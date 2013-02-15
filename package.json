@@ -22,6 +22,9 @@
     ],
     "dependencies": {},
     "devDependencies": {},
+    "scripts": {
+        "test": "node test/all.js"
+    },
     "main": "math2.js",
     "engines": {
         "node": "*"
