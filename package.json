@@ -1,0 +1,29 @@
+{
+    "name": "math2",
+    "version": "0.0.1",
+    "description": "An advanced Javascript math library",
+    "author": "Jos de Jong <wjosdejong@gmail.com>",
+    "contributors": [
+        {
+            "name": "Jos de Jong",
+            "email": "wjosdejong@gmail.com"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/josdejong/math2.git"
+    },
+    "keywords": [
+        "math",
+        "mathematics",
+        "functions",
+        "parser",
+        "expression"
+    ],
+    "dependencies": {},
+    "devDependencies": {},
+    "main": "math2.js",
+    "engines": {
+        "node": "*"
+    }
+}
