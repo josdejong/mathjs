@@ -1,5 +1,6 @@
 src
 test
 node_modules
+Jakefile.js
 .idea
 .npmignore

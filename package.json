@@ -36,7 +36,7 @@
     "scripts": {
         "prepublish": "jake"
     },
-    "main": "math2.js",
+    "main": "math2.min.js",
     "engines": {
         "node": "*"
     }
