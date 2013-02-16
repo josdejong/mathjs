@@ -17,8 +17,8 @@ Math2 can be installed via [npm](https://npmjs.org/).
     npm install math2
 
 Alternatively, the library can be downloaded from github:
-[math2.js](https://raw.github.com/josdejong/math2/master/math2.js),or minified:
-[math2.min.js](https://raw.github.com/josdejong/math2/master/math2.min.js),
+[math2.js](https://raw.github.com/josdejong/math2/master/math2.js), or minified:
+[math2.min.js](https://raw.github.com/josdejong/math2/master/math2.min.js).
 
 
 ## Use
@@ -32,10 +32,12 @@ Math2 can be loaded via require:
         Unit = math2.type.Unit;
 
     console.log(math2.sqrt(25));           // 5
+
     var c = new Complex(3, -4);
     console.log(math2.sqrt(c).toString()); // 2 - i
-    console.log(math2.sin(math2.pi / 4));  // 0.7071067811865475
+
     var u = new Unit(45, 'deg');
+    console.log(math2.sin(math2.pi / 4));  // 0.7071067811865475
     console.log(math2.sin(u));             // 0.7071067811865475
 
 ### Browser
@@ -53,10 +55,12 @@ Math2 can be loaded as a regular javascript file in the browser:
             var Unit = math2.type.Unit;
 
             console.log(math2.sqrt(25));           // 5
+
             var c = new Complex(3, -4);
             console.log(math2.sqrt(c).toString()); // 2 - i
-            console.log(math2.sin(math2.pi / 4));  // 0.7071067811865475
+
             var u = new Unit(45, 'deg');
+            console.log(math2.sin(math2.pi / 4));  // 0.7071067811865475
             console.log(math2.sin(u));             // 0.7071067811865475
         </script>
     </body>
@@ -68,12 +72,12 @@ Math2 can be loaded as a regular javascript file in the browser:
 To clone the project from github:
 
     git clone git://github.com/josdejong/math2.git
-    cd math2
 
 To build the project, [jake](https://github.com/mde/jake) must be installed
 globally. Next, install all dependencies using npm. Then build the project
 using jake.
 
+    cd math2
     sudo npm install -g jake
     npm install
     jake
