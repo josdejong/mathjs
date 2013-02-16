@@ -24,10 +24,10 @@ math2.type.Complex = Complex;
 
 /**
  * Create a copy of the complex value
- * @return {math2.type.Complex} copy
+ * @return {Complex} copy
  */
 Complex.prototype.copy = function () {
-    return new math2.type.Complex(this.re, this.im);
+    return new Complex(this.re, this.im);
 };
 
 /**

@@ -3,7 +3,7 @@
  * An extended Math library for Javascript
  * https://github.com/josdejong/math2
  *
- * @version 0.0.2-SNAPSHOT
+ * @version 0.0.2
  * @date    2013-02-16
  *
  * @license
@@ -194,7 +194,7 @@ math2.type.Unit = Unit;
 
 /**
  * create a copy of this unit
- * @return {math2.type.Unit} copy
+ * @return {Unit} copy
  */
 Unit.prototype.copy = function () {
     var clone = new Unit();
@@ -690,10 +690,10 @@ math2.type.Complex = Complex;
 
 /**
  * Create a copy of the complex value
- * @return {math2.type.Complex} copy
+ * @return {Complex} copy
  */
 Complex.prototype.copy = function () {
-    return new math2.type.Complex(this.re, this.im);
+    return new Complex(this.re, this.im);
 };
 
 /**
@@ -855,7 +855,7 @@ math2.i         = math2.I;
  * @param {*} value
  * @return {TypeError | Error} error
  */
-function createTypeError(fn, value) {
+function newUnsupportedTypeError(fn, value) {
     var t = type(value);
     var msg = 'Function ' + fn + ' does not support a parameter of type ' + t;
 
@@ -866,6 +866,57 @@ function createTypeError(fn, value) {
         return new Error(msg);
     }
 }
+
+/**
+ * Change the unit of a value. x in unit or in(x, unit)
+ * @param {Unit} x
+ * @param {Unit} unit
+ * @return {Unit} res
+ */
+function unit_in(x, unit) {
+    if (isUnit(x)) {
+        // Test if unit has no value
+        if (unit.hasValue) {
+            throw new Error('Cannot convert to a unit with a value');
+        }
+        // Test if unit has a unit
+        if (!unit.hasUnit) {
+            throw new Error('Unit expected on the right hand side of function in');
+        }
+
+        var res = unit.copy();
+        res.value = x.value;
+        res.fixPrefix = true;
+
+        return res;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('in', x);
+}
+
+math2['in'] = unit_in;
+
+/**
+ * Function documentation
+ */
+unit_in.doc ={
+    'name': 'in',
+    'category': 'Units',
+    'syntax': [
+        'x in unit',
+        'in(x, unit)'
+    ],
+    'description': 'Change the unit of a value.',
+    'examples': [
+        '5 inch in cm',
+        '3.2kg in g',
+        '16 bytes in bits'
+    ],
+    'seealso': []
+};
 
 /**
  * Calculate the sine of a value, sin(x)
@@ -894,7 +945,7 @@ function sin(x) {
     // TODO: implement array support
     // TODO: implement matrix support
 
-    throw createTypeError('sin', x);
+    throw newUnsupportedTypeError('sin', x);
 }
 
 math2.sin = sin;
@@ -951,7 +1002,7 @@ function cos(x) {
     // TODO: implement array support
     // TODO: implement matrix support
 
-    throw createTypeError('cos', x);
+    throw newUnsupportedTypeError('cos', x);
 }
 
 math2.cos = cos;
@@ -1011,7 +1062,7 @@ function tan(x) {
     // TODO: implement array support
     // TODO: implement matrix support
 
-    throw createTypeError('tan', x);
+    throw newUnsupportedTypeError('tan', x);
 }
 
 math2.tan = tan;
@@ -1059,7 +1110,7 @@ function exp (x) {
     // TODO: implement array support
     // TODO: implement matrix support
 
-    throw createTypeError('exp', x);
+    throw newUnsupportedTypeError('exp', x);
 }
 
 math2.exp = exp;
@@ -1121,7 +1172,7 @@ function sqrt (x) {
     // TODO: implement array support
     // TODO: implement matrix support
 
-    throw createTypeError('sqrt', x);
+    throw newUnsupportedTypeError('sqrt', x);
 }
 
 math2.sqrt = sqrt;
@@ -1166,7 +1217,7 @@ function abs(x) {
     // TODO: implement array support
     // TODO: implement matrix support
 
-    throw createTypeError('abs', x);
+    throw newUnsupportedTypeError('abs', x);
 }
 
 math2.abs = abs;
@@ -1214,7 +1265,7 @@ function log(x) {
     // TODO: implement array support
     // TODO: implement matrix support
 
-    throw createTypeError('log', x);
+    throw newUnsupportedTypeError('log', x);
 }
 
 math2.log = log;

@@ -32,7 +32,7 @@ math2.type.Unit = Unit;
 
 /**
  * create a copy of this unit
- * @return {math2.type.Unit} copy
+ * @return {Unit} copy
  */
 Unit.prototype.copy = function () {
     var clone = new Unit();
