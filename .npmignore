@@ -2,5 +2,6 @@ src
 test
 node_modules
 Jakefile.js
+math2.min.js
 .idea
 .npmignore
