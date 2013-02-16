@@ -1,7 +1,7 @@
 {
     "name": "math2",
-    "version": "0.0.1",
-    "description": "An advanced Javascript math library",
+    "version": "0.0.2-SNAPSHOT",
+    "description": "An extended Math library for Javascript",
     "author": "Jos de Jong <wjosdejong@gmail.com>",
     "contributors": [
         {
@@ -18,12 +18,22 @@
         "mathematics",
         "functions",
         "parser",
-        "expression"
+        "expression",
+        "real",
+        "complex",
+        "matrix",
+        "unit"
     ],
     "dependencies": {},
-    "devDependencies": {},
+    "devDependencies": {
+        "jake": ">= 0.5.8",
+        "uglify-js": ">= 2.2.5",
+        "nodeunit": ">= 0.7.4",
+        "replace": ">= 0.2.1",
+        "date-utils": ">= 1.2.12"
+    },
     "scripts": {
-        "test": "node test/all.js"
+        "prepublish": "jake"
     },
     "main": "math2.js",
     "engines": {

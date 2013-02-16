@@ -1,0 +1,3 @@
+/**
+ * Helper methods for functions
+ */

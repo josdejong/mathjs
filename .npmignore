@@ -1,0 +1,5 @@
+src
+test
+node_modules
+.idea
+.npmignore

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Math2 Test</title>
+
+    <script src="../math2.js"></script>
+</head>
+<body>
+    <p>
+        Use the math2 library from the console...
+    </p>
+    <script>
+        var complex1 = new math2.type.Complex(3, -4);
+        console.log(complex1.toString());
+
+        console.log('sqrt(25) = ' + math2.sqrt(25));
+        console.log('sqrt(' + complex1.toString() + ') = ' + math2.sqrt(complex1));
+        console.log('sqrt(-4) = ' + math2.sqrt(-4));
+    </script>
+</body>
+</html>
