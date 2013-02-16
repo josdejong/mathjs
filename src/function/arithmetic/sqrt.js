@@ -1,8 +1,9 @@
 /**
  * Calculate the square root of a value
- * @param {Number | math2.type.Complex} x
+ * @param {Number | Complex} x
+ * @return {Number | Complex} res
  */
-var sqrt = math2.sqrt = function (x) {
+function sqrt (x) {
     if (isNumber(x)) {
         if (x >= 0) {
             return Math.sqrt(x);
@@ -28,11 +29,13 @@ var sqrt = math2.sqrt = function (x) {
         }
     }
 
-    // TODO: matrix
+    // TODO: implement array support
+    // TODO: implement matrix support
 
-    throw new Error('Function sqrt does not support a parameter of type "' +
-        (x && x.name ? x.name : 'unknown') + '"');
-};
+    throw newUnsupportedTypeError('sqrt', x);
+}
+
+math2.sqrt = sqrt;
 
 /**
  * Function documentation

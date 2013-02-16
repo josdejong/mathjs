@@ -5,7 +5,8 @@
 var fs = require('fs'),
     jake = require('jake'),
     uglify = require('uglify-js'),
-    replace = require('replace');
+    replace = require('replace'),
+    filesize = require('filesize');
 
 require('date-utils');
 
@@ -16,19 +17,31 @@ var MATH2       = './math2.js';
 var MATH2_MIN   = './math2.min.js';
 var HEADER      = './src/header.js';
 
+// register start time
+var start = +new Date();
+
 /**
  * default task
  */
-desc('Execute all tasks');
-task('default', ['concat', 'minify', 'version', 'test'], function (params) {
-    console.log('Done');
+desc('Execute all tasks: build and test the library');
+task('default', ['build', 'test'], function () {
+    // calculate duration
+    var end = +new Date();
+    var duration = end - start;
+    console.log('Done (' + duration + ' ms)');
 });
+
+/**
+ * build task
+ */
+desc('Build the library');
+task('build', ['concat', 'minify', 'version']);
 
 /**
  * concat task
  */
 desc('Concatenate all source files into one file');
-task('concat', function (params) {
+task('concat', function () {
     var filelist = new jake.FileList();
     filelist.include([
         './src/module.js',
@@ -58,14 +71,14 @@ task('concat', function (params) {
     fs.writeFileSync(MATH2, out);
 
     console.log('Concatenated ' + files.length + ' files into ' +
-        MATH2 + ' (' + out.length + ' bytes)');
+        MATH2 + ' (' + filesize(out.length, 1) + ')');
 });
 
 /**
  * minify task
  */
 desc('Minify the library');
-task('minify', ['concat'], function (params) {
+task('minify', ['concat'], function () {
     var header = fs.readFileSync(HEADER);
     var input = fs.readFileSync(MATH2);
     var result = uglify.minify(MATH2, {});
@@ -73,8 +86,8 @@ task('minify', ['concat'], function (params) {
     fs.writeFileSync(MATH2_MIN, out);
 
     console.log('Minified ' +
-        MATH2 + ' (' + input.length + ' bytes) to ' +
-        MATH2_MIN + ' (' + out.length + ' bytes)');
+        MATH2 + ' (' + filesize(input.length, 1) + ') to ' +
+        MATH2_MIN + ' (' + filesize(out.length, 1) + ')');
 });
 
 /**
@@ -110,7 +123,7 @@ task('version', ['concat', 'minify'], function () {
 desc('Test the library');
 task('test', ['concat'], function () {
     require('./test/all.js');
-    console.log('Test successful');
+    console.log('Tests successful');
 });
 
 /**

@@ -3,21 +3,51 @@
  */
 
 /**
- * Test whether x is a Number
- * @param {*} x
+ * Test whether value is a Number
+ * @param {*} value
  * @return {Boolean} isNumber
- * @private
  */
-function isNumber(x) {
-    return (x instanceof Number) || (typeof x == 'number');
+function isNumber(value) {
+    return (value instanceof Number) || (typeof value == 'number');
 }
 
 /**
- * Test whether x is a Complex
- * @param {*} x
+ * Test whether value is a Complex value
+ * @param {*} value
  * @return {Boolean} isComplex
- * @private
  */
-function isComplex(x) {
-    return (x instanceof Complex);
+function isComplex(value) {
+    return (value instanceof Complex);
+}
+
+/**
+ * Test whether value is a Unit
+ * @param {*} value
+ * @return {Boolean} isUnit
+ */
+function isUnit(value) {
+    return (value instanceof Unit);
+}
+
+/**
+ * Get the type of an object.
+ * @param {*} obj
+ * @return {String} type
+ */
+function type (obj) {
+    var t = typeof obj;
+
+    if (t == 'object') {
+        if (obj == null) {
+            return 'null';
+        }
+        if (obj instanceof Array) {
+            return 'array';
+        }
+        if (obj && obj.constructor && obj.constructor.name) {
+            return obj.constructor.name;
+        }
+    }
+
+    return t;
 }

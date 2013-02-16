@@ -30,7 +30,8 @@
         "uglify-js": ">= 2.2.5",
         "nodeunit": ">= 0.7.4",
         "replace": ">= 0.2.1",
-        "date-utils": ">= 1.2.12"
+        "date-utils": ">= 1.2.12",
+        "filesize": ">= 1.7.9"
     },
     "scripts": {
         "prepublish": "jake"

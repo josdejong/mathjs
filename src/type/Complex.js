@@ -4,9 +4,10 @@
  * @param {Number} [re]
  * @param {Number} [im]
  */
-var Complex = math2.type.Complex = function(re, im) {
-
-    // TODO: test if called via new Complex()
+function Complex(re, im) {
+    if (this.constructor != Complex) {
+        throw new Error('Complex constructor must be called with the new operator');
+    }
 
     /**
      * @type {Number}
@@ -17,9 +18,9 @@ var Complex = math2.type.Complex = function(re, im) {
      * @type {Number}
      */
     this.im = im || 0;
-};
+}
 
-Complex.name = 'Complex';
+math2.type.Complex = Complex;
 
 /**
  * Create a copy of the complex value
