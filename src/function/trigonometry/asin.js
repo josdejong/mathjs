@@ -1,6 +1,6 @@
 /**
  * Calculate the inverse sine of a value, asin(x)
- * @param {Number | Complex | Unit} x
+ * @param {Number | Complex} x
  * @return {Number | Complex} res
  */
 function asin(x) {

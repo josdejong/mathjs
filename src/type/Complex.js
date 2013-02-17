@@ -39,7 +39,7 @@ Complex.prototype.toString = function () {
 
     if (this.im === 0) {
         // real value
-        str = format(this.re);
+        str = util.format(this.re);
     }
     else if (this.re === 0) {
         // purely complex value
@@ -50,25 +50,25 @@ Complex.prototype.toString = function () {
             str = '-i';
         }
         else {
-            str = format(this.im) + 'i';
+            str = util.format(this.im) + 'i';
         }
     }
     else {
         // complex value
         if (this.im > 0) {
             if (this.im == 1) {
-                str = format(this.re) + ' + i';
+                str = util.format(this.re) + ' + i';
             }
             else {
-                str = format(this.re) + ' + ' + format(this.im) + 'i';
+                str = util.format(this.re) + ' + ' + util.format(this.im) + 'i';
             }
         }
         else {
             if (this.im == -1) {
-                str = format(this.re) + ' - i';
+                str = util.format(this.re) + ' - i';
             }
             else {
-                str = format(this.re) + ' - ' + format(Math.abs(this.im)) + 'i';
+                str = util.format(this.re) + ' - ' + util.format(Math.abs(this.im)) + 'i';
             }
         }
     }

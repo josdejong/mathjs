@@ -1,6 +1,6 @@
 /**
  * Calculate the inverse tangent of a value, atan(x)
- * @param {Number | Complex | Unit} x
+ * @param {Number | Complex} x
  * @return {Number | Complex} res
  */
 function atan(x) {

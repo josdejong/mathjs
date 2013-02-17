@@ -19,7 +19,7 @@ function tan(x) {
         );
     }
 
-    if (isUnit(x)) {
+    if (x instanceof Unit) {
         if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
             throw new TypeError ('Unit in function tan is no angle');
         }

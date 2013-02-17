@@ -16,7 +16,7 @@ function cos(x) {
         );
     }
 
-    if (isUnit(x)) {
+    if (x instanceof Unit) {
         if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
             throw new TypeError ('Unit in function cos is no angle');
         }

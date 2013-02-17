@@ -6,17 +6,26 @@
  * Create a TypeError with message:
  *      'Function <fn> does not support a parameter of type <type>';
  * @param {String} fn
- * @param {*} value
+ * @param {*} value1
+ * @param {*} [value2]
  * @return {TypeError | Error} error
  */
-function newUnsupportedTypeError(fn, value) {
-    var t = type(value);
-    var msg = 'Function ' + fn + ' does not support a parameter of type ' + t;
-
-    if ((typeof TypeError) != 'undefined') {
-        return new TypeError(msg);
+function newUnsupportedTypeError(fn, value1, value2) {
+    var msg = undefined;
+    if (arguments.length == 2) {
+        var t = type(value1);
+        msg = 'Function ' + fn + ' does not support a parameter of type ' + t;
+    }
+    else if (arguments.length > 2) {
+        var types = [];
+        for (var i = 1; i < arguments.length; i++) {
+            types += type(arguments[i])
+        }
+        msg = 'Function ' + fn + ' does not support a parameters of type ' + types.join(', ');
     }
     else {
-        return new Error(msg);
+        msg = 'Unsupported parameter in function ' + fn;
     }
+
+    return new TypeError(msg);
 }

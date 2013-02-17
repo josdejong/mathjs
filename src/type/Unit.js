@@ -172,7 +172,7 @@ Unit.prototype.hasBase = function(base) {
 
 /**
  * Check if this unit has a base equal to another base
- * @param {math.type.Unit} other
+ * @param {Unit} other
  * @return {Boolean} true if equal base
  */
 Unit.prototype.equalBase = function(other) {
@@ -193,6 +193,7 @@ Unit.prototype.equals = function(other) {
  * @return {String}
  */
 Unit.prototype.toString = function() {
+    var value;
     if (!this.fixPrefix) {
         // find the best prefix value (resulting in the value of which
         // the absolute value of the log10 is closest to zero,
@@ -220,12 +221,12 @@ Unit.prototype.toString = function() {
             }
         }
 
-        var value = this._unnormalize(this.value, bestPrefix.value);
-        return format(value) + ' ' + bestPrefix.name + this.unit.name;
+        value = this._unnormalize(this.value, bestPrefix.value);
+        return util.format(value) + ' ' + bestPrefix.name + this.unit.name;
     }
     else {
-        var value = this._unnormalize(this.value);
-        return format(value) + ' ' + this.prefix.name + this.unit.name;
+        value = this._unnormalize(this.value);
+        return util.format(value) + ' ' + this.prefix.name + this.unit.name;
     }
 };
 

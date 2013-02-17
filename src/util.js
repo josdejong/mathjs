@@ -1,14 +1,15 @@
 
 var PRECISION = 1E10;
 
+var util = {};
+
 /**
  * Convert a number to a formatted string representation
  * @param {Number} value            The value to be formatted
  * @param {Number} [digits]         number of digits
  * @return {String} formattedValue  The formatted value
- * @private
  */
-var format = function (value, digits) {
+util.format = function (value, digits) {
     if (value === Infinity) {
         return 'Infinity';
     }
@@ -23,13 +24,13 @@ var format = function (value, digits) {
     var abs = Math.abs(value);
     if ( (abs > 0.0001 && abs < 1000000) || abs == 0.0 ) {
         // round the func to a limited number of digits
-        return String(round(value, digits));
+        return String(util.round(value, digits));
     }
     else {
         // scientific notation
         var exp = Math.round(Math.log(abs) / Math.LN10);
         var v = value / (Math.pow(10.0, exp));
-        return round(v, digits) + 'E' + exp;
+        return util.round(v, digits) + 'E' + exp;
     }
 };
 
@@ -39,9 +40,8 @@ var format = function (value, digits) {
  * @param {Number} value
  * @param {Number} [digits]
  * @return {Number} roundedValue
- * @private
  */
-var round = function (value, digits) {
+util.round = function (value, digits) {
     digits = (digits != undefined) ? Math.pow(10, digits) : PRECISION;
 
     return Math.round(value * digits) / digits;
@@ -51,9 +51,8 @@ var round = function (value, digits) {
  * Create a semi UUID
  * source: http://stackoverflow.com/a/105074/1262753
  * @return {String} uuid
- * @private
  */
-var createUUID = function () {
+util.createUUID = function () {
     var S4 = function () {
         return Math.floor(
             Math.random() * 0x10000 /* 65536 */
