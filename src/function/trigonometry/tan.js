@@ -32,7 +32,7 @@ function tan(x) {
     throw newUnsupportedTypeError('tan', x);
 }
 
-math2.tan = tan;
+math.tan = tan;
 
 /**
  * Function documentation

@@ -1,5 +1,5 @@
 /**
- * Jake build script for Math2
+ * Jake build script for mathjs
  */
 
 var fs = require('fs'),
@@ -13,8 +13,8 @@ require('date-utils');
 /**
  * Constants
  */
-var MATH2       = './math2.js';
-var MATH2_MIN   = './math2.min.js';
+var MATHJS       = './math.js';
+var MATHJS_MIN   = './math.min.js';
 var HEADER      = './src/header.js';
 
 // register start time
@@ -44,7 +44,7 @@ desc('Concatenate all source files into one file');
 task('concat', function () {
     var filelist = new jake.FileList();
     filelist.include([
-        './src/module.js',
+        './src/exports.js',
         './src/util.js',
         './src/type/**/*.js',
         './src/types.js',
@@ -68,10 +68,10 @@ task('concat', function () {
         '\n})();\n';
 
     // write file
-    fs.writeFileSync(MATH2, out);
+    fs.writeFileSync(MATHJS, out);
 
     console.log('Concatenated ' + files.length + ' files into ' +
-        MATH2 + ' (' + filesize(out.length, 1) + ')');
+        MATHJS + ' (' + filesize(out.length, 1) + ')');
 });
 
 /**
@@ -80,14 +80,14 @@ task('concat', function () {
 desc('Minify the library');
 task('minify', ['concat'], function () {
     var header = fs.readFileSync(HEADER);
-    var input = fs.readFileSync(MATH2);
-    var result = uglify.minify(MATH2, {});
+    var input = fs.readFileSync(MATHJS);
+    var result = uglify.minify(MATHJS, {});
     var out = header + result.code;
-    fs.writeFileSync(MATH2_MIN, out);
+    fs.writeFileSync(MATHJS_MIN, out);
 
     console.log('Minified ' +
-        MATH2 + ' (' + filesize(input.length, 1) + ') to ' +
-        MATH2_MIN + ' (' + filesize(out.length, 1) + ')');
+        MATHJS + ' (' + filesize(input.length, 1) + ') to ' +
+        MATHJS_MIN + ' (' + filesize(out.length, 1) + ')');
 });
 
 /**
@@ -95,7 +95,7 @@ task('minify', ['concat'], function () {
  */
 desc('Update version and date in the library');
 task('version', ['concat', 'minify'], function () {
-    var files = [MATH2, MATH2_MIN];
+    var files = [MATHJS, MATHJS_MIN];
     var pkg = JSON.parse(fs.readFileSync('./package.json'));
     if (!pkg.version) {
         throw new Error('No version found in package.json');

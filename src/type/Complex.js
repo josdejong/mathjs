@@ -1,5 +1,5 @@
 /**
- * @constructor math2.type.Complex
+ * @constructor math.type.Complex
  *
  * @param {Number} [re]
  * @param {Number} [im]
@@ -20,7 +20,7 @@ function Complex(re, im) {
     this.im = im || 0;
 }
 
-math2.type.Complex = Complex;
+math.type.Complex = Complex;
 
 /**
  * Create a copy of the complex value

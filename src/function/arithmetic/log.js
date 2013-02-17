@@ -27,7 +27,7 @@ function log(x) {
     throw newUnsupportedTypeError('log', x);
 }
 
-math2.log = log;
+math.log = log;
 
 /**
  * Function documentation

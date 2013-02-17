@@ -18,7 +18,7 @@ function abs(x) {
     throw newUnsupportedTypeError('abs', x);
 }
 
-math2.abs = abs;
+math.abs = abs;
 
 /**
  * Function documentation

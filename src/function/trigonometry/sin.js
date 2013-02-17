@@ -28,7 +28,7 @@ function sin(x) {
     throw newUnsupportedTypeError('sin', x);
 }
 
-math2.sin = sin;
+math.sin = sin;
 
 /**
  * Function documentation

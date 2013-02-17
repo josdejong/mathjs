@@ -29,7 +29,7 @@ function cos(x) {
     throw newUnsupportedTypeError('cos', x);
 }
 
-math2.cos = cos;
+math.cos = cos;
 
 /**
  * Function documentation
