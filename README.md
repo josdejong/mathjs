@@ -21,8 +21,8 @@ Math.js can be installed via [npm](https://npmjs.org/).
     npm install mathjs
 
 Alternatively, the library can be downloaded from github:
-[math.js](https://raw.github.com/josdejong/mathjs/master/lib/math.js), or minified:
-[math.min.js](https://raw.github.com/josdejong/mathjs/master/lib/math.min.js).
+[math.js](https://raw.github.com/josdejong/mathjs/master/math.js), or minified:
+[math.min.js](https://raw.github.com/josdejong/mathjs/master/math.min.js).
 
 
 ## Use
