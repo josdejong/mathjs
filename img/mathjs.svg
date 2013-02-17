@@ -9,12 +9,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="340"
+   width="330"
    height="100"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="mathjs.svg">
+   sodipodi:docname="mathjs.svg"
+   inkscape:export-filename="/home/jos/mathjs/img/mathjs.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -24,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="143.92804"
-     inkscape:cy="41.051303"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="241.85037"
+     inkscape:cy="37.613825"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -55,7 +58,7 @@
     <rect
        style="fill:#dc3912;fill-opacity:1;stroke:none"
        id="rect3004"
-       width="340"
+       width="243"
        height="100"
        x="0"
        y="952.36218" />
@@ -84,18 +87,11 @@
          id="tspan3784"
          x="98"
          y="19" /></text>
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none"
-       id="rect3786"
-       width="95"
-       height="100"
-       x="240"
-       y="952.36218" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot3774-8"
        style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#202020;fill-opacity:1;stroke:none;font-family:Source Sans Pro;-inkscape-font-specification:Source Sans Pro Bold"
-       transform="translate(247.396,926.60823)"><flowRegion
+       transform="translate(243.98176,926.60823)"><flowRegion
          id="flowRegion3776-8"><rect
            id="rect3778-1"
            width="85"
