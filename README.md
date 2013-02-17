@@ -1,66 +1,67 @@
-# Math2
-https://github.com/josdejong/math2
+# math.js
+https://github.com/josdejong/mathjs
 
-Math2 is an extended math library for JavaScript,
-compatible with the standard Math library of JavaScript.
-Math2 supports real values, complex values, units, strings, and matrices.
+Math.js is an extended Math library for Javascript.
+It is a superset of the standard Math library.
+Powerful and easy to use.
+
+Math.js supports real values, complex values, units, strings, and matrices.
 It contains an extensive set of built-in functions,
 and comes with a flexible expression parser.
-Powerful and easy to use.
 
 
 ## Install
 
-Math2 can be installed via [npm](https://npmjs.org/).
+Math.js can be installed via [npm](https://npmjs.org/).
 
-    npm install math2
+    npm install mathjs
 
 Alternatively, the library can be downloaded from github:
-[math2.js](https://raw.github.com/josdejong/math2/master/math2.js), or minified:
-[math2.min.js](https://raw.github.com/josdejong/math2/master/math2.min.js).
+[math.js](https://raw.github.com/josdejong/mathjs/master/mathjs.js), or minified:
+[math.min.js](https://raw.github.com/josdejong/mathjs/master/mathjs.min.js).
 
 
 ## Use
 
 ### Node
 
-Math2 can be loaded via require:
+Math.js can be loaded via require:
 
-    var math2 = require('math2'),
-        Complex = math2.type.Complex,
-        Unit = math2.type.Unit;
+    var math = require('mathjs'),
+        Complex = math.type.Complex,
+        Unit = math.type.Unit;
 
-    console.log(math2.sqrt(25));           // 5
+    console.log(math.sqrt(25));           // 5
 
     var c = new Complex(3, -4);
-    console.log(math2.sqrt(c).toString()); // 2 - i
+    console.log(math.sqrt(c).toString()); // 2 - i
 
     var u = new Unit(45, 'deg');
-    console.log(math2.sin(math2.pi / 4));  // 0.7071067811865475
-    console.log(math2.sin(u));             // 0.7071067811865475
+    console.log(math.sin(math.pi / 4));  // 0.7071067811865475
+    console.log(math.sin(u));             // 0.7071067811865475
 
 ### Browser
 
-Math2 can be loaded as a regular JavaScript file in the browser:
+Math.js can be loaded as a regular javascript file in the browser:
 
     <!DOCTYPE html>
     <html>
     <head>
-        <script src="math2.js" type="text/javascript"></script>
+        <script src="math.js" type="text/javascript"></script>
     </head>
     <body>
         <script>
-            var Complex = math2.type.Complex;
-            var Unit = math2.type.Unit;
+            var Complex = math.type.Complex;
+            var Unit = math.type.Unit;
 
-            console.log(math2.sqrt(25));           // 5
+            console.log(math.sqrt(25));           // 5
 
             var c = new Complex(3, -4);
-            console.log(math2.sqrt(c).toString()); // 2 - i
+            console.log(math.sqrt(c).toString()); // 2 - i
 
             var u = new Unit(45, 'deg');
-            console.log(math2.sin(math2.pi / 4));  // 0.7071067811865475
-            console.log(math2.sin(u));             // 0.7071067811865475
+            console.log(math.sin(math.pi / 4));  // 0.7071067811865475
+            console.log(math.sin(u));             // 0.7071067811865475
         </script>
     </body>
     </html>
@@ -70,13 +71,13 @@ Math2 can be loaded as a regular JavaScript file in the browser:
 
 To clone the project from github:
 
-    git clone git://github.com/josdejong/math2.git
+    git clone git://github.com/josdejong/mathjs.git
 
 To build the project, [jake](https://github.com/mde/jake) must be installed
 globally. Next, install all dependencies using npm. Then build the project
 using jake.
 
-    cd math2
+    cd mathjs
     sudo npm install -g jake
     npm install
     jake
@@ -84,7 +85,7 @@ using jake.
 
 ## License
 
-Math2 is licensed under the Apache 2.0 license.
+Math.js is licensed under the Apache 2.0 license.
 
     Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
 

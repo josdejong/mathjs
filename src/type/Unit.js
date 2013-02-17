@@ -7,7 +7,7 @@
  */
 
 /**
- * @constructor math2.type.Unit
+ * @constructor math.type.Unit
  *
  * @param {Number} [value]     A value for the unit, like 5.2
  * @param {String} [prefixUnit]  A unit like "cm" or "inch"
@@ -28,7 +28,7 @@ function Unit(value, prefixUnit) {
     this._init(value, prefixUnit);
 }
 
-math2.type.Unit = Unit;
+math.type.Unit = Unit;
 
 /**
  * create a copy of this unit
@@ -161,7 +161,7 @@ Unit.isUnit = function (unit) {
 
 /**
  * check if this unit has given base unit
- * @param {math2.type.Unit.BASE_UNITS} base
+ * @param {math.type.Unit.BASE_UNITS} base
  */
 Unit.prototype.hasBase = function(base) {
     if (this.unit.base === undefined) {
@@ -172,7 +172,7 @@ Unit.prototype.hasBase = function(base) {
 
 /**
  * Check if this unit has a base equal to another base
- * @param {math2.type.Unit} other
+ * @param {math.type.Unit} other
  * @return {Boolean} true if equal base
  */
 Unit.prototype.equalBase = function(other) {

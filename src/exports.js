@@ -1,7 +1,7 @@
 /**
- * Define math2 namespace
+ * Define mathjs namespace
  */
-var math2 = {
+var math = {
     type: {},
     parser: {}
 };
@@ -10,10 +10,10 @@ var math2 = {
  * CommonJS module exports
  */
 if ((typeof module !== 'undefined') && (typeof module.exports !== 'undefined')) {
-    module.exports = math2;
+    module.exports = math;
 }
 if (typeof exports !== 'undefined') {
-    exports = math2;
+    exports = math;
 }
 
 /**
@@ -21,7 +21,7 @@ if (typeof exports !== 'undefined') {
  */
 if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
     define(function () {
-        return math2;
+        return math;
     });
 }
 
@@ -29,5 +29,5 @@ if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
  * Browser exports
  */
 if (typeof(window) != 'undefined') {
-    window['math2'] = math2;
+    window['math'] = math;
 }

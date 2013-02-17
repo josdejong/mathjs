@@ -1,7 +1,8 @@
 /**
- * Math2
- * An extended Math library for Javascript
- * https://github.com/josdejong/math2
+ * math.js
+ * An extended math library. Includes a parser, real and complex values, units,
+ * matrices, strings, and a large set of functions and constants.
+ * https://github.com/josdejong/mathjs
  *
  * @version @@version
  * @date    @@date

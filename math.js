@@ -1,10 +1,11 @@
 /**
- * Math2
- * An extended Math library for Javascript
- * https://github.com/josdejong/math2
+ * math.js
+ * An extended math library. Includes a parser, real and complex values, units,
+ * matrices, strings, and a large set of functions and constants.
+ * https://github.com/josdejong/mathjs
  *
  * @version 0.0.2
- * @date    2013-02-16
+ * @date    2013-02-17
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -25,9 +26,9 @@
 (function() {
 
 /**
- * Define math2 namespace
+ * Define mathjs namespace
  */
-var math2 = {
+var math = {
     type: {},
     parser: {}
 };
@@ -36,10 +37,10 @@ var math2 = {
  * CommonJS module exports
  */
 if ((typeof module !== 'undefined') && (typeof module.exports !== 'undefined')) {
-    module.exports = math2;
+    module.exports = math;
 }
 if (typeof exports !== 'undefined') {
-    exports = math2;
+    exports = math;
 }
 
 /**
@@ -47,7 +48,7 @@ if (typeof exports !== 'undefined') {
  */
 if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
     define(function () {
-        return math2;
+        return math;
     });
 }
 
@@ -55,7 +56,7 @@ if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
  * Browser exports
  */
 if (typeof(window) != 'undefined') {
-    window['math2'] = math2;
+    window['math'] = math;
 }
 
 
@@ -169,7 +170,7 @@ if (!Array.prototype.forEach) {
  */
 
 /**
- * @constructor math2.type.Unit
+ * @constructor math.type.Unit
  *
  * @param {Number} [value]     A value for the unit, like 5.2
  * @param {String} [prefixUnit]  A unit like "cm" or "inch"
@@ -190,7 +191,7 @@ function Unit(value, prefixUnit) {
     this._init(value, prefixUnit);
 }
 
-math2.type.Unit = Unit;
+math.type.Unit = Unit;
 
 /**
  * create a copy of this unit
@@ -323,7 +324,7 @@ Unit.isUnit = function (unit) {
 
 /**
  * check if this unit has given base unit
- * @param {math2.type.Unit.BASE_UNITS} base
+ * @param {math.type.Unit.BASE_UNITS} base
  */
 Unit.prototype.hasBase = function(base) {
     if (this.unit.base === undefined) {
@@ -334,7 +335,7 @@ Unit.prototype.hasBase = function(base) {
 
 /**
  * Check if this unit has a base equal to another base
- * @param {math2.type.Unit} other
+ * @param {math.type.Unit} other
  * @return {Boolean} true if equal base
  */
 Unit.prototype.equalBase = function(other) {
@@ -665,7 +666,7 @@ Unit.UNITS = [
 ];
 
 /**
- * @constructor math2.type.Complex
+ * @constructor math.type.Complex
  *
  * @param {Number} [re]
  * @param {Number} [im]
@@ -686,7 +687,7 @@ function Complex(re, im) {
     this.im = im || 0;
 }
 
-math2.type.Complex = Complex;
+math.type.Complex = Complex;
 
 /**
  * Create a copy of the complex value
@@ -826,23 +827,23 @@ function type (obj) {
 }
 
 /**
- * Math2 Constants
+ * mathjs constants
  */
-math2.E         = Math.E;
-math2.LN2       = Math.LN2;
-math2.LN10      = Math.LN10;
-math2.LOG2E     = Math.LOG2E;
-math2.LOG10E    = Math.LOG10E;
-math2.PI        = Math.PI;
-math2.SQRT1_2   = Math.SQRT1_2;
-math2.SQRT2     = Math.SQRT2;
+math.E          = Math.E;
+math.LN2        = Math.LN2;
+math.LN10       = Math.LN10;
+math.LOG2E      = Math.LOG2E;
+math.LOG10E     = Math.LOG10E;
+math.PI         = Math.PI;
+math.SQRT1_2    = Math.SQRT1_2;
+math.SQRT2      = Math.SQRT2;
 
-math2.I         = new Complex(0, -1);
+math.I          = new Complex(0, -1);
 
 // lower case constants
-math2.pi        = math2.PI;
-math2.e         = math2.E;
-math2.i         = math2.I;
+math.pi        = math.PI;
+math.e         = math.E;
+math.i         = math.I;
 
 /**
  * Helper methods for functions
@@ -897,7 +898,7 @@ function unit_in(x, unit) {
     throw newUnsupportedTypeError('in', x);
 }
 
-math2['in'] = unit_in;
+math['in'] = unit_in;
 
 /**
  * Function documentation
@@ -948,7 +949,7 @@ function sin(x) {
     throw newUnsupportedTypeError('sin', x);
 }
 
-math2.sin = sin;
+math.sin = sin;
 
 /**
  * Function documentation
@@ -1005,7 +1006,7 @@ function cos(x) {
     throw newUnsupportedTypeError('cos', x);
 }
 
-math2.cos = cos;
+math.cos = cos;
 
 /**
  * Function documentation
@@ -1065,7 +1066,7 @@ function tan(x) {
     throw newUnsupportedTypeError('tan', x);
 }
 
-math2.tan = tan;
+math.tan = tan;
 
 /**
  * Function documentation
@@ -1113,7 +1114,7 @@ function exp (x) {
     throw newUnsupportedTypeError('exp', x);
 }
 
-math2.exp = exp;
+math.exp = exp;
 
 /**
  * Function documentation
@@ -1175,7 +1176,7 @@ function sqrt (x) {
     throw newUnsupportedTypeError('sqrt', x);
 }
 
-math2.sqrt = sqrt;
+math.sqrt = sqrt;
 
 /**
  * Function documentation
@@ -1220,7 +1221,7 @@ function abs(x) {
     throw newUnsupportedTypeError('abs', x);
 }
 
-math2.abs = abs;
+math.abs = abs;
 
 /**
  * Function documentation
@@ -1268,7 +1269,7 @@ function log(x) {
     throw newUnsupportedTypeError('log', x);
 }
 
-math2.log = log;
+math.log = log;
 
 /**
  * Function documentation

@@ -35,7 +35,7 @@ function sqrt (x) {
     throw newUnsupportedTypeError('sqrt', x);
 }
 
-math2.sqrt = sqrt;
+math.sqrt = sqrt;
 
 /**
  * Function documentation

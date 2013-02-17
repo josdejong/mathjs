@@ -1,5 +1,5 @@
-# Math2 Changelog
-https://github.com/josdejong/math2
+# math.js changelog
+https://github.com/josdejong/mathjs
 
 
 ## 2013-02-16, version 0.0.2
@@ -11,4 +11,4 @@ https://github.com/josdejong/math2
 
 ## 2013-02-15, version 0.0.1
 
-- First publish of the math2 package. (package is still empty)
+- First publish of the mathjs package. (package is still empty)

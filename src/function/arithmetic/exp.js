@@ -21,7 +21,7 @@ function exp (x) {
     throw newUnsupportedTypeError('exp', x);
 }
 
-math2.exp = exp;
+math.exp = exp;
 
 /**
  * Function documentation

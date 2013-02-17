@@ -28,7 +28,7 @@ function unit_in(x, unit) {
     throw newUnsupportedTypeError('in', x);
 }
 
-math2['in'] = unit_in;
+math['in'] = unit_in;
 
 /**
  * Function documentation

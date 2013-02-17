@@ -1,7 +1,7 @@
 {
-    "name": "math2",
+    "name": "mathjs",
     "version": "0.0.2",
-    "description": "An extended math library for Javascript",
+    "description": "An extended math library. Includes a parser, real and complex values, units, matrices, strings, and a large set of functions and constants.",
     "author": "Jos de Jong <wjosdejong@gmail.com>",
     "contributors": [
         {
@@ -11,7 +11,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git://github.com/josdejong/math2.git"
+        "url": "git://github.com/josdejong/mathjs.git"
     },
     "keywords": [
         "math",
@@ -36,7 +36,7 @@
     "scripts": {
         "prepublish": "jake"
     },
-    "main": "math2.js",
+    "main": "math.js",
     "engines": {
         "node": "*"
     }
