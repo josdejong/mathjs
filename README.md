@@ -1,13 +1,12 @@
 # Math2
 https://github.com/josdejong/math2
 
-Math2 is an extended Math library for Javascript.
-It is a superset of the standard Math library.
-Powerful and easy to use.
-
+Math2 is an extended math library for JavaScript,
+compatible with the standard Math library of JavaScript.
 Math2 supports real values, complex values, units, strings, and matrices.
 It contains an extensive set of built-in functions,
 and comes with a flexible expression parser.
+Powerful and easy to use.
 
 
 ## Install
@@ -42,7 +41,7 @@ Math2 can be loaded via require:
 
 ### Browser
 
-Math2 can be loaded as a regular javascript file in the browser:
+Math2 can be loaded as a regular JavaScript file in the browser:
 
     <!DOCTYPE html>
     <html>

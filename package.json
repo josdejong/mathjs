@@ -1,7 +1,7 @@
 {
     "name": "math2",
     "version": "0.0.2",
-    "description": "An extended Math library for Javascript",
+    "description": "An extended math library for Javascript",
     "author": "Jos de Jong <wjosdejong@gmail.com>",
     "contributors": [
         {
