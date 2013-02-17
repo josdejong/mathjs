@@ -1,5 +1,5 @@
 /**
- * Define mathjs namespace
+ * Define namespace
  */
 var math = {
     type: {},
