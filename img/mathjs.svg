@@ -27,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="241.85037"
-     inkscape:cy="37.613825"
+     inkscape:zoom="2.8284272"
+     inkscape:cx="176.49086"
+     inkscape:cy="66.725293"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -58,7 +58,7 @@
     <rect
        style="fill:#dc3912;fill-opacity:1;stroke:none"
        id="rect3004"
-       width="243"
+       width="330"
        height="100"
        x="0"
        y="952.36218" />
@@ -87,6 +87,13 @@
          id="tspan3784"
          x="98"
          y="19" /></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       id="rect3004-2"
+       width="87"
+       height="100"
+       x="243.10193"
+       y="952.36218" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot3774-8"

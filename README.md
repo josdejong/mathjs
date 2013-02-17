@@ -12,7 +12,6 @@ The library features:
 - Powerful and easy to use.
 
 Website: http://mathjs.org
-Sourcecode: https://github.com/josdejong/mathjs
 
 
 ## Install
