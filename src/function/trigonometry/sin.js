@@ -8,7 +8,7 @@ function sin(x) {
         return Math.sin(x);
     }
 
-    if (isComplex(x)) {
+    if (x instanceof Complex) {
         return new Complex(
             0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp( x.im)),
             0.5 * Math.cos(x.re) * (Math.exp( x.im) - Math.exp(-x.im))

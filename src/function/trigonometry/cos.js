@@ -8,7 +8,7 @@ function cos(x) {
         return Math.cos(x);
     }
 
-    if (isComplex(x)) {
+    if (x instanceof Complex) {
         // cos(z) = (exp(iz) + exp(-iz)) / 2
         return new Complex(
             0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp(x.im)),

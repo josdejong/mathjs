@@ -7,7 +7,7 @@ function exp (x) {
     if (isNumber(x)) {
         return Math.exp(x);
     }
-    if (isComplex(x)) {
+    if (x instanceof Complex) {
         var r = Math.exp(x.re);
         return new Complex(
             r * Math.cos(x.im),

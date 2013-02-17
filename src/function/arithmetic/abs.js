@@ -8,7 +8,7 @@ function abs(x) {
         return Math.abs(x);
     }
 
-    if (isComplex(x)) {
+    if (x instanceof Complex) {
         return Math.sqrt(x.re * x.re + x.im * x.im);
     }
 

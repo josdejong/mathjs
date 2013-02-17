@@ -14,7 +14,7 @@ function log(x) {
         }
     }
 
-    if (isComplex(x)) {
+    if (x instanceof Complex) {
         return new Complex (
             Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
             Math.atan2(x.im, x.re)

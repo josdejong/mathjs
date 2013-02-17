@@ -8,7 +8,7 @@ function tan(x) {
         return Math.tan(x);
     }
 
-    if (isComplex(x)) {
+    if (x instanceof Complex) {
         var den = Math.exp(-4.0 * x.im) +
             2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) +
             1.0;
