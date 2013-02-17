@@ -4,7 +4,7 @@
 
 var assert = require('assert');
 // var nodeunit = require('nodeunit'); // TODO: use nodeunit
-var math = require('../math.js'),
+var math = require('../lib/math.js'),
     Complex = math.type.Complex,
     Unit = math.type.Unit;
 

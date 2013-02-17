@@ -13,8 +13,8 @@ require('date-utils');
 /**
  * Constants
  */
-var MATHJS       = './math.js';
-var MATHJS_MIN   = './math.min.js';
+var MATHJS       = './lib/math.js';
+var MATHJS_MIN   = './lib/math.min.js';
 var HEADER      = './src/header.js';
 
 // register start time
