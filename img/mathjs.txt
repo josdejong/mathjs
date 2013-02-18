@@ -1,0 +1,15 @@
+Description of the logo:
+
+size: 330x100px
+font: Source Sans Pro, 96px
+
+math:
+    size:    243x100px
+    color:   ffffffff
+    bgcolor: c3912ff
+
+js:
+    size:    87x100px
+    color:   202020ff
+    bgcolor: ffffffff
+
