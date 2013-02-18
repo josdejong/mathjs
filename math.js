@@ -5,7 +5,7 @@
  * https://github.com/josdejong/mathjs
  *
  * @version 0.1.0-SNAPSHOT
- * @date    2013-02-17
+ * @date    2013-02-18
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -106,6 +106,15 @@ util.round = function (value, digits) {
     digits = (digits != undefined) ? Math.pow(10, digits) : PRECISION;
 
     return Math.round(value * digits) / digits;
+};
+
+/**
+ * Check if a number is integer
+ * @param {Number} value
+ * @return {Boolean} isInteger
+ */
+util.isInteger = function (value) {
+    return (value == Math.round(value));
 };
 
 /**
@@ -804,6 +813,15 @@ function isUnit(value) {
 }
 
 /**
+ * Test whether value is a String
+ * @param {*} value
+ * @return {Boolean} isString
+ */
+function isString(value) {
+    return (value instanceof String) || (typeof value == 'string');
+}
+
+/**
  * Get the type of an object.
  * @param {*} obj
  * @return {String} type
@@ -866,7 +884,7 @@ function newUnsupportedTypeError(fn, value1, value2) {
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
-            types += type(arguments[i])
+            types.push(type(arguments[i]));
         }
         msg = 'Function ' + fn + ' does not support a parameters of type ' + types.join(', ');
     }
@@ -876,6 +894,110 @@ function newUnsupportedTypeError(fn, value1, value2) {
 
     return new TypeError(msg);
 }
+
+/**
+ * Compute the minimum value of a list of values, min(a, b, c, ...)
+ * @param {... *} args  one or multiple arguments
+ * @return {*} res
+ */
+function min(args) {
+    if (arguments.length == 0) {
+        throw new Error('Function sum requires one or multiple parameters (0 provided)');
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    var min = arguments[0];
+    for (var i = 1, iMax = arguments.length; i < iMax; i++) {
+        var value = arguments[i];
+        if (smaller(value, min)) {
+            min = value;
+        }
+    }
+
+    return max;
+}
+
+math.min = min;
+
+/**
+ * Function documentation
+ */
+min.doc = {
+    'name': 'min',
+    'category': 'Statistics',
+    'syntax': [
+        'min(a, b, c, ...)'
+    ],
+    'description': 'Compute the minimum value of a list of values.',
+    'examples': [
+        'max(2, 3, 4, 1)',
+        'max(2.7, 7.1, -4.5, 2.0, 4.1)',
+        'min(2.7, 7.1, -4.5, 2.0, 4.1)'
+    ],
+    'seealso': [
+        'sum',
+        'prod',
+        'avg',
+        'var',
+        'std',
+        'min',
+        'median'
+    ]
+};
+
+/**
+ * Compute the maximum value of a list of values, max(a, b, c, ...)
+ * @param {... *} args  one or multiple arguments
+ * @return {*} res
+ */
+function max(args) {
+    if (arguments.length == 0) {
+        throw new Error('Function sum requires one or multiple parameters (0 provided)');
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    var max = arguments[0];
+    for (var i = 1, iMax = arguments.length; i < iMax; i++) {
+        var value = arguments[i];
+        if (larger(value, max)) {
+            max = value;
+        }
+    }
+
+    return max;
+}
+
+math.max = max;
+
+/**
+ * Function documentation
+ */
+max.doc = {
+    'name': 'max',
+    'category': 'Statistics',
+    'syntax': [
+        'max(a, b, c, ...)'
+    ],
+    'description': 'Compute the maximum value of a list of values.',
+    'examples': [
+        'max(2, 3, 4, 1)',
+        'max(2.7, 7.1, -4.5, 2.0, 4.1)',
+        'min(2.7, 7.1, -4.5, 2.0, 4.1)'
+    ],
+    'seealso': [
+        'sum',
+        'prod',
+        'avg',
+        'var',
+        'std',
+        'min',
+        'median'
+    ]
+};
 
 /**
  * Change the unit of a value. x in unit or in(x, unit)
@@ -1343,6 +1465,88 @@ acos.doc = {
 };
 
 /**
+ * Divide two values. x / y or divide(x, y)
+ * @param  {Number | Complex | Unit} x
+ * @param  {Number | Complex} y
+ * @return {Number | Complex | Unit} res
+ */
+function divide(x, y) {
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number / number
+            return x / y;
+        }
+        else if (y instanceof Complex) {
+            // number / complex
+            return divideComplex(new Complex(x), y);
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex / number
+            return divideComplex(x, new Complex(y));
+        }
+        else if (y instanceof Complex) {
+            // complex / complex
+            return divideComplex(x, y);
+        }
+    }
+    else if (x instanceof Unit) {
+        if (isNumber(y)) {
+            var res = x.copy();
+            res.value /= y;
+            return res;
+        }
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('divide', x, y);
+}
+
+/**
+ * Divide two complex values. x / y or divide(x, y)
+ * @param {Complex} x
+ * @param {Complex} y
+ * @return {Complex} res
+ * @private
+ */
+function divideComplex (x, y) {
+    var den = y.re * y.re + y.im * y.im;
+    return new Complex(
+        (x.re * y.re + x.im * y.im) / den,
+        (x.im * y.re - x.re * y.im) / den
+    );
+}
+
+math.divide = divide;
+
+/**
+ * Function documentation
+ */
+divide.doc = {
+    'name': 'divide',
+    'category': 'Operators',
+    'syntax': [
+        'x / y',
+        'divide(x, y)'
+    ],
+    'description': 'Divide two values.',
+    'examples': [
+        '2 / 3',
+        'ans * 3',
+        '4.5 / 2',
+        '3 + 4 / 2',
+        '(3 + 4) / 2',
+        '18 km / 4.5'
+    ],
+    'seealso': [
+        'multiply'
+    ]
+};
+
+/**
  * Round a value towards the nearest integer, round(x [, n])
  * @param {Number | Complex} x
  * @param {Number} [n] number of digits
@@ -1435,7 +1639,7 @@ function fix(x) {
     }
 
     if (x instanceof Complex) {
-        new Complex(
+        return new Complex(
             (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
             (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
         );
@@ -1469,6 +1673,98 @@ fix.doc = {
         'fix(-4.8)'
     ],
     'seealso': ['ceil', 'floor', 'round']
+};
+
+/**
+ * Add two values. x + y or add(x, y)
+ * @param  {Number | Complex | Unit | String} x
+ * @param  {Number | Complex | Unit | String} y
+ * @return {Number | Complex | Unit | String} res
+ */
+function add(x, y) {
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number + number
+            return x + y;
+        }
+        else if (y instanceof Complex) {
+            // number + complex
+            return new Complex(
+                x + y.re,
+                    y.im
+            )
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex + number
+            return new Complex(
+                x.re + y,
+                x.im
+            )
+        }
+        else if (y instanceof Complex) {
+            // complex + complex
+            return new Complex(
+                x.re + y.re,
+                x.im + y.im
+            );
+        }
+    }
+    else if (x instanceof Unit) {
+        if (y instanceof Unit) {
+            if (!x.equalBase(y)) {
+                throw new Error('Units do not match');
+            }
+
+            if (!x.hasValue) {
+                throw new Error('Unit on left hand side of operator + has no value');
+            }
+
+            if (!y.hasValue) {
+                throw new Error('Unit on right hand side of operator + has no value');
+            }
+
+            var res = x.copy();
+            res.value += y.value;
+            res.fixPrefix = false;
+            return res;
+        }
+    }
+
+    if (isString(x) || isString(y)) {
+        return x + y;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('add', x, y);
+}
+
+math.add = add;
+
+/**
+ * Function documentation
+ */
+add.doc = {
+    'name': 'add',
+    'category': 'Operators',
+    'syntax': [
+        'x + y',
+        'add(x, y)'
+    ],
+    'description': 'Add two values.',
+    'examples': [
+        '2.1 + 3.6',
+        'ans - 3.6',
+        '3 + 2i',
+        '"hello" + " world"',
+        '3 cm + 2 inch'
+    ],
+    'seealso': [
+        'subtract'
+    ]
 };
 
 /**
@@ -1582,6 +1878,196 @@ sqrt.doc = {
 };
 
 /**
+ * Check if value x is larger y, x > y
+ * In case of complex values, the absolute values of a and b are compared.
+ * @param  {Number | Complex | Unit | String} x
+ * @param  {Number | Complex | Unit | String} y
+ * @return {Boolean} res
+ */
+function larger(x, y) {
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x > y;
+        }
+        else if (y instanceof Complex) {
+            return x > abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return abs(x) > y;
+        }
+        else if (y instanceof Complex) {
+            return abs(x) > abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value > y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x > y;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('larger', x, y);
+}
+
+math.larger = larger;
+
+/**
+ * Function documentation
+ */
+larger.doc = {
+    'name': 'larger',
+    'category': 'Operators',
+    'syntax': [
+        'x > y',
+        'larger(x, y)'
+    ],
+    'description':
+        'Check if value x is larger y. ' +
+        'Returns 1 if x is larger than y, and 0 if not.',
+    'examples': [
+        '2 > 3',
+        '5 > 2*2',
+        'a = 3.3',
+        'b = 6-2.8',
+        '(a > b)',
+        '(b < a)',
+        '5 cm > 2 inch'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'smaller', 'smallereq', 'largereq'
+    ]
+};
+
+/**
+ * Inverse the sign of a value. -x or unaryminus(x)
+ * @param  {Number | Complex | Unit} x
+ * @return {Number | Complex | Unit} res
+ */
+function unaryminus(x) {
+    if (isNumber(x)) {
+        return -x;
+    }
+    else if (x instanceof Complex) {
+        return new Complex(
+            -x.re,
+            -x.im
+        );
+    }
+    else if (x instanceof Unit) {
+        var res = x.copy();
+        res.value = -x.value;
+        return res;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('unaryminus', x);
+}
+
+math.unaryminus = unaryminus;
+
+/**
+ * Function documentation
+ */
+unaryminus.doc = {
+    'name': 'unaryminus',
+    'category': 'Operators',
+    'syntax': [
+        '-x',
+        'unaryminus(x)'
+    ],
+    'description':
+        'Inverse the sign of a value.',
+    'examples': [
+        '-4.5',
+        '-(-5.6)'
+    ],
+    'seealso': [
+        'add', 'subtract'
+    ]
+};
+/**
+ * Check if value a is smaller b, a < b
+ * In case of complex values, the absolute values of a and b are compared.
+ * @param  {Number | Complex | Unit | String} x
+ * @param  {Number | Complex | Unit | String} y
+ * @return {Boolean} res
+ */
+function smaller(x, y) {
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x < y;
+        }
+        else if (y instanceof Complex) {
+            return x < abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return abs(x) < y;
+        }
+        else if (y instanceof Complex) {
+            return abs(x) < abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value < y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x < y;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('smaller', x, y);
+}
+
+math.smaller = smaller;
+
+/**
+ * Function documentation
+ */
+smaller.doc = {
+    'name': 'smaller',
+    'category': 'Operators',
+    'syntax': [
+        'x < y',
+        'smaller(x, y)'
+    ],
+    'description':
+        'Check if value a is smaller value b. ' +
+            'Returns 1 if x is smaller than y, and 0 if not.',
+    'examples': [
+        '2 < 3',
+        '5 < 2*2',
+        'a = 3.3',
+        'b = 6-2.8',
+        '(a < b)',
+        '5 cm < 2 inch'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+/**
  * Calculate the square root of a value
  * @param {Number | Complex} x
  * @return {Number | Complex} res
@@ -1671,6 +2157,81 @@ log.doc = {
         'exp',
         'logb',
         'log10'
+    ]
+};
+
+/**
+ * Calculates the power of x to y, x^y
+ * @param  {Number | Complex} x
+ * @param  {Number | Complex} y
+ * @return {Number | Complex} res
+ */
+function pow(x, y) {
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            if (util.isInteger(y) || x >= 0) {
+                // real value computation
+                return Math.pow(x, y);
+            }
+            else {
+                return powComplex(new Complex(x), new Complex(y));
+            }
+        }
+        else if (y instanceof Complex) {
+            return powComplex(new Complex(x), y);
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return powComplex(x, new Complex(y));
+        }
+        else if (y instanceof Complex) {
+            return powComplex(x, y);
+        }
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('pow', x, y);
+}
+
+/**
+ * Caculates the power of x to y, x^y, for two complex values.
+ * @param {Complex} x
+ * @param {Complex} y
+ * @return {Complex} res
+ * @private
+ */
+function powComplex (x, y) {
+    // complex computation
+    // x^y = exp(log(x)*y) = exp((abs(x)+i*arg(x))*y)
+    var temp1 = log(x);
+    var temp2 = multiply(temp1, y);
+    return exp(temp2);
+}
+
+math.pow = pow;
+
+/**
+ * Function documentation
+ */
+pow.doc = {
+    'name': 'pow',
+    'category': 'Operators',
+    'syntax': [
+        'x ^ y',
+        'pow(x, y)'
+    ],
+    'description':
+        'Calculates the power of x to y, x^y.',
+    'examples': [
+        '2^3 = 8',
+        '2*2*2',
+        '1 + e ^ (pi * i)'
+    ],
+    'seealso': [
+        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
     ]
 };
 
@@ -1766,6 +2327,181 @@ ceil.doc = {
     'seealso': ['floor', 'fix', 'round']
 };
 
+/**
+ * Multiply two values. x + y or multiply(x, y)
+ * @param  {Number | Complex | Unit} x
+ * @param  {Number | Complex | Unit} y
+ * @return {Number | Complex | Unit} res
+ */
+function multiply(x, y) {
+    var res;
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number * number
+            return x * y;
+        }
+        else if (y instanceof Complex) {
+            // number * complex
+            return multiplyComplex(new Complex(x), y);
+        }
+        else if (y instanceof Unit) {
+            res = y.copy();
+            res.value *= x;
+            return res;
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex * number
+            return multiplyComplex(x, new Complex(y));
+        }
+        else if (y instanceof Complex) {
+            // complex * complex
+            return multiplyComplex(x, y);
+        }
+    }
+    else if (x instanceof Unit) {
+        if (isNumber(y)) {
+            res = x.copy();
+            res.value *= y;
+            return res;
+        }
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('multiply', x, y);
+}
+
+/**
+ * Multiply two complex values. x * y or multiply(x, y)
+ * @param {Complex} x
+ * @param {Complex} y
+ * @return {Complex} res
+ * @private
+ */
+function multiplyComplex (x, y) {
+    return new Complex(
+        x.re * y.re - x.im * y.im,
+        x.re * y.im + x.im * y.re
+    );
+}
+
+math.multiply = multiply;
+
+/**
+ * Function documentation
+ */
+multiply.doc = {
+    'name': 'multiply',
+    'category': 'Operators',
+    'syntax': [
+        'x * y',
+        'multiply(x, y)'
+    ],
+    'description': 'multiply two values.',
+    'examples': [
+        '2.1 * 3.6',
+        'ans / 3.6',
+        '2 * 3 + 4',
+        '2 * (3 + 4)',
+        '3 * 2.1 km'
+    ],
+    'seealso': [
+        'divide'
+    ]
+};
+
+/**
+ * Subtract two values. x - y or subtract(x, y)
+ * @param  {Number | Complex | Unit} x
+ * @param  {Number | Complex | Unit} y
+ * @return {Number | Complex | Unit} res
+ */
+function subtract(x, y) {
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number - number
+            return x - y;
+        }
+        else if (y instanceof Complex) {
+            // number - complex
+            return new Complex (
+                x - y.re,
+                    y.im
+            );
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex - number
+            return new Complex (
+                x.re - y,
+                x.im
+            )
+        }
+        else if (y instanceof Complex) {
+            // complex - complex
+            return new Complex (
+                x.re - y.re,
+                x.im - y.im
+            )
+        }
+    }
+    else if (x instanceof Unit) {
+        if (y instanceof Unit) {
+            if (!x.equalBase(y)) {
+                throw new Error('Units do not match');
+            }
+
+            if (!x.hasValue) {
+                throw new Error('Unit on left hand side of operator - has no value');
+            }
+
+            if (!y.hasValue) {
+                throw new Error('Unit on right hand side of operator - has no value');
+            }
+
+            var res = x.copy();
+            res.value -= y.value;
+            res.fixPrefix = false;
+
+            return res;
+        }
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('subtract', x, y);
+}
+
+math.subtract = subtract;
+
+/**
+ * Function documentation
+ */
+subtract.doc = {
+    'name': 'subtract',
+    'category': 'Operators',
+    'syntax': [
+        'x - y',
+        'subtract(x, y)'
+    ],
+    'description': 'subtract two values.',
+    'examples': [
+        '5.3 - 2',
+        'ans + 2',
+        '2/3 - 1/6',
+        '2 * 3 - 3',
+        '2.1 km - 500m'
+    ],
+    'seealso': [
+        'add'
+    ]
+};
 /**
  * Return a random number between 0 and 1
  * @return {Number} res

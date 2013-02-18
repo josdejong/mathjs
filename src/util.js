@@ -48,6 +48,15 @@ util.round = function (value, digits) {
 };
 
 /**
+ * Check if a number is integer
+ * @param {Number} value
+ * @return {Boolean} isInteger
+ */
+util.isInteger = function (value) {
+    return (value == Math.round(value));
+};
+
+/**
  * Create a semi UUID
  * source: http://stackoverflow.com/a/105074/1262753
  * @return {String} uuid

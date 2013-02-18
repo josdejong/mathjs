@@ -1,7 +1,7 @@
 {
     "name": "mathjs",
     "version": "0.1.0-SNAPSHOT",
-    "description": "JavaScript math library. Includes a parser, real and complex values, units, matrices, and many functions.",
+    "description": "An extensive JavaScript math library. Includes an advanced expression parser. Supports real and complex values, units, and matrices. Contains a large set of functions and constants.",
     "author": "Jos de Jong <wjosdejong@gmail.com>",
     "contributors": [
         {
@@ -9,6 +9,7 @@
             "email": "wjosdejong@gmail.com"
         }
     ],
+    "homepage": "http://mathjs.org",
     "repository": {
         "type": "git",
         "url": "git://github.com/josdejong/mathjs.git"

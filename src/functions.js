@@ -19,7 +19,7 @@ function newUnsupportedTypeError(fn, value1, value2) {
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
-            types += type(arguments[i])
+            types.push(type(arguments[i]));
         }
         msg = 'Function ' + fn + ' does not support a parameters of type ' + types.join(', ');
     }

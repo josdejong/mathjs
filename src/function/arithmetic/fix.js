@@ -9,7 +9,7 @@ function fix(x) {
     }
 
     if (x instanceof Complex) {
-        new Complex(
+        return new Complex(
             (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
             (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
         );

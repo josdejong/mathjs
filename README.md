@@ -1,7 +1,7 @@
 ![math.js](https://raw.github.com/josdejong/mathjs/master/img/mathjs.png)
 
-Math.js is an extensive JavaScript math library, compatible with the standard
-Math library.
+Math.js is an extensive JavaScript math library, compatible with JavaScripts
+standard Math library.
 
 The library features:
 
@@ -27,48 +27,125 @@ Alternatively, the library can be downloaded from github:
 
 ## Use
 
-### Node
+### Node.js
 
-Math.js can be loaded via require:
+Math.js can be loaded in node.js via require, and similarly in the browser
+using [require.js](http://requirejs.org/).
 
     var math = require('mathjs'),
         Complex = math.type.Complex,
         Unit = math.type.Unit;
 
-    console.log(math.sqrt(25));           // 5
+    // use methods and types available in the math object
+    var a = math.sin(math.pi / 4);
+    var b = math.pow(a, 2);
+    console.log('sin(pi / 4) ^ 2 = ' + math.round(b, 3)); // 'sin(pi / 4) ^ 2 = 0.5'
 
     var c = new Complex(3, -4);
-    console.log(math.sqrt(c).toString()); // 2 - i
+    var d = math.sqrt(c);
+    console.log('sqrt(3 - 4i) = ' + d); // 'sqrt(3 - 4i) = 2 - i'
 
-    var u = new Unit(45, 'deg');
-    console.log(math.sin(math.pi / 4));  // 0.7071067811865475
-    console.log(math.sin(u));             // 0.7071067811865475
+    var e = math.sqrt(-4);
+    console.log('sqrt(-4) = ' +  e); // 'sqrt(-4) = 2i'
+
+    var f = new Unit(60, 'deg');
+    var g = math.cos(f);
+    console.log('cos(60 deg) = ' + math.round(g, 3)); // 'cos(60 deg) = 0.5'
+
 
 ### Browser
 
 Math.js can be loaded as a regular javascript file in the browser:
 
-    <!DOCTYPE html>
+    <!DOCTYPE HTML>
     <html>
     <head>
         <script src="math.js" type="text/javascript"></script>
     </head>
     <body>
-        <script>
-            var Complex = math.type.Complex;
-            var Unit = math.type.Unit;
+        <script type="text/javascript">
+            // the math object is available here
 
-            console.log(math.sqrt(25));           // 5
+            var a = math.sqrt(-4);
+            console.log('sqrt(-4) = ' +  a);     // 'sqrt(-4) = 2i'
 
-            var c = new Complex(3, -4);
-            console.log(math.sqrt(c).toString()); // 2 - i
-
-            var u = new Unit(45, 'deg');
-            console.log(math.sin(math.pi / 4));  // 0.7071067811865475
-            console.log(math.sin(u));             // 0.7071067811865475
+            // ...
         </script>
     </body>
     </html>
+
+
+## Parser
+
+The expression parser is not yet implemented. Coming soon...
+
+
+## API
+
+The math.js library contains the following data types, methods and constants.
+
+### Data types
+
+- Number
+- String
+- math.type.Complex
+- math.type.Unit
+
+### Constants
+
+- math.E, math.e
+- math.I, math.i
+- math.LN2
+- math.LN10
+- math.LOG2E
+- math.LOG10E
+- math.PI, math.pi
+- math.SQRT1_2
+- math.SQRT2
+
+### Methods
+
+#### Arithmetic
+
+- math.abs(x)
+- math.add(x, y)
+- math.ceil(x)
+- math.divide(x, y)
+- math.exp(x)
+- math.fix(x)
+- math.floor(x)
+- math.larger(x, y)
+- math.log(x)
+- math.multiply(x, y)
+- math.pow(x, y)
+- math.round(x [, n])
+- math.smaller(x, y)
+- math.subtract(x, y)
+- math.sqrt(x)
+- math.unaryminus(x)
+
+#### Probability
+
+- math.random()
+
+#### Statistics
+
+- math.max(a, b, c, ...)
+- math.min(a, b, c, ...)
+
+#### Trigonometry
+
+- math.acos(x)
+- math.asin(x)
+- math.atan(x)
+- math.atan2(y, x)
+- math.cos(x)
+- math.sin(x)
+- math.tan(x)
+
+#### Units
+
+- math.in(x, unit)
 
 
 ## Build

@@ -30,6 +30,15 @@ function isUnit(value) {
 }
 
 /**
+ * Test whether value is a String
+ * @param {*} value
+ * @return {Boolean} isString
+ */
+function isString(value) {
+    return (value instanceof String) || (typeof value == 'string');
+}
+
+/**
  * Get the type of an object.
  * @param {*} obj
  * @return {String} type
