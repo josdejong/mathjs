@@ -3,7 +3,7 @@
 Math.js is an extensive JavaScript math library, compatible with JavaScripts
 standard Math library.
 
-The library features:
+Features:
 
 - A flexible expression parser.
 - Support for real and complex values, units, strings, arrays, and matrices.

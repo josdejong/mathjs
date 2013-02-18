@@ -4,8 +4,8 @@
  * matrices, strings, and a large set of functions and constants.
  * https://github.com/josdejong/mathjs
  *
- * @version 0.1.0-SNAPSHOT
- * @date    2013-02-18
+ * @version @@version
+ * @date    @@date
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
