@@ -4,7 +4,7 @@ https://github.com/josdejong/mathjs
 
 ## <not yet released>, version 0.1.0
 
-- Reached full compatibility with Javascripts standard Math library.
+- Reached full compatibility with Javascripts built-in Math library.
 - More functions implemented.
 - Some bugfixes.
 

@@ -1,12 +1,4 @@
 /**
- * @License Apache 2.0 License
- *
- * @Author Jos de Jong
- * @Date 2011-12-03
- *
- */
-
-/**
  * @constructor math.type.Unit
  *
  * @param {Number} [value]     A value for the unit, like 5.2
@@ -29,6 +21,15 @@ function Unit(value, prefixUnit) {
 }
 
 math.type.Unit = Unit;
+
+/**
+ * Test whether value is a Unit
+ * @param {*} value
+ * @return {Boolean} isUnit
+ */
+function isUnit(value) {
+    return (value instanceof Unit);
+}
 
 /**
  * create a copy of this unit

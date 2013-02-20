@@ -2,13 +2,8 @@
  * Jake build script for mathjs
  */
 
-var fs = require('fs'),
-    jake = require('jake'),
-    uglify = require('uglify-js'),
-    replace = require('replace'),
+var util = require('./tools/jake-utils.js'),
     filesize = require('filesize');
-
-require('date-utils');
 
 /**
  * Constants
@@ -42,36 +37,24 @@ task('build', ['concat', 'minify', 'version']);
  */
 desc('Concatenate all source files into one file');
 task('concat', function () {
-    var filelist = new jake.FileList();
-    filelist.include([
-        './src/exports.js',
-        './src/util.js',
-        './src/type/**/*.js',
-        './src/types.js',
-        './src/constants.js',
-        './src/functions.js',
-        './src/function/**/*.js'
-    ]);
-    var files = filelist.toArray();
-
-    // concatenate all source files
-    var out = '';
-    files.map(function(file) {
-        out += fs.readFileSync(file) + '\n';
+    var result = util.concat({
+        src: [
+            './src/exports.js',
+            './src/options.js',
+            './src/util.js',
+            './src/type/**/*.js',
+            './src/constants.js',
+            './src/functions.js',
+            './src/function/**/*.js'
+        ],
+        dest: MATHJS,
+        header: util.read(HEADER) + '\n(function() {\n',
+        separator: '\n',
+        footer: '\n})();\n'
     });
 
-    // wrap the code in a closure and add the header file
-    var header = fs.readFileSync(HEADER);
-    out = header +
-        '\n(function() {\n\n' +
-        out +
-        '\n})();\n';
-
-    // write file
-    fs.writeFileSync(MATHJS, out);
-
-    console.log('Concatenated ' + files.length + ' files into ' +
-        MATHJS + ' (' + filesize(out.length, 1) + ')');
+    console.log('Concatenated ' + result.src.length + ' files into ' +
+        MATHJS + ' (' + filesize(result.code.length, 1) + ')');
 });
 
 /**
@@ -79,15 +62,15 @@ task('concat', function () {
  */
 desc('Minify the library');
 task('minify', ['concat'], function () {
-    var header = fs.readFileSync(HEADER);
-    var input = fs.readFileSync(MATHJS);
-    var result = uglify.minify(MATHJS, {});
-    var out = header + result.code;
-    fs.writeFileSync(MATHJS_MIN, out);
+    var result = util.minify({
+        src: MATHJS,
+        dest: MATHJS_MIN,
+        header: util.read(HEADER)
+    });
 
     console.log('Minified ' +
-        MATHJS + ' (' + filesize(input.length, 1) + ') to ' +
-        MATHJS_MIN + ' (' + filesize(out.length, 1) + ')');
+        MATHJS +     ' (' + filesize(util.read(result.src[0]).length, 1) + ') to ' +
+        MATHJS_MIN + ' (' + filesize(result.code.length, 1) + ')');
 });
 
 /**
@@ -96,22 +79,12 @@ task('minify', ['concat'], function () {
 desc('Update version and date in the library');
 task('version', ['concat', 'minify'], function () {
     var files = [MATHJS, MATHJS_MIN];
-    var pkg = JSON.parse(fs.readFileSync('./package.json'));
-    if (!pkg.version) {
-        throw new Error('No version found in package.json');
-    }
-
-    replace({
-        regex: '@@version',
-        replacement: pkg.version,
-        path: files,
-        silent: true
-    });
-    replace({
-        regex: '@@date',
-        replacement: today(),
-        path: files,
-        silent: true
+    util.replace({
+        replacements: [
+            {pattern: '@@date',    replacement: util.version()},
+            {pattern: '@@version', replacement: util.today()}
+        ],
+        src: files
     });
 
     console.log('Version and date updated in ' + files.join(' '));
@@ -126,11 +99,3 @@ task('test', ['concat'], function () {
     console.log('Tests successful');
 });
 
-/**
- * Retuns todays date in the format 'YYYY-MM-DD', for example '2013-02-18'
- * @return {String} today
- */
-function today () {
-    var date = new Date();
-    return date.toFormat('YYYY-MM-DD');
-}

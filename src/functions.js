@@ -13,13 +13,13 @@
 function newUnsupportedTypeError(fn, value1, value2) {
     var msg = undefined;
     if (arguments.length == 2) {
-        var t = type(value1);
+        var t = _typeof(value1);
         msg = 'Function ' + fn + ' does not support a parameter of type ' + t;
     }
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
-            types.push(type(arguments[i]));
+            types.push(_typeof(arguments[i]));
         }
         msg = 'Function ' + fn + ' does not support a parameters of type ' + types.join(', ');
     }

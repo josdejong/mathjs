@@ -23,6 +23,15 @@ function Complex(re, im) {
 math.type.Complex = Complex;
 
 /**
+ * Test whether value is a Complex value
+ * @param {*} value
+ * @return {Boolean} isComplex
+ */
+function isComplex(value) {
+    return (value instanceof Complex);
+}
+
+/**
  * Create a copy of the complex value
  * @return {Complex} copy
  */

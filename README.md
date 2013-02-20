@@ -1,7 +1,9 @@
 ![math.js](https://raw.github.com/josdejong/mathjs/master/img/mathjs.png)
 
-Math.js is an extensive math library for Javascript and Node.js,
-compatible with the built-in Math library.
+[http://mathjs.org](http://mathjs.org)
+
+Math.js is an extensive math library for JavaScript and Node.js,
+compatible with the built-in Math library of JavaScript.
 
 Features:
 
@@ -10,8 +12,6 @@ Features:
 - A large set of built-in functions and constants.
 - Easily extensible with new functions and constants.
 - Powerful and easy to use.
-
-Website: http://mathjs.org
 
 
 ## Install
@@ -147,17 +147,22 @@ The math.js library contains the following data types, methods and constants.
 
 - math.in(x, unit)
 
+#### Utils
+
+- math.help(fn)
+- math.typeof(x)
+
 
 ## Build
 
-To clone the project from github:
+First clone the project from github:
 
     git clone git://github.com/josdejong/mathjs.git
 
 The project uses [jake](https://github.com/mde/jake) as build tool,
-and must be installed globally.
-After jake is installed, the project dependencies can be downloaded using npm.
-Then the project can be build by executing jake in the projects root.
+which must be installed globally. After jake is installed, the project
+dependencies can be downloaded using npm. Then the project can be build by
+executing jake in the root of the project.
 
     cd mathjs
     sudo npm install -g jake
@@ -166,6 +171,18 @@ Then the project can be build by executing jake in the projects root.
 
 When jake is executed, it will generate the library math.js and math.min.js
 from the source files, and will test the library.
+
+
+## Roadmap
+
+- Version 0.1.0:
+    - Implement all methods and constants available in the built-in Math library
+    - Implement data types Complex and Unit
+- Version 0.2.0: Implement Parser and Scope
+- Version 0.3.0: Implement Workspace
+- Version 0.4.0: Implement a larger set of methods
+- Version 0.5.0: Implement Matrices
+- ...
 
 
 ## License

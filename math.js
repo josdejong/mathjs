@@ -4,8 +4,8 @@
  * matrices, strings, and a large set of functions and constants.
  * https://github.com/josdejong/mathjs
  *
- * @version 0.2.0-SNAPSHOT
- * @date    2013-02-18
+ * @version 2013-02-20
+ * @date    0.2.0-SNAPSHOT
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -59,8 +59,15 @@ if (typeof(window) != 'undefined') {
     window['math'] = math;
 }
 
+/**
+ * Settings for math.js
+ */
 
-var PRECISION = 1E10;
+var options = {
+    precision: 10  // number of decimals in formatted output
+};
+
+math.options = options;
 
 var util = {};
 
@@ -85,36 +92,14 @@ util.format = function (value, digits) {
     var abs = Math.abs(value);
     if ( (abs > 0.0001 && abs < 1000000) || abs == 0.0 ) {
         // round the func to a limited number of digits
-        return String(util.round(value, digits));
+        return String(roundNumber(value, digits));
     }
     else {
         // scientific notation
         var exp = Math.round(Math.log(abs) / Math.LN10);
         var v = value / (Math.pow(10.0, exp));
-        return util.round(v, digits) + 'E' + exp;
+        return roundNumber(v, digits) + 'E' + exp;
     }
-};
-
-/**
- * round a number to the given number of digits, or to the default if
- * digits is not provided
- * @param {Number} value
- * @param {Number} [digits]
- * @return {Number} roundedValue
- */
-util.round = function (value, digits) {
-    digits = (digits != undefined) ? Math.pow(10, digits) : PRECISION;
-
-    return Math.round(value * digits) / digits;
-};
-
-/**
- * Check if a number is integer
- * @param {Number} value
- * @return {Boolean} isInteger
- */
-util.isInteger = function (value) {
-    return (value == Math.round(value));
 };
 
 /**
@@ -122,7 +107,7 @@ util.isInteger = function (value) {
  * source: http://stackoverflow.com/a/105074/1262753
  * @return {String} uuid
  */
-util.createUUID = function () {
+util.randomUUID = function () {
     var S4 = function () {
         return Math.floor(
             Math.random() * 0x10000 /* 65536 */
@@ -130,10 +115,10 @@ util.createUUID = function () {
     };
 
     return (
-        S4() + S4() + "-" +
-            S4() + "-" +
-            S4() + "-" +
-            S4() + "-" +
+        S4() + S4() + '-' +
+            S4() + '-' +
+            S4() + '-' +
+            S4() + '-' +
             S4() + S4() + S4()
         );
 };
@@ -170,14 +155,6 @@ if (!Array.prototype.forEach) {
 }
 
 /**
- * @License Apache 2.0 License
- *
- * @Author Jos de Jong
- * @Date 2011-12-03
- *
- */
-
-/**
  * @constructor math.type.Unit
  *
  * @param {Number} [value]     A value for the unit, like 5.2
@@ -200,6 +177,15 @@ function Unit(value, prefixUnit) {
 }
 
 math.type.Unit = Unit;
+
+/**
+ * Test whether value is a Unit
+ * @param {*} value
+ * @return {Boolean} isUnit
+ */
+function isUnit(value) {
+    return (value instanceof Unit);
+}
 
 /**
  * create a copy of this unit
@@ -675,6 +661,42 @@ Unit.UNITS = [
 ];
 
 /**
+ * The build in String object of Javascript is used.
+ */
+
+/**
+ * Test whether value is a String
+ * @param {*} value
+ * @return {Boolean} isString
+ */
+function isString(value) {
+    return (value instanceof String) || (typeof value == 'string');
+}
+
+/**
+ * The build in Number object of Javascript is used.
+ */
+
+
+/**
+ * Test whether value is a Number
+ * @param {*} value
+ * @return {Boolean} isNumber
+ */
+function isNumber(value) {
+    return (value instanceof Number) || (typeof value == 'number');
+}
+
+/**
+ * Check if a number is integer
+ * @param {Number} value
+ * @return {Boolean} isInteger
+ */
+function isInteger(value) {
+    return (value == Math.round(value));
+}
+
+/**
  * @constructor math.type.Complex
  *
  * @param {Number} [re]
@@ -697,6 +719,15 @@ function Complex(re, im) {
 }
 
 math.type.Complex = Complex;
+
+/**
+ * Test whether value is a Complex value
+ * @param {*} value
+ * @return {Boolean} isComplex
+ */
+function isComplex(value) {
+    return (value instanceof Complex);
+}
 
 /**
  * Create a copy of the complex value
@@ -782,69 +813,6 @@ Complex.doc = {
 
 
 /**
- * Generic type methods
- */
-
-/**
- * Test whether value is a Number
- * @param {*} value
- * @return {Boolean} isNumber
- */
-function isNumber(value) {
-    return (value instanceof Number) || (typeof value == 'number');
-}
-
-/**
- * Test whether value is a Complex value
- * @param {*} value
- * @return {Boolean} isComplex
- */
-function isComplex(value) {
-    return (value instanceof Complex);
-}
-
-/**
- * Test whether value is a Unit
- * @param {*} value
- * @return {Boolean} isUnit
- */
-function isUnit(value) {
-    return (value instanceof Unit);
-}
-
-/**
- * Test whether value is a String
- * @param {*} value
- * @return {Boolean} isString
- */
-function isString(value) {
-    return (value instanceof String) || (typeof value == 'string');
-}
-
-/**
- * Get the type of an object.
- * @param {*} obj
- * @return {String} type
- */
-function type (obj) {
-    var t = typeof obj;
-
-    if (t == 'object') {
-        if (obj == null) {
-            return 'null';
-        }
-        if (obj instanceof Array) {
-            return 'array';
-        }
-        if (obj && obj.constructor && obj.constructor.name) {
-            return obj.constructor.name;
-        }
-    }
-
-    return t;
-}
-
-/**
  * mathjs constants
  */
 math.E          = Math.E;
@@ -878,13 +846,13 @@ math.i         = math.I;
 function newUnsupportedTypeError(fn, value1, value2) {
     var msg = undefined;
     if (arguments.length == 2) {
-        var t = type(value1);
+        var t = _typeof(value1);
         msg = 'Function ' + fn + ' does not support a parameter of type ' + t;
     }
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
-            types.push(type(arguments[i]));
+            types.push(_typeof(arguments[i]));
         }
         msg = 'Function ' + fn + ' does not support a parameters of type ' + types.join(', ');
     }
@@ -894,6 +862,144 @@ function newUnsupportedTypeError(fn, value1, value2) {
 
     return new TypeError(msg);
 }
+
+/**
+ * Display documentation on a function or data type
+ * @param {function | string | Object} subject
+ * @return {String} documentation
+ */
+function help(subject) {
+    if (subject.doc) {
+        return generateDoc(subject.doc);
+    }
+    else if (subject.constructor.doc) {
+        return generateDoc(subject.constructor.doc);
+    }
+    else if (isString(subject)) {
+        // search the subject in the methods
+        var obj = math[subject];
+        if (obj && obj.doc) {
+            return generateDoc(obj.doc);
+        }
+
+        // search the subject in the types
+        for (var t in math.type) {
+            if (math.type.hasOwnProperty(t)) {
+                if (subject.toLowerCase() == t.toLowerCase() && math.type[t].doc) {
+                    return generateDoc(math.type[t].doc);
+                }
+            }
+        }
+    }
+
+    // TODO: generate documentation for constants, number and string
+
+    if (subject instanceof Object && subject.name) {
+        return 'No documentation found on subject "' + subject.name +'"';
+    }
+    else if (subject instanceof Object && subject.constructor.name) {
+        return 'No documentation found on subject "' + subject.constructor.name +'"';
+    }
+    else {
+        return 'No documentation found on subject "' + subject +'"';
+    }
+}
+
+math.help = help;
+
+/**
+ * Generate readable documentation from a documentation object
+ * @param {Object} doc
+ * @return {String} readableDoc
+ * @private
+ */
+function generateDoc (doc) {
+    var desc = '';
+
+    if (doc.name) {
+        desc += 'NAME\n' + doc.name + '\n\n';
+    }
+    if (doc.category) {
+        desc += 'CATEGORY\n' + doc.category + '\n\n';
+    }
+    if (doc.syntax) {
+        desc += 'SYNTAX\n' + doc.syntax.join('\n') + '\n\n';
+    }
+    if (doc.examples) {
+        desc += 'EXAMPLES\n';
+        for (var i = 0; i < doc.examples.length; i++) {
+            desc += doc.examples[i] + '\n';
+            // TODO: evaluate the examples
+        }
+        desc += '\n';
+    }
+    if (doc.seealso) {
+        desc += 'SEE ALSO\n' + doc.seealso.join(', ') + '\n';
+    }
+
+    return desc;
+}
+
+math.abs = abs;
+
+/**
+ * Function documentation
+ */
+help.doc = {
+    'name': 'help',
+    'category': 'Utils',
+    'syntax': [
+        'help(object)'
+    ],
+    'description': 'Display documentation on a function or data type.',
+    'examples': [
+        'help("sqrt")',
+        'help("Complex")'
+    ],
+    'seealso': []
+};
+
+/**
+ * Calculate the square root of a value
+ * @param {*} x
+ * @return {String} type  Lower case type, for example "number", "string",
+ *                        "array".
+ */
+function _typeof(x) {
+    var type = typeof x;
+
+    if (type == 'object') {
+        if (x == null) {
+            return 'null';
+        }
+        if (x && x.constructor && x.constructor.name) {
+            return x.constructor.name.toLowerCase();
+        }
+    }
+
+    return type;
+}
+
+math['typeof'] = _typeof;
+
+/**
+ * Function documentation
+ */
+_typeof.doc = {
+    'name': 'typeof',
+    'category': 'Utils',
+    'syntax': [
+        'typeof(x)'
+    ],
+    'description': 'Get the type of a variable.',
+    'examples': [
+        'typeof(3.5)',
+        'typeof(2 - 4i)',
+        'typeof(45 deg)',
+        'typeof("hello world")'
+    ],
+    'seealso': []
+};
 
 /**
  * Compute the minimum value of a list of values, min(a, b, c, ...)
@@ -1465,102 +1571,6 @@ acos.doc = {
 };
 
 /**
- * Display documentation on a function or data type
- * @param {function | string | Object} subject
- * @return {String} documentation
- */
-function help(subject) {
-    if (subject.doc) {
-        return generateDoc(subject.doc);
-    }
-    else if (subject.constructor.doc) {
-        return generateDoc(subject.constructor.doc);
-    }
-    else if (isString(subject)) {
-        // search the subject in the methods
-        var obj = math[subject];
-        if (obj && obj.doc) {
-            return generateDoc(obj.doc);
-        }
-
-        // search the subject in the types
-        for (var t in math.type) {
-            if (math.type.hasOwnProperty(t)) {
-                if (subject.toLowerCase() == t.toLowerCase() && math.type[t].doc) {
-                    return generateDoc(math.type[t].doc);
-                }
-            }
-        }
-    }
-
-    // TODO: generate documentation for constants, number and string
-
-    if (subject instanceof Object && subject.name) {
-        return 'No documentation found on subject "' + subject.name +'"';
-    }
-    else if (subject instanceof Object && subject.constructor.name) {
-        return 'No documentation found on subject "' + subject.constructor.name +'"';
-    }
-    else {
-        return 'No documentation found on subject "' + subject +'"';
-    }
-}
-
-math.help = help;
-
-/**
- * Generate readable documentation from a documentation object
- * @param {Object} doc
- * @return {String} readableDoc
- * @private
- */
-function generateDoc (doc) {
-    var desc = '';
-
-    if (doc.name) {
-        desc += 'NAME\n' + doc.name + '\n\n';
-    }
-    if (doc.category) {
-        desc += 'CATEGORY\n' + doc.category + '\n\n';
-    }
-    if (doc.syntax) {
-        desc += 'SYNTAX\n' + doc.syntax.join('\n') + '\n\n';
-    }
-    if (doc.examples) {
-        desc += 'EXAMPLES\n';
-        for (var i = 0; i < doc.examples.length; i++) {
-            desc += doc.examples[i] + '\n';
-            // TODO: evaluate the examples
-        }
-        desc += '\n';
-    }
-    if (doc.seealso) {
-        desc += 'SEE ALSO\n' + doc.seealso.join(', ') + '\n';
-    }
-
-    return desc;
-}
-
-math.abs = abs;
-
-/**
- * Function documentation
- */
-help.doc = {
-    'name': 'help',
-    'category': 'None',
-    'syntax': [
-        'help(object)'
-    ],
-    'description': 'Display documentation on a function or data type.',
-    'examples': [
-        'help("sqrt")',
-        'help("Complex")'
-    ],
-    'seealso': []
-};
-
-/**
  * Divide two values. x / y or divide(x, y)
  * @param  {Number | Complex | Unit} x
  * @param  {Number | Complex} y
@@ -1677,13 +1687,13 @@ function round(x, n) {
         }
 
         if (isNumber(x)) {
-            return util.round(x, n);
+            return roundNumber(x, n);
         }
 
         if (x instanceof Complex) {
             return new Complex (
-                util.round(x.re, n),
-                util.round(x.im, n)
+                roundNumber(x.re, n),
+                roundNumber(x.im, n)
             );
         }
 
@@ -1695,8 +1705,19 @@ function round(x, n) {
 
 }
 
-
 math.round = round;
+
+/**
+ * round a number to the given number of digits, or to the default if
+ * digits is not provided
+ * @param {Number} value
+ * @param {Number} [digits]  number of digits, between 0 and 15
+ * @return {Number} roundedValue
+ */
+function roundNumber (value, digits) {
+    var p = Math.pow(10, (digits != undefined) ? digits : options.precision);
+    return Math.round(value * p) / p;
+}
 
 /**
  * Function documentation
@@ -2265,7 +2286,7 @@ log.doc = {
 function pow(x, y) {
     if (isNumber(x)) {
         if (isNumber(y)) {
-            if (util.isInteger(y) || x >= 0) {
+            if (isInteger(y) || x >= 0) {
                 // real value computation
                 return Math.pow(x, y);
             }
