@@ -7,7 +7,7 @@
 function pow(x, y) {
     if (isNumber(x)) {
         if (isNumber(y)) {
-            if (util.isInteger(y) || x >= 0) {
+            if (isInteger(y) || x >= 0) {
                 // real value computation
                 return Math.pow(x, y);
             }

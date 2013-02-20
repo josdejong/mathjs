@@ -33,13 +33,13 @@ function round(x, n) {
         }
 
         if (isNumber(x)) {
-            return util.round(x, n);
+            return roundNumber(x, n);
         }
 
         if (x instanceof Complex) {
             return new Complex (
-                util.round(x.re, n),
-                util.round(x.im, n)
+                roundNumber(x.re, n),
+                roundNumber(x.im, n)
             );
         }
 
@@ -51,8 +51,19 @@ function round(x, n) {
 
 }
 
-
 math.round = round;
+
+/**
+ * round a number to the given number of digits, or to the default if
+ * digits is not provided
+ * @param {Number} value
+ * @param {Number} [digits]  number of digits, between 0 and 15
+ * @return {Number} roundedValue
+ */
+function roundNumber (value, digits) {
+    var p = Math.pow(10, (digits != undefined) ? digits : options.precision);
+    return Math.round(value * p) / p;
+}
 
 /**
  * Function documentation

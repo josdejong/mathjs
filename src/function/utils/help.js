@@ -82,7 +82,7 @@ math.abs = abs;
  */
 help.doc = {
     'name': 'help',
-    'category': 'None',
+    'category': 'Utils',
     'syntax': [
         'help(object)'
     ],
