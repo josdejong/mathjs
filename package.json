@@ -30,7 +30,7 @@
         "jake": ">= 0.5.8",
         "uglify-js": ">= 2.2.5",
         "nodeunit": ">= 0.7.4",
-        "date-utils": ">= 1.2.12",
+        "dateable": ">= 0.1.2",
         "filesize": ">= 1.7.9"
     },
     "scripts": {
