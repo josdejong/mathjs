@@ -3,6 +3,5 @@ test
 img
 node_modules
 Jakefile.js
-math.min.js
 .idea
 .npmignore

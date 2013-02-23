@@ -16,16 +16,16 @@ function pow(x, y) {
                 return Math.pow(x, y);
             }
             else {
-                return powComplex(new Complex(x), new Complex(y));
+                return powComplex(new Complex(x, 0), new Complex(y, 0));
             }
         }
         else if (y instanceof Complex) {
-            return powComplex(new Complex(x), y);
+            return powComplex(new Complex(x, 0), y);
         }
     }
     else if (x instanceof Complex) {
         if (isNumber(y)) {
-            return powComplex(x, new Complex(y));
+            return powComplex(x, new Complex(y, 0));
         }
         else if (y instanceof Complex) {
             return powComplex(x, y);

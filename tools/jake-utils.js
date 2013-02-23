@@ -4,7 +4,7 @@
  * Dependencies:
  *     jake
  *     uglify-js
- *     date-utils
+ *     dateable
  *
  * Usage:
  *     var util = require('jake-utils');
@@ -64,8 +64,8 @@ function version() {
  *             {pattern: '@@version', replacement: '1.4.0'}
  *         },
  *         src: [
- *          'file1.js',
- *          'file2.js'
+ *          'main.js',
+ *          'other/*.js'
  *         ]
  *     });
  *
@@ -137,8 +137,10 @@ function replace (params) {
  *             './src/extra.js',
  *             './src/functions/**',
  *         ],
- *         dest: './lib/mylibrary.js',
- *         header: '// license information...'
+ *         dest: './lib/mylibrary.js',           // optional
+ *         header: '// license information...',  // optional
+ *         separator: '\n',                      // optional
+ *         footer: '// the end...'               // optional
  *     });
  *
  * @param {Object} params  Object containing:
@@ -207,8 +209,11 @@ function concat (params) {
  *         src:  [
  *             './lib/mylibrary.js'
  *         ],
- *         dest: './lib/mylibrary.min.js',
- *         header: '// license information...'
+ *         dest: './lib/mylibrary.min.js',       // optional
+ *         options: {},                          // uglify-js options. optional
+ *         header: '// license information...',  // optional
+ *         separator: '\n',                      // optional
+ *         footer: '// the end...'               // optional
  *     });
  *
  * @param {Object} params  Object containing:
@@ -228,7 +233,7 @@ function concat (params) {
  * @return {Object} res    Result information. The object contains:
  *                         {String[]} src       List with the filenames of the
  *                                              files which are minified
- *                         {String} code        The contents of the concatenated
+ *                         {String} code        The contents of the minified
  *                                              file.
  */
 function minify (params) {

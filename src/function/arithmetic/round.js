@@ -65,7 +65,7 @@ math.round = round;
  * @return {Number} roundedValue
  */
 function roundNumber (value, digits) {
-    var p = Math.pow(10, (digits != undefined) ? digits : options.precision);
+    var p = Math.pow(10, (digits != undefined) ? digits : math.options.precision);
     return Math.round(value * p) / p;
 }
 

@@ -18,7 +18,7 @@ function multiply(x, y) {
         }
         else if (y instanceof Complex) {
             // number * complex
-            return multiplyComplex(new Complex(x), y);
+            return multiplyComplex(new Complex(x, 0), y);
         }
         else if (y instanceof Unit) {
             res = y.copy();
@@ -29,7 +29,7 @@ function multiply(x, y) {
     else if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex * number
-            return multiplyComplex(x, new Complex(y));
+            return multiplyComplex(x, new Complex(y, 0));
         }
         else if (y instanceof Complex) {
             // complex * complex

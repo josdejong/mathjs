@@ -1,5 +1,5 @@
 /**
- * The build in Number object of Javascript is used.
+ * Utility functions for Numbers
  */
 
 

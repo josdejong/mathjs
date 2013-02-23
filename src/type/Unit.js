@@ -1,5 +1,5 @@
 /**
- * @constructor math.type.Unit
+ * @constructor Unit
  *
  * @param {Number} [value]     A value for the unit, like 5.2
  * @param {String} [prefixUnit]  A unit like "cm" or "inch"

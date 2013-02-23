@@ -1,5 +1,5 @@
 /**
- * The build in String object of Javascript is used.
+ * Utility functions for Strings
  */
 
 /**

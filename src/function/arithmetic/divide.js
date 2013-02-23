@@ -16,13 +16,13 @@ function divide(x, y) {
         }
         else if (y instanceof Complex) {
             // number / complex
-            return divideComplex(new Complex(x), y);
+            return divideComplex(new Complex(x, 0), y);
         }
     }
     else if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex / number
-            return divideComplex(x, new Complex(y));
+            return divideComplex(x, new Complex(y, 0));
         }
         else if (y instanceof Complex) {
             // complex / complex

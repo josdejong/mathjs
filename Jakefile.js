@@ -40,12 +40,19 @@ task('concat', function () {
     var result = util.concat({
         src: [
             './src/exports.js',
-            './src/options.js',
             './src/util.js',
             './src/type/**/*.js',
             './src/constants.js',
             './src/functions.js',
-            './src/function/**/*.js'
+            './src/function/**/*.js',
+            './src/parser/node/Node.js',
+            './src/parser/node/Function.js',
+            './src/parser/node/Constant.js',
+            './src/parser/node/Block.js',
+            './src/parser/node/Assignment.js',
+            './src/parser/node/FunctionAssignment.js',
+            './src/parser/Scope.js',
+            './src/parser/Parser.js'
         ],
         dest: MATHJS,
         header: util.read(HEADER) + '\n(function() {\n',

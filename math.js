@@ -1,11 +1,22 @@
 /**
  * math.js
- * An extended math library. Includes a parser, real and complex values, units,
- * matrices, strings, and a large set of functions and constants.
  * https://github.com/josdejong/mathjs
  *
- * @version @@version
- * @date    @@date
+ * Math.js is an extensive math library for JavaScript and Node.js,
+ * compatible with JavaScript's built-in Math library.
+ *
+ * Features:
+ *   - A flexible expression parser
+ *   - Support for numbers, complex values, units, strings, arrays*,
+ *     and matrices*
+ *   - A large set of built-in functions and constants
+ *   - Easily extensible with new functions and constants
+ *   - Powerful and easy to use
+ *
+ * * Note: arrays and matrices are to be implemented.
+ *
+ * @version 2013-02-23
+ * @date    0.2.0-SNAPSHOT
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -30,7 +41,12 @@
  */
 var math = {
     type: {},
-    parser: {}
+    parser: {
+        node: {}
+    },
+    options: {
+        precision: 10  // number of decimals in formatted output
+    }
 };
 
 /**
@@ -59,15 +75,6 @@ if (typeof(window) != 'undefined') {
     window['math'] = math;
 }
 
-/**
- * Settings for math.js
- */
-
-var options = {
-    precision: 10  // number of decimals in formatted output
-};
-
-math.options = options;
 
 var util = {};
 
@@ -123,8 +130,8 @@ util.randomUUID = function () {
         );
 };
 
-// Internet Explorer 8 and older does not support Array.indexOf,
-// so we define it here in that case
+// Internet Explorer 8 and older does not support Array.indexOf, so we define
+// it here in that case.
 // http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
 if(!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(obj){
@@ -143,8 +150,8 @@ if(!Array.prototype.indexOf) {
     }
 }
 
-// Internet Explorer 8 and older does not support Array.forEach,
-// so we define it here in that case
+// Internet Explorer 8 and older does not support Array.forEach, so we define
+// it here in that case.
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
 if (!Array.prototype.forEach) {
     Array.prototype.forEach = function(fn, scope) {
@@ -154,8 +161,85 @@ if (!Array.prototype.forEach) {
     }
 }
 
+// Internet Explorer 8 and older does not support Array.map, so we define it
+// here in that case.
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
+// Production steps of ECMA-262, Edition 5, 15.4.4.19
+// Reference: http://es5.github.com/#x15.4.4.19
+if (!Array.prototype.map) {
+    Array.prototype.map = function(callback, thisArg) {
+
+        var T, A, k;
+
+        if (this == null) {
+            throw new TypeError(" this is null or not defined");
+        }
+
+        // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
+        var O = Object(this);
+
+        // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
+        // 3. Let len be ToUint32(lenValue).
+        var len = O.length >>> 0;
+
+        // 4. If IsCallable(callback) is false, throw a TypeError exception.
+        // See: http://es5.github.com/#x9.11
+        if (typeof callback !== "function") {
+            throw new TypeError(callback + " is not a function");
+        }
+
+        // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+        if (thisArg) {
+            T = thisArg;
+        }
+
+        // 6. Let A be a new array created as if by the expression new Array(len) where Array is
+        // the standard built-in constructor with that name and len is the value of len.
+        A = new Array(len);
+
+        // 7. Let k be 0
+        k = 0;
+
+        // 8. Repeat, while k < len
+        while(k < len) {
+
+            var kValue, mappedValue;
+
+            // a. Let Pk be ToString(k).
+            //   This is implicit for LHS operands of the in operator
+            // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
+            //   This step can be combined with c
+            // c. If kPresent is true, then
+            if (k in O) {
+
+                // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
+                kValue = O[ k ];
+
+                // ii. Let mappedValue be the result of calling the Call internal method of callback
+                // with T as the this value and argument list containing kValue, k, and O.
+                mappedValue = callback.call(T, kValue, k, O);
+
+                // iii. Call the DefineOwnProperty internal method of A with arguments
+                // Pk, Property Descriptor {Value: mappedValue, : true, Enumerable: true, Configurable: true},
+                // and false.
+
+                // In browsers that support Object.defineProperty, use the following:
+                // Object.defineProperty(A, Pk, { value: mappedValue, writable: true, enumerable: true, configurable: true });
+
+                // For best browser support, use the following:
+                A[ k ] = mappedValue;
+            }
+            // d. Increase k by 1.
+            k++;
+        }
+
+        // 9. return A
+        return A;
+    };
+}
+
 /**
- * @constructor math.type.Unit
+ * @constructor Unit
  *
  * @param {Number} [value]     A value for the unit, like 5.2
  * @param {String} [prefixUnit]  A unit like "cm" or "inch"
@@ -661,7 +745,7 @@ Unit.UNITS = [
 ];
 
 /**
- * The build in String object of Javascript is used.
+ * Utility functions for Strings
  */
 
 /**
@@ -674,7 +758,7 @@ function isString(value) {
 }
 
 /**
- * The build in Number object of Javascript is used.
+ * Utility functions for Numbers
  */
 
 
@@ -697,28 +781,134 @@ function isInteger(value) {
 }
 
 /**
- * @constructor math.type.Complex
+ * @constructor Complex
  *
- * @param {Number} [re]
- * @param {Number} [im]
+ * A complex value can be constructed in three ways:
+ *     var a = new Complex(re, im);
+ *     var b = new Complex(str);
+ *     var c = new Complex();
+ *
+ * Example usage:
+ *     var a = new Complex(3, -4);    // 3 - 4i
+ *     var b = new Complex('2 + 6i'); // 2 + 6i
+ *     var c = new Complex();         // 0 + 0i
+ *     var d = math.add(a, b);        // 5 + 2i
+ *
+ * @param {Number | String} re    A number with the real part of the complex
+ *                               value, or a string containing a complex number
+ * @param {Number} [im]          The imaginary part of the complex value
  */
 function Complex(re, im) {
     if (this.constructor != Complex) {
-        throw new Error('Complex constructor must be called with the new operator');
+        throw new SyntaxError(
+            'Complex constructor must be called with the new operator');
     }
 
-    /**
-     * @type {Number}
-     */
-    this.re = re || 0;
+    switch (arguments.length) {
+        case 2:
+            // re and im numbers provided
+            if (!isNumber(re) || !isNumber(im)) {
+                throw new TypeError(
+                    'Two numbers or a single string expected in Complex constructor');
+            }
+            this.re = re;
+            this.im = im;
+            break;
 
-    /**
-     * @type {Number}
-     */
-    this.im = im || 0;
+        case 1:
+            // parse string into a complex number
+            if (!isString(re)) {
+                throw new TypeError(
+                    'Two numbers or a single string expected in Complex constructor');
+            }
+
+            // TODO: replace by some nice regexp?
+            // TODO: also support a pattern like "-2.5e+3 - 7.6e-5i"
+            var parts = [],
+                part;
+            var separator = '+';
+            var index = re.lastIndexOf(separator);
+            if (index == -1) {
+                separator = '-';
+                index = re.lastIndexOf(separator);
+            }
+
+            if (index != -1) {
+                part = trim(re.substring(0, index));
+                if (part) {
+                    parts.push(part);
+                }
+                part = trim(re.substring(index + 1));
+                if (part) {
+                    parts.push(separator + part);
+                }
+            }
+            else {
+                part = trim(re);
+                if (part) {
+                    parts.push(part);
+                }
+            }
+
+            var ok = false;
+            switch (parts.length) {
+                case 1:
+                    part = parts[0];
+                    if (part[part.length - 1].toUpperCase() == 'I') {
+                        // complex number
+                        this.re = 0;
+                        this.im = Number(part.substring(0, part.length - 1));
+                        ok = !isNaN(this.im);
+                    }
+                    else {
+                        // real number
+                        this.re = Number(part);
+                        this.im = 0;
+                        ok = !isNaN(this.re);
+                    }
+                    break;
+
+                case 2:
+                    part = parts[0];
+                    this.re = Number(parts[0]);
+                    this.im = Number(parts[1].substring(0, parts[1].length - 1));
+                    ok = !isNaN(this.re) && !isNaN(this.im) &&
+                        (parts[1][parts[1].length - 1].toUpperCase() == 'I');
+                    break;
+            }
+
+            // TODO: allow '+3-2'
+
+            if (!ok) {
+                throw new SyntaxError('Invalid string "' + re + '"');
+            }
+
+            break;
+
+        case 0:
+            // nul values
+            this.re = 0;
+            this.im = 0;
+            break;
+
+        default:
+            throw new SyntaxError(
+                'Wrong number of arguments in Complex constructor ' +
+                    '(' + arguments.length + ' provided, 0, 1, or 2 expected)');
+    }
 }
 
 math.type.Complex = Complex;
+
+/**
+ * Trim a string
+ * http://stackoverflow.com/a/498995/1262753
+ * @param str
+ * @return {*|void}
+ */
+function trim(str) {
+    return str.replace(/^\s+|\s+$/g, '');
+}
 
 /**
  * Test whether value is a Complex value
@@ -838,29 +1028,44 @@ math.i         = math.I;
 /**
  * Create a TypeError with message:
  *      'Function <fn> does not support a parameter of type <type>';
- * @param {String} fn
+ * @param {String} name   Function name
  * @param {*} value1
  * @param {*} [value2]
  * @return {TypeError | Error} error
  */
-function newUnsupportedTypeError(fn, value1, value2) {
+function newUnsupportedTypeError(name, value1, value2) {
     var msg = undefined;
     if (arguments.length == 2) {
         var t = _typeof(value1);
-        msg = 'Function ' + fn + ' does not support a parameter of type ' + t;
+        msg = 'Function ' + name + ' does not support a parameter of type ' + t;
     }
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
             types.push(_typeof(arguments[i]));
         }
-        msg = 'Function ' + fn + ' does not support a parameters of type ' + types.join(', ');
+        msg = 'Function ' + name + ' does not support a parameters of type ' + types.join(', ');
     }
     else {
-        msg = 'Unsupported parameter in function ' + fn;
+        msg = 'Unsupported parameter in function ' + name;
     }
 
     return new TypeError(msg);
+}
+
+/**
+ * Create a syntax error with the message:
+ *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
+ * @param {String} name   Function name
+ * @param {Number} count  Actual argument count
+ * @param {Number} min    Minimum required argument count
+ * @param {Number} [max]  Maximum required argument count
+ */
+function newArgumentsError(name, count, min, max) {
+    var msg = 'Wrong number of arguments in function ' + name +
+        ' (' + count + ' provided, ' +
+        min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
+    return new SyntaxError(msg);
 }
 
 /**
@@ -869,6 +1074,10 @@ function newUnsupportedTypeError(fn, value1, value2) {
  * @return {String} documentation
  */
 function help(subject) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('help', arguments.length, 1);
+    }
+
     if (subject.doc) {
         return generateDoc(subject.doc);
     }
@@ -966,6 +1175,10 @@ help.doc = {
  *                        "array".
  */
 function _typeof(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('typeof', arguments.length, 1);
+    }
+
     var type = typeof x;
 
     if (type == 'object') {
@@ -1008,7 +1221,7 @@ _typeof.doc = {
  */
 function min(args) {
     if (arguments.length == 0) {
-        throw new Error('Function sum requires one or multiple parameters (0 provided)');
+        throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
     // TODO: implement array support
@@ -1060,7 +1273,7 @@ min.doc = {
  */
 function max(args) {
     if (arguments.length == 0) {
-        throw new Error('Function sum requires one or multiple parameters (0 provided)');
+        throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
     // TODO: implement array support
@@ -1112,6 +1325,10 @@ max.doc = {
  * @return {Unit} res
  */
 function unit_in(x, unit) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('in', arguments.length, 2);
+    }
+
     if (x instanceof Unit) {
         // Test if unit has no value
         if (unit.hasValue) {
@@ -1162,6 +1379,10 @@ unit_in.doc ={
  * @return {Number | Complex} res
  */
 function sin(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sin', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.sin(x);
     }
@@ -1219,6 +1440,10 @@ sin.doc = {
  * @return {Number | Complex} res
  */
 function atan2(y, x) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('atan2', arguments.length, 2);
+    }
+
     if (isNumber(y)) {
         if (isNumber(x)) {
             return Math.atan2(y, x);
@@ -1275,6 +1500,10 @@ atan2.doc = {
  * @return {Number | Complex} res
  */
 function asin(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('asin', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         if (x >= -1 && x <= 1) {
             return Math.asin(x);
@@ -1339,6 +1568,10 @@ asin.doc = {
  * @return {Number | Complex} res
  */
 function atan(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('atan', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.atan(x);
     }
@@ -1396,6 +1629,10 @@ atan.doc = {
  * @return {Number | Complex} res
  */
 function cos(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('cos', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.cos(x);
     }
@@ -1453,6 +1690,10 @@ cos.doc = {
  * @return {Number | Complex} res
  */
 function tan(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('tan', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.tan(x);
     }
@@ -1512,6 +1753,10 @@ tan.doc = {
  * @return {Number | Complex} res
  */
 function acos(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('acos', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         if (x >= -1 && x <= 1) {
             return Math.acos(x);
@@ -1577,6 +1822,10 @@ acos.doc = {
  * @return {Number | Complex | Unit} res
  */
 function divide(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('divide', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             // number / number
@@ -1584,13 +1833,13 @@ function divide(x, y) {
         }
         else if (y instanceof Complex) {
             // number / complex
-            return divideComplex(new Complex(x), y);
+            return divideComplex(new Complex(x, 0), y);
         }
     }
     else if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex / number
-            return divideComplex(x, new Complex(y));
+            return divideComplex(x, new Complex(y, 0));
         }
         else if (y instanceof Complex) {
             // complex / complex
@@ -1659,6 +1908,10 @@ divide.doc = {
  * @return {Number | Complex} res
  */
 function round(x, n) {
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('round', arguments.length, 1, 2);
+    }
+
     if (n == undefined) {
         // round (x)
         if (isNumber(x)) {
@@ -1715,7 +1968,7 @@ math.round = round;
  * @return {Number} roundedValue
  */
 function roundNumber (value, digits) {
-    var p = Math.pow(10, (digits != undefined) ? digits : options.precision);
+    var p = Math.pow(10, (digits != undefined) ? digits : math.options.precision);
     return Math.round(value * p) / p;
 }
 
@@ -1751,6 +2004,10 @@ round.doc = {
  * @return {Number | Complex} res
  */
 function fix(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('fix', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return (value > 0) ? Math.floor(x) : Math.ceil(x);
     }
@@ -1799,6 +2056,10 @@ fix.doc = {
  * @return {Number | Complex | Unit | String} res
  */
 function add(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('add', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             // number + number
@@ -1890,6 +2151,10 @@ add.doc = {
  * @return {Number | Complex} res
  */
 function exp (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('exp', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.exp(x);
     }
@@ -1938,6 +2203,10 @@ exp.doc = {
  * @return {Number | Complex} res
  */
 function sqrt (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sqrt', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         if (x >= 0) {
             return Math.sqrt(x);
@@ -2002,6 +2271,10 @@ sqrt.doc = {
  * @return {Boolean} res
  */
 function larger(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('larger', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             return x > y;
@@ -2071,6 +2344,10 @@ larger.doc = {
  * @return {Number | Complex | Unit} res
  */
 function unaryminus(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('unaryminus', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return -x;
     }
@@ -2122,6 +2399,10 @@ unaryminus.doc = {
  * @return {Boolean} res
  */
 function smaller(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('smaller', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             return x < y;
@@ -2190,6 +2471,10 @@ smaller.doc = {
  * @return {Number | Complex} res
  */
 function abs(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('abs', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.abs(x);
     }
@@ -2229,6 +2514,10 @@ abs.doc = {
  * @return {Number | Complex} res
  */
 function log(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('log', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         if (x >= 0) {
             return Math.log(x);
@@ -2284,6 +2573,10 @@ log.doc = {
  * @return {Number | Complex} res
  */
 function pow(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('pow', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             if (isInteger(y) || x >= 0) {
@@ -2291,16 +2584,16 @@ function pow(x, y) {
                 return Math.pow(x, y);
             }
             else {
-                return powComplex(new Complex(x), new Complex(y));
+                return powComplex(new Complex(x, 0), new Complex(y, 0));
             }
         }
         else if (y instanceof Complex) {
-            return powComplex(new Complex(x), y);
+            return powComplex(new Complex(x, 0), y);
         }
     }
     else if (x instanceof Complex) {
         if (isNumber(y)) {
-            return powComplex(x, new Complex(y));
+            return powComplex(x, new Complex(y, 0));
         }
         else if (y instanceof Complex) {
             return powComplex(x, y);
@@ -2358,6 +2651,10 @@ pow.doc = {
  * @return {Number | Complex} res
  */
 function floor(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('floor', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.floor(x);
     }
@@ -2404,6 +2701,10 @@ floor.doc = {
  * @return {Number | Complex} res
  */
 function ceil(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('ceil', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.ceil(x);
     }
@@ -2453,6 +2754,10 @@ ceil.doc = {
 function multiply(x, y) {
     var res;
 
+    if (arguments.length != 2) {
+        throw newArgumentsError('multiply', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             // number * number
@@ -2460,7 +2765,7 @@ function multiply(x, y) {
         }
         else if (y instanceof Complex) {
             // number * complex
-            return multiplyComplex(new Complex(x), y);
+            return multiplyComplex(new Complex(x, 0), y);
         }
         else if (y instanceof Unit) {
             res = y.copy();
@@ -2471,7 +2776,7 @@ function multiply(x, y) {
     else if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex * number
-            return multiplyComplex(x, new Complex(y));
+            return multiplyComplex(x, new Complex(y, 0));
         }
         else if (y instanceof Complex) {
             // complex * complex
@@ -2538,6 +2843,10 @@ multiply.doc = {
  * @return {Number | Complex | Unit} res
  */
 function subtract(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('subtract', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             // number - number
@@ -2624,6 +2933,10 @@ subtract.doc = {
  * @return {Number} res
  */
 function random () {
+    if (arguments.length != 0) {
+        throw newArgumentsError('random', arguments.length, 0);
+    }
+
     // TODO: implement parameter min and max
     return Math.random();
 }
@@ -2646,6 +2959,1863 @@ random.doc = {
         '100 * random()'
     ],
     'seealso': []
+};
+
+/**
+ * Node
+ */
+function Node() {}
+
+math.parser.node.Node = Node;
+
+/**
+ * Evaluate the node
+ * @return {*} result
+ */
+Node.prototype.eval = function () {
+    throw new Error('Cannot evaluate a Node interface');
+};
+
+/**
+ * Get string representation
+ * @return {String}
+ */
+Node.prototype.toString = function() {
+    return '';
+};
+
+/**
+ * @constructor math.parser.node.Function
+ * @param {String} [name]
+ * @param {function} fn
+ * @param {Node[]} params
+ * @extends {Node}
+ */
+function Function(name, fn, params) {
+    this.name = name;
+    this.fn = fn;
+    this.params = params;
+}
+
+Function.prototype = new Node();
+
+math.parser.node.Function = Function;
+
+/**
+ * Check whether the Function has one or multiple parameters set.
+ * @return {Boolean}
+ */
+Function.prototype.hasParams = function () {
+    return (this.params != undefined && this.params.length > 0);
+};
+
+/**
+ * Evaluate the symbol
+ * @return {*} result
+ * @override
+ */
+Function.prototype.eval = function() {
+    var fn = this.fn;
+    if (fn === undefined) {
+        throw new Error('Undefined symbol ' + this.name);
+    }
+
+    // evaluate the parameters
+    var results = this.params.map(function (param) {
+        return param.eval();
+    });
+
+    // evaluate the function
+    return fn.apply(this, results);
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ * @override
+ */
+Function.prototype.toString = function() {
+    // variable. format the symbol like "myvar"
+    if (this.name && !this.params) {
+        return this.name;
+    }
+
+    /* TODO: determine if the function is an operator
+    // operator. format the operation like "(2 + 3)"
+    if (this.fn && (this.fn instanceof mathnotepad.fn.Operator)) {
+        if (this.params && this.params.length == 2) {
+            return '(' +
+                this.params[0].toString() + ' ' +
+                this.name + ' ' +
+                this.params[1].toString() + ')';
+        }
+    }
+    */
+
+    // function. format the operation like "f(2, 4.2)"
+    var str = this.name;
+    if (this.params && this.params.length) {
+        str += '(' + this.params.join(', ') + ')';
+    }
+    return str;
+};
+
+/**
+ * @constructor math.parser.node.Constant
+ * @param {*} value
+ * @extends {Node}
+ */
+function Constant(value) {
+    this.value = value;
+}
+
+Constant.prototype = new Node();
+
+math.parser.node.Constant = Constant;
+
+/**
+ * Evaluate the constant
+ * @return {*} value
+ */
+Constant.prototype.eval = function () {
+    return this.value;
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ */
+Constant.prototype.toString = function() {
+    return this.value ? this.value.toString() : '';
+};
+
+/**
+ * @constructor math.parser.node.Block
+ * Holds a set with nodes
+ * @extends {Node}
+ */
+function Block() {
+    this.params = [];
+    this.visible = [];
+}
+
+Block.prototype = new Node();
+
+math.parser.node.Block = Block;
+
+/**
+ * Add a parameter
+ * @param {Node} param
+ * @param {Boolean} [visible]   true by default
+ */
+Block.prototype.add = function (param, visible) {
+    var index = this.params.length;
+    this.params[index] = param;
+    this.visible[index] = (visible != undefined) ? visible : true;
+};
+
+/**
+ * Evaluate the set
+ * @return {*[]} results
+ * @override
+ */
+Block.prototype.eval = function() {
+    // evaluate the parameters
+    var results = [];
+    for (var i = 0, iMax = this.params.length; i < iMax; i++) {
+        var result = this.params[i].eval();
+        if (this.visible[i]) {
+            results.push(result);
+        }
+    }
+
+    return results;
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ * @override
+ */
+Block.prototype.toString = function() {
+    var strings = [];
+
+    for (var i = 0, iMax = this.params.length; i < iMax; i++) {
+        if (this.visible[i]) {
+            strings.push('\n  ' + this.params[i].toString());
+        }
+    }
+
+    return '[' + strings.join(',') + '\n]';
+};
+
+/**
+ * @constructor mathnotepad.tree.Assignment
+ * @param {String} name                 Symbol name
+ * @param {Node[] | undefined} params   Zero or more parameters
+ * @param {Node} expr                   The expression defining the symbol
+ * @param {function} result             placeholder for the result
+ */
+function Assignment(name, params, expr, result) {
+    this.name = name;
+    this.params = params;
+    this.expr = expr;
+    this.result = result;
+}
+
+Assignment.prototype = new Node();
+
+math.parser.node.Assignment = Assignment;
+
+/**
+ * Evaluate the assignment
+ * @return {*} result
+ */
+Assignment.prototype.eval = function() {
+    if (this.expr === undefined) {
+        throw new Error('Undefined symbol ' + this.name);
+    }
+
+    var result;
+    var params = this.params;
+
+    if (params && params.length) {
+        // change part of a matrix, for example "a=[]", "a(2,3)=4.5"
+        var paramResults = [];
+        this.params.forEach(function (param) {
+            paramResults.push(param.eval());
+        });
+
+        var exprResult = this.expr.eval();
+
+        // test if definition is currently undefined
+        if (this.result.value == undefined) {
+            throw new Error('Undefined symbol ' + this.name);
+        }
+
+        var prevResult = this.result.eval();
+        result = prevResult.set(paramResults, exprResult);
+
+        this.result.value = result;
+    }
+    else {
+        // variable definition, for example "a = 3/4"
+        result = this.expr.eval();
+        this.result.value = result;
+    }
+
+    return result;
+};
+
+/**
+ * Get string representation
+ * @return {String}
+ */
+Assignment.prototype.toString = function() {
+    var str = '';
+
+    str += this.name;
+    if (this.params && this.params.length) {
+        str += '(' + this.params.join(', ') + ')';
+    }
+    str += ' = ';
+    str += this.expr.toString();
+
+    return str;
+};
+
+/**
+ * @constructor FunctionAssignment
+ * assigns a custom defined function
+ *
+ * @param {String} name             Function name
+ * @param {String[]} variableNames  Variable names
+ * @param {function[]} variables    Links to the variables in a scope
+ * @param {Node} expr               The function expression
+ * @param {function} result         Link to store the result
+ */
+function FunctionAssignment(name, variableNames, variables, expr, result) {
+    this.name = name;
+    this.variables = variables;
+
+    this.values = [];
+    for (var i = 0, iMax = this.variables.length; i < iMax; i++) {
+        this.values[i] = (function () {
+            var value = function () {
+                return value.value;
+            };
+            value.value = undefined;
+            return value;
+        })();
+    }
+
+    this.def = this.createFunction(name, variableNames, variables, expr);
+
+    this.result = result;
+}
+
+FunctionAssignment.prototype = new Node();
+
+math.parser.node.FunctionAssignment = FunctionAssignment;
+
+/**
+ * Create a function from the function assignment
+ * @param {String} name             Function name
+ * @param {String[]} variableNames  Variable names
+ * @param {function[]} values       Zero or more functions returning a value
+ *                                  Each function contains a parameter
+ *                                  name of type String and value of
+ *                                  type mathnotepad.fn.Link
+ * @param {Node} expr               The function expression
+ *
+ */
+FunctionAssignment.prototype.createFunction = function (name, variableNames,
+                                                        values, expr) {
+    var fn = function () {
+        // validate correct number of arguments
+        var valuesNum = values ? values.length : 0;
+        var argumentsNum = arguments ? arguments.length : 0;
+        if (valuesNum != argumentsNum) {
+            throw newArgumentsError(name, argumentsNum, valuesNum);
+        }
+
+        // fill in all parameter values
+        if (valuesNum > 0) {
+            for (var i = 0; i < valuesNum; i++){
+                values[i].value = arguments[i];
+            }
+        }
+
+        // evaluate the expression
+        return expr.eval();
+    };
+
+    fn.toString = function() {
+        return name + '(' + variableNames.join(', ') + ')';
+    };
+
+    return fn;
+};
+
+/**
+ * Evaluate the function assignment
+ * @return {function} result
+ */
+FunctionAssignment.prototype.eval = function() {
+    // link the variables to the values of this function assignment
+    var variables = this.variables,
+        values = this.values;
+    for (var i = 0, iMax = variables.length; i < iMax; i++) {
+        variables[i].value = values[i];
+    }
+
+    // put the definition in the result
+    this.result.value = this.def;
+
+    // TODO: what to return? a neat "function y(x) defined"?
+    return this.def;
+};
+
+/**
+ * get string representation
+ * @return {String} str
+ */
+FunctionAssignment.prototype.toString = function() {
+    return this.def.toString();
+};
+
+/**
+ * @License Apache 2.0 License
+ *
+ * @Author Jos de Jong
+ * @Date 2012-07-10
+ */
+
+/**
+ * Scope
+ * A scope stores functions.
+ *
+ * @constructor mathnotepad.Scope
+ * @param {Scope} [parentScope]
+ */
+function Scope(parentScope) {
+    this.parentScope = parentScope;
+    this.nestedScopes = undefined;
+
+    this.symbols = {}; // the actual symbols
+
+    // the following objects are just used to test existence.
+    this.defs = {};    // definitions by name (for example "a = [1, 2; 3, 4]")
+    this.updates = {}; // updates by name     (for example "a(2, 1) = 5.2")
+    this.links = {};   // links by name       (for example "2 * a")
+}
+
+math.parser.node.Scope = Scope;
+
+/**
+ * Create a nested scope
+ * The variables in a nested scope are not accessible from the parent scope
+ * @return {Scope} nestedScope
+ */
+Scope.prototype.createNestedScope = function () {
+    var nestedScope = new Scope(this);
+    if (!this.nestedScopes) {
+        this.nestedScopes = [];
+    }
+    this.nestedScopes.push(nestedScope);
+    return nestedScope;
+};
+
+/**
+ * Clear all symbols in this scope and its nested scopes
+ * (parent scope will not be cleared)
+ */
+Scope.prototype.clear = function () {
+    this.symbols = {};
+    this.defs = {};
+    this.links = {};
+    this.updates = {};
+
+    if (this.nestedScopes) {
+        var nestedScopes = this.nestedScopes;
+        for (var i = 0, iMax = nestedScopes.length; i < iMax; i++) {
+            nestedScopes[i].clear();
+        }
+    }
+};
+
+/**
+ * create a symbol
+ * @param {String} name
+ * @return {function} symbol
+ * @private
+ */
+Scope.prototype.createSymbol = function (name) {
+    var symbol = this.symbols[name];
+    if (!symbol) {
+        // get a link to the last definition
+        var lastDef = this.findDef(name);
+
+        // create a new symbol
+        symbol = this.newSymbol(name, lastDef);
+        this.symbols[name] = symbol;
+
+    }
+    return symbol;
+};
+
+/**
+ * Create a new symbol
+ * @param {String} name
+ * @param {*} [value]
+ * @return {function} symbol
+ * @private
+ */
+Scope.prototype.newSymbol = function (name, value) {
+    // create a new symbol
+    var symbol = function () {
+        if (!symbol.value) {
+            throw new Error('Undefined symbol ' + name);
+        }
+        if (typeof symbol.value == 'function') {
+            return symbol.value.apply(null, arguments);
+        }
+        else {
+            // TODO: implement subset for all types
+            return symbol.value;
+        }
+    };
+
+    symbol.value = value;
+
+    symbol.toString = function () {
+        return symbol.value ? symbol.value.toString() : '';
+    };
+
+    return symbol;
+};
+
+/**
+ * create a link to a value.
+ * @param {String} name
+ * @return {function} symbol
+ */
+Scope.prototype.createLink = function (name) {
+    var symbol = this.links[name];
+    if (!symbol) {
+        symbol = this.createSymbol(name);
+        this.links[name] = symbol;
+    }
+    return symbol;
+};
+
+/**
+ * Create a variable definition
+ * Returns the created symbol
+ * @param {String} name
+ * @return {function} symbol
+ */
+Scope.prototype.createDef = function (name) {
+    var symbol = this.defs[name];
+    if (!symbol) {
+        symbol = this.createSymbol(name);
+        this.defs[name] = symbol;
+    }
+    return symbol;
+};
+
+/**
+ * Create a variable update definition
+ * Returns the created symbol
+ * @param {String} name
+ * @return {function} symbol
+ */
+Scope.prototype.createUpdate = function (name) {
+    var symbol = this.updates[name];
+    if (!symbol) {
+        symbol = this.createLink(name);
+        this.updates[name] = symbol;
+    }
+    return symbol;
+};
+
+/**
+ * get the link to a symbol definition or update.
+ * If the symbol is not found in this scope, it will be looked up in its parent
+ * scope.
+ * @param {String} name
+ * @return {function | undefined} symbol, or undefined when not found
+ */
+Scope.prototype.findDef = function (name) {
+    var symbol;
+
+    // check scope
+    symbol = this.defs[name];
+    if (symbol) {
+        return symbol;
+    }
+    symbol = this.updates[name];
+    if (symbol) {
+        return symbol;
+    }
+
+    // check parent scope
+    if (this.parentScope) {
+        return this.parentScope.findDef(name);
+    }
+    else {
+        // this is the root scope (has no parent)
+
+        var newSymbol = this.newSymbol,
+            symbols = this.symbols,
+            defs = this.defs;
+
+        /**
+         * Store a symbol in the root scope
+         * @param {String} name
+         * @param {*} value
+         * @return {function} symbol
+         */
+        function put(name, value) {
+            var symbol = newSymbol(name, value);
+            symbols[name] = symbol;
+            defs[name] = symbol;
+            return symbol;
+        }
+
+        // check constant (and load the constant)
+        if (name == 'pi') {
+            return put(name, math.PI);
+        }
+        if (name == 'e') {
+            return put(name, math.E);
+        }
+        if (name == 'i') {
+            return put(name, new Complex(0, 1));
+        }
+
+        // check function (and load the function), for example "sin" or "sqrt"
+        // search in the mathnotepad.math namespace for this symbol
+        var fn = math[name];
+        if (fn) {
+            return put(name, fn);
+        }
+
+        // Check if token is a unit
+        // Note: we do not check the upper case name, units are case sensitive!
+        if (Unit.isUnit(name)) {
+            var unit = new Unit(undefined, name);
+            return put(name, unit);
+        }
+    }
+
+    return undefined;
+};
+
+/**
+ * Remove a link to a symbol
+ * @param {String} name
+ */
+Scope.prototype.removeLink = function (name) {
+    delete this.links[name];
+};
+
+/**
+ * Remove a definition of a symbol
+ * @param {String} name
+ */
+Scope.prototype.removeDef = function (name) {
+    delete this.defs[name];
+};
+
+/**
+ * Remove an update definition of a symbol
+ * @param {String} name
+ */
+Scope.prototype.removeUpdate = function (name) {
+    delete this.updates[name];
+};
+
+/**
+ * initialize the scope and its nested scopes
+ *
+ * All functions are linked to their previous definition
+ * If there is no parentScope, or no definition of the func in the parent scope,
+ * the link will be set undefined
+ */
+Scope.prototype.init = function () {
+    var symbols = this.symbols;
+    var parentScope = this.parentScope;
+
+    for (var name in symbols) {
+        if (symbols.hasOwnProperty(name)) {
+            var symbol = symbols[name];
+            symbol.set(parentScope ? parentScope.findDef(name) : undefined);
+        }
+    }
+
+    if (this.nestedScopes) {
+        this.nestedScopes.forEach(function (nestedScope) {
+            nestedScope.init();
+        });
+    }
+};
+
+/**
+ * Check whether this scope or any of its nested scopes contain a link to a
+ * symbol with given name
+ * @param {String} name
+ * @return {boolean} hasLink   True if a link with given name is found
+ */
+Scope.prototype.hasLink = function (name) {
+    if (this.links[name]) {
+        return true;
+    }
+
+    if (this.nestedScopes) {
+        var nestedScopes = this.nestedScopes;
+        for (var i = 0, iMax = nestedScopes.length; i < iMax; i++) {
+            if (nestedScopes[i].hasLink(name)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
+/**
+ * Check whether this scope contains a definition of a symbol with given name
+ * @param {String} name
+ * @return {boolean} hasDef   True if a definition with given name is found
+ */
+Scope.prototype.hasDef = function (name) {
+    return (this.defs[name] != undefined);
+};
+
+/**
+ * Check whether this scope contains an update definition of a symbol with
+ * given name
+ * @param {String} name
+ * @return {boolean} hasUpdate   True if an update definition with given name is found
+ */
+Scope.prototype.hasUpdate = function (name) {
+    return (this.updates[name] != undefined);
+};
+
+/**
+ * Retrieve all undefined symbols
+ * @return {function[]} undefinedSymbols   All symbols which are undefined
+ */
+Scope.prototype.getUndefinedSymbols = function () {
+    var symbols = this.symbols;
+    var undefinedSymbols = [];
+    for (var i in symbols) {
+        if (symbols.hasOwnProperty(i)) {
+            var symbol = symbols[i];
+            if (symbol.value == undefined) {
+                undefinedSymbols.push(symbol);
+            }
+        }
+    }
+
+    if (this.nestedScopes) {
+        this.nestedScopes.forEach(function (nestedScope) {
+            undefinedSymbols =
+                undefinedSymbols.concat(nestedScope.getUndefinedSymbols());
+        });
+    }
+
+    return undefinedSymbols;
+};
+
+// TODO: do not use this.token, but a local variable var token for better speed? -> getToken() must return token.
+// TODO: make all parse methods private
+
+/**
+ * @constructor math.parser.Parser
+ * TODO: add comments to the Parser constructor
+ */
+function Parser() {
+    // token types enumeration
+    this.TOKENTYPE = {
+        NULL : 0,
+        DELIMITER : 1,
+        NUMBER : 2,
+        SYMBOL : 3,
+        UNKNOWN : 4
+    };
+
+    this.expr = '';        // current expression
+    this.index = 0;        // current index in expr
+    this.c = '';           // current token character in expr
+    this.token = '';       // current token
+    this.token_type = this.TOKENTYPE.NULL; // type of the token
+
+    this.scope = new Scope();
+}
+
+math.parser.Parser = Parser;
+
+/**
+ * Clear the scope with variables and functions
+ */
+Parser.prototype.clear = function () {
+    this.scope.clear();
+};
+
+/**
+ * Parse an expression end return the parsed function node.
+ * The node can be evaluated via node.eval()
+ * @param {String} expr
+ * @param {Scope} [scope]
+ * @return {Node} node
+ * @throws {Error}
+ */
+Parser.prototype.parse = function (expr, scope) {
+    this.expr = expr || '';
+
+    if (!scope) {
+        scope = this.scope;
+    }
+
+    return this.parse_start(scope);
+};
+
+/**
+ * Parse and evaluate the given expression
+ * @param {String} expr     A string containing an expression, for example "2+3"
+ * @return {*} result       The result, or undefined when the expression was
+ *                          empty
+ * @throws {Error}
+ */
+Parser.prototype.eval = function (expr) {
+    var result = undefined;
+
+    try {
+        var node = this.parse(expr);
+        result = node.eval();
+    } catch (err) {
+        result = err.toString ? err.toString() : err;
+    }
+
+    return result;
+};
+
+/**
+ * Get the next character from the expression.
+ * The character is stored into the char t.
+ * If the end of the expression is reached, the function puts an empty
+ * string in t.
+ * @private
+ */
+Parser.prototype.getChar = function () {
+    this.index++;
+    this.c = this.expr.charAt(this.index);
+};
+
+/**
+ * Get the first character from the expression.
+ * The character is stored into the char t.
+ * If the end of the expression is reached, the function puts an empty
+ * string in t.
+ * @private
+ */
+Parser.prototype.getFirstChar = function () {
+    this.index = 0;
+    this.c = this.expr.charAt(0);
+};
+
+/**
+ * Get next token in the current string expr.
+ * Uses the Parser data expr, e, token, t, token_type and err
+ * The token and token type are available at this.token_type and this.token
+ * @private
+ */
+Parser.prototype.getToken = function () {
+    this.token_type = this.TOKENTYPE.NULL;
+    this.token = '';
+
+    // skip over whitespaces
+    while (this.c == ' ' || this.c == '\t') {  // space or tab
+        this.getChar();
+    }
+
+    // skip comment
+    if (this.c == '#') {
+        while (this.c != '\n' && this.c != '') {
+            this.getChar();
+        }
+    }
+
+    // check for end of expression
+    if (this.c == '') {
+        // token is still empty
+        this.token_type = this.TOKENTYPE.DELIMITER;
+        return;
+    }
+
+    // check for minus, comma, parentheses, quotes, newline, semicolon
+    if (this.c == '-' || this.c == ',' ||
+        this.c == '(' || this.c == ')' ||
+        this.c == '[' || this.c == ']' ||
+        this.c == '\"' || this.c == '\n' ||
+        this.c == ';' || this.c == ':') {
+        this.token_type = this.TOKENTYPE.DELIMITER;
+        this.token += this.c;
+        this.getChar();
+        return;
+    }
+
+    // check for operators (delimiters)
+    if (this.isDelimiter(this.c)) {
+        this.token_type = this.TOKENTYPE.DELIMITER;
+        while (this.isDelimiter(this.c)) {
+            this.token += this.c;
+            this.getChar();
+        }
+        return;
+    }
+
+    // check for a number
+    if (this.isDigitDot(this.c)) {
+        this.token_type = this.TOKENTYPE.NUMBER;
+        while (this.isDigitDot(this.c)) {
+            this.token += this.c;
+            this.getChar();
+        }
+
+        // check for scientific notation like "2.3e-4" or "1.23e50"
+        if (this.c == 'E' || this.c == 'e') {
+            this.token += this.c;
+            this.getChar();
+
+            if (this.c == '+' || this.c == '-') {
+                this.token += this.c;
+                this.getChar();
+            }
+
+            // Scientific notation MUST be followed by an exponent
+            if (!this.isDigit(this.c)) {
+                // this is no legal number, exponent is missing.
+                this.token_type = this.TOKENTYPE.UNKNOWN;
+            }
+
+            while (this.isDigit(this.c)) {
+                this.token += this.c;
+                this.getChar();
+            }
+        }
+        return;
+    }
+    // check for variables or functions
+    if (this.isAlpha(this.c)) {
+        this.token_type = this.TOKENTYPE.SYMBOL;
+
+        while (this.isAlpha(this.c) || this.isDigit(this.c))
+        {
+            this.token += this.c;
+            this.getChar();
+        }
+        return;
+    }
+
+    // something unknown is found, wrong characters -> a syntax error
+    this.token_type = this.TOKENTYPE.UNKNOWN;
+    while (this.c != '') {
+        this.token += this.c;
+        this.getChar();
+    }
+    throw this.createSyntaxError('Syntax error in part "' + this.token + '"');
+};
+
+/**
+ * checks if the given char c is a delimiter
+ * minus is not checked in this method (can be unary minus)
+ * @param {String} c   a string with one character
+ * @return {Boolean}
+ * @private
+ */
+Parser.prototype.isDelimiter = function (c) {
+    return c == '&' ||
+        c == '|' ||
+        c == '<' ||
+        c == '>' ||
+        c == '=' ||
+        c == '+' ||
+        c == '/' ||
+        c == '*' ||
+        c == '%' ||
+        c == '^' ||
+        c == ',' ||
+        c == ';' ||
+        c == '\n' ||
+        c == '!';
+};
+
+/**
+ * Check if a given name is valid
+ * if not, an error is thrown
+ * @param {String} name
+ * @return {boolean} valid
+ * @private
+ */
+Parser.prototype.isValidSymbolName = function (name) {
+    for (var i = 0, iMax = name.length; i < iMax; i++) {
+        var c = name.charAt(i);
+        //var valid = (this.isAlpha(c) || (i > 0 && this.isDigit(c))); // TODO
+        var valid = (this.isAlpha(c));
+        if (!valid) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+/**
+ * checks if the given char c is a letter (upper or lower case)
+ * or underscore
+ * @param {String} c   a string with one character
+ * @return {Boolean}
+ * @private
+ */
+Parser.prototype.isAlpha = function (c) {
+    return ((c >= 'a' && c <= 'z') ||
+        (c >= 'A' && c <= 'Z') ||
+        c == '_');
+};
+
+/**
+ * checks if the given char c is a digit or dot
+ * @param {String} c   a string with one character
+ * @return {Boolean}
+ * @private
+ */
+Parser.prototype.isDigitDot = function (c) {
+    return ((c >= '0' && c <= '9') ||
+        c == '.');
+};
+
+/**
+ * checks if the given char c is a digit
+ * @param {String} c   a string with one character
+ * @return {Boolean}
+ * @private
+ */
+Parser.prototype.isDigit = function (c) {
+    return ((c >= '0' && c <= '9'));
+};
+
+/**
+ * Start of the parse levels below, in order of precedence
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_start = function (scope) {
+    // get the first character in expression
+    this.getFirstChar();
+
+    this.getToken();
+
+    var node;
+    if (this.token == '') {
+        // empty expression
+        node = new Constant(undefined);
+    }
+    else {
+        node = this.parse_block(scope);
+    }
+
+    // check for garbage at the end of the expression
+    // an expression ends with a empty character '' and token_type DELIMITER
+    if (this.token != '') {
+        if (this.token_type == this.TOKENTYPE.DELIMITER) {
+            // user entered a not existing operator like "//"
+
+            // TODO: give hints for aliases, for example with "<>" give as hint " did you mean != ?"
+            throw this.createError('Unknown operator ' + this.token);
+        }
+        else {
+            throw this.createSyntaxError('Unexpected part "' + this.token + '"');
+        }
+    }
+
+    return node;
+};
+
+
+/**
+ * Parse assignment of ans.
+ * Ans is assigned when the expression itself is no variable or function
+ * assignment
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_ans = function (scope) {
+    var expression = this.parse_function_assignment(scope);
+
+    // TODO: not so nice having to specify some special types here...
+    if (!(expression instanceof Assignment)
+        // !(expression instanceof FunctionAssignment) &&  // TODO
+        // !(expression instanceof plot)                   // TODO
+        ) {
+        // create a variable definition for ans
+        var name = 'ans';
+        var params = undefined;
+        var link = scope.createDef(name);
+        return new Assignment(name, params, expression, link);
+    }
+
+    return expression;
+};
+
+
+/**
+ * Parse a block with expressions. Expressions can be separated by a newline
+ * character '\n', or by a semicolon ';'. In case of a semicolon, no output
+ * of the preceding line is returned.
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_block = function (scope) {
+    var node, block, visible;
+
+    if (this.token != '\n' && this.token != ';' && this.token != '') {
+        node = this.parse_ans(scope);
+    }
+
+    while (this.token == '\n' || this.token == ';') {
+        if (!block) {
+            // initialize the block
+            block = new Block();
+            if (node) {
+                visible = (this.token != ';');
+                block.add(node, visible);
+            }
+        }
+
+        this.getToken();
+        if (this.token != '\n' && this.token != ';' && this.token != '') {
+            node = this.parse_ans(scope);
+
+            visible = (this.token != ';');
+            block.add(node, visible);
+        }
+    }
+
+    if (block) {
+        return block;
+    }
+
+    if (!node) {
+        node = this.parse_ans(scope);
+    }
+
+    return node;
+};
+
+/**
+ * Parse a function assignment like "function f(a,b) = a*b"
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_function_assignment = function (scope) {
+    // TODO: keyword 'function' must become a reserved keyword
+    if (this.token_type == this.TOKENTYPE.SYMBOL && this.token == 'function') {
+        // get function name
+        this.getToken();
+        if (this.token_type != this.TOKENTYPE.SYMBOL) {
+            throw this.createSyntaxError('Function name expected');
+        }
+        var name = this.token;
+
+        // get parenthesis open
+        this.getToken();
+        if (this.token != '(') {
+            throw this.createSyntaxError('Opening parenthesis ( expected');
+        }
+
+        // get function variables
+        var functionScope = scope.createNestedScope();
+        var variableNames = [];
+        var variables = [];
+        while (true) {
+            this.getToken();
+            if (this.token_type == this.TOKENTYPE.SYMBOL) {
+                // store parameter
+                var variableName = this.token;
+                var variable = functionScope.createDef(variableName);
+                variableNames.push(variableName);
+                variables.push(variable);
+            }
+            else {
+                throw this.createSyntaxError('Variable name expected');
+            }
+
+            this.getToken();
+            if (this.token == ',') {
+                // ok, nothing to do, read next variable
+            }
+            else if (this.token == ')') {
+                // end of variable list encountered. break loop
+                break;
+            }
+            else {
+                throw this.createSyntaxError('Comma , or closing parenthesis ) expected"');
+            }
+        }
+
+        this.getToken();
+        if (this.token != '=') {
+            throw this.createSyntaxError('Equal sign = expected');
+        }
+
+        // parse the expression, with the correct function scope
+        this.getToken();
+        var expression = this.parse_range(functionScope);
+        var result = scope.createDef(name);
+
+        return  new FunctionAssignment(name, variableNames, variables,
+            expression, result);
+    }
+
+    return this.parse_assignment(scope);
+};
+
+/**
+ * Assignment of a variable, can be a variable like "a=2.3" or a updating an
+ * existing variable like "matrix(2,3:5)=[6,7,8]"
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_assignment = function (scope) {
+    var linkExisted = false;
+    if (this.token_type == this.TOKENTYPE.SYMBOL) {
+        linkExisted = scope.hasLink(this.token);
+    }
+
+    var node = this.parse_range(scope);
+
+    if (this.token == '=') {
+        if (!(node instanceof Function)) {
+            throw this.createSyntaxError('Variable expected at the left hand side ' +
+                'of assignment operator =');
+        }
+        var name = node.name;
+        var params = node.params;
+
+        if (!linkExisted) {
+            // we parsed the assignment as if it where an expression instead,
+            // therefore, a link was created to the symbol. This link must
+            // be cleaned up again, and only if it wasn't existing before
+            scope.removeLink(name);
+        }
+
+        // parse the expression, with the correct function scope
+        this.getToken();
+        var expression = this.parse_range(scope);
+        var link = node.hasParams() ? scope.createUpdate(name) : scope.createDef(name);
+        return new Assignment(name, params, expression, link);
+    }
+
+    return node;
+};
+
+/**
+ * parse range, "start:end" or "start:step:end"
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_range = function (scope) {
+    var node = this.parse_conditions(scope);
+
+    /* TODO: implement range
+    if (this.token == ':') {
+        var params = [node];
+
+        while (this.token == ':') {
+            this.getToken();
+            params.push(this.parse_conditions(scope));
+        }
+
+        var fn = range;
+        var name = ':';
+        node = new Function(name, fn, params);
+    }
+    */
+
+    return node;
+};
+
+/**
+ * conditions like and, or, in
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_conditions = function (scope) {
+    var node = this.parse_bitwise_conditions(scope);
+
+    // TODO: precedence of And above Or?
+    var operators = {
+        'in' : 'in'
+        /* TODO: implement conditions
+        'and' : 'and',
+        '&&' : 'and',
+        'or': 'or',
+        '||': 'or',
+        'xor': 'xor'
+        */
+    };
+    while (operators[this.token] !== undefined) {
+        // TODO: with all operators: only load one instance of the operator, use the scope
+        var name = this.token;
+        var fn = math[operators[name]];
+
+        this.getToken();
+        var params = [node, this.parse_bitwise_conditions(scope)];
+        node = new Function(name, fn, params);
+    }
+
+    return node;
+};
+
+/**
+ * conditional operators and bitshift
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_bitwise_conditions = function (scope) {
+    var node = this.parse_comparison(scope);
+
+    /* TODO: implement bitwise conditions
+    var operators = {
+        '&' : 'bitwiseand',
+        '|' : 'bitwiseor',
+        // todo: bitwise xor?
+        '<<': 'bitshiftleft',
+        '>>': 'bitshiftright'
+    };
+    while (operators[this.token] !== undefined) {
+        var name = this.token;
+        var fn = math[operators[name]];
+
+        this.getToken();
+        var params = [node, this.parse_comparison()];
+        node = new Function(name, fn, params);
+    }
+    */
+
+    return node;
+};
+
+/**
+ * comparison operators
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_comparison = function (scope) {
+    var node = this.parse_addsubtract(scope);
+
+    var operators = {
+        '==': 'equal',
+        '!=': 'unequal',
+        '<': 'smaller',
+        '>': 'larger',
+        '<=': 'smallereq',
+        '>=': 'largereq'
+    };
+    while (operators[this.token] !== undefined) {
+        var name = this.token;
+        var fn = math[operators[name]];
+
+        this.getToken();
+        var params = [node, this.parse_addsubtract(scope)];
+        node = new Function(name, fn, params);
+    }
+
+    return node;
+};
+
+/**
+ * add or subtract
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_addsubtract = function (scope)  {
+    var node = this.parse_multiplydivide(scope);
+
+    var operators = {
+        '+': 'add',
+        '-': 'subtract'
+    };
+    while (operators[this.token] !== undefined) {
+        var name = this.token;
+        var fn = math[operators[name]];
+
+        this.getToken();
+        var params = [node, this.parse_multiplydivide(scope)];
+        node = new Function(name, fn, params);
+    }
+
+    return node;
+};
+
+
+/**
+ * multiply, divide, modulus
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_multiplydivide = function (scope) {
+    var node = this.parse_pow(scope);
+
+    var operators = {
+        '*': 'multiply',
+        '/': 'divide',
+        '%': 'mod',
+        'mod': 'mod'
+    };
+    while (operators[this.token] !== undefined) {
+        var name = this.token;
+        var fn = math[operators[name]];
+
+        this.getToken();
+        var params = [node, this.parse_pow(scope)];
+        node = new Function(name, fn, params);
+    }
+
+    return node;
+};
+
+/**
+ * power
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_pow = function (scope) {
+    var node = this.parse_factorial(scope);
+
+    while (this.token == '^') {
+        var name = this.token;
+        var fn = pow;
+        this.getToken();
+        var params = [node, this.parse_factorial(scope)];
+
+        node = new Function(name, fn, params);
+    }
+
+    return node;
+};
+
+/**
+ * Factorial
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_factorial = function (scope)  {
+    var node = this.parse_unaryminus(scope);
+
+    while (this.token == '!') {
+        var name = this.token;
+        var fn = factorial;
+        this.getToken();
+        var params = [node];
+
+        node = new Function(name, fn, params);
+    }
+
+    return node;
+};
+
+/**
+ * Unary minus
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_unaryminus = function (scope) {
+    if (this.token == '-') {
+        var name = this.token;
+        var fn = unaryminus;
+        this.getToken();
+        var params = [this.parse_plot(scope)];
+
+        return new Function(name, fn, params);
+    }
+
+    return this.parse_plot(scope);
+};
+
+/**
+ * parse plot
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_plot = function (scope) {
+    /* TODO: implement plot
+    if (this.token_type == this.TOKENTYPE.SYMBOL &&
+        this.token == 'plot') {
+        this.getToken();
+
+        // parse the parentheses and parameters of the plot
+        // the parameters are something like: plot(sin(x), cos(x), x)
+        var functions = [];
+        if (this.token == '(') {
+            var plotScope = scope.createNestedScope();
+
+            this.getToken();
+            functions.push(this.parse_range(plotScope));
+
+            // parse a list with parameters
+            while (this.token == ',') {
+                this.getToken();
+                functions.push(this.parse_range(plotScope));
+            }
+
+            if (this.token != ')') {
+                throw this.createSyntaxError('Parenthesis ) missing');
+            }
+            this.getToken();
+        }
+
+        // check what the variable of the functions is.
+        var variable = undefined;
+        var lastFunction = functions[functions.length - 1];
+        if (lastFunction) {
+            // if the last function is a variable, remove it from the functions list
+            // and use its variable func
+            var lastIsSymbol = (lastFunction instanceof Function &&
+                !lastFunction.hasParams());
+            if (lastIsSymbol) {
+                functions.pop();
+                variable = lastFunction.fn;
+            }
+        }
+        return new plot(functions, variable, plotScope);
+    }
+    */
+
+    return this.parse_symbol(scope);
+};
+
+/**
+ * parse symbols: functions, variables, constants, units
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_symbol = function (scope) {
+    if (this.token_type == this.TOKENTYPE.SYMBOL) {
+        var name = this.token;
+
+        this.getToken();
+
+        var link = scope.createLink(name);
+        var arguments = this.parse_arguments(scope); // TODO: not so nice to "misuse" creating a Function
+        var symbol = new Function(name, link, arguments);
+
+        /* TODO: parse arguments
+        // parse arguments
+        while (this.token == '(') {
+            symbol = this.parse_arguments(scope, symbol);
+        }
+        */
+        return symbol;
+    }
+
+    return this.parse_string(scope);
+};
+
+/**
+ * parse symbol parameters
+ * @param {Scope} scope
+ * @return {Node[]} arguments
+ * @private
+ */
+Parser.prototype.parse_arguments = function (scope) {
+    var arguments = [];
+    if (this.token == '(') {
+        // TODO: in case of Plot, create a new scope.
+
+        this.getToken();
+        arguments.push(this.parse_range(scope));
+
+        // parse a list with parameters
+        while (this.token == ',') {
+            this.getToken();
+            arguments.push(this.parse_range(scope));
+        }
+
+        if (this.token != ')') {
+            throw this.createSyntaxError('Parenthesis ) missing');
+        }
+        this.getToken();
+    }
+
+    return arguments;
+};
+
+/**
+ * parse a string.
+ * A string is enclosed by double quotes
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_string = function (scope) {
+    if (this.token == '"') {
+        // string "..."
+        var str = '';
+        var tPrev = '';
+        while (this.c != '' && (this.c != '\"' || tPrev == '\\')) { // also handle escape character
+            str += this.c;
+            tPrev = this.c;
+            this.getChar();
+        }
+
+        this.getToken();
+        if (this.token != '"') {
+            throw this.createSyntaxError('End of string " missing');
+        }
+        this.getToken();
+
+        var res = new Constant(str);
+
+        /* TODO: implement string with arguments
+        // parse arguments
+        while (this.token == '(') {
+            res = this.parse_arguments(scope, res);
+        }
+        */
+
+        return res;
+    }
+
+    return this.parse_matrix(scope);
+};
+
+/**
+ * parse the matrix
+ * @param {Scope} scope
+ * @return {Node} A MatrixNode
+ * @private
+ */
+Parser.prototype.parse_matrix = function (scope) {
+    /* TODO: implement matrix
+    if (this.token == '[') {
+        // matrix [...]
+        var matrix;
+
+        // skip newlines
+        this.getToken();
+        while (this.token == '\n') {
+            this.getToken();
+        }
+
+        // check if this is an empty matrix "[ ]"
+        if (this.token != ']') {
+            // this is a non-empty matrix
+            var params = [];
+            var r = 0, c = 0;
+
+            params[0] = [this.parse_range(scope)];
+
+            // the columns in the matrix are separated by commas, and the rows by dot-comma's
+            while (this.token == ',' || this.token == ';') {
+                if (this.token == ',') {
+                    c++;
+                }
+                else {
+                    r++;
+                    c = 0;
+                    params[r] = [];
+                }
+
+                // skip newlines
+                this.getToken();
+                while (this.token == '\n') {
+                    this.getToken();
+                }
+
+                params[r][c] = this.parse_range(scope);
+
+                // skip newlines
+                while (this.token == '\n') {
+                    this.getToken();
+                }
+            }
+
+            var rows =  params.length;
+            var cols = (params.length > 0) ? params[0].length : 0;
+
+            // check if the number of columns matches in all rows
+            for (r = 1; r < rows; r++) {
+                if (params[r].length != cols) {
+                    throw this.createError('Number of columns must match ' +
+                            '(' + params[r].length + ' != ' + cols + ')');
+                }
+            }
+
+            if (this.token != ']') {
+                throw this.createSyntaxError('End of matrix ] missing');
+            }
+
+            this.getToken();
+            matrix = new MatrixNode(params);
+        }
+        else {
+            // this is an empty matrix "[ ]"
+            this.getToken();
+            matrix = new MatrixNode();
+        }
+
+        // parse arguments
+        while (this.token == '(') {
+            matrix = this.parse_arguments(scope, matrix);
+        }
+
+        return matrix;
+    }
+    */
+
+    return this.parse_number(scope);
+};
+
+/**
+ * parse a number
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_number = function (scope) {
+    if (this.token_type == this.TOKENTYPE.NUMBER) {
+        // this is a number
+        var number;
+        if (this.token == '.') {
+            number = 0.0;
+        } else {
+            number = Number(this.token);
+        }
+        this.getToken();
+
+        /* TODO: implicit multiplication?
+         // TODO: how to calculate a=3; 2/2a ? is this (2/2)*a or 2/(2*a) ?
+         // check for implicit multiplication
+         if (token_type == TOKENTYPE.VARIABLE) {
+         node = multiply(node, parse_pow());
+         }
+         //*/
+
+        var value;
+        if (this.token_type == this.TOKENTYPE.SYMBOL) {
+            if (this.token == 'i' || this.token == 'I') {
+                value = new Complex(0, number);
+                this.getToken();
+                return new Constant(value);
+            }
+
+            if (Unit.isUnit(this.token)) {
+                value = new Unit(number, this.token);
+                this.getToken();
+                return new Constant(value);
+            }
+
+            throw this.createTypeError('Unknown unit "' + this.token + '"');
+        }
+
+        // just a regular number
+        var res = new Constant(number);
+
+        /* TODO: implement number with arguments
+        // parse arguments
+        while (this.token == '(') {
+            res = this.parse_arguments(scope, res);
+        }
+        */
+
+        return res;
+    }
+
+    return this.parse_parentheses(scope);
+};
+
+/**
+ * parentheses
+ * @param {Scope} scope
+ * @return {Node} res
+ * @private
+ */
+Parser.prototype.parse_parentheses = function (scope) {
+    // check if it is a parenthesized expression
+    if (this.token == '(') {
+        // parentheses (...)
+        this.getToken();
+        var res = this.parse_range(scope); // start again
+
+        if (this.token != ')') {
+            throw this.createSyntaxError('Parenthesis ) expected');
+        }
+        this.getToken();
+
+        /* TODO: implicit multiplication?
+         // TODO: how to calculate a=3; 2/2a ? is this (2/2)*a or 2/(2*a) ?
+         // check for implicit multiplication
+         if (token_type == TOKENTYPE.VARIABLE) {
+         node = multiply(node, parse_pow());
+         }
+         //*/
+
+        /* TODO: parse parentheses with arguments
+        // parse arguments
+        while (this.token == '(') {
+            res = this.parse_arguments(scope, res);
+        }
+        */
+
+        return res;
+    }
+
+    return this.parse_end(scope);
+};
+
+/**
+ * Evaluated when the expression is not yet ended but expected to end
+ * @param {Scope} scope
+ * @return {Node} res
+ * @private
+ */
+Parser.prototype.parse_end = function (scope) {
+    if (this.token == '') {
+        // syntax error or unexpected end of expression
+        throw this.createSyntaxError('Unexpected end of expression');
+    } else {
+        throw this.createSyntaxError('Value expected');
+    }
+};
+
+/**
+ * Shortcut for getting the current row value (one based)
+ * Returns the line of the currently handled expression
+ * @private
+ */
+Parser.prototype.row = function () {
+    // TODO: also register row number during parsing
+    return undefined;
+};
+
+/**
+ * Shortcut for getting the current col value (one based)
+ * Returns the column (position) where the last token starts
+ * @private
+ */
+Parser.prototype.col = function () {
+    return this.index - this.token.length + 1;
+};
+
+
+/**
+ * Build up an error message
+ * @param {String} message
+ * @return {String} message with row and column information
+ * @private
+ */
+Parser.prototype.createErrorMessage = function(message) {
+    var row = this.row();
+    var col = this.col();
+    if (row === undefined) {
+        if (col === undefined) {
+            return message;
+        } else {
+            return message + ' (col ' + col + ')';
+        }
+    } else {
+        return message + ' (ln ' + row + ', col ' + col + ')';
+    }
+};
+
+/**
+ * Create an error
+ * @param {String} message
+ * @return {SyntaxError} instantiated error
+ * @private
+ */
+Parser.prototype.createSyntaxError = function(message) {
+    return new SyntaxError(this.createErrorMessage(message));
+};
+
+/**
+ * Create an error
+ * @param {String} message
+ * @return {TypeError} instantiated error
+ * @private
+ */
+Parser.prototype.createTypeError = function(message) {
+    return new TypeError(this.createErrorMessage(message));
+};
+
+/**
+ * Create an error
+ * @param {String} message
+ * @return {Error} instantiated error
+ * @private
+ */
+Parser.prototype.createError = function(message) {
+    return new Error(this.createErrorMessage(message));
 };
 
 

@@ -3,7 +3,12 @@
  */
 var math = {
     type: {},
-    parser: {}
+    parser: {
+        node: {}
+    },
+    options: {
+        precision: 10  // number of decimals in formatted output
+    }
 };
 
 /**
