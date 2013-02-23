@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function tan(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('tan', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.tan(x);
     }

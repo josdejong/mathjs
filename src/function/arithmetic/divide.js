@@ -5,6 +5,10 @@
  * @return {Number | Complex | Unit} res
  */
 function divide(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('divide', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             // number / number

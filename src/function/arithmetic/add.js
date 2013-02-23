@@ -5,6 +5,10 @@
  * @return {Number | Complex | Unit | String} res
  */
 function add(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('add', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             // number + number

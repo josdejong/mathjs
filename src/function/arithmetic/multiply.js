@@ -7,6 +7,10 @@
 function multiply(x, y) {
     var res;
 
+    if (arguments.length != 2) {
+        throw newArgumentsError('multiply', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             // number * number

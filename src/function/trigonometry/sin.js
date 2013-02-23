@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function sin(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sin', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.sin(x);
     }

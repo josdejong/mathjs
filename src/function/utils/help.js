@@ -4,6 +4,10 @@
  * @return {String} documentation
  */
 function help(subject) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('help', arguments.length, 1);
+    }
+
     if (subject.doc) {
         return generateDoc(subject.doc);
     }

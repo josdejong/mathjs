@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function log(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('log', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         if (x >= 0) {
             return Math.log(x);

@@ -5,6 +5,10 @@
  * @return {Number | Complex} res
  */
 function atan2(y, x) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('atan2', arguments.length, 2);
+    }
+
     if (isNumber(y)) {
         if (isNumber(x)) {
             return Math.atan2(y, x);

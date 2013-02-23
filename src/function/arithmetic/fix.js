@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function fix(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('fix', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return (value > 0) ? Math.floor(x) : Math.ceil(x);
     }

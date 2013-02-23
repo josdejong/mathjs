@@ -5,6 +5,10 @@
  *                        "array".
  */
 function _typeof(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('typeof', arguments.length, 1);
+    }
+
     var type = typeof x;
 
     if (type == 'object') {

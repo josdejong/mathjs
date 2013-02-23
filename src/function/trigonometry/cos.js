@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function cos(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('cos', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.cos(x);
     }

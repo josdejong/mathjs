@@ -5,6 +5,10 @@
  * @return {Number | Complex} res
  */
 function pow(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('pow', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             if (isInteger(y) || x >= 0) {

@@ -4,6 +4,10 @@
  * @return {Number | Complex | Unit} res
  */
 function unaryminus(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('unaryminus', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return -x;
     }

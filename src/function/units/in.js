@@ -5,6 +5,10 @@
  * @return {Unit} res
  */
 function unit_in(x, unit) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('in', arguments.length, 2);
+    }
+
     if (x instanceof Unit) {
         // Test if unit has no value
         if (unit.hasValue) {

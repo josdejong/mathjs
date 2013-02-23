@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function asin(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('asin', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         if (x >= -1 && x <= 1) {
             return Math.asin(x);

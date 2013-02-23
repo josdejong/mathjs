@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function sqrt (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sqrt', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         if (x >= 0) {
             return Math.sqrt(x);

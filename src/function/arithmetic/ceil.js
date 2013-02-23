@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function ceil(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('ceil', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.ceil(x);
     }

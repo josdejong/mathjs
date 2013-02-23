@@ -5,7 +5,7 @@
  */
 function min(args) {
     if (arguments.length == 0) {
-        throw new Error('Function sum requires one or multiple parameters (0 provided)');
+        throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
     // TODO: implement array support

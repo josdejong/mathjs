@@ -5,6 +5,10 @@
  * @return {Number | Complex} res
  */
 function round(x, n) {
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('round', arguments.length, 1, 2);
+    }
+
     if (n == undefined) {
         // round (x)
         if (isNumber(x)) {

@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function acos(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('acos', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         if (x >= -1 && x <= 1) {
             return Math.acos(x);

@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function abs(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('abs', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.abs(x);
     }

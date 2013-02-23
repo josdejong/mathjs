@@ -6,6 +6,10 @@
  * @return {Boolean} res
  */
 function smaller(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('smaller', arguments.length, 2);
+    }
+
     if (isNumber(x)) {
         if (isNumber(y)) {
             return x < y;

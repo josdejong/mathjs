@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function atan(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('atan', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.atan(x);
     }

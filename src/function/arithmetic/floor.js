@@ -4,6 +4,10 @@
  * @return {Number | Complex} res
  */
 function floor(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('floor', arguments.length, 1);
+    }
+
     if (isNumber(x)) {
         return Math.floor(x);
     }
