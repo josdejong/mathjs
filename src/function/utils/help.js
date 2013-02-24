@@ -79,8 +79,6 @@ function generateDoc (doc) {
     return desc;
 }
 
-math.abs = abs;
-
 /**
  * Function documentation
  */

@@ -135,7 +135,7 @@ The built-in type Number can be used in all methods.
 
     var a = math.subtract(7.1, 2.3);        // 4.8
     var b = math.round(math.pi, 3);         // 3.142
-    var c = math.sqrt(new Number(4));       // 2
+    var c = math.sqrt(new Number(4.41e2));  // 21
 
 ### String
 
@@ -238,7 +238,51 @@ types (Number, String, Complex, and Unit) where applicable.
 ### Utils
 
 - math.help(fn)
+- math.import(filename | object, override)
 - math.typeof(x)
+
+
+## Extend
+
+The library can easily be extended with functions and variables using the
+`import` method. The method `import` accepts a filename or an object with
+functions and variables.
+
+    var math = require('mathjs');
+
+    // define new functions and variables
+    math.import({
+        myvalue: 42,
+        hello: function (name) {
+            return 'hello, ' + name + '!';
+        });
+    });
+
+    // defined methods can be used in JavaScript and in the parser
+    var a = math.myvalue * 2;               // 84
+    var b = math.hello('user');             // 'hello, user!'
+
+    var parser = new math.parser.Parser();
+    parser.eval('myvalue + 10');            // 52
+    parser.eval('hello("user")');           // 'hello, user!'
+
+To import functions from a math library like
+[numbers.js](https://github.com/sjkaliski/numbers.js),
+the library must be installed using npm:
+
+    npm install numbers
+
+And next, the library can be imported into math.js:
+
+    var math = require('mathjs'),
+        parser = new math.parser.Parser();
+
+    // import the numbers.js library into math.js
+    math.import('numbers');
+
+    // use functions from numbers.js
+    math.fibonacci(7);                      // 7
+    parser.eval('fibonacci(7)');            // 7
 
 
 ## Build

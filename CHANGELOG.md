@@ -5,6 +5,7 @@ https://github.com/josdejong/mathjs
 ## <not yet released>, version 0.2.0
 
 - Parser, Scope, and Node tree implemented.
+- Implemented method import.
 
 
 ## 2013-02-18, version 0.1.0
