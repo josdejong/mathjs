@@ -37,16 +37,19 @@ assert.equal(math.add(123, 'str'), '123str');
 
 // TODO: test ceil
 // TODO: test divide
+// TODO: test equal
 // TODO: test exp
 // TODO: test fix
 // TODO: test floor
 // TODO: test larger
+// TODO: test largereq
 // TODO: test log
 // TODO: test mod
 // TODO: test multiply
 // TODO: test pow
 // TODO: test round
 // TODO: test smaller
+// TODO: test smallereq
 
 
 // test sqrt
@@ -63,3 +66,4 @@ assert.throws(function () {
 
 // TODO: test subtract
 // TODO: test unaryminus
+// TODO: test unequal
