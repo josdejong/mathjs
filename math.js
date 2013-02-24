@@ -1897,6 +1897,210 @@ acos.doc = {
 };
 
 /**
+ * Compute the argument of a complex value.
+ * If x = a+bi, the argument is computed as atan2(b, a).
+ * @param {Number | Complex} x
+ * @return {Number} res
+ */
+function arg(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('arg', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.atan2(0, x);
+    }
+
+    if (x instanceof Complex) {
+        return Math.atan2(x.im, x.re);
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('arg', x);
+}
+
+math.arg = arg;
+
+/**
+ * Function documentation
+ */
+arg.doc = {
+    'name': 'arg',
+    'category': 'Complex',
+    'syntax': [
+        'arg(x)'
+    ],
+    'description':
+        'Compute the argument of a complex value. ' +
+            'If x = a+bi, the argument is computed as atan2(b, a).',
+    'examples': [
+        'arg(2 + 2i)',
+        'atan2(3, 2)',
+        'arg(2 - 3i)'
+    ],
+    'seealso': [
+        're',
+        'im',
+        'conj',
+        'abs'
+    ]
+};
+
+/**
+ * Compute the complex conjugate of a complex value.
+ * If x = a+bi, the complex conjugate is a-bi.
+ * @param {Number | Complex} x
+ * @return {Number | Complex} res
+ */
+function conj(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('conj', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x;
+    }
+
+    if (x instanceof Complex) {
+        return new Complex(x.re, -x.im);
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('conj', x);
+}
+
+math.conj = conj;
+
+/**
+ * Function documentation
+ */
+conj.doc = {
+    'name': 'conj',
+    'category': 'Complex',
+    'syntax': [
+        'conj(x)'
+    ],
+    'description':
+        'Compute the complex conjugate of a complex value. ' +
+            'If x = a+bi, the complex conjugate is a-bi.',
+    'examples': [
+        'conj(2 + 3i)',
+        'conj(2 - 3i)',
+        'conj(-5.2i)'
+    ],
+    'seealso': [
+        're',
+        'im',
+        'abs',
+        'arg'
+    ]
+};
+
+/**
+ * Get the imaginary part of a complex number.
+ * @param {Number | Complex} x
+ * @return {Number} im
+ */
+function im(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('im', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return 0;
+    }
+
+    if (x instanceof Complex) {
+        return x.im;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('im', x);
+}
+
+math.im = im;
+
+/**
+ * Function documentation
+ */
+im.doc = {
+    'name': 'im',
+    'category': 'Complex',
+    'syntax': [
+        'im(x)'
+    ],
+    'description': 'Get the imaginary part of a complex number.',
+    'examples': [
+        'im(2 + 3i)',
+        're(2 + 3i)',
+        'im(-5.2i)',
+        'im(2.4)'
+    ],
+    'seealso': [
+        're',
+        'conj',
+        'abs',
+        'arg'
+    ]
+};
+
+/**
+ * Get the real part of a complex number.
+ * @param {Number | Complex} x
+ * @return {Number} re
+ */
+function re(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('re', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x;
+    }
+
+    if (x instanceof Complex) {
+        return x.re;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('re', x);
+}
+
+math.re = re;
+
+/**
+ * Function documentation
+ */
+re.doc = {
+    'name': 're',
+    'category': 'Complex',
+    'syntax': [
+        're(x)'
+    ],
+    'description': 'Get the real part of a complex number.',
+    'examples': [
+        're(2 + 3i)',
+        'im(2 + 3i)',
+        're(-5.2i)',
+        're(2.4)'
+    ],
+    'seealso': [
+        'im',
+        'conj',
+        'abs',
+        'arg'
+    ]
+};
+
+/**
  * Divide two values. x / y or divide(x, y)
  * @param  {Number | Complex | Unit} x
  * @param  {Number | Complex} y

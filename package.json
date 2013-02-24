@@ -30,8 +30,7 @@
         "jake": ">= 0.5.8",
         "uglify-js": ">= 2.2.5",
         "nodeunit": ">= 0.7.4",
-        "dateable": ">= 0.1.2",
-        "filesize": ">= 1.7.9"
+        "dateable": ">= 0.1.2"
     },
     "scripts": {
         "prepublish": "jake"

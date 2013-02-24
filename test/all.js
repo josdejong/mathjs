@@ -10,6 +10,7 @@ require('./type/unit.js');
 
 // test functions
 require('./function/arithmetic.js');
+require('./function/complex.js');
 require('./function/probability.js');
 require('./function/statistics.js');
 require('./function/trigonometry.js');

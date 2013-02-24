@@ -2,8 +2,7 @@
  * Jake build script for mathjs
  */
 
-var util = require('./tools/jake-utils.js'),
-    filesize = require('filesize');
+var util = require('./tools/jake-utils.js');
 
 /**
  * Constants
@@ -106,3 +105,11 @@ task('test', ['concat'], function () {
     console.log('Tests successful');
 });
 
+/**
+ * Return the filesize in kilo bytes
+ * @param {Number} size    Size in Bytes
+ * @return {String} str    Formatted string like "50.7KB"
+ */
+function filesize (size) {
+    return (size / 1024).toPrecision(3) + 'KB';
+}
