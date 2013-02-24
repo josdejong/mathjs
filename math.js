@@ -15,7 +15,7 @@
  *
  * * Note: arrays and matrices are to be implemented.
  *
- * @version 2013-02-23
+ * @version 2013-02-24
  * @date    0.2.0-SNAPSHOT
  *
  * @license
@@ -2985,27 +2985,28 @@ Node.prototype.toString = function() {
 };
 
 /**
- * @constructor math.parser.node.Function
+ * @constructor math.parser.node.Symbol
+ * A symbol can hold and evaluate a variable or function with parameters.
  * @param {String} [name]
  * @param {function} fn
  * @param {Node[]} params
  * @extends {Node}
  */
-function Function(name, fn, params) {
+function Symbol(name, fn, params) {
     this.name = name;
     this.fn = fn;
     this.params = params;
 }
 
-Function.prototype = new Node();
+Symbol.prototype = new Node();
 
-math.parser.node.Function = Function;
+math.parser.node.Symbol = Symbol;
 
 /**
- * Check whether the Function has one or multiple parameters set.
+ * Check whether the Symbol has one or multiple parameters set.
  * @return {Boolean}
  */
-Function.prototype.hasParams = function () {
+Symbol.prototype.hasParams = function () {
     return (this.params != undefined && this.params.length > 0);
 };
 
@@ -3014,7 +3015,7 @@ Function.prototype.hasParams = function () {
  * @return {*} result
  * @override
  */
-Function.prototype.eval = function() {
+Symbol.prototype.eval = function() {
     var fn = this.fn;
     if (fn === undefined) {
         throw new Error('Undefined symbol ' + this.name);
@@ -3034,7 +3035,7 @@ Function.prototype.eval = function() {
  * @return {String} str
  * @override
  */
-Function.prototype.toString = function() {
+Symbol.prototype.toString = function() {
     // variable. format the symbol like "myvar"
     if (this.name && !this.params) {
         return this.name;
@@ -3194,7 +3195,7 @@ Assignment.prototype.eval = function() {
         }
 
         var prevResult = this.result.eval();
-        result = prevResult.set(paramResults, exprResult);
+        result = prevResult.set(paramResults, exprResult); // TODO implement set subset
 
         this.result.value = result;
     }
@@ -3453,13 +3454,17 @@ Scope.prototype.createLink = function (name) {
  * Create a variable definition
  * Returns the created symbol
  * @param {String} name
+ * @param {*} [value]
  * @return {function} symbol
  */
-Scope.prototype.createDef = function (name) {
+Scope.prototype.createDef = function (name, value) {
     var symbol = this.defs[name];
     if (!symbol) {
         symbol = this.createSymbol(name);
         this.defs[name] = symbol;
+    }
+    if (symbol && value != undefined) {
+        symbol.value = value;
     }
     return symbol;
 };
@@ -3698,13 +3703,6 @@ function Parser() {
 math.parser.Parser = Parser;
 
 /**
- * Clear the scope with variables and functions
- */
-Parser.prototype.clear = function () {
-    this.scope.clear();
-};
-
-/**
  * Parse an expression end return the parsed function node.
  * The node can be evaluated via node.eval()
  * @param {String} expr
@@ -3740,6 +3738,36 @@ Parser.prototype.eval = function (expr) {
     }
 
     return result;
+};
+
+/**
+ * Get a variable (a function or variable) by name from the parsers scope.
+ * Returns undefined when not found
+ * @param {String} name
+ * @return {* | undefined} value
+ */
+Parser.prototype.get = function (name) {
+    var symbol = this.scope.findDef(name);
+    if (symbol) {
+        return symbol();
+    }
+    return undefined;
+};
+
+/**
+ * Put a symbol (a function or variable) by name from the parsers scope.
+ * @param {String} name
+ * @param {* | undefined} value
+ */
+Parser.prototype.put = function (name, value) {
+    this.scope.createDef(name, value);
+};
+
+/**
+ * Clear the scope with variables and functions
+ */
+Parser.prototype.clear = function () {
+    this.scope.clear();
 };
 
 /**
@@ -4143,8 +4171,8 @@ Parser.prototype.parse_assignment = function (scope) {
     var node = this.parse_range(scope);
 
     if (this.token == '=') {
-        if (!(node instanceof Function)) {
-            throw this.createSyntaxError('Variable expected at the left hand side ' +
+        if (!(node instanceof Symbol)) {
+            throw this.createSyntaxError('Symbol expected at the left hand side ' +
                 'of assignment operator =');
         }
         var name = node.name;
@@ -4187,7 +4215,7 @@ Parser.prototype.parse_range = function (scope) {
 
         var fn = range;
         var name = ':';
-        node = new Function(name, fn, params);
+        node = new Symbol(name, fn, params);
     }
     */
 
@@ -4221,7 +4249,7 @@ Parser.prototype.parse_conditions = function (scope) {
 
         this.getToken();
         var params = [node, this.parse_bitwise_conditions(scope)];
-        node = new Function(name, fn, params);
+        node = new Symbol(name, fn, params);
     }
 
     return node;
@@ -4250,7 +4278,7 @@ Parser.prototype.parse_bitwise_conditions = function (scope) {
 
         this.getToken();
         var params = [node, this.parse_comparison()];
-        node = new Function(name, fn, params);
+        node = new Symbol(name, fn, params);
     }
     */
 
@@ -4280,7 +4308,7 @@ Parser.prototype.parse_comparison = function (scope) {
 
         this.getToken();
         var params = [node, this.parse_addsubtract(scope)];
-        node = new Function(name, fn, params);
+        node = new Symbol(name, fn, params);
     }
 
     return node;
@@ -4305,7 +4333,7 @@ Parser.prototype.parse_addsubtract = function (scope)  {
 
         this.getToken();
         var params = [node, this.parse_multiplydivide(scope)];
-        node = new Function(name, fn, params);
+        node = new Symbol(name, fn, params);
     }
 
     return node;
@@ -4333,7 +4361,7 @@ Parser.prototype.parse_multiplydivide = function (scope) {
 
         this.getToken();
         var params = [node, this.parse_pow(scope)];
-        node = new Function(name, fn, params);
+        node = new Symbol(name, fn, params);
     }
 
     return node;
@@ -4354,7 +4382,7 @@ Parser.prototype.parse_pow = function (scope) {
         this.getToken();
         var params = [node, this.parse_factorial(scope)];
 
-        node = new Function(name, fn, params);
+        node = new Symbol(name, fn, params);
     }
 
     return node;
@@ -4375,7 +4403,7 @@ Parser.prototype.parse_factorial = function (scope)  {
         this.getToken();
         var params = [node];
 
-        node = new Function(name, fn, params);
+        node = new Symbol(name, fn, params);
     }
 
     return node;
@@ -4394,7 +4422,7 @@ Parser.prototype.parse_unaryminus = function (scope) {
         this.getToken();
         var params = [this.parse_plot(scope)];
 
-        return new Function(name, fn, params);
+        return new Symbol(name, fn, params);
     }
 
     return this.parse_plot(scope);
@@ -4439,7 +4467,7 @@ Parser.prototype.parse_plot = function (scope) {
         if (lastFunction) {
             // if the last function is a variable, remove it from the functions list
             // and use its variable func
-            var lastIsSymbol = (lastFunction instanceof Function &&
+            var lastIsSymbol = (lastFunction instanceof Symbol &&
                 !lastFunction.hasParams());
             if (lastIsSymbol) {
                 functions.pop();
@@ -4467,7 +4495,7 @@ Parser.prototype.parse_symbol = function (scope) {
 
         var link = scope.createLink(name);
         var arguments = this.parse_arguments(scope); // TODO: not so nice to "misuse" creating a Function
-        var symbol = new Function(name, link, arguments);
+        var symbol = new Symbol(name, link, arguments);
 
         /* TODO: parse arguments
         // parse arguments

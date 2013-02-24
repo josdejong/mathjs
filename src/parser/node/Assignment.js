@@ -43,7 +43,7 @@ Assignment.prototype.eval = function() {
         }
 
         var prevResult = this.result.eval();
-        result = prevResult.set(paramResults, exprResult);
+        result = prevResult.set(paramResults, exprResult); // TODO implement set subset
 
         this.result.value = result;
     }

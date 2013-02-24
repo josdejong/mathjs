@@ -46,7 +46,7 @@ task('concat', function () {
             './src/functions.js',
             './src/function/**/*.js',
             './src/parser/node/Node.js',
-            './src/parser/node/Function.js',
+            './src/parser/node/Symbol.js',
             './src/parser/node/Constant.js',
             './src/parser/node/Block.js',
             './src/parser/node/Assignment.js',

@@ -127,13 +127,17 @@ Scope.prototype.createLink = function (name) {
  * Create a variable definition
  * Returns the created symbol
  * @param {String} name
+ * @param {*} [value]
  * @return {function} symbol
  */
-Scope.prototype.createDef = function (name) {
+Scope.prototype.createDef = function (name, value) {
     var symbol = this.defs[name];
     if (!symbol) {
         symbol = this.createSymbol(name);
         this.defs[name] = symbol;
+    }
+    if (symbol && value != undefined) {
+        symbol.value = value;
     }
     return symbol;
 };

@@ -1,25 +1,26 @@
 /**
- * @constructor math.parser.node.Function
+ * @constructor math.parser.node.Symbol
+ * A symbol can hold and evaluate a variable or function with parameters.
  * @param {String} [name]
  * @param {function} fn
  * @param {Node[]} params
  * @extends {Node}
  */
-function Function(name, fn, params) {
+function Symbol(name, fn, params) {
     this.name = name;
     this.fn = fn;
     this.params = params;
 }
 
-Function.prototype = new Node();
+Symbol.prototype = new Node();
 
-math.parser.node.Function = Function;
+math.parser.node.Symbol = Symbol;
 
 /**
- * Check whether the Function has one or multiple parameters set.
+ * Check whether the Symbol has one or multiple parameters set.
  * @return {Boolean}
  */
-Function.prototype.hasParams = function () {
+Symbol.prototype.hasParams = function () {
     return (this.params != undefined && this.params.length > 0);
 };
 
@@ -28,7 +29,7 @@ Function.prototype.hasParams = function () {
  * @return {*} result
  * @override
  */
-Function.prototype.eval = function() {
+Symbol.prototype.eval = function() {
     var fn = this.fn;
     if (fn === undefined) {
         throw new Error('Undefined symbol ' + this.name);
@@ -48,7 +49,7 @@ Function.prototype.eval = function() {
  * @return {String} str
  * @override
  */
-Function.prototype.toString = function() {
+Symbol.prototype.toString = function() {
     // variable. format the symbol like "myvar"
     if (this.name && !this.params) {
         return this.name;
