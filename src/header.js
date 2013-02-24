@@ -7,7 +7,7 @@
  *
  * Features:
  *   - A flexible expression parser
- *   - Support for numbers, complex values, units, strings, arrays*,
+ *   - Support for numbers, complex numbers, units, strings, arrays*,
  *     and matrices*
  *   - A large set of built-in functions and constants
  *   - Easily extensible with new functions and constants

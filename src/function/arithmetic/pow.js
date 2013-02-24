@@ -39,7 +39,7 @@ function pow(x, y) {
 }
 
 /**
- * Caculates the power of x to y, x^y, for two complex values.
+ * Caculates the power of x to y, x^y, for two complex numbers.
  * @param {Complex} x
  * @param {Complex} y
  * @return {Complex} res

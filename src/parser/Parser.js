@@ -6,6 +6,11 @@
  * TODO: add comments to the Parser constructor
  */
 function Parser() {
+    if (this.constructor != Parser) {
+        throw new SyntaxError(
+            'Parser constructor must be called with the new operator');
+    }
+
     // token types enumeration
     this.TOKENTYPE = {
         NULL : 0,
@@ -52,16 +57,8 @@ Parser.prototype.parse = function (expr, scope) {
  * @throws {Error}
  */
 Parser.prototype.eval = function (expr) {
-    var result = undefined;
-
-    try {
-        var node = this.parse(expr);
-        result = node.eval();
-    } catch (err) {
-        result = err.toString ? err.toString() : err;
-    }
-
-    return result;
+    var node = this.parse(expr);
+    return node.eval();
 };
 
 /**
@@ -73,7 +70,7 @@ Parser.prototype.eval = function (expr) {
 Parser.prototype.get = function (name) {
     var symbol = this.scope.findDef(name);
     if (symbol) {
-        return symbol();
+        return symbol.value;
     }
     return undefined;
 };

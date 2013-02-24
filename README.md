@@ -9,7 +9,7 @@ compatible with JavaScript's built-in Math library.
 ## Features
 
 - A flexible expression parser.
-- Supports numbers, complex values, units, strings, arrays**\***, and
+- Supports numbers, complex numbers, units, strings, arrays**\***, and
   matrices**\***.
 - A large set of built-in functions and constants.
 - Easily extensible with new functions and constants.
@@ -81,21 +81,101 @@ Math.js can be loaded as a regular javascript file in the browser:
 
 ## Parser
 
-The expression parser is not yet implemented. Coming soon...
+Math.js contains a flexible and easy to use expression parser.
+The parser supports all data types, methods and constants available in math.js.
+It has a method `eval` to evaluate expressions,
+and `parse` to parse expressions and build a node tree from it.
+The parser supports variable and function definitions.
+Variables and functions can be manipulated using the methods `get` and `put`.
+
+The following example code shows how to create and use a parser.
+
+    var math = require('mathjs');
+
+    // create a new parser
+    var parser = new math.parser.Parser();
+
+    // evaluate expressions
+    var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
+    var d = parser.eval('sqrt(-4)');        // 2i
+    var b = parser.eval('2 inch in cm');    // 5.08 cm
+    var c = parser.eval('cos(45 deg)');     // 0.7071067811865476
+
+    // define variables and functions
+    parser.eval('x = 7 / 2');               // 3.5
+    parser.eval('x + 3');                   // 6.5
+    parser.eval('function f(x, y) = x^y');  // f(x, y)
+    parser.eval('f(2, 3)');                 // 8
+
+    // get and put variables and functions
+    var x = parser.get('x');                // 7
+    var f = parser.get('f');                // function
+    var g = f(3, 2);                        // 9
+    parser.put('h', 500);
+    var i = parser.eval('h / 2');           // 250
+    parser.put('hello', function (name) {
+        return 'hello, ' + name + '!';
+    });
+    parser.eval('hello("user")');           // "hello, user!"
+
+    // clear defined functions and variables
+    parser.clear();
 
 
-## API
+## Data types
 
-The math.js library contains the following data types, methods and constants.
+Math.js supports both native data types like Number, String, and Array,
+as well as advanced data types like Complex and Unit.
 
-### Data types
+### Number
 
-- Number
-- String
-- math.type.Complex
-- math.type.Unit
+The built-in type Number can be used in all methods.
 
-### Constants
+    var math = require('mathjs');
+
+    var a = math.subtract(7.1, 2.3);        // 4.8
+    var b = math.round(math.pi, 3);         // 3.142
+    var c = math.sqrt(new Number(4));       // 2
+
+### String
+
+The built-in type String can be used in applicable methods.
+
+    var math = require('math.js');
+    
+    var a = math.add('hello ', 'world');    // 'hello world'
+    var b = math.max('A', 'D', 'C');        // 'D'
+
+### Complex
+
+Math.js supports complex numbers.
+
+    var math = require('math.js'),
+        Complex = math.type.Complex;
+
+    var a = new Complex(2, 3);              // 2 + 3i
+    var b = new Complex('4 - 2i');          // 4 - 2i
+    var c = math.add(a, b);                 // 6 + i
+    var d = math.sqrt(-4);                  // 2i
+
+### Unit
+
+Math.js supports units.
+
+    var math = require('math.js'),
+        Unit = math.type.Unit;
+
+    var a = new Unit(55, 'cm');             // 550 mm
+    var b = new Unit(0.1, 'm');             // 100 mm
+    var c = math.add(a, b);                 // 650 mm
+
+    var parser = new math.parser.Parser();
+    var d = parser.eval('2 inch in cm');    // 5.08 cm
+
+
+## Constants
+
+Math.js has the following built-in constants.
 
 - math.E, math.e
 - math.I, math.i
@@ -107,9 +187,13 @@ The math.js library contains the following data types, methods and constants.
 - math.SQRT1_2
 - math.SQRT2
 
-### Methods
 
-#### Arithmetic
+## Methods
+
+Math.js contains the following methods. The methods support all available data
+types (Number, String, Complex, and Unit) where applicable.
+
+### Arithmetic
 
 - math.abs(x)
 - math.add(x, y)
@@ -128,16 +212,16 @@ The math.js library contains the following data types, methods and constants.
 - math.sqrt(x)
 - math.unaryminus(x)
 
-#### Probability
+### Probability
 
 - math.random()
 
-#### Statistics
+### Statistics
 
 - math.max(a, b, c, ...)
 - math.min(a, b, c, ...)
 
-#### Trigonometry
+### Trigonometry
 
 - math.acos(x)
 - math.asin(x)
@@ -147,11 +231,11 @@ The math.js library contains the following data types, methods and constants.
 - math.sin(x)
 - math.tan(x)
 
-#### Units
+### Units
 
 - math.in(x, unit)
 
-#### Utils
+### Utils
 
 - math.help(fn)
 - math.typeof(x)

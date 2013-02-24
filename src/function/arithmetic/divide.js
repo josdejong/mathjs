@@ -44,7 +44,7 @@ function divide(x, y) {
 }
 
 /**
- * Divide two complex values. x / y or divide(x, y)
+ * Divide two complex numbers. x / y or divide(x, y)
  * @param {Complex} x
  * @param {Complex} y
  * @return {Complex} res

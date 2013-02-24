@@ -1,6 +1,6 @@
 /**
  * Check if value a is smaller b, a < b
- * In case of complex values, the absolute values of a and b are compared.
+ * In case of complex numbers, the absolute values of a and b are compared.
  * @param  {Number | Complex | Unit | String} x
  * @param  {Number | Complex | Unit | String} y
  * @return {Boolean} res

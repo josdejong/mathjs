@@ -51,7 +51,7 @@ function multiply(x, y) {
 }
 
 /**
- * Multiply two complex values. x * y or multiply(x, y)
+ * Multiply two complex numbers. x * y or multiply(x, y)
  * @param {Complex} x
  * @param {Complex} y
  * @return {Complex} res

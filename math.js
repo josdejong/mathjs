@@ -7,7 +7,7 @@
  *
  * Features:
  *   - A flexible expression parser
- *   - Support for numbers, complex values, units, strings, arrays*,
+ *   - Support for numbers, complex numbers, units, strings, arrays*,
  *     and matrices*
  *   - A large set of built-in functions and constants
  *   - Easily extensible with new functions and constants
@@ -1861,7 +1861,7 @@ function divide(x, y) {
 }
 
 /**
- * Divide two complex values. x / y or divide(x, y)
+ * Divide two complex numbers. x / y or divide(x, y)
  * @param {Complex} x
  * @param {Complex} y
  * @return {Complex} res
@@ -2265,7 +2265,7 @@ sqrt.doc = {
 
 /**
  * Check if value x is larger y, x > y
- * In case of complex values, the absolute values of a and b are compared.
+ * In case of complex numbers, the absolute values of a and b are compared.
  * @param  {Number | Complex | Unit | String} x
  * @param  {Number | Complex | Unit | String} y
  * @return {Boolean} res
@@ -2393,7 +2393,7 @@ unaryminus.doc = {
 };
 /**
  * Check if value a is smaller b, a < b
- * In case of complex values, the absolute values of a and b are compared.
+ * In case of complex numbers, the absolute values of a and b are compared.
  * @param  {Number | Complex | Unit | String} x
  * @param  {Number | Complex | Unit | String} y
  * @return {Boolean} res
@@ -2607,7 +2607,7 @@ function pow(x, y) {
 }
 
 /**
- * Caculates the power of x to y, x^y, for two complex values.
+ * Caculates the power of x to y, x^y, for two complex numbers.
  * @param {Complex} x
  * @param {Complex} y
  * @return {Complex} res
@@ -2798,7 +2798,7 @@ function multiply(x, y) {
 }
 
 /**
- * Multiply two complex values. x * y or multiply(x, y)
+ * Multiply two complex numbers. x * y or multiply(x, y)
  * @param {Complex} x
  * @param {Complex} y
  * @return {Complex} res
@@ -3682,6 +3682,11 @@ Scope.prototype.getUndefinedSymbols = function () {
  * TODO: add comments to the Parser constructor
  */
 function Parser() {
+    if (this.constructor != Parser) {
+        throw new SyntaxError(
+            'Parser constructor must be called with the new operator');
+    }
+
     // token types enumeration
     this.TOKENTYPE = {
         NULL : 0,
@@ -3728,16 +3733,8 @@ Parser.prototype.parse = function (expr, scope) {
  * @throws {Error}
  */
 Parser.prototype.eval = function (expr) {
-    var result = undefined;
-
-    try {
-        var node = this.parse(expr);
-        result = node.eval();
-    } catch (err) {
-        result = err.toString ? err.toString() : err;
-    }
-
-    return result;
+    var node = this.parse(expr);
+    return node.eval();
 };
 
 /**
@@ -3749,7 +3746,7 @@ Parser.prototype.eval = function (expr) {
 Parser.prototype.get = function (name) {
     var symbol = this.scope.findDef(name);
     if (symbol) {
-        return symbol();
+        return symbol.value;
     }
     return undefined;
 };
