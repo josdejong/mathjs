@@ -1,29 +1,29 @@
 /**
- * Check if value x is larger y, x > y
- * In case of complex numbers, the absolute values of a and b are compared.
+ * Check if value x equals y, x == y
+ * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
  * @param  {Number | Complex | Unit | String} x
  * @param  {Number | Complex | Unit | String} y
  * @return {Boolean} res
  */
-function larger(x, y) {
+function equal(x, y) {
     if (arguments.length != 2) {
-        throw newArgumentsError('larger', arguments.length, 2);
+        throw newArgumentsError('equal', arguments.length, 2);
     }
 
     if (isNumber(x)) {
         if (isNumber(y)) {
-            return x > y;
+            return x == y;
         }
         else if (y instanceof Complex) {
-            return x > abs(y);
+            return (x == y.re) && (y.im == 0);
         }
     }
     if (x instanceof Complex) {
         if (isNumber(y)) {
-            return abs(x) > y;
+            return (x.re == y) && (x.im == 0);
         }
         else if (y instanceof Complex) {
-            return abs(x) > abs(y);
+            return (x.re == y.re) && (x.im == y.im);
         }
     }
 
@@ -31,44 +31,43 @@ function larger(x, y) {
         if (!x.equalBase(y)) {
             throw new Error('Cannot compare units with different base');
         }
-        return x.value > y.value;
+        return x.value == y.value;
     }
 
     if (isString(x) || isString(y)) {
-        return x > y;
+        return x == y;
     }
 
     // TODO: implement array support
     // TODO: implement matrix support
 
-    throw newUnsupportedTypeError('larger', x, y);
+    throw newUnsupportedTypeError('equal', x, y);
 }
 
-math.larger = larger;
+math.equal = equal;
 
 /**
  * Function documentation
  */
-larger.doc = {
-    'name': 'larger',
+equal.doc = {
+    'name': 'equal',
     'category': 'Operators',
     'syntax': [
-        'x > y',
-        'larger(x, y)'
+        'x == y',
+        'equal(x, y)'
     ],
     'description':
-        'Check if value x is larger than y. ' +
-        'Returns 1 if x is larger than y, and 0 if not.',
+        'Check equality of two values. ' +
+            'Returns 1 if the values are equal, and 0 if not.',
     'examples': [
-        '2 > 3',
-        '5 > 2*2',
-        'a = 3.3',
+        '2+2 == 3',
+        '2+2 == 4',
+        'a = 3.2',
         'b = 6-2.8',
-        '(a > b)',
-        '(b < a)',
-        '5 cm > 2 inch'
+        'a == b',
+        '50cm == 0.5m'
     ],
     'seealso': [
-        'equal', 'unequal', 'smaller', 'smallereq', 'largereq'
+        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
     ]
 };

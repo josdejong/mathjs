@@ -842,12 +842,15 @@ Parser.prototype.parse_arguments = function (scope) {
         // TODO: in case of Plot, create a new scope.
 
         this.getToken();
-        arguments.push(this.parse_range(scope));
 
-        // parse a list with parameters
-        while (this.token == ',') {
-            this.getToken();
+        if (this.token != ')') {
             arguments.push(this.parse_range(scope));
+
+            // parse a list with parameters
+            while (this.token == ',') {
+                this.getToken();
+                arguments.push(this.parse_range(scope));
+            }
         }
 
         if (this.token != ')') {

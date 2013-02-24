@@ -2187,6 +2187,79 @@ divide.doc = {
 };
 
 /**
+ * Check if value a is smaller or equal to b, a <= b
+ * In case of complex numbers, the absolute values of a and b are compared.
+ * @param  {Number | Complex | Unit | String} x
+ * @param  {Number | Complex | Unit | String} y
+ * @return {Boolean} res
+ */
+function smallereq(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('smallereq', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x <= y;
+        }
+        else if (y instanceof Complex) {
+            return x <= abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return abs(x) <= y;
+        }
+        else if (y instanceof Complex) {
+            return abs(x) <= abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value <= y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x <= y;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('smallereq', x, y);
+}
+
+math.smallereq = smallereq;
+
+/**
+ * Function documentation
+ */
+smallereq.doc = {
+    'name': 'smallereq',
+    'category': 'Operators',
+    'syntax': [
+        'x <= y',
+        'smallereq(x, y)'
+    ],
+    'description':
+        'Check if value x is smaller or equal to value y. ' +
+            'Returns 1 if x is smaller than y, and 0 if not.',
+    'examples': [
+        '2 < 1+1',
+        '2 <= 1+1',
+        'a = 3.2',
+        'b = 6-2.8',
+        '(a < b)'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'larger', 'smaller', 'largereq'
+    ]
+};
+
+/**
  * Round a value towards the nearest integer, round(x [, n])
  * @param {Number | Complex} x
  * @param {Number} [n] number of digits
@@ -2281,6 +2354,155 @@ round.doc = {
         'round(123.45678, 2)'
     ],
     'seealso': ['ceil', 'floor', 'fix']
+};
+
+/**
+ * Check if value x equals y, x == y
+ * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
+ * @param  {Number | Complex | Unit | String} x
+ * @param  {Number | Complex | Unit | String} y
+ * @return {Boolean} res
+ */
+function equal(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('equal', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x == y;
+        }
+        else if (y instanceof Complex) {
+            return (x == y.re) && (y.im == 0);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return (x.re == y) && (x.im == 0);
+        }
+        else if (y instanceof Complex) {
+            return (x.re == y.re) && (x.im == y.im);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value == y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x == y;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('equal', x, y);
+}
+
+math.equal = equal;
+
+/**
+ * Function documentation
+ */
+equal.doc = {
+    'name': 'equal',
+    'category': 'Operators',
+    'syntax': [
+        'x == y',
+        'equal(x, y)'
+    ],
+    'description':
+        'Check equality of two values. ' +
+            'Returns 1 if the values are equal, and 0 if not.',
+    'examples': [
+        '2+2 == 3',
+        '2+2 == 4',
+        'a = 3.2',
+        'b = 6-2.8',
+        'a == b',
+        '50cm == 0.5m'
+    ],
+    'seealso': [
+        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+/**
+ * Check if value x unequals y, x != y
+ * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
+ * @param  {Number | Complex | Unit | String} x
+ * @param  {Number | Complex | Unit | String} y
+ * @return {Boolean} res
+ */
+function unequal(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('unequal', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x == y;
+        }
+        else if (y instanceof Complex) {
+            return (x == y.re) && (y.im == 0);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return (x.re == y) && (x.im == 0);
+        }
+        else if (y instanceof Complex) {
+            return (x.re == y.re) && (x.im == y.im);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value == y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x == y;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('unequal', x, y);
+}
+
+math.unequal = unequal;
+
+/**
+ * Function documentation
+ */
+unequal.doc = {
+    'name': 'unequal',
+    'category': 'Operators',
+    'syntax': [
+        'x != y',
+        'unequal(x, y)'
+    ],
+    'description':
+        'Check unequality of two values. ' +
+            'Returns 1 if the values are unequal, and 0 if they are equal.',
+    'examples': [
+        '2+2 != 3',
+        '2+2 != 4',
+        'a = 3.2',
+        'b = 6-2.8',
+        'a != b',
+        '50cm != 0.5m',
+        '5 cm != 2 inch'
+    ],
+    'seealso': [
+        'equal', 'smaller', 'larger', 'smallereq', 'largereq'
+    ]
 };
 
 /**
@@ -2431,6 +2653,71 @@ add.doc = {
 };
 
 /**
+ * Calculates the modulus, the remainder of an integer division.
+ * @param  {Number | Complex} x
+ * @param  {Number | Complex} y
+ * @return {Number} res
+ */
+function mod(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('mod', arguments.length, 2);
+    }
+
+    // TODO: only handle integer values in mod?
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number % number
+            return x % y;
+        }
+        else if (y instanceof Complex && y.im == 0) {
+            // number % complex
+            return x % y.re;
+        }
+    }
+    else if (x instanceof Complex && x.im == 0) {
+        if (isNumber(y)) {
+            // complex * number
+            return x.re % y;
+        }
+        else if (y instanceof Complex && y.im == 0) {
+            // complex * complex
+            return x.re % y.re;
+        }
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('mod', x, y);
+}
+
+math.mod = mod;
+
+/**
+ * Function documentation
+ */
+mod.doc = {
+    'name': 'mod',
+    'category': 'Operators',
+    'syntax': [
+        'x % y',
+        'x mod y',
+        'mod(x, y)'
+    ],
+    'description':
+        'Calculates the modulus, the remainder of an integer division.',
+    'examples': [
+        '7 % 3',
+        '11 % 2',
+        '10 mod 4',
+        'function isOdd(x) = x % 2',
+        'isOdd(2)',
+        'isOdd(3)'
+    ],
+    'seealso': []
+};
+
+/**
  * Calculate the exponent of a value, exp(x)
  * @param {Number | Complex} x
  * @return {Number | Complex} res
@@ -2482,6 +2769,79 @@ exp.doc = {
         'log'
     ]
 };
+/**
+ * Check if value x is larger or equal to y, x >= y
+ * In case of complex numbers, the absolute values of a and b are compared.
+ * @param  {Number | Complex | Unit | String} x
+ * @param  {Number | Complex | Unit | String} y
+ * @return {Boolean} res
+ */
+function largereq(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('largereq', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x >= y;
+        }
+        else if (y instanceof Complex) {
+            return x >= abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return abs(x) >= y;
+        }
+        else if (y instanceof Complex) {
+            return abs(x) >= abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value >= y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x >= y;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('largereq', x, y);
+}
+
+math.largereq = largereq;
+
+/**
+ * Function documentation
+ */
+largereq.doc = {
+    'name': 'largereq',
+    'category': 'Operators',
+    'syntax': [
+        'x >= y',
+        'largereq(x, y)'
+    ],
+    'description':
+        'Check if value x is larger or equal to y. ' +
+        'Returns 1 if x is larger or equal to y, and 0 if not.',
+    'examples': [
+        '2 > 1+1',
+        '2 >= 1+1',
+        'a = 3.2',
+        'b = 6-2.8',
+        '(a > b)'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'smallereq', 'smaller', 'largereq'
+    ]
+};
+
 /**
  * Calculate the square root of a value
  * @param {Number | Complex} x
@@ -2607,7 +2967,7 @@ larger.doc = {
         'larger(x, y)'
     ],
     'description':
-        'Check if value x is larger y. ' +
+        'Check if value x is larger than y. ' +
         'Returns 1 if x is larger than y, and 0 if not.',
     'examples': [
         '2 > 3',
@@ -2677,7 +3037,7 @@ unaryminus.doc = {
     ]
 };
 /**
- * Check if value a is smaller b, a < b
+ * Check if value x is smaller y, x < y
  * In case of complex numbers, the absolute values of a and b are compared.
  * @param  {Number | Complex | Unit | String} x
  * @param  {Number | Complex | Unit | String} y
@@ -2735,7 +3095,7 @@ smaller.doc = {
         'smaller(x, y)'
     ],
     'description':
-        'Check if value a is smaller value b. ' +
+        'Check if value x is smaller than value y. ' +
             'Returns 1 if x is smaller than y, and 0 if not.',
     'examples': [
         '2 < 3',
@@ -4803,12 +5163,15 @@ Parser.prototype.parse_arguments = function (scope) {
         // TODO: in case of Plot, create a new scope.
 
         this.getToken();
-        arguments.push(this.parse_range(scope));
 
-        // parse a list with parameters
-        while (this.token == ',') {
-            this.getToken();
+        if (this.token != ')') {
             arguments.push(this.parse_range(scope));
+
+            // parse a list with parameters
+            while (this.token == ',') {
+                this.getToken();
+                arguments.push(this.parse_range(scope));
+            }
         }
 
         if (this.token != ')') {

@@ -199,18 +199,30 @@ types (Number, String, Complex, and Unit) where applicable.
 - math.add(x, y)
 - math.ceil(x)
 - math.divide(x, y)
+- math.equal(x)
 - math.exp(x)
 - math.fix(x)
 - math.floor(x)
 - math.larger(x, y)
+- math.largereq(x, y)
 - math.log(x)
+- math.mod(x, y)
 - math.multiply(x, y)
 - math.pow(x, y)
 - math.round(x [, n])
 - math.smaller(x, y)
+- math.smallereq(x, y)
 - math.subtract(x, y)
 - math.sqrt(x)
 - math.unaryminus(x)
+- math.unequal(x)
+
+### Complex
+
+- math.re(x)
+- math.im(x)
+- math.arg(x)
+- math.conj(x)
 
 ### Probability
 

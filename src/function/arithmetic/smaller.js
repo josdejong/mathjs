@@ -1,5 +1,5 @@
 /**
- * Check if value a is smaller b, a < b
+ * Check if value x is smaller y, x < y
  * In case of complex numbers, the absolute values of a and b are compared.
  * @param  {Number | Complex | Unit | String} x
  * @param  {Number | Complex | Unit | String} y
@@ -57,7 +57,7 @@ smaller.doc = {
         'smaller(x, y)'
     ],
     'description':
-        'Check if value a is smaller value b. ' +
+        'Check if value x is smaller than value y. ' +
             'Returns 1 if x is smaller than y, and 0 if not.',
     'examples': [
         '2 < 3',

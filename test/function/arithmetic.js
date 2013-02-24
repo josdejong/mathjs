@@ -42,6 +42,7 @@ assert.equal(math.add(123, 'str'), '123str');
 // TODO: test floor
 // TODO: test larger
 // TODO: test log
+// TODO: test mod
 // TODO: test multiply
 // TODO: test pow
 // TODO: test round
