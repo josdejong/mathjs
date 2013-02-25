@@ -2,6 +2,7 @@ src
 test
 img
 node_modules
+tools
 Jakefile.js
 .idea
 .npmignore
