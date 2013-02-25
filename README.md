@@ -50,7 +50,7 @@ using [require.js](http://requirejs.org/).
     console.log('sqrt(3 - 4i) = ' + d); // 'sqrt(3 - 4i) = 2 - i'
 
     var e = math.sqrt(-4);
-    console.log('sqrt(-4) = ' +  e); // 'sqrt(-4) = 2i'
+    console.log('sqrt(-4) = ' + e); // 'sqrt(-4) = 2i'
 
     var f = new Unit(60, 'deg');
     var g = math.cos(f);
@@ -71,7 +71,7 @@ Math.js can be loaded as a regular javascript file in the browser:
             // the math object is available here
 
             var a = math.sqrt(-4);
-            console.log('sqrt(-4) = ' +  a);     // 'sqrt(-4) = 2i'
+            console.log('sqrt(-4) = ' + a);     // 'sqrt(-4) = 2i'
 
             // ...
         </script>

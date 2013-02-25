@@ -16,7 +16,7 @@
  * * Note: arrays and matrices are to be implemented.
  *
  * @version 2013-02-25
- * @date    0.2.0
+ * @date    0.3.0-SNAPSHOT
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
