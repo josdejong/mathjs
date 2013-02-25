@@ -15,12 +15,12 @@ compatible with JavaScript's built-in Math library.
 - Easily extensible with new functions and constants.
 - Powerful and easy to use.
 
-\* Note: arrays, and matrices are to be implemented.
+\* Note: arrays and matrices are to be implemented.
 
 
 ## Install
 
-Math.js can be installed via [npm](https://npmjs.org/).
+Math.js can be installed with [npm](https://npmjs.org/).
 
     npm install mathjs
 
@@ -33,7 +33,7 @@ Alternatively, the library can be downloaded from github:
 
 ### Node.js
 
-Math.js can be loaded in node.js via require, and similarly in the browser
+Math.js can be loaded in node.js using `require`, and similarly in the browser
 using [require.js](http://requirejs.org/).
 
     var math = require('mathjs'),
@@ -198,6 +198,7 @@ types (Number, String, Complex, and Unit) where applicable.
 - math.abs(x)
 - math.add(x, y)
 - math.ceil(x)
+- math.cube(x)
 - math.divide(x, y)
 - math.equal(x)
 - math.exp(x)
@@ -205,15 +206,18 @@ types (Number, String, Complex, and Unit) where applicable.
 - math.floor(x)
 - math.larger(x, y)
 - math.largereq(x, y)
-- math.log(x)
+- math.log(x [, base])
+- math.log10(x)
 - math.mod(x, y)
 - math.multiply(x, y)
 - math.pow(x, y)
 - math.round(x [, n])
+- math.sign()
 - math.smaller(x, y)
 - math.smallereq(x, y)
 - math.subtract(x, y)
 - math.sqrt(x)
+- math.square(x)
 - math.unaryminus(x)
 - math.unequal(x)
 
@@ -226,6 +230,7 @@ types (Number, String, Complex, and Unit) where applicable.
 
 ### Probability
 
+- math.factorial(x)
 - math.random()
 
 ### Statistics

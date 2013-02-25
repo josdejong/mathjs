@@ -15,7 +15,7 @@
  *
  * * Note: arrays and matrices are to be implemented.
  *
- * @version 2013-02-24
+ * @version 2013-02-25
  * @date    0.2.0-SNAPSHOT
  *
  * @license
@@ -2101,6 +2101,55 @@ re.doc = {
 };
 
 /**
+ * Compute the cube of a value, x * x * x.',
+ * @param {Number | Complex} x
+ * @return {Number | Complex} res
+ */
+function cube(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('cube', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x * x * x;
+    }
+
+    if (x instanceof Complex) {
+        return multiply(multiply(x, x), x);
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('cube', x);
+}
+
+math.cube = cube;
+
+/**
+ * Function documentation
+ */
+cube.doc = {
+    'name': 'cube',
+    'category': 'Arithmetic',
+    'syntax': [
+        'cube(x)'
+    ],
+    'description': 'Compute the cube of a value. ' +
+        'The cube of x is x * x * x.',
+    'examples': [
+        'cube(2)',
+        '2^3',
+        '2 * 2 * 2'
+    ],
+    'seealso': [
+        'multiply',
+        'square',
+        'pow'
+    ]
+};
+
+/**
  * Divide two values. x / y or divide(x, y)
  * @param  {Number | Complex | Unit} x
  * @param  {Number | Complex} y
@@ -2502,6 +2551,64 @@ unequal.doc = {
     ],
     'seealso': [
         'equal', 'smaller', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+/**
+ * Calculate the 10-base logarithm of a value, log10(x)
+ * @param {Number | Complex} x
+ * @return {Number | Complex} res
+ */
+function log10(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('log10', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        if (x >= 0) {
+            return Math.log(x) / Math.LN10;
+        }
+        else {
+            // negative value -> complex value computation
+            return log10(new Complex(x, 0));
+        }
+    }
+
+    if (x instanceof Complex) {
+        return new Complex (
+            Math.log(Math.sqrt(x.re * x.re + x.im * x.im)) / Math.LN10,
+            Math.atan2(x.im, x.re) / Math.LN10
+        );
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('log10', x);
+}
+
+math.log10 = log10;
+
+/**
+ * Function documentation
+ */
+log10.doc = {
+    'name': 'log10',
+    'category': 'Arithmetic',
+    'syntax': [
+        'log10(x)'
+    ],
+    'description': 'Compute the 10-base logarithm of a value.',
+    'examples': [
+        'log10(1000)',
+        '10 ^ 3',
+        'log10(0.01)',
+        'log(1000) / log(10)',
+        'log(1000, 10)'
+    ],
+    'seealso': [
+        'exp',
+        'log'
     ]
 };
 
@@ -2909,6 +3016,58 @@ sqrt.doc = {
 };
 
 /**
+ * Compute the square of a value, x * x
+ * @param {Number | Complex} x
+ * @return {Number | Complex} res
+ */
+function square(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('square', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x * x;
+    }
+
+    if (x instanceof Complex) {
+        return multiply(x, x);
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('square', x);
+}
+
+math.square = square;
+
+/**
+ * Function documentation
+ */
+square.doc = {
+    'name': 'square',
+    'category': 'Arithmetic',
+    'syntax': [
+        'square(x)'
+    ],
+    'description':
+        'Compute the square of a value. ' +
+            'The square of x is x * x.',
+    'examples': [
+        'square(3)',
+        'sqrt(9)',
+        '3^2',
+        '3 * 3'
+    ],
+    'seealso': [
+        'multiply',
+        'pow',
+        'sqrt',
+        'cube'
+    ]
+};
+
+/**
  * Check if value x is larger y, x > y
  * In case of complex numbers, the absolute values of a and b are compared.
  * @param  {Number | Complex | Unit | String} x
@@ -2980,6 +3139,66 @@ larger.doc = {
     ],
     'seealso': [
         'equal', 'unequal', 'smaller', 'smallereq', 'largereq'
+    ]
+};
+
+/**
+ * Compute the sign of a value.
+ * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
+ * @param {Number | Complex} x
+ * @return {Number | Complex} res
+ */
+function sign(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sign', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        var sign;
+        if (x > 0) {
+            sign = 1;
+        }
+        else if (x < 0) {
+            sign = -1;
+        }
+        else {
+            sign = 0;
+        }
+        return sign;
+    }
+
+    if (x instanceof Complex) {
+        var abs = Math.sqrt(x.re * x.re + x.im * x.im);
+        return new Complex(x.re / abs, x.im / abs);
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('sign', x);
+}
+
+math.sign = sign;
+
+/**
+ * Function documentation
+ */
+sign.doc = {
+    'name': 'sign',
+    'category': 'Arithmetic',
+    'syntax': [
+        'sign(x)'
+    ],
+    'description':
+        'Compute the sign of a value. ' +
+            'The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.',
+    'examples': [
+        'sign(3.5)',
+        'sign(-4.2)',
+        'sign(0)'
+    ],
+    'seealso': [
+        'abs'
     ]
 };
 
@@ -3154,36 +3373,45 @@ abs.doc = {
 };
 
 /**
- * Calculate the natural logarithm of a value, log(x)
+ * Calculate the logarithm of a value, log(x [, base])
+ * base is optional. If not provided, the natural logarithm of x is calculated
+ * logarithm for any base, like log(x, base)
  * @param {Number | Complex} x
+ * @param {Number | Complex} [base]
  * @return {Number | Complex} res
  */
-function log(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('log', arguments.length, 1);
+function log(x, base) {
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('log', arguments.length, 1, 2);
     }
 
-    if (isNumber(x)) {
-        if (x >= 0) {
-            return Math.log(x);
+    if (base === undefined) {
+        // calculate natural logarithm, log(x)
+        if (isNumber(x)) {
+            if (x >= 0) {
+                return Math.log(x);
+            }
+            else {
+                // negative value -> complex value computation
+                return log(new Complex(x, 0));
+            }
         }
-        else {
-            // negative value -> complex value computation
-            return log(new Complex(x, 0));
+        else if (x instanceof Complex) {
+            return new Complex (
+                Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
+                Math.atan2(x.im, x.re)
+            );
         }
     }
-
-    if (x instanceof Complex) {
-        return new Complex (
-            Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
-            Math.atan2(x.im, x.re)
-        );
+    else {
+        // calculate logarithm for a specified base, log(x, base)
+        return divide(log(x), log(base));
     }
 
     // TODO: implement array support
     // TODO: implement matrix support
 
-    throw newUnsupportedTypeError('log', x);
+    throw newUnsupportedTypeError('log', x, base);
 }
 
 math.log = log;
@@ -3195,18 +3423,25 @@ log.doc = {
     'name': 'log',
     'category': 'Arithmetic',
     'syntax': [
-        'log(x)'
+        'log(x)',
+        'log(x, base)'
     ],
-    'description': 'Compute the natural logarithm of a value.',
+    'description': 'Compute the logarithm of a value. ' +
+        'If no base is provided, the natural logarithm of x is calculated. ' +
+        'If base if provided, the logarithm is calculated for the specified base. ' +
+        'log(x, base) is defined as log(x) / log(base).',
     'examples': [
         'log(3.5)',
         'a = log(2.4)',
         'exp(a)',
-        'log(1000) / log(10)'
+        '10 ^ 3',
+        'log(1000, 10)',
+        'log(1000) / log(10)',
+        'b = logb(1024, 2)',
+        '2 ^ b'
     ],
     'seealso': [
         'exp',
-        'logb',
         'log10'
     ]
 };
@@ -3606,6 +3841,62 @@ random.doc = {
     'seealso': []
 };
 
+/**
+ * Compute the factorial of a value, factorial(x) or x!
+ * @Param {Number} x
+ * @return {Number} res
+ */
+function factorial (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('factorial', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        if (!isInteger(x)) {
+            throw new TypeError('Function factorial can only handle integer values');
+        }
+
+        var value = x,
+            res = value;
+        value--;
+        while (value > 1) {
+            res *= value;
+            value--;
+        }
+
+        if (res == 0) {
+            res = 1;        // 0! is per definition 1
+        }
+
+        return res;
+    }
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('factorial', x);
+}
+
+math.factorial = factorial;
+
+/**
+ * Function documentation
+ */
+factorial.doc = {
+    'name': 'factorial',
+    'category': 'Probability',
+    'syntax': [
+        'x!',
+        'factorial(x)'
+    ],
+    'description': 'Compute the factorial of a value',
+    'examples': [
+        '5!',
+        '5*4*3*2*1',
+        '3!'
+    ],
+    'seealso': []
+};
 /**
  * Node
  */

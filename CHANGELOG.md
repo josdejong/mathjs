@@ -5,8 +5,8 @@ https://github.com/josdejong/mathjs
 ## <not yet released>, version 0.2.0
 
 - Parser, Scope, and Node tree implemented.
-- Implemented methods import, re, im, arg, conj, mod, equal, unequal,
-  smallereq, largereq.
+- Implemented methods arg, conj, cube, equal, factorial, im, import, largereq,
+  log(x, base), log10, mod, re, sign, smallereq, square, unequal.
 
 
 ## 2013-02-18, version 0.1.0

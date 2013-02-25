@@ -5,6 +5,9 @@ var math = require('../../math.js'),
     Complex = math.type.Complex,
     Unit = math.type.Unit;
 
+
+// TODO: test factorial
+
 // test random
 var r1 = math.random();
 assert.ok(r1 >= 0 && r1 <= 1);
