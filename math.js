@@ -4251,13 +4251,6 @@ FunctionAssignment.prototype.toString = function() {
 };
 
 /**
- * @License Apache 2.0 License
- *
- * @Author Jos de Jong
- * @Date 2012-07-10
- */
-
-/**
  * Scope
  * A scope stores functions.
  *
@@ -4277,6 +4270,8 @@ function Scope(parentScope) {
 }
 
 math.parser.node.Scope = Scope;
+
+// TODO: rethink the whole scoping solution again. Try to simplify
 
 /**
  * Create a nested scope
@@ -4339,9 +4334,15 @@ Scope.prototype.createSymbol = function (name) {
  */
 Scope.prototype.newSymbol = function (name, value) {
     // create a new symbol
+    var scope = this;
     var symbol = function () {
         if (!symbol.value) {
-            throw new Error('Undefined symbol ' + name);
+            // try to resolve again
+            symbol.value = scope.findDef(name);
+
+            if (!symbol.value) {
+                throw new Error('Undefined symbol ' + name);
+            }
         }
         if (typeof symbol.value == 'function') {
             return symbol.value.apply(null, arguments);
