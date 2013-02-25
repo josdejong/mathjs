@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## <not yet released>, version 0.2.0
+## 2013-02-25, version 0.2.0
 
 - Parser, Scope, and Node tree implemented.
 - Implemented method import which makes it easy to extend math.js.

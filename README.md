@@ -324,13 +324,17 @@ from the source files, and will test the library.
 
 ## Roadmap
 
-- Version 0.1.0:
+- Version 0.1.0 (2013-02-18):
     - Implement all methods and constants available in the built-in Math library
     - Implement data types Complex and Unit
-- Version 0.2.0: Implement Parser and Scope
-- Version 0.3.0: Implement Workspace
-- Version 0.4.0: Implement a larger set of methods
-- Version 0.5.0: Implement Matrices
+- Version 0.2.0 (2013-02-25):
+    - Implement Parser, Scope, Node tree
+    - Implement more methods
+- Version 0.3.0:
+    - Implement Workspace
+    - Extensive testing
+- Version 0.4.0: Implement Arrays and Matrices
+- Version 0.5.0: Implement more methods
 - ...
 
 
