@@ -36,6 +36,7 @@ Alternatively, the library can be downloaded from github:
 Math.js can be loaded in node.js using `require`, and similarly in the browser
 using [require.js](http://requirejs.org/).
 
+    ```js
     var math = require('mathjs'),
         Complex = math.Complex,
         Unit = math.Unit;
@@ -55,12 +56,13 @@ using [require.js](http://requirejs.org/).
     var f = new Unit(60, 'deg');
     var g = math.cos(f);
     console.log('cos(60 deg) = ' + math.round(g, 3)); // 'cos(60 deg) = 0.5'
-
+    ```
 
 ### Browser
 
 Math.js can be loaded as a regular javascript file in the browser:
 
+    ```html
     <!DOCTYPE HTML>
     <html>
     <head>
@@ -77,6 +79,7 @@ Math.js can be loaded as a regular javascript file in the browser:
         </script>
     </body>
     </html>
+    ```
 
 
 ## Parser
@@ -90,6 +93,7 @@ Variables and functions can be manipulated using the methods `get` and `put`.
 
 The following example code shows how to create and use a parser.
 
+    ```js
     var math = require('mathjs');
 
     // create a new parser
@@ -120,7 +124,7 @@ The following example code shows how to create and use a parser.
 
     // clear defined functions and variables
     parser.clear();
-
+    ```
 
 ## Data types
 
@@ -131,25 +135,30 @@ as well as advanced data types like Complex and Unit.
 
 The built-in type Number can be used in all methods.
 
+    ```js
     var math = require('mathjs');
 
     var a = math.subtract(7.1, 2.3);        // 4.8
     var b = math.round(math.pi, 3);         // 3.142
     var c = math.sqrt(new Number(4.41e2));  // 21
+    ```
 
 ### String
 
 The built-in type String can be used in applicable methods.
 
+    ```js
     var math = require('math.js');
     
     var a = math.add('hello ', 'world');    // 'hello world'
     var b = math.max('A', 'D', 'C');        // 'D'
+    ```
 
 ### Complex
 
 Math.js supports complex numbers.
 
+    ```js
     var math = require('math.js'),
         Complex = math.Complex;
 
@@ -157,11 +166,13 @@ Math.js supports complex numbers.
     var b = new Complex('4 - 2i');          // 4 - 2i
     var c = math.add(a, b);                 // 6 + i
     var d = math.sqrt(-4);                  // 2i
+    ```
 
 ### Unit
 
 Math.js supports units.
 
+    ```js
     var math = require('math.js'),
         Unit = math.Unit;
 
@@ -171,7 +182,7 @@ Math.js supports units.
 
     var parser = new math.parser.Parser();
     var d = parser.eval('2 inch in cm');    // 5.08 cm
-
+    ```
 
 ## Constants
 
@@ -265,6 +276,7 @@ The library can easily be extended with functions and variables using the
 `import` method. The method `import` accepts a filename or an object with
 functions and variables.
 
+    ```js
     var math = require('mathjs');
 
     // define new functions and variables
@@ -282,6 +294,7 @@ functions and variables.
     var parser = new math.parser.Parser();
     parser.eval('myvalue + 10');            // 52
     parser.eval('hello("user")');           // 'hello, user!'
+    ```
 
 To import functions from a math library like
 [numbers.js](https://github.com/sjkaliski/numbers.js),
@@ -291,6 +304,7 @@ the library must be installed using npm:
 
 And next, the library can be imported into math.js:
 
+    ```js
     var math = require('mathjs'),
         parser = new math.parser.Parser();
 
@@ -300,6 +314,7 @@ And next, the library can be imported into math.js:
     // use functions from numbers.js
     math.fibonacci(7);                      // 7
     parser.eval('fibonacci(7)');            // 7
+    ```
 
 
 ## Build
@@ -333,6 +348,7 @@ from the source files, and will test the library.
 - Version 0.3.0:
     - Implement Workspace
     - Extensive testing
+    - Build a website
 - Version 0.4.0: Implement Arrays and Matrices
 - Version 0.5.0: Implement more methods
 - ...
