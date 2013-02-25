@@ -37,8 +37,8 @@ Math.js can be loaded in node.js using `require`, and similarly in the browser
 using [require.js](http://requirejs.org/).
 
     var math = require('mathjs'),
-        Complex = math.type.Complex,
-        Unit = math.type.Unit;
+        Complex = math.Complex,
+        Unit = math.Unit;
 
     // use methods and types available in the math object
     var a = math.sin(math.pi / 4);
@@ -151,7 +151,7 @@ The built-in type String can be used in applicable methods.
 Math.js supports complex numbers.
 
     var math = require('math.js'),
-        Complex = math.type.Complex;
+        Complex = math.Complex;
 
     var a = new Complex(2, 3);              // 2 + 3i
     var b = new Complex('4 - 2i');          // 4 - 2i
@@ -163,7 +163,7 @@ Math.js supports complex numbers.
 Math.js supports units.
 
     var math = require('math.js'),
-        Unit = math.type.Unit;
+        Unit = math.Unit;
 
     var a = new Unit(55, 'cm');             // 550 mm
     var b = new Unit(0.1, 'm');             // 100 mm
@@ -275,7 +275,7 @@ functions and variables.
         });
     });
 
-    // defined methods can be used in JavaScript and in the parser
+    // defined methods can be used in both JavaScript as well as the parser
     var a = math.myvalue * 2;               // 84
     var b = math.hello('user');             // 'hello, user!'
 

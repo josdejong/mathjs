@@ -8,25 +8,18 @@ function help(subject) {
         throw newArgumentsError('help', arguments.length, 1);
     }
 
-    if (subject.doc) {
-        return generateDoc(subject.doc);
-    }
-    else if (subject.constructor.doc) {
-        return generateDoc(subject.constructor.doc);
-    }
-    else if (isString(subject)) {
-        // search the subject in the methods
-        var obj = math[subject];
-        if (obj && obj.doc) {
-            return generateDoc(obj.doc);
+    if (subject != undefined) {
+        if (subject.doc) {
+            return generateDoc(subject.doc);
         }
-
-        // search the subject in the types
-        for (var t in math.type) {
-            if (math.type.hasOwnProperty(t)) {
-                if (subject.toLowerCase() == t.toLowerCase() && math.type[t].doc) {
-                    return generateDoc(math.type[t].doc);
-                }
+        else if (subject.constructor.doc) {
+            return generateDoc(subject.constructor.doc);
+        }
+        else if (isString(subject)) {
+            // search the subject in the methods
+            var obj = math[subject];
+            if (obj && obj.doc) {
+                return generateDoc(obj.doc);
             }
         }
     }

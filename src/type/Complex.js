@@ -98,7 +98,7 @@ function Complex(re, im) {
             // TODO: allow '+3-2'
 
             if (!ok) {
-                throw new SyntaxError('Invalid string "' + re + '"');
+                throw new SyntaxError('Invalid value "' + re + '"');
             }
 
             break;
@@ -116,7 +116,7 @@ function Complex(re, im) {
     }
 }
 
-math.type.Complex = Complex;
+math.Complex = Complex;
 
 /**
  * Trim a string

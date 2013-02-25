@@ -2,8 +2,8 @@
 
 var assert = require('assert');
 var math = require('../../math.js'),
-    Complex = math.type.Complex,
-    Unit = math.type.Unit;
+    Complex = math.Complex,
+    Unit = math.Unit;
 
 var complex1 = new Complex(3, -4);
 assert.equal(complex1.re, 3);

@@ -20,7 +20,7 @@ function Unit(value, prefixUnit) {
     this._init(value, prefixUnit);
 }
 
-math.type.Unit = Unit;
+math.Unit = Unit;
 
 /**
  * Test whether value is a Unit
@@ -162,7 +162,7 @@ Unit.isUnit = function (unit) {
 
 /**
  * check if this unit has given base unit
- * @param {math.type.Unit.BASE_UNITS} base
+ * @param {Unit.BASE_UNITS} base
  */
 Unit.prototype.hasBase = function(base) {
     if (this.unit.base === undefined) {

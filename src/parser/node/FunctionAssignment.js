@@ -36,10 +36,7 @@ math.parser.node.FunctionAssignment = FunctionAssignment;
  * Create a function from the function assignment
  * @param {String} name             Function name
  * @param {String[]} variableNames  Variable names
- * @param {function[]} values       Zero or more functions returning a value
- *                                  Each function contains a parameter
- *                                  name of type String and value of
- *                                  type mathnotepad.fn.Link
+ * @param {function[]} values       Zero or more functions
  * @param {Node} expr               The function expression
  *
  */

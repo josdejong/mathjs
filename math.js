@@ -40,7 +40,6 @@
  * Define namespace
  */
 var math = {
-    type: {},
     parser: {
         node: {}
     },
@@ -260,7 +259,7 @@ function Unit(value, prefixUnit) {
     this._init(value, prefixUnit);
 }
 
-math.type.Unit = Unit;
+math.Unit = Unit;
 
 /**
  * Test whether value is a Unit
@@ -402,7 +401,7 @@ Unit.isUnit = function (unit) {
 
 /**
  * check if this unit has given base unit
- * @param {math.type.Unit.BASE_UNITS} base
+ * @param {Unit.BASE_UNITS} base
  */
 Unit.prototype.hasBase = function(base) {
     if (this.unit.base === undefined) {
@@ -880,7 +879,7 @@ function Complex(re, im) {
             // TODO: allow '+3-2'
 
             if (!ok) {
-                throw new SyntaxError('Invalid string "' + re + '"');
+                throw new SyntaxError('Invalid value "' + re + '"');
             }
 
             break;
@@ -898,7 +897,7 @@ function Complex(re, im) {
     }
 }
 
-math.type.Complex = Complex;
+math.Complex = Complex;
 
 /**
  * Trim a string
@@ -1161,25 +1160,18 @@ function help(subject) {
         throw newArgumentsError('help', arguments.length, 1);
     }
 
-    if (subject.doc) {
-        return generateDoc(subject.doc);
-    }
-    else if (subject.constructor.doc) {
-        return generateDoc(subject.constructor.doc);
-    }
-    else if (isString(subject)) {
-        // search the subject in the methods
-        var obj = math[subject];
-        if (obj && obj.doc) {
-            return generateDoc(obj.doc);
+    if (subject != undefined) {
+        if (subject.doc) {
+            return generateDoc(subject.doc);
         }
-
-        // search the subject in the types
-        for (var t in math.type) {
-            if (math.type.hasOwnProperty(t)) {
-                if (subject.toLowerCase() == t.toLowerCase() && math.type[t].doc) {
-                    return generateDoc(math.type[t].doc);
-                }
+        else if (subject.constructor.doc) {
+            return generateDoc(subject.constructor.doc);
+        }
+        else if (isString(subject)) {
+            // search the subject in the methods
+            var obj = math[subject];
+            if (obj && obj.doc) {
+                return generateDoc(obj.doc);
             }
         }
     }
@@ -4199,10 +4191,7 @@ math.parser.node.FunctionAssignment = FunctionAssignment;
  * Create a function from the function assignment
  * @param {String} name             Function name
  * @param {String[]} variableNames  Variable names
- * @param {function[]} values       Zero or more functions returning a value
- *                                  Each function contains a parameter
- *                                  name of type String and value of
- *                                  type mathnotepad.fn.Link
+ * @param {function[]} values       Zero or more functions
  * @param {Node} expr               The function expression
  *
  */

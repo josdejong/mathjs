@@ -5,7 +5,8 @@ https://github.com/josdejong/mathjs
 ## <not yet released>, version 0.2.0
 
 - Parser, Scope, and Node tree implemented.
-- Implemented methods arg, conj, cube, equal, factorial, im, import, largereq,
+- Implemented method import which makes it easy to extend math.js.
+- Implemented methods arg, conj, cube, equal, factorial, im, largereq,
   log(x, base), log10, mod, re, sign, smallereq, square, unequal.
 
 

@@ -2,7 +2,6 @@
  * Define namespace
  */
 var math = {
-    type: {},
     parser: {
         node: {}
     },
