@@ -33,7 +33,8 @@
         "dateable": ">= 0.1.2"
     },
     "scripts": {
-        "prepublish": "jake"
+        "prepublish": "jake",
+        "test": "jake test"
     },
     "main": "./math.js",
     "engines": {

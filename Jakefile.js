@@ -29,7 +29,7 @@ task('default', ['build', 'test'], function () {
  * build task
  */
 desc('Build the library');
-task('build', ['concat', 'minify', 'version']);
+task('build', ['concat', 'minify']);
 
 /**
  * concat task
@@ -60,6 +60,8 @@ task('concat', function () {
         footer: '\n})();\n'
     });
 
+    updateVersion(MATHJS);
+
     console.log('Concatenated ' + result.src.length + ' files into ' +
         MATHJS + ' (' + filesize(result.code.length, 1) + ')');
 });
@@ -75,26 +77,11 @@ task('minify', ['concat'], function () {
         header: util.read(HEADER)
     });
 
+    updateVersion(MATHJS_MIN);
+
     console.log('Minified ' +
         MATHJS +     ' (' + filesize(util.read(result.src[0]).length, 1) + ') to ' +
         MATHJS_MIN + ' (' + filesize(result.code.length, 1) + ')');
-});
-
-/**
- * version task
- */
-desc('Update version and date in the library');
-task('version', ['concat', 'minify'], function () {
-    var files = [MATHJS, MATHJS_MIN];
-    util.replace({
-        replacements: [
-            {pattern: '@@date',    replacement: util.version()},
-            {pattern: '@@version', replacement: util.today()}
-        ],
-        src: files
-    });
-
-    console.log('Version and date updated in ' + files.join(' '));
 });
 
 /**
@@ -105,6 +92,23 @@ task('test', ['concat'], function () {
     require('./test/all.js');
     console.log('Tests successful');
 });
+
+/**
+ * Update version and date patterns in given file.
+ * Patterns '@@date' and '@@version' will be replaced with current date and
+ * version.
+ * @param {String} file
+ */
+function updateVersion(file) {
+    // update date and version number
+    util.replace({
+        replacements: [
+            {pattern: '@@date',    replacement: util.version()},
+            {pattern: '@@version', replacement: util.today()}
+        ],
+        src: file
+    });
+}
 
 /**
  * Return the filesize in kilo bytes
