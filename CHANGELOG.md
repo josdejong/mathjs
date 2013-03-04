@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## <not yet released, version 0.3.0
+
+- Implemented Workspace
+
+
 ## 2013-02-25, version 0.2.0
 
 - Parser, Scope, and Node tree implemented.

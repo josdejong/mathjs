@@ -51,7 +51,8 @@ task('concat', function () {
             './src/parser/node/Assignment.js',
             './src/parser/node/FunctionAssignment.js',
             './src/parser/Scope.js',
-            './src/parser/Parser.js'
+            './src/parser/Parser.js',
+            './src/parser/Workspace.js'
         ],
         dest: MATHJS,
         header: util.read(HEADER) + '\n(function() {\n',

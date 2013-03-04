@@ -20,7 +20,16 @@
         console.log('sqrt(' + complex1.toString() + ') = ' + math.sqrt(complex1));
         console.log('sqrt(-4) = ' + math.sqrt(-4));
 
-        var p = new math.parser.Parser();
+        var parser = new math.parser.Parser();
+
+        var workspace = new math.parser.Workspace();
+        var id0 = workspace.append('a = 3/4');
+        var id1 = workspace.append('a + 2');
+        console.log('a = ' + workspace.getResult(id0));
+        console.log('a + 2 = ' + workspace.getResult(id1));
+        workspace.replace('a=5/2', id0);
+        console.log('a = ' + workspace.getResult(id0));
+        console.log('a + 2 = ' + workspace.getResult(id1));
 
     </script>
 </body>

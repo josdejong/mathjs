@@ -269,7 +269,7 @@ Scope.prototype.init = function () {
     for (var name in symbols) {
         if (symbols.hasOwnProperty(name)) {
             var symbol = symbols[name];
-            symbol.set(parentScope ? parentScope.findDef(name) : undefined);
+            symbol.value = (parentScope ? parentScope.findDef(name) : undefined);
         }
     }
 

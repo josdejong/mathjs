@@ -3,7 +3,18 @@
 
 /**
  * @constructor math.parser.Parser
- * TODO: add comments to the Parser constructor
+ *
+ * Methods:
+ *    var result = parser.eval(expr);    // evaluate an expression
+ *    parser.put(name, value);           // put a variable in the parser
+ *    var value = parser.get(name);      // retrieve a variable from the parser
+ *
+ *    // it is possible to parse an expression into a node tree:
+ *    var node = parser.parse(expr);     // parse an expression
+ *    var result = node.eval();          // evaluate a parsed node
+ *
+ * Example usage:
+ *  var parser = new math.parser.Parser();
  */
 function Parser() {
     if (this.constructor != Parser) {
