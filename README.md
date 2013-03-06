@@ -20,16 +20,17 @@ compatible with JavaScript's built-in Math library.
 
 ## Install
 
-Math.js can be installed with [npm](https://npmjs.org/).
+Math.js can be installed with [npm](https://npmjs.org/):
 
     npm install mathjs
 
-Alternatively, the library can be downloaded from github:
-[math.js](https://raw.github.com/josdejong/mathjs/master/math.js), or minified:
-[math.min.js](https://raw.github.com/josdejong/mathjs/master/math.min.js).
+Alternatively, the latest stable version of math.js can be downloaded from github:
+
+- [math.js](https://raw.github.com/josdejong/mathjs/master/math.js)
+- [math.min.js](https://raw.github.com/josdejong/mathjs/master/math.min.js) (minified)
 
 
-## Use
+## Load
 
 ### Node.js
 
@@ -37,25 +38,10 @@ Math.js can be loaded in node.js using `require`, and similarly in the browser
 using [require.js](http://requirejs.org/).
 
 ```js
-var math = require('mathjs'),
-    Complex = math.Complex,
-    Unit = math.Unit;
+var math = require('mathjs');
 
-// use methods and types available in the math object
-var a = math.sin(math.pi / 4);
-var b = math.pow(a, 2);
-console.log('sin(pi / 4) ^ 2 = ' + math.round(b, 3)); // 'sin(pi / 4) ^ 2 = 0.5'
-
-var c = new Complex(3, -4);
-var d = math.sqrt(c);
-console.log('sqrt(3 - 4i) = ' + d); // 'sqrt(3 - 4i) = 2 - i'
-
-var e = math.sqrt(-4);
-console.log('sqrt(-4) = ' + e); // 'sqrt(-4) = 2i'
-
-var f = new Unit(60, 'deg');
-var g = math.cos(f);
-console.log('cos(60 deg) = ' + math.round(g, 3)); // 'cos(60 deg) = 0.5'
+var a = math.sqrt(-4);
+console.log('a = ' + a);                // 'a = 2i'
 ```
 
 ### Browser
@@ -70,15 +56,40 @@ Math.js can be loaded as a regular javascript file in the browser:
 </head>
 <body>
     <script type="text/javascript">
-        // the math object is available here
-
         var a = math.sqrt(-4);
-        console.log('sqrt(-4) = ' + a);     // 'sqrt(-4) = 2i'
-
-        // ...
+        document.write('a = ' + a);     // 'a = 2i'
     </script>
 </body>
 </html>
+```
+
+<!-- TODO: Describe how to load using require.js -->
+
+
+## Use
+
+Math.js can be used similar to Javascript's built-in Math library.
+
+```js
+var math = require('mathjs'),
+    Complex = math.Complex,
+    Unit = math.Unit;
+
+// use methods and types available in the math object
+var a = math.sin(math.pi / 4);
+var b = math.pow(a, 2);
+console.log('b = ' + math.round(b, 3)); // 'b = 0.5'
+
+var c = new Complex(3, -4);
+var d = math.sqrt(c);
+console.log('d = ' + d);                // 'd = 2 - i'
+
+var e = math.sqrt(-4);
+console.log('e = ' + e);                // 'e = 2i'
+
+var f = new Unit(60, 'deg');
+var g = math.cos(f);
+console.log('g = ' + math.round(g, 3)); // 'g = 0.5'
 ```
 
 
@@ -125,6 +136,9 @@ parser.eval('hello("user")');           // "hello, user!"
 // clear defined functions and variables
 parser.clear();
 ```
+
+<!-- TODO: document Workspace -->
+
 
 ## Data types
 
@@ -256,6 +270,9 @@ types (Number, String, Complex, and Unit) where applicable.
 - math.atan(x)
 - math.atan2(y, x)
 - math.cos(x)
+- math.cot(x)
+- math.csc(x)
+- math.sec(x)
 - math.sin(x)
 - math.tan(x)
 
@@ -335,6 +352,13 @@ executing jake in the root of the project.
 
 When jake is executed, it will generate the library math.js and math.min.js
 from the source files, and will test the library.
+
+
+## Test
+
+To execute tests for the library, run:
+
+    npm test
 
 
 ## Roadmap

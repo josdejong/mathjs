@@ -10,5 +10,8 @@ var math = require('../../math.js'),
 // TODO: test atan
 // TODO: test atan2
 // TODO: test cos
+// TODO: test cot
+// TODO: test csc
+// TODO: test sec
 // TODO: test sin
 // TODO: test tan
