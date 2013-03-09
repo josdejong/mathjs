@@ -1,6 +1,11 @@
 /**
- * Math workspace
  * @constructor math.parser.Workspace
+ *
+ * Workspace manages a set of expressions. Expressions can be added, replace,
+ * deleted, and inserted in the workspace. The workspace keeps track on the
+ * dependencies between the expressions, and automatically updates results of
+ * depending expressions when variables or function definitions are changed in
+ * the workspace.
  *
  * Methods:
  *     var id = workspace.append(expr);

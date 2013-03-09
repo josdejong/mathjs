@@ -1,10 +1,11 @@
 /**
  * @constructor Complex
  *
- * A complex value can be constructed in three ways:
+ * A complex value can be constructed in the following ways:
  *     var a = new Complex(re, im);
- *     var b = new Complex(str);
+ *     var b = new Complex(str);      // equivalent to Complex.parse(str)
  *     var c = new Complex();
+ *     var d = Complex.parse(str);
  *
  * Example usage:
  *     var a = new Complex(3, -4);    // 3 - 4i
@@ -12,7 +13,7 @@
  *     var c = new Complex();         // 0 + 0i
  *     var d = math.add(a, b);        // 5 + 2i
  *
- * @param {Number | String} re    A number with the real part of the complex
+ * @param {Number | String} re   A number with the real part of the complex
  *                               value, or a string containing a complex number
  * @param {Number} [im]          The imaginary part of the complex value
  */
@@ -39,72 +40,17 @@ function Complex(re, im) {
                 throw new TypeError(
                     'Two numbers or a single string expected in Complex constructor');
             }
-
-            // TODO: replace by some nice regexp?
-            // TODO: also support a pattern like "-2.5e+3 - 7.6e-5i"
-            var parts = [],
-                part;
-            var separator = '+';
-            var index = re.lastIndexOf(separator);
-            if (index == -1) {
-                separator = '-';
-                index = re.lastIndexOf(separator);
-            }
-
-            if (index != -1) {
-                part = trim(re.substring(0, index));
-                if (part) {
-                    parts.push(part);
-                }
-                part = trim(re.substring(index + 1));
-                if (part) {
-                    parts.push(separator + part);
-                }
+            var c = Complex.parse(re);
+            if (c) {
+                return c;
             }
             else {
-                part = trim(re);
-                if (part) {
-                    parts.push(part);
-                }
+                throw new SyntaxError('"' + re + '" is no valid complex number');
             }
-
-            var ok = false;
-            switch (parts.length) {
-                case 1:
-                    part = parts[0];
-                    if (part[part.length - 1].toUpperCase() == 'I') {
-                        // complex number
-                        this.re = 0;
-                        this.im = Number(part.substring(0, part.length - 1));
-                        ok = !isNaN(this.im);
-                    }
-                    else {
-                        // real number
-                        this.re = Number(part);
-                        this.im = 0;
-                        ok = !isNaN(this.re);
-                    }
-                    break;
-
-                case 2:
-                    part = parts[0];
-                    this.re = Number(parts[0]);
-                    this.im = Number(parts[1].substring(0, parts[1].length - 1));
-                    ok = !isNaN(this.re) && !isNaN(this.im) &&
-                        (parts[1][parts[1].length - 1].toUpperCase() == 'I');
-                    break;
-            }
-
-            // TODO: allow '+3-2'
-
-            if (!ok) {
-                throw new SyntaxError('Invalid value "' + re + '"');
-            }
-
             break;
 
         case 0:
-            // nul values
+            // no parameters. Set re and im zero
             this.re = 0;
             this.im = 0;
             break;
@@ -117,6 +63,81 @@ function Complex(re, im) {
 }
 
 math.Complex = Complex;
+
+/**
+ * Parse a complex number from a string. For example Complex.parse("2 + 3i")
+ * will return a Complex value where re = 2, im = 3.
+ * Returns null if provided string does not contain a valid complex number.
+ * @param {String} str
+ * @returns {Complex | null} complex
+ */
+Complex.parse = function(str) {
+    var re = 0,
+        im = 0;
+
+    if (!isString(str)) {
+        return null;
+    }
+
+    // TODO: replace by some nice regexp?
+    // TODO: also support a pattern like "-2.5e+3 - 7.6e-5i"
+    var parts = [],
+        part;
+    var separator = '+';
+    var index = str.lastIndexOf(separator);
+    if (index == -1) {
+        separator = '-';
+        index = str.lastIndexOf(separator);
+    }
+
+    if (index != -1) {
+        part = trim(str.substring(0, index));
+        if (part) {
+            parts.push(part);
+        }
+        part = trim(str.substring(index + 1));
+        if (part) {
+            parts.push(separator + part);
+        }
+    }
+    else {
+        part = trim(str);
+        if (part) {
+            parts.push(part);
+        }
+    }
+
+    var ok = false;
+    switch (parts.length) {
+        case 1:
+            part = parts[0];
+            if (part[part.length - 1].toUpperCase() == 'I') {
+                // complex number
+                re = 0;
+                im = Number(part.substring(0, part.length - 1));
+                ok = !isNaN(im);
+            }
+            else {
+                // real number
+                re = Number(part);
+                im = 0;
+                ok = !isNaN(re);
+            }
+            break;
+
+        case 2:
+            part = parts[0];
+            re = Number(parts[0]);
+            im = Number(parts[1].substring(0, parts[1].length - 1));
+            ok = !isNaN(re) && !isNaN(im) &&
+                (parts[1][parts[1].length - 1].toUpperCase() == 'I');
+            break;
+    }
+
+    // TODO: allow '+3-2'
+
+    return ok ? new Complex(re, im) : null;
+};
 
 /**
  * Trim a string

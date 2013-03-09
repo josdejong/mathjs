@@ -5,6 +5,7 @@ https://github.com/josdejong/mathjs
 ## <not yet released, version 0.3.0
 
 - Implemented Workspace
+- Implemented methods cot, csc, sec.
 
 
 ## 2013-02-25, version 0.2.0

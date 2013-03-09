@@ -1,20 +1,44 @@
-// TODO: do not use this.token, but a local variable var token for better speed? -> getToken() must return token.
-// TODO: make all parse methods private
-
 /**
  * @constructor math.parser.Parser
+ * Parser parses math expressions and evaluates them or returns a node tree.
  *
  * Methods:
  *    var result = parser.eval(expr);    // evaluate an expression
- *    parser.put(name, value);           // put a variable in the parser
  *    var value = parser.get(name);      // retrieve a variable from the parser
+ *    parser.put(name, value);           // put a variable in the parser
  *
  *    // it is possible to parse an expression into a node tree:
- *    var node = parser.parse(expr);     // parse an expression
+ *    var node = parser.parse(expr);     // parse an expression into a node tree
  *    var result = node.eval();          // evaluate a parsed node
  *
  * Example usage:
- *  var parser = new math.parser.Parser();
+ *    var parser = new math.parser.Parser();
+ *
+ *    // evaluate expressions
+ *    var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
+ *    var b = parser.eval('sqrt(-4)');        // 2i
+ *    var c = parser.eval('2 inch in cm');    // 5.08 cm
+ *    var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
+ *
+ *    // define variables and functions
+ *    parser.eval('x = 7 / 2');               // 3.5
+ *    parser.eval('x + 3');                   // 6.5
+ *    parser.eval('function f(x, y) = x^y');  // f(x, y)
+ *    parser.eval('f(2, 3)');                 // 8
+ *
+ *    // get and put variables and functions
+ *    var x = parser.get('x');                // 7
+ *    var f = parser.get('f');                // function
+ *    var g = f(3, 2);                        // 9
+ *    parser.put('h', 500);
+ *    var i = parser.eval('h / 2');           // 250
+ *    parser.put('hello', function (name) {
+ *        return 'hello, ' + name + '!';
+ *    });
+ *    parser.eval('hello("user")');           // "hello, user!"
+ *
+ *    // clear defined functions and variables
+ *    parser.clear();
  */
 function Parser() {
     if (this.constructor != Parser) {
@@ -36,6 +60,7 @@ function Parser() {
     this.c = '';           // current token character in expr
     this.token = '';       // current token
     this.token_type = this.TOKENTYPE.NULL; // type of the token
+    // TODO: do not use this.token, but a local variable var token for better speed? -> getToken() must return token.
 
     this.scope = new Scope();
 }

@@ -105,6 +105,7 @@ Variables and functions can be manipulated using the methods `get` and `put`.
 The following example code shows how to create and use a parser.
 
 ```js
+// load math.js
 var math = require('mathjs');
 
 // create a new parser
@@ -112,9 +113,9 @@ var parser = new math.parser.Parser();
 
 // evaluate expressions
 var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
-var d = parser.eval('sqrt(-4)');        // 2i
-var b = parser.eval('2 inch in cm');    // 5.08 cm
-var c = parser.eval('cos(45 deg)');     // 0.7071067811865476
+var b = parser.eval('sqrt(-4)');        // 2i
+var c = parser.eval('2 inch in cm');    // 5.08 cm
+var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
 
 // define variables and functions
 parser.eval('x = 7 / 2');               // 3.5
@@ -137,7 +138,53 @@ parser.eval('hello("user")');           // "hello, user!"
 parser.clear();
 ```
 
-<!-- TODO: document Workspace -->
+Available methods:
+
+    var result = parser.eval(expr);    // evaluate an expression
+    var value = parser.get(name);      // retrieve a variable from the parser
+    parser.put(name, value);           // put a variable in the parser
+
+    var node = parser.parse(expr);     // parse an expression into a node tree
+    var result = node.eval();          // evaluate a node
+
+
+## Workspace
+
+Math.js features a workspace, which manages a set of expressions.
+Expressions can be added, replace, deleted, and inserted in the workspace.
+The workspace keeps track on the dependencies between the expressions,
+and automatically updates results of depending expressions when variables
+or function definitions are changed in the workspace.
+
+```js
+// load math.js
+var math = require('mathjs');
+
+// create a new workspace
+var workspace = new math.parser.Workspace();
+
+// add expressions to the workspace
+var id0 = workspace.append('a = 3/4');
+var id1 = workspace.append('a + 2');
+console.log('a + 2 = ' + workspace.getResult(id1));
+
+// replace expressions in the workspace
+workspace.replace('a=5/2', id0);
+console.log('a + 2 = ' + workspace.getResult(id1));
+```
+
+Available methods:
+
+    var id = workspace.append(expr);
+    var id = workspace.insertBefore(expr, beforeId);
+    var id = workspace.insertAfter(expr, afterId);
+    workspace.replace(expr, id);
+    workspace.remove(id);
+    workspace.clear();
+    var expr    = workspace.getExpr(id);
+    var result  = workspace.getResult(id);
+    var deps    = workspace.getDependencies(id);
+    var changes = workspace.getChanges(updateSeq);
 
 
 ## Data types
@@ -371,11 +418,12 @@ To execute tests for the library, run:
     - Implement more methods
 - Version 0.3.0:
     - Implement Workspace
+    - Implement more methods
+- Build a website
+- Version 0.4.0:
+    - Implement Arrays and Matrices
+- Version 1.0.0
     - Extensive testing
-    - Build a website
-- Version 0.4.0: Implement Arrays and Matrices
-- Version 0.5.0: Implement more methods
-- ...
 
 
 ## License
