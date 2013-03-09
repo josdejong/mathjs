@@ -416,7 +416,7 @@ To execute tests for the library, run:
 - Version 0.2.0 (2013-02-25):
     - Implement Parser, Scope, Node tree
     - Implement more methods
-- Version 0.3.0:
+- Version 0.3.0 (2013-03-09):
     - Implement Workspace
     - Implement more methods
 - Build a website
