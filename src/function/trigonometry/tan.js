@@ -1,7 +1,7 @@
 /**
  * Calculate the tangent of a value, tan(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function tan(x) {
     if (arguments.length != 1) {
@@ -30,7 +30,9 @@ function tan(x) {
         return Math.tan(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, tan);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('tan', x);

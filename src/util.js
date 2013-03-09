@@ -53,6 +53,19 @@ util.randomUUID = function () {
         );
 };
 
+/**
+ * Execute function fn for each element in array. Returns an array with the
+ * results
+ * @param {Array} array
+ * @param {function} fn
+ * @return {Array} res
+ */
+util.map = function (array, fn) {
+    return array.map(function (x) {
+        return fn(x);
+    });
+};
+
 // Internet Explorer 8 and older does not support Array.indexOf, so we define
 // it here in that case.
 // http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/

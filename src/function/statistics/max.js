@@ -8,18 +8,20 @@ function max(args) {
         throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
-    // TODO: implement array support
+    if (arguments.length == 1 && arguments[0] instanceof Array) {
+        return max.apply(this, arguments[0]);
+    }
     // TODO: implement matrix support
 
-    var max = arguments[0];
+    var res = arguments[0];
     for (var i = 1, iMax = arguments.length; i < iMax; i++) {
         var value = arguments[i];
-        if (larger(value, max)) {
-            max = value;
+        if (larger(value, res)) {
+            res = value;
         }
     }
 
-    return max;
+    return res;
 }
 
 math.max = max;

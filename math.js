@@ -15,7 +15,7 @@
  *
  * * Note: arrays and matrices are to be implemented.
  *
- * @version 2013-03-06
+ * @version 2013-03-09
  * @date    0.3.0-SNAPSHOT
  *
  * @license
@@ -127,6 +127,19 @@ util.randomUUID = function () {
             S4() + '-' +
             S4() + S4() + S4()
         );
+};
+
+/**
+ * Execute function fn for each element in array. Returns an array with the
+ * results
+ * @param {Array} array
+ * @param {function} fn
+ * @return {Array} res
+ */
+util.map = function (array, fn) {
+    return array.map(function (x) {
+        return fn(x);
+    });
 };
 
 // Internet Explorer 8 and older does not support Array.indexOf, so we define
@@ -782,10 +795,11 @@ function isInteger(value) {
 /**
  * @constructor Complex
  *
- * A complex value can be constructed in three ways:
+ * A complex value can be constructed in the following ways:
  *     var a = new Complex(re, im);
- *     var b = new Complex(str);
+ *     var b = new Complex(str);      // equivalent to Complex.parse(str)
  *     var c = new Complex();
+ *     var d = Complex.parse(str);
  *
  * Example usage:
  *     var a = new Complex(3, -4);    // 3 - 4i
@@ -793,7 +807,7 @@ function isInteger(value) {
  *     var c = new Complex();         // 0 + 0i
  *     var d = math.add(a, b);        // 5 + 2i
  *
- * @param {Number | String} re    A number with the real part of the complex
+ * @param {Number | String} re   A number with the real part of the complex
  *                               value, or a string containing a complex number
  * @param {Number} [im]          The imaginary part of the complex value
  */
@@ -820,72 +834,17 @@ function Complex(re, im) {
                 throw new TypeError(
                     'Two numbers or a single string expected in Complex constructor');
             }
-
-            // TODO: replace by some nice regexp?
-            // TODO: also support a pattern like "-2.5e+3 - 7.6e-5i"
-            var parts = [],
-                part;
-            var separator = '+';
-            var index = re.lastIndexOf(separator);
-            if (index == -1) {
-                separator = '-';
-                index = re.lastIndexOf(separator);
-            }
-
-            if (index != -1) {
-                part = trim(re.substring(0, index));
-                if (part) {
-                    parts.push(part);
-                }
-                part = trim(re.substring(index + 1));
-                if (part) {
-                    parts.push(separator + part);
-                }
+            var c = Complex.parse(re);
+            if (c) {
+                return c;
             }
             else {
-                part = trim(re);
-                if (part) {
-                    parts.push(part);
-                }
+                throw new SyntaxError('"' + re + '" is no valid complex number');
             }
-
-            var ok = false;
-            switch (parts.length) {
-                case 1:
-                    part = parts[0];
-                    if (part[part.length - 1].toUpperCase() == 'I') {
-                        // complex number
-                        this.re = 0;
-                        this.im = Number(part.substring(0, part.length - 1));
-                        ok = !isNaN(this.im);
-                    }
-                    else {
-                        // real number
-                        this.re = Number(part);
-                        this.im = 0;
-                        ok = !isNaN(this.re);
-                    }
-                    break;
-
-                case 2:
-                    part = parts[0];
-                    this.re = Number(parts[0]);
-                    this.im = Number(parts[1].substring(0, parts[1].length - 1));
-                    ok = !isNaN(this.re) && !isNaN(this.im) &&
-                        (parts[1][parts[1].length - 1].toUpperCase() == 'I');
-                    break;
-            }
-
-            // TODO: allow '+3-2'
-
-            if (!ok) {
-                throw new SyntaxError('Invalid value "' + re + '"');
-            }
-
             break;
 
         case 0:
-            // nul values
+            // no parameters. Set re and im zero
             this.re = 0;
             this.im = 0;
             break;
@@ -898,6 +857,81 @@ function Complex(re, im) {
 }
 
 math.Complex = Complex;
+
+/**
+ * Parse a complex number from a string. For example Complex.parse("2 + 3i")
+ * will return a Complex value where re = 2, im = 3.
+ * Returns null if provided string does not contain a valid complex number.
+ * @param {String} str
+ * @returns {Complex | null} complex
+ */
+Complex.parse = function(str) {
+    var re = 0,
+        im = 0;
+
+    if (!isString(str)) {
+        return null;
+    }
+
+    // TODO: replace by some nice regexp?
+    // TODO: also support a pattern like "-2.5e+3 - 7.6e-5i"
+    var parts = [],
+        part;
+    var separator = '+';
+    var index = str.lastIndexOf(separator);
+    if (index == -1) {
+        separator = '-';
+        index = str.lastIndexOf(separator);
+    }
+
+    if (index != -1) {
+        part = trim(str.substring(0, index));
+        if (part) {
+            parts.push(part);
+        }
+        part = trim(str.substring(index + 1));
+        if (part) {
+            parts.push(separator + part);
+        }
+    }
+    else {
+        part = trim(str);
+        if (part) {
+            parts.push(part);
+        }
+    }
+
+    var ok = false;
+    switch (parts.length) {
+        case 1:
+            part = parts[0];
+            if (part[part.length - 1].toUpperCase() == 'I') {
+                // complex number
+                re = 0;
+                im = Number(part.substring(0, part.length - 1));
+                ok = !isNaN(im);
+            }
+            else {
+                // real number
+                re = Number(part);
+                im = 0;
+                ok = !isNaN(re);
+            }
+            break;
+
+        case 2:
+            part = parts[0];
+            re = Number(parts[0]);
+            im = Number(parts[1].substring(0, parts[1].length - 1));
+            ok = !isNaN(re) && !isNaN(im) &&
+                (parts[1][parts[1].length - 1].toUpperCase() == 'I');
+            break;
+    }
+
+    // TODO: allow '+3-2'
+
+    return ok ? new Complex(re, im) : null;
+};
 
 /**
  * Trim a string
@@ -1297,18 +1331,20 @@ function min(args) {
         throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
-    // TODO: implement array support
+    if (arguments.length == 1 && arguments[0] instanceof Array) {
+        return min.apply(this, arguments[0]);
+    }
     // TODO: implement matrix support
 
-    var min = arguments[0];
+    var res = arguments[0];
     for (var i = 1, iMax = arguments.length; i < iMax; i++) {
         var value = arguments[i];
-        if (smaller(value, min)) {
-            min = value;
+        if (smaller(value, res)) {
+            res = value;
         }
     }
 
-    return max;
+    return res;
 }
 
 math.min = min;
@@ -1349,18 +1385,20 @@ function max(args) {
         throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
-    // TODO: implement array support
+    if (arguments.length == 1 && arguments[0] instanceof Array) {
+        return max.apply(this, arguments[0]);
+    }
     // TODO: implement matrix support
 
-    var max = arguments[0];
+    var res = arguments[0];
     for (var i = 1, iMax = arguments.length; i < iMax; i++) {
         var value = arguments[i];
-        if (larger(value, max)) {
-            max = value;
+        if (larger(value, res)) {
+            res = value;
         }
     }
 
-    return max;
+    return res;
 }
 
 math.max = max;
@@ -1448,8 +1486,8 @@ unit_in.doc ={
 
 /**
  * Calculate the sine of a value, sin(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function sin(x) {
     if (arguments.length != 1) {
@@ -1474,7 +1512,9 @@ function sin(x) {
         return Math.sin(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, sin);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('sin', x);
@@ -1569,8 +1609,8 @@ atan2.doc = {
 
 /**
  * Calculate the inverse sine of a value, asin(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function asin(x) {
     if (arguments.length != 1) {
@@ -1606,7 +1646,9 @@ function asin(x) {
         return new Complex(temp4.im, -temp4.re);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, asin);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('asin', x);
@@ -1637,8 +1679,8 @@ asin.doc = {
 
 /**
  * Calculate the inverse tangent of a value, atan(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function atan(x) {
     if (arguments.length != 1) {
@@ -1667,7 +1709,9 @@ function atan(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, atan);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('atan', x);
@@ -1698,8 +1742,8 @@ atan.doc = {
 
 /**
  * Calculate the cosecant of a value, csc(x) = 1/sin(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function csc(x) {
     if (arguments.length != 1) {
@@ -1728,7 +1772,9 @@ function csc(x) {
         return 1 / Math.sin(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, csc);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('csc', x);
@@ -1760,8 +1806,8 @@ csc.doc = {
 
 /**
  * Calculate the cosine of a value, cos(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function cos(x) {
     if (arguments.length != 1) {
@@ -1787,7 +1833,9 @@ function cos(x) {
         return Math.cos(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, cos);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('cos', x);
@@ -1821,8 +1869,8 @@ cos.doc = {
 
 /**
  * Calculate the cotangent of a value, cot(x) = 1/tan(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function cot(x) {
     if (arguments.length != 1) {
@@ -1850,7 +1898,9 @@ function cot(x) {
         return 1 / Math.tan(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, cot);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('cot', x);
@@ -1882,8 +1932,8 @@ cot.doc = {
 
 /**
  * Calculate the secant of a value, sec(x) = 1/cos(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function sec(x) {
     if (arguments.length != 1) {
@@ -1911,7 +1961,9 @@ function sec(x) {
         return 1 / Math.cos(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, sec);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('sec', x);
@@ -1943,8 +1995,8 @@ sec.doc = {
 
 /**
  * Calculate the tangent of a value, tan(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function tan(x) {
     if (arguments.length != 1) {
@@ -1973,7 +2025,9 @@ function tan(x) {
         return Math.tan(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, tan);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('tan', x);
@@ -2006,8 +2060,8 @@ tan.doc = {
 
 /**
  * Calculate the inverse cosine of a value, acos(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function acos(x) {
     if (arguments.length != 1) {
@@ -2043,7 +2097,9 @@ function acos(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, acos);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('acos', x);
@@ -2075,8 +2131,8 @@ acos.doc = {
 /**
  * Compute the argument of a complex value.
  * If x = a+bi, the argument is computed as atan2(b, a).
- * @param {Number | Complex} x
- * @return {Number} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Array} res
  */
 function arg(x) {
     if (arguments.length != 1) {
@@ -2091,7 +2147,9 @@ function arg(x) {
         return Math.atan2(x.im, x.re);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, arg);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('arg', x);
@@ -2127,8 +2185,8 @@ arg.doc = {
 /**
  * Compute the complex conjugate of a complex value.
  * If x = a+bi, the complex conjugate is a-bi.
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function conj(x) {
     if (arguments.length != 1) {
@@ -2143,7 +2201,9 @@ function conj(x) {
         return new Complex(x.re, -x.im);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, conj);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('conj', x);
@@ -2178,8 +2238,8 @@ conj.doc = {
 
 /**
  * Get the imaginary part of a complex number.
- * @param {Number | Complex} x
- * @return {Number} im
+ * @param {Number | Complex | Array} x
+ * @return {Number | Array} im
  */
 function im(x) {
     if (arguments.length != 1) {
@@ -2194,7 +2254,9 @@ function im(x) {
         return x.im;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, im);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('im', x);
@@ -2228,8 +2290,8 @@ im.doc = {
 
 /**
  * Get the real part of a complex number.
- * @param {Number | Complex} x
- * @return {Number} re
+ * @param {Number | Complex | Array} x
+ * @return {Number | Array} re
  */
 function re(x) {
     if (arguments.length != 1) {
@@ -2244,7 +2306,9 @@ function re(x) {
         return x.re;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, re);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('re', x);
@@ -2732,8 +2796,8 @@ unequal.doc = {
 
 /**
  * Calculate the 10-base logarithm of a value, log10(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function log10(x) {
     if (arguments.length != 1) {
@@ -2757,7 +2821,9 @@ function log10(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, log10);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('log10', x);
@@ -2790,8 +2856,8 @@ log10.doc = {
 
 /**
  * Round a value towards zero, fix(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function fix(x) {
     if (arguments.length != 1) {
@@ -2809,7 +2875,9 @@ function fix(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, fix);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('fix', x);
@@ -3002,8 +3070,8 @@ mod.doc = {
 
 /**
  * Calculate the exponent of a value, exp(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function exp (x) {
     if (arguments.length != 1) {
@@ -3021,7 +3089,9 @@ function exp (x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, exp);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('exp', x);
@@ -3127,8 +3197,8 @@ largereq.doc = {
 
 /**
  * Calculate the square root of a value
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function sqrt (x) {
     if (arguments.length != 1) {
@@ -3160,7 +3230,9 @@ function sqrt (x) {
         }
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, sqrt);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('sqrt', x);
@@ -3321,8 +3393,8 @@ larger.doc = {
 /**
  * Compute the sign of a value.
  * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function sign(x) {
     if (arguments.length != 1) {
@@ -3348,7 +3420,9 @@ function sign(x) {
         return new Complex(x.re / abs, x.im / abs);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, sign);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('sign', x);
@@ -3380,8 +3454,8 @@ sign.doc = {
 
 /**
  * Inverse the sign of a value. -x or unaryminus(x)
- * @param  {Number | Complex | Unit} x
- * @return {Number | Complex | Unit} res
+ * @param  {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Unit | Array} res
  */
 function unaryminus(x) {
     if (arguments.length != 1) {
@@ -3403,7 +3477,9 @@ function unaryminus(x) {
         return res;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, unaryminus);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('unaryminus', x);
@@ -3507,8 +3583,8 @@ smaller.doc = {
 
 /**
  * Calculate the square root of a value
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function abs(x) {
     if (arguments.length != 1) {
@@ -3523,7 +3599,9 @@ function abs(x) {
         return Math.sqrt(x.re * x.re + x.im * x.im);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, abs);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('abs', x);
@@ -3552,9 +3630,9 @@ abs.doc = {
  * Calculate the logarithm of a value, log(x [, base])
  * base is optional. If not provided, the natural logarithm of x is calculated
  * logarithm for any base, like log(x, base)
- * @param {Number | Complex} x
+ * @param {Number | Complex | Array} x
  * @param {Number | Complex} [base]
- * @return {Number | Complex} res
+ * @return {Number | Complex | Array} res
  */
 function log(x, base) {
     if (arguments.length != 1 && arguments.length != 2) {
@@ -3572,11 +3650,16 @@ function log(x, base) {
                 return log(new Complex(x, 0));
             }
         }
-        else if (x instanceof Complex) {
+
+        if (x instanceof Complex) {
             return new Complex (
                 Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
                 Math.atan2(x.im, x.re)
             );
+        }
+
+        if (x instanceof Array) {
+            return util.map(x, log);
         }
     }
     else {
@@ -3584,7 +3667,6 @@ function log(x, base) {
         return divide(log(x), log(base));
     }
 
-    // TODO: implement array support
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('log', x, base);
@@ -3703,8 +3785,8 @@ pow.doc = {
 
 /**
  * Round a value towards minus infinity, floor(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function floor(x) {
     if (arguments.length != 1) {
@@ -3722,7 +3804,9 @@ function floor(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, floor);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('floor', x);
@@ -3753,8 +3837,8 @@ floor.doc = {
 
 /**
  * Round a value towards plus infinity, ceil(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function ceil(x) {
     if (arguments.length != 1) {
@@ -3772,7 +3856,9 @@ function ceil(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, ceil);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('ceil', x);
@@ -4019,8 +4105,8 @@ random.doc = {
 
 /**
  * Compute the factorial of a value, factorial(x) or x!
- * @Param {Number} x
- * @return {Number} res
+ * @Param {Number | Array} x
+ * @return {Number | Array} res
  */
 function factorial (x) {
     if (arguments.length != 1) {
@@ -4047,7 +4133,9 @@ function factorial (x) {
         return res;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, factorial);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('factorial', x);
@@ -4784,23 +4872,47 @@ Scope.prototype.getUndefinedSymbols = function () {
     return undefinedSymbols;
 };
 
-// TODO: do not use this.token, but a local variable var token for better speed? -> getToken() must return token.
-// TODO: make all parse methods private
-
 /**
  * @constructor math.parser.Parser
+ * Parser parses math expressions and evaluates them or returns a node tree.
  *
  * Methods:
  *    var result = parser.eval(expr);    // evaluate an expression
- *    parser.put(name, value);           // put a variable in the parser
  *    var value = parser.get(name);      // retrieve a variable from the parser
+ *    parser.put(name, value);           // put a variable in the parser
  *
  *    // it is possible to parse an expression into a node tree:
- *    var node = parser.parse(expr);     // parse an expression
+ *    var node = parser.parse(expr);     // parse an expression into a node tree
  *    var result = node.eval();          // evaluate a parsed node
  *
  * Example usage:
- *  var parser = new math.parser.Parser();
+ *    var parser = new math.parser.Parser();
+ *
+ *    // evaluate expressions
+ *    var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
+ *    var b = parser.eval('sqrt(-4)');        // 2i
+ *    var c = parser.eval('2 inch in cm');    // 5.08 cm
+ *    var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
+ *
+ *    // define variables and functions
+ *    parser.eval('x = 7 / 2');               // 3.5
+ *    parser.eval('x + 3');                   // 6.5
+ *    parser.eval('function f(x, y) = x^y');  // f(x, y)
+ *    parser.eval('f(2, 3)');                 // 8
+ *
+ *    // get and put variables and functions
+ *    var x = parser.get('x');                // 7
+ *    var f = parser.get('f');                // function
+ *    var g = f(3, 2);                        // 9
+ *    parser.put('h', 500);
+ *    var i = parser.eval('h / 2');           // 250
+ *    parser.put('hello', function (name) {
+ *        return 'hello, ' + name + '!';
+ *    });
+ *    parser.eval('hello("user")');           // "hello, user!"
+ *
+ *    // clear defined functions and variables
+ *    parser.clear();
  */
 function Parser() {
     if (this.constructor != Parser) {
@@ -4822,6 +4934,7 @@ function Parser() {
     this.c = '';           // current token character in expr
     this.token = '';       // current token
     this.token_type = this.TOKENTYPE.NULL; // type of the token
+    // TODO: do not use this.token, but a local variable var token for better speed? -> getToken() must return token.
 
     this.scope = new Scope();
 }
@@ -5968,8 +6081,13 @@ Parser.prototype.createError = function(message) {
 };
 
 /**
- * Math workspace
  * @constructor math.parser.Workspace
+ *
+ * Workspace manages a set of expressions. Expressions can be added, replace,
+ * deleted, and inserted in the workspace. The workspace keeps track on the
+ * dependencies between the expressions, and automatically updates results of
+ * depending expressions when variables or function definitions are changed in
+ * the workspace.
  *
  * Methods:
  *     var id = workspace.append(expr);

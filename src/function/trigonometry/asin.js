@@ -1,7 +1,7 @@
 /**
  * Calculate the inverse sine of a value, asin(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function asin(x) {
     if (arguments.length != 1) {
@@ -37,7 +37,9 @@ function asin(x) {
         return new Complex(temp4.im, -temp4.re);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, asin);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('asin', x);

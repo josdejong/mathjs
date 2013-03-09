@@ -1,7 +1,7 @@
 /**
  * Compute the factorial of a value, factorial(x) or x!
- * @Param {Number} x
- * @return {Number} res
+ * @Param {Number | Array} x
+ * @return {Number | Array} res
  */
 function factorial (x) {
     if (arguments.length != 1) {
@@ -28,7 +28,9 @@ function factorial (x) {
         return res;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, factorial);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('factorial', x);

@@ -1,7 +1,7 @@
 /**
  * Calculate the cotangent of a value, cot(x) = 1/tan(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function cot(x) {
     if (arguments.length != 1) {
@@ -29,7 +29,9 @@ function cot(x) {
         return 1 / Math.tan(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, cot);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('cot', x);

@@ -1,7 +1,7 @@
 /**
  * Calculate the square root of a value
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function sqrt (x) {
     if (arguments.length != 1) {
@@ -33,7 +33,9 @@ function sqrt (x) {
         }
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, sqrt);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('sqrt', x);

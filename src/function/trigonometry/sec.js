@@ -1,7 +1,7 @@
 /**
  * Calculate the secant of a value, sec(x) = 1/cos(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function sec(x) {
     if (arguments.length != 1) {
@@ -29,7 +29,9 @@ function sec(x) {
         return 1 / Math.cos(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, sec);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('sec', x);

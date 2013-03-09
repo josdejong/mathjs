@@ -1,7 +1,7 @@
 /**
  * Get the real part of a complex number.
- * @param {Number | Complex} x
- * @return {Number} re
+ * @param {Number | Complex | Array} x
+ * @return {Number | Array} re
  */
 function re(x) {
     if (arguments.length != 1) {
@@ -16,7 +16,9 @@ function re(x) {
         return x.re;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, re);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('re', x);

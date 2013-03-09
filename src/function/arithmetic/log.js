@@ -2,9 +2,9 @@
  * Calculate the logarithm of a value, log(x [, base])
  * base is optional. If not provided, the natural logarithm of x is calculated
  * logarithm for any base, like log(x, base)
- * @param {Number | Complex} x
+ * @param {Number | Complex | Array} x
  * @param {Number | Complex} [base]
- * @return {Number | Complex} res
+ * @return {Number | Complex | Array} res
  */
 function log(x, base) {
     if (arguments.length != 1 && arguments.length != 2) {
@@ -22,11 +22,16 @@ function log(x, base) {
                 return log(new Complex(x, 0));
             }
         }
-        else if (x instanceof Complex) {
+
+        if (x instanceof Complex) {
             return new Complex (
                 Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
                 Math.atan2(x.im, x.re)
             );
+        }
+
+        if (x instanceof Array) {
+            return util.map(x, log);
         }
     }
     else {
@@ -34,7 +39,6 @@ function log(x, base) {
         return divide(log(x), log(base));
     }
 
-    // TODO: implement array support
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('log', x, base);

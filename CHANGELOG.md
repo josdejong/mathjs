@@ -2,10 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
-## <not yet released, version 0.3.0
+## <not yet released>, version 0.3.0
 
 - Implemented Workspace
 - Implemented methods cot, csc, sec.
+- Implemented Array support for methods with one parameter.
 
 
 ## 2013-02-25, version 0.2.0

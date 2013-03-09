@@ -1,8 +1,8 @@
 /**
  * Compute the complex conjugate of a complex value.
  * If x = a+bi, the complex conjugate is a-bi.
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function conj(x) {
     if (arguments.length != 1) {
@@ -17,7 +17,9 @@ function conj(x) {
         return new Complex(x.re, -x.im);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, conj);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('conj', x);

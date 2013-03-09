@@ -1,7 +1,7 @@
 /**
  * Round a value towards zero, fix(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function fix(x) {
     if (arguments.length != 1) {
@@ -19,7 +19,9 @@ function fix(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, fix);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('fix', x);

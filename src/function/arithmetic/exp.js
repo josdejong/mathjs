@@ -1,7 +1,7 @@
 /**
  * Calculate the exponent of a value, exp(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function exp (x) {
     if (arguments.length != 1) {
@@ -19,7 +19,9 @@ function exp (x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, exp);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('exp', x);

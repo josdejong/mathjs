@@ -8,18 +8,20 @@ function min(args) {
         throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
-    // TODO: implement array support
+    if (arguments.length == 1 && arguments[0] instanceof Array) {
+        return min.apply(this, arguments[0]);
+    }
     // TODO: implement matrix support
 
-    var min = arguments[0];
+    var res = arguments[0];
     for (var i = 1, iMax = arguments.length; i < iMax; i++) {
         var value = arguments[i];
-        if (smaller(value, min)) {
-            min = value;
+        if (smaller(value, res)) {
+            res = value;
         }
     }
 
-    return max;
+    return res;
 }
 
 math.min = min;

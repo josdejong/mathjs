@@ -1,7 +1,7 @@
 /**
  * Calculate the cosine of a value, cos(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function cos(x) {
     if (arguments.length != 1) {
@@ -27,7 +27,9 @@ function cos(x) {
         return Math.cos(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, cos);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('cos', x);

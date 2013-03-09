@@ -1,7 +1,7 @@
 /**
  * Calculate the inverse tangent of a value, atan(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function atan(x) {
     if (arguments.length != 1) {
@@ -30,7 +30,9 @@ function atan(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, atan);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('atan', x);

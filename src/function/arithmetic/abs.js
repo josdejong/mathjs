@@ -1,7 +1,7 @@
 /**
  * Calculate the square root of a value
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function abs(x) {
     if (arguments.length != 1) {
@@ -16,7 +16,9 @@ function abs(x) {
         return Math.sqrt(x.re * x.re + x.im * x.im);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, abs);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('abs', x);

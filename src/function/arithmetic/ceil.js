@@ -1,7 +1,7 @@
 /**
  * Round a value towards plus infinity, ceil(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function ceil(x) {
     if (arguments.length != 1) {
@@ -19,7 +19,9 @@ function ceil(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, ceil);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('ceil', x);

@@ -1,7 +1,7 @@
 /**
  * Calculate the inverse cosine of a value, acos(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function acos(x) {
     if (arguments.length != 1) {
@@ -37,7 +37,9 @@ function acos(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, acos);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('acos', x);

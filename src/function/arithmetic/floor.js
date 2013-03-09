@@ -1,7 +1,7 @@
 /**
  * Round a value towards minus infinity, floor(x)
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function floor(x) {
     if (arguments.length != 1) {
@@ -19,7 +19,9 @@ function floor(x) {
         );
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, floor);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('floor', x);

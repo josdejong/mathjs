@@ -1,7 +1,7 @@
 /**
  * Calculate the sine of a value, sin(x)
- * @param {Number | Complex | Unit} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
  */
 function sin(x) {
     if (arguments.length != 1) {
@@ -26,7 +26,9 @@ function sin(x) {
         return Math.sin(x.value);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return util.map(x, sin);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('sin', x);
