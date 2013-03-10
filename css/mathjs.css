@@ -1,6 +1,6 @@
 
 body {
-    background: white url('img/background.png') repeat;
+    background: #f5f5f5 url('img/low_contrast_linen.png') repeat;
     height: 100%;
 
     font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Verdana, Tahoma, sans-serif;
@@ -221,6 +221,7 @@ pre code,
 
     border: 1px solid #e5e5e5;
     background-color: white;
+    box-shadow: inset 2px 2px 5px rgba(192, 192, 192, 0.1);
 }
 
 .console button.eval {
