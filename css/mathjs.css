@@ -20,7 +20,7 @@ body {
     min-height: 700px;
     margin: 20px auto 0 auto;
     background-color: white;
-    padding: 40px 40px 120px 40px;
+    padding: 40px 50px 120px 50px;
     border: 1px solid lightgray;
     border-radius: 3px;
 
@@ -30,7 +30,7 @@ body {
 #footer {
     color: #c8c8c8;
     text-align: center;
-    margin: 0 auto 30px auto;
+    margin: 5px auto 30px auto;
 }
 
 div.cols {
@@ -38,28 +38,34 @@ div.cols {
     margin: 0;
 }
 
-div.cols div.left {
+div.cols .left {
     float: left;
     width: 330px;
 }
 
-div.cols div.right {
+div.cols .right {
     float: right;
     width: 330px;
 }
 
 
-div.cols div.end {
+div.cols .end {
     clear: both;
+    height: 0;
+    overflow: hidden;
 }
 
 pre code,
 #example,
-#console #input,
-#console .expr,
-#console .res {
+.console .input,
+.console .results .expr,
+.console .results .res {
     font-family: monospace;
     font-size: 12px;
+    color: #363636;
+}
+
+.console .eval {
     color: #363636;
 }
 
@@ -73,22 +79,27 @@ pre code,
 }
 
 #console {
+    width: 100%;
+    height: 300px;
+}
+
+.console {
     position: relative;
     width: 100%;
-    height: 400px;
-    overflow: auto;
-
+    height: 100%;
+    margin: 0;
     padding: 3px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
 
     border: 1px solid #e5e5e5;
     background-color: #f5f5f5;
     border-radius: 2px;
+
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
-#console.fullscreen {
+.console.fullscreen {
     position: fixed;
     left: 0;
     top: 0;
@@ -96,7 +107,26 @@ pre code,
     z-index: 999;
 }
 
-#console button.fullscreen {
+.console .top-panel {
+    width: 100%;
+    height: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0 0 -30px 0;
+    padding: 0 0 30px 0;
+}
+
+.console .bottom-panel {
+    position: relative;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    height: 30px;
+}
+
+.console button.fullscreen {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -109,31 +139,96 @@ pre code,
     background: url('img/fullscreen.png');
 }
 
-#console button.fullscreen:hover {
+.console button.fullscreen:hover {
     opacity: 0.5;
     filter: alpha(opacity=50); /* For IE8 and earlier */
 }
 
-#console.fullscreen button.fullscreen {
+.console.fullscreen button.fullscreen {
     background: url('img/fullscreen_exit.png');
 }
 
-#console .input {
+.console .results {
     width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: auto;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 4px;
+
     border: 1px solid #e5e5e5;
     background-color: white;
+    box-shadow: inset 2px 2px 5px rgba(192, 192, 192, 0.1);
+    line-height: 1.5;
 }
 
-#console .results .expr {
+.console .results .expr {
     padding: 0;
     margin: 0;
 }
 
-#console .results .res {
+.console .results .res {
     padding: 0;
-    margin: 0 0 0 30px;
+    margin: 0 0 5px 30px;
     color: #dc3912;
 }
+
+.console .results .expr,
+.console .results .res {
+    background: none;
+    border: none;
+
+    /* http://css-tricks.com/snippets/css/make-pre-text-wrap/ */
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.console .input-left {
+    width: 100%;
+    height: 100%;
+    margin: 0 -80px 0 0;
+    padding: 0 80px 4px 0;
+    float: left;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.console .input-right {
+    width: 80px;
+    height: 100%;
+    margin: 0;
+    padding: 0 0 4px 4px;
+    float: right;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.console .input {
+    width: 100%;
+    height: 100%;
+    margin: 4px 0 0 0;
+    padding: 2px 4px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+
+    border: 1px solid #e5e5e5;
+    background-color: white;
+}
+
+.console .eval {
+    width: 100%;
+    height: 100%;
+    margin: 4px 0;
+}
+
 
 button.download {
     width: 200px;
@@ -152,6 +247,10 @@ h1 {
     margin-top: 20px;
 }
 
+ul {
+    list-style-type: square;
+}
+
 a {
     color: #dc3912;
 }
@@ -164,8 +263,8 @@ a:hover {
     color: #f43f14;
 }
 
-pre code {
-    padding: 4px 4px;
+pre {
+    padding: 4px;
     background-color: #f5f5f5;
     border: 1px solid #e5e5e5;
     border-radius: 2px;
@@ -173,6 +272,7 @@ pre code {
 
 #footer a {
     color: #c8c8c8;
+    background-color: rgba(245, 245, 245, 0.5);
     text-decoration: none;
 }
 
