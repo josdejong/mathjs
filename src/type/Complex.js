@@ -111,7 +111,7 @@ Complex.parse = function(str) {
     switch (parts.length) {
         case 1:
             part = parts[0];
-            if (part[part.length - 1].toUpperCase() == 'I') {
+            if (part && part[part.length - 1].toUpperCase() == 'I') {
                 // complex number
                 re = 0;
                 im = Number(part.substring(0, part.length - 1));

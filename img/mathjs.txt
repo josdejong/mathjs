@@ -6,7 +6,7 @@ font: Source Sans Pro, 96px
 math:
     size:    243x100px
     color:   ffffffff
-    bgcolor: c3912ff
+    bgcolor: dc3912ff
 
 js:
     size:    87x100px

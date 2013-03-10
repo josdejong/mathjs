@@ -20,7 +20,7 @@ compatible with JavaScript's built-in Math library.
 
 ## Install
 
-Math.js can be installed with [npm](https://npmjs.org/):
+Math.js can be installed using [npm](https://npmjs.org/):
 
     npm install mathjs
 
@@ -422,6 +422,7 @@ To execute tests for the library, run:
 - Build a website
 - Version 0.4.0:
     - Implement Arrays and Matrices
+    - Add examples
 - Version 1.0.0
     - Extensive testing
 
