@@ -1,14 +1,13 @@
 
 body {
-    background-color: white;
-    background-image: url('img/background.png');
-    background-repeat: repeat;
+    background: white url('img/background.png') repeat;
+    height: 100%;
 
-    font-family: arial, sans serif;
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Verdana, Tahoma, sans-serif;
     font-weight: normal;
-    font-size: 11pt;
-    line-height: 1.5;
-    color: #262626;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #363636;
 }
 
 #logo {
@@ -16,69 +15,167 @@ body {
     height: 100px;
 }
 
-#subtitle {
-    color: #dc3912;
-}
-
-#menu {
-    background-color: #666666;
-    color: white;
-    display: block;
-    height: 50px;
-    margin: 40px -40px;
-    padding: 0 40px;
-}
-
-#menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-#menu ul li {
-    border-right: 1px solid #737373;
-    height: 50px;
-
-    padding: 0;
-    margin: 0;
-    float: left;
-
-    text-decoration: none;
-}
-
-#menu ul li:first-child {
-    border-left: 1px solid #737373;
-}
-
-#menu ul li a {
-    text-transform: uppercase;
-    color: #f5f5f5;
-    text-decoration: none;
-
-    display: block;
-    height: 50px;
-    line-height: 50px;
-    padding: 0 20px;
-}
-
-#menu ul li a:hover {
-    background-color: #737373;
-    color: white;
-}
-
-
 #page {
     width: 700px;
     min-height: 700px;
-    margin: 20px auto;
+    margin: 20px auto 0 auto;
     background-color: white;
-    padding: 20px 40px;
+    padding: 40px 40px 120px 40px;
     border: 1px solid lightgray;
     border-radius: 3px;
 
     box-shadow: 2px 2px 10px rgba(128, 128, 128, 0.2);
 }
 
+#footer {
+    color: #c8c8c8;
+    text-align: center;
+    margin: 0 auto 30px auto;
+}
+
+div.cols {
+    padding: 0;
+    margin: 0;
+}
+
+div.cols div.left {
+    float: left;
+    width: 330px;
+}
+
+div.cols div.right {
+    float: right;
+    width: 330px;
+}
+
+
+div.cols div.end {
+    clear: both;
+}
+
+pre code,
+#example,
+#console #input,
+#console .expr,
+#console .res {
+    font-family: monospace;
+    font-size: 12px;
+    color: #363636;
+}
+
+#example {
+    overflow: auto;
+    width: 100%;
+
+    border: 1px solid #e5e5e5;
+    background-color: #f5f5f5;
+    border-radius: 2px;
+}
+
+#console {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: auto;
+
+    padding: 3px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+
+    border: 1px solid #e5e5e5;
+    background-color: #f5f5f5;
+    border-radius: 2px;
+}
+
+#console.fullscreen {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 999;
+}
+
+#console button.fullscreen {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 16px;
+    height: 16px;
+    z-index: 1;
+
+    border: none;
+    cursor: pointer;
+    background: url('img/fullscreen.png');
+}
+
+#console button.fullscreen:hover {
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+#console.fullscreen button.fullscreen {
+    background: url('img/fullscreen_exit.png');
+}
+
+#console .input {
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    background-color: white;
+}
+
+#console .results .expr {
+    padding: 0;
+    margin: 0;
+}
+
+#console .results .res {
+    padding: 0;
+    margin: 0 0 0 30px;
+    color: #dc3912;
+}
+
+button.download {
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: #dc3912;
+    color: white;
+    font-size: 24px;
+    border: none;
+    border-radius: 5px;
+}
+
 h1 {
-    font-size: 150%;
+    font-size: 120%;
+    margin-top: 20px;
+}
+
+a {
+    color: #dc3912;
+}
+
+a:visited {
+    color: #b82e12;
+}
+
+a:hover {
+    color: #f43f14;
+}
+
+pre code {
+    padding: 4px 4px;
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    border-radius: 2px;
+}
+
+#footer a {
+    color: #c8c8c8;
+    text-decoration: none;
+}
+
+#footer a:hover {
+    color: #dc3912;
 }

@@ -14,8 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 
     <link href="css/mathjs.css" rel="stylesheet" type="text/css">
-
-    <script type="text/javascript" src="https://raw.github.com/josdejong/mathjs/master/math.js"></script>
 </head>
 <body>
 <div id="page">
@@ -24,22 +22,21 @@
             <img src="css/img/mathjs_330x100.png" id="logo">
         </a>
     </p>
-    <p id='subtitle'>
-        An extensive math library for JavaScript and Node.js
-    </p>
-
-    <div id="menu">
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Demo</a></li>
-            <li><a href="#">Documentation</a></li>
-            <li><a href="#">About</a></li>
-        </ul>
-    </div>
 
     {{content}}
+
 </div>
 
 <!-- TODO: create a footer -->
+
+<div id="footer">
+    <a href="http://mathjs.org">mathjs.org</a> &bull;
+    <a href="https://github.com/josdejong/mathjs" target="_blank">sourcecode</a> &bull;
+    <a href="https://github.com/josdejong/mathjs#license" target="_blank">copyright &copy; 2013 jos de jong</a>
+</div>
+
+<script src="js/lib/math.js" type="text/javascript"></script>
+<script src="js/console.js" type="text/javascript"></script>
+
 </body>
 </html>
