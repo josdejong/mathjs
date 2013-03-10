@@ -1,9 +1,42 @@
-// TODO: turn the console in a standalone utility
-
+/**
+ * A small console editor to demonstrate the math.js parser.
+ */
 (function (container) {
+    // TODO: turn the console in a standalone utility
+
     var page = document.getElementById('page');
     while (container.firstChild) {
         container.removeChild(container.firstChild);
+    }
+
+    /**
+     * Returns the version of Internet Explorer or a -1
+     * (indicating the use of another browser).
+     * Source: http://msdn.microsoft.com/en-us/library/ms537509(v=vs.85).aspx
+     * @return {Number} Internet Explorer version, or -1 in case of an other browser
+     */
+    function getInternetExplorerVersion () {
+        var rv = -1; // Return value assumes failure.
+        if (navigator.appName == 'Microsoft Internet Explorer')
+        {
+            var ua = navigator.userAgent;
+            var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+            if (re.exec(ua) != null) {
+                rv = parseFloat( RegExp.$1 );
+            }
+        }
+        return rv;
+    }
+
+    // the console does not work well on IE7
+    // TODO: make the demo working on IE7
+    var ieVersion = getInternetExplorerVersion();
+    if (ieVersion == 6 || ieVersion == 7) {
+        container.appendChild(document.createTextNode(
+            'Sorry, this demo is not available on IE7 and older. The math.js ' +
+                'library itself works fine on every version of IE though.'));
+        container.style.color = 'red';
+        return;
     }
 
     // create main frame for the console
@@ -131,7 +164,6 @@
     inputRight.className = 'input-right';
     bottomPanel.appendChild(inputRight);
 
-    // TODO: position the input at the bottom of the editor, with a button "Evaluate" right
     var input = document.createElement('input');
     input.className = 'input';
     input.onkeydown = function (event) {
@@ -141,6 +173,7 @@
         switch (keynum) {
             case 13: // Enter
                 evalInput();
+                return false;
                 break;
             case 38: // Arrow up
                 if (historyIndex > 0) {
