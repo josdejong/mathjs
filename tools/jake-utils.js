@@ -169,7 +169,7 @@ function concat (params) {
     }
 
     var code = '';
-    var separator = String(params.separator) || '';
+    var separator = params.separator ? String(params.separator) : '';
 
     // header
     if (params.header) {
@@ -251,7 +251,7 @@ function minify (params) {
     }
 
     var code = '';
-    var separator = String(params.separator) || '';
+    var separator = params.separator ? String(params.separator) : '';
     var options = params.options || {};
 
     // header
