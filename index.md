@@ -88,3 +88,11 @@ Documentation and source code can be found on github:
 <p>
     <a href="https://github.com/josdejong/mathjs" target="_blank">https://github.com/josdejong/mathjs</a>
 </p>
+
+# License
+
+Math.js is open source and licensend under the Apache 2.0 License:
+
+<p>
+    <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">http://www.apache.org/licenses/LICENSE-2.0</a>
+</p>
