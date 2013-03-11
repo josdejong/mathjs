@@ -15,8 +15,8 @@
  *
  * * Note: arrays and matrices are to be implemented.
  *
- * @version 2013-03-09
- * @date    0.3.0
+ * @version 2013-03-11
+ * @date    0.4.0-SNAPSHOT
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -905,7 +905,7 @@ Complex.parse = function(str) {
     switch (parts.length) {
         case 1:
             part = parts[0];
-            if (part[part.length - 1].toUpperCase() == 'I') {
+            if (part && part[part.length - 1].toUpperCase() == 'I') {
                 // complex number
                 re = 0;
                 im = Number(part.substring(0, part.length - 1));
@@ -6362,6 +6362,7 @@ Workspace.Node.prototype.getResult = function () {
 
 /**
  * parse the node's expression
+ * @private
  */
 Workspace.Node.prototype._parse = function () {
     try {
@@ -6394,6 +6395,7 @@ Workspace.Node.prototype.eval = function () {
  * The elements are not sorted.
  * @param {Array} array1
  * @param {Array} array2
+ * @private
  */
 Workspace._merge = function (array1, array2) {
     for (var i = 0, iMax = array2.length; i < iMax; i++) {
@@ -6502,6 +6504,7 @@ Workspace.prototype.getResult = function (id) {
 /**
  * Update the results of an expression and all dependent expressions
  * @param {Number[]} ids    Ids of the expressions to be updated
+ * @private
  */
 Workspace.prototype._update = function (ids) {
     this.updateSeq++;
@@ -6574,6 +6577,7 @@ Workspace.prototype.autoComplete = function (keyword) {
 /**
  * Return a new, unique id for an expression
  * @return {Number} new id
+ * @private
  */
 Workspace.prototype._getNewId = function () {
     this.idMax++;

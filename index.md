@@ -6,8 +6,8 @@ title: Home
 # An extensive math library for JavaScript and Node.js
 
 Math.js is an extensive math library for JavaScript and Node.js.
-The library features advanced data types, a large set of math functions and
-constants, and a flexible expression parser.
+The library features advanced data types, a large set of mathematical functions
+and constants, and a flexible expression parser.
 
 
 # Features
@@ -56,7 +56,12 @@ parser.eval('sin(45 deg) ^ 2');   // 0.5
         <p>
             Try the expression parser below.
         </p>
-        <div id="console">loading...</div>
+        <div id="commandline">loading...</div>
+        <script type="text/javascript">
+            var editor = new CommandLineEditor({
+                container: document.getElementById('commandline')
+            });
+        </script>
     </div>
     <div class="end">&nbsp;</div>
 </div>
@@ -91,8 +96,5 @@ Documentation and source code can be found on github:
 
 # License
 
-Math.js is open source and licensend under the Apache 2.0 License:
-
-<p>
-    <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">http://www.apache.org/licenses/LICENSE-2.0</a>
-</p>
+Math.js is open source and licensend under the
+<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache 2.0 License</a>.
