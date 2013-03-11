@@ -280,6 +280,7 @@ Workspace.Node.prototype.getResult = function () {
 
 /**
  * parse the node's expression
+ * @private
  */
 Workspace.Node.prototype._parse = function () {
     try {
@@ -312,6 +313,7 @@ Workspace.Node.prototype.eval = function () {
  * The elements are not sorted.
  * @param {Array} array1
  * @param {Array} array2
+ * @private
  */
 Workspace._merge = function (array1, array2) {
     for (var i = 0, iMax = array2.length; i < iMax; i++) {
@@ -420,6 +422,7 @@ Workspace.prototype.getResult = function (id) {
 /**
  * Update the results of an expression and all dependent expressions
  * @param {Number[]} ids    Ids of the expressions to be updated
+ * @private
  */
 Workspace.prototype._update = function (ids) {
     this.updateSeq++;
@@ -492,6 +495,7 @@ Workspace.prototype.autoComplete = function (keyword) {
 /**
  * Return a new, unique id for an expression
  * @return {Number} new id
+ * @private
  */
 Workspace.prototype._getNewId = function () {
     this.idMax++;
