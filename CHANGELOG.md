@@ -1,6 +1,11 @@
 # math.js changelog
 https://github.com/josdejong/mathjs
 
+## 2013-03-12, version 0.4.0
+
+- Improved parser for complex values (math.Complex.parse(str));
+- Fixed method typeof which was not working well with minified and mangle code.
+
 
 ## 2013-03-09, version 0.3.0
 

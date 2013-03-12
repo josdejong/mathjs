@@ -471,28 +471,6 @@ Workspace.prototype.getChanges = function (updateSeq) {
 };
 
 /**
- * Auto complete given keyword
- * @return {String} keyword
- * @return {String[]} array with completed keywords. Can be empty.
- */
-Workspace.prototype.autoComplete = function (keyword) {
-    var keywordLower = keyword.toLowerCase();
-
-    // TODO: reckon with variables defined in the scopes.
-
-    var matches = [];
-    for (var func in math) {
-        if (math.hasOwnProperty(func)) {
-            if (func.toLowerCase().indexOf(keywordLower) == 0) {
-                matches.push(func);
-            }
-        }
-    }
-
-    return matches;
-};
-
-/**
  * Return a new, unique id for an expression
  * @return {Number} new id
  * @private

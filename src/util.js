@@ -79,10 +79,8 @@ if(!Array.prototype.indexOf) {
         return -1;
     };
 
-    try {
+    if (console && console.log) {
         console.log("Warning: Ancient browser detected. Please update your browser");
-    }
-    catch (err) {
     }
 }
 

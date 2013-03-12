@@ -2,17 +2,18 @@
 
 [http://mathjs.org](http://mathjs.org)
 
-Math.js is an extensive math library for JavaScript and Node.js,
-compatible with JavaScript's built-in Math library.
+Math.js is an extensive math library for JavaScript and Node.js.
+The library features advanced data types, a large set of mathematical
+functions, and a flexible expression parser.
 
 
 ## Features
 
-- A flexible expression parser.
-- Supports numbers, complex numbers, units, strings, arrays\*, and
-  matrices\*.
-- A large set of built-in functions and constants.
-- Easily extensible with new functions and constants.
+- Supports real and complex numbers, units, strings, arrays\*, and matrices\*.
+- Contains a large set of built-in functions and constants.
+- Contains a flexible expression parser.
+- Easily extensible.
+- Compatible with JavaScript’s built-in Math library.
 - Powerful and easy to use.
 
 \* Note: arrays and matrices are to be implemented.
@@ -40,8 +41,7 @@ using [require.js](http://requirejs.org/).
 ```js
 var math = require('mathjs');
 
-var a = math.sqrt(-4);
-console.log('a = ' + a);                // 'a = 2i'
+math.sqrt(-4); // 2i
 ```
 
 ### Browser
@@ -56,8 +56,7 @@ Math.js can be loaded as a regular javascript file in the browser:
 </head>
 <body>
     <script type="text/javascript">
-        var a = math.sqrt(-4);
-        document.write('a = ' + a);     // 'a = 2i'
+        math.sqrt(-4); // 2i
     </script>
 </body>
 </html>
@@ -76,20 +75,16 @@ var math = require('mathjs'),
     Unit = math.Unit;
 
 // use methods and types available in the math object
-var a = math.sin(math.pi / 4);
-var b = math.pow(a, 2);
-console.log('b = ' + math.round(b, 3)); // 'b = 0.5'
+var a = math.sin(math.pi / 4);  // 0.7071067811865476
+var b = math.pow(a, 2);         // 0.5
 
-var c = new Complex(3, -4);
-var d = math.sqrt(c);
-console.log('d = ' + d);                // 'd = 2 - i'
+var c = new Complex(3, -4);     // 3 - 4i
+math.sqrt(c);                   // 2 - i
 
-var e = math.sqrt(-4);
-console.log('e = ' + e);                // 'e = 2i'
+math.sqrt(-4);                  // 2i
 
-var f = new Unit(60, 'deg');
-var g = math.cos(f);
-console.log('g = ' + math.round(g, 3)); // 'g = 0.5'
+var f = new Unit(60, 'deg');    // 60 deg
+var g = math.cos(f);            // 0.5
 ```
 
 
@@ -112,10 +107,10 @@ var math = require('mathjs');
 var parser = new math.parser.Parser();
 
 // evaluate expressions
-var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
-var b = parser.eval('sqrt(-4)');        // 2i
-var c = parser.eval('2 inch in cm');    // 5.08 cm
-var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
+var a = parser.eval('sqrt(3^2 + 4^2)'); // a = 5
+var b = parser.eval('sqrt(-4)');        // b = 2i
+var c = parser.eval('2 inch in cm');    // c = 5.08 cm
+var d = parser.eval('cos(45 deg)');     // d = 0.7071067811865476
 
 // define variables and functions
 parser.eval('x = 7 / 2');               // 3.5
@@ -124,11 +119,11 @@ parser.eval('function f(x, y) = x^y');  // f(x, y)
 parser.eval('f(2, 3)');                 // 8
 
 // get and put variables and functions
-var x = parser.get('x');                // 7
-var f = parser.get('f');                // function
-var g = f(3, 2);                        // 9
+var x = parser.get('x');                // x = 7
+var f = parser.get('f');                // f = function
+var g = f(3, 3);                        // g = 27
 parser.put('h', 500);
-var i = parser.eval('h / 2');           // 250
+parser.eval('h / 2');                   // 250
 parser.put('hello', function (name) {
     return 'hello, ' + name + '!';
 });
@@ -166,11 +161,11 @@ var workspace = new math.parser.Workspace();
 // add expressions to the workspace
 var id0 = workspace.append('a = 3/4');
 var id1 = workspace.append('a + 2');
-console.log('a + 2 = ' + workspace.getResult(id1));
+workspace.getResult(id1); // 2.75
 
 // replace expressions in the workspace
 workspace.replace('a=5/2', id0);
-console.log('a + 2 = ' + workspace.getResult(id1));
+workspace.getResult(id1); // 4.5
 ```
 
 Available methods:
@@ -199,9 +194,9 @@ The built-in type Number can be used in all methods.
 ```js
 var math = require('mathjs');
 
-var a = math.subtract(7.1, 2.3);        // 4.8
-var b = math.round(math.pi, 3);         // 3.142
-var c = math.sqrt(new Number(4.41e2));  // 21
+math.subtract(7.1, 2.3);        // 4.8
+math.round(math.pi, 3);         // 3.142
+math.sqrt(new Number(4.41e2));  // 21
 ```
 
 ### String
@@ -211,8 +206,8 @@ The built-in type String can be used in applicable methods.
 ```js
 var math = require('math.js');
 
-var a = math.add('hello ', 'world');    // 'hello world'
-var b = math.max('A', 'D', 'C');        // 'D'
+math.add('hello ', 'world');    // 'hello world'
+math.max('A', 'D', 'C');        // 'D'
 ```
 
 ### Complex
@@ -223,10 +218,10 @@ Math.js supports complex numbers.
 var math = require('math.js'),
     Complex = math.Complex;
 
-var a = new Complex(2, 3);              // 2 + 3i
-var b = new Complex('4 - 2i');          // 4 - 2i
-var c = math.add(a, b);                 // 6 + i
-var d = math.sqrt(-4);                  // 2i
+var a = new Complex(2, 3);      // 2 + 3i
+var b = new Complex('4 - 2i');  // 4 - 2i
+math.add(a, b);                 // 6 + i
+math.sqrt(-4);                  // 2i
 ```
 
 ### Unit
@@ -237,12 +232,12 @@ Math.js supports units.
 var math = require('math.js'),
     Unit = math.Unit;
 
-var a = new Unit(55, 'cm');             // 550 mm
-var b = new Unit(0.1, 'm');             // 100 mm
-var c = math.add(a, b);                 // 650 mm
+var a = new Unit(55, 'cm');     // 550 mm
+var b = new Unit(0.1, 'm');     // 100 mm
+math.add(a, b);                 // 650 mm
 
 var parser = new math.parser.Parser();
-var d = parser.eval('2 inch in cm');    // 5.08 cm
+parser.eval('2 inch in cm');    // 5.08 cm
 ```
 
 ## Constants
@@ -352,12 +347,12 @@ math.import({
 });
 
 // defined methods can be used in both JavaScript as well as the parser
-var a = math.myvalue * 2;               // 84
-var b = math.hello('user');             // 'hello, user!'
+math.myvalue * 2;               // 84
+math.hello('user');             // 'hello, user!'
 
 var parser = new math.parser.Parser();
-parser.eval('myvalue + 10');            // 52
-parser.eval('hello("user")');           // 'hello, user!'
+parser.eval('myvalue + 10');    // 52
+parser.eval('hello("user")');   // 'hello, user!'
 ```
 
 To import functions from a math library like
@@ -419,7 +414,7 @@ To execute tests for the library, run:
 - Version 0.3.0 (2013-03-09):
     - Implement Workspace
     - Implement more methods
-- Build a website
+- Build a website (2013-03-11)
 - Version 0.4.0:
     - Implement Arrays and Matrices
     - Add examples

@@ -233,6 +233,7 @@ Parser.prototype.getToken = function () {
         }
         return;
     }
+
     // check for variables or functions
     if (this.isAlpha(this.c)) {
         this.token_type = this.TOKENTYPE.SYMBOL;

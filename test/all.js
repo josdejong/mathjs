@@ -20,3 +20,5 @@ require('./function/units.js');
 // TODO: test Workspace
 // TODO: test Scope
 // TODO: test Node, Assignment, Block, Constant, FunctionAssignment, Symbol
+
+// TODO: test minified library, for example on math.typeof(new Complex()) -> 'Complex'
