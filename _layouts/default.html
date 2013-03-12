@@ -15,6 +15,13 @@
     <!-- TODO: use minified library instead -->
     <script src="js/lib/math.min.js" type="text/javascript"></script>
     <script src="js/commandline.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var img = new Image();
+        img.src = 'css/img/bright_squares.png';
+        img.onload = function () {
+            document.body.style.background = 'url(\'' + img.src + '\')';
+        }
+    </script>
 </head>
 <body>
 <div id="page">

@@ -2724,7 +2724,7 @@ round.doc = {
         'round(pi, 3)',
         'round(123.45678, 2)'
     ],
-    'seealso': ['ceil', 'floor', 'fix', 'precision']
+    'seealso': ['ceil', 'floor', 'fix']
 };
 
 /**
@@ -2986,7 +2986,7 @@ fix.doc = {
         'fix(-4.2)',
         'fix(-4.8)'
     ],
-    'seealso': ['ceil', 'floor', 'round', 'precision']
+    'seealso': ['ceil', 'floor', 'round']
 };
 
 /**
@@ -3914,75 +3914,7 @@ floor.doc = {
         'floor(3.8)',
         'floor(-4.2)'
     ],
-    'seealso': ['ceil', 'fix', 'round', 'precision']
-};
-
-/**
- * Round a value to a specific precision, precision(x [, n])
- * @param {Number | Complex} x
- * @param {Number} [n]
- * @return {Number | Complex} res
- */
-function precision(x, n) {
-    if (arguments.length != 1 && arguments.length != 2) {
-        throw newArgumentsError('precision', arguments.length, 1, 2);
-    }
-
-    if (n != undefined) {
-        if (!isNumber(n)) {
-            throw new TypeError('Number of digits in function precision must be an integer');
-        }
-        if (n !== Math.round(n)) {
-            throw new TypeError('Number of digits in function precision must be integer');
-        }
-        if (n < 0 || n > 9) {
-            throw new Error ('Number of digits in function precision must be in te range of 0-9');
-        }
-    }
-    else {
-        n = math.options.precision;
-    }
-
-
-    if (isNumber(x)) {
-        return Number(x.toPrecision(n));
-    }
-
-    if (x instanceof Complex) {
-        return new Complex (
-            Number(x.re.toPrecision(n)),
-            Number(x.im.toPrecision(n))
-        );
-    }
-
-    throw newUnsupportedTypeError('precision', x);
-
-
-    // TODO: implement array support
-    // TODO: implement matrix support
-}
-
-math.precision = precision;
-
-/**
- * Function documentation
- */
-precision.doc = {
-    'name': 'precision',
-    'category': 'Arithmetic',
-    'syntax': [
-        'precision(x)',
-        'precision(x, n)'
-    ],
-    'description':
-        'Round a number to a specific precision.' +
-            'If n is not provided, the number will be rounded to a default precision.',
-    'examples': [
-        'precision(pi, 3)',
-        'precision(e, 5)',
-        'precision(0.1234, 2)'
-    ],
-    'seealso': ['ceil', 'fix', 'round', 'floor']
+    'seealso': ['ceil', 'fix', 'round']
 };
 
 /**
@@ -4034,7 +3966,7 @@ ceil.doc = {
         'ceil(3.8)',
         'ceil(-4.2)'
     ],
-    'seealso': ['floor', 'fix', 'round', 'precision']
+    'seealso': ['floor', 'fix', 'round']
 };
 
 /**
