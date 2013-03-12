@@ -155,10 +155,6 @@ if(!Array.prototype.indexOf) {
         }
         return -1;
     };
-
-    if (console && console.log) {
-        console.log("Warning: Ancient browser detected. Please update your browser");
-    }
 }
 
 // Internet Explorer 8 and older does not support Array.forEach, so we define
