@@ -271,11 +271,15 @@ function CommandLineEditor (params) {
         switch (keynum) {
             case 9: // Tab
                 autoComplete();
+                util.preventDefault(event);
+                util.stopPropagation(event);
                 return false;
                 break;
 
             case 13: // Enter
                 evalInput();
+                util.preventDefault(event);
+                util.stopPropagation(event);
                 return false;
                 break;
 
@@ -283,6 +287,8 @@ function CommandLineEditor (params) {
                 if (historyIndex > 0) {
                     historyIndex--;
                     dom.input.value = history[historyIndex] || '';
+                    util.preventDefault(event);
+                    util.stopPropagation(event);
                 }
                 return false;
                 break;
@@ -291,6 +297,8 @@ function CommandLineEditor (params) {
                 if (historyIndex < history.length) {
                     historyIndex++;
                     dom.input.value = history[historyIndex] || '';
+                    util.preventDefault(event);
+                    util.stopPropagation(event);
                 }
                 return false;
                 break;
