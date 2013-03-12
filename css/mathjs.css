@@ -72,6 +72,19 @@ pre code,
     border-radius: 2px;
 }
 
+#example .keyword {
+    color: rgb(0,78,208);
+}
+#example .string {
+    color: orange;
+}
+#example .number {
+    color: #dc3912;
+}
+#example .comment {
+    color: gray;
+}
+
 #commandline {
     width: 100%;
     height: 300px;

@@ -5,9 +5,9 @@ title: Home
 
 # An extensive math library for JavaScript and Node.js
 
-Math.js is an extensive math library for JavaScript and Node.js, featuring
-real and complex numbers, units, matrices, a large set of mathematical
-functions, and a flexible expression parser.
+Math.js is an extensive math library for JavaScript and Node.js.
+It features real and complex numbers, units, matrices, a large set of
+mathematical functions, and a flexible expression parser.
 
 
 # Features
@@ -29,25 +29,25 @@ functions, and a flexible expression parser.
             A code example showing how to use the library.
         </p>
         <pre id="example">
-// load math.js
-var math = require('mathjs');
+<span class="comment">// load math.js</span>
+<span class="keyword">var</span> math = require(<span class="string">'mathjs'</span>);
 
-// methods and constants
-math.round(math.e, 3);            // 2.718
-math.atan2(3, -3) / math.pi;      // 0.75
-math.log(1000, 10);               // 3
+<span class="comment">// methods and constants</span>
+math.round(math.e, <span class="number">3</span>);            <span class="comment">// 2.718</span>
+math.atan2(<span class="number">3</span>, <span class="number">-3</span>) / math.pi;      <span class="comment">// 0.75</span>
+math.log(<span class="number">1000</span>, <span class="number">10</span>);               <span class="comment">// 3</span>
 
-// complex numbers
-var c = new math.Complex(3, -4);  // 3 - 4i
-math.add(c, 2);                   // 5 - 2i
-math.sqrt(-4);                    // 2i
+<span class="comment">// complex numbers</span>
+<span class="keyword">var</span> c = <span class="keyword">new</span> math.Complex(<span class="number">3</span>, <span class="number">-4</span>);  <span class="comment">// 3 - 4i</span>
+math.add(c, <span class="number">2</span>);                   <span class="comment">// 5 - 2i</span>
+math.sqrt(<span class="number">-4</span>);                    <span class="comment">// 2i</span>
 
-// parse expressions
-var parser = new math.parser.Parser();
-parser.eval('1.2 / (2.3 + 0.7)'); // 0.4
-parser.eval('a = 5.08 cm');
-parser.eval('a in inch');         // 2 inch
-parser.eval('sin(45 deg) ^ 2');   // 0.5</pre>
+<span class="comment">// parse expressions</span>
+<span class="keyword">var</span> parser = <span class="keyword">new</span> math.parser.Parser();
+parser.eval(<span class="string">'1.2 / (2.3 + 0.7)'</span>); <span class="comment">// 0.4</span>
+parser.eval(<span class="string">'a = 5.08 cm'</span>);
+parser.eval(<span class="string">'a in inch'</span>);         <span class="comment">// 2 inch</span>
+parser.eval(<span class="string">'sin(45 deg) ^ 2'</span>);   <span class="comment">// 0.5</span></pre>
 
     </div>
     <div class="right">
