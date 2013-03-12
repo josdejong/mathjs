@@ -60,6 +60,30 @@ function CommandLineEditor (params) {
     };
 
     /**
+     * Stop event propagation
+     */
+    util.stopPropagation = function stopPropagation (event) {
+        if (event.stopPropagation) {
+            event.stopPropagation();  // non-IE browsers
+        }
+        else {
+            event.cancelBubble = true;  // IE browsers
+        }
+    };
+
+    /**
+     * Cancels the event if it is cancelable, without stopping further propagation of the event.
+     */
+    util.preventDefault = function preventDefault (event) {
+        if (event.preventDefault) {
+            event.preventDefault();  // non-IE browsers
+        }
+        else {
+            event.returnValue = false;  // IE browsers
+        }
+    };
+
+    /**
      * Clear all DOM childs from an element
      * @param {HTMLElement} element
      */
@@ -133,6 +157,8 @@ function CommandLineEditor (params) {
         document.body.style.overflow = 'hidden'; // (works only if body.style.height is defined)
         fullscreen = true;
         resize();
+        scrollDown();
+        dom.input.focus();
     }
 
     function exitFullscreen() {
@@ -140,28 +166,92 @@ function CommandLineEditor (params) {
         document.body.style.overflow = '';
         fullscreen = false;
         resize();
+        scrollDown();
+    }
+
+    function scrollDown() {
+        dom.results.scrollTop = dom.results.scrollHeight;
+    }
+
+    // Auto complete current input
+    function autoComplete () {
+        var text = dom.input.value;
+        var end = /[a-zA-Z_0-9]+$/.exec(text);
+        if (end) {
+            var keyword = end[0];
+            var matches = [];
+
+            // TODO: not nice to read the (private) defs inside the scope
+            for (var def in parser.scope.defs) {
+                if (parser.scope.defs.hasOwnProperty(def)) {
+                    if (def.indexOf(keyword) == 0) {
+                        matches.push(def);
+                    }
+                }
+            }
+
+            if ('clear'.indexOf(keyword) == 0) {
+                matches.push('clear');
+            }
+
+            var ignore = ['parser', 'Complex', 'Unit'];
+            for (var func in math) {
+                if (math.hasOwnProperty(func)) {
+                    if (func.indexOf(keyword) == 0 && ignore.indexOf(func) == -1) {
+                        matches.push(func);
+                    }
+                }
+            }
+
+            // TODO: in case of multiple matches, show a drop-down box to select one
+            var firstMatch = matches[0];
+            if (firstMatch) {
+                text = text.substring(0, text.length - keyword.length) + firstMatch;
+                dom.input.value = text;
+            }
+        }
     }
 
     /**
-     * KeyDown event handler to catch ESC key in the window
+     * KeyDown event handler to catch global key presses in the window
      * @param {Event} event
      */
-    function onESC (event) {
+    function onWindowKeyDown (event) {
         if (dom.frame.parentNode != container) {
             destroy();
         }
 
         event = event || window.event;
+        var target = event.target || event.srcElement;
         var keynum = event.which || event.keyCode;
-        if (keynum == 27) {
-            exitFullscreen();
+        if (keynum == 83) { // s
+            if (target != dom.input) {
+                dom.input.focus();
+                util.preventDefault(event);
+                util.stopPropagation(event);
+            }
+        }
+        else if (keynum == 27) { // ESC
+            if (fullscreen) {
+                exitFullscreen();
+                util.preventDefault(event);
+                util.stopPropagation(event);
+            }
+        }
+        else if (event.ctrlKey && keynum == 122) { // Ctrl+F11
+            toggleFullscreen();
+            if (fullscreen) {
+                dom.input.focus();
+            }
+            util.preventDefault(event);
+            util.stopPropagation(event);
         }
     }
 
     /**
      * Resize event handler
      */
-    function onResize () {
+    function onWindowResize () {
         if (dom.frame.parentNode != container) {
             destroy();
         }
@@ -179,7 +269,10 @@ function CommandLineEditor (params) {
 
         var keynum = event.which || event.keyCode;
         switch (keynum) {
-            // TODO: implement auto completion on Tab key
+            case 9: // Tab
+                autoComplete();
+                return false;
+                break;
 
             case 13: // Enter
                 evalInput();
@@ -235,7 +328,7 @@ function CommandLineEditor (params) {
         // create fullscreen button
         dom.fullscreen = document.createElement('button');
         dom.fullscreen.className = 'fullscreen';
-        dom.fullscreen.title = 'Toggle full screen display';
+        dom.fullscreen.title = 'Toggle full screen display (Ctrl+F11)';
         dom.fullscreen.onclick = toggleFullscreen;
         dom.topPanel.appendChild(dom.fullscreen);
 
@@ -256,13 +349,13 @@ function CommandLineEditor (params) {
         dom.btnEval = document.createElement('button');
         dom.btnEval.appendChild(document.createTextNode('Evaluate'));
         dom.btnEval.className = 'eval';
-        dom.btnEval.title = 'Evaluate the entered expression';
+        dom.btnEval.title = 'Evaluate the expression (Enter)';
         dom.btnEval.onclick = evalInput;
         dom.inputRight.appendChild(dom.btnEval);
 
         // create global event listeners
-        util.addEventListener(window, 'keydown', onESC);
-        util.addEventListener(window, 'resize', onResize);
+        util.addEventListener(window, 'keydown', onWindowKeyDown);
+        util.addEventListener(window, 'resize', onWindowResize);
     }
 
     /**
@@ -275,8 +368,8 @@ function CommandLineEditor (params) {
         }
 
         // destroy event listeners
-        util.removeEventListener(window, 'keydown', onESC);
-        util.removeEventListener(window, 'resize', onResize);
+        util.removeEventListener(window, 'keydown', onWindowKeyDown);
+        util.removeEventListener(window, 'resize', onWindowResize);
     }
 
     /**
@@ -372,7 +465,7 @@ function CommandLineEditor (params) {
             preRes.appendChild(document.createTextNode(res));
             dom.results.appendChild(preRes);
 
-            dom.results.scrollTop = dom.results.scrollHeight; // scroll down
+            scrollDown();
             dom.input.value = '';
 
             resize();

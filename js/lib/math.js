@@ -2,20 +2,21 @@
  * math.js
  * https://github.com/josdejong/mathjs
  *
- * Math.js is an extensive math library for JavaScript and Node.js,
- * compatible with JavaScript's built-in Math library.
+ * Math.js is an extensive math library for JavaScript and Node.js.
+ * The library features real and complex numbers, units, matrices,
+ * a large set of mathematical functions, and a flexible expression parser.
  *
  * Features:
- *   - A flexible expression parser
- *   - Support for numbers, complex numbers, units, strings, arrays*,
- *     and matrices*
- *   - A large set of built-in functions and constants
- *   - Easily extensible with new functions and constants
- *   - Powerful and easy to use
+ *   - Supports real and complex numbers, units, strings, arrays*, and matrices*.
+ *   - Contains a large set of built-in functions and constants.
+ *   - Contains a flexible expression parser.
+ *   - Easily extensible.
+ *   - Compatible with JavaScript's built-in Math library.
+ *   - Powerful and easy to use.
  *
  * * Note: arrays and matrices are to be implemented.
  *
- * @version 2013-03-11
+ * @version 2013-03-12
  * @date    0.4.0-SNAPSHOT
  *
  * @license
@@ -155,10 +156,8 @@ if(!Array.prototype.indexOf) {
         return -1;
     };
 
-    try {
+    if (console && console.log) {
         console.log("Warning: Ancient browser detected. Please update your browser");
-    }
-    catch (err) {
     }
 }
 
@@ -797,9 +796,13 @@ function isInteger(value) {
  *
  * A complex value can be constructed in the following ways:
  *     var a = new Complex(re, im);
- *     var b = new Complex(str);      // equivalent to Complex.parse(str)
+ *     var b = new Complex(str);
  *     var c = new Complex();
  *     var d = Complex.parse(str);
+ *
+ * The constructor new Complex(str) is equivalent with Complex.parse(str), but
+ * the constructor will throw an error in case of an invalid string, whilst the
+ * parse method will return null.
  *
  * Example usage:
  *     var a = new Complex(3, -4);    // 3 - 4i
@@ -866,71 +869,141 @@ math.Complex = Complex;
  * @returns {Complex | null} complex
  */
 Complex.parse = function(str) {
-    var re = 0,
-        im = 0;
+    var index = -1,
+        c = '';
 
     if (!isString(str)) {
         return null;
     }
 
-    // TODO: replace by some nice regexp?
-    // TODO: also support a pattern like "-2.5e+3 - 7.6e-5i"
-    var parts = [],
-        part;
-    var separator = '+';
-    var index = str.lastIndexOf(separator);
-    if (index == -1) {
-        separator = '-';
-        index = str.lastIndexOf(separator);
-    }
-
-    if (index != -1) {
-        part = trim(str.substring(0, index));
-        if (part) {
-            parts.push(part);
-        }
-        part = trim(str.substring(index + 1));
-        if (part) {
-            parts.push(separator + part);
-        }
-    }
-    else {
-        part = trim(str);
-        if (part) {
-            parts.push(part);
+    function skipWhitespace() {
+        while (c == ' ' || c == '\t') {
+            next();
         }
     }
 
-    var ok = false;
-    switch (parts.length) {
-        case 1:
-            part = parts[0];
-            if (part && part[part.length - 1].toUpperCase() == 'I') {
-                // complex number
-                re = 0;
-                im = Number(part.substring(0, part.length - 1));
-                ok = !isNaN(im);
+    function isDigitDot (c) {
+        return ((c >= '0' && c <= '9') || c == '.');
+    }
+
+    function isDigit (c) {
+        return ((c >= '0' && c <= '9'));
+    }
+
+    // remove last character from a string
+    function pop(str) {
+        return str.substring(0, str.length - 1);
+    }
+
+    function next() {
+        index++;
+        c = str[index];
+    }
+
+    function parseNumber () {
+        var number = '';
+
+        if (c == '+') {
+            next();
+        }
+        if (c == '-') {
+            number += c;
+            next();
+        }
+
+        while (isDigitDot(c)) {
+            number += c;
+            next();
+        }
+
+        // check for scientific notation like "2.3e-4" or "1.23e50"
+        if (c == 'E' || c == 'e') {
+            number += c;
+            next();
+
+            if (c == '+' || c == '-') {
+                number += c;
+                next();
+            }
+
+            // Scientific notation MUST be followed by an exponent
+            if (!isDigit(c)) {
+                // this is no legal number, exponent is missing.
+                return null;
+            }
+
+            while (isDigit(c)) {
+                number += c;
+                next();
+            }
+        }
+
+        return number;
+    }
+
+    next();
+    skipWhitespace();
+    var first = parseNumber();
+    if (first) {
+        if (c == 'I' || c == 'i') {
+            // pure imaginary number
+            next();
+            skipWhitespace();
+            if (c) {
+                // garbage at the end. not good.
+                return null;
+            }
+
+            return new Complex(0, Number(first));
+        }
+        else {
+            skipWhitespace();
+            var separator = c;
+            if (separator != '+' && separator != '-') {
+                // pure real number
+                skipWhitespace();
+                if (c) {
+                    // garbage at the end. not good.
+                    return null;
+                }
+
+                return new Complex(Number(first), 0);
             }
             else {
-                // real number
-                re = Number(part);
-                im = 0;
-                ok = !isNaN(re);
-            }
-            break;
+                // complex and real part
+                next();
+                skipWhitespace();
+                var second = parseNumber();
+                if (!second) {
+                    // imaginary number missing after separator
+                    return null;
+                }
+                if (c != 'I' && c != 'i') {
+                    // 'i' missing at the end of the complex number
+                    return null;
+                }
+                if (separator == '-') {
+                    if (second[0] == '-') {
+                        second =  '+' + second.substring(1);
+                    }
+                    else {
+                        second = '-' + second;
+                    }
+                }
 
-        case 2:
-            part = parts[0];
-            re = Number(parts[0]);
-            im = Number(parts[1].substring(0, parts[1].length - 1));
-            ok = !isNaN(re) && !isNaN(im) &&
-                (parts[1][parts[1].length - 1].toUpperCase() == 'I');
-            break;
+                next();
+                skipWhitespace();
+                if (c) {
+                    // garbage at the end. not good.
+                    return null;
+                }
+
+                return new Complex(Number(first), Number(second));
+            }
+        }
     }
 
-    // TODO: allow '+3-2'
-
-    return ok ? new Complex(re, im) : null;
+    return null;
 };
 
 /**
@@ -967,16 +1040,16 @@ Complex.prototype.copy = function () {
 Complex.prototype.toString = function () {
     var str = '';
 
-    if (this.im === 0) {
+    if (this.im == 0) {
         // real value
         str = util.format(this.re);
     }
-    else if (this.re === 0) {
+    else if (this.re == 0) {
         // purely complex value
-        if (this.im === 1) {
+        if (this.im == 1) {
             str = 'i';
         }
-        else if (this.im === -1) {
+        else if (this.im == -1) {
             str = '-i';
         }
         else {
@@ -1292,8 +1365,17 @@ function _typeof(x) {
         if (x == null) {
             return 'null';
         }
-        if (x && x.constructor && x.constructor.name) {
-            return x.constructor.name.toLowerCase();
+        if (x.constructor) {
+            for (var name in math) {
+                if (math.hasOwnProperty(name)) {
+                    if (x.constructor == math[name]) {
+                        return name.toLowerCase();
+                    }
+                }
+            }
+            if (x.constructor.name) {
+                return x.constructor.name.toLowerCase();
+            }
         }
     }
 
@@ -2642,7 +2724,7 @@ round.doc = {
         'round(pi, 3)',
         'round(123.45678, 2)'
     ],
-    'seealso': ['ceil', 'floor', 'fix']
+    'seealso': ['ceil', 'floor', 'fix', 'precision']
 };
 
 /**
@@ -2904,7 +2986,7 @@ fix.doc = {
         'fix(-4.2)',
         'fix(-4.8)'
     ],
-    'seealso': ['ceil', 'floor', 'round']
+    'seealso': ['ceil', 'floor', 'round', 'precision']
 };
 
 /**
@@ -3832,7 +3914,75 @@ floor.doc = {
         'floor(3.8)',
         'floor(-4.2)'
     ],
-    'seealso': ['ceil', 'fix', 'round']
+    'seealso': ['ceil', 'fix', 'round', 'precision']
+};
+
+/**
+ * Round a value to a specific precision, precision(x [, n])
+ * @param {Number | Complex} x
+ * @param {Number} [n]
+ * @return {Number | Complex} res
+ */
+function precision(x, n) {
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('precision', arguments.length, 1, 2);
+    }
+
+    if (n != undefined) {
+        if (!isNumber(n)) {
+            throw new TypeError('Number of digits in function precision must be an integer');
+        }
+        if (n !== Math.round(n)) {
+            throw new TypeError('Number of digits in function precision must be integer');
+        }
+        if (n < 0 || n > 9) {
+            throw new Error ('Number of digits in function precision must be in te range of 0-9');
+        }
+    }
+    else {
+        n = math.options.precision;
+    }
+
+
+    if (isNumber(x)) {
+        return Number(x.toPrecision(n));
+    }
+
+    if (x instanceof Complex) {
+        return new Complex (
+            Number(x.re.toPrecision(n)),
+            Number(x.im.toPrecision(n))
+        );
+    }
+
+    throw newUnsupportedTypeError('precision', x);
+
+
+    // TODO: implement array support
+    // TODO: implement matrix support
+}
+
+math.precision = precision;
+
+/**
+ * Function documentation
+ */
+precision.doc = {
+    'name': 'precision',
+    'category': 'Arithmetic',
+    'syntax': [
+        'precision(x)',
+        'precision(x, n)'
+    ],
+    'description':
+        'Round a number to a specific precision.' +
+            'If n is not provided, the number will be rounded to a default precision.',
+    'examples': [
+        'precision(pi, 3)',
+        'precision(e, 5)',
+        'precision(0.1234, 2)'
+    ],
+    'seealso': ['ceil', 'fix', 'round', 'floor']
 };
 
 /**
@@ -3884,7 +4034,7 @@ ceil.doc = {
         'ceil(3.8)',
         'ceil(-4.2)'
     ],
-    'seealso': ['floor', 'fix', 'round']
+    'seealso': ['floor', 'fix', 'round', 'precision']
 };
 
 /**
@@ -5107,6 +5257,7 @@ Parser.prototype.getToken = function () {
         }
         return;
     }
+
     // check for variables or functions
     if (this.isAlpha(this.c)) {
         this.token_type = this.TOKENTYPE.SYMBOL;
@@ -6550,28 +6701,6 @@ Workspace.prototype.getChanges = function (updateSeq) {
         'ids': changedIds,
         'updateSeq': this.updateSeq
     };
-};
-
-/**
- * Auto complete given keyword
- * @return {String} keyword
- * @return {String[]} array with completed keywords. Can be empty.
- */
-Workspace.prototype.autoComplete = function (keyword) {
-    var keywordLower = keyword.toLowerCase();
-
-    // TODO: reckon with variables defined in the scopes.
-
-    var matches = [];
-    for (var func in math) {
-        if (math.hasOwnProperty(func)) {
-            if (func.toLowerCase().indexOf(keywordLower) == 0) {
-                matches.push(func);
-            }
-        }
-    }
-
-    return matches;
 };
 
 /**

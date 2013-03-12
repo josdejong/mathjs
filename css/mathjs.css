@@ -1,6 +1,6 @@
 
 body {
-    background: #f5f5f5 url('img/debut_light.png') repeat;
+    background: #f5f5f5 url('img/bright_squares_interlaced.png') repeat;
     height: 100%;
 
     font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Verdana, Tahoma, sans-serif;
@@ -29,7 +29,7 @@ body {
 }
 
 #footer {
-    color: #c8c8c8;
+    color: #b4b4b4;
     text-align: center;
     margin: 5px auto 30px auto;
 }
@@ -77,6 +77,14 @@ pre code,
     height: 300px;
 }
 
+.tips {
+    color: #b4b4b4;
+    margin: 10px 0;
+}
+.tips ul {
+    margin: 0;
+}
+
 button.download {
     width: 200px;
     height: 50px;
@@ -122,8 +130,7 @@ pre {
 }
 
 #footer a {
-    color: #c8c8c8;
-    background-color: rgba(245, 245, 245, 0.5);
+    color: #b4b4b4;
     text-decoration: none;
 }
 

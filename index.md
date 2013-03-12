@@ -7,8 +7,7 @@ title: Home
 
 Math.js is an extensive math library for JavaScript and Node.js.
 The library features real and complex numbers, units, matrices,
-a large set of mathematical functions and constants,
-and a flexible expression parser.
+a large set of mathematical functions, and a flexible expression parser.
 
 
 # Features
@@ -48,8 +47,7 @@ var parser = new math.parser.Parser();
 parser.eval('1.2 / (2.3 + 0.7)'); // 0.4
 parser.eval('a = 5.08 cm');
 parser.eval('a in inch');         // 2 inch
-parser.eval('sin(45 deg) ^ 2');   // 0.5
-        </pre>
+parser.eval('sin(45 deg) ^ 2');   // 0.5</pre>
 
     </div>
     <div class="right">
@@ -63,6 +61,14 @@ parser.eval('sin(45 deg) ^ 2');   // 0.5
                 container: document.getElementById('commandline')
             });
         </script>
+        <div class="tips">
+            Shortcut keys:
+            <ul>
+                <li>Press <b>S</b> to set focus to the input field</li>
+                <li>Press <b>Ctrl+F11</b> to toggle full screen</li>
+                <li>Enter <b>"clear"</b> to clear history</li>
+            </ul>
+        </div>
     </div>
     <div class="end">&nbsp;</div>
 </div>
