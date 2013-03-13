@@ -7,7 +7,7 @@ var util = {};
  * @param {Number} [digits]         number of digits
  * @return {String} formattedValue  The formatted value
  */
-util.format = function (value, digits) {
+util.format = function format(value, digits) {
     if (value === Infinity) {
         return 'Infinity';
     }
@@ -32,12 +32,27 @@ util.format = function (value, digits) {
     }
 };
 
+
+/**
+ * Cast an object to a string
+ * @param {Object} object
+ * @return {String} str
+ */
+util.toString = function toString (object) {
+    if (isNumber(object)) {
+        return util.format(object);
+    }
+    else {
+        return object.toString();
+    }
+};
+
 /**
  * Create a semi UUID
  * source: http://stackoverflow.com/a/105074/1262753
  * @return {String} uuid
  */
-util.randomUUID = function () {
+util.randomUUID = function randomUUID() {
     var S4 = function () {
         return Math.floor(
             Math.random() * 0x10000 /* 65536 */
@@ -60,10 +75,65 @@ util.randomUUID = function () {
  * @param {function} fn
  * @return {Array} res
  */
-util.map = function (array, fn) {
+util.map = function map(array, fn) {
+    if (!array instanceof Array) {
+        throw new TypeError('Array expected');
+    }
+
     return array.map(function (x) {
         return fn(x);
     });
+};
+
+/**
+ * Execute function fn entry wise for each entry in two given arrays, or for an
+ * object and array pair. Returns an array with the results
+ * @param {Array | Object} array1
+ * @param {Array | Object} array2
+ * @param {function} fn
+ * @return {Array} res
+ */
+util.map2 = function map2(array1, array2, fn) {
+    var res, len, i;
+    if (array1 instanceof Array) {
+        if (array2 instanceof Array) {
+            // fn(array, array)
+            if (array1.length != array2.length) {
+                throw new Error('Dimension mismatch ' +
+                    '(' +  array1.length + ' != ' + array2.length + ')');
+            }
+
+            res = [];
+            len = array1.length;
+            for (i = 0; i < len; i++) {
+                res[i] = fn(array1[i], array2[i]);
+            }
+        }
+        else {
+            // fn(array, object)
+            res = [];
+            len = array1.length;
+            for (i = 0; i < len; i++) {
+                res[i] = fn(array1[i], array2);
+            }
+        }
+    }
+    else {
+        if (array2 instanceof Array) {
+            // fn(object, array)
+            res = [];
+            len = array2.length;
+            for (i = 0; i < len; i++) {
+                res[i] = fn(array1, array2[i]);
+            }
+        }
+        else {
+            // fn(object, object)
+            res = fn(array1, array2);
+        }
+    }
+
+    return res;
 };
 
 // Internet Explorer 8 and older does not support Array.indexOf, so we define
