@@ -1,15 +1,15 @@
 /**
  * Change the unit of a value. x in unit or in(x, unit)
- * @param {Unit} x
- * @param {Unit} unit
- * @return {Unit} res
+ * @param {Unit | Array} x
+ * @param {Unit | Array} unit
+ * @return {Unit | Array} res
  */
 function unit_in(x, unit) {
     if (arguments.length != 2) {
         throw newArgumentsError('in', arguments.length, 2);
     }
 
-    if (x instanceof Unit) {
+    if (x instanceof Unit && unit instanceof Unit) {
         // Test if unit has no value
         if (unit.hasValue) {
             throw new Error('Cannot convert to a unit with a value');
@@ -26,7 +26,9 @@ function unit_in(x, unit) {
         return res;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array || unit instanceof Array) {
+        return util.map2(x, unit, unit_in);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('in', x);

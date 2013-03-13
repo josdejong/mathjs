@@ -1,9 +1,9 @@
 /**
  * Check if value x is larger y, x > y
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String} x
- * @param  {Number | Complex | Unit | String} y
- * @return {Boolean} res
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Boolean | Array} res
  */
 function larger(x, y) {
     if (arguments.length != 2) {
@@ -38,7 +38,9 @@ function larger(x, y) {
         return x > y;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, equal);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('larger', x, y);

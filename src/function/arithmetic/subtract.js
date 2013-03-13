@@ -1,8 +1,8 @@
 /**
  * Subtract two values. x - y or subtract(x, y)
- * @param  {Number | Complex | Unit} x
- * @param  {Number | Complex | Unit} y
- * @return {Number | Complex | Unit} res
+ * @param  {Number | Complex | Unit | Array} x
+ * @param  {Number | Complex | Unit | Array} y
+ * @return {Number | Complex | Unit | Array} res
  */
 function subtract(x, y) {
     if (arguments.length != 2) {
@@ -60,7 +60,9 @@ function subtract(x, y) {
         }
     }
 
-    // TODO: implement array support
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, subtract);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('subtract', x, y);

@@ -1,9 +1,9 @@
 /**
  * Check if value a is smaller or equal to b, a <= b
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String} x
- * @param  {Number | Complex | Unit | String} y
- * @return {Boolean} res
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Boolean | Array} res
  */
 function smallereq(x, y) {
     if (arguments.length != 2) {
@@ -38,7 +38,9 @@ function smallereq(x, y) {
         return x <= y;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, smallereq);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('smallereq', x, y);

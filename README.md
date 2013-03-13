@@ -9,14 +9,14 @@ mathematical functions, and a flexible expression parser.
 
 ## Features
 
-- Supports real and complex numbers, units, strings, arrays\*, and matrices\*.
+- Supports real and complex numbers, units, strings, arrays, and matrices\*.
 - Contains a large set of built-in functions and constants.
 - Contains a flexible expression parser.
 - Easily extensible.
 - Compatible with JavaScript’s built-in Math library.
 - Powerful and easy to use.
 
-\* Note: arrays and matrices are to be implemented.
+\* Note: matrices are to be implemented.
 
 
 ## Install
@@ -416,10 +416,12 @@ To execute tests for the library, run:
     - Implement more methods
 - Build a website (2013-03-11)
 - Version 0.4.0:
-    - Implement Arrays and Matrices
-    - Add examples
+    - Implement Arrays
+_ Version 0.5.0
+    - Implement Matrices
 - Version 1.0.0
     - Extensive testing
+    - Add examples and documentation
 
 
 ## License

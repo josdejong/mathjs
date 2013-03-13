@@ -1,8 +1,8 @@
 /**
  * Add two values. x + y or add(x, y)
- * @param  {Number | Complex | Unit | String} x
- * @param  {Number | Complex | Unit | String} y
- * @return {Number | Complex | Unit | String} res
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Number | Complex | Unit | String | Array} res
  */
 function add(x, y) {
     if (arguments.length != 2) {
@@ -63,7 +63,9 @@ function add(x, y) {
         return x + y;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, add);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('add', x, y);

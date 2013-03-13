@@ -32,7 +32,6 @@ util.format = function format(value, digits) {
     }
 };
 
-
 /**
  * Cast an object to a string
  * @param {Object} object
@@ -41,6 +40,10 @@ util.format = function format(value, digits) {
 util.toString = function toString (object) {
     if (isNumber(object)) {
         return util.format(object);
+    }
+    else if (object instanceof Array) {
+        // TODO: implement toString for an array
+        return object.toString();
     }
     else {
         return object.toString();
