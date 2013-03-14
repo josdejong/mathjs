@@ -68,20 +68,9 @@ function Complex(re, im) {
 
 math.Complex = Complex;
 
-/**
- * Parse a complex number from a string. For example Complex.parse("2 + 3i")
- * will return a Complex value where re = 2, im = 3.
- * Returns null if provided string does not contain a valid complex number.
- * @param {String} str
- * @returns {Complex | null} complex
- */
-Complex.parse = function(str) {
-    var index = -1,
-        c = '';
-
-    if (!isString(str)) {
-        return null;
-    }
+// Complex parser methods in a closure
+(function () {
+    var text, index, c;
 
     function skipWhitespace() {
         while (c == ' ' || c == '\t') {
@@ -97,27 +86,35 @@ Complex.parse = function(str) {
         return ((c >= '0' && c <= '9'));
     }
 
-    // remove last character from a string
-    function pop(str) {
-        return str.substring(0, str.length - 1);
-    }
-
     function next() {
         index++;
-        c = str[index];
+        c = text[index];
+    }
+
+    function revert(oldIndex) {
+        index = oldIndex;
+        c = text[index];
     }
 
     function parseNumber () {
         var number = '';
+        var oldIndex = index;
 
         if (c == '+') {
             next();
         }
-        if (c == '-') {
+        else if (c == '-') {
             number += c;
             next();
         }
 
+        if (!isDigitDot(c)) {
+            // a + or - must be followed by a digit
+            revert(oldIndex);
+            return null;
+        }
+
+        // TODO only allow a single dot, and enforce at least one digit before or after the dot
         while (isDigitDot(c)) {
             number += c;
             next();
@@ -136,6 +133,7 @@ Complex.parse = function(str) {
             // Scientific notation MUST be followed by an exponent
             if (!isDigit(c)) {
                 // this is no legal number, exponent is missing.
+                revert(oldIndex);
                 return null;
             }
 
@@ -148,80 +146,126 @@ Complex.parse = function(str) {
         return number;
     }
 
-    next();
-    skipWhitespace();
-    var first = parseNumber();
-    if (first) {
+    function parseComplex () {
+        // check for 'i', '-i', '+i'
+        var cnext = text[index + 1];
         if (c == 'I' || c == 'i') {
-            // pure imaginary number
             next();
-            skipWhitespace();
-            if (c) {
-                // garbage at the end. not good.
-                return null;
-            }
-
-            return new Complex(0, Number(first));
+            return '1';
         }
-        else {
-            skipWhitespace();
-            var separator = c;
-            if (separator != '+' && separator != '-') {
-                // pure real number
+        else if ((c == '+' || c == '-') && (cnext == 'I' || cnext == 'i')) {
+            var number = (c == '+') ? '1' : '-1';
+            next();
+            next();
+            return number;
+        }
+
+        return null;
+    }
+
+    /**
+     * Parse a complex number from a string. For example Complex.parse("2 + 3i")
+     * will return a Complex value where re = 2, im = 3.
+     * Returns null if provided string does not contain a valid complex number.
+     * @param {String} str
+     * @returns {Complex | null} complex
+     */
+    Complex.parse = function parse(str) {
+        text = str;
+        index = -1;
+        c = '';
+
+        if (!isString(text)) {
+            return null;
+        }
+
+        next();
+        skipWhitespace();
+        var first = parseNumber();
+        if (first) {
+            if (c == 'I' || c == 'i') {
+                // pure imaginary number
+                next();
                 skipWhitespace();
                 if (c) {
                     // garbage at the end. not good.
                     return null;
                 }
 
-                return new Complex(Number(first), 0);
+                return new Complex(0, Number(first));
             }
             else {
                 // complex and real part
-                next();
                 skipWhitespace();
-                var second = parseNumber();
-                if (!second) {
-                    // imaginary number missing after separator
-                    return null;
+                var separator = c;
+                if (separator != '+' && separator != '-') {
+                    // pure real number
+                    skipWhitespace();
+                    if (c) {
+                        // garbage at the end. not good.
+                        return null;
+                    }
+
+                    return new Complex(Number(first), 0);
                 }
-                if (c != 'I' && c != 'i') {
-                    // 'i' missing at the end of the complex number
-                    return null;
-                }
-                if (separator == '-') {
-                    if (second[0] == '-') {
-                        second =  '+' + second.substring(1);
+                else {
+                    // complex and real part
+                    next();
+                    skipWhitespace();
+                    var second = parseNumber();
+                    if (second) {
+                        if (c != 'I' && c != 'i') {
+                            // 'i' missing at the end of the complex number
+                            return null;
+                        }
+                        next();
                     }
                     else {
-                        second = '-' + second;
+                        second = parseComplex();
+                        if (!second) {
+                            // imaginary number missing after separator
+                            return null;
+                        }
                     }
-                }
 
-                next();
+                    if (separator == '-') {
+                        if (second[0] == '-') {
+                            second =  '+' + second.substring(1);
+                        }
+                        else {
+                            second = '-' + second;
+                        }
+                    }
+
+                    next();
+                    skipWhitespace();
+                    if (c) {
+                        // garbage at the end. not good.
+                        return null;
+                    }
+
+                    return new Complex(Number(first), Number(second));
+                }
+            }
+        }
+        else {
+            // check for 'i', '-i', '+i'
+            first = parseComplex();
+            if (first) {
                 skipWhitespace();
                 if (c) {
                     // garbage at the end. not good.
                     return null;
                 }
 
-                return new Complex(Number(first), Number(second));
+                return new Complex(0, Number(first));
             }
         }
-    }
 
-    return null;
-};
+        return null;
+    };
 
-/**
- * Trim a string
- * http://stackoverflow.com/a/498995/1262753
- * @param str
- * @return {*|void}
- */
-function trim(str) {
-    return str.replace(/^\s+|\s+$/g, '');
-}
+})();
 
 /**
  * Test whether value is a Complex value
