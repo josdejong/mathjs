@@ -454,10 +454,7 @@ function CommandLineEditor (params) {
 
             var res;
             try {
-                res = parser.eval(expr);
-                if ((res instanceof Number) || (typeof res == 'number')) {
-                    res = math.round(res, 9);
-                }
+                res = math.format(parser.eval(expr));
             }
             catch (err) {
                 res = err.toString();

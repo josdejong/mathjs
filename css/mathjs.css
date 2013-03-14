@@ -73,7 +73,7 @@ pre code,
 }
 
 #example .keyword {
-    color: rgb(0,78,208);
+    color: #004ED0;
 }
 #example .string {
     color: orange;
