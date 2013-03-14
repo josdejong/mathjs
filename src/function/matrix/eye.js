@@ -36,7 +36,6 @@ function eye (m, n) {
         }
     }
 
-    // TODO: add support for n dimensional matrices
     // TODO: use zeros(m, n) instead, then fill the diagonal with ones
     var res = [];
     for (var r = 0; r < rows; r++) {
@@ -47,6 +46,7 @@ function eye (m, n) {
         res[r] = row;
     }
 
+    // fill in ones on the diagonal
     var min = Math.min(rows, cols);
     for (var d = 0; d < min; d++) {
         res[d][d] = 1;
@@ -55,7 +55,8 @@ function eye (m, n) {
     return res;
 }
 
-math.eye = eye;
+// TODO: export method eye to math
+// math.eye = eye;
 
 /**
  * Function documentation
