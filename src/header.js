@@ -6,16 +6,6 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * Features:
- *   - Supports real and complex numbers, units, strings, arrays*, and matrices*.
- *   - Contains a large set of built-in functions and constants.
- *   - Contains a flexible expression parser.
- *   - Easily extensible.
- *   - Compatible with JavaScript's built-in Math library.
- *   - Powerful and easy to use.
- *
- * * Note: arrays and matrices are to be implemented.
- *
  * @version @@version
  * @date    @@date
  *

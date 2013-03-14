@@ -70,7 +70,7 @@ function generateDoc (doc) {
                 res = e;
             }
             desc += expr + '\n';
-            desc += '    ' + util.toString(res) + '\n';
+            desc += '    ' + math.format(res) + '\n';
         }
         desc += '\n';
     }

@@ -33,24 +33,6 @@ util.format = function format(value, digits) {
 };
 
 /**
- * Cast an object to a string
- * @param {Object} object
- * @return {String} str
- */
-util.toString = function toString (object) {
-    if (isNumber(object)) {
-        return util.format(object);
-    }
-    else if (object instanceof Array) {
-        // TODO: implement toString for an array
-        return object.toString();
-    }
-    else {
-        return object.toString();
-    }
-};
-
-/**
  * Create a semi UUID
  * source: http://stackoverflow.com/a/105074/1262753
  * @return {String} uuid
@@ -72,8 +54,8 @@ util.randomUUID = function randomUUID() {
 };
 
 /**
- * Execute function fn for each element in array. Returns an array with the
- * results
+ * Execute function fn element wise for each element in array. Returns an array
+ * with the results
  * @param {Array} array
  * @param {function} fn
  * @return {Array} res
@@ -89,8 +71,8 @@ util.map = function map(array, fn) {
 };
 
 /**
- * Execute function fn entry wise for each entry in two given arrays, or for an
- * object and array pair. Returns an array with the results
+ * Execute function fn element wise for each entry in two given arrays, or for
+ * an object and array pair. Returns an array with the results
  * @param {Array | Object} array1
  * @param {Array | Object} array2
  * @param {function} fn

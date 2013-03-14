@@ -6,17 +6,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * Features:
- *   - Supports real and complex numbers, units, strings, arrays*, and matrices*.
- *   - Contains a large set of built-in functions and constants.
- *   - Contains a flexible expression parser.
- *   - Easily extensible.
- *   - Compatible with JavaScript's built-in Math library.
- *   - Powerful and easy to use.
- *
- * * Note: arrays and matrices are to be implemented.
- *
- * @version 2013-03-13
+ * @version 2013-03-14
  * @date    0.4.0-SNAPSHOT
  *
  * @license
@@ -110,24 +100,6 @@ util.format = function format(value, digits) {
 };
 
 /**
- * Cast an object to a string
- * @param {Object} object
- * @return {String} str
- */
-util.toString = function toString (object) {
-    if (isNumber(object)) {
-        return util.format(object);
-    }
-    else if (object instanceof Array) {
-        // TODO: implement toString for an array
-        return object.toString();
-    }
-    else {
-        return object.toString();
-    }
-};
-
-/**
  * Create a semi UUID
  * source: http://stackoverflow.com/a/105074/1262753
  * @return {String} uuid
@@ -149,8 +121,8 @@ util.randomUUID = function randomUUID() {
 };
 
 /**
- * Execute function fn for each element in array. Returns an array with the
- * results
+ * Execute function fn element wise for each element in array. Returns an array
+ * with the results
  * @param {Array} array
  * @param {function} fn
  * @return {Array} res
@@ -166,8 +138,8 @@ util.map = function map(array, fn) {
 };
 
 /**
- * Execute function fn entry wise for each entry in two given arrays, or for an
- * object and array pair. Returns an array with the results
+ * Execute function fn element wise for each entry in two given arrays, or for
+ * an object and array pair. Returns an array with the results
  * @param {Array | Object} array1
  * @param {Array | Object} array2
  * @param {function} fn
@@ -321,10 +293,12 @@ if (!Array.prototype.map) {
 /**
  * @constructor Unit
  *
- * @param {Number} [value]     A value for the unit, like 5.2
- * @param {String} [prefixUnit]  A unit like "cm" or "inch"
+ * TODO: write comments on using a Unit
+ *
+ * @param {Number} [value]  A value for the unit, like 5.2
+ * @param {String} [unit]   A unit like "cm" or "inch"
  */
-function Unit(value, prefixUnit) {
+function Unit(value, unit) {
     if (this.constructor != Unit) {
         throw new Error('Unit constructor must be called with the new operator');
     }
@@ -337,10 +311,12 @@ function Unit(value, prefixUnit) {
     this.hasValue = false;
     this.fixPrefix = false;  // is set true by the method "x In unit"s
 
-    this._init(value, prefixUnit);
+    this._init(value, unit);
 }
 
 math.Unit = Unit;
+
+// TODO: create a method Unit.parse(str)
 
 /**
  * Test whether value is a Unit
@@ -930,20 +906,9 @@ function Complex(re, im) {
 
 math.Complex = Complex;
 
-/**
- * Parse a complex number from a string. For example Complex.parse("2 + 3i")
- * will return a Complex value where re = 2, im = 3.
- * Returns null if provided string does not contain a valid complex number.
- * @param {String} str
- * @returns {Complex | null} complex
- */
-Complex.parse = function(str) {
-    var index = -1,
-        c = '';
-
-    if (!isString(str)) {
-        return null;
-    }
+// Complex parser methods in a closure
+(function () {
+    var text, index, c;
 
     function skipWhitespace() {
         while (c == ' ' || c == '\t') {
@@ -959,27 +924,35 @@ Complex.parse = function(str) {
         return ((c >= '0' && c <= '9'));
     }
 
-    // remove last character from a string
-    function pop(str) {
-        return str.substring(0, str.length - 1);
-    }
-
     function next() {
         index++;
-        c = str[index];
+        c = text[index];
+    }
+
+    function revert(oldIndex) {
+        index = oldIndex;
+        c = text[index];
     }
 
     function parseNumber () {
         var number = '';
+        var oldIndex = index;
 
         if (c == '+') {
             next();
         }
-        if (c == '-') {
+        else if (c == '-') {
             number += c;
             next();
         }
 
+        if (!isDigitDot(c)) {
+            // a + or - must be followed by a digit
+            revert(oldIndex);
+            return null;
+        }
+
+        // TODO only allow a single dot, and enforce at least one digit before or after the dot
         while (isDigitDot(c)) {
             number += c;
             next();
@@ -998,6 +971,7 @@ Complex.parse = function(str) {
             // Scientific notation MUST be followed by an exponent
             if (!isDigit(c)) {
                 // this is no legal number, exponent is missing.
+                revert(oldIndex);
                 return null;
             }
 
@@ -1010,80 +984,126 @@ Complex.parse = function(str) {
         return number;
     }
 
-    next();
-    skipWhitespace();
-    var first = parseNumber();
-    if (first) {
+    function parseComplex () {
+        // check for 'i', '-i', '+i'
+        var cnext = text[index + 1];
         if (c == 'I' || c == 'i') {
-            // pure imaginary number
             next();
-            skipWhitespace();
-            if (c) {
-                // garbage at the end. not good.
-                return null;
-            }
-
-            return new Complex(0, Number(first));
+            return '1';
         }
-        else {
-            skipWhitespace();
-            var separator = c;
-            if (separator != '+' && separator != '-') {
-                // pure real number
+        else if ((c == '+' || c == '-') && (cnext == 'I' || cnext == 'i')) {
+            var number = (c == '+') ? '1' : '-1';
+            next();
+            next();
+            return number;
+        }
+
+        return null;
+    }
+
+    /**
+     * Parse a complex number from a string. For example Complex.parse("2 + 3i")
+     * will return a Complex value where re = 2, im = 3.
+     * Returns null if provided string does not contain a valid complex number.
+     * @param {String} str
+     * @returns {Complex | null} complex
+     */
+    Complex.parse = function parse(str) {
+        text = str;
+        index = -1;
+        c = '';
+
+        if (!isString(text)) {
+            return null;
+        }
+
+        next();
+        skipWhitespace();
+        var first = parseNumber();
+        if (first) {
+            if (c == 'I' || c == 'i') {
+                // pure imaginary number
+                next();
                 skipWhitespace();
                 if (c) {
                     // garbage at the end. not good.
                     return null;
                 }
 
-                return new Complex(Number(first), 0);
+                return new Complex(0, Number(first));
             }
             else {
                 // complex and real part
-                next();
                 skipWhitespace();
-                var second = parseNumber();
-                if (!second) {
-                    // imaginary number missing after separator
-                    return null;
+                var separator = c;
+                if (separator != '+' && separator != '-') {
+                    // pure real number
+                    skipWhitespace();
+                    if (c) {
+                        // garbage at the end. not good.
+                        return null;
+                    }
+
+                    return new Complex(Number(first), 0);
                 }
-                if (c != 'I' && c != 'i') {
-                    // 'i' missing at the end of the complex number
-                    return null;
-                }
-                if (separator == '-') {
-                    if (second[0] == '-') {
-                        second =  '+' + second.substring(1);
+                else {
+                    // complex and real part
+                    next();
+                    skipWhitespace();
+                    var second = parseNumber();
+                    if (second) {
+                        if (c != 'I' && c != 'i') {
+                            // 'i' missing at the end of the complex number
+                            return null;
+                        }
+                        next();
                     }
                     else {
-                        second = '-' + second;
+                        second = parseComplex();
+                        if (!second) {
+                            // imaginary number missing after separator
+                            return null;
+                        }
                     }
-                }
 
-                next();
+                    if (separator == '-') {
+                        if (second[0] == '-') {
+                            second =  '+' + second.substring(1);
+                        }
+                        else {
+                            second = '-' + second;
+                        }
+                    }
+
+                    next();
+                    skipWhitespace();
+                    if (c) {
+                        // garbage at the end. not good.
+                        return null;
+                    }
+
+                    return new Complex(Number(first), Number(second));
+                }
+            }
+        }
+        else {
+            // check for 'i', '-i', '+i'
+            first = parseComplex();
+            if (first) {
                 skipWhitespace();
                 if (c) {
                     // garbage at the end. not good.
                     return null;
                 }
 
-                return new Complex(Number(first), Number(second));
+                return new Complex(0, Number(first));
             }
         }
-    }
 
-    return null;
-};
+        return null;
+    };
 
-/**
- * Trim a string
- * http://stackoverflow.com/a/498995/1262753
- * @param str
- * @return {*|void}
- */
-function trim(str) {
-    return str.replace(/^\s+|\s+$/g, '');
-}
+})();
 
 /**
  * Test whether value is a Complex value
@@ -1398,7 +1418,7 @@ function generateDoc (doc) {
                 res = e;
             }
             desc += expr + '\n';
-            desc += '    ' + util.toString(res) + '\n';
+            desc += '    ' + math.format(res) + '\n';
         }
         desc += '\n';
     }
@@ -1477,6 +1497,140 @@ _typeof.doc = {
         'typeof(2 - 4i)',
         'typeof(45 deg)',
         'typeof("hello world")'
+    ],
+    'seealso': []
+};
+
+/**
+ * Format a value of any type into a string. Interpolate values into the string.
+ * Usage:
+ *     math.format(array);
+ *     math.format('Hello $name! The date is $date', {name: 'user', date: new Date()});
+ *
+ * @param {String} template
+ * @param {Object} values
+ * @return {String} str
+ */
+function format(template, values) {
+    var num = arguments.length;
+    if (num != 1 && num != 2) {
+        throw newArgumentsError('format', num, 1, 2);
+    }
+
+    if (num == 1) {
+        // just format a value as string
+        var value = arguments[0];
+        if (isNumber(value)) {
+            return util.format(value);
+        }
+
+        if (value instanceof Array) {
+            return formatArray(value);
+        }
+
+        if (value instanceof Object) {
+            return value.toString();
+        }
+
+        return String(value);
+    }
+    else {
+        if (!isString(template)) {
+            throw new TypeError('String expected as first parameter in function format');
+        }
+        if (!(values instanceof Object)) {
+            throw new TypeError('Object expected as first parameter in function format');
+        }
+
+        // format values into a string
+        return template.replace(/\$([\w\.]+)/g, function (original, key) {
+                var keys = key.split('.');
+                var value = values[keys.shift()];
+                while (keys.length && value != undefined) {
+                    var k = keys.shift();
+                    value = k ? value[k] : value + '.';
+                }
+                return value != undefined ? value : original;
+            }
+        );
+    }
+}
+
+math.format = format;
+
+/**
+ * Format a n-dimensional array
+ * @param {Array} array
+ * @returns {string} str
+ */
+function formatArray (array) {
+    var str = '[';
+    var s = size(array)[0];
+
+    if (s.length != 2) {
+        return formatArrayN(array);
+    }
+
+    var rows = s[0];
+    var cols = s[1];
+    for (var r = 0; r < rows; r++) {
+        if (r != 0) {
+            str += '; ';
+        }
+
+        var row = array[r];
+        for (var c = 0; c < cols; c++) {
+            if (c != 0) {
+                str += ', ';
+            }
+            var cell = row[c];
+            if (cell != undefined) {
+                str += format(cell);
+            }
+        }
+    }
+    str += ']';
+
+    return str;
+}
+
+/**
+ * Recursively format an n-dimensional matrix
+ * @param {Array} array
+ * @returns {String} str
+ */
+function formatArrayN (array) {
+    if (array instanceof Array) {
+        var str = '[';
+        var len = array.length;
+        for (var i = 0; i < len; i++) {
+            if (i != 0) {
+                str += ', ';
+            }
+            str += formatArrayN(array[i]);
+        }
+        str += ']';
+        return str;
+    }
+    else {
+        return format(array);
+    }
+}
+
+/**
+ * Function documentation
+ */
+format.doc = {
+    'name': 'format',
+    'category': 'Utils',
+    'syntax': [
+        'format(value)'
+    ],
+    'description': 'Format a value of any type as string.',
+    'examples': [
+        'format(2.3)',
+        'format(3 - 4i)',
+        'format([])'
     ],
     'seealso': []
 };
@@ -1684,7 +1838,6 @@ function eye (m, n) {
         }
     }
 
-    // TODO: add support for n dimensional matrices
     // TODO: use zeros(m, n) instead, then fill the diagonal with ones
     var res = [];
     for (var r = 0; r < rows; r++) {
@@ -1695,6 +1848,7 @@ function eye (m, n) {
         res[r] = row;
     }
 
+    // fill in ones on the diagonal
     var min = Math.min(rows, cols);
     for (var d = 0; d < min; d++) {
         res[d][d] = 1;
@@ -1703,7 +1857,8 @@ function eye (m, n) {
     return res;
 }
 
-math.eye = eye;
+// TODO: export method eye to math
+// math.eye = eye;
 
 /**
  * Function documentation
@@ -1756,6 +1911,8 @@ function size (x) {
     }
 
     if (x instanceof Array) {
+        var s = getSize(x);
+        validate(x, s);
         return [getSize(x)];
     }
     // TODO: implement matrix support
@@ -1772,11 +1929,8 @@ function getSize (x) {
     if (x instanceof Array) {
         var sizeX = x.length;
         if (sizeX) {
-            var sizeI = getSize(x[0]);
-
-            // TODO: validate whether the other elements have the same size
-
-            return [sizeX].concat(sizeI);
+            var size0 = getSize(x[0]);
+            return [sizeX].concat(size0);
         }
         else {
             return [sizeX];
@@ -1787,7 +1941,73 @@ function getSize (x) {
     }
 }
 
-math.size = size;
+/**
+ * Verify whether each element in an n dimensional array has the correct size
+ * @param {Array | Object} array    Array to be validated
+ * @param {Number[]} size           Array with dimensions
+ * @param {Number} [dim]            Current dimension
+ * @throw Error
+ */
+function validate(array, size, dim) {
+    var i,
+        len = array.length;
+    if (!dim) {
+        dim = 0;
+    }
+
+    if (len != size[dim]) {
+        throw new Error('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
+    }
+
+    if (dim < size.length - 1) {
+        // recursively validate each child array
+        var dimNext = dim + 1;
+        for (i = 0; i < len; i++) {
+            var child = array[i];
+            if (!(child instanceof Array)) {
+                throw new Error('Dimension mismatch ' +
+                    '(' + (size.length - 1) + ' < ' + size.length + ')');
+            }
+            validate(array[i], size, dimNext);
+        }
+    }
+    else {
+        // last dimension. none of the childs may be an array
+        for (i = 0; i < len; i++) {
+            if (array[i] instanceof Array) {
+                throw new Error('Dimension mismatch ' +
+                    '(' + (size.length + 1) + ' > ' + size.length + ')');
+            }
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Compare two arrays
+ * @param a
+ * @param b
+ * @return {Boolean} equal   True if both arrays are equal, else false
+ */
+function compare(a, b) {
+    var len = a.length;
+    if (len != b.length) {
+        return false;
+    }
+
+    for (var i = 0; i < len; i++) {
+        if (a[i] != b[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+// TODO: export method size to math
+// math.size = size;
 
 /**
  * Function documentation

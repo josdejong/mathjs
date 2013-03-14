@@ -11,10 +11,12 @@ require('./type/unit.js');
 // test functions
 require('./function/arithmetic.js');
 require('./function/complex.js');
+require('./function/matrix.js');
 require('./function/probability.js');
 require('./function/statistics.js');
 require('./function/trigonometry.js');
 require('./function/units.js');
+require('./function/util.js');
 
 // TODO: test Parser
 // TODO: test Workspace
