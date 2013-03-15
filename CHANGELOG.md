@@ -1,12 +1,14 @@
 # math.js changelog
 https://github.com/josdejong/mathjs
 
-## 2013-03-13, version 0.4.0
+## 2013-03-15, version 0.4.0
 
 - Implemented Array support for all methods.
+- Implemented Array support in the Parser.
+- Implemented method format
 - Improved parser for complex values (math.Complex.parse(str));
 - Improved method help: it now evaluates the examples.
-- Fixed a scoping issue with the Parser.
+- Fixed a scoping issue with the Parser when defining functions.
 - Fixed method typeof which was not working well with minified and mangled code.
 
 

@@ -24,5 +24,5 @@ Constant.prototype.eval = function () {
  * @return {String} str
  */
 Constant.prototype.toString = function() {
-    return this.value ? this.value.toString() : '';
+    return this.value ? math.format(this.value) : '';
 };

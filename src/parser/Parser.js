@@ -959,10 +959,9 @@ Parser.prototype.parse_string = function (scope) {
  * @private
  */
 Parser.prototype.parse_matrix = function (scope) {
-    /* TODO: implement matrix
     if (this.token == '[') {
         // matrix [...]
-        var matrix;
+        var array;
 
         // skip newlines
         this.getToken();
@@ -1019,22 +1018,21 @@ Parser.prototype.parse_matrix = function (scope) {
             }
 
             this.getToken();
-            matrix = new MatrixNode(params);
+            array = new ArrayNode(params);
         }
         else {
             // this is an empty matrix "[ ]"
             this.getToken();
-            matrix = new MatrixNode();
+            array = new ArrayNode([]);
         }
 
         // parse arguments
         while (this.token == '(') {
-            matrix = this.parse_arguments(scope, matrix);
+            array = this.parse_arguments(scope, array);
         }
 
-        return matrix;
+        return array;
     }
-    */
 
     return this.parse_number(scope);
 };

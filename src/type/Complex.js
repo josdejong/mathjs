@@ -49,7 +49,7 @@ function Complex(re, im) {
                 return c;
             }
             else {
-                throw new SyntaxError('"' + re + '" is no valid complex number');
+                throw new SyntaxError('String "' + re + '" is no valid complex number');
             }
             break;
 

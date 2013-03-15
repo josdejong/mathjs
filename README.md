@@ -241,6 +241,25 @@ var parser = new math.parser.Parser();
 parser.eval('2 inch in cm');    // 5.08 cm
 ```
 
+### Array
+
+Math.js supports n-dimensional arrays. Arrays can be created via JavaScript or
+using the Parser.
+
+```js
+var math = require('math.js'),
+    parser = new math.parser.Parser();
+
+math.sqrt([1, 4, 9, 16, 25]);           // [1, 2, 3, 4, 5]
+
+var a = [[1, 2], [3, 4]];               // [1, 2; 3, 4]
+var b = parser.eval('[5, 6; 7, 8]');    // [5, 6; 7, 8]
+var c = math.multiply(a, b);
+math.format(c);                         // [19, 22; 43, 50]
+
+```
+
+
 ## Constants
 
 Math.js has the following built-in constants.

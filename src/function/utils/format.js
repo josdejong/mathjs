@@ -25,6 +25,10 @@ function format(template, values) {
             return formatArray(value);
         }
 
+        if (isString(value)) {
+            return '"' + value + '"';
+        }
+
         if (value instanceof Object) {
             return value.toString();
         }
