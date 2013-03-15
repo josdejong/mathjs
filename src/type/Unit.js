@@ -1,10 +1,12 @@
 /**
  * @constructor Unit
  *
- * @param {Number} [value]     A value for the unit, like 5.2
- * @param {String} [prefixUnit]  A unit like "cm" or "inch"
+ * TODO: write comments on using a Unit
+ *
+ * @param {Number} [value]  A value for the unit, like 5.2
+ * @param {String} [unit]   A unit like "cm" or "inch"
  */
-function Unit(value, prefixUnit) {
+function Unit(value, unit) {
     if (this.constructor != Unit) {
         throw new Error('Unit constructor must be called with the new operator');
     }
@@ -17,10 +19,12 @@ function Unit(value, prefixUnit) {
     this.hasValue = false;
     this.fixPrefix = false;  // is set true by the method "x In unit"s
 
-    this._init(value, prefixUnit);
+    this._init(value, unit);
 }
 
 math.Unit = Unit;
+
+// TODO: create a method Unit.parse(str)
 
 /**
  * Test whether value is a Unit

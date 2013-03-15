@@ -6,6 +6,7 @@ https://github.com/josdejong/mathjs
 - Implemented Array support for all methods.
 - Improved parser for complex values (math.Complex.parse(str));
 - Improved method help: it now evaluates the examples.
+- Fixed a scoping issue with the Parser.
 - Fixed method typeof which was not working well with minified and mangled code.
 
 

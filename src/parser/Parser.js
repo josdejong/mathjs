@@ -79,6 +79,7 @@ Parser.prototype.parse = function (expr, scope) {
     this.expr = expr || '';
 
     if (!scope) {
+        this.newScope();
         scope = this.scope;
     }
 
@@ -104,6 +105,7 @@ Parser.prototype.eval = function (expr) {
  * @return {* | undefined} value
  */
 Parser.prototype.get = function (name) {
+    this.newScope();
     var symbol = this.scope.findDef(name);
     if (symbol) {
         return symbol.value;
@@ -118,6 +120,18 @@ Parser.prototype.get = function (name) {
  */
 Parser.prototype.put = function (name, value) {
     this.scope.createDef(name, value);
+};
+
+/**
+ * Create a new scope having the current scope as parent scope, to make current
+ * scope immutable
+ * @private
+ */
+Parser.prototype.newScope = function () {
+    this.scope = new Scope(this.scope);
+
+    // TODO: smartly cleanup scopes which are not relevant anymore
+
 };
 
 /**

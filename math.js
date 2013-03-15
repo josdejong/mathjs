@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 2013-03-14
- * @date    0.4.0-SNAPSHOT
+ * @version 0.4.0-SNAPSHOT
+ * @date    2013-03-15
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -288,6 +288,403 @@ if (!Array.prototype.map) {
         // 9. return A
         return A;
     };
+}
+
+/**
+ * @constructor Complex
+ *
+ * A complex value can be constructed in the following ways:
+ *     var a = new Complex(re, im);
+ *     var b = new Complex(str);
+ *     var c = new Complex();
+ *     var d = Complex.parse(str);
+ *
+ * The constructor new Complex(str) is equivalent with Complex.parse(str), but
+ * the constructor will throw an error in case of an invalid string, whilst the
+ * parse method will return null.
+ *
+ * Example usage:
+ *     var a = new Complex(3, -4);    // 3 - 4i
+ *     var b = new Complex('2 + 6i'); // 2 + 6i
+ *     var c = new Complex();         // 0 + 0i
+ *     var d = math.add(a, b);        // 5 + 2i
+ *
+ * @param {Number | String} re   A number with the real part of the complex
+ *                               value, or a string containing a complex number
+ * @param {Number} [im]          The imaginary part of the complex value
+ */
+function Complex(re, im) {
+    if (this.constructor != Complex) {
+        throw new SyntaxError(
+            'Complex constructor must be called with the new operator');
+    }
+
+    switch (arguments.length) {
+        case 2:
+            // re and im numbers provided
+            if (!isNumber(re) || !isNumber(im)) {
+                throw new TypeError(
+                    'Two numbers or a single string expected in Complex constructor');
+            }
+            this.re = re;
+            this.im = im;
+            break;
+
+        case 1:
+            // parse string into a complex number
+            if (!isString(re)) {
+                throw new TypeError(
+                    'Two numbers or a single string expected in Complex constructor');
+            }
+            var c = Complex.parse(re);
+            if (c) {
+                return c;
+            }
+            else {
+                throw new SyntaxError('"' + re + '" is no valid complex number');
+            }
+            break;
+
+        case 0:
+            // no parameters. Set re and im zero
+            this.re = 0;
+            this.im = 0;
+            break;
+
+        default:
+            throw new SyntaxError(
+                'Wrong number of arguments in Complex constructor ' +
+                    '(' + arguments.length + ' provided, 0, 1, or 2 expected)');
+    }
+}
+
+math.Complex = Complex;
+
+// Complex parser methods in a closure
+(function () {
+    var text, index, c;
+
+    function skipWhitespace() {
+        while (c == ' ' || c == '\t') {
+            next();
+        }
+    }
+
+    function isDigitDot (c) {
+        return ((c >= '0' && c <= '9') || c == '.');
+    }
+
+    function isDigit (c) {
+        return ((c >= '0' && c <= '9'));
+    }
+
+    function next() {
+        index++;
+        c = text[index];
+    }
+
+    function revert(oldIndex) {
+        index = oldIndex;
+        c = text[index];
+    }
+
+    function parseNumber () {
+        var number = '';
+        var oldIndex = index;
+
+        if (c == '+') {
+            next();
+        }
+        else if (c == '-') {
+            number += c;
+            next();
+        }
+
+        if (!isDigitDot(c)) {
+            // a + or - must be followed by a digit
+            revert(oldIndex);
+            return null;
+        }
+
+        // TODO only allow a single dot, and enforce at least one digit before or after the dot
+        while (isDigitDot(c)) {
+            number += c;
+            next();
+        }
+
+        // check for scientific notation like "2.3e-4" or "1.23e50"
+        if (c == 'E' || c == 'e') {
+            number += c;
+            next();
+
+            if (c == '+' || c == '-') {
+                number += c;
+                next();
+            }
+
+            // Scientific notation MUST be followed by an exponent
+            if (!isDigit(c)) {
+                // this is no legal number, exponent is missing.
+                revert(oldIndex);
+                return null;
+            }
+
+            while (isDigit(c)) {
+                number += c;
+                next();
+            }
+        }
+
+        return number;
+    }
+
+    function parseComplex () {
+        // check for 'i', '-i', '+i'
+        var cnext = text[index + 1];
+        if (c == 'I' || c == 'i') {
+            next();
+            return '1';
+        }
+        else if ((c == '+' || c == '-') && (cnext == 'I' || cnext == 'i')) {
+            var number = (c == '+') ? '1' : '-1';
+            next();
+            next();
+            return number;
+        }
+
+        return null;
+    }
+
+    /**
+     * Parse a complex number from a string. For example Complex.parse("2 + 3i")
+     * will return a Complex value where re = 2, im = 3.
+     * Returns null if provided string does not contain a valid complex number.
+     * @param {String} str
+     * @returns {Complex | null} complex
+     */
+    Complex.parse = function parse(str) {
+        text = str;
+        index = -1;
+        c = '';
+
+        if (!isString(text)) {
+            return null;
+        }
+
+        next();
+        skipWhitespace();
+        var first = parseNumber();
+        if (first) {
+            if (c == 'I' || c == 'i') {
+                // pure imaginary number
+                next();
+                skipWhitespace();
+                if (c) {
+                    // garbage at the end. not good.
+                    return null;
+                }
+
+                return new Complex(0, Number(first));
+            }
+            else {
+                // complex and real part
+                skipWhitespace();
+                var separator = c;
+                if (separator != '+' && separator != '-') {
+                    // pure real number
+                    skipWhitespace();
+                    if (c) {
+                        // garbage at the end. not good.
+                        return null;
+                    }
+
+                    return new Complex(Number(first), 0);
+                }
+                else {
+                    // complex and real part
+                    next();
+                    skipWhitespace();
+                    var second = parseNumber();
+                    if (second) {
+                        if (c != 'I' && c != 'i') {
+                            // 'i' missing at the end of the complex number
+                            return null;
+                        }
+                        next();
+                    }
+                    else {
+                        second = parseComplex();
+                        if (!second) {
+                            // imaginary number missing after separator
+                            return null;
+                        }
+                    }
+
+                    if (separator == '-') {
+                        if (second[0] == '-') {
+                            second =  '+' + second.substring(1);
+                        }
+                        else {
+                            second = '-' + second;
+                        }
+                    }
+
+                    next();
+                    skipWhitespace();
+                    if (c) {
+                        // garbage at the end. not good.
+                        return null;
+                    }
+
+                    return new Complex(Number(first), Number(second));
+                }
+            }
+        }
+        else {
+            // check for 'i', '-i', '+i'
+            first = parseComplex();
+            if (first) {
+                skipWhitespace();
+                if (c) {
+                    // garbage at the end. not good.
+                    return null;
+                }
+
+                return new Complex(0, Number(first));
+            }
+        }
+
+        return null;
+    };
+
+})();
+
+/**
+ * Test whether value is a Complex value
+ * @param {*} value
+ * @return {Boolean} isComplex
+ */
+function isComplex(value) {
+    return (value instanceof Complex);
+}
+
+/**
+ * Create a copy of the complex value
+ * @return {Complex} copy
+ */
+Complex.prototype.copy = function () {
+    return new Complex(this.re, this.im);
+};
+
+/**
+ * Get string representation of the Complex value
+ * @return {String} str
+ */
+Complex.prototype.toString = function () {
+    var str = '';
+
+    if (this.im == 0) {
+        // real value
+        str = util.format(this.re);
+    }
+    else if (this.re == 0) {
+        // purely complex value
+        if (this.im == 1) {
+            str = 'i';
+        }
+        else if (this.im == -1) {
+            str = '-i';
+        }
+        else {
+            str = util.format(this.im) + 'i';
+        }
+    }
+    else {
+        // complex value
+        if (this.im > 0) {
+            if (this.im == 1) {
+                str = util.format(this.re) + ' + i';
+            }
+            else {
+                str = util.format(this.re) + ' + ' + util.format(this.im) + 'i';
+            }
+        }
+        else {
+            if (this.im == -1) {
+                str = util.format(this.re) + ' - i';
+            }
+            else {
+                str = util.format(this.re) + ' - ' + util.format(Math.abs(this.im)) + 'i';
+            }
+        }
+    }
+
+    return str;
+};
+
+/**
+ * Type documentation
+ */
+Complex.doc = {
+    'name': 'Complex',
+    'category': 'type',
+    'syntax': [
+        'a + bi',
+        'a + b * i'
+    ],
+    'description':
+        'A complex value a + bi, ' +
+            'where a is the real part and b is the complex part, ' +
+            'and i is the imaginary number defined as sqrt(-1).',
+    'examples': [
+        '2 + 3i',
+        'sqrt(-4)',
+        '(1.2 -5i) * 2'
+    ],
+    'seealso': [
+        'abs',
+        'arg',
+        'conj',
+        'im',
+        're'
+    ]
+};
+
+
+/**
+ * Utility functions for Numbers
+ */
+
+
+/**
+ * Test whether value is a Number
+ * @param {*} value
+ * @return {Boolean} isNumber
+ */
+function isNumber(value) {
+    return (value instanceof Number) || (typeof value == 'number');
+}
+
+/**
+ * Check if a number is integer
+ * @param {Number} value
+ * @return {Boolean} isInteger
+ */
+function isInteger(value) {
+    return (value == Math.round(value));
+}
+
+/**
+ * Utility functions for Strings
+ */
+
+/**
+ * Test whether value is a String
+ * @param {*} value
+ * @return {Boolean} isString
+ */
+function isString(value) {
+    return (value instanceof String) || (typeof value == 'string');
 }
 
 /**
@@ -801,403 +1198,6 @@ Unit.UNITS = [
 ];
 
 /**
- * Utility functions for Strings
- */
-
-/**
- * Test whether value is a String
- * @param {*} value
- * @return {Boolean} isString
- */
-function isString(value) {
-    return (value instanceof String) || (typeof value == 'string');
-}
-
-/**
- * Utility functions for Numbers
- */
-
-
-/**
- * Test whether value is a Number
- * @param {*} value
- * @return {Boolean} isNumber
- */
-function isNumber(value) {
-    return (value instanceof Number) || (typeof value == 'number');
-}
-
-/**
- * Check if a number is integer
- * @param {Number} value
- * @return {Boolean} isInteger
- */
-function isInteger(value) {
-    return (value == Math.round(value));
-}
-
-/**
- * @constructor Complex
- *
- * A complex value can be constructed in the following ways:
- *     var a = new Complex(re, im);
- *     var b = new Complex(str);
- *     var c = new Complex();
- *     var d = Complex.parse(str);
- *
- * The constructor new Complex(str) is equivalent with Complex.parse(str), but
- * the constructor will throw an error in case of an invalid string, whilst the
- * parse method will return null.
- *
- * Example usage:
- *     var a = new Complex(3, -4);    // 3 - 4i
- *     var b = new Complex('2 + 6i'); // 2 + 6i
- *     var c = new Complex();         // 0 + 0i
- *     var d = math.add(a, b);        // 5 + 2i
- *
- * @param {Number | String} re   A number with the real part of the complex
- *                               value, or a string containing a complex number
- * @param {Number} [im]          The imaginary part of the complex value
- */
-function Complex(re, im) {
-    if (this.constructor != Complex) {
-        throw new SyntaxError(
-            'Complex constructor must be called with the new operator');
-    }
-
-    switch (arguments.length) {
-        case 2:
-            // re and im numbers provided
-            if (!isNumber(re) || !isNumber(im)) {
-                throw new TypeError(
-                    'Two numbers or a single string expected in Complex constructor');
-            }
-            this.re = re;
-            this.im = im;
-            break;
-
-        case 1:
-            // parse string into a complex number
-            if (!isString(re)) {
-                throw new TypeError(
-                    'Two numbers or a single string expected in Complex constructor');
-            }
-            var c = Complex.parse(re);
-            if (c) {
-                return c;
-            }
-            else {
-                throw new SyntaxError('"' + re + '" is no valid complex number');
-            }
-            break;
-
-        case 0:
-            // no parameters. Set re and im zero
-            this.re = 0;
-            this.im = 0;
-            break;
-
-        default:
-            throw new SyntaxError(
-                'Wrong number of arguments in Complex constructor ' +
-                    '(' + arguments.length + ' provided, 0, 1, or 2 expected)');
-    }
-}
-
-math.Complex = Complex;
-
-// Complex parser methods in a closure
-(function () {
-    var text, index, c;
-
-    function skipWhitespace() {
-        while (c == ' ' || c == '\t') {
-            next();
-        }
-    }
-
-    function isDigitDot (c) {
-        return ((c >= '0' && c <= '9') || c == '.');
-    }
-
-    function isDigit (c) {
-        return ((c >= '0' && c <= '9'));
-    }
-
-    function next() {
-        index++;
-        c = text[index];
-    }
-
-    function revert(oldIndex) {
-        index = oldIndex;
-        c = text[index];
-    }
-
-    function parseNumber () {
-        var number = '';
-        var oldIndex = index;
-
-        if (c == '+') {
-            next();
-        }
-        else if (c == '-') {
-            number += c;
-            next();
-        }
-
-        if (!isDigitDot(c)) {
-            // a + or - must be followed by a digit
-            revert(oldIndex);
-            return null;
-        }
-
-        // TODO only allow a single dot, and enforce at least one digit before or after the dot
-        while (isDigitDot(c)) {
-            number += c;
-            next();
-        }
-
-        // check for scientific notation like "2.3e-4" or "1.23e50"
-        if (c == 'E' || c == 'e') {
-            number += c;
-            next();
-
-            if (c == '+' || c == '-') {
-                number += c;
-                next();
-            }
-
-            // Scientific notation MUST be followed by an exponent
-            if (!isDigit(c)) {
-                // this is no legal number, exponent is missing.
-                revert(oldIndex);
-                return null;
-            }
-
-            while (isDigit(c)) {
-                number += c;
-                next();
-            }
-        }
-
-        return number;
-    }
-
-    function parseComplex () {
-        // check for 'i', '-i', '+i'
-        var cnext = text[index + 1];
-        if (c == 'I' || c == 'i') {
-            next();
-            return '1';
-        }
-        else if ((c == '+' || c == '-') && (cnext == 'I' || cnext == 'i')) {
-            var number = (c == '+') ? '1' : '-1';
-            next();
-            next();
-            return number;
-        }
-
-        return null;
-    }
-
-    /**
-     * Parse a complex number from a string. For example Complex.parse("2 + 3i")
-     * will return a Complex value where re = 2, im = 3.
-     * Returns null if provided string does not contain a valid complex number.
-     * @param {String} str
-     * @returns {Complex | null} complex
-     */
-    Complex.parse = function parse(str) {
-        text = str;
-        index = -1;
-        c = '';
-
-        if (!isString(text)) {
-            return null;
-        }
-
-        next();
-        skipWhitespace();
-        var first = parseNumber();
-        if (first) {
-            if (c == 'I' || c == 'i') {
-                // pure imaginary number
-                next();
-                skipWhitespace();
-                if (c) {
-                    // garbage at the end. not good.
-                    return null;
-                }
-
-                return new Complex(0, Number(first));
-            }
-            else {
-                // complex and real part
-                skipWhitespace();
-                var separator = c;
-                if (separator != '+' && separator != '-') {
-                    // pure real number
-                    skipWhitespace();
-                    if (c) {
-                        // garbage at the end. not good.
-                        return null;
-                    }
-
-                    return new Complex(Number(first), 0);
-                }
-                else {
-                    // complex and real part
-                    next();
-                    skipWhitespace();
-                    var second = parseNumber();
-                    if (second) {
-                        if (c != 'I' && c != 'i') {
-                            // 'i' missing at the end of the complex number
-                            return null;
-                        }
-                        next();
-                    }
-                    else {
-                        second = parseComplex();
-                        if (!second) {
-                            // imaginary number missing after separator
-                            return null;
-                        }
-                    }
-
-                    if (separator == '-') {
-                        if (second[0] == '-') {
-                            second =  '+' + second.substring(1);
-                        }
-                        else {
-                            second = '-' + second;
-                        }
-                    }
-
-                    next();
-                    skipWhitespace();
-                    if (c) {
-                        // garbage at the end. not good.
-                        return null;
-                    }
-
-                    return new Complex(Number(first), Number(second));
-                }
-            }
-        }
-        else {
-            // check for 'i', '-i', '+i'
-            first = parseComplex();
-            if (first) {
-                skipWhitespace();
-                if (c) {
-                    // garbage at the end. not good.
-                    return null;
-                }
-
-                return new Complex(0, Number(first));
-            }
-        }
-
-        return null;
-    };
-
-})();
-
-/**
- * Test whether value is a Complex value
- * @param {*} value
- * @return {Boolean} isComplex
- */
-function isComplex(value) {
-    return (value instanceof Complex);
-}
-
-/**
- * Create a copy of the complex value
- * @return {Complex} copy
- */
-Complex.prototype.copy = function () {
-    return new Complex(this.re, this.im);
-};
-
-/**
- * Get string representation of the Complex value
- * @return {String} str
- */
-Complex.prototype.toString = function () {
-    var str = '';
-
-    if (this.im == 0) {
-        // real value
-        str = util.format(this.re);
-    }
-    else if (this.re == 0) {
-        // purely complex value
-        if (this.im == 1) {
-            str = 'i';
-        }
-        else if (this.im == -1) {
-            str = '-i';
-        }
-        else {
-            str = util.format(this.im) + 'i';
-        }
-    }
-    else {
-        // complex value
-        if (this.im > 0) {
-            if (this.im == 1) {
-                str = util.format(this.re) + ' + i';
-            }
-            else {
-                str = util.format(this.re) + ' + ' + util.format(this.im) + 'i';
-            }
-        }
-        else {
-            if (this.im == -1) {
-                str = util.format(this.re) + ' - i';
-            }
-            else {
-                str = util.format(this.re) + ' - ' + util.format(Math.abs(this.im)) + 'i';
-            }
-        }
-    }
-
-    return str;
-};
-
-/**
- * Type documentation
- */
-Complex.doc = {
-    'name': 'Complex',
-    'category': 'type',
-    'syntax': [
-        'a + bi',
-        'a + b * i'
-    ],
-    'description':
-        'A complex value a + bi, ' +
-            'where a is the real part and b is the complex part, ' +
-            'and i is the imaginary number defined as sqrt(-1).',
-    'examples': [
-        '2 + 3i',
-        'sqrt(-4)',
-        '(1.2 -5i) * 2'
-    ],
-    'seealso': [
-        'abs',
-        'arg',
-        'conj',
-        'im',
-        're'
-    ]
-};
-
-
-/**
  * mathjs constants
  */
 math.E          = Math.E;
@@ -1264,540 +1264,2068 @@ function newArgumentsError(name, count, min, max) {
 }
 
 /**
- * Import functions from an object or a file
- * @param {function | String | Object} object
- * @param {boolean} [override]         If true, existing functions will be
- *                                     overwritten. False by default.
+ * Calculate the square root of a value
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
-// TODO: return status information
-function _import(object, override) {
-    var name;
+function abs(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('abs', arguments.length, 1);
+    }
 
-    if (isString(object)) {
-        // a string with a filename
-        if (typeof (require) !== 'undefined') {
-            // load the file using require
-            var module = require(object);
-            _import(module);
-        }
-        else {
-            throw new Error('Cannot load file: require not available.');
-        }
+    if (isNumber(x)) {
+        return Math.abs(x);
     }
-    else if (isSupportedType(object)) {
-        // a single function
-        name = object.name;
-        if (name) {
-            if (override || math[name] === undefined) {
-                math[name] = object;
-            }
-        }
-        else {
-            throw new Error('Cannot import an unnamed function');
-        }
+
+    if (x instanceof Complex) {
+        return Math.sqrt(x.re * x.re + x.im * x.im);
     }
-    else if (object instanceof Object) {
-        // a map with functions
-        for (name in object) {
-            if (object.hasOwnProperty(name)) {
-                var value = object[name];
-                if (isSupportedType(value)) {
-                    if (override || math[name] === undefined) {
-                        math[name] = value;
-                    }
-                }
-                else {
-                    _import(value);
-                }
-            }
-        }
+
+    if (x instanceof Array) {
+        return util.map(x, abs);
     }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('abs', x);
 }
 
-math['import'] = _import;
-
-/**
- * Check whether given object is a supported type
- * @param object
- * @return {Boolean}
- * @private
- */
-function isSupportedType(object) {
-    return (typeof object == 'function') ||
-        isNumber(object) || isString(object) ||
-        (object instanceof Complex) || (object instanceof Unit);
-    // TODO: add boolean?
-}
+math.abs = abs;
 
 /**
  * Function documentation
  */
-_import.doc = {
-    'name': 'import',
-    'category': 'Utils',
+abs.doc = {
+    'name': 'abs',
+    'category': 'Arithmetic',
     'syntax': [
-        'import(string)'
+        'abs(x)'
     ],
-    'description': 'Import functions from a file.',
+    'description': 'Compute the absolute value.',
     'examples': [
-        'import("numbers")',
-        'import("./mylib.js")'
+        'abs(3.5)',
+        'abs(-4.2)'
+    ],
+    'seealso': ['sign']
+};
+
+/**
+ * Add two values. x + y or add(x, y)
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Number | Complex | Unit | String | Array} res
+ */
+function add(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('add', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number + number
+            return x + y;
+        }
+        else if (y instanceof Complex) {
+            // number + complex
+            return new Complex(
+                x + y.re,
+                    y.im
+            )
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex + number
+            return new Complex(
+                x.re + y,
+                x.im
+            )
+        }
+        else if (y instanceof Complex) {
+            // complex + complex
+            return new Complex(
+                x.re + y.re,
+                x.im + y.im
+            );
+        }
+    }
+    else if (x instanceof Unit) {
+        if (y instanceof Unit) {
+            if (!x.equalBase(y)) {
+                throw new Error('Units do not match');
+            }
+
+            if (!x.hasValue) {
+                throw new Error('Unit on left hand side of operator + has no value');
+            }
+
+            if (!y.hasValue) {
+                throw new Error('Unit on right hand side of operator + has no value');
+            }
+
+            var res = x.copy();
+            res.value += y.value;
+            res.fixPrefix = false;
+            return res;
+        }
+    }
+
+    if (isString(x) || isString(y)) {
+        return x + y;
+    }
+
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, add);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('add', x, y);
+}
+
+math.add = add;
+
+/**
+ * Function documentation
+ */
+add.doc = {
+    'name': 'add',
+    'category': 'Operators',
+    'syntax': [
+        'x + y',
+        'add(x, y)'
+    ],
+    'description': 'Add two values.',
+    'examples': [
+        '2.1 + 3.6',
+        'ans - 3.6',
+        '3 + 2i',
+        '"hello" + " world"',
+        '3 cm + 2 inch'
+    ],
+    'seealso': [
+        'subtract'
+    ]
+};
+
+/**
+ * Round a value towards plus infinity, ceil(x)
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function ceil(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('ceil', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.ceil(x);
+    }
+
+    if (x instanceof Complex) {
+        return new Complex (
+            Math.ceil(x.re),
+            Math.ceil(x.im)
+        );
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, ceil);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('ceil', x);
+}
+
+math.ceil = ceil;
+
+/**
+ * Function documentation
+ */
+ceil.doc = {
+    'name': 'ceil',
+    'category': 'Arithmetic',
+    'syntax': [
+        'ceil(x)'
+    ],
+    'description':
+        'Round a value towards plus infinity.' +
+            'If x is complex, both real and imaginary part are rounded ' +
+            'towards plus infinity.',
+    'examples': [
+        'ceil(3.2)',
+        'ceil(3.8)',
+        'ceil(-4.2)'
+    ],
+    'seealso': ['floor', 'fix', 'round']
+};
+
+/**
+ * Compute the cube of a value, x * x * x.',
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function cube(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('cube', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x * x * x;
+    }
+
+    if (x instanceof Complex) {
+        return multiply(multiply(x, x), x);
+    }
+
+    if (x instanceof Array) {
+        return multiply(multiply(x, x), x);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('cube', x);
+}
+
+math.cube = cube;
+
+/**
+ * Function documentation
+ */
+cube.doc = {
+    'name': 'cube',
+    'category': 'Arithmetic',
+    'syntax': [
+        'cube(x)'
+    ],
+    'description': 'Compute the cube of a value. ' +
+        'The cube of x is x * x * x.',
+    'examples': [
+        'cube(2)',
+        '2^3',
+        '2 * 2 * 2'
+    ],
+    'seealso': [
+        'multiply',
+        'square',
+        'pow'
+    ]
+};
+
+/**
+ * Divide two values. x / y or divide(x, y)
+ * @param  {Number | Complex | Unit | Array} x
+ * @param  {Number | Complex} y
+ * @return {Number | Complex | Unit | Array} res
+ */
+function divide(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('divide', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number / number
+            return x / y;
+        }
+        else if (y instanceof Complex) {
+            // number / complex
+            return divideComplex(new Complex(x, 0), y);
+        }
+    }
+
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex / number
+            return divideComplex(x, new Complex(y, 0));
+        }
+        else if (y instanceof Complex) {
+            // complex / complex
+            return divideComplex(x, y);
+        }
+    }
+
+    if (x instanceof Unit) {
+        if (isNumber(y)) {
+            var res = x.copy();
+            res.value /= y;
+            return res;
+        }
+    }
+
+    if (x instanceof Array) {
+        if (y instanceof Array) {
+            // TODO: implement matrix/matrix
+        }
+        else {
+            // matrix / scalar
+            return util.map2(x, y, divide);
+        }
+    }
+
+    if (y instanceof Array) {
+        // TODO: implement scalar/matrix
+    }
+
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('divide', x, y);
+}
+
+/**
+ * Divide two complex numbers. x / y or divide(x, y)
+ * @param {Complex} x
+ * @param {Complex} y
+ * @return {Complex} res
+ * @private
+ */
+function divideComplex (x, y) {
+    var den = y.re * y.re + y.im * y.im;
+    return new Complex(
+        (x.re * y.re + x.im * y.im) / den,
+        (x.im * y.re - x.re * y.im) / den
+    );
+}
+
+math.divide = divide;
+
+/**
+ * Function documentation
+ */
+divide.doc = {
+    'name': 'divide',
+    'category': 'Operators',
+    'syntax': [
+        'x / y',
+        'divide(x, y)'
+    ],
+    'description': 'Divide two values.',
+    'examples': [
+        '2 / 3',
+        'ans * 3',
+        '4.5 / 2',
+        '3 + 4 / 2',
+        '(3 + 4) / 2',
+        '18 km / 4.5'
+    ],
+    'seealso': [
+        'multiply'
+    ]
+};
+
+/**
+ * Check if value x equals y, x == y
+ * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Boolean | Array} res
+ */
+function equal(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('equal', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x == y;
+        }
+        else if (y instanceof Complex) {
+            return (x == y.re) && (y.im == 0);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return (x.re == y) && (x.im == 0);
+        }
+        else if (y instanceof Complex) {
+            return (x.re == y.re) && (x.im == y.im);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value == y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x == y;
+    }
+
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, equal);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('equal', x, y);
+}
+
+math.equal = equal;
+
+/**
+ * Function documentation
+ */
+equal.doc = {
+    'name': 'equal',
+    'category': 'Operators',
+    'syntax': [
+        'x == y',
+        'equal(x, y)'
+    ],
+    'description':
+        'Check equality of two values. ' +
+            'Returns 1 if the values are equal, and 0 if not.',
+    'examples': [
+        '2+2 == 3',
+        '2+2 == 4',
+        'a = 3.2',
+        'b = 6-2.8',
+        'a == b',
+        '50cm == 0.5m'
+    ],
+    'seealso': [
+        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+/**
+ * Calculate the exponent of a value, exp(x)
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function exp (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('exp', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.exp(x);
+    }
+    if (x instanceof Complex) {
+        var r = Math.exp(x.re);
+        return new Complex(
+            r * Math.cos(x.im),
+            r * Math.sin(x.im)
+        );
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, exp);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('exp', x);
+}
+
+math.exp = exp;
+
+/**
+ * Function documentation
+ */
+exp.doc = {
+    'name': 'exp',
+    'category': 'Arithmetic',
+    'syntax': [
+        'exp(x)'
+    ],
+    'description': 'Calculate the exponent of a value.',
+    'examples': [
+        'exp(1.3)',
+        'e ^ 1.3',
+        'log(exp(1.3))',
+        'x = 2.4',
+        '(exp(i*x) == cos(x) + i*sin(x))   # Euler\'s formula'
+    ],
+    'seealso': [
+        'square',
+        'multiply',
+        'log'
+    ]
+};
+/**
+ * Round a value towards zero, fix(x)
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function fix(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('fix', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return (value > 0) ? Math.floor(x) : Math.ceil(x);
+    }
+
+    if (x instanceof Complex) {
+        return new Complex(
+            (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
+            (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
+        );
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, fix);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('fix', x);
+}
+
+math.fix = fix;
+
+/**
+ * Function documentation
+ */
+fix.doc = {
+    'name': 'fix',
+    'category': 'Arithmetic',
+    'syntax': [
+        'fix(x)'
+    ],
+    'description':
+        'Round a value towards zero.' +
+            'If x is complex, both real and imaginary part are rounded ' +
+            'towards zero.',
+    'examples': [
+        'fix(3.2)',
+        'fix(3.8)',
+        'fix(-4.2)',
+        'fix(-4.8)'
+    ],
+    'seealso': ['ceil', 'floor', 'round']
+};
+
+/**
+ * Round a value towards minus infinity, floor(x)
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function floor(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('floor', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.floor(x);
+    }
+
+    if (x instanceof Complex) {
+        return new Complex (
+            Math.floor(x.re),
+            Math.floor(x.im)
+        );
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, floor);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('floor', x);
+}
+
+math.floor = floor;
+
+/**
+ * Function documentation
+ */
+floor.doc = {
+    'name': 'floor',
+    'category': 'Arithmetic',
+    'syntax': [
+        'floor(x)'
+    ],
+    'description':
+        'Round a value towards minus infinity.' +
+            'If x is complex, both real and imaginary part are rounded ' +
+            'towards minus infinity.',
+    'examples': [
+        'floor(3.2)',
+        'floor(3.8)',
+        'floor(-4.2)'
+    ],
+    'seealso': ['ceil', 'fix', 'round']
+};
+
+/**
+ * Check if value x is larger y, x > y
+ * In case of complex numbers, the absolute values of a and b are compared.
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Boolean | Array} res
+ */
+function larger(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('larger', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x > y;
+        }
+        else if (y instanceof Complex) {
+            return x > abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return abs(x) > y;
+        }
+        else if (y instanceof Complex) {
+            return abs(x) > abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value > y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x > y;
+    }
+
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, equal);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('larger', x, y);
+}
+
+math.larger = larger;
+
+/**
+ * Function documentation
+ */
+larger.doc = {
+    'name': 'larger',
+    'category': 'Operators',
+    'syntax': [
+        'x > y',
+        'larger(x, y)'
+    ],
+    'description':
+        'Check if value x is larger than y. ' +
+        'Returns 1 if x is larger than y, and 0 if not.',
+    'examples': [
+        '2 > 3',
+        '5 > 2*2',
+        'a = 3.3',
+        'b = 6-2.8',
+        '(a > b)',
+        '(b < a)',
+        '5 cm > 2 inch'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'smaller', 'smallereq', 'largereq'
+    ]
+};
+
+/**
+ * Check if value x is larger or equal to y, x >= y
+ * In case of complex numbers, the absolute values of a and b are compared.
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Boolean | Array} res
+ */
+function largereq(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('largereq', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x >= y;
+        }
+        else if (y instanceof Complex) {
+            return x >= abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return abs(x) >= y;
+        }
+        else if (y instanceof Complex) {
+            return abs(x) >= abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value >= y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x >= y;
+    }
+
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, largereq);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('largereq', x, y);
+}
+
+math.largereq = largereq;
+
+/**
+ * Function documentation
+ */
+largereq.doc = {
+    'name': 'largereq',
+    'category': 'Operators',
+    'syntax': [
+        'x >= y',
+        'largereq(x, y)'
+    ],
+    'description':
+        'Check if value x is larger or equal to y. ' +
+        'Returns 1 if x is larger or equal to y, and 0 if not.',
+    'examples': [
+        '2 > 1+1',
+        '2 >= 1+1',
+        'a = 3.2',
+        'b = 6-2.8',
+        '(a > b)'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'smallereq', 'smaller', 'largereq'
+    ]
+};
+
+/**
+ * Calculate the logarithm of a value, log(x [, base])
+ * base is optional. If not provided, the natural logarithm of x is calculated
+ * logarithm for any base, like log(x, base)
+ * @param {Number | Complex | Array} x
+ * @param {Number | Complex} [base]
+ * @return {Number | Complex | Array} res
+ */
+function log(x, base) {
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('log', arguments.length, 1, 2);
+    }
+
+    if (base === undefined) {
+        // calculate natural logarithm, log(x)
+        if (isNumber(x)) {
+            if (x >= 0) {
+                return Math.log(x);
+            }
+            else {
+                // negative value -> complex value computation
+                return log(new Complex(x, 0));
+            }
+        }
+
+        if (x instanceof Complex) {
+            return new Complex (
+                Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
+                Math.atan2(x.im, x.re)
+            );
+        }
+
+        if (x instanceof Array) {
+            return util.map(x, log);
+        }
+    }
+    else {
+        // calculate logarithm for a specified base, log(x, base)
+        return divide(log(x), log(base));
+    }
+
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('log', x, base);
+}
+
+math.log = log;
+
+/**
+ * Function documentation
+ */
+log.doc = {
+    'name': 'log',
+    'category': 'Arithmetic',
+    'syntax': [
+        'log(x)',
+        'log(x, base)'
+    ],
+    'description': 'Compute the logarithm of a value. ' +
+        'If no base is provided, the natural logarithm of x is calculated. ' +
+        'If base if provided, the logarithm is calculated for the specified base. ' +
+        'log(x, base) is defined as log(x) / log(base).',
+    'examples': [
+        'log(3.5)',
+        'a = log(2.4)',
+        'exp(a)',
+        '10 ^ 3',
+        'log(1000, 10)',
+        'log(1000) / log(10)',
+        'b = logb(1024, 2)',
+        '2 ^ b'
+    ],
+    'seealso': [
+        'exp',
+        'log10'
+    ]
+};
+
+/**
+ * Calculate the 10-base logarithm of a value, log10(x)
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function log10(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('log10', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        if (x >= 0) {
+            return Math.log(x) / Math.LN10;
+        }
+        else {
+            // negative value -> complex value computation
+            return log10(new Complex(x, 0));
+        }
+    }
+
+    if (x instanceof Complex) {
+        return new Complex (
+            Math.log(Math.sqrt(x.re * x.re + x.im * x.im)) / Math.LN10,
+            Math.atan2(x.im, x.re) / Math.LN10
+        );
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, log10);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('log10', x);
+}
+
+math.log10 = log10;
+
+/**
+ * Function documentation
+ */
+log10.doc = {
+    'name': 'log10',
+    'category': 'Arithmetic',
+    'syntax': [
+        'log10(x)'
+    ],
+    'description': 'Compute the 10-base logarithm of a value.',
+    'examples': [
+        'log10(1000)',
+        '10 ^ 3',
+        'log10(0.01)',
+        'log(1000) / log(10)',
+        'log(1000, 10)'
+    ],
+    'seealso': [
+        'exp',
+        'log'
+    ]
+};
+
+/**
+ * Calculates the modulus, the remainder of an integer division.
+ * @param  {Number | Complex | Array} x
+ * @param  {Number | Complex | Array} y
+ * @return {Number | Array} res
+ */
+function mod(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('mod', arguments.length, 2);
+    }
+
+    // TODO: only handle integer values in mod?
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number % number
+            return x % y;
+        }
+        else if (y instanceof Complex && y.im == 0) {
+            // number % complex
+            return x % y.re;
+        }
+    }
+    else if (x instanceof Complex && x.im == 0) {
+        if (isNumber(y)) {
+            // complex * number
+            return x.re % y;
+        }
+        else if (y instanceof Complex && y.im == 0) {
+            // complex * complex
+            return x.re % y.re;
+        }
+    }
+
+
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, mod);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('mod', x, y);
+}
+
+math.mod = mod;
+
+/**
+ * Function documentation
+ */
+mod.doc = {
+    'name': 'mod',
+    'category': 'Operators',
+    'syntax': [
+        'x % y',
+        'x mod y',
+        'mod(x, y)'
+    ],
+    'description':
+        'Calculates the modulus, the remainder of an integer division.',
+    'examples': [
+        '7 % 3',
+        '11 % 2',
+        '10 mod 4',
+        'function isOdd(x) = x % 2',
+        'isOdd(2)',
+        'isOdd(3)'
     ],
     'seealso': []
 };
 
 /**
- * Display documentation on a function or data type
- * @param {function | string | Object} subject
- * @return {String} documentation
+ * Multiply two values. x + y or multiply(x, y)
+ * @param  {Number | Complex | Unit | Array} x
+ * @param  {Number | Complex | Unit | Array} y
+ * @return {Number | Complex | Unit | Array} res
  */
-function help(subject) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('help', arguments.length, 1);
+function multiply(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('multiply', arguments.length, 2);
     }
 
-    if (subject != undefined) {
-        if (subject.doc) {
-            return generateDoc(subject.doc);
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number * number
+            return x * y;
         }
-        else if (subject.constructor.doc) {
-            return generateDoc(subject.constructor.doc);
+        else if (y instanceof Complex) {
+            // number * complex
+            return multiplyComplex(new Complex(x, 0), y);
         }
-        else if (isString(subject)) {
-            // search the subject in the methods
-            var obj = math[subject];
-            if (obj && obj.doc) {
-                return generateDoc(obj.doc);
+        else if (y instanceof Unit) {
+            res = y.copy();
+            res.value *= x;
+            return res;
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex * number
+            return multiplyComplex(x, new Complex(y, 0));
+        }
+        else if (y instanceof Complex) {
+            // complex * complex
+            return multiplyComplex(x, y);
+        }
+    }
+    else if (x instanceof Unit) {
+        if (isNumber(y)) {
+            res = x.copy();
+            res.value *= y;
+            return res;
+        }
+    }
+    else if (x instanceof Array) {
+        if (y instanceof Array) {
+            // matrix * matrix
+            var sizeX = size(x)[0];
+            var sizeY = size(y)[0];
+
+            if (sizeX.length != 2) {
+                throw new Error('Can only multiply a 2 dimensional matrix ' +
+                        '(A has ' + sizeX.length + ' dimensions)');
             }
+            if (sizeY.length != 2) {
+                throw new Error('Can only multiply a 2 dimensional matrix ' +
+                        '(B has ' + sizeY.length + ' dimensions)');
+            }
+            if (sizeX[1] != sizeY[0]) {
+                throw new Error('Dimensions mismatch in multiplication. ' +
+                        'Columns of A must match rows of B ' +
+                        '(A is ' + sizeX[0] + 'x' + sizeX[1] +
+                        ', B is ' + sizeY[0] + 'x' + sizeY[1] + ', ' +
+                        sizeY[1] + ' != ' + sizeY[0] + ')');
+            }
+
+            // TODO: performance of matrix multiplication can be improved
+            var res = [];
+            var rows = sizeX[0];
+            var cols = sizeY[1];
+            var num = sizeX[1];
+            for (var r = 0; r < rows; r++) {
+                res[r] = [];
+                for (var c = 0; c < cols; c++) {
+                    var result = null;
+                    for (var n = 0; n < num; n++) {
+                        var p = multiply(x[r][n], y[n][c]);
+                        result = (result == null) ? p : add(result, p);
+                    }
+                    res[r][c] = result;
+                }
+            }
+
+            return res;
+        }
+        else {
+            // matrix * scalar
+            return util.map2(x, y, multiply);
         }
     }
 
-    // TODO: generate documentation for constants, number and string
+    if (y instanceof Array) {
+        // scalar * matrix
+        return util.map2(x, y, multiply);
+    }
 
-    if (subject instanceof Object && subject.name) {
-        return 'No documentation found on subject "' + subject.name +'"';
-    }
-    else if (subject instanceof Object && subject.constructor.name) {
-        return 'No documentation found on subject "' + subject.constructor.name +'"';
-    }
-    else {
-        return 'No documentation found on subject "' + subject +'"';
-    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('multiply', x, y);
 }
 
-math.help = help;
-
 /**
- * Generate readable documentation from a documentation object
- * @param {Object} doc
- * @return {String} readableDoc
+ * Multiply two complex numbers. x * y or multiply(x, y)
+ * @param {Complex} x
+ * @param {Complex} y
+ * @return {Complex} res
  * @private
  */
-function generateDoc (doc) {
-    var desc = '';
+function multiplyComplex (x, y) {
+    return new Complex(
+        x.re * y.re - x.im * y.im,
+        x.re * y.im + x.im * y.re
+    );
+}
 
-    if (doc.name) {
-        desc += 'NAME\n' + doc.name + '\n\n';
+math.multiply = multiply;
+
+/**
+ * Function documentation
+ */
+multiply.doc = {
+    'name': 'multiply',
+    'category': 'Operators',
+    'syntax': [
+        'x * y',
+        'multiply(x, y)'
+    ],
+    'description': 'multiply two values.',
+    'examples': [
+        '2.1 * 3.6',
+        'ans / 3.6',
+        '2 * 3 + 4',
+        '2 * (3 + 4)',
+        '3 * 2.1 km'
+    ],
+    'seealso': [
+        'divide'
+    ]
+};
+
+/**
+ * Calculates the power of x to y, x^y
+ * @param  {Number | Complex} x
+ * @param  {Number | Complex} y
+ * @return {Number | Complex} res
+ */
+function pow(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('pow', arguments.length, 2);
     }
-    if (doc.category) {
-        desc += 'CATEGORY\n' + doc.category + '\n\n';
-    }
-    if (doc.syntax) {
-        desc += 'SYNTAX\n' + doc.syntax.join('\n') + '\n\n';
-    }
-    if (doc.examples) {
-        var parser = new math.parser.Parser();
-        desc += 'EXAMPLES\n';
-        for (var i = 0; i < doc.examples.length; i++) {
-            var expr = doc.examples[i];
-            var res;
-            try {
-                res = parser.eval(expr);
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            if (isInteger(y) || x >= 0) {
+                // real value computation
+                return Math.pow(x, y);
             }
-            catch (e) {
-                res = e;
+            else {
+                return powComplex(new Complex(x, 0), new Complex(y, 0));
             }
-            desc += expr + '\n';
-            desc += '    ' + math.format(res) + '\n';
         }
-        desc += '\n';
+        else if (y instanceof Complex) {
+            return powComplex(new Complex(x, 0), y);
+        }
     }
-    if (doc.seealso) {
-        desc += 'SEE ALSO\n' + doc.seealso.join(', ') + '\n';
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return powComplex(x, new Complex(y, 0));
+        }
+        else if (y instanceof Complex) {
+            return powComplex(x, y);
+        }
+    }
+    else if (x instanceof Array) {
+        if (!isNumber(y) || !isInteger(y) || y < 0) {
+            throw new TypeError('For A^b, b must be a positive integer ' +
+                    '(value is ' + y + ')');
+        }
+
+        // verify that A is a 2 dimensional square matrix
+        var s = size(x)[0];
+        if (s.length != 2) {
+            throw new Error('For A^b, A must be 2 dimensional ' +
+                    '(A has ' + s.length + ' dimensions)');
+        }
+        if (s[0] != s[1]) {
+            throw new Error('For A^b, A must be square ' +
+                    '(size is ' + s[0] + 'x' + s[1] + ')');
+        }
+
+        if (y == 0) {
+            // return the identity matrix
+            // TODO: implement method eye
+            return eye(s[0]);
+        }
+        else {
+            // value > 0
+            var res = x;
+            for (var i = 1; i < y; i++) {
+                res = multiply(x, res);
+            }
+            return res;
+        }
     }
 
-    return desc;
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('pow', x, y);
+}
+
+/**
+ * Caculates the power of x to y, x^y, for two complex numbers.
+ * @param {Complex} x
+ * @param {Complex} y
+ * @return {Complex} res
+ * @private
+ */
+function powComplex (x, y) {
+    // complex computation
+    // x^y = exp(log(x)*y) = exp((abs(x)+i*arg(x))*y)
+    var temp1 = log(x);
+    var temp2 = multiply(temp1, y);
+    return exp(temp2);
+}
+
+math.pow = pow;
+
+/**
+ * Function documentation
+ */
+pow.doc = {
+    'name': 'pow',
+    'category': 'Operators',
+    'syntax': [
+        'x ^ y',
+        'pow(x, y)'
+    ],
+    'description':
+        'Calculates the power of x to y, x^y.',
+    'examples': [
+        '2^3 = 8',
+        '2*2*2',
+        '1 + e ^ (pi * i)'
+    ],
+    'seealso': [
+        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+/**
+ * Round a value towards the nearest integer, round(x [, n])
+ * @param {Number | Complex | Array} x
+ * @param {Number | Array} [n] number of digits
+ * @return {Number | Complex | Array} res
+ */
+function round(x, n) {
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('round', arguments.length, 1, 2);
+    }
+
+    if (n == undefined) {
+        // round (x)
+        if (isNumber(x)) {
+            return Math.round(x);
+        }
+
+        if (x instanceof Complex) {
+            return new Complex (
+                Math.round(x.re),
+                Math.round(x.im)
+            );
+        }
+
+        if (x instanceof Array) {
+            util.map(x, round);
+        }
+
+        throw newUnsupportedTypeError('round', x);
+    }
+    else {
+        // round (x, n)
+        if (!isNumber(n)) {
+            throw new TypeError('Number of digits in function round must be an integer');
+        }
+        if (n !== Math.round(n)) {
+            throw new TypeError('Number of digits in function round must be integer');
+        }
+        if (n < 0 || n > 9) {
+            throw new Error ('Number of digits in function round must be in te range of 0-9');
+        }
+
+        if (isNumber(x)) {
+            return roundNumber(x, n);
+        }
+
+        if (x instanceof Complex) {
+            return new Complex (
+                roundNumber(x.re, n),
+                roundNumber(x.im, n)
+            );
+        }
+
+        if (x instanceof Array || n instanceof Array) {
+            return util.map2(x, n, round);
+        }
+
+        throw newUnsupportedTypeError('round', x, n);
+    }
+
+    // TODO: implement matrix support
+}
+
+math.round = round;
+
+/**
+ * round a number to the given number of digits, or to the default if
+ * digits is not provided
+ * @param {Number} value
+ * @param {Number} [digits]  number of digits, between 0 and 15
+ * @return {Number} roundedValue
+ */
+function roundNumber (value, digits) {
+    var p = Math.pow(10, (digits != undefined) ? digits : math.options.precision);
+    return Math.round(value * p) / p;
 }
 
 /**
  * Function documentation
  */
-help.doc = {
-    'name': 'help',
-    'category': 'Utils',
+round.doc = {
+    'name': 'round',
+    'category': 'Arithmetic',
     'syntax': [
-        'help(object)'
+        'round(x)',
+        'round(x, n)'
     ],
-    'description': 'Display documentation on a function or data type.',
+    'description':
+        'round a value towards the nearest integer.' +
+            'If x is complex, both real and imaginary part are rounded ' +
+            'towards the nearest integer. ' +
+            'When n is specified, the value is rounded to n decimals.',
     'examples': [
-        'help("sqrt")',
-        'help("Complex")'
+        'round(3.2)',
+        'round(3.8)',
+        'round(-4.2)',
+        'round(-4.8)',
+        'round(pi, 3)',
+        'round(123.45678, 2)'
     ],
-    'seealso': []
+    'seealso': ['ceil', 'floor', 'fix']
+};
+
+/**
+ * Compute the sign of a value.
+ * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function sign(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sign', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        var sign;
+        if (x > 0) {
+            sign = 1;
+        }
+        else if (x < 0) {
+            sign = -1;
+        }
+        else {
+            sign = 0;
+        }
+        return sign;
+    }
+
+    if (x instanceof Complex) {
+        var abs = Math.sqrt(x.re * x.re + x.im * x.im);
+        return new Complex(x.re / abs, x.im / abs);
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, sign);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('sign', x);
+}
+
+math.sign = sign;
+
+/**
+ * Function documentation
+ */
+sign.doc = {
+    'name': 'sign',
+    'category': 'Arithmetic',
+    'syntax': [
+        'sign(x)'
+    ],
+    'description':
+        'Compute the sign of a value. ' +
+            'The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.',
+    'examples': [
+        'sign(3.5)',
+        'sign(-4.2)',
+        'sign(0)'
+    ],
+    'seealso': [
+        'abs'
+    ]
+};
+
+/**
+ * Check if value x is smaller y, x < y
+ * In case of complex numbers, the absolute values of a and b are compared.
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Boolean | Array} res
+ */
+function smaller(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('smaller', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x < y;
+        }
+        else if (y instanceof Complex) {
+            return x < abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return abs(x) < y;
+        }
+        else if (y instanceof Complex) {
+            return abs(x) < abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value < y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x < y;
+    }
+
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, smaller);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('smaller', x, y);
+}
+
+math.smaller = smaller;
+
+/**
+ * Function documentation
+ */
+smaller.doc = {
+    'name': 'smaller',
+    'category': 'Operators',
+    'syntax': [
+        'x < y',
+        'smaller(x, y)'
+    ],
+    'description':
+        'Check if value x is smaller than value y. ' +
+            'Returns 1 if x is smaller than y, and 0 if not.',
+    'examples': [
+        '2 < 3',
+        '5 < 2*2',
+        'a = 3.3',
+        'b = 6-2.8',
+        '(a < b)',
+        '5 cm < 2 inch'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+/**
+ * Check if value a is smaller or equal to b, a <= b
+ * In case of complex numbers, the absolute values of a and b are compared.
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Boolean | Array} res
+ */
+function smallereq(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('smallereq', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x <= y;
+        }
+        else if (y instanceof Complex) {
+            return x <= abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return abs(x) <= y;
+        }
+        else if (y instanceof Complex) {
+            return abs(x) <= abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value <= y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x <= y;
+    }
+
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, smallereq);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('smallereq', x, y);
+}
+
+math.smallereq = smallereq;
+
+/**
+ * Function documentation
+ */
+smallereq.doc = {
+    'name': 'smallereq',
+    'category': 'Operators',
+    'syntax': [
+        'x <= y',
+        'smallereq(x, y)'
+    ],
+    'description':
+        'Check if value x is smaller or equal to value y. ' +
+            'Returns 1 if x is smaller than y, and 0 if not.',
+    'examples': [
+        '2 < 1+1',
+        '2 <= 1+1',
+        'a = 3.2',
+        'b = 6-2.8',
+        '(a < b)'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'larger', 'smaller', 'largereq'
+    ]
 };
 
 /**
  * Calculate the square root of a value
- * @param {*} x
- * @return {String} type  Lower case type, for example "number", "string",
- *                        "array".
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
-function _typeof(x) {
+function sqrt (x) {
     if (arguments.length != 1) {
-        throw newArgumentsError('typeof', arguments.length, 1);
+        throw newArgumentsError('sqrt', arguments.length, 1);
     }
 
-    var type = typeof x;
-
-    if (type == 'object') {
-        if (x == null) {
-            return 'null';
+    if (isNumber(x)) {
+        if (x >= 0) {
+            return Math.sqrt(x);
         }
-        if (x.constructor) {
-            for (var name in math) {
-                if (math.hasOwnProperty(name)) {
-                    if (x.constructor == math[name]) {
-                        return name.toLowerCase();
-                    }
-                }
-            }
-            if (x.constructor.name) {
-                return x.constructor.name.toLowerCase();
-            }
+        else {
+            return sqrt(new Complex(x, 0));
         }
     }
 
-    return type;
+    if (x instanceof Complex) {
+        var r = Math.sqrt(x.re * x.re + x.im * x.im);
+        if (x.im >= 0.0) {
+            return new Complex(
+                0.5 * Math.sqrt(2.0 * (r + x.re)),
+                0.5 * Math.sqrt(2.0 * (r - x.re))
+            );
+        }
+        else {
+            return new Complex(
+                0.5 * Math.sqrt(2.0 * (r + x.re)),
+                -0.5 * Math.sqrt(2.0 * (r - x.re))
+            );
+        }
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, sqrt);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('sqrt', x);
 }
 
-math['typeof'] = _typeof;
+math.sqrt = sqrt;
 
 /**
  * Function documentation
  */
-_typeof.doc = {
-    'name': 'typeof',
-    'category': 'Utils',
+sqrt.doc = {
+    'name': 'sqrt',
+    'category': 'Arithmetic',
     'syntax': [
-        'typeof(x)'
+        'sqrt(x)'
     ],
-    'description': 'Get the type of a variable.',
+    'description':
+        'Compute the square root value. ' +
+            'If x = y * y, then y is the square root of x.',
     'examples': [
-        'typeof(3.5)',
-        'typeof(2 - 4i)',
-        'typeof(45 deg)',
-        'typeof("hello world")'
+        'sqrt(25)',
+        '5 * 5',
+        'sqrt(-1)'
     ],
-    'seealso': []
+    'seealso': [
+        'square',
+        'multiply'
+    ]
 };
 
 /**
- * Format a value of any type into a string. Interpolate values into the string.
- * Usage:
- *     math.format(array);
- *     math.format('Hello $name! The date is $date', {name: 'user', date: new Date()});
- *
- * @param {String} template
- * @param {Object} values
- * @return {String} str
+ * Compute the square of a value, x * x
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
-function format(template, values) {
-    var num = arguments.length;
-    if (num != 1 && num != 2) {
-        throw newArgumentsError('format', num, 1, 2);
+function square(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('square', arguments.length, 1);
     }
 
-    if (num == 1) {
-        // just format a value as string
-        var value = arguments[0];
-        if (isNumber(value)) {
-            return util.format(value);
-        }
-
-        if (value instanceof Array) {
-            return formatArray(value);
-        }
-
-        if (value instanceof Object) {
-            return value.toString();
-        }
-
-        return String(value);
+    if (isNumber(x)) {
+        return x * x;
     }
-    else {
-        if (!isString(template)) {
-            throw new TypeError('String expected as first parameter in function format');
-        }
-        if (!(values instanceof Object)) {
-            throw new TypeError('Object expected as first parameter in function format');
-        }
 
-        // format values into a string
-        return template.replace(/\$([\w\.]+)/g, function (original, key) {
-                var keys = key.split('.');
-                var value = values[keys.shift()];
-                while (keys.length && value != undefined) {
-                    var k = keys.shift();
-                    value = k ? value[k] : value + '.';
-                }
-                return value != undefined ? value : original;
+    if (x instanceof Complex) {
+        return multiply(x, x);
+    }
+
+    if (x instanceof Array) {
+        return multiply(x, x);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('square', x);
+}
+
+math.square = square;
+
+/**
+ * Function documentation
+ */
+square.doc = {
+    'name': 'square',
+    'category': 'Arithmetic',
+    'syntax': [
+        'square(x)'
+    ],
+    'description':
+        'Compute the square of a value. ' +
+            'The square of x is x * x.',
+    'examples': [
+        'square(3)',
+        'sqrt(9)',
+        '3^2',
+        '3 * 3'
+    ],
+    'seealso': [
+        'multiply',
+        'pow',
+        'sqrt',
+        'cube'
+    ]
+};
+
+/**
+ * Subtract two values. x - y or subtract(x, y)
+ * @param  {Number | Complex | Unit | Array} x
+ * @param  {Number | Complex | Unit | Array} y
+ * @return {Number | Complex | Unit | Array} res
+ */
+function subtract(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('subtract', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number - number
+            return x - y;
+        }
+        else if (y instanceof Complex) {
+            // number - complex
+            return new Complex (
+                x - y.re,
+                    y.im
+            );
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex - number
+            return new Complex (
+                x.re - y,
+                x.im
+            )
+        }
+        else if (y instanceof Complex) {
+            // complex - complex
+            return new Complex (
+                x.re - y.re,
+                x.im - y.im
+            )
+        }
+    }
+    else if (x instanceof Unit) {
+        if (y instanceof Unit) {
+            if (!x.equalBase(y)) {
+                throw new Error('Units do not match');
             }
+
+            if (!x.hasValue) {
+                throw new Error('Unit on left hand side of operator - has no value');
+            }
+
+            if (!y.hasValue) {
+                throw new Error('Unit on right hand side of operator - has no value');
+            }
+
+            var res = x.copy();
+            res.value -= y.value;
+            res.fixPrefix = false;
+
+            return res;
+        }
+    }
+
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, subtract);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('subtract', x, y);
+}
+
+math.subtract = subtract;
+
+/**
+ * Function documentation
+ */
+subtract.doc = {
+    'name': 'subtract',
+    'category': 'Operators',
+    'syntax': [
+        'x - y',
+        'subtract(x, y)'
+    ],
+    'description': 'subtract two values.',
+    'examples': [
+        '5.3 - 2',
+        'ans + 2',
+        '2/3 - 1/6',
+        '2 * 3 - 3',
+        '2.1 km - 500m'
+    ],
+    'seealso': [
+        'add'
+    ]
+};
+/**
+ * Inverse the sign of a value. -x or unaryminus(x)
+ * @param  {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Unit | Array} res
+ */
+function unaryminus(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('unaryminus', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return -x;
+    }
+    else if (x instanceof Complex) {
+        return new Complex(
+            -x.re,
+            -x.im
         );
     }
-}
-
-math.format = format;
-
-/**
- * Format a n-dimensional array
- * @param {Array} array
- * @returns {string} str
- */
-function formatArray (array) {
-    var str = '[';
-    var s = size(array)[0];
-
-    if (s.length != 2) {
-        return formatArrayN(array);
-    }
-
-    var rows = s[0];
-    var cols = s[1];
-    for (var r = 0; r < rows; r++) {
-        if (r != 0) {
-            str += '; ';
-        }
-
-        var row = array[r];
-        for (var c = 0; c < cols; c++) {
-            if (c != 0) {
-                str += ', ';
-            }
-            var cell = row[c];
-            if (cell != undefined) {
-                str += format(cell);
-            }
-        }
-    }
-    str += ']';
-
-    return str;
-}
-
-/**
- * Recursively format an n-dimensional matrix
- * @param {Array} array
- * @returns {String} str
- */
-function formatArrayN (array) {
-    if (array instanceof Array) {
-        var str = '[';
-        var len = array.length;
-        for (var i = 0; i < len; i++) {
-            if (i != 0) {
-                str += ', ';
-            }
-            str += formatArrayN(array[i]);
-        }
-        str += ']';
-        return str;
-    }
-    else {
-        return format(array);
-    }
-}
-
-/**
- * Function documentation
- */
-format.doc = {
-    'name': 'format',
-    'category': 'Utils',
-    'syntax': [
-        'format(value)'
-    ],
-    'description': 'Format a value of any type as string.',
-    'examples': [
-        'format(2.3)',
-        'format(3 - 4i)',
-        'format([])'
-    ],
-    'seealso': []
-};
-
-/**
- * Compute the minimum value of a list of values, min(a, b, c, ...)
- * @param {... *} args  one or multiple arguments
- * @return {*} res
- */
-function min(args) {
-    if (arguments.length == 0) {
-        throw new Error('Function sum requires one or more parameters (0 provided)');
-    }
-
-    if (arguments.length == 1 && arguments[0] instanceof Array) {
-        return min.apply(this, arguments[0]);
-    }
-    // TODO: implement matrix support
-
-    var res = arguments[0];
-    for (var i = 1, iMax = arguments.length; i < iMax; i++) {
-        var value = arguments[i];
-        if (smaller(value, res)) {
-            res = value;
-        }
-    }
-
-    return res;
-}
-
-math.min = min;
-
-/**
- * Function documentation
- */
-min.doc = {
-    'name': 'min',
-    'category': 'Statistics',
-    'syntax': [
-        'min(a, b, c, ...)'
-    ],
-    'description': 'Compute the minimum value of a list of values.',
-    'examples': [
-        'max(2, 3, 4, 1)',
-        'max(2.7, 7.1, -4.5, 2.0, 4.1)',
-        'min(2.7, 7.1, -4.5, 2.0, 4.1)'
-    ],
-    'seealso': [
-        'sum',
-        'prod',
-        'avg',
-        'var',
-        'std',
-        'min',
-        'median'
-    ]
-};
-
-/**
- * Compute the maximum value of a list of values, max(a, b, c, ...)
- * @param {... *} args  one or multiple arguments
- * @return {*} res
- */
-function max(args) {
-    if (arguments.length == 0) {
-        throw new Error('Function sum requires one or more parameters (0 provided)');
-    }
-
-    if (arguments.length == 1 && arguments[0] instanceof Array) {
-        return max.apply(this, arguments[0]);
-    }
-    // TODO: implement matrix support
-
-    var res = arguments[0];
-    for (var i = 1, iMax = arguments.length; i < iMax; i++) {
-        var value = arguments[i];
-        if (larger(value, res)) {
-            res = value;
-        }
-    }
-
-    return res;
-}
-
-math.max = max;
-
-/**
- * Function documentation
- */
-max.doc = {
-    'name': 'max',
-    'category': 'Statistics',
-    'syntax': [
-        'max(a, b, c, ...)'
-    ],
-    'description': 'Compute the maximum value of a list of values.',
-    'examples': [
-        'max(2, 3, 4, 1)',
-        'max(2.7, 7.1, -4.5, 2.0, 4.1)',
-        'min(2.7, 7.1, -4.5, 2.0, 4.1)'
-    ],
-    'seealso': [
-        'sum',
-        'prod',
-        'avg',
-        'var',
-        'std',
-        'min',
-        'median'
-    ]
-};
-
-/**
- * Change the unit of a value. x in unit or in(x, unit)
- * @param {Unit | Array} x
- * @param {Unit | Array} unit
- * @return {Unit | Array} res
- */
-function unit_in(x, unit) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('in', arguments.length, 2);
-    }
-
-    if (x instanceof Unit && unit instanceof Unit) {
-        // Test if unit has no value
-        if (unit.hasValue) {
-            throw new Error('Cannot convert to a unit with a value');
-        }
-        // Test if unit has a unit
-        if (!unit.hasUnit) {
-            throw new Error('Unit expected on the right hand side of function in');
-        }
-
-        var res = unit.copy();
-        res.value = x.value;
-        res.fixPrefix = true;
-
+    else if (x instanceof Unit) {
+        var res = x.copy();
+        res.value = -x.value;
         return res;
     }
 
-    if (x instanceof Array || unit instanceof Array) {
-        return util.map2(x, unit, unit_in);
+    if (x instanceof Array) {
+        return util.map(x, unaryminus);
     }
     // TODO: implement matrix support
 
-    throw newUnsupportedTypeError('in', x);
+    throw newUnsupportedTypeError('unaryminus', x);
 }
 
-math['in'] = unit_in;
+math.unaryminus = unaryminus;
 
 /**
  * Function documentation
  */
-unit_in.doc ={
-    'name': 'in',
-    'category': 'Units',
+unaryminus.doc = {
+    'name': 'unaryminus',
+    'category': 'Operators',
     'syntax': [
-        'x in unit',
-        'in(x, unit)'
+        '-x',
+        'unaryminus(x)'
     ],
-    'description': 'Change the unit of a value.',
+    'description':
+        'Inverse the sign of a value.',
     'examples': [
-        '5 inch in cm',
-        '3.2kg in g',
-        '16 bytes in bits'
+        '-4.5',
+        '-(-5.6)'
     ],
-    'seealso': []
+    'seealso': [
+        'add', 'subtract'
+    ]
+};
+/**
+ * Check if value x unequals y, x != y
+ * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Boolean | Array} res
+ */
+function unequal(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('unequal', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x == y;
+        }
+        else if (y instanceof Complex) {
+            return (x == y.re) && (y.im == 0);
+        }
+    }
+
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return (x.re == y) && (x.im == 0);
+        }
+        else if (y instanceof Complex) {
+            return (x.re == y.re) && (x.im == y.im);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value == y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x == y;
+    }
+
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, unequal);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('unequal', x, y);
+}
+
+math.unequal = unequal;
+
+/**
+ * Function documentation
+ */
+unequal.doc = {
+    'name': 'unequal',
+    'category': 'Operators',
+    'syntax': [
+        'x != y',
+        'unequal(x, y)'
+    ],
+    'description':
+        'Check unequality of two values. ' +
+            'Returns 1 if the values are unequal, and 0 if they are equal.',
+    'examples': [
+        '2+2 != 3',
+        '2+2 != 4',
+        'a = 3.2',
+        'b = 6-2.8',
+        'a != b',
+        '50cm != 0.5m',
+        '5 cm != 2 inch'
+    ],
+    'seealso': [
+        'equal', 'smaller', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+/**
+ * Compute the argument of a complex value.
+ * If x = a+bi, the argument is computed as atan2(b, a).
+ * @param {Number | Complex | Array} x
+ * @return {Number | Array} res
+ */
+function arg(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('arg', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.atan2(0, x);
+    }
+
+    if (x instanceof Complex) {
+        return Math.atan2(x.im, x.re);
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, arg);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('arg', x);
+}
+
+math.arg = arg;
+
+/**
+ * Function documentation
+ */
+arg.doc = {
+    'name': 'arg',
+    'category': 'Complex',
+    'syntax': [
+        'arg(x)'
+    ],
+    'description':
+        'Compute the argument of a complex value. ' +
+            'If x = a+bi, the argument is computed as atan2(b, a).',
+    'examples': [
+        'arg(2 + 2i)',
+        'atan2(3, 2)',
+        'arg(2 - 3i)'
+    ],
+    'seealso': [
+        're',
+        'im',
+        'conj',
+        'abs'
+    ]
+};
+
+/**
+ * Compute the complex conjugate of a complex value.
+ * If x = a+bi, the complex conjugate is a-bi.
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function conj(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('conj', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x;
+    }
+
+    if (x instanceof Complex) {
+        return new Complex(x.re, -x.im);
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, conj);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('conj', x);
+}
+
+math.conj = conj;
+
+/**
+ * Function documentation
+ */
+conj.doc = {
+    'name': 'conj',
+    'category': 'Complex',
+    'syntax': [
+        'conj(x)'
+    ],
+    'description':
+        'Compute the complex conjugate of a complex value. ' +
+            'If x = a+bi, the complex conjugate is a-bi.',
+    'examples': [
+        'conj(2 + 3i)',
+        'conj(2 - 3i)',
+        'conj(-5.2i)'
+    ],
+    'seealso': [
+        're',
+        'im',
+        'abs',
+        'arg'
+    ]
+};
+
+/**
+ * Get the imaginary part of a complex number.
+ * @param {Number | Complex | Array} x
+ * @return {Number | Array} im
+ */
+function im(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('im', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return 0;
+    }
+
+    if (x instanceof Complex) {
+        return x.im;
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, im);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('im', x);
+}
+
+math.im = im;
+
+/**
+ * Function documentation
+ */
+im.doc = {
+    'name': 'im',
+    'category': 'Complex',
+    'syntax': [
+        'im(x)'
+    ],
+    'description': 'Get the imaginary part of a complex number.',
+    'examples': [
+        'im(2 + 3i)',
+        're(2 + 3i)',
+        'im(-5.2i)',
+        'im(2.4)'
+    ],
+    'seealso': [
+        're',
+        'conj',
+        'abs',
+        'arg'
+    ]
+};
+
+/**
+ * Get the real part of a complex number.
+ * @param {Number | Complex | Array} x
+ * @return {Number | Array} re
+ */
+function re(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('re', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x;
+    }
+
+    if (x instanceof Complex) {
+        return x.re;
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, re);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('re', x);
+}
+
+math.re = re;
+
+/**
+ * Function documentation
+ */
+re.doc = {
+    'name': 're',
+    'category': 'Complex',
+    'syntax': [
+        're(x)'
+    ],
+    'description': 'Get the real part of a complex number.',
+    'examples': [
+        're(2 + 3i)',
+        'im(2 + 3i)',
+        're(-5.2i)',
+        're(2.4)'
+    ],
+    'seealso': [
+        'im',
+        'conj',
+        'abs',
+        'arg'
+    ]
 };
 
 /**
@@ -2031,127 +3559,271 @@ size.doc = {
     ]
 };
 /**
- * Calculate the sine of a value, sin(x)
- * @param {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Array} res
+ * Compute the factorial of a value, factorial(x) or x!
+ * @Param {Number | Array} x
+ * @return {Number | Array} res
  */
-function sin(x) {
+function factorial (x) {
     if (arguments.length != 1) {
-        throw newArgumentsError('sin', arguments.length, 1);
+        throw newArgumentsError('factorial', arguments.length, 1);
     }
 
     if (isNumber(x)) {
-        return Math.sin(x);
-    }
-
-    if (x instanceof Complex) {
-        return new Complex(
-            0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp( x.im)),
-            0.5 * Math.cos(x.re) * (Math.exp( x.im) - Math.exp(-x.im))
-        );
-    }
-
-    if (x instanceof Unit) {
-        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
-            throw new TypeError ('Unit in function cos is no angle');
+        if (!isInteger(x)) {
+            throw new TypeError('Function factorial can only handle integer values');
         }
-        return Math.sin(x.value);
+
+        var value = x,
+            res = value;
+        value--;
+        while (value > 1) {
+            res *= value;
+            value--;
+        }
+
+        if (res == 0) {
+            res = 1;        // 0! is per definition 1
+        }
+
+        return res;
     }
 
     if (x instanceof Array) {
-        return util.map(x, sin);
+        return util.map(x, factorial);
     }
     // TODO: implement matrix support
 
-    throw newUnsupportedTypeError('sin', x);
+    throw newUnsupportedTypeError('factorial', x);
 }
 
-math.sin = sin;
+math.factorial = factorial;
 
 /**
  * Function documentation
  */
-sin.doc = {
-    'name': 'sin',
-    'category': 'Trigonometry',
+factorial.doc = {
+    'name': 'factorial',
+    'category': 'Probability',
     'syntax': [
-        'sin(x)'
+        'x!',
+        'factorial(x)'
     ],
-    'description': 'Compute the sine of x in radians.',
+    'description': 'Compute the factorial of a value',
     'examples': [
-        'sin(2)',
-        'sin(pi / 4) ^ 2',
-        'sin(90 deg)',
-        'sin(30 deg)',
-        'sin(0.2)^2 + cos(0.2)^2'
+        '5!',
+        '5*4*3*2*1',
+        '3!'
+    ],
+    'seealso': []
+};
+/**
+ * Return a random number between 0 and 1
+ * @return {Number} res
+ */
+function random () {
+    if (arguments.length != 0) {
+        throw newArgumentsError('random', arguments.length, 0);
+    }
+
+    // TODO: implement parameter min and max
+    return Math.random();
+}
+
+math.random = random;
+
+/**
+ * Function documentation
+ */
+random.doc = {
+    'name': 'random',
+    'category': 'Probability',
+    'syntax': [
+        'random()'
+    ],
+    'description':
+        'Return a random number between 0 and 1.',
+    'examples': [
+        'random()',
+        '100 * random()'
+    ],
+    'seealso': []
+};
+
+/**
+ * Compute the maximum value of a list of values, max(a, b, c, ...)
+ * @param {... *} args  one or multiple arguments
+ * @return {*} res
+ */
+function max(args) {
+    if (arguments.length == 0) {
+        throw new Error('Function sum requires one or more parameters (0 provided)');
+    }
+
+    if (arguments.length == 1 && arguments[0] instanceof Array) {
+        return max.apply(this, arguments[0]);
+    }
+    // TODO: implement matrix support
+
+    var res = arguments[0];
+    for (var i = 1, iMax = arguments.length; i < iMax; i++) {
+        var value = arguments[i];
+        if (larger(value, res)) {
+            res = value;
+        }
+    }
+
+    return res;
+}
+
+math.max = max;
+
+/**
+ * Function documentation
+ */
+max.doc = {
+    'name': 'max',
+    'category': 'Statistics',
+    'syntax': [
+        'max(a, b, c, ...)'
+    ],
+    'description': 'Compute the maximum value of a list of values.',
+    'examples': [
+        'max(2, 3, 4, 1)',
+        'max(2.7, 7.1, -4.5, 2.0, 4.1)',
+        'min(2.7, 7.1, -4.5, 2.0, 4.1)'
     ],
     'seealso': [
-        'asin',
-        'cos',
-        'tan'
+        'sum',
+        'prod',
+        'avg',
+        'var',
+        'std',
+        'min',
+        'median'
     ]
 };
 
 /**
- * Computes the principal value of the arc tangent of y/x in radians, atan2(y,x)
- * @param {Number | Complex | Array} y
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * Compute the minimum value of a list of values, min(a, b, c, ...)
+ * @param {... *} args  one or multiple arguments
+ * @return {*} res
  */
-function atan2(y, x) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('atan2', arguments.length, 2);
+function min(args) {
+    if (arguments.length == 0) {
+        throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
-    if (isNumber(y)) {
-        if (isNumber(x)) {
-            return Math.atan2(y, x);
-        }
-        else if (x instanceof Complex) {
-            return Math.atan2(y, x.re);
-        }
-    }
-    else if (y instanceof Complex) {
-        if (isNumber(x)) {
-            return Math.atan2(y.re, x);
-        }
-        else if (x instanceof Complex) {
-            return Math.atan2(y.re, x.re);
-        }
-    }
-
-    if (x instanceof Array || y instanceof Array) {
-        return util.map2(y, x, atan2);
+    if (arguments.length == 1 && arguments[0] instanceof Array) {
+        return min.apply(this, arguments[0]);
     }
     // TODO: implement matrix support
 
-    throw newUnsupportedTypeError('atan2', y, x);
+    var res = arguments[0];
+    for (var i = 1, iMax = arguments.length; i < iMax; i++) {
+        var value = arguments[i];
+        if (smaller(value, res)) {
+            res = value;
+        }
+    }
+
+    return res;
 }
 
-math.atan2 = atan2;
+math.min = min;
 
 /**
  * Function documentation
  */
-atan2.doc = {
-    'name': 'atan2',
-    'category': 'Trigonometry',
+min.doc = {
+    'name': 'min',
+    'category': 'Statistics',
     'syntax': [
-        'atan2(y, x)'
+        'min(a, b, c, ...)'
     ],
-    'description':
-        'Computes the principal value of the arc tangent of y/x in radians.',
+    'description': 'Compute the minimum value of a list of values.',
     'examples': [
-        'atan2(2, 2) / pi',
-        'angle = 60 deg in rad',
-        'x = cos(angle)',
-        'y = sin(angle)',
-        'atan2(y, x)'
+        'max(2, 3, 4, 1)',
+        'max(2.7, 7.1, -4.5, 2.0, 4.1)',
+        'min(2.7, 7.1, -4.5, 2.0, 4.1)'
     ],
     'seealso': [
-        'sin',
+        'sum',
+        'prod',
+        'avg',
+        'var',
+        'std',
+        'min',
+        'median'
+    ]
+};
+
+/**
+ * Calculate the inverse cosine of a value, acos(x)
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function acos(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('acos', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        if (x >= -1 && x <= 1) {
+            return Math.acos(x);
+        }
+        else {
+            return acos(new Complex(x, 0));
+        }
+    }
+
+    if (x instanceof Complex) {
+        // acos(z) = 0.5*pi + i*log(iz + sqrt(1-z^2))
+        var temp1 = new Complex(
+            x.im * x.im - x.re * x.re + 1.0,
+            -2.0 * x.re * x.im
+        );
+        var temp2 = sqrt(temp1);
+        var temp3 = new Complex(
+            temp2.re - x.im,
+            temp2.im + x.re
+        );
+        var temp4 = log(temp3);
+
+        // 0.5*pi = 1.5707963267948966192313216916398
+        return new Complex(
+            1.57079632679489661923 - temp4.im,
+            temp4.re
+        );
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, acos);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('acos', x);
+}
+
+math.acos = acos;
+
+/**
+ * Function documentation
+ */
+acos.doc = {
+    'name': 'acos',
+    'category': 'Trigonometry',
+    'syntax': [
+        'acos(x)'
+    ],
+    'description': 'Compute the inverse cosine of a value in radians.',
+    'examples': [
+        'acos(0.5)',
+        'acos(cos(2.3))'
+    ],
+    'seealso': [
         'cos',
-        'tan'
+        'acos',
+        'asin'
     ]
 };
 
@@ -2289,66 +3961,65 @@ atan.doc = {
 };
 
 /**
- * Calculate the cosecant of a value, csc(x) = 1/sin(x)
- * @param {Number | Complex | Unit | Array} x
+ * Computes the principal value of the arc tangent of y/x in radians, atan2(y,x)
+ * @param {Number | Complex | Array} y
+ * @param {Number | Complex | Array} x
  * @return {Number | Complex | Array} res
  */
-function csc(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('csc', arguments.length, 1);
+function atan2(y, x) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('atan2', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-        return 1 / Math.sin(x);
-    }
-
-    if (x instanceof Complex) {
-        // csc(z) = 1/sin(z) = (2i) / (exp(iz) - exp(-iz))
-        var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) -
-            0.5 * Math.cos(2.0 * x.re);
-
-        return new Complex (
-            0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp(x.im)) / den,
-            0.5 * Math.cos(x.re) * (Math.exp(-x.im) - Math.exp(x.im)) / den
-        );
-    }
-
-    if (x instanceof Unit) {
-        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
-            throw new TypeError ('Unit in function csc is no angle');
+    if (isNumber(y)) {
+        if (isNumber(x)) {
+            return Math.atan2(y, x);
         }
-        return 1 / Math.sin(x.value);
+        else if (x instanceof Complex) {
+            return Math.atan2(y, x.re);
+        }
+    }
+    else if (y instanceof Complex) {
+        if (isNumber(x)) {
+            return Math.atan2(y.re, x);
+        }
+        else if (x instanceof Complex) {
+            return Math.atan2(y.re, x.re);
+        }
     }
 
-    if (x instanceof Array) {
-        return util.map(x, csc);
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(y, x, atan2);
     }
     // TODO: implement matrix support
 
-    throw newUnsupportedTypeError('csc', x);
+    throw newUnsupportedTypeError('atan2', y, x);
 }
 
-math.csc = csc;
+math.atan2 = atan2;
 
 /**
  * Function documentation
  */
-csc.doc = {
-    'name': 'csc',
+atan2.doc = {
+    'name': 'atan2',
     'category': 'Trigonometry',
     'syntax': [
-        'csc(x)'
+        'atan2(y, x)'
     ],
-    'description': 'Compute the cosecant of x in radians. ' +
-        'Defined as 1/sin(x)',
+    'description':
+        'Computes the principal value of the arc tangent of y/x in radians.',
     'examples': [
-        'csc(2)',
-        '1 / sin(2)'
+        'atan2(2, 2) / pi',
+        'angle = 60 deg in rad',
+        'x = cos(angle)',
+        'y = sin(angle)',
+        'atan2(y, x)'
     ],
     'seealso': [
-        'sec',
-        'cot',
-        'sin'
+        'sin',
+        'cos',
+        'tan'
     ]
 };
 
@@ -2479,6 +4150,70 @@ cot.doc = {
 };
 
 /**
+ * Calculate the cosecant of a value, csc(x) = 1/sin(x)
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function csc(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('csc', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return 1 / Math.sin(x);
+    }
+
+    if (x instanceof Complex) {
+        // csc(z) = 1/sin(z) = (2i) / (exp(iz) - exp(-iz))
+        var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) -
+            0.5 * Math.cos(2.0 * x.re);
+
+        return new Complex (
+            0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp(x.im)) / den,
+            0.5 * Math.cos(x.re) * (Math.exp(-x.im) - Math.exp(x.im)) / den
+        );
+    }
+
+    if (x instanceof Unit) {
+        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+            throw new TypeError ('Unit in function csc is no angle');
+        }
+        return 1 / Math.sin(x.value);
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, csc);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('csc', x);
+}
+
+math.csc = csc;
+
+/**
+ * Function documentation
+ */
+csc.doc = {
+    'name': 'csc',
+    'category': 'Trigonometry',
+    'syntax': [
+        'csc(x)'
+    ],
+    'description': 'Compute the cosecant of x in radians. ' +
+        'Defined as 1/sin(x)',
+    'examples': [
+        'csc(2)',
+        '1 / sin(2)'
+    ],
+    'seealso': [
+        'sec',
+        'cot',
+        'sin'
+    ]
+};
+
+/**
  * Calculate the secant of a value, sec(x) = 1/cos(x)
  * @param {Number | Complex | Unit | Array} x
  * @return {Number | Complex | Array} res
@@ -2538,6 +4273,68 @@ sec.doc = {
         'cot',
         'csc',
         'cos'
+    ]
+};
+
+/**
+ * Calculate the sine of a value, sin(x)
+ * @param {Number | Complex | Unit | Array} x
+ * @return {Number | Complex | Array} res
+ */
+function sin(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sin', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.sin(x);
+    }
+
+    if (x instanceof Complex) {
+        return new Complex(
+            0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp( x.im)),
+            0.5 * Math.cos(x.re) * (Math.exp( x.im) - Math.exp(-x.im))
+        );
+    }
+
+    if (x instanceof Unit) {
+        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+            throw new TypeError ('Unit in function cos is no angle');
+        }
+        return Math.sin(x.value);
+    }
+
+    if (x instanceof Array) {
+        return util.map(x, sin);
+    }
+    // TODO: implement matrix support
+
+    throw newUnsupportedTypeError('sin', x);
+}
+
+math.sin = sin;
+
+/**
+ * Function documentation
+ */
+sin.doc = {
+    'name': 'sin',
+    'category': 'Trigonometry',
+    'syntax': [
+        'sin(x)'
+    ],
+    'description': 'Compute the sine of x in radians.',
+    'examples': [
+        'sin(2)',
+        'sin(pi / 4) ^ 2',
+        'sin(90 deg)',
+        'sin(30 deg)',
+        'sin(0.2)^2 + cos(0.2)^2'
+    ],
+    'seealso': [
+        'asin',
+        'cos',
+        'tan'
     ]
 };
 
@@ -2607,2231 +4404,434 @@ tan.doc = {
 };
 
 /**
- * Calculate the inverse cosine of a value, acos(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * Change the unit of a value. x in unit or in(x, unit)
+ * @param {Unit | Array} x
+ * @param {Unit | Array} unit
+ * @return {Unit | Array} res
  */
-function acos(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('acos', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        if (x >= -1 && x <= 1) {
-            return Math.acos(x);
-        }
-        else {
-            return acos(new Complex(x, 0));
-        }
-    }
-
-    if (x instanceof Complex) {
-        // acos(z) = 0.5*pi + i*log(iz + sqrt(1-z^2))
-        var temp1 = new Complex(
-            x.im * x.im - x.re * x.re + 1.0,
-            -2.0 * x.re * x.im
-        );
-        var temp2 = sqrt(temp1);
-        var temp3 = new Complex(
-            temp2.re - x.im,
-            temp2.im + x.re
-        );
-        var temp4 = log(temp3);
-
-        // 0.5*pi = 1.5707963267948966192313216916398
-        return new Complex(
-            1.57079632679489661923 - temp4.im,
-            temp4.re
-        );
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, acos);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('acos', x);
-}
-
-math.acos = acos;
-
-/**
- * Function documentation
- */
-acos.doc = {
-    'name': 'acos',
-    'category': 'Trigonometry',
-    'syntax': [
-        'acos(x)'
-    ],
-    'description': 'Compute the inverse cosine of a value in radians.',
-    'examples': [
-        'acos(0.5)',
-        'acos(cos(2.3))'
-    ],
-    'seealso': [
-        'cos',
-        'acos',
-        'asin'
-    ]
-};
-
-/**
- * Compute the argument of a complex value.
- * If x = a+bi, the argument is computed as atan2(b, a).
- * @param {Number | Complex | Array} x
- * @return {Number | Array} res
- */
-function arg(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('arg', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.atan2(0, x);
-    }
-
-    if (x instanceof Complex) {
-        return Math.atan2(x.im, x.re);
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, arg);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('arg', x);
-}
-
-math.arg = arg;
-
-/**
- * Function documentation
- */
-arg.doc = {
-    'name': 'arg',
-    'category': 'Complex',
-    'syntax': [
-        'arg(x)'
-    ],
-    'description':
-        'Compute the argument of a complex value. ' +
-            'If x = a+bi, the argument is computed as atan2(b, a).',
-    'examples': [
-        'arg(2 + 2i)',
-        'atan2(3, 2)',
-        'arg(2 - 3i)'
-    ],
-    'seealso': [
-        're',
-        'im',
-        'conj',
-        'abs'
-    ]
-};
-
-/**
- * Compute the complex conjugate of a complex value.
- * If x = a+bi, the complex conjugate is a-bi.
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
- */
-function conj(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('conj', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return x;
-    }
-
-    if (x instanceof Complex) {
-        return new Complex(x.re, -x.im);
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, conj);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('conj', x);
-}
-
-math.conj = conj;
-
-/**
- * Function documentation
- */
-conj.doc = {
-    'name': 'conj',
-    'category': 'Complex',
-    'syntax': [
-        'conj(x)'
-    ],
-    'description':
-        'Compute the complex conjugate of a complex value. ' +
-            'If x = a+bi, the complex conjugate is a-bi.',
-    'examples': [
-        'conj(2 + 3i)',
-        'conj(2 - 3i)',
-        'conj(-5.2i)'
-    ],
-    'seealso': [
-        're',
-        'im',
-        'abs',
-        'arg'
-    ]
-};
-
-/**
- * Get the imaginary part of a complex number.
- * @param {Number | Complex | Array} x
- * @return {Number | Array} im
- */
-function im(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('im', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return 0;
-    }
-
-    if (x instanceof Complex) {
-        return x.im;
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, im);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('im', x);
-}
-
-math.im = im;
-
-/**
- * Function documentation
- */
-im.doc = {
-    'name': 'im',
-    'category': 'Complex',
-    'syntax': [
-        'im(x)'
-    ],
-    'description': 'Get the imaginary part of a complex number.',
-    'examples': [
-        'im(2 + 3i)',
-        're(2 + 3i)',
-        'im(-5.2i)',
-        'im(2.4)'
-    ],
-    'seealso': [
-        're',
-        'conj',
-        'abs',
-        'arg'
-    ]
-};
-
-/**
- * Get the real part of a complex number.
- * @param {Number | Complex | Array} x
- * @return {Number | Array} re
- */
-function re(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('re', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return x;
-    }
-
-    if (x instanceof Complex) {
-        return x.re;
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, re);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('re', x);
-}
-
-math.re = re;
-
-/**
- * Function documentation
- */
-re.doc = {
-    'name': 're',
-    'category': 'Complex',
-    'syntax': [
-        're(x)'
-    ],
-    'description': 'Get the real part of a complex number.',
-    'examples': [
-        're(2 + 3i)',
-        'im(2 + 3i)',
-        're(-5.2i)',
-        're(2.4)'
-    ],
-    'seealso': [
-        'im',
-        'conj',
-        'abs',
-        'arg'
-    ]
-};
-
-/**
- * Compute the cube of a value, x * x * x.',
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
- */
-function cube(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('cube', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return x * x * x;
-    }
-
-    if (x instanceof Complex) {
-        return multiply(multiply(x, x), x);
-    }
-
-    if (x instanceof Array) {
-        return multiply(multiply(x, x), x);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('cube', x);
-}
-
-math.cube = cube;
-
-/**
- * Function documentation
- */
-cube.doc = {
-    'name': 'cube',
-    'category': 'Arithmetic',
-    'syntax': [
-        'cube(x)'
-    ],
-    'description': 'Compute the cube of a value. ' +
-        'The cube of x is x * x * x.',
-    'examples': [
-        'cube(2)',
-        '2^3',
-        '2 * 2 * 2'
-    ],
-    'seealso': [
-        'multiply',
-        'square',
-        'pow'
-    ]
-};
-
-/**
- * Divide two values. x / y or divide(x, y)
- * @param  {Number | Complex | Unit | Array} x
- * @param  {Number | Complex} y
- * @return {Number | Complex | Unit | Array} res
- */
-function divide(x, y) {
+function unit_in(x, unit) {
     if (arguments.length != 2) {
-        throw newArgumentsError('divide', arguments.length, 2);
+        throw newArgumentsError('in', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number / number
-            return x / y;
+    if (x instanceof Unit && unit instanceof Unit) {
+        // Test if unit has no value
+        if (unit.hasValue) {
+            throw new Error('Cannot convert to a unit with a value');
         }
-        else if (y instanceof Complex) {
-            // number / complex
-            return divideComplex(new Complex(x, 0), y);
+        // Test if unit has a unit
+        if (!unit.hasUnit) {
+            throw new Error('Unit expected on the right hand side of function in');
         }
+
+        var res = unit.copy();
+        res.value = x.value;
+        res.fixPrefix = true;
+
+        return res;
     }
 
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            // complex / number
-            return divideComplex(x, new Complex(y, 0));
-        }
-        else if (y instanceof Complex) {
-            // complex / complex
-            return divideComplex(x, y);
-        }
+    if (x instanceof Array || unit instanceof Array) {
+        return util.map2(x, unit, unit_in);
     }
-
-    if (x instanceof Unit) {
-        if (isNumber(y)) {
-            var res = x.copy();
-            res.value /= y;
-            return res;
-        }
-    }
-
-    if (x instanceof Array) {
-        if (y instanceof Array) {
-            // TODO: implement matrix/matrix
-        }
-        else {
-            // matrix / scalar
-            return util.map2(x, y, divide);
-        }
-    }
-
-    if (y instanceof Array) {
-        // TODO: implement scalar/matrix
-    }
-
     // TODO: implement matrix support
 
-    throw newUnsupportedTypeError('divide', x, y);
+    throw newUnsupportedTypeError('in', x);
 }
 
-/**
- * Divide two complex numbers. x / y or divide(x, y)
- * @param {Complex} x
- * @param {Complex} y
- * @return {Complex} res
- * @private
- */
-function divideComplex (x, y) {
-    var den = y.re * y.re + y.im * y.im;
-    return new Complex(
-        (x.re * y.re + x.im * y.im) / den,
-        (x.im * y.re - x.re * y.im) / den
-    );
-}
-
-math.divide = divide;
+math['in'] = unit_in;
 
 /**
  * Function documentation
  */
-divide.doc = {
-    'name': 'divide',
-    'category': 'Operators',
+unit_in.doc ={
+    'name': 'in',
+    'category': 'Units',
     'syntax': [
-        'x / y',
-        'divide(x, y)'
+        'x in unit',
+        'in(x, unit)'
     ],
-    'description': 'Divide two values.',
+    'description': 'Change the unit of a value.',
     'examples': [
-        '2 / 3',
-        'ans * 3',
-        '4.5 / 2',
-        '3 + 4 / 2',
-        '(3 + 4) / 2',
-        '18 km / 4.5'
-    ],
-    'seealso': [
-        'multiply'
-    ]
-};
-
-/**
- * Check if value a is smaller or equal to b, a <= b
- * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
- */
-function smallereq(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('smallereq', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x <= y;
-        }
-        else if (y instanceof Complex) {
-            return x <= abs(y);
-        }
-    }
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return abs(x) <= y;
-        }
-        else if (y instanceof Complex) {
-            return abs(x) <= abs(y);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value <= y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x <= y;
-    }
-
-    if (x instanceof Array || y instanceof Array) {
-        return util.map2(x, y, smallereq);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('smallereq', x, y);
-}
-
-math.smallereq = smallereq;
-
-/**
- * Function documentation
- */
-smallereq.doc = {
-    'name': 'smallereq',
-    'category': 'Operators',
-    'syntax': [
-        'x <= y',
-        'smallereq(x, y)'
-    ],
-    'description':
-        'Check if value x is smaller or equal to value y. ' +
-            'Returns 1 if x is smaller than y, and 0 if not.',
-    'examples': [
-        '2 < 1+1',
-        '2 <= 1+1',
-        'a = 3.2',
-        'b = 6-2.8',
-        '(a < b)'
-    ],
-    'seealso': [
-        'equal', 'unequal', 'larger', 'smaller', 'largereq'
-    ]
-};
-
-/**
- * Round a value towards the nearest integer, round(x [, n])
- * @param {Number | Complex | Array} x
- * @param {Number | Array} [n] number of digits
- * @return {Number | Complex | Array} res
- */
-function round(x, n) {
-    if (arguments.length != 1 && arguments.length != 2) {
-        throw newArgumentsError('round', arguments.length, 1, 2);
-    }
-
-    if (n == undefined) {
-        // round (x)
-        if (isNumber(x)) {
-            return Math.round(x);
-        }
-
-        if (x instanceof Complex) {
-            return new Complex (
-                Math.round(x.re),
-                Math.round(x.im)
-            );
-        }
-
-        if (x instanceof Array) {
-            util.map(x, round);
-        }
-
-        throw newUnsupportedTypeError('round', x);
-    }
-    else {
-        // round (x, n)
-        if (!isNumber(n)) {
-            throw new TypeError('Number of digits in function round must be an integer');
-        }
-        if (n !== Math.round(n)) {
-            throw new TypeError('Number of digits in function round must be integer');
-        }
-        if (n < 0 || n > 9) {
-            throw new Error ('Number of digits in function round must be in te range of 0-9');
-        }
-
-        if (isNumber(x)) {
-            return roundNumber(x, n);
-        }
-
-        if (x instanceof Complex) {
-            return new Complex (
-                roundNumber(x.re, n),
-                roundNumber(x.im, n)
-            );
-        }
-
-        if (x instanceof Array || n instanceof Array) {
-            return util.map2(x, n, round);
-        }
-
-        throw newUnsupportedTypeError('round', x, n);
-    }
-
-    // TODO: implement matrix support
-}
-
-math.round = round;
-
-/**
- * round a number to the given number of digits, or to the default if
- * digits is not provided
- * @param {Number} value
- * @param {Number} [digits]  number of digits, between 0 and 15
- * @return {Number} roundedValue
- */
-function roundNumber (value, digits) {
-    var p = Math.pow(10, (digits != undefined) ? digits : math.options.precision);
-    return Math.round(value * p) / p;
-}
-
-/**
- * Function documentation
- */
-round.doc = {
-    'name': 'round',
-    'category': 'Arithmetic',
-    'syntax': [
-        'round(x)',
-        'round(x, n)'
-    ],
-    'description':
-        'round a value towards the nearest integer.' +
-            'If x is complex, both real and imaginary part are rounded ' +
-            'towards the nearest integer. ' +
-            'When n is specified, the value is rounded to n decimals.',
-    'examples': [
-        'round(3.2)',
-        'round(3.8)',
-        'round(-4.2)',
-        'round(-4.8)',
-        'round(pi, 3)',
-        'round(123.45678, 2)'
-    ],
-    'seealso': ['ceil', 'floor', 'fix']
-};
-
-/**
- * Check if value x equals y, x == y
- * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
- */
-function equal(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('equal', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x == y;
-        }
-        else if (y instanceof Complex) {
-            return (x == y.re) && (y.im == 0);
-        }
-    }
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return (x.re == y) && (x.im == 0);
-        }
-        else if (y instanceof Complex) {
-            return (x.re == y.re) && (x.im == y.im);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value == y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x == y;
-    }
-
-    if (x instanceof Array || y instanceof Array) {
-        return util.map2(x, y, equal);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('equal', x, y);
-}
-
-math.equal = equal;
-
-/**
- * Function documentation
- */
-equal.doc = {
-    'name': 'equal',
-    'category': 'Operators',
-    'syntax': [
-        'x == y',
-        'equal(x, y)'
-    ],
-    'description':
-        'Check equality of two values. ' +
-            'Returns 1 if the values are equal, and 0 if not.',
-    'examples': [
-        '2+2 == 3',
-        '2+2 == 4',
-        'a = 3.2',
-        'b = 6-2.8',
-        'a == b',
-        '50cm == 0.5m'
-    ],
-    'seealso': [
-        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
-    ]
-};
-
-/**
- * Check if value x unequals y, x != y
- * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
- */
-function unequal(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('unequal', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x == y;
-        }
-        else if (y instanceof Complex) {
-            return (x == y.re) && (y.im == 0);
-        }
-    }
-
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return (x.re == y) && (x.im == 0);
-        }
-        else if (y instanceof Complex) {
-            return (x.re == y.re) && (x.im == y.im);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value == y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x == y;
-    }
-
-    if (x instanceof Array || y instanceof Array) {
-        return util.map2(x, y, unequal);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('unequal', x, y);
-}
-
-math.unequal = unequal;
-
-/**
- * Function documentation
- */
-unequal.doc = {
-    'name': 'unequal',
-    'category': 'Operators',
-    'syntax': [
-        'x != y',
-        'unequal(x, y)'
-    ],
-    'description':
-        'Check unequality of two values. ' +
-            'Returns 1 if the values are unequal, and 0 if they are equal.',
-    'examples': [
-        '2+2 != 3',
-        '2+2 != 4',
-        'a = 3.2',
-        'b = 6-2.8',
-        'a != b',
-        '50cm != 0.5m',
-        '5 cm != 2 inch'
-    ],
-    'seealso': [
-        'equal', 'smaller', 'larger', 'smallereq', 'largereq'
-    ]
-};
-
-/**
- * Calculate the 10-base logarithm of a value, log10(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
- */
-function log10(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('log10', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        if (x >= 0) {
-            return Math.log(x) / Math.LN10;
-        }
-        else {
-            // negative value -> complex value computation
-            return log10(new Complex(x, 0));
-        }
-    }
-
-    if (x instanceof Complex) {
-        return new Complex (
-            Math.log(Math.sqrt(x.re * x.re + x.im * x.im)) / Math.LN10,
-            Math.atan2(x.im, x.re) / Math.LN10
-        );
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, log10);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('log10', x);
-}
-
-math.log10 = log10;
-
-/**
- * Function documentation
- */
-log10.doc = {
-    'name': 'log10',
-    'category': 'Arithmetic',
-    'syntax': [
-        'log10(x)'
-    ],
-    'description': 'Compute the 10-base logarithm of a value.',
-    'examples': [
-        'log10(1000)',
-        '10 ^ 3',
-        'log10(0.01)',
-        'log(1000) / log(10)',
-        'log(1000, 10)'
-    ],
-    'seealso': [
-        'exp',
-        'log'
-    ]
-};
-
-/**
- * Round a value towards zero, fix(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
- */
-function fix(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('fix', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return (value > 0) ? Math.floor(x) : Math.ceil(x);
-    }
-
-    if (x instanceof Complex) {
-        return new Complex(
-            (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
-            (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
-        );
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, fix);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('fix', x);
-}
-
-math.fix = fix;
-
-/**
- * Function documentation
- */
-fix.doc = {
-    'name': 'fix',
-    'category': 'Arithmetic',
-    'syntax': [
-        'fix(x)'
-    ],
-    'description':
-        'Round a value towards zero.' +
-            'If x is complex, both real and imaginary part are rounded ' +
-            'towards zero.',
-    'examples': [
-        'fix(3.2)',
-        'fix(3.8)',
-        'fix(-4.2)',
-        'fix(-4.8)'
-    ],
-    'seealso': ['ceil', 'floor', 'round']
-};
-
-/**
- * Add two values. x + y or add(x, y)
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Number | Complex | Unit | String | Array} res
- */
-function add(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('add', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number + number
-            return x + y;
-        }
-        else if (y instanceof Complex) {
-            // number + complex
-            return new Complex(
-                x + y.re,
-                    y.im
-            )
-        }
-    }
-    else if (x instanceof Complex) {
-        if (isNumber(y)) {
-            // complex + number
-            return new Complex(
-                x.re + y,
-                x.im
-            )
-        }
-        else if (y instanceof Complex) {
-            // complex + complex
-            return new Complex(
-                x.re + y.re,
-                x.im + y.im
-            );
-        }
-    }
-    else if (x instanceof Unit) {
-        if (y instanceof Unit) {
-            if (!x.equalBase(y)) {
-                throw new Error('Units do not match');
-            }
-
-            if (!x.hasValue) {
-                throw new Error('Unit on left hand side of operator + has no value');
-            }
-
-            if (!y.hasValue) {
-                throw new Error('Unit on right hand side of operator + has no value');
-            }
-
-            var res = x.copy();
-            res.value += y.value;
-            res.fixPrefix = false;
-            return res;
-        }
-    }
-
-    if (isString(x) || isString(y)) {
-        return x + y;
-    }
-
-    if (x instanceof Array || y instanceof Array) {
-        return util.map2(x, y, add);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('add', x, y);
-}
-
-math.add = add;
-
-/**
- * Function documentation
- */
-add.doc = {
-    'name': 'add',
-    'category': 'Operators',
-    'syntax': [
-        'x + y',
-        'add(x, y)'
-    ],
-    'description': 'Add two values.',
-    'examples': [
-        '2.1 + 3.6',
-        'ans - 3.6',
-        '3 + 2i',
-        '"hello" + " world"',
-        '3 cm + 2 inch'
-    ],
-    'seealso': [
-        'subtract'
-    ]
-};
-
-/**
- * Calculates the modulus, the remainder of an integer division.
- * @param  {Number | Complex | Array} x
- * @param  {Number | Complex | Array} y
- * @return {Number | Array} res
- */
-function mod(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('mod', arguments.length, 2);
-    }
-
-    // TODO: only handle integer values in mod?
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number % number
-            return x % y;
-        }
-        else if (y instanceof Complex && y.im == 0) {
-            // number % complex
-            return x % y.re;
-        }
-    }
-    else if (x instanceof Complex && x.im == 0) {
-        if (isNumber(y)) {
-            // complex * number
-            return x.re % y;
-        }
-        else if (y instanceof Complex && y.im == 0) {
-            // complex * complex
-            return x.re % y.re;
-        }
-    }
-
-
-    if (x instanceof Array || y instanceof Array) {
-        return util.map2(x, y, mod);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('mod', x, y);
-}
-
-math.mod = mod;
-
-/**
- * Function documentation
- */
-mod.doc = {
-    'name': 'mod',
-    'category': 'Operators',
-    'syntax': [
-        'x % y',
-        'x mod y',
-        'mod(x, y)'
-    ],
-    'description':
-        'Calculates the modulus, the remainder of an integer division.',
-    'examples': [
-        '7 % 3',
-        '11 % 2',
-        '10 mod 4',
-        'function isOdd(x) = x % 2',
-        'isOdd(2)',
-        'isOdd(3)'
+        '5 inch in cm',
+        '3.2kg in g',
+        '16 bytes in bits'
     ],
     'seealso': []
 };
 
 /**
- * Calculate the exponent of a value, exp(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * Format a value of any type into a string. Interpolate values into the string.
+ * Usage:
+ *     math.format(array);
+ *     math.format('Hello $name! The date is $date', {name: 'user', date: new Date()});
+ *
+ * @param {String} template
+ * @param {Object} values
+ * @return {String} str
  */
-function exp (x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('exp', arguments.length, 1);
+function format(template, values) {
+    var num = arguments.length;
+    if (num != 1 && num != 2) {
+        throw newArgumentsError('format', num, 1, 2);
     }
 
-    if (isNumber(x)) {
-        return Math.exp(x);
-    }
-    if (x instanceof Complex) {
-        var r = Math.exp(x.re);
-        return new Complex(
-            r * Math.cos(x.im),
-            r * Math.sin(x.im)
-        );
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, exp);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('exp', x);
-}
-
-math.exp = exp;
-
-/**
- * Function documentation
- */
-exp.doc = {
-    'name': 'exp',
-    'category': 'Arithmetic',
-    'syntax': [
-        'exp(x)'
-    ],
-    'description': 'Calculate the exponent of a value.',
-    'examples': [
-        'exp(1.3)',
-        'e ^ 1.3',
-        'log(exp(1.3))',
-        'x = 2.4',
-        '(exp(i*x) == cos(x) + i*sin(x))   # Euler\'s formula'
-    ],
-    'seealso': [
-        'square',
-        'multiply',
-        'log'
-    ]
-};
-/**
- * Check if value x is larger or equal to y, x >= y
- * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
- */
-function largereq(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('largereq', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x >= y;
-        }
-        else if (y instanceof Complex) {
-            return x >= abs(y);
-        }
-    }
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return abs(x) >= y;
-        }
-        else if (y instanceof Complex) {
-            return abs(x) >= abs(y);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value >= y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x >= y;
-    }
-
-    if (x instanceof Array || y instanceof Array) {
-        return util.map2(x, y, largereq);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('largereq', x, y);
-}
-
-math.largereq = largereq;
-
-/**
- * Function documentation
- */
-largereq.doc = {
-    'name': 'largereq',
-    'category': 'Operators',
-    'syntax': [
-        'x >= y',
-        'largereq(x, y)'
-    ],
-    'description':
-        'Check if value x is larger or equal to y. ' +
-        'Returns 1 if x is larger or equal to y, and 0 if not.',
-    'examples': [
-        '2 > 1+1',
-        '2 >= 1+1',
-        'a = 3.2',
-        'b = 6-2.8',
-        '(a > b)'
-    ],
-    'seealso': [
-        'equal', 'unequal', 'smallereq', 'smaller', 'largereq'
-    ]
-};
-
-/**
- * Calculate the square root of a value
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
- */
-function sqrt (x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('sqrt', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        if (x >= 0) {
-            return Math.sqrt(x);
-        }
-        else {
-            return sqrt(new Complex(x, 0));
-        }
-    }
-
-    if (x instanceof Complex) {
-        var r = Math.sqrt(x.re * x.re + x.im * x.im);
-        if (x.im >= 0.0) {
-            return new Complex(
-                0.5 * Math.sqrt(2.0 * (r + x.re)),
-                0.5 * Math.sqrt(2.0 * (r - x.re))
-            );
-        }
-        else {
-            return new Complex(
-                0.5 * Math.sqrt(2.0 * (r + x.re)),
-                -0.5 * Math.sqrt(2.0 * (r - x.re))
-            );
-        }
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, sqrt);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('sqrt', x);
-}
-
-math.sqrt = sqrt;
-
-/**
- * Function documentation
- */
-sqrt.doc = {
-    'name': 'sqrt',
-    'category': 'Arithmetic',
-    'syntax': [
-        'sqrt(x)'
-    ],
-    'description':
-        'Compute the square root value. ' +
-            'If x = y * y, then y is the square root of x.',
-    'examples': [
-        'sqrt(25)',
-        '5 * 5',
-        'sqrt(-1)'
-    ],
-    'seealso': [
-        'square',
-        'multiply'
-    ]
-};
-
-/**
- * Compute the square of a value, x * x
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
- */
-function square(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('square', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return x * x;
-    }
-
-    if (x instanceof Complex) {
-        return multiply(x, x);
-    }
-
-    if (x instanceof Array) {
-        return multiply(x, x);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('square', x);
-}
-
-math.square = square;
-
-/**
- * Function documentation
- */
-square.doc = {
-    'name': 'square',
-    'category': 'Arithmetic',
-    'syntax': [
-        'square(x)'
-    ],
-    'description':
-        'Compute the square of a value. ' +
-            'The square of x is x * x.',
-    'examples': [
-        'square(3)',
-        'sqrt(9)',
-        '3^2',
-        '3 * 3'
-    ],
-    'seealso': [
-        'multiply',
-        'pow',
-        'sqrt',
-        'cube'
-    ]
-};
-
-/**
- * Check if value x is larger y, x > y
- * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
- */
-function larger(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('larger', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x > y;
-        }
-        else if (y instanceof Complex) {
-            return x > abs(y);
-        }
-    }
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return abs(x) > y;
-        }
-        else if (y instanceof Complex) {
-            return abs(x) > abs(y);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value > y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x > y;
-    }
-
-    if (x instanceof Array || y instanceof Array) {
-        return util.map2(x, y, equal);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('larger', x, y);
-}
-
-math.larger = larger;
-
-/**
- * Function documentation
- */
-larger.doc = {
-    'name': 'larger',
-    'category': 'Operators',
-    'syntax': [
-        'x > y',
-        'larger(x, y)'
-    ],
-    'description':
-        'Check if value x is larger than y. ' +
-        'Returns 1 if x is larger than y, and 0 if not.',
-    'examples': [
-        '2 > 3',
-        '5 > 2*2',
-        'a = 3.3',
-        'b = 6-2.8',
-        '(a > b)',
-        '(b < a)',
-        '5 cm > 2 inch'
-    ],
-    'seealso': [
-        'equal', 'unequal', 'smaller', 'smallereq', 'largereq'
-    ]
-};
-
-/**
- * Compute the sign of a value.
- * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
- */
-function sign(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('sign', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        var sign;
-        if (x > 0) {
-            sign = 1;
-        }
-        else if (x < 0) {
-            sign = -1;
-        }
-        else {
-            sign = 0;
-        }
-        return sign;
-    }
-
-    if (x instanceof Complex) {
-        var abs = Math.sqrt(x.re * x.re + x.im * x.im);
-        return new Complex(x.re / abs, x.im / abs);
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, sign);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('sign', x);
-}
-
-math.sign = sign;
-
-/**
- * Function documentation
- */
-sign.doc = {
-    'name': 'sign',
-    'category': 'Arithmetic',
-    'syntax': [
-        'sign(x)'
-    ],
-    'description':
-        'Compute the sign of a value. ' +
-            'The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.',
-    'examples': [
-        'sign(3.5)',
-        'sign(-4.2)',
-        'sign(0)'
-    ],
-    'seealso': [
-        'abs'
-    ]
-};
-
-/**
- * Inverse the sign of a value. -x or unaryminus(x)
- * @param  {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Unit | Array} res
- */
-function unaryminus(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('unaryminus', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return -x;
-    }
-    else if (x instanceof Complex) {
-        return new Complex(
-            -x.re,
-            -x.im
-        );
-    }
-    else if (x instanceof Unit) {
-        var res = x.copy();
-        res.value = -x.value;
-        return res;
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, unaryminus);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('unaryminus', x);
-}
-
-math.unaryminus = unaryminus;
-
-/**
- * Function documentation
- */
-unaryminus.doc = {
-    'name': 'unaryminus',
-    'category': 'Operators',
-    'syntax': [
-        '-x',
-        'unaryminus(x)'
-    ],
-    'description':
-        'Inverse the sign of a value.',
-    'examples': [
-        '-4.5',
-        '-(-5.6)'
-    ],
-    'seealso': [
-        'add', 'subtract'
-    ]
-};
-/**
- * Check if value x is smaller y, x < y
- * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
- */
-function smaller(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('smaller', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x < y;
-        }
-        else if (y instanceof Complex) {
-            return x < abs(y);
-        }
-    }
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return abs(x) < y;
-        }
-        else if (y instanceof Complex) {
-            return abs(x) < abs(y);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value < y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x < y;
-    }
-
-    if (x instanceof Array || y instanceof Array) {
-        return util.map2(x, y, smaller);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('smaller', x, y);
-}
-
-math.smaller = smaller;
-
-/**
- * Function documentation
- */
-smaller.doc = {
-    'name': 'smaller',
-    'category': 'Operators',
-    'syntax': [
-        'x < y',
-        'smaller(x, y)'
-    ],
-    'description':
-        'Check if value x is smaller than value y. ' +
-            'Returns 1 if x is smaller than y, and 0 if not.',
-    'examples': [
-        '2 < 3',
-        '5 < 2*2',
-        'a = 3.3',
-        'b = 6-2.8',
-        '(a < b)',
-        '5 cm < 2 inch'
-    ],
-    'seealso': [
-        'equal', 'unequal', 'larger', 'smallereq', 'largereq'
-    ]
-};
-
-/**
- * Calculate the square root of a value
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
- */
-function abs(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('abs', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.abs(x);
-    }
-
-    if (x instanceof Complex) {
-        return Math.sqrt(x.re * x.re + x.im * x.im);
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, abs);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('abs', x);
-}
-
-math.abs = abs;
-
-/**
- * Function documentation
- */
-abs.doc = {
-    'name': 'abs',
-    'category': 'Arithmetic',
-    'syntax': [
-        'abs(x)'
-    ],
-    'description': 'Compute the absolute value.',
-    'examples': [
-        'abs(3.5)',
-        'abs(-4.2)'
-    ],
-    'seealso': ['sign']
-};
-
-/**
- * Calculate the logarithm of a value, log(x [, base])
- * base is optional. If not provided, the natural logarithm of x is calculated
- * logarithm for any base, like log(x, base)
- * @param {Number | Complex | Array} x
- * @param {Number | Complex} [base]
- * @return {Number | Complex | Array} res
- */
-function log(x, base) {
-    if (arguments.length != 1 && arguments.length != 2) {
-        throw newArgumentsError('log', arguments.length, 1, 2);
-    }
-
-    if (base === undefined) {
-        // calculate natural logarithm, log(x)
-        if (isNumber(x)) {
-            if (x >= 0) {
-                return Math.log(x);
-            }
-            else {
-                // negative value -> complex value computation
-                return log(new Complex(x, 0));
-            }
+    if (num == 1) {
+        // just format a value as string
+        var value = arguments[0];
+        if (isNumber(value)) {
+            return util.format(value);
         }
 
-        if (x instanceof Complex) {
-            return new Complex (
-                Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
-                Math.atan2(x.im, x.re)
-            );
+        if (value instanceof Array) {
+            return formatArray(value);
         }
 
-        if (x instanceof Array) {
-            return util.map(x, log);
+        if (value instanceof Object) {
+            return value.toString();
         }
+
+        return String(value);
     }
     else {
-        // calculate logarithm for a specified base, log(x, base)
-        return divide(log(x), log(base));
+        if (!isString(template)) {
+            throw new TypeError('String expected as first parameter in function format');
+        }
+        if (!(values instanceof Object)) {
+            throw new TypeError('Object expected as first parameter in function format');
+        }
+
+        // format values into a string
+        return template.replace(/\$([\w\.]+)/g, function (original, key) {
+                var keys = key.split('.');
+                var value = values[keys.shift()];
+                while (keys.length && value != undefined) {
+                    var k = keys.shift();
+                    value = k ? value[k] : value + '.';
+                }
+                return value != undefined ? value : original;
+            }
+        );
     }
-
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('log', x, base);
 }
 
-math.log = log;
+math.format = format;
+
+/**
+ * Format a n-dimensional array
+ * @param {Array} array
+ * @returns {string} str
+ */
+function formatArray (array) {
+    var str = '[';
+    var s = size(array)[0];
+
+    if (s.length != 2) {
+        return formatArrayN(array);
+    }
+
+    var rows = s[0];
+    var cols = s[1];
+    for (var r = 0; r < rows; r++) {
+        if (r != 0) {
+            str += '; ';
+        }
+
+        var row = array[r];
+        for (var c = 0; c < cols; c++) {
+            if (c != 0) {
+                str += ', ';
+            }
+            var cell = row[c];
+            if (cell != undefined) {
+                str += format(cell);
+            }
+        }
+    }
+    str += ']';
+
+    return str;
+}
+
+/**
+ * Recursively format an n-dimensional matrix
+ * @param {Array} array
+ * @returns {String} str
+ */
+function formatArrayN (array) {
+    if (array instanceof Array) {
+        var str = '[';
+        var len = array.length;
+        for (var i = 0; i < len; i++) {
+            if (i != 0) {
+                str += ', ';
+            }
+            str += formatArrayN(array[i]);
+        }
+        str += ']';
+        return str;
+    }
+    else {
+        return format(array);
+    }
+}
 
 /**
  * Function documentation
  */
-log.doc = {
-    'name': 'log',
-    'category': 'Arithmetic',
+format.doc = {
+    'name': 'format',
+    'category': 'Utils',
     'syntax': [
-        'log(x)',
-        'log(x, base)'
+        'format(value)'
     ],
-    'description': 'Compute the logarithm of a value. ' +
-        'If no base is provided, the natural logarithm of x is calculated. ' +
-        'If base if provided, the logarithm is calculated for the specified base. ' +
-        'log(x, base) is defined as log(x) / log(base).',
+    'description': 'Format a value of any type as string.',
     'examples': [
-        'log(3.5)',
-        'a = log(2.4)',
-        'exp(a)',
-        '10 ^ 3',
-        'log(1000, 10)',
-        'log(1000) / log(10)',
-        'b = logb(1024, 2)',
-        '2 ^ b'
+        'format(2.3)',
+        'format(3 - 4i)',
+        'format([])'
     ],
-    'seealso': [
-        'exp',
-        'log10'
-    ]
+    'seealso': []
 };
 
 /**
- * Calculates the power of x to y, x^y
- * @param  {Number | Complex} x
- * @param  {Number | Complex} y
- * @return {Number | Complex} res
+ * Display documentation on a function or data type
+ * @param {function | string | Object} subject
+ * @return {String} documentation
  */
-function pow(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('pow', arguments.length, 2);
+function help(subject) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('help', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            if (isInteger(y) || x >= 0) {
-                // real value computation
-                return Math.pow(x, y);
+    if (subject != undefined) {
+        if (subject.doc) {
+            return generateDoc(subject.doc);
+        }
+        else if (subject.constructor.doc) {
+            return generateDoc(subject.constructor.doc);
+        }
+        else if (isString(subject)) {
+            // search the subject in the methods
+            var obj = math[subject];
+            if (obj && obj.doc) {
+                return generateDoc(obj.doc);
             }
-            else {
-                return powComplex(new Complex(x, 0), new Complex(y, 0));
-            }
-        }
-        else if (y instanceof Complex) {
-            return powComplex(new Complex(x, 0), y);
-        }
-    }
-    else if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return powComplex(x, new Complex(y, 0));
-        }
-        else if (y instanceof Complex) {
-            return powComplex(x, y);
-        }
-    }
-    else if (x instanceof Array) {
-        if (!isNumber(y) || !isInteger(y) || y < 0) {
-            throw new TypeError('For A^b, b must be a positive integer ' +
-                    '(value is ' + y + ')');
-        }
-
-        // verify that A is a 2 dimensional square matrix
-        var s = size(x)[0];
-        if (s.length != 2) {
-            throw new Error('For A^b, A must be 2 dimensional ' +
-                    '(A has ' + s.length + ' dimensions)');
-        }
-        if (s[0] != s[1]) {
-            throw new Error('For A^b, A must be square ' +
-                    '(size is ' + s[0] + 'x' + s[1] + ')');
-        }
-
-        if (y == 0) {
-            // return the identity matrix
-            // TODO: implement method eye
-            return eye(s[0]);
-        }
-        else {
-            // value > 0
-            var res = x;
-            for (var i = 1; i < y; i++) {
-                res = multiply(x, res);
-            }
-            return res;
         }
     }
 
-    // TODO: implement matrix support
+    // TODO: generate documentation for constants, number and string
 
-    throw newUnsupportedTypeError('pow', x, y);
+    if (subject instanceof Object && subject.name) {
+        return 'No documentation found on subject "' + subject.name +'"';
+    }
+    else if (subject instanceof Object && subject.constructor.name) {
+        return 'No documentation found on subject "' + subject.constructor.name +'"';
+    }
+    else {
+        return 'No documentation found on subject "' + subject +'"';
+    }
 }
 
+math.help = help;
+
 /**
- * Caculates the power of x to y, x^y, for two complex numbers.
- * @param {Complex} x
- * @param {Complex} y
- * @return {Complex} res
+ * Generate readable documentation from a documentation object
+ * @param {Object} doc
+ * @return {String} readableDoc
  * @private
  */
-function powComplex (x, y) {
-    // complex computation
-    // x^y = exp(log(x)*y) = exp((abs(x)+i*arg(x))*y)
-    var temp1 = log(x);
-    var temp2 = multiply(temp1, y);
-    return exp(temp2);
-}
+function generateDoc (doc) {
+    var desc = '';
 
-math.pow = pow;
+    if (doc.name) {
+        desc += 'NAME\n' + doc.name + '\n\n';
+    }
+    if (doc.category) {
+        desc += 'CATEGORY\n' + doc.category + '\n\n';
+    }
+    if (doc.syntax) {
+        desc += 'SYNTAX\n' + doc.syntax.join('\n') + '\n\n';
+    }
+    if (doc.examples) {
+        var parser = new math.parser.Parser();
+        desc += 'EXAMPLES\n';
+        for (var i = 0; i < doc.examples.length; i++) {
+            var expr = doc.examples[i];
+            var res;
+            try {
+                res = parser.eval(expr);
+            }
+            catch (e) {
+                res = e;
+            }
+            desc += expr + '\n';
+            desc += '    ' + math.format(res) + '\n';
+        }
+        desc += '\n';
+    }
+    if (doc.seealso) {
+        desc += 'SEE ALSO\n' + doc.seealso.join(', ') + '\n';
+    }
+
+    return desc;
+}
 
 /**
  * Function documentation
  */
-pow.doc = {
-    'name': 'pow',
-    'category': 'Operators',
+help.doc = {
+    'name': 'help',
+    'category': 'Utils',
     'syntax': [
-        'x ^ y',
-        'pow(x, y)'
+        'help(object)'
     ],
-    'description':
-        'Calculates the power of x to y, x^y.',
+    'description': 'Display documentation on a function or data type.',
     'examples': [
-        '2^3 = 8',
-        '2*2*2',
-        '1 + e ^ (pi * i)'
+        'help("sqrt")',
+        'help("Complex")'
     ],
-    'seealso': [
-        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
-    ]
+    'seealso': []
 };
 
 /**
- * Round a value towards minus infinity, floor(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * Import functions from an object or a file
+ * @param {function | String | Object} object
+ * @param {boolean} [override]         If true, existing functions will be
+ *                                     overwritten. False by default.
  */
-function floor(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('floor', arguments.length, 1);
-    }
+// TODO: return status information
+function _import(object, override) {
+    var name;
 
-    if (isNumber(x)) {
-        return Math.floor(x);
-    }
-
-    if (x instanceof Complex) {
-        return new Complex (
-            Math.floor(x.re),
-            Math.floor(x.im)
-        );
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, floor);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('floor', x);
-}
-
-math.floor = floor;
-
-/**
- * Function documentation
- */
-floor.doc = {
-    'name': 'floor',
-    'category': 'Arithmetic',
-    'syntax': [
-        'floor(x)'
-    ],
-    'description':
-        'Round a value towards minus infinity.' +
-            'If x is complex, both real and imaginary part are rounded ' +
-            'towards minus infinity.',
-    'examples': [
-        'floor(3.2)',
-        'floor(3.8)',
-        'floor(-4.2)'
-    ],
-    'seealso': ['ceil', 'fix', 'round']
-};
-
-/**
- * Round a value towards plus infinity, ceil(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
- */
-function ceil(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('ceil', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.ceil(x);
-    }
-
-    if (x instanceof Complex) {
-        return new Complex (
-            Math.ceil(x.re),
-            Math.ceil(x.im)
-        );
-    }
-
-    if (x instanceof Array) {
-        return util.map(x, ceil);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('ceil', x);
-}
-
-math.ceil = ceil;
-
-/**
- * Function documentation
- */
-ceil.doc = {
-    'name': 'ceil',
-    'category': 'Arithmetic',
-    'syntax': [
-        'ceil(x)'
-    ],
-    'description':
-        'Round a value towards plus infinity.' +
-            'If x is complex, both real and imaginary part are rounded ' +
-            'towards plus infinity.',
-    'examples': [
-        'ceil(3.2)',
-        'ceil(3.8)',
-        'ceil(-4.2)'
-    ],
-    'seealso': ['floor', 'fix', 'round']
-};
-
-/**
- * Multiply two values. x + y or multiply(x, y)
- * @param  {Number | Complex | Unit | Array} x
- * @param  {Number | Complex | Unit | Array} y
- * @return {Number | Complex | Unit | Array} res
- */
-function multiply(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('multiply', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number * number
-            return x * y;
+    if (isString(object)) {
+        // a string with a filename
+        if (typeof (require) !== 'undefined') {
+            // load the file using require
+            var module = require(object);
+            _import(module);
         }
-        else if (y instanceof Complex) {
-            // number * complex
-            return multiplyComplex(new Complex(x, 0), y);
-        }
-        else if (y instanceof Unit) {
-            res = y.copy();
-            res.value *= x;
-            return res;
+        else {
+            throw new Error('Cannot load file: require not available.');
         }
     }
-    else if (x instanceof Complex) {
-        if (isNumber(y)) {
-            // complex * number
-            return multiplyComplex(x, new Complex(y, 0));
-        }
-        else if (y instanceof Complex) {
-            // complex * complex
-            return multiplyComplex(x, y);
-        }
-    }
-    else if (x instanceof Unit) {
-        if (isNumber(y)) {
-            res = x.copy();
-            res.value *= y;
-            return res;
-        }
-    }
-    else if (x instanceof Array) {
-        if (y instanceof Array) {
-            // matrix * matrix
-            var sizeX = size(x)[0];
-            var sizeY = size(y)[0];
-
-            if (sizeX.length != 2) {
-                throw new Error('Can only multiply a 2 dimensional matrix ' +
-                        '(A has ' + sizeX.length + ' dimensions)');
+    else if (isSupportedType(object)) {
+        // a single function
+        name = object.name;
+        if (name) {
+            if (override || math[name] === undefined) {
+                math[name] = object;
             }
-            if (sizeY.length != 2) {
-                throw new Error('Can only multiply a 2 dimensional matrix ' +
-                        '(B has ' + sizeY.length + ' dimensions)');
-            }
-            if (sizeX[1] != sizeY[0]) {
-                throw new Error('Dimensions mismatch in multiplication. ' +
-                        'Columns of A must match rows of B ' +
-                        '(A is ' + sizeX[0] + 'x' + sizeX[1] +
-                        ', B is ' + sizeY[0] + 'x' + sizeY[1] + ', ' +
-                        sizeY[1] + ' != ' + sizeY[0] + ')');
-            }
-
-            // TODO: performance of matrix multiplication can be improved
-            var res = [];
-            var rows = sizeX[0];
-            var cols = sizeY[1];
-            var num = sizeX[1];
-            for (var r = 0; r < rows; r++) {
-                res[r] = [];
-                for (var c = 0; c < cols; c++) {
-                    var result = null;
-                    for (var n = 0; n < num; n++) {
-                        var p = multiply(x[r][n], y[n][c]);
-                        result = (result == null) ? p : add(result, p);
+        }
+        else {
+            throw new Error('Cannot import an unnamed function');
+        }
+    }
+    else if (object instanceof Object) {
+        // a map with functions
+        for (name in object) {
+            if (object.hasOwnProperty(name)) {
+                var value = object[name];
+                if (isSupportedType(value)) {
+                    if (override || math[name] === undefined) {
+                        math[name] = value;
                     }
-                    res[r][c] = result;
+                }
+                else {
+                    _import(value);
                 }
             }
-
-            return res;
-        }
-        else {
-            // matrix * scalar
-            return util.map2(x, y, multiply);
         }
     }
-
-    if (y instanceof Array) {
-        // scalar * matrix
-        return util.map2(x, y, multiply);
-    }
-
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('multiply', x, y);
 }
 
+math['import'] = _import;
+
 /**
- * Multiply two complex numbers. x * y or multiply(x, y)
- * @param {Complex} x
- * @param {Complex} y
- * @return {Complex} res
+ * Check whether given object is a supported type
+ * @param object
+ * @return {Boolean}
  * @private
  */
-function multiplyComplex (x, y) {
-    return new Complex(
-        x.re * y.re - x.im * y.im,
-        x.re * y.im + x.im * y.re
-    );
+function isSupportedType(object) {
+    return (typeof object == 'function') ||
+        isNumber(object) || isString(object) ||
+        (object instanceof Complex) || (object instanceof Unit);
+    // TODO: add boolean?
 }
-
-math.multiply = multiply;
 
 /**
  * Function documentation
  */
-multiply.doc = {
-    'name': 'multiply',
-    'category': 'Operators',
+_import.doc = {
+    'name': 'import',
+    'category': 'Utils',
     'syntax': [
-        'x * y',
-        'multiply(x, y)'
+        'import(string)'
     ],
-    'description': 'multiply two values.',
+    'description': 'Import functions from a file.',
     'examples': [
-        '2.1 * 3.6',
-        'ans / 3.6',
-        '2 * 3 + 4',
-        '2 * (3 + 4)',
-        '3 * 2.1 km'
-    ],
-    'seealso': [
-        'divide'
-    ]
-};
-
-/**
- * Subtract two values. x - y or subtract(x, y)
- * @param  {Number | Complex | Unit | Array} x
- * @param  {Number | Complex | Unit | Array} y
- * @return {Number | Complex | Unit | Array} res
- */
-function subtract(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('subtract', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number - number
-            return x - y;
-        }
-        else if (y instanceof Complex) {
-            // number - complex
-            return new Complex (
-                x - y.re,
-                    y.im
-            );
-        }
-    }
-    else if (x instanceof Complex) {
-        if (isNumber(y)) {
-            // complex - number
-            return new Complex (
-                x.re - y,
-                x.im
-            )
-        }
-        else if (y instanceof Complex) {
-            // complex - complex
-            return new Complex (
-                x.re - y.re,
-                x.im - y.im
-            )
-        }
-    }
-    else if (x instanceof Unit) {
-        if (y instanceof Unit) {
-            if (!x.equalBase(y)) {
-                throw new Error('Units do not match');
-            }
-
-            if (!x.hasValue) {
-                throw new Error('Unit on left hand side of operator - has no value');
-            }
-
-            if (!y.hasValue) {
-                throw new Error('Unit on right hand side of operator - has no value');
-            }
-
-            var res = x.copy();
-            res.value -= y.value;
-            res.fixPrefix = false;
-
-            return res;
-        }
-    }
-
-    if (x instanceof Array || y instanceof Array) {
-        return util.map2(x, y, subtract);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('subtract', x, y);
-}
-
-math.subtract = subtract;
-
-/**
- * Function documentation
- */
-subtract.doc = {
-    'name': 'subtract',
-    'category': 'Operators',
-    'syntax': [
-        'x - y',
-        'subtract(x, y)'
-    ],
-    'description': 'subtract two values.',
-    'examples': [
-        '5.3 - 2',
-        'ans + 2',
-        '2/3 - 1/6',
-        '2 * 3 - 3',
-        '2.1 km - 500m'
-    ],
-    'seealso': [
-        'add'
-    ]
-};
-/**
- * Return a random number between 0 and 1
- * @return {Number} res
- */
-function random () {
-    if (arguments.length != 0) {
-        throw newArgumentsError('random', arguments.length, 0);
-    }
-
-    // TODO: implement parameter min and max
-    return Math.random();
-}
-
-math.random = random;
-
-/**
- * Function documentation
- */
-random.doc = {
-    'name': 'random',
-    'category': 'Probability',
-    'syntax': [
-        'random()'
-    ],
-    'description':
-        'Return a random number between 0 and 1.',
-    'examples': [
-        'random()',
-        '100 * random()'
+        'import("numbers")',
+        'import("./mylib.js")'
     ],
     'seealso': []
 };
 
 /**
- * Compute the factorial of a value, factorial(x) or x!
- * @Param {Number | Array} x
- * @return {Number | Array} res
+ * Calculate the square root of a value
+ * @param {*} x
+ * @return {String} type  Lower case type, for example "number", "string",
+ *                        "array".
  */
-function factorial (x) {
+function _typeof(x) {
     if (arguments.length != 1) {
-        throw newArgumentsError('factorial', arguments.length, 1);
+        throw newArgumentsError('typeof', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
-        if (!isInteger(x)) {
-            throw new TypeError('Function factorial can only handle integer values');
-        }
+    var type = typeof x;
 
-        var value = x,
-            res = value;
-        value--;
-        while (value > 1) {
-            res *= value;
-            value--;
+    if (type == 'object') {
+        if (x == null) {
+            return 'null';
         }
-
-        if (res == 0) {
-            res = 1;        // 0! is per definition 1
+        if (x.constructor) {
+            for (var name in math) {
+                if (math.hasOwnProperty(name)) {
+                    if (x.constructor == math[name]) {
+                        return name.toLowerCase();
+                    }
+                }
+            }
+            if (x.constructor.name) {
+                return x.constructor.name.toLowerCase();
+            }
         }
-
-        return res;
     }
 
-    if (x instanceof Array) {
-        return util.map(x, factorial);
-    }
-    // TODO: implement matrix support
-
-    throw newUnsupportedTypeError('factorial', x);
+    return type;
 }
 
-math.factorial = factorial;
+math['typeof'] = _typeof;
 
 /**
  * Function documentation
  */
-factorial.doc = {
-    'name': 'factorial',
-    'category': 'Probability',
+_typeof.doc = {
+    'name': 'typeof',
+    'category': 'Utils',
     'syntax': [
-        'x!',
-        'factorial(x)'
+        'typeof(x)'
     ],
-    'description': 'Compute the factorial of a value',
+    'description': 'Get the type of a variable.',
     'examples': [
-        '5!',
-        '5*4*3*2*1',
-        '3!'
+        'typeof(3.5)',
+        'typeof(2 - 4i)',
+        'typeof(45 deg)',
+        'typeof("hello world")'
     ],
     'seealso': []
 };
+
 /**
  * Node
  */
@@ -5624,6 +5624,7 @@ Parser.prototype.parse = function (expr, scope) {
     this.expr = expr || '';
 
     if (!scope) {
+        this.newScope();
         scope = this.scope;
     }
 
@@ -5649,6 +5650,7 @@ Parser.prototype.eval = function (expr) {
  * @return {* | undefined} value
  */
 Parser.prototype.get = function (name) {
+    this.newScope();
     var symbol = this.scope.findDef(name);
     if (symbol) {
         return symbol.value;
@@ -5663,6 +5665,18 @@ Parser.prototype.get = function (name) {
  */
 Parser.prototype.put = function (name, value) {
     this.scope.createDef(name, value);
+};
+
+/**
+ * Create a new scope having the current scope as parent scope, to make current
+ * scope immutable
+ * @private
+ */
+Parser.prototype.newScope = function () {
+    this.scope = new Scope(this.scope);
+
+    // TODO: smartly cleanup scopes which are not relevant anymore
+
 };
 
 /**

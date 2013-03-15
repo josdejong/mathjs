@@ -103,8 +103,8 @@ function updateVersion(file) {
     // update date and version number
     util.replace({
         replacements: [
-            {pattern: '@@date',    replacement: util.version()},
-            {pattern: '@@version', replacement: util.today()}
+            {pattern: '@@date',    replacement: util.today()},
+            {pattern: '@@version', replacement: util.version()}
         ],
         src: file
     });
