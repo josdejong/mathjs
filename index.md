@@ -7,21 +7,20 @@ title: Home
 
 Math.js is an extensive math library for JavaScript and Node.js.
 It features real and complex numbers, units, matrices, a large set of
-mathematical functions, and a flexible expression parser. Math.js is
-powerful and easy to use.
+mathematical functions, and a flexible expression parser.
+Powerful and easy to use.
 
 
 # Features
 
-- Supports numbers, complex numbers, units, strings, arrays\*, and matrices\*.
+- Supports numbers, complex numbers, units, strings, arrays, and matrices\*.
 - Contains a large set of built-in functions and constants.
 - Contains a flexible expression parser.
 - Compatible with JavaScript’s built-in Math library.
 - No dependencies. Runs on any JavaScript engine.
 - Easily extensible.
 
-
-*\* Note: arrays and matrices are to be implemented.*
+*\* Note: matrices are to be implemented.*
 
 <div class="cols">
     <div class="left">
@@ -43,13 +42,20 @@ math.log(<span class="number">1000</span>, <span class="number">10</span>);     
 math.add(c, <span class="number">2</span>);                   <span class="comment">// 5 - 2i</span>
 math.sqrt(<span class="number">-4</span>);                    <span class="comment">// 2i</span>
 
-<span class="comment">// parse expressions</span>
+<span class="comment">// parse expressions. use units</span>
 <span class="keyword">var</span> parser = <span class="keyword">new</span> math.parser.Parser();
 parser.eval(<span class="string">'1.2 / (2.3 + 0.7)'</span>); <span class="comment">// 0.4</span>
 parser.eval(<span class="string">'a = 5.08 cm'</span>);
 parser.eval(<span class="string">'a in inch'</span>);         <span class="comment">// 2 inch</span>
-parser.eval(<span class="string">'sin(45 deg) ^ 2'</span>);   <span class="comment">// 0.5</span></pre>
+parser.eval(<span class="string">'sin(45 deg) ^ 2'</span>);   <span class="comment">// 0.5</span>
 
+<span class="comment">// arrays</span>
+<span class="keyword">var</span> a = [[1, 2], [3, 4]];
+<span class="keyword">var</span> b = parser.eval(<span class="string">'[5, 6; 7, 8]'</span>);
+<span class="keyword">var</span> c = math.multiply(a, b);
+math.format(a);     <span class="comment">// [1, 2; 3, 4]</span>
+math.format(b);     <span class="comment">// [5, 6; 7, 8]</span>
+math.format(c);     <span class="comment">// [19, 22; 43, 50]</span></pre>
     </div>
     <div class="right">
         <h1>Demo</h1>
@@ -82,17 +88,28 @@ Math.js can be installed using [npm](https://npmjs.org/):
 
     npm install mathjs
 
-The latest stable version of math.js can be downloaded from github:
+The latest version of math.js can be downloaded below:
 
-<p>
-    <a href="https://raw.github.com/josdejong/mathjs/master/math.js" target="_blank">math.js</a>
-    <br>
-    <a href="https://raw.github.com/josdejong/mathjs/master/math.min.js" target="_blank">math.min.js</a> (minified)
-</p>
-
-<!-- TODO: create nice download buttons
-<button class="download">math.js</button>
--->
+<table>
+    <tr>
+        <td>
+            <a href="js/lib/math.js" target="_blank">Development
+                (version <span class="version">0.4.0-SNAPSHOT</span>)</a>
+        </td>
+        <td>
+            <span id="development-size">186 kB</span>, uncompressed with comments
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="js/lib/math.min.js" target="_blank">Production
+                (version <span class="version">0.4.0-SNAPSHOT</span>)</a>
+        </td>
+        <td>
+            <span id="production-size">17 kB</span>, minified and gzipped
+        </td>
+    </tr>
+</table>
 
 # Documentation and source code
 
