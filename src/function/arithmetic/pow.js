@@ -31,8 +31,38 @@ function pow(x, y) {
             return powComplex(x, y);
         }
     }
+    else if (x instanceof Array) {
+        if (!isNumber(y) || !isInteger(y) || y < 0) {
+            throw new TypeError('For A^b, b must be a positive integer ' +
+                    '(value is ' + y + ')');
+        }
 
-    // TODO: implement array support
+        // verify that A is a 2 dimensional square matrix
+        var s = size(x)[0];
+        if (s.length != 2) {
+            throw new Error('For A^b, A must be 2 dimensional ' +
+                    '(A has ' + s.length + ' dimensions)');
+        }
+        if (s[0] != s[1]) {
+            throw new Error('For A^b, A must be square ' +
+                    '(size is ' + s[0] + 'x' + s[1] + ')');
+        }
+
+        if (y == 0) {
+            // return the identity matrix
+            // TODO: implement method eye
+            return eye(s[0]);
+        }
+        else {
+            // value > 0
+            var res = x;
+            for (var i = 1; i < y; i++) {
+                res = multiply(x, res);
+            }
+            return res;
+        }
+    }
+
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('pow', x, y);

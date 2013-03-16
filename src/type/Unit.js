@@ -1,10 +1,26 @@
 /**
  * @constructor Unit
  *
- * @param {Number} [value]     A value for the unit, like 5.2
- * @param {String} [prefixUnit]  A unit like "cm" or "inch"
+ * A unit can be constructed in the following ways:
+ *     var a = new Unit(value, unit);
+ *     var a = new Unit(null, unit);
+ *     var b = new Unit(str);
+ *     var d = Unit.parse(str);
+ *
+ * The constructor new Unit(str) is equivalent with Unit.parse(str), but
+ * the constructor will throw an error in case of an invalid string, whilst the
+ * parse method will return null.
+ *
+ * Example usage:
+ *     var a = new Unit(5, 'cm');               // 50 mm
+ *     var b = new Unit('23 kg');               // 23 kg
+ *     var c = math.in(a, new Unit(null, 'm');  // 0.05 m
+ *
+ * @param {Number | String} [value] A value for the unit, like 5.2, or a string
+ *                                  with a value and unit like "5.2cm"
+ * @param {String} [unit]           A unit like "cm" or "inch"
  */
-function Unit(value, prefixUnit) {
+function Unit(value, unit) {
     if (this.constructor != Unit) {
         throw new Error('Unit constructor must be called with the new operator');
     }
@@ -17,10 +33,210 @@ function Unit(value, prefixUnit) {
     this.hasValue = false;
     this.fixPrefix = false;  // is set true by the method "x In unit"s
 
-    this._init(value, prefixUnit);
+    var len = arguments.length;
+    if (len == 0) {
+        // no arguments
+    }
+    else if (len == 1) {
+        // parse a string
+        if (!isString(value)) {
+            throw new TypeError('A string or a number and string expected in Unit constructor');
+        }
+
+        var u = Unit.parse(value);
+        if (u) {
+            return u;
+        }
+        else {
+            throw new SyntaxError('String "' + value + '" is no valid unit');
+        }
+    }
+    else if (len == 2) {
+        // a number and a unit
+        if (!isString(unit)) {
+            throw new Error('Second parameter in Unit constructor must be a String');
+        }
+
+        // find the unit and prefix from the string
+        var UNITS = Unit.UNITS;
+        var found = false;
+        for (var i = 0, iMax = UNITS.length; i < iMax; i++) {
+            var UNIT = UNITS[i];
+
+            if (Unit.endsWith(unit, UNIT.name) ) {
+                var prefixLen = (unit.length - UNIT.name.length);
+                var prefixName = unit.substring(0, prefixLen);
+                var prefix = UNIT.prefixes[prefixName];
+                if (prefix !== undefined) {
+                    // store unit, prefix, and value
+                    this.unit = UNIT;
+                    this.prefix = prefix;
+                    this.hasUnit = true;
+
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            throw new Error('String "' + unit + '" is no unit');
+        }
+
+        if (value != null) {
+            this.value = this._normalize(value);
+            this.hasValue = true;
+        }
+        else {
+            this.value = this._normalize(1);
+        }
+    }
+    else {
+        throw new Error('Too many parameters in Unit constructor, 1 or 2 expected');
+    }
 }
 
 math.Unit = Unit;
+
+(function() {
+    var text, index, c;
+
+    function skipWhitespace() {
+        while (c == ' ' || c == '\t') {
+            next();
+        }
+    }
+
+    function isDigitDot (c) {
+        return ((c >= '0' && c <= '9') || c == '.');
+    }
+
+    function isDigit (c) {
+        return ((c >= '0' && c <= '9'));
+    }
+
+    function next() {
+        index++;
+        c = text[index];
+    }
+
+    function revert(oldIndex) {
+        index = oldIndex;
+        c = text[index];
+    }
+
+    function parseNumber () {
+        var number = '';
+        var oldIndex = index;
+
+        if (c == '+') {
+            next();
+        }
+        else if (c == '-') {
+            number += c;
+            next();
+        }
+
+        if (!isDigitDot(c)) {
+            // a + or - must be followed by a digit
+            revert(oldIndex);
+            return null;
+        }
+
+        // TODO only allow a single dot, and enforce at least one digit before or after the dot
+        while (isDigitDot(c)) {
+            number += c;
+            next();
+        }
+
+        // check for scientific notation like "2.3e-4" or "1.23e50"
+        if (c == 'E' || c == 'e') {
+            number += c;
+            next();
+
+            if (c == '+' || c == '-') {
+                number += c;
+                next();
+            }
+
+            // Scientific notation MUST be followed by an exponent
+            if (!isDigit(c)) {
+                // this is no legal number, exponent is missing.
+                revert(oldIndex);
+                return null;
+            }
+
+            while (isDigit(c)) {
+                number += c;
+                next();
+            }
+        }
+
+        return number;
+    }
+
+    function parseUnit() {
+        var unit = '';
+
+        skipWhitespace();
+        while (c && c != ' ' && c != '\t') {
+            unit += c;
+            next();
+        }
+
+        return unit || null;
+    }
+
+    /**
+     * Parse a string into a unit. Returns null if the provided string does not
+     * contain a valid unit.
+     * @param {String} str        A string like "5.2 inch", "4e2 kg"
+     * @return {Unit | null} unit
+     */
+    Unit.parse = function parse(str) {
+        text = str;
+        index = -1;
+        c = '';
+
+        if (!isString(text)) {
+            return null;
+        }
+
+        next();
+        skipWhitespace();
+        var value = parseNumber();
+        var unit;
+        if (value) {
+            unit = parseUnit();
+
+            next();
+            skipWhitespace();
+            if (c) {
+                // garbage at the end. not good.
+                return null;
+            }
+
+            if (value && unit) {
+                return new Unit(Number(value), unit);
+            }
+        }
+        else {
+            unit = parseUnit();
+
+            next();
+            skipWhitespace();
+            if (c) {
+                // garbage at the end. not good.
+                return null;
+            }
+
+            return new Unit(null, unit)
+        }
+
+        return null;
+    };
+
+})();
 
 /**
  * Test whether value is a Unit
@@ -52,55 +268,11 @@ Unit.prototype.copy = function () {
  * @param {String} text
  * @param {String} search
  */
-    // TODO: put the endsWith method in another
+// TODO: put the endsWith method in another
 Unit.endsWith = function(text, search) {
     var start = text.length - search.length;
     var end = text.length;
     return (text.substring(start, end) === search);
-};
-
-/**
- * Initialize a unit and value
- * @param {Number} [value]
- * @param {String} [unit]   A string containing unit (and prefix), like "cm"
- * @private
- */
-Unit.prototype._init = function (value, unit)  {
-    // find the unit and prefix from the string
-    if (unit !== undefined) {
-        var UNITS = Unit.UNITS;
-        var found = false;
-        for (var i = 0, iMax = UNITS.length; i < iMax; i++) {
-            var UNIT = UNITS[i];
-
-            if (Unit.endsWith(unit, UNIT.name) ) {
-                var prefixLen = (unit.length - UNIT.name.length);
-                var prefixName = unit.substring(0, prefixLen);
-                var prefix = UNIT.prefixes[prefixName];
-                if (prefix !== undefined) {
-                    // store unit, prefix, and value
-                    this.unit = UNIT;
-                    this.prefix = prefix;
-                    this.hasUnit = true;
-
-                    found = true;
-                    break;
-                }
-            }
-        }
-
-        if (!found) {
-            throw new Error('String "' + unit + '" is no unit');
-        }
-    }
-
-    if (value !== undefined) {
-        this.value = this._normalize(value);
-        this.hasValue = true;
-    }
-    else {
-        this.value = this._normalize(1);
-    }
 };
 
 /**
@@ -198,21 +370,20 @@ Unit.prototype.toString = function() {
     if (!this.fixPrefix) {
         // find the best prefix value (resulting in the value of which
         // the absolute value of the log10 is closest to zero,
-        // though with a little offset of 1.5 for nicer values: 999m
-        // is still displayed as 999m, and 1000m as 1km)
+        // though with a little offset of 1.2 for nicer values: you get a
+        // sequence 1mm 100mm 500mm 0.6m 1m 10m 100m 500m 0.6km 1km ...
+        var absValue = Math.abs(this.value / this.unit.value);
         var bestPrefix = Unit.PREFIX_NONE;
         var bestDiff = Math.abs(
-            Math.log(this.value / bestPrefix.value) / Math.LN10 - 1.5);
+            Math.log(absValue / bestPrefix.value) / Math.LN10 - 1.2);
 
-        // TODO: 1000m is still displayed as 1000m, 1001m correctly as 1.001km
-        // TODO: working wrong with prefixes below zero, should do + 1.5 offset?
         var prefixes = this.unit.prefixes;
         for (var p in prefixes) {
             if (prefixes.hasOwnProperty(p)) {
                 var prefix = prefixes[p];
                 if (prefix.scientific) {
                     var diff = Math.abs(
-                        Math.log(this.value / prefix.value) / Math.LN10 - 1.5);
+                        Math.log(absValue / prefix.value) / Math.LN10 - 1.2);
 
                     if (diff < bestDiff) {
                         bestPrefix = prefix;

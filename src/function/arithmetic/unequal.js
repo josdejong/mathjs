@@ -1,9 +1,9 @@
 /**
  * Check if value x unequals y, x != y
  * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
- * @param  {Number | Complex | Unit | String} x
- * @param  {Number | Complex | Unit | String} y
- * @return {Boolean} res
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Boolean | Array} res
  */
 function unequal(x, y) {
     if (arguments.length != 2) {
@@ -18,6 +18,7 @@ function unequal(x, y) {
             return (x == y.re) && (y.im == 0);
         }
     }
+
     if (x instanceof Complex) {
         if (isNumber(y)) {
             return (x.re == y) && (x.im == 0);
@@ -38,7 +39,9 @@ function unequal(x, y) {
         return x == y;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, unequal);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('unequal', x, y);

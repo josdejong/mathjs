@@ -15,8 +15,17 @@ function _typeof(x) {
         if (x == null) {
             return 'null';
         }
-        if (x && x.constructor && x.constructor.name) {
-            return x.constructor.name.toLowerCase();
+        if (x.constructor) {
+            for (var name in math) {
+                if (math.hasOwnProperty(name)) {
+                    if (x.constructor == math[name]) {
+                        return name.toLowerCase();
+                    }
+                }
+            }
+            if (x.constructor.name) {
+                return x.constructor.name.toLowerCase();
+            }
         }
     }
 

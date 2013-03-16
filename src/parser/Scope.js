@@ -223,7 +223,7 @@ Scope.prototype.findDef = function (name) {
         // Check if token is a unit
         // Note: we do not check the upper case name, units are case sensitive!
         if (Unit.isUnit(name)) {
-            var unit = new Unit(undefined, name);
+            var unit = new Unit(null, name);
             return put(name, unit);
         }
     }

@@ -1,8 +1,8 @@
 /**
  * Divide two values. x / y or divide(x, y)
- * @param  {Number | Complex | Unit} x
+ * @param  {Number | Complex | Unit | Array} x
  * @param  {Number | Complex} y
- * @return {Number | Complex | Unit} res
+ * @return {Number | Complex | Unit | Array} res
  */
 function divide(x, y) {
     if (arguments.length != 2) {
@@ -19,7 +19,8 @@ function divide(x, y) {
             return divideComplex(new Complex(x, 0), y);
         }
     }
-    else if (x instanceof Complex) {
+
+    if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex / number
             return divideComplex(x, new Complex(y, 0));
@@ -29,7 +30,8 @@ function divide(x, y) {
             return divideComplex(x, y);
         }
     }
-    else if (x instanceof Unit) {
+
+    if (x instanceof Unit) {
         if (isNumber(y)) {
             var res = x.copy();
             res.value /= y;
@@ -37,7 +39,20 @@ function divide(x, y) {
         }
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        if (y instanceof Array) {
+            // TODO: implement matrix/matrix
+        }
+        else {
+            // matrix / scalar
+            return util.map2(x, y, divide);
+        }
+    }
+
+    if (y instanceof Array) {
+        // TODO: implement scalar/matrix
+    }
+
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('divide', x, y);

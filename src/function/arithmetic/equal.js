@@ -1,9 +1,9 @@
 /**
  * Check if value x equals y, x == y
  * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
- * @param  {Number | Complex | Unit | String} x
- * @param  {Number | Complex | Unit | String} y
- * @return {Boolean} res
+ * @param  {Number | Complex | Unit | String | Array} x
+ * @param  {Number | Complex | Unit | String | Array} y
+ * @return {Boolean | Array} res
  */
 function equal(x, y) {
     if (arguments.length != 2) {
@@ -38,7 +38,9 @@ function equal(x, y) {
         return x == y;
     }
 
-    // TODO: implement array support
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(x, y, equal);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('equal', x, y);

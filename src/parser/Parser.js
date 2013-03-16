@@ -79,6 +79,7 @@ Parser.prototype.parse = function (expr, scope) {
     this.expr = expr || '';
 
     if (!scope) {
+        this.newScope();
         scope = this.scope;
     }
 
@@ -104,6 +105,7 @@ Parser.prototype.eval = function (expr) {
  * @return {* | undefined} value
  */
 Parser.prototype.get = function (name) {
+    this.newScope();
     var symbol = this.scope.findDef(name);
     if (symbol) {
         return symbol.value;
@@ -118,6 +120,18 @@ Parser.prototype.get = function (name) {
  */
 Parser.prototype.put = function (name, value) {
     this.scope.createDef(name, value);
+};
+
+/**
+ * Create a new scope having the current scope as parent scope, to make current
+ * scope immutable
+ * @private
+ */
+Parser.prototype.newScope = function () {
+    this.scope = new Scope(this.scope);
+
+    // TODO: smartly cleanup scopes which are not relevant anymore
+
 };
 
 /**
@@ -233,6 +247,7 @@ Parser.prototype.getToken = function () {
         }
         return;
     }
+
     // check for variables or functions
     if (this.isAlpha(this.c)) {
         this.token_type = this.TOKENTYPE.SYMBOL;
@@ -944,10 +959,9 @@ Parser.prototype.parse_string = function (scope) {
  * @private
  */
 Parser.prototype.parse_matrix = function (scope) {
-    /* TODO: implement matrix
     if (this.token == '[') {
         // matrix [...]
-        var matrix;
+        var array;
 
         // skip newlines
         this.getToken();
@@ -1004,22 +1018,21 @@ Parser.prototype.parse_matrix = function (scope) {
             }
 
             this.getToken();
-            matrix = new MatrixNode(params);
+            array = new ArrayNode(params);
         }
         else {
             // this is an empty matrix "[ ]"
             this.getToken();
-            matrix = new MatrixNode();
+            array = new ArrayNode([]);
         }
 
         // parse arguments
         while (this.token == '(') {
-            matrix = this.parse_arguments(scope, matrix);
+            array = this.parse_arguments(scope, array);
         }
 
-        return matrix;
+        return array;
     }
-    */
 
     return this.parse_number(scope);
 };

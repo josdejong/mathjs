@@ -1,8 +1,8 @@
 /**
  * Round a value towards the nearest integer, round(x [, n])
- * @param {Number | Complex} x
- * @param {Number} [n] number of digits
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @param {Number | Array} [n] number of digits
+ * @return {Number | Complex | Array} res
  */
 function round(x, n) {
     if (arguments.length != 1 && arguments.length != 2) {
@@ -20,6 +20,10 @@ function round(x, n) {
                 Math.round(x.re),
                 Math.round(x.im)
             );
+        }
+
+        if (x instanceof Array) {
+            util.map(x, round);
         }
 
         throw newUnsupportedTypeError('round', x);
@@ -47,12 +51,14 @@ function round(x, n) {
             );
         }
 
+        if (x instanceof Array || n instanceof Array) {
+            return util.map2(x, n, round);
+        }
+
         throw newUnsupportedTypeError('round', x, n);
     }
 
-    // TODO: implement array support
     // TODO: implement matrix support
-
 }
 
 math.round = round;

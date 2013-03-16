@@ -1,8 +1,8 @@
 /**
  * Computes the principal value of the arc tangent of y/x in radians, atan2(y,x)
- * @param {Number | Complex} y
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} y
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function atan2(y, x) {
     if (arguments.length != 2) {
@@ -26,7 +26,9 @@ function atan2(y, x) {
         }
     }
 
-    // TODO: implement array support
+    if (x instanceof Array || y instanceof Array) {
+        return util.map2(y, x, atan2);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('atan2', y, x);

@@ -1,7 +1,7 @@
 /**
  * Compute the square of a value, x * x
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function square(x) {
     if (arguments.length != 1) {
@@ -16,7 +16,9 @@ function square(x) {
         return multiply(x, x);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return multiply(x, x);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('square', x);

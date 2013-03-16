@@ -47,6 +47,7 @@ task('concat', function () {
             './src/parser/node/Node.js',
             './src/parser/node/Symbol.js',
             './src/parser/node/Constant.js',
+            './src/parser/node/ArrayNode.js',
             './src/parser/node/Block.js',
             './src/parser/node/Assignment.js',
             './src/parser/node/FunctionAssignment.js',
@@ -103,8 +104,8 @@ function updateVersion(file) {
     // update date and version number
     util.replace({
         replacements: [
-            {pattern: '@@date',    replacement: util.version()},
-            {pattern: '@@version', replacement: util.today()}
+            {pattern: '@@date',    replacement: util.today()},
+            {pattern: '@@version', replacement: util.version()}
         ],
         src: file
     });

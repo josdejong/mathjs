@@ -1,12 +1,10 @@
 /**
  * Multiply two values. x + y or multiply(x, y)
- * @param  {Number | Complex | Unit} x
- * @param  {Number | Complex | Unit} y
- * @return {Number | Complex | Unit} res
+ * @param  {Number | Complex | Unit | Array} x
+ * @param  {Number | Complex | Unit | Array} y
+ * @return {Number | Complex | Unit | Array} res
  */
 function multiply(x, y) {
-    var res;
-
     if (arguments.length != 2) {
         throw newArgumentsError('multiply', arguments.length, 2);
     }
@@ -43,8 +41,58 @@ function multiply(x, y) {
             return res;
         }
     }
+    else if (x instanceof Array) {
+        if (y instanceof Array) {
+            // matrix * matrix
+            var sizeX = size(x)[0];
+            var sizeY = size(y)[0];
 
-    // TODO: implement array support
+            if (sizeX.length != 2) {
+                throw new Error('Can only multiply a 2 dimensional matrix ' +
+                        '(A has ' + sizeX.length + ' dimensions)');
+            }
+            if (sizeY.length != 2) {
+                throw new Error('Can only multiply a 2 dimensional matrix ' +
+                        '(B has ' + sizeY.length + ' dimensions)');
+            }
+            if (sizeX[1] != sizeY[0]) {
+                throw new Error('Dimensions mismatch in multiplication. ' +
+                        'Columns of A must match rows of B ' +
+                        '(A is ' + sizeX[0] + 'x' + sizeX[1] +
+                        ', B is ' + sizeY[0] + 'x' + sizeY[1] + ', ' +
+                        sizeY[1] + ' != ' + sizeY[0] + ')');
+            }
+
+            // TODO: performance of matrix multiplication can be improved
+            var res = [];
+            var rows = sizeX[0];
+            var cols = sizeY[1];
+            var num = sizeX[1];
+            for (var r = 0; r < rows; r++) {
+                res[r] = [];
+                for (var c = 0; c < cols; c++) {
+                    var result = null;
+                    for (var n = 0; n < num; n++) {
+                        var p = multiply(x[r][n], y[n][c]);
+                        result = (result == null) ? p : add(result, p);
+                    }
+                    res[r][c] = result;
+                }
+            }
+
+            return res;
+        }
+        else {
+            // matrix * scalar
+            return util.map2(x, y, multiply);
+        }
+    }
+
+    if (y instanceof Array) {
+        // scalar * matrix
+        return util.map2(x, y, multiply);
+    }
+
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('multiply', x, y);

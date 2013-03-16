@@ -1,7 +1,7 @@
 /**
  * Compute the cube of a value, x * x * x.',
- * @param {Number | Complex} x
- * @return {Number | Complex} res
+ * @param {Number | Complex | Array} x
+ * @return {Number | Complex | Array} res
  */
 function cube(x) {
     if (arguments.length != 1) {
@@ -16,7 +16,9 @@ function cube(x) {
         return multiply(multiply(x, x), x);
     }
 
-    // TODO: implement array support
+    if (x instanceof Array) {
+        return multiply(multiply(x, x), x);
+    }
     // TODO: implement matrix support
 
     throw newUnsupportedTypeError('cube', x);

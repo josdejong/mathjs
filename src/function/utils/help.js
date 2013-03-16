@@ -58,10 +58,19 @@ function generateDoc (doc) {
         desc += 'SYNTAX\n' + doc.syntax.join('\n') + '\n\n';
     }
     if (doc.examples) {
+        var parser = new math.parser.Parser();
         desc += 'EXAMPLES\n';
         for (var i = 0; i < doc.examples.length; i++) {
-            desc += doc.examples[i] + '\n';
-            // TODO: evaluate the examples
+            var expr = doc.examples[i];
+            var res;
+            try {
+                res = parser.eval(expr);
+            }
+            catch (e) {
+                res = e;
+            }
+            desc += expr + '\n';
+            desc += '    ' + math.format(res) + '\n';
         }
         desc += '\n';
     }

@@ -1,7 +1,7 @@
 {
     "name": "mathjs",
-    "version": "0.3.0",
-    "description": "An extensive math library for JavaScript and Node.js. Includes an advanced expression parser. Supports numbers, complex numbers, units, strings, and matrices. Contains a large set of functions and constants.",
+    "version": "0.4.0",
+    "description": "Math.js is an extensive math library for JavaScript and Node.js. It features real and complex numbers, units, matrices, a large set of mathematical functions, and a flexible expression parser.",
     "author": "Jos de Jong <wjosdejong@gmail.com>",
     "contributors": [
         {
@@ -27,7 +27,7 @@
     ],
     "dependencies": {},
     "devDependencies": {
-        "jake": ">= 0.5.8",
+        "jake": ">= 0.5.9",
         "uglify-js": ">= 2.2.5",
         "nodeunit": ">= 0.7.4",
         "dateable": ">= 0.1.2"
