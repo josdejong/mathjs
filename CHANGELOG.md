@@ -5,11 +5,13 @@ https://github.com/josdejong/mathjs
 
 - Implemented Array support for all methods.
 - Implemented Array support in the Parser.
-- Implemented method format
-- Improved parser for complex values (math.Complex.parse(str));
+- Implemented method format.
+- Implemented parser for units, math.Unit.parse(str).
+- Improved parser for complex values math.Complex.parse(str);
 - Improved method help: it now evaluates the examples.
 - Fixed a scoping issue with the Parser when defining functions.
 - Fixed method typeof which was not working well with minified and mangled code.
+- Fixed an error in determining the best prefix for a unit.
 
 
 ## 2013-03-09, version 0.3.0

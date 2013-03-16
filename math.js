@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.4.0-SNAPSHOT
- * @date    2013-03-15
+ * @date    2013-03-16
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -957,7 +957,7 @@ Unit.prototype.copy = function () {
  * @param {String} text
  * @param {String} search
  */
-    // TODO: put the endsWith method in another
+// TODO: put the endsWith method in another
 Unit.endsWith = function(text, search) {
     var start = text.length - search.length;
     var end = text.length;
@@ -1059,21 +1059,21 @@ Unit.prototype.toString = function() {
     if (!this.fixPrefix) {
         // find the best prefix value (resulting in the value of which
         // the absolute value of the log10 is closest to zero,
-        // though with a little offset of 1.5 for nicer values: 999m
-        // is still displayed as 999m, and 1000m as 1km)
+        // though with a little offset of 1.2 for nicer values: you get a
+        // sequence 1mm 100mm 500mm 0.6m 1m 10m 100m 500m 0.6km 1km ...
         var bestPrefix = Unit.PREFIX_NONE;
         var bestDiff = Math.abs(
-            Math.log(this.value / bestPrefix.value) / Math.LN10 - 1.5);
+            Math.log(this.value / this.unit.value / bestPrefix.value) /
+                Math.LN10 - 1.2);
 
-        // TODO: 1000m is still displayed as 1000m, 1001m correctly as 1.001km
-        // TODO: working wrong with prefixes below zero, should do + 1.5 offset?
         var prefixes = this.unit.prefixes;
         for (var p in prefixes) {
             if (prefixes.hasOwnProperty(p)) {
                 var prefix = prefixes[p];
                 if (prefix.scientific) {
                     var diff = Math.abs(
-                        Math.log(this.value / prefix.value) / Math.LN10 - 1.5);
+                        Math.log(this.value / this.unit.value / prefix.value) /
+                            Math.LN10 - 1.2);
 
                     if (diff < bestDiff) {
                         bestPrefix = prefix;
