@@ -438,7 +438,7 @@ To execute tests for the library, run:
 - Build a website (2013-03-11)
 - Version 0.4.0 (2013-03-16):
     - Implement Arrays
-_ Version 0.5.0
+- Version 0.5.0
     - Implement Matrices
 - Version 1.0.0
     - Extensive testing
