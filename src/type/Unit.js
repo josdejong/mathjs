@@ -372,10 +372,10 @@ Unit.prototype.toString = function() {
         // the absolute value of the log10 is closest to zero,
         // though with a little offset of 1.2 for nicer values: you get a
         // sequence 1mm 100mm 500mm 0.6m 1m 10m 100m 500m 0.6km 1km ...
+        var absValue = Math.abs(this.value / this.unit.value);
         var bestPrefix = Unit.PREFIX_NONE;
         var bestDiff = Math.abs(
-            Math.log(this.value / this.unit.value / bestPrefix.value) /
-                Math.LN10 - 1.2);
+            Math.log(absValue / bestPrefix.value) / Math.LN10 - 1.2);
 
         var prefixes = this.unit.prefixes;
         for (var p in prefixes) {
@@ -383,8 +383,7 @@ Unit.prototype.toString = function() {
                 var prefix = prefixes[p];
                 if (prefix.scientific) {
                     var diff = Math.abs(
-                        Math.log(this.value / this.unit.value / prefix.value) /
-                            Math.LN10 - 1.2);
+                        Math.log(absValue / prefix.value) / Math.LN10 - 1.2);
 
                     if (diff < bestDiff) {
                         bestPrefix = prefix;
