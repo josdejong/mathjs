@@ -235,7 +235,7 @@ var math = require('math.js'),
 
 var a = new Unit(55, 'cm');     // 550 mm
 var b = new Unit(0.1, 'm');     // 100 mm
-math.add(a, b);                 // 650 mm
+math.add(a, b);                 // 0.65 m
 
 var parser = new math.parser.Parser();
 parser.eval('2 inch in cm');    // 5.08 cm
@@ -436,7 +436,7 @@ To execute tests for the library, run:
     - Implement Workspace
     - Implement more methods
 - Build a website (2013-03-11)
-- Version 0.4.0:
+- Version 0.4.0 (2013-03-16):
     - Implement Arrays
 _ Version 0.5.0
     - Implement Matrices
