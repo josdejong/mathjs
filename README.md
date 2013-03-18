@@ -28,8 +28,8 @@ Math.js can be installed using [npm](https://npmjs.org/):
 
 Alternatively, the latest stable version of math.js can be downloaded from github:
 
-- [math.js](https://raw.github.com/josdejong/mathjs/master/math.js)
-- [math.min.js](https://raw.github.com/josdejong/mathjs/master/math.min.js) (minified)
+- [math.js](https://raw.github.com/josdejong/mathjs/master/math.js) (development version: uncompressed, with comments)
+- [math.min.js](https://raw.github.com/josdejong/mathjs/master/math.min.js) (production version: minified)
 
 
 ## Load

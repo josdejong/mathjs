@@ -10,11 +10,12 @@ function unit_in(x, unit) {
     }
 
     if (x instanceof Unit && unit instanceof Unit) {
-        // Test if unit has no value
+        if (!x.equalBase(unit)) {
+            throw new Error('Units do not match');
+        }
         if (unit.hasValue) {
             throw new Error('Cannot convert to a unit with a value');
         }
-        // Test if unit has a unit
         if (!unit.hasUnit) {
             throw new Error('Unit expected on the right hand side of function in');
         }
