@@ -66,7 +66,7 @@ math.format = format;
  */
 function formatArray (array) {
     var str = '[';
-    var s = size(array)[0];
+    var s = util.array.validatedSize(array);
 
     if (s.length != 2) {
         return formatArrayN(array);

@@ -55,8 +55,7 @@ function eye (m, n) {
     return res;
 }
 
-// TODO: export method eye to math
-// math.eye = eye;
+math.eye = eye;
 
 /**
  * Function documentation

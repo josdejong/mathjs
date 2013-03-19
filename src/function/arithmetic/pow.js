@@ -38,7 +38,7 @@ function pow(x, y) {
         }
 
         // verify that A is a 2 dimensional square matrix
-        var s = size(x)[0];
+        var s = util.array.validatedSize(x);
         if (s.length != 2) {
             throw new Error('For A^b, A must be 2 dimensional ' +
                     '(A has ' + s.length + ' dimensions)');

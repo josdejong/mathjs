@@ -121,6 +121,87 @@ util.map2 = function map2(array1, array2, fn) {
     return res;
 };
 
+util.array = {};
+
+/**
+ * Recursively get the size of an array or object.
+ * The size is calculated from the first dimension.
+ * The array is not checked for matching dimensions, that should be done using
+ * util.array.validate or util.array.validatedSize
+ * @param {Array | Object} x
+ * @Return {Number[]} size
+ */
+util.array.size = function size (x) {
+    if (x instanceof Array) {
+        var sizeX = x.length;
+        if (sizeX) {
+            var size0 = util.array.size(x[0]);
+            return [sizeX].concat(size0);
+        }
+        else {
+            return [sizeX];
+        }
+    }
+    else {
+        return [];
+    }
+};
+
+/**
+ * Verify whether each element in an n dimensional array has the correct size
+ * @param {Array | Object} array    Array to be validated
+ * @param {Number[]} size           Array with dimensions
+ * @param {Number} [dim]            Current dimension
+ * @throw Error
+ */
+util.array.validate = function validate(array, size, dim) {
+    var i,
+        len = array.length;
+    if (!dim) {
+        dim = 0;
+    }
+
+    if (len != size[dim]) {
+        throw new Error('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
+    }
+
+    if (dim < size.length - 1) {
+        // recursively validate each child array
+        var dimNext = dim + 1;
+        for (i = 0; i < len; i++) {
+            var child = array[i];
+            if (!(child instanceof Array)) {
+                throw new Error('Dimension mismatch ' +
+                    '(' + (size.length - 1) + ' < ' + size.length + ')');
+            }
+            validate(array[i], size, dimNext);
+        }
+    }
+    else {
+        // last dimension. none of the childs may be an array
+        for (i = 0; i < len; i++) {
+            if (array[i] instanceof Array) {
+                throw new Error('Dimension mismatch ' +
+                    '(' + (size.length + 1) + ' > ' + size.length + ')');
+            }
+        }
+    }
+
+    return true;
+};
+
+/**
+ * Recursively get the size of a multidimensional array or object.
+ * The array is checked for matching dimensions.
+ * @param {Array | Object} x
+ * @Return {Number[]} size
+ */
+util.array.validatedSize = function validatedSize(x) {
+    var s = util.array.size(x);
+    util.array.validate(x, s);
+    return s;
+};
+
 // Internet Explorer 8 and older does not support Array.indexOf, so we define
 // it here in that case.
 // http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/

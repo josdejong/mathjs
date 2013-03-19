@@ -44,8 +44,8 @@ function multiply(x, y) {
     else if (x instanceof Array) {
         if (y instanceof Array) {
             // matrix * matrix
-            var sizeX = size(x)[0];
-            var sizeY = size(y)[0];
+            var sizeX = util.array.validatedSize(x);
+            var sizeY = util.array.validatedSize(y);
 
             if (sizeX.length != 2) {
                 throw new Error('Can only multiply a 2 dimensional matrix ' +
