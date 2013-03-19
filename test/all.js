@@ -7,6 +7,7 @@
 // test data types
 require('./type/complex.js');
 require('./type/unit.js');
+require('./type/matrix.js');
 
 // test functions
 require('./function/arithmetic.js');

@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.4.0
- * @date    2013-03-16
+ * @version 0.5.0-SNAPSHOT
+ * @date    2013-03-19
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -186,6 +186,87 @@ util.map2 = function map2(array1, array2, fn) {
     }
 
     return res;
+};
+
+util.array = {};
+
+/**
+ * Recursively get the size of an array or object.
+ * The size is calculated from the first dimension.
+ * The array is not checked for matching dimensions, that should be done using
+ * util.array.validate or util.array.validatedSize
+ * @param {Array | Object} x
+ * @Return {Number[]} size
+ */
+util.array.size = function size (x) {
+    if (x instanceof Array) {
+        var sizeX = x.length;
+        if (sizeX) {
+            var size0 = util.array.size(x[0]);
+            return [sizeX].concat(size0);
+        }
+        else {
+            return [sizeX];
+        }
+    }
+    else {
+        return [];
+    }
+};
+
+/**
+ * Verify whether each element in an n dimensional array has the correct size
+ * @param {Array | Object} array    Array to be validated
+ * @param {Number[]} size           Array with dimensions
+ * @param {Number} [dim]            Current dimension
+ * @throw Error
+ */
+util.array.validate = function validate(array, size, dim) {
+    var i,
+        len = array.length;
+    if (!dim) {
+        dim = 0;
+    }
+
+    if (len != size[dim]) {
+        throw new Error('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
+    }
+
+    if (dim < size.length - 1) {
+        // recursively validate each child array
+        var dimNext = dim + 1;
+        for (i = 0; i < len; i++) {
+            var child = array[i];
+            if (!(child instanceof Array)) {
+                throw new Error('Dimension mismatch ' +
+                    '(' + (size.length - 1) + ' < ' + size.length + ')');
+            }
+            validate(array[i], size, dimNext);
+        }
+    }
+    else {
+        // last dimension. none of the childs may be an array
+        for (i = 0; i < len; i++) {
+            if (array[i] instanceof Array) {
+                throw new Error('Dimension mismatch ' +
+                    '(' + (size.length + 1) + ' > ' + size.length + ')');
+            }
+        }
+    }
+
+    return true;
+};
+
+/**
+ * Recursively get the size of a multidimensional array or object.
+ * The array is checked for matching dimensions.
+ * @param {Array | Object} x
+ * @Return {Number[]} size
+ */
+util.array.validatedSize = function validatedSize(x) {
+    var s = util.array.size(x);
+    util.array.validate(x, s);
+    return s;
 };
 
 // Internet Explorer 8 and older does not support Array.indexOf, so we define
@@ -570,9 +651,9 @@ function isComplex(value) {
 
 /**
  * Create a copy of the complex value
- * @return {Complex} copy
+ * @return {Complex} clone
  */
-Complex.prototype.copy = function () {
+Complex.prototype.clone = function () {
     return new Complex(this.re, this.im);
 };
 
@@ -650,6 +731,117 @@ Complex.doc = {
     ]
 };
 
+
+/**
+ * @constructor Matrix
+ *
+ * TODO: document Matrix
+ *
+ * @param {Array} [array]    A multi dimensional array
+ */
+function Matrix(array) {
+    if (this.constructor != Matrix) {
+        throw new SyntaxError(
+            'Matrix constructor must be called with the new operator');
+    }
+
+    this.array = array || [];
+}
+
+math.Matrix = Matrix;
+
+// TODO: implement a parse method
+
+// TODO: implement method toVector
+// TODO: implement method isVector
+
+
+
+/**
+ * Retrieve the size of the matrix.
+ * The size of the matrix will be validated too
+ * @returns {Number[]} size
+ */
+Matrix.prototype.size = function () {
+    return util.array.validatedSize(this.array);
+};
+
+/**
+ * Get the scalar value of the matrix. Will return null if the matrix is no
+ * scalar value
+ * @return {* | null} scalar
+ */
+Matrix.prototype.toScalar = function () {
+    var value = this.array;
+    while (value instanceof Array && value.length == 1) {
+        value = value[0];
+    }
+
+    if (value instanceof Array) {
+        return null;
+    }
+    else {
+        return value;
+    }
+};
+
+/**
+ * Test whether the matrix is a scalar.
+ * @return {boolean} isScalar
+ */
+Matrix.prototype.isScalar = function () {
+    var value = this.array;
+    while (value instanceof Array && value.length == 1) {
+        value = array[0];
+    }
+    return !(value instanceof Array);
+};
+
+/**
+ * Get the matrix contents as vector. Returns null if the Matrix is no vector
+ * return {Array} vector
+ */
+Matrix.prototype.toVector = function () {
+    var s = util.array.validatedSize(this.array);
+    if (s.length != 2) {
+        return null;
+    }
+    if (s[0] != 1 && s[1] != 1) {
+        return null;
+    }
+
+    if (s[0] == 1) {
+        return this.array[0].concat();
+    }
+    else {
+        var vector = [];
+        this.array.forEach(function (row, index) {
+            vector[index] = row[0];
+        });
+        return vector;
+    }
+};
+
+/**
+ * Test if the matrix is a vector.
+ * A matrix is a vector when the dims is [1 x n] or [n x 1]
+ * return {boolean} isVector
+ */
+Matrix.prototype.isVector = function () {
+    var s = util.array.validatedSize(this.array);
+    if (s.length != 2) {
+        return false;
+    }
+    return (s[0] == 1 || s[1] == 1);
+};
+
+/**
+ * Get the primitive value of the Matrix: a multidimensional array
+ * @returns {Array} array
+ */
+Matrix.prototype.valueOf = function () {
+    return this.array;
+};
 
 /**
  * Utility functions for Numbers
@@ -938,9 +1130,9 @@ function isUnit(value) {
 
 /**
  * create a copy of this unit
- * @return {Unit} copy
+ * @return {Unit} clone
  */
-Unit.prototype.copy = function () {
+Unit.prototype.clone = function () {
     var clone = new Unit();
 
     for (var p in this) {
@@ -1451,7 +1643,11 @@ function abs(x) {
     if (x instanceof Array) {
         return util.map(x, abs);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return abs(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('abs', x);
 }
@@ -1529,7 +1725,7 @@ function add(x, y) {
                 throw new Error('Unit on right hand side of operator + has no value');
             }
 
-            var res = x.copy();
+            var res = x.clone();
             res.value += y.value;
             res.fixPrefix = false;
             return res;
@@ -1543,7 +1739,11 @@ function add(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, add);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return add(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('add', x, y);
 }
@@ -1597,7 +1797,11 @@ function ceil(x) {
     if (x instanceof Array) {
         return util.map(x, ceil);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return ceil(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('ceil', x);
 }
@@ -1646,7 +1850,11 @@ function cube(x) {
     if (x instanceof Array) {
         return multiply(multiply(x, x), x);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return cube(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('cube', x);
 }
@@ -1711,7 +1919,7 @@ function divide(x, y) {
 
     if (x instanceof Unit) {
         if (isNumber(y)) {
-            var res = x.copy();
+            var res = x.clone();
             res.value /= y;
             return res;
         }
@@ -1731,7 +1939,10 @@ function divide(x, y) {
         // TODO: implement scalar/matrix
     }
 
-    // TODO: implement matrix support
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive value
+        return divide(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('divide', x, y);
 }
@@ -1820,7 +2031,11 @@ function equal(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, equal);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return equal(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('equal', x, y);
 }
@@ -1877,7 +2092,11 @@ function exp (x) {
     if (x instanceof Array) {
         return util.map(x, exp);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return exp(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('exp', x);
 }
@@ -1931,7 +2150,11 @@ function fix(x) {
     if (x instanceof Array) {
         return util.map(x, fix);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return fix(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('fix', x);
 }
@@ -1984,7 +2207,11 @@ function floor(x) {
     if (x instanceof Array) {
         return util.map(x, floor);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return floor(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('floor', x);
 }
@@ -2055,7 +2282,11 @@ function larger(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, equal);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return larger(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('larger', x, y);
 }
@@ -2132,7 +2363,11 @@ function largereq(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, largereq);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return largereq(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('largereq', x, y);
 }
@@ -2205,7 +2440,10 @@ function log(x, base) {
         return divide(log(x), log(base));
     }
 
-    // TODO: implement matrix support
+    if (x.valueOf() !== x || base.valueOf() !== base) {
+        // fallback on the objects primitive values
+        return log(x.valueOf(), base.valueOf());
+    }
 
     throw newUnsupportedTypeError('log', x, base);
 }
@@ -2272,7 +2510,11 @@ function log10(x) {
     if (x instanceof Array) {
         return util.map(x, log10);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return log10(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('log10', x);
 }
@@ -2339,7 +2581,11 @@ function mod(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, mod);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return mod(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('mod', x, y);
 }
@@ -2391,7 +2637,7 @@ function multiply(x, y) {
             return multiplyComplex(new Complex(x, 0), y);
         }
         else if (y instanceof Unit) {
-            res = y.copy();
+            res = y.clone();
             res.value *= x;
             return res;
         }
@@ -2408,7 +2654,7 @@ function multiply(x, y) {
     }
     else if (x instanceof Unit) {
         if (isNumber(y)) {
-            res = x.copy();
+            res = x.clone();
             res.value *= y;
             return res;
         }
@@ -2416,8 +2662,8 @@ function multiply(x, y) {
     else if (x instanceof Array) {
         if (y instanceof Array) {
             // matrix * matrix
-            var sizeX = size(x)[0];
-            var sizeY = size(y)[0];
+            var sizeX = util.array.validatedSize(x);
+            var sizeY = util.array.validatedSize(y);
 
             if (sizeX.length != 2) {
                 throw new Error('Can only multiply a 2 dimensional matrix ' +
@@ -2465,7 +2711,10 @@ function multiply(x, y) {
         return util.map2(x, y, multiply);
     }
 
-    // TODO: implement matrix support
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return multiply(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('multiply', x, y);
 }
@@ -2549,7 +2798,7 @@ function pow(x, y) {
         }
 
         // verify that A is a 2 dimensional square matrix
-        var s = size(x)[0];
+        var s = util.array.validatedSize(x);
         if (s.length != 2) {
             throw new Error('For A^b, A must be 2 dimensional ' +
                     '(A has ' + s.length + ' dimensions)');
@@ -2561,7 +2810,6 @@ function pow(x, y) {
 
         if (y == 0) {
             // return the identity matrix
-            // TODO: implement method eye
             return eye(s[0]);
         }
         else {
@@ -2574,7 +2822,10 @@ function pow(x, y) {
         }
     }
 
-    // TODO: implement matrix support
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return pow(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('pow', x, y);
 }
@@ -2646,6 +2897,11 @@ function round(x, n) {
             util.map(x, round);
         }
 
+        if (x.valueOf() !== x) {
+            // fallback on the objects primitive value
+            return round(x.valueOf());
+        }
+
         throw newUnsupportedTypeError('round', x);
     }
     else {
@@ -2675,10 +2931,13 @@ function round(x, n) {
             return util.map2(x, n, round);
         }
 
+        if (x.valueOf() !== x || n.valueOf() !== n) {
+            // fallback on the objects primitive values
+            return larger(x.valueOf(), n.valueOf());
+        }
+
         throw newUnsupportedTypeError('round', x, n);
     }
-
-    // TODO: implement matrix support
 }
 
 math.round = round;
@@ -2754,7 +3013,11 @@ function sign(x) {
     if (x instanceof Array) {
         return util.map(x, sign);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return sign(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('sign', x);
 }
@@ -2826,7 +3089,11 @@ function smaller(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, smaller);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return smaller(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('smaller', x, y);
 }
@@ -2902,7 +3169,11 @@ function smallereq(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, smallereq);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return smallereq(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('smallereq', x, y);
 }
@@ -2972,7 +3243,11 @@ function sqrt (x) {
     if (x instanceof Array) {
         return util.map(x, sqrt);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return sqrt(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('sqrt', x);
 }
@@ -3023,7 +3298,11 @@ function square(x) {
     if (x instanceof Array) {
         return multiply(x, x);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return square(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('square', x);
 }
@@ -3110,7 +3389,7 @@ function subtract(x, y) {
                 throw new Error('Unit on right hand side of operator - has no value');
             }
 
-            var res = x.copy();
+            var res = x.clone();
             res.value -= y.value;
             res.fixPrefix = false;
 
@@ -3121,7 +3400,11 @@ function subtract(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, subtract);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return subtract(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('subtract', x, y);
 }
@@ -3170,7 +3453,7 @@ function unaryminus(x) {
         );
     }
     else if (x instanceof Unit) {
-        var res = x.copy();
+        var res = x.clone();
         res.value = -x.value;
         return res;
     }
@@ -3178,7 +3461,11 @@ function unaryminus(x) {
     if (x instanceof Array) {
         return util.map(x, unaryminus);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return unaryminus(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('unaryminus', x);
 }
@@ -3249,7 +3536,11 @@ function unequal(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, unequal);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return unequal(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('unequal', x, y);
 }
@@ -3305,7 +3596,11 @@ function arg(x) {
     if (x instanceof Array) {
         return util.map(x, arg);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return arg(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('arg', x);
 }
@@ -3359,7 +3654,11 @@ function conj(x) {
     if (x instanceof Array) {
         return util.map(x, conj);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return conj(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('conj', x);
 }
@@ -3412,7 +3711,11 @@ function im(x) {
     if (x instanceof Array) {
         return util.map(x, im);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return im(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('im', x);
 }
@@ -3464,7 +3767,11 @@ function re(x) {
     if (x instanceof Array) {
         return util.map(x, re);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return re(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('re', x);
 }
@@ -3552,8 +3859,7 @@ function eye (m, n) {
     return res;
 }
 
-// TODO: export method eye to math
-// math.eye = eye;
+math.eye = eye;
 
 /**
  * Function documentation
@@ -3606,103 +3912,22 @@ function size (x) {
     }
 
     if (x instanceof Array) {
-        var s = getSize(x);
-        validate(x, s);
-        return [getSize(x)];
+        var s = util.array.validatedSize(x);
+        if (s.length == 1) {
+            s.push(0);
+        }
+        return [s];
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return size(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('size', x);
 }
 
-/**
- * Recursively get the size of an array or object
- * @param {Array | Object} x
- * @Return {Array}
- */
-function getSize (x) {
-    if (x instanceof Array) {
-        var sizeX = x.length;
-        if (sizeX) {
-            var size0 = getSize(x[0]);
-            return [sizeX].concat(size0);
-        }
-        else {
-            return [sizeX];
-        }
-    }
-    else {
-        return [];
-    }
-}
-
-/**
- * Verify whether each element in an n dimensional array has the correct size
- * @param {Array | Object} array    Array to be validated
- * @param {Number[]} size           Array with dimensions
- * @param {Number} [dim]            Current dimension
- * @throw Error
- */
-function validate(array, size, dim) {
-    var i,
-        len = array.length;
-    if (!dim) {
-        dim = 0;
-    }
-
-    if (len != size[dim]) {
-        throw new Error('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
-    }
-
-    if (dim < size.length - 1) {
-        // recursively validate each child array
-        var dimNext = dim + 1;
-        for (i = 0; i < len; i++) {
-            var child = array[i];
-            if (!(child instanceof Array)) {
-                throw new Error('Dimension mismatch ' +
-                    '(' + (size.length - 1) + ' < ' + size.length + ')');
-            }
-            validate(array[i], size, dimNext);
-        }
-    }
-    else {
-        // last dimension. none of the childs may be an array
-        for (i = 0; i < len; i++) {
-            if (array[i] instanceof Array) {
-                throw new Error('Dimension mismatch ' +
-                    '(' + (size.length + 1) + ' > ' + size.length + ')');
-            }
-        }
-    }
-
-    return true;
-}
-
-/**
- * Compare two arrays
- * @param a
- * @param b
- * @return {Boolean} equal   True if both arrays are equal, else false
- */
-function compare(a, b) {
-    var len = a.length;
-    if (len != b.length) {
-        return false;
-    }
-
-    for (var i = 0; i < len; i++) {
-        if (a[i] != b[i]) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-
-// TODO: export method size to math
-// math.size = size;
+math.size = size;
 
 /**
  * Function documentation
@@ -3758,7 +3983,11 @@ function factorial (x) {
     if (x instanceof Array) {
         return util.map(x, factorial);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return factorial(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('factorial', x);
 }
@@ -3826,10 +4055,9 @@ function max(args) {
         throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
-    if (arguments.length == 1 && arguments[0] instanceof Array) {
-        return max.apply(this, arguments[0]);
+    if (arguments.length == 1 && (args.valueOf() instanceof Array)) {
+        return max.apply(this, args.valueOf());
     }
-    // TODO: implement matrix support
 
     var res = arguments[0];
     for (var i = 1, iMax = arguments.length; i < iMax; i++) {
@@ -3880,10 +4108,9 @@ function min(args) {
         throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
-    if (arguments.length == 1 && arguments[0] instanceof Array) {
-        return min.apply(this, arguments[0]);
+    if (arguments.length == 1 && (args.valueOf() instanceof Array)) {
+        return min.apply(this, args.valueOf());
     }
-    // TODO: implement matrix support
 
     var res = arguments[0];
     for (var i = 1, iMax = arguments.length; i < iMax; i++) {
@@ -3966,7 +4193,11 @@ function acos(x) {
     if (x instanceof Array) {
         return util.map(x, acos);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return acos(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('acos', x);
 }
@@ -4036,7 +4267,11 @@ function asin(x) {
     if (x instanceof Array) {
         return util.map(x, asin);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return asin(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('asin', x);
 }
@@ -4099,7 +4334,11 @@ function atan(x) {
     if (x instanceof Array) {
         return util.map(x, atan);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return atan(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('atan', x);
 }
@@ -4158,7 +4397,11 @@ function atan2(y, x) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(y, x, atan2);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return atan2(y.valueOf(), x.valueOf());
+    }
 
     throw newUnsupportedTypeError('atan2', y, x);
 }
@@ -4222,7 +4465,11 @@ function cos(x) {
     if (x instanceof Array) {
         return util.map(x, cos);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return cos(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('cos', x);
 }
@@ -4287,7 +4534,11 @@ function cot(x) {
     if (x instanceof Array) {
         return util.map(x, cot);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return cot(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('cot', x);
 }
@@ -4351,7 +4602,11 @@ function csc(x) {
     if (x instanceof Array) {
         return util.map(x, csc);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return csc(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('csc', x);
 }
@@ -4414,7 +4669,11 @@ function sec(x) {
     if (x instanceof Array) {
         return util.map(x, sec);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return sec(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('sec', x);
 }
@@ -4474,7 +4733,11 @@ function sin(x) {
     if (x instanceof Array) {
         return util.map(x, sin);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return sin(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('sin', x);
 }
@@ -4540,7 +4803,11 @@ function tan(x) {
     if (x instanceof Array) {
         return util.map(x, tan);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return tan(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('tan', x);
 }
@@ -4582,16 +4849,17 @@ function unit_in(x, unit) {
     }
 
     if (x instanceof Unit && unit instanceof Unit) {
-        // Test if unit has no value
+        if (!x.equalBase(unit)) {
+            throw new Error('Units do not match');
+        }
         if (unit.hasValue) {
             throw new Error('Cannot convert to a unit with a value');
         }
-        // Test if unit has a unit
         if (!unit.hasUnit) {
             throw new Error('Unit expected on the right hand side of function in');
         }
 
-        var res = unit.copy();
+        var res = unit.clone();
         res.value = x.value;
         res.fixPrefix = true;
 
@@ -4601,12 +4869,16 @@ function unit_in(x, unit) {
     if (x instanceof Array || unit instanceof Array) {
         return util.map2(x, unit, unit_in);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.in(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('in', x);
 }
 
-math['in'] = unit_in;
+math.in = unit_in;
 
 /**
  * Function documentation
@@ -4695,7 +4967,7 @@ math.format = format;
  */
 function formatArray (array) {
     var str = '[';
-    var s = size(array)[0];
+    var s = util.array.validatedSize(array);
 
     if (s.length != 2) {
         return formatArrayN(array);
