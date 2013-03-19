@@ -8,10 +8,9 @@ function min(args) {
         throw new Error('Function sum requires one or more parameters (0 provided)');
     }
 
-    if (arguments.length == 1 && arguments[0] instanceof Array) {
-        return min.apply(this, arguments[0]);
+    if (arguments.length == 1 && (args.valueOf() instanceof Array)) {
+        return min.apply(this, args.valueOf());
     }
-    // TODO: implement matrix support
 
     var res = arguments[0];
     for (var i = 1, iMax = arguments.length; i < iMax; i++) {

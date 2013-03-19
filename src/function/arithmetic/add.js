@@ -66,7 +66,11 @@ function add(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, add);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return add(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('add', x, y);
 }

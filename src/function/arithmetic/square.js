@@ -19,7 +19,11 @@ function square(x) {
     if (x instanceof Array) {
         return multiply(x, x);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return square(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('square', x);
 }

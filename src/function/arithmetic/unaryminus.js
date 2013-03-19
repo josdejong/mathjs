@@ -26,7 +26,11 @@ function unaryminus(x) {
     if (x instanceof Array) {
         return util.map(x, unaryminus);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return unaryminus(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('unaryminus', x);
 }

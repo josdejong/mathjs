@@ -22,7 +22,11 @@ function exp (x) {
     if (x instanceof Array) {
         return util.map(x, exp);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return exp(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('exp', x);
 }

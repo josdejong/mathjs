@@ -26,6 +26,11 @@ function round(x, n) {
             util.map(x, round);
         }
 
+        if (x.valueOf() !== x) {
+            // fallback on the objects primitive value
+            return round(x.valueOf());
+        }
+
         throw newUnsupportedTypeError('round', x);
     }
     else {
@@ -55,10 +60,13 @@ function round(x, n) {
             return util.map2(x, n, round);
         }
 
+        if (x.valueOf() !== x || n.valueOf() !== n) {
+            // fallback on the objects primitive values
+            return larger(x.valueOf(), n.valueOf());
+        }
+
         throw newUnsupportedTypeError('round', x, n);
     }
-
-    // TODO: implement matrix support
 }
 
 math.round = round;

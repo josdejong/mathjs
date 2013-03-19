@@ -93,7 +93,10 @@ function multiply(x, y) {
         return util.map2(x, y, multiply);
     }
 
-    // TODO: implement matrix support
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return multiply(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('multiply', x, y);
 }

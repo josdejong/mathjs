@@ -41,7 +41,11 @@ function smaller(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, smaller);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return smaller(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('smaller', x, y);
 }

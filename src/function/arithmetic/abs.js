@@ -19,7 +19,11 @@ function abs(x) {
     if (x instanceof Array) {
         return util.map(x, abs);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return abs(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('abs', x);
 }

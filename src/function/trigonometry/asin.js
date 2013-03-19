@@ -40,7 +40,11 @@ function asin(x) {
     if (x instanceof Array) {
         return util.map(x, asin);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return asin(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('asin', x);
 }

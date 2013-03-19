@@ -29,7 +29,11 @@ function atan2(y, x) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(y, x, atan2);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return atan2(y.valueOf(), x.valueOf());
+    }
 
     throw newUnsupportedTypeError('atan2', y, x);
 }

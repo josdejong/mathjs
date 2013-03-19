@@ -19,7 +19,11 @@ function re(x) {
     if (x instanceof Array) {
         return util.map(x, re);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return re(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('re', x);
 }

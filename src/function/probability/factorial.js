@@ -31,7 +31,11 @@ function factorial (x) {
     if (x instanceof Array) {
         return util.map(x, factorial);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return factorial(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('factorial', x);
 }

@@ -32,7 +32,11 @@ function cot(x) {
     if (x instanceof Array) {
         return util.map(x, cot);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return cot(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('cot', x);
 }

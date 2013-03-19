@@ -20,7 +20,11 @@ function arg(x) {
     if (x instanceof Array) {
         return util.map(x, arg);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return arg(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('arg', x);
 }

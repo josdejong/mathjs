@@ -32,7 +32,11 @@ function sec(x) {
     if (x instanceof Array) {
         return util.map(x, sec);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return sec(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('sec', x);
 }

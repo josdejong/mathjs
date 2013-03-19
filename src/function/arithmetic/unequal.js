@@ -42,7 +42,11 @@ function unequal(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, unequal);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return unequal(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('unequal', x, y);
 }

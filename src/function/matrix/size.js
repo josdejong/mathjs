@@ -29,7 +29,11 @@ function size (x) {
         validate(x, s);
         return [getSize(x)];
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return size(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('size', x);
 }

@@ -41,7 +41,11 @@ function smallereq(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, smallereq);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return smallereq(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('smallereq', x, y);
 }

@@ -53,7 +53,10 @@ function divide(x, y) {
         // TODO: implement scalar/matrix
     }
 
-    // TODO: implement matrix support
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive value
+        return divide(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('divide', x, y);
 }

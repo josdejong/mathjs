@@ -40,7 +40,11 @@ function acos(x) {
     if (x instanceof Array) {
         return util.map(x, acos);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return acos(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('acos', x);
 }

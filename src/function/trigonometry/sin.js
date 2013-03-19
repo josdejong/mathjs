@@ -29,7 +29,11 @@ function sin(x) {
     if (x instanceof Array) {
         return util.map(x, sin);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return sin(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('sin', x);
 }

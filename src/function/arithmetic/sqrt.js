@@ -36,7 +36,11 @@ function sqrt (x) {
     if (x instanceof Array) {
         return util.map(x, sqrt);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return sqrt(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('sqrt', x);
 }

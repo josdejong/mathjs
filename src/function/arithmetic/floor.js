@@ -22,7 +22,11 @@ function floor(x) {
     if (x instanceof Array) {
         return util.map(x, floor);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return floor(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('floor', x);
 }

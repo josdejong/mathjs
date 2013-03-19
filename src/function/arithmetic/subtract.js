@@ -63,7 +63,11 @@ function subtract(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, subtract);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return subtract(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('subtract', x, y);
 }

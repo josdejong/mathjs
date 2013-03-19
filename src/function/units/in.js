@@ -30,12 +30,16 @@ function unit_in(x, unit) {
     if (x instanceof Array || unit instanceof Array) {
         return util.map2(x, unit, unit_in);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.in(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('in', x);
 }
 
-math['in'] = unit_in;
+math.in = unit_in;
 
 /**
  * Function documentation

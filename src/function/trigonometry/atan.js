@@ -33,7 +33,11 @@ function atan(x) {
     if (x instanceof Array) {
         return util.map(x, atan);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return atan(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('atan', x);
 }

@@ -19,7 +19,11 @@ function cube(x) {
     if (x instanceof Array) {
         return multiply(multiply(x, x), x);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return cube(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('cube', x);
 }

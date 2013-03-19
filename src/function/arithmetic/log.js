@@ -39,7 +39,10 @@ function log(x, base) {
         return divide(log(x), log(base));
     }
 
-    // TODO: implement matrix support
+    if (x.valueOf() !== x || base.valueOf() !== base) {
+        // fallback on the objects primitive values
+        return log(x.valueOf(), base.valueOf());
+    }
 
     throw newUnsupportedTypeError('log', x, base);
 }

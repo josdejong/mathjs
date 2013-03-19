@@ -35,7 +35,11 @@ function mod(x, y) {
     if (x instanceof Array || y instanceof Array) {
         return util.map2(x, y, mod);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return mod(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('mod', x, y);
 }

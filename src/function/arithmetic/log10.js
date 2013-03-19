@@ -28,7 +28,11 @@ function log10(x) {
     if (x instanceof Array) {
         return util.map(x, log10);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return log10(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('log10', x);
 }

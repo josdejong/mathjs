@@ -63,7 +63,10 @@ function pow(x, y) {
         }
     }
 
-    // TODO: implement matrix support
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return pow(x.valueOf(), y.valueOf());
+    }
 
     throw newUnsupportedTypeError('pow', x, y);
 }

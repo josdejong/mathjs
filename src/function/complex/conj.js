@@ -20,7 +20,11 @@ function conj(x) {
     if (x instanceof Array) {
         return util.map(x, conj);
     }
-    // TODO: implement matrix support
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return conj(x.valueOf());
+    }
 
     throw newUnsupportedTypeError('conj', x);
 }
