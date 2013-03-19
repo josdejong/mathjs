@@ -20,7 +20,7 @@ function unit_in(x, unit) {
             throw new Error('Unit expected on the right hand side of function in');
         }
 
-        var res = unit.copy();
+        var res = unit.clone();
         res.value = x.value;
         res.fixPrefix = true;
 

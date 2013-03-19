@@ -249,9 +249,9 @@ function isUnit(value) {
 
 /**
  * create a copy of this unit
- * @return {Unit} copy
+ * @return {Unit} clone
  */
-Unit.prototype.copy = function () {
+Unit.prototype.clone = function () {
     var clone = new Unit();
 
     for (var p in this) {

@@ -33,7 +33,7 @@ function divide(x, y) {
 
     if (x instanceof Unit) {
         if (isNumber(y)) {
-            var res = x.copy();
+            var res = x.clone();
             res.value /= y;
             return res;
         }

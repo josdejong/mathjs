@@ -18,7 +18,7 @@ function unaryminus(x) {
         );
     }
     else if (x instanceof Unit) {
-        var res = x.copy();
+        var res = x.clone();
         res.value = -x.value;
         return res;
     }

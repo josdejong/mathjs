@@ -52,7 +52,7 @@ function add(x, y) {
                 throw new Error('Unit on right hand side of operator + has no value');
             }
 
-            var res = x.copy();
+            var res = x.clone();
             res.value += y.value;
             res.fixPrefix = false;
             return res;

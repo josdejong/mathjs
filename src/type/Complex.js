@@ -278,9 +278,9 @@ function isComplex(value) {
 
 /**
  * Create a copy of the complex value
- * @return {Complex} copy
+ * @return {Complex} clone
  */
-Complex.prototype.copy = function () {
+Complex.prototype.clone = function () {
     return new Complex(this.re, this.im);
 };
 

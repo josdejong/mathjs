@@ -19,7 +19,7 @@ function multiply(x, y) {
             return multiplyComplex(new Complex(x, 0), y);
         }
         else if (y instanceof Unit) {
-            res = y.copy();
+            res = y.clone();
             res.value *= x;
             return res;
         }
@@ -36,7 +36,7 @@ function multiply(x, y) {
     }
     else if (x instanceof Unit) {
         if (isNumber(y)) {
-            res = x.copy();
+            res = x.clone();
             res.value *= y;
             return res;
         }

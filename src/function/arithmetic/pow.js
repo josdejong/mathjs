@@ -50,7 +50,6 @@ function pow(x, y) {
 
         if (y == 0) {
             // return the identity matrix
-            // TODO: implement method eye
             return eye(s[0]);
         }
         else {

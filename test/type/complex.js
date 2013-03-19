@@ -77,12 +77,12 @@ assert.equal(new Complex(1, 0).toString(),  '1');
 assert.equal(new Complex(-1, 2).toString(), '-1 + 2i');
 assert.equal(new Complex(-1, 1).toString(), '-1 + i');
 
-// test copy
-var copy = complex1.copy();
-copy.re = 100;
-copy.im = 200;
-assert.notEqual(complex1, copy);
+// test clone
+var clone = complex1.clone();
+clone.re = 100;
+clone.im = 200;
+assert.notEqual(complex1, clone);
 assert.equal(complex1.re, 3);
 assert.equal(complex1.im, -4);
-assert.equal(copy.re, 100);
-assert.equal(copy.im, 200);
+assert.equal(clone.re, 100);
+assert.equal(clone.im, 200);
