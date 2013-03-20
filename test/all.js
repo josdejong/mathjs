@@ -18,7 +18,10 @@ require('./function/trigonometry.js');
 require('./function/units.js');
 require('./function/util.js');
 
-// TODO: test Parser
+// test Parser
+require('./parser/eval.js');
+// TODO: more Parser tests
+
 // TODO: test Workspace
 // TODO: test Scope
 // TODO: test Node, Assignment, Block, Constant, FunctionAssignment, Symbol, ArrayNode
