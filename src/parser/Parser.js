@@ -748,11 +748,36 @@ Parser.prototype.parse_multiplydivide = function (scope) {
 Parser.prototype.parse_pow = function (scope) {
     var node = this.parse_factorial(scope);
 
+    // a counter to keep track of the number of encountered '^' operators
+    var n = 0;
+
     while (this.token == '^') {
+        n++;
         var name = this.token;
         var fn = pow;
         this.getToken();
-        var params = [node, this.parse_factorial(scope)];
+
+        var params;
+
+        // are there more than 1 successive '^' operators?
+        if(n > 1) {
+
+            // get the previous node's left and right children
+            var left_node = node.params[0];
+            var right_node = node.params[1];
+
+            // let the right child become the left child of the previous node
+            node.params[0] = right_node;
+
+            // let the newly discovered value become the right child of the previous node
+            node.params[1] = this.parse_factorial(scope);
+
+            // let the old node become the right child of the next (new) node
+            params = [left_node, node];
+        }
+        else {
+            params = [node, this.parse_factorial(scope)];
+        }
 
         node = new Symbol(name, fn, params);
     }
