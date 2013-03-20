@@ -5,7 +5,7 @@
  * Methods:
  *    var result = parser.eval(expr);    // evaluate an expression
  *    var value = parser.get(name);      // retrieve a variable from the parser
- *    parser.put(name, value);           // put a variable in the parser
+ *    parser.set(name, value);           // set a variable in the parser
  *
  *    // it is possible to parse an expression into a node tree:
  *    var node = parser.parse(expr);     // parse an expression into a node tree
@@ -26,13 +26,13 @@
  *    parser.eval('function f(x, y) = x^y');  // f(x, y)
  *    parser.eval('f(2, 3)');                 // 8
  *
- *    // get and put variables and functions
+ *    // get and set variables and functions
  *    var x = parser.get('x');                // 7
  *    var f = parser.get('f');                // function
  *    var g = f(3, 2);                        // 9
- *    parser.put('h', 500);
+ *    parser.set('h', 500);
  *    var i = parser.eval('h / 2');           // 250
- *    parser.put('hello', function (name) {
+ *    parser.set('hello', function (name) {
  *        return 'hello, ' + name + '!';
  *    });
  *    parser.eval('hello("user")');           // "hello, user!"
@@ -114,11 +114,11 @@ Parser.prototype.get = function (name) {
 };
 
 /**
- * Put a symbol (a function or variable) by name from the parsers scope.
+ * Set a symbol (a function or variable) by name from the parsers scope.
  * @param {String} name
  * @param {* | undefined} value
  */
-Parser.prototype.put = function (name, value) {
+Parser.prototype.set = function (name, value) {
     this.scope.createDef(name, value);
 };
 

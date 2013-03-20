@@ -3,6 +3,7 @@ https://github.com/josdejong/mathjs
 
 ## <not yet released>, version 0.4.1
 
+- Changed: renamed the parsers method 'put' into 'set'.
 - Fixed: method 'in' did not check for units to have the same base.
 
 

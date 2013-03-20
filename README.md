@@ -96,7 +96,7 @@ The parser supports all data types, methods and constants available in math.js.
 It has a method `eval` to evaluate expressions,
 and `parse` to parse expressions and build a node tree from it.
 The parser supports variable and function definitions.
-Variables and functions can be manipulated using the methods `get` and `put`.
+Variables and functions can be manipulated using the methods `get` and `set`.
 
 The following example code shows how to create and use a parser.
 
@@ -119,13 +119,13 @@ parser.eval('x + 3');                   // 6.5
 parser.eval('function f(x, y) = x^y');  // f(x, y)
 parser.eval('f(2, 3)');                 // 8
 
-// get and put variables and functions
+// get and set variables and functions
 var x = parser.get('x');                // x = 7
 var f = parser.get('f');                // f = function
 var g = f(3, 3);                        // g = 27
-parser.put('h', 500);
+parser.set('h', 500);
 parser.eval('h / 2');                   // 250
-parser.put('hello', function (name) {
+parser.set('hello', function (name) {
     return 'hello, ' + name + '!';
 });
 parser.eval('hello("user")');           // "hello, user!"
@@ -138,7 +138,7 @@ Available methods:
 
     var result = parser.eval(expr);    // evaluate an expression
     var value = parser.get(name);      // retrieve a variable from the parser
-    parser.put(name, value);           // put a variable in the parser
+    parser.set(name, value);           // set a variable in the parser
 
     var node = parser.parse(expr);     // parse an expression into a node tree
     var result = node.eval();          // evaluate a node
