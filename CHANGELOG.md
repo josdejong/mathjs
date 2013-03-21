@@ -3,6 +3,7 @@ https://github.com/josdejong/mathjs
 
 ## <not yet released>, version 0.4.1
 
+- Implemented method clone
 - Changed: changed behavior of the power operator in the parser from left
   associative to right associative in order to follow the mathematical
   conventions.
