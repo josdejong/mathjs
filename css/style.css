@@ -146,3 +146,10 @@ pre {
 #footer a:hover {
     color: #dc3912;
 }
+
+#forkme {
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 0;
+}
