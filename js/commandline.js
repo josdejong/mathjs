@@ -181,6 +181,7 @@ function CommandLineEditor (params) {
             var keyword = end[0];
             var matches = [];
 
+            // scope variables
             // TODO: not nice to read the (private) defs inside the scope
             for (var def in parser.scope.defs) {
                 if (parser.scope.defs.hasOwnProperty(def)) {
@@ -190,15 +191,46 @@ function CommandLineEditor (params) {
                 }
             }
 
+            // commandline keywords
             if ('clear'.indexOf(keyword) == 0) {
                 matches.push('clear');
             }
 
+            // math functions and constants
             var ignore = ['parser', 'Complex', 'Unit'];
             for (var func in math) {
                 if (math.hasOwnProperty(func)) {
                     if (func.indexOf(keyword) == 0 && ignore.indexOf(func) == -1) {
                         matches.push(func);
+                    }
+                }
+            }
+
+            // units
+            math.Unit.UNITS.forEach(function (unit) {
+                if (unit.name.indexOf(keyword) == 0) {
+                    matches.push(unit.name);
+                }
+            });
+            for (var name in math.Unit.PREFIXES) {
+                if (math.Unit.PREFIXES.hasOwnProperty(name)) {
+                    var prefixes = math.Unit.PREFIXES[name];
+                    for (var prefix in prefixes) {
+                        if (prefixes.hasOwnProperty(prefix)) {
+                            if (prefix.indexOf(keyword) == 0) {
+                                matches.push(prefix);
+                            }
+                            else if (keyword.indexOf(prefix) == 0) {
+                                var unitKeyword = keyword.substring(prefix.length);
+                                math.Unit.UNITS.forEach(function (unit) {
+                                    if (unit.name.indexOf(unitKeyword) == 0 &&
+                                            math.Unit.isUnit(prefix + unit.name)) {
+                                        matches.push(prefix + unit.name);
+                                    }
+                                });
+
+                            }
+                        }
                     }
                 }
             }
