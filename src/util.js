@@ -121,14 +121,51 @@ util.map2 = function map2(array1, array2, fn) {
     return res;
 };
 
+
+util.object = {};
+
+
+/**
+ * For each method for objects. The method loops over all properties of the object.
+ * @param {Object} object       The object
+ * @param {function} callback   Callback method, called for each item in
+ *                              the object or array with three parameters:
+ *                              callback(value, index, object)
+ */
+util.object.forEach = function forEach (object, callback) {
+    for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+            callback(object[key], key, object);
+        }
+    }
+};
+
+/**
+ * Creates a new object with the results of calling a provided function on
+ * every property in the object.
+ * @param {Object} object           The object
+ * @param {function} fn             Mapping function
+ * @return {Object} mappedObject
+ */
+util.object.map = function map (object, fn) {
+    var m = {};
+    for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+            m[key] = fn(object[key]);
+        }
+    }
+    return m;
+};
+
+
 util.array = {};
 
 /**
- * Recursively get the size of an array or object.
+ * Recursively get the size of an array.
  * The size is calculated from the first dimension.
  * The array is not checked for matching dimensions, that should be done using
  * util.array.validate or util.array.validatedSize
- * @param {Array | Object} x
+ * @param {Array} x
  * @Return {Number[]} size
  */
 util.array.size = function size (x) {
@@ -149,12 +186,20 @@ util.array.size = function size (x) {
 
 /**
  * Verify whether each element in an n dimensional array has the correct size
- * @param {Array | Object} array    Array to be validated
- * @param {Number[]} size           Array with dimensions
- * @param {Number} [dim]            Current dimension
+ * @param {Array} array    Array to be validated
+ * @param {Number[]} size  Array with dimensions
+ * @param {Number} [dim]   Current dimension
  * @throw Error
  */
 util.array.validate = function validate(array, size, dim) {
+    if (size.length == 0) {
+        // scalar
+        if (array instanceof Array) {
+            throw new Error('Dimension mismatch (' + array.length + ' != 0)');
+        }
+        return;
+    }
+
     var i,
         len = array.length;
     if (!dim) {
@@ -191,9 +236,9 @@ util.array.validate = function validate(array, size, dim) {
 };
 
 /**
- * Recursively get the size of a multidimensional array or object.
+ * Recursively get the size of a multidimensional array.
  * The array is checked for matching dimensions.
- * @param {Array | Object} x
+ * @param {Array} x
  * @Return {Number[]} size
  */
 util.array.validatedSize = function validatedSize(x) {

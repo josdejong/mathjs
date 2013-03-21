@@ -1,14 +1,10 @@
-// test matrix functions
+// test data type Vector
 
 var assert = require('assert');
 var math = require('../../math.js'),
     Complex = math.Complex,
-    Unit = math.Unit,
     Matrix = math.Matrix,
-    Vector = math.Vector;
+    Vector = math.Vector,
+    Unit = math.Unit;
 
-// test size
-
-
-
-// TODO: test eye
+// TODO: extensively test Vector

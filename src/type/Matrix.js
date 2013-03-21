@@ -3,24 +3,36 @@
  *
  * TODO: document Matrix
  *
- * @param {Array} [array]    A multi dimensional array
+ * @param {Array} [data]    A multi dimensional array
  */
-function Matrix(array) {
+function Matrix(data) {
     if (this.constructor != Matrix) {
         throw new SyntaxError(
             'Matrix constructor must be called with the new operator');
     }
 
-    this.array = array || [];
+    this.data = data ? data.valueOf() : null;
+
+    // verify the size of the array
+    util.array.validatedSize(this.data);
 }
 
 math.Matrix = Matrix;
 
-// TODO: implement a parse method
+// TODO: implement method parse
+// TODO: implement method get
+// TODO: implement method set
+// TODO: implement method resize
 
-// TODO: implement method toVector
-// TODO: implement method isVector
-
+/**
+ * Create a clone of the matrix
+ * @return {Matrix} clone
+ */
+Matrix.prototype.clone = function () {
+    var matrix = new Matrix();
+    matrix.data = clone(this.data);
+    return matrix;
+};
 
 
 /**
@@ -29,7 +41,7 @@ math.Matrix = Matrix;
  * @returns {Number[]} size
  */
 Matrix.prototype.size = function () {
-    return util.array.validatedSize(this.array);
+    return util.array.validatedSize(this.data);
 };
 
 /**
@@ -38,16 +50,16 @@ Matrix.prototype.size = function () {
  * @return {* | null} scalar
  */
 Matrix.prototype.toScalar = function () {
-    var value = this.array;
-    while (value instanceof Array && value.length == 1) {
-        value = value[0];
+    var scalar = this.data;
+    while (scalar instanceof Array && scalar.length == 1) {
+        scalar = value[0];
     }
 
-    if (value instanceof Array) {
+    if (scalar instanceof Array) {
         return null;
     }
     else {
-        return value;
+        return scalar;
     }
 };
 
@@ -56,49 +68,64 @@ Matrix.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Matrix.prototype.isScalar = function () {
-    var value = this.array;
-    while (value instanceof Array && value.length == 1) {
-        value = array[0];
+    var scalar = this.data;
+    while (scalar instanceof Array && scalar.length == 1) {
+        scalar = scalar[0];
     }
-    return !(value instanceof Array);
+    return !(scalar instanceof Array);
 };
 
 /**
- * Get the matrix contents as vector. Returns null if the Matrix is no vector
- * return {Array} vector
+ * Get the matrix contents as vector.
+ * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
+ * dimensions where maximum one of the dimensions has a size larger than 1.
+ * Returns null if the Matrix is no vector
+ * return {Vector} vector
  */
 Matrix.prototype.toVector = function () {
-    var s = util.array.validatedSize(this.array);
-    if (s.length != 2) {
-        return null;
-    }
-    if (s[0] != 1 && s[1] != 1) {
+    /* TODO: implement toVector
+    var count = 0;
+    var dim = undefined;
+    var s = util.array.validatedSize(this.data);
+    s.forEach(function (length, index) {
+        if (length > 1) {
+            count++;
+            dim = index;
+        }
+    });
+    if (count > 1) {
         return null;
     }
 
-    if (s[0] == 1) {
-        return this.array[0].concat();
-    }
-    else {
-        var vector = [];
-        this.array.forEach(function (row, index) {
-            vector[index] = row[0];
-        });
-        return vector;
-    }
+    /// TODO: clone the values
+    */
+    throw new Error('not yet implemented');
 };
 
 /**
  * Test if the matrix is a vector.
- * A matrix is a vector when the dims is [1 x n] or [n x 1]
+ * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
+ * dimensions where maximum one of the dimensions has a size larger than 1.
  * return {boolean} isVector
  */
 Matrix.prototype.isVector = function () {
-    var s = util.array.validatedSize(this.array);
-    if (s.length != 2) {
-        return false;
-    }
-    return (s[0] == 1 || s[1] == 1);
+    var count = 0;
+    var s = util.array.validatedSize(this.data);
+    s.forEach(function (length) {
+        if (length > 1) {
+            count++;
+        }
+    });
+    return (count <= 1);
+};
+
+/**
+ * Get the matrix contents as an Array.
+ * The returned Array is a clone of the original matrix data
+ * @returns {Array} array
+ */
+Matrix.prototype.toArray = function () {
+    return clone(this.data);
 };
 
 /**
@@ -106,5 +133,7 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.valueOf = function () {
-    return this.array;
+    return this.data;
 };
+
+// TODO: implement Matrix.toString()

@@ -37,10 +37,10 @@ b = math.clone(a);
 a.valueOf()[0][0] = 5;
 assert.equal(b.valueOf()[0][0], 1);
 
-a = new math.Vector([1, 2, 3, 4]);
+a = new math.Vector([1, 2, new math.Complex(2, 3), 4]);
 b = math.clone(a);
-a.valueOf()[1] = 5;
-assert.equal(b.valueOf()[1], 2);
+a.valueOf()[2].re = 5;
+assert.equal(b.valueOf()[2].re, 2);
 
 
 // TODO: test format

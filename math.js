@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.5.0-SNAPSHOT
- * @date    2013-03-19
+ * @date    2013-03-21
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -188,14 +188,51 @@ util.map2 = function map2(array1, array2, fn) {
     return res;
 };
 
+
+util.object = {};
+
+
+/**
+ * For each method for objects. The method loops over all properties of the object.
+ * @param {Object} object       The object
+ * @param {function} callback   Callback method, called for each item in
+ *                              the object or array with three parameters:
+ *                              callback(value, index, object)
+ */
+util.object.forEach = function forEach (object, callback) {
+    for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+            callback(object[key], key, object);
+        }
+    }
+};
+
+/**
+ * Creates a new object with the results of calling a provided function on
+ * every property in the object.
+ * @param {Object} object           The object
+ * @param {function} fn             Mapping function
+ * @return {Object} mappedObject
+ */
+util.object.map = function map (object, fn) {
+    var m = {};
+    for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+            m[key] = fn(object[key]);
+        }
+    }
+    return m;
+};
+
+
 util.array = {};
 
 /**
- * Recursively get the size of an array or object.
+ * Recursively get the size of an array.
  * The size is calculated from the first dimension.
  * The array is not checked for matching dimensions, that should be done using
  * util.array.validate or util.array.validatedSize
- * @param {Array | Object} x
+ * @param {Array} x
  * @Return {Number[]} size
  */
 util.array.size = function size (x) {
@@ -216,12 +253,20 @@ util.array.size = function size (x) {
 
 /**
  * Verify whether each element in an n dimensional array has the correct size
- * @param {Array | Object} array    Array to be validated
- * @param {Number[]} size           Array with dimensions
- * @param {Number} [dim]            Current dimension
+ * @param {Array} array    Array to be validated
+ * @param {Number[]} size  Array with dimensions
+ * @param {Number} [dim]   Current dimension
  * @throw Error
  */
 util.array.validate = function validate(array, size, dim) {
+    if (size.length == 0) {
+        // scalar
+        if (array instanceof Array) {
+            throw new Error('Dimension mismatch (' + array.length + ' != 0)');
+        }
+        return;
+    }
+
     var i,
         len = array.length;
     if (!dim) {
@@ -258,9 +303,9 @@ util.array.validate = function validate(array, size, dim) {
 };
 
 /**
- * Recursively get the size of a multidimensional array or object.
+ * Recursively get the size of a multidimensional array.
  * The array is checked for matching dimensions.
- * @param {Array | Object} x
+ * @param {Array} x
  * @Return {Number[]} size
  */
 util.array.validatedSize = function validatedSize(x) {
@@ -737,24 +782,36 @@ Complex.doc = {
  *
  * TODO: document Matrix
  *
- * @param {Array} [array]    A multi dimensional array
+ * @param {Array} [data]    A multi dimensional array
  */
-function Matrix(array) {
+function Matrix(data) {
     if (this.constructor != Matrix) {
         throw new SyntaxError(
             'Matrix constructor must be called with the new operator');
     }
 
-    this.array = array || [];
+    this.data = data ? data.valueOf() : null;
+
+    // verify the size of the array
+    util.array.validatedSize(this.data);
 }
 
 math.Matrix = Matrix;
 
-// TODO: implement a parse method
+// TODO: implement method parse
+// TODO: implement method get
+// TODO: implement method set
+// TODO: implement method resize
 
-// TODO: implement method toVector
-// TODO: implement method isVector
-
+/**
+ * Create a clone of the matrix
+ * @return {Matrix} clone
+ */
+Matrix.prototype.clone = function () {
+    var matrix = new Matrix();
+    matrix.data = clone(this.data);
+    return matrix;
+};
 
 
 /**
@@ -763,7 +820,7 @@ math.Matrix = Matrix;
  * @returns {Number[]} size
  */
 Matrix.prototype.size = function () {
-    return util.array.validatedSize(this.array);
+    return util.array.validatedSize(this.data);
 };
 
 /**
@@ -772,16 +829,16 @@ Matrix.prototype.size = function () {
  * @return {* | null} scalar
  */
 Matrix.prototype.toScalar = function () {
-    var value = this.array;
-    while (value instanceof Array && value.length == 1) {
-        value = value[0];
+    var scalar = this.data;
+    while (scalar instanceof Array && scalar.length == 1) {
+        scalar = value[0];
     }
 
-    if (value instanceof Array) {
+    if (scalar instanceof Array) {
         return null;
     }
     else {
-        return value;
+        return scalar;
     }
 };
 
@@ -790,49 +847,64 @@ Matrix.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Matrix.prototype.isScalar = function () {
-    var value = this.array;
-    while (value instanceof Array && value.length == 1) {
-        value = array[0];
+    var scalar = this.data;
+    while (scalar instanceof Array && scalar.length == 1) {
+        scalar = scalar[0];
     }
-    return !(value instanceof Array);
+    return !(scalar instanceof Array);
 };
 
 /**
- * Get the matrix contents as vector. Returns null if the Matrix is no vector
- * return {Array} vector
+ * Get the matrix contents as vector.
+ * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
+ * dimensions where maximum one of the dimensions has a size larger than 1.
+ * Returns null if the Matrix is no vector
+ * return {Vector} vector
  */
 Matrix.prototype.toVector = function () {
-    var s = util.array.validatedSize(this.array);
-    if (s.length != 2) {
-        return null;
-    }
-    if (s[0] != 1 && s[1] != 1) {
+    /* TODO: implement toVector
+    var count = 0;
+    var dim = undefined;
+    var s = util.array.validatedSize(this.data);
+    s.forEach(function (length, index) {
+        if (length > 1) {
+            count++;
+            dim = index;
+        }
+    });
+    if (count > 1) {
         return null;
     }
 
-    if (s[0] == 1) {
-        return this.array[0].concat();
-    }
-    else {
-        var vector = [];
-        this.array.forEach(function (row, index) {
-            vector[index] = row[0];
-        });
-        return vector;
-    }
+    /// TODO: clone the values
+    */
+    throw new Error('not yet implemented');
 };
 
 /**
  * Test if the matrix is a vector.
- * A matrix is a vector when the dims is [1 x n] or [n x 1]
+ * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
+ * dimensions where maximum one of the dimensions has a size larger than 1.
  * return {boolean} isVector
  */
 Matrix.prototype.isVector = function () {
-    var s = util.array.validatedSize(this.array);
-    if (s.length != 2) {
-        return false;
-    }
-    return (s[0] == 1 || s[1] == 1);
+    var count = 0;
+    var s = util.array.validatedSize(this.data);
+    s.forEach(function (length) {
+        if (length > 1) {
+            count++;
+        }
+    });
+    return (count <= 1);
+};
+
+/**
+ * Get the matrix contents as an Array.
+ * The returned Array is a clone of the original matrix data
+ * @returns {Array} array
+ */
+Matrix.prototype.toArray = function () {
+    return clone(this.data);
 };
 
 /**
@@ -840,8 +912,10 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.valueOf = function () {
-    return this.array;
+    return this.data;
 };
+
+// TODO: implement Matrix.toString()
 
 /**
  * Utility functions for Numbers
@@ -1555,6 +1629,170 @@ Unit.UNITS = [
     {'name': 'B', 'base': BASE_UNITS.BIT, 'prefixes': PREFIXES.BINARY_SHORT, 'value': 8, 'offset': 0},
     {'name': 'bytes', 'base': BASE_UNITS.BIT, 'prefixes': PREFIXES.BINARY_LONG, 'value': 8, 'offset': 0}
 ];
+
+/**
+ * @constructor Vector
+ *
+ * TODO: document Vector
+ *
+ * @param {Array} [data]    A one dimensional array
+ */
+function Vector(data) {
+    if (this.constructor != Vector) {
+        throw new SyntaxError(
+            'Vector constructor must be called with the new operator');
+    }
+
+    this.data = data ? data.valueOf() : null;
+
+    // verify the size of the array
+    var s = util.array.size(this.data);
+    util.array.validate(this.data, s);
+    if (s.length > 1) {
+        throw new Error('Vector can only contain one dimension (size: ' + format(s) + ')');
+    }
+}
+
+math.Vector = Vector;
+
+// TODO: implement method parse
+// TODO: implement method resize
+
+/**
+ * get a value or a subset of the vector. Returns undefined when out of range
+ * @param {Number | Number[]} index
+ * @return {* | *[]} value
+ */
+Vector.prototype.get = function (index) {
+    var me = this;
+    index = index.valueOf();
+
+    if (index instanceof Array) {
+        return index.map(function (i) {
+            return me.get(i);
+        });
+    }
+    else {
+        if (!isNumber(index) || !isInteger(index) || index < 0) {
+            throw new TypeError('Positive integer expected as index in method get');
+        }
+        if (this.data instanceof Array) {
+            return this.data[index];
+        }
+        else if (index == 0) {
+            return this.data;
+        }
+        else {
+            return undefined;
+        }
+    }
+};
+
+/**
+ * Set a value or a set of value in the vector.
+ * @param {Number | Number[]} index
+ * @param {* | *[]} value
+ */
+Vector.prototype.set = function (index, value) {
+    var me = this;
+    index = index.valueOf();
+
+    if (index instanceof Array) {
+        if (value instanceof Array) {
+            if (index.length != value.length) {
+                throw new Error('Dimension mismatch (' + index.length+ ' != ' +
+                    value.length + ')');
+            }
+
+            util.map2(index, value, function (i, v) {
+                me.set(i, v);
+            });
+        }
+        else {
+            this.set(index, [value]);
+        }
+    }
+    else {
+        if (value instanceof Array) {
+            this.set([index], value);
+        }
+        else {
+            if (!(this.data instanceof Array)) {
+                this.data = [this.data];
+            }
+            this.data[index] = value;
+        }
+    }
+};
+
+/**
+ * Create a clone of the vector
+ * @return {Vector} clone
+ */
+Vector.prototype.clone = function () {
+    var vector = new Vector();
+    vector.data = clone(this.data);
+    return vector;
+};
+
+/**
+ * Retrieve the size of the vector.
+ * The size of the vector will be validated too
+ * @returns {Number[]} size
+ */
+Vector.prototype.size = function () {
+    return util.array.validatedSize(this.data);
+};
+
+/**
+ * Get the scalar value of the vector. Will return null if the vector is no
+ * scalar value
+ * @return {* | null} scalar
+ */
+Vector.prototype.toScalar = function () {
+    var value = this.data;
+    while (value instanceof Array && value.length == 1) {
+        value = value[0];
+    }
+
+    if (value instanceof Array) {
+        return null;
+    }
+    else {
+        return value;
+    }
+};
+
+/**
+ * Test whether the vector is a scalar.
+ * @return {boolean} isScalar
+ */
+Vector.prototype.isScalar = function () {
+    var value = this.data;
+    while (value instanceof Array && value.length == 1) {
+        value = value[0];
+    }
+    return !(value instanceof Array);
+};
+
+/**
+ * Get the vector contents as an Array. The array will contain a clone of
+ * the original vector data
+ * @returns {Array} array
+ */
+Vector.prototype.toArray = function () {
+    return clone(this.data);
+};
+
+/**
+ * Get the primitive value of the Value: a one dimensional array
+ * @returns {Array} array
+ */
+Vector.prototype.valueOf = function () {
+    return this.data;
+};
+
+// TODO: implement Vector.toString()
 
 /**
  * mathjs constants
@@ -3886,7 +4124,7 @@ eye.doc = {
     ]
 };
 /**
- * Calculate the size of a matrix, size(x)
+ * Calculate the size of a vector, matrix, or scalar. size(x)
  * @param {Number | Complex | Array} x
  * @return {Number | Complex | Array} res
  */
@@ -3895,28 +4133,16 @@ function size (x) {
         throw newArgumentsError('size', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
-        return [[1, 1]];
-    }
-
-    if (x instanceof Complex) {
-        return [[1, 1]];
-    }
-
-    if (x instanceof Unit) {
-        return [[1, 1]];
+    if (isNumber(x) || x instanceof Complex || x instanceof Unit || x == null) {
+        return [];
     }
 
     if (isString(x)) {
-        return [[1, x.length]];
+        return [x.length];
     }
 
     if (x instanceof Array) {
-        var s = util.array.validatedSize(x);
-        if (s.length == 1) {
-            s.push(0);
-        }
-        return [s];
+        return util.array.validatedSize(x);
     }
 
     if (x.valueOf() !== x) {
@@ -4895,6 +5121,62 @@ unit_in.doc ={
         '5 inch in cm',
         '3.2kg in g',
         '16 bytes in bits'
+    ],
+    'seealso': []
+};
+
+/**
+ * Clone an object
+ * @param {*} x
+ * @return {*} clone
+ */
+function clone(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('clone', arguments.length, 1);
+    }
+
+    if (typeof(x.clone) === 'function') {
+        return x.clone();
+    }
+
+    if (isNumber(x) || isString(x) || x === null) {
+        return x;
+    }
+
+    if (x instanceof Array) {
+        return x.map(function (value) {
+            return clone(value);
+        });
+    }
+
+    if (x instanceof Object) {
+        return util.object.map(x, clone);
+    }
+
+    throw newUnsupportedTypeError('clone', x);
+}
+
+math.clone = clone;
+
+
+
+/**
+ * Function documentation
+ */
+clone.doc = {
+    'name': 'clone',
+    'category': 'Utils',
+    'syntax': [
+        'clone(x)'
+    ],
+    'description': 'Clone a variable. Creates a copy of primitive variables,' +
+        'and a deep copy of matrices',
+    'examples': [
+        'clone(3.5)',
+        'clone(2 - 4i)',
+        'clone(45 deg)',
+        'clone([1, 2; 3, 4])',
+        'clone("hello world")'
     ],
     'seealso': []
 };
@@ -6069,7 +6351,7 @@ Scope.prototype.getUndefinedSymbols = function () {
  * Methods:
  *    var result = parser.eval(expr);    // evaluate an expression
  *    var value = parser.get(name);      // retrieve a variable from the parser
- *    parser.put(name, value);           // put a variable in the parser
+ *    parser.set(name, value);           // set a variable in the parser
  *
  *    // it is possible to parse an expression into a node tree:
  *    var node = parser.parse(expr);     // parse an expression into a node tree
@@ -6090,13 +6372,13 @@ Scope.prototype.getUndefinedSymbols = function () {
  *    parser.eval('function f(x, y) = x^y');  // f(x, y)
  *    parser.eval('f(2, 3)');                 // 8
  *
- *    // get and put variables and functions
+ *    // get and set variables and functions
  *    var x = parser.get('x');                // 7
  *    var f = parser.get('f');                // function
  *    var g = f(3, 2);                        // 9
- *    parser.put('h', 500);
+ *    parser.set('h', 500);
  *    var i = parser.eval('h / 2');           // 250
- *    parser.put('hello', function (name) {
+ *    parser.set('hello', function (name) {
  *        return 'hello, ' + name + '!';
  *    });
  *    parser.eval('hello("user")');           // "hello, user!"
@@ -6178,11 +6460,11 @@ Parser.prototype.get = function (name) {
 };
 
 /**
- * Put a symbol (a function or variable) by name from the parsers scope.
+ * Set a symbol (a function or variable) by name from the parsers scope.
  * @param {String} name
  * @param {* | undefined} value
  */
-Parser.prototype.put = function (name, value) {
+Parser.prototype.set = function (name, value) {
     this.scope.createDef(name, value);
 };
 
@@ -6805,19 +7087,29 @@ Parser.prototype.parse_multiplydivide = function (scope) {
 
 /**
  * power
+ * Node: power operator is right associative
  * @param {Scope} scope
  * @return {Node} node
  * @private
  */
 Parser.prototype.parse_pow = function (scope) {
-    var node = this.parse_factorial(scope);
+    var nodes = [
+        this.parse_factorial(scope)
+    ];
 
+    // stack all operands of a chained power operator (like '2^3^3')
     while (this.token == '^') {
-        var name = this.token;
-        var fn = pow;
         this.getToken();
-        var params = [node, this.parse_factorial(scope)];
+        nodes.push(this.parse_factorial(scope));
+    }
 
+    // evaluate the operands from right to left (right associative)
+    var node = nodes.pop();
+    while (nodes.length) {
+        var leftNode = nodes.pop();
+        var name = '^';
+        var fn = pow;
+        var params = [leftNode, node];
         node = new Symbol(name, fn, params);
     }
 
