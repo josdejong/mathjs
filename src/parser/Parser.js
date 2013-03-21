@@ -741,19 +741,29 @@ Parser.prototype.parse_multiplydivide = function (scope) {
 
 /**
  * power
+ * Node: power operator is right associative
  * @param {Scope} scope
  * @return {Node} node
  * @private
  */
 Parser.prototype.parse_pow = function (scope) {
-    var node = this.parse_factorial(scope);
+    var nodes = [
+        this.parse_factorial(scope)
+    ];
 
+    // stack all operands of a chained power operator (like '2^3^3')
     while (this.token == '^') {
-        var name = this.token;
-        var fn = pow;
         this.getToken();
-        var params = [node, this.parse_factorial(scope)];
+        nodes.push(this.parse_factorial(scope));
+    }
 
+    // evaluate the operands from right to left (right associative)
+    var node = nodes.pop();
+    while (nodes.length) {
+        var leftNode = nodes.pop();
+        var name = '^';
+        var fn = pow;
+        var params = [leftNode, node];
         node = new Symbol(name, fn, params);
     }
 
