@@ -542,6 +542,7 @@ Parser.prototype.parse_assignment = function (scope) {
 
     var node = this.parse_range(scope);
 
+    // TODO: support chained assignments like "a = b = 2.3"
     if (this.token == '=') {
         if (!(node instanceof Symbol)) {
             throw this.createSyntaxError('Symbol expected at the left hand side ' +
@@ -719,7 +720,7 @@ Parser.prototype.parse_addsubtract = function (scope)  {
  * @private
  */
 Parser.prototype.parse_multiplydivide = function (scope) {
-    var node = this.parse_pow(scope);
+    var node = this.parse_unaryminus(scope);
 
     var operators = {
         '*': 'multiply',
@@ -732,11 +733,30 @@ Parser.prototype.parse_multiplydivide = function (scope) {
         var fn = math[operators[name]];
 
         this.getToken();
-        var params = [node, this.parse_pow(scope)];
+        var params = [node, this.parse_unaryminus(scope)];
         node = new Symbol(name, fn, params);
     }
 
     return node;
+};
+
+/**
+ * Unary minus
+ * @param {Scope} scope
+ * @return {Node} node
+ * @private
+ */
+Parser.prototype.parse_unaryminus = function (scope) {
+    if (this.token == '-') {
+        var name = this.token;
+        var fn = unaryminus;
+        this.getToken();
+        var params = [this.parse_pow(scope)];
+
+        return new Symbol(name, fn, params);
+    }
+
+    return this.parse_pow(scope);
 };
 
 /**
@@ -777,7 +797,7 @@ Parser.prototype.parse_pow = function (scope) {
  * @private
  */
 Parser.prototype.parse_factorial = function (scope)  {
-    var node = this.parse_unaryminus(scope);
+    var node = this.parse_plot(scope);
 
     while (this.token == '!') {
         var name = this.token;
@@ -789,25 +809,6 @@ Parser.prototype.parse_factorial = function (scope)  {
     }
 
     return node;
-};
-
-/**
- * Unary minus
- * @param {Scope} scope
- * @return {Node} node
- * @private
- */
-Parser.prototype.parse_unaryminus = function (scope) {
-    if (this.token == '-') {
-        var name = this.token;
-        var fn = unaryminus;
-        this.getToken();
-        var params = [this.parse_plot(scope)];
-
-        return new Symbol(name, fn, params);
-    }
-
-    return this.parse_plot(scope);
 };
 
 /**
