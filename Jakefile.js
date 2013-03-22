@@ -2,7 +2,8 @@
  * Jake build script for mathjs
  */
 
-var util = require('./tools/jake-utils.js');
+var jake = require('jake'),
+    util = require('./tools/jake-utils.js');
 
 /**
  * Constants
@@ -90,8 +91,18 @@ task('minify', ['concat'], function () {
  */
 desc('Test the library');
 task('test', ['concat'], function () {
-    require('./test/all.js');
-    console.log('Tests successful');
+    // TODO: use a testing suite for testing: nodeunit, mocha, tap, ...
+    var filelist = new jake.FileList();
+    filelist.include([
+        './test/**/*.js'
+    ]);
+
+    var files = filelist.toArray();
+    files.forEach(function (file) {
+        require('./' + file);
+    });
+
+    console.log('Executed ' + files.length + ' test files successfully');
 });
 
 /**

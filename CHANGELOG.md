@@ -1,12 +1,16 @@
 # math.js changelog
 https://github.com/josdejong/mathjs
 
-## <not yet released>, version 0.4.1
 
-- Implemented method clone
-- Changed: changed behavior of the power operator in the parser from left
-  associative to right associative in order to follow the mathematical
-  conventions.
+## <not yet released>, version 0.5.0
+
+- Implemented data types Vector, Matrix, and Range.
+- Implemented methods clone, range, size, eye.
+- Changed: changed operator precedence of the power operator:
+  - it is now right associative instead of left associative like most scripting
+    languages. So 2^3^4 is now calculated as 2^(3^4).
+  - it has now higher precedence than unary minus most languages, thus -3^2 is
+    now calculated as -(3^2).
 - Changed: renamed the parsers method 'put' into 'set'.
 - Fixed: method 'in' did not check for units to have the same base.
 

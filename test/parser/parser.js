@@ -27,4 +27,8 @@ assert.equal(parser.eval('(-3)^2'), 9);
 assert.equal(parser.eval('2^3!'), 64);
 assert.equal(parser.eval('2^(3!)'), 64);
 
+// test range
+assert.deepEqual(parser.eval('2:5').toArray(), [2,3,4,5]);
+assert.deepEqual(parser.eval('10:-2:2').toArray(), [10,8,6,4,2]);
+
 // TODO: extensively test the Parser
