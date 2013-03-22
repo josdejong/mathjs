@@ -12,3 +12,4 @@ var math = require('../../math.js'),
 
 
 // TODO: test eye
+// TODO: test zeros

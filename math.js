@@ -151,7 +151,7 @@ util.map2 = function map2(array1, array2, fn) {
         if (array2 instanceof Array) {
             // fn(array, array)
             if (array1.length != array2.length) {
-                throw new Error('Dimension mismatch ' +
+                throw new RangeError('Dimension mismatch ' +
                     '(' +  array1.length + ' != ' + array2.length + ')');
             }
 
@@ -262,7 +262,7 @@ util.array.validate = function validate(array, size, dim) {
     if (size.length == 0) {
         // scalar
         if (array instanceof Array) {
-            throw new Error('Dimension mismatch (' + array.length + ' != 0)');
+            throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
         }
         return;
     }
@@ -274,7 +274,7 @@ util.array.validate = function validate(array, size, dim) {
     }
 
     if (len != size[dim]) {
-        throw new Error('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
+        throw new RangeError('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
     }
 
     if (dim < size.length - 1) {
@@ -283,7 +283,7 @@ util.array.validate = function validate(array, size, dim) {
         for (i = 0; i < len; i++) {
             var child = array[i];
             if (!(child instanceof Array)) {
-                throw new Error('Dimension mismatch ' +
+                throw new RangeError('Dimension mismatch ' +
                     '(' + (size.length - 1) + ' < ' + size.length + ')');
             }
             validate(array[i], size, dimNext);
@@ -293,7 +293,7 @@ util.array.validate = function validate(array, size, dim) {
         // last dimension. none of the childs may be an array
         for (i = 0; i < len; i++) {
             if (array[i] instanceof Array) {
-                throw new Error('Dimension mismatch ' +
+                throw new RangeError('Dimension mismatch ' +
                     '(' + (size.length + 1) + ' > ' + size.length + ')');
             }
         }
@@ -910,7 +910,11 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {
-    return clone(this.data);
+    var array = clone(this.data);
+    if (!(array instanceof Array)) {
+        array = [array];
+    }
+    return array;
 };
 
 /**
@@ -921,7 +925,13 @@ Matrix.prototype.valueOf = function () {
     return this.data;
 };
 
-// TODO: implement Matrix.toString()
+/**
+ * Get a string representation of the matrix
+ * @returns {String} str
+ */
+Matrix.prototype.toString = function () {
+    return format(this.data);
+};
 
 /**
  * Utility functions for Numbers
@@ -948,13 +958,22 @@ function isInteger(value) {
 
 /**
  * @constructor Range
- * Create a range. A range contains a start, step and end.
+ * Create a range. A range works similar to an Array, with functions like
+ * forEach and map. However, a Range object is very cheap to create compared to
+ * a large Array with indexes, as it stores only a start, step and end value of
+ * the range.
  *
  * A range can be constructed as:
  *     var a = new Range(start, end);
  *     var b = new Range(start, step, end);
  *
  * To get the result of the range:
+ *     range.forEach(function (x) {
+ *         console.log(x);
+ *     });
+ *     range.map(function (x) {
+ *         return math.sin(x);
+ *     });
  *     range.toVector();
  *     range.toArray();
  *
@@ -964,9 +983,9 @@ function isInteger(value) {
  *     var d = new Range(2, -1, -2);    // 2:-1:-2
  *     d.toArray();                     // [2, 1, 0, -1, -2]
  *
- * @param {Number} start    Default value is 0
+ * @param {Number} start
  * @param {Number} [step]   Default value is 1
- * @param {Number} end      Default value is 0
+ * @param {Number} end
  */
 function Range(start, step, end) {
     if (this.constructor != Range) {
@@ -984,10 +1003,10 @@ function Range(start, step, end) {
             '(2 or 3 expected, ' + arguments.length + ' provided)');
     }
     if (start != null && !isNumber(start)) {
-        throw new TypeError('parameter start must be a number');
+        throw new TypeError('Parameter start must be a number');
     }
     if (end != null && !isNumber(end)) {
-        throw new TypeError('parameter end must be a number');
+        throw new TypeError('Parameter end must be a number');
     }
     if (step != null && !isNumber(step)) {
         throw new TypeError('Parameter step must be a number');
@@ -1013,8 +1032,63 @@ Range.prototype.clone = function () {
  * @returns {Number[]} size
  */
 Range.prototype.size = function () {
-    // TODO: more efficient size calculation: calculate without writing down
-    return [this.toArray().length];
+    var len = 0,
+        start = Number(this.start),
+        step = Number(this.step),
+        end = Number(this.end),
+        diff = end - start;
+
+    if (sign(step) == sign(diff)) {
+        len = Math.floor((diff) / step) + 1;
+    }
+    else if (diff == 0) {
+        len = 1;
+    }
+
+    if (isNaN(len)) {
+        len = 0;
+    }
+    return [len];
+};
+
+/**
+ * Execute a callback function for each value in the range.
+ * @param {function} callback   Called as fn(value, index) for each value in the
+ *                              range.
+ */
+Range.prototype.forEach = function (callback) {
+    var x = Number(this.start);
+    var step = Number(this.step);
+    var end = Number(this.end);
+    var i = 0;
+
+    if (step > 0) {
+        while (x <= end) {
+            callback(x, i);
+            x += step;
+            i++;
+        }
+    }
+    else if (step < 0) {
+        while (x >= end) {
+            callback(x, i);
+            x += step;
+            i++;
+        }
+    }
+};
+
+/**
+ * Execute a callback function for each value in the Range, and return the
+ * results as an array
+ * @returns {Array} array
+ */
+Range.prototype.map = function (callback) {
+    var array = [];
+    this.forEach(function (value, index) {
+        array[index] = callback(value);
+    });
+    return array;
 };
 
 /**
@@ -1030,25 +1104,11 @@ Range.prototype.toVector = function () {
  * @returns {Array} array
  */
 Range.prototype.toArray = function () {
-    var range = [];
-    var x = Number(this.start);
-    var step = Number(this.step);
-    var end = Number(this.end);
-
-    if (step > 0) {
-        while (x <= end) {
-            range.push(x);
-            x += step;
-        }
-    }
-    else if (step < 0) {
-        while (x >= end) {
-            range.push(x);
-            x += step;
-        }
-    }
-
-    return range;
+    var array = [];
+    this.forEach(function (value, index) {
+        array[index] = value;
+    });
+    return array;
 };
 
 /**
@@ -1763,8 +1823,29 @@ Unit.UNITS = [
 
 /**
  * @constructor Vector
+ * A Vector is a wrapper around an Array. A vector can hold a one dimensional
+ * array. A vector can be constructed as:
+ *     var vector = new Vector(data)
  *
- * TODO: document Vector
+ * Vector contains the following functions:
+ *     resize(size, defaultValue)
+ *     get(index)
+ *     get(indexes)
+ *     set(index, value)
+ *     set(indexes, values)
+ *     clone()
+ *     isScalar()
+ *     toScalar()
+ *     isArray()
+ *     toArray()            // create an Array with the vector data cloned
+ *     valueOf()            // get the internal data Array of the vector
+ *
+ * Example usage:
+ *     var vector = new Vector([4, 5, 6, 7])
+ *     vector.resize(6, -1);
+ *     vector.set(2, 9);
+ *     vector.valueOf();          // [4, 5, 9, 7, -1, -1]
+ *     vector.get([3,4 ])         // [7, -1]
  *
  * @param {Array | Matrix | Vector | Range} [data]    A one dimensional array
  */
@@ -1797,18 +1878,60 @@ function Vector(data) {
 
 math.Vector = Vector;
 
-// TODO: implement method resize
+/**
+ * Resize the vector
+ * @param {Number | Number[]} size  A positive integer value, or an array
+ *                                  containing one integer value.
+ * @param {*} [defaultValue]        Default value, filled in on new entries.
+ *                                  If not provided, the vector will be filled
+ *                                  with zeros.
+ */
+Vector.prototype.resize = function (size, defaultValue) {
+    size = size.valueOf();
+    if (size instanceof Array) {
+        if (size.length > 1) {
+            throw new RangeError('Cannot resize a vector to multiple dimensions ' +
+                '(size: ' + format(size) + ')');
+        }
+        this.resize(size[0], defaultValue);
+    }
+    else {
+        if (!isNumber(size) || !isInteger(size) || size < 0) {
+            throw new TypeError('Positive integer expected as size in method resize');
+        }
+
+        if (!(this.data instanceof Array) && size > 1) {
+            // vector currently contains a scalar. change that to an array
+            this.data = [this.data];
+            this.resize(size, defaultValue);
+        }
+        else {
+            if(size > this.data.length) {
+                // enlarge
+                for (var i = this.data.length; i < size; i++) {
+                    this.data[i] = defaultValue ? clone(defaultValue) : 0;
+                }
+            }
+            else {
+                // shrink
+                this.data.length = size;
+            }
+        }
+    }
+};
 
 /**
- * get a value or a subset of the vector. Returns undefined when out of range
- * @param {Number | Number[]} index
+ * get a value or a subset of the vector. Throws an RangeError when index is
+ * out of range.
+ * Indexes are zero-based.
+ * @param {Number | Number[] | Range} index
  * @return {* | *[]} value
  */
 Vector.prototype.get = function (index) {
     var me = this;
     index = index.valueOf();
 
-    if (index instanceof Array) {
+    if (index instanceof Range || index instanceof Array) {
         return index.map(function (i) {
             return me.get(i);
         });
@@ -1824,13 +1947,14 @@ Vector.prototype.get = function (index) {
             return this.data;
         }
         else {
-            return undefined;
+            throw new RangeError('Index out of range (' + index + ')');
         }
     }
 };
 
 /**
  * Set a value or a set of value in the vector.
+ * Indexes are zero-based.
  * @param {Number | Number[]} index
  * @param {* | *[]} value
  */
@@ -1838,15 +1962,25 @@ Vector.prototype.set = function (index, value) {
     var me = this;
     index = index.valueOf();
 
-    if (index instanceof Array) {
+    if (index instanceof Range) {
+        if (index.size() != value.length) {
+            throw new RangeError('Dimension mismatch (' + index.size() + ' != ' +
+                value.length + ')');
+        }
+
+        index.forEach(function (v, i) {
+             me._set(v, value[i]);
+        });
+    }
+    else if (index instanceof Array) {
         if (value instanceof Array) {
             if (index.length != value.length) {
-                throw new Error('Dimension mismatch (' + index.length+ ' != ' +
+                throw new RangeError('Dimension mismatch (' + index.length+ ' != ' +
                     value.length + ')');
             }
 
-            util.map2(index, value, function (i, v) {
-                me.set(i, v);
+            index.forEach(function (v, i) {
+                me._set(v, value[i]);
             });
         }
         else {
@@ -1858,12 +1992,25 @@ Vector.prototype.set = function (index, value) {
             this.set([index], value);
         }
         else {
-            if (!(this.data instanceof Array)) {
-                this.data = [this.data];
-            }
-            this.data[index] = value;
+            this._set(index, value);
         }
     }
+};
+
+/**
+ * Set a single value
+ * @param {Number} index
+ * @param {*} value
+ * @private
+ */
+Vector.prototype._set = function (index, value) {
+    if (!(this.data instanceof Array)) {
+        this.data = [this.data];
+    }
+    if (index > this.data.length) {
+        this.resize(index);
+    }
+    this.data[index] = value;
 };
 
 /**
@@ -1922,7 +2069,11 @@ Vector.prototype.isScalar = function () {
  * @returns {Array} array
  */
 Vector.prototype.toArray = function () {
-    return clone(this.data);
+    var array = clone(this.data);
+    if (!(array instanceof Array)) {
+        array = [array];
+    }
+    return array;
 };
 
 /**
@@ -1933,7 +2084,13 @@ Vector.prototype.valueOf = function () {
     return this.data;
 };
 
-// TODO: implement Vector.toString()
+/**
+ * Get a string representation of the vector
+ * @returns {String} str
+ */
+Vector.prototype.toString = function () {
+    return format(this.data);
+};
 
 /**
  * mathjs constants
@@ -3053,7 +3210,7 @@ function multiply(x, y) {
                         '(B has ' + sizeY.length + ' dimensions)');
             }
             if (sizeX[1] != sizeY[0]) {
-                throw new Error('Dimensions mismatch in multiplication. ' +
+                throw new RangeError('Dimensions mismatch in multiplication. ' +
                         'Columns of A must match rows of B ' +
                         '(A is ' + sizeX[0] + 'x' + sizeX[1] +
                         ', B is ' + sizeY[0] + 'x' + sizeY[1] + ', ' +

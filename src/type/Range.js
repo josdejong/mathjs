@@ -1,12 +1,21 @@
 /**
  * @constructor Range
- * Create a range. A range contains a start, step and end.
+ * Create a range. A range works similar to an Array, with functions like
+ * forEach and map. However, a Range object is very cheap to create compared to
+ * a large Array with indexes, as it stores only a start, step and end value of
+ * the range.
  *
  * A range can be constructed as:
  *     var a = new Range(start, end);
  *     var b = new Range(start, step, end);
  *
  * To get the result of the range:
+ *     range.forEach(function (x) {
+ *         console.log(x);
+ *     });
+ *     range.map(function (x) {
+ *         return math.sin(x);
+ *     });
  *     range.toVector();
  *     range.toArray();
  *
@@ -16,9 +25,9 @@
  *     var d = new Range(2, -1, -2);    // 2:-1:-2
  *     d.toArray();                     // [2, 1, 0, -1, -2]
  *
- * @param {Number} start    Default value is 0
+ * @param {Number} start
  * @param {Number} [step]   Default value is 1
- * @param {Number} end      Default value is 0
+ * @param {Number} end
  */
 function Range(start, step, end) {
     if (this.constructor != Range) {
@@ -36,10 +45,10 @@ function Range(start, step, end) {
             '(2 or 3 expected, ' + arguments.length + ' provided)');
     }
     if (start != null && !isNumber(start)) {
-        throw new TypeError('parameter start must be a number');
+        throw new TypeError('Parameter start must be a number');
     }
     if (end != null && !isNumber(end)) {
-        throw new TypeError('parameter end must be a number');
+        throw new TypeError('Parameter end must be a number');
     }
     if (step != null && !isNumber(step)) {
         throw new TypeError('Parameter step must be a number');
@@ -65,8 +74,63 @@ Range.prototype.clone = function () {
  * @returns {Number[]} size
  */
 Range.prototype.size = function () {
-    // TODO: more efficient size calculation: calculate without writing down
-    return [this.toArray().length];
+    var len = 0,
+        start = Number(this.start),
+        step = Number(this.step),
+        end = Number(this.end),
+        diff = end - start;
+
+    if (sign(step) == sign(diff)) {
+        len = Math.floor((diff) / step) + 1;
+    }
+    else if (diff == 0) {
+        len = 1;
+    }
+
+    if (isNaN(len)) {
+        len = 0;
+    }
+    return [len];
+};
+
+/**
+ * Execute a callback function for each value in the range.
+ * @param {function} callback   Called as fn(value, index) for each value in the
+ *                              range.
+ */
+Range.prototype.forEach = function (callback) {
+    var x = Number(this.start);
+    var step = Number(this.step);
+    var end = Number(this.end);
+    var i = 0;
+
+    if (step > 0) {
+        while (x <= end) {
+            callback(x, i);
+            x += step;
+            i++;
+        }
+    }
+    else if (step < 0) {
+        while (x >= end) {
+            callback(x, i);
+            x += step;
+            i++;
+        }
+    }
+};
+
+/**
+ * Execute a callback function for each value in the Range, and return the
+ * results as an array
+ * @returns {Array} array
+ */
+Range.prototype.map = function (callback) {
+    var array = [];
+    this.forEach(function (value, index) {
+        array[index] = callback(value);
+    });
+    return array;
 };
 
 /**
@@ -82,25 +146,11 @@ Range.prototype.toVector = function () {
  * @returns {Array} array
  */
 Range.prototype.toArray = function () {
-    var range = [];
-    var x = Number(this.start);
-    var step = Number(this.step);
-    var end = Number(this.end);
-
-    if (step > 0) {
-        while (x <= end) {
-            range.push(x);
-            x += step;
-        }
-    }
-    else if (step < 0) {
-        while (x >= end) {
-            range.push(x);
-            x += step;
-        }
-    }
-
-    return range;
+    var array = [];
+    this.forEach(function (value, index) {
+        array[index] = value;
+    });
+    return array;
 };
 
 /**

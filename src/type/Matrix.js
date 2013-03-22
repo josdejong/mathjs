@@ -131,7 +131,11 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {
-    return clone(this.data);
+    var array = clone(this.data);
+    if (!(array instanceof Array)) {
+        array = [array];
+    }
+    return array;
 };
 
 /**
@@ -142,4 +146,10 @@ Matrix.prototype.valueOf = function () {
     return this.data;
 };
 
-// TODO: implement Matrix.toString()
+/**
+ * Get a string representation of the matrix
+ * @returns {String} str
+ */
+Matrix.prototype.toString = function () {
+    return format(this.data);
+};

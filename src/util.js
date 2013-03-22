@@ -84,7 +84,7 @@ util.map2 = function map2(array1, array2, fn) {
         if (array2 instanceof Array) {
             // fn(array, array)
             if (array1.length != array2.length) {
-                throw new Error('Dimension mismatch ' +
+                throw new RangeError('Dimension mismatch ' +
                     '(' +  array1.length + ' != ' + array2.length + ')');
             }
 
@@ -195,7 +195,7 @@ util.array.validate = function validate(array, size, dim) {
     if (size.length == 0) {
         // scalar
         if (array instanceof Array) {
-            throw new Error('Dimension mismatch (' + array.length + ' != 0)');
+            throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
         }
         return;
     }
@@ -207,7 +207,7 @@ util.array.validate = function validate(array, size, dim) {
     }
 
     if (len != size[dim]) {
-        throw new Error('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
+        throw new RangeError('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
     }
 
     if (dim < size.length - 1) {
@@ -216,7 +216,7 @@ util.array.validate = function validate(array, size, dim) {
         for (i = 0; i < len; i++) {
             var child = array[i];
             if (!(child instanceof Array)) {
-                throw new Error('Dimension mismatch ' +
+                throw new RangeError('Dimension mismatch ' +
                     '(' + (size.length - 1) + ' < ' + size.length + ')');
             }
             validate(array[i], size, dimNext);
@@ -226,7 +226,7 @@ util.array.validate = function validate(array, size, dim) {
         // last dimension. none of the childs may be an array
         for (i = 0; i < len; i++) {
             if (array[i] instanceof Array) {
-                throw new Error('Dimension mismatch ' +
+                throw new RangeError('Dimension mismatch ' +
                     '(' + (size.length + 1) + ' > ' + size.length + ')');
             }
         }

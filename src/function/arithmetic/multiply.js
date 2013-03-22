@@ -56,7 +56,7 @@ function multiply(x, y) {
                         '(B has ' + sizeY.length + ' dimensions)');
             }
             if (sizeX[1] != sizeY[0]) {
-                throw new Error('Dimensions mismatch in multiplication. ' +
+                throw new RangeError('Dimensions mismatch in multiplication. ' +
                         'Columns of A must match rows of B ' +
                         '(A is ' + sizeX[0] + 'x' + sizeX[1] +
                         ', B is ' + sizeY[0] + 'x' + sizeY[1] + ', ' +
