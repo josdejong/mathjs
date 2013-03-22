@@ -577,7 +577,6 @@ Parser.prototype.parse_assignment = function (scope) {
 Parser.prototype.parse_range = function (scope) {
     var node = this.parse_conditions(scope);
 
-    /* TODO: implement range
     if (this.token == ':') {
         var params = [node];
 
@@ -586,11 +585,16 @@ Parser.prototype.parse_range = function (scope) {
             params.push(this.parse_conditions(scope));
         }
 
-        var fn = range;
-        var name = ':';
+        if (params.length > 3) {
+            throw new TypeError('Invalid range');
+        }
+
+        var name = 'range';
+        var fn = function(start, step, end) {
+            return new Range(start, step, end);
+        };
         node = new Symbol(name, fn, params);
     }
-    */
 
     return node;
 };
@@ -1091,7 +1095,7 @@ Parser.prototype.parse_number = function (scope) {
         }
 
         // just a regular number
-        var res = new Constant(number);
+        var node = new Constant(number);
 
         /* TODO: implement number with arguments
         // parse arguments
@@ -1100,7 +1104,7 @@ Parser.prototype.parse_number = function (scope) {
         }
         */
 
-        return res;
+        return node;
     }
 
     return this.parse_parentheses(scope);

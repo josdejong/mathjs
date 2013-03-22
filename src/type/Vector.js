@@ -3,7 +3,7 @@
  *
  * TODO: document Vector
  *
- * @param {Array} [data]    A one dimensional array
+ * @param {Array | Matrix | Vector | Range} [data]    A one dimensional array
  */
 function Vector(data) {
     if (this.constructor != Vector) {
@@ -11,9 +11,20 @@ function Vector(data) {
             'Vector constructor must be called with the new operator');
     }
 
-    this.data = data ? data.valueOf() : null;
+    if (data instanceof Matrix) {
+        // clone data from Matrix
+        this.data = data.toVector();
+    }
+    else if (data instanceof Vector || data instanceof Range) {
+        // clone data from Vector or Range
+        this.data = data.toArray();
+    }
+    else {
+        // use data as is
+        this.data = data || null;
+    }
 
-    // verify the size of the array
+    // verify whether the data is a one dimensional array
     var s = util.array.size(this.data);
     util.array.validate(this.data, s);
     if (s.length > 1) {
@@ -23,7 +34,6 @@ function Vector(data) {
 
 math.Vector = Vector;
 
-// TODO: implement method parse
 // TODO: implement method resize
 
 /**
@@ -153,7 +163,7 @@ Vector.prototype.toArray = function () {
 };
 
 /**
- * Get the primitive value of the Value: a one dimensional array
+ * Get the primitive value of the Vector: a one dimensional array
  * @returns {Array} array
  */
 Vector.prototype.valueOf = function () {

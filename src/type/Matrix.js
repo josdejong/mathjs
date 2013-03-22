@@ -3,7 +3,7 @@
  *
  * TODO: document Matrix
  *
- * @param {Array} [data]    A multi dimensional array
+ * @param {Array | Matrix | Vector | Range} [data]    A multi dimensional array
  */
 function Matrix(data) {
     if (this.constructor != Matrix) {
@@ -11,7 +11,14 @@ function Matrix(data) {
             'Matrix constructor must be called with the new operator');
     }
 
-    this.data = data ? data.valueOf() : null;
+    if (data instanceof Matrix || data instanceof Vector || data instanceof Range) {
+        // clone data from Vector, Matrix, or Range
+        this.data = data.toArray();
+    }
+    else {
+        // use data as is
+        this.data = data || null;
+    }
 
     // verify the size of the array
     util.array.validatedSize(this.data);
@@ -19,7 +26,6 @@ function Matrix(data) {
 
 math.Matrix = Matrix;
 
-// TODO: implement method parse
 // TODO: implement method get
 // TODO: implement method set
 // TODO: implement method resize

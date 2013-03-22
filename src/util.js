@@ -243,7 +243,7 @@ util.array.validate = function validate(array, size, dim) {
  */
 util.array.validatedSize = function validatedSize(x) {
     var s = util.array.size(x);
-    util.array.validate(x, s);
+    util.array.validate(x, s); // TODO: make validation optional via math.options?
     return s;
 };
 
