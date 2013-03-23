@@ -107,4 +107,10 @@ m.resize([0]);
 assert.deepEqual(m.size(), [0]);
 assert.deepEqual(m.valueOf(), []);
 
+m = new Matrix();
+m.set([1,2], 5);
+assert.deepEqual(m.size(), [2,3]);
+assert.deepEqual(m.valueOf(), [[0,0,0],[0,0,5]]);
+
+
 // TODO: extensively test Matrix

@@ -1123,8 +1123,6 @@ Matrix.prototype.get = function (index) {
     }
 };
 
-// TODO: implement method set
-
 /**
  * Get a value or a set of values from the matrix.
  * Indexes are zero-based.
@@ -1153,20 +1151,18 @@ Matrix.prototype.set = function (index, value) {
             throw new Error('Setting a range of values is not yet implemented...');
         }
         else {
-            if (index.length != this._size.length) {
-                throw new RangeError('Number of dimensions do not match ' +
-                    '(' + index.length + ' != ' + this._size.length + ')');
-            }
-
             var size = this._size.concat([]);
             var needResize = false;
-            for (var i = 0; i < size.length; i++) {
+            if (index.length != this._size.length) {
+                needResize = true;
+            }
+            for (var i = 0; i < index.length; i++) {
                 var index_i = index[i];
                 if (!isNumber(index_i) || !isInteger(index_i) || index_i < 0) {
                     throw new TypeError('Positive integer expected as index in method get');
                 }
-                if (index[i] > size[i]) {
-                    size[i] = index_i;
+                if ((size[i] == undefined) || (index_i + 1 > size[i])) {
+                    size[i] = index_i + 1;
                     needResize = true;
                 }
             }
@@ -1185,25 +1181,6 @@ Matrix.prototype.set = function (index, value) {
                 }
             });
         }
-
-        /* TODO: cleanup
-        if (index.length != this._size.length) {
-            throw new RangeError('Number of dimensions do not match ' +
-                '(' + index.length + ' != ' + this._size.length + ')');
-        }
-
-        var value = this._data;
-        index.forEach(function (i) {
-            if (!isNumber(i) || !isInteger(i) || i < 0) {
-                throw new TypeError('Positive integer expected as index in method get');
-            }
-            if (i > value.length - 1) {
-                throw new RangeError('Index out of range (' + i + ')');
-            }
-            value = value[i];
-        });
-        return value;
-        */
     }
     else {
         // TODO: support a single number as index in case the matrix is a vector
