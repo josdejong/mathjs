@@ -5,7 +5,7 @@ https://github.com/josdejong/mathjs
 ## <not yet released>, version 0.5.0
 
 - Implemented data types Vector, Matrix, and Range.
-- Implemented methods clone, range, size, eye.
+- Implemented methods clone, size, eye.
 - Changed: changed operator precedence of the power operator:
   - it is now right associative instead of left associative like most scripting
     languages. So 2^3^4 is now calculated as 2^(3^4).
