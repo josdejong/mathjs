@@ -18,11 +18,11 @@ function format(template, values) {
         // just format a value as string
         var value = arguments[0];
         if (isNumber(value)) {
-            return util.format(value);
+            return util.formatNumber(value);
         }
 
         if (value instanceof Array) {
-            return formatArray(value);
+            return util.formatArray(value);
         }
 
         if (isString(value)) {
@@ -58,65 +58,6 @@ function format(template, values) {
 }
 
 math.format = format;
-
-/**
- * Format a n-dimensional array
- * @param {Array} array
- * @returns {string} str
- */
-function formatArray (array) {
-    var str = '[';
-    var s = util.array.validatedSize(array);
-
-    if (s.length != 2) {
-        return formatArrayN(array);
-    }
-
-    var rows = s[0];
-    var cols = s[1];
-    for (var r = 0; r < rows; r++) {
-        if (r != 0) {
-            str += '; ';
-        }
-
-        var row = array[r];
-        for (var c = 0; c < cols; c++) {
-            if (c != 0) {
-                str += ', ';
-            }
-            var cell = row[c];
-            if (cell != undefined) {
-                str += format(cell);
-            }
-        }
-    }
-    str += ']';
-
-    return str;
-}
-
-/**
- * Recursively format an n-dimensional matrix
- * @param {Array} array
- * @returns {String} str
- */
-function formatArrayN (array) {
-    if (array instanceof Array) {
-        var str = '[';
-        var len = array.length;
-        for (var i = 0; i < len; i++) {
-            if (i != 0) {
-                str += ', ';
-            }
-            str += formatArrayN(array[i]);
-        }
-        str += ']';
-        return str;
-    }
-    else {
-        return format(array);
-    }
-}
 
 /**
  * Function documentation

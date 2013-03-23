@@ -10,6 +10,7 @@
  *     get(indexes)
  *     set(index, value)
  *     set(indexes, values)
+ *     size()
  *     clone()
  *     isScalar()
  *     toScalar()
@@ -34,22 +35,22 @@ function Vector(data) {
 
     if (data instanceof Matrix) {
         // clone data from Matrix
-        this.data = data.toVector();
+        this._data = data.toVector();
     }
     else if (data instanceof Vector || data instanceof Range) {
         // clone data from Vector or Range
-        this.data = data.toArray();
+        this._data = data.toArray();
     }
     else {
         // use data as is
-        this.data = data || null;
+        this._data = data || null;
     }
 
     // verify whether the data is a one dimensional array
-    var s = util.array.size(this.data);
-    util.array.validate(this.data, s);
-    if (s.length > 1) {
-        throw new Error('Vector can only contain one dimension (size: ' + format(s) + ')');
+    this._size = util.size(this._data);
+    if (this._size.length > 1) {
+        throw new Error('Vector can only contain one dimension ' +
+            '(size: ' + format(this._size) + ')');
     }
 }
 
@@ -77,22 +78,24 @@ Vector.prototype.resize = function (size, defaultValue) {
             throw new TypeError('Positive integer expected as size in method resize');
         }
 
-        if (!(this.data instanceof Array) && size > 1) {
+        if (!(this._data instanceof Array) && size > 1) {
             // vector currently contains a scalar. change that to an array
-            this.data = [this.data];
+            this._data = [this._data];
             this.resize(size, defaultValue);
         }
         else {
-            if(size > this.data.length) {
+            if(size > this._data.length) {
                 // enlarge
-                for (var i = this.data.length; i < size; i++) {
-                    this.data[i] = defaultValue ? clone(defaultValue) : 0;
+                for (var i = this._data.length; i < size; i++) {
+                    this._data[i] = defaultValue ? clone(defaultValue) : 0;
                 }
             }
             else {
                 // shrink
-                this.data.length = size;
+                this._data.length = size;
             }
+
+            this._size = [this._data.length];
         }
     }
 };
@@ -117,11 +120,11 @@ Vector.prototype.get = function (index) {
         if (!isNumber(index) || !isInteger(index) || index < 0) {
             throw new TypeError('Positive integer expected as index in method get');
         }
-        if (this.data instanceof Array) {
-            return this.data[index];
+        if (this._data instanceof Array) {
+            return this._data[index];
         }
         else if (index == 0) {
-            return this.data;
+            return this._data;
         }
         else {
             throw new RangeError('Index out of range (' + index + ')');
@@ -181,13 +184,13 @@ Vector.prototype.set = function (index, value) {
  * @private
  */
 Vector.prototype._set = function (index, value) {
-    if (!(this.data instanceof Array)) {
-        this.data = [this.data];
+    if (!(this._data instanceof Array)) {
+        this._data = [this._data];
     }
-    if (index > this.data.length) {
+    if (index > this._data.length) {
         this.resize(index);
     }
-    this.data[index] = value;
+    this._data[index] = value;
 };
 
 /**
@@ -196,7 +199,7 @@ Vector.prototype._set = function (index, value) {
  */
 Vector.prototype.clone = function () {
     var vector = new Vector();
-    vector.data = clone(this.data);
+    vector._data = clone(this._data);
     return vector;
 };
 
@@ -206,7 +209,7 @@ Vector.prototype.clone = function () {
  * @returns {Number[]} size
  */
 Vector.prototype.size = function () {
-    return util.array.validatedSize(this.data);
+    return this._size;
 };
 
 /**
@@ -215,7 +218,7 @@ Vector.prototype.size = function () {
  * @return {* | null} scalar
  */
 Vector.prototype.toScalar = function () {
-    var value = this.data;
+    var value = this._data;
     while (value instanceof Array && value.length == 1) {
         value = value[0];
     }
@@ -233,7 +236,7 @@ Vector.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Vector.prototype.isScalar = function () {
-    var value = this.data;
+    var value = this._data;
     while (value instanceof Array && value.length == 1) {
         value = value[0];
     }
@@ -246,7 +249,7 @@ Vector.prototype.isScalar = function () {
  * @returns {Array} array
  */
 Vector.prototype.toArray = function () {
-    var array = clone(this.data);
+    var array = clone(this._data);
     if (!(array instanceof Array)) {
         array = [array];
     }
@@ -258,7 +261,7 @@ Vector.prototype.toArray = function () {
  * @returns {Array} array
  */
 Vector.prototype.valueOf = function () {
-    return this.data;
+    return this._data;
 };
 
 /**
@@ -266,5 +269,5 @@ Vector.prototype.valueOf = function () {
  * @returns {String} str
  */
 Vector.prototype.toString = function () {
-    return format(this.data);
+    return util.formatArray(this._data);
 };

@@ -13,15 +13,15 @@ function Matrix(data) {
 
     if (data instanceof Matrix || data instanceof Vector || data instanceof Range) {
         // clone data from Vector, Matrix, or Range
-        this.data = data.toArray();
+        this._data = data.toArray();
     }
     else {
         // use data as is
-        this.data = data || null;
+        this._data = data || null;
     }
 
     // verify the size of the array
-    util.array.validatedSize(this.data);
+    this._size = util.size(this._data);
 }
 
 math.Matrix = Matrix;
@@ -36,7 +36,7 @@ math.Matrix = Matrix;
  */
 Matrix.prototype.clone = function () {
     var matrix = new Matrix();
-    matrix.data = clone(this.data);
+    matrix._data = clone(this._data);
     return matrix;
 };
 
@@ -47,7 +47,7 @@ Matrix.prototype.clone = function () {
  * @returns {Number[]} size
  */
 Matrix.prototype.size = function () {
-    return util.array.validatedSize(this.data);
+    return this._size;
 };
 
 /**
@@ -56,7 +56,7 @@ Matrix.prototype.size = function () {
  * @return {* | null} scalar
  */
 Matrix.prototype.toScalar = function () {
-    var scalar = this.data;
+    var scalar = this._data;
     while (scalar instanceof Array && scalar.length == 1) {
         scalar = value[0];
     }
@@ -74,7 +74,7 @@ Matrix.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Matrix.prototype.isScalar = function () {
-    var scalar = this.data;
+    var scalar = this._data;
     while (scalar instanceof Array && scalar.length == 1) {
         scalar = scalar[0];
     }
@@ -92,7 +92,7 @@ Matrix.prototype.toVector = function () {
     /* TODO: implement toVector
     var count = 0;
     var dim = undefined;
-    var s = util.array.validatedSize(this.data);
+    var s = util.size(this._data);
     s.forEach(function (length, index) {
         if (length > 1) {
             count++;
@@ -116,7 +116,7 @@ Matrix.prototype.toVector = function () {
  */
 Matrix.prototype.isVector = function () {
     var count = 0;
-    var s = util.array.validatedSize(this.data);
+    var s = util.size(this._data);
     s.forEach(function (length) {
         if (length > 1) {
             count++;
@@ -131,7 +131,7 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {
-    var array = clone(this.data);
+    var array = clone(this._data);
     if (!(array instanceof Array)) {
         array = [array];
     }
@@ -143,7 +143,7 @@ Matrix.prototype.toArray = function () {
  * @returns {Array} array
  */
 Matrix.prototype.valueOf = function () {
-    return this.data;
+    return this._data;
 };
 
 /**
@@ -151,5 +151,5 @@ Matrix.prototype.valueOf = function () {
  * @returns {String} str
  */
 Matrix.prototype.toString = function () {
-    return format(this.data);
+    return util.formatArray(this._data);
 };

@@ -1,8 +1,8 @@
 /**
  * Calculates the power of x to y, x^y
- * @param  {Number | Complex} x
+ * @param  {Number | Complex | Array} x
  * @param  {Number | Complex} y
- * @return {Number | Complex} res
+ * @return {Number | Complex | Array} res
  */
 function pow(x, y) {
     if (arguments.length != 2) {
@@ -38,7 +38,7 @@ function pow(x, y) {
         }
 
         // verify that A is a 2 dimensional square matrix
-        var s = util.array.validatedSize(x);
+        var s = util.size(x);
         if (s.length != 2) {
             throw new Error('For A^b, A must be 2 dimensional ' +
                     '(A has ' + s.length + ' dimensions)');

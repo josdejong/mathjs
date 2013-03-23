@@ -394,11 +394,11 @@ Unit.prototype.toString = function() {
         }
 
         value = this._unnormalize(this.value, bestPrefix.value);
-        return util.format(value) + ' ' + bestPrefix.name + this.unit.name;
+        return util.formatNumber(value) + ' ' + bestPrefix.name + this.unit.name;
     }
     else {
         value = this._unnormalize(this.value);
-        return util.format(value) + ' ' + this.prefix.name + this.unit.name;
+        return util.formatNumber(value) + ' ' + this.prefix.name + this.unit.name;
     }
 };
 

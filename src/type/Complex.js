@@ -13,6 +13,8 @@
  *
  * Example usage:
  *     var a = new Complex(3, -4);    // 3 - 4i
+ *     a.re = 5;                      // a = 5 - 4i
+ *     var i = a.im;                  // -4;
  *     var b = new Complex('2 + 6i'); // 2 + 6i
  *     var c = new Complex();         // 0 + 0i
  *     var d = math.add(a, b);        // 5 + 2i
@@ -290,10 +292,12 @@ Complex.prototype.clone = function () {
  */
 Complex.prototype.toString = function () {
     var str = '';
+    var strRe = util.formatNumber(this.re);
+    var strIm = util.formatNumber(this.im);
 
     if (this.im == 0) {
         // real value
-        str = util.format(this.re);
+        str = strRe;
     }
     else if (this.re == 0) {
         // purely complex value
@@ -304,25 +308,25 @@ Complex.prototype.toString = function () {
             str = '-i';
         }
         else {
-            str = util.format(this.im) + 'i';
+            str = strIm + 'i';
         }
     }
     else {
         // complex value
         if (this.im > 0) {
             if (this.im == 1) {
-                str = util.format(this.re) + ' + i';
+                str = strRe + ' + i';
             }
             else {
-                str = util.format(this.re) + ' + ' + util.format(this.im) + 'i';
+                str = strRe + ' + ' + strIm + 'i';
             }
         }
         else {
             if (this.im == -1) {
-                str = util.format(this.re) + ' - i';
+                str = strRe + ' - i';
             }
             else {
-                str = util.format(this.re) + ' - ' + util.format(Math.abs(this.im)) + 'i';
+                str = strRe + ' - ' + util.formatNumber(Math.abs(this.im)) + 'i';
             }
         }
     }

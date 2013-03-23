@@ -43,7 +43,12 @@ a.valueOf()[2].re = 5;
 assert.equal(b.valueOf()[2].re, 2);
 
 
+// test format
+assert.equal(math.format(2/7), '0.2857142857');
+assert.equal(math.format([[1,2],[3,4]]), '[[1, 2], [3, 4]]');
+assert.equal(math.format([[1,2],['hi',new math.Complex(2,3)]]), '[[1, 2], ["hi", 2 + 3i]]');
 // TODO: test format
+
 // TODO: test help
 // TODO: test import
 // TODO: test typeof

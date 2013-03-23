@@ -23,7 +23,7 @@ function clone(x) {
     }
 
     if (x instanceof Object) {
-        return util.object.map(x, clone);
+        return util.map(x, clone);
     }
 
     throw newUnsupportedTypeError('clone', x);

@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.5.0-SNAPSHOT
- * @date    2013-03-22
+ * @date    2013-03-23
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -65,356 +65,433 @@ if (typeof(window) != 'undefined') {
     window['math'] = math;
 }
 
+// utility methods for strings, objects, and arrays
+var util = (function () {
+    var util = {};
 
-var util = {};
+    /**
+     * Convert a number to a formatted string representation
+     * @param {Number} value            The value to be formatted
+     * @param {Number} [digits]         number of digits
+     * @return {String} formattedValue  The formatted value
+     */
+    util.formatNumber = function formatNumber(value, digits) {
+        if (value === Infinity) {
+            return 'Infinity';
+        }
+        else if (value === -Infinity) {
+            return '-Infinity';
+        }
+        else if (value === NaN) {
+            return 'NaN';
+        }
 
-/**
- * Convert a number to a formatted string representation
- * @param {Number} value            The value to be formatted
- * @param {Number} [digits]         number of digits
- * @return {String} formattedValue  The formatted value
- */
-util.format = function format(value, digits) {
-    if (value === Infinity) {
-        return 'Infinity';
-    }
-    else if (value === -Infinity) {
-        return '-Infinity';
-    }
-    else if (value === NaN) {
-        return 'NaN';
-    }
-
-    // TODO: what is a nice limit for non-scientific values?
-    var abs = Math.abs(value);
-    if ( (abs > 0.0001 && abs < 1000000) || abs == 0.0 ) {
-        // round the func to a limited number of digits
-        return String(roundNumber(value, digits));
-    }
-    else {
-        // scientific notation
-        var exp = Math.round(Math.log(abs) / Math.LN10);
-        var v = value / (Math.pow(10.0, exp));
-        return roundNumber(v, digits) + 'E' + exp;
-    }
-};
-
-/**
- * Create a semi UUID
- * source: http://stackoverflow.com/a/105074/1262753
- * @return {String} uuid
- */
-util.randomUUID = function randomUUID() {
-    var S4 = function () {
-        return Math.floor(
-            Math.random() * 0x10000 /* 65536 */
-        ).toString(16);
+        // TODO: what is a nice limit for non-scientific values?
+        var abs = Math.abs(value);
+        if ( (abs > 0.0001 && abs < 1000000) || abs == 0.0 ) {
+            // round the func to a limited number of digits
+            return String(roundNumber(value, digits));
+        }
+        else {
+            // scientific notation
+            var exp = Math.round(Math.log(abs) / Math.LN10);
+            var v = value / (Math.pow(10.0, exp));
+            return roundNumber(v, digits) + 'E' + exp;
+        }
     };
 
-    return (
-        S4() + S4() + '-' +
-            S4() + '-' +
-            S4() + '-' +
-            S4() + '-' +
-            S4() + S4() + S4()
-        );
-};
-
-/**
- * Execute function fn element wise for each element in array. Returns an array
- * with the results
- * @param {Array} array
- * @param {function} fn
- * @return {Array} res
- */
-util.map = function map(array, fn) {
-    if (!array instanceof Array) {
-        throw new TypeError('Array expected');
-    }
-
-    return array.map(function (x) {
-        return fn(x);
-    });
-};
-
-/**
- * Execute function fn element wise for each entry in two given arrays, or for
- * an object and array pair. Returns an array with the results
- * @param {Array | Object} array1
- * @param {Array | Object} array2
- * @param {function} fn
- * @return {Array} res
- */
-util.map2 = function map2(array1, array2, fn) {
-    var res, len, i;
-    if (array1 instanceof Array) {
-        if (array2 instanceof Array) {
-            // fn(array, array)
-            if (array1.length != array2.length) {
-                throw new RangeError('Dimension mismatch ' +
-                    '(' +  array1.length + ' != ' + array2.length + ')');
-            }
-
-            res = [];
-            len = array1.length;
-            for (i = 0; i < len; i++) {
-                res[i] = fn(array1[i], array2[i]);
-            }
-        }
-        else {
-            // fn(array, object)
-            res = [];
-            len = array1.length;
-            for (i = 0; i < len; i++) {
-                res[i] = fn(array1[i], array2);
-            }
-        }
-    }
-    else {
-        if (array2 instanceof Array) {
-            // fn(object, array)
-            res = [];
-            len = array2.length;
-            for (i = 0; i < len; i++) {
-                res[i] = fn(array1, array2[i]);
-            }
-        }
-        else {
-            // fn(object, object)
-            res = fn(array1, array2);
-        }
-    }
-
-    return res;
-};
-
-
-util.object = {};
-
-
-/**
- * For each method for objects. The method loops over all properties of the object.
- * @param {Object} object       The object
- * @param {function} callback   Callback method, called for each item in
- *                              the object or array with three parameters:
- *                              callback(value, index, object)
- */
-util.object.forEach = function forEach (object, callback) {
-    for (var key in object) {
-        if (object.hasOwnProperty(key)) {
-            callback(object[key], key, object);
-        }
-    }
-};
-
-/**
- * Creates a new object with the results of calling a provided function on
- * every property in the object.
- * @param {Object} object           The object
- * @param {function} fn             Mapping function
- * @return {Object} mappedObject
- */
-util.object.map = function map (object, fn) {
-    var m = {};
-    for (var key in object) {
-        if (object.hasOwnProperty(key)) {
-            m[key] = fn(object[key]);
-        }
-    }
-    return m;
-};
-
-
-util.array = {};
-
-/**
- * Recursively get the size of an array.
- * The size is calculated from the first dimension.
- * The array is not checked for matching dimensions, that should be done using
- * util.array.validate or util.array.validatedSize
- * @param {Array} x
- * @Return {Number[]} size
- */
-util.array.size = function size (x) {
-    if (x instanceof Array) {
-        var sizeX = x.length;
-        if (sizeX) {
-            var size0 = util.array.size(x[0]);
-            return [sizeX].concat(size0);
-        }
-        else {
-            return [sizeX];
-        }
-    }
-    else {
-        return [];
-    }
-};
-
-/**
- * Verify whether each element in an n dimensional array has the correct size
- * @param {Array} array    Array to be validated
- * @param {Number[]} size  Array with dimensions
- * @param {Number} [dim]   Current dimension
- * @throw Error
- */
-util.array.validate = function validate(array, size, dim) {
-    if (size.length == 0) {
-        // scalar
+    /**
+     * Recursively format an n-dimensional matrix
+     * Example output: "[[1, 2], [3, 4]]"
+     * @param {Array} array
+     * @returns {String} str
+     */
+    util.formatArray = function formatArray (array) {
         if (array instanceof Array) {
-            throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
-        }
-        return;
-    }
-
-    var i,
-        len = array.length;
-    if (!dim) {
-        dim = 0;
-    }
-
-    if (len != size[dim]) {
-        throw new RangeError('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
-    }
-
-    if (dim < size.length - 1) {
-        // recursively validate each child array
-        var dimNext = dim + 1;
-        for (i = 0; i < len; i++) {
-            var child = array[i];
-            if (!(child instanceof Array)) {
-                throw new RangeError('Dimension mismatch ' +
-                    '(' + (size.length - 1) + ' < ' + size.length + ')');
+            var str = '[';
+            var len = array.length;
+            for (var i = 0; i < len; i++) {
+                if (i != 0) {
+                    str += ', ';
+                }
+                str += formatArray(array[i]);
             }
-            validate(array[i], size, dimNext);
+            str += ']';
+            return str;
         }
-    }
-    else {
-        // last dimension. none of the childs may be an array
-        for (i = 0; i < len; i++) {
-            if (array[i] instanceof Array) {
-                throw new RangeError('Dimension mismatch ' +
-                    '(' + (size.length + 1) + ' > ' + size.length + ')');
-            }
+        else {
+            return format(array);
         }
-    }
-
-    return true;
-};
-
-/**
- * Recursively get the size of a multidimensional array.
- * The array is checked for matching dimensions.
- * @param {Array} x
- * @Return {Number[]} size
- */
-util.array.validatedSize = function validatedSize(x) {
-    var s = util.array.size(x);
-    util.array.validate(x, s); // TODO: make validation optional via math.options?
-    return s;
-};
-
-// Internet Explorer 8 and older does not support Array.indexOf, so we define
-// it here in that case.
-// http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
-if(!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function(obj){
-        for(var i = 0; i < this.length; i++){
-            if(this[i] == obj){
-                return i;
-            }
-        }
-        return -1;
     };
-}
 
-// Internet Explorer 8 and older does not support Array.forEach, so we define
-// it here in that case.
-// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
-if (!Array.prototype.forEach) {
-    Array.prototype.forEach = function(fn, scope) {
-        for(var i = 0, len = this.length; i < len; ++i) {
-            fn.call(scope || this, this[i], i, this);
+    /**
+     * Recursively format an n-dimensional array, output looks like
+     * "[1, 2, 3]"
+     * @param {Array} array
+     * @returns {string} str
+     */
+    util.formatArray2d = function formatArray2d (array) {
+        var str = '[';
+        var s = util.size(array);
+
+        if (s.length != 2) {
+            throw new RangeError('Array must be two dimensional (size: ' +
+                formatArray(s) + ')');
+        }
+
+        var rows = s[0];
+        var cols = s[1];
+        for (var r = 0; r < rows; r++) {
+            if (r != 0) {
+                str += '; ';
+            }
+
+            var row = array[r];
+            for (var c = 0; c < cols; c++) {
+                if (c != 0) {
+                    str += ', ';
+                }
+                var cell = row[c];
+                if (cell != undefined) {
+                    str += format(cell);
+                }
+            }
+        }
+        str += ']';
+
+        return str;
+    };
+
+    /**
+     * Create a semi UUID
+     * source: http://stackoverflow.com/a/105074/1262753
+     * @return {String} uuid
+     */
+    util.randomUUID = function randomUUID() {
+        var S4 = function () {
+            return Math.floor(
+                Math.random() * 0x10000 /* 65536 */
+            ).toString(16);
+        };
+
+        return (
+            S4() + S4() + '-' +
+                S4() + '-' +
+                S4() + '-' +
+                S4() + '-' +
+                S4() + S4() + S4()
+            );
+    };
+
+    /**
+     * Execute function fn element wise for each element in array. Returns an array
+     * with the results
+     * @param {Array} array
+     * @param {function} fn
+     * @return {Array} res
+     */
+    util.map = function map(array, fn) {
+        if (!array instanceof Array) {
+            throw new TypeError('Array expected');
+        }
+
+        return array.map(function (x) {
+            return fn(x);
+        });
+    };
+
+    /**
+     * Execute function fn element wise for each entry in two given arrays, or for
+     * an object and array pair. Returns an array with the results
+     * @param {Array | Object} array1
+     * @param {Array | Object} array2
+     * @param {function} fn
+     * @return {Array} res
+     */
+    util.map2 = function map2(array1, array2, fn) {
+        var res, len, i;
+        if (array1 instanceof Array) {
+            if (array2 instanceof Array) {
+                // fn(array, array)
+                if (array1.length != array2.length) {
+                    throw new RangeError('Dimension mismatch ' +
+                        '(' +  array1.length + ' != ' + array2.length + ')');
+                }
+
+                res = [];
+                len = array1.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = fn(array1[i], array2[i]);
+                }
+            }
+            else {
+                // fn(array, object)
+                res = [];
+                len = array1.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = fn(array1[i], array2);
+                }
+            }
+        }
+        else {
+            if (array2 instanceof Array) {
+                // fn(object, array)
+                res = [];
+                len = array2.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = fn(array1, array2[i]);
+                }
+            }
+            else {
+                // fn(object, object)
+                res = fn(array1, array2);
+            }
+        }
+
+        return res;
+    };
+
+
+    /**
+     * For each method for objects and arrays.
+     * In case of an object, the method loops over all properties of the object.
+     * In case of an array, the method loops over all indexes of the array.
+     * @param {Object | Array} object   The object
+     * @param {function} callback       Callback method, called for each item in
+     *                                  the object or array with three parameters:
+     *                                  callback(value, index, object)
+     */
+    util.forEach = function forEach (object, callback) {
+        if (object instanceof Array) {
+            object.forEach(callback);
+        }
+        else {
+            for (var key in object) {
+                if (object.hasOwnProperty(key)) {
+                    callback(object[key], key, object);
+                }
+            }
+        }
+    };
+
+    /**
+     * Creates a new object with the results of calling a provided function on
+     * every property in the object.
+     * @param {Object | Array} object   The object or array.
+     * @param {function} callback       Mapping function
+     * @return {Object | Array} mappedObject
+     */
+    util.map = function map (object, callback) {
+        if (object instanceof Array) {
+            return object.map(callback);
+        }
+        else {
+            var m = {};
+            for (var key in object) {
+                if (object.hasOwnProperty(key)) {
+                    m[key] = callback(object[key]);
+                }
+            }
+            return m;
+        }
+    };
+
+
+    util.array = {};
+
+    /**
+     * Recursively calculate the size of a multi dimensional array.
+     * @param {Array} x
+     * @Return {Number[]} size
+     * @throws RangeError
+     */
+    function _size(x) {
+        if (x instanceof Array) {
+            var sizeX = x.length;
+            if (sizeX) {
+                var size0 = size(x[0]);
+                return [sizeX].concat(size0);
+            }
+            else {
+                return [sizeX];
+            }
+        }
+        else {
+            return [];
         }
     }
-}
 
-// Internet Explorer 8 and older does not support Array.map, so we define it
-// here in that case.
-// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
-// Production steps of ECMA-262, Edition 5, 15.4.4.19
-// Reference: http://es5.github.com/#x15.4.4.19
-if (!Array.prototype.map) {
-    Array.prototype.map = function(callback, thisArg) {
+    /**
+     * Calculate the size of a multi dimensional array.
+     * All elements in the array are checked for matching dimensions using the
+     * method validate
+     * @param {Array} x
+     * @Return {Number[]} size
+     * @throws RangeError
+     */
+    util.size = function size (x) {
+        // calculate the size
+        var s = _size(x);
 
-        var T, A, k;
+        // verify the size
+        util.validate(x, s);
 
-        if (this == null) {
-            throw new TypeError(" this is null or not defined");
-        }
-
-        // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
-        var O = Object(this);
-
-        // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
-        // 3. Let len be ToUint32(lenValue).
-        var len = O.length >>> 0;
-
-        // 4. If IsCallable(callback) is false, throw a TypeError exception.
-        // See: http://es5.github.com/#x9.11
-        if (typeof callback !== "function") {
-            throw new TypeError(callback + " is not a function");
-        }
-
-        // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
-        if (thisArg) {
-            T = thisArg;
-        }
-
-        // 6. Let A be a new array created as if by the expression new Array(len) where Array is
-        // the standard built-in constructor with that name and len is the value of len.
-        A = new Array(len);
-
-        // 7. Let k be 0
-        k = 0;
-
-        // 8. Repeat, while k < len
-        while(k < len) {
-
-            var kValue, mappedValue;
-
-            // a. Let Pk be ToString(k).
-            //   This is implicit for LHS operands of the in operator
-            // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
-            //   This step can be combined with c
-            // c. If kPresent is true, then
-            if (k in O) {
-
-                // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
-                kValue = O[ k ];
-
-                // ii. Let mappedValue be the result of calling the Call internal method of callback
-                // with T as the this value and argument list containing kValue, k, and O.
-                mappedValue = callback.call(T, kValue, k, O);
-
-                // iii. Call the DefineOwnProperty internal method of A with arguments
-                // Pk, Property Descriptor {Value: mappedValue, : true, Enumerable: true, Configurable: true},
-                // and false.
-
-                // In browsers that support Object.defineProperty, use the following:
-                // Object.defineProperty(A, Pk, { value: mappedValue, writable: true, enumerable: true, configurable: true });
-
-                // For best browser support, use the following:
-                A[ k ] = mappedValue;
-            }
-            // d. Increase k by 1.
-            k++;
-        }
-
-        // 9. return A
-        return A;
+        return s;
     };
-}
+
+    /**
+     * Verify whether each element in a multi dimensional array has the correct size
+     * @param {Array} array    Array to be validated
+     * @param {Number[]} size  Array with dimensions
+     * @param {Number} [dim]   Current dimension
+     * @throws RangeError
+     */
+    util.validate = function validate(array, size, dim) {
+        if (size.length == 0) {
+            // scalar
+            if (array instanceof Array) {
+                throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
+            }
+            return;
+        }
+
+        var i,
+            len = array.length;
+        if (!dim) {
+            dim = 0;
+        }
+
+        if (len != size[dim]) {
+            throw new RangeError('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
+        }
+
+        if (dim < size.length - 1) {
+            // recursively validate each child array
+            var dimNext = dim + 1;
+            for (i = 0; i < len; i++) {
+                var child = array[i];
+                if (!(child instanceof Array)) {
+                    throw new RangeError('Dimension mismatch ' +
+                        '(' + (size.length - 1) + ' < ' + size.length + ')');
+                }
+                validate(array[i], size, dimNext);
+            }
+        }
+        else {
+            // last dimension. none of the childs may be an array
+            for (i = 0; i < len; i++) {
+                if (array[i] instanceof Array) {
+                    throw new RangeError('Dimension mismatch ' +
+                        '(' + (size.length + 1) + ' > ' + size.length + ')');
+                }
+            }
+        }
+    };
+
+    // Internet Explorer 8 and older does not support Array.indexOf, so we define
+    // it here in that case.
+    // http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
+    if(!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function(obj){
+            for(var i = 0; i < this.length; i++){
+                if(this[i] == obj){
+                    return i;
+                }
+            }
+            return -1;
+        };
+    }
+
+    // Internet Explorer 8 and older does not support Array.forEach, so we define
+    // it here in that case.
+    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
+    if (!Array.prototype.forEach) {
+        Array.prototype.forEach = function(fn, scope) {
+            for(var i = 0, len = this.length; i < len; ++i) {
+                fn.call(scope || this, this[i], i, this);
+            }
+        }
+    }
+
+    // Internet Explorer 8 and older does not support Array.map, so we define it
+    // here in that case.
+    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
+    // Production steps of ECMA-262, Edition 5, 15.4.4.19
+    // Reference: http://es5.github.com/#x15.4.4.19
+    if (!Array.prototype.map) {
+        Array.prototype.map = function(callback, thisArg) {
+
+            var T, A, k;
+
+            if (this == null) {
+                throw new TypeError(" this is null or not defined");
+            }
+
+            // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
+            var O = Object(this);
+
+            // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
+            // 3. Let len be ToUint32(lenValue).
+            var len = O.length >>> 0;
+
+            // 4. If IsCallable(callback) is false, throw a TypeError exception.
+            // See: http://es5.github.com/#x9.11
+            if (typeof callback !== "function") {
+                throw new TypeError(callback + " is not a function");
+            }
+
+            // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+            if (thisArg) {
+                T = thisArg;
+            }
+
+            // 6. Let A be a new array created as if by the expression new Array(len) where Array is
+            // the standard built-in constructor with that name and len is the value of len.
+            A = new Array(len);
+
+            // 7. Let k be 0
+            k = 0;
+
+            // 8. Repeat, while k < len
+            while(k < len) {
+
+                var kValue, mappedValue;
+
+                // a. Let Pk be ToString(k).
+                //   This is implicit for LHS operands of the in operator
+                // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
+                //   This step can be combined with c
+                // c. If kPresent is true, then
+                if (k in O) {
+
+                    // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
+                    kValue = O[ k ];
+
+                    // ii. Let mappedValue be the result of calling the Call internal method of callback
+                    // with T as the this value and argument list containing kValue, k, and O.
+                    mappedValue = callback.call(T, kValue, k, O);
+
+                    // iii. Call the DefineOwnProperty internal method of A with arguments
+                    // Pk, Property Descriptor {Value: mappedValue, : true, Enumerable: true, Configurable: true},
+                    // and false.
+
+                    // In browsers that support Object.defineProperty, use the following:
+                    // Object.defineProperty(A, Pk, { value: mappedValue, writable: true, enumerable: true, configurable: true });
+
+                    // For best browser support, use the following:
+                    A[ k ] = mappedValue;
+                }
+                // d. Increase k by 1.
+                k++;
+            }
+
+            // 9. return A
+            return A;
+        };
+    }
+
+    return util;
+})();
 
 /**
  * @constructor Complex
@@ -431,6 +508,8 @@ if (!Array.prototype.map) {
  *
  * Example usage:
  *     var a = new Complex(3, -4);    // 3 - 4i
+ *     a.re = 5;                      // a = 5 - 4i
+ *     var i = a.im;                  // -4;
  *     var b = new Complex('2 + 6i'); // 2 + 6i
  *     var c = new Complex();         // 0 + 0i
  *     var d = math.add(a, b);        // 5 + 2i
@@ -708,10 +787,12 @@ Complex.prototype.clone = function () {
  */
 Complex.prototype.toString = function () {
     var str = '';
+    var strRe = util.formatNumber(this.re);
+    var strIm = util.formatNumber(this.im);
 
     if (this.im == 0) {
         // real value
-        str = util.format(this.re);
+        str = strRe;
     }
     else if (this.re == 0) {
         // purely complex value
@@ -722,25 +803,25 @@ Complex.prototype.toString = function () {
             str = '-i';
         }
         else {
-            str = util.format(this.im) + 'i';
+            str = strIm + 'i';
         }
     }
     else {
         // complex value
         if (this.im > 0) {
             if (this.im == 1) {
-                str = util.format(this.re) + ' + i';
+                str = strRe + ' + i';
             }
             else {
-                str = util.format(this.re) + ' + ' + util.format(this.im) + 'i';
+                str = strRe + ' + ' + strIm + 'i';
             }
         }
         else {
             if (this.im == -1) {
-                str = util.format(this.re) + ' - i';
+                str = strRe + ' - i';
             }
             else {
-                str = util.format(this.re) + ' - ' + util.format(Math.abs(this.im)) + 'i';
+                str = strRe + ' - ' + util.formatNumber(Math.abs(this.im)) + 'i';
             }
         }
     }
@@ -792,15 +873,15 @@ function Matrix(data) {
 
     if (data instanceof Matrix || data instanceof Vector || data instanceof Range) {
         // clone data from Vector, Matrix, or Range
-        this.data = data.toArray();
+        this._data = data.toArray();
     }
     else {
         // use data as is
-        this.data = data || null;
+        this._data = data || null;
     }
 
     // verify the size of the array
-    util.array.validatedSize(this.data);
+    this._size = util.size(this._data);
 }
 
 math.Matrix = Matrix;
@@ -815,7 +896,7 @@ math.Matrix = Matrix;
  */
 Matrix.prototype.clone = function () {
     var matrix = new Matrix();
-    matrix.data = clone(this.data);
+    matrix._data = clone(this._data);
     return matrix;
 };
 
@@ -826,7 +907,7 @@ Matrix.prototype.clone = function () {
  * @returns {Number[]} size
  */
 Matrix.prototype.size = function () {
-    return util.array.validatedSize(this.data);
+    return this._size;
 };
 
 /**
@@ -835,7 +916,7 @@ Matrix.prototype.size = function () {
  * @return {* | null} scalar
  */
 Matrix.prototype.toScalar = function () {
-    var scalar = this.data;
+    var scalar = this._data;
     while (scalar instanceof Array && scalar.length == 1) {
         scalar = value[0];
     }
@@ -853,7 +934,7 @@ Matrix.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Matrix.prototype.isScalar = function () {
-    var scalar = this.data;
+    var scalar = this._data;
     while (scalar instanceof Array && scalar.length == 1) {
         scalar = scalar[0];
     }
@@ -871,7 +952,7 @@ Matrix.prototype.toVector = function () {
     /* TODO: implement toVector
     var count = 0;
     var dim = undefined;
-    var s = util.array.validatedSize(this.data);
+    var s = util.size(this._data);
     s.forEach(function (length, index) {
         if (length > 1) {
             count++;
@@ -895,7 +976,7 @@ Matrix.prototype.toVector = function () {
  */
 Matrix.prototype.isVector = function () {
     var count = 0;
-    var s = util.array.validatedSize(this.data);
+    var s = util.size(this._data);
     s.forEach(function (length) {
         if (length > 1) {
             count++;
@@ -910,7 +991,7 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {
-    var array = clone(this.data);
+    var array = clone(this._data);
     if (!(array instanceof Array)) {
         array = [array];
     }
@@ -922,7 +1003,7 @@ Matrix.prototype.toArray = function () {
  * @returns {Array} array
  */
 Matrix.prototype.valueOf = function () {
-    return this.data;
+    return this._data;
 };
 
 /**
@@ -930,7 +1011,7 @@ Matrix.prototype.valueOf = function () {
  * @returns {String} str
  */
 Matrix.prototype.toString = function () {
-    return format(this.data);
+    return util.formatArray(this._data);
 };
 
 /**
@@ -1540,11 +1621,11 @@ Unit.prototype.toString = function() {
         }
 
         value = this._unnormalize(this.value, bestPrefix.value);
-        return util.format(value) + ' ' + bestPrefix.name + this.unit.name;
+        return util.formatNumber(value) + ' ' + bestPrefix.name + this.unit.name;
     }
     else {
         value = this._unnormalize(this.value);
-        return util.format(value) + ' ' + this.prefix.name + this.unit.name;
+        return util.formatNumber(value) + ' ' + this.prefix.name + this.unit.name;
     }
 };
 
@@ -1833,6 +1914,7 @@ Unit.UNITS = [
  *     get(indexes)
  *     set(index, value)
  *     set(indexes, values)
+ *     size()
  *     clone()
  *     isScalar()
  *     toScalar()
@@ -1857,22 +1939,22 @@ function Vector(data) {
 
     if (data instanceof Matrix) {
         // clone data from Matrix
-        this.data = data.toVector();
+        this._data = data.toVector();
     }
     else if (data instanceof Vector || data instanceof Range) {
         // clone data from Vector or Range
-        this.data = data.toArray();
+        this._data = data.toArray();
     }
     else {
         // use data as is
-        this.data = data || null;
+        this._data = data || null;
     }
 
     // verify whether the data is a one dimensional array
-    var s = util.array.size(this.data);
-    util.array.validate(this.data, s);
-    if (s.length > 1) {
-        throw new Error('Vector can only contain one dimension (size: ' + format(s) + ')');
+    this._size = util.size(this._data);
+    if (this._size.length > 1) {
+        throw new Error('Vector can only contain one dimension ' +
+            '(size: ' + format(this._size) + ')');
     }
 }
 
@@ -1900,22 +1982,24 @@ Vector.prototype.resize = function (size, defaultValue) {
             throw new TypeError('Positive integer expected as size in method resize');
         }
 
-        if (!(this.data instanceof Array) && size > 1) {
+        if (!(this._data instanceof Array) && size > 1) {
             // vector currently contains a scalar. change that to an array
-            this.data = [this.data];
+            this._data = [this._data];
             this.resize(size, defaultValue);
         }
         else {
-            if(size > this.data.length) {
+            if(size > this._data.length) {
                 // enlarge
-                for (var i = this.data.length; i < size; i++) {
-                    this.data[i] = defaultValue ? clone(defaultValue) : 0;
+                for (var i = this._data.length; i < size; i++) {
+                    this._data[i] = defaultValue ? clone(defaultValue) : 0;
                 }
             }
             else {
                 // shrink
-                this.data.length = size;
+                this._data.length = size;
             }
+
+            this._size = [this._data.length];
         }
     }
 };
@@ -1940,11 +2024,11 @@ Vector.prototype.get = function (index) {
         if (!isNumber(index) || !isInteger(index) || index < 0) {
             throw new TypeError('Positive integer expected as index in method get');
         }
-        if (this.data instanceof Array) {
-            return this.data[index];
+        if (this._data instanceof Array) {
+            return this._data[index];
         }
         else if (index == 0) {
-            return this.data;
+            return this._data;
         }
         else {
             throw new RangeError('Index out of range (' + index + ')');
@@ -2004,13 +2088,13 @@ Vector.prototype.set = function (index, value) {
  * @private
  */
 Vector.prototype._set = function (index, value) {
-    if (!(this.data instanceof Array)) {
-        this.data = [this.data];
+    if (!(this._data instanceof Array)) {
+        this._data = [this._data];
     }
-    if (index > this.data.length) {
+    if (index > this._data.length) {
         this.resize(index);
     }
-    this.data[index] = value;
+    this._data[index] = value;
 };
 
 /**
@@ -2019,7 +2103,7 @@ Vector.prototype._set = function (index, value) {
  */
 Vector.prototype.clone = function () {
     var vector = new Vector();
-    vector.data = clone(this.data);
+    vector._data = clone(this._data);
     return vector;
 };
 
@@ -2029,7 +2113,7 @@ Vector.prototype.clone = function () {
  * @returns {Number[]} size
  */
 Vector.prototype.size = function () {
-    return util.array.validatedSize(this.data);
+    return this._size;
 };
 
 /**
@@ -2038,7 +2122,7 @@ Vector.prototype.size = function () {
  * @return {* | null} scalar
  */
 Vector.prototype.toScalar = function () {
-    var value = this.data;
+    var value = this._data;
     while (value instanceof Array && value.length == 1) {
         value = value[0];
     }
@@ -2056,7 +2140,7 @@ Vector.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Vector.prototype.isScalar = function () {
-    var value = this.data;
+    var value = this._data;
     while (value instanceof Array && value.length == 1) {
         value = value[0];
     }
@@ -2069,7 +2153,7 @@ Vector.prototype.isScalar = function () {
  * @returns {Array} array
  */
 Vector.prototype.toArray = function () {
-    var array = clone(this.data);
+    var array = clone(this._data);
     if (!(array instanceof Array)) {
         array = [array];
     }
@@ -2081,7 +2165,7 @@ Vector.prototype.toArray = function () {
  * @returns {Array} array
  */
 Vector.prototype.valueOf = function () {
-    return this.data;
+    return this._data;
 };
 
 /**
@@ -2089,7 +2173,7 @@ Vector.prototype.valueOf = function () {
  * @returns {String} str
  */
 Vector.prototype.toString = function () {
-    return format(this.data);
+    return util.formatArray(this._data);
 };
 
 /**
@@ -3198,8 +3282,8 @@ function multiply(x, y) {
     else if (x instanceof Array) {
         if (y instanceof Array) {
             // matrix * matrix
-            var sizeX = util.array.validatedSize(x);
-            var sizeY = util.array.validatedSize(y);
+            var sizeX = util.size(x);
+            var sizeY = util.size(y);
 
             if (sizeX.length != 2) {
                 throw new Error('Can only multiply a 2 dimensional matrix ' +
@@ -3296,9 +3380,9 @@ multiply.doc = {
 
 /**
  * Calculates the power of x to y, x^y
- * @param  {Number | Complex} x
+ * @param  {Number | Complex | Array} x
  * @param  {Number | Complex} y
- * @return {Number | Complex} res
+ * @return {Number | Complex | Array} res
  */
 function pow(x, y) {
     if (arguments.length != 2) {
@@ -3334,7 +3418,7 @@ function pow(x, y) {
         }
 
         // verify that A is a 2 dimensional square matrix
-        var s = util.array.validatedSize(x);
+        var s = util.size(x);
         if (s.length != 2) {
             throw new Error('For A^b, A must be 2 dimensional ' +
                     '(A has ' + s.length + ' dimensions)');
@@ -4483,7 +4567,11 @@ function size (x) {
     }
 
     if (x instanceof Array) {
-        return util.array.validatedSize(x);
+        return util.size(x);
+    }
+
+    if (x instanceof Matrix || x instanceof Vector || x instanceof Range) {
+        return x.size();
     }
 
     if (x.valueOf() !== x) {
@@ -5491,7 +5579,7 @@ function clone(x) {
     }
 
     if (x instanceof Object) {
-        return util.object.map(x, clone);
+        return util.map(x, clone);
     }
 
     throw newUnsupportedTypeError('clone', x);
@@ -5542,11 +5630,11 @@ function format(template, values) {
         // just format a value as string
         var value = arguments[0];
         if (isNumber(value)) {
-            return util.format(value);
+            return util.formatNumber(value);
         }
 
         if (value instanceof Array) {
-            return formatArray(value);
+            return util.formatArray(value);
         }
 
         if (isString(value)) {
@@ -5582,65 +5670,6 @@ function format(template, values) {
 }
 
 math.format = format;
-
-/**
- * Format a n-dimensional array
- * @param {Array} array
- * @returns {string} str
- */
-function formatArray (array) {
-    var str = '[';
-    var s = util.array.validatedSize(array);
-
-    if (s.length != 2) {
-        return formatArrayN(array);
-    }
-
-    var rows = s[0];
-    var cols = s[1];
-    for (var r = 0; r < rows; r++) {
-        if (r != 0) {
-            str += '; ';
-        }
-
-        var row = array[r];
-        for (var c = 0; c < cols; c++) {
-            if (c != 0) {
-                str += ', ';
-            }
-            var cell = row[c];
-            if (cell != undefined) {
-                str += format(cell);
-            }
-        }
-    }
-    str += ']';
-
-    return str;
-}
-
-/**
- * Recursively format an n-dimensional matrix
- * @param {Array} array
- * @returns {String} str
- */
-function formatArrayN (array) {
-    if (array instanceof Array) {
-        var str = '[';
-        var len = array.length;
-        for (var i = 0; i < len; i++) {
-            if (i != 0) {
-                str += ', ';
-            }
-            str += formatArrayN(array[i]);
-        }
-        str += ']';
-        return str;
-    }
-    else {
-        return format(array);
-    }
-}
 
 /**
  * Function documentation

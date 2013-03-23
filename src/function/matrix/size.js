@@ -17,7 +17,11 @@ function size (x) {
     }
 
     if (x instanceof Array) {
-        return util.array.validatedSize(x);
+        return util.size(x);
+    }
+
+    if (x instanceof Matrix || x instanceof Vector || x instanceof Range) {
+        return x.size();
     }
 
     if (x.valueOf() !== x) {
