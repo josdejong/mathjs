@@ -10,14 +10,12 @@ Powerful and easy to use.
 
 ## Features
 
-- Supports numbers, complex numbers, units, strings, arrays, and matrices\*.
+- Supports numbers, complex numbers, units, strings, and matrices.
 - Contains a large set of built-in functions and constants.
 - Contains a flexible expression parser.
 - Compatible with JavaScript’s built-in Math library.
 - No dependencies. Runs on any JavaScript engine.
 - Easily extensible.
-
-\* Note: matrices are to be implemented.
 
 
 ## Install
@@ -26,11 +24,8 @@ Math.js can be installed using [npm](https://npmjs.org/):
 
     npm install mathjs
 
-Alternatively, the latest stable version of math.js can be downloaded from github:
-
-- [math.js](https://raw.github.com/josdejong/mathjs/master/math.js) (development version: uncompressed, with comments)
-- [math.min.js](https://raw.github.com/josdejong/mathjs/master/math.min.js) (production version: minified)
-
+The latest version of math.js can be downloaded on the website,
+[http://mathjs.org/](http://mathjs.org/#install_or_download).
 
 ## Load
 
