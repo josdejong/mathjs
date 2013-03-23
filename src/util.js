@@ -372,8 +372,102 @@ var util = (function () {
         }
     };
 
-    // Internet Explorer 8 and older does not support Array.indexOf, so we define
-    // it here in that case.
+    /**
+     * Recursively resize a multi dimensional array
+     * @param {Array} array         Array to be resized
+     * @param {Number[]} size       Array with the size of each dimension
+     * @param {Number} dim          Current dimension
+     * @param {*} [defaultValue]    Value to be filled in in new entries,
+     *                              0 by default.
+     * @private
+     */
+    function _resize (array, size, dim, defaultValue) {
+        if (!(array instanceof Array)) {
+            throw new TypeError('Array expected');
+        }
+
+        var len = array.length,
+            newLen = size[dim];
+
+        if (len != newLen) {
+            if(newLen > array.length) {
+                // enlarge
+                for (var i = array.length; i < newLen; i++) {
+                    array[i] = defaultValue ? clone(defaultValue) : 0;
+                }
+            }
+            else {
+                // shrink
+                array.length = size[dim];
+            }
+            len = array.length;
+        }
+
+        if (dim < size.length - 1) {
+            // recursively validate each child array
+            var dimNext = dim + 1;
+            for (i = 0; i < len; i++) {
+                child = array[i];
+                if (!(child instanceof Array)) {
+                    child = [child];
+                    array[i] = child;
+                }
+                _resize(child, size, dimNext, defaultValue);
+            }
+        }
+        else {
+            // last dimension
+            for (i = 0; i < len; i++) {
+                var child = array[i];
+                while (child instanceof Array) {
+                    child = child[0];
+                }
+                array[i] = child;
+            }
+        }
+    }
+
+    /**
+     * Resize a multi dimensional array
+     * @param {Array} array         Array to be resized
+     * @param {Number[]} size       Array with the size of each dimension
+     * @param {*} [defaultValue]    Value to be filled in in new entries,
+     *                              0 by default
+     */
+    util.resize = function resize(array, size, defaultValue) {
+        // TODO: what to do with scalars, when size=[] ?
+
+        // check the type of size
+        if (!(size instanceof Array)) {
+            throw new TypeError('Size must be an array (size is ' + type(size) + ')');
+        }
+
+        // check whether size contains positive integers
+        size.forEach(function (value) {
+            if (!isNumber(value) || !isInteger(value) || value < 0) {
+                throw new TypeError('Invalid size, must contain positive integers ' +
+                    '(size: ' + formatArray(size) + ')');
+            }
+        });
+
+        var hasZeros = (size.indexOf(0) != -1);
+        if (hasZeros) {
+            // array where all dimensions are zero
+            size.forEach(function (value) {
+                if (value != 0) {
+                    throw new RangeError('Invalid size, all dimensions must be ' +
+                        'either zero or non-zero (size: ' + formatArray(size) + ')');
+                }
+            });
+        }
+
+        // recursively resize
+        _resize(array, size, 0, defaultValue);
+    };
+
+
+    // Internet Explorer 8 and older does not support Array.indexOf,
+    // so we define it here in that case.
     // http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
     if(!Array.prototype.indexOf) {
         Array.prototype.indexOf = function(obj){
@@ -386,8 +480,8 @@ var util = (function () {
         };
     }
 
-    // Internet Explorer 8 and older does not support Array.forEach, so we define
-    // it here in that case.
+    // Internet Explorer 8 and older does not support Array.forEach,
+    // so we define it here in that case.
     // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
     if (!Array.prototype.forEach) {
         Array.prototype.forEach = function(fn, scope) {
@@ -397,8 +491,8 @@ var util = (function () {
         }
     }
 
-    // Internet Explorer 8 and older does not support Array.map, so we define it
-    // here in that case.
+    // Internet Explorer 8 and older does not support Array.map,
+    // so we define it here in that case.
     // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
     // Production steps of ECMA-262, Edition 5, 15.4.4.19
     // Reference: http://es5.github.com/#x15.4.4.19
@@ -471,6 +565,34 @@ var util = (function () {
 
             // 9. return A
             return A;
+        };
+    }
+
+    // Internet Explorer 8 and older does not support Array.every,
+    // so we define it here in that case.
+    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/every
+    if (!Array.prototype.every) {
+        Array.prototype.every = function(fun /*, thisp */) {
+            "use strict";
+
+            if (this == null) {
+                throw new TypeError();
+            }
+
+            var t = Object(this);
+            var len = t.length >>> 0;
+            if (typeof fun != "function") {
+                throw new TypeError();
+            }
+
+            var thisp = arguments[1];
+            for (var i = 0; i < len; i++) {
+                if (i in t && !fun.call(thisp, t[i], i, t)) {
+                    return false;
+                }
+            }
+
+            return true;
         };
     }
 

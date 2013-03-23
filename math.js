@@ -439,8 +439,102 @@ var util = (function () {
         }
     };
 
-    // Internet Explorer 8 and older does not support Array.indexOf, so we define
-    // it here in that case.
+    /**
+     * Recursively resize a multi dimensional array
+     * @param {Array} array         Array to be resized
+     * @param {Number[]} size       Array with the size of each dimension
+     * @param {Number} dim          Current dimension
+     * @param {*} [defaultValue]    Value to be filled in in new entries,
+     *                              0 by default.
+     * @private
+     */
+    function _resize (array, size, dim, defaultValue) {
+        if (!(array instanceof Array)) {
+            throw new TypeError('Array expected');
+        }
+
+        var len = array.length,
+            newLen = size[dim];
+
+        if (len != newLen) {
+            if(newLen > array.length) {
+                // enlarge
+                for (var i = array.length; i < newLen; i++) {
+                    array[i] = defaultValue ? clone(defaultValue) : 0;
+                }
+            }
+            else {
+                // shrink
+                array.length = size[dim];
+            }
+            len = array.length;
+        }
+
+        if (dim < size.length - 1) {
+            // recursively validate each child array
+            var dimNext = dim + 1;
+            for (i = 0; i < len; i++) {
+                child = array[i];
+                if (!(child instanceof Array)) {
+                    child = [child];
+                    array[i] = child;
+                }
+                _resize(child, size, dimNext, defaultValue);
+            }
+        }
+        else {
+            // last dimension
+            for (i = 0; i < len; i++) {
+                var child = array[i];
+                while (child instanceof Array) {
+                    child = child[0];
+                }
+                array[i] = child;
+            }
+        }
+    }
+
+    /**
+     * Resize a multi dimensional array
+     * @param {Array} array         Array to be resized
+     * @param {Number[]} size       Array with the size of each dimension
+     * @param {*} [defaultValue]    Value to be filled in in new entries,
+     *                              0 by default
+     */
+    util.resize = function resize(array, size, defaultValue) {
+        // TODO: what to do with scalars, when size=[] ?
+
+        // check the type of size
+        if (!(size instanceof Array)) {
+            throw new TypeError('Size must be an array (size is ' + type(size) + ')');
+        }
+
+        // check whether size contains positive integers
+        size.forEach(function (value) {
+            if (!isNumber(value) || !isInteger(value) || value < 0) {
+                throw new TypeError('Invalid size, must contain positive integers ' +
+                    '(size: ' + formatArray(size) + ')');
+            }
+        });
+
+        var hasZeros = (size.indexOf(0) != -1);
+        if (hasZeros) {
+            // array where all dimensions are zero
+            size.forEach(function (value) {
+                if (value != 0) {
+                    throw new RangeError('Invalid size, all dimensions must be ' +
+                        'either zero or non-zero (size: ' + formatArray(size) + ')');
+                }
+            });
+        }
+
+        // recursively resize
+        _resize(array, size, 0, defaultValue);
+    };
+
+
+    // Internet Explorer 8 and older does not support Array.indexOf,
+    // so we define it here in that case.
     // http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
     if(!Array.prototype.indexOf) {
         Array.prototype.indexOf = function(obj){
@@ -453,8 +547,8 @@ var util = (function () {
         };
     }
 
-    // Internet Explorer 8 and older does not support Array.forEach, so we define
-    // it here in that case.
+    // Internet Explorer 8 and older does not support Array.forEach,
+    // so we define it here in that case.
     // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
     if (!Array.prototype.forEach) {
         Array.prototype.forEach = function(fn, scope) {
@@ -464,8 +558,8 @@ var util = (function () {
         }
     }
 
-    // Internet Explorer 8 and older does not support Array.map, so we define it
-    // here in that case.
+    // Internet Explorer 8 and older does not support Array.map,
+    // so we define it here in that case.
     // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
     // Production steps of ECMA-262, Edition 5, 15.4.4.19
     // Reference: http://es5.github.com/#x15.4.4.19
@@ -538,6 +632,34 @@ var util = (function () {
 
             // 9. return A
             return A;
+        };
+    }
+
+    // Internet Explorer 8 and older does not support Array.every,
+    // so we define it here in that case.
+    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/every
+    if (!Array.prototype.every) {
+        Array.prototype.every = function(fun /*, thisp */) {
+            "use strict";
+
+            if (this == null) {
+                throw new TypeError();
+            }
+
+            var t = Object(this);
+            var len = t.length >>> 0;
+            if (typeof fun != "function") {
+                throw new TypeError();
+            }
+
+            var thisp = arguments[1];
+            for (var i = 0; i < len; i++) {
+                if (i in t && !fun.call(thisp, t[i], i, t)) {
+                    return false;
+                }
+            }
+
+            return true;
         };
     }
 
@@ -912,7 +1034,20 @@ Complex.doc = {
 /**
  * @constructor Matrix
  *
- * TODO: document Matrix
+ * A Matrix is a wrapper around an Array. A matrix can hold a multi dimensional
+ * array. A matrix can be constructed as:
+ *     var matrix = new Matrix(data)
+ *
+ * Matrix contains the functions to resize, get and set values, get the size,
+ * clone the matrix and to convert the matrix to a vector, array, or scalar.
+ * The internal Array of the Matrix can be accessed using the method valueOf.
+ *
+ * Example usage:
+ *     var matrix = new Matrix([[1, 2], [3, 4]);
+ *     matix.size();              // [2, 2]
+ *     matrix.resize([3, 2], 5);
+ *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
+ *     matrix.get([1, 0])         // 3
  *
  * @param {Array | Matrix | Vector | Range} [data]    A multi dimensional array
  */
@@ -926,9 +1061,17 @@ function Matrix(data) {
         // clone data from Vector, Matrix, or Range
         this._data = data.toArray();
     }
+    else if (data instanceof Array) {
+        // use array as is
+        this._data = data;
+    }
+    else if (data != null) {
+        // a scalar provided
+        this._data = [data];
+    }
     else {
-        // use data as is
-        this._data = data || null;
+        // nothing provided
+        this._data = [];
     }
 
     // verify the size of the array
@@ -937,9 +1080,148 @@ function Matrix(data) {
 
 math.Matrix = Matrix;
 
-// TODO: implement method get
+/**
+ * Get a value or a set of values from the matrix.
+ * Indexes are zero-based.
+ * @param {Array | Vector | Matrix} index
+ */
+Matrix.prototype.get = function (index) {
+    // TODO: support getting a range of values
+
+    if (index instanceof Matrix) {
+        if (!index.isVector()) {
+            throw new RangeError('Index must be a vector ' +
+                '(size: ' + format(index.size()) + ')');
+        }
+        index = index.toVector();
+    }
+    if (index instanceof Vector) {
+        index = index.valueOf();
+    }
+
+    if (index instanceof Array) {
+        if (index.length != this._size.length) {
+            throw new RangeError('Number of dimensions do not match ' +
+                '(' + index.length + ' != ' + this._size.length + ')');
+        }
+
+        var value = this._data;
+        index.forEach(function (i) {
+            if (!isNumber(i) || !isInteger(i) || i < 0) {
+                throw new TypeError('Positive integer expected as index in method get');
+            }
+            if (i > value.length - 1) {
+                throw new RangeError('Index out of range (' + i + ')');
+            }
+            value = value[i];
+        });
+        return value;
+    }
+    else {
+        // TODO: support a single number as index in case the matrix is a vector
+        throw new TypeError('Unsupported type of index ' + type(index));
+    }
+};
+
 // TODO: implement method set
-// TODO: implement method resize
+
+/**
+ * Get a value or a set of values from the matrix.
+ * Indexes are zero-based.
+ * @param {Array | Vector | Matrix} index
+ * @param {*} value
+ */
+Matrix.prototype.set = function (index, value) {
+    // TODO: support setting a range of values
+
+    if (index instanceof Matrix) {
+        if (!index.isVector()) {
+            throw new RangeError('Index must be a vector ' +
+                '(size: ' + format(index.size()) + ')');
+        }
+        index = index.toVector();
+    }
+    if (index instanceof Vector) {
+        index = index.valueOf();
+    }
+    if (value instanceof Matrix || value instanceof Vector || value instanceof Range) {
+        value = value.valueOf();
+    }
+
+    if (index instanceof Array) {
+        if (value instanceof Array) {
+            throw new Error('Setting a range of values is not yet implemented...');
+        }
+        else {
+            if (index.length != this._size.length) {
+                throw new RangeError('Number of dimensions do not match ' +
+                    '(' + index.length + ' != ' + this._size.length + ')');
+            }
+
+            var size = this._size.concat([]);
+            var needResize = false;
+            for (var i = 0; i < size.length; i++) {
+                var index_i = index[i];
+                if (!isNumber(index_i) || !isInteger(index_i) || index_i < 0) {
+                    throw new TypeError('Positive integer expected as index in method get');
+                }
+                if (index[i] > size[i]) {
+                    size[i] = index_i;
+                    needResize = true;
+                }
+            }
+            if (needResize) {
+                this.resize(size);
+            }
+
+            var len = size.length;
+            var arr = this._data;
+            index.forEach(function (v, i) {
+                if (i < len - 1) {
+                    arr = arr[v];
+                }
+                else {
+                    arr[v] = value;
+                }
+            });
+        }
+
+        /* TODO: cleanup
+        if (index.length != this._size.length) {
+            throw new RangeError('Number of dimensions do not match ' +
+                '(' + index.length + ' != ' + this._size.length + ')');
+        }
+
+        var value = this._data;
+        index.forEach(function (i) {
+            if (!isNumber(i) || !isInteger(i) || i < 0) {
+                throw new TypeError('Positive integer expected as index in method get');
+            }
+            if (i > value.length - 1) {
+                throw new RangeError('Index out of range (' + i + ')');
+            }
+            value = value[i];
+        });
+        return value;
+        */
+    }
+    else {
+        // TODO: support a single number as index in case the matrix is a vector
+        throw new TypeError('Unsupported type of index ' + type(index));
+    }
+};
+
+/**
+ * Resize the matrix
+ * @param {Number[]} size
+ * @param {*} [defaultValue]        Default value, filled in on new entries.
+ *                                  If not provided, the vector will be filled
+ *                                  with zeros.
+ */
+Matrix.prototype.resize = function (size, defaultValue) {
+    util.resize(this._data, size, defaultValue);
+    this._size = clone(size);
+};
 
 /**
  * Create a clone of the matrix
@@ -950,7 +1232,6 @@ Matrix.prototype.clone = function () {
     matrix._data = clone(this._data);
     return matrix;
 };
-
 
 /**
  * Retrieve the size of the matrix.
@@ -969,7 +1250,7 @@ Matrix.prototype.size = function () {
 Matrix.prototype.toScalar = function () {
     var scalar = this._data;
     while (scalar instanceof Array && scalar.length == 1) {
-        scalar = value[0];
+        scalar = scalar[0];
     }
 
     if (scalar instanceof Array) {
@@ -985,11 +1266,9 @@ Matrix.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Matrix.prototype.isScalar = function () {
-    var scalar = this._data;
-    while (scalar instanceof Array && scalar.length == 1) {
-        scalar = scalar[0];
-    }
-    return !(scalar instanceof Array);
+    return this._size.every(function (s) {
+        return (s <= 1);
+    });
 };
 
 /**
@@ -997,26 +1276,37 @@ Matrix.prototype.isScalar = function () {
  * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
  * dimensions where maximum one of the dimensions has a size larger than 1.
  * Returns null if the Matrix is no vector
- * return {Vector} vector
+ * return {Vector | null} vector
  */
 Matrix.prototype.toVector = function () {
-    /* TODO: implement toVector
     var count = 0;
     var dim = undefined;
-    var s = util.size(this._data);
-    s.forEach(function (length, index) {
+    var index = [];
+    this._size.forEach(function (length, i) {
         if (length > 1) {
             count++;
-            dim = index;
+            dim = i;
         }
+        index[i] = 0;
     });
-    if (count > 1) {
+
+    if (count == 0) {
+        // scalar or empty
+        return new Vector(this.toScalar());
+    }
+    else if (count == 1) {
+        // valid vector
+        var vector = [];
+        for (var i = 0, iMax = this._size[dim]; i < iMax; i++) {
+            index[dim] = i;
+            vector[i] = this.get(index);
+        }
+        return new Vector(vector);
+    }
+    else {
+        // count > 1, this is no vector
         return null;
     }
-
-    /// TODO: clone the values
-    */
-    throw new Error('not yet implemented');
 };
 
 /**
@@ -1027,8 +1317,7 @@ Matrix.prototype.toVector = function () {
  */
 Matrix.prototype.isVector = function () {
     var count = 0;
-    var s = util.size(this._data);
-    s.forEach(function (length) {
+    this._size.forEach(function (length) {
         if (length > 1) {
             count++;
         }
@@ -1042,11 +1331,7 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {
-    var array = clone(this._data);
-    if (!(array instanceof Array)) {
-        array = [array];
-    }
-    return array;
+    return clone(this._data);
 };
 
 /**
@@ -1959,26 +2244,16 @@ Unit.UNITS = [
  * array. A vector can be constructed as:
  *     var vector = new Vector(data)
  *
- * Vector contains the following functions:
- *     resize(size, defaultValue)
- *     get(index)
- *     get(indexes)
- *     set(index, value)
- *     set(indexes, values)
- *     size()
- *     clone()
- *     isScalar()
- *     toScalar()
- *     isArray()
- *     toArray()            // create an Array with the vector data cloned
- *     valueOf()            // get the internal data Array of the vector
+ * Vector contains the functions to resize, get and set values, get the size,
+ * clone the vector and to convert the vector to an array or scalar.
+ * The internal Array of the Vector can be accessed using the method valueOf.
  *
  * Example usage:
- *     var vector = new Vector([4, 5, 6, 7])
+ *     var vector = new Vector([4, 5, 6, 7]);
  *     vector.resize(6, -1);
  *     vector.set(2, 9);
  *     vector.valueOf();          // [4, 5, 9, 7, -1, -1]
- *     vector.get([3,4 ])         // [7, -1]
+ *     vector.get([3, 4])         // [7, -1]
  *
  * @param {Array | Matrix | Vector | Range} [data]    A one dimensional array
  */
@@ -1996,9 +2271,17 @@ function Vector(data) {
         // clone data from Vector or Range
         this._data = data.toArray();
     }
+    else if (data instanceof Array) {
+        // use array as is
+        this._data = data;
+    }
+    else if (data != null) {
+        // a scalar provided
+        this._data = [data];
+    }
     else {
-        // use data as is
-        this._data = data || null;
+        // nothing provided
+        this._data = [];
     }
 
     // verify whether the data is a one dimensional array
@@ -2033,25 +2316,18 @@ Vector.prototype.resize = function (size, defaultValue) {
             throw new TypeError('Positive integer expected as size in method resize');
         }
 
-        if (!(this._data instanceof Array) && size > 1) {
-            // vector currently contains a scalar. change that to an array
-            this._data = [this._data];
-            this.resize(size, defaultValue);
+        if(size > this._data.length) {
+            // enlarge
+            for (var i = this._data.length; i < size; i++) {
+                this._data[i] = defaultValue ? clone(defaultValue) : 0;
+            }
         }
         else {
-            if(size > this._data.length) {
-                // enlarge
-                for (var i = this._data.length; i < size; i++) {
-                    this._data[i] = defaultValue ? clone(defaultValue) : 0;
-                }
-            }
-            else {
-                // shrink
-                this._data.length = size;
-            }
-
-            this._size = [this._data.length];
+            // shrink
+            this._data.length = size;
         }
+
+        this._size = [this._data.length];
     }
 };
 
@@ -2059,12 +2335,23 @@ Vector.prototype.resize = function (size, defaultValue) {
  * get a value or a subset of the vector. Throws an RangeError when index is
  * out of range.
  * Indexes are zero-based.
- * @param {Number | Number[] | Range} index
- * @return {* | *[]} value
+ * @param {Number | Array | Matrix | Vector | Range} index
+ * @return {* | Array | Matrix | Vector | Range} value
  */
 Vector.prototype.get = function (index) {
     var me = this;
     index = index.valueOf();
+
+    if (index instanceof Matrix) {
+        if (!index.isVector()) {
+            throw new RangeError('Index must be a vector ' +
+                '(size: ' + format(index.size()) + ')');
+        }
+        index = index.toVector();
+    }
+    if (index instanceof Vector) {
+        index = index.valueOf();
+    }
 
     if (index instanceof Range || index instanceof Array) {
         return index.map(function (i) {
@@ -2075,58 +2362,61 @@ Vector.prototype.get = function (index) {
         if (!isNumber(index) || !isInteger(index) || index < 0) {
             throw new TypeError('Positive integer expected as index in method get');
         }
-        if (this._data instanceof Array) {
-            return this._data[index];
-        }
-        else if (index == 0) {
-            return this._data;
-        }
-        else {
+        if (index > this._data.length - 1) {
             throw new RangeError('Index out of range (' + index + ')');
         }
+        return this._data[index];
     }
 };
 
 /**
- * Set a value or a set of value in the vector.
+ * Set a value or a set of values in the vector.
  * Indexes are zero-based.
- * @param {Number | Number[]} index
- * @param {* | *[]} value
+ * @param {Number | Array | Matrix | Vector | Range} index
+ * @param {* | Array | Matrix | Vector | Range} value
  */
 Vector.prototype.set = function (index, value) {
     var me = this;
-    index = index.valueOf();
 
-    if (index instanceof Range) {
-        if (index.size() != value.length) {
-            throw new RangeError('Dimension mismatch (' + index.size() + ' != ' +
-                value.length + ')');
+    if (index instanceof Matrix) {
+        if (!index.isVector()) {
+            throw new RangeError('Index must be a vector ' +
+                '(size: ' + format(index.size()) + ')');
         }
-
-        index.forEach(function (v, i) {
-             me._set(v, value[i]);
-        });
+        index = index.toVector();
     }
-    else if (index instanceof Array) {
+    if (index instanceof Vector) {
+        index = index.valueOf();
+    }
+    if (value instanceof Matrix || value instanceof Vector || value instanceof Range) {
+        value = value.valueOf();
+    }
+
+    if (index instanceof Range || index instanceof Array) {
         if (value instanceof Array) {
-            if (index.length != value.length) {
-                throw new RangeError('Dimension mismatch (' + index.length+ ' != ' +
-                    value.length + ')');
+            if (size(index) != value.length) {
+                throw new RangeError('Dimension mismatch ' +
+                    '(' + size(index) + ' != ' + value.length + ')');
             }
 
             index.forEach(function (v, i) {
-                me._set(v, value[i]);
+                 me._set(v, value[i]);
             });
         }
         else {
-            this.set(index, [value]);
+            index.forEach(function (v) {
+                me._set(v, value);
+            });
         }
     }
     else {
+        // index is a scalar
         if (value instanceof Array) {
+            // try as two arrays
             this.set([index], value);
         }
         else {
+            // set single value
             this._set(index, value);
         }
     }
@@ -2139,9 +2429,6 @@ Vector.prototype.set = function (index, value) {
  * @private
  */
 Vector.prototype._set = function (index, value) {
-    if (!(this._data instanceof Array)) {
-        this._data = [this._data];
-    }
     if (index > this._data.length) {
         this.resize(index);
     }
@@ -2173,16 +2460,11 @@ Vector.prototype.size = function () {
  * @return {* | null} scalar
  */
 Vector.prototype.toScalar = function () {
-    var value = this._data;
-    while (value instanceof Array && value.length == 1) {
-        value = value[0];
-    }
-
-    if (value instanceof Array) {
-        return null;
+    if (this._data.length == 1) {
+        return this._data[0];
     }
     else {
-        return value;
+        return null;
     }
 };
 
@@ -2191,11 +2473,7 @@ Vector.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Vector.prototype.isScalar = function () {
-    var value = this._data;
-    while (value instanceof Array && value.length == 1) {
-        value = value[0];
-    }
-    return !(value instanceof Array);
+    return (this._data.length <= 1);
 };
 
 /**
@@ -2204,11 +2482,7 @@ Vector.prototype.isScalar = function () {
  * @returns {Array} array
  */
 Vector.prototype.toArray = function () {
-    var array = clone(this._data);
-    if (!(array instanceof Array)) {
-        array = [array];
-    }
-    return array;
+    return clone(this._data);
 };
 
 /**
@@ -4557,49 +4831,6 @@ eye.doc = {
     ]
 };
 /**
- * Create a range. range(start[, step], end) or start:end
- * @param {Number} start
- * @param {Number} [step]
- * @param {Number} end
- * @return {Number[]} range
- */
-function range (start, step, end) {
-    if (arguments.length != 1 && arguments.length != 2) {
-        throw newArgumentsError('range', arguments.length, 1);
-    }
-
-    var r = new Range(start, end, step);
-    return r.toArray();
-}
-
-math.range = range;
-
-/**
- * Function documentation
- */
-range.doc = {
-    'name': 'range',
-    'category': 'Matrix',
-    'syntax': [
-        'start : end',
-        'start : step : end',
-        'range(start, end)',
-        'range(start, step, end)'
-    ],
-    'description': 'Create a range.',
-    'examples': [
-        '1:10',
-        '0:10:100',
-        '0:0.2:1',
-        'range(20, -1, 10)',
-        'matrix = [1, 2, 3; 4, 5, 6; 7, 8, 9]',
-        'matrix(2:3, 1:2)'
-    ],
-    'seealso': [
-        'diag', 'eye', 'ones', 'size', 'transpose', 'zeros'
-    ]
-};
-/**
  * Calculate the size of a vector, matrix, or scalar. size(x)
  * @param {Number | Complex | Array} x
  * @return {Number | Complex | Array} res
@@ -5615,11 +5846,16 @@ function clone(x) {
         throw newArgumentsError('clone', arguments.length, 1);
     }
 
+    if (x == null) {
+        // null or undefined
+        return x;
+    }
+
     if (typeof(x.clone) === 'function') {
         return x.clone();
     }
 
-    if (isNumber(x) || isString(x) || x === null) {
+    if (isNumber(x) || isString(x)) {
         return x;
     }
 

@@ -24,8 +24,8 @@ assert.deepEqual(math.size('hello'), [5]);
 assert.deepEqual(math.size(''), [0]);
 assert.deepEqual(math.size(new Complex(2,3)), []);
 assert.deepEqual(math.size(null), []);
-assert.deepEqual(math.size(new Vector()), []);
-assert.deepEqual(math.size(new Matrix()), []);
+assert.deepEqual(math.size(new Vector()), [0]);
+assert.deepEqual(math.size(new Matrix()), [0]);
 assert.deepEqual(math.size(new Range(2,5)), [4]);
 // TODO: test whether math.size throws an error in case of invalid data or size
 

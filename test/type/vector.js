@@ -32,5 +32,9 @@ assert.deepEqual(v.valueOf(), [100]);
 var s = v.toScalar();
 assert.deepEqual(s, 100);
 
+v = new Vector();
+assert.deepEqual(v.size(), [0]);
+v.set(new math.Range(2,2,10), 7);
+assert.deepEqual(v.valueOf(), [0,0,7,0,7,0,7,0,7,0,7]);
 
 // TODO: extensively test Vector

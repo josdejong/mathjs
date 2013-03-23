@@ -8,11 +8,16 @@ function clone(x) {
         throw newArgumentsError('clone', arguments.length, 1);
     }
 
+    if (x == null) {
+        // null or undefined
+        return x;
+    }
+
     if (typeof(x.clone) === 'function') {
         return x.clone();
     }
 
-    if (isNumber(x) || isString(x) || x === null) {
+    if (isNumber(x) || isString(x)) {
         return x;
     }
 

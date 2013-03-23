@@ -4,26 +4,16 @@
  * array. A vector can be constructed as:
  *     var vector = new Vector(data)
  *
- * Vector contains the following functions:
- *     resize(size, defaultValue)
- *     get(index)
- *     get(indexes)
- *     set(index, value)
- *     set(indexes, values)
- *     size()
- *     clone()
- *     isScalar()
- *     toScalar()
- *     isArray()
- *     toArray()            // create an Array with the vector data cloned
- *     valueOf()            // get the internal data Array of the vector
+ * Vector contains the functions to resize, get and set values, get the size,
+ * clone the vector and to convert the vector to an array or scalar.
+ * The internal Array of the Vector can be accessed using the method valueOf.
  *
  * Example usage:
- *     var vector = new Vector([4, 5, 6, 7])
+ *     var vector = new Vector([4, 5, 6, 7]);
  *     vector.resize(6, -1);
  *     vector.set(2, 9);
  *     vector.valueOf();          // [4, 5, 9, 7, -1, -1]
- *     vector.get([3,4 ])         // [7, -1]
+ *     vector.get([3, 4])         // [7, -1]
  *
  * @param {Array | Matrix | Vector | Range} [data]    A one dimensional array
  */
@@ -41,9 +31,17 @@ function Vector(data) {
         // clone data from Vector or Range
         this._data = data.toArray();
     }
+    else if (data instanceof Array) {
+        // use array as is
+        this._data = data;
+    }
+    else if (data != null) {
+        // a scalar provided
+        this._data = [data];
+    }
     else {
-        // use data as is
-        this._data = data || null;
+        // nothing provided
+        this._data = [];
     }
 
     // verify whether the data is a one dimensional array
@@ -78,25 +76,18 @@ Vector.prototype.resize = function (size, defaultValue) {
             throw new TypeError('Positive integer expected as size in method resize');
         }
 
-        if (!(this._data instanceof Array) && size > 1) {
-            // vector currently contains a scalar. change that to an array
-            this._data = [this._data];
-            this.resize(size, defaultValue);
+        if(size > this._data.length) {
+            // enlarge
+            for (var i = this._data.length; i < size; i++) {
+                this._data[i] = defaultValue ? clone(defaultValue) : 0;
+            }
         }
         else {
-            if(size > this._data.length) {
-                // enlarge
-                for (var i = this._data.length; i < size; i++) {
-                    this._data[i] = defaultValue ? clone(defaultValue) : 0;
-                }
-            }
-            else {
-                // shrink
-                this._data.length = size;
-            }
-
-            this._size = [this._data.length];
+            // shrink
+            this._data.length = size;
         }
+
+        this._size = [this._data.length];
     }
 };
 
@@ -104,12 +95,23 @@ Vector.prototype.resize = function (size, defaultValue) {
  * get a value or a subset of the vector. Throws an RangeError when index is
  * out of range.
  * Indexes are zero-based.
- * @param {Number | Number[] | Range} index
- * @return {* | *[]} value
+ * @param {Number | Array | Matrix | Vector | Range} index
+ * @return {* | Array | Matrix | Vector | Range} value
  */
 Vector.prototype.get = function (index) {
     var me = this;
     index = index.valueOf();
+
+    if (index instanceof Matrix) {
+        if (!index.isVector()) {
+            throw new RangeError('Index must be a vector ' +
+                '(size: ' + format(index.size()) + ')');
+        }
+        index = index.toVector();
+    }
+    if (index instanceof Vector) {
+        index = index.valueOf();
+    }
 
     if (index instanceof Range || index instanceof Array) {
         return index.map(function (i) {
@@ -120,58 +122,61 @@ Vector.prototype.get = function (index) {
         if (!isNumber(index) || !isInteger(index) || index < 0) {
             throw new TypeError('Positive integer expected as index in method get');
         }
-        if (this._data instanceof Array) {
-            return this._data[index];
-        }
-        else if (index == 0) {
-            return this._data;
-        }
-        else {
+        if (index > this._data.length - 1) {
             throw new RangeError('Index out of range (' + index + ')');
         }
+        return this._data[index];
     }
 };
 
 /**
- * Set a value or a set of value in the vector.
+ * Set a value or a set of values in the vector.
  * Indexes are zero-based.
- * @param {Number | Number[]} index
- * @param {* | *[]} value
+ * @param {Number | Array | Matrix | Vector | Range} index
+ * @param {* | Array | Matrix | Vector | Range} value
  */
 Vector.prototype.set = function (index, value) {
     var me = this;
-    index = index.valueOf();
 
-    if (index instanceof Range) {
-        if (index.size() != value.length) {
-            throw new RangeError('Dimension mismatch (' + index.size() + ' != ' +
-                value.length + ')');
+    if (index instanceof Matrix) {
+        if (!index.isVector()) {
+            throw new RangeError('Index must be a vector ' +
+                '(size: ' + format(index.size()) + ')');
         }
-
-        index.forEach(function (v, i) {
-             me._set(v, value[i]);
-        });
+        index = index.toVector();
     }
-    else if (index instanceof Array) {
+    if (index instanceof Vector) {
+        index = index.valueOf();
+    }
+    if (value instanceof Matrix || value instanceof Vector || value instanceof Range) {
+        value = value.valueOf();
+    }
+
+    if (index instanceof Range || index instanceof Array) {
         if (value instanceof Array) {
-            if (index.length != value.length) {
-                throw new RangeError('Dimension mismatch (' + index.length+ ' != ' +
-                    value.length + ')');
+            if (size(index) != value.length) {
+                throw new RangeError('Dimension mismatch ' +
+                    '(' + size(index) + ' != ' + value.length + ')');
             }
 
             index.forEach(function (v, i) {
-                me._set(v, value[i]);
+                 me._set(v, value[i]);
             });
         }
         else {
-            this.set(index, [value]);
+            index.forEach(function (v) {
+                me._set(v, value);
+            });
         }
     }
     else {
+        // index is a scalar
         if (value instanceof Array) {
+            // try as two arrays
             this.set([index], value);
         }
         else {
+            // set single value
             this._set(index, value);
         }
     }
@@ -184,9 +189,6 @@ Vector.prototype.set = function (index, value) {
  * @private
  */
 Vector.prototype._set = function (index, value) {
-    if (!(this._data instanceof Array)) {
-        this._data = [this._data];
-    }
     if (index > this._data.length) {
         this.resize(index);
     }
@@ -218,16 +220,11 @@ Vector.prototype.size = function () {
  * @return {* | null} scalar
  */
 Vector.prototype.toScalar = function () {
-    var value = this._data;
-    while (value instanceof Array && value.length == 1) {
-        value = value[0];
-    }
-
-    if (value instanceof Array) {
-        return null;
+    if (this._data.length == 1) {
+        return this._data[0];
     }
     else {
-        return value;
+        return null;
     }
 };
 
@@ -236,11 +233,7 @@ Vector.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Vector.prototype.isScalar = function () {
-    var value = this._data;
-    while (value instanceof Array && value.length == 1) {
-        value = value[0];
-    }
-    return !(value instanceof Array);
+    return (this._data.length <= 1);
 };
 
 /**
@@ -249,11 +242,7 @@ Vector.prototype.isScalar = function () {
  * @returns {Array} array
  */
 Vector.prototype.toArray = function () {
-    var array = clone(this._data);
-    if (!(array instanceof Array)) {
-        array = [array];
-    }
-    return array;
+    return clone(this._data);
 };
 
 /**
