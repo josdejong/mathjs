@@ -46,8 +46,16 @@ assert.equal(b.valueOf()[2].re, 2);
 // test format
 assert.equal(math.format(2/7), '0.2857142857');
 assert.equal(math.format([[1,2],[3,4]]), '[[1, 2], [3, 4]]');
-assert.equal(math.format([[1,2],['hi',new math.Complex(2,3)]]), '[[1, 2], ["hi", 2 + 3i]]');
-// TODO: test format
+assert.equal(math.format([[1,2/7],['hi',new math.Complex(2,3)]]),
+    '[[1, 0.2857142857], ["hi", 2 + 3i]]');
+
+
+assert.equal(math.format('hello, $name!', {name: 'user'}), 'hello, user!');
+assert.equal(math.format('hello, $name.first $name.last!',
+    {name: {first: 'first', last: 'last'}}),
+    'hello, first last!');
+
+// TODO: test format extensively
 
 // TODO: test help
 // TODO: test import

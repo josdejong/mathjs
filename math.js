@@ -296,9 +296,6 @@ var util = (function () {
         }
     };
 
-
-    util.array = {};
-
     /**
      * Recursively calculate the size of a multi dimensional array.
      * @param {Array} x
@@ -310,7 +307,12 @@ var util = (function () {
             var sizeX = x.length;
             if (sizeX) {
                 var size0 = size(x[0]);
-                return [sizeX].concat(size0);
+                if (size0[0] == 0) {
+                    return [0].concat(size0);
+                }
+                else {
+                    return [sizeX].concat(size0);
+                }
             }
             else {
                 return [sizeX];
@@ -340,26 +342,16 @@ var util = (function () {
     };
 
     /**
-     * Verify whether each element in a multi dimensional array has the correct size
+     * Recursively validate whether each element in a multi dimensional array
+     * has a size corresponding to the provided size array.
      * @param {Array} array    Array to be validated
-     * @param {Number[]} size  Array with dimensions
-     * @param {Number} [dim]   Current dimension
+     * @param {Number[]} size  Array with the size of each dimension
+     * @param {Number} dim   Current dimension
      * @throws RangeError
      */
-    util.validate = function validate(array, size, dim) {
-        if (size.length == 0) {
-            // scalar
-            if (array instanceof Array) {
-                throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
-            }
-            return;
-        }
-
-        var i,
-            len = array.length;
-        if (!dim) {
-            dim = 0;
-        }
+    function _validate(array, size, dim) {
+        var i;
+        var len = array.length;
 
         if (len != size[dim]) {
             throw new RangeError('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
@@ -374,7 +366,7 @@ var util = (function () {
                     throw new RangeError('Dimension mismatch ' +
                         '(' + (size.length - 1) + ' < ' + size.length + ')');
                 }
-                validate(array[i], size, dimNext);
+                _validate(array[i], size, dimNext);
             }
         }
         else {
@@ -385,6 +377,65 @@ var util = (function () {
                         '(' + (size.length + 1) + ' > ' + size.length + ')');
                 }
             }
+        }
+    }
+
+    /**
+     * Recursively validate whether each array in a multi dimensional array
+     * is empty (zero size) and has the correct number dimensions.
+     * @param {Array} array    Array to be validated
+     * @param {Number[]} size  Array with the size of each dimension
+     * @param {Number} dim   Current dimension
+     * @throws RangeError
+     */
+    function _validateEmpty(array, size, dim) {
+        if (dim < size.length - 1) {
+            var child = array[0];
+            if (array.length != 1 || !(child instanceof Array)) {
+                throw new RangeError('Dimension mismatch ' + '(' + array.length + ' > 0)');
+            }
+
+            _validateEmpty(child, size, dim + 1);
+        }
+        else {
+            // last dimension. test if empty
+            if (array.length) {
+                throw new RangeError('Dimension mismatch ' + '(' + array.length + ' > 0)');
+            }
+        }
+    }
+
+    /**
+     * Validate whether each element in a multi dimensional array has
+     * a size corresponding to the provided size array.
+     * @param {Array} array    Array to be validated
+     * @param {Number[]} size  Array with the size of each dimension
+     * @throws RangeError
+     */
+    util.validate = function validate(array, size) {
+        var isScalar = (size.length == 0);
+        if (isScalar) {
+            // scalar
+            if (array instanceof Array) {
+                throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
+            }
+            return;
+        }
+
+        var hasZeros = (size.indexOf(0) != -1);
+        if (hasZeros) {
+            // array where all dimensions are zero
+            size.forEach(function (value) {
+                if (value != 0) {
+                    throw new RangeError('Invalid size, all dimensions must be ' +
+                        'either zero or non-zero (size: ' + formatArray(size) + ')');
+                }
+            });
+
+            _validateEmpty(array, size, 0);
+        }
+        else {
+            _validate(array, size, 0);
         }
     };
 
@@ -5613,8 +5664,16 @@ clone.doc = {
 /**
  * Format a value of any type into a string. Interpolate values into the string.
  * Usage:
- *     math.format(array);
- *     math.format('Hello $name! The date is $date', {name: 'user', date: new Date()});
+ *     math.format(value)
+ *     math.format(template, object)
+ *
+ * Example usage:
+ *     math.format(2/7);                // '0.2857142857'
+ *     math.format(new Complex(2, 3));  // '2 + 3i'
+ *     math.format('Hello $name! The date is $date', {
+ *         name: 'user',
+ *         date: new Date().toISOString().substring(0, 10)
+ *     });                              // 'hello user! The date is 2013-03-23'
  *
  * @param {String} template
  * @param {Object} values

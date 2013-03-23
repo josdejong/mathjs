@@ -1,8 +1,16 @@
 /**
  * Format a value of any type into a string. Interpolate values into the string.
  * Usage:
- *     math.format(array);
- *     math.format('Hello $name! The date is $date', {name: 'user', date: new Date()});
+ *     math.format(value)
+ *     math.format(template, object)
+ *
+ * Example usage:
+ *     math.format(2/7);                // '0.2857142857'
+ *     math.format(new Complex(2, 3));  // '2 + 3i'
+ *     math.format('Hello $name! The date is $date', {
+ *         name: 'user',
+ *         date: new Date().toISOString().substring(0, 10)
+ *     });                              // 'hello user! The date is 2013-03-23'
  *
  * @param {String} template
  * @param {Object} values
