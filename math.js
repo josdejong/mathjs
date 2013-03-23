@@ -114,7 +114,7 @@ var util = (function () {
                 if (i != 0) {
                     str += ', ';
                 }
-                str += formatArray(array[i]);
+                str += util.formatArray(array[i]);
             }
             str += ']';
             return str;
@@ -136,7 +136,7 @@ var util = (function () {
 
         if (s.length != 2) {
             throw new RangeError('Array must be two dimensional (size: ' +
-                formatArray(s) + ')');
+                util.formatArray(s) + ')');
         }
 
         var rows = s[0];
@@ -160,6 +160,46 @@ var util = (function () {
         str += ']';
 
         return str;
+    };
+
+    /**
+     * Convert function arguments to an array. Arguments can have the following
+     * signature:
+     *     fn()
+     *     fn(n)
+     *     fn(m, n, p, ...)
+     *     fn([m, n, p, ...])
+     * @param {...Number | Array | Matrix | Vector} args
+     * @returns {Array} array
+     */
+    util.argsToArray = function argsToArray(args) {
+        var array;
+        if (args.length == 0) {
+            // fn()
+            array = [];
+        }
+        else if (args.length == 1) {
+            // fn(n)
+            // fn([m, n, p, ...])
+            array = args[0];
+            if (array instanceof Matrix) {
+                array = array.toVector();
+            }
+            if (array instanceof Vector || array instanceof Range) {
+                array = array.valueOf();
+            }
+            if (!(array instanceof Array)) {
+                array = [array];
+            }
+        }
+        else {
+            // fn(m, n, p, ...)
+            array = [];
+            for (var i = 0; i < args.length; i++) {
+                array[i] = args[i];
+            }
+        }
+        return array;
     };
 
     /**
@@ -428,7 +468,7 @@ var util = (function () {
             size.forEach(function (value) {
                 if (value != 0) {
                     throw new RangeError('Invalid size, all dimensions must be ' +
-                        'either zero or non-zero (size: ' + formatArray(size) + ')');
+                        'either zero or non-zero (size: ' + util.formatArray(size) + ')');
                 }
             });
 
@@ -513,7 +553,7 @@ var util = (function () {
         size.forEach(function (value) {
             if (!isNumber(value) || !isInteger(value) || value < 0) {
                 throw new TypeError('Invalid size, must contain positive integers ' +
-                    '(size: ' + formatArray(size) + ')');
+                    '(size: ' + util.formatArray(size) + ')');
             }
         });
 
@@ -523,7 +563,7 @@ var util = (function () {
             size.forEach(function (value) {
                 if (value != 0) {
                     throw new RangeError('Invalid size, all dimensions must be ' +
-                        'either zero or non-zero (size: ' + formatArray(size) + ')');
+                        'either zero or non-zero (size: ' + util.formatArray(size) + ')');
                 }
             });
         }
@@ -4726,32 +4766,23 @@ re.doc = {
 
 /**
  * Create an identity matrix with size m x n, eye(m [, n])
- * @param {Number} m
- * @param {Number} [n]
- * @return {Number | Array} res
+ * @param {...Number | Matrix | Vector | Array} size
+ * @return {Matrix} matrix
  */
-function eye (m, n) {
-    var rows, cols;
-    var num = arguments.length;
-    if (num < 0 || num > 2) {
+function eye (size) {
+    var args = util.argsToArray(arguments);
+    if (args.length == 0) {
+        args = [1, 1];
+    }
+    else if (args.length == 1) {
+        args[1] = args[0];
+    }
+    else if (args.length > 2) {
         throw newArgumentsError('eye', num, 0, 2);
     }
 
-    if (num == 0) {
-        return 1;
-    }
-
-    if (num == 1) {
-        // TODO: support an array as first argument
-        // TODO: support a matrix as first argument
-
-        rows = m;
-        cols = m;
-    }
-    else if (num == 2) {
-        rows = m;
-        cols = n;
-    }
+    var rows = args[0],
+        cols = args[1];
 
     if (!isNumber(rows) || !isInteger(rows) || rows < 1) {
         throw new Error('Parameters in function eye must be positive integers');
@@ -4762,23 +4793,18 @@ function eye (m, n) {
         }
     }
 
-    // TODO: use zeros(m, n) instead, then fill the diagonal with ones
-    var res = [];
-    for (var r = 0; r < rows; r++) {
-        var row = [];
-        for (var c = 0; c < cols; c++) {
-            row[c] = 0;
-        }
-        res[r] = row;
-    }
+    // create and args the matrix
+    var matrix = new Matrix();
+    matrix.resize(args);
 
     // fill in ones on the diagonal
-    var min = Math.min(rows, cols);
+    var min = math.min(args);
+    var data = matrix.valueOf();
     for (var d = 0; d < min; d++) {
-        res[d][d] = 1;
+        data[d][d] = 1;
     }
 
-    return res;
+    return matrix;
 }
 
 math.eye = eye;
@@ -4805,6 +4831,61 @@ eye.doc = {
     ],
     'seealso': [
         'diag', 'ones', 'range', 'size', 'transpose', 'zeros'
+    ]
+};
+/**
+ * @constructor ones
+ * ones(n)
+ * ones(m, n)
+ * ones([m, n])
+ * ones([m, n, p, ...])
+ * returns a matrix filled with ones
+ * @param {...Number | Array} size
+ * @return {Matrix} matrix
+ */
+function ones (size) {
+    var args = util.argsToArray(arguments);
+
+    if (args.length == 0) {
+        args = [1, 1];
+    }
+    else if (args.length == 1) {
+        args[1] = args[0];
+    }
+
+    // create and size the matrix
+    var matrix = new Matrix();
+    var defaultValue = 1;
+    matrix.resize(args, defaultValue);
+    return matrix;
+}
+
+math.ones = ones;
+
+/**
+ * Function documentation
+ */
+ones.doc = {
+    'name': 'ones',
+    'category': 'Matrix',
+    'syntax': [
+        'ones(n)',
+        'ones(m, n)',
+        'ones(m, n, p, ...)',
+        'ones([m, n])',
+        'ones([m, n, p, ...])',
+        'ones'
+    ],
+    'description': 'Create a matrix containing ones.',
+    'examples': [
+        'ones(3)',
+        'ones(3, 5)',
+        'ones([2,3]) * 4.5',
+        'a = [1, 2, 3; 4, 5, 6]',
+        'ones(size(a))'
+    ],
+    'seealso': [
+        'diag', 'eye', 'range', 'size', 'transpose', 'zeros'
     ]
 };
 /**
@@ -4862,6 +4943,59 @@ size.doc = {
     ],
     'seealso': [
         'diag', 'eye', 'ones', 'range', 'transpose', 'zeros'
+    ]
+};
+/**
+ * @constructor zeros
+ * zeros(n)
+ * zeros(m, n)
+ * zeros([m, n])
+ * zeros([m, n, p, ...])
+ * returns a matrix filled with zeros
+ * @param {...Number | Array} size
+ * @return {Matrix} matrix
+ */
+function zeros (size) {
+    var args = util.argsToArray(arguments);
+
+    if (args.length == 0) {
+        args = [1, 1];
+    }
+    else if (args.length == 1) {
+        args[1] = args[0];
+    }
+
+    // create and size the matrix
+    var matrix = new Matrix();
+    matrix.resize(args);
+    return matrix;
+}
+
+math.zeros = zeros;
+
+/**
+ * Function documentation
+ */
+zeros.doc = {
+    'name': 'zeros',
+    'category': 'Matrix',
+    'syntax': [
+        'zeros(n)',
+        'zeros(m, n)',
+        'zeros(m, n, p, ...)',
+        'zeros([m, n])',
+        'zeros([m, n, p, ...])',
+        'zeros'
+    ],
+    'description': 'Create a matrix containing zeros.',
+    'examples': [
+        'zeros(3)',
+        'zeros(3, 5)',
+        'a = [1, 2, 3; 4, 5, 6]',
+        'zeros(size(a))'
+    ],
+    'seealso': [
+        'diag', 'eye', 'ones', 'range', 'size', 'transpose'
     ]
 };
 /**

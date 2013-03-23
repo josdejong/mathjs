@@ -315,6 +315,13 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.arg(x)
 - math.conj(x)
 
+### Numerics
+
+- math.eye(m, n, p, ...)
+- math.ones(m, n, p, ...)
+- math.size(x)
+- math.zeros(m, n, p, ...)
+
 ### Probability
 
 - math.factorial(x)

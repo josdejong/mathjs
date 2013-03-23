@@ -47,7 +47,7 @@ var util = (function () {
                 if (i != 0) {
                     str += ', ';
                 }
-                str += formatArray(array[i]);
+                str += util.formatArray(array[i]);
             }
             str += ']';
             return str;
@@ -69,7 +69,7 @@ var util = (function () {
 
         if (s.length != 2) {
             throw new RangeError('Array must be two dimensional (size: ' +
-                formatArray(s) + ')');
+                util.formatArray(s) + ')');
         }
 
         var rows = s[0];
@@ -93,6 +93,46 @@ var util = (function () {
         str += ']';
 
         return str;
+    };
+
+    /**
+     * Convert function arguments to an array. Arguments can have the following
+     * signature:
+     *     fn()
+     *     fn(n)
+     *     fn(m, n, p, ...)
+     *     fn([m, n, p, ...])
+     * @param {...Number | Array | Matrix | Vector} args
+     * @returns {Array} array
+     */
+    util.argsToArray = function argsToArray(args) {
+        var array;
+        if (args.length == 0) {
+            // fn()
+            array = [];
+        }
+        else if (args.length == 1) {
+            // fn(n)
+            // fn([m, n, p, ...])
+            array = args[0];
+            if (array instanceof Matrix) {
+                array = array.toVector();
+            }
+            if (array instanceof Vector || array instanceof Range) {
+                array = array.valueOf();
+            }
+            if (!(array instanceof Array)) {
+                array = [array];
+            }
+        }
+        else {
+            // fn(m, n, p, ...)
+            array = [];
+            for (var i = 0; i < args.length; i++) {
+                array[i] = args[i];
+            }
+        }
+        return array;
     };
 
     /**
@@ -361,7 +401,7 @@ var util = (function () {
             size.forEach(function (value) {
                 if (value != 0) {
                     throw new RangeError('Invalid size, all dimensions must be ' +
-                        'either zero or non-zero (size: ' + formatArray(size) + ')');
+                        'either zero or non-zero (size: ' + util.formatArray(size) + ')');
                 }
             });
 
@@ -446,7 +486,7 @@ var util = (function () {
         size.forEach(function (value) {
             if (!isNumber(value) || !isInteger(value) || value < 0) {
                 throw new TypeError('Invalid size, must contain positive integers ' +
-                    '(size: ' + formatArray(size) + ')');
+                    '(size: ' + util.formatArray(size) + ')');
             }
         });
 
@@ -456,7 +496,7 @@ var util = (function () {
             size.forEach(function (value) {
                 if (value != 0) {
                     throw new RangeError('Invalid size, all dimensions must be ' +
-                        'either zero or non-zero (size: ' + formatArray(size) + ')');
+                        'either zero or non-zero (size: ' + util.formatArray(size) + ')');
                 }
             });
         }
