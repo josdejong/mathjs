@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.5.0-SNAPSHOT
- * @date    2013-03-23
+ * @date    2013-03-24
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -1126,6 +1126,7 @@ math.Matrix = Matrix;
  * @param {Array | Vector | Matrix} index
  */
 Matrix.prototype.get = function (index) {
+    // TODO: support syntax Matrix.get(m,n,p, ...)
     // TODO: support getting a range of values
 
     if (index instanceof Matrix) {
@@ -1170,6 +1171,7 @@ Matrix.prototype.get = function (index) {
  * @param {*} value
  */
 Matrix.prototype.set = function (index, value) {
+    // TODO: support syntax Matrix.get(m,n,p, ..., value)
     // TODO: support setting a range of values
 
     if (index instanceof Matrix) {
@@ -1259,9 +1261,12 @@ Matrix.prototype.size = function () {
     return this._size;
 };
 
+// TODO: implement Matrix.map
+// TODO: implement Matrix.forEach
+
 /**
- * Get the scalar value of the matrix. Will return null if the matrix is no
- * scalar value
+ * Create a scalar with a copy of the data of the Matrix
+ * Will return null if the matrix does not consist of a scalar value
  * @return {* | null} scalar
  */
 Matrix.prototype.toScalar = function () {
@@ -1274,7 +1279,7 @@ Matrix.prototype.toScalar = function () {
         return null;
     }
     else {
-        return scalar;
+        return clone(scalar);
     }
 };
 
@@ -1289,10 +1294,11 @@ Matrix.prototype.isScalar = function () {
 };
 
 /**
- * Get the matrix contents as vector.
+ * Create a Vector with a copy of the data of the Matrix
+ * Returns null if the Matrix does not contain a vector
+ *
  * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
  * dimensions where maximum one of the dimensions has a size larger than 1.
- * Returns null if the Matrix is no vector
  * return {Vector | null} vector
  */
 Matrix.prototype.toVector = function () {
@@ -1316,7 +1322,7 @@ Matrix.prototype.toVector = function () {
         var vector = [];
         for (var i = 0, iMax = this._size[dim]; i < iMax; i++) {
             index[dim] = i;
-            vector[i] = this.get(index);
+            vector[i] = clone(this.get(index));
         }
         return new Vector(vector);
     }
@@ -1327,7 +1333,7 @@ Matrix.prototype.toVector = function () {
 };
 
 /**
- * Test if the matrix is a vector.
+ * Test if the matrix contains a vector.
  * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
  * dimensions where maximum one of the dimensions has a size larger than 1.
  * return {boolean} isVector
@@ -1343,8 +1349,7 @@ Matrix.prototype.isVector = function () {
 };
 
 /**
- * Get the matrix contents as an Array.
- * The returned Array is a clone of the original matrix data
+ * Create an Array with a copy of the data of the Matrix
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {
@@ -1526,7 +1531,15 @@ Range.prototype.map = function (callback) {
 };
 
 /**
- * Get the range as a vector
+ * Create a Matrix with a copy of the Ranges data
+ * @return {Matrix} matrix
+ */
+Vector.prototype.toMatrix = function () {
+    return new Matrix(this.toArray());
+};
+
+/**
+ * Create a Vector with a copy of the Ranges data
  * @return {Vector} vector
  */
 Range.prototype.toVector = function () {
@@ -1534,7 +1547,7 @@ Range.prototype.toVector = function () {
 };
 
 /**
- * Get the range as an array
+ * Create an Array with a copy of the Ranges data
  * @returns {Array} array
  */
 Range.prototype.toArray = function () {
@@ -1546,7 +1559,7 @@ Range.prototype.toArray = function () {
 };
 
 /**
- * Get the primitive value of the Range: a one dimensional array
+ * Get the primitive value of the Range, a one dimensional array
  * @returns {Array} array
  */
 Range.prototype.valueOf = function () {
@@ -2471,14 +2484,16 @@ Vector.prototype.size = function () {
     return this._size;
 };
 
+// TODO: implement Vector.map
+// TODO: implement Vector.forEach
+
 /**
- * Get the scalar value of the vector. Will return null if the vector is no
- * scalar value
+ * Create a Scalar with a copy of the Vectors data
  * @return {* | null} scalar
  */
 Vector.prototype.toScalar = function () {
     if (this._data.length == 1) {
-        return this._data[0];
+        return clone(this._data[0]);
     }
     else {
         return null;
@@ -2494,8 +2509,15 @@ Vector.prototype.isScalar = function () {
 };
 
 /**
- * Get the vector contents as an Array. The array will contain a clone of
- * the original vector data
+ * Create a Matrix with a copy of the Vectors data
+ * @return {Matrix} matrix
+ */
+Vector.prototype.toMatrix = function () {
+    return new Matrix(this.toArray());
+};
+
+/**
+ * Create an Array with a copy of the Vectors data
  * @returns {Array} array
  */
 Vector.prototype.toArray = function () {
@@ -4765,6 +4787,116 @@ re.doc = {
 };
 
 /**
+ * Create a diagonal matrix or retrieve the diagonal of a matrix
+ * diag(v)
+ * diag(v, k)
+ * diag(X)
+ * diag(X, k)
+ * @param {Number | Matrix | Vector | Array} x
+ * @param {Number} [k]
+ * @return {Matrix | Vector} matrix
+ */
+function diag (x, k) {
+    var data, vector, i, iMax;
+
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('diag', arguments.length, 1, 2);
+    }
+
+    if (k) {
+        if (!isNumber(k) || !isInteger(k)) {
+            throw new TypeError ('Second parameter in function diag must be an integer');
+        }
+    }
+    else {
+        k = 0;
+    }
+    var kSuper = k > 0 ? k : 0;
+    var kSub = k < 0 ? -k : 0;
+
+    if (x instanceof Matrix) {
+        if (x.isVector()) {
+            x = x.toVector();
+        }
+    }
+    else if (x instanceof Vector) {
+        // nothing to do
+    }
+    else if (x instanceof Range) {
+        x = x.toVector();
+    }
+    else if (x instanceof Array) {
+        x = new Matrix(x);
+        if (x.isVector()) {
+            x = x.toVector();
+        }
+    }
+    else {
+        x = new Matrix(x);
+        if (x.isVector()) {
+            x = x.toVector();
+        }
+    }
+
+    if (x instanceof Vector) {
+        // create diagonal matrix
+        vector = x.valueOf();
+        var matrix = new Matrix();
+        matrix.resize([vector.length + kSub, vector.length + kSuper]);
+        data = matrix.valueOf();
+        iMax = vector.length;
+        for (i = 0; i < iMax; i++) {
+            data[i + kSub][i + kSuper] = clone(vector[i]);
+        }
+        return matrix;
+    }
+    else {
+        // get diagonal from matrix
+        var s = x.size();
+        if (s.length != 2) {
+            throw new RangeError('Matrix for function diag must be 2 dimensional');
+        }
+        vector = [];
+        data = x.valueOf();
+        iMax = Math.min(s[0] - kSub, s[1] - kSuper);
+        for (i = 0; i < iMax; i++) {
+            vector[i] = clone(data[i + kSub][i + kSuper]);
+        }
+        return new Vector(vector);
+    }
+}
+
+math.diag = diag;
+
+/**
+ * Function documentation
+ */
+diag.doc = {
+    'name': 'diag',
+    'category': 'Matrix',
+    'syntax': [
+        'diag(x)',
+        'diag(x, k)'
+    ],
+    'description': 'Create a diagonal matrix or retrieve the diagonal ' +
+        'of a matrix. When x is a vector, a matrix with the vector values ' +
+        'on the diagonal will be returned. When x is a matrix, ' +
+        'a vector with the diagonal values of the matrix is returned.' +
+        'When k is provided, the k-th diagonal will be ' +
+        'filled in or retrieved, if k is positive, the values are placed ' +
+        'on the super diagonal. When k is negative, the values are placed ' +
+        'on the sub diagonal.',
+    'examples': [
+        'diag(1:4)',
+        'diag(1:4, 1)',
+        'a = [1, 2, 3; 4, 5, 6; 7, 8, 9]',
+        'diag(a)'
+    ],
+    'seealso': [
+        'eye', 'ones', 'range', 'size', 'transpose', 'zeros'
+    ]
+};
+/**
  * Create an identity matrix with size m x n, eye(m [, n])
  * @param {...Number | Matrix | Vector | Array} size
  * @return {Matrix} matrix
@@ -4814,7 +4946,7 @@ math.eye = eye;
  */
 eye.doc = {
     'name': 'eye',
-    'category': 'Matrix',
+    'category': 'Numerics',
     'syntax': [
         'eye(n)',
         'eye(m, n)',
@@ -4867,7 +4999,7 @@ math.ones = ones;
  */
 ones.doc = {
     'name': 'ones',
-    'category': 'Matrix',
+    'category': 'Numerics',
     'syntax': [
         'ones(n)',
         'ones(m, n)',
@@ -4929,7 +5061,7 @@ math.size = size;
  */
 size.doc = {
     'name': 'size',
-    'category': 'Matrix',
+    'category': 'Numerics',
     'syntax': [
         'size(x)'
     ],
@@ -4978,7 +5110,7 @@ math.zeros = zeros;
  */
 zeros.doc = {
     'name': 'zeros',
-    'category': 'Matrix',
+    'category': 'Numerics',
     'syntax': [
         'zeros(n)',
         'zeros(m, n)',
@@ -6463,28 +6595,28 @@ Constant.prototype.toString = function() {
 };
 
 /**
- * @constructor math.parser.node.ArrayNode
+ * @constructor math.parser.node.MatrixNode
  * Holds an n-dimensional array with nodes
  * @param {Array} nodes
  * @extends {Node}
  */
-function ArrayNode(nodes) {
+function MatrixNode(nodes) {
     this.nodes = nodes || [];
 }
 
-ArrayNode.prototype = new Node();
+MatrixNode.prototype = new Node();
 
-math.parser.node.ArrayNode = ArrayNode;
+math.parser.node.MatrixNode = MatrixNode;
 
 (function () {
     /**
      * Evaluate the array
-     * @return {*[]} results
+     * @return {Matrix} results
      * @override
      */
-    ArrayNode.prototype.eval = function() {
+    MatrixNode.prototype.eval = function() {
         // recursively evaluate the nodes in the array
-        return evalArray(this.nodes);
+        return new Matrix(evalArray(this.nodes));
     };
 
     /**
@@ -6510,7 +6642,7 @@ math.parser.node.ArrayNode = ArrayNode;
      * @return {String} str
      * @override
      */
-    ArrayNode.prototype.toString = function() {
+    MatrixNode.prototype.toString = function() {
         return formatArray(this.nodes);
     };
 
@@ -8155,12 +8287,12 @@ Parser.prototype.parse_matrix = function (scope) {
             }
 
             this.getToken();
-            array = new ArrayNode(params);
+            array = new MatrixNode(params);
         }
         else {
             // this is an empty matrix "[ ]"
             this.getToken();
-            array = new ArrayNode([]);
+            array = new MatrixNode([]);
         }
 
         // parse arguments
