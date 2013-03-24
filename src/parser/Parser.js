@@ -1033,12 +1033,12 @@ Parser.prototype.parse_matrix = function (scope) {
             }
 
             this.getToken();
-            array = new ArrayNode(params);
+            array = new MatrixNode(params);
         }
         else {
             // this is an empty matrix "[ ]"
             this.getToken();
-            array = new ArrayNode([]);
+            array = new MatrixNode([]);
         }
 
         // parse arguments

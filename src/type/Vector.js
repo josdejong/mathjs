@@ -214,14 +214,16 @@ Vector.prototype.size = function () {
     return this._size;
 };
 
+// TODO: implement Vector.map
+// TODO: implement Vector.forEach
+
 /**
- * Get the scalar value of the vector. Will return null if the vector is no
- * scalar value
+ * Create a Scalar with a copy of the Vectors data
  * @return {* | null} scalar
  */
 Vector.prototype.toScalar = function () {
     if (this._data.length == 1) {
-        return this._data[0];
+        return clone(this._data[0]);
     }
     else {
         return null;
@@ -237,8 +239,15 @@ Vector.prototype.isScalar = function () {
 };
 
 /**
- * Get the vector contents as an Array. The array will contain a clone of
- * the original vector data
+ * Create a Matrix with a copy of the Vectors data
+ * @return {Matrix} matrix
+ */
+Vector.prototype.toMatrix = function () {
+    return new Matrix(this.toArray());
+};
+
+/**
+ * Create an Array with a copy of the Vectors data
  * @returns {Array} array
  */
 Vector.prototype.toArray = function () {

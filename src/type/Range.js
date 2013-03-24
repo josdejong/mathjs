@@ -134,7 +134,15 @@ Range.prototype.map = function (callback) {
 };
 
 /**
- * Get the range as a vector
+ * Create a Matrix with a copy of the Ranges data
+ * @return {Matrix} matrix
+ */
+Vector.prototype.toMatrix = function () {
+    return new Matrix(this.toArray());
+};
+
+/**
+ * Create a Vector with a copy of the Ranges data
  * @return {Vector} vector
  */
 Range.prototype.toVector = function () {
@@ -142,7 +150,7 @@ Range.prototype.toVector = function () {
 };
 
 /**
- * Get the range as an array
+ * Create an Array with a copy of the Ranges data
  * @returns {Array} array
  */
 Range.prototype.toArray = function () {
@@ -154,7 +162,7 @@ Range.prototype.toArray = function () {
 };
 
 /**
- * Get the primitive value of the Range: a one dimensional array
+ * Get the primitive value of the Range, a one dimensional array
  * @returns {Array} array
  */
 Range.prototype.valueOf = function () {

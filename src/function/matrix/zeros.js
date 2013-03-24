@@ -31,7 +31,7 @@ math.zeros = zeros;
  */
 zeros.doc = {
     'name': 'zeros',
-    'category': 'Matrix',
+    'category': 'Numerics',
     'syntax': [
         'zeros(n)',
         'zeros(m, n)',

@@ -1,26 +1,26 @@
 /**
- * @constructor math.parser.node.ArrayNode
+ * @constructor math.parser.node.MatrixNode
  * Holds an n-dimensional array with nodes
  * @param {Array} nodes
  * @extends {Node}
  */
-function ArrayNode(nodes) {
+function MatrixNode(nodes) {
     this.nodes = nodes || [];
 }
 
-ArrayNode.prototype = new Node();
+MatrixNode.prototype = new Node();
 
-math.parser.node.ArrayNode = ArrayNode;
+math.parser.node.MatrixNode = MatrixNode;
 
 (function () {
     /**
      * Evaluate the array
-     * @return {*[]} results
+     * @return {Matrix} results
      * @override
      */
-    ArrayNode.prototype.eval = function() {
+    MatrixNode.prototype.eval = function() {
         // recursively evaluate the nodes in the array
-        return evalArray(this.nodes);
+        return new Matrix(evalArray(this.nodes));
     };
 
     /**
@@ -46,7 +46,7 @@ math.parser.node.ArrayNode = ArrayNode;
      * @return {String} str
      * @override
      */
-    ArrayNode.prototype.toString = function() {
+    MatrixNode.prototype.toString = function() {
         return formatArray(this.nodes);
     };
 

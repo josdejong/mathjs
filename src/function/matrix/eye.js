@@ -48,7 +48,7 @@ math.eye = eye;
  */
 eye.doc = {
     'name': 'eye',
-    'category': 'Matrix',
+    'category': 'Numerics',
     'syntax': [
         'eye(n)',
         'eye(m, n)',

@@ -32,7 +32,7 @@ math.ones = ones;
  */
 ones.doc = {
     'name': 'ones',
-    'category': 'Matrix',
+    'category': 'Numerics',
     'syntax': [
         'ones(n)',
         'ones(m, n)',

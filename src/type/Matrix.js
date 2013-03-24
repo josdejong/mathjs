@@ -53,6 +53,7 @@ math.Matrix = Matrix;
  * @param {Array | Vector | Matrix} index
  */
 Matrix.prototype.get = function (index) {
+    // TODO: support syntax Matrix.get(m,n,p, ...)
     // TODO: support getting a range of values
 
     if (index instanceof Matrix) {
@@ -97,6 +98,7 @@ Matrix.prototype.get = function (index) {
  * @param {*} value
  */
 Matrix.prototype.set = function (index, value) {
+    // TODO: support syntax Matrix.get(m,n,p, ..., value)
     // TODO: support setting a range of values
 
     if (index instanceof Matrix) {
@@ -186,9 +188,12 @@ Matrix.prototype.size = function () {
     return this._size;
 };
 
+// TODO: implement Matrix.map
+// TODO: implement Matrix.forEach
+
 /**
- * Get the scalar value of the matrix. Will return null if the matrix is no
- * scalar value
+ * Create a scalar with a copy of the data of the Matrix
+ * Will return null if the matrix does not consist of a scalar value
  * @return {* | null} scalar
  */
 Matrix.prototype.toScalar = function () {
@@ -201,7 +206,7 @@ Matrix.prototype.toScalar = function () {
         return null;
     }
     else {
-        return scalar;
+        return clone(scalar);
     }
 };
 
@@ -216,10 +221,11 @@ Matrix.prototype.isScalar = function () {
 };
 
 /**
- * Get the matrix contents as vector.
+ * Create a Vector with a copy of the data of the Matrix
+ * Returns null if the Matrix does not contain a vector
+ *
  * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
  * dimensions where maximum one of the dimensions has a size larger than 1.
- * Returns null if the Matrix is no vector
  * return {Vector | null} vector
  */
 Matrix.prototype.toVector = function () {
@@ -243,7 +249,7 @@ Matrix.prototype.toVector = function () {
         var vector = [];
         for (var i = 0, iMax = this._size[dim]; i < iMax; i++) {
             index[dim] = i;
-            vector[i] = this.get(index);
+            vector[i] = clone(this.get(index));
         }
         return new Vector(vector);
     }
@@ -254,7 +260,7 @@ Matrix.prototype.toVector = function () {
 };
 
 /**
- * Test if the matrix is a vector.
+ * Test if the matrix contains a vector.
  * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
  * dimensions where maximum one of the dimensions has a size larger than 1.
  * return {boolean} isVector
@@ -270,8 +276,7 @@ Matrix.prototype.isVector = function () {
 };
 
 /**
- * Get the matrix contents as an Array.
- * The returned Array is a clone of the original matrix data
+ * Create an Array with a copy of the data of the Matrix
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {

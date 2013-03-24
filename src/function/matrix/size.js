@@ -39,7 +39,7 @@ math.size = size;
  */
 size.doc = {
     'name': 'size',
-    'category': 'Matrix',
+    'category': 'Numerics',
     'syntax': [
         'size(x)'
     ],
