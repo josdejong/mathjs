@@ -36,8 +36,8 @@ function Vector(data) {
         this._data = data;
     }
     else if (data != null) {
-        // a scalar provided
-        this._data = [data];
+        // unsupported type
+        throw new TypeError('Unsupported type of data (' + math.typeof(data) + ')');
     }
     else {
         // nothing provided
@@ -52,7 +52,7 @@ function Vector(data) {
     }
 }
 
-math.Vector = Vector;
+math.type.Vector = Vector;
 
 /**
  * Resize the vector

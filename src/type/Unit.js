@@ -3,26 +3,27 @@
  *
  * A unit can be constructed in the following ways:
  *     var a = new Unit(value, unit);
- *     var a = new Unit(null, unit);
- *     var b = new Unit(str);
- *     var d = Unit.parse(str);
- *
- * The constructor new Unit(str) is equivalent with Unit.parse(str), but
- * the constructor will throw an error in case of an invalid string, whilst the
- * parse method will return null.
+ *     var b = new Unit(null, unit);
+ *     var c = Unit.parse(str);
  *
  * Example usage:
  *     var a = new Unit(5, 'cm');               // 50 mm
- *     var b = new Unit('23 kg');               // 23 kg
+ *     var b = Unit.parse('23 kg');             // 23 kg
  *     var c = math.in(a, new Unit(null, 'm');  // 0.05 m
  *
- * @param {Number | String} [value] A value for the unit, like 5.2, or a string
- *                                  with a value and unit like "5.2cm"
- * @param {String} [unit]           A unit like "cm" or "inch"
+ * @param {Number} [value]  A value like 5.2
+ * @param {String} [unit]   A unit like "cm" or "inch"
  */
 function Unit(value, unit) {
     if (this.constructor != Unit) {
         throw new Error('Unit constructor must be called with the new operator');
+    }
+
+    if (value != null && !isNumber(value)) {
+        throw new Error('First parameter in Unit constructor must be a number');
+    }
+    if (unit != null && !isString(unit)) {
+        throw new Error('Second parameter in Unit constructor must be a string');
     }
 
     this.value = 1;
@@ -33,30 +34,7 @@ function Unit(value, unit) {
     this.hasValue = false;
     this.fixPrefix = false;  // is set true by the method "x In unit"s
 
-    var len = arguments.length;
-    if (len == 0) {
-        // no arguments
-    }
-    else if (len == 1) {
-        // parse a string
-        if (!isString(value)) {
-            throw new TypeError('A string or a number and string expected in Unit constructor');
-        }
-
-        var u = Unit.parse(value);
-        if (u) {
-            return u;
-        }
-        else {
-            throw new SyntaxError('String "' + value + '" is no valid unit');
-        }
-    }
-    else if (len == 2) {
-        // a number and a unit
-        if (!isString(unit)) {
-            throw new Error('Second parameter in Unit constructor must be a String');
-        }
-
+    if (unit != null) {
         // find the unit and prefix from the string
         var UNITS = Unit.UNITS;
         var found = false;
@@ -82,21 +60,18 @@ function Unit(value, unit) {
         if (!found) {
             throw new Error('String "' + unit + '" is no unit');
         }
+    }
 
-        if (value != null) {
-            this.value = this._normalize(value);
-            this.hasValue = true;
-        }
-        else {
-            this.value = this._normalize(1);
-        }
+    if (value != null) {
+        this.value = this._normalize(value);
+        this.hasValue = true;
     }
     else {
-        throw new Error('Too many parameters in Unit constructor, 1 or 2 expected');
+        this.value = this._normalize(1);
     }
 }
 
-math.Unit = Unit;
+math.type.Unit = Unit;
 
 (function() {
     var text, index, c;

@@ -14,14 +14,14 @@ b = math.clone(a);
 a = 'bye!';
 assert.strictEqual(b, 'hello world');
 
-a = new math.Complex(2, 3);
+a = math.complex(2, 3);
 b = math.clone(a);
 assert.notEqual(a, b);
 a.re = 5;
 assert.strictEqual(a.toString(), '5 + 3i');
 assert.strictEqual(b.toString(), '2 + 3i');
 
-a = new math.Unit('5mm');
+a = math.unit('5mm');
 b = math.clone(a);
 a.value = 10;
 assert.equal(a.toString(), '10 m');
@@ -32,12 +32,12 @@ b = math.clone(a);
 a[2][1] = 5;
 assert.equal(b[2][1], 4);
 
-a = new math.Matrix([[1, 2], [3, 4]]);
+a = math.matrix([[1, 2], [3, 4]]);
 b = math.clone(a);
 a.valueOf()[0][0] = 5;
 assert.equal(b.valueOf()[0][0], 1);
 
-a = new math.Vector([1, 2, new math.Complex(2, 3), 4]);
+a = math.vector([1, 2, new math.complex(2, 3), 4]);
 b = math.clone(a);
 a.valueOf()[2].re = 5;
 assert.equal(b.valueOf()[2].re, 2);
@@ -46,7 +46,7 @@ assert.equal(b.valueOf()[2].re, 2);
 // test format
 assert.equal(math.format(2/7), '0.2857142857');
 assert.equal(math.format([[1,2],[3,4]]), '[[1, 2], [3, 4]]');
-assert.equal(math.format([[1,2/7],['hi',new math.Complex(2,3)]]),
+assert.equal(math.format([[1,2/7],['hi', math.complex(2,3)]]),
     '[[1, 0.2857142857], ["hi", 2 + 3i]]');
 
 

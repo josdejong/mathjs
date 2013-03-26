@@ -17,7 +17,7 @@ function Scope(parentScope) {
     this.links = {};   // links by name       (for example "2 * a")
 }
 
-math.parser.node.Scope = Scope;
+math.expr.Scope = Scope;
 
 // TODO: rethink the whole scoping solution again. Try to simplify
 

@@ -66,20 +66,18 @@ Math.js can be loaded as a regular javascript file in the browser:
 Math.js can be used similar to Javascript's built-in Math library.
 
 ```js
-var math = require('mathjs'),
-    Complex = math.Complex,
-    Unit = math.Unit;
+var math = require('mathjs');
 
 // use methods and types available in the math object
 var a = math.sin(math.pi / 4);  // 0.7071067811865476
 var b = math.pow(a, 2);         // 0.5
 
-var c = new Complex(3, -4);     // 3 - 4i
+var c = math.complex(3, -4);    // 3 - 4i
 math.sqrt(c);                   // 2 - i
 
 math.sqrt(-4);                  // 2i
 
-var f = new Unit(60, 'deg');    // 60 deg
+var f = math.unit(60, 'deg');   // 60 deg
 var g = math.cos(f);            // 0.5
 ```
 
@@ -99,8 +97,8 @@ The following example code shows how to create and use a parser.
 // load math.js
 var math = require('mathjs');
 
-// create a new parser
-var parser = new math.parser.Parser();
+// create a parser
+var parser = math.parser();
 
 // evaluate expressions
 var a = parser.eval('sqrt(3^2 + 4^2)'); // a = 5
@@ -151,8 +149,8 @@ or function definitions are changed in the workspace.
 // load math.js
 var math = require('mathjs');
 
-// create a new workspace
-var workspace = new math.parser.Workspace();
+// create a workspace
+var workspace = math.workspace();
 
 // add expressions to the workspace
 var id0 = workspace.append('a = 3/4');
@@ -211,11 +209,10 @@ math.max('A', 'D', 'C');        // 'D'
 Math.js supports complex numbers.
 
 ```js
-var math = require('math.js'),
-    Complex = math.Complex;
+var math = require('math.js');
 
-var a = new Complex(2, 3);      // 2 + 3i
-var b = new Complex('4 - 2i');  // 4 - 2i
+var a = math.complex(2, 3);     // 2 + 3i
+var b = math.complex('4 - 2i'); // 4 - 2i
 math.add(a, b);                 // 6 + i
 math.sqrt(-4);                  // 2i
 ```
@@ -225,14 +222,13 @@ math.sqrt(-4);                  // 2i
 Math.js supports units.
 
 ```js
-var math = require('math.js'),
-    Unit = math.Unit;
+var math = require('math.js');
 
-var a = new Unit(55, 'cm');     // 550 mm
-var b = new Unit(0.1, 'm');     // 100 mm
+var a = math.unit(55, 'cm');    // 550 mm
+var b = math.unit(0.1, 'm');    // 100 mm
 math.add(a, b);                 // 0.65 m
 
-var parser = new math.parser.Parser();
+var parser = math.parser();
 parser.eval('2 inch in cm');    // 5.08 cm
 ```
 
@@ -243,7 +239,7 @@ using the Parser.
 
 ```js
 var math = require('math.js'),
-    parser = new math.parser.Parser();
+    parser = math.parser();
 
 math.sqrt([1, 4, 9, 16, 25]);           // [1, 2, 3, 4, 5]
 
@@ -374,7 +370,7 @@ math.import({
 math.myvalue * 2;               // 84
 math.hello('user');             // 'hello, user!'
 
-var parser = new math.parser.Parser();
+var parser = math.parser();
 parser.eval('myvalue + 10');    // 52
 parser.eval('hello("user")');   // 'hello, user!'
 ```
@@ -389,7 +385,7 @@ And next, the library can be imported into math.js:
 
 ```js
 var math = require('mathjs'),
-    parser = new math.parser.Parser();
+    parser = math.parser();
 
 // import the numbers.js library into math.js
 math.import('numbers');

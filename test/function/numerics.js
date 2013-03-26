@@ -1,12 +1,7 @@
 // test numerical functions
 
 var assert = require('assert');
-var math = require('../../math.js'),
-    Complex = math.Complex,
-    Unit = math.Unit,
-    Matrix = math.Matrix,
-    Vector = math.Vector,
-    Range = math.Range;
+var math = require('../../math.js');
 
 // test size
 assert.deepEqual(math.size([[1,2,3],[4,5,6]]), [2,3]);
@@ -22,11 +17,11 @@ assert.deepEqual(math.size([[]]), [0,0]);
 assert.deepEqual(math.size([[[]]]), [0,0,0]);
 assert.deepEqual(math.size('hello'), [5]);
 assert.deepEqual(math.size(''), [0]);
-assert.deepEqual(math.size(new Complex(2,3)), []);
+assert.deepEqual(math.size(math.complex(2,3)), []);
 assert.deepEqual(math.size(null), []);
-assert.deepEqual(math.size(new Vector()), [0]);
-assert.deepEqual(math.size(new Matrix()), [0]);
-assert.deepEqual(math.size(new Range(2,5)), [4]);
+assert.deepEqual(math.size(math.vector()), [0]);
+assert.deepEqual(math.size(math.matrix()), [0]);
+assert.deepEqual(math.size(math.range(2,5)), [4]);
 // TODO: test whether math.size throws an error in case of invalid data or size
 
 // test eye
@@ -38,8 +33,8 @@ assert.deepEqual(math.eye([2]).valueOf(), [[1,0],[0,1]]);
 assert.deepEqual(math.eye(2,3).valueOf(), [[1,0,0],[0,1,0]]);
 assert.deepEqual(math.eye(3,2).valueOf(), [[1,0],[0,1],[0,0]]);
 assert.deepEqual(math.eye([3,2]).valueOf(), [[1,0],[0,1],[0,0]]);
-assert.deepEqual(math.eye(new Vector([3,2])).valueOf(), [[1,0],[0,1],[0,0]]);
-assert.deepEqual(math.eye(new Matrix([[3],[2]])).valueOf(), [[1,0],[0,1],[0,0]]);
+assert.deepEqual(math.eye(math.vector([3,2])).valueOf(), [[1,0],[0,1],[0,0]]);
+assert.deepEqual(math.eye(math.matrix([[3],[2]])).valueOf(), [[1,0],[0,1],[0,0]]);
 assert.deepEqual(math.eye(3,3).valueOf(), [[1,0,0],[0,1,0],[0,0,1]]);
 assert.throws(function () {math.eye(3,3,2);});
 assert.throws(function () {math.eye([3,3,2]);});
@@ -52,12 +47,12 @@ assert.deepEqual(math.zeros(3).valueOf(), [[0,0,0],[0,0,0],[0,0,0]]);
 assert.deepEqual(math.zeros(2,3).valueOf(), [[0,0,0],[0,0,0]]);
 assert.deepEqual(math.zeros(3,2).valueOf(), [[0,0],[0,0],[0,0]]);
 assert.deepEqual(math.zeros([3,2]).valueOf(), [[0,0],[0,0],[0,0]]);
-assert.deepEqual(math.zeros(new Vector([3,2])).valueOf(), [[0,0],[0,0],[0,0]]);
-assert.deepEqual(math.zeros(new Matrix([3,2])).valueOf(), [[0,0],[0,0],[0,0]]);
-assert.deepEqual(math.zeros(new Matrix([[[3]],[[2]]])).valueOf(), [[0,0],[0,0],[0,0]]);
+assert.deepEqual(math.zeros(math.vector([3,2])).valueOf(), [[0,0],[0,0],[0,0]]);
+assert.deepEqual(math.zeros(math.matrix([3,2])).valueOf(), [[0,0],[0,0],[0,0]]);
+assert.deepEqual(math.zeros(math.matrix([[[3]],[[2]]])).valueOf(), [[0,0],[0,0],[0,0]]);
 assert.deepEqual(math.zeros(2,2,2).valueOf(), [[[0,0],[0,0]],[[0,0],[0,0]]]);
 assert.deepEqual(math.zeros([2,2,2]).valueOf(), [[[0,0],[0,0]],[[0,0],[0,0]]]);
-var a = new Matrix([[1, 2, 3], [4, 5, 6]]);
+var a = math.matrix([[1, 2, 3], [4, 5, 6]]);
 assert.deepEqual(math.zeros(math.size(a)).size(), a.size());
 
 
@@ -68,12 +63,12 @@ assert.deepEqual(math.ones(3).valueOf(), [[1,1,1],[1,1,1],[1,1,1]]);
 assert.deepEqual(math.ones(2,3).valueOf(), [[1,1,1],[1,1,1]]);
 assert.deepEqual(math.ones(3,2).valueOf(), [[1,1],[1,1],[1,1]]);
 assert.deepEqual(math.ones([3,2]).valueOf(), [[1,1],[1,1],[1,1]]);
-assert.deepEqual(math.ones(new Vector([3,2])).valueOf(), [[1,1],[1,1],[1,1]]);
-assert.deepEqual(math.ones(new Matrix([3,2])).valueOf(), [[1,1],[1,1],[1,1]]);
-assert.deepEqual(math.ones(new Matrix([[[3]],[[2]]])).valueOf(), [[1,1],[1,1],[1,1]]);
+assert.deepEqual(math.ones(math.vector([3,2])).valueOf(), [[1,1],[1,1],[1,1]]);
+assert.deepEqual(math.ones(math.matrix([3,2])).valueOf(), [[1,1],[1,1],[1,1]]);
+assert.deepEqual(math.ones(math.matrix([[[3]],[[2]]])).valueOf(), [[1,1],[1,1],[1,1]]);
 assert.deepEqual(math.ones(2,2,2).valueOf(), [[[1,1],[1,1]],[[1,1],[1,1]]]);
 assert.deepEqual(math.ones([2,2,2]).valueOf(), [[[1,1],[1,1]],[[1,1],[1,1]]]);
-a = new Matrix([[1, 2, 3], [4, 5, 6]]);
+a = math.matrix([[1, 2, 3], [4, 5, 6]]);
 assert.deepEqual(math.ones(math.size(a)).size(), a.size());
 
 
@@ -85,5 +80,5 @@ assert.deepEqual(math.diag([[1,2,3],[4,5,6]]).valueOf(), [1,5]);
 assert.deepEqual(math.diag([[1,2,3],[4,5,6]],1).valueOf(), [2,6]);
 assert.deepEqual(math.diag([[1,2,3],[4,5,6]],-1).valueOf(), [4]);
 assert.deepEqual(math.diag([[1,2,3],[4,5,6]],-2).valueOf(), []);
-assert.deepEqual(math.diag(new Range(1,3)).valueOf(), [[1,0,0],[0,2,0],[0,0,3]]);
+assert.deepEqual(math.diag(math.range(1,3)).valueOf(), [[1,0,0],[0,2,0],[0,0,3]]);
 // TODO: test diag for all types of input (also scalar)

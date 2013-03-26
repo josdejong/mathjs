@@ -1,5 +1,5 @@
 /**
- * @constructor math.parser.node.MatrixNode
+ * @constructor MatrixNode
  * Holds an n-dimensional array with nodes
  * @param {Array} nodes
  * @extends {Node}
@@ -10,7 +10,7 @@ function MatrixNode(nodes) {
 
 MatrixNode.prototype = new Node();
 
-math.parser.node.MatrixNode = MatrixNode;
+math.expr.node.MatrixNode = MatrixNode;
 
 (function () {
     /**

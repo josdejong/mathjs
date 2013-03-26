@@ -3,7 +3,7 @@
  */
 function Node() {}
 
-math.parser.node.Node = Node;
+math.expr.node.Node = Node;
 
 /**
  * Evaluate the node

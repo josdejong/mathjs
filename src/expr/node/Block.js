@@ -1,5 +1,5 @@
 /**
- * @constructor math.parser.node.Block
+ * @constructor Block
  * Holds a set with nodes
  * @extends {Node}
  */
@@ -10,7 +10,7 @@ function Block() {
 
 Block.prototype = new Node();
 
-math.parser.node.Block = Block;
+math.expr.node.Block = Block;
 
 /**
  * Add a parameter

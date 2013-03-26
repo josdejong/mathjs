@@ -1,5 +1,5 @@
 /**
- * @constructor math.parser.Workspace
+ * @constructor math.expr.Workspace
  *
  * Workspace manages a set of expressions. Expressions can be added, replace,
  * deleted, and inserted in the workspace. The workspace keeps track on the
@@ -20,7 +20,7 @@
  *     var changes = workspace.getChanges(updateSeq);
  *
  * Usage:
- *     var workspace = new math.parser.Workspace();
+ *     var workspace = new math.expr.Workspace();
  *     var id0 = workspace.append('a = 3/4');
  *     var id1 = workspace.append('a + 2');
  *     console.log('a + 2 = ' + workspace.getResult(id1));
@@ -38,7 +38,7 @@ function Workspace () {
     this.lastNode = undefined;
 }
 
-math.parser.Workspace = Workspace;
+math.expr.Workspace = Workspace;
 
 /**
  * clear the workspace

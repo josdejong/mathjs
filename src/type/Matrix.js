@@ -33,8 +33,8 @@ function Matrix(data) {
         this._data = data;
     }
     else if (data != null) {
-        // a scalar provided
-        this._data = [data];
+        // unsupported type
+        throw new TypeError('Unsupported type of data (' + math.typeof(data) + ')');
     }
     else {
         // nothing provided
@@ -45,7 +45,7 @@ function Matrix(data) {
     this._size = util.size(this._data);
 }
 
-math.Matrix = Matrix;
+math.type.Matrix = Matrix;
 
 /**
  * Get a value or a set of values from the matrix.
@@ -242,7 +242,13 @@ Matrix.prototype.toVector = function () {
 
     if (count == 0) {
         // scalar or empty
-        return new Vector(this.toScalar());
+        var scalar = this.toScalar();
+        if (scalar) {
+            return new Vector([scalar]);
+        }
+        else {
+            return new Vector();
+        }
     }
     else if (count == 1) {
         // valid vector

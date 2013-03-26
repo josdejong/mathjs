@@ -1,5 +1,5 @@
 /**
- * @constructor math.parser.node.Symbol
+ * @constructor Symbol
  * A symbol can hold and evaluate a variable or function with parameters.
  * @param {String} [name]
  * @param {function} fn
@@ -14,7 +14,7 @@ function Symbol(name, fn, params) {
 
 Symbol.prototype = new Node();
 
-math.parser.node.Symbol = Symbol;
+math.expr.node.Symbol = Symbol;
 
 /**
  * Check whether the Symbol has one or multiple parameters set.

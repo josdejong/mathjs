@@ -10,19 +10,18 @@
         Use the mathjs library from the console...
     </p>
     <script>
-        var Complex = math.Complex;
         var Unit = math.Unit;
 
-        var complex1 = new Complex(3, -4);
+        var complex1 = math.complex(3, -4);
         console.log(complex1.toString());
 
         console.log('sqrt(25) = ' + math.sqrt(25));
         console.log('sqrt(' + complex1.toString() + ') = ' + math.sqrt(complex1));
         console.log('sqrt(-4) = ' + math.sqrt(-4));
 
-        var parser = new math.parser.Parser();
+        var parser = new math.parser();
 
-        var workspace = new math.parser.Workspace();
+        var workspace = new math.workspace();
         var id0 = workspace.append('a = 3/4');
         var id1 = workspace.append('a + 2');
         console.log('a = ' + workspace.getResult(id0));

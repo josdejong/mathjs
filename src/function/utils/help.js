@@ -58,7 +58,7 @@ function generateDoc (doc) {
         desc += 'SYNTAX\n' + doc.syntax.join('\n') + '\n\n';
     }
     if (doc.examples) {
-        var parser = new math.parser.Parser();
+        var parser = math.parser();
         desc += 'EXAMPLES\n';
         for (var i = 0; i < doc.examples.length; i++) {
             var expr = doc.examples[i];

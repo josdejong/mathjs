@@ -6,8 +6,7 @@
  * the range.
  *
  * A range can be constructed as:
- *     var a = new Range(start, end);
- *     var b = new Range(start, step, end);
+ *     var a = new Range(start, step, end);
  *
  * To get the result of the range:
  *     range.forEach(function (x) {
@@ -20,13 +19,13 @@
  *     range.toArray();
  *
  * Example usage:
- *     var c = new Range(2, 5);         // 2:1:5
+ *     var c = new Range(2, 1, 5);      // 2:1:5
  *     c.toArray();                     // [2, 3, 4, 5]
  *     var d = new Range(2, -1, -2);    // 2:-1:-2
  *     d.toArray();                     // [2, 1, 0, -1, -2]
  *
  * @param {Number} start
- * @param {Number} [step]   Default value is 1
+ * @param {Number} step
  * @param {Number} end
  */
 function Range(start, step, end) {
@@ -35,15 +34,6 @@ function Range(start, step, end) {
             'Range constructor must be called with the new operator');
     }
 
-    if (end == null) {
-        end = step;
-        step = null;
-    }
-
-    if (arguments.length != 2 && arguments.length != 3) {
-        throw new TypeError('Wrong number of parameters in Range constructor ' +
-            '(2 or 3 expected, ' + arguments.length + ' provided)');
-    }
     if (start != null && !isNumber(start)) {
         throw new TypeError('Parameter start must be a number');
     }
@@ -55,11 +45,11 @@ function Range(start, step, end) {
     }
 
     this.start = (start != null) ? start : 0;
-    this.end = (end != null) ? end : 0;
-    this.step = (step != null) ? step : 1;
+    this.end   = (end != null) ? end : 0;
+    this.step  = (step != null) ? step : 1;
 }
 
-math.Range = Range;
+math.type.Range = Range;
 
 /**
  * Create a clone of the range

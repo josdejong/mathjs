@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.5.0-SNAPSHOT
- * @date    2013-03-24
+ * @date    2013-03-26
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -31,7 +31,8 @@
  * Define namespace
  */
 var math = {
-    parser: {
+    type: {},
+    expr: {
         node: {}
     },
     options: {
@@ -710,26 +711,20 @@ var util = (function () {
  * @constructor Complex
  *
  * A complex value can be constructed in the following ways:
- *     var a = new Complex(re, im);
- *     var b = new Complex(str);
- *     var c = new Complex();
- *     var d = Complex.parse(str);
- *
- * The constructor new Complex(str) is equivalent with Complex.parse(str), but
- * the constructor will throw an error in case of an invalid string, whilst the
- * parse method will return null.
+ *     var a = new Complex();
+ *     var b = new Complex(re, im);
+ *     var c = Complex.parse(str);
  *
  * Example usage:
- *     var a = new Complex(3, -4);    // 3 - 4i
- *     a.re = 5;                      // a = 5 - 4i
- *     var i = a.im;                  // -4;
- *     var b = new Complex('2 + 6i'); // 2 + 6i
- *     var c = new Complex();         // 0 + 0i
- *     var d = math.add(a, b);        // 5 + 2i
+ *     var a = new Complex(3, -4);      // 3 - 4i
+ *     a.re = 5;                        // a = 5 - 4i
+ *     var i = a.im;                    // -4;
+ *     var b = Complex.parse('2 + 6i'); // 2 + 6i
+ *     var c = new Complex();           // 0 + 0i
+ *     var d = math.add(a, b);          // 5 + 2i
  *
- * @param {Number | String} re   A number with the real part of the complex
- *                               value, or a string containing a complex number
- * @param {Number} [im]          The imaginary part of the complex value
+ * @param {Number} re       The real part of the complex value
+ * @param {Number} [im]     The imaginary part of the complex value
  */
 function Complex(re, im) {
     if (this.constructor != Complex) {
@@ -737,46 +732,16 @@ function Complex(re, im) {
             'Complex constructor must be called with the new operator');
     }
 
-    switch (arguments.length) {
-        case 2:
-            // re and im numbers provided
-            if (!isNumber(re) || !isNumber(im)) {
-                throw new TypeError(
-                    'Two numbers or a single string expected in Complex constructor');
-            }
-            this.re = re;
-            this.im = im;
-            break;
-
-        case 1:
-            // parse string into a complex number
-            if (!isString(re)) {
-                throw new TypeError(
-                    'Two numbers or a single string expected in Complex constructor');
-            }
-            var c = Complex.parse(re);
-            if (c) {
-                return c;
-            }
-            else {
-                throw new SyntaxError('String "' + re + '" is no valid complex number');
-            }
-            break;
-
-        case 0:
-            // no parameters. Set re and im zero
-            this.re = 0;
-            this.im = 0;
-            break;
-
-        default:
-            throw new SyntaxError(
-                'Wrong number of arguments in Complex constructor ' +
-                    '(' + arguments.length + ' provided, 0, 1, or 2 expected)');
+    if ((re != null && !isNumber(re)) || (im != null && !isNumber(im))) {
+        throw new TypeError(
+            'Two numbers or a single string expected in Complex constructor');
     }
+
+    this.re = re || 0;
+    this.im = im || 0;
 }
 
-math.Complex = Complex;
+math.type.Complex = Complex;
 
 // Complex parser methods in a closure
 (function () {
@@ -1106,8 +1071,8 @@ function Matrix(data) {
         this._data = data;
     }
     else if (data != null) {
-        // a scalar provided
-        this._data = [data];
+        // unsupported type
+        throw new TypeError('Unsupported type of data (' + math.typeof(data) + ')');
     }
     else {
         // nothing provided
@@ -1118,7 +1083,7 @@ function Matrix(data) {
     this._size = util.size(this._data);
 }
 
-math.Matrix = Matrix;
+math.type.Matrix = Matrix;
 
 /**
  * Get a value or a set of values from the matrix.
@@ -1315,7 +1280,13 @@ Matrix.prototype.toVector = function () {
 
     if (count == 0) {
         // scalar or empty
-        return new Vector(this.toScalar());
+        var scalar = this.toScalar();
+        if (scalar) {
+            return new Vector([scalar]);
+        }
+        else {
+            return new Vector();
+        }
     }
     else if (count == 1) {
         // valid vector
@@ -1403,8 +1374,7 @@ function isInteger(value) {
  * the range.
  *
  * A range can be constructed as:
- *     var a = new Range(start, end);
- *     var b = new Range(start, step, end);
+ *     var a = new Range(start, step, end);
  *
  * To get the result of the range:
  *     range.forEach(function (x) {
@@ -1417,13 +1387,13 @@ function isInteger(value) {
  *     range.toArray();
  *
  * Example usage:
- *     var c = new Range(2, 5);         // 2:1:5
+ *     var c = new Range(2, 1, 5);      // 2:1:5
  *     c.toArray();                     // [2, 3, 4, 5]
  *     var d = new Range(2, -1, -2);    // 2:-1:-2
  *     d.toArray();                     // [2, 1, 0, -1, -2]
  *
  * @param {Number} start
- * @param {Number} [step]   Default value is 1
+ * @param {Number} step
  * @param {Number} end
  */
 function Range(start, step, end) {
@@ -1432,15 +1402,6 @@ function Range(start, step, end) {
             'Range constructor must be called with the new operator');
     }
 
-    if (end == null) {
-        end = step;
-        step = null;
-    }
-
-    if (arguments.length != 2 && arguments.length != 3) {
-        throw new TypeError('Wrong number of parameters in Range constructor ' +
-            '(2 or 3 expected, ' + arguments.length + ' provided)');
-    }
     if (start != null && !isNumber(start)) {
         throw new TypeError('Parameter start must be a number');
     }
@@ -1452,11 +1413,11 @@ function Range(start, step, end) {
     }
 
     this.start = (start != null) ? start : 0;
-    this.end = (end != null) ? end : 0;
-    this.step = (step != null) ? step : 1;
+    this.end   = (end != null) ? end : 0;
+    this.step  = (step != null) ? step : 1;
 }
 
-math.Range = Range;
+math.type.Range = Range;
 
 /**
  * Create a clone of the range
@@ -1596,26 +1557,27 @@ function isString(value) {
  *
  * A unit can be constructed in the following ways:
  *     var a = new Unit(value, unit);
- *     var a = new Unit(null, unit);
- *     var b = new Unit(str);
- *     var d = Unit.parse(str);
- *
- * The constructor new Unit(str) is equivalent with Unit.parse(str), but
- * the constructor will throw an error in case of an invalid string, whilst the
- * parse method will return null.
+ *     var b = new Unit(null, unit);
+ *     var c = Unit.parse(str);
  *
  * Example usage:
  *     var a = new Unit(5, 'cm');               // 50 mm
- *     var b = new Unit('23 kg');               // 23 kg
+ *     var b = Unit.parse('23 kg');             // 23 kg
  *     var c = math.in(a, new Unit(null, 'm');  // 0.05 m
  *
- * @param {Number | String} [value] A value for the unit, like 5.2, or a string
- *                                  with a value and unit like "5.2cm"
- * @param {String} [unit]           A unit like "cm" or "inch"
+ * @param {Number} [value]  A value like 5.2
+ * @param {String} [unit]   A unit like "cm" or "inch"
  */
 function Unit(value, unit) {
     if (this.constructor != Unit) {
         throw new Error('Unit constructor must be called with the new operator');
+    }
+
+    if (value != null && !isNumber(value)) {
+        throw new Error('First parameter in Unit constructor must be a number');
+    }
+    if (unit != null && !isString(unit)) {
+        throw new Error('Second parameter in Unit constructor must be a string');
     }
 
     this.value = 1;
@@ -1626,30 +1588,7 @@ function Unit(value, unit) {
     this.hasValue = false;
     this.fixPrefix = false;  // is set true by the method "x In unit"s
 
-    var len = arguments.length;
-    if (len == 0) {
-        // no arguments
-    }
-    else if (len == 1) {
-        // parse a string
-        if (!isString(value)) {
-            throw new TypeError('A string or a number and string expected in Unit constructor');
-        }
-
-        var u = Unit.parse(value);
-        if (u) {
-            return u;
-        }
-        else {
-            throw new SyntaxError('String "' + value + '" is no valid unit');
-        }
-    }
-    else if (len == 2) {
-        // a number and a unit
-        if (!isString(unit)) {
-            throw new Error('Second parameter in Unit constructor must be a String');
-        }
-
+    if (unit != null) {
         // find the unit and prefix from the string
         var UNITS = Unit.UNITS;
         var found = false;
@@ -1675,21 +1614,18 @@ function Unit(value, unit) {
         if (!found) {
             throw new Error('String "' + unit + '" is no unit');
         }
+    }
 
-        if (value != null) {
-            this.value = this._normalize(value);
-            this.hasValue = true;
-        }
-        else {
-            this.value = this._normalize(1);
-        }
+    if (value != null) {
+        this.value = this._normalize(value);
+        this.hasValue = true;
     }
     else {
-        throw new Error('Too many parameters in Unit constructor, 1 or 2 expected');
+        this.value = this._normalize(1);
     }
 }
 
-math.Unit = Unit;
+math.type.Unit = Unit;
 
 (function() {
     var text, index, c;
@@ -2306,8 +2242,8 @@ function Vector(data) {
         this._data = data;
     }
     else if (data != null) {
-        // a scalar provided
-        this._data = [data];
+        // unsupported type
+        throw new TypeError('Unsupported type of data (' + math.typeof(data) + ')');
     }
     else {
         // nothing provided
@@ -2322,7 +2258,7 @@ function Vector(data) {
     }
 }
 
-math.Vector = Vector;
+math.type.Vector = Vector;
 
 /**
  * Resize the vector
@@ -4787,6 +4723,287 @@ re.doc = {
 };
 
 /**
+ * Create a complex value. Depending on the passed arguments, the function
+ * will create and return a new math.type.Complex object.
+ *
+ * The method accepts the following arguments:
+ *     complex()                           creates a complex value with zero
+ *                                         as real and imaginary part.
+ *     complex(re : number, im : string)   creates a complex value with provided
+ *                                         values for real and imaginary part.
+ *     complex(str : string)               parses a string into a complex value.
+ *
+ * Example usage:
+ *     var a = math.complex(3, -4);     // 3 - 4i
+ *     a.re = 5;                        // a = 5 - 4i
+ *     var i = a.im;                    // -4;
+ *     var b = math.complex('2 + 6i');  // 2 + 6i
+ *     var c = math.complex();          // 0 + 0i
+ *     var d = math.add(a, b);          // 5 + 2i
+ *
+ * @param {*} [args]
+ * @return {Complex} value
+ */
+function complex(args) {
+    switch (arguments.length) {
+        case 0:
+            // no parameters. Set re and im zero
+            return new Complex(0, 0);
+            break;
+
+        case 1:
+            // parse string into a complex number
+            var str = arguments[0];
+            if (!isString(str)) {
+                throw new TypeError(
+                    'Two numbers or a single string expected in function complex');
+            }
+            var c = Complex.parse(str);
+            if (c) {
+                return c;
+            }
+            else {
+                throw new SyntaxError('String "' + str + '" is no valid complex number');
+            }
+            break;
+
+        case 2:
+            // re and im provided
+            return new Complex(arguments[0], arguments[1]);
+            break;
+
+        default:
+            throw newArgumentsError('complex', arguments.length, 0, 2);
+    }
+}
+
+math.complex = complex;
+
+/**
+ * Create a matrix. The function creates a new math.type.Matrix object.
+ *
+ * The method accepts the following arguments:
+ *     matrix()       creates an empty matrix
+ *     matrix(data)   creates a matrix with initial data.
+ *
+ * Example usage:
+ * Example usage:
+ *     var m = matrix([[1, 2], [3, 4]);
+ *     m.size();                        // [2, 2]
+ *     m.resize([3, 2], 5);
+ *     m.valueOf();                     // [[1, 2], [3, 4], [5, 5]]
+ *     m.get([1, 0])                    // 3
+ *
+ * @param {Array | Matrix | Vector | Range} [data]    A multi dimensional array
+ * @return {Matrix} matrix
+ */
+function matrix(data) {
+    if (arguments.length > 1) {
+        throw newArgumentsError('matrix', arguments.length, 0, 1);
+    }
+
+    return new Matrix(data);
+}
+
+math.matrix = matrix;
+
+/**
+ * Create a parser. The function creates a new math.expr.Parser object.
+ *
+ * Example usage:
+ *    var parser = new math.parser();
+ *
+ *    // evaluate expressions
+ *    var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
+ *    var b = parser.eval('sqrt(-4)');        // 2i
+ *    var c = parser.eval('2 inch in cm');    // 5.08 cm
+ *    var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
+ *
+ *    // define variables and functions
+ *    parser.eval('x = 7 / 2');               // 3.5
+ *    parser.eval('x + 3');                   // 6.5
+ *    parser.eval('function f(x, y) = x^y');  // f(x, y)
+ *    parser.eval('f(2, 3)');                 // 8
+ *
+ *    // get and set variables and functions
+ *    var x = parser.get('x');                // 7
+ *    var f = parser.get('f');                // function
+ *    var g = f(3, 2);                        // 9
+ *    parser.set('h', 500);
+ *    var i = parser.eval('h / 2');           // 250
+ *    parser.set('hello', function (name) {
+ *        return 'hello, ' + name + '!';
+ *    });
+ *    parser.eval('hello("user")');           // "hello, user!"
+ *
+ *    // clear defined functions and variables
+ *    parser.clear();
+ *
+ * @return {Parser} Parser
+ */
+function parser() {
+    return new Parser();
+}
+
+math.parser = parser;
+
+/**
+ * Create a range. The function creates a new math.type.Range object.
+ *
+ * A range works similar to an Array, with functions like
+ * forEach and map. However, a Range object is very cheap to create compared to
+ * a large Array with indexes, as it stores only a start, step and end value of
+ * the range.
+ *
+ * The method accepts the following arguments
+ *     range(start, end)            Create a range with start and end and a
+ *                                  default step size of 1
+ *     range(start, step, end)      Create a range with start, step, and end.
+ *
+ * Example usage:
+ *     var c = math.range(2, 1, 5);     // 2:1:5
+ *     c.toArray();                     // [2, 3, 4, 5]
+ *     var d = math.range(2, -1, -2);   // 2:-1:-2
+ *     d.forEach(function (value, index) {
+ *         console.log(index, value);
+ *     });
+ *
+ * @param {...*} args
+ * @return {Range} range
+ */
+function range(args) {
+    switch (arguments.length) {
+        case 2:
+            // range(start, end)
+            return new Range(arguments[0], null, arguments[1]);
+            break;
+
+        case 3:
+            // range(start, step, end)
+            return new Range(arguments[0], arguments[1], arguments[2]);
+            break;
+
+        default:
+            throw newArgumentsError('range', arguments.length, 2, 3);
+    }
+}
+
+math.range = range;
+
+/**
+ * Create a unit. Depending on the passed arguments, the function
+ * will create and return a new math.type.Unit object.
+ *
+ * The method accepts the following arguments:
+ *     unit(unit : string)
+ *     unit(value : number, unit : string
+ *
+ * Example usage:
+ *     var a = math.unit(5, 'cm');          // 50 mm
+ *     var b = math.unit('23 kg');          // 23 kg
+ *     var c = math.in(a, math.unit('m');   // 0.05 m
+ *
+ * @param {*} args
+ * @return {Unit} value
+ */
+function unit(args) {
+    switch(arguments.length) {
+        case 1:
+            // parse a string
+            var str = arguments[0];
+            if (!isString(str)) {
+                throw new TypeError('A string or a number and string expected in function unit');
+            }
+
+            if (Unit.isUnit(str)) {
+                return new Unit(null, str); // a pure unit
+            }
+
+            var u = Unit.parse(str);        // a unit with value, like '5cm'
+            if (u) {
+                return u;
+            }
+
+            throw new SyntaxError('String "' + str + '" is no valid unit');
+            break;
+
+        case 2:
+            // a number and a unit
+            return new Unit(arguments[0], arguments[1]);
+            break;
+
+        default:
+            throw newArgumentsError('unit', arguments.length, 1, 2);
+    }
+}
+
+math.unit = unit;
+
+/**
+ * Create a vector. The function creates a new math.type.Vector object.
+ *
+ * The method accepts the following arguments:
+ *     vector()       creates an empty vector
+ *     vector(data)   creates a vector with initial data.
+ *
+ * Example usage:
+ *     var v = math.vector([4, 5, 6, 7]);
+ *     v.resize(6, -1);
+ *     v.set(2, 9);
+ *     v.valueOf();          // [4, 5, 9, 7, -1, -1]
+ *     v.get([3, 4])         // [7, -1]
+ *
+ * @param {Array | Matrix | Vector | Range} [data]
+ * @return {Vector} vector
+ */
+function vector(data) {
+    if (arguments.length > 1) {
+        throw newArgumentsError('vector', arguments.length, 0, 1);
+    }
+
+    return new Vector(data);
+}
+
+math.vector = vector;
+
+/**
+ * Create a workspace. The function creates a new math.expr.Workspace object.
+ *
+ * Workspace manages a set of expressions. Expressions can be added, replace,
+ * deleted, and inserted in the workspace. The workspace keeps track on the
+ * dependencies between the expressions, and automatically updates results of
+ * depending expressions when variables or function definitions are changed in
+ * the workspace.
+ *
+ * Methods:
+ *     var id = workspace.append(expr);
+ *     var id = workspace.insertBefore(expr, beforeId);
+ *     var id = workspace.insertAfter(expr, afterId);
+ *     workspace.replace(expr, id);
+ *     workspace.remove(id);
+ *     workspace.clear();
+ *     var expr   = workspace.getExpr(id);
+ *     var result = workspace.getResult(id);
+ *     var deps   = workspace.getDependencies(id);
+ *     var changes = workspace.getChanges(updateSeq);
+ *
+ * Usage:
+ *     var workspace = new math.workspace();
+ *     var id0 = workspace.append('a = 3/4');
+ *     var id1 = workspace.append('a + 2');
+ *     console.log('a + 2 = ' + workspace.getResult(id1));
+ *     workspace.replace('a=5/2', id0);
+ *     console.log('a + 2 = ' + workspace.getResult(id1));
+ *
+ * @return {Workspace} Workspace
+ */
+function workspace() {
+    return new Workspace();
+}
+
+math.workspace = workspace;
+
+/**
  * Create a diagonal matrix or retrieve the diagonal of a matrix
  * diag(v)
  * diag(v, k)
@@ -6287,7 +6504,7 @@ function generateDoc (doc) {
         desc += 'SYNTAX\n' + doc.syntax.join('\n') + '\n\n';
     }
     if (doc.examples) {
-        var parser = new math.parser.Parser();
+        var parser = math.parser();
         desc += 'EXAMPLES\n';
         for (var i = 0; i < doc.examples.length; i++) {
             var expr = doc.examples[i];
@@ -6470,7 +6687,7 @@ _typeof.doc = {
  */
 function Node() {}
 
-math.parser.node.Node = Node;
+math.expr.node.Node = Node;
 
 /**
  * Evaluate the node
@@ -6489,7 +6706,7 @@ Node.prototype.toString = function() {
 };
 
 /**
- * @constructor math.parser.node.Symbol
+ * @constructor Symbol
  * A symbol can hold and evaluate a variable or function with parameters.
  * @param {String} [name]
  * @param {function} fn
@@ -6504,7 +6721,7 @@ function Symbol(name, fn, params) {
 
 Symbol.prototype = new Node();
 
-math.parser.node.Symbol = Symbol;
+math.expr.node.Symbol = Symbol;
 
 /**
  * Check whether the Symbol has one or multiple parameters set.
@@ -6566,7 +6783,7 @@ Symbol.prototype.toString = function() {
 };
 
 /**
- * @constructor math.parser.node.Constant
+ * @constructor Constant
  * @param {*} value
  * @extends {Node}
  */
@@ -6576,7 +6793,7 @@ function Constant(value) {
 
 Constant.prototype = new Node();
 
-math.parser.node.Constant = Constant;
+math.expr.node.Constant = Constant;
 
 /**
  * Evaluate the constant
@@ -6595,7 +6812,7 @@ Constant.prototype.toString = function() {
 };
 
 /**
- * @constructor math.parser.node.MatrixNode
+ * @constructor MatrixNode
  * Holds an n-dimensional array with nodes
  * @param {Array} nodes
  * @extends {Node}
@@ -6606,7 +6823,7 @@ function MatrixNode(nodes) {
 
 MatrixNode.prototype = new Node();
 
-math.parser.node.MatrixNode = MatrixNode;
+math.expr.node.MatrixNode = MatrixNode;
 
 (function () {
     /**
@@ -6671,7 +6888,7 @@ math.parser.node.MatrixNode = MatrixNode;
 
 })();
 /**
- * @constructor math.parser.node.Block
+ * @constructor Block
  * Holds a set with nodes
  * @extends {Node}
  */
@@ -6682,7 +6899,7 @@ function Block() {
 
 Block.prototype = new Node();
 
-math.parser.node.Block = Block;
+math.expr.node.Block = Block;
 
 /**
  * Add a parameter
@@ -6746,7 +6963,7 @@ function Assignment(name, params, expr, result) {
 
 Assignment.prototype = new Node();
 
-math.parser.node.Assignment = Assignment;
+math.expr.node.Assignment = Assignment;
 
 /**
  * Evaluate the assignment
@@ -6837,7 +7054,7 @@ function FunctionAssignment(name, variableNames, variables, expr, result) {
 
 FunctionAssignment.prototype = new Node();
 
-math.parser.node.FunctionAssignment = FunctionAssignment;
+math.expr.node.FunctionAssignment = FunctionAssignment;
 
 /**
  * Create a function from the function assignment
@@ -6921,7 +7138,7 @@ function Scope(parentScope) {
     this.links = {};   // links by name       (for example "2 * a")
 }
 
-math.parser.node.Scope = Scope;
+math.expr.Scope = Scope;
 
 // TODO: rethink the whole scoping solution again. Try to simplify
 
@@ -7253,7 +7470,7 @@ Scope.prototype.getUndefinedSymbols = function () {
 };
 
 /**
- * @constructor math.parser.Parser
+ * @constructor math.expr.Parser
  * Parser parses math expressions and evaluates them or returns a node tree.
  *
  * Methods:
@@ -7266,7 +7483,9 @@ Scope.prototype.getUndefinedSymbols = function () {
  *    var result = node.eval();          // evaluate a parsed node
  *
  * Example usage:
- *    var parser = new math.parser.Parser();
+ *    var parser = new math.expr.Parser();
+ *    // Note: there is a convenience method which can be used instead:
+ *    // var parser = new math.parser();
  *
  *    // evaluate expressions
  *    var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
@@ -7319,7 +7538,7 @@ function Parser() {
     this.scope = new Scope();
 }
 
-math.parser.Parser = Parser;
+math.expr.Parser = Parser;
 
 /**
  * Parse an expression end return the parsed function node.
@@ -7844,9 +8063,7 @@ Parser.prototype.parse_range = function (scope) {
         }
 
         var name = 'range';
-        var fn = function(start, step, end) {
-            return new Range(start, step, end);
-        };
+        var fn = range;
         node = new Symbol(name, fn, params);
     }
 
@@ -8489,7 +8706,7 @@ Parser.prototype.createError = function(message) {
 };
 
 /**
- * @constructor math.parser.Workspace
+ * @constructor math.expr.Workspace
  *
  * Workspace manages a set of expressions. Expressions can be added, replace,
  * deleted, and inserted in the workspace. The workspace keeps track on the
@@ -8510,7 +8727,7 @@ Parser.prototype.createError = function(message) {
  *     var changes = workspace.getChanges(updateSeq);
  *
  * Usage:
- *     var workspace = new math.parser.Workspace();
+ *     var workspace = new math.expr.Workspace();
  *     var id0 = workspace.append('a = 3/4');
  *     var id1 = workspace.append('a + 2');
  *     console.log('a + 2 = ' + workspace.getResult(id1));
@@ -8528,7 +8745,7 @@ function Workspace () {
     this.lastNode = undefined;
 }
 
-math.parser.Workspace = Workspace;
+math.expr.Workspace = Workspace;
 
 /**
  * clear the workspace

@@ -1,9 +1,7 @@
 // test probability functions
 
 var assert = require('assert');
-var math = require('../../math.js'),
-    Complex = math.Complex,
-    Unit = math.Unit;
+var math = require('../../math.js');
 
 
 // TODO: test factorial

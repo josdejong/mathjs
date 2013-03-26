@@ -14,7 +14,7 @@ function Assignment(name, params, expr, result) {
 
 Assignment.prototype = new Node();
 
-math.parser.node.Assignment = Assignment;
+math.expr.node.Assignment = Assignment;
 
 /**
  * Evaluate the assignment

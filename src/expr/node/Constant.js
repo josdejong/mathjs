@@ -1,5 +1,5 @@
 /**
- * @constructor math.parser.node.Constant
+ * @constructor Constant
  * @param {*} value
  * @extends {Node}
  */
@@ -9,7 +9,7 @@ function Constant(value) {
 
 Constant.prototype = new Node();
 
-math.parser.node.Constant = Constant;
+math.expr.node.Constant = Constant;
 
 /**
  * Evaluate the constant

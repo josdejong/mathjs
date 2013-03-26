@@ -1,5 +1,5 @@
 /**
- * @constructor math.parser.Parser
+ * @constructor math.expr.Parser
  * Parser parses math expressions and evaluates them or returns a node tree.
  *
  * Methods:
@@ -12,7 +12,9 @@
  *    var result = node.eval();          // evaluate a parsed node
  *
  * Example usage:
- *    var parser = new math.parser.Parser();
+ *    var parser = new math.expr.Parser();
+ *    // Note: there is a convenience method which can be used instead:
+ *    // var parser = new math.parser();
  *
  *    // evaluate expressions
  *    var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
@@ -65,7 +67,7 @@ function Parser() {
     this.scope = new Scope();
 }
 
-math.parser.Parser = Parser;
+math.expr.Parser = Parser;
 
 /**
  * Parse an expression end return the parsed function node.
@@ -590,9 +592,7 @@ Parser.prototype.parse_range = function (scope) {
         }
 
         var name = 'range';
-        var fn = function(start, step, end) {
-            return new Range(start, step, end);
-        };
+        var fn = range;
         node = new Symbol(name, fn, params);
     }
 

@@ -2,26 +2,20 @@
  * @constructor Complex
  *
  * A complex value can be constructed in the following ways:
- *     var a = new Complex(re, im);
- *     var b = new Complex(str);
- *     var c = new Complex();
- *     var d = Complex.parse(str);
- *
- * The constructor new Complex(str) is equivalent with Complex.parse(str), but
- * the constructor will throw an error in case of an invalid string, whilst the
- * parse method will return null.
+ *     var a = new Complex();
+ *     var b = new Complex(re, im);
+ *     var c = Complex.parse(str);
  *
  * Example usage:
- *     var a = new Complex(3, -4);    // 3 - 4i
- *     a.re = 5;                      // a = 5 - 4i
- *     var i = a.im;                  // -4;
- *     var b = new Complex('2 + 6i'); // 2 + 6i
- *     var c = new Complex();         // 0 + 0i
- *     var d = math.add(a, b);        // 5 + 2i
+ *     var a = new Complex(3, -4);      // 3 - 4i
+ *     a.re = 5;                        // a = 5 - 4i
+ *     var i = a.im;                    // -4;
+ *     var b = Complex.parse('2 + 6i'); // 2 + 6i
+ *     var c = new Complex();           // 0 + 0i
+ *     var d = math.add(a, b);          // 5 + 2i
  *
- * @param {Number | String} re   A number with the real part of the complex
- *                               value, or a string containing a complex number
- * @param {Number} [im]          The imaginary part of the complex value
+ * @param {Number} re       The real part of the complex value
+ * @param {Number} [im]     The imaginary part of the complex value
  */
 function Complex(re, im) {
     if (this.constructor != Complex) {
@@ -29,46 +23,16 @@ function Complex(re, im) {
             'Complex constructor must be called with the new operator');
     }
 
-    switch (arguments.length) {
-        case 2:
-            // re and im numbers provided
-            if (!isNumber(re) || !isNumber(im)) {
-                throw new TypeError(
-                    'Two numbers or a single string expected in Complex constructor');
-            }
-            this.re = re;
-            this.im = im;
-            break;
-
-        case 1:
-            // parse string into a complex number
-            if (!isString(re)) {
-                throw new TypeError(
-                    'Two numbers or a single string expected in Complex constructor');
-            }
-            var c = Complex.parse(re);
-            if (c) {
-                return c;
-            }
-            else {
-                throw new SyntaxError('String "' + re + '" is no valid complex number');
-            }
-            break;
-
-        case 0:
-            // no parameters. Set re and im zero
-            this.re = 0;
-            this.im = 0;
-            break;
-
-        default:
-            throw new SyntaxError(
-                'Wrong number of arguments in Complex constructor ' +
-                    '(' + arguments.length + ' provided, 0, 1, or 2 expected)');
+    if ((re != null && !isNumber(re)) || (im != null && !isNumber(im))) {
+        throw new TypeError(
+            'Two numbers or a single string expected in Complex constructor');
     }
+
+    this.re = re || 0;
+    this.im = im || 0;
 }
 
-math.Complex = Complex;
+math.type.Complex = Complex;
 
 // Complex parser methods in a closure
 (function () {

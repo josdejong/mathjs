@@ -30,7 +30,7 @@ function FunctionAssignment(name, variableNames, variables, expr, result) {
 
 FunctionAssignment.prototype = new Node();
 
-math.parser.node.FunctionAssignment = FunctionAssignment;
+math.expr.node.FunctionAssignment = FunctionAssignment;
 
 /**
  * Create a function from the function assignment
