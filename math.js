@@ -1134,6 +1134,7 @@ Matrix.prototype.get = function (index) {
  * Indexes are zero-based.
  * @param {Array | Vector | Matrix} index
  * @param {*} value
+ * @return {Matrix} itself
  */
 Matrix.prototype.set = function (index, value) {
     // TODO: support syntax Matrix.get(m,n,p, ..., value)
@@ -1193,6 +1194,8 @@ Matrix.prototype.set = function (index, value) {
         // TODO: support a single number as index in case the matrix is a vector
         throw new TypeError('Unsupported type of index ' + type(index));
     }
+
+    return this;
 };
 
 /**
@@ -2340,6 +2343,7 @@ Vector.prototype.get = function (index) {
  * Indexes are zero-based.
  * @param {Number | Array | Matrix | Vector | Range} index
  * @param {* | Array | Matrix | Vector | Range} value
+ * @return {Vector} itself
  */
 Vector.prototype.set = function (index, value) {
     var me = this;
@@ -2386,6 +2390,8 @@ Vector.prototype.set = function (index, value) {
             this._set(index, value);
         }
     }
+
+    return this;
 };
 
 /**

@@ -134,6 +134,7 @@ Vector.prototype.get = function (index) {
  * Indexes are zero-based.
  * @param {Number | Array | Matrix | Vector | Range} index
  * @param {* | Array | Matrix | Vector | Range} value
+ * @return {Vector} itself
  */
 Vector.prototype.set = function (index, value) {
     var me = this;
@@ -180,6 +181,8 @@ Vector.prototype.set = function (index, value) {
             this._set(index, value);
         }
     }
+
+    return this;
 };
 
 /**

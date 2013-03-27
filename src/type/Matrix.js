@@ -96,6 +96,7 @@ Matrix.prototype.get = function (index) {
  * Indexes are zero-based.
  * @param {Array | Vector | Matrix} index
  * @param {*} value
+ * @return {Matrix} itself
  */
 Matrix.prototype.set = function (index, value) {
     // TODO: support syntax Matrix.get(m,n,p, ..., value)
@@ -155,6 +156,8 @@ Matrix.prototype.set = function (index, value) {
         // TODO: support a single number as index in case the matrix is a vector
         throw new TypeError('Unsupported type of index ' + type(index));
     }
+
+    return this;
 };
 
 /**
