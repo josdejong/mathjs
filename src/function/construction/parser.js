@@ -30,10 +30,10 @@
  *    // clear defined functions and variables
  *    parser.clear();
  *
- * @return {Parser} Parser
+ * @return {math.expr.Parser} Parser
  */
 function parser() {
-    return new Parser();
+    return new math.expr.Parser();
 }
 
 math.parser = parser;

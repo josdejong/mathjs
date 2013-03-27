@@ -225,7 +225,7 @@ Math.js supports units.
 var math = require('math.js');
 
 var a = math.unit(55, 'cm');    // 550 mm
-var b = math.unit(0.1, 'm');    // 100 mm
+var b = math.unit('0.1m');      // 100 mm
 math.add(a, b);                 // 0.65 m
 
 var parser = math.parser();

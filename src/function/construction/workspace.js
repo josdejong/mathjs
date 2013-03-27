@@ -27,10 +27,10 @@
  *     workspace.replace('a=5/2', id0);
  *     console.log('a + 2 = ' + workspace.getResult(id1));
  *
- * @return {Workspace} Workspace
+ * @return {math.expr.Workspace} Workspace
  */
 function workspace() {
-    return new Workspace();
+    return new math.expr.Workspace();
 }
 
 math.workspace = workspace;
