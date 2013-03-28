@@ -31,37 +31,37 @@ m = math.matrix([1,2,3]);
 assert.equal(m.isScalar(), false);
 assert.equal(m.isVector(), true);
 assert.deepEqual(m.size(), [3]);
-assert.deepEqual(m.toVector().valueOf(), [1,2,3]);
+assert.deepEqual(m.toVector(), [1,2,3]);
 
 m = math.matrix([[1],[2],[3]]);
 assert.equal(m.isScalar(), false);
 assert.equal(m.isVector(), true);
 assert.deepEqual(m.size(), [3,1]);
-assert.deepEqual(m.toVector().valueOf(), [1,2,3]);
+assert.deepEqual(m.toVector(), [1,2,3]);
 
 m = math.matrix([[[1],[2],[3]]]);
 assert.equal(m.isScalar(), false);
 assert.equal(m.isVector(), true);
 assert.deepEqual(m.size(), [1,3,1]);
-assert.deepEqual(m.toVector().valueOf(), [1,2,3]);
+assert.deepEqual(m.toVector(), [1,2,3]);
 
 m = math.matrix([[[3]]]);
 assert.equal(m.isScalar(), true);
 assert.equal(m.isVector(), true);
 assert.deepEqual(m.size(), [1,1,1]);
-assert.deepEqual(m.toVector().valueOf(), [3]);
+assert.deepEqual(m.toVector(), [3]);
 
 m = math.matrix([[]]);
 assert.equal(m.isScalar(), true);
 assert.equal(m.isVector(), true);
 assert.deepEqual(m.size(), [0,0]);
-assert.deepEqual(m.toVector().valueOf(), []);
+assert.deepEqual(m.toVector(), []);
 
 m = math.matrix();
 assert.equal(m.isScalar(), true);
 assert.equal(m.isVector(), true);
 assert.deepEqual(m.size(), [0]);
-assert.deepEqual(m.toVector().valueOf(), []);
+assert.deepEqual(m.toVector(), []);
 
 // test resizing
 m = math.matrix([[1,2,3],[4,5,6]]);

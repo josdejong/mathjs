@@ -1,6 +1,6 @@
 /**
  * Create an identity matrix with size m x n, identity(m [, n])
- * @param {...Number | Matrix | Vector | Array} size
+ * @param {...Number | Matrix | Array} size
  * @return {Matrix} matrix
  */
 function identity (size) {

@@ -15,7 +15,6 @@
  *     range.map(function (x) {
  *         return math.sin(x);
  *     });
- *     range.toVector();
  *     range.toArray();
  *
  * Example usage:
@@ -127,16 +126,8 @@ Range.prototype.map = function (callback) {
  * Create a Matrix with a copy of the Ranges data
  * @return {Matrix} matrix
  */
-Vector.prototype.toMatrix = function () {
+Range.prototype.toMatrix = function () {
     return new Matrix(this.toArray());
-};
-
-/**
- * Create a Vector with a copy of the Ranges data
- * @return {Vector} vector
- */
-Range.prototype.toVector = function () {
-    return new Vector(this.toArray());
 };
 
 /**
@@ -149,6 +140,45 @@ Range.prototype.toArray = function () {
         array[index] = value;
     });
     return array;
+};
+
+/**
+ * Create an array with a copy of the Ranges data.
+ * This method is equal to Range.toArray, and is available for compatibility
+ * with Matrix.
+ * @return {Array} vector
+ */
+Range.prototype.toVector = Range.prototype.toArray;
+
+/**
+ * Test if the range contains a vector. For a range, this is always the case
+ * return {boolean} isVector
+ */
+Range.prototype.isVector = function () {
+    return true;
+};
+
+/**
+ * Create a scalar with a copy of the data of the Range
+ * Will return null if the range does not consist of a scalar value
+ * @return {* | null} scalar
+ */
+Range.prototype.toScalar = function () {
+    var array = this.toArray();
+    if (array.length == 1) {
+        return array[0];
+    }
+    else {
+        return null;
+    }
+};
+
+/**
+ * Test whether the matrix is a scalar.
+ * @return {boolean} isScalar
+ */
+Range.prototype.isScalar = function () {
+    return (this.size()[0] == 1);
 };
 
 /**

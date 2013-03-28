@@ -37,7 +37,7 @@ b = math.clone(a);
 a.valueOf()[0][0] = 5;
 assert.equal(b.valueOf()[0][0], 1);
 
-a = math.vector([1, 2, new math.complex(2, 3), 4]);
+a = math.matrix([1, 2, new math.complex(2, 3), 4]);
 b = math.clone(a);
 a.valueOf()[2].re = 5;
 assert.equal(b.valueOf()[2].re, 2);

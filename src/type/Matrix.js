@@ -16,7 +16,7 @@
  *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
  *     matrix.get([1, 0])         // 3
  *
- * @param {Array | Matrix | Vector | Range} [data]    A multi dimensional array
+ * @param {Array | Matrix | Range} [data]    A multi dimensional array
  */
 function Matrix(data) {
     if (this.constructor != Matrix) {
@@ -24,8 +24,8 @@ function Matrix(data) {
             'Matrix constructor must be called with the new operator');
     }
 
-    if (data instanceof Matrix || data instanceof Vector || data instanceof Range) {
-        // clone data from Vector, Matrix, or Range
+    if (data instanceof Matrix || data instanceof Range) {
+        // clone data from a Matrix or Range
         this._data = data.toArray();
     }
     else if (data instanceof Array) {
@@ -50,7 +50,7 @@ math.type.Matrix = Matrix;
 /**
  * Get a value or a set of values from the matrix.
  * Indexes are zero-based.
- * @param {Array | Vector | Matrix} index
+ * @param {Array | Matrix} index
  */
 Matrix.prototype.get = function (index) {
     // TODO: support syntax Matrix.get(m,n,p, ...)
@@ -63,8 +63,8 @@ Matrix.prototype.get = function (index) {
         }
         index = index.toVector();
     }
-    if (index instanceof Vector) {
-        index = index.valueOf();
+    if (index instanceof Range) {
+        index = index.toArray();
     }
 
     if (index instanceof Array) {
@@ -87,14 +87,14 @@ Matrix.prototype.get = function (index) {
     }
     else {
         // TODO: support a single number as index in case the matrix is a vector
-        throw new TypeError('Unsupported type of index ' + type(index));
+        throw new TypeError('Unsupported type of index ' + math.typeof(index));
     }
 };
 
 /**
  * Get a value or a set of values from the matrix.
  * Indexes are zero-based.
- * @param {Array | Vector | Matrix} index
+ * @param {Array | Range | Matrix} index
  * @param {*} value
  * @return {Matrix} itself
  */
@@ -109,10 +109,7 @@ Matrix.prototype.set = function (index, value) {
         }
         index = index.toVector();
     }
-    if (index instanceof Vector) {
-        index = index.valueOf();
-    }
-    if (value instanceof Matrix || value instanceof Vector || value instanceof Range) {
+    if (value instanceof Matrix || value instanceof Range) {
         value = value.valueOf();
     }
 
@@ -154,7 +151,7 @@ Matrix.prototype.set = function (index, value) {
     }
     else {
         // TODO: support a single number as index in case the matrix is a vector
-        throw new TypeError('Unsupported type of index ' + type(index));
+        throw new TypeError('Unsupported type of index ' + math.typeof(index));
     }
 
     return this;
@@ -224,12 +221,12 @@ Matrix.prototype.isScalar = function () {
 };
 
 /**
- * Create a Vector with a copy of the data of the Matrix
+ * Create a vector with a copy of the data of the Matrix
  * Returns null if the Matrix does not contain a vector
  *
  * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
  * dimensions where maximum one of the dimensions has a size larger than 1.
- * return {Vector | null} vector
+ * return {Array | null} vector
  */
 Matrix.prototype.toVector = function () {
     var count = 0;
@@ -247,10 +244,10 @@ Matrix.prototype.toVector = function () {
         // scalar or empty
         var scalar = this.toScalar();
         if (scalar) {
-            return new Vector([scalar]);
+            return [scalar];
         }
         else {
-            return new Vector();
+            return [];
         }
     }
     else if (count == 1) {
@@ -260,7 +257,7 @@ Matrix.prototype.toVector = function () {
             index[dim] = i;
             vector[i] = clone(this.get(index));
         }
-        return new Vector(vector);
+        return vector;
     }
     else {
         // count > 1, this is no vector

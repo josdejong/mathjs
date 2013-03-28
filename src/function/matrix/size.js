@@ -1,5 +1,5 @@
 /**
- * Calculate the size of a vector, matrix, or scalar. size(x)
+ * Calculate the size of a matrix. size(x)
  * @param {Number | Complex | Array} x
  * @return {Number | Complex | Array} res
  */
@@ -20,7 +20,7 @@ function size (x) {
         return util.size(x);
     }
 
-    if (x instanceof Matrix || x instanceof Vector || x instanceof Range) {
+    if (x instanceof Matrix || x instanceof Range) {
         return x.size();
     }
 

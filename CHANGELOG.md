@@ -6,7 +6,7 @@ https://github.com/josdejong/mathjs
 
 *Note: version 0.5 is incompatible with previous versions.*
 
-- Implemented data types Vector, Matrix, and Range.
+- Implemented data types Matrix and Range.
 - Implemented methods clone, size, identity.
 - Changed: moved all type constructors in the namespace under math.type,
   created construction methods for easy object creation. For example, a complex

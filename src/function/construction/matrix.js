@@ -13,7 +13,7 @@
  *     m.valueOf();                     // [[1, 2], [3, 4], [5, 5]]
  *     m.get([1, 0])                    // 3
  *
- * @param {Array | Matrix | Vector | Range} [data]    A multi dimensional array
+ * @param {Array | Matrix | Range} [data]    A multi dimensional array
  * @return {Matrix} matrix
  */
 function matrix(data) {

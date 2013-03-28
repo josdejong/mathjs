@@ -102,7 +102,7 @@ var util = (function () {
      *     fn(n)
      *     fn(m, n, p, ...)
      *     fn([m, n, p, ...])
-     * @param {...Number | Array | Matrix | Vector} args
+     * @param {...Number | Array | Matrix} args
      * @returns {Array} array
      */
     util.argsToArray = function argsToArray(args) {
@@ -118,7 +118,7 @@ var util = (function () {
             if (array instanceof Matrix) {
                 array = array.toVector();
             }
-            if (array instanceof Vector || array instanceof Range) {
+            if (array instanceof Range) {
                 array = array.valueOf();
             }
             if (!(array instanceof Array)) {
@@ -479,7 +479,7 @@ var util = (function () {
 
         // check the type of size
         if (!(size instanceof Array)) {
-            throw new TypeError('Size must be an array (size is ' + type(size) + ')');
+            throw new TypeError('Size must be an array (size is ' + math.typeof(size) + ')');
         }
 
         // check whether size contains positive integers
