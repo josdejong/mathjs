@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.5.0-SNAPSHOT
- * @date    2013-03-27
+ * @date    2013-03-28
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -3736,7 +3736,7 @@ function pow(x, y) {
 
         if (y == 0) {
             // return the identity matrix
-            return eye(s[0]);
+            return identity(s[0]);
         }
         else {
             // value > 0
@@ -5116,15 +5116,15 @@ diag.doc = {
         'diag(a)'
     ],
     'seealso': [
-        'eye', 'ones', 'range', 'size', 'transpose', 'zeros'
+        'identity', 'ones', 'range', 'size', 'transpose', 'zeros'
     ]
 };
 /**
- * Create an identity matrix with size m x n, eye(m [, n])
+ * Create an identity matrix with size m x n, identity(m [, n])
  * @param {...Number | Matrix | Vector | Array} size
  * @return {Matrix} matrix
  */
-function eye (size) {
+function identity (size) {
     var args = util.argsToArray(arguments);
     if (args.length == 0) {
         args = [1, 1];
@@ -5133,18 +5133,18 @@ function eye (size) {
         args[1] = args[0];
     }
     else if (args.length > 2) {
-        throw newArgumentsError('eye', num, 0, 2);
+        throw newArgumentsError('identity', num, 0, 2);
     }
 
     var rows = args[0],
         cols = args[1];
 
     if (!isNumber(rows) || !isInteger(rows) || rows < 1) {
-        throw new Error('Parameters in function eye must be positive integers');
+        throw new Error('Parameters in function identity must be positive integers');
     }
     if (cols) {
         if (!isNumber(cols) || !isInteger(cols) || cols < 1) {
-            throw new Error('Parameters in function eye must be positive integers');
+            throw new Error('Parameters in function identity must be positive integers');
         }
     }
 
@@ -5162,27 +5162,27 @@ function eye (size) {
     return matrix;
 }
 
-math.eye = eye;
+math.identity = identity;
 
 /**
  * Function documentation
  */
-eye.doc = {
-    'name': 'eye',
+identity.doc = {
+    'name': 'identity',
     'category': 'Numerics',
     'syntax': [
-        'eye(n)',
-        'eye(m, n)',
-        'eye([m, n])',
-        'eye'
+        'identity(n)',
+        'identity(m, n)',
+        'identity([m, n])',
+        'identity'
     ],
     'description': 'Returns the identity matrix with size m-by-n. ' +
         'The matrix has ones on the diagonal and zeros elsewhere.',
     'examples': [
-        'eye(3)',
-        'eye(3, 5)',
+        'identity(3)',
+        'identity(3, 5)',
         'a = [1, 2, 3; 4, 5, 6]',
-        'eye(size(a))'
+        'identity(size(a))'
     ],
     'seealso': [
         'diag', 'ones', 'range', 'size', 'transpose', 'zeros'
@@ -5240,7 +5240,7 @@ ones.doc = {
         'ones(size(a))'
     ],
     'seealso': [
-        'diag', 'eye', 'range', 'size', 'transpose', 'zeros'
+        'diag', 'identity', 'range', 'size', 'transpose', 'zeros'
     ]
 };
 /**
@@ -5297,7 +5297,7 @@ size.doc = {
         'size(1:6)'
     ],
     'seealso': [
-        'diag', 'eye', 'ones', 'range', 'transpose', 'zeros'
+        'diag', 'identity', 'ones', 'range', 'transpose', 'zeros'
     ]
 };
 /**
@@ -5350,7 +5350,7 @@ zeros.doc = {
         'zeros(size(a))'
     ],
     'seealso': [
-        'diag', 'eye', 'ones', 'range', 'size', 'transpose'
+        'diag', 'identity', 'ones', 'range', 'size', 'transpose'
     ]
 };
 /**

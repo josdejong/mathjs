@@ -1,9 +1,9 @@
 /**
- * Create an identity matrix with size m x n, eye(m [, n])
+ * Create an identity matrix with size m x n, identity(m [, n])
  * @param {...Number | Matrix | Vector | Array} size
  * @return {Matrix} matrix
  */
-function eye (size) {
+function identity (size) {
     var args = util.argsToArray(arguments);
     if (args.length == 0) {
         args = [1, 1];
@@ -12,18 +12,18 @@ function eye (size) {
         args[1] = args[0];
     }
     else if (args.length > 2) {
-        throw newArgumentsError('eye', num, 0, 2);
+        throw newArgumentsError('identity', num, 0, 2);
     }
 
     var rows = args[0],
         cols = args[1];
 
     if (!isNumber(rows) || !isInteger(rows) || rows < 1) {
-        throw new Error('Parameters in function eye must be positive integers');
+        throw new Error('Parameters in function identity must be positive integers');
     }
     if (cols) {
         if (!isNumber(cols) || !isInteger(cols) || cols < 1) {
-            throw new Error('Parameters in function eye must be positive integers');
+            throw new Error('Parameters in function identity must be positive integers');
         }
     }
 
@@ -41,27 +41,27 @@ function eye (size) {
     return matrix;
 }
 
-math.eye = eye;
+math.identity = identity;
 
 /**
  * Function documentation
  */
-eye.doc = {
-    'name': 'eye',
+identity.doc = {
+    'name': 'identity',
     'category': 'Numerics',
     'syntax': [
-        'eye(n)',
-        'eye(m, n)',
-        'eye([m, n])',
-        'eye'
+        'identity(n)',
+        'identity(m, n)',
+        'identity([m, n])',
+        'identity'
     ],
     'description': 'Returns the identity matrix with size m-by-n. ' +
         'The matrix has ones on the diagonal and zeros elsewhere.',
     'examples': [
-        'eye(3)',
-        'eye(3, 5)',
+        'identity(3)',
+        'identity(3, 5)',
         'a = [1, 2, 3; 4, 5, 6]',
-        'eye(size(a))'
+        'identity(size(a))'
     ],
     'seealso': [
         'diag', 'ones', 'range', 'size', 'transpose', 'zeros'

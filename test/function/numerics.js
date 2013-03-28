@@ -24,20 +24,20 @@ assert.deepEqual(math.size(math.matrix()), [0]);
 assert.deepEqual(math.size(math.range(2,5)), [4]);
 // TODO: test whether math.size throws an error in case of invalid data or size
 
-// test eye
-assert.deepEqual(math.eye().valueOf(), [[1]]);
-assert.deepEqual(math.eye([]).valueOf(), [[1]]);
-assert.deepEqual(math.eye(1).valueOf(), [[1]]);
-assert.deepEqual(math.eye(2).valueOf(), [[1,0],[0,1]]);
-assert.deepEqual(math.eye([2]).valueOf(), [[1,0],[0,1]]);
-assert.deepEqual(math.eye(2,3).valueOf(), [[1,0,0],[0,1,0]]);
-assert.deepEqual(math.eye(3,2).valueOf(), [[1,0],[0,1],[0,0]]);
-assert.deepEqual(math.eye([3,2]).valueOf(), [[1,0],[0,1],[0,0]]);
-assert.deepEqual(math.eye(math.vector([3,2])).valueOf(), [[1,0],[0,1],[0,0]]);
-assert.deepEqual(math.eye(math.matrix([[3],[2]])).valueOf(), [[1,0],[0,1],[0,0]]);
-assert.deepEqual(math.eye(3,3).valueOf(), [[1,0,0],[0,1,0],[0,0,1]]);
-assert.throws(function () {math.eye(3,3,2);});
-assert.throws(function () {math.eye([3,3,2]);});
+// test identity
+assert.deepEqual(math.identity().valueOf(), [[1]]);
+assert.deepEqual(math.identity([]).valueOf(), [[1]]);
+assert.deepEqual(math.identity(1).valueOf(), [[1]]);
+assert.deepEqual(math.identity(2).valueOf(), [[1,0],[0,1]]);
+assert.deepEqual(math.identity([2]).valueOf(), [[1,0],[0,1]]);
+assert.deepEqual(math.identity(2,3).valueOf(), [[1,0,0],[0,1,0]]);
+assert.deepEqual(math.identity(3,2).valueOf(), [[1,0],[0,1],[0,0]]);
+assert.deepEqual(math.identity([3,2]).valueOf(), [[1,0],[0,1],[0,0]]);
+assert.deepEqual(math.identity(math.vector([3,2])).valueOf(), [[1,0],[0,1],[0,0]]);
+assert.deepEqual(math.identity(math.matrix([[3],[2]])).valueOf(), [[1,0],[0,1],[0,0]]);
+assert.deepEqual(math.identity(3,3).valueOf(), [[1,0,0],[0,1,0],[0,0,1]]);
+assert.throws(function () {math.identity(3,3,2);});
+assert.throws(function () {math.identity([3,3,2]);});
 
 
 // test zeros
