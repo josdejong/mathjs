@@ -50,6 +50,6 @@ ones.doc = {
         'ones(size(a))'
     ],
     'seealso': [
-        'diag', 'identity', 'range', 'size', 'transpose', 'zeros'
+        'diag', 'identity', 'range', 'size', 'squeeze', 'transpose', 'zeros'
     ]
 };

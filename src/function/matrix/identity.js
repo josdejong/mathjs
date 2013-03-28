@@ -64,6 +64,6 @@ identity.doc = {
         'identity(size(a))'
     ],
     'seealso': [
-        'diag', 'ones', 'range', 'size', 'transpose', 'zeros'
+        'diag', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
     ]
 };

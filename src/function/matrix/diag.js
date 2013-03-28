@@ -98,6 +98,6 @@ diag.doc = {
         'diag(a)'
     ],
     'seealso': [
-        'identity', 'ones', 'range', 'size', 'transpose', 'zeros'
+        'identity', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
     ]
 };

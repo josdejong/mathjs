@@ -79,3 +79,13 @@ assert.deepEqual(math.diag([[1,2,3],[4,5,6]],-1).valueOf(), [4]);
 assert.deepEqual(math.diag([[1,2,3],[4,5,6]],-2).valueOf(), []);
 assert.deepEqual(math.diag(math.range(1,3)).valueOf(), [[1,0,0],[0,2,0],[0,0,3]]);
 // TODO: test diag for all types of input (also scalar)
+
+// test squeeze
+m = math.ones(1,3,2);
+assert.deepEqual(math.size(m).valueOf(), [1,3,2]);
+assert.deepEqual(math.size(math.squeeze(m)).valueOf(), [3,2]);
+m = math.ones(3,1,1);
+assert.deepEqual(math.size(m).valueOf(), [3,1,1]);
+assert.deepEqual(math.size(math.squeeze(m)).valueOf(), [3]);
+assert.deepEqual(math.squeeze(2.3), 2.3);
+assert.deepEqual(math.size(math.squeeze(math.range(1,5))), [5]);
