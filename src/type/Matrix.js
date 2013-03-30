@@ -53,43 +53,177 @@ math.type.Matrix = Matrix;
  * @param {Array | Matrix} index
  */
 Matrix.prototype.get = function (index) {
-    // TODO: support syntax Matrix.get(m,n,p, ...)
-    // TODO: support getting a range of values
-
+    var isVector;
     if (index instanceof Matrix) {
-        if (!index.isVector()) {
-            throw new RangeError('Index must be a vector ' +
-                '(size: ' + format(index.size()) + ')');
-        }
-        index = index.toVector();
+        isVector = index.isVector();
+        index = index.valueOf();
     }
-    if (index instanceof Range) {
-        index = index.toArray();
-    }
-
-    if (index instanceof Array) {
-        if (index.length != this._size.length) {
-            throw new RangeError('Number of dimensions do not match ' +
-                '(' + index.length + ' != ' + this._size.length + ')');
-        }
-
-        var value = this._data;
-        index.forEach(function (i) {
-            if (!isNumber(i) || !isInteger(i) || i < 0) {
-                throw new TypeError('Positive integer expected as index in method get');
-            }
-            if (i > value.length - 1) {
-                throw new RangeError('Index out of range (' + i + ')');
-            }
-            value = value[i];
+    else if (index instanceof Array) {
+        isVector = !index.some(function (i) {
+            return (i.forEach); // an Array or Range
         });
-        return value;
     }
     else {
-        // TODO: support a single number as index in case the matrix is a vector
         throw new TypeError('Unsupported type of index ' + math.typeof(index));
     }
+
+    if (index.length != this._size.length) {
+        throw new RangeError('Number of dimensions do not match ' +
+            '(' + index.length + ' != ' + this._size.length + ')');
+    }
+
+    if (isVector) {
+        // return a single value
+        switch (index.length) {
+            case 1:     return _get(this._data, index[0]);
+            case 2:     return _get(_get(this._data, index[0]), index[1]);
+            default:    return _getScalar(this._data, index);
+        }
+    }
+    else {
+        // return multiple values
+        switch (index.length) {
+            case 1: return _getSubset1D(this._data, index);
+            case 2: return _getSubset2D(this._data, index);
+            default: return _getSubset(this._data, index, 0);
+        }
+    }
 };
+
+/**
+ * Get a single value from an array. The method tests whether:
+ * - index is a non-negative integer
+ * - index does not exceed the dimensions of array
+ * @param {Array} array
+ * @param {Number} index
+ * @return {*} value
+ * @private
+ */
+function _get (array, index) {
+    if (!isNumber(index) || !isInteger(index) || index < 0) {
+        throw new TypeError('Index must contain positive integers (value: ' + index + ')');
+    }
+    if (index > array.length - 1) {
+        throw new RangeError('Index out of range (' + index + '>' + (array.length - 1) +  ')');
+    }
+    return array[index];
+}
+
+/**
+ * Get a single value from the matrix.
+ * Index is not checked for correct number of dimensions.
+ * @param {Array} data
+ * @param {Number[]} index
+ * @return {*} scalar
+ * @private
+ */
+function _getScalar (data, index) {
+    index.forEach(function (i) {
+        data = _get(data, i);
+    });
+    return clone(data);
+}
+
+/**
+ * Get a subset of a multi dimensional matrix.
+ * Index is not checked for correct number of dimensions.
+ * @param {Array} data
+ * @param {Array} subset
+ * @param {number} dim
+ * @return {Array} res
+ * @private
+ */
+function _getSubset (data, subset, dim) {
+    var last = (dim == subset.length - 1);
+    var current = subset[dim];
+    var recurse = function (index) {
+        var child = _get(data, index);
+        return last ? child : _getSubset(child, subset, dim + 1);
+    };
+
+    if (current.map) {
+        // array or Range
+        return current.map(recurse);
+    }
+    else {
+        // scalar
+        return [
+            recurse(current)
+        ];
+    }
+}
+
+/**
+ * Get a subset of a one dimensional matrix.
+ * Index is not checked for correct number of dimensions.
+ * @param {Array} data
+ * @param {Array} subset
+ * @return {Array} res
+ * @private
+ */
+function _getSubset1D (data, subset) {
+    var current = subset[0];
+    if (current.map) {
+        // array or Range
+        return current.map(function (index) {
+            return _get(data, index);
+        });
+    }
+    else {
+        // scalar
+        return [
+            _get(data, current)
+        ];
+    }
+}
+
+/**
+ * Get a subset of a 2 dimensional matrix.
+ * Index is not checked for correct number of dimensions.
+ * @param {Array} data
+ * @param {Array} subset
+ * @return {Array} res
+ * @private
+ */
+function _getSubset2D (data, subset) {
+    var rows = subset[0];
+    var cols = subset[1];
+
+    if (rows.map) {
+        if (cols.map) {
+            return rows.map(function (row) {
+                var child = _get(data, row);
+                return cols.map(function (col) {
+                    return _get(child, col);
+                });
+            });
+        }
+        else {
+            return rows.map(function (row) {
+                return [
+                    _get(_get(data, row), cols)
+                ];
+            });
+        }
+    }
+    else {
+        if (cols.map) {
+            var child = _get(data, rows);
+            return [
+                cols.map(function (col) {
+                    return _get(child, col);
+                })
+            ]
+        }
+        else {
+            return [
+                [
+                    _get(_get(data, rows), cols)
+                ]
+            ];
+        }
+    }
+}
 
 /**
  * Get a value or a set of values from the matrix.
@@ -150,7 +284,6 @@ Matrix.prototype.set = function (index, value) {
         }
     }
     else {
-        // TODO: support a single number as index in case the matrix is a vector
         throw new TypeError('Unsupported type of index ' + math.typeof(index));
     }
 

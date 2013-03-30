@@ -107,5 +107,13 @@ m.set([1,2], 5);
 assert.deepEqual(m.size(), [2,3]);
 assert.deepEqual(m.valueOf(), [[0,0,0],[0,0,5]]);
 
+m = math.matrix([[1,2,3],[4,5,6],[7,8,9]]);
+assert.deepEqual(m.size(), [3,3]);
+assert.deepEqual(m.get([1,1]), 5);
+assert.deepEqual(m.get([[0,1],[0,1]]), [[1,2],[4,5]]);
+assert.deepEqual(m.get([[1], math.range(1,2)]), [[5,6]]);
+assert.deepEqual(m.get([0, math.range(1,2)]), [[2,3]]);
+assert.deepEqual(m.get([math.range(1,2), [1]]), [[5],[8]]);
+assert.deepEqual(m.get([math.range(1,2), 2]), [[6],[9]]);
 
 // TODO: extensively test Matrix

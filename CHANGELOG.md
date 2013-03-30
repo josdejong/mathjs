@@ -8,13 +8,12 @@ https://github.com/josdejong/mathjs
 
 - Implemented data types Matrix and Range.
 - Implemented methods clone, diag, size, squeeze, identity.
-- Changed: moved all type constructors in the namespace under math.type,
-  created construction methods for easy object creation. For example, a complex
-  value is now created with "math.complex(2, 3)" instead of
-  "new math.Complex(2, 3)".
-- Changed: moved the Parser, Workspace, etc to the namespace math.expr, and
-  created construction methods for easy object creation. For example a parser
-  is now created by "math.parser()" instead of "new math.parser.Parser()".
+- Changed: created construction methods for easy object creation for all data
+  types and for the parser. For example, a complex value is now created
+  with "math.complex(2, 3)" instead of "new math.Complex(2, 3)", and a parser
+  is now created with "math.parser()" instead of "new math.parser.Parser()".
+- Changed: moved all data types under the namespace math.type, and moved the
+  Parser, Workspace, etc. under the namespace math.expr.
 - Changed: changed operator precedence of the power operator:
   - it is now right associative instead of left associative like most scripting
     languages. So 2^3^4 is now calculated as 2^(3^4).
