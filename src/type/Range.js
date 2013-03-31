@@ -84,8 +84,9 @@ Range.prototype.size = function () {
 
 /**
  * Execute a callback function for each value in the range.
- * @param {function} callback   Called as fn(value, index) for each value in the
- *                              range.
+ * @param {function} callback   The callback method is invoked with three
+ *                              parameters: the value of the element, the index
+ *                              of the element, and the Matrix being traversed.
  */
 Range.prototype.forEach = function (callback) {
     var x = Number(this.start);
@@ -95,14 +96,14 @@ Range.prototype.forEach = function (callback) {
 
     if (step > 0) {
         while (x <= end) {
-            callback(x, i);
+            callback(x, i, this);
             x += step;
             i++;
         }
     }
     else if (step < 0) {
         while (x >= end) {
-            callback(x, i);
+            callback(x, i, this);
             x += step;
             i++;
         }
@@ -112,12 +113,15 @@ Range.prototype.forEach = function (callback) {
 /**
  * Execute a callback function for each value in the Range, and return the
  * results as an array
+ * @param {function} callback   The callback method is invoked with three
+ *                              parameters: the value of the element, the index
+ *                              of the element, and the Matrix being traversed.
  * @returns {Array} array
  */
 Range.prototype.map = function (callback) {
     var array = [];
-    this.forEach(function (value, index) {
-        array[index] = callback(value);
+    this.forEach(function (value, index, obj) {
+        array[index] = callback(value, index, obj);
     });
     return array;
 };

@@ -157,8 +157,8 @@ var util = (function () {
     };
 
     /**
-     * Execute function fn element wise for each element in array. Returns an array
-     * with the results
+     * Execute function fn element wise for each element in array.
+     * Returns an array with the results
      * @param {Array} array
      * @param {function} fn
      * @return {Array} res
@@ -174,8 +174,8 @@ var util = (function () {
     };
 
     /**
-     * Execute function fn element wise for each entry in two given arrays, or for
-     * an object and array pair. Returns an array with the results
+     * Execute function fn element wise for each entry in two given arrays, or
+     * for a (scalar) object and array pair. Returns an array with the results
      * @param {Array | Object} array1
      * @param {Array | Object} array2
      * @param {function} fn
@@ -250,22 +250,63 @@ var util = (function () {
     /**
      * Creates a new object with the results of calling a provided function on
      * every property in the object.
-     * @param {Object | Array} object   The object or array.
+     * @param {Object} object           The object.
      * @param {function} callback       Mapping function
      * @return {Object | Array} mappedObject
      */
-    util.map = function map (object, callback) {
-        if (object instanceof Array) {
-            return object.map(callback);
+    util.mapObject = function mapObject (object, callback) {
+        var m = {};
+        for (var key in object) {
+            if (object.hasOwnProperty(key)) {
+                m[key] = callback(object[key]);
+            }
         }
-        else {
-            var m = {};
-            for (var key in object) {
-                if (object.hasOwnProperty(key)) {
-                    m[key] = callback(object[key]);
+        return m;
+    };
+
+    /**
+     * Deep test equality of all fields in two pairs of arrays or objects.
+     * @param {Array | Object} a
+     * @param {Array | Object} b
+     * @returns {boolean}
+     */
+    util.deepEqual = function (a, b) {
+        var prop, i, len;
+        if (a instanceof Array) {
+            if (!(b instanceof Array)) {
+                return false;
+            }
+
+            for (i = 0, len = a.length; i < len; i++) {
+                if (!util.deepEqual(a[i], b[i])) {
+                    return false;
                 }
             }
-            return m;
+            return true;
+        }
+        else if (a instanceof Object) {
+            if (b instanceof Array || !(b instanceof Object)) {
+                return false;
+            }
+
+            for (prop in a) {
+                if (a.hasOwnProperty(prop)) {
+                    if (!util.deepEqual(a[prop], b[prop])) {
+                        return false;
+                    }
+                }
+            }
+            for (prop in b) {
+                if (b.hasOwnProperty(prop)) {
+                    if (!util.deepEqual(a[prop], b[prop])) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        else {
+            return (a.valueOf() == b.valueOf());
         }
     };
 

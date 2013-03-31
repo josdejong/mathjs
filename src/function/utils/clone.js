@@ -17,7 +17,7 @@ function clone(x) {
         return x.clone();
     }
 
-    if (isNumber(x) || isString(x)) {
+    if (isNumber(x) || isString(x) || isBoolean(x)) {
         return x;
     }
 
@@ -28,7 +28,7 @@ function clone(x) {
     }
 
     if (x instanceof Object) {
-        return util.map(x, clone);
+        return util.mapObject(x, clone);
     }
 
     throw newUnsupportedTypeError('clone', x);

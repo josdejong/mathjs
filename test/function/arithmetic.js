@@ -88,6 +88,9 @@ assert.throws(function () {
 assert.throws(function () {
     math.sqrt('a string');
 });
+assert.deepEqual(math.sqrt([4,9,16,25]), [2,3,4,5]);
+assert.deepEqual(math.sqrt([[4,9],[16,25]]), [[2,3],[4,5]]);
+
 
 // TODO: test square
 // TODO: test subtract
