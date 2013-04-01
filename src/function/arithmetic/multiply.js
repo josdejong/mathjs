@@ -82,19 +82,24 @@ function multiply(x, y) {
 
             return res;
         }
+        else if (y instanceof Matrix) {
+            return new Matrix(multiply(x.valueOf(), y.valueOf()));
+        }
         else {
             // matrix * scalar
             return util.map2(x, y, multiply);
         }
     }
-
-    if (x instanceof Matrix || y instanceof Matrix) {
+    else if (x instanceof Matrix) {
         return new Matrix(multiply(x.valueOf(), y.valueOf()));
     }
 
     if (y instanceof Array) {
         // scalar * matrix
         return util.map2(x, y, multiply);
+    }
+    else if (y instanceof Matrix) {
+        return new Matrix(multiply(x.valueOf(), y.valueOf()));
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {

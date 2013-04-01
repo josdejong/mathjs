@@ -164,15 +164,10 @@ var util = (function () {
      * @return {Array | Matrix} res
      */
     util.map = function map(array, fn) {
-        if (array instanceof Array || array instanceof Matrix) {
+        if (array instanceof Array || array instanceof Matrix || array instanceof Range) {
             return array.map(function (x) {
                 return fn(x);
             });
-        }
-        else if (array instanceof Range) {
-            return new Matrix(array.map(function (x) {
-                return fn(x);
-            }));
         }
         else {
             throw new TypeError('Array expected');

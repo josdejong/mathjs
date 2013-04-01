@@ -47,6 +47,12 @@ assert.ok(parser.eval('[1,2;3,4]') instanceof math.type.Matrix);
 var m = parser.eval('[1,2,3;4,5,6]');
 assert.deepEqual(m.size(), [2,3]);
 assert.deepEqual(m.valueOf(), [[1,2,3],[4,5,6]]);
+var b = parser.eval('[5, 6; 1, 1]');
+assert.deepEqual(b.size(), [2,2]);
+assert.deepEqual(b.valueOf(), [[5,6],[1,1]]);
+b.set([2, [1, 2]], [[7, 8]]);
+assert.deepEqual(b.size(), [2,2]);
+assert.deepEqual(b.valueOf(), [[5,6],[7,8]]);
 
 parser.eval('a=[1,2;3,4]');
 parser.eval('a(1,1) = 100');

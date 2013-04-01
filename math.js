@@ -232,15 +232,10 @@ var util = (function () {
      * @return {Array | Matrix} res
      */
     util.map = function map(array, fn) {
-        if (array instanceof Array || array instanceof Matrix) {
+        if (array instanceof Array || array instanceof Matrix || array instanceof Range) {
             return array.map(function (x) {
                 return fn(x);
             });
-        }
-        else if (array instanceof Range) {
-            return new Matrix(array.map(function (x) {
-                return fn(x);
-            }));
         }
         else {
             throw new TypeError('Array expected');
@@ -1582,7 +1577,7 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
     }
     else {
         // scalar
-        recurse(current)
+        recurse(current, 0)
     }
 }
 
@@ -3883,19 +3878,24 @@ function multiply(x, y) {
 
             return res;
         }
+        else if (y instanceof Matrix) {
+            return new Matrix(multiply(x.valueOf(), y.valueOf()));
+        }
         else {
             // matrix * scalar
             return util.map2(x, y, multiply);
         }
     }
-
-    if (x instanceof Matrix || y instanceof Matrix) {
+    else if (x instanceof Matrix) {
         return new Matrix(multiply(x.valueOf(), y.valueOf()));
     }
 
     if (y instanceof Array) {
         // scalar * matrix
         return util.map2(x, y, multiply);
+    }
+    else if (y instanceof Matrix) {
+        return new Matrix(multiply(x.valueOf(), y.valueOf()));
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {

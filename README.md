@@ -186,8 +186,6 @@ as well as advanced data types like Complex and Unit.
 The built-in type Number can be used in all methods.
 
 ```js
-var math = require('mathjs');
-
 math.subtract(7.1, 2.3);        // 4.8
 math.round(math.pi, 3);         // 3.142
 math.sqrt(new Number(4.41e2));  // 21
@@ -198,8 +196,6 @@ math.sqrt(new Number(4.41e2));  // 21
 The built-in type String can be used in applicable methods.
 
 ```js
-var math = require('math.js');
-
 math.add('hello ', 'world');    // 'hello world'
 math.max('A', 'D', 'C');        // 'D'
 ```
@@ -209,8 +205,6 @@ math.max('A', 'D', 'C');        // 'D'
 Math.js supports complex numbers.
 
 ```js
-var math = require('math.js');
-
 var a = math.complex(2, 3);     // 2 + 3i
 var b = math.complex('4 - 2i'); // 4 - 2i
 math.add(a, b);                 // 6 + i
@@ -222,8 +216,6 @@ math.sqrt(-4);                  // 2i
 Math.js supports units.
 
 ```js
-var math = require('math.js');
-
 var a = math.unit(55, 'cm');    // 550 mm
 var b = math.unit('0.1m');      // 100 mm
 math.add(a, b);                 // 0.65 m
@@ -232,22 +224,61 @@ var parser = math.parser();
 parser.eval('2 inch in cm');    // 5.08 cm
 ```
 
-### Array
+### Array and Matrix
 
-Math.js supports n-dimensional arrays. Arrays can be created via JavaScript or
-using the Parser.
+Math.js supports n-dimensional arrays and matrices. Both regular JavaScript
+Array and the math.js Matrix can be used interchangeably in all math.js
+functions.
+
+A `Matrix` is an object wrapped around a regular JavaScript Array, providing
+utility methods for easy matrix manipulation such as `get`, `set`, `size`,
+`resize`, `clone`, and more.
+
+```js
+var matrix = math.matrix([1, 4, 9, 16, 25]);    // Matrix, [1, 4, 9, 16, 25]
+math.sqrt(matrix);                              // Matrix, [1, 2, 3, 4, 5]
+
+var array = [1, 2, 3, 4, 5];
+math.factorial(array);                          // Array,  [1, 2, 6, 24, 120]
+
+var a = [[1, 2], [3, 4]];                       // Array,  [[1, 2], [3, 4]]
+var b = math.matrix([[5, 6], [1, 1]]);          // Matrix, [[5, 6], [1, 1]]
+b.set([2, [1, 2]], [[7, 8]]);                   // Matrix, [[5, 6], [7, 8]]
+var c = math.multiply(a, b);                    // Matrix, [[19, 22], [43, 50]]
+var d = c.get([2, 1]);                          // 43
+```
+
+Matrices are supported by the parser:
+
+```js
+parser = math.parser();
+
+parser.eval('a = [1, 2; 3, 4]');                // Matrix, [[1, 2], [3, 4]]
+parser.eval('b = [5, 6; 7, 8]');                // Matrix, [[5, 6], [1, 1]]
+parser.eval('b(2, 1:2) = [7, 8]');              // Matrix, [[5, 6], [7, 8]]
+parser.eval('c = a * b');                       // Matrix, [[19, 22], [43, 50]]
+parser.eval('d = c(2, 1)');                     // 43
+```
+
+
+### Range
+
+A `Range` creates a range with a start, end, and optionally a step.
+A Range can be used to create indexes to get or set submatrices.
 
 ```js
 var math = require('math.js'),
     parser = math.parser();
 
-math.sqrt([1, 4, 9, 16, 25]);           // [1, 2, 3, 4, 5]
+math.factorial(math.range(1,5));                // Array,  [1, 2, 6, 24, 120]
 
-var a = [[1, 2], [3, 4]];               // [1, 2; 3, 4]
-var b = parser.eval('[5, 6; 7, 8]');    // [5, 6; 7, 8]
-var c = math.multiply(a, b);
-math.format(c);                         // [19, 22; 43, 50]
+var a = math.matrix();                          // Matrix, []
+a.set([math.range(2,5)], [7, 2, 1, 5]);         // Matrix, [0, 7, 2, 1, 5]
 
+var b = math.range(2, -1, -2);                  // Range, 2:-1:-2
+var c = b.valueOf();                            // Array,  [2, 1, 0, -1, -2]
+
+var d = parser.eval('3:7');                     // Range, 3:7
 ```
 
 
@@ -306,11 +337,13 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.arg(x)
 - math.conj(x)
 
-### Numerics
+### Matrix
 
+- math.diag(x)
 - math.identity(m, n, p, ...)
 - math.ones(m, n, p, ...)
 - math.size(x)
+- math.squeeze(x)
 - math.zeros(m, n, p, ...)
 
 ### Probability

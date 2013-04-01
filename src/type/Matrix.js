@@ -443,7 +443,7 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
     }
     else {
         // scalar
-        recurse(current)
+        recurse(current, 0)
     }
 }
 
