@@ -1,8 +1,8 @@
 /**
  * Calculates the modulus, the remainder of an integer division.
- * @param  {Number | Complex | Array} x
- * @param  {Number | Complex | Array} y
- * @return {Number | Array} res
+ * @param  {Number | Complex | Array | Matrix | Range} x
+ * @param  {Number | Complex | Array | Matrix | Range} y
+ * @return {Number | Array | Matrix} res
  */
 function mod(x, y) {
     if (arguments.length != 2) {
@@ -32,7 +32,8 @@ function mod(x, y) {
     }
 
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, mod);
     }
 

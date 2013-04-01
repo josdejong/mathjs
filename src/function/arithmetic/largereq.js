@@ -1,9 +1,9 @@
 /**
  * Check if value x is larger or equal to y, x >= y
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @return {Boolean | Array | Matrix} res
  */
 function largereq(x, y) {
     if (arguments.length != 2) {
@@ -38,7 +38,8 @@ function largereq(x, y) {
         return x >= y;
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, largereq);
     }
 

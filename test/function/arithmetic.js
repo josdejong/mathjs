@@ -15,6 +15,14 @@ assert.throws(function () {
 assert.throws(function () {
     math.abs('a string');
 });
+var a1 = math.abs(math.matrix([1,-2,3]));
+assert.ok(a1 instanceof math.type.Matrix);
+assert.deepEqual(a1.size(), [3]);
+assert.deepEqual(a1.valueOf(), [1,2,3]);
+a1 = math.abs(math.range(-2,2));
+assert.ok(a1 instanceof math.type.Matrix);
+assert.deepEqual(a1.size(), [5]);
+assert.deepEqual(a1.valueOf(), [2,1,0,1,2]);
 
 // test add
 assert.equal(math.add(2, 3), 5);
@@ -32,6 +40,16 @@ assert.equal(math.add('hello ', 'world'), 'hello world');
 assert.equal(math.add('str', 123), 'str123');
 assert.equal(math.add(123, 'str'), '123str');
 
+var a2 = math.matrix([[1,2],[3,4]]);
+var a3 = math.matrix([[5,6],[7,8]]);
+var a4 = math.add(a2, a3);
+assert.ok(a4 instanceof math.type.Matrix);
+assert.deepEqual(a4.size(), [2,2]);
+assert.deepEqual(a4.valueOf(), [[6,8],[10,12]]);
+var a5 = math.pow(a2, 2);
+assert.ok(a5 instanceof math.type.Matrix);
+assert.deepEqual(a5.size(), [2,2]);
+assert.deepEqual(a5.valueOf(), [[7,10],[15,22]]);
 
 // TODO: test ceil
 // TODO: test cube

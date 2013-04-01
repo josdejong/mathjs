@@ -1,8 +1,8 @@
 /**
  * Compute the sign of a value.
  * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function sign(x) {
     if (arguments.length != 1) {
@@ -28,7 +28,7 @@ function sign(x) {
         return new Complex(x.re / abs, x.im / abs);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, sign);
     }
 

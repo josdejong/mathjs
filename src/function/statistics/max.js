@@ -12,6 +12,8 @@ function max(args) {
         return max.apply(this, args.valueOf());
     }
 
+    // TODO: implement support for Matrix
+
     var res = arguments[0];
     for (var i = 1, iMax = arguments.length; i < iMax; i++) {
         var value = arguments[i];

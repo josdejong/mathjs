@@ -1,7 +1,7 @@
 /**
  * Calculate the cosecant of a value, csc(x) = 1/sin(x)
- * @param {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function csc(x) {
     if (arguments.length != 1) {
@@ -30,7 +30,7 @@ function csc(x) {
         return 1 / Math.sin(x.value);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, csc);
     }
 

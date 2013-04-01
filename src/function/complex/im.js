@@ -1,7 +1,7 @@
 /**
  * Get the imaginary part of a complex number.
- * @param {Number | Complex | Array} x
- * @return {Number | Array} im
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Array | Matrix} im
  */
 function im(x) {
     if (arguments.length != 1) {
@@ -16,7 +16,7 @@ function im(x) {
         return x.im;
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, im);
     }
 

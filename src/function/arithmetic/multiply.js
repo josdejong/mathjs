@@ -1,8 +1,8 @@
 /**
  * Multiply two values. x + y or multiply(x, y)
- * @param  {Number | Complex | Unit | Array} x
- * @param  {Number | Complex | Unit | Array} y
- * @return {Number | Complex | Unit | Array} res
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
  */
 function multiply(x, y) {
     if (arguments.length != 2) {
@@ -86,6 +86,10 @@ function multiply(x, y) {
             // matrix * scalar
             return util.map2(x, y, multiply);
         }
+    }
+
+    if (x instanceof Matrix || y instanceof Matrix) {
+        return new Matrix(multiply(x.valueOf(), y.valueOf()));
     }
 
     if (y instanceof Array) {

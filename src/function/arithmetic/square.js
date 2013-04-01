@@ -1,7 +1,7 @@
 /**
  * Compute the square of a value, x * x
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function square(x) {
     if (arguments.length != 1) {
@@ -16,7 +16,7 @@ function square(x) {
         return multiply(x, x);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return multiply(x, x);
     }
 

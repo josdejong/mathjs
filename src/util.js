@@ -159,30 +159,48 @@ var util = (function () {
     /**
      * Execute function fn element wise for each element in array.
      * Returns an array with the results
-     * @param {Array} array
+     * @param {Array | Matrix | Range} array
      * @param {function} fn
-     * @return {Array} res
+     * @return {Array | Matrix} res
      */
     util.map = function map(array, fn) {
-        if (!array instanceof Array) {
+        if (array instanceof Array || array instanceof Matrix) {
+            return array.map(function (x) {
+                return fn(x);
+            });
+        }
+        else if (array instanceof Range) {
+            return new Matrix(array.map(function (x) {
+                return fn(x);
+            }));
+        }
+        else {
             throw new TypeError('Array expected');
         }
-
-        return array.map(function (x) {
-            return fn(x);
-        });
     };
 
     /**
      * Execute function fn element wise for each entry in two given arrays, or
      * for a (scalar) object and array pair. Returns an array with the results
-     * @param {Array | Object} array1
-     * @param {Array | Object} array2
+     * @param {Array | Matrix | Range | Object} array1
+     * @param {Array | Matrix | Range | Object} array2
      * @param {function} fn
-     * @return {Array} res
+     * @return {Array | Matrix} res
      */
     util.map2 = function map2(array1, array2, fn) {
         var res, len, i;
+
+        // handle Matrix
+        if (array1 instanceof Matrix || array2 instanceof Matrix) {
+            return new Matrix(util.map2(array1.valueOf(), array2.valueOf(), fn));
+        }
+
+        // handle Range
+        if (array1 instanceof Range || array2 instanceof Range) {
+            // TODO: util.map2 does not utilize Range.map
+            return new Matrix(util.map2(array1.valueOf(), array2.valueOf(), fn));
+        }
+
         if (array1 instanceof Array) {
             if (array2 instanceof Array) {
                 // fn(array, array)

@@ -222,6 +222,7 @@ Range.prototype.isScalar = function () {
  * @returns {Array} array
  */
 Range.prototype.valueOf = function () {
+    // TODO: implement a caching mechanism for range.valueOf()
     return this.toArray();
 };
 

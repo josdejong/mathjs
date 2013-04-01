@@ -2,9 +2,9 @@
  * Calculate the logarithm of a value, log(x [, base])
  * base is optional. If not provided, the natural logarithm of x is calculated
  * logarithm for any base, like log(x, base)
- * @param {Number | Complex | Array} x
+ * @param {Number | Complex | Array | Matrix | Range} x
  * @param {Number | Complex} [base]
- * @return {Number | Complex | Array} res
+ * @return {Number | Complex | Array | Matrix} res
  */
 function log(x, base) {
     if (arguments.length != 1 && arguments.length != 2) {
@@ -30,7 +30,7 @@ function log(x, base) {
             );
         }
 
-        if (x instanceof Array) {
+        if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
             return util.map(x, log);
         }
     }

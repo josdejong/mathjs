@@ -1,8 +1,8 @@
 /**
  * Subtract two values. x - y or subtract(x, y)
- * @param  {Number | Complex | Unit | Array} x
- * @param  {Number | Complex | Unit | Array} y
- * @return {Number | Complex | Unit | Array} res
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
  */
 function subtract(x, y) {
     if (arguments.length != 2) {
@@ -60,7 +60,8 @@ function subtract(x, y) {
         }
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, subtract);
     }
 

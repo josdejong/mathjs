@@ -1,8 +1,8 @@
 /**
  * Change the unit of a value. x in unit or in(x, unit)
- * @param {Unit | Array} x
- * @param {Unit | Array} unit
- * @return {Unit | Array} res
+ * @param {Unit | Array | Matrix | Range} x
+ * @param {Unit | Array | Matrix} unit
+ * @return {Unit | Array | Matrix} res
  */
 function unit_in(x, unit) {
     if (arguments.length != 2) {
@@ -27,7 +27,8 @@ function unit_in(x, unit) {
         return res;
     }
 
-    if (x instanceof Array || unit instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        unit instanceof Array || unit instanceof Matrix || unit instanceof Range) {
         return util.map2(x, unit, unit_in);
     }
 

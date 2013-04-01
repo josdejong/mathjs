@@ -105,7 +105,7 @@ function _validateIndex(index, max) {
         throw new RangeError('Index out of range (' + index + ' < 1)');
     }
     if (max && index > max) {
-        throw new RangeError('Index out of range (' + index + '>' + max +  ')');
+        throw new RangeError('Index out of range (' + index + ' > ' + max +  ')');
     }
 }
 

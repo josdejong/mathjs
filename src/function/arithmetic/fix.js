@@ -1,7 +1,7 @@
 /**
  * Round a value towards zero, fix(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function fix(x) {
     if (arguments.length != 1) {
@@ -9,7 +9,7 @@ function fix(x) {
     }
 
     if (isNumber(x)) {
-        return (value > 0) ? Math.floor(x) : Math.ceil(x);
+        return (x > 0) ? Math.floor(x) : Math.ceil(x);
     }
 
     if (x instanceof Complex) {
@@ -19,7 +19,7 @@ function fix(x) {
         );
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, fix);
     }
 

@@ -1,7 +1,7 @@
 /**
  * Calculate the square root of a value
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function sqrt (x) {
     if (arguments.length != 1) {
@@ -33,7 +33,7 @@ function sqrt (x) {
         }
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, sqrt);
     }
 

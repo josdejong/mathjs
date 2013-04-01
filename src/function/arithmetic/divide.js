@@ -1,8 +1,8 @@
 /**
  * Divide two values. x / y or divide(x, y)
- * @param  {Number | Complex | Unit | Array} x
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} x
  * @param  {Number | Complex} y
- * @return {Number | Complex | Unit | Array} res
+ * @return {Number | Complex | Unit | Array | Matrix} res
  */
 function divide(x, y) {
     if (arguments.length != 2) {
@@ -39,8 +39,8 @@ function divide(x, y) {
         }
     }
 
-    if (x instanceof Array) {
-        if (y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+        if (y instanceof Array || y instanceof Matrix || y instanceof Range) {
             // TODO: implement matrix/matrix
         }
         else {
@@ -49,7 +49,7 @@ function divide(x, y) {
         }
     }
 
-    if (y instanceof Array) {
+    if (y instanceof Array || y instanceof Matrix || y instanceof Range) {
         // TODO: implement scalar/matrix
     }
 

@@ -227,30 +227,48 @@ var util = (function () {
     /**
      * Execute function fn element wise for each element in array.
      * Returns an array with the results
-     * @param {Array} array
+     * @param {Array | Matrix | Range} array
      * @param {function} fn
-     * @return {Array} res
+     * @return {Array | Matrix} res
      */
     util.map = function map(array, fn) {
-        if (!array instanceof Array) {
+        if (array instanceof Array || array instanceof Matrix) {
+            return array.map(function (x) {
+                return fn(x);
+            });
+        }
+        else if (array instanceof Range) {
+            return new Matrix(array.map(function (x) {
+                return fn(x);
+            }));
+        }
+        else {
             throw new TypeError('Array expected');
         }
-
-        return array.map(function (x) {
-            return fn(x);
-        });
     };
 
     /**
      * Execute function fn element wise for each entry in two given arrays, or
      * for a (scalar) object and array pair. Returns an array with the results
-     * @param {Array | Object} array1
-     * @param {Array | Object} array2
+     * @param {Array | Matrix | Range | Object} array1
+     * @param {Array | Matrix | Range | Object} array2
      * @param {function} fn
-     * @return {Array} res
+     * @return {Array | Matrix} res
      */
     util.map2 = function map2(array1, array2, fn) {
         var res, len, i;
+
+        // handle Matrix
+        if (array1 instanceof Matrix || array2 instanceof Matrix) {
+            return new Matrix(util.map2(array1.valueOf(), array2.valueOf(), fn));
+        }
+
+        // handle Range
+        if (array1 instanceof Range || array2 instanceof Range) {
+            // TODO: util.map2 does not utilize Range.map
+            return new Matrix(util.map2(array1.valueOf(), array2.valueOf(), fn));
+        }
+
         if (array1 instanceof Array) {
             if (array2 instanceof Array) {
                 // fn(array, array)
@@ -1136,7 +1154,7 @@ Complex.doc = {
  *     matix.size();              // [2, 2]
  *     matrix.resize([3, 2], 5);
  *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
- *     matrix.get([1, 0])         // 3
+ *     matrix.get([2,1])         // 3
  *
  * @param {Array | Matrix | Range} [data]    A multi dimensional array
  */
@@ -1171,8 +1189,7 @@ math.type.Matrix = Matrix;
 
 /**
  * Get a value or a submatrix of the matrix.
- * Indexes are zero-based.
- * @param {Array | Matrix} index
+ * @param {Array | Matrix} index    One-based index
  */
 Matrix.prototype.get = function (index) {
     var isScalar;
@@ -1209,34 +1226,48 @@ Matrix.prototype.get = function (index) {
             case 2: return new Matrix(_getSubmatrix2D(this._data, index));
             default: return new Matrix(_getSubmatrix(this._data, index, 0));
         }
-        // TODO: more efficient when creating an empty matrix and setting data and size manually
+        // TODO: more efficient when creating an empty matrix and setting _data and _size manually
     }
 };
+
+/**
+ * Test whether index is an integer number with index >= 1 and index <= max
+ * @param {*} index       One-based index
+ * @param {Number} [max]  One-based maximum value
+ * @private
+ */
+function _validateIndex(index, max) {
+    if (!isNumber(index) || !isInteger(index)) {
+        throw new TypeError('Index must be an integer (value: ' + index + ')');
+    }
+    if (index < 1) {
+        throw new RangeError('Index out of range (' + index + ' < 1)');
+    }
+    if (max && index > max) {
+        throw new RangeError('Index out of range (' + index + ' > ' + max +  ')');
+    }
+}
 
 /**
  * Get a single value from an array. The method tests whether:
  * - index is a non-negative integer
  * - index does not exceed the dimensions of array
  * @param {Array} array
- * @param {Number} index
+ * @param {Number} index   One-based index
  * @return {*} value
  * @private
  */
 function _get (array, index) {
-    if (!isNumber(index) || !isInteger(index) || index < 0) {
-        throw new TypeError('Index must contain positive integers (value: ' + index + ')');
-    }
-    if (index > array.length - 1) {
-        throw new RangeError('Index out of range (' + index + '>' + (array.length - 1) +  ')');
-    }
-    return array[index];
+    _validateIndex(index, array.length);
+    return array[index - 1]; // one-based index
 }
 
 /**
- * Get a single value from the matrix.
+ * Get a single value from the matrix. The value will be a copy of the original
+ * value in the matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Number[]} index
+ * @param {Number[]} index   One-based index
  * @return {*} scalar
  * @private
  */
@@ -1251,7 +1282,7 @@ function _getScalar (data, index) {
  * Get a submatrix of a one dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index
+ * @param {Array} index         One-based index
  * @return {Array} submatrix
  * @private
  */
@@ -1275,7 +1306,7 @@ function _getSubmatrix1D (data, index) {
  * Get a submatrix of a 2 dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index
+ * @param {Array} index         One-based index
  * @return {Array} submatrix
  * @private
  */
@@ -1323,7 +1354,7 @@ function _getSubmatrix2D (data, index) {
  * Get a submatrix of a multi dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index
+ * @param {Array} index         One-based index
  * @param {number} dim
  * @return {Array} submatrix
  * @private
@@ -1350,8 +1381,8 @@ function _getSubmatrix (data, index, dim) {
 
 /**
  * Replace a value or a submatrix in the matrix.
- * Indexes are zero-based.
- * @param {Array | Range | Matrix} index
+ * Indexes are one-based.
+ * @param {Array | Range | Matrix} index        One-based index
  * @param {*} submatrix
  * @return {Matrix} itself
  */
@@ -1409,41 +1440,38 @@ Matrix.prototype.set = function (index, submatrix) {
  * Replace a single value in an array. The method tests whether index is a
  * non-negative integer
  * @param {Array} array
- * @param {Number} index
+ * @param {Number} index   One-based index
  * @param {*} value
  * @private
  */
 function _set (array, index, value) {
-    if (!isNumber(index) || !isInteger(index) || index < 0) {
-        throw new TypeError('Index must contain positive integers (value: ' + index + ')');
-    }
+    _validateIndex(index);
     if (value instanceof Array) {
         throw new TypeError('Dimension mismatch, value expected instead of array');
     }
-    array[index] = value;
+    array[index - 1] = value; // one-based index
 }
 
 /**
  * Replace a single value in a multi dimensional matrix
  * @param {Array} data
  * @param {Number[]} size
- * @param {Number[]} index
+ * @param {Number[]} index  One-based index
  * @param {*} value
  * @private
  */
 function _setScalar (data, size, index, value) {
     var resized = false;
     if (index.length > size.length) {
+        // dimension added
         resized = true;
     }
 
     for (var i = 0; i < index.length; i++) {
         var index_i = index[i];
-        if (!isNumber(index_i) || !isInteger(index_i) || index_i < 0) {
-            throw new TypeError('Positive integer expected as index in method get');
-        }
-        if ((size[i] == null) || (index_i + 1 > size[i])) {
-            size[i] = index_i + 1;
+        _validateIndex(index_i);
+        if ((size[i] == null) || (index_i > size[i])) {
+            size[i] = index_i;
             resized = true;
         }
     }
@@ -1455,10 +1483,10 @@ function _setScalar (data, size, index, value) {
     var len = size.length;
     index.forEach(function (v, i) {
         if (i < len - 1) {
-            data = data[v];
+            data = data[v - 1]; // one-based index
         }
         else {
-            data[v] = value;
+            data[v - 1] = value; // one-based index
         }
     });
 }
@@ -1467,60 +1495,56 @@ function _setScalar (data, size, index, value) {
  * Replace a single value in a one dimensional matrix
  * @param {Array} data
  * @param {Number[]} size
- * @param {Number[]} index
+ * @param {Number[]} index      One-based index
  * @param {*} value
  * @private
  */
 function _setScalar1D (data, size, index, value) {
     var row = index[0];
-    if (!isNumber(row) || !isInteger(row) || row < 0) {
-        throw new TypeError('Positive integer expected as index in method get');
+    _validateIndex(row);
+
+    if (row > size[0]) {
+        util.resize(data, [row], 0);
     }
 
-    if (row + 1 > size[0]) {
-        util.resize(data, [row + 1], 0);
-    }
-
-    data[row] = value;
+    data[row - 1] = value; // one-based index
 }
 
 /**
  * Replace a single value in a two dimensional matrix
  * @param {Array} data
  * @param {Number[]} size
- * @param {Number[]} index
+ * @param {Number[]} index  One-based index
  * @param {*} value
  * @private
  */
 function _setScalar2D (data, size, index, value) {
     var row = index[0];
     var col = index[1];
-    if (!isNumber(row) || !isInteger(row) || row < 0 ||
-        !isNumber(col) || !isInteger(col) || col < 0) {
-        throw new TypeError('Positive integer expected as index in method get');
-    }
+    _validateIndex(row);
+    _validateIndex(col);
 
     var resized = false;
-    if (row + 1 > (size[0] || 0)) {
-        size[0] = row + 1;
+    if (row > (size[0] || 0)) {
+        size[0] = row;
         resized = true;
     }
-    if (col + 1 > (size[1] || 0)) {
-        size[1] = col + 1;
+    if (col > (size[1] || 0)) {
+        size[1] = col;
         resized = true;
     }
     if (resized) {
         util.resize(data, size, 0);
     }
 
-    data[row][col] = value;
+    data[row - 1][col - 1] = value; // one-based index
 }
 
 /**
  * Replace a submatrix of a multi dimensional matrix.
  * @param {Array} data
  * @param {Array} size
- * @param {Array} index
+ * @param {Array} index     One-based index
  * @param {number} dim
  * @param {Array} submatrix
  * @private
@@ -1536,9 +1560,9 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
             }
         }
         else {
-            var child = data[v];
+            var child = data[v - 1]; // one-based index
             if (!(child instanceof Array)) {
-                data[v] = child = [child];
+                data[v - 1] = child = [child]; // one-based index
                 if (data.length > (size[dim] || 0)) {
                     size[dim] = data.length;
                 }
@@ -1579,7 +1603,7 @@ function _init(array) {
     }
 }
 
-    /**
+/**
  * Resize the matrix
  * @param {Number[]} size
  * @param {*} [defaultValue]        Default value, filled in on new entries.
@@ -1626,7 +1650,7 @@ Matrix.prototype.map = function (callback) {
     var recurse = function (value, dim) {
         if (value instanceof Array) {
             return value.map(function (child, i) {
-                index[dim] = i;
+                index[dim] = i + 1; // one-based index
                 return recurse(child, dim + 1);
             });
         }
@@ -1652,7 +1676,7 @@ Matrix.prototype.forEach = function (callback) {
     var recurse = function (value, dim) {
         if (value instanceof Array) {
             value.forEach(function (child, i) {
-                index[dim] = i;
+                index[dim] = i + 1; // one-based index
                 recurse(child, dim + 1);
             });
         }
@@ -1725,10 +1749,15 @@ Matrix.prototype.toVector = function () {
     else if (count == 1) {
         // valid vector
         var vector = [];
-        for (var i = 0, iMax = this._size[dim]; i < iMax; i++) {
-            index[dim] = i;
-            vector[i] = clone(this.get(index));
-        }
+        var recurse = function (data) {
+            if (data instanceof Array) {
+                data.forEach(recurse);
+            }
+            else {
+                vector.push(data);
+            }
+        };
+        recurse(this._data);
         return vector;
     }
     else {
@@ -2024,6 +2053,7 @@ Range.prototype.isScalar = function () {
  * @returns {Array} array
  */
 Range.prototype.valueOf = function () {
+    // TODO: implement a caching mechanism for range.valueOf()
     return this.toArray();
 };
 
@@ -2772,8 +2802,8 @@ function newArgumentsError(name, count, min, max) {
 
 /**
  * Calculate the square root of a value
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function abs(x) {
     if (arguments.length != 1) {
@@ -2788,7 +2818,7 @@ function abs(x) {
         return Math.sqrt(x.re * x.re + x.im * x.im);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, abs);
     }
 
@@ -2821,9 +2851,9 @@ abs.doc = {
 
 /**
  * Add two values. x + y or add(x, y)
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Number | Complex | Unit | String | Array} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @return {Number | Complex | Unit | String | Array | Matrix} res
  */
 function add(x, y) {
     if (arguments.length != 2) {
@@ -2884,13 +2914,14 @@ function add(x, y) {
         return x + y;
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, add);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return add(x.valueOf());
+        return add(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('add', x, y);
@@ -2923,8 +2954,8 @@ add.doc = {
 
 /**
  * Round a value towards plus infinity, ceil(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function ceil(x) {
     if (arguments.length != 1) {
@@ -2942,7 +2973,7 @@ function ceil(x) {
         );
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, ceil);
     }
 
@@ -2979,8 +3010,8 @@ ceil.doc = {
 
 /**
  * Compute the cube of a value, x * x * x.',
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function cube(x) {
     if (arguments.length != 1) {
@@ -2995,7 +3026,7 @@ function cube(x) {
         return multiply(multiply(x, x), x);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return multiply(multiply(x, x), x);
     }
 
@@ -3034,9 +3065,9 @@ cube.doc = {
 
 /**
  * Divide two values. x / y or divide(x, y)
- * @param  {Number | Complex | Unit | Array} x
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} x
  * @param  {Number | Complex} y
- * @return {Number | Complex | Unit | Array} res
+ * @return {Number | Complex | Unit | Array | Matrix} res
  */
 function divide(x, y) {
     if (arguments.length != 2) {
@@ -3073,8 +3104,8 @@ function divide(x, y) {
         }
     }
 
-    if (x instanceof Array) {
-        if (y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+        if (y instanceof Array || y instanceof Matrix || y instanceof Range) {
             // TODO: implement matrix/matrix
         }
         else {
@@ -3083,7 +3114,7 @@ function divide(x, y) {
         }
     }
 
-    if (y instanceof Array) {
+    if (y instanceof Array || y instanceof Matrix || y instanceof Range) {
         // TODO: implement scalar/matrix
     }
 
@@ -3139,9 +3170,9 @@ divide.doc = {
 /**
  * Check if value x equals y, x == y
  * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @return {Boolean | Array | Matrix} res
  */
 function equal(x, y) {
     if (arguments.length != 2) {
@@ -3176,7 +3207,8 @@ function equal(x, y) {
         return x == y;
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, equal);
     }
 
@@ -3218,8 +3250,8 @@ equal.doc = {
 
 /**
  * Calculate the exponent of a value, exp(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function exp (x) {
     if (arguments.length != 1) {
@@ -3237,7 +3269,7 @@ function exp (x) {
         );
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, exp);
     }
 
@@ -3276,8 +3308,8 @@ exp.doc = {
 };
 /**
  * Round a value towards zero, fix(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function fix(x) {
     if (arguments.length != 1) {
@@ -3285,7 +3317,7 @@ function fix(x) {
     }
 
     if (isNumber(x)) {
-        return (value > 0) ? Math.floor(x) : Math.ceil(x);
+        return (x > 0) ? Math.floor(x) : Math.ceil(x);
     }
 
     if (x instanceof Complex) {
@@ -3295,7 +3327,7 @@ function fix(x) {
         );
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, fix);
     }
 
@@ -3333,8 +3365,8 @@ fix.doc = {
 
 /**
  * Round a value towards minus infinity, floor(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function floor(x) {
     if (arguments.length != 1) {
@@ -3352,7 +3384,7 @@ function floor(x) {
         );
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, floor);
     }
 
@@ -3390,9 +3422,9 @@ floor.doc = {
 /**
  * Check if value x is larger y, x > y
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @return {Boolean | Array | Matrix | Range} res
  */
 function larger(x, y) {
     if (arguments.length != 2) {
@@ -3427,7 +3459,8 @@ function larger(x, y) {
         return x > y;
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, equal);
     }
 
@@ -3471,9 +3504,9 @@ larger.doc = {
 /**
  * Check if value x is larger or equal to y, x >= y
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @return {Boolean | Array | Matrix} res
  */
 function largereq(x, y) {
     if (arguments.length != 2) {
@@ -3508,7 +3541,8 @@ function largereq(x, y) {
         return x >= y;
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, largereq);
     }
 
@@ -3551,9 +3585,9 @@ largereq.doc = {
  * Calculate the logarithm of a value, log(x [, base])
  * base is optional. If not provided, the natural logarithm of x is calculated
  * logarithm for any base, like log(x, base)
- * @param {Number | Complex | Array} x
+ * @param {Number | Complex | Array | Matrix | Range} x
  * @param {Number | Complex} [base]
- * @return {Number | Complex | Array} res
+ * @return {Number | Complex | Array | Matrix} res
  */
 function log(x, base) {
     if (arguments.length != 1 && arguments.length != 2) {
@@ -3579,7 +3613,7 @@ function log(x, base) {
             );
         }
 
-        if (x instanceof Array) {
+        if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
             return util.map(x, log);
         }
     }
@@ -3630,8 +3664,8 @@ log.doc = {
 
 /**
  * Calculate the 10-base logarithm of a value, log10(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function log10(x) {
     if (arguments.length != 1) {
@@ -3655,7 +3689,7 @@ function log10(x) {
         );
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, log10);
     }
 
@@ -3694,9 +3728,9 @@ log10.doc = {
 
 /**
  * Calculates the modulus, the remainder of an integer division.
- * @param  {Number | Complex | Array} x
- * @param  {Number | Complex | Array} y
- * @return {Number | Array} res
+ * @param  {Number | Complex | Array | Matrix | Range} x
+ * @param  {Number | Complex | Array | Matrix | Range} y
+ * @return {Number | Array | Matrix} res
  */
 function mod(x, y) {
     if (arguments.length != 2) {
@@ -3726,7 +3760,8 @@ function mod(x, y) {
     }
 
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, mod);
     }
 
@@ -3766,9 +3801,9 @@ mod.doc = {
 
 /**
  * Multiply two values. x + y or multiply(x, y)
- * @param  {Number | Complex | Unit | Array} x
- * @param  {Number | Complex | Unit | Array} y
- * @return {Number | Complex | Unit | Array} res
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
  */
 function multiply(x, y) {
     if (arguments.length != 2) {
@@ -3854,6 +3889,10 @@ function multiply(x, y) {
         }
     }
 
+    if (x instanceof Matrix || y instanceof Matrix) {
+        return new Matrix(multiply(x.valueOf(), y.valueOf()));
+    }
+
     if (y instanceof Array) {
         // scalar * matrix
         return util.map2(x, y, multiply);
@@ -3908,9 +3947,9 @@ multiply.doc = {
 
 /**
  * Calculates the power of x to y, x^y
- * @param  {Number | Complex | Array} x
+ * @param  {Number | Complex | Array | Matrix | Range} x
  * @param  {Number | Complex} y
- * @return {Number | Complex | Array} res
+ * @return {Number | Complex | Array | Matrix} res
  */
 function pow(x, y) {
     if (arguments.length != 2) {
@@ -3944,7 +3983,6 @@ function pow(x, y) {
             throw new TypeError('For A^b, b must be a positive integer ' +
                     '(value is ' + y + ')');
         }
-
         // verify that A is a 2 dimensional square matrix
         var s = util.size(x);
         if (s.length != 2) {
@@ -3968,6 +4006,9 @@ function pow(x, y) {
             }
             return res;
         }
+    }
+    else if (x instanceof Matrix) {
+        return new Matrix(pow(x.valueOf(), y));
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -4019,9 +4060,9 @@ pow.doc = {
 
 /**
  * Round a value towards the nearest integer, round(x [, n])
- * @param {Number | Complex | Array} x
+ * @param {Number | Complex | Array | Matrix | Range} x
  * @param {Number | Array} [n] number of digits
- * @return {Number | Complex | Array} res
+ * @return {Number | Complex | Array | Matrix} res
  */
 function round(x, n) {
     if (arguments.length != 1 && arguments.length != 2) {
@@ -4041,7 +4082,7 @@ function round(x, n) {
             );
         }
 
-        if (x instanceof Array) {
+        if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
             util.map(x, round);
         }
 
@@ -4075,7 +4116,8 @@ function round(x, n) {
             );
         }
 
-        if (x instanceof Array || n instanceof Array) {
+        if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+            n instanceof Array || n instanceof Matrix || n instanceof Range) {
             return util.map2(x, n, round);
         }
 
@@ -4131,8 +4173,8 @@ round.doc = {
 /**
  * Compute the sign of a value.
  * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function sign(x) {
     if (arguments.length != 1) {
@@ -4158,7 +4200,7 @@ function sign(x) {
         return new Complex(x.re / abs, x.im / abs);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, sign);
     }
 
@@ -4197,9 +4239,9 @@ sign.doc = {
 /**
  * Check if value x is smaller y, x < y
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @return {Boolean | Array | Matrix} res
  */
 function smaller(x, y) {
     if (arguments.length != 2) {
@@ -4234,7 +4276,8 @@ function smaller(x, y) {
         return x < y;
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, smaller);
     }
 
@@ -4277,9 +4320,9 @@ smaller.doc = {
 /**
  * Check if value a is smaller or equal to b, a <= b
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @return {Boolean | Array | Matrix} res
  */
 function smallereq(x, y) {
     if (arguments.length != 2) {
@@ -4314,7 +4357,8 @@ function smallereq(x, y) {
         return x <= y;
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, smallereq);
     }
 
@@ -4355,8 +4399,8 @@ smallereq.doc = {
 
 /**
  * Calculate the square root of a value
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function sqrt (x) {
     if (arguments.length != 1) {
@@ -4388,7 +4432,7 @@ function sqrt (x) {
         }
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, sqrt);
     }
 
@@ -4427,8 +4471,8 @@ sqrt.doc = {
 
 /**
  * Compute the square of a value, x * x
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function square(x) {
     if (arguments.length != 1) {
@@ -4443,7 +4487,7 @@ function square(x) {
         return multiply(x, x);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return multiply(x, x);
     }
 
@@ -4485,9 +4529,9 @@ square.doc = {
 
 /**
  * Subtract two values. x - y or subtract(x, y)
- * @param  {Number | Complex | Unit | Array} x
- * @param  {Number | Complex | Unit | Array} y
- * @return {Number | Complex | Unit | Array} res
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
  */
 function subtract(x, y) {
     if (arguments.length != 2) {
@@ -4545,7 +4589,8 @@ function subtract(x, y) {
         }
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, subtract);
     }
 
@@ -4583,8 +4628,8 @@ subtract.doc = {
 };
 /**
  * Inverse the sign of a value. -x or unaryminus(x)
- * @param  {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Unit | Array} res
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} x
+ * @return {Number | Complex | Unit | Array | Matrix} res
  */
 function unaryminus(x) {
     if (arguments.length != 1) {
@@ -4606,7 +4651,7 @@ function unaryminus(x) {
         return res;
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, unaryminus);
     }
 
@@ -4643,9 +4688,9 @@ unaryminus.doc = {
 /**
  * Check if value x unequals y, x != y
  * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Boolean | Array} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @return {Boolean | Array | Matrix} res
  */
 function unequal(x, y) {
     if (arguments.length != 2) {
@@ -4681,7 +4726,8 @@ function unequal(x, y) {
         return x == y;
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, unequal);
     }
 
@@ -4725,8 +4771,8 @@ unequal.doc = {
 /**
  * Compute the argument of a complex value.
  * If x = a+bi, the argument is computed as atan2(b, a).
- * @param {Number | Complex | Array} x
- * @return {Number | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Array | Matrix} res
  */
 function arg(x) {
     if (arguments.length != 1) {
@@ -4741,7 +4787,7 @@ function arg(x) {
         return Math.atan2(x.im, x.re);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, arg);
     }
 
@@ -4783,8 +4829,8 @@ arg.doc = {
 /**
  * Compute the complex conjugate of a complex value.
  * If x = a+bi, the complex conjugate is a-bi.
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function conj(x) {
     if (arguments.length != 1) {
@@ -4799,7 +4845,7 @@ function conj(x) {
         return new Complex(x.re, -x.im);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, conj);
     }
 
@@ -4840,8 +4886,8 @@ conj.doc = {
 
 /**
  * Get the imaginary part of a complex number.
- * @param {Number | Complex | Array} x
- * @return {Number | Array} im
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Array | Matrix} im
  */
 function im(x) {
     if (arguments.length != 1) {
@@ -4856,7 +4902,7 @@ function im(x) {
         return x.im;
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, im);
     }
 
@@ -4896,8 +4942,8 @@ im.doc = {
 
 /**
  * Get the real part of a complex number.
- * @param {Number | Complex | Array} x
- * @return {Number | Array} re
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Array | Matrix} re
  */
 function re(x) {
     if (arguments.length != 1) {
@@ -4912,7 +4958,7 @@ function re(x) {
         return x.re;
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, re);
     }
 
@@ -5629,8 +5675,8 @@ zeros.doc = {
 };
 /**
  * Compute the factorial of a value, factorial(x) or x!
- * @Param {Number | Array} x
- * @return {Number | Array} res
+ * @Param {Number | Array | Matrix | Range} x
+ * @return {Number | Array | Matrix} res
  */
 function factorial (x) {
     if (arguments.length != 1) {
@@ -5657,7 +5703,7 @@ function factorial (x) {
         return res;
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, factorial);
     }
 
@@ -5736,6 +5782,8 @@ function max(args) {
         return max.apply(this, args.valueOf());
     }
 
+    // TODO: implement support for Matrix
+
     var res = arguments[0];
     for (var i = 1, iMax = arguments.length; i < iMax; i++) {
         var value = arguments[i];
@@ -5789,6 +5837,8 @@ function min(args) {
         return min.apply(this, args.valueOf());
     }
 
+    // TODO: implement support for Matrix
+
     var res = arguments[0];
     for (var i = 1, iMax = arguments.length; i < iMax; i++) {
         var value = arguments[i];
@@ -5830,8 +5880,8 @@ min.doc = {
 
 /**
  * Calculate the inverse cosine of a value, acos(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function acos(x) {
     if (arguments.length != 1) {
@@ -5867,7 +5917,7 @@ function acos(x) {
         );
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, acos);
     }
 
@@ -5904,8 +5954,8 @@ acos.doc = {
 
 /**
  * Calculate the inverse sine of a value, asin(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function asin(x) {
     if (arguments.length != 1) {
@@ -5941,7 +5991,7 @@ function asin(x) {
         return new Complex(temp4.im, -temp4.re);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, asin);
     }
 
@@ -5978,8 +6028,8 @@ asin.doc = {
 
 /**
  * Calculate the inverse tangent of a value, atan(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function atan(x) {
     if (arguments.length != 1) {
@@ -6008,7 +6058,7 @@ function atan(x) {
         );
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, atan);
     }
 
@@ -6045,9 +6095,9 @@ atan.doc = {
 
 /**
  * Computes the principal value of the arc tangent of y/x in radians, atan2(y,x)
- * @param {Number | Complex | Array} y
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} y
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function atan2(y, x) {
     if (arguments.length != 2) {
@@ -6071,7 +6121,8 @@ function atan2(y, x) {
         }
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (y instanceof Array || y instanceof Matrix || y instanceof Range ||
+        x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map2(y, x, atan2);
     }
 
@@ -6112,8 +6163,8 @@ atan2.doc = {
 
 /**
  * Calculate the cosine of a value, cos(x)
- * @param {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function cos(x) {
     if (arguments.length != 1) {
@@ -6139,7 +6190,7 @@ function cos(x) {
         return Math.cos(x.value);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, cos);
     }
 
@@ -6179,8 +6230,8 @@ cos.doc = {
 
 /**
  * Calculate the cotangent of a value, cot(x) = 1/tan(x)
- * @param {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function cot(x) {
     if (arguments.length != 1) {
@@ -6208,7 +6259,7 @@ function cot(x) {
         return 1 / Math.tan(x.value);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, cot);
     }
 
@@ -6246,8 +6297,8 @@ cot.doc = {
 
 /**
  * Calculate the cosecant of a value, csc(x) = 1/sin(x)
- * @param {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function csc(x) {
     if (arguments.length != 1) {
@@ -6276,7 +6327,7 @@ function csc(x) {
         return 1 / Math.sin(x.value);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, csc);
     }
 
@@ -6314,8 +6365,8 @@ csc.doc = {
 
 /**
  * Calculate the secant of a value, sec(x) = 1/cos(x)
- * @param {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function sec(x) {
     if (arguments.length != 1) {
@@ -6343,7 +6394,7 @@ function sec(x) {
         return 1 / Math.cos(x.value);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, sec);
     }
 
@@ -6381,8 +6432,8 @@ sec.doc = {
 
 /**
  * Calculate the sine of a value, sin(x)
- * @param {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function sin(x) {
     if (arguments.length != 1) {
@@ -6407,7 +6458,7 @@ function sin(x) {
         return Math.sin(x.value);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, sin);
     }
 
@@ -6447,8 +6498,8 @@ sin.doc = {
 
 /**
  * Calculate the tangent of a value, tan(x)
- * @param {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function tan(x) {
     if (arguments.length != 1) {
@@ -6477,7 +6528,7 @@ function tan(x) {
         return Math.tan(x.value);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, tan);
     }
 
@@ -6516,9 +6567,9 @@ tan.doc = {
 
 /**
  * Change the unit of a value. x in unit or in(x, unit)
- * @param {Unit | Array} x
- * @param {Unit | Array} unit
- * @return {Unit | Array} res
+ * @param {Unit | Array | Matrix | Range} x
+ * @param {Unit | Array | Matrix} unit
+ * @return {Unit | Array | Matrix} res
  */
 function unit_in(x, unit) {
     if (arguments.length != 2) {
@@ -6543,7 +6594,8 @@ function unit_in(x, unit) {
         return res;
     }
 
-    if (x instanceof Array || unit instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        unit instanceof Array || unit instanceof Matrix || unit instanceof Range) {
         return util.map2(x, unit, unit_in);
     }
 

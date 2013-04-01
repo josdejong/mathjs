@@ -1,8 +1,8 @@
 /**
  * Compute the argument of a complex value.
  * If x = a+bi, the argument is computed as atan2(b, a).
- * @param {Number | Complex | Array} x
- * @return {Number | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Array | Matrix} res
  */
 function arg(x) {
     if (arguments.length != 1) {
@@ -17,7 +17,7 @@ function arg(x) {
         return Math.atan2(x.im, x.re);
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, arg);
     }
 

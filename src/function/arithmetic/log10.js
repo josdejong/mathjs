@@ -1,7 +1,7 @@
 /**
  * Calculate the 10-base logarithm of a value, log10(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix | Range} x
+ * @return {Number | Complex | Array | Matrix} res
  */
 function log10(x) {
     if (arguments.length != 1) {
@@ -25,7 +25,7 @@ function log10(x) {
         );
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, log10);
     }
 

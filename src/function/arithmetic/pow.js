@@ -1,8 +1,8 @@
 /**
  * Calculates the power of x to y, x^y
- * @param  {Number | Complex | Array} x
+ * @param  {Number | Complex | Array | Matrix | Range} x
  * @param  {Number | Complex} y
- * @return {Number | Complex | Array} res
+ * @return {Number | Complex | Array | Matrix} res
  */
 function pow(x, y) {
     if (arguments.length != 2) {
@@ -36,7 +36,6 @@ function pow(x, y) {
             throw new TypeError('For A^b, b must be a positive integer ' +
                     '(value is ' + y + ')');
         }
-
         // verify that A is a 2 dimensional square matrix
         var s = util.size(x);
         if (s.length != 2) {
@@ -60,6 +59,9 @@ function pow(x, y) {
             }
             return res;
         }
+    }
+    else if (x instanceof Matrix) {
+        return new Matrix(pow(x.valueOf(), y));
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {

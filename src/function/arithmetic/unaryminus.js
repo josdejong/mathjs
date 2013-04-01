@@ -1,7 +1,7 @@
 /**
  * Inverse the sign of a value. -x or unaryminus(x)
- * @param  {Number | Complex | Unit | Array} x
- * @return {Number | Complex | Unit | Array} res
+ * @param  {Number | Complex | Unit | Array | Matrix | Range} x
+ * @return {Number | Complex | Unit | Array | Matrix} res
  */
 function unaryminus(x) {
     if (arguments.length != 1) {
@@ -23,7 +23,7 @@ function unaryminus(x) {
         return res;
     }
 
-    if (x instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
         return util.map(x, unaryminus);
     }
 

@@ -1,8 +1,8 @@
 /**
  * Add two values. x + y or add(x, y)
- * @param  {Number | Complex | Unit | String | Array} x
- * @param  {Number | Complex | Unit | String | Array} y
- * @return {Number | Complex | Unit | String | Array} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @return {Number | Complex | Unit | String | Array | Matrix} res
  */
 function add(x, y) {
     if (arguments.length != 2) {
@@ -63,13 +63,14 @@ function add(x, y) {
         return x + y;
     }
 
-    if (x instanceof Array || y instanceof Array) {
+    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
+        y instanceof Array || y instanceof Matrix || y instanceof Range) {
         return util.map2(x, y, add);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return add(x.valueOf());
+        return add(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('add', x, y);
