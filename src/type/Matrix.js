@@ -92,6 +92,24 @@ Matrix.prototype.get = function (index) {
 };
 
 /**
+ * Test whether index is an integer number with index >= 1 and index <= max
+ * @param {*} index       One-based index
+ * @param {Number} [max]  One-based maximum value
+ * @private
+ */
+function _validateIndex(index, max) {
+    if (!isNumber(index) || !isInteger(index)) {
+        throw new TypeError('Index must be an integer (value: ' + index + ')');
+    }
+    if (index < 1) {
+        throw new RangeError('Index out of range (' + index + ' < 1)');
+    }
+    if (max && index > max) {
+        throw new RangeError('Index out of range (' + index + '>' + max +  ')');
+    }
+}
+
+/**
  * Get a single value from an array. The method tests whether:
  * - index is a non-negative integer
  * - index does not exceed the dimensions of array
@@ -101,15 +119,7 @@ Matrix.prototype.get = function (index) {
  * @private
  */
 function _get (array, index) {
-    if (!isNumber(index) || !isInteger(index)) {
-        throw new TypeError('Index must be an integer (value: ' + index + ')');
-    }
-    if (index < 1) {
-        throw new RangeError('Index out of range (' + index + ' < 1)');
-    }
-    if (index > array.length) {
-        throw new RangeError('Index out of range (' + index + '>' + (array.length) +  ')');
-    }
+    _validateIndex(index, array.length);
     return array[index - 1]; // one-based index
 }
 
@@ -296,12 +306,7 @@ Matrix.prototype.set = function (index, submatrix) {
  * @private
  */
 function _set (array, index, value) {
-    if (!isNumber(index) || !isInteger(index) || index < 1) {
-        throw new TypeError('Index must be an integer (value: ' + index + ')');
-    }
-    if (index < 1) {
-        throw new TypeError('Index out of range (' + index + ' < 1)');
-    }
+    _validateIndex(index);
     if (value instanceof Array) {
         throw new TypeError('Dimension mismatch, value expected instead of array');
     }
@@ -325,9 +330,7 @@ function _setScalar (data, size, index, value) {
 
     for (var i = 0; i < index.length; i++) {
         var index_i = index[i];
-        if (!isNumber(index_i) || !isInteger(index_i) || index_i < 1) {
-            throw new TypeError('Positive integer expected as index in method get');
-        }
+        _validateIndex(index_i);
         if ((size[i] == null) || (index_i > size[i])) {
             size[i] = index_i;
             resized = true;
@@ -359,12 +362,7 @@ function _setScalar (data, size, index, value) {
  */
 function _setScalar1D (data, size, index, value) {
     var row = index[0];
-    if (!isNumber(row) || !isInteger(row)) {
-        throw new TypeError('Index must be an integer (value: ' + row + ')');
-    }
-    if (row < 1) {
-        throw new TypeError('Index out of range (' + row + ' < 1)');
-    }
+    _validateIndex(row);
 
     if (row > size[0]) {
         util.resize(data, [row], 0);
@@ -384,19 +382,8 @@ function _setScalar1D (data, size, index, value) {
 function _setScalar2D (data, size, index, value) {
     var row = index[0];
     var col = index[1];
-    if (!isNumber(row) || !isInteger(row)) {
-        throw new TypeError('Index must be an integer (value: ' + row + ')');
-    }
-    if (row < 1) {
-        throw new TypeError('Index out of range (' + row + ' < 1)');
-    }
-    if (!isNumber(col) || !isInteger(col)) {
-        throw new TypeError('Index must be an integer (value: ' + col + ')');
-    }
-    if (col < 1) {
-        throw new TypeError('Index out of range (' + col + ' < 1)');
-    }
-
+    _validateIndex(row);
+    _validateIndex(col);
 
     var resized = false;
     if (row > (size[0] || 0)) {
@@ -477,7 +464,7 @@ function _init(array) {
     }
 }
 
-    /**
+/**
  * Resize the matrix
  * @param {Number[]} size
  * @param {*} [defaultValue]        Default value, filled in on new entries.
