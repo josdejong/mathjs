@@ -7,6 +7,7 @@
  *
  * Matrix contains the functions to resize, get and set values, get the size,
  * clone the matrix and to convert the matrix to a vector, array, or scalar.
+ * Furthermore, one can iterate over the matrix using map and forEach.
  * The internal Array of the Matrix can be accessed using the method valueOf.
  *
  * Example usage:
@@ -48,7 +49,7 @@ function Matrix(data) {
 math.type.Matrix = Matrix;
 
 /**
- * Get a value or a set of values from the matrix.
+ * Get a value or a submatrix of the matrix.
  * Indexes are zero-based.
  * @param {Array | Matrix} index
  */
@@ -81,11 +82,11 @@ Matrix.prototype.get = function (index) {
         }
     }
     else {
-        // return a set with values
+        // return a submatrix
         switch (index.length) {
-            case 1: return _getSubset1D(this._data, index);
-            case 2: return _getSubset2D(this._data, index);
-            default: return _getSubset(this._data, index, 0);
+            case 1: return _getSubmatrix1D(this._data, index);
+            case 2: return _getSubmatrix2D(this._data, index);
+            default: return _getSubmatrix(this._data, index, 0);
         }
     }
 };
@@ -125,19 +126,19 @@ function _getScalar (data, index) {
 }
 
 /**
- * Get a subset of a one dimensional matrix.
+ * Get a submatrix of a one dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} subset
- * @return {Array} res
+ * @param {Array} index
+ * @return {Array} submatrix
  * @private
  */
-function _getSubset1D (data, subset) {
-    var current = subset[0];
+function _getSubmatrix1D (data, index) {
+    var current = index[0];
     if (current.map) {
         // array or Range
-        return current.map(function (index) {
-            return _get(data, index);
+        return current.map(function (i) {
+            return _get(data, i);
         });
     }
     else {
@@ -149,16 +150,16 @@ function _getSubset1D (data, subset) {
 }
 
 /**
- * Get a subset of a 2 dimensional matrix.
+ * Get a submatrix of a 2 dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} subset
- * @return {Array} res
+ * @param {Array} index
+ * @return {Array} submatrix
  * @private
  */
-function _getSubset2D (data, subset) {
-    var rows = subset[0];
-    var cols = subset[1];
+function _getSubmatrix2D (data, index) {
+    var rows = index[0];
+    var cols = index[1];
 
     if (rows.map) {
         if (cols.map) {
@@ -197,20 +198,20 @@ function _getSubset2D (data, subset) {
 }
 
 /**
- * Get a subset of a multi dimensional matrix.
+ * Get a submatrix of a multi dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} subset
+ * @param {Array} index
  * @param {number} dim
- * @return {Array} res
+ * @return {Array} submatrix
  * @private
  */
-function _getSubset (data, subset, dim) {
-    var last = (dim == subset.length - 1);
-    var current = subset[dim];
-    var recurse = function (index) {
-        var child = _get(data, index);
-        return last ? child : _getSubset(child, subset, dim + 1);
+function _getSubmatrix (data, index, dim) {
+    var last = (dim == index.length - 1);
+    var current = index[dim];
+    var recurse = function (i) {
+        var child = _get(data, i);
+        return last ? child : _getSubmatrix(child, index, dim + 1);
     };
 
     if (current.map) {
@@ -226,13 +227,13 @@ function _getSubset (data, subset, dim) {
 }
 
 /**
- * Get a value or a set of values from the matrix.
+ * Replace a value or a submatrix in the matrix.
  * Indexes are zero-based.
  * @param {Array | Range | Matrix} index
- * @param {*} value
+ * @param {*} submatrix
  * @return {Matrix} itself
  */
-Matrix.prototype.set = function (index, value) {
+Matrix.prototype.set = function (index, submatrix) {
     var isScalar;
     if (index instanceof Matrix) {
         isScalar = index.isVector();
@@ -247,8 +248,8 @@ Matrix.prototype.set = function (index, value) {
         throw new TypeError('Unsupported type of index ' + math.typeof(index));
     }
 
-    if (value instanceof Matrix || value instanceof Range) {
-        value = value.valueOf();
+    if (submatrix instanceof Matrix || submatrix instanceof Range) {
+        submatrix = submatrix.valueOf();
     }
 
     if (index.length < this._size.length) {
@@ -258,21 +259,21 @@ Matrix.prototype.set = function (index, value) {
 
     if (isScalar) {
         // set a scalar
-        // check whether value is no matrix/array
-        if (math.size(value).length != 0) {
+        // check whether submatrix is no matrix/array
+        if (math.size(submatrix).length != 0) {
             throw new TypeError('Scalar value expected');
         }
 
         switch (index.length) {
-            case 1:  _setScalar1D(this._data, this._size, index, value); break;
-            case 2:  _setScalar2D(this._data, this._size, index, value); break;
-            default: _setScalar(this._data, this._size, index, value); break;
+            case 1:  _setScalar1D(this._data, this._size, index, submatrix); break;
+            case 2:  _setScalar2D(this._data, this._size, index, submatrix); break;
+            default: _setScalar(this._data, this._size, index, submatrix); break;
         }
     }
     else {
-        // set a subset
+        // set a submatrix
         var size = this._size.concat();
-        _setSubset (this._data, size, index, 0, value);
+        _setSubmatrix (this._data, size, index, 0, submatrix);
         if (!util.deepEqual(this._size, size)) {
             _init(this._data);
             this.resize(size);
@@ -394,41 +395,41 @@ function _setScalar2D (data, size, index, value) {
 }
 
 /**
- * Replace a subset of a multi dimensional matrix.
+ * Replace a submatrix of a multi dimensional matrix.
  * @param {Array} data
  * @param {Array} size
- * @param {Array} subset
+ * @param {Array} index
  * @param {number} dim
- * @param {Array} value
+ * @param {Array} submatrix
  * @private
  */
-function _setSubset (data, size, subset, dim, value) {
-    var last = (dim == subset.length - 1);
-    var current = subset[dim];
-    var recurse = function (index, i) {
+function _setSubmatrix (data, size, index, dim, submatrix) {
+    var last = (dim == index.length - 1);
+    var current = index[dim];
+    var recurse = function (v, i) {
         if (last) {
-            _set(data, index, value[i]);
+            _set(data, v, submatrix[i]);
             if (data.length > (size[dim] || 0)) {
                 size[dim] = data.length;
             }
         }
         else {
-            var child = data[index];
+            var child = data[v];
             if (!(child instanceof Array)) {
-                data[index] = child = [child];
+                data[v] = child = [child];
                 if (data.length > (size[dim] || 0)) {
                     size[dim] = data.length;
                 }
             }
-            _setSubset(child, size, subset, dim + 1, value[i]);
+            _setSubmatrix(child, size, index, dim + 1, submatrix[i]);
         }
     };
 
     if (current.map) {
         // array or Range
-        if (current.length != value.length) {
+        if (current.length != submatrix.length) {
             throw new RangeError('Dimensions mismatch ' +
-                '(' + current.length + ' != '+ value.length + ')');
+                '(' + current.length + ' != '+ submatrix.length + ')');
         }
         current.map(recurse);
     }
