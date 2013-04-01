@@ -15,17 +15,17 @@ assert.equal(m.isScalar(), true);
 assert.equal(m.isVector(), true);
 assert.deepEqual(m.size(), [1,1]);
 assert.deepEqual(m.toScalar(), 23);
-assert.deepEqual(m.get([0,0]), 23);
+assert.deepEqual(m.get([1,1]), 23);
 
 m = math.matrix([[1,2,3],[4,5,6]]);
 assert.equal(m.isScalar(), false);
 assert.equal(m.isVector(), false);
 assert.deepEqual(m.size(), [2,3]);
-assert.equal(m.get([1,2]), 6);
-assert.equal(m.get([0,1]), 2);
-assert.throws(function () { m.get([1,2, 3]); });
-assert.throws(function () { m.get([3,0]); });
-assert.throws(function () { m.get([1]); });
+assert.equal(m.get([2,3]), 6);
+assert.equal(m.get([1,2]), 2);
+assert.throws(function () { m.get([2,3,4]); });
+assert.throws(function () { m.get([4,1]); });
+assert.throws(function () { m.get([2]); });
 
 m = math.matrix([1,2,3]);
 assert.equal(m.isScalar(), false);
@@ -87,7 +87,7 @@ assert.deepEqual(m.valueOf(), [
     [[6,6,6],[6,6,6],[6,6,6]],
     [[6,6,6],[6,6,6],[6,6,6]]
 ]);
-m.set([2,2,1], 3);
+m.set([3,3,2], 3);
 assert.deepEqual(m.valueOf(), [
     [[6,6,6],[6,6,6],[6,6,6]],
     [[6,6,6],[6,6,6],[6,6,6]],
@@ -96,47 +96,47 @@ assert.deepEqual(m.valueOf(), [
 m.resize([2,2]);
 assert.deepEqual(m.size(), [2,2]);
 assert.deepEqual(m.valueOf(), [[6,6],[6,6]]);
-m.set([1,0], 3);
+m.set([2,1], 3);
 assert.deepEqual(m.valueOf(), [[6,6],[3,6]]);
 m.resize([0]);
 assert.deepEqual(m.size(), [0]);
 assert.deepEqual(m.valueOf(), []);
 
 m = math.matrix();
-m.set([1,2], 5);
+m.set([2,3], 5);
 assert.deepEqual(m.size(), [2,3]);
 assert.deepEqual(m.valueOf(), [[0,0,0],[0,0,5]]);
 
 // get 1-dimensional
-m = math.matrix(math.range(0,9));
+m = math.matrix(math.range(1,10));
 assert.deepEqual(m.size(), [10]);
 assert.deepEqual(m.get([[2,5,3,4]]).valueOf(), [2,5,3,4]);
 
 // get 2-dimensional
 m = math.matrix([[1,2,3],[4,5,6],[7,8,9]]);
 assert.deepEqual(m.size(), [3,3]);
-assert.deepEqual(m.get([1,1]), 5);
-assert.deepEqual(m.get([[0,1],[0,1]]).valueOf(), [[1,2],[4,5]]);
-assert.deepEqual(m.get([[1], math.range(1,2)]).valueOf(), [[5,6]]);
-assert.deepEqual(m.get([0, math.range(1,2)]).valueOf(), [[2,3]]);
-assert.deepEqual(m.get([math.range(1,2), [1]]).valueOf(), [[5],[8]]);
-assert.deepEqual(m.get([math.range(1,2), 2]).valueOf(), [[6],[9]]);
+assert.deepEqual(m.get([2,2]), 5);
+assert.deepEqual(m.get([[1,2],[1,2]]).valueOf(), [[1,2],[4,5]]);
+assert.deepEqual(m.get([[2], math.range(2,3)]).valueOf(), [[5,6]]);
+assert.deepEqual(m.get([1, math.range(2,3)]).valueOf(), [[2,3]]);
+assert.deepEqual(m.get([math.range(2,3), [2]]).valueOf(), [[5],[8]]);
+assert.deepEqual(m.get([math.range(2,3), 3]).valueOf(), [[6],[9]]);
 
 // get n-dimensional
 m = math.matrix([[[1,2],[3,4]], [[5,6],[7,8]]]);
 assert.deepEqual(m.size(), [2,2,2]);
-assert.deepEqual(m.get([[0,1],[0,1],[0,1]]).valueOf(), m.valueOf());
-assert.deepEqual(m.get([0,0,0]), 1);
-assert.deepEqual(m.get([[1],[1],[1]]).valueOf(), [[[8]]]);
-assert.deepEqual(m.get([[1],[1],[0,1]]).valueOf(), [[[7,8]]]);
-assert.deepEqual(m.get([[1],[0,1],[1]]).valueOf(), [[[6],[8]]]);
+assert.deepEqual(m.get([[1,2],[1,2],[1,2]]).valueOf(), m.valueOf());
+assert.deepEqual(m.get([1,1,1]), 1);
+assert.deepEqual(m.get([[2],[2],[2]]).valueOf(), [[[8]]]);
+assert.deepEqual(m.get([[2],[2],[1,2]]).valueOf(), [[[7,8]]]);
+assert.deepEqual(m.get([[2],[1,2],[2]]).valueOf(), [[[6],[8]]]);
 
 // set 1-dimensional
 m = math.matrix(math.range(0,6));
-m.set([[2,3]], [20,30]);
+m.set([[3,4]], [20,30]);
 assert.deepEqual(m.size(), [7]);
 assert.deepEqual(m.valueOf(), [0,1,20,30,4,5,6]);
-m.set([4], 40);
+m.set([5], 40);
 assert.deepEqual(m.size(), [7]);
 assert.deepEqual(m.valueOf(), [0,1,20,30,40,5,6]);
 
@@ -145,30 +145,30 @@ m = math.matrix();
 m.resize([3,3]);
 assert.deepEqual(m.size(), [3,3]);
 assert.deepEqual(m.valueOf(), [[0,0,0],[0,0,0],[0,0,0]]);
-m.set([[1,2], [1,2]], [[1,2],[3,4]]);
+m.set([[2,3], [2,3]], [[1,2],[3,4]]);
 assert.deepEqual(m.size(), [3,3]);
 assert.deepEqual(m.valueOf(), [[0,0,0],[0,1,2],[0,3,4]]);
 
 // set 2-dimensional with resize
 m = math.matrix([[123]]);
 assert.deepEqual(m.size(), [1,1]);
-m.set([[1,2], [1,2]], [[1,2],[3,4]]);
+m.set([[2,3], [2,3]], [[1,2],[3,4]]);
 assert.deepEqual(m.size(), [3,3]);
 assert.deepEqual(m.valueOf(), [[123,0,0],[0,1,2],[0,3,4]]);
 
 // set resize dimensions
 m = math.matrix([123]);
 assert.deepEqual(m.size(), [1]);
-m.set([[1,2], [1,2]], [[1,2],[3,4]]);
+m.set([[2,3], [2,3]], [[1,2],[3,4]]);
 assert.deepEqual(m.size(), [3,3]);
 assert.deepEqual(m.valueOf(), [[123,0,0],[0,1,2],[0,3,4]]);
-m.set([math.range(0,1), math.range(0,1)], [[55,55],[55,55]]);
+m.set([math.range(1,2), math.range(1,2)], [[55,55],[55,55]]);
 assert.deepEqual(m.size(), [3,3]);
 assert.deepEqual(m.valueOf(), [[55,55,0],[55,55,2],[0,3,4]]);
 
 m = math.matrix();
 assert.deepEqual(m.size(), [0]);
-m.set([[1,2], [1,2], [1,2]], [[[1,2],[3,4]],[[5,6],[7,8]]]);
+m.set([[2,3], [2,3], [2,3]], [[[1,2],[3,4]],[[5,6],[7,8]]]);
 assert.deepEqual(m.size(), [3,3,3]);
 assert.deepEqual(m.valueOf(), [
     [
@@ -188,6 +188,7 @@ assert.deepEqual(m.valueOf(), [
     ]
 ]);
 
+
 // test matrix.map
 m = math.matrix([[1,2,3], [4,5,6]]);
 m2 = m.map(function (value) {
@@ -202,25 +203,25 @@ m.forEach(function (value, index, obj) {
     output.push(math.clone([value, index, obj === m]));
 });
 assert.deepEqual(output, [
-    [1, [0, 0], true ],
-    [2, [0, 1], true ],
-    [3, [0, 2], true ],
-    [4, [1, 0], true ],
-    [5, [1, 1], true ],
-    [6, [1, 2], true ]
+    [1, [1, 1], true ],
+    [2, [1, 2], true ],
+    [3, [1, 3], true ],
+    [4, [2, 1], true ],
+    [5, [2, 2], true ],
+    [6, [2, 3], true ]
 ]);
 assert.deepEqual(m.map(function (value, index, obj) {
     return math.clone([value, index, obj === m]);
 }).valueOf(), [
     [
-        [1, [0, 0], true ],
-        [2, [0, 1], true ],
-        [3, [0, 2], true ]
+        [1, [1, 1], true ],
+        [2, [1, 2], true ],
+        [3, [1, 3], true ]
     ],
     [
-        [4, [1, 0], true ],
-        [5, [1, 1], true ],
-        [6, [1, 2], true ]
+        [4, [2, 1], true ],
+        [5, [2, 2], true ],
+        [6, [2, 3], true ]
     ]
 ]);
 

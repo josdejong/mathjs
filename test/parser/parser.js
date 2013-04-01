@@ -49,14 +49,14 @@ assert.deepEqual(m.size(), [2,3]);
 assert.deepEqual(m.valueOf(), [[1,2,3],[4,5,6]]);
 
 parser.eval('a=[1,2;3,4]');
-parser.eval('a(0,0) = 100');
+parser.eval('a(1,1) = 100');
 assert.deepEqual(parser.get('a').size(), [2,2]);
 assert.deepEqual(parser.get('a').valueOf(), [[100,2],[3,4]]);
-parser.eval('a(1:2,1:2) = [10,11;12,13]');
+parser.eval('a(2:3,2:3) = [10,11;12,13]');
 assert.deepEqual(parser.get('a').size(), [3,3]);
 assert.deepEqual(parser.get('a').valueOf(), [[100,2,0],[3,10,11],[0,12,13]]);
 var a = parser.get('a');
-assert.deepEqual(a.get([math.range('0:2'), math.range('0:1')]).valueOf(), [[100,2],[3,10],[0,12]]);
-assert.deepEqual(parser.eval('a(0:2,0:1)').valueOf(), [[100,2],[3,10],[0,12]]);
+assert.deepEqual(a.get([math.range('1:3'), math.range('1:2')]).valueOf(), [[100,2],[3,10],[0,12]]);
+assert.deepEqual(parser.eval('a(1:3,1:2)').valueOf(), [[100,2],[3,10],[0,12]]);
 
 // TODO: extensively test the Parser
