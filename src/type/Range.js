@@ -51,6 +51,38 @@ function Range(start, step, end) {
 math.type.Range = Range;
 
 /**
+ * Parse a string into a range,
+ * The string contains the start, optional step, and end, separated by a colon.
+ * If the string does not contain a valid range, null is returned.
+ * For example str='0:2:10'.
+ * @param {String} str
+ * @return {Range | null} range
+ */
+Range.parse = function (str) {
+    if (!isString(str)) {
+        return null;
+    }
+
+    var args = str.split(':');
+    var nums = args.map(function (arg) {
+        return Number(arg);
+    });
+
+    var invalid = nums.some(function (num) {
+        return isNaN(num);
+    });
+    if(invalid) {
+        return null;
+    }
+
+    switch (nums.length) {
+        case 2: return new Range(nums[0], 1, nums[1]);
+        case 3: return new Range(nums[0], nums[1], nums[2]);
+        default: return null;
+    }
+};
+
+/**
  * Create a clone of the range
  * @return {Range} clone
  */

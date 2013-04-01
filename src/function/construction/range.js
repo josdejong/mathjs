@@ -7,6 +7,9 @@
  * the range.
  *
  * The method accepts the following arguments
+ *     range(str)                   Create a range from a string, where the
+ *                                  string contains the start, optional step,
+ *                                  and end, separated by a colon.
  *     range(start, end)            Create a range with start and end and a
  *                                  default step size of 1
  *     range(start, step, end)      Create a range with start, step, and end.
@@ -18,12 +21,28 @@
  *     d.forEach(function (value, index) {
  *         console.log(index, value);
  *     });
+ *     var e = math.range('2:1:5');     // 2:1:5
  *
  * @param {...*} args
  * @return {Range} range
  */
 function range(args) {
     switch (arguments.length) {
+        case 1:
+            // parse string into a range
+            if (!isString(args)) {
+                throw new TypeError(
+                    'Two or three numbers or a single string expected in function range');
+            }
+            var r = Range.parse(args);
+            if (r) {
+                return r;
+            }
+            else {
+                throw new SyntaxError('String "' + r + '" is no valid range');
+            }
+            break;
+
         case 2:
             // range(start, end)
             return new Range(arguments[0], null, arguments[1]);
