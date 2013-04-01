@@ -85,6 +85,7 @@
         // create a new symbol
         var scope = this;
         var symbol = function () {
+            var args, i;
             if (!symbol.value) {
                 // try to resolve again
                 symbol.value = scope.findDef(name);
@@ -93,11 +94,24 @@
                     throw new Error('Undefined symbol ' + name);
                 }
             }
-            if (typeof symbol.value == 'function') {
+            if (typeof symbol.value === 'function') {
                 return symbol.value.apply(null, arguments);
             }
+            else if (symbol.value instanceof Matrix || symbol.value instanceof Range || symbol.value instanceof Array) {
+                if (arguments.length) {
+                    var matrix = (symbol.value instanceof Array) ? new Matrix(symbol.value) : symbol.value;
+                    args = [];
+                    for (i = 0; i < arguments.length; i++) {
+                        args[i] = arguments[i];
+                    }
+                    return matrix.get(args);
+                }
+                else {
+                    return symbol.value;
+                }
+            }
+            // TODO: implement get subset for all types
             else {
-                // TODO: implement subset for all types
                 return symbol.value;
             }
         };

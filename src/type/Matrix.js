@@ -84,10 +84,11 @@ Matrix.prototype.get = function (index) {
     else {
         // return a submatrix
         switch (index.length) {
-            case 1: return _getSubmatrix1D(this._data, index);
-            case 2: return _getSubmatrix2D(this._data, index);
-            default: return _getSubmatrix(this._data, index, 0);
+            case 1: return new Matrix(_getSubmatrix1D(this._data, index));
+            case 2: return new Matrix(_getSubmatrix2D(this._data, index));
+            default: return new Matrix(_getSubmatrix(this._data, index, 0));
         }
+        // TODO: more efficient when creating an empty matrix and setting data and size manually
     }
 };
 
@@ -427,9 +428,10 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
 
     if (current.map) {
         // array or Range
-        if (current.length != submatrix.length) {
+        var len = (current.size && current.size() || current.length);
+        if (len != submatrix.length) {
             throw new RangeError('Dimensions mismatch ' +
-                '(' + current.length + ' != '+ submatrix.length + ')');
+                '(' + len + ' != '+ submatrix.length + ')');
         }
         current.map(recurse);
     }

@@ -110,26 +110,26 @@ assert.deepEqual(m.valueOf(), [[0,0,0],[0,0,5]]);
 // get 1-dimensional
 m = math.matrix(math.range(0,9));
 assert.deepEqual(m.size(), [10]);
-assert.deepEqual(m.get([[2,5,3,4]]), [2,5,3,4]);
+assert.deepEqual(m.get([[2,5,3,4]]).valueOf(), [2,5,3,4]);
 
 // get 2-dimensional
 m = math.matrix([[1,2,3],[4,5,6],[7,8,9]]);
 assert.deepEqual(m.size(), [3,3]);
 assert.deepEqual(m.get([1,1]), 5);
-assert.deepEqual(m.get([[0,1],[0,1]]), [[1,2],[4,5]]);
-assert.deepEqual(m.get([[1], math.range(1,2)]), [[5,6]]);
-assert.deepEqual(m.get([0, math.range(1,2)]), [[2,3]]);
-assert.deepEqual(m.get([math.range(1,2), [1]]), [[5],[8]]);
-assert.deepEqual(m.get([math.range(1,2), 2]), [[6],[9]]);
+assert.deepEqual(m.get([[0,1],[0,1]]).valueOf(), [[1,2],[4,5]]);
+assert.deepEqual(m.get([[1], math.range(1,2)]).valueOf(), [[5,6]]);
+assert.deepEqual(m.get([0, math.range(1,2)]).valueOf(), [[2,3]]);
+assert.deepEqual(m.get([math.range(1,2), [1]]).valueOf(), [[5],[8]]);
+assert.deepEqual(m.get([math.range(1,2), 2]).valueOf(), [[6],[9]]);
 
 // get n-dimensional
 m = math.matrix([[[1,2],[3,4]], [[5,6],[7,8]]]);
 assert.deepEqual(m.size(), [2,2,2]);
-assert.deepEqual(m.get([[0,1],[0,1],[0,1]]), m.valueOf());
+assert.deepEqual(m.get([[0,1],[0,1],[0,1]]).valueOf(), m.valueOf());
 assert.deepEqual(m.get([0,0,0]), 1);
-assert.deepEqual(m.get([[1],[1],[1]]), [[[8]]]);
-assert.deepEqual(m.get([[1],[1],[0,1]]), [[[7,8]]]);
-assert.deepEqual(m.get([[1],[0,1],[1]]), [[[6],[8]]]);
+assert.deepEqual(m.get([[1],[1],[1]]).valueOf(), [[[8]]]);
+assert.deepEqual(m.get([[1],[1],[0,1]]).valueOf(), [[[7,8]]]);
+assert.deepEqual(m.get([[1],[0,1],[1]]).valueOf(), [[[6],[8]]]);
 
 // set 1-dimensional
 m = math.matrix(math.range(0,6));
@@ -162,6 +162,9 @@ assert.deepEqual(m.size(), [1]);
 m.set([[1,2], [1,2]], [[1,2],[3,4]]);
 assert.deepEqual(m.size(), [3,3]);
 assert.deepEqual(m.valueOf(), [[123,0,0],[0,1,2],[0,3,4]]);
+m.set([math.range(0,1), math.range(0,1)], [[55,55],[55,55]]);
+assert.deepEqual(m.size(), [3,3]);
+assert.deepEqual(m.valueOf(), [[55,55,0],[55,55,2],[0,3,4]]);
 
 m = math.matrix();
 assert.deepEqual(m.size(), [0]);

@@ -51,6 +51,7 @@ task('concat', function () {
             './src/expr/node/MatrixNode.js',
             './src/expr/node/Block.js',
             './src/expr/node/Assignment.js',
+            './src/expr/node/Arguments.js',
             './src/expr/node/FunctionAssignment.js',
             './src/expr/Scope.js',
             './src/expr/Parser.js',

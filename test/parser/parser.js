@@ -26,6 +26,17 @@ assert.equal(parser.eval('(-3)^2'), 9);
 assert.equal(parser.eval('2^3!'), 64);
 assert.equal(parser.eval('2^(3!)'), 64);
 
+// test function calls
+assert.equal(parser.eval('sqrt(4)'), 2);
+assert.equal(parser.eval('sqrt(6+3)'), 3);
+assert.equal(parser.eval('atan2(2,2)'), 0.7853981633974483);
+
+// test variables
+assert.equal(parser.eval('a = 0.75'), 0.75);
+assert.equal(parser.eval('a + 2'), 2.75);
+assert.equal(parser.eval('a = 2'), 2);
+assert.equal(parser.eval('a + 2'), 4);
+
 // test range
 assert.ok(parser.eval('2:5') instanceof math.type.Range);
 assert.deepEqual(parser.eval('2:5').toArray(), [2,3,4,5]);
@@ -36,5 +47,16 @@ assert.ok(parser.eval('[1,2;3,4]') instanceof math.type.Matrix);
 var m = parser.eval('[1,2,3;4,5,6]');
 assert.deepEqual(m.size(), [2,3]);
 assert.deepEqual(m.valueOf(), [[1,2,3],[4,5,6]]);
+
+parser.eval('a=[1,2;3,4]');
+parser.eval('a(0,0) = 100');
+assert.deepEqual(parser.get('a').size(), [2,2]);
+assert.deepEqual(parser.get('a').valueOf(), [[100,2],[3,4]]);
+parser.eval('a(1:2,1:2) = [10,11;12,13]');
+assert.deepEqual(parser.get('a').size(), [3,3]);
+assert.deepEqual(parser.get('a').valueOf(), [[100,2,0],[3,10,11],[0,12,13]]);
+var a = parser.get('a');
+assert.deepEqual(a.get([math.range('0:2'), math.range('0:1')]).valueOf(), [[100,2],[3,10],[0,12]]);
+assert.deepEqual(parser.eval('a(0:2,0:1)').valueOf(), [[100,2],[3,10],[0,12]]);
 
 // TODO: extensively test the Parser

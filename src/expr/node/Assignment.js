@@ -42,8 +42,14 @@ Assignment.prototype.eval = function() {
             throw new Error('Undefined symbol ' + this.name);
         }
 
-        var prevResult = this.result.eval();
-        result = prevResult.set(paramResults, exprResult); // TODO implement set subset
+        var prevResult = this.result();
+        // TODO: check type of prevResult: Matrix, Array, String, other...
+        if (!prevResult.set) {
+            throw new TypeError('Cannot apply a subset to object of type ' +
+                math.typeof(prevResult));
+
+        }
+        result = prevResult.set(paramResults, exprResult);
 
         this.result.value = result;
     }

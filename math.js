@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.5.0-SNAPSHOT
- * @date    2013-03-31
+ * @date    2013-04-01
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -1128,6 +1128,7 @@ Complex.doc = {
  *
  * Matrix contains the functions to resize, get and set values, get the size,
  * clone the matrix and to convert the matrix to a vector, array, or scalar.
+ * Furthermore, one can iterate over the matrix using map and forEach.
  * The internal Array of the Matrix can be accessed using the method valueOf.
  *
  * Example usage:
@@ -1169,7 +1170,7 @@ function Matrix(data) {
 math.type.Matrix = Matrix;
 
 /**
- * Get a value or a set of values from the matrix.
+ * Get a value or a submatrix of the matrix.
  * Indexes are zero-based.
  * @param {Array | Matrix} index
  */
@@ -1202,12 +1203,13 @@ Matrix.prototype.get = function (index) {
         }
     }
     else {
-        // return a set with values
+        // return a submatrix
         switch (index.length) {
-            case 1: return _getSubset1D(this._data, index);
-            case 2: return _getSubset2D(this._data, index);
-            default: return _getSubset(this._data, index, 0);
+            case 1: return new Matrix(_getSubmatrix1D(this._data, index));
+            case 2: return new Matrix(_getSubmatrix2D(this._data, index));
+            default: return new Matrix(_getSubmatrix(this._data, index, 0));
         }
+        // TODO: more efficient when creating an empty matrix and setting data and size manually
     }
 };
 
@@ -1246,19 +1248,19 @@ function _getScalar (data, index) {
 }
 
 /**
- * Get a subset of a one dimensional matrix.
+ * Get a submatrix of a one dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} subset
- * @return {Array} res
+ * @param {Array} index
+ * @return {Array} submatrix
  * @private
  */
-function _getSubset1D (data, subset) {
-    var current = subset[0];
+function _getSubmatrix1D (data, index) {
+    var current = index[0];
     if (current.map) {
         // array or Range
-        return current.map(function (index) {
-            return _get(data, index);
+        return current.map(function (i) {
+            return _get(data, i);
         });
     }
     else {
@@ -1270,16 +1272,16 @@ function _getSubset1D (data, subset) {
 }
 
 /**
- * Get a subset of a 2 dimensional matrix.
+ * Get a submatrix of a 2 dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} subset
- * @return {Array} res
+ * @param {Array} index
+ * @return {Array} submatrix
  * @private
  */
-function _getSubset2D (data, subset) {
-    var rows = subset[0];
-    var cols = subset[1];
+function _getSubmatrix2D (data, index) {
+    var rows = index[0];
+    var cols = index[1];
 
     if (rows.map) {
         if (cols.map) {
@@ -1318,20 +1320,20 @@ function _getSubset2D (data, subset) {
 }
 
 /**
- * Get a subset of a multi dimensional matrix.
+ * Get a submatrix of a multi dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} subset
+ * @param {Array} index
  * @param {number} dim
- * @return {Array} res
+ * @return {Array} submatrix
  * @private
  */
-function _getSubset (data, subset, dim) {
-    var last = (dim == subset.length - 1);
-    var current = subset[dim];
-    var recurse = function (index) {
-        var child = _get(data, index);
-        return last ? child : _getSubset(child, subset, dim + 1);
+function _getSubmatrix (data, index, dim) {
+    var last = (dim == index.length - 1);
+    var current = index[dim];
+    var recurse = function (i) {
+        var child = _get(data, i);
+        return last ? child : _getSubmatrix(child, index, dim + 1);
     };
 
     if (current.map) {
@@ -1347,13 +1349,13 @@ function _getSubset (data, subset, dim) {
 }
 
 /**
- * Get a value or a set of values from the matrix.
+ * Replace a value or a submatrix in the matrix.
  * Indexes are zero-based.
  * @param {Array | Range | Matrix} index
- * @param {*} value
+ * @param {*} submatrix
  * @return {Matrix} itself
  */
-Matrix.prototype.set = function (index, value) {
+Matrix.prototype.set = function (index, submatrix) {
     var isScalar;
     if (index instanceof Matrix) {
         isScalar = index.isVector();
@@ -1368,8 +1370,8 @@ Matrix.prototype.set = function (index, value) {
         throw new TypeError('Unsupported type of index ' + math.typeof(index));
     }
 
-    if (value instanceof Matrix || value instanceof Range) {
-        value = value.valueOf();
+    if (submatrix instanceof Matrix || submatrix instanceof Range) {
+        submatrix = submatrix.valueOf();
     }
 
     if (index.length < this._size.length) {
@@ -1379,21 +1381,21 @@ Matrix.prototype.set = function (index, value) {
 
     if (isScalar) {
         // set a scalar
-        // check whether value is no matrix/array
-        if (math.size(value).length != 0) {
+        // check whether submatrix is no matrix/array
+        if (math.size(submatrix).length != 0) {
             throw new TypeError('Scalar value expected');
         }
 
         switch (index.length) {
-            case 1:  _setScalar1D(this._data, this._size, index, value); break;
-            case 2:  _setScalar2D(this._data, this._size, index, value); break;
-            default: _setScalar(this._data, this._size, index, value); break;
+            case 1:  _setScalar1D(this._data, this._size, index, submatrix); break;
+            case 2:  _setScalar2D(this._data, this._size, index, submatrix); break;
+            default: _setScalar(this._data, this._size, index, submatrix); break;
         }
     }
     else {
-        // set a subset
+        // set a submatrix
         var size = this._size.concat();
-        _setSubset (this._data, size, index, 0, value);
+        _setSubmatrix (this._data, size, index, 0, submatrix);
         if (!util.deepEqual(this._size, size)) {
             _init(this._data);
             this.resize(size);
@@ -1515,41 +1517,42 @@ function _setScalar2D (data, size, index, value) {
 }
 
 /**
- * Replace a subset of a multi dimensional matrix.
+ * Replace a submatrix of a multi dimensional matrix.
  * @param {Array} data
  * @param {Array} size
- * @param {Array} subset
+ * @param {Array} index
  * @param {number} dim
- * @param {Array} value
+ * @param {Array} submatrix
  * @private
  */
-function _setSubset (data, size, subset, dim, value) {
-    var last = (dim == subset.length - 1);
-    var current = subset[dim];
-    var recurse = function (index, i) {
+function _setSubmatrix (data, size, index, dim, submatrix) {
+    var last = (dim == index.length - 1);
+    var current = index[dim];
+    var recurse = function (v, i) {
         if (last) {
-            _set(data, index, value[i]);
+            _set(data, v, submatrix[i]);
             if (data.length > (size[dim] || 0)) {
                 size[dim] = data.length;
             }
         }
         else {
-            var child = data[index];
+            var child = data[v];
             if (!(child instanceof Array)) {
-                data[index] = child = [child];
+                data[v] = child = [child];
                 if (data.length > (size[dim] || 0)) {
                     size[dim] = data.length;
                 }
             }
-            _setSubset(child, size, subset, dim + 1, value[i]);
+            _setSubmatrix(child, size, index, dim + 1, submatrix[i]);
         }
     };
 
     if (current.map) {
         // array or Range
-        if (current.length != value.length) {
+        var len = (current.size && current.size() || current.length);
+        if (len != submatrix.length) {
             throw new RangeError('Dimensions mismatch ' +
-                '(' + current.length + ' != '+ value.length + ')');
+                '(' + len + ' != '+ submatrix.length + ')');
         }
         current.map(recurse);
     }
@@ -1848,6 +1851,38 @@ function Range(start, step, end) {
 }
 
 math.type.Range = Range;
+
+/**
+ * Parse a string into a range,
+ * The string contains the start, optional step, and end, separated by a colon.
+ * If the string does not contain a valid range, null is returned.
+ * For example str='0:2:10'.
+ * @param {String} str
+ * @return {Range | null} range
+ */
+Range.parse = function (str) {
+    if (!isString(str)) {
+        return null;
+    }
+
+    var args = str.split(':');
+    var nums = args.map(function (arg) {
+        return Number(arg);
+    });
+
+    var invalid = nums.some(function (num) {
+        return isNaN(num);
+    });
+    if(invalid) {
+        return null;
+    }
+
+    switch (nums.length) {
+        case 2: return new Range(nums[0], 1, nums[1]);
+        case 3: return new Range(nums[0], nums[1], nums[2]);
+        default: return null;
+    }
+};
 
 /**
  * Create a clone of the range
@@ -5049,6 +5084,9 @@ math.parser = parser;
  * the range.
  *
  * The method accepts the following arguments
+ *     range(str)                   Create a range from a string, where the
+ *                                  string contains the start, optional step,
+ *                                  and end, separated by a colon.
  *     range(start, end)            Create a range with start and end and a
  *                                  default step size of 1
  *     range(start, step, end)      Create a range with start, step, and end.
@@ -5060,12 +5098,28 @@ math.parser = parser;
  *     d.forEach(function (value, index) {
  *         console.log(index, value);
  *     });
+ *     var e = math.range('2:1:5');     // 2:1:5
  *
  * @param {...*} args
  * @return {Range} range
  */
 function range(args) {
     switch (arguments.length) {
+        case 1:
+            // parse string into a range
+            if (!isString(args)) {
+                throw new TypeError(
+                    'Two or three numbers or a single string expected in function range');
+            }
+            var r = Range.parse(args);
+            if (r) {
+                return r;
+            }
+            else {
+                throw new SyntaxError('String "' + r + '" is no valid range');
+            }
+            break;
+
         case 2:
             // range(start, end)
             return new Range(arguments[0], null, arguments[1]);
@@ -7217,8 +7271,14 @@ Assignment.prototype.eval = function() {
             throw new Error('Undefined symbol ' + this.name);
         }
 
-        var prevResult = this.result.eval();
-        result = prevResult.set(paramResults, exprResult); // TODO implement set subset
+        var prevResult = this.result();
+        // TODO: check type of prevResult: Matrix, Array, String, other...
+        if (!prevResult.set) {
+            throw new TypeError('Cannot apply a subset to object of type ' +
+                math.typeof(prevResult));
+
+        }
+        result = prevResult.set(paramResults, exprResult);
 
         this.result.value = result;
     }
@@ -7245,6 +7305,60 @@ Assignment.prototype.toString = function() {
     str += ' = ';
     str += this.expr.toString();
 
+    return str;
+};
+
+/**
+ * @constructor Arguments
+ * invoke a list with parameters on the results of a node
+ * @param {Node} object
+ * @param {Node[]} params
+ */
+function Arguments (object, params) {
+    this.object = object;
+    this.params = params;
+}
+
+Arguments.prototype = new Node();
+
+math.expr.node.Arguments = Arguments;
+
+/**
+ * Evaluate the parameters
+ * @return {*} result
+ */
+Arguments.prototype.eval = function() {
+    var object = this.object;
+    if (object == undefined) {
+        throw new Error ('Node undefined');
+    }
+    var objectRes = object.eval();
+
+    // evaluate the parameters
+    var params = this.params;
+    var paramsRes = [];
+    for (var i = 0, len = params.length; i < len; i++) {
+        paramsRes[i] = params[i].eval();
+    }
+
+    // TODO: check type of objectRes
+    if (!objectRes.get) {
+        throw new TypeError('Cannot apply arguments to object of type ' +
+            math.typeof(objectRes));
+    }
+    return objectRes.get(paramsRes);
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ */
+Arguments.prototype.toString = function() {
+    // format the arguments like "(2, 4.2)"
+    var str = this.object ? this.object.toString() : '';
+    if (this.params) {
+        str += '(' + this.params.join(', ') + ')';
+    }
     return str;
 };
 
@@ -7432,6 +7546,7 @@ FunctionAssignment.prototype.toString = function() {
         // create a new symbol
         var scope = this;
         var symbol = function () {
+            var args, i;
             if (!symbol.value) {
                 // try to resolve again
                 symbol.value = scope.findDef(name);
@@ -7440,11 +7555,24 @@ FunctionAssignment.prototype.toString = function() {
                     throw new Error('Undefined symbol ' + name);
                 }
             }
-            if (typeof symbol.value == 'function') {
+            if (typeof symbol.value === 'function') {
                 return symbol.value.apply(null, arguments);
             }
+            else if (symbol.value instanceof Matrix || symbol.value instanceof Range || symbol.value instanceof Array) {
+                if (arguments.length) {
+                    var matrix = (symbol.value instanceof Array) ? new Matrix(symbol.value) : symbol.value;
+                    args = [];
+                    for (i = 0; i < arguments.length; i++) {
+                        args[i] = arguments[i];
+                    }
+                    return matrix.get(args);
+                }
+                else {
+                    return symbol.value;
+                }
+            }
+            // TODO: implement get subset for all types
             else {
-                // TODO: implement subset for all types
                 return symbol.value;
             }
         };
@@ -8577,15 +8705,16 @@ FunctionAssignment.prototype.toString = function() {
             getToken();
 
             var link = scope.createLink(name);
-            var arguments = parse_arguments(scope); // TODO: not so nice to "misuse" creating a Function
+            // TODO: split applying arguments from symbol?
+            var arguments = parse_arguments(scope);
             var symbol = new Symbol(name, link, arguments);
 
             /* TODO: parse arguments
-             // parse arguments
-             while (token == '(') {
-             symbol = parse_arguments(scope, symbol);
-             }
-             */
+            // parse arguments
+            while (token == '(') {
+                symbol = parse_arguments(scope, symbol);
+            }
+            */
             return symbol;
         }
 
@@ -8593,7 +8722,7 @@ FunctionAssignment.prototype.toString = function() {
     }
 
     /**
-     * parse symbol parameters
+     * parse arguments, enclosed in parenthesis
      * @param {Scope} scope
      * @return {Node[]} arguments
      * @private
@@ -8648,16 +8777,16 @@ FunctionAssignment.prototype.toString = function() {
             }
             getToken();
 
-            var res = new Constant(str);
+            var node = new Constant(str);
 
-            /* TODO: implement string with arguments
-             // parse arguments
-             while (token == '(') {
-             res = parse_arguments(scope, res);
-             }
-             */
+            /* TODO: parse arguments
+            // parse arguments
+            while (token == '(') {
+                node = parse_arguments(scope, node);
+            }
+            */
 
-            return res;
+            return node;
         }
 
         return parse_matrix(scope);
@@ -8737,10 +8866,12 @@ FunctionAssignment.prototype.toString = function() {
                 array = new MatrixNode([]);
             }
 
+            /* TODO: parse arguments
             // parse arguments
             while (token == '(') {
                 array = parse_arguments(scope, array);
             }
+            */
 
             return array;
         }
@@ -8793,12 +8924,12 @@ FunctionAssignment.prototype.toString = function() {
             // just a regular number
             var node = new Constant(number);
 
-            /* TODO: implement number with arguments
-             // parse arguments
-             while (token == '(') {
-             res = parse_arguments(scope, res);
-             }
-             */
+            /* TODO: parse arguments
+            // parse arguments
+            while (token == '(') {
+                node = parse_arguments(scope, node);
+            }
+            */
 
             return node;
         }
@@ -8809,7 +8940,7 @@ FunctionAssignment.prototype.toString = function() {
     /**
      * parentheses
      * @param {Scope} scope
-     * @return {Node} res
+     * @return {Node} node
      * @private
      */
     function parse_parentheses (scope) {
@@ -8817,7 +8948,7 @@ FunctionAssignment.prototype.toString = function() {
         if (token == '(') {
             // parentheses (...)
             getToken();
-            var res = parse_range(scope); // start again
+            var node = parse_range(scope); // start again
 
             if (token != ')') {
                 throw createSyntaxError('Parenthesis ) expected');
@@ -8832,14 +8963,14 @@ FunctionAssignment.prototype.toString = function() {
              }
              //*/
 
-            /* TODO: parse parentheses with arguments
-             // parse arguments
-             while (token == '(') {
-             res = parse_arguments(scope, res);
-             }
-             */
+            /* TODO: parse arguments
+            // parse arguments
+            while (token == '(') {
+                node = parse_arguments(scope, node);
+            }
+            */
 
-            return res;
+            return node;
         }
 
         return parse_end(scope);

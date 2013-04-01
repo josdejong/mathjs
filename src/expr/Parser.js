@@ -877,15 +877,16 @@
             getToken();
 
             var link = scope.createLink(name);
-            var arguments = parse_arguments(scope); // TODO: not so nice to "misuse" creating a Function
+            // TODO: split applying arguments from symbol?
+            var arguments = parse_arguments(scope);
             var symbol = new Symbol(name, link, arguments);
 
             /* TODO: parse arguments
-             // parse arguments
-             while (token == '(') {
-             symbol = parse_arguments(scope, symbol);
-             }
-             */
+            // parse arguments
+            while (token == '(') {
+                symbol = parse_arguments(scope, symbol);
+            }
+            */
             return symbol;
         }
 
@@ -893,7 +894,7 @@
     }
 
     /**
-     * parse symbol parameters
+     * parse arguments, enclosed in parenthesis
      * @param {Scope} scope
      * @return {Node[]} arguments
      * @private
@@ -948,16 +949,16 @@
             }
             getToken();
 
-            var res = new Constant(str);
+            var node = new Constant(str);
 
-            /* TODO: implement string with arguments
-             // parse arguments
-             while (token == '(') {
-             res = parse_arguments(scope, res);
-             }
-             */
+            /* TODO: parse arguments
+            // parse arguments
+            while (token == '(') {
+                node = parse_arguments(scope, node);
+            }
+            */
 
-            return res;
+            return node;
         }
 
         return parse_matrix(scope);
@@ -1037,10 +1038,12 @@
                 array = new MatrixNode([]);
             }
 
+            /* TODO: parse arguments
             // parse arguments
             while (token == '(') {
                 array = parse_arguments(scope, array);
             }
+            */
 
             return array;
         }
@@ -1093,12 +1096,12 @@
             // just a regular number
             var node = new Constant(number);
 
-            /* TODO: implement number with arguments
-             // parse arguments
-             while (token == '(') {
-             res = parse_arguments(scope, res);
-             }
-             */
+            /* TODO: parse arguments
+            // parse arguments
+            while (token == '(') {
+                node = parse_arguments(scope, node);
+            }
+            */
 
             return node;
         }
@@ -1109,7 +1112,7 @@
     /**
      * parentheses
      * @param {Scope} scope
-     * @return {Node} res
+     * @return {Node} node
      * @private
      */
     function parse_parentheses (scope) {
@@ -1117,7 +1120,7 @@
         if (token == '(') {
             // parentheses (...)
             getToken();
-            var res = parse_range(scope); // start again
+            var node = parse_range(scope); // start again
 
             if (token != ')') {
                 throw createSyntaxError('Parenthesis ) expected');
@@ -1132,14 +1135,14 @@
              }
              //*/
 
-            /* TODO: parse parentheses with arguments
-             // parse arguments
-             while (token == '(') {
-             res = parse_arguments(scope, res);
-             }
-             */
+            /* TODO: parse arguments
+            // parse arguments
+            while (token == '(') {
+                node = parse_arguments(scope, node);
+            }
+            */
 
-            return res;
+            return node;
         }
 
         return parse_end(scope);
