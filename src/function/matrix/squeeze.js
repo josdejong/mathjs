@@ -62,6 +62,6 @@ squeeze.doc = {
         'size(squeeze(b))'
     ],
     'seealso': [
-        'diag', 'identity', 'ones', 'range', 'transpose', 'zeros'
+        'det', 'diag', 'identity', 'ones', 'range', 'transpose', 'zeros'
     ]
 };

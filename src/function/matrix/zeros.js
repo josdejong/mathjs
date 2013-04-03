@@ -48,6 +48,6 @@ zeros.doc = {
         'zeros(size(a))'
     ],
     'seealso': [
-        'diag', 'identity', 'ones', 'range', 'size', 'squeeze', 'transpose'
+        'det', 'diag', 'identity', 'ones', 'range', 'size', 'squeeze', 'transpose'
     ]
 };

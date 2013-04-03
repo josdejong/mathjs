@@ -227,7 +227,7 @@ parser.eval('2 inch in cm');    // 5.08 cm
 ### Array and Matrix
 
 Math.js supports n-dimensional arrays and matrices. Both regular JavaScript
-Array and the math.js Matrix can be used interchangeably in all math.js
+`Array` and the math.js `Matrix` can be used interchangeably in all math.js
 functions.
 
 A `Matrix` is an object wrapped around a regular JavaScript Array, providing
@@ -264,7 +264,7 @@ parser.eval('d = c(2, 1)');                     // 43
 ### Range
 
 A `Range` creates a range with a start, end, and optionally a step.
-A Range can be used to create indexes to get or set submatrices.
+A `Range` can be used to create indexes to get or set submatrices.
 
 ```js
 var math = require('math.js'),
@@ -273,7 +273,7 @@ var math = require('math.js'),
 math.factorial(math.range(1,5));                // Array,  [1, 2, 6, 24, 120]
 
 var a = math.matrix();                          // Matrix, []
-a.set([math.range(2,5)], [7, 2, 1, 5]);         // Matrix, [0, 7, 2, 1, 5]
+a.set([math.range('2:5')], [7, 2, 1, 5]);       // Matrix, [0, 7, 2, 1, 5]
 
 var b = math.range(2, -1, -2);                  // Range, 2:-1:-2
 var c = b.valueOf();                            // Array,  [2, 1, 0, -1, -2]
@@ -339,6 +339,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 
 ### Matrix
 
+- math.det(x)
 - math.diag(x)
 - math.identity(m, n, p, ...)
 - math.ones(m, n, p, ...)
@@ -471,10 +472,12 @@ To execute tests for the library, run:
 - Version 0.4.0 (2013-03-16):
     - Implement Arrays
 - Version 0.5.0
-    - Implement Matrices
+    - Implement Matrix and Range
+- Version 0.6.0
+    - More on matrices
 - Version 1.0.0
     - Extensive testing
-    - Add examples and documentation
+    - Examples and documentation
 
 
 ## License
