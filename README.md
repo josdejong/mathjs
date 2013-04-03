@@ -341,7 +341,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 
 - math.det(x)
 - math.diag(x)
-- math.identity(m, n, p, ...)
+- math.eye(m, n, p, ...)
 - math.ones(m, n, p, ...)
 - math.size(x)
 - math.squeeze(x)

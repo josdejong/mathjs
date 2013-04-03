@@ -32,20 +32,20 @@ assert.deepEqual(math.diag([[1,2,3],[4,5,6]],-2).valueOf(), []);
 assert.deepEqual(math.diag(math.range(1,3)).valueOf(), [[1,0,0],[0,2,0],[0,0,3]]);
 // TODO: test diag for all types of input (also scalar)
 
-// test identity
-assert.deepEqual(math.identity().valueOf(), [[1]]);
-assert.deepEqual(math.identity([]).valueOf(), [[1]]);
-assert.deepEqual(math.identity(1).valueOf(), [[1]]);
-assert.deepEqual(math.identity(2).valueOf(), [[1,0],[0,1]]);
-assert.deepEqual(math.identity([2]).valueOf(), [[1,0],[0,1]]);
-assert.deepEqual(math.identity(2,3).valueOf(), [[1,0,0],[0,1,0]]);
-assert.deepEqual(math.identity(3,2).valueOf(), [[1,0],[0,1],[0,0]]);
-assert.deepEqual(math.identity([3,2]).valueOf(), [[1,0],[0,1],[0,0]]);
-assert.deepEqual(math.identity(math.matrix([3,2])).valueOf(), [[1,0],[0,1],[0,0]]);
-assert.deepEqual(math.identity(math.matrix([[3],[2]])).valueOf(), [[1,0],[0,1],[0,0]]);
-assert.deepEqual(math.identity(3,3).valueOf(), [[1,0,0],[0,1,0],[0,0,1]]);
-assert.throws(function () {math.identity(3,3,2);});
-assert.throws(function () {math.identity([3,3,2]);});
+// test eye
+assert.deepEqual(math.eye().valueOf(), [[1]]);
+assert.deepEqual(math.eye([]).valueOf(), [[1]]);
+assert.deepEqual(math.eye(1).valueOf(), [[1]]);
+assert.deepEqual(math.eye(2).valueOf(), [[1,0],[0,1]]);
+assert.deepEqual(math.eye([2]).valueOf(), [[1,0],[0,1]]);
+assert.deepEqual(math.eye(2,3).valueOf(), [[1,0,0],[0,1,0]]);
+assert.deepEqual(math.eye(3,2).valueOf(), [[1,0],[0,1],[0,0]]);
+assert.deepEqual(math.eye([3,2]).valueOf(), [[1,0],[0,1],[0,0]]);
+assert.deepEqual(math.eye(math.matrix([3,2])).valueOf(), [[1,0],[0,1],[0,0]]);
+assert.deepEqual(math.eye(math.matrix([[3],[2]])).valueOf(), [[1,0],[0,1],[0,0]]);
+assert.deepEqual(math.eye(3,3).valueOf(), [[1,0,0],[0,1,0],[0,0,1]]);
+assert.throws(function () {math.eye(3,3,2);});
+assert.throws(function () {math.eye([3,3,2]);});
 
 // test ones
 assert.deepEqual(math.ones().valueOf(), [[1]]);

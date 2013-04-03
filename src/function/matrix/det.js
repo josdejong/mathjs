@@ -124,6 +124,6 @@ det.doc = {
         'det([-2, 2, 3; -1, 1, 3; 2, 0, -1])'
     ],
     'seealso': [
-        'diag', 'identity', 'range', 'size', 'squeeze', 'transpose', 'zeros'
+        'diag', 'eye', 'range', 'size', 'squeeze', 'transpose', 'zeros'
     ]
 };

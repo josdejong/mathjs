@@ -52,6 +52,6 @@ size.doc = {
         'size(1:6)'
     ],
     'seealso': [
-        'det', 'diag', 'identity', 'ones', 'range', 'squeeze', 'transpose', 'zeros'
+        'det', 'diag', 'eye', 'ones', 'range', 'squeeze', 'transpose', 'zeros'
     ]
 };
