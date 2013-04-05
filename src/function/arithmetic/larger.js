@@ -40,7 +40,7 @@ function larger(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, equal);
+        return util.map2(x, y, larger);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {

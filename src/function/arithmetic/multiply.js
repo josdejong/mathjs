@@ -16,7 +16,7 @@ function multiply(x, y) {
         }
         else if (y instanceof Complex) {
             // number * complex
-            return multiplyComplex(new Complex(x, 0), y);
+            return _multiplyComplex (new Complex(x, 0), y);
         }
         else if (y instanceof Unit) {
             res = y.clone();
@@ -27,11 +27,11 @@ function multiply(x, y) {
     else if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex * number
-            return multiplyComplex(x, new Complex(y, 0));
+            return _multiplyComplex (x, new Complex(y, 0));
         }
         else if (y instanceof Complex) {
             // complex * complex
-            return multiplyComplex(x, y);
+            return _multiplyComplex (x, y);
         }
     }
     else if (x instanceof Unit) {
@@ -117,7 +117,7 @@ function multiply(x, y) {
  * @return {Complex} res
  * @private
  */
-function multiplyComplex (x, y) {
+function _multiplyComplex (x, y) {
     return new Complex(
         x.re * y.re - x.im * y.im,
         x.re * y.im + x.im * y.re

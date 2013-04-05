@@ -16,18 +16,18 @@ function divide(x, y) {
         }
         else if (y instanceof Complex) {
             // number / complex
-            return divideComplex(new Complex(x, 0), y);
+            return _divideComplex(new Complex(x, 0), y);
         }
     }
 
     if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex / number
-            return divideComplex(x, new Complex(y, 0));
+            return _divideComplex(x, new Complex(y, 0));
         }
         else if (y instanceof Complex) {
             // complex / complex
-            return divideComplex(x, y);
+            return _divideComplex(x, y);
         }
     }
 
@@ -73,7 +73,7 @@ function divide(x, y) {
  * @return {Complex} res
  * @private
  */
-function divideComplex (x, y) {
+function _divideComplex (x, y) {
     var den = y.re * y.re + y.im * y.im;
     return new Complex(
         (x.re * y.re + x.im * y.im) / den,

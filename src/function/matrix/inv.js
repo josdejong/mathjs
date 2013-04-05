@@ -75,7 +75,11 @@ math.inv = inv;
  * @private
  */
 function _inv (matrix, rows, cols){
-    var r, s, f, value, temp;
+    var r, s, f, value, temp,
+        add = math.add,
+        unaryminus = math.unaryminus,
+        multiply = math.multiply,
+        divide = math.divide;
 
     if (rows == 1) {
         // this is a 1 x 1 matrix
@@ -95,12 +99,12 @@ function _inv (matrix, rows, cols){
         }
         return [
             [
-                math.divide(matrix[1][1], det),
-                math.divide(math.unaryminus(matrix[0][1]), det)
+                divide(matrix[1][1], det),
+                divide(unaryminus(matrix[0][1]), det)
             ],
             [
-                math.divide(math.unaryminus(matrix[1][0]), det),
-                math.divide(matrix[0][0], det)
+                divide(unaryminus(matrix[1][0]), det),
+                divide(matrix[0][0], det)
             ]
         ];
     }
@@ -146,15 +150,15 @@ function _inv (matrix, rows, cols){
                 if(r != c) {
                     // eliminate value at column c and row r
                     if (Ar[c] != 0) {
-                        f = math.divide(math.unaryminus(Ar[c]), Ac[c]);
+                        f = divide(unaryminus(Ar[c]), Ac[c]);
 
                         // add (f * row c) to row r to eliminate the value
                         // at column c
                         for (s = c; s < cols; s++) {
-                            Ar[s] = math.add(Ar[s], math.multiply(f, Ac[s]));
+                            Ar[s] = add(Ar[s], multiply(f, Ac[s]));
                         }
                         for (s = 0; s < cols; s++) {
-                            Br[s] = math.add(Br[s], math.multiply(f, Bc[s]));
+                            Br[s] = add(Br[s], multiply(f, Bc[s]));
                         }
                     }
                 }
@@ -163,10 +167,10 @@ function _inv (matrix, rows, cols){
                     // divide each value on row r with the value at Acc
                     f = Ac[c];
                     for (s = c; s < cols; s++) {
-                        Ar[s] = math.divide(Ar[s], f);
+                        Ar[s] = divide(Ar[s], f);
                     }
                     for (s = 0; s < cols; s++) {
-                        Br[s] = math.divide(Br[s], f);
+                        Br[s] = divide(Br[s], f);
                     }
                 }
             }

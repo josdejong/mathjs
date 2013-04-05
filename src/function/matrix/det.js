@@ -58,6 +58,9 @@ math.det = det;
  * @private
  */
 function _det (matrix, rows, cols) {
+    var multiply = math.multiply,
+        subtract = math.subtract;
+
     // this is a square matrix
     if (rows == 1) {
         // this is a 1 x 1 matrix
@@ -66,9 +69,9 @@ function _det (matrix, rows, cols) {
     else if (rows == 2) {
         // this is a 2 x 2 matrix
         // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12
-        return math.subtract(
-            math.multiply(matrix[0][0], matrix[1][1]),
-            math.multiply(matrix[1][0], matrix[0][1])
+        return subtract(
+            multiply(matrix[0][0], matrix[1][1]),
+            multiply(matrix[1][0], matrix[0][1])
         );
     }
     else {
@@ -77,8 +80,8 @@ function _det (matrix, rows, cols) {
         for (var c = 0; c < cols; c++) {
             var minor = _minor(matrix, rows, cols, 0, c);
             //d += Math.pow(-1, 1 + c) * a(1, c) * _det(minor);
-            d += math.multiply(
-                math.multiply((c + 1) % 2 + (c + 1) % 2 - 1, matrix[0][c]),
+            d += multiply(
+                multiply((c + 1) % 2 + (c + 1) % 2 - 1, matrix[0][c]),
                 _det(minor, rows - 1, cols - 1)
             ); // faster than with pow()
         }

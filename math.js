@@ -3076,18 +3076,18 @@ function divide(x, y) {
         }
         else if (y instanceof Complex) {
             // number / complex
-            return divideComplex(new Complex(x, 0), y);
+            return _divideComplex(new Complex(x, 0), y);
         }
     }
 
     if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex / number
-            return divideComplex(x, new Complex(y, 0));
+            return _divideComplex(x, new Complex(y, 0));
         }
         else if (y instanceof Complex) {
             // complex / complex
-            return divideComplex(x, y);
+            return _divideComplex(x, y);
         }
     }
 
@@ -3133,7 +3133,7 @@ function divide(x, y) {
  * @return {Complex} res
  * @private
  */
-function divideComplex (x, y) {
+function _divideComplex (x, y) {
     var den = y.re * y.re + y.im * y.im;
     return new Complex(
         (x.re * y.re + x.im * y.im) / den,
@@ -3461,7 +3461,7 @@ function larger(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, equal);
+        return util.map2(x, y, larger);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -3817,7 +3817,7 @@ function multiply(x, y) {
         }
         else if (y instanceof Complex) {
             // number * complex
-            return multiplyComplex(new Complex(x, 0), y);
+            return _multiplyComplex (new Complex(x, 0), y);
         }
         else if (y instanceof Unit) {
             res = y.clone();
@@ -3828,11 +3828,11 @@ function multiply(x, y) {
     else if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex * number
-            return multiplyComplex(x, new Complex(y, 0));
+            return _multiplyComplex (x, new Complex(y, 0));
         }
         else if (y instanceof Complex) {
             // complex * complex
-            return multiplyComplex(x, y);
+            return _multiplyComplex (x, y);
         }
     }
     else if (x instanceof Unit) {
@@ -3918,7 +3918,7 @@ function multiply(x, y) {
  * @return {Complex} res
  * @private
  */
-function multiplyComplex (x, y) {
+function _multiplyComplex (x, y) {
     return new Complex(
         x.re * y.re - x.im * y.im,
         x.re * y.im + x.im * y.re
@@ -5334,6 +5334,9 @@ math.det = det;
  * @private
  */
 function _det (matrix, rows, cols) {
+    var multiply = math.multiply,
+        subtract = math.subtract;
+
     // this is a square matrix
     if (rows == 1) {
         // this is a 1 x 1 matrix
@@ -5342,9 +5345,9 @@ function _det (matrix, rows, cols) {
     else if (rows == 2) {
         // this is a 2 x 2 matrix
         // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12
-        return math.subtract(
-            math.multiply(matrix[0][0], matrix[1][1]),
-            math.multiply(matrix[1][0], matrix[0][1])
+        return subtract(
+            multiply(matrix[0][0], matrix[1][1]),
+            multiply(matrix[1][0], matrix[0][1])
         );
     }
     else {
@@ -5353,8 +5356,8 @@ function _det (matrix, rows, cols) {
         for (var c = 0; c < cols; c++) {
             var minor = _minor(matrix, rows, cols, 0, c);
             //d += Math.pow(-1, 1 + c) * a(1, c) * _det(minor);
-            d += math.multiply(
-                math.multiply((c + 1) % 2 + (c + 1) % 2 - 1, matrix[0][c]),
+            d += multiply(
+                multiply((c + 1) % 2 + (c + 1) % 2 - 1, matrix[0][c]),
                 _det(minor, rows - 1, cols - 1)
             ); // faster than with pow()
         }
@@ -5656,7 +5659,11 @@ math.inv = inv;
  * @private
  */
 function _inv (matrix, rows, cols){
-    var r, s, f, value, temp;
+    var r, s, f, value, temp,
+        add = math.add,
+        unaryminus = math.unaryminus,
+        multiply = math.multiply,
+        divide = math.divide;
 
     if (rows == 1) {
         // this is a 1 x 1 matrix
@@ -5676,12 +5683,12 @@ function _inv (matrix, rows, cols){
         }
         return [
             [
-                math.divide(matrix[1][1], det),
-                math.divide(math.unaryminus(matrix[0][1]), det)
+                divide(matrix[1][1], det),
+                divide(unaryminus(matrix[0][1]), det)
             ],
             [
-                math.divide(math.unaryminus(matrix[1][0]), det),
-                math.divide(matrix[0][0], det)
+                divide(unaryminus(matrix[1][0]), det),
+                divide(matrix[0][0], det)
             ]
         ];
     }
@@ -5727,15 +5734,15 @@ function _inv (matrix, rows, cols){
                 if(r != c) {
                     // eliminate value at column c and row r
                     if (Ar[c] != 0) {
-                        f = math.divide(math.unaryminus(Ar[c]), Ac[c]);
+                        f = divide(unaryminus(Ar[c]), Ac[c]);
 
                         // add (f * row c) to row r to eliminate the value
                         // at column c
                         for (s = c; s < cols; s++) {
-                            Ar[s] = math.add(Ar[s], math.multiply(f, Ac[s]));
+                            Ar[s] = add(Ar[s], multiply(f, Ac[s]));
                         }
                         for (s = 0; s < cols; s++) {
-                            Br[s] = math.add(Br[s], math.multiply(f, Bc[s]));
+                            Br[s] = add(Br[s], multiply(f, Bc[s]));
                         }
                     }
                 }
@@ -5744,10 +5751,10 @@ function _inv (matrix, rows, cols){
                     // divide each value on row r with the value at Acc
                     f = Ac[c];
                     for (s = c; s < cols; s++) {
-                        Ar[s] = math.divide(Ar[s], f);
+                        Ar[s] = divide(Ar[s], f);
                     }
                     for (s = 0; s < cols; s++) {
-                        Br[s] = math.divide(Br[s], f);
+                        Br[s] = divide(Br[s], f);
                     }
                 }
             }
@@ -6180,27 +6187,94 @@ random.doc = {
  */
 function max(args) {
     if (arguments.length == 0) {
-        throw new Error('Function sum requires one or more parameters (0 provided)');
+        throw new Error('Function max requires one or more parameters (0 provided)');
     }
 
-    if (arguments.length == 1 && (args.valueOf() instanceof Array)) {
-        return max.apply(this, args.valueOf());
+    if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
+        // max([a, b, c, d, ...]])
+        if (arguments.length > 1) {
+            throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
+        }
+
+        var size = math.size(args);
+
+        if (size.length == 1) {
+            // vector
+            if (args.length == 0) {
+                throw new Error('Cannot calculate max of an empty vector');
+            }
+
+            return _max(args.valueOf());
+        }
+        else if (size.length == 2) {
+            // 2 dimensional matrix
+            if (size[0] == 0 || size[1] == 0) {
+                throw new Error('Cannot calculate max of an empty matrix');
+            }
+            if (args instanceof Array) {
+                return _max2(args, size[0], size[1]);
+            }
+            else if (args instanceof Matrix || args instanceof Range) {
+                return new Matrix(_max2(args.valueOf(), size[0], size[1]));
+            }
+            else {
+                throw newUnsupportedTypeError('max', args);
+            }
+        }
+        else {
+            // TODO: implement max for n-dimensional matrices
+            throw new RangeError('Cannot calculate max for multi dimensional matrix');
+        }
     }
+    else {
+        // max(a, b, c, d, ...)
+        return _max(arguments);
+    }
+}
 
-    // TODO: implement support for Matrix
+math.max = max;
 
-    var res = arguments[0];
-    for (var i = 1, iMax = arguments.length; i < iMax; i++) {
-        var value = arguments[i];
+/**
+ * Calculate the max of a one dimensional array
+ * @param {Array} array
+ * @return {Number} max
+ * @private
+ */
+function _max(array) {
+    var larger = math.larger;
+    var res = array[0];
+    for (var i = 1, iMax = array.length; i < iMax; i++) {
+        var value = array[i];
         if (larger(value, res)) {
             res = value;
         }
     }
-
     return res;
 }
 
-math.max = max;
+/**
+ * Calculate the max of a two dimensional array
+ * @param {Array} array
+ * @param {Number} rows
+ * @param {Number} cols
+ * @return {Number[]} max
+ * @private
+ */
+function _max2(array, rows, cols) {
+    var larger = math.larger;
+    var res = [];
+    for (var c = 0; c < cols; c++) {
+        var max = array[0][c];
+        for (var r = 1; r < rows; r++) {
+            var value = array[r][c];
+            if (larger(value, max)) {
+                max = value;
+            }
+        }
+        res[c] = max;
+    }
+    return res;
+}
 
 /**
  * Function documentation
@@ -6235,27 +6309,94 @@ max.doc = {
  */
 function min(args) {
     if (arguments.length == 0) {
-        throw new Error('Function sum requires one or more parameters (0 provided)');
+        throw new Error('Function min requires one or more parameters (0 provided)');
     }
 
-    if (arguments.length == 1 && (args.valueOf() instanceof Array)) {
-        return min.apply(this, args.valueOf());
+    if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
+        // min([a, b, c, d, ...]])
+        if (arguments.length > 1) {
+            throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
+        }
+
+        var size = math.size(args);
+
+        if (size.length == 1) {
+            // vector
+            if (args.length == 0) {
+                throw new Error('Cannot calculate min of an empty vector');
+            }
+
+            return _min(args.valueOf());
+        }
+        else if (size.length == 2) {
+            // 2 dimensional matrix
+            if (size[0] == 0 || size[1] == 0) {
+                throw new Error('Cannot calculate min of an empty matrix');
+            }
+            if (args instanceof Array) {
+                return _min2(args, size[0], size[1]);
+            }
+            else if (args instanceof Matrix || args instanceof Range) {
+                return new Matrix(_min2(args.valueOf(), size[0], size[1]));
+            }
+            else {
+                throw newUnsupportedTypeError('min', args);
+            }
+        }
+        else {
+            // TODO: implement min for n-dimensional matrices
+            throw new RangeError('Cannot calculate min for multi dimensional matrix');
+        }
     }
+    else {
+        // min(a, b, c, d, ...)
+        return _min(arguments);
+    }
+}
 
-    // TODO: implement support for Matrix
+math.min = min;
 
-    var res = arguments[0];
-    for (var i = 1, iMax = arguments.length; i < iMax; i++) {
-        var value = arguments[i];
+/**
+ * Calculate the min of a one dimensional array
+ * @param {Array} array
+ * @return {Number} min
+ * @private
+ */
+function _min(array) {
+    var smaller = math.smaller;
+    var res = array[0];
+    for (var i = 1, iMax = array.length; i < iMax; i++) {
+        var value = array[i];
         if (smaller(value, res)) {
             res = value;
         }
     }
-
     return res;
 }
 
-math.min = min;
+/**
+ * Calculate the min of a two dimensional array
+ * @param {Array} array
+ * @param {Number} rows
+ * @param {Number} cols
+ * @return {Number[]} min
+ * @private
+ */
+function _min2(array, rows, cols) {
+    var smaller = math.smaller;
+    var res = [];
+    for (var c = 0; c < cols; c++) {
+        var min = array[0][c];
+        for (var r = 1; r < rows; r++) {
+            var value = array[r][c];
+            if (smaller(value, min)) {
+                min = value;
+            }
+        }
+        res[c] = min;
+    }
+    return res;
+}
 
 /**
  * Function documentation
@@ -6268,9 +6409,9 @@ min.doc = {
     ],
     'description': 'Compute the minimum value of a list of values.',
     'examples': [
-        'max(2, 3, 4, 1)',
-        'max(2.7, 7.1, -4.5, 2.0, 4.1)',
-        'min(2.7, 7.1, -4.5, 2.0, 4.1)'
+        'min(2, 3, 4, 1)',
+        'min(2.7, 7.1, -4.5, 2.0, 4.1)',
+        'max(2.7, 7.1, -4.5, 2.0, 4.1)'
     ],
     'seealso': [
         'sum',
