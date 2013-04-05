@@ -75,6 +75,15 @@ assert.deepEqual(math.format(math.inv([
     [1/2, 1,   1/2],
     [1/4, 1/2, 3/4]
 ]));
+assert.deepEqual(math.format(math.divide(1, [
+    [ 1, 4,  7],
+    [ 3, 0,  5],
+    [-1, 9, 11]
+])), math.format([
+    [ 5.625, -2.375, -2.5],
+    [ 4.75,  -2.25,  -2],
+    [-3.375,  1.625,  1.5]
+]));
 
 // test ones
 assert.deepEqual(math.ones().valueOf(), [[1]]);

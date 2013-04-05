@@ -39,9 +39,13 @@ function divide(x, y) {
         }
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        if (y instanceof Array || y instanceof Matrix || y instanceof Range) {
-            // TODO: implement matrix/matrix
+    if (x instanceof Array || x instanceof Matrix) {
+        if (y instanceof Array || y instanceof Matrix) {
+            // TODO: implement matrix right division using pseudo inverse
+            // http://www.mathworks.nl/help/matlab/ref/mrdivide.html
+            // http://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
+            // http://stackoverflow.com/questions/12263932/how-does-gnu-octave-matrix-division-work-getting-unexpected-behaviour
+            return math.multiply(x, math.inv(y));
         }
         else {
             // matrix / scalar
@@ -49,8 +53,9 @@ function divide(x, y) {
         }
     }
 
-    if (y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        // TODO: implement scalar/matrix
+    if (y instanceof Array || y instanceof Matrix) {
+        // TODO: implement matrix right division using pseudo inverse
+        return math.multiply(x, math.inv(y));
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
