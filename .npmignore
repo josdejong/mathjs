@@ -6,3 +6,4 @@ tools
 Jakefile.js
 .idea
 .npmignore
+.travis.yml

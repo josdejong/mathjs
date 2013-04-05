@@ -66,7 +66,10 @@ function _det (matrix, rows, cols) {
     else if (rows == 2) {
         // this is a 2 x 2 matrix
         // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12
-        return matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1];
+        return math.subtract(
+            math.multiply(matrix[0][0], matrix[1][1]),
+            math.multiply(matrix[1][0], matrix[0][1])
+        );
     }
     else {
         // this is a matrix of 3 x 3 or larger
@@ -74,9 +77,10 @@ function _det (matrix, rows, cols) {
         for (var c = 0; c < cols; c++) {
             var minor = _minor(matrix, rows, cols, 0, c);
             //d += Math.pow(-1, 1 + c) * a(1, c) * _det(minor);
-            d += ((c + 1) % 2 + (c + 1) % 2 - 1) *
-                matrix[0][c] *
-                _det(minor, rows - 1, cols - 1); // faster than with pow()
+            d += math.multiply(
+                math.multiply((c + 1) % 2 + (c + 1) % 2 - 1, matrix[0][c]),
+                _det(minor, rows - 1, cols - 1)
+            ); // faster than with pow()
         }
         return d;
     }
@@ -124,6 +128,6 @@ det.doc = {
         'det([-2, 2, 3; -1, 1, 3; 2, 0, -1])'
     ],
     'seealso': [
-        'diag', 'eye', 'range', 'size', 'squeeze', 'transpose', 'zeros'
+        'diag', 'eye', 'inv', 'range', 'size', 'squeeze', 'transpose', 'zeros'
     ]
 };

@@ -342,9 +342,11 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.det(x)
 - math.diag(x)
 - math.eye(m, n, p, ...)
+- math.inv(x)
 - math.ones(m, n, p, ...)
 - math.size(x)
 - math.squeeze(x)
+- math.transpose(x)
 - math.zeros(m, n, p, ...)
 
 ### Probability

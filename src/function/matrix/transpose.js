@@ -55,7 +55,7 @@ math.transpose = transpose;
  * Function documentation
  */
 transpose.doc = {
-    'name': this.name,
+    'name': 'transpose',
     'category': 'Numerics',
     'syntax': [
         'transpose(x)'
@@ -66,6 +66,6 @@ transpose.doc = {
         'transpose(a)'
     ],
     'seealso': [
-        'det', 'diag', 'eye', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
+        'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'zeros'
     ]
 };

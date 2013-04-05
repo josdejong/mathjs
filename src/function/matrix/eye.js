@@ -64,6 +64,6 @@ eye.doc = {
         'eye(size(a))'
     ],
     'seealso': [
-        'det', 'diag', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
+        'det', 'diag', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
     ]
 };
