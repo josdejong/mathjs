@@ -24,8 +24,12 @@ Math.js can be installed using [npm](https://npmjs.org/):
 
     npm install mathjs
 
-The latest version of math.js can be downloaded from the website:
-[http://mathjs.org/](http://mathjs.org/#install_or_download)
+Or the latest version of math.js can be downloaded from
+[mathjs.org](http://mathjs.org/#install_or_download):
+
+- [math.js](http://mathjs.org/js/lib/math.js) (Development version)
+- [math.min.js](http://mathjs.org/js/lib/math.min.js) (Production version)
+
 
 ## Load
 
