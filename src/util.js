@@ -333,7 +333,7 @@ var util = (function () {
         if (x instanceof Array) {
             var sizeX = x.length;
             if (sizeX) {
-                var size0 = size(x[0]);
+                var size0 = _size(x[0]);
                 if (size0[0] == 0) {
                     return [0].concat(size0);
                 }
