@@ -195,6 +195,6 @@ inv.doc = {
         '1 / 4'
     ],
     'seealso': [
-        'det', 'diag', 'eye', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
+        'concat', 'det', 'diag', 'eye', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
     ]
 };

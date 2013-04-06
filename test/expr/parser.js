@@ -65,4 +65,16 @@ var a = parser.get('a');
 assert.deepEqual(a.get([math.range('1:3'), math.range('1:2')]).valueOf(), [[100,2],[3,10],[0,12]]);
 assert.deepEqual(parser.eval('a(1:3,1:2)').valueOf(), [[100,2],[3,10],[0,12]]);
 
+/*
+// test matrix concatenation
+parser = math.parser();
+parser.eval('a=[1,2;3,4]');
+parser.eval('b=[5,6,7,8]');
+assert.deepEqual(parser.eval('c=[a,b]').valueOf(), [[1,2,5,6],[3,4,7,8]]);
+assert.deepEqual(parser.eval('c=[a;b]').valueOf(), [[1,2],[3,4],[5,6],[7,8]]);
+assert.deepEqual(parser.eval('c=[[1,2]; [3,4]]').valueOf(), [[1,2],[3,4]]);
+assert.deepEqual(parser.eval('c=[1; [2;3]]').valueOf(), [[1],[2],[3]]);
+assert.throws(function () {parser.eval('c=[a; [1,2,3] ]')});
+*/
+
 // TODO: extensively test the Parser

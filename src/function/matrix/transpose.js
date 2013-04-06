@@ -66,6 +66,6 @@ transpose.doc = {
         'transpose(a)'
     ],
     'seealso': [
-        'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'zeros'
+        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'zeros'
     ]
 };

@@ -339,6 +339,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 
 ### Matrix
 
+- math.concat(a, b, c, ... [, dim])
 - math.det(x)
 - math.diag(x)
 - math.eye(m, n, p, ...)

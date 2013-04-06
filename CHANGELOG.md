@@ -7,8 +7,8 @@ https://github.com/josdejong/mathjs
 *Note: version 0.5 is incompatible with previous versions.*
 
 - Implemented data types Matrix and Range.
-- Implemented matrix methods clone, det, diag, eye, inv, ones, size, squeeze,
-  transpose, zeros.
+- Implemented matrix methods clone, concat, det, diag, eye, inv, ones, size,
+  squeeze, transpose, zeros.
 - Changed: created construction methods for easy object creation for all data
   types and for the parser. For example, a complex value is now created
   with "math.complex(2, 3)" instead of "new math.Complex(2, 3)", and a parser
