@@ -57,14 +57,29 @@ math.expr.node.MatrixNode = MatrixNode;
             var row = array[r];
             var cols = row.length;
             var submatrix = null;
+            var submatrixRows = null;
             for (var c = 0; c < cols; c++) {
                 var entry = math.clone(row[c]);
                 var size;
-                if (entry instanceof Matrix || entry instanceof Range) {
+                if (entry instanceof Matrix) {
+                    // get the data from the matrix
                     size = entry.size();
                     entry = entry.valueOf();
+                    if (size.length == 1) {
+                        entry = [entry];
+                        size = [1, size[0]];
+                    }
+                    else if (size.length > 2) {
+                        throw new Error('Cannot merge a multi dimensional matrix');
+                    }
+                }
+                else if (entry instanceof Range) {
+                    // change range into an 1xn matrix
+                    entry = [entry.valueOf()];
+                    size = [1, entry[0].length];
                 }
                 else {
+                    // change scalar into a 1x1 matrix
                     size = [1, 1];
                     entry = [[entry]];
                 }
@@ -73,27 +88,22 @@ math.expr.node.MatrixNode = MatrixNode;
                 if (submatrix == null) {
                     // first entry
                     submatrix = entry;
+                    submatrixRows = size[0];
                 }
-                else if (size[0] == submatrix.length) {
+                else if (size[0] == submatrixRows) {
                     // merge
-                    for (var i = 0; i < submatrix.length; i++) {
-                        submatrix[i] = submatrix[i].concat(entry[i]);
+                    for (var s = 0; s < submatrixRows; s++) {
+                        submatrix[s] = submatrix[s].concat(entry[s]);
                     }
                 }
                 else {
-                    // no good
+                    // no good...
                     throw new Error('Dimension mismatch ' +
-                        '(' + size[0] + ' != ' + submatrix.length + ')');
+                        '(' + size[0] + ' != ' + submatrixRows + ')');
                 }
             }
 
             // merge the submatrix
-            if (merged[0] && merged[0][0] &&
-                submatrix[0] && submatrix[0][0] &&
-                merged[0][0].length != submatrix[0][0].length) {
-                throw new Error('Dimension mismatch ' +
-                    '(' + merged[0][0].length + ' != ' + submatrix[0][0].length + ')')
-            }
             merged = merged.concat(submatrix);
         }
 

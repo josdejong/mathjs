@@ -200,7 +200,8 @@
             c == '(' || c == ')' ||
             c == '[' || c == ']' ||
             c == '\"' || c == '\n' ||
-            c == ';' || c == ':') {
+            c == ';' || c == ':' ||
+            c == '!' || c == '\'') {
             token_type = TOKENTYPE.DELIMITER;
             token += c;
             getChar();
@@ -291,7 +292,8 @@
             c == ',' ||
             c == ';' ||
             c == '\n' ||
-            c == '!';
+            c == '!' ||
+            c == '\'';
     }
 
     /**
@@ -797,11 +799,32 @@
      * @private
      */
     function parse_factorial (scope)  {
-        var node = parse_plot(scope);
+        var node = parse_transpose(scope);
 
         while (token == '!') {
             var name = token;
             var fn = factorial;
+            getToken();
+            var params = [node];
+
+            node = new Symbol(name, fn, params);
+        }
+
+        return node;
+    }
+
+    /**
+     * Transpose
+     * @param {Scope} scope
+     * @return {Node} node
+     * @private
+     */
+    function parse_transpose (scope)  {
+        var node = parse_plot(scope);
+
+        while (token == '\'') {
+            var name = token;
+            var fn = transpose;
             getToken();
             var params = [node];
 
@@ -1035,7 +1058,7 @@
             else {
                 // this is an empty matrix "[ ]"
                 getToken();
-                array = new MatrixNode([]);
+                array = new MatrixNode([[]]);
             }
 
             /* TODO: parse arguments
@@ -1182,7 +1205,6 @@
         return index - token.length + 1;
     }
 
-
     /**
      * Build up an error message
      * @param {String} message
@@ -1190,16 +1212,16 @@
      * @private
      */
     function createErrorMessage (message) {
-        var row = row();
-        var col = col();
-        if (row === undefined) {
-            if (col === undefined) {
+        var r = row();
+        var c = col();
+        if (r === undefined) {
+            if (c === undefined) {
                 return message;
             } else {
-                return message + ' (col ' + col + ')';
+                return message + ' (char ' + c + ')';
             }
         } else {
-            return message + ' (ln ' + row + ', col ' + col + ')';
+            return message + ' (line ' + r + ', char ' + c + ')';
         }
     }
 

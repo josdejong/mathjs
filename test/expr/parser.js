@@ -2,7 +2,6 @@
 
 var assert = require('assert');
 var math = require('../../math.js');
-
 var parser = math.parser();
 
 // test precedence
@@ -25,6 +24,14 @@ assert.equal(parser.eval('(-3)^2'), 9);
 
 assert.equal(parser.eval('2^3!'), 64);
 assert.equal(parser.eval('2^(3!)'), 64);
+
+assert.equal(parser.eval('-4!'), -24);
+assert.equal(parser.eval('3!+2'), 8);
+
+assert.deepEqual(parser.eval('[1,2;3,4]\' * 2').valueOf(), [[2,6],[4,8]]);
+assert.deepEqual(parser.eval('[1,2;3,4]\' * [5,6;7,8]').valueOf(), [[26,30],[38,44]]);
+assert.deepEqual(parser.eval('[1,2;3,4] * [5,6;7,8]\'').valueOf(), [[17,23],[39,53]]);
+assert.deepEqual(parser.eval('[1,2;3,4]\'+2').valueOf(), [[3,5],[4,6]]);
 
 // test function calls
 assert.equal(parser.eval('sqrt(4)'), 2);
@@ -53,6 +60,7 @@ assert.deepEqual(b.valueOf(), [[5,6],[1,1]]);
 b.set([2, [1, 2]], [[7, 8]]);
 assert.deepEqual(b.size(), [2,2]);
 assert.deepEqual(b.valueOf(), [[5,6],[7,8]]);
+assert.deepEqual(parser.eval('[ ]').valueOf(), [[]]);
 
 parser.eval('a=[1,2;3,4]');
 parser.eval('a(1,1) = 100');
@@ -74,6 +82,15 @@ assert.deepEqual(parser.eval('c=[a;b]').valueOf(), [[1,2],[3,4],[5,6],[7,8]]);
 assert.deepEqual(parser.eval('c=[a,b;b,a]').valueOf(), [[1,2,5,6],[3,4,7,8],[5,6,1,2],[7,8,3,4]]);
 assert.deepEqual(parser.eval('c=[[1,2]; [3,4]]').valueOf(), [[1,2],[3,4]]);
 assert.deepEqual(parser.eval('c=[1; [2;3]]').valueOf(), [[1],[2],[3]]);
+assert.deepEqual(parser.eval('[[],[]]').valueOf(), [[]]);
+assert.deepEqual(parser.eval('[[],[]]').size(), [0, 0]);
 assert.throws(function () {parser.eval('c=[a; [1,2,3] ]')});
+
+// test matrix transpose
+assert.deepEqual(parser.eval('[1,2,3;4,5,6]\'').valueOf(), [[1,4],[2,5],[3,6]]);
+assert.deepEqual(parser.eval('23\'').valueOf(), 23);
+assert.deepEqual(parser.eval('[1:4]').valueOf(), [[1,2,3,4]]);
+assert.deepEqual(parser.eval('[1:4]\'').valueOf(), [[1],[2],[3],[4]]);
+assert.deepEqual(parser.eval('size([1:4])').valueOf(), [1, 4]);
 
 // TODO: extensively test the Parser
