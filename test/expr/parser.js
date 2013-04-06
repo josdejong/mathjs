@@ -88,6 +88,7 @@ assert.throws(function () {parser.eval('c=[a; [1,2,3] ]')});
 
 // test matrix transpose
 assert.deepEqual(parser.eval('[1,2,3;4,5,6]\'').valueOf(), [[1,4],[2,5],[3,6]]);
+assert.ok(parser.eval('[1,2,3;4,5,6]\'') instanceof math.type.Matrix);
 assert.deepEqual(parser.eval('23\'').valueOf(), 23);
 assert.deepEqual(parser.eval('[1:4]').valueOf(), [[1,2,3,4]]);
 assert.deepEqual(parser.eval('[1:4]\'').valueOf(), [[1],[2],[3],[4]]);

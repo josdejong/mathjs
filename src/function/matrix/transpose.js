@@ -26,6 +26,7 @@ function transpose (x) {
             // two dimensional array
             var rows = size[1],  // index 1 is no error
                 cols = size[0],  // index 0 is no error
+                asMatrix = x instanceof Matrix,
                 array = x.valueOf(),
                 transposed = [],
                 transposedRow,
@@ -39,7 +40,7 @@ function transpose (x) {
             if (cols == 0) {
                 transposed[0] = [];
             }
-            return transposed;
+            return asMatrix ? new Matrix(transposed) : transposed;
             break;
 
         default:
