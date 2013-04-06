@@ -53,7 +53,7 @@ var util = (function () {
             return str;
         }
         else {
-            return format(array);
+            return math.format(array);
         }
     };
 

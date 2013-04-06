@@ -51,7 +51,6 @@ var e = [
 ];
 assert.deepEqual(math.size(d), [2,2,2]);
 assert.deepEqual(math.size(e), [2,2,2]);
-assert.deepEqual(math.size(f), [2,2,2]);
 var de = math.concat(d,e);
 assert.deepEqual(math.size(de), [2,2,4]);
 assert.deepEqual(de, [

@@ -121,7 +121,7 @@ var util = (function () {
             return str;
         }
         else {
-            return format(array);
+            return math.format(array);
         }
     };
 
@@ -7838,8 +7838,12 @@ math.expr.node.MatrixNode = MatrixNode;
      * @override
      */
     MatrixNode.prototype.eval = function() {
-        // recursively evaluate the nodes in the array
-        return new Matrix(evalArray(this.nodes));
+        // recursively evaluate the nodes in the array, and merge the result
+        var array = evalArray(this.nodes);
+        if (containsMatrix(array)) {
+            array = merge(array);
+        }
+        return new Matrix(array);
     };
 
     /**
@@ -7861,37 +7865,88 @@ math.expr.node.MatrixNode = MatrixNode;
     }
 
     /**
+     * Merge nested Matrices in an Array.
+     * @param {Array} array    Two-dimensional array containing Matrices
+     * @return {Array} merged  The merged array (two-dimensional)
+     */
+    function merge (array) {
+        var merged = [];
+        var rows = array.length;
+        for (var r = 0; r < rows; r++) {
+            var row = array[r];
+            var cols = row.length;
+            var submatrix = null;
+            for (var c = 0; c < cols; c++) {
+                var entry = math.clone(row[c]);
+                var size;
+                if (entry instanceof Matrix || entry instanceof Range) {
+                    size = entry.size();
+                    entry = entry.valueOf();
+                }
+                else {
+                    size = [1, 1];
+                    entry = [[entry]];
+                }
+
+                // check the height of this row
+                if (submatrix == null) {
+                    // first entry
+                    submatrix = entry;
+                }
+                else if (size[0] == submatrix.length) {
+                    // merge
+                    for (var i = 0; i < submatrix.length; i++) {
+                        submatrix[i] = submatrix[i].concat(entry[i]);
+                    }
+                }
+                else {
+                    // no good
+                    throw new Error('Dimension mismatch ' +
+                        '(' + size[0] + ' != ' + submatrix.length + ')');
+                }
+            }
+
+            // merge the submatrix
+            if (merged[0] && merged[0][0] &&
+                submatrix[0] && submatrix[0][0] &&
+                merged[0][0].length != submatrix[0][0].length) {
+                throw new Error('Dimension mismatch ' +
+                    '(' + merged[0][0].length + ' != ' + submatrix[0][0].length + ')')
+            }
+            merged = merged.concat(submatrix);
+        }
+
+        return merged;
+    }
+
+    /**
+     * Recursively test whether a multidimensional array contains at least one
+     * Matrix or Range.
+     * @param {Array} array
+     * @return {Boolean} containsMatrix
+     */
+    function containsMatrix(array) {
+        return array.some(function (child) {
+            if (child instanceof Matrix || child instanceof Range) {
+                return true;
+            }
+            else if (child instanceof Array) {
+                return containsMatrix(child);
+            }
+            else {
+                return false;
+            }
+        });
+    }
+
+    /**
      * Get string representation
      * @return {String} str
      * @override
      */
     MatrixNode.prototype.toString = function() {
-        return formatArray(this.nodes);
+        return util.formatArray(this.nodes);
     };
-
-    /**
-     * Recursively evaluate an array with nodes
-     * @param {Array} array
-     * @returns {String} str
-     */
-    function formatArray(array) {
-        if (array instanceof Array) {
-            var str = '[';
-            var len = array.length;
-            for (var i = 0; i < len; i++) {
-                if (i != 0) {
-                    str += ', ';
-                }
-                str += formatArray(array[i]);
-            }
-            str += ']';
-            return str;
-        }
-        else {
-            return array.toString();
-        }
-    }
-
 })();
 /**
  * @constructor Block
