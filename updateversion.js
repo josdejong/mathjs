@@ -62,10 +62,10 @@ function updateVersion(developmentSize, productionSize, version, callback) {
     fs.readFile(INDEX, function (err, data) {
         if (!err) {
             data = String(data);
-            data = data.replace(/<span id="development-size">(\w*)<\/span>/g,
+            data = data.replace(/<span id="development-size">([\w\s]*)<\/span>/g,
                 '<span id="development-size">' + developmentSize + '</span>');
 
-            data = data.replace(/<span id="production-size">(\w*)<\/span>/g,
+            data = data.replace(/<span id="production-size">([\w\s]*)<\/span>/g,
                 '<span id="production-size">' + productionSize + '</span>');
 
             data = data.replace(/<span class="version">([\w\.-]*)<\/span>/g,

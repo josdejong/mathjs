@@ -105,7 +105,7 @@ function CommandLineEditor (params) {
 
     // validate if math.js is loaded.
     var error;
-    if (typeof math === 'undefined' || !math.parser || !math.parser.Parser) {
+    if (typeof math === 'undefined' || !math.parser) {
         error = document.createElement('div');
         error.appendChild(document.createTextNode(
             'Cannot create parser, math.js not loaded.'));
@@ -133,7 +133,7 @@ function CommandLineEditor (params) {
         fullscreen = false,
         history = [],
         historyIndex = -1,
-        parser = new math.parser.Parser();
+        parser = math.parser();
 
     function resize() {
         // position the full screen button in the top right
