@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## (not yet released), version 0.5.0
+## 2013-04-06, version 0.5.0
 
 *Note: version 0.5 is incompatible with previous versions.*
 

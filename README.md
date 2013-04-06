@@ -470,19 +470,19 @@ To execute tests for the library, run:
 
 ## Roadmap
 
-- Version 0.1.0 (2013-02-18):
+- Version 0.1.0 (2013-02-18)
     - Implement all methods and constants available in the built-in Math library
     - Implement data types Complex and Unit
-- Version 0.2.0 (2013-02-25):
+- Version 0.2.0 (2013-02-25)
     - Implement Parser, Scope, Node tree
     - Implement more methods
-- Version 0.3.0 (2013-03-09):
+- Version 0.3.0 (2013-03-09)
     - Implement Workspace
     - Implement more methods
 - Build a website (2013-03-11)
-- Version 0.4.0 (2013-03-16):
+- Version 0.4.0 (2013-03-16)
     - Implement Arrays
-- Version 0.5.0
+- Version 0.5.0 (2013-04-06)
     - Implement Matrix and Range
 - Version 0.6.0
     - More on matrices
