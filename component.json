@@ -11,6 +11,7 @@
         ".gitignore",
         ".npmignore",
         ".travis.yml",
-        "Jakefile.js"
+        "Jakefile.js",
+        "package.json"
     ]
 }
