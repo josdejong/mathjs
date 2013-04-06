@@ -7,3 +7,4 @@ Jakefile.js
 .idea
 .npmignore
 .travis.yml
+component.json

@@ -1,0 +1,17 @@
+{
+    "name": "mathjs",
+    "version": "0.5.0",
+    "main": "math.js",
+    "ignore": [
+        "img",
+        "node_modules",
+        "src",
+        "test",
+        "tools",
+        ".gitignore",
+        ".npmignore",
+        ".travis.yml",
+        "Jakefile.js",
+        "package.json"
+    ]
+}
