@@ -10,22 +10,37 @@ body {
     color: #363636;
 }
 
-#logo {
-    width: 330px;
-    height: 100px;
-}
-
 #page {
     position: relative;
     width: 700px;
     min-height: 700px;
     margin: 20px auto 0 auto;
     background-color: white;
-    padding: 40px 50px 120px 50px;
+    padding: 40px 50px 40px 50px;
     border: 1px solid lightgray;
     border-radius: 3px;
 
     box-shadow: 2px 2px 10px rgba(128, 128, 128, 0.2);
+}
+
+#logo {
+    width: 330px;
+    height: 100px;
+}
+
+#likes {
+    margin: 60px 0 20px 0;
+    height: 26px;
+    overflow: visible;
+}
+
+div.like {
+    float: left;
+    margin-right: 16px;
+}
+
+div.like.facebook, div.like.linkedin {
+    margin-right: 50px;
 }
 
 #footer {
