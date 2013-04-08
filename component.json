@@ -4,6 +4,7 @@
     "main": "math.js",
     "ignore": [
         "img",
+        "misc",
         "node_modules",
         "src",
         "test",

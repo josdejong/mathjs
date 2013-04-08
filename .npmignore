@@ -1,10 +1,11 @@
 src
 test
 img
+misc
 node_modules
 tools
+component.json
 Jakefile.js
 .idea
 .npmignore
 .travis.yml
-component.json
