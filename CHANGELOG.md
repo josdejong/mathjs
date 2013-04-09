@@ -1,6 +1,10 @@
 # math.js changelog
 https://github.com/josdejong/mathjs
 
+## not yet relesed, version 0.6.0
+
+- Implemented methods gcd and lcm.
+
 
 ## 2013-04-06, version 0.5.0
 

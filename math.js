@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.5.0
- * @date    2013-04-06
+ * @version 0.6.0-SNAPSHOT
+ * @date    2013-04-09
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -3420,6 +3420,81 @@ floor.doc = {
 };
 
 /**
+ * Calculate the greatest common divisor for two or more values or arrays.
+ *     gcd(a, b)
+ *     gcd(a, b, c, ...)
+ * @param {... Number | Array | Matrix} args    two or more integer numbers
+ * @return {Number | Array | Matrix} greatest common divisor
+ */
+function gcd(args) {
+    var a = arguments[0],
+        b = arguments[1],
+        t;
+
+    if (arguments.length == 2) {
+        // two arguments
+        if (isNumber(a) && isNumber(b)) {
+            if (!isInteger(a) || !isInteger(b)) {
+                throw new Error('Parameters in function gcd must be integer numbers');
+            }
+
+            // http://en.wikipedia.org/wiki/Euclidean_algorithm
+            while (b != 0) {
+                t = b;
+                b = a % t;
+                a = t;
+            }
+            return Math.abs(a);
+        }
+
+        // evaluate gcd element wise
+        if (a instanceof Array || a instanceof Matrix ||
+            b instanceof Array || b instanceof Matrix) {
+            return util.map2(a, b, gcd);
+        }
+
+        if (a.valueOf() !== a || b.valueOf() !== b) {
+            // fallback on the objects primitive value
+            return gcd(a.valueOf(), b.valueOf());
+        }
+
+        throw newUnsupportedTypeError('gcd', a, b);
+    }
+
+    if (arguments.length > 2) {
+        // multiple arguments. Evaluate them iteratively
+        for (var i = 1; i < arguments.length; i++) {
+            a = gcd(a, arguments[i]);
+        }
+        return a;
+    }
+
+    // zero or one argument
+    throw new SyntaxError('Function gcd expects two or more arguments');
+}
+
+math.gcd = gcd;
+
+/**
+ * Function documentation
+ */
+gcd.doc = {
+    'name': 'gcd',
+    'category': 'Arithmetic',
+    'syntax': [
+        'gcd(a, b)',
+        'gcd(a, b, c, ...)'
+    ],
+    'description': 'Compute the greatest common divisor.',
+    'examples': [
+        'gcd(8, 12)',
+        'gcd(-4, 6)',
+        'gcd(25, 15, -10)'
+    ],
+    'seealso': [ 'lcm' ]
+};
+
+/**
  * Check if value x is larger y, x > y
  * In case of complex numbers, the absolute values of a and b are compared.
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
@@ -3579,6 +3654,84 @@ largereq.doc = {
     'seealso': [
         'equal', 'unequal', 'smallereq', 'smaller', 'largereq'
     ]
+};
+
+/**
+ * Calculate the least common multiple for two or more values or arrays.
+ *     lcm(a, b)
+ *     lcm(a, b, c, ...)
+ * lcm is defined as:
+ *     lcm(a, b) = abs(a * b) / gcd(a, b)
+ * @param {... Number | Array | Matrix} args    two or more integer numbers
+ * @return {Number | Array | Matrix} least common multiple
+ */
+function lcm(args) {
+    var a = arguments[0],
+        b = arguments[1],
+        t;
+
+    if (arguments.length == 2) {
+        // two arguments
+        if (isNumber(a) && isNumber(b)) {
+            if (!isInteger(a) || !isInteger(b)) {
+                throw new Error('Parameters in function lcm must be integer numbers');
+            }
+
+            // http://en.wikipedia.org/wiki/Euclidean_algorithm
+            // evaluate gcd here inline to reduce overhead
+            var prod = a * b;
+            while (b != 0) {
+                t = b;
+                b = a % t;
+                a = t;
+            }
+            return Math.abs(prod / a);
+        }
+
+        // evaluate lcm element wise
+        if (a instanceof Array || a instanceof Matrix ||
+            b instanceof Array || b instanceof Matrix) {
+            return util.map2(a, b, lcm);
+        }
+
+        if (a.valueOf() !== a || b.valueOf() !== b) {
+            // fallback on the objects primitive value
+            return lcm(a.valueOf(), b.valueOf());
+        }
+
+        throw newUnsupportedTypeError('lcm', a, b);
+    }
+
+    if (arguments.length > 2) {
+        // multiple arguments. Evaluate them iteratively
+        for (var i = 1; i < arguments.length; i++) {
+            a = lcm(a, arguments[i]);
+        }
+        return a;
+    }
+
+    // zero or one argument
+    throw new SyntaxError('Function lcm expects two or more arguments');
+}
+
+math.lcm = lcm;
+
+/**
+ * Function documentation
+ */
+lcm.doc = {
+    'name': 'lcm',
+    'category': 'Arithmetic',
+    'syntax': [
+        'lcm(x, y)'
+    ],
+    'description': 'Compute the least common multiple.',
+    'examples': [
+        'lcm(4, 6)',
+        'lcm(6, 21)',
+        'lcm(6, 21, 5)'
+    ],
+    'seealso': [ 'gcd' ]
 };
 
 /**

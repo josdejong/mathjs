@@ -58,8 +58,36 @@ assert.deepEqual(a5.valueOf(), [[7,10],[15,22]]);
 // TODO: test exp
 // TODO: test fix
 // TODO: test floor
+
+// test gcd
+assert.equal(math.gcd(12, 8), 4);
+assert.equal(math.gcd(8, 12), 4);
+assert.equal(math.gcd(8, -12), 4);
+assert.equal(math.gcd(-12, 8), 4);
+assert.equal(math.gcd(12, -8), 4);
+assert.equal(math.gcd(15, 3), 3);
+assert.equal(math.gcd(3, 0), 3);
+assert.equal(math.gcd(-3, 0), 3);
+assert.equal(math.gcd(0, 3), 3);
+assert.equal(math.gcd(0, -3), 3);
+assert.equal(math.gcd(0, 0), 0);
+assert.equal(math.gcd(25, 15, -10, 30), 5);
+assert.throws(function () {math.gcd(1); });
+assert.throws(function () {math.gcd(math.complex(1,3),2); });
+
 // TODO: test larger
 // TODO: test largereq
+
+// test lcm
+assert.equal(math.lcm(4, 6), 12);
+assert.equal(math.lcm(4, -6), 12);
+assert.equal(math.lcm(6, 4), 12);
+assert.equal(math.lcm(-6, 4), 12);
+assert.equal(math.lcm(-6, -4), 12);
+assert.equal(math.lcm(21, 6), 42);
+assert.equal(math.lcm(3, -4, 24), 24);
+
+
 // TODO: test log
 // TODO: test log10
 // TODO: test mod
