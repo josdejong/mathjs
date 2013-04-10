@@ -53,7 +53,47 @@ assert.deepEqual(a5.valueOf(), [[7,10],[15,22]]);
 
 // TODO: test ceil
 // TODO: test cube
-// TODO: test divide
+
+// test divide
+assert.equal(math.divide(4, 2), 2);
+assert.equal(math.divide(-4, 2), -2);
+assert.equal(math.divide(4, -2), -2);
+assert.equal(math.divide(-4, -2), 2);
+assert.equal(math.divide(4, 0), Infinity);
+assert.equal(math.divide(0, -5), 0);
+assert.ok(isNaN(math.divide(0, 0)));
+assert.throws(function () {math.divide(2,3,4); });
+assert.throws(function () {math.divide(2); });
+
+assert.deepEqual(math.divide(math.complex('2+3i'), 2), math.complex('1+1.5i'));
+assert.deepEqual(math.divide(math.complex('2+3i'), math.complex('4i')), math.complex('0.75 - 0.5i'));
+assert.deepEqual(math.divide(math.complex('2i'), math.complex('4i')), math.complex('0.5'));
+assert.deepEqual(math.divide(4, math.complex('1+2i')), math.complex('0.8 - 1.6i'));
+
+assert.equal(math.divide(math.unit('5 m'), 10).toString(), '500 mm');
+assert.throws(function () {math.divide(10, math.unit('5 m')).toString()});
+
+assert.deepEqual(math.divide(math.range(2,2,6), 2), [1,2,3]);
+a  = math.matrix([[1,2],[3,4]]);
+assert.deepEqual(math.divide(a, 2), math.matrix([[0.5,1],[1.5,2]]));
+assert.deepEqual(math.divide(a.valueOf(), 2), [[0.5,1],[1.5,2]]);
+assert.deepEqual(math.divide([], 2), []);
+assert.deepEqual(math.divide([], 2), []);
+assert.deepEqual(math.format(math.divide(1, [
+    [ 1, 4,  7],
+    [ 3, 0,  5],
+    [-1, 9, 11]
+])), math.format([
+    [ 5.625, -2.375, -2.5],
+    [ 4.75,  -2.25,  -2],
+    [-3.375,  1.625,  1.5]
+]));
+a = math.matrix([[1,2],[3,4]]);
+b = math.matrix([[5,6],[7,8]]);
+assert.deepEqual(math.divide(a, b), math.matrix([[3,-2], [2,-1]]));
+assert.throws(function () {math.divide(a, [[1]])});
+
+
 // TODO: test equal
 // TODO: test exp
 // TODO: test fix
@@ -139,6 +179,17 @@ assert.deepEqual(math.sqrt([[4,9],[16,25]]), [[2,3],[4,5]]);
 
 
 // TODO: test square
+
+
+// test subtract
+assert.deepEqual(math.subtract(4, 2), 2);
+assert.deepEqual(math.subtract(2, 4), -2);
+assert.deepEqual(math.subtract(3, 0), 3);
+assert.deepEqual(math.subtract(0, 3), -3);
+assert.deepEqual(math.subtract(0, 3), -3);
+assert.deepEqual(math.subtract(0, 3), -3);
 // TODO: test subtract
+
+
 // TODO: test unaryminus
 // TODO: test unequal

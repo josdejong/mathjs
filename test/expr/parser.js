@@ -94,4 +94,14 @@ assert.deepEqual(parser.eval('[1:4]').valueOf(), [[1,2,3,4]]);
 assert.deepEqual(parser.eval('[1:4]\'').valueOf(), [[1],[2],[3],[4]]);
 assert.deepEqual(parser.eval('size([1:4])').valueOf(), [1, 4]);
 
+// test unit
+assert.equal(parser.eval('5cm').toString(), '50 mm');
+assert.ok(parser.eval('5cm') instanceof math.type.Unit);
+//assert.equal(parser.eval('5.08 cm * 1000 in inch').toString(), '2000 inch'); // TODO: this gives an error
+assert.equal(parser.eval('(5.08 cm * 1000) in inch').toString(), '2000 inch');
+assert.equal(parser.eval('(5.08 cm * 1000) in mm').toString(), '50800 mm');
+assert.equal(parser.eval('ans in inch').toString(), '2000 inch');
+
+
+
 // TODO: extensively test the Parser

@@ -237,7 +237,7 @@
 
             // Check if token is a unit
             // Note: we do not check the upper case name, units are case sensitive!
-            if (Unit.isUnit(name)) {
+            if (Unit.isPlainUnit(name)) {
                 var unit = new Unit(null, name);
                 return put(name, unit);
             }

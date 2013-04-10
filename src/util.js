@@ -136,6 +136,17 @@ var util = (function () {
     };
 
     /**
+     * Check if a text ends with a certain string.
+     * @param {String} text
+     * @param {String} search
+     */
+    util.endsWith = function(text, search) {
+        var start = text.length - search.length;
+        var end = text.length;
+        return (text.substring(start, end) === search);
+    };
+
+    /**
      * Create a semi UUID
      * source: http://stackoverflow.com/a/105074/1262753
      * @return {String} uuid

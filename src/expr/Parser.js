@@ -608,6 +608,7 @@
         var node = parse_bitwise_conditions(scope);
 
         // TODO: precedence of And above Or?
+        // TODO: implement a method for unit to number conversion
         var operators = {
             'in' : 'in'
             /* TODO: implement conditions
@@ -1107,7 +1108,7 @@
                     return new Constant(value);
                 }
 
-                if (Unit.isUnit(token)) {
+                if (Unit.isPlainUnit(token)) {
                     value = new Unit(number, token);
                     getToken();
                     return new Constant(value);

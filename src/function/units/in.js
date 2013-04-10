@@ -9,22 +9,10 @@ function unit_in(x, unit) {
         throw newArgumentsError('in', arguments.length, 2);
     }
 
-    if (x instanceof Unit && unit instanceof Unit) {
-        if (!x.equalBase(unit)) {
-            throw new Error('Units do not match');
+    if (x instanceof Unit) {
+        if (unit instanceof Unit || isString(unit)) {
+            return x.in(unit);
         }
-        if (unit.hasValue) {
-            throw new Error('Cannot convert to a unit with a value');
-        }
-        if (!unit.hasUnit) {
-            throw new Error('Unit expected on the right hand side of function in');
-        }
-
-        var res = unit.clone();
-        res.value = x.value;
-        res.fixPrefix = true;
-
-        return res;
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
@@ -37,7 +25,7 @@ function unit_in(x, unit) {
         return math.in(x.valueOf());
     }
 
-    throw newUnsupportedTypeError('in', x);
+    throw newUnsupportedTypeError('in', x, unit);
 }
 
 math.in = unit_in;

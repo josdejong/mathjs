@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.6.0-SNAPSHOT
- * @date    2013-04-09
+ * @date    2013-04-10
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -201,6 +201,17 @@ var util = (function () {
             }
         }
         return array;
+    };
+
+    /**
+     * Check if a text ends with a certain string.
+     * @param {String} text
+     * @param {String} search
+     */
+    util.endsWith = function(text, search) {
+        var start = text.length - search.length;
+        var end = text.length;
+        return (text.substring(start, end) === search);
     };
 
     /**
@@ -2105,48 +2116,31 @@ function Unit(value, unit) {
         throw new Error('Second parameter in Unit constructor must be a string');
     }
 
-    this.value = 1;
-    this.unit = Unit.UNIT_NONE;
-    this.prefix = Unit.PREFIX_NONE;  // link to a list with supported prefixes
-
-    this.hasUnit = false;
-    this.hasValue = false;
-    this.fixPrefix = false;  // is set true by the method "x In unit"s
-
     if (unit != null) {
         // find the unit and prefix from the string
-        var UNITS = Unit.UNITS;
-        var found = false;
-        for (var i = 0, iMax = UNITS.length; i < iMax; i++) {
-            var UNIT = UNITS[i];
-
-            if (Unit.endsWith(unit, UNIT.name) ) {
-                var prefixLen = (unit.length - UNIT.name.length);
-                var prefixName = unit.substring(0, prefixLen);
-                var prefix = UNIT.prefixes[prefixName];
-                if (prefix !== undefined) {
-                    // store unit, prefix, and value
-                    this.unit = UNIT;
-                    this.prefix = prefix;
-                    this.hasUnit = true;
-
-                    found = true;
-                    break;
-                }
-            }
-        }
-
-        if (!found) {
+        var res = _findUnit(unit);
+        if (!res) {
             throw new Error('String "' + unit + '" is no unit');
         }
+        this.unit = res.unit;
+        this.prefix = res.prefix;
+        this.hasUnit = true;
+    }
+    else {
+        this.unit = Unit.UNIT_NONE;
+        this.prefix = Unit.PREFIX_NONE;  // link to a list with supported prefixes
+        this.hasUnit = false;
     }
 
     if (value != null) {
         this.value = this._normalize(value);
         this.hasValue = true;
+        this.fixPrefix = false;  // is set true by the methods Unit.in and math.in
     }
     else {
         this.value = this._normalize(1);
+        this.hasValue = false;
+        this.fixPrefix = true;
     }
 }
 
@@ -2293,7 +2287,7 @@ math.type.Unit = Unit;
 })();
 
 /**
- * Test whether value is a Unit
+ * Test whether value is of type Unit
  * @param {*} value
  * @return {Boolean} isUnit
  */
@@ -2318,18 +2312,6 @@ Unit.prototype.clone = function () {
 };
 
 /**
- * check if a text ends with a certain string
- * @param {String} text
- * @param {String} search
- */
-// TODO: put the endsWith method in another
-Unit.endsWith = function(text, search) {
-    var start = text.length - search.length;
-    var end = text.length;
-    return (text.substring(start, end) === search);
-};
-
-/**
  * Normalize a value, based on its currently set unit
  * @param {Number} value
  * @return {Number} normalized value
@@ -2343,12 +2325,12 @@ Unit.prototype._normalize = function(value) {
 /**
  * Unnormalize a value, based on its currently set unit
  * @param {Number} value
- * @param {Number} prefixValue    Optional prefixvalue to be used
+ * @param {Number} [prefixValue]    Optional prefix value to be used
  * @return {Number} unnormalized value
  * @private
  */
 Unit.prototype._unnormalize = function (value, prefixValue) {
-    if (prefixValue === undefined) {
+    if (prefixValue == undefined) {
         return value / this.unit.value / this.prefix.value -
             this.unit.offset;
     }
@@ -2359,31 +2341,42 @@ Unit.prototype._unnormalize = function (value, prefixValue) {
 };
 
 /**
- * Test if the given expression is a unit
- * @param {String} unit   A unit with prefix, like "cm"
- * @return {Boolean}      true if the given string is a unit
+ * Find a unit from a string
+ * @param {String} str              A string like 'cm' or 'inch'
+ * @returns {Object | null} result  When found, an object with fields unit and
+ *                                  prefix is returned. Else, null is returned.
+ * @private
  */
-Unit.isUnit = function (unit) {
+function _findUnit(str) {
     var UNITS = Unit.UNITS;
-    var num = UNITS.length;
-    for (var i = 0; i < num; i++) {
+    for (var i = 0, iMax = UNITS.length; i < iMax; i++) {
         var UNIT = UNITS[i];
 
-        if (Unit.endsWith(unit, UNIT.name) ) {
-            var prefixLen = (unit.length - UNIT.name.length);
-            if (prefixLen == 0) {
-                return true;
-            }
-
-            var prefixName = unit.substring(0, prefixLen);
+        if (util.endsWith(str, UNIT.name) ) {
+            var prefixLen = (str.length - UNIT.name.length);
+            var prefixName = str.substring(0, prefixLen);
             var prefix = UNIT.prefixes[prefixName];
             if (prefix !== undefined) {
-                return true;
+                // store unit, prefix, and value
+                return {
+                    unit: UNIT,
+                    prefix: prefix
+                };
             }
         }
     }
 
-    return false;
+    return null;
+}
+
+/**
+ * Test if the given expression is a unit.
+ * The unit can have a prefix but cannot have a value.
+ * @param {String} unit   A plain unit without value. Can have prefix, like "cm"
+ * @return {Boolean}      true if the given string is a unit
+ */
+Unit.isPlainUnit = function (unit) {
+    return (_findUnit(unit) != null);
 };
 
 /**
@@ -2416,37 +2409,62 @@ Unit.prototype.equals = function(other) {
 };
 
 /**
+ * Create a clone of this unit with a representation
+ * @param {String | Unit} plainUnit   A plain unit, without value. Can have prefix, like "cm"
+ * @returns {Unit} unit having fixed, specified unit
+ */
+Unit.prototype.in = function (plainUnit) {
+    var other;
+    if (isString(plainUnit)) {
+        other = new Unit(null, plainUnit);
+
+        if (!this.equalBase(other)) {
+            throw new Error('Units do not match');
+        }
+
+        other.value = this.value;
+        return other;
+    }
+    else if (plainUnit instanceof Unit) {
+        if (!this.equalBase(plainUnit)) {
+            throw new Error('Units do not match');
+        }
+        if (plainUnit.hasValue) {
+            throw new Error('Cannot convert to a unit with a value');
+        }
+        if (!plainUnit.hasUnit) {
+            throw new Error('Unit expected on the right hand side of function in');
+        }
+
+        other = plainUnit.clone();
+        other.value = this.value;
+        other.fixPrefix = true;
+        return other;
+    }
+    else {
+        throw new Error('String or Unit expected as parameter');
+    }
+};
+
+/**
+ * Return the value of the unit when represented with given plain unit
+ * @param {String | Unit} plainUnit    For example 'cm' or 'inch'
+ * @return {Number} value
+ */
+Unit.prototype.as = function (plainUnit) {
+    var other = this.in(plainUnit);
+    var prefix = this.fixPrefix ? other._bestPrefix() : other.prefix;
+    return other._unnormalize(other.value, prefix.value);
+};
+
+/**
  * Get string representation
  * @return {String}
  */
 Unit.prototype.toString = function() {
     var value;
     if (!this.fixPrefix) {
-        // find the best prefix value (resulting in the value of which
-        // the absolute value of the log10 is closest to zero,
-        // though with a little offset of 1.2 for nicer values: you get a
-        // sequence 1mm 100mm 500mm 0.6m 1m 10m 100m 500m 0.6km 1km ...
-        var absValue = Math.abs(this.value / this.unit.value);
-        var bestPrefix = Unit.PREFIX_NONE;
-        var bestDiff = Math.abs(
-            Math.log(absValue / bestPrefix.value) / Math.LN10 - 1.2);
-
-        var prefixes = this.unit.prefixes;
-        for (var p in prefixes) {
-            if (prefixes.hasOwnProperty(p)) {
-                var prefix = prefixes[p];
-                if (prefix.scientific) {
-                    var diff = Math.abs(
-                        Math.log(absValue / prefix.value) / Math.LN10 - 1.2);
-
-                    if (diff < bestDiff) {
-                        bestPrefix = prefix;
-                        bestDiff = diff;
-                    }
-                }
-            }
-        }
-
+        var bestPrefix = this._bestPrefix();
         value = this._unnormalize(this.value, bestPrefix.value);
         return util.formatNumber(value) + ' ' + bestPrefix.name + this.unit.name;
     }
@@ -2454,6 +2472,40 @@ Unit.prototype.toString = function() {
         value = this._unnormalize(this.value);
         return util.formatNumber(value) + ' ' + this.prefix.name + this.unit.name;
     }
+};
+
+/**
+ * Calculate the best prefix using current value.
+ * @returns {Object} prefix
+ * @private
+ */
+Unit.prototype._bestPrefix = function () {
+    // find the best prefix value (resulting in the value of which
+    // the absolute value of the log10 is closest to zero,
+    // though with a little offset of 1.2 for nicer values: you get a
+    // sequence 1mm 100mm 500mm 0.6m 1m 10m 100m 500m 0.6km 1km ...
+    var absValue = Math.abs(this.value / this.unit.value);
+    var bestPrefix = Unit.PREFIX_NONE;
+    var bestDiff = Math.abs(
+        Math.log(absValue / bestPrefix.value) / Math.LN10 - 1.2);
+
+    var prefixes = this.unit.prefixes;
+    for (var p in prefixes) {
+        if (prefixes.hasOwnProperty(p)) {
+            var prefix = prefixes[p];
+            if (prefix.scientific) {
+                var diff = Math.abs(
+                    Math.log(absValue / prefix.value) / Math.LN10 - 1.2);
+
+                if (diff < bestDiff) {
+                    bestPrefix = prefix;
+                    bestDiff = diff;
+                }
+            }
+        }
+    }
+
+    return bestPrefix;
 };
 
 Unit.PREFIXES = {
@@ -5366,7 +5418,7 @@ function unit(args) {
                 throw new TypeError('A string or a number and string expected in function unit');
             }
 
-            if (Unit.isUnit(str)) {
+            if (Unit.isPlainUnit(str)) {
                 return new Unit(null, str); // a pure unit
             }
 
@@ -7404,22 +7456,10 @@ function unit_in(x, unit) {
         throw newArgumentsError('in', arguments.length, 2);
     }
 
-    if (x instanceof Unit && unit instanceof Unit) {
-        if (!x.equalBase(unit)) {
-            throw new Error('Units do not match');
+    if (x instanceof Unit) {
+        if (unit instanceof Unit || isString(unit)) {
+            return x.in(unit);
         }
-        if (unit.hasValue) {
-            throw new Error('Cannot convert to a unit with a value');
-        }
-        if (!unit.hasUnit) {
-            throw new Error('Unit expected on the right hand side of function in');
-        }
-
-        var res = unit.clone();
-        res.value = x.value;
-        res.fixPrefix = true;
-
-        return res;
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
@@ -7432,7 +7472,7 @@ function unit_in(x, unit) {
         return math.in(x.valueOf());
     }
 
-    throw newUnsupportedTypeError('in', x);
+    throw newUnsupportedTypeError('in', x, unit);
 }
 
 math.in = unit_in;
@@ -8643,7 +8683,7 @@ FunctionAssignment.prototype.toString = function() {
 
             // Check if token is a unit
             // Note: we do not check the upper case name, units are case sensitive!
-            if (Unit.isUnit(name)) {
+            if (Unit.isPlainUnit(name)) {
                 var unit = new Unit(null, name);
                 return put(name, unit);
             }
@@ -9381,6 +9421,7 @@ FunctionAssignment.prototype.toString = function() {
         var node = parse_bitwise_conditions(scope);
 
         // TODO: precedence of And above Or?
+        // TODO: implement a method for unit to number conversion
         var operators = {
             'in' : 'in'
             /* TODO: implement conditions
@@ -9880,7 +9921,7 @@ FunctionAssignment.prototype.toString = function() {
                     return new Constant(value);
                 }
 
-                if (Unit.isUnit(token)) {
+                if (Unit.isPlainUnit(token)) {
                     value = new Unit(number, token);
                     getToken();
                     return new Constant(value);

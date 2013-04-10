@@ -23,7 +23,7 @@ function unit(args) {
                 throw new TypeError('A string or a number and string expected in function unit');
             }
 
-            if (Unit.isUnit(str)) {
+            if (Unit.isPlainUnit(str)) {
                 return new Unit(null, str); // a pure unit
             }
 
