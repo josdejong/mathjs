@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet relesed, version 0.6.0
+## not yet released, version 0.6.0
 
 - Implemented methods gcd and lcm.
 - Implemented method `Unit.in(unit)`, which creates a clone of the unit with a

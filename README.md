@@ -206,10 +206,13 @@ math.max('A', 'D', 'C');        // 'D'
 
 ### Complex
 
-Math.js supports complex numbers.
+Math.js supports complex numbers. Most methods can be executed with complex
+numbers as arguments.
 
 ```js
 var a = math.complex(2, 3);     // 2 + 3i
+a.re;                           // 2
+a.im;                           // 3
 var b = math.complex('4 - 2i'); // 4 - 2i
 math.add(a, b);                 // 6 + i
 math.sqrt(-4);                  // 2i
@@ -217,17 +220,22 @@ math.sqrt(-4);                  // 2i
 
 ### Unit
 
-Math.js supports units.
+Math.js supports units. Basic operations `add`, `subtract`, `multiply`,
+and `divide` can be performed on units.
+Trigonometric methods like `sin` support units with an angle as argument.
+Units can be converted from one to another using method `in`,
+an the value of a unit can be retrieved using `toNumber`.
 
 ```js
 var a = math.unit(55, 'cm');    // 550 mm
 var b = math.unit('0.1m');      // 100 mm
 math.add(a, b);                 // 0.65 m
-b.in('cm');                     // 10 cm
+b.in('cm');                     // 10 cm  Alternatively: math.in(b, 'cm')
 b.toNumber('cm');               // 10
 
 var parser = math.parser();
 parser.eval('2 inch in cm');    // 5.08 cm
+parser.eval('cos(45 deg)');     // 0.7071067811865476
 ```
 
 ### Array and Matrix
