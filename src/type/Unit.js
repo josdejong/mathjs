@@ -361,7 +361,7 @@ Unit.prototype.in = function (plainUnit) {
  * @param {String | Unit} plainUnit    For example 'cm' or 'inch'
  * @return {Number} value
  */
-Unit.prototype.as = function (plainUnit) {
+Unit.prototype.toNumber = function (plainUnit) {
     var other = this.in(plainUnit);
     var prefix = this.fixPrefix ? other._bestPrefix() : other.prefix;
     return other._unnormalize(other.value, prefix.value);

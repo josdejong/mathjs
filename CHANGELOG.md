@@ -1,9 +1,20 @@
 # math.js changelog
 https://github.com/josdejong/mathjs
 
+
 ## not yet relesed, version 0.6.0
 
 - Implemented methods gcd and lcm.
+- Implemented method `Unit.in(unit)`, which creates a clone of the unit with a
+  fixed representation. For example `math.unit('5.08 cm').in('inch')` will
+  return a unit which string representation always is in inch, thus `2 inch`.
+  `Unit.in(unit)` is the same as method `math.in(x, unit)`.
+- Implemented `Unit.toNumber(unit)`, which returns the value of the unit when
+  represented with given unit. For example
+  `math.unit('5.08 cm').toNumber('inch')` returns the number `2`, as the
+  representation of the unit in inches has 2 as value.
+- Improved: method `math.in(x, unit)` now supports a string as second parameter,
+  for example `math.in(math.unit('5.08 cm'), 'inch')`.
 
 
 ## 2013-04-06, version 0.5.0
@@ -13,18 +24,18 @@ https://github.com/josdejong/mathjs
 - Implemented data types Matrix and Range.
 - Implemented matrix methods clone, concat, det, diag, eye, inv, ones, size,
   squeeze, transpose, zeros.
-- Implemented range operator (:), and transpose operator (') in parser.s
+- Implemented range operator `:`, and transpose operator `'` in parser.
 - Changed: created construction methods for easy object creation for all data
   types and for the parser. For example, a complex value is now created
-  with "math.complex(2, 3)" instead of "new math.Complex(2, 3)", and a parser
-  is now created with "math.parser()" instead of "new math.parser.Parser()".
+  with `math.complex(2, 3)` instead of `new math.Complex(2, 3)`, and a parser
+  is now created with `math.parser()` instead of `new math.parser.Parser()`.
 - Changed: moved all data types under the namespace math.type, and moved the
   Parser, Workspace, etc. under the namespace math.expr.
 - Changed: changed operator precedence of the power operator:
   - it is now right associative instead of left associative like most scripting
-    languages. So 2^3^4 is now calculated as 2^(3^4).
-  - it has now higher precedence than unary minus most languages, thus -3^2 is
-    now calculated as -(3^2).
+    languages. So `2^3^4` is now calculated as `2^(3^4)`.
+  - it has now higher precedence than unary minus most languages, thus `-3^2` is
+    now calculated as `-(3^2)`.
 - Changed: renamed the parsers method 'put' into 'set'.
 - Fixed: method 'in' did not check for units to have the same base.
 

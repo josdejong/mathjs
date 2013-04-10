@@ -32,11 +32,11 @@ var u = math.unit(5000, 'cm');
 assert.equal(u.toString(), '50 m');
 var u2 = u.in('mm');
 assert.equal(u2.toString(), '50000 mm');
-assert.strictEqual(u.as('mm'), 50000);
+assert.strictEqual(u.toNumber('mm'), 50000);
 assert.throws( function () {u.in('5mm'); });
 var u3 = math.unit('5.08 cm').in('inch');
 assert.equal(u3.toString(), '2 inch');
-assert.strictEqual(math.format(math.unit('5.08 cm').as('inch')), '2');
+assert.strictEqual(math.format(math.unit('5.08 cm').toNumber('inch')), '2');
 
 // test calculation of best prefix
 assert.equal(math.unit('0.001m').toString(), '1 mm');
