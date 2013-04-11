@@ -1,5 +1,5 @@
 /**
- * @constructor mathnotepad.tree.Assignment
+ * @constructor Assignment
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
  * @param {Node} expr                   The expression defining the symbol

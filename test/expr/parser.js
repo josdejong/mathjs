@@ -1,8 +1,8 @@
 // test parser
 
-var assert = require('assert');
-var math = require('../../math.js');
-var parser = math.parser();
+var assert = require('assert'),
+    math = require('../../math.js'),
+    parser = math.parser();
 
 // test precedence
 assert.equal(parser.eval('4-2+3'), 5);
@@ -102,6 +102,20 @@ assert.equal(parser.eval('(5.08 cm * 1000) in inch').toString(), '2000 inch');
 assert.equal(parser.eval('(5.08 cm * 1000) in mm').toString(), '50800 mm');
 assert.equal(parser.eval('ans in inch').toString(), '2000 inch');
 
+parser = math.parser();
+assert.equal(parser.eval('a = 3'), 3);
+assert.equal(parser.eval('function f(x) = a * x'), 'f(x)');
+assert.equal(parser.eval('f(2)'), 6);
+assert.equal(parser.eval('a = 5'), 5);
+assert.equal(parser.eval('f(2)'), 10);
+assert.equal(parser.eval('function g(x) = x^q'), 'g(x)');
+assert.throws(function () {
+    parser.eval('g(3)')
+}, function (err) {
+    return (err instanceof Error) && (err.toString() == 'Error: Undefined symbol q');
+});
+assert.equal(parser.eval('q = 4/2'), 2);
+assert.equal(parser.eval('g(3)'), 9);
 
 
 // TODO: extensively test the Parser

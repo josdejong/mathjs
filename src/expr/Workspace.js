@@ -230,14 +230,14 @@
     };
 
     /**
-     * @constructor mathnotepad.Workspace.Node
+     * @constructor Workspace.Node
      * @param {Object} params Object containing parameters:
      *                        {Number} id
      *                        {String} expression   An expression, for example "2+3"
-     *                        {mathnotepad.Parser} parser
-     *                        {mathnotepad.Scope} scope
-     *                        {mathnotepad.Workspace.Node} nextNode
-     *                        {mathnotepad.Workspace.Node} previousNode
+     *                        {Parser} parser
+     *                        {Scope} scope
+     *                        {Workspace.Node} nextNode
+     *                        {Workspace.Node} previousNode
      */
     Workspace.Node = function (params) {
         this.id = params.id;

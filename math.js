@@ -6354,7 +6354,7 @@ Symbol.prototype.toString = function() {
 
     /* TODO: determine if the function is an operator
     // operator. format the operation like "(2 + 3)"
-    if (this.fn && (this.fn instanceof mathnotepad.fn.Operator)) {
+    if (this.fn && (this.fn instanceof math.fn.Operator)) {
         if (this.params && this.params.length == 2) {
             return '(' +
                 this.params[0].toString() + ' ' +
@@ -6603,7 +6603,7 @@ Block.prototype.toString = function() {
 };
 
 /**
- * @constructor mathnotepad.tree.Assignment
+ * @constructor Assignment
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
  * @param {Node} expr                   The expression defining the symbol
@@ -7010,6 +7010,19 @@ FunctionAssignment.prototype.toString = function() {
     };
 
     /**
+     * Create a constant
+     * @param {String} name
+     * @param {*} value
+     * @return {function} symbol
+     */
+    Scope.prototype.createConstant = function (name, value) {
+        var symbol = this.newSymbol(name, value);
+        this.symbols[name] = symbol;
+        this.defs[name] = symbol;
+        return symbol;
+    };
+
+    /**
      * get the link to a symbol definition or update.
      * If the symbol is not found in this scope, it will be looked up in its parent
      * scope.
@@ -7034,48 +7047,20 @@ FunctionAssignment.prototype.toString = function() {
             return this.parentScope.findDef(name);
         }
         else {
-            // this is the root scope (has no parent)
-
-            var newSymbol = this.newSymbol,
-                symbols = this.symbols,
-                defs = this.defs;
-
-            /**
-             * Store a symbol in the root scope
-             * @param {String} name
-             * @param {*} value
-             * @return {function} symbol
-             */
-            var put = function (name, value) {
-                var symbol = newSymbol(name, value);
-                symbols[name] = symbol;
-                defs[name] = symbol;
-                return symbol;
-            };
-
-            // check constant (and load the constant)
-            if (name == 'pi') {
-                return put(name, math.PI);
-            }
-            if (name == 'e') {
-                return put(name, math.E);
-            }
-            if (name == 'i') {
-                return put(name, new Complex(0, 1));
-            }
+            // this is the root scope (has no parent),
+            // try to load constants, functions, or unit from the library
 
             // check function (and load the function), for example "sin" or "sqrt"
             // search in the mathnotepad.math namespace for this symbol
             var fn = math[name];
             if (fn) {
-                return put(name, fn);
+                return this.createConstant(name, fn);
             }
 
             // Check if token is a unit
-            // Note: we do not check the upper case name, units are case sensitive!
             if (Unit.isPlainUnit(name)) {
                 var unit = new Unit(null, name);
-                return put(name, unit);
+                return this.createConstant(name, unit);
             }
         }
 
@@ -7267,7 +7252,6 @@ FunctionAssignment.prototype.toString = function() {
         expr = expression || '';
 
         if (!scope) {
-            this._newScope();
             scope = this.scope;
         }
 
@@ -7293,7 +7277,6 @@ FunctionAssignment.prototype.toString = function() {
      * @return {* | undefined} value
      */
     math.expr.Parser.prototype.get = function (name) {
-        this._newScope();
         var symbol = this.scope.findDef(name);
         if (symbol) {
             return symbol.value;
@@ -7308,18 +7291,6 @@ FunctionAssignment.prototype.toString = function() {
      */
     math.expr.Parser.prototype.set = function (name, value) {
         this.scope.createDef(name, value);
-    };
-
-    /**
-     * Create a new scope having the current scope as parent scope, to make current
-     * scope immutable
-     * @private
-     */
-    math.expr.Parser.prototype._newScope = function () {
-        this.scope = new math.expr.Scope(this.scope);
-
-        // TODO: smartly cleanup scopes which are not relevant anymore
-
     };
 
     /**
@@ -8693,14 +8664,14 @@ FunctionAssignment.prototype.toString = function() {
     };
 
     /**
-     * @constructor mathnotepad.Workspace.Node
+     * @constructor Workspace.Node
      * @param {Object} params Object containing parameters:
      *                        {Number} id
      *                        {String} expression   An expression, for example "2+3"
-     *                        {mathnotepad.Parser} parser
-     *                        {mathnotepad.Scope} scope
-     *                        {mathnotepad.Workspace.Node} nextNode
-     *                        {mathnotepad.Workspace.Node} previousNode
+     *                        {Parser} parser
+     *                        {Scope} scope
+     *                        {Workspace.Node} nextNode
+     *                        {Workspace.Node} previousNode
      */
     Workspace.Node = function (params) {
         this.id = params.id;

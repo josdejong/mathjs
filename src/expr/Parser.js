@@ -64,7 +64,6 @@
         expr = expression || '';
 
         if (!scope) {
-            this._newScope();
             scope = this.scope;
         }
 
@@ -90,7 +89,6 @@
      * @return {* | undefined} value
      */
     math.expr.Parser.prototype.get = function (name) {
-        this._newScope();
         var symbol = this.scope.findDef(name);
         if (symbol) {
             return symbol.value;
@@ -105,18 +103,6 @@
      */
     math.expr.Parser.prototype.set = function (name, value) {
         this.scope.createDef(name, value);
-    };
-
-    /**
-     * Create a new scope having the current scope as parent scope, to make current
-     * scope immutable
-     * @private
-     */
-    math.expr.Parser.prototype._newScope = function () {
-        this.scope = new math.expr.Scope(this.scope);
-
-        // TODO: smartly cleanup scopes which are not relevant anymore
-
     };
 
     /**

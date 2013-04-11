@@ -57,7 +57,7 @@ Symbol.prototype.toString = function() {
 
     /* TODO: determine if the function is an operator
     // operator. format the operation like "(2 + 3)"
-    if (this.fn && (this.fn instanceof mathnotepad.fn.Operator)) {
+    if (this.fn && (this.fn instanceof math.fn.Operator)) {
         if (this.params && this.params.length == 2) {
             return '(' +
                 this.params[0].toString() + ' ' +

@@ -174,6 +174,19 @@
     };
 
     /**
+     * Create a constant
+     * @param {String} name
+     * @param {*} value
+     * @return {function} symbol
+     */
+    Scope.prototype.createConstant = function (name, value) {
+        var symbol = this.newSymbol(name, value);
+        this.symbols[name] = symbol;
+        this.defs[name] = symbol;
+        return symbol;
+    };
+
+    /**
      * get the link to a symbol definition or update.
      * If the symbol is not found in this scope, it will be looked up in its parent
      * scope.
@@ -198,48 +211,20 @@
             return this.parentScope.findDef(name);
         }
         else {
-            // this is the root scope (has no parent)
-
-            var newSymbol = this.newSymbol,
-                symbols = this.symbols,
-                defs = this.defs;
-
-            /**
-             * Store a symbol in the root scope
-             * @param {String} name
-             * @param {*} value
-             * @return {function} symbol
-             */
-            var put = function (name, value) {
-                var symbol = newSymbol(name, value);
-                symbols[name] = symbol;
-                defs[name] = symbol;
-                return symbol;
-            };
-
-            // check constant (and load the constant)
-            if (name == 'pi') {
-                return put(name, math.PI);
-            }
-            if (name == 'e') {
-                return put(name, math.E);
-            }
-            if (name == 'i') {
-                return put(name, new Complex(0, 1));
-            }
+            // this is the root scope (has no parent),
+            // try to load constants, functions, or unit from the library
 
             // check function (and load the function), for example "sin" or "sqrt"
             // search in the mathnotepad.math namespace for this symbol
             var fn = math[name];
             if (fn) {
-                return put(name, fn);
+                return this.createConstant(name, fn);
             }
 
             // Check if token is a unit
-            // Note: we do not check the upper case name, units are case sensitive!
             if (Unit.isPlainUnit(name)) {
                 var unit = new Unit(null, name);
-                return put(name, unit);
+                return this.createConstant(name, unit);
             }
         }
 
