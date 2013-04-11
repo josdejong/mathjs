@@ -1,46 +1,45 @@
-(function () {
-    /**
-     * Scope
-     * A scope stores functions.
-     *
-     * @constructor mathnotepad.Scope
-     * @param {Scope} [parentScope]
-     */
-    function Scope(parentScope) {
-        this.parentScope = parentScope;
-        this.nestedScopes = undefined;
 
-        this.symbols = {}; // the actual symbols
+/**
+ * Scope
+ * A scope stores functions.
+ *
+ * @constructor mathnotepad.Scope
+ * @param {Scope} [parentScope]
+ */
+math.expr.Scope = function Scope(parentScope) {
+    this.parentScope = parentScope;
+    this.nestedScopes = undefined;
 
-        // the following objects are just used to test existence.
-        this.defs = {};    // definitions by name (for example "a = [1, 2; 3, 4]")
-        this.updates = {}; // updates by name     (for example "a(2, 1) = 5.2")
-        this.links = {};   // links by name       (for example "2 * a")
-    }
+    this.symbols = {}; // the actual symbols
 
-    math.expr.Scope = Scope;
+    // the following objects are just used to test existence.
+    this.defs = {};    // definitions by name (for example "a = [1, 2; 3, 4]")
+    this.updates = {}; // updates by name     (for example "a(2, 1) = 5.2")
+    this.links = {};   // links by name       (for example "2 * a")
+};
 
-    // TODO: rethink the whole scoping solution again. Try to simplify
+// TODO: rethink the whole scoping solution again. Try to simplify
 
+math.expr.Scope.prototype = {
     /**
      * Create a nested scope
      * The variables in a nested scope are not accessible from the parent scope
-     * @return {Scope} nestedScope
+     * @return {math.expr.Scope} nestedScope
      */
-    Scope.prototype.createNestedScope = function () {
-        var nestedScope = new Scope(this);
+    createNestedScope: function () {
+        var nestedScope = new math.expr.Scope(this);
         if (!this.nestedScopes) {
             this.nestedScopes = [];
         }
         this.nestedScopes.push(nestedScope);
         return nestedScope;
-    };
+    },
 
     /**
      * Clear all symbols in this scope and its nested scopes
      * (parent scope will not be cleared)
      */
-    Scope.prototype.clear = function () {
+    clear: function () {
         this.symbols = {};
         this.defs = {};
         this.links = {};
@@ -52,7 +51,7 @@
                 nestedScopes[i].clear();
             }
         }
-    };
+    },
 
     /**
      * create a symbol
@@ -60,7 +59,7 @@
      * @return {function} symbol
      * @private
      */
-    Scope.prototype.createSymbol = function (name) {
+    createSymbol: function (name) {
         var symbol = this.symbols[name];
         if (!symbol) {
             // get a link to the last definition
@@ -72,7 +71,7 @@
 
         }
         return symbol;
-    };
+    },
 
     /**
      * Create a new symbol
@@ -81,7 +80,7 @@
      * @return {function} symbol
      * @private
      */
-    Scope.prototype.newSymbol = function (name, value) {
+    newSymbol: function (name, value) {
         // create a new symbol
         var scope = this;
         var symbol = function () {
@@ -123,21 +122,21 @@
         };
 
         return symbol;
-    };
+    },
 
     /**
      * create a link to a value.
      * @param {String} name
      * @return {function} symbol
      */
-    Scope.prototype.createLink = function (name) {
+    createLink: function (name) {
         var symbol = this.links[name];
         if (!symbol) {
             symbol = this.createSymbol(name);
             this.links[name] = symbol;
         }
         return symbol;
-    };
+    },
 
     /**
      * Create a variable definition
@@ -146,7 +145,7 @@
      * @param {*} [value]
      * @return {function} symbol
      */
-    Scope.prototype.createDef = function (name, value) {
+    createDef: function (name, value) {
         var symbol = this.defs[name];
         if (!symbol) {
             symbol = this.createSymbol(name);
@@ -156,7 +155,7 @@
             symbol.value = value;
         }
         return symbol;
-    };
+    },
 
     /**
      * Create a variable update definition
@@ -164,27 +163,28 @@
      * @param {String} name
      * @return {function} symbol
      */
-    Scope.prototype.createUpdate = function (name) {
+    createUpdate: function (name) {
         var symbol = this.updates[name];
         if (!symbol) {
             symbol = this.createLink(name);
             this.updates[name] = symbol;
         }
         return symbol;
-    };
+    },
 
     /**
      * Create a constant
      * @param {String} name
      * @param {*} value
      * @return {function} symbol
+     * @private
      */
-    Scope.prototype.createConstant = function (name, value) {
+    createConstant: function (name, value) {
         var symbol = this.newSymbol(name, value);
         this.symbols[name] = symbol;
         this.defs[name] = symbol;
         return symbol;
-    };
+    },
 
     /**
      * get the link to a symbol definition or update.
@@ -193,7 +193,7 @@
      * @param {String} name
      * @return {function | undefined} symbol, or undefined when not found
      */
-    Scope.prototype.findDef = function (name) {
+    findDef: function (name) {
         var symbol;
 
         // check scope
@@ -229,31 +229,31 @@
         }
 
         return undefined;
-    };
+    },
 
     /**
      * Remove a link to a symbol
      * @param {String} name
      */
-    Scope.prototype.removeLink = function (name) {
+    removeLink: function (name) {
         delete this.links[name];
-    };
+    },
 
     /**
      * Remove a definition of a symbol
      * @param {String} name
      */
-    Scope.prototype.removeDef = function (name) {
+    removeDef: function (name) {
         delete this.defs[name];
-    };
+    },
 
     /**
      * Remove an update definition of a symbol
      * @param {String} name
      */
-    Scope.prototype.removeUpdate = function (name) {
+    removeUpdate: function (name) {
         delete this.updates[name];
-    };
+    },
 
     /**
      * initialize the scope and its nested scopes
@@ -262,7 +262,7 @@
      * If there is no parentScope, or no definition of the func in the parent scope,
      * the link will be set undefined
      */
-    Scope.prototype.init = function () {
+    init: function () {
         var symbols = this.symbols;
         var parentScope = this.parentScope;
 
@@ -278,7 +278,7 @@
                 nestedScope.init();
             });
         }
-    };
+    },
 
     /**
      * Check whether this scope or any of its nested scopes contain a link to a
@@ -286,7 +286,7 @@
      * @param {String} name
      * @return {boolean} hasLink   True if a link with given name is found
      */
-    Scope.prototype.hasLink = function (name) {
+    hasLink: function (name) {
         if (this.links[name]) {
             return true;
         }
@@ -301,16 +301,16 @@
         }
 
         return false;
-    };
+    },
 
     /**
      * Check whether this scope contains a definition of a symbol with given name
      * @param {String} name
      * @return {boolean} hasDef   True if a definition with given name is found
      */
-    Scope.prototype.hasDef = function (name) {
+    hasDef: function (name) {
         return (this.defs[name] != undefined);
-    };
+    },
 
     /**
      * Check whether this scope contains an update definition of a symbol with
@@ -318,15 +318,15 @@
      * @param {String} name
      * @return {boolean} hasUpdate   True if an update definition with given name is found
      */
-    Scope.prototype.hasUpdate = function (name) {
+    hasUpdate: function (name) {
         return (this.updates[name] != undefined);
-    };
+    },
 
     /**
      * Retrieve all undefined symbols
      * @return {function[]} undefinedSymbols   All symbols which are undefined
      */
-    Scope.prototype.getUndefinedSymbols = function () {
+    getUndefinedSymbols: function () {
         var symbols = this.symbols;
         var undefinedSymbols = [];
         for (var i in symbols) {
@@ -346,6 +346,5 @@
         }
 
         return undefinedSymbols;
-    };
-
-})();
+    }
+};
