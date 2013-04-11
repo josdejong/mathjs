@@ -3,7 +3,7 @@
  * @param {... *} args  one or multiple arguments
  * @return {*} res
  */
-function min(args) {
+math.min = function min(args) {
     if (arguments.length == 0) {
         throw new Error('Function min requires one or more parameters (0 provided)');
     }
@@ -48,9 +48,7 @@ function min(args) {
         // min(a, b, c, d, ...)
         return _min(arguments);
     }
-}
-
-math.min = min;
+};
 
 /**
  * Calculate the min of a one dimensional array
@@ -93,29 +91,3 @@ function _min2(array, rows, cols) {
     }
     return res;
 }
-
-/**
- * Function documentation
- */
-min.doc = {
-    'name': 'min',
-    'category': 'Statistics',
-    'syntax': [
-        'min(a, b, c, ...)'
-    ],
-    'description': 'Compute the minimum value of a list of values.',
-    'examples': [
-        'min(2, 3, 4, 1)',
-        'min(2.7, 7.1, -4.5, 2.0, 4.1)',
-        'max(2.7, 7.1, -4.5, 2.0, 4.1)'
-    ],
-    'seealso': [
-        'sum',
-        'prod',
-        'avg',
-        'var',
-        'std',
-        'min',
-        'median'
-    ]
-};

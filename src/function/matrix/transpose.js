@@ -4,7 +4,7 @@
  * @param {Array | Matrix} x
  * @return {Array | Matrix} transpose
  */
-function transpose (x) {
+math.transpose = function transpose (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('transpose', arguments.length, 1);
     }
@@ -48,25 +48,4 @@ function transpose (x) {
             throw new RangeError('Matrix must be two dimensional ' +
                 '(size: ' + math.format(size) + ')');
     }
-}
-
-math.transpose = transpose;
-
-/**
- * Function documentation
- */
-transpose.doc = {
-    'name': 'transpose',
-    'category': 'Numerics',
-    'syntax': [
-        'transpose(x)'
-    ],
-    'description': 'Transpose a matrix',
-    'examples': [
-        'a = [1, 2, 3; 4, 5, 6]',
-        'transpose(a)'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'zeros'
-    ]
 };

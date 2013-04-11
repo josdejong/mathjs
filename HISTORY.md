@@ -1,4 +1,4 @@
-# math.js changelog
+# math.js history
 https://github.com/josdejong/mathjs
 
 
@@ -15,6 +15,9 @@ https://github.com/josdejong/mathjs
   representation of the unit in inches has 2 as value.
 - Improved: method `math.in(x, unit)` now supports a string as second parameter,
   for example `math.in(math.unit('5.08 cm'), 'inch')`.
+- Split the end user documentation of the parser functions from the source files.
+- Removed function help and the built-in documentation from the core library.
+- Minor bug fixes.
 
 
 ## 2013-04-06, version 0.5.0

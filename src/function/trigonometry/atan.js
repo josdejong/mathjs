@@ -3,7 +3,7 @@
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function atan(x) {
+math.atan = function atan(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('atan', arguments.length, 1);
     }
@@ -22,7 +22,7 @@ function atan(x) {
             (1.0 - im * im - re * re) / den,
             (-2.0 * re) / den
         );
-        var temp2 = log(temp1);
+        var temp2 = math.log(temp1);
 
         return new Complex(
             -0.5 * temp2.im,
@@ -31,36 +31,13 @@ function atan(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, atan);
+        return util.map(x, math.atan);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return atan(x.valueOf());
+        return math.atan(x.valueOf());
     }
 
     throw newUnsupportedTypeError('atan', x);
-}
-
-math.atan = atan;
-
-/**
- * Function documentation
- */
-atan.doc = {
-    'name': 'atan',
-    'category': 'Trigonometry',
-    'syntax': [
-        'atan(x)'
-    ],
-    'description': 'Compute the inverse tangent of a value in radians.',
-    'examples': [
-        'atan(0.5)',
-        'atan(tan(2.3))'
-    ],
-    'seealso': [
-        'tan',
-        'acos',
-        'asin'
-    ]
 };

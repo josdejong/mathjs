@@ -4,7 +4,7 @@
  * @param {Number | Array} [n] number of digits
  * @return {Number | Complex | Array | Matrix} res
  */
-function round(x, n) {
+math.round = function round(x, n) {
     if (arguments.length != 1 && arguments.length != 2) {
         throw newArgumentsError('round', arguments.length, 1, 2);
     }
@@ -23,12 +23,12 @@ function round(x, n) {
         }
 
         if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-            util.map(x, round);
+            util.map(x, math.round);
         }
 
         if (x.valueOf() !== x) {
             // fallback on the objects primitive value
-            return round(x.valueOf());
+            return math.round(x.valueOf());
         }
 
         throw newUnsupportedTypeError('round', x);
@@ -58,19 +58,17 @@ function round(x, n) {
 
         if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
             n instanceof Array || n instanceof Matrix || n instanceof Range) {
-            return util.map2(x, n, round);
+            return util.map2(x, n, math.round);
         }
 
         if (x.valueOf() !== x || n.valueOf() !== n) {
             // fallback on the objects primitive values
-            return larger(x.valueOf(), n.valueOf());
+            return math.round(x.valueOf(), n.valueOf());
         }
 
         throw newUnsupportedTypeError('round', x, n);
     }
-}
-
-math.round = round;
+};
 
 /**
  * round a number to the given number of digits, or to the default if
@@ -83,29 +81,3 @@ function roundNumber (value, digits) {
     var p = Math.pow(10, (digits != undefined) ? digits : math.options.precision);
     return Math.round(value * p) / p;
 }
-
-/**
- * Function documentation
- */
-round.doc = {
-    'name': 'round',
-    'category': 'Arithmetic',
-    'syntax': [
-        'round(x)',
-        'round(x, n)'
-    ],
-    'description':
-        'round a value towards the nearest integer.' +
-            'If x is complex, both real and imaginary part are rounded ' +
-            'towards the nearest integer. ' +
-            'When n is specified, the value is rounded to n decimals.',
-    'examples': [
-        'round(3.2)',
-        'round(3.8)',
-        'round(-4.2)',
-        'round(-4.8)',
-        'round(pi, 3)',
-        'round(123.45678, 2)'
-    ],
-    'seealso': ['ceil', 'floor', 'fix']
-};

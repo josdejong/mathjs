@@ -4,7 +4,7 @@
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function atan2(y, x) {
+math.atan2 = function atan2(y, x) {
     if (arguments.length != 2) {
         throw newArgumentsError('atan2', arguments.length, 2);
     }
@@ -28,40 +28,13 @@ function atan2(y, x) {
 
     if (y instanceof Array || y instanceof Matrix || y instanceof Range ||
         x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map2(y, x, atan2);
+        return util.map2(y, x, math.atan2);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return atan2(y.valueOf(), x.valueOf());
+        return math.atan2(y.valueOf(), x.valueOf());
     }
 
     throw newUnsupportedTypeError('atan2', y, x);
-}
-
-math.atan2 = atan2;
-
-/**
- * Function documentation
- */
-atan2.doc = {
-    'name': 'atan2',
-    'category': 'Trigonometry',
-    'syntax': [
-        'atan2(y, x)'
-    ],
-    'description':
-        'Computes the principal value of the arc tangent of y/x in radians.',
-    'examples': [
-        'atan2(2, 2) / pi',
-        'angle = 60 deg in rad',
-        'x = cos(angle)',
-        'y = sin(angle)',
-        'atan2(y, x)'
-    ],
-    'seealso': [
-        'sin',
-        'cos',
-        'tan'
-    ]
 };

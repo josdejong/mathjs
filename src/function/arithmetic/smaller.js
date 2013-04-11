@@ -5,7 +5,7 @@
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix} res
  */
-function smaller(x, y) {
+math.smaller = function smaller(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('smaller', arguments.length, 2);
     }
@@ -15,15 +15,15 @@ function smaller(x, y) {
             return x < y;
         }
         else if (y instanceof Complex) {
-            return x < abs(y);
+            return x < math.abs(y);
         }
     }
     if (x instanceof Complex) {
         if (isNumber(y)) {
-            return abs(x) < y;
+            return math.abs(x) < y;
         }
         else if (y instanceof Complex) {
-            return abs(x) < abs(y);
+            return math.abs(x) < math.abs(y);
         }
     }
 
@@ -40,41 +40,13 @@ function smaller(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, smaller);
+        return util.map2(x, y, math.smaller);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return smaller(x.valueOf(), y.valueOf());
+        return math.smaller(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('smaller', x, y);
-}
-
-math.smaller = smaller;
-
-/**
- * Function documentation
- */
-smaller.doc = {
-    'name': 'smaller',
-    'category': 'Operators',
-    'syntax': [
-        'x < y',
-        'smaller(x, y)'
-    ],
-    'description':
-        'Check if value x is smaller than value y. ' +
-            'Returns 1 if x is smaller than y, and 0 if not.',
-    'examples': [
-        '2 < 3',
-        '5 < 2*2',
-        'a = 3.3',
-        'b = 6-2.8',
-        '(a < b)',
-        '5 cm < 2 inch'
-    ],
-    'seealso': [
-        'equal', 'unequal', 'larger', 'smallereq', 'largereq'
-    ]
 };

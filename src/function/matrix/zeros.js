@@ -8,7 +8,7 @@
  * @param {...Number | Array} size
  * @return {Matrix} matrix
  */
-function zeros (size) {
+math.zeros = function zeros (size) {
     var args = util.argsToArray(arguments);
 
     if (args.length == 0) {
@@ -22,32 +22,4 @@ function zeros (size) {
     var matrix = new Matrix();
     matrix.resize(args);
     return matrix;
-}
-
-math.zeros = zeros;
-
-/**
- * Function documentation
- */
-zeros.doc = {
-    'name': 'zeros',
-    'category': 'Numerics',
-    'syntax': [
-        'zeros(n)',
-        'zeros(m, n)',
-        'zeros(m, n, p, ...)',
-        'zeros([m, n])',
-        'zeros([m, n, p, ...])',
-        'zeros'
-    ],
-    'description': 'Create a matrix containing zeros.',
-    'examples': [
-        'zeros(3)',
-        'zeros(3, 5)',
-        'a = [1, 2, 3; 4, 5, 6]',
-        'zeros(size(a))'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose'
-    ]
 };

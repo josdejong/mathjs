@@ -16,12 +16,10 @@
  * @param {Array | Matrix | Range} [data]    A multi dimensional array
  * @return {Matrix} matrix
  */
-function matrix(data) {
+math.matrix = function matrix(data) {
     if (arguments.length > 1) {
         throw newArgumentsError('matrix', arguments.length, 0, 1);
     }
 
     return new Matrix(data);
-}
-
-math.matrix = matrix;
+};

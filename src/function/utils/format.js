@@ -16,7 +16,7 @@
  * @param {Object} values
  * @return {String} str
  */
-function format(template, values) {
+math.format = function format(template, values) {
     var num = arguments.length;
     if (num != 1 && num != 2) {
         throw newArgumentsError('format', num, 1, 2);
@@ -63,24 +63,4 @@ function format(template, values) {
             }
         );
     }
-}
-
-math.format = format;
-
-/**
- * Function documentation
- */
-format.doc = {
-    'name': 'format',
-    'category': 'Utils',
-    'syntax': [
-        'format(value)'
-    ],
-    'description': 'Format a value of any type as string.',
-    'examples': [
-        'format(2.3)',
-        'format(3 - 4i)',
-        'format([])'
-    ],
-    'seealso': []
 };

@@ -26,7 +26,7 @@
  * @param {...*} args
  * @return {Range} range
  */
-function range(args) {
+math.range = function range(args) {
     switch (arguments.length) {
         case 1:
             // parse string into a range
@@ -56,6 +56,4 @@ function range(args) {
         default:
             throw newArgumentsError('range', arguments.length, 2, 3);
     }
-}
-
-math.range = range;
+};

@@ -5,7 +5,7 @@
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix | Range} res
  */
-function larger(x, y) {
+math.larger = function larger(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('larger', arguments.length, 2);
     }
@@ -15,15 +15,15 @@ function larger(x, y) {
             return x > y;
         }
         else if (y instanceof Complex) {
-            return x > abs(y);
+            return x > math.abs(y);
         }
     }
     if (x instanceof Complex) {
         if (isNumber(y)) {
-            return abs(x) > y;
+            return math.abs(x) > y;
         }
         else if (y instanceof Complex) {
-            return abs(x) > abs(y);
+            return math.abs(x) > math.abs(y);
         }
     }
 
@@ -40,42 +40,13 @@ function larger(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, larger);
+        return util.map2(x, y, math.larger);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return larger(x.valueOf(), y.valueOf());
+        return math.larger(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('larger', x, y);
-}
-
-math.larger = larger;
-
-/**
- * Function documentation
- */
-larger.doc = {
-    'name': 'larger',
-    'category': 'Operators',
-    'syntax': [
-        'x > y',
-        'larger(x, y)'
-    ],
-    'description':
-        'Check if value x is larger than y. ' +
-        'Returns 1 if x is larger than y, and 0 if not.',
-    'examples': [
-        '2 > 3',
-        '5 > 2*2',
-        'a = 3.3',
-        'b = 6-2.8',
-        '(a > b)',
-        '(b < a)',
-        '5 cm > 2 inch'
-    ],
-    'seealso': [
-        'equal', 'unequal', 'smaller', 'smallereq', 'largereq'
-    ]
 };

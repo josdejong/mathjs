@@ -4,7 +4,7 @@
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function sign(x) {
+math.sign = function sign(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('sign', arguments.length, 1);
     }
@@ -29,37 +29,13 @@ function sign(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, sign);
+        return util.map(x, math.sign);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return sign(x.valueOf());
+        return math.sign(x.valueOf());
     }
 
     throw newUnsupportedTypeError('sign', x);
-}
-
-math.sign = sign;
-
-/**
- * Function documentation
- */
-sign.doc = {
-    'name': 'sign',
-    'category': 'Arithmetic',
-    'syntax': [
-        'sign(x)'
-    ],
-    'description':
-        'Compute the sign of a value. ' +
-            'The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.',
-    'examples': [
-        'sign(3.5)',
-        'sign(-4.2)',
-        'sign(0)'
-    ],
-    'seealso': [
-        'abs'
-    ]
 };

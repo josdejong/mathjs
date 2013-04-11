@@ -4,7 +4,7 @@
  * @param  {Number | Complex} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-function divide(x, y) {
+math.divide = function divide(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('divide', arguments.length, 2);
     }
@@ -49,7 +49,7 @@ function divide(x, y) {
         }
         else {
             // matrix / scalar
-            return util.map2(x, y, divide);
+            return util.map2(x, y, math.divide);
         }
     }
 
@@ -60,11 +60,11 @@ function divide(x, y) {
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive value
-        return divide(x.valueOf(), y.valueOf());
+        return math.divide(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('divide', x, y);
-}
+};
 
 /**
  * Divide two complex numbers. x / y or divide(x, y)
@@ -80,29 +80,3 @@ function _divideComplex (x, y) {
         (x.im * y.re - x.re * y.im) / den
     );
 }
-
-math.divide = divide;
-
-/**
- * Function documentation
- */
-divide.doc = {
-    'name': 'divide',
-    'category': 'Operators',
-    'syntax': [
-        'x / y',
-        'divide(x, y)'
-    ],
-    'description': 'Divide two values.',
-    'examples': [
-        '2 / 3',
-        'ans * 3',
-        '4.5 / 2',
-        '3 + 4 / 2',
-        '(3 + 4) / 2',
-        '18 km / 4.5'
-    ],
-    'seealso': [
-        'multiply'
-    ]
-};

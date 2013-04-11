@@ -3,7 +3,7 @@
  * @param {...Number | Matrix | Array} size
  * @return {Matrix} matrix
  */
-function eye (size) {
+math.eye = function eye (size) {
     var args = util.argsToArray(arguments);
     if (args.length == 0) {
         args = [1, 1];
@@ -12,7 +12,7 @@ function eye (size) {
         args[1] = args[0];
     }
     else if (args.length > 2) {
-        throw newArgumentsError('eye', num, 0, 2);
+        throw newArgumentsError('eye', args.length, 0, 2);
     }
 
     var rows = args[0],
@@ -39,31 +39,4 @@ function eye (size) {
     }
 
     return matrix;
-}
-
-math.eye = eye;
-
-/**
- * Function documentation
- */
-eye.doc = {
-    'name': 'eye',
-    'category': 'Numerics',
-    'syntax': [
-        'eye(n)',
-        'eye(m, n)',
-        'eye([m, n])',
-        'eye'
-    ],
-    'description': 'Returns the identity matrix with size m-by-n. ' +
-        'The matrix has ones on the diagonal and zeros elsewhere.',
-    'examples': [
-        'eye(3)',
-        'eye(3, 5)',
-        'a = [1, 2, 3; 4, 5, 6]',
-        'eye(size(a))'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
-    ]
 };

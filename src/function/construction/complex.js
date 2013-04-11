@@ -20,7 +20,7 @@
  * @param {*} [args]
  * @return {Complex} value
  */
-function complex(args) {
+math.complex = function complex(args) {
     switch (arguments.length) {
         case 0:
             // no parameters. Set re and im zero
@@ -51,6 +51,4 @@ function complex(args) {
         default:
             throw newArgumentsError('complex', arguments.length, 0, 2);
     }
-}
-
-math.complex = complex;
+};

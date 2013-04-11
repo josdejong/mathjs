@@ -3,7 +3,7 @@
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function asin(x) {
+math.asin = function asin(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('asin', arguments.length, 1);
     }
@@ -13,7 +13,7 @@ function asin(x) {
             return Math.asin(x);
         }
         else {
-            return asin(new Complex(x, 0));
+            return math.asin(new Complex(x, 0));
         }
     }
 
@@ -26,48 +26,25 @@ function asin(x) {
             -2.0 * re * im
         );
 
-        var temp2 = sqrt(temp1);
+        var temp2 = math.sqrt(temp1);
         var temp3 = new Complex(
             temp2.re - im,
             temp2.im + re
         );
 
-        var temp4 = log(temp3);
+        var temp4 = math.log(temp3);
 
         return new Complex(temp4.im, -temp4.re);
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, asin);
+        return util.map(x, math.asin);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return asin(x.valueOf());
+        return math.asin(x.valueOf());
     }
 
     throw newUnsupportedTypeError('asin', x);
-}
-
-math.asin = asin;
-
-/**
- * Function documentation
- */
-asin.doc = {
-    'name': 'asin',
-    'category': 'Trigonometry',
-    'syntax': [
-        'asin(x)'
-    ],
-    'description': 'Compute the inverse sine of a value in radians.',
-    'examples': [
-        'asin(0.5)',
-        'asin(sin(2.3))'
-    ],
-    'seealso': [
-        'sin',
-        'acos',
-        'asin'
-    ]
 };

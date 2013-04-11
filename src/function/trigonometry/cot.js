@@ -3,7 +3,7 @@
  * @param {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function cot(x) {
+math.cot = function cot(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('cot', arguments.length, 1);
     }
@@ -30,37 +30,13 @@ function cot(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, cot);
+        return util.map(x, math.cot);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return cot(x.valueOf());
+        return math.cot(x.valueOf());
     }
 
     throw newUnsupportedTypeError('cot', x);
-}
-
-math.cot = cot;
-
-/**
- * Function documentation
- */
-cot.doc = {
-    'name': 'cot',
-    'category': 'Trigonometry',
-    'syntax': [
-        'cot(x)'
-    ],
-    'description': 'Compute the cotangent of x in radians. ' +
-        'Defined as 1/tan(x)',
-    'examples': [
-        'cot(2)',
-        '1 / tan(2)'
-    ],
-    'seealso': [
-        'sec',
-        'csc',
-        'tan'
-    ]
 };

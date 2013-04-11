@@ -7,7 +7,7 @@
  * @param {... Number | Array | Matrix} args    two or more integer numbers
  * @return {Number | Array | Matrix} least common multiple
  */
-function lcm(args) {
+math.lcm = function lcm(args) {
     var a = arguments[0],
         b = arguments[1],
         t;
@@ -33,12 +33,12 @@ function lcm(args) {
         // evaluate lcm element wise
         if (a instanceof Array || a instanceof Matrix ||
             b instanceof Array || b instanceof Matrix) {
-            return util.map2(a, b, lcm);
+            return util.map2(a, b, math.lcm);
         }
 
         if (a.valueOf() !== a || b.valueOf() !== b) {
             // fallback on the objects primitive value
-            return lcm(a.valueOf(), b.valueOf());
+            return math.lcm(a.valueOf(), b.valueOf());
         }
 
         throw newUnsupportedTypeError('lcm', a, b);
@@ -47,31 +47,11 @@ function lcm(args) {
     if (arguments.length > 2) {
         // multiple arguments. Evaluate them iteratively
         for (var i = 1; i < arguments.length; i++) {
-            a = lcm(a, arguments[i]);
+            a = math.lcm(a, arguments[i]);
         }
         return a;
     }
 
     // zero or one argument
     throw new SyntaxError('Function lcm expects two or more arguments');
-}
-
-math.lcm = lcm;
-
-/**
- * Function documentation
- */
-lcm.doc = {
-    'name': 'lcm',
-    'category': 'Arithmetic',
-    'syntax': [
-        'lcm(x, y)'
-    ],
-    'description': 'Compute the least common multiple.',
-    'examples': [
-        'lcm(4, 6)',
-        'lcm(6, 21)',
-        'lcm(6, 21, 5)'
-    ],
-    'seealso': [ 'gcd' ]
 };

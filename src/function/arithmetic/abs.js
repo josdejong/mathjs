@@ -3,7 +3,7 @@
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function abs(x) {
+math.abs = function abs(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('abs', arguments.length, 1);
     }
@@ -17,32 +17,13 @@ function abs(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, abs);
+        return util.map(x, math.abs);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return abs(x.valueOf());
+        return math.abs(x.valueOf());
     }
 
     throw newUnsupportedTypeError('abs', x);
-}
-
-math.abs = abs;
-
-/**
- * Function documentation
- */
-abs.doc = {
-    'name': 'abs',
-    'category': 'Arithmetic',
-    'syntax': [
-        'abs(x)'
-    ],
-    'description': 'Compute the absolute value.',
-    'examples': [
-        'abs(3.5)',
-        'abs(-4.2)'
-    ],
-    'seealso': ['sign']
 };

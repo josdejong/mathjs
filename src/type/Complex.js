@@ -297,32 +297,3 @@ Complex.prototype.toString = function () {
 
     return str;
 };
-
-/**
- * Type documentation
- */
-Complex.doc = {
-    'name': 'Complex',
-    'category': 'type',
-    'syntax': [
-        'a + bi',
-        'a + b * i'
-    ],
-    'description':
-        'A complex value a + bi, ' +
-            'where a is the real part and b is the complex part, ' +
-            'and i is the imaginary number defined as sqrt(-1).',
-    'examples': [
-        '2 + 3i',
-        'sqrt(-4)',
-        '(1.2 -5i) * 2'
-    ],
-    'seealso': [
-        'abs',
-        'arg',
-        'conj',
-        'im',
-        're'
-    ]
-};
-

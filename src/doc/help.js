@@ -3,7 +3,8 @@
  * @param {function | string | Object} subject
  * @return {String} documentation
  */
-function help(subject) {
+// TODO: Create a build script to concatenate all json documents, and integrate the help function with this.
+math.help = function help(subject) {
     if (arguments.length != 1) {
         throw newArgumentsError('help', arguments.length, 1);
     }
@@ -35,9 +36,7 @@ function help(subject) {
     else {
         return 'No documentation found on subject "' + subject +'"';
     }
-}
-
-math.help = help;
+};
 
 /**
  * Generate readable documentation from a documentation object
@@ -80,20 +79,3 @@ function generateDoc (doc) {
 
     return desc;
 }
-
-/**
- * Function documentation
- */
-help.doc = {
-    'name': 'help',
-    'category': 'Utils',
-    'syntax': [
-        'help(object)'
-    ],
-    'description': 'Display documentation on a function or data type.',
-    'examples': [
-        'help("sqrt")',
-        'help("Complex")'
-    ],
-    'seealso': []
-};

@@ -3,7 +3,7 @@
  * @param {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function csc(x) {
+math.csc = function csc(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('csc', arguments.length, 1);
     }
@@ -31,37 +31,13 @@ function csc(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, csc);
+        return util.map(x, math.csc);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return csc(x.valueOf());
+        return math.csc(x.valueOf());
     }
 
     throw newUnsupportedTypeError('csc', x);
-}
-
-math.csc = csc;
-
-/**
- * Function documentation
- */
-csc.doc = {
-    'name': 'csc',
-    'category': 'Trigonometry',
-    'syntax': [
-        'csc(x)'
-    ],
-    'description': 'Compute the cosecant of x in radians. ' +
-        'Defined as 1/sin(x)',
-    'examples': [
-        'csc(2)',
-        '1 / sin(2)'
-    ],
-    'seealso': [
-        'sec',
-        'cot',
-        'sin'
-    ]
 };

@@ -3,7 +3,7 @@
  * @param {*} x
  * @return {*} clone
  */
-function clone(x) {
+math.clone = function clone(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('clone', arguments.length, 1);
     }
@@ -22,39 +22,15 @@ function clone(x) {
     }
 
     if (x instanceof Array) {
+        var c = math.clone;
         return x.map(function (value) {
-            return clone(value);
+            return c(value);
         });
     }
 
     if (x instanceof Object) {
-        return util.mapObject(x, clone);
+        return util.mapObject(x, math.clone);
     }
 
     throw newUnsupportedTypeError('clone', x);
-}
-
-math.clone = clone;
-
-
-
-/**
- * Function documentation
- */
-clone.doc = {
-    'name': 'clone',
-    'category': 'Utils',
-    'syntax': [
-        'clone(x)'
-    ],
-    'description': 'Clone a variable. Creates a copy of primitive variables,' +
-        'and a deep copy of matrices',
-    'examples': [
-        'clone(3.5)',
-        'clone(2 - 4i)',
-        'clone(45 deg)',
-        'clone([1, 2; 3, 4])',
-        'clone("hello world")'
-    ],
-    'seealso': []
 };

@@ -3,7 +3,7 @@
  * @param {Matrix | Array} x
  * @return {Matrix | Array} res
  */
-function squeeze (x) {
+math.squeeze = function squeeze (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('squeeze', arguments.length, 1);
     }
@@ -12,15 +12,13 @@ function squeeze (x) {
         return _squeezeArray(x.toArray());
     }
     else if (x instanceof Array) {
-        return _squeezeArray(clone(x));
+        return _squeezeArray(math.clone(x));
     }
     else {
         // scalar
-        return clone(x);
+        return math.clone(x);
     }
-}
-
-math.squeeze = squeeze;
+};
 
 /**
  * Recursively squeeze a multi dimensional array
@@ -44,24 +42,3 @@ function _squeezeArray(array) {
         return array;
     }
 }
-
-/**
- * Function documentation
- */
-squeeze.doc = {
-    'name': 'squeeze',
-    'category': 'Numerics',
-    'syntax': [
-        'squeeze(x)'
-    ],
-    'description': 'Remove singleton dimensions from a matrix.',
-    'examples': [
-        'a = zeros(1,3,2)',
-        'size(squeeze(a))',
-        'b = zeros(3,1,1)',
-        'size(squeeze(b))'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'transpose', 'zeros'
-    ]
-};

@@ -3,7 +3,7 @@
  * @param {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function sec(x) {
+math.sec = function sec(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('sec', arguments.length, 1);
     }
@@ -30,37 +30,13 @@ function sec(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, sec);
+        return util.map(x, math.sec);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return sec(x.valueOf());
+        return math.sec(x.valueOf());
     }
 
     throw newUnsupportedTypeError('sec', x);
-}
-
-math.sec = sec;
-
-/**
- * Function documentation
- */
-sec.doc = {
-    'name': 'sec',
-    'category': 'Trigonometry',
-    'syntax': [
-        'sec(x)'
-    ],
-    'description': 'Compute the secant of x in radians. ' +
-        'Defined as 1/cos(x)',
-    'examples': [
-        'sec(2)',
-        '1 / cos(2)'
-    ],
-    'seealso': [
-        'cot',
-        'csc',
-        'cos'
-    ]
 };

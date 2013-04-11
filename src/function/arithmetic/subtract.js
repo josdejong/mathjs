@@ -4,7 +4,7 @@
  * @param  {Number | Complex | Unit | Array | Matrix | Range} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-function subtract(x, y) {
+math.subtract = function subtract(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('subtract', arguments.length, 2);
     }
@@ -62,38 +62,13 @@ function subtract(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, subtract);
+        return util.map2(x, y, math.subtract);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return subtract(x.valueOf(), y.valueOf());
+        return math.subtract(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('subtract', x, y);
-}
-
-math.subtract = subtract;
-
-/**
- * Function documentation
- */
-subtract.doc = {
-    'name': 'subtract',
-    'category': 'Operators',
-    'syntax': [
-        'x - y',
-        'subtract(x, y)'
-    ],
-    'description': 'subtract two values.',
-    'examples': [
-        '5.3 - 2',
-        'ans + 2',
-        '2/3 - 1/6',
-        '2 * 3 - 3',
-        '2.1 km - 500m'
-    ],
-    'seealso': [
-        'add'
-    ]
 };

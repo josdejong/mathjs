@@ -4,7 +4,7 @@
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Number | Complex | Unit | String | Array | Matrix} res
  */
-function add(x, y) {
+math.add = function add(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('add', arguments.length, 2);
     }
@@ -65,38 +65,13 @@ function add(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, add);
+        return util.map2(x, y, math.add);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return add(x.valueOf(), y.valueOf());
+        return math.add(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('add', x, y);
-}
-
-math.add = add;
-
-/**
- * Function documentation
- */
-add.doc = {
-    'name': 'add',
-    'category': 'Operators',
-    'syntax': [
-        'x + y',
-        'add(x, y)'
-    ],
-    'description': 'Add two values.',
-    'examples': [
-        '2.1 + 3.6',
-        'ans - 3.6',
-        '3 + 2i',
-        '"hello" + " world"',
-        '3 cm + 2 inch'
-    ],
-    'seealso': [
-        'subtract'
-    ]
 };

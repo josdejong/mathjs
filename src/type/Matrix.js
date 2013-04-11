@@ -136,7 +136,7 @@ function _getScalar (data, index) {
     index.forEach(function (i) {
         data = _get(data, i);
     });
-    return clone(data);
+    return math.clone(data);
 }
 
 /**
@@ -473,7 +473,7 @@ function _init(array) {
  */
 Matrix.prototype.resize = function (size, defaultValue) {
     util.resize(this._data, size, defaultValue);
-    this._size = clone(size);
+    this._size = math.clone(size);
 };
 
 /**
@@ -482,8 +482,8 @@ Matrix.prototype.resize = function (size, defaultValue) {
  */
 Matrix.prototype.clone = function () {
     var matrix = new Matrix();
-    matrix._data = clone(this._data);
-    matrix._size = clone(this._size);
+    matrix._data = math.clone(this._data);
+    matrix._size = math.clone(this._size);
     return matrix;
 };
 
@@ -520,7 +520,7 @@ Matrix.prototype.map = function (callback) {
         }
     };
     matrix._data = recurse(this._data, 0);
-    matrix._size = clone(this._size);
+    matrix._size = math.clone(this._size);
 
     return matrix;
 };
@@ -563,7 +563,7 @@ Matrix.prototype.toScalar = function () {
         return null;
     }
     else {
-        return clone(scalar);
+        return math.clone(scalar);
     }
 };
 
@@ -648,7 +648,7 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {
-    return clone(this._data);
+    return math.clone(this._data);
 };
 
 /**

@@ -8,7 +8,7 @@
  * @param {...Number | Array} size
  * @return {Matrix} matrix
  */
-function ones (size) {
+math.ones = function ones (size) {
     var args = util.argsToArray(arguments);
 
     if (args.length == 0) {
@@ -23,33 +23,4 @@ function ones (size) {
     var defaultValue = 1;
     matrix.resize(args, defaultValue);
     return matrix;
-}
-
-math.ones = ones;
-
-/**
- * Function documentation
- */
-ones.doc = {
-    'name': 'ones',
-    'category': 'Numerics',
-    'syntax': [
-        'ones(n)',
-        'ones(m, n)',
-        'ones(m, n, p, ...)',
-        'ones([m, n])',
-        'ones([m, n, p, ...])',
-        'ones'
-    ],
-    'description': 'Create a matrix containing ones.',
-    'examples': [
-        'ones(3)',
-        'ones(3, 5)',
-        'ones([2,3]) * 4.5',
-        'a = [1, 2, 3; 4, 5, 6]',
-        'ones(size(a))'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'inv', 'range', 'size', 'squeeze', 'transpose', 'zeros'
-    ]
 };

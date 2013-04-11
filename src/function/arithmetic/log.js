@@ -6,7 +6,7 @@
  * @param {Number | Complex} [base]
  * @return {Number | Complex | Array | Matrix} res
  */
-function log(x, base) {
+math.log = function log(x, base) {
     if (arguments.length != 1 && arguments.length != 2) {
         throw newArgumentsError('log', arguments.length, 1, 2);
     }
@@ -19,7 +19,7 @@ function log(x, base) {
             }
             else {
                 // negative value -> complex value computation
-                return log(new Complex(x, 0));
+                return math.log(new Complex(x, 0));
             }
         }
 
@@ -31,50 +31,18 @@ function log(x, base) {
         }
 
         if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-            return util.map(x, log);
+            return util.map(x, math.log);
         }
     }
     else {
         // calculate logarithm for a specified base, log(x, base)
-        return divide(log(x), log(base));
+        return math.divide(math.log(x), math.log(base));
     }
 
     if (x.valueOf() !== x || base.valueOf() !== base) {
         // fallback on the objects primitive values
-        return log(x.valueOf(), base.valueOf());
+        return math.log(x.valueOf(), base.valueOf());
     }
 
     throw newUnsupportedTypeError('log', x, base);
-}
-
-math.log = log;
-
-/**
- * Function documentation
- */
-log.doc = {
-    'name': 'log',
-    'category': 'Arithmetic',
-    'syntax': [
-        'log(x)',
-        'log(x, base)'
-    ],
-    'description': 'Compute the logarithm of a value. ' +
-        'If no base is provided, the natural logarithm of x is calculated. ' +
-        'If base if provided, the logarithm is calculated for the specified base. ' +
-        'log(x, base) is defined as log(x) / log(base).',
-    'examples': [
-        'log(3.5)',
-        'a = log(2.4)',
-        'exp(a)',
-        '10 ^ 3',
-        'log(1000, 10)',
-        'log(1000) / log(10)',
-        'b = logb(1024, 2)',
-        '2 ^ b'
-    ],
-    'seealso': [
-        'exp',
-        'log10'
-    ]
 };

@@ -3,7 +3,7 @@
  * @param {... *} args  one or multiple arguments
  * @return {*} res
  */
-function max(args) {
+math.max = function max(args) {
     if (arguments.length == 0) {
         throw new Error('Function max requires one or more parameters (0 provided)');
     }
@@ -48,9 +48,7 @@ function max(args) {
         // max(a, b, c, d, ...)
         return _max(arguments);
     }
-}
-
-math.max = max;
+};
 
 /**
  * Calculate the max of a one dimensional array
@@ -93,29 +91,3 @@ function _max2(array, rows, cols) {
     }
     return res;
 }
-
-/**
- * Function documentation
- */
-max.doc = {
-    'name': 'max',
-    'category': 'Statistics',
-    'syntax': [
-        'max(a, b, c, ...)'
-    ],
-    'description': 'Compute the maximum value of a list of values.',
-    'examples': [
-        'max(2, 3, 4, 1)',
-        'max(2.7, 7.1, -4.5, 2.0, 4.1)',
-        'min(2.7, 7.1, -4.5, 2.0, 4.1)'
-    ],
-    'seealso': [
-        'sum',
-        'prod',
-        'avg',
-        'var',
-        'std',
-        'min',
-        'median'
-    ]
-};

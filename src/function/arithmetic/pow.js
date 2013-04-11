@@ -4,7 +4,7 @@
  * @param  {Number | Complex} y
  * @return {Number | Complex | Array | Matrix} res
  */
-function pow(x, y) {
+math.pow = function pow(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('pow', arguments.length, 2);
     }
@@ -49,31 +49,31 @@ function pow(x, y) {
 
         if (y == 0) {
             // return the identity matrix
-            return identity(s[0]);
+            return math.eye(s[0]);
         }
         else {
             // value > 0
             var res = x;
             for (var i = 1; i < y; i++) {
-                res = multiply(x, res);
+                res = math.multiply(x, res);
             }
             return res;
         }
     }
     else if (x instanceof Matrix) {
-        return new Matrix(pow(x.valueOf(), y));
+        return new Matrix(math.pow(x.valueOf(), y));
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return pow(x.valueOf(), y.valueOf());
+        return math.pow(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('pow', x, y);
-}
+};
 
 /**
- * Caculates the power of x to y, x^y, for two complex numbers.
+ * Calculates the power of x to y, x^y, for two complex numbers.
  * @param {Complex} x
  * @param {Complex} y
  * @return {Complex} res
@@ -82,31 +82,7 @@ function pow(x, y) {
 function powComplex (x, y) {
     // complex computation
     // x^y = exp(log(x)*y) = exp((abs(x)+i*arg(x))*y)
-    var temp1 = log(x);
-    var temp2 = multiply(temp1, y);
-    return exp(temp2);
+    var temp1 = math.log(x);
+    var temp2 = math.multiply(temp1, y);
+    return math.exp(temp2);
 }
-
-math.pow = pow;
-
-/**
- * Function documentation
- */
-pow.doc = {
-    'name': 'pow',
-    'category': 'Operators',
-    'syntax': [
-        'x ^ y',
-        'pow(x, y)'
-    ],
-    'description':
-        'Calculates the power of x to y, x^y.',
-    'examples': [
-        '2^3 = 8',
-        '2*2*2',
-        '1 + e ^ (pi * i)'
-    ],
-    'seealso': [
-        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
-    ]
-};

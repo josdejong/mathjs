@@ -4,7 +4,7 @@
  * @param  {Number | Complex | Array | Matrix | Range} y
  * @return {Number | Array | Matrix} res
  */
-function mod(x, y) {
+math.mod = function mod(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('mod', arguments.length, 2);
     }
@@ -34,39 +34,13 @@ function mod(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, mod);
+        return util.map2(x, y, math.mod);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return mod(x.valueOf(), y.valueOf());
+        return math.mod(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('mod', x, y);
-}
-
-math.mod = mod;
-
-/**
- * Function documentation
- */
-mod.doc = {
-    'name': 'mod',
-    'category': 'Operators',
-    'syntax': [
-        'x % y',
-        'x mod y',
-        'mod(x, y)'
-    ],
-    'description':
-        'Calculates the modulus, the remainder of an integer division.',
-    'examples': [
-        '7 % 3',
-        '11 % 2',
-        '10 mod 4',
-        'function isOdd(x) = x % 2',
-        'isOdd(2)',
-        'isOdd(3)'
-    ],
-    'seealso': []
 };

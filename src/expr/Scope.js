@@ -210,12 +210,12 @@
              * @param {*} value
              * @return {function} symbol
              */
-            function put(name, value) {
+            var put = function (name, value) {
                 var symbol = newSymbol(name, value);
                 symbols[name] = symbol;
                 defs[name] = symbol;
                 return symbol;
-            }
+            };
 
             // check constant (and load the constant)
             if (name == 'pi') {

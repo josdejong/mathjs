@@ -3,7 +3,7 @@
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function log10(x) {
+math.log10 = function log10(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('log10', arguments.length, 1);
     }
@@ -14,7 +14,7 @@ function log10(x) {
         }
         else {
             // negative value -> complex value computation
-            return log10(new Complex(x, 0));
+            return math.log10(new Complex(x, 0));
         }
     }
 
@@ -26,38 +26,13 @@ function log10(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, log10);
+        return util.map(x, math.log10);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return log10(x.valueOf());
+        return math.log10(x.valueOf());
     }
 
     throw newUnsupportedTypeError('log10', x);
-}
-
-math.log10 = log10;
-
-/**
- * Function documentation
- */
-log10.doc = {
-    'name': 'log10',
-    'category': 'Arithmetic',
-    'syntax': [
-        'log10(x)'
-    ],
-    'description': 'Compute the 10-base logarithm of a value.',
-    'examples': [
-        'log10(1000)',
-        '10 ^ 3',
-        'log10(0.01)',
-        'log(1000) / log(10)',
-        'log(1000, 10)'
-    ],
-    'seealso': [
-        'exp',
-        'log'
-    ]
 };

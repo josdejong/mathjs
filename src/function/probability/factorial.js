@@ -3,7 +3,7 @@
  * @Param {Number | Array | Matrix | Range} x
  * @return {Number | Array | Matrix} res
  */
-function factorial (x) {
+math.factorial = function factorial (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('factorial', arguments.length, 1);
     }
@@ -29,34 +29,13 @@ function factorial (x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, factorial);
+        return util.map(x, math.factorial);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return factorial(x.valueOf());
+        return math.factorial(x.valueOf());
     }
 
     throw newUnsupportedTypeError('factorial', x);
-}
-
-math.factorial = factorial;
-
-/**
- * Function documentation
- */
-factorial.doc = {
-    'name': 'factorial',
-    'category': 'Probability',
-    'syntax': [
-        'x!',
-        'factorial(x)'
-    ],
-    'description': 'Compute the factorial of a value',
-    'examples': [
-        '5!',
-        '5*4*3*2*1',
-        '3!'
-    ],
-    'seealso': []
 };

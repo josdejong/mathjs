@@ -3,7 +3,7 @@
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function exp (x) {
+math.exp = function exp (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('exp', arguments.length, 1);
     }
@@ -20,39 +20,13 @@ function exp (x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, exp);
+        return util.map(x, math.exp);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return exp(x.valueOf());
+        return math.exp(x.valueOf());
     }
 
     throw newUnsupportedTypeError('exp', x);
-}
-
-math.exp = exp;
-
-/**
- * Function documentation
- */
-exp.doc = {
-    'name': 'exp',
-    'category': 'Arithmetic',
-    'syntax': [
-        'exp(x)'
-    ],
-    'description': 'Calculate the exponent of a value.',
-    'examples': [
-        'exp(1.3)',
-        'e ^ 1.3',
-        'log(exp(1.3))',
-        'x = 2.4',
-        '(exp(i*x) == cos(x) + i*sin(x))   # Euler\'s formula'
-    ],
-    'seealso': [
-        'square',
-        'multiply',
-        'log'
-    ]
 };

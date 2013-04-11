@@ -3,7 +3,7 @@
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function sqrt (x) {
+math.sqrt = function sqrt (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('sqrt', arguments.length, 1);
     }
@@ -13,7 +13,7 @@ function sqrt (x) {
             return Math.sqrt(x);
         }
         else {
-            return sqrt(new Complex(x, 0));
+            return math.sqrt(new Complex(x, 0));
         }
     }
 
@@ -34,38 +34,13 @@ function sqrt (x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, sqrt);
+        return util.map(x, math.sqrt);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return sqrt(x.valueOf());
+        return math.sqrt(x.valueOf());
     }
 
     throw newUnsupportedTypeError('sqrt', x);
-}
-
-math.sqrt = sqrt;
-
-/**
- * Function documentation
- */
-sqrt.doc = {
-    'name': 'sqrt',
-    'category': 'Arithmetic',
-    'syntax': [
-        'sqrt(x)'
-    ],
-    'description':
-        'Compute the square root value. ' +
-            'If x = y * y, then y is the square root of x.',
-    'examples': [
-        'sqrt(25)',
-        '5 * 5',
-        'sqrt(-1)'
-    ],
-    'seealso': [
-        'square',
-        'multiply'
-    ]
 };

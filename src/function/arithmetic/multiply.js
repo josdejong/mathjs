@@ -4,7 +4,7 @@
  * @param  {Number | Complex | Unit | Array | Matrix | Range} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-function multiply(x, y) {
+math.multiply = function multiply(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('multiply', arguments.length, 2);
     }
@@ -64,10 +64,12 @@ function multiply(x, y) {
             }
 
             // TODO: performance of matrix multiplication can be improved
-            var res = [];
-            var rows = sizeX[0];
-            var cols = sizeY[1];
-            var num = sizeX[1];
+            var res = [],
+                rows = sizeX[0],
+                cols = sizeY[1],
+                num = sizeX[1],
+                multiply = math.multiply,
+                add = math.add;
             for (var r = 0; r < rows; r++) {
                 res[r] = [];
                 for (var c = 0; c < cols; c++) {
@@ -83,32 +85,32 @@ function multiply(x, y) {
             return res;
         }
         else if (y instanceof Matrix) {
-            return new Matrix(multiply(x.valueOf(), y.valueOf()));
+            return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
         }
         else {
             // matrix * scalar
-            return util.map2(x, y, multiply);
+            return util.map2(x, y, math.multiply);
         }
     }
     else if (x instanceof Matrix) {
-        return new Matrix(multiply(x.valueOf(), y.valueOf()));
+        return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
     }
 
     if (y instanceof Array) {
         // scalar * matrix
-        return util.map2(x, y, multiply);
+        return util.map2(x, y, math.multiply);
     }
     else if (y instanceof Matrix) {
-        return new Matrix(multiply(x.valueOf(), y.valueOf()));
+        return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return multiply(x.valueOf(), y.valueOf());
+        return math.multiply(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('multiply', x, y);
-}
+};
 
 /**
  * Multiply two complex numbers. x * y or multiply(x, y)
@@ -123,28 +125,3 @@ function _multiplyComplex (x, y) {
         x.re * y.im + x.im * y.re
     );
 }
-
-math.multiply = multiply;
-
-/**
- * Function documentation
- */
-multiply.doc = {
-    'name': 'multiply',
-    'category': 'Operators',
-    'syntax': [
-        'x * y',
-        'multiply(x, y)'
-    ],
-    'description': 'multiply two values.',
-    'examples': [
-        '2.1 * 3.6',
-        'ans / 3.6',
-        '2 * 3 + 4',
-        '2 * (3 + 4)',
-        '3 * 2.1 km'
-    ],
-    'seealso': [
-        'divide'
-    ]
-};

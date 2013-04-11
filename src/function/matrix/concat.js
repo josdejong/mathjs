@@ -10,7 +10,7 @@
  * @param {... Array | Matrix} args
  * @return {Array | Matrix} res
  */
-function concat (args) {
+math.concat = function concat (args) {
     var i,
         len = arguments.length,
         dim = -1,  // one-based dimension
@@ -70,9 +70,7 @@ function concat (args) {
     }
 
     return asMatrix ? new Matrix(res) : res;
-}
-
-math.concat = concat;
+};
 
 /**
  * Recursively concatenate two matrices.
@@ -102,27 +100,3 @@ function _concat(a, b, concatDim, dim) {
         return a.concat(b);
     }
 }
-
-/**
- * Function documentation
- */
-concat.doc = {
-    'name': 'concat',
-    'category': 'Numerics',
-    'syntax': [
-        'concat(a, b, c, ...)',
-        'concat(a, b, c, ..., dim)'
-    ],
-    'description': 'Concatenate matrices. By default, the matrices are ' +
-        'concatenated by the first dimension. The dimension on which to ' +
-        'concatenate can be provided as last argument.',
-    'examples': [
-        'a = [1, 2; 5, 6]',
-        'b = [3, 4; 7, 8]',
-        'concat(a, b)',
-        '[a, b]',
-        'concat(a, b, 2)',
-        '[a; b]'
-    ],
-    'seealso': [ ]
-};

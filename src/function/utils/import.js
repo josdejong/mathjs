@@ -5,15 +5,15 @@
  *                                     overwritten. False by default.
  */
 // TODO: return status information
-function _import(object, override) {
+math['import'] = function math_import(object, override) {
     var name;
 
     if (isString(object)) {
         // a string with a filename
         if (typeof (require) !== 'undefined') {
             // load the file using require
-            var module = require(object);
-            _import(module);
+            var _module = require(object);
+            math['import'](_module);
         }
         else {
             throw new Error('Cannot load file: require not available.');
@@ -42,14 +42,12 @@ function _import(object, override) {
                     }
                 }
                 else {
-                    _import(value);
+                    math['import'](value);
                 }
             }
         }
     }
-}
-
-math['import'] = _import;
+};
 
 /**
  * Check whether given object is a supported type
@@ -63,20 +61,3 @@ function isSupportedType(object) {
         (object instanceof Complex) || (object instanceof Unit);
     // TODO: add boolean?
 }
-
-/**
- * Function documentation
- */
-_import.doc = {
-    'name': 'import',
-    'category': 'Utils',
-    'syntax': [
-        'import(string)'
-    ],
-    'description': 'Import functions from a file.',
-    'examples': [
-        'import("numbers")',
-        'import("./mylib.js")'
-    ],
-    'seealso': []
-};

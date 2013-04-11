@@ -14,7 +14,7 @@
  * @param {*} args
  * @return {Unit} value
  */
-function unit(args) {
+math.unit = function unit(args) {
     switch(arguments.length) {
         case 1:
             // parse a string
@@ -43,6 +43,4 @@ function unit(args) {
         default:
             throw newArgumentsError('unit', arguments.length, 1, 2);
     }
-}
-
-math.unit = unit;
+};

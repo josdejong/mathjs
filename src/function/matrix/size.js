@@ -1,9 +1,9 @@
 /**
  * Calculate the size of a matrix. size(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
  */
-function size (x) {
+math.size = function size (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('size', arguments.length, 1);
     }
@@ -26,32 +26,8 @@ function size (x) {
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return size(x.valueOf());
+        return math.size(x.valueOf());
     }
 
     throw newUnsupportedTypeError('size', x);
-}
-
-math.size = size;
-
-/**
- * Function documentation
- */
-size.doc = {
-    'name': 'size',
-    'category': 'Numerics',
-    'syntax': [
-        'size(x)'
-    ],
-    'description': 'Calculate the size of a matrix.',
-    'examples': [
-        'size(2.3)',
-        'size("hello world")',
-        'a = [1, 2; 3, 4; 5, 6]',
-        'size(a)',
-        'size(1:6)'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'squeeze', 'transpose', 'zeros'
-    ]
 };

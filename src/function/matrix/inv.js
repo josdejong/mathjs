@@ -4,7 +4,7 @@
  * @param {Array | Matrix} x
  * @return {Array | Matrix} inv
  */
-function inv (x) {
+math.inv = function inv (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('inv', arguments.length, 1);
     }
@@ -62,9 +62,7 @@ function inv (x) {
             throw new RangeError('Matrix must be two dimensional ' +
                 '(size: ' + math.format(size) + ')');
     }
-}
-
-math.inv = inv;
+};
 
 /**
  * Calculate the inverse of a square matrix
@@ -88,7 +86,7 @@ function _inv (matrix, rows, cols){
             throw Error('Cannot calculate inverse, determinant is zero');
         }
         return [[
-            math.divide(1, value)
+            divide(1, value)
         ]];
     }
     else if (rows == 2) {
@@ -178,23 +176,3 @@ function _inv (matrix, rows, cols){
         return B;
     }
 }
-
-/**
- * Function documentation
- */
-inv.doc = {
-    'name': 'inv',
-    'category': 'Numerics',
-    'syntax': [
-        'inv(x)'
-    ],
-    'description': 'Calculate the inverse of a matrix',
-    'examples': [
-        'inv([1, 2; 3, 4])',
-        'inv(4)',
-        '1 / 4'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
-    ]
-};

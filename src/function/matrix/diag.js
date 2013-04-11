@@ -8,7 +8,7 @@
  * @param {Number} [k]
  * @return {Matrix} matrix
  */
-function diag (x, k) {
+math.diag = function diag (x, k) {
     var data, vector, i, iMax;
 
     if (arguments.length != 1 && arguments.length != 2) {
@@ -50,7 +50,7 @@ function diag (x, k) {
             data = matrix.valueOf();
             iMax = vector.length;
             for (i = 0; i < iMax; i++) {
-                data[i + kSub][i + kSuper] = clone(vector[i]);
+                data[i + kSub][i + kSuper] = math.clone(vector[i]);
             }
             return matrix;
         break;
@@ -61,7 +61,7 @@ function diag (x, k) {
             data = x.valueOf();
             iMax = Math.min(s[0] - kSub, s[1] - kSuper);
             for (i = 0; i < iMax; i++) {
-                vector[i] = clone(data[i + kSub][i + kSuper]);
+                vector[i] = math.clone(data[i + kSub][i + kSuper]);
             }
             return new Matrix(vector);
         break;
@@ -69,35 +69,4 @@ function diag (x, k) {
         default:
             throw new RangeError('Matrix for function diag must be 2 dimensional');
     }
-}
-
-math.diag = diag;
-
-/**
- * Function documentation
- */
-diag.doc = {
-    'name': 'diag',
-    'category': 'Matrix',
-    'syntax': [
-        'diag(x)',
-        'diag(x, k)'
-    ],
-    'description': 'Create a diagonal matrix or retrieve the diagonal ' +
-        'of a matrix. When x is a vector, a matrix with the vector values ' +
-        'on the diagonal will be returned. When x is a matrix, ' +
-        'a vector with the diagonal values of the matrix is returned.' +
-        'When k is provided, the k-th diagonal will be ' +
-        'filled in or retrieved, if k is positive, the values are placed ' +
-        'on the super diagonal. When k is negative, the values are placed ' +
-        'on the sub diagonal.',
-    'examples': [
-        'diag(1:4)',
-        'diag(1:4, 1)',
-        'a = [1, 2, 3; 4, 5, 6; 7, 8, 9]',
-        'diag(a)'
-    ],
-    'seealso': [
-        'concat', 'det', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
-    ]
 };

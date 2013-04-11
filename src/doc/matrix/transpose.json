@@ -1,0 +1,15 @@
+{
+    "name": "transpose",
+    "category": "Numerics",
+    "syntax": [
+        "transpose(x)"
+    ],
+    "description": "Transpose a matrix",
+    "examples": [
+        "a = [1, 2, 3; 4, 5, 6]",
+        "transpose(a)"
+    ],
+    "seealso": [
+        "concat", "det", "diag", "eye", "inv", "ones", "range", "size", "squeeze", "zeros"
+    ]
+}

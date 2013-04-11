@@ -101,7 +101,7 @@ Range.prototype.size = function () {
         end = Number(this.end),
         diff = end - start;
 
-    if (sign(step) == sign(diff)) {
+    if (math.sign(step) == math.sign(diff)) {
         len = Math.floor((diff) / step) + 1;
     }
     else if (diff == 0) {
@@ -231,10 +231,10 @@ Range.prototype.valueOf = function () {
  * @returns {String} str
  */
 Range.prototype.toString = function () {
-    var str = format(Number(this.start));
+    var str = math.format(Number(this.start));
     if (this.step != 1) {
-        str += ':' + format(Number(this.step));
+        str += ':' + math.format(Number(this.step));
     }
-    str += ':' + format(Number(this.end));
+    str += ':' + math.format(Number(this.end));
     return str;
 };

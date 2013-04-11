@@ -3,7 +3,7 @@
  * @param  {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-function unaryminus(x) {
+math.unaryminus = function unaryminus(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('unaryminus', arguments.length, 1);
     }
@@ -24,36 +24,13 @@ function unaryminus(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, unaryminus);
+        return util.map(x, math.unaryminus);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return unaryminus(x.valueOf());
+        return math.unaryminus(x.valueOf());
     }
 
     throw newUnsupportedTypeError('unaryminus', x);
-}
-
-math.unaryminus = unaryminus;
-
-/**
- * Function documentation
- */
-unaryminus.doc = {
-    'name': 'unaryminus',
-    'category': 'Operators',
-    'syntax': [
-        '-x',
-        'unaryminus(x)'
-    ],
-    'description':
-        'Inverse the sign of a value.',
-    'examples': [
-        '-4.5',
-        '-(-5.6)'
-    ],
-    'seealso': [
-        'add', 'subtract'
-    ]
 };

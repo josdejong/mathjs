@@ -3,7 +3,7 @@
  * @param {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function cos(x) {
+math.cos = function cos(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('cos', arguments.length, 1);
     }
@@ -28,39 +28,13 @@ function cos(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, cos);
+        return util.map(x, math.cos);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return cos(x.valueOf());
+        return math.cos(x.valueOf());
     }
 
     throw newUnsupportedTypeError('cos', x);
-}
-
-math.cos = cos;
-
-/**
- * Function documentation
- */
-cos.doc = {
-    'name': 'cos',
-    'category': 'Trigonometry',
-    'syntax': [
-        'cos(x)'
-    ],
-    'description': 'Compute the cosine of x in radians.',
-    'examples': [
-        'cos(2)',
-        'cos(pi / 4) ^ 2',
-        'cos(180 deg)',
-        'cos(60 deg)',
-        'sin(0.2)^2 + cos(0.2)^2'
-    ],
-    'seealso': [
-        'acos',
-        'sin',
-        'tan'
-    ]
 };

@@ -86,7 +86,7 @@ var util = (function () {
                 }
                 var cell = row[c];
                 if (cell != undefined) {
-                    str += format(cell);
+                    str += math.format(cell);
                 }
             }
         }
@@ -498,7 +498,7 @@ var util = (function () {
             if(newLen > array.length) {
                 // enlarge
                 for (var i = array.length; i < newLen; i++) {
-                    array[i] = defaultValue ? clone(defaultValue) : 0;
+                    array[i] = defaultValue ? math.clone(defaultValue) : 0;
                 }
             }
             else {

@@ -314,7 +314,7 @@
         }
 
         return true;
-    };
+    }
 
     /**
      * checks if the given char c is a letter (upper or lower case)
@@ -389,32 +389,6 @@
     }
 
     /**
-     * Parse assignment of ans.
-     * Ans is assigned when the expression itself is no variable or function
-     * assignment
-     * @param {Scope} scope
-     * @return {Node} node
-     * @private
-     */
-    function parse_ans (scope) {
-        var expression = parse_function_assignment(scope);
-
-        // TODO: not so nice having to specify some special types here...
-        if (!(expression instanceof Assignment)
-        // !(expression instanceof FunctionAssignment) &&  // TODO
-        // !(expression instanceof plot)                   // TODO
-            ) {
-            // create a variable definition for ans
-            var name = 'ans';
-            var params = undefined;
-            var link = scope.createDef(name);
-            return new Assignment(name, params, expression, link);
-        }
-
-        return expression;
-    }
-
-    /**
      * Parse a block with expressions. Expressions can be separated by a newline
      * character '\n', or by a semicolon ';'. In case of a semicolon, no output
      * of the preceding line is returned.
@@ -457,6 +431,32 @@
         }
 
         return node;
+    }
+
+    /**
+     * Parse assignment of ans.
+     * Ans is assigned when the expression itself is no variable or function
+     * assignment
+     * @param {Scope} scope
+     * @return {Node} node
+     * @private
+     */
+    function parse_ans (scope) {
+        var expression = parse_function_assignment(scope);
+
+        // TODO: not so nice having to specify some special types here...
+        if (!(expression instanceof Assignment)
+        // !(expression instanceof FunctionAssignment) &&  // TODO
+        // !(expression instanceof plot)                   // TODO
+            ) {
+            // create a variable definition for ans
+            var name = 'ans';
+            var params = undefined;
+            var link = scope.createDef(name);
+            return new Assignment(name, params, expression, link);
+        }
+
+        return expression;
     }
 
     /**
@@ -591,7 +591,7 @@
             }
 
             var name = 'range';
-            var fn = range;
+            var fn = math.range;
             node = new Symbol(name, fn, params);
         }
 
@@ -752,7 +752,7 @@
     function parse_unaryminus (scope) {
         if (token == '-') {
             var name = token;
-            var fn = unaryminus;
+            var fn = math.unaryminus;
             getToken();
             var params = [parse_pow(scope)];
 
@@ -785,7 +785,7 @@
         while (nodes.length) {
             var leftNode = nodes.pop();
             var name = '^';
-            var fn = pow;
+            var fn = math.pow;
             var params = [leftNode, node];
             node = new Symbol(name, fn, params);
         }
@@ -804,7 +804,7 @@
 
         while (token == '!') {
             var name = token;
-            var fn = factorial;
+            var fn = math.factorial;
             getToken();
             var params = [node];
 
@@ -825,7 +825,7 @@
 
         while (token == '\'') {
             var name = token;
-            var fn = transpose;
+            var fn = math.transpose;
             getToken();
             var params = [node];
 
@@ -902,8 +902,8 @@
 
             var link = scope.createLink(name);
             // TODO: split applying arguments from symbol?
-            var arguments = parse_arguments(scope);
-            var symbol = new Symbol(name, link, arguments);
+            var args = parse_arguments(scope);
+            var symbol = new Symbol(name, link, args);
 
             /* TODO: parse arguments
             // parse arguments
@@ -924,19 +924,19 @@
      * @private
      */
     function parse_arguments (scope) {
-        var arguments = [];
+        var args = [];
         if (token == '(') {
             // TODO: in case of Plot, create a new scope.
 
             getToken();
 
             if (token != ')') {
-                arguments.push(parse_range(scope));
+                args.push(parse_range(scope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
-                    arguments.push(parse_range(scope));
+                    args.push(parse_range(scope));
                 }
             }
 
@@ -946,7 +946,7 @@
             getToken();
         }
 
-        return arguments;
+        return args;
     }
 
     /**

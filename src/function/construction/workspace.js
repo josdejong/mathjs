@@ -29,8 +29,6 @@
  *
  * @return {math.expr.Workspace} Workspace
  */
-function workspace() {
+math.workspace = function workspace() {
     return new math.expr.Workspace();
-}
-
-math.workspace = workspace;
+};

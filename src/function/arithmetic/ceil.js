@@ -3,7 +3,7 @@
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function ceil(x) {
+math.ceil = function ceil(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('ceil', arguments.length, 1);
     }
@@ -20,36 +20,13 @@ function ceil(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, ceil);
+        return util.map(x, math.ceil);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return ceil(x.valueOf());
+        return math.ceil(x.valueOf());
     }
 
     throw newUnsupportedTypeError('ceil', x);
-}
-
-math.ceil = ceil;
-
-/**
- * Function documentation
- */
-ceil.doc = {
-    'name': 'ceil',
-    'category': 'Arithmetic',
-    'syntax': [
-        'ceil(x)'
-    ],
-    'description':
-        'Round a value towards plus infinity.' +
-            'If x is complex, both real and imaginary part are rounded ' +
-            'towards plus infinity.',
-    'examples': [
-        'ceil(3.2)',
-        'ceil(3.8)',
-        'ceil(-4.2)'
-    ],
-    'seealso': ['floor', 'fix', 'round']
 };

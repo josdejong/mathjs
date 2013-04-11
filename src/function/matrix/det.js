@@ -4,7 +4,7 @@
  * @param {Array | Matrix} x
  * @return {Number} determinant
  */
-function det (x) {
+math.det = function det (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('det', arguments.length, 1);
     }
@@ -45,9 +45,7 @@ function det (x) {
             throw new RangeError('Matrix must be two dimensional ' +
                 '(size: ' + math.format(size) + ')');
     }
-}
-
-math.det = det;
+};
 
 /**
  * Calculate the determinant of a matrix
@@ -115,22 +113,3 @@ function _minor(matrix, rows, cols, row, col) {
 
     return minor;
 }
-
-/**
- * Function documentation
- */
-det.doc = {
-    'name': 'det',
-    'category': 'Numerics',
-    'syntax': [
-        'det(x)'
-    ],
-    'description': 'Calculate the determinant of a matrix',
-    'examples': [
-        'det([1, 2; 3, 4])',
-        'det([-2, 2, 3; -1, 1, 3; 2, 0, -1])'
-    ],
-    'seealso': [
-        'concat', 'diag', 'eye', 'inv', 'range', 'size', 'squeeze', 'transpose', 'zeros'
-    ]
-};
