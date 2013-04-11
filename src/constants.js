@@ -10,7 +10,7 @@ math.PI         = Math.PI;
 math.SQRT1_2    = Math.SQRT1_2;
 math.SQRT2      = Math.SQRT2;
 
-math.I          = new Complex(0, -1);
+math.I          = new Complex(0, 1);
 
 // lower case constants
 math.pi        = math.PI;
