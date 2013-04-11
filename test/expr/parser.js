@@ -33,6 +33,11 @@ assert.deepEqual(parser.eval('[1,2;3,4]\' * [5,6;7,8]').valueOf(), [[26,30],[38,
 assert.deepEqual(parser.eval('[1,2;3,4] * [5,6;7,8]\'').valueOf(), [[17,23],[39,53]]);
 assert.deepEqual(parser.eval('[1,2;3,4]\'+2').valueOf(), [[3,5],[4,6]]);
 
+// test constants
+assert.deepEqual(parser.eval('i'), math.complex(0, 1));
+assert.deepEqual(parser.eval('pi'), Math.PI);
+
+
 // test function calls
 assert.equal(parser.eval('sqrt(4)'), 2);
 assert.equal(parser.eval('sqrt(6+3)'), 3);

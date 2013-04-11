@@ -395,6 +395,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 
 ### Utils
 
+- math.chain([x])
 - math.clone(x)
 - math.format([template, ] values)
 - math.import(filename | object, override)

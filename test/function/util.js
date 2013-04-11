@@ -3,6 +3,18 @@
 var assert = require('assert');
 var math = require('../../math.js');
 
+// test chain
+assert.ok(math.chain(45) instanceof math.type.Chain);
+assert.equal(math.chain(3).add(4).subtract(2).done(), 5);
+assert.deepEqual(math.chain(math.matrix([[1,2],[3,4]]))
+    .set([1,1], 8)
+    .multiply(3).done(), math.matrix([[24, 6], [9, 12]]));
+assert.deepEqual(math.chain([[1,2],[3,4]])
+    .set([1,1], 8)
+    .multiply(3).done(), [[24, 6], [9, 12]]);
+assert.deepEqual(math.chain().i.multiply(2).add(3).done(), math.complex(3, 2));
+assert.deepEqual(math.chain().pi.divide(4).sin().pow(2).format().done(), 0.5);
+
 // test clone
 var a = 1;
 var b = math.clone(a);
