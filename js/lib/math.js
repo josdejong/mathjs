@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.5.0
- * @date    2013-04-06
+ * @version 0.6.0
+ * @date    2013-04-13
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -26,6 +26,9 @@
  */
 
 (function() {
+
+// TODO: put "use strict"; here (but right now webstorms inspector starts
+// complaining on this issue: http://youtrack.jetbrains.com/issue/WEB-7485)
 
 /**
  * Define namespace
@@ -154,7 +157,7 @@ var util = (function () {
                 }
                 var cell = row[c];
                 if (cell != undefined) {
-                    str += format(cell);
+                    str += math.format(cell);
                 }
             }
         }
@@ -201,6 +204,17 @@ var util = (function () {
             }
         }
         return array;
+    };
+
+    /**
+     * Check if a text ends with a certain string.
+     * @param {String} text
+     * @param {String} search
+     */
+    util.endsWith = function(text, search) {
+        var start = text.length - search.length;
+        var end = text.length;
+        return (text.substring(start, end) === search);
     };
 
     /**
@@ -555,7 +569,7 @@ var util = (function () {
             if(newLen > array.length) {
                 // enlarge
                 for (var i = array.length; i < newLen; i++) {
-                    array[i] = defaultValue ? clone(defaultValue) : 0;
+                    array[i] = defaultValue ? math.clone(defaultValue) : 0;
                 }
             }
             else {
@@ -1104,35 +1118,6 @@ Complex.prototype.toString = function () {
 };
 
 /**
- * Type documentation
- */
-Complex.doc = {
-    'name': 'Complex',
-    'category': 'type',
-    'syntax': [
-        'a + bi',
-        'a + b * i'
-    ],
-    'description':
-        'A complex value a + bi, ' +
-            'where a is the real part and b is the complex part, ' +
-            'and i is the imaginary number defined as sqrt(-1).',
-    'examples': [
-        '2 + 3i',
-        'sqrt(-4)',
-        '(1.2 -5i) * 2'
-    ],
-    'seealso': [
-        'abs',
-        'arg',
-        'conj',
-        'im',
-        're'
-    ]
-};
-
-
-/**
  * @constructor Matrix
  *
  * A Matrix is a wrapper around an Array. A matrix can hold a multi dimensional
@@ -1270,7 +1255,7 @@ function _getScalar (data, index) {
     index.forEach(function (i) {
         data = _get(data, i);
     });
-    return clone(data);
+    return math.clone(data);
 }
 
 /**
@@ -1607,7 +1592,7 @@ function _init(array) {
  */
 Matrix.prototype.resize = function (size, defaultValue) {
     util.resize(this._data, size, defaultValue);
-    this._size = clone(size);
+    this._size = math.clone(size);
 };
 
 /**
@@ -1616,8 +1601,8 @@ Matrix.prototype.resize = function (size, defaultValue) {
  */
 Matrix.prototype.clone = function () {
     var matrix = new Matrix();
-    matrix._data = clone(this._data);
-    matrix._size = clone(this._size);
+    matrix._data = math.clone(this._data);
+    matrix._size = math.clone(this._size);
     return matrix;
 };
 
@@ -1654,7 +1639,7 @@ Matrix.prototype.map = function (callback) {
         }
     };
     matrix._data = recurse(this._data, 0);
-    matrix._size = clone(this._size);
+    matrix._size = math.clone(this._size);
 
     return matrix;
 };
@@ -1697,7 +1682,7 @@ Matrix.prototype.toScalar = function () {
         return null;
     }
     else {
-        return clone(scalar);
+        return math.clone(scalar);
     }
 };
 
@@ -1782,7 +1767,7 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {
-    return clone(this._data);
+    return math.clone(this._data);
 };
 
 /**
@@ -1927,7 +1912,7 @@ Range.prototype.size = function () {
         end = Number(this.end),
         diff = end - start;
 
-    if (sign(step) == sign(diff)) {
+    if (math.sign(step) == math.sign(diff)) {
         len = Math.floor((diff) / step) + 1;
     }
     else if (diff == 0) {
@@ -2057,13 +2042,150 @@ Range.prototype.valueOf = function () {
  * @returns {String} str
  */
 Range.prototype.toString = function () {
-    var str = format(Number(this.start));
+    var str = math.format(Number(this.start));
     if (this.step != 1) {
-        str += ':' + format(Number(this.step));
+        str += ':' + math.format(Number(this.step));
     }
-    str += ':' + format(Number(this.end));
+    str += ':' + math.format(Number(this.end));
     return str;
 };
+/**
+ * @constructor math.type.Selector
+ * Wrap any value in a Selector, allowing to perform chained operations on
+ * the value.
+ *
+ * All methods available in the math.js library can be called upon the selector,
+ * and then will be evaluated with the value itself as first argument.
+ * The selector can be closed by executing selector.done(), which will return
+ * the final value.
+ *
+ * The Selector has a number of special functions:
+ * - done()     Finalize the chained operation and return the selectors value.
+ * - valueOf()  The same as done()
+ * - toString() Executes math.format() onto the selectors value, returning
+ *              a string representation of the value.
+ * - get(...)   Get a subselection of the selectors value. Only applicable when
+ *              the value has a method get, for example when value is a Matrix
+ *              or Array.
+ * - set(...)   Replace a subselection of the selectors value. Only applicable
+ *              when the value has a method get, for example when value is a
+ *              Matrix or Array.
+ *
+ * @param {*} [value]
+ */
+math.type.Selector = function Selector (value) {
+    if (!(this instanceof Selector)) {
+        throw new SyntaxError(
+            'Selector constructor must be called with the new operator');
+    }
+
+    if (value instanceof math.type.Selector) {
+        this.value = value.value;
+    }
+    else {
+        this.value = value || undefined;
+    }
+};
+
+math.type.Selector.prototype = {
+    /**
+     * Close the selector. Returns the final value.
+     * Does the same as method valueOf()
+     * @returns {*} value
+     */
+    done: function () {
+        return this.value;
+    },
+
+    /**
+     * Get a submatrix or subselection from current value.
+     * Only applicable when the current value has a method get.
+     */
+    get: function () {
+        var value = this.value;
+        if (!value) {
+            throw Error('Selector value is undefined');
+        }
+
+        if (value.get) {
+            return new math.type.Selector(value.get.apply(value, arguments));
+        }
+
+        if (value instanceof Array) {
+            // convert to matrix, evaluate, and then back to Array
+            value = new Matrix(value);
+            return new math.type.Selector(
+                value.get.apply(value, arguments).valueOf()
+            );
+        }
+
+        throw Error('Selector value has no method get');
+    },
+
+    /**
+     * Set a submatrix or subselection on current value.
+     * Only applicable when the current value has a method set.
+     */
+    set: function () {
+        var value = this.value;
+        if (!value) {
+            throw Error('Selector value is undefined');
+        }
+
+        if (value.set) {
+            return new math.type.Selector(value.set.apply(value, arguments));
+        }
+
+        if (value instanceof Array) {
+            // convert to matrix, evaluate, and then back to Array
+            value = new Matrix(value);
+            return new math.type.Selector(
+                value.set.apply(value, arguments).valueOf()
+            );
+        }
+
+        throw Error('Selector value has no method set');
+    },
+
+    /**
+     * Close the selector. Returns the final value.
+     * Does the same as method done()
+     * @returns {*} value
+     */
+    valueOf: function () {
+        return this.value;
+    },
+
+    /**
+     * Get the string representation of the value in the selector
+     * @returns {String}
+     */
+    toString: function () {
+        return math.format(this.value);
+    }
+};
+
+/**
+ * Create a proxy method for the selector
+ * @param {String} name
+ * @param {*} value       The value or function to be proxied
+ */
+function createSelectorProxy(name, value) {
+    var Selector = math.type.Selector;
+    var slice = Array.prototype.slice;
+    if (typeof value === 'function') {
+        // a function
+        Selector.prototype[name] = function () {
+            var args = [this.value].concat(slice.call(arguments, 0));
+            return new Selector(value.apply(this, args));
+        }
+    }
+    else {
+        // a constant
+        Selector.prototype[name] = new Selector(value);
+    }
+}
+
 /**
  * Utility functions for Strings
  */
@@ -2105,48 +2227,31 @@ function Unit(value, unit) {
         throw new Error('Second parameter in Unit constructor must be a string');
     }
 
-    this.value = 1;
-    this.unit = Unit.UNIT_NONE;
-    this.prefix = Unit.PREFIX_NONE;  // link to a list with supported prefixes
-
-    this.hasUnit = false;
-    this.hasValue = false;
-    this.fixPrefix = false;  // is set true by the method "x In unit"s
-
     if (unit != null) {
         // find the unit and prefix from the string
-        var UNITS = Unit.UNITS;
-        var found = false;
-        for (var i = 0, iMax = UNITS.length; i < iMax; i++) {
-            var UNIT = UNITS[i];
-
-            if (Unit.endsWith(unit, UNIT.name) ) {
-                var prefixLen = (unit.length - UNIT.name.length);
-                var prefixName = unit.substring(0, prefixLen);
-                var prefix = UNIT.prefixes[prefixName];
-                if (prefix !== undefined) {
-                    // store unit, prefix, and value
-                    this.unit = UNIT;
-                    this.prefix = prefix;
-                    this.hasUnit = true;
-
-                    found = true;
-                    break;
-                }
-            }
-        }
-
-        if (!found) {
+        var res = _findUnit(unit);
+        if (!res) {
             throw new Error('String "' + unit + '" is no unit');
         }
+        this.unit = res.unit;
+        this.prefix = res.prefix;
+        this.hasUnit = true;
+    }
+    else {
+        this.unit = Unit.UNIT_NONE;
+        this.prefix = Unit.PREFIX_NONE;  // link to a list with supported prefixes
+        this.hasUnit = false;
     }
 
     if (value != null) {
         this.value = this._normalize(value);
         this.hasValue = true;
+        this.fixPrefix = false;  // is set true by the methods Unit.in and math.in
     }
     else {
         this.value = this._normalize(1);
+        this.hasValue = false;
+        this.fixPrefix = true;
     }
 }
 
@@ -2293,7 +2398,7 @@ math.type.Unit = Unit;
 })();
 
 /**
- * Test whether value is a Unit
+ * Test whether value is of type Unit
  * @param {*} value
  * @return {Boolean} isUnit
  */
@@ -2318,18 +2423,6 @@ Unit.prototype.clone = function () {
 };
 
 /**
- * check if a text ends with a certain string
- * @param {String} text
- * @param {String} search
- */
-// TODO: put the endsWith method in another
-Unit.endsWith = function(text, search) {
-    var start = text.length - search.length;
-    var end = text.length;
-    return (text.substring(start, end) === search);
-};
-
-/**
  * Normalize a value, based on its currently set unit
  * @param {Number} value
  * @return {Number} normalized value
@@ -2343,12 +2436,12 @@ Unit.prototype._normalize = function(value) {
 /**
  * Unnormalize a value, based on its currently set unit
  * @param {Number} value
- * @param {Number} prefixValue    Optional prefixvalue to be used
+ * @param {Number} [prefixValue]    Optional prefix value to be used
  * @return {Number} unnormalized value
  * @private
  */
 Unit.prototype._unnormalize = function (value, prefixValue) {
-    if (prefixValue === undefined) {
+    if (prefixValue == undefined) {
         return value / this.unit.value / this.prefix.value -
             this.unit.offset;
     }
@@ -2359,31 +2452,42 @@ Unit.prototype._unnormalize = function (value, prefixValue) {
 };
 
 /**
- * Test if the given expression is a unit
- * @param {String} unit   A unit with prefix, like "cm"
- * @return {Boolean}      true if the given string is a unit
+ * Find a unit from a string
+ * @param {String} str              A string like 'cm' or 'inch'
+ * @returns {Object | null} result  When found, an object with fields unit and
+ *                                  prefix is returned. Else, null is returned.
+ * @private
  */
-Unit.isUnit = function (unit) {
+function _findUnit(str) {
     var UNITS = Unit.UNITS;
-    var num = UNITS.length;
-    for (var i = 0; i < num; i++) {
+    for (var i = 0, iMax = UNITS.length; i < iMax; i++) {
         var UNIT = UNITS[i];
 
-        if (Unit.endsWith(unit, UNIT.name) ) {
-            var prefixLen = (unit.length - UNIT.name.length);
-            if (prefixLen == 0) {
-                return true;
-            }
-
-            var prefixName = unit.substring(0, prefixLen);
+        if (util.endsWith(str, UNIT.name) ) {
+            var prefixLen = (str.length - UNIT.name.length);
+            var prefixName = str.substring(0, prefixLen);
             var prefix = UNIT.prefixes[prefixName];
             if (prefix !== undefined) {
-                return true;
+                // store unit, prefix, and value
+                return {
+                    unit: UNIT,
+                    prefix: prefix
+                };
             }
         }
     }
 
-    return false;
+    return null;
+}
+
+/**
+ * Test if the given expression is a unit.
+ * The unit can have a prefix but cannot have a value.
+ * @param {String} unit   A plain unit without value. Can have prefix, like "cm"
+ * @return {Boolean}      true if the given string is a unit
+ */
+Unit.isPlainUnit = function (unit) {
+    return (_findUnit(unit) != null);
 };
 
 /**
@@ -2416,37 +2520,62 @@ Unit.prototype.equals = function(other) {
 };
 
 /**
+ * Create a clone of this unit with a representation
+ * @param {String | Unit} plainUnit   A plain unit, without value. Can have prefix, like "cm"
+ * @returns {Unit} unit having fixed, specified unit
+ */
+Unit.prototype.in = function (plainUnit) {
+    var other;
+    if (isString(plainUnit)) {
+        other = new Unit(null, plainUnit);
+
+        if (!this.equalBase(other)) {
+            throw new Error('Units do not match');
+        }
+
+        other.value = this.value;
+        return other;
+    }
+    else if (plainUnit instanceof Unit) {
+        if (!this.equalBase(plainUnit)) {
+            throw new Error('Units do not match');
+        }
+        if (plainUnit.hasValue) {
+            throw new Error('Cannot convert to a unit with a value');
+        }
+        if (!plainUnit.hasUnit) {
+            throw new Error('Unit expected on the right hand side of function in');
+        }
+
+        other = plainUnit.clone();
+        other.value = this.value;
+        other.fixPrefix = true;
+        return other;
+    }
+    else {
+        throw new Error('String or Unit expected as parameter');
+    }
+};
+
+/**
+ * Return the value of the unit when represented with given plain unit
+ * @param {String | Unit} plainUnit    For example 'cm' or 'inch'
+ * @return {Number} value
+ */
+Unit.prototype.toNumber = function (plainUnit) {
+    var other = this.in(plainUnit);
+    var prefix = this.fixPrefix ? other._bestPrefix() : other.prefix;
+    return other._unnormalize(other.value, prefix.value);
+};
+
+/**
  * Get string representation
  * @return {String}
  */
 Unit.prototype.toString = function() {
     var value;
     if (!this.fixPrefix) {
-        // find the best prefix value (resulting in the value of which
-        // the absolute value of the log10 is closest to zero,
-        // though with a little offset of 1.2 for nicer values: you get a
-        // sequence 1mm 100mm 500mm 0.6m 1m 10m 100m 500m 0.6km 1km ...
-        var absValue = Math.abs(this.value / this.unit.value);
-        var bestPrefix = Unit.PREFIX_NONE;
-        var bestDiff = Math.abs(
-            Math.log(absValue / bestPrefix.value) / Math.LN10 - 1.2);
-
-        var prefixes = this.unit.prefixes;
-        for (var p in prefixes) {
-            if (prefixes.hasOwnProperty(p)) {
-                var prefix = prefixes[p];
-                if (prefix.scientific) {
-                    var diff = Math.abs(
-                        Math.log(absValue / prefix.value) / Math.LN10 - 1.2);
-
-                    if (diff < bestDiff) {
-                        bestPrefix = prefix;
-                        bestDiff = diff;
-                    }
-                }
-            }
-        }
-
+        var bestPrefix = this._bestPrefix();
         value = this._unnormalize(this.value, bestPrefix.value);
         return util.formatNumber(value) + ' ' + bestPrefix.name + this.unit.name;
     }
@@ -2454,6 +2583,40 @@ Unit.prototype.toString = function() {
         value = this._unnormalize(this.value);
         return util.formatNumber(value) + ' ' + this.prefix.name + this.unit.name;
     }
+};
+
+/**
+ * Calculate the best prefix using current value.
+ * @returns {Object} prefix
+ * @private
+ */
+Unit.prototype._bestPrefix = function () {
+    // find the best prefix value (resulting in the value of which
+    // the absolute value of the log10 is closest to zero,
+    // though with a little offset of 1.2 for nicer values: you get a
+    // sequence 1mm 100mm 500mm 0.6m 1m 10m 100m 500m 0.6km 1km ...
+    var absValue = Math.abs(this.value / this.unit.value);
+    var bestPrefix = Unit.PREFIX_NONE;
+    var bestDiff = Math.abs(
+        Math.log(absValue / bestPrefix.value) / Math.LN10 - 1.2);
+
+    var prefixes = this.unit.prefixes;
+    for (var p in prefixes) {
+        if (prefixes.hasOwnProperty(p)) {
+            var prefix = prefixes[p];
+            if (prefix.scientific) {
+                var diff = Math.abs(
+                    Math.log(absValue / prefix.value) / Math.LN10 - 1.2);
+
+                if (diff < bestDiff) {
+                    bestPrefix = prefix;
+                    bestDiff = diff;
+                }
+            }
+        }
+    }
+
+    return bestPrefix;
 };
 
 Unit.PREFIXES = {
@@ -2741,7 +2904,7 @@ math.PI         = Math.PI;
 math.SQRT1_2    = Math.SQRT1_2;
 math.SQRT2      = Math.SQRT2;
 
-math.I          = new Complex(0, -1);
+math.I          = new Complex(0, 1);
 
 // lower case constants
 math.pi        = math.PI;
@@ -2763,13 +2926,13 @@ math.i         = math.I;
 function newUnsupportedTypeError(name, value1, value2) {
     var msg = undefined;
     if (arguments.length == 2) {
-        var t = _typeof(value1);
+        var t = math.typeof(value1);
         msg = 'Function ' + name + ' does not support a parameter of type ' + t;
     }
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
-            types.push(_typeof(arguments[i]));
+            types.push(math.typeof(arguments[i]));
         }
         msg = 'Function ' + name + ' does not support a parameters of type ' + types.join(', ');
     }
@@ -2800,7 +2963,7 @@ function newArgumentsError(name, count, min, max) {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function abs(x) {
+math.abs = function abs(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('abs', arguments.length, 1);
     }
@@ -2814,34 +2977,15 @@ function abs(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, abs);
+        return util.map(x, math.abs);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return abs(x.valueOf());
+        return math.abs(x.valueOf());
     }
 
     throw newUnsupportedTypeError('abs', x);
-}
-
-math.abs = abs;
-
-/**
- * Function documentation
- */
-abs.doc = {
-    'name': 'abs',
-    'category': 'Arithmetic',
-    'syntax': [
-        'abs(x)'
-    ],
-    'description': 'Compute the absolute value.',
-    'examples': [
-        'abs(3.5)',
-        'abs(-4.2)'
-    ],
-    'seealso': ['sign']
 };
 
 /**
@@ -2850,7 +2994,7 @@ abs.doc = {
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Number | Complex | Unit | String | Array | Matrix} res
  */
-function add(x, y) {
+math.add = function add(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('add', arguments.length, 2);
     }
@@ -2911,40 +3055,15 @@ function add(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, add);
+        return util.map2(x, y, math.add);
     }
 
-    if (x.valueOf() !== x) {
+    if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive value
-        return add(x.valueOf(), y.valueOf());
+        return math.add(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('add', x, y);
-}
-
-math.add = add;
-
-/**
- * Function documentation
- */
-add.doc = {
-    'name': 'add',
-    'category': 'Operators',
-    'syntax': [
-        'x + y',
-        'add(x, y)'
-    ],
-    'description': 'Add two values.',
-    'examples': [
-        '2.1 + 3.6',
-        'ans - 3.6',
-        '3 + 2i',
-        '"hello" + " world"',
-        '3 cm + 2 inch'
-    ],
-    'seealso': [
-        'subtract'
-    ]
 };
 
 /**
@@ -2952,7 +3071,7 @@ add.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function ceil(x) {
+math.ceil = function ceil(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('ceil', arguments.length, 1);
     }
@@ -2969,38 +3088,15 @@ function ceil(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, ceil);
+        return util.map(x, math.ceil);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return ceil(x.valueOf());
+        return math.ceil(x.valueOf());
     }
 
     throw newUnsupportedTypeError('ceil', x);
-}
-
-math.ceil = ceil;
-
-/**
- * Function documentation
- */
-ceil.doc = {
-    'name': 'ceil',
-    'category': 'Arithmetic',
-    'syntax': [
-        'ceil(x)'
-    ],
-    'description':
-        'Round a value towards plus infinity.' +
-            'If x is complex, both real and imaginary part are rounded ' +
-            'towards plus infinity.',
-    'examples': [
-        'ceil(3.2)',
-        'ceil(3.8)',
-        'ceil(-4.2)'
-    ],
-    'seealso': ['floor', 'fix', 'round']
 };
 
 /**
@@ -3008,7 +3104,7 @@ ceil.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function cube(x) {
+math.cube = function cube(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('cube', arguments.length, 1);
     }
@@ -3018,44 +3114,19 @@ function cube(x) {
     }
 
     if (x instanceof Complex) {
-        return multiply(multiply(x, x), x);
+        return math.multiply(math.multiply(x, x), x);
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return multiply(multiply(x, x), x);
+        return math.multiply(math.multiply(x, x), x);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return cube(x.valueOf());
+        return math.cube(x.valueOf());
     }
 
     throw newUnsupportedTypeError('cube', x);
-}
-
-math.cube = cube;
-
-/**
- * Function documentation
- */
-cube.doc = {
-    'name': 'cube',
-    'category': 'Arithmetic',
-    'syntax': [
-        'cube(x)'
-    ],
-    'description': 'Compute the cube of a value. ' +
-        'The cube of x is x * x * x.',
-    'examples': [
-        'cube(2)',
-        '2^3',
-        '2 * 2 * 2'
-    ],
-    'seealso': [
-        'multiply',
-        'square',
-        'pow'
-    ]
 };
 
 /**
@@ -3064,7 +3135,7 @@ cube.doc = {
  * @param  {Number | Complex} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-function divide(x, y) {
+math.divide = function divide(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('divide', arguments.length, 2);
     }
@@ -3109,7 +3180,7 @@ function divide(x, y) {
         }
         else {
             // matrix / scalar
-            return util.map2(x, y, divide);
+            return util.map2(x, y, math.divide);
         }
     }
 
@@ -3120,11 +3191,11 @@ function divide(x, y) {
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive value
-        return divide(x.valueOf(), y.valueOf());
+        return math.divide(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('divide', x, y);
-}
+};
 
 /**
  * Divide two complex numbers. x / y or divide(x, y)
@@ -3141,32 +3212,6 @@ function _divideComplex (x, y) {
     );
 }
 
-math.divide = divide;
-
-/**
- * Function documentation
- */
-divide.doc = {
-    'name': 'divide',
-    'category': 'Operators',
-    'syntax': [
-        'x / y',
-        'divide(x, y)'
-    ],
-    'description': 'Divide two values.',
-    'examples': [
-        '2 / 3',
-        'ans * 3',
-        '4.5 / 2',
-        '3 + 4 / 2',
-        '(3 + 4) / 2',
-        '18 km / 4.5'
-    ],
-    'seealso': [
-        'multiply'
-    ]
-};
-
 /**
  * Check if value x equals y, x == y
  * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
@@ -3174,7 +3219,7 @@ divide.doc = {
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix} res
  */
-function equal(x, y) {
+math.equal = function equal(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('equal', arguments.length, 2);
     }
@@ -3209,7 +3254,7 @@ function equal(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, equal);
+        return util.map2(x, y, math.equal);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -3218,34 +3263,6 @@ function equal(x, y) {
     }
 
     throw newUnsupportedTypeError('equal', x, y);
-}
-
-math.equal = equal;
-
-/**
- * Function documentation
- */
-equal.doc = {
-    'name': 'equal',
-    'category': 'Operators',
-    'syntax': [
-        'x == y',
-        'equal(x, y)'
-    ],
-    'description':
-        'Check equality of two values. ' +
-            'Returns 1 if the values are equal, and 0 if not.',
-    'examples': [
-        '2+2 == 3',
-        '2+2 == 4',
-        'a = 3.2',
-        'b = 6-2.8',
-        'a == b',
-        '50cm == 0.5m'
-    ],
-    'seealso': [
-        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
-    ]
 };
 
 /**
@@ -3253,7 +3270,7 @@ equal.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function exp (x) {
+math.exp = function exp (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('exp', arguments.length, 1);
     }
@@ -3270,48 +3287,23 @@ function exp (x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, exp);
+        return util.map(x, math.exp);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return exp(x.valueOf());
+        return math.exp(x.valueOf());
     }
 
     throw newUnsupportedTypeError('exp', x);
-}
-
-math.exp = exp;
-
-/**
- * Function documentation
- */
-exp.doc = {
-    'name': 'exp',
-    'category': 'Arithmetic',
-    'syntax': [
-        'exp(x)'
-    ],
-    'description': 'Calculate the exponent of a value.',
-    'examples': [
-        'exp(1.3)',
-        'e ^ 1.3',
-        'log(exp(1.3))',
-        'x = 2.4',
-        '(exp(i*x) == cos(x) + i*sin(x))   # Euler\'s formula'
-    ],
-    'seealso': [
-        'square',
-        'multiply',
-        'log'
-    ]
 };
+
 /**
  * Round a value towards zero, fix(x)
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function fix(x) {
+math.fix = function fix(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('fix', arguments.length, 1);
     }
@@ -3328,39 +3320,15 @@ function fix(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, fix);
+        return util.map(x, math.fix);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return fix(x.valueOf());
+        return math.fix(x.valueOf());
     }
 
     throw newUnsupportedTypeError('fix', x);
-}
-
-math.fix = fix;
-
-/**
- * Function documentation
- */
-fix.doc = {
-    'name': 'fix',
-    'category': 'Arithmetic',
-    'syntax': [
-        'fix(x)'
-    ],
-    'description':
-        'Round a value towards zero.' +
-            'If x is complex, both real and imaginary part are rounded ' +
-            'towards zero.',
-    'examples': [
-        'fix(3.2)',
-        'fix(3.8)',
-        'fix(-4.2)',
-        'fix(-4.8)'
-    ],
-    'seealso': ['ceil', 'floor', 'round']
 };
 
 /**
@@ -3368,7 +3336,7 @@ fix.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function floor(x) {
+math.floor = function floor(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('floor', arguments.length, 1);
     }
@@ -3385,38 +3353,69 @@ function floor(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, floor);
+        return util.map(x, math.floor);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return floor(x.valueOf());
+        return math.floor(x.valueOf());
     }
 
     throw newUnsupportedTypeError('floor', x);
-}
-
-math.floor = floor;
+};
 
 /**
- * Function documentation
+ * Calculate the greatest common divisor for two or more values or arrays.
+ *     gcd(a, b)
+ *     gcd(a, b, c, ...)
+ * @param {... Number | Array | Matrix} args    two or more integer numbers
+ * @return {Number | Array | Matrix} greatest common divisor
  */
-floor.doc = {
-    'name': 'floor',
-    'category': 'Arithmetic',
-    'syntax': [
-        'floor(x)'
-    ],
-    'description':
-        'Round a value towards minus infinity.' +
-            'If x is complex, both real and imaginary part are rounded ' +
-            'towards minus infinity.',
-    'examples': [
-        'floor(3.2)',
-        'floor(3.8)',
-        'floor(-4.2)'
-    ],
-    'seealso': ['ceil', 'fix', 'round']
+math.gcd = function gcd(args) {
+    var a = arguments[0],
+        b = arguments[1],
+        t;
+
+    if (arguments.length == 2) {
+        // two arguments
+        if (isNumber(a) && isNumber(b)) {
+            if (!isInteger(a) || !isInteger(b)) {
+                throw new Error('Parameters in function gcd must be integer numbers');
+            }
+
+            // http://en.wikipedia.org/wiki/Euclidean_algorithm
+            while (b != 0) {
+                t = b;
+                b = a % t;
+                a = t;
+            }
+            return Math.abs(a);
+        }
+
+        // evaluate gcd element wise
+        if (a instanceof Array || a instanceof Matrix ||
+            b instanceof Array || b instanceof Matrix) {
+            return util.map2(a, b, math.gcd);
+        }
+
+        if (a.valueOf() !== a || b.valueOf() !== b) {
+            // fallback on the objects primitive value
+            return math.gcd(a.valueOf(), b.valueOf());
+        }
+
+        throw newUnsupportedTypeError('gcd', a, b);
+    }
+
+    if (arguments.length > 2) {
+        // multiple arguments. Evaluate them iteratively
+        for (var i = 1; i < arguments.length; i++) {
+            a = math.gcd(a, arguments[i]);
+        }
+        return a;
+    }
+
+    // zero or one argument
+    throw new SyntaxError('Function gcd expects two or more arguments');
 };
 
 /**
@@ -3426,7 +3425,7 @@ floor.doc = {
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix | Range} res
  */
-function larger(x, y) {
+math.larger = function larger(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('larger', arguments.length, 2);
     }
@@ -3436,15 +3435,15 @@ function larger(x, y) {
             return x > y;
         }
         else if (y instanceof Complex) {
-            return x > abs(y);
+            return x > math.abs(y);
         }
     }
     if (x instanceof Complex) {
         if (isNumber(y)) {
-            return abs(x) > y;
+            return math.abs(x) > y;
         }
         else if (y instanceof Complex) {
-            return abs(x) > abs(y);
+            return math.abs(x) > math.abs(y);
         }
     }
 
@@ -3461,44 +3460,15 @@ function larger(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, larger);
+        return util.map2(x, y, math.larger);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return larger(x.valueOf(), y.valueOf());
+        return math.larger(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('larger', x, y);
-}
-
-math.larger = larger;
-
-/**
- * Function documentation
- */
-larger.doc = {
-    'name': 'larger',
-    'category': 'Operators',
-    'syntax': [
-        'x > y',
-        'larger(x, y)'
-    ],
-    'description':
-        'Check if value x is larger than y. ' +
-        'Returns 1 if x is larger than y, and 0 if not.',
-    'examples': [
-        '2 > 3',
-        '5 > 2*2',
-        'a = 3.3',
-        'b = 6-2.8',
-        '(a > b)',
-        '(b < a)',
-        '5 cm > 2 inch'
-    ],
-    'seealso': [
-        'equal', 'unequal', 'smaller', 'smallereq', 'largereq'
-    ]
 };
 
 /**
@@ -3508,7 +3478,7 @@ larger.doc = {
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix} res
  */
-function largereq(x, y) {
+math.largereq = function largereq(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('largereq', arguments.length, 2);
     }
@@ -3518,15 +3488,15 @@ function largereq(x, y) {
             return x >= y;
         }
         else if (y instanceof Complex) {
-            return x >= abs(y);
+            return x >= math.abs(y);
         }
     }
     if (x instanceof Complex) {
         if (isNumber(y)) {
-            return abs(x) >= y;
+            return math.abs(x) >= y;
         }
         else if (y instanceof Complex) {
-            return abs(x) >= abs(y);
+            return math.abs(x) >= math.abs(y);
         }
     }
 
@@ -3543,42 +3513,73 @@ function largereq(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, largereq);
+        return util.map2(x, y, math.largereq);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return largereq(x.valueOf(), y.valueOf());
+        return math.largereq(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('largereq', x, y);
-}
-
-math.largereq = largereq;
+};
 
 /**
- * Function documentation
+ * Calculate the least common multiple for two or more values or arrays.
+ *     lcm(a, b)
+ *     lcm(a, b, c, ...)
+ * lcm is defined as:
+ *     lcm(a, b) = abs(a * b) / gcd(a, b)
+ * @param {... Number | Array | Matrix} args    two or more integer numbers
+ * @return {Number | Array | Matrix} least common multiple
  */
-largereq.doc = {
-    'name': 'largereq',
-    'category': 'Operators',
-    'syntax': [
-        'x >= y',
-        'largereq(x, y)'
-    ],
-    'description':
-        'Check if value x is larger or equal to y. ' +
-        'Returns 1 if x is larger or equal to y, and 0 if not.',
-    'examples': [
-        '2 > 1+1',
-        '2 >= 1+1',
-        'a = 3.2',
-        'b = 6-2.8',
-        '(a > b)'
-    ],
-    'seealso': [
-        'equal', 'unequal', 'smallereq', 'smaller', 'largereq'
-    ]
+math.lcm = function lcm(args) {
+    var a = arguments[0],
+        b = arguments[1],
+        t;
+
+    if (arguments.length == 2) {
+        // two arguments
+        if (isNumber(a) && isNumber(b)) {
+            if (!isInteger(a) || !isInteger(b)) {
+                throw new Error('Parameters in function lcm must be integer numbers');
+            }
+
+            // http://en.wikipedia.org/wiki/Euclidean_algorithm
+            // evaluate gcd here inline to reduce overhead
+            var prod = a * b;
+            while (b != 0) {
+                t = b;
+                b = a % t;
+                a = t;
+            }
+            return Math.abs(prod / a);
+        }
+
+        // evaluate lcm element wise
+        if (a instanceof Array || a instanceof Matrix ||
+            b instanceof Array || b instanceof Matrix) {
+            return util.map2(a, b, math.lcm);
+        }
+
+        if (a.valueOf() !== a || b.valueOf() !== b) {
+            // fallback on the objects primitive value
+            return math.lcm(a.valueOf(), b.valueOf());
+        }
+
+        throw newUnsupportedTypeError('lcm', a, b);
+    }
+
+    if (arguments.length > 2) {
+        // multiple arguments. Evaluate them iteratively
+        for (var i = 1; i < arguments.length; i++) {
+            a = math.lcm(a, arguments[i]);
+        }
+        return a;
+    }
+
+    // zero or one argument
+    throw new SyntaxError('Function lcm expects two or more arguments');
 };
 
 /**
@@ -3589,7 +3590,7 @@ largereq.doc = {
  * @param {Number | Complex} [base]
  * @return {Number | Complex | Array | Matrix} res
  */
-function log(x, base) {
+math.log = function log(x, base) {
     if (arguments.length != 1 && arguments.length != 2) {
         throw newArgumentsError('log', arguments.length, 1, 2);
     }
@@ -3602,7 +3603,7 @@ function log(x, base) {
             }
             else {
                 // negative value -> complex value computation
-                return log(new Complex(x, 0));
+                return math.log(new Complex(x, 0));
             }
         }
 
@@ -3614,52 +3615,20 @@ function log(x, base) {
         }
 
         if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-            return util.map(x, log);
+            return util.map(x, math.log);
         }
     }
     else {
         // calculate logarithm for a specified base, log(x, base)
-        return divide(log(x), log(base));
+        return math.divide(math.log(x), math.log(base));
     }
 
     if (x.valueOf() !== x || base.valueOf() !== base) {
         // fallback on the objects primitive values
-        return log(x.valueOf(), base.valueOf());
+        return math.log(x.valueOf(), base.valueOf());
     }
 
     throw newUnsupportedTypeError('log', x, base);
-}
-
-math.log = log;
-
-/**
- * Function documentation
- */
-log.doc = {
-    'name': 'log',
-    'category': 'Arithmetic',
-    'syntax': [
-        'log(x)',
-        'log(x, base)'
-    ],
-    'description': 'Compute the logarithm of a value. ' +
-        'If no base is provided, the natural logarithm of x is calculated. ' +
-        'If base if provided, the logarithm is calculated for the specified base. ' +
-        'log(x, base) is defined as log(x) / log(base).',
-    'examples': [
-        'log(3.5)',
-        'a = log(2.4)',
-        'exp(a)',
-        '10 ^ 3',
-        'log(1000, 10)',
-        'log(1000) / log(10)',
-        'b = logb(1024, 2)',
-        '2 ^ b'
-    ],
-    'seealso': [
-        'exp',
-        'log10'
-    ]
 };
 
 /**
@@ -3667,7 +3636,7 @@ log.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function log10(x) {
+math.log10 = function log10(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('log10', arguments.length, 1);
     }
@@ -3678,7 +3647,7 @@ function log10(x) {
         }
         else {
             // negative value -> complex value computation
-            return log10(new Complex(x, 0));
+            return math.log10(new Complex(x, 0));
         }
     }
 
@@ -3690,40 +3659,15 @@ function log10(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, log10);
+        return util.map(x, math.log10);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return log10(x.valueOf());
+        return math.log10(x.valueOf());
     }
 
     throw newUnsupportedTypeError('log10', x);
-}
-
-math.log10 = log10;
-
-/**
- * Function documentation
- */
-log10.doc = {
-    'name': 'log10',
-    'category': 'Arithmetic',
-    'syntax': [
-        'log10(x)'
-    ],
-    'description': 'Compute the 10-base logarithm of a value.',
-    'examples': [
-        'log10(1000)',
-        '10 ^ 3',
-        'log10(0.01)',
-        'log(1000) / log(10)',
-        'log(1000, 10)'
-    ],
-    'seealso': [
-        'exp',
-        'log'
-    ]
 };
 
 /**
@@ -3732,7 +3676,7 @@ log10.doc = {
  * @param  {Number | Complex | Array | Matrix | Range} y
  * @return {Number | Array | Matrix} res
  */
-function mod(x, y) {
+math.mod = function mod(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('mod', arguments.length, 2);
     }
@@ -3762,41 +3706,15 @@ function mod(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, mod);
+        return util.map2(x, y, math.mod);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return mod(x.valueOf(), y.valueOf());
+        return math.mod(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('mod', x, y);
-}
-
-math.mod = mod;
-
-/**
- * Function documentation
- */
-mod.doc = {
-    'name': 'mod',
-    'category': 'Operators',
-    'syntax': [
-        'x % y',
-        'x mod y',
-        'mod(x, y)'
-    ],
-    'description':
-        'Calculates the modulus, the remainder of an integer division.',
-    'examples': [
-        '7 % 3',
-        '11 % 2',
-        '10 mod 4',
-        'function isOdd(x) = x % 2',
-        'isOdd(2)',
-        'isOdd(3)'
-    ],
-    'seealso': []
 };
 
 /**
@@ -3805,7 +3723,7 @@ mod.doc = {
  * @param  {Number | Complex | Unit | Array | Matrix | Range} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-function multiply(x, y) {
+math.multiply = function multiply(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('multiply', arguments.length, 2);
     }
@@ -3865,10 +3783,12 @@ function multiply(x, y) {
             }
 
             // TODO: performance of matrix multiplication can be improved
-            var res = [];
-            var rows = sizeX[0];
-            var cols = sizeY[1];
-            var num = sizeX[1];
+            var res = [],
+                rows = sizeX[0],
+                cols = sizeY[1],
+                num = sizeX[1],
+                multiply = math.multiply,
+                add = math.add;
             for (var r = 0; r < rows; r++) {
                 res[r] = [];
                 for (var c = 0; c < cols; c++) {
@@ -3884,32 +3804,32 @@ function multiply(x, y) {
             return res;
         }
         else if (y instanceof Matrix) {
-            return new Matrix(multiply(x.valueOf(), y.valueOf()));
+            return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
         }
         else {
             // matrix * scalar
-            return util.map2(x, y, multiply);
+            return util.map2(x, y, math.multiply);
         }
     }
     else if (x instanceof Matrix) {
-        return new Matrix(multiply(x.valueOf(), y.valueOf()));
+        return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
     }
 
     if (y instanceof Array) {
         // scalar * matrix
-        return util.map2(x, y, multiply);
+        return util.map2(x, y, math.multiply);
     }
     else if (y instanceof Matrix) {
-        return new Matrix(multiply(x.valueOf(), y.valueOf()));
+        return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return multiply(x.valueOf(), y.valueOf());
+        return math.multiply(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('multiply', x, y);
-}
+};
 
 /**
  * Multiply two complex numbers. x * y or multiply(x, y)
@@ -3925,38 +3845,13 @@ function _multiplyComplex (x, y) {
     );
 }
 
-math.multiply = multiply;
-
-/**
- * Function documentation
- */
-multiply.doc = {
-    'name': 'multiply',
-    'category': 'Operators',
-    'syntax': [
-        'x * y',
-        'multiply(x, y)'
-    ],
-    'description': 'multiply two values.',
-    'examples': [
-        '2.1 * 3.6',
-        'ans / 3.6',
-        '2 * 3 + 4',
-        '2 * (3 + 4)',
-        '3 * 2.1 km'
-    ],
-    'seealso': [
-        'divide'
-    ]
-};
-
 /**
  * Calculates the power of x to y, x^y
  * @param  {Number | Complex | Array | Matrix | Range} x
  * @param  {Number | Complex} y
  * @return {Number | Complex | Array | Matrix} res
  */
-function pow(x, y) {
+math.pow = function pow(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('pow', arguments.length, 2);
     }
@@ -4001,31 +3896,31 @@ function pow(x, y) {
 
         if (y == 0) {
             // return the identity matrix
-            return identity(s[0]);
+            return math.eye(s[0]);
         }
         else {
             // value > 0
             var res = x;
             for (var i = 1; i < y; i++) {
-                res = multiply(x, res);
+                res = math.multiply(x, res);
             }
             return res;
         }
     }
     else if (x instanceof Matrix) {
-        return new Matrix(pow(x.valueOf(), y));
+        return new Matrix(math.pow(x.valueOf(), y));
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return pow(x.valueOf(), y.valueOf());
+        return math.pow(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('pow', x, y);
-}
+};
 
 /**
- * Caculates the power of x to y, x^y, for two complex numbers.
+ * Calculates the power of x to y, x^y, for two complex numbers.
  * @param {Complex} x
  * @param {Complex} y
  * @return {Complex} res
@@ -4034,34 +3929,10 @@ function pow(x, y) {
 function powComplex (x, y) {
     // complex computation
     // x^y = exp(log(x)*y) = exp((abs(x)+i*arg(x))*y)
-    var temp1 = log(x);
-    var temp2 = multiply(temp1, y);
-    return exp(temp2);
+    var temp1 = math.log(x);
+    var temp2 = math.multiply(temp1, y);
+    return math.exp(temp2);
 }
-
-math.pow = pow;
-
-/**
- * Function documentation
- */
-pow.doc = {
-    'name': 'pow',
-    'category': 'Operators',
-    'syntax': [
-        'x ^ y',
-        'pow(x, y)'
-    ],
-    'description':
-        'Calculates the power of x to y, x^y.',
-    'examples': [
-        '2^3 = 8',
-        '2*2*2',
-        '1 + e ^ (pi * i)'
-    ],
-    'seealso': [
-        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
-    ]
-};
 
 /**
  * Round a value towards the nearest integer, round(x [, n])
@@ -4069,7 +3940,7 @@ pow.doc = {
  * @param {Number | Array} [n] number of digits
  * @return {Number | Complex | Array | Matrix} res
  */
-function round(x, n) {
+math.round = function round(x, n) {
     if (arguments.length != 1 && arguments.length != 2) {
         throw newArgumentsError('round', arguments.length, 1, 2);
     }
@@ -4088,12 +3959,12 @@ function round(x, n) {
         }
 
         if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-            util.map(x, round);
+            util.map(x, math.round);
         }
 
         if (x.valueOf() !== x) {
             // fallback on the objects primitive value
-            return round(x.valueOf());
+            return math.round(x.valueOf());
         }
 
         throw newUnsupportedTypeError('round', x);
@@ -4123,19 +3994,17 @@ function round(x, n) {
 
         if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
             n instanceof Array || n instanceof Matrix || n instanceof Range) {
-            return util.map2(x, n, round);
+            return util.map2(x, n, math.round);
         }
 
         if (x.valueOf() !== x || n.valueOf() !== n) {
             // fallback on the objects primitive values
-            return larger(x.valueOf(), n.valueOf());
+            return math.round(x.valueOf(), n.valueOf());
         }
 
         throw newUnsupportedTypeError('round', x, n);
     }
-}
-
-math.round = round;
+};
 
 /**
  * round a number to the given number of digits, or to the default if
@@ -4150,38 +4019,12 @@ function roundNumber (value, digits) {
 }
 
 /**
- * Function documentation
- */
-round.doc = {
-    'name': 'round',
-    'category': 'Arithmetic',
-    'syntax': [
-        'round(x)',
-        'round(x, n)'
-    ],
-    'description':
-        'round a value towards the nearest integer.' +
-            'If x is complex, both real and imaginary part are rounded ' +
-            'towards the nearest integer. ' +
-            'When n is specified, the value is rounded to n decimals.',
-    'examples': [
-        'round(3.2)',
-        'round(3.8)',
-        'round(-4.2)',
-        'round(-4.8)',
-        'round(pi, 3)',
-        'round(123.45678, 2)'
-    ],
-    'seealso': ['ceil', 'floor', 'fix']
-};
-
-/**
  * Compute the sign of a value.
  * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function sign(x) {
+math.sign = function sign(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('sign', arguments.length, 1);
     }
@@ -4206,39 +4049,15 @@ function sign(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, sign);
+        return util.map(x, math.sign);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return sign(x.valueOf());
+        return math.sign(x.valueOf());
     }
 
     throw newUnsupportedTypeError('sign', x);
-}
-
-math.sign = sign;
-
-/**
- * Function documentation
- */
-sign.doc = {
-    'name': 'sign',
-    'category': 'Arithmetic',
-    'syntax': [
-        'sign(x)'
-    ],
-    'description':
-        'Compute the sign of a value. ' +
-            'The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.',
-    'examples': [
-        'sign(3.5)',
-        'sign(-4.2)',
-        'sign(0)'
-    ],
-    'seealso': [
-        'abs'
-    ]
 };
 
 /**
@@ -4248,7 +4067,7 @@ sign.doc = {
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix} res
  */
-function smaller(x, y) {
+math.smaller = function smaller(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('smaller', arguments.length, 2);
     }
@@ -4258,15 +4077,15 @@ function smaller(x, y) {
             return x < y;
         }
         else if (y instanceof Complex) {
-            return x < abs(y);
+            return x < math.abs(y);
         }
     }
     if (x instanceof Complex) {
         if (isNumber(y)) {
-            return abs(x) < y;
+            return math.abs(x) < y;
         }
         else if (y instanceof Complex) {
-            return abs(x) < abs(y);
+            return math.abs(x) < math.abs(y);
         }
     }
 
@@ -4283,43 +4102,15 @@ function smaller(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, smaller);
+        return util.map2(x, y, math.smaller);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return smaller(x.valueOf(), y.valueOf());
+        return math.smaller(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('smaller', x, y);
-}
-
-math.smaller = smaller;
-
-/**
- * Function documentation
- */
-smaller.doc = {
-    'name': 'smaller',
-    'category': 'Operators',
-    'syntax': [
-        'x < y',
-        'smaller(x, y)'
-    ],
-    'description':
-        'Check if value x is smaller than value y. ' +
-            'Returns 1 if x is smaller than y, and 0 if not.',
-    'examples': [
-        '2 < 3',
-        '5 < 2*2',
-        'a = 3.3',
-        'b = 6-2.8',
-        '(a < b)',
-        '5 cm < 2 inch'
-    ],
-    'seealso': [
-        'equal', 'unequal', 'larger', 'smallereq', 'largereq'
-    ]
 };
 
 /**
@@ -4329,7 +4120,7 @@ smaller.doc = {
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix} res
  */
-function smallereq(x, y) {
+math.smallereq = function smallereq(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('smallereq', arguments.length, 2);
     }
@@ -4339,15 +4130,15 @@ function smallereq(x, y) {
             return x <= y;
         }
         else if (y instanceof Complex) {
-            return x <= abs(y);
+            return x <= math.abs(y);
         }
     }
     if (x instanceof Complex) {
         if (isNumber(y)) {
-            return abs(x) <= y;
+            return math.abs(x) <= y;
         }
         else if (y instanceof Complex) {
-            return abs(x) <= abs(y);
+            return math.abs(x) <= math.abs(y);
         }
     }
 
@@ -4364,42 +4155,15 @@ function smallereq(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, smallereq);
+        return util.map2(x, y, math.smallereq);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return smallereq(x.valueOf(), y.valueOf());
+        return math.smallereq(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('smallereq', x, y);
-}
-
-math.smallereq = smallereq;
-
-/**
- * Function documentation
- */
-smallereq.doc = {
-    'name': 'smallereq',
-    'category': 'Operators',
-    'syntax': [
-        'x <= y',
-        'smallereq(x, y)'
-    ],
-    'description':
-        'Check if value x is smaller or equal to value y. ' +
-            'Returns 1 if x is smaller than y, and 0 if not.',
-    'examples': [
-        '2 < 1+1',
-        '2 <= 1+1',
-        'a = 3.2',
-        'b = 6-2.8',
-        '(a < b)'
-    ],
-    'seealso': [
-        'equal', 'unequal', 'larger', 'smaller', 'largereq'
-    ]
 };
 
 /**
@@ -4407,7 +4171,7 @@ smallereq.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function sqrt (x) {
+math.sqrt = function sqrt (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('sqrt', arguments.length, 1);
     }
@@ -4417,7 +4181,7 @@ function sqrt (x) {
             return Math.sqrt(x);
         }
         else {
-            return sqrt(new Complex(x, 0));
+            return math.sqrt(new Complex(x, 0));
         }
     }
 
@@ -4438,40 +4202,15 @@ function sqrt (x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, sqrt);
+        return util.map(x, math.sqrt);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return sqrt(x.valueOf());
+        return math.sqrt(x.valueOf());
     }
 
     throw newUnsupportedTypeError('sqrt', x);
-}
-
-math.sqrt = sqrt;
-
-/**
- * Function documentation
- */
-sqrt.doc = {
-    'name': 'sqrt',
-    'category': 'Arithmetic',
-    'syntax': [
-        'sqrt(x)'
-    ],
-    'description':
-        'Compute the square root value. ' +
-            'If x = y * y, then y is the square root of x.',
-    'examples': [
-        'sqrt(25)',
-        '5 * 5',
-        'sqrt(-1)'
-    ],
-    'seealso': [
-        'square',
-        'multiply'
-    ]
 };
 
 /**
@@ -4479,7 +4218,7 @@ sqrt.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function square(x) {
+math.square = function square(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('square', arguments.length, 1);
     }
@@ -4489,47 +4228,19 @@ function square(x) {
     }
 
     if (x instanceof Complex) {
-        return multiply(x, x);
+        return math.multiply(x, x);
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return multiply(x, x);
+        return math.multiply(x, x);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return square(x.valueOf());
+        return math.square(x.valueOf());
     }
 
     throw newUnsupportedTypeError('square', x);
-}
-
-math.square = square;
-
-/**
- * Function documentation
- */
-square.doc = {
-    'name': 'square',
-    'category': 'Arithmetic',
-    'syntax': [
-        'square(x)'
-    ],
-    'description':
-        'Compute the square of a value. ' +
-            'The square of x is x * x.',
-    'examples': [
-        'square(3)',
-        'sqrt(9)',
-        '3^2',
-        '3 * 3'
-    ],
-    'seealso': [
-        'multiply',
-        'pow',
-        'sqrt',
-        'cube'
-    ]
 };
 
 /**
@@ -4538,7 +4249,7 @@ square.doc = {
  * @param  {Number | Complex | Unit | Array | Matrix | Range} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-function subtract(x, y) {
+math.subtract = function subtract(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('subtract', arguments.length, 2);
     }
@@ -4596,47 +4307,23 @@ function subtract(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, subtract);
+        return util.map2(x, y, math.subtract);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return subtract(x.valueOf(), y.valueOf());
+        return math.subtract(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('subtract', x, y);
-}
-
-math.subtract = subtract;
-
-/**
- * Function documentation
- */
-subtract.doc = {
-    'name': 'subtract',
-    'category': 'Operators',
-    'syntax': [
-        'x - y',
-        'subtract(x, y)'
-    ],
-    'description': 'subtract two values.',
-    'examples': [
-        '5.3 - 2',
-        'ans + 2',
-        '2/3 - 1/6',
-        '2 * 3 - 3',
-        '2.1 km - 500m'
-    ],
-    'seealso': [
-        'add'
-    ]
 };
+
 /**
  * Inverse the sign of a value. -x or unaryminus(x)
  * @param  {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-function unaryminus(x) {
+math.unaryminus = function unaryminus(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('unaryminus', arguments.length, 1);
     }
@@ -4657,39 +4344,17 @@ function unaryminus(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, unaryminus);
+        return util.map(x, math.unaryminus);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return unaryminus(x.valueOf());
+        return math.unaryminus(x.valueOf());
     }
 
     throw newUnsupportedTypeError('unaryminus', x);
-}
-
-math.unaryminus = unaryminus;
-
-/**
- * Function documentation
- */
-unaryminus.doc = {
-    'name': 'unaryminus',
-    'category': 'Operators',
-    'syntax': [
-        '-x',
-        'unaryminus(x)'
-    ],
-    'description':
-        'Inverse the sign of a value.',
-    'examples': [
-        '-4.5',
-        '-(-5.6)'
-    ],
-    'seealso': [
-        'add', 'subtract'
-    ]
 };
+
 /**
  * Check if value x unequals y, x != y
  * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
@@ -4697,7 +4362,7 @@ unaryminus.doc = {
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix} res
  */
-function unequal(x, y) {
+math.unequal = function unequal(x, y) {
     if (arguments.length != 2) {
         throw newArgumentsError('unequal', arguments.length, 2);
     }
@@ -4733,44 +4398,15 @@ function unequal(x, y) {
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, unequal);
+        return util.map2(x, y, math.unequal);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return unequal(x.valueOf(), y.valueOf());
+        return math.unequal(x.valueOf(), y.valueOf());
     }
 
     throw newUnsupportedTypeError('unequal', x, y);
-}
-
-math.unequal = unequal;
-
-/**
- * Function documentation
- */
-unequal.doc = {
-    'name': 'unequal',
-    'category': 'Operators',
-    'syntax': [
-        'x != y',
-        'unequal(x, y)'
-    ],
-    'description':
-        'Check unequality of two values. ' +
-            'Returns 1 if the values are unequal, and 0 if they are equal.',
-    'examples': [
-        '2+2 != 3',
-        '2+2 != 4',
-        'a = 3.2',
-        'b = 6-2.8',
-        'a != b',
-        '50cm != 0.5m',
-        '5 cm != 2 inch'
-    ],
-    'seealso': [
-        'equal', 'smaller', 'larger', 'smallereq', 'largereq'
-    ]
 };
 
 /**
@@ -4779,7 +4415,7 @@ unequal.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Array | Matrix} res
  */
-function arg(x) {
+math.arg = function arg(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('arg', arguments.length, 1);
     }
@@ -4793,42 +4429,15 @@ function arg(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, arg);
+        return util.map(x, math.arg);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return arg(x.valueOf());
+        return math.arg(x.valueOf());
     }
 
     throw newUnsupportedTypeError('arg', x);
-}
-
-math.arg = arg;
-
-/**
- * Function documentation
- */
-arg.doc = {
-    'name': 'arg',
-    'category': 'Complex',
-    'syntax': [
-        'arg(x)'
-    ],
-    'description':
-        'Compute the argument of a complex value. ' +
-            'If x = a+bi, the argument is computed as atan2(b, a).',
-    'examples': [
-        'arg(2 + 2i)',
-        'atan2(3, 2)',
-        'arg(2 - 3i)'
-    ],
-    'seealso': [
-        're',
-        'im',
-        'conj',
-        'abs'
-    ]
 };
 
 /**
@@ -4837,7 +4446,7 @@ arg.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function conj(x) {
+math.conj = function conj(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('conj', arguments.length, 1);
     }
@@ -4851,42 +4460,15 @@ function conj(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, conj);
+        return util.map(x, math.conj);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return conj(x.valueOf());
+        return math.conj(x.valueOf());
     }
 
     throw newUnsupportedTypeError('conj', x);
-}
-
-math.conj = conj;
-
-/**
- * Function documentation
- */
-conj.doc = {
-    'name': 'conj',
-    'category': 'Complex',
-    'syntax': [
-        'conj(x)'
-    ],
-    'description':
-        'Compute the complex conjugate of a complex value. ' +
-            'If x = a+bi, the complex conjugate is a-bi.',
-    'examples': [
-        'conj(2 + 3i)',
-        'conj(2 - 3i)',
-        'conj(-5.2i)'
-    ],
-    'seealso': [
-        're',
-        'im',
-        'abs',
-        'arg'
-    ]
 };
 
 /**
@@ -4894,7 +4476,7 @@ conj.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Array | Matrix} im
  */
-function im(x) {
+math.im = function im(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('im', arguments.length, 1);
     }
@@ -4908,41 +4490,16 @@ function im(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, im);
+        return util.map(x, math.im);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return im(x.valueOf());
+        return math.im(x.valueOf());
     }
 
+    // TODO: return 0 for all non-complex values?
     throw newUnsupportedTypeError('im', x);
-}
-
-math.im = im;
-
-/**
- * Function documentation
- */
-im.doc = {
-    'name': 'im',
-    'category': 'Complex',
-    'syntax': [
-        'im(x)'
-    ],
-    'description': 'Get the imaginary part of a complex number.',
-    'examples': [
-        'im(2 + 3i)',
-        're(2 + 3i)',
-        'im(-5.2i)',
-        'im(2.4)'
-    ],
-    'seealso': [
-        're',
-        'conj',
-        'abs',
-        'arg'
-    ]
 };
 
 /**
@@ -4950,7 +4507,7 @@ im.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Array | Matrix} re
  */
-function re(x) {
+math.re = function re(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('re', arguments.length, 1);
     }
@@ -4964,41 +4521,16 @@ function re(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, re);
+        return util.map(x, math.re);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return re(x.valueOf());
+        return math.re(x.valueOf());
     }
 
+    // TODO: return just the value itself for all non-complex values?
     throw newUnsupportedTypeError('re', x);
-}
-
-math.re = re;
-
-/**
- * Function documentation
- */
-re.doc = {
-    'name': 're',
-    'category': 'Complex',
-    'syntax': [
-        're(x)'
-    ],
-    'description': 'Get the real part of a complex number.',
-    'examples': [
-        're(2 + 3i)',
-        'im(2 + 3i)',
-        're(-5.2i)',
-        're(2.4)'
-    ],
-    'seealso': [
-        'im',
-        'conj',
-        'abs',
-        'arg'
-    ]
 };
 
 /**
@@ -5023,7 +4555,7 @@ re.doc = {
  * @param {*} [args]
  * @return {Complex} value
  */
-function complex(args) {
+math.complex = function complex(args) {
     switch (arguments.length) {
         case 0:
             // no parameters. Set re and im zero
@@ -5054,9 +4586,7 @@ function complex(args) {
         default:
             throw newArgumentsError('complex', arguments.length, 0, 2);
     }
-}
-
-math.complex = complex;
+};
 
 /**
  * Create a matrix. The function creates a new math.type.Matrix object.
@@ -5076,15 +4606,13 @@ math.complex = complex;
  * @param {Array | Matrix | Range} [data]    A multi dimensional array
  * @return {Matrix} matrix
  */
-function matrix(data) {
+math.matrix = function matrix(data) {
     if (arguments.length > 1) {
         throw newArgumentsError('matrix', arguments.length, 0, 1);
     }
 
     return new Matrix(data);
-}
-
-math.matrix = matrix;
+};
 
 /**
  * Create a parser. The function creates a new math.expr.Parser object.
@@ -5120,11 +4648,9 @@ math.matrix = matrix;
  *
  * @return {math.expr.Parser} Parser
  */
-function parser() {
+math.parser = function parser() {
     return new math.expr.Parser();
-}
-
-math.parser = parser;
+};
 
 /**
  * Create a range. The function creates a new math.type.Range object.
@@ -5154,7 +4680,7 @@ math.parser = parser;
  * @param {...*} args
  * @return {Range} range
  */
-function range(args) {
+math.range = function range(args) {
     switch (arguments.length) {
         case 1:
             // parse string into a range
@@ -5184,9 +4710,7 @@ function range(args) {
         default:
             throw newArgumentsError('range', arguments.length, 2, 3);
     }
-}
-
-math.range = range;
+};
 
 /**
  * Create a unit. Depending on the passed arguments, the function
@@ -5204,7 +4728,7 @@ math.range = range;
  * @param {*} args
  * @return {Unit} value
  */
-function unit(args) {
+math.unit = function unit(args) {
     switch(arguments.length) {
         case 1:
             // parse a string
@@ -5213,7 +4737,7 @@ function unit(args) {
                 throw new TypeError('A string or a number and string expected in function unit');
             }
 
-            if (Unit.isUnit(str)) {
+            if (Unit.isPlainUnit(str)) {
                 return new Unit(null, str); // a pure unit
             }
 
@@ -5233,9 +4757,7 @@ function unit(args) {
         default:
             throw newArgumentsError('unit', arguments.length, 1, 2);
     }
-}
-
-math.unit = unit;
+};
 
 /**
  * Create a workspace. The function creates a new math.expr.Workspace object.
@@ -5268,11 +4790,9 @@ math.unit = unit;
  *
  * @return {math.expr.Workspace} Workspace
  */
-function workspace() {
+math.workspace = function workspace() {
     return new math.expr.Workspace();
-}
-
-math.workspace = workspace;
+};
 
 /**
  * Concatenate two or more matrices
@@ -5286,7 +4806,7 @@ math.workspace = workspace;
  * @param {... Array | Matrix} args
  * @return {Array | Matrix} res
  */
-function concat (args) {
+math.concat = function concat (args) {
     var i,
         len = arguments.length,
         dim = -1,  // one-based dimension
@@ -5346,9 +4866,7 @@ function concat (args) {
     }
 
     return asMatrix ? new Matrix(res) : res;
-}
-
-math.concat = concat;
+};
 
 /**
  * Recursively concatenate two matrices.
@@ -5380,35 +4898,12 @@ function _concat(a, b, concatDim, dim) {
 }
 
 /**
- * Function documentation
- */
-concat.doc = {
-    'name': 'concat',
-    'category': 'Numerics',
-    'syntax': [
-        'concat(a, b, c, ...)',
-        'concat(a, b, c, ..., dim)'
-    ],
-    'description': 'Concatenate matrices. By default, the matrices are ' +
-        'concatenated by the first dimension. The dimension on which to ' +
-        'concatenate can be provided as last argument.',
-    'examples': [
-        'a = [1, 2; 5, 6]',
-        'b = [3, 4; 7, 8]',
-        'concat(a, b)',
-        '[a, b]',
-        'concat(a, b, 2)',
-        '[a; b]'
-    ],
-    'seealso': [ ]
-};
-/**
  * @constructor det
  * Calculate the determinant of a matrix, det(x)
  * @param {Array | Matrix} x
  * @return {Number} determinant
  */
-function det (x) {
+math.det = function det (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('det', arguments.length, 1);
     }
@@ -5449,9 +4944,7 @@ function det (x) {
             throw new RangeError('Matrix must be two dimensional ' +
                 '(size: ' + math.format(size) + ')');
     }
-}
-
-math.det = det;
+};
 
 /**
  * Calculate the determinant of a matrix
@@ -5521,24 +5014,6 @@ function _minor(matrix, rows, cols, row, col) {
 }
 
 /**
- * Function documentation
- */
-det.doc = {
-    'name': 'det',
-    'category': 'Numerics',
-    'syntax': [
-        'det(x)'
-    ],
-    'description': 'Calculate the determinant of a matrix',
-    'examples': [
-        'det([1, 2; 3, 4])',
-        'det([-2, 2, 3; -1, 1, 3; 2, 0, -1])'
-    ],
-    'seealso': [
-        'concat', 'diag', 'eye', 'inv', 'range', 'size', 'squeeze', 'transpose', 'zeros'
-    ]
-};
-/**
  * Create a diagonal matrix or retrieve the diagonal of a matrix
  * diag(v)
  * diag(v, k)
@@ -5548,7 +5023,7 @@ det.doc = {
  * @param {Number} [k]
  * @return {Matrix} matrix
  */
-function diag (x, k) {
+math.diag = function diag (x, k) {
     var data, vector, i, iMax;
 
     if (arguments.length != 1 && arguments.length != 2) {
@@ -5590,7 +5065,7 @@ function diag (x, k) {
             data = matrix.valueOf();
             iMax = vector.length;
             for (i = 0; i < iMax; i++) {
-                data[i + kSub][i + kSuper] = clone(vector[i]);
+                data[i + kSub][i + kSuper] = math.clone(vector[i]);
             }
             return matrix;
         break;
@@ -5601,7 +5076,7 @@ function diag (x, k) {
             data = x.valueOf();
             iMax = Math.min(s[0] - kSub, s[1] - kSuper);
             for (i = 0; i < iMax; i++) {
-                vector[i] = clone(data[i + kSub][i + kSuper]);
+                vector[i] = math.clone(data[i + kSub][i + kSuper]);
             }
             return new Matrix(vector);
         break;
@@ -5609,44 +5084,14 @@ function diag (x, k) {
         default:
             throw new RangeError('Matrix for function diag must be 2 dimensional');
     }
-}
-
-math.diag = diag;
-
-/**
- * Function documentation
- */
-diag.doc = {
-    'name': 'diag',
-    'category': 'Matrix',
-    'syntax': [
-        'diag(x)',
-        'diag(x, k)'
-    ],
-    'description': 'Create a diagonal matrix or retrieve the diagonal ' +
-        'of a matrix. When x is a vector, a matrix with the vector values ' +
-        'on the diagonal will be returned. When x is a matrix, ' +
-        'a vector with the diagonal values of the matrix is returned.' +
-        'When k is provided, the k-th diagonal will be ' +
-        'filled in or retrieved, if k is positive, the values are placed ' +
-        'on the super diagonal. When k is negative, the values are placed ' +
-        'on the sub diagonal.',
-    'examples': [
-        'diag(1:4)',
-        'diag(1:4, 1)',
-        'a = [1, 2, 3; 4, 5, 6; 7, 8, 9]',
-        'diag(a)'
-    ],
-    'seealso': [
-        'concat', 'det', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
-    ]
 };
+
 /**
  * Create an identity matrix with size m x n, eye(m [, n])
  * @param {...Number | Matrix | Array} size
  * @return {Matrix} matrix
  */
-function eye (size) {
+math.eye = function eye (size) {
     var args = util.argsToArray(arguments);
     if (args.length == 0) {
         args = [1, 1];
@@ -5655,7 +5100,7 @@ function eye (size) {
         args[1] = args[0];
     }
     else if (args.length > 2) {
-        throw newArgumentsError('eye', num, 0, 2);
+        throw newArgumentsError('eye', args.length, 0, 2);
     }
 
     var rows = args[0],
@@ -5682,41 +5127,15 @@ function eye (size) {
     }
 
     return matrix;
-}
-
-math.eye = eye;
-
-/**
- * Function documentation
- */
-eye.doc = {
-    'name': 'eye',
-    'category': 'Numerics',
-    'syntax': [
-        'eye(n)',
-        'eye(m, n)',
-        'eye([m, n])',
-        'eye'
-    ],
-    'description': 'Returns the identity matrix with size m-by-n. ' +
-        'The matrix has ones on the diagonal and zeros elsewhere.',
-    'examples': [
-        'eye(3)',
-        'eye(3, 5)',
-        'a = [1, 2, 3; 4, 5, 6]',
-        'eye(size(a))'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
-    ]
 };
+
 /**
  * @constructor inv
  * Calculate the inverse of a matrix, inv(x)
  * @param {Array | Matrix} x
  * @return {Array | Matrix} inv
  */
-function inv (x) {
+math.inv = function inv (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('inv', arguments.length, 1);
     }
@@ -5774,9 +5193,7 @@ function inv (x) {
             throw new RangeError('Matrix must be two dimensional ' +
                 '(size: ' + math.format(size) + ')');
     }
-}
-
-math.inv = inv;
+};
 
 /**
  * Calculate the inverse of a square matrix
@@ -5800,7 +5217,7 @@ function _inv (matrix, rows, cols){
             throw Error('Cannot calculate inverse, determinant is zero');
         }
         return [[
-            math.divide(1, value)
+            divide(1, value)
         ]];
     }
     else if (rows == 2) {
@@ -5892,25 +5309,6 @@ function _inv (matrix, rows, cols){
 }
 
 /**
- * Function documentation
- */
-inv.doc = {
-    'name': 'inv',
-    'category': 'Numerics',
-    'syntax': [
-        'inv(x)'
-    ],
-    'description': 'Calculate the inverse of a matrix',
-    'examples': [
-        'inv([1, 2; 3, 4])',
-        'inv(4)',
-        '1 / 4'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
-    ]
-};
-/**
  * @constructor ones
  * ones(n)
  * ones(m, n)
@@ -5920,7 +5318,7 @@ inv.doc = {
  * @param {...Number | Array} size
  * @return {Matrix} matrix
  */
-function ones (size) {
+math.ones = function ones (size) {
     var args = util.argsToArray(arguments);
 
     if (args.length == 0) {
@@ -5935,42 +5333,14 @@ function ones (size) {
     var defaultValue = 1;
     matrix.resize(args, defaultValue);
     return matrix;
-}
-
-math.ones = ones;
-
-/**
- * Function documentation
- */
-ones.doc = {
-    'name': 'ones',
-    'category': 'Numerics',
-    'syntax': [
-        'ones(n)',
-        'ones(m, n)',
-        'ones(m, n, p, ...)',
-        'ones([m, n])',
-        'ones([m, n, p, ...])',
-        'ones'
-    ],
-    'description': 'Create a matrix containing ones.',
-    'examples': [
-        'ones(3)',
-        'ones(3, 5)',
-        'ones([2,3]) * 4.5',
-        'a = [1, 2, 3; 4, 5, 6]',
-        'ones(size(a))'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'inv', 'range', 'size', 'squeeze', 'transpose', 'zeros'
-    ]
 };
+
 /**
  * Calculate the size of a matrix. size(x)
- * @param {Number | Complex | Array} x
- * @return {Number | Complex | Array} res
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
  */
-function size (x) {
+math.size = function size (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('size', arguments.length, 1);
     }
@@ -5993,41 +5363,18 @@ function size (x) {
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return size(x.valueOf());
+        return math.size(x.valueOf());
     }
 
     throw newUnsupportedTypeError('size', x);
-}
-
-math.size = size;
-
-/**
- * Function documentation
- */
-size.doc = {
-    'name': 'size',
-    'category': 'Numerics',
-    'syntax': [
-        'size(x)'
-    ],
-    'description': 'Calculate the size of a matrix.',
-    'examples': [
-        'size(2.3)',
-        'size("hello world")',
-        'a = [1, 2; 3, 4; 5, 6]',
-        'size(a)',
-        'size(1:6)'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'squeeze', 'transpose', 'zeros'
-    ]
 };
+
 /**
  * Remove singleton dimensions from a matrix. squeeze(x)
  * @param {Matrix | Array} x
  * @return {Matrix | Array} res
  */
-function squeeze (x) {
+math.squeeze = function squeeze (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('squeeze', arguments.length, 1);
     }
@@ -6036,15 +5383,13 @@ function squeeze (x) {
         return _squeezeArray(x.toArray());
     }
     else if (x instanceof Array) {
-        return _squeezeArray(clone(x));
+        return _squeezeArray(math.clone(x));
     }
     else {
         // scalar
-        return clone(x);
+        return math.clone(x);
     }
-}
-
-math.squeeze = squeeze;
+};
 
 /**
  * Recursively squeeze a multi dimensional array
@@ -6070,32 +5415,12 @@ function _squeezeArray(array) {
 }
 
 /**
- * Function documentation
- */
-squeeze.doc = {
-    'name': 'squeeze',
-    'category': 'Numerics',
-    'syntax': [
-        'squeeze(x)'
-    ],
-    'description': 'Remove singleton dimensions from a matrix.',
-    'examples': [
-        'a = zeros(1,3,2)',
-        'size(squeeze(a))',
-        'b = zeros(3,1,1)',
-        'size(squeeze(b))'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'transpose', 'zeros'
-    ]
-};
-/**
  * @constructor transpose
  * Calculate the determinant of a matrix, transpose(x)
  * @param {Array | Matrix} x
  * @return {Array | Matrix} transpose
  */
-function transpose (x) {
+math.transpose = function transpose (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('transpose', arguments.length, 1);
     }
@@ -6139,28 +5464,8 @@ function transpose (x) {
             throw new RangeError('Matrix must be two dimensional ' +
                 '(size: ' + math.format(size) + ')');
     }
-}
-
-math.transpose = transpose;
-
-/**
- * Function documentation
- */
-transpose.doc = {
-    'name': 'transpose',
-    'category': 'Numerics',
-    'syntax': [
-        'transpose(x)'
-    ],
-    'description': 'Transpose a matrix',
-    'examples': [
-        'a = [1, 2, 3; 4, 5, 6]',
-        'transpose(a)'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'zeros'
-    ]
 };
+
 /**
  * @constructor zeros
  * zeros(n)
@@ -6171,7 +5476,7 @@ transpose.doc = {
  * @param {...Number | Array} size
  * @return {Matrix} matrix
  */
-function zeros (size) {
+math.zeros = function zeros (size) {
     var args = util.argsToArray(arguments);
 
     if (args.length == 0) {
@@ -6185,41 +5490,14 @@ function zeros (size) {
     var matrix = new Matrix();
     matrix.resize(args);
     return matrix;
-}
-
-math.zeros = zeros;
-
-/**
- * Function documentation
- */
-zeros.doc = {
-    'name': 'zeros',
-    'category': 'Numerics',
-    'syntax': [
-        'zeros(n)',
-        'zeros(m, n)',
-        'zeros(m, n, p, ...)',
-        'zeros([m, n])',
-        'zeros([m, n, p, ...])',
-        'zeros'
-    ],
-    'description': 'Create a matrix containing zeros.',
-    'examples': [
-        'zeros(3)',
-        'zeros(3, 5)',
-        'a = [1, 2, 3; 4, 5, 6]',
-        'zeros(size(a))'
-    ],
-    'seealso': [
-        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose'
-    ]
 };
+
 /**
  * Compute the factorial of a value, factorial(x) or x!
  * @Param {Number | Array | Matrix | Range} x
  * @return {Number | Array | Matrix} res
  */
-function factorial (x) {
+math.factorial = function factorial (x) {
     if (arguments.length != 1) {
         throw newArgumentsError('factorial', arguments.length, 1);
     }
@@ -6245,68 +5523,28 @@ function factorial (x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, factorial);
+        return util.map(x, math.factorial);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return factorial(x.valueOf());
+        return math.factorial(x.valueOf());
     }
 
     throw newUnsupportedTypeError('factorial', x);
-}
-
-math.factorial = factorial;
-
-/**
- * Function documentation
- */
-factorial.doc = {
-    'name': 'factorial',
-    'category': 'Probability',
-    'syntax': [
-        'x!',
-        'factorial(x)'
-    ],
-    'description': 'Compute the factorial of a value',
-    'examples': [
-        '5!',
-        '5*4*3*2*1',
-        '3!'
-    ],
-    'seealso': []
 };
+
 /**
  * Return a random number between 0 and 1
  * @return {Number} res
  */
-function random () {
+math.random = function random () {
     if (arguments.length != 0) {
         throw newArgumentsError('random', arguments.length, 0);
     }
 
     // TODO: implement parameter min and max
     return Math.random();
-}
-
-math.random = random;
-
-/**
- * Function documentation
- */
-random.doc = {
-    'name': 'random',
-    'category': 'Probability',
-    'syntax': [
-        'random()'
-    ],
-    'description':
-        'Return a random number between 0 and 1.',
-    'examples': [
-        'random()',
-        '100 * random()'
-    ],
-    'seealso': []
 };
 
 /**
@@ -6314,7 +5552,7 @@ random.doc = {
  * @param {... *} args  one or multiple arguments
  * @return {*} res
  */
-function max(args) {
+math.max = function max(args) {
     if (arguments.length == 0) {
         throw new Error('Function max requires one or more parameters (0 provided)');
     }
@@ -6359,9 +5597,7 @@ function max(args) {
         // max(a, b, c, d, ...)
         return _max(arguments);
     }
-}
-
-math.max = max;
+};
 
 /**
  * Calculate the max of a one dimensional array
@@ -6406,37 +5642,11 @@ function _max2(array, rows, cols) {
 }
 
 /**
- * Function documentation
- */
-max.doc = {
-    'name': 'max',
-    'category': 'Statistics',
-    'syntax': [
-        'max(a, b, c, ...)'
-    ],
-    'description': 'Compute the maximum value of a list of values.',
-    'examples': [
-        'max(2, 3, 4, 1)',
-        'max(2.7, 7.1, -4.5, 2.0, 4.1)',
-        'min(2.7, 7.1, -4.5, 2.0, 4.1)'
-    ],
-    'seealso': [
-        'sum',
-        'prod',
-        'avg',
-        'var',
-        'std',
-        'min',
-        'median'
-    ]
-};
-
-/**
  * Compute the minimum value of a list of values, min(a, b, c, ...)
  * @param {... *} args  one or multiple arguments
  * @return {*} res
  */
-function min(args) {
+math.min = function min(args) {
     if (arguments.length == 0) {
         throw new Error('Function min requires one or more parameters (0 provided)');
     }
@@ -6481,9 +5691,7 @@ function min(args) {
         // min(a, b, c, d, ...)
         return _min(arguments);
     }
-}
-
-math.min = min;
+};
 
 /**
  * Calculate the min of a one dimensional array
@@ -6528,37 +5736,11 @@ function _min2(array, rows, cols) {
 }
 
 /**
- * Function documentation
- */
-min.doc = {
-    'name': 'min',
-    'category': 'Statistics',
-    'syntax': [
-        'min(a, b, c, ...)'
-    ],
-    'description': 'Compute the minimum value of a list of values.',
-    'examples': [
-        'min(2, 3, 4, 1)',
-        'min(2.7, 7.1, -4.5, 2.0, 4.1)',
-        'max(2.7, 7.1, -4.5, 2.0, 4.1)'
-    ],
-    'seealso': [
-        'sum',
-        'prod',
-        'avg',
-        'var',
-        'std',
-        'min',
-        'median'
-    ]
-};
-
-/**
  * Calculate the inverse cosine of a value, acos(x)
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function acos(x) {
+math.acos = function acos(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('acos', arguments.length, 1);
     }
@@ -6568,7 +5750,7 @@ function acos(x) {
             return Math.acos(x);
         }
         else {
-            return acos(new Complex(x, 0));
+            return math.acos(new Complex(x, 0));
         }
     }
 
@@ -6578,12 +5760,12 @@ function acos(x) {
             x.im * x.im - x.re * x.re + 1.0,
             -2.0 * x.re * x.im
         );
-        var temp2 = sqrt(temp1);
+        var temp2 = math.sqrt(temp1);
         var temp3 = new Complex(
             temp2.re - x.im,
             temp2.im + x.re
         );
-        var temp4 = log(temp3);
+        var temp4 = math.log(temp3);
 
         // 0.5*pi = 1.5707963267948966192313216916398
         return new Complex(
@@ -6593,38 +5775,15 @@ function acos(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, acos);
+        return util.map(x, math.acos);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return acos(x.valueOf());
+        return math.acos(x.valueOf());
     }
 
     throw newUnsupportedTypeError('acos', x);
-}
-
-math.acos = acos;
-
-/**
- * Function documentation
- */
-acos.doc = {
-    'name': 'acos',
-    'category': 'Trigonometry',
-    'syntax': [
-        'acos(x)'
-    ],
-    'description': 'Compute the inverse cosine of a value in radians.',
-    'examples': [
-        'acos(0.5)',
-        'acos(cos(2.3))'
-    ],
-    'seealso': [
-        'cos',
-        'acos',
-        'asin'
-    ]
 };
 
 /**
@@ -6632,7 +5791,7 @@ acos.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function asin(x) {
+math.asin = function asin(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('asin', arguments.length, 1);
     }
@@ -6642,7 +5801,7 @@ function asin(x) {
             return Math.asin(x);
         }
         else {
-            return asin(new Complex(x, 0));
+            return math.asin(new Complex(x, 0));
         }
     }
 
@@ -6655,50 +5814,27 @@ function asin(x) {
             -2.0 * re * im
         );
 
-        var temp2 = sqrt(temp1);
+        var temp2 = math.sqrt(temp1);
         var temp3 = new Complex(
             temp2.re - im,
             temp2.im + re
         );
 
-        var temp4 = log(temp3);
+        var temp4 = math.log(temp3);
 
         return new Complex(temp4.im, -temp4.re);
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, asin);
+        return util.map(x, math.asin);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return asin(x.valueOf());
+        return math.asin(x.valueOf());
     }
 
     throw newUnsupportedTypeError('asin', x);
-}
-
-math.asin = asin;
-
-/**
- * Function documentation
- */
-asin.doc = {
-    'name': 'asin',
-    'category': 'Trigonometry',
-    'syntax': [
-        'asin(x)'
-    ],
-    'description': 'Compute the inverse sine of a value in radians.',
-    'examples': [
-        'asin(0.5)',
-        'asin(sin(2.3))'
-    ],
-    'seealso': [
-        'sin',
-        'acos',
-        'asin'
-    ]
 };
 
 /**
@@ -6706,7 +5842,7 @@ asin.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function atan(x) {
+math.atan = function atan(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('atan', arguments.length, 1);
     }
@@ -6725,7 +5861,7 @@ function atan(x) {
             (1.0 - im * im - re * re) / den,
             (-2.0 * re) / den
         );
-        var temp2 = log(temp1);
+        var temp2 = math.log(temp1);
 
         return new Complex(
             -0.5 * temp2.im,
@@ -6734,38 +5870,15 @@ function atan(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, atan);
+        return util.map(x, math.atan);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return atan(x.valueOf());
+        return math.atan(x.valueOf());
     }
 
     throw newUnsupportedTypeError('atan', x);
-}
-
-math.atan = atan;
-
-/**
- * Function documentation
- */
-atan.doc = {
-    'name': 'atan',
-    'category': 'Trigonometry',
-    'syntax': [
-        'atan(x)'
-    ],
-    'description': 'Compute the inverse tangent of a value in radians.',
-    'examples': [
-        'atan(0.5)',
-        'atan(tan(2.3))'
-    ],
-    'seealso': [
-        'tan',
-        'acos',
-        'asin'
-    ]
 };
 
 /**
@@ -6774,7 +5887,7 @@ atan.doc = {
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function atan2(y, x) {
+math.atan2 = function atan2(y, x) {
     if (arguments.length != 2) {
         throw newArgumentsError('atan2', arguments.length, 2);
     }
@@ -6798,42 +5911,15 @@ function atan2(y, x) {
 
     if (y instanceof Array || y instanceof Matrix || y instanceof Range ||
         x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map2(y, x, atan2);
+        return util.map2(y, x, math.atan2);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive values
-        return atan2(y.valueOf(), x.valueOf());
+        return math.atan2(y.valueOf(), x.valueOf());
     }
 
     throw newUnsupportedTypeError('atan2', y, x);
-}
-
-math.atan2 = atan2;
-
-/**
- * Function documentation
- */
-atan2.doc = {
-    'name': 'atan2',
-    'category': 'Trigonometry',
-    'syntax': [
-        'atan2(y, x)'
-    ],
-    'description':
-        'Computes the principal value of the arc tangent of y/x in radians.',
-    'examples': [
-        'atan2(2, 2) / pi',
-        'angle = 60 deg in rad',
-        'x = cos(angle)',
-        'y = sin(angle)',
-        'atan2(y, x)'
-    ],
-    'seealso': [
-        'sin',
-        'cos',
-        'tan'
-    ]
 };
 
 /**
@@ -6841,7 +5927,7 @@ atan2.doc = {
  * @param {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function cos(x) {
+math.cos = function cos(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('cos', arguments.length, 1);
     }
@@ -6866,41 +5952,15 @@ function cos(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, cos);
+        return util.map(x, math.cos);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return cos(x.valueOf());
+        return math.cos(x.valueOf());
     }
 
     throw newUnsupportedTypeError('cos', x);
-}
-
-math.cos = cos;
-
-/**
- * Function documentation
- */
-cos.doc = {
-    'name': 'cos',
-    'category': 'Trigonometry',
-    'syntax': [
-        'cos(x)'
-    ],
-    'description': 'Compute the cosine of x in radians.',
-    'examples': [
-        'cos(2)',
-        'cos(pi / 4) ^ 2',
-        'cos(180 deg)',
-        'cos(60 deg)',
-        'sin(0.2)^2 + cos(0.2)^2'
-    ],
-    'seealso': [
-        'acos',
-        'sin',
-        'tan'
-    ]
 };
 
 /**
@@ -6908,7 +5968,7 @@ cos.doc = {
  * @param {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function cot(x) {
+math.cot = function cot(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('cot', arguments.length, 1);
     }
@@ -6935,39 +5995,15 @@ function cot(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, cot);
+        return util.map(x, math.cot);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return cot(x.valueOf());
+        return math.cot(x.valueOf());
     }
 
     throw newUnsupportedTypeError('cot', x);
-}
-
-math.cot = cot;
-
-/**
- * Function documentation
- */
-cot.doc = {
-    'name': 'cot',
-    'category': 'Trigonometry',
-    'syntax': [
-        'cot(x)'
-    ],
-    'description': 'Compute the cotangent of x in radians. ' +
-        'Defined as 1/tan(x)',
-    'examples': [
-        'cot(2)',
-        '1 / tan(2)'
-    ],
-    'seealso': [
-        'sec',
-        'csc',
-        'tan'
-    ]
 };
 
 /**
@@ -6975,7 +6011,7 @@ cot.doc = {
  * @param {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function csc(x) {
+math.csc = function csc(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('csc', arguments.length, 1);
     }
@@ -7003,39 +6039,15 @@ function csc(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, csc);
+        return util.map(x, math.csc);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return csc(x.valueOf());
+        return math.csc(x.valueOf());
     }
 
     throw newUnsupportedTypeError('csc', x);
-}
-
-math.csc = csc;
-
-/**
- * Function documentation
- */
-csc.doc = {
-    'name': 'csc',
-    'category': 'Trigonometry',
-    'syntax': [
-        'csc(x)'
-    ],
-    'description': 'Compute the cosecant of x in radians. ' +
-        'Defined as 1/sin(x)',
-    'examples': [
-        'csc(2)',
-        '1 / sin(2)'
-    ],
-    'seealso': [
-        'sec',
-        'cot',
-        'sin'
-    ]
 };
 
 /**
@@ -7043,7 +6055,7 @@ csc.doc = {
  * @param {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function sec(x) {
+math.sec = function sec(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('sec', arguments.length, 1);
     }
@@ -7070,39 +6082,15 @@ function sec(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, sec);
+        return util.map(x, math.sec);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return sec(x.valueOf());
+        return math.sec(x.valueOf());
     }
 
     throw newUnsupportedTypeError('sec', x);
-}
-
-math.sec = sec;
-
-/**
- * Function documentation
- */
-sec.doc = {
-    'name': 'sec',
-    'category': 'Trigonometry',
-    'syntax': [
-        'sec(x)'
-    ],
-    'description': 'Compute the secant of x in radians. ' +
-        'Defined as 1/cos(x)',
-    'examples': [
-        'sec(2)',
-        '1 / cos(2)'
-    ],
-    'seealso': [
-        'cot',
-        'csc',
-        'cos'
-    ]
 };
 
 /**
@@ -7110,7 +6098,7 @@ sec.doc = {
  * @param {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function sin(x) {
+math.sin = function sin(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('sin', arguments.length, 1);
     }
@@ -7134,41 +6122,15 @@ function sin(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, sin);
+        return util.map(x, math.sin);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return sin(x.valueOf());
+        return math.sin(x.valueOf());
     }
 
     throw newUnsupportedTypeError('sin', x);
-}
-
-math.sin = sin;
-
-/**
- * Function documentation
- */
-sin.doc = {
-    'name': 'sin',
-    'category': 'Trigonometry',
-    'syntax': [
-        'sin(x)'
-    ],
-    'description': 'Compute the sine of x in radians.',
-    'examples': [
-        'sin(2)',
-        'sin(pi / 4) ^ 2',
-        'sin(90 deg)',
-        'sin(30 deg)',
-        'sin(0.2)^2 + cos(0.2)^2'
-    ],
-    'seealso': [
-        'asin',
-        'cos',
-        'tan'
-    ]
 };
 
 /**
@@ -7176,7 +6138,7 @@ sin.doc = {
  * @param {Number | Complex | Unit | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
-function tan(x) {
+math.tan = function tan(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('tan', arguments.length, 1);
     }
@@ -7204,40 +6166,15 @@ function tan(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, tan);
+        return util.map(x, math.tan);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return tan(x.valueOf());
+        return math.tan(x.valueOf());
     }
 
     throw newUnsupportedTypeError('tan', x);
-}
-
-math.tan = tan;
-
-/**
- * Function documentation
- */
-tan.doc = {
-    'name': 'tan',
-    'category': 'Trigonometry',
-    'syntax': [
-        'tan(x)'
-    ],
-    'description': 'Compute the tangent of x in radians.',
-    'examples': [
-        'tan(0.5)',
-        'sin(0.5) / cos(0.5)',
-        'tan(pi / 4)',
-        'tan(45 deg)'
-    ],
-    'seealso': [
-        'atan',
-        'sin',
-        'cos'
-    ]
 };
 
 /**
@@ -7246,61 +6183,28 @@ tan.doc = {
  * @param {Unit | Array | Matrix} unit
  * @return {Unit | Array | Matrix} res
  */
-function unit_in(x, unit) {
+math['in'] = function unit_in(x, unit) {
     if (arguments.length != 2) {
         throw newArgumentsError('in', arguments.length, 2);
     }
 
-    if (x instanceof Unit && unit instanceof Unit) {
-        if (!x.equalBase(unit)) {
-            throw new Error('Units do not match');
+    if (x instanceof Unit) {
+        if (unit instanceof Unit || isString(unit)) {
+            return x.in(unit);
         }
-        if (unit.hasValue) {
-            throw new Error('Cannot convert to a unit with a value');
-        }
-        if (!unit.hasUnit) {
-            throw new Error('Unit expected on the right hand side of function in');
-        }
-
-        var res = unit.clone();
-        res.value = x.value;
-        res.fixPrefix = true;
-
-        return res;
     }
 
     if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
         unit instanceof Array || unit instanceof Matrix || unit instanceof Range) {
-        return util.map2(x, unit, unit_in);
+        return util.map2(x, unit, math['in']);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return math.in(x.valueOf());
+        return math['in'](x.valueOf());
     }
 
-    throw newUnsupportedTypeError('in', x);
-}
-
-math.in = unit_in;
-
-/**
- * Function documentation
- */
-unit_in.doc ={
-    'name': 'in',
-    'category': 'Units',
-    'syntax': [
-        'x in unit',
-        'in(x, unit)'
-    ],
-    'description': 'Change the unit of a value.',
-    'examples': [
-        '5 inch in cm',
-        '3.2kg in g',
-        '16 bytes in bits'
-    ],
-    'seealso': []
+    throw newUnsupportedTypeError('in', x, unit);
 };
 
 /**
@@ -7308,7 +6212,7 @@ unit_in.doc ={
  * @param {*} x
  * @return {*} clone
  */
-function clone(x) {
+math.clone = function clone(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('clone', arguments.length, 1);
     }
@@ -7327,41 +6231,17 @@ function clone(x) {
     }
 
     if (x instanceof Array) {
+        var c = math.clone;
         return x.map(function (value) {
-            return clone(value);
+            return c(value);
         });
     }
 
     if (x instanceof Object) {
-        return util.mapObject(x, clone);
+        return util.mapObject(x, math.clone);
     }
 
     throw newUnsupportedTypeError('clone', x);
-}
-
-math.clone = clone;
-
-
-
-/**
- * Function documentation
- */
-clone.doc = {
-    'name': 'clone',
-    'category': 'Utils',
-    'syntax': [
-        'clone(x)'
-    ],
-    'description': 'Clone a variable. Creates a copy of primitive variables,' +
-        'and a deep copy of matrices',
-    'examples': [
-        'clone(3.5)',
-        'clone(2 - 4i)',
-        'clone(45 deg)',
-        'clone([1, 2; 3, 4])',
-        'clone("hello world")'
-    ],
-    'seealso': []
 };
 
 /**
@@ -7382,7 +6262,7 @@ clone.doc = {
  * @param {Object} values
  * @return {String} str
  */
-function format(template, values) {
+math.format = function format(template, values) {
     var num = arguments.length;
     if (num != 1 && num != 2) {
         throw newArgumentsError('format', num, 1, 2);
@@ -7429,126 +6309,6 @@ function format(template, values) {
             }
         );
     }
-}
-
-math.format = format;
-
-/**
- * Function documentation
- */
-format.doc = {
-    'name': 'format',
-    'category': 'Utils',
-    'syntax': [
-        'format(value)'
-    ],
-    'description': 'Format a value of any type as string.',
-    'examples': [
-        'format(2.3)',
-        'format(3 - 4i)',
-        'format([])'
-    ],
-    'seealso': []
-};
-
-/**
- * Display documentation on a function or data type
- * @param {function | string | Object} subject
- * @return {String} documentation
- */
-function help(subject) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('help', arguments.length, 1);
-    }
-
-    if (subject != undefined) {
-        if (subject.doc) {
-            return generateDoc(subject.doc);
-        }
-        else if (subject.constructor.doc) {
-            return generateDoc(subject.constructor.doc);
-        }
-        else if (isString(subject)) {
-            // search the subject in the methods
-            var obj = math[subject];
-            if (obj && obj.doc) {
-                return generateDoc(obj.doc);
-            }
-        }
-    }
-
-    // TODO: generate documentation for constants, number and string
-
-    if (subject instanceof Object && subject.name) {
-        return 'No documentation found on subject "' + subject.name +'"';
-    }
-    else if (subject instanceof Object && subject.constructor.name) {
-        return 'No documentation found on subject "' + subject.constructor.name +'"';
-    }
-    else {
-        return 'No documentation found on subject "' + subject +'"';
-    }
-}
-
-math.help = help;
-
-/**
- * Generate readable documentation from a documentation object
- * @param {Object} doc
- * @return {String} readableDoc
- * @private
- */
-function generateDoc (doc) {
-    var desc = '';
-
-    if (doc.name) {
-        desc += 'NAME\n' + doc.name + '\n\n';
-    }
-    if (doc.category) {
-        desc += 'CATEGORY\n' + doc.category + '\n\n';
-    }
-    if (doc.syntax) {
-        desc += 'SYNTAX\n' + doc.syntax.join('\n') + '\n\n';
-    }
-    if (doc.examples) {
-        var parser = math.parser();
-        desc += 'EXAMPLES\n';
-        for (var i = 0; i < doc.examples.length; i++) {
-            var expr = doc.examples[i];
-            var res;
-            try {
-                res = parser.eval(expr);
-            }
-            catch (e) {
-                res = e;
-            }
-            desc += expr + '\n';
-            desc += '    ' + math.format(res) + '\n';
-        }
-        desc += '\n';
-    }
-    if (doc.seealso) {
-        desc += 'SEE ALSO\n' + doc.seealso.join(', ') + '\n';
-    }
-
-    return desc;
-}
-
-/**
- * Function documentation
- */
-help.doc = {
-    'name': 'help',
-    'category': 'Utils',
-    'syntax': [
-        'help(object)'
-    ],
-    'description': 'Display documentation on a function or data type.',
-    'examples': [
-        'help("sqrt")',
-        'help("Complex")'
-    ],
-    'seealso': []
 };
 
 /**
@@ -7558,15 +6318,15 @@ help.doc = {
  *                                     overwritten. False by default.
  */
 // TODO: return status information
-function _import(object, override) {
+math['import'] = function math_import(object, override) {
     var name;
 
     if (isString(object)) {
         // a string with a filename
         if (typeof (require) !== 'undefined') {
             // load the file using require
-            var module = require(object);
-            _import(module);
+            var _module = require(object);
+            math['import'](_module);
         }
         else {
             throw new Error('Cannot load file: require not available.');
@@ -7577,11 +6337,11 @@ function _import(object, override) {
         name = object.name;
         if (name) {
             if (override || math[name] === undefined) {
-                math[name] = object;
+                _import(name, object);
             }
         }
         else {
-            throw new Error('Cannot import an unnamed function');
+            throw new Error('Cannot import an unnamed function or object');
         }
     }
     else if (object instanceof Object) {
@@ -7591,18 +6351,30 @@ function _import(object, override) {
                 var value = object[name];
                 if (isSupportedType(value)) {
                     if (override || math[name] === undefined) {
-                        math[name] = value;
+                        _import(name, value);
                     }
                 }
                 else {
-                    _import(value);
+                    math['import'](value);
                 }
             }
         }
     }
-}
+};
 
-math['import'] = _import;
+/**
+ * Add a property to the math namespace and create a chain proxy for it.
+ * @param {String} name
+ * @param {*} value
+ * @private
+ */
+function _import(name, value) {
+    // add to math namespace
+    math[name] = value;
+
+    // create a proxy for the Selector
+    createSelectorProxy(name, value);
+}
 
 /**
  * Check whether given object is a supported type
@@ -7618,20 +6390,41 @@ function isSupportedType(object) {
 }
 
 /**
- * Function documentation
+ * Wrap any value in a Selector, allowing to perform chained operations on
+ * the value.
+ *
+ * All methods available in the math.js library can be called upon the selector,
+ * and then will be evaluated with the value itself as first argument.
+ * The selector can be closed by executing selector.done(), which will return
+ * the final value.
+ *
+ * Example usage:
+ *     math.select(3)
+ *         .add(4)
+ *         .subtract(2)
+ *         .done();     // 5
+ *     math.select( [[1, 2], [3, 4]] )
+ *         .set([1, 1], 8)
+ *         .multiply(3)
+ *         .done();     // [[24, 6], [9, 12]]
+ *
+ * The Selector has a number of special functions:
+ * - done()     Finalize the chained operation and return the selectors value.
+ * - valueOf()  The same as done()
+ * - toString() Executes math.format() onto the selectors value, returning
+ *              a string representation of the value.
+ * - get(...)   Get a subselection of the selectors value. Only applicable when
+ *              the value has a method get, for example when value is a Matrix
+ *              or Array.
+ * - set(...)   Replace a subselection of the selectors value. Only applicable
+ *              when the value has a method get, for example when value is a
+ *              Matrix or Array.
+ *
+ * @param {*} value
+ * @return {math.type.Selector} selector
  */
-_import.doc = {
-    'name': 'import',
-    'category': 'Utils',
-    'syntax': [
-        'import(string)'
-    ],
-    'description': 'Import functions from a file.',
-    'examples': [
-        'import("numbers")',
-        'import("./mylib.js")'
-    ],
-    'seealso': []
+math.select = function select(value) {
+    return new math.type.Selector(value);
 };
 
 /**
@@ -7640,7 +6433,7 @@ _import.doc = {
  * @return {String} type  Lower case type, for example "number", "string",
  *                        "array".
  */
-function _typeof(x) {
+math['typeof'] = function math_typeof(x) {
     if (arguments.length != 1) {
         throw newArgumentsError('typeof', arguments.length, 1);
     }
@@ -7666,27 +6459,6 @@ function _typeof(x) {
     }
 
     return type;
-}
-
-math['typeof'] = _typeof;
-
-/**
- * Function documentation
- */
-_typeof.doc = {
-    'name': 'typeof',
-    'category': 'Utils',
-    'syntax': [
-        'typeof(x)'
-    ],
-    'description': 'Get the type of a variable.',
-    'examples': [
-        'typeof(3.5)',
-        'typeof(2 - 4i)',
-        'typeof(45 deg)',
-        'typeof("hello world")'
-    ],
-    'seealso': []
 };
 
 /**
@@ -7771,7 +6543,7 @@ Symbol.prototype.toString = function() {
 
     /* TODO: determine if the function is an operator
     // operator. format the operation like "(2 + 3)"
-    if (this.fn && (this.fn instanceof mathnotepad.fn.Operator)) {
+    if (this.fn && (this.fn instanceof math.fn.Operator)) {
         if (this.params && this.params.length == 2) {
             return '(' +
                 this.params[0].toString() + ' ' +
@@ -8020,7 +6792,7 @@ Block.prototype.toString = function() {
 };
 
 /**
- * @constructor mathnotepad.tree.Assignment
+ * @constructor Assignment
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
  * @param {Node} expr                   The expression defining the symbol
@@ -8251,49 +7023,48 @@ FunctionAssignment.prototype.toString = function() {
     return this.def.toString();
 };
 
-(function () {
-    /**
-     * Scope
-     * A scope stores functions.
-     *
-     * @constructor mathnotepad.Scope
-     * @param {Scope} [parentScope]
-     */
-    function Scope(parentScope) {
-        this.parentScope = parentScope;
-        this.nestedScopes = undefined;
 
-        this.symbols = {}; // the actual symbols
+/**
+ * Scope
+ * A scope stores functions.
+ *
+ * @constructor mathnotepad.Scope
+ * @param {Scope} [parentScope]
+ */
+math.expr.Scope = function Scope(parentScope) {
+    this.parentScope = parentScope;
+    this.nestedScopes = undefined;
 
-        // the following objects are just used to test existence.
-        this.defs = {};    // definitions by name (for example "a = [1, 2; 3, 4]")
-        this.updates = {}; // updates by name     (for example "a(2, 1) = 5.2")
-        this.links = {};   // links by name       (for example "2 * a")
-    }
+    this.symbols = {}; // the actual symbols
 
-    math.expr.Scope = Scope;
+    // the following objects are just used to test existence.
+    this.defs = {};    // definitions by name (for example "a = [1, 2; 3, 4]")
+    this.updates = {}; // updates by name     (for example "a(2, 1) = 5.2")
+    this.links = {};   // links by name       (for example "2 * a")
+};
 
-    // TODO: rethink the whole scoping solution again. Try to simplify
+// TODO: rethink the whole scoping solution again. Try to simplify
 
+math.expr.Scope.prototype = {
     /**
      * Create a nested scope
      * The variables in a nested scope are not accessible from the parent scope
-     * @return {Scope} nestedScope
+     * @return {math.expr.Scope} nestedScope
      */
-    Scope.prototype.createNestedScope = function () {
-        var nestedScope = new Scope(this);
+    createNestedScope: function () {
+        var nestedScope = new math.expr.Scope(this);
         if (!this.nestedScopes) {
             this.nestedScopes = [];
         }
         this.nestedScopes.push(nestedScope);
         return nestedScope;
-    };
+    },
 
     /**
      * Clear all symbols in this scope and its nested scopes
      * (parent scope will not be cleared)
      */
-    Scope.prototype.clear = function () {
+    clear: function () {
         this.symbols = {};
         this.defs = {};
         this.links = {};
@@ -8305,7 +7076,7 @@ FunctionAssignment.prototype.toString = function() {
                 nestedScopes[i].clear();
             }
         }
-    };
+    },
 
     /**
      * create a symbol
@@ -8313,7 +7084,7 @@ FunctionAssignment.prototype.toString = function() {
      * @return {function} symbol
      * @private
      */
-    Scope.prototype.createSymbol = function (name) {
+    createSymbol: function (name) {
         var symbol = this.symbols[name];
         if (!symbol) {
             // get a link to the last definition
@@ -8325,7 +7096,7 @@ FunctionAssignment.prototype.toString = function() {
 
         }
         return symbol;
-    };
+    },
 
     /**
      * Create a new symbol
@@ -8334,7 +7105,7 @@ FunctionAssignment.prototype.toString = function() {
      * @return {function} symbol
      * @private
      */
-    Scope.prototype.newSymbol = function (name, value) {
+    newSymbol: function (name, value) {
         // create a new symbol
         var scope = this;
         var symbol = function () {
@@ -8376,21 +7147,21 @@ FunctionAssignment.prototype.toString = function() {
         };
 
         return symbol;
-    };
+    },
 
     /**
      * create a link to a value.
      * @param {String} name
      * @return {function} symbol
      */
-    Scope.prototype.createLink = function (name) {
+    createLink: function (name) {
         var symbol = this.links[name];
         if (!symbol) {
             symbol = this.createSymbol(name);
             this.links[name] = symbol;
         }
         return symbol;
-    };
+    },
 
     /**
      * Create a variable definition
@@ -8399,7 +7170,7 @@ FunctionAssignment.prototype.toString = function() {
      * @param {*} [value]
      * @return {function} symbol
      */
-    Scope.prototype.createDef = function (name, value) {
+    createDef: function (name, value) {
         var symbol = this.defs[name];
         if (!symbol) {
             symbol = this.createSymbol(name);
@@ -8409,7 +7180,7 @@ FunctionAssignment.prototype.toString = function() {
             symbol.value = value;
         }
         return symbol;
-    };
+    },
 
     /**
      * Create a variable update definition
@@ -8417,14 +7188,28 @@ FunctionAssignment.prototype.toString = function() {
      * @param {String} name
      * @return {function} symbol
      */
-    Scope.prototype.createUpdate = function (name) {
+    createUpdate: function (name) {
         var symbol = this.updates[name];
         if (!symbol) {
             symbol = this.createLink(name);
             this.updates[name] = symbol;
         }
         return symbol;
-    };
+    },
+
+    /**
+     * Create a constant
+     * @param {String} name
+     * @param {*} value
+     * @return {function} symbol
+     * @private
+     */
+    createConstant: function (name, value) {
+        var symbol = this.newSymbol(name, value);
+        this.symbols[name] = symbol;
+        this.defs[name] = symbol;
+        return symbol;
+    },
 
     /**
      * get the link to a symbol definition or update.
@@ -8433,7 +7218,7 @@ FunctionAssignment.prototype.toString = function() {
      * @param {String} name
      * @return {function | undefined} symbol, or undefined when not found
      */
-    Scope.prototype.findDef = function (name) {
+    findDef: function (name) {
         var symbol;
 
         // check scope
@@ -8451,77 +7236,49 @@ FunctionAssignment.prototype.toString = function() {
             return this.parentScope.findDef(name);
         }
         else {
-            // this is the root scope (has no parent)
-
-            var newSymbol = this.newSymbol,
-                symbols = this.symbols,
-                defs = this.defs;
-
-            /**
-             * Store a symbol in the root scope
-             * @param {String} name
-             * @param {*} value
-             * @return {function} symbol
-             */
-            function put(name, value) {
-                var symbol = newSymbol(name, value);
-                symbols[name] = symbol;
-                defs[name] = symbol;
-                return symbol;
-            }
-
-            // check constant (and load the constant)
-            if (name == 'pi') {
-                return put(name, math.PI);
-            }
-            if (name == 'e') {
-                return put(name, math.E);
-            }
-            if (name == 'i') {
-                return put(name, new Complex(0, 1));
-            }
+            // this is the root scope (has no parent),
+            // try to load constants, functions, or unit from the library
 
             // check function (and load the function), for example "sin" or "sqrt"
             // search in the mathnotepad.math namespace for this symbol
             var fn = math[name];
             if (fn) {
-                return put(name, fn);
+                return this.createConstant(name, fn);
             }
 
             // Check if token is a unit
-            // Note: we do not check the upper case name, units are case sensitive!
-            if (Unit.isUnit(name)) {
+            if (Unit.isPlainUnit(name)) {
                 var unit = new Unit(null, name);
-                return put(name, unit);
+                return this.createConstant(name, unit);
             }
         }
 
         return undefined;
-    };
+    },
 
     /**
      * Remove a link to a symbol
      * @param {String} name
      */
-    Scope.prototype.removeLink = function (name) {
+    removeLink: function (name) {
         delete this.links[name];
-    };
+    },
 
     /**
      * Remove a definition of a symbol
      * @param {String} name
      */
-    Scope.prototype.removeDef = function (name) {
+    removeDef: function (name) {
         delete this.defs[name];
-    };
+    },
 
     /**
      * Remove an update definition of a symbol
      * @param {String} name
      */
-    Scope.prototype.removeUpdate = function (name) {
+    removeUpdate: function (name) {
         delete this.updates[name];
-    };
+    },
 
     /**
      * initialize the scope and its nested scopes
@@ -8530,7 +7287,7 @@ FunctionAssignment.prototype.toString = function() {
      * If there is no parentScope, or no definition of the func in the parent scope,
      * the link will be set undefined
      */
-    Scope.prototype.init = function () {
+    init: function () {
         var symbols = this.symbols;
         var parentScope = this.parentScope;
 
@@ -8546,7 +7303,7 @@ FunctionAssignment.prototype.toString = function() {
                 nestedScope.init();
             });
         }
-    };
+    },
 
     /**
      * Check whether this scope or any of its nested scopes contain a link to a
@@ -8554,7 +7311,7 @@ FunctionAssignment.prototype.toString = function() {
      * @param {String} name
      * @return {boolean} hasLink   True if a link with given name is found
      */
-    Scope.prototype.hasLink = function (name) {
+    hasLink: function (name) {
         if (this.links[name]) {
             return true;
         }
@@ -8569,16 +7326,16 @@ FunctionAssignment.prototype.toString = function() {
         }
 
         return false;
-    };
+    },
 
     /**
      * Check whether this scope contains a definition of a symbol with given name
      * @param {String} name
      * @return {boolean} hasDef   True if a definition with given name is found
      */
-    Scope.prototype.hasDef = function (name) {
+    hasDef: function (name) {
         return (this.defs[name] != undefined);
-    };
+    },
 
     /**
      * Check whether this scope contains an update definition of a symbol with
@@ -8586,15 +7343,15 @@ FunctionAssignment.prototype.toString = function() {
      * @param {String} name
      * @return {boolean} hasUpdate   True if an update definition with given name is found
      */
-    Scope.prototype.hasUpdate = function (name) {
+    hasUpdate: function (name) {
         return (this.updates[name] != undefined);
-    };
+    },
 
     /**
      * Retrieve all undefined symbols
      * @return {function[]} undefinedSymbols   All symbols which are undefined
      */
-    Scope.prototype.getUndefinedSymbols = function () {
+    getUndefinedSymbols: function () {
         var symbols = this.symbols;
         var undefinedSymbols = [];
         for (var i in symbols) {
@@ -8614,9 +7371,8 @@ FunctionAssignment.prototype.toString = function() {
         }
 
         return undefinedSymbols;
-    };
-
-})();
+    }
+};
 
 (function () {
     /**
@@ -8684,7 +7440,6 @@ FunctionAssignment.prototype.toString = function() {
         expr = expression || '';
 
         if (!scope) {
-            this._newScope();
             scope = this.scope;
         }
 
@@ -8710,7 +7465,6 @@ FunctionAssignment.prototype.toString = function() {
      * @return {* | undefined} value
      */
     math.expr.Parser.prototype.get = function (name) {
-        this._newScope();
         var symbol = this.scope.findDef(name);
         if (symbol) {
             return symbol.value;
@@ -8725,18 +7479,6 @@ FunctionAssignment.prototype.toString = function() {
      */
     math.expr.Parser.prototype.set = function (name, value) {
         this.scope.createDef(name, value);
-    };
-
-    /**
-     * Create a new scope having the current scope as parent scope, to make current
-     * scope immutable
-     * @private
-     */
-    math.expr.Parser.prototype._newScope = function () {
-        this.scope = new math.expr.Scope(this.scope);
-
-        // TODO: smartly cleanup scopes which are not relevant anymore
-
     };
 
     /**
@@ -8934,7 +7676,7 @@ FunctionAssignment.prototype.toString = function() {
         }
 
         return true;
-    };
+    }
 
     /**
      * checks if the given char c is a letter (upper or lower case)
@@ -9009,32 +7751,6 @@ FunctionAssignment.prototype.toString = function() {
     }
 
     /**
-     * Parse assignment of ans.
-     * Ans is assigned when the expression itself is no variable or function
-     * assignment
-     * @param {Scope} scope
-     * @return {Node} node
-     * @private
-     */
-    function parse_ans (scope) {
-        var expression = parse_function_assignment(scope);
-
-        // TODO: not so nice having to specify some special types here...
-        if (!(expression instanceof Assignment)
-        // !(expression instanceof FunctionAssignment) &&  // TODO
-        // !(expression instanceof plot)                   // TODO
-            ) {
-            // create a variable definition for ans
-            var name = 'ans';
-            var params = undefined;
-            var link = scope.createDef(name);
-            return new Assignment(name, params, expression, link);
-        }
-
-        return expression;
-    }
-
-    /**
      * Parse a block with expressions. Expressions can be separated by a newline
      * character '\n', or by a semicolon ';'. In case of a semicolon, no output
      * of the preceding line is returned.
@@ -9077,6 +7793,32 @@ FunctionAssignment.prototype.toString = function() {
         }
 
         return node;
+    }
+
+    /**
+     * Parse assignment of ans.
+     * Ans is assigned when the expression itself is no variable or function
+     * assignment
+     * @param {Scope} scope
+     * @return {Node} node
+     * @private
+     */
+    function parse_ans (scope) {
+        var expression = parse_function_assignment(scope);
+
+        // TODO: not so nice having to specify some special types here...
+        if (!(expression instanceof Assignment)
+        // !(expression instanceof FunctionAssignment) &&  // TODO
+        // !(expression instanceof plot)                   // TODO
+            ) {
+            // create a variable definition for ans
+            var name = 'ans';
+            var params = undefined;
+            var link = scope.createDef(name);
+            return new Assignment(name, params, expression, link);
+        }
+
+        return expression;
     }
 
     /**
@@ -9211,7 +7953,7 @@ FunctionAssignment.prototype.toString = function() {
             }
 
             var name = 'range';
-            var fn = range;
+            var fn = math.range;
             node = new Symbol(name, fn, params);
         }
 
@@ -9228,6 +7970,7 @@ FunctionAssignment.prototype.toString = function() {
         var node = parse_bitwise_conditions(scope);
 
         // TODO: precedence of And above Or?
+        // TODO: implement a method for unit to number conversion
         var operators = {
             'in' : 'in'
             /* TODO: implement conditions
@@ -9371,7 +8114,7 @@ FunctionAssignment.prototype.toString = function() {
     function parse_unaryminus (scope) {
         if (token == '-') {
             var name = token;
-            var fn = unaryminus;
+            var fn = math.unaryminus;
             getToken();
             var params = [parse_pow(scope)];
 
@@ -9404,7 +8147,7 @@ FunctionAssignment.prototype.toString = function() {
         while (nodes.length) {
             var leftNode = nodes.pop();
             var name = '^';
-            var fn = pow;
+            var fn = math.pow;
             var params = [leftNode, node];
             node = new Symbol(name, fn, params);
         }
@@ -9423,7 +8166,7 @@ FunctionAssignment.prototype.toString = function() {
 
         while (token == '!') {
             var name = token;
-            var fn = factorial;
+            var fn = math.factorial;
             getToken();
             var params = [node];
 
@@ -9444,7 +8187,7 @@ FunctionAssignment.prototype.toString = function() {
 
         while (token == '\'') {
             var name = token;
-            var fn = transpose;
+            var fn = math.transpose;
             getToken();
             var params = [node];
 
@@ -9521,8 +8264,8 @@ FunctionAssignment.prototype.toString = function() {
 
             var link = scope.createLink(name);
             // TODO: split applying arguments from symbol?
-            var arguments = parse_arguments(scope);
-            var symbol = new Symbol(name, link, arguments);
+            var args = parse_arguments(scope);
+            var symbol = new Symbol(name, link, args);
 
             /* TODO: parse arguments
             // parse arguments
@@ -9543,19 +8286,19 @@ FunctionAssignment.prototype.toString = function() {
      * @private
      */
     function parse_arguments (scope) {
-        var arguments = [];
+        var args = [];
         if (token == '(') {
             // TODO: in case of Plot, create a new scope.
 
             getToken();
 
             if (token != ')') {
-                arguments.push(parse_range(scope));
+                args.push(parse_range(scope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
-                    arguments.push(parse_range(scope));
+                    args.push(parse_range(scope));
                 }
             }
 
@@ -9565,7 +8308,7 @@ FunctionAssignment.prototype.toString = function() {
             getToken();
         }
 
-        return arguments;
+        return args;
     }
 
     /**
@@ -9727,7 +8470,7 @@ FunctionAssignment.prototype.toString = function() {
                     return new Constant(value);
                 }
 
-                if (Unit.isUnit(token)) {
+                if (Unit.isPlainUnit(token)) {
                     value = new Unit(number, token);
                     getToken();
                     return new Constant(value);
@@ -10109,14 +8852,14 @@ FunctionAssignment.prototype.toString = function() {
     };
 
     /**
-     * @constructor mathnotepad.Workspace.Node
+     * @constructor Workspace.Node
      * @param {Object} params Object containing parameters:
      *                        {Number} id
      *                        {String} expression   An expression, for example "2+3"
-     *                        {mathnotepad.Parser} parser
-     *                        {mathnotepad.Scope} scope
-     *                        {mathnotepad.Workspace.Node} nextNode
-     *                        {mathnotepad.Workspace.Node} previousNode
+     *                        {Parser} parser
+     *                        {Scope} scope
+     *                        {Workspace.Node} nextNode
+     *                        {Workspace.Node} previousNode
      */
     Workspace.Node = function (params) {
         this.id = params.id;
@@ -10419,6 +9162,14 @@ math.parser.Parser = function () {
 math.parser.Workspace = function () {
     deprecated('new math.parser.Workspace()', 'math.workspace()');
 };
+
+
+// initialise the Chain prototype with all functions and constants in math
+for (var prop in math) {
+    if (math.hasOwnProperty(prop) && prop) {
+        createSelectorProxy(prop, math[prop]);
+    }
+}
 
 
 })();

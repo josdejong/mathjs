@@ -207,14 +207,15 @@ function CommandLineEditor (params) {
             }
 
             // units
-            math.Unit.UNITS.forEach(function (unit) {
+            var Unit = math.type.Unit;
+            Unit.UNITS.forEach(function (unit) {
                 if (unit.name.indexOf(keyword) == 0) {
                     matches.push(unit.name);
                 }
             });
-            for (var name in math.Unit.PREFIXES) {
-                if (math.Unit.PREFIXES.hasOwnProperty(name)) {
-                    var prefixes = math.Unit.PREFIXES[name];
+            for (var name in Unit.PREFIXES) {
+                if (Unit.PREFIXES.hasOwnProperty(name)) {
+                    var prefixes = Unit.PREFIXES[name];
                     for (var prefix in prefixes) {
                         if (prefixes.hasOwnProperty(prefix)) {
                             if (prefix.indexOf(keyword) == 0) {
@@ -222,9 +223,9 @@ function CommandLineEditor (params) {
                             }
                             else if (keyword.indexOf(prefix) == 0) {
                                 var unitKeyword = keyword.substring(prefix.length);
-                                math.Unit.UNITS.forEach(function (unit) {
+                                Unit.UNITS.forEach(function (unit) {
                                     if (unit.name.indexOf(unitKeyword) == 0 &&
-                                            math.Unit.isUnit(prefix + unit.name)) {
+                                            Unit.isPlainUnit(prefix + unit.name)) {
                                         matches.push(prefix + unit.name);
                                     }
                                 });
@@ -382,6 +383,7 @@ function CommandLineEditor (params) {
 
         dom.input = document.createElement('input');
         dom.input.className = 'input';
+        dom.input.title = 'Enter an expression';
         dom.input.onkeydown = onKeyDown;
         dom.inputLeft.appendChild(dom.input);
 

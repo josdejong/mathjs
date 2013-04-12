@@ -36,11 +36,8 @@ body {
 
 div.like {
     float: left;
-    margin-right: 16px;
-}
-
-div.like.facebook, div.like.linkedin {
-    margin-right: 50px;
+    width: 135px;
+    height: 26px;
 }
 
 #footer {

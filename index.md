@@ -14,9 +14,10 @@ Powerful and easy to use.
 # Features
 
 - Supports numbers, complex numbers, units, strings, arrays, and matrices.
-- Contains a large set of built-in functions and constants.
 - Contains a flexible expression parser.
 - Compatible with JavaScript’s built-in Math library.
+- Supports chained operations.
+- A large set of built-in functions and constants.
 - No dependencies. Runs on any JavaScript engine.
 - Easily extensible.
 
@@ -35,17 +36,23 @@ math.round(math.e, <span class="number">3</span>);            <span class="comme
 math.atan2(<span class="number">3</span>, <span class="number">-3</span>) / math.pi;      <span class="comment">// 0.75</span>
 math.log(<span class="number">1000</span>, <span class="number">10</span>);               <span class="comment">// 3</span>
 
+<span class="comment">// parse expressions. use units</span>
+<span class="keyword">var</span> parser = math.parser();
+parser.eval(<span class="string">'1.2 / (2.3 + 0.7)'</span>); <span class="comment">// 0.4</span>
+parser.eval(<span class="string">'5.08 cm in inch'</span>);   <span class="comment">// 2 inch</span>
+parser.eval(<span class="string">'a = sqrt(4)'</span>);
+parser.eval(<span class="string">'sin(45 deg) ^ a'</span>);   <span class="comment">// 0.5</span>
+
+<span class="comment">// chained operations</span>
+math.select(<span class="number">3</span>)
+    .add(<span class="number">4</span>)
+    .subtract(<span class="number">2</span>)
+    .done(); <span class="comment">// 5</span>
+
 <span class="comment">// complex numbers</span>
 <span class="keyword">var</span> c = math.complex(<span class="number">3</span>, <span class="number">-4</span>);      <span class="comment">// 3 - 4i</span>
 math.add(c, <span class="number">2</span>);                   <span class="comment">// 5 - 2i</span>
 math.sqrt(<span class="number">-4</span>);                    <span class="comment">// 2i</span>
-
-<span class="comment">// parse expressions. use units</span>
-<span class="keyword">var</span> parser = math.parser();
-parser.eval(<span class="string">'1.2 / (2.3 + 0.7)'</span>); <span class="comment">// 0.4</span>
-parser.eval(<span class="string">'a = 5.08 cm'</span>);
-parser.eval(<span class="string">'a in inch'</span>);         <span class="comment">// 2 inch</span>
-parser.eval(<span class="string">'sin(45 deg) ^ 2'</span>);   <span class="comment">// 0.5</span>
 
 <span class="comment">// arrays and matrices</span>
 <span class="keyword">var</span> a = [[1, 2], [3, 4]];
@@ -95,19 +102,19 @@ The latest version of math.js can be downloaded below:
     <tr>
         <td>
             <a href="js/lib/math.js" target="_blank">Development
-                (version <span class="version">0.5.0</span>)</a>
+                (version <span class="version">0.6.0</span>)</a>
         </td>
         <td>
-            <span id="development-size">281 kB</span>, uncompressed with comments
+            <span id="development-size">263 kB</span>, uncompressed with comments
         </td>
     </tr>
     <tr>
         <td>
             <a href="js/lib/math.min.js" target="_blank">Production
-                (version <span class="version">0.5.0</span>)</a>
+                (version <span class="version">0.6.0</span>)</a>
         </td>
         <td>
-            <span id="production-size">23 kB</span>, minified and gzipped
+            <span id="production-size">19 kB</span>, minified and gzipped
         </td>
     </tr>
 </table>
