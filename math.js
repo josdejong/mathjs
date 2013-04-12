@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.6.0-SNAPSHOT
- * @date    2013-04-11
+ * @date    2013-04-13
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -815,123 +815,6 @@ var util = (function () {
  */
 function isBoolean(value) {
     return (value instanceof Boolean) || (typeof value == 'boolean');
-}
-
-/**
- * Create a chained value. All methods available in the math.js library
- * can be called upon the value, and then will be evaluated with the
- * value itself as first argument.
- * The chain can be closed by executing chain.done(), which will return the
- * final value.
- * @param {*} [value]
- * @constructor
- */
-math.type.Chain = function Chain (value) {
-    if (!(this instanceof Chain)) {
-        throw new SyntaxError(
-            'Chain constructor must be called with the new operator');
-    }
-
-    this.value = value || undefined;
-};
-
-math.type.Chain.prototype = {
-    /**
-     * Close the chain. Returns the final value.
-     * Does the same as method valueOf()
-     * @returns {*} value
-     */
-    done: function () {
-        return this.value;
-    },
-
-    /**
-     * Get a submatrix or subselection from current value.
-     * Only applicable when the current value has a method get.
-     */
-    get: function () {
-        var value = this.value;
-        if (!value) {
-            throw Error('Value in chain is undefined');
-        }
-
-        if (value.get) {
-            return new math.type.Chain(value.get.apply(value, arguments));
-        }
-
-        if (value instanceof Array) {
-            // convert to matrix, evaluate, and then back to Array
-            value = new Matrix(value);
-            return new math.type.Chain(
-                value.get.apply(value, arguments).valueOf()
-            );
-        }
-
-        throw Error('Value in chain has no method get');
-    },
-
-    /**
-     * Set a submatrix or subselection on current value.
-     * Only applicable when the current value has a method set.
-     */
-    set: function () {
-        var value = this.value;
-        if (!value) {
-            throw Error('Value in chain is undefined');
-        }
-
-        if (value.set) {
-            return new math.type.Chain(value.set.apply(value, arguments));
-        }
-
-        if (value instanceof Array) {
-            // convert to matrix, evaluate, and then back to Array
-            value = new Matrix(value);
-            return new math.type.Chain(
-                value.set.apply(value, arguments).valueOf()
-            );
-        }
-
-        throw Error('Value in chain has no method set');
-    },
-
-    /**
-     * Close the chain. Returns the final value.
-     * Does the same as method done()
-     * @returns {*} value
-     */
-    valueOf: function () {
-        return this.value;
-    },
-
-    /**
-     * Get the string representation of the value in the chain
-     * @returns {String}
-     */
-    toString: function () {
-        return math.format(this.value);
-    }
-};
-
-/**
- * Create a proxy method for the
- * @param {String} name
- * @param {*} value       The value or function to be proxied
- */
-function createChainProxy(name, value) {
-    var Chain = math.type.Chain;
-    var slice = Array.prototype.slice;
-    if (typeof value === 'function') {
-        // a function
-        Chain.prototype[name] = function () {
-            var args = [this.value].concat(slice.call(arguments, 0));
-            return new Chain(value.apply(this, args));
-        }
-    }
-    else {
-        // a constant
-        Chain.prototype[name] = new Chain(value);
-    }
 }
 
 /**
@@ -2167,6 +2050,143 @@ Range.prototype.toString = function () {
     return str;
 };
 /**
+ * @constructor math.type.Selector
+ * Wrap any value in a Selector, allowing to perform chained operations on
+ * the value.
+ *
+ * All methods available in the math.js library can be called upon the selector,
+ * and then will be evaluated with the value itself as first argument.
+ * The selector can be closed by executing selector.done(), which will return
+ * the final value.
+ *
+ * The Selector has a number of special functions:
+ * - done()     Finalize the chained operation and return the selectors value.
+ * - valueOf()  The same as done()
+ * - toString() Executes math.format() onto the selectors value, returning
+ *              a string representation of the value.
+ * - get(...)   Get a subselection of the selectors value. Only applicable when
+ *              the value has a method get, for example when value is a Matrix
+ *              or Array.
+ * - set(...)   Replace a subselection of the selectors value. Only applicable
+ *              when the value has a method get, for example when value is a
+ *              Matrix or Array.
+ *
+ * @param {*} [value]
+ */
+math.type.Selector = function Selector (value) {
+    if (!(this instanceof Selector)) {
+        throw new SyntaxError(
+            'Selector constructor must be called with the new operator');
+    }
+
+    if (value instanceof math.type.Selector) {
+        this.value = value.value;
+    }
+    else {
+        this.value = value || undefined;
+    }
+};
+
+math.type.Selector.prototype = {
+    /**
+     * Close the selector. Returns the final value.
+     * Does the same as method valueOf()
+     * @returns {*} value
+     */
+    done: function () {
+        return this.value;
+    },
+
+    /**
+     * Get a submatrix or subselection from current value.
+     * Only applicable when the current value has a method get.
+     */
+    get: function () {
+        var value = this.value;
+        if (!value) {
+            throw Error('Selector value is undefined');
+        }
+
+        if (value.get) {
+            return new math.type.Selector(value.get.apply(value, arguments));
+        }
+
+        if (value instanceof Array) {
+            // convert to matrix, evaluate, and then back to Array
+            value = new Matrix(value);
+            return new math.type.Selector(
+                value.get.apply(value, arguments).valueOf()
+            );
+        }
+
+        throw Error('Selector value has no method get');
+    },
+
+    /**
+     * Set a submatrix or subselection on current value.
+     * Only applicable when the current value has a method set.
+     */
+    set: function () {
+        var value = this.value;
+        if (!value) {
+            throw Error('Selector value is undefined');
+        }
+
+        if (value.set) {
+            return new math.type.Selector(value.set.apply(value, arguments));
+        }
+
+        if (value instanceof Array) {
+            // convert to matrix, evaluate, and then back to Array
+            value = new Matrix(value);
+            return new math.type.Selector(
+                value.set.apply(value, arguments).valueOf()
+            );
+        }
+
+        throw Error('Selector value has no method set');
+    },
+
+    /**
+     * Close the selector. Returns the final value.
+     * Does the same as method done()
+     * @returns {*} value
+     */
+    valueOf: function () {
+        return this.value;
+    },
+
+    /**
+     * Get the string representation of the value in the selector
+     * @returns {String}
+     */
+    toString: function () {
+        return math.format(this.value);
+    }
+};
+
+/**
+ * Create a proxy method for the selector
+ * @param {String} name
+ * @param {*} value       The value or function to be proxied
+ */
+function createSelectorProxy(name, value) {
+    var Selector = math.type.Selector;
+    var slice = Array.prototype.slice;
+    if (typeof value === 'function') {
+        // a function
+        Selector.prototype[name] = function () {
+            var args = [this.value].concat(slice.call(arguments, 0));
+            return new Selector(value.apply(this, args));
+        }
+    }
+    else {
+        // a constant
+        Selector.prototype[name] = new Selector(value);
+    }
+}
+
+/**
  * Utility functions for Strings
  */
 
@@ -3038,7 +3058,7 @@ math.add = function add(x, y) {
         return util.map2(x, y, math.add);
     }
 
-    if (x.valueOf() !== x) {
+    if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive value
         return math.add(x.valueOf(), y.valueOf());
     }
@@ -6188,19 +6208,6 @@ math['in'] = function unit_in(x, unit) {
 };
 
 /**
- * Create a chained value. All methods available in the math.js library
- * can be called upon the value, and then will be evaluated with the
- * value itself as first argument.
- * The chain can be closed by executing chain.done(), which will return the
- * final value.
- * @param {*} value
- * @return {math.type.Chain} chain
- */
-math.chain = function chain(value) {
-    return new math.type.Chain(value);
-};
-
-/**
  * Clone an object
  * @param {*} x
  * @return {*} clone
@@ -6330,11 +6337,11 @@ math['import'] = function math_import(object, override) {
         name = object.name;
         if (name) {
             if (override || math[name] === undefined) {
-                math[name] = object;
+                _import(name, object);
             }
         }
         else {
-            throw new Error('Cannot import an unnamed function');
+            throw new Error('Cannot import an unnamed function or object');
         }
     }
     else if (object instanceof Object) {
@@ -6344,7 +6351,7 @@ math['import'] = function math_import(object, override) {
                 var value = object[name];
                 if (isSupportedType(value)) {
                     if (override || math[name] === undefined) {
-                        math[name] = value;
+                        _import(name, value);
                     }
                 }
                 else {
@@ -6354,6 +6361,20 @@ math['import'] = function math_import(object, override) {
         }
     }
 };
+
+/**
+ * Add a property to the math namespace and create a chain proxy for it.
+ * @param {String} name
+ * @param {*} value
+ * @private
+ */
+function _import(name, value) {
+    // add to math namespace
+    math[name] = value;
+
+    // create a proxy for the Selector
+    createSelectorProxy(name, value);
+}
 
 /**
  * Check whether given object is a supported type
@@ -6367,6 +6388,44 @@ function isSupportedType(object) {
         (object instanceof Complex) || (object instanceof Unit);
     // TODO: add boolean?
 }
+
+/**
+ * Wrap any value in a Selector, allowing to perform chained operations on
+ * the value.
+ *
+ * All methods available in the math.js library can be called upon the selector,
+ * and then will be evaluated with the value itself as first argument.
+ * The selector can be closed by executing selector.done(), which will return
+ * the final value.
+ *
+ * Example usage:
+ *     math.select(3)
+ *         .add(4)
+ *         .subtract(2)
+ *         .done();     // 5
+ *     math.select( [[1, 2], [3, 4]] )
+ *         .set([1, 1], 8)
+ *         .multiply(3)
+ *         .done();     // [[24, 6], [9, 12]]
+ *
+ * The Selector has a number of special functions:
+ * - done()     Finalize the chained operation and return the selectors value.
+ * - valueOf()  The same as done()
+ * - toString() Executes math.format() onto the selectors value, returning
+ *              a string representation of the value.
+ * - get(...)   Get a subselection of the selectors value. Only applicable when
+ *              the value has a method get, for example when value is a Matrix
+ *              or Array.
+ * - set(...)   Replace a subselection of the selectors value. Only applicable
+ *              when the value has a method get, for example when value is a
+ *              Matrix or Array.
+ *
+ * @param {*} value
+ * @return {math.type.Selector} selector
+ */
+math.select = function select(value) {
+    return new math.type.Selector(value);
+};
 
 /**
  * Calculate the square root of a value
@@ -9108,7 +9167,7 @@ math.parser.Workspace = function () {
 // initialise the Chain prototype with all functions and constants in math
 for (var prop in math) {
     if (math.hasOwnProperty(prop) && prop) {
-        createChainProxy(prop, math[prop]);
+        createSelectorProxy(prop, math[prop]);
     }
 }
 

@@ -11,9 +11,10 @@ Powerful and easy to use.
 ## Features
 
 - Supports numbers, complex numbers, units, strings, arrays, and matrices.
-- Contains a large set of built-in functions and constants.
 - Contains a flexible expression parser.
 - Compatible with JavaScript’s built-in Math library.
+- Supports chained operations.
+- A large set of built-in functions and constants.
 - No dependencies. Runs on any JavaScript engine.
 - Easily extensible.
 
@@ -85,6 +86,24 @@ var f = math.unit(60, 'deg');   // 60 deg
 var g = math.cos(f);            // 0.5
 ```
 
+Operations can be performed using:
+
+- regular function calls
+- chained operations (see [Selector](#selector))
+- expression parsing (see [Parser](#parser))
+
+```js
+// regular function call
+math.subtract(math.add(3, 4), 2);           // 5
+
+// chained operation
+math.select(3).add(4).subtract(2).done();   // 5
+
+// expression parser
+var parser = math.parser();
+parser.eval('3 + 4 - 2');                   // 5
+```
+
 
 ## Parser
 
@@ -139,6 +158,48 @@ Available methods:
 
     var node = parser.parse(expr);     // parse an expression into a node tree
     var result = node.eval();          // evaluate a node
+
+
+## Selector
+
+Math.js supports chaining operations by wrapping a value into a `Selector`.
+A selector can be created with the method `math.select(value)`.
+All methods available in the math namespace can be executed via the selector.
+The methods will be executed with the selectors value as first argument,
+followed by extra arguments provided by the method call itself.
+
+```js
+math.select(3)
+    .add(4)
+    .subtract(2)
+    .done();
+    // 5
+
+math.select( [[1, 2], [3, 4]] )
+    .set([1, 1], 8)
+    .multiply(3)
+    .done();
+    // [[24, 6], [9, 12]]
+```
+
+The Selector has a number of special functions:
+
+ - `done()`
+   Finalize the chained operation and return the selectors value.
+ - `valueOf()`
+   The same as `done()`, returns the selectors value.
+ - `toString()`
+   Executes `math.format(value)` onto the selectors value, returning
+   a string representation of the value.
+ - `get(index)`
+   Get a subselection of the selectors value. Only applicable when
+   the value has a method get, for example when value is a Matrix
+   or Array.
+ - `set(index, replacement)`
+   Replace a subselection of the selectors value. Only applicable
+   when the value has a method get, for example when value is a
+   Matrix or Array.
+
 
 
 ## Workspace
@@ -395,10 +456,10 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 
 ### Utils
 
-- math.chain([x])
 - math.clone(x)
 - math.format([template, ] values)
 - math.import(filename | object, override)
+- math.select([x])
 - math.typeof(x)
 
 
@@ -497,6 +558,8 @@ To execute tests for the library, run:
 - Version 0.5.0 (2013-04-06)
     - Implement Matrix and Range
 - Version 0.6.0
+    - Implement chained operations
+- Version 0.7.0
     - More on matrices
 - Version 1.0.0
     - Extensive testing

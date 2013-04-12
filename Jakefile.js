@@ -57,7 +57,7 @@ task('concat', function () {
             './src/expr/Parser.js',
             './src/expr/Workspace.js',
             './src/compatibility.js',
-            './src/initialize.js'
+            './src/init.js'
         ],
         dest: MATHJS,
         header: util.read(HEADER) + '\n(function() {\n',

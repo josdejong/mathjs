@@ -4,8 +4,8 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.6.0
 
-- Implemented chained operations via method math.chain(). For example
-  `math.chain(3).add(4).subtract(2).done()` will return `5`.
+- Implemented chained operations via method math.select(). For example
+  `math.select(3).add(4).subtract(2).done()` will return `5`.
 - Implemented methods gcd and lcm.
 - Implemented method `Unit.in(unit)`, which creates a clone of the unit with a
   fixed representation. For example `math.unit('5.08 cm').in('inch')` will

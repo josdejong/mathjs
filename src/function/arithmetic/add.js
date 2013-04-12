@@ -68,7 +68,7 @@ math.add = function add(x, y) {
         return util.map2(x, y, math.add);
     }
 
-    if (x.valueOf() !== x) {
+    if (x.valueOf() !== x || y.valueOf() !== y) {
         // fallback on the objects primitive value
         return math.add(x.valueOf(), y.valueOf());
     }

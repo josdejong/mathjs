@@ -24,11 +24,11 @@ math['import'] = function math_import(object, override) {
         name = object.name;
         if (name) {
             if (override || math[name] === undefined) {
-                math[name] = object;
+                _import(name, object);
             }
         }
         else {
-            throw new Error('Cannot import an unnamed function');
+            throw new Error('Cannot import an unnamed function or object');
         }
     }
     else if (object instanceof Object) {
@@ -38,7 +38,7 @@ math['import'] = function math_import(object, override) {
                 var value = object[name];
                 if (isSupportedType(value)) {
                     if (override || math[name] === undefined) {
-                        math[name] = value;
+                        _import(name, value);
                     }
                 }
                 else {
@@ -48,6 +48,20 @@ math['import'] = function math_import(object, override) {
         }
     }
 };
+
+/**
+ * Add a property to the math namespace and create a chain proxy for it.
+ * @param {String} name
+ * @param {*} value
+ * @private
+ */
+function _import(name, value) {
+    // add to math namespace
+    math[name] = value;
+
+    // create a proxy for the Selector
+    createSelectorProxy(name, value);
+}
 
 /**
  * Check whether given object is a supported type
