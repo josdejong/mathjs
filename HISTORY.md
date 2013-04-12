@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.6.0
+## 2013-04-13, version 0.6.0
 
 - Implemented chained operations via method math.select(). For example
   `math.select(3).add(4).subtract(2).done()` will return `5`.
