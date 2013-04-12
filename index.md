@@ -14,8 +14,8 @@ Powerful and easy to use.
 # Features
 
 - Supports numbers, complex numbers, units, strings, arrays, and matrices.
-- Contains a flexible expression parser.
 - Compatible with JavaScript’s built-in Math library.
+- Contains a flexible expression parser.
 - Supports chained operations.
 - A large set of built-in functions and constants.
 - No dependencies. Runs on any JavaScript engine.
