@@ -11,8 +11,8 @@ Powerful and easy to use.
 ## Features
 
 - Supports numbers, complex numbers, units, strings, arrays, and matrices.
-- Contains a flexible expression parser.
 - Compatible with JavaScript’s built-in Math library.
+- Contains a flexible expression parser.
 - Supports chained operations.
 - A large set of built-in functions and constants.
 - No dependencies. Runs on any JavaScript engine.
@@ -89,23 +89,23 @@ var g = math.cos(f);            // 0.5
 Operations can be performed using:
 
 - regular function calls
-- chained operations (see [Selector](#selector))
-- expression parsing (see [Parser](#parser))
+- chained operations (see [Chained operations](#chained-operations))
+- expression parsing (see [Expression parser](#expression-parser))
 
 ```js
 // regular function call
-math.subtract(math.add(3, 4), 2);           // 5
+math.subtract(math.add(3, 4), 2); // 5
 
 // chained operation
-math.select(3).add(4).subtract(2).done();   // 5
+math.select(3).add(4).subtract(2).done(); // 5
 
 // expression parser
 var parser = math.parser();
-parser.eval('3 + 4 - 2');                   // 5
+parser.eval('3 + 4 - 2'); // 5
 ```
 
 
-## Parser
+## Expression parser
 
 Math.js contains a flexible and easy to use expression parser.
 The parser supports all data types, methods and constants available in math.js.
@@ -160,7 +160,7 @@ Available methods:
     var result = node.eval();          // evaluate a node
 
 
-## Selector
+## Chained operations
 
 Math.js supports chaining operations by wrapping a value into a `Selector`.
 A selector can be created with the method `math.select(value)`.
@@ -172,14 +172,12 @@ followed by extra arguments provided by the method call itself.
 math.select(3)
     .add(4)
     .subtract(2)
-    .done();
-    // 5
+    .done(); // 5
 
 math.select( [[1, 2], [3, 4]] )
     .set([1, 1], 8)
     .multiply(3)
-    .done();
-    // [[24, 6], [9, 12]]
+    .done(); // [[24, 6], [9, 12]]
 ```
 
 The Selector has a number of special functions:
@@ -557,7 +555,7 @@ To execute tests for the library, run:
     - Implement Arrays
 - Version 0.5.0 (2013-04-06)
     - Implement Matrix and Range
-- Version 0.6.0
+- Version 0.6.0 (2013-04-13)
     - Implement chained operations
 - Version 0.7.0
     - More on matrices
