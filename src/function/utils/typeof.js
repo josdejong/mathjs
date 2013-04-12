@@ -9,20 +9,33 @@ math['typeof'] = function math_typeof(x) {
         throw newArgumentsError('typeof', arguments.length, 1);
     }
 
-    var type = typeof x;
+    var type = typeof x,
+        name;
 
     if (type == 'object') {
         if (x == null) {
             return 'null';
         }
         if (x.constructor) {
-            for (var name in math) {
+            // search functions / constants
+            for (name in math) {
                 if (math.hasOwnProperty(name)) {
                     if (x.constructor == math[name]) {
                         return name.toLowerCase();
                     }
                 }
             }
+
+            // search data types
+            for (name in math.type) {
+                if (math.type.hasOwnProperty(name)) {
+                    if (x.constructor == math.type[name]) {
+                        return name.toLowerCase();
+                    }
+                }
+            }
+
+            // try the constructors name as last resort
             if (x.constructor.name) {
                 return x.constructor.name.toLowerCase();
             }
