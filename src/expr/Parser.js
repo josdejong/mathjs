@@ -3,6 +3,9 @@
      * @constructor math.expr.Parser
      * Parser parses math expressions and evaluates them or returns a node tree.
      *
+     * @param {Object} [options]   Available options:
+     *                                 {boolean} readonly (false by default).
+     *
      * Methods:
      *    var result = parser.eval(expr);    // evaluate an expression
      *    var value = parser.get(name);      // retrieve a variable from the parser
@@ -43,13 +46,13 @@
      *    // clear defined functions and variables
      *    parser.clear();
      */
-    math.expr.Parser = function Parser() {
+    math.expr.Parser = function Parser(options) {
         if (this.constructor != Parser) {
             throw new SyntaxError(
                 'Parser constructor must be called with the new operator');
         }
 
-        this.scope = new math.expr.Scope();
+        this.scope = new math.expr.Scope(null, options);
     };
 
     /**
@@ -430,16 +433,18 @@
     function parse_ans (scope) {
         var expression = parse_function_assignment(scope);
 
-        // TODO: not so nice having to specify some special types here...
-        if (!(expression instanceof Assignment)
-        // !(expression instanceof FunctionAssignment) &&  // TODO
-        // !(expression instanceof plot)                   // TODO
-            ) {
-            // create a variable definition for ans
-            var name = 'ans';
-            var params = undefined;
-            var link = scope.createDef(name);
-            return new Assignment(name, params, expression, link);
+        if (!scope.readonly) {
+            // TODO: not so nice having to specify some special types here...
+            if (!(expression instanceof Assignment)
+            // !(expression instanceof FunctionAssignment) &&  // TODO
+            // !(expression instanceof plot)                   // TODO
+                ) {
+                // create a variable definition for ans
+                var name = 'ans';
+                var params = undefined;
+                var link = scope.createDef(name);
+                return new Assignment(name, params, expression, link);
+            }
         }
 
         return expression;

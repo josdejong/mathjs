@@ -455,6 +455,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 ### Utils
 
 - math.clone(x)
+- math.eval(expr)
 - math.format([template, ] values)
 - math.import(filename | object, override)
 - math.select([x])

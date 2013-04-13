@@ -2,6 +2,12 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.7.0
+
+- Implemented method math.eval, which uses a readonly parser to evaluate
+  expressions.
+
+
 ## 2013-04-13, version 0.6.0
 
 - Implemented chained operations via method math.select(). For example

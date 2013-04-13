@@ -44,7 +44,6 @@ task('concat', function () {
             './src/type/**/*.js',
             './src/constants.js',
             './src/functions.js',
-            './src/function/**/*.js',
             './src/expr/node/Node.js',
             './src/expr/node/Symbol.js',
             './src/expr/node/Constant.js',
@@ -56,6 +55,7 @@ task('concat', function () {
             './src/expr/Scope.js',
             './src/expr/Parser.js',
             './src/expr/Workspace.js',
+            './src/function/**/*.js',
             './src/compatibility.js',
             './src/init.js'
         ],
