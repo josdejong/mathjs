@@ -1,5 +1,5 @@
 /**
- * Multiply two values. x + y or multiply(x, y)
+ * Multiply two values. x * y or multiply(x, y)
  * @param  {Number | Complex | Unit | Array | Matrix | Range} x
  * @param  {Number | Complex | Unit | Array | Matrix | Range} y
  * @return {Number | Complex | Unit | Array | Matrix} res
