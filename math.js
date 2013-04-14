@@ -2946,14 +2946,14 @@ function newUnsupportedTypeError(name, value1, value2) {
     var msg = undefined;
     if (arguments.length == 2) {
         var t = math.typeof(value1);
-        msg = 'Function ' + name + ' does not support a parameter of type ' + t;
+        msg = 'Function ' + name + '(' + t + ') not supported';
     }
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
             types.push(math.typeof(arguments[i]));
         }
-        msg = 'Function ' + name + ' does not support a parameters of type ' + types.join(', ');
+        msg = 'Function ' + name + '(' + types.join(', ') + ') not supported';
     }
     else {
         msg = 'Unsupported parameter in function ' + name;
@@ -7169,7 +7169,8 @@ math.arg = function arg(x) {
         return math.arg(x.valueOf());
     }
 
-    throw newUnsupportedTypeError('arg', x);
+    // handle other types just as non-complex values
+    return math.atan2(0, x);
 };
 
 /**
@@ -7200,7 +7201,8 @@ math.conj = function conj(x) {
         return math.conj(x.valueOf());
     }
 
-    throw newUnsupportedTypeError('conj', x);
+    // return a clone of the value for non-complex values
+    return clone(x);
 };
 
 /**
@@ -8631,17 +8633,21 @@ math.atan2 = function atan2(y, x) {
         if (isNumber(x)) {
             return Math.atan2(y, x);
         }
+        /* TODO: support for complex computation of atan2
         else if (x instanceof Complex) {
-            return Math.atan2(y, x.re);
+            return Math.atan2(y.re, x.re);
         }
+        */
     }
     else if (y instanceof Complex) {
         if (isNumber(x)) {
             return Math.atan2(y.re, x);
         }
+        /* TODO: support for complex computation of atan2
         else if (x instanceof Complex) {
             return Math.atan2(y.re, x.re);
         }
+        */
     }
 
     if (y instanceof Array || y instanceof Matrix ||

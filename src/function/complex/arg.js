@@ -26,5 +26,6 @@ math.arg = function arg(x) {
         return math.arg(x.valueOf());
     }
 
-    throw newUnsupportedTypeError('arg', x);
+    // handle other types just as non-complex values
+    return math.atan2(0, x);
 };

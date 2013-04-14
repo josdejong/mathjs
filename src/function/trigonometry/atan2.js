@@ -13,17 +13,21 @@ math.atan2 = function atan2(y, x) {
         if (isNumber(x)) {
             return Math.atan2(y, x);
         }
+        /* TODO: support for complex computation of atan2
         else if (x instanceof Complex) {
-            return Math.atan2(y, x.re);
+            return Math.atan2(y.re, x.re);
         }
+        */
     }
     else if (y instanceof Complex) {
         if (isNumber(x)) {
             return Math.atan2(y.re, x);
         }
+        /* TODO: support for complex computation of atan2
         else if (x instanceof Complex) {
             return Math.atan2(y.re, x.re);
         }
+        */
     }
 
     if (y instanceof Array || y instanceof Matrix ||

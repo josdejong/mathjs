@@ -6,9 +6,10 @@ https://github.com/josdejong/mathjs
 
 - Implemented method math.eval, which uses a readonly parser to evaluate
   expressions.
-- Improved math.format, which now returns a maximum number of digits for
-  numbers (by default 5 digits, `math.format(math.pi)` returns `3.1416`).
-- Minor bug fixes.
+- Improved math.format, which now rounds values to a maximum number of digits
+  instead of decimals (default is 5 digits, for example `math.format(math.pi)`
+  returns `3.1416`).
+- Minor bug fixes and improvements.
 
 
 ## 2013-04-13, version 0.6.0

@@ -26,5 +26,6 @@ math.conj = function conj(x) {
         return math.conj(x.valueOf());
     }
 
-    throw newUnsupportedTypeError('conj', x);
+    // return a clone of the value for non-complex values
+    return clone(x);
 };
