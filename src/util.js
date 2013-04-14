@@ -3,7 +3,7 @@ var util = (function () {
     var util = {};
 
     /**
-     * Convert a number to a formatted string representation
+     * Convert a number to a formatted string representation.
      * @param {Number} value            The value to be formatted
      * @param {Number} [digits]         number of digits
      * @return {String} formattedValue  The formatted value
@@ -21,17 +21,37 @@ var util = (function () {
 
         // TODO: what is a nice limit for non-scientific values?
         var abs = Math.abs(value);
-        if ( (abs > 0.0001 && abs < 1000000) || abs == 0.0 ) {
-            // round the func to a limited number of digits
-            return String(roundNumber(value, digits));
+        if ( (abs > 0.001 && abs < 100000) || abs == 0.0 ) {
+            // round the value to a limited number of digits
+            return util.toPrecision(value, digits);
         }
         else {
             // scientific notation
             var exp = Math.round(Math.log(abs) / Math.LN10);
             var v = value / (Math.pow(10.0, exp));
-            return roundNumber(v, digits) + 'E' + exp;
+            return util.toPrecision(v, digits) + 'e' + exp;
         }
     };
+
+    /**
+     * Round a value to a maximum number of digits. Trailing zeros will be
+     * removed.
+     * @param {Number} value
+     * @param {Number} [digits]
+     * @returns {string} str
+     */
+    util.toPrecision = function (value, digits) {
+        if (digits == undefined) {
+            digits = math.options.precision;
+        }
+
+        return value.toPrecision(digits).replace(_trailingZeros, function (a, b, c) {
+            return a.substring(0, a.length - (b.length ? 0 : 1) - c.length);
+        });
+    };
+
+    /** @private */
+    var _trailingZeros = /\.(\d*?)(0+)$/g;
 
     /**
      * Recursively format an n-dimensional matrix
@@ -204,7 +224,7 @@ var util = (function () {
         // handle Range
         if (array1 instanceof Range || array2 instanceof Range) {
             // TODO: util.map2 does not utilize Range.map
-            return new Matrix(util.map2(array1.valueOf(), array2.valueOf(), fn));
+            return util.map2(array1.valueOf(), array2.valueOf(), fn);
         }
 
         if (array1 instanceof Array) {

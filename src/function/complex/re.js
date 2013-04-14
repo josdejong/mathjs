@@ -25,6 +25,6 @@ math.re = function re(x) {
         return math.re(x.valueOf());
     }
 
-    // just return a clone of the value itself for all non-complex values
+    // return a clone of the value itself for all non-complex values
     return math.clone(x);
 };

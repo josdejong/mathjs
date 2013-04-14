@@ -32,7 +32,7 @@ assert.equal(math.add(-5, -3), -8);
 assert.equal(math.add(math.complex(3, -4), math.complex(8, 2)), '11 - 2i');
 assert.equal(math.add(math.complex(3, -4), 10), '13 - 4i');
 assert.equal(math.add(10, math.complex(3, -4)), '13 - 4i');
-assert.equal(math.add(math.unit(5, 'km'), math.unit(100, 'mile')).toString(), '165.9344 km');
+assert.equal(math.add(math.unit(5, 'km'), math.unit(100, 'mile')).toString(), '165.93 km');
 assert.throws(function () {
     math.add(math.unit(5, 'km'), math.unit(100, 'gram'));
 });
@@ -157,8 +157,31 @@ assert.deepEqual(math.multiply(d, c).valueOf(), [[61]]);
 assert.throws(function () {math.multiply(c, b)});
 
 // TODO: test pow
-// TODO: test round
-// TODO: test sign
+
+// test round
+assert.equal(math.round(math.pi), 3);
+assert.equal(math.round(math.pi * 1000), 3142);
+assert.equal(math.round(math.pi, 3), 3.142);
+assert.equal(math.round(math.pi, 6), 3.141593);
+assert.equal(math.round(1234.5678, 2), 1234.57);
+assert.deepEqual(math.round(math.range(0,1/3,2), 2), [0,0.33,0.67,1,1.33,1.67,2]);
+assert.deepEqual(math.round(math.range(0,1/3,2)), [0,0,1,1,1,2,2]);
+assert.deepEqual(math.round([1.7,2.3]), [2,2]);
+assert.deepEqual(math.round(math.matrix([1.7,2.3])).valueOf(), [2, 2]);
+assert.throws(function () { math.round("hello world"); });
+assert.throws(function () { math.round(math.unit('5cm')); });
+
+// test sign
+assert.equal(math.sign(3), 1);
+assert.equal(math.sign(-3), -1);
+assert.equal(math.sign(0), 0);
+assert.equal(math.sign(math.complex(2,-3)).toString(), '0.5547 - 0.83205i');
+assert.deepEqual(math.sign(math.range(-2,2)), [-1,-1,0,1,1]);
+assert.deepEqual(math.sign(math.matrix(math.range(-2,2))).valueOf(), [-1,-1,0,1,1]);
+assert.throws(function () { math.sign("hello world"); });
+assert.throws(function () { math.sign(math.unit('5cm')); });
+
+
 // TODO: test smaller
 // TODO: test smallereq
 

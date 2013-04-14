@@ -10,7 +10,7 @@ var math = {
         node: {}
     },
     options: {
-        precision: 10  // number of decimals in formatted output
+        precision: 5  // number of digits in formatted output
     }
 };
 

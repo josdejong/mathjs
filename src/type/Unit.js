@@ -34,22 +34,18 @@ function Unit(value, unit) {
         }
         this.unit = res.unit;
         this.prefix = res.prefix;
-        this.hasUnit = true;
     }
     else {
         this.unit = Unit.UNIT_NONE;
         this.prefix = Unit.PREFIX_NONE;  // link to a list with supported prefixes
-        this.hasUnit = false;
     }
 
     if (value != null) {
         this.value = this._normalize(value);
-        this.hasValue = true;
         this.fixPrefix = false;  // is set true by the methods Unit.in and math.in
     }
     else {
-        this.value = this._normalize(1);
-        this.hasValue = false;
+        this.value = null;
         this.fixPrefix = true;
     }
 }
@@ -339,10 +335,10 @@ Unit.prototype.in = function (plainUnit) {
         if (!this.equalBase(plainUnit)) {
             throw new Error('Units do not match');
         }
-        if (plainUnit.hasValue) {
+        if (plainUnit.value != null) {
             throw new Error('Cannot convert to a unit with a value');
         }
-        if (!plainUnit.hasUnit) {
+        if (plainUnit.unit == null) {
             throw new Error('Unit expected on the right hand side of function in');
         }
 
@@ -372,16 +368,19 @@ Unit.prototype.toNumber = function (plainUnit) {
  * @return {String}
  */
 Unit.prototype.toString = function() {
-    var value;
+    var value, str;
     if (!this.fixPrefix) {
         var bestPrefix = this._bestPrefix();
         value = this._unnormalize(this.value, bestPrefix.value);
-        return util.formatNumber(value) + ' ' + bestPrefix.name + this.unit.name;
+        str = (this.value != null) ? util.formatNumber(value) + ' ' : '';
+        str += bestPrefix.name + this.unit.name;
     }
     else {
         value = this._unnormalize(this.value);
-        return util.formatNumber(value) + ' ' + this.prefix.name + this.unit.name;
+        str = (this.value != null) ? util.formatNumber(value) + ' ' : '';
+        str += this.prefix.name + this.unit.name;
     }
+    return str;
 };
 
 /**

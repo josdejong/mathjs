@@ -664,5 +664,5 @@ Matrix.prototype.valueOf = function () {
  * @returns {String} str
  */
 Matrix.prototype.toString = function () {
-    return util.formatArray(this._data);
+    return math.format(this._data);
 };

@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.7.0-SNAPSHOT
- * @date    2013-04-13
+ * @date    2013-04-14
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -39,7 +39,7 @@ var math = {
         node: {}
     },
     options: {
-        precision: 10  // number of decimals in formatted output
+        precision: 5  // number of digits in formatted output
     }
 };
 
@@ -74,7 +74,7 @@ var util = (function () {
     var util = {};
 
     /**
-     * Convert a number to a formatted string representation
+     * Convert a number to a formatted string representation.
      * @param {Number} value            The value to be formatted
      * @param {Number} [digits]         number of digits
      * @return {String} formattedValue  The formatted value
@@ -92,17 +92,37 @@ var util = (function () {
 
         // TODO: what is a nice limit for non-scientific values?
         var abs = Math.abs(value);
-        if ( (abs > 0.0001 && abs < 1000000) || abs == 0.0 ) {
-            // round the func to a limited number of digits
-            return String(roundNumber(value, digits));
+        if ( (abs > 0.001 && abs < 100000) || abs == 0.0 ) {
+            // round the value to a limited number of digits
+            return util.toPrecision(value, digits);
         }
         else {
             // scientific notation
             var exp = Math.round(Math.log(abs) / Math.LN10);
             var v = value / (Math.pow(10.0, exp));
-            return roundNumber(v, digits) + 'E' + exp;
+            return util.toPrecision(v, digits) + 'e' + exp;
         }
     };
+
+    /**
+     * Round a value to a maximum number of digits. Trailing zeros will be
+     * removed.
+     * @param {Number} value
+     * @param {Number} [digits]
+     * @returns {string} str
+     */
+    util.toPrecision = function (value, digits) {
+        if (digits == undefined) {
+            digits = math.options.precision;
+        }
+
+        return value.toPrecision(digits).replace(_trailingZeros, function (a, b, c) {
+            return a.substring(0, a.length - (b.length ? 0 : 1) - c.length);
+        });
+    };
+
+    /** @private */
+    var _trailingZeros = /\.(\d*?)(0+)$/g;
 
     /**
      * Recursively format an n-dimensional matrix
@@ -275,7 +295,7 @@ var util = (function () {
         // handle Range
         if (array1 instanceof Range || array2 instanceof Range) {
             // TODO: util.map2 does not utilize Range.map
-            return new Matrix(util.map2(array1.valueOf(), array2.valueOf(), fn));
+            return util.map2(array1.valueOf(), array2.valueOf(), fn);
         }
 
         if (array1 instanceof Array) {
@@ -1783,7 +1803,7 @@ Matrix.prototype.valueOf = function () {
  * @returns {String} str
  */
 Matrix.prototype.toString = function () {
-    return util.formatArray(this._data);
+    return math.format(this._data);
 };
 
 /**
@@ -2235,22 +2255,18 @@ function Unit(value, unit) {
         }
         this.unit = res.unit;
         this.prefix = res.prefix;
-        this.hasUnit = true;
     }
     else {
         this.unit = Unit.UNIT_NONE;
         this.prefix = Unit.PREFIX_NONE;  // link to a list with supported prefixes
-        this.hasUnit = false;
     }
 
     if (value != null) {
         this.value = this._normalize(value);
-        this.hasValue = true;
         this.fixPrefix = false;  // is set true by the methods Unit.in and math.in
     }
     else {
-        this.value = this._normalize(1);
-        this.hasValue = false;
+        this.value = null;
         this.fixPrefix = true;
     }
 }
@@ -2540,10 +2556,10 @@ Unit.prototype.in = function (plainUnit) {
         if (!this.equalBase(plainUnit)) {
             throw new Error('Units do not match');
         }
-        if (plainUnit.hasValue) {
+        if (plainUnit.value != null) {
             throw new Error('Cannot convert to a unit with a value');
         }
-        if (!plainUnit.hasUnit) {
+        if (plainUnit.unit == null) {
             throw new Error('Unit expected on the right hand side of function in');
         }
 
@@ -2573,16 +2589,19 @@ Unit.prototype.toNumber = function (plainUnit) {
  * @return {String}
  */
 Unit.prototype.toString = function() {
-    var value;
+    var value, str;
     if (!this.fixPrefix) {
         var bestPrefix = this._bestPrefix();
         value = this._unnormalize(this.value, bestPrefix.value);
-        return util.formatNumber(value) + ' ' + bestPrefix.name + this.unit.name;
+        str = (this.value != null) ? util.formatNumber(value) + ' ' : '';
+        str += bestPrefix.name + this.unit.name;
     }
     else {
         value = this._unnormalize(this.value);
-        return util.formatNumber(value) + ' ' + this.prefix.name + this.unit.name;
+        str = (this.value != null) ? util.formatNumber(value) + ' ' : '';
+        str += this.prefix.name + this.unit.name;
     }
+    return str;
 };
 
 /**
@@ -5684,7 +5703,7 @@ math.abs = function abs(x) {
         return Math.sqrt(x.re * x.re + x.im * x.im);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.abs);
     }
 
@@ -5742,12 +5761,12 @@ math.add = function add(x, y) {
                 throw new Error('Units do not match');
             }
 
-            if (!x.hasValue) {
-                throw new Error('Unit on left hand side of operator + has no value');
+            if (x.value == null) {
+                throw new Error('Unit on left hand side of operator + has an undefined value');
             }
 
-            if (!y.hasValue) {
-                throw new Error('Unit on right hand side of operator + has no value');
+            if (y.value == null) {
+                throw new Error('Unit on right hand side of operator + has an undefined value');
             }
 
             var res = x.clone();
@@ -5761,8 +5780,8 @@ math.add = function add(x, y) {
         return x + y;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.add);
     }
 
@@ -5795,7 +5814,7 @@ math.ceil = function ceil(x) {
         );
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.ceil);
     }
 
@@ -5825,7 +5844,7 @@ math.cube = function cube(x) {
         return math.multiply(math.multiply(x, x), x);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return math.multiply(math.multiply(x, x), x);
     }
 
@@ -5960,8 +5979,8 @@ math.equal = function equal(x, y) {
         return x == y;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.equal);
     }
 
@@ -5994,7 +6013,7 @@ math.exp = function exp (x) {
         );
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.exp);
     }
 
@@ -6027,7 +6046,7 @@ math.fix = function fix(x) {
         );
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.fix);
     }
 
@@ -6060,7 +6079,7 @@ math.floor = function floor(x) {
         );
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.floor);
     }
 
@@ -6166,8 +6185,8 @@ math.larger = function larger(x, y) {
         return x > y;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.larger);
     }
 
@@ -6219,8 +6238,8 @@ math.largereq = function largereq(x, y) {
         return x >= y;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.largereq);
     }
 
@@ -6322,7 +6341,7 @@ math.log = function log(x, base) {
             );
         }
 
-        if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+        if (x instanceof Array || x instanceof Matrix) {
             return util.map(x, math.log);
         }
     }
@@ -6366,7 +6385,7 @@ math.log10 = function log10(x) {
         );
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.log10);
     }
 
@@ -6412,8 +6431,8 @@ math.mod = function mod(x, y) {
     }
 
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.mod);
     }
 
@@ -6645,7 +6664,7 @@ function powComplex (x, y) {
 /**
  * Round a value towards the nearest integer, round(x [, n])
  * @param {Number | Complex | Array | Matrix | Range} x
- * @param {Number | Array} [n] number of digits
+ * @param {Number | Array} [n] number of decimals (by default n=0)
  * @return {Number | Complex | Array | Matrix} res
  */
 math.round = function round(x, n) {
@@ -6666,8 +6685,8 @@ math.round = function round(x, n) {
             );
         }
 
-        if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-            util.map(x, math.round);
+        if (x instanceof Array || x instanceof Matrix) {
+            return util.map(x, math.round);
         }
 
         if (x.valueOf() !== x) {
@@ -6680,13 +6699,13 @@ math.round = function round(x, n) {
     else {
         // round (x, n)
         if (!isNumber(n)) {
-            throw new TypeError('Number of digits in function round must be an integer');
+            throw new TypeError('Number of decimals in function round must be an integer');
         }
         if (n !== Math.round(n)) {
-            throw new TypeError('Number of digits in function round must be integer');
+            throw new TypeError('Number of decimals in function round must be integer');
         }
         if (n < 0 || n > 9) {
-            throw new Error ('Number of digits in function round must be in te range of 0-9');
+            throw new Error ('Number of decimals in function round must be in te range of 0-9');
         }
 
         if (isNumber(x)) {
@@ -6700,8 +6719,8 @@ math.round = function round(x, n) {
             );
         }
 
-        if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-            n instanceof Array || n instanceof Matrix || n instanceof Range) {
+        if (x instanceof Array || x instanceof Matrix ||
+            n instanceof Array || n instanceof Matrix) {
             return util.map2(x, n, math.round);
         }
 
@@ -6715,15 +6734,20 @@ math.round = function round(x, n) {
 };
 
 /**
- * round a number to the given number of digits, or to the default if
- * digits is not provided
+ * round a number to the given number of decimals, or to zero if decimals is
+ * not provided
  * @param {Number} value
- * @param {Number} [digits]  number of digits, between 0 and 15
+ * @param {Number} [decimals]  number of decimals, between 0 and 15 (0 by default)
  * @return {Number} roundedValue
  */
-function roundNumber (value, digits) {
-    var p = Math.pow(10, (digits != undefined) ? digits : math.options.precision);
-    return Math.round(value * p) / p;
+function roundNumber (value, decimals) {
+    if (decimals) {
+        var p = Math.pow(10, decimals);
+        return Math.round(value * p) / p;
+    }
+    else {
+        return Math.round(value);
+    }
 }
 
 /**
@@ -6756,7 +6780,7 @@ math.sign = function sign(x) {
         return new Complex(x.re / abs, x.im / abs);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.sign);
     }
 
@@ -6808,8 +6832,8 @@ math.smaller = function smaller(x, y) {
         return x < y;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.smaller);
     }
 
@@ -6861,8 +6885,8 @@ math.smallereq = function smallereq(x, y) {
         return x <= y;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.smallereq);
     }
 
@@ -6909,7 +6933,7 @@ math.sqrt = function sqrt (x) {
         }
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.sqrt);
     }
 
@@ -6939,7 +6963,7 @@ math.square = function square(x) {
         return math.multiply(x, x);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return math.multiply(x, x);
     }
 
@@ -6997,12 +7021,12 @@ math.subtract = function subtract(x, y) {
                 throw new Error('Units do not match');
             }
 
-            if (!x.hasValue) {
-                throw new Error('Unit on left hand side of operator - has no value');
+            if (x.value == null) {
+                throw new Error('Unit on left hand side of operator - has an undefined value');
             }
 
-            if (!y.hasValue) {
-                throw new Error('Unit on right hand side of operator - has no value');
+            if (y.value == null) {
+                throw new Error('Unit on right hand side of operator - has an undefined value');
             }
 
             var res = x.clone();
@@ -7013,8 +7037,8 @@ math.subtract = function subtract(x, y) {
         }
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.subtract);
     }
 
@@ -7051,7 +7075,7 @@ math.unaryminus = function unaryminus(x) {
         return res;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.unaryminus);
     }
 
@@ -7104,8 +7128,8 @@ math.unequal = function unequal(x, y) {
         return x == y;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.unequal);
     }
 
@@ -7136,7 +7160,7 @@ math.arg = function arg(x) {
         return Math.atan2(x.im, x.re);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.arg);
     }
 
@@ -7167,7 +7191,7 @@ math.conj = function conj(x) {
         return new Complex(x.re, -x.im);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.conj);
     }
 
@@ -7197,7 +7221,7 @@ math.im = function im(x) {
         return x.im;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.im);
     }
 
@@ -7206,8 +7230,8 @@ math.im = function im(x) {
         return math.im(x.valueOf());
     }
 
-    // TODO: return 0 for all non-complex values?
-    throw newUnsupportedTypeError('im', x);
+    // return 0 for all non-complex values
+    return 0;
 };
 
 /**
@@ -7228,7 +7252,7 @@ math.re = function re(x) {
         return x.re;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.re);
     }
 
@@ -7237,8 +7261,8 @@ math.re = function re(x) {
         return math.re(x.valueOf());
     }
 
-    // TODO: return just the value itself for all non-complex values?
-    throw newUnsupportedTypeError('re', x);
+    // return a clone of the value itself for all non-complex values
+    return math.clone(x);
 };
 
 /**
@@ -8065,7 +8089,7 @@ math.size = function size (x) {
         return util.size(x);
     }
 
-    if (x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Matrix) {
         return x.size();
     }
 
@@ -8087,11 +8111,14 @@ math.squeeze = function squeeze (x) {
         throw newArgumentsError('squeeze', arguments.length, 1);
     }
 
-    if (x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array) {
+        return _squeezeArray(math.clone(x));
+    }
+    else if (x instanceof Matrix) {
         return _squeezeArray(x.toArray());
     }
-    else if (x instanceof Array) {
-        return _squeezeArray(math.clone(x));
+    else if (x.valueOf() instanceof Array) {
+        return _squeezeArray(math.clone(x.valueOf()));
     }
     else {
         // scalar
@@ -8211,8 +8238,8 @@ math.factorial = function factorial (x) {
     }
 
     if (isNumber(x)) {
-        if (!isInteger(x)) {
-            throw new TypeError('Function factorial can only handle integer values');
+        if (!isInteger(x) || x < 0) {
+            throw new TypeError('Positive integer value expected in function factorial');
         }
 
         var value = x,
@@ -8230,7 +8257,7 @@ math.factorial = function factorial (x) {
         return res;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.factorial);
     }
 
@@ -8482,7 +8509,7 @@ math.acos = function acos(x) {
         );
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.acos);
     }
 
@@ -8533,7 +8560,7 @@ math.asin = function asin(x) {
         return new Complex(temp4.im, -temp4.re);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.asin);
     }
 
@@ -8577,7 +8604,7 @@ math.atan = function atan(x) {
         );
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.atan);
     }
 
@@ -8617,8 +8644,8 @@ math.atan2 = function atan2(y, x) {
         }
     }
 
-    if (y instanceof Array || y instanceof Matrix || y instanceof Range ||
-        x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (y instanceof Array || y instanceof Matrix ||
+        x instanceof Array || x instanceof Matrix) {
         return util.map2(y, x, math.atan2);
     }
 
@@ -8659,7 +8686,7 @@ math.cos = function cos(x) {
         return Math.cos(x.value);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.cos);
     }
 
@@ -8702,7 +8729,7 @@ math.cot = function cot(x) {
         return 1 / Math.tan(x.value);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.cot);
     }
 
@@ -8746,7 +8773,7 @@ math.csc = function csc(x) {
         return 1 / Math.sin(x.value);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.csc);
     }
 
@@ -8789,7 +8816,7 @@ math.sec = function sec(x) {
         return 1 / Math.cos(x.value);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.sec);
     }
 
@@ -8829,7 +8856,7 @@ math.sin = function sin(x) {
         return Math.sin(x.value);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.sin);
     }
 
@@ -8873,7 +8900,7 @@ math.tan = function tan(x) {
         return Math.tan(x.value);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.tan);
     }
 
@@ -8902,14 +8929,14 @@ math['in'] = function unit_in(x, unit) {
         }
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        unit instanceof Array || unit instanceof Matrix || unit instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        unit instanceof Array || unit instanceof Matrix) {
         return util.map2(x, unit, math['in']);
     }
 
-    if (x.valueOf() !== x) {
+    if (x.valueOf() !== x || unit.valueOf() !== unit) {
         // fallback on the objects primitive value
-        return math['in'](x.valueOf());
+        return math['in'](x.valueOf(), unit.valueOf());
     }
 
     throw newUnsupportedTypeError('in', x, unit);
@@ -8977,12 +9004,13 @@ var _readonlyParser = new math.expr.Parser({
 
 /**
  * Format a value of any type into a string. Interpolate values into the string.
+ * Numbers are rounded off to a maximum number of 5 digits by default.
  * Usage:
  *     math.format(value)
  *     math.format(template, object)
  *
  * Example usage:
- *     math.format(2/7);                // '0.2857142857'
+ *     math.format(2/7);                // '0.28571'
  *     math.format(new Complex(2, 3));  // '2 + 3i'
  *     math.format('Hello $name! The date is $date', {
  *         name: 'user',

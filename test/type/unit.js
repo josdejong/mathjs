@@ -14,7 +14,7 @@ assert.equal(math.unit('5e-3kg').toString(), '5 g');
 assert.equal(math.unit('5e+3kg').toString(), '5 Mg');
 assert.equal(math.unit('-5kg').toString(), '-5 kg');
 assert.equal(math.unit('-5mg').toString(), '-5 mg');
-assert.equal(math.unit(null, 'kg').toString(), '1 kg');
+assert.equal(math.unit(null, 'kg').toString(), 'kg');
 
 assert.throws(function () { Unit(2, 'inch'); });
 assert.throws(function () { new Unit('24', 'inch'); });

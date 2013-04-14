@@ -25,6 +25,6 @@ math.im = function im(x) {
         return math.im(x.valueOf());
     }
 
-    // TODO: return 0 for all non-complex values?
-    throw newUnsupportedTypeError('im', x);
+    // return 0 for all non-complex values
+    return 0;
 };

@@ -11,12 +11,12 @@ Powerful and easy to use.
 ## Features
 
 - Supports numbers, complex numbers, units, strings, arrays, and matrices.
-- Compatible with JavaScript’s built-in Math library.
+- Is compatible with JavaScript’s built-in Math library.
 - Contains a flexible expression parser.
 - Supports chained operations.
-- A large set of built-in functions and constants.
-- No dependencies. Runs on any JavaScript engine.
-- Easily extensible.
+- Comes with a large set of built-in functions and constants.
+- Has no dependencies. Runs on any JavaScript engine.
+- Is easily extensible.
 
 
 ## Install
@@ -74,7 +74,7 @@ Math.js can be used similar to Javascript's built-in Math library.
 var math = require('mathjs');
 
 // use methods and types available in the math object
-var a = math.sin(math.pi / 4);  // 0.7071067811865476
+var a = math.sin(math.pi / 4);  // 0.70711...
 var b = math.pow(a, 2);         // 0.5
 
 var c = math.complex(3, -4);    // 3 - 4i
