@@ -1,6 +1,6 @@
 /**
  * Calculate the square root of a value
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.sqrt = function sqrt (x) {

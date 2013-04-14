@@ -1,6 +1,6 @@
 /**
  * Calculate the cotangent of a value, cot(x) = 1/tan(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.cot = function cot(x) {

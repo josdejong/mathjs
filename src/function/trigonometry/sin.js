@@ -1,6 +1,6 @@
 /**
  * Calculate the sine of a value, sin(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.sin = function sin(x) {

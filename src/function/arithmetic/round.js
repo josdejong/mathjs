@@ -1,6 +1,6 @@
 /**
  * Round a value towards the nearest integer, round(x [, n])
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @param {Number | Array} [n] number of decimals (by default n=0)
  * @return {Number | Complex | Array | Matrix} res
  */

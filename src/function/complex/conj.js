@@ -1,7 +1,7 @@
 /**
  * Compute the complex conjugate of a complex value.
  * If x = a+bi, the complex conjugate is a-bi.
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.conj = function conj(x) {

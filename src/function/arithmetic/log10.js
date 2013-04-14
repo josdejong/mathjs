@@ -1,6 +1,6 @@
 /**
  * Calculate the 10-base logarithm of a value, log10(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.log10 = function log10(x) {

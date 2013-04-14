@@ -1,8 +1,8 @@
 /**
  * Check if value x equals y, x == y
  * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
  */
 math.equal = function equal(x, y) {

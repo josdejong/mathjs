@@ -1,6 +1,6 @@
 /**
  * Divide two values. x / y or divide(x, y)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | Array | Matrix} x
  * @param  {Number | Complex} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */

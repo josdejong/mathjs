@@ -1,6 +1,6 @@
 /**
  * Get the imaginary part of a complex number.
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} im
  */
 math.im = function im(x) {

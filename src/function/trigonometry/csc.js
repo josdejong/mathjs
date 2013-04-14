@@ -1,6 +1,6 @@
 /**
  * Calculate the cosecant of a value, csc(x) = 1/sin(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.csc = function csc(x) {

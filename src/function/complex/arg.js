@@ -1,7 +1,7 @@
 /**
  * Compute the argument of a complex value.
  * If x = a+bi, the argument is computed as atan2(b, a).
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} res
  */
 math.arg = function arg(x) {

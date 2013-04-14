@@ -1,7 +1,7 @@
 /**
  * Add two values. x + y or add(x, y)
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Number | Complex | Unit | String | Array | Matrix} res
  */
 math.add = function add(x, y) {

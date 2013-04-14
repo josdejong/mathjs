@@ -1,6 +1,6 @@
 /**
  * Calculate the cosine of a value, cos(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.cos = function cos(x) {

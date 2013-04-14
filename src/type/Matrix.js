@@ -17,7 +17,7 @@
  *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
  *     matrix.get([2,1])         // 3
  *
- * @param {Array | Matrix | Range} [data]    A multi dimensional array
+ * @param {Array | Matrix} [data]    A multi dimensional array
  */
 function Matrix(data) {
     if (this.constructor != Matrix) {
@@ -243,7 +243,7 @@ function _getSubmatrix (data, index, dim) {
 /**
  * Replace a value or a submatrix in the matrix.
  * Indexes are one-based.
- * @param {Array | Range | Matrix} index        One-based index
+ * @param {Array | Matrix} index        One-based index
  * @param {*} submatrix
  * @return {Matrix} itself
  */

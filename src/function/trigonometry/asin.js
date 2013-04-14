@@ -1,6 +1,6 @@
 /**
  * Calculate the inverse sine of a value, asin(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.asin = function asin(x) {

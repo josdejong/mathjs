@@ -1,6 +1,6 @@
 /**
  * Get the real part of a complex number.
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} re
  */
 math.re = function re(x) {

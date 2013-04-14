@@ -1,6 +1,6 @@
 /**
  * Calculate the exponent of a value, exp(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.exp = function exp (x) {

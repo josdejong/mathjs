@@ -1,6 +1,6 @@
 /**
  * Compute the cube of a value, x * x * x.',
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.cube = function cube(x) {

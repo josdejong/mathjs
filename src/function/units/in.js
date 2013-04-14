@@ -1,6 +1,6 @@
 /**
  * Change the unit of a value. x in unit or in(x, unit)
- * @param {Unit | Array | Matrix | Range} x
+ * @param {Unit | Array | Matrix} x
  * @param {Unit | Array | Matrix} unit
  * @return {Unit | Array | Matrix} res
  */

@@ -1,6 +1,6 @@
 /**
  * Calculate the secant of a value, sec(x) = 1/cos(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.sec = function sec(x) {

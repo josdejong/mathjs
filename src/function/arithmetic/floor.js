@@ -1,6 +1,6 @@
 /**
  * Round a value towards minus infinity, floor(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.floor = function floor(x) {

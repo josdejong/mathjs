@@ -1,6 +1,6 @@
 /**
  * Calculate the tangent of a value, tan(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.tan = function tan(x) {

@@ -1,7 +1,7 @@
 /**
  * Calculates the modulus, the remainder of an integer division.
- * @param  {Number | Complex | Array | Matrix | Range} x
- * @param  {Number | Complex | Array | Matrix | Range} y
+ * @param  {Number | Complex | Array | Matrix} x
+ * @param  {Number | Complex | Array | Matrix} y
  * @return {Number | Array | Matrix} res
  */
 math.mod = function mod(x, y) {

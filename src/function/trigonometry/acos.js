@@ -1,6 +1,6 @@
 /**
  * Calculate the inverse cosine of a value, acos(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.acos = function acos(x) {

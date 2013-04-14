@@ -1,9 +1,9 @@
 /**
  * Check if value x is larger y, x > y
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
- * @return {Boolean | Array | Matrix | Range} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
+ * @return {Boolean | Array | Matrix} res
  */
 math.larger = function larger(x, y) {
     if (arguments.length != 2) {

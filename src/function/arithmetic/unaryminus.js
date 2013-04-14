@@ -1,6 +1,6 @@
 /**
  * Inverse the sign of a value. -x or unaryminus(x)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
 math.unaryminus = function unaryminus(x) {

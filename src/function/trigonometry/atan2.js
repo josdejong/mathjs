@@ -1,7 +1,7 @@
 /**
  * Computes the principal value of the arc tangent of y/x in radians, atan2(y,x)
- * @param {Number | Complex | Array | Matrix | Range} y
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} y
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.atan2 = function atan2(y, x) {

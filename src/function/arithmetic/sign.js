@@ -1,7 +1,7 @@
 /**
  * Compute the sign of a value.
  * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.sign = function sign(x) {

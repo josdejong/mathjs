@@ -1,7 +1,7 @@
 /**
  * Multiply two values. x * y or multiply(x, y)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | Array | Matrix | Range} y
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
 math.multiply = function multiply(x, y) {

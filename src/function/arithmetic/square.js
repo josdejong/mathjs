@@ -1,6 +1,6 @@
 /**
  * Compute the square of a value, x * x
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.square = function square(x) {

@@ -1,6 +1,6 @@
 /**
  * Compute the factorial of a value, factorial(x) or x!
- * @Param {Number | Array | Matrix | Range} x
+ * @Param {Number | Array | Matrix} x
  * @return {Number | Array | Matrix} res
  */
 math.factorial = function factorial (x) {

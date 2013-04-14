@@ -1156,7 +1156,7 @@ Complex.prototype.toString = function () {
  *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
  *     matrix.get([2,1])         // 3
  *
- * @param {Array | Matrix | Range} [data]    A multi dimensional array
+ * @param {Array | Matrix} [data]    A multi dimensional array
  */
 function Matrix(data) {
     if (this.constructor != Matrix) {
@@ -1382,7 +1382,7 @@ function _getSubmatrix (data, index, dim) {
 /**
  * Replace a value or a submatrix in the matrix.
  * Indexes are one-based.
- * @param {Array | Range | Matrix} index        One-based index
+ * @param {Array | Matrix} index        One-based index
  * @param {*} submatrix
  * @return {Matrix} itself
  */
@@ -5686,8 +5686,8 @@ math.expr.Scope.prototype = {
 
 })();
 /**
- * Calculate the square root of a value
- * @param {Number | Complex | Array | Matrix | Range} x
+ * Calculate the absolute value of a value
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.abs = function abs(x) {
@@ -5717,8 +5717,8 @@ math.abs = function abs(x) {
 
 /**
  * Add two values. x + y or add(x, y)
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Number | Complex | Unit | String | Array | Matrix} res
  */
 math.add = function add(x, y) {
@@ -5795,7 +5795,7 @@ math.add = function add(x, y) {
 
 /**
  * Round a value towards plus infinity, ceil(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.ceil = function ceil(x) {
@@ -5828,7 +5828,7 @@ math.ceil = function ceil(x) {
 
 /**
  * Compute the cube of a value, x * x * x.',
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.cube = function cube(x) {
@@ -5858,7 +5858,7 @@ math.cube = function cube(x) {
 
 /**
  * Divide two values. x / y or divide(x, y)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | Array | Matrix} x
  * @param  {Number | Complex} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
@@ -5942,8 +5942,8 @@ function _divideComplex (x, y) {
 /**
  * Check if value x equals y, x == y
  * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
  */
 math.equal = function equal(x, y) {
@@ -5994,7 +5994,7 @@ math.equal = function equal(x, y) {
 
 /**
  * Calculate the exponent of a value, exp(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.exp = function exp (x) {
@@ -6027,7 +6027,7 @@ math.exp = function exp (x) {
 
 /**
  * Round a value towards zero, fix(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.fix = function fix(x) {
@@ -6060,7 +6060,7 @@ math.fix = function fix(x) {
 
 /**
  * Round a value towards minus infinity, floor(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.floor = function floor(x) {
@@ -6148,9 +6148,9 @@ math.gcd = function gcd(args) {
 /**
  * Check if value x is larger y, x > y
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
- * @return {Boolean | Array | Matrix | Range} res
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
+ * @return {Boolean | Array | Matrix} res
  */
 math.larger = function larger(x, y) {
     if (arguments.length != 2) {
@@ -6201,8 +6201,8 @@ math.larger = function larger(x, y) {
 /**
  * Check if value x is larger or equal to y, x >= y
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
  */
 math.largereq = function largereq(x, y) {
@@ -6313,7 +6313,7 @@ math.lcm = function lcm(args) {
  * Calculate the logarithm of a value, log(x [, base])
  * base is optional. If not provided, the natural logarithm of x is calculated
  * logarithm for any base, like log(x, base)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @param {Number | Complex} [base]
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -6360,7 +6360,7 @@ math.log = function log(x, base) {
 
 /**
  * Calculate the 10-base logarithm of a value, log10(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.log10 = function log10(x) {
@@ -6399,8 +6399,8 @@ math.log10 = function log10(x) {
 
 /**
  * Calculates the modulus, the remainder of an integer division.
- * @param  {Number | Complex | Array | Matrix | Range} x
- * @param  {Number | Complex | Array | Matrix | Range} y
+ * @param  {Number | Complex | Array | Matrix} x
+ * @param  {Number | Complex | Array | Matrix} y
  * @return {Number | Array | Matrix} res
  */
 math.mod = function mod(x, y) {
@@ -6445,9 +6445,9 @@ math.mod = function mod(x, y) {
 };
 
 /**
- * Multiply two values. x + y or multiply(x, y)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | Array | Matrix | Range} y
+ * Multiply two values. x * y or multiply(x, y)
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
 math.multiply = function multiply(x, y) {
@@ -6574,7 +6574,7 @@ function _multiplyComplex (x, y) {
 
 /**
  * Calculates the power of x to y, x^y
- * @param  {Number | Complex | Array | Matrix | Range} x
+ * @param  {Number | Complex | Array | Matrix} x
  * @param  {Number | Complex} y
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -6663,7 +6663,7 @@ function powComplex (x, y) {
 
 /**
  * Round a value towards the nearest integer, round(x [, n])
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @param {Number | Array} [n] number of decimals (by default n=0)
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -6753,7 +6753,7 @@ function roundNumber (value, decimals) {
 /**
  * Compute the sign of a value.
  * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.sign = function sign(x) {
@@ -6795,8 +6795,8 @@ math.sign = function sign(x) {
 /**
  * Check if value x is smaller y, x < y
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
  */
 math.smaller = function smaller(x, y) {
@@ -6848,8 +6848,8 @@ math.smaller = function smaller(x, y) {
 /**
  * Check if value a is smaller or equal to b, a <= b
  * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
  */
 math.smallereq = function smallereq(x, y) {
@@ -6900,7 +6900,7 @@ math.smallereq = function smallereq(x, y) {
 
 /**
  * Calculate the square root of a value
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.sqrt = function sqrt (x) {
@@ -6947,7 +6947,7 @@ math.sqrt = function sqrt (x) {
 
 /**
  * Compute the square of a value, x * x
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.square = function square(x) {
@@ -6977,8 +6977,8 @@ math.square = function square(x) {
 
 /**
  * Subtract two values. x - y or subtract(x, y)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | Array | Matrix | Range} y
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
 math.subtract = function subtract(x, y) {
@@ -7052,7 +7052,7 @@ math.subtract = function subtract(x, y) {
 
 /**
  * Inverse the sign of a value. -x or unaryminus(x)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
 math.unaryminus = function unaryminus(x) {
@@ -7090,8 +7090,8 @@ math.unaryminus = function unaryminus(x) {
 /**
  * Check if value x unequals y, x != y
  * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
  */
 math.unequal = function unequal(x, y) {
@@ -7144,7 +7144,7 @@ math.unequal = function unequal(x, y) {
 /**
  * Compute the argument of a complex value.
  * If x = a+bi, the argument is computed as atan2(b, a).
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} res
  */
 math.arg = function arg(x) {
@@ -7176,7 +7176,7 @@ math.arg = function arg(x) {
 /**
  * Compute the complex conjugate of a complex value.
  * If x = a+bi, the complex conjugate is a-bi.
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.conj = function conj(x) {
@@ -7207,7 +7207,7 @@ math.conj = function conj(x) {
 
 /**
  * Get the imaginary part of a complex number.
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} im
  */
 math.im = function im(x) {
@@ -7238,7 +7238,7 @@ math.im = function im(x) {
 
 /**
  * Get the real part of a complex number.
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} re
  */
 math.re = function re(x) {
@@ -7337,7 +7337,7 @@ math.complex = function complex(args) {
  *     m.valueOf();                     // [[1, 2], [3, 4], [5, 5]]
  *     m.get([1, 0])                    // 3
  *
- * @param {Array | Matrix | Range} [data]    A multi dimensional array
+ * @param {Array | Matrix} [data]    A multi dimensional array
  * @return {Matrix} matrix
  */
 math.matrix = function matrix(data) {
@@ -8231,7 +8231,7 @@ math.zeros = function zeros (size) {
 
 /**
  * Compute the factorial of a value, factorial(x) or x!
- * @Param {Number | Array | Matrix | Range} x
+ * @Param {Number | Array | Matrix} x
  * @return {Number | Array | Matrix} res
  */
 math.factorial = function factorial (x) {
@@ -8474,7 +8474,7 @@ function _min2(array, rows, cols) {
 
 /**
  * Calculate the inverse cosine of a value, acos(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.acos = function acos(x) {
@@ -8525,7 +8525,7 @@ math.acos = function acos(x) {
 
 /**
  * Calculate the inverse sine of a value, asin(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.asin = function asin(x) {
@@ -8576,7 +8576,7 @@ math.asin = function asin(x) {
 
 /**
  * Calculate the inverse tangent of a value, atan(x)
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.atan = function atan(x) {
@@ -8620,8 +8620,8 @@ math.atan = function atan(x) {
 
 /**
  * Computes the principal value of the arc tangent of y/x in radians, atan2(y,x)
- * @param {Number | Complex | Array | Matrix | Range} y
- * @param {Number | Complex | Array | Matrix | Range} x
+ * @param {Number | Complex | Array | Matrix} y
+ * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.atan2 = function atan2(y, x) {
@@ -8665,7 +8665,7 @@ math.atan2 = function atan2(y, x) {
 
 /**
  * Calculate the cosine of a value, cos(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.cos = function cos(x) {
@@ -8706,7 +8706,7 @@ math.cos = function cos(x) {
 
 /**
  * Calculate the cotangent of a value, cot(x) = 1/tan(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.cot = function cot(x) {
@@ -8749,7 +8749,7 @@ math.cot = function cot(x) {
 
 /**
  * Calculate the cosecant of a value, csc(x) = 1/sin(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.csc = function csc(x) {
@@ -8793,7 +8793,7 @@ math.csc = function csc(x) {
 
 /**
  * Calculate the secant of a value, sec(x) = 1/cos(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.sec = function sec(x) {
@@ -8836,7 +8836,7 @@ math.sec = function sec(x) {
 
 /**
  * Calculate the sine of a value, sin(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.sin = function sin(x) {
@@ -8876,7 +8876,7 @@ math.sin = function sin(x) {
 
 /**
  * Calculate the tangent of a value, tan(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
+ * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
 math.tan = function tan(x) {
@@ -8920,7 +8920,7 @@ math.tan = function tan(x) {
 
 /**
  * Change the unit of a value. x in unit or in(x, unit)
- * @param {Unit | Array | Matrix | Range} x
+ * @param {Unit | Array | Matrix} x
  * @param {Unit | Array | Matrix} unit
  * @return {Unit | Array | Matrix} res
  */
