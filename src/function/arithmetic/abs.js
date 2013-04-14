@@ -1,5 +1,5 @@
 /**
- * Calculate the square root of a value
+ * Calculate the absolute value of a value
  * @param {Number | Complex | Array | Matrix | Range} x
  * @return {Number | Complex | Array | Matrix} res
  */
