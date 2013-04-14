@@ -151,5 +151,5 @@ assert.equal(round5(tan(unit('-135deg'))), 1);
 assert.throws(function () {tan('string')});
 assert.throws(function () {tan(unit('5 celsius'))});
 math.range(-2*pi, pi/4, 2*pi).forEach(function (value) {
-    assert.equal(math.format(tan(value))), math.format(sin(value) / cos(value));
+    assert.equal(math.format(tan(value)), math.format(sin(value) / cos(value)));
 });
