@@ -28,7 +28,7 @@ math.sign = function sign(x) {
         return new Complex(x.re / abs, x.im / abs);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.sign);
     }
 

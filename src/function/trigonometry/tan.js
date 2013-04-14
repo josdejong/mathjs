@@ -30,7 +30,7 @@ math.tan = function tan(x) {
         return Math.tan(x.value);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.tan);
     }
 

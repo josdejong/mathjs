@@ -29,7 +29,7 @@ math.sec = function sec(x) {
         return 1 / Math.cos(x.value);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.sec);
     }
 

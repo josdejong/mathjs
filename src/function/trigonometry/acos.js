@@ -37,7 +37,7 @@ math.acos = function acos(x) {
         );
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.acos);
     }
 

@@ -15,14 +15,14 @@ math['in'] = function unit_in(x, unit) {
         }
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        unit instanceof Array || unit instanceof Matrix || unit instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        unit instanceof Array || unit instanceof Matrix) {
         return util.map2(x, unit, math['in']);
     }
 
-    if (x.valueOf() !== x) {
+    if (x.valueOf() !== x || unit.valueOf() !== unit) {
         // fallback on the objects primitive value
-        return math['in'](x.valueOf());
+        return math['in'](x.valueOf(), unit.valueOf());
     }
 
     throw newUnsupportedTypeError('in', x, unit);

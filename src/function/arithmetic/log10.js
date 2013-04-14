@@ -25,7 +25,7 @@ math.log10 = function log10(x) {
         );
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.log10);
     }
 

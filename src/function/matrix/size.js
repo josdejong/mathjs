@@ -20,7 +20,7 @@ math.size = function size (x) {
         return util.size(x);
     }
 
-    if (x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Matrix) {
         return x.size();
     }
 

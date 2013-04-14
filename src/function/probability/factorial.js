@@ -9,8 +9,8 @@ math.factorial = function factorial (x) {
     }
 
     if (isNumber(x)) {
-        if (!isInteger(x)) {
-            throw new TypeError('Function factorial can only handle integer values');
+        if (!isInteger(x) || x < 0) {
+            throw new TypeError('Positive integer value expected in function factorial');
         }
 
         var value = x,
@@ -28,7 +28,7 @@ math.factorial = function factorial (x) {
         return res;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.factorial);
     }
 

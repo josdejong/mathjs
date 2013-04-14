@@ -8,11 +8,14 @@ math.squeeze = function squeeze (x) {
         throw newArgumentsError('squeeze', arguments.length, 1);
     }
 
-    if (x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array) {
+        return _squeezeArray(math.clone(x));
+    }
+    else if (x instanceof Matrix) {
         return _squeezeArray(x.toArray());
     }
-    else if (x instanceof Array) {
-        return _squeezeArray(math.clone(x));
+    else if (x.valueOf() instanceof Array) {
+        return _squeezeArray(math.clone(x.valueOf()));
     }
     else {
         // scalar

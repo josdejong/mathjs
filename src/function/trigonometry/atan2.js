@@ -26,8 +26,8 @@ math.atan2 = function atan2(y, x) {
         }
     }
 
-    if (y instanceof Array || y instanceof Matrix || y instanceof Range ||
-        x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (y instanceof Array || y instanceof Matrix ||
+        x instanceof Array || x instanceof Matrix) {
         return util.map2(y, x, math.atan2);
     }
 

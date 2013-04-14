@@ -17,7 +17,7 @@ math.conj = function conj(x) {
         return new Complex(x.re, -x.im);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.conj);
     }
 

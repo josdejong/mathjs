@@ -16,7 +16,7 @@ math.cube = function cube(x) {
         return math.multiply(math.multiply(x, x), x);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return math.multiply(math.multiply(x, x), x);
     }
 

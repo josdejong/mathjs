@@ -16,7 +16,7 @@ math.im = function im(x) {
         return x.im;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.im);
     }
 

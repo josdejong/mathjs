@@ -17,7 +17,7 @@ math.arg = function arg(x) {
         return Math.atan2(x.im, x.re);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.arg);
     }
 

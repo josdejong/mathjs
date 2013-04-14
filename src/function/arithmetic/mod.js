@@ -32,8 +32,8 @@ math.mod = function mod(x, y) {
     }
 
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.mod);
     }
 

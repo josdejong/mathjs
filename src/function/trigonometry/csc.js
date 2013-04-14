@@ -30,7 +30,7 @@ math.csc = function csc(x) {
         return 1 / Math.sin(x.value);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.csc);
     }
 

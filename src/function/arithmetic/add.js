@@ -44,12 +44,12 @@ math.add = function add(x, y) {
                 throw new Error('Units do not match');
             }
 
-            if (!x.hasValue) {
-                throw new Error('Unit on left hand side of operator + has no value');
+            if (x.value == null) {
+                throw new Error('Unit on left hand side of operator + has an undefined value');
             }
 
-            if (!y.hasValue) {
-                throw new Error('Unit on right hand side of operator + has no value');
+            if (y.value == null) {
+                throw new Error('Unit on right hand side of operator + has an undefined value');
             }
 
             var res = x.clone();
@@ -63,8 +63,8 @@ math.add = function add(x, y) {
         return x + y;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
         return util.map2(x, y, math.add);
     }
 

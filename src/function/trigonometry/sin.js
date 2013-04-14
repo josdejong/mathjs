@@ -26,7 +26,7 @@ math.sin = function sin(x) {
         return Math.sin(x.value);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.sin);
     }
 

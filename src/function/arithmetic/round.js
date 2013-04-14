@@ -1,7 +1,7 @@
 /**
  * Round a value towards the nearest integer, round(x [, n])
  * @param {Number | Complex | Array | Matrix | Range} x
- * @param {Number | Array} [n] number of digits
+ * @param {Number | Array} [n] number of decimals (by default n=0)
  * @return {Number | Complex | Array | Matrix} res
  */
 math.round = function round(x, n) {
@@ -22,8 +22,8 @@ math.round = function round(x, n) {
             );
         }
 
-        if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-            util.map(x, math.round);
+        if (x instanceof Array || x instanceof Matrix) {
+            return util.map(x, math.round);
         }
 
         if (x.valueOf() !== x) {
@@ -36,13 +36,13 @@ math.round = function round(x, n) {
     else {
         // round (x, n)
         if (!isNumber(n)) {
-            throw new TypeError('Number of digits in function round must be an integer');
+            throw new TypeError('Number of decimals in function round must be an integer');
         }
         if (n !== Math.round(n)) {
-            throw new TypeError('Number of digits in function round must be integer');
+            throw new TypeError('Number of decimals in function round must be integer');
         }
         if (n < 0 || n > 9) {
-            throw new Error ('Number of digits in function round must be in te range of 0-9');
+            throw new Error ('Number of decimals in function round must be in te range of 0-9');
         }
 
         if (isNumber(x)) {
@@ -56,8 +56,8 @@ math.round = function round(x, n) {
             );
         }
 
-        if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-            n instanceof Array || n instanceof Matrix || n instanceof Range) {
+        if (x instanceof Array || x instanceof Matrix ||
+            n instanceof Array || n instanceof Matrix) {
             return util.map2(x, n, math.round);
         }
 
@@ -71,13 +71,18 @@ math.round = function round(x, n) {
 };
 
 /**
- * round a number to the given number of digits, or to the default if
- * digits is not provided
+ * round a number to the given number of decimals, or to zero if decimals is
+ * not provided
  * @param {Number} value
- * @param {Number} [digits]  number of digits, between 0 and 15
+ * @param {Number} [decimals]  number of decimals, between 0 and 15 (0 by default)
  * @return {Number} roundedValue
  */
-function roundNumber (value, digits) {
-    var p = Math.pow(10, (digits != undefined) ? digits : math.options.precision);
-    return Math.round(value * p) / p;
+function roundNumber (value, decimals) {
+    if (decimals) {
+        var p = Math.pow(10, decimals);
+        return Math.round(value * p) / p;
+    }
+    else {
+        return Math.round(value);
+    }
 }

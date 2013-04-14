@@ -16,7 +16,7 @@ math.square = function square(x) {
         return math.multiply(x, x);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return math.multiply(x, x);
     }
 

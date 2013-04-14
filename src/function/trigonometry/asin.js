@@ -37,7 +37,7 @@ math.asin = function asin(x) {
         return new Complex(temp4.im, -temp4.re);
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.asin);
     }
 

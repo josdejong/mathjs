@@ -23,7 +23,7 @@ math.unaryminus = function unaryminus(x) {
         return res;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.unaryminus);
     }
 

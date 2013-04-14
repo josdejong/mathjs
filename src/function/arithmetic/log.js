@@ -30,7 +30,7 @@ math.log = function log(x, base) {
             );
         }
 
-        if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+        if (x instanceof Array || x instanceof Matrix) {
             return util.map(x, math.log);
         }
     }

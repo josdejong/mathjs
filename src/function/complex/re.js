@@ -16,7 +16,7 @@ math.re = function re(x) {
         return x.re;
     }
 
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
+    if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.re);
     }
 
@@ -25,6 +25,6 @@ math.re = function re(x) {
         return math.re(x.valueOf());
     }
 
-    // TODO: return just the value itself for all non-complex values?
-    throw newUnsupportedTypeError('re', x);
+    // just return a clone of the value itself for all non-complex values
+    return math.clone(x);
 };
