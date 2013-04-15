@@ -404,6 +404,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.square(x)
 - math.unaryminus(x)
 - math.unequal(x)
+- math.xgcd(a, b)
 
 ### Complex
 

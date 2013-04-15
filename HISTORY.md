@@ -4,11 +4,12 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.7.0
 
-- Implemented method math.eval, which uses a readonly parser to evaluate
+- Implemented method `math.eval`, which uses a readonly parser to evaluate
   expressions.
 - Improved math.format, which now rounds values to a maximum number of digits
   instead of decimals (default is 5 digits, for example `math.format(math.pi)`
   returns `3.1416`).
+- Implemented method `xgcd` (extended eucledian algorithm). Thanks Bart Kiers.
 - Minor bug fixes and improvements.
 
 

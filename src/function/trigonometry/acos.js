@@ -1,7 +1,12 @@
 /**
- * Calculate the inverse cosine of a value, acos(x)
+ * Calculate the inverse cosine of a value
+ *
+ *     acos(x)
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * http://mathworld.wolfram.com/InverseCosine.html
  */
 math.acos = function acos(x) {
     if (arguments.length != 1) {

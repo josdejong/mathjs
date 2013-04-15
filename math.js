@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.7.0-SNAPSHOT
- * @date    2013-04-14
+ * @date    2013-04-15
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -7142,6 +7142,51 @@ math.unequal = function unequal(x, y) {
 };
 
 /**
+ * Calculate the extended greatest common divisor for two or
+ * more values.
+ *
+ *     xgcd(a, b)
+ *
+ * @param {Number} args    two integer numbers
+ * @return {Array}         an array containing 3 integers [div, m, n]
+ *                         where div = gcd(a, b) and a*m + b*n = div
+ *
+ * @see http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+ */
+math.xgcd = function xgcd(args) {
+
+    var a = arguments[0],
+        b = arguments[1];
+
+    if (arguments.length == 2) {
+
+        // two arguments
+        if (isNumber(a) && isNumber(b)) {
+
+            if (!isInteger(a) || !isInteger(b)) {
+                throw new Error('Parameters in function xgcd must be integer numbers');
+            }
+
+            if(b == 0) {
+                return [a, 1, 0];
+            }
+
+            var tmp = xgcd(b, a % b),
+                div = tmp[0],
+                x = tmp[1],
+                y = tmp[2];
+
+            return [div, y, x - y * Math.floor(a / b)];
+        }
+
+        throw newUnsupportedTypeError('xgcd', a, b);
+    }
+
+    // zero or one argument
+    throw new SyntaxError('Function xgcd expects two arguments');
+};
+
+/**
  * Compute the argument of a complex value.
  * If x = a+bi, the argument is computed as atan2(b, a).
  * @param {Number | Complex | Array | Matrix} x
@@ -8473,9 +8518,14 @@ function _min2(array, rows, cols) {
 }
 
 /**
- * Calculate the inverse cosine of a value, acos(x)
+ * Calculate the inverse cosine of a value
+ *
+ *     acos(x)
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * http://mathworld.wolfram.com/InverseCosine.html
  */
 math.acos = function acos(x) {
     if (arguments.length != 1) {
