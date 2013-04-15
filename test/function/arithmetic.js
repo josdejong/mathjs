@@ -216,3 +216,22 @@ assert.deepEqual(math.subtract(0, 3), -3);
 
 // TODO: test unaryminus
 // TODO: test unequal
+
+// test xgcd
+
+// xgcd(36163, 21199) = 1247 => -7(36163) + 12(21199) = 1247
+assert.deepEqual([1247, -7, 12], math.xgcd(36163, 21199));
+
+// xgcd(120, 23) = 1 => -9(120) + 47(23) = 1
+assert.deepEqual([1, -9, 47], math.xgcd(120, 23));
+
+// some unit tests from: https://github.com/sjkaliski/numbers.js/blob/master/test/basic.test.js
+assert.deepEqual([5, -3, 5], math.xgcd(65, 40));
+assert.deepEqual([5, 5, -3], math.xgcd(40, 65));
+assert.deepEqual([21, -16, 27], math.xgcd(1239, 735));
+assert.deepEqual([21, 5, -2], math.xgcd(105, 252));
+assert.deepEqual([21, -2, 5], math.xgcd(252, 105));
+
+// invalid input (only 2 params are permitted!)
+assert.throws(function () {math.xgcd(1)});
+assert.throws(function () {math.xgcd(1, 2, 3)});
