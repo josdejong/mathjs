@@ -16,6 +16,21 @@ math['typeof'] = function math_typeof(x) {
         if (x == null) {
             return 'null';
         }
+        if (x instanceof Boolean) {
+            return 'boolean';
+        }
+        if (x instanceof Number) {
+            return 'number';
+        }
+        if (x instanceof String) {
+            return 'string';
+        }
+        if (x instanceof Array) {
+            return 'array';
+        }
+        if (x instanceof Date) {
+            return 'date';
+        }
         if (x.constructor) {
             // search functions / constants
             for (name in math) {
