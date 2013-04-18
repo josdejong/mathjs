@@ -1,7 +1,12 @@
 /**
- * Calculate the inverse tangent of a value, atan(x)
+ * Calculate the inverse tangent of a value
+ *
+ *     atan(x)
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/InverseTangent.html
  */
 math.atan = function atan(x) {
     if (arguments.length != 1) {

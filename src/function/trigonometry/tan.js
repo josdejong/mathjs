@@ -1,7 +1,12 @@
 /**
- * Calculate the tangent of a value, tan(x)
+ * Calculate the tangent of a value
+ *
+ *     tan(x)
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/Tangent.html
  */
 math.tan = function tan(x) {
     if (arguments.length != 1) {

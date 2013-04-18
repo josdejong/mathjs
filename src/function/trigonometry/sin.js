@@ -1,7 +1,12 @@
 /**
- * Calculate the sine of a value, sin(x)
+ * Calculate the sine of a value
+ *
+ *     sin(x)
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/Sine.html
  */
 math.sin = function sin(x) {
     if (arguments.length != 1) {

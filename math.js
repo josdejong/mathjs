@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.7.0-SNAPSHOT
- * @date    2013-04-15
+ * @date    2013-04-18
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -817,6 +817,15 @@ var util = (function () {
             }
 
             return false;
+        };
+    }
+
+    // Internet Explorer 8 and older does not support Array.isArray,
+    // so we define it here in that case.
+    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/isArray
+    if(!Array.isArray) {
+        Array.isArray = function (vArg) {
+            return Object.prototype.toString.call(vArg) === "[object Array]";
         };
     }
 
@@ -7147,22 +7156,17 @@ math.unequal = function unequal(x, y) {
  *
  *     xgcd(a, b)
  *
- * @param {Number} args    two integer numbers
+ * @param {Number} a       An integer number
+ * @param {Number} b       An integer number
  * @return {Array}         an array containing 3 integers [div, m, n]
  *                         where div = gcd(a, b) and a*m + b*n = div
  *
  * @see http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
  */
-math.xgcd = function xgcd(args) {
-
-    var a = arguments[0],
-        b = arguments[1];
-
+math.xgcd = function xgcd(a, b) {
     if (arguments.length == 2) {
-
         // two arguments
         if (isNumber(a) && isNumber(b)) {
-
             if (!isInteger(a) || !isInteger(b)) {
                 throw new Error('Parameters in function xgcd must be integer numbers');
             }
@@ -8525,7 +8529,7 @@ function _min2(array, rows, cols) {
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  *
- * http://mathworld.wolfram.com/InverseCosine.html
+ * @see http://mathworld.wolfram.com/InverseCosine.html
  */
 math.acos = function acos(x) {
     if (arguments.length != 1) {
@@ -8574,9 +8578,14 @@ math.acos = function acos(x) {
 };
 
 /**
- * Calculate the inverse sine of a value, asin(x)
+ * Calculate the inverse sine of a value
+ *
+ *     asin(x)
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/InverseSine.html
  */
 math.asin = function asin(x) {
     if (arguments.length != 1) {
@@ -8625,9 +8634,14 @@ math.asin = function asin(x) {
 };
 
 /**
- * Calculate the inverse tangent of a value, atan(x)
+ * Calculate the inverse tangent of a value
+ *
+ *     atan(x)
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/InverseTangent.html
  */
 math.atan = function atan(x) {
     if (arguments.length != 1) {
@@ -8669,10 +8683,15 @@ math.atan = function atan(x) {
 };
 
 /**
- * Computes the principal value of the arc tangent of y/x in radians, atan2(y,x)
+ * Computes the principal value of the arc tangent of y/x in radians
+ *
+ *     atan2(y, x)
+ *
  * @param {Number | Complex | Array | Matrix} y
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/InverseTangent.html
  */
 math.atan2 = function atan2(y, x) {
     if (arguments.length != 2) {
@@ -8714,9 +8733,14 @@ math.atan2 = function atan2(y, x) {
 };
 
 /**
- * Calculate the cosine of a value, cos(x)
+ * Calculate the cosine of a value
+ *
+ *     cos(x)
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/Cosine.html
  */
 math.cos = function cos(x) {
     if (arguments.length != 1) {
@@ -8885,9 +8909,14 @@ math.sec = function sec(x) {
 };
 
 /**
- * Calculate the sine of a value, sin(x)
+ * Calculate the sine of a value
+ *
+ *     sin(x)
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/Sine.html
  */
 math.sin = function sin(x) {
     if (arguments.length != 1) {
@@ -8925,9 +8954,14 @@ math.sin = function sin(x) {
 };
 
 /**
- * Calculate the tangent of a value, tan(x)
+ * Calculate the tangent of a value
+ *
+ *     tan(x)
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/Tangent.html
  */
 math.tan = function tan(x) {
     if (arguments.length != 1) {
@@ -9259,6 +9293,21 @@ math['typeof'] = function math_typeof(x) {
     if (type == 'object') {
         if (x == null) {
             return 'null';
+        }
+        if (x instanceof Boolean) {
+            return 'boolean';
+        }
+        if (x instanceof Number) {
+            return 'number';
+        }
+        if (x instanceof String) {
+            return 'string';
+        }
+        if (x instanceof Array) {
+            return 'array';
+        }
+        if (x instanceof Date) {
+            return 'date';
         }
         if (x.constructor) {
             // search functions / constants

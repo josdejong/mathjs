@@ -10,6 +10,7 @@ https://github.com/josdejong/mathjs
   instead of decimals (default is 5 digits, for example `math.format(math.pi)`
   returns `3.1416`).
 - Implemented method `xgcd` (extended eucledian algorithm). Thanks Bart Kiers.
+- Fixed method math.typeof on IE.
 - Minor bug fixes and improvements.
 
 

@@ -1,7 +1,12 @@
 /**
- * Calculate the cosine of a value, cos(x)
+ * Calculate the cosine of a value
+ *
+ *     cos(x)
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/Cosine.html
  */
 math.cos = function cos(x) {
     if (arguments.length != 1) {

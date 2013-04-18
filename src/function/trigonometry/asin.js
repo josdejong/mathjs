@@ -1,7 +1,12 @@
 /**
- * Calculate the inverse sine of a value, asin(x)
+ * Calculate the inverse sine of a value
+ *
+ *     asin(x)
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/InverseSine.html
  */
 math.asin = function asin(x) {
     if (arguments.length != 1) {

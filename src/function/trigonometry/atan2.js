@@ -1,8 +1,13 @@
 /**
- * Computes the principal value of the arc tangent of y/x in radians, atan2(y,x)
+ * Computes the principal value of the arc tangent of y/x in radians
+ *
+ *     atan2(y, x)
+ *
  * @param {Number | Complex | Array | Matrix} y
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/InverseTangent.html
  */
 math.atan2 = function atan2(y, x) {
     if (arguments.length != 2) {
