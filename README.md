@@ -88,6 +88,9 @@ Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate expressions (see [Expressions](#expressions)) and supports
 chained operations (see [Chained operations](#chained-operations)).
 
+Here some example code. More can be found in the
+[examples directory](https://github.com/josdejong/mathjs/tree/master/examples/).
+
 ```js
 // load math.js
 var math = require('mathjs');
