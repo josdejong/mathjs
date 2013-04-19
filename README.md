@@ -25,6 +25,10 @@ Math.js can be installed using [npm](https://npmjs.org/):
 
     npm install mathjs
 
+Or using [bower](http://twitter.github.io/bower/):
+
+    bower install mathjs
+
 Or the latest version of math.js can be downloaded from
 [mathjs.org](http://mathjs.org/#install_or_download):
 
@@ -36,8 +40,7 @@ Or the latest version of math.js can be downloaded from
 
 ### Node.js
 
-Math.js can be loaded in node.js using `require`, and similarly in the browser
-using [require.js](http://requirejs.org/).
+Load math.js in [node.js](http://nodejs.org/):
 
 ```js
 var math = require('mathjs');
@@ -63,58 +66,106 @@ Math.js can be loaded as a regular javascript file in the browser:
 </html>
 ```
 
-<!-- TODO: Describe how to load using require.js -->
+#### Require.js
+
+Load math.js in the browser using [require.js](http://requirejs.org/):
+
+```js
+require.config({
+    paths: {
+        mathjs: 'path/to/mathjs',
+    }
+});
+require(['mathjs'], function (math) {
+    math.sqrt(-4); // 2i
+});
+```
 
 
 ## Use
 
-Math.js can be used similar to Javascript's built-in Math library.
+Math.js can be used similar to JavaScript's built-in Math library. Besides that,
+math.js can evaluate expressions (see [Expressions](#expressions)) and supports
+chained operations (see [Chained operations](#chained-operations)).
 
 ```js
+// load math.js
 var math = require('mathjs');
 
-// use methods and types available in the math object
-var a = math.sin(math.pi / 4);  // 0.70711...
-var b = math.pow(a, 2);         // 0.5
+// functions and constants
+math.round(math.e, 3);            // 2.718
+math.atan2(3, -3) / math.pi;      // 0.75
+math.log(1000, 10);               // 3
+math.sqrt(-4);                    // 2i
+math.pow([[-1, 2], [3, 1]], 2);   // [[7, 0], [0, 7]]
 
-var c = math.complex(3, -4);    // 3 - 4i
-math.sqrt(c);                   // 2 - i
+// expressions
+math.eval('1.2 / (2.3 + 0.7)');   // 0.4
+math.eval('5.08 cm in inch');     // 2 inch
+math.eval('sin(45 deg) ^ 2');     // 0.5
+math.eval('9 / 3 + 2i');          // 3 + 2i
+math.eval('det([-1, 2; 3, 1])');  // -7
 
-math.sqrt(-4);                  // 2i
-
-var f = math.unit(60, 'deg');   // 60 deg
-var g = math.cos(f);            // 0.5
-```
-
-Operations can be performed using:
-
-- regular function calls
-- chained operations (see [Chained operations](#chained-operations))
-- expression parsing (see [Expression parser](#expression-parser))
-
-```js
-// regular function call
-math.subtract(math.add(3, 4), 2); // 5
-
-// chained operation
-math.select(3).add(4).subtract(2).done(); // 5
-
-// expression parser
-var parser = math.parser();
-parser.eval('3 + 4 - 2'); // 5
+// chained operations
+math.select(3)
+    .add(4)
+    .multiply(2)
+    .done(); // 14
 ```
 
 
-## Expression parser
+## Expressions
 
 Math.js contains a flexible and easy to use expression parser.
 The parser supports all data types, methods and constants available in math.js.
-It has a method `eval` to evaluate expressions,
-and `parse` to parse expressions and build a node tree from it.
-The parser supports variable and function definitions.
-Variables and functions can be manipulated using the methods `get` and `set`.
+Expressions can be evaluated in two ways:
 
-The following example code shows how to create and use a parser.
+- Using the function [`math.eval`](#eval), which uses a read-only parser.
+- Using a more flexible [parser](#parser).
+
+
+### Eval
+
+Math.js comes with a function `math.eval` to evaluate expressions.
+The function `eval` does support all functions, variables, and data types
+available in math.js. Internally, the function `eval` uses a read-only parser.
+The following code demonstrates how to evaluate expressions.
+
+```js
+// load math.js
+var math = require('mathjs');
+
+// evaluate expressions
+var a = math.eval('sqrt(3^2 + 4^2)');   // a = 5
+var b = math.eval('sqrt(-4)');          // b = 2i
+var c = math.eval('2 inch in cm');      // c = 5.08 cm
+var d = math.eval('cos(45 deg)');       // d = 0.7071067811865476
+```
+
+
+### Parser
+
+The parser of math.js supports all functions, variables, and data types
+available in math.js. Additionally, it supports variable and function
+assignments. A parser can be created by:
+
+```js
+var parser = math.parser();
+```
+
+The parser contains the following methods:
+
+- `eval(expr)`
+  Evaluate an expression.
+- `get(name)`
+  Retrieve a variable or function from the parsers scope.
+- `set(name, value)`
+  Set a variable or function in the parsers scope.
+- `parse(expr)`
+  Parse an expression into a node tree.
+  A node can be evaluated as `node.eval()`.
+
+The following code shows how to create and use a parser.
 
 ```js
 // load math.js
@@ -150,23 +201,14 @@ parser.eval('hello("user")');           // "hello, user!"
 parser.clear();
 ```
 
-Available methods:
-
-    var result = parser.eval(expr);    // evaluate an expression
-    var value = parser.get(name);      // retrieve a variable from the parser
-    parser.set(name, value);           // set a variable in the parser
-
-    var node = parser.parse(expr);     // parse an expression into a node tree
-    var result = node.eval();          // evaluate a node
-
 
 ## Chained operations
 
 Math.js supports chaining operations by wrapping a value into a `Selector`.
-A selector can be created with the method `math.select(value)`.
+A selector can be created with the function `math.select(value)`.
 All methods available in the math namespace can be executed via the selector.
 The methods will be executed with the selectors value as first argument,
-followed by extra arguments provided by the method call itself.
+followed by extra arguments provided by the function call itself.
 
 ```js
 math.select(3)
@@ -191,11 +233,11 @@ The Selector has a number of special functions:
    a string representation of the value.
  - `get(index)`
    Get a subselection of the selectors value. Only applicable when
-   the value has a method get, for example when value is a Matrix
+   the value has a function get, for example when value is a Matrix
    or Array.
  - `set(index, replacement)`
    Replace a subselection of the selectors value. Only applicable
-   when the value has a method get, for example when value is a
+   when the value has a function get, for example when value is a
    Matrix or Array.
 
 
@@ -543,27 +585,10 @@ To execute tests for the library, run:
 
 ## Roadmap
 
-- Version 0.1.0 (2013-02-18)
-    - Implement all methods and constants available in the built-in Math library
-    - Implement data types Complex and Unit
-- Version 0.2.0 (2013-02-25)
-    - Implement Parser, Scope, Node tree
-    - Implement more methods
-- Version 0.3.0 (2013-03-09)
-    - Implement Workspace
-    - Implement more methods
-- Build a website (2013-03-11)
-- Version 0.4.0 (2013-03-16)
-    - Implement Arrays
-- Version 0.5.0 (2013-04-06)
-    - Implement Matrix and Range
-- Version 0.6.0 (2013-04-13)
-    - Implement chained operations
-- Version 0.7.0
+- Before version 1.0.0:
     - More on matrices
-- Version 1.0.0
-    - Extensive testing
     - Examples and documentation
+    - Extensive testing
 
 
 ## License
