@@ -125,6 +125,8 @@ approxEqual(math.pi, 3.14159);
 // test whether overwritten when forced
 math.import({pi: 3}, {override: true});
 approxEqual(math.pi, 3);
+// restore pi
+math.import({pi: Math.pi}, {override: true});
 
 
 var parser = math.parser();
