@@ -2,6 +2,9 @@
 https://github.com/josdejong/mathjs
 
 
+## under development, version 0.8.0
+
+
 ## 2013-04-20, version 0.7.0
 
 - Implemented method `math.eval`, which uses a readonly parser to evaluate
