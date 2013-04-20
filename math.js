@@ -238,6 +238,21 @@ var util = (function () {
     };
 
     /**
+     * Extend object a with the properties of object b
+     * @param {Object} a
+     * @param {Object} b
+     * @return {Object} a
+     */
+    util.extend = function (a, b) {
+        for (var prop in b) {
+            if (b.hasOwnProperty(prop)) {
+                a[prop] = b[prop];
+            }
+        }
+        return a;
+    };
+
+    /**
      * Create a semi UUID
      * source: http://stackoverflow.com/a/105074/1262753
      * @return {String} uuid
@@ -9411,12 +9426,20 @@ math.format = function format(template, values) {
 /**
  * Import functions from an object or a file
  * @param {function | String | Object} object
- * @param {boolean} [override]         If true, existing functions will be
- *                                     overwritten. False by default.
+ * @param {Object} [options]        Available options:
+ *                                  {Boolean} override
+ *                                  If true, existing functions will be
+ *                                  overwritten. False by default.
  */
 // TODO: return status information
-math['import'] = function math_import(object, override) {
+math['import'] = function math_import(object, options) {
     var name;
+    var opts = {
+        override: false
+    };
+    if (options && options instanceof Object) {
+        util.extend(opts, options);
+    }
 
     if (isString(object)) {
         // a string with a filename
@@ -9433,7 +9456,7 @@ math['import'] = function math_import(object, override) {
         // a single function
         name = object.name;
         if (name) {
-            if (override || math[name] === undefined) {
+            if (opts.override || math[name] === undefined) {
                 _import(name, object);
             }
         }
@@ -9447,7 +9470,7 @@ math['import'] = function math_import(object, override) {
             if (object.hasOwnProperty(name)) {
                 var value = object[name];
                 if (isSupportedType(value)) {
-                    if (override || math[name] === undefined) {
+                    if (opts.override || math[name] === undefined) {
                         _import(name, value);
                     }
                 }

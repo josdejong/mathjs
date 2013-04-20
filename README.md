@@ -522,7 +522,7 @@ math.import({
     myvalue: 42,
     hello: function (name) {
         return 'hello, ' + name + '!';
-    });
+    }
 });
 
 // defined methods can be used in both JavaScript as well as the parser

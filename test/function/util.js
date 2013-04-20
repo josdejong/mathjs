@@ -3,6 +3,15 @@
 var assert = require('assert');
 var math = require('../../math.js');
 
+/**
+ * Test whether two numbers are equal when rounded to 5 decimals
+ * @param {Number} a
+ * @param {Number} b
+ */
+function approxEqual(a, b) {
+    assert.equal(math.round(a, 5), math.round(b, 5));
+}
+
 // test select
 assert.ok(math.select(45) instanceof math.type.Selector);
 assert.equal(math.select(3).add(4).subtract(2).done(), 5);
@@ -100,7 +109,27 @@ assert.equal(math.format('hello, $name.first $name.last!',
     {name: {first: 'first', last: 'last'}}),
     'hello, first last!');
 
-// TODO: test import
+// test import
+math.import({
+    myvalue: 42,
+    hello: function (name) {
+        return 'hello, ' + name + '!';
+    }
+});
+assert.equal(math.myvalue * 2, 84);
+assert.equal(math.hello('user'), 'hello, user!');
+
+// test whether not overwriting existing functions by default
+math.import({pi: 3});
+approxEqual(math.pi, 3.14159);
+// test whether overwritten when forced
+math.import({pi: 3}, {override: true});
+approxEqual(math.pi, 3);
+
+
+var parser = math.parser();
+parser.eval('myvalue + 10');    // 52
+parser.eval('hello("user")');   // 'hello, user!'
 
 // test typeof
 assert.equal(math.typeof(2), 'number');

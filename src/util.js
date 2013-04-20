@@ -167,6 +167,21 @@ var util = (function () {
     };
 
     /**
+     * Extend object a with the properties of object b
+     * @param {Object} a
+     * @param {Object} b
+     * @return {Object} a
+     */
+    util.extend = function (a, b) {
+        for (var prop in b) {
+            if (b.hasOwnProperty(prop)) {
+                a[prop] = b[prop];
+            }
+        }
+        return a;
+    };
+
+    /**
      * Create a semi UUID
      * source: http://stackoverflow.com/a/105074/1262753
      * @return {String} uuid

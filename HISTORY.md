@@ -11,6 +11,7 @@ https://github.com/josdejong/mathjs
   returns `3.1416`).
 - Implemented method `xgcd` (extended eucledian algorithm). Thanks Bart Kiers.
 - Changed methods square and cube to evaluate matrices element wise.
+- Changed second parameter of method import to an object with options.
 - Fixed method math.typeof on IE.
 - Minor bug fixes and improvements.
 
