@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.6.0
- * @date    2013-04-13
+ * @version 0.7.0
+ * @date    2013-04-20
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -39,7 +39,7 @@ var math = {
         node: {}
     },
     options: {
-        precision: 10  // number of decimals in formatted output
+        precision: 5  // number of digits in formatted output
     }
 };
 
@@ -74,7 +74,7 @@ var util = (function () {
     var util = {};
 
     /**
-     * Convert a number to a formatted string representation
+     * Convert a number to a formatted string representation.
      * @param {Number} value            The value to be formatted
      * @param {Number} [digits]         number of digits
      * @return {String} formattedValue  The formatted value
@@ -92,17 +92,37 @@ var util = (function () {
 
         // TODO: what is a nice limit for non-scientific values?
         var abs = Math.abs(value);
-        if ( (abs > 0.0001 && abs < 1000000) || abs == 0.0 ) {
-            // round the func to a limited number of digits
-            return String(roundNumber(value, digits));
+        if ( (abs > 0.001 && abs < 100000) || abs == 0.0 ) {
+            // round the value to a limited number of digits
+            return util.toPrecision(value, digits);
         }
         else {
             // scientific notation
             var exp = Math.round(Math.log(abs) / Math.LN10);
             var v = value / (Math.pow(10.0, exp));
-            return roundNumber(v, digits) + 'E' + exp;
+            return util.toPrecision(v, digits) + 'e' + exp;
         }
     };
+
+    /**
+     * Round a value to a maximum number of digits. Trailing zeros will be
+     * removed.
+     * @param {Number} value
+     * @param {Number} [digits]
+     * @returns {string} str
+     */
+    util.toPrecision = function (value, digits) {
+        if (digits == undefined) {
+            digits = math.options.precision;
+        }
+
+        return value.toPrecision(digits).replace(_trailingZeros, function (a, b, c) {
+            return a.substring(0, a.length - (b.length ? 0 : 1) - c.length);
+        });
+    };
+
+    /** @private */
+    var _trailingZeros = /\.(\d*?)(0+)$/g;
 
     /**
      * Recursively format an n-dimensional matrix
@@ -218,6 +238,21 @@ var util = (function () {
     };
 
     /**
+     * Extend object a with the properties of object b
+     * @param {Object} a
+     * @param {Object} b
+     * @return {Object} a
+     */
+    util.extend = function (a, b) {
+        for (var prop in b) {
+            if (b.hasOwnProperty(prop)) {
+                a[prop] = b[prop];
+            }
+        }
+        return a;
+    };
+
+    /**
      * Create a semi UUID
      * source: http://stackoverflow.com/a/105074/1262753
      * @return {String} uuid
@@ -275,7 +310,7 @@ var util = (function () {
         // handle Range
         if (array1 instanceof Range || array2 instanceof Range) {
             // TODO: util.map2 does not utilize Range.map
-            return new Matrix(util.map2(array1.valueOf(), array2.valueOf(), fn));
+            return util.map2(array1.valueOf(), array2.valueOf(), fn);
         }
 
         if (array1 instanceof Array) {
@@ -1136,7 +1171,7 @@ Complex.prototype.toString = function () {
  *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
  *     matrix.get([2,1])         // 3
  *
- * @param {Array | Matrix | Range} [data]    A multi dimensional array
+ * @param {Array | Matrix} [data]    A multi dimensional array
  */
 function Matrix(data) {
     if (this.constructor != Matrix) {
@@ -1362,7 +1397,7 @@ function _getSubmatrix (data, index, dim) {
 /**
  * Replace a value or a submatrix in the matrix.
  * Indexes are one-based.
- * @param {Array | Range | Matrix} index        One-based index
+ * @param {Array | Matrix} index        One-based index
  * @param {*} submatrix
  * @return {Matrix} itself
  */
@@ -1783,7 +1818,7 @@ Matrix.prototype.valueOf = function () {
  * @returns {String} str
  */
 Matrix.prototype.toString = function () {
-    return util.formatArray(this._data);
+    return math.format(this._data);
 };
 
 /**
@@ -2235,22 +2270,18 @@ function Unit(value, unit) {
         }
         this.unit = res.unit;
         this.prefix = res.prefix;
-        this.hasUnit = true;
     }
     else {
         this.unit = Unit.UNIT_NONE;
         this.prefix = Unit.PREFIX_NONE;  // link to a list with supported prefixes
-        this.hasUnit = false;
     }
 
     if (value != null) {
         this.value = this._normalize(value);
-        this.hasValue = true;
         this.fixPrefix = false;  // is set true by the methods Unit.in and math.in
     }
     else {
-        this.value = this._normalize(1);
-        this.hasValue = false;
+        this.value = null;
         this.fixPrefix = true;
     }
 }
@@ -2540,10 +2571,10 @@ Unit.prototype.in = function (plainUnit) {
         if (!this.equalBase(plainUnit)) {
             throw new Error('Units do not match');
         }
-        if (plainUnit.hasValue) {
+        if (plainUnit.value != null) {
             throw new Error('Cannot convert to a unit with a value');
         }
-        if (!plainUnit.hasUnit) {
+        if (plainUnit.unit == null) {
             throw new Error('Unit expected on the right hand side of function in');
         }
 
@@ -2573,16 +2604,19 @@ Unit.prototype.toNumber = function (plainUnit) {
  * @return {String}
  */
 Unit.prototype.toString = function() {
-    var value;
+    var value, str;
     if (!this.fixPrefix) {
         var bestPrefix = this._bestPrefix();
         value = this._unnormalize(this.value, bestPrefix.value);
-        return util.formatNumber(value) + ' ' + bestPrefix.name + this.unit.name;
+        str = (this.value != null) ? util.formatNumber(value) + ' ' : '';
+        str += bestPrefix.name + this.unit.name;
     }
     else {
         value = this._unnormalize(this.value);
-        return util.formatNumber(value) + ' ' + this.prefix.name + this.unit.name;
+        str = (this.value != null) ? util.formatNumber(value) + ' ' : '';
+        str += this.prefix.name + this.unit.name;
     }
+    return str;
 };
 
 /**
@@ -2927,14 +2961,14 @@ function newUnsupportedTypeError(name, value1, value2) {
     var msg = undefined;
     if (arguments.length == 2) {
         var t = math.typeof(value1);
-        msg = 'Function ' + name + ' does not support a parameter of type ' + t;
+        msg = 'Function ' + name + '(' + t + ') not supported';
     }
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
             types.push(math.typeof(arguments[i]));
         }
-        msg = 'Function ' + name + ' does not support a parameters of type ' + types.join(', ');
+        msg = 'Function ' + name + '(' + types.join(', ') + ') not supported';
     }
     else {
         msg = 'Unsupported parameter in function ' + name;
@@ -2957,3509 +2991,6 @@ function newArgumentsError(name, count, min, max) {
         min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
     return new SyntaxError(msg);
 }
-
-/**
- * Calculate the square root of a value
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.abs = function abs(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('abs', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.abs(x);
-    }
-
-    if (x instanceof Complex) {
-        return Math.sqrt(x.re * x.re + x.im * x.im);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.abs);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.abs(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('abs', x);
-};
-
-/**
- * Add two values. x + y or add(x, y)
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
- * @return {Number | Complex | Unit | String | Array | Matrix} res
- */
-math.add = function add(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('add', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number + number
-            return x + y;
-        }
-        else if (y instanceof Complex) {
-            // number + complex
-            return new Complex(
-                x + y.re,
-                    y.im
-            )
-        }
-    }
-    else if (x instanceof Complex) {
-        if (isNumber(y)) {
-            // complex + number
-            return new Complex(
-                x.re + y,
-                x.im
-            )
-        }
-        else if (y instanceof Complex) {
-            // complex + complex
-            return new Complex(
-                x.re + y.re,
-                x.im + y.im
-            );
-        }
-    }
-    else if (x instanceof Unit) {
-        if (y instanceof Unit) {
-            if (!x.equalBase(y)) {
-                throw new Error('Units do not match');
-            }
-
-            if (!x.hasValue) {
-                throw new Error('Unit on left hand side of operator + has no value');
-            }
-
-            if (!y.hasValue) {
-                throw new Error('Unit on right hand side of operator + has no value');
-            }
-
-            var res = x.clone();
-            res.value += y.value;
-            res.fixPrefix = false;
-            return res;
-        }
-    }
-
-    if (isString(x) || isString(y)) {
-        return x + y;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, math.add);
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive value
-        return math.add(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('add', x, y);
-};
-
-/**
- * Round a value towards plus infinity, ceil(x)
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.ceil = function ceil(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('ceil', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.ceil(x);
-    }
-
-    if (x instanceof Complex) {
-        return new Complex (
-            Math.ceil(x.re),
-            Math.ceil(x.im)
-        );
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.ceil);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.ceil(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('ceil', x);
-};
-
-/**
- * Compute the cube of a value, x * x * x.',
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.cube = function cube(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('cube', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return x * x * x;
-    }
-
-    if (x instanceof Complex) {
-        return math.multiply(math.multiply(x, x), x);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return math.multiply(math.multiply(x, x), x);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.cube(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('cube', x);
-};
-
-/**
- * Divide two values. x / y or divide(x, y)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
- * @param  {Number | Complex} y
- * @return {Number | Complex | Unit | Array | Matrix} res
- */
-math.divide = function divide(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('divide', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number / number
-            return x / y;
-        }
-        else if (y instanceof Complex) {
-            // number / complex
-            return _divideComplex(new Complex(x, 0), y);
-        }
-    }
-
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            // complex / number
-            return _divideComplex(x, new Complex(y, 0));
-        }
-        else if (y instanceof Complex) {
-            // complex / complex
-            return _divideComplex(x, y);
-        }
-    }
-
-    if (x instanceof Unit) {
-        if (isNumber(y)) {
-            var res = x.clone();
-            res.value /= y;
-            return res;
-        }
-    }
-
-    if (x instanceof Array || x instanceof Matrix) {
-        if (y instanceof Array || y instanceof Matrix) {
-            // TODO: implement matrix right division using pseudo inverse
-            // http://www.mathworks.nl/help/matlab/ref/mrdivide.html
-            // http://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
-            // http://stackoverflow.com/questions/12263932/how-does-gnu-octave-matrix-division-work-getting-unexpected-behaviour
-            return math.multiply(x, math.inv(y));
-        }
-        else {
-            // matrix / scalar
-            return util.map2(x, y, math.divide);
-        }
-    }
-
-    if (y instanceof Array || y instanceof Matrix) {
-        // TODO: implement matrix right division using pseudo inverse
-        return math.multiply(x, math.inv(y));
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive value
-        return math.divide(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('divide', x, y);
-};
-
-/**
- * Divide two complex numbers. x / y or divide(x, y)
- * @param {Complex} x
- * @param {Complex} y
- * @return {Complex} res
- * @private
- */
-function _divideComplex (x, y) {
-    var den = y.re * y.re + y.im * y.im;
-    return new Complex(
-        (x.re * y.re + x.im * y.im) / den,
-        (x.im * y.re - x.re * y.im) / den
-    );
-}
-
-/**
- * Check if value x equals y, x == y
- * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
- * @return {Boolean | Array | Matrix} res
- */
-math.equal = function equal(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('equal', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x == y;
-        }
-        else if (y instanceof Complex) {
-            return (x == y.re) && (y.im == 0);
-        }
-    }
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return (x.re == y) && (x.im == 0);
-        }
-        else if (y instanceof Complex) {
-            return (x.re == y.re) && (x.im == y.im);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value == y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x == y;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, math.equal);
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return equal(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('equal', x, y);
-};
-
-/**
- * Calculate the exponent of a value, exp(x)
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.exp = function exp (x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('exp', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.exp(x);
-    }
-    if (x instanceof Complex) {
-        var r = Math.exp(x.re);
-        return new Complex(
-            r * Math.cos(x.im),
-            r * Math.sin(x.im)
-        );
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.exp);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.exp(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('exp', x);
-};
-
-/**
- * Round a value towards zero, fix(x)
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.fix = function fix(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('fix', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return (x > 0) ? Math.floor(x) : Math.ceil(x);
-    }
-
-    if (x instanceof Complex) {
-        return new Complex(
-            (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
-            (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
-        );
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.fix);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.fix(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('fix', x);
-};
-
-/**
- * Round a value towards minus infinity, floor(x)
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.floor = function floor(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('floor', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.floor(x);
-    }
-
-    if (x instanceof Complex) {
-        return new Complex (
-            Math.floor(x.re),
-            Math.floor(x.im)
-        );
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.floor);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.floor(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('floor', x);
-};
-
-/**
- * Calculate the greatest common divisor for two or more values or arrays.
- *     gcd(a, b)
- *     gcd(a, b, c, ...)
- * @param {... Number | Array | Matrix} args    two or more integer numbers
- * @return {Number | Array | Matrix} greatest common divisor
- */
-math.gcd = function gcd(args) {
-    var a = arguments[0],
-        b = arguments[1],
-        t;
-
-    if (arguments.length == 2) {
-        // two arguments
-        if (isNumber(a) && isNumber(b)) {
-            if (!isInteger(a) || !isInteger(b)) {
-                throw new Error('Parameters in function gcd must be integer numbers');
-            }
-
-            // http://en.wikipedia.org/wiki/Euclidean_algorithm
-            while (b != 0) {
-                t = b;
-                b = a % t;
-                a = t;
-            }
-            return Math.abs(a);
-        }
-
-        // evaluate gcd element wise
-        if (a instanceof Array || a instanceof Matrix ||
-            b instanceof Array || b instanceof Matrix) {
-            return util.map2(a, b, math.gcd);
-        }
-
-        if (a.valueOf() !== a || b.valueOf() !== b) {
-            // fallback on the objects primitive value
-            return math.gcd(a.valueOf(), b.valueOf());
-        }
-
-        throw newUnsupportedTypeError('gcd', a, b);
-    }
-
-    if (arguments.length > 2) {
-        // multiple arguments. Evaluate them iteratively
-        for (var i = 1; i < arguments.length; i++) {
-            a = math.gcd(a, arguments[i]);
-        }
-        return a;
-    }
-
-    // zero or one argument
-    throw new SyntaxError('Function gcd expects two or more arguments');
-};
-
-/**
- * Check if value x is larger y, x > y
- * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
- * @return {Boolean | Array | Matrix | Range} res
- */
-math.larger = function larger(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('larger', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x > y;
-        }
-        else if (y instanceof Complex) {
-            return x > math.abs(y);
-        }
-    }
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return math.abs(x) > y;
-        }
-        else if (y instanceof Complex) {
-            return math.abs(x) > math.abs(y);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value > y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x > y;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, math.larger);
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.larger(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('larger', x, y);
-};
-
-/**
- * Check if value x is larger or equal to y, x >= y
- * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
- * @return {Boolean | Array | Matrix} res
- */
-math.largereq = function largereq(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('largereq', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x >= y;
-        }
-        else if (y instanceof Complex) {
-            return x >= math.abs(y);
-        }
-    }
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return math.abs(x) >= y;
-        }
-        else if (y instanceof Complex) {
-            return math.abs(x) >= math.abs(y);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value >= y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x >= y;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, math.largereq);
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.largereq(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('largereq', x, y);
-};
-
-/**
- * Calculate the least common multiple for two or more values or arrays.
- *     lcm(a, b)
- *     lcm(a, b, c, ...)
- * lcm is defined as:
- *     lcm(a, b) = abs(a * b) / gcd(a, b)
- * @param {... Number | Array | Matrix} args    two or more integer numbers
- * @return {Number | Array | Matrix} least common multiple
- */
-math.lcm = function lcm(args) {
-    var a = arguments[0],
-        b = arguments[1],
-        t;
-
-    if (arguments.length == 2) {
-        // two arguments
-        if (isNumber(a) && isNumber(b)) {
-            if (!isInteger(a) || !isInteger(b)) {
-                throw new Error('Parameters in function lcm must be integer numbers');
-            }
-
-            // http://en.wikipedia.org/wiki/Euclidean_algorithm
-            // evaluate gcd here inline to reduce overhead
-            var prod = a * b;
-            while (b != 0) {
-                t = b;
-                b = a % t;
-                a = t;
-            }
-            return Math.abs(prod / a);
-        }
-
-        // evaluate lcm element wise
-        if (a instanceof Array || a instanceof Matrix ||
-            b instanceof Array || b instanceof Matrix) {
-            return util.map2(a, b, math.lcm);
-        }
-
-        if (a.valueOf() !== a || b.valueOf() !== b) {
-            // fallback on the objects primitive value
-            return math.lcm(a.valueOf(), b.valueOf());
-        }
-
-        throw newUnsupportedTypeError('lcm', a, b);
-    }
-
-    if (arguments.length > 2) {
-        // multiple arguments. Evaluate them iteratively
-        for (var i = 1; i < arguments.length; i++) {
-            a = math.lcm(a, arguments[i]);
-        }
-        return a;
-    }
-
-    // zero or one argument
-    throw new SyntaxError('Function lcm expects two or more arguments');
-};
-
-/**
- * Calculate the logarithm of a value, log(x [, base])
- * base is optional. If not provided, the natural logarithm of x is calculated
- * logarithm for any base, like log(x, base)
- * @param {Number | Complex | Array | Matrix | Range} x
- * @param {Number | Complex} [base]
- * @return {Number | Complex | Array | Matrix} res
- */
-math.log = function log(x, base) {
-    if (arguments.length != 1 && arguments.length != 2) {
-        throw newArgumentsError('log', arguments.length, 1, 2);
-    }
-
-    if (base === undefined) {
-        // calculate natural logarithm, log(x)
-        if (isNumber(x)) {
-            if (x >= 0) {
-                return Math.log(x);
-            }
-            else {
-                // negative value -> complex value computation
-                return math.log(new Complex(x, 0));
-            }
-        }
-
-        if (x instanceof Complex) {
-            return new Complex (
-                Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
-                Math.atan2(x.im, x.re)
-            );
-        }
-
-        if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-            return util.map(x, math.log);
-        }
-    }
-    else {
-        // calculate logarithm for a specified base, log(x, base)
-        return math.divide(math.log(x), math.log(base));
-    }
-
-    if (x.valueOf() !== x || base.valueOf() !== base) {
-        // fallback on the objects primitive values
-        return math.log(x.valueOf(), base.valueOf());
-    }
-
-    throw newUnsupportedTypeError('log', x, base);
-};
-
-/**
- * Calculate the 10-base logarithm of a value, log10(x)
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.log10 = function log10(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('log10', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        if (x >= 0) {
-            return Math.log(x) / Math.LN10;
-        }
-        else {
-            // negative value -> complex value computation
-            return math.log10(new Complex(x, 0));
-        }
-    }
-
-    if (x instanceof Complex) {
-        return new Complex (
-            Math.log(Math.sqrt(x.re * x.re + x.im * x.im)) / Math.LN10,
-            Math.atan2(x.im, x.re) / Math.LN10
-        );
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.log10);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.log10(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('log10', x);
-};
-
-/**
- * Calculates the modulus, the remainder of an integer division.
- * @param  {Number | Complex | Array | Matrix | Range} x
- * @param  {Number | Complex | Array | Matrix | Range} y
- * @return {Number | Array | Matrix} res
- */
-math.mod = function mod(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('mod', arguments.length, 2);
-    }
-
-    // TODO: only handle integer values in mod?
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number % number
-            return x % y;
-        }
-        else if (y instanceof Complex && y.im == 0) {
-            // number % complex
-            return x % y.re;
-        }
-    }
-    else if (x instanceof Complex && x.im == 0) {
-        if (isNumber(y)) {
-            // complex * number
-            return x.re % y;
-        }
-        else if (y instanceof Complex && y.im == 0) {
-            // complex * complex
-            return x.re % y.re;
-        }
-    }
-
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, math.mod);
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.mod(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('mod', x, y);
-};
-
-/**
- * Multiply two values. x + y or multiply(x, y)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | Array | Matrix | Range} y
- * @return {Number | Complex | Unit | Array | Matrix} res
- */
-math.multiply = function multiply(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('multiply', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number * number
-            return x * y;
-        }
-        else if (y instanceof Complex) {
-            // number * complex
-            return _multiplyComplex (new Complex(x, 0), y);
-        }
-        else if (y instanceof Unit) {
-            res = y.clone();
-            res.value *= x;
-            return res;
-        }
-    }
-    else if (x instanceof Complex) {
-        if (isNumber(y)) {
-            // complex * number
-            return _multiplyComplex (x, new Complex(y, 0));
-        }
-        else if (y instanceof Complex) {
-            // complex * complex
-            return _multiplyComplex (x, y);
-        }
-    }
-    else if (x instanceof Unit) {
-        if (isNumber(y)) {
-            res = x.clone();
-            res.value *= y;
-            return res;
-        }
-    }
-    else if (x instanceof Array) {
-        if (y instanceof Array) {
-            // matrix * matrix
-            var sizeX = util.size(x);
-            var sizeY = util.size(y);
-
-            if (sizeX.length != 2) {
-                throw new Error('Can only multiply a 2 dimensional matrix ' +
-                        '(A has ' + sizeX.length + ' dimensions)');
-            }
-            if (sizeY.length != 2) {
-                throw new Error('Can only multiply a 2 dimensional matrix ' +
-                        '(B has ' + sizeY.length + ' dimensions)');
-            }
-            if (sizeX[1] != sizeY[0]) {
-                throw new RangeError('Dimensions mismatch in multiplication. ' +
-                        'Columns of A must match rows of B ' +
-                        '(A is ' + sizeX[0] + 'x' + sizeX[1] +
-                        ', B is ' + sizeY[0] + 'x' + sizeY[1] + ', ' +
-                        sizeY[1] + ' != ' + sizeY[0] + ')');
-            }
-
-            // TODO: performance of matrix multiplication can be improved
-            var res = [],
-                rows = sizeX[0],
-                cols = sizeY[1],
-                num = sizeX[1],
-                multiply = math.multiply,
-                add = math.add;
-            for (var r = 0; r < rows; r++) {
-                res[r] = [];
-                for (var c = 0; c < cols; c++) {
-                    var result = null;
-                    for (var n = 0; n < num; n++) {
-                        var p = multiply(x[r][n], y[n][c]);
-                        result = (result == null) ? p : add(result, p);
-                    }
-                    res[r][c] = result;
-                }
-            }
-
-            return res;
-        }
-        else if (y instanceof Matrix) {
-            return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
-        }
-        else {
-            // matrix * scalar
-            return util.map2(x, y, math.multiply);
-        }
-    }
-    else if (x instanceof Matrix) {
-        return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
-    }
-
-    if (y instanceof Array) {
-        // scalar * matrix
-        return util.map2(x, y, math.multiply);
-    }
-    else if (y instanceof Matrix) {
-        return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.multiply(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('multiply', x, y);
-};
-
-/**
- * Multiply two complex numbers. x * y or multiply(x, y)
- * @param {Complex} x
- * @param {Complex} y
- * @return {Complex} res
- * @private
- */
-function _multiplyComplex (x, y) {
-    return new Complex(
-        x.re * y.re - x.im * y.im,
-        x.re * y.im + x.im * y.re
-    );
-}
-
-/**
- * Calculates the power of x to y, x^y
- * @param  {Number | Complex | Array | Matrix | Range} x
- * @param  {Number | Complex} y
- * @return {Number | Complex | Array | Matrix} res
- */
-math.pow = function pow(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('pow', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            if (isInteger(y) || x >= 0) {
-                // real value computation
-                return Math.pow(x, y);
-            }
-            else {
-                return powComplex(new Complex(x, 0), new Complex(y, 0));
-            }
-        }
-        else if (y instanceof Complex) {
-            return powComplex(new Complex(x, 0), y);
-        }
-    }
-    else if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return powComplex(x, new Complex(y, 0));
-        }
-        else if (y instanceof Complex) {
-            return powComplex(x, y);
-        }
-    }
-    else if (x instanceof Array) {
-        if (!isNumber(y) || !isInteger(y) || y < 0) {
-            throw new TypeError('For A^b, b must be a positive integer ' +
-                    '(value is ' + y + ')');
-        }
-        // verify that A is a 2 dimensional square matrix
-        var s = util.size(x);
-        if (s.length != 2) {
-            throw new Error('For A^b, A must be 2 dimensional ' +
-                    '(A has ' + s.length + ' dimensions)');
-        }
-        if (s[0] != s[1]) {
-            throw new Error('For A^b, A must be square ' +
-                    '(size is ' + s[0] + 'x' + s[1] + ')');
-        }
-
-        if (y == 0) {
-            // return the identity matrix
-            return math.eye(s[0]);
-        }
-        else {
-            // value > 0
-            var res = x;
-            for (var i = 1; i < y; i++) {
-                res = math.multiply(x, res);
-            }
-            return res;
-        }
-    }
-    else if (x instanceof Matrix) {
-        return new Matrix(math.pow(x.valueOf(), y));
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.pow(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('pow', x, y);
-};
-
-/**
- * Calculates the power of x to y, x^y, for two complex numbers.
- * @param {Complex} x
- * @param {Complex} y
- * @return {Complex} res
- * @private
- */
-function powComplex (x, y) {
-    // complex computation
-    // x^y = exp(log(x)*y) = exp((abs(x)+i*arg(x))*y)
-    var temp1 = math.log(x);
-    var temp2 = math.multiply(temp1, y);
-    return math.exp(temp2);
-}
-
-/**
- * Round a value towards the nearest integer, round(x [, n])
- * @param {Number | Complex | Array | Matrix | Range} x
- * @param {Number | Array} [n] number of digits
- * @return {Number | Complex | Array | Matrix} res
- */
-math.round = function round(x, n) {
-    if (arguments.length != 1 && arguments.length != 2) {
-        throw newArgumentsError('round', arguments.length, 1, 2);
-    }
-
-    if (n == undefined) {
-        // round (x)
-        if (isNumber(x)) {
-            return Math.round(x);
-        }
-
-        if (x instanceof Complex) {
-            return new Complex (
-                Math.round(x.re),
-                Math.round(x.im)
-            );
-        }
-
-        if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-            util.map(x, math.round);
-        }
-
-        if (x.valueOf() !== x) {
-            // fallback on the objects primitive value
-            return math.round(x.valueOf());
-        }
-
-        throw newUnsupportedTypeError('round', x);
-    }
-    else {
-        // round (x, n)
-        if (!isNumber(n)) {
-            throw new TypeError('Number of digits in function round must be an integer');
-        }
-        if (n !== Math.round(n)) {
-            throw new TypeError('Number of digits in function round must be integer');
-        }
-        if (n < 0 || n > 9) {
-            throw new Error ('Number of digits in function round must be in te range of 0-9');
-        }
-
-        if (isNumber(x)) {
-            return roundNumber(x, n);
-        }
-
-        if (x instanceof Complex) {
-            return new Complex (
-                roundNumber(x.re, n),
-                roundNumber(x.im, n)
-            );
-        }
-
-        if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-            n instanceof Array || n instanceof Matrix || n instanceof Range) {
-            return util.map2(x, n, math.round);
-        }
-
-        if (x.valueOf() !== x || n.valueOf() !== n) {
-            // fallback on the objects primitive values
-            return math.round(x.valueOf(), n.valueOf());
-        }
-
-        throw newUnsupportedTypeError('round', x, n);
-    }
-};
-
-/**
- * round a number to the given number of digits, or to the default if
- * digits is not provided
- * @param {Number} value
- * @param {Number} [digits]  number of digits, between 0 and 15
- * @return {Number} roundedValue
- */
-function roundNumber (value, digits) {
-    var p = Math.pow(10, (digits != undefined) ? digits : math.options.precision);
-    return Math.round(value * p) / p;
-}
-
-/**
- * Compute the sign of a value.
- * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.sign = function sign(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('sign', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        var sign;
-        if (x > 0) {
-            sign = 1;
-        }
-        else if (x < 0) {
-            sign = -1;
-        }
-        else {
-            sign = 0;
-        }
-        return sign;
-    }
-
-    if (x instanceof Complex) {
-        var abs = Math.sqrt(x.re * x.re + x.im * x.im);
-        return new Complex(x.re / abs, x.im / abs);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.sign);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.sign(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('sign', x);
-};
-
-/**
- * Check if value x is smaller y, x < y
- * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
- * @return {Boolean | Array | Matrix} res
- */
-math.smaller = function smaller(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('smaller', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x < y;
-        }
-        else if (y instanceof Complex) {
-            return x < math.abs(y);
-        }
-    }
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return math.abs(x) < y;
-        }
-        else if (y instanceof Complex) {
-            return math.abs(x) < math.abs(y);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value < y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x < y;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, math.smaller);
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.smaller(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('smaller', x, y);
-};
-
-/**
- * Check if value a is smaller or equal to b, a <= b
- * In case of complex numbers, the absolute values of a and b are compared.
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
- * @return {Boolean | Array | Matrix} res
- */
-math.smallereq = function smallereq(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('smallereq', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x <= y;
-        }
-        else if (y instanceof Complex) {
-            return x <= math.abs(y);
-        }
-    }
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return math.abs(x) <= y;
-        }
-        else if (y instanceof Complex) {
-            return math.abs(x) <= math.abs(y);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value <= y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x <= y;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, math.smallereq);
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.smallereq(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('smallereq', x, y);
-};
-
-/**
- * Calculate the square root of a value
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.sqrt = function sqrt (x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('sqrt', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        if (x >= 0) {
-            return Math.sqrt(x);
-        }
-        else {
-            return math.sqrt(new Complex(x, 0));
-        }
-    }
-
-    if (x instanceof Complex) {
-        var r = Math.sqrt(x.re * x.re + x.im * x.im);
-        if (x.im >= 0.0) {
-            return new Complex(
-                0.5 * Math.sqrt(2.0 * (r + x.re)),
-                0.5 * Math.sqrt(2.0 * (r - x.re))
-            );
-        }
-        else {
-            return new Complex(
-                0.5 * Math.sqrt(2.0 * (r + x.re)),
-                -0.5 * Math.sqrt(2.0 * (r - x.re))
-            );
-        }
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.sqrt);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.sqrt(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('sqrt', x);
-};
-
-/**
- * Compute the square of a value, x * x
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.square = function square(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('square', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return x * x;
-    }
-
-    if (x instanceof Complex) {
-        return math.multiply(x, x);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return math.multiply(x, x);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.square(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('square', x);
-};
-
-/**
- * Subtract two values. x - y or subtract(x, y)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | Array | Matrix | Range} y
- * @return {Number | Complex | Unit | Array | Matrix} res
- */
-math.subtract = function subtract(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('subtract', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number - number
-            return x - y;
-        }
-        else if (y instanceof Complex) {
-            // number - complex
-            return new Complex (
-                x - y.re,
-                    y.im
-            );
-        }
-    }
-    else if (x instanceof Complex) {
-        if (isNumber(y)) {
-            // complex - number
-            return new Complex (
-                x.re - y,
-                x.im
-            )
-        }
-        else if (y instanceof Complex) {
-            // complex - complex
-            return new Complex (
-                x.re - y.re,
-                x.im - y.im
-            )
-        }
-    }
-    else if (x instanceof Unit) {
-        if (y instanceof Unit) {
-            if (!x.equalBase(y)) {
-                throw new Error('Units do not match');
-            }
-
-            if (!x.hasValue) {
-                throw new Error('Unit on left hand side of operator - has no value');
-            }
-
-            if (!y.hasValue) {
-                throw new Error('Unit on right hand side of operator - has no value');
-            }
-
-            var res = x.clone();
-            res.value -= y.value;
-            res.fixPrefix = false;
-
-            return res;
-        }
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, math.subtract);
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.subtract(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('subtract', x, y);
-};
-
-/**
- * Inverse the sign of a value. -x or unaryminus(x)
- * @param  {Number | Complex | Unit | Array | Matrix | Range} x
- * @return {Number | Complex | Unit | Array | Matrix} res
- */
-math.unaryminus = function unaryminus(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('unaryminus', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return -x;
-    }
-    else if (x instanceof Complex) {
-        return new Complex(
-            -x.re,
-            -x.im
-        );
-    }
-    else if (x instanceof Unit) {
-        var res = x.clone();
-        res.value = -x.value;
-        return res;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.unaryminus);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.unaryminus(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('unaryminus', x);
-};
-
-/**
- * Check if value x unequals y, x != y
- * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
- * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
- * @return {Boolean | Array | Matrix} res
- */
-math.unequal = function unequal(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('unequal', arguments.length, 2);
-    }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x == y;
-        }
-        else if (y instanceof Complex) {
-            return (x == y.re) && (y.im == 0);
-        }
-    }
-
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return (x.re == y) && (x.im == 0);
-        }
-        else if (y instanceof Complex) {
-            return (x.re == y.re) && (x.im == y.im);
-        }
-    }
-
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value == y.value;
-    }
-
-    if (isString(x) || isString(y)) {
-        return x == y;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        y instanceof Array || y instanceof Matrix || y instanceof Range) {
-        return util.map2(x, y, math.unequal);
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.unequal(x.valueOf(), y.valueOf());
-    }
-
-    throw newUnsupportedTypeError('unequal', x, y);
-};
-
-/**
- * Compute the argument of a complex value.
- * If x = a+bi, the argument is computed as atan2(b, a).
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Array | Matrix} res
- */
-math.arg = function arg(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('arg', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.atan2(0, x);
-    }
-
-    if (x instanceof Complex) {
-        return Math.atan2(x.im, x.re);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.arg);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.arg(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('arg', x);
-};
-
-/**
- * Compute the complex conjugate of a complex value.
- * If x = a+bi, the complex conjugate is a-bi.
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.conj = function conj(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('conj', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return x;
-    }
-
-    if (x instanceof Complex) {
-        return new Complex(x.re, -x.im);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.conj);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.conj(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('conj', x);
-};
-
-/**
- * Get the imaginary part of a complex number.
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Array | Matrix} im
- */
-math.im = function im(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('im', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return 0;
-    }
-
-    if (x instanceof Complex) {
-        return x.im;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.im);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.im(x.valueOf());
-    }
-
-    // TODO: return 0 for all non-complex values?
-    throw newUnsupportedTypeError('im', x);
-};
-
-/**
- * Get the real part of a complex number.
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Array | Matrix} re
- */
-math.re = function re(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('re', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return x;
-    }
-
-    if (x instanceof Complex) {
-        return x.re;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.re);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.re(x.valueOf());
-    }
-
-    // TODO: return just the value itself for all non-complex values?
-    throw newUnsupportedTypeError('re', x);
-};
-
-/**
- * Create a complex value. Depending on the passed arguments, the function
- * will create and return a new math.type.Complex object.
- *
- * The method accepts the following arguments:
- *     complex()                           creates a complex value with zero
- *                                         as real and imaginary part.
- *     complex(re : number, im : string)   creates a complex value with provided
- *                                         values for real and imaginary part.
- *     complex(str : string)               parses a string into a complex value.
- *
- * Example usage:
- *     var a = math.complex(3, -4);     // 3 - 4i
- *     a.re = 5;                        // a = 5 - 4i
- *     var i = a.im;                    // -4;
- *     var b = math.complex('2 + 6i');  // 2 + 6i
- *     var c = math.complex();          // 0 + 0i
- *     var d = math.add(a, b);          // 5 + 2i
- *
- * @param {*} [args]
- * @return {Complex} value
- */
-math.complex = function complex(args) {
-    switch (arguments.length) {
-        case 0:
-            // no parameters. Set re and im zero
-            return new Complex(0, 0);
-            break;
-
-        case 1:
-            // parse string into a complex number
-            var str = arguments[0];
-            if (!isString(str)) {
-                throw new TypeError(
-                    'Two numbers or a single string expected in function complex');
-            }
-            var c = Complex.parse(str);
-            if (c) {
-                return c;
-            }
-            else {
-                throw new SyntaxError('String "' + str + '" is no valid complex number');
-            }
-            break;
-
-        case 2:
-            // re and im provided
-            return new Complex(arguments[0], arguments[1]);
-            break;
-
-        default:
-            throw newArgumentsError('complex', arguments.length, 0, 2);
-    }
-};
-
-/**
- * Create a matrix. The function creates a new math.type.Matrix object.
- *
- * The method accepts the following arguments:
- *     matrix()       creates an empty matrix
- *     matrix(data)   creates a matrix with initial data.
- *
- * Example usage:
- * Example usage:
- *     var m = matrix([[1, 2], [3, 4]);
- *     m.size();                        // [2, 2]
- *     m.resize([3, 2], 5);
- *     m.valueOf();                     // [[1, 2], [3, 4], [5, 5]]
- *     m.get([1, 0])                    // 3
- *
- * @param {Array | Matrix | Range} [data]    A multi dimensional array
- * @return {Matrix} matrix
- */
-math.matrix = function matrix(data) {
-    if (arguments.length > 1) {
-        throw newArgumentsError('matrix', arguments.length, 0, 1);
-    }
-
-    return new Matrix(data);
-};
-
-/**
- * Create a parser. The function creates a new math.expr.Parser object.
- *
- * Example usage:
- *    var parser = new math.parser();
- *
- *    // evaluate expressions
- *    var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
- *    var b = parser.eval('sqrt(-4)');        // 2i
- *    var c = parser.eval('2 inch in cm');    // 5.08 cm
- *    var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
- *
- *    // define variables and functions
- *    parser.eval('x = 7 / 2');               // 3.5
- *    parser.eval('x + 3');                   // 6.5
- *    parser.eval('function f(x, y) = x^y');  // f(x, y)
- *    parser.eval('f(2, 3)');                 // 8
- *
- *    // get and set variables and functions
- *    var x = parser.get('x');                // 7
- *    var f = parser.get('f');                // function
- *    var g = f(3, 2);                        // 9
- *    parser.set('h', 500);
- *    var i = parser.eval('h / 2');           // 250
- *    parser.set('hello', function (name) {
- *        return 'hello, ' + name + '!';
- *    });
- *    parser.eval('hello("user")');           // "hello, user!"
- *
- *    // clear defined functions and variables
- *    parser.clear();
- *
- * @return {math.expr.Parser} Parser
- */
-math.parser = function parser() {
-    return new math.expr.Parser();
-};
-
-/**
- * Create a range. The function creates a new math.type.Range object.
- *
- * A range works similar to an Array, with functions like
- * forEach and map. However, a Range object is very cheap to create compared to
- * a large Array with indexes, as it stores only a start, step and end value of
- * the range.
- *
- * The method accepts the following arguments
- *     range(str)                   Create a range from a string, where the
- *                                  string contains the start, optional step,
- *                                  and end, separated by a colon.
- *     range(start, end)            Create a range with start and end and a
- *                                  default step size of 1
- *     range(start, step, end)      Create a range with start, step, and end.
- *
- * Example usage:
- *     var c = math.range(2, 1, 5);     // 2:1:5
- *     c.toArray();                     // [2, 3, 4, 5]
- *     var d = math.range(2, -1, -2);   // 2:-1:-2
- *     d.forEach(function (value, index) {
- *         console.log(index, value);
- *     });
- *     var e = math.range('2:1:5');     // 2:1:5
- *
- * @param {...*} args
- * @return {Range} range
- */
-math.range = function range(args) {
-    switch (arguments.length) {
-        case 1:
-            // parse string into a range
-            if (!isString(args)) {
-                throw new TypeError(
-                    'Two or three numbers or a single string expected in function range');
-            }
-            var r = Range.parse(args);
-            if (r) {
-                return r;
-            }
-            else {
-                throw new SyntaxError('String "' + r + '" is no valid range');
-            }
-            break;
-
-        case 2:
-            // range(start, end)
-            return new Range(arguments[0], null, arguments[1]);
-            break;
-
-        case 3:
-            // range(start, step, end)
-            return new Range(arguments[0], arguments[1], arguments[2]);
-            break;
-
-        default:
-            throw newArgumentsError('range', arguments.length, 2, 3);
-    }
-};
-
-/**
- * Create a unit. Depending on the passed arguments, the function
- * will create and return a new math.type.Unit object.
- *
- * The method accepts the following arguments:
- *     unit(unit : string)
- *     unit(value : number, unit : string
- *
- * Example usage:
- *     var a = math.unit(5, 'cm');          // 50 mm
- *     var b = math.unit('23 kg');          // 23 kg
- *     var c = math.in(a, math.unit('m');   // 0.05 m
- *
- * @param {*} args
- * @return {Unit} value
- */
-math.unit = function unit(args) {
-    switch(arguments.length) {
-        case 1:
-            // parse a string
-            var str = arguments[0];
-            if (!isString(str)) {
-                throw new TypeError('A string or a number and string expected in function unit');
-            }
-
-            if (Unit.isPlainUnit(str)) {
-                return new Unit(null, str); // a pure unit
-            }
-
-            var u = Unit.parse(str);        // a unit with value, like '5cm'
-            if (u) {
-                return u;
-            }
-
-            throw new SyntaxError('String "' + str + '" is no valid unit');
-            break;
-
-        case 2:
-            // a number and a unit
-            return new Unit(arguments[0], arguments[1]);
-            break;
-
-        default:
-            throw newArgumentsError('unit', arguments.length, 1, 2);
-    }
-};
-
-/**
- * Create a workspace. The function creates a new math.expr.Workspace object.
- *
- * Workspace manages a set of expressions. Expressions can be added, replace,
- * deleted, and inserted in the workspace. The workspace keeps track on the
- * dependencies between the expressions, and automatically updates results of
- * depending expressions when variables or function definitions are changed in
- * the workspace.
- *
- * Methods:
- *     var id = workspace.append(expr);
- *     var id = workspace.insertBefore(expr, beforeId);
- *     var id = workspace.insertAfter(expr, afterId);
- *     workspace.replace(expr, id);
- *     workspace.remove(id);
- *     workspace.clear();
- *     var expr   = workspace.getExpr(id);
- *     var result = workspace.getResult(id);
- *     var deps   = workspace.getDependencies(id);
- *     var changes = workspace.getChanges(updateSeq);
- *
- * Usage:
- *     var workspace = new math.workspace();
- *     var id0 = workspace.append('a = 3/4');
- *     var id1 = workspace.append('a + 2');
- *     console.log('a + 2 = ' + workspace.getResult(id1));
- *     workspace.replace('a=5/2', id0);
- *     console.log('a + 2 = ' + workspace.getResult(id1));
- *
- * @return {math.expr.Workspace} Workspace
- */
-math.workspace = function workspace() {
-    return new math.expr.Workspace();
-};
-
-/**
- * Concatenate two or more matrices
- * Usage:
- *     math.concat(A, B, C, ...)
- *     math.concat(A, B, C, ..., dim)
- *
- * Where the optional dim is the one-based number of the dimension to be
- * concatenated.
- *
- * @param {... Array | Matrix} args
- * @return {Array | Matrix} res
- */
-math.concat = function concat (args) {
-    var i,
-        len = arguments.length,
-        dim = -1,  // one-based dimension
-        prevDim,
-        asMatrix = false,
-        matrices = [];  // contains multi dimensional arrays
-
-    for (i = 0; i < len; i++) {
-        var arg = arguments[i];
-
-        // test whether we need to return a Matrix (if not we return an Array)
-        if (arg instanceof Matrix) {
-            asMatrix = true;
-        }
-
-        if ((i == len - 1) && isNumber(arg)) {
-            // last argument contains the dimension on which to concatenate
-            prevDim = dim;
-            dim = arg;
-
-            if (!isInteger(dim) || dim < 1) {
-                throw new TypeError('Dimension number must be a positive integer ' +
-                    '(dim = ' + dim + ')');
-            }
-
-            if (i > 0 && dim > prevDim) {
-                throw new RangeError('Dimension out of range ' +
-                    '(' + dim + ' > ' + prevDim + ')');
-            }
-        }
-        else if (arg instanceof Array || arg instanceof Matrix) {
-            // this is a matrix or array
-            var matrix = math.clone(arg.valueOf());
-            var size = math.size(arg);
-            matrices[i] = matrix;
-            prevDim = dim;
-            dim = size.length;
-
-            // verify whether each of the matrices has the same number of dimensions
-            if (i > 0 && dim != prevDim) {
-                throw new RangeError('Dimension mismatch ' +
-                    '(' + prevDim + ' != ' + dim + ')');
-            }
-        }
-        else {
-            throw newUnsupportedTypeError('concat', arg);
-        }
-    }
-
-    if (matrices.length == 0) {
-        throw new SyntaxError('At least one matrix expected');
-    }
-
-    var res = matrices.shift();
-    while (matrices.length) {
-        res = _concat(res, matrices.shift(), dim - 1, 0);
-    }
-
-    return asMatrix ? new Matrix(res) : res;
-};
-
-/**
- * Recursively concatenate two matrices.
- * The contents of the matrices is not cloned.
- * @param {Array} a             Multi dimensional array
- * @param {Array} b             Multi dimensional array
- * @param {Number} concatDim    The dimension on which to concatenate (zero-based)
- * @param {Number} dim          The current dim (zero-based)
- * @return {Array} c            The concatenated matrix
- * @private
- */
-function _concat(a, b, concatDim, dim) {
-    if (dim < concatDim) {
-        // recurse into next dimension
-        if (a.length != b.length) {
-            throw new Error('Dimensions mismatch (' + a.length + ' != ' + b.length + ')');
-        }
-
-        var c = [];
-        for (var i = 0; i < a.length; i++) {
-            c[i] = _concat(a[i], b[i], concatDim, dim + 1);
-        }
-        return c;
-    }
-    else {
-        // concatenate this dimension
-        return a.concat(b);
-    }
-}
-
-/**
- * @constructor det
- * Calculate the determinant of a matrix, det(x)
- * @param {Array | Matrix} x
- * @return {Number} determinant
- */
-math.det = function det (x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('det', arguments.length, 1);
-    }
-
-    var size = math.size(x);
-    switch (size.length) {
-        case 0:
-            // scalar
-            return math.clone(x);
-            break;
-
-        case 1:
-            // vector
-            if (size[0] == 1) {
-                return math.clone(x.valueOf()[0]);
-            }
-            else {
-                throw new RangeError('Matrix must be square ' +
-                    '(size: ' + math.format(size) + ')');
-            }
-            break;
-
-        case 2:
-            // two dimensional array
-            var rows = size[0];
-            var cols = size[1];
-            if (rows == cols) {
-                return _det(x.valueOf(), rows, cols);
-            }
-            else {
-                throw new RangeError('Matrix must be square ' +
-                    '(size: ' + math.format(size) + ')');
-            }
-            break;
-
-        default:
-            // multi dimensional array
-            throw new RangeError('Matrix must be two dimensional ' +
-                '(size: ' + math.format(size) + ')');
-    }
-};
-
-/**
- * Calculate the determinant of a matrix
- * @param {Array[]} matrix  A square, two dimensional matrix
- * @param {Number} rows     Number of rows of the matrix (zero-based)
- * @param {Number} cols     Number of columns of the matrix (zero-based)
- * @returns {Number} det
- * @private
- */
-function _det (matrix, rows, cols) {
-    var multiply = math.multiply,
-        subtract = math.subtract;
-
-    // this is a square matrix
-    if (rows == 1) {
-        // this is a 1 x 1 matrix
-        return matrix[0][0];
-    }
-    else if (rows == 2) {
-        // this is a 2 x 2 matrix
-        // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12
-        return subtract(
-            multiply(matrix[0][0], matrix[1][1]),
-            multiply(matrix[1][0], matrix[0][1])
-        );
-    }
-    else {
-        // this is a matrix of 3 x 3 or larger
-        var d = 0;
-        for (var c = 0; c < cols; c++) {
-            var minor = _minor(matrix, rows, cols, 0, c);
-            //d += Math.pow(-1, 1 + c) * a(1, c) * _det(minor);
-            d += multiply(
-                multiply((c + 1) % 2 + (c + 1) % 2 - 1, matrix[0][c]),
-                _det(minor, rows - 1, cols - 1)
-            ); // faster than with pow()
-        }
-        return d;
-    }
-}
-
-/**
- * Extract a minor from a matrix
- * @param {Array[]} matrix  A square, two dimensional matrix
- * @param {Number} rows     Number of rows of the matrix (zero-based)
- * @param {Number} cols     Number of columns of the matrix (zero-based)
- * @param {Number} row      Row number to be removed (zero-based)
- * @param {Number} col      Column number to be removed (zero-based)
- * @private
- */
-function _minor(matrix, rows, cols, row, col) {
-    var minor = [],
-        minorRow;
-
-    for (var r = 0; r < rows; r++) {
-        if (r != row) {
-            minorRow = minor[r - (r > row)] = [];
-            for (var c = 0; c < cols; c++) {
-                if (c != col) {
-                    minorRow[c - (c > col)] = matrix[r][c];
-                }
-            }
-        }
-    }
-
-    return minor;
-}
-
-/**
- * Create a diagonal matrix or retrieve the diagonal of a matrix
- * diag(v)
- * diag(v, k)
- * diag(X)
- * diag(X, k)
- * @param {Number | Matrix | Array} x
- * @param {Number} [k]
- * @return {Matrix} matrix
- */
-math.diag = function diag (x, k) {
-    var data, vector, i, iMax;
-
-    if (arguments.length != 1 && arguments.length != 2) {
-        throw newArgumentsError('diag', arguments.length, 1, 2);
-    }
-
-    if (k) {
-        if (!isNumber(k) || !isInteger(k)) {
-            throw new TypeError ('Second parameter in function diag must be an integer');
-        }
-    }
-    else {
-        k = 0;
-    }
-    var kSuper = k > 0 ? k : 0;
-    var kSub = k < 0 ? -k : 0;
-
-    // convert to matrix
-    if (!(x instanceof Matrix) && !(x instanceof Range)) {
-        x = new Matrix(x);
-    }
-
-    // get as array when the matrix is a vector
-    var s;
-    if (x.isVector()) {
-        x = x.toVector();
-        s = [x.length];
-    }
-    else {
-        s = x.size();
-    }
-
-    switch (s.length) {
-        case 1:
-            // x is a vector. create diagonal matrix
-            vector = x.valueOf();
-            var matrix = new Matrix();
-            matrix.resize([vector.length + kSub, vector.length + kSuper]);
-            data = matrix.valueOf();
-            iMax = vector.length;
-            for (i = 0; i < iMax; i++) {
-                data[i + kSub][i + kSuper] = math.clone(vector[i]);
-            }
-            return matrix;
-        break;
-
-        case 2:
-            // x is a matrix get diagonal from matrix
-            vector = [];
-            data = x.valueOf();
-            iMax = Math.min(s[0] - kSub, s[1] - kSuper);
-            for (i = 0; i < iMax; i++) {
-                vector[i] = math.clone(data[i + kSub][i + kSuper]);
-            }
-            return new Matrix(vector);
-        break;
-
-        default:
-            throw new RangeError('Matrix for function diag must be 2 dimensional');
-    }
-};
-
-/**
- * Create an identity matrix with size m x n, eye(m [, n])
- * @param {...Number | Matrix | Array} size
- * @return {Matrix} matrix
- */
-math.eye = function eye (size) {
-    var args = util.argsToArray(arguments);
-    if (args.length == 0) {
-        args = [1, 1];
-    }
-    else if (args.length == 1) {
-        args[1] = args[0];
-    }
-    else if (args.length > 2) {
-        throw newArgumentsError('eye', args.length, 0, 2);
-    }
-
-    var rows = args[0],
-        cols = args[1];
-
-    if (!isNumber(rows) || !isInteger(rows) || rows < 1) {
-        throw new Error('Parameters in function eye must be positive integers');
-    }
-    if (cols) {
-        if (!isNumber(cols) || !isInteger(cols) || cols < 1) {
-            throw new Error('Parameters in function eye must be positive integers');
-        }
-    }
-
-    // create and args the matrix
-    var matrix = new Matrix();
-    matrix.resize(args);
-
-    // fill in ones on the diagonal
-    var min = math.min(args);
-    var data = matrix.valueOf();
-    for (var d = 0; d < min; d++) {
-        data[d][d] = 1;
-    }
-
-    return matrix;
-};
-
-/**
- * @constructor inv
- * Calculate the inverse of a matrix, inv(x)
- * @param {Array | Matrix} x
- * @return {Array | Matrix} inv
- */
-math.inv = function inv (x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('inv', arguments.length, 1);
-    }
-
-    var size = math.size(x);
-    switch (size.length) {
-        case 0:
-            // scalar
-            return math.divide(1, x);
-            break;
-
-        case 1:
-            // vector
-            if (size[0] == 1) {
-                if (x instanceof Matrix) {
-                    return new Matrix([
-                        math.divide(1, x.valueOf()[0])
-                    ]);
-                }
-                else {
-                    return [
-                        math.divide(1, x[0])
-                    ];
-                }
-            }
-            else {
-                throw new RangeError('Matrix must be square ' +
-                    '(size: ' + math.format(size) + ')');
-            }
-            break;
-
-        case 2:
-            // two dimensional array
-            var rows = size[0];
-            var cols = size[1];
-            if (rows == cols) {
-                if (x instanceof Matrix) {
-                    return new Matrix(
-                        _inv(x.valueOf(), rows, cols)
-                    );
-                }
-                else {
-                    // return an Array
-                    return _inv(x, rows, cols);
-                }
-            }
-            else {
-                throw new RangeError('Matrix must be square ' +
-                    '(size: ' + math.format(size) + ')');
-            }
-            break;
-
-        default:
-            // multi dimensional array
-            throw new RangeError('Matrix must be two dimensional ' +
-                '(size: ' + math.format(size) + ')');
-    }
-};
-
-/**
- * Calculate the inverse of a square matrix
- * @param {Array[]} matrix  A square matrix
- * @param {Number} rows     Number of rows
- * @param {Number} cols     Number of columns, must equal rows
- * @return {Array[]} inv    Inverse matrix
- * @private
- */
-function _inv (matrix, rows, cols){
-    var r, s, f, value, temp,
-        add = math.add,
-        unaryminus = math.unaryminus,
-        multiply = math.multiply,
-        divide = math.divide;
-
-    if (rows == 1) {
-        // this is a 1 x 1 matrix
-        value = matrix[0][0];
-        if (value == 0) {
-            throw Error('Cannot calculate inverse, determinant is zero');
-        }
-        return [[
-            divide(1, value)
-        ]];
-    }
-    else if (rows == 2) {
-        // this is a 2 x 2 matrix
-        var det = math.det(matrix);
-        if (det == 0) {
-            throw Error('Cannot calculate inverse, determinant is zero');
-        }
-        return [
-            [
-                divide(matrix[1][1], det),
-                divide(unaryminus(matrix[0][1]), det)
-            ],
-            [
-                divide(unaryminus(matrix[1][0]), det),
-                divide(matrix[0][0], det)
-            ]
-        ];
-    }
-    else {
-        // this is a matrix of 3 x 3 or larger
-        // calculate inverse using gauss-jordan elimination
-        //      http://en.wikipedia.org/wiki/Gaussian_elimination
-        //      http://mathworld.wolfram.com/MatrixInverse.html
-        //      http://math.uww.edu/~mcfarlat/inverse.htm
-
-        // make a copy of the matrix (only the arrays, not of the elements)
-        var A = matrix.concat();
-        for (r = 0; r < rows; r++) {
-            A[r] = A[r].concat();
-        }
-
-        // create an identity matrix which in the end will contain the
-        // matrix inverse
-        var B = math.eye(rows).valueOf();
-
-        // loop over all columns, and perform row reductions
-        for (var c = 0; c < cols; c++) {
-            // element Acc should be non zero. if not, swap content
-            // with one of the lower rows
-            r = c;
-            while (r < rows && A[r][c] == 0) {
-                r++;
-            }
-            if (r == rows || A[r][c] == 0) {
-                throw Error('Cannot calculate inverse, determinant is zero');
-            }
-            if (r != c) {
-                temp = A[c]; A[c] = A[r]; A[r] = temp;
-                temp = B[c]; B[c] = B[r]; B[r] = temp;
-            }
-
-            // eliminate non-zero values on the other rows at column c
-            var Ac = A[c],
-                Bc = B[c];
-            for (r = 0; r < rows; r++) {
-                var Ar = A[r],
-                    Br = B[r];
-                if(r != c) {
-                    // eliminate value at column c and row r
-                    if (Ar[c] != 0) {
-                        f = divide(unaryminus(Ar[c]), Ac[c]);
-
-                        // add (f * row c) to row r to eliminate the value
-                        // at column c
-                        for (s = c; s < cols; s++) {
-                            Ar[s] = add(Ar[s], multiply(f, Ac[s]));
-                        }
-                        for (s = 0; s < cols; s++) {
-                            Br[s] = add(Br[s], multiply(f, Bc[s]));
-                        }
-                    }
-                }
-                else {
-                    // normalize value at Acc to 1,
-                    // divide each value on row r with the value at Acc
-                    f = Ac[c];
-                    for (s = c; s < cols; s++) {
-                        Ar[s] = divide(Ar[s], f);
-                    }
-                    for (s = 0; s < cols; s++) {
-                        Br[s] = divide(Br[s], f);
-                    }
-                }
-            }
-        }
-        return B;
-    }
-}
-
-/**
- * @constructor ones
- * ones(n)
- * ones(m, n)
- * ones([m, n])
- * ones([m, n, p, ...])
- * returns a matrix filled with ones
- * @param {...Number | Array} size
- * @return {Matrix} matrix
- */
-math.ones = function ones (size) {
-    var args = util.argsToArray(arguments);
-
-    if (args.length == 0) {
-        args = [1, 1];
-    }
-    else if (args.length == 1) {
-        args[1] = args[0];
-    }
-
-    // create and size the matrix
-    var matrix = new Matrix();
-    var defaultValue = 1;
-    matrix.resize(args, defaultValue);
-    return matrix;
-};
-
-/**
- * Calculate the size of a matrix. size(x)
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.size = function size (x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('size', arguments.length, 1);
-    }
-
-    if (isNumber(x) || x instanceof Complex || x instanceof Unit || x == null) {
-        return [];
-    }
-
-    if (isString(x)) {
-        return [x.length];
-    }
-
-    if (x instanceof Array) {
-        return util.size(x);
-    }
-
-    if (x instanceof Matrix || x instanceof Range) {
-        return x.size();
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.size(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('size', x);
-};
-
-/**
- * Remove singleton dimensions from a matrix. squeeze(x)
- * @param {Matrix | Array} x
- * @return {Matrix | Array} res
- */
-math.squeeze = function squeeze (x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('squeeze', arguments.length, 1);
-    }
-
-    if (x instanceof Matrix || x instanceof Range) {
-        return _squeezeArray(x.toArray());
-    }
-    else if (x instanceof Array) {
-        return _squeezeArray(math.clone(x));
-    }
-    else {
-        // scalar
-        return math.clone(x);
-    }
-};
-
-/**
- * Recursively squeeze a multi dimensional array
- * @param {Array} array
- * @return {Array} array
- * @private
- */
-function _squeezeArray(array) {
-    if (array.length == 1) {
-        // squeeze this array
-        return _squeezeArray(array[0]);
-    }
-    else {
-        // process all childs
-        for (var i = 0, len = array.length; i < len; i++) {
-            var child = array[i];
-            if (child instanceof Array) {
-                array[i] = _squeezeArray(child);
-            }
-        }
-        return array;
-    }
-}
-
-/**
- * @constructor transpose
- * Calculate the determinant of a matrix, transpose(x)
- * @param {Array | Matrix} x
- * @return {Array | Matrix} transpose
- */
-math.transpose = function transpose (x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('transpose', arguments.length, 1);
-    }
-
-    var size = math.size(x);
-    switch (size.length) {
-        case 0:
-            // scalar
-            return math.clone(x);
-            break;
-
-        case 1:
-            // vector
-            // TODO: is it logic to return a 1 dimensional vector itself as transpose?
-            return math.clone(x);
-            break;
-
-        case 2:
-            // two dimensional array
-            var rows = size[1],  // index 1 is no error
-                cols = size[0],  // index 0 is no error
-                asMatrix = x instanceof Matrix,
-                array = x.valueOf(),
-                transposed = [],
-                transposedRow,
-                clone = math.clone;
-            for (var r = 0; r < rows; r++) {
-                transposedRow = transposed[r] = [];
-                for (var c = 0; c < cols; c++) {
-                    transposedRow[c] = clone(array[c][r]);
-                }
-            }
-            if (cols == 0) {
-                transposed[0] = [];
-            }
-            return asMatrix ? new Matrix(transposed) : transposed;
-            break;
-
-        default:
-            // multi dimensional array
-            throw new RangeError('Matrix must be two dimensional ' +
-                '(size: ' + math.format(size) + ')');
-    }
-};
-
-/**
- * @constructor zeros
- * zeros(n)
- * zeros(m, n)
- * zeros([m, n])
- * zeros([m, n, p, ...])
- * returns a matrix filled with zeros
- * @param {...Number | Array} size
- * @return {Matrix} matrix
- */
-math.zeros = function zeros (size) {
-    var args = util.argsToArray(arguments);
-
-    if (args.length == 0) {
-        args = [1, 1];
-    }
-    else if (args.length == 1) {
-        args[1] = args[0];
-    }
-
-    // create and size the matrix
-    var matrix = new Matrix();
-    matrix.resize(args);
-    return matrix;
-};
-
-/**
- * Compute the factorial of a value, factorial(x) or x!
- * @Param {Number | Array | Matrix | Range} x
- * @return {Number | Array | Matrix} res
- */
-math.factorial = function factorial (x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('factorial', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        if (!isInteger(x)) {
-            throw new TypeError('Function factorial can only handle integer values');
-        }
-
-        var value = x,
-            res = value;
-        value--;
-        while (value > 1) {
-            res *= value;
-            value--;
-        }
-
-        if (res == 0) {
-            res = 1;        // 0! is per definition 1
-        }
-
-        return res;
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.factorial);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.factorial(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('factorial', x);
-};
-
-/**
- * Return a random number between 0 and 1
- * @return {Number} res
- */
-math.random = function random () {
-    if (arguments.length != 0) {
-        throw newArgumentsError('random', arguments.length, 0);
-    }
-
-    // TODO: implement parameter min and max
-    return Math.random();
-};
-
-/**
- * Compute the maximum value of a list of values, max(a, b, c, ...)
- * @param {... *} args  one or multiple arguments
- * @return {*} res
- */
-math.max = function max(args) {
-    if (arguments.length == 0) {
-        throw new Error('Function max requires one or more parameters (0 provided)');
-    }
-
-    if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
-        // max([a, b, c, d, ...]])
-        if (arguments.length > 1) {
-            throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
-        }
-
-        var size = math.size(args);
-
-        if (size.length == 1) {
-            // vector
-            if (args.length == 0) {
-                throw new Error('Cannot calculate max of an empty vector');
-            }
-
-            return _max(args.valueOf());
-        }
-        else if (size.length == 2) {
-            // 2 dimensional matrix
-            if (size[0] == 0 || size[1] == 0) {
-                throw new Error('Cannot calculate max of an empty matrix');
-            }
-            if (args instanceof Array) {
-                return _max2(args, size[0], size[1]);
-            }
-            else if (args instanceof Matrix || args instanceof Range) {
-                return new Matrix(_max2(args.valueOf(), size[0], size[1]));
-            }
-            else {
-                throw newUnsupportedTypeError('max', args);
-            }
-        }
-        else {
-            // TODO: implement max for n-dimensional matrices
-            throw new RangeError('Cannot calculate max for multi dimensional matrix');
-        }
-    }
-    else {
-        // max(a, b, c, d, ...)
-        return _max(arguments);
-    }
-};
-
-/**
- * Calculate the max of a one dimensional array
- * @param {Array} array
- * @return {Number} max
- * @private
- */
-function _max(array) {
-    var larger = math.larger;
-    var res = array[0];
-    for (var i = 1, iMax = array.length; i < iMax; i++) {
-        var value = array[i];
-        if (larger(value, res)) {
-            res = value;
-        }
-    }
-    return res;
-}
-
-/**
- * Calculate the max of a two dimensional array
- * @param {Array} array
- * @param {Number} rows
- * @param {Number} cols
- * @return {Number[]} max
- * @private
- */
-function _max2(array, rows, cols) {
-    var larger = math.larger;
-    var res = [];
-    for (var c = 0; c < cols; c++) {
-        var max = array[0][c];
-        for (var r = 1; r < rows; r++) {
-            var value = array[r][c];
-            if (larger(value, max)) {
-                max = value;
-            }
-        }
-        res[c] = max;
-    }
-    return res;
-}
-
-/**
- * Compute the minimum value of a list of values, min(a, b, c, ...)
- * @param {... *} args  one or multiple arguments
- * @return {*} res
- */
-math.min = function min(args) {
-    if (arguments.length == 0) {
-        throw new Error('Function min requires one or more parameters (0 provided)');
-    }
-
-    if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
-        // min([a, b, c, d, ...]])
-        if (arguments.length > 1) {
-            throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
-        }
-
-        var size = math.size(args);
-
-        if (size.length == 1) {
-            // vector
-            if (args.length == 0) {
-                throw new Error('Cannot calculate min of an empty vector');
-            }
-
-            return _min(args.valueOf());
-        }
-        else if (size.length == 2) {
-            // 2 dimensional matrix
-            if (size[0] == 0 || size[1] == 0) {
-                throw new Error('Cannot calculate min of an empty matrix');
-            }
-            if (args instanceof Array) {
-                return _min2(args, size[0], size[1]);
-            }
-            else if (args instanceof Matrix || args instanceof Range) {
-                return new Matrix(_min2(args.valueOf(), size[0], size[1]));
-            }
-            else {
-                throw newUnsupportedTypeError('min', args);
-            }
-        }
-        else {
-            // TODO: implement min for n-dimensional matrices
-            throw new RangeError('Cannot calculate min for multi dimensional matrix');
-        }
-    }
-    else {
-        // min(a, b, c, d, ...)
-        return _min(arguments);
-    }
-};
-
-/**
- * Calculate the min of a one dimensional array
- * @param {Array} array
- * @return {Number} min
- * @private
- */
-function _min(array) {
-    var smaller = math.smaller;
-    var res = array[0];
-    for (var i = 1, iMax = array.length; i < iMax; i++) {
-        var value = array[i];
-        if (smaller(value, res)) {
-            res = value;
-        }
-    }
-    return res;
-}
-
-/**
- * Calculate the min of a two dimensional array
- * @param {Array} array
- * @param {Number} rows
- * @param {Number} cols
- * @return {Number[]} min
- * @private
- */
-function _min2(array, rows, cols) {
-    var smaller = math.smaller;
-    var res = [];
-    for (var c = 0; c < cols; c++) {
-        var min = array[0][c];
-        for (var r = 1; r < rows; r++) {
-            var value = array[r][c];
-            if (smaller(value, min)) {
-                min = value;
-            }
-        }
-        res[c] = min;
-    }
-    return res;
-}
-
-/**
- * Calculate the inverse cosine of a value, acos(x)
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.acos = function acos(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('acos', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        if (x >= -1 && x <= 1) {
-            return Math.acos(x);
-        }
-        else {
-            return math.acos(new Complex(x, 0));
-        }
-    }
-
-    if (x instanceof Complex) {
-        // acos(z) = 0.5*pi + i*log(iz + sqrt(1-z^2))
-        var temp1 = new Complex(
-            x.im * x.im - x.re * x.re + 1.0,
-            -2.0 * x.re * x.im
-        );
-        var temp2 = math.sqrt(temp1);
-        var temp3 = new Complex(
-            temp2.re - x.im,
-            temp2.im + x.re
-        );
-        var temp4 = math.log(temp3);
-
-        // 0.5*pi = 1.5707963267948966192313216916398
-        return new Complex(
-            1.57079632679489661923 - temp4.im,
-            temp4.re
-        );
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.acos);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.acos(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('acos', x);
-};
-
-/**
- * Calculate the inverse sine of a value, asin(x)
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.asin = function asin(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('asin', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        if (x >= -1 && x <= 1) {
-            return Math.asin(x);
-        }
-        else {
-            return math.asin(new Complex(x, 0));
-        }
-    }
-
-    if (x instanceof Complex) {
-        // asin(z) = -i*log(iz + sqrt(1-z^2))
-        var re = x.re;
-        var im = x.im;
-        var temp1 = new Complex(
-            im * im - re * re + 1.0,
-            -2.0 * re * im
-        );
-
-        var temp2 = math.sqrt(temp1);
-        var temp3 = new Complex(
-            temp2.re - im,
-            temp2.im + re
-        );
-
-        var temp4 = math.log(temp3);
-
-        return new Complex(temp4.im, -temp4.re);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.asin);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.asin(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('asin', x);
-};
-
-/**
- * Calculate the inverse tangent of a value, atan(x)
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.atan = function atan(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('atan', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.atan(x);
-    }
-
-    if (x instanceof Complex) {
-        // atan(z) = 1/2 * i * (ln(1-iz) - ln(1+iz))
-        var re = x.re;
-        var im = x.im;
-        var den = re * re + (1.0 - im) * (1.0 - im);
-
-        var temp1 = new Complex(
-            (1.0 - im * im - re * re) / den,
-            (-2.0 * re) / den
-        );
-        var temp2 = math.log(temp1);
-
-        return new Complex(
-            -0.5 * temp2.im,
-            0.5 * temp2.re
-        );
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.atan);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.atan(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('atan', x);
-};
-
-/**
- * Computes the principal value of the arc tangent of y/x in radians, atan2(y,x)
- * @param {Number | Complex | Array | Matrix | Range} y
- * @param {Number | Complex | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.atan2 = function atan2(y, x) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('atan2', arguments.length, 2);
-    }
-
-    if (isNumber(y)) {
-        if (isNumber(x)) {
-            return Math.atan2(y, x);
-        }
-        else if (x instanceof Complex) {
-            return Math.atan2(y, x.re);
-        }
-    }
-    else if (y instanceof Complex) {
-        if (isNumber(x)) {
-            return Math.atan2(y.re, x);
-        }
-        else if (x instanceof Complex) {
-            return Math.atan2(y.re, x.re);
-        }
-    }
-
-    if (y instanceof Array || y instanceof Matrix || y instanceof Range ||
-        x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map2(y, x, math.atan2);
-    }
-
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.atan2(y.valueOf(), x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('atan2', y, x);
-};
-
-/**
- * Calculate the cosine of a value, cos(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.cos = function cos(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('cos', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.cos(x);
-    }
-
-    if (x instanceof Complex) {
-        // cos(z) = (exp(iz) + exp(-iz)) / 2
-        return new Complex(
-            0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp(x.im)),
-            0.5 * Math.sin(x.re) * (Math.exp(-x.im) - Math.exp(x.im))
-        );
-    }
-
-    if (x instanceof Unit) {
-        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
-            throw new TypeError ('Unit in function cos is no angle');
-        }
-        return Math.cos(x.value);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.cos);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.cos(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('cos', x);
-};
-
-/**
- * Calculate the cotangent of a value, cot(x) = 1/tan(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.cot = function cot(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('cot', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return 1 / Math.tan(x);
-    }
-
-    if (x instanceof Complex) {
-        var den = Math.exp(-4.0 * x.im) -
-            2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) + 1.0;
-
-        return new Complex(
-            2.0 * Math.exp(-2.0 * x.im) * Math.sin(2.0 * x.re) / den,
-            (Math.exp(-4.0 * x.im) - 1.0) / den
-        );
-    }
-
-    if (x instanceof Unit) {
-        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
-            throw new TypeError ('Unit in function cot is no angle');
-        }
-        return 1 / Math.tan(x.value);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.cot);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.cot(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('cot', x);
-};
-
-/**
- * Calculate the cosecant of a value, csc(x) = 1/sin(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.csc = function csc(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('csc', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return 1 / Math.sin(x);
-    }
-
-    if (x instanceof Complex) {
-        // csc(z) = 1/sin(z) = (2i) / (exp(iz) - exp(-iz))
-        var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) -
-            0.5 * Math.cos(2.0 * x.re);
-
-        return new Complex (
-            0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp(x.im)) / den,
-            0.5 * Math.cos(x.re) * (Math.exp(-x.im) - Math.exp(x.im)) / den
-        );
-    }
-
-    if (x instanceof Unit) {
-        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
-            throw new TypeError ('Unit in function csc is no angle');
-        }
-        return 1 / Math.sin(x.value);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.csc);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.csc(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('csc', x);
-};
-
-/**
- * Calculate the secant of a value, sec(x) = 1/cos(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.sec = function sec(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('sec', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return 1 / Math.cos(x);
-    }
-
-    if (x instanceof Complex) {
-        // sec(z) = 1/cos(z) = 2 / (exp(iz) + exp(-iz))
-        var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) +
-            0.5 * Math.cos(2.0 * x.re);
-        return new Complex(
-            0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp( x.im)) / den,
-            0.5 * Math.sin(x.re) * (Math.exp( x.im) - Math.exp(-x.im)) / den
-        );
-    }
-
-    if (x instanceof Unit) {
-        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
-            throw new TypeError ('Unit in function sec is no angle');
-        }
-        return 1 / Math.cos(x.value);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.sec);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.sec(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('sec', x);
-};
-
-/**
- * Calculate the sine of a value, sin(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.sin = function sin(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('sin', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.sin(x);
-    }
-
-    if (x instanceof Complex) {
-        return new Complex(
-            0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp( x.im)),
-            0.5 * Math.cos(x.re) * (Math.exp( x.im) - Math.exp(-x.im))
-        );
-    }
-
-    if (x instanceof Unit) {
-        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
-            throw new TypeError ('Unit in function cos is no angle');
-        }
-        return Math.sin(x.value);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.sin);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.sin(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('sin', x);
-};
-
-/**
- * Calculate the tangent of a value, tan(x)
- * @param {Number | Complex | Unit | Array | Matrix | Range} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.tan = function tan(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('tan', arguments.length, 1);
-    }
-
-    if (isNumber(x)) {
-        return Math.tan(x);
-    }
-
-    if (x instanceof Complex) {
-        var den = Math.exp(-4.0 * x.im) +
-            2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) +
-            1.0;
-
-        return new Complex(
-             2.0 * Math.exp(-2.0 * x.im) * Math.sin(2.0 * x.re) / den,
-            (1.0 - Math.exp(-4.0 * x.im)) / den
-        );
-    }
-
-    if (x instanceof Unit) {
-        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
-            throw new TypeError ('Unit in function tan is no angle');
-        }
-        return Math.tan(x.value);
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range) {
-        return util.map(x, math.tan);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.tan(x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('tan', x);
-};
-
-/**
- * Change the unit of a value. x in unit or in(x, unit)
- * @param {Unit | Array | Matrix | Range} x
- * @param {Unit | Array | Matrix} unit
- * @return {Unit | Array | Matrix} res
- */
-math['in'] = function unit_in(x, unit) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('in', arguments.length, 2);
-    }
-
-    if (x instanceof Unit) {
-        if (unit instanceof Unit || isString(unit)) {
-            return x.in(unit);
-        }
-    }
-
-    if (x instanceof Array || x instanceof Matrix || x instanceof Range ||
-        unit instanceof Array || unit instanceof Matrix || unit instanceof Range) {
-        return util.map2(x, unit, math['in']);
-    }
-
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math['in'](x.valueOf());
-    }
-
-    throw newUnsupportedTypeError('in', x, unit);
-};
-
-/**
- * Clone an object
- * @param {*} x
- * @return {*} clone
- */
-math.clone = function clone(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('clone', arguments.length, 1);
-    }
-
-    if (x == null) {
-        // null or undefined
-        return x;
-    }
-
-    if (typeof(x.clone) === 'function') {
-        return x.clone();
-    }
-
-    if (isNumber(x) || isString(x) || isBoolean(x)) {
-        return x;
-    }
-
-    if (x instanceof Array) {
-        var c = math.clone;
-        return x.map(function (value) {
-            return c(value);
-        });
-    }
-
-    if (x instanceof Object) {
-        return util.mapObject(x, math.clone);
-    }
-
-    throw newUnsupportedTypeError('clone', x);
-};
-
-/**
- * Format a value of any type into a string. Interpolate values into the string.
- * Usage:
- *     math.format(value)
- *     math.format(template, object)
- *
- * Example usage:
- *     math.format(2/7);                // '0.2857142857'
- *     math.format(new Complex(2, 3));  // '2 + 3i'
- *     math.format('Hello $name! The date is $date', {
- *         name: 'user',
- *         date: new Date().toISOString().substring(0, 10)
- *     });                              // 'hello user! The date is 2013-03-23'
- *
- * @param {String} template
- * @param {Object} values
- * @return {String} str
- */
-math.format = function format(template, values) {
-    var num = arguments.length;
-    if (num != 1 && num != 2) {
-        throw newArgumentsError('format', num, 1, 2);
-    }
-
-    if (num == 1) {
-        // just format a value as string
-        var value = arguments[0];
-        if (isNumber(value)) {
-            return util.formatNumber(value);
-        }
-
-        if (value instanceof Array) {
-            return util.formatArray(value);
-        }
-
-        if (isString(value)) {
-            return '"' + value + '"';
-        }
-
-        if (value instanceof Object) {
-            return value.toString();
-        }
-
-        return String(value);
-    }
-    else {
-        if (!isString(template)) {
-            throw new TypeError('String expected as first parameter in function format');
-        }
-        if (!(values instanceof Object)) {
-            throw new TypeError('Object expected as first parameter in function format');
-        }
-
-        // format values into a string
-        return template.replace(/\$([\w\.]+)/g, function (original, key) {
-                var keys = key.split('.');
-                var value = values[keys.shift()];
-                while (keys.length && value != undefined) {
-                    var k = keys.shift();
-                    value = k ? value[k] : value + '.';
-                }
-                return value != undefined ? value : original;
-            }
-        );
-    }
-};
-
-/**
- * Import functions from an object or a file
- * @param {function | String | Object} object
- * @param {boolean} [override]         If true, existing functions will be
- *                                     overwritten. False by default.
- */
-// TODO: return status information
-math['import'] = function math_import(object, override) {
-    var name;
-
-    if (isString(object)) {
-        // a string with a filename
-        if (typeof (require) !== 'undefined') {
-            // load the file using require
-            var _module = require(object);
-            math['import'](_module);
-        }
-        else {
-            throw new Error('Cannot load file: require not available.');
-        }
-    }
-    else if (isSupportedType(object)) {
-        // a single function
-        name = object.name;
-        if (name) {
-            if (override || math[name] === undefined) {
-                _import(name, object);
-            }
-        }
-        else {
-            throw new Error('Cannot import an unnamed function or object');
-        }
-    }
-    else if (object instanceof Object) {
-        // a map with functions
-        for (name in object) {
-            if (object.hasOwnProperty(name)) {
-                var value = object[name];
-                if (isSupportedType(value)) {
-                    if (override || math[name] === undefined) {
-                        _import(name, value);
-                    }
-                }
-                else {
-                    math['import'](value);
-                }
-            }
-        }
-    }
-};
-
-/**
- * Add a property to the math namespace and create a chain proxy for it.
- * @param {String} name
- * @param {*} value
- * @private
- */
-function _import(name, value) {
-    // add to math namespace
-    math[name] = value;
-
-    // create a proxy for the Selector
-    createSelectorProxy(name, value);
-}
-
-/**
- * Check whether given object is a supported type
- * @param object
- * @return {Boolean}
- * @private
- */
-function isSupportedType(object) {
-    return (typeof object == 'function') ||
-        isNumber(object) || isString(object) ||
-        (object instanceof Complex) || (object instanceof Unit);
-    // TODO: add boolean?
-}
-
-/**
- * Wrap any value in a Selector, allowing to perform chained operations on
- * the value.
- *
- * All methods available in the math.js library can be called upon the selector,
- * and then will be evaluated with the value itself as first argument.
- * The selector can be closed by executing selector.done(), which will return
- * the final value.
- *
- * Example usage:
- *     math.select(3)
- *         .add(4)
- *         .subtract(2)
- *         .done();     // 5
- *     math.select( [[1, 2], [3, 4]] )
- *         .set([1, 1], 8)
- *         .multiply(3)
- *         .done();     // [[24, 6], [9, 12]]
- *
- * The Selector has a number of special functions:
- * - done()     Finalize the chained operation and return the selectors value.
- * - valueOf()  The same as done()
- * - toString() Executes math.format() onto the selectors value, returning
- *              a string representation of the value.
- * - get(...)   Get a subselection of the selectors value. Only applicable when
- *              the value has a method get, for example when value is a Matrix
- *              or Array.
- * - set(...)   Replace a subselection of the selectors value. Only applicable
- *              when the value has a method get, for example when value is a
- *              Matrix or Array.
- *
- * @param {*} value
- * @return {math.type.Selector} selector
- */
-math.select = function select(value) {
-    return new math.type.Selector(value);
-};
-
-/**
- * Calculate the square root of a value
- * @param {*} x
- * @return {String} type  Lower case type, for example "number", "string",
- *                        "array".
- */
-math['typeof'] = function math_typeof(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('typeof', arguments.length, 1);
-    }
-
-    var type = typeof x;
-
-    if (type == 'object') {
-        if (x == null) {
-            return 'null';
-        }
-        if (x.constructor) {
-            for (var name in math) {
-                if (math.hasOwnProperty(name)) {
-                    if (x.constructor == math[name]) {
-                        return name.toLowerCase();
-                    }
-                }
-            }
-            if (x.constructor.name) {
-                return x.constructor.name.toLowerCase();
-            }
-        }
-    }
-
-    return type;
-};
 
 /**
  * Node
@@ -7030,8 +3561,15 @@ FunctionAssignment.prototype.toString = function() {
  *
  * @constructor mathnotepad.Scope
  * @param {Scope} [parentScope]
+ * @param {Object} [options]   Available options:
+ *                                 {boolean} readonly (false by default).
  */
-math.expr.Scope = function Scope(parentScope) {
+math.expr.Scope = function Scope(parentScope, options) {
+    this.readonly = false;
+    if (options && options.readonly != undefined) {
+        this.readonly = options.readonly;
+    }
+
     this.parentScope = parentScope;
     this.nestedScopes = undefined;
 
@@ -7052,6 +3590,10 @@ math.expr.Scope.prototype = {
      * @return {math.expr.Scope} nestedScope
      */
     createNestedScope: function () {
+        if (this.readonly) {
+            throw new Error('Cannot create nested scope: Scope is read-only');
+        }
+
         var nestedScope = new math.expr.Scope(this);
         if (!this.nestedScopes) {
             this.nestedScopes = [];
@@ -7065,6 +3607,10 @@ math.expr.Scope.prototype = {
      * (parent scope will not be cleared)
      */
     clear: function () {
+        if (this.readonly) {
+            throw new Error('Cannot clear scope: Scope is read-only');
+        }
+
         this.symbols = {};
         this.defs = {};
         this.links = {};
@@ -7171,6 +3717,10 @@ math.expr.Scope.prototype = {
      * @return {function} symbol
      */
     createDef: function (name, value) {
+        if (this.readonly) {
+            throw new Error('Cannot create variable: Scope is read-only');
+        }
+
         var symbol = this.defs[name];
         if (!symbol) {
             symbol = this.createSymbol(name);
@@ -7189,6 +3739,10 @@ math.expr.Scope.prototype = {
      * @return {function} symbol
      */
     createUpdate: function (name) {
+        if (this.readonly) {
+            throw new Error('Cannot update variable: Scope is read-only');
+        }
+
         var symbol = this.updates[name];
         if (!symbol) {
             symbol = this.createLink(name);
@@ -7379,6 +3933,9 @@ math.expr.Scope.prototype = {
      * @constructor math.expr.Parser
      * Parser parses math expressions and evaluates them or returns a node tree.
      *
+     * @param {Object} [options]   Available options:
+     *                                 {boolean} readonly (false by default).
+     *
      * Methods:
      *    var result = parser.eval(expr);    // evaluate an expression
      *    var value = parser.get(name);      // retrieve a variable from the parser
@@ -7419,13 +3976,13 @@ math.expr.Scope.prototype = {
      *    // clear defined functions and variables
      *    parser.clear();
      */
-    math.expr.Parser = function Parser() {
+    math.expr.Parser = function Parser(options) {
         if (this.constructor != Parser) {
             throw new SyntaxError(
                 'Parser constructor must be called with the new operator');
         }
 
-        this.scope = new math.expr.Scope();
+        this.scope = new math.expr.Scope(null, options);
     };
 
     /**
@@ -7806,16 +4363,18 @@ math.expr.Scope.prototype = {
     function parse_ans (scope) {
         var expression = parse_function_assignment(scope);
 
-        // TODO: not so nice having to specify some special types here...
-        if (!(expression instanceof Assignment)
-        // !(expression instanceof FunctionAssignment) &&  // TODO
-        // !(expression instanceof plot)                   // TODO
-            ) {
-            // create a variable definition for ans
-            var name = 'ans';
-            var params = undefined;
-            var link = scope.createDef(name);
-            return new Assignment(name, params, expression, link);
+        if (!scope.readonly) {
+            // TODO: not so nice having to specify some special types here...
+            if (!(expression instanceof Assignment)
+            // !(expression instanceof FunctionAssignment) &&  // TODO
+            // !(expression instanceof plot)                   // TODO
+                ) {
+                // create a variable definition for ans
+                var name = 'ans';
+                var params = undefined;
+                var link = scope.createDef(name);
+                return new Assignment(name, params, expression, link);
+            }
         }
 
         return expression;
@@ -9141,6 +5700,3918 @@ math.expr.Scope.prototype = {
     };
 
 })();
+/**
+ * Calculate the absolute value of a value.
+ *
+ *     abs(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.abs = function abs(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('abs', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.abs(x);
+    }
+
+    if (x instanceof Complex) {
+        return Math.sqrt(x.re * x.re + x.im * x.im);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.abs);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.abs(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('abs', x);
+};
+
+/**
+ * Add two values
+ *
+ *     x + y
+ *     add(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
+ * @return {Number | Complex | Unit | String | Array | Matrix} res
+ */
+math.add = function add(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('add', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number + number
+            return x + y;
+        }
+        else if (y instanceof Complex) {
+            // number + complex
+            return new Complex(
+                x + y.re,
+                    y.im
+            )
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex + number
+            return new Complex(
+                x.re + y,
+                x.im
+            )
+        }
+        else if (y instanceof Complex) {
+            // complex + complex
+            return new Complex(
+                x.re + y.re,
+                x.im + y.im
+            );
+        }
+    }
+    else if (x instanceof Unit) {
+        if (y instanceof Unit) {
+            if (!x.equalBase(y)) {
+                throw new Error('Units do not match');
+            }
+
+            if (x.value == null) {
+                throw new Error('Unit on left hand side of operator + has an undefined value');
+            }
+
+            if (y.value == null) {
+                throw new Error('Unit on right hand side of operator + has an undefined value');
+            }
+
+            var res = x.clone();
+            res.value += y.value;
+            res.fixPrefix = false;
+            return res;
+        }
+    }
+
+    if (isString(x) || isString(y)) {
+        return x + y;
+    }
+
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
+        return util.map2(x, y, math.add);
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive value
+        return math.add(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('add', x, y);
+};
+
+/**
+ * Round a value towards plus infinity
+ *
+ *     ceil(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.ceil = function ceil(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('ceil', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.ceil(x);
+    }
+
+    if (x instanceof Complex) {
+        return new Complex (
+            Math.ceil(x.re),
+            Math.ceil(x.im)
+        );
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.ceil);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.ceil(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('ceil', x);
+};
+
+/**
+ * Compute the cube of a value
+ *
+ *     x .* x .* x
+ *     cube(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.cube = function cube(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('cube', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x * x * x;
+    }
+
+    if (x instanceof Complex) {
+        return math.multiply(math.multiply(x, x), x);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.cube);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.cube(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('cube', x);
+};
+
+/**
+ * Divide two values.
+ *
+ *     x / y
+ *     divide(x, y)
+ *
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
+ */
+math.divide = function divide(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('divide', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number / number
+            return x / y;
+        }
+        else if (y instanceof Complex) {
+            // number / complex
+            return _divideComplex(new Complex(x, 0), y);
+        }
+    }
+
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex / number
+            return _divideComplex(x, new Complex(y, 0));
+        }
+        else if (y instanceof Complex) {
+            // complex / complex
+            return _divideComplex(x, y);
+        }
+    }
+
+    if (x instanceof Unit) {
+        if (isNumber(y)) {
+            var res = x.clone();
+            res.value /= y;
+            return res;
+        }
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        if (y instanceof Array || y instanceof Matrix) {
+            // TODO: implement matrix right division using pseudo inverse
+            // http://www.mathworks.nl/help/matlab/ref/mrdivide.html
+            // http://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
+            // http://stackoverflow.com/questions/12263932/how-does-gnu-octave-matrix-division-work-getting-unexpected-behaviour
+            return math.multiply(x, math.inv(y));
+        }
+        else {
+            // matrix / scalar
+            return util.map2(x, y, math.divide);
+        }
+    }
+
+    if (y instanceof Array || y instanceof Matrix) {
+        // TODO: implement matrix right division using pseudo inverse
+        return math.multiply(x, math.inv(y));
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive value
+        return math.divide(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('divide', x, y);
+};
+
+/**
+ * Divide two complex numbers. x / y or divide(x, y)
+ * @param {Complex} x
+ * @param {Complex} y
+ * @return {Complex} res
+ * @private
+ */
+function _divideComplex (x, y) {
+    var den = y.re * y.re + y.im * y.im;
+    return new Complex(
+        (x.re * y.re + x.im * y.im) / den,
+        (x.im * y.re - x.re * y.im) / den
+    );
+}
+
+/**
+ * Check if value x equals y,
+ *
+ *     x == y
+ *     equal(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
+ *
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
+ * @return {Boolean | Array | Matrix} res
+ */
+math.equal = function equal(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('equal', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x == y;
+        }
+        else if (y instanceof Complex) {
+            return (x == y.re) && (y.im == 0);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return (x.re == y) && (x.im == 0);
+        }
+        else if (y instanceof Complex) {
+            return (x.re == y.re) && (x.im == y.im);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value == y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x == y;
+    }
+
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
+        return util.map2(x, y, math.equal);
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return equal(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('equal', x, y);
+};
+
+/**
+ * Calculate the exponent of a value
+ *
+ *     exp(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.exp = function exp (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('exp', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.exp(x);
+    }
+    if (x instanceof Complex) {
+        var r = Math.exp(x.re);
+        return new Complex(
+            r * Math.cos(x.im),
+            r * Math.sin(x.im)
+        );
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.exp);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.exp(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('exp', x);
+};
+
+/**
+ * Round a value towards zero
+ *
+ *     fix(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.fix = function fix(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('fix', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return (x > 0) ? Math.floor(x) : Math.ceil(x);
+    }
+
+    if (x instanceof Complex) {
+        return new Complex(
+            (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
+            (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
+        );
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.fix);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.fix(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('fix', x);
+};
+
+/**
+ * Round a value towards minus infinity
+ *
+ *     floor(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.floor = function floor(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('floor', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.floor(x);
+    }
+
+    if (x instanceof Complex) {
+        return new Complex (
+            Math.floor(x.re),
+            Math.floor(x.im)
+        );
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.floor);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.floor(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('floor', x);
+};
+
+/**
+ * Calculate the greatest common divisor for two or more values or arrays.
+ *
+ *     gcd(a, b)
+ *     gcd(a, b, c, ...)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {... Number | Array | Matrix} args    two or more integer numbers
+ * @return {Number | Array | Matrix} greatest common divisor
+ */
+math.gcd = function gcd(args) {
+    var a = arguments[0],
+        b = arguments[1],
+        t;
+
+    if (arguments.length == 2) {
+        // two arguments
+        if (isNumber(a) && isNumber(b)) {
+            if (!isInteger(a) || !isInteger(b)) {
+                throw new Error('Parameters in function gcd must be integer numbers');
+            }
+
+            // http://en.wikipedia.org/wiki/Euclidean_algorithm
+            while (b != 0) {
+                t = b;
+                b = a % t;
+                a = t;
+            }
+            return Math.abs(a);
+        }
+
+        // evaluate gcd element wise
+        if (a instanceof Array || a instanceof Matrix ||
+            b instanceof Array || b instanceof Matrix) {
+            return util.map2(a, b, math.gcd);
+        }
+
+        if (a.valueOf() !== a || b.valueOf() !== b) {
+            // fallback on the objects primitive value
+            return math.gcd(a.valueOf(), b.valueOf());
+        }
+
+        throw newUnsupportedTypeError('gcd', a, b);
+    }
+
+    if (arguments.length > 2) {
+        // multiple arguments. Evaluate them iteratively
+        for (var i = 1; i < arguments.length; i++) {
+            a = math.gcd(a, arguments[i]);
+        }
+        return a;
+    }
+
+    // zero or one argument
+    throw new SyntaxError('Function gcd expects two or more arguments');
+};
+
+/**
+ * Check if value x is larger y
+ *
+ *    x > y
+ *    larger(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ * In case of complex numbers, the absolute values of a and b are compared.
+ *
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
+ * @return {Boolean | Array | Matrix} res
+ */
+math.larger = function larger(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('larger', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x > y;
+        }
+        else if (y instanceof Complex) {
+            return x > math.abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return math.abs(x) > y;
+        }
+        else if (y instanceof Complex) {
+            return math.abs(x) > math.abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value > y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x > y;
+    }
+
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
+        return util.map2(x, y, math.larger);
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return math.larger(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('larger', x, y);
+};
+
+/**
+ * Check if value x is larger or equal to y
+ *
+ *     x >= y
+ *     largereq(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ * In case of complex numbers, the absolute values of a and b are compared.
+ *
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
+ * @return {Boolean | Array | Matrix} res
+ */
+math.largereq = function largereq(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('largereq', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x >= y;
+        }
+        else if (y instanceof Complex) {
+            return x >= math.abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return math.abs(x) >= y;
+        }
+        else if (y instanceof Complex) {
+            return math.abs(x) >= math.abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value >= y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x >= y;
+    }
+
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
+        return util.map2(x, y, math.largereq);
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return math.largereq(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('largereq', x, y);
+};
+
+/**
+ * Calculate the least common multiple for two or more values or arrays.
+ *
+ *     lcm(a, b)
+ *     lcm(a, b, c, ...)
+ *
+ * lcm is defined as:
+ *     lcm(a, b) = abs(a * b) / gcd(a, b)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {... Number | Array | Matrix} args    two or more integer numbers
+ * @return {Number | Array | Matrix} least common multiple
+ */
+math.lcm = function lcm(args) {
+    var a = arguments[0],
+        b = arguments[1],
+        t;
+
+    if (arguments.length == 2) {
+        // two arguments
+        if (isNumber(a) && isNumber(b)) {
+            if (!isInteger(a) || !isInteger(b)) {
+                throw new Error('Parameters in function lcm must be integer numbers');
+            }
+
+            // http://en.wikipedia.org/wiki/Euclidean_algorithm
+            // evaluate gcd here inline to reduce overhead
+            var prod = a * b;
+            while (b != 0) {
+                t = b;
+                b = a % t;
+                a = t;
+            }
+            return Math.abs(prod / a);
+        }
+
+        // evaluate lcm element wise
+        if (a instanceof Array || a instanceof Matrix ||
+            b instanceof Array || b instanceof Matrix) {
+            return util.map2(a, b, math.lcm);
+        }
+
+        if (a.valueOf() !== a || b.valueOf() !== b) {
+            // fallback on the objects primitive value
+            return math.lcm(a.valueOf(), b.valueOf());
+        }
+
+        throw newUnsupportedTypeError('lcm', a, b);
+    }
+
+    if (arguments.length > 2) {
+        // multiple arguments. Evaluate them iteratively
+        for (var i = 1; i < arguments.length; i++) {
+            a = math.lcm(a, arguments[i]);
+        }
+        return a;
+    }
+
+    // zero or one argument
+    throw new SyntaxError('Function lcm expects two or more arguments');
+};
+
+/**
+ * Calculate the logarithm of a value
+ *
+ *     log(x)
+ *     log(x, base)
+ *
+ * base is optional. If not provided, the natural logarithm of x is calculated.
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @param {Number | Complex} [base]
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.log = function log(x, base) {
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('log', arguments.length, 1, 2);
+    }
+
+    if (base === undefined) {
+        // calculate natural logarithm, log(x)
+        if (isNumber(x)) {
+            if (x >= 0) {
+                return Math.log(x);
+            }
+            else {
+                // negative value -> complex value computation
+                return math.log(new Complex(x, 0));
+            }
+        }
+
+        if (x instanceof Complex) {
+            return new Complex (
+                Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
+                Math.atan2(x.im, x.re)
+            );
+        }
+
+        if (x instanceof Array || x instanceof Matrix) {
+            return util.map(x, math.log);
+        }
+    }
+    else {
+        // calculate logarithm for a specified base, log(x, base)
+        return math.divide(math.log(x), math.log(base));
+    }
+
+    if (x.valueOf() !== x || base.valueOf() !== base) {
+        // fallback on the objects primitive values
+        return math.log(x.valueOf(), base.valueOf());
+    }
+
+    throw newUnsupportedTypeError('log', x, base);
+};
+
+/**
+ * Calculate the 10-base logarithm of a value
+ *
+ *     log10(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.log10 = function log10(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('log10', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        if (x >= 0) {
+            return Math.log(x) / Math.LN10;
+        }
+        else {
+            // negative value -> complex value computation
+            return math.log10(new Complex(x, 0));
+        }
+    }
+
+    if (x instanceof Complex) {
+        return new Complex (
+            Math.log(Math.sqrt(x.re * x.re + x.im * x.im)) / Math.LN10,
+            Math.atan2(x.im, x.re) / Math.LN10
+        );
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.log10);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.log10(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('log10', x);
+};
+
+/**
+ * Calculates the modulus, the remainder of an integer division.
+ *
+ *     x % y
+ *     mod(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param  {Number | Complex | Array | Matrix} x
+ * @param  {Number | Complex | Array | Matrix} y
+ * @return {Number | Array | Matrix} res
+ */
+math.mod = function mod(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('mod', arguments.length, 2);
+    }
+
+    // TODO: only handle integer values in mod?
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number % number
+            return x % y;
+        }
+        else if (y instanceof Complex && y.im == 0) {
+            // number % complex
+            return x % y.re;
+        }
+    }
+    else if (x instanceof Complex && x.im == 0) {
+        if (isNumber(y)) {
+            // complex * number
+            return x.re % y;
+        }
+        else if (y instanceof Complex && y.im == 0) {
+            // complex * complex
+            return x.re % y.re;
+        }
+    }
+
+
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
+        return util.map2(x, y, math.mod);
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return math.mod(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('mod', x, y);
+};
+
+/**
+ * Multiply two values.
+ *
+ *     x * y
+ *     multiply(x, y)
+ *
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
+ */
+math.multiply = function multiply(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('multiply', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number * number
+            return x * y;
+        }
+        else if (y instanceof Complex) {
+            // number * complex
+            return _multiplyComplex (new Complex(x, 0), y);
+        }
+        else if (y instanceof Unit) {
+            res = y.clone();
+            res.value *= x;
+            return res;
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex * number
+            return _multiplyComplex (x, new Complex(y, 0));
+        }
+        else if (y instanceof Complex) {
+            // complex * complex
+            return _multiplyComplex (x, y);
+        }
+    }
+    else if (x instanceof Unit) {
+        if (isNumber(y)) {
+            res = x.clone();
+            res.value *= y;
+            return res;
+        }
+    }
+    else if (x instanceof Array) {
+        if (y instanceof Array) {
+            // matrix * matrix
+            var sizeX = util.size(x);
+            var sizeY = util.size(y);
+
+            if (sizeX.length != 2) {
+                throw new Error('Can only multiply a 2 dimensional matrix ' +
+                        '(A has ' + sizeX.length + ' dimensions)');
+            }
+            if (sizeY.length != 2) {
+                throw new Error('Can only multiply a 2 dimensional matrix ' +
+                        '(B has ' + sizeY.length + ' dimensions)');
+            }
+            if (sizeX[1] != sizeY[0]) {
+                throw new RangeError('Dimensions mismatch in multiplication. ' +
+                        'Columns of A must match rows of B ' +
+                        '(A is ' + sizeX[0] + 'x' + sizeX[1] +
+                        ', B is ' + sizeY[0] + 'x' + sizeY[1] + ', ' +
+                        sizeY[1] + ' != ' + sizeY[0] + ')');
+            }
+
+            // TODO: performance of matrix multiplication can be improved
+            var res = [],
+                rows = sizeX[0],
+                cols = sizeY[1],
+                num = sizeX[1],
+                multiply = math.multiply,
+                add = math.add;
+            for (var r = 0; r < rows; r++) {
+                res[r] = [];
+                for (var c = 0; c < cols; c++) {
+                    var result = null;
+                    for (var n = 0; n < num; n++) {
+                        var p = multiply(x[r][n], y[n][c]);
+                        result = (result == null) ? p : add(result, p);
+                    }
+                    res[r][c] = result;
+                }
+            }
+
+            return res;
+        }
+        else if (y instanceof Matrix) {
+            return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
+        }
+        else {
+            // matrix * scalar
+            return util.map2(x, y, math.multiply);
+        }
+    }
+    else if (x instanceof Matrix) {
+        return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
+    }
+
+    if (y instanceof Array) {
+        // scalar * matrix
+        return util.map2(x, y, math.multiply);
+    }
+    else if (y instanceof Matrix) {
+        return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return math.multiply(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('multiply', x, y);
+};
+
+/**
+ * Multiply two complex numbers. x * y or multiply(x, y)
+ * @param {Complex} x
+ * @param {Complex} y
+ * @return {Complex} res
+ * @private
+ */
+function _multiplyComplex (x, y) {
+    return new Complex(
+        x.re * y.re - x.im * y.im,
+        x.re * y.im + x.im * y.re
+    );
+}
+
+/**
+ * Calculates the power of x to y
+ *
+ *     x ^ y
+ *     pow(x, y)
+ *
+ * @param  {Number | Complex | Array | Matrix} x
+ * @param  {Number | Complex} y
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.pow = function pow(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('pow', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            if (isInteger(y) || x >= 0) {
+                // real value computation
+                return Math.pow(x, y);
+            }
+            else {
+                return powComplex(new Complex(x, 0), new Complex(y, 0));
+            }
+        }
+        else if (y instanceof Complex) {
+            return powComplex(new Complex(x, 0), y);
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return powComplex(x, new Complex(y, 0));
+        }
+        else if (y instanceof Complex) {
+            return powComplex(x, y);
+        }
+    }
+    else if (x instanceof Array) {
+        if (!isNumber(y) || !isInteger(y) || y < 0) {
+            throw new TypeError('For A^b, b must be a positive integer ' +
+                    '(value is ' + y + ')');
+        }
+        // verify that A is a 2 dimensional square matrix
+        var s = util.size(x);
+        if (s.length != 2) {
+            throw new Error('For A^b, A must be 2 dimensional ' +
+                    '(A has ' + s.length + ' dimensions)');
+        }
+        if (s[0] != s[1]) {
+            throw new Error('For A^b, A must be square ' +
+                    '(size is ' + s[0] + 'x' + s[1] + ')');
+        }
+
+        if (y == 0) {
+            // return the identity matrix
+            return math.eye(s[0]);
+        }
+        else {
+            // value > 0
+            var res = x;
+            for (var i = 1; i < y; i++) {
+                res = math.multiply(x, res);
+            }
+            return res;
+        }
+    }
+    else if (x instanceof Matrix) {
+        return new Matrix(math.pow(x.valueOf(), y));
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return math.pow(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('pow', x, y);
+};
+
+/**
+ * Calculates the power of x to y, x^y, for two complex numbers.
+ * @param {Complex} x
+ * @param {Complex} y
+ * @return {Complex} res
+ * @private
+ */
+function powComplex (x, y) {
+    // complex computation
+    // x^y = exp(log(x)*y) = exp((abs(x)+i*arg(x))*y)
+    var temp1 = math.log(x);
+    var temp2 = math.multiply(temp1, y);
+    return math.exp(temp2);
+}
+
+/**
+ * Round a value towards the nearest integer
+ *
+ *     round(x)
+ *     round(x, n)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @param {Number | Array} [n] number of decimals (by default n=0)
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.round = function round(x, n) {
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('round', arguments.length, 1, 2);
+    }
+
+    if (n == undefined) {
+        // round (x)
+        if (isNumber(x)) {
+            return Math.round(x);
+        }
+
+        if (x instanceof Complex) {
+            return new Complex (
+                Math.round(x.re),
+                Math.round(x.im)
+            );
+        }
+
+        if (x instanceof Array || x instanceof Matrix) {
+            return util.map(x, math.round);
+        }
+
+        if (x.valueOf() !== x) {
+            // fallback on the objects primitive value
+            return math.round(x.valueOf());
+        }
+
+        throw newUnsupportedTypeError('round', x);
+    }
+    else {
+        // round (x, n)
+        if (!isNumber(n)) {
+            throw new TypeError('Number of decimals in function round must be an integer');
+        }
+        if (n !== Math.round(n)) {
+            throw new TypeError('Number of decimals in function round must be integer');
+        }
+        if (n < 0 || n > 9) {
+            throw new Error ('Number of decimals in function round must be in te range of 0-9');
+        }
+
+        if (isNumber(x)) {
+            return roundNumber(x, n);
+        }
+
+        if (x instanceof Complex) {
+            return new Complex (
+                roundNumber(x.re, n),
+                roundNumber(x.im, n)
+            );
+        }
+
+        if (x instanceof Array || x instanceof Matrix ||
+            n instanceof Array || n instanceof Matrix) {
+            return util.map2(x, n, math.round);
+        }
+
+        if (x.valueOf() !== x || n.valueOf() !== n) {
+            // fallback on the objects primitive values
+            return math.round(x.valueOf(), n.valueOf());
+        }
+
+        throw newUnsupportedTypeError('round', x, n);
+    }
+};
+
+/**
+ * round a number to the given number of decimals, or to zero if decimals is
+ * not provided
+ * @param {Number} value
+ * @param {Number} [decimals]  number of decimals, between 0 and 15 (0 by default)
+ * @return {Number} roundedValue
+ */
+function roundNumber (value, decimals) {
+    if (decimals) {
+        var p = Math.pow(10, decimals);
+        return Math.round(value * p) / p;
+    }
+    else {
+        return Math.round(value);
+    }
+}
+
+/**
+ * Compute the sign of a value.
+ *
+ *     sign(x)
+ *
+ * The sign of a value x is 1 when x > 1, -1 when x < 0, and 0 when x == 0
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.sign = function sign(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sign', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        var sign;
+        if (x > 0) {
+            sign = 1;
+        }
+        else if (x < 0) {
+            sign = -1;
+        }
+        else {
+            sign = 0;
+        }
+        return sign;
+    }
+
+    if (x instanceof Complex) {
+        var abs = Math.sqrt(x.re * x.re + x.im * x.im);
+        return new Complex(x.re / abs, x.im / abs);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.sign);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.sign(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('sign', x);
+};
+
+/**
+ * Check if value x is smaller y
+ *
+ *     x < y
+ *     smaller(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ * In case of complex numbers, the absolute values of a and b are compared.
+ *
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
+ * @return {Boolean | Array | Matrix} res
+ */
+math.smaller = function smaller(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('smaller', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x < y;
+        }
+        else if (y instanceof Complex) {
+            return x < math.abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return math.abs(x) < y;
+        }
+        else if (y instanceof Complex) {
+            return math.abs(x) < math.abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value < y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x < y;
+    }
+
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
+        return util.map2(x, y, math.smaller);
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return math.smaller(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('smaller', x, y);
+};
+
+/**
+ * Check if value a is smaller or equal to b
+ *
+ *     a <= b
+ *     smallereq(a, b)
+ *
+ * For matrices, the function is evaluated element wise.
+ * In case of complex numbers, the absolute values of a and b are compared.
+ *
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
+ * @return {Boolean | Array | Matrix} res
+ */
+math.smallereq = function smallereq(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('smallereq', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x <= y;
+        }
+        else if (y instanceof Complex) {
+            return x <= math.abs(y);
+        }
+    }
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return math.abs(x) <= y;
+        }
+        else if (y instanceof Complex) {
+            return math.abs(x) <= math.abs(y);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value <= y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x <= y;
+    }
+
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
+        return util.map2(x, y, math.smallereq);
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return math.smallereq(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('smallereq', x, y);
+};
+
+/**
+ * Calculate the square root of a value
+ *
+ *     sqrt(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.sqrt = function sqrt (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sqrt', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        if (x >= 0) {
+            return Math.sqrt(x);
+        }
+        else {
+            return math.sqrt(new Complex(x, 0));
+        }
+    }
+
+    if (x instanceof Complex) {
+        var r = Math.sqrt(x.re * x.re + x.im * x.im);
+        if (x.im >= 0.0) {
+            return new Complex(
+                0.5 * Math.sqrt(2.0 * (r + x.re)),
+                0.5 * Math.sqrt(2.0 * (r - x.re))
+            );
+        }
+        else {
+            return new Complex(
+                0.5 * Math.sqrt(2.0 * (r + x.re)),
+                -0.5 * Math.sqrt(2.0 * (r - x.re))
+            );
+        }
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.sqrt);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.sqrt(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('sqrt', x);
+};
+
+/**
+ * Compute the square of a value
+ *
+ *     x .* x
+ *     square(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.square = function square(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('square', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x * x;
+    }
+
+    if (x instanceof Complex) {
+        return math.multiply(x, x);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.square);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.square(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('square', x);
+};
+
+/**
+ * Subtract two values
+ *
+ *     x - y
+ *     subtract(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
+ */
+math.subtract = function subtract(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('subtract', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            // number - number
+            return x - y;
+        }
+        else if (y instanceof Complex) {
+            // number - complex
+            return new Complex (
+                x - y.re,
+                    y.im
+            );
+        }
+    }
+    else if (x instanceof Complex) {
+        if (isNumber(y)) {
+            // complex - number
+            return new Complex (
+                x.re - y,
+                x.im
+            )
+        }
+        else if (y instanceof Complex) {
+            // complex - complex
+            return new Complex (
+                x.re - y.re,
+                x.im - y.im
+            )
+        }
+    }
+    else if (x instanceof Unit) {
+        if (y instanceof Unit) {
+            if (!x.equalBase(y)) {
+                throw new Error('Units do not match');
+            }
+
+            if (x.value == null) {
+                throw new Error('Unit on left hand side of operator - has an undefined value');
+            }
+
+            if (y.value == null) {
+                throw new Error('Unit on right hand side of operator - has an undefined value');
+            }
+
+            var res = x.clone();
+            res.value -= y.value;
+            res.fixPrefix = false;
+
+            return res;
+        }
+    }
+
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
+        return util.map2(x, y, math.subtract);
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return math.subtract(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('subtract', x, y);
+};
+
+/**
+ * Inverse the sign of a value.
+ *
+ *     -x
+ *     unaryminus(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @return {Number | Complex | Unit | Array | Matrix} res
+ */
+math.unaryminus = function unaryminus(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('unaryminus', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return -x;
+    }
+    else if (x instanceof Complex) {
+        return new Complex(
+            -x.re,
+            -x.im
+        );
+    }
+    else if (x instanceof Unit) {
+        var res = x.clone();
+        res.value = -x.value;
+        return res;
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.unaryminus);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.unaryminus(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('unaryminus', x);
+};
+
+/**
+ * Check if value x unequals y
+ *
+ *     x != y
+ *     unequal(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
+ *
+ * @param  {Number | Complex | Unit | String | Array | Matrix} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix} y
+ * @return {Boolean | Array | Matrix} res
+ */
+math.unequal = function unequal(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('unequal', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+        if (isNumber(y)) {
+            return x == y;
+        }
+        else if (y instanceof Complex) {
+            return (x == y.re) && (y.im == 0);
+        }
+    }
+
+    if (x instanceof Complex) {
+        if (isNumber(y)) {
+            return (x.re == y) && (x.im == 0);
+        }
+        else if (y instanceof Complex) {
+            return (x.re == y.re) && (x.im == y.im);
+        }
+    }
+
+    if ((x instanceof Unit) && (y instanceof Unit)) {
+        if (!x.equalBase(y)) {
+            throw new Error('Cannot compare units with different base');
+        }
+        return x.value == y.value;
+    }
+
+    if (isString(x) || isString(y)) {
+        return x == y;
+    }
+
+    if (x instanceof Array || x instanceof Matrix ||
+        y instanceof Array || y instanceof Matrix) {
+        return util.map2(x, y, math.unequal);
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return math.unequal(x.valueOf(), y.valueOf());
+    }
+
+    throw newUnsupportedTypeError('unequal', x, y);
+};
+
+/**
+ * Calculate the extended greatest common divisor for two values.
+ *
+ *     xgcd(a, b)
+ *
+ * @param {Number} a       An integer number
+ * @param {Number} b       An integer number
+ * @return {Array}         An array containing 3 integers [div, m, n]
+ *                         where div = gcd(a, b) and a*m + b*n = div
+ *
+ * @see http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+ */
+math.xgcd = function xgcd(a, b) {
+    if (arguments.length == 2) {
+        // two arguments
+        if (isNumber(a) && isNumber(b)) {
+            if (!isInteger(a) || !isInteger(b)) {
+                throw new Error('Parameters in function xgcd must be integer numbers');
+            }
+
+            if(b == 0) {
+                return [a, 1, 0];
+            }
+
+            var tmp = xgcd(b, a % b),
+                div = tmp[0],
+                x = tmp[1],
+                y = tmp[2];
+
+            return [div, y, x - y * Math.floor(a / b)];
+        }
+
+        throw newUnsupportedTypeError('xgcd', a, b);
+    }
+
+    // zero or one argument
+    throw new SyntaxError('Function xgcd expects two arguments');
+};
+
+/**
+ * Compute the argument of a complex value.
+ * If x = a + bi, the argument is computed as atan2(b, a).
+ *
+ *     arg(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Array | Matrix} res
+ */
+math.arg = function arg(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('arg', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.atan2(0, x);
+    }
+
+    if (x instanceof Complex) {
+        return Math.atan2(x.im, x.re);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.arg);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.arg(x.valueOf());
+    }
+
+    // handle other types just as non-complex values
+    return math.atan2(0, x);
+};
+
+/**
+ * Compute the complex conjugate of a complex value.
+ * If x = a+bi, the complex conjugate is a-bi.
+ *
+ *     conj(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.conj = function conj(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('conj', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x;
+    }
+
+    if (x instanceof Complex) {
+        return new Complex(x.re, -x.im);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.conj);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.conj(x.valueOf());
+    }
+
+    // return a clone of the value for non-complex values
+    return clone(x);
+};
+
+/**
+ * Get the imaginary part of a complex number.
+ *
+ *     im(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Array | Matrix} im
+ */
+math.im = function im(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('im', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return 0;
+    }
+
+    if (x instanceof Complex) {
+        return x.im;
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.im);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.im(x.valueOf());
+    }
+
+    // return 0 for all non-complex values
+    return 0;
+};
+
+/**
+ * Get the real part of a complex number.
+ *
+ *     re(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Array | Matrix} re
+ */
+math.re = function re(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('re', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return x;
+    }
+
+    if (x instanceof Complex) {
+        return x.re;
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.re);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.re(x.valueOf());
+    }
+
+    // return a clone of the value itself for all non-complex values
+    return math.clone(x);
+};
+
+/**
+ * Create a complex value. Depending on the passed arguments, the function
+ * will create and return a new math.type.Complex object.
+ *
+ * The method accepts the following arguments:
+ *     complex()                           creates a complex value with zero
+ *                                         as real and imaginary part.
+ *     complex(re : number, im : string)   creates a complex value with provided
+ *                                         values for real and imaginary part.
+ *     complex(str : string)               parses a string into a complex value.
+ *
+ * Example usage:
+ *     var a = math.complex(3, -4);     // 3 - 4i
+ *     a.re = 5;                        // a = 5 - 4i
+ *     var i = a.im;                    // -4;
+ *     var b = math.complex('2 + 6i');  // 2 + 6i
+ *     var c = math.complex();          // 0 + 0i
+ *     var d = math.add(a, b);          // 5 + 2i
+ *
+ * @param {*} [args]
+ * @return {Complex} value
+ */
+math.complex = function complex(args) {
+    switch (arguments.length) {
+        case 0:
+            // no parameters. Set re and im zero
+            return new Complex(0, 0);
+            break;
+
+        case 1:
+            // parse string into a complex number
+            var str = arguments[0];
+            if (!isString(str)) {
+                throw new TypeError(
+                    'Two numbers or a single string expected in function complex');
+            }
+            var c = Complex.parse(str);
+            if (c) {
+                return c;
+            }
+            else {
+                throw new SyntaxError('String "' + str + '" is no valid complex number');
+            }
+            break;
+
+        case 2:
+            // re and im provided
+            return new Complex(arguments[0], arguments[1]);
+            break;
+
+        default:
+            throw newArgumentsError('complex', arguments.length, 0, 2);
+    }
+};
+
+/**
+ * Create a matrix. The function creates a new math.type.Matrix object.
+ *
+ * The method accepts the following arguments:
+ *     matrix()       creates an empty matrix
+ *     matrix(data)   creates a matrix with initial data.
+ *
+ * Example usage:
+ *     var m = matrix([[1, 2], [3, 4]);
+ *     m.size();                        // [2, 2]
+ *     m.resize([3, 2], 5);
+ *     m.valueOf();                     // [[1, 2], [3, 4], [5, 5]]
+ *     m.get([1, 0])                    // 3
+ *
+ * @param {Array | Matrix} [data]    A multi dimensional array
+ * @return {Matrix} matrix
+ */
+math.matrix = function matrix(data) {
+    if (arguments.length > 1) {
+        throw newArgumentsError('matrix', arguments.length, 0, 1);
+    }
+
+    return new Matrix(data);
+};
+
+/**
+ * Create a parser. The function creates a new math.expr.Parser object.
+ *
+ *    parser()
+ *
+ * Example usage:
+ *     var parser = new math.parser();
+ *
+ *     // evaluate expressions
+ *     var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
+ *     var b = parser.eval('sqrt(-4)');        // 2i
+ *     var c = parser.eval('2 inch in cm');    // 5.08 cm
+ *     var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
+ *
+ *     // define variables and functions
+ *     parser.eval('x = 7 / 2');               // 3.5
+ *     parser.eval('x + 3');                   // 6.5
+ *     parser.eval('function f(x, y) = x^y');  // f(x, y)
+ *     parser.eval('f(2, 3)');                 // 8
+ *
+ *     // get and set variables and functions
+ *     var x = parser.get('x');                // 7
+ *     var f = parser.get('f');                // function
+ *     var g = f(3, 2);                        // 9
+ *     parser.set('h', 500);
+ *     var i = parser.eval('h / 2');           // 250
+ *     parser.set('hello', function (name) {
+ *         return 'hello, ' + name + '!';
+ *     });
+ *     parser.eval('hello("user")');           // "hello, user!"
+ *
+ *     // clear defined functions and variables
+ *     parser.clear();
+ *
+ * @return {math.expr.Parser} Parser
+ */
+math.parser = function parser() {
+    return new math.expr.Parser();
+};
+
+/**
+ * Create a range. The function creates a new math.type.Range object.
+ *
+ * A range works similar to an Array, with functions like
+ * forEach and map. However, a Range object is very cheap to create compared to
+ * a large Array with indexes, as it stores only a start, step and end value of
+ * the range.
+ *
+ * The method accepts the following arguments
+ *     range(str)                   Create a range from a string, where the
+ *                                  string contains the start, optional step,
+ *                                  and end, separated by a colon.
+ *     range(start, end)            Create a range with start and end and a
+ *                                  default step size of 1
+ *     range(start, step, end)      Create a range with start, step, and end.
+ *
+ * Example usage:
+ *     var c = math.range(2, 1, 5);     // 2:1:5
+ *     c.toArray();                     // [2, 3, 4, 5]
+ *     var d = math.range(2, -1, -2);   // 2:-1:-2
+ *     d.forEach(function (value, index) {
+ *         console.log(index, value);
+ *     });
+ *     var e = math.range('2:1:5');     // 2:1:5
+ *
+ * @param {...*} args
+ * @return {Range} range
+ */
+math.range = function range(args) {
+    switch (arguments.length) {
+        case 1:
+            // parse string into a range
+            if (!isString(args)) {
+                throw new TypeError(
+                    'Two or three numbers or a single string expected in function range');
+            }
+            var r = Range.parse(args);
+            if (r) {
+                return r;
+            }
+            else {
+                throw new SyntaxError('String "' + r + '" is no valid range');
+            }
+            break;
+
+        case 2:
+            // range(start, end)
+            return new Range(arguments[0], null, arguments[1]);
+            break;
+
+        case 3:
+            // range(start, step, end)
+            return new Range(arguments[0], arguments[1], arguments[2]);
+            break;
+
+        default:
+            throw newArgumentsError('range', arguments.length, 2, 3);
+    }
+};
+
+/**
+ * Create a unit. Depending on the passed arguments, the function
+ * will create and return a new math.type.Unit object.
+ *
+ * The method accepts the following arguments:
+ *     unit(unit : string)
+ *     unit(value : number, unit : string
+ *
+ * Example usage:
+ *     var a = math.unit(5, 'cm');          // 50 mm
+ *     var b = math.unit('23 kg');          // 23 kg
+ *     var c = math.in(a, math.unit('m');   // 0.05 m
+ *
+ * @param {*} args
+ * @return {Unit} value
+ */
+math.unit = function unit(args) {
+    switch(arguments.length) {
+        case 1:
+            // parse a string
+            var str = arguments[0];
+            if (!isString(str)) {
+                throw new TypeError('A string or a number and string expected in function unit');
+            }
+
+            if (Unit.isPlainUnit(str)) {
+                return new Unit(null, str); // a pure unit
+            }
+
+            var u = Unit.parse(str);        // a unit with value, like '5cm'
+            if (u) {
+                return u;
+            }
+
+            throw new SyntaxError('String "' + str + '" is no valid unit');
+            break;
+
+        case 2:
+            // a number and a unit
+            return new Unit(arguments[0], arguments[1]);
+            break;
+
+        default:
+            throw newArgumentsError('unit', arguments.length, 1, 2);
+    }
+};
+
+/**
+ * Create a workspace. The function creates a new math.expr.Workspace object.
+ *
+ *     workspace()
+ *
+ * Workspace manages a set of expressions. Expressions can be added, replace,
+ * deleted, and inserted in the workspace. The workspace keeps track on the
+ * dependencies between the expressions, and automatically updates results of
+ * depending expressions when variables or function definitions are changed in
+ * the workspace.
+ *
+ * Methods:
+ *     var id = workspace.append(expr);
+ *     var id = workspace.insertBefore(expr, beforeId);
+ *     var id = workspace.insertAfter(expr, afterId);
+ *     workspace.replace(expr, id);
+ *     workspace.remove(id);
+ *     workspace.clear();
+ *     var expr   = workspace.getExpr(id);
+ *     var result = workspace.getResult(id);
+ *     var deps   = workspace.getDependencies(id);
+ *     var changes = workspace.getChanges(updateSeq);
+ *
+ * Usage:
+ *     var workspace = new math.workspace();
+ *     var id0 = workspace.append('a = 3/4');
+ *     var id1 = workspace.append('a + 2');
+ *     console.log('a + 2 = ' + workspace.getResult(id1));
+ *     workspace.replace('a=5/2', id0);
+ *     console.log('a + 2 = ' + workspace.getResult(id1));
+ *
+ * @return {math.expr.Workspace} Workspace
+ */
+math.workspace = function workspace() {
+    return new math.expr.Workspace();
+};
+
+/**
+ * Concatenate two or more matrices
+ * Usage:
+ *     math.concat(A, B, C, ...)
+ *     math.concat(A, B, C, ..., dim)
+ *
+ * Where the optional dim is the one-based number of the dimension to be
+ * concatenated.
+ *
+ * @param {... Array | Matrix} args
+ * @return {Array | Matrix} res
+ */
+math.concat = function concat (args) {
+    var i,
+        len = arguments.length,
+        dim = -1,  // one-based dimension
+        prevDim,
+        asMatrix = false,
+        matrices = [];  // contains multi dimensional arrays
+
+    for (i = 0; i < len; i++) {
+        var arg = arguments[i];
+
+        // test whether we need to return a Matrix (if not we return an Array)
+        if (arg instanceof Matrix) {
+            asMatrix = true;
+        }
+
+        if ((i == len - 1) && isNumber(arg)) {
+            // last argument contains the dimension on which to concatenate
+            prevDim = dim;
+            dim = arg;
+
+            if (!isInteger(dim) || dim < 1) {
+                throw new TypeError('Dimension number must be a positive integer ' +
+                    '(dim = ' + dim + ')');
+            }
+
+            if (i > 0 && dim > prevDim) {
+                throw new RangeError('Dimension out of range ' +
+                    '(' + dim + ' > ' + prevDim + ')');
+            }
+        }
+        else if (arg instanceof Array || arg instanceof Matrix) {
+            // this is a matrix or array
+            var matrix = math.clone(arg.valueOf());
+            var size = math.size(arg);
+            matrices[i] = matrix;
+            prevDim = dim;
+            dim = size.length;
+
+            // verify whether each of the matrices has the same number of dimensions
+            if (i > 0 && dim != prevDim) {
+                throw new RangeError('Dimension mismatch ' +
+                    '(' + prevDim + ' != ' + dim + ')');
+            }
+        }
+        else {
+            throw newUnsupportedTypeError('concat', arg);
+        }
+    }
+
+    if (matrices.length == 0) {
+        throw new SyntaxError('At least one matrix expected');
+    }
+
+    var res = matrices.shift();
+    while (matrices.length) {
+        res = _concat(res, matrices.shift(), dim - 1, 0);
+    }
+
+    return asMatrix ? new Matrix(res) : res;
+};
+
+/**
+ * Recursively concatenate two matrices.
+ * The contents of the matrices is not cloned.
+ * @param {Array} a             Multi dimensional array
+ * @param {Array} b             Multi dimensional array
+ * @param {Number} concatDim    The dimension on which to concatenate (zero-based)
+ * @param {Number} dim          The current dim (zero-based)
+ * @return {Array} c            The concatenated matrix
+ * @private
+ */
+function _concat(a, b, concatDim, dim) {
+    if (dim < concatDim) {
+        // recurse into next dimension
+        if (a.length != b.length) {
+            throw new Error('Dimensions mismatch (' + a.length + ' != ' + b.length + ')');
+        }
+
+        var c = [];
+        for (var i = 0; i < a.length; i++) {
+            c[i] = _concat(a[i], b[i], concatDim, dim + 1);
+        }
+        return c;
+    }
+    else {
+        // concatenate this dimension
+        return a.concat(b);
+    }
+}
+
+/**
+ * @constructor det
+ * Calculate the determinant of a matrix
+ *
+ *     det(x)
+ *
+ * @param {Array | Matrix} x
+ * @return {Number} determinant
+ */
+math.det = function det (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('det', arguments.length, 1);
+    }
+
+    var size = math.size(x);
+    switch (size.length) {
+        case 0:
+            // scalar
+            return math.clone(x);
+            break;
+
+        case 1:
+            // vector
+            if (size[0] == 1) {
+                return math.clone(x.valueOf()[0]);
+            }
+            else {
+                throw new RangeError('Matrix must be square ' +
+                    '(size: ' + math.format(size) + ')');
+            }
+            break;
+
+        case 2:
+            // two dimensional array
+            var rows = size[0];
+            var cols = size[1];
+            if (rows == cols) {
+                return _det(x.valueOf(), rows, cols);
+            }
+            else {
+                throw new RangeError('Matrix must be square ' +
+                    '(size: ' + math.format(size) + ')');
+            }
+            break;
+
+        default:
+            // multi dimensional array
+            throw new RangeError('Matrix must be two dimensional ' +
+                '(size: ' + math.format(size) + ')');
+    }
+};
+
+/**
+ * Calculate the determinant of a matrix
+ * @param {Array[]} matrix  A square, two dimensional matrix
+ * @param {Number} rows     Number of rows of the matrix (zero-based)
+ * @param {Number} cols     Number of columns of the matrix (zero-based)
+ * @returns {Number} det
+ * @private
+ */
+function _det (matrix, rows, cols) {
+    var multiply = math.multiply,
+        subtract = math.subtract;
+
+    // this is a square matrix
+    if (rows == 1) {
+        // this is a 1 x 1 matrix
+        return matrix[0][0];
+    }
+    else if (rows == 2) {
+        // this is a 2 x 2 matrix
+        // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12
+        return subtract(
+            multiply(matrix[0][0], matrix[1][1]),
+            multiply(matrix[1][0], matrix[0][1])
+        );
+    }
+    else {
+        // this is a matrix of 3 x 3 or larger
+        var d = 0;
+        for (var c = 0; c < cols; c++) {
+            var minor = _minor(matrix, rows, cols, 0, c);
+            //d += Math.pow(-1, 1 + c) * a(1, c) * _det(minor);
+            d += multiply(
+                multiply((c + 1) % 2 + (c + 1) % 2 - 1, matrix[0][c]),
+                _det(minor, rows - 1, cols - 1)
+            ); // faster than with pow()
+        }
+        return d;
+    }
+}
+
+/**
+ * Extract a minor from a matrix
+ * @param {Array[]} matrix  A square, two dimensional matrix
+ * @param {Number} rows     Number of rows of the matrix (zero-based)
+ * @param {Number} cols     Number of columns of the matrix (zero-based)
+ * @param {Number} row      Row number to be removed (zero-based)
+ * @param {Number} col      Column number to be removed (zero-based)
+ * @private
+ */
+function _minor(matrix, rows, cols, row, col) {
+    var minor = [],
+        minorRow;
+
+    for (var r = 0; r < rows; r++) {
+        if (r != row) {
+            minorRow = minor[r - (r > row)] = [];
+            for (var c = 0; c < cols; c++) {
+                if (c != col) {
+                    minorRow[c - (c > col)] = matrix[r][c];
+                }
+            }
+        }
+    }
+
+    return minor;
+}
+
+/**
+ * Create a diagonal matrix or retrieve the diagonal of a matrix
+ *
+ *     diag(v)
+ *     diag(v, k)
+ *     diag(X)
+ *     diag(X, k)
+ *
+ * TODO: more documentation on diag
+ *
+ * @param {Number | Matrix | Array} x
+ * @param {Number} [k]
+ * @return {Matrix} matrix
+ */
+math.diag = function diag (x, k) {
+    var data, vector, i, iMax;
+
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('diag', arguments.length, 1, 2);
+    }
+
+    if (k) {
+        if (!isNumber(k) || !isInteger(k)) {
+            throw new TypeError ('Second parameter in function diag must be an integer');
+        }
+    }
+    else {
+        k = 0;
+    }
+    var kSuper = k > 0 ? k : 0;
+    var kSub = k < 0 ? -k : 0;
+
+    // convert to matrix
+    if (!(x instanceof Matrix) && !(x instanceof Range)) {
+        x = new Matrix(x);
+    }
+
+    // get as array when the matrix is a vector
+    var s;
+    if (x.isVector()) {
+        x = x.toVector();
+        s = [x.length];
+    }
+    else {
+        s = x.size();
+    }
+
+    switch (s.length) {
+        case 1:
+            // x is a vector. create diagonal matrix
+            vector = x.valueOf();
+            var matrix = new Matrix();
+            matrix.resize([vector.length + kSub, vector.length + kSuper]);
+            data = matrix.valueOf();
+            iMax = vector.length;
+            for (i = 0; i < iMax; i++) {
+                data[i + kSub][i + kSuper] = math.clone(vector[i]);
+            }
+            return matrix;
+        break;
+
+        case 2:
+            // x is a matrix get diagonal from matrix
+            vector = [];
+            data = x.valueOf();
+            iMax = Math.min(s[0] - kSub, s[1] - kSuper);
+            for (i = 0; i < iMax; i++) {
+                vector[i] = math.clone(data[i + kSub][i + kSuper]);
+            }
+            return new Matrix(vector);
+        break;
+
+        default:
+            throw new RangeError('Matrix for function diag must be 2 dimensional');
+    }
+};
+
+/**
+ * Create an identity matrix with size m x n
+ *
+ *     eye(m)
+ *     eye(m, n)
+ *
+ * TODO: more documentation on eye
+ *
+ * @param {...Number | Matrix | Array} size
+ * @return {Matrix} matrix
+ */
+math.eye = function eye (size) {
+    var args = util.argsToArray(arguments);
+    if (args.length == 0) {
+        args = [1, 1];
+    }
+    else if (args.length == 1) {
+        args[1] = args[0];
+    }
+    else if (args.length > 2) {
+        throw newArgumentsError('eye', args.length, 0, 2);
+    }
+
+    var rows = args[0],
+        cols = args[1];
+
+    if (!isNumber(rows) || !isInteger(rows) || rows < 1) {
+        throw new Error('Parameters in function eye must be positive integers');
+    }
+    if (cols) {
+        if (!isNumber(cols) || !isInteger(cols) || cols < 1) {
+            throw new Error('Parameters in function eye must be positive integers');
+        }
+    }
+
+    // create and args the matrix
+    var matrix = new Matrix();
+    matrix.resize(args);
+
+    // fill in ones on the diagonal
+    var min = math.min(args);
+    var data = matrix.valueOf();
+    for (var d = 0; d < min; d++) {
+        data[d][d] = 1;
+    }
+
+    return matrix;
+};
+
+/**
+ * Calculate the inverse of a matrix
+ *
+ *     inv(x)
+ *
+ * TODO: more documentation on inv
+ *
+ * @param {Array | Matrix} x
+ * @return {Array | Matrix} inv
+ */
+math.inv = function inv (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('inv', arguments.length, 1);
+    }
+
+    var size = math.size(x);
+    switch (size.length) {
+        case 0:
+            // scalar
+            return math.divide(1, x);
+            break;
+
+        case 1:
+            // vector
+            if (size[0] == 1) {
+                if (x instanceof Matrix) {
+                    return new Matrix([
+                        math.divide(1, x.valueOf()[0])
+                    ]);
+                }
+                else {
+                    return [
+                        math.divide(1, x[0])
+                    ];
+                }
+            }
+            else {
+                throw new RangeError('Matrix must be square ' +
+                    '(size: ' + math.format(size) + ')');
+            }
+            break;
+
+        case 2:
+            // two dimensional array
+            var rows = size[0];
+            var cols = size[1];
+            if (rows == cols) {
+                if (x instanceof Matrix) {
+                    return new Matrix(
+                        _inv(x.valueOf(), rows, cols)
+                    );
+                }
+                else {
+                    // return an Array
+                    return _inv(x, rows, cols);
+                }
+            }
+            else {
+                throw new RangeError('Matrix must be square ' +
+                    '(size: ' + math.format(size) + ')');
+            }
+            break;
+
+        default:
+            // multi dimensional array
+            throw new RangeError('Matrix must be two dimensional ' +
+                '(size: ' + math.format(size) + ')');
+    }
+};
+
+/**
+ * Calculate the inverse of a square matrix
+ * @param {Array[]} matrix  A square matrix
+ * @param {Number} rows     Number of rows
+ * @param {Number} cols     Number of columns, must equal rows
+ * @return {Array[]} inv    Inverse matrix
+ * @private
+ */
+function _inv (matrix, rows, cols){
+    var r, s, f, value, temp,
+        add = math.add,
+        unaryminus = math.unaryminus,
+        multiply = math.multiply,
+        divide = math.divide;
+
+    if (rows == 1) {
+        // this is a 1 x 1 matrix
+        value = matrix[0][0];
+        if (value == 0) {
+            throw Error('Cannot calculate inverse, determinant is zero');
+        }
+        return [[
+            divide(1, value)
+        ]];
+    }
+    else if (rows == 2) {
+        // this is a 2 x 2 matrix
+        var det = math.det(matrix);
+        if (det == 0) {
+            throw Error('Cannot calculate inverse, determinant is zero');
+        }
+        return [
+            [
+                divide(matrix[1][1], det),
+                divide(unaryminus(matrix[0][1]), det)
+            ],
+            [
+                divide(unaryminus(matrix[1][0]), det),
+                divide(matrix[0][0], det)
+            ]
+        ];
+    }
+    else {
+        // this is a matrix of 3 x 3 or larger
+        // calculate inverse using gauss-jordan elimination
+        //      http://en.wikipedia.org/wiki/Gaussian_elimination
+        //      http://mathworld.wolfram.com/MatrixInverse.html
+        //      http://math.uww.edu/~mcfarlat/inverse.htm
+
+        // make a copy of the matrix (only the arrays, not of the elements)
+        var A = matrix.concat();
+        for (r = 0; r < rows; r++) {
+            A[r] = A[r].concat();
+        }
+
+        // create an identity matrix which in the end will contain the
+        // matrix inverse
+        var B = math.eye(rows).valueOf();
+
+        // loop over all columns, and perform row reductions
+        for (var c = 0; c < cols; c++) {
+            // element Acc should be non zero. if not, swap content
+            // with one of the lower rows
+            r = c;
+            while (r < rows && A[r][c] == 0) {
+                r++;
+            }
+            if (r == rows || A[r][c] == 0) {
+                throw Error('Cannot calculate inverse, determinant is zero');
+            }
+            if (r != c) {
+                temp = A[c]; A[c] = A[r]; A[r] = temp;
+                temp = B[c]; B[c] = B[r]; B[r] = temp;
+            }
+
+            // eliminate non-zero values on the other rows at column c
+            var Ac = A[c],
+                Bc = B[c];
+            for (r = 0; r < rows; r++) {
+                var Ar = A[r],
+                    Br = B[r];
+                if(r != c) {
+                    // eliminate value at column c and row r
+                    if (Ar[c] != 0) {
+                        f = divide(unaryminus(Ar[c]), Ac[c]);
+
+                        // add (f * row c) to row r to eliminate the value
+                        // at column c
+                        for (s = c; s < cols; s++) {
+                            Ar[s] = add(Ar[s], multiply(f, Ac[s]));
+                        }
+                        for (s = 0; s < cols; s++) {
+                            Br[s] = add(Br[s], multiply(f, Bc[s]));
+                        }
+                    }
+                }
+                else {
+                    // normalize value at Acc to 1,
+                    // divide each value on row r with the value at Acc
+                    f = Ac[c];
+                    for (s = c; s < cols; s++) {
+                        Ar[s] = divide(Ar[s], f);
+                    }
+                    for (s = 0; s < cols; s++) {
+                        Br[s] = divide(Br[s], f);
+                    }
+                }
+            }
+        }
+        return B;
+    }
+}
+
+/**
+ * Create a matrix filled with ones
+ *
+ *     ones(n)
+ *     ones(m, n)
+ *     ones([m, n])
+ *     ones([m, n, p, ...])
+ *
+ * @param {...Number | Array} size
+ * @return {Matrix} matrix
+ */
+math.ones = function ones (size) {
+    var args = util.argsToArray(arguments);
+
+    if (args.length == 0) {
+        args = [1, 1];
+    }
+    else if (args.length == 1) {
+        args[1] = args[0];
+    }
+
+    // create and size the matrix
+    var matrix = new Matrix();
+    var defaultValue = 1;
+    matrix.resize(args, defaultValue);
+    return matrix;
+};
+
+/**
+ * Calculate the size of a matrix or scalar
+ *
+ *     size(x)
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.size = function size (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('size', arguments.length, 1);
+    }
+
+    if (isNumber(x) || x instanceof Complex || x instanceof Unit || x == null) {
+        return [];
+    }
+
+    if (isString(x)) {
+        return [x.length];
+    }
+
+    if (x instanceof Array) {
+        return util.size(x);
+    }
+
+    if (x instanceof Matrix) {
+        return x.size();
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.size(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('size', x);
+};
+
+/**
+ * Remove singleton dimensions from a matrix
+ *
+ *     squeeze(x)
+ *
+ * @param {Matrix | Array} x
+ * @return {Matrix | Array} res
+ */
+math.squeeze = function squeeze (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('squeeze', arguments.length, 1);
+    }
+
+    if (x instanceof Array) {
+        return _squeezeArray(math.clone(x));
+    }
+    else if (x instanceof Matrix) {
+        return _squeezeArray(x.toArray());
+    }
+    else if (x.valueOf() instanceof Array) {
+        return _squeezeArray(math.clone(x.valueOf()));
+    }
+    else {
+        // scalar
+        return math.clone(x);
+    }
+};
+
+/**
+ * Recursively squeeze a multi dimensional array
+ * @param {Array} array
+ * @return {Array} array
+ * @private
+ */
+function _squeezeArray(array) {
+    if (array.length == 1) {
+        // squeeze this array
+        return _squeezeArray(array[0]);
+    }
+    else {
+        // process all childs
+        for (var i = 0, len = array.length; i < len; i++) {
+            var child = array[i];
+            if (child instanceof Array) {
+                array[i] = _squeezeArray(child);
+            }
+        }
+        return array;
+    }
+}
+
+/**
+ * Create the transpose of a matrix
+ *
+ *     transpose(x)
+ *
+ * @param {Array | Matrix} x
+ * @return {Array | Matrix} transpose
+ */
+math.transpose = function transpose (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('transpose', arguments.length, 1);
+    }
+
+    var size = math.size(x);
+    switch (size.length) {
+        case 0:
+            // scalar
+            return math.clone(x);
+            break;
+
+        case 1:
+            // vector
+            // TODO: is it logic to return a 1 dimensional vector itself as transpose?
+            return math.clone(x);
+            break;
+
+        case 2:
+            // two dimensional array
+            var rows = size[1],  // index 1 is no error
+                cols = size[0],  // index 0 is no error
+                asMatrix = x instanceof Matrix,
+                array = x.valueOf(),
+                transposed = [],
+                transposedRow,
+                clone = math.clone;
+            for (var r = 0; r < rows; r++) {
+                transposedRow = transposed[r] = [];
+                for (var c = 0; c < cols; c++) {
+                    transposedRow[c] = clone(array[c][r]);
+                }
+            }
+            if (cols == 0) {
+                transposed[0] = [];
+            }
+            return asMatrix ? new Matrix(transposed) : transposed;
+            break;
+
+        default:
+            // multi dimensional array
+            throw new RangeError('Matrix must be two dimensional ' +
+                '(size: ' + math.format(size) + ')');
+    }
+};
+
+/**
+ * create a matrix filled with zeros
+ *
+ *     zeros(n)
+ *     zeros(m, n)
+ *     zeros([m, n])
+ *     zeros([m, n, p, ...])
+ *
+ * @param {...Number | Array} size
+ * @return {Matrix} matrix
+ */
+math.zeros = function zeros (size) {
+    var args = util.argsToArray(arguments);
+
+    if (args.length == 0) {
+        args = [1, 1];
+    }
+    else if (args.length == 1) {
+        args[1] = args[0];
+    }
+
+    // create and size the matrix
+    var matrix = new Matrix();
+    matrix.resize(args);
+    return matrix;
+};
+
+/**
+ * Compute the factorial of a value
+ *
+ *     x!
+ *     factorial(x)
+ *
+ * Factorial only supports an integer value as argument.
+ * For matrices, the function is evaluated element wise.
+ *
+ * @Param {Number | Array | Matrix} x
+ * @return {Number | Array | Matrix} res
+ */
+math.factorial = function factorial (x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('factorial', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        if (!isInteger(x) || x < 0) {
+            throw new TypeError('Positive integer value expected in function factorial');
+        }
+
+        var value = x,
+            res = value;
+        value--;
+        while (value > 1) {
+            res *= value;
+            value--;
+        }
+
+        if (res == 0) {
+            res = 1;        // 0! is per definition 1
+        }
+
+        return res;
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.factorial);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.factorial(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('factorial', x);
+};
+
+/**
+ * Return a random number between 0 and 1
+ *
+ *     random()
+ *
+ * @return {Number} res
+ */
+math.random = function random () {
+    if (arguments.length != 0) {
+        throw newArgumentsError('random', arguments.length, 0);
+    }
+
+    // TODO: implement parameter min and max
+    return Math.random();
+};
+
+/**
+ * Compute the maximum value of a list of values
+ *
+ *     max(a, b, c, ...)
+ *     max([a, b, c, ...])
+ *
+ * @param {... *} args  A single matrix or or multiple scalar values
+ * @return {*} res
+ */
+math.max = function max(args) {
+    if (arguments.length == 0) {
+        throw new Error('Function max requires one or more parameters (0 provided)');
+    }
+
+    if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
+        // max([a, b, c, d, ...]])
+        if (arguments.length > 1) {
+            throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
+        }
+
+        var size = math.size(args);
+
+        if (size.length == 1) {
+            // vector
+            if (args.length == 0) {
+                throw new Error('Cannot calculate max of an empty vector');
+            }
+
+            return _max(args.valueOf());
+        }
+        else if (size.length == 2) {
+            // 2 dimensional matrix
+            if (size[0] == 0 || size[1] == 0) {
+                throw new Error('Cannot calculate max of an empty matrix');
+            }
+            if (args instanceof Array) {
+                return _max2(args, size[0], size[1]);
+            }
+            else if (args instanceof Matrix || args instanceof Range) {
+                return new Matrix(_max2(args.valueOf(), size[0], size[1]));
+            }
+            else {
+                throw newUnsupportedTypeError('max', args);
+            }
+        }
+        else {
+            // TODO: implement max for n-dimensional matrices
+            throw new RangeError('Cannot calculate max for multi dimensional matrix');
+        }
+    }
+    else {
+        // max(a, b, c, d, ...)
+        return _max(arguments);
+    }
+};
+
+/**
+ * Calculate the max of a one dimensional array
+ * @param {Array} array
+ * @return {Number} max
+ * @private
+ */
+function _max(array) {
+    var larger = math.larger;
+    var res = array[0];
+    for (var i = 1, iMax = array.length; i < iMax; i++) {
+        var value = array[i];
+        if (larger(value, res)) {
+            res = value;
+        }
+    }
+    return res;
+}
+
+/**
+ * Calculate the max of a two dimensional array
+ * @param {Array} array
+ * @param {Number} rows
+ * @param {Number} cols
+ * @return {Number[]} max
+ * @private
+ */
+function _max2(array, rows, cols) {
+    var larger = math.larger;
+    var res = [];
+    for (var c = 0; c < cols; c++) {
+        var max = array[0][c];
+        for (var r = 1; r < rows; r++) {
+            var value = array[r][c];
+            if (larger(value, max)) {
+                max = value;
+            }
+        }
+        res[c] = max;
+    }
+    return res;
+}
+
+/**
+ * Compute the minimum value of a list of values
+ *
+ *     min(a, b, c, ...)
+ *     min([a, b, c, ...])
+ *
+ * @param {... *} args  A single matrix or multiple scalars
+ * @return {*} res
+ */
+math.min = function min(args) {
+    if (arguments.length == 0) {
+        throw new Error('Function min requires one or more parameters (0 provided)');
+    }
+
+    if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
+        // min([a, b, c, d, ...]])
+        if (arguments.length > 1) {
+            throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
+        }
+
+        var size = math.size(args);
+
+        if (size.length == 1) {
+            // vector
+            if (args.length == 0) {
+                throw new Error('Cannot calculate min of an empty vector');
+            }
+
+            return _min(args.valueOf());
+        }
+        else if (size.length == 2) {
+            // 2 dimensional matrix
+            if (size[0] == 0 || size[1] == 0) {
+                throw new Error('Cannot calculate min of an empty matrix');
+            }
+            if (args instanceof Array) {
+                return _min2(args, size[0], size[1]);
+            }
+            else if (args instanceof Matrix || args instanceof Range) {
+                return new Matrix(_min2(args.valueOf(), size[0], size[1]));
+            }
+            else {
+                throw newUnsupportedTypeError('min', args);
+            }
+        }
+        else {
+            // TODO: implement min for n-dimensional matrices
+            throw new RangeError('Cannot calculate min for multi dimensional matrix');
+        }
+    }
+    else {
+        // min(a, b, c, d, ...)
+        return _min(arguments);
+    }
+};
+
+/**
+ * Calculate the min of a one dimensional array
+ * @param {Array} array
+ * @return {Number} min
+ * @private
+ */
+function _min(array) {
+    var smaller = math.smaller;
+    var res = array[0];
+    for (var i = 1, iMax = array.length; i < iMax; i++) {
+        var value = array[i];
+        if (smaller(value, res)) {
+            res = value;
+        }
+    }
+    return res;
+}
+
+/**
+ * Calculate the min of a two dimensional array
+ * @param {Array} array
+ * @param {Number} rows
+ * @param {Number} cols
+ * @return {Number[]} min
+ * @private
+ */
+function _min2(array, rows, cols) {
+    var smaller = math.smaller;
+    var res = [];
+    for (var c = 0; c < cols; c++) {
+        var min = array[0][c];
+        for (var r = 1; r < rows; r++) {
+            var value = array[r][c];
+            if (smaller(value, min)) {
+                min = value;
+            }
+        }
+        res[c] = min;
+    }
+    return res;
+}
+
+/**
+ * Calculate the inverse cosine of a value
+ *
+ *     acos(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/InverseCosine.html
+ */
+math.acos = function acos(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('acos', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        if (x >= -1 && x <= 1) {
+            return Math.acos(x);
+        }
+        else {
+            return math.acos(new Complex(x, 0));
+        }
+    }
+
+    if (x instanceof Complex) {
+        // acos(z) = 0.5*pi + i*log(iz + sqrt(1-z^2))
+        var temp1 = new Complex(
+            x.im * x.im - x.re * x.re + 1.0,
+            -2.0 * x.re * x.im
+        );
+        var temp2 = math.sqrt(temp1);
+        var temp3 = new Complex(
+            temp2.re - x.im,
+            temp2.im + x.re
+        );
+        var temp4 = math.log(temp3);
+
+        // 0.5*pi = 1.5707963267948966192313216916398
+        return new Complex(
+            1.57079632679489661923 - temp4.im,
+            temp4.re
+        );
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.acos);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.acos(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('acos', x);
+};
+
+/**
+ * Calculate the inverse sine of a value
+ *
+ *     asin(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/InverseSine.html
+ */
+math.asin = function asin(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('asin', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        if (x >= -1 && x <= 1) {
+            return Math.asin(x);
+        }
+        else {
+            return math.asin(new Complex(x, 0));
+        }
+    }
+
+    if (x instanceof Complex) {
+        // asin(z) = -i*log(iz + sqrt(1-z^2))
+        var re = x.re;
+        var im = x.im;
+        var temp1 = new Complex(
+            im * im - re * re + 1.0,
+            -2.0 * re * im
+        );
+
+        var temp2 = math.sqrt(temp1);
+        var temp3 = new Complex(
+            temp2.re - im,
+            temp2.im + re
+        );
+
+        var temp4 = math.log(temp3);
+
+        return new Complex(temp4.im, -temp4.re);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.asin);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.asin(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('asin', x);
+};
+
+/**
+ * Calculate the inverse tangent of a value
+ *
+ *     atan(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/InverseTangent.html
+ */
+math.atan = function atan(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('atan', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.atan(x);
+    }
+
+    if (x instanceof Complex) {
+        // atan(z) = 1/2 * i * (ln(1-iz) - ln(1+iz))
+        var re = x.re;
+        var im = x.im;
+        var den = re * re + (1.0 - im) * (1.0 - im);
+
+        var temp1 = new Complex(
+            (1.0 - im * im - re * re) / den,
+            (-2.0 * re) / den
+        );
+        var temp2 = math.log(temp1);
+
+        return new Complex(
+            -0.5 * temp2.im,
+            0.5 * temp2.re
+        );
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.atan);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.atan(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('atan', x);
+};
+
+/**
+ * Computes the principal value of the arc tangent of y/x in radians
+ *
+ *     atan2(y, x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Array | Matrix} y
+ * @param {Number | Complex | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/InverseTangent.html
+ */
+math.atan2 = function atan2(y, x) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('atan2', arguments.length, 2);
+    }
+
+    if (isNumber(y)) {
+        if (isNumber(x)) {
+            return Math.atan2(y, x);
+        }
+        /* TODO: support for complex computation of atan2
+        else if (x instanceof Complex) {
+            return Math.atan2(y.re, x.re);
+        }
+        */
+    }
+    else if (y instanceof Complex) {
+        if (isNumber(x)) {
+            return Math.atan2(y.re, x);
+        }
+        /* TODO: support for complex computation of atan2
+        else if (x instanceof Complex) {
+            return Math.atan2(y.re, x.re);
+        }
+        */
+    }
+
+    if (y instanceof Array || y instanceof Matrix ||
+        x instanceof Array || x instanceof Matrix) {
+        return util.map2(y, x, math.atan2);
+    }
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+        // fallback on the objects primitive values
+        return math.atan2(y.valueOf(), x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('atan2', y, x);
+};
+
+/**
+ * Calculate the cosine of a value
+ *
+ *     cos(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Unit | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/Cosine.html
+ */
+math.cos = function cos(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('cos', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.cos(x);
+    }
+
+    if (x instanceof Complex) {
+        // cos(z) = (exp(iz) + exp(-iz)) / 2
+        return new Complex(
+            0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp(x.im)),
+            0.5 * Math.sin(x.re) * (Math.exp(-x.im) - Math.exp(x.im))
+        );
+    }
+
+    if (x instanceof Unit) {
+        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+            throw new TypeError ('Unit in function cos is no angle');
+        }
+        return Math.cos(x.value);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.cos);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.cos(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('cos', x);
+};
+
+/**
+ * Calculate the cotangent of a value. cot(x) is defined as 1 / tan(x)
+ *
+ *     cot(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Unit | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.cot = function cot(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('cot', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return 1 / Math.tan(x);
+    }
+
+    if (x instanceof Complex) {
+        var den = Math.exp(-4.0 * x.im) -
+            2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) + 1.0;
+
+        return new Complex(
+            2.0 * Math.exp(-2.0 * x.im) * Math.sin(2.0 * x.re) / den,
+            (Math.exp(-4.0 * x.im) - 1.0) / den
+        );
+    }
+
+    if (x instanceof Unit) {
+        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+            throw new TypeError ('Unit in function cot is no angle');
+        }
+        return 1 / Math.tan(x.value);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.cot);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.cot(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('cot', x);
+};
+
+/**
+ * Calculate the cosecant of a value, csc(x) = 1/sin(x)
+ *
+ *     csc(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Unit | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.csc = function csc(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('csc', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return 1 / Math.sin(x);
+    }
+
+    if (x instanceof Complex) {
+        // csc(z) = 1/sin(z) = (2i) / (exp(iz) - exp(-iz))
+        var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) -
+            0.5 * Math.cos(2.0 * x.re);
+
+        return new Complex (
+            0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp(x.im)) / den,
+            0.5 * Math.cos(x.re) * (Math.exp(-x.im) - Math.exp(x.im)) / den
+        );
+    }
+
+    if (x instanceof Unit) {
+        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+            throw new TypeError ('Unit in function csc is no angle');
+        }
+        return 1 / Math.sin(x.value);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.csc);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.csc(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('csc', x);
+};
+
+/**
+ * Calculate the secant of a value, sec(x) = 1/cos(x)
+ *
+ *     sec(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Unit | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ */
+math.sec = function sec(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sec', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return 1 / Math.cos(x);
+    }
+
+    if (x instanceof Complex) {
+        // sec(z) = 1/cos(z) = 2 / (exp(iz) + exp(-iz))
+        var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) +
+            0.5 * Math.cos(2.0 * x.re);
+        return new Complex(
+            0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp( x.im)) / den,
+            0.5 * Math.sin(x.re) * (Math.exp( x.im) - Math.exp(-x.im)) / den
+        );
+    }
+
+    if (x instanceof Unit) {
+        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+            throw new TypeError ('Unit in function sec is no angle');
+        }
+        return 1 / Math.cos(x.value);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.sec);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.sec(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('sec', x);
+};
+
+/**
+ * Calculate the sine of a value
+ *
+ *     sin(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Unit | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/Sine.html
+ */
+math.sin = function sin(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('sin', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.sin(x);
+    }
+
+    if (x instanceof Complex) {
+        return new Complex(
+            0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp( x.im)),
+            0.5 * Math.cos(x.re) * (Math.exp( x.im) - Math.exp(-x.im))
+        );
+    }
+
+    if (x instanceof Unit) {
+        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+            throw new TypeError ('Unit in function cos is no angle');
+        }
+        return Math.sin(x.value);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.sin);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.sin(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('sin', x);
+};
+
+/**
+ * Calculate the tangent of a value
+ *
+ *     tan(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Number | Complex | Unit | Array | Matrix} x
+ * @return {Number | Complex | Array | Matrix} res
+ *
+ * @see http://mathworld.wolfram.com/Tangent.html
+ */
+math.tan = function tan(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('tan', arguments.length, 1);
+    }
+
+    if (isNumber(x)) {
+        return Math.tan(x);
+    }
+
+    if (x instanceof Complex) {
+        var den = Math.exp(-4.0 * x.im) +
+            2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) +
+            1.0;
+
+        return new Complex(
+             2.0 * Math.exp(-2.0 * x.im) * Math.sin(2.0 * x.re) / den,
+            (1.0 - Math.exp(-4.0 * x.im)) / den
+        );
+    }
+
+    if (x instanceof Unit) {
+        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+            throw new TypeError ('Unit in function tan is no angle');
+        }
+        return Math.tan(x.value);
+    }
+
+    if (x instanceof Array || x instanceof Matrix) {
+        return util.map(x, math.tan);
+    }
+
+    if (x.valueOf() !== x) {
+        // fallback on the objects primitive value
+        return math.tan(x.valueOf());
+    }
+
+    throw newUnsupportedTypeError('tan', x);
+};
+
+/**
+ * Change the unit of a value.
+ *
+ *     x in unit
+ *     in(x, unit)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
+ * @param {Unit | Array | Matrix} x
+ * @param {Unit | Array | Matrix} unit
+ * @return {Unit | Array | Matrix} res
+ */
+math['in'] = function unit_in(x, unit) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('in', arguments.length, 2);
+    }
+
+    if (x instanceof Unit) {
+        if (unit instanceof Unit || isString(unit)) {
+            return x.in(unit);
+        }
+    }
+
+    if (x instanceof Array || x instanceof Matrix ||
+        unit instanceof Array || unit instanceof Matrix) {
+        return util.map2(x, unit, math['in']);
+    }
+
+    if (x.valueOf() !== x || unit.valueOf() !== unit) {
+        // fallback on the objects primitive value
+        return math['in'](x.valueOf(), unit.valueOf());
+    }
+
+    throw newUnsupportedTypeError('in', x, unit);
+};
+
+/**
+ * Clone an object
+ *
+ *     clone(x)
+ *
+ * @param {*} x
+ * @return {*} clone
+ */
+math.clone = function clone(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('clone', arguments.length, 1);
+    }
+
+    if (x == null) {
+        // null or undefined
+        return x;
+    }
+
+    if (typeof(x.clone) === 'function') {
+        return x.clone();
+    }
+
+    if (isNumber(x) || isString(x) || isBoolean(x)) {
+        return x;
+    }
+
+    if (x instanceof Array) {
+        var c = math.clone;
+        return x.map(function (value) {
+            return c(value);
+        });
+    }
+
+    if (x instanceof Object) {
+        return util.mapObject(x, math.clone);
+    }
+
+    throw newUnsupportedTypeError('clone', x);
+};
+
+/**
+ * Evaluate an expression. The expression will be evaluated using a read-only
+ * instance of a Parser (i.e. variable definitions are not supported).
+ *
+ *     eval(expr)
+ *     eval([expr1, expr2, expr3, ...])
+ *
+ * @param {String | Array | Matrix} expr
+ * @return {*} res
+ */
+math.eval = function eval(expr) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('eval', arguments.length, 1);
+    }
+
+    if (isString(expr)) {
+        return _readonlyParser.eval(expr);
+    }
+
+    if (expr instanceof Array || expr instanceof Matrix) {
+        return util.map(expr, math.eval);
+    }
+
+    throw new TypeError('String or matrix expected');
+};
+
+/** @private */
+var _readonlyParser = new math.expr.Parser({
+    readonly: true
+});
+
+/**
+ * Format a value of any type into a string. Interpolate values into the string.
+ * Numbers are rounded off to a maximum number of 5 digits by default.
+ * Usage:
+ *     math.format(value)
+ *     math.format(template, object)
+ *
+ * Example usage:
+ *     math.format(2/7);                // '0.28571'
+ *     math.format(new Complex(2, 3));  // '2 + 3i'
+ *     math.format('Hello $name! The date is $date', {
+ *         name: 'user',
+ *         date: new Date().toISOString().substring(0, 10)
+ *     });                              // 'hello user! The date is 2013-03-23'
+ *
+ * @param {String} template
+ * @param {Object} values
+ * @return {String} str
+ */
+math.format = function format(template, values) {
+    var num = arguments.length;
+    if (num != 1 && num != 2) {
+        throw newArgumentsError('format', num, 1, 2);
+    }
+
+    if (num == 1) {
+        // just format a value as string
+        var value = arguments[0];
+        if (isNumber(value)) {
+            return util.formatNumber(value);
+        }
+
+        if (value instanceof Array) {
+            return util.formatArray(value);
+        }
+
+        if (isString(value)) {
+            return '"' + value + '"';
+        }
+
+        if (value instanceof Object) {
+            return value.toString();
+        }
+
+        return String(value);
+    }
+    else {
+        if (!isString(template)) {
+            throw new TypeError('String expected as first parameter in function format');
+        }
+        if (!(values instanceof Object)) {
+            throw new TypeError('Object expected as first parameter in function format');
+        }
+
+        // format values into a string
+        return template.replace(/\$([\w\.]+)/g, function (original, key) {
+                var keys = key.split('.');
+                var value = values[keys.shift()];
+                while (keys.length && value != undefined) {
+                    var k = keys.shift();
+                    value = k ? value[k] : value + '.';
+                }
+                return value != undefined ? value : original;
+            }
+        );
+    }
+};
+
+/**
+ * Import functions from an object or a file
+ * @param {function | String | Object} object
+ * @param {Object} [options]        Available options:
+ *                                  {Boolean} override
+ *                                  If true, existing functions will be
+ *                                  overwritten. False by default.
+ */
+// TODO: return status information
+math['import'] = function math_import(object, options) {
+    var name;
+    var opts = {
+        override: false
+    };
+    if (options && options instanceof Object) {
+        util.extend(opts, options);
+    }
+
+    if (isString(object)) {
+        // a string with a filename
+        if (typeof (require) !== 'undefined') {
+            // load the file using require
+            var _module = require(object);
+            math['import'](_module);
+        }
+        else {
+            throw new Error('Cannot load file: require not available.');
+        }
+    }
+    else if (isSupportedType(object)) {
+        // a single function
+        name = object.name;
+        if (name) {
+            if (opts.override || math[name] === undefined) {
+                _import(name, object);
+            }
+        }
+        else {
+            throw new Error('Cannot import an unnamed function or object');
+        }
+    }
+    else if (object instanceof Object) {
+        // a map with functions
+        for (name in object) {
+            if (object.hasOwnProperty(name)) {
+                var value = object[name];
+                if (isSupportedType(value)) {
+                    if (opts.override || math[name] === undefined) {
+                        _import(name, value);
+                    }
+                }
+                else {
+                    math['import'](value);
+                }
+            }
+        }
+    }
+};
+
+/**
+ * Add a property to the math namespace and create a chain proxy for it.
+ * @param {String} name
+ * @param {*} value
+ * @private
+ */
+function _import(name, value) {
+    // add to math namespace
+    math[name] = value;
+
+    // create a proxy for the Selector
+    createSelectorProxy(name, value);
+}
+
+/**
+ * Check whether given object is a supported type
+ * @param object
+ * @return {Boolean}
+ * @private
+ */
+function isSupportedType(object) {
+    return (typeof object == 'function') ||
+        isNumber(object) || isString(object) ||
+        (object instanceof Complex) || (object instanceof Unit);
+    // TODO: add boolean?
+}
+
+/**
+ * Wrap any value in a Selector, allowing to perform chained operations on
+ * the value.
+ *
+ * All methods available in the math.js library can be called upon the selector,
+ * and then will be evaluated with the value itself as first argument.
+ * The selector can be closed by executing selector.done(), which will return
+ * the final value.
+ *
+ * Example usage:
+ *     math.select(3)
+ *         .add(4)
+ *         .subtract(2)
+ *         .done();     // 5
+ *     math.select( [[1, 2], [3, 4]] )
+ *         .set([1, 1], 8)
+ *         .multiply(3)
+ *         .done();     // [[24, 6], [9, 12]]
+ *
+ * The Selector has a number of special functions:
+ * - done()     Finalize the chained operation and return the selectors value.
+ * - valueOf()  The same as done()
+ * - toString() Executes math.format() onto the selectors value, returning
+ *              a string representation of the value.
+ * - get(...)   Get a subselection of the selectors value. Only applicable when
+ *              the value has a method get, for example when value is a Matrix
+ *              or Array.
+ * - set(...)   Replace a subselection of the selectors value. Only applicable
+ *              when the value has a method get, for example when value is a
+ *              Matrix or Array.
+ *
+ * @param {*} value
+ * @return {math.type.Selector} selector
+ */
+math.select = function select(value) {
+    return new math.type.Selector(value);
+};
+
+/**
+ * Determine the type of a variable
+ *
+ *     typeof(x)
+ *
+ * @param {*} x
+ * @return {String} type  Lower case type, for example "number", "string",
+ *                        "array".
+ */
+math['typeof'] = function math_typeof(x) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('typeof', arguments.length, 1);
+    }
+
+    var type = typeof x,
+        name;
+
+    if (type == 'object') {
+        if (x == null) {
+            return 'null';
+        }
+        if (x instanceof Boolean) {
+            return 'boolean';
+        }
+        if (x instanceof Number) {
+            return 'number';
+        }
+        if (x instanceof String) {
+            return 'string';
+        }
+        if (x instanceof Array) {
+            return 'array';
+        }
+        if (x instanceof Date) {
+            return 'date';
+        }
+        if (x.constructor) {
+            // search functions / constants
+            for (name in math) {
+                if (math.hasOwnProperty(name)) {
+                    if (x.constructor == math[name]) {
+                        return name.toLowerCase();
+                    }
+                }
+            }
+
+            // search data types
+            for (name in math.type) {
+                if (math.type.hasOwnProperty(name)) {
+                    if (x.constructor == math.type[name]) {
+                        return name.toLowerCase();
+                    }
+                }
+            }
+
+            // try the constructors name as last resort
+            if (x.constructor.name) {
+                return x.constructor.name.toLowerCase();
+            }
+        }
+    }
+
+    return type;
+};
+
 /**
  * Backward compatibility stuff
  */

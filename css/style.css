@@ -29,14 +29,16 @@ body {
 }
 
 #likes {
-    margin: 60px 0 20px 0;
+    width: 600px;
     height: 26px;
+    margin: 60px auto 20px auto;
+    padding: 0;
     overflow: visible;
 }
 
 div.like {
     float: left;
-    width: 135px;
+    width: 120px;
     height: 26px;
 }
 
@@ -84,7 +86,7 @@ pre code,
 }
 
 #example {
-    overflow: auto;
+    overflow: visible;
     width: 100%;
 
     border: 1px solid #e5e5e5;
@@ -121,6 +123,10 @@ pre code,
 h1 {
     font-size: 120%;
     margin-top: 20px;
+}
+
+p {
+    max-width: 600px;
 }
 
 ul {
