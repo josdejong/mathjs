@@ -1,6 +1,10 @@
 /**
- * Compute the maximum value of a list of values, max(a, b, c, ...)
- * @param {... *} args  one or multiple arguments
+ * Compute the maximum value of a list of values
+ *
+ *     max(a, b, c, ...)
+ *     max([a, b, c, ...])
+ *
+ * @param {... *} args  A single matrix or or multiple scalar values
  * @return {*} res
  */
 math.max = function max(args) {

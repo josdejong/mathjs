@@ -29,7 +29,7 @@ Or using [bower](http://twitter.github.io/bower/):
 
     bower install mathjs
 
-Or the latest version of math.js can be downloaded from
+Or by downloading the latest version from
 [mathjs.org](http://mathjs.org/#install_or_download):
 
 - [math.js](http://mathjs.org/js/lib/math.js) (Development version)
@@ -88,7 +88,7 @@ Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate expressions (see [Expressions](#expressions)) and supports
 chained operations (see [Chained operations](#chained-operations)).
 
-Here some example code. More can be found in the
+The example code below shows how to use math.js. More examples can be found in the
 [examples directory](https://github.com/josdejong/mathjs/tree/master/examples/).
 
 ```js

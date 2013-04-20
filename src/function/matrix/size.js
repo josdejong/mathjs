@@ -1,5 +1,8 @@
 /**
- * Calculate the size of a matrix. size(x)
+ * Calculate the size of a matrix or scalar
+ *
+ *     size(x)
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */

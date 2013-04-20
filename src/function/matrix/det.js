@@ -1,6 +1,9 @@
 /**
  * @constructor det
- * Calculate the determinant of a matrix, det(x)
+ * Calculate the determinant of a matrix
+ *
+ *     det(x)
+ *
  * @param {Array | Matrix} x
  * @return {Number} determinant
  */

@@ -1,9 +1,14 @@
 /**
  * Calculate the least common multiple for two or more values or arrays.
+ *
  *     lcm(a, b)
  *     lcm(a, b, c, ...)
+ *
  * lcm is defined as:
  *     lcm(a, b) = abs(a * b) / gcd(a, b)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {... Number | Array | Matrix} args    two or more integer numbers
  * @return {Number | Array | Matrix} least common multiple
  */

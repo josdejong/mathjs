@@ -1,5 +1,10 @@
 /**
- * Calculate the 10-base logarithm of a value, log10(x)
+ * Calculate the 10-base logarithm of a value
+ *
+ *     log10(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */

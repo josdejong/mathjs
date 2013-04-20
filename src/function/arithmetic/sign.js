@@ -1,6 +1,11 @@
 /**
  * Compute the sign of a value.
- * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
+ *
+ *     sign(x)
+ *
+ * The sign of a value x is 1 when x > 1, -1 when x < 0, and 0 when x == 0
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */

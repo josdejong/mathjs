@@ -1,12 +1,11 @@
 /**
- * Calculate the extended greatest common divisor for two or
- * more values.
+ * Calculate the extended greatest common divisor for two values.
  *
  *     xgcd(a, b)
  *
  * @param {Number} a       An integer number
  * @param {Number} b       An integer number
- * @return {Array}         an array containing 3 integers [div, m, n]
+ * @return {Array}         An array containing 3 integers [div, m, n]
  *                         where div = gcd(a, b) and a*m + b*n = div
  *
  * @see http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm

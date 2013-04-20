@@ -1,5 +1,8 @@
 /**
- * Calculate the square root of a value
+ * Determine the type of a variable
+ *
+ *     typeof(x)
+ *
  * @param {*} x
  * @return {String} type  Lower case type, for example "number", "string",
  *                        "array".

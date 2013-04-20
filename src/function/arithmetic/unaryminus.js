@@ -1,5 +1,11 @@
 /**
- * Inverse the sign of a value. -x or unaryminus(x)
+ * Inverse the sign of a value.
+ *
+ *     -x
+ *     unaryminus(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param  {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Unit | Array | Matrix} res
  */

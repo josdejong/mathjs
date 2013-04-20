@@ -1,5 +1,10 @@
 /**
- * Round a value towards plus infinity, ceil(x)
+ * Round a value towards plus infinity
+ *
+ *     ceil(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */

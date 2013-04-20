@@ -3,6 +3,8 @@
  *
  *     atan2(y, x)
  *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} y
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res

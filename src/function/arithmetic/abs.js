@@ -1,5 +1,10 @@
 /**
- * Calculate the absolute value of a value
+ * Calculate the absolute value of a value.
+ *
+ *     abs(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */

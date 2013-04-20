@@ -1,5 +1,8 @@
 /**
- * Remove singleton dimensions from a matrix. squeeze(x)
+ * Remove singleton dimensions from a matrix
+ *
+ *     squeeze(x)
+ *
  * @param {Matrix | Array} x
  * @return {Matrix | Array} res
  */

@@ -1,7 +1,12 @@
 /**
- * Calculate the logarithm of a value, log(x [, base])
- * base is optional. If not provided, the natural logarithm of x is calculated
- * logarithm for any base, like log(x, base)
+ * Calculate the logarithm of a value
+ *
+ *     log(x)
+ *     log(x, base)
+ *
+ * base is optional. If not provided, the natural logarithm of x is calculated.
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @param {Number | Complex} [base]
  * @return {Number | Complex | Array | Matrix} res

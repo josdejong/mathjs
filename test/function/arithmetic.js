@@ -52,6 +52,11 @@ assert.deepEqual(a5.size(), [2,2]);
 assert.deepEqual(a5.valueOf(), [[7,10],[15,22]]);
 
 // TODO: test ceil
+
+// test cube
+assert.equal(math.cube(4), 64);
+assert.deepEqual(math.cube(math.complex('2i')), math.complex('-8i'));
+assert.deepEqual(math.cube([2,3,4,5]), [8,27,64,125]);
 // TODO: test cube
 
 // test divide
@@ -201,8 +206,12 @@ assert.deepEqual(math.sqrt([4,9,16,25]), [2,3,4,5]);
 assert.deepEqual(math.sqrt([[4,9],[16,25]]), [[2,3],[4,5]]);
 
 
+// test square
+assert.equal(math.square(4), 16);
+assert.equal(math.square(math.complex('2i')), -4);
+assert.deepEqual(math.square([2,3,4,5]), [4,9,16,25]);
+assert.deepEqual(math.square([[2,3],[4,5]]), [[4,9],[16,25]]);
 // TODO: test square
-
 
 // test subtract
 assert.deepEqual(math.subtract(4, 2), 2);

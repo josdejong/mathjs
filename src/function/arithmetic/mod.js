@@ -1,5 +1,11 @@
 /**
  * Calculates the modulus, the remainder of an integer division.
+ *
+ *     x % y
+ *     mod(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param  {Number | Complex | Array | Matrix} x
  * @param  {Number | Complex | Array | Matrix} y
  * @return {Number | Array | Matrix} res

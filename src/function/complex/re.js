@@ -1,5 +1,10 @@
 /**
  * Get the real part of a complex number.
+ *
+ *     re(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} re
  */

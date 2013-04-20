@@ -1,6 +1,8 @@
 /**
- * @constructor transpose
- * Calculate the determinant of a matrix, transpose(x)
+ * Create the transpose of a matrix
+ *
+ *     transpose(x)
+ *
  * @param {Array | Matrix} x
  * @return {Array | Matrix} transpose
  */

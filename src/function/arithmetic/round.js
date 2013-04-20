@@ -1,5 +1,11 @@
 /**
- * Round a value towards the nearest integer, round(x [, n])
+ * Round a value towards the nearest integer
+ *
+ *     round(x)
+ *     round(x, n)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @param {Number | Array} [n] number of decimals (by default n=0)
  * @return {Number | Complex | Array | Matrix} res

@@ -1,5 +1,10 @@
 /**
  * Get the imaginary part of a complex number.
+ *
+ *     im(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} im
  */

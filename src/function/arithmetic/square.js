@@ -1,5 +1,11 @@
 /**
- * Compute the square of a value, x * x
+ * Compute the square of a value
+ *
+ *     x .* x
+ *     square(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -17,7 +23,7 @@ math.square = function square(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix) {
-        return math.multiply(x, x);
+        return util.map(x, math.square);
     }
 
     if (x.valueOf() !== x) {

@@ -1,6 +1,8 @@
 /**
  * Create a workspace. The function creates a new math.expr.Workspace object.
  *
+ *     workspace()
+ *
  * Workspace manages a set of expressions. Expressions can be added, replace,
  * deleted, and inserted in the workspace. The workspace keeps track on the
  * dependencies between the expressions, and automatically updates results of

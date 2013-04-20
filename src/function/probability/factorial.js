@@ -1,5 +1,12 @@
 /**
- * Compute the factorial of a value, factorial(x) or x!
+ * Compute the factorial of a value
+ *
+ *     x!
+ *     factorial(x)
+ *
+ * Factorial only supports an integer value as argument.
+ * For matrices, the function is evaluated element wise.
+ *
  * @Param {Number | Array | Matrix} x
  * @return {Number | Array | Matrix} res
  */

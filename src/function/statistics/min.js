@@ -1,6 +1,10 @@
 /**
- * Compute the minimum value of a list of values, min(a, b, c, ...)
- * @param {... *} args  one or multiple arguments
+ * Compute the minimum value of a list of values
+ *
+ *     min(a, b, c, ...)
+ *     min([a, b, c, ...])
+ *
+ * @param {... *} args  A single matrix or multiple scalars
  * @return {*} res
  */
 math.min = function min(args) {

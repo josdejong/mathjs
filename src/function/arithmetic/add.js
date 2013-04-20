@@ -1,5 +1,11 @@
 /**
- * Add two values. x + y or add(x, y)
+ * Add two values
+ *
+ *     x + y
+ *     add(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Number | Complex | Unit | String | Array | Matrix} res

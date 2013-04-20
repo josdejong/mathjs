@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.7.0-SNAPSHOT
- * @date    2013-04-18
+ * @date    2013-04-20
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -817,15 +817,6 @@ var util = (function () {
             }
 
             return false;
-        };
-    }
-
-    // Internet Explorer 8 and older does not support Array.isArray,
-    // so we define it here in that case.
-    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/isArray
-    if(!Array.isArray) {
-        Array.isArray = function (vArg) {
-            return Object.prototype.toString.call(vArg) === "[object Array]";
         };
     }
 
@@ -5695,7 +5686,12 @@ math.expr.Scope.prototype = {
 
 })();
 /**
- * Calculate the absolute value of a value
+ * Calculate the absolute value of a value.
+ *
+ *     abs(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -5725,7 +5721,13 @@ math.abs = function abs(x) {
 };
 
 /**
- * Add two values. x + y or add(x, y)
+ * Add two values
+ *
+ *     x + y
+ *     add(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Number | Complex | Unit | String | Array | Matrix} res
@@ -5803,7 +5805,12 @@ math.add = function add(x, y) {
 };
 
 /**
- * Round a value towards plus infinity, ceil(x)
+ * Round a value towards plus infinity
+ *
+ *     ceil(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -5836,7 +5843,13 @@ math.ceil = function ceil(x) {
 };
 
 /**
- * Compute the cube of a value, x * x * x.',
+ * Compute the cube of a value
+ *
+ *     x .* x .* x
+ *     cube(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -5854,7 +5867,7 @@ math.cube = function cube(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix) {
-        return math.multiply(math.multiply(x, x), x);
+        return util.map(x, math.cube);
     }
 
     if (x.valueOf() !== x) {
@@ -5866,7 +5879,11 @@ math.cube = function cube(x) {
 };
 
 /**
- * Divide two values. x / y or divide(x, y)
+ * Divide two values.
+ *
+ *     x / y
+ *     divide(x, y)
+ *
  * @param  {Number | Complex | Unit | Array | Matrix} x
  * @param  {Number | Complex} y
  * @return {Number | Complex | Unit | Array | Matrix} res
@@ -5949,8 +5966,14 @@ function _divideComplex (x, y) {
 }
 
 /**
- * Check if value x equals y, x == y
+ * Check if value x equals y,
+ *
+ *     x == y
+ *     equal(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
  * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
@@ -6002,7 +6025,12 @@ math.equal = function equal(x, y) {
 };
 
 /**
- * Calculate the exponent of a value, exp(x)
+ * Calculate the exponent of a value
+ *
+ *     exp(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -6035,7 +6063,12 @@ math.exp = function exp (x) {
 };
 
 /**
- * Round a value towards zero, fix(x)
+ * Round a value towards zero
+ *
+ *     fix(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -6068,7 +6101,12 @@ math.fix = function fix(x) {
 };
 
 /**
- * Round a value towards minus infinity, floor(x)
+ * Round a value towards minus infinity
+ *
+ *     floor(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -6102,8 +6140,12 @@ math.floor = function floor(x) {
 
 /**
  * Calculate the greatest common divisor for two or more values or arrays.
+ *
  *     gcd(a, b)
  *     gcd(a, b, c, ...)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {... Number | Array | Matrix} args    two or more integer numbers
  * @return {Number | Array | Matrix} greatest common divisor
  */
@@ -6155,8 +6197,14 @@ math.gcd = function gcd(args) {
 };
 
 /**
- * Check if value x is larger y, x > y
+ * Check if value x is larger y
+ *
+ *    x > y
+ *    larger(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
  * In case of complex numbers, the absolute values of a and b are compared.
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
@@ -6208,8 +6256,14 @@ math.larger = function larger(x, y) {
 };
 
 /**
- * Check if value x is larger or equal to y, x >= y
+ * Check if value x is larger or equal to y
+ *
+ *     x >= y
+ *     largereq(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
  * In case of complex numbers, the absolute values of a and b are compared.
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
@@ -6262,10 +6316,15 @@ math.largereq = function largereq(x, y) {
 
 /**
  * Calculate the least common multiple for two or more values or arrays.
+ *
  *     lcm(a, b)
  *     lcm(a, b, c, ...)
+ *
  * lcm is defined as:
  *     lcm(a, b) = abs(a * b) / gcd(a, b)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {... Number | Array | Matrix} args    two or more integer numbers
  * @return {Number | Array | Matrix} least common multiple
  */
@@ -6319,9 +6378,14 @@ math.lcm = function lcm(args) {
 };
 
 /**
- * Calculate the logarithm of a value, log(x [, base])
- * base is optional. If not provided, the natural logarithm of x is calculated
- * logarithm for any base, like log(x, base)
+ * Calculate the logarithm of a value
+ *
+ *     log(x)
+ *     log(x, base)
+ *
+ * base is optional. If not provided, the natural logarithm of x is calculated.
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @param {Number | Complex} [base]
  * @return {Number | Complex | Array | Matrix} res
@@ -6368,7 +6432,12 @@ math.log = function log(x, base) {
 };
 
 /**
- * Calculate the 10-base logarithm of a value, log10(x)
+ * Calculate the 10-base logarithm of a value
+ *
+ *     log10(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -6408,6 +6477,12 @@ math.log10 = function log10(x) {
 
 /**
  * Calculates the modulus, the remainder of an integer division.
+ *
+ *     x % y
+ *     mod(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param  {Number | Complex | Array | Matrix} x
  * @param  {Number | Complex | Array | Matrix} y
  * @return {Number | Array | Matrix} res
@@ -6454,7 +6529,11 @@ math.mod = function mod(x, y) {
 };
 
 /**
- * Multiply two values. x * y or multiply(x, y)
+ * Multiply two values.
+ *
+ *     x * y
+ *     multiply(x, y)
+ *
  * @param  {Number | Complex | Unit | Array | Matrix} x
  * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res
@@ -6582,7 +6661,11 @@ function _multiplyComplex (x, y) {
 }
 
 /**
- * Calculates the power of x to y, x^y
+ * Calculates the power of x to y
+ *
+ *     x ^ y
+ *     pow(x, y)
+ *
  * @param  {Number | Complex | Array | Matrix} x
  * @param  {Number | Complex} y
  * @return {Number | Complex | Array | Matrix} res
@@ -6671,7 +6754,13 @@ function powComplex (x, y) {
 }
 
 /**
- * Round a value towards the nearest integer, round(x [, n])
+ * Round a value towards the nearest integer
+ *
+ *     round(x)
+ *     round(x, n)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @param {Number | Array} [n] number of decimals (by default n=0)
  * @return {Number | Complex | Array | Matrix} res
@@ -6761,7 +6850,12 @@ function roundNumber (value, decimals) {
 
 /**
  * Compute the sign of a value.
- * The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.
+ *
+ *     sign(x)
+ *
+ * The sign of a value x is 1 when x > 1, -1 when x < 0, and 0 when x == 0
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -6802,8 +6896,14 @@ math.sign = function sign(x) {
 };
 
 /**
- * Check if value x is smaller y, x < y
+ * Check if value x is smaller y
+ *
+ *     x < y
+ *     smaller(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
  * In case of complex numbers, the absolute values of a and b are compared.
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
@@ -6855,8 +6955,14 @@ math.smaller = function smaller(x, y) {
 };
 
 /**
- * Check if value a is smaller or equal to b, a <= b
+ * Check if value a is smaller or equal to b
+ *
+ *     a <= b
+ *     smallereq(a, b)
+ *
+ * For matrices, the function is evaluated element wise.
  * In case of complex numbers, the absolute values of a and b are compared.
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
@@ -6909,6 +7015,11 @@ math.smallereq = function smallereq(x, y) {
 
 /**
  * Calculate the square root of a value
+ *
+ *     sqrt(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -6955,7 +7066,13 @@ math.sqrt = function sqrt (x) {
 };
 
 /**
- * Compute the square of a value, x * x
+ * Compute the square of a value
+ *
+ *     x .* x
+ *     square(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -6973,7 +7090,7 @@ math.square = function square(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix) {
-        return math.multiply(x, x);
+        return util.map(x, math.square);
     }
 
     if (x.valueOf() !== x) {
@@ -6985,7 +7102,13 @@ math.square = function square(x) {
 };
 
 /**
- * Subtract two values. x - y or subtract(x, y)
+ * Subtract two values
+ *
+ *     x - y
+ *     subtract(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param  {Number | Complex | Unit | Array | Matrix} x
  * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res
@@ -7060,7 +7183,13 @@ math.subtract = function subtract(x, y) {
 };
 
 /**
- * Inverse the sign of a value. -x or unaryminus(x)
+ * Inverse the sign of a value.
+ *
+ *     -x
+ *     unaryminus(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param  {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
@@ -7097,8 +7226,14 @@ math.unaryminus = function unaryminus(x) {
 };
 
 /**
- * Check if value x unequals y, x != y
+ * Check if value x unequals y
+ *
+ *     x != y
+ *     unequal(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
  * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
@@ -7151,14 +7286,13 @@ math.unequal = function unequal(x, y) {
 };
 
 /**
- * Calculate the extended greatest common divisor for two or
- * more values.
+ * Calculate the extended greatest common divisor for two values.
  *
  *     xgcd(a, b)
  *
  * @param {Number} a       An integer number
  * @param {Number} b       An integer number
- * @return {Array}         an array containing 3 integers [div, m, n]
+ * @return {Array}         An array containing 3 integers [div, m, n]
  *                         where div = gcd(a, b) and a*m + b*n = div
  *
  * @see http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
@@ -7192,7 +7326,12 @@ math.xgcd = function xgcd(a, b) {
 
 /**
  * Compute the argument of a complex value.
- * If x = a+bi, the argument is computed as atan2(b, a).
+ * If x = a + bi, the argument is computed as atan2(b, a).
+ *
+ *     arg(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} res
  */
@@ -7225,6 +7364,11 @@ math.arg = function arg(x) {
 /**
  * Compute the complex conjugate of a complex value.
  * If x = a+bi, the complex conjugate is a-bi.
+ *
+ *     conj(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -7256,6 +7400,11 @@ math.conj = function conj(x) {
 
 /**
  * Get the imaginary part of a complex number.
+ *
+ *     im(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} im
  */
@@ -7287,6 +7436,11 @@ math.im = function im(x) {
 
 /**
  * Get the real part of a complex number.
+ *
+ *     re(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} re
  */
@@ -7379,7 +7533,6 @@ math.complex = function complex(args) {
  *     matrix(data)   creates a matrix with initial data.
  *
  * Example usage:
- * Example usage:
  *     var m = matrix([[1, 2], [3, 4]);
  *     m.size();                        // [2, 2]
  *     m.resize([3, 2], 5);
@@ -7400,34 +7553,36 @@ math.matrix = function matrix(data) {
 /**
  * Create a parser. The function creates a new math.expr.Parser object.
  *
+ *    parser()
+ *
  * Example usage:
- *    var parser = new math.parser();
+ *     var parser = new math.parser();
  *
- *    // evaluate expressions
- *    var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
- *    var b = parser.eval('sqrt(-4)');        // 2i
- *    var c = parser.eval('2 inch in cm');    // 5.08 cm
- *    var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
+ *     // evaluate expressions
+ *     var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
+ *     var b = parser.eval('sqrt(-4)');        // 2i
+ *     var c = parser.eval('2 inch in cm');    // 5.08 cm
+ *     var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
  *
- *    // define variables and functions
- *    parser.eval('x = 7 / 2');               // 3.5
- *    parser.eval('x + 3');                   // 6.5
- *    parser.eval('function f(x, y) = x^y');  // f(x, y)
- *    parser.eval('f(2, 3)');                 // 8
+ *     // define variables and functions
+ *     parser.eval('x = 7 / 2');               // 3.5
+ *     parser.eval('x + 3');                   // 6.5
+ *     parser.eval('function f(x, y) = x^y');  // f(x, y)
+ *     parser.eval('f(2, 3)');                 // 8
  *
- *    // get and set variables and functions
- *    var x = parser.get('x');                // 7
- *    var f = parser.get('f');                // function
- *    var g = f(3, 2);                        // 9
- *    parser.set('h', 500);
- *    var i = parser.eval('h / 2');           // 250
- *    parser.set('hello', function (name) {
- *        return 'hello, ' + name + '!';
- *    });
- *    parser.eval('hello("user")');           // "hello, user!"
+ *     // get and set variables and functions
+ *     var x = parser.get('x');                // 7
+ *     var f = parser.get('f');                // function
+ *     var g = f(3, 2);                        // 9
+ *     parser.set('h', 500);
+ *     var i = parser.eval('h / 2');           // 250
+ *     parser.set('hello', function (name) {
+ *         return 'hello, ' + name + '!';
+ *     });
+ *     parser.eval('hello("user")');           // "hello, user!"
  *
- *    // clear defined functions and variables
- *    parser.clear();
+ *     // clear defined functions and variables
+ *     parser.clear();
  *
  * @return {math.expr.Parser} Parser
  */
@@ -7544,6 +7699,8 @@ math.unit = function unit(args) {
 
 /**
  * Create a workspace. The function creates a new math.expr.Workspace object.
+ *
+ *     workspace()
  *
  * Workspace manages a set of expressions. Expressions can be added, replace,
  * deleted, and inserted in the workspace. The workspace keeps track on the
@@ -7682,7 +7839,10 @@ function _concat(a, b, concatDim, dim) {
 
 /**
  * @constructor det
- * Calculate the determinant of a matrix, det(x)
+ * Calculate the determinant of a matrix
+ *
+ *     det(x)
+ *
  * @param {Array | Matrix} x
  * @return {Number} determinant
  */
@@ -7798,10 +7958,14 @@ function _minor(matrix, rows, cols, row, col) {
 
 /**
  * Create a diagonal matrix or retrieve the diagonal of a matrix
- * diag(v)
- * diag(v, k)
- * diag(X)
- * diag(X, k)
+ *
+ *     diag(v)
+ *     diag(v, k)
+ *     diag(X)
+ *     diag(X, k)
+ *
+ * TODO: more documentation on diag
+ *
  * @param {Number | Matrix | Array} x
  * @param {Number} [k]
  * @return {Matrix} matrix
@@ -7870,7 +8034,13 @@ math.diag = function diag (x, k) {
 };
 
 /**
- * Create an identity matrix with size m x n, eye(m [, n])
+ * Create an identity matrix with size m x n
+ *
+ *     eye(m)
+ *     eye(m, n)
+ *
+ * TODO: more documentation on eye
+ *
  * @param {...Number | Matrix | Array} size
  * @return {Matrix} matrix
  */
@@ -7913,8 +8083,12 @@ math.eye = function eye (size) {
 };
 
 /**
- * @constructor inv
- * Calculate the inverse of a matrix, inv(x)
+ * Calculate the inverse of a matrix
+ *
+ *     inv(x)
+ *
+ * TODO: more documentation on inv
+ *
  * @param {Array | Matrix} x
  * @return {Array | Matrix} inv
  */
@@ -8092,12 +8266,13 @@ function _inv (matrix, rows, cols){
 }
 
 /**
- * @constructor ones
- * ones(n)
- * ones(m, n)
- * ones([m, n])
- * ones([m, n, p, ...])
- * returns a matrix filled with ones
+ * Create a matrix filled with ones
+ *
+ *     ones(n)
+ *     ones(m, n)
+ *     ones([m, n])
+ *     ones([m, n, p, ...])
+ *
  * @param {...Number | Array} size
  * @return {Matrix} matrix
  */
@@ -8119,7 +8294,10 @@ math.ones = function ones (size) {
 };
 
 /**
- * Calculate the size of a matrix. size(x)
+ * Calculate the size of a matrix or scalar
+ *
+ *     size(x)
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -8153,7 +8331,10 @@ math.size = function size (x) {
 };
 
 /**
- * Remove singleton dimensions from a matrix. squeeze(x)
+ * Remove singleton dimensions from a matrix
+ *
+ *     squeeze(x)
+ *
  * @param {Matrix | Array} x
  * @return {Matrix | Array} res
  */
@@ -8201,8 +8382,10 @@ function _squeezeArray(array) {
 }
 
 /**
- * @constructor transpose
- * Calculate the determinant of a matrix, transpose(x)
+ * Create the transpose of a matrix
+ *
+ *     transpose(x)
+ *
  * @param {Array | Matrix} x
  * @return {Array | Matrix} transpose
  */
@@ -8253,12 +8436,13 @@ math.transpose = function transpose (x) {
 };
 
 /**
- * @constructor zeros
- * zeros(n)
- * zeros(m, n)
- * zeros([m, n])
- * zeros([m, n, p, ...])
- * returns a matrix filled with zeros
+ * create a matrix filled with zeros
+ *
+ *     zeros(n)
+ *     zeros(m, n)
+ *     zeros([m, n])
+ *     zeros([m, n, p, ...])
+ *
  * @param {...Number | Array} size
  * @return {Matrix} matrix
  */
@@ -8279,7 +8463,14 @@ math.zeros = function zeros (size) {
 };
 
 /**
- * Compute the factorial of a value, factorial(x) or x!
+ * Compute the factorial of a value
+ *
+ *     x!
+ *     factorial(x)
+ *
+ * Factorial only supports an integer value as argument.
+ * For matrices, the function is evaluated element wise.
+ *
  * @Param {Number | Array | Matrix} x
  * @return {Number | Array | Matrix} res
  */
@@ -8322,6 +8513,9 @@ math.factorial = function factorial (x) {
 
 /**
  * Return a random number between 0 and 1
+ *
+ *     random()
+ *
  * @return {Number} res
  */
 math.random = function random () {
@@ -8334,8 +8528,12 @@ math.random = function random () {
 };
 
 /**
- * Compute the maximum value of a list of values, max(a, b, c, ...)
- * @param {... *} args  one or multiple arguments
+ * Compute the maximum value of a list of values
+ *
+ *     max(a, b, c, ...)
+ *     max([a, b, c, ...])
+ *
+ * @param {... *} args  A single matrix or or multiple scalar values
  * @return {*} res
  */
 math.max = function max(args) {
@@ -8428,8 +8626,12 @@ function _max2(array, rows, cols) {
 }
 
 /**
- * Compute the minimum value of a list of values, min(a, b, c, ...)
- * @param {... *} args  one or multiple arguments
+ * Compute the minimum value of a list of values
+ *
+ *     min(a, b, c, ...)
+ *     min([a, b, c, ...])
+ *
+ * @param {... *} args  A single matrix or multiple scalars
  * @return {*} res
  */
 math.min = function min(args) {
@@ -8526,6 +8728,8 @@ function _min2(array, rows, cols) {
  *
  *     acos(x)
  *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  *
@@ -8581,6 +8785,8 @@ math.acos = function acos(x) {
  * Calculate the inverse sine of a value
  *
  *     asin(x)
+ *
+ * For matrices, the function is evaluated element wise.
  *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
@@ -8638,6 +8844,8 @@ math.asin = function asin(x) {
  *
  *     atan(x)
  *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  *
@@ -8686,6 +8894,8 @@ math.atan = function atan(x) {
  * Computes the principal value of the arc tangent of y/x in radians
  *
  *     atan2(y, x)
+ *
+ * For matrices, the function is evaluated element wise.
  *
  * @param {Number | Complex | Array | Matrix} y
  * @param {Number | Complex | Array | Matrix} x
@@ -8737,6 +8947,8 @@ math.atan2 = function atan2(y, x) {
  *
  *     cos(x)
  *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  *
@@ -8779,7 +8991,12 @@ math.cos = function cos(x) {
 };
 
 /**
- * Calculate the cotangent of a value, cot(x) = 1/tan(x)
+ * Calculate the cotangent of a value. cot(x) is defined as 1 / tan(x)
+ *
+ *     cot(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -8823,6 +9040,11 @@ math.cot = function cot(x) {
 
 /**
  * Calculate the cosecant of a value, csc(x) = 1/sin(x)
+ *
+ *     csc(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -8867,6 +9089,11 @@ math.csc = function csc(x) {
 
 /**
  * Calculate the secant of a value, sec(x) = 1/cos(x)
+ *
+ *     sec(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -8913,6 +9140,8 @@ math.sec = function sec(x) {
  *
  *     sin(x)
  *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  *
@@ -8957,6 +9186,8 @@ math.sin = function sin(x) {
  * Calculate the tangent of a value
  *
  *     tan(x)
+ *
+ * For matrices, the function is evaluated element wise.
  *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
@@ -9003,7 +9234,13 @@ math.tan = function tan(x) {
 };
 
 /**
- * Change the unit of a value. x in unit or in(x, unit)
+ * Change the unit of a value.
+ *
+ *     x in unit
+ *     in(x, unit)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Unit | Array | Matrix} x
  * @param {Unit | Array | Matrix} unit
  * @return {Unit | Array | Matrix} res
@@ -9034,6 +9271,9 @@ math['in'] = function unit_in(x, unit) {
 
 /**
  * Clone an object
+ *
+ *     clone(x)
+ *
  * @param {*} x
  * @return {*} clone
  */
@@ -9072,6 +9312,9 @@ math.clone = function clone(x) {
 /**
  * Evaluate an expression. The expression will be evaluated using a read-only
  * instance of a Parser (i.e. variable definitions are not supported).
+ *
+ *     eval(expr)
+ *
  * @param {String} expr
  * @return {*} res
  */
@@ -9083,6 +9326,8 @@ math.eval = function eval(expr) {
     if (!isString(expr)) {
         throw new TypeError('String expected');
     }
+
+    // TODO: add support for matrices in function eval
 
     return _readonlyParser.eval(expr);
 };
@@ -9277,7 +9522,10 @@ math.select = function select(value) {
 };
 
 /**
- * Calculate the square root of a value
+ * Determine the type of a variable
+ *
+ *     typeof(x)
+ *
  * @param {*} x
  * @return {String} type  Lower case type, for example "number", "string",
  *                        "array".

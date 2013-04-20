@@ -1,6 +1,11 @@
 /**
  * Compute the argument of a complex value.
- * If x = a+bi, the argument is computed as atan2(b, a).
+ * If x = a + bi, the argument is computed as atan2(b, a).
+ *
+ *     arg(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} res
  */

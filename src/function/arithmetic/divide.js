@@ -1,5 +1,9 @@
 /**
- * Divide two values. x / y or divide(x, y)
+ * Divide two values.
+ *
+ *     x / y
+ *     divide(x, y)
+ *
  * @param  {Number | Complex | Unit | Array | Matrix} x
  * @param  {Number | Complex} y
  * @return {Number | Complex | Unit | Array | Matrix} res

@@ -1,5 +1,10 @@
 /**
- * Calculate the cotangent of a value, cot(x) = 1/tan(x)
+ * Calculate the cotangent of a value. cot(x) is defined as 1 / tan(x)
+ *
+ *     cot(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */

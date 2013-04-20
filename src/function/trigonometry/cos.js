@@ -3,6 +3,8 @@
  *
  *     cos(x)
  *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  *

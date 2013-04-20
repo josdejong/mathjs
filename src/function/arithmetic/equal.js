@@ -1,6 +1,12 @@
 /**
- * Check if value x equals y, x == y
+ * Check if value x equals y,
+ *
+ *     x == y
+ *     equal(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
  * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res

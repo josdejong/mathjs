@@ -6,7 +6,6 @@
  *     matrix(data)   creates a matrix with initial data.
  *
  * Example usage:
- * Example usage:
  *     var m = matrix([[1, 2], [3, 4]);
  *     m.size();                        // [2, 2]
  *     m.resize([3, 2], 5);

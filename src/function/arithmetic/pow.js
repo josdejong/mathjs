@@ -1,5 +1,9 @@
 /**
- * Calculates the power of x to y, x^y
+ * Calculates the power of x to y
+ *
+ *     x ^ y
+ *     pow(x, y)
+ *
  * @param  {Number | Complex | Array | Matrix} x
  * @param  {Number | Complex} y
  * @return {Number | Complex | Array | Matrix} res

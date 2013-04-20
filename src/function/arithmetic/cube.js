@@ -1,5 +1,11 @@
 /**
- * Compute the cube of a value, x * x * x.',
+ * Compute the cube of a value
+ *
+ *     x .* x .* x
+ *     cube(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
@@ -17,7 +23,7 @@ math.cube = function cube(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix) {
-        return math.multiply(math.multiply(x, x), x);
+        return util.map(x, math.cube);
     }
 
     if (x.valueOf() !== x) {

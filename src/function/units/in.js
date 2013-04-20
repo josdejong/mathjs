@@ -1,5 +1,11 @@
 /**
- * Change the unit of a value. x in unit or in(x, unit)
+ * Change the unit of a value.
+ *
+ *     x in unit
+ *     in(x, unit)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Unit | Array | Matrix} x
  * @param {Unit | Array | Matrix} unit
  * @return {Unit | Array | Matrix} res

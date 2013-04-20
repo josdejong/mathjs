@@ -1,6 +1,12 @@
 /**
- * Check if value x unequals y, x != y
+ * Check if value x unequals y
+ *
+ *     x != y
+ *     unequal(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
  * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res

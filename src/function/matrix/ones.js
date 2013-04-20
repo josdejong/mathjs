@@ -1,10 +1,11 @@
 /**
- * @constructor ones
- * ones(n)
- * ones(m, n)
- * ones([m, n])
- * ones([m, n, p, ...])
- * returns a matrix filled with ones
+ * Create a matrix filled with ones
+ *
+ *     ones(n)
+ *     ones(m, n)
+ *     ones([m, n])
+ *     ones([m, n, p, ...])
+ *
  * @param {...Number | Array} size
  * @return {Matrix} matrix
  */

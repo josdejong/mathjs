@@ -1,5 +1,11 @@
 /**
- * Subtract two values. x - y or subtract(x, y)
+ * Subtract two values
+ *
+ *     x - y
+ *     subtract(x, y)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param  {Number | Complex | Unit | Array | Matrix} x
  * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res

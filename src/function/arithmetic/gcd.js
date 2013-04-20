@@ -1,7 +1,11 @@
 /**
  * Calculate the greatest common divisor for two or more values or arrays.
+ *
  *     gcd(a, b)
  *     gcd(a, b, c, ...)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {... Number | Array | Matrix} args    two or more integer numbers
  * @return {Number | Array | Matrix} greatest common divisor
  */

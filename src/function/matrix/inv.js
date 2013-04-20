@@ -1,6 +1,10 @@
 /**
- * @constructor inv
- * Calculate the inverse of a matrix, inv(x)
+ * Calculate the inverse of a matrix
+ *
+ *     inv(x)
+ *
+ * TODO: more documentation on inv
+ *
  * @param {Array | Matrix} x
  * @return {Array | Matrix} inv
  */

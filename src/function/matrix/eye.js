@@ -1,5 +1,11 @@
 /**
- * Create an identity matrix with size m x n, eye(m [, n])
+ * Create an identity matrix with size m x n
+ *
+ *     eye(m)
+ *     eye(m, n)
+ *
+ * TODO: more documentation on eye
+ *
  * @param {...Number | Matrix | Array} size
  * @return {Matrix} matrix
  */

@@ -1,5 +1,8 @@
 /**
  * Clone an object
+ *
+ *     clone(x)
+ *
  * @param {*} x
  * @return {*} clone
  */

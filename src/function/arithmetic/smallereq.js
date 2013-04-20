@@ -1,6 +1,12 @@
 /**
- * Check if value a is smaller or equal to b, a <= b
+ * Check if value a is smaller or equal to b
+ *
+ *     a <= b
+ *     smallereq(a, b)
+ *
+ * For matrices, the function is evaluated element wise.
  * In case of complex numbers, the absolute values of a and b are compared.
+ *
  * @param  {Number | Complex | Unit | String | Array | Matrix} x
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res

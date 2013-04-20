@@ -1,5 +1,10 @@
 /**
  * Calculate the square root of a value
+ *
+ *     sqrt(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */

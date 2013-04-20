@@ -1,5 +1,8 @@
 /**
  * Return a random number between 0 and 1
+ *
+ *     random()
+ *
  * @return {Number} res
  */
 math.random = function random () {

@@ -1,10 +1,11 @@
 /**
- * @constructor zeros
- * zeros(n)
- * zeros(m, n)
- * zeros([m, n])
- * zeros([m, n, p, ...])
- * returns a matrix filled with zeros
+ * create a matrix filled with zeros
+ *
+ *     zeros(n)
+ *     zeros(m, n)
+ *     zeros([m, n])
+ *     zeros([m, n, p, ...])
+ *
  * @param {...Number | Array} size
  * @return {Matrix} matrix
  */

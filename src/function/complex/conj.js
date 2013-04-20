@@ -1,6 +1,11 @@
 /**
  * Compute the complex conjugate of a complex value.
  * If x = a+bi, the complex conjugate is a-bi.
+ *
+ *     conj(x)
+ *
+ * For matrices, the function is evaluated element wise.
+ *
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
