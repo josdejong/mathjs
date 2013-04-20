@@ -3,8 +3,9 @@
  * instance of a Parser (i.e. variable definitions are not supported).
  *
  *     eval(expr)
+ *     eval([expr1, expr2, expr3, ...])
  *
- * @param {String} expr
+ * @param {String | Array | Matrix} expr
  * @return {*} res
  */
 math.eval = function eval(expr) {
@@ -12,13 +13,15 @@ math.eval = function eval(expr) {
         throw newArgumentsError('eval', arguments.length, 1);
     }
 
-    if (!isString(expr)) {
-        throw new TypeError('String expected');
+    if (isString(expr)) {
+        return _readonlyParser.eval(expr);
     }
 
-    // TODO: add support for matrices in function eval
+    if (expr instanceof Array || expr instanceof Matrix) {
+        return util.map(expr, math.eval);
+    }
 
-    return _readonlyParser.eval(expr);
+    throw new TypeError('String or matrix expected');
 };
 
 /** @private */
