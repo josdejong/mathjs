@@ -120,13 +120,11 @@ assert.equal(math.myvalue * 2, 84);
 assert.equal(math.hello('user'), 'hello, user!');
 
 // test whether not overwriting existing functions by default
-math.import({pi: 3});
-approxEqual(math.pi, 3.14159);
+math.import({myvalue: 10});
+approxEqual(math.myvalue, 42);
 // test whether overwritten when forced
-math.import({pi: 3}, {override: true});
-approxEqual(math.pi, 3);
-// restore pi
-math.import({pi: Math.pi}, {override: true});
+math.import({myvalue: 10}, {override: true});
+approxEqual(math.myvalue, 10);
 
 
 var parser = math.parser();
