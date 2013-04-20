@@ -36,3 +36,12 @@ var a = math.select(3)
     .multiply(2)
     .done();
 print(a); // 14
+console.log();
+
+// mixed use of different data types in functions
+console.log('mixed use of data types');
+print(math.add(4, [5, 6]));                   // Number + array, [9, 11]
+print(math.multiply(math.unit('5 mm'), 3));   // Unit * Number,  15 mm
+print(math.subtract([2, 3, 4], 5));           // Array - Number, [-3, -2, -1]
+print(math.add(math.matrix([2, 3]), [4, 5])); // Matrix + Array, [6, 8]
+console.log();
