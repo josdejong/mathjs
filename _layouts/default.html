@@ -9,6 +9,8 @@
     <meta name="description" content="Math.js is an extensive math library for JavaScript and Node.js. It features real and complex numbers, units, and matrices.">
     <meta name="author" content="Jos de Jong">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
     <link href="css/style.css" rel="stylesheet" type="text/css">
     <link href="css/commandline.css" rel="stylesheet" type="text/css">
 
@@ -43,7 +45,7 @@
 
         <!-- facebook -->
         <div class="like facebook">
-            <div id="fb-root"></div>
+            <div id="fb-root" style="display: none;"></div>
             <script>(function(d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0];
                 if (d.getElementById(id)) return;
@@ -85,9 +87,29 @@
     <a href="http://subtlepatterns.com/bright-squares/" target="_blank">background by waseem dahman</a>
 </div>
 
-<a id="forkme" href="https://github.com/josdejong/mathjs" target="_blank">
-    <img src="css/img/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" >
-</a>
+<div id="forkme">
+    <a href="https://github.com/josdejong/mathjs" target="_blank">
+        <img src="css/img/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" >
+    </a>
+</div>
+
+<script type="text/javascript">
+    // change layout for different screen sizes
+    function resize () {
+        var width = document.body.clientWidth;
+
+        var page = document.getElementById('page');
+        page.className = (width < 810) ? 'small' : 'normal';
+        if (width < 400) {
+            page.className += ' tiny';
+        }
+
+        var forkme = document.getElementById('forkme');
+        forkme.className = (width < 500) ? 'small' : 'normal';
+    }
+    resize();
+    window.onresize = resize;
+</script>
 
 </body>
 </html>

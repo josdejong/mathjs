@@ -2,6 +2,10 @@
 body {
     background: #f5f5f5 url('img/bright_squares_interlaced.png') repeat;
     height: 100%;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
 
     font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Verdana, Tahoma, sans-serif;
     font-weight: normal;
@@ -16,22 +20,40 @@ body {
     min-height: 700px;
     margin: 20px auto 0 auto;
     background-color: white;
-    padding: 40px 50px 40px 50px;
+    padding: 40px 50px;
     border: 1px solid lightgray;
     border-radius: 3px;
 
     box-shadow: 2px 2px 10px rgba(128, 128, 128, 0.2);
 }
 
+#page.small {
+    width: auto;
+    margin: 5px 5px 0 5px;
+    padding: 4%;
+}
+
+
 #logo {
     width: 330px;
     height: 100px;
 }
 
+.small #logo {
+    width: 220px;
+    height: 67px;
+}
+
+.tiny #logo {
+    width: 165px;
+    height: 50px;
+}
+
+
 #likes {
-    width: 600px;
-    height: 26px;
-    margin: 60px auto 20px auto;
+    min-height: 30px;
+    line-height: 30px;
+    margin: 60px 0 20px 0;
     padding: 0;
     overflow: visible;
 }
@@ -39,6 +61,7 @@ body {
 div.like {
     float: left;
     width: 120px;
+    max-width: 100%;
     height: 26px;
 }
 
@@ -53,14 +76,23 @@ div.cols {
     margin: 0;
 }
 
+.small div.cols {
+    width: 100%;
+}
+
 div.cols .left {
     float: left;
-    width: 320px;
+    width: 47%;
 }
 
 div.cols .right {
     float: right;
-    width: 320px;
+    width: 47%;
+}
+
+.small div.cols .left,
+.small div.cols .right {
+    width: 100%;
 }
 
 
@@ -78,15 +110,26 @@ table td {
     padding: 5px 20px 5px 0;
 }
 
-pre code,
-#example {
+pre {
     font-family: monospace;
     font-size: 12px;
     color: #363636;
+
+    padding: 4px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    border-radius: 2px;
+}
+
+.tiny pre {
+    font-size: 10px;
 }
 
 #example {
-    overflow: visible;
+    overflow: auto;
     width: 100%;
 
     border: 1px solid #e5e5e5;
@@ -149,13 +192,6 @@ a:hover {
     color: #f43f14;
 }
 
-pre {
-    padding: 4px;
-    background-color: #f5f5f5;
-    border: 1px solid #e5e5e5;
-    border-radius: 2px;
-}
-
 #footer a {
     color: #b4b4b4;
     text-decoration: none;
@@ -166,8 +202,13 @@ pre {
 }
 
 #forkme {
-    position: fixed;
+    position: absolute;
+    text-align: right;
     top: 0;
     right: 0;
     border: 0;
+}
+
+#forkme.small {
+    display: none;
 }
