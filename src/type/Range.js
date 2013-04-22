@@ -28,7 +28,7 @@
  * @param {Number} end
  */
 function Range(start, step, end) {
-    if (this.constructor != Range) {
+    if (!(this instanceof Range)) {
         throw new SyntaxError(
             'Range constructor must be called with the new operator');
     }

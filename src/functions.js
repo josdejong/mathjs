@@ -13,13 +13,13 @@
 function newUnsupportedTypeError(name, value1, value2) {
     var msg = undefined;
     if (arguments.length == 2) {
-        var t = math.typeof(value1);
+        var t = math['typeof'](value1);
         msg = 'Function ' + name + '(' + t + ') not supported';
     }
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
-            types.push(math.typeof(arguments[i]));
+            types.push(math['typeof'](arguments[i]));
         }
         msg = 'Function ' + name + '(' + types.join(', ') + ') not supported';
     }

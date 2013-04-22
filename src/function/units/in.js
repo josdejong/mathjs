@@ -17,7 +17,7 @@ math['in'] = function unit_in(x, unit) {
 
     if (x instanceof Unit) {
         if (unit instanceof Unit || isString(unit)) {
-            return x.in(unit);
+            return x['in'](unit);
         }
     }
 

@@ -66,7 +66,7 @@ Math.js can be loaded as a regular javascript file in the browser:
 </html>
 ```
 
-#### Require.js
+### Require.js
 
 Load math.js in the browser using [require.js](http://requirejs.org/):
 

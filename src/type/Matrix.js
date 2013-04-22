@@ -20,7 +20,7 @@
  * @param {Array | Matrix} [data]    A multi dimensional array
  */
 function Matrix(data) {
-    if (this.constructor != Matrix) {
+    if (!(this instanceof Matrix)) {
         throw new SyntaxError(
             'Matrix constructor must be called with the new operator');
     }
@@ -35,7 +35,7 @@ function Matrix(data) {
     }
     else if (data != null) {
         // unsupported type
-        throw new TypeError('Unsupported type of data (' + math.typeof(data) + ')');
+        throw new TypeError('Unsupported type of data (' + math['typeof'](data) + ')');
     }
     else {
         // nothing provided
@@ -64,7 +64,7 @@ Matrix.prototype.get = function (index) {
         });
     }
     else {
-        throw new TypeError('Unsupported type of index ' + math.typeof(index));
+        throw new TypeError('Unsupported type of index ' + math['typeof'](index));
     }
 
     if (index.length != this._size.length) {
@@ -259,7 +259,7 @@ Matrix.prototype.set = function (index, submatrix) {
         });
     }
     else {
-        throw new TypeError('Unsupported type of index ' + math.typeof(index));
+        throw new TypeError('Unsupported type of index ' + math['typeof'](index));
     }
 
     if (submatrix instanceof Matrix || submatrix instanceof Range) {

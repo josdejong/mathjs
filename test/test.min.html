@@ -10,23 +10,30 @@
         Use the mathjs library from the console...
     </p>
     <script>
-        var complex1 = math.complex(3, -4);
-        console.log(complex1.toString());
+        function print (args) {
+            for (var i = 0; i < arguments.length; i++) {
+                document.write(arguments[i] + '');
+            }
+            document.write('<br>');
+        }
 
-        console.log('sqrt(25) = ' + math.sqrt(25));
-        console.log('sqrt(' + complex1.toString() + ') = ' + math.sqrt(complex1));
-        console.log('sqrt(-4) = ' + math.sqrt(-4));
+        var complex1 = math.complex(3, -4);
+        print(complex1.toString());
+
+        print('sqrt(25) = ' + math.sqrt(25));
+        print('sqrt(' + complex1.toString() + ') = ' + math.sqrt(complex1));
+        print('sqrt(-4) = ' + math.sqrt(-4));
 
         var parser = math.parser();
 
         var workspace = math.workspace();
         var id0 = workspace.append('a = 3/4');
         var id1 = workspace.append('a + 2');
-        console.log('a = ' + workspace.getResult(id0));
-        console.log('a + 2 = ' + workspace.getResult(id1));
+        print('a = ' + workspace.getResult(id0));
+        print('a + 2 = ' + workspace.getResult(id1));
         workspace.replace('a=5/2', id0);
-        console.log('a = ' + workspace.getResult(id0));
-        console.log('a + 2 = ' + workspace.getResult(id1));
+        print('a = ' + workspace.getResult(id0));
+        print('a + 2 = ' + workspace.getResult(id1));
 
     </script>
 </body>

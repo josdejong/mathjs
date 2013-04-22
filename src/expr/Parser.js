@@ -47,7 +47,7 @@
      *    parser.clear();
      */
     math.expr.Parser = function Parser(options) {
-        if (this.constructor != Parser) {
+        if (!(this instanceof math.expr.Parser)) {
             throw new SyntaxError(
                 'Parser constructor must be called with the new operator');
         }

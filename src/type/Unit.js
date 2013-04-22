@@ -15,7 +15,7 @@
  * @param {String} [unit]   A unit like "cm" or "inch"
  */
 function Unit(value, unit) {
-    if (this.constructor != Unit) {
+    if (!(this instanceof Unit)) {
         throw new Error('Unit constructor must be called with the new operator');
     }
 
@@ -71,12 +71,12 @@ math.type.Unit = Unit;
 
     function next() {
         index++;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function revert(oldIndex) {
         index = oldIndex;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function parseNumber () {
@@ -183,6 +183,8 @@ math.type.Unit = Unit;
                 // garbage at the end. not good.
                 return null;
             }
+
+            console.log('unit: ', unit);
 
             return new Unit(null, unit)
         }
@@ -319,7 +321,7 @@ Unit.prototype.equals = function(other) {
  * @param {String | Unit} plainUnit   A plain unit, without value. Can have prefix, like "cm"
  * @returns {Unit} unit having fixed, specified unit
  */
-Unit.prototype.in = function (plainUnit) {
+Unit.prototype['in'] = function (plainUnit) {
     var other;
     if (isString(plainUnit)) {
         other = new Unit(null, plainUnit);
@@ -358,7 +360,7 @@ Unit.prototype.in = function (plainUnit) {
  * @return {Number} value
  */
 Unit.prototype.toNumber = function (plainUnit) {
-    var other = this.in(plainUnit);
+    var other = this['in'](plainUnit);
     var prefix = this.fixPrefix ? other._bestPrefix() : other.prefix;
     return other._unnormalize(other.value, prefix.value);
 };

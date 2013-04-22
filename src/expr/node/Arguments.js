@@ -34,7 +34,7 @@ Arguments.prototype.eval = function() {
     // TODO: check type of objectRes
     if (!objectRes.get) {
         throw new TypeError('Cannot apply arguments to object of type ' +
-            math.typeof(objectRes));
+            math['typeof'](objectRes));
     }
     return objectRes.get(paramsRes);
 };

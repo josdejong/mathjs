@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.8.0-SNAPSHOT
- * @date    2013-04-20
+ * @date    2013-04-22
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -650,7 +650,7 @@ var util = (function () {
 
         // check the type of size
         if (!(size instanceof Array)) {
-            throw new TypeError('Size must be an array (size is ' + math.typeof(size) + ')');
+            throw new TypeError('Size must be an array (size is ' + math['typeof'](size) + ')');
         }
 
         // check whether size contains positive integers
@@ -872,7 +872,7 @@ function isBoolean(value) {
  * @param {Number} [im]     The imaginary part of the complex value
  */
 function Complex(re, im) {
-    if (this.constructor != Complex) {
+    if (!(this instanceof Complex)) {
         throw new SyntaxError(
             'Complex constructor must be called with the new operator');
     }
@@ -908,12 +908,12 @@ math.type.Complex = Complex;
 
     function next() {
         index++;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function revert(oldIndex) {
         index = oldIndex;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function parseNumber () {
@@ -968,7 +968,7 @@ math.type.Complex = Complex;
 
     function parseComplex () {
         // check for 'i', '-i', '+i'
-        var cnext = text[index + 1];
+        var cnext = text.charAt(index + 1);
         if (c == 'I' || c == 'i') {
             next();
             return '1';
@@ -1174,7 +1174,7 @@ Complex.prototype.toString = function () {
  * @param {Array | Matrix} [data]    A multi dimensional array
  */
 function Matrix(data) {
-    if (this.constructor != Matrix) {
+    if (!(this instanceof Matrix)) {
         throw new SyntaxError(
             'Matrix constructor must be called with the new operator');
     }
@@ -1189,7 +1189,7 @@ function Matrix(data) {
     }
     else if (data != null) {
         // unsupported type
-        throw new TypeError('Unsupported type of data (' + math.typeof(data) + ')');
+        throw new TypeError('Unsupported type of data (' + math['typeof'](data) + ')');
     }
     else {
         // nothing provided
@@ -1218,7 +1218,7 @@ Matrix.prototype.get = function (index) {
         });
     }
     else {
-        throw new TypeError('Unsupported type of index ' + math.typeof(index));
+        throw new TypeError('Unsupported type of index ' + math['typeof'](index));
     }
 
     if (index.length != this._size.length) {
@@ -1413,7 +1413,7 @@ Matrix.prototype.set = function (index, submatrix) {
         });
     }
     else {
-        throw new TypeError('Unsupported type of index ' + math.typeof(index));
+        throw new TypeError('Unsupported type of index ' + math['typeof'](index));
     }
 
     if (submatrix instanceof Matrix || submatrix instanceof Range) {
@@ -1874,7 +1874,7 @@ function isInteger(value) {
  * @param {Number} end
  */
 function Range(start, step, end) {
-    if (this.constructor != Range) {
+    if (!(this instanceof Range)) {
         throw new SyntaxError(
             'Range constructor must be called with the new operator');
     }
@@ -2109,7 +2109,7 @@ Range.prototype.toString = function () {
  * @param {*} [value]
  */
 math.type.Selector = function Selector (value) {
-    if (!(this instanceof Selector)) {
+    if (!(this instanceof math.type.Selector)) {
         throw new SyntaxError(
             'Selector constructor must be called with the new operator');
     }
@@ -2251,7 +2251,7 @@ function isString(value) {
  * @param {String} [unit]   A unit like "cm" or "inch"
  */
 function Unit(value, unit) {
-    if (this.constructor != Unit) {
+    if (!(this instanceof Unit)) {
         throw new Error('Unit constructor must be called with the new operator');
     }
 
@@ -2307,12 +2307,12 @@ math.type.Unit = Unit;
 
     function next() {
         index++;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function revert(oldIndex) {
         index = oldIndex;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function parseNumber () {
@@ -2419,6 +2419,8 @@ math.type.Unit = Unit;
                 // garbage at the end. not good.
                 return null;
             }
+
+            console.log('unit: ', unit);
 
             return new Unit(null, unit)
         }
@@ -2555,7 +2557,7 @@ Unit.prototype.equals = function(other) {
  * @param {String | Unit} plainUnit   A plain unit, without value. Can have prefix, like "cm"
  * @returns {Unit} unit having fixed, specified unit
  */
-Unit.prototype.in = function (plainUnit) {
+Unit.prototype['in'] = function (plainUnit) {
     var other;
     if (isString(plainUnit)) {
         other = new Unit(null, plainUnit);
@@ -2594,7 +2596,7 @@ Unit.prototype.in = function (plainUnit) {
  * @return {Number} value
  */
 Unit.prototype.toNumber = function (plainUnit) {
-    var other = this.in(plainUnit);
+    var other = this['in'](plainUnit);
     var prefix = this.fixPrefix ? other._bestPrefix() : other.prefix;
     return other._unnormalize(other.value, prefix.value);
 };
@@ -2960,13 +2962,13 @@ math.i         = math.I;
 function newUnsupportedTypeError(name, value1, value2) {
     var msg = undefined;
     if (arguments.length == 2) {
-        var t = math.typeof(value1);
+        var t = math['typeof'](value1);
         msg = 'Function ' + name + '(' + t + ') not supported';
     }
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
-            types.push(math.typeof(arguments[i]));
+            types.push(math['typeof'](arguments[i]));
         }
         msg = 'Function ' + name + '(' + types.join(', ') + ') not supported';
     }
@@ -3370,7 +3372,7 @@ Assignment.prototype.eval = function() {
         // TODO: check type of prevResult: Matrix, Array, String, other...
         if (!prevResult.set) {
             throw new TypeError('Cannot apply a subset to object of type ' +
-                math.typeof(prevResult));
+                math['typeof'](prevResult));
 
         }
         result = prevResult.set(paramResults, exprResult);
@@ -3439,7 +3441,7 @@ Arguments.prototype.eval = function() {
     // TODO: check type of objectRes
     if (!objectRes.get) {
         throw new TypeError('Cannot apply arguments to object of type ' +
-            math.typeof(objectRes));
+            math['typeof'](objectRes));
     }
     return objectRes.get(paramsRes);
 };
@@ -3977,7 +3979,7 @@ math.expr.Scope.prototype = {
      *    parser.clear();
      */
     math.expr.Parser = function Parser(options) {
-        if (this.constructor != Parser) {
+        if (!(this instanceof math.expr.Parser)) {
             throw new SyntaxError(
                 'Parser constructor must be called with the new operator');
         }
@@ -9267,7 +9269,7 @@ math['in'] = function unit_in(x, unit) {
 
     if (x instanceof Unit) {
         if (unit instanceof Unit || isString(unit)) {
-            return x.in(unit);
+            return x['in'](unit);
         }
     }
 

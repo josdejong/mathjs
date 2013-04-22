@@ -23,7 +23,7 @@
  * @param {*} [value]
  */
 math.type.Selector = function Selector (value) {
-    if (!(this instanceof Selector)) {
+    if (!(this instanceof math.type.Selector)) {
         throw new SyntaxError(
             'Selector constructor must be called with the new operator');
     }

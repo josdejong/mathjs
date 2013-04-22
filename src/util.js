@@ -579,7 +579,7 @@ var util = (function () {
 
         // check the type of size
         if (!(size instanceof Array)) {
-            throw new TypeError('Size must be an array (size is ' + math.typeof(size) + ')');
+            throw new TypeError('Size must be an array (size is ' + math['typeof'](size) + ')');
         }
 
         // check whether size contains positive integers

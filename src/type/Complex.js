@@ -18,7 +18,7 @@
  * @param {Number} [im]     The imaginary part of the complex value
  */
 function Complex(re, im) {
-    if (this.constructor != Complex) {
+    if (!(this instanceof Complex)) {
         throw new SyntaxError(
             'Complex constructor must be called with the new operator');
     }
@@ -54,12 +54,12 @@ math.type.Complex = Complex;
 
     function next() {
         index++;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function revert(oldIndex) {
         index = oldIndex;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function parseNumber () {
@@ -114,7 +114,7 @@ math.type.Complex = Complex;
 
     function parseComplex () {
         // check for 'i', '-i', '+i'
-        var cnext = text[index + 1];
+        var cnext = text.charAt(index + 1);
         if (c == 'I' || c == 'i') {
             next();
             return '1';

@@ -7,6 +7,9 @@ math.js is registered at the following places:
 
 # websites
 - http://jster.net/ (automatically updates via github)
+- http://www.jsdb.io/
+- http://jswiki.org/
+- http://jspkg.com/ (manually import a project from github)
 
 # other
 - travis-ci (automatically updates via github)

@@ -46,7 +46,7 @@ Assignment.prototype.eval = function() {
         // TODO: check type of prevResult: Matrix, Array, String, other...
         if (!prevResult.set) {
             throw new TypeError('Cannot apply a subset to object of type ' +
-                math.typeof(prevResult));
+                math['typeof'](prevResult));
 
         }
         result = prevResult.set(paramResults, exprResult);

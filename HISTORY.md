@@ -4,6 +4,8 @@ https://github.com/josdejong/mathjs
 
 ## under development, version 0.8.0
 
+- Fixed: math.js now works on IE6-8 too.
+
 
 ## 2013-04-20, version 0.7.0
 

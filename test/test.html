@@ -10,37 +10,44 @@
         Use the mathjs library from the console...
     </p>
     <script>
+        function print (args) {
+            for (var i = 0; i < arguments.length; i++) {
+                document.write(arguments[i] + '');
+            }
+            document.write('<br>');
+        }
+        
         var complex1 = math.complex(3, -4);
-        console.log(complex1.toString());
+        print(complex1.toString());
 
-        console.log('sqrt(25) = ' + math.sqrt(25));
-        console.log('sqrt(' + complex1.toString() + ') = ' + math.sqrt(complex1));
-        console.log('sqrt(-4) = ' + math.sqrt(-4));
+        print('sqrt(25) = ' + math.sqrt(25));
+        print('sqrt(' + complex1.toString() + ') = ' + math.sqrt(complex1));
+        print('sqrt(-4) = ' + math.sqrt(-4));
 
         var parser = math.parser();
 
         var workspace = math.workspace();
         var id0 = workspace.append('a = 3/4');
         var id1 = workspace.append('a + 2');
-        console.log('a = ' + workspace.getResult(id0));
-        console.log('a + 2 = ' + workspace.getResult(id1));
+        print('a = ' + workspace.getResult(id0));
+        print('a + 2 = ' + workspace.getResult(id1));
         workspace.replace('a=5/2', id0);
-        console.log('a = ' + workspace.getResult(id0));
-        console.log('a + 2 = ' + workspace.getResult(id1));
+        print('a = ' + workspace.getResult(id0));
+        print('a + 2 = ' + workspace.getResult(id1));
 
-        console.log(math.unit('0.01m').toString());
-        console.log(math.unit('1m').toString());
-        console.log(math.unit('10m').toString());
-        console.log(math.unit('100m').toString());
-        console.log(math.unit('500m').toString());
-        console.log(math.unit('800m').toString());
-        console.log(math.unit('1000m').toString());
-        console.log(math.unit('1100m').toString());
+        print(math.unit('0.01m').toString());
+        print(math.unit('1m').toString());
+        print(math.unit('10m').toString());
+        print(math.unit('100m').toString());
+        print(math.unit('500m').toString());
+        print(math.unit('800m').toString());
+        print(math.unit('1000m').toString());
+        print(math.unit('1100m').toString());
 
-        console.log(parser.eval('a=[1,2,3;4,5,6]'));
+        print(parser.eval('a=[1,2,3;4,5,6]'));
         var a = parser.get('a');
-        //console.log(parser.eval('a(1,1)'));
-        console.log(parser.eval('a(1,1:2)'));
+        //print(parser.eval('a(1,1)'));
+        print(parser.eval('a(1,1:2)'));
 
 
     </script>
