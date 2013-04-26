@@ -49,6 +49,16 @@ assert.equal(parser.eval('a + 2'), 2.75);
 assert.equal(parser.eval('a = 2'), 2);
 assert.equal(parser.eval('a + 2'), 4);
 
+// test function assignments
+parser.eval('x=100'); // for testing scoping of the function variables
+assert.equal(parser.eval('function f(x) = x^2'), 'f(x)');
+assert.equal(parser.eval('f(3)'), 9);
+assert.equal(parser.eval('x'), 100);
+assert.equal(parser.eval('function g(x, y) = x^y'), 'g(x, y)');
+assert.equal(parser.eval('g(4,5)'), 1024);
+var g = parser.eval('g');
+
+
 // test range
 assert.ok(parser.eval('2:5') instanceof math.type.Range);
 assert.deepEqual(parser.eval('2:5').toArray(), [2,3,4,5]);

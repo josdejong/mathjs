@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.8.0-SNAPSHOT
- * @date    2013-04-22
+ * @version 0.7.1-SNAPSHOT
+ * @date    2013-04-26
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -2420,8 +2420,6 @@ math.type.Unit = Unit;
                 return null;
             }
 
-            console.log('unit: ', unit);
-
             return new Unit(null, unit)
         }
 
@@ -3018,83 +3016,6 @@ Node.prototype.toString = function() {
 };
 
 /**
- * @constructor Symbol
- * A symbol can hold and evaluate a variable or function with parameters.
- * @param {String} [name]
- * @param {function} fn
- * @param {Node[]} params
- * @extends {Node}
- */
-function Symbol(name, fn, params) {
-    this.name = name;
-    this.fn = fn;
-    this.params = params;
-}
-
-Symbol.prototype = new Node();
-
-math.expr.node.Symbol = Symbol;
-
-/**
- * Check whether the Symbol has one or multiple parameters set.
- * @return {Boolean}
- */
-Symbol.prototype.hasParams = function () {
-    return (this.params != undefined && this.params.length > 0);
-};
-
-/**
- * Evaluate the symbol
- * @return {*} result
- * @override
- */
-Symbol.prototype.eval = function() {
-    var fn = this.fn;
-    if (fn === undefined) {
-        throw new Error('Undefined symbol ' + this.name);
-    }
-
-    // evaluate the parameters
-    var results = this.params.map(function (param) {
-        return param.eval();
-    });
-
-    // evaluate the function
-    return fn.apply(this, results);
-};
-
-/**
- * Get string representation
- * @return {String} str
- * @override
- */
-Symbol.prototype.toString = function() {
-    // variable. format the symbol like "myvar"
-    if (this.name && !this.params) {
-        return this.name;
-    }
-
-    /* TODO: determine if the function is an operator
-    // operator. format the operation like "(2 + 3)"
-    if (this.fn && (this.fn instanceof math.fn.Operator)) {
-        if (this.params && this.params.length == 2) {
-            return '(' +
-                this.params[0].toString() + ' ' +
-                this.name + ' ' +
-                this.params[1].toString() + ')';
-        }
-    }
-    */
-
-    // function. format the operation like "f(2, 4.2)"
-    var str = this.name;
-    if (this.params && this.params.length) {
-        str += '(' + this.params.join(', ') + ')';
-    }
-    return str;
-};
-
-/**
  * @constructor Constant
  * @param {*} value
  * @extends {Node}
@@ -3108,7 +3029,7 @@ Constant.prototype = new Node();
 math.expr.node.Constant = Constant;
 
 /**
- * Evaluate the constant
+ * Evaluate the constant (just return it)
  * @return {*} value
  */
 Constant.prototype.eval = function () {
@@ -3120,7 +3041,161 @@ Constant.prototype.eval = function () {
  * @return {String} str
  */
 Constant.prototype.toString = function() {
-    return this.value ? math.format(this.value) : '';
+    return math.format(this.value || null);
+};
+
+/**
+ * @constructor Operator
+ * An operator with two arguments, like 2+3
+ * @param {String} name     Function name, for example '+'
+ * @param {function} fn     Function, for example math.add
+ * @param {Node[]} params   Parameters
+ */
+function Operator (name, fn, params) {
+    this.name = name;
+    this.fn = fn;
+    this.params = params;
+}
+
+Operator.prototype = new Node();
+
+math.expr.node.Operator = Operator;
+
+/**
+ * Evaluate the parameters
+ * @return {*} result
+ */
+Operator.prototype.eval = function() {
+    return this.fn.apply(this, this.params.map(function (param) {
+        return param.eval();
+    }));
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ */
+Operator.prototype.toString = function() {
+    var params = this.params;
+
+    // special case: unary minus
+    if (this.fn === math.unaryminus) {
+        return '-' + params[0].toString();
+    }
+
+    switch (params.length) {
+        case 1: // for example '5!'
+            return params[0].toString() + this.name;
+
+        case 2: // for example '2+3'
+            var lhs = params[0].toString();
+            if (params[0] instanceof Operator) {
+                lhs = '(' + lhs + ')';
+            }
+            var rhs = params[1].toString();
+            if (params[1] instanceof Operator) {
+                rhs = '(' + rhs + ')';
+            }
+            return lhs + ' ' + this.name + ' ' + rhs;
+
+        default: // this should occur. format as a function call
+            return this.name + '(' + this.params.join(', ') + ')';
+    }
+};
+
+/**
+ * @constructor Symbol
+ * A symbol can hold and evaluate a link to a value or function defined in a
+ * scope.
+ * @param {String} [name]
+ * @param {Link} link
+ * @extends {Node}
+ */
+function Symbol(name, link) {
+    this.name = name;
+    this.link = link;
+}
+
+Symbol.prototype = new Node();
+
+math.expr.node.Symbol = Symbol;
+
+/**
+ * Evaluate the symbol
+ * @return {*} result
+ * @override
+ */
+Symbol.prototype.eval = function() {
+    // return the value of the link
+    return this.link.get();
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ * @override
+ */
+Symbol.prototype.toString = function() {
+    return this.name;
+};
+
+/**
+ * @constructor Params
+ * invoke a list with parameters on the results of a node
+ * @param {Node} object
+ * @param {Node[]} params
+ */
+function Params (object, params) {
+    this.object = object;
+    this.params = params;
+}
+
+Params.prototype = new Node();
+
+math.expr.node.Params = Params;
+
+/**
+ * Evaluate the parameters
+ * @return {*} result
+ */
+Params.prototype.eval = function() {
+    var object = this.object;
+    if (object == undefined) {
+        throw new Error ('Node undefined');
+    }
+    var obj = object.eval();
+
+    // evaluate the parameters
+    var res = this.params.map(function (arg) {
+        return arg.eval();
+    });
+
+    if (typeof obj === 'function') {
+        // invoke a function with the parameters
+        return obj.apply(this, res);
+    }
+    else if (obj instanceof Object && obj.get) {
+        // apply method get with the parameters
+        return obj.get(res);
+    }
+    // TODO: apply parameters on a string
+    else {
+        throw new TypeError('Cannot apply parameters to object of type ' +
+            math['typeof'](obj));
+    }
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ */
+Params.prototype.toString = function() {
+    // format the parameters like "(2, 4.2)"
+    var str = this.object ? this.object.toString() : '';
+    if (this.params) {
+        str += '(' + this.params.join(', ') + ')';
+    }
+    return str;
 };
 
 /**
@@ -3329,7 +3404,7 @@ Block.prototype.toString = function() {
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
  * @param {Node} expr                   The expression defining the symbol
- * @param {function} result             placeholder for the result
+ * @param {Link} result                 placeholder for the result
  */
 function Assignment(name, params, expr, result) {
     this.name = name;
@@ -3364,16 +3439,15 @@ Assignment.prototype.eval = function() {
         var exprResult = this.expr.eval();
 
         // test if definition is currently undefined
-        if (this.result.value == undefined) {
+        var prevResult = this.result.get();
+        if (prevResult == undefined) {
             throw new Error('Undefined symbol ' + this.name);
         }
 
-        var prevResult = this.result();
         // TODO: check type of prevResult: Matrix, Array, String, other...
         if (!prevResult.set) {
             throw new TypeError('Cannot apply a subset to object of type ' +
                 math['typeof'](prevResult));
-
         }
         result = prevResult.set(paramResults, exprResult);
 
@@ -3406,60 +3480,6 @@ Assignment.prototype.toString = function() {
 };
 
 /**
- * @constructor Arguments
- * invoke a list with parameters on the results of a node
- * @param {Node} object
- * @param {Node[]} params
- */
-function Arguments (object, params) {
-    this.object = object;
-    this.params = params;
-}
-
-Arguments.prototype = new Node();
-
-math.expr.node.Arguments = Arguments;
-
-/**
- * Evaluate the parameters
- * @return {*} result
- */
-Arguments.prototype.eval = function() {
-    var object = this.object;
-    if (object == undefined) {
-        throw new Error ('Node undefined');
-    }
-    var objectRes = object.eval();
-
-    // evaluate the parameters
-    var params = this.params;
-    var paramsRes = [];
-    for (var i = 0, len = params.length; i < len; i++) {
-        paramsRes[i] = params[i].eval();
-    }
-
-    // TODO: check type of objectRes
-    if (!objectRes.get) {
-        throw new TypeError('Cannot apply arguments to object of type ' +
-            math['typeof'](objectRes));
-    }
-    return objectRes.get(paramsRes);
-};
-
-/**
- * Get string representation
- * @return {String} str
- */
-Arguments.prototype.toString = function() {
-    // format the arguments like "(2, 4.2)"
-    var str = this.object ? this.object.toString() : '';
-    if (this.params) {
-        str += '(' + this.params.join(', ') + ')';
-    }
-    return str;
-};
-
-/**
  * @constructor FunctionAssignment
  * assigns a custom defined function
  *
@@ -3467,7 +3487,7 @@ Arguments.prototype.toString = function() {
  * @param {String[]} variableNames  Variable names
  * @param {function[]} variables    Links to the variables in a scope
  * @param {Node} expr               The function expression
- * @param {function} result         Link to store the result
+ * @param {Link} result             Link to store the result
  */
 function FunctionAssignment(name, variableNames, variables, expr, result) {
     this.name = name;
@@ -3542,7 +3562,7 @@ FunctionAssignment.prototype.eval = function() {
     }
 
     // put the definition in the result
-    this.result.value = this.def;
+    this.result.set(this.def);
 
     // TODO: what to return? a neat "function y(x) defined"?
     return this.def;
@@ -3629,7 +3649,7 @@ math.expr.Scope.prototype = {
     /**
      * create a symbol
      * @param {String} name
-     * @return {function} symbol
+     * @return {Link} symbol
      * @private
      */
     createSymbol: function (name) {
@@ -3639,7 +3659,7 @@ math.expr.Scope.prototype = {
             var lastDef = this.findDef(name);
 
             // create a new symbol
-            symbol = this.newSymbol(name, lastDef);
+            symbol = new Link(this, name, lastDef);
             this.symbols[name] = symbol;
 
         }
@@ -3647,60 +3667,9 @@ math.expr.Scope.prototype = {
     },
 
     /**
-     * Create a new symbol
-     * @param {String} name
-     * @param {*} [value]
-     * @return {function} symbol
-     * @private
-     */
-    newSymbol: function (name, value) {
-        // create a new symbol
-        var scope = this;
-        var symbol = function () {
-            var args, i;
-            if (!symbol.value) {
-                // try to resolve again
-                symbol.value = scope.findDef(name);
-
-                if (!symbol.value) {
-                    throw new Error('Undefined symbol ' + name);
-                }
-            }
-            if (typeof symbol.value === 'function') {
-                return symbol.value.apply(null, arguments);
-            }
-            else if (symbol.value instanceof Matrix || symbol.value instanceof Range || symbol.value instanceof Array) {
-                if (arguments.length) {
-                    var matrix = (symbol.value instanceof Array) ? new Matrix(symbol.value) : symbol.value;
-                    args = [];
-                    for (i = 0; i < arguments.length; i++) {
-                        args[i] = arguments[i];
-                    }
-                    return matrix.get(args);
-                }
-                else {
-                    return symbol.value;
-                }
-            }
-            // TODO: implement get subset for all types
-            else {
-                return symbol.value;
-            }
-        };
-
-        symbol.value = value;
-
-        symbol.toString = function () {
-            return symbol.value ? symbol.value.toString() : '';
-        };
-
-        return symbol;
-    },
-
-    /**
      * create a link to a value.
      * @param {String} name
-     * @return {function} symbol
+     * @return {Link} symbol
      */
     createLink: function (name) {
         var symbol = this.links[name];
@@ -3716,7 +3685,7 @@ math.expr.Scope.prototype = {
      * Returns the created symbol
      * @param {String} name
      * @param {*} [value]
-     * @return {function} symbol
+     * @return {Link} symbol
      */
     createDef: function (name, value) {
         if (this.readonly) {
@@ -3729,7 +3698,7 @@ math.expr.Scope.prototype = {
             this.defs[name] = symbol;
         }
         if (symbol && value != undefined) {
-            symbol.value = value;
+            symbol.set(value);
         }
         return symbol;
     },
@@ -3738,7 +3707,7 @@ math.expr.Scope.prototype = {
      * Create a variable update definition
      * Returns the created symbol
      * @param {String} name
-     * @return {function} symbol
+     * @return {Link} symbol
      */
     createUpdate: function (name) {
         if (this.readonly) {
@@ -3757,11 +3726,11 @@ math.expr.Scope.prototype = {
      * Create a constant
      * @param {String} name
      * @param {*} value
-     * @return {function} symbol
+     * @return {Link} symbol
      * @private
      */
     createConstant: function (name, value) {
-        var symbol = this.newSymbol(name, value);
+        var symbol = new Link(this, name, value);
         this.symbols[name] = symbol;
         this.defs[name] = symbol;
         return symbol;
@@ -3772,7 +3741,7 @@ math.expr.Scope.prototype = {
      * If the symbol is not found in this scope, it will be looked up in its parent
      * scope.
      * @param {String} name
-     * @return {function | undefined} symbol, or undefined when not found
+     * @return {Link | undefined} symbol, or undefined when not found
      */
     findDef: function (name) {
         var symbol;
@@ -3850,7 +3819,7 @@ math.expr.Scope.prototype = {
         for (var name in symbols) {
             if (symbols.hasOwnProperty(name)) {
                 var symbol = symbols[name];
-                symbol.value = (parentScope ? parentScope.findDef(name) : undefined);
+                symbol.set(parentScope ? parentScope.findDef(name) : undefined);
             }
         }
 
@@ -3928,6 +3897,45 @@ math.expr.Scope.prototype = {
 
         return undefinedSymbols;
     }
+};
+
+// TODO: comment link
+
+function Link (scope, name, value) {
+    this.scope = scope;
+    this.name = name;
+    this.value = value;
+}
+
+/**
+ * Get the links value
+ * @returns {*} value
+ */
+Link.prototype.get = function () {
+    var value = this.value;
+    if (!value) {
+        // try to resolve again
+        value = this.value = this.scope.findDef(this.name);
+
+        if (!value) {
+            throw new Error('Undefined symbol ' + this.name);
+        }
+    }
+
+    // resolve a chain of links
+    while (value instanceof Link) {
+        value = value.get();
+    }
+
+    return value;
+};
+
+/**
+ * Set the value for the link
+ * @param {*} value
+ */
+Link.prototype.set = function (value) {
+    this.value = value;
 };
 
 (function () {
@@ -4026,7 +4034,7 @@ math.expr.Scope.prototype = {
     math.expr.Parser.prototype.get = function (name) {
         var symbol = this.scope.findDef(name);
         if (symbol) {
-            return symbol.value;
+            return symbol.get();
         }
         return undefined;
     };
@@ -4468,25 +4476,44 @@ math.expr.Scope.prototype = {
 
         // TODO: support chained assignments like "a = b = 2.3"
         if (token == '=') {
-            if (!(node instanceof Symbol)) {
+            if (node instanceof Symbol) {
+                // assignment
+                if (!linkExisted) {
+                    // we parsed the assignment as if it where an expression instead,
+                    // therefore, a link was created to the symbol. This link must
+                    // be cleaned up again, and only if it wasn't existing before
+                    scope.removeLink(name);
+                }
+
+                // parse the expression, with the correct function scope
+                getToken();
+                var name = node.name;
+                var params = null;
+                var expression = parse_range(scope);
+                var link = scope.createDef(name);
+                return new Assignment(name, params, expression, link);
+            }
+            else if (node instanceof Params && node.object instanceof Symbol) {
+                // update of a variable
+                if (!linkExisted) {
+                    // we parsed the assignment as if it where an expression instead,
+                    // therefore, a link was created to the symbol. This link must
+                    // be cleaned up again, and only if it wasn't existing before
+                    scope.removeLink(name);
+                }
+
+                // parse the expression, with the correct function scope
+                getToken();
+                var name = node.object.name;
+                var params = node.params;
+                var expression = parse_range(scope);
+                var link = scope.createUpdate(name);
+                return new Assignment(name, params, expression, link);
+            }
+            else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
                     'of assignment operator =');
             }
-            var name = node.name;
-            var params = node.params;
-
-            if (!linkExisted) {
-                // we parsed the assignment as if it where an expression instead,
-                // therefore, a link was created to the symbol. This link must
-                // be cleaned up again, and only if it wasn't existing before
-                scope.removeLink(name);
-            }
-
-            // parse the expression, with the correct function scope
-            getToken();
-            var expression = parse_range(scope);
-            var link = node.hasParams() ? scope.createUpdate(name) : scope.createDef(name);
-            return new Assignment(name, params, expression, link);
         }
 
         return node;
@@ -4515,7 +4542,7 @@ math.expr.Scope.prototype = {
 
             var name = 'range';
             var fn = math.range;
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -4549,7 +4576,7 @@ math.expr.Scope.prototype = {
 
             getToken();
             var params = [node, parse_bitwise_conditions(scope)];
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -4578,7 +4605,7 @@ math.expr.Scope.prototype = {
 
          getToken();
          var params = [node, parse_comparison()];
-         node = new Symbol(name, fn, params);
+         node = new Operator(name, fn, params);
          }
          */
 
@@ -4608,7 +4635,7 @@ math.expr.Scope.prototype = {
 
             getToken();
             var params = [node, parse_addsubtract(scope)];
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -4633,7 +4660,7 @@ math.expr.Scope.prototype = {
 
             getToken();
             var params = [node, parse_multiplydivide(scope)];
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -4660,7 +4687,7 @@ math.expr.Scope.prototype = {
 
             getToken();
             var params = [node, parse_unaryminus(scope)];
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -4679,7 +4706,7 @@ math.expr.Scope.prototype = {
             getToken();
             var params = [parse_pow(scope)];
 
-            return new Symbol(name, fn, params);
+            return new Operator(name, fn, params);
         }
 
         return parse_pow(scope);
@@ -4710,7 +4737,7 @@ math.expr.Scope.prototype = {
             var name = '^';
             var fn = math.pow;
             var params = [leftNode, node];
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -4731,7 +4758,7 @@ math.expr.Scope.prototype = {
             getToken();
             var params = [node];
 
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -4752,7 +4779,7 @@ math.expr.Scope.prototype = {
             getToken();
             var params = [node];
 
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -4797,8 +4824,7 @@ math.expr.Scope.prototype = {
          if (lastFunction) {
          // if the last function is a variable, remove it from the functions list
          // and use its variable func
-         var lastIsSymbol = (lastFunction instanceof Symbol &&
-         !lastFunction.hasParams());
+         var lastIsSymbol = (lastFunction instanceof Arguments);
          if (lastIsSymbol) {
          functions.pop();
          variable = lastFunction.fn;
@@ -4823,43 +4849,39 @@ math.expr.Scope.prototype = {
 
             getToken();
 
+            // create a symbol
             var link = scope.createLink(name);
-            // TODO: split applying arguments from symbol?
-            var args = parse_arguments(scope);
-            var symbol = new Symbol(name, link, args);
+            var symbol = new Symbol(name, link);
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                symbol = parse_arguments(scope, symbol);
-            }
-            */
-            return symbol;
+            // parse parameters
+            return parse_params(scope, symbol);
         }
 
         return parse_string(scope);
     }
 
     /**
-     * parse arguments, enclosed in parenthesis
+     * parse parameters, enclosed in parenthesis
      * @param {Scope} scope
-     * @return {Node[]} arguments
+     * @param {Node} node    Node on which to apply the parameters. If there
+     *                       are no parameters in the expression, the node
+     *                       itself is returned
+     * @return {Node} node
      * @private
      */
-    function parse_arguments (scope) {
-        var args = [];
-        if (token == '(') {
-            // TODO: in case of Plot, create a new scope.
+    function parse_params (scope, node) {
+        while (token == '(') {
+            var params = [];
 
             getToken();
 
             if (token != ')') {
-                args.push(parse_range(scope));
+                params.push(parse_range(scope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
-                    args.push(parse_range(scope));
+                    params.push(parse_range(scope));
                 }
             }
 
@@ -4867,9 +4889,11 @@ math.expr.Scope.prototype = {
                 throw createSyntaxError('Parenthesis ) missing');
             }
             getToken();
+
+            node = new Params(node, params);
         }
 
-        return args;
+        return node;
     }
 
     /**

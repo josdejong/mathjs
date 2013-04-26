@@ -71,7 +71,7 @@ math.expr.Scope.prototype = {
     /**
      * create a symbol
      * @param {String} name
-     * @return {function} symbol
+     * @return {Link} symbol
      * @private
      */
     createSymbol: function (name) {
@@ -81,7 +81,7 @@ math.expr.Scope.prototype = {
             var lastDef = this.findDef(name);
 
             // create a new symbol
-            symbol = this.newSymbol(name, lastDef);
+            symbol = new Link(this, name, lastDef);
             this.symbols[name] = symbol;
 
         }
@@ -89,60 +89,9 @@ math.expr.Scope.prototype = {
     },
 
     /**
-     * Create a new symbol
-     * @param {String} name
-     * @param {*} [value]
-     * @return {function} symbol
-     * @private
-     */
-    newSymbol: function (name, value) {
-        // create a new symbol
-        var scope = this;
-        var symbol = function () {
-            var args, i;
-            if (!symbol.value) {
-                // try to resolve again
-                symbol.value = scope.findDef(name);
-
-                if (!symbol.value) {
-                    throw new Error('Undefined symbol ' + name);
-                }
-            }
-            if (typeof symbol.value === 'function') {
-                return symbol.value.apply(null, arguments);
-            }
-            else if (symbol.value instanceof Matrix || symbol.value instanceof Range || symbol.value instanceof Array) {
-                if (arguments.length) {
-                    var matrix = (symbol.value instanceof Array) ? new Matrix(symbol.value) : symbol.value;
-                    args = [];
-                    for (i = 0; i < arguments.length; i++) {
-                        args[i] = arguments[i];
-                    }
-                    return matrix.get(args);
-                }
-                else {
-                    return symbol.value;
-                }
-            }
-            // TODO: implement get subset for all types
-            else {
-                return symbol.value;
-            }
-        };
-
-        symbol.value = value;
-
-        symbol.toString = function () {
-            return symbol.value ? symbol.value.toString() : '';
-        };
-
-        return symbol;
-    },
-
-    /**
      * create a link to a value.
      * @param {String} name
-     * @return {function} symbol
+     * @return {Link} symbol
      */
     createLink: function (name) {
         var symbol = this.links[name];
@@ -158,7 +107,7 @@ math.expr.Scope.prototype = {
      * Returns the created symbol
      * @param {String} name
      * @param {*} [value]
-     * @return {function} symbol
+     * @return {Link} symbol
      */
     createDef: function (name, value) {
         if (this.readonly) {
@@ -171,7 +120,7 @@ math.expr.Scope.prototype = {
             this.defs[name] = symbol;
         }
         if (symbol && value != undefined) {
-            symbol.value = value;
+            symbol.set(value);
         }
         return symbol;
     },
@@ -180,7 +129,7 @@ math.expr.Scope.prototype = {
      * Create a variable update definition
      * Returns the created symbol
      * @param {String} name
-     * @return {function} symbol
+     * @return {Link} symbol
      */
     createUpdate: function (name) {
         if (this.readonly) {
@@ -199,11 +148,11 @@ math.expr.Scope.prototype = {
      * Create a constant
      * @param {String} name
      * @param {*} value
-     * @return {function} symbol
+     * @return {Link} symbol
      * @private
      */
     createConstant: function (name, value) {
-        var symbol = this.newSymbol(name, value);
+        var symbol = new Link(this, name, value);
         this.symbols[name] = symbol;
         this.defs[name] = symbol;
         return symbol;
@@ -214,7 +163,7 @@ math.expr.Scope.prototype = {
      * If the symbol is not found in this scope, it will be looked up in its parent
      * scope.
      * @param {String} name
-     * @return {function | undefined} symbol, or undefined when not found
+     * @return {Link | undefined} symbol, or undefined when not found
      */
     findDef: function (name) {
         var symbol;
@@ -292,7 +241,7 @@ math.expr.Scope.prototype = {
         for (var name in symbols) {
             if (symbols.hasOwnProperty(name)) {
                 var symbol = symbols[name];
-                symbol.value = (parentScope ? parentScope.findDef(name) : undefined);
+                symbol.set(parentScope ? parentScope.findDef(name) : undefined);
             }
         }
 

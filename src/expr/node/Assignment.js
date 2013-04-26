@@ -3,7 +3,7 @@
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
  * @param {Node} expr                   The expression defining the symbol
- * @param {function} result             placeholder for the result
+ * @param {Link} result                 placeholder for the result
  */
 function Assignment(name, params, expr, result) {
     this.name = name;
@@ -38,16 +38,15 @@ Assignment.prototype.eval = function() {
         var exprResult = this.expr.eval();
 
         // test if definition is currently undefined
-        if (this.result.value == undefined) {
+        var prevResult = this.result.get();
+        if (prevResult == undefined) {
             throw new Error('Undefined symbol ' + this.name);
         }
 
-        var prevResult = this.result();
         // TODO: check type of prevResult: Matrix, Array, String, other...
         if (!prevResult.set) {
             throw new TypeError('Cannot apply a subset to object of type ' +
                 math['typeof'](prevResult));
-
         }
         result = prevResult.set(paramResults, exprResult);
 

@@ -6,7 +6,7 @@
  * @param {String[]} variableNames  Variable names
  * @param {function[]} variables    Links to the variables in a scope
  * @param {Node} expr               The function expression
- * @param {function} result         Link to store the result
+ * @param {Link} result             Link to store the result
  */
 function FunctionAssignment(name, variableNames, variables, expr, result) {
     this.name = name;
@@ -81,7 +81,7 @@ FunctionAssignment.prototype.eval = function() {
     }
 
     // put the definition in the result
-    this.result.value = this.def;
+    this.result.set(this.def);
 
     // TODO: what to return? a neat "function y(x) defined"?
     return this.def;

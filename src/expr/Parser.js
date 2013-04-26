@@ -94,7 +94,7 @@
     math.expr.Parser.prototype.get = function (name) {
         var symbol = this.scope.findDef(name);
         if (symbol) {
-            return symbol.value;
+            return symbol.get();
         }
         return undefined;
     };
@@ -536,25 +536,44 @@
 
         // TODO: support chained assignments like "a = b = 2.3"
         if (token == '=') {
-            if (!(node instanceof Symbol)) {
+            if (node instanceof Symbol) {
+                // assignment
+                if (!linkExisted) {
+                    // we parsed the assignment as if it where an expression instead,
+                    // therefore, a link was created to the symbol. This link must
+                    // be cleaned up again, and only if it wasn't existing before
+                    scope.removeLink(name);
+                }
+
+                // parse the expression, with the correct function scope
+                getToken();
+                var name = node.name;
+                var params = null;
+                var expression = parse_range(scope);
+                var link = scope.createDef(name);
+                return new Assignment(name, params, expression, link);
+            }
+            else if (node instanceof Params && node.object instanceof Symbol) {
+                // update of a variable
+                if (!linkExisted) {
+                    // we parsed the assignment as if it where an expression instead,
+                    // therefore, a link was created to the symbol. This link must
+                    // be cleaned up again, and only if it wasn't existing before
+                    scope.removeLink(name);
+                }
+
+                // parse the expression, with the correct function scope
+                getToken();
+                var name = node.object.name;
+                var params = node.params;
+                var expression = parse_range(scope);
+                var link = scope.createUpdate(name);
+                return new Assignment(name, params, expression, link);
+            }
+            else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
                     'of assignment operator =');
             }
-            var name = node.name;
-            var params = node.params;
-
-            if (!linkExisted) {
-                // we parsed the assignment as if it where an expression instead,
-                // therefore, a link was created to the symbol. This link must
-                // be cleaned up again, and only if it wasn't existing before
-                scope.removeLink(name);
-            }
-
-            // parse the expression, with the correct function scope
-            getToken();
-            var expression = parse_range(scope);
-            var link = node.hasParams() ? scope.createUpdate(name) : scope.createDef(name);
-            return new Assignment(name, params, expression, link);
         }
 
         return node;
@@ -583,7 +602,7 @@
 
             var name = 'range';
             var fn = math.range;
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -617,7 +636,7 @@
 
             getToken();
             var params = [node, parse_bitwise_conditions(scope)];
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -646,7 +665,7 @@
 
          getToken();
          var params = [node, parse_comparison()];
-         node = new Symbol(name, fn, params);
+         node = new Operator(name, fn, params);
          }
          */
 
@@ -676,7 +695,7 @@
 
             getToken();
             var params = [node, parse_addsubtract(scope)];
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -701,7 +720,7 @@
 
             getToken();
             var params = [node, parse_multiplydivide(scope)];
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -728,7 +747,7 @@
 
             getToken();
             var params = [node, parse_unaryminus(scope)];
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -747,7 +766,7 @@
             getToken();
             var params = [parse_pow(scope)];
 
-            return new Symbol(name, fn, params);
+            return new Operator(name, fn, params);
         }
 
         return parse_pow(scope);
@@ -778,7 +797,7 @@
             var name = '^';
             var fn = math.pow;
             var params = [leftNode, node];
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -799,7 +818,7 @@
             getToken();
             var params = [node];
 
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -820,7 +839,7 @@
             getToken();
             var params = [node];
 
-            node = new Symbol(name, fn, params);
+            node = new Operator(name, fn, params);
         }
 
         return node;
@@ -865,8 +884,7 @@
          if (lastFunction) {
          // if the last function is a variable, remove it from the functions list
          // and use its variable func
-         var lastIsSymbol = (lastFunction instanceof Symbol &&
-         !lastFunction.hasParams());
+         var lastIsSymbol = (lastFunction instanceof Arguments);
          if (lastIsSymbol) {
          functions.pop();
          variable = lastFunction.fn;
@@ -891,43 +909,39 @@
 
             getToken();
 
+            // create a symbol
             var link = scope.createLink(name);
-            // TODO: split applying arguments from symbol?
-            var args = parse_arguments(scope);
-            var symbol = new Symbol(name, link, args);
+            var symbol = new Symbol(name, link);
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                symbol = parse_arguments(scope, symbol);
-            }
-            */
-            return symbol;
+            // parse parameters
+            return parse_params(scope, symbol);
         }
 
         return parse_string(scope);
     }
 
     /**
-     * parse arguments, enclosed in parenthesis
+     * parse parameters, enclosed in parenthesis
      * @param {Scope} scope
-     * @return {Node[]} arguments
+     * @param {Node} node    Node on which to apply the parameters. If there
+     *                       are no parameters in the expression, the node
+     *                       itself is returned
+     * @return {Node} node
      * @private
      */
-    function parse_arguments (scope) {
-        var args = [];
-        if (token == '(') {
-            // TODO: in case of Plot, create a new scope.
+    function parse_params (scope, node) {
+        while (token == '(') {
+            var params = [];
 
             getToken();
 
             if (token != ')') {
-                args.push(parse_range(scope));
+                params.push(parse_range(scope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
-                    args.push(parse_range(scope));
+                    params.push(parse_range(scope));
                 }
             }
 
@@ -935,9 +949,11 @@
                 throw createSyntaxError('Parenthesis ) missing');
             }
             getToken();
+
+            node = new Params(node, params);
         }
 
-        return args;
+        return node;
     }
 
     /**

@@ -184,8 +184,6 @@ math.type.Unit = Unit;
                 return null;
             }
 
-            console.log('unit: ', unit);
-
             return new Unit(null, unit)
         }
 
