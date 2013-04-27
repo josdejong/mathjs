@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.7.0
- * @date    2013-04-20
+ * @version 0.7.1
+ * @date    2013-04-27
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -650,7 +650,7 @@ var util = (function () {
 
         // check the type of size
         if (!(size instanceof Array)) {
-            throw new TypeError('Size must be an array (size is ' + math.typeof(size) + ')');
+            throw new TypeError('Size must be an array (size is ' + math['typeof'](size) + ')');
         }
 
         // check whether size contains positive integers
@@ -872,7 +872,7 @@ function isBoolean(value) {
  * @param {Number} [im]     The imaginary part of the complex value
  */
 function Complex(re, im) {
-    if (this.constructor != Complex) {
+    if (!(this instanceof Complex)) {
         throw new SyntaxError(
             'Complex constructor must be called with the new operator');
     }
@@ -908,17 +908,18 @@ math.type.Complex = Complex;
 
     function next() {
         index++;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function revert(oldIndex) {
         index = oldIndex;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function parseNumber () {
         var number = '';
-        var oldIndex = index;
+        var oldIndex;
+        oldIndex = index;
 
         if (c == '+') {
             next();
@@ -934,8 +935,27 @@ math.type.Complex = Complex;
             return null;
         }
 
-        // TODO only allow a single dot, and enforce at least one digit before or after the dot
-        while (isDigitDot(c)) {
+        // get number, can have a single dot
+        if (c == '.') {
+            number += c;
+            next();
+            if (!isDigit(c)) {
+                // this is no legal number, it is just a dot
+                revert(oldIndex);
+                return null;
+            }
+        }
+        else {
+            while (isDigit(c)) {
+                number += c;
+                next();
+            }
+            if (c == '.') {
+                number += c;
+                next();
+            }
+        }
+        while (isDigit(c)) {
             number += c;
             next();
         }
@@ -968,7 +988,7 @@ math.type.Complex = Complex;
 
     function parseComplex () {
         // check for 'i', '-i', '+i'
-        var cnext = text[index + 1];
+        var cnext = text.charAt(index + 1);
         if (c == 'I' || c == 'i') {
             next();
             return '1';
@@ -1174,7 +1194,7 @@ Complex.prototype.toString = function () {
  * @param {Array | Matrix} [data]    A multi dimensional array
  */
 function Matrix(data) {
-    if (this.constructor != Matrix) {
+    if (!(this instanceof Matrix)) {
         throw new SyntaxError(
             'Matrix constructor must be called with the new operator');
     }
@@ -1189,7 +1209,7 @@ function Matrix(data) {
     }
     else if (data != null) {
         // unsupported type
-        throw new TypeError('Unsupported type of data (' + math.typeof(data) + ')');
+        throw new TypeError('Unsupported type of data (' + math['typeof'](data) + ')');
     }
     else {
         // nothing provided
@@ -1218,7 +1238,7 @@ Matrix.prototype.get = function (index) {
         });
     }
     else {
-        throw new TypeError('Unsupported type of index ' + math.typeof(index));
+        throw new TypeError('Unsupported type of index ' + math['typeof'](index));
     }
 
     if (index.length != this._size.length) {
@@ -1413,7 +1433,7 @@ Matrix.prototype.set = function (index, submatrix) {
         });
     }
     else {
-        throw new TypeError('Unsupported type of index ' + math.typeof(index));
+        throw new TypeError('Unsupported type of index ' + math['typeof'](index));
     }
 
     if (submatrix instanceof Matrix || submatrix instanceof Range) {
@@ -1874,7 +1894,7 @@ function isInteger(value) {
  * @param {Number} end
  */
 function Range(start, step, end) {
-    if (this.constructor != Range) {
+    if (!(this instanceof Range)) {
         throw new SyntaxError(
             'Range constructor must be called with the new operator');
     }
@@ -2109,7 +2129,7 @@ Range.prototype.toString = function () {
  * @param {*} [value]
  */
 math.type.Selector = function Selector (value) {
-    if (!(this instanceof Selector)) {
+    if (!(this instanceof math.type.Selector)) {
         throw new SyntaxError(
             'Selector constructor must be called with the new operator');
     }
@@ -2251,7 +2271,7 @@ function isString(value) {
  * @param {String} [unit]   A unit like "cm" or "inch"
  */
 function Unit(value, unit) {
-    if (this.constructor != Unit) {
+    if (!(this instanceof Unit)) {
         throw new Error('Unit constructor must be called with the new operator');
     }
 
@@ -2307,17 +2327,18 @@ math.type.Unit = Unit;
 
     function next() {
         index++;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function revert(oldIndex) {
         index = oldIndex;
-        c = text[index];
+        c = text.charAt(index);
     }
 
     function parseNumber () {
         var number = '';
-        var oldIndex = index;
+        var oldIndex;
+        oldIndex = index;
 
         if (c == '+') {
             next();
@@ -2333,8 +2354,27 @@ math.type.Unit = Unit;
             return null;
         }
 
-        // TODO only allow a single dot, and enforce at least one digit before or after the dot
-        while (isDigitDot(c)) {
+        // get number, can have a single dot
+        if (c == '.') {
+            number += c;
+            next();
+            if (!isDigit(c)) {
+                // this is no legal number, it is just a dot
+                revert(oldIndex);
+                return null;
+            }
+        }
+        else {
+            while (isDigit(c)) {
+                number += c;
+                next();
+            }
+            if (c == '.') {
+                number += c;
+                next();
+            }
+        }
+        while (isDigit(c)) {
             number += c;
             next();
         }
@@ -2555,7 +2595,7 @@ Unit.prototype.equals = function(other) {
  * @param {String | Unit} plainUnit   A plain unit, without value. Can have prefix, like "cm"
  * @returns {Unit} unit having fixed, specified unit
  */
-Unit.prototype.in = function (plainUnit) {
+Unit.prototype['in'] = function (plainUnit) {
     var other;
     if (isString(plainUnit)) {
         other = new Unit(null, plainUnit);
@@ -2594,7 +2634,7 @@ Unit.prototype.in = function (plainUnit) {
  * @return {Number} value
  */
 Unit.prototype.toNumber = function (plainUnit) {
-    var other = this.in(plainUnit);
+    var other = this['in'](plainUnit);
     var prefix = this.fixPrefix ? other._bestPrefix() : other.prefix;
     return other._unnormalize(other.value, prefix.value);
 };
@@ -2960,13 +3000,13 @@ math.i         = math.I;
 function newUnsupportedTypeError(name, value1, value2) {
     var msg = undefined;
     if (arguments.length == 2) {
-        var t = math.typeof(value1);
+        var t = math['typeof'](value1);
         msg = 'Function ' + name + '(' + t + ') not supported';
     }
     else if (arguments.length > 2) {
         var types = [];
         for (var i = 1; i < arguments.length; i++) {
-            types.push(math.typeof(arguments[i]));
+            types.push(math['typeof'](arguments[i]));
         }
         msg = 'Function ' + name + '(' + types.join(', ') + ') not supported';
     }
@@ -3016,100 +3056,23 @@ Node.prototype.toString = function() {
 };
 
 /**
- * @constructor Symbol
- * A symbol can hold and evaluate a variable or function with parameters.
- * @param {String} [name]
- * @param {function} fn
- * @param {Node[]} params
- * @extends {Node}
- */
-function Symbol(name, fn, params) {
-    this.name = name;
-    this.fn = fn;
-    this.params = params;
-}
-
-Symbol.prototype = new Node();
-
-math.expr.node.Symbol = Symbol;
-
-/**
- * Check whether the Symbol has one or multiple parameters set.
- * @return {Boolean}
- */
-Symbol.prototype.hasParams = function () {
-    return (this.params != undefined && this.params.length > 0);
-};
-
-/**
- * Evaluate the symbol
- * @return {*} result
- * @override
- */
-Symbol.prototype.eval = function() {
-    var fn = this.fn;
-    if (fn === undefined) {
-        throw new Error('Undefined symbol ' + this.name);
-    }
-
-    // evaluate the parameters
-    var results = this.params.map(function (param) {
-        return param.eval();
-    });
-
-    // evaluate the function
-    return fn.apply(this, results);
-};
-
-/**
- * Get string representation
- * @return {String} str
- * @override
- */
-Symbol.prototype.toString = function() {
-    // variable. format the symbol like "myvar"
-    if (this.name && !this.params) {
-        return this.name;
-    }
-
-    /* TODO: determine if the function is an operator
-    // operator. format the operation like "(2 + 3)"
-    if (this.fn && (this.fn instanceof math.fn.Operator)) {
-        if (this.params && this.params.length == 2) {
-            return '(' +
-                this.params[0].toString() + ' ' +
-                this.name + ' ' +
-                this.params[1].toString() + ')';
-        }
-    }
-    */
-
-    // function. format the operation like "f(2, 4.2)"
-    var str = this.name;
-    if (this.params && this.params.length) {
-        str += '(' + this.params.join(', ') + ')';
-    }
-    return str;
-};
-
-/**
- * @constructor Constant
+ * @constructor ConstantNode
  * @param {*} value
  * @extends {Node}
  */
-function Constant(value) {
+function ConstantNode(value) {
     this.value = value;
 }
 
-Constant.prototype = new Node();
+ConstantNode.prototype = new Node();
 
-math.expr.node.Constant = Constant;
+math.expr.node.ConstantNode = ConstantNode;
 
 /**
- * Evaluate the constant
+ * Evaluate the constant (just return it)
  * @return {*} value
  */
-Constant.prototype.eval = function () {
+ConstantNode.prototype.eval = function () {
     return this.value;
 };
 
@@ -3117,8 +3080,168 @@ Constant.prototype.eval = function () {
  * Get string representation
  * @return {String} str
  */
-Constant.prototype.toString = function() {
-    return this.value ? math.format(this.value) : '';
+ConstantNode.prototype.toString = function() {
+    return math.format(this.value || null);
+};
+
+/**
+ * @constructor OperatorNode
+ * An operator with two arguments, like 2+3
+ * @param {String} name     Function name, for example '+'
+ * @param {function} fn     Function, for example math.add
+ * @param {Node[]} params   Parameters
+ */
+function OperatorNode (name, fn, params) {
+    this.name = name;
+    this.fn = fn;
+    this.params = params;
+}
+
+OperatorNode.prototype = new Node();
+
+math.expr.node.OperatorNode = OperatorNode;
+
+/**
+ * Evaluate the parameters
+ * @return {*} result
+ */
+OperatorNode.prototype.eval = function() {
+    return this.fn.apply(this, this.params.map(function (param) {
+        return param.eval();
+    }));
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ */
+OperatorNode.prototype.toString = function() {
+    var params = this.params;
+
+    // special case: unary minus
+    if (this.fn === math.unaryminus) {
+        return '-' + params[0].toString();
+    }
+
+    switch (params.length) {
+        case 1: // for example '5!'
+            return params[0].toString() + this.name;
+
+        case 2: // for example '2+3'
+            var lhs = params[0].toString();
+            if (params[0] instanceof OperatorNode) {
+                lhs = '(' + lhs + ')';
+            }
+            var rhs = params[1].toString();
+            if (params[1] instanceof OperatorNode) {
+                rhs = '(' + rhs + ')';
+            }
+            return lhs + ' ' + this.name + ' ' + rhs;
+
+        default: // this should occur. format as a function call
+            return this.name + '(' + this.params.join(', ') + ')';
+    }
+};
+
+/**
+ * @constructor SymbolNode
+ * A symbol node can hold and resolve a symbol
+ * @param {String} [name]
+ * @param {math.expr.Symbol} symbol
+ * @extends {Node}
+ */
+function SymbolNode(name, symbol) {
+    this.name = name;
+    this.symbol = symbol;
+}
+
+SymbolNode.prototype = new Node();
+
+math.expr.node.SymbolNode = SymbolNode;
+
+/**
+ * Evaluate the symbol. Throws an error when the symbol is undefined.
+ * @return {*} result
+ * @override
+ */
+SymbolNode.prototype.eval = function() {
+    // return the value of the symbol
+    var value = this.symbol.get();
+
+    if (value === undefined) {
+        // TODO: throw an error or not?
+        throw new Error('Undefined symbol ' + this.name);
+    }
+
+    return value;
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ * @override
+ */
+SymbolNode.prototype.toString = function() {
+    return this.name;
+};
+
+/**
+ * @constructor ParamsNode
+ * invoke a list with parameters on the results of a node
+ * @param {Node} object
+ * @param {Node[]} params
+ */
+function ParamsNode (object, params) {
+    this.object = object;
+    this.params = params;
+}
+
+ParamsNode.prototype = new Node();
+
+math.expr.node.ParamsNode = ParamsNode;
+
+/**
+ * Evaluate the parameters
+ * @return {*} result
+ */
+ParamsNode.prototype.eval = function() {
+    var object = this.object;
+    if (object == undefined) {
+        throw new Error ('Node undefined');
+    }
+    var obj = object.eval();
+
+    // evaluate the parameters
+    var res = this.params.map(function (arg) {
+        return arg.eval();
+    });
+
+    if (typeof obj === 'function') {
+        // invoke a function with the parameters
+        return obj.apply(this, res);
+    }
+    else if (obj instanceof Object && obj.get) {
+        // apply method get with the parameters
+        return obj.get(res);
+    }
+    // TODO: apply parameters on a string
+    else {
+        throw new TypeError('Cannot apply parameters to object of type ' +
+            math['typeof'](obj));
+    }
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ */
+ParamsNode.prototype.toString = function() {
+    // format the parameters like "(2, 4.2)"
+    var str = this.object ? this.object.toString() : '';
+    if (this.params) {
+        str += '(' + this.params.join(', ') + ')';
+    }
+    return str;
 };
 
 /**
@@ -3263,25 +3386,25 @@ math.expr.node.MatrixNode = MatrixNode;
     };
 })();
 /**
- * @constructor Block
+ * @constructor BlockNode
  * Holds a set with nodes
  * @extends {Node}
  */
-function Block() {
+function BlockNode() {
     this.params = [];
     this.visible = [];
 }
 
-Block.prototype = new Node();
+BlockNode.prototype = new Node();
 
-math.expr.node.Block = Block;
+math.expr.node.BlockNode = BlockNode;
 
 /**
  * Add a parameter
  * @param {Node} param
  * @param {Boolean} [visible]   true by default
  */
-Block.prototype.add = function (param, visible) {
+BlockNode.prototype.add = function (param, visible) {
     var index = this.params.length;
     this.params[index] = param;
     this.visible[index] = (visible != undefined) ? visible : true;
@@ -3292,7 +3415,7 @@ Block.prototype.add = function (param, visible) {
  * @return {*[]} results
  * @override
  */
-Block.prototype.eval = function() {
+BlockNode.prototype.eval = function() {
     // evaluate the parameters
     var results = [];
     for (var i = 0, iMax = this.params.length; i < iMax; i++) {
@@ -3310,7 +3433,7 @@ Block.prototype.eval = function() {
  * @return {String} str
  * @override
  */
-Block.prototype.toString = function() {
+BlockNode.prototype.toString = function() {
     var strings = [];
 
     for (var i = 0, iMax = this.params.length; i < iMax; i++) {
@@ -3323,28 +3446,28 @@ Block.prototype.toString = function() {
 };
 
 /**
- * @constructor Assignment
+ * @constructor AssignmentNode
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
  * @param {Node} expr                   The expression defining the symbol
- * @param {function} result             placeholder for the result
+ * @param {math.expr.Symbol} symbol     placeholder for the symbol
  */
-function Assignment(name, params, expr, result) {
+function AssignmentNode(name, params, expr, symbol) {
     this.name = name;
     this.params = params;
     this.expr = expr;
-    this.result = result;
+    this.symbol = symbol;
 }
 
-Assignment.prototype = new Node();
+AssignmentNode.prototype = new Node();
 
-math.expr.node.Assignment = Assignment;
+math.expr.node.AssignmentNode = AssignmentNode;
 
 /**
  * Evaluate the assignment
  * @return {*} result
  */
-Assignment.prototype.eval = function() {
+AssignmentNode.prototype.eval = function() {
     if (this.expr === undefined) {
         throw new Error('Undefined symbol ' + this.name);
     }
@@ -3362,25 +3485,24 @@ Assignment.prototype.eval = function() {
         var exprResult = this.expr.eval();
 
         // test if definition is currently undefined
-        if (this.result.value == undefined) {
+        var prevResult = this.symbol.get();
+        if (prevResult == undefined) {
             throw new Error('Undefined symbol ' + this.name);
         }
 
-        var prevResult = this.result();
         // TODO: check type of prevResult: Matrix, Array, String, other...
         if (!prevResult.set) {
             throw new TypeError('Cannot apply a subset to object of type ' +
-                math.typeof(prevResult));
-
+                math['typeof'](prevResult));
         }
         result = prevResult.set(paramResults, exprResult);
 
-        this.result.value = result;
+        this.symbol.set(result);
     }
     else {
         // variable definition, for example "a = 3/4"
         result = this.expr.eval();
-        this.result.value = result;
+        this.symbol.set(result);
     }
 
     return result;
@@ -3390,7 +3512,7 @@ Assignment.prototype.eval = function() {
  * Get string representation
  * @return {String}
  */
-Assignment.prototype.toString = function() {
+AssignmentNode.prototype.toString = function() {
     var str = '';
 
     str += this.name;
@@ -3404,70 +3526,17 @@ Assignment.prototype.toString = function() {
 };
 
 /**
- * @constructor Arguments
- * invoke a list with parameters on the results of a node
- * @param {Node} object
- * @param {Node[]} params
- */
-function Arguments (object, params) {
-    this.object = object;
-    this.params = params;
-}
-
-Arguments.prototype = new Node();
-
-math.expr.node.Arguments = Arguments;
-
-/**
- * Evaluate the parameters
- * @return {*} result
- */
-Arguments.prototype.eval = function() {
-    var object = this.object;
-    if (object == undefined) {
-        throw new Error ('Node undefined');
-    }
-    var objectRes = object.eval();
-
-    // evaluate the parameters
-    var params = this.params;
-    var paramsRes = [];
-    for (var i = 0, len = params.length; i < len; i++) {
-        paramsRes[i] = params[i].eval();
-    }
-
-    // TODO: check type of objectRes
-    if (!objectRes.get) {
-        throw new TypeError('Cannot apply arguments to object of type ' +
-            math.typeof(objectRes));
-    }
-    return objectRes.get(paramsRes);
-};
-
-/**
- * Get string representation
- * @return {String} str
- */
-Arguments.prototype.toString = function() {
-    // format the arguments like "(2, 4.2)"
-    var str = this.object ? this.object.toString() : '';
-    if (this.params) {
-        str += '(' + this.params.join(', ') + ')';
-    }
-    return str;
-};
-
-/**
- * @constructor FunctionAssignment
- * assigns a custom defined function
+ * @constructor FunctionNode
+ * Function assignment
  *
  * @param {String} name             Function name
  * @param {String[]} variableNames  Variable names
  * @param {function[]} variables    Links to the variables in a scope
  * @param {Node} expr               The function expression
- * @param {function} result         Link to store the result
+ * @param {math.expr.Symbol} symbol Symbol to store the resulting function
+ *                                  assignment
  */
-function FunctionAssignment(name, variableNames, variables, expr, result) {
+function FunctionNode(name, variableNames, variables, expr, symbol) {
     this.name = name;
     this.variables = variables;
 
@@ -3482,14 +3551,14 @@ function FunctionAssignment(name, variableNames, variables, expr, result) {
         })();
     }
 
-    this.def = this.createFunction(name, variableNames, variables, expr);
+    this.fn = this.createFunction(name, variableNames, variables, expr);
 
-    this.result = result;
+    this.symbol = symbol;
 }
 
-FunctionAssignment.prototype = new Node();
+FunctionNode.prototype = new Node();
 
-math.expr.node.FunctionAssignment = FunctionAssignment;
+math.expr.node.FunctionNode = FunctionNode;
 
 /**
  * Create a function from the function assignment
@@ -3499,8 +3568,8 @@ math.expr.node.FunctionAssignment = FunctionAssignment;
  * @param {Node} expr               The function expression
  *
  */
-FunctionAssignment.prototype.createFunction = function (name, variableNames,
-                                                        values, expr) {
+FunctionNode.prototype.createFunction = function (
+        name, variableNames, values, expr) {
     var fn = function () {
         // validate correct number of arguments
         var valuesNum = values ? values.length : 0;
@@ -3521,7 +3590,9 @@ FunctionAssignment.prototype.createFunction = function (name, variableNames,
     };
 
     fn.toString = function() {
+        // TODO: what to return as toString?
         return name + '(' + variableNames.join(', ') + ')';
+        //return name + '(' + variableNames.join(', ') + ') = ' + expr.toString();
     };
 
     return fn;
@@ -3529,9 +3600,9 @@ FunctionAssignment.prototype.createFunction = function (name, variableNames,
 
 /**
  * Evaluate the function assignment
- * @return {function} result
+ * @return {function} fn
  */
-FunctionAssignment.prototype.eval = function() {
+FunctionNode.prototype.eval = function() {
     // link the variables to the values of this function assignment
     var variables = this.variables,
         values = this.values;
@@ -3539,19 +3610,61 @@ FunctionAssignment.prototype.eval = function() {
         variables[i].value = values[i];
     }
 
-    // put the definition in the result
-    this.result.value = this.def;
+    // put the definition in the symbol
+    this.symbol.set(this.fn);
 
     // TODO: what to return? a neat "function y(x) defined"?
-    return this.def;
+    return this.fn;
 };
 
 /**
  * get string representation
  * @return {String} str
  */
-FunctionAssignment.prototype.toString = function() {
-    return this.def.toString();
+FunctionNode.prototype.toString = function() {
+    return this.fn.toString();
+};
+
+/**
+ * A Symbol stores a variable or function, or a link to another symbol
+ * @param {String} name
+ * @param {*} value
+ * @constructor math.expr.Symbol
+ */
+math.expr.Symbol = function Symbol (name, value) {
+    this.name = name;
+    this.value = value;
+};
+
+/**
+ * Get the symbols value
+ * @returns {* | undefined} value
+ */
+math.expr.Symbol.prototype.get = function () {
+    var value = this.value;
+
+    // resolve a chain of symbols
+    while (value instanceof math.expr.Symbol) {
+        value = value.get();
+    }
+
+    return value;
+};
+
+/**
+ * Set the value for the symbol
+ * @param {*} value
+ */
+math.expr.Symbol.prototype.set = function (value) {
+    this.value = value;
+};
+
+/**
+ * Get the symbols value
+ * @returns {*} value
+ */
+math.expr.Symbol.prototype.valueOf = function () {
+    return this.get();
 };
 
 
@@ -3559,20 +3672,24 @@ FunctionAssignment.prototype.toString = function() {
  * Scope
  * A scope stores functions.
  *
- * @constructor mathnotepad.Scope
+ * @constructor math.expr.Scope
  * @param {Scope} [parentScope]
  * @param {Object} [options]   Available options:
  *                                 {boolean} readonly (false by default).
  */
-math.expr.Scope = function Scope(parentScope, options) {
+math.expr.Scope = function (parentScope, options) {
     this.readonly = false;
     if (options && options.readonly != undefined) {
         this.readonly = options.readonly;
     }
 
+    /** @type {math.expr.Scope} */
     this.parentScope = parentScope;
+
+    /** @type {math.expr.Scope[]} */
     this.nestedScopes = undefined;
 
+    /** @type {Object.<string, math.expr.Symbol>} */
     this.symbols = {}; // the actual symbols
 
     // the following objects are just used to test existence.
@@ -3627,7 +3744,7 @@ math.expr.Scope.prototype = {
     /**
      * create a symbol
      * @param {String} name
-     * @return {function} symbol
+     * @return {math.expr.Symbol} symbol
      * @private
      */
     createSymbol: function (name) {
@@ -3637,7 +3754,7 @@ math.expr.Scope.prototype = {
             var lastDef = this.findDef(name);
 
             // create a new symbol
-            symbol = this.newSymbol(name, lastDef);
+            symbol = new math.expr.Symbol(name, lastDef);
             this.symbols[name] = symbol;
 
         }
@@ -3645,60 +3762,9 @@ math.expr.Scope.prototype = {
     },
 
     /**
-     * Create a new symbol
-     * @param {String} name
-     * @param {*} [value]
-     * @return {function} symbol
-     * @private
-     */
-    newSymbol: function (name, value) {
-        // create a new symbol
-        var scope = this;
-        var symbol = function () {
-            var args, i;
-            if (!symbol.value) {
-                // try to resolve again
-                symbol.value = scope.findDef(name);
-
-                if (!symbol.value) {
-                    throw new Error('Undefined symbol ' + name);
-                }
-            }
-            if (typeof symbol.value === 'function') {
-                return symbol.value.apply(null, arguments);
-            }
-            else if (symbol.value instanceof Matrix || symbol.value instanceof Range || symbol.value instanceof Array) {
-                if (arguments.length) {
-                    var matrix = (symbol.value instanceof Array) ? new Matrix(symbol.value) : symbol.value;
-                    args = [];
-                    for (i = 0; i < arguments.length; i++) {
-                        args[i] = arguments[i];
-                    }
-                    return matrix.get(args);
-                }
-                else {
-                    return symbol.value;
-                }
-            }
-            // TODO: implement get subset for all types
-            else {
-                return symbol.value;
-            }
-        };
-
-        symbol.value = value;
-
-        symbol.toString = function () {
-            return symbol.value ? symbol.value.toString() : '';
-        };
-
-        return symbol;
-    },
-
-    /**
      * create a link to a value.
      * @param {String} name
-     * @return {function} symbol
+     * @return {math.expr.Symbol} symbol
      */
     createLink: function (name) {
         var symbol = this.links[name];
@@ -3714,20 +3780,37 @@ math.expr.Scope.prototype = {
      * Returns the created symbol
      * @param {String} name
      * @param {*} [value]
-     * @return {function} symbol
+     * @return {math.expr.Symbol} symbol
      */
     createDef: function (name, value) {
         if (this.readonly) {
-            throw new Error('Cannot create variable: Scope is read-only');
+            throw new Error('Cannot create symbol: Scope is read-only');
         }
 
         var symbol = this.defs[name];
         if (!symbol) {
+            // create a new symbol
             symbol = this.createSymbol(name);
             this.defs[name] = symbol;
+
+            // update the symbols value
+            if (value != undefined) {
+                symbol.set(value);
+            }
+
+            // link undefined symbols in nested scopes to this symbol
+            var undef = this.getUndefinedSymbols(name);
+            if (undef.length) {
+                undef.forEach(function (u) {
+                    u.set(symbol);
+                });
+            }
         }
-        if (symbol && value != undefined) {
-            symbol.value = value;
+        else {
+            // update the symbols value
+            if (value != undefined) {
+                symbol.set(value);
+            }
         }
         return symbol;
     },
@@ -3736,17 +3819,26 @@ math.expr.Scope.prototype = {
      * Create a variable update definition
      * Returns the created symbol
      * @param {String} name
-     * @return {function} symbol
+     * @return {math.expr.Symbol} symbol
      */
     createUpdate: function (name) {
         if (this.readonly) {
-            throw new Error('Cannot update variable: Scope is read-only');
+            throw new Error('Cannot update symbol: Scope is read-only');
         }
 
         var symbol = this.updates[name];
         if (!symbol) {
+            // create a new symbol
             symbol = this.createLink(name);
             this.updates[name] = symbol;
+
+            // link undefined symbols in nested scopes to this symbol
+            var undef = this.getUndefinedSymbols(name);
+            if (undef.length) {
+                undef.forEach(function (u) {
+                    u.set(symbol);
+                });
+            }
         }
         return symbol;
     },
@@ -3755,11 +3847,11 @@ math.expr.Scope.prototype = {
      * Create a constant
      * @param {String} name
      * @param {*} value
-     * @return {function} symbol
+     * @return {math.expr.Symbol} symbol
      * @private
      */
     createConstant: function (name, value) {
-        var symbol = this.newSymbol(name, value);
+        var symbol = new math.expr.Symbol(name, value);
         this.symbols[name] = symbol;
         this.defs[name] = symbol;
         return symbol;
@@ -3770,7 +3862,7 @@ math.expr.Scope.prototype = {
      * If the symbol is not found in this scope, it will be looked up in its parent
      * scope.
      * @param {String} name
-     * @return {function | undefined} symbol, or undefined when not found
+     * @return {math.expr.Symbol | undefined} symbol, or undefined when not found
      */
     findDef: function (name) {
         var symbol;
@@ -3811,6 +3903,17 @@ math.expr.Scope.prototype = {
     },
 
     /**
+     * Set a symbol to undefined (if defined)
+     * @param {String} name
+     */
+    setUndefined: function (name) {
+        var symbol = this.symbols[name];
+        if (symbol) {
+            symbol.set(undefined);
+        }
+    },
+
+    /**
      * Remove a link to a symbol
      * @param {String} name
      */
@@ -3848,7 +3951,7 @@ math.expr.Scope.prototype = {
         for (var name in symbols) {
             if (symbols.hasOwnProperty(name)) {
                 var symbol = symbols[name];
-                symbol.value = (parentScope ? parentScope.findDef(name) : undefined);
+                symbol.set(parentScope ? parentScope.findDef(name) : undefined);
             }
         }
 
@@ -3903,15 +4006,16 @@ math.expr.Scope.prototype = {
 
     /**
      * Retrieve all undefined symbols
-     * @return {function[]} undefinedSymbols   All symbols which are undefined
+     * @param {String} [name]  Optional name to filter the undefined symbols
+     * @return {math.expr.Symbol[]} undefinedSymbols   All symbols which are undefined
      */
-    getUndefinedSymbols: function () {
+    getUndefinedSymbols: function (name) {
         var symbols = this.symbols;
         var undefinedSymbols = [];
         for (var i in symbols) {
             if (symbols.hasOwnProperty(i)) {
                 var symbol = symbols[i];
-                if (symbol.value == undefined) {
+                if (symbol.value == undefined && (!name || symbol.name == name)) {
                     undefinedSymbols.push(symbol);
                 }
             }
@@ -3919,8 +4023,8 @@ math.expr.Scope.prototype = {
 
         if (this.nestedScopes) {
             this.nestedScopes.forEach(function (nestedScope) {
-                undefinedSymbols =
-                    undefinedSymbols.concat(nestedScope.getUndefinedSymbols());
+                undefinedSymbols = undefinedSymbols.concat(
+                    nestedScope.getUndefinedSymbols(name));
             });
         }
 
@@ -3940,6 +4044,9 @@ math.expr.Scope.prototype = {
      *    var result = parser.eval(expr);    // evaluate an expression
      *    var value = parser.get(name);      // retrieve a variable from the parser
      *    parser.set(name, value);           // set a variable in the parser
+     *    parser.remove(name);               // clear a variable from the
+     *                                       // parsers scope
+     *    parser.clear();                    // clear the parsers scope
      *
      *    // it is possible to parse an expression into a node tree:
      *    var node = parser.parse(expr);     // parse an expression into a node tree
@@ -3977,7 +4084,7 @@ math.expr.Scope.prototype = {
      *    parser.clear();
      */
     math.expr.Parser = function Parser(options) {
-        if (this.constructor != Parser) {
+        if (!(this instanceof math.expr.Parser)) {
             throw new SyntaxError(
                 'Parser constructor must be called with the new operator');
         }
@@ -3989,7 +4096,7 @@ math.expr.Scope.prototype = {
      * Parse an expression end return the parsed function node.
      * The node can be evaluated via node.eval()
      * @param {String} expression
-     * @param {Scope} [scope]
+     * @param {math.expr.Scope} [scope]
      * @return {Node} node
      * @throws {Error}
      */
@@ -4024,7 +4131,7 @@ math.expr.Scope.prototype = {
     math.expr.Parser.prototype.get = function (name) {
         var symbol = this.scope.findDef(name);
         if (symbol) {
-            return symbol.value;
+            return symbol.get();
         }
         return undefined;
     };
@@ -4036,6 +4143,14 @@ math.expr.Scope.prototype = {
      */
     math.expr.Parser.prototype.set = function (name, value) {
         this.scope.createDef(name, value);
+    };
+
+    /**
+     * Remove a variable from the parsers scope
+     * @param {String} name
+     */
+    math.expr.Parser.prototype.remove = function (name) {
+        this.scope.setUndefined(name);
     };
 
     /**
@@ -4059,7 +4174,6 @@ math.expr.Scope.prototype = {
     var c = '';           // current token character in expr
     var token = '';       // current token
     var token_type = TOKENTYPE.NULL; // type of the token
-    // TODO: do not use this.token, but a local variable var token for better speed? -> getToken() must return token.
 
     /**
      * Get the next character from the expression.
@@ -4140,7 +4254,28 @@ math.expr.Scope.prototype = {
         // check for a number
         if (isDigitDot(c)) {
             token_type = TOKENTYPE.NUMBER;
-            while (isDigitDot(c)) {
+
+            // get number, can have a single dot
+            if (c == '.') {
+                token += c;
+                getChar();
+
+                if (!isDigit(c)) {
+                    // this is no legal number, it is just a dot
+                    token_type = TOKENTYPE.UNKNOWN;
+                }
+            }
+            else {
+                while (isDigit(c)) {
+                    token += c;
+                    getChar();
+                }
+                if (c == '.') {
+                    token += c;
+                    getChar();
+                }
+            }
+            while (isDigit(c)) {
                 token += c;
                 getChar();
             }
@@ -4166,6 +4301,7 @@ math.expr.Scope.prototype = {
                     getChar();
                 }
             }
+
             return;
         }
 
@@ -4225,7 +4361,7 @@ math.expr.Scope.prototype = {
     function isValidSymbolName (name) {
         for (var i = 0, iMax = name.length; i < iMax; i++) {
             var c = name.charAt(i);
-            //var valid = (isAlpha(c) || (i > 0 && isDigit(c))); // TODO
+            //var valid = (isAlpha(c) || (i > 0 && isDigit(c))); // TODO: allow digits in symbol name
             var valid = (isAlpha(c));
             if (!valid) {
                 return false;
@@ -4271,7 +4407,7 @@ math.expr.Scope.prototype = {
 
     /**
      * Start of the parse levels below, in order of precedence
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4284,7 +4420,7 @@ math.expr.Scope.prototype = {
         var node;
         if (token == '') {
             // empty expression
-            node = new Constant(undefined);
+            node = new ConstantNode(undefined);
         }
         else {
             node = parse_block(scope);
@@ -4311,7 +4447,7 @@ math.expr.Scope.prototype = {
      * Parse a block with expressions. Expressions can be separated by a newline
      * character '\n', or by a semicolon ';'. In case of a semicolon, no output
      * of the preceding line is returned.
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4325,7 +4461,7 @@ math.expr.Scope.prototype = {
         while (token == '\n' || token == ';') {
             if (!block) {
                 // initialize the block
-                block = new Block();
+                block = new BlockNode();
                 if (node) {
                     visible = (token != ';');
                     block.add(node, visible);
@@ -4356,7 +4492,7 @@ math.expr.Scope.prototype = {
      * Parse assignment of ans.
      * Ans is assigned when the expression itself is no variable or function
      * assignment
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4364,17 +4500,11 @@ math.expr.Scope.prototype = {
         var expression = parse_function_assignment(scope);
 
         if (!scope.readonly) {
-            // TODO: not so nice having to specify some special types here...
-            if (!(expression instanceof Assignment)
-            // !(expression instanceof FunctionAssignment) &&  // TODO
-            // !(expression instanceof plot)                   // TODO
-                ) {
-                // create a variable definition for ans
-                var name = 'ans';
-                var params = undefined;
-                var link = scope.createDef(name);
-                return new Assignment(name, params, expression, link);
-            }
+            // create a variable definition for ans
+            var name = 'ans';
+            var params = undefined;
+            var link = scope.createDef(name);
+            return new AssignmentNode(name, params, expression, link);
         }
 
         return expression;
@@ -4382,7 +4512,7 @@ math.expr.Scope.prototype = {
 
     /**
      * Parse a function assignment like "function f(a,b) = a*b"
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4439,10 +4569,10 @@ math.expr.Scope.prototype = {
 
             // parse the expression, with the correct function scope
             getToken();
-            var expression = parse_range(functionScope);
+            var expression = parse_assignment(functionScope);
             var result = scope.createDef(name);
 
-            return  new FunctionAssignment(name, variableNames, variables,
+            return  new FunctionNode(name, variableNames, variables,
                 expression, result);
         }
 
@@ -4452,11 +4582,12 @@ math.expr.Scope.prototype = {
     /**
      * Assignment of a variable, can be a variable like "a=2.3" or a updating an
      * existing variable like "matrix(2,3:5)=[6,7,8]"
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_assignment (scope) {
+        var name, params, expr, link;
         var linkExisted = false;
         if (token_type == TOKENTYPE.SYMBOL) {
             linkExisted = scope.hasLink(token);
@@ -4466,25 +4597,44 @@ math.expr.Scope.prototype = {
 
         // TODO: support chained assignments like "a = b = 2.3"
         if (token == '=') {
-            if (!(node instanceof Symbol)) {
+            if (node instanceof SymbolNode) {
+                // assignment
+                if (!linkExisted) {
+                    // we parsed the assignment as if it where an expression instead,
+                    // therefore, a link was created to the symbol. This link must
+                    // be cleaned up again, and only if it wasn't existing before
+                    scope.removeLink(name);
+                }
+
+                // parse the expression, with the correct function scope
+                getToken();
+                name = node.name;
+                params = null;
+                expr = parse_assignment(scope);
+                link = scope.createDef(name);
+                return new AssignmentNode(name, params, expr, link);
+            }
+            else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
+                // update of a variable
+                if (!linkExisted) {
+                    // we parsed the assignment as if it where an expression instead,
+                    // therefore, a link was created to the symbol. This link must
+                    // be cleaned up again, and only if it wasn't existing before
+                    scope.removeLink(name);
+                }
+
+                // parse the expression, with the correct function scope
+                getToken();
+                name = node.object.name;
+                params = node.params;
+                expr = parse_assignment(scope);
+                link = scope.createUpdate(name);
+                return new AssignmentNode(name, params, expr, link);
+            }
+            else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
                     'of assignment operator =');
             }
-            var name = node.name;
-            var params = node.params;
-
-            if (!linkExisted) {
-                // we parsed the assignment as if it where an expression instead,
-                // therefore, a link was created to the symbol. This link must
-                // be cleaned up again, and only if it wasn't existing before
-                scope.removeLink(name);
-            }
-
-            // parse the expression, with the correct function scope
-            getToken();
-            var expression = parse_range(scope);
-            var link = node.hasParams() ? scope.createUpdate(name) : scope.createDef(name);
-            return new Assignment(name, params, expression, link);
         }
 
         return node;
@@ -4492,15 +4642,16 @@ math.expr.Scope.prototype = {
 
     /**
      * parse range, "start:end" or "start:step:end"
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_range (scope) {
-        var node = parse_conditions(scope);
+        var node, name, fn, params;
 
+        node = parse_conditions(scope);
         if (token == ':') {
-            var params = [node];
+            params = [node];
 
             while (token == ':') {
                 getToken();
@@ -4511,9 +4662,9 @@ math.expr.Scope.prototype = {
                 throw new TypeError('Invalid range');
             }
 
-            var name = 'range';
-            var fn = math.range;
-            node = new Symbol(name, fn, params);
+            name = 'range';
+            fn = math.range;
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4521,16 +4672,18 @@ math.expr.Scope.prototype = {
 
     /**
      * conditions like and, or, in
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_conditions (scope) {
-        var node = parse_bitwise_conditions(scope);
+        var node, operators, name, fn, params;
+
+        node = parse_bitwise_conditions(scope);
 
         // TODO: precedence of And above Or?
         // TODO: implement a method for unit to number conversion
-        var operators = {
+        operators = {
             'in' : 'in'
             /* TODO: implement conditions
              'and' : 'and',
@@ -4540,14 +4693,14 @@ math.expr.Scope.prototype = {
              'xor': 'xor'
              */
         };
+
         while (operators[token] !== undefined) {
-            // TODO: with all operators: only load one instance of the operator, use the scope
-            var name = token;
-            var fn = math[operators[name]];
+            name = token;
+            fn = math[operators[name]];
 
             getToken();
-            var params = [node, parse_bitwise_conditions(scope)];
-            node = new Symbol(name, fn, params);
+            params = [node, parse_bitwise_conditions(scope)];
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4555,7 +4708,7 @@ math.expr.Scope.prototype = {
 
     /**
      * conditional operators and bitshift
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4576,7 +4729,7 @@ math.expr.Scope.prototype = {
 
          getToken();
          var params = [node, parse_comparison()];
-         node = new Symbol(name, fn, params);
+         node = new OperatorNode(name, fn, params);
          }
          */
 
@@ -4585,14 +4738,16 @@ math.expr.Scope.prototype = {
 
     /**
      * comparison operators
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_comparison (scope) {
-        var node = parse_addsubtract(scope);
+        var node, operators, name, fn, params;
 
-        var operators = {
+        node = parse_addsubtract(scope);
+
+        operators = {
             '==': 'equal',
             '!=': 'unequal',
             '<': 'smaller',
@@ -4601,12 +4756,12 @@ math.expr.Scope.prototype = {
             '>=': 'largereq'
         };
         while (operators[token] !== undefined) {
-            var name = token;
-            var fn = math[operators[name]];
+            name = token;
+            fn = math[operators[name]];
 
             getToken();
-            var params = [node, parse_addsubtract(scope)];
-            node = new Symbol(name, fn, params);
+            params = [node, parse_addsubtract(scope)];
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4614,24 +4769,26 @@ math.expr.Scope.prototype = {
 
     /**
      * add or subtract
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_addsubtract (scope)  {
-        var node = parse_multiplydivide(scope);
+        var node, operators, name, fn, params;
 
-        var operators = {
+        node = parse_multiplydivide(scope);
+
+        operators = {
             '+': 'add',
             '-': 'subtract'
         };
         while (operators[token] !== undefined) {
-            var name = token;
-            var fn = math[operators[name]];
+            name = token;
+            fn = math[operators[name]];
 
             getToken();
-            var params = [node, parse_multiplydivide(scope)];
-            node = new Symbol(name, fn, params);
+            params = [node, parse_multiplydivide(scope)];
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4639,26 +4796,29 @@ math.expr.Scope.prototype = {
 
     /**
      * multiply, divide, modulus
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_multiplydivide (scope) {
-        var node = parse_unaryminus(scope);
+        var node, operators, name, fn, params;
 
-        var operators = {
+        node = parse_unaryminus(scope);
+
+        operators = {
             '*': 'multiply',
             '/': 'divide',
             '%': 'mod',
             'mod': 'mod'
         };
+
         while (operators[token] !== undefined) {
-            var name = token;
-            var fn = math[operators[name]];
+            name = token;
+            fn = math[operators[name]];
 
             getToken();
-            var params = [node, parse_unaryminus(scope)];
-            node = new Symbol(name, fn, params);
+            params = [node, parse_unaryminus(scope)];
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4666,18 +4826,20 @@ math.expr.Scope.prototype = {
 
     /**
      * Unary minus
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_unaryminus (scope) {
-        if (token == '-') {
-            var name = token;
-            var fn = math.unaryminus;
-            getToken();
-            var params = [parse_pow(scope)];
+        var name, fn, params;
 
-            return new Symbol(name, fn, params);
+        if (token == '-') {
+            name = token;
+            fn = math.unaryminus;
+            getToken();
+            params = [parse_pow(scope)];
+
+            return new OperatorNode(name, fn, params);
         }
 
         return parse_pow(scope);
@@ -4686,12 +4848,14 @@ math.expr.Scope.prototype = {
     /**
      * power
      * Node: power operator is right associative
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_pow (scope) {
-        var nodes = [
+        var node, leftNode, nodes, operators, name, fn, params;
+
+        nodes = [
             parse_factorial(scope)
         ];
 
@@ -4702,13 +4866,13 @@ math.expr.Scope.prototype = {
         }
 
         // evaluate the operands from right to left (right associative)
-        var node = nodes.pop();
+        node = nodes.pop();
         while (nodes.length) {
-            var leftNode = nodes.pop();
-            var name = '^';
-            var fn = math.pow;
-            var params = [leftNode, node];
-            node = new Symbol(name, fn, params);
+            leftNode = nodes.pop();
+            name = '^';
+            fn = math.pow;
+            params = [leftNode, node];
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4716,20 +4880,22 @@ math.expr.Scope.prototype = {
 
     /**
      * Factorial
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_factorial (scope)  {
-        var node = parse_transpose(scope);
+        var node, name, fn, params;
+
+        node = parse_transpose(scope);
 
         while (token == '!') {
-            var name = token;
-            var fn = math.factorial;
+            name = token;
+            fn = math.factorial;
             getToken();
-            var params = [node];
+            params = [node];
 
-            node = new Symbol(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4737,20 +4903,22 @@ math.expr.Scope.prototype = {
 
     /**
      * Transpose
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_transpose (scope)  {
-        var node = parse_plot(scope);
+        var node, name, fn, params;
+
+        node = parse_plot(scope);
 
         while (token == '\'') {
-            var name = token;
-            var fn = math.transpose;
+            name = token;
+            fn = math.transpose;
             getToken();
-            var params = [node];
+            params = [node];
 
-            node = new Symbol(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4758,7 +4926,7 @@ math.expr.Scope.prototype = {
 
     /**
      * parse plot
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4775,12 +4943,12 @@ math.expr.Scope.prototype = {
          var plotScope = scope.createNestedScope();
 
          getToken();
-         functions.push(parse_range(plotScope));
+         functions.push(parse_assignment(plotScope));
 
          // parse a list with parameters
          while (token == ',') {
          getToken();
-         functions.push(parse_range(plotScope));
+         functions.push(parse_assigment(plotScope));
          }
 
          if (token != ')') {
@@ -4795,8 +4963,7 @@ math.expr.Scope.prototype = {
          if (lastFunction) {
          // if the last function is a variable, remove it from the functions list
          // and use its variable func
-         var lastIsSymbol = (lastFunction instanceof Symbol &&
-         !lastFunction.hasParams());
+         var lastIsSymbol = (lastFunction instanceof Arguments);
          if (lastIsSymbol) {
          functions.pop();
          variable = lastFunction.fn;
@@ -4811,53 +4978,53 @@ math.expr.Scope.prototype = {
 
     /**
      * parse symbols: functions, variables, constants, units
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_symbol (scope) {
+        var node, name, symbol;
+
         if (token_type == TOKENTYPE.SYMBOL) {
-            var name = token;
+            name = token;
 
             getToken();
 
-            var link = scope.createLink(name);
-            // TODO: split applying arguments from symbol?
-            var args = parse_arguments(scope);
-            var symbol = new Symbol(name, link, args);
+            // create a symbol
+            symbol = scope.createLink(name);
+            node = new SymbolNode(name, symbol);
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                symbol = parse_arguments(scope, symbol);
-            }
-            */
-            return symbol;
+            // parse parameters
+            return parse_params(scope, node);
         }
 
         return parse_string(scope);
     }
 
     /**
-     * parse arguments, enclosed in parenthesis
-     * @param {Scope} scope
-     * @return {Node[]} arguments
+     * parse parameters, enclosed in parenthesis
+     * @param {math.expr.Scope} scope
+     * @param {Node} node    Node on which to apply the parameters. If there
+     *                       are no parameters in the expression, the node
+     *                       itself is returned
+     * @return {Node} node
      * @private
      */
-    function parse_arguments (scope) {
-        var args = [];
-        if (token == '(') {
-            // TODO: in case of Plot, create a new scope.
+    function parse_params (scope, node) {
+        var params;
+
+        while (token == '(') {
+            params = [];
 
             getToken();
 
             if (token != ')') {
-                args.push(parse_range(scope));
+                params.push(parse_assignment(scope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
-                    args.push(parse_range(scope));
+                    params.push(parse_assignment(scope));
                 }
             }
 
@@ -4865,23 +5032,27 @@ math.expr.Scope.prototype = {
                 throw createSyntaxError('Parenthesis ) missing');
             }
             getToken();
+
+            node = new ParamsNode(node, params);
         }
 
-        return args;
+        return node;
     }
 
     /**
      * parse a string.
      * A string is enclosed by double quotes
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_string (scope) {
+        var node, str, tPrev;
+
         if (token == '"') {
             // string "..."
-            var str = '';
-            var tPrev = '';
+            str = '';
+            tPrev = '';
             while (c != '' && (c != '\"' || tPrev == '\\')) { // also handle escape character
                 str += c;
                 tPrev = c;
@@ -4894,14 +5065,11 @@ math.expr.Scope.prototype = {
             }
             getToken();
 
-            var node = new Constant(str);
+            // create constant
+            node = new ConstantNode(str);
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                node = parse_arguments(scope, node);
-            }
-            */
+            // parse parameters
+            node = parse_params(scope, node);
 
             return node;
         }
@@ -4911,14 +5079,15 @@ math.expr.Scope.prototype = {
 
     /**
      * parse the matrix
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} A MatrixNode
      * @private
      */
     function parse_matrix (scope) {
+        var array, params, r, c, rows, cols;
+
         if (token == '[') {
             // matrix [...]
-            var array;
 
             // skip newlines
             getToken();
@@ -4929,10 +5098,11 @@ math.expr.Scope.prototype = {
             // check if this is an empty matrix "[ ]"
             if (token != ']') {
                 // this is a non-empty matrix
-                var params = [];
-                var r = 0, c = 0;
+                params = [];
+                r = 0;
+                c = 0;
 
-                params[0] = [parse_range(scope)];
+                params[0] = [parse_assignment(scope)];
 
                 // the columns in the matrix are separated by commas, and the rows by dot-comma's
                 while (token == ',' || token == ';') {
@@ -4951,7 +5121,7 @@ math.expr.Scope.prototype = {
                         getToken();
                     }
 
-                    params[r][c] = parse_range(scope);
+                    params[r][c] = parse_assignment(scope);
 
                     // skip newlines
                     while (token == '\n') {
@@ -4959,8 +5129,8 @@ math.expr.Scope.prototype = {
                     }
                 }
 
-                var rows =  params.length;
-                var cols = (params.length > 0) ? params[0].length : 0;
+                rows =  params.length;
+                cols = (params.length > 0) ? params[0].length : 0;
 
                 // check if the number of columns matches in all rows
                 for (r = 1; r < rows; r++) {
@@ -4983,12 +5153,8 @@ math.expr.Scope.prototype = {
                 array = new MatrixNode([[]]);
             }
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                array = parse_arguments(scope, array);
-            }
-            */
+            // parse parameters
+            array = parse_params(scope, array);
 
             return array;
         }
@@ -4998,16 +5164,17 @@ math.expr.Scope.prototype = {
 
     /**
      * parse a number
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_number (scope) {
+        var node, value, number;
+
         if (token_type == TOKENTYPE.NUMBER) {
             // this is a number
-            var number;
             if (token == '.') {
-                number = 0.0;
+                number = 0;
             } else {
                 number = Number(token);
             }
@@ -5021,32 +5188,27 @@ math.expr.Scope.prototype = {
              }
              //*/
 
-            var value;
             if (token_type == TOKENTYPE.SYMBOL) {
                 if (token == 'i' || token == 'I') {
                     value = new Complex(0, number);
                     getToken();
-                    return new Constant(value);
+                    return new ConstantNode(value);
                 }
 
                 if (Unit.isPlainUnit(token)) {
                     value = new Unit(number, token);
                     getToken();
-                    return new Constant(value);
+                    return new ConstantNode(value);
                 }
 
                 throw createTypeError('Unknown unit "' + token + '"');
             }
 
             // just a regular number
-            var node = new Constant(number);
+            node = new ConstantNode(number);
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                node = parse_arguments(scope, node);
-            }
-            */
+            // parse parameters
+            node = parse_params(scope, node);
 
             return node;
         }
@@ -5056,16 +5218,18 @@ math.expr.Scope.prototype = {
 
     /**
      * parentheses
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_parentheses (scope) {
+        var node;
+
         // check if it is a parenthesized expression
         if (token == '(') {
             // parentheses (...)
             getToken();
-            var node = parse_range(scope); // start again
+            node = parse_assignment(scope); // start again
 
             if (token != ')') {
                 throw createSyntaxError('Parenthesis ) expected');
@@ -5080,12 +5244,8 @@ math.expr.Scope.prototype = {
              }
              //*/
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                node = parse_arguments(scope, node);
-            }
-            */
+            // parse parameters
+            node = parse_params(scope, node);
 
             return node;
         }
@@ -5095,7 +5255,7 @@ math.expr.Scope.prototype = {
 
     /**
      * Evaluated when the expression is not yet ended but expected to end
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} res
      * @private
      */
@@ -5328,11 +5488,12 @@ math.expr.Scope.prototype = {
             throw 'Node with id "' + afterId + '" not found';
         }
 
-        if (previousNode == this.lastNode) {
-            return this.append(expression);
+        var nextNode = previousNode.nextNode;
+        if (nextNode) {
+            return this.insertBefore(expression, nextNode.id);
         }
         else {
-            return this.insertBefore(afterId + 1, expression);
+            return this.append(expression);
         }
     };
 
@@ -5470,7 +5631,7 @@ math.expr.Scope.prototype = {
         }
         catch (err) {
             var value = 'Error: ' + String(err.message || err);
-            this.fn = new Constant(value);
+            this.fn = new ConstantNode(value);
         }
     };
 
@@ -9267,7 +9428,7 @@ math['in'] = function unit_in(x, unit) {
 
     if (x instanceof Unit) {
         if (unit instanceof Unit || isString(unit)) {
-            return x.in(unit);
+            return x['in'](unit);
         }
     }
 
@@ -9615,24 +9776,6 @@ math['typeof'] = function math_typeof(x) {
 /**
  * Backward compatibility stuff
  */
-// TODO: remove error messages for deprecated methods (deprecated since version 0.5.0)
-function deprecated(deprecated, replacement) {
-    throw new Error(
-        'Constructor "' + deprecated +'" has been replaced by ' +
-        'constructor method "' + replacement + '" in math.js v0.5.0');
-}
-math.Complex = function () {
-    deprecated('new math.Complex()', 'math.complex()');
-};
-math.Unit = function () {
-    deprecated('new math.Unit()', 'math.unit()');
-};
-math.parser.Parser = function () {
-    deprecated('new math.parser.Parser()', 'math.parser()');
-};
-math.parser.Workspace = function () {
-    deprecated('new math.parser.Workspace()', 'math.workspace()');
-};
 
 
 // initialise the Chain prototype with all functions and constants in math
