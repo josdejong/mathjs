@@ -354,7 +354,7 @@
         var node;
         if (token == '') {
             // empty expression
-            node = new Constant(undefined);
+            node = new ConstantNode(undefined);
         }
         else {
             node = parse_block(scope);
@@ -395,7 +395,7 @@
         while (token == '\n' || token == ';') {
             if (!block) {
                 // initialize the block
-                block = new Block();
+                block = new BlockNode();
                 if (node) {
                     visible = (token != ';');
                     block.add(node, visible);
@@ -435,15 +435,15 @@
 
         if (!scope.readonly) {
             // TODO: not so nice having to specify some special types here...
-            if (!(expression instanceof Assignment)
-            // !(expression instanceof FunctionAssignment) &&  // TODO
+            if (!(expression instanceof AssignmentNode)
+            // !(expression instanceof FunctionNode) &&  // TODO
             // !(expression instanceof plot)                   // TODO
                 ) {
                 // create a variable definition for ans
                 var name = 'ans';
                 var params = undefined;
                 var link = scope.createDef(name);
-                return new Assignment(name, params, expression, link);
+                return new AssignmentNode(name, params, expression, link);
             }
         }
 
@@ -512,7 +512,7 @@
             var expression = parse_range(functionScope);
             var result = scope.createDef(name);
 
-            return  new FunctionAssignment(name, variableNames, variables,
+            return  new FunctionNode(name, variableNames, variables,
                 expression, result);
         }
 
@@ -536,7 +536,7 @@
 
         // TODO: support chained assignments like "a = b = 2.3"
         if (token == '=') {
-            if (node instanceof Symbol) {
+            if (node instanceof SymbolNode) {
                 // assignment
                 if (!linkExisted) {
                     // we parsed the assignment as if it where an expression instead,
@@ -551,9 +551,9 @@
                 var params = null;
                 var expression = parse_range(scope);
                 var link = scope.createDef(name);
-                return new Assignment(name, params, expression, link);
+                return new AssignmentNode(name, params, expression, link);
             }
-            else if (node instanceof Params && node.object instanceof Symbol) {
+            else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
                 // update of a variable
                 if (!linkExisted) {
                     // we parsed the assignment as if it where an expression instead,
@@ -568,7 +568,7 @@
                 var params = node.params;
                 var expression = parse_range(scope);
                 var link = scope.createUpdate(name);
-                return new Assignment(name, params, expression, link);
+                return new AssignmentNode(name, params, expression, link);
             }
             else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
@@ -602,7 +602,7 @@
 
             var name = 'range';
             var fn = math.range;
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -636,7 +636,7 @@
 
             getToken();
             var params = [node, parse_bitwise_conditions(scope)];
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -665,7 +665,7 @@
 
          getToken();
          var params = [node, parse_comparison()];
-         node = new Operator(name, fn, params);
+         node = new OperatorNode(name, fn, params);
          }
          */
 
@@ -695,7 +695,7 @@
 
             getToken();
             var params = [node, parse_addsubtract(scope)];
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -720,7 +720,7 @@
 
             getToken();
             var params = [node, parse_multiplydivide(scope)];
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -747,7 +747,7 @@
 
             getToken();
             var params = [node, parse_unaryminus(scope)];
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -766,7 +766,7 @@
             getToken();
             var params = [parse_pow(scope)];
 
-            return new Operator(name, fn, params);
+            return new OperatorNode(name, fn, params);
         }
 
         return parse_pow(scope);
@@ -797,7 +797,7 @@
             var name = '^';
             var fn = math.pow;
             var params = [leftNode, node];
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -818,7 +818,7 @@
             getToken();
             var params = [node];
 
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -839,7 +839,7 @@
             getToken();
             var params = [node];
 
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -911,7 +911,7 @@
 
             // create a symbol
             var link = scope.createLink(name);
-            var symbol = new Symbol(name, link);
+            var symbol = new SymbolNode(name, link);
 
             // parse parameters
             return parse_params(scope, symbol);
@@ -950,7 +950,7 @@
             }
             getToken();
 
-            node = new Params(node, params);
+            node = new ParamsNode(node, params);
         }
 
         return node;
@@ -980,7 +980,7 @@
             }
             getToken();
 
-            var node = new Constant(str);
+            var node = new ConstantNode(str);
 
             /* TODO: parse arguments
             // parse arguments
@@ -1112,20 +1112,20 @@
                 if (token == 'i' || token == 'I') {
                     value = new Complex(0, number);
                     getToken();
-                    return new Constant(value);
+                    return new ConstantNode(value);
                 }
 
                 if (Unit.isPlainUnit(token)) {
                     value = new Unit(number, token);
                     getToken();
-                    return new Constant(value);
+                    return new ConstantNode(value);
                 }
 
                 throw createTypeError('Unknown unit "' + token + '"');
             }
 
             // just a regular number
-            var node = new Constant(number);
+            var node = new ConstantNode(number);
 
             /* TODO: parse arguments
             // parse arguments

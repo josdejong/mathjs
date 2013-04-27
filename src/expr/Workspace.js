@@ -289,7 +289,7 @@
         }
         catch (err) {
             var value = 'Error: ' + String(err.message || err);
-            this.fn = new Constant(value);
+            this.fn = new ConstantNode(value);
         }
     };
 

@@ -1,25 +1,25 @@
 /**
- * @constructor Operator
+ * @constructor OperatorNode
  * An operator with two arguments, like 2+3
  * @param {String} name     Function name, for example '+'
  * @param {function} fn     Function, for example math.add
  * @param {Node[]} params   Parameters
  */
-function Operator (name, fn, params) {
+function OperatorNode (name, fn, params) {
     this.name = name;
     this.fn = fn;
     this.params = params;
 }
 
-Operator.prototype = new Node();
+OperatorNode.prototype = new Node();
 
-math.expr.node.Operator = Operator;
+math.expr.node.OperatorNode = OperatorNode;
 
 /**
  * Evaluate the parameters
  * @return {*} result
  */
-Operator.prototype.eval = function() {
+OperatorNode.prototype.eval = function() {
     return this.fn.apply(this, this.params.map(function (param) {
         return param.eval();
     }));
@@ -29,7 +29,7 @@ Operator.prototype.eval = function() {
  * Get string representation
  * @return {String} str
  */
-Operator.prototype.toString = function() {
+OperatorNode.prototype.toString = function() {
     var params = this.params;
 
     // special case: unary minus
@@ -43,11 +43,11 @@ Operator.prototype.toString = function() {
 
         case 2: // for example '2+3'
             var lhs = params[0].toString();
-            if (params[0] instanceof Operator) {
+            if (params[0] instanceof OperatorNode) {
                 lhs = '(' + lhs + ')';
             }
             var rhs = params[1].toString();
-            if (params[1] instanceof Operator) {
+            if (params[1] instanceof OperatorNode) {
                 rhs = '(' + rhs + ')';
             }
             return lhs + ' ' + this.name + ' ' + rhs;

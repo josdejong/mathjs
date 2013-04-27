@@ -1,14 +1,15 @@
 /**
- * @constructor FunctionAssignment
- * assigns a custom defined function
+ * @constructor FunctionNode
+ * Function assignment
  *
  * @param {String} name             Function name
  * @param {String[]} variableNames  Variable names
  * @param {function[]} variables    Links to the variables in a scope
  * @param {Node} expr               The function expression
- * @param {math.expr.Link} result   Link to store the result
+ * @param {math.expr.Symbol} symbol Symbol to store the resulting function
+ *                                  assignment
  */
-function FunctionAssignment(name, variableNames, variables, expr, result) {
+function FunctionNode(name, variableNames, variables, expr, symbol) {
     this.name = name;
     this.variables = variables;
 
@@ -23,14 +24,14 @@ function FunctionAssignment(name, variableNames, variables, expr, result) {
         })();
     }
 
-    this.def = this.createFunction(name, variableNames, variables, expr);
+    this.fn = this.createFunction(name, variableNames, variables, expr);
 
-    this.result = result;
+    this.symbol = symbol;
 }
 
-FunctionAssignment.prototype = new Node();
+FunctionNode.prototype = new Node();
 
-math.expr.node.FunctionAssignment = FunctionAssignment;
+math.expr.node.FunctionNode = FunctionNode;
 
 /**
  * Create a function from the function assignment
@@ -40,8 +41,8 @@ math.expr.node.FunctionAssignment = FunctionAssignment;
  * @param {Node} expr               The function expression
  *
  */
-FunctionAssignment.prototype.createFunction = function (name, variableNames,
-                                                        values, expr) {
+FunctionNode.prototype.createFunction = function (
+        name, variableNames, values, expr) {
     var fn = function () {
         // validate correct number of arguments
         var valuesNum = values ? values.length : 0;
@@ -62,7 +63,9 @@ FunctionAssignment.prototype.createFunction = function (name, variableNames,
     };
 
     fn.toString = function() {
+        // TODO: what to return as toString?
         return name + '(' + variableNames.join(', ') + ')';
+        //return name + '(' + variableNames.join(', ') + ') = ' + expr.toString();
     };
 
     return fn;
@@ -70,9 +73,9 @@ FunctionAssignment.prototype.createFunction = function (name, variableNames,
 
 /**
  * Evaluate the function assignment
- * @return {function} result
+ * @return {function} fn
  */
-FunctionAssignment.prototype.eval = function() {
+FunctionNode.prototype.eval = function() {
     // link the variables to the values of this function assignment
     var variables = this.variables,
         values = this.values;
@@ -80,17 +83,17 @@ FunctionAssignment.prototype.eval = function() {
         variables[i].value = values[i];
     }
 
-    // put the definition in the result
-    this.result.set(this.def);
+    // put the definition in the symbol
+    this.symbol.set(this.fn);
 
     // TODO: what to return? a neat "function y(x) defined"?
-    return this.def;
+    return this.fn;
 };
 
 /**
  * get string representation
  * @return {String} str
  */
-FunctionAssignment.prototype.toString = function() {
-    return this.def.toString();
+FunctionNode.prototype.toString = function() {
+    return this.fn.toString();
 };

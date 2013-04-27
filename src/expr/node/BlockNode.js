@@ -1,23 +1,23 @@
 /**
- * @constructor Block
+ * @constructor BlockNode
  * Holds a set with nodes
  * @extends {Node}
  */
-function Block() {
+function BlockNode() {
     this.params = [];
     this.visible = [];
 }
 
-Block.prototype = new Node();
+BlockNode.prototype = new Node();
 
-math.expr.node.Block = Block;
+math.expr.node.BlockNode = BlockNode;
 
 /**
  * Add a parameter
  * @param {Node} param
  * @param {Boolean} [visible]   true by default
  */
-Block.prototype.add = function (param, visible) {
+BlockNode.prototype.add = function (param, visible) {
     var index = this.params.length;
     this.params[index] = param;
     this.visible[index] = (visible != undefined) ? visible : true;
@@ -28,7 +28,7 @@ Block.prototype.add = function (param, visible) {
  * @return {*[]} results
  * @override
  */
-Block.prototype.eval = function() {
+BlockNode.prototype.eval = function() {
     // evaluate the parameters
     var results = [];
     for (var i = 0, iMax = this.params.length; i < iMax; i++) {
@@ -46,7 +46,7 @@ Block.prototype.eval = function() {
  * @return {String} str
  * @override
  */
-Block.prototype.toString = function() {
+BlockNode.prototype.toString = function() {
     var strings = [];
 
     for (var i = 0, iMax = this.params.length; i < iMax; i++) {

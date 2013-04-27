@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.7.1-SNAPSHOT
- * @date    2013-04-26
+ * @date    2013-04-27
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -3016,23 +3016,23 @@ Node.prototype.toString = function() {
 };
 
 /**
- * @constructor Constant
+ * @constructor ConstantNode
  * @param {*} value
  * @extends {Node}
  */
-function Constant(value) {
+function ConstantNode(value) {
     this.value = value;
 }
 
-Constant.prototype = new Node();
+ConstantNode.prototype = new Node();
 
-math.expr.node.Constant = Constant;
+math.expr.node.ConstantNode = ConstantNode;
 
 /**
  * Evaluate the constant (just return it)
  * @return {*} value
  */
-Constant.prototype.eval = function () {
+ConstantNode.prototype.eval = function () {
     return this.value;
 };
 
@@ -3040,32 +3040,32 @@ Constant.prototype.eval = function () {
  * Get string representation
  * @return {String} str
  */
-Constant.prototype.toString = function() {
+ConstantNode.prototype.toString = function() {
     return math.format(this.value || null);
 };
 
 /**
- * @constructor Operator
+ * @constructor OperatorNode
  * An operator with two arguments, like 2+3
  * @param {String} name     Function name, for example '+'
  * @param {function} fn     Function, for example math.add
  * @param {Node[]} params   Parameters
  */
-function Operator (name, fn, params) {
+function OperatorNode (name, fn, params) {
     this.name = name;
     this.fn = fn;
     this.params = params;
 }
 
-Operator.prototype = new Node();
+OperatorNode.prototype = new Node();
 
-math.expr.node.Operator = Operator;
+math.expr.node.OperatorNode = OperatorNode;
 
 /**
  * Evaluate the parameters
  * @return {*} result
  */
-Operator.prototype.eval = function() {
+OperatorNode.prototype.eval = function() {
     return this.fn.apply(this, this.params.map(function (param) {
         return param.eval();
     }));
@@ -3075,7 +3075,7 @@ Operator.prototype.eval = function() {
  * Get string representation
  * @return {String} str
  */
-Operator.prototype.toString = function() {
+OperatorNode.prototype.toString = function() {
     var params = this.params;
 
     // special case: unary minus
@@ -3089,11 +3089,11 @@ Operator.prototype.toString = function() {
 
         case 2: // for example '2+3'
             var lhs = params[0].toString();
-            if (params[0] instanceof Operator) {
+            if (params[0] instanceof OperatorNode) {
                 lhs = '(' + lhs + ')';
             }
             var rhs = params[1].toString();
-            if (params[1] instanceof Operator) {
+            if (params[1] instanceof OperatorNode) {
                 rhs = '(' + rhs + ')';
             }
             return lhs + ' ' + this.name + ' ' + rhs;
@@ -3104,30 +3104,29 @@ Operator.prototype.toString = function() {
 };
 
 /**
- * @constructor Symbol
- * A symbol can hold and evaluate a link to a value or function defined in a
- * scope.
+ * @constructor SymbolNode
+ * A symbol node can hold and resolve a symbol
  * @param {String} [name]
- * @param {Link} link
+ * @param {math.expr.Symbol} symbol
  * @extends {Node}
  */
-function Symbol(name, link) {
+function SymbolNode(name, symbol) {
     this.name = name;
-    this.link = link;
+    this.symbol = symbol;
 }
 
-Symbol.prototype = new Node();
+SymbolNode.prototype = new Node();
 
-math.expr.node.Symbol = Symbol;
+math.expr.node.SymbolNode = SymbolNode;
 
 /**
  * Evaluate the symbol
  * @return {*} result
  * @override
  */
-Symbol.prototype.eval = function() {
-    // return the value of the link
-    return this.link.get();
+SymbolNode.prototype.eval = function() {
+    // return the value of the symbol
+    return this.symbol.get();
 };
 
 /**
@@ -3135,30 +3134,30 @@ Symbol.prototype.eval = function() {
  * @return {String} str
  * @override
  */
-Symbol.prototype.toString = function() {
+SymbolNode.prototype.toString = function() {
     return this.name;
 };
 
 /**
- * @constructor Params
+ * @constructor ParamsNode
  * invoke a list with parameters on the results of a node
  * @param {Node} object
  * @param {Node[]} params
  */
-function Params (object, params) {
+function ParamsNode (object, params) {
     this.object = object;
     this.params = params;
 }
 
-Params.prototype = new Node();
+ParamsNode.prototype = new Node();
 
-math.expr.node.Params = Params;
+math.expr.node.ParamsNode = ParamsNode;
 
 /**
  * Evaluate the parameters
  * @return {*} result
  */
-Params.prototype.eval = function() {
+ParamsNode.prototype.eval = function() {
     var object = this.object;
     if (object == undefined) {
         throw new Error ('Node undefined');
@@ -3189,7 +3188,7 @@ Params.prototype.eval = function() {
  * Get string representation
  * @return {String} str
  */
-Params.prototype.toString = function() {
+ParamsNode.prototype.toString = function() {
     // format the parameters like "(2, 4.2)"
     var str = this.object ? this.object.toString() : '';
     if (this.params) {
@@ -3340,25 +3339,25 @@ math.expr.node.MatrixNode = MatrixNode;
     };
 })();
 /**
- * @constructor Block
+ * @constructor BlockNode
  * Holds a set with nodes
  * @extends {Node}
  */
-function Block() {
+function BlockNode() {
     this.params = [];
     this.visible = [];
 }
 
-Block.prototype = new Node();
+BlockNode.prototype = new Node();
 
-math.expr.node.Block = Block;
+math.expr.node.BlockNode = BlockNode;
 
 /**
  * Add a parameter
  * @param {Node} param
  * @param {Boolean} [visible]   true by default
  */
-Block.prototype.add = function (param, visible) {
+BlockNode.prototype.add = function (param, visible) {
     var index = this.params.length;
     this.params[index] = param;
     this.visible[index] = (visible != undefined) ? visible : true;
@@ -3369,7 +3368,7 @@ Block.prototype.add = function (param, visible) {
  * @return {*[]} results
  * @override
  */
-Block.prototype.eval = function() {
+BlockNode.prototype.eval = function() {
     // evaluate the parameters
     var results = [];
     for (var i = 0, iMax = this.params.length; i < iMax; i++) {
@@ -3387,7 +3386,7 @@ Block.prototype.eval = function() {
  * @return {String} str
  * @override
  */
-Block.prototype.toString = function() {
+BlockNode.prototype.toString = function() {
     var strings = [];
 
     for (var i = 0, iMax = this.params.length; i < iMax; i++) {
@@ -3400,28 +3399,28 @@ Block.prototype.toString = function() {
 };
 
 /**
- * @constructor Assignment
+ * @constructor AssignmentNode
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
  * @param {Node} expr                   The expression defining the symbol
- * @param {Link} result                 placeholder for the result
+ * @param {math.expr.Symbol} symbol     placeholder for the symbol
  */
-function Assignment(name, params, expr, result) {
+function AssignmentNode(name, params, expr, symbol) {
     this.name = name;
     this.params = params;
     this.expr = expr;
-    this.result = result;
+    this.symbol = symbol;
 }
 
-Assignment.prototype = new Node();
+AssignmentNode.prototype = new Node();
 
-math.expr.node.Assignment = Assignment;
+math.expr.node.AssignmentNode = AssignmentNode;
 
 /**
  * Evaluate the assignment
  * @return {*} result
  */
-Assignment.prototype.eval = function() {
+AssignmentNode.prototype.eval = function() {
     if (this.expr === undefined) {
         throw new Error('Undefined symbol ' + this.name);
     }
@@ -3439,7 +3438,7 @@ Assignment.prototype.eval = function() {
         var exprResult = this.expr.eval();
 
         // test if definition is currently undefined
-        var prevResult = this.result.get();
+        var prevResult = this.symbol.get();
         if (prevResult == undefined) {
             throw new Error('Undefined symbol ' + this.name);
         }
@@ -3451,12 +3450,12 @@ Assignment.prototype.eval = function() {
         }
         result = prevResult.set(paramResults, exprResult);
 
-        this.result.value = result;
+        this.symbol.set(result);
     }
     else {
         // variable definition, for example "a = 3/4"
         result = this.expr.eval();
-        this.result.value = result;
+        this.symbol.set(result);
     }
 
     return result;
@@ -3466,7 +3465,7 @@ Assignment.prototype.eval = function() {
  * Get string representation
  * @return {String}
  */
-Assignment.prototype.toString = function() {
+AssignmentNode.prototype.toString = function() {
     var str = '';
 
     str += this.name;
@@ -3480,16 +3479,17 @@ Assignment.prototype.toString = function() {
 };
 
 /**
- * @constructor FunctionAssignment
- * assigns a custom defined function
+ * @constructor FunctionNode
+ * Function assignment
  *
  * @param {String} name             Function name
  * @param {String[]} variableNames  Variable names
  * @param {function[]} variables    Links to the variables in a scope
  * @param {Node} expr               The function expression
- * @param {Link} result             Link to store the result
+ * @param {math.expr.Symbol} symbol Symbol to store the resulting function
+ *                                  assignment
  */
-function FunctionAssignment(name, variableNames, variables, expr, result) {
+function FunctionNode(name, variableNames, variables, expr, symbol) {
     this.name = name;
     this.variables = variables;
 
@@ -3504,14 +3504,14 @@ function FunctionAssignment(name, variableNames, variables, expr, result) {
         })();
     }
 
-    this.def = this.createFunction(name, variableNames, variables, expr);
+    this.fn = this.createFunction(name, variableNames, variables, expr);
 
-    this.result = result;
+    this.symbol = symbol;
 }
 
-FunctionAssignment.prototype = new Node();
+FunctionNode.prototype = new Node();
 
-math.expr.node.FunctionAssignment = FunctionAssignment;
+math.expr.node.FunctionNode = FunctionNode;
 
 /**
  * Create a function from the function assignment
@@ -3521,8 +3521,8 @@ math.expr.node.FunctionAssignment = FunctionAssignment;
  * @param {Node} expr               The function expression
  *
  */
-FunctionAssignment.prototype.createFunction = function (name, variableNames,
-                                                        values, expr) {
+FunctionNode.prototype.createFunction = function (
+        name, variableNames, values, expr) {
     var fn = function () {
         // validate correct number of arguments
         var valuesNum = values ? values.length : 0;
@@ -3543,7 +3543,9 @@ FunctionAssignment.prototype.createFunction = function (name, variableNames,
     };
 
     fn.toString = function() {
+        // TODO: what to return as toString?
         return name + '(' + variableNames.join(', ') + ')';
+        //return name + '(' + variableNames.join(', ') + ') = ' + expr.toString();
     };
 
     return fn;
@@ -3551,9 +3553,9 @@ FunctionAssignment.prototype.createFunction = function (name, variableNames,
 
 /**
  * Evaluate the function assignment
- * @return {function} result
+ * @return {function} fn
  */
-FunctionAssignment.prototype.eval = function() {
+FunctionNode.prototype.eval = function() {
     // link the variables to the values of this function assignment
     var variables = this.variables,
         values = this.values;
@@ -3561,19 +3563,72 @@ FunctionAssignment.prototype.eval = function() {
         variables[i].value = values[i];
     }
 
-    // put the definition in the result
-    this.result.set(this.def);
+    // put the definition in the symbol
+    this.symbol.set(this.fn);
 
     // TODO: what to return? a neat "function y(x) defined"?
-    return this.def;
+    return this.fn;
 };
 
 /**
  * get string representation
  * @return {String} str
  */
-FunctionAssignment.prototype.toString = function() {
-    return this.def.toString();
+FunctionNode.prototype.toString = function() {
+    return this.fn.toString();
+};
+
+/**
+ * A Symbol stores a variable or function, or a link to another symbol
+ * @param {math.expr.Scope} scope
+ * @param {String} name
+ * @param {*} value
+ * @constructor math.expr.Symbol
+ */
+math.expr.Symbol = function Symbol (scope, name, value) {
+    this.scope = scope;
+    this.name = name;
+    this.value = value;
+};
+
+/**
+ * Get the symbols value
+ * @returns {*} value
+ */
+math.expr.Symbol.prototype.get = function () {
+    var value = this.value;
+    if (!value) {
+        // try to resolve again
+        value = this.value = this.scope.findDef(this.name);
+
+        if (!value) {
+            // TODO: throw an error or not?
+            throw new Error('Undefined symbol ' + this.name);
+        }
+    }
+
+    // resolve a chain of symbols
+    while (value instanceof math.expr.Symbol) {
+        value = value.get();
+    }
+
+    return value;
+};
+
+/**
+ * Set the value for the symbol
+ * @param {*} value
+ */
+math.expr.Symbol.prototype.set = function (value) {
+    this.value = value;
+};
+
+/**
+ * Get the symbols value
+ * @returns {*} value
+ */
+math.expr.Symbol.prototype.valueOf = function () {
+    return this.get();
 };
 
 
@@ -3581,7 +3636,7 @@ FunctionAssignment.prototype.toString = function() {
  * Scope
  * A scope stores functions.
  *
- * @constructor mathnotepad.Scope
+ * @constructor math.expr.Scope
  * @param {Scope} [parentScope]
  * @param {Object} [options]   Available options:
  *                                 {boolean} readonly (false by default).
@@ -3649,7 +3704,7 @@ math.expr.Scope.prototype = {
     /**
      * create a symbol
      * @param {String} name
-     * @return {Link} symbol
+     * @return {math.expr.Symbol} symbol
      * @private
      */
     createSymbol: function (name) {
@@ -3659,7 +3714,7 @@ math.expr.Scope.prototype = {
             var lastDef = this.findDef(name);
 
             // create a new symbol
-            symbol = new Link(this, name, lastDef);
+            symbol = new math.expr.Symbol(this, name, lastDef);
             this.symbols[name] = symbol;
 
         }
@@ -3669,7 +3724,7 @@ math.expr.Scope.prototype = {
     /**
      * create a link to a value.
      * @param {String} name
-     * @return {Link} symbol
+     * @return {math.expr.Symbol} symbol
      */
     createLink: function (name) {
         var symbol = this.links[name];
@@ -3685,11 +3740,11 @@ math.expr.Scope.prototype = {
      * Returns the created symbol
      * @param {String} name
      * @param {*} [value]
-     * @return {Link} symbol
+     * @return {math.expr.Symbol} symbol
      */
     createDef: function (name, value) {
         if (this.readonly) {
-            throw new Error('Cannot create variable: Scope is read-only');
+            throw new Error('Cannot create symbol: Scope is read-only');
         }
 
         var symbol = this.defs[name];
@@ -3707,11 +3762,11 @@ math.expr.Scope.prototype = {
      * Create a variable update definition
      * Returns the created symbol
      * @param {String} name
-     * @return {Link} symbol
+     * @return {math.expr.Symbol} symbol
      */
     createUpdate: function (name) {
         if (this.readonly) {
-            throw new Error('Cannot update variable: Scope is read-only');
+            throw new Error('Cannot update symbol: Scope is read-only');
         }
 
         var symbol = this.updates[name];
@@ -3726,11 +3781,11 @@ math.expr.Scope.prototype = {
      * Create a constant
      * @param {String} name
      * @param {*} value
-     * @return {Link} symbol
+     * @return {math.expr.Symbol} symbol
      * @private
      */
     createConstant: function (name, value) {
-        var symbol = new Link(this, name, value);
+        var symbol = new math.expr.Symbol(this, name, value);
         this.symbols[name] = symbol;
         this.defs[name] = symbol;
         return symbol;
@@ -3741,7 +3796,7 @@ math.expr.Scope.prototype = {
      * If the symbol is not found in this scope, it will be looked up in its parent
      * scope.
      * @param {String} name
-     * @return {Link | undefined} symbol, or undefined when not found
+     * @return {math.expr.Symbol | undefined} symbol, or undefined when not found
      */
     findDef: function (name) {
         var symbol;
@@ -3897,45 +3952,6 @@ math.expr.Scope.prototype = {
 
         return undefinedSymbols;
     }
-};
-
-// TODO: comment link
-
-function Link (scope, name, value) {
-    this.scope = scope;
-    this.name = name;
-    this.value = value;
-}
-
-/**
- * Get the links value
- * @returns {*} value
- */
-Link.prototype.get = function () {
-    var value = this.value;
-    if (!value) {
-        // try to resolve again
-        value = this.value = this.scope.findDef(this.name);
-
-        if (!value) {
-            throw new Error('Undefined symbol ' + this.name);
-        }
-    }
-
-    // resolve a chain of links
-    while (value instanceof Link) {
-        value = value.get();
-    }
-
-    return value;
-};
-
-/**
- * Set the value for the link
- * @param {*} value
- */
-Link.prototype.set = function (value) {
-    this.value = value;
 };
 
 (function () {
@@ -4294,7 +4310,7 @@ Link.prototype.set = function (value) {
         var node;
         if (token == '') {
             // empty expression
-            node = new Constant(undefined);
+            node = new ConstantNode(undefined);
         }
         else {
             node = parse_block(scope);
@@ -4335,7 +4351,7 @@ Link.prototype.set = function (value) {
         while (token == '\n' || token == ';') {
             if (!block) {
                 // initialize the block
-                block = new Block();
+                block = new BlockNode();
                 if (node) {
                     visible = (token != ';');
                     block.add(node, visible);
@@ -4375,15 +4391,15 @@ Link.prototype.set = function (value) {
 
         if (!scope.readonly) {
             // TODO: not so nice having to specify some special types here...
-            if (!(expression instanceof Assignment)
-            // !(expression instanceof FunctionAssignment) &&  // TODO
+            if (!(expression instanceof AssignmentNode)
+            // !(expression instanceof FunctionNode) &&  // TODO
             // !(expression instanceof plot)                   // TODO
                 ) {
                 // create a variable definition for ans
                 var name = 'ans';
                 var params = undefined;
                 var link = scope.createDef(name);
-                return new Assignment(name, params, expression, link);
+                return new AssignmentNode(name, params, expression, link);
             }
         }
 
@@ -4452,7 +4468,7 @@ Link.prototype.set = function (value) {
             var expression = parse_range(functionScope);
             var result = scope.createDef(name);
 
-            return  new FunctionAssignment(name, variableNames, variables,
+            return  new FunctionNode(name, variableNames, variables,
                 expression, result);
         }
 
@@ -4476,7 +4492,7 @@ Link.prototype.set = function (value) {
 
         // TODO: support chained assignments like "a = b = 2.3"
         if (token == '=') {
-            if (node instanceof Symbol) {
+            if (node instanceof SymbolNode) {
                 // assignment
                 if (!linkExisted) {
                     // we parsed the assignment as if it where an expression instead,
@@ -4491,9 +4507,9 @@ Link.prototype.set = function (value) {
                 var params = null;
                 var expression = parse_range(scope);
                 var link = scope.createDef(name);
-                return new Assignment(name, params, expression, link);
+                return new AssignmentNode(name, params, expression, link);
             }
-            else if (node instanceof Params && node.object instanceof Symbol) {
+            else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
                 // update of a variable
                 if (!linkExisted) {
                     // we parsed the assignment as if it where an expression instead,
@@ -4508,7 +4524,7 @@ Link.prototype.set = function (value) {
                 var params = node.params;
                 var expression = parse_range(scope);
                 var link = scope.createUpdate(name);
-                return new Assignment(name, params, expression, link);
+                return new AssignmentNode(name, params, expression, link);
             }
             else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
@@ -4542,7 +4558,7 @@ Link.prototype.set = function (value) {
 
             var name = 'range';
             var fn = math.range;
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4576,7 +4592,7 @@ Link.prototype.set = function (value) {
 
             getToken();
             var params = [node, parse_bitwise_conditions(scope)];
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4605,7 +4621,7 @@ Link.prototype.set = function (value) {
 
          getToken();
          var params = [node, parse_comparison()];
-         node = new Operator(name, fn, params);
+         node = new OperatorNode(name, fn, params);
          }
          */
 
@@ -4635,7 +4651,7 @@ Link.prototype.set = function (value) {
 
             getToken();
             var params = [node, parse_addsubtract(scope)];
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4660,7 +4676,7 @@ Link.prototype.set = function (value) {
 
             getToken();
             var params = [node, parse_multiplydivide(scope)];
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4687,7 +4703,7 @@ Link.prototype.set = function (value) {
 
             getToken();
             var params = [node, parse_unaryminus(scope)];
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4706,7 +4722,7 @@ Link.prototype.set = function (value) {
             getToken();
             var params = [parse_pow(scope)];
 
-            return new Operator(name, fn, params);
+            return new OperatorNode(name, fn, params);
         }
 
         return parse_pow(scope);
@@ -4737,7 +4753,7 @@ Link.prototype.set = function (value) {
             var name = '^';
             var fn = math.pow;
             var params = [leftNode, node];
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4758,7 +4774,7 @@ Link.prototype.set = function (value) {
             getToken();
             var params = [node];
 
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4779,7 +4795,7 @@ Link.prototype.set = function (value) {
             getToken();
             var params = [node];
 
-            node = new Operator(name, fn, params);
+            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -4851,7 +4867,7 @@ Link.prototype.set = function (value) {
 
             // create a symbol
             var link = scope.createLink(name);
-            var symbol = new Symbol(name, link);
+            var symbol = new SymbolNode(name, link);
 
             // parse parameters
             return parse_params(scope, symbol);
@@ -4890,7 +4906,7 @@ Link.prototype.set = function (value) {
             }
             getToken();
 
-            node = new Params(node, params);
+            node = new ParamsNode(node, params);
         }
 
         return node;
@@ -4920,7 +4936,7 @@ Link.prototype.set = function (value) {
             }
             getToken();
 
-            var node = new Constant(str);
+            var node = new ConstantNode(str);
 
             /* TODO: parse arguments
             // parse arguments
@@ -5052,20 +5068,20 @@ Link.prototype.set = function (value) {
                 if (token == 'i' || token == 'I') {
                     value = new Complex(0, number);
                     getToken();
-                    return new Constant(value);
+                    return new ConstantNode(value);
                 }
 
                 if (Unit.isPlainUnit(token)) {
                     value = new Unit(number, token);
                     getToken();
-                    return new Constant(value);
+                    return new ConstantNode(value);
                 }
 
                 throw createTypeError('Unknown unit "' + token + '"');
             }
 
             // just a regular number
-            var node = new Constant(number);
+            var node = new ConstantNode(number);
 
             /* TODO: parse arguments
             // parse arguments
@@ -5496,7 +5512,7 @@ Link.prototype.set = function (value) {
         }
         catch (err) {
             var value = 'Error: ' + String(err.message || err);
-            this.fn = new Constant(value);
+            this.fn = new ConstantNode(value);
         }
     };
 
@@ -9641,24 +9657,6 @@ math['typeof'] = function math_typeof(x) {
 /**
  * Backward compatibility stuff
  */
-// TODO: remove error messages for deprecated methods (deprecated since version 0.5.0)
-function deprecated(deprecated, replacement) {
-    throw new Error(
-        'Constructor "' + deprecated +'" has been replaced by ' +
-        'constructor method "' + replacement + '" in math.js v0.5.0');
-}
-math.Complex = function () {
-    deprecated('new math.Complex()', 'math.complex()');
-};
-math.Unit = function () {
-    deprecated('new math.Unit()', 'math.unit()');
-};
-math.parser.Parser = function () {
-    deprecated('new math.parser.Parser()', 'math.parser()');
-};
-math.parser.Workspace = function () {
-    deprecated('new math.parser.Workspace()', 'math.workspace()');
-};
 
 
 // initialise the Chain prototype with all functions and constants in math

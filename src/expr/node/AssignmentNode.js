@@ -1,26 +1,26 @@
 /**
- * @constructor Assignment
+ * @constructor AssignmentNode
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
  * @param {Node} expr                   The expression defining the symbol
- * @param {math.expr.Link} result       placeholder for the result
+ * @param {math.expr.Symbol} symbol     placeholder for the symbol
  */
-function Assignment(name, params, expr, result) {
+function AssignmentNode(name, params, expr, symbol) {
     this.name = name;
     this.params = params;
     this.expr = expr;
-    this.result = result;
+    this.symbol = symbol;
 }
 
-Assignment.prototype = new Node();
+AssignmentNode.prototype = new Node();
 
-math.expr.node.Assignment = Assignment;
+math.expr.node.AssignmentNode = AssignmentNode;
 
 /**
  * Evaluate the assignment
  * @return {*} result
  */
-Assignment.prototype.eval = function() {
+AssignmentNode.prototype.eval = function() {
     if (this.expr === undefined) {
         throw new Error('Undefined symbol ' + this.name);
     }
@@ -38,7 +38,7 @@ Assignment.prototype.eval = function() {
         var exprResult = this.expr.eval();
 
         // test if definition is currently undefined
-        var prevResult = this.result.get();
+        var prevResult = this.symbol.get();
         if (prevResult == undefined) {
             throw new Error('Undefined symbol ' + this.name);
         }
@@ -50,12 +50,12 @@ Assignment.prototype.eval = function() {
         }
         result = prevResult.set(paramResults, exprResult);
 
-        this.result.value = result;
+        this.symbol.set(result);
     }
     else {
         // variable definition, for example "a = 3/4"
         result = this.expr.eval();
-        this.result.value = result;
+        this.symbol.set(result);
     }
 
     return result;
@@ -65,7 +65,7 @@ Assignment.prototype.eval = function() {
  * Get string representation
  * @return {String}
  */
-Assignment.prototype.toString = function() {
+AssignmentNode.prototype.toString = function() {
     var str = '';
 
     str += this.name;

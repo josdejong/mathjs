@@ -3,7 +3,7 @@
  * Scope
  * A scope stores functions.
  *
- * @constructor mathnotepad.Scope
+ * @constructor math.expr.Scope
  * @param {Scope} [parentScope]
  * @param {Object} [options]   Available options:
  *                                 {boolean} readonly (false by default).
@@ -71,7 +71,7 @@ math.expr.Scope.prototype = {
     /**
      * create a symbol
      * @param {String} name
-     * @return {math.expr.Link} symbol
+     * @return {math.expr.Symbol} symbol
      * @private
      */
     createSymbol: function (name) {
@@ -81,7 +81,7 @@ math.expr.Scope.prototype = {
             var lastDef = this.findDef(name);
 
             // create a new symbol
-            symbol = new math.expr.Link(this, name, lastDef);
+            symbol = new math.expr.Symbol(this, name, lastDef);
             this.symbols[name] = symbol;
 
         }
@@ -91,7 +91,7 @@ math.expr.Scope.prototype = {
     /**
      * create a link to a value.
      * @param {String} name
-     * @return {math.expr.Link} symbol
+     * @return {math.expr.Symbol} symbol
      */
     createLink: function (name) {
         var symbol = this.links[name];
@@ -107,11 +107,11 @@ math.expr.Scope.prototype = {
      * Returns the created symbol
      * @param {String} name
      * @param {*} [value]
-     * @return {math.expr.Link} symbol
+     * @return {math.expr.Symbol} symbol
      */
     createDef: function (name, value) {
         if (this.readonly) {
-            throw new Error('Cannot create variable: Scope is read-only');
+            throw new Error('Cannot create symbol: Scope is read-only');
         }
 
         var symbol = this.defs[name];
@@ -129,11 +129,11 @@ math.expr.Scope.prototype = {
      * Create a variable update definition
      * Returns the created symbol
      * @param {String} name
-     * @return {math.expr.Link} symbol
+     * @return {math.expr.Symbol} symbol
      */
     createUpdate: function (name) {
         if (this.readonly) {
-            throw new Error('Cannot update variable: Scope is read-only');
+            throw new Error('Cannot update symbol: Scope is read-only');
         }
 
         var symbol = this.updates[name];
@@ -148,11 +148,11 @@ math.expr.Scope.prototype = {
      * Create a constant
      * @param {String} name
      * @param {*} value
-     * @return {math.expr.Link} symbol
+     * @return {math.expr.Symbol} symbol
      * @private
      */
     createConstant: function (name, value) {
-        var symbol = new math.expr.Link(this, name, value);
+        var symbol = new math.expr.Symbol(this, name, value);
         this.symbols[name] = symbol;
         this.defs[name] = symbol;
         return symbol;
@@ -163,7 +163,7 @@ math.expr.Scope.prototype = {
      * If the symbol is not found in this scope, it will be looked up in its parent
      * scope.
      * @param {String} name
-     * @return {math.expr.Link | undefined} symbol, or undefined when not found
+     * @return {math.expr.Symbol | undefined} symbol, or undefined when not found
      */
     findDef: function (name) {
         var symbol;

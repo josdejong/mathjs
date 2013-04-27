@@ -1,23 +1,23 @@
 /**
- * @constructor Params
+ * @constructor ParamsNode
  * invoke a list with parameters on the results of a node
  * @param {Node} object
  * @param {Node[]} params
  */
-function Params (object, params) {
+function ParamsNode (object, params) {
     this.object = object;
     this.params = params;
 }
 
-Params.prototype = new Node();
+ParamsNode.prototype = new Node();
 
-math.expr.node.Params = Params;
+math.expr.node.ParamsNode = ParamsNode;
 
 /**
  * Evaluate the parameters
  * @return {*} result
  */
-Params.prototype.eval = function() {
+ParamsNode.prototype.eval = function() {
     var object = this.object;
     if (object == undefined) {
         throw new Error ('Node undefined');
@@ -48,7 +48,7 @@ Params.prototype.eval = function() {
  * Get string representation
  * @return {String} str
  */
-Params.prototype.toString = function() {
+ParamsNode.prototype.toString = function() {
     // format the parameters like "(2, 4.2)"
     var str = this.object ? this.object.toString() : '';
     if (this.params) {

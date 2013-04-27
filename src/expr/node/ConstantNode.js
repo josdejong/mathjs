@@ -1,21 +1,21 @@
 /**
- * @constructor Constant
+ * @constructor ConstantNode
  * @param {*} value
  * @extends {Node}
  */
-function Constant(value) {
+function ConstantNode(value) {
     this.value = value;
 }
 
-Constant.prototype = new Node();
+ConstantNode.prototype = new Node();
 
-math.expr.node.Constant = Constant;
+math.expr.node.ConstantNode = ConstantNode;
 
 /**
  * Evaluate the constant (just return it)
  * @return {*} value
  */
-Constant.prototype.eval = function () {
+ConstantNode.prototype.eval = function () {
     return this.value;
 };
 
@@ -23,6 +23,6 @@ Constant.prototype.eval = function () {
  * Get string representation
  * @return {String} str
  */
-Constant.prototype.toString = function() {
+ConstantNode.prototype.toString = function() {
     return math.format(this.value || null);
 };
