@@ -129,7 +129,6 @@
     var c = '';           // current token character in expr
     var token = '';       // current token
     var token_type = TOKENTYPE.NULL; // type of the token
-    // TODO: do not use this.token, but a local variable var token for better speed? -> getToken() must return token.
 
     /**
      * Get the next character from the expression.
@@ -295,7 +294,7 @@
     function isValidSymbolName (name) {
         for (var i = 0, iMax = name.length; i < iMax; i++) {
             var c = name.charAt(i);
-            //var valid = (isAlpha(c) || (i > 0 && isDigit(c))); // TODO
+            //var valid = (isAlpha(c) || (i > 0 && isDigit(c))); // TODO: allow digits in symbol name
             var valid = (isAlpha(c));
             if (!valid) {
                 return false;
@@ -434,17 +433,11 @@
         var expression = parse_function_assignment(scope);
 
         if (!scope.readonly) {
-            // TODO: not so nice having to specify some special types here...
-            if (!(expression instanceof AssignmentNode)
-            // !(expression instanceof FunctionNode) &&  // TODO
-            // !(expression instanceof plot)                   // TODO
-                ) {
-                // create a variable definition for ans
-                var name = 'ans';
-                var params = undefined;
-                var link = scope.createDef(name);
-                return new AssignmentNode(name, params, expression, link);
-            }
+            // create a variable definition for ans
+            var name = 'ans';
+            var params = undefined;
+            var link = scope.createDef(name);
+            return new AssignmentNode(name, params, expression, link);
         }
 
         return expression;
@@ -630,7 +623,6 @@
              */
         };
         while (operators[token] !== undefined) {
-            // TODO: with all operators: only load one instance of the operator, use the scope
             var name = token;
             var fn = math[operators[name]];
 
@@ -980,14 +972,11 @@
             }
             getToken();
 
+            // create constant
             var node = new ConstantNode(str);
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                node = parse_arguments(scope, node);
-            }
-            */
+            // parse parameters
+            node = parse_params(scope, node);
 
             return node;
         }
@@ -1069,12 +1058,8 @@
                 array = new MatrixNode([[]]);
             }
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                array = parse_arguments(scope, array);
-            }
-            */
+            // parse parameters
+            array = parse_params(scope, array);
 
             return array;
         }
@@ -1127,12 +1112,8 @@
             // just a regular number
             var node = new ConstantNode(number);
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                node = parse_arguments(scope, node);
-            }
-            */
+            // parse parameters
+            node = parse_params(scope, node);
 
             return node;
         }
@@ -1166,12 +1147,8 @@
              }
              //*/
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                node = parse_arguments(scope, node);
-            }
-            */
+            // parse parameters
+            node = parse_params(scope, node);
 
             return node;
         }

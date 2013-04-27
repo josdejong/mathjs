@@ -14,9 +14,13 @@ math.expr.Scope = function Scope(parentScope, options) {
         this.readonly = options.readonly;
     }
 
+    /** @type {math.expr.Scope} */
     this.parentScope = parentScope;
+
+    /** @type {math.expr.Scope[]} */
     this.nestedScopes = undefined;
 
+    /** @type {Object.<string, math.expr.Symbol>} */
     this.symbols = {}; // the actual symbols
 
     // the following objects are just used to test existence.
