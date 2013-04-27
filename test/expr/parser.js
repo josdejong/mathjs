@@ -53,6 +53,24 @@ assert.deepEqual(parser.eval('[1,2;3,4]\' * [5,6;7,8]').valueOf(), [[26,30],[38,
 assert.deepEqual(parser.eval('[1,2;3,4] * [5,6;7,8]\'').valueOf(), [[17,23],[39,53]]);
 assert.deepEqual(parser.eval('[1,2;3,4]\'+2').valueOf(), [[3,5],[4,6]]);
 
+// test numbers
+assert.equal(parser.eval('3'), 3);
+assert.equal(parser.eval('3.2'), 3.2);
+assert.equal(parser.eval('003.2'), 3.2);
+assert.equal(parser.eval('003.200'), 3.2);
+assert.equal(parser.eval('.2'), 0.2);
+assert.equal(parser.eval('2.'), 2);
+assert.throws(function () {parser.eval('.'); });
+assert.throws(function () {parser.eval('3.2.2'); });
+assert.equal(parser.eval('3e2'), 300);
+assert.equal(parser.eval('300e2'), 30000);
+assert.equal(parser.eval('300e+2'), 30000);
+assert.equal(parser.eval('300e-2'), 3);
+assert.equal(parser.eval('300E-2'), 3);
+assert.equal(parser.eval('3.2e2'), 320);
+assert.throws(function () {parser.eval('3.2e2.2'); });
+
+
 // test constants
 assert.deepEqual(parser.eval('i'), math.complex(0, 1));
 assert.deepEqual(parser.eval('pi'), Math.PI);

@@ -64,7 +64,8 @@ math.type.Complex = Complex;
 
     function parseNumber () {
         var number = '';
-        var oldIndex = index;
+        var oldIndex;
+        oldIndex = index;
 
         if (c == '+') {
             next();
@@ -80,8 +81,27 @@ math.type.Complex = Complex;
             return null;
         }
 
-        // TODO only allow a single dot, and enforce at least one digit before or after the dot
-        while (isDigitDot(c)) {
+        // get number, can have a single dot
+        if (c == '.') {
+            number += c;
+            next();
+            if (!isDigit(c)) {
+                // this is no legal number, it is just a dot
+                revert(oldIndex);
+                return null;
+            }
+        }
+        else {
+            while (isDigit(c)) {
+                number += c;
+                next();
+            }
+            if (c == '.') {
+                number += c;
+                next();
+            }
+        }
+        while (isDigit(c)) {
             number += c;
             next();
         }

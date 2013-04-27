@@ -918,7 +918,8 @@ math.type.Complex = Complex;
 
     function parseNumber () {
         var number = '';
-        var oldIndex = index;
+        var oldIndex;
+        oldIndex = index;
 
         if (c == '+') {
             next();
@@ -934,8 +935,27 @@ math.type.Complex = Complex;
             return null;
         }
 
-        // TODO only allow a single dot, and enforce at least one digit before or after the dot
-        while (isDigitDot(c)) {
+        // get number, can have a single dot
+        if (c == '.') {
+            number += c;
+            next();
+            if (!isDigit(c)) {
+                // this is no legal number, it is just a dot
+                revert(oldIndex);
+                return null;
+            }
+        }
+        else {
+            while (isDigit(c)) {
+                number += c;
+                next();
+            }
+            if (c == '.') {
+                number += c;
+                next();
+            }
+        }
+        while (isDigit(c)) {
             number += c;
             next();
         }
@@ -2317,7 +2337,8 @@ math.type.Unit = Unit;
 
     function parseNumber () {
         var number = '';
-        var oldIndex = index;
+        var oldIndex;
+        oldIndex = index;
 
         if (c == '+') {
             next();
@@ -2333,8 +2354,27 @@ math.type.Unit = Unit;
             return null;
         }
 
-        // TODO only allow a single dot, and enforce at least one digit before or after the dot
-        while (isDigitDot(c)) {
+        // get number, can have a single dot
+        if (c == '.') {
+            number += c;
+            next();
+            if (!isDigit(c)) {
+                // this is no legal number, it is just a dot
+                revert(oldIndex);
+                return null;
+            }
+        }
+        else {
+            while (isDigit(c)) {
+                number += c;
+                next();
+            }
+            if (c == '.') {
+                number += c;
+                next();
+            }
+        }
+        while (isDigit(c)) {
             number += c;
             next();
         }
@@ -3970,6 +4010,7 @@ math.expr.Scope.prototype = {
      *    var result = parser.eval(expr);    // evaluate an expression
      *    var value = parser.get(name);      // retrieve a variable from the parser
      *    parser.set(name, value);           // set a variable in the parser
+     *    parser.clear();                    // clear the parsers scope
      *
      *    // it is possible to parse an expression into a node tree:
      *    var node = parser.parse(expr);     // parse an expression into a node tree
@@ -4169,7 +4210,28 @@ math.expr.Scope.prototype = {
         // check for a number
         if (isDigitDot(c)) {
             token_type = TOKENTYPE.NUMBER;
-            while (isDigitDot(c)) {
+
+            // get number, can have a single dot
+            if (c == '.') {
+                token += c;
+                getChar();
+
+                if (!isDigit(c)) {
+                    // this is no legal number, it is just a dot
+                    token_type = TOKENTYPE.UNKNOWN;
+                }
+            }
+            else {
+                while (isDigit(c)) {
+                    token += c;
+                    getChar();
+                }
+                if (c == '.') {
+                    token += c;
+                    getChar();
+                }
+            }
+            while (isDigit(c)) {
                 token += c;
                 getChar();
             }
@@ -4195,6 +4257,7 @@ math.expr.Scope.prototype = {
                     getChar();
                 }
             }
+
             return;
         }
 

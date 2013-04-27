@@ -24,7 +24,6 @@ assert.deepEqual(workspace.toJSON(), [
     { id: 1, expression: 'a + 2', dependencies: [], result: 12 }
 ]);
 
-
 var id3 = workspace.insertBefore('a * 3', id2);
 assert.deepEqual(workspace.toJSON(), [
     { id: 0, expression: 'a=5/2', dependencies: [ 3, 2, 1 ], result: 2.5 },

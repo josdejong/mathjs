@@ -9,8 +9,10 @@ https://github.com/josdejong/mathjs
   - Added support for chained variable assignments.
   - Renamed nodes for more consistency and to resolve naming conflicts.
   - Improved stringification of a node tree.
-- Fixed: math.js now works on IE 6-8 too.
+- Fixed a bug in the parser, returning NaN instead of throwing an error for a
+  number with multiple decimal separators like '2.3.4'.
 - Fixed a bug in Workspace.insertAfter.
+- Fixed: math.js now works on IE 6-8 too.
 
 
 ## 2013-04-20, version 0.7.0
