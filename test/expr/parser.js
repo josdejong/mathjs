@@ -87,6 +87,8 @@ assert.equal(parser.eval('a + 2'), 2.75);
 assert.equal(parser.eval('a = 2'), 2);
 assert.equal(parser.eval('a + 2'), 4);
 approxEqual(parser.eval('pi * 2'), 6.283185307179586);
+parser.remove('a');
+assert.throws(function() {parser.eval('a + 2'); }); // TODO: throws an stack overflow
 
 // test nested variable assignments
 assert.equal(parser.eval('c = d = (e = 4.5)'), 4.5);
@@ -181,6 +183,16 @@ assert.throws(function () {
 });
 assert.equal(parser.eval('q = 4/2'), 2);
 assert.equal(parser.eval('g(3)'), 9);
+
+// test undefined symbols, defining symbols, and removing symbols
+parser = math.parser();
+var n = parser.parse('q');
+assert.throws(function () { n.eval(); });
+parser.eval('q=33');
+assert.equal(n.eval(), 33);
+parser.remove('q');
+assert.throws(function () { n.eval(); });
+
 
 // test read-only parser
 var readonlyParser = new math.expr.Parser({readonly: true});

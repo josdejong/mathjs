@@ -158,14 +158,18 @@ var parser = math.parser();
 
 The parser contains the following methods:
 
+- `clear()`
+  Completely clear the parsers scope.
 - `eval(expr)`
   Evaluate an expression.
 - `get(name)`
   Retrieve a variable or function from the parsers scope.
-- `set(name, value)`
-  Set a variable or function in the parsers scope.
 - `parse(expr)`
   Parse an expression into a node tree.
+- `remove(name)`
+  Remove a variable or function from the parsers scope.
+- `set(name, value)`
+  Set a variable or function in the parsers scope.
   A node can be evaluated as `node.eval()`.
 
 The following code shows how to create and use a parser.

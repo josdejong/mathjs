@@ -3160,13 +3160,20 @@ SymbolNode.prototype = new Node();
 math.expr.node.SymbolNode = SymbolNode;
 
 /**
- * Evaluate the symbol
+ * Evaluate the symbol. Throws an error when the symbol is undefined.
  * @return {*} result
  * @override
  */
 SymbolNode.prototype.eval = function() {
     // return the value of the symbol
-    return this.symbol.get();
+    var value = this.symbol.get();
+
+    if (value === undefined) {
+        // TODO: throw an error or not?
+        throw new Error('Undefined symbol ' + this.name);
+    }
+
+    return value;
 };
 
 /**
@@ -3620,32 +3627,21 @@ FunctionNode.prototype.toString = function() {
 
 /**
  * A Symbol stores a variable or function, or a link to another symbol
- * @param {math.expr.Scope} scope
  * @param {String} name
  * @param {*} value
  * @constructor math.expr.Symbol
  */
-math.expr.Symbol = function Symbol (scope, name, value) {
-    this.scope = scope;
+math.expr.Symbol = function Symbol (name, value) {
     this.name = name;
     this.value = value;
 };
 
 /**
  * Get the symbols value
- * @returns {*} value
+ * @returns {* | undefined} value
  */
 math.expr.Symbol.prototype.get = function () {
     var value = this.value;
-    if (!value) {
-        // try to resolve again
-        value = this.value = this.scope.findDef(this.name);
-
-        if (!value) {
-            // TODO: throw an error or not?
-            throw new Error('Undefined symbol ' + this.name);
-        }
-    }
 
     // resolve a chain of symbols
     while (value instanceof math.expr.Symbol) {
@@ -3758,7 +3754,7 @@ math.expr.Scope.prototype = {
             var lastDef = this.findDef(name);
 
             // create a new symbol
-            symbol = new math.expr.Symbol(this, name, lastDef);
+            symbol = new math.expr.Symbol(name, lastDef);
             this.symbols[name] = symbol;
 
         }
@@ -3793,11 +3789,28 @@ math.expr.Scope.prototype = {
 
         var symbol = this.defs[name];
         if (!symbol) {
+            // create a new symbol
             symbol = this.createSymbol(name);
             this.defs[name] = symbol;
+
+            // update the symbols value
+            if (value != undefined) {
+                symbol.set(value);
+            }
+
+            // link undefined symbols in nested scopes to this symbol
+            var undef = this.getUndefinedSymbols(name);
+            if (undef.length) {
+                undef.forEach(function (u) {
+                    u.set(symbol);
+                });
+            }
         }
-        if (symbol && value != undefined) {
-            symbol.set(value);
+        else {
+            // update the symbols value
+            if (value != undefined) {
+                symbol.set(value);
+            }
         }
         return symbol;
     },
@@ -3815,8 +3828,17 @@ math.expr.Scope.prototype = {
 
         var symbol = this.updates[name];
         if (!symbol) {
+            // create a new symbol
             symbol = this.createLink(name);
             this.updates[name] = symbol;
+
+            // link undefined symbols in nested scopes to this symbol
+            var undef = this.getUndefinedSymbols(name);
+            if (undef.length) {
+                undef.forEach(function (u) {
+                    u.set(symbol);
+                });
+            }
         }
         return symbol;
     },
@@ -3829,7 +3851,7 @@ math.expr.Scope.prototype = {
      * @private
      */
     createConstant: function (name, value) {
-        var symbol = new math.expr.Symbol(this, name, value);
+        var symbol = new math.expr.Symbol(name, value);
         this.symbols[name] = symbol;
         this.defs[name] = symbol;
         return symbol;
@@ -3878,6 +3900,17 @@ math.expr.Scope.prototype = {
         }
 
         return undefined;
+    },
+
+    /**
+     * Set a symbol to undefined (if defined)
+     * @param {String} name
+     */
+    setUndefined: function (name) {
+        var symbol = this.symbols[name];
+        if (symbol) {
+            symbol.set(undefined);
+        }
     },
 
     /**
@@ -3973,15 +4006,16 @@ math.expr.Scope.prototype = {
 
     /**
      * Retrieve all undefined symbols
-     * @return {function[]} undefinedSymbols   All symbols which are undefined
+     * @param {String} [name]  Optional name to filter the undefined symbols
+     * @return {math.expr.Symbol[]} undefinedSymbols   All symbols which are undefined
      */
-    getUndefinedSymbols: function () {
+    getUndefinedSymbols: function (name) {
         var symbols = this.symbols;
         var undefinedSymbols = [];
         for (var i in symbols) {
             if (symbols.hasOwnProperty(i)) {
                 var symbol = symbols[i];
-                if (symbol.value == undefined) {
+                if (symbol.value == undefined && (!name || symbol.name == name)) {
                     undefinedSymbols.push(symbol);
                 }
             }
@@ -3989,8 +4023,8 @@ math.expr.Scope.prototype = {
 
         if (this.nestedScopes) {
             this.nestedScopes.forEach(function (nestedScope) {
-                undefinedSymbols =
-                    undefinedSymbols.concat(nestedScope.getUndefinedSymbols());
+                undefinedSymbols = undefinedSymbols.concat(
+                    nestedScope.getUndefinedSymbols(name));
             });
         }
 
@@ -4010,6 +4044,8 @@ math.expr.Scope.prototype = {
      *    var result = parser.eval(expr);    // evaluate an expression
      *    var value = parser.get(name);      // retrieve a variable from the parser
      *    parser.set(name, value);           // set a variable in the parser
+     *    parser.remove(name);               // clear a variable from the
+     *                                       // parsers scope
      *    parser.clear();                    // clear the parsers scope
      *
      *    // it is possible to parse an expression into a node tree:
@@ -4107,6 +4143,14 @@ math.expr.Scope.prototype = {
      */
     math.expr.Parser.prototype.set = function (name, value) {
         this.scope.createDef(name, value);
+    };
+
+    /**
+     * Remove a variable from the parsers scope
+     * @param {String} name
+     */
+    math.expr.Parser.prototype.remove = function (name) {
+        this.scope.setUndefined(name);
     };
 
     /**

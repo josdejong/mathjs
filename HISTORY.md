@@ -2,13 +2,16 @@
 https://github.com/josdejong/mathjs
 
 
-## under development, version 0.7.1
+## 2013-04-27, version 0.7.1
 
 - Improvements in the parser:
   - Added support for chained arguments.
   - Added support for chained variable assignments.
+  - Added a function remove(name) to remove a variable from the parsers scope.
   - Renamed nodes for more consistency and to resolve naming conflicts.
   - Improved stringification of a node tree.
+  - Some simplifications in the code.
+  - Minor bug fixes.
 - Fixed a bug in the parser, returning NaN instead of throwing an error for a
   number with multiple decimal separators like '2.3.4'.
 - Fixed a bug in Workspace.insertAfter.

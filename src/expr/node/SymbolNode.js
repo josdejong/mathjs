@@ -15,13 +15,20 @@ SymbolNode.prototype = new Node();
 math.expr.node.SymbolNode = SymbolNode;
 
 /**
- * Evaluate the symbol
+ * Evaluate the symbol. Throws an error when the symbol is undefined.
  * @return {*} result
  * @override
  */
 SymbolNode.prototype.eval = function() {
     // return the value of the symbol
-    return this.symbol.get();
+    var value = this.symbol.get();
+
+    if (value === undefined) {
+        // TODO: throw an error or not?
+        throw new Error('Undefined symbol ' + this.name);
+    }
+
+    return value;
 };
 
 /**

@@ -10,6 +10,8 @@
      *    var result = parser.eval(expr);    // evaluate an expression
      *    var value = parser.get(name);      // retrieve a variable from the parser
      *    parser.set(name, value);           // set a variable in the parser
+     *    parser.remove(name);               // clear a variable from the
+     *                                       // parsers scope
      *    parser.clear();                    // clear the parsers scope
      *
      *    // it is possible to parse an expression into a node tree:
@@ -107,6 +109,14 @@
      */
     math.expr.Parser.prototype.set = function (name, value) {
         this.scope.createDef(name, value);
+    };
+
+    /**
+     * Remove a variable from the parsers scope
+     * @param {String} name
+     */
+    math.expr.Parser.prototype.remove = function (name) {
+        this.scope.setUndefined(name);
     };
 
     /**
