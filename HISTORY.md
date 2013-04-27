@@ -4,9 +4,13 @@ https://github.com/josdejong/mathjs
 
 ## under development, version 0.7.1
 
-- Internal improvements/simplifications in the parser and the parsed node tree,
-  improved stringification of a node tree.
+- Improvements in the parser:
+  - Added support for chained arguments.
+  - Added support for chained variable assignments.
+  - Renamed nodes for more consistency and to resolve naming conflicts.
+  - Improved stringification of a node tree.
 - Fixed: math.js now works on IE 6-8 too.
+- Fixed a bug in Workspace.insertAfter.
 
 
 ## 2013-04-20, version 0.7.0

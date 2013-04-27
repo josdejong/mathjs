@@ -502,7 +502,7 @@
 
             // parse the expression, with the correct function scope
             getToken();
-            var expression = parse_range(functionScope);
+            var expression = parse_assignment(functionScope);
             var result = scope.createDef(name);
 
             return  new FunctionNode(name, variableNames, variables,
@@ -543,7 +543,7 @@
                 getToken();
                 name = node.name;
                 params = null;
-                expr = parse_range(scope);
+                expr = parse_assignment(scope);
                 link = scope.createDef(name);
                 return new AssignmentNode(name, params, expr, link);
             }
@@ -560,7 +560,7 @@
                 getToken();
                 name = node.object.name;
                 params = node.params;
-                expr = parse_range(scope);
+                expr = parse_assignment(scope);
                 link = scope.createUpdate(name);
                 return new AssignmentNode(name, params, expr, link);
             }
@@ -876,12 +876,12 @@
          var plotScope = scope.createNestedScope();
 
          getToken();
-         functions.push(parse_range(plotScope));
+         functions.push(parse_assignment(plotScope));
 
          // parse a list with parameters
          while (token == ',') {
          getToken();
-         functions.push(parse_range(plotScope));
+         functions.push(parse_assigment(plotScope));
          }
 
          if (token != ')') {
@@ -952,12 +952,12 @@
             getToken();
 
             if (token != ')') {
-                params.push(parse_range(scope));
+                params.push(parse_assignment(scope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
-                    params.push(parse_range(scope));
+                    params.push(parse_assignment(scope));
                 }
             }
 
@@ -1035,7 +1035,7 @@
                 r = 0;
                 c = 0;
 
-                params[0] = [parse_range(scope)];
+                params[0] = [parse_assignment(scope)];
 
                 // the columns in the matrix are separated by commas, and the rows by dot-comma's
                 while (token == ',' || token == ';') {
@@ -1054,7 +1054,7 @@
                         getToken();
                     }
 
-                    params[r][c] = parse_range(scope);
+                    params[r][c] = parse_assignment(scope);
 
                     // skip newlines
                     while (token == '\n') {
@@ -1162,7 +1162,7 @@
         if (token == '(') {
             // parentheses (...)
             getToken();
-            node = parse_range(scope); // start again
+            node = parse_assignment(scope); // start again
 
             if (token != ')') {
                 throw createSyntaxError('Parenthesis ) expected');

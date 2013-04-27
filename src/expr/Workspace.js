@@ -147,11 +147,12 @@
             throw 'Node with id "' + afterId + '" not found';
         }
 
-        if (previousNode == this.lastNode) {
-            return this.append(expression);
+        var nextNode = previousNode.nextNode;
+        if (nextNode) {
+            return this.insertBefore(expression, nextNode.id);
         }
         else {
-            return this.insertBefore(afterId + 1, expression);
+            return this.append(expression);
         }
     };
 

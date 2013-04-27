@@ -3641,15 +3641,19 @@ math.expr.Symbol.prototype.valueOf = function () {
  * @param {Object} [options]   Available options:
  *                                 {boolean} readonly (false by default).
  */
-math.expr.Scope = function Scope(parentScope, options) {
+math.expr.Scope = function (parentScope, options) {
     this.readonly = false;
     if (options && options.readonly != undefined) {
         this.readonly = options.readonly;
     }
 
+    /** @type {math.expr.Scope} */
     this.parentScope = parentScope;
+
+    /** @type {math.expr.Scope[]} */
     this.nestedScopes = undefined;
 
+    /** @type {Object.<string, math.expr.Symbol>} */
     this.symbols = {}; // the actual symbols
 
     // the following objects are just used to test existence.
@@ -4015,7 +4019,7 @@ math.expr.Scope.prototype = {
      * Parse an expression end return the parsed function node.
      * The node can be evaluated via node.eval()
      * @param {String} expression
-     * @param {Scope} [scope]
+     * @param {math.expr.Scope} [scope]
      * @return {Node} node
      * @throws {Error}
      */
@@ -4085,7 +4089,6 @@ math.expr.Scope.prototype = {
     var c = '';           // current token character in expr
     var token = '';       // current token
     var token_type = TOKENTYPE.NULL; // type of the token
-    // TODO: do not use this.token, but a local variable var token for better speed? -> getToken() must return token.
 
     /**
      * Get the next character from the expression.
@@ -4251,7 +4254,7 @@ math.expr.Scope.prototype = {
     function isValidSymbolName (name) {
         for (var i = 0, iMax = name.length; i < iMax; i++) {
             var c = name.charAt(i);
-            //var valid = (isAlpha(c) || (i > 0 && isDigit(c))); // TODO
+            //var valid = (isAlpha(c) || (i > 0 && isDigit(c))); // TODO: allow digits in symbol name
             var valid = (isAlpha(c));
             if (!valid) {
                 return false;
@@ -4297,7 +4300,7 @@ math.expr.Scope.prototype = {
 
     /**
      * Start of the parse levels below, in order of precedence
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4337,7 +4340,7 @@ math.expr.Scope.prototype = {
      * Parse a block with expressions. Expressions can be separated by a newline
      * character '\n', or by a semicolon ';'. In case of a semicolon, no output
      * of the preceding line is returned.
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4382,7 +4385,7 @@ math.expr.Scope.prototype = {
      * Parse assignment of ans.
      * Ans is assigned when the expression itself is no variable or function
      * assignment
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4390,17 +4393,11 @@ math.expr.Scope.prototype = {
         var expression = parse_function_assignment(scope);
 
         if (!scope.readonly) {
-            // TODO: not so nice having to specify some special types here...
-            if (!(expression instanceof AssignmentNode)
-            // !(expression instanceof FunctionNode) &&  // TODO
-            // !(expression instanceof plot)                   // TODO
-                ) {
-                // create a variable definition for ans
-                var name = 'ans';
-                var params = undefined;
-                var link = scope.createDef(name);
-                return new AssignmentNode(name, params, expression, link);
-            }
+            // create a variable definition for ans
+            var name = 'ans';
+            var params = undefined;
+            var link = scope.createDef(name);
+            return new AssignmentNode(name, params, expression, link);
         }
 
         return expression;
@@ -4408,7 +4405,7 @@ math.expr.Scope.prototype = {
 
     /**
      * Parse a function assignment like "function f(a,b) = a*b"
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4465,7 +4462,7 @@ math.expr.Scope.prototype = {
 
             // parse the expression, with the correct function scope
             getToken();
-            var expression = parse_range(functionScope);
+            var expression = parse_assignment(functionScope);
             var result = scope.createDef(name);
 
             return  new FunctionNode(name, variableNames, variables,
@@ -4478,11 +4475,12 @@ math.expr.Scope.prototype = {
     /**
      * Assignment of a variable, can be a variable like "a=2.3" or a updating an
      * existing variable like "matrix(2,3:5)=[6,7,8]"
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_assignment (scope) {
+        var name, params, expr, link;
         var linkExisted = false;
         if (token_type == TOKENTYPE.SYMBOL) {
             linkExisted = scope.hasLink(token);
@@ -4503,11 +4501,11 @@ math.expr.Scope.prototype = {
 
                 // parse the expression, with the correct function scope
                 getToken();
-                var name = node.name;
-                var params = null;
-                var expression = parse_range(scope);
-                var link = scope.createDef(name);
-                return new AssignmentNode(name, params, expression, link);
+                name = node.name;
+                params = null;
+                expr = parse_assignment(scope);
+                link = scope.createDef(name);
+                return new AssignmentNode(name, params, expr, link);
             }
             else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
                 // update of a variable
@@ -4520,11 +4518,11 @@ math.expr.Scope.prototype = {
 
                 // parse the expression, with the correct function scope
                 getToken();
-                var name = node.object.name;
-                var params = node.params;
-                var expression = parse_range(scope);
-                var link = scope.createUpdate(name);
-                return new AssignmentNode(name, params, expression, link);
+                name = node.object.name;
+                params = node.params;
+                expr = parse_assignment(scope);
+                link = scope.createUpdate(name);
+                return new AssignmentNode(name, params, expr, link);
             }
             else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
@@ -4537,15 +4535,16 @@ math.expr.Scope.prototype = {
 
     /**
      * parse range, "start:end" or "start:step:end"
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_range (scope) {
-        var node = parse_conditions(scope);
+        var node, name, fn, params;
 
+        node = parse_conditions(scope);
         if (token == ':') {
-            var params = [node];
+            params = [node];
 
             while (token == ':') {
                 getToken();
@@ -4556,8 +4555,8 @@ math.expr.Scope.prototype = {
                 throw new TypeError('Invalid range');
             }
 
-            var name = 'range';
-            var fn = math.range;
+            name = 'range';
+            fn = math.range;
             node = new OperatorNode(name, fn, params);
         }
 
@@ -4566,16 +4565,18 @@ math.expr.Scope.prototype = {
 
     /**
      * conditions like and, or, in
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_conditions (scope) {
-        var node = parse_bitwise_conditions(scope);
+        var node, operators, name, fn, params;
+
+        node = parse_bitwise_conditions(scope);
 
         // TODO: precedence of And above Or?
         // TODO: implement a method for unit to number conversion
-        var operators = {
+        operators = {
             'in' : 'in'
             /* TODO: implement conditions
              'and' : 'and',
@@ -4585,13 +4586,13 @@ math.expr.Scope.prototype = {
              'xor': 'xor'
              */
         };
+
         while (operators[token] !== undefined) {
-            // TODO: with all operators: only load one instance of the operator, use the scope
-            var name = token;
-            var fn = math[operators[name]];
+            name = token;
+            fn = math[operators[name]];
 
             getToken();
-            var params = [node, parse_bitwise_conditions(scope)];
+            params = [node, parse_bitwise_conditions(scope)];
             node = new OperatorNode(name, fn, params);
         }
 
@@ -4600,7 +4601,7 @@ math.expr.Scope.prototype = {
 
     /**
      * conditional operators and bitshift
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4630,14 +4631,16 @@ math.expr.Scope.prototype = {
 
     /**
      * comparison operators
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_comparison (scope) {
-        var node = parse_addsubtract(scope);
+        var node, operators, name, fn, params;
 
-        var operators = {
+        node = parse_addsubtract(scope);
+
+        operators = {
             '==': 'equal',
             '!=': 'unequal',
             '<': 'smaller',
@@ -4646,11 +4649,11 @@ math.expr.Scope.prototype = {
             '>=': 'largereq'
         };
         while (operators[token] !== undefined) {
-            var name = token;
-            var fn = math[operators[name]];
+            name = token;
+            fn = math[operators[name]];
 
             getToken();
-            var params = [node, parse_addsubtract(scope)];
+            params = [node, parse_addsubtract(scope)];
             node = new OperatorNode(name, fn, params);
         }
 
@@ -4659,23 +4662,25 @@ math.expr.Scope.prototype = {
 
     /**
      * add or subtract
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_addsubtract (scope)  {
-        var node = parse_multiplydivide(scope);
+        var node, operators, name, fn, params;
 
-        var operators = {
+        node = parse_multiplydivide(scope);
+
+        operators = {
             '+': 'add',
             '-': 'subtract'
         };
         while (operators[token] !== undefined) {
-            var name = token;
-            var fn = math[operators[name]];
+            name = token;
+            fn = math[operators[name]];
 
             getToken();
-            var params = [node, parse_multiplydivide(scope)];
+            params = [node, parse_multiplydivide(scope)];
             node = new OperatorNode(name, fn, params);
         }
 
@@ -4684,25 +4689,28 @@ math.expr.Scope.prototype = {
 
     /**
      * multiply, divide, modulus
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_multiplydivide (scope) {
-        var node = parse_unaryminus(scope);
+        var node, operators, name, fn, params;
 
-        var operators = {
+        node = parse_unaryminus(scope);
+
+        operators = {
             '*': 'multiply',
             '/': 'divide',
             '%': 'mod',
             'mod': 'mod'
         };
+
         while (operators[token] !== undefined) {
-            var name = token;
-            var fn = math[operators[name]];
+            name = token;
+            fn = math[operators[name]];
 
             getToken();
-            var params = [node, parse_unaryminus(scope)];
+            params = [node, parse_unaryminus(scope)];
             node = new OperatorNode(name, fn, params);
         }
 
@@ -4711,16 +4719,18 @@ math.expr.Scope.prototype = {
 
     /**
      * Unary minus
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_unaryminus (scope) {
+        var name, fn, params;
+
         if (token == '-') {
-            var name = token;
-            var fn = math.unaryminus;
+            name = token;
+            fn = math.unaryminus;
             getToken();
-            var params = [parse_pow(scope)];
+            params = [parse_pow(scope)];
 
             return new OperatorNode(name, fn, params);
         }
@@ -4731,12 +4741,14 @@ math.expr.Scope.prototype = {
     /**
      * power
      * Node: power operator is right associative
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_pow (scope) {
-        var nodes = [
+        var node, leftNode, nodes, operators, name, fn, params;
+
+        nodes = [
             parse_factorial(scope)
         ];
 
@@ -4747,12 +4759,12 @@ math.expr.Scope.prototype = {
         }
 
         // evaluate the operands from right to left (right associative)
-        var node = nodes.pop();
+        node = nodes.pop();
         while (nodes.length) {
-            var leftNode = nodes.pop();
-            var name = '^';
-            var fn = math.pow;
-            var params = [leftNode, node];
+            leftNode = nodes.pop();
+            name = '^';
+            fn = math.pow;
+            params = [leftNode, node];
             node = new OperatorNode(name, fn, params);
         }
 
@@ -4761,18 +4773,20 @@ math.expr.Scope.prototype = {
 
     /**
      * Factorial
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_factorial (scope)  {
-        var node = parse_transpose(scope);
+        var node, name, fn, params;
+
+        node = parse_transpose(scope);
 
         while (token == '!') {
-            var name = token;
-            var fn = math.factorial;
+            name = token;
+            fn = math.factorial;
             getToken();
-            var params = [node];
+            params = [node];
 
             node = new OperatorNode(name, fn, params);
         }
@@ -4782,18 +4796,20 @@ math.expr.Scope.prototype = {
 
     /**
      * Transpose
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_transpose (scope)  {
-        var node = parse_plot(scope);
+        var node, name, fn, params;
+
+        node = parse_plot(scope);
 
         while (token == '\'') {
-            var name = token;
-            var fn = math.transpose;
+            name = token;
+            fn = math.transpose;
             getToken();
-            var params = [node];
+            params = [node];
 
             node = new OperatorNode(name, fn, params);
         }
@@ -4803,7 +4819,7 @@ math.expr.Scope.prototype = {
 
     /**
      * parse plot
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
@@ -4820,12 +4836,12 @@ math.expr.Scope.prototype = {
          var plotScope = scope.createNestedScope();
 
          getToken();
-         functions.push(parse_range(plotScope));
+         functions.push(parse_assignment(plotScope));
 
          // parse a list with parameters
          while (token == ',') {
          getToken();
-         functions.push(parse_range(plotScope));
+         functions.push(parse_assigment(plotScope));
          }
 
          if (token != ')') {
@@ -4855,22 +4871,24 @@ math.expr.Scope.prototype = {
 
     /**
      * parse symbols: functions, variables, constants, units
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_symbol (scope) {
+        var node, name, symbol;
+
         if (token_type == TOKENTYPE.SYMBOL) {
-            var name = token;
+            name = token;
 
             getToken();
 
             // create a symbol
-            var link = scope.createLink(name);
-            var symbol = new SymbolNode(name, link);
+            symbol = scope.createLink(name);
+            node = new SymbolNode(name, symbol);
 
             // parse parameters
-            return parse_params(scope, symbol);
+            return parse_params(scope, node);
         }
 
         return parse_string(scope);
@@ -4878,7 +4896,7 @@ math.expr.Scope.prototype = {
 
     /**
      * parse parameters, enclosed in parenthesis
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @param {Node} node    Node on which to apply the parameters. If there
      *                       are no parameters in the expression, the node
      *                       itself is returned
@@ -4886,18 +4904,20 @@ math.expr.Scope.prototype = {
      * @private
      */
     function parse_params (scope, node) {
+        var params;
+
         while (token == '(') {
-            var params = [];
+            params = [];
 
             getToken();
 
             if (token != ')') {
-                params.push(parse_range(scope));
+                params.push(parse_assignment(scope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
-                    params.push(parse_range(scope));
+                    params.push(parse_assignment(scope));
                 }
             }
 
@@ -4915,15 +4935,17 @@ math.expr.Scope.prototype = {
     /**
      * parse a string.
      * A string is enclosed by double quotes
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_string (scope) {
+        var node, str, tPrev;
+
         if (token == '"') {
             // string "..."
-            var str = '';
-            var tPrev = '';
+            str = '';
+            tPrev = '';
             while (c != '' && (c != '\"' || tPrev == '\\')) { // also handle escape character
                 str += c;
                 tPrev = c;
@@ -4936,14 +4958,11 @@ math.expr.Scope.prototype = {
             }
             getToken();
 
-            var node = new ConstantNode(str);
+            // create constant
+            node = new ConstantNode(str);
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                node = parse_arguments(scope, node);
-            }
-            */
+            // parse parameters
+            node = parse_params(scope, node);
 
             return node;
         }
@@ -4953,14 +4972,15 @@ math.expr.Scope.prototype = {
 
     /**
      * parse the matrix
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} A MatrixNode
      * @private
      */
     function parse_matrix (scope) {
+        var array, params, r, c, rows, cols;
+
         if (token == '[') {
             // matrix [...]
-            var array;
 
             // skip newlines
             getToken();
@@ -4971,10 +4991,11 @@ math.expr.Scope.prototype = {
             // check if this is an empty matrix "[ ]"
             if (token != ']') {
                 // this is a non-empty matrix
-                var params = [];
-                var r = 0, c = 0;
+                params = [];
+                r = 0;
+                c = 0;
 
-                params[0] = [parse_range(scope)];
+                params[0] = [parse_assignment(scope)];
 
                 // the columns in the matrix are separated by commas, and the rows by dot-comma's
                 while (token == ',' || token == ';') {
@@ -4993,7 +5014,7 @@ math.expr.Scope.prototype = {
                         getToken();
                     }
 
-                    params[r][c] = parse_range(scope);
+                    params[r][c] = parse_assignment(scope);
 
                     // skip newlines
                     while (token == '\n') {
@@ -5001,8 +5022,8 @@ math.expr.Scope.prototype = {
                     }
                 }
 
-                var rows =  params.length;
-                var cols = (params.length > 0) ? params[0].length : 0;
+                rows =  params.length;
+                cols = (params.length > 0) ? params[0].length : 0;
 
                 // check if the number of columns matches in all rows
                 for (r = 1; r < rows; r++) {
@@ -5025,12 +5046,8 @@ math.expr.Scope.prototype = {
                 array = new MatrixNode([[]]);
             }
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                array = parse_arguments(scope, array);
-            }
-            */
+            // parse parameters
+            array = parse_params(scope, array);
 
             return array;
         }
@@ -5040,16 +5057,17 @@ math.expr.Scope.prototype = {
 
     /**
      * parse a number
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_number (scope) {
+        var node, value, number;
+
         if (token_type == TOKENTYPE.NUMBER) {
             // this is a number
-            var number;
             if (token == '.') {
-                number = 0.0;
+                number = 0;
             } else {
                 number = Number(token);
             }
@@ -5063,7 +5081,6 @@ math.expr.Scope.prototype = {
              }
              //*/
 
-            var value;
             if (token_type == TOKENTYPE.SYMBOL) {
                 if (token == 'i' || token == 'I') {
                     value = new Complex(0, number);
@@ -5081,14 +5098,10 @@ math.expr.Scope.prototype = {
             }
 
             // just a regular number
-            var node = new ConstantNode(number);
+            node = new ConstantNode(number);
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                node = parse_arguments(scope, node);
-            }
-            */
+            // parse parameters
+            node = parse_params(scope, node);
 
             return node;
         }
@@ -5098,16 +5111,18 @@ math.expr.Scope.prototype = {
 
     /**
      * parentheses
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_parentheses (scope) {
+        var node;
+
         // check if it is a parenthesized expression
         if (token == '(') {
             // parentheses (...)
             getToken();
-            var node = parse_range(scope); // start again
+            node = parse_assignment(scope); // start again
 
             if (token != ')') {
                 throw createSyntaxError('Parenthesis ) expected');
@@ -5122,12 +5137,8 @@ math.expr.Scope.prototype = {
              }
              //*/
 
-            /* TODO: parse arguments
-            // parse arguments
-            while (token == '(') {
-                node = parse_arguments(scope, node);
-            }
-            */
+            // parse parameters
+            node = parse_params(scope, node);
 
             return node;
         }
@@ -5137,7 +5148,7 @@ math.expr.Scope.prototype = {
 
     /**
      * Evaluated when the expression is not yet ended but expected to end
-     * @param {Scope} scope
+     * @param {math.expr.Scope} scope
      * @return {Node} res
      * @private
      */
@@ -5370,11 +5381,12 @@ math.expr.Scope.prototype = {
             throw 'Node with id "' + afterId + '" not found';
         }
 
-        if (previousNode == this.lastNode) {
-            return this.append(expression);
+        var nextNode = previousNode.nextNode;
+        if (nextNode) {
+            return this.insertBefore(expression, nextNode.id);
         }
         else {
-            return this.insertBefore(afterId + 1, expression);
+            return this.append(expression);
         }
     };
 

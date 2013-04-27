@@ -2,7 +2,27 @@
 
 var assert = require('assert'),
     math = require('../../math.js'),
-    parser = math.parser();
+    parser = math.parser(),
+    round = math.round;
+
+/**
+ * Test whether two numbers are equal when rounded to 5 decimals
+ * @param {Number} a
+ * @param {Number} b
+ */
+function approxEqual(a, b) {
+    assert.equal(round(a, 5), round(b, 5));
+}
+
+/**
+ * Test whether all numbers in two objects objects are equal when rounded
+ * to 5 decimals
+ * @param {*} a
+ * @param {*} b
+ */
+function approxDeepEqual(a, b) {
+    assert.deepEqual(round(a, 5), round(b, 5));
+}
 
 // test precedence
 assert.equal(parser.eval('4-2+3'), 5);
@@ -48,6 +68,18 @@ assert.equal(parser.eval('a = 0.75'), 0.75);
 assert.equal(parser.eval('a + 2'), 2.75);
 assert.equal(parser.eval('a = 2'), 2);
 assert.equal(parser.eval('a + 2'), 4);
+approxEqual(parser.eval('pi * 2'), 6.283185307179586);
+
+// test nested variable assignments
+assert.equal(parser.eval('c = d = (e = 4.5)'), 4.5);
+assert.equal(parser.get('c'), 4.5);
+assert.equal(parser.get('d'), 4.5);
+assert.equal(parser.get('e'), 4.5);
+assert.deepEqual(parser.eval('a = [1,2,f=3]'), math.matrix([[1,2,3]]));
+assert.equal(parser.get('f'), 3);
+assert.equal(parser.eval('2 + (g = 3 + 4)'), 9);
+assert.equal(parser.get('g'), 7);
+
 
 // test function assignments
 parser.eval('x=100'); // for testing scoping of the function variables
