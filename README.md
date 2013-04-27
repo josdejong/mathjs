@@ -592,10 +592,11 @@ To execute tests for the library, run:
 
 ## Roadmap
 
-- Before version 1.0.0:
-    - More on matrices
-    - Examples and documentation
-    - Extensive testing
+Before version 1.0:
+
+- More on matrices
+- Examples and documentation
+- Extensive testing
 
 
 ## License
