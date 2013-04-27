@@ -3,7 +3,7 @@
  * A symbol can hold and evaluate a link to a value or function defined in a
  * scope.
  * @param {String} [name]
- * @param {Link} link
+ * @param {math.expr.Link} link
  * @extends {Node}
  */
 function Symbol(name, link) {

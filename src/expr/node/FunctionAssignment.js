@@ -6,7 +6,7 @@
  * @param {String[]} variableNames  Variable names
  * @param {function[]} variables    Links to the variables in a scope
  * @param {Node} expr               The function expression
- * @param {Link} result             Link to store the result
+ * @param {math.expr.Link} result   Link to store the result
  */
 function FunctionAssignment(name, variableNames, variables, expr, result) {
     this.name = name;

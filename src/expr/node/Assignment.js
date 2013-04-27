@@ -3,7 +3,7 @@
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
  * @param {Node} expr                   The expression defining the symbol
- * @param {Link} result                 placeholder for the result
+ * @param {math.expr.Link} result       placeholder for the result
  */
 function Assignment(name, params, expr, result) {
     this.name = name;

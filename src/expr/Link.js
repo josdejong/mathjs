@@ -1,16 +1,16 @@
 // TODO: comment link
 
-function Link (scope, name, value) {
+math.expr.Link = function Link (scope, name, value) {
     this.scope = scope;
     this.name = name;
     this.value = value;
-}
+};
 
 /**
  * Get the links value
  * @returns {*} value
  */
-Link.prototype.get = function () {
+math.expr.Link.prototype.get = function () {
     var value = this.value;
     if (!value) {
         // try to resolve again
@@ -22,7 +22,7 @@ Link.prototype.get = function () {
     }
 
     // resolve a chain of links
-    while (value instanceof Link) {
+    while (value instanceof math.expr.Link) {
         value = value.get();
     }
 
@@ -33,6 +33,6 @@ Link.prototype.get = function () {
  * Set the value for the link
  * @param {*} value
  */
-Link.prototype.set = function (value) {
+math.expr.Link.prototype.set = function (value) {
     this.value = value;
 };
