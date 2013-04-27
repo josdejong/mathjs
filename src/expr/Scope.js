@@ -8,7 +8,7 @@
  * @param {Object} [options]   Available options:
  *                                 {boolean} readonly (false by default).
  */
-math.expr.Scope = function Scope(parentScope, options) {
+math.expr.Scope = function (parentScope, options) {
     this.readonly = false;
     if (options && options.readonly != undefined) {
         this.readonly = options.readonly;
