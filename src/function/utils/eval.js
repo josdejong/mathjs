@@ -8,7 +8,7 @@
  * @param {String | Array | Matrix} expr
  * @return {*} res
  */
-math.eval = function eval(expr) {
+math.eval = function (expr) {
     if (arguments.length != 1) {
         throw newArgumentsError('eval', arguments.length, 1);
     }
