@@ -2,6 +2,12 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.7.2
+
+- Fixed method unequal, which was checking for equality instead of inequality.
+  (Thanks FJS2).
+
+
 ## 2013-04-27, version 0.7.1
 
 - Improvements in the parser:

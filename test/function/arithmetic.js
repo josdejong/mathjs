@@ -215,15 +215,54 @@ assert.deepEqual(math.square([[2,3],[4,5]]), [[4,9],[16,25]]);
 
 // test subtract
 assert.deepEqual(math.subtract(4, 2), 2);
+assert.deepEqual(math.subtract(4, -4), 8);
+assert.deepEqual(math.subtract(-4, -4), 0);
+assert.deepEqual(math.subtract(-4, 4), -8);
 assert.deepEqual(math.subtract(2, 4), -2);
 assert.deepEqual(math.subtract(3, 0), 3);
 assert.deepEqual(math.subtract(0, 3), -3);
 assert.deepEqual(math.subtract(0, 3), -3);
 assert.deepEqual(math.subtract(0, 3), -3);
-// TODO: test subtract
+assert.equal(math.subtract(math.complex(3, 2), math.complex(8, 4)), '-5 - 2i');
+assert.equal(math.subtract(math.complex(3, -4), 10), '-7 - 4i');
+assert.equal(math.subtract(10, math.complex(3, -4)), '7 - 4i');
+assert.equal(math.subtract(math.unit(5, 'km'), math.unit(100, 'mile')).toString(), '-155.93 km');
+assert.throws(function () {
+    math.subtract(math.unit(5, 'km'), math.unit(100, 'gram'));
+});
+assert.throws(function () {math.subtract('hello ', 'world'); });
+assert.throws(function () {math.subtract('str', 123)});
+assert.throws(function () {math.subtract(123, 'str')});
+
+a2 = math.matrix([[1,2],[3,4]]);
+a3 = math.matrix([[5,6],[7,8]]);
+var a6 = math.subtract(a2, a3);
+assert.ok(a6 instanceof math.type.Matrix);
+assert.deepEqual(a6.size(), [2,2]);
+assert.deepEqual(a6.valueOf(), [[-4,-4],[-4,-4]]);
+assert.deepEqual(math.subtract(math.range(1,5), 2), math.range(-1,3).valueOf());
+
+// test unaryminus
+assert.deepEqual(math.unaryminus(2), -2);
+assert.deepEqual(math.unaryminus(-2), 2);
+assert.deepEqual(math.unaryminus(0), 0);
+assert.equal(math.unaryminus(math.complex(3, 2)), '-3 - 2i');
+assert.equal(math.unaryminus(math.complex(3, -2)), '-3 + 2i');
+assert.equal(math.unaryminus(math.complex(-3, 2)), '3 - 2i');
+assert.equal(math.unaryminus(math.complex(-3, -2)), '3 + 2i');
+assert.equal(math.unaryminus(math.unit(5, 'km')).toString(), '-5 km');
+assert.throws(function () {math.subtract('hello ', 'world'); });
+assert.throws(function () {math.subtract('str', 123)});
+assert.throws(function () {math.subtract(123, 'str')});
+
+a2 = math.matrix([[1,2],[3,4]]);
+var a7 = math.unaryminus(a2);
+assert.ok(a7 instanceof math.type.Matrix);
+assert.deepEqual(a7.size(), [2,2]);
+assert.deepEqual(a7.valueOf(), [[-1,-2],[-3,-4]]);
+assert.deepEqual(math.unaryminus(math.range(1,5)), math.range(-1,-1,-5).valueOf());
 
 
-// TODO: test unaryminus
 // TODO: test unequal
 
 // test xgcd
