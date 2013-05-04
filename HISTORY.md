@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.7.2
+## 2013-05-04, version 0.7.2
 
 - Fixed method unequal, which was checking for equality instead of inequality.
   (Thanks FJS2).
