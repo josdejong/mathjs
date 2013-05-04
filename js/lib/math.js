@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.7.1
- * @date    2013-04-27
+ * @version 0.7.2
+ * @date    2013-05-04
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -7402,16 +7402,10 @@ math.unaryminus = function unaryminus(x) {
 };
 
 /**
- * Check if value x unequals y
- *
- *     x != y
- *     unequal(x, y)
- *
- * For matrices, the function is evaluated element wise.
- * In case of complex numbers, x.re must unequal y.re, and x.im must unequal y.im
- *
- * @param  {Number | Complex | Unit | String | Array | Matrix} x
- * @param  {Number | Complex | Unit | String | Array | Matrix} y
+ * Check if value x unequals y, x != y
+ * In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
+ * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix} res
  */
 math.unequal = function unequal(x, y) {
@@ -7421,19 +7415,19 @@ math.unequal = function unequal(x, y) {
 
     if (isNumber(x)) {
         if (isNumber(y)) {
-            return x == y;
+            return x != y;
         }
         else if (y instanceof Complex) {
-            return (x == y.re) && (y.im == 0);
+            return (x != y.re) || (y.im != 0);
         }
     }
 
     if (x instanceof Complex) {
         if (isNumber(y)) {
-            return (x.re == y) && (x.im == 0);
+            return (x.re != y) || (x.im != 0);
         }
         else if (y instanceof Complex) {
-            return (x.re == y.re) && (x.im == y.im);
+            return (x.re != y.re) || (x.im != y.im);
         }
     }
 
@@ -7441,11 +7435,11 @@ math.unequal = function unequal(x, y) {
         if (!x.equalBase(y)) {
             throw new Error('Cannot compare units with different base');
         }
-        return x.value == y.value;
+        return x.value != y.value;
     }
 
     if (isString(x) || isString(y)) {
-        return x == y;
+        return x != y;
     }
 
     if (x instanceof Array || x instanceof Matrix ||
@@ -9495,7 +9489,7 @@ math.clone = function clone(x) {
  * @param {String | Array | Matrix} expr
  * @return {*} res
  */
-math.eval = function eval(expr) {
+math.eval = function (expr) {
     if (arguments.length != 1) {
         throw newArgumentsError('eval', arguments.length, 1);
     }
