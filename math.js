@@ -4101,6 +4101,10 @@ math.expr.Scope.prototype = {
      * @throws {Error}
      */
     math.expr.Parser.prototype.parse = function (expression, scope) {
+        if (!isString(expression)) {
+            throw new TypeError('String expected');
+        }
+
         expr = expression || '';
 
         if (!scope) {

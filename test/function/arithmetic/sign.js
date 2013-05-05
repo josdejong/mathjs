@@ -2,7 +2,10 @@
 var assert = require('assert');
 var math = require('../../../math.js');
 
-// TODO: test parser
+// parser
+assert.equal(math.eval('sign(3)'), 1);
+assert.equal(math.eval('sign(-3)'), -1);
+assert.equal(math.eval('sign(0)'), 0);
 
 // number
 assert.equal(math.sign(3), 1);

@@ -2,7 +2,8 @@
 var assert = require('assert');
 var math = require('../../../math.js');
 
-// TODO: test parser
+// parser
+assert.equal(math.eval('sqrt(25)'), 5);
 
 // number
 assert.equal(math.sqrt(25), 5);

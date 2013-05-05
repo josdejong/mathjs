@@ -2,7 +2,9 @@
 var assert = require('assert');
 var math = require('../../../math.js');
 
-// TODO: test parser
+// parser
+assert.equal(math.eval('round(pi)'), 3);
+assert.equal(math.eval('round(pi, 3)'), 3.142);
 
 // number
 assert.equal(math.round(math.pi), 3);
