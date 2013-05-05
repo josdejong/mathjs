@@ -10,8 +10,6 @@ var assert = require('assert'),
     cos = math.cos,
     tan = math.tan;
 
-// TODO: replace all string comparisons with approx.equal comparisons with numbers
-
 // number
 approx.equal(tan(0), 0);
 approx.equal(tan(pi*1/4), 1);
@@ -25,13 +23,15 @@ approx.equal(tan(pi*7/4), -1);
 approx.equal(tan(pi*8/4), 0);
 
 // complex
-assert.deepEqual(tan(complex('2+3i')).toString(), '-0.003764 + 1.0032i');
-assert.deepEqual(tan(complex('2-3i')).toString(), '-0.003764 - 1.0032i');
-assert.deepEqual(tan(complex('-2+3i')).toString(), '0.003764 + 1.0032i');
-assert.deepEqual(tan(complex('-2-3i')).toString(), '0.003764 - 1.0032i');
-assert.deepEqual(tan(complex('i')).toString(), '0.76159i');
-assert.deepEqual(tan(complex('1')).toString(), '1.5574');
-assert.deepEqual(tan(complex('1+i')).toString(), '0.27175 + 1.0839i');
+var re = 0.00376402564150425,
+    im = 1.00323862735360980;
+approx.deepEqual(tan(complex('2+3i')), complex(-re, im));
+approx.deepEqual(tan(complex('2-3i')), complex(-re, -im));
+approx.deepEqual(tan(complex('-2+3i')), complex(re, im));
+approx.deepEqual(tan(complex('-2-3i')), complex(re, -im));
+approx.deepEqual(tan(complex('i')), complex(0, 0.761594155955765));
+approx.deepEqual(tan(complex('1')), complex(1.55740772465490, 0));
+approx.deepEqual(tan(complex('1+i')), complex(0.271752585319512, 1.083923327338695));
 
 // unit
 approx.equal(tan(unit(' 60deg')), math.sqrt(3));

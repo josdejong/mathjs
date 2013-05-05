@@ -2,7 +2,10 @@
 var assert = require('assert');
 var math = require('../../../math.js');
 
-// TODO: test parser
+// parser
+assert.equal(math.eval('4 * 2'), 8);
+assert.equal(math.eval('8 * 2 * 2'), 32);
+assert.equal(math.eval('multiply(4, 2)'), 8);
 
 // number
 assert.equal(math.multiply(2, 3), 6);

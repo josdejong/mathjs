@@ -5,6 +5,7 @@ var math = require('../../../math.js');
 // parser
 assert.equal(math.eval('add(2, 3)'), 5);
 assert.equal(math.eval('2 + 3'), 5);
+assert.equal(math.eval('2 + 3 + 4'), 9);
 
 // number
 assert.equal(math.add(2, 3), 5);

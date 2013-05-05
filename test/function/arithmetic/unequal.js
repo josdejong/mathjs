@@ -3,7 +3,10 @@ var assert = require('assert');
 var math = require('../../../math.js');
 
 // parser
-//assert.equal(math.eval('2 != 3'), true); // FIXME: parser unequal does not work
+assert.equal(math.eval('2 != 3'), true);
+assert.equal(math.eval('2 != 2'), false);
+assert.equal(math.eval('unequal(2, 3)'), true);
+assert.equal(math.eval('unequal(2, 2)'), false);
 
 // number
 assert.equal(math.unequal(2, 3), true);

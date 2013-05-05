@@ -8,8 +8,6 @@ var assert = require('assert'),
     unit = math.unit,
     cos = math.cos;
 
-// TODO: replace all string comparisons with approx.equal comparisons with numbers
-
 // number
 approx.equal(cos(0), 1);
 approx.equal(cos(pi*1/4), 0.707106781186548);
@@ -24,13 +22,15 @@ approx.equal(cos(pi*8/4), 1);
 approx.equal(cos(pi/4), math.sqrt(2)/2);
 
 // complex
-assert.deepEqual(cos(complex('2+3i')).toString(), '-4.1896 - 9.1092i');
-assert.deepEqual(cos(complex('2-3i')).toString(), '-4.1896 + 9.1092i');
-assert.deepEqual(cos(complex('-2+3i')).toString(), '-4.1896 + 9.1092i');
-assert.deepEqual(cos(complex('-2-3i')).toString(), '-4.1896 - 9.1092i');
-assert.deepEqual(cos(complex('i')).toString(), '1.5431');
-assert.deepEqual(cos(complex('1')).toString(), '0.5403');
-assert.deepEqual(cos(complex('1+i')).toString(), '0.83373 - 0.9889i');
+var re = 4.18962569096881,
+    im = 9.10922789375534;
+approx.deepEqual(cos(complex('2+3i')), complex(-re, -im));
+approx.deepEqual(cos(complex('2-3i')), complex(-re, im));
+approx.deepEqual(cos(complex('-2+3i')), complex(-re, im));
+approx.deepEqual(cos(complex('-2-3i')), complex(-re, -im));
+approx.deepEqual(cos(complex('i')), complex(1.54308063481524, 0));
+approx.deepEqual(cos(complex('1')), complex(0.540302305868140, 0));
+approx.deepEqual(cos(complex('1+i')), complex(0.833730025131149, -0.988897705762865));
 
 // unit
 approx.equal(cos(unit('45deg')), 0.707106781186548);

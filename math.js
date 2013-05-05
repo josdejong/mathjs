@@ -4228,13 +4228,28 @@ math.expr.Scope.prototype = {
             return;
         }
 
+        // check for factorial character !, and unequal operator !=
+        if (c == '!') {
+            token_type = TOKENTYPE.DELIMITER;
+            token += c;
+            getChar();
+
+            // TODO: solve operators consisting of of two characters in a more generic way
+            if (c == '=') {
+                token += c;
+                getChar();
+            }
+
+            return;
+        }
+
         // check for minus, comma, parentheses, quotes, newline, semicolon
         if (c == '-' || c == ',' ||
             c == '(' || c == ')' ||
             c == '[' || c == ']' ||
-            c == '\"' || c == '\n' ||
-            c == ';' || c == ':' ||
-            c == '!' || c == '\'') {
+            c == '\"' || c == '\'' ||
+            c == '\n' ||
+            c == ';' || c == ':') {
             token_type = TOKENTYPE.DELIMITER;
             token += c;
             getChar();

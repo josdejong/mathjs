@@ -8,8 +8,6 @@ var assert = require('assert'),
     unit = math.unit,
     sin = math.sin;
 
-// TODO: replace all string comparisons with approx.equal comparisons with numbers
-
 // number
 approx.equal(sin(0), 0);
 approx.equal(sin(pi*1/4), 0.707106781186548);
@@ -24,13 +22,15 @@ approx.equal(sin(pi*8/4), 0);
 approx.equal(sin(pi/4), math.sqrt(2)/2);
 
 // complex
-assert.deepEqual(sin(complex('2+3i')).toString(), '9.1545 - 4.1689i');
-assert.deepEqual(sin(complex('2-3i')).toString(), '9.1545 + 4.1689i');
-assert.deepEqual(sin(complex('-2+3i')).toString(), '-9.1545 - 4.1689i');
-assert.deepEqual(sin(complex('-2-3i')).toString(), '-9.1545 + 4.1689i');
-assert.deepEqual(sin(complex('i')).toString(), '1.1752i');
-assert.deepEqual(sin(complex('1')).toString(), '0.84147');
-assert.deepEqual(sin(complex('1+i')).toString(), '1.2985 + 0.63496i');
+var re = 9.15449914691143,
+    im = 4.16890695996656;
+approx.deepEqual(sin(complex('2+3i')), complex(re, -im));
+approx.deepEqual(sin(complex('2-3i')), complex(re, im));
+approx.deepEqual(sin(complex('-2+3i')), complex(-re, -im));
+approx.deepEqual(sin(complex('-2-3i')), complex(-re, im));
+approx.deepEqual(sin(complex('i')), complex(0, 1.175201193643801));
+approx.deepEqual(sin(complex('1')), complex(0.841470984807897, 0));
+approx.deepEqual(sin(complex('1+i')), complex(1.298457581415977, 0.634963914784736));
 
 // unit
 approx.equal(sin(unit('45deg')), 0.707106781186548);

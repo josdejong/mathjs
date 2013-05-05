@@ -9,8 +9,6 @@ var assert = require('assert'),
     atan = math.atan,
     tan = math.tan;
 
-// TODO: replace all string comparisons with approx.equal comparisons with numbers
-
 // number
 approx.equal(atan(-1) / pi, -0.25);
 approx.equal(atan(-0.5) / pi, -0.147583617650433);
@@ -19,13 +17,15 @@ approx.equal(atan(0.5) / pi, 0.147583617650433);
 approx.equal(atan(1) / pi, 0.25);
 
 // complex
-assert.deepEqual(atan(complex('2+3i')).toString(), '1.4099 + 0.22907i');
-assert.deepEqual(atan(complex('2-3i')).toString(), '1.4099 - 0.22907i');
-assert.deepEqual(atan(complex('-2+3i')).toString(), '-1.4099 + 0.22907i');
-assert.deepEqual(atan(complex('-2-3i')).toString(), '-1.4099 - 0.22907i');
-assert.deepEqual(atan(complex('i')).toString(), '-Infinityi');
-assert.deepEqual(atan(complex('1')).toString(), '0.7854');
-assert.deepEqual(atan(complex('1+i')).toString(), '1.0172 + 0.40236i');
+var re = 1.409921049596575,
+    im = 0.229072682968539;
+approx.deepEqual(atan(complex('2+3i')), complex(re, im));
+approx.deepEqual(atan(complex('2-3i')), complex(re, -im));
+approx.deepEqual(atan(complex('-2+3i')), complex(-re, im));
+approx.deepEqual(atan(complex('-2-3i')), complex(-re, -im));
+approx.deepEqual(atan(complex('i')), complex(0, -Infinity));
+approx.deepEqual(atan(complex('1')), complex(0.785398163397448, 0));
+approx.deepEqual(atan(complex('1+i')), complex(1.017221967897851, 0.402359478108525));
 
 // unit
 assert.throws(function () {atan(unit('45deg'))});

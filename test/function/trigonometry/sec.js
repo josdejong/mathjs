@@ -8,8 +8,6 @@ var assert = require('assert'),
     unit = math.unit,
     sec = math.sec;
 
-// TODO: replace all string comparisons with approx.equal comparisons with numbers
-
 // number
 approx.equal(1 / sec(0), 1);
 approx.equal(1 / sec(pi*1/4), 0.707106781186548);
@@ -32,13 +30,15 @@ approx.equal(sec(2*pi), 1);
 approx.equal(sec(-2*pi), 1);
 
 // complex
-assert.deepEqual(sec(complex('2+3i')).toString(), '-0.041675 + 0.090611i');
-assert.deepEqual(sec(complex('2-3i')).toString(), '-0.041675 - 0.090611i');
-assert.deepEqual(sec(complex('-2+3i')).toString(), '-0.041675 - 0.090611i');
-assert.deepEqual(sec(complex('-2-3i')).toString(), '-0.041675 + 0.090611i');
-assert.deepEqual(sec(complex('i')).toString(), '0.64805');
-assert.deepEqual(sec(complex('1')).toString(), '1.8508');
-assert.deepEqual(sec(complex('1+i')).toString(), '0.49834 + 0.59108i');
+var re = 0.0416749644111443,
+    im = 0.0906111371962376;
+approx.deepEqual(sec(complex('2+3i')), complex(-re, im));
+approx.deepEqual(sec(complex('2-3i')), complex(-re, -im));
+approx.deepEqual(sec(complex('-2+3i')), complex(-re, -im));
+approx.deepEqual(sec(complex('-2-3i')), complex(-re, im));
+approx.deepEqual(sec(complex('i')), complex(0.648054273663885, 0));
+approx.deepEqual(sec(complex('1')), complex(1.85081571768093, 0));
+approx.deepEqual(sec(complex('1+i')), complex(0.498337030555187, 0.591083841721045));
 
 // unit
 approx.equal(sec(unit('45deg')), 1.41421356237310);

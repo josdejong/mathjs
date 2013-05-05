@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.7.3
+
+- Fixed non-working unequal operator != in the parser.
+
+
 ## 2013-05-04, version 0.7.2
 
 - Fixed method unequal, which was checking for equality instead of inequality.
