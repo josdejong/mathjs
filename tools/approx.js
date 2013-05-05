@@ -1,23 +1,77 @@
 var assert = require('assert'),
     math = require('../math');
 
-var epsilon = 0.0001; // TODO: compare difference
+var epsilon = 0.0001;
 
 /**
- * Test whether two numbers are equal when rounded to 5 decimals
+ * Test whether a value is a number
+ * @param {*} value
+ * @returns {boolean}
+ */
+function isNumber (value) {
+    return (value instanceof Number || typeof value === 'number');
+}
+
+/**
+ * Test whether two values are approximately equal. Tests whether the difference
+ * between the two numbers is smaller than a fraction of their max value.
  * @param {Number} a
  * @param {Number} b
  */
 exports.equal = function equal(a, b) {
-    assert.equal(math.round(a, 5), math.round(b, 5));
+    if (isNumber(a) && isNumber(b)) {
+        if (a == b) {
+            // great, we're done :)
+        }
+        else if (a == 0) {
+            assert.ok(Math.abs(b) < epsilon, (a + ' ~= ' + b));
+        }
+        else if (b == 0) {
+            assert.ok(Math.abs(a) < epsilon, (a + ' ~= ' + b));
+        }
+        else {
+            var diff = Math.abs(a - b);
+            var max = Math.max(a, b);
+            var max_diff = Math.abs(max * epsilon);
+            assert.ok(diff <= max_diff, (a + ' ~= ' + b));
+        }
+    }
+    else {
+        assert.equal(a, b);
+    }
 };
 
 /**
- * Test whether all numbers in two objects objects are equal when rounded
- * to 5 decimals
+ * Test whether all values in two objects or arrays are approximately equal.
+ * Will deep compare all values of Arrays and Objects element wise.
  * @param {*} a
  * @param {*} b
  */
-exports.deepEqual = function equal(a, b) {
-    assert.deepEqual(math.round(a, 5), math.round(b, 5));
+exports.deepEqual = function deepEqual(a, b) {
+    var prop, i, len;
+
+    if ((a instanceof Array) && (b instanceof Array)) {
+        assert.equal(a.length, b.length, 'a.length != b.length');
+        for (i = 0, len = a.length; i < len; i++) {
+            deepEqual(a[i], b[i]);
+        }
+    }
+    else if (a instanceof Object && b instanceof Object) {
+        for (prop in a) {
+            if (a.hasOwnProperty(prop)) {
+                assert.ok(b.hasOwnProperty(prop), 'b[' + prop + ']');
+                deepEqual(a[prop], b[prop]);
+            }
+        }
+
+        for (prop in b) {
+            if (b.hasOwnProperty(prop)) {
+                assert.ok(a.hasOwnProperty(prop), 'a[' + prop + ']');
+                deepEqual(a[prop], b[prop]);
+            }
+        }
+    }
+    else {
+        exports.equal(a, b);
+    }
 };
