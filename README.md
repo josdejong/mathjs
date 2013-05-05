@@ -123,15 +123,16 @@ Math.js contains a flexible and easy to use expression parser.
 The parser supports all data types, methods and constants available in math.js.
 Expressions can be evaluated in two ways:
 
-- Using the function [`math.eval`](#eval), which uses a read-only parser.
-- Using a more flexible [parser](#parser).
+- Using the function [`math.eval`](#eval).
+- Using a more flexible [parser](#parser), which keeps defined variables and
+  functions in its scope for reuse.
 
 
 ### Eval
 
 Math.js comes with a function `math.eval` to evaluate expressions.
 The function `eval` does support all functions, variables, and data types
-available in math.js. Internally, the function `eval` uses a read-only parser.
+available in math.js. It accepts one or multiple expressions as arguments.
 The following code demonstrates how to evaluate expressions.
 
 ```js
@@ -143,6 +144,7 @@ var a = math.eval('sqrt(3^2 + 4^2)');   // a = 5
 var b = math.eval('sqrt(-4)');          // b = 2i
 var c = math.eval('2 inch in cm');      // c = 5.08 cm
 var d = math.eval('cos(45 deg)');       // d = 0.7071067811865476
+math.eval('f = 3', 'g = 4', 'f * g');   // [3, 4, 12]
 ```
 
 
@@ -341,9 +343,8 @@ math.add(a, b);                 // 0.65 m
 b.in('cm');                     // 10 cm  Alternatively: math.in(b, 'cm')
 b.toNumber('cm');               // 10
 
-var parser = math.parser();
-parser.eval('2 inch in cm');    // 5.08 cm
-parser.eval('cos(45 deg)');     // 0.7071067811865476
+math.eval('2 inch in cm');      // 5.08 cm
+math.eval('cos(45 deg)');       // 0.7071067811865476
 ```
 
 ### Array and Matrix
@@ -389,8 +390,7 @@ A `Range` creates a range with a start, end, and optionally a step.
 A `Range` can be used to create indexes to get or set submatrices.
 
 ```js
-var math = require('math.js'),
-    parser = math.parser();
+var math = require('math.js');
 
 math.factorial(math.range(1,5));                // Array,  [1, 2, 6, 24, 120]
 
@@ -400,7 +400,7 @@ a.set([math.range('2:5')], [7, 2, 1, 5]);       // Matrix, [0, 7, 2, 1, 5]
 var b = math.range(2, -1, -2);                  // Range, 2:-1:-2
 var c = b.valueOf();                            // Array,  [2, 1, 0, -1, -2]
 
-var d = parser.eval('3:7');                     // Range, 3:7
+var d = math.eval('3:7');                       // Range, 3:7
 ```
 
 
@@ -547,15 +547,14 @@ the library must be installed using npm:
 And next, the library can be imported into math.js:
 
 ```js
-var math = require('mathjs'),
-    parser = math.parser();
+var math = require('mathjs');
 
 // import the numbers.js library into math.js
 math.import('numbers');
 
 // use functions from numbers.js
 math.fibonacci(7);                      // 7
-parser.eval('fibonacci(7)');            // 7
+math.eval('fibonacci(7)');              // 7
 ```
 
 

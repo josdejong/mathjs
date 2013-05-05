@@ -835,6 +835,32 @@ var util = (function () {
         };
     }
 
+    // Define Function.bind if not available
+    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
+    if (!Function.prototype.bind) {
+        Function.prototype.bind = function (oThis) {
+            if (typeof this !== "function") {
+                // closest thing possible to the ECMAScript 5 internal IsCallable function
+                throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+            }
+
+            var aArgs = Array.prototype.slice.call(arguments, 1),
+                fToBind = this,
+                fNOP = function () {},
+                fBound = function () {
+                    return fToBind.apply(this instanceof fNOP && oThis
+                        ? this
+                        : oThis,
+                        aArgs.concat(Array.prototype.slice.call(arguments)));
+                };
+
+            fNOP.prototype = this.prototype;
+            fBound.prototype = new fNOP();
+
+            return fBound;
+        };
+    }
+
     return util;
 })();
 
@@ -3674,15 +3700,8 @@ math.expr.Symbol.prototype.valueOf = function () {
  *
  * @constructor math.expr.Scope
  * @param {Scope} [parentScope]
- * @param {Object} [options]   Available options:
- *                                 {boolean} readonly (false by default).
  */
-math.expr.Scope = function (parentScope, options) {
-    this.readonly = false;
-    if (options && options.readonly != undefined) {
-        this.readonly = options.readonly;
-    }
-
+math.expr.Scope = function (parentScope) {
     /** @type {math.expr.Scope} */
     this.parentScope = parentScope;
 
@@ -3707,10 +3726,6 @@ math.expr.Scope.prototype = {
      * @return {math.expr.Scope} nestedScope
      */
     createNestedScope: function () {
-        if (this.readonly) {
-            throw new Error('Cannot create nested scope: Scope is read-only');
-        }
-
         var nestedScope = new math.expr.Scope(this);
         if (!this.nestedScopes) {
             this.nestedScopes = [];
@@ -3724,10 +3739,6 @@ math.expr.Scope.prototype = {
      * (parent scope will not be cleared)
      */
     clear: function () {
-        if (this.readonly) {
-            throw new Error('Cannot clear scope: Scope is read-only');
-        }
-
         this.symbols = {};
         this.defs = {};
         this.links = {};
@@ -3783,10 +3794,6 @@ math.expr.Scope.prototype = {
      * @return {math.expr.Symbol} symbol
      */
     createDef: function (name, value) {
-        if (this.readonly) {
-            throw new Error('Cannot create symbol: Scope is read-only');
-        }
-
         var symbol = this.defs[name];
         if (!symbol) {
             // create a new symbol
@@ -3822,10 +3829,6 @@ math.expr.Scope.prototype = {
      * @return {math.expr.Symbol} symbol
      */
     createUpdate: function (name) {
-        if (this.readonly) {
-            throw new Error('Cannot update symbol: Scope is read-only');
-        }
-
         var symbol = this.updates[name];
         if (!symbol) {
             // create a new symbol
@@ -4037,9 +4040,6 @@ math.expr.Scope.prototype = {
      * @constructor math.expr.Parser
      * Parser parses math expressions and evaluates them or returns a node tree.
      *
-     * @param {Object} [options]   Available options:
-     *                                 {boolean} readonly (false by default).
-     *
      * Methods:
      *    var result = parser.eval(expr);    // evaluate an expression
      *    var value = parser.get(name);      // retrieve a variable from the parser
@@ -4083,13 +4083,13 @@ math.expr.Scope.prototype = {
      *    // clear defined functions and variables
      *    parser.clear();
      */
-    math.expr.Parser = function Parser(options) {
+    math.expr.Parser = function Parser() {
         if (!(this instanceof math.expr.Parser)) {
             throw new SyntaxError(
                 'Parser constructor must be called with the new operator');
         }
 
-        this.scope = new math.expr.Scope(null, options);
+        this.scope = new math.expr.Scope(null);
     };
 
     /**
@@ -9495,35 +9495,54 @@ math.clone = function clone(x) {
 };
 
 /**
- * Evaluate an expression. The expression will be evaluated using a read-only
- * instance of a Parser (i.e. variable definitions are not supported).
+ * Evaluate an expression.
  *
  *     eval(expr)
+ *     eval(expr1, expr2, expr3, ...)
  *     eval([expr1, expr2, expr3, ...])
  *
  * @param {String | Array | Matrix} expr
  * @return {*} res
  */
 math.eval = function (expr) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('eval', arguments.length, 1);
-    }
+    var parser,
+        res;
 
+    switch (arguments.length) {
+        case 0:
+            throw new Error('Function eval requires one or more parameters (0 provided)');
+
+        case 1:
+            parser = new math.expr.Parser();
+            return _eval(parser, expr);
+
+        default:
+            parser = new math.expr.Parser();
+            res = [];
+            for (var i = 0, len = arguments.length; i < len; i++) {
+                res[i] = _eval(parser, arguments[i]);
+            }
+            return res;
+    }
+};
+
+/**
+ * Evaluate an expression
+ * @param {math.expr.Parser} parser
+ * @param {String | Array | Matrix} expr
+ * @private
+ */
+var _eval = function (parser, expr) {
     if (isString(expr)) {
-        return _readonlyParser.eval(expr);
+        return parser.eval(expr);
     }
 
     if (expr instanceof Array || expr instanceof Matrix) {
-        return util.map(expr, math.eval);
+        return util.map(expr, parser.eval.bind(parser));
     }
 
     throw new TypeError('String or matrix expected');
 };
-
-/** @private */
-var _readonlyParser = new math.expr.Parser({
-    readonly: true
-});
 
 /**
  * Format a value of any type into a string. Interpolate values into the string.

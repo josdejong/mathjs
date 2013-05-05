@@ -193,13 +193,4 @@ assert.equal(n.eval(), 33);
 parser.remove('q');
 assert.throws(function () { n.eval(); });
 
-
-// test read-only parser
-var readonlyParser = new math.expr.Parser({readonly: true});
-assert.equal(readonlyParser.get('pi'), Math.PI);
-assert.throws(function () {readonlyParser.eval('b = 43');});
-assert.throws(function () {readonlyParser.eval('function f(x) = a * x');});
-assert.throws(function () {readonlyParser.eval('a([1,1])= [4]');});
-assert.throws(function () {readonlyParser.set('a', 3)});
-
 // TODO: extensively test the Parser

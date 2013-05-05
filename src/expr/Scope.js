@@ -5,15 +5,8 @@
  *
  * @constructor math.expr.Scope
  * @param {Scope} [parentScope]
- * @param {Object} [options]   Available options:
- *                                 {boolean} readonly (false by default).
  */
-math.expr.Scope = function (parentScope, options) {
-    this.readonly = false;
-    if (options && options.readonly != undefined) {
-        this.readonly = options.readonly;
-    }
-
+math.expr.Scope = function (parentScope) {
     /** @type {math.expr.Scope} */
     this.parentScope = parentScope;
 
@@ -38,10 +31,6 @@ math.expr.Scope.prototype = {
      * @return {math.expr.Scope} nestedScope
      */
     createNestedScope: function () {
-        if (this.readonly) {
-            throw new Error('Cannot create nested scope: Scope is read-only');
-        }
-
         var nestedScope = new math.expr.Scope(this);
         if (!this.nestedScopes) {
             this.nestedScopes = [];
@@ -55,10 +44,6 @@ math.expr.Scope.prototype = {
      * (parent scope will not be cleared)
      */
     clear: function () {
-        if (this.readonly) {
-            throw new Error('Cannot clear scope: Scope is read-only');
-        }
-
         this.symbols = {};
         this.defs = {};
         this.links = {};
@@ -114,10 +99,6 @@ math.expr.Scope.prototype = {
      * @return {math.expr.Symbol} symbol
      */
     createDef: function (name, value) {
-        if (this.readonly) {
-            throw new Error('Cannot create symbol: Scope is read-only');
-        }
-
         var symbol = this.defs[name];
         if (!symbol) {
             // create a new symbol
@@ -153,10 +134,6 @@ math.expr.Scope.prototype = {
      * @return {math.expr.Symbol} symbol
      */
     createUpdate: function (name) {
-        if (this.readonly) {
-            throw new Error('Cannot update symbol: Scope is read-only');
-        }
-
         var symbol = this.updates[name];
         if (!symbol) {
             // create a new symbol

@@ -4,6 +4,9 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.7.3
 
+- Function math.eval is more flexible now: it supports variables and multiple
+  expressions.
+- Removed the read-only option from Parser and Scope.
 - Fixed non-working unequal operator != in the parser.
 
 

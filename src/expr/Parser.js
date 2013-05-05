@@ -3,9 +3,6 @@
      * @constructor math.expr.Parser
      * Parser parses math expressions and evaluates them or returns a node tree.
      *
-     * @param {Object} [options]   Available options:
-     *                                 {boolean} readonly (false by default).
-     *
      * Methods:
      *    var result = parser.eval(expr);    // evaluate an expression
      *    var value = parser.get(name);      // retrieve a variable from the parser
@@ -49,13 +46,13 @@
      *    // clear defined functions and variables
      *    parser.clear();
      */
-    math.expr.Parser = function Parser(options) {
+    math.expr.Parser = function Parser() {
         if (!(this instanceof math.expr.Parser)) {
             throw new SyntaxError(
                 'Parser constructor must be called with the new operator');
         }
 
-        this.scope = new math.expr.Scope(null, options);
+        this.scope = new math.expr.Scope(null);
     };
 
     /**

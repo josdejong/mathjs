@@ -1,30 +1,49 @@
 /**
- * Evaluate an expression. The expression will be evaluated using a read-only
- * instance of a Parser (i.e. variable definitions are not supported).
+ * Evaluate an expression.
  *
  *     eval(expr)
+ *     eval(expr1, expr2, expr3, ...)
  *     eval([expr1, expr2, expr3, ...])
  *
  * @param {String | Array | Matrix} expr
  * @return {*} res
  */
 math.eval = function (expr) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('eval', arguments.length, 1);
-    }
+    var parser,
+        res;
 
+    switch (arguments.length) {
+        case 0:
+            throw new Error('Function eval requires one or more parameters (0 provided)');
+
+        case 1:
+            parser = new math.expr.Parser();
+            return _eval(parser, expr);
+
+        default:
+            parser = new math.expr.Parser();
+            res = [];
+            for (var i = 0, len = arguments.length; i < len; i++) {
+                res[i] = _eval(parser, arguments[i]);
+            }
+            return res;
+    }
+};
+
+/**
+ * Evaluate an expression
+ * @param {math.expr.Parser} parser
+ * @param {String | Array | Matrix} expr
+ * @private
+ */
+var _eval = function (parser, expr) {
     if (isString(expr)) {
-        return _readonlyParser.eval(expr);
+        return parser.eval(expr);
     }
 
     if (expr instanceof Array || expr instanceof Matrix) {
-        return util.map(expr, math.eval);
+        return util.map(expr, parser.eval.bind(parser));
     }
 
     throw new TypeError('String or matrix expected');
 };
-
-/** @private */
-var _readonlyParser = new math.expr.Parser({
-    readonly: true
-});
