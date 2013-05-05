@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.7.3-SNAPSHOT
- * @date    2013-05-04
+ * @date    2013-05-05
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
