@@ -2,8 +2,10 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.7.3
+## not yet released, version 0.8.0
 
+- Implemented a command line interface. When math.js is installed globally via
+  npm, the application is available on your system as 'mathjs'.
 - Function math.eval is more flexible now: it supports variables and multiple
   expressions.
 - Removed the read-only option from Parser and Scope.
