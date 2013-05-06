@@ -32,8 +32,8 @@ assert.equal(unequal(complex(2,0), 3), true);
 // unit
 assert.equal(unequal(unit('100cm'), unit('10inch')), true);
 assert.equal(unequal(unit('100cm'), unit('1m')), false);
-//assert.equal(unequal(unit('12inch'), unit('1foot')), false); // TODO: round-off error :(
-//assert.equal(unequal(unit('2.54cm'), unit('1inch')), false); // TODO: round-off error :(
+//assert.equal(unequal(unit('12inch'), unit('1foot')), false); // round-off error :(
+//assert.equal(unequal(unit('2.54cm'), unit('1inch')), false); // round-off error :(
 assert.throws(function () {unequal(unit('100cm'), 22)});
 
 // string

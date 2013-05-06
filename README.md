@@ -103,7 +103,7 @@ math.sqrt(-4);                    // 2i
 math.pow([[-1, 2], [3, 1]], 2);   // [[7, 0], [0, 7]]
 
 // expressions
-math.eval('1.2 / (2.3 + 0.7)');   // 0.4
+math.eval('12 / (2.3 + 0.7)');    // 4
 math.eval('5.08 cm in inch');     // 2 inch
 math.eval('sin(45 deg) ^ 2');     // 0.5
 math.eval('9 / 3 + 2i');          // 3 + 2i
@@ -250,7 +250,6 @@ The Selector has a number of special functions:
    Matrix or Array.
 
 
-
 ## Workspace
 
 Math.js features a workspace, which manages a set of expressions.
@@ -288,6 +287,41 @@ Available methods:
     var result  = workspace.getResult(id);
     var deps    = workspace.getDependencies(id);
     var changes = workspace.getChanges(updateSeq);
+
+## Command Line Interface
+
+When math.js is installed globally using npm, the parser can be run from the
+command line. To install math.js globally:
+
+    npm install -g mathjs
+
+Possibly the installation must be run with admin rights, by preceding the
+command with `sudo`. After installation, the application `mathjs` is available.
+
+Math.js can be used as a command line application:
+
+```bash
+$ mathjs
+math.js, version 0.7.3
+http://mathjs.org
+
+> 12 / (2.3 + 0.7)
+4
+> 5.08 cm in inch
+2 inch
+> sin(45 deg) ^ 2
+0.5
+> 9 / 3 + 2i
+3 + 2i
+> det([-1, 2; 3, 1])
+-7
+```
+
+The command line interface can also be used to execute a script
+
+```bash
+$ mathjs myscript.txt
+```
 
 
 ## Data types

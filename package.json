@@ -38,6 +38,9 @@
         "test": "jake test --trace"
     },
     "main": "./math.js",
+    "bin": {
+        "mathjs": "./bin/cli.js"
+    },
     "engines": {
         "node": "*"
     }
