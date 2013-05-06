@@ -51,7 +51,7 @@ exports.deepEqual = function deepEqual(a, b) {
     var prop, i, len;
 
     if ((a instanceof Array) && (b instanceof Array)) {
-        assert.equal(a.length, b.length, 'a.length != b.length');
+        assert.equal(a.length, b.length, a + ' ~= ' + b);
         for (i = 0, len = a.length; i < len; i++) {
             deepEqual(a[i], b[i]);
         }
@@ -59,14 +59,14 @@ exports.deepEqual = function deepEqual(a, b) {
     else if (a instanceof Object && b instanceof Object) {
         for (prop in a) {
             if (a.hasOwnProperty(prop)) {
-                assert.ok(b.hasOwnProperty(prop), 'b[' + prop + ']');
+                assert.ok(b.hasOwnProperty(prop), a[prop] + ' ~= ' + b[prop]);
                 deepEqual(a[prop], b[prop]);
             }
         }
 
         for (prop in b) {
             if (b.hasOwnProperty(prop)) {
-                assert.ok(a.hasOwnProperty(prop), 'a[' + prop + ']');
+                assert.ok(a.hasOwnProperty(prop), a[prop] + ' ~= ' + b[prop]);
                 deepEqual(a[prop], b[prop]);
             }
         }

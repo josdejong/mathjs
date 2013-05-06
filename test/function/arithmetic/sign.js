@@ -24,4 +24,4 @@ assert.throws(function () { math.sign("hello world"); });
 // matrix, range
 assert.deepEqual(math.sign(math.range(-2,2)), [-1,-1,0,1,1]);
 assert.deepEqual(math.sign(math.matrix(math.range(-2,2))).valueOf(), [-1,-1,0,1,1]);
-// TODO: test array
+assert.deepEqual(math.sign([-2, -1, 0, 1, 2]), [-1,-1,0,1,1]);
