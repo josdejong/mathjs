@@ -120,7 +120,9 @@ function completer (text) {
 }
 
 /**
- * Run stream, read and evaluate input and stream that to output
+ * Run stream, read and evaluate input and stream that to output.
+ * Text lines read from the input are evaluated, and the results are send to
+ * the output.
  * @param input   Input stream
  * @param output  Output stream
  */
@@ -183,8 +185,11 @@ function runStream (input, output) {
     });
 }
 
+/**
+ * Output application version number.
+ * Version number is read version from package.json.
+ */
 function outputVersion () {
-    // read version from package.json
     fs.readFile(__dirname + '/../package.json', function (err, data) {
         if (err) {
             console.log(err.toString());
@@ -197,6 +202,9 @@ function outputVersion () {
     });
 }
 
+/**
+ * Output a help message
+ */
 function outputHelp() {
     console.log('math.js');
     console.log('http://mathjs.org');
@@ -221,6 +229,9 @@ function outputHelp() {
     console.log();
 }
 
+/**
+ * Process input and output, based on the command line arguments
+ */
 if (process.argv.length > 2) {
     var arg = process.argv[2];
     if (arg == '-v' || arg == '--version') {
