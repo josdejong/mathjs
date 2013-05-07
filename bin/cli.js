@@ -18,9 +18,9 @@
  *
  * Example usage:
  *     mathjs                                 Open a command prompt
- *     mathjs script.txt                      Run a script file, output to console
+ *     mathjs script.txt                      Run a script file, output to terminal
  *     mathjs script.txt > results.txt        Run a script file, output to file
- *     cat script.txt | mathjs                Run input stream, output to console
+ *     cat script.txt | mathjs                Run input stream, output to terminal
  *     cat script.txt | mathjs > results.txt  Run input stream, output to file
  *
  * @license
@@ -221,11 +221,11 @@ function outputHelp() {
     console.log('       --help, -h  Show this message');
     console.log();
     console.log('Example usage:');
-    console.log('    mathjs                                 Open a command prompt');
-    console.log('    mathjs script.txt                      Run a script file, output to console');
-    console.log('    mathjs script.txt > results.txt        Run a script file, output to file');
-    console.log('    cat script.txt | mathjs                Run input stream, output to console');
-    console.log('    cat script.txt | mathjs > results.txt  Run input stream, output to file');
+    console.log('    mathjs                                Open a command prompt');
+    console.log('    mathjs script.txt                     Run a script file, output to terminal');
+    console.log('    mathjs script.txt > results.txt       Run a script file, output to file');
+    console.log('    cat script.txt | mathjs               Run input stream, output to terminal');
+    console.log('    cat script.txt | mathjs > results.txt Run input stream, output to file');
     console.log();
 }
 

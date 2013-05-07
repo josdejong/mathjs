@@ -1,4 +1,4 @@
-// test function xyz
+// test example
 return;
 
 var assert = require('assert'),

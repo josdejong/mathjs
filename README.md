@@ -16,6 +16,7 @@ Powerful and easy to use.
 - Supports chained operations.
 - Comes with a large set of built-in functions and constants.
 - Has no dependencies. Runs on any JavaScript engine.
+- Can be used as a command line application as well.
 - Is easily extensible.
 
 
@@ -290,14 +291,15 @@ Available methods:
 
 ## Command Line Interface (CLI)
 
-When math.js is installed globally using npm, the parser can be run from the
-command line. To install math.js globally:
+When math.js is installed globally using npm, its expression parser can be used
+from the command line. To install math.js globally:
 
     npm install -g mathjs
 
-Possibly the installation must be run with admin rights, by preceding the
-command with `sudo`. After installation, the application `mathjs` is available.
+Possibly the installation must be run with admin rights (proceed the
+command with `sudo`).
 
+After installation, the application `mathjs` is available.
 Math.js can be used as a command line application:
 
 ```bash
@@ -317,10 +319,15 @@ http://mathjs.org
 -7
 ```
 
-The command line interface can also be used to execute a script
+The command line interface can also be used to execute a script, or to pipe
+input and output streams:
 
 ```bash
-$ mathjs myscript.txt
+$ mathjs                                 # Open a command prompt
+$ mathjs script.txt                      # Run a script file, output to console
+$ mathjs script.txt > results.txt        # Run a script file, output to file
+$ cat script.txt | mathjs                # Run input stream, output to console
+$ cat script.txt | mathjs > results.txt  # Run input stream, output to file
 ```
 
 
