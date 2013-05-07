@@ -9,8 +9,19 @@
  *
  * Usage:
  *
- *     mathjs           Open a command prompt
- *     mathjs script    Run a script file
+ *     mathjs [scriptfile] {OPTIONS}
+ *
+ * Options:
+ *
+ *     --version, -v  Show application version
+ *        --help, -h  Show this message
+ *
+ * Example usage:
+ *     mathjs                                 Open a command prompt
+ *     mathjs script.txt                      Run a script file, output to console
+ *     mathjs script.txt > results.txt        Run a script file, output to file
+ *     cat script.txt | mathjs                Run input stream, output to console
+ *     cat script.txt | mathjs > results.txt  Run input stream, output to file
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -28,10 +39,8 @@
  * the License.
  */
 
-// TODO: implement piping
-
-var readline = require('readline'),
-    math = require('../math'),
+var math = require('../math'),
+    parser = math.parser(),
     fs = require('fs');
 
 /**
@@ -56,7 +65,7 @@ function completer (text) {
         }
 
         // commandline keywords
-        ['exit', 'quit'].forEach(function (cmd) {
+        ['exit', 'quit', 'clear'].forEach(function (cmd) {
             if (cmd.indexOf(keyword) == 0) {
                 matches.push(cmd);
             }
@@ -105,73 +114,127 @@ function completer (text) {
         matches = matches.filter(function(elem, pos, arr) {
             return arr.indexOf(elem) == pos;
         });
-
     }
 
     return [matches, keyword];
 }
 
-if (process.argv.length > 2) {
-    // execute a script file
-    var file = process.argv[2];
+/**
+ * Run stream, read and evaluate input and stream that to output
+ * @param input   Input stream
+ * @param output  Output stream
+ */
+function runStream (input, output) {
+    var readline = require('readline'),
+        rl = readline.createInterface({
+            input: input || process.stdin,
+            output: output || process.stdout,
+            completer: completer
+        });
 
-    fs.readFile(file, function (err, data) {
-        if (err) {
-            console.log(err.toString());
-            process.exit(1);
-        }
-
-        var parser = math.parser();
-        var results = parser.eval(String(data));
-        console.log(results.join('\n'));
-    });
-}
-else {
-    // handle user input
-
-    // read the version number from package.json
-    var version = 'unknown';
-    try {
-        var pkg = JSON.parse(fs.readFileSync(__dirname + '/../package.json'));
-        version = pkg && pkg.version;
+    if (rl.output.isTTY) {
+        rl.setPrompt('> ');
+        rl.prompt();
     }
-    catch (err) {}
 
-    // output header with general information
-    console.log('math.js, version ' + version);
-    console.log('http://mathjs.org');
-    console.log('');
+    rl.on('line', function(line) {
+        var expr = line.trim();
 
-    var rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-        completer: completer
-    });
-    var parser = math.parser();
-    var input = function () {
-        rl.question("> ", function(expr) {
-            // check for exit
-            if (expr.toLowerCase() == 'exit' || expr.toLowerCase() == 'quit') {
-                rl.close();
+        // check for exit
+        if (expr.toLowerCase() == 'exit' || expr.toLowerCase() == 'quit') {
+            // exit application
+            rl.close();
+        }
+        if (expr.toLowerCase() == 'clear') {
+            // clear memory
+            parser.clear();
+            console.log('memory cleared');
+
+            // get next input
+            if (rl.output.isTTY) {
+                rl.prompt();
             }
-            else {
-                // TODO: implement method clear
-
-                // evaluate expression
-                if (expr) {
-                    try {
-                        var res = parser.eval(expr);
+        }
+        else {
+            // evaluate expression
+            if (expr) {
+                try {
+                    var res = parser.eval(expr);
+                    if (!(res instanceof Array) || res.length) {
+                        // TODO: how to distinguish array output from multi-line output?
                         console.log(math.format(res));
                     }
-                    catch (err) {
-                        console.log(err.toString());
-                    }
                 }
-
-                // get next input
-                input();
+                catch (err) {
+                    console.log(err.toString());
+                }
             }
-        });
-    };
-    input();
+
+            // get next input
+            if (rl.output.isTTY) {
+                rl.prompt();
+            }
+        }
+    });
+
+    rl.on('close', function() {
+        console.log();
+        process.exit(0);
+    });
+}
+
+function outputVersion () {
+    // read version from package.json
+    fs.readFile(__dirname + '/../package.json', function (err, data) {
+        if (err) {
+            console.log(err.toString());
+        }
+        else {
+            var pkg = JSON.parse(data);
+            var version = pkg && pkg.version ? 'v' + pkg.version : 'unknown';
+            console.log(version);
+        }
+    });
+}
+
+function outputHelp() {
+    console.log('math.js');
+    console.log('http://mathjs.org');
+    console.log();
+    console.log('Math.js is an extensive math library for JavaScript and Node.js. It features ');
+    console.log('real and complex numbers, units, matrices, a large set of mathematical');
+    console.log('functions, and a flexible expression parser.');
+    console.log();
+    console.log('Usage:');
+    console.log('    mathjs [scriptfile] {OPTIONS}');
+    console.log();
+    console.log('Options:');
+    console.log('    --version, -v  Show application version');
+    console.log('       --help, -h  Show this message');
+    console.log();
+    console.log('Example usage:');
+    console.log('    mathjs                                 Open a command prompt');
+    console.log('    mathjs script.txt                      Run a script file, output to console');
+    console.log('    mathjs script.txt > results.txt        Run a script file, output to file');
+    console.log('    cat script.txt | mathjs                Run input stream, output to console');
+    console.log('    cat script.txt | mathjs > results.txt  Run input stream, output to file');
+    console.log();
+}
+
+if (process.argv.length > 2) {
+    var arg = process.argv[2];
+    if (arg == '-v' || arg == '--version') {
+        outputVersion();
+    }
+    else if (arg == '-h' || arg == '--help') {
+        outputHelp();
+    }
+    else {
+        // run a script file
+        runStream(fs.createReadStream(arg), process.stdout);
+    }
+}
+else {
+    // run a stream, can be user input or pipe input
+    runStream(process.stdin, process.stdout);
 }

@@ -288,7 +288,7 @@ Available methods:
     var deps    = workspace.getDependencies(id);
     var changes = workspace.getChanges(updateSeq);
 
-## Command Line Interface
+## Command Line Interface (CLI)
 
 When math.js is installed globally using npm, the parser can be run from the
 command line. To install math.js globally:
@@ -302,7 +302,7 @@ Math.js can be used as a command line application:
 
 ```bash
 $ mathjs
-math.js, version 0.7.3
+math.js, version 0.8.0
 http://mathjs.org
 
 > 12 / (2.3 + 0.7)
