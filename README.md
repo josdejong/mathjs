@@ -289,47 +289,6 @@ Available methods:
     var deps    = workspace.getDependencies(id);
     var changes = workspace.getChanges(updateSeq);
 
-## Command Line Interface (CLI)
-
-When math.js is installed globally using npm, its expression parser can be used
-from the command line. To install math.js globally:
-
-    npm install -g mathjs
-
-Possibly the installation must be run with admin rights (proceed the
-command with `sudo`).
-
-After installation, the application `mathjs` is available.
-Math.js can be used as a command line application:
-
-```bash
-$ mathjs
-math.js, version 0.8.0
-http://mathjs.org
-
-> 12 / (2.3 + 0.7)
-4
-> 5.08 cm in inch
-2 inch
-> sin(45 deg) ^ 2
-0.5
-> 9 / 3 + 2i
-3 + 2i
-> det([-1, 2; 3, 1])
--7
-```
-
-The command line interface can also be used to execute a script, or to pipe
-input and output streams:
-
-```bash
-$ mathjs                                 # Open a command prompt
-$ mathjs script.txt                      # Run a script file, output to console
-$ mathjs script.txt > results.txt        # Run a script file, output to file
-$ cat script.txt | mathjs                # Run input stream, output to console
-$ cat script.txt | mathjs > results.txt  # Run input stream, output to file
-```
-
 
 ## Data types
 
@@ -599,6 +558,42 @@ math.eval('fibonacci(7)');              // 7
 ```
 
 
+## Command Line Interface (CLI)
+
+When math.js is installed globally using npm, its expression parser can be used
+from the command line. To install math.js globally:
+
+    npm install -g mathjs
+
+Possibly the installation must be run with admin rights (precede the
+command with `sudo`). After installation, the application `mathjs` is available:
+
+```bash
+$ mathjs
+> 12 / (2.3 + 0.7)
+4
+> 5.08 cm in inch
+2 inch
+> sin(45 deg) ^ 2
+0.5
+> 9 / 3 + 2i
+3 + 2i
+> det([-1, 2; 3, 1])
+-7
+```
+
+The command line interface can be used open a prompt, to execute a script,
+or to pipe input and output streams:
+
+```bash
+$ mathjs                                 # Open a command prompt
+$ mathjs script.txt                      # Run a script file, output to console
+$ mathjs script.txt > results.txt        # Run a script file, output to file
+$ cat script.txt | mathjs                # Run input stream, output to console
+$ cat script.txt | mathjs > results.txt  # Run input stream, output to file
+```
+
+
 ## Build
 
 First clone the project from github:
@@ -632,11 +627,19 @@ To execute tests for the library, run:
 
 ## Roadmap
 
-Before version 1.0:
+Version 1.0:
 
-- More on matrices
-- Examples and documentation
-- Extensive testing
+- An expression parser.
+- A basic set of functions and constants.
+- Data types Number, Complex, Matrix, Unit, String.
+- Examples and documentation.
+- Extensive testing.
+
+Version 2.0:
+
+- A basic set of functions covering all common mathematical areas.
+- Functions and data types for numeral systems: Bin, Oct, Hex, Dec.
+- Arbitrary precision calculations with a BigNumber data type.
 
 
 ## License
