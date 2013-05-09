@@ -193,4 +193,14 @@ assert.equal(n.eval(), 33);
 parser.remove('q');
 assert.throws(function () { n.eval(); });
 
+n = parser.parse('qq(1,1)=33');
+assert.throws(function () { n.eval(); });
+parser.eval('qq=[1,2;3,4]');
+assert.deepEqual(n.eval(), math.matrix([[33,2],[3,4]]));
+parser.eval('qq=[4]');
+assert.deepEqual(n.eval(), math.matrix([[33]]));
+parser.remove('qq');
+assert.throws(function () { n.eval(); });
+
+
 // TODO: extensively test the Parser
