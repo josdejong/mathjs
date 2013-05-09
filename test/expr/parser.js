@@ -100,6 +100,7 @@ assert.deepEqual(parser.eval('a = [1,2,f=3]'), matrix([[1,2,3]]));
 assert.equal(parser.get('f'), 3);
 assert.equal(parser.eval('2 + (g = 3 + 4)'), 9);
 assert.equal(parser.get('g'), 7);
+assert.throws(function () {parser.eval('a(j = 3)')}, SyntaxError);
 
 
 // test function assignments
@@ -116,6 +117,26 @@ var g = parser.eval('g');
 assert.ok(parser.eval('2:5') instanceof math.type.Range);
 assert.deepEqual(parser.eval('2:5').toArray(), [2,3,4,5]);
 assert.deepEqual(parser.eval('10:-2:2').toArray(), [10,8,6,4,2]);
+
+parser.set('a', matrix([
+    [1,2,3],
+    [4,5,6],
+    [7,8,9]
+]));
+assert.deepEqual(parser.eval('a(2, :)'),        matrix([[4,5,6]]));
+assert.deepEqual(parser.eval('a(2, :2)'),       matrix([[4,5]]));
+assert.deepEqual(parser.eval('a(2, :end-1)'),   matrix([[4,5]]));
+assert.deepEqual(parser.eval('a(2, 2:)'),       matrix([[5,6]]));
+assert.deepEqual(parser.eval('a(2, 2:3)'),      matrix([[5,6]]));
+assert.deepEqual(parser.eval('a(2, 1:2:3)'),    matrix([[4,6]]));
+assert.deepEqual(parser.eval('a(:, 2)'),        matrix([[2],[5],[8]]));
+assert.deepEqual(parser.eval('a(:2, 2)'),       matrix([[2],[5]]));
+assert.deepEqual(parser.eval('a(:end-1, 2)'),   matrix([[2],[5]]));
+assert.deepEqual(parser.eval('a(2:, 2)'),       matrix([[5],[8]]));
+assert.deepEqual(parser.eval('a(2:3, 2)'),      matrix([[5],[8]]));
+assert.deepEqual(parser.eval('a(1:2:3, 2)'),    matrix([[2],[8]]));
+// TODO: implement and test support for Array (instead of Matrix)
+
 
 // test matrix
 assert.ok(parser.eval('[1,2;3,4]') instanceof math.type.Matrix);

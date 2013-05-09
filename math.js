@@ -2988,7 +2988,7 @@ OperatorNode.prototype.toString = function() {
 /**
  * @constructor SymbolNode
  * A symbol node can hold and resolve a symbol
- * @param {String} [name]
+ * @param {String} name
  * @param {math.expr.Symbol} symbol
  * @extends {Node}
  */
@@ -4537,30 +4537,46 @@ math.expr.Scope.prototype = {
     }
 
     /**
-     * parse range, "start:end" or "start:step:end"
+     * parse range, "start:end", "start:step:end", ":", "start:", ":end", etc
      * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_range (scope) {
-        var node, name, fn, params;
+        var node, name, fn, params = [];
 
-        node = parse_conditions(scope);
         if (token == ':') {
-            params = [node];
+            // implicit start=1
+            node = new ConstantNode(1);
+        }
+        else {
+            // explicit start
+            node = parse_conditions(scope);
+        }
 
+        if (token == ':') {
+            params.push(node);
+
+            // parse step and end
             while (token == ':') {
                 getToken();
-                params.push(parse_conditions(scope));
+                if (token == ')' || token == ',' || token == '') {
+                    // implicit end
+                    var end = scope.createLink('end');
+                    params.push(new SymbolNode('end', end));
+                }
+                else {
+                    // explicit end
+                    params.push(parse_conditions(scope));
+                }
             }
 
-            if (params.length > 3) {
-                throw new TypeError('Invalid range');
+            if (params.length) {
+                // create a range constructor
+                name = 'range';
+                fn = math.range;
+                node = new OperatorNode(name, fn, params);
             }
-
-            name = 'range';
-            fn = math.range;
-            node = new OperatorNode(name, fn, params);
         }
 
         return node;

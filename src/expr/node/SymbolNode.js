@@ -1,7 +1,7 @@
 /**
  * @constructor SymbolNode
  * A symbol node can hold and resolve a symbol
- * @param {String} [name]
+ * @param {String} name
  * @param {math.expr.Symbol} symbol
  * @extends {Node}
  */
