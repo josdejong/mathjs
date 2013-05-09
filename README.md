@@ -22,14 +22,20 @@ Powerful and easy to use.
 
 ## Install
 
+### npm
 Math.js can be installed using [npm](https://npmjs.org/):
 
     npm install mathjs
 
+Note: when installed globally (using the `-g` option), math.js is available as a
+command line application `mathjs`, see section [CLI](command-line-interface-cli).
+
+### bower
 Or using [bower](http://twitter.github.io/bower/):
 
     bower install mathjs
 
+### download
 Or by downloading the latest version from
 [mathjs.org](http://mathjs.org/#install_or_download):
 
@@ -565,7 +571,7 @@ from the command line. To install math.js globally:
 
     npm install -g mathjs
 
-Possibly the installation must be run with admin rights (precede the
+Normally, a global installation must be run with admin rights (precede the
 command with `sudo`). After installation, the application `mathjs` is available:
 
 ```bash

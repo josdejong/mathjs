@@ -481,15 +481,11 @@
     function parse_ans (scope) {
         var expression = parse_function_assignment(scope);
 
-        if (!scope.readonly) {
-            // create a variable definition for ans
-            var name = 'ans';
-            var params = undefined;
-            var link = scope.createDef(name);
-            return new AssignmentNode(name, params, expression, link);
-        }
-
-        return expression;
+        // create a variable definition for ans
+        var name = 'ans';
+        var params = undefined;
+        var link = scope.createDef(name);
+        return new AssignmentNode(name, params, null, expression, link);
     }
 
     /**
@@ -569,24 +565,23 @@
      * @private
      */
     function parse_assignment (scope) {
-        var name, params, expr, link;
+        var name, params, scopes, expr, link;
+
+        /* TODO: cleanup? or use? see comments further down
         var linkExisted = false;
         if (token_type == TOKENTYPE.SYMBOL) {
             linkExisted = scope.hasLink(token);
         }
+        */
 
         var node = parse_range(scope);
 
-        // TODO: support chained assignments like "a = b = 2.3"
         if (token == '=') {
             if (node instanceof SymbolNode) {
-                // assignment
-                if (!linkExisted) {
-                    // we parsed the assignment as if it where an expression instead,
-                    // therefore, a link was created to the symbol. This link must
-                    // be cleaned up again, and only if it wasn't existing before
-                    scope.removeLink(name);
-                }
+                // TODO: remove link when it was undefined before we parsed this expression?
+                // we parsed the assignment as if it where an expression instead,
+                // therefore, a link was created to the symbol. This link must
+                // be cleaned up again, and only if it wasn't existing before
 
                 // parse the expression, with the correct function scope
                 getToken();
@@ -594,24 +589,22 @@
                 params = null;
                 expr = parse_assignment(scope);
                 link = scope.createDef(name);
-                return new AssignmentNode(name, params, expr, link);
+                return new AssignmentNode(name, params, null, expr, link);
             }
             else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
-                // update of a variable
-                if (!linkExisted) {
+                // TODO: remove link when it was undefined before we parsed this expression?
                     // we parsed the assignment as if it where an expression instead,
                     // therefore, a link was created to the symbol. This link must
                     // be cleaned up again, and only if it wasn't existing before
-                    scope.removeLink(name);
-                }
 
                 // parse the expression, with the correct function scope
                 getToken();
                 name = node.object.name;
                 params = node.params;
+                scopes = node.scopes;
                 expr = parse_assignment(scope);
                 link = scope.createUpdate(name);
-                return new AssignmentNode(name, params, expr, link);
+                return new AssignmentNode(name, params, scopes, expr, link);
             }
             else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
@@ -993,20 +986,28 @@
      * @private
      */
     function parse_params (scope, node) {
-        var params;
+        var params,
+            scopes,
+            nestedScope;
 
         while (token == '(') {
             params = [];
+            scopes = [];
 
             getToken();
 
             if (token != ')') {
-                params.push(parse_assignment(scope));
+                nestedScope = scope.createNestedScope();
+                scopes.push(nestedScope);
+                params.push(parse_range(nestedScope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
-                    params.push(parse_assignment(scope));
+
+                    nestedScope = scope.createNestedScope();
+                    scopes.push(nestedScope);
+                    params.push(parse_range(nestedScope));
                 }
             }
 
@@ -1015,7 +1016,7 @@
             }
             getToken();
 
-            node = new ParamsNode(node, params);
+            node = new ParamsNode(node, params, scopes);
         }
 
         return node;

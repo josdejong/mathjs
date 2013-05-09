@@ -9,6 +9,7 @@
  * @return {*} res
  */
 math.eval = function (expr) {
+    // TODO: implement a second parameter 'scope', which allows providing a custom scope with variables and functions
     var parser,
         res;
 

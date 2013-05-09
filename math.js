@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.8.0-SNAPSHOT
- * @date    2013-05-06
+ * @date    2013-05-09
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -2130,6 +2130,7 @@ Range.prototype.toString = function () {
     str += ':' + math.format(Number(this.end));
     return str;
 };
+
 /**
  * @constructor math.type.Selector
  * Wrap any value in a Selector, allowing to perform chained operations on
@@ -3216,10 +3217,28 @@ SymbolNode.prototype.toString = function() {
  * invoke a list with parameters on the results of a node
  * @param {Node} object
  * @param {Node[]} params
+ * @param {Scope[]} scopes      A scope for every parameter, where the index
+ *                              variable 'end' can be defined.
  */
-function ParamsNode (object, params) {
+function ParamsNode (object, params, scopes) {
     this.object = object;
     this.params = params;
+    this.scopes = scopes;
+
+    // find the symbols 'end', which are index dependent
+    var ends = null;
+    if (scopes) {
+        for (var i = 0, len = scopes.length; i < len; i++) {
+            var scope = scopes[i];
+            if (scope.hasLink('end')) {
+                if (!ends) {
+                    ends = [];
+                }
+                ends[i] = scope.createLink('end');
+            }
+        }
+    }
+    this.ends = ends;
 }
 
 ParamsNode.prototype = new Node();
@@ -3231,24 +3250,41 @@ math.expr.node.ParamsNode = ParamsNode;
  * @return {*} result
  */
 ParamsNode.prototype.eval = function() {
+    var i, len;
+
+    // evaluate the object
     var object = this.object;
     if (object == undefined) {
         throw new Error ('Node undefined');
     }
     var obj = object.eval();
 
+    // evaluate the values of parameter 'end'
+    if (this.ends) {
+        var ends = this.ends,
+            size = obj.size && obj.size();
+        for (i = 0, len = this.params.length; i < len; i++) {
+            var end = ends[i];
+            if (end && size) {
+                end.set(size[i]);
+            }
+        }
+    }
+
     // evaluate the parameters
-    var res = this.params.map(function (arg) {
-        return arg.eval();
-    });
+    var params = this.params,
+        results = [];
+    for (i = 0, len = this.params.length; i < len; i++) {
+        results[i] = params[i].eval();
+    }
 
     if (typeof obj === 'function') {
         // invoke a function with the parameters
-        return obj.apply(this, res);
+        return obj.apply(this, results);
     }
     else if (obj instanceof Object && obj.get) {
         // apply method get with the parameters
-        return obj.get(res);
+        return obj.get(results);
     }
     // TODO: apply parameters on a string
     else {
@@ -3475,14 +3511,31 @@ BlockNode.prototype.toString = function() {
  * @constructor AssignmentNode
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
+ * @param {Scope[]}  scopes             A scope for every parameter, where the
+ *                                      index variable 'end' can be defined.
  * @param {Node} expr                   The expression defining the symbol
  * @param {math.expr.Symbol} symbol     placeholder for the symbol
  */
-function AssignmentNode(name, params, expr, symbol) {
+function AssignmentNode(name, params, scopes, expr, symbol) {
     this.name = name;
     this.params = params;
     this.expr = expr;
     this.symbol = symbol;
+
+    // find the symbols 'end', which are index dependent
+    var ends = null;
+    if (scopes) {
+        for (var i = 0, len = scopes.length; i < len; i++) {
+            var scope = scopes[i];
+            if (scope.hasLink('end')) {
+                if (!ends) {
+                    ends = [];
+                }
+                ends[i] = scope.createLink('end');
+            }
+        }
+    }
+    this.ends = ends;
 }
 
 AssignmentNode.prototype = new Node();
@@ -3502,6 +3555,24 @@ AssignmentNode.prototype.eval = function() {
     var params = this.params;
 
     if (params && params.length) {
+        // test if definition is currently undefined
+        var prevResult = this.symbol.get();
+        if (prevResult == undefined) {
+            throw new Error('Undefined symbol ' + this.name);
+        }
+
+        // evaluate the values of parameter 'end'
+        if (this.ends) {
+            var ends = this.ends,
+                size = prevResult.size && prevResult.size();
+            for (var i = 0, len = this.params.length; i < len; i++) {
+                var end = ends[i];
+                if (end && size) {
+                    end.set(size[i]);
+                }
+            }
+        }
+
         // change part of a matrix, for example "a=[]", "a(2,3)=4.5"
         var paramResults = [];
         this.params.forEach(function (param) {
@@ -3509,12 +3580,6 @@ AssignmentNode.prototype.eval = function() {
         });
 
         var exprResult = this.expr.eval();
-
-        // test if definition is currently undefined
-        var prevResult = this.symbol.get();
-        if (prevResult == undefined) {
-            throw new Error('Undefined symbol ' + this.name);
-        }
 
         // TODO: check type of prevResult: Matrix, Array, String, other...
         if (!prevResult.set) {
@@ -3809,7 +3874,9 @@ math.expr.Scope.prototype = {
             var undef = this.getUndefinedSymbols(name);
             if (undef.length) {
                 undef.forEach(function (u) {
-                    u.set(symbol);
+                    if (u != symbol) {
+                        u.set(symbol);
+                    }
                 });
             }
         }
@@ -3839,7 +3906,9 @@ math.expr.Scope.prototype = {
             var undef = this.getUndefinedSymbols(name);
             if (undef.length) {
                 undef.forEach(function (u) {
-                    u.set(symbol);
+                    if (u != symbol) {
+                        u.set(symbol);
+                    }
                 });
             }
         }
@@ -4518,15 +4587,11 @@ math.expr.Scope.prototype = {
     function parse_ans (scope) {
         var expression = parse_function_assignment(scope);
 
-        if (!scope.readonly) {
-            // create a variable definition for ans
-            var name = 'ans';
-            var params = undefined;
-            var link = scope.createDef(name);
-            return new AssignmentNode(name, params, expression, link);
-        }
-
-        return expression;
+        // create a variable definition for ans
+        var name = 'ans';
+        var params = undefined;
+        var link = scope.createDef(name);
+        return new AssignmentNode(name, params, null, expression, link);
     }
 
     /**
@@ -4606,24 +4671,23 @@ math.expr.Scope.prototype = {
      * @private
      */
     function parse_assignment (scope) {
-        var name, params, expr, link;
+        var name, params, scopes, expr, link;
+
+        /* TODO: cleanup? or use? see comments further down
         var linkExisted = false;
         if (token_type == TOKENTYPE.SYMBOL) {
             linkExisted = scope.hasLink(token);
         }
+        */
 
         var node = parse_range(scope);
 
-        // TODO: support chained assignments like "a = b = 2.3"
         if (token == '=') {
             if (node instanceof SymbolNode) {
-                // assignment
-                if (!linkExisted) {
-                    // we parsed the assignment as if it where an expression instead,
-                    // therefore, a link was created to the symbol. This link must
-                    // be cleaned up again, and only if it wasn't existing before
-                    scope.removeLink(name);
-                }
+                // TODO: remove link when it was undefined before we parsed this expression?
+                // we parsed the assignment as if it where an expression instead,
+                // therefore, a link was created to the symbol. This link must
+                // be cleaned up again, and only if it wasn't existing before
 
                 // parse the expression, with the correct function scope
                 getToken();
@@ -4631,24 +4695,22 @@ math.expr.Scope.prototype = {
                 params = null;
                 expr = parse_assignment(scope);
                 link = scope.createDef(name);
-                return new AssignmentNode(name, params, expr, link);
+                return new AssignmentNode(name, params, null, expr, link);
             }
             else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
-                // update of a variable
-                if (!linkExisted) {
+                // TODO: remove link when it was undefined before we parsed this expression?
                     // we parsed the assignment as if it where an expression instead,
                     // therefore, a link was created to the symbol. This link must
                     // be cleaned up again, and only if it wasn't existing before
-                    scope.removeLink(name);
-                }
 
                 // parse the expression, with the correct function scope
                 getToken();
                 name = node.object.name;
                 params = node.params;
+                scopes = node.scopes;
                 expr = parse_assignment(scope);
                 link = scope.createUpdate(name);
-                return new AssignmentNode(name, params, expr, link);
+                return new AssignmentNode(name, params, scopes, expr, link);
             }
             else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
@@ -5030,20 +5092,28 @@ math.expr.Scope.prototype = {
      * @private
      */
     function parse_params (scope, node) {
-        var params;
+        var params,
+            scopes,
+            nestedScope;
 
         while (token == '(') {
             params = [];
+            scopes = [];
 
             getToken();
 
             if (token != ')') {
-                params.push(parse_assignment(scope));
+                nestedScope = scope.createNestedScope();
+                scopes.push(nestedScope);
+                params.push(parse_range(nestedScope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
-                    params.push(parse_assignment(scope));
+
+                    nestedScope = scope.createNestedScope();
+                    scopes.push(nestedScope);
+                    params.push(parse_range(nestedScope));
                 }
             }
 
@@ -5052,7 +5122,7 @@ math.expr.Scope.prototype = {
             }
             getToken();
 
-            node = new ParamsNode(node, params);
+            node = new ParamsNode(node, params, scopes);
         }
 
         return node;
@@ -9509,6 +9579,7 @@ math.clone = function clone(x) {
  * @return {*} res
  */
 math.eval = function (expr) {
+    // TODO: implement a second parameter 'scope', which allows providing a custom scope with variables and functions
     var parser,
         res;
 

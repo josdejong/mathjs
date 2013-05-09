@@ -3,6 +3,7 @@
 var assert = require('assert'),
     math = require('../../math.js'),
     parser = math.parser(),
+    matrix = math.matrix,
     round = math.round;
 
 /**
@@ -95,7 +96,7 @@ assert.equal(parser.eval('c = d = (e = 4.5)'), 4.5);
 assert.equal(parser.get('c'), 4.5);
 assert.equal(parser.get('d'), 4.5);
 assert.equal(parser.get('e'), 4.5);
-assert.deepEqual(parser.eval('a = [1,2,f=3]'), math.matrix([[1,2,3]]));
+assert.deepEqual(parser.eval('a = [1,2,f=3]'), matrix([[1,2,3]]));
 assert.equal(parser.get('f'), 3);
 assert.equal(parser.eval('2 + (g = 3 + 4)'), 9);
 assert.equal(parser.get('g'), 7);
@@ -139,6 +140,17 @@ assert.deepEqual(parser.get('a').valueOf(), [[100,2,0],[3,10,11],[0,12,13]]);
 var a = parser.get('a');
 assert.deepEqual(a.get([math.range('1:3'), math.range('1:2')]).valueOf(), [[100,2],[3,10],[0,12]]);
 assert.deepEqual(parser.eval('a(1:3,1:2)').valueOf(), [[100,2],[3,10],[0,12]]);
+
+parser.eval('a=diag([1,2,3,4])');
+assert.deepEqual(parser.eval('a(3:end, 3:end)'), matrix([[3,0],[0,4]]));
+assert.deepEqual(parser.eval('a(3:end, 2:end)=9*ones(2,3)'), matrix([
+    [1,0,0,0],
+    [0,2,0,0],
+    [0,9,9,9],
+    [0,9,9,9]
+]));
+assert.deepEqual(parser.eval('a(2:end-1, 2:end-1)'), matrix([[2,0],[9,9]]));
+
 
 // test matrix concatenation
 parser = math.parser();
@@ -196,9 +208,9 @@ assert.throws(function () { n.eval(); });
 n = parser.parse('qq(1,1)=33');
 assert.throws(function () { n.eval(); });
 parser.eval('qq=[1,2;3,4]');
-assert.deepEqual(n.eval(), math.matrix([[33,2],[3,4]]));
+assert.deepEqual(n.eval(), matrix([[33,2],[3,4]]));
 parser.eval('qq=[4]');
-assert.deepEqual(n.eval(), math.matrix([[33]]));
+assert.deepEqual(n.eval(), matrix([[33]]));
 parser.remove('qq');
 assert.throws(function () { n.eval(); });
 

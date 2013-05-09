@@ -2,14 +2,31 @@
  * @constructor AssignmentNode
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
+ * @param {Scope[]}  scopes             A scope for every parameter, where the
+ *                                      index variable 'end' can be defined.
  * @param {Node} expr                   The expression defining the symbol
  * @param {math.expr.Symbol} symbol     placeholder for the symbol
  */
-function AssignmentNode(name, params, expr, symbol) {
+function AssignmentNode(name, params, scopes, expr, symbol) {
     this.name = name;
     this.params = params;
     this.expr = expr;
     this.symbol = symbol;
+
+    // find the symbols 'end', which are index dependent
+    var ends = null;
+    if (scopes) {
+        for (var i = 0, len = scopes.length; i < len; i++) {
+            var scope = scopes[i];
+            if (scope.hasLink('end')) {
+                if (!ends) {
+                    ends = [];
+                }
+                ends[i] = scope.createLink('end');
+            }
+        }
+    }
+    this.ends = ends;
 }
 
 AssignmentNode.prototype = new Node();
@@ -29,6 +46,24 @@ AssignmentNode.prototype.eval = function() {
     var params = this.params;
 
     if (params && params.length) {
+        // test if definition is currently undefined
+        var prevResult = this.symbol.get();
+        if (prevResult == undefined) {
+            throw new Error('Undefined symbol ' + this.name);
+        }
+
+        // evaluate the values of parameter 'end'
+        if (this.ends) {
+            var ends = this.ends,
+                size = prevResult.size && prevResult.size();
+            for (var i = 0, len = this.params.length; i < len; i++) {
+                var end = ends[i];
+                if (end && size) {
+                    end.set(size[i]);
+                }
+            }
+        }
+
         // change part of a matrix, for example "a=[]", "a(2,3)=4.5"
         var paramResults = [];
         this.params.forEach(function (param) {
@@ -36,12 +71,6 @@ AssignmentNode.prototype.eval = function() {
         });
 
         var exprResult = this.expr.eval();
-
-        // test if definition is currently undefined
-        var prevResult = this.symbol.get();
-        if (prevResult == undefined) {
-            throw new Error('Undefined symbol ' + this.name);
-        }
 
         // TODO: check type of prevResult: Matrix, Array, String, other...
         if (!prevResult.set) {

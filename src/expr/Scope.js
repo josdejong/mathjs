@@ -114,7 +114,9 @@ math.expr.Scope.prototype = {
             var undef = this.getUndefinedSymbols(name);
             if (undef.length) {
                 undef.forEach(function (u) {
-                    u.set(symbol);
+                    if (u != symbol) {
+                        u.set(symbol);
+                    }
                 });
             }
         }
@@ -144,7 +146,9 @@ math.expr.Scope.prototype = {
             var undef = this.getUndefinedSymbols(name);
             if (undef.length) {
                 undef.forEach(function (u) {
-                    u.set(symbol);
+                    if (u != symbol) {
+                        u.set(symbol);
+                    }
                 });
             }
         }
