@@ -6,7 +6,9 @@ https://github.com/josdejong/mathjs
 
 - Implemented a command line interface. When math.js is installed globally via
   npm, the application is available on your system as 'mathjs'.
-- Function math.eval is more flexible now: it supports variables and multiple
+- Implemented `end` keyword and implicit start and end for ranges in matrix
+  indexes (expressions like `a(2,:)` and `b(2:end,3:end-1)` are supported now).
+- Function math.eval is more flexible now: it supports variables and multi-line
   expressions.
 - Removed the read-only option from Parser and Scope.
 - Fixed non-working unequal operator != in the parser.
