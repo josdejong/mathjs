@@ -622,10 +622,6 @@ Then, the project can be build by executing jake in the root of the project:
 This will build the library math.js and math.min.js from the source files and
 execute tests.
 
-Alternatively, when jake is not installed on your system, the project can be
-build by running `npm install` in the root of the project. npm will then
-use a local installation of jake to build the project.
-
 
 ## Test
 

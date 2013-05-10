@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## 2013-05-10, version 0.8.1
+
+- Fixed an npm warning when installing mathjs globally.
+
+
 ## 2013-05-10, version 0.8.0
 
 - Implemented a command line interface. When math.js is installed globally via
