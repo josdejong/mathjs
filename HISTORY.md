@@ -15,6 +15,7 @@ https://github.com/josdejong/mathjs
 - Fixed non-working unequal operator != in the parser.
 - Fixed a bug in resizing matrices when replacing a subset.
 - Fixed a bug in updating a subset of a non-existing variable.
+- Minor bug fixes.
 
 
 ## 2013-05-04, version 0.7.2

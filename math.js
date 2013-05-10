@@ -6487,11 +6487,7 @@ math.lcm = function lcm(args) {
  * @return {Number | Complex | Array | Matrix} res
  */
 math.log = function log(x, base) {
-    if (arguments.length != 1 && arguments.length != 2) {
-        throw newArgumentsError('log', arguments.length, 1, 2);
-    }
-
-    if (base === undefined) {
+    if (arguments.length == 1) {
         // calculate natural logarithm, log(x)
         if (isNumber(x)) {
             if (x >= 0) {
@@ -6513,18 +6509,21 @@ math.log = function log(x, base) {
         if (x instanceof Array || x instanceof Matrix) {
             return util.map(x, math.log);
         }
+
+        if (x.valueOf() !== x) {
+            // fallback on the objects primitive values
+            return math.log(x.valueOf());
+        }
+
+        throw newUnsupportedTypeError('log', x);
     }
-    else {
+    else if (arguments.length == 2) {
         // calculate logarithm for a specified base, log(x, base)
         return math.divide(math.log(x), math.log(base));
     }
-
-    if (x.valueOf() !== x || base.valueOf() !== base) {
-        // fallback on the objects primitive values
-        return math.log(x.valueOf(), base.valueOf());
+    else {
+        throw newArgumentsError('log', arguments.length, 1, 2);
     }
-
-    throw newUnsupportedTypeError('log', x, base);
 };
 
 /**
