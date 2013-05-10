@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.8.0
+## 2013-05-10, version 0.8.0
 
 - Implemented a command line interface. When math.js is installed globally via
   npm, the application is available on your system as 'mathjs'.
