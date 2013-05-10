@@ -27,8 +27,9 @@ Math.js can be installed using [npm](https://npmjs.org/):
 
     npm install mathjs
 
-Note: when installed globally (using the `-g` option), math.js is available as a
-command line application `mathjs`, see section [CLI](command-line-interface-cli).
+Note: when installed globally (using the `-g` option), math.js is available as
+a command line application `mathjs`, see section
+[command line interface](#command-line-interface-cli).
 
 ### bower
 Or using [bower](http://twitter.github.io/bower/):

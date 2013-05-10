@@ -137,6 +137,23 @@ assert.deepEqual(parser.eval('a(2:3, 2)'),      matrix([[5],[8]]));
 assert.deepEqual(parser.eval('a(1:2:3, 2)'),    matrix([[2],[8]]));
 // TODO: implement and test support for Array (instead of Matrix)
 
+// test matrix resizing
+assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
+assert.deepEqual(parser.eval('a(1:3,1) = [1;2;3]'), matrix([[1],[2],[3]]));
+assert.deepEqual(parser.eval('a(:,2) = [4;5;6]'), matrix([[1,4],[2,5],[3,6]]));
+
+assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
+assert.deepEqual(parser.eval('a(1,3) = 3'), matrix([[0,0,3]]));
+assert.deepEqual(parser.eval('a(2,:) = [4,5,6]'), matrix([[0,0,3],[4,5,6]]));
+
+assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
+assert.deepEqual(parser.eval('a(3,1) = 3'), matrix([[0],[0],[3]]));
+assert.deepEqual(parser.eval('a(:,2) = [4;5;6]'), matrix([[0,4],[0,5],[3,6]]));
+
+assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
+assert.deepEqual(parser.eval('a(1,1:3) = [1,2,3]'), matrix([[1,2,3]]));
+assert.deepEqual(parser.eval('a(2,:) = [4,5,6]'), matrix([[1,2,3],[4,5,6]]));
+
 
 // test matrix
 assert.ok(parser.eval('[1,2;3,4]') instanceof math.type.Matrix);

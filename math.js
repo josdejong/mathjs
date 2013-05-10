@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.8.0-SNAPSHOT
- * @date    2013-05-09
+ * @date    2013-05-10
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -1428,22 +1428,22 @@ function _setScalar2D (data, size, index, value) {
 function _setSubmatrix (data, size, index, dim, submatrix) {
     var last = (dim == index.length - 1);
     var current = index[dim];
-    var recurse = function (v, i) {
+    var recurse = function (dataIndex, subIndex) {
         if (last) {
-            _set(data, v, submatrix[i]);
-            if (data.length > (size[dim] || 0)) {
-                size[dim] = data.length;
+            _set(data, dataIndex, submatrix[subIndex]);
+            if (dataIndex > (size[dim] || 0)) {
+                size[dim] = dataIndex;
             }
         }
         else {
-            var child = data[v - 1]; // one-based index
+            var child = data[dataIndex - 1]; // one-based index
             if (!(child instanceof Array)) {
-                data[v - 1] = child = [child]; // one-based index
-                if (data.length > (size[dim] || 0)) {
-                    size[dim] = data.length;
-                }
+                data[dataIndex - 1] = child = [child]; // one-based index
             }
-            _setSubmatrix(child, size, index, dim + 1, submatrix[i]);
+            if (dataIndex > (size[dim] || 0)) {
+                size[dim] = dataIndex;
+            }
+            _setSubmatrix(child, size, index, dim + 1, submatrix[subIndex]);
         }
     };
 
