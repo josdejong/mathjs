@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.7.2
- * @date    2013-05-04
+ * @version 0.8.0
+ * @date    2013-05-10
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -675,165 +675,6 @@ var util = (function () {
         // recursively resize
         _resize(array, size, 0, defaultValue);
     };
-
-
-    // Internet Explorer 8 and older does not support Array.indexOf,
-    // so we define it here in that case.
-    // http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
-    if(!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function(obj){
-            for(var i = 0; i < this.length; i++){
-                if(this[i] == obj){
-                    return i;
-                }
-            }
-            return -1;
-        };
-    }
-
-    // Internet Explorer 8 and older does not support Array.forEach,
-    // so we define it here in that case.
-    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
-    if (!Array.prototype.forEach) {
-        Array.prototype.forEach = function(fn, scope) {
-            for(var i = 0, len = this.length; i < len; ++i) {
-                fn.call(scope || this, this[i], i, this);
-            }
-        }
-    }
-
-    // Internet Explorer 8 and older does not support Array.map,
-    // so we define it here in that case.
-    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
-    // Production steps of ECMA-262, Edition 5, 15.4.4.19
-    // Reference: http://es5.github.com/#x15.4.4.19
-    if (!Array.prototype.map) {
-        Array.prototype.map = function(callback, thisArg) {
-
-            var T, A, k;
-
-            if (this == null) {
-                throw new TypeError(" this is null or not defined");
-            }
-
-            // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
-            var O = Object(this);
-
-            // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
-            // 3. Let len be ToUint32(lenValue).
-            var len = O.length >>> 0;
-
-            // 4. If IsCallable(callback) is false, throw a TypeError exception.
-            // See: http://es5.github.com/#x9.11
-            if (typeof callback !== "function") {
-                throw new TypeError(callback + " is not a function");
-            }
-
-            // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
-            if (thisArg) {
-                T = thisArg;
-            }
-
-            // 6. Let A be a new array created as if by the expression new Array(len) where Array is
-            // the standard built-in constructor with that name and len is the value of len.
-            A = new Array(len);
-
-            // 7. Let k be 0
-            k = 0;
-
-            // 8. Repeat, while k < len
-            while(k < len) {
-
-                var kValue, mappedValue;
-
-                // a. Let Pk be ToString(k).
-                //   This is implicit for LHS operands of the in operator
-                // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
-                //   This step can be combined with c
-                // c. If kPresent is true, then
-                if (k in O) {
-
-                    // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
-                    kValue = O[ k ];
-
-                    // ii. Let mappedValue be the result of calling the Call internal method of callback
-                    // with T as the this value and argument list containing kValue, k, and O.
-                    mappedValue = callback.call(T, kValue, k, O);
-
-                    // iii. Call the DefineOwnProperty internal method of A with arguments
-                    // Pk, Property Descriptor {Value: mappedValue, : true, Enumerable: true, Configurable: true},
-                    // and false.
-
-                    // In browsers that support Object.defineProperty, use the following:
-                    // Object.defineProperty(A, Pk, { value: mappedValue, writable: true, enumerable: true, configurable: true });
-
-                    // For best browser support, use the following:
-                    A[ k ] = mappedValue;
-                }
-                // d. Increase k by 1.
-                k++;
-            }
-
-            // 9. return A
-            return A;
-        };
-    }
-
-    // Internet Explorer 8 and older does not support Array.every,
-    // so we define it here in that case.
-    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/every
-    if (!Array.prototype.every) {
-        Array.prototype.every = function(fun /*, thisp */) {
-            "use strict";
-
-            if (this == null) {
-                throw new TypeError();
-            }
-
-            var t = Object(this);
-            var len = t.length >>> 0;
-            if (typeof fun != "function") {
-                throw new TypeError();
-            }
-
-            var thisp = arguments[1];
-            for (var i = 0; i < len; i++) {
-                if (i in t && !fun.call(thisp, t[i], i, t)) {
-                    return false;
-                }
-            }
-
-            return true;
-        };
-    }
-
-    // Internet Explorer 8 and older does not support Array.some,
-    // so we define it here in that case.
-    // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/some
-    if (!Array.prototype.some) {
-        Array.prototype.some = function(fun /*, thisp */) {
-            "use strict";
-
-            if (this == null) {
-                throw new TypeError();
-            }
-
-            var t = Object(this);
-            var len = t.length >>> 0;
-            if (typeof fun != "function") {
-                throw new TypeError();
-            }
-
-            var thisp = arguments[1];
-            for (var i = 0; i < len; i++) {
-                if (i in t && fun.call(thisp, t[i], i, t)) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-    }
 
     return util;
 })();
@@ -1587,22 +1428,22 @@ function _setScalar2D (data, size, index, value) {
 function _setSubmatrix (data, size, index, dim, submatrix) {
     var last = (dim == index.length - 1);
     var current = index[dim];
-    var recurse = function (v, i) {
+    var recurse = function (dataIndex, subIndex) {
         if (last) {
-            _set(data, v, submatrix[i]);
-            if (data.length > (size[dim] || 0)) {
-                size[dim] = data.length;
+            _set(data, dataIndex, submatrix[subIndex]);
+            if (dataIndex > (size[dim] || 0)) {
+                size[dim] = dataIndex;
             }
         }
         else {
-            var child = data[v - 1]; // one-based index
+            var child = data[dataIndex - 1]; // one-based index
             if (!(child instanceof Array)) {
-                data[v - 1] = child = [child]; // one-based index
-                if (data.length > (size[dim] || 0)) {
-                    size[dim] = data.length;
-                }
+                data[dataIndex - 1] = child = [child]; // one-based index
             }
-            _setSubmatrix(child, size, index, dim + 1, submatrix[i]);
+            if (dataIndex > (size[dim] || 0)) {
+                size[dim] = dataIndex;
+            }
+            _setSubmatrix(child, size, index, dim + 1, submatrix[subIndex]);
         }
     };
 
@@ -2104,6 +1945,7 @@ Range.prototype.toString = function () {
     str += ':' + math.format(Number(this.end));
     return str;
 };
+
 /**
  * @constructor math.type.Selector
  * Wrap any value in a Selector, allowing to perform chained operations on
@@ -3146,7 +2988,7 @@ OperatorNode.prototype.toString = function() {
 /**
  * @constructor SymbolNode
  * A symbol node can hold and resolve a symbol
- * @param {String} [name]
+ * @param {String} name
  * @param {math.expr.Symbol} symbol
  * @extends {Node}
  */
@@ -3190,10 +3032,28 @@ SymbolNode.prototype.toString = function() {
  * invoke a list with parameters on the results of a node
  * @param {Node} object
  * @param {Node[]} params
+ * @param {Scope[]} scopes      A scope for every parameter, where the index
+ *                              variable 'end' can be defined.
  */
-function ParamsNode (object, params) {
+function ParamsNode (object, params, scopes) {
     this.object = object;
     this.params = params;
+    this.scopes = scopes;
+
+    // find the symbols 'end', which are index dependent
+    var ends = null;
+    if (scopes) {
+        for (var i = 0, len = scopes.length; i < len; i++) {
+            var scope = scopes[i];
+            if (scope.hasLink('end')) {
+                if (!ends) {
+                    ends = [];
+                }
+                ends[i] = scope.createLink('end');
+            }
+        }
+    }
+    this.ends = ends;
 }
 
 ParamsNode.prototype = new Node();
@@ -3205,24 +3065,41 @@ math.expr.node.ParamsNode = ParamsNode;
  * @return {*} result
  */
 ParamsNode.prototype.eval = function() {
+    var i, len;
+
+    // evaluate the object
     var object = this.object;
     if (object == undefined) {
         throw new Error ('Node undefined');
     }
     var obj = object.eval();
 
+    // evaluate the values of parameter 'end'
+    if (this.ends) {
+        var ends = this.ends,
+            size = obj.size && obj.size();
+        for (i = 0, len = this.params.length; i < len; i++) {
+            var end = ends[i];
+            if (end && size) {
+                end.set(size[i]);
+            }
+        }
+    }
+
     // evaluate the parameters
-    var res = this.params.map(function (arg) {
-        return arg.eval();
-    });
+    var params = this.params,
+        results = [];
+    for (i = 0, len = this.params.length; i < len; i++) {
+        results[i] = params[i].eval();
+    }
 
     if (typeof obj === 'function') {
         // invoke a function with the parameters
-        return obj.apply(this, res);
+        return obj.apply(this, results);
     }
     else if (obj instanceof Object && obj.get) {
         // apply method get with the parameters
-        return obj.get(res);
+        return obj.get(results);
     }
     // TODO: apply parameters on a string
     else {
@@ -3449,14 +3326,31 @@ BlockNode.prototype.toString = function() {
  * @constructor AssignmentNode
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
+ * @param {Scope[]}  scopes             A scope for every parameter, where the
+ *                                      index variable 'end' can be defined.
  * @param {Node} expr                   The expression defining the symbol
  * @param {math.expr.Symbol} symbol     placeholder for the symbol
  */
-function AssignmentNode(name, params, expr, symbol) {
+function AssignmentNode(name, params, scopes, expr, symbol) {
     this.name = name;
     this.params = params;
     this.expr = expr;
     this.symbol = symbol;
+
+    // find the symbols 'end', which are index dependent
+    var ends = null;
+    if (scopes) {
+        for (var i = 0, len = scopes.length; i < len; i++) {
+            var scope = scopes[i];
+            if (scope.hasLink('end')) {
+                if (!ends) {
+                    ends = [];
+                }
+                ends[i] = scope.createLink('end');
+            }
+        }
+    }
+    this.ends = ends;
 }
 
 AssignmentNode.prototype = new Node();
@@ -3476,6 +3370,24 @@ AssignmentNode.prototype.eval = function() {
     var params = this.params;
 
     if (params && params.length) {
+        // test if definition is currently undefined
+        var prevResult = this.symbol.get();
+        if (prevResult == undefined) {
+            throw new Error('Undefined symbol ' + this.name);
+        }
+
+        // evaluate the values of parameter 'end'
+        if (this.ends) {
+            var ends = this.ends,
+                size = prevResult.size && prevResult.size();
+            for (var i = 0, len = this.params.length; i < len; i++) {
+                var end = ends[i];
+                if (end && size) {
+                    end.set(size[i]);
+                }
+            }
+        }
+
         // change part of a matrix, for example "a=[]", "a(2,3)=4.5"
         var paramResults = [];
         this.params.forEach(function (param) {
@@ -3483,12 +3395,6 @@ AssignmentNode.prototype.eval = function() {
         });
 
         var exprResult = this.expr.eval();
-
-        // test if definition is currently undefined
-        var prevResult = this.symbol.get();
-        if (prevResult == undefined) {
-            throw new Error('Undefined symbol ' + this.name);
-        }
 
         // TODO: check type of prevResult: Matrix, Array, String, other...
         if (!prevResult.set) {
@@ -3674,15 +3580,8 @@ math.expr.Symbol.prototype.valueOf = function () {
  *
  * @constructor math.expr.Scope
  * @param {Scope} [parentScope]
- * @param {Object} [options]   Available options:
- *                                 {boolean} readonly (false by default).
  */
-math.expr.Scope = function (parentScope, options) {
-    this.readonly = false;
-    if (options && options.readonly != undefined) {
-        this.readonly = options.readonly;
-    }
-
+math.expr.Scope = function (parentScope) {
     /** @type {math.expr.Scope} */
     this.parentScope = parentScope;
 
@@ -3707,10 +3606,6 @@ math.expr.Scope.prototype = {
      * @return {math.expr.Scope} nestedScope
      */
     createNestedScope: function () {
-        if (this.readonly) {
-            throw new Error('Cannot create nested scope: Scope is read-only');
-        }
-
         var nestedScope = new math.expr.Scope(this);
         if (!this.nestedScopes) {
             this.nestedScopes = [];
@@ -3724,10 +3619,6 @@ math.expr.Scope.prototype = {
      * (parent scope will not be cleared)
      */
     clear: function () {
-        if (this.readonly) {
-            throw new Error('Cannot clear scope: Scope is read-only');
-        }
-
         this.symbols = {};
         this.defs = {};
         this.links = {};
@@ -3783,10 +3674,6 @@ math.expr.Scope.prototype = {
      * @return {math.expr.Symbol} symbol
      */
     createDef: function (name, value) {
-        if (this.readonly) {
-            throw new Error('Cannot create symbol: Scope is read-only');
-        }
-
         var symbol = this.defs[name];
         if (!symbol) {
             // create a new symbol
@@ -3802,7 +3689,9 @@ math.expr.Scope.prototype = {
             var undef = this.getUndefinedSymbols(name);
             if (undef.length) {
                 undef.forEach(function (u) {
-                    u.set(symbol);
+                    if (u != symbol) {
+                        u.set(symbol);
+                    }
                 });
             }
         }
@@ -3822,10 +3711,6 @@ math.expr.Scope.prototype = {
      * @return {math.expr.Symbol} symbol
      */
     createUpdate: function (name) {
-        if (this.readonly) {
-            throw new Error('Cannot update symbol: Scope is read-only');
-        }
-
         var symbol = this.updates[name];
         if (!symbol) {
             // create a new symbol
@@ -3836,7 +3721,9 @@ math.expr.Scope.prototype = {
             var undef = this.getUndefinedSymbols(name);
             if (undef.length) {
                 undef.forEach(function (u) {
-                    u.set(symbol);
+                    if (u != symbol) {
+                        u.set(symbol);
+                    }
                 });
             }
         }
@@ -4037,9 +3924,6 @@ math.expr.Scope.prototype = {
      * @constructor math.expr.Parser
      * Parser parses math expressions and evaluates them or returns a node tree.
      *
-     * @param {Object} [options]   Available options:
-     *                                 {boolean} readonly (false by default).
-     *
      * Methods:
      *    var result = parser.eval(expr);    // evaluate an expression
      *    var value = parser.get(name);      // retrieve a variable from the parser
@@ -4083,13 +3967,13 @@ math.expr.Scope.prototype = {
      *    // clear defined functions and variables
      *    parser.clear();
      */
-    math.expr.Parser = function Parser(options) {
+    math.expr.Parser = function Parser() {
         if (!(this instanceof math.expr.Parser)) {
             throw new SyntaxError(
                 'Parser constructor must be called with the new operator');
         }
 
-        this.scope = new math.expr.Scope(null, options);
+        this.scope = new math.expr.Scope(null);
     };
 
     /**
@@ -4101,6 +3985,10 @@ math.expr.Scope.prototype = {
      * @throws {Error}
      */
     math.expr.Parser.prototype.parse = function (expression, scope) {
+        if (!isString(expression)) {
+            throw new TypeError('String expected');
+        }
+
         expr = expression || '';
 
         if (!scope) {
@@ -4228,13 +4116,28 @@ math.expr.Scope.prototype = {
             return;
         }
 
+        // check for factorial character !, and unequal operator !=
+        if (c == '!') {
+            token_type = TOKENTYPE.DELIMITER;
+            token += c;
+            getChar();
+
+            // TODO: solve operators consisting of of two characters in a more generic way
+            if (c == '=') {
+                token += c;
+                getChar();
+            }
+
+            return;
+        }
+
         // check for minus, comma, parentheses, quotes, newline, semicolon
         if (c == '-' || c == ',' ||
             c == '(' || c == ')' ||
             c == '[' || c == ']' ||
-            c == '\"' || c == '\n' ||
-            c == ';' || c == ':' ||
-            c == '!' || c == '\'') {
+            c == '\"' || c == '\'' ||
+            c == '\n' ||
+            c == ';' || c == ':') {
             token_type = TOKENTYPE.DELIMITER;
             token += c;
             getChar();
@@ -4499,15 +4402,11 @@ math.expr.Scope.prototype = {
     function parse_ans (scope) {
         var expression = parse_function_assignment(scope);
 
-        if (!scope.readonly) {
-            // create a variable definition for ans
-            var name = 'ans';
-            var params = undefined;
-            var link = scope.createDef(name);
-            return new AssignmentNode(name, params, expression, link);
-        }
-
-        return expression;
+        // create a variable definition for ans
+        var name = 'ans';
+        var params = undefined;
+        var link = scope.createDef(name);
+        return new AssignmentNode(name, params, null, expression, link);
     }
 
     /**
@@ -4587,24 +4486,23 @@ math.expr.Scope.prototype = {
      * @private
      */
     function parse_assignment (scope) {
-        var name, params, expr, link;
+        var name, params, scopes, expr, link;
+
+        /* TODO: cleanup? or use? see comments further down
         var linkExisted = false;
         if (token_type == TOKENTYPE.SYMBOL) {
             linkExisted = scope.hasLink(token);
         }
+        */
 
         var node = parse_range(scope);
 
-        // TODO: support chained assignments like "a = b = 2.3"
         if (token == '=') {
             if (node instanceof SymbolNode) {
-                // assignment
-                if (!linkExisted) {
-                    // we parsed the assignment as if it where an expression instead,
-                    // therefore, a link was created to the symbol. This link must
-                    // be cleaned up again, and only if it wasn't existing before
-                    scope.removeLink(name);
-                }
+                // TODO: remove link when it was undefined before we parsed this expression?
+                // we parsed the assignment as if it where an expression instead,
+                // therefore, a link was created to the symbol. This link must
+                // be cleaned up again, and only if it wasn't existing before
 
                 // parse the expression, with the correct function scope
                 getToken();
@@ -4612,24 +4510,22 @@ math.expr.Scope.prototype = {
                 params = null;
                 expr = parse_assignment(scope);
                 link = scope.createDef(name);
-                return new AssignmentNode(name, params, expr, link);
+                return new AssignmentNode(name, params, null, expr, link);
             }
             else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
-                // update of a variable
-                if (!linkExisted) {
+                // TODO: remove link when it was undefined before we parsed this expression?
                     // we parsed the assignment as if it where an expression instead,
                     // therefore, a link was created to the symbol. This link must
                     // be cleaned up again, and only if it wasn't existing before
-                    scope.removeLink(name);
-                }
 
                 // parse the expression, with the correct function scope
                 getToken();
                 name = node.object.name;
                 params = node.params;
+                scopes = node.scopes;
                 expr = parse_assignment(scope);
                 link = scope.createUpdate(name);
-                return new AssignmentNode(name, params, expr, link);
+                return new AssignmentNode(name, params, scopes, expr, link);
             }
             else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
@@ -4641,30 +4537,46 @@ math.expr.Scope.prototype = {
     }
 
     /**
-     * parse range, "start:end" or "start:step:end"
+     * parse range, "start:end", "start:step:end", ":", "start:", ":end", etc
      * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
     function parse_range (scope) {
-        var node, name, fn, params;
+        var node, name, fn, params = [];
 
-        node = parse_conditions(scope);
         if (token == ':') {
-            params = [node];
+            // implicit start=1
+            node = new ConstantNode(1);
+        }
+        else {
+            // explicit start
+            node = parse_conditions(scope);
+        }
 
+        if (token == ':') {
+            params.push(node);
+
+            // parse step and end
             while (token == ':') {
                 getToken();
-                params.push(parse_conditions(scope));
+                if (token == ')' || token == ',' || token == '') {
+                    // implicit end
+                    var end = scope.createLink('end');
+                    params.push(new SymbolNode('end', end));
+                }
+                else {
+                    // explicit end
+                    params.push(parse_conditions(scope));
+                }
             }
 
-            if (params.length > 3) {
-                throw new TypeError('Invalid range');
+            if (params.length) {
+                // create a range constructor
+                name = 'range';
+                fn = math.range;
+                node = new OperatorNode(name, fn, params);
             }
-
-            name = 'range';
-            fn = math.range;
-            node = new OperatorNode(name, fn, params);
         }
 
         return node;
@@ -5011,20 +4923,28 @@ math.expr.Scope.prototype = {
      * @private
      */
     function parse_params (scope, node) {
-        var params;
+        var params,
+            scopes,
+            nestedScope;
 
         while (token == '(') {
             params = [];
+            scopes = [];
 
             getToken();
 
             if (token != ')') {
-                params.push(parse_assignment(scope));
+                nestedScope = scope.createNestedScope();
+                scopes.push(nestedScope);
+                params.push(parse_range(nestedScope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
-                    params.push(parse_assignment(scope));
+
+                    nestedScope = scope.createNestedScope();
+                    scopes.push(nestedScope);
+                    params.push(parse_range(nestedScope));
                 }
             }
 
@@ -5033,7 +4953,7 @@ math.expr.Scope.prototype = {
             }
             getToken();
 
-            node = new ParamsNode(node, params);
+            node = new ParamsNode(node, params, scopes);
         }
 
         return node;
@@ -6567,11 +6487,7 @@ math.lcm = function lcm(args) {
  * @return {Number | Complex | Array | Matrix} res
  */
 math.log = function log(x, base) {
-    if (arguments.length != 1 && arguments.length != 2) {
-        throw newArgumentsError('log', arguments.length, 1, 2);
-    }
-
-    if (base === undefined) {
+    if (arguments.length == 1) {
         // calculate natural logarithm, log(x)
         if (isNumber(x)) {
             if (x >= 0) {
@@ -6593,18 +6509,21 @@ math.log = function log(x, base) {
         if (x instanceof Array || x instanceof Matrix) {
             return util.map(x, math.log);
         }
+
+        if (x.valueOf() !== x) {
+            // fallback on the objects primitive values
+            return math.log(x.valueOf());
+        }
+
+        throw newUnsupportedTypeError('log', x);
     }
-    else {
+    else if (arguments.length == 2) {
         // calculate logarithm for a specified base, log(x, base)
         return math.divide(math.log(x), math.log(base));
     }
-
-    if (x.valueOf() !== x || base.valueOf() !== base) {
-        // fallback on the objects primitive values
-        return math.log(x.valueOf(), base.valueOf());
+    else {
+        throw newArgumentsError('log', arguments.length, 1, 2);
     }
-
-    throw newUnsupportedTypeError('log', x, base);
 };
 
 /**
@@ -9480,35 +9399,55 @@ math.clone = function clone(x) {
 };
 
 /**
- * Evaluate an expression. The expression will be evaluated using a read-only
- * instance of a Parser (i.e. variable definitions are not supported).
+ * Evaluate an expression.
  *
  *     eval(expr)
+ *     eval(expr1, expr2, expr3, ...)
  *     eval([expr1, expr2, expr3, ...])
  *
  * @param {String | Array | Matrix} expr
  * @return {*} res
  */
 math.eval = function (expr) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('eval', arguments.length, 1);
-    }
+    // TODO: implement a second parameter 'scope', which allows providing a custom scope with variables and functions
+    var parser,
+        res;
 
+    switch (arguments.length) {
+        case 0:
+            throw new Error('Function eval requires one or more parameters (0 provided)');
+
+        case 1:
+            parser = new math.expr.Parser();
+            return _eval(parser, expr);
+
+        default:
+            parser = new math.expr.Parser();
+            res = [];
+            for (var i = 0, len = arguments.length; i < len; i++) {
+                res[i] = _eval(parser, arguments[i]);
+            }
+            return res;
+    }
+};
+
+/**
+ * Evaluate an expression
+ * @param {math.expr.Parser} parser
+ * @param {String | Array | Matrix} expr
+ * @private
+ */
+var _eval = function (parser, expr) {
     if (isString(expr)) {
-        return _readonlyParser.eval(expr);
+        return parser.eval(expr);
     }
 
     if (expr instanceof Array || expr instanceof Matrix) {
-        return util.map(expr, math.eval);
+        return util.map(expr, parser.eval.bind(parser));
     }
 
     throw new TypeError('String or matrix expected');
 };
-
-/** @private */
-var _readonlyParser = new math.expr.Parser({
-    readonly: true
-});
 
 /**
  * Format a value of any type into a string. Interpolate values into the string.
@@ -9768,8 +9707,192 @@ math['typeof'] = function math_typeof(x) {
 };
 
 /**
- * Backward compatibility stuff
+ * Compatibility functions for older JavaScript engines
  */
+
+// Internet Explorer 8 and older does not support Array.indexOf,
+// so we define it here in that case.
+// http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
+if(!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function(obj){
+        for(var i = 0; i < this.length; i++){
+            if(this[i] == obj){
+                return i;
+            }
+        }
+        return -1;
+    };
+}
+
+// Internet Explorer 8 and older does not support Array.forEach,
+// so we define it here in that case.
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
+if (!Array.prototype.forEach) {
+    Array.prototype.forEach = function(fn, scope) {
+        for(var i = 0, len = this.length; i < len; ++i) {
+            fn.call(scope || this, this[i], i, this);
+        }
+    }
+}
+
+// Internet Explorer 8 and older does not support Array.map,
+// so we define it here in that case.
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
+// Production steps of ECMA-262, Edition 5, 15.4.4.19
+// Reference: http://es5.github.com/#x15.4.4.19
+if (!Array.prototype.map) {
+    Array.prototype.map = function(callback, thisArg) {
+
+        var T, A, k;
+
+        if (this == null) {
+            throw new TypeError(" this is null or not defined");
+        }
+
+        // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
+        var O = Object(this);
+
+        // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
+        // 3. Let len be ToUint32(lenValue).
+        var len = O.length >>> 0;
+
+        // 4. If IsCallable(callback) is false, throw a TypeError exception.
+        // See: http://es5.github.com/#x9.11
+        if (typeof callback !== "function") {
+            throw new TypeError(callback + " is not a function");
+        }
+
+        // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+        if (thisArg) {
+            T = thisArg;
+        }
+
+        // 6. Let A be a new array created as if by the expression new Array(len) where Array is
+        // the standard built-in constructor with that name and len is the value of len.
+        A = new Array(len);
+
+        // 7. Let k be 0
+        k = 0;
+
+        // 8. Repeat, while k < len
+        while(k < len) {
+
+            var kValue, mappedValue;
+
+            // a. Let Pk be ToString(k).
+            //   This is implicit for LHS operands of the in operator
+            // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
+            //   This step can be combined with c
+            // c. If kPresent is true, then
+            if (k in O) {
+
+                // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
+                kValue = O[ k ];
+
+                // ii. Let mappedValue be the result of calling the Call internal method of callback
+                // with T as the this value and argument list containing kValue, k, and O.
+                mappedValue = callback.call(T, kValue, k, O);
+
+                // iii. Call the DefineOwnProperty internal method of A with arguments
+                // Pk, Property Descriptor {Value: mappedValue, : true, Enumerable: true, Configurable: true},
+                // and false.
+
+                // In browsers that support Object.defineProperty, use the following:
+                // Object.defineProperty(A, Pk, { value: mappedValue, writable: true, enumerable: true, configurable: true });
+
+                // For best browser support, use the following:
+                A[ k ] = mappedValue;
+            }
+            // d. Increase k by 1.
+            k++;
+        }
+
+        // 9. return A
+        return A;
+    };
+}
+
+// Internet Explorer 8 and older does not support Array.every,
+// so we define it here in that case.
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/every
+if (!Array.prototype.every) {
+    Array.prototype.every = function(fun /*, thisp */) {
+        "use strict";
+
+        if (this == null) {
+            throw new TypeError();
+        }
+
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (typeof fun != "function") {
+            throw new TypeError();
+        }
+
+        var thisp = arguments[1];
+        for (var i = 0; i < len; i++) {
+            if (i in t && !fun.call(thisp, t[i], i, t)) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+}
+
+// Internet Explorer 8 and older does not support Array.some,
+// so we define it here in that case.
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/some
+if (!Array.prototype.some) {
+    Array.prototype.some = function(fun /*, thisp */) {
+        "use strict";
+
+        if (this == null) {
+            throw new TypeError();
+        }
+
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (typeof fun != "function") {
+            throw new TypeError();
+        }
+
+        var thisp = arguments[1];
+        for (var i = 0; i < len; i++) {
+            if (i in t && fun.call(thisp, t[i], i, t)) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+}
+
+// Define Function.bind if not available
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
+if (!Function.prototype.bind) {
+    Function.prototype.bind = function (oThis) {
+        if (typeof this !== "function") {
+            // closest thing possible to the ECMAScript 5 internal IsCallable function
+            throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+        }
+
+        var aArgs = Array.prototype.slice.call(arguments, 1),
+            fToBind = this,
+            fNOP = function () {},
+            fBound = function () {
+                return fToBind.apply(this instanceof fNOP && oThis
+                    ? this
+                    : oThis,
+                    aArgs.concat(Array.prototype.slice.call(arguments)));
+            };
+
+        fNOP.prototype = this.prototype;
+        fBound.prototype = new fNOP();
+
+        return fBound;
+    };
+}
 
 
 // initialise the Chain prototype with all functions and constants in math

@@ -197,7 +197,7 @@ function CommandLineEditor (params) {
             }
 
             // math functions and constants
-            var ignore = ['parser', 'Complex', 'Unit'];
+            var ignore = ['expr', 'type'];
             for (var func in math) {
                 if (math.hasOwnProperty(func)) {
                     if (func.indexOf(keyword) == 0 && ignore.indexOf(func) == -1) {
