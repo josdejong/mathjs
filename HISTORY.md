@@ -2,6 +2,12 @@
 https://github.com/josdejong/mathjs
 
 
+## version 0.8.2
+
+- Fixed a bug in function subtract, when subtracting a complex number from a
+  real number.
+
+
 ## 2013-05-10, version 0.8.1
 
 - Fixed an npm warning when installing mathjs globally.

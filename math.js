@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.8.1
- * @date    2013-05-10
+ * @version 0.8.2-SNAPSHOT
+ * @date    2013-05-17
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -7222,7 +7222,7 @@ math.subtract = function subtract(x, y) {
             // number - complex
             return new Complex (
                 x - y.re,
-                    y.im
+                  - y.im
             );
         }
     }

@@ -24,7 +24,7 @@ math.subtract = function subtract(x, y) {
             // number - complex
             return new Complex (
                 x - y.re,
-                    y.im
+                  - y.im
             );
         }
     }

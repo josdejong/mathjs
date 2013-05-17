@@ -20,8 +20,14 @@ assert.deepEqual(math.subtract(0, 3), -3);
 
 // complex
 assert.equal(math.subtract(math.complex(3, 2), math.complex(8, 4)), '-5 - 2i');
-assert.equal(math.subtract(math.complex(3, -4), 10), '-7 - 4i');
-assert.equal(math.subtract(10, math.complex(3, -4)), '7 - 4i');
+assert.equal(math.subtract(math.complex(6, 3), math.complex(-2, -2)), '8 + 5i');
+assert.equal(math.subtract(math.complex(3, 4), 10), '-7 + 4i');
+assert.equal(math.subtract(math.complex(3, 4), -2), '5 + 4i');
+assert.equal(math.subtract(math.complex(-3, -4), 10), '-13 - 4i');
+assert.equal(math.subtract(10, math.complex(3, 4)), '7 - 4i');
+assert.equal(math.subtract(10, math.i), '10 - i');
+assert.equal(math.subtract(0, math.i), '-i');
+assert.equal(math.subtract(10, math.complex(0, 1)), '10 - i');
 
 // unit
 assert.equal(math.subtract(math.unit(5, 'km'), math.unit(100, 'mile')).toString(), '-155.93 km');
