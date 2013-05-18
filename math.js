@@ -2118,17 +2118,17 @@ function Unit(value, unit) {
     }
 
     if (value != null && !isNumber(value)) {
-        throw new Error('First parameter in Unit constructor must be a number');
+        throw new TypeError('First parameter in Unit constructor must be a number');
     }
     if (unit != null && !isString(unit)) {
-        throw new Error('Second parameter in Unit constructor must be a string');
+        throw new TypeError('Second parameter in Unit constructor must be a string');
     }
 
     if (unit != null) {
         // find the unit and prefix from the string
         var res = _findUnit(unit);
         if (!res) {
-            throw new Error('String "' + unit + '" is no unit');
+            throw new SyntaxError('String "' + unit + '" is no unit');
         }
         this.unit = res.unit;
         this.prefix = res.prefix;
@@ -7554,7 +7554,7 @@ math.re = function re(x) {
  *                                         as real and imaginary part.
  *     complex(re : number, im : string)   creates a complex value with provided
  *                                         values for real and imaginary part.
- *     complex(str : string)               parses a string into a complex value.
+ *     complex(arg : string)               parses a string into a complex value.
  *
  * Example usage:
  *     var a = math.complex(3, -4);     // 3 - 4i
@@ -7576,17 +7576,23 @@ math.complex = function complex(args) {
 
         case 1:
             // parse string into a complex number
-            var str = arguments[0];
-            if (!isString(str)) {
-                throw new TypeError(
-                    'Two numbers or a single string expected in function complex');
+            var arg = arguments[0];
+            if (arg instanceof Complex) {
+                // create a clone
+                return arg.clone();
             }
-            var c = Complex.parse(str);
-            if (c) {
-                return c;
+            else if (isString(arg)) {
+                var c = Complex.parse(arg);
+                if (c) {
+                    return c;
+                }
+                else {
+                    throw new SyntaxError('String "' + arg + '" is no valid complex number');
+                }
             }
             else {
-                throw new SyntaxError('String "' + str + '" is no valid complex number');
+                throw new TypeError(
+                    'Two numbers or a single string expected in function complex');
             }
             break;
 
@@ -7697,16 +7703,22 @@ math.range = function range(args) {
     switch (arguments.length) {
         case 1:
             // parse string into a range
-            if (!isString(args)) {
-                throw new TypeError(
-                    'Two or three numbers or a single string expected in function range');
+            if (args instanceof Range) {
+                // create a clone
+                return args.clone();
             }
-            var r = Range.parse(args);
-            if (r) {
-                return r;
+            else if (isString(args)) {
+                var r = Range.parse(args);
+                if (r) {
+                    return r;
+                }
+                else {
+                    throw new SyntaxError('String "' + r + '" is no valid range');
+                }
             }
             else {
-                throw new SyntaxError('String "' + r + '" is no valid range');
+                throw new TypeError(
+                    'Two or three numbers or a single string expected in function range');
             }
             break;
 
@@ -7745,21 +7757,26 @@ math.unit = function unit(args) {
     switch(arguments.length) {
         case 1:
             // parse a string
-            var str = arguments[0];
-            if (!isString(str)) {
+            var arg = arguments[0];
+            if (arg instanceof Unit) {
+                // create a clone of the unit
+                return arg.clone();
+            }
+            else if (isString(arg)) {
+                if (Unit.isPlainUnit(arg)) {
+                    return new Unit(null, arg); // a pure unit
+                }
+
+                var u = Unit.parse(arg);        // a unit with value, like '5cm'
+                if (u) {
+                    return u;
+                }
+
+                throw new SyntaxError('String "' + arg + '" is no valid unit');
+            }
+            else {
                 throw new TypeError('A string or a number and string expected in function unit');
             }
-
-            if (Unit.isPlainUnit(str)) {
-                return new Unit(null, str); // a pure unit
-            }
-
-            var u = Unit.parse(str);        // a unit with value, like '5cm'
-            if (u) {
-                return u;
-            }
-
-            throw new SyntaxError('String "' + str + '" is no valid unit');
             break;
 
         case 2:

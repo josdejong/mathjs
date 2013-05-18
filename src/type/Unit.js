@@ -20,17 +20,17 @@ function Unit(value, unit) {
     }
 
     if (value != null && !isNumber(value)) {
-        throw new Error('First parameter in Unit constructor must be a number');
+        throw new TypeError('First parameter in Unit constructor must be a number');
     }
     if (unit != null && !isString(unit)) {
-        throw new Error('Second parameter in Unit constructor must be a string');
+        throw new TypeError('Second parameter in Unit constructor must be a string');
     }
 
     if (unit != null) {
         // find the unit and prefix from the string
         var res = _findUnit(unit);
         if (!res) {
-            throw new Error('String "' + unit + '" is no unit');
+            throw new SyntaxError('String "' + unit + '" is no unit');
         }
         this.unit = res.unit;
         this.prefix = res.prefix;

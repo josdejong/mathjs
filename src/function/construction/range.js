@@ -30,16 +30,22 @@ math.range = function range(args) {
     switch (arguments.length) {
         case 1:
             // parse string into a range
-            if (!isString(args)) {
-                throw new TypeError(
-                    'Two or three numbers or a single string expected in function range');
+            if (args instanceof Range) {
+                // create a clone
+                return args.clone();
             }
-            var r = Range.parse(args);
-            if (r) {
-                return r;
+            else if (isString(args)) {
+                var r = Range.parse(args);
+                if (r) {
+                    return r;
+                }
+                else {
+                    throw new SyntaxError('String "' + r + '" is no valid range');
+                }
             }
             else {
-                throw new SyntaxError('String "' + r + '" is no valid range');
+                throw new TypeError(
+                    'Two or three numbers or a single string expected in function range');
             }
             break;
 

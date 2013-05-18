@@ -7,7 +7,7 @@
  *                                         as real and imaginary part.
  *     complex(re : number, im : string)   creates a complex value with provided
  *                                         values for real and imaginary part.
- *     complex(str : string)               parses a string into a complex value.
+ *     complex(arg : string)               parses a string into a complex value.
  *
  * Example usage:
  *     var a = math.complex(3, -4);     // 3 - 4i
@@ -29,17 +29,23 @@ math.complex = function complex(args) {
 
         case 1:
             // parse string into a complex number
-            var str = arguments[0];
-            if (!isString(str)) {
-                throw new TypeError(
-                    'Two numbers or a single string expected in function complex');
+            var arg = arguments[0];
+            if (arg instanceof Complex) {
+                // create a clone
+                return arg.clone();
             }
-            var c = Complex.parse(str);
-            if (c) {
-                return c;
+            else if (isString(arg)) {
+                var c = Complex.parse(arg);
+                if (c) {
+                    return c;
+                }
+                else {
+                    throw new SyntaxError('String "' + arg + '" is no valid complex number');
+                }
             }
             else {
-                throw new SyntaxError('String "' + str + '" is no valid complex number');
+                throw new TypeError(
+                    'Two numbers or a single string expected in function complex');
             }
             break;
 

@@ -18,21 +18,26 @@ math.unit = function unit(args) {
     switch(arguments.length) {
         case 1:
             // parse a string
-            var str = arguments[0];
-            if (!isString(str)) {
+            var arg = arguments[0];
+            if (arg instanceof Unit) {
+                // create a clone of the unit
+                return arg.clone();
+            }
+            else if (isString(arg)) {
+                if (Unit.isPlainUnit(arg)) {
+                    return new Unit(null, arg); // a pure unit
+                }
+
+                var u = Unit.parse(arg);        // a unit with value, like '5cm'
+                if (u) {
+                    return u;
+                }
+
+                throw new SyntaxError('String "' + arg + '" is no valid unit');
+            }
+            else {
                 throw new TypeError('A string or a number and string expected in function unit');
             }
-
-            if (Unit.isPlainUnit(str)) {
-                return new Unit(null, str); // a pure unit
-            }
-
-            var u = Unit.parse(str);        // a unit with value, like '5cm'
-            if (u) {
-                return u;
-            }
-
-            throw new SyntaxError('String "' + str + '" is no valid unit');
             break;
 
         case 2:
