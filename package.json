@@ -31,7 +31,8 @@
         "jake": ">= 0.5.9",
         "uglify-js": ">= 2.2.5",
         "nodeunit": ">= 0.7.4",
-        "dateable": ">= 0.1.2"
+        "dateable": ">= 0.1.2",
+        "numbers": "latest"
     },
     "scripts": {
         "test": "jake test --trace"

@@ -562,8 +562,8 @@ var math = require('mathjs');
 math.import('numbers');
 
 // use functions from numbers.js
-math.fibonacci(7);                      // 7
-math.eval('fibonacci(7)');              // 7
+math.fibonacci(7);                      // 13
+math.eval('fibonacci(7)');              // 13
 ```
 
 

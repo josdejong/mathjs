@@ -9525,14 +9525,23 @@ math.format = function format(template, values) {
  * @param {function | String | Object} object
  * @param {Object} [options]        Available options:
  *                                  {Boolean} override
- *                                  If true, existing functions will be
- *                                  overwritten. False by default.
+ *                                      If true, existing functions will be
+ *                                      overwritten. False by default.
+ *                                  {Boolean} wrap
+ *                                      If true (default), the functions will
+ *                                      be wrapped in a wrapper function which
+ *                                      converts data types like Matrix to
+ *                                      primitive data types like Array.
+ *                                      The wrapper is needed when extending
+ *                                      math.js with libraries which do not
+ *                                      support the math.js data types.
  */
 // TODO: return status information
 math['import'] = function math_import(object, options) {
     var name;
     var opts = {
-        override: false
+        override: false,
+        wrap: true
     };
     if (options && options instanceof Object) {
         util.extend(opts, options);
@@ -9554,7 +9563,7 @@ math['import'] = function math_import(object, options) {
         name = object.name;
         if (name) {
             if (opts.override || math[name] === undefined) {
-                _import(name, object);
+                _import(name, object, opts);
             }
         }
         else {
@@ -9567,9 +9576,7 @@ math['import'] = function math_import(object, options) {
             if (object.hasOwnProperty(name)) {
                 var value = object[name];
                 if (isSupportedType(value)) {
-                    if (opts.override || math[name] === undefined) {
-                        _import(name, value);
-                    }
+                    _import(name, value, opts);
                 }
                 else {
                     math['import'](value);
@@ -9583,14 +9590,31 @@ math['import'] = function math_import(object, options) {
  * Add a property to the math namespace and create a chain proxy for it.
  * @param {String} name
  * @param {*} value
+ * @param {Object} options  See import for a description of the options
  * @private
  */
-function _import(name, value) {
-    // add to math namespace
-    math[name] = value;
+function _import(name, value, options) {
+    if (options.override || math[name] === undefined) {
+        // add to math namespace
+        if (options.wrap && typeof value === 'function') {
+            // create a wrapper around the function
+            math[name] = function () {
+                var args = [];
+                for (var i = 0, len = arguments.length; i < len; i++) {
+                    args[i] = arguments[i].valueOf();
+                }
+                return value.apply(math, args);
+            };
+        }
+        else {
+            // just create a link to the function or value
+            math[name] = value;
+        }
 
-    // create a proxy for the Selector
-    createSelectorProxy(name, value);
+        // create a proxy for the Selector
+        createSelectorProxy(name, value);
+    }
+
 }
 
 /**
