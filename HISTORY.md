@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## version 0.8.2
+## 2013-05-18, version 0.8.2
 
 - Extended the import function and some other minor improvements.
 - Fixed a bug in merging one dimensional vectors into a matrix.
