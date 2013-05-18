@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.8.1
- * @date    2013-05-10
+ * @version 0.8.2
+ * @date    2013-05-18
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -2118,17 +2118,17 @@ function Unit(value, unit) {
     }
 
     if (value != null && !isNumber(value)) {
-        throw new Error('First parameter in Unit constructor must be a number');
+        throw new TypeError('First parameter in Unit constructor must be a number');
     }
     if (unit != null && !isString(unit)) {
-        throw new Error('Second parameter in Unit constructor must be a string');
+        throw new TypeError('Second parameter in Unit constructor must be a string');
     }
 
     if (unit != null) {
         // find the unit and prefix from the string
         var res = _findUnit(unit);
         if (!res) {
-            throw new Error('String "' + unit + '" is no unit');
+            throw new SyntaxError('String "' + unit + '" is no unit');
         }
         this.unit = res.unit;
         this.prefix = res.prefix;
@@ -3123,8 +3123,8 @@ ParamsNode.prototype.toString = function() {
 
 /**
  * @constructor MatrixNode
- * Holds an n-dimensional array with nodes
- * @param {Array} nodes
+ * Holds an 2-dimensional array with nodes
+ * @param {Array[]} nodes    2 dimensional array with nodes
  * @extends {Node}
  */
 function MatrixNode(nodes) {
@@ -3142,34 +3142,35 @@ math.expr.node.MatrixNode = MatrixNode;
      * @override
      */
     MatrixNode.prototype.eval = function() {
-        // recursively evaluate the nodes in the array, and merge the result
-        var array = evalArray(this.nodes);
-        if (containsMatrix(array)) {
-            array = merge(array);
+        // evaluate all nodes in the 2d array, and merge the results into a matrix
+        var nodes = this.nodes,
+            results = [],
+            mergeNeeded = false;
+
+        for (var r = 0, rows = nodes.length; r < rows; r++) {
+            var nodes_r = nodes[r];
+            var results_r = [];
+            for (var c = 0, cols = nodes_r.length; c < cols; c++) {
+                var results_rc = nodes_r[c].eval();
+                if (results_rc instanceof Matrix ||
+                    results_rc instanceof Range ||
+                    results_rc instanceof Array) {
+                    mergeNeeded = true;
+                }
+                results_r[c] = results_rc;
+            }
+            results[r] = results_r;
         }
-        return new Matrix(array);
+
+        if (mergeNeeded) {
+            results = merge(results);
+        }
+
+        return new Matrix(results);
     };
 
     /**
-     * Recursively evaluate an array with nodes
-     * @param {Array} array
-     * @returns {Array} results
-     */
-    function evalArray(array) {
-        return array.map(function (child) {
-            if (child instanceof Array) {
-                // evaluate a nested array
-                return evalArray(child);
-            }
-            else {
-                // evaluate a node (end point)
-                return child.eval();
-            }
-        })
-    }
-
-    /**
-     * Merge nested Matrices in an Array.
+     * Merge nested Matrices in a two dimensional Array.
      * @param {Array} array    Two-dimensional array containing Matrices
      * @return {Array} merged  The merged array (two-dimensional)
      */
@@ -3177,12 +3178,12 @@ math.expr.node.MatrixNode = MatrixNode;
         var merged = [];
         var rows = array.length;
         for (var r = 0; r < rows; r++) {
-            var row = array[r];
-            var cols = row.length;
+            var array_r = array[r];
+            var cols = array_r.length;
             var submatrix = null;
             var submatrixRows = null;
             for (var c = 0; c < cols; c++) {
-                var entry = math.clone(row[c]);
+                var entry = math.clone(array_r[c]);
                 var size;
                 if (entry instanceof Matrix) {
                     // get the data from the matrix
@@ -3200,6 +3201,11 @@ math.expr.node.MatrixNode = MatrixNode;
                     // change range into an 1xn matrix
                     entry = [entry.valueOf()];
                     size = [1, entry[0].length];
+                }
+                else if (entry instanceof Array) {
+                    // change array into a 1xn matrix
+                    size = [1, entry.length];
+                    entry = [entry];
                 }
                 else {
                     // change scalar into a 1x1 matrix
@@ -3231,26 +3237,6 @@ math.expr.node.MatrixNode = MatrixNode;
         }
 
         return merged;
-    }
-
-    /**
-     * Recursively test whether a multidimensional array contains at least one
-     * Matrix or Range.
-     * @param {Array} array
-     * @return {Boolean} containsMatrix
-     */
-    function containsMatrix(array) {
-        return array.some(function (child) {
-            if (child instanceof Matrix || child instanceof Range) {
-                return true;
-            }
-            else if (child instanceof Array) {
-                return containsMatrix(child);
-            }
-            else {
-                return false;
-            }
-        });
     }
 
     /**
@@ -7222,7 +7208,7 @@ math.subtract = function subtract(x, y) {
             // number - complex
             return new Complex (
                 x - y.re,
-                    y.im
+                  - y.im
             );
         }
     }
@@ -7568,7 +7554,7 @@ math.re = function re(x) {
  *                                         as real and imaginary part.
  *     complex(re : number, im : string)   creates a complex value with provided
  *                                         values for real and imaginary part.
- *     complex(str : string)               parses a string into a complex value.
+ *     complex(arg : string)               parses a string into a complex value.
  *
  * Example usage:
  *     var a = math.complex(3, -4);     // 3 - 4i
@@ -7590,17 +7576,23 @@ math.complex = function complex(args) {
 
         case 1:
             // parse string into a complex number
-            var str = arguments[0];
-            if (!isString(str)) {
-                throw new TypeError(
-                    'Two numbers or a single string expected in function complex');
+            var arg = arguments[0];
+            if (arg instanceof Complex) {
+                // create a clone
+                return arg.clone();
             }
-            var c = Complex.parse(str);
-            if (c) {
-                return c;
+            else if (isString(arg)) {
+                var c = Complex.parse(arg);
+                if (c) {
+                    return c;
+                }
+                else {
+                    throw new SyntaxError('String "' + arg + '" is no valid complex number');
+                }
             }
             else {
-                throw new SyntaxError('String "' + str + '" is no valid complex number');
+                throw new TypeError(
+                    'Two numbers or a single string expected in function complex');
             }
             break;
 
@@ -7711,16 +7703,22 @@ math.range = function range(args) {
     switch (arguments.length) {
         case 1:
             // parse string into a range
-            if (!isString(args)) {
-                throw new TypeError(
-                    'Two or three numbers or a single string expected in function range');
+            if (args instanceof Range) {
+                // create a clone
+                return args.clone();
             }
-            var r = Range.parse(args);
-            if (r) {
-                return r;
+            else if (isString(args)) {
+                var r = Range.parse(args);
+                if (r) {
+                    return r;
+                }
+                else {
+                    throw new SyntaxError('String "' + r + '" is no valid range');
+                }
             }
             else {
-                throw new SyntaxError('String "' + r + '" is no valid range');
+                throw new TypeError(
+                    'Two or three numbers or a single string expected in function range');
             }
             break;
 
@@ -7759,21 +7757,26 @@ math.unit = function unit(args) {
     switch(arguments.length) {
         case 1:
             // parse a string
-            var str = arguments[0];
-            if (!isString(str)) {
+            var arg = arguments[0];
+            if (arg instanceof Unit) {
+                // create a clone of the unit
+                return arg.clone();
+            }
+            else if (isString(arg)) {
+                if (Unit.isPlainUnit(arg)) {
+                    return new Unit(null, arg); // a pure unit
+                }
+
+                var u = Unit.parse(arg);        // a unit with value, like '5cm'
+                if (u) {
+                    return u;
+                }
+
+                throw new SyntaxError('String "' + arg + '" is no valid unit');
+            }
+            else {
                 throw new TypeError('A string or a number and string expected in function unit');
             }
-
-            if (Unit.isPlainUnit(str)) {
-                return new Unit(null, str); // a pure unit
-            }
-
-            var u = Unit.parse(str);        // a unit with value, like '5cm'
-            if (u) {
-                return u;
-            }
-
-            throw new SyntaxError('String "' + str + '" is no valid unit');
             break;
 
         case 2:
@@ -9522,14 +9525,23 @@ math.format = function format(template, values) {
  * @param {function | String | Object} object
  * @param {Object} [options]        Available options:
  *                                  {Boolean} override
- *                                  If true, existing functions will be
- *                                  overwritten. False by default.
+ *                                      If true, existing functions will be
+ *                                      overwritten. False by default.
+ *                                  {Boolean} wrap
+ *                                      If true (default), the functions will
+ *                                      be wrapped in a wrapper function which
+ *                                      converts data types like Matrix to
+ *                                      primitive data types like Array.
+ *                                      The wrapper is needed when extending
+ *                                      math.js with libraries which do not
+ *                                      support the math.js data types.
  */
 // TODO: return status information
 math['import'] = function math_import(object, options) {
     var name;
     var opts = {
-        override: false
+        override: false,
+        wrap: true
     };
     if (options && options instanceof Object) {
         util.extend(opts, options);
@@ -9551,7 +9563,7 @@ math['import'] = function math_import(object, options) {
         name = object.name;
         if (name) {
             if (opts.override || math[name] === undefined) {
-                _import(name, object);
+                _import(name, object, opts);
             }
         }
         else {
@@ -9564,9 +9576,7 @@ math['import'] = function math_import(object, options) {
             if (object.hasOwnProperty(name)) {
                 var value = object[name];
                 if (isSupportedType(value)) {
-                    if (opts.override || math[name] === undefined) {
-                        _import(name, value);
-                    }
+                    _import(name, value, opts);
                 }
                 else {
                     math['import'](value);
@@ -9580,14 +9590,31 @@ math['import'] = function math_import(object, options) {
  * Add a property to the math namespace and create a chain proxy for it.
  * @param {String} name
  * @param {*} value
+ * @param {Object} options  See import for a description of the options
  * @private
  */
-function _import(name, value) {
-    // add to math namespace
-    math[name] = value;
+function _import(name, value, options) {
+    if (options.override || math[name] === undefined) {
+        // add to math namespace
+        if (options.wrap && typeof value === 'function') {
+            // create a wrapper around the function
+            math[name] = function () {
+                var args = [];
+                for (var i = 0, len = arguments.length; i < len; i++) {
+                    args[i] = arguments[i].valueOf();
+                }
+                return value.apply(math, args);
+            };
+        }
+        else {
+            // just create a link to the function or value
+            math[name] = value;
+        }
 
-    // create a proxy for the Selector
-    createSelectorProxy(name, value);
+        // create a proxy for the Selector
+        createSelectorProxy(name, value);
+    }
+
 }
 
 /**
