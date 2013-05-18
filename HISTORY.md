@@ -4,6 +4,7 @@ https://github.com/josdejong/mathjs
 
 ## version 0.8.2
 
+- Fixed a bug in merging one dimensional vectors into a matrix.
 - Fixed a bug in function subtract, when subtracting a complex number from a
   real number.
 

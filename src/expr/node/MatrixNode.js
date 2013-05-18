@@ -1,7 +1,7 @@
 /**
  * @constructor MatrixNode
- * Holds an n-dimensional array with nodes
- * @param {Array} nodes
+ * Holds an 2-dimensional array with nodes
+ * @param {Array[]} nodes    2 dimensional array with nodes
  * @extends {Node}
  */
 function MatrixNode(nodes) {
@@ -19,34 +19,35 @@ math.expr.node.MatrixNode = MatrixNode;
      * @override
      */
     MatrixNode.prototype.eval = function() {
-        // recursively evaluate the nodes in the array, and merge the result
-        var array = evalArray(this.nodes);
-        if (containsMatrix(array)) {
-            array = merge(array);
+        // evaluate all nodes in the 2d array, and merge the results into a matrix
+        var nodes = this.nodes,
+            results = [],
+            mergeNeeded = false;
+
+        for (var r = 0, rows = nodes.length; r < rows; r++) {
+            var nodes_r = nodes[r];
+            var results_r = [];
+            for (var c = 0, cols = nodes_r.length; c < cols; c++) {
+                var results_rc = nodes_r[c].eval();
+                if (results_rc instanceof Matrix ||
+                    results_rc instanceof Range ||
+                    results_rc instanceof Array) {
+                    mergeNeeded = true;
+                }
+                results_r[c] = results_rc;
+            }
+            results[r] = results_r;
         }
-        return new Matrix(array);
+
+        if (mergeNeeded) {
+            results = merge(results);
+        }
+
+        return new Matrix(results);
     };
 
     /**
-     * Recursively evaluate an array with nodes
-     * @param {Array} array
-     * @returns {Array} results
-     */
-    function evalArray(array) {
-        return array.map(function (child) {
-            if (child instanceof Array) {
-                // evaluate a nested array
-                return evalArray(child);
-            }
-            else {
-                // evaluate a node (end point)
-                return child.eval();
-            }
-        })
-    }
-
-    /**
-     * Merge nested Matrices in an Array.
+     * Merge nested Matrices in a two dimensional Array.
      * @param {Array} array    Two-dimensional array containing Matrices
      * @return {Array} merged  The merged array (two-dimensional)
      */
@@ -54,12 +55,12 @@ math.expr.node.MatrixNode = MatrixNode;
         var merged = [];
         var rows = array.length;
         for (var r = 0; r < rows; r++) {
-            var row = array[r];
-            var cols = row.length;
+            var array_r = array[r];
+            var cols = array_r.length;
             var submatrix = null;
             var submatrixRows = null;
             for (var c = 0; c < cols; c++) {
-                var entry = math.clone(row[c]);
+                var entry = math.clone(array_r[c]);
                 var size;
                 if (entry instanceof Matrix) {
                     // get the data from the matrix
@@ -77,6 +78,11 @@ math.expr.node.MatrixNode = MatrixNode;
                     // change range into an 1xn matrix
                     entry = [entry.valueOf()];
                     size = [1, entry[0].length];
+                }
+                else if (entry instanceof Array) {
+                    // change array into a 1xn matrix
+                    size = [1, entry.length];
+                    entry = [entry];
                 }
                 else {
                     // change scalar into a 1x1 matrix
@@ -108,26 +114,6 @@ math.expr.node.MatrixNode = MatrixNode;
         }
 
         return merged;
-    }
-
-    /**
-     * Recursively test whether a multidimensional array contains at least one
-     * Matrix or Range.
-     * @param {Array} array
-     * @return {Boolean} containsMatrix
-     */
-    function containsMatrix(array) {
-        return array.some(function (child) {
-            if (child instanceof Matrix || child instanceof Range) {
-                return true;
-            }
-            else if (child instanceof Array) {
-                return containsMatrix(child);
-            }
-            else {
-                return false;
-            }
-        });
     }
 
     /**

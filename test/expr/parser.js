@@ -4,6 +4,7 @@ var assert = require('assert'),
     math = require('../../math.js'),
     parser = math.parser(),
     matrix = math.matrix,
+    range = math.range,
     round = math.round;
 
 /**
@@ -118,6 +119,7 @@ assert.ok(parser.eval('2:5') instanceof math.type.Range);
 assert.deepEqual(parser.eval('2:5').toArray(), [2,3,4,5]);
 assert.deepEqual(parser.eval('10:-2:2').toArray(), [10,8,6,4,2]);
 
+// test matrix
 parser.set('a', matrix([
     [1,2,3],
     [4,5,6],
@@ -154,8 +156,7 @@ assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
 assert.deepEqual(parser.eval('a(1,1:3) = [1,2,3]'), matrix([[1,2,3]]));
 assert.deepEqual(parser.eval('a(2,:) = [4,5,6]'), matrix([[1,2,3],[4,5,6]]));
 
-
-// test matrix
+// test matrix sizes
 assert.ok(parser.eval('[1,2;3,4]') instanceof math.type.Matrix);
 var m = parser.eval('[1,2,3;4,5,6]');
 assert.deepEqual(m.size(), [2,3]);
@@ -168,6 +169,7 @@ assert.deepEqual(b.size(), [2,2]);
 assert.deepEqual(b.valueOf(), [[5,6],[7,8]]);
 assert.deepEqual(parser.eval('[ ]').valueOf(), [[]]);
 
+// test matrix get/set submatrix
 parser.eval('a=[1,2;3,4]');
 parser.eval('a(1,1) = 100');
 assert.deepEqual(parser.get('a').size(), [2,2]);
@@ -194,12 +196,19 @@ assert.deepEqual(parser.eval('a(2:end-1, 2:end-1)'), matrix([[2,0],[9,9]]));
 parser = math.parser();
 parser.eval('a=[1,2;3,4]');
 parser.eval('b=[5,6;7,8]');
-assert.deepEqual(parser.eval('c=[a,b]').valueOf(), [[1,2,5,6],[3,4,7,8]]);
-assert.deepEqual(parser.eval('c=[a;b]').valueOf(), [[1,2],[3,4],[5,6],[7,8]]);
-assert.deepEqual(parser.eval('c=[a,b;b,a]').valueOf(), [[1,2,5,6],[3,4,7,8],[5,6,1,2],[7,8,3,4]]);
-assert.deepEqual(parser.eval('c=[[1,2]; [3,4]]').valueOf(), [[1,2],[3,4]]);
-assert.deepEqual(parser.eval('c=[1; [2;3]]').valueOf(), [[1],[2],[3]]);
-assert.deepEqual(parser.eval('[[],[]]').valueOf(), [[]]);
+assert.deepEqual(parser.eval('c=[a,b]'), matrix([[1,2,5,6],[3,4,7,8]]));
+assert.deepEqual(parser.eval('c=[a;b]'), matrix([[1,2],[3,4],[5,6],[7,8]]));
+assert.deepEqual(parser.eval('c=[a,b;b,a]'), matrix([[1,2,5,6],[3,4,7,8],[5,6,1,2],[7,8,3,4]]));
+assert.deepEqual(parser.eval('c=[[1,2]; [3,4]]'), matrix([[1,2],[3,4]]));
+assert.deepEqual(parser.eval('c=[1; [2;3]]'), matrix([[1],[2],[3]]));
+assert.deepEqual(parser.eval('d=1:3'), range(1,3));  // d is a Range
+assert.deepEqual(parser.eval('[d,d]'), matrix([[1,2,3,1,2,3]]));
+assert.deepEqual(parser.eval('[d;d]'), matrix([[1,2,3],[1,2,3]]));
+assert.deepEqual(parser.eval('e=1+d'), [2,3,4]);  // e is an Array
+assert.deepEqual(parser.eval('size(e)'), [3]);
+assert.deepEqual(parser.eval('[e,e]'), matrix([[2,3,4,2,3,4]]));
+assert.deepEqual(parser.eval('[e;e]'), matrix([[2,3,4],[2,3,4]]));
+assert.deepEqual(parser.eval('[[],[]]'), matrix([[]]));
 assert.deepEqual(parser.eval('[[],[]]').size(), [0, 0]);
 assert.throws(function () {parser.eval('c=[a; [1,2,3] ]')});
 
