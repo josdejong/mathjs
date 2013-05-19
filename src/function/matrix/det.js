@@ -76,43 +76,61 @@ function _det (matrix, rows, cols) {
         );
     }
     else {
-        // this is a matrix of 3 x 3 or larger
-        var d = 0;
-        for (var c = 0; c < cols; c++) {
-            var minor = _minor(matrix, rows, cols, 0, c);
-            //d += Math.pow(-1, 1 + c) * a(1, c) * _det(minor);
-            d += multiply(
-                multiply((c + 1) % 2 + (c + 1) % 2 - 1, matrix[0][c]),
-                _det(minor, rows - 1, cols - 1)
-            ); // faster than with pow()
-        }
-        return d;
-    }
-}
-
-/**
- * Extract a minor from a matrix
- * @param {Array[]} matrix  A square, two dimensional matrix
- * @param {Number} rows     Number of rows of the matrix (zero-based)
- * @param {Number} cols     Number of columns of the matrix (zero-based)
- * @param {Number} row      Row number to be removed (zero-based)
- * @param {Number} col      Column number to be removed (zero-based)
- * @private
- */
-function _minor(matrix, rows, cols, row, col) {
-    var minor = [],
-        minorRow;
-
-    for (var r = 0; r < rows; r++) {
-        if (r != row) {
-            minorRow = minor[r - (r > row)] = [];
-            for (var c = 0; c < cols; c++) {
-                if (c != col) {
-                    minorRow[c - (c > col)] = matrix[r][c];
+        var det = 1;
+        var lead = 0;
+        for (var r = 0; r < rows; r++) {
+            if (lead >= cols) {
+                break;
+            }
+            var i = r;
+            // Find the pivot element.
+            while (matrix[i][lead] == 0) {
+                i++;
+                if (i == rows) {
+                    i = r;
+                    lead++;
+                    if (lead == cols) {
+                        // We found the last pivot.
+                        if (util.deepEqual(matrix, math.eye(rows).valueOf())) {
+                            return math.round(det, 6);
+                        } else {
+                            return 0;
+                        }
+                    }
                 }
             }
+            if (i != r) {
+                // Swap rows i and r, which negates the determinant.
+                for (var a = 0; a < cols; a++) {
+                    var temp = matrix[i][a];
+                    matrix[i][a] = matrix[r][a];
+                    matrix[r][a] = temp;
+                }
+                det *= -1;
+            }
+            // Scale row r and the determinant simultaneously.
+            var div = matrix[r][lead];
+            for (var a = 0; a < cols; a++) {
+                matrix[r][a] = matrix[r][a] / div;
+            }
+            det *= div;
+            // Back-substitute upwards.
+            for (var j = 0; j < rows; j++) {
+                if (j != r) {
+                    // Taking linear combinations does not change the det.
+                    var c = matrix[j][lead];
+                    for (var a = 0; a < cols; a++) {
+                        matrix[j][a] = matrix[j][a] - matrix[r][a] * c;
+                    }
+                }
+            }
+            lead++; // Now looking for a pivot further right.
+        }
+        // If reduction did not result in the identity, the matrix is singular.
+        if (util.deepEqual(matrix, math.eye(rows).valueOf())) {
+            return math.round(det, 6);
+        } else {
+            return 0;
         }
     }
-
-    return minor;
 }
