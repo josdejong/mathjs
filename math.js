@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.8.3-SNAPSHOT
- * @date    2013-05-18
+ * @date    2013-05-20
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -2890,6 +2890,55 @@ Node.prototype.eval = function () {
 };
 
 /**
+ * Find any node in the node tree matching given filter. For example, to
+ * find all nodes of type SymbolNode having name 'x':
+ *
+ *     var results = Node.find({
+ *         type: SymbolNode,
+ *         properties: {
+ *             name: 'x'
+ *         }
+ *     });
+ *
+ * @param {Object} filter       Available parameters:
+ *                              {Function} type
+ *                              {Object<String, String>} properties
+ * @return {Node[]} nodes       An array with nodes matching given filter criteria
+ */
+Node.prototype.find = function (filter) {
+    return this.match(filter) ? [this] : [];
+};
+
+/**
+ * Test if this object matches given filter
+ * @param {Object} filter       Available parameters:
+ *                              {Function} type
+ *                              {Object<String, String>} properties
+ * @return {Boolean} matches    True if there is a match
+ */
+Node.prototype.match = function (filter) {
+    var match = true;
+
+    if (filter) {
+        if (filter.type && !(this instanceof filter.type)) {
+            match = false;
+        }
+        if (match && filter.properties) {
+            for (var prop in filter.properties) {
+                if (filter.properties.hasOwnProperty(prop)) {
+                    if (this[prop] != filter.properties[prop]) {
+                        match = false;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    return match;
+};
+
+/**
  * Get string representation
  * @return {String}
  */
@@ -2954,6 +3003,30 @@ OperatorNode.prototype.eval = function() {
 };
 
 /**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+OperatorNode.prototype.find = function (filter) {
+    var nodes = [];
+
+    // check itself
+    if (this.match(filter)) {
+        nodes.push(this);
+    }
+
+    // search in parameters
+    var params = this.params;
+    if (params) {
+        for (var i = 0, len = params.length; i < len; i++) {
+            nodes = nodes.concat(params[i].find(filter));
+        }
+    }
+
+    return nodes;
+};
+
+/**
  * Get string representation
  * @return {String} str
  */
@@ -2989,12 +3062,12 @@ OperatorNode.prototype.toString = function() {
  * @constructor SymbolNode
  * A symbol node can hold and resolve a symbol
  * @param {String} name
- * @param {math.expr.Symbol} symbol
+ * @param {math.expr.Scope} scope
  * @extends {Node}
  */
-function SymbolNode(name, symbol) {
+function SymbolNode(name, scope) {
     this.name = name;
-    this.symbol = symbol;
+    this.scope = scope;
 }
 
 SymbolNode.prototype = new Node();
@@ -3008,10 +3081,9 @@ math.expr.node.SymbolNode = SymbolNode;
  */
 SymbolNode.prototype.eval = function() {
     // return the value of the symbol
-    var value = this.symbol.get();
+    var value = this.scope.get(this.name);
 
     if (value === undefined) {
-        // TODO: throw an error or not?
         throw new Error('Undefined symbol ' + this.name);
     }
 
@@ -3032,28 +3104,31 @@ SymbolNode.prototype.toString = function() {
  * invoke a list with parameters on the results of a node
  * @param {Node} object
  * @param {Node[]} params
- * @param {Scope[]} scopes      A scope for every parameter, where the index
- *                              variable 'end' can be defined.
+ * @param {Scope[]} paramScopes     A scope for every parameter, where the
+ *                                  index variable 'end' can be defined.
  */
-function ParamsNode (object, params, scopes) {
+function ParamsNode (object, params, paramScopes) {
     this.object = object;
     this.params = params;
-    this.scopes = scopes;
+    this.paramScopes = paramScopes;
 
-    // find the symbols 'end', which are index dependent
-    var ends = null;
-    if (scopes) {
-        for (var i = 0, len = scopes.length; i < len; i++) {
-            var scope = scopes[i];
-            if (scope.hasLink('end')) {
-                if (!ends) {
-                    ends = [];
-                }
-                ends[i] = scope.createLink('end');
+    // check whether any of the params expressions uses the context symbol 'end'
+    this.hasContextParams = false;
+    if (params) {
+        var filter = {
+            type: math.type.SymbolNode,
+            properties: {
+                name: 'end'
+            }
+        };
+
+        for (var i = 0, len = params.length; i < len; i++) {
+            if (params[i].find(filter).length > 0) {
+                this.hasContextParams = true;
+                break;
             }
         }
     }
-    this.ends = ends;
 }
 
 ParamsNode.prototype = new Node();
@@ -3074,14 +3149,16 @@ ParamsNode.prototype.eval = function() {
     }
     var obj = object.eval();
 
-    // evaluate the values of parameter 'end'
-    if (this.ends) {
-        var ends = this.ends,
+    // evaluate the values of context parameter 'end' when needed
+    if (this.hasContextParams) {
+        var paramScopes = this.paramScopes,
             size = obj.size && obj.size();
-        for (i = 0, len = this.params.length; i < len; i++) {
-            var end = ends[i];
-            if (end && size) {
-                end.set(size[i]);
+        if (paramScopes && size) {
+            for (i = 0, len = this.params.length; i < len; i++) {
+                var paramScope = paramScopes[i];
+                if (paramScope) {
+                    paramScope.set('end', size[i]);
+                }
             }
         }
     }
@@ -3106,6 +3183,35 @@ ParamsNode.prototype.eval = function() {
         throw new TypeError('Cannot apply parameters to object of type ' +
             math['typeof'](obj));
     }
+};
+
+/**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+ParamsNode.prototype.find = function (filter) {
+    var nodes = [];
+
+    // check itself
+    if (this.match(filter)) {
+        nodes.push(this);
+    }
+
+    // search object
+    if (this.object) {
+        nodes = nodes.concat(this.object.find(filter));
+    }
+
+    // search in parameters
+    var params = this.params;
+    if (params) {
+        for (var i = 0, len = params.length; i < len; i++) {
+            nodes = nodes.concat(params[i].find(filter));
+        }
+    }
+
+    return nodes;
 };
 
 /**
@@ -3167,6 +3273,31 @@ math.expr.node.MatrixNode = MatrixNode;
         }
 
         return new Matrix(results);
+    };
+
+    /**
+     * Find all nodes matching given filter
+     * @param {Object} filter  See Node.find for a description of the filter options
+     * @returns {Node[]} nodes
+     */
+    MatrixNode.prototype.find = function (filter) {
+        var results = [];
+
+        // check itself
+        if (this.match(filter)) {
+            results.push(this);
+        }
+
+        // search in all nodes
+        var nodes = this.nodes;
+        for (var r = 0, rows = nodes.length; r < rows; r++) {
+            var nodes_r = nodes[r];
+            for (var c = 0, cols = nodes_r.length; c < cols; c++) {
+                results = results.concat(nodes_r[c].find(filter));
+            }
+        }
+
+        return results;
     };
 
     /**
@@ -3292,6 +3423,30 @@ BlockNode.prototype.eval = function() {
 };
 
 /**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+BlockNode.prototype.find = function (filter) {
+    var nodes = [];
+
+    // check itself
+    if (this.match(filter)) {
+        nodes.push(this);
+    }
+
+    // search in parameters
+    var params = this.params;
+    if (params) {
+        for (var i = 0, len = params.length; i < len; i++) {
+            nodes = nodes.concat(params[i].find(filter));
+        }
+    }
+
+    return nodes;
+};
+
+/**
  * Get string representation
  * @return {String} str
  * @override
@@ -3310,33 +3465,16 @@ BlockNode.prototype.toString = function() {
 
 /**
  * @constructor AssignmentNode
+ * Define a symbol, like "a = 3.2"
+ *
  * @param {String} name                 Symbol name
- * @param {Node[] | undefined} params   Zero or more parameters
- * @param {Scope[]}  scopes             A scope for every parameter, where the
- *                                      index variable 'end' can be defined.
  * @param {Node} expr                   The expression defining the symbol
- * @param {math.expr.Symbol} symbol     placeholder for the symbol
+ * @param {math.expr.Scope} scope       Scope to store the result
  */
-function AssignmentNode(name, params, scopes, expr, symbol) {
+function AssignmentNode(name, expr, scope) {
     this.name = name;
-    this.params = params;
     this.expr = expr;
-    this.symbol = symbol;
-
-    // find the symbols 'end', which are index dependent
-    var ends = null;
-    if (scopes) {
-        for (var i = 0, len = scopes.length; i < len; i++) {
-            var scope = scopes[i];
-            if (scope.hasLink('end')) {
-                if (!ends) {
-                    ends = [];
-                }
-                ends[i] = scope.createLink('end');
-            }
-        }
-    }
-    this.ends = ends;
+    this.scope = scope;
 }
 
 AssignmentNode.prototype = new Node();
@@ -3352,52 +3490,31 @@ AssignmentNode.prototype.eval = function() {
         throw new Error('Undefined symbol ' + this.name);
     }
 
-    var result;
-    var params = this.params;
-
-    if (params && params.length) {
-        // test if definition is currently undefined
-        var prevResult = this.symbol.get();
-        if (prevResult == undefined) {
-            throw new Error('Undefined symbol ' + this.name);
-        }
-
-        // evaluate the values of parameter 'end'
-        if (this.ends) {
-            var ends = this.ends,
-                size = prevResult.size && prevResult.size();
-            for (var i = 0, len = this.params.length; i < len; i++) {
-                var end = ends[i];
-                if (end && size) {
-                    end.set(size[i]);
-                }
-            }
-        }
-
-        // change part of a matrix, for example "a=[]", "a(2,3)=4.5"
-        var paramResults = [];
-        this.params.forEach(function (param) {
-            paramResults.push(param.eval());
-        });
-
-        var exprResult = this.expr.eval();
-
-        // TODO: check type of prevResult: Matrix, Array, String, other...
-        if (!prevResult.set) {
-            throw new TypeError('Cannot apply a subset to object of type ' +
-                math['typeof'](prevResult));
-        }
-        result = prevResult.set(paramResults, exprResult);
-
-        this.symbol.set(result);
-    }
-    else {
-        // variable definition, for example "a = 3/4"
-        result = this.expr.eval();
-        this.symbol.set(result);
-    }
+    var result = this.expr.eval();
+    this.scope.set(this.name, result);
 
     return result;
+};
+
+/**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+AssignmentNode.prototype.find = function (filter) {
+    var nodes = [];
+
+    // check itself
+    if (this.match(filter)) {
+        nodes.push(this);
+    }
+
+    // search in expression
+    if (this.expr) {
+        nodes = nodes.concat(this.expr.find(filter));
+    }
+
+    return nodes;
 };
 
 /**
@@ -3405,6 +3522,133 @@ AssignmentNode.prototype.eval = function() {
  * @return {String}
  */
 AssignmentNode.prototype.toString = function() {
+    return this.name + ' = ' + this.expr.toString();
+};
+
+/**
+ * @constructor UpdateNode
+ * Update a symbol value, like a(2,3) = 4.5
+ *
+ * @param {String} name                 Symbol name
+ * @param {Node[] | undefined} params   One or more parameters
+ * @param {Scope[]}  paramScopes        A scope for every parameter, where the
+ *                                      index variable 'end' can be defined.
+ * @param {Node} expr                   The expression defining the symbol
+ * @param {math.expr.Scope} scope       Scope to store the result
+ */
+function UpdateNode(name, params, paramScopes, expr, scope) {
+    this.name = name;
+    this.params = params;
+    this.paramScopes = paramScopes;
+    this.expr = expr;
+    this.scope = scope;
+
+    // check whether any of the params expressions uses the context symbol 'end'
+    this.hasContextParams = false;
+    var filter = {
+        type: math.type.SymbolNode,
+        properties: {
+            name: 'end'
+        }
+    };
+    for (var i = 0, len = params.length; i < len; i++) {
+        if (params[i].find(filter).length > 0) {
+            this.hasContextParams = true;
+            break;
+        }
+    }
+}
+
+UpdateNode.prototype = new Node();
+
+math.expr.node.UpdateNode = UpdateNode;
+
+/**
+ * Evaluate the assignment
+ * @return {*} result
+ */
+UpdateNode.prototype.eval = function() {
+    if (this.expr === undefined) {
+        throw new Error('Undefined symbol ' + this.name);
+    }
+
+    var result;
+    var params = this.params;
+
+    // test if definition is currently undefined
+    var prevResult = this.scope.get(this.name);
+    if (prevResult == undefined) {
+        throw new Error('Undefined symbol ' + this.name);
+    }
+
+    // evaluate the values of context parameter 'end' when needed
+    if (this.hasContextParams) {
+        var paramScopes = this.paramScopes,
+            size = prevResult.size && prevResult.size();
+        if (paramScopes && size) {
+            for (var i = 0, len = this.params.length; i < len; i++) {
+                var paramScope = paramScopes[i];
+                if (paramScope) {
+                    paramScope.set('end', size[i]);
+                }
+            }
+        }
+    }
+
+    // change part of a matrix, for example "a=[]", "a(2,3)=4.5"
+    var paramResults = [];
+    this.params.forEach(function (param) {
+        paramResults.push(param.eval());
+    });
+
+    var exprResult = this.expr.eval();
+
+    // TODO: check type of prevResult: Matrix, Array, String, other...
+    if (!prevResult.set) {
+        throw new TypeError('Cannot apply a subset to object of type ' +
+            math['typeof'](prevResult));
+    }
+    result = prevResult.set(paramResults, exprResult);
+
+    this.scope.set(this.name, result);
+
+    return result;
+};
+
+/**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+UpdateNode.prototype.find = function (filter) {
+    var nodes = [];
+
+    // check itself
+    if (this.match(filter)) {
+        nodes.push(this);
+    }
+
+    // search in parameters
+    var params = this.params;
+    if (params) {
+        for (var i = 0, len = params.length; i < len; i++) {
+            nodes = nodes.concat(params[i].find(filter));
+        }
+    }
+
+    // search in expression
+    if (this.expr) {
+        nodes = nodes.concat(this.expr.find(filter));
+    }
+
+    return nodes;
+};
+
+/**
+ * Get string representation
+ * @return {String}
+ */
+UpdateNode.prototype.toString = function() {
     var str = '';
 
     str += this.name;
@@ -3421,31 +3665,42 @@ AssignmentNode.prototype.toString = function() {
  * @constructor FunctionNode
  * Function assignment
  *
- * @param {String} name             Function name
- * @param {String[]} variableNames  Variable names
- * @param {function[]} variables    Links to the variables in a scope
- * @param {Node} expr               The function expression
- * @param {math.expr.Symbol} symbol Symbol to store the resulting function
- *                                  assignment
+ * @param {String} name                     Function name
+ * @param {String[]} variables              Variable names
+ * @param {Node} expr                       The function expression
+ * @param {math.expr.Scope} functionScope   Scope in which to write variable
+ *                                          values
+ * @param {math.expr.Scope} scope           Scope to store the resulting
+ *                                          function assignment
  */
-function FunctionNode(name, variableNames, variables, expr, symbol) {
+function FunctionNode(name, variables, expr, functionScope, scope) {
     this.name = name;
     this.variables = variables;
+    this.scope = scope;
 
-    this.values = [];
-    for (var i = 0, iMax = this.variables.length; i < iMax; i++) {
-        this.values[i] = (function () {
-            var value = function () {
-                return value.value;
-            };
-            value.value = undefined;
-            return value;
-        })();
-    }
+    // create function
+    this.fn = function () {
+        var num = variables ? variables.length : 0;
 
-    this.fn = this.createFunction(name, variableNames, variables, expr);
+        // validate correct number of arguments
+        if (arguments.length != num) {
+            throw newArgumentsError(name, arguments.length, num);
+        }
 
-    this.symbol = symbol;
+        // fill in the provided arguments in the functionScope variables
+        for (var i = 0; i < num; i++) {
+            functionScope.set(variables[i], arguments[i]);
+        }
+
+        // evaluate the expression
+        return expr.eval();
+    };
+
+    this.fn.toString = function() {
+        // TODO: what to return as toString?
+        return name + '(' + variables.join(', ') + ')';
+        //return name + '(' + variableNames.join(', ') + ') = ' + expr.toString();
+    };
 }
 
 FunctionNode.prototype = new Node();
@@ -3453,60 +3708,35 @@ FunctionNode.prototype = new Node();
 math.expr.node.FunctionNode = FunctionNode;
 
 /**
- * Create a function from the function assignment
- * @param {String} name             Function name
- * @param {String[]} variableNames  Variable names
- * @param {function[]} values       Zero or more functions
- * @param {Node} expr               The function expression
- *
- */
-FunctionNode.prototype.createFunction = function (
-        name, variableNames, values, expr) {
-    var fn = function () {
-        // validate correct number of arguments
-        var valuesNum = values ? values.length : 0;
-        var argumentsNum = arguments ? arguments.length : 0;
-        if (valuesNum != argumentsNum) {
-            throw newArgumentsError(name, argumentsNum, valuesNum);
-        }
-
-        // fill in all parameter values
-        if (valuesNum > 0) {
-            for (var i = 0; i < valuesNum; i++){
-                values[i].value = arguments[i];
-            }
-        }
-
-        // evaluate the expression
-        return expr.eval();
-    };
-
-    fn.toString = function() {
-        // TODO: what to return as toString?
-        return name + '(' + variableNames.join(', ') + ')';
-        //return name + '(' + variableNames.join(', ') + ') = ' + expr.toString();
-    };
-
-    return fn;
-};
-
-/**
  * Evaluate the function assignment
  * @return {function} fn
  */
 FunctionNode.prototype.eval = function() {
-    // link the variables to the values of this function assignment
-    var variables = this.variables,
-        values = this.values;
-    for (var i = 0, iMax = variables.length; i < iMax; i++) {
-        variables[i].value = values[i];
+    // put the definition in the scope
+    this.scope.set(this.name, this.fn);
+
+    return this.fn;
+};
+
+/**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+FunctionNode.prototype.find = function (filter) {
+    var nodes = [];
+
+    // check itself
+    if (this.match(filter)) {
+        nodes.push(this);
     }
 
-    // put the definition in the symbol
-    this.symbol.set(this.fn);
+    // search in expression
+    if (this.expr) {
+        nodes = nodes.concat(this.expr.find(filter));
+    }
 
-    // TODO: what to return? a neat "function y(x) defined"?
-    return this.fn;
+    return nodes;
 };
 
 /**
@@ -3517,393 +3747,262 @@ FunctionNode.prototype.toString = function() {
     return this.fn.toString();
 };
 
-/**
- * A Symbol stores a variable or function, or a link to another symbol
- * @param {String} name
- * @param {*} value
- * @constructor math.expr.Symbol
- */
-math.expr.Symbol = function Symbol (name, value) {
-    this.name = name;
-    this.value = value;
-};
-
-/**
- * Get the symbols value
- * @returns {* | undefined} value
- */
-math.expr.Symbol.prototype.get = function () {
-    var value = this.value;
-
-    // resolve a chain of symbols
-    while (value instanceof math.expr.Symbol) {
-        value = value.get();
-    }
-
-    return value;
-};
-
-/**
- * Set the value for the symbol
- * @param {*} value
- */
-math.expr.Symbol.prototype.set = function (value) {
-    this.value = value;
-};
-
-/**
- * Get the symbols value
- * @returns {*} value
- */
-math.expr.Symbol.prototype.valueOf = function () {
-    return this.get();
-};
-
 
 /**
  * Scope
- * A scope stores functions.
+ * A scope stores values of symbols: variables and functions.
+ *
+ * Usage:
+ *     var scope = new math.expr.Scope();
+ *     var scope = new math.expr.Scope(parentScope);
+ *     var scope = new math.expr.Scope(symbols);
+ *     var scope = new math.expr.Scope(parentScope, symbols);
+ *
+ * Where:
+ *     {math.expr.Scope} parentScope    Scope will be linked to a parent scope,
+ *                                      which is consulted when resolving
+ *                                      symbols.
+ *     {Object} symbols                 A custom object that will be used to
+ *                                      resolve and store variables.
  *
  * @constructor math.expr.Scope
- * @param {Scope} [parentScope]
+ * @param {...} [args]
  */
-math.expr.Scope = function (parentScope) {
+math.expr.Scope = function Scope(args) {
     /** @type {math.expr.Scope} */
-    this.parentScope = parentScope;
+    this.parentScope = null;
 
     /** @type {math.expr.Scope[]} */
-    this.nestedScopes = undefined;
+    this.subScopes = null;
 
-    /** @type {Object.<string, math.expr.Symbol>} */
-    this.symbols = {}; // the actual symbols
+    /** @type {Object.<String, *>} */
+    this.symbols = {}; // variables and functions
 
-    // the following objects are just used to test existence.
-    this.defs = {};    // definitions by name (for example "a = [1, 2; 3, 4]")
-    this.updates = {}; // updates by name     (for example "a(2, 1) = 5.2")
-    this.links = {};   // links by name       (for example "2 * a")
+    // read first argument
+    if (arguments.length > 0) {
+        var arg0 = arguments[0];
+        if (arg0 instanceof math.expr.Scope) {
+            this.parentScope = arg0;
+        }
+        else if (arg0 instanceof Object) {
+            this.symbols = arg0;
+        }
+    }
+
+    // read second argument
+    if (arguments.length > 1) {
+        var arg1 = arguments[1];
+        if (arg1 instanceof Object) {
+            this.symbols = arg1;
+        }
+    }
 };
-
-// TODO: rethink the whole scoping solution again. Try to simplify
 
 math.expr.Scope.prototype = {
     /**
-     * Create a nested scope
-     * The variables in a nested scope are not accessible from the parent scope
-     * @return {math.expr.Scope} nestedScope
+     * Create a sub scope
+     * The variables in a sub scope are not accessible from the parent scope
+     * @return {math.expr.Scope} subScope
      */
-    createNestedScope: function () {
-        var nestedScope = new math.expr.Scope(this);
-        if (!this.nestedScopes) {
-            this.nestedScopes = [];
+    createSubScope: function () {
+        var subScope = new math.expr.Scope(this);
+        if (!this.subScopes) {
+            this.subScopes = [];
         }
-        this.nestedScopes.push(nestedScope);
-        return nestedScope;
+        this.subScopes.push(subScope);
+        return subScope;
     },
 
     /**
-     * Clear all symbols in this scope and its nested scopes
+     * Get a symbol value by name.
+     * Returns undefined if the symbol is not found in this scope or any of
+     * its parent scopes.
+     * @param {String} name
+     * @returns {* | undefined} value
+     */
+    get: function (name) {
+        var value;
+
+        // check itself
+        value = this.symbols[name];
+        if (value !== undefined) {
+            return value;
+        }
+
+        // TODO: implement a caching mechanism to store the scope.symbols where it last found the symbol
+
+        // check parent scope
+        if (this.parentScope) {
+            return this.parentScope.get(name);
+        }
+
+        // check root scope
+        return math.expr.Scope.rootScope.get(name);
+    },
+
+    /**
+     * Test whether this scope contains a symbol (will not check parent scopes)
+     * @param {String} name
+     * @return {Boolean} hasSymbol
+     */
+    has: function (name) {
+        return (this.symbols[name] !== undefined);
+    },
+
+    /**
+     * Set a symbol value
+     * @param {String} name
+     * @param {*} value
+     * @return {*} value
+     */
+    set: function (name, value) {
+        return this.symbols[name] = value;
+    },
+
+    /**
+     * Remove a symbol by name
+     * @param {String} name
+     */
+    remove: function(name) {
+        delete this.symbols[name];
+    },
+
+    /**
+     * Clear all symbols in this scope and its sub scopes
      * (parent scope will not be cleared)
      */
     clear: function () {
-        this.symbols = {};
-        this.defs = {};
-        this.links = {};
-        this.updates = {};
+        var symbols = this.symbols;
+        for (var name in symbols) {
+            if (symbols.hasOwnProperty(name)) {
+                delete symbols[name];
+            }
+        }
 
-        if (this.nestedScopes) {
-            var nestedScopes = this.nestedScopes;
-            for (var i = 0, iMax = nestedScopes.length; i < iMax; i++) {
-                nestedScopes[i].clear();
+        if (this.subScopes) {
+            var subScopes = this.subScopes;
+            for (var i = 0, iMax = subScopes.length; i < iMax; i++) {
+                subScopes[i].clear();
             }
         }
     },
 
     /**
-     * create a symbol
+     * Locate a symbol, find the last scope where this symbol is defined.
+     * The function will first search the chain of parent scopes until it
+     * finds the symbol. If found, it returns the scope where the symbol is
+     * defined, else it returns undefined.
      * @param {String} name
-     * @return {math.expr.Symbol} symbol
-     * @private
+     * @return {math.expr.Scope | undefined} scope, or undefined when not found
      */
-    createSymbol: function (name) {
-        var symbol = this.symbols[name];
-        if (!symbol) {
-            // get a link to the last definition
-            var lastDef = this.findDef(name);
-
-            // create a new symbol
-            symbol = new math.expr.Symbol(name, lastDef);
-            this.symbols[name] = symbol;
-
-        }
-        return symbol;
-    },
-
-    /**
-     * create a link to a value.
-     * @param {String} name
-     * @return {math.expr.Symbol} symbol
-     */
-    createLink: function (name) {
-        var symbol = this.links[name];
-        if (!symbol) {
-            symbol = this.createSymbol(name);
-            this.links[name] = symbol;
-        }
-        return symbol;
-    },
-
-    /**
-     * Create a variable definition
-     * Returns the created symbol
-     * @param {String} name
-     * @param {*} [value]
-     * @return {math.expr.Symbol} symbol
-     */
-    createDef: function (name, value) {
-        var symbol = this.defs[name];
-        if (!symbol) {
-            // create a new symbol
-            symbol = this.createSymbol(name);
-            this.defs[name] = symbol;
-
-            // update the symbols value
-            if (value != undefined) {
-                symbol.set(value);
-            }
-
-            // link undefined symbols in nested scopes to this symbol
-            var undef = this.getUndefinedSymbols(name);
-            if (undef.length) {
-                undef.forEach(function (u) {
-                    if (u != symbol) {
-                        u.set(symbol);
-                    }
-                });
-            }
-        }
-        else {
-            // update the symbols value
-            if (value != undefined) {
-                symbol.set(value);
-            }
-        }
-        return symbol;
-    },
-
-    /**
-     * Create a variable update definition
-     * Returns the created symbol
-     * @param {String} name
-     * @return {math.expr.Symbol} symbol
-     */
-    createUpdate: function (name) {
-        var symbol = this.updates[name];
-        if (!symbol) {
-            // create a new symbol
-            symbol = this.createLink(name);
-            this.updates[name] = symbol;
-
-            // link undefined symbols in nested scopes to this symbol
-            var undef = this.getUndefinedSymbols(name);
-            if (undef.length) {
-                undef.forEach(function (u) {
-                    if (u != symbol) {
-                        u.set(symbol);
-                    }
-                });
-            }
-        }
-        return symbol;
-    },
-
-    /**
-     * Create a constant
-     * @param {String} name
-     * @param {*} value
-     * @return {math.expr.Symbol} symbol
-     * @private
-     */
-    createConstant: function (name, value) {
-        var symbol = new math.expr.Symbol(name, value);
-        this.symbols[name] = symbol;
-        this.defs[name] = symbol;
-        return symbol;
-    },
-
-    /**
-     * get the link to a symbol definition or update.
-     * If the symbol is not found in this scope, it will be looked up in its parent
-     * scope.
-     * @param {String} name
-     * @return {math.expr.Symbol | undefined} symbol, or undefined when not found
-     */
-    findDef: function (name) {
-        var symbol;
-
-        // check scope
-        symbol = this.defs[name];
-        if (symbol) {
-            return symbol;
-        }
-        symbol = this.updates[name];
-        if (symbol) {
-            return symbol;
+    find: function (name) {
+        // check this scope
+        if (this.symbols[name] !== undefined) {
+            return this;
         }
 
         // check parent scope
         if (this.parentScope) {
-            return this.parentScope.findDef(name);
-        }
-        else {
-            // this is the root scope (has no parent),
-            // try to load constants, functions, or unit from the library
-
-            // check function (and load the function), for example "sin" or "sqrt"
-            // search in the mathnotepad.math namespace for this symbol
-            var fn = math[name];
-            if (fn) {
-                return this.createConstant(name, fn);
-            }
-
-            // Check if token is a unit
-            if (Unit.isPlainUnit(name)) {
-                var unit = new Unit(null, name);
-                return this.createConstant(name, unit);
-            }
+            return this.parentScope.find(name);
         }
 
-        return undefined;
-    },
-
-    /**
-     * Set a symbol to undefined (if defined)
-     * @param {String} name
-     */
-    setUndefined: function (name) {
-        var symbol = this.symbols[name];
-        if (symbol) {
-            symbol.set(undefined);
-        }
-    },
-
-    /**
-     * Remove a link to a symbol
-     * @param {String} name
-     */
-    removeLink: function (name) {
-        delete this.links[name];
-    },
-
-    /**
-     * Remove a definition of a symbol
-     * @param {String} name
-     */
-    removeDef: function (name) {
-        delete this.defs[name];
-    },
-
-    /**
-     * Remove an update definition of a symbol
-     * @param {String} name
-     */
-    removeUpdate: function (name) {
-        delete this.updates[name];
-    },
-
-    /**
-     * initialize the scope and its nested scopes
-     *
-     * All functions are linked to their previous definition
-     * If there is no parentScope, or no definition of the func in the parent scope,
-     * the link will be set undefined
-     */
-    init: function () {
-        var symbols = this.symbols;
-        var parentScope = this.parentScope;
-
-        for (var name in symbols) {
-            if (symbols.hasOwnProperty(name)) {
-                var symbol = symbols[name];
-                symbol.set(parentScope ? parentScope.findDef(name) : undefined);
-            }
-        }
-
-        if (this.nestedScopes) {
-            this.nestedScopes.forEach(function (nestedScope) {
-                nestedScope.init();
-            });
-        }
-    },
-
-    /**
-     * Check whether this scope or any of its nested scopes contain a link to a
-     * symbol with given name
-     * @param {String} name
-     * @return {boolean} hasLink   True if a link with given name is found
-     */
-    hasLink: function (name) {
-        if (this.links[name]) {
-            return true;
-        }
-
-        if (this.nestedScopes) {
-            var nestedScopes = this.nestedScopes;
-            for (var i = 0, iMax = nestedScopes.length; i < iMax; i++) {
-                if (nestedScopes[i].hasLink(name)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    },
-
-    /**
-     * Check whether this scope contains a definition of a symbol with given name
-     * @param {String} name
-     * @return {boolean} hasDef   True if a definition with given name is found
-     */
-    hasDef: function (name) {
-        return (this.defs[name] != undefined);
-    },
-
-    /**
-     * Check whether this scope contains an update definition of a symbol with
-     * given name
-     * @param {String} name
-     * @return {boolean} hasUpdate   True if an update definition with given name is found
-     */
-    hasUpdate: function (name) {
-        return (this.updates[name] != undefined);
-    },
-
-    /**
-     * Retrieve all undefined symbols
-     * @param {String} [name]  Optional name to filter the undefined symbols
-     * @return {math.expr.Symbol[]} undefinedSymbols   All symbols which are undefined
-     */
-    getUndefinedSymbols: function (name) {
-        var symbols = this.symbols;
-        var undefinedSymbols = [];
-        for (var i in symbols) {
-            if (symbols.hasOwnProperty(i)) {
-                var symbol = symbols[i];
-                if (symbol.value == undefined && (!name || symbol.name == name)) {
-                    undefinedSymbols.push(symbol);
-                }
-            }
-        }
-
-        if (this.nestedScopes) {
-            this.nestedScopes.forEach(function (nestedScope) {
-                undefinedSymbols = undefinedSymbols.concat(
-                    nestedScope.getUndefinedSymbols(name));
-            });
-        }
-
-        return undefinedSymbols;
+        // check root scope
+        return math.expr.Scope.rootScope.find(name);
     }
 };
+
+/**
+ * @constructor math.expr.RootScope
+ * The root scope is read-only, and returns/holds all built-in functions and
+ * variables
+ */
+math.expr.RootScope = function RootScope() {};
+
+math.expr.RootScope.prototype = new math.expr.Scope();
+
+/**
+ * Create a sub scope
+ * The variables in a sub scope are not accessible from the parent scope
+ * @return {math.expr.Scope} subScope
+ */
+math.expr.RootScope.prototype.createSubScope = function () {
+    throw new Error('Cannot create a sub scope in the root scope');
+};
+
+/**
+ * Get a symbol value by name. Returns undefined if the symbol is not
+ * found in this scope.
+ * @param {String} name
+ * @returns {* | undefined} value
+ */
+math.expr.RootScope.prototype.get = function (name) {
+    var value;
+
+    // check function (and load the function), for example "sin" or "sqrt"
+    // search in the mathnotepad.math namespace for this symbol
+    value = math[name];
+    if (value) {
+        // Note: we do NOT cache methods from the math namespace
+        return value;
+    }
+
+    // check if cached
+    value = this.symbols[name];
+    if (value !== undefined) {
+        return value;
+    }
+
+    // check if token is a unit
+    if (Unit.isPlainUnit(name)) {
+        value = new Unit(null, name);
+        this.symbols[name] = value;
+        return value;
+    }
+
+    // noop. not found
+    return undefined;
+};
+
+/**
+ * Test whether this scope contains a symbol (will not check parent scopes)
+ * @param {String} name
+ * @return {Boolean} hasSymbol
+ */
+math.expr.RootScope.prototype.has = function (name) {
+    return (this.get(name) !== undefined);
+};
+
+/**
+ * Set a symbol value
+ * @param {String} name
+ * @param {*} value
+ */
+math.expr.RootScope.prototype.set = function (name, value) {
+    throw new Error('Cannot set a symbol in the root scope');
+};
+
+/**
+ * Locate a symbol, find the last scope where this symbol is defined.
+ * The function will first search the chain of parent scopes until it
+ * finds the symbol. If found, it returns the scope where the symbol is
+ * defined, else it returns undefined.
+ * @param {String} name
+ * @return {Scope | undefined} scope, or undefined when not found
+ */
+math.expr.RootScope.prototype.find = function (name) {
+    if (this.get(name) !== undefined) {
+        return this;
+    }
+    else {
+        return undefined;
+    }
+};
+
+/**
+ * Singleton root scope for use by all scopes
+ * @type {math.expr.Scope}
+ */
+math.expr.Scope.rootScope = new math.expr.RootScope();
 
 (function () {
     /**
@@ -3959,14 +4058,14 @@ math.expr.Scope.prototype = {
                 'Parser constructor must be called with the new operator');
         }
 
-        this.scope = new math.expr.Scope(null);
+        this.scope = new math.expr.Scope();
     };
 
     /**
      * Parse an expression end return the parsed function node.
      * The node can be evaluated via node.eval()
      * @param {String} expression
-     * @param {math.expr.Scope} [scope]
+     * @param {math.expr.Scope | Object} [scope]
      * @return {Node} node
      * @throws {Error}
      */
@@ -3977,22 +4076,33 @@ math.expr.Scope.prototype = {
 
         expr = expression || '';
 
-        if (!scope) {
-            scope = this.scope;
+        var parseScope;
+        if (scope) {
+            if (scope instanceof math.expr.Scope) {
+                parseScope = scope;
+            }
+            else {
+                parseScope = new math.expr.Scope(scope);
+            }
+        }
+        else {
+            parseScope = this.scope;
         }
 
-        return parse_start(scope);
+        return parse_start(parseScope);
     };
 
     /**
      * Parse and evaluate the given expression
-     * @param {String} expression   A string containing an expression, for example "2+3"
-     * @return {*} result           The result, or undefined when the expression was
-     *                              empty
+     * @param {String} expression                   A string containing an
+     *                                              expression, for example "2+3"
+     * @param {math.expr.Scope | Object} [scope]
+     * @return {*} result                           The result, or undefined when
+     *                                              the expression was empty
      * @throws {Error}
      */
-    math.expr.Parser.prototype.eval = function (expression) {
-        var node = this.parse(expression);
+    math.expr.Parser.prototype.eval = function (expression, scope) {
+        var node = this.parse(expression, scope);
         return node.eval();
     };
 
@@ -4003,11 +4113,7 @@ math.expr.Scope.prototype = {
      * @return {* | undefined} value
      */
     math.expr.Parser.prototype.get = function (name) {
-        var symbol = this.scope.findDef(name);
-        if (symbol) {
-            return symbol.get();
-        }
-        return undefined;
+        return this.scope.get(name);
     };
 
     /**
@@ -4016,7 +4122,7 @@ math.expr.Scope.prototype = {
      * @param {* | undefined} value
      */
     math.expr.Parser.prototype.set = function (name, value) {
-        this.scope.createDef(name, value);
+        this.scope.set(name, value);
     };
 
     /**
@@ -4024,7 +4130,7 @@ math.expr.Scope.prototype = {
      * @param {String} name
      */
     math.expr.Parser.prototype.remove = function (name) {
-        this.scope.setUndefined(name);
+        this.scope.remove(name);
     };
 
     /**
@@ -4390,9 +4496,7 @@ math.expr.Scope.prototype = {
 
         // create a variable definition for ans
         var name = 'ans';
-        var params = undefined;
-        var link = scope.createDef(name);
-        return new AssignmentNode(name, params, null, expression, link);
+        return new AssignmentNode(name, expression, scope);
     }
 
     /**
@@ -4418,17 +4522,13 @@ math.expr.Scope.prototype = {
             }
 
             // get function variables
-            var functionScope = scope.createNestedScope();
-            var variableNames = [];
+            var functionScope = scope.createSubScope();
             var variables = [];
             while (true) {
                 getToken();
                 if (token_type == TOKENTYPE.SYMBOL) {
-                    // store parameter
-                    var variableName = token;
-                    var variable = functionScope.createDef(variableName);
-                    variableNames.push(variableName);
-                    variables.push(variable);
+                    // store variable name
+                    variables.push(token);
                 }
                 else {
                     throw createSyntaxError('Variable name expected');
@@ -4455,10 +4555,8 @@ math.expr.Scope.prototype = {
             // parse the expression, with the correct function scope
             getToken();
             var expression = parse_assignment(functionScope);
-            var result = scope.createDef(name);
 
-            return  new FunctionNode(name, variableNames, variables,
-                expression, result);
+            return new FunctionNode(name, variables, expression, functionScope, scope);
         }
 
         return parse_assignment(scope);
@@ -4472,12 +4570,12 @@ math.expr.Scope.prototype = {
      * @private
      */
     function parse_assignment (scope) {
-        var name, params, scopes, expr, link;
+        var name, params, paramScopes, expr;
 
         /* TODO: cleanup? or use? see comments further down
         var linkExisted = false;
         if (token_type == TOKENTYPE.SYMBOL) {
-            linkExisted = scope.hasLink(token);
+            linkExisted = scope.has(token);
         }
         */
 
@@ -4495,8 +4593,7 @@ math.expr.Scope.prototype = {
                 name = node.name;
                 params = null;
                 expr = parse_assignment(scope);
-                link = scope.createDef(name);
-                return new AssignmentNode(name, params, null, expr, link);
+                return new AssignmentNode(name, expr, scope);
             }
             else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
                 // TODO: remove link when it was undefined before we parsed this expression?
@@ -4508,10 +4605,9 @@ math.expr.Scope.prototype = {
                 getToken();
                 name = node.object.name;
                 params = node.params;
-                scopes = node.scopes;
+                paramScopes = node.paramScopes;
                 expr = parse_assignment(scope);
-                link = scope.createUpdate(name);
-                return new AssignmentNode(name, params, scopes, expr, link);
+                return new UpdateNode(name, params, paramScopes, expr, scope);
             }
             else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
@@ -4548,8 +4644,7 @@ math.expr.Scope.prototype = {
                 getToken();
                 if (token == ')' || token == ',' || token == '') {
                     // implicit end
-                    var end = scope.createLink('end');
-                    params.push(new SymbolNode('end', end));
+                    params.push(new SymbolNode('end', scope));
                 }
                 else {
                     // explicit end
@@ -4838,7 +4933,7 @@ math.expr.Scope.prototype = {
          // the parameters are something like: plot(sin(x), cos(x), x)
          var functions = [];
          if (token == '(') {
-         var plotScope = scope.createNestedScope();
+         var plotScope = scope.createSubScope();
 
          getToken();
          functions.push(parse_assignment(plotScope));
@@ -4881,7 +4976,7 @@ math.expr.Scope.prototype = {
      * @private
      */
     function parse_symbol (scope) {
-        var node, name, symbol;
+        var node, name;
 
         if (token_type == TOKENTYPE.SYMBOL) {
             name = token;
@@ -4889,8 +4984,7 @@ math.expr.Scope.prototype = {
             getToken();
 
             // create a symbol
-            symbol = scope.createLink(name);
-            node = new SymbolNode(name, symbol);
+            node = new SymbolNode(name, scope);
 
             // parse parameters
             return parse_params(scope, node);
@@ -4910,27 +5004,27 @@ math.expr.Scope.prototype = {
      */
     function parse_params (scope, node) {
         var params,
-            scopes,
-            nestedScope;
+            paramScopes,
+            paramScope;
 
         while (token == '(') {
             params = [];
-            scopes = [];
+            paramScopes = [];
 
             getToken();
 
             if (token != ')') {
-                nestedScope = scope.createNestedScope();
-                scopes.push(nestedScope);
-                params.push(parse_range(nestedScope));
+                paramScope = scope.createSubScope();
+                paramScopes.push(paramScope);
+                params.push(parse_range(paramScope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
 
-                    nestedScope = scope.createNestedScope();
-                    scopes.push(nestedScope);
-                    params.push(parse_range(nestedScope));
+                    paramScope = scope.createSubScope();
+                    paramScopes.push(paramScope);
+                    params.push(parse_range(paramScope));
                 }
             }
 
@@ -4939,7 +5033,7 @@ math.expr.Scope.prototype = {
             }
             getToken();
 
-            node = new ParamsNode(node, params, scopes);
+            node = new ParamsNode(node, params, paramScopes);
         }
 
         return node;
@@ -5245,528 +5339,581 @@ math.expr.Scope.prototype = {
 
 })();
 
-(function () {
-    /**
-     * @constructor math.expr.Workspace
-     *
-     * Workspace manages a set of expressions. Expressions can be added, replace,
-     * deleted, and inserted in the workspace. The workspace keeps track on the
-     * dependencies between the expressions, and automatically updates results of
-     * depending expressions when variables or function definitions are changed in
-     * the workspace.
-     *
-     * Methods:
-     *     var id = workspace.append(expr);
-     *     var id = workspace.insertBefore(expr, beforeId);
-     *     var id = workspace.insertAfter(expr, afterId);
-     *     workspace.replace(expr, id);
-     *     workspace.remove(id);
-     *     workspace.clear();
-     *     var expr   = workspace.getExpr(id);
-     *     var result = workspace.getResult(id);
-     *     var deps   = workspace.getDependencies(id);
-     *     var changes = workspace.getChanges(updateSeq);
-     *
-     * Usage:
-     *     var workspace = new math.expr.Workspace();
-     *     var id0 = workspace.append('a = 3/4');
-     *     var id1 = workspace.append('a + 2');
-     *     console.log('a + 2 = ' + workspace.getResult(id1));
-     *     workspace.replace('a=5/2', id0);
-     *     console.log('a + 2 = ' + workspace.getResult(id1));
-     */
-    function Workspace () {
-        this.idMax = -1;
-        this.updateSeq = 0;
-        this.parser = new math.expr.Parser();
-        this.scope = new math.expr.Scope();
 
-        this.nodes = {};
-        this.firstNode = undefined;
-        this.lastNode = undefined;
+/**
+ * @constructor math.expr.Expression
+ *
+ * A node which can hold a scope and an expression.
+ * Expression is used by Workspace.
+ *
+ * @param {Object} params Object containing parameters:
+ *                        {Number} id
+ *                        {String} expression   An expression, for example "2+3"
+ *                        {Parser} parser
+ *                        {Scope} scope
+ *                        {math.expr.Expression} nextNode
+ *                        {math.expr.Expression} previousNode
+ */
+math.expr.Expression = function Expression (params) {
+    this.id = params.id;
+    this.parser = params.parser;
+    this.scope = params.scope;
+    this.nextNode = params.nextNode;
+    this.previousNode = params.previousNode;
+    // TODO: throw error when id, parser, or scope is not given
+
+    this.updateSeq = 0;
+    this.node = undefined;
+
+    this.symbols = {};
+    this.assignments = {};
+    this.updates = {};
+
+    this.result = undefined;
+    this.setExpr(params.expression);
+};
+
+/**
+ * Set the node's expression
+ * @param {String} expression
+ */
+math.expr.Expression.prototype.setExpr = function (expression) {
+    this.expression = expression || '';
+    this.scope.clear();
+    this._parse();
+    this._analyse();
+};
+
+/**
+ * Get the node's expression
+ * @return {String} expression
+ */
+math.expr.Expression.prototype.getExpr = function () {
+    return this.expression;
+};
+
+/**
+ * get the result of the nodes expression
+ * @return {*} result
+ */
+math.expr.Expression.prototype.getResult = function () {
+    // TODO: automatically evaluate when not up to date?
+    return this.result;
+};
+
+/**
+ * parse the node's expression
+ * @private
+ */
+math.expr.Expression.prototype._parse = function () {
+    try {
+        this.node = this.parser.parse(this.expression, this.scope);
+    }
+    catch (err) {
+        var value = 'Error: ' + String(err.message || err);
+        this.node = new ConstantNode(value);
+    }
+};
+
+/**
+ * analyse the expressions node tree: find all symbols, assignments, and updates
+ * @private
+ */
+math.expr.Expression.prototype._analyse = function () {
+    var i, len, node;
+
+    if (this.node) {
+        // find symbol nodes
+        var symbols = this.node.find({
+            type: math.expr.node.SymbolNode
+        });
+        this.symbols = {};
+        for (i = 0, len = symbols.length; i < len; i++) {
+            node = symbols[i];
+            this.symbols[node.name] = node;
+        }
+
+        // find symbol assignments
+        var assignments = this.node.find({
+            type: math.expr.node.AssignmentNode
+        });
+        this.assignments = {};
+        for (i = 0, len = assignments.length; i < len; i++) {
+            node = assignments[i];
+            this.assignments[node.name] = node;
+        }
+
+        // find symbol updates
+        var updates = this.node.find({
+            type: math.expr.node.UpdateNode
+        });
+        this.updates = {};
+        for (i = 0, len = updates.length; i < len; i++) {
+            node = updates[i];
+            this.updates[node.name] = node;
+        }
+
+    }
+};
+
+/**
+ * Evaluate the node expression
+ * @return {*} result
+ */
+math.expr.Expression.prototype.eval = function () {
+    try {
+        this.scope.clear();
+        this.result = this.node.eval();
+    }
+    catch (err) {
+        this.scope.clear();
+        this.result = 'Error: ' + String(err.message || err);
+    }
+    return this.result;
+};
+
+/**
+ * @constructor math.expr.Workspace
+ *
+ * Workspace manages a set of expressions. Expressions can be added,
+ * replaced, deleted, and inserted in the workspace. The workspace keeps
+ * track on the dependencies between the expressions, and automatically
+ * re-evaluates depending expressions when variables or function
+ * definitions are changed in the workspace.
+ *
+ * Methods:
+ *     var id = workspace.append(expr);
+ *     var id = workspace.insertBefore(expr, beforeId);
+ *     var id = workspace.insertAfter(expr, afterId);
+ *     workspace.replace(expr, id);
+ *     workspace.remove(id);
+ *     workspace.clear();
+ *     var expr   = workspace.getExpr(id);
+ *     var result = workspace.getResult(id);
+ *     var deps   = workspace.getDependencies(id);
+ *     var changes = workspace.getChanges(updateSeq);
+ *
+ * Usage:
+ *     var workspace = new math.expr.Workspace();
+ *     var id0 = workspace.append('a = 3/4');
+ *     var id1 = workspace.append('a + 2');
+ *     console.log('a + 2 = ' + workspace.getResult(id1));
+ *     workspace.replace('a=5/2', id0);
+ *     console.log('a + 2 = ' + workspace.getResult(id1));
+ */
+function Workspace () {
+    this.idMax = -1;
+    this.updateSeq = 0;
+    this.parser = new math.expr.Parser();
+    this.scope = new math.expr.Scope();
+
+    this.nodes = {};
+    this.firstNode = undefined;
+    this.lastNode = undefined;
+}
+
+math.expr.Workspace = Workspace;
+
+/**
+ * clear the workspace
+ */
+Workspace.prototype.clear = function () {
+    this.nodes = {};
+    this.firstNode = undefined;
+    this.lastNode = undefined;
+};
+
+/**
+ * append an expression to the workspace
+ * @param {String}    expression
+ * @return {Number}   id of the created node
+ */
+Workspace.prototype.append = function (expression) {
+    // create the node
+    var id = this._getNewId();
+    var parentScope = this.lastNode ? this.lastNode.scope : this.scope;
+    var scope = new math.expr.Scope(parentScope);
+    var node = new math.expr.Expression({
+        'id': id,
+        'expression': expression,
+        'parser': this.parser,
+        'scope': scope,
+        'nextNode': undefined,
+        'previousNode': this.lastNode
+    });
+    this.nodes[id] = node;
+
+    // link next and previous nodes
+    if (!this.firstNode) {
+        this.firstNode = node;
+    }
+    if (this.lastNode) {
+        this.lastNode.nextNode = node;
+    }
+    this.lastNode = node;
+
+    // update this node
+    this._update([id]);
+
+    return id;
+};
+
+/**
+ * insert an expression before an existing expression
+ * @param {String} expression   the new expression
+ * @param {Number} beforeId     id of an existing expression
+ * @return {Number} id          id of the created node
+ */
+Workspace.prototype.insertBefore = function (expression, beforeId) {
+    var nextNode = this.nodes[beforeId];
+    if (!nextNode) {
+        throw new RangeError('Node with id "' + beforeId + '" not found');
     }
 
-    math.expr.Workspace = Workspace;
+    var previousNode = nextNode.previousNode;
+
+    // create the node
+    var id = this._getNewId();
+    var previousScope = previousNode ? previousNode.scope : this.scope;
+    var scope = new math.expr.Scope(previousScope);
+    var node = new math.expr.Expression({
+        'id': id,
+        'expression': expression,
+        'parser': this.parser,
+        'scope': scope,
+        'nextNode': nextNode,
+        'previousNode': previousNode
+    });
+    this.nodes[id] = node;
+
+    // link next and previous nodes
+    if (previousNode) {
+        previousNode.nextNode = node;
+    }
+    else {
+        this.firstNode = node;
+    }
+    nextNode.previousNode = node;
+
+    // link to the new the scope
+    nextNode.scope.parentScope = node.scope;
+
+    // update this node and all dependent nodes
+    var ids = this.getDependencies(id);
+    if (ids.indexOf(id) == -1) {
+        ids.unshift(id);
+    }
+    this._update(ids);
+
+    return id;
+};
+
+/**
+ * insert an expression after an existing expression
+ * @param {String} expression   the new expression
+ * @param {Number} afterId      id of an existing expression
+ * @return {Number} id          id of the created expression
+ */
+Workspace.prototype.insertAfter = function (expression, afterId) {
+    var previousNode = this.nodes[afterId];
+    if (!previousNode) {
+        throw new RangeError('Node with id "' + afterId + '" not found');
+    }
+
+    var nextNode = previousNode.nextNode;
+    if (nextNode) {
+        return this.insertBefore(expression, nextNode.id);
+    }
+    else {
+        return this.append(expression);
+    }
+};
+
+
+/**
+ * remove an expression. If the expression is not found, no action will
+ * be taken.
+ * @param {Number} id           id of an existing expression
+ */
+Workspace.prototype.remove = function (id) {
+    var node = this.nodes[id];
+    if (!node) {
+        throw new RangeError('Node with id "' + id + '" not found');
+    }
+
+    // get the dependencies (needed to update them after deletion of this node)
+    var dependentIds = this.getDependencies(id);
+
+    // adjust links to previous and next nodes
+    var previousNode = node.previousNode;
+    var nextNode = node.nextNode;
+    if (previousNode) {
+        previousNode.nextNode = nextNode;
+    }
+    else {
+        this.firstNode = nextNode;
+    }
+    if (nextNode) {
+        nextNode.previousNode = previousNode;
+    }
+    else {
+        this.lastNode = previousNode;
+    }
+
+    // re-link the scope
+    var previousScope = previousNode ? previousNode.scope : this.scope;
+    if (nextNode) {
+        nextNode.scope.parentScope = previousScope;
+    }
+
+    // remove the node
+    delete this.nodes[id];
+
+    // update all dependent nodes
+    this._update(dependentIds);
+};
+
+
+/**
+ * replace an existing expression
+ * @param {String} expression   the new expression
+ * @param {Number} id           id of an existing expression
+ */
+Workspace.prototype.replace = function (expression, id) {
+    var node = this.nodes[id];
+    if (!node) {
+        throw new RangeError('Node with id "' + id + '" not found');
+    }
+
+    // get the dependencies
+    var dependentIds = [id];
+    Workspace._merge(dependentIds, this.getDependencies(id));
+
+    // replace the expression
+    node.setExpr(expression);
+
+    // add the new dependencies
+    Workspace._merge(dependentIds, this.getDependencies(id));
+
+    // update all dependencies
+    this._update(dependentIds);
+};
+
+/**
+ * Merge array2 into array1, only adding distinct elements.
+ * The elements are not sorted.
+ * @param {Array} array1
+ * @param {Array} array2
+ * @private
+ */
+Workspace._merge = function (array1, array2) {
+    for (var i = 0, iMax = array2.length; i < iMax; i++) {
+        var elem = array2[i];
+        if (array1.indexOf(elem) == -1) {
+            array1.push(elem);
+        }
+    }
+};
+
+/**
+ * Retrieve the id's of the nodes which are dependent on this node
+ * @param {Number} id
+ * @return {Number[]} id's of dependent nodes. The ids are not ordered
+ */
+Workspace.prototype.getDependencies = function (id) {
+    var node = this.nodes[id],
+        ids = [],
+        names = {},
+        name;
+
+    if (!node) {
+        throw new RangeError('Node with id "' + id + '" not found');
+    }
 
     /**
-     * clear the workspace
+     * Append all symbol assignments and updates of given Expression to the list
+     * with names (value == true), or remove them (value == false).
+     * @param {math.expr.Expression} expr
+     * @param {boolean} value
      */
-    Workspace.prototype.clear = function () {
-        this.nodes = {};
-        this.firstNode = undefined;
-        this.lastNode = undefined;
-    };
-
-    /**
-     * append an expression to the workspace
-     * @param {String}    expression
-     * @return {Number}   id of the created node
-     */
-    Workspace.prototype.append = function (expression) {
-        // create the node
-        var id = this._getNewId();
-        var parentScope = this.lastNode ? this.lastNode.scope : this.scope;
-        var scope = new math.expr.Scope(parentScope);
-        var node = new Workspace.Node({
-            'id': id,
-            'expression': expression,
-            'parser': this.parser,
-            'scope': scope,
-            'nextNode': undefined,
-            'previousNode': this.lastNode
-        });
-        this.nodes[id] = node;
-
-        // link next and previous nodes
-        if (!this.firstNode) {
-            this.firstNode = node;
-        }
-        if (this.lastNode) {
-            this.lastNode.nextNode = node;
-        }
-        this.lastNode = node;
-
-        // update this node
-        this._update([id]);
-
-        return id;
-    };
-
-    /**
-     * insert an expression before an existing expression
-     * @param {String} expression   the new expression
-     * @param {Number} beforeId     id of an existing expression
-     * @return {Number} id          id of the created node
-     */
-    Workspace.prototype.insertBefore = function (expression, beforeId) {
-        var nextNode = this.nodes[beforeId];
-        if (!nextNode) {
-            throw 'Node with id "' + beforeId + '" not found';
-        }
-
-        var previousNode = nextNode.previousNode;
-
-        // create the node
-        var id = this._getNewId();
-        var previousScope = previousNode ? previousNode.scope : this.scope;
-        var scope = new math.expr.Scope(previousScope);
-        var node = new Workspace.Node({
-            'id': id,
-            'expression': expression,
-            'parser': this.parser,
-            'scope': scope,
-            'nextNode': nextNode,
-            'previousNode': previousNode
-        });
-        this.nodes[id] = node;
-
-        // link next and previous nodes
-        if (previousNode) {
-            previousNode.nextNode = node;
-        }
-        else {
-            this.firstNode = node;
-        }
-        nextNode.previousNode = node;
-
-        // link to the new the scope
-        nextNode.scope.parentScope = node.scope;
-
-        // update this node and all dependent nodes
-        var ids = this.getDependencies(id);
-        if (ids.indexOf(id) == -1) {
-            ids.unshift(id);
-        }
-        this._update(ids);
-
-        return id;
-    };
-
-    /**
-     * insert an expression after an existing expression
-     * @param {String} expression   the new expression
-     * @param {Number} afterId      id of an existing expression
-     * @return {Number} id          id of the created expression
-     */
-    Workspace.prototype.insertAfter = function (expression, afterId) {
-        var previousNode = this.nodes[afterId];
-        if (!previousNode) {
-            throw 'Node with id "' + afterId + '" not found';
-        }
-
-        var nextNode = previousNode.nextNode;
-        if (nextNode) {
-            return this.insertBefore(expression, nextNode.id);
-        }
-        else {
-            return this.append(expression);
-        }
-    };
-
-
-    /**
-     * remove an expression. If the expression is not found, no action will
-     * be taken.
-     * @param {Number} id           id of an existing expression
-     */
-    Workspace.prototype.remove = function (id) {
-        var node = this.nodes[id];
-        if (!node) {
-            throw 'Node with id "' + id + '" not found';
-        }
-
-        // get the dependencies (needed to update them after deletion of this node)
-        var dependentIds = this.getDependencies(id);
-
-        // adjust links to previous and next nodes
-        var previousNode = node.previousNode;
-        var nextNode = node.nextNode;
-        if (previousNode) {
-            previousNode.nextNode = nextNode;
-        }
-        else {
-            this.firstNode = nextNode;
-        }
-        if (nextNode) {
-            nextNode.previousNode = previousNode;
-        }
-        else {
-            this.lastNode = previousNode;
-        }
-
-        // re-link the scope
-        var previousScope = previousNode ? previousNode.scope : this.scope;
-        if (nextNode) {
-            nextNode.scope.parentScope = previousScope;
-        }
-
-        // remove the node
-        delete this.nodes[id];
-
-        // update all dependent nodes
-        this._update(dependentIds);
-    };
-
-
-    /**
-     * replace an existing expression
-     * @param {String} expression   the new expression
-     * @param {Number} id           id of an existing expression
-     */
-    Workspace.prototype.replace = function (expression, id) {
-        var node = this.nodes[id];
-        if (!node) {
-            throw 'Node with id "' + id + '" not found';
-        }
-
-        // get the dependencies
-        var dependentIds = [id];
-        Workspace._merge(dependentIds, this.getDependencies(id));
-
-        var previousNode = node.previousNode;
-        var nextNode = node.nextNode;
-        var previousScope = previousNode ? previousNode.scope : this.scope;
-
-        // replace the expression
-        node.setExpr(expression);
-
-        // add the new dependencies
-        Workspace._merge(dependentIds, this.getDependencies(id));
-
-        // update all dependencies
-        this._update(dependentIds);
-    };
-
-    /**
-     * @constructor Workspace.Node
-     * @param {Object} params Object containing parameters:
-     *                        {Number} id
-     *                        {String} expression   An expression, for example "2+3"
-     *                        {Parser} parser
-     *                        {Scope} scope
-     *                        {Workspace.Node} nextNode
-     *                        {Workspace.Node} previousNode
-     */
-    Workspace.Node = function (params) {
-        this.id = params.id;
-        this.parser = params.parser;
-        this.scope = params.scope;
-        this.nextNode = params.nextNode;
-        this.previousNode = params.previousNode;
-        // TODO: throw error when id, parser, or scope is not given
-
-        this.updateSeq = 0;
-        this.result = undefined;
-        this.setExpr(params.expression);
-    };
-
-    /**
-     * set the node's expression
-     * @param {String} expression
-     */
-    Workspace.Node.prototype.setExpr = function (expression) {
-        this.expression = expression || '';
-        this.scope.clear();
-        this._parse();
-    };
-
-    /**
-     * get the node's expression
-     * @return {String} expression
-     */
-    Workspace.Node.prototype.getExpr = function () {
-        return this.expression;
-    };
-
-    /**
-     * get the result of the nodes expression
-     * @return {*} result
-     */
-    Workspace.Node.prototype.getResult = function () {
-        // TODO: automatically evaluate when not up to date?
-        return this.result;
-    };
-
-    /**
-     * parse the node's expression
-     * @private
-     */
-    Workspace.Node.prototype._parse = function () {
-        try {
-            this.fn = this.parser.parse(this.expression, this.scope);
-        }
-        catch (err) {
-            var value = 'Error: ' + String(err.message || err);
-            this.fn = new ConstantNode(value);
-        }
-    };
-
-    /**
-     * Evaluate the node expression
-     * @return {*} result
-     */
-    Workspace.Node.prototype.eval = function () {
-        try {
-            this.scope.init();
-            this.result = this.fn.eval();
-        }
-        catch (err) {
-            this.scope.init();
-            this.result = 'Error: ' + String(err.message || err);
-        }
-        return this.result;
-    };
-
-    /**
-     * Merge array2 into array1, only adding distinct elements.
-     * The elements are not sorted.
-     * @param {Array} array1
-     * @param {Array} array2
-     * @private
-     */
-    Workspace._merge = function (array1, array2) {
-        for (var i = 0, iMax = array2.length; i < iMax; i++) {
-            var elem = array2[i];
-            if (array1.indexOf(elem) == -1) {
-                array1.push(elem);
-            }
-        }
-    };
-
-    /**
-     * Retrieve the id's of the nodes which are dependent on this node
-     * @param {Number} id
-     * @return {Number[]} id's of dependent nodes. The ids are not ordered
-     */
-    Workspace.prototype.getDependencies = function (id) {
-        var ids = [],
+    var appendNames = function (expr, value) {
+        var assignments = expr.assignments,
+            updates = expr.updates,
             name;
 
-        var node = this.nodes[id];
+        for (name in assignments) {
+            if (assignments.hasOwnProperty(name)) {
+                names[name] = value;
+            }
+        }
+        for (name in updates) {
+            if (updates.hasOwnProperty(name)) {
+                names[name] = value;
+            }
+        }
+    };
+
+    // append the assignments of the node itself
+    appendNames(node, true);
+
+    // loop over all next nodes and test dependency
+    node = node.nextNode;
+    while (node) {
+        var symbols = node.symbols,
+            depends = false;
+
+        // test if any of the nodes symbols are listed in the names map
+        for (name in symbols) {
+            if (symbols.hasOwnProperty(name) && names[name] == true) {
+                depends = true;
+                break;
+            }
+        }
+
+        if (depends) {
+            // append all assignments done in this node
+            appendNames(node, true);
+            ids.push(node.id);
+        }
+        else {
+            // detach all assignments done by this node
+            appendNames(node, false);
+        }
+
+        node = node.nextNode;
+    }
+
+    return ids;
+};
+
+/**
+ * Retrieve an expression, the original string
+ * @param {Number} id    Id of the expression to be retrieved
+ * @return {String}      The original expression as a string
+ */
+Workspace.prototype.getExpr = function (id) {
+    var node = this.nodes[id];
+    if (!node) {
+        throw new RangeError('Node with id "' + id + '" not found');
+    }
+
+    return node.getExpr();
+};
+
+
+/**
+ * get the result of and expression
+ * @param {Number} id
+ * @return {*} result
+ */
+Workspace.prototype.getResult = function (id) {
+    var node = this.nodes[id];
+    if (!node) {
+        throw new RangeError('Node with id "' + id + '" not found');
+    }
+
+    return node.getResult();
+};
+
+
+/**
+ * Update the results of an expression and all dependent expressions
+ * @param {Number[]} ids    Ids of the expressions to be updated
+ * @private
+ */
+Workspace.prototype._update = function (ids) {
+    this.updateSeq++;
+    var updateSeq = this.updateSeq;
+    var nodes = this.nodes;
+
+    for (var i = 0, iMax = ids.length; i < iMax; i++) {
+        var id = ids[i];
+        var node = nodes[id];
         if (node) {
-            // create a list with all symbol names defined/updated in this scope
-            var defs = node.scope.defs;
-            var updates = node.scope.updates;
-            var symbolNames = [];
-            for (name in defs) {
-                if (defs.hasOwnProperty(name)) {
-                    symbolNames.push(name);
-                }
-            }
-            for (name in updates) {
-                if (updates.hasOwnProperty(name) && symbolNames.indexOf(name) == -1) {
-                    symbolNames.push(name);
-                }
-            }
-
-            // loop through the nodes and retrieve the ids of nodes dependent on
-            // these values. We start at current node
-            var n = node.nextNode;
-            while (n && symbolNames.length) {
-                var scope = n.scope;
-                // loop through each of the parameters and check if the scope
-                // contains bindings to this parameter func
-                var i = 0;
-                while (i < symbolNames.length) {
-                    name = symbolNames[i];
-
-                    // check if this scope contains a link to the current symbol name
-                    if (scope.hasLink(name) || scope.hasUpdate(name)) {
-                        if (ids.indexOf(n.id) == -1) {
-                            ids.push(n.id);
-
-                            // recursively check the dependencies of this id
-                            var childIds = this.getDependencies(n.id);
-                            Workspace._merge(ids, childIds);
-                        }
-                    }
-
-                    // stop propagation of the current symbol name as soon as it is
-                    // redefined in one of the next scopes (not if it is updated)
-                    if (scope.hasDef(name)) {
-                        symbolNames.splice(i, 1);
-                        i--;
-                    }
-
-                    i++;
-                }
-
-                n = n.nextNode;
-            }
+            node.eval();
+            //console.log('eval node=' + id + ' result=' + node.result.toString()); // TODO: cleanup
+            node.updateSeq = updateSeq;
         }
+        else {
+            // TODO: throw error?
+        }
+    }
+};
 
-        return ids;
+/**
+ * Get all changes since an update sequence
+ * @param {Number} updateSeq.    Optional. if not provided, all changes are
+ *                               since the creation of the workspace are returned
+ * @return {Object} ids    Object containing two parameters:
+ *                         param {Number[]} ids         Array containing
+ *                                                      the ids of the changed
+ *                                                      expressions
+ *                         param {Number} updateSeq     the current update
+ *                                                      sequence
+ */
+Workspace.prototype.getChanges = function (updateSeq) {
+    var changedIds = [];
+    var node = this.firstNode;
+    updateSeq = updateSeq || 0;
+    while (node) {
+        if (node.updateSeq > updateSeq) {
+            changedIds.push(node.id);
+        }
+        node = node.nextNode;
+    }
+    return {
+        'ids': changedIds,
+        'updateSeq': this.updateSeq
     };
+};
 
-    /**
-     * Retrieve an expression, the original string
-     * @param {Number} id    Id of the expression to be retrieved
-     * @return {String}      The original expression as a string
-     */
-    Workspace.prototype.getExpr = function (id) {
-        var node = this.nodes[id];
-        if (!node) {
-            throw 'Node with id "' + id + '" not found';
-        }
+/**
+ * Return a new, unique id for an expression
+ * @return {Number} new id
+ * @private
+ */
+Workspace.prototype._getNewId = function () {
+    this.idMax++;
+    return this.idMax;
+};
 
-        return node.getExpr();
-    };
+/**
+ * String representation of the Workspace
+ * @return {String} description
+ */
+Workspace.prototype.toString = function () {
+    return JSON.stringify(this.toJSON());
+};
 
+/**
+ * JSON representation of the Workspace
+ * @return {Object} description
+ */
+Workspace.prototype.toJSON = function () {
+    var json = [];
 
-    /**
-     * get the result of and expression
-     * @param {Number} id
-     * @return {*} result
-     */
-    Workspace.prototype.getResult = function (id) {
-        var node = this.nodes[id];
-        if (!node) {
-            throw 'Node with id "' + id + '" not found';
-        }
-
-        return node.getResult();
-    };
-
-
-    /**
-     * Update the results of an expression and all dependent expressions
-     * @param {Number[]} ids    Ids of the expressions to be updated
-     * @private
-     */
-    Workspace.prototype._update = function (ids) {
-        this.updateSeq++;
-        var updateSeq = this.updateSeq;
-        var nodes = this.nodes;
-
-        for (var i = 0, iMax = ids.length; i < iMax; i++) {
-            var id = ids[i];
-            var node = nodes[id];
-            if (node) {
-                node.eval();
-                //console.log('eval node=' + id + ' result=' + node.result.toString()); // TODO: cleanup
-                node.updateSeq = updateSeq;
-            }
-            else {
-                // TODO: throw error?
-            }
-        }
-    };
-
-    /**
-     * Get all changes since an update sequence
-     * @param {Number} updateSeq.    Optional. if not provided, all changes are
-     *                               since the creation of the workspace are returned
-     * @return {Object} ids    Object containing two parameters:
-     *                         param {Number[]} ids         Array containing
-     *                                                      the ids of the changed
-     *                                                      expressions
-     *                         param {Number} updateSeq     the current update
-     *                                                      sequence
-     */
-    Workspace.prototype.getChanges = function (updateSeq) {
-        var changedIds = [];
-        var node = this.firstNode;
-        updateSeq = updateSeq || 0;
-        while (node) {
-            if (node.updateSeq > updateSeq) {
-                changedIds.push(node.id);
-            }
-            node = node.nextNode;
-        }
-        return {
-            'ids': changedIds,
-            'updateSeq': this.updateSeq
+    var node = this.firstNode;
+    while (node) {
+        var desc = {
+            'id': node.id,
+            'expression': node.expression,
+            'dependencies': this.getDependencies(node.id)
         };
-    };
 
-    /**
-     * Return a new, unique id for an expression
-     * @return {Number} new id
-     * @private
-     */
-    Workspace.prototype._getNewId = function () {
-        this.idMax++;
-        return this.idMax;
-    };
-
-    /**
-     * String representation of the Workspace
-     * @return {String} description
-     */
-    Workspace.prototype.toString = function () {
-        return JSON.stringify(this.toJSON());
-    };
-
-    /**
-     * JSON representation of the Workspace
-     * @return {Object} description
-     */
-    Workspace.prototype.toJSON = function () {
-        var json = [];
-
-        var node = this.firstNode;
-        while (node) {
-            var desc = {
-                'id': node.id,
-                'expression': node.expression,
-                'dependencies': this.getDependencies(node.id)
-            };
-
-            try {
-                desc.result = node.getResult();
-            } catch (err) {
-                desc.result = 'Error: ' + String(err.message || err);
-            }
-
-            json.push(desc);
-
-            node = node.nextNode;
+        try {
+            desc.result = node.getResult();
+        } catch (err) {
+            desc.result = 'Error: ' + String(err.message || err);
         }
 
-        return json;
-    };
+        json.push(desc);
 
-})();
+        node = node.nextNode;
+    }
+
+    return json;
+};
+
 /**
  * Calculate the absolute value of a value.
  *
@@ -7993,7 +8140,6 @@ function _det (matrix, rows, cols) {
     var multiply = math.multiply,
         subtract = math.subtract;
 
-    // this is a square matrix
     if (rows == 1) {
         // this is a 1 x 1 matrix
         return matrix[0][0];
@@ -8007,45 +8153,64 @@ function _det (matrix, rows, cols) {
         );
     }
     else {
-        // this is a matrix of 3 x 3 or larger
-        var d = 0;
-        for (var c = 0; c < cols; c++) {
-            var minor = _minor(matrix, rows, cols, 0, c);
-            //d += Math.pow(-1, 1 + c) * a(1, c) * _det(minor);
-            d += multiply(
-                multiply((c + 1) % 2 + (c + 1) % 2 - 1, matrix[0][c]),
-                _det(minor, rows - 1, cols - 1)
-            ); // faster than with pow()
-        }
-        return d;
-    }
-}
-
-/**
- * Extract a minor from a matrix
- * @param {Array[]} matrix  A square, two dimensional matrix
- * @param {Number} rows     Number of rows of the matrix (zero-based)
- * @param {Number} cols     Number of columns of the matrix (zero-based)
- * @param {Number} row      Row number to be removed (zero-based)
- * @param {Number} col      Column number to be removed (zero-based)
- * @private
- */
-function _minor(matrix, rows, cols, row, col) {
-    var minor = [],
-        minorRow;
-
-    for (var r = 0; r < rows; r++) {
-        if (r != row) {
-            minorRow = minor[r - (r > row)] = [];
-            for (var c = 0; c < cols; c++) {
-                if (c != col) {
-                    minorRow[c - (c > col)] = matrix[r][c];
+        // this is an n x n matrix
+        var det = 1;
+        var lead = 0;
+        for (var r = 0; r < rows; r++) {
+            if (lead >= cols) {
+                break;
+            }
+            var i = r;
+            // Find the pivot element.
+            while (matrix[i][lead] == 0) {
+                i++;
+                if (i == rows) {
+                    i = r;
+                    lead++;
+                    if (lead == cols) {
+                        // We found the last pivot.
+                        if (util.deepEqual(matrix, math.eye(rows).valueOf())) {
+                            return math.round(det, 6);
+                        } else {
+                            return 0;
+                        }
+                    }
                 }
             }
+            if (i != r) {
+                // Swap rows i and r, which negates the determinant.
+                for (var a = 0; a < cols; a++) {
+                    var temp = matrix[i][a];
+                    matrix[i][a] = matrix[r][a];
+                    matrix[r][a] = temp;
+                }
+                det *= -1;
+            }
+            // Scale row r and the determinant simultaneously.
+            var div = matrix[r][lead];
+            for (var a = 0; a < cols; a++) {
+                matrix[r][a] = matrix[r][a] / div;
+            }
+            det *= div;
+            // Back-substitute upwards.
+            for (var j = 0; j < rows; j++) {
+                if (j != r) {
+                    // Taking linear combinations does not change the det.
+                    var c = matrix[j][lead];
+                    for (var a = 0; a < cols; a++) {
+                        matrix[j][a] = matrix[j][a] - matrix[r][a] * c;
+                    }
+                }
+            }
+            lead++; // Now looking for a pivot further right.
+        }
+        // If reduction did not result in the identity, the matrix is singular.
+        if (util.deepEqual(matrix, math.eye(rows).valueOf())) {
+            return math.round(det, 6);
+        } else {
+            return 0;
         }
     }
-
-    return minor;
 }
 
 /**

@@ -1,9 +1,6 @@
 var assert = require('assert'),
     math = require('../../math.js');
 
-// TODO: test workspace as soon as it works again after simplifying scope
-return;
-
 var workspace = math.workspace();
 var id0 = workspace.append('a = 3/4');
 var id1 = workspace.append('a + 2');
@@ -22,22 +19,22 @@ assert.deepEqual(workspace.toJSON(), [
 
 var id2 = workspace.insertBefore('a=10', id1);
 assert.deepEqual(workspace.toJSON(), [
-    { id: 0, expression: 'a=5/2', dependencies: [ 2, 1 ], result: 2.5 },
+    { id: 0, expression: 'a=5/2', dependencies: [ ], result: 2.5 },
     { id: 2, expression: 'a=10', dependencies: [ 1 ], result: 10 },
     { id: 1, expression: 'a + 2', dependencies: [], result: 12 }
 ]);
 
 var id3 = workspace.insertBefore('a * 3', id2);
 assert.deepEqual(workspace.toJSON(), [
-    { id: 0, expression: 'a=5/2', dependencies: [ 3, 2, 1 ], result: 2.5 },
-    { id: 3, expression: 'a * 3', dependencies: [], result: 7.5 },
+    { id: 0, expression: 'a=5/2', dependencies: [ 3 ], result: 2.5 },
+    { id: 3, expression: 'a * 3', dependencies: [ ], result: 7.5 },
     { id: 2, expression: 'a=10', dependencies: [ 1 ], result: 10 },
     { id: 1, expression: 'a + 2', dependencies: [], result: 12 }
 ]);
 
 var id4 = workspace.append('q + 2');
 assert.deepEqual(workspace.toJSON(), [
-    { id: 0, expression: 'a=5/2', dependencies: [ 3, 2, 1 ], result: 2.5 },
+    { id: 0, expression: 'a=5/2', dependencies: [ 3 ], result: 2.5 },
     { id: 3, expression: 'a * 3', dependencies: [], result: 7.5 },
     { id: 2, expression: 'a=10', dependencies: [ 1 ], result: 10 },
     { id: 1, expression: 'a + 2', dependencies: [], result: 12 },
@@ -46,7 +43,7 @@ assert.deepEqual(workspace.toJSON(), [
 
 var id5 = workspace.insertAfter('q = a * 6', id3);
 assert.deepEqual(workspace.toJSON(), [
-    { id: 0, expression: 'a=5/2', dependencies: [ 3, 5, 4, 2, 1 ], result: 2.5 },
+    { id: 0, expression: 'a=5/2', dependencies: [ 3, 5, 4 ], result: 2.5 },
     { id: 3, expression: 'a * 3', dependencies: [], result: 7.5 },
     { id: 5, expression: 'q = a * 6', dependencies: [ 4 ], result: 15 },
     { id: 2, expression: 'a=10', dependencies: [ 1 ], result: 10 },
