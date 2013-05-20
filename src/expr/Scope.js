@@ -189,8 +189,13 @@ math.expr.RootScope.prototype.createSubScope = function () {
 math.expr.RootScope.prototype.get = function (name) {
     var value;
 
-    // TODO: do not cache anything in the root scope?
-    //       will give issues when changing functions in the math namespace
+    // check function (and load the function), for example "sin" or "sqrt"
+    // search in the mathnotepad.math namespace for this symbol
+    value = math[name];
+    if (value) {
+        // Note: we do NOT cache methods from the math namespace
+        return value;
+    }
 
     // check if cached
     value = this.symbols[name];
@@ -198,15 +203,7 @@ math.expr.RootScope.prototype.get = function (name) {
         return value;
     }
 
-    // check function (and load the function), for example "sin" or "sqrt"
-    // search in the mathnotepad.math namespace for this symbol
-    value = math[name];
-    if (value) {
-        // Note: we do NOT cache methods
-        return value;
-    }
-
-    // Check if token is a unit
+    // check if token is a unit
     if (Unit.isPlainUnit(name)) {
         value = new Unit(null, name);
         this.symbols[name] = value;

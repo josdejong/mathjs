@@ -53,7 +53,6 @@ task('concat', function () {
             './src/expr/node/BlockNode.js',
             './src/expr/node/AssignmentNode.js',
             './src/expr/node/FunctionNode.js',
-            './src/expr/Symbol.js',
             './src/expr/Scope.js',
             './src/expr/Parser.js',
             './src/expr/Workspace.js',
