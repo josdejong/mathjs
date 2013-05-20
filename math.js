@@ -3911,10 +3911,13 @@ math.expr.Scope.prototype = {
     }
 };
 
+
 /**
  * @constructor math.expr.RootScope
  * The root scope is read-only, and returns/holds all built-in functions and
  * variables
+ *
+ * @extends math.expr.Scope
  */
 math.expr.RootScope = function RootScope() {};
 
