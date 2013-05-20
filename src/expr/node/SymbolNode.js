@@ -2,12 +2,12 @@
  * @constructor SymbolNode
  * A symbol node can hold and resolve a symbol
  * @param {String} name
- * @param {math.expr.Symbol} symbol
+ * @param {math.expr.Scope} scope
  * @extends {Node}
  */
-function SymbolNode(name, symbol) {
+function SymbolNode(name, scope) {
     this.name = name;
-    this.symbol = symbol;
+    this.scope = scope;
 }
 
 SymbolNode.prototype = new Node();
@@ -21,10 +21,9 @@ math.expr.node.SymbolNode = SymbolNode;
  */
 SymbolNode.prototype.eval = function() {
     // return the value of the symbol
-    var value = this.symbol.get();
+    var value = this.scope.get(this.name);
 
     if (value === undefined) {
-        // TODO: throw an error or not?
         throw new Error('Undefined symbol ' + this.name);
     }
 

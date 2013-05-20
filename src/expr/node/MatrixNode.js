@@ -47,6 +47,31 @@ math.expr.node.MatrixNode = MatrixNode;
     };
 
     /**
+     * Find all nodes matching given filter
+     * @param {Object} filter  See Node.find for a description of the filter options
+     * @returns {Node[]} nodes
+     */
+    MatrixNode.prototype.find = function (filter) {
+        var results = [];
+
+        // check itself
+        if (this.match(filter)) {
+            results.push(this);
+        }
+
+        // search in all nodes
+        var nodes = this.nodes;
+        for (var r = 0, rows = nodes.length; r < rows; r++) {
+            var nodes_r = nodes[r];
+            for (var c = 0, cols = nodes_r.length; c < cols; c++) {
+                results = results.concat(nodes_r[c].find(filter));
+            }
+        }
+
+        return results;
+    };
+
+    /**
      * Merge nested Matrices in a two dimensional Array.
      * @param {Array} array    Two-dimensional array containing Matrices
      * @return {Array} merged  The merged array (two-dimensional)

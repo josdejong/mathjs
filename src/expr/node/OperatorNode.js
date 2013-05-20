@@ -26,6 +26,30 @@ OperatorNode.prototype.eval = function() {
 };
 
 /**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+OperatorNode.prototype.find = function (filter) {
+    var nodes = [];
+
+    // check itself
+    if (this.match(filter)) {
+        nodes.push(this);
+    }
+
+    // search in parameters
+    var params = this.params;
+    if (params) {
+        for (var i = 0, len = params.length; i < len; i++) {
+            nodes = nodes.concat(params[i].find(filter));
+        }
+    }
+
+    return nodes;
+};
+
+/**
  * Get string representation
  * @return {String} str
  */

@@ -52,14 +52,14 @@
                 'Parser constructor must be called with the new operator');
         }
 
-        this.scope = new math.expr.Scope(null);
+        this.scope = new math.expr.Scope();
     };
 
     /**
      * Parse an expression end return the parsed function node.
      * The node can be evaluated via node.eval()
      * @param {String} expression
-     * @param {math.expr.Scope} [scope]
+     * @param {math.expr.Scope | Object} [scope]
      * @return {Node} node
      * @throws {Error}
      */
@@ -70,22 +70,33 @@
 
         expr = expression || '';
 
-        if (!scope) {
-            scope = this.scope;
+        var parseScope;
+        if (scope) {
+            if (scope instanceof math.expr.Scope) {
+                parseScope = scope;
+            }
+            else {
+                parseScope = new math.expr.Scope(scope);
+            }
+        }
+        else {
+            parseScope = this.scope;
         }
 
-        return parse_start(scope);
+        return parse_start(parseScope);
     };
 
     /**
      * Parse and evaluate the given expression
-     * @param {String} expression   A string containing an expression, for example "2+3"
-     * @return {*} result           The result, or undefined when the expression was
-     *                              empty
+     * @param {String} expression                   A string containing an
+     *                                              expression, for example "2+3"
+     * @param {math.expr.Scope | Object} [scope]
+     * @return {*} result                           The result, or undefined when
+     *                                              the expression was empty
      * @throws {Error}
      */
-    math.expr.Parser.prototype.eval = function (expression) {
-        var node = this.parse(expression);
+    math.expr.Parser.prototype.eval = function (expression, scope) {
+        var node = this.parse(expression, scope);
         return node.eval();
     };
 
@@ -96,11 +107,7 @@
      * @return {* | undefined} value
      */
     math.expr.Parser.prototype.get = function (name) {
-        var symbol = this.scope.findDef(name);
-        if (symbol) {
-            return symbol.get();
-        }
-        return undefined;
+        return this.scope.get(name);
     };
 
     /**
@@ -109,7 +116,7 @@
      * @param {* | undefined} value
      */
     math.expr.Parser.prototype.set = function (name, value) {
-        this.scope.createDef(name, value);
+        this.scope.set(name, value);
     };
 
     /**
@@ -117,7 +124,7 @@
      * @param {String} name
      */
     math.expr.Parser.prototype.remove = function (name) {
-        this.scope.setUndefined(name);
+        this.scope.remove(name);
     };
 
     /**
@@ -484,8 +491,7 @@
         // create a variable definition for ans
         var name = 'ans';
         var params = undefined;
-        var link = scope.createDef(name);
-        return new AssignmentNode(name, params, null, expression, link);
+        return new AssignmentNode(name, params, null, expression, scope);
     }
 
     /**
@@ -511,17 +517,13 @@
             }
 
             // get function variables
-            var functionScope = scope.createNestedScope();
-            var variableNames = [];
+            var functionScope = scope.createSubScope();
             var variables = [];
             while (true) {
                 getToken();
                 if (token_type == TOKENTYPE.SYMBOL) {
-                    // store parameter
-                    var variableName = token;
-                    var variable = functionScope.createDef(variableName);
-                    variableNames.push(variableName);
-                    variables.push(variable);
+                    // store variable name
+                    variables.push(token);
                 }
                 else {
                     throw createSyntaxError('Variable name expected');
@@ -548,10 +550,8 @@
             // parse the expression, with the correct function scope
             getToken();
             var expression = parse_assignment(functionScope);
-            var result = scope.createDef(name);
 
-            return  new FunctionNode(name, variableNames, variables,
-                expression, result);
+            return new FunctionNode(name, variables, expression, functionScope, scope);
         }
 
         return parse_assignment(scope);
@@ -565,12 +565,12 @@
      * @private
      */
     function parse_assignment (scope) {
-        var name, params, scopes, expr, link;
+        var name, params, paramScopes, expr;
 
         /* TODO: cleanup? or use? see comments further down
         var linkExisted = false;
         if (token_type == TOKENTYPE.SYMBOL) {
-            linkExisted = scope.hasLink(token);
+            linkExisted = scope.has(token);
         }
         */
 
@@ -588,8 +588,7 @@
                 name = node.name;
                 params = null;
                 expr = parse_assignment(scope);
-                link = scope.createDef(name);
-                return new AssignmentNode(name, params, null, expr, link);
+                return new AssignmentNode(name, params, null, expr, scope);
             }
             else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
                 // TODO: remove link when it was undefined before we parsed this expression?
@@ -601,10 +600,9 @@
                 getToken();
                 name = node.object.name;
                 params = node.params;
-                scopes = node.scopes;
+                paramScopes = node.paramScopes;
                 expr = parse_assignment(scope);
-                link = scope.createUpdate(name);
-                return new AssignmentNode(name, params, scopes, expr, link);
+                return new AssignmentNode(name, params, paramScopes, expr, scope);
             }
             else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +
@@ -641,8 +639,7 @@
                 getToken();
                 if (token == ')' || token == ',' || token == '') {
                     // implicit end
-                    var end = scope.createLink('end');
-                    params.push(new SymbolNode('end', end));
+                    params.push(new SymbolNode('end', scope));
                 }
                 else {
                     // explicit end
@@ -931,7 +928,7 @@
          // the parameters are something like: plot(sin(x), cos(x), x)
          var functions = [];
          if (token == '(') {
-         var plotScope = scope.createNestedScope();
+         var plotScope = scope.createSubScope();
 
          getToken();
          functions.push(parse_assignment(plotScope));
@@ -974,7 +971,7 @@
      * @private
      */
     function parse_symbol (scope) {
-        var node, name, symbol;
+        var node, name;
 
         if (token_type == TOKENTYPE.SYMBOL) {
             name = token;
@@ -982,8 +979,7 @@
             getToken();
 
             // create a symbol
-            symbol = scope.createLink(name);
-            node = new SymbolNode(name, symbol);
+            node = new SymbolNode(name, scope);
 
             // parse parameters
             return parse_params(scope, node);
@@ -1003,27 +999,27 @@
      */
     function parse_params (scope, node) {
         var params,
-            scopes,
-            nestedScope;
+            paramScopes,
+            paramScope;
 
         while (token == '(') {
             params = [];
-            scopes = [];
+            paramScopes = [];
 
             getToken();
 
             if (token != ')') {
-                nestedScope = scope.createNestedScope();
-                scopes.push(nestedScope);
-                params.push(parse_range(nestedScope));
+                paramScope = scope.createSubScope();
+                paramScopes.push(paramScope);
+                params.push(parse_range(paramScope));
 
                 // parse a list with parameters
                 while (token == ',') {
                     getToken();
 
-                    nestedScope = scope.createNestedScope();
-                    scopes.push(nestedScope);
-                    params.push(parse_range(nestedScope));
+                    paramScope = scope.createSubScope();
+                    paramScopes.push(paramScope);
+                    params.push(parse_range(paramScope));
                 }
             }
 
@@ -1032,7 +1028,7 @@
             }
             getToken();
 
-            node = new ParamsNode(node, params, scopes);
+            node = new ParamsNode(node, params, paramScopes);
         }
 
         return node;

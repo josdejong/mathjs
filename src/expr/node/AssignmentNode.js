@@ -1,32 +1,39 @@
 /**
  * @constructor AssignmentNode
+ * Define or update a symbol value
+ *
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   Zero or more parameters
- * @param {Scope[]}  scopes             A scope for every parameter, where the
+ * @param {Scope[]}  paramScopes        A scope for every parameter, where the
  *                                      index variable 'end' can be defined.
  * @param {Node} expr                   The expression defining the symbol
- * @param {math.expr.Symbol} symbol     placeholder for the symbol
+ * @param {math.expr.Scope} scope       Scope to store the result
  */
-function AssignmentNode(name, params, scopes, expr, symbol) {
+function AssignmentNode(name, params, paramScopes, expr, scope) {
     this.name = name;
     this.params = params;
+    this.paramScopes = paramScopes;
     this.expr = expr;
-    this.symbol = symbol;
+    this.scope = scope;
 
-    // find the symbols 'end', which are index dependent
-    var ends = null;
-    if (scopes) {
-        for (var i = 0, len = scopes.length; i < len; i++) {
-            var scope = scopes[i];
-            if (scope.hasLink('end')) {
-                if (!ends) {
-                    ends = [];
-                }
-                ends[i] = scope.createLink('end');
+    // check whether any of the params expressions uses the context symbol 'end'
+    this.hasContextParams = false;
+    if (params) {
+        var filter = {
+            type: math.type.SymbolNode,
+            properties: {
+                name: 'end'
+            }
+        };
+
+        for (var i = 0, len = params.length; i < len; i++) {
+            if (params[i].find(filter).length > 0) {
+                this.hasContextParams = true;
+                break;
             }
         }
     }
-    this.ends = ends;
+
 }
 
 AssignmentNode.prototype = new Node();
@@ -47,19 +54,21 @@ AssignmentNode.prototype.eval = function() {
 
     if (params && params.length) {
         // test if definition is currently undefined
-        var prevResult = this.symbol.get();
+        var prevResult = this.scope.get(this.name);
         if (prevResult == undefined) {
             throw new Error('Undefined symbol ' + this.name);
         }
 
-        // evaluate the values of parameter 'end'
-        if (this.ends) {
-            var ends = this.ends,
+        // evaluate the values of context parameter 'end' when needed
+        if (this.hasContextParams) {
+            var paramScopes = this.paramScopes,
                 size = prevResult.size && prevResult.size();
-            for (var i = 0, len = this.params.length; i < len; i++) {
-                var end = ends[i];
-                if (end && size) {
-                    end.set(size[i]);
+            if (paramScopes && size) {
+                for (var i = 0, len = this.params.length; i < len; i++) {
+                    var paramScope = paramScopes[i];
+                    if (paramScope) {
+                        paramScope.set('end', size[i]);
+                    }
                 }
             }
         }
@@ -79,15 +88,44 @@ AssignmentNode.prototype.eval = function() {
         }
         result = prevResult.set(paramResults, exprResult);
 
-        this.symbol.set(result);
+        this.scope.set(this.name, result);
     }
     else {
         // variable definition, for example "a = 3/4"
         result = this.expr.eval();
-        this.symbol.set(result);
+        this.scope.set(this.name, result);
     }
 
     return result;
+};
+
+/**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+AssignmentNode.prototype.find = function (filter) {
+    var nodes = [];
+
+    // check itself
+    if (this.match(filter)) {
+        nodes.push(this);
+    }
+
+    // search in parameters
+    var params = this.params;
+    if (params) {
+        for (var i = 0, len = params.length; i < len; i++) {
+            nodes = nodes.concat(params[i].find(filter));
+        }
+    }
+
+    // search in expression
+    if (this.expr) {
+        nodes = nodes.concat(this.expr.find(filter));
+    }
+
+    return nodes;
 };
 
 /**

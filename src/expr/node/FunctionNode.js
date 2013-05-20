@@ -2,31 +2,42 @@
  * @constructor FunctionNode
  * Function assignment
  *
- * @param {String} name             Function name
- * @param {String[]} variableNames  Variable names
- * @param {function[]} variables    Links to the variables in a scope
- * @param {Node} expr               The function expression
- * @param {math.expr.Symbol} symbol Symbol to store the resulting function
- *                                  assignment
+ * @param {String} name                     Function name
+ * @param {String[]} variables              Variable names
+ * @param {Node} expr                       The function expression
+ * @param {math.expr.Scope} functionScope   Scope in which to write variable
+ *                                          values
+ * @param {math.expr.Scope} scope           Scope to store the resulting
+ *                                          function assignment
  */
-function FunctionNode(name, variableNames, variables, expr, symbol) {
+function FunctionNode(name, variables, expr, functionScope, scope) {
     this.name = name;
     this.variables = variables;
+    this.scope = scope;
 
-    this.values = [];
-    for (var i = 0, iMax = this.variables.length; i < iMax; i++) {
-        this.values[i] = (function () {
-            var value = function () {
-                return value.value;
-            };
-            value.value = undefined;
-            return value;
-        })();
-    }
+    // create function
+    this.fn = function () {
+        var num = variables ? variables.length : 0;
 
-    this.fn = this.createFunction(name, variableNames, variables, expr);
+        // validate correct number of arguments
+        if (arguments.length != num) {
+            throw newArgumentsError(name, arguments.length, num);
+        }
 
-    this.symbol = symbol;
+        // fill in the provided arguments in the functionScope variables
+        for (var i = 0; i < num; i++) {
+            functionScope.set(variables[i], arguments[i]);
+        }
+
+        // evaluate the expression
+        return expr.eval();
+    };
+
+    this.fn.toString = function() {
+        // TODO: what to return as toString?
+        return name + '(' + variables.join(', ') + ')';
+        //return name + '(' + variableNames.join(', ') + ') = ' + expr.toString();
+    };
 }
 
 FunctionNode.prototype = new Node();
@@ -34,60 +45,35 @@ FunctionNode.prototype = new Node();
 math.expr.node.FunctionNode = FunctionNode;
 
 /**
- * Create a function from the function assignment
- * @param {String} name             Function name
- * @param {String[]} variableNames  Variable names
- * @param {function[]} values       Zero or more functions
- * @param {Node} expr               The function expression
- *
- */
-FunctionNode.prototype.createFunction = function (
-        name, variableNames, values, expr) {
-    var fn = function () {
-        // validate correct number of arguments
-        var valuesNum = values ? values.length : 0;
-        var argumentsNum = arguments ? arguments.length : 0;
-        if (valuesNum != argumentsNum) {
-            throw newArgumentsError(name, argumentsNum, valuesNum);
-        }
-
-        // fill in all parameter values
-        if (valuesNum > 0) {
-            for (var i = 0; i < valuesNum; i++){
-                values[i].value = arguments[i];
-            }
-        }
-
-        // evaluate the expression
-        return expr.eval();
-    };
-
-    fn.toString = function() {
-        // TODO: what to return as toString?
-        return name + '(' + variableNames.join(', ') + ')';
-        //return name + '(' + variableNames.join(', ') + ') = ' + expr.toString();
-    };
-
-    return fn;
-};
-
-/**
  * Evaluate the function assignment
  * @return {function} fn
  */
 FunctionNode.prototype.eval = function() {
-    // link the variables to the values of this function assignment
-    var variables = this.variables,
-        values = this.values;
-    for (var i = 0, iMax = variables.length; i < iMax; i++) {
-        variables[i].value = values[i];
+    // put the definition in the scope
+    this.scope.set(this.name, this.fn);
+
+    return this.fn;
+};
+
+/**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+FunctionNode.prototype.find = function (filter) {
+    var nodes = [];
+
+    // check itself
+    if (this.match(filter)) {
+        nodes.push(this);
     }
 
-    // put the definition in the symbol
-    this.symbol.set(this.fn);
+    // search in expression
+    if (this.expr) {
+        nodes = nodes.concat(this.expr.find(filter));
+    }
 
-    // TODO: what to return? a neat "function y(x) defined"?
-    return this.fn;
+    return nodes;
 };
 
 /**

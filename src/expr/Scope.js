@@ -1,345 +1,259 @@
 
 /**
  * Scope
- * A scope stores functions.
+ * A scope stores values of symbols: variables and functions.
+ *
+ * Usage:
+ *     var scope = new math.expr.Scope();
+ *     var scope = new math.expr.Scope(parentScope);
+ *     var scope = new math.expr.Scope(symbols);
+ *     var scope = new math.expr.Scope(parentScope, symbols);
+ *
+ * Where:
+ *     {math.expr.Scope} parentScope    Scope will be linked to a parent scope,
+ *                                      which is consulted when resolving
+ *                                      symbols.
+ *     {Object} symbols                 A custom object that will be used to
+ *                                      resolve and store variables.
  *
  * @constructor math.expr.Scope
- * @param {Scope} [parentScope]
+ * @param {...} [args]
  */
-math.expr.Scope = function (parentScope) {
+math.expr.Scope = function Scope(args) {
     /** @type {math.expr.Scope} */
-    this.parentScope = parentScope;
+    this.parentScope = null;
 
     /** @type {math.expr.Scope[]} */
-    this.nestedScopes = undefined;
+    this.subScopes = null;
 
-    /** @type {Object.<string, math.expr.Symbol>} */
-    this.symbols = {}; // the actual symbols
+    /** @type {Object.<String, *>} */
+    this.symbols = {}; // variables and functions
 
-    // the following objects are just used to test existence.
-    this.defs = {};    // definitions by name (for example "a = [1, 2; 3, 4]")
-    this.updates = {}; // updates by name     (for example "a(2, 1) = 5.2")
-    this.links = {};   // links by name       (for example "2 * a")
+    // read first argument
+    if (arguments.length > 0) {
+        var arg0 = arguments[0];
+        if (arg0 instanceof math.expr.Scope) {
+            this.parentScope = arg0;
+        }
+        else if (arg0 instanceof Object) {
+            this.symbols = arg0;
+        }
+    }
+
+    // read second argument
+    if (arguments.length > 1) {
+        var arg1 = arguments[1];
+        if (arg1 instanceof Object) {
+            this.symbols = arg1;
+        }
+    }
 };
-
-// TODO: rethink the whole scoping solution again. Try to simplify
 
 math.expr.Scope.prototype = {
     /**
-     * Create a nested scope
-     * The variables in a nested scope are not accessible from the parent scope
-     * @return {math.expr.Scope} nestedScope
+     * Create a sub scope
+     * The variables in a sub scope are not accessible from the parent scope
+     * @return {math.expr.Scope} subScope
      */
-    createNestedScope: function () {
-        var nestedScope = new math.expr.Scope(this);
-        if (!this.nestedScopes) {
-            this.nestedScopes = [];
+    createSubScope: function () {
+        var subScope = new math.expr.Scope(this);
+        if (!this.subScopes) {
+            this.subScopes = [];
         }
-        this.nestedScopes.push(nestedScope);
-        return nestedScope;
+        this.subScopes.push(subScope);
+        return subScope;
     },
 
     /**
-     * Clear all symbols in this scope and its nested scopes
+     * Get a symbol value by name.
+     * Returns undefined if the symbol is not found in this scope or any of
+     * its parent scopes.
+     * @param {String} name
+     * @returns {* | undefined} value
+     */
+    get: function (name) {
+        var value;
+
+        // check itself
+        value = this.symbols[name];
+        if (value !== undefined) {
+            return value;
+        }
+
+        // TODO: implement a caching mechanism to store the scope.symbols where it last found the symbol
+
+        // check parent scope
+        if (this.parentScope) {
+            return this.parentScope.get(name);
+        }
+
+        // check root scope
+        return math.expr.Scope.rootScope.get(name);
+    },
+
+    /**
+     * Test whether this scope contains a symbol (will not check parent scopes)
+     * @param {String} name
+     * @return {Boolean} hasSymbol
+     */
+    has: function (name) {
+        return (this.symbols[name] !== undefined);
+    },
+
+    /**
+     * Set a symbol value
+     * @param {String} name
+     * @param {*} value
+     * @return {*} value
+     */
+    set: function (name, value) {
+        return this.symbols[name] = value;
+    },
+
+    /**
+     * Remove a symbol by name
+     * @param {String} name
+     */
+    remove: function(name) {
+        delete this.symbols[name];
+    },
+
+    /**
+     * Clear all symbols in this scope and its sub scopes
      * (parent scope will not be cleared)
      */
     clear: function () {
-        this.symbols = {};
-        this.defs = {};
-        this.links = {};
-        this.updates = {};
+        var symbols = this.symbols;
+        for (var name in symbols) {
+            if (symbols.hasOwnProperty(name)) {
+                delete symbols[name];
+            }
+        }
 
-        if (this.nestedScopes) {
-            var nestedScopes = this.nestedScopes;
-            for (var i = 0, iMax = nestedScopes.length; i < iMax; i++) {
-                nestedScopes[i].clear();
+        if (this.subScopes) {
+            var subScopes = this.subScopes;
+            for (var i = 0, iMax = subScopes.length; i < iMax; i++) {
+                subScopes[i].clear();
             }
         }
     },
 
     /**
-     * create a symbol
+     * Locate a symbol, find the last scope where this symbol is defined.
+     * The function will first search the chain of parent scopes until it
+     * finds the symbol. If found, it returns the scope where the symbol is
+     * defined, else it returns undefined.
      * @param {String} name
-     * @return {math.expr.Symbol} symbol
-     * @private
+     * @return {math.expr.Scope | undefined} scope, or undefined when not found
      */
-    createSymbol: function (name) {
-        var symbol = this.symbols[name];
-        if (!symbol) {
-            // get a link to the last definition
-            var lastDef = this.findDef(name);
-
-            // create a new symbol
-            symbol = new math.expr.Symbol(name, lastDef);
-            this.symbols[name] = symbol;
-
-        }
-        return symbol;
-    },
-
-    /**
-     * create a link to a value.
-     * @param {String} name
-     * @return {math.expr.Symbol} symbol
-     */
-    createLink: function (name) {
-        var symbol = this.links[name];
-        if (!symbol) {
-            symbol = this.createSymbol(name);
-            this.links[name] = symbol;
-        }
-        return symbol;
-    },
-
-    /**
-     * Create a variable definition
-     * Returns the created symbol
-     * @param {String} name
-     * @param {*} [value]
-     * @return {math.expr.Symbol} symbol
-     */
-    createDef: function (name, value) {
-        var symbol = this.defs[name];
-        if (!symbol) {
-            // create a new symbol
-            symbol = this.createSymbol(name);
-            this.defs[name] = symbol;
-
-            // update the symbols value
-            if (value != undefined) {
-                symbol.set(value);
-            }
-
-            // link undefined symbols in nested scopes to this symbol
-            var undef = this.getUndefinedSymbols(name);
-            if (undef.length) {
-                undef.forEach(function (u) {
-                    if (u != symbol) {
-                        u.set(symbol);
-                    }
-                });
-            }
-        }
-        else {
-            // update the symbols value
-            if (value != undefined) {
-                symbol.set(value);
-            }
-        }
-        return symbol;
-    },
-
-    /**
-     * Create a variable update definition
-     * Returns the created symbol
-     * @param {String} name
-     * @return {math.expr.Symbol} symbol
-     */
-    createUpdate: function (name) {
-        var symbol = this.updates[name];
-        if (!symbol) {
-            // create a new symbol
-            symbol = this.createLink(name);
-            this.updates[name] = symbol;
-
-            // link undefined symbols in nested scopes to this symbol
-            var undef = this.getUndefinedSymbols(name);
-            if (undef.length) {
-                undef.forEach(function (u) {
-                    if (u != symbol) {
-                        u.set(symbol);
-                    }
-                });
-            }
-        }
-        return symbol;
-    },
-
-    /**
-     * Create a constant
-     * @param {String} name
-     * @param {*} value
-     * @return {math.expr.Symbol} symbol
-     * @private
-     */
-    createConstant: function (name, value) {
-        var symbol = new math.expr.Symbol(name, value);
-        this.symbols[name] = symbol;
-        this.defs[name] = symbol;
-        return symbol;
-    },
-
-    /**
-     * get the link to a symbol definition or update.
-     * If the symbol is not found in this scope, it will be looked up in its parent
-     * scope.
-     * @param {String} name
-     * @return {math.expr.Symbol | undefined} symbol, or undefined when not found
-     */
-    findDef: function (name) {
-        var symbol;
-
-        // check scope
-        symbol = this.defs[name];
-        if (symbol) {
-            return symbol;
-        }
-        symbol = this.updates[name];
-        if (symbol) {
-            return symbol;
+    find: function (name) {
+        // check this scope
+        if (this.symbols[name] !== undefined) {
+            return this;
         }
 
         // check parent scope
         if (this.parentScope) {
-            return this.parentScope.findDef(name);
-        }
-        else {
-            // this is the root scope (has no parent),
-            // try to load constants, functions, or unit from the library
-
-            // check function (and load the function), for example "sin" or "sqrt"
-            // search in the mathnotepad.math namespace for this symbol
-            var fn = math[name];
-            if (fn) {
-                return this.createConstant(name, fn);
-            }
-
-            // Check if token is a unit
-            if (Unit.isPlainUnit(name)) {
-                var unit = new Unit(null, name);
-                return this.createConstant(name, unit);
-            }
+            return this.parentScope.find(name);
         }
 
-        return undefined;
-    },
-
-    /**
-     * Set a symbol to undefined (if defined)
-     * @param {String} name
-     */
-    setUndefined: function (name) {
-        var symbol = this.symbols[name];
-        if (symbol) {
-            symbol.set(undefined);
-        }
-    },
-
-    /**
-     * Remove a link to a symbol
-     * @param {String} name
-     */
-    removeLink: function (name) {
-        delete this.links[name];
-    },
-
-    /**
-     * Remove a definition of a symbol
-     * @param {String} name
-     */
-    removeDef: function (name) {
-        delete this.defs[name];
-    },
-
-    /**
-     * Remove an update definition of a symbol
-     * @param {String} name
-     */
-    removeUpdate: function (name) {
-        delete this.updates[name];
-    },
-
-    /**
-     * initialize the scope and its nested scopes
-     *
-     * All functions are linked to their previous definition
-     * If there is no parentScope, or no definition of the func in the parent scope,
-     * the link will be set undefined
-     */
-    init: function () {
-        var symbols = this.symbols;
-        var parentScope = this.parentScope;
-
-        for (var name in symbols) {
-            if (symbols.hasOwnProperty(name)) {
-                var symbol = symbols[name];
-                symbol.set(parentScope ? parentScope.findDef(name) : undefined);
-            }
-        }
-
-        if (this.nestedScopes) {
-            this.nestedScopes.forEach(function (nestedScope) {
-                nestedScope.init();
-            });
-        }
-    },
-
-    /**
-     * Check whether this scope or any of its nested scopes contain a link to a
-     * symbol with given name
-     * @param {String} name
-     * @return {boolean} hasLink   True if a link with given name is found
-     */
-    hasLink: function (name) {
-        if (this.links[name]) {
-            return true;
-        }
-
-        if (this.nestedScopes) {
-            var nestedScopes = this.nestedScopes;
-            for (var i = 0, iMax = nestedScopes.length; i < iMax; i++) {
-                if (nestedScopes[i].hasLink(name)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    },
-
-    /**
-     * Check whether this scope contains a definition of a symbol with given name
-     * @param {String} name
-     * @return {boolean} hasDef   True if a definition with given name is found
-     */
-    hasDef: function (name) {
-        return (this.defs[name] != undefined);
-    },
-
-    /**
-     * Check whether this scope contains an update definition of a symbol with
-     * given name
-     * @param {String} name
-     * @return {boolean} hasUpdate   True if an update definition with given name is found
-     */
-    hasUpdate: function (name) {
-        return (this.updates[name] != undefined);
-    },
-
-    /**
-     * Retrieve all undefined symbols
-     * @param {String} [name]  Optional name to filter the undefined symbols
-     * @return {math.expr.Symbol[]} undefinedSymbols   All symbols which are undefined
-     */
-    getUndefinedSymbols: function (name) {
-        var symbols = this.symbols;
-        var undefinedSymbols = [];
-        for (var i in symbols) {
-            if (symbols.hasOwnProperty(i)) {
-                var symbol = symbols[i];
-                if (symbol.value == undefined && (!name || symbol.name == name)) {
-                    undefinedSymbols.push(symbol);
-                }
-            }
-        }
-
-        if (this.nestedScopes) {
-            this.nestedScopes.forEach(function (nestedScope) {
-                undefinedSymbols = undefinedSymbols.concat(
-                    nestedScope.getUndefinedSymbols(name));
-            });
-        }
-
-        return undefinedSymbols;
+        // check root scope
+        return math.expr.Scope.rootScope.find(name);
     }
 };
+
+/**
+ * @constructor math.expr.RootScope
+ * The root scope is read-only, and returns/holds all built-in functions and
+ * variables
+ */
+math.expr.RootScope = function RootScope() {};
+
+math.expr.RootScope.prototype = new math.expr.Scope();
+
+/**
+ * Create a sub scope
+ * The variables in a sub scope are not accessible from the parent scope
+ * @return {math.expr.Scope} subScope
+ */
+math.expr.RootScope.prototype.createSubScope = function () {
+    throw new Error('Cannot create a sub scope in the root scope');
+};
+
+/**
+ * Get a symbol value by name. Returns undefined if the symbol is not
+ * found in this scope.
+ * @param {String} name
+ * @returns {* | undefined} value
+ */
+math.expr.RootScope.prototype.get = function (name) {
+    var value;
+
+    // TODO: do not cache anything in the root scope?
+    //       will give issues when changing functions in the math namespace
+
+    // check if cached
+    value = this.symbols[name];
+    if (value !== undefined) {
+        return value;
+    }
+
+    // check function (and load the function), for example "sin" or "sqrt"
+    // search in the mathnotepad.math namespace for this symbol
+    value = math[name];
+    if (value) {
+        // Note: we do NOT cache methods
+        return value;
+    }
+
+    // Check if token is a unit
+    if (Unit.isPlainUnit(name)) {
+        value = new Unit(null, name);
+        this.symbols[name] = value;
+        return value;
+    }
+
+    // noop. not found
+    return undefined;
+};
+
+/**
+ * Test whether this scope contains a symbol (will not check parent scopes)
+ * @param {String} name
+ * @return {Boolean} hasSymbol
+ */
+math.expr.RootScope.prototype.has = function (name) {
+    return (this.get(name) !== undefined);
+};
+
+/**
+ * Set a symbol value
+ * @param {String} name
+ * @param {*} value
+ */
+math.expr.RootScope.prototype.set = function (name, value) {
+    throw new Error('Cannot set a symbol in the root scope');
+};
+
+/**
+ * Locate a symbol, find the last scope where this symbol is defined.
+ * The function will first search the chain of parent scopes until it
+ * finds the symbol. If found, it returns the scope where the symbol is
+ * defined, else it returns undefined.
+ * @param {String} name
+ * @return {Scope | undefined} scope, or undefined when not found
+ */
+math.expr.RootScope.prototype.find = function (name) {
+    if (this.get(name) !== undefined) {
+        return this;
+    }
+    else {
+        return undefined;
+    }
+};
+
+/**
+ * Singleton root scope for use by all scopes
+ * @type {math.expr.Scope}
+ */
+math.expr.Scope.rootScope = new math.expr.RootScope();

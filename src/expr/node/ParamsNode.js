@@ -3,28 +3,31 @@
  * invoke a list with parameters on the results of a node
  * @param {Node} object
  * @param {Node[]} params
- * @param {Scope[]} scopes      A scope for every parameter, where the index
- *                              variable 'end' can be defined.
+ * @param {Scope[]} paramScopes     A scope for every parameter, where the
+ *                                  index variable 'end' can be defined.
  */
-function ParamsNode (object, params, scopes) {
+function ParamsNode (object, params, paramScopes) {
     this.object = object;
     this.params = params;
-    this.scopes = scopes;
+    this.paramScopes = paramScopes;
 
-    // find the symbols 'end', which are index dependent
-    var ends = null;
-    if (scopes) {
-        for (var i = 0, len = scopes.length; i < len; i++) {
-            var scope = scopes[i];
-            if (scope.hasLink('end')) {
-                if (!ends) {
-                    ends = [];
-                }
-                ends[i] = scope.createLink('end');
+    // check whether any of the params expressions uses the context symbol 'end'
+    this.hasContextParams = false;
+    if (params) {
+        var filter = {
+            type: math.type.SymbolNode,
+            properties: {
+                name: 'end'
+            }
+        };
+
+        for (var i = 0, len = params.length; i < len; i++) {
+            if (params[i].find(filter).length > 0) {
+                this.hasContextParams = true;
+                break;
             }
         }
     }
-    this.ends = ends;
 }
 
 ParamsNode.prototype = new Node();
@@ -45,14 +48,16 @@ ParamsNode.prototype.eval = function() {
     }
     var obj = object.eval();
 
-    // evaluate the values of parameter 'end'
-    if (this.ends) {
-        var ends = this.ends,
+    // evaluate the values of context parameter 'end' when needed
+    if (this.hasContextParams) {
+        var paramScopes = this.paramScopes,
             size = obj.size && obj.size();
-        for (i = 0, len = this.params.length; i < len; i++) {
-            var end = ends[i];
-            if (end && size) {
-                end.set(size[i]);
+        if (paramScopes && size) {
+            for (i = 0, len = this.params.length; i < len; i++) {
+                var paramScope = paramScopes[i];
+                if (paramScope) {
+                    paramScope.set('end', size[i]);
+                }
             }
         }
     }
@@ -77,6 +82,35 @@ ParamsNode.prototype.eval = function() {
         throw new TypeError('Cannot apply parameters to object of type ' +
             math['typeof'](obj));
     }
+};
+
+/**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+ParamsNode.prototype.find = function (filter) {
+    var nodes = [];
+
+    // check itself
+    if (this.match(filter)) {
+        nodes.push(this);
+    }
+
+    // search object
+    if (this.object) {
+        nodes = nodes.concat(this.object.find(filter));
+    }
+
+    // search in parameters
+    var params = this.params;
+    if (params) {
+        for (var i = 0, len = params.length; i < len; i++) {
+            nodes = nodes.concat(params[i].find(filter));
+        }
+    }
+
+    return nodes;
 };
 
 /**
