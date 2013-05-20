@@ -11,7 +11,7 @@
  *
  * Where:
  *     {math.expr.Scope} parentScope    Scope will be linked to a parent scope,
- *                                      which is consulted when resolving
+ *                                      which is traversed when resolving
  *                                      symbols.
  *     {Object} symbols                 A custom object that will be used to
  *                                      resolve and store variables.
@@ -29,7 +29,7 @@ math.expr.Scope = function Scope(args) {
     /** @type {Object.<String, *>} */
     this.symbols = {}; // variables and functions
 
-    // read first argument
+    // read first argument (can be parentScope or symbols map)
     if (arguments.length > 0) {
         var arg0 = arguments[0];
         if (arg0 instanceof math.expr.Scope) {
@@ -40,7 +40,7 @@ math.expr.Scope = function Scope(args) {
         }
     }
 
-    // read second argument
+    // read second argument (can be symbols map)
     if (arguments.length > 1) {
         var arg1 = arguments[1];
         if (arg1 instanceof Object) {

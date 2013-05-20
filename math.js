@@ -3760,7 +3760,7 @@ FunctionNode.prototype.toString = function() {
  *
  * Where:
  *     {math.expr.Scope} parentScope    Scope will be linked to a parent scope,
- *                                      which is consulted when resolving
+ *                                      which is traversed when resolving
  *                                      symbols.
  *     {Object} symbols                 A custom object that will be used to
  *                                      resolve and store variables.
@@ -3778,7 +3778,7 @@ math.expr.Scope = function Scope(args) {
     /** @type {Object.<String, *>} */
     this.symbols = {}; // variables and functions
 
-    // read first argument
+    // read first argument (can be parentScope or symbols map)
     if (arguments.length > 0) {
         var arg0 = arguments[0];
         if (arg0 instanceof math.expr.Scope) {
@@ -3789,7 +3789,7 @@ math.expr.Scope = function Scope(args) {
         }
     }
 
-    // read second argument
+    // read second argument (can be symbols map)
     if (arguments.length > 1) {
         var arg1 = arguments[1];
         if (arg1 instanceof Object) {
@@ -3914,12 +3914,14 @@ math.expr.Scope.prototype = {
 
 /**
  * @constructor math.expr.RootScope
- * The root scope is read-only, and returns/holds all built-in functions and
- * variables
+ *
+ * The root scope is read-only, and holds all built-in functions and variables
  *
  * @extends math.expr.Scope
  */
-math.expr.RootScope = function RootScope() {};
+math.expr.RootScope = function RootScope() {
+    this.cache = {};
+};
 
 math.expr.RootScope.prototype = new math.expr.Scope();
 
@@ -3946,11 +3948,12 @@ math.expr.RootScope.prototype.get = function (name) {
     value = math[name];
     if (value) {
         // Note: we do NOT cache methods from the math namespace
+        // (methods may be changed by imports or other overrides)
         return value;
     }
 
     // check if cached
-    value = this.symbols[name];
+    value = this.cache[name];
     if (value !== undefined) {
         return value;
     }
@@ -3958,7 +3961,7 @@ math.expr.RootScope.prototype.get = function (name) {
     // check if token is a unit
     if (Unit.isPlainUnit(name)) {
         value = new Unit(null, name);
-        this.symbols[name] = value;
+        this.cache[name] = value;
         return value;
     }
 
@@ -5346,7 +5349,8 @@ math.expr.Scope.rootScope = new math.expr.RootScope();
 /**
  * @constructor math.expr.Expression
  *
- * A node which can hold a scope and an expression.
+ * An expression is a linked node which can hold a scope and an expression,
+ * and calculates symbol dependencies.
  * Expression is used by Workspace.
  *
  * @param {Object} params Object containing parameters:
@@ -5419,7 +5423,7 @@ math.expr.Expression.prototype._parse = function () {
 };
 
 /**
- * analyse the expressions node tree: find all symbols, assignments, and updates
+ * Analyse the expressions node tree: find all symbols, assignments, and updates
  * @private
  */
 math.expr.Expression.prototype._analyse = function () {

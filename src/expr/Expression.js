@@ -2,7 +2,8 @@
 /**
  * @constructor math.expr.Expression
  *
- * A node which can hold a scope and an expression.
+ * An expression is a linked node which can hold a scope and an expression,
+ * and calculates symbol dependencies.
  * Expression is used by Workspace.
  *
  * @param {Object} params Object containing parameters:
@@ -75,7 +76,7 @@ math.expr.Expression.prototype._parse = function () {
 };
 
 /**
- * analyse the expressions node tree: find all symbols, assignments, and updates
+ * Analyse the expressions node tree: find all symbols, assignments, and updates
  * @private
  */
 math.expr.Expression.prototype._analyse = function () {
