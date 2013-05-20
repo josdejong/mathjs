@@ -490,8 +490,7 @@
 
         // create a variable definition for ans
         var name = 'ans';
-        var params = undefined;
-        return new AssignmentNode(name, params, null, expression, scope);
+        return new AssignmentNode(name, expression, scope);
     }
 
     /**
@@ -588,7 +587,7 @@
                 name = node.name;
                 params = null;
                 expr = parse_assignment(scope);
-                return new AssignmentNode(name, params, null, expr, scope);
+                return new AssignmentNode(name, expr, scope);
             }
             else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
                 // TODO: remove link when it was undefined before we parsed this expression?
@@ -602,7 +601,7 @@
                 params = node.params;
                 paramScopes = node.paramScopes;
                 expr = parse_assignment(scope);
-                return new AssignmentNode(name, params, paramScopes, expr, scope);
+                return new UpdateNode(name, params, paramScopes, expr, scope);
             }
             else {
                 throw createSyntaxError('Symbol expected at the left hand side ' +

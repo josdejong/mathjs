@@ -1,39 +1,15 @@
 /**
  * @constructor AssignmentNode
- * Define or update a symbol value
+ * Define a symbol, like "a = 3.2"
  *
  * @param {String} name                 Symbol name
- * @param {Node[] | undefined} params   Zero or more parameters
- * @param {Scope[]}  paramScopes        A scope for every parameter, where the
- *                                      index variable 'end' can be defined.
  * @param {Node} expr                   The expression defining the symbol
  * @param {math.expr.Scope} scope       Scope to store the result
  */
-function AssignmentNode(name, params, paramScopes, expr, scope) {
+function AssignmentNode(name, expr, scope) {
     this.name = name;
-    this.params = params;
-    this.paramScopes = paramScopes;
     this.expr = expr;
     this.scope = scope;
-
-    // check whether any of the params expressions uses the context symbol 'end'
-    this.hasContextParams = false;
-    if (params) {
-        var filter = {
-            type: math.type.SymbolNode,
-            properties: {
-                name: 'end'
-            }
-        };
-
-        for (var i = 0, len = params.length; i < len; i++) {
-            if (params[i].find(filter).length > 0) {
-                this.hasContextParams = true;
-                break;
-            }
-        }
-    }
-
 }
 
 AssignmentNode.prototype = new Node();
@@ -49,52 +25,8 @@ AssignmentNode.prototype.eval = function() {
         throw new Error('Undefined symbol ' + this.name);
     }
 
-    var result;
-    var params = this.params;
-
-    if (params && params.length) {
-        // test if definition is currently undefined
-        var prevResult = this.scope.get(this.name);
-        if (prevResult == undefined) {
-            throw new Error('Undefined symbol ' + this.name);
-        }
-
-        // evaluate the values of context parameter 'end' when needed
-        if (this.hasContextParams) {
-            var paramScopes = this.paramScopes,
-                size = prevResult.size && prevResult.size();
-            if (paramScopes && size) {
-                for (var i = 0, len = this.params.length; i < len; i++) {
-                    var paramScope = paramScopes[i];
-                    if (paramScope) {
-                        paramScope.set('end', size[i]);
-                    }
-                }
-            }
-        }
-
-        // change part of a matrix, for example "a=[]", "a(2,3)=4.5"
-        var paramResults = [];
-        this.params.forEach(function (param) {
-            paramResults.push(param.eval());
-        });
-
-        var exprResult = this.expr.eval();
-
-        // TODO: check type of prevResult: Matrix, Array, String, other...
-        if (!prevResult.set) {
-            throw new TypeError('Cannot apply a subset to object of type ' +
-                math['typeof'](prevResult));
-        }
-        result = prevResult.set(paramResults, exprResult);
-
-        this.scope.set(this.name, result);
-    }
-    else {
-        // variable definition, for example "a = 3/4"
-        result = this.expr.eval();
-        this.scope.set(this.name, result);
-    }
+    var result = this.expr.eval();
+    this.scope.set(this.name, result);
 
     return result;
 };
@@ -112,14 +44,6 @@ AssignmentNode.prototype.find = function (filter) {
         nodes.push(this);
     }
 
-    // search in parameters
-    var params = this.params;
-    if (params) {
-        for (var i = 0, len = params.length; i < len; i++) {
-            nodes = nodes.concat(params[i].find(filter));
-        }
-    }
-
     // search in expression
     if (this.expr) {
         nodes = nodes.concat(this.expr.find(filter));
@@ -133,14 +57,5 @@ AssignmentNode.prototype.find = function (filter) {
  * @return {String}
  */
 AssignmentNode.prototype.toString = function() {
-    var str = '';
-
-    str += this.name;
-    if (this.params && this.params.length) {
-        str += '(' + this.params.join(', ') + ')';
-    }
-    str += ' = ';
-    str += this.expr.toString();
-
-    return str;
+    return this.name + ' = ' + this.expr.toString();
 };
