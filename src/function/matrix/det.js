@@ -62,7 +62,6 @@ function _det (matrix, rows, cols) {
     var multiply = math.multiply,
         subtract = math.subtract;
 
-    // this is a square matrix
     if (rows == 1) {
         // this is a 1 x 1 matrix
         return matrix[0][0];
@@ -76,6 +75,7 @@ function _det (matrix, rows, cols) {
         );
     }
     else {
+        // this is an n x n matrix
         var det = 1;
         var lead = 0;
         for (var r = 0; r < rows; r++) {
