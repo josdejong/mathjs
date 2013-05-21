@@ -2,6 +2,17 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.8.3
+
+- Implemented function math.parse(expr [,scope]). Optional parameter scope can
+  be a plain JavaScript Object containing variables.
+- Extended function math.expr(expr [, scope]) with an additional parameter
+  scope, similar to math.parse.
+- Moved the parse code from prototype math.expr.Parser to function math.parse,
+  simplified Parser a little bit.
+- Strongly simplified the code of Scope and Workspace.
+
+
 ## 2013-05-18, version 0.8.2
 
 - Extended the import function and some other minor improvements.

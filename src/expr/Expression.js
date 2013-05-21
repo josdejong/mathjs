@@ -9,18 +9,16 @@
  * @param {Object} params Object containing parameters:
  *                        {Number} id
  *                        {String} expression   An expression, for example "2+3"
- *                        {Parser} parser
  *                        {Scope} scope
  *                        {math.expr.Expression} nextNode
  *                        {math.expr.Expression} previousNode
  */
 math.expr.Expression = function Expression (params) {
     this.id = params.id;
-    this.parser = params.parser;
     this.scope = params.scope;
     this.nextNode = params.nextNode;
     this.previousNode = params.previousNode;
-    // TODO: throw error when id, parser, or scope is not given
+    // TODO: throw error when id or scope is not given
 
     this.updateSeq = 0;
     this.node = undefined;
@@ -67,7 +65,7 @@ math.expr.Expression.prototype.getResult = function () {
  */
 math.expr.Expression.prototype._parse = function () {
     try {
-        this.node = this.parser.parse(this.expression, this.scope);
+        this.node = math.parse(this.expression, this.scope);
     }
     catch (err) {
         var value = 'Error: ' + String(err.message || err);

@@ -30,7 +30,6 @@
 function Workspace () {
     this.idMax = -1;
     this.updateSeq = 0;
-    this.parser = new math.expr.Parser();
     this.scope = new math.expr.Scope();
 
     this.nodes = {};
@@ -62,7 +61,6 @@ Workspace.prototype.append = function (expression) {
     var node = new math.expr.Expression({
         'id': id,
         'expression': expression,
-        'parser': this.parser,
         'scope': scope,
         'nextNode': undefined,
         'previousNode': this.lastNode
@@ -105,7 +103,6 @@ Workspace.prototype.insertBefore = function (expression, beforeId) {
     var node = new math.expr.Expression({
         'id': id,
         'expression': expression,
-        'parser': this.parser,
         'scope': scope,
         'nextNode': nextNode,
         'previousNode': previousNode

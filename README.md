@@ -514,10 +514,11 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 ### Utils
 
 - math.clone(x)
-- math.eval(expr)
+- math.eval(expr [, scope])
 - math.format([template, ] values)
 - math.import(filename | object, override)
 - math.select([x])
+- math.parse(expr [, scope])
 - math.typeof(x)
 
 

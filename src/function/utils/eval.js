@@ -1,50 +1,51 @@
 /**
  * Evaluate an expression.
  *
- *     eval(expr)
- *     eval(expr1, expr2, expr3, ...)
- *     eval([expr1, expr2, expr3, ...])
+ * Syntax:
  *
- * @param {String | Array | Matrix} expr
+ *     math.eval(expr)
+ *     math.eval(expr, scope)
+ *     math.eval([expr1, expr2, expr3, ...])
+ *     math.eval([expr1, expr2, expr3, ...], scope)
+ *
+ * @param {String | String[] | Matrix} expr
+ * @param {math.expr.Scope | Object} [scope]
  * @return {*} res
+ * @throws {Error}
  */
-math.eval = function (expr) {
-    // TODO: implement a second parameter 'scope', which allows providing a custom scope with variables and functions
-    var parser,
-        res;
-
-    switch (arguments.length) {
-        case 0:
-            throw new Error('Function eval requires one or more parameters (0 provided)');
-
-        case 1:
-            parser = new math.expr.Parser();
-            return _eval(parser, expr);
-
-        default:
-            parser = new math.expr.Parser();
-            res = [];
-            for (var i = 0, len = arguments.length; i < len; i++) {
-                res[i] = _eval(parser, arguments[i]);
-            }
-            return res;
+math.eval = function (expr, scope) {
+    if (arguments.length != 1 && arguments.length != 2) {
+        throw newArgumentsError('eval', arguments.length, 1, 2);
     }
-};
 
-/**
- * Evaluate an expression
- * @param {math.expr.Parser} parser
- * @param {String | Array | Matrix} expr
- * @private
- */
-var _eval = function (parser, expr) {
+    // instantiate a scope
+    var evalScope;
+    if (scope) {
+        if (scope instanceof math.expr.Scope) {
+            evalScope = scope;
+        }
+        else {
+            evalScope = new math.expr.Scope(scope);
+        }
+    }
+    else {
+        evalScope = new math.expr.Scope();
+    }
+
     if (isString(expr)) {
-        return parser.eval(expr);
+        // evaluate a single expression
+        var node = math.parse(expr, evalScope);
+        return node.eval();
     }
-
-    if (expr instanceof Array || expr instanceof Matrix) {
-        return util.map(expr, parser.eval.bind(parser));
+    else if (expr instanceof Array || expr instanceof Matrix) {
+        // evaluate an array or matrix with expressions
+        return util.map(expr, function (elem) {
+            var node = math.parse(elem, evalScope);
+            return node.eval();
+        });
     }
-
-    throw new TypeError('String or matrix expected');
+    else {
+        // oops
+        throw new TypeError('String or matrix expected');
+    }
 };
