@@ -21,6 +21,8 @@ math['in'] = function unit_in(x, unit) {
         }
     }
 
+    // TODO: add support for string, in that case, convert to unit
+
     if (x instanceof Array || x instanceof Matrix ||
         unit instanceof Array || unit instanceof Matrix) {
         return util.map2(x, unit, math['in']);
