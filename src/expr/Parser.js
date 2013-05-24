@@ -1,9 +1,9 @@
 
 /**
  * @constructor math.expr.Parser
- * Parser contains methods to evaluate or parse expressions, and has some
- * additional methods get, set, and remove variables from memory. Parser keeps
- * a single scope containing variables in memory, which is used for all
+ * Parser contains methods to evaluate or parse expressions, and has a number
+ * of convenience methods to get, set, and remove variables from memory. Parser
+ * keeps a scope containing variables in memory, which is used for all
  * evaluations.
  *
  * Methods:
@@ -24,10 +24,10 @@
  *    // var parser = new math.parser();
  *
  *    // evaluate expressions
- *    var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
- *    var b = parser.eval('sqrt(-4)');        // 2i
- *    var c = parser.eval('2 inch in cm');    // 5.08 cm
- *    var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
+ *    parser.eval('sqrt(3^2 + 4^2)');         // 5
+ *    parser.eval('sqrt(-4)');                // 2i
+ *    parser.eval('2 inch in cm');            // 5.08 cm
+ *    parser.eval('cos(45 deg)');             // 0.7071067811865476
  *
  *    // define variables and functions
  *    parser.eval('x = 7 / 2');               // 3.5

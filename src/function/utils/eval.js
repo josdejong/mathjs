@@ -8,6 +8,16 @@
  *     math.eval([expr1, expr2, expr3, ...])
  *     math.eval([expr1, expr2, expr3, ...], scope)
  *
+ * Example:
+ *
+ *     math.eval('(2+3)/4');                // 1.25
+ *     math.eval('sqrt(3^2 + 4^2)');        // 5
+ *     math.eval('sqrt(-4)');               // 2i
+ *     math.eval(['a=3', 'b=4', 'a*b']);,   // [3, 4, 12]
+ *
+ *     var scope = {a:3, b:4};
+ *     math.eval('a * b', scope);           // 12
+ *
  * @param {String | String[] | Matrix} expr
  * @param {math.expr.Scope | Object} [scope]
  * @return {*} res

@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.8.3-SNAPSHOT
- * @date    2013-05-21
+ * @date    2013-05-24
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -4013,9 +4013,9 @@ math.expr.Scope.rootScope = new math.expr.RootScope();
 
 /**
  * @constructor math.expr.Parser
- * Parser contains methods to evaluate or parse expressions, and has some
- * additional methods get, set, and remove variables from memory. Parser keeps
- * a single scope containing variables in memory, which is used for all
+ * Parser contains methods to evaluate or parse expressions, and has a number
+ * of convenience methods to get, set, and remove variables from memory. Parser
+ * keeps a scope containing variables in memory, which is used for all
  * evaluations.
  *
  * Methods:
@@ -4036,10 +4036,10 @@ math.expr.Scope.rootScope = new math.expr.RootScope();
  *    // var parser = new math.parser();
  *
  *    // evaluate expressions
- *    var a = parser.eval('sqrt(3^2 + 4^2)'); // 5
- *    var b = parser.eval('sqrt(-4)');        // 2i
- *    var c = parser.eval('2 inch in cm');    // 5.08 cm
- *    var d = parser.eval('cos(45 deg)');     // 0.7071067811865476
+ *    parser.eval('sqrt(3^2 + 4^2)');         // 5
+ *    parser.eval('sqrt(-4)');                // 2i
+ *    parser.eval('2 inch in cm');            // 5.08 cm
+ *    parser.eval('cos(45 deg)');             // 0.7071067811865476
  *
  *    // define variables and functions
  *    parser.eval('x = 7 / 2');               // 3.5
@@ -8359,6 +8359,16 @@ math.clone = function clone(x) {
  *     math.eval([expr1, expr2, expr3, ...])
  *     math.eval([expr1, expr2, expr3, ...], scope)
  *
+ * Example:
+ *
+ *     math.eval('(2+3)/4');                // 1.25
+ *     math.eval('sqrt(3^2 + 4^2)');        // 5
+ *     math.eval('sqrt(-4)');               // 2i
+ *     math.eval(['a=3', 'b=4', 'a*b']);,   // [3, 4, 12]
+ *
+ *     var scope = {a:3, b:4};
+ *     math.eval('a * b', scope);           // 12
+ *
  * @param {String | String[] | Matrix} expr
  * @param {math.expr.Scope | Object} [scope]
  * @return {*} res
@@ -8590,6 +8600,20 @@ function isSupportedType(object) {
      *     math.parse(expr, scope)
      *     math.parse([expr1, expr2, expr3, ...])
      *     math.parse([expr1, expr2, expr3, ...], scope)
+     *
+     * Example:
+     *
+     *     var node = math.parse('sqrt(3^2 + 4^2)');
+     *     node.eval(); // 5
+     *
+     *     var scope = {a:3, b:4}
+     *     var node = math.parse('a * b', scope); // 12
+     *     node.eval(); // 12
+     *     scope.a = 5;
+     *     node.eval(); // 20
+     *
+     *     var nodes = math.parse(['a = 3', 'b = 4', 'a * b']);
+     *     nodes[2].eval(); // 12
      *
      * @param {String | String[] | Matrix} expr
      * @param {math.expr.Scope | Object} [scope]

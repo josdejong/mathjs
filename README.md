@@ -129,18 +129,31 @@ math.select(3)
 
 Math.js contains a flexible and easy to use expression parser.
 The parser supports all data types, methods and constants available in math.js.
-Expressions can be evaluated in two ways:
+Expressions can be evaluated in various ways:
 
-- Using the function [`math.eval`](#eval).
-- Using a more flexible [parser](#parser), which keeps defined variables and
-  functions in its scope for reuse.
+- Using the function [`math.eval(expr [,scope])`](#eval).
+- Using the function [`math.parse(expr [,scope])`](#parse).
+- By creating a [parser](#parser), `math.parser()`, which contains functions
+  `eval`, `parse`, and keeps a scope with assigned variables in memory.
 
 
 ### Eval
 
-Math.js comes with a function `math.eval` to evaluate expressions.
-The function `eval` does support all functions, variables, and data types
-available in math.js. It accepts one or multiple expressions as arguments.
+Math.js comes with a function `math.eval` to evaluate expressions. Syntax:
+
+```js
+math.eval(expr)
+math.eval(expr, scope)
+math.eval([expr1, expr2, expr3, ...])
+math.eval([expr1, expr2, expr3, ...], scope)
+```
+
+Function `eval` accepts a single expression or an array with
+expressions as first argument, and has an optional second argument
+containing a scope with variables and functions. The scope is a regular
+JavaScript Object. The scope will be used to resolve symbols, and to write
+assigned variables or function.
+
 The following code demonstrates how to evaluate expressions.
 
 ```js
@@ -148,19 +161,73 @@ The following code demonstrates how to evaluate expressions.
 var math = require('mathjs');
 
 // evaluate expressions
-var a = math.eval('sqrt(3^2 + 4^2)');   // a = 5
-var b = math.eval('sqrt(-4)');          // b = 2i
-var c = math.eval('2 inch in cm');      // c = 5.08 cm
-var d = math.eval('cos(45 deg)');       // d = 0.7071067811865476
-math.eval('f = 3', 'g = 4', 'f * g');   // [3, 4, 12]
+math.eval('sqrt(3^2 + 4^2)');           // 5
+math.eval('sqrt(-4)');                  // 2i
+math.eval('2 inch in cm');              // 5.08 cm
+math.eval('cos(45 deg)');               // 0.7071067811865476
+
+// provide a scope
+var scope = {
+    a: 3,
+    b: 4
+};
+math.eval('a * b', scope);              // 12
+math.eval('c = 2.3 + 4.5', scope);      // 6.8
+scope.c;                                // 6.8
+```
+
+### Parse
+
+Math.js contains a function `math.parse` to parse expressions into a node
+tree. The syntax is similar to [`math.eval`](#eval):
+
+```js
+math.parse(expr)
+math.parse(expr, scope)
+math.parse([expr1, expr2, expr3, ...])
+math.parse([expr1, expr2, expr3, ...], scope)
+```
+
+Function `parse` accepts a single expression or an array with
+expressions as first argument, and has an optional second argument
+containing a scope with variables and functions. The scope is a regular
+JavaScript Object. The scope will be used to resolve symbols, and to write
+assigned variables or function. Variables are linked dynamically to the
+provided scope.
+
+Example usage:
+
+```js
+// load math.js
+var math = require('mathjs');
+
+// parse an expression into a node, and evaluate the node
+var node1 = math.parse('sqrt(3^2 + 4^2)');
+node1.eval(); // 5
+
+// provide a scope
+var scope = {
+    x: 3,
+    a: 2
+};
+var node2 = math.parse('x^a', scope);
+node2.eval(); // 9
+
+// change a value in the scope and re-evaluate the node
+scope.a = 3;
+node2.eval(); // 27
 ```
 
 
 ### Parser
 
-The parser of math.js supports all functions, variables, and data types
-available in math.js. Additionally, it supports variable and function
-assignments. A parser can be created by:
+In addition to the static functions [`math.eval`](#eval) and
+[`math.parse`](#parse), math.js contains a parser with functions `eval` and
+`parse`, which automatically keeps a scope with assigned variables in memory.
+The parser also contains some convenience methods to get, set, and remove
+variables from memory.
+
+A parser can be created by:
 
 ```js
 var parser = math.parser();
@@ -192,10 +259,10 @@ var math = require('mathjs');
 var parser = math.parser();
 
 // evaluate expressions
-var a = parser.eval('sqrt(3^2 + 4^2)'); // a = 5
-var b = parser.eval('sqrt(-4)');        // b = 2i
-var c = parser.eval('2 inch in cm');    // c = 5.08 cm
-var d = parser.eval('cos(45 deg)');     // d = 0.7071067811865476
+parser.eval('sqrt(3^2 + 4^2)');         // 5
+parser.eval('sqrt(-4)');                // 2i
+parser.eval('2 inch in cm');            // 5.08 cm
+parser.eval('cos(45 deg)');             // 0.7071067811865476
 
 // define variables and functions
 parser.eval('x = 7 / 2');               // 3.5

@@ -10,6 +10,20 @@
      *     math.parse([expr1, expr2, expr3, ...])
      *     math.parse([expr1, expr2, expr3, ...], scope)
      *
+     * Example:
+     *
+     *     var node = math.parse('sqrt(3^2 + 4^2)');
+     *     node.eval(); // 5
+     *
+     *     var scope = {a:3, b:4}
+     *     var node = math.parse('a * b', scope); // 12
+     *     node.eval(); // 12
+     *     scope.a = 5;
+     *     node.eval(); // 20
+     *
+     *     var nodes = math.parse(['a = 3', 'b = 4', 'a * b']);
+     *     nodes[2].eval(); // 12
+     *
      * @param {String | String[] | Matrix} expr
      * @param {math.expr.Scope | Object} [scope]
      * @return {Node | Node[]} node
