@@ -37,7 +37,7 @@ math.expr.Expression = function Expression (params) {
  */
 math.expr.Expression.prototype.setExpr = function (expression) {
     this.expression = expression || '';
-    this.scope.clear();
+    this.scope.clear(); // clear assignments and cache
     this._parse();
     this._analyse();
 };
@@ -120,11 +120,11 @@ math.expr.Expression.prototype._analyse = function () {
  */
 math.expr.Expression.prototype.eval = function () {
     try {
-        this.scope.clear();
+        this.scope.clear(); // clear assignments and cache
         this.result = this.node.eval();
     }
     catch (err) {
-        this.scope.clear();
+        this.scope.clear(); // clear assignments and cache
         this.result = 'Error: ' + String(err.message || err);
     }
     return this.result;

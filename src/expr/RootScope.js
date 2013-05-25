@@ -6,6 +6,7 @@
  *
  * @extends math.expr.Scope
  */
+// TODO: delete root scope
 math.expr.RootScope = function RootScope() {
     this.cache = {};
 };
@@ -72,23 +73,6 @@ math.expr.RootScope.prototype.has = function (name) {
  */
 math.expr.RootScope.prototype.set = function (name, value) {
     throw new Error('Cannot set a symbol in the root scope');
-};
-
-/**
- * Locate a symbol, find the last scope where this symbol is defined.
- * The function will first search the chain of parent scopes until it
- * finds the symbol. If found, it returns the scope where the symbol is
- * defined, else it returns undefined.
- * @param {String} name
- * @return {Scope | undefined} scope, or undefined when not found
- */
-math.expr.RootScope.prototype.find = function (name) {
-    if (this.get(name) !== undefined) {
-        return this;
-    }
-    else {
-        return undefined;
-    }
 };
 
 /**

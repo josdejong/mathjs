@@ -72,3 +72,16 @@ assert.deepEqual(symbols6, {
     aa: 'aa',
     cc: 'cc'
 });
+
+
+// test cache
+var scope7 = new Scope();
+scope7.set('a', 123);
+assert.equal(scope7.get('a'), 123);
+var scope8 = new Scope(scope7);
+assert.equal(scope8.get('a'), 123);
+// 'a' is now in the cache of scope8, refering to scope7
+scope8.parentScope = null;                  // remove scope7 as parent
+assert.equal(scope8.get('a'), 123);         // whoops! still in the cache
+scope8.clearCache();                        // clear the cache of scope8
+assert.equal(scope8.get('a'), undefined);   // ah, that's better

@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.8.3-SNAPSHOT
- * @date    2013-05-24
+ * @date    2013-05-25
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -3752,7 +3752,7 @@ FunctionNode.prototype.toString = function() {
  * Scope
  * A scope stores values of symbols: variables and functions.
  *
- * Usage:
+ * Syntax:
  *     var scope = new math.expr.Scope();
  *     var scope = new math.expr.Scope(parentScope);
  *     var scope = new math.expr.Scope(symbols);
@@ -3776,7 +3776,11 @@ math.expr.Scope = function Scope(args) {
     this.subScopes = null;
 
     /** @type {Object.<String, *>} */
-    this.symbols = {}; // variables and functions
+    this.symbols = {};  // variables and functions
+
+    /** @type {Object.<String, Object>} */
+    this.cache = {};    // cache, referring to the scope.symbols object where
+                        // a variable was last found
 
     // read first argument (can be parentScope or symbols map)
     if (arguments.length > 0) {
@@ -3829,15 +3833,39 @@ math.expr.Scope.prototype = {
             return value;
         }
 
-        // TODO: implement a caching mechanism to store the scope.symbols where it last found the symbol
-
-        // check parent scope
-        if (this.parentScope) {
-            return this.parentScope.get(name);
+        // read from cache
+        var symbols = this.cache[name];
+        if (symbols) {
+            return symbols[name];
         }
 
-        // check root scope
-        return math.expr.Scope.rootScope.get(name);
+        // check parent scope
+        var parent = this.parentScope;
+        while (parent) {
+            value = parent.symbols[name];
+            if (value !== undefined) {
+                this.cache[name] = parent.symbols;
+                return value;
+            }
+            parent = parent.parentScope;
+        }
+
+        // check math namespace
+        value = math[name];
+        if (value !== undefined) {
+            this.cache[name] = math;
+            return value;
+        }
+
+        // check if name is a unit
+        if (Unit.isPlainUnit(name)) {
+            value = new Unit(null, name);
+            this.cache[name] = {};
+            this.cache[name][name] = value;
+            return value;
+        }
+
+        return undefined;
     },
 
     /**
@@ -3868,8 +3896,8 @@ math.expr.Scope.prototype = {
     },
 
     /**
-     * Clear all symbols in this scope and its sub scopes
-     * (parent scope will not be cleared)
+     * Clear all symbols in this scope, its sub scopes, and clear the cache.
+     * Parent scopes will not be cleared.
      */
     clear: function () {
         var symbols = this.symbols;
@@ -3885,29 +3913,15 @@ math.expr.Scope.prototype = {
                 subScopes[i].clear();
             }
         }
+
+        this.clearCache();
     },
 
     /**
-     * Locate a symbol, find the last scope where this symbol is defined.
-     * The function will first search the chain of parent scopes until it
-     * finds the symbol. If found, it returns the scope where the symbol is
-     * defined, else it returns undefined.
-     * @param {String} name
-     * @return {math.expr.Scope | undefined} scope, or undefined when not found
+     * Clear cached links to symbols in other scopes
      */
-    find: function (name) {
-        // check this scope
-        if (this.symbols[name] !== undefined) {
-            return this;
-        }
-
-        // check parent scope
-        if (this.parentScope) {
-            return this.parentScope.find(name);
-        }
-
-        // check root scope
-        return math.expr.Scope.rootScope.find(name);
+    clearCache: function () {
+        this.cache = {};
     }
 };
 
@@ -3919,6 +3933,7 @@ math.expr.Scope.prototype = {
  *
  * @extends math.expr.Scope
  */
+// TODO: delete root scope
 math.expr.RootScope = function RootScope() {
     this.cache = {};
 };
@@ -3985,23 +4000,6 @@ math.expr.RootScope.prototype.has = function (name) {
  */
 math.expr.RootScope.prototype.set = function (name, value) {
     throw new Error('Cannot set a symbol in the root scope');
-};
-
-/**
- * Locate a symbol, find the last scope where this symbol is defined.
- * The function will first search the chain of parent scopes until it
- * finds the symbol. If found, it returns the scope where the symbol is
- * defined, else it returns undefined.
- * @param {String} name
- * @return {Scope | undefined} scope, or undefined when not found
- */
-math.expr.RootScope.prototype.find = function (name) {
-    if (this.get(name) !== undefined) {
-        return this;
-    }
-    else {
-        return undefined;
-    }
 };
 
 /**
@@ -4165,7 +4163,7 @@ math.expr.Expression = function Expression (params) {
  */
 math.expr.Expression.prototype.setExpr = function (expression) {
     this.expression = expression || '';
-    this.scope.clear();
+    this.scope.clear(); // clear assignments and cache
     this._parse();
     this._analyse();
 };
@@ -4248,11 +4246,11 @@ math.expr.Expression.prototype._analyse = function () {
  */
 math.expr.Expression.prototype.eval = function () {
     try {
-        this.scope.clear();
+        this.scope.clear(); // clear assignments and cache
         this.result = this.node.eval();
     }
     catch (err) {
-        this.scope.clear();
+        this.scope.clear(); // clear assignments and cache
         this.result = 'Error: ' + String(err.message || err);
     }
     return this.result;
@@ -8295,6 +8293,8 @@ math['in'] = function unit_in(x, unit) {
             return x['in'](unit);
         }
     }
+
+    // TODO: add support for string, in that case, convert to unit
 
     if (x instanceof Array || x instanceof Matrix ||
         unit instanceof Array || unit instanceof Matrix) {

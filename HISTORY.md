@@ -8,6 +8,7 @@ https://github.com/josdejong/mathjs
   be a plain JavaScript Object containing variables.
 - Extended function math.expr(expr [, scope]) with an additional parameter
   scope, similar to math.parse.
+- Improved function det. Thanks Bryan Cuccioli (bcuccioli).
 - Moved the parse code from prototype math.expr.Parser to function math.parse,
   simplified Parser a little bit.
 - Strongly simplified the code of Scope and Workspace.
@@ -45,7 +46,7 @@ https://github.com/josdejong/mathjs
 ## 2013-05-04, version 0.7.2
 
 - Fixed method unequal, which was checking for equality instead of inequality.
-  (Thanks FJS2).
+  Thanks FJS2.
 
 
 ## 2013-04-27, version 0.7.1
@@ -68,7 +69,8 @@ https://github.com/josdejong/mathjs
 
 - Implemented method `math.eval`, which uses a readonly parser to evaluate
   expressions.
-- Implemented method `xgcd` (extended eucledian algorithm). Thanks Bart Kiers.
+- Implemented method `xgcd` (extended eucledian algorithm). Thanks Bart Kiers
+  (bkiers).
 - Improved math.format, which now rounds values to a maximum number of digits
   instead of decimals (default is 5 digits, for example `math.format(math.pi)`
   returns `3.1416`).

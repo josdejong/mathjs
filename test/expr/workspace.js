@@ -51,4 +51,21 @@ assert.deepEqual(workspace.toJSON(), [
     { id: 4, expression: 'q + 2', dependencies: [], result: 17 }
 ]);
 
+// verify whether the scope's cache work correct
+assert.equal(workspace.nodes[1].scope.cache['a'], workspace.nodes[2].scope.symbols);
+assert.notEqual(workspace.nodes[1].scope.cache['a'], workspace.nodes[0].scope.symbols);
+
+workspace.remove(2);
+
+// verify whether the scope's cache is updated after the removal
+assert.equal(workspace.nodes[1].scope.cache['a'], workspace.nodes[0].scope.symbols);
+
+assert.deepEqual(workspace.toJSON(), [
+    { id: 0, expression: 'a=5/2', dependencies: [ 3, 5, 1, 4 ], result: 2.5 },
+    { id: 3, expression: 'a * 3', dependencies: [], result: 7.5 },
+    { id: 5, expression: 'q = a * 6', dependencies: [ 4 ], result: 15 },
+    { id: 1, expression: 'a + 2', dependencies: [], result: 4.5 },
+    { id: 4, expression: 'q + 2', dependencies: [], result: 17 }
+]);
+
 // TODO: extensively test Workspace
