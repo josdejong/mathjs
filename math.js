@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.8.3-SNAPSHOT
- * @date    2013-05-25
+ * @date    2013-05-26
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -584,6 +584,23 @@ var util = (function () {
     };
 
     /**
+     * Test whether index is an integer number with index >= 1 and index <= max
+     * @param {*} index       One-based index
+     * @param {Number} [max]  One-based maximum value
+     */
+    util.validateIndex = function (index, max) {
+        if (!isNumber(index) || !isInteger(index)) {
+            throw new TypeError('Index must be an integer (value: ' + index + ')');
+        }
+        if (index < 1) {
+            throw new RangeError('Index out of range (' + index + ' < 1)');
+        }
+        if (max && index > max) {
+            throw new RangeError('Index out of range (' + index + ' > ' + max +  ')');
+        }
+    };
+
+    /**
      * Recursively resize a multi dimensional array
      * @param {Array} array         Array to be resized
      * @param {Number[]} size       Array with the size of each dimension
@@ -1070,16 +1087,20 @@ math.type.Matrix = Matrix;
 Matrix.prototype.get = function (index) {
     var isScalar;
     if (index instanceof Matrix) {
-        isScalar = index.isVector();
+        // index is scalar when size==[n] or size==[1,1,...]
+        isScalar = (index.size().length == 1) || !index.size().some(function (i) {
+            return (i != 1);
+        });
         index = index.valueOf();
     }
     else if (index instanceof Array) {
-        isScalar = !index.some(function (i) {
-            return (i.forEach); // an Array or Range
+        isScalar = !index.some(function (elem) {
+            var size = math.size(elem);
+            return (size.length != 0) && (size != [1]);
         });
     }
     else {
-        throw new TypeError('Unsupported type of index ' + math['typeof'](index));
+        throw new TypeError('Invalid index');
     }
 
     if (index.length != this._size.length) {
@@ -1107,24 +1128,6 @@ Matrix.prototype.get = function (index) {
 };
 
 /**
- * Test whether index is an integer number with index >= 1 and index <= max
- * @param {*} index       One-based index
- * @param {Number} [max]  One-based maximum value
- * @private
- */
-function _validateIndex(index, max) {
-    if (!isNumber(index) || !isInteger(index)) {
-        throw new TypeError('Index must be an integer (value: ' + index + ')');
-    }
-    if (index < 1) {
-        throw new RangeError('Index out of range (' + index + ' < 1)');
-    }
-    if (max && index > max) {
-        throw new RangeError('Index out of range (' + index + ' > ' + max +  ')');
-    }
-}
-
-/**
  * Get a single value from an array. The method tests whether:
  * - index is a non-negative integer
  * - index does not exceed the dimensions of array
@@ -1134,7 +1137,7 @@ function _validateIndex(index, max) {
  * @private
  */
 function _get (array, index) {
-    _validateIndex(index, array.length);
+    util.validateIndex(index, array.length);
     return array[index - 1]; // one-based index
 }
 
@@ -1265,16 +1268,20 @@ function _getSubmatrix (data, index, dim) {
 Matrix.prototype.set = function (index, submatrix) {
     var isScalar;
     if (index instanceof Matrix) {
-        isScalar = index.isVector();
+        // index is scalar when size==[n] or size==[1,1,...]
+        isScalar = (index.size().length == 1) || !index.size().some(function (i) {
+            return (i != 1);
+        });
         index = index.valueOf();
     }
     else if (index instanceof Array) {
-        isScalar = !index.some(function (i) {
-            return (i.forEach); // an Array or Range
+        isScalar = !index.some(function (elem) {
+            var size = math.size(elem);
+            return (size.length != 0) && (size != [1]);
         });
     }
     else {
-        throw new TypeError('Unsupported type of index ' + math['typeof'](index));
+        throw new TypeError('Invalid index');
     }
 
     if (submatrix instanceof Matrix || submatrix instanceof Range) {
@@ -1321,7 +1328,7 @@ Matrix.prototype.set = function (index, submatrix) {
  * @private
  */
 function _set (array, index, value) {
-    _validateIndex(index);
+    util.validateIndex(index);
     if (value instanceof Array) {
         throw new TypeError('Dimension mismatch, value expected instead of array');
     }
@@ -1345,7 +1352,7 @@ function _setScalar (data, size, index, value) {
 
     for (var i = 0; i < index.length; i++) {
         var index_i = index[i];
-        _validateIndex(index_i);
+        util.validateIndex(index_i);
         if ((size[i] == null) || (index_i > size[i])) {
             size[i] = index_i;
             resized = true;
@@ -1377,12 +1384,11 @@ function _setScalar (data, size, index, value) {
  */
 function _setScalar1D (data, size, index, value) {
     var row = index[0];
-    _validateIndex(row);
-
+    util.validateIndex(row);
     if (row > size[0]) {
         util.resize(data, [row], 0);
+        size[0] = row;
     }
-
     data[row - 1] = value; // one-based index
 }
 
@@ -1397,8 +1403,8 @@ function _setScalar1D (data, size, index, value) {
 function _setScalar2D (data, size, index, value) {
     var row = index[0];
     var col = index[1];
-    _validateIndex(row);
-    _validateIndex(col);
+    util.validateIndex(row);
+    util.validateIndex(col);
 
     var resized = false;
     if (row > (size[0] || 0)) {
@@ -1961,12 +1967,10 @@ Range.prototype.toString = function () {
  * - valueOf()  The same as done()
  * - toString() Executes math.format() onto the selectors value, returning
  *              a string representation of the value.
- * - get(...)   Get a subselection of the selectors value. Only applicable when
- *              the value has a method get, for example when value is a Matrix
- *              or Array.
- * - set(...)   Replace a subselection of the selectors value. Only applicable
- *              when the value has a method get, for example when value is a
- *              Matrix or Array.
+ * - get(...)   Get a subset of the selectors value. Useful for example for
+ *              matrices and arrays.
+ * - set(...)   Replace a subset of the selectors value. Useful for example for
+ *              matrices and arrays.
  *
  * @param {*} [value]
  */
@@ -1998,50 +2002,26 @@ math.type.Selector.prototype = {
      * Get a submatrix or subselection from current value.
      * Only applicable when the current value has a method get.
      */
-    get: function () {
+    get: function (index) {
         var value = this.value;
         if (!value) {
             throw Error('Selector value is undefined');
         }
 
-        if (value.get) {
-            return new math.type.Selector(value.get.apply(value, arguments));
-        }
-
-        if (value instanceof Array) {
-            // convert to matrix, evaluate, and then back to Array
-            value = new Matrix(value);
-            return new math.type.Selector(
-                value.get.apply(value, arguments).valueOf()
-            );
-        }
-
-        throw Error('Selector value has no method get');
+        return new math.type.Selector(math.subset(value, index));
     },
 
     /**
      * Set a submatrix or subselection on current value.
      * Only applicable when the current value has a method set.
      */
-    set: function () {
+    set: function (index, replacement) {
         var value = this.value;
         if (!value) {
             throw Error('Selector value is undefined');
         }
 
-        if (value.set) {
-            return new math.type.Selector(value.set.apply(value, arguments));
-        }
-
-        if (value instanceof Array) {
-            // convert to matrix, evaluate, and then back to Array
-            value = new Matrix(value);
-            return new math.type.Selector(
-                value.set.apply(value, arguments).valueOf()
-            );
-        }
-
-        throw Error('Selector value has no method set');
+        return new math.type.Selector(math.subset(value, index, replacement));
     },
 
     /**
@@ -3174,14 +3154,9 @@ ParamsNode.prototype.eval = function() {
         // invoke a function with the parameters
         return obj.apply(this, results);
     }
-    else if (obj instanceof Object && obj.get) {
-        // apply method get with the parameters
-        return obj.get(results);
-    }
-    // TODO: apply parameters on a string
     else {
-        throw new TypeError('Cannot apply parameters to object of type ' +
-            math['typeof'](obj));
+        // get a subset of the object
+        return math.subset(obj, results);
     }
 };
 
@@ -3603,12 +3578,8 @@ UpdateNode.prototype.eval = function() {
 
     var exprResult = this.expr.eval();
 
-    // TODO: check type of prevResult: Matrix, Array, String, other...
-    if (!prevResult.set) {
-        throw new TypeError('Cannot apply a subset to object of type ' +
-            math['typeof'](prevResult));
-    }
-    result = prevResult.set(paramResults, exprResult);
+    // replace subset
+    result = math.subset(prevResult, paramResults, exprResult);
 
     this.scope.set(this.name, result);
 
@@ -7334,6 +7305,201 @@ function _squeezeArray(array) {
         }
         return array;
     }
+}
+
+/**
+ * Get or set a subset of a matrix or string
+ *
+ * Usage:
+ *     var subset = math.subset(value, index)           // retrieve subset
+ *     var value = math.subset(value, index, subset)    // replace subset
+ *
+ * Where:
+ *     {*} value        An array, matrix, or scalar value
+ *     {Array} index    An array containing index values
+ *     {*} subset       An array, matrix, or scalar
+ *
+ * @param args
+ * @return res
+ */
+math.subset = function subset (args) {
+    switch (arguments.length) {
+        case 2: // get subset
+            return _getSubset(arguments[0], arguments[1]);
+
+        case 3: // set subset
+            return _setSubset(arguments[0], arguments[1], arguments[2]);
+
+        default: // wrong number of arguments
+            throw newArgumentsError('subset', arguments.length, 2, 3);
+    }
+};
+
+/**
+ * Retrieve a subset of an value such as an Array, Matrix, or String
+ * @param {*} value            Object from which to get a subset
+ * @param {Array[] | Range[] | Number[] | Matrix} index
+ *                              Two dimensional array (size 1 x n) containing
+ *                              the indexes to be retrieved. Can also be a two
+ *                              dimensional Matrix (size 1 x n), or an Array
+ *                              (size 1) containing a Range or a Number.
+ * @returns {*} subset
+ * @private
+ */
+function _getSubset(value, index) {
+    var matrix, subset;
+
+    if (value instanceof Array || value instanceof Range) {
+        matrix = math.matrix(value);
+        subset = matrix.get(index);
+        return subset.valueOf();
+    }
+    else if (value instanceof Matrix) {
+        return value.get(index);
+    }
+    else if (isString(value)) {
+        return _getSubstring(value, index);
+    }
+    else {
+        // scalar
+        matrix = math.matrix([value]);
+        subset = matrix.get(index);
+        return subset.valueOf();
+    }
+}
+
+/**
+ * Retrieve a subset of a string
+ * @param {String} str          String from which to get a substring
+ * @param {Array[] | Range[] | Number[] | Matrix} index
+ *                              Two dimensional array (size 1 x n) containing
+ *                              the indexes to be retrieved. Can also be a two
+ *                              dimensional Matrix (size 1 x n), or an Array
+ *                              (size 1) containing a Range or a Number.
+ * @returns {string} substring
+ * @private
+ */
+function _getSubstring(str, index) {
+    var i, len;
+    index = index.valueOf(); // cast from matrix or range to array
+    if (index.length != 1) {
+        throw new RangeError('Dimension mismatch (' + index.length + ' != 1)');
+    }
+
+    if (index instanceof Array) {
+        index = index[0];   // read first dimension
+    }
+    index = index.valueOf(); // cast from matrix or range to array
+    if (!(index instanceof Array)) {
+        index = [index];
+    }
+
+    var substr = '';
+    var strLen = str.length;
+    for (i = 0, len = index.length; i < len; i++) {
+        var index_i = index[i];
+        util.validateIndex(index_i, strLen);
+        substr += str.charAt(index_i - 1);  // index_i is one based
+    }
+
+    return substr;
+}
+
+/**
+ * Replace a subset in an value such as an Array, Matrix, or String
+ * @param {*} value            Object to be replaced
+ * @param {Array[] | Range[] | Number[] | Matrix} index
+ *                              Two dimensional array (size 1 x n) containing
+ *                              the indexes to be replaced. Can also be a two
+ *                              dimensional Matrix (size 1 x n), or an Array
+ *                              (size 1) containing a Range.
+ * @param {String} subset
+ * @returns {*} result
+ * @private
+ */
+function _setSubset(value, index, subset) {
+    if (value instanceof Array || value instanceof Range) {
+        var matrix = math.matrix(math.clone(value));
+        matrix.set(index, subset);
+        return matrix.valueOf();
+    }
+    else if (value instanceof Matrix) {
+        return value.clone().set(index, subset);
+    }
+    else if (isString(value)) {
+        return _setSubstring(value, index, subset);
+    }
+    else {
+        // scalar
+        matrix = math.matrix([value]);
+        matrix.set(index, subset);
+
+        if (matrix.isScalar()) {
+            // still a scalar
+            return matrix.toScalar();
+        }
+        else {
+            // changed into a matrix. return array
+            return matrix.valueOf();
+        }
+    }
+}
+
+/**
+ * Replace a substring in a string
+ * @param {String} str          String to be replaced
+ * @param {Array[] | Range[] | Number[] | Matrix} index
+ *                              Two dimensional array (size 1 x n) containing
+ *                              the indexes to be replaced. Can also be a two
+ *                              dimensional Matrix (size 1 x n), or an Array
+ *                              (size 1) containing a Range.
+ * @param {String} subset       Replacement string
+ * @returns {string} result
+ * @private
+ */
+function _setSubstring(str, index, subset) {
+    var i, len;
+    index = index.valueOf();  // cast from matrix or range to array
+
+    if (index.length != 1) {
+        throw new RangeError('Dimension mismatch (' + index.length + ' != 1)');
+    }
+    if (index instanceof Array) {
+        index = index[0];   // read first dimension
+    }
+    index = index.valueOf(); // cast from matrix or range to array
+    if (!(index instanceof Array)) {
+        index = [index];
+    }
+
+    if (index.length != subset.length) {
+        throw new RangeError('Dimension mismatch ' +
+            '(' + index.length + ' != ' + subset.length + ')');
+    }
+
+    // copy the string into an array with characters
+    var strLen = str.length;
+    var chars = [];
+    for (i = 0; i < strLen; i++) {
+        chars[i] = str.charAt(i);
+    }
+
+    for (i = 0, len = index.length; i < len; i++) {
+        var index_i = index[i];
+        util.validateIndex(index_i);
+        chars[index_i - 1] = subset.charAt(i); // index_i is one based
+    }
+
+    // initialize undefined characters with a space
+    if (chars.length > strLen) {
+        for (i = strLen - 1, len = chars.length; i < len; i++) {
+            if (!chars[i]) {
+                chars[i] = ' ';
+            }
+        }
+    }
+
+    return chars.join('');
 }
 
 /**

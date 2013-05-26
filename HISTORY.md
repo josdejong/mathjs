@@ -4,14 +4,17 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.8.3
 
-- Implemented function math.parse(expr [,scope]). Optional parameter scope can
+- Implemented function `math.parse(expr [,scope])`. Optional parameter scope can
   be a plain JavaScript Object containing variables.
-- Extended function math.expr(expr [, scope]) with an additional parameter
-  scope, similar to math.parse.
-- Improved function det. Thanks Bryan Cuccioli (bcuccioli).
+- Extended function `math.expr(expr [, scope])` with an additional parameter
+  `scope`, similar to `parse`. Example: `math.eval('x^a', {x:3, a:2});`.
+- Implemented function `subset`, to get or set a subset from a matrix, string,
+  or other data types.
+- Improved function `det`. Thanks Bryan Cuccioli (bcuccioli).
 - Moved the parse code from prototype math.expr.Parser to function math.parse,
   simplified Parser a little bit.
 - Strongly simplified the code of Scope and Workspace.
+- Minor bug fixes.
 
 
 ## 2013-05-18, version 0.8.2
@@ -60,7 +63,7 @@ https://github.com/josdejong/mathjs
   - Some simplifications in the code.
   - Minor bug fixes.
 - Fixed a bug in the parser, returning NaN instead of throwing an error for a
-  number with multiple decimal separators like '2.3.4'.
+  number with multiple decimal separators like `2.3.4`.
 - Fixed a bug in Workspace.insertAfter.
 - Fixed: math.js now works on IE 6-8 too.
 

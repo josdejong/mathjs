@@ -548,6 +548,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.ones(m, n, p, ...)
 - math.size(x)
 - math.squeeze(x)
+- math.subset(x, index [, replacement])
 - math.transpose(x)
 - math.zeros(m, n, p, ...)
 

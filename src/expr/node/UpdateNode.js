@@ -76,12 +76,8 @@ UpdateNode.prototype.eval = function() {
 
     var exprResult = this.expr.eval();
 
-    // TODO: check type of prevResult: Matrix, Array, String, other...
-    if (!prevResult.set) {
-        throw new TypeError('Cannot apply a subset to object of type ' +
-            math['typeof'](prevResult));
-    }
-    result = prevResult.set(paramResults, exprResult);
+    // replace subset
+    result = math.subset(prevResult, paramResults, exprResult);
 
     this.scope.set(this.name, result);
 

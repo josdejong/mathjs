@@ -513,6 +513,23 @@ var util = (function () {
     };
 
     /**
+     * Test whether index is an integer number with index >= 1 and index <= max
+     * @param {*} index       One-based index
+     * @param {Number} [max]  One-based maximum value
+     */
+    util.validateIndex = function (index, max) {
+        if (!isNumber(index) || !isInteger(index)) {
+            throw new TypeError('Index must be an integer (value: ' + index + ')');
+        }
+        if (index < 1) {
+            throw new RangeError('Index out of range (' + index + ' < 1)');
+        }
+        if (max && index > max) {
+            throw new RangeError('Index out of range (' + index + ' > ' + max +  ')');
+        }
+    };
+
+    /**
      * Recursively resize a multi dimensional array
      * @param {Array} array         Array to be resized
      * @param {Number[]} size       Array with the size of each dimension

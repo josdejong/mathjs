@@ -73,14 +73,9 @@ ParamsNode.prototype.eval = function() {
         // invoke a function with the parameters
         return obj.apply(this, results);
     }
-    else if (obj instanceof Object && obj.get) {
-        // apply method get with the parameters
-        return obj.get(results);
-    }
-    // TODO: apply parameters on a string
     else {
-        throw new TypeError('Cannot apply parameters to object of type ' +
-            math['typeof'](obj));
+        // get a subset of the object
+        return math.subset(obj, results);
     }
 };
 

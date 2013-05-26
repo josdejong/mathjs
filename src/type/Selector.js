@@ -13,12 +13,10 @@
  * - valueOf()  The same as done()
  * - toString() Executes math.format() onto the selectors value, returning
  *              a string representation of the value.
- * - get(...)   Get a subselection of the selectors value. Only applicable when
- *              the value has a method get, for example when value is a Matrix
- *              or Array.
- * - set(...)   Replace a subselection of the selectors value. Only applicable
- *              when the value has a method get, for example when value is a
- *              Matrix or Array.
+ * - get(...)   Get a subset of the selectors value. Useful for example for
+ *              matrices and arrays.
+ * - set(...)   Replace a subset of the selectors value. Useful for example for
+ *              matrices and arrays.
  *
  * @param {*} [value]
  */
@@ -50,50 +48,26 @@ math.type.Selector.prototype = {
      * Get a submatrix or subselection from current value.
      * Only applicable when the current value has a method get.
      */
-    get: function () {
+    get: function (index) {
         var value = this.value;
         if (!value) {
             throw Error('Selector value is undefined');
         }
 
-        if (value.get) {
-            return new math.type.Selector(value.get.apply(value, arguments));
-        }
-
-        if (value instanceof Array) {
-            // convert to matrix, evaluate, and then back to Array
-            value = new Matrix(value);
-            return new math.type.Selector(
-                value.get.apply(value, arguments).valueOf()
-            );
-        }
-
-        throw Error('Selector value has no method get');
+        return new math.type.Selector(math.subset(value, index));
     },
 
     /**
      * Set a submatrix or subselection on current value.
      * Only applicable when the current value has a method set.
      */
-    set: function () {
+    set: function (index, replacement) {
         var value = this.value;
         if (!value) {
             throw Error('Selector value is undefined');
         }
 
-        if (value.set) {
-            return new math.type.Selector(value.set.apply(value, arguments));
-        }
-
-        if (value instanceof Array) {
-            // convert to matrix, evaluate, and then back to Array
-            value = new Matrix(value);
-            return new math.type.Selector(
-                value.set.apply(value, arguments).valueOf()
-            );
-        }
-
-        throw Error('Selector value has no method set');
+        return new math.type.Selector(math.subset(value, index, replacement));
     },
 
     /**

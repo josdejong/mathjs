@@ -55,16 +55,20 @@ math.type.Matrix = Matrix;
 Matrix.prototype.get = function (index) {
     var isScalar;
     if (index instanceof Matrix) {
-        isScalar = index.isVector();
+        // index is scalar when size==[n] or size==[1,1,...]
+        isScalar = (index.size().length == 1) || !index.size().some(function (i) {
+            return (i != 1);
+        });
         index = index.valueOf();
     }
     else if (index instanceof Array) {
-        isScalar = !index.some(function (i) {
-            return (i.forEach); // an Array or Range
+        isScalar = !index.some(function (elem) {
+            var size = math.size(elem);
+            return (size.length != 0) && (size != [1]);
         });
     }
     else {
-        throw new TypeError('Unsupported type of index ' + math['typeof'](index));
+        throw new TypeError('Invalid index');
     }
 
     if (index.length != this._size.length) {
@@ -92,24 +96,6 @@ Matrix.prototype.get = function (index) {
 };
 
 /**
- * Test whether index is an integer number with index >= 1 and index <= max
- * @param {*} index       One-based index
- * @param {Number} [max]  One-based maximum value
- * @private
- */
-function _validateIndex(index, max) {
-    if (!isNumber(index) || !isInteger(index)) {
-        throw new TypeError('Index must be an integer (value: ' + index + ')');
-    }
-    if (index < 1) {
-        throw new RangeError('Index out of range (' + index + ' < 1)');
-    }
-    if (max && index > max) {
-        throw new RangeError('Index out of range (' + index + ' > ' + max +  ')');
-    }
-}
-
-/**
  * Get a single value from an array. The method tests whether:
  * - index is a non-negative integer
  * - index does not exceed the dimensions of array
@@ -119,7 +105,7 @@ function _validateIndex(index, max) {
  * @private
  */
 function _get (array, index) {
-    _validateIndex(index, array.length);
+    util.validateIndex(index, array.length);
     return array[index - 1]; // one-based index
 }
 
@@ -250,16 +236,20 @@ function _getSubmatrix (data, index, dim) {
 Matrix.prototype.set = function (index, submatrix) {
     var isScalar;
     if (index instanceof Matrix) {
-        isScalar = index.isVector();
+        // index is scalar when size==[n] or size==[1,1,...]
+        isScalar = (index.size().length == 1) || !index.size().some(function (i) {
+            return (i != 1);
+        });
         index = index.valueOf();
     }
     else if (index instanceof Array) {
-        isScalar = !index.some(function (i) {
-            return (i.forEach); // an Array or Range
+        isScalar = !index.some(function (elem) {
+            var size = math.size(elem);
+            return (size.length != 0) && (size != [1]);
         });
     }
     else {
-        throw new TypeError('Unsupported type of index ' + math['typeof'](index));
+        throw new TypeError('Invalid index');
     }
 
     if (submatrix instanceof Matrix || submatrix instanceof Range) {
@@ -306,7 +296,7 @@ Matrix.prototype.set = function (index, submatrix) {
  * @private
  */
 function _set (array, index, value) {
-    _validateIndex(index);
+    util.validateIndex(index);
     if (value instanceof Array) {
         throw new TypeError('Dimension mismatch, value expected instead of array');
     }
@@ -330,7 +320,7 @@ function _setScalar (data, size, index, value) {
 
     for (var i = 0; i < index.length; i++) {
         var index_i = index[i];
-        _validateIndex(index_i);
+        util.validateIndex(index_i);
         if ((size[i] == null) || (index_i > size[i])) {
             size[i] = index_i;
             resized = true;
@@ -362,12 +352,11 @@ function _setScalar (data, size, index, value) {
  */
 function _setScalar1D (data, size, index, value) {
     var row = index[0];
-    _validateIndex(row);
-
+    util.validateIndex(row);
     if (row > size[0]) {
         util.resize(data, [row], 0);
+        size[0] = row;
     }
-
     data[row - 1] = value; // one-based index
 }
 
@@ -382,8 +371,8 @@ function _setScalar1D (data, size, index, value) {
 function _setScalar2D (data, size, index, value) {
     var row = index[0];
     var col = index[1];
-    _validateIndex(row);
-    _validateIndex(col);
+    util.validateIndex(row);
+    util.validateIndex(col);
 
     var resized = false;
     if (row > (size[0] || 0)) {
