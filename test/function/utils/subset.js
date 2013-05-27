@@ -138,3 +138,4 @@ assert.deepEqual(parser.eval('c(1) = "H"'), "Hello");
 assert.deepEqual(parser.eval('c'), "Hello");
 assert.deepEqual(parser.eval('c(6:11) = " world"'), "Hello world");
 assert.deepEqual(parser.eval('c(5:-1:1)'), "olleH");
+//assert.deepEqual(parser.eval('c(end:-1:1)'), "olleH"); // TODO: implement context symbol end for strings

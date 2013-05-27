@@ -407,7 +407,7 @@ math.sqrt(-4);                  // 2i
 Math.js supports units. Basic operations `add`, `subtract`, `multiply`,
 and `divide` can be performed on units.
 Trigonometric methods like `sin` support units with an angle as argument.
-Units can be converted from one to another using method `in`,
+Units can be converted from one to another using function `in`,
 an the value of a unit can be retrieved using `toNumber`.
 
 ```js
@@ -593,7 +593,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 ## Extend
 
 The library can easily be extended with functions and variables using the
-`import` method. The method `import` accepts a filename or an object with
+`import` function. The function `import` accepts a filename or an object with
 functions and variables.
 
 ```js
@@ -616,23 +616,32 @@ parser.eval('myvalue + 10');    // 52
 parser.eval('hello("user")');   // 'hello, user!'
 ```
 
-To import functions from a math library like
-[numbers.js](https://github.com/sjkaliski/numbers.js),
-the library must be installed using npm:
+External libraries like
+[numbers.js](https://github.com/sjkaliski/numbers.js) and
+[numeric.js](http://numericjs.com/) can be imported as well.
+The libraries must be installed using npm:
 
     npm install numbers
+    npm install numeric
 
-And next, the library can be imported into math.js:
+The libraries can be easily imported into math.js using `import`. By default,
+existing functions will not be overwritten, and math.js will create a wrapper
+function around the imported functions which converts data types like `Matrix`
+to primitive types like `Array`.
 
 ```js
 var math = require('mathjs');
 
-// import the numbers.js library into math.js
+// import the numbers.js and numeric.js libraries into math.js
 math.import('numbers');
+math.import('numeric');
 
 // use functions from numbers.js
-math.fibonacci(7);                      // 13
-math.eval('fibonacci(7)');              // 13
+math.fibonacci(7);                          // 13
+math.eval('fibonacci(7)');                  // 13
+
+// use functions from numeric.js
+math.eval('eig([1, 2; 4, 3])').lambda.x;    // [5, -1]
 ```
 
 
