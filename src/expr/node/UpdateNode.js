@@ -57,7 +57,17 @@ UpdateNode.prototype.eval = function() {
     // evaluate the values of context parameter 'end' when needed
     if (this.hasContextParams) {
         var paramScopes = this.paramScopes,
-            size = prevResult.size && prevResult.size();
+            size;
+        if (prevResult.size) {
+            size = prevResult.size(); // matrix
+        }
+        else if (prevResult.length !== undefined) {
+            size = [prevResult.length];  // string
+        }
+        else {
+            size = [];  // scalar
+        }
+
         if (paramScopes && size) {
             for (var i = 0, len = this.params.length; i < len; i++) {
                 var paramScope = paramScopes[i];

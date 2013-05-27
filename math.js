@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.8.3-SNAPSHOT
- * @date    2013-05-26
+ * @date    2013-05-27
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -3132,7 +3132,17 @@ ParamsNode.prototype.eval = function() {
     // evaluate the values of context parameter 'end' when needed
     if (this.hasContextParams) {
         var paramScopes = this.paramScopes,
-            size = obj.size && obj.size();
+            size;
+        if (obj.size) {
+            size = obj.size(); // matrix
+        }
+        else if (obj.length !== undefined) {
+            size = [obj.length];  // string
+        }
+        else {
+            size = [];  // scalar
+        }
+
         if (paramScopes && size) {
             for (i = 0, len = this.params.length; i < len; i++) {
                 var paramScope = paramScopes[i];
@@ -3559,7 +3569,17 @@ UpdateNode.prototype.eval = function() {
     // evaluate the values of context parameter 'end' when needed
     if (this.hasContextParams) {
         var paramScopes = this.paramScopes,
-            size = prevResult.size && prevResult.size();
+            size;
+        if (prevResult.size) {
+            size = prevResult.size(); // matrix
+        }
+        else if (prevResult.length !== undefined) {
+            size = [prevResult.length];  // string
+        }
+        else {
+            size = [];  // scalar
+        }
+
         if (paramScopes && size) {
             for (var i = 0, len = this.params.length; i < len; i++) {
                 var paramScope = paramScopes[i];
@@ -7311,13 +7331,13 @@ function _squeezeArray(array) {
  * Get or set a subset of a matrix or string
  *
  * Usage:
- *     var subset = math.subset(value, index)           // retrieve subset
- *     var value = math.subset(value, index, subset)    // replace subset
+ *     var subset = math.subset(value, index)               // retrieve subset
+ *     var value = math.subset(value, index, replacement)   // replace subset
  *
  * Where:
  *     {*} value        An array, matrix, or scalar value
  *     {Array} index    An array containing index values
- *     {*} subset       An array, matrix, or scalar
+ *     {*} replacement  An array, matrix, or scalar
  *
  * @param args
  * @return res
@@ -7413,26 +7433,26 @@ function _getSubstring(str, index) {
  *                              the indexes to be replaced. Can also be a two
  *                              dimensional Matrix (size 1 x n), or an Array
  *                              (size 1) containing a Range.
- * @param {String} subset
+ * @param {String} replacement
  * @returns {*} result
  * @private
  */
-function _setSubset(value, index, subset) {
+function _setSubset(value, index, replacement) {
     if (value instanceof Array || value instanceof Range) {
         var matrix = math.matrix(math.clone(value));
-        matrix.set(index, subset);
+        matrix.set(index, replacement);
         return matrix.valueOf();
     }
     else if (value instanceof Matrix) {
-        return value.clone().set(index, subset);
+        return value.clone().set(index, replacement);
     }
     else if (isString(value)) {
-        return _setSubstring(value, index, subset);
+        return _setSubstring(value, index, replacement);
     }
     else {
         // scalar
         matrix = math.matrix([value]);
-        matrix.set(index, subset);
+        matrix.set(index, replacement);
 
         if (matrix.isScalar()) {
             // still a scalar
@@ -7453,11 +7473,11 @@ function _setSubset(value, index, subset) {
  *                              the indexes to be replaced. Can also be a two
  *                              dimensional Matrix (size 1 x n), or an Array
  *                              (size 1) containing a Range.
- * @param {String} subset       Replacement string
+ * @param {String} replacement  Replacement string
  * @returns {string} result
  * @private
  */
-function _setSubstring(str, index, subset) {
+function _setSubstring(str, index, replacement) {
     var i, len;
     index = index.valueOf();  // cast from matrix or range to array
 
@@ -7472,9 +7492,9 @@ function _setSubstring(str, index, subset) {
         index = [index];
     }
 
-    if (index.length != subset.length) {
+    if (index.length != replacement.length) {
         throw new RangeError('Dimension mismatch ' +
-            '(' + index.length + ' != ' + subset.length + ')');
+            '(' + index.length + ' != ' + replacement.length + ')');
     }
 
     // copy the string into an array with characters
@@ -7487,7 +7507,7 @@ function _setSubstring(str, index, subset) {
     for (i = 0, len = index.length; i < len; i++) {
         var index_i = index[i];
         util.validateIndex(index_i);
-        chars[index_i - 1] = subset.charAt(i); // index_i is one based
+        chars[index_i - 1] = replacement.charAt(i); // index_i is one based
     }
 
     // initialize undefined characters with a space
