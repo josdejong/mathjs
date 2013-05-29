@@ -27,7 +27,7 @@ math.format = function format(template, values) {
         // just format a value as string
         var value = arguments[0];
         if (isNumber(value)) {
-            return util.formatNumber(value);
+            return util.formatNumber(value, math.options.precision);
         }
 
         if (value instanceof Array) {

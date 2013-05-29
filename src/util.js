@@ -41,10 +41,6 @@ var util = (function () {
      * @returns {string} str
      */
     util.toPrecision = function (value, digits) {
-        if (digits == undefined) {
-            digits = math.options.precision;
-        }
-
         return value.toPrecision(digits).replace(_trailingZeros, function (a, b, c) {
             return a.substring(0, a.length - (b.length ? 0 : 1) - c.length);
         });

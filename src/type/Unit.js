@@ -392,12 +392,12 @@ Unit.prototype.toString = function() {
     if (!this.fixPrefix) {
         var bestPrefix = this._bestPrefix();
         value = this._unnormalize(this.value, bestPrefix.value);
-        str = (this.value != null) ? util.formatNumber(value) + ' ' : '';
+        str = (this.value != null) ? util.formatNumber(value, math.options.precision) + ' ' : '';
         str += bestPrefix.name + this.unit.name;
     }
     else {
         value = this._unnormalize(this.value);
-        str = (this.value != null) ? util.formatNumber(value) + ' ' : '';
+        str = (this.value != null) ? util.formatNumber(value, math.options.precision) + ' ' : '';
         str += this.prefix.name + this.unit.name;
     }
     return str;

@@ -112,10 +112,6 @@ var util = (function () {
      * @returns {string} str
      */
     util.toPrecision = function (value, digits) {
-        if (digits == undefined) {
-            digits = math.options.precision;
-        }
-
         return value.toPrecision(digits).replace(_trailingZeros, function (a, b, c) {
             return a.substring(0, a.length - (b.length ? 0 : 1) - c.length);
         });
@@ -988,8 +984,8 @@ Complex.prototype.clone = function () {
  */
 Complex.prototype.toString = function () {
     var str = '';
-    var strRe = util.formatNumber(this.re);
-    var strIm = util.formatNumber(this.im);
+    var strRe = util.formatNumber(this.re, math.options.precision);
+    var strIm = util.formatNumber(this.im, math.options.precision);
 
     if (this.im == 0) {
         // real value
@@ -1022,7 +1018,8 @@ Complex.prototype.toString = function () {
                 str = strRe + ' - i';
             }
             else {
-                str = strRe + ' - ' + util.formatNumber(Math.abs(this.im)) + 'i';
+                str = strRe + ' - ' +
+                    util.formatNumber(Math.abs(this.im), math.options.precision) + 'i';
             }
         }
     }
@@ -2470,12 +2467,12 @@ Unit.prototype.toString = function() {
     if (!this.fixPrefix) {
         var bestPrefix = this._bestPrefix();
         value = this._unnormalize(this.value, bestPrefix.value);
-        str = (this.value != null) ? util.formatNumber(value) + ' ' : '';
+        str = (this.value != null) ? util.formatNumber(value, math.options.precision) + ' ' : '';
         str += bestPrefix.name + this.unit.name;
     }
     else {
         value = this._unnormalize(this.value);
-        str = (this.value != null) ? util.formatNumber(value) + ' ' : '';
+        str = (this.value != null) ? util.formatNumber(value, math.options.precision) + ' ' : '';
         str += this.prefix.name + this.unit.name;
     }
     return str;
@@ -6610,6 +6607,52 @@ math.range = function range(args) {
 };
 
 /**
+ * Create a string or convert any object into a string
+ * @param {*} [value]
+ * @return {String} str
+ */
+math.string = function (value) {
+    switch (arguments.length) {
+        case 0:
+            return '';
+
+        case 1:
+            return _toString(value);
+
+        default:
+            throw newArgumentsError('string', arguments.length, 0, 1);
+    }
+};
+
+/**
+ * Recursive toString function
+ * @param {*} value  Value can be anything: number, string, array, Matrix, ...
+ * @returns {String} str
+ * @private
+ */
+function _toString(value) {
+    if (value instanceof Array || value instanceof Matrix || value instanceof Range) {
+        var array = value.valueOf();
+
+        var str = '[';
+        var len = array.length;
+        for (var i = 0; i < len; i++) {
+            if (i != 0) {
+                str += ', ';
+            }
+            str += _toString(array[i]);
+        }
+        str += ']';
+        return str;
+    }
+    else if (isNumber(value)) {
+        return util.formatNumber(value); // no digits specified
+    }
+    else {
+        return value.toString();
+    }
+}
+/**
  * Create a unit. Depending on the passed arguments, the function
  * will create and return a new math.type.Unit object.
  *
@@ -8579,7 +8622,7 @@ math.format = function format(template, values) {
         // just format a value as string
         var value = arguments[0];
         if (isNumber(value)) {
-            return util.formatNumber(value);
+            return util.formatNumber(value, math.options.precision);
         }
 
         if (value instanceof Array) {

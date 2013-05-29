@@ -276,8 +276,8 @@ Complex.prototype.clone = function () {
  */
 Complex.prototype.toString = function () {
     var str = '';
-    var strRe = util.formatNumber(this.re);
-    var strIm = util.formatNumber(this.im);
+    var strRe = util.formatNumber(this.re, math.options.precision);
+    var strIm = util.formatNumber(this.im, math.options.precision);
 
     if (this.im == 0) {
         // real value
@@ -310,7 +310,8 @@ Complex.prototype.toString = function () {
                 str = strRe + ' - i';
             }
             else {
-                str = strRe + ' - ' + util.formatNumber(Math.abs(this.im)) + 'i';
+                str = strRe + ' - ' +
+                    util.formatNumber(Math.abs(this.im), math.options.precision) + 'i';
             }
         }
     }
