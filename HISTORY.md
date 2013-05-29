@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.8.3
+## 2013-05-29, version 0.9.0
 
 - Implemented function `math.parse(expr [,scope])`. Optional parameter scope can
   be a plain JavaScript Object containing variables.

@@ -4,6 +4,10 @@ var assert = require('assert'),
     approx = require('../../../tools/approx.js'),
     number = math.number;
 
+// parser
+assert.equal(math.eval('number("123")'), 123);
+assert.equal(math.eval('number()'), 0);
+
 // 0 arguments
 approx.equal(number(), 0);
 

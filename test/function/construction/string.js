@@ -3,6 +3,13 @@ var assert = require('assert'),
     math = require('../../../math.js'),
     string = math.string;
 
+// parser
+assert.equal(math.eval('string(123)'), '123');
+assert.equal(math.eval('string(2+3i)'), '2 + 3i');
+assert.equal(math.eval('string(1:5)'), '[1, 2, 3, 4, 5]');
+assert.equal(math.eval('string(2 inch)'), '2 inch');
+assert.equal(math.eval('string([1,2;3,4])'), '[[1, 2], [3, 4]]');
+
 // 0 arguments
 assert.equal(string(), '');
 
