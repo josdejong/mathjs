@@ -538,6 +538,17 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.arg(x)
 - math.conj(x)
 
+### Construction
+
+- math.complex(re, im)
+- math.matrix(x)
+- math.number(x)
+- math.parser()
+- math.range(start [, step] , end)
+- math.string(x)
+- math.unit(x)
+- math.workspace()
+
 ### Matrix
 
 - math.concat(a, b, c, ... [, dim])

@@ -25,7 +25,7 @@ function Complex(re, im) {
 
     if ((re != null && !isNumber(re)) || (im != null && !isNumber(im))) {
         throw new TypeError(
-            'Two numbers or a single string expected in Complex constructor');
+            'Two numbers expected in Complex constructor');
     }
 
     this.re = re || 0;

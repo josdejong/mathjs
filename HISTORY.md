@@ -10,6 +10,8 @@ https://github.com/josdejong/mathjs
   `scope`, similar to `parse`. Example: `math.eval('x^a', {x:3, a:2});`.
 - Implemented function `subset`, to get or set a subset from a matrix, string,
   or other data types.
+- Implemented construction functions number and string (mainly useful inside
+  the parser).
 - Improved function `det`. Thanks Bryan Cuccioli (bcuccioli).
 - Moved the parse code from prototype math.expr.Parser to function math.parse,
   simplified Parser a little bit.
