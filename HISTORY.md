@@ -14,7 +14,8 @@ https://github.com/josdejong/mathjs
 - Moved the parse code from prototype math.expr.Parser to function math.parse,
   simplified Parser a little bit.
 - Strongly simplified the code of Scope and Workspace.
-- Minor bug fixes.
+- Fixed function mod for negative numerators, and added error messages in case
+  of wrong input.
 
 
 ## 2013-05-18, version 0.8.2

@@ -1,4 +1,4 @@
-// TODO: test subset
+// test subset
 var assert = require('assert'),
     math = require('../../../math.js'),
     subset = math.subset,
@@ -128,7 +128,7 @@ assert.deepEqual(parser.eval('a(:,2)'), matrix([[2],[4]]));
 assert.deepEqual(parser.eval('a(:,2) = [-2;-4]'), matrix([[1,-2],[3,-4]]));
 assert.deepEqual(parser.eval('b=123'), 123);
 assert.deepEqual(parser.eval('b(1)'), 123);
-// assert.deepEqual(parser.eval('b(1,1)'), 123); // TODO: should be supported
+// assert.deepEqual(parser.eval('b(1,1)'), 123); // TODO: should be supported?
 assert.deepEqual(parser.eval('b(1)=456'), 456);
 assert.deepEqual(parser.eval('b'), 456);
 assert.deepEqual(parser.eval('c="hello"'), "hello");

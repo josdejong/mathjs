@@ -15,28 +15,14 @@ math.mod = function mod(x, y) {
         throw newArgumentsError('mod', arguments.length, 2);
     }
 
-    // TODO: only handle integer values in mod?
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number % number
-            return x % y;
-        }
-        else if (y instanceof Complex && y.im == 0) {
-            // number % complex
-            return x % y.re;
-        }
-    }
-    else if (x instanceof Complex && x.im == 0) {
-        if (isNumber(y)) {
-            // complex * number
-            return x.re % y;
-        }
-        else if (y instanceof Complex && y.im == 0) {
-            // complex * complex
-            return x.re % y.re;
-        }
+    // see http://functions.wolfram.com/IntegerFunctions/Mod/
+
+    if (isNumber(x) && isNumber(y)) {
+        // number % number
+        return _mod(x, y);
     }
 
+    // TODO: implement mod for complex values
 
     if (x instanceof Array || x instanceof Matrix ||
         y instanceof Array || y instanceof Matrix) {
@@ -50,3 +36,31 @@ math.mod = function mod(x, y) {
 
     throw newUnsupportedTypeError('mod', x, y);
 };
+
+/**
+ * Calculate the modulus of two numbers
+ * @param {Number} x
+ * @param {Number} y
+ * @returns {number} res
+ * @private
+ */
+function _mod(x, y) {
+    if (y > 0) {
+        if (x > 0) {
+            return x % y;
+        }
+        else if (x == 0) {
+            return 0;
+        }
+        else { // x < 0
+            return x - y * Math.floor(x / y);
+        }
+    }
+    else if (y == 0) {
+        return x;
+    }
+    else { // y < 0
+        // TODO: implement mod for a negative divisor
+        throw new Error('Cannot calculate mod for a negative divisor');
+    }
+}
