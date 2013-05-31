@@ -39,7 +39,7 @@ desc('Concatenate all source files into one file');
 task('concat', function () {
     var result = util.concat({
         src: [
-            './src/exports.js',
+            './src/namespace.js',
             './src/util.js',
             './src/type/**/*.js',
             './src/constants.js',
@@ -60,7 +60,8 @@ task('concat', function () {
             './src/expr/Workspace.js',
             './src/function/**/*.js',
             './src/compatibility.js',
-            './src/init.js'
+            './src/init.js',
+            './src/exports.js'
         ],
         dest: MATHJS,
         header: util.read(HEADER) + '\n(function() {\n',

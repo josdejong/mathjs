@@ -1,19 +1,3 @@
-// TODO: put "use strict"; here (but right now webstorms inspector starts
-// complaining on this issue: http://youtrack.jetbrains.com/issue/WEB-7485)
-
-/**
- * Define namespace
- */
-var math = {
-    type: {},
-    expr: {
-        node: {}
-    },
-    options: {
-        precision: 5  // number of digits in formatted output
-    }
-};
-
 /**
  * CommonJS module exports
  */
@@ -37,5 +21,10 @@ if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
  * Browser exports
  */
 if (typeof(window) != 'undefined') {
-    window['math'] = math;
+    if (window['math']) {
+        util.deepExtend(window['math'], math);
+    }
+    else {
+        window['math'] = math;
+    }
 }

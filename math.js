@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.9.1-SNAPSHOT
- * @date    2013-05-29
+ * @date    2013-05-31
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -43,32 +43,6 @@ var math = {
     }
 };
 
-/**
- * CommonJS module exports
- */
-if ((typeof module !== 'undefined') && (typeof module.exports !== 'undefined')) {
-    module.exports = math;
-}
-if (typeof exports !== 'undefined') {
-    exports = math;
-}
-
-/**
- * AMD module exports
- */
-if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
-    define(function () {
-        return math;
-    });
-}
-
-/**
- * Browser exports
- */
-if (typeof(window) != 'undefined') {
-    window['math'] = math;
-}
-
 // utility methods for strings, objects, and arrays
 var util = (function () {
     var util = {};
@@ -76,10 +50,10 @@ var util = (function () {
     /**
      * Convert a number to a formatted string representation.
      * @param {Number} value            The value to be formatted
-     * @param {Number} [digits]         number of digits
+     * @param {Number} [precision]      number of digits in formatted output
      * @return {String} formattedValue  The formatted value
      */
-    util.formatNumber = function formatNumber(value, digits) {
+    util.formatNumber = function formatNumber(value, precision) {
         if (value === Infinity) {
             return 'Infinity';
         }
@@ -93,26 +67,26 @@ var util = (function () {
         // TODO: what is a nice limit for non-scientific values?
         var abs = Math.abs(value);
         if ( (abs > 0.001 && abs < 100000) || abs == 0.0 ) {
-            // round the value to a limited number of digits
-            return util.toPrecision(value, digits);
+            // round the value to a limited number of precision
+            return util.toPrecision(value, precision);
         }
         else {
             // scientific notation
             var exp = Math.round(Math.log(abs) / Math.LN10);
             var v = value / (Math.pow(10.0, exp));
-            return util.toPrecision(v, digits) + 'e' + exp;
+            return util.toPrecision(v, precision) + 'e' + exp;
         }
     };
 
     /**
-     * Round a value to a maximum number of digits. Trailing zeros will be
+     * Round a value to a maximum number of precision. Trailing zeros will be
      * removed.
      * @param {Number} value
-     * @param {Number} [digits]
+     * @param {Number} [precision]  Number of digits in formatted output
      * @returns {string} str
      */
-    util.toPrecision = function (value, digits) {
-        return value.toPrecision(digits).replace(_trailingZeros, function (a, b, c) {
+    util.toPrecision = function toPrecision (value, precision) {
+        return value.toPrecision(precision).replace(_trailingZeros, function (a, b, c) {
             return a.substring(0, a.length - (b.length ? 0 : 1) - c.length);
         });
     };
@@ -227,7 +201,7 @@ var util = (function () {
      * @param {String} text
      * @param {String} search
      */
-    util.endsWith = function(text, search) {
+    util.endsWith = function endsWith(text, search) {
         var start = text.length - search.length;
         var end = text.length;
         return (text.substring(start, end) === search);
@@ -239,7 +213,7 @@ var util = (function () {
      * @param {Object} b
      * @return {Object} a
      */
-    util.extend = function (a, b) {
+    util.extend = function extend (a, b) {
         for (var prop in b) {
             if (b.hasOwnProperty(prop)) {
                 a[prop] = b[prop];
@@ -249,8 +223,36 @@ var util = (function () {
     };
 
     /**
+     * Deep extend an object a with the properties of object b
+     * @param {Object} a
+     * @param {Object} b
+     * @returns {Object}
+     */
+    util.deepExtend = function deepExtend (a, b) {
+        for (var prop in b) {
+            if (b.hasOwnProperty(prop)) {
+                console.log(prop)
+                if (b[prop] && b[prop].constructor === Object) {
+                    if (a[prop] === undefined) {
+                        a[prop] = {};
+                    }
+                    if (a[prop].constructor === Object) {
+                        deepExtend(a[prop], b[prop]);
+                    }
+                    else {
+                        a[prop] = b[prop];
+                    }
+                } else {
+                    a[prop] = b[prop];
+                }
+            }
+        }
+        return a;
+    };
+
+    /**
      * Create a semi UUID
-     * source: http://stackoverflow.com/a/105074/1262753
+     * b: http://stackoverflow.com/a/105074/1262753
      * @return {String} uuid
      */
     util.randomUUID = function randomUUID() {
@@ -269,6 +271,8 @@ var util = (function () {
             );
     };
 
+    // TODO: write the map, deepMap, map2, and deepMap2 functions in a more concise way
+
     /**
      * Execute function fn element wise for each element in array.
      * Returns an array with the results
@@ -284,6 +288,25 @@ var util = (function () {
         }
         else {
             throw new TypeError('Array expected');
+        }
+    };
+
+    /**
+     * Execute function fn element wise for each element in array and any nested
+     * array
+     * Returns an array with the results
+     * @param {Array | Matrix | Range} array
+     * @param {function} fn
+     * @return {Array | Matrix} res
+     */
+    util.deepMap = function map(array, fn) {
+        if (array instanceof Array || array instanceof Matrix || array instanceof Range) {
+            return array.map(function (x) {
+                return map(x, fn);
+            });
+        }
+        else {
+            return fn(array);
         }
     };
 
@@ -350,6 +373,69 @@ var util = (function () {
         return res;
     };
 
+    /**
+     * Execute function fn element wise for each entry in two given arrays,
+     * and for any nested array. Objects can also be scalar objects.
+     * Returns an array with the results.
+     * @param {Array | Matrix | Range | Object} array1
+     * @param {Array | Matrix | Range | Object} array2
+     * @param {function} fn
+     * @return {Array | Matrix} res
+     */
+    util.deepMap2 = function map2(array1, array2, fn) {
+        var res, len, i;
+
+        // handle Matrix
+        if (array1 instanceof Matrix || array2 instanceof Matrix) {
+            return new Matrix(map2(array1.valueOf(), array2.valueOf(), fn));
+        }
+
+        // handle Range
+        if (array1 instanceof Range || array2 instanceof Range) {
+            // TODO: util.deepMap2 does not utilize Range.map
+            return map2(array1.valueOf(), array2.valueOf(), fn);
+        }
+
+        if (array1 instanceof Array) {
+            if (array2 instanceof Array) {
+                // fn(array, array)
+                if (array1.length != array2.length) {
+                    throw new RangeError('Dimension mismatch ' +
+                        '(' +  array1.length + ' != ' + array2.length + ')');
+                }
+
+                res = [];
+                len = array1.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = map2(array1[i], array2[i], fn);
+                }
+            }
+            else {
+                // fn(array, object)
+                res = [];
+                len = array1.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = map2(array1[i], array2, fn);
+                }
+            }
+        }
+        else {
+            if (array2 instanceof Array) {
+                // fn(object, array)
+                res = [];
+                len = array2.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = map2(array1, array2[i], fn);
+                }
+            }
+            else {
+                // fn(object, object)
+                res = fn(array1, array2);
+            }
+        }
+
+        return res;
+    };
 
     /**
      * For each method for objects and arrays.
@@ -375,7 +461,7 @@ var util = (function () {
 
     /**
      * Creates a new object with the results of calling a provided function on
-     * every property in the object.
+     * every prop in the object.
      * @param {Object} object           The object.
      * @param {function} callback       Mapping function
      * @return {Object | Array} mappedObject
@@ -396,7 +482,7 @@ var util = (function () {
      * @param {Array | Object} b
      * @returns {boolean}
      */
-    util.deepEqual = function (a, b) {
+    util.deepEqual = function deepEqual (a, b) {
         var prop, i, len;
         if (a instanceof Array) {
             if (!(b instanceof Array)) {
@@ -584,7 +670,7 @@ var util = (function () {
      * @param {*} index       One-based index
      * @param {Number} [max]  One-based maximum value
      */
-    util.validateIndex = function (index, max) {
+    util.validateIndex = function validateIndex (index, max) {
         if (!isNumber(index) || !isInteger(index)) {
             throw new TypeError('Index must be an integer (value: ' + index + ')');
         }
@@ -4879,6 +4965,60 @@ function _divideComplex (x, y) {
         (x.im * y.re - x.re * y.im) / den
     );
 }
+
+/**
+ * Divide two values element wise.
+ *
+ *     x ./ y
+ *     edivide(x, y)
+ *
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
+ */
+math.edivide = function edivide(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('edivide', arguments.length, 2);
+    }
+
+    return util.deepMap2(x, y, math.divide);
+};
+
+/**
+ * Multiply two values element wise.
+ *
+ *     x .* y
+ *     emultiply(x, y)
+ *
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
+ */
+math.emultiply = function emultiply(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('emultiply', arguments.length, 2);
+    }
+
+    return util.deepMap2(x, y, math.multiply);
+};
+
+/**
+ * Calculates the power of x to y element wise
+ *
+ *     x .^ y
+ *     epow(x, y)
+ *
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
+ */
+math.epow = function epow(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('epow', arguments.length, 2);
+    }
+
+    return util.deepMap2(x, y, math.pow);
+};
 
 /**
  * Check if value x equals y,
@@ -9828,6 +9968,41 @@ function isSupportedType(object) {
                     }
                 }
 
+                // TODO: spaces as separator for matrix columns
+                /*
+                // the columns in the matrix are separated by commas or spaces,
+                // and the rows by dot-comma's
+                while (token && token != ']') {
+                    if (token == ';') {
+                        r++;
+                        c = 0;
+                        params[r] = [];
+                        getToken();
+                    }
+                    else if (token == ',') {
+                        c++;
+                        getToken();
+                    }
+                    else {
+                        c++;
+                    }
+
+                    // skip newlines
+                    while (token == '\n') {
+                        getToken();
+                    }
+
+                    //TODO: math.eval('[1 -2 3]') is evaluated as '[(1-2) 3]' instead of '[(1) (-2) (3)]'
+                    //TODO: '[(1) (-2) (3)]' doesn't work
+                    params[r][c] = parse_assignment(scope);
+
+                    // skip newlines
+                    while (token == '\n') {
+                        getToken();
+                    }
+                }
+                */
+
                 rows =  params.length;
                 cols = (params.length > 0) ? params[0].length : 0;
 
@@ -10334,6 +10509,37 @@ if (!Function.prototype.bind) {
 for (var prop in math) {
     if (math.hasOwnProperty(prop) && prop) {
         createSelectorProxy(prop, math[prop]);
+    }
+}
+
+/**
+ * CommonJS module exports
+ */
+if ((typeof module !== 'undefined') && (typeof module.exports !== 'undefined')) {
+    module.exports = math;
+}
+if (typeof exports !== 'undefined') {
+    exports = math;
+}
+
+/**
+ * AMD module exports
+ */
+if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
+    define(function () {
+        return math;
+    });
+}
+
+/**
+ * Browser exports
+ */
+if (typeof(window) != 'undefined') {
+    if (window['math']) {
+        util.deepExtend(window['math'], math);
+    }
+    else {
+        window['math'] = math;
     }
 }
 

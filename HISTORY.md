@@ -2,6 +2,12 @@
 https://github.com/josdejong/mathjs
 
 
+## version 0.9.1
+
+- Implemented element wise operations `emultiply` (`x .* y`),
+  `edivide` (`x ./ y`), `epow` (`x .^ y`).
+
+
 ## 2013-05-29, version 0.9.0
 
 - Implemented function `math.parse(expr [,scope])`. Optional parameter scope can

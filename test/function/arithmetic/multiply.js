@@ -66,7 +66,7 @@ assert.equal(multiply(unit('5 mm'), 0).toString(), '0 m');
 assert.throws(function () {multiply("hello", "world")});
 assert.throws(function () {multiply("hello", 2)});
 
-// matrix, array
+// matrix, array, range
 var a = matrix([[1,2],[3,4]]);
 var b = matrix([[5,6],[7,8]]);
 var c = matrix([[5],[6]]);

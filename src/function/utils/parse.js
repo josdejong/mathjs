@@ -1055,6 +1055,41 @@
                     }
                 }
 
+                // TODO: spaces as separator for matrix columns
+                /*
+                // the columns in the matrix are separated by commas or spaces,
+                // and the rows by dot-comma's
+                while (token && token != ']') {
+                    if (token == ';') {
+                        r++;
+                        c = 0;
+                        params[r] = [];
+                        getToken();
+                    }
+                    else if (token == ',') {
+                        c++;
+                        getToken();
+                    }
+                    else {
+                        c++;
+                    }
+
+                    // skip newlines
+                    while (token == '\n') {
+                        getToken();
+                    }
+
+                    //TODO: math.eval('[1 -2 3]') is evaluated as '[(1-2) 3]' instead of '[(1) (-2) (3)]'
+                    //TODO: '[(1) (-2) (3)]' doesn't work
+                    params[r][c] = parse_assignment(scope);
+
+                    // skip newlines
+                    while (token == '\n') {
+                        getToken();
+                    }
+                }
+                */
+
                 rows =  params.length;
                 cols = (params.length > 0) ? params[0].length : 0;
 

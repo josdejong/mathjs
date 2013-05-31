@@ -5,10 +5,10 @@ var util = (function () {
     /**
      * Convert a number to a formatted string representation.
      * @param {Number} value            The value to be formatted
-     * @param {Number} [digits]         number of digits
+     * @param {Number} [precision]      number of digits in formatted output
      * @return {String} formattedValue  The formatted value
      */
-    util.formatNumber = function formatNumber(value, digits) {
+    util.formatNumber = function formatNumber(value, precision) {
         if (value === Infinity) {
             return 'Infinity';
         }
@@ -22,26 +22,26 @@ var util = (function () {
         // TODO: what is a nice limit for non-scientific values?
         var abs = Math.abs(value);
         if ( (abs > 0.001 && abs < 100000) || abs == 0.0 ) {
-            // round the value to a limited number of digits
-            return util.toPrecision(value, digits);
+            // round the value to a limited number of precision
+            return util.toPrecision(value, precision);
         }
         else {
             // scientific notation
             var exp = Math.round(Math.log(abs) / Math.LN10);
             var v = value / (Math.pow(10.0, exp));
-            return util.toPrecision(v, digits) + 'e' + exp;
+            return util.toPrecision(v, precision) + 'e' + exp;
         }
     };
 
     /**
-     * Round a value to a maximum number of digits. Trailing zeros will be
+     * Round a value to a maximum number of precision. Trailing zeros will be
      * removed.
      * @param {Number} value
-     * @param {Number} [digits]
+     * @param {Number} [precision]  Number of digits in formatted output
      * @returns {string} str
      */
-    util.toPrecision = function (value, digits) {
-        return value.toPrecision(digits).replace(_trailingZeros, function (a, b, c) {
+    util.toPrecision = function toPrecision (value, precision) {
+        return value.toPrecision(precision).replace(_trailingZeros, function (a, b, c) {
             return a.substring(0, a.length - (b.length ? 0 : 1) - c.length);
         });
     };
@@ -156,7 +156,7 @@ var util = (function () {
      * @param {String} text
      * @param {String} search
      */
-    util.endsWith = function(text, search) {
+    util.endsWith = function endsWith(text, search) {
         var start = text.length - search.length;
         var end = text.length;
         return (text.substring(start, end) === search);
@@ -168,7 +168,7 @@ var util = (function () {
      * @param {Object} b
      * @return {Object} a
      */
-    util.extend = function (a, b) {
+    util.extend = function extend (a, b) {
         for (var prop in b) {
             if (b.hasOwnProperty(prop)) {
                 a[prop] = b[prop];
@@ -178,8 +178,36 @@ var util = (function () {
     };
 
     /**
+     * Deep extend an object a with the properties of object b
+     * @param {Object} a
+     * @param {Object} b
+     * @returns {Object}
+     */
+    util.deepExtend = function deepExtend (a, b) {
+        for (var prop in b) {
+            if (b.hasOwnProperty(prop)) {
+                console.log(prop)
+                if (b[prop] && b[prop].constructor === Object) {
+                    if (a[prop] === undefined) {
+                        a[prop] = {};
+                    }
+                    if (a[prop].constructor === Object) {
+                        deepExtend(a[prop], b[prop]);
+                    }
+                    else {
+                        a[prop] = b[prop];
+                    }
+                } else {
+                    a[prop] = b[prop];
+                }
+            }
+        }
+        return a;
+    };
+
+    /**
      * Create a semi UUID
-     * source: http://stackoverflow.com/a/105074/1262753
+     * b: http://stackoverflow.com/a/105074/1262753
      * @return {String} uuid
      */
     util.randomUUID = function randomUUID() {
@@ -198,6 +226,8 @@ var util = (function () {
             );
     };
 
+    // TODO: write the map, deepMap, map2, and deepMap2 functions in a more concise way
+
     /**
      * Execute function fn element wise for each element in array.
      * Returns an array with the results
@@ -213,6 +243,25 @@ var util = (function () {
         }
         else {
             throw new TypeError('Array expected');
+        }
+    };
+
+    /**
+     * Execute function fn element wise for each element in array and any nested
+     * array
+     * Returns an array with the results
+     * @param {Array | Matrix | Range} array
+     * @param {function} fn
+     * @return {Array | Matrix} res
+     */
+    util.deepMap = function map(array, fn) {
+        if (array instanceof Array || array instanceof Matrix || array instanceof Range) {
+            return array.map(function (x) {
+                return map(x, fn);
+            });
+        }
+        else {
+            return fn(array);
         }
     };
 
@@ -279,6 +328,69 @@ var util = (function () {
         return res;
     };
 
+    /**
+     * Execute function fn element wise for each entry in two given arrays,
+     * and for any nested array. Objects can also be scalar objects.
+     * Returns an array with the results.
+     * @param {Array | Matrix | Range | Object} array1
+     * @param {Array | Matrix | Range | Object} array2
+     * @param {function} fn
+     * @return {Array | Matrix} res
+     */
+    util.deepMap2 = function map2(array1, array2, fn) {
+        var res, len, i;
+
+        // handle Matrix
+        if (array1 instanceof Matrix || array2 instanceof Matrix) {
+            return new Matrix(map2(array1.valueOf(), array2.valueOf(), fn));
+        }
+
+        // handle Range
+        if (array1 instanceof Range || array2 instanceof Range) {
+            // TODO: util.deepMap2 does not utilize Range.map
+            return map2(array1.valueOf(), array2.valueOf(), fn);
+        }
+
+        if (array1 instanceof Array) {
+            if (array2 instanceof Array) {
+                // fn(array, array)
+                if (array1.length != array2.length) {
+                    throw new RangeError('Dimension mismatch ' +
+                        '(' +  array1.length + ' != ' + array2.length + ')');
+                }
+
+                res = [];
+                len = array1.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = map2(array1[i], array2[i], fn);
+                }
+            }
+            else {
+                // fn(array, object)
+                res = [];
+                len = array1.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = map2(array1[i], array2, fn);
+                }
+            }
+        }
+        else {
+            if (array2 instanceof Array) {
+                // fn(object, array)
+                res = [];
+                len = array2.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = map2(array1, array2[i], fn);
+                }
+            }
+            else {
+                // fn(object, object)
+                res = fn(array1, array2);
+            }
+        }
+
+        return res;
+    };
 
     /**
      * For each method for objects and arrays.
@@ -304,7 +416,7 @@ var util = (function () {
 
     /**
      * Creates a new object with the results of calling a provided function on
-     * every property in the object.
+     * every prop in the object.
      * @param {Object} object           The object.
      * @param {function} callback       Mapping function
      * @return {Object | Array} mappedObject
@@ -325,7 +437,7 @@ var util = (function () {
      * @param {Array | Object} b
      * @returns {boolean}
      */
-    util.deepEqual = function (a, b) {
+    util.deepEqual = function deepEqual (a, b) {
         var prop, i, len;
         if (a instanceof Array) {
             if (!(b instanceof Array)) {
@@ -513,7 +625,7 @@ var util = (function () {
      * @param {*} index       One-based index
      * @param {Number} [max]  One-based maximum value
      */
-    util.validateIndex = function (index, max) {
+    util.validateIndex = function validateIndex (index, max) {
         if (!isNumber(index) || !isInteger(index)) {
             throw new TypeError('Index must be an integer (value: ' + index + ')');
         }

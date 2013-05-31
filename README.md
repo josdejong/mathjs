@@ -495,6 +495,30 @@ Math.js has the following built-in constants.
 - math.SQRT2
 
 
+## Operators
+
+The following operators are available in the expression parser of math.js.
+
+- x + y (add)
+- x - y (subtract)
+- x * y (multiply)
+- x / y (divide)
+- x % y (mod)
+- x ^ y (mod)
+- -y (unary minus)
+- y' (transpose)
+- y! (factorial)
+- x = y (assignment)
+- x : y (range)
+- x in y (unit conversion)
+- x == y (equal)
+- x != y (unequal)
+- x < y (smaller)
+- x > y (larger)
+- x <= y (smallereq)
+- x >= y (largereq)
+
+
 ## Methods
 
 Math.js contains the following methods. The methods support all available data
@@ -507,6 +531,9 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.ceil(x)
 - math.cube(x)
 - math.divide(x, y)
+- math.edivide(x, y)
+- math.emultiply(x, y)
+- math.epow(x, y)
 - math.equal(x)
 - math.exp(x)
 - math.fix(x)
