@@ -186,7 +186,6 @@ var util = (function () {
     util.deepExtend = function deepExtend (a, b) {
         for (var prop in b) {
             if (b.hasOwnProperty(prop)) {
-                console.log(prop)
                 if (b[prop] && b[prop].constructor === Object) {
                     if (a[prop] === undefined) {
                         a[prop] = {};

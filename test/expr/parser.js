@@ -251,6 +251,19 @@ assert.deepEqual(parser.eval('[1:4]').valueOf(), [[1,2,3,4]]);
 assert.deepEqual(parser.eval('[1:4]\'').valueOf(), [[1],[2],[3],[4]]);
 assert.deepEqual(parser.eval('size([1:4])').valueOf(), [1, 4]);
 
+// test element wise operators
+assert.deepEqual(parser.eval('2.*3'), 6);
+assert.deepEqual(parser.eval('2 .* 3'), 6);
+assert.deepEqual(parser.eval('2. * 3'), 6);
+assert.deepEqual(parser.eval('2 .^ 3'), 8);
+assert.deepEqual(parser.eval('4./2'), 2);
+assert.deepEqual(parser.eval('4 ./ 2'), 2);
+assert.deepEqual(parser.eval('a=3; a.*4'), [12]);
+assert.deepEqual(parser.eval('[1,2,3] .* [1,2,3]'), matrix([[1,4,9]]));
+assert.deepEqual(parser.eval('[1,2,3] ./ [1,2,3]'), matrix([[1,1,1]]));
+assert.deepEqual(parser.eval('[2,3] .^ [2,3]'), matrix([[4,27]]));
+
+
 // test unit
 assert.equal(parser.eval('5cm').toString(), '50 mm');
 assert.ok(parser.eval('5cm') instanceof math.type.Unit);

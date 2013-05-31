@@ -75,6 +75,39 @@
         UNKNOWN : 4
     };
 
+    // map with all delimiters
+    var DELIMITERS = {
+        ',': true,
+        '(': true,
+        ')': true,
+        '[': true,
+        ']': true,
+        '\"': true,
+        '\n': true,
+        ';': true,
+
+        '+': true,
+        '-': true,
+        '*': true,
+        '.*': true,
+        '/': true,
+        './': true,
+        '%': true,
+        '^': true,
+        '.^': true,
+        '!': true,
+        '\'': true,
+        '=': true,
+        ':': true,
+
+        '==': true,
+        '!=': true,
+        '<': true,
+        '>': true,
+        '<=': true,
+        '>=': true
+    };
+
     var expression = '';  // current expression
     var index = 0;        // current index in expr
     var c = '';           // current token character in expr
@@ -82,27 +115,34 @@
     var token_type = TOKENTYPE.NULL; // type of the token
 
     /**
-     * Get the next character from the expression.
-     * The character is stored into the char t.
-     * If the end of the expression is reached, the function puts an empty
-     * string in t.
+     * Get the first character from the expression.
+     * The character is stored into the char c. If the end of the expression is
+     * reached, the function puts an empty string in c.
      * @private
      */
-    function getChar() {
+    function first() {
+        index = 0;
+        c = expression.charAt(0);
+    }
+
+    /**
+     * Get the next character from the expression.
+     * The character is stored into the char c. If the end of the expression is
+     * reached, the function puts an empty string in c.
+     * @private
+     */
+    function next() {
         index++;
         c = expression.charAt(index);
     }
 
     /**
-     * Get the first character from the expression.
-     * The character is stored into the char t.
-     * If the end of the expression is reached, the function puts an empty
-     * string in t.
+     * Preview the next character from the expression.
+     * @return {String} cNext
      * @private
      */
-    function getFirstChar() {
-        index = 0;
-        c = expression.charAt(0);
+    function nextPreview() {
+        return expression.charAt(index + 1);
     }
 
     /**
@@ -117,13 +157,13 @@
 
         // skip over whitespaces
         while (c == ' ' || c == '\t') {  // space or tab
-            getChar();
+            next();
         }
 
         // skip comment
         if (c == '#') {
             while (c != '\n' && c != '') {
-                getChar();
+                next();
             }
         }
 
@@ -134,41 +174,21 @@
             return;
         }
 
-        // check for factorial character !, and unequal operator !=
-        if (c == '!') {
+        // check for delimiters consisting of 2 characters
+        var c2 = c + nextPreview();
+        if (DELIMITERS[c2]) {
             token_type = TOKENTYPE.DELIMITER;
-            token += c;
-            getChar();
-
-            // TODO: solve operators consisting of of two characters in a more generic way
-            if (c == '=') {
-                token += c;
-                getChar();
-            }
-
+            token = c2;
+            next();
+            next();
             return;
         }
 
-        // check for minus, comma, parentheses, quotes, newline, semicolon
-        if (c == '-' || c == ',' ||
-            c == '(' || c == ')' ||
-            c == '[' || c == ']' ||
-            c == '\"' || c == '\'' ||
-            c == '\n' ||
-            c == ';' || c == ':') {
+        // check for delimiters consisting of 1 character
+        if (DELIMITERS[c]) {
             token_type = TOKENTYPE.DELIMITER;
-            token += c;
-            getChar();
-            return;
-        }
-
-        // check for operators (delimiters)
-        if (isDelimiter(c)) {
-            token_type = TOKENTYPE.DELIMITER;
-            while (isDelimiter(c)) {
-                token += c;
-                getChar();
-            }
+            token = c;
+            next();
             return;
         }
 
@@ -179,7 +199,7 @@
             // get number, can have a single dot
             if (c == '.') {
                 token += c;
-                getChar();
+                next();
 
                 if (!isDigit(c)) {
                     // this is no legal number, it is just a dot
@@ -189,26 +209,26 @@
             else {
                 while (isDigit(c)) {
                     token += c;
-                    getChar();
+                    next();
                 }
                 if (c == '.') {
                     token += c;
-                    getChar();
+                    next();
                 }
             }
             while (isDigit(c)) {
                 token += c;
-                getChar();
+                next();
             }
 
             // check for scientific notation like "2.3e-4" or "1.23e50"
             if (c == 'E' || c == 'e') {
                 token += c;
-                getChar();
+                next();
 
                 if (c == '+' || c == '-') {
                     token += c;
-                    getChar();
+                    next();
                 }
 
                 // Scientific notation MUST be followed by an exponent
@@ -219,7 +239,7 @@
 
                 while (isDigit(c)) {
                     token += c;
-                    getChar();
+                    next();
                 }
             }
 
@@ -230,10 +250,9 @@
         if (isAlpha(c)) {
             token_type = TOKENTYPE.SYMBOL;
 
-            while (isAlpha(c) || isDigit(c))
-            {
+            while (isAlpha(c) || isDigit(c)) {
                 token += c;
-                getChar();
+                next();
             }
             return;
         }
@@ -242,34 +261,9 @@
         token_type = TOKENTYPE.UNKNOWN;
         while (c != '') {
             token += c;
-            getChar();
+            next();
         }
         throw createSyntaxError('Syntax error in part "' + token + '"');
-    }
-
-    /**
-     * checks if the given char c is a delimiter
-     * minus is not checked in this method (can be unary minus)
-     * @param {String} c   a string with one character
-     * @return {Boolean}
-     * @private
-     */
-    function isDelimiter (c) {
-        return c == '&' ||
-            c == '|' ||
-            c == '<' ||
-            c == '>' ||
-            c == '=' ||
-            c == '+' ||
-            c == '/' ||
-            c == '*' ||
-            c == '%' ||
-            c == '^' ||
-            c == ',' ||
-            c == ';' ||
-            c == '\n' ||
-            c == '!' ||
-            c == '\'';
     }
 
     /**
@@ -279,6 +273,7 @@
      * @return {boolean} valid
      * @private
      */
+    // TODO: check for valid symbol name
     function isValidSymbolName (name) {
         for (var i = 0, iMax = name.length; i < iMax; i++) {
             var c = name.charAt(i);
@@ -334,7 +329,7 @@
      */
     function parse_start (scope) {
         // get the first character in expression
-        getFirstChar();
+        first();
 
         getToken();
 
@@ -726,7 +721,9 @@
 
         operators = {
             '*': 'multiply',
+            '.*': 'emultiply',
             '/': 'divide',
+            './': 'edivide',
             '%': 'mod',
             'mod': 'mod'
         };
@@ -772,14 +769,16 @@
      * @private
      */
     function parse_pow (scope) {
-        var node, leftNode, nodes, operators, name, fn, params;
+        var node, leftNode, nodes, ops, name, fn, params;
 
         nodes = [
             parse_factorial(scope)
         ];
+        ops = [];
 
         // stack all operands of a chained power operator (like '2^3^3')
-        while (token == '^') {
+        while (token == '^' || token == '.^') {
+            ops.push(token);
             getToken();
             nodes.push(parse_factorial(scope));
         }
@@ -788,8 +787,8 @@
         node = nodes.pop();
         while (nodes.length) {
             leftNode = nodes.pop();
-            name = '^';
-            fn = math.pow;
+            name = ops.pop();
+            fn = (name == '^') ? math.pow : math.epow;
             params = [leftNode, node];
             node = new OperatorNode(name, fn, params);
         }
@@ -982,7 +981,7 @@
             while (c != '' && (c != '\"' || tPrev == '\\')) { // also handle escape character
                 str += c;
                 tPrev = c;
-                getChar();
+                next();
             }
 
             getToken();
