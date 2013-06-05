@@ -539,19 +539,22 @@ Unit.PREFIX_NONE = {'name': '', 'value': 1, 'scientific': true};
 Unit.BASE_UNITS = {
     'NONE': {},
 
-    'LENGTH': {},               // meter
-    'MASS': {},                 // kilogram
-    'TIME': {},                 // second
-    'CURRENT': {},              // ampere
-    'TEMPERATURE': {},          // kelvin
-    'LUMINOUS_INTENSITY': {},   // candela
-    'AMOUNT_OF_SUBSTANCE': {},  // mole
+    'LENGTH': {'m': 1},               // meter
+    'MASS':   {'kg': 1},                 // kilogram
+    'TIME': {'s': 1},                 // second
+    'CURRENT': {'A': 1},              // ampere
+    'TEMPERATURE': {'K':1},          // kelvin
+    'LUMINOUS_INTENSITY': {'cd': 1},   // candela
+    'AMOUNT_OF_SUBSTANCE': {'mol': 1},  // mole
 
-    'FORCE': {},        // Newton
-    'SURFACE': {},      // m2
-    'VOLUME': {},       // m3
-    'ANGLE': {},        // rad
-    'BIT': {}           // bit (digital)
+    'FORCE': {'kg':1 ,'m': 1, 's':-2 },        // Newton
+    'SURFACE': {'m': 2},      // m2
+    'VOLUME': {'m': 3},       // m3
+    'ANGLE': {'rad': 1},        // rad
+    'BIT': {'b':1},          // bit (digital)
+    'FREQUENCY': {'s':-1},
+    'SPEED' : {'m':1, 's': -1},
+    'ACCELERATION': {'m':1, 's':-2}
 };
 
 var BASE_UNITS = Unit.BASE_UNITS;
