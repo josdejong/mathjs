@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.9.0
- * @date    2013-05-29
+ * @date    2013-06-12
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -2380,6 +2380,38 @@ Unit.isPlainUnit = function (unit) {
     return (_findUnit(unit) != null);
 };
 
+
+Unit._findBaseUnit= function (dimensions){
+    debugger;
+    var BASE_UNITS = Unit.BASE_UNITS;
+    for(var dim in dimensions){
+        if(dimensions[dim] === 0) delete dimensions[dim];        
+    }
+    var iMax = BASE_UNITS.length;
+    outerloop: for (var i = 0; i < iMax; i++) {
+        var BASE_UNIT = BASE_UNITS[i];
+        for(var dim in dimensions){
+            if(dimensions[dim]!==BASE_UNIT.dimensions[dim]){
+                continue outerloop;
+            }        
+        }
+        return BASE_UNIT;
+    }
+
+    throw new Error('Could not find a matching base quantity for the given dimensions: ' + JSON.stringify(dimensions));
+};
+Unit._findUnitFromBase = function(base){
+    var UNITS = Unit.UNITS;
+    for (var i = 0, iMax = UNITS.length; i < iMax; i++) {
+        var UNIT = UNITS[i];
+        if(UNIT.base===base){
+            return UNIT;
+        }
+
+    }
+
+    throw new Error('No matching unit for the base quantity ' + base.name +' was found');
+}
 /**
  * check if this unit has given base unit
  * @param {Unit.BASE_UNITS} base
@@ -2612,21 +2644,24 @@ Unit.PREFIXES = {
 Unit.PREFIX_NONE = {'name': '', 'value': 1, 'scientific': true};
 
 Unit.BASE_UNITS = {
-    'NONE': {},
+    'NONE': {'name': 'none', 'dimensions':{}},
 
-    'LENGTH': {},               // meter
-    'MASS': {},                 // kilogram
-    'TIME': {},                 // second
-    'CURRENT': {},              // ampere
-    'TEMPERATURE': {},          // kelvin
-    'LUMINOUS_INTENSITY': {},   // candela
-    'AMOUNT_OF_SUBSTANCE': {},  // mole
+    'LENGTH': {'name':'length', 'dimensions':{'m': 1}},   // meter
+    'MASS':   {'name':'mass', 'dimensions':{'kg': 1}},    // kilogram
+    'TIME': {'name':'time', 'dimensions':{'s': 1}},        // second
+    'CURRENT': {'name':'current', 'dimensions':{'A': 1}}, // ampere
+    'TEMPERATURE': {'name':'temperature', 'dimensions':{'K': 1}},// kelvin
+    'LUMINOUS_INTENSITY': {'name':'luminous intensity', 'dimensions':{'cd': 1}},   // candela
+    'AMOUNT_OF_SUBSTANCE': {'name':'amount of substance', 'dimensions':{'mol': 1}},  // mole
 
-    'FORCE': {},        // Newton
-    'SURFACE': {},      // m2
-    'VOLUME': {},       // m3
-    'ANGLE': {},        // rad
-    'BIT': {}           // bit (digital)
+    'FORCE': {'name': 'force', 'dimensions': {'kg': 1 ,'m': 1, 's': -2}},  // Newton
+    'SURFACE': {'name': 'surface', 'dimensions':{'m': 2}},      // m2
+    'VOLUME': {'name': 'volume', 'dimensions': {'m': 3}},       // m3
+    'ANGLE': {'name': 'angle', 'dimensions': {'rad': 1}},        // rad
+    'BIT': {'name': 'bit', 'dimensions': {'b': 1}},          // bit (digital)
+    'FREQUENCY': {'name': 'frequency', 'dimensions': {'s': -1}},
+    'SPEED' : {'name': 'speed', 'dimensions': {'m': 1, 's': -1}},
+    'ACCELERATION': {'name': 'acceleration', 'dimensions': {'m': 1, 's': -2}}
 };
 
 var BASE_UNITS = Unit.BASE_UNITS;
@@ -2737,6 +2772,12 @@ Unit.UNITS = [
     {'name': 'hour', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 3600, 'offset': 0},
     {'name': 'day', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 86400, 'offset': 0},
     {'name': 'days', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 86400, 'offset': 0},
+
+    //Speed
+    {'name': 'mps', 'base': BASE_UNITS.SPEED, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+
+    //Frequency
+    {'name': 'Hz', 'base': BASE_UNITS.FREQUENCY, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
 
     // Angles
     {'name': 'rad', 'base': BASE_UNITS.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
@@ -4836,6 +4877,9 @@ math.divide = function divide(x, y) {
             res.value /= y;
             return res;
         }
+        else if(y instanceof Unit){
+            return _divideUnit(x, y)
+        }
     }
 
     if (x instanceof Array || x instanceof Matrix) {
@@ -4879,6 +4923,21 @@ function _divideComplex (x, y) {
         (x.im * y.re - x.re * y.im) / den
     );
 }
+
+function _divideUnit(x, y){
+    var value = x._normalize(x.value)*y._normalize(y.value);
+    var dimensions = x.unit.base.dimensions;
+    for (var dim in y.unit.base.dimensions){
+        if(dimensions[dim]===undefined)
+            dimensions[dim]= -y.unit.base.dimensions[dim];
+        else
+            dimensions[dim] -=  y.unit.base.dimensions[dim];
+    }
+    var baseunit = Unit._findBaseUnit(dimensions);
+    var unit = Unit._findUnitFromBase(baseunit);
+    return new Unit(value, unit);
+}
+
 
 /**
  * Check if value x equals y,
