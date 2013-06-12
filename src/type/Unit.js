@@ -305,6 +305,36 @@ Unit.isPlainUnit = function (unit) {
     return (_findUnit(unit) != null);
 };
 
+
+Unit._findBaseUnit= function (dimensions){
+    var BASE_UNITS = Unit.BASE_UNITS;
+    for(var dim in dimensions){
+        if(dimensions[dim] === 0) delete dimensions[dim];        
+    }
+    outerloop: for (var i = 0, iMax = BASE_UNITS.length; i < iMax; i++) {
+        var BASE_UNIT = BASE_UNITS[i];
+        for(var dim in dimensions){
+            if(!dimensions[dim]===BASE_UNIT[dim]){
+                continue outerloop;
+            }        
+        }
+        return BASE_UNIT;
+    }
+
+    throw new Error('Could not find a matching base quantity for the given dimensions: ' + JSON.stringify(dimensions));
+};
+Unit._findUnitFromBase = function(base){
+    var UNITS = Unit.UNITS;
+    for (var i = 0, iMax = UNITS.length; i < iMax; i++) {
+        var UNIT = UNITS[i];
+        if(UNIT.base===base){
+            return UNIT;
+        }
+
+    }
+
+    throw new Error('No matching unit for the base quantity ' + base.name +' was found');
+}
 /**
  * check if this unit has given base unit
  * @param {Unit.BASE_UNITS} base
@@ -537,24 +567,24 @@ Unit.PREFIXES = {
 Unit.PREFIX_NONE = {'name': '', 'value': 1, 'scientific': true};
 
 Unit.BASE_UNITS = {
-    'NONE': {},
+    'NONE': {'name': 'none', 'dimensions':{}},
 
-    'LENGTH': {'m': 1},               // meter
-    'MASS':   {'kg': 1},                 // kilogram
-    'TIME': {'s': 1},                 // second
-    'CURRENT': {'A': 1},              // ampere
-    'TEMPERATURE': {'K':1},          // kelvin
-    'LUMINOUS_INTENSITY': {'cd': 1},   // candela
-    'AMOUNT_OF_SUBSTANCE': {'mol': 1},  // mole
+    'LENGTH': {'name':'length', 'dimensions':{'m': 1}},   // meter
+    'MASS':   {'name':'mass', 'dimensions':{'kg': 1}},    // kilogram
+    'TIME': {'name':'time', 'dimensions':{'s': 1}},        // second
+    'CURRENT': {'name':'current', 'dimensions':{'A': 1}}, // ampere
+    'TEMPERATURE': {'name':'temperature', 'dimensions':{'K': 1}},// kelvin
+    'LUMINOUS_INTENSITY': {'name':'luminous intensity', 'dimensions':{'cd': 1}},   // candela
+    'AMOUNT_OF_SUBSTANCE': {'name':'amount of substance', 'dimensions':{'mol': 1}},  // mole
 
-    'FORCE': {'kg':1 ,'m': 1, 's':-2 },        // Newton
-    'SURFACE': {'m': 2},      // m2
-    'VOLUME': {'m': 3},       // m3
-    'ANGLE': {'rad': 1},        // rad
-    'BIT': {'b':1},          // bit (digital)
-    'FREQUENCY': {'s':-1},
-    'SPEED' : {'m':1, 's': -1},
-    'ACCELERATION': {'m':1, 's':-2}
+    'FORCE': {'name': 'force', 'dimensions': {'kg': 1 ,'m': 1, 's': -2}},  // Newton
+    'SURFACE': {'name': 'surface', 'dimensions':{'m': 2}},      // m2
+    'VOLUME': {'name': 'volume', 'dimensions': {'m': 3}},       // m3
+    'ANGLE': {'name': 'angle', 'dimensions': {'rad': 1}},        // rad
+    'BIT': {'name': 'bit', 'dimensions': {'b': 1}},          // bit (digital)
+    'FREQUENCY': {'name': 'frequency', 'dimensions': {'s': -1}},
+    'SPEED' : {'name': 'speed', 'dimensions': {'m': 1, 's': -1}},
+    'ACCELERATION': {'name': 'acceleration', 'dimensions': {'m': 1, 's': -2}}
 };
 
 var BASE_UNITS = Unit.BASE_UNITS;
