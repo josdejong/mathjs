@@ -307,14 +307,16 @@ Unit.isPlainUnit = function (unit) {
 
 
 Unit._findBaseUnit= function (dimensions){
+    debugger;
     var BASE_UNITS = Unit.BASE_UNITS;
     for(var dim in dimensions){
         if(dimensions[dim] === 0) delete dimensions[dim];        
     }
-    outerloop: for (var i = 0, iMax = BASE_UNITS.length; i < iMax; i++) {
+    var iMax = BASE_UNITS.length;
+    outerloop: for (var i = 0; i < iMax; i++) {
         var BASE_UNIT = BASE_UNITS[i];
         for(var dim in dimensions){
-            if(!dimensions[dim]===BASE_UNIT[dim]){
+            if(dimensions[dim]!==BASE_UNIT.dimensions[dim]){
                 continue outerloop;
             }        
         }
@@ -695,6 +697,12 @@ Unit.UNITS = [
     {'name': 'hour', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 3600, 'offset': 0},
     {'name': 'day', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 86400, 'offset': 0},
     {'name': 'days', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 86400, 'offset': 0},
+
+    //Speed
+    {'name': 'mps', 'base': BASE_UNITS.SPEED, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+
+    //Frequency
+    {'name': 'Hz', 'base': BASE_UNITS.FREQUENCY, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
 
     // Angles
     {'name': 'rad', 'base': BASE_UNITS.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},

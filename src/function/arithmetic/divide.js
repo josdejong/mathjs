@@ -41,6 +41,9 @@ math.divide = function divide(x, y) {
             res.value /= y;
             return res;
         }
+        else if(y instanceof Unit){
+            return _divideUnit(x, y)
+        }
     }
 
     if (x instanceof Array || x instanceof Matrix) {
@@ -84,3 +87,18 @@ function _divideComplex (x, y) {
         (x.im * y.re - x.re * y.im) / den
     );
 }
+
+function _divideUnit(x, y){
+    var value = x._normalize(x.value)*y._normalize(y.value);
+    var dimensions = x.unit.base.dimensions;
+    for (var dim in y.unit.base.dimensions){
+        if(dimensions[dim]===undefined)
+            dimensions[dim]= -y.unit.base.dimensions[dim];
+        else
+            dimensions[dim] -=  y.unit.base.dimensions[dim];
+    }
+    var baseunit = Unit._findBaseUnit(dimensions);
+    var unit = Unit._findUnitFromBase(baseunit);
+    return new Unit(value, unit);
+}
+
