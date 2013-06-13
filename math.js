@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.9.0
- * @date    2013-06-12
+ * @date    2013-06-13
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -4925,7 +4925,7 @@ function _divideComplex (x, y) {
 }
 
 function _divideUnit(x, y){
-    var value = x._normalize(x.value)*y._normalize(y.value);
+    var value = x._normalize(x.value) / y._normalize(y.value);
     var dimensions = x.unit.base.dimensions;
     for (var dim in y.unit.base.dimensions){
         if(dimensions[dim]===undefined)
