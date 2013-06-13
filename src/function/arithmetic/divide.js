@@ -89,7 +89,7 @@ function _divideComplex (x, y) {
 }
 
 function _divideUnit(x, y){
-    var value = x._normalize(x.value)*y._normalize(y.value);
+    var value = x._normalize(x.value) / y._normalize(y.value);
     var dimensions = x.unit.base.dimensions;
     for (var dim in y.unit.base.dimensions){
         if(dimensions[dim]===undefined)
