@@ -27,6 +27,13 @@ approx.equal(2e-100, 1.999999e-100);
 assert.throws(function () {approx.equal(2e-100, 2.001e-100)}, assert.AssertionError);
 assert.throws(function () {approx.equal(2e-100, 1.999e-100)}, assert.AssertionError);
 
+// NaN values
+var a = NaN;
+var b = NaN;
+approx.equal(a, b);
+assert.throws(function () {approx.equal(NaN, 3)}, assert.AssertionError);
+assert.throws(function () {approx.equal(NaN, 'nonumber')}, assert.AssertionError);
+
 // zero as one of the two values
 approx.equal(0, 1e-15);
 assert.throws(function () {approx.equal(0, 0.001)}, assert.AssertionError);

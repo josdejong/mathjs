@@ -147,8 +147,7 @@
 
     /**
      * Get next token in the current string expr.
-     * Uses the Parser data expr, e, token, t, token_type and err
-     * The token and token type are available at token_type and token
+     * The token and token type are available as token and token_type
      * @private
      */
     function getToken() {

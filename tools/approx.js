@@ -23,6 +23,9 @@ exports.equal = function equal(a, b) {
         if (a == b) {
             // great, we're done :)
         }
+        else if (isNaN(a)) {
+            assert.equal(a.toString(), b.toString());
+        }
         else if (a == 0) {
             assert.ok(Math.abs(b) < epsilon, (a + ' ~= ' + b));
         }

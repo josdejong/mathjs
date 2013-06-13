@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.9.1-SNAPSHOT
- * @date    2013-05-31
+ * @date    2013-06-13
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -816,13 +816,28 @@ function Complex(re, im) {
             'Complex constructor must be called with the new operator');
     }
 
-    if ((re != null && !isNumber(re)) || (im != null && !isNumber(im))) {
-        throw new TypeError(
-            'Two numbers expected in Complex constructor');
-    }
+    switch (arguments.length) {
+        case 0:
+            this.re = 0;
+            this.im = 0;
+            break;
 
-    this.re = re || 0;
-    this.im = im || 0;
+        case 2:
+            if (!isNumber(re) || !isNumber(im)) {
+                throw new TypeError(
+                    'Two numbers expected in Complex constructor');
+            }
+            this.re = re;
+            this.im = im;
+            break;
+
+        default:
+            if (arguments.length != 0 && arguments.length != 2) {
+                throw new SyntaxError(
+                    'Two or zero arguments expected in Complex constructor');
+            }
+            break;
+    }
 }
 
 math.type.Complex = Complex;
@@ -9059,8 +9074,7 @@ function isSupportedType(object) {
 
     /**
      * Get next token in the current string expr.
-     * Uses the Parser data expr, e, token, t, token_type and err
-     * The token and token type are available at token_type and token
+     * The token and token type are available as token and token_type
      * @private
      */
     function getToken() {

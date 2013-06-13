@@ -25,10 +25,11 @@ assert.throws(function () {divide(2,3,4); });
 assert.throws(function () {divide(2); });
 
 // complex
-assert.deepEqual(divide(complex('2+3i'), 2), complex('1+1.5i'));
-assert.deepEqual(divide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'));
-assert.deepEqual(divide(complex('2i'), complex('4i')), complex('0.5'));
-assert.deepEqual(divide(4, complex('1+2i')), complex('0.8 - 1.6i'));
+approx.deepEqual(divide(complex('2+3i'), 2), complex('1+1.5i'));
+approx.deepEqual(divide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'));
+approx.deepEqual(divide(complex('2i'), complex('4i')), complex('0.5'));
+approx.deepEqual(divide(4, complex('1+2i')), complex('0.8 - 1.6i'));
+approx.deepEqual(divide(math.i, 0), complex(NaN, NaN));  // TODO: should return NaN + Infi instead
 
 approx.deepEqual(divide(complex(2, 3), complex(4, 5)), complex('0.5609756097560976 + 0.0487804878048781i'));
 approx.deepEqual(divide(complex(2, 3), complex(4, -5)), complex('-0.170731707317073 + 0.536585365853659i'));

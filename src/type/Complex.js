@@ -23,13 +23,28 @@ function Complex(re, im) {
             'Complex constructor must be called with the new operator');
     }
 
-    if ((re != null && !isNumber(re)) || (im != null && !isNumber(im))) {
-        throw new TypeError(
-            'Two numbers expected in Complex constructor');
-    }
+    switch (arguments.length) {
+        case 0:
+            this.re = 0;
+            this.im = 0;
+            break;
 
-    this.re = re || 0;
-    this.im = im || 0;
+        case 2:
+            if (!isNumber(re) || !isNumber(im)) {
+                throw new TypeError(
+                    'Two numbers expected in Complex constructor');
+            }
+            this.re = re;
+            this.im = im;
+            break;
+
+        default:
+            if (arguments.length != 0 && arguments.length != 2) {
+                throw new SyntaxError(
+                    'Two or zero arguments expected in Complex constructor');
+            }
+            break;
+    }
 }
 
 math.type.Complex = Complex;

@@ -4,7 +4,7 @@ https://github.com/josdejong/mathjs
 
 ## version 0.9.1
 
-- Implemented element wise functions and operators: `emultiply` (`x .* y`),
+- Implemented element-wise functions and operators: `emultiply` (`x .* y`),
   `edivide` (`x ./ y`), `epow` (`x .^ y`).
 
 
