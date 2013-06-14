@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.9.0
- * @date    2013-05-29
+ * @version 0.9.1
+ * @date    2013-06-14
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -43,32 +43,6 @@ var math = {
     }
 };
 
-/**
- * CommonJS module exports
- */
-if ((typeof module !== 'undefined') && (typeof module.exports !== 'undefined')) {
-    module.exports = math;
-}
-if (typeof exports !== 'undefined') {
-    exports = math;
-}
-
-/**
- * AMD module exports
- */
-if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
-    define(function () {
-        return math;
-    });
-}
-
-/**
- * Browser exports
- */
-if (typeof(window) != 'undefined') {
-    window['math'] = math;
-}
-
 // utility methods for strings, objects, and arrays
 var util = (function () {
     var util = {};
@@ -76,10 +50,10 @@ var util = (function () {
     /**
      * Convert a number to a formatted string representation.
      * @param {Number} value            The value to be formatted
-     * @param {Number} [digits]         number of digits
+     * @param {Number} [precision]      number of digits in formatted output
      * @return {String} formattedValue  The formatted value
      */
-    util.formatNumber = function formatNumber(value, digits) {
+    util.formatNumber = function formatNumber(value, precision) {
         if (value === Infinity) {
             return 'Infinity';
         }
@@ -93,26 +67,26 @@ var util = (function () {
         // TODO: what is a nice limit for non-scientific values?
         var abs = Math.abs(value);
         if ( (abs > 0.001 && abs < 100000) || abs == 0.0 ) {
-            // round the value to a limited number of digits
-            return util.toPrecision(value, digits);
+            // round the value to a limited number of precision
+            return util.toPrecision(value, precision);
         }
         else {
             // scientific notation
             var exp = Math.round(Math.log(abs) / Math.LN10);
             var v = value / (Math.pow(10.0, exp));
-            return util.toPrecision(v, digits) + 'e' + exp;
+            return util.toPrecision(v, precision) + 'e' + exp;
         }
     };
 
     /**
-     * Round a value to a maximum number of digits. Trailing zeros will be
+     * Round a value to a maximum number of precision. Trailing zeros will be
      * removed.
      * @param {Number} value
-     * @param {Number} [digits]
+     * @param {Number} [precision]  Number of digits in formatted output
      * @returns {string} str
      */
-    util.toPrecision = function (value, digits) {
-        return value.toPrecision(digits).replace(_trailingZeros, function (a, b, c) {
+    util.toPrecision = function toPrecision (value, precision) {
+        return value.toPrecision(precision).replace(_trailingZeros, function (a, b, c) {
             return a.substring(0, a.length - (b.length ? 0 : 1) - c.length);
         });
     };
@@ -227,7 +201,7 @@ var util = (function () {
      * @param {String} text
      * @param {String} search
      */
-    util.endsWith = function(text, search) {
+    util.endsWith = function endsWith(text, search) {
         var start = text.length - search.length;
         var end = text.length;
         return (text.substring(start, end) === search);
@@ -239,7 +213,7 @@ var util = (function () {
      * @param {Object} b
      * @return {Object} a
      */
-    util.extend = function (a, b) {
+    util.extend = function extend (a, b) {
         for (var prop in b) {
             if (b.hasOwnProperty(prop)) {
                 a[prop] = b[prop];
@@ -249,8 +223,35 @@ var util = (function () {
     };
 
     /**
+     * Deep extend an object a with the properties of object b
+     * @param {Object} a
+     * @param {Object} b
+     * @returns {Object}
+     */
+    util.deepExtend = function deepExtend (a, b) {
+        for (var prop in b) {
+            if (b.hasOwnProperty(prop)) {
+                if (b[prop] && b[prop].constructor === Object) {
+                    if (a[prop] === undefined) {
+                        a[prop] = {};
+                    }
+                    if (a[prop].constructor === Object) {
+                        deepExtend(a[prop], b[prop]);
+                    }
+                    else {
+                        a[prop] = b[prop];
+                    }
+                } else {
+                    a[prop] = b[prop];
+                }
+            }
+        }
+        return a;
+    };
+
+    /**
      * Create a semi UUID
-     * source: http://stackoverflow.com/a/105074/1262753
+     * b: http://stackoverflow.com/a/105074/1262753
      * @return {String} uuid
      */
     util.randomUUID = function randomUUID() {
@@ -269,6 +270,8 @@ var util = (function () {
             );
     };
 
+    // TODO: write the map, deepMap, map2, and deepMap2 functions in a more concise way
+
     /**
      * Execute function fn element wise for each element in array.
      * Returns an array with the results
@@ -284,6 +287,25 @@ var util = (function () {
         }
         else {
             throw new TypeError('Array expected');
+        }
+    };
+
+    /**
+     * Execute function fn element wise for each element in array and any nested
+     * array
+     * Returns an array with the results
+     * @param {Array | Matrix | Range} array
+     * @param {function} fn
+     * @return {Array | Matrix} res
+     */
+    util.deepMap = function map(array, fn) {
+        if (array instanceof Array || array instanceof Matrix || array instanceof Range) {
+            return array.map(function (x) {
+                return map(x, fn);
+            });
+        }
+        else {
+            return fn(array);
         }
     };
 
@@ -350,6 +372,69 @@ var util = (function () {
         return res;
     };
 
+    /**
+     * Execute function fn element wise for each entry in two given arrays,
+     * and for any nested array. Objects can also be scalar objects.
+     * Returns an array with the results.
+     * @param {Array | Matrix | Range | Object} array1
+     * @param {Array | Matrix | Range | Object} array2
+     * @param {function} fn
+     * @return {Array | Matrix} res
+     */
+    util.deepMap2 = function map2(array1, array2, fn) {
+        var res, len, i;
+
+        // handle Matrix
+        if (array1 instanceof Matrix || array2 instanceof Matrix) {
+            return new Matrix(map2(array1.valueOf(), array2.valueOf(), fn));
+        }
+
+        // handle Range
+        if (array1 instanceof Range || array2 instanceof Range) {
+            // TODO: util.deepMap2 does not utilize Range.map
+            return map2(array1.valueOf(), array2.valueOf(), fn);
+        }
+
+        if (array1 instanceof Array) {
+            if (array2 instanceof Array) {
+                // fn(array, array)
+                if (array1.length != array2.length) {
+                    throw new RangeError('Dimension mismatch ' +
+                        '(' +  array1.length + ' != ' + array2.length + ')');
+                }
+
+                res = [];
+                len = array1.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = map2(array1[i], array2[i], fn);
+                }
+            }
+            else {
+                // fn(array, object)
+                res = [];
+                len = array1.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = map2(array1[i], array2, fn);
+                }
+            }
+        }
+        else {
+            if (array2 instanceof Array) {
+                // fn(object, array)
+                res = [];
+                len = array2.length;
+                for (i = 0; i < len; i++) {
+                    res[i] = map2(array1, array2[i], fn);
+                }
+            }
+            else {
+                // fn(object, object)
+                res = fn(array1, array2);
+            }
+        }
+
+        return res;
+    };
 
     /**
      * For each method for objects and arrays.
@@ -375,7 +460,7 @@ var util = (function () {
 
     /**
      * Creates a new object with the results of calling a provided function on
-     * every property in the object.
+     * every prop in the object.
      * @param {Object} object           The object.
      * @param {function} callback       Mapping function
      * @return {Object | Array} mappedObject
@@ -396,7 +481,7 @@ var util = (function () {
      * @param {Array | Object} b
      * @returns {boolean}
      */
-    util.deepEqual = function (a, b) {
+    util.deepEqual = function deepEqual (a, b) {
         var prop, i, len;
         if (a instanceof Array) {
             if (!(b instanceof Array)) {
@@ -584,7 +669,7 @@ var util = (function () {
      * @param {*} index       One-based index
      * @param {Number} [max]  One-based maximum value
      */
-    util.validateIndex = function (index, max) {
+    util.validateIndex = function validateIndex (index, max) {
         if (!isNumber(index) || !isInteger(index)) {
             throw new TypeError('Index must be an integer (value: ' + index + ')');
         }
@@ -731,13 +816,28 @@ function Complex(re, im) {
             'Complex constructor must be called with the new operator');
     }
 
-    if ((re != null && !isNumber(re)) || (im != null && !isNumber(im))) {
-        throw new TypeError(
-            'Two numbers expected in Complex constructor');
-    }
+    switch (arguments.length) {
+        case 0:
+            this.re = 0;
+            this.im = 0;
+            break;
 
-    this.re = re || 0;
-    this.im = im || 0;
+        case 2:
+            if (!isNumber(re) || !isNumber(im)) {
+                throw new TypeError(
+                    'Two numbers expected in Complex constructor');
+            }
+            this.re = re;
+            this.im = im;
+            break;
+
+        default:
+            if (arguments.length != 0 && arguments.length != 2) {
+                throw new SyntaxError(
+                    'Two or zero arguments expected in Complex constructor');
+            }
+            break;
+    }
 }
 
 math.type.Complex = Complex;
@@ -2799,6 +2899,9 @@ math.SQRT2      = Math.SQRT2;
 
 math.I          = new Complex(0, 1);
 
+math.Infinity   = Infinity;
+math.NaN        = NaN;
+
 // lower case constants
 math.pi        = math.PI;
 math.e         = math.E;
@@ -4029,577 +4132,6 @@ math.expr.Parser.prototype.clear = function () {
     this.scope.clear();
 };
 
-
-/**
- * @constructor math.expr.Expression
- *
- * An expression is a linked node which can hold a scope and an expression,
- * and calculates symbol dependencies.
- * Expression is used by Workspace.
- *
- * @param {Object} params Object containing parameters:
- *                        {Number} id
- *                        {String} expression   An expression, for example "2+3"
- *                        {Scope} scope
- *                        {math.expr.Expression} nextNode
- *                        {math.expr.Expression} previousNode
- */
-math.expr.Expression = function Expression (params) {
-    this.id = params.id;
-    this.scope = params.scope;
-    this.nextNode = params.nextNode;
-    this.previousNode = params.previousNode;
-    // TODO: throw error when id or scope is not given
-
-    this.updateSeq = 0;
-    this.node = undefined;
-
-    this.symbols = {};
-    this.assignments = {};
-    this.updates = {};
-
-    this.result = undefined;
-    this.setExpr(params.expression);
-};
-
-/**
- * Set the node's expression
- * @param {String} expression
- */
-math.expr.Expression.prototype.setExpr = function (expression) {
-    this.expression = expression || '';
-    this.scope.clear(); // clear assignments and cache
-    this._parse();
-    this._analyse();
-};
-
-/**
- * Get the node's expression
- * @return {String} expression
- */
-math.expr.Expression.prototype.getExpr = function () {
-    return this.expression;
-};
-
-/**
- * get the result of the nodes expression
- * @return {*} result
- */
-math.expr.Expression.prototype.getResult = function () {
-    // TODO: automatically evaluate when not up to date?
-    return this.result;
-};
-
-/**
- * parse the node's expression
- * @private
- */
-math.expr.Expression.prototype._parse = function () {
-    try {
-        this.node = math.parse(this.expression, this.scope);
-    }
-    catch (err) {
-        var value = 'Error: ' + String(err.message || err);
-        this.node = new ConstantNode(value);
-    }
-};
-
-/**
- * Analyse the expressions node tree: find all symbols, assignments, and updates
- * @private
- */
-math.expr.Expression.prototype._analyse = function () {
-    var i, len, node;
-
-    if (this.node) {
-        // find symbol nodes
-        var symbols = this.node.find({
-            type: math.expr.node.SymbolNode
-        });
-        this.symbols = {};
-        for (i = 0, len = symbols.length; i < len; i++) {
-            node = symbols[i];
-            this.symbols[node.name] = node;
-        }
-
-        // find symbol assignments
-        var assignments = this.node.find({
-            type: math.expr.node.AssignmentNode
-        });
-        this.assignments = {};
-        for (i = 0, len = assignments.length; i < len; i++) {
-            node = assignments[i];
-            this.assignments[node.name] = node;
-        }
-
-        // find symbol updates
-        var updates = this.node.find({
-            type: math.expr.node.UpdateNode
-        });
-        this.updates = {};
-        for (i = 0, len = updates.length; i < len; i++) {
-            node = updates[i];
-            this.updates[node.name] = node;
-        }
-
-    }
-};
-
-/**
- * Evaluate the node expression
- * @return {*} result
- */
-math.expr.Expression.prototype.eval = function () {
-    try {
-        this.scope.clear(); // clear assignments and cache
-        this.result = this.node.eval();
-    }
-    catch (err) {
-        this.scope.clear(); // clear assignments and cache
-        this.result = 'Error: ' + String(err.message || err);
-    }
-    return this.result;
-};
-
-/**
- * @constructor math.expr.Workspace
- *
- * Workspace manages a set of expressions. Expressions can be added,
- * replaced, deleted, and inserted in the workspace. The workspace keeps
- * track on the dependencies between the expressions, and automatically
- * re-evaluates depending expressions when variables or function
- * definitions are changed in the workspace.
- *
- * Methods:
- *     var id = workspace.append(expr);
- *     var id = workspace.insertBefore(expr, beforeId);
- *     var id = workspace.insertAfter(expr, afterId);
- *     workspace.replace(expr, id);
- *     workspace.remove(id);
- *     workspace.clear();
- *     var expr   = workspace.getExpr(id);
- *     var result = workspace.getResult(id);
- *     var deps   = workspace.getDependencies(id);
- *     var changes = workspace.getChanges(updateSeq);
- *
- * Usage:
- *     var workspace = new math.expr.Workspace();
- *     var id0 = workspace.append('a = 3/4');
- *     var id1 = workspace.append('a + 2');
- *     console.log('a + 2 = ' + workspace.getResult(id1));
- *     workspace.replace('a=5/2', id0);
- *     console.log('a + 2 = ' + workspace.getResult(id1));
- */
-function Workspace () {
-    this.idMax = -1;
-    this.updateSeq = 0;
-    this.scope = new math.expr.Scope();
-
-    this.nodes = {};
-    this.firstNode = undefined;
-    this.lastNode = undefined;
-}
-
-math.expr.Workspace = Workspace;
-
-/**
- * clear the workspace
- */
-Workspace.prototype.clear = function () {
-    this.nodes = {};
-    this.firstNode = undefined;
-    this.lastNode = undefined;
-};
-
-/**
- * append an expression to the workspace
- * @param {String}    expression
- * @return {Number}   id of the created node
- */
-Workspace.prototype.append = function (expression) {
-    // create the node
-    var id = this._getNewId();
-    var parentScope = this.lastNode ? this.lastNode.scope : this.scope;
-    var scope = new math.expr.Scope(parentScope);
-    var node = new math.expr.Expression({
-        'id': id,
-        'expression': expression,
-        'scope': scope,
-        'nextNode': undefined,
-        'previousNode': this.lastNode
-    });
-    this.nodes[id] = node;
-
-    // link next and previous nodes
-    if (!this.firstNode) {
-        this.firstNode = node;
-    }
-    if (this.lastNode) {
-        this.lastNode.nextNode = node;
-    }
-    this.lastNode = node;
-
-    // update this node
-    this._update([id]);
-
-    return id;
-};
-
-/**
- * insert an expression before an existing expression
- * @param {String} expression   the new expression
- * @param {Number} beforeId     id of an existing expression
- * @return {Number} id          id of the created node
- */
-Workspace.prototype.insertBefore = function (expression, beforeId) {
-    var nextNode = this.nodes[beforeId];
-    if (!nextNode) {
-        throw new RangeError('Node with id "' + beforeId + '" not found');
-    }
-
-    var previousNode = nextNode.previousNode;
-
-    // create the node
-    var id = this._getNewId();
-    var previousScope = previousNode ? previousNode.scope : this.scope;
-    var scope = new math.expr.Scope(previousScope);
-    var node = new math.expr.Expression({
-        'id': id,
-        'expression': expression,
-        'scope': scope,
-        'nextNode': nextNode,
-        'previousNode': previousNode
-    });
-    this.nodes[id] = node;
-
-    // link next and previous nodes
-    if (previousNode) {
-        previousNode.nextNode = node;
-    }
-    else {
-        this.firstNode = node;
-    }
-    nextNode.previousNode = node;
-
-    // link to the new the scope
-    nextNode.scope.parentScope = node.scope;
-
-    // update this node and all dependent nodes
-    var ids = this.getDependencies(id);
-    if (ids.indexOf(id) == -1) {
-        ids.unshift(id);
-    }
-    this._update(ids);
-
-    return id;
-};
-
-/**
- * insert an expression after an existing expression
- * @param {String} expression   the new expression
- * @param {Number} afterId      id of an existing expression
- * @return {Number} id          id of the created expression
- */
-Workspace.prototype.insertAfter = function (expression, afterId) {
-    var previousNode = this.nodes[afterId];
-    if (!previousNode) {
-        throw new RangeError('Node with id "' + afterId + '" not found');
-    }
-
-    var nextNode = previousNode.nextNode;
-    if (nextNode) {
-        return this.insertBefore(expression, nextNode.id);
-    }
-    else {
-        return this.append(expression);
-    }
-};
-
-
-/**
- * remove an expression. If the expression is not found, no action will
- * be taken.
- * @param {Number} id           id of an existing expression
- */
-Workspace.prototype.remove = function (id) {
-    var node = this.nodes[id];
-    if (!node) {
-        throw new RangeError('Node with id "' + id + '" not found');
-    }
-
-    // get the dependencies (needed to update them after deletion of this node)
-    var dependentIds = this.getDependencies(id);
-
-    // adjust links to previous and next nodes
-    var previousNode = node.previousNode;
-    var nextNode = node.nextNode;
-    if (previousNode) {
-        previousNode.nextNode = nextNode;
-    }
-    else {
-        this.firstNode = nextNode;
-    }
-    if (nextNode) {
-        nextNode.previousNode = previousNode;
-    }
-    else {
-        this.lastNode = previousNode;
-    }
-
-    // re-link the scope
-    var previousScope = previousNode ? previousNode.scope : this.scope;
-    if (nextNode) {
-        nextNode.scope.parentScope = previousScope;
-    }
-
-    // remove the node
-    delete this.nodes[id];
-
-    // update all dependent nodes
-    this._update(dependentIds);
-};
-
-
-/**
- * replace an existing expression
- * @param {String} expression   the new expression
- * @param {Number} id           id of an existing expression
- */
-Workspace.prototype.replace = function (expression, id) {
-    var node = this.nodes[id];
-    if (!node) {
-        throw new RangeError('Node with id "' + id + '" not found');
-    }
-
-    // get the dependencies
-    var dependentIds = [id];
-    Workspace._merge(dependentIds, this.getDependencies(id));
-
-    // replace the expression
-    node.setExpr(expression);
-
-    // add the new dependencies
-    Workspace._merge(dependentIds, this.getDependencies(id));
-
-    // update all dependencies
-    this._update(dependentIds);
-};
-
-/**
- * Merge array2 into array1, only adding distinct elements.
- * The elements are not sorted.
- * @param {Array} array1
- * @param {Array} array2
- * @private
- */
-Workspace._merge = function (array1, array2) {
-    for (var i = 0, iMax = array2.length; i < iMax; i++) {
-        var elem = array2[i];
-        if (array1.indexOf(elem) == -1) {
-            array1.push(elem);
-        }
-    }
-};
-
-/**
- * Retrieve the id's of the nodes which are dependent on this node
- * @param {Number} id
- * @return {Number[]} id's of dependent nodes. The ids are not ordered
- */
-Workspace.prototype.getDependencies = function (id) {
-    var node = this.nodes[id],
-        ids = [],
-        names = {},
-        name;
-
-    if (!node) {
-        throw new RangeError('Node with id "' + id + '" not found');
-    }
-
-    /**
-     * Append all symbol assignments and updates of given Expression to the list
-     * with names (value == true), or remove them (value == false).
-     * @param {math.expr.Expression} expr
-     * @param {boolean} value
-     */
-    var appendNames = function (expr, value) {
-        var assignments = expr.assignments,
-            updates = expr.updates,
-            name;
-
-        for (name in assignments) {
-            if (assignments.hasOwnProperty(name)) {
-                names[name] = value;
-            }
-        }
-        for (name in updates) {
-            if (updates.hasOwnProperty(name)) {
-                names[name] = value;
-            }
-        }
-    };
-
-    // append the assignments of the node itself
-    appendNames(node, true);
-
-    // loop over all next nodes and test dependency
-    node = node.nextNode;
-    while (node) {
-        var symbols = node.symbols,
-            depends = false;
-
-        // test if any of the nodes symbols are listed in the names map
-        for (name in symbols) {
-            if (symbols.hasOwnProperty(name) && names[name] == true) {
-                depends = true;
-                break;
-            }
-        }
-
-        if (depends) {
-            // append all assignments done in this node
-            appendNames(node, true);
-            ids.push(node.id);
-        }
-        else {
-            // detach all assignments done by this node
-            appendNames(node, false);
-        }
-
-        node = node.nextNode;
-    }
-
-    return ids;
-};
-
-/**
- * Retrieve an expression, the original string
- * @param {Number} id    Id of the expression to be retrieved
- * @return {String}      The original expression as a string
- */
-Workspace.prototype.getExpr = function (id) {
-    var node = this.nodes[id];
-    if (!node) {
-        throw new RangeError('Node with id "' + id + '" not found');
-    }
-
-    return node.getExpr();
-};
-
-
-/**
- * get the result of and expression
- * @param {Number} id
- * @return {*} result
- */
-Workspace.prototype.getResult = function (id) {
-    var node = this.nodes[id];
-    if (!node) {
-        throw new RangeError('Node with id "' + id + '" not found');
-    }
-
-    return node.getResult();
-};
-
-
-/**
- * Update the results of an expression and all dependent expressions
- * @param {Number[]} ids    Ids of the expressions to be updated
- * @private
- */
-Workspace.prototype._update = function (ids) {
-    this.updateSeq++;
-    var updateSeq = this.updateSeq;
-    var nodes = this.nodes;
-
-    for (var i = 0, iMax = ids.length; i < iMax; i++) {
-        var id = ids[i];
-        var node = nodes[id];
-        if (node) {
-            node.eval();
-            //console.log('eval node=' + id + ' result=' + node.result.toString()); // TODO: cleanup
-            node.updateSeq = updateSeq;
-        }
-        else {
-            // TODO: throw error?
-        }
-    }
-};
-
-/**
- * Get all changes since an update sequence
- * @param {Number} updateSeq.    Optional. if not provided, all changes are
- *                               since the creation of the workspace are returned
- * @return {Object} ids    Object containing two parameters:
- *                         param {Number[]} ids         Array containing
- *                                                      the ids of the changed
- *                                                      expressions
- *                         param {Number} updateSeq     the current update
- *                                                      sequence
- */
-Workspace.prototype.getChanges = function (updateSeq) {
-    var changedIds = [];
-    var node = this.firstNode;
-    updateSeq = updateSeq || 0;
-    while (node) {
-        if (node.updateSeq > updateSeq) {
-            changedIds.push(node.id);
-        }
-        node = node.nextNode;
-    }
-    return {
-        'ids': changedIds,
-        'updateSeq': this.updateSeq
-    };
-};
-
-/**
- * Return a new, unique id for an expression
- * @return {Number} new id
- * @private
- */
-Workspace.prototype._getNewId = function () {
-    this.idMax++;
-    return this.idMax;
-};
-
-/**
- * String representation of the Workspace
- * @return {String} description
- */
-Workspace.prototype.toString = function () {
-    return JSON.stringify(this.toJSON());
-};
-
-/**
- * JSON representation of the Workspace
- * @return {Object} description
- */
-Workspace.prototype.toJSON = function () {
-    var json = [];
-
-    var node = this.firstNode;
-    while (node) {
-        var desc = {
-            'id': node.id,
-            'expression': node.expression,
-            'dependencies': this.getDependencies(node.id)
-        };
-
-        try {
-            desc.result = node.getResult();
-        } catch (err) {
-            desc.result = 'Error: ' + String(err.message || err);
-        }
-
-        json.push(desc);
-
-        node = node.nextNode;
-    }
-
-    return json;
-};
-
 /**
  * Calculate the absolute value of a value.
  *
@@ -4874,11 +4406,74 @@ math.divide = function divide(x, y) {
  */
 function _divideComplex (x, y) {
     var den = y.re * y.re + y.im * y.im;
-    return new Complex(
-        (x.re * y.re + x.im * y.im) / den,
-        (x.im * y.re - x.re * y.im) / den
-    );
+    if (den != 0) {
+        return new Complex(
+            (x.re * y.re + x.im * y.im) / den,
+            (x.im * y.re - x.re * y.im) / den
+        );
+    }
+    else {
+        // both y.re and y.im are zero
+        return new Complex(
+            (x.re != 0) ? (x.re / 0) : 0,
+            (x.im != 0) ? (x.im / 0) : 0
+        );
+    }
 }
+
+/**
+ * Divide two values element wise.
+ *
+ *     x ./ y
+ *     edivide(x, y)
+ *
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
+ */
+math.edivide = function edivide(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('edivide', arguments.length, 2);
+    }
+
+    return util.deepMap2(x, y, math.divide);
+};
+
+/**
+ * Multiply two values element wise.
+ *
+ *     x .* y
+ *     emultiply(x, y)
+ *
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
+ */
+math.emultiply = function emultiply(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('emultiply', arguments.length, 2);
+    }
+
+    return util.deepMap2(x, y, math.multiply);
+};
+
+/**
+ * Calculates the power of x to y element wise
+ *
+ *     x .^ y
+ *     epow(x, y)
+ *
+ * @param  {Number | Complex | Unit | Array | Matrix} x
+ * @param  {Number | Complex | Unit | Array | Matrix} y
+ * @return {Number | Complex | Unit | Array | Matrix} res
+ */
+math.epow = function epow(x, y) {
+    if (arguments.length != 2) {
+        throw newArgumentsError('epow', arguments.length, 2);
+    }
+
+    return util.deepMap2(x, y, math.pow);
+};
 
 /**
  * Check if value x equals y,
@@ -5581,10 +5176,44 @@ math.multiply = function multiply(x, y) {
  * @private
  */
 function _multiplyComplex (x, y) {
-    return new Complex(
-        x.re * y.re - x.im * y.im,
-        x.re * y.im + x.im * y.re
-    );
+    // Note: we test whether x or y are pure real or pure complex,
+    // to prevent unnecessary NaN values. For example, Infinity*i should
+    // result in Infinity*i, and not in NaN+Infinity*i
+    if (x.im == 0) {
+        // x is pure real
+        return new Complex(
+            x.re * y.re,
+            x.re * y.im
+        );
+    }
+    else if (x.re == 0) {
+        // x is pure complex
+        return new Complex(
+           -x.im * y.im,
+            x.im * y.re
+        );
+    }
+    else if (y.im == 0) {
+        // y is pure real
+        return new Complex(
+            x.re * y.re,
+            x.im * y.re
+        );
+    }
+    else if (y.re == 0) {
+        // y is pure complex
+        return new Complex(
+           -x.im * y.im,
+            x.re * y.im
+        );
+    }
+    else {
+        // both x and y are complex
+        return new Complex(
+            x.re * y.re - x.im * y.im,
+            x.re * y.im + x.im * y.re
+        );
+    }
 }
 
 /**
@@ -6704,43 +6333,9 @@ math.unit = function unit(args) {
     }
 };
 
-/**
- * Create a workspace. The function creates a new math.expr.Workspace object.
- *
- *     workspace()
- *
- * Workspace manages a set of expressions. Expressions can be added, replace,
- * deleted, and inserted in the workspace. The workspace keeps track on the
- * dependencies between the expressions, and automatically updates results of
- * depending expressions when variables or function definitions are changed in
- * the workspace.
- *
- * Methods:
- *     var id = workspace.append(expr);
- *     var id = workspace.insertBefore(expr, beforeId);
- *     var id = workspace.insertAfter(expr, afterId);
- *     workspace.replace(expr, id);
- *     workspace.remove(id);
- *     workspace.clear();
- *     var expr   = workspace.getExpr(id);
- *     var result = workspace.getResult(id);
- *     var deps   = workspace.getDependencies(id);
- *     var changes = workspace.getChanges(updateSeq);
- *
- * Usage:
- *     var workspace = new math.workspace();
- *     var id0 = workspace.append('a = 3/4');
- *     var id1 = workspace.append('a + 2');
- *     console.log('a + 2 = ' + workspace.getResult(id1));
- *     workspace.replace('a=5/2', id0);
- *     console.log('a + 2 = ' + workspace.getResult(id1));
- *
- * @return {math.expr.Workspace} Workspace
- */
-math.workspace = function workspace() {
-    return new math.expr.Workspace();
+math.workspace = function () {
+    throw new Error('Workspace is no longer supported, sorry...');
 };
-
 /**
  * Concatenate two or more matrices
  * Usage:
@@ -8848,6 +8443,39 @@ function isSupportedType(object) {
         UNKNOWN : 4
     };
 
+    // map with all delimiters
+    var DELIMITERS = {
+        ',': true,
+        '(': true,
+        ')': true,
+        '[': true,
+        ']': true,
+        '\"': true,
+        '\n': true,
+        ';': true,
+
+        '+': true,
+        '-': true,
+        '*': true,
+        '.*': true,
+        '/': true,
+        './': true,
+        '%': true,
+        '^': true,
+        '.^': true,
+        '!': true,
+        '\'': true,
+        '=': true,
+        ':': true,
+
+        '==': true,
+        '!=': true,
+        '<': true,
+        '>': true,
+        '<=': true,
+        '>=': true
+    };
+
     var expression = '';  // current expression
     var index = 0;        // current index in expr
     var c = '';           // current token character in expr
@@ -8855,33 +8483,39 @@ function isSupportedType(object) {
     var token_type = TOKENTYPE.NULL; // type of the token
 
     /**
-     * Get the next character from the expression.
-     * The character is stored into the char t.
-     * If the end of the expression is reached, the function puts an empty
-     * string in t.
-     * @private
-     */
-    function getChar() {
-        index++;
-        c = expression.charAt(index);
-    }
-
-    /**
      * Get the first character from the expression.
-     * The character is stored into the char t.
-     * If the end of the expression is reached, the function puts an empty
-     * string in t.
+     * The character is stored into the char c. If the end of the expression is
+     * reached, the function puts an empty string in c.
      * @private
      */
-    function getFirstChar() {
+    function first() {
         index = 0;
         c = expression.charAt(0);
     }
 
     /**
+     * Get the next character from the expression.
+     * The character is stored into the char c. If the end of the expression is
+     * reached, the function puts an empty string in c.
+     * @private
+     */
+    function next() {
+        index++;
+        c = expression.charAt(index);
+    }
+
+    /**
+     * Preview the next character from the expression.
+     * @return {String} cNext
+     * @private
+     */
+    function nextPreview() {
+        return expression.charAt(index + 1);
+    }
+
+    /**
      * Get next token in the current string expr.
-     * Uses the Parser data expr, e, token, t, token_type and err
-     * The token and token type are available at token_type and token
+     * The token and token type are available as token and token_type
      * @private
      */
     function getToken() {
@@ -8890,13 +8524,13 @@ function isSupportedType(object) {
 
         // skip over whitespaces
         while (c == ' ' || c == '\t') {  // space or tab
-            getChar();
+            next();
         }
 
         // skip comment
         if (c == '#') {
             while (c != '\n' && c != '') {
-                getChar();
+                next();
             }
         }
 
@@ -8907,41 +8541,21 @@ function isSupportedType(object) {
             return;
         }
 
-        // check for factorial character !, and unequal operator !=
-        if (c == '!') {
+        // check for delimiters consisting of 2 characters
+        var c2 = c + nextPreview();
+        if (DELIMITERS[c2]) {
             token_type = TOKENTYPE.DELIMITER;
-            token += c;
-            getChar();
-
-            // TODO: solve operators consisting of of two characters in a more generic way
-            if (c == '=') {
-                token += c;
-                getChar();
-            }
-
+            token = c2;
+            next();
+            next();
             return;
         }
 
-        // check for minus, comma, parentheses, quotes, newline, semicolon
-        if (c == '-' || c == ',' ||
-            c == '(' || c == ')' ||
-            c == '[' || c == ']' ||
-            c == '\"' || c == '\'' ||
-            c == '\n' ||
-            c == ';' || c == ':') {
+        // check for delimiters consisting of 1 character
+        if (DELIMITERS[c]) {
             token_type = TOKENTYPE.DELIMITER;
-            token += c;
-            getChar();
-            return;
-        }
-
-        // check for operators (delimiters)
-        if (isDelimiter(c)) {
-            token_type = TOKENTYPE.DELIMITER;
-            while (isDelimiter(c)) {
-                token += c;
-                getChar();
-            }
+            token = c;
+            next();
             return;
         }
 
@@ -8952,7 +8566,7 @@ function isSupportedType(object) {
             // get number, can have a single dot
             if (c == '.') {
                 token += c;
-                getChar();
+                next();
 
                 if (!isDigit(c)) {
                     // this is no legal number, it is just a dot
@@ -8962,26 +8576,26 @@ function isSupportedType(object) {
             else {
                 while (isDigit(c)) {
                     token += c;
-                    getChar();
+                    next();
                 }
                 if (c == '.') {
                     token += c;
-                    getChar();
+                    next();
                 }
             }
             while (isDigit(c)) {
                 token += c;
-                getChar();
+                next();
             }
 
             // check for scientific notation like "2.3e-4" or "1.23e50"
             if (c == 'E' || c == 'e') {
                 token += c;
-                getChar();
+                next();
 
                 if (c == '+' || c == '-') {
                     token += c;
-                    getChar();
+                    next();
                 }
 
                 // Scientific notation MUST be followed by an exponent
@@ -8992,7 +8606,7 @@ function isSupportedType(object) {
 
                 while (isDigit(c)) {
                     token += c;
-                    getChar();
+                    next();
                 }
             }
 
@@ -9003,10 +8617,9 @@ function isSupportedType(object) {
         if (isAlpha(c)) {
             token_type = TOKENTYPE.SYMBOL;
 
-            while (isAlpha(c) || isDigit(c))
-            {
+            while (isAlpha(c) || isDigit(c)) {
                 token += c;
-                getChar();
+                next();
             }
             return;
         }
@@ -9015,34 +8628,9 @@ function isSupportedType(object) {
         token_type = TOKENTYPE.UNKNOWN;
         while (c != '') {
             token += c;
-            getChar();
+            next();
         }
         throw createSyntaxError('Syntax error in part "' + token + '"');
-    }
-
-    /**
-     * checks if the given char c is a delimiter
-     * minus is not checked in this method (can be unary minus)
-     * @param {String} c   a string with one character
-     * @return {Boolean}
-     * @private
-     */
-    function isDelimiter (c) {
-        return c == '&' ||
-            c == '|' ||
-            c == '<' ||
-            c == '>' ||
-            c == '=' ||
-            c == '+' ||
-            c == '/' ||
-            c == '*' ||
-            c == '%' ||
-            c == '^' ||
-            c == ',' ||
-            c == ';' ||
-            c == '\n' ||
-            c == '!' ||
-            c == '\'';
     }
 
     /**
@@ -9052,6 +8640,7 @@ function isSupportedType(object) {
      * @return {boolean} valid
      * @private
      */
+    // TODO: check for valid symbol name
     function isValidSymbolName (name) {
         for (var i = 0, iMax = name.length; i < iMax; i++) {
             var c = name.charAt(i);
@@ -9107,7 +8696,7 @@ function isSupportedType(object) {
      */
     function parse_start (scope) {
         // get the first character in expression
-        getFirstChar();
+        first();
 
         getToken();
 
@@ -9499,7 +9088,9 @@ function isSupportedType(object) {
 
         operators = {
             '*': 'multiply',
+            '.*': 'emultiply',
             '/': 'divide',
+            './': 'edivide',
             '%': 'mod',
             'mod': 'mod'
         };
@@ -9545,14 +9136,16 @@ function isSupportedType(object) {
      * @private
      */
     function parse_pow (scope) {
-        var node, leftNode, nodes, operators, name, fn, params;
+        var node, leftNode, nodes, ops, name, fn, params;
 
         nodes = [
             parse_factorial(scope)
         ];
+        ops = [];
 
         // stack all operands of a chained power operator (like '2^3^3')
-        while (token == '^') {
+        while (token == '^' || token == '.^') {
+            ops.push(token);
             getToken();
             nodes.push(parse_factorial(scope));
         }
@@ -9561,8 +9154,8 @@ function isSupportedType(object) {
         node = nodes.pop();
         while (nodes.length) {
             leftNode = nodes.pop();
-            name = '^';
-            fn = math.pow;
+            name = ops.pop();
+            fn = (name == '^') ? math.pow : math.epow;
             params = [leftNode, node];
             node = new OperatorNode(name, fn, params);
         }
@@ -9728,7 +9321,7 @@ function isSupportedType(object) {
             }
 
             if (token != ')') {
-                throw createSyntaxError('Parenthesis ) missing');
+                throw createSyntaxError('Parenthesis ) expected');
             }
             getToken();
 
@@ -9755,12 +9348,12 @@ function isSupportedType(object) {
             while (c != '' && (c != '\"' || tPrev == '\\')) { // also handle escape character
                 str += c;
                 tPrev = c;
-                getChar();
+                next();
             }
 
             getToken();
             if (token != '"') {
-                throw createSyntaxError('End of string " missing');
+                throw createSyntaxError('End of string " expected');
             }
             getToken();
 
@@ -9828,6 +9421,41 @@ function isSupportedType(object) {
                     }
                 }
 
+                // TODO: spaces as separator for matrix columns
+                /*
+                // the columns in the matrix are separated by commas or spaces,
+                // and the rows by dot-comma's
+                while (token && token != ']') {
+                    if (token == ';') {
+                        r++;
+                        c = 0;
+                        params[r] = [];
+                        getToken();
+                    }
+                    else if (token == ',') {
+                        c++;
+                        getToken();
+                    }
+                    else {
+                        c++;
+                    }
+
+                    // skip newlines
+                    while (token == '\n') {
+                        getToken();
+                    }
+
+                    //TODO: math.eval('[1 -2 3]') is evaluated as '[(1-2) 3]' instead of '[(1) (-2) (3)]'
+                    //TODO: '[(1) (-2) (3)]' doesn't work
+                    params[r][c] = parse_assignment(scope);
+
+                    // skip newlines
+                    while (token == '\n') {
+                        getToken();
+                    }
+                }
+                */
+
                 rows =  params.length;
                 cols = (params.length > 0) ? params[0].length : 0;
 
@@ -9840,7 +9468,7 @@ function isSupportedType(object) {
                 }
 
                 if (token != ']') {
-                    throw createSyntaxError('End of matrix ] missing');
+                    throw createSyntaxError('End of matrix ] expected');
                 }
 
                 getToken();
@@ -10334,6 +9962,37 @@ if (!Function.prototype.bind) {
 for (var prop in math) {
     if (math.hasOwnProperty(prop) && prop) {
         createSelectorProxy(prop, math[prop]);
+    }
+}
+
+/**
+ * CommonJS module exports
+ */
+if ((typeof module !== 'undefined') && (typeof module.exports !== 'undefined')) {
+    module.exports = math;
+}
+if (typeof exports !== 'undefined') {
+    exports = math;
+}
+
+/**
+ * AMD module exports
+ */
+if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
+    define(function () {
+        return math;
+    });
+}
+
+/**
+ * Browser exports
+ */
+if (typeof(window) != 'undefined') {
+    if (window['math']) {
+        util.deepExtend(window['math'], math);
+    }
+    else {
+        window['math'] = math;
     }
 }
 
