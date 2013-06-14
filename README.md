@@ -325,45 +325,6 @@ The Selector has a number of special functions:
    Matrix or Array.
 
 
-## Workspace
-
-Math.js features a workspace, which manages a set of expressions.
-Expressions can be added, replace, deleted, and inserted in the workspace.
-The workspace keeps track on the dependencies between the expressions,
-and automatically updates results of depending expressions when variables
-or function definitions are changed in the workspace.
-
-```js
-// load math.js
-var math = require('mathjs');
-
-// create a workspace
-var workspace = math.workspace();
-
-// add expressions to the workspace
-var id0 = workspace.append('a = 3/4');
-var id1 = workspace.append('a + 2');
-workspace.getResult(id1); // 2.75
-
-// replace expressions in the workspace
-workspace.replace('a=5/2', id0);
-workspace.getResult(id1); // 4.5
-```
-
-Available methods:
-
-    var id = workspace.append(expr);
-    var id = workspace.insertBefore(expr, beforeId);
-    var id = workspace.insertAfter(expr, afterId);
-    workspace.replace(expr, id);
-    workspace.remove(id);
-    workspace.clear();
-    var expr    = workspace.getExpr(id);
-    var result  = workspace.getResult(id);
-    var deps    = workspace.getDependencies(id);
-    var changes = workspace.getChanges(updateSeq);
-
-
 ## Data types
 
 Math.js supports both native data types like Number, String, and Array,
@@ -579,7 +540,6 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.range(start [, step] , end)
 - math.string(x)
 - math.unit(x)
-- math.workspace()
 
 ### Matrix
 

@@ -26,15 +26,6 @@
 
         var parser = math.parser();
 
-        var workspace = math.workspace();
-        var id0 = workspace.append('a = 3/4');
-        var id1 = workspace.append('a + 2');
-        print('a = ' + workspace.getResult(id0));
-        print('a + 2 = ' + workspace.getResult(id1));
-        workspace.replace('a=5/2', id0);
-        print('a = ' + workspace.getResult(id0));
-        print('a + 2 = ' + workspace.getResult(id1));
-
     </script>
 </body>
 </html>

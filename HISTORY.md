@@ -7,6 +7,7 @@ https://github.com/josdejong/mathjs
 - Implemented element-wise functions and operators: `emultiply` (`x .* y`),
   `edivide` (`x ./ y`), `epow` (`x .^ y`).
 - Added constants `Infinity` and `NaN`.
+- Removed support for Workspace to keep the library focused on its core task.
 - Fixed a bug in the Complex constructor, not accepting NaN values.
 - Fixed division by zero in case of pure complex values.
 - Fixed a bug in function multiply multiplying a pure complex value with

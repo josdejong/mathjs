@@ -56,8 +56,6 @@ task('concat', function () {
             './src/expr/node/FunctionNode.js',
             './src/expr/Scope.js',
             './src/expr/Parser.js',
-            './src/expr/Expression.js',
-            './src/expr/Workspace.js',
             './src/function/**/*.js',
             './src/compatibility.js',
             './src/init.js',
