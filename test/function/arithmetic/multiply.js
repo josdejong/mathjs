@@ -21,6 +21,9 @@ approx.equal(multiply(-2, 3), -6);
 approx.equal(multiply(-2, -3), 6);
 approx.equal(multiply(5, 0), 0);
 approx.equal(multiply(0, 5), 0);
+approx.deepEqual(multiply(0, Infinity), NaN);
+approx.deepEqual(multiply(2, Infinity), Infinity);
+approx.deepEqual(multiply(-2, Infinity), -Infinity);
 
 // complex
 approx.deepEqual(multiply(complex(2, 3), 2), complex(4, 6));
@@ -38,6 +41,7 @@ approx.deepEqual(divide(complex(-5, 12), complex(2, 3)), complex(2, 3));
 approx.deepEqual(multiply(complex(2, 3), 0), complex(0, 0));
 approx.deepEqual(multiply(complex(0, 3), complex(0, -4)), complex(12, 0));
 approx.deepEqual(multiply(multiply(3, i), multiply(-4, i)), complex(12, 0));
+approx.deepEqual(multiply(math.i, Infinity), complex(0, Infinity));
 
 approx.deepEqual(multiply(complex(2, 3), complex(4, 5)), complex(-7, 22));
 approx.deepEqual(multiply(complex(2, 3), complex(4, -5)), complex(23, 2));

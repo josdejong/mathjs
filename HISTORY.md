@@ -6,6 +6,9 @@ https://github.com/josdejong/mathjs
 
 - Implemented element-wise functions and operators: `emultiply` (`x .* y`),
   `edivide` (`x ./ y`), `epow` (`x .^ y`).
+- Fixed a bug in the Complex constructor, not accepting NaN values.
+- Fixed a bug in function divide for complex divisions with a denominator of 0.
+- Fixed functions divide and multiply for calculations with pure
 
 
 ## 2013-05-29, version 0.9.0

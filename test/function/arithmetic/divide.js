@@ -17,6 +17,7 @@ assert.equal(divide(-4, 2), -2);
 assert.equal(divide(4, -2), -2);
 assert.equal(divide(-4, -2), 2);
 assert.equal(divide(4, 0), Infinity);
+assert.equal(divide(-4, 0), -Infinity);
 assert.equal(divide(0, -5), 0);
 assert.ok(isNaN(divide(0, 0)));
 
@@ -29,7 +30,15 @@ approx.deepEqual(divide(complex('2+3i'), 2), complex('1+1.5i'));
 approx.deepEqual(divide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'));
 approx.deepEqual(divide(complex('2i'), complex('4i')), complex('0.5'));
 approx.deepEqual(divide(4, complex('1+2i')), complex('0.8 - 1.6i'));
-approx.deepEqual(divide(math.i, 0), complex(NaN, NaN));  // TODO: should return NaN + Infi instead
+approx.deepEqual(divide(math.i, 0), complex(0, Infinity));
+approx.deepEqual(divide(complex(0,1), 0), complex(0, Infinity));
+approx.deepEqual(divide(complex(1,0), 0), complex(Infinity, 0));
+approx.deepEqual(divide(complex(0,1), complex(0,0)), complex(0, Infinity));
+approx.deepEqual(divide(complex(1,1), complex(0,0)), complex(Infinity, Infinity));
+approx.deepEqual(divide(complex(1,-1), complex(0,0)), complex(Infinity, -Infinity));
+approx.deepEqual(divide(complex(-1,1), complex(0,0)), complex(-Infinity, Infinity));
+approx.deepEqual(divide(complex(1,1), complex(0,1)), complex(1, -1));
+approx.deepEqual(divide(complex(1,1), complex(1,0)), complex(1, 1));
 
 approx.deepEqual(divide(complex(2, 3), complex(4, 5)), complex('0.5609756097560976 + 0.0487804878048781i'));
 approx.deepEqual(divide(complex(2, 3), complex(4, -5)), complex('-0.170731707317073 + 0.536585365853659i'));

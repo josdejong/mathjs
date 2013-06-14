@@ -31,6 +31,9 @@ assert.throws(function () {pow(1)}, SyntaxError, 'Wrong number of arguments in f
 assert.throws(function () {pow(1, 2, 3)}, SyntaxError, 'Wrong number of arguments in function pow (3 provided, 2 expected)');
 
 // complex
+approx.deepEqual(pow(complex(3, 0), 2), complex(9, 0));
+approx.deepEqual(pow(complex(0, 2), 2), complex(-4, 0));
+
 approx.deepEqual(pow(complex(-1,-1),complex(-1,-1)), complex('-0.0284750589322119 +  0.0606697332231795i'));
 approx.deepEqual(pow(complex(-1,-1),complex(-1,1)), complex('-6.7536199239765713 +  3.1697803027015614i'));
 approx.deepEqual(pow(complex(-1,-1),complex(0,-1)), complex('0.0891447921553914 - 0.0321946742909677i'));

@@ -124,8 +124,42 @@ math.multiply = function multiply(x, y) {
  * @private
  */
 function _multiplyComplex (x, y) {
-    return new Complex(
-        x.re * y.re - x.im * y.im,
-        x.re * y.im + x.im * y.re
-    );
+    // Note: we test whether x or y are pure real or pure complex,
+    // to prevent unnecessary NaN values. For example, Infinity*i should
+    // result in Infinity*i, and not in NaN+Infinity*i
+    if (x.im == 0) {
+        // x is pure real
+        return new Complex(
+            x.re * y.re,
+            x.re * y.im
+        );
+    }
+    else if (x.re == 0) {
+        // x is pure complex
+        return new Complex(
+           -x.im * y.im,
+            x.im * y.re
+        );
+    }
+    else if (y.im == 0) {
+        // y is pure real
+        return new Complex(
+            x.re * y.re,
+            x.im * y.re
+        );
+    }
+    else if (y.re == 0) {
+        // y is pure complex
+        return new Complex(
+           -x.im * y.im,
+            x.re * y.im
+        );
+    }
+    else {
+        // both x and y are complex
+        return new Complex(
+            x.re * y.re - x.im * y.im,
+            x.re * y.im + x.im * y.re
+        );
+    }
 }

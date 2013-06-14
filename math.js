@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.9.1-SNAPSHOT
- * @date    2013-06-13
+ * @date    2013-06-14
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -4974,10 +4974,19 @@ math.divide = function divide(x, y) {
  */
 function _divideComplex (x, y) {
     var den = y.re * y.re + y.im * y.im;
-    return new Complex(
-        (x.re * y.re + x.im * y.im) / den,
-        (x.im * y.re - x.re * y.im) / den
-    );
+    if (den != 0) {
+        return new Complex(
+            (x.re * y.re + x.im * y.im) / den,
+            (x.im * y.re - x.re * y.im) / den
+        );
+    }
+    else {
+        // both y.re and y.im are zero
+        return new Complex(
+            (x.re != 0) ? (x.re / 0) : 0,
+            (x.im != 0) ? (x.im / 0) : 0
+        );
+    }
 }
 
 /**
@@ -5735,10 +5744,44 @@ math.multiply = function multiply(x, y) {
  * @private
  */
 function _multiplyComplex (x, y) {
-    return new Complex(
-        x.re * y.re - x.im * y.im,
-        x.re * y.im + x.im * y.re
-    );
+    // Note: we test whether x or y are pure real or pure complex,
+    // to prevent unnecessary NaN values. For example, Infinity*i should
+    // result in Infinity*i, and not in NaN+Infinity*i
+    if (x.im == 0) {
+        // x is pure real
+        return new Complex(
+            x.re * y.re,
+            x.re * y.im
+        );
+    }
+    else if (x.re == 0) {
+        // x is pure complex
+        return new Complex(
+           -x.im * y.im,
+            x.im * y.re
+        );
+    }
+    else if (y.im == 0) {
+        // y is pure real
+        return new Complex(
+            x.re * y.re,
+            x.im * y.re
+        );
+    }
+    else if (y.re == 0) {
+        // y is pure complex
+        return new Complex(
+           -x.im * y.im,
+            x.re * y.im
+        );
+    }
+    else {
+        // both x and y are complex
+        return new Complex(
+            x.re * y.re - x.im * y.im,
+            x.re * y.im + x.im * y.re
+        );
+    }
 }
 
 /**
