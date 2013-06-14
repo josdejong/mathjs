@@ -1,5 +1,5 @@
 /**
- * Jake build script for mathjs
+ * Jake build script for math.js
  */
 
 var jake = require('jake'),

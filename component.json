@@ -1,6 +1,6 @@
 {
     "name": "mathjs",
-    "version": "0.9.1-SNAPSHOT",
+    "version": "0.9.1",
     "main": "math.js",
     "ignore": [
         "img",

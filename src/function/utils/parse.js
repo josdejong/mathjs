@@ -953,7 +953,7 @@
             }
 
             if (token != ')') {
-                throw createSyntaxError('Parenthesis ) missing');
+                throw createSyntaxError('Parenthesis ) expected');
             }
             getToken();
 
@@ -985,7 +985,7 @@
 
             getToken();
             if (token != '"') {
-                throw createSyntaxError('End of string " missing');
+                throw createSyntaxError('End of string " expected');
             }
             getToken();
 
@@ -1100,7 +1100,7 @@
                 }
 
                 if (token != ']') {
-                    throw createSyntaxError('End of matrix ] missing');
+                    throw createSyntaxError('End of matrix ] expected');
                 }
 
                 getToken();

@@ -6,7 +6,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.9.1-SNAPSHOT
+ * @version 0.9.1
  * @date    2013-06-14
  *
  * @license
@@ -9321,7 +9321,7 @@ function isSupportedType(object) {
             }
 
             if (token != ')') {
-                throw createSyntaxError('Parenthesis ) missing');
+                throw createSyntaxError('Parenthesis ) expected');
             }
             getToken();
 
@@ -9353,7 +9353,7 @@ function isSupportedType(object) {
 
             getToken();
             if (token != '"') {
-                throw createSyntaxError('End of string " missing');
+                throw createSyntaxError('End of string " expected');
             }
             getToken();
 
@@ -9468,7 +9468,7 @@ function isSupportedType(object) {
                 }
 
                 if (token != ']') {
-                    throw createSyntaxError('End of matrix ] missing');
+                    throw createSyntaxError('End of matrix ] expected');
                 }
 
                 getToken();
