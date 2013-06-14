@@ -2899,6 +2899,9 @@ math.SQRT2      = Math.SQRT2;
 
 math.I          = new Complex(0, 1);
 
+math.Infinity   = Infinity;
+math.NaN        = NaN;
+
 // lower case constants
 math.pi        = math.PI;
 math.e         = math.E;
