@@ -89,16 +89,17 @@ function _divideComplex (x, y) {
 }
 
 function _divideUnit(x, y){
-    var value = x._normalize(x.value) / y._normalize(y.value);
-    var dimensions = x.unit.base.dimensions;
+    var res = x.clone();
+    res.value = x._normalize(x.value) / y._normalize(y.value);
+    var dimensions = math.clone(res.unit.base.dimensions);
     for (var dim in y.unit.base.dimensions){
         if(dimensions[dim]===undefined)
             dimensions[dim]= -y.unit.base.dimensions[dim];
         else
             dimensions[dim] -=  y.unit.base.dimensions[dim];
     }
-    var baseunit = Unit._findBaseUnit(dimensions);
-    var unit = Unit._findUnitFromBase(baseunit);
-    return new Unit(value, unit);
+    var baseunit = Unit._findBaseQuantity(dimensions);
+    res.unit = Unit._findUnitFromBase(baseunit);
+    return res;
 }
 

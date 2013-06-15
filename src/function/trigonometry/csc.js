@@ -29,7 +29,7 @@ math.csc = function csc(x) {
     }
 
     if (x instanceof Unit) {
-        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+        if (!x.hasBase(Unit.BASE_QUANTITY.ANGLE)) {
             throw new TypeError ('Unit in function csc is no angle');
         }
         return 1 / Math.sin(x.value);

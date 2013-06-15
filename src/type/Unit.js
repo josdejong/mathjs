@@ -306,26 +306,27 @@ Unit.isPlainUnit = function (unit) {
 };
 
 
-Unit._findBaseUnit= function (dimensions){
-    debugger;
-    var BASE_UNITS = Unit.BASE_UNITS;
+Unit._findBaseQuantity= function (dimensions){
+    var BASE_QUANTITY = Unit.BASE_QUANTITY;
     for(var dim in dimensions){
         if(dimensions[dim] === 0) delete dimensions[dim];        
     }
-    var iMax = BASE_UNITS.length;
-    outerloop: for (var i = 0; i < iMax; i++) {
-        var BASE_UNIT = BASE_UNITS[i];
+    outerloop: for (var idx in BASE_QUANTITY) {
+        var currentQty=BASE_QUANTITY[idx];
+
         for(var dim in dimensions){
-            if(dimensions[dim]!==BASE_UNIT.dimensions[dim]){
+            if(dimensions[dim]!==currentQty.dimensions[dim]){
                 continue outerloop;
             }        
         }
-        return BASE_UNIT;
+        return currentQty;
+
     }
 
     throw new Error('Could not find a matching base quantity for the given dimensions: ' + JSON.stringify(dimensions));
 };
 Unit._findUnitFromBase = function(base){
+    if(base==BASE_QUANTITY.NONE) return Unit.UNIT_NONE;
     var UNITS = Unit.UNITS;
     for (var i = 0, iMax = UNITS.length; i < iMax; i++) {
         var UNIT = UNITS[i];
@@ -339,7 +340,7 @@ Unit._findUnitFromBase = function(base){
 }
 /**
  * check if this unit has given base unit
- * @param {Unit.BASE_UNITS} base
+ * @param {Unit.BASE_QUANTITY} base
  */
 Unit.prototype.hasBase = function(base) {
     if (this.unit.base === undefined) {
@@ -568,7 +569,7 @@ Unit.PREFIXES = {
 
 Unit.PREFIX_NONE = {'name': '', 'value': 1, 'scientific': true};
 
-Unit.BASE_UNITS = {
+Unit.BASE_QUANTITY = {
     'NONE': {'name': 'none', 'dimensions':{}},
 
     'LENGTH': {'name':'length', 'dimensions':{'m': 1}},   // meter
@@ -589,164 +590,164 @@ Unit.BASE_UNITS = {
     'ACCELERATION': {'name': 'acceleration', 'dimensions': {'m': 1, 's': -2}}
 };
 
-var BASE_UNITS = Unit.BASE_UNITS;
+var BASE_QUANTITY = Unit.BASE_QUANTITY;
 var PREFIXES = Unit.PREFIXES;
 
-Unit.BASE_UNIT_NONE = {};
+Unit.BASE_QUANTITY_NONE = {};
 
-Unit.UNIT_NONE = {'name': '', 'base': Unit.BASE_UNIT_NONE, 'value': 1, 'offset': 0};
+Unit.UNIT_NONE = {'name': '', 'base': Unit.BASE_QUANTITY_NONE, 'value': 1, 'offset': 0};
 
 Unit.UNITS = [
     // length
-    {'name': 'meter', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
-    {'name': 'inch', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.0254, 'offset': 0},
-    {'name': 'foot', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.3048, 'offset': 0},
-    {'name': 'yard', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.9144, 'offset': 0},
-    {'name': 'mile', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 1609.344, 'offset': 0},
-    {'name': 'link', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.201168, 'offset': 0},
-    {'name': 'rod', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 5.029210, 'offset': 0},
-    {'name': 'chain', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 20.1168, 'offset': 0},
-    {'name': 'angstrom', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 1e-10, 'offset': 0},
+    {'name': 'meter', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
+    {'name': 'inch', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.0254, 'offset': 0},
+    {'name': 'foot', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.3048, 'offset': 0},
+    {'name': 'yard', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.9144, 'offset': 0},
+    {'name': 'mile', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 1609.344, 'offset': 0},
+    {'name': 'link', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.201168, 'offset': 0},
+    {'name': 'rod', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 5.029210, 'offset': 0},
+    {'name': 'chain', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 20.1168, 'offset': 0},
+    {'name': 'angstrom', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 1e-10, 'offset': 0},
 
-    {'name': 'm', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
-    //{'name': 'in', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.0254, 'offset': 0}, not supported, In is an operator
-    {'name': 'ft', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.3048, 'offset': 0},
-    {'name': 'yd', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.9144, 'offset': 0},
-    {'name': 'mi', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 1609.344, 'offset': 0},
-    {'name': 'li', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.201168, 'offset': 0},
-    {'name': 'rd', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 5.029210, 'offset': 0},
-    {'name': 'ch', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 20.1168, 'offset': 0},
-    {'name': 'mil', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.0000254, 'offset': 0}, // 1/1000 inch
+    {'name': 'm', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
+    //{'name': 'in', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.0254, 'offset': 0}, not supported, In is an operator
+    {'name': 'ft', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.3048, 'offset': 0},
+    {'name': 'yd', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.9144, 'offset': 0},
+    {'name': 'mi', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 1609.344, 'offset': 0},
+    {'name': 'li', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.201168, 'offset': 0},
+    {'name': 'rd', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 5.029210, 'offset': 0},
+    {'name': 'ch', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 20.1168, 'offset': 0},
+    {'name': 'mil', 'base': BASE_QUANTITY.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.0000254, 'offset': 0}, // 1/1000 inch
 
     // Surface
-    {'name': 'm2', 'base': BASE_UNITS.SURFACE, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
-    {'name': 'sqin', 'base': BASE_UNITS.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 0.00064516, 'offset': 0}, // 645.16 mm2
-    {'name': 'sqft', 'base': BASE_UNITS.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 0.09290304, 'offset': 0}, // 0.09290304 m2
-    {'name': 'sqyd', 'base': BASE_UNITS.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 0.83612736, 'offset': 0}, // 0.83612736 m2
-    {'name': 'sqmi', 'base': BASE_UNITS.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 2589988.110336, 'offset': 0}, // 2.589988110336 km2
-    {'name': 'sqrd', 'base': BASE_UNITS.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 25.29295, 'offset': 0}, // 25.29295 m2
-    {'name': 'sqch', 'base': BASE_UNITS.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 404.6873, 'offset': 0}, // 404.6873 m2
-    {'name': 'sqmil', 'base': BASE_UNITS.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 6.4516e-10, 'offset': 0}, // 6.4516 * 10^-10 m2
+    {'name': 'm2', 'base': BASE_QUANTITY.SURFACE, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
+    {'name': 'sqin', 'base': BASE_QUANTITY.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 0.00064516, 'offset': 0}, // 645.16 mm2
+    {'name': 'sqft', 'base': BASE_QUANTITY.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 0.09290304, 'offset': 0}, // 0.09290304 m2
+    {'name': 'sqyd', 'base': BASE_QUANTITY.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 0.83612736, 'offset': 0}, // 0.83612736 m2
+    {'name': 'sqmi', 'base': BASE_QUANTITY.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 2589988.110336, 'offset': 0}, // 2.589988110336 km2
+    {'name': 'sqrd', 'base': BASE_QUANTITY.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 25.29295, 'offset': 0}, // 25.29295 m2
+    {'name': 'sqch', 'base': BASE_QUANTITY.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 404.6873, 'offset': 0}, // 404.6873 m2
+    {'name': 'sqmil', 'base': BASE_QUANTITY.SURFACE, 'prefixes': PREFIXES.NONE, 'value': 6.4516e-10, 'offset': 0}, // 6.4516 * 10^-10 m2
 
     // Volume
-    {'name': 'm3', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
-    {'name': 'L', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.SHORT, 'value': 0.001, 'offset': 0}, // litre
-    {'name': 'litre', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.LONG, 'value': 0.001, 'offset': 0},
-    {'name': 'cuin', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 1.6387064e-5, 'offset': 0}, // 1.6387064e-5 m3
-    {'name': 'cuft', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.028316846592, 'offset': 0}, // 28.316 846 592 L
-    {'name': 'cuyd', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.764554857984, 'offset': 0}, // 764.554 857 984 L
-    {'name': 'teaspoon', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.000005, 'offset': 0}, // 5 mL
-    {'name': 'tablespoon', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.000015, 'offset': 0}, // 15 mL
-    //{'name': 'cup', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.000240, 'offset': 0}, // 240 mL  // not possible, we have already another cup
+    {'name': 'm3', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
+    {'name': 'L', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.SHORT, 'value': 0.001, 'offset': 0}, // litre
+    {'name': 'litre', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.LONG, 'value': 0.001, 'offset': 0},
+    {'name': 'cuin', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 1.6387064e-5, 'offset': 0}, // 1.6387064e-5 m3
+    {'name': 'cuft', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.028316846592, 'offset': 0}, // 28.316 846 592 L
+    {'name': 'cuyd', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.764554857984, 'offset': 0}, // 764.554 857 984 L
+    {'name': 'teaspoon', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.000005, 'offset': 0}, // 5 mL
+    {'name': 'tablespoon', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.000015, 'offset': 0}, // 15 mL
+    //{'name': 'cup', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.000240, 'offset': 0}, // 240 mL  // not possible, we have already another cup
 
     // Liquid volume
-    {'name': 'minim', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.00000006161152, 'offset': 0}, // 0.06161152 mL
-    {'name': 'fluiddram', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0000036966911, 'offset': 0},  // 3.696691 mL
-    {'name': 'fluidounce', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.00002957353, 'offset': 0}, // 29.57353 mL
-    {'name': 'gill', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0001182941, 'offset': 0}, // 118.2941 mL
-    {'name': 'cup', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0002365882, 'offset': 0}, // 236.5882 mL
-    {'name': 'pint', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0004731765, 'offset': 0}, // 473.1765 mL
-    {'name': 'quart', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0009463529, 'offset': 0}, // 946.3529 mL
-    {'name': 'gallon', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.003785412, 'offset': 0}, // 3.785412 L
-    {'name': 'beerbarrel', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.1173478, 'offset': 0}, // 117.3478 L
-    {'name': 'oilbarrel', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.1589873, 'offset': 0}, // 158.9873 L
-    {'name': 'hogshead', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.2384810, 'offset': 0}, // 238.4810 L
+    {'name': 'minim', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.00000006161152, 'offset': 0}, // 0.06161152 mL
+    {'name': 'fluiddram', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0000036966911, 'offset': 0},  // 3.696691 mL
+    {'name': 'fluidounce', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.00002957353, 'offset': 0}, // 29.57353 mL
+    {'name': 'gill', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0001182941, 'offset': 0}, // 118.2941 mL
+    {'name': 'cup', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0002365882, 'offset': 0}, // 236.5882 mL
+    {'name': 'pint', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0004731765, 'offset': 0}, // 473.1765 mL
+    {'name': 'quart', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0009463529, 'offset': 0}, // 946.3529 mL
+    {'name': 'gallon', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.003785412, 'offset': 0}, // 3.785412 L
+    {'name': 'beerbarrel', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.1173478, 'offset': 0}, // 117.3478 L
+    {'name': 'oilbarrel', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.1589873, 'offset': 0}, // 158.9873 L
+    {'name': 'hogshead', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.2384810, 'offset': 0}, // 238.4810 L
 
-    //{'name': 'min', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.00000006161152, 'offset': 0}, // 0.06161152 mL // min is already in use as minute
-    {'name': 'fldr', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0000036966911, 'offset': 0},  // 3.696691 mL
-    {'name': 'floz', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.00002957353, 'offset': 0}, // 29.57353 mL
-    {'name': 'gi', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0001182941, 'offset': 0}, // 118.2941 mL
-    {'name': 'cp', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0002365882, 'offset': 0}, // 236.5882 mL
-    {'name': 'pt', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0004731765, 'offset': 0}, // 473.1765 mL
-    {'name': 'qt', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0009463529, 'offset': 0}, // 946.3529 mL
-    {'name': 'gal', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.003785412, 'offset': 0}, // 3.785412 L
-    {'name': 'bbl', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.1173478, 'offset': 0}, // 117.3478 L
-    {'name': 'obl', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.1589873, 'offset': 0}, // 158.9873 L
-    //{'name': 'hogshead', 'base': BASE_UNITS.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.2384810, 'offset': 0}, // 238.4810 L // TODO: hh?
+    //{'name': 'min', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.00000006161152, 'offset': 0}, // 0.06161152 mL // min is already in use as minute
+    {'name': 'fldr', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0000036966911, 'offset': 0},  // 3.696691 mL
+    {'name': 'floz', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.00002957353, 'offset': 0}, // 29.57353 mL
+    {'name': 'gi', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0001182941, 'offset': 0}, // 118.2941 mL
+    {'name': 'cp', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0002365882, 'offset': 0}, // 236.5882 mL
+    {'name': 'pt', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0004731765, 'offset': 0}, // 473.1765 mL
+    {'name': 'qt', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.0009463529, 'offset': 0}, // 946.3529 mL
+    {'name': 'gal', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.003785412, 'offset': 0}, // 3.785412 L
+    {'name': 'bbl', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.1173478, 'offset': 0}, // 117.3478 L
+    {'name': 'obl', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.1589873, 'offset': 0}, // 158.9873 L
+    //{'name': 'hogshead', 'base': BASE_QUANTITY.VOLUME, 'prefixes': PREFIXES.NONE, 'value': 0.2384810, 'offset': 0}, // 238.4810 L // TODO: hh?
 
     // Mass
-    {'name': 'g', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.SHORT, 'value': 0.001, 'offset': 0},
-    {'name': 'gram', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.LONG, 'value': 0.001, 'offset': 0},
+    {'name': 'g', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.SHORT, 'value': 0.001, 'offset': 0},
+    {'name': 'gram', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.LONG, 'value': 0.001, 'offset': 0},
 
-    {'name': 'ton', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.SHORT, 'value': 907.18474, 'offset': 0},
-    {'name': 'tonne', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.SHORT, 'value': 1000, 'offset': 0},
+    {'name': 'ton', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.SHORT, 'value': 907.18474, 'offset': 0},
+    {'name': 'tonne', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.SHORT, 'value': 1000, 'offset': 0},
 
-    {'name': 'grain', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 64.79891e-6, 'offset': 0},
-    {'name': 'dram', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 1.7718451953125e-3, 'offset': 0},
-    {'name': 'ounce', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 28.349523125e-3, 'offset': 0},
-    {'name': 'poundmass', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 453.59237e-3, 'offset': 0},
-    {'name': 'hundredweight', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 45.359237, 'offset': 0},
-    {'name': 'stick', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 115e-3, 'offset': 0},
+    {'name': 'grain', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 64.79891e-6, 'offset': 0},
+    {'name': 'dram', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 1.7718451953125e-3, 'offset': 0},
+    {'name': 'ounce', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 28.349523125e-3, 'offset': 0},
+    {'name': 'poundmass', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 453.59237e-3, 'offset': 0},
+    {'name': 'hundredweight', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 45.359237, 'offset': 0},
+    {'name': 'stick', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 115e-3, 'offset': 0},
 
-    {'name': 'gr', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 64.79891e-6, 'offset': 0},
-    {'name': 'dr', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 1.7718451953125e-3, 'offset': 0},
-    {'name': 'oz', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 28.349523125e-3, 'offset': 0},
-    {'name': 'lbm', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 453.59237e-3, 'offset': 0},
-    {'name': 'cwt', 'base': BASE_UNITS.MASS, 'prefixes': PREFIXES.NONE, 'value': 45.359237, 'offset': 0},
+    {'name': 'gr', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 64.79891e-6, 'offset': 0},
+    {'name': 'dr', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 1.7718451953125e-3, 'offset': 0},
+    {'name': 'oz', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 28.349523125e-3, 'offset': 0},
+    {'name': 'lbm', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 453.59237e-3, 'offset': 0},
+    {'name': 'cwt', 'base': BASE_QUANTITY.MASS, 'prefixes': PREFIXES.NONE, 'value': 45.359237, 'offset': 0},
 
     // Time
-    {'name': 's', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
-    {'name': 'min', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 60, 'offset': 0},
-    {'name': 'h', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 3600, 'offset': 0},
-    {'name': 'seconds', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
-    {'name': 'second', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
-    {'name': 'sec', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
-    {'name': 'minutes', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 60, 'offset': 0},
-    {'name': 'minute', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 60, 'offset': 0},
-    {'name': 'hours', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 3600, 'offset': 0},
-    {'name': 'hour', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 3600, 'offset': 0},
-    {'name': 'day', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 86400, 'offset': 0},
-    {'name': 'days', 'base': BASE_UNITS.TIME, 'prefixes': PREFIXES.NONE, 'value': 86400, 'offset': 0},
+    {'name': 's', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
+    {'name': 'min', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.NONE, 'value': 60, 'offset': 0},
+    {'name': 'h', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.NONE, 'value': 3600, 'offset': 0},
+    {'name': 'seconds', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
+    {'name': 'second', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
+    {'name': 'sec', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
+    {'name': 'minutes', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.NONE, 'value': 60, 'offset': 0},
+    {'name': 'minute', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.NONE, 'value': 60, 'offset': 0},
+    {'name': 'hours', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.NONE, 'value': 3600, 'offset': 0},
+    {'name': 'hour', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.NONE, 'value': 3600, 'offset': 0},
+    {'name': 'day', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.NONE, 'value': 86400, 'offset': 0},
+    {'name': 'days', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.NONE, 'value': 86400, 'offset': 0},
 
     //Speed
-    {'name': 'mps', 'base': BASE_UNITS.SPEED, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'm/s', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
 
     //Frequency
-    {'name': 'Hz', 'base': BASE_UNITS.FREQUENCY, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'Hz', 'base': BASE_QUANTITY.FREQUENCY, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
 
     // Angles
-    {'name': 'rad', 'base': BASE_UNITS.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
-    {'name': 'deg', 'base': BASE_UNITS.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 0.017453292519943295769236907684888, 'offset': 0},  // deg = rad / (2*pi) * 360 = rad / 0.017453292519943295769236907684888
-    {'name': 'grad', 'base': BASE_UNITS.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 0.015707963267948966192313216916399, 'offset': 0}, // grad = rad / (2*pi) * 400  = rad / 0.015707963267948966192313216916399
-    {'name': 'cycle', 'base': BASE_UNITS.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 6.2831853071795864769252867665793, 'offset': 0},  // cycle = rad / (2*pi) = rad / 6.2831853071795864769252867665793
+    {'name': 'rad', 'base': BASE_QUANTITY.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'deg', 'base': BASE_QUANTITY.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 0.017453292519943295769236907684888, 'offset': 0},  // deg = rad / (2*pi) * 360 = rad / 0.017453292519943295769236907684888
+    {'name': 'grad', 'base': BASE_QUANTITY.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 0.015707963267948966192313216916399, 'offset': 0}, // grad = rad / (2*pi) * 400  = rad / 0.015707963267948966192313216916399
+    {'name': 'cycle', 'base': BASE_QUANTITY.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 6.2831853071795864769252867665793, 'offset': 0},  // cycle = rad / (2*pi) = rad / 6.2831853071795864769252867665793
 
     // Electric current
-    {'name': 'A', 'base': BASE_UNITS.CURRENT, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
-    {'name': 'ampere', 'base': BASE_UNITS.CURRENT, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
+    {'name': 'A', 'base': BASE_QUANTITY.CURRENT, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
+    {'name': 'ampere', 'base': BASE_QUANTITY.CURRENT, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
 
     // Temperature
     // K(C) = °C + 273.15
     // K(F) = (°F + 459.67) / 1.8
     // K(R) = °R / 1.8
-    {'name': 'K', 'base': BASE_UNITS.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
-    {'name': 'degC', 'base': BASE_UNITS.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 273.15},
-    {'name': 'degF', 'base': BASE_UNITS.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1/1.8, 'offset': 459.67},
-    {'name': 'degR', 'base': BASE_UNITS.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1/1.8, 'offset': 0},
-    {'name': 'kelvin', 'base': BASE_UNITS.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
-    {'name': 'celsius', 'base': BASE_UNITS.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 273.15},
-    {'name': 'fahrenheit', 'base': BASE_UNITS.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1/1.8, 'offset': 459.67},
-    {'name': 'rankine', 'base': BASE_UNITS.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1/1.8, 'offset': 0},
+    {'name': 'K', 'base': BASE_QUANTITY.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'degC', 'base': BASE_QUANTITY.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 273.15},
+    {'name': 'degF', 'base': BASE_QUANTITY.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1/1.8, 'offset': 459.67},
+    {'name': 'degR', 'base': BASE_QUANTITY.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1/1.8, 'offset': 0},
+    {'name': 'kelvin', 'base': BASE_QUANTITY.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'celsius', 'base': BASE_QUANTITY.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 273.15},
+    {'name': 'fahrenheit', 'base': BASE_QUANTITY.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1/1.8, 'offset': 459.67},
+    {'name': 'rankine', 'base': BASE_QUANTITY.TEMPERATURE, 'prefixes': PREFIXES.NONE, 'value': 1/1.8, 'offset': 0},
 
     // amount of substance
-    {'name': 'mol', 'base': BASE_UNITS.AMOUNT_OF_SUBSTANCE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
-    {'name': 'mole', 'base': BASE_UNITS.AMOUNT_OF_SUBSTANCE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'mol', 'base': BASE_QUANTITY.AMOUNT_OF_SUBSTANCE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'mole', 'base': BASE_QUANTITY.AMOUNT_OF_SUBSTANCE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
 
     // luminous intensity
-    {'name': 'cd', 'base': BASE_UNITS.LUMINOUS_INTENSITY, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
-    {'name': 'candela', 'base': BASE_UNITS.LUMINOUS_INTENSITY, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'cd', 'base': BASE_QUANTITY.LUMINOUS_INTENSITY, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'candela', 'base': BASE_QUANTITY.LUMINOUS_INTENSITY, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
     // TODO: units STERADIAN
-    //{'name': 'sr', 'base': BASE_UNITS.STERADIAN, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
-    //{'name': 'steradian', 'base': BASE_UNITS.STERADIAN, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    //{'name': 'sr', 'base': BASE_QUANTITY.STERADIAN, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    //{'name': 'steradian', 'base': BASE_QUANTITY.STERADIAN, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
 
     // Force
-    {'name': 'N', 'base': BASE_UNITS.FORCE, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
-    {'name': 'newton', 'base': BASE_UNITS.FORCE, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
-    {'name': 'lbf', 'base': BASE_UNITS.FORCE, 'prefixes': PREFIXES.NONE, 'value': 4.4482216152605, 'offset': 0},
-    {'name': 'poundforce', 'base': BASE_UNITS.FORCE, 'prefixes': PREFIXES.NONE, 'value': 4.4482216152605, 'offset': 0},
+    {'name': 'N', 'base': BASE_QUANTITY.FORCE, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
+    {'name': 'newton', 'base': BASE_QUANTITY.FORCE, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
+    {'name': 'lbf', 'base': BASE_QUANTITY.FORCE, 'prefixes': PREFIXES.NONE, 'value': 4.4482216152605, 'offset': 0},
+    {'name': 'poundforce', 'base': BASE_QUANTITY.FORCE, 'prefixes': PREFIXES.NONE, 'value': 4.4482216152605, 'offset': 0},
 
     // Binary
-    {'name': 'b', 'base': BASE_UNITS.BIT, 'prefixes': PREFIXES.BINARY_SHORT, 'value': 1, 'offset': 0},
-    {'name': 'bits', 'base': BASE_UNITS.BIT, 'prefixes': PREFIXES.BINARY_LONG, 'value': 1, 'offset': 0},
-    {'name': 'B', 'base': BASE_UNITS.BIT, 'prefixes': PREFIXES.BINARY_SHORT, 'value': 8, 'offset': 0},
-    {'name': 'bytes', 'base': BASE_UNITS.BIT, 'prefixes': PREFIXES.BINARY_LONG, 'value': 8, 'offset': 0}
+    {'name': 'b', 'base': BASE_QUANTITY.BIT, 'prefixes': PREFIXES.BINARY_SHORT, 'value': 1, 'offset': 0},
+    {'name': 'bits', 'base': BASE_QUANTITY.BIT, 'prefixes': PREFIXES.BINARY_LONG, 'value': 1, 'offset': 0},
+    {'name': 'B', 'base': BASE_QUANTITY.BIT, 'prefixes': PREFIXES.BINARY_SHORT, 'value': 8, 'offset': 0},
+    {'name': 'bytes', 'base': BASE_QUANTITY.BIT, 'prefixes': PREFIXES.BINARY_LONG, 'value': 8, 'offset': 0}
 ];

@@ -27,7 +27,7 @@ math.sin = function sin(x) {
     }
 
     if (x instanceof Unit) {
-        if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+        if (!x.hasBase(Unit.BASE_QUANTITY.ANGLE)) {
             throw new TypeError ('Unit in function cos is no angle');
         }
         return Math.sin(x.value);
