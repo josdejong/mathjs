@@ -22,6 +22,9 @@ math.divide = function divide(x, y) {
             // number / complex
             return _divideComplex(new Complex(x, 0), y);
         }
+        else if(y instanceof Unit){
+            return math.divide(new Unit(x,null), y);
+        }
     }
 
     if (x instanceof Complex) {

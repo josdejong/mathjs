@@ -2668,9 +2668,7 @@ Unit.BASE_QUANTITY = {
 var BASE_QUANTITY = Unit.BASE_QUANTITY;
 var PREFIXES = Unit.PREFIXES;
 
-Unit.BASE_QUANTITY_NONE = {};
-
-Unit.UNIT_NONE = {'name': '', 'base': Unit.BASE_QUANTITY_NONE, 'value': 1, 'offset': 0};
+Unit.UNIT_NONE = {'name': '', 'base': Unit.BASE_QUANTITY.NONE, 'value': 1, 'offset': 0};
 
 Unit.UNITS = [
     // length
@@ -2775,10 +2773,14 @@ Unit.UNITS = [
     {'name': 'days', 'base': BASE_QUANTITY.TIME, 'prefixes': PREFIXES.NONE, 'value': 86400, 'offset': 0},
 
     //Speed
-    {'name': 'm/s', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'm/s', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
+    {'name': 'mps', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
+
+
+
 
     //Frequency
-    {'name': 'Hz', 'base': BASE_QUANTITY.FREQUENCY, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
+    {'name': 'Hz', 'base': BASE_QUANTITY.FREQUENCY, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
 
     // Angles
     {'name': 'rad', 'base': BASE_QUANTITY.ANGLE, 'prefixes': PREFIXES.NONE, 'value': 1, 'offset': 0},
@@ -4858,6 +4860,9 @@ math.divide = function divide(x, y) {
         else if (y instanceof Complex) {
             // number / complex
             return _divideComplex(new Complex(x, 0), y);
+        }
+        else if(y instanceof Unit){
+            return math.divide(new Unit(x,null), y);
         }
     }
 
