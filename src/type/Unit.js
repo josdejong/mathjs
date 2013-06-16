@@ -711,6 +711,13 @@ Unit.UNITS = [
     //Speed
     {'name': 'm/s', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
     {'name': 'mps', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
+    {'name': 'm/h', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.SHORT, 'value': 1/3600, 'offset': 0},
+    {'name': 'mph', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.SHORT, 'value': 1/3600, 'offset': 0},   //meaning meters per hours, which is ambiguous..
+
+
+    //Acceleration
+    {'name': 'm/s2','base':BASE_QUANTITY.ACCELERATION, 'prefixes': PREFIXES.SHORT,'value': 1,'offset':0},
+    {'name': 'mps2','base':BASE_QUANTITY.ACCELERATION, 'prefixes': PREFIXES.SHORT,'value': 1,'offset':0},
 
 
 
