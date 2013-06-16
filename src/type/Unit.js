@@ -325,6 +325,11 @@ Unit._findBaseQuantity= function (dimensions){
                 continue outerloop;
             }        
         }
+        for (var dim in currentQty.dimensions){
+            if(dimensions[dim]===undefined) {
+                continue outerloop;
+            }
+        }
         return currentQty;
 
     }
