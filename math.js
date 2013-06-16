@@ -2413,6 +2413,11 @@ Unit._findBaseQuantity= function (dimensions){
                 continue outerloop;
             }        
         }
+        for (var dim in currentQty.dimensions){
+            if(dimensions[dim]===undefined) {
+                continue outerloop;
+            }
+        }
         return currentQty;
 
     }
@@ -2794,6 +2799,13 @@ Unit.UNITS = [
     //Speed
     {'name': 'm/s', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
     {'name': 'mps', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.SHORT, 'value': 1, 'offset': 0},
+    {'name': 'm/h', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.SHORT, 'value': 1/3600, 'offset': 0},
+    {'name': 'mph', 'base': BASE_QUANTITY.SPEED, 'prefixes': PREFIXES.SHORT, 'value': 1/3600, 'offset': 0},   //meaning meters per hours, which is ambiguous..
+
+
+    //Acceleration
+    {'name': 'm/s2','base':BASE_QUANTITY.ACCELERATION, 'prefixes': PREFIXES.SHORT,'value': 1,'offset':0},
+    {'name': 'mps2','base':BASE_QUANTITY.ACCELERATION, 'prefixes': PREFIXES.SHORT,'value': 1,'offset':0},
 
 
 
@@ -5583,6 +5595,9 @@ math.multiply = function multiply(x, y) {
             res.value *= y;
             return res;
         }
+        else if(y instanceof Unit){
+            return _multiplyUnit(x,y);
+        }
     }
     else if (x instanceof Array) {
         if (y instanceof Array) {
@@ -5667,6 +5682,17 @@ function _multiplyComplex (x, y) {
         x.re * y.re - x.im * y.im,
         x.re * y.im + x.im * y.re
     );
+}
+function _multiplyUnit(x,y){
+    var value = x.value * y.value;
+    var dimensions = math.clone(x.unit.base.dimensions);
+    for (var dim in y.unit.base.dimensions){
+        if(dimensions[dim]===undefined)
+            dimensions[dim]= y.unit.base.dimensions[dim];
+        else
+            dimensions[dim] +=  y.unit.base.dimensions[dim];
+    }
+    return new Unit(value,dimensions);
 }
 
 /**
@@ -6029,8 +6055,8 @@ math.smallereq = function smallereq(x, y) {
  *
  * For matrices, the function is evaluated element wise.
  *
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
+ * @param {Number | Complex | Array | Matrix | Unit} x
+ * @return {Number | Complex | Array | Matrix| Unit} res
  */
 math.sqrt = function sqrt (x) {
     if (arguments.length != 1) {
@@ -6061,6 +6087,15 @@ math.sqrt = function sqrt (x) {
             );
         }
     }
+    if(x instanceof Unit){
+            var value = Math.sqrt(x.value);
+            var dimensions = math.clone(x.unit.base.dimensions);
+            for (var dim in dimensions){
+                    dimensions[dim] /=  2;
+            }
+            return new Unit(value,dimensions);
+
+    }
 
     if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.sqrt);
@@ -6082,8 +6117,8 @@ math.sqrt = function sqrt (x) {
  *
  * For matrices, the function is evaluated element wise.
  *
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
+ * @param {Number | Complex | Array | Matrix | Unit} x
+ * @return {Number | Complex | Array | Matrix | Unit} res
  */
 math.square = function square(x) {
     if (arguments.length != 1) {
@@ -6100,6 +6135,16 @@ math.square = function square(x) {
 
     if (x instanceof Array || x instanceof Matrix) {
         return util.map(x, math.square);
+    }
+
+    if(x instanceof Unit){
+        var value = x.value * x.value;
+        var dimensions = math.clone(x.unit.base.dimensions);
+        for (var dim in dimensions){
+            dimensions[dim] *=  2;
+        }
+        return new Unit(value, dimensions);
+
     }
 
     if (x.valueOf() !== x) {
