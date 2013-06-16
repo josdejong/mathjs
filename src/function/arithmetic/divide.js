@@ -80,14 +80,14 @@ math.divide = function divide(x, y) {
 function _divideComplex (x, y) {
     var den = y.re * y.re + y.im * y.im;
     if (den != 0) {
-        return new Complex(
+        return Complex.create(
             (x.re * y.re + x.im * y.im) / den,
             (x.im * y.re - x.re * y.im) / den
         );
     }
     else {
         // both y.re and y.im are zero
-        return new Complex(
+        return Complex.create(
             (x.re != 0) ? (x.re / 0) : 0,
             (x.im != 0) ? (x.im / 0) : 0
         );

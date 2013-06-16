@@ -18,7 +18,7 @@ math.ceil = function ceil(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex (
+        return Complex.create (
             Math.ceil(x.re),
             Math.ceil(x.im)
         );

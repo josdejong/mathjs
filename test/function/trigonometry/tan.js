@@ -30,7 +30,7 @@ approx.deepEqual(tan(complex('2-3i')), complex(-re, -im));
 approx.deepEqual(tan(complex('-2+3i')), complex(re, im));
 approx.deepEqual(tan(complex('-2-3i')), complex(re, -im));
 approx.deepEqual(tan(complex('i')), complex(0, 0.761594155955765));
-approx.deepEqual(tan(complex('1')), complex(1.55740772465490, 0));
+approx.deepEqual(tan(complex('1')), 1.55740772465490);
 approx.deepEqual(tan(complex('1+i')), complex(0.271752585319512, 1.083923327338695));
 
 // unit

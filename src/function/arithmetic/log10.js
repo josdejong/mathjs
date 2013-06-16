@@ -24,7 +24,7 @@ math.log10 = function log10(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex (
+        return Complex.create (
             Math.log(Math.sqrt(x.re * x.re + x.im * x.im)) / Math.LN10,
             Math.atan2(x.im, x.re) / Math.LN10
         );

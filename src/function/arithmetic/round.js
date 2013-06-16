@@ -22,7 +22,7 @@ math.round = function round(x, n) {
         }
 
         if (x instanceof Complex) {
-            return new Complex (
+            return Complex.create (
                 Math.round(x.re),
                 Math.round(x.im)
             );
@@ -56,7 +56,7 @@ math.round = function round(x, n) {
         }
 
         if (x instanceof Complex) {
-            return new Complex (
+            return Complex.create (
                 roundNumber(x.re, n),
                 roundNumber(x.im, n)
             );

@@ -2,6 +2,13 @@
 https://github.com/josdejong/mathjs
 
 
+## version 0.9.2
+
+- For complex calculations, all functions now automatically replace results with
+  an imaginary part of zero with a Number. (`2i * 2i` now returns a Number `-4`
+  instead of a Complex number `-4 + 0i`).
+
+
 ## 2013-06-14, version 0.9.1
 
 - Implemented element-wise functions and operators: `emultiply` (`x .* y`),

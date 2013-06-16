@@ -27,10 +27,10 @@ assert.throws(function () {edivide(2,3,4); });
 assert.throws(function () {edivide(2); });
 
 // complex
-assert.deepEqual(edivide(complex('2+3i'), 2), complex('1+1.5i'));
-assert.deepEqual(edivide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'));
-assert.deepEqual(edivide(complex('2i'), complex('4i')), complex('0.5'));
-assert.deepEqual(edivide(4, complex('1+2i')), complex('0.8 - 1.6i'));
+approx.deepEqual(edivide(complex('2+3i'), 2), complex('1+1.5i'));
+approx.deepEqual(edivide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'));
+approx.deepEqual(edivide(complex('2i'), complex('4i')), 0.5);
+approx.deepEqual(edivide(4, complex('1+2i')), complex('0.8 - 1.6i'));
 
 // unit
 assert.equal(edivide(math.unit('5 m'), 10).toString(), '500 mm');

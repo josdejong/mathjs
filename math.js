@@ -958,6 +958,26 @@ math.type.Complex = Complex;
     }
 
     /**
+     * Create a complex number from a provided real and imaginary number.
+     * When the imaginary part is zero, a real number is returned instead of
+     * a complex number. For example:
+     *     Complex.create(2, 3);        // returns a Complex(2, 3)
+     *     Complex.create(2, 0);        // returns a Number 2
+     *
+     * @param {Number} re
+     * @param {Number} im
+     * @return {Complex | Number} value
+     */
+    Complex.create = function (re, im) {
+        if (im == 0) {
+            return re;
+        }
+        else {
+            return new Complex(re, im);
+        }
+    };
+
+    /**
      * Parse a complex number from a string. For example Complex.parse("2 + 3i")
      * will return a Complex value where re = 2, im = 3.
      * Returns null if provided string does not contain a valid complex number.
@@ -4191,7 +4211,7 @@ math.add = function add(x, y) {
         }
         else if (y instanceof Complex) {
             // number + complex
-            return new Complex(
+            return Complex.create(
                 x + y.re,
                     y.im
             )
@@ -4200,14 +4220,14 @@ math.add = function add(x, y) {
     else if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex + number
-            return new Complex(
+            return Complex.create(
                 x.re + y,
                 x.im
             )
         }
         else if (y instanceof Complex) {
             // complex + complex
-            return new Complex(
+            return Complex.create(
                 x.re + y.re,
                 x.im + y.im
             );
@@ -4271,7 +4291,7 @@ math.ceil = function ceil(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex (
+        return Complex.create (
             Math.ceil(x.re),
             Math.ceil(x.im)
         );
@@ -4407,14 +4427,14 @@ math.divide = function divide(x, y) {
 function _divideComplex (x, y) {
     var den = y.re * y.re + y.im * y.im;
     if (den != 0) {
-        return new Complex(
+        return Complex.create(
             (x.re * y.re + x.im * y.im) / den,
             (x.im * y.re - x.re * y.im) / den
         );
     }
     else {
         // both y.re and y.im are zero
-        return new Complex(
+        return Complex.create(
             (x.re != 0) ? (x.re / 0) : 0,
             (x.im != 0) ? (x.im / 0) : 0
         );
@@ -4554,7 +4574,7 @@ math.exp = function exp (x) {
     }
     if (x instanceof Complex) {
         var r = Math.exp(x.re);
-        return new Complex(
+        return Complex.create(
             r * Math.cos(x.im),
             r * Math.sin(x.im)
         );
@@ -4592,7 +4612,7 @@ math.fix = function fix(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex(
+        return Complex.create(
             (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
             (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
         );
@@ -4630,7 +4650,7 @@ math.floor = function floor(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex (
+        return Complex.create (
             Math.floor(x.re),
             Math.floor(x.im)
         );
@@ -4914,7 +4934,7 @@ math.log = function log(x, base) {
         }
 
         if (x instanceof Complex) {
-            return new Complex (
+            return Complex.create (
                 Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
                 Math.atan2(x.im, x.re)
             );
@@ -4966,7 +4986,7 @@ math.log10 = function log10(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex (
+        return Complex.create (
             Math.log(Math.sqrt(x.re * x.re + x.im * x.im)) / Math.LN10,
             Math.atan2(x.im, x.re) / Math.LN10
         );
@@ -5365,7 +5385,7 @@ math.round = function round(x, n) {
         }
 
         if (x instanceof Complex) {
-            return new Complex (
+            return Complex.create (
                 Math.round(x.re),
                 Math.round(x.im)
             );
@@ -5399,7 +5419,7 @@ math.round = function round(x, n) {
         }
 
         if (x instanceof Complex) {
-            return new Complex (
+            return Complex.create (
                 roundNumber(x.re, n),
                 roundNumber(x.im, n)
             );
@@ -5468,7 +5488,7 @@ math.sign = function sign(x) {
 
     if (x instanceof Complex) {
         var abs = Math.sqrt(x.re * x.re + x.im * x.im);
-        return new Complex(x.re / abs, x.im / abs);
+        return Complex.create(x.re / abs, x.im / abs);
     }
 
     if (x instanceof Array || x instanceof Matrix) {
@@ -5627,14 +5647,14 @@ math.sqrt = function sqrt (x) {
 
     if (x instanceof Complex) {
         var r = Math.sqrt(x.re * x.re + x.im * x.im);
-        if (x.im >= 0.0) {
-            return new Complex(
+        if (x.im >= 0) {
+            return Complex.create(
                 0.5 * Math.sqrt(2.0 * (r + x.re)),
                 0.5 * Math.sqrt(2.0 * (r - x.re))
             );
         }
         else {
-            return new Complex(
+            return Complex.create(
                 0.5 * Math.sqrt(2.0 * (r + x.re)),
                 -0.5 * Math.sqrt(2.0 * (r - x.re))
             );
@@ -5713,7 +5733,7 @@ math.subtract = function subtract(x, y) {
         }
         else if (y instanceof Complex) {
             // number - complex
-            return new Complex (
+            return Complex.create (
                 x - y.re,
                   - y.im
             );
@@ -5722,14 +5742,14 @@ math.subtract = function subtract(x, y) {
     else if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex - number
-            return new Complex (
+            return Complex.create (
                 x.re - y,
                 x.im
             )
         }
         else if (y instanceof Complex) {
             // complex - complex
-            return new Complex (
+            return Complex.create (
                 x.re - y.re,
                 x.im - y.im
             )
@@ -5790,7 +5810,7 @@ math.unaryminus = function unaryminus(x) {
         return -x;
     }
     else if (x instanceof Complex) {
-        return new Complex(
+        return Complex.create(
             -x.re,
             -x.im
         );
@@ -5964,7 +5984,7 @@ math.conj = function conj(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex(x.re, -x.im);
+        return Complex.create(x.re, -x.im);
     }
 
     if (x instanceof Array || x instanceof Matrix) {
@@ -7598,22 +7618,39 @@ math.acos = function acos(x) {
 
     if (x instanceof Complex) {
         // acos(z) = 0.5*pi + i*log(iz + sqrt(1-z^2))
-        var temp1 = new Complex(
+        var temp1 = Complex.create(
             x.im * x.im - x.re * x.re + 1.0,
             -2.0 * x.re * x.im
         );
         var temp2 = math.sqrt(temp1);
-        var temp3 = new Complex(
-            temp2.re - x.im,
-            temp2.im + x.re
-        );
+        var temp3;
+        if (temp2 instanceof Complex) {
+            temp3 = Complex.create(
+                temp2.re - x.im,
+                temp2.im + x.re
+            )
+        }
+        else {
+            temp3 = Complex.create(
+                temp2 - x.im,
+                x.re
+            )
+        }
         var temp4 = math.log(temp3);
 
         // 0.5*pi = 1.5707963267948966192313216916398
-        return new Complex(
-            1.57079632679489661923 - temp4.im,
-            temp4.re
-        );
+        if (temp4 instanceof Complex) {
+            return Complex.create(
+                1.57079632679489661923 - temp4.im,
+                temp4.re
+            );
+        }
+        else {
+            return new Complex(
+                1.57079632679489661923,
+                temp4
+            );
+        }
     }
 
     if (x instanceof Array || x instanceof Matrix) {
@@ -7658,20 +7695,34 @@ math.asin = function asin(x) {
         // asin(z) = -i*log(iz + sqrt(1-z^2))
         var re = x.re;
         var im = x.im;
-        var temp1 = new Complex(
+        var temp1 = Complex.create(
             im * im - re * re + 1.0,
             -2.0 * re * im
         );
 
         var temp2 = math.sqrt(temp1);
-        var temp3 = new Complex(
-            temp2.re - im,
-            temp2.im + re
-        );
+        var temp3;
+        if (temp2 instanceof Complex) {
+            temp3 = Complex.create(
+                temp2.re - im,
+                temp2.im + re
+            );
+        }
+        else {
+            temp3 = Complex.create(
+                temp2 - im,
+                re
+            );
+        }
 
         var temp4 = math.log(temp3);
 
-        return new Complex(temp4.im, -temp4.re);
+        if (temp4 instanceof Complex) {
+            return Complex.create(temp4.im, -temp4.re);
+        }
+        else {
+            return Complex.create(0, -temp4);
+        }
     }
 
     if (x instanceof Array || x instanceof Matrix) {
@@ -7713,16 +7764,24 @@ math.atan = function atan(x) {
         var im = x.im;
         var den = re * re + (1.0 - im) * (1.0 - im);
 
-        var temp1 = new Complex(
+        var temp1 = Complex.create(
             (1.0 - im * im - re * re) / den,
             (-2.0 * re) / den
         );
         var temp2 = math.log(temp1);
 
-        return new Complex(
-            -0.5 * temp2.im,
-            0.5 * temp2.re
-        );
+        if (temp2 instanceof Complex) {
+            return Complex.create(
+                -0.5 * temp2.im,
+                0.5 * temp2.re
+            );
+        }
+        else {
+            return Complex.create(
+                0,
+                0.5 * temp2
+            );
+        }
     }
 
     if (x instanceof Array || x instanceof Matrix) {
@@ -7812,7 +7871,7 @@ math.cos = function cos(x) {
 
     if (x instanceof Complex) {
         // cos(z) = (exp(iz) + exp(-iz)) / 2
-        return new Complex(
+        return Complex.create(
             0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp(x.im)),
             0.5 * Math.sin(x.re) * (Math.exp(-x.im) - Math.exp(x.im))
         );
@@ -7860,7 +7919,7 @@ math.cot = function cot(x) {
         var den = Math.exp(-4.0 * x.im) -
             2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) + 1.0;
 
-        return new Complex(
+        return Complex.create(
             2.0 * Math.exp(-2.0 * x.im) * Math.sin(2.0 * x.re) / den,
             (Math.exp(-4.0 * x.im) - 1.0) / den
         );
@@ -7909,7 +7968,7 @@ math.csc = function csc(x) {
         var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) -
             0.5 * Math.cos(2.0 * x.re);
 
-        return new Complex (
+        return Complex.create (
             0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp(x.im)) / den,
             0.5 * Math.cos(x.re) * (Math.exp(-x.im) - Math.exp(x.im)) / den
         );
@@ -7957,7 +8016,7 @@ math.sec = function sec(x) {
         // sec(z) = 1/cos(z) = 2 / (exp(iz) + exp(-iz))
         var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) +
             0.5 * Math.cos(2.0 * x.re);
-        return new Complex(
+        return Complex.create(
             0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp( x.im)) / den,
             0.5 * Math.sin(x.re) * (Math.exp( x.im) - Math.exp(-x.im)) / den
         );
@@ -8004,7 +8063,7 @@ math.sin = function sin(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex(
+        return Complex.create(
             0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp( x.im)),
             0.5 * Math.cos(x.re) * (Math.exp( x.im) - Math.exp(-x.im))
         );
@@ -8055,7 +8114,7 @@ math.tan = function tan(x) {
             2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) +
             1.0;
 
-        return new Complex(
+        return Complex.create(
              2.0 * Math.exp(-2.0 * x.im) * Math.sin(2.0 * x.re) / den,
             (1.0 - Math.exp(-4.0 * x.im)) / den
         );

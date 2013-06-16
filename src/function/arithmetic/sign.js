@@ -30,7 +30,7 @@ math.sign = function sign(x) {
 
     if (x instanceof Complex) {
         var abs = Math.sqrt(x.re * x.re + x.im * x.im);
-        return new Complex(x.re / abs, x.im / abs);
+        return Complex.create(x.re / abs, x.im / abs);
     }
 
     if (x instanceof Array || x instanceof Matrix) {

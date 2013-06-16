@@ -21,7 +21,7 @@ math.cos = function cos(x) {
 
     if (x instanceof Complex) {
         // cos(z) = (exp(iz) + exp(-iz)) / 2
-        return new Complex(
+        return Complex.create(
             0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp(x.im)),
             0.5 * Math.sin(x.re) * (Math.exp(-x.im) - Math.exp(x.im))
         );

@@ -25,16 +25,24 @@ math.atan = function atan(x) {
         var im = x.im;
         var den = re * re + (1.0 - im) * (1.0 - im);
 
-        var temp1 = new Complex(
+        var temp1 = Complex.create(
             (1.0 - im * im - re * re) / den,
             (-2.0 * re) / den
         );
         var temp2 = math.log(temp1);
 
-        return new Complex(
-            -0.5 * temp2.im,
-            0.5 * temp2.re
-        );
+        if (temp2 instanceof Complex) {
+            return Complex.create(
+                -0.5 * temp2.im,
+                0.5 * temp2.re
+            );
+        }
+        else {
+            return Complex.create(
+                0,
+                0.5 * temp2
+            );
+        }
     }
 
     if (x instanceof Array || x instanceof Matrix) {

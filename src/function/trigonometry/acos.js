@@ -26,22 +26,39 @@ math.acos = function acos(x) {
 
     if (x instanceof Complex) {
         // acos(z) = 0.5*pi + i*log(iz + sqrt(1-z^2))
-        var temp1 = new Complex(
+        var temp1 = Complex.create(
             x.im * x.im - x.re * x.re + 1.0,
             -2.0 * x.re * x.im
         );
         var temp2 = math.sqrt(temp1);
-        var temp3 = new Complex(
-            temp2.re - x.im,
-            temp2.im + x.re
-        );
+        var temp3;
+        if (temp2 instanceof Complex) {
+            temp3 = Complex.create(
+                temp2.re - x.im,
+                temp2.im + x.re
+            )
+        }
+        else {
+            temp3 = Complex.create(
+                temp2 - x.im,
+                x.re
+            )
+        }
         var temp4 = math.log(temp3);
 
         // 0.5*pi = 1.5707963267948966192313216916398
-        return new Complex(
-            1.57079632679489661923 - temp4.im,
-            temp4.re
-        );
+        if (temp4 instanceof Complex) {
+            return Complex.create(
+                1.57079632679489661923 - temp4.im,
+                temp4.re
+            );
+        }
+        else {
+            return new Complex(
+                1.57079632679489661923,
+                temp4
+            );
+        }
     }
 
     if (x instanceof Array || x instanceof Matrix) {

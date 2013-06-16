@@ -22,7 +22,7 @@ math.subtract = function subtract(x, y) {
         }
         else if (y instanceof Complex) {
             // number - complex
-            return new Complex (
+            return Complex.create (
                 x - y.re,
                   - y.im
             );
@@ -31,14 +31,14 @@ math.subtract = function subtract(x, y) {
     else if (x instanceof Complex) {
         if (isNumber(y)) {
             // complex - number
-            return new Complex (
+            return Complex.create (
                 x.re - y,
                 x.im
             )
         }
         else if (y instanceof Complex) {
             // complex - complex
-            return new Complex (
+            return Complex.create (
                 x.re - y.re,
                 x.im - y.im
             )

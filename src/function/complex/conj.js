@@ -19,7 +19,7 @@ math.conj = function conj(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex(x.re, -x.im);
+        return Complex.create(x.re, -x.im);
     }
 
     if (x instanceof Array || x instanceof Matrix) {

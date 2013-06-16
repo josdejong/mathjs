@@ -25,7 +25,7 @@ math.log = function log(x, base) {
         }
 
         if (x instanceof Complex) {
-            return new Complex (
+            return Complex.create (
                 Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
                 Math.atan2(x.im, x.re)
             );

@@ -18,7 +18,7 @@ math.unaryminus = function unaryminus(x) {
         return -x;
     }
     else if (x instanceof Complex) {
-        return new Complex(
+        return Complex.create(
             -x.re,
             -x.im
         );

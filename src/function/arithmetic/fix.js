@@ -18,7 +18,7 @@ math.fix = function fix(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex(
+        return Complex.create(
             (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
             (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
         );

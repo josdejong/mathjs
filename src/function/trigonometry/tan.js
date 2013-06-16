@@ -24,7 +24,7 @@ math.tan = function tan(x) {
             2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) +
             1.0;
 
-        return new Complex(
+        return Complex.create(
              2.0 * Math.exp(-2.0 * x.im) * Math.sin(2.0 * x.re) / den,
             (1.0 - Math.exp(-4.0 * x.im)) / den
         );

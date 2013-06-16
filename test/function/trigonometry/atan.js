@@ -24,7 +24,7 @@ approx.deepEqual(atan(complex('2-3i')), complex(re, -im));
 approx.deepEqual(atan(complex('-2+3i')), complex(-re, im));
 approx.deepEqual(atan(complex('-2-3i')), complex(-re, -im));
 approx.deepEqual(atan(complex('i')), complex(NaN, NaN)); // TODO: should return NaN + Infi instead
-approx.deepEqual(atan(complex('1')), complex(0.785398163397448, 0));
+approx.deepEqual(atan(complex('1')), 0.785398163397448);
 approx.deepEqual(atan(complex('1+i')), complex(1.017221967897851, 0.402359478108525));
 
 // unit

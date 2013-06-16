@@ -24,14 +24,14 @@ math.sqrt = function sqrt (x) {
 
     if (x instanceof Complex) {
         var r = Math.sqrt(x.re * x.re + x.im * x.im);
-        if (x.im >= 0.0) {
-            return new Complex(
+        if (x.im >= 0) {
+            return Complex.create(
                 0.5 * Math.sqrt(2.0 * (r + x.re)),
                 0.5 * Math.sqrt(2.0 * (r - x.re))
             );
         }
         else {
-            return new Complex(
+            return Complex.create(
                 0.5 * Math.sqrt(2.0 * (r + x.re)),
                 -0.5 * Math.sqrt(2.0 * (r - x.re))
             );

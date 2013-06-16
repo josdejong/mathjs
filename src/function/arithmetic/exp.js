@@ -18,7 +18,7 @@ math.exp = function exp (x) {
     }
     if (x instanceof Complex) {
         var r = Math.exp(x.re);
-        return new Complex(
+        return Complex.create(
             r * Math.cos(x.im),
             r * Math.sin(x.im)
         );

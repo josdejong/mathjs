@@ -21,7 +21,7 @@ math.sec = function sec(x) {
         // sec(z) = 1/cos(z) = 2 / (exp(iz) + exp(-iz))
         var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) +
             0.5 * Math.cos(2.0 * x.re);
-        return new Complex(
+        return Complex.create(
             0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp( x.im)) / den,
             0.5 * Math.sin(x.re) * (Math.exp( x.im) - Math.exp(-x.im)) / den
         );

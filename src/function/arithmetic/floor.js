@@ -18,7 +18,7 @@ math.floor = function floor(x) {
     }
 
     if (x instanceof Complex) {
-        return new Complex (
+        return Complex.create (
             Math.floor(x.re),
             Math.floor(x.im)
         );

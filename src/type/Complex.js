@@ -165,6 +165,26 @@ math.type.Complex = Complex;
     }
 
     /**
+     * Create a complex number from a provided real and imaginary number.
+     * When the imaginary part is zero, a real number is returned instead of
+     * a complex number. For example:
+     *     Complex.create(2, 3);        // returns a Complex(2, 3)
+     *     Complex.create(2, 0);        // returns a Number 2
+     *
+     * @param {Number} re
+     * @param {Number} im
+     * @return {Complex | Number} value
+     */
+    Complex.create = function (re, im) {
+        if (im == 0) {
+            return re;
+        }
+        else {
+            return new Complex(re, im);
+        }
+    };
+
+    /**
      * Parse a complex number from a string. For example Complex.parse("2 + 3i")
      * will return a Complex value where re = 2, im = 3.
      * Returns null if provided string does not contain a valid complex number.

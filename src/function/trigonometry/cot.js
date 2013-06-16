@@ -21,7 +21,7 @@ math.cot = function cot(x) {
         var den = Math.exp(-4.0 * x.im) -
             2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) + 1.0;
 
-        return new Complex(
+        return Complex.create(
             2.0 * Math.exp(-2.0 * x.im) * Math.sin(2.0 * x.re) / den,
             (Math.exp(-4.0 * x.im) - 1.0) / den
         );

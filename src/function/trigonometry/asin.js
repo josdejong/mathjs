@@ -28,20 +28,34 @@ math.asin = function asin(x) {
         // asin(z) = -i*log(iz + sqrt(1-z^2))
         var re = x.re;
         var im = x.im;
-        var temp1 = new Complex(
+        var temp1 = Complex.create(
             im * im - re * re + 1.0,
             -2.0 * re * im
         );
 
         var temp2 = math.sqrt(temp1);
-        var temp3 = new Complex(
-            temp2.re - im,
-            temp2.im + re
-        );
+        var temp3;
+        if (temp2 instanceof Complex) {
+            temp3 = Complex.create(
+                temp2.re - im,
+                temp2.im + re
+            );
+        }
+        else {
+            temp3 = Complex.create(
+                temp2 - im,
+                re
+            );
+        }
 
         var temp4 = math.log(temp3);
 
-        return new Complex(temp4.im, -temp4.re);
+        if (temp4 instanceof Complex) {
+            return Complex.create(temp4.im, -temp4.re);
+        }
+        else {
+            return Complex.create(0, -temp4);
+        }
     }
 
     if (x instanceof Array || x instanceof Matrix) {
