@@ -60,7 +60,7 @@ var util = (function () {
         else if (value === -Infinity) {
             return '-Infinity';
         }
-        else if (value === NaN) {
+        else if (isNaN(value)) {
             return 'NaN';
         }
 
