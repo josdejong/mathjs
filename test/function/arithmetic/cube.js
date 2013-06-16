@@ -19,7 +19,7 @@ assert.throws(function () {cube(1, 2)}, SyntaxError, 'Wrong number of arguments 
 // complex
 assert.deepEqual(cube(math.complex('2i')), math.complex('-8i'));
 assert.deepEqual(cube(math.complex('2+3i')), math.complex('-46+9i'));
-assert.deepEqual(cube(math.complex('2')), math.complex('8'));
+assert.deepEqual(cube(math.complex('2')), 8);
 
 // unit
 assert.throws(function () {cube(unit('5cm'))});

@@ -42,6 +42,17 @@ approx.deepEqual(multiply(complex(2, 3), 0), complex(0, 0));
 approx.deepEqual(multiply(complex(0, 3), complex(0, -4)), complex(12, 0));
 approx.deepEqual(multiply(multiply(3, i), multiply(-4, i)), complex(12, 0));
 approx.deepEqual(multiply(math.i, Infinity), complex(0, Infinity));
+approx.deepEqual(multiply(Infinity, math.i), complex(0, Infinity));
+
+approx.deepEqual(multiply(complex(2,0), complex(0,2)), complex(0, 4));
+approx.deepEqual(multiply(complex(0,2), complex(0,2)), -4);
+approx.deepEqual(multiply(complex(2,2), complex(0,2)), complex(-4, 4));
+approx.deepEqual(multiply(complex(2,0), complex(2,2)), complex(4, 4));
+approx.deepEqual(multiply(complex(0,2), complex(2,2)), complex(-4, 4));
+approx.deepEqual(multiply(complex(2,2), complex(2,2)), complex(0, 8));
+approx.deepEqual(multiply(complex(2,0), complex(2,0)), 4);
+approx.deepEqual(multiply(complex(0,2), complex(2,0)), complex(0, 4));
+approx.deepEqual(multiply(complex(2,2), complex(2,0)), complex(4, 4));
 
 approx.deepEqual(multiply(complex(2, 3), complex(4, 5)), complex(-7, 22));
 approx.deepEqual(multiply(complex(2, 3), complex(4, -5)), complex(23, 2));

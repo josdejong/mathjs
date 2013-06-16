@@ -17,9 +17,9 @@ assert.throws(function () {square()}, SyntaxError, 'Wrong number of arguments in
 assert.throws(function () {square(1, 2)}, SyntaxError, 'Wrong number of arguments in function square (2 provided, 1 expected)');
 
 // complex
-assert.deepEqual(square(math.complex('2i')), math.complex('-4'));
+assert.deepEqual(square(math.complex('2i')), -4);
 assert.deepEqual(square(math.complex('2+3i')), math.complex('-5+12i'));
-assert.deepEqual(square(math.complex('2')), math.complex('4'));
+assert.deepEqual(square(math.complex('2')), 4);
 
 // unit
 assert.throws(function () {square(unit('5cm'))});
