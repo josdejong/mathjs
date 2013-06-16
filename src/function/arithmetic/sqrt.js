@@ -5,8 +5,8 @@
  *
  * For matrices, the function is evaluated element wise.
  *
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
+ * @param {Number | Complex | Array | Matrix | Unit} x
+ * @return {Number | Complex | Array | Matrix| Unit} res
  */
 math.sqrt = function sqrt (x) {
     if (arguments.length != 1) {
@@ -36,6 +36,15 @@ math.sqrt = function sqrt (x) {
                 -0.5 * Math.sqrt(2.0 * (r - x.re))
             );
         }
+    }
+    if(x instanceof Unit){
+            var value = Math.sqrt(x.value);
+            var dimensions = math.clone(x.unit.base.dimensions);
+            for (var dim in dimensions){
+                    dimensions[dim] /=  2;
+            }
+            return new Unit(value,dimensions);
+
     }
 
     if (x instanceof Array || x instanceof Matrix) {
