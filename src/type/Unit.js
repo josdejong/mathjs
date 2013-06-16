@@ -22,11 +22,11 @@ function Unit(value, unit) {
     if (value != null && !isNumber(value)) {
         throw new TypeError('First parameter in Unit constructor must be a number');
     }
-    if (unit != null && !isString(unit)) {
+    if (unit != null && !isString(unit) && !isObject(unit)) {
         throw new TypeError('Second parameter in Unit constructor must be a string');
     }
 
-    if (unit != null) {
+    if (isString(unit)) {
         // find the unit and prefix from the string
         var res = _findUnit(unit);
         if (!res) {
@@ -35,16 +35,22 @@ function Unit(value, unit) {
         this.unit = res.unit;
         this.prefix = res.prefix;
     }
-    else {
+    else if(unit==null) {
         this.unit = Unit.UNIT_NONE;
         this.prefix = Unit.PREFIX_NONE;  // link to a list with supported prefixes
     }
+    else if(isObject(unit)){
+        this.value=value;
+        var baseunit = Unit._findBaseQuantity(unit);
+        this.unit = Unit._findUnitFromBase(baseunit);
+        this.prefix = Unit.PREFIX_NONE;
+    }
 
-    if (value != null) {
+    if (value != null && !isObject(unit)) {
         this.value = this._normalize(value);
         this.fixPrefix = false;  // is set true by the methods Unit.in and math.in
     }
-    else {
+    else if(value===null && !isObject(unit)){
         this.value = null;
         this.fixPrefix = true;
     }
@@ -323,7 +329,7 @@ Unit._findBaseQuantity= function (dimensions){
 
     }
 
-    throw new Error('Could not find a matching base quantity for the given dimensions: ' + JSON.stringify(dimensions));
+    throw new TypeError('Could not find a matching base quantity for the given dimensions: ' + JSON.stringify(dimensions));
 };
 Unit._findUnitFromBase = function(base){
     if(base==BASE_QUANTITY.NONE) return Unit.UNIT_NONE;
