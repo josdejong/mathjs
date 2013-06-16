@@ -44,6 +44,9 @@ math.multiply = function multiply(x, y) {
             res.value *= y;
             return res;
         }
+        else if(y instanceof Unit){
+            return _multiplyUnit(x,y);
+        }
     }
     else if (x instanceof Array) {
         if (y instanceof Array) {
@@ -128,4 +131,15 @@ function _multiplyComplex (x, y) {
         x.re * y.re - x.im * y.im,
         x.re * y.im + x.im * y.re
     );
+}
+function _multiplyUnit(x,y){
+    var value = x.value * y.value;
+    var dimensions = math.clone(x.unit.base.dimensions);
+    for (var dim in y.unit.base.dimensions){
+        if(dimensions[dim]===undefined)
+            dimensions[dim]= y.unit.base.dimensions[dim];
+        else
+            dimensions[dim] +=  y.unit.base.dimensions[dim];
+    }
+    return new Unit(value,dimensions);
 }
