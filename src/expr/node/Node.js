@@ -25,8 +25,8 @@ Node.prototype.eval = function () {
  *     });
  *
  * @param {Object} filter       Available parameters:
- *                              {Function} type
- *                              {Object<String, String>} properties
+ *                                  {Function} type
+ *                                  {Object<String, String>} properties
  * @return {Node[]} nodes       An array with nodes matching given filter criteria
  */
 Node.prototype.find = function (filter) {

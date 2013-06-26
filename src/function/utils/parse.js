@@ -494,22 +494,10 @@
     function parse_assignment (scope) {
         var name, params, paramScopes, expr;
 
-        /* TODO: cleanup? or use? see comments further down
-         var linkExisted = false;
-         if (token_type == TOKENTYPE.SYMBOL) {
-         linkExisted = scope.has(token);
-         }
-         */
-
         var node = parse_range(scope);
 
         if (token == '=') {
             if (node instanceof SymbolNode) {
-                // TODO: remove link when it was undefined before we parsed this expression?
-                // we parsed the assignment as if it where an expression instead,
-                // therefore, a link was created to the symbol. This link must
-                // be cleaned up again, and only if it wasn't existing before
-
                 // parse the expression, with the correct function scope
                 getToken();
                 name = node.name;
@@ -518,11 +506,6 @@
                 return new AssignmentNode(name, expr, scope);
             }
             else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
-                // TODO: remove link when it was undefined before we parsed this expression?
-                // we parsed the assignment as if it where an expression instead,
-                // therefore, a link was created to the symbol. This link must
-                // be cleaned up again, and only if it wasn't existing before
-
                 // parse the expression, with the correct function scope
                 getToken();
                 name = node.object.name;
@@ -844,64 +827,12 @@
     }
 
     /**
-     * parse plot
-     * @param {math.expr.Scope} scope
-     * @return {Node} node
-     * @private
-     */
-    function parse_plot (scope) {
-        /* TODO: implement plot
-         if (token_type == TOKENTYPE.SYMBOL &&
-         token == 'plot') {
-         getToken();
-
-         // parse the parentheses and parameters of the plot
-         // the parameters are something like: plot(sin(x), cos(x), x)
-         var functions = [];
-         if (token == '(') {
-         var plotScope = scope.createSubScope();
-
-         getToken();
-         functions.push(parse_assignment(plotScope));
-
-         // parse a list with parameters
-         while (token == ',') {
-         getToken();
-         functions.push(parse_assigment(plotScope));
-         }
-
-         if (token != ')') {
-         throw createSyntaxError('Parenthesis ) missing');
-         }
-         getToken();
-         }
-
-         // check what the variable of the functions is.
-         var variable = undefined;
-         var lastFunction = functions[functions.length - 1];
-         if (lastFunction) {
-         // if the last function is a variable, remove it from the functions list
-         // and use its variable func
-         var lastIsSymbol = (lastFunction instanceof Arguments);
-         if (lastIsSymbol) {
-         functions.pop();
-         variable = lastFunction.fn;
-         }
-         }
-         return new plot(functions, variable, plotScope);
-         }
-         */
-
-        return parse_node_handler(scope);
-    }
-
-    /**
      * Parse a custom node handler. A node handler can be used to process
      * nodes in a custom way, for example for handling a plot.
      *
      * A handler must be defined in the namespace math.expr.node.handlers,
      * and must extend math.expr.node.Node, and the handler must contain
-     * functions eval() and toString().
+     * functions eval(), find(filter), and toString().
      *
      * For example:
      *

@@ -9,6 +9,7 @@ https://github.com/josdejong/mathjs
   Number `-4` instead of a Complex `-4 + 0i`).
 - Implemented custom node handlers in the parser. Can be used for example to
   implement a node handler for a plot.
+- Fixed a bug in determining node dependencies in function assignments.
 
 
 ## 2013-06-14, version 0.9.1

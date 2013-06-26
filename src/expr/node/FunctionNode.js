@@ -13,6 +13,7 @@
 function FunctionNode(name, variables, expr, functionScope, scope) {
     this.name = name;
     this.variables = variables;
+    this.expr = expr;
     this.scope = scope;
 
     // create function
