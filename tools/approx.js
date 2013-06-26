@@ -1,5 +1,4 @@
-var assert = require('assert'),
-    math = require('../math');
+var assert = require('assert');
 
 var epsilon = 0.0001;
 

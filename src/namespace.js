@@ -7,7 +7,9 @@
 var math = {
     type: {},
     expr: {
-        node: {}
+        node: {
+            handlers: {}
+        }
     },
     options: {
         precision: 5  // number of digits in formatted output

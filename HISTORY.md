@@ -7,6 +7,8 @@ https://github.com/josdejong/mathjs
 - For complex calculations, all functions now automatically replace results
   having an imaginary part of zero with a Number. (`2i * 2i` now returns a
   Number `-4` instead of a Complex `-4 + 0i`).
+- Implemented custom node handlers in the parser. Can be used for example to
+  implement a node handler for a plot.
 
 
 ## 2013-06-14, version 0.9.1

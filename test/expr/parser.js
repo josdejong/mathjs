@@ -306,4 +306,29 @@ parser.remove('qq');
 assert.throws(function () { n.eval(); });
 
 
+// test a custom node handler
+function CustomNode (params, paramScopes) {
+    this.params = params;
+    this.paramScopes = paramScopes;
+}
+CustomNode.prototype = new math.expr.node.Node();
+CustomNode.prototype.toString = function () {
+    return 'CustomNode';
+};
+CustomNode.prototype.eval = function () {
+    var strParams = [];
+    this.params.forEach(function (param) {
+        strParams.push(param.toString());
+    });
+    return 'CustomNode(' + strParams.join(', ') + ')';
+};
+
+math.expr.node.handlers['custom'] = CustomNode;
+
+var node = math.parse('custom(x, (2+x), sin(x))');
+assert.equal(node.eval(), 'CustomNode(x, 2 + x, sin(x))');
+
+
+
+
 // TODO: extensively test the Parser

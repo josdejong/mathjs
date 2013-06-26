@@ -108,6 +108,8 @@
         '>=': true
     };
 
+    var handlers = math.expr.node.handlers;
+
     var expression = '';  // current expression
     var index = 0;        // current index in expr
     var c = '';           // current token character in expr
@@ -827,7 +829,7 @@
     function parse_transpose (scope)  {
         var node, name, fn, params;
 
-        node = parse_plot(scope);
+        node = parse_node_handler(scope);
 
         while (token == '\'') {
             name = token;
@@ -889,6 +891,77 @@
          return new plot(functions, variable, plotScope);
          }
          */
+
+        return parse_node_handler(scope);
+    }
+
+    /**
+     * Parse a custom node handler. A node handler can be used to process
+     * nodes in a custom way, for example for handling a plot.
+     *
+     * A handler must be defined in the namespace math.expr.node.handlers,
+     * and must extend math.expr.node.Node, and the handler must contain
+     * functions eval() and toString().
+     *
+     * For example:
+     *
+     *     math.expr.node.handlers['plot'] = PlotHandler;
+     *
+     * The constructor of the handler is called as:
+     *
+     *     node = new PlotHandler(params, paramScopes);
+     *
+     * The handler will be invoked when evaluating an expression like:
+     *
+     *     node = math.parse('plot(sin(x), x)');
+     *
+     * @param {math.expr.Scope} scope
+     * @return {Node} node
+     * @private
+     */
+    function parse_node_handler (scope) {
+        var params,
+            paramScopes,
+            paramScope,
+            handler;
+
+        if (token_type == TOKENTYPE.SYMBOL && handlers[token]) {
+            handler = handlers[token];
+
+            getToken();
+
+            // parse parameters
+            if (token == '(') {
+                params = [];
+                paramScopes = [];
+
+                getToken();
+
+                if (token != ')') {
+                    paramScope = scope.createSubScope();
+                    paramScopes.push(paramScope);
+                    params.push(parse_range(paramScope));
+
+                    // parse a list with parameters
+                    while (token == ',') {
+                        getToken();
+
+                        paramScope = scope.createSubScope();
+                        paramScopes.push(paramScope);
+                        params.push(parse_range(paramScope));
+                    }
+                }
+
+                if (token != ')') {
+                    throw createSyntaxError('Parenthesis ) expected');
+                }
+                getToken();
+            }
+
+            // create a new node handler
+            //noinspection JSValidateTypes
+            return new handler(params, paramScopes);
+        }
 
         return parse_symbol(scope);
     }
