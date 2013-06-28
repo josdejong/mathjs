@@ -9,6 +9,7 @@ math.LOG10E     = Math.LOG10E;
 math.PI         = Math.PI;
 math.SQRT1_2    = Math.SQRT1_2;
 math.SQRT2      = Math.SQRT2;
+math.TAU        = Math.PI * 2;
 
 math.I          = new Complex(0, 1);
 
@@ -19,3 +20,4 @@ math.NaN        = NaN;
 math.pi        = math.PI;
 math.e         = math.E;
 math.i         = math.I;
+math.tau       = math.PI * 2;
