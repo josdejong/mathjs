@@ -24,7 +24,7 @@ math.size = function size (x) {
     }
 
     if (x instanceof Matrix) {
-        return x.size();
+        return new Matrix(x.size());
     }
 
     if (x.valueOf() !== x) {

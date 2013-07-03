@@ -264,7 +264,7 @@ Matrix.prototype.set = function (index, submatrix) {
     if (isScalar) {
         // set a scalar
         // check whether submatrix is no matrix/array
-        if (math.size(submatrix).length != 0) {
+        if (math.size(submatrix).valueOf().length != 0) {
             throw new TypeError('Scalar value expected');
         }
 

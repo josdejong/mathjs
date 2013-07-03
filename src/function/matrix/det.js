@@ -12,7 +12,7 @@ math.det = function det (x) {
         throw newArgumentsError('det', arguments.length, 1);
     }
 
-    var size = math.size(x);
+    var size = math.size(x).valueOf();
     switch (size.length) {
         case 0:
             // scalar

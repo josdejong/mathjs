@@ -15,7 +15,7 @@ math.squeeze = function squeeze (x) {
         return _squeezeArray(math.clone(x));
     }
     else if (x instanceof Matrix) {
-        return _squeezeArray(x.toArray());
+        return math.matrix(_squeezeArray(x.toArray()));
     }
     else if (x.valueOf() instanceof Array) {
         return _squeezeArray(math.clone(x.valueOf()));

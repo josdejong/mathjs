@@ -1,12 +1,16 @@
 // test squeeze
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../math.js'),
+    squeeze = math.squeeze,
+    size = math.size,
+    matrix = math.matrix;
 
 m = math.ones(1,3,2);
-assert.deepEqual(math.size(m).valueOf(), [1,3,2]);
-assert.deepEqual(math.size(math.squeeze(m)).valueOf(), [3,2]);
+assert.deepEqual(size(m), matrix([1,3,2]));
+assert.deepEqual(size(m.valueOf()), [1,3,2]);
+assert.deepEqual(size(squeeze(m)), matrix([3,2]));
 m = math.ones(3,1,1);
-assert.deepEqual(math.size(m).valueOf(), [3,1,1]);
-assert.deepEqual(math.size(math.squeeze(m)).valueOf(), [3]);
-assert.deepEqual(math.squeeze(2.3), 2.3);
-assert.deepEqual(math.size(math.squeeze(math.range(1,5))), [5]);
+assert.deepEqual(size(m), matrix([3,1,1]));
+assert.deepEqual(size(squeeze(m)), matrix([3]));
+assert.deepEqual(squeeze(2.3), 2.3);
+assert.deepEqual(size(squeeze(math.range(1,5))), [5]);

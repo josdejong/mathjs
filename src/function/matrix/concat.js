@@ -43,8 +43,8 @@ math.concat = function concat (args) {
         }
         else if (arg instanceof Array || arg instanceof Matrix) {
             // this is a matrix or array
-            var matrix = math.clone(arg.valueOf());
-            var size = math.size(arg);
+            var matrix = math.clone(arg).valueOf();
+            var size = math.size(arg).valueOf();
             matrices[i] = matrix;
             prevDim = dim;
             dim = size.length;

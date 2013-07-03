@@ -11,7 +11,7 @@ math.transpose = function transpose (x) {
         throw newArgumentsError('transpose', arguments.length, 1);
     }
 
-    var size = math.size(x);
+    var size = math.size(x).valueOf();
     switch (size.length) {
         case 0:
             // scalar

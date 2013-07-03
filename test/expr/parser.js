@@ -183,7 +183,7 @@ assert.deepEqual(parser.eval('a(1:3,1:2)').valueOf(), [[100,2],[3,10],[0,12]]);
 
 // test get/set matrix for 3d matrix
 assert.deepEqual(parser.eval('f=[1,2;3,4]'), matrix([[1,2],[3,4]]));
-assert.deepEqual(parser.eval('size(f)'), [2,2]);
+assert.deepEqual(parser.eval('size(f)'), matrix([2,2]));
 /* TODO: doesn't work correctly
 assert.deepEqual(parser.eval('f(:,:,2)=[5,6;7,8]'), matrix([
     [
@@ -206,7 +206,7 @@ parser.set('f', matrix([
         [4,8]
     ]
 ]));
-assert.deepEqual(parser.eval('size(f)'), [2,2,2]);
+assert.deepEqual(parser.eval('size(f)'), matrix([2,2,2]));
 assert.deepEqual(parser.eval('f(:,:,1)'), matrix([[[1],[2]],[[3],[4]]])); // TODO: last dimension should be squeezed
 assert.deepEqual(parser.eval('f(:,:,2)'), matrix([[[5],[6]],[[7],[8]]])); // TODO: last dimension should be squeezed
 assert.deepEqual(parser.eval('f(:,2,:)'), matrix([[[2,6]],[[4,8]]]));

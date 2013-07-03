@@ -13,7 +13,7 @@ math.inv = function inv (x) {
         throw newArgumentsError('inv', arguments.length, 1);
     }
 
-    var size = math.size(x);
+    var size = math.size(x).valueOf();
     switch (size.length) {
         case 0:
             // scalar

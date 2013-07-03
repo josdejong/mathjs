@@ -18,7 +18,7 @@ math.min = function min(args) {
             throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
         }
 
-        var size = math.size(args);
+        var size = math.size(args).valueOf();
 
         if (size.length == 1) {
             // vector

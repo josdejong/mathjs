@@ -7,8 +7,10 @@ https://github.com/josdejong/mathjs
 - For complex calculations, all functions now automatically replace results
   having an imaginary part of zero with a Number. (`2i * 2i` now returns a
   Number `-4` instead of a Complex `-4 + 0i`).
-- Implemented custom node handlers in the parser. Can be used for example to
-  implement a node handler for a plot.
+- Implemented support for injecting custom node handlers in the parser. Can be
+  used for example to implement a node handler for plotting a graph.
+- Functions `size` and `squeeze` now return a Matrix instead of an Array as
+  output on Matrix input.
 - Fixed a bug in determining node dependencies in function assignments.
 
 

@@ -17,6 +17,7 @@ assert.deepEqual(math.size('hello'), [5]);
 assert.deepEqual(math.size(''), [0]);
 assert.deepEqual(math.size(math.complex(2,3)), []);
 assert.deepEqual(math.size(null), []);
-assert.deepEqual(math.size(math.matrix()), [0]);
+assert.deepEqual(math.size(math.matrix()), math.matrix([0]));
+assert.deepEqual(math.size(math.matrix([[1,2,3], [4,5,6]])), math.matrix([2,3]));
 assert.deepEqual(math.size(math.range(2,5)), [4]);
 // TODO: test whether math.size throws an error in case of invalid data or size
