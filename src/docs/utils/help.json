@@ -6,8 +6,8 @@
     ],
     "description": "Display documentation on a function or data type.",
     "examples": [
-        "help(\"sqrt\")",
-        "help(\"Complex\")"
+        "help(\"sqrt\");",
+        "help(\"complex\");"
     ],
     "seealso": []
 }

@@ -11,6 +11,7 @@ var math = {
             handlers: {}
         }
     },
+    docs: {},
     options: {
         precision: 5  // number of digits in formatted output
     }

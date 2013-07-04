@@ -8,9 +8,11 @@ var jake = require('jake'),
 /**
  * Constants
  */
-var MATHJS       = './math.js';
-var MATHJS_MIN   = './math.min.js';
-var HEADER      = './src/header.js';
+var HEADER          = './src/header.js';
+var MATHJS          = './math.js';
+var MATHJS_MIN      = './math.min.js';
+var MATHJS_HELP     = './extensions/help.js';
+var MATHJS_HELP_MIN = './extensions/help.min.js';
 
 // register start time
 var start = +new Date();
@@ -37,6 +39,8 @@ task('build', ['concat', 'minify']);
  */
 desc('Concatenate all source files into one file');
 task('concat', function () {
+    var header = util.read(HEADER);
+    var docs = buildDocs();
     var result = util.concat({
         src: [
             './src/namespace.js',
@@ -62,9 +66,9 @@ task('concat', function () {
             './src/exports.js'
         ],
         dest: MATHJS,
-        header: util.read(HEADER) + '\n(function() {\n',
+        header: header + '\n(function() {\n',
         separator: '\n',
-        footer: '\n})();\n'
+        footer: docs + '\n})();\n'
     });
 
     updateVersion(MATHJS);
@@ -90,6 +94,33 @@ task('minify', ['concat'], function () {
         MATHJS +     ' (' + filesize(util.read(result.src[0]).length, 1) + ') to ' +
         MATHJS_MIN + ' (' + filesize(result.code.length, 1) + ')');
 });
+
+/**
+ * Build docs.
+ * Reads all *.json files in src/docs, and creates a JSON object from it.
+ * @return {String} docs
+ */
+function buildDocs () {
+    var filelist = new jake.FileList();
+    filelist.include([
+        './src/docs/**/*.json'
+    ]);
+    var files = filelist.toArray();
+
+    // generate a single JSON object with all docs
+    var docs = {};
+    files.forEach(function (file) {
+        var content = String(util.read(file)).trim();
+        if (content) {
+            var doc = JSON.parse(content);
+            docs[doc.name] = doc;
+        }
+    });
+
+    return '/**\n * Documentation\n */\n' +
+        'math.docs = ' + JSON.stringify(docs, null, 4) + ';' +
+        '\n';
+}
 
 /**
  * test task
