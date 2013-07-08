@@ -1,6 +1,6 @@
 math.docs.det = {
     "name": "det",
-    "category": "Numerics",
+    "category": "Matrix",
     "syntax": [
         "det(x)"
     ],
@@ -10,6 +10,6 @@ math.docs.det = {
         "det([-2, 2, 3; -1, 1, 3; 2, 0, -1])"
     ],
     "seealso": [
-        "concat", "diag", "eye", "inv", "range", "size", "squeeze", "transpose", "zeros"
+        "concat", "diag", "eye", "inv", "ones", "size", "squeeze", "subset", "transpose", "zeros"
     ]
 };

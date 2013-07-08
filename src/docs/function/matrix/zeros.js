@@ -1,6 +1,6 @@
 math.docs.zeros = {
     "name": "zeros",
-    "category": "Numerics",
+    "category": "Matrix",
     "syntax": [
         "zeros(n)",
         "zeros(m, n)",
@@ -17,6 +17,6 @@ math.docs.zeros = {
         "zeros(size(a))"
     ],
     "seealso": [
-        "concat", "det", "diag", "eye", "inv", "ones", "range", "size", "squeeze", "transpose"
+        "concat", "det", "diag", "eye", "inv", "ones", "size", "squeeze", "subset", "transpose"
     ]
 };

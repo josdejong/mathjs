@@ -1,6 +1,6 @@
 math.docs.inv = {
     "name": "inv",
-    "category": "Numerics",
+    "category": "Matrix",
     "syntax": [
         "inv(x)"
     ],
@@ -11,6 +11,6 @@ math.docs.inv = {
         "1 / 4"
     ],
     "seealso": [
-        "concat", "det", "diag", "eye", "ones", "range", "size", "squeeze", "transpose", "zeros"
+        "concat", "det", "diag", "eye", "ones", "size", "squeeze", "subset", "transpose", "zeros"
     ]
 };

@@ -1,6 +1,6 @@
 math.docs.size = {
     "name": "size",
-    "category": "Numerics",
+    "category": "Matrix",
     "syntax": [
         "size(x)"
     ],
@@ -13,6 +13,6 @@ math.docs.size = {
         "size(1:6)"
     ],
     "seealso": [
-        "concat", "det", "diag", "eye", "inv", "ones", "range", "squeeze", "transpose", "zeros"
+        "concat", "det", "diag", "eye", "inv", "ones", "squeeze", "subset", "transpose", "zeros"
     ]
 };

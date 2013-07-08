@@ -1,6 +1,6 @@
 math.docs.ones = {
     "name": "ones",
-    "category": "Numerics",
+    "category": "Matrix",
     "syntax": [
         "ones(n)",
         "ones(m, n)",
@@ -18,6 +18,6 @@ math.docs.ones = {
         "ones(size(a))"
     ],
     "seealso": [
-        "concat", "det", "diag", "eye", "inv", "range", "size", "squeeze", "transpose", "zeros"
+        "concat", "det", "diag", "eye", "inv", "size", "squeeze", "subset", "transpose", "zeros"
     ]
 };

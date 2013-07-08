@@ -8,7 +8,7 @@ assert.ok(doc instanceof math.type.Help);
 assert.deepEqual(doc, math.docs.sin);
 
 // names to ignore
-var ignore = ['workspace', 'parse'];
+var ignore = ['workspace', 'parse', 'parser', 'select'];
 
 // test whether all functions are documented
 var undocumented = [];
@@ -32,7 +32,7 @@ var nonexisting = [];
 var docs = math.docs;
 for (prop in docs) {
     if (docs.hasOwnProperty(prop)) {
-        if (!math[prop] && !math.type[prop]) {
+        if (math[prop] === undefined && !math.type[prop]) {
             nonexisting.push(prop);
         }
     }

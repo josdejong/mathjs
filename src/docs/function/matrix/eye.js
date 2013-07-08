@@ -1,6 +1,6 @@
 math.docs.eye = {
     "name": "eye",
-    "category": "Numerics",
+    "category": "Matrix",
     "syntax": [
         "eye(n)",
         "eye(m, n)",
@@ -15,6 +15,6 @@ math.docs.eye = {
         "eye(size(a))"
     ],
     "seealso": [
-        "concat", "det", "diag", "inv", "ones", "range", "size", "squeeze", "transpose", "zeros"
+        "concat", "det", "diag", "inv", "ones", "size", "squeeze", "subset", "transpose", "zeros"
     ]
 };

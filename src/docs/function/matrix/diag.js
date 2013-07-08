@@ -13,6 +13,6 @@ math.docs.diag = {
         "diag(a)"
     ],
     "seealso": [
-        "concat", "det", "eye", "inv", "ones", "range", "size", "squeeze", "transpose", "zeros"
+        "concat", "det", "eye", "inv", "ones", "size", "squeeze", "subset", "transpose", "zeros"
     ]
 };

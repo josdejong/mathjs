@@ -11,5 +11,5 @@ math.docs.gcd = {
         "gcd(-4, 6)",
         "gcd(25, 15, -10)"
     ],
-    "seealso": [ "lcm" ]
+    "seealso": [ "lcm", "xgcd" ]
 };

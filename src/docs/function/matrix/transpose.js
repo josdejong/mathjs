@@ -1,6 +1,6 @@
 math.docs.transpose = {
     "name": "transpose",
-    "category": "Numerics",
+    "category": "Matrix",
     "syntax": [
         "x'",
         "transpose(x)"
@@ -12,6 +12,6 @@ math.docs.transpose = {
         "a'"
     ],
     "seealso": [
-        "concat", "det", "diag", "eye", "inv", "ones", "range", "size", "squeeze", "zeros"
+        "concat", "det", "diag", "eye", "inv", "ones", "size", "squeeze", "subset", "zeros"
     ]
 };

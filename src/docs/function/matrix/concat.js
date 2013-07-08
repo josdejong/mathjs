@@ -1,6 +1,6 @@
 math.docs.concat = {
     "name": "concat",
-    "category": "Numerics",
+    "category": "Matrix",
     "syntax": [
         "concat(a, b, c, ...)",
         "concat(a, b, c, ..., dim)"
@@ -14,5 +14,7 @@ math.docs.concat = {
         "concat(a, b, 2)",
         "[a; b]"
     ],
-    "seealso": [ ]
+    "seealso": [
+        "det", "diag", "eye", "inv", "ones", "size", "squeeze", "subset", "transpose", "zeros"
+    ]
 };

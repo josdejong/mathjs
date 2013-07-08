@@ -1,6 +1,6 @@
 math.docs.squeeze = {
     "name": "squeeze",
-    "category": "Numerics",
+    "category": "Matrix",
     "syntax": [
         "squeeze(x)"
     ],
@@ -12,6 +12,6 @@ math.docs.squeeze = {
         "size(squeeze(b))"
     ],
     "seealso": [
-        "concat", "det", "diag", "eye", "inv", "ones", "range", "size", "transpose", "zeros"
+        "concat", "det", "diag", "eye", "inv", "ones", "size", "subset", "transpose", "zeros"
     ]
 };
