@@ -19,3 +19,4 @@ math.NaN        = NaN;
 math.pi        = math.PI;
 math.e         = math.E;
 math.i         = math.I;
+math.tau       = math.PI * 2;
