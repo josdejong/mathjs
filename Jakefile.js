@@ -97,7 +97,8 @@ task('minify', ['concat'], function () {
 
 /**
  * Build docs.
- * Reads all *.json files in src/docs, and creates a JSON object from it.
+ * Reads all *.json files in src/docs, and creates JavaScript code from it
+ * where all docs are put in a single JSON object in math.docs.
  * @return {String} docs
  */
 function buildDocs () {

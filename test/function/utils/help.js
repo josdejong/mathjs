@@ -7,6 +7,8 @@ var doc = math.help('sin');
 assert.ok(doc instanceof math.type.Help);
 assert.deepEqual(doc, math.docs.sin);
 
+// names to ignore
+var ignore = [];
 
 // test whether all functions are documented
 var undocumented = [];
@@ -14,7 +16,7 @@ for (prop in math) {
     if (math.hasOwnProperty(prop)) {
         var obj = math[prop];
         if (math['typeof'](obj) != 'object') {
-            if (!math.docs[prop]) {
+            if (!math.docs[prop] && (ignore.indexOf(prop) == -1)) {
                 undocumented.push(prop);
             }
         }
