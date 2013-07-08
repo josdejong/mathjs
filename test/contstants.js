@@ -1,17 +1,23 @@
-var assert = require('assert');
-var math = require('../math.js');
+var assert = require('assert'),
+    math = require('../math.js'),
+    approx = require('../tools/approx.js');
 
-assert.equal(math.round(math.pi, 3), 3.142);
+// pi
+approx.equal(math.pi, 3.14159265358979);
 assert.equal(math.sin(math.pi / 2), 1);
 assert.equal(math.PI, math.pi);
 
-assert.equal(math.round(math.e, 3), 2.718);
+// tau
+approx.equal(math.tau, 6.28318530717959);
 
+// e
+approx.equal(math.e, 2.71828182845905);
+
+// i
 assert.equal(math.i.re, 0);
 assert.equal(math.i.im, 1);
 assert.deepEqual(math.i, math.complex(0,1));
 assert.deepEqual(math.sqrt(-1), math.i);
-assert.equal(math.I, math.i);
 
 // test euler 1+e^(pi*i) == 0
 assert.equal(math.round(math.add(1,math.pow(math.e, math.multiply(math.pi, math.i))), 5), 0);
