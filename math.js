@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.9.2-SNAPSHOT
- * @date    2013-06-16
+ * @version 0.10.0
+ * @date    2013-07-08
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -36,8 +36,11 @@
 var math = {
     type: {},
     expr: {
-        node: {}
+        node: {
+            handlers: {}
+        }
     },
+    docs: {},
     options: {
         precision: 5  // number of digits in formatted output
     }
@@ -1147,6 +1150,75 @@ Complex.prototype.toString = function () {
     return str;
 };
 
+
+/**
+ * Documentation object
+ * @param {Object} doc  Object containing properties:
+ *                      {String} name
+ *                      {String} category
+ *                      {String[]} syntax
+ *                      {String[]} examples
+ *                      {String[]} seealso
+ * @constructor
+ */
+function Help (doc) {
+    if (doc) {
+        util.extend(this, doc);
+    }
+}
+
+math.type.Help = Help;
+
+/**
+ * Generate readable description from a Help object
+ * @return {String} readableDoc
+ * @private
+ */
+Help.prototype.toString = function () {
+    var desc = '';
+
+    if (this.name) {
+        desc += 'NAME\n' + this.name + '\n\n';
+    }
+    if (this.category) {
+        desc += 'CATEGORY\n' + this.category + '\n\n';
+    }
+    if (this.syntax) {
+        desc += 'SYNTAX\n' + this.syntax.join('\n') + '\n\n';
+    }
+    if (this.examples) {
+        var parser = math.parser();
+        desc += 'EXAMPLES\n';
+        for (var i = 0; i < this.examples.length; i++) {
+            var expr = this.examples[i];
+            var res;
+            try {
+                res = parser.eval(expr);
+            }
+            catch (e) {
+                res = e;
+            }
+            desc += expr + '\n';
+            desc += '    ' + math.format(res) + '\n';
+        }
+        desc += '\n';
+    }
+    if (this.seealso) {
+        desc += 'SEE ALSO\n' + this.seealso.join(', ') + '\n';
+    }
+
+    return desc;
+};
+
+// TODO: implement a toHTML function in Help
+
+/**
+ * Export the help object to JSON
+ */
+Help.prototype.toJSON = function () {
+    return util.extend({}, this);
+};
+
 /**
  * @constructor Matrix
  *
@@ -1413,7 +1485,7 @@ Matrix.prototype.set = function (index, submatrix) {
     if (isScalar) {
         // set a scalar
         // check whether submatrix is no matrix/array
-        if (math.size(submatrix).length != 0) {
+        if (math.size(submatrix).valueOf().length != 0) {
             throw new TypeError('Scalar value expected');
         }
 
@@ -2908,6 +2980,15 @@ Unit.UNITS = [
 /**
  * mathjs constants
  */
+math.pi        = Math.PI;
+math.e         = Math.E;
+math.tau       = Math.PI * 2;
+math.i         = new Complex(0, 1);
+
+math.Infinity   = Infinity;
+math.NaN        = NaN;
+
+// uppercase constants (for compatibility with built-in Math)
 math.E          = Math.E;
 math.LN2        = Math.LN2;
 math.LN10       = Math.LN10;
@@ -2916,16 +2997,6 @@ math.LOG10E     = Math.LOG10E;
 math.PI         = Math.PI;
 math.SQRT1_2    = Math.SQRT1_2;
 math.SQRT2      = Math.SQRT2;
-
-math.I          = new Complex(0, 1);
-
-math.Infinity   = Infinity;
-math.NaN        = NaN;
-
-// lower case constants
-math.pi        = math.PI;
-math.e         = math.E;
-math.i         = math.I;
 
 /**
  * Helper methods for functions
@@ -3001,8 +3072,8 @@ Node.prototype.eval = function () {
  *     });
  *
  * @param {Object} filter       Available parameters:
- *                              {Function} type
- *                              {Object<String, String>} properties
+ *                                  {Function} type
+ *                                  {Object<String, String>} properties
  * @return {Node[]} nodes       An array with nodes matching given filter criteria
  */
 Node.prototype.find = function (filter) {
@@ -3134,7 +3205,7 @@ OperatorNode.prototype.toString = function() {
     var params = this.params;
 
     // special case: unary minus
-    if (this.fn === math.unaryminus) {
+    if (this.fn === math.unary) {
         return '-' + params[0].toString();
     }
 
@@ -3787,6 +3858,7 @@ UpdateNode.prototype.toString = function() {
 function FunctionNode(name, variables, expr, functionScope, scope) {
     this.name = name;
     this.variables = variables;
+    this.expr = expr;
     this.scope = scope;
 
     // create function
@@ -5794,16 +5866,16 @@ math.subtract = function subtract(x, y) {
  * Inverse the sign of a value.
  *
  *     -x
- *     unaryminus(x)
+ *     unary(x)
  *
  * For matrices, the function is evaluated element wise.
  *
  * @param  {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-math.unaryminus = function unaryminus(x) {
+math.unary = function unary(x) {
     if (arguments.length != 1) {
-        throw newArgumentsError('unaryminus', arguments.length, 1);
+        throw newArgumentsError('unary', arguments.length, 1);
     }
 
     if (isNumber(x)) {
@@ -5822,15 +5894,20 @@ math.unaryminus = function unaryminus(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix) {
-        return util.map(x, math.unaryminus);
+        return util.map(x, math.unary);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return math.unaryminus(x.valueOf());
+        return math.unary(x.valueOf());
     }
 
-    throw newUnsupportedTypeError('unaryminus', x);
+    throw newUnsupportedTypeError('unary', x);
+};
+
+// TODO: deprecated since version  0.10.0, cleanup some day
+math.unaryminus = function unaryminus(x) {
+    throw new Error('Function unaryminus is deprecated, use unary instead');
 };
 
 /**
@@ -6433,8 +6510,8 @@ math.concat = function concat (args) {
         }
         else if (arg instanceof Array || arg instanceof Matrix) {
             // this is a matrix or array
-            var matrix = math.clone(arg.valueOf());
-            var size = math.size(arg);
+            var matrix = math.clone(arg).valueOf();
+            var size = math.size(arg).valueOf();
             matrices[i] = matrix;
             prevDim = dim;
             dim = size.length;
@@ -6505,7 +6582,7 @@ math.det = function det (x) {
         throw newArgumentsError('det', arguments.length, 1);
     }
 
-    var size = math.size(x);
+    var size = math.size(x).valueOf();
     switch (size.length) {
         case 0:
             // scalar
@@ -6769,7 +6846,7 @@ math.inv = function inv (x) {
         throw newArgumentsError('inv', arguments.length, 1);
     }
 
-    var size = math.size(x);
+    var size = math.size(x).valueOf();
     switch (size.length) {
         case 0:
             // scalar
@@ -6835,7 +6912,7 @@ math.inv = function inv (x) {
 function _inv (matrix, rows, cols){
     var r, s, f, value, temp,
         add = math.add,
-        unaryminus = math.unaryminus,
+        unary = math.unary,
         multiply = math.multiply,
         divide = math.divide;
 
@@ -6858,10 +6935,10 @@ function _inv (matrix, rows, cols){
         return [
             [
                 divide(matrix[1][1], det),
-                divide(unaryminus(matrix[0][1]), det)
+                divide(unary(matrix[0][1]), det)
             ],
             [
-                divide(unaryminus(matrix[1][0]), det),
+                divide(unary(matrix[1][0]), det),
                 divide(matrix[0][0], det)
             ]
         ];
@@ -6908,7 +6985,7 @@ function _inv (matrix, rows, cols){
                 if(r != c) {
                     // eliminate value at column c and row r
                     if (Ar[c] != 0) {
-                        f = divide(unaryminus(Ar[c]), Ac[c]);
+                        f = divide(unary(Ar[c]), Ac[c]);
 
                         // add (f * row c) to row r to eliminate the value
                         // at column c
@@ -6991,7 +7068,7 @@ math.size = function size (x) {
     }
 
     if (x instanceof Matrix) {
-        return x.size();
+        return new Matrix(x.size());
     }
 
     if (x.valueOf() !== x) {
@@ -7019,7 +7096,7 @@ math.squeeze = function squeeze (x) {
         return _squeezeArray(math.clone(x));
     }
     else if (x instanceof Matrix) {
-        return _squeezeArray(x.toArray());
+        return math.matrix(_squeezeArray(x.toArray()));
     }
     else if (x.valueOf() instanceof Array) {
         return _squeezeArray(math.clone(x.valueOf()));
@@ -7261,7 +7338,7 @@ math.transpose = function transpose (x) {
         throw newArgumentsError('transpose', arguments.length, 1);
     }
 
-    var size = math.size(x);
+    var size = math.size(x).valueOf();
     switch (size.length) {
         case 0:
             // scalar
@@ -7414,7 +7491,7 @@ math.max = function max(args) {
             throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
         }
 
-        var size = math.size(args);
+        var size = math.size(args).valueOf();
 
         if (size.length == 1) {
             // vector
@@ -7512,7 +7589,7 @@ math.min = function min(args) {
             throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
         }
 
-        var size = math.size(args);
+        var size = math.size(args).valueOf();
 
         if (size.length == 1) {
             // vector
@@ -8348,6 +8425,59 @@ math.format = function format(template, values) {
 };
 
 /**
+ * Retrieve help on a function or data type.
+ * Help files are retrieved from the documentation in math.docs.
+ * @param {function | string | Object} search
+ * @return {Help} help
+ */
+math.help = function help(search) {
+    if (arguments.length != 1) {
+        throw new SyntaxError('Wrong number of arguments in function help ' +
+            '(' + arguments.length + ' provided, 1 expected)');
+    }
+
+    var text = null;
+    if ((search instanceof String) || (typeof(search) === 'string')) {
+        text = search;
+    }
+    else {
+        var prop;
+        for (prop in math) {
+            // search in functions and constants
+            if (math.hasOwnProperty(prop)) {
+                if (search === math[prop]) {
+                    text = prop;
+                    break;
+                }
+            }
+        }
+
+        if (!text) {
+            // search data type
+            for (prop in math.type) {
+                if (math.type.hasOwnProperty(prop)) {
+                    if (search === math.type[prop]) {
+                        text = prop;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    if (!text) {
+        throw new Error('Could not find search term "' + search + '"');
+    }
+    else {
+        var doc = math.docs[text];
+        if (!doc) {
+            throw new Error('No documentation found on "' + text + '"');
+        }
+        return new Help(doc);
+    }
+};
+
+/**
  * Import functions from an object or a file
  * @param {function | String | Object} object
  * @param {Object} [options]        Available options:
@@ -8566,6 +8696,8 @@ function isSupportedType(object) {
         '<=': true,
         '>=': true
     };
+
+    var handlers = math.expr.node.handlers;
 
     var expression = '';  // current expression
     var index = 0;        // current index in expr
@@ -8951,22 +9083,10 @@ function isSupportedType(object) {
     function parse_assignment (scope) {
         var name, params, paramScopes, expr;
 
-        /* TODO: cleanup? or use? see comments further down
-         var linkExisted = false;
-         if (token_type == TOKENTYPE.SYMBOL) {
-         linkExisted = scope.has(token);
-         }
-         */
-
         var node = parse_range(scope);
 
         if (token == '=') {
             if (node instanceof SymbolNode) {
-                // TODO: remove link when it was undefined before we parsed this expression?
-                // we parsed the assignment as if it where an expression instead,
-                // therefore, a link was created to the symbol. This link must
-                // be cleaned up again, and only if it wasn't existing before
-
                 // parse the expression, with the correct function scope
                 getToken();
                 name = node.name;
@@ -8975,11 +9095,6 @@ function isSupportedType(object) {
                 return new AssignmentNode(name, expr, scope);
             }
             else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
-                // TODO: remove link when it was undefined before we parsed this expression?
-                // we parsed the assignment as if it where an expression instead,
-                // therefore, a link was created to the symbol. This link must
-                // be cleaned up again, and only if it wasn't existing before
-
                 // parse the expression, with the correct function scope
                 getToken();
                 name = node.object.name;
@@ -9175,7 +9290,7 @@ function isSupportedType(object) {
     function parse_multiplydivide (scope) {
         var node, operators, name, fn, params;
 
-        node = parse_unaryminus(scope);
+        node = parse_unary(scope);
 
         operators = {
             '*': 'multiply',
@@ -9191,7 +9306,7 @@ function isSupportedType(object) {
             fn = math[operators[name]];
 
             getToken();
-            params = [node, parse_unaryminus(scope)];
+            params = [node, parse_unary(scope)];
             node = new OperatorNode(name, fn, params);
         }
 
@@ -9204,12 +9319,12 @@ function isSupportedType(object) {
      * @return {Node} node
      * @private
      */
-    function parse_unaryminus (scope) {
+    function parse_unary (scope) {
         var name, fn, params;
 
         if (token == '-') {
             name = token;
-            fn = math.unaryminus;
+            fn = math.unary;
             getToken();
             params = [parse_pow(scope)];
 
@@ -9286,7 +9401,7 @@ function isSupportedType(object) {
     function parse_transpose (scope)  {
         var node, name, fn, params;
 
-        node = parse_plot(scope);
+        node = parse_node_handler(scope);
 
         while (token == '\'') {
             name = token;
@@ -9301,53 +9416,72 @@ function isSupportedType(object) {
     }
 
     /**
-     * parse plot
+     * Parse a custom node handler. A node handler can be used to process
+     * nodes in a custom way, for example for handling a plot.
+     *
+     * A handler must be defined in the namespace math.expr.node.handlers,
+     * and must extend math.expr.node.Node, and the handler must contain
+     * functions eval(), find(filter), and toString().
+     *
+     * For example:
+     *
+     *     math.expr.node.handlers['plot'] = PlotHandler;
+     *
+     * The constructor of the handler is called as:
+     *
+     *     node = new PlotHandler(params, paramScopes);
+     *
+     * The handler will be invoked when evaluating an expression like:
+     *
+     *     node = math.parse('plot(sin(x), x)');
+     *
      * @param {math.expr.Scope} scope
      * @return {Node} node
      * @private
      */
-    function parse_plot (scope) {
-        /* TODO: implement plot
-         if (token_type == TOKENTYPE.SYMBOL &&
-         token == 'plot') {
-         getToken();
+    function parse_node_handler (scope) {
+        var params,
+            paramScopes,
+            paramScope,
+            handler;
 
-         // parse the parentheses and parameters of the plot
-         // the parameters are something like: plot(sin(x), cos(x), x)
-         var functions = [];
-         if (token == '(') {
-         var plotScope = scope.createSubScope();
+        if (token_type == TOKENTYPE.SYMBOL && handlers[token]) {
+            handler = handlers[token];
 
-         getToken();
-         functions.push(parse_assignment(plotScope));
+            getToken();
 
-         // parse a list with parameters
-         while (token == ',') {
-         getToken();
-         functions.push(parse_assigment(plotScope));
-         }
+            // parse parameters
+            if (token == '(') {
+                params = [];
+                paramScopes = [];
 
-         if (token != ')') {
-         throw createSyntaxError('Parenthesis ) missing');
-         }
-         getToken();
-         }
+                getToken();
 
-         // check what the variable of the functions is.
-         var variable = undefined;
-         var lastFunction = functions[functions.length - 1];
-         if (lastFunction) {
-         // if the last function is a variable, remove it from the functions list
-         // and use its variable func
-         var lastIsSymbol = (lastFunction instanceof Arguments);
-         if (lastIsSymbol) {
-         functions.pop();
-         variable = lastFunction.fn;
-         }
-         }
-         return new plot(functions, variable, plotScope);
-         }
-         */
+                if (token != ')') {
+                    paramScope = scope.createSubScope();
+                    paramScopes.push(paramScope);
+                    params.push(parse_range(paramScope));
+
+                    // parse a list with parameters
+                    while (token == ',') {
+                        getToken();
+
+                        paramScope = scope.createSubScope();
+                        paramScopes.push(paramScope);
+                        params.push(parse_range(paramScope));
+                    }
+                }
+
+                if (token != ')') {
+                    throw createSyntaxError('Parenthesis ) expected');
+                }
+                getToken();
+            }
+
+            // create a new node handler
+            //noinspection JSValidateTypes
+            return new handler(params, paramScopes);
+        }
 
         return parse_symbol(scope);
     }
@@ -9860,8 +9994,1590 @@ math['typeof'] = function math_typeof(x) {
     return type;
 };
 
+math.docs['Infinity'] = {
+    'name': 'Infinity',
+    'category': 'Constants',
+    'syntax': [
+        'Infinity'
+    ],
+    'description': 'Infinity, a number which is larger than the maximum number that can be handled by a floating point number.',
+    'examples': [
+        'Infinity',
+        '1 / 0'
+    ],
+    'seealso': []
+};
+
+math.docs.LN10 = {
+    'name': 'LN10',
+    'category': 'Constants',
+    'syntax': [
+        'LN10'
+    ],
+    'description': 'Returns the natural logarithm of 10, approximately equal to 2.302',
+    'examples': [
+        'LN10',
+        'log(10)'
+    ],
+    'seealso': []
+};
+
+math.docs.LN2 = {
+    'name': 'LN2',
+    'category': 'Constants',
+    'syntax': [
+        'LN2'
+    ],
+    'description': 'Returns the natural logarithm of 2, approximately equal to 0.693',
+    'examples': [
+        'LN2',
+        'log(2)'
+    ],
+    'seealso': []
+};
+
+math.docs.LOG10E = {
+    'name': 'LOG10E',
+    'category': 'Constants',
+    'syntax': [
+        'LOG10E'
+    ],
+    'description': 'Returns the base-10 logarithm of E, approximately equal to 0.434',
+    'examples': [
+        'LOG10E',
+        'log(e, 10)'
+    ],
+    'seealso': []
+};
+
+math.docs.LOG2E = {
+    'name': 'LOG2E',
+    'category': 'Constants',
+    'syntax': [
+        'LOG2E'
+    ],
+    'description': 'Returns the base-2 logarithm of E, approximately equal to 1.442',
+    'examples': [
+        'LOG2E',
+        'log(e, 2)'
+    ],
+    'seealso': []
+};
+
+math.docs['NaN'] = {
+    'name': 'NaN',
+    'category': 'Constants',
+    'syntax': [
+        'NaN'
+    ],
+    'description': 'Not a number',
+    'examples': [
+        'NaN',
+        '0 / 0'
+    ],
+    'seealso': []
+};
+
+math.docs.SQRT1_2 = {
+    'name': 'SQRT1_2',
+    'category': 'Constants',
+    'syntax': [
+        'SQRT1_2'
+    ],
+    'description': 'Returns the square root of 1/2, approximately equal to 0.707',
+    'examples': [
+        'SQRT1_2',
+        'sqrt(1/2)'
+    ],
+    'seealso': []
+};
+
+math.docs.SQRT2 = {
+    'name': 'SQRT2',
+    'category': 'Constants',
+    'syntax': [
+        'SQRT2'
+    ],
+    'description': 'Returns the square root of 2, approximately equal to 1.414',
+    'examples': [
+        'SQRT2',
+        'sqrt(2)'
+    ],
+    'seealso': []
+};
+
+math.docs.e = math.docs.E = {
+    'name': 'e',
+    'category': 'Constants',
+    'syntax': [
+        'e'
+    ],
+    'description': 'Euler\'s number, the base of the natural logarithm. Approximately equal to 2.71828',
+    'examples': [
+        'e',
+        'e ^ 2',
+        'exp(2)',
+        'log(e)'
+    ],
+    'seealso': ['exp']
+};
+
+math.docs.i = {
+    'name': 'i',
+    'category': 'Constants',
+    'syntax': [
+        'i'
+    ],
+    'description': 'Imaginary unit, defined as i*i=-1. A complex number is described as a + b*i, where a is the real part, and b is the imaginary part.',
+    'examples': [
+        'i',
+        'i * i',
+        'sqrt(-1)'
+    ],
+    'seealso': []
+};
+
+math.docs.pi = math.docs.PI = {
+    'name': 'pi',
+    'category': 'Constants',
+    'syntax': [
+        'pi'
+    ],
+    'description': 'The number pi is a mathematical constant that is the ratio of a circle\'s circumference to its diameter, and is approximately equal to 3.14159',
+    'examples': [
+        'pi',
+        'sin(pi/2)'
+    ],
+    'seealso': ['tau']
+};
+
+math.docs.tau = {
+    'name': 'tau',
+    'category': 'Constants',
+    'syntax': [
+        'pi'
+    ],
+    'description': 'Tau is the ratio constant of a circle\'s circumference to radius, equal to 2 * pi, approximately 6.2832.',
+    'examples': [
+        'tau',
+        '2 * pi'
+    ],
+    'seealso': ['pi']
+};
+
+math.docs.abs = {
+    'name': 'abs',
+    'category': 'Arithmetic',
+    'syntax': [
+        'abs(x)'
+    ],
+    'description': 'Compute the absolute value.',
+    'examples': [
+        'abs(3.5)',
+        'abs(-4.2)'
+    ],
+    'seealso': ['sign']
+};
+
+math.docs.add = {
+    'name': 'add',
+    'category': 'Operators',
+    'syntax': [
+        'x + y',
+        'add(x, y)'
+    ],
+    'description': 'Add two values.',
+    'examples': [
+        '2.1 + 3.6',
+        'ans - 3.6',
+        '3 + 2i',
+        '"hello" + " world"',
+        '3 cm + 2 inch'
+    ],
+    'seealso': [
+        'subtract'
+    ]
+};
+
+math.docs.ceil = {
+    'name': 'ceil',
+    'category': 'Arithmetic',
+    'syntax': [
+        'ceil(x)'
+    ],
+    'description':
+        'Round a value towards plus infinity.If x is complex, both real and imaginary part are rounded towards plus infinity.',
+    'examples': [
+        'ceil(3.2)',
+        'ceil(3.8)',
+        'ceil(-4.2)'
+    ],
+    'seealso': ['floor', 'fix', 'round']
+};
+
+math.docs.cube = {
+    'name': 'cube',
+    'category': 'Arithmetic',
+    'syntax': [
+        'cube(x)'
+    ],
+    'description': 'Compute the cube of a value. The cube of x is x * x * x.',
+    'examples': [
+        'cube(2)',
+        '2^3',
+        '2 * 2 * 2'
+    ],
+    'seealso': [
+        'multiply',
+        'square',
+        'pow'
+    ]
+};
+
+math.docs.divide = {
+    'name': 'divide',
+    'category': 'Operators',
+    'syntax': [
+        'x / y',
+        'divide(x, y)'
+    ],
+    'description': 'Divide two values.',
+    'examples': [
+        '2 / 3',
+        'ans * 3',
+        '4.5 / 2',
+        '3 + 4 / 2',
+        '(3 + 4) / 2',
+        '18 km / 4.5'
+    ],
+    'seealso': [
+        'multiply'
+    ]
+};
+
+math.docs.edivide = {
+    'name': 'edivide',
+    'category': 'Operator',
+    'syntax': [
+        'x ./ y',
+        'edivide(x, y)'
+    ],
+    'description': 'divide two values element wise.',
+    'examples': [
+        'a = [1, 2, 3; 4, 5, 6]',
+        'b = [2, 1, 1; 3, 2, 5]',
+        'a ./ b'
+    ],
+    'seealso': [
+        'multiply',
+        'emultiply',
+        'divide'
+    ]
+};
+
+math.docs.emultiply = {
+    'name': 'emultiply',
+    'category': 'Operator',
+    'syntax': [
+        'x .* y',
+        'emultiply(x, y)'
+    ],
+    'description': 'multiply two values element wise.',
+    'examples': [
+        'a = [1, 2, 3; 4, 5, 6]',
+        'b = [2, 1, 1; 3, 2, 5]',
+        'a .* b'
+    ],
+    'seealso': [
+        'multiply',
+        'divide',
+        'edivide'
+    ]
+};
+
+math.docs.epow = {
+    'name': 'epow',
+    'category': 'Operators',
+    'syntax': [
+        'x .^ y',
+        'epow(x, y)'
+    ],
+    'description':
+        'Calculates the power of x to y element wise.',
+    'examples': [
+        'a = [1, 2, 3; 4, 5, 6]',
+        'a .^ 2'
+    ],
+    'seealso': [
+        'pow'
+    ]
+};
+
+math.docs.equal = {
+    'name': 'equal',
+    'category': 'Operators',
+    'syntax': [
+        'x == y',
+        'equal(x, y)'
+    ],
+    'description':
+        'Check equality of two values. Returns 1 if the values are equal, and 0 if not.',
+    'examples': [
+        '2+2 == 3',
+        '2+2 == 4',
+        'a = 3.2',
+        'b = 6-2.8',
+        'a == b',
+        '50cm == 0.5m'
+    ],
+    'seealso': [
+        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+math.docs.exp = {
+    'name': 'exp',
+    'category': 'Arithmetic',
+    'syntax': [
+        'exp(x)'
+    ],
+    'description': 'Calculate the exponent of a value.',
+    'examples': [
+        'exp(1.3)',
+        'e ^ 1.3',
+        'log(exp(1.3))',
+        'x = 2.4',
+        '(exp(i*x) == cos(x) + i*sin(x))   # Euler\'s formula'
+    ],
+    'seealso': [
+        'square',
+        'multiply',
+        'log'
+    ]
+};
+
+math.docs.fix = {
+    'name': 'fix',
+    'category': 'Arithmetic',
+    'syntax': [
+        'fix(x)'
+    ],
+    'description':
+        'Round a value towards zero.If x is complex, both real and imaginary part are rounded towards zero.',
+    'examples': [
+        'fix(3.2)',
+        'fix(3.8)',
+        'fix(-4.2)',
+        'fix(-4.8)'
+    ],
+    'seealso': ['ceil', 'floor', 'round']
+};
+
+math.docs.floor = {
+    'name': 'floor',
+    'category': 'Arithmetic',
+    'syntax': [
+        'floor(x)'
+    ],
+    'description':
+        'Round a value towards minus infinity.If x is complex, both real and imaginary part are rounded towards minus infinity.',
+    'examples': [
+        'floor(3.2)',
+        'floor(3.8)',
+        'floor(-4.2)'
+    ],
+    'seealso': ['ceil', 'fix', 'round']
+};
+
+math.docs.gcd = {
+    'name': 'gcd',
+    'category': 'Arithmetic',
+    'syntax': [
+        'gcd(a, b)',
+        'gcd(a, b, c, ...)'
+    ],
+    'description': 'Compute the greatest common divisor.',
+    'examples': [
+        'gcd(8, 12)',
+        'gcd(-4, 6)',
+        'gcd(25, 15, -10)'
+    ],
+    'seealso': [ 'lcm', 'xgcd' ]
+};
+
+math.docs.larger = {
+    'name': 'larger',
+    'category': 'Operators',
+    'syntax': [
+        'x > y',
+        'larger(x, y)'
+    ],
+    'description':
+        'Check if value x is larger than y. Returns 1 if x is larger than y, and 0 if not.',
+    'examples': [
+        '2 > 3',
+        '5 > 2*2',
+        'a = 3.3',
+        'b = 6-2.8',
+        '(a > b)',
+        '(b < a)',
+        '5 cm > 2 inch'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'smaller', 'smallereq', 'largereq'
+    ]
+};
+
+math.docs.largereq = {
+    'name': 'largereq',
+    'category': 'Operators',
+    'syntax': [
+        'x >= y',
+        'largereq(x, y)'
+    ],
+    'description':
+        'Check if value x is larger or equal to y. Returns 1 if x is larger or equal to y, and 0 if not.',
+    'examples': [
+        '2 > 1+1',
+        '2 >= 1+1',
+        'a = 3.2',
+        'b = 6-2.8',
+        '(a > b)'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'smallereq', 'smaller', 'largereq'
+    ]
+};
+
+math.docs.lcm = {
+    'name': 'lcm',
+    'category': 'Arithmetic',
+    'syntax': [
+        'lcm(x, y)'
+    ],
+    'description': 'Compute the least common multiple.',
+    'examples': [
+        'lcm(4, 6)',
+        'lcm(6, 21)',
+        'lcm(6, 21, 5)'
+    ],
+    'seealso': [ 'gcd' ]
+};
+
+math.docs.log = {
+    'name': 'log',
+    'category': 'Arithmetic',
+    'syntax': [
+        'log(x)',
+        'log(x, base)'
+    ],
+    'description': 'Compute the logarithm of a value. If no base is provided, the natural logarithm of x is calculated. If base if provided, the logarithm is calculated for the specified base. log(x, base) is defined as log(x) / log(base).',
+    'examples': [
+        'log(3.5)',
+        'a = log(2.4)',
+        'exp(a)',
+        '10 ^ 3',
+        'log(1000, 10)',
+        'log(1000) / log(10)',
+        'b = logb(1024, 2)',
+        '2 ^ b'
+    ],
+    'seealso': [
+        'exp',
+        'log10'
+    ]
+};
+math.docs.log10 = {
+    'name': 'log10',
+    'category': 'Arithmetic',
+    'syntax': [
+        'log10(x)'
+    ],
+    'description': 'Compute the 10-base logarithm of a value.',
+    'examples': [
+        'log10(1000)',
+        '10 ^ 3',
+        'log10(0.01)',
+        'log(1000) / log(10)',
+        'log(1000, 10)'
+    ],
+    'seealso': [
+        'exp',
+        'log'
+    ]
+};
+
+math.docs.mod = {
+    'name': 'mod',
+    'category': 'Operators',
+    'syntax': [
+        'x % y',
+        'x mod y',
+        'mod(x, y)'
+    ],
+    'description':
+        'Calculates the modulus, the remainder of an integer division.',
+    'examples': [
+        '7 % 3',
+        '11 % 2',
+        '10 mod 4',
+        'function isOdd(x) = x % 2',
+        'isOdd(2)',
+        'isOdd(3)'
+    ],
+    'seealso': []
+};
+
+math.docs.multiply = {
+    'name': 'multiply',
+    'category': 'Operators',
+    'syntax': [
+        'x * y',
+        'multiply(x, y)'
+    ],
+    'description': 'multiply two values.',
+    'examples': [
+        '2.1 * 3.6',
+        'ans / 3.6',
+        '2 * 3 + 4',
+        '2 * (3 + 4)',
+        '3 * 2.1 km'
+    ],
+    'seealso': [
+        'divide'
+    ]
+};
+
+math.docs.pow = {
+    'name': 'pow',
+    'category': 'Operators',
+    'syntax': [
+        'x ^ y',
+        'pow(x, y)'
+    ],
+    'description':
+        'Calculates the power of x to y, x^y.',
+    'examples': [
+        '2^3 = 8',
+        '2*2*2',
+        '1 + e ^ (pi * i)'
+    ],
+    'seealso': [
+        'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+math.docs.round = {
+    'name': 'round',
+    'category': 'Arithmetic',
+    'syntax': [
+        'round(x)',
+        'round(x, n)'
+    ],
+    'description':
+        'round a value towards the nearest integer.If x is complex, both real and imaginary part are rounded towards the nearest integer. When n is specified, the value is rounded to n decimals.',
+    'examples': [
+        'round(3.2)',
+        'round(3.8)',
+        'round(-4.2)',
+        'round(-4.8)',
+        'round(pi, 3)',
+        'round(123.45678, 2)'
+    ],
+    'seealso': ['ceil', 'floor', 'fix']
+};
+
+math.docs.sign = {
+    'name': 'sign',
+    'category': 'Arithmetic',
+    'syntax': [
+        'sign(x)'
+    ],
+    'description':
+        'Compute the sign of a value. The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.',
+    'examples': [
+        'sign(3.5)',
+        'sign(-4.2)',
+        'sign(0)'
+    ],
+    'seealso': [
+        'abs'
+    ]
+};
+
+math.docs.smaller = {
+    'name': 'smaller',
+    'category': 'Operators',
+    'syntax': [
+        'x < y',
+        'smaller(x, y)'
+    ],
+    'description':
+        'Check if value x is smaller than value y. Returns 1 if x is smaller than y, and 0 if not.',
+    'examples': [
+        '2 < 3',
+        '5 < 2*2',
+        'a = 3.3',
+        'b = 6-2.8',
+        '(a < b)',
+        '5 cm < 2 inch'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+math.docs.smallereq = {
+    'name': 'smallereq',
+    'category': 'Operators',
+    'syntax': [
+        'x <= y',
+        'smallereq(x, y)'
+    ],
+    'description':
+        'Check if value x is smaller or equal to value y. Returns 1 if x is smaller than y, and 0 if not.',
+    'examples': [
+        '2 < 1+1',
+        '2 <= 1+1',
+        'a = 3.2',
+        'b = 6-2.8',
+        '(a < b)'
+    ],
+    'seealso': [
+        'equal', 'unequal', 'larger', 'smaller', 'largereq'
+    ]
+};
+
+math.docs.sqrt = {
+    'name': 'sqrt',
+    'category': 'Arithmetic',
+    'syntax': [
+        'sqrt(x)'
+    ],
+    'description':
+        'Compute the square root value. If x = y * y, then y is the square root of x.',
+    'examples': [
+        'sqrt(25)',
+        '5 * 5',
+        'sqrt(-1)'
+    ],
+    'seealso': [
+        'square',
+        'multiply'
+    ]
+};
+
+math.docs.square = {
+    'name': 'square',
+    'category': 'Arithmetic',
+    'syntax': [
+        'square(x)'
+    ],
+    'description':
+        'Compute the square of a value. The square of x is x * x.',
+    'examples': [
+        'square(3)',
+        'sqrt(9)',
+        '3^2',
+        '3 * 3'
+    ],
+    'seealso': [
+        'multiply',
+        'pow',
+        'sqrt',
+        'cube'
+    ]
+};
+
+math.docs.subtract = {
+    'name': 'subtract',
+    'category': 'Operators',
+    'syntax': [
+        'x - y',
+        'subtract(x, y)'
+    ],
+    'description': 'subtract two values.',
+    'examples': [
+        '5.3 - 2',
+        'ans + 2',
+        '2/3 - 1/6',
+        '2 * 3 - 3',
+        '2.1 km - 500m'
+    ],
+    'seealso': [
+        'add'
+    ]
+};
+
+math.docs.unary = {
+    'name': 'unary',
+    'category': 'Operators',
+    'syntax': [
+        '-x',
+        'unary(x)'
+    ],
+    'description':
+        'Inverse the sign of a value.',
+    'examples': [
+        '-4.5',
+        '-(-5.6)'
+    ],
+    'seealso': [
+        'add', 'subtract'
+    ]
+};
+
+math.docs.unequal = {
+    'name': 'unequal',
+    'category': 'Operators',
+    'syntax': [
+        'x != y',
+        'unequal(x, y)'
+    ],
+    'description':
+        'Check unequality of two values. Returns 1 if the values are unequal, and 0 if they are equal.',
+    'examples': [
+        '2+2 != 3',
+        '2+2 != 4',
+        'a = 3.2',
+        'b = 6-2.8',
+        'a != b',
+        '50cm != 0.5m',
+        '5 cm != 2 inch'
+    ],
+    'seealso': [
+        'equal', 'smaller', 'larger', 'smallereq', 'largereq'
+    ]
+};
+
+math.docs.xgcd = {
+    'name': 'xgcd',
+    'category': 'Arithmetic',
+    'syntax': [
+        'xgcd(a, b)'
+    ],
+    'description': 'Calculate the extended greatest common divisor for two values',
+    'examples': [
+        'xgcd(8, 12)',
+        'gcd(8, 12)',
+        'xgcd(36163, 21199)'
+    ],
+    'seealso': [ 'gcd', 'lcm' ]
+};
+
+math.docs.arg = {
+    'name': 'arg',
+    'category': 'Complex',
+    'syntax': [
+        'arg(x)'
+    ],
+    'description':
+        'Compute the argument of a complex value. If x = a+bi, the argument is computed as atan2(b, a).',
+    'examples': [
+        'arg(2 + 2i)',
+        'atan2(3, 2)',
+        'arg(2 - 3i)'
+    ],
+    'seealso': [
+        're',
+        'im',
+        'conj',
+        'abs'
+    ]
+};
+
+math.docs.conj = {
+    'name': 'conj',
+    'category': 'Complex',
+    'syntax': [
+        'conj(x)'
+    ],
+    'description':
+        'Compute the complex conjugate of a complex value. If x = a+bi, the complex conjugate is a-bi.',
+    'examples': [
+        'conj(2 + 3i)',
+        'conj(2 - 3i)',
+        'conj(-5.2i)'
+    ],
+    'seealso': [
+        're',
+        'im',
+        'abs',
+        'arg'
+    ]
+};
+
+math.docs.im = {
+    'name': 'im',
+    'category': 'Complex',
+    'syntax': [
+        'im(x)'
+    ],
+    'description': 'Get the imaginary part of a complex number.',
+    'examples': [
+        'im(2 + 3i)',
+        're(2 + 3i)',
+        'im(-5.2i)',
+        'im(2.4)'
+    ],
+    'seealso': [
+        're',
+        'conj',
+        'abs',
+        'arg'
+    ]
+};
+
+math.docs.re = {
+    'name': 're',
+    'category': 'Complex',
+    'syntax': [
+        're(x)'
+    ],
+    'description': 'Get the real part of a complex number.',
+    'examples': [
+        're(2 + 3i)',
+        'im(2 + 3i)',
+        're(-5.2i)',
+        're(2.4)'
+    ],
+    'seealso': [
+        'im',
+        'conj',
+        'abs',
+        'arg'
+    ]
+};
+
+math.docs.complex = {
+    'name': 'complex',
+    'category': 'Type',
+    'syntax': [
+        'complex()',
+        'complex(re, im)',
+        'complex(string)'
+    ],
+    'description':
+        'Create a complex number.',
+    'examples': [
+        'complex()',
+        'complex(2, 3)',
+        'complex("7 - 2i")'
+    ],
+    'seealso': [
+        'matrix', 'number', 'range', 'string', 'unit'
+    ]
+};
+
+math.docs.matrix = {
+    'name': 'matrix',
+    'category': 'Type',
+    'syntax': [
+        '[]',
+        '[a1, b1, ...; a2, b2, ...]',
+        'matrix()',
+        'matrix([...])'
+    ],
+    'description':
+        'Create a matrix.',
+    'examples': [
+        '[]',
+        '[1, 2, 3]',
+        '[1, 2, 3; 4, 5, 6]',
+        'matrix()',
+        'matrix([3, 4])'
+    ],
+    'seealso': [
+        'complex', 'number', 'range', 'string', 'unit'
+    ]
+};
+
+math.docs.number = {
+    'name': 'number',
+    'category': 'Type',
+    'syntax': [
+        'x',
+        'number(x)'
+    ],
+    'description':
+        'Create a number or convert a string or boolean into a number.',
+    'examples': [
+        '2',
+        '2e3',
+        '4.05',
+        'number(2)',
+        'number("7.2")',
+        'number(true)'
+    ],
+    'seealso': [
+        'complex', 'matrix', 'range', 'string', 'unit'
+    ]
+};
+
+math.docs.range = {
+    'name': 'range',
+    'category': 'Type',
+    'syntax': [
+        'start:end',
+        'start:step:end',
+        'range(start, end)',
+        'range(start, step, end)',
+        'range(string)'
+    ],
+    'description':
+        'Create a range.',
+    'examples': [
+        '1:5',
+        '3:-1:-3',
+        'range(3, 6)',
+        'range(0, 2, 10)',
+        'range("4:10")',
+        'a = [1, 2, 3; 4, 5, 6]',
+        'a(:, 2:3)'
+    ],
+    'seealso': [
+        'complex', 'matrix', 'number', 'string', 'unit'
+    ]
+};
+
+math.docs.string = {
+    'name': 'string',
+    'category': 'Type',
+    'syntax': [
+        '"text"',
+        'string(x)'
+    ],
+    'description':
+        'Create a string or convert a value to a string',
+    'examples': [
+        '"Hello World!"',
+        'string(4.2)',
+        'string(3 + 2i)'
+    ],
+    'seealso': [
+        'complex', 'matrix', 'number', 'range', 'unit'
+    ]
+};
+
+math.docs.unit = {
+    'name': 'unit',
+    'category': 'Type',
+    'syntax': [
+        'value unit',
+        'unit(value, unit)',
+        'unit(string)'
+    ],
+    'description':
+        'Create a unit.',
+    'examples': [
+        '5.5 mm',
+        '3 inch',
+        'unit(7.1, "kilogram")',
+        'unit("23 deg")'
+    ],
+    'seealso': [
+        'complex', 'matrix', 'number', 'range', 'string'
+    ]
+};
+
+math.docs.concat = {
+    'name': 'concat',
+    'category': 'Matrix',
+    'syntax': [
+        'concat(a, b, c, ...)',
+        'concat(a, b, c, ..., dim)'
+    ],
+    'description': 'Concatenate matrices. By default, the matrices are concatenated by the first dimension. The dimension on which to concatenate can be provided as last argument.',
+    'examples': [
+        'a = [1, 2; 5, 6]',
+        'b = [3, 4; 7, 8]',
+        'concat(a, b)',
+        '[a, b]',
+        'concat(a, b, 2)',
+        '[a; b]'
+    ],
+    'seealso': [
+        'det', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    ]
+};
+
+math.docs.det = {
+    'name': 'det',
+    'category': 'Matrix',
+    'syntax': [
+        'det(x)'
+    ],
+    'description': 'Calculate the determinant of a matrix',
+    'examples': [
+        'det([1, 2; 3, 4])',
+        'det([-2, 2, 3; -1, 1, 3; 2, 0, -1])'
+    ],
+    'seealso': [
+        'concat', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    ]
+};
+
+math.docs.diag = {
+    'name': 'diag',
+    'category': 'Matrix',
+    'syntax': [
+        'diag(x)',
+        'diag(x, k)'
+    ],
+    'description': 'Create a diagonal matrix or retrieve the diagonal of a matrix. When x is a vector, a matrix with the vector values on the diagonal will be returned. When x is a matrix, a vector with the diagonal values of the matrix is returned.When k is provided, the k-th diagonal will be filled in or retrieved, if k is positive, the values are placed on the super diagonal. When k is negative, the values are placed on the sub diagonal.',
+    'examples': [
+        'diag(1:4)',
+        'diag(1:4, 1)',
+        'a = [1, 2, 3; 4, 5, 6; 7, 8, 9]',
+        'diag(a)'
+    ],
+    'seealso': [
+        'concat', 'det', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    ]
+};
+
+math.docs.eye = {
+    'name': 'eye',
+    'category': 'Matrix',
+    'syntax': [
+        'eye(n)',
+        'eye(m, n)',
+        'eye([m, n])',
+        'eye'
+    ],
+    'description': 'Returns the identity matrix with size m-by-n. The matrix has ones on the diagonal and zeros elsewhere.',
+    'examples': [
+        'eye(3)',
+        'eye(3, 5)',
+        'a = [1, 2, 3; 4, 5, 6]',
+        'eye(size(a))'
+    ],
+    'seealso': [
+        'concat', 'det', 'diag', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    ]
+};
+
+math.docs.inv = {
+    'name': 'inv',
+    'category': 'Matrix',
+    'syntax': [
+        'inv(x)'
+    ],
+    'description': 'Calculate the inverse of a matrix',
+    'examples': [
+        'inv([1, 2; 3, 4])',
+        'inv(4)',
+        '1 / 4'
+    ],
+    'seealso': [
+        'concat', 'det', 'diag', 'eye', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    ]
+};
+
+math.docs.ones = {
+    'name': 'ones',
+    'category': 'Matrix',
+    'syntax': [
+        'ones(n)',
+        'ones(m, n)',
+        'ones(m, n, p, ...)',
+        'ones([m, n])',
+        'ones([m, n, p, ...])',
+        'ones'
+    ],
+    'description': 'Create a matrix containing ones.',
+    'examples': [
+        'ones(3)',
+        'ones(3, 5)',
+        'ones([2,3]) * 4.5',
+        'a = [1, 2, 3; 4, 5, 6]',
+        'ones(size(a))'
+    ],
+    'seealso': [
+        'concat', 'det', 'diag', 'eye', 'inv', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    ]
+};
+
+math.docs.size = {
+    'name': 'size',
+    'category': 'Matrix',
+    'syntax': [
+        'size(x)'
+    ],
+    'description': 'Calculate the size of a matrix.',
+    'examples': [
+        'size(2.3)',
+        'size("hello world")',
+        'a = [1, 2; 3, 4; 5, 6]',
+        'size(a)',
+        'size(1:6)'
+    ],
+    'seealso': [
+        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'squeeze', 'subset', 'transpose', 'zeros'
+    ]
+};
+
+math.docs.squeeze = {
+    'name': 'squeeze',
+    'category': 'Matrix',
+    'syntax': [
+        'squeeze(x)'
+    ],
+    'description': 'Remove singleton dimensions from a matrix.',
+    'examples': [
+        'a = zeros(1,3,2)',
+        'size(squeeze(a))',
+        'b = zeros(3,1,1)',
+        'size(squeeze(b))'
+    ],
+    'seealso': [
+        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'size', 'subset', 'transpose', 'zeros'
+    ]
+};
+
+math.docs.subset = {
+    'name': 'subset',
+    'category': 'Matrix',
+    'syntax': [
+        'value(index)',
+        'value(index) = replacement',
+        'subset(value, [index])',
+        'subset(value, [index], replacement)'
+    ],
+    'description': 'Get or set a subset of a matrix or string.',
+    'examples': [
+        'd = [1, 2; 3, 4]',
+        'e = []',
+        'e(1, 1:2) = [5, 6]',
+        'e(2, :) = [7, 8]',
+        'f = d * e',
+        'f(2, 1)',
+        'f(:, 1)'
+    ],
+    'seealso': [
+        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
+    ]
+};
+
+math.docs.transpose = {
+    'name': 'transpose',
+    'category': 'Matrix',
+    'syntax': [
+        'x\'',
+        'transpose(x)'
+    ],
+    'description': 'Transpose a matrix',
+    'examples': [
+        'a = [1, 2, 3; 4, 5, 6]',
+        'a\'',
+        'transpose(a)'
+    ],
+    'seealso': [
+        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'zeros'
+    ]
+};
+
+math.docs.zeros = {
+    'name': 'zeros',
+    'category': 'Matrix',
+    'syntax': [
+        'zeros(n)',
+        'zeros(m, n)',
+        'zeros(m, n, p, ...)',
+        'zeros([m, n])',
+        'zeros([m, n, p, ...])',
+        'zeros'
+    ],
+    'description': 'Create a matrix containing zeros.',
+    'examples': [
+        'zeros(3)',
+        'zeros(3, 5)',
+        'a = [1, 2, 3; 4, 5, 6]',
+        'zeros(size(a))'
+    ],
+    'seealso': [
+        'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose'
+    ]
+};
+
+math.docs.factorial = {
+    'name': 'factorial',
+    'category': 'Probability',
+    'syntax': [
+        'x!',
+        'factorial(x)'
+    ],
+    'description': 'Compute the factorial of a value',
+    'examples': [
+        '5!',
+        '5*4*3*2*1',
+        '3!'
+    ],
+    'seealso': []
+};
+
+math.docs.random = {
+    'name': 'random',
+    'category': 'Probability',
+    'syntax': [
+        'random()'
+    ],
+    'description':
+        'Return a random number between 0 and 1.',
+    'examples': [
+        'random()',
+        '100 * random()'
+    ],
+    'seealso': []
+};
+
+math.docs.max = {
+    'name': 'max',
+    'category': 'Statistics',
+    'syntax': [
+        'max(a, b, c, ...)'
+    ],
+    'description': 'Compute the maximum value of a list of values.',
+    'examples': [
+        'max(2, 3, 4, 1)',
+        'max(2.7, 7.1, -4.5, 2.0, 4.1)',
+        'min(2.7, 7.1, -4.5, 2.0, 4.1)'
+    ],
+    'seealso': [
+        //'sum',
+        //'prod',
+        //'avg',
+        //'var',
+        //'std',
+        'min'
+        //'median'
+    ]
+};
+
+math.docs.min = {
+    'name': 'min',
+    'category': 'Statistics',
+    'syntax': [
+        'min(a, b, c, ...)'
+    ],
+    'description': 'Compute the minimum value of a list of values.',
+    'examples': [
+        'min(2, 3, 4, 1)',
+        'min(2.7, 7.1, -4.5, 2.0, 4.1)',
+        'max(2.7, 7.1, -4.5, 2.0, 4.1)'
+    ],
+    'seealso': [
+        //'sum',
+        //'prod',
+        //'avg',
+        //'var',
+        //'std',
+        'max'
+        //'median'
+    ]
+};
+
+math.docs.acos = {
+    'name': 'acos',
+    'category': 'Trigonometry',
+    'syntax': [
+        'acos(x)'
+    ],
+    'description': 'Compute the inverse cosine of a value in radians.',
+    'examples': [
+        'acos(0.5)',
+        'acos(cos(2.3))'
+    ],
+    'seealso': [
+        'cos',
+        'acos',
+        'asin'
+    ]
+};
+
+math.docs.asin = {
+    'name': 'asin',
+    'category': 'Trigonometry',
+    'syntax': [
+        'asin(x)'
+    ],
+    'description': 'Compute the inverse sine of a value in radians.',
+    'examples': [
+        'asin(0.5)',
+        'asin(sin(2.3))'
+    ],
+    'seealso': [
+        'sin',
+        'acos',
+        'asin'
+    ]
+};
+
+math.docs.atan = {
+    'name': 'atan',
+    'category': 'Trigonometry',
+    'syntax': [
+        'atan(x)'
+    ],
+    'description': 'Compute the inverse tangent of a value in radians.',
+    'examples': [
+        'atan(0.5)',
+        'atan(tan(2.3))'
+    ],
+    'seealso': [
+        'tan',
+        'acos',
+        'asin'
+    ]
+};
+
+math.docs.atan2 = {
+    'name': 'atan2',
+    'category': 'Trigonometry',
+    'syntax': [
+        'atan2(y, x)'
+    ],
+    'description':
+        'Computes the principal value of the arc tangent of y/x in radians.',
+    'examples': [
+        'atan2(2, 2) / pi',
+        'angle = 60 deg in rad',
+        'x = cos(angle)',
+        'y = sin(angle)',
+        'atan2(y, x)'
+    ],
+    'seealso': [
+        'sin',
+        'cos',
+        'tan'
+    ]
+};
+
+math.docs.cos = {
+    'name': 'cos',
+    'category': 'Trigonometry',
+    'syntax': [
+        'cos(x)'
+    ],
+    'description': 'Compute the cosine of x in radians.',
+    'examples': [
+        'cos(2)',
+        'cos(pi / 4) ^ 2',
+        'cos(180 deg)',
+        'cos(60 deg)',
+        'sin(0.2)^2 + cos(0.2)^2'
+    ],
+    'seealso': [
+        'acos',
+        'sin',
+        'tan'
+    ]
+};
+
+math.docs.cot = {
+    'name': 'cot',
+    'category': 'Trigonometry',
+    'syntax': [
+        'cot(x)'
+    ],
+    'description': 'Compute the cotangent of x in radians. Defined as 1/tan(x)',
+    'examples': [
+        'cot(2)',
+        '1 / tan(2)'
+    ],
+    'seealso': [
+        'sec',
+        'csc',
+        'tan'
+    ]
+};
+
+math.docs.csc = {
+    'name': 'csc',
+    'category': 'Trigonometry',
+    'syntax': [
+        'csc(x)'
+    ],
+    'description': 'Compute the cosecant of x in radians. Defined as 1/sin(x)',
+    'examples': [
+        'csc(2)',
+        '1 / sin(2)'
+    ],
+    'seealso': [
+        'sec',
+        'cot',
+        'sin'
+    ]
+};
+
+math.docs.sec = {
+    'name': 'sec',
+    'category': 'Trigonometry',
+    'syntax': [
+        'sec(x)'
+    ],
+    'description': 'Compute the secant of x in radians. Defined as 1/cos(x)',
+    'examples': [
+        'sec(2)',
+        '1 / cos(2)'
+    ],
+    'seealso': [
+        'cot',
+        'csc',
+        'cos'
+    ]
+};
+
+math.docs.sin = {
+    'name': 'sin',
+    'category': 'Trigonometry',
+    'syntax': [
+        'sin(x)'
+    ],
+    'description': 'Compute the sine of x in radians.',
+    'examples': [
+        'sin(2)',
+        'sin(pi / 4) ^ 2',
+        'sin(90 deg)',
+        'sin(30 deg)',
+        'sin(0.2)^2 + cos(0.2)^2'
+    ],
+    'seealso': [
+        'asin',
+        'cos',
+        'tan'
+    ]
+};
+
+math.docs.tan = {
+    'name': 'tan',
+    'category': 'Trigonometry',
+    'syntax': [
+        'tan(x)'
+    ],
+    'description': 'Compute the tangent of x in radians.',
+    'examples': [
+        'tan(0.5)',
+        'sin(0.5) / cos(0.5)',
+        'tan(pi / 4)',
+        'tan(45 deg)'
+    ],
+    'seealso': [
+        'atan',
+        'sin',
+        'cos'
+    ]
+};
+
+math.docs['in'] = {
+    'name': 'in',
+    'category': 'Units',
+    'syntax': [
+        'x in unit',
+        'in(x, unit)'
+    ],
+    'description': 'Change the unit of a value.',
+    'examples': [
+        '5 inch in cm',
+        '3.2kg in g',
+        '16 bytes in bits'
+    ],
+    'seealso': []
+};
+
+math.docs.clone = {
+    'name': 'clone',
+    'category': 'Utils',
+    'syntax': [
+        'clone(x)'
+    ],
+    'description': 'Clone a variable. Creates a copy of primitive variables,and a deep copy of matrices',
+    'examples': [
+        'clone(3.5)',
+        'clone(2 - 4i)',
+        'clone(45 deg)',
+        'clone([1, 2; 3, 4])',
+        'clone("hello world")'
+    ],
+    'seealso': []
+};
+
+math.docs['eval'] = {
+    'name': 'eval',
+    'category': 'Utils',
+    'syntax': [
+        'eval(expression)',
+        'eval([expr1, expr2, expr3, ...])'
+    ],
+    'description': 'Evaluate an expression or an array with expressions.',
+    'examples': [
+        'eval("2 + 3")',
+        'eval("sqrt(" + 4 + ")")'
+    ],
+    'seealso': []
+};
+
+math.docs.format = {
+    'name': 'format',
+    'category': 'Utils',
+    'syntax': [
+        'format(value)'
+    ],
+    'description': 'Format a value of any type as string.',
+    'examples': [
+        'format(2.3)',
+        'format(3 - 4i)',
+        'format([])'
+    ],
+    'seealso': []
+};
+
+math.docs.help = {
+    'name': 'help',
+    'category': 'Utils',
+    'syntax': [
+        'help(object)'
+    ],
+    'description': 'Display documentation on a function or data type.',
+    'examples': [
+        'help("sqrt");',
+        'help("complex");'
+    ],
+    'seealso': []
+};
+
+math.docs['import'] = {
+    'name': 'import',
+    'category': 'Utils',
+    'syntax': [
+        'import(string)'
+    ],
+    'description': 'Import functions from a file.',
+    'examples': [
+        'import("numbers")',
+        'import("./mylib.js")'
+    ],
+    'seealso': []
+};
+
+math.docs['typeof'] = {
+    'name': 'typeof',
+    'category': 'Utils',
+    'syntax': [
+        'typeof(x)'
+    ],
+    'description': 'Get the type of a variable.',
+    'examples': [
+        'typeof(3.5)',
+        'typeof(2 - 4i)',
+        'typeof(45 deg)',
+        'typeof("hello world")'
+    ],
+    'seealso': []
+};
+
 /**
- * Compatibility functions for older JavaScript engines
+ * Compatibility shims for legacy JavaScript engines
  */
 
 // Internet Explorer 8 and older does not support Array.indexOf,
@@ -10048,6 +11764,9 @@ if (!Function.prototype.bind) {
     };
 }
 
+/**
+ * math.js library initialization
+ */
 
 // initialise the Chain prototype with all functions and constants in math
 for (var prop in math) {

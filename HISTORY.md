@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## version 0.9.2
+## 2013-07-08, version 0.10.0
 
 - For complex calculations, all functions now automatically replace results
   having an imaginary part of zero with a Number. (`2i * 2i` now returns a

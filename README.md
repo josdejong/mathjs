@@ -520,7 +520,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.subtract(x, y)
 - math.sqrt(x)
 - math.square(x)
-- math.unaryminus(x)
+- math.unary(x)
 - math.unequal(x)
 - math.xgcd(a, b)
 
@@ -710,6 +710,21 @@ execute tests.
 To execute tests for the library, run:
 
     npm test
+
+
+## Contribute
+
+We can't do this alone. Contributions to the math.js library are very welcome!
+You can contribute in different ways: spread the word, report bugs, come up with
+ideas and suggestions, and contribute to the code.
+
+There are a few preferences regarding code contributions:
+
+- Send pull requests to the `develop` branch, not the `master` branch.
+- Only commit changes done in the source files under `src`, not to the library
+  builds `math.js` and `math.min.js`.
+
+Thanks!
 
 
 ## Roadmap
