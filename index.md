@@ -6,8 +6,8 @@ title: Home
 # An extensive math library for JavaScript and Node.js
 
 Math.js is an extensive math library for JavaScript and Node.js.
-It features real and complex numbers, units, matrices, a large set of
-mathematical functions, and a flexible expression parser.
+It features a flexible expression parser and offers an integrated solution
+to work with real and complex numbers, units, and matrices.
 Powerful and easy to use.
 
 
@@ -92,19 +92,19 @@ The latest version of math.js can be downloaded below:
     <tr>
         <td>
             <a href="js/lib/math.js" target="_blank">Development
-                (version <span class="version">0.9.1</span>)</a>
+                (version <span class="version">0.10.0</span>)</a>
         </td>
         <td>
-            <span id="development-size">279 kB</span>, uncompressed with comments
+            <span id="development-size">316 kB</span>, uncompressed with comments
         </td>
     </tr>
     <tr>
         <td>
             <a href="js/lib/math.min.js" target="_blank">Production
-                (version <span class="version">0.9.1</span>)</a>
+                (version <span class="version">0.10.0</span>)</a>
         </td>
         <td>
-            <span id="production-size">19 kB</span>, minified and gzipped
+            <span id="production-size">25 kB</span>, minified and gzipped
         </td>
     </tr>
 </table>
