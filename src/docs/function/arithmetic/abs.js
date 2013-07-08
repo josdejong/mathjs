@@ -1,13 +1,13 @@
 math.docs.abs = {
-    "name": "abs",
-    "category": "Arithmetic",
-    "syntax": [
-        "abs(x)"
+    'name': 'abs',
+    'category': 'Arithmetic',
+    'syntax': [
+        'abs(x)'
     ],
-    "description": "Compute the absolute value.",
-    "examples": [
-        "abs(3.5)",
-        "abs(-4.2)"
+    'description': 'Compute the absolute value.',
+    'examples': [
+        'abs(3.5)',
+        'abs(-4.2)'
     ],
-    "seealso": ["sign"]
+    'seealso': ['sign']
 };
