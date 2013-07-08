@@ -9,8 +9,10 @@ https://github.com/josdejong/mathjs
   Number `-4` instead of a Complex `-4 + 0i`).
 - Implemented support for injecting custom node handlers in the parser. Can be
   used for example to implement a node handler for plotting a graph.
+- Implemented end user documentation and a new `help` function.
 - Functions `size` and `squeeze` now return a Matrix instead of an Array as
   output on Matrix input.
+- Added a constant tau (2 * pi). Thanks Zak Zibrat (palimpsests).
 - Fixed a bug in determining node dependencies in function assignments.
 
 

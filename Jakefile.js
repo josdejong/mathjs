@@ -40,7 +40,6 @@ task('build', ['concat', 'minify']);
 desc('Concatenate all source files into one file');
 task('concat', function () {
     var header = util.read(HEADER);
-    var docs = buildDocs();
     var result = util.concat({
         src: [
             './src/namespace.js',
@@ -61,14 +60,15 @@ task('concat', function () {
             './src/expr/Scope.js',
             './src/expr/Parser.js',
             './src/function/**/*.js',
-            './src/compatibility.js',
+            './src/docs/**/*.js',
+            './src/shim.js',
             './src/init.js',
             './src/exports.js'
         ],
         dest: MATHJS,
         header: header + '\n(function() {\n',
         separator: '\n',
-        footer: docs + '\n})();\n'
+        footer: '\n})();\n'
     });
 
     updateVersion(MATHJS);
@@ -94,34 +94,6 @@ task('minify', ['concat'], function () {
         MATHJS +     ' (' + filesize(util.read(result.src[0]).length, 1) + ') to ' +
         MATHJS_MIN + ' (' + filesize(result.code.length, 1) + ')');
 });
-
-/**
- * Build docs.
- * Reads all *.json files in src/docs, and creates JavaScript code from it
- * where all docs are put in a single JSON object in math.docs.
- * @return {String} docs
- */
-function buildDocs () {
-    var filelist = new jake.FileList();
-    filelist.include([
-        './src/docs/**/*.json'
-    ]);
-    var files = filelist.toArray();
-
-    // generate a single JSON object with all docs
-    var docs = {};
-    files.forEach(function (file) {
-        var content = String(util.read(file)).trim();
-        if (content) {
-            var doc = JSON.parse(content);
-            docs[doc.name] = doc;
-        }
-    });
-
-    return '/**\n * Documentation\n */\n' +
-        'math.docs = ' + JSON.stringify(docs, null, 4) + ';' +
-        '\n';
-}
 
 /**
  * test task

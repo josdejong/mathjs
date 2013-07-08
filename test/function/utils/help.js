@@ -8,7 +8,7 @@ assert.ok(doc instanceof math.type.Help);
 assert.deepEqual(doc, math.docs.sin);
 
 // names to ignore
-var ignore = [];
+var ignore = ['workspace', 'parse'];
 
 // test whether all functions are documented
 var undocumented = [];

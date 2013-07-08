@@ -1,3 +1,6 @@
+/**
+ * math.js library initialization
+ */
 
 // initialise the Chain prototype with all functions and constants in math
 for (var prop in math) {
