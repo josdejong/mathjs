@@ -57,7 +57,7 @@ OperatorNode.prototype.toString = function() {
     var params = this.params;
 
     // special case: unary minus
-    if (this.fn === math.unaryminus) {
+    if (this.fn === math.unary) {
         return '-' + params[0].toString();
     }
 

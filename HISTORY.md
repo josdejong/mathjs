@@ -13,6 +13,7 @@ https://github.com/josdejong/mathjs
 - Functions `size` and `squeeze` now return a Matrix instead of an Array as
   output on Matrix input.
 - Added a constant tau (2 * pi). Thanks Zak Zibrat (palimpsests).
+- Renamed function `unaryminus` to `unary`.
 - Fixed a bug in determining node dependencies in function assignments.
 
 

@@ -13,12 +13,12 @@ assert.equal(math.arg(math.complex('0 - i')) / math.pi, -0.5);
 assert.equal(math.arg(math.complex('1 - i')) / math.pi, -0.25);
 assert.equal(math.arg(math.i) / math.pi, 0.5);
 assert.deepEqual(math.divide(math.arg([
-    math.i, math.unaryminus(math.i), math.add(1,math.i)
+    math.i, math.unary(math.i), math.add(1,math.i)
 ]), math.pi), [
     0.5, -0.5, 0.25
 ]);
 assert.deepEqual(math.matrix(math.divide(math.arg([
-    math.i, math.unaryminus(math.i), math.add(1,math.i)
+    math.i, math.unary(math.i), math.add(1,math.i)
 ]), math.pi)).valueOf(), [
     0.5, -0.5, 0.25
 ]);

@@ -701,7 +701,7 @@
     function parse_multiplydivide (scope) {
         var node, operators, name, fn, params;
 
-        node = parse_unaryminus(scope);
+        node = parse_unary(scope);
 
         operators = {
             '*': 'multiply',
@@ -717,7 +717,7 @@
             fn = math[operators[name]];
 
             getToken();
-            params = [node, parse_unaryminus(scope)];
+            params = [node, parse_unary(scope)];
             node = new OperatorNode(name, fn, params);
         }
 
@@ -730,12 +730,12 @@
      * @return {Node} node
      * @private
      */
-    function parse_unaryminus (scope) {
+    function parse_unary (scope) {
         var name, fn, params;
 
         if (token == '-') {
             name = token;
-            fn = math.unaryminus;
+            fn = math.unary;
             getToken();
             params = [parse_pow(scope)];
 

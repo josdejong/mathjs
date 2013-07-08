@@ -79,7 +79,7 @@ math.inv = function inv (x) {
 function _inv (matrix, rows, cols){
     var r, s, f, value, temp,
         add = math.add,
-        unaryminus = math.unaryminus,
+        unary = math.unary,
         multiply = math.multiply,
         divide = math.divide;
 
@@ -102,10 +102,10 @@ function _inv (matrix, rows, cols){
         return [
             [
                 divide(matrix[1][1], det),
-                divide(unaryminus(matrix[0][1]), det)
+                divide(unary(matrix[0][1]), det)
             ],
             [
-                divide(unaryminus(matrix[1][0]), det),
+                divide(unary(matrix[1][0]), det),
                 divide(matrix[0][0], det)
             ]
         ];
@@ -152,7 +152,7 @@ function _inv (matrix, rows, cols){
                 if(r != c) {
                     // eliminate value at column c and row r
                     if (Ar[c] != 0) {
-                        f = divide(unaryminus(Ar[c]), Ac[c]);
+                        f = divide(unary(Ar[c]), Ac[c]);
 
                         // add (f * row c) to row r to eliminate the value
                         // at column c

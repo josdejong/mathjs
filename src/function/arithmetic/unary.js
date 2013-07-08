@@ -2,16 +2,16 @@
  * Inverse the sign of a value.
  *
  *     -x
- *     unaryminus(x)
+ *     unary(x)
  *
  * For matrices, the function is evaluated element wise.
  *
  * @param  {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-math.unaryminus = function unaryminus(x) {
+math.unary = function unary(x) {
     if (arguments.length != 1) {
-        throw newArgumentsError('unaryminus', arguments.length, 1);
+        throw newArgumentsError('unary', arguments.length, 1);
     }
 
     if (isNumber(x)) {
@@ -30,13 +30,18 @@ math.unaryminus = function unaryminus(x) {
     }
 
     if (x instanceof Array || x instanceof Matrix) {
-        return util.map(x, math.unaryminus);
+        return util.map(x, math.unary);
     }
 
     if (x.valueOf() !== x) {
         // fallback on the objects primitive value
-        return math.unaryminus(x.valueOf());
+        return math.unary(x.valueOf());
     }
 
-    throw newUnsupportedTypeError('unaryminus', x);
+    throw newUnsupportedTypeError('unary', x);
+};
+
+// TODO: deprecated since version  0.10.0, cleanup some day
+math.unaryminus = function unaryminus(x) {
+    throw new Error('Function unaryminus is deprecated, use unary instead');
 };

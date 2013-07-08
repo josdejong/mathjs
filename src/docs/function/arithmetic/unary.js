@@ -1,9 +1,9 @@
-math.docs.unaryminus = {
-    'name': 'unaryminus',
+math.docs.unary = {
+    'name': 'unary',
     'category': 'Operators',
     'syntax': [
         '-x',
-        'unaryminus(x)'
+        'unary(x)'
     ],
     'description':
         'Inverse the sign of a value.',
