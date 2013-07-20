@@ -59,7 +59,8 @@ math.select(<span class="number">3</span>)
     <div class="right">
         <h1>Demo</h1>
         <p>
-            Try the expression parser below.<br><br>
+            Try the expression parser below.
+            See <a href="http://mathnotepad.com/">Math Notepad</a> for a full application.<br>
         </p>
         <div id="commandline">loading...</div>
         <script type="text/javascript">
