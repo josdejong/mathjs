@@ -27,8 +27,7 @@ Powerful and easy to use.
         <p>
             Here some example code demonstrating how to use the library.
             More examples are available
-            <a href="https://github.com/josdejong/mathjs/tree/master/examples/"
-                target="_blank">here</a>.
+            <a href="https://github.com/josdejong/mathjs/tree/master/examples/" target="_blank">here</a>.
         </p>
         <pre id="example">
 <span class="comment">// load math.js</span>
