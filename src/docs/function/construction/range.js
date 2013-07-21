@@ -17,7 +17,7 @@ math.docs.range = {
         'range(0, 2, 10)',
         'range("4:10")',
         'a = [1, 2, 3; 4, 5, 6]',
-        'a(:, 2:3)'
+        'a(:, 1:2)'
     ],
     'seealso': [
         'boolean', 'complex', 'matrix', 'number', 'string', 'unit'

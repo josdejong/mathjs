@@ -620,19 +620,19 @@ var util = (function () {
     };
 
     /**
-     * Test whether index is an integer number with index >= 1 and index <= max
-     * @param {*} index       One-based index
-     * @param {Number} [max]  One-based maximum value
+     * Test whether index is an integer number with index >= 0 and index < length
+     * @param {*} index         Zero-based index
+     * @param {Number} [length] Length of the array
      */
-    util.validateIndex = function validateIndex (index, max) {
+    util.validateIndex = function validateIndex (index, length) {
         if (!isNumber(index) || !isInteger(index)) {
             throw new TypeError('Index must be an integer (value: ' + index + ')');
         }
-        if (index < 1) {
-            throw new RangeError('Index out of range (' + index + ' < 1)');
+        if (index < 0) {
+            throw new RangeError('Index out of range (' + index + ' < 0)');
         }
-        if (max && index > max) {
-            throw new RangeError('Index out of range (' + index + ' > ' + max +  ')');
+        if (length !== undefined && index >= length) {
+            throw new RangeError('Index out of range (' + index + ' >= ' + length +  ')');
         }
     };
 

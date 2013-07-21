@@ -43,20 +43,22 @@ print(d);                                   // [[1, 2], [3, 4]]
 var e = math.matrix([[5, 6], [1, 1]]);
 print(e);                                   // [[5, 6], [1, 1]]
 
-// set d submatrix
-e.set([2, [1, 2]], [[7, 8]]);
+// set d submatrix.
+// Matrix indexes are zero-based.
+e.set([1, [0, 1]], [[7, 8]]);
 print(e);                                   // [[5, 6], [7, 8]]
 var f = math.multiply(d, e);
 print(f);                                   // [[19, 22], [43, 50]]
-var g = f.get([2, 1]);
+var g = f.get([1, 0]);
 print(g);                                   // 43
 console.log();
 
 // get d sub matrix
+// Matrix indexes are zero-based.
 console.log('get a sub matrix');
 var h = math.diag(math.range(1,3));
 print(h);                                   // [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
-print(h.get([[2, 3], [2, 3]]));             // [[2, 0], [0, 3]]
+print(h.get([[1, 2], [1, 2]]));             // [[2, 0], [0, 3]]
 console.log();
 
 // resize d multi dimensional matrix
@@ -68,7 +70,7 @@ print(i.size());                            // [2, 2, 2]
 i.resize([2, 2]);
 print(i);                                   // [[0, 0], [0, 0]]
 print(i.size());                            // [2, 2]
-i.set([3, 2], 6);
+i.set([2, 1], 6);
 print(i);                                   // [[0, 0], [0, 0], [0, 6]]
 print(i.size());                            // [3, 2]
 console.log();
@@ -85,9 +87,9 @@ console.log('use the expression parser');
 var parser = math.parser();
 print(parser.eval('d = [1, 2; 3, 4]'));     // [[1, 2], [3, 4]]
 print(parser.eval('e = zeros(2, 2)'));      // [[0, 0], [0, 0]]
-print(parser.eval('e(1, 1:2) = [5, 6]'));   // [[5, 6], [0, 0]]
-print(parser.eval('e(2, :) = [7, 8]'));     // [[5, 6], [7, 8]]
+print(parser.eval('e(0, 0:1) = [5, 6]'));   // [[5, 6], [0, 0]]
+print(parser.eval('e(1, :) = [7, 8]'));     // [[5, 6], [7, 8]]
 print(parser.eval('f = d * e'));            // [[19, 22], [43, 50]]
-print(parser.eval('g = f(2, 1)'));          // 43
-print(parser.eval('g = f(:, 1)'));          // [[19], [43]]
+print(parser.eval('g = f(1, 0)'));          // 43
+print(parser.eval('g = f(:, 0)'));          // [[19], [43]]
 console.log();

@@ -90,7 +90,7 @@ function _getSubstring(str, index) {
     for (i = 0, len = index.length; i < len; i++) {
         var index_i = index[i];
         util.validateIndex(index_i, strLen);
-        substr += str.charAt(index_i - 1);  // index_i is one based
+        substr += str.charAt(index_i);  // index_i is zero based
     }
 
     return substr;
@@ -178,7 +178,7 @@ function _setSubstring(str, index, replacement) {
     for (i = 0, len = index.length; i < len; i++) {
         var index_i = index[i];
         util.validateIndex(index_i);
-        chars[index_i - 1] = replacement.charAt(i); // index_i is one based
+        chars[index_i] = replacement.charAt(i); // index_i is zero based
     }
 
     // initialize undefined characters with a space

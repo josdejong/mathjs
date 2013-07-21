@@ -15,7 +15,7 @@
  *     matix.size();              // [2, 2]
  *     matrix.resize([3, 2], 5);
  *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
- *     matrix.get([2,1])         // 3
+ *     matrix.get([1,2])          // 3 (indexes are zero-based)
  *
  * @param {Array | Matrix} [data]    A multi dimensional array
  */
@@ -50,21 +50,21 @@ math.type.Matrix = Matrix;
 
 /**
  * Get a value or a submatrix of the matrix.
- * @param {Array | Matrix} index    One-based index
+ * @param {Array | Matrix} index    Zero-based index
  */
 Matrix.prototype.get = function (index) {
     var isScalar;
     if (index instanceof Matrix) {
         // index is scalar when size==[n] or size==[1,1,...]
         isScalar = (index.size().length == 1) || !index.size().some(function (i) {
-            return (i != 1);
+            return (i != 0);
         });
         index = index.valueOf();
     }
     else if (index instanceof Array) {
         isScalar = !index.some(function (elem) {
             var size = math.size(elem);
-            return (size.length != 0) && (size != [1]);
+            return (size.length != 0) && (size != [0]);
         });
     }
     else {
@@ -100,13 +100,13 @@ Matrix.prototype.get = function (index) {
  * - index is a non-negative integer
  * - index does not exceed the dimensions of array
  * @param {Array} array
- * @param {Number} index   One-based index
+ * @param {Number} index   Zero-based index
  * @return {*} value
  * @private
  */
 function _get (array, index) {
     util.validateIndex(index, array.length);
-    return array[index - 1]; // one-based index
+    return array[index]; // zero-based index
 }
 
 /**
@@ -114,7 +114,7 @@ function _get (array, index) {
  * value in the matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Number[]} index   One-based index
+ * @param {Number[]} index   Zero-based index
  * @return {*} scalar
  * @private
  */
@@ -126,10 +126,10 @@ function _getScalar (data, index) {
 }
 
 /**
- * Get a submatrix of a one dimensional matrix.
+ * Get a submatrix of a zero dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index         One-based index
+ * @param {Array} index         Zero-based index
  * @return {Array} submatrix
  * @private
  */
@@ -153,7 +153,7 @@ function _getSubmatrix1D (data, index) {
  * Get a submatrix of a 2 dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index         One-based index
+ * @param {Array} index         Zero-based index
  * @return {Array} submatrix
  * @private
  */
@@ -201,7 +201,7 @@ function _getSubmatrix2D (data, index) {
  * Get a submatrix of a multi dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index         One-based index
+ * @param {Array} index         Zero-based index
  * @param {number} dim
  * @return {Array} submatrix
  * @private
@@ -228,24 +228,24 @@ function _getSubmatrix (data, index, dim) {
 
 /**
  * Replace a value or a submatrix in the matrix.
- * Indexes are one-based.
- * @param {Array | Matrix} index        One-based index
+ * Indexes are zero-based.
+ * @param {Array | Matrix} index        zero-based index
  * @param {*} submatrix
  * @return {Matrix} itself
  */
 Matrix.prototype.set = function (index, submatrix) {
     var isScalar;
     if (index instanceof Matrix) {
-        // index is scalar when size==[n] or size==[1,1,...]
+        // index is scalar when size==[n] or size==[0,0,...]
         isScalar = (index.size().length == 1) || !index.size().some(function (i) {
-            return (i != 1);
+            return (i != 0);
         });
         index = index.valueOf();
     }
     else if (index instanceof Array) {
         isScalar = !index.some(function (elem) {
             var size = math.size(elem);
-            return (size.length != 0) && (size != [1]);
+            return (size.length != 0) && (size != [0]);
         });
     }
     else {
@@ -291,7 +291,7 @@ Matrix.prototype.set = function (index, submatrix) {
  * Replace a single value in an array. The method tests whether index is a
  * non-negative integer
  * @param {Array} array
- * @param {Number} index   One-based index
+ * @param {Number} index   Zero-based index
  * @param {*} value
  * @private
  */
@@ -300,14 +300,14 @@ function _set (array, index, value) {
     if (value instanceof Array) {
         throw new TypeError('Dimension mismatch, value expected instead of array');
     }
-    array[index - 1] = value; // one-based index
+    array[index] = value; // zero-based index
 }
 
 /**
  * Replace a single value in a multi dimensional matrix
  * @param {Array} data
  * @param {Number[]} size
- * @param {Number[]} index  One-based index
+ * @param {Number[]} index  Zero-based index
  * @param {*} value
  * @private
  */
@@ -321,8 +321,8 @@ function _setScalar (data, size, index, value) {
     for (var i = 0; i < index.length; i++) {
         var index_i = index[i];
         util.validateIndex(index_i);
-        if ((size[i] == null) || (index_i > size[i])) {
-            size[i] = index_i;
+        if ((size[i] == null) || (index_i + 1 > size[i])) {
+            size[i] = index_i + 1; // size is index + 1 as index is zero-based
             resized = true;
         }
     }
@@ -334,37 +334,37 @@ function _setScalar (data, size, index, value) {
     var len = size.length;
     index.forEach(function (v, i) {
         if (i < len - 1) {
-            data = data[v - 1]; // one-based index
+            data = data[v]; // zero-based index
         }
         else {
-            data[v - 1] = value; // one-based index
+            data[v] = value; // zero-based index
         }
     });
 }
 
 /**
- * Replace a single value in a one dimensional matrix
+ * Replace a single value in a zero dimensional matrix
  * @param {Array} data
  * @param {Number[]} size
- * @param {Number[]} index      One-based index
+ * @param {Number[]} index      zero-based index
  * @param {*} value
  * @private
  */
 function _setScalar1D (data, size, index, value) {
     var row = index[0];
     util.validateIndex(row);
-    if (row > size[0]) {
-        util.resize(data, [row], 0);
-        size[0] = row;
+    if (row + 1 > size[0]) {
+        util.resize(data, [row + 1], 0); // size is index + 1 as index is zero-based
+        size[0] = row + 1;
     }
-    data[row - 1] = value; // one-based index
+    data[row] = value; // zero-based index
 }
 
 /**
  * Replace a single value in a two dimensional matrix
  * @param {Array} data
  * @param {Number[]} size
- * @param {Number[]} index  One-based index
+ * @param {Number[]} index  zero-based index
  * @param {*} value
  * @private
  */
@@ -375,26 +375,26 @@ function _setScalar2D (data, size, index, value) {
     util.validateIndex(col);
 
     var resized = false;
-    if (row > (size[0] || 0)) {
-        size[0] = row;
+    if (row + 1 > (size[0] || 0)) {
+        size[0] = row + 1;   // size is index + 1 as index is zero-based
         resized = true;
     }
-    if (col > (size[1] || 0)) {
-        size[1] = col;
+    if (col + 1 > (size[1] || 0)) {
+        size[1] = col + 1;   // size is index + 1 as index is zero-based
         resized = true;
     }
     if (resized) {
         util.resize(data, size, 0);
     }
 
-    data[row - 1][col - 1] = value; // one-based index
+    data[row][col] = value; // zero-based index
 }
 
 /**
  * Replace a submatrix of a multi dimensional matrix.
  * @param {Array} data
  * @param {Array} size
- * @param {Array} index     One-based index
+ * @param {Array} index     zero-based index
  * @param {number} dim
  * @param {Array} submatrix
  * @private
@@ -405,17 +405,17 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
     var recurse = function (dataIndex, subIndex) {
         if (last) {
             _set(data, dataIndex, submatrix[subIndex]);
-            if (dataIndex > (size[dim] || 0)) {
-                size[dim] = dataIndex;
+            if (dataIndex + 1 > (size[dim] || 0)) {
+                size[dim] = dataIndex + 1;
             }
         }
         else {
-            var child = data[dataIndex - 1]; // one-based index
+            var child = data[dataIndex]; // zero-based index
             if (!(child instanceof Array)) {
-                data[dataIndex - 1] = child = [child]; // one-based index
+                data[dataIndex] = child = [child]; // zero-based index
             }
-            if (dataIndex > (size[dim] || 0)) {
-                size[dim] = dataIndex;
+            if (dataIndex + 1 > (size[dim] || 0)) {
+                size[dim] = dataIndex + 1;
             }
             _setSubmatrix(child, size, index, dim + 1, submatrix[subIndex]);
         }
@@ -500,7 +500,7 @@ Matrix.prototype.map = function (callback) {
     var recurse = function (value, dim) {
         if (value instanceof Array) {
             return value.map(function (child, i) {
-                index[dim] = i + 1; // one-based index
+                index[dim] = i; // zero-based index
                 return recurse(child, dim + 1);
             });
         }
@@ -526,7 +526,7 @@ Matrix.prototype.forEach = function (callback) {
     var recurse = function (value, dim) {
         if (value instanceof Array) {
             value.forEach(function (child, i) {
-                index[dim] = i + 1; // one-based index
+                index[dim] = i; // zero-based index
                 recurse(child, dim + 1);
             });
         }

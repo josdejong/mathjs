@@ -4,6 +4,11 @@ https://github.com/josdejong/mathjs
 
 ## version 0.11.0-SNAPSHOT
 
+*WARNING: version 0.11 is incompatible with previous versions.*
+
+- Changed math.js from one-based to zero-based indexes.
+  - Getting and setting matrix subset is now zero-based.
+  - The dimension argument in function `concat` is now zero-based.
 - Improvements in the string output of function help.
 - Added constants `true` and `false`.
 - Added constructor function `boolean`.
@@ -148,7 +153,7 @@ https://github.com/josdejong/mathjs
 
 ## 2013-04-06, version 0.5.0
 
-*Note: version 0.5 is incompatible with previous versions.*
+*WARNING: version 0.5 is incompatible with previous versions.*
 
 - Implemented data types Matrix and Range.
 - Implemented matrix methods clone, concat, det, diag, eye, inv, ones, size,

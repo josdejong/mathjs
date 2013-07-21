@@ -46,11 +46,11 @@ print(math.square(selector));   // 0.44444
 // the functions get and set can be used to get or replace sub matrices
 var array = [[1, 2], [3, 4]];
 var v = math.select(array)
-    .get([2, 1]);
+    .get([1, 0]);
 print(v);                       // 3
 
 var m = math.select(array)
-    .set([1, 1], 8)
+    .set([0, 0], 8)
     .multiply(3)
     .done();
 print(m);                       // [[24, 6], [9, 12]]

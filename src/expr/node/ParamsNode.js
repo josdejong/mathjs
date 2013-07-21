@@ -66,7 +66,7 @@ ParamsNode.prototype.eval = function() {
             for (i = 0, len = this.params.length; i < len; i++) {
                 var paramScope = paramScopes[i];
                 if (paramScope) {
-                    paramScope.set('end', size[i]);
+                    paramScope.set('end', size[i] - 1); // zero-based end
                 }
             }
         }

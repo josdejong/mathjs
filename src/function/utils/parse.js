@@ -534,8 +534,8 @@
         var node, name, fn, params = [];
 
         if (token == ':') {
-            // implicit start=1
-            node = new ConstantNode(1);
+            // implicit start=0
+            node = new ConstantNode(0);
         }
         else {
             // explicit start

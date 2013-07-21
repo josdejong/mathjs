@@ -11,11 +11,11 @@ math.docs.subset = {
     'examples': [
         'd = [1, 2; 3, 4]',
         'e = []',
-        'e(1, 1:2) = [5, 6]',
-        'e(2, :) = [7, 8]',
+        'e(0, 0:1) = [5, 6]',
+        'e(1, :) = [7, 8]',
         'f = d * e',
-        'f(2, 1)',
-        'f(:, 1)'
+        'f(1, 0)',
+        'f(:, 0)'
     ],
     'seealso': [
         'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'

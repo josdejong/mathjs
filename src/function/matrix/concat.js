@@ -4,7 +4,7 @@
  *     math.concat(A, B, C, ...)
  *     math.concat(A, B, C, ..., dim)
  *
- * Where the optional dim is the one-based number of the dimension to be
+ * Where the optional dim is the zero-based number of the dimension to be
  * concatenated.
  *
  * @param {... Array | Matrix} args
@@ -13,7 +13,7 @@
 math.concat = function concat (args) {
     var i,
         len = arguments.length,
-        dim = -1,  // one-based dimension
+        dim = -1,  // zero-based dimension
         prevDim,
         asMatrix = false,
         matrices = [];  // contains multi dimensional arrays
@@ -31,7 +31,7 @@ math.concat = function concat (args) {
             prevDim = dim;
             dim = arg;
 
-            if (!isInteger(dim) || dim < 1) {
+            if (!isInteger(dim) || dim < 0) {
                 throw new TypeError('Dimension number must be a positive integer ' +
                     '(dim = ' + dim + ')');
             }
@@ -47,7 +47,7 @@ math.concat = function concat (args) {
             var size = math.size(arg).valueOf();
             matrices[i] = matrix;
             prevDim = dim;
-            dim = size.length;
+            dim = size.length - 1;
 
             // verify whether each of the matrices has the same number of dimensions
             if (i > 0 && dim != prevDim) {
@@ -66,7 +66,7 @@ math.concat = function concat (args) {
 
     var res = matrices.shift();
     while (matrices.length) {
-        res = _concat(res, matrices.shift(), dim - 1, 0);
+        res = _concat(res, matrices.shift(), dim, 0);
     }
 
     return asMatrix ? new Matrix(res) : res;

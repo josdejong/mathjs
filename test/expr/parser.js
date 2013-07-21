@@ -107,36 +107,36 @@ parser.set('a', matrix([
     [4,5,6],
     [7,8,9]
 ]));
-assert.deepEqual(parser.eval('a(2, :)'),        matrix([[4,5,6]]));
-assert.deepEqual(parser.eval('a(2, :2)'),       matrix([[4,5]]));
-assert.deepEqual(parser.eval('a(2, :end-1)'),   matrix([[4,5]]));
-assert.deepEqual(parser.eval('a(2, 2:)'),       matrix([[5,6]]));
-assert.deepEqual(parser.eval('a(2, 2:3)'),      matrix([[5,6]]));
-assert.deepEqual(parser.eval('a(2, 1:2:3)'),    matrix([[4,6]]));
-assert.deepEqual(parser.eval('a(:, 2)'),        matrix([[2],[5],[8]]));
-assert.deepEqual(parser.eval('a(:2, 2)'),       matrix([[2],[5]]));
-assert.deepEqual(parser.eval('a(:end-1, 2)'),   matrix([[2],[5]]));
-assert.deepEqual(parser.eval('a(2:, 2)'),       matrix([[5],[8]]));
-assert.deepEqual(parser.eval('a(2:3, 2)'),      matrix([[5],[8]]));
-assert.deepEqual(parser.eval('a(1:2:3, 2)'),    matrix([[2],[8]]));
+assert.deepEqual(parser.eval('a(1, :)'),        matrix([[4,5,6]]));
+assert.deepEqual(parser.eval('a(1, :1)'),       matrix([[4,5]]));
+assert.deepEqual(parser.eval('a(1, :end-1)'),   matrix([[4,5]]));
+assert.deepEqual(parser.eval('a(1, 1:)'),       matrix([[5,6]]));
+assert.deepEqual(parser.eval('a(1, 1:2)'),      matrix([[5,6]]));
+assert.deepEqual(parser.eval('a(1, 0:2:2)'),    matrix([[4,6]]));
+assert.deepEqual(parser.eval('a(:, 1)'),        matrix([[2],[5],[8]]));
+assert.deepEqual(parser.eval('a(:1, 1)'),       matrix([[2],[5]]));
+assert.deepEqual(parser.eval('a(:end-1, 1)'),   matrix([[2],[5]]));
+assert.deepEqual(parser.eval('a(1:, 1)'),       matrix([[5],[8]]));
+assert.deepEqual(parser.eval('a(1:2, 1)'),      matrix([[5],[8]]));
+assert.deepEqual(parser.eval('a(0:2:2, 1)'),    matrix([[2],[8]]));
 // TODO: implement and test support for Array (instead of Matrix)
 
 // test matrix resizing
 assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
-assert.deepEqual(parser.eval('a(1:3,1) = [1;2;3]'), matrix([[1],[2],[3]]));
-assert.deepEqual(parser.eval('a(:,2) = [4;5;6]'), matrix([[1,4],[2,5],[3,6]]));
+assert.deepEqual(parser.eval('a(0:2,0) = [1;2;3]'), matrix([[1],[2],[3]]));
+assert.deepEqual(parser.eval('a(:,1) = [4;5;6]'), matrix([[1,4],[2,5],[3,6]]));
 
 assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
-assert.deepEqual(parser.eval('a(1,3) = 3'), matrix([[0,0,3]]));
-assert.deepEqual(parser.eval('a(2,:) = [4,5,6]'), matrix([[0,0,3],[4,5,6]]));
+assert.deepEqual(parser.eval('a(0,2) = 3'), matrix([[0,0,3]]));
+assert.deepEqual(parser.eval('a(1,:) = [4,5,6]'), matrix([[0,0,3],[4,5,6]]));
 
 assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
-assert.deepEqual(parser.eval('a(3,1) = 3'), matrix([[0],[0],[3]]));
-assert.deepEqual(parser.eval('a(:,2) = [4;5;6]'), matrix([[0,4],[0,5],[3,6]]));
+assert.deepEqual(parser.eval('a(2,0) = 3'), matrix([[0],[0],[3]]));
+assert.deepEqual(parser.eval('a(:,1) = [4;5;6]'), matrix([[0,4],[0,5],[3,6]]));
 
 assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
-assert.deepEqual(parser.eval('a(1,1:3) = [1,2,3]'), matrix([[1,2,3]]));
-assert.deepEqual(parser.eval('a(2,:) = [4,5,6]'), matrix([[1,2,3],[4,5,6]]));
+assert.deepEqual(parser.eval('a(0,0:2) = [1,2,3]'), matrix([[1,2,3]]));
+assert.deepEqual(parser.eval('a(1,:) = [4,5,6]'), matrix([[1,2,3],[4,5,6]]));
 
 // test matrix sizes
 assert.ok(parser.eval('[1,2;3,4]') instanceof math.type.Matrix);
@@ -146,28 +146,28 @@ assert.deepEqual(m.valueOf(), [[1,2,3],[4,5,6]]);
 var b = parser.eval('[5, 6; 1, 1]');
 assert.deepEqual(b.size(), [2,2]);
 assert.deepEqual(b.valueOf(), [[5,6],[1,1]]);
-b.set([2, [1, 2]], [[7, 8]]);
+b.set([1, [0, 1]], [[7, 8]]);
 assert.deepEqual(b.size(), [2,2]);
 assert.deepEqual(b.valueOf(), [[5,6],[7,8]]);
 assert.deepEqual(parser.eval('[ ]').valueOf(), [[]]);
 
 // test matrix get/set submatrix
 parser.eval('a=[1,2;3,4]');
-parser.eval('a(1,1) = 100');
+parser.eval('a(0,0) = 100');
 assert.deepEqual(parser.get('a').size(), [2,2]);
 assert.deepEqual(parser.get('a').valueOf(), [[100,2],[3,4]]);
-parser.eval('a(2:3,2:3) = [10,11;12,13]');
+parser.eval('a(1:2,1:2) = [10,11;12,13]');
 assert.deepEqual(parser.get('a').size(), [3,3]);
 assert.deepEqual(parser.get('a').valueOf(), [[100,2,0],[3,10,11],[0,12,13]]);
 var a = parser.get('a');
-assert.deepEqual(a.get([math.range('1:3'), math.range('1:2')]).valueOf(), [[100,2],[3,10],[0,12]]);
-assert.deepEqual(parser.eval('a(1:3,1:2)').valueOf(), [[100,2],[3,10],[0,12]]);
+assert.deepEqual(a.get([math.range('0:2'), math.range('0:1')]).valueOf(), [[100,2],[3,10],[0,12]]);
+assert.deepEqual(parser.eval('a(0:2,0:1)').valueOf(), [[100,2],[3,10],[0,12]]);
 
 // test get/set matrix for 3d matrix
 assert.deepEqual(parser.eval('f=[1,2;3,4]'), matrix([[1,2],[3,4]]));
 assert.deepEqual(parser.eval('size(f)'), matrix([2,2]));
 /* TODO: doesn't work correctly
- assert.deepEqual(parser.eval('f(:,:,2)=[5,6;7,8]'), matrix([
+ assert.deepEqual(parser.eval('f(:,:,1)=[5,6;7,8]'), matrix([
  [
  [1,2],
  [3,4]
@@ -189,20 +189,20 @@ parser.set('f', matrix([
     ]
 ]));
 assert.deepEqual(parser.eval('size(f)'), matrix([2,2,2]));
-assert.deepEqual(parser.eval('f(:,:,1)'), matrix([[[1],[2]],[[3],[4]]])); // TODO: last dimension should be squeezed
-assert.deepEqual(parser.eval('f(:,:,2)'), matrix([[[5],[6]],[[7],[8]]])); // TODO: last dimension should be squeezed
-assert.deepEqual(parser.eval('f(:,2,:)'), matrix([[[2,6]],[[4,8]]]));
-assert.deepEqual(parser.eval('f(2,:,:)'), matrix([[[3,7],[4,8]]]));
+assert.deepEqual(parser.eval('f(:,:,0)'), matrix([[[1],[2]],[[3],[4]]])); // TODO: last dimension should be squeezed
+assert.deepEqual(parser.eval('f(:,:,1)'), matrix([[[5],[6]],[[7],[8]]])); // TODO: last dimension should be squeezed
+assert.deepEqual(parser.eval('f(:,1,:)'), matrix([[[2,6]],[[4,8]]]));
+assert.deepEqual(parser.eval('f(1,:,:)'), matrix([[[3,7],[4,8]]]));
 
 parser.eval('a=diag([1,2,3,4])');
-assert.deepEqual(parser.eval('a(3:end, 3:end)'), matrix([[3,0],[0,4]]));
-assert.deepEqual(parser.eval('a(3:end, 2:end)=9*ones(2,3)'), matrix([
+assert.deepEqual(parser.eval('a(2:end, 2:end)'), matrix([[3,0],[0,4]]));
+assert.deepEqual(parser.eval('a(2:end, 1:end)=9*ones(2,3)'), matrix([
     [1,0,0,0],
     [0,2,0,0],
     [0,9,9,9],
     [0,9,9,9]
 ]));
-assert.deepEqual(parser.eval('a(2:end-1, 2:end-1)'), matrix([[2,0],[9,9]]));
+assert.deepEqual(parser.eval('a(1:end-1, 1:end-1)'), matrix([[2,0],[9,9]]));
 
 
 // test matrix concatenation
@@ -278,7 +278,7 @@ assert.equal(n.eval(), 33);
 parser.remove('q');
 assert.throws(function () { n.eval(); });
 
-n = parser.parse('qq(1,1)=33');
+n = parser.parse('qq(0,0)=33');
 assert.throws(function () { n.eval(); });
 parser.eval('qq=[1,2;3,4]');
 assert.deepEqual(n.eval(), matrix([[33,2],[3,4]]));
