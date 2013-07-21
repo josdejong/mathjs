@@ -30,7 +30,7 @@ math.type.Selector = function Selector (value) {
         this.value = value.value;
     }
     else {
-        this.value = value || undefined;
+        this.value = value;
     }
 };
 
