@@ -16,6 +16,6 @@ math.docs.number = {
         'number(true)'
     ],
     'seealso': [
-        'complex', 'matrix', 'range', 'string', 'unit'
+        'boolean', 'complex', 'matrix', 'range', 'string', 'unit'
     ]
 };

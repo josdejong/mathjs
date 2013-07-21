@@ -15,6 +15,6 @@ math.docs.unit = {
         'unit("23 deg")'
     ],
     'seealso': [
-        'complex', 'matrix', 'number', 'range', 'string'
+        'boolean', 'complex', 'matrix', 'number', 'range', 'string'
     ]
 };

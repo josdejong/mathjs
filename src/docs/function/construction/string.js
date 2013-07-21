@@ -13,6 +13,6 @@ math.docs.string = {
         'string(3 + 2i)'
     ],
     'seealso': [
-        'complex', 'matrix', 'number', 'range', 'unit'
+        'boolean', 'complex', 'matrix', 'number', 'range', 'unit'
     ]
 };

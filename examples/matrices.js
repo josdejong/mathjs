@@ -4,14 +4,14 @@
 var math = require('../math.js');
 
 /**
- * Helper function to output d value in the console. Value will be formatted.
+ * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
     console.log(math.format(value));
 }
 
-// create matrices and arrays. d matrix is just d wrapper around an Array,
+// create matrices and arrays. a matrix is just a wrapper around an Array,
 // providing some handy utilities.
 console.log('create a matrix');
 var a = math.matrix([1, 4, 9, 16, 25]);
@@ -20,7 +20,7 @@ var b = math.ones([2, 3]);
 print(b);                                  // [[1, 1, 1], [1, 1, 1]]
 print(b.size());                           // [2, 3]
 
-// the Array data of d Matrix can be retrieved using valueOf()
+// the Array data of a Matrix can be retrieved using valueOf()
 var array = a.valueOf();
 print(array);                               // [1, 4, 9, 16, 25]
 

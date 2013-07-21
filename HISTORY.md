@@ -2,6 +2,16 @@
 https://github.com/josdejong/mathjs
 
 
+## version 0.11.0-SNAPSHOT
+
+- Improvements in the string output of function help.
+- Added constants `true` and `false`.
+- Added constructor function `boolean`.
+- Fixed function `select` not accepting `0` as input.
+  Thanks Elijah Manor (elijahmanor).
+- Some fixes in the end user documentation.
+
+
 ## 2013-07-08, version 0.10.0
 
 - For complex calculations, all functions now automatically replace results

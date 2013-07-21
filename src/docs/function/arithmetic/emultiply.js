@@ -1,6 +1,6 @@
 math.docs.emultiply = {
     'name': 'emultiply',
-    'category': 'Operator',
+    'category': 'Operators',
     'syntax': [
         'x .* y',
         'emultiply(x, y)'

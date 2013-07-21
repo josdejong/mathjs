@@ -429,6 +429,7 @@
      */
     function parse_function_assignment (scope) {
         // TODO: keyword 'function' must become a reserved keyword
+        // TODO: replace the 'function' keyword with an assignment operator '=>'
         if (token_type == TOKENTYPE.SYMBOL && token == 'function') {
             // get function name
             getToken();

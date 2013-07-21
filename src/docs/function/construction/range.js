@@ -20,6 +20,6 @@ math.docs.range = {
         'a(:, 2:3)'
     ],
     'seealso': [
-        'complex', 'matrix', 'number', 'string', 'unit'
+        'boolean', 'complex', 'matrix', 'number', 'string', 'unit'
     ]
 };

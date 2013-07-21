@@ -1,6 +1,6 @@
 math.docs.edivide = {
     'name': 'edivide',
-    'category': 'Operator',
+    'category': 'Operators',
     'syntax': [
         'x ./ y',
         'edivide(x, y)'

@@ -1,13 +1,15 @@
 /**
  * mathjs constants
  */
-math.pi        = Math.PI;
-math.e         = Math.E;
-math.tau       = Math.PI * 2;
-math.i         = new Complex(0, 1);
+math.pi         = Math.PI;
+math.e          = Math.E;
+math.tau        = Math.PI * 2;
+math.i          = new Complex(0, 1);
 
-math.Infinity   = Infinity;
-math.NaN        = NaN;
+math['Infinity']= Infinity;
+math['NaN']     = NaN;
+math['true']    = true;
+math['false']   = false;
 
 // uppercase constants (for compatibility with built-in Math)
 math.E          = Math.E;

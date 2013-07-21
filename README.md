@@ -533,6 +533,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 
 ### Construction
 
+- math.boolean(x)
 - math.complex(re, im)
 - math.matrix(x)
 - math.number(x)

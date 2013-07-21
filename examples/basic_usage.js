@@ -15,14 +15,14 @@ function print (value) {
 console.log('functions and constants');
 print(math.round(math.e, 3));           // 2.718
 print(math.atan2(3, -3) / math.pi);     // 0.75
-print(math.log(1000, 10));              // 3
+print(math.log(10000, 10));             // 4
 print(math.sqrt(-4));                   // 2i
 print(math.pow([[-1, 2], [3, 1]], 2));  // [[7, 0], [0, 7]]
 console.log();
 
 // expressions
 console.log('expressions');
-print(math.eval('1.2 / (2.3 + 0.7)'));  // 0.4
+print(math.eval('1.2 * (2 + 4.5)'));    // 7.8
 print(math.eval('5.08 cm in inch'));    // 2 inch
 print(math.eval('sin(45 deg) ^ 2'));    // 0.5
 print(math.eval('9 / 3 + 2i'));         // 3 + 2i

@@ -23,20 +23,20 @@ math.type.Help = Help;
  * @private
  */
 Help.prototype.toString = function () {
-    var desc = '';
+    var desc = '\n';
 
     if (this.name) {
-        desc += 'NAME\n' + this.name + '\n\n';
+        desc += 'Name: ' + this.name + '\n\n';
     }
     if (this.category) {
-        desc += 'CATEGORY\n' + this.category + '\n\n';
+        desc += 'Category: ' + this.category + '\n\n';
     }
     if (this.syntax) {
-        desc += 'SYNTAX\n' + this.syntax.join('\n') + '\n\n';
+        desc += 'Syntax:\n    ' + this.syntax.join('\n    ') + '\n\n';
     }
     if (this.examples) {
         var parser = math.parser();
-        desc += 'EXAMPLES\n';
+        desc += 'Examples:\n';
         for (var i = 0; i < this.examples.length; i++) {
             var expr = this.examples[i];
             var res;
@@ -46,14 +46,17 @@ Help.prototype.toString = function () {
             catch (e) {
                 res = e;
             }
-            desc += expr + '\n';
-            desc += '    ' + math.format(res) + '\n';
+            desc += '    ' + expr + '\n';
+            if (res && !(res instanceof Help)) {
+                desc += '        ' + math.format(res) + '\n';
+            }
         }
         desc += '\n';
     }
     if (this.seealso) {
-        desc += 'SEE ALSO\n' + this.seealso.join(', ') + '\n';
+        desc += 'See also: ' + this.seealso.join(', ') + '\n';
     }
+
 
     return desc;
 };

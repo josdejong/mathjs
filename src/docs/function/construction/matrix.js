@@ -17,6 +17,6 @@ math.docs.matrix = {
         'matrix([3, 4])'
     ],
     'seealso': [
-        'complex', 'number', 'range', 'string', 'unit'
+        'boolean', 'complex', 'number', 'range', 'string', 'unit'
     ]
 };

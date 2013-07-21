@@ -14,6 +14,6 @@ math.docs.complex = {
         'complex("7 - 2i")'
     ],
     'seealso': [
-        'matrix', 'number', 'range', 'string', 'unit'
+        'boolean', 'matrix', 'number', 'range', 'string', 'unit'
     ]
 };

@@ -22,9 +22,11 @@
 math.expr.Scope = function Scope(args) {
     /** @type {math.expr.Scope} */
     this.parentScope = null;
+    // TODO: rename parentScope to previousScope, add a nextScope, change Scope to a linked list node
 
     /** @type {math.expr.Scope[]} */
     this.subScopes = null;
+    // TODO: rename subScopes to childScopes (or childNodes?)
 
     /** @type {Object.<String, *>} */
     this.symbols = {};  // variables and functions

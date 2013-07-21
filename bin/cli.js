@@ -139,6 +139,8 @@ function runStream (input, output) {
         rl.prompt();
     }
 
+    // TODO: automatic insertion of 'ans' before operators like +, -, *, /
+
     rl.on('line', function(line) {
         var expr = line.trim();
 
