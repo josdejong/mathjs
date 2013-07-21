@@ -1,30 +1,12 @@
 // test parser
 
 var assert = require('assert'),
+    approx = require('../../tools/approx.js'),
     math = require('../../math.js'),
     parser = math.parser(),
     matrix = math.matrix,
     range = math.range,
     round = math.round;
-
-/**
- * Test whether two numbers are equal when rounded to 5 decimals
- * @param {Number} a
- * @param {Number} b
- */
-function approxEqual(a, b) {
-    assert.equal(round(a, 5), round(b, 5));
-}
-
-/**
- * Test whether all numbers in two objects objects are equal when rounded
- * to 5 decimals
- * @param {*} a
- * @param {*} b
- */
-function approxDeepEqual(a, b) {
-    assert.deepEqual(round(a, 5), round(b, 5));
-}
 
 // test precedence
 assert.equal(parser.eval('4-2+3'), 5);
@@ -88,7 +70,7 @@ assert.equal(parser.eval('a = 0.75'), 0.75);
 assert.equal(parser.eval('a + 2'), 2.75);
 assert.equal(parser.eval('a = 2'), 2);
 assert.equal(parser.eval('a + 2'), 4);
-approxEqual(parser.eval('pi * 2'), 6.283185307179586);
+approx.equal(parser.eval('pi * 2'), 6.283185307179586);
 parser.remove('a');
 assert.throws(function() {parser.eval('a + 2'); }); // TODO: throws an stack overflow
 
@@ -185,17 +167,17 @@ assert.deepEqual(parser.eval('a(1:3,1:2)').valueOf(), [[100,2],[3,10],[0,12]]);
 assert.deepEqual(parser.eval('f=[1,2;3,4]'), matrix([[1,2],[3,4]]));
 assert.deepEqual(parser.eval('size(f)'), matrix([2,2]));
 /* TODO: doesn't work correctly
-assert.deepEqual(parser.eval('f(:,:,2)=[5,6;7,8]'), matrix([
-    [
-        [1,2],
-        [3,4]
-    ],
-    [
-        [5,6],
-        [7,8]
-    ]
-]));
-*/
+ assert.deepEqual(parser.eval('f(:,:,2)=[5,6;7,8]'), matrix([
+ [
+ [1,2],
+ [3,4]
+ ],
+ [
+ [5,6],
+ [7,8]
+ ]
+ ]));
+ */
 parser.set('f', matrix([
     [
         [1,5],
