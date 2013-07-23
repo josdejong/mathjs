@@ -17,6 +17,11 @@ https://github.com/josdejong/mathjs
 - Some fixes in the end user documentation.
 
 
+## 2013-07-08, version 0.10.1
+
+- Fixed missing development dependency
+
+
 ## 2013-07-08, version 0.10.0
 
 - For complex calculations, all functions now automatically replace results
