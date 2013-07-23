@@ -36,13 +36,13 @@ Powerful and easy to use.
 <span class="comment">// functions and constants</span>
 math.round(math.e, <span class="number">3</span>);            <span class="comment">// 2.718</span>
 math.atan2(<span class="number">3</span>, <span class="number">-3</span>) / math.pi;      <span class="comment">// 0.75</span>
-math.log(<span class="number">1000</span>, <span class="number">10</span>);               <span class="comment">// 3</span>
+math.log(<span class="number">10000</span>, <span class="number">10</span>);              <span class="comment">// 4</span>
 math.sqrt(<span class="number">-4</span>);                    <span class="comment">// 2i</span>
 math.pow([[-1, 2], [3, 1]], 2);
      <span class="comment">// [[7, 0], [0, 7]]</span>
 
 <span class="comment">// expressions</span>
-math.eval(<span class="string">'1.2 / (2.3 + 0.7)'</span>);   <span class="comment">// 0.4</span>
+math.eval(<span class="string">'1.2 * (2 + 4.5)'</span>);     <span class="comment">// 7.8</span>
 math.eval(<span class="string">'5.08 cm in inch'</span>);     <span class="comment">// 2 inch</span>
 math.eval(<span class="string">'sin(45 deg) ^ 2'</span>);     <span class="comment">// 0.5</span>
 math.eval(<span class="string">'9 / 3 + 2i'</span>);          <span class="comment">// 3 + 2i</span>
@@ -92,16 +92,16 @@ The latest version of math.js can be downloaded below:
     <tr>
         <td>
             <a href="js/lib/math.js" target="_blank">Development
-                (version <span class="version">0.10.0</span>)</a>
+                (version <span class="version">0.11.1</span>)</a>
         </td>
         <td>
-            <span id="development-size">316 kB</span>, uncompressed with comments
+            <span id="development-size">319 kB</span>, uncompressed with comments
         </td>
     </tr>
     <tr>
         <td>
             <a href="js/lib/math.min.js" target="_blank">Production
-                (version <span class="version">0.10.0</span>)</a>
+                (version <span class="version">0.11.1</span>)</a>
         </td>
         <td>
             <span id="production-size">25 kB</span>, minified and gzipped
