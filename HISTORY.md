@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## 2013-07-23, version 0.11.1
+
+- Fixed missing development dependency
+
+
 ## 2013-07-23, version 0.11.0
 
 *WARNING: version 0.11 is incompatible with previous versions.*
@@ -15,11 +20,6 @@ https://github.com/josdejong/mathjs
 - Fixed function `select` not accepting `0` as input.
   Thanks Elijah Manor (elijahmanor).
 - Some fixes in the end user documentation.
-
-
-## 2013-07-08, version 0.10.1
-
-- Fixed missing development dependency
 
 
 ## 2013-07-08, version 0.10.0
