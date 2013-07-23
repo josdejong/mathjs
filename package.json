@@ -30,6 +30,7 @@
     "devDependencies": {
         "jake": ">= 0.5.9",
         "tap": ">= 0.4.3",
+        "numbers" : "0.4.0",
         "uglify-js": ">= 2.2.5",
         "dateable": ">= 0.1.2"
     },

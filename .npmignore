@@ -5,6 +5,7 @@ misc
 node_modules
 tools
 component.json
+bower.json
 Jakefile.js
 .idea
 .npmignore
