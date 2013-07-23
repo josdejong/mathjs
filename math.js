@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.10.0
- * @date    2013-07-08
+ * @version 0.11.0
+ * @date    2013-07-23
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -668,19 +668,19 @@ var util = (function () {
     };
 
     /**
-     * Test whether index is an integer number with index >= 1 and index <= max
-     * @param {*} index       One-based index
-     * @param {Number} [max]  One-based maximum value
+     * Test whether index is an integer number with index >= 0 and index < length
+     * @param {*} index         Zero-based index
+     * @param {Number} [length] Length of the array
      */
-    util.validateIndex = function validateIndex (index, max) {
+    util.validateIndex = function validateIndex (index, length) {
         if (!isNumber(index) || !isInteger(index)) {
             throw new TypeError('Index must be an integer (value: ' + index + ')');
         }
-        if (index < 1) {
-            throw new RangeError('Index out of range (' + index + ' < 1)');
+        if (index < 0) {
+            throw new RangeError('Index out of range (' + index + ' < 0)');
         }
-        if (max && index > max) {
-            throw new RangeError('Index out of range (' + index + ' > ' + max +  ')');
+        if (length !== undefined && index >= length) {
+            throw new RangeError('Index out of range (' + index + ' >= ' + length +  ')');
         }
     };
 
@@ -1175,20 +1175,20 @@ math.type.Help = Help;
  * @private
  */
 Help.prototype.toString = function () {
-    var desc = '';
+    var desc = '\n';
 
     if (this.name) {
-        desc += 'NAME\n' + this.name + '\n\n';
+        desc += 'Name: ' + this.name + '\n\n';
     }
     if (this.category) {
-        desc += 'CATEGORY\n' + this.category + '\n\n';
+        desc += 'Category: ' + this.category + '\n\n';
     }
     if (this.syntax) {
-        desc += 'SYNTAX\n' + this.syntax.join('\n') + '\n\n';
+        desc += 'Syntax:\n    ' + this.syntax.join('\n    ') + '\n\n';
     }
     if (this.examples) {
         var parser = math.parser();
-        desc += 'EXAMPLES\n';
+        desc += 'Examples:\n';
         for (var i = 0; i < this.examples.length; i++) {
             var expr = this.examples[i];
             var res;
@@ -1198,14 +1198,17 @@ Help.prototype.toString = function () {
             catch (e) {
                 res = e;
             }
-            desc += expr + '\n';
-            desc += '    ' + math.format(res) + '\n';
+            desc += '    ' + expr + '\n';
+            if (res && !(res instanceof Help)) {
+                desc += '        ' + math.format(res) + '\n';
+            }
         }
         desc += '\n';
     }
     if (this.seealso) {
-        desc += 'SEE ALSO\n' + this.seealso.join(', ') + '\n';
+        desc += 'See also: ' + this.seealso.join(', ') + '\n';
     }
+
 
     return desc;
 };
@@ -1236,7 +1239,7 @@ Help.prototype.toJSON = function () {
  *     matix.size();              // [2, 2]
  *     matrix.resize([3, 2], 5);
  *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
- *     matrix.get([2,1])         // 3
+ *     matrix.get([1,2])          // 3 (indexes are zero-based)
  *
  * @param {Array | Matrix} [data]    A multi dimensional array
  */
@@ -1271,21 +1274,21 @@ math.type.Matrix = Matrix;
 
 /**
  * Get a value or a submatrix of the matrix.
- * @param {Array | Matrix} index    One-based index
+ * @param {Array | Matrix} index    Zero-based index
  */
 Matrix.prototype.get = function (index) {
     var isScalar;
     if (index instanceof Matrix) {
         // index is scalar when size==[n] or size==[1,1,...]
         isScalar = (index.size().length == 1) || !index.size().some(function (i) {
-            return (i != 1);
+            return (i != 0);
         });
         index = index.valueOf();
     }
     else if (index instanceof Array) {
         isScalar = !index.some(function (elem) {
             var size = math.size(elem);
-            return (size.length != 0) && (size != [1]);
+            return (size.length != 0) && (size != [0]);
         });
     }
     else {
@@ -1321,13 +1324,13 @@ Matrix.prototype.get = function (index) {
  * - index is a non-negative integer
  * - index does not exceed the dimensions of array
  * @param {Array} array
- * @param {Number} index   One-based index
+ * @param {Number} index   Zero-based index
  * @return {*} value
  * @private
  */
 function _get (array, index) {
     util.validateIndex(index, array.length);
-    return array[index - 1]; // one-based index
+    return array[index]; // zero-based index
 }
 
 /**
@@ -1335,7 +1338,7 @@ function _get (array, index) {
  * value in the matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Number[]} index   One-based index
+ * @param {Number[]} index   Zero-based index
  * @return {*} scalar
  * @private
  */
@@ -1347,10 +1350,10 @@ function _getScalar (data, index) {
 }
 
 /**
- * Get a submatrix of a one dimensional matrix.
+ * Get a submatrix of a zero dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index         One-based index
+ * @param {Array} index         Zero-based index
  * @return {Array} submatrix
  * @private
  */
@@ -1374,7 +1377,7 @@ function _getSubmatrix1D (data, index) {
  * Get a submatrix of a 2 dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index         One-based index
+ * @param {Array} index         Zero-based index
  * @return {Array} submatrix
  * @private
  */
@@ -1422,7 +1425,7 @@ function _getSubmatrix2D (data, index) {
  * Get a submatrix of a multi dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index         One-based index
+ * @param {Array} index         Zero-based index
  * @param {number} dim
  * @return {Array} submatrix
  * @private
@@ -1449,24 +1452,24 @@ function _getSubmatrix (data, index, dim) {
 
 /**
  * Replace a value or a submatrix in the matrix.
- * Indexes are one-based.
- * @param {Array | Matrix} index        One-based index
+ * Indexes are zero-based.
+ * @param {Array | Matrix} index        zero-based index
  * @param {*} submatrix
  * @return {Matrix} itself
  */
 Matrix.prototype.set = function (index, submatrix) {
     var isScalar;
     if (index instanceof Matrix) {
-        // index is scalar when size==[n] or size==[1,1,...]
+        // index is scalar when size==[n] or size==[0,0,...]
         isScalar = (index.size().length == 1) || !index.size().some(function (i) {
-            return (i != 1);
+            return (i != 0);
         });
         index = index.valueOf();
     }
     else if (index instanceof Array) {
         isScalar = !index.some(function (elem) {
             var size = math.size(elem);
-            return (size.length != 0) && (size != [1]);
+            return (size.length != 0) && (size != [0]);
         });
     }
     else {
@@ -1512,7 +1515,7 @@ Matrix.prototype.set = function (index, submatrix) {
  * Replace a single value in an array. The method tests whether index is a
  * non-negative integer
  * @param {Array} array
- * @param {Number} index   One-based index
+ * @param {Number} index   Zero-based index
  * @param {*} value
  * @private
  */
@@ -1521,14 +1524,14 @@ function _set (array, index, value) {
     if (value instanceof Array) {
         throw new TypeError('Dimension mismatch, value expected instead of array');
     }
-    array[index - 1] = value; // one-based index
+    array[index] = value; // zero-based index
 }
 
 /**
  * Replace a single value in a multi dimensional matrix
  * @param {Array} data
  * @param {Number[]} size
- * @param {Number[]} index  One-based index
+ * @param {Number[]} index  Zero-based index
  * @param {*} value
  * @private
  */
@@ -1542,8 +1545,8 @@ function _setScalar (data, size, index, value) {
     for (var i = 0; i < index.length; i++) {
         var index_i = index[i];
         util.validateIndex(index_i);
-        if ((size[i] == null) || (index_i > size[i])) {
-            size[i] = index_i;
+        if ((size[i] == null) || (index_i + 1 > size[i])) {
+            size[i] = index_i + 1; // size is index + 1 as index is zero-based
             resized = true;
         }
     }
@@ -1555,37 +1558,37 @@ function _setScalar (data, size, index, value) {
     var len = size.length;
     index.forEach(function (v, i) {
         if (i < len - 1) {
-            data = data[v - 1]; // one-based index
+            data = data[v]; // zero-based index
         }
         else {
-            data[v - 1] = value; // one-based index
+            data[v] = value; // zero-based index
         }
     });
 }
 
 /**
- * Replace a single value in a one dimensional matrix
+ * Replace a single value in a zero dimensional matrix
  * @param {Array} data
  * @param {Number[]} size
- * @param {Number[]} index      One-based index
+ * @param {Number[]} index      zero-based index
  * @param {*} value
  * @private
  */
 function _setScalar1D (data, size, index, value) {
     var row = index[0];
     util.validateIndex(row);
-    if (row > size[0]) {
-        util.resize(data, [row], 0);
-        size[0] = row;
+    if (row + 1 > size[0]) {
+        util.resize(data, [row + 1], 0); // size is index + 1 as index is zero-based
+        size[0] = row + 1;
     }
-    data[row - 1] = value; // one-based index
+    data[row] = value; // zero-based index
 }
 
 /**
  * Replace a single value in a two dimensional matrix
  * @param {Array} data
  * @param {Number[]} size
- * @param {Number[]} index  One-based index
+ * @param {Number[]} index  zero-based index
  * @param {*} value
  * @private
  */
@@ -1596,26 +1599,26 @@ function _setScalar2D (data, size, index, value) {
     util.validateIndex(col);
 
     var resized = false;
-    if (row > (size[0] || 0)) {
-        size[0] = row;
+    if (row + 1 > (size[0] || 0)) {
+        size[0] = row + 1;   // size is index + 1 as index is zero-based
         resized = true;
     }
-    if (col > (size[1] || 0)) {
-        size[1] = col;
+    if (col + 1 > (size[1] || 0)) {
+        size[1] = col + 1;   // size is index + 1 as index is zero-based
         resized = true;
     }
     if (resized) {
         util.resize(data, size, 0);
     }
 
-    data[row - 1][col - 1] = value; // one-based index
+    data[row][col] = value; // zero-based index
 }
 
 /**
  * Replace a submatrix of a multi dimensional matrix.
  * @param {Array} data
  * @param {Array} size
- * @param {Array} index     One-based index
+ * @param {Array} index     zero-based index
  * @param {number} dim
  * @param {Array} submatrix
  * @private
@@ -1626,17 +1629,17 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
     var recurse = function (dataIndex, subIndex) {
         if (last) {
             _set(data, dataIndex, submatrix[subIndex]);
-            if (dataIndex > (size[dim] || 0)) {
-                size[dim] = dataIndex;
+            if (dataIndex + 1 > (size[dim] || 0)) {
+                size[dim] = dataIndex + 1;
             }
         }
         else {
-            var child = data[dataIndex - 1]; // one-based index
+            var child = data[dataIndex]; // zero-based index
             if (!(child instanceof Array)) {
-                data[dataIndex - 1] = child = [child]; // one-based index
+                data[dataIndex] = child = [child]; // zero-based index
             }
-            if (dataIndex > (size[dim] || 0)) {
-                size[dim] = dataIndex;
+            if (dataIndex + 1 > (size[dim] || 0)) {
+                size[dim] = dataIndex + 1;
             }
             _setSubmatrix(child, size, index, dim + 1, submatrix[subIndex]);
         }
@@ -1721,7 +1724,7 @@ Matrix.prototype.map = function (callback) {
     var recurse = function (value, dim) {
         if (value instanceof Array) {
             return value.map(function (child, i) {
-                index[dim] = i + 1; // one-based index
+                index[dim] = i; // zero-based index
                 return recurse(child, dim + 1);
             });
         }
@@ -1747,7 +1750,7 @@ Matrix.prototype.forEach = function (callback) {
     var recurse = function (value, dim) {
         if (value instanceof Array) {
             value.forEach(function (child, i) {
-                index[dim] = i + 1; // one-based index
+                index[dim] = i; // zero-based index
                 recurse(child, dim + 1);
             });
         }
@@ -2173,7 +2176,7 @@ math.type.Selector = function Selector (value) {
         this.value = value.value;
     }
     else {
-        this.value = value || undefined;
+        this.value = value;
     }
 };
 
@@ -2980,13 +2983,15 @@ Unit.UNITS = [
 /**
  * mathjs constants
  */
-math.pi        = Math.PI;
-math.e         = Math.E;
-math.tau       = Math.PI * 2;
-math.i         = new Complex(0, 1);
+math.pi         = Math.PI;
+math.e          = Math.E;
+math.tau        = Math.PI * 2;
+math.i          = new Complex(0, 1);
 
-math.Infinity   = Infinity;
-math.NaN        = NaN;
+math['Infinity']= Infinity;
+math['NaN']     = NaN;
+math['true']    = true;
+math['false']   = false;
 
 // uppercase constants (for compatibility with built-in Math)
 math.E          = Math.E;
@@ -3338,7 +3343,7 @@ ParamsNode.prototype.eval = function() {
             for (i = 0, len = this.params.length; i < len; i++) {
                 var paramScope = paramScopes[i];
                 if (paramScope) {
-                    paramScope.set('end', size[i]);
+                    paramScope.set('end', size[i] - 1); // zero-based end
                 }
             }
         }
@@ -3775,7 +3780,7 @@ UpdateNode.prototype.eval = function() {
             for (var i = 0, len = this.params.length; i < len; i++) {
                 var paramScope = paramScopes[i];
                 if (paramScope) {
-                    paramScope.set('end', size[i]);
+                    paramScope.set('end', size[i] - 1);
                 }
             }
         }
@@ -3954,9 +3959,11 @@ FunctionNode.prototype.toString = function() {
 math.expr.Scope = function Scope(args) {
     /** @type {math.expr.Scope} */
     this.parentScope = null;
+    // TODO: rename parentScope to previousScope, add a nextScope, change Scope to a linked list node
 
     /** @type {math.expr.Scope[]} */
     this.subScopes = null;
+    // TODO: rename subScopes to childScopes (or childNodes?)
 
     /** @type {Object.<String, *>} */
     this.symbols = {};  // variables and functions
@@ -6150,6 +6157,48 @@ math.re = function re(x) {
 };
 
 /**
+ * Create a boolean or convert a string or number to a boolean.
+ * In case of a number, true is returned for non-zero numbers, and false in
+ * case of zero.
+ * Strings can be 'true' or 'false', or can contain a number.
+ * @param {String | Number | Boolean} value
+ * @return {Boolean} bool
+ */
+math['boolean'] = function (value) {
+    if (arguments.length != 1) {
+        throw newArgumentsError('boolean', arguments.length, 0, 1);
+    }
+
+    if (value === 'true' || value === true) {
+        return true;
+    }
+    else if (value === 'false' || value === false) {
+        return false;
+    }
+    else if (isNumber(value)) {
+        return (value !== 0);
+    }
+    else if (isString(value)) {
+        // try case insensitive
+        var lcase = value.toLowerCase();
+        if (lcase === 'true') {
+            return true;
+        }
+        else if (lcase === 'false') {
+            return false;
+        }
+
+        // try whether a number
+        var num = Number(value);
+        if (value != '' && !isNaN(num)) {
+            return (num !== 0);
+        }
+    }
+
+    throw new SyntaxError(value.toString() + ' is no valid boolean');
+};
+
+/**
  * Create a complex value. Depending on the passed arguments, the function
  * will create and return a new math.type.Complex object.
  *
@@ -6471,7 +6520,7 @@ math.workspace = function () {
  *     math.concat(A, B, C, ...)
  *     math.concat(A, B, C, ..., dim)
  *
- * Where the optional dim is the one-based number of the dimension to be
+ * Where the optional dim is the zero-based number of the dimension to be
  * concatenated.
  *
  * @param {... Array | Matrix} args
@@ -6480,7 +6529,7 @@ math.workspace = function () {
 math.concat = function concat (args) {
     var i,
         len = arguments.length,
-        dim = -1,  // one-based dimension
+        dim = -1,  // zero-based dimension
         prevDim,
         asMatrix = false,
         matrices = [];  // contains multi dimensional arrays
@@ -6498,7 +6547,7 @@ math.concat = function concat (args) {
             prevDim = dim;
             dim = arg;
 
-            if (!isInteger(dim) || dim < 1) {
+            if (!isInteger(dim) || dim < 0) {
                 throw new TypeError('Dimension number must be a positive integer ' +
                     '(dim = ' + dim + ')');
             }
@@ -6514,7 +6563,7 @@ math.concat = function concat (args) {
             var size = math.size(arg).valueOf();
             matrices[i] = matrix;
             prevDim = dim;
-            dim = size.length;
+            dim = size.length - 1;
 
             // verify whether each of the matrices has the same number of dimensions
             if (i > 0 && dim != prevDim) {
@@ -6533,7 +6582,7 @@ math.concat = function concat (args) {
 
     var res = matrices.shift();
     while (matrices.length) {
-        res = _concat(res, matrices.shift(), dim - 1, 0);
+        res = _concat(res, matrices.shift(), dim, 0);
     }
 
     return asMatrix ? new Matrix(res) : res;
@@ -7222,7 +7271,7 @@ function _getSubstring(str, index) {
     for (i = 0, len = index.length; i < len; i++) {
         var index_i = index[i];
         util.validateIndex(index_i, strLen);
-        substr += str.charAt(index_i - 1);  // index_i is one based
+        substr += str.charAt(index_i);  // index_i is zero based
     }
 
     return substr;
@@ -7310,7 +7359,7 @@ function _setSubstring(str, index, replacement) {
     for (i = 0, len = index.length; i < len; i++) {
         var index_i = index[i];
         util.validateIndex(index_i);
-        chars[index_i - 1] = replacement.charAt(i); // index_i is one based
+        chars[index_i] = replacement.charAt(i); // index_i is zero based
     }
 
     // initialize undefined characters with a space
@@ -9018,6 +9067,7 @@ function isSupportedType(object) {
      */
     function parse_function_assignment (scope) {
         // TODO: keyword 'function' must become a reserved keyword
+        // TODO: replace the 'function' keyword with an assignment operator '=>'
         if (token_type == TOKENTYPE.SYMBOL && token == 'function') {
             // get function name
             getToken();
@@ -9122,8 +9172,8 @@ function isSupportedType(object) {
         var node, name, fn, params = [];
 
         if (token == ':') {
-            // implicit start=1
-            node = new ConstantNode(1);
+            // implicit start=0
+            node = new ConstantNode(0);
         }
         else {
             // explicit start
@@ -10122,6 +10172,19 @@ math.docs.e = math.docs.E = {
     'seealso': ['exp']
 };
 
+math.docs['false'] = {
+    'name': 'false',
+    'category': 'Constants',
+    'syntax': [
+        'false'
+    ],
+    'description': 'Boolean value false',
+    'examples': [
+        'false'
+    ],
+    'seealso': ['true']
+};
+
 math.docs.i = {
     'name': 'i',
     'category': 'Constants',
@@ -10163,6 +10226,19 @@ math.docs.tau = {
         '2 * pi'
     ],
     'seealso': ['pi']
+};
+
+math.docs['true'] = {
+    'name': 'true',
+    'category': 'Constants',
+    'syntax': [
+        'true'
+    ],
+    'description': 'Boolean value true',
+    'examples': [
+        'true'
+    ],
+    'seealso': ['false']
 };
 
 math.docs.abs = {
@@ -10257,7 +10333,7 @@ math.docs.divide = {
 
 math.docs.edivide = {
     'name': 'edivide',
-    'category': 'Operator',
+    'category': 'Operators',
     'syntax': [
         'x ./ y',
         'edivide(x, y)'
@@ -10277,7 +10353,7 @@ math.docs.edivide = {
 
 math.docs.emultiply = {
     'name': 'emultiply',
-    'category': 'Operator',
+    'category': 'Operators',
     'syntax': [
         'x .* y',
         'emultiply(x, y)'
@@ -10849,6 +10925,27 @@ math.docs.re = {
     ]
 };
 
+math.docs['boolean'] = {
+    'name': 'boolean',
+    'category': 'Type',
+    'syntax': [
+        'x',
+        'boolean(x)'
+    ],
+    'description':
+        'Convert a string or number into a boolean.',
+    'examples': [
+        'boolean(0)',
+        'boolean(1)',
+        'boolean(3)',
+        'boolean("true")',
+        'boolean("false")'
+    ],
+    'seealso': [
+        'complex', 'matrix', 'range', 'string', 'unit'
+    ]
+};
+
 math.docs.complex = {
     'name': 'complex',
     'category': 'Type',
@@ -10865,7 +10962,7 @@ math.docs.complex = {
         'complex("7 - 2i")'
     ],
     'seealso': [
-        'matrix', 'number', 'range', 'string', 'unit'
+        'boolean', 'matrix', 'number', 'range', 'string', 'unit'
     ]
 };
 
@@ -10888,7 +10985,7 @@ math.docs.matrix = {
         'matrix([3, 4])'
     ],
     'seealso': [
-        'complex', 'number', 'range', 'string', 'unit'
+        'boolean', 'complex', 'number', 'range', 'string', 'unit'
     ]
 };
 
@@ -10910,7 +11007,7 @@ math.docs.number = {
         'number(true)'
     ],
     'seealso': [
-        'complex', 'matrix', 'range', 'string', 'unit'
+        'boolean', 'complex', 'matrix', 'range', 'string', 'unit'
     ]
 };
 
@@ -10933,10 +11030,10 @@ math.docs.range = {
         'range(0, 2, 10)',
         'range("4:10")',
         'a = [1, 2, 3; 4, 5, 6]',
-        'a(:, 2:3)'
+        'a(:, 1:2)'
     ],
     'seealso': [
-        'complex', 'matrix', 'number', 'string', 'unit'
+        'boolean', 'complex', 'matrix', 'number', 'string', 'unit'
     ]
 };
 
@@ -10955,7 +11052,7 @@ math.docs.string = {
         'string(3 + 2i)'
     ],
     'seealso': [
-        'complex', 'matrix', 'number', 'range', 'unit'
+        'boolean', 'complex', 'matrix', 'number', 'range', 'unit'
     ]
 };
 
@@ -10976,7 +11073,7 @@ math.docs.unit = {
         'unit("23 deg")'
     ],
     'seealso': [
-        'complex', 'matrix', 'number', 'range', 'string'
+        'boolean', 'complex', 'matrix', 'number', 'range', 'string'
     ]
 };
 
@@ -11148,11 +11245,11 @@ math.docs.subset = {
     'examples': [
         'd = [1, 2; 3, 4]',
         'e = []',
-        'e(1, 1:2) = [5, 6]',
-        'e(2, :) = [7, 8]',
+        'e(0, 0:1) = [5, 6]',
+        'e(1, :) = [7, 8]',
         'f = d * e',
-        'f(2, 1)',
-        'f(:, 1)'
+        'f(1, 0)',
+        'f(:, 0)'
     ],
     'seealso': [
         'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
@@ -11536,12 +11633,13 @@ math.docs.help = {
     'name': 'help',
     'category': 'Utils',
     'syntax': [
-        'help(object)'
+        'help(object)',
+        'help(string)'
     ],
     'description': 'Display documentation on a function or data type.',
     'examples': [
-        'help("sqrt");',
-        'help("complex");'
+        'help(sqrt)',
+        'help("complex")'
     ],
     'seealso': []
 };
