@@ -457,7 +457,7 @@ function _init(array) {
  * Resize the matrix
  * @param {Number[]} size
  * @param {*} [defaultValue]        Default value, filled in on new entries.
- *                                  If not provided, the vector will be filled
+ *                                  If not provided, the matrix will be filled
  *                                  with zeros.
  */
 Matrix.prototype.resize = function (size, defaultValue) {
