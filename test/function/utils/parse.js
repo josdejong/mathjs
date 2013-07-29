@@ -54,3 +54,10 @@ scope.hello = function (name) {
     return 'hello, ' + name + '!';
 };
 assert.deepEqual(math.parse('hello("jos")', scope).eval(), 'hello, jos!');
+
+
+//test stringification of nodes
+assert.equal(math.parse('0').toString(), 'ans = 0');
+assert.equal(math.parse('0 + 2').toString(), 'ans = 0 + 2');
+assert.equal(math.parse('"hello"').toString(), 'ans = "hello"');
+assert.equal(math.parse('[1, 2 + 3i, 4]').toString(), 'ans = [[1, 2 + 3i, 4]]');

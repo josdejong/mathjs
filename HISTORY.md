@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## version 0.11.2
+
+- Fixed zeros being formatted as null. Thanks TimKraft.
+
+
 ## 2013-07-23, version 0.11.1
 
 - Fixed missing development dependency

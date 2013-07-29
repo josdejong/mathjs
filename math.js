@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.11.1
- * @date    2013-07-23
+ * @version 0.11.2-SNAPSHOT
+ * @date    2013-07-29
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -3148,7 +3148,7 @@ ConstantNode.prototype.eval = function () {
  * @return {String} str
  */
 ConstantNode.prototype.toString = function() {
-    return math.format(this.value || null);
+    return math.format(this.value);
 };
 
 /**
