@@ -71,5 +71,35 @@ var testRandomInt = function() {
 
 }
 
+var assertInTolerance = function(testVal, val, tol) {
+    var diff = Math.abs(val - testVal) 
+    if (diff > tol) assert.equal(testVal, val) 
+    else assert.ok(diff <= tol)
+}
+
+var testRandomNormal = function() {
+    var picked = [], count, distribution = math.distribution('normal')
+
+    _.times(100000, function() {
+        picked.push(distribution.random())
+    })
+    count = _.filter(picked, function(val) { return val < 0 }).length
+    assert.equal(count, 0)
+    count = _.filter(picked, function(val) { return val > 1 }).length
+    assert.equal(count, 0)
+
+    count = _.filter(picked, function(val) { return val < 0.25 }).length
+    assertInTolerance(count/picked.length, 0.07, 0.01)
+    count = _.filter(picked, function(val) { return val < 0.4 }).length
+    assertInTolerance(count/picked.length, 0.27, 0.01)
+    count = _.filter(picked, function(val) { return val < 0.5 }).length
+    assertInTolerance(count/picked.length, 0.5, 0.01)
+    count = _.filter(picked, function(val) { return val < 0.6 }).length
+    assertInTolerance(count/picked.length, 0.73, 0.01)
+    count = _.filter(picked, function(val) { return val < 0.75 }).length
+    assertInTolerance(count/picked.length, 0.93, 0.01)
+}
+
 testRandom()
 testRandomInt()
+testRandomNormal()
