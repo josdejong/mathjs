@@ -44,15 +44,18 @@ math.distribution = function(name) {
     // We wrap all the random functions into one object which uses the given distribution.
     return (function(distribution) {
 
-        // TODO: argument check 
         return {
             random: function(min, max) {
+                if (arguments.length > 2)
+                    newArgumentsError('random', arguments.length, 0, 2);
                 if (max === undefined) max = 1
                 if (min === undefined) min = 0
                 return min + distribution() * (max - min);
             },
 
             randomInt: function(min, max) {
+                if (arguments.length > 2)
+                    newArgumentsError('random', arguments.length, 0, 2);
                 return Math.floor(this.random(min, max));
             }
         }
