@@ -45,6 +45,7 @@ math.distribution = function(name) {
     return (function(distribution) {
 
         return {
+
             random: function(min, max) {
                 if (arguments.length > 2)
                     newArgumentsError('random', arguments.length, 0, 2);
@@ -55,8 +56,14 @@ math.distribution = function(name) {
 
             randomInt: function(min, max) {
                 if (arguments.length > 2)
-                    newArgumentsError('random', arguments.length, 0, 2);
+                    newArgumentsError('randomInt', arguments.length, 0, 2);
                 return Math.floor(this.random(min, max));
+            },
+
+            pickRandom: function(possibles) {
+                if (arguments.length !== 1)
+                    newArgumentsError('pickRandom', arguments.length, 1);
+                return possibles[Math.floor(Math.random() * possibles.length)];
             }
         }
 
@@ -67,3 +74,4 @@ math.distribution = function(name) {
 var uniformRandFunctions = math.distribution('uniform');
 math.random = uniformRandFunctions.random;
 math.randomInt = uniformRandFunctions.randomInt;
+math.pickRandom = uniformRandFunctions.pickRandom;

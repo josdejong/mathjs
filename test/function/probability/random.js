@@ -71,6 +71,31 @@ var testRandomInt = function() {
 
 }
 
+var testPickRandom = function() {
+    var possibles = [11, 22, 33, 44, 55],
+        picked = [],
+        count
+
+    _.times(1000, function() {
+        picked.push(math.pickRandom(possibles))
+    })
+
+    count = _.filter(picked, function(val) { return val === 11 }).length
+    assert.equal(math.round(count/picked.length, 1), 0.2)
+
+    count = _.filter(picked, function(val) { return val === 22 }).length
+    assert.equal(math.round(count/picked.length, 1), 0.2)
+
+    count = _.filter(picked, function(val) { return val === 33 }).length
+    assert.equal(math.round(count/picked.length, 1), 0.2)
+
+    count = _.filter(picked, function(val) { return val === 44 }).length
+    assert.equal(math.round(count/picked.length, 1), 0.2)
+
+    count = _.filter(picked, function(val) { return val === 55 }).length
+    assert.equal(math.round(count/picked.length, 1), 0.2)
+}
+
 var assertInTolerance = function(testVal, val, tol) {
     var diff = Math.abs(val - testVal) 
     if (diff > tol) assert.equal(testVal, val) 
@@ -102,4 +127,6 @@ var testRandomNormal = function() {
 
 testRandom()
 testRandomInt()
+testPickRandom()
+
 testRandomNormal()
