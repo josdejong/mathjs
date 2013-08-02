@@ -32,7 +32,8 @@
         "tap": ">= 0.4.3",
         "numbers" : "0.4.0",
         "uglify-js": ">= 2.2.5",
-        "dateable": ">= 0.1.2"
+        "dateable": ">= 0.1.2",
+        "underscore": "1.4.x"
     },
     "scripts": {
         "test": "jake test --trace"
