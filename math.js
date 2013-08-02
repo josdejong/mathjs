@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.11.1
- * @date    2013-07-23
+ * @date    2013-08-02
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -7511,15 +7511,44 @@ math.factorial = function factorial (x) {
  *
  * @return {Number} res
  */
-math.random = function random () {
-    if (arguments.length != 0) {
-        throw newArgumentsError('random', arguments.length, 0);
-    }
 
-    // TODO: implement parameter min and max
-    return Math.random();
+// Each distribution is a function that takes no argument and when called returns
+// a number between 0 and 1.
+var distributions = {
+
+    uniform: function() {
+        return Math.random;
+    }
 };
 
+math.distribution = function(name) {
+    if (!distributions.hasOwnProperty(name))
+        throw new Error('unknown distribution ' + name);
+
+    var args = Array.prototype.slice.call(arguments, 1),
+        distribution = distributions[name].apply(this, args);
+
+    // We wrap all the random functions into one object which uses the given distribution.
+    return (function(distribution) {
+
+        // TODO: argument check 
+        return {
+            random: function(min, max) {
+                return min + distribution() * (max - min);
+            },
+
+            randomInt: function(min, max) {
+                return Math.floor(this.random(min, max));
+            }
+        }
+
+    })(distribution)
+};
+
+// Default random functions use uniform distribution
+var uniformRandFunctions = math.distribution('uniform');
+math.random = uniformRandFunctions.random;
+math.randomInt = uniformRandFunctions.randomInt;
 /**
  * Compute the maximum value of a list of values
  *
@@ -11317,17 +11346,29 @@ math.docs.random = {
     'name': 'random',
     'category': 'Probability',
     'syntax': [
-        'random()'
+        'random(min, max)'
     ],
     'description':
         'Return a random number between 0 and 1.',
     'examples': [
-        'random()',
-        '100 * random()'
+        'random()'
     ],
     'seealso': []
 };
 
+math.docs.randInt = {
+    'name': 'randInt',
+    'category': 'Probability',
+    'syntax': [
+        'randInt()'
+    ],
+    'description':
+        'Return a random number between 0 and 1.',
+    'examples': [
+        'randInt()'
+    ],
+    'seealso': []
+};
 math.docs.max = {
     'name': 'max',
     'category': 'Statistics',
