@@ -6,7 +6,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.11.1
+ * @version 0.11.2-SNAPSHOT
  * @date    2013-08-02
  *
  * @license
@@ -1681,7 +1681,7 @@ function _init(array) {
  * Resize the matrix
  * @param {Number[]} size
  * @param {*} [defaultValue]        Default value, filled in on new entries.
- *                                  If not provided, the vector will be filled
+ *                                  If not provided, the matrix will be filled
  *                                  with zeros.
  */
 Matrix.prototype.resize = function (size, defaultValue) {
@@ -3148,7 +3148,7 @@ ConstantNode.prototype.eval = function () {
  * @return {String} str
  */
 ConstantNode.prototype.toString = function() {
-    return math.format(this.value || null);
+    return math.format(this.value);
 };
 
 /**

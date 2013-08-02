@@ -24,5 +24,5 @@ ConstantNode.prototype.eval = function () {
  * @return {String} str
  */
 ConstantNode.prototype.toString = function() {
-    return math.format(this.value || null);
+    return math.format(this.value);
 };
