@@ -44,7 +44,7 @@ math.distribution = function(name) {
     // We wrap all the random functions into one object which uses the given distribution.
     return (function(distribution) {
 
-        return {
+        var randFunctions = {
 
             random: function(min, max) {
                 if (arguments.length > 2)
@@ -64,10 +64,35 @@ math.distribution = function(name) {
                 if (arguments.length !== 1)
                     newArgumentsError('pickRandom', arguments.length, 1);
                 return possibles[Math.floor(Math.random() * possibles.length)];
-            }
-        }
+            },
 
-    })(distribution)
+            randomMatrix: function(size, min, max) {
+                if (arguments.length > 3 || arguments.length < 1)
+                    newArgumentsError('pickRandom', arguments.length, 1, 3);
+                debugger
+                return new Matrix(_randomDataForMatrix(size, min, max));
+            }
+        };
+
+        var _randomDataForMatrix = function(size, min, max) {
+            var data = [], length, i;
+            size = size.slice(0);
+
+            if (size.length > 1) {
+                for (i = 0, length = size.shift(); i < length; i++)
+                    data.push(_randomDataForMatrix(size, min, max));
+            } else {
+                for (i = 0, length = size.shift(); i < length; i++)
+                    data.push(randFunctions.random.call(randFunctions, min, max));
+            }
+
+            return data;
+        };
+
+        return randFunctions;
+
+    })(distribution);
+
 };
 
 // Default random functions use uniform distribution
@@ -75,3 +100,4 @@ var uniformRandFunctions = math.distribution('uniform');
 math.random = uniformRandFunctions.random;
 math.randomInt = uniformRandFunctions.randomInt;
 math.pickRandom = uniformRandFunctions.pickRandom;
+math.randomMatrix = uniformRandFunctions.randomMatrix;
