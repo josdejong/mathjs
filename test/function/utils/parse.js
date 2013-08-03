@@ -61,3 +61,12 @@ assert.equal(math.parse('0').toString(), 'ans = 0');
 assert.equal(math.parse('0 + 2').toString(), 'ans = 0 + 2');
 assert.equal(math.parse('"hello"').toString(), 'ans = "hello"');
 assert.equal(math.parse('[1, 2 + 3i, 4]').toString(), 'ans = [[1, 2 + 3i, 4]]');
+
+
+// test multiple unary minus
+assert.equal(math.eval('5-3'), 2);
+assert.equal(math.eval('5--3'), 8);
+assert.equal(math.eval('5---3'), 2);
+assert.equal(math.eval('5+---3'), 2);
+assert.equal(math.eval('5----3'), 8);
+assert.equal(math.eval('5+--(2+1)'), 8);

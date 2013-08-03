@@ -29,6 +29,7 @@ https://github.com/josdejong/mathjs
 - Added constructor function `boolean`.
 - Fixed function `select` not accepting `0` as input.
   Thanks Elijah Manor (elijahmanor).
+- Parser now supports multiple unary minus operators after each other.
 - Some fixes in the end user documentation.
 
 
