@@ -34,6 +34,15 @@ var distributions = {
     }
 };
 
+/**
+ * Create a distribution object.
+ * @param {String} name           Name of a distribution.
+ *                                Choose from 'uniform', 'normal'.
+ * @return {Object} distribution  A distribution object containing functions:
+ *                                    random([min, max])
+ *                                    randomInt([min, max])
+ *                                    pickRandom(array)
+ */
 math.distribution = function(name) {
     if (!distributions.hasOwnProperty(name))
         throw new Error('unknown distribution ' + name);
@@ -49,8 +58,8 @@ math.distribution = function(name) {
             random: function(min, max) {
                 if (arguments.length > 2)
                     newArgumentsError('random', arguments.length, 0, 2);
-                if (max === undefined) max = 1
-                if (min === undefined) min = 0
+                if (max === undefined) max = 1;
+                if (min === undefined) min = 0;
                 return min + distribution() * (max - min);
             },
 
@@ -69,7 +78,6 @@ math.distribution = function(name) {
             randomMatrix: function(size, min, max) {
                 if (arguments.length > 3 || arguments.length < 1)
                     newArgumentsError('pickRandom', arguments.length, 1, 3);
-                debugger
                 return new Matrix(_randomDataForMatrix(size, min, max));
             }
         };

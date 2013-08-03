@@ -4,6 +4,11 @@ https://github.com/josdejong/mathjs
 
 ## version 0.11.2
 
+- Implemented functions `random([min, max])`, `randomInt([min, max])`,
+  `pickRandom(array)`. Thanks sebpiq.
+- Implemented function `distribution(name)`, generating a distribution object
+  with functions `random`, `randomInt`, `pickRandom` for different
+  distributions. Currently supporting `uniform` and `normal`.
 - Fixed zeros being formatted as null. Thanks TimKraft.
 
 
