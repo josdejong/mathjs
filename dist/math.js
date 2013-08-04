@@ -7540,15 +7540,61 @@ math.distribution = function(name) {
     var randFunctions = {
 
       random: function(arg1, arg2, arg3) {
-        return _genericRandom(arg1, arg2, arg3, arguments.length, 'random', function(min, max) {
-          return min + distribution() * (max - min);
-        })
+        var size, min, max
+        if (arguments.length > 3) {
+          throw newArgumentsError(funcName, argCount, 0, 3);
+
+        // `random(max)` or `random(size)`
+        } else if (arguments.length === 1) {
+          if (Object.prototype.toString.call(arg1) === '[object Array]')
+            size = arg1
+          else max = arg1
+        // `random(min, max)` or `random(size, max)`
+        } else if (arguments.length === 2) {
+          if (Object.prototype.toString.call(arg1) === '[object Array]')
+            size = arg1
+          else {
+            min = arg1
+            max = arg2
+          }
+        // `random(size, min, max)`
+        } else {
+          size = arg1
+          min = arg2
+          max = arg3
+        }
+
+        if (max === undefined) max = 1;
+        if (min === undefined) min = 0;
+        if (size !== undefined) return new Matrix(_randomDataForMatrix(size, min, max, _random));
+        else return _random(min, max);
       },
 
       randomInt: function(arg1, arg2, arg3) {
-        return _genericRandom(arg1, arg2, arg3, arguments.length, 'randomInt', function(min, max) {
-          return Math.floor(min + distribution() * (max - min));
-        })
+        var size, min, max
+        if (arguments.length > 3 || arguments.length < 1)
+          throw newArgumentsError(funcName, argCount, 1, 3);
+
+        // `random(max)`
+        else if (arguments.length === 1) max = arg1
+        // `random(min, max)` or `random(size, max)`
+        else if (arguments.length === 2) {
+          if (Object.prototype.toString.call(arg1) === '[object Array]')
+            size = arg1
+          else {
+            min = arg1
+            max = arg2
+          }
+        // `random(size, min, max)`
+        } else {
+          size = arg1
+          min = arg2
+          max = arg3
+        }
+
+        if (min === undefined) min = 0;
+        if (size !== undefined) return new Matrix(_randomDataForMatrix(size, min, max, _randomInt));
+        else return _randomInt(min, max);
       },
 
       pickRandom: function(possibles) {
@@ -7559,28 +7605,12 @@ math.distribution = function(name) {
 
     };
 
-    // This is a generic function for both `random` and `randomInt` which behave exactly the same.
-    var _genericRandom = function(arg1, arg2, arg3, argCount, funcName, randFunc) {
-      if (argCount > 3)
-        throw newArgumentsError(funcName, argCount, 0, 3);
+    var _random = function(min, max) {
+      return min + distribution() * (max - min);
+    };
 
-      // Random matrix
-      else if (Object.prototype.toString.call(arg1) === '[object Array]') {
-        var min = arg2, max = arg3;
-        if (max === undefined) max = 1;
-        if (min === undefined) min = 0;
-        return new Matrix(_randomDataForMatrix(arg1, min, max, randFunc));
-
-      // Random float
-      } else {
-        // TODO: more precise error message?
-        if (argCount > 2)
-          throw newArgumentsError(funcName, argCount, 0, 2);
-        var min = arg1, max = arg2;
-        if (max === undefined) max = 1;
-        if (min === undefined) min = 0;
-        return randFunc(min, max);
-      }        
+    var _randomInt = function(min, max) {
+      return Math.floor(min + distribution() * (max - min));
     };
 
     // This is a function for generating a random matrix recursively.
