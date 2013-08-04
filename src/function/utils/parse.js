@@ -738,7 +738,7 @@
             name = token;
             fn = math.unary;
             getToken();
-            params = [parse_pow(scope)];
+            params = [parse_unary(scope)];
 
             return new OperatorNode(name, fn, params);
         }

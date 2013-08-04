@@ -440,28 +440,6 @@ var util = (function () {
     };
 
     /**
-     * For each method for objects and arrays.
-     * In case of an object, the method loops over all properties of the object.
-     * In case of an array, the method loops over all indexes of the array.
-     * @param {Object | Array} object   The object
-     * @param {function} callback       Callback method, called for each item in
-     *                                  the object or array with three parameters:
-     *                                  callback(value, index, object)
-     */
-    util.forEach = function forEach (object, callback) {
-        if (object instanceof Array) {
-            object.forEach(callback);
-        }
-        else {
-            for (var key in object) {
-                if (object.hasOwnProperty(key)) {
-                    callback(object[key], key, object);
-                }
-            }
-        }
-    };
-
-    /**
      * Creates a new object with the results of calling a provided function on
      * every prop in the object.
      * @param {Object} object           The object.
@@ -7540,6 +7518,15 @@ var distributions = {
     }
 };
 
+/**
+ * Create a distribution object.
+ * @param {String} name           Name of a distribution.
+ *                                Choose from 'uniform', 'normal'.
+ * @return {Object} distribution  A distribution object containing functions:
+ *                                    random([size, min, max])
+ *                                    randomInt([min, max])
+ *                                    pickRandom(array)
+ */
 math.distribution = function(name) {
     if (!distributions.hasOwnProperty(name))
         throw new Error('unknown distribution ' + name);
@@ -9471,7 +9458,7 @@ function isSupportedType(object) {
             name = token;
             fn = math.unary;
             getToken();
-            params = [parse_pow(scope)];
+            params = [parse_unary(scope)];
 
             return new OperatorNode(name, fn, params);
         }

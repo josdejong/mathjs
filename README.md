@@ -563,7 +563,10 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 ### Probability
 
 - math.factorial(x)
-- math.random()
+- math.random([min, max])
+- math.randomInt([min, max])
+- math.pickRandom([min, max])
+- math.distribution(name)
 
 ### Statistics
 

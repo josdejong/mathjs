@@ -34,6 +34,15 @@ var distributions = {
     }
 };
 
+/**
+ * Create a distribution object.
+ * @param {String} name           Name of a distribution.
+ *                                Choose from 'uniform', 'normal'.
+ * @return {Object} distribution  A distribution object containing functions:
+ *                                    random([size, min, max])
+ *                                    randomInt([min, max])
+ *                                    pickRandom(array)
+ */
 math.distribution = function(name) {
     if (!distributions.hasOwnProperty(name))
         throw new Error('unknown distribution ' + name);
