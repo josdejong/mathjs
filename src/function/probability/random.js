@@ -46,12 +46,27 @@ math.distribution = function(name) {
 
         var randFunctions = {
 
-            random: function(min, max) {
-                if (arguments.length > 2)
-                    newArgumentsError('random', arguments.length, 0, 2);
-                if (max === undefined) max = 1
-                if (min === undefined) min = 0
-                return min + distribution() * (max - min);
+            random: function(arg1, arg2, arg3) {
+                if (arguments.length > 3)
+                    newArgumentsError('random', arguments.length, 0, 3);
+
+                // Random matrix
+                else if (Object.prototype.toString.call(arg1) === '[object Array]') {
+                    var min = arg2, max = arg3;
+                    if (max === undefined) max = 1;
+                    if (min === undefined) min = 0;
+                    return new Matrix(_randomDataForMatrix(arg1, min, max));
+
+                // Random float
+                } else {
+                    // TODO: more precise error message?
+                    if (arguments.length > 2)
+                        newArgumentsError('random', arguments.length, 0, 2);
+                    var min = arg1, max = arg2;
+                    if (max === undefined) max = 1;
+                    if (min === undefined) min = 0;
+                    return min + distribution() * (max - min);              
+                }
             },
 
             randomInt: function(min, max) {
@@ -64,13 +79,6 @@ math.distribution = function(name) {
                 if (arguments.length !== 1)
                     newArgumentsError('pickRandom', arguments.length, 1);
                 return possibles[Math.floor(Math.random() * possibles.length)];
-            },
-
-            randomMatrix: function(size, min, max) {
-                if (arguments.length > 3 || arguments.length < 1)
-                    newArgumentsError('pickRandom', arguments.length, 1, 3);
-                debugger
-                return new Matrix(_randomDataForMatrix(size, min, max));
             }
         };
 
