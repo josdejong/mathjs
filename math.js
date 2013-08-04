@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.11.2-SNAPSHOT
- * @date    2013-08-02
+ * @date    2013-08-04
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -437,28 +437,6 @@ var util = (function () {
         }
 
         return res;
-    };
-
-    /**
-     * For each method for objects and arrays.
-     * In case of an object, the method loops over all properties of the object.
-     * In case of an array, the method loops over all indexes of the array.
-     * @param {Object | Array} object   The object
-     * @param {function} callback       Callback method, called for each item in
-     *                                  the object or array with three parameters:
-     *                                  callback(value, index, object)
-     */
-    util.forEach = function forEach (object, callback) {
-        if (object instanceof Array) {
-            object.forEach(callback);
-        }
-        else {
-            for (var key in object) {
-                if (object.hasOwnProperty(key)) {
-                    callback(object[key], key, object);
-                }
-            }
-        }
     };
 
     /**
@@ -7540,6 +7518,15 @@ var distributions = {
     }
 };
 
+/**
+ * Create a distribution object.
+ * @param {String} name           Name of a distribution.
+ *                                Choose from 'uniform', 'normal'.
+ * @return {Object} distribution  A distribution object containing functions:
+ *                                    random([size, min, max])
+ *                                    randomInt([min, max])
+ *                                    pickRandom(array)
+ */
 math.distribution = function(name) {
     if (!distributions.hasOwnProperty(name))
         throw new Error('unknown distribution ' + name);
@@ -7552,12 +7539,27 @@ math.distribution = function(name) {
 
         var randFunctions = {
 
-            random: function(min, max) {
-                if (arguments.length > 2)
-                    newArgumentsError('random', arguments.length, 0, 2);
-                if (max === undefined) max = 1
-                if (min === undefined) min = 0
-                return min + distribution() * (max - min);
+            random: function(arg1, arg2, arg3) {
+                if (arguments.length > 3)
+                    newArgumentsError('random', arguments.length, 0, 3);
+
+                // Random matrix
+                else if (Object.prototype.toString.call(arg1) === '[object Array]') {
+                    var min = arg2, max = arg3;
+                    if (max === undefined) max = 1;
+                    if (min === undefined) min = 0;
+                    return new Matrix(_randomDataForMatrix(arg1, min, max));
+
+                // Random float
+                } else {
+                    // TODO: more precise error message?
+                    if (arguments.length > 2)
+                        newArgumentsError('random', arguments.length, 0, 2);
+                    var min = arg1, max = arg2;
+                    if (max === undefined) max = 1;
+                    if (min === undefined) min = 0;
+                    return min + distribution() * (max - min);              
+                }
             },
 
             randomInt: function(min, max) {
@@ -7570,13 +7572,6 @@ math.distribution = function(name) {
                 if (arguments.length !== 1)
                     newArgumentsError('pickRandom', arguments.length, 1);
                 return possibles[Math.floor(Math.random() * possibles.length)];
-            },
-
-            randomMatrix: function(size, min, max) {
-                if (arguments.length > 3 || arguments.length < 1)
-                    newArgumentsError('pickRandom', arguments.length, 1, 3);
-                debugger
-                return new Matrix(_randomDataForMatrix(size, min, max));
             }
         };
 
@@ -9463,7 +9458,7 @@ function isSupportedType(object) {
             name = token;
             fn = math.unary;
             getToken();
-            params = [parse_pow(scope)];
+            params = [parse_unary(scope)];
 
             return new OperatorNode(name, fn, params);
         }

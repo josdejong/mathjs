@@ -8,38 +8,96 @@ var assertApproxEqual = function(testVal, val, tolerance) {
     else assert.ok(diff <= tolerance)
 }
 
-var testRandom = function() {
+var assertUniformDistribution = function(values, min, max) {
+    var interval = (max - min) / 10
+    count = _.filter(values, function(val) { return val < min }).length
+    assert.equal(count, 0)
+    count = _.filter(values, function(val) { return val > max }).length
+    assert.equal(count, 0)
+
+    count = _.filter(values, function(val) { return val < (min + interval) }).length
+    assert.equal(math.round(count/values.length, 1), 0.1)
+    count = _.filter(values, function(val) { return val >= (min + interval) && val < (min + 2 * interval) }).length
+    assert.equal(math.round(count/values.length, 1), 0.1)
+    count = _.filter(values, function(val) { return val >= (min + 2 * interval) && val < (min + 3 * interval) }).length
+    assert.equal(math.round(count/values.length, 1), 0.1)
+    count = _.filter(values, function(val) { return val >= (min + 3 * interval) && val < (min + 4 * interval) }).length
+    assert.equal(math.round(count/values.length, 1), 0.1)
+    count = _.filter(values, function(val) { return val >= (min + 4 * interval) && val < (min + 5 * interval) }).length
+    assert.equal(math.round(count/values.length, 1), 0.1)
+    count = _.filter(values, function(val) { return val >= (min + 5 * interval) && val < (min + 6 * interval) }).length
+    assert.equal(math.round(count/values.length, 1), 0.1)
+    count = _.filter(values, function(val) { return val >= (min + 6 * interval) && val < (min + 7 * interval) }).length
+    assert.equal(math.round(count/values.length, 1), 0.1)
+    count = _.filter(values, function(val) { return val >= (min + 7 * interval) && val < (min + 8 * interval) }).length
+    assert.equal(math.round(count/values.length, 1), 0.1)
+    count = _.filter(values, function(val) { return val >= (min + 8 * interval) && val < (min + 9 * interval) }).length
+    assert.equal(math.round(count/values.length, 1), 0.1)
+    count = _.filter(values, function(val) { return val >= (min + 9 * interval) }).length
+    assert.equal(math.round(count/values.length, 1), 0.1)
+
+}
+
+var testRandomFloat = function() {
+    var picked = [], count
+
+    _.times(1000, function() {
+        picked.push(math.random())
+    })
+    assertUniformDistribution(picked, 0, 1)
+}
+
+var testRandomFloatMinMax = function() {
     var picked = [], count
 
     _.times(1000, function() {
         picked.push(math.random(-10, 10))
     })
+    assertUniformDistribution(picked, -10, 10)
+}
 
-    count = _.filter(picked, function(val) { return val < -10 }).length
-    assert.equal(count, 0)
-    count = _.filter(picked, function(val) { return val > 10 }).length
-    assert.equal(count, 0)
+var testRandomMatrix = function() {
+    var picked = [],
+        matrices = [],
+        size = [2, 3, 4],
+        count, matrix
 
-    count = _.filter(picked, function(val) { return val < -8 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= -8 && val < -6 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= -6 && val < -4 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= -4 && val < -2 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= -2 && val < 0 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= 0 && val < 2 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= 2 && val < 4 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= 4 && val < 6 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= 6 && val < 8 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= 8 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
+    _.times(100, function() {
+        matrices.push(math.random(size))
+    })
+
+    // Collect all values in one array
+    matrices.forEach(function(matrix) {
+        assert.deepEqual(matrix.size(), size)
+        matrix.forEach(function(val) {
+            picked.push(val)
+        })
+    })
+    assert.equal(picked.length, 2 * 3 * 4 * 100)
+
+    assertUniformDistribution(picked, 0, 1)
+}
+
+var testRandomMatrixMinMax = function() {
+    var picked = [],
+        matrices = [],
+        size = [2, 3, 4],
+        count, matrix
+
+    _.times(100, function() {
+        matrices.push(math.random(size, -103, 8))
+    })
+
+    // Collect all values in one array
+    matrices.forEach(function(matrix) {
+        assert.deepEqual(matrix.size(), size)
+        matrix.forEach(function(val) {
+            picked.push(val)
+        })
+    })
+    assert.equal(picked.length, 2 * 3 * 4 * 100)
+
+    assertUniformDistribution(picked, -103, 8)
 }
 
 var testRandomInt = function() {
@@ -102,52 +160,6 @@ var testPickRandom = function() {
     assert.equal(math.round(count/picked.length, 1), 0.2)
 }
 
-var testRandomMatrix = function(size, min, max) {
-    var picked = [],
-        matrices = [],
-        size = [2, 3, 4],
-        count, matrix
-
-    _.times(100, function() {
-        matrices.push(math.randomMatrix(size, -10, 10))
-    })
-
-    // Collect all values in one array
-    matrices.forEach(function(matrix) {
-        assert.deepEqual(matrix.size(), size)
-        matrix.forEach(function(val) {
-            picked.push(val)
-        })
-    })
-    assert.equal(picked.length, 2 * 3 * 4 * 100)
-
-    count = _.filter(picked, function(val) { return val < -10 }).length
-    assert.equal(count, 0)
-    count = _.filter(picked, function(val) { return val > 10 }).length
-    assert.equal(count, 0)
-
-    count = _.filter(picked, function(val) { return val < -8 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= -8 && val < -6 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= -6 && val < -4 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= -4 && val < -2 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= -2 && val < 0 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= 0 && val < 2 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= 2 && val < 4 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= 4 && val < 6 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= 6 && val < 8 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-    count = _.filter(picked, function(val) { return val >= 8 }).length
-    assert.equal(math.round(count/picked.length, 1), 0.1)
-}
-
 var testRandomNormal = function() {
     var picked = [], count, distribution = math.distribution('normal')
 
@@ -171,9 +183,13 @@ var testRandomNormal = function() {
     assertApproxEqual(count/picked.length, 0.93, 0.01)
 }
 
-testRandom()
+testRandomFloat()
+testRandomFloatMinMax()
+testRandomMatrix()
+testRandomMatrixMinMax()
+
+
 testRandomInt()
 testPickRandom()
-testRandomMatrix()
 
 testRandomNormal()
