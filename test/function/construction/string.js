@@ -1,6 +1,6 @@
 // test string construction
 var assert = require('assert'),
-    math = require('../../../math.js'),
+    math = require('../../../dist/math.js'),
     string = math.string;
 
 // parser

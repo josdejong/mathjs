@@ -1,6 +1,6 @@
 // test range construction
 var assert = require('assert'),
-    math = require('../../../math.js'),
+    math = require('../../../dist/math.js'),
     range = math.range;
 
 

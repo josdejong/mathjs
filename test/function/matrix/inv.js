@@ -1,6 +1,6 @@
 // test inv
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 assert.deepEqual(math.inv(4), 1/4);
 assert.deepEqual(math.inv([4]), [1/4]);

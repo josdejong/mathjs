@@ -9,8 +9,8 @@ var jake = require('jake'),
  * Constants
  */
 var HEADER          = './src/header.js';
-var MATHJS          = './math.js';
-var MATHJS_MIN      = './math.min.js';
+var MATHJS          = './dist/math.js';
+var MATHJS_MIN      = './dist/math.min.js';
 var MATHJS_HELP     = './extensions/help.js';
 var MATHJS_HELP_MIN = './extensions/help.min.js';
 

@@ -1,6 +1,6 @@
 // test emultiply (element-wise multiply)
 var assert = require('assert'),
-    math = require('../../../math.js'),
+    math = require('../../../dist/math.js'),
     approx = require('../../../tools/approx.js'),
     emultiply = math.emultiply,
     divide = math.divide,

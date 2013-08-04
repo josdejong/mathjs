@@ -38,7 +38,7 @@
   "scripts": {
     "test": "jake test --trace"
   },
-  "main": "./math.js",
+  "main": "./dist/math.js",
   "bin": {
     "mathjs": "./bin/cli.js"
   },

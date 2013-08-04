@@ -1,7 +1,7 @@
 // test data type Range
 
 var assert = require('assert');
-var math = require('../../math.js');
+var math = require('../../dist/math.js');
 
 var r = math.range(2,5);
 assert.deepEqual(r.toArray(), [2,3,4,5]);

@@ -1,6 +1,6 @@
 // test eye
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 assert.deepEqual(math.eye().valueOf(), [[1]]);
 assert.deepEqual(math.eye([]).valueOf(), [[1]]);

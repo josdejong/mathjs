@@ -1,6 +1,6 @@
 // test add
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 // parser
 assert.equal(math.eval('add(2, 3)'), 5);

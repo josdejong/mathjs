@@ -1,7 +1,7 @@
 // test Scope
 var assert = require('assert'),
     approx = require('../../tools/approx.js'),
-    math = require('../../math.js'),
+    math = require('../../dist/math.js'),
     Scope = math.expr.Scope;
 
 var scope1 = new Scope();

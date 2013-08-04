@@ -1,6 +1,6 @@
 // test sign
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 // parser
 assert.equal(math.eval('sign(3)'), 1);

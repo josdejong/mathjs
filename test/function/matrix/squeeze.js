@@ -1,6 +1,6 @@
 // test squeeze
 var assert = require('assert');
-var math = require('../../../math.js'),
+var math = require('../../../dist/math.js'),
     squeeze = math.squeeze,
     size = math.size,
     matrix = math.matrix;

@@ -1,6 +1,6 @@
 // test unit construction
 var assert = require('assert'),
-    math = require('../../../math.js'),
+    math = require('../../../dist/math.js'),
     unit = math.unit;
 
 

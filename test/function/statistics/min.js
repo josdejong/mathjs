@@ -1,6 +1,6 @@
 // test min
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 assert.equal(math.min(5), 5);
 assert.equal(math.min(1,3), 1);

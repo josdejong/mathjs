@@ -1,6 +1,6 @@
 // test ones
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 assert.deepEqual(math.ones().valueOf(), [[1]]);
 assert.deepEqual(math.ones([]).valueOf(), [[1]]);

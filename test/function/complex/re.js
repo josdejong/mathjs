@@ -1,6 +1,6 @@
 // test re
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 assert.equal(math.re(math.complex(2,3)), 2);
 assert.equal(math.re(math.complex(-2,-3)), -2);

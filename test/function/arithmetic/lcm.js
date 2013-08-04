@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 // test lcm
 assert.equal(math.lcm(4, 6), 12);

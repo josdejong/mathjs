@@ -1,6 +1,6 @@
 // test format
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 assert.equal(math.format(2/7), '0.28571');
 assert.equal(math.format(0.10400), '0.104');

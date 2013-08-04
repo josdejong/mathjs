@@ -1,6 +1,6 @@
 // test number construction
 var assert = require('assert'),
-    math = require('../../../math.js'),
+    math = require('../../../dist/math.js'),
     approx = require('../../../tools/approx.js'),
     number = math.number;
 

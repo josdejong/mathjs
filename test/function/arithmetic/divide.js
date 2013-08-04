@@ -1,6 +1,6 @@
 // test divide
 var assert = require('assert');
-math = require('../../../math.js'),
+math = require('../../../dist/math.js'),
     approx = require('../../../tools/approx.js'),
     divide = math.divide,
     complex = math.complex;

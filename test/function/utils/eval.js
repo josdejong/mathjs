@@ -1,6 +1,6 @@
 // test eval
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 // test some expressions
 assert.equal(math.eval('pi'), Math.PI);

@@ -1,6 +1,6 @@
 // test subset
 var assert = require('assert'),
-    math = require('../../../math.js'),
+    math = require('../../../dist/math.js'),
     subset = math.subset,
     matrix = math.matrix,
     range = math.range;

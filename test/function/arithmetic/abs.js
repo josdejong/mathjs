@@ -1,6 +1,6 @@
 // test abs
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 // parser
 assert.equal(math.eval('abs(-4.2)'), 4.2);

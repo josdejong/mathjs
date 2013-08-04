@@ -1,6 +1,6 @@
 // test edivide (element-wise divide)
 var assert = require('assert');
-math = require('../../../math.js'),
+math = require('../../../dist/math.js'),
     approx = require('../../../tools/approx.js'),
     edivide = math.edivide,
     complex = math.complex;

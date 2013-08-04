@@ -1,7 +1,7 @@
 // test select (chaining of operations)
 var assert = require('assert'),
     approx = require('../../../tools/approx.js'),
-    math = require('../../../math.js');
+    math = require('../../../dist/math.js');
 
 assert.ok(math.select(45) instanceof math.type.Selector);
 assert.equal(math.select(3).add(4).subtract(2).done(), 5);

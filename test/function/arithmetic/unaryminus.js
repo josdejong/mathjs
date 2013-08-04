@@ -1,6 +1,6 @@
 // test unary minus
 var assert = require('assert');
-var math = require('../../../math.js');
+var math = require('../../../dist/math.js');
 
 // parser
 assert.equal(math.eval('-2'), -2);
