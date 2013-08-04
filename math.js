@@ -104,7 +104,7 @@ var util = (function () {
    * @returns {String} str
    */
   util.formatArray = function formatArray (array) {
-    if (array instanceof Array) {
+    if (Array.isArray(array)) {
       var str = '[';
       var len = array.length;
       for (var i = 0; i < len; i++) {
@@ -185,7 +185,7 @@ var util = (function () {
       if (array instanceof Range) {
         array = array.valueOf();
       }
-      if (!(array instanceof Array)) {
+      if (!Array.isArray(array)) {
         array = [array];
       }
     }
@@ -283,7 +283,7 @@ var util = (function () {
    * @return {Array | Matrix} res
    */
   util.map = function map(array, fn) {
-    if (array instanceof Array || array instanceof Matrix || array instanceof Range) {
+    if (Array.isArray(array) || array instanceof Matrix || array instanceof Range) {
       return array.map(function (x) {
         return fn(x);
       });
@@ -302,7 +302,7 @@ var util = (function () {
    * @return {Array | Matrix} res
    */
   util.deepMap = function map(array, fn) {
-    if (array instanceof Array || array instanceof Matrix || array instanceof Range) {
+    if (Array.isArray(array) || array instanceof Matrix || array instanceof Range) {
       return array.map(function (x) {
         return map(x, fn);
       });
@@ -334,8 +334,8 @@ var util = (function () {
       return util.map2(array1.valueOf(), array2.valueOf(), fn);
     }
 
-    if (array1 instanceof Array) {
-      if (array2 instanceof Array) {
+    if (Array.isArray(array1)) {
+      if (Array.isArray(array2)) {
         // fn(array, array)
         if (array1.length != array2.length) {
           throw new RangeError('Dimension mismatch ' +
@@ -358,7 +358,7 @@ var util = (function () {
       }
     }
     else {
-      if (array2 instanceof Array) {
+      if (Array.isArray(array2)) {
         // fn(object, array)
         res = [];
         len = array2.length;
@@ -398,8 +398,8 @@ var util = (function () {
       return map2(array1.valueOf(), array2.valueOf(), fn);
     }
 
-    if (array1 instanceof Array) {
-      if (array2 instanceof Array) {
+    if (Array.isArray(array1)) {
+      if (Array.isArray(array2)) {
         // fn(array, array)
         if (array1.length != array2.length) {
           throw new RangeError('Dimension mismatch ' +
@@ -422,7 +422,7 @@ var util = (function () {
       }
     }
     else {
-      if (array2 instanceof Array) {
+      if (Array.isArray(array2)) {
         // fn(object, array)
         res = [];
         len = array2.length;
@@ -464,8 +464,8 @@ var util = (function () {
    */
   util.deepEqual = function deepEqual (a, b) {
     var prop, i, len;
-    if (a instanceof Array) {
-      if (!(b instanceof Array)) {
+    if (Array.isArray(a)) {
+      if (!Array.isArray(b)) {
         return false;
       }
 
@@ -477,7 +477,7 @@ var util = (function () {
       return true;
     }
     else if (a instanceof Object) {
-      if (b instanceof Array || !(b instanceof Object)) {
+      if (Array.isArray(b) || !(b instanceof Object)) {
         return false;
       }
 
@@ -509,7 +509,7 @@ var util = (function () {
    * @throws RangeError
    */
   function _size(x) {
-    if (x instanceof Array) {
+    if (Array.isArray(x)) {
       var sizeX = x.length;
       if (sizeX) {
         var size0 = _size(x[0]);
@@ -568,7 +568,7 @@ var util = (function () {
       var dimNext = dim + 1;
       for (i = 0; i < len; i++) {
         var child = array[i];
-        if (!(child instanceof Array)) {
+        if (!Array.isArray(child)) {
           throw new RangeError('Dimension mismatch ' +
               '(' + (size.length - 1) + ' < ' + size.length + ')');
         }
@@ -578,7 +578,7 @@ var util = (function () {
     else {
       // last dimension. none of the childs may be an array
       for (i = 0; i < len; i++) {
-        if (array[i] instanceof Array) {
+        if (Array.isArray(array[i])) {
           throw new RangeError('Dimension mismatch ' +
               '(' + (size.length + 1) + ' > ' + size.length + ')');
         }
@@ -597,7 +597,7 @@ var util = (function () {
   function _validateEmpty(array, size, dim) {
     if (dim < size.length - 1) {
       var child = array[0];
-      if (array.length != 1 || !(child instanceof Array)) {
+      if (array.length != 1 || !Array.isArray(child)) {
         throw new RangeError('Dimension mismatch ' + '(' + array.length + ' > 0)');
       }
 
@@ -622,7 +622,7 @@ var util = (function () {
     var isScalar = (size.length == 0);
     if (isScalar) {
       // scalar
-      if (array instanceof Array) {
+      if (Array.isArray(array)) {
         throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
       }
       return;
@@ -672,7 +672,7 @@ var util = (function () {
    * @private
    */
   function _resize (array, size, dim, defaultValue) {
-    if (!(array instanceof Array)) {
+    if (!Array.isArray(array)) {
       throw new TypeError('Array expected');
     }
 
@@ -698,7 +698,7 @@ var util = (function () {
       var dimNext = dim + 1;
       for (i = 0; i < len; i++) {
         child = array[i];
-        if (!(child instanceof Array)) {
+        if (!Array.isArray(child)) {
           child = [child];
           array[i] = child;
         }
@@ -709,7 +709,7 @@ var util = (function () {
       // last dimension
       for (i = 0; i < len; i++) {
         var child = array[i];
-        while (child instanceof Array) {
+        while (Array.isArray(child)) {
           child = child[0];
         }
         array[i] = child;
@@ -728,7 +728,7 @@ var util = (function () {
     // TODO: what to do with scalars, when size=[] ?
 
     // check the type of size
-    if (!(size instanceof Array)) {
+    if (!Array.isArray(size)) {
       throw new TypeError('Size must be an array (size is ' + math['typeof'](size) + ')');
     }
 
@@ -1231,7 +1231,7 @@ function Matrix(data) {
     // clone data from a Matrix or Range
     this._data = data.toArray();
   }
-  else if (data instanceof Array) {
+  else if (Array.isArray(data)) {
     // use array as is
     this._data = data;
   }
@@ -1263,7 +1263,7 @@ Matrix.prototype.get = function (index) {
     });
     index = index.valueOf();
   }
-  else if (index instanceof Array) {
+  else if (Array.isArray(index)) {
     isScalar = !index.some(function (elem) {
       var size = math.size(elem);
       return (size.length != 0) && (size != [0]);
@@ -1444,7 +1444,7 @@ Matrix.prototype.set = function (index, submatrix) {
     });
     index = index.valueOf();
   }
-  else if (index instanceof Array) {
+  else if (Array.isArray(index)) {
     isScalar = !index.some(function (elem) {
       var size = math.size(elem);
       return (size.length != 0) && (size != [0]);
@@ -1499,7 +1499,7 @@ Matrix.prototype.set = function (index, submatrix) {
  */
 function _set (array, index, value) {
   util.validateIndex(index);
-  if (value instanceof Array) {
+  if (Array.isArray(value)) {
     throw new TypeError('Dimension mismatch, value expected instead of array');
   }
   array[index] = value; // zero-based index
@@ -1613,7 +1613,7 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
     }
     else {
       var child = data[dataIndex]; // zero-based index
-      if (!(child instanceof Array)) {
+      if (!Array.isArray(child)) {
         data[dataIndex] = child = [child]; // zero-based index
       }
       if (dataIndex + 1 > (size[dim] || 0)) {
@@ -1646,7 +1646,7 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
 function _init(array) {
   for (var i = 0, len = array.length; i < len; i++) {
     var value = array[i];
-    if (value instanceof Array) {
+    if (Array.isArray(value)) {
       _init(value);
     }
     else if (value == undefined) {
@@ -1700,7 +1700,7 @@ Matrix.prototype.map = function (callback) {
   var matrix = new Matrix();
   var index = [];
   var recurse = function (value, dim) {
-    if (value instanceof Array) {
+    if (Array.isArray(value)) {
       return value.map(function (child, i) {
         index[dim] = i; // zero-based index
         return recurse(child, dim + 1);
@@ -1726,7 +1726,7 @@ Matrix.prototype.forEach = function (callback) {
   var me = this;
   var index = [];
   var recurse = function (value, dim) {
-    if (value instanceof Array) {
+    if (Array.isArray(value)) {
       value.forEach(function (child, i) {
         index[dim] = i; // zero-based index
         recurse(child, dim + 1);
@@ -1746,11 +1746,11 @@ Matrix.prototype.forEach = function (callback) {
  */
 Matrix.prototype.toScalar = function () {
   var scalar = this._data;
-  while (scalar instanceof Array && scalar.length == 1) {
+  while (Array.isArray(scalar) && scalar.length == 1) {
     scalar = scalar[0];
   }
 
-  if (scalar instanceof Array) {
+  if (Array.isArray(scalar)) {
     return null;
   }
   else {
@@ -1802,7 +1802,7 @@ Matrix.prototype.toVector = function () {
     // valid vector
     var vector = [];
     var recurse = function (data) {
-      if (data instanceof Array) {
+      if (Array.isArray(data)) {
         data.forEach(recurse);
       }
       else {
@@ -3419,7 +3419,7 @@ math.expr.node.MatrixNode = MatrixNode;
         var results_rc = nodes_r[c].eval();
         if (results_rc instanceof Matrix ||
             results_rc instanceof Range ||
-            results_rc instanceof Array) {
+            Array.isArray(results_rc)) {
           mergeNeeded = true;
         }
         results_r[c] = results_rc;
@@ -3492,7 +3492,7 @@ math.expr.node.MatrixNode = MatrixNode;
           entry = [entry.valueOf()];
           size = [1, entry[0].length];
         }
-        else if (entry instanceof Array) {
+        else if (Array.isArray(entry)) {
           // change array into a 1xn matrix
           size = [1, entry.length];
           entry = [entry];
@@ -4232,7 +4232,7 @@ math.abs = function abs(x) {
     return Math.sqrt(x.re * x.re + x.im * x.im);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.abs);
   }
 
@@ -4315,8 +4315,8 @@ math.add = function add(x, y) {
     return x + y;
   }
 
-  if (x instanceof Array || x instanceof Matrix ||
-      y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(y) || y instanceof Matrix) {
     return util.map2(x, y, math.add);
   }
 
@@ -4354,7 +4354,7 @@ math.ceil = function ceil(x) {
     );
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.ceil);
   }
 
@@ -4390,7 +4390,7 @@ math.cube = function cube(x) {
     return math.multiply(math.multiply(x, x), x);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.cube);
   }
 
@@ -4447,8 +4447,8 @@ math.divide = function divide(x, y) {
     }
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
-    if (y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
+    if (Array.isArray(y) || y instanceof Matrix) {
       // TODO: implement matrix right division using pseudo inverse
       // http://www.mathworks.nl/help/matlab/ref/mrdivide.html
       // http://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
@@ -4461,7 +4461,7 @@ math.divide = function divide(x, y) {
     }
   }
 
-  if (y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(y) || y instanceof Matrix) {
     // TODO: implement matrix right division using pseudo inverse
     return math.multiply(x, math.inv(y));
   }
@@ -4598,8 +4598,8 @@ math.equal = function equal(x, y) {
     return x == y;
   }
 
-  if (x instanceof Array || x instanceof Matrix ||
-      y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(y) || y instanceof Matrix) {
     return util.map2(x, y, math.equal);
   }
 
@@ -4637,7 +4637,7 @@ math.exp = function exp (x) {
     );
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.exp);
   }
 
@@ -4675,7 +4675,7 @@ math.fix = function fix(x) {
     );
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.fix);
   }
 
@@ -4713,7 +4713,7 @@ math.floor = function floor(x) {
     );
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.floor);
   }
 
@@ -4758,8 +4758,8 @@ math.gcd = function gcd(args) {
     }
 
     // evaluate gcd element wise
-    if (a instanceof Array || a instanceof Matrix ||
-        b instanceof Array || b instanceof Matrix) {
+    if (Array.isArray(a) || a instanceof Matrix ||
+        Array.isArray(b) || b instanceof Matrix) {
       return util.map2(a, b, math.gcd);
     }
 
@@ -4829,8 +4829,8 @@ math.larger = function larger(x, y) {
     return x > y;
   }
 
-  if (x instanceof Array || x instanceof Matrix ||
-      y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(y) || y instanceof Matrix) {
     return util.map2(x, y, math.larger);
   }
 
@@ -4888,8 +4888,8 @@ math.largereq = function largereq(x, y) {
     return x >= y;
   }
 
-  if (x instanceof Array || x instanceof Matrix ||
-      y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(y) || y instanceof Matrix) {
     return util.map2(x, y, math.largereq);
   }
 
@@ -4939,8 +4939,8 @@ math.lcm = function lcm(args) {
     }
 
     // evaluate lcm element wise
-    if (a instanceof Array || a instanceof Matrix ||
-        b instanceof Array || b instanceof Matrix) {
+    if (Array.isArray(a) || a instanceof Matrix ||
+        Array.isArray(b) || b instanceof Matrix) {
       return util.map2(a, b, math.lcm);
     }
 
@@ -4997,7 +4997,7 @@ math.log = function log(x, base) {
       );
     }
 
-    if (x instanceof Array || x instanceof Matrix) {
+    if (Array.isArray(x) || x instanceof Matrix) {
       return util.map(x, math.log);
     }
 
@@ -5049,7 +5049,7 @@ math.log10 = function log10(x) {
     );
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.log10);
   }
 
@@ -5087,8 +5087,8 @@ math.mod = function mod(x, y) {
 
   // TODO: implement mod for complex values
 
-  if (x instanceof Array || x instanceof Matrix ||
-      y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(y) || y instanceof Matrix) {
     return util.map2(x, y, math.mod);
   }
 
@@ -5174,8 +5174,8 @@ math.multiply = function multiply(x, y) {
       return res;
     }
   }
-  else if (x instanceof Array) {
-    if (y instanceof Array) {
+  else if (Array.isArray(x)) {
+    if (Array.isArray(y)) {
       // matrix * matrix
       var sizeX = util.size(x);
       var sizeY = util.size(y);
@@ -5229,7 +5229,7 @@ math.multiply = function multiply(x, y) {
     return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
   }
 
-  if (y instanceof Array) {
+  if (Array.isArray(y)) {
     // scalar * matrix
     return util.map2(x, y, math.multiply);
   }
@@ -5362,7 +5362,7 @@ math.pow = function pow(x, y) {
       return powComplex(x, y);
     }
   }
-  else if (x instanceof Array) {
+  else if (Array.isArray(x)) {
     if (!isNumber(y) || !isInteger(y) || y < 0) {
       throw new TypeError('For A^b, b must be a positive integer ' +
           '(value is ' + y + ')');
@@ -5448,7 +5448,7 @@ math.round = function round(x, n) {
       );
     }
 
-    if (x instanceof Array || x instanceof Matrix) {
+    if (Array.isArray(x) || x instanceof Matrix) {
       return util.map(x, math.round);
     }
 
@@ -5482,8 +5482,8 @@ math.round = function round(x, n) {
       );
     }
 
-    if (x instanceof Array || x instanceof Matrix ||
-        n instanceof Array || n instanceof Matrix) {
+    if (Array.isArray(x) || x instanceof Matrix ||
+        Array.isArray(n) || n instanceof Matrix) {
       return util.map2(x, n, math.round);
     }
 
@@ -5548,7 +5548,7 @@ math.sign = function sign(x) {
     return Complex.create(x.re / abs, x.im / abs);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.sign);
   }
 
@@ -5606,8 +5606,8 @@ math.smaller = function smaller(x, y) {
     return x < y;
   }
 
-  if (x instanceof Array || x instanceof Matrix ||
-      y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(y) || y instanceof Matrix) {
     return util.map2(x, y, math.smaller);
   }
 
@@ -5665,8 +5665,8 @@ math.smallereq = function smallereq(x, y) {
     return x <= y;
   }
 
-  if (x instanceof Array || x instanceof Matrix ||
-      y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(y) || y instanceof Matrix) {
     return util.map2(x, y, math.smallereq);
   }
 
@@ -5718,7 +5718,7 @@ math.sqrt = function sqrt (x) {
     }
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.sqrt);
   }
 
@@ -5754,7 +5754,7 @@ math.square = function square(x) {
     return math.multiply(x, x);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.square);
   }
 
@@ -5834,8 +5834,8 @@ math.subtract = function subtract(x, y) {
     }
   }
 
-  if (x instanceof Array || x instanceof Matrix ||
-      y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(y) || y instanceof Matrix) {
     return util.map2(x, y, math.subtract);
   }
 
@@ -5878,7 +5878,7 @@ math.unary = function unary(x) {
     return res;
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.unary);
   }
 
@@ -5936,8 +5936,8 @@ math.unequal = function unequal(x, y) {
     return x != y;
   }
 
-  if (x instanceof Array || x instanceof Matrix ||
-      y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(y) || y instanceof Matrix) {
     return util.map2(x, y, math.unequal);
   }
 
@@ -6012,7 +6012,7 @@ math.arg = function arg(x) {
     return Math.atan2(x.im, x.re);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.arg);
   }
 
@@ -6049,7 +6049,7 @@ math.conj = function conj(x) {
     return Complex.create(x.re, -x.im);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.conj);
   }
 
@@ -6085,7 +6085,7 @@ math.im = function im(x) {
     return x.im;
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.im);
   }
 
@@ -6121,7 +6121,7 @@ math.re = function re(x) {
     return x.re;
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.re);
   }
 
@@ -6416,7 +6416,7 @@ math.string = function (value) {
  * @private
  */
 function _toString(value) {
-  if (value instanceof Array || value instanceof Matrix || value instanceof Range) {
+  if (Array.isArray(value) || value instanceof Matrix || value instanceof Range) {
     var array = value.valueOf();
 
     var str = '[';
@@ -6535,7 +6535,7 @@ math.concat = function concat (args) {
             '(' + dim + ' > ' + prevDim + ')');
       }
     }
-    else if (arg instanceof Array || arg instanceof Matrix) {
+    else if (Array.isArray(arg) || arg instanceof Matrix) {
       // this is a matrix or array
       var matrix = math.clone(arg).valueOf();
       var size = math.size(arg).valueOf();
@@ -7090,7 +7090,7 @@ math.size = function size (x) {
     return [x.length];
   }
 
-  if (x instanceof Array) {
+  if (Array.isArray(x)) {
     return util.size(x);
   }
 
@@ -7119,13 +7119,13 @@ math.squeeze = function squeeze (x) {
     throw newArgumentsError('squeeze', arguments.length, 1);
   }
 
-  if (x instanceof Array) {
+  if (Array.isArray(x)) {
     return _squeezeArray(math.clone(x));
   }
   else if (x instanceof Matrix) {
     return math.matrix(_squeezeArray(x.toArray()));
   }
-  else if (x.valueOf() instanceof Array) {
+  else if (Array.isArray(x.valueOf())) {
     return _squeezeArray(math.clone(x.valueOf()));
   }
   else {
@@ -7149,7 +7149,7 @@ function _squeezeArray(array) {
     // process all childs
     for (var i = 0, len = array.length; i < len; i++) {
       var child = array[i];
-      if (child instanceof Array) {
+      if (Array.isArray(child)) {
         array[i] = _squeezeArray(child);
       }
     }
@@ -7199,7 +7199,7 @@ math.subset = function subset (args) {
 function _getSubset(value, index) {
   var matrix, subset;
 
-  if (value instanceof Array || value instanceof Range) {
+  if (Array.isArray(value) || value instanceof Range) {
     matrix = math.matrix(value);
     subset = matrix.get(index);
     return subset.valueOf();
@@ -7236,11 +7236,11 @@ function _getSubstring(str, index) {
     throw new RangeError('Dimension mismatch (' + index.length + ' != 1)');
   }
 
-  if (index instanceof Array) {
+  if (Array.isArray(index)) {
     index = index[0];   // read first dimension
   }
   index = index.valueOf(); // cast from matrix or range to array
-  if (!(index instanceof Array)) {
+  if (!Array.isArray(index)) {
     index = [index];
   }
 
@@ -7268,7 +7268,7 @@ function _getSubstring(str, index) {
  * @private
  */
 function _setSubset(value, index, replacement) {
-  if (value instanceof Array || value instanceof Range) {
+  if (Array.isArray(value) || value instanceof Range) {
     var matrix = math.matrix(math.clone(value));
     matrix.set(index, replacement);
     return matrix.valueOf();
@@ -7314,11 +7314,11 @@ function _setSubstring(str, index, replacement) {
   if (index.length != 1) {
     throw new RangeError('Dimension mismatch (' + index.length + ' != 1)');
   }
-  if (index instanceof Array) {
+  if (Array.isArray(index)) {
     index = index[0];   // read first dimension
   }
   index = index.valueOf(); // cast from matrix or range to array
-  if (!(index instanceof Array)) {
+  if (!Array.isArray(index)) {
     index = [index];
   }
 
@@ -7470,7 +7470,7 @@ math.factorial = function factorial (x) {
     return res;
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.factorial);
   }
 
@@ -7505,7 +7505,7 @@ var distributions = {
   normal: function() {
     return function() {
       var u1, u2,
-          picked = -1
+          picked = -1;
       // We reject values outside of the interval [0, 1]
       // TODO: check if it is ok to do that?
       while (picked < 0 || picked > 1) {
@@ -7541,10 +7541,10 @@ math.distribution = function(name) {
 
       random: function(arg1, arg2, arg3) {
         if (arguments.length > 3)
-          newArgumentsError('random', arguments.length, 0, 3);
+          throw newArgumentsError('random', arguments.length, 0, 3);
 
         // Random matrix
-        else if (Object.prototype.toString.call(arg1) === '[object Array]') {
+        else if (Array.isArray(arg1)) {
           var min = arg2, max = arg3;
           if (max === undefined) max = 1;
           if (min === undefined) min = 0;
@@ -7554,7 +7554,7 @@ math.distribution = function(name) {
         } else {
           // TODO: more precise error message?
           if (arguments.length > 2)
-            newArgumentsError('random', arguments.length, 0, 2);
+            throw newArgumentsError('random', arguments.length, 0, 2);
           var min = arg1, max = arg2;
           if (max === undefined) max = 1;
           if (min === undefined) min = 0;
@@ -7564,13 +7564,13 @@ math.distribution = function(name) {
 
       randomInt: function(min, max) {
         if (arguments.length > 2)
-          newArgumentsError('randomInt', arguments.length, 0, 2);
+          throw newArgumentsError('randomInt', arguments.length, 0, 2);
         return Math.floor(this.random(min, max));
       },
 
       pickRandom: function(possibles) {
         if (arguments.length !== 1)
-          newArgumentsError('pickRandom', arguments.length, 1);
+          throw newArgumentsError('pickRandom', arguments.length, 1);
         return possibles[Math.floor(Math.random() * possibles.length)];
       }
     };
@@ -7616,7 +7616,7 @@ math.max = function max(args) {
     throw new Error('Function max requires one or more parameters (0 provided)');
   }
 
-  if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
+  if (Array.isArray(args) || args instanceof Matrix || args instanceof Range) {
     // max([a, b, c, d, ...]])
     if (arguments.length > 1) {
       throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
@@ -7637,7 +7637,7 @@ math.max = function max(args) {
       if (size[0] == 0 || size[1] == 0) {
         throw new Error('Cannot calculate max of an empty matrix');
       }
-      if (args instanceof Array) {
+      if (Array.isArray(args)) {
         return _max2(args, size[0], size[1]);
       }
       else if (args instanceof Matrix || args instanceof Range) {
@@ -7714,7 +7714,7 @@ math.min = function min(args) {
     throw new Error('Function min requires one or more parameters (0 provided)');
   }
 
-  if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
+  if (Array.isArray(args) || args instanceof Matrix || args instanceof Range) {
     // min([a, b, c, d, ...]])
     if (arguments.length > 1) {
       throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
@@ -7735,7 +7735,7 @@ math.min = function min(args) {
       if (size[0] == 0 || size[1] == 0) {
         throw new Error('Cannot calculate min of an empty matrix');
       }
-      if (args instanceof Array) {
+      if (Array.isArray(args)) {
         return _min2(args, size[0], size[1]);
       }
       else if (args instanceof Matrix || args instanceof Range) {
@@ -7861,7 +7861,7 @@ math.acos = function acos(x) {
     }
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.acos);
   }
 
@@ -7933,7 +7933,7 @@ math.asin = function asin(x) {
     }
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.asin);
   }
 
@@ -7992,7 +7992,7 @@ math.atan = function atan(x) {
     }
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.atan);
   }
 
@@ -8043,8 +8043,8 @@ math.atan2 = function atan2(y, x) {
      */
   }
 
-  if (y instanceof Array || y instanceof Matrix ||
-      x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(y) || y instanceof Matrix ||
+      Array.isArray(x) || x instanceof Matrix) {
     return util.map2(y, x, math.atan2);
   }
 
@@ -8092,7 +8092,7 @@ math.cos = function cos(x) {
     return Math.cos(x.value);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.cos);
   }
 
@@ -8140,7 +8140,7 @@ math.cot = function cot(x) {
     return 1 / Math.tan(x.value);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.cot);
   }
 
@@ -8189,7 +8189,7 @@ math.csc = function csc(x) {
     return 1 / Math.sin(x.value);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.csc);
   }
 
@@ -8237,7 +8237,7 @@ math.sec = function sec(x) {
     return 1 / Math.cos(x.value);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.sec);
   }
 
@@ -8284,7 +8284,7 @@ math.sin = function sin(x) {
     return Math.sin(x.value);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.sin);
   }
 
@@ -8335,7 +8335,7 @@ math.tan = function tan(x) {
     return Math.tan(x.value);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.tan);
   }
 
@@ -8372,8 +8372,8 @@ math['in'] = function unit_in(x, unit) {
 
   // TODO: add support for string, in that case, convert to unit
 
-  if (x instanceof Array || x instanceof Matrix ||
-      unit instanceof Array || unit instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(unit) || unit instanceof Matrix) {
     return util.map2(x, unit, math['in']);
   }
 
@@ -8411,7 +8411,7 @@ math.clone = function clone(x) {
     return x;
   }
 
-  if (x instanceof Array) {
+  if (Array.isArray(x)) {
     var c = math.clone;
     return x.map(function (value) {
       return c(value);
@@ -8474,7 +8474,7 @@ math.eval = function (expr, scope) {
     var node = math.parse(expr, evalScope);
     return node.eval();
   }
-  else if (expr instanceof Array || expr instanceof Matrix) {
+  else if (Array.isArray(expr) || expr instanceof Matrix) {
     // evaluate an array or matrix with expressions
     return util.map(expr, function (elem) {
       var node = math.parse(elem, evalScope);
@@ -8519,7 +8519,7 @@ math.format = function format(template, values) {
       return util.formatNumber(value, math.options.precision);
     }
 
-    if (value instanceof Array) {
+    if (Array.isArray(value)) {
       return util.formatArray(value);
     }
 
@@ -8773,7 +8773,7 @@ function isSupportedType(object) {
       expression = expr || '';
       return parse_start(parseScope);
     }
-    else if (expr instanceof Array || expr instanceof Matrix) {
+    else if (Array.isArray(expr) || expr instanceof Matrix) {
       // parse an array or matrix with expressions
       return util.map(expr, function (elem) {
         expression = elem || '';
@@ -10091,7 +10091,7 @@ math['typeof'] = function math_typeof(x) {
     if (x instanceof String) {
       return 'string';
     }
-    if (x instanceof Array) {
+    if (Array.isArray(x)) {
       return 'array';
     }
     if (x instanceof Date) {
@@ -11772,8 +11772,6 @@ math.docs['typeof'] = {
  * Compatibility shims for legacy JavaScript engines
  */
 
-// Internet Explorer 8 and older does not support Array.indexOf,
-// so we define it here in that case.
 // http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
 if(!Array.prototype.indexOf) {
   Array.prototype.indexOf = function(obj){
@@ -11786,8 +11784,6 @@ if(!Array.prototype.indexOf) {
   };
 }
 
-// Internet Explorer 8 and older does not support Array.forEach,
-// so we define it here in that case.
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
 if (!Array.prototype.forEach) {
   Array.prototype.forEach = function(fn, scope) {
@@ -11797,8 +11793,13 @@ if (!Array.prototype.forEach) {
   }
 }
 
-// Internet Explorer 8 and older does not support Array.map,
-// so we define it here in that case.
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+if(!Array.isArray) {
+  Array.isArray = function (vArg) {
+    return Object.prototype.toString.call(vArg) === "[object Array]";
+  };
+}
+
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
 // Production steps of ECMA-262, Edition 5, 15.4.4.19
 // Reference: http://es5.github.com/#x15.4.4.19
@@ -11874,8 +11875,6 @@ if (!Array.prototype.map) {
   };
 }
 
-// Internet Explorer 8 and older does not support Array.every,
-// so we define it here in that case.
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/every
 if (!Array.prototype.every) {
   Array.prototype.every = function(fun /*, thisp */) {
@@ -11902,8 +11901,6 @@ if (!Array.prototype.every) {
   };
 }
 
-// Internet Explorer 8 and older does not support Array.some,
-// so we define it here in that case.
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/some
 if (!Array.prototype.some) {
   Array.prototype.some = function(fun /*, thisp */) {
@@ -11930,7 +11927,6 @@ if (!Array.prototype.some) {
   };
 }
 
-// Define Function.bind if not available
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
 if (!Function.prototype.bind) {
   Function.prototype.bind = function (oThis) {

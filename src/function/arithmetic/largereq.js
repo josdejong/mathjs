@@ -44,8 +44,8 @@ math.largereq = function largereq(x, y) {
     return x >= y;
   }
 
-  if (x instanceof Array || x instanceof Matrix ||
-      y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix ||
+      Array.isArray(y) || y instanceof Matrix) {
     return util.map2(x, y, math.largereq);
   }
 

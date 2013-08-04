@@ -11,13 +11,13 @@ math.squeeze = function squeeze (x) {
     throw newArgumentsError('squeeze', arguments.length, 1);
   }
 
-  if (x instanceof Array) {
+  if (Array.isArray(x)) {
     return _squeezeArray(math.clone(x));
   }
   else if (x instanceof Matrix) {
     return math.matrix(_squeezeArray(x.toArray()));
   }
-  else if (x.valueOf() instanceof Array) {
+  else if (Array.isArray(x.valueOf())) {
     return _squeezeArray(math.clone(x.valueOf()));
   }
   else {
@@ -41,7 +41,7 @@ function _squeezeArray(array) {
     // process all childs
     for (var i = 0, len = array.length; i < len; i++) {
       var child = array[i];
-      if (child instanceof Array) {
+      if (Array.isArray(child)) {
         array[i] = _squeezeArray(child);
       }
     }

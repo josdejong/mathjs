@@ -21,7 +21,7 @@ math.abs = function abs(x) {
     return Math.sqrt(x.re * x.re + x.im * x.im);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.abs);
   }
 

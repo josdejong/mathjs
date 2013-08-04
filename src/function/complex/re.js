@@ -21,7 +21,7 @@ math.re = function re(x) {
     return x.re;
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.re);
   }
 

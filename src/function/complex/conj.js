@@ -22,7 +22,7 @@ math.conj = function conj(x) {
     return Complex.create(x.re, -x.im);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.conj);
   }
 

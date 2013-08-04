@@ -35,7 +35,7 @@ math.pow = function pow(x, y) {
       return powComplex(x, y);
     }
   }
-  else if (x instanceof Array) {
+  else if (Array.isArray(x)) {
     if (!isNumber(y) || !isInteger(y) || y < 0) {
       throw new TypeError('For A^b, b must be a positive integer ' +
           '(value is ' + y + ')');

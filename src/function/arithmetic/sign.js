@@ -33,7 +33,7 @@ math.sign = function sign(x) {
     return Complex.create(x.re / abs, x.im / abs);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.sign);
   }
 

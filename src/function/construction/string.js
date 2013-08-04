@@ -23,7 +23,7 @@ math.string = function (value) {
  * @private
  */
 function _toString(value) {
-  if (value instanceof Array || value instanceof Matrix || value instanceof Range) {
+  if (Array.isArray(value) || value instanceof Matrix || value instanceof Range) {
     var array = value.valueOf();
 
     var str = '[';

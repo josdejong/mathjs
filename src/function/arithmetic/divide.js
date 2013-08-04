@@ -43,8 +43,8 @@ math.divide = function divide(x, y) {
     }
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
-    if (y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
+    if (Array.isArray(y) || y instanceof Matrix) {
       // TODO: implement matrix right division using pseudo inverse
       // http://www.mathworks.nl/help/matlab/ref/mrdivide.html
       // http://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
@@ -57,7 +57,7 @@ math.divide = function divide(x, y) {
     }
   }
 
-  if (y instanceof Array || y instanceof Matrix) {
+  if (Array.isArray(y) || y instanceof Matrix) {
     // TODO: implement matrix right division using pseudo inverse
     return math.multiply(x, math.inv(y));
   }

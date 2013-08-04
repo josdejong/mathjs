@@ -56,7 +56,7 @@ var util = (function () {
    * @returns {String} str
    */
   util.formatArray = function formatArray (array) {
-    if (array instanceof Array) {
+    if (Array.isArray(array)) {
       var str = '[';
       var len = array.length;
       for (var i = 0; i < len; i++) {
@@ -137,7 +137,7 @@ var util = (function () {
       if (array instanceof Range) {
         array = array.valueOf();
       }
-      if (!(array instanceof Array)) {
+      if (!Array.isArray(array)) {
         array = [array];
       }
     }
@@ -235,7 +235,7 @@ var util = (function () {
    * @return {Array | Matrix} res
    */
   util.map = function map(array, fn) {
-    if (array instanceof Array || array instanceof Matrix || array instanceof Range) {
+    if (Array.isArray(array) || array instanceof Matrix || array instanceof Range) {
       return array.map(function (x) {
         return fn(x);
       });
@@ -254,7 +254,7 @@ var util = (function () {
    * @return {Array | Matrix} res
    */
   util.deepMap = function map(array, fn) {
-    if (array instanceof Array || array instanceof Matrix || array instanceof Range) {
+    if (Array.isArray(array) || array instanceof Matrix || array instanceof Range) {
       return array.map(function (x) {
         return map(x, fn);
       });
@@ -286,8 +286,8 @@ var util = (function () {
       return util.map2(array1.valueOf(), array2.valueOf(), fn);
     }
 
-    if (array1 instanceof Array) {
-      if (array2 instanceof Array) {
+    if (Array.isArray(array1)) {
+      if (Array.isArray(array2)) {
         // fn(array, array)
         if (array1.length != array2.length) {
           throw new RangeError('Dimension mismatch ' +
@@ -310,7 +310,7 @@ var util = (function () {
       }
     }
     else {
-      if (array2 instanceof Array) {
+      if (Array.isArray(array2)) {
         // fn(object, array)
         res = [];
         len = array2.length;
@@ -350,8 +350,8 @@ var util = (function () {
       return map2(array1.valueOf(), array2.valueOf(), fn);
     }
 
-    if (array1 instanceof Array) {
-      if (array2 instanceof Array) {
+    if (Array.isArray(array1)) {
+      if (Array.isArray(array2)) {
         // fn(array, array)
         if (array1.length != array2.length) {
           throw new RangeError('Dimension mismatch ' +
@@ -374,7 +374,7 @@ var util = (function () {
       }
     }
     else {
-      if (array2 instanceof Array) {
+      if (Array.isArray(array2)) {
         // fn(object, array)
         res = [];
         len = array2.length;
@@ -416,8 +416,8 @@ var util = (function () {
    */
   util.deepEqual = function deepEqual (a, b) {
     var prop, i, len;
-    if (a instanceof Array) {
-      if (!(b instanceof Array)) {
+    if (Array.isArray(a)) {
+      if (!Array.isArray(b)) {
         return false;
       }
 
@@ -429,7 +429,7 @@ var util = (function () {
       return true;
     }
     else if (a instanceof Object) {
-      if (b instanceof Array || !(b instanceof Object)) {
+      if (Array.isArray(b) || !(b instanceof Object)) {
         return false;
       }
 
@@ -461,7 +461,7 @@ var util = (function () {
    * @throws RangeError
    */
   function _size(x) {
-    if (x instanceof Array) {
+    if (Array.isArray(x)) {
       var sizeX = x.length;
       if (sizeX) {
         var size0 = _size(x[0]);
@@ -520,7 +520,7 @@ var util = (function () {
       var dimNext = dim + 1;
       for (i = 0; i < len; i++) {
         var child = array[i];
-        if (!(child instanceof Array)) {
+        if (!Array.isArray(child)) {
           throw new RangeError('Dimension mismatch ' +
               '(' + (size.length - 1) + ' < ' + size.length + ')');
         }
@@ -530,7 +530,7 @@ var util = (function () {
     else {
       // last dimension. none of the childs may be an array
       for (i = 0; i < len; i++) {
-        if (array[i] instanceof Array) {
+        if (Array.isArray(array[i])) {
           throw new RangeError('Dimension mismatch ' +
               '(' + (size.length + 1) + ' > ' + size.length + ')');
         }
@@ -549,7 +549,7 @@ var util = (function () {
   function _validateEmpty(array, size, dim) {
     if (dim < size.length - 1) {
       var child = array[0];
-      if (array.length != 1 || !(child instanceof Array)) {
+      if (array.length != 1 || !Array.isArray(child)) {
         throw new RangeError('Dimension mismatch ' + '(' + array.length + ' > 0)');
       }
 
@@ -574,7 +574,7 @@ var util = (function () {
     var isScalar = (size.length == 0);
     if (isScalar) {
       // scalar
-      if (array instanceof Array) {
+      if (Array.isArray(array)) {
         throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
       }
       return;
@@ -624,7 +624,7 @@ var util = (function () {
    * @private
    */
   function _resize (array, size, dim, defaultValue) {
-    if (!(array instanceof Array)) {
+    if (!Array.isArray(array)) {
       throw new TypeError('Array expected');
     }
 
@@ -650,7 +650,7 @@ var util = (function () {
       var dimNext = dim + 1;
       for (i = 0; i < len; i++) {
         child = array[i];
-        if (!(child instanceof Array)) {
+        if (!Array.isArray(child)) {
           child = [child];
           array[i] = child;
         }
@@ -661,7 +661,7 @@ var util = (function () {
       // last dimension
       for (i = 0; i < len; i++) {
         var child = array[i];
-        while (child instanceof Array) {
+        while (Array.isArray(child)) {
           child = child[0];
         }
         array[i] = child;
@@ -680,7 +680,7 @@ var util = (function () {
     // TODO: what to do with scalars, when size=[] ?
 
     // check the type of size
-    if (!(size instanceof Array)) {
+    if (!Array.isArray(size)) {
       throw new TypeError('Size must be an array (size is ' + math['typeof'](size) + ')');
     }
 

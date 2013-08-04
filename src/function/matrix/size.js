@@ -19,7 +19,7 @@ math.size = function size (x) {
     return [x.length];
   }
 
-  if (x instanceof Array) {
+  if (Array.isArray(x)) {
     return util.size(x);
   }
 

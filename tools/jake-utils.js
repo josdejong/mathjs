@@ -90,7 +90,7 @@ function replace (params) {
   if (!params.replacements) {
     throw new Error('Parameter "replacements" missing.');
   }
-  if (!(params.replacements instanceof Array)) {
+  if (!Array.isArray(params.replacements)) {
     throw new Error('Parameter "replacements" must be an array.');
   }
   if (!params.src) {

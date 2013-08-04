@@ -35,7 +35,7 @@ math.factorial = function factorial (x) {
     return res;
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.factorial);
   }
 

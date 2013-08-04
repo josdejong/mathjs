@@ -31,7 +31,7 @@ math.expr.node.MatrixNode = MatrixNode;
         var results_rc = nodes_r[c].eval();
         if (results_rc instanceof Matrix ||
             results_rc instanceof Range ||
-            results_rc instanceof Array) {
+            Array.isArray(results_rc)) {
           mergeNeeded = true;
         }
         results_r[c] = results_rc;
@@ -104,7 +104,7 @@ math.expr.node.MatrixNode = MatrixNode;
           entry = [entry.valueOf()];
           size = [1, entry[0].length];
         }
-        else if (entry instanceof Array) {
+        else if (Array.isArray(entry)) {
           // change array into a 1xn matrix
           size = [1, entry.length];
           entry = [entry];

@@ -28,7 +28,7 @@ math.round = function round(x, n) {
       );
     }
 
-    if (x instanceof Array || x instanceof Matrix) {
+    if (Array.isArray(x) || x instanceof Matrix) {
       return util.map(x, math.round);
     }
 
@@ -62,8 +62,8 @@ math.round = function round(x, n) {
       );
     }
 
-    if (x instanceof Array || x instanceof Matrix ||
-        n instanceof Array || n instanceof Matrix) {
+    if (Array.isArray(x) || x instanceof Matrix ||
+        Array.isArray(n) || n instanceof Matrix) {
       return util.map2(x, n, math.round);
     }
 

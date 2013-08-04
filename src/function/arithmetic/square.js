@@ -22,7 +22,7 @@ math.square = function square(x) {
     return math.multiply(x, x);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.square);
   }
 

@@ -12,7 +12,7 @@ math.min = function min(args) {
     throw new Error('Function min requires one or more parameters (0 provided)');
   }
 
-  if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
+  if (Array.isArray(args) || args instanceof Matrix || args instanceof Range) {
     // min([a, b, c, d, ...]])
     if (arguments.length > 1) {
       throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
@@ -33,7 +33,7 @@ math.min = function min(args) {
       if (size[0] == 0 || size[1] == 0) {
         throw new Error('Cannot calculate min of an empty matrix');
       }
-      if (args instanceof Array) {
+      if (Array.isArray(args)) {
         return _min2(args, size[0], size[1]);
       }
       else if (args instanceof Matrix || args instanceof Range) {

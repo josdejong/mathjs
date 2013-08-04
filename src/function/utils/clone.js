@@ -24,7 +24,7 @@ math.clone = function clone(x) {
     return x;
   }
 
-  if (x instanceof Array) {
+  if (Array.isArray(x)) {
     var c = math.clone;
     return x.map(function (value) {
       return c(value);

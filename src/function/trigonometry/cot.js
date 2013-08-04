@@ -34,7 +34,7 @@ math.cot = function cot(x) {
     return 1 / Math.tan(x.value);
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.cot);
   }
 

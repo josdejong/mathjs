@@ -30,7 +30,7 @@ math.format = function format(template, values) {
       return util.formatNumber(value, math.options.precision);
     }
 
-    if (value instanceof Array) {
+    if (Array.isArray(value)) {
       return util.formatArray(value);
     }
 

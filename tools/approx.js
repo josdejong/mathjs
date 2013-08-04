@@ -52,7 +52,7 @@ exports.equal = function equal(a, b) {
 exports.deepEqual = function deepEqual(a, b) {
   var prop, i, len;
 
-  if ((a instanceof Array) && (b instanceof Array)) {
+  if (Array.isArray(a) && Array.isArray(b)) {
     assert.equal(a.length, b.length, a + ' ~= ' + b);
     for (i = 0, len = a.length; i < len; i++) {
       deepEqual(a[i], b[i]);

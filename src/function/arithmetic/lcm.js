@@ -36,8 +36,8 @@ math.lcm = function lcm(args) {
     }
 
     // evaluate lcm element wise
-    if (a instanceof Array || a instanceof Matrix ||
-        b instanceof Array || b instanceof Matrix) {
+    if (Array.isArray(a) || a instanceof Matrix ||
+        Array.isArray(b) || b instanceof Matrix) {
       return util.map2(a, b, math.lcm);
     }
 

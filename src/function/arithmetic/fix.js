@@ -24,7 +24,7 @@ math.fix = function fix(x) {
     );
   }
 
-  if (x instanceof Array || x instanceof Matrix) {
+  if (Array.isArray(x) || x instanceof Matrix) {
     return util.map(x, math.fix);
   }
 

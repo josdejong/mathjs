@@ -40,7 +40,7 @@ math.subset = function subset (args) {
 function _getSubset(value, index) {
   var matrix, subset;
 
-  if (value instanceof Array || value instanceof Range) {
+  if (Array.isArray(value) || value instanceof Range) {
     matrix = math.matrix(value);
     subset = matrix.get(index);
     return subset.valueOf();
@@ -77,11 +77,11 @@ function _getSubstring(str, index) {
     throw new RangeError('Dimension mismatch (' + index.length + ' != 1)');
   }
 
-  if (index instanceof Array) {
+  if (Array.isArray(index)) {
     index = index[0];   // read first dimension
   }
   index = index.valueOf(); // cast from matrix or range to array
-  if (!(index instanceof Array)) {
+  if (!Array.isArray(index)) {
     index = [index];
   }
 
@@ -109,7 +109,7 @@ function _getSubstring(str, index) {
  * @private
  */
 function _setSubset(value, index, replacement) {
-  if (value instanceof Array || value instanceof Range) {
+  if (Array.isArray(value) || value instanceof Range) {
     var matrix = math.matrix(math.clone(value));
     matrix.set(index, replacement);
     return matrix.valueOf();
@@ -155,11 +155,11 @@ function _setSubstring(str, index, replacement) {
   if (index.length != 1) {
     throw new RangeError('Dimension mismatch (' + index.length + ' != 1)');
   }
-  if (index instanceof Array) {
+  if (Array.isArray(index)) {
     index = index[0];   // read first dimension
   }
   index = index.valueOf(); // cast from matrix or range to array
-  if (!(index instanceof Array)) {
+  if (!Array.isArray(index)) {
     index = [index];
   }
 

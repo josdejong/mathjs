@@ -45,8 +45,8 @@ math.multiply = function multiply(x, y) {
       return res;
     }
   }
-  else if (x instanceof Array) {
-    if (y instanceof Array) {
+  else if (Array.isArray(x)) {
+    if (Array.isArray(y)) {
       // matrix * matrix
       var sizeX = util.size(x);
       var sizeY = util.size(y);
@@ -100,7 +100,7 @@ math.multiply = function multiply(x, y) {
     return new Matrix(math.multiply(x.valueOf(), y.valueOf()));
   }
 
-  if (y instanceof Array) {
+  if (Array.isArray(y)) {
     // scalar * matrix
     return util.map2(x, y, math.multiply);
   }

@@ -41,7 +41,7 @@ math.concat = function concat (args) {
             '(' + dim + ' > ' + prevDim + ')');
       }
     }
-    else if (arg instanceof Array || arg instanceof Matrix) {
+    else if (Array.isArray(arg) || arg instanceof Matrix) {
       // this is a matrix or array
       var matrix = math.clone(arg).valueOf();
       var size = math.size(arg).valueOf();

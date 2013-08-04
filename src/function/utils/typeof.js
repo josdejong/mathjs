@@ -28,7 +28,7 @@ math['typeof'] = function math_typeof(x) {
     if (x instanceof String) {
       return 'string';
     }
-    if (x instanceof Array) {
+    if (Array.isArray(x)) {
       return 'array';
     }
     if (x instanceof Date) {

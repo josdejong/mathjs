@@ -29,7 +29,7 @@ function Matrix(data) {
     // clone data from a Matrix or Range
     this._data = data.toArray();
   }
-  else if (data instanceof Array) {
+  else if (Array.isArray(data)) {
     // use array as is
     this._data = data;
   }
@@ -61,7 +61,7 @@ Matrix.prototype.get = function (index) {
     });
     index = index.valueOf();
   }
-  else if (index instanceof Array) {
+  else if (Array.isArray(index)) {
     isScalar = !index.some(function (elem) {
       var size = math.size(elem);
       return (size.length != 0) && (size != [0]);
@@ -242,7 +242,7 @@ Matrix.prototype.set = function (index, submatrix) {
     });
     index = index.valueOf();
   }
-  else if (index instanceof Array) {
+  else if (Array.isArray(index)) {
     isScalar = !index.some(function (elem) {
       var size = math.size(elem);
       return (size.length != 0) && (size != [0]);
@@ -297,7 +297,7 @@ Matrix.prototype.set = function (index, submatrix) {
  */
 function _set (array, index, value) {
   util.validateIndex(index);
-  if (value instanceof Array) {
+  if (Array.isArray(value)) {
     throw new TypeError('Dimension mismatch, value expected instead of array');
   }
   array[index] = value; // zero-based index
@@ -411,7 +411,7 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
     }
     else {
       var child = data[dataIndex]; // zero-based index
-      if (!(child instanceof Array)) {
+      if (!Array.isArray(child)) {
         data[dataIndex] = child = [child]; // zero-based index
       }
       if (dataIndex + 1 > (size[dim] || 0)) {
@@ -444,7 +444,7 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
 function _init(array) {
   for (var i = 0, len = array.length; i < len; i++) {
     var value = array[i];
-    if (value instanceof Array) {
+    if (Array.isArray(value)) {
       _init(value);
     }
     else if (value == undefined) {
@@ -498,7 +498,7 @@ Matrix.prototype.map = function (callback) {
   var matrix = new Matrix();
   var index = [];
   var recurse = function (value, dim) {
-    if (value instanceof Array) {
+    if (Array.isArray(value)) {
       return value.map(function (child, i) {
         index[dim] = i; // zero-based index
         return recurse(child, dim + 1);
@@ -524,7 +524,7 @@ Matrix.prototype.forEach = function (callback) {
   var me = this;
   var index = [];
   var recurse = function (value, dim) {
-    if (value instanceof Array) {
+    if (Array.isArray(value)) {
       value.forEach(function (child, i) {
         index[dim] = i; // zero-based index
         recurse(child, dim + 1);
@@ -544,11 +544,11 @@ Matrix.prototype.forEach = function (callback) {
  */
 Matrix.prototype.toScalar = function () {
   var scalar = this._data;
-  while (scalar instanceof Array && scalar.length == 1) {
+  while (Array.isArray(scalar) && scalar.length == 1) {
     scalar = scalar[0];
   }
 
-  if (scalar instanceof Array) {
+  if (Array.isArray(scalar)) {
     return null;
   }
   else {
@@ -600,7 +600,7 @@ Matrix.prototype.toVector = function () {
     // valid vector
     var vector = [];
     var recurse = function (data) {
-      if (data instanceof Array) {
+      if (Array.isArray(data)) {
         data.forEach(recurse);
       }
       else {

@@ -21,7 +21,7 @@ var distributions = {
   normal: function() {
     return function() {
       var u1, u2,
-          picked = -1
+          picked = -1;
       // We reject values outside of the interval [0, 1]
       // TODO: check if it is ok to do that?
       while (picked < 0 || picked > 1) {
@@ -57,10 +57,10 @@ math.distribution = function(name) {
 
       random: function(arg1, arg2, arg3) {
         if (arguments.length > 3)
-          newArgumentsError('random', arguments.length, 0, 3);
+          throw newArgumentsError('random', arguments.length, 0, 3);
 
         // Random matrix
-        else if (Object.prototype.toString.call(arg1) === '[object Array]') {
+        else if (Array.isArray(arg1)) {
           var min = arg2, max = arg3;
           if (max === undefined) max = 1;
           if (min === undefined) min = 0;
@@ -70,7 +70,7 @@ math.distribution = function(name) {
         } else {
           // TODO: more precise error message?
           if (arguments.length > 2)
-            newArgumentsError('random', arguments.length, 0, 2);
+            throw newArgumentsError('random', arguments.length, 0, 2);
           var min = arg1, max = arg2;
           if (max === undefined) max = 1;
           if (min === undefined) min = 0;
@@ -80,13 +80,13 @@ math.distribution = function(name) {
 
       randomInt: function(min, max) {
         if (arguments.length > 2)
-          newArgumentsError('randomInt', arguments.length, 0, 2);
+          throw newArgumentsError('randomInt', arguments.length, 0, 2);
         return Math.floor(this.random(min, max));
       },
 
       pickRandom: function(possibles) {
         if (arguments.length !== 1)
-          newArgumentsError('pickRandom', arguments.length, 1);
+          throw newArgumentsError('pickRandom', arguments.length, 1);
         return possibles[Math.floor(Math.random() * possibles.length)];
       }
     };

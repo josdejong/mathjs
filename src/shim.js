@@ -2,8 +2,6 @@
  * Compatibility shims for legacy JavaScript engines
  */
 
-// Internet Explorer 8 and older does not support Array.indexOf,
-// so we define it here in that case.
 // http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
 if(!Array.prototype.indexOf) {
   Array.prototype.indexOf = function(obj){
@@ -16,8 +14,6 @@ if(!Array.prototype.indexOf) {
   };
 }
 
-// Internet Explorer 8 and older does not support Array.forEach,
-// so we define it here in that case.
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
 if (!Array.prototype.forEach) {
   Array.prototype.forEach = function(fn, scope) {
@@ -27,8 +23,13 @@ if (!Array.prototype.forEach) {
   }
 }
 
-// Internet Explorer 8 and older does not support Array.map,
-// so we define it here in that case.
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+if(!Array.isArray) {
+  Array.isArray = function (vArg) {
+    return Object.prototype.toString.call(vArg) === "[object Array]";
+  };
+}
+
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
 // Production steps of ECMA-262, Edition 5, 15.4.4.19
 // Reference: http://es5.github.com/#x15.4.4.19
@@ -104,8 +105,6 @@ if (!Array.prototype.map) {
   };
 }
 
-// Internet Explorer 8 and older does not support Array.every,
-// so we define it here in that case.
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/every
 if (!Array.prototype.every) {
   Array.prototype.every = function(fun /*, thisp */) {
@@ -132,8 +131,6 @@ if (!Array.prototype.every) {
   };
 }
 
-// Internet Explorer 8 and older does not support Array.some,
-// so we define it here in that case.
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/some
 if (!Array.prototype.some) {
   Array.prototype.some = function(fun /*, thisp */) {
@@ -160,7 +157,6 @@ if (!Array.prototype.some) {
   };
 }
 
-// Define Function.bind if not available
 // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
 if (!Function.prototype.bind) {
   Function.prototype.bind = function (oThis) {

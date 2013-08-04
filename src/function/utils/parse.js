@@ -53,7 +53,7 @@
       expression = expr || '';
       return parse_start(parseScope);
     }
-    else if (expr instanceof Array || expr instanceof Matrix) {
+    else if (Array.isArray(expr) || expr instanceof Matrix) {
       // parse an array or matrix with expressions
       return util.map(expr, function (elem) {
         expression = elem || '';

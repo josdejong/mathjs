@@ -47,7 +47,7 @@ math.eval = function (expr, scope) {
     var node = math.parse(expr, evalScope);
     return node.eval();
   }
-  else if (expr instanceof Array || expr instanceof Matrix) {
+  else if (Array.isArray(expr) || expr instanceof Matrix) {
     // evaluate an array or matrix with expressions
     return util.map(expr, function (elem) {
       var node = math.parse(elem, evalScope);
