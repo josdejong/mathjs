@@ -50,38 +50,67 @@ math.distribution = function(name) {
   var args = Array.prototype.slice.call(arguments, 1),
       distribution = distributions[name].apply(this, args);
 
-  // We wrap all the random functions into one object which uses the given distribution.
   return (function(distribution) {
 
+    // This is the public API for all distributions
     var randFunctions = {
 
       random: function(arg1, arg2, arg3) {
-        if (arguments.length > 3)
-          throw newArgumentsError('random', arguments.length, 0, 3);
+        var size, min, max
+        if (arguments.length > 3) {
+          throw newArgumentsError(funcName, argCount, 0, 3);
 
-        // Random matrix
-        else if (Array.isArray(arg1)) {
-          var min = arg2, max = arg3;
-          if (max === undefined) max = 1;
-          if (min === undefined) min = 0;
-          return new Matrix(_randomDataForMatrix(arg1, min, max));
-
-          // Random float
+        // `random(max)` or `random(size)`
+        } else if (arguments.length === 1) {
+          if (Object.prototype.toString.call(arg1) === '[object Array]')
+            size = arg1
+          else max = arg1
+        // `random(min, max)` or `random(size, max)`
+        } else if (arguments.length === 2) {
+          if (Object.prototype.toString.call(arg1) === '[object Array]')
+            size = arg1
+          else {
+            min = arg1
+            max = arg2
+          }
+        // `random(size, min, max)`
         } else {
-          // TODO: more precise error message?
-          if (arguments.length > 2)
-            throw newArgumentsError('random', arguments.length, 0, 2);
-          var min = arg1, max = arg2;
-          if (max === undefined) max = 1;
-          if (min === undefined) min = 0;
-          return min + distribution() * (max - min);
+          size = arg1
+          min = arg2
+          max = arg3
         }
+
+        if (max === undefined) max = 1;
+        if (min === undefined) min = 0;
+        if (size !== undefined) return new Matrix(_randomDataForMatrix(size, min, max, _random));
+        else return _random(min, max);
       },
 
-      randomInt: function(min, max) {
-        if (arguments.length > 2)
-          throw newArgumentsError('randomInt', arguments.length, 0, 2);
-        return Math.floor(this.random(min, max));
+      randomInt: function(arg1, arg2, arg3) {
+        var size, min, max
+        if (arguments.length > 3 || arguments.length < 1)
+          throw newArgumentsError(funcName, argCount, 1, 3);
+
+        // `random(max)`
+        else if (arguments.length === 1) max = arg1
+        // `random(min, max)` or `random(size, max)`
+        else if (arguments.length === 2) {
+          if (Object.prototype.toString.call(arg1) === '[object Array]')
+            size = arg1
+          else {
+            min = arg1
+            max = arg2
+          }
+        // `random(size, min, max)`
+        } else {
+          size = arg1
+          min = arg2
+          max = arg3
+        }
+
+        if (min === undefined) min = 0;
+        if (size !== undefined) return new Matrix(_randomDataForMatrix(size, min, max, _randomInt));
+        else return _randomInt(min, max);
       },
 
       pickRandom: function(possibles) {
@@ -89,18 +118,28 @@ math.distribution = function(name) {
           throw newArgumentsError('pickRandom', arguments.length, 1);
         return possibles[Math.floor(Math.random() * possibles.length)];
       }
+
     };
 
-    var _randomDataForMatrix = function(size, min, max) {
+    var _random = function(min, max) {
+      return min + distribution() * (max - min);
+    };
+
+    var _randomInt = function(min, max) {
+      return Math.floor(min + distribution() * (max - min));
+    };
+
+    // This is a function for generating a random matrix recursively.
+    var _randomDataForMatrix = function(size, min, max, randFunc) {
       var data = [], length, i;
       size = size.slice(0);
 
       if (size.length > 1) {
         for (i = 0, length = size.shift(); i < length; i++)
-          data.push(_randomDataForMatrix(size, min, max));
+          data.push(_randomDataForMatrix(size, min, max, randFunc));
       } else {
         for (i = 0, length = size.shift(); i < length; i++)
-          data.push(randFunctions.random.call(randFunctions, min, max));
+          data.push(randFunc(min, max));
       }
 
       return data;
@@ -117,4 +156,3 @@ var uniformRandFunctions = math.distribution('uniform');
 math.random = uniformRandFunctions.random;
 math.randomInt = uniformRandFunctions.randomInt;
 math.pickRandom = uniformRandFunctions.pickRandom;
-math.randomMatrix = uniformRandFunctions.randomMatrix;
