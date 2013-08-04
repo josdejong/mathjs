@@ -16,7 +16,7 @@ assert.deepEqual(r.toArray(), [1,2.5,4]);
 assert.equal(r.size(), 3);
 
 assert.throws(function () {
-    var r = math.range();
+  var r = math.range();
 });
 
 r = math.range(0,0);

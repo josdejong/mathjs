@@ -8,7 +8,7 @@ var math = require('../math.js');
  * @param {*} value
  */
 function print (value) {
-    console.log(math.format(value));
+  console.log(math.format(value));
 }
 
 // units can be created by providing a value and plain unit, or by providing

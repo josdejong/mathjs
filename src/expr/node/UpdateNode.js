@@ -10,26 +10,26 @@
  * @param {math.expr.Scope} scope       Scope to store the result
  */
 function UpdateNode(name, params, paramScopes, expr, scope) {
-    this.name = name;
-    this.params = params;
-    this.paramScopes = paramScopes;
-    this.expr = expr;
-    this.scope = scope;
+  this.name = name;
+  this.params = params;
+  this.paramScopes = paramScopes;
+  this.expr = expr;
+  this.scope = scope;
 
-    // check whether any of the params expressions uses the context symbol 'end'
-    this.hasContextParams = false;
-    var filter = {
-        type: math.type.SymbolNode,
-        properties: {
-            name: 'end'
-        }
-    };
-    for (var i = 0, len = params.length; i < len; i++) {
-        if (params[i].find(filter).length > 0) {
-            this.hasContextParams = true;
-            break;
-        }
+  // check whether any of the params expressions uses the context symbol 'end'
+  this.hasContextParams = false;
+  var filter = {
+    type: math.type.SymbolNode,
+    properties: {
+      name: 'end'
     }
+  };
+  for (var i = 0, len = params.length; i < len; i++) {
+    if (params[i].find(filter).length > 0) {
+      this.hasContextParams = true;
+      break;
+    }
+  }
 }
 
 UpdateNode.prototype = new Node();
@@ -41,57 +41,57 @@ math.expr.node.UpdateNode = UpdateNode;
  * @return {*} result
  */
 UpdateNode.prototype.eval = function() {
-    if (this.expr === undefined) {
-        throw new Error('Undefined symbol ' + this.name);
+  if (this.expr === undefined) {
+    throw new Error('Undefined symbol ' + this.name);
+  }
+
+  var result;
+  var params = this.params;
+
+  // test if definition is currently undefined
+  var prevResult = this.scope.get(this.name);
+  if (prevResult == undefined) {
+    throw new Error('Undefined symbol ' + this.name);
+  }
+
+  // evaluate the values of context parameter 'end' when needed
+  if (this.hasContextParams) {
+    var paramScopes = this.paramScopes,
+        size;
+    if (prevResult.size) {
+      size = prevResult.size(); // matrix
+    }
+    else if (prevResult.length !== undefined) {
+      size = [prevResult.length];  // string
+    }
+    else {
+      size = [];  // scalar
     }
 
-    var result;
-    var params = this.params;
-
-    // test if definition is currently undefined
-    var prevResult = this.scope.get(this.name);
-    if (prevResult == undefined) {
-        throw new Error('Undefined symbol ' + this.name);
+    if (paramScopes && size) {
+      for (var i = 0, len = this.params.length; i < len; i++) {
+        var paramScope = paramScopes[i];
+        if (paramScope) {
+          paramScope.set('end', size[i] - 1);
+        }
+      }
     }
+  }
 
-    // evaluate the values of context parameter 'end' when needed
-    if (this.hasContextParams) {
-        var paramScopes = this.paramScopes,
-            size;
-        if (prevResult.size) {
-            size = prevResult.size(); // matrix
-        }
-        else if (prevResult.length !== undefined) {
-            size = [prevResult.length];  // string
-        }
-        else {
-            size = [];  // scalar
-        }
+  // change part of a matrix, for example "a=[]", "a(2,3)=4.5"
+  var paramResults = [];
+  this.params.forEach(function (param) {
+    paramResults.push(param.eval());
+  });
 
-        if (paramScopes && size) {
-            for (var i = 0, len = this.params.length; i < len; i++) {
-                var paramScope = paramScopes[i];
-                if (paramScope) {
-                    paramScope.set('end', size[i] - 1);
-                }
-            }
-        }
-    }
+  var exprResult = this.expr.eval();
 
-    // change part of a matrix, for example "a=[]", "a(2,3)=4.5"
-    var paramResults = [];
-    this.params.forEach(function (param) {
-        paramResults.push(param.eval());
-    });
+  // replace subset
+  result = math.subset(prevResult, paramResults, exprResult);
 
-    var exprResult = this.expr.eval();
+  this.scope.set(this.name, result);
 
-    // replace subset
-    result = math.subset(prevResult, paramResults, exprResult);
-
-    this.scope.set(this.name, result);
-
-    return result;
+  return result;
 };
 
 /**
@@ -100,27 +100,27 @@ UpdateNode.prototype.eval = function() {
  * @returns {Node[]} nodes
  */
 UpdateNode.prototype.find = function (filter) {
-    var nodes = [];
+  var nodes = [];
 
-    // check itself
-    if (this.match(filter)) {
-        nodes.push(this);
+  // check itself
+  if (this.match(filter)) {
+    nodes.push(this);
+  }
+
+  // search in parameters
+  var params = this.params;
+  if (params) {
+    for (var i = 0, len = params.length; i < len; i++) {
+      nodes = nodes.concat(params[i].find(filter));
     }
+  }
 
-    // search in parameters
-    var params = this.params;
-    if (params) {
-        for (var i = 0, len = params.length; i < len; i++) {
-            nodes = nodes.concat(params[i].find(filter));
-        }
-    }
+  // search in expression
+  if (this.expr) {
+    nodes = nodes.concat(this.expr.find(filter));
+  }
 
-    // search in expression
-    if (this.expr) {
-        nodes = nodes.concat(this.expr.find(filter));
-    }
-
-    return nodes;
+  return nodes;
 };
 
 /**
@@ -128,14 +128,14 @@ UpdateNode.prototype.find = function (filter) {
  * @return {String}
  */
 UpdateNode.prototype.toString = function() {
-    var str = '';
+  var str = '';
 
-    str += this.name;
-    if (this.params && this.params.length) {
-        str += '(' + this.params.join(', ') + ')';
-    }
-    str += ' = ';
-    str += this.expr.toString();
+  str += this.name;
+  if (this.params && this.params.length) {
+    str += '(' + this.params.join(', ') + ')';
+  }
+  str += ' = ';
+  str += this.expr.toString();
 
-    return str;
+  return str;
 };

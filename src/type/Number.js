@@ -9,7 +9,7 @@
  * @return {Boolean} isNumber
  */
 function isNumber(value) {
-    return (value instanceof Number) || (typeof value == 'number');
+  return (value instanceof Number) || (typeof value == 'number');
 }
 
 /**
@@ -18,5 +18,5 @@ function isNumber(value) {
  * @return {Boolean} isInteger
  */
 function isInteger(value) {
-    return (value == Math.round(value));
+  return (value == Math.round(value));
 }

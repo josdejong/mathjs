@@ -6,48 +6,48 @@
  * @return {Boolean | Array | Matrix} res
  */
 math.unequal = function unequal(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('unequal', arguments.length, 2);
-    }
+  if (arguments.length != 2) {
+    throw newArgumentsError('unequal', arguments.length, 2);
+  }
 
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            return x != y;
-        }
-        else if (y instanceof Complex) {
-            return (x != y.re) || (y.im != 0);
-        }
+  if (isNumber(x)) {
+    if (isNumber(y)) {
+      return x != y;
     }
-
-    if (x instanceof Complex) {
-        if (isNumber(y)) {
-            return (x.re != y) || (x.im != 0);
-        }
-        else if (y instanceof Complex) {
-            return (x.re != y.re) || (x.im != y.im);
-        }
+    else if (y instanceof Complex) {
+      return (x != y.re) || (y.im != 0);
     }
+  }
 
-    if ((x instanceof Unit) && (y instanceof Unit)) {
-        if (!x.equalBase(y)) {
-            throw new Error('Cannot compare units with different base');
-        }
-        return x.value != y.value;
+  if (x instanceof Complex) {
+    if (isNumber(y)) {
+      return (x.re != y) || (x.im != 0);
     }
-
-    if (isString(x) || isString(y)) {
-        return x != y;
+    else if (y instanceof Complex) {
+      return (x.re != y.re) || (x.im != y.im);
     }
+  }
 
-    if (x instanceof Array || x instanceof Matrix ||
-        y instanceof Array || y instanceof Matrix) {
-        return util.map2(x, y, math.unequal);
+  if ((x instanceof Unit) && (y instanceof Unit)) {
+    if (!x.equalBase(y)) {
+      throw new Error('Cannot compare units with different base');
     }
+    return x.value != y.value;
+  }
 
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.unequal(x.valueOf(), y.valueOf());
-    }
+  if (isString(x) || isString(y)) {
+    return x != y;
+  }
 
-    throw newUnsupportedTypeError('unequal', x, y);
+  if (x instanceof Array || x instanceof Matrix ||
+      y instanceof Array || y instanceof Matrix) {
+    return util.map2(x, y, math.unequal);
+  }
+
+  if (x.valueOf() !== x || y.valueOf() !== y) {
+    // fallback on the objects primitive values
+    return math.unequal(x.valueOf(), y.valueOf());
+  }
+
+  throw newUnsupportedTypeError('unequal', x, y);
 };

@@ -32,7 +32,7 @@ assert.equal(math.subtract(10, math.complex(0, 1)), '10 - i');
 // unit
 assert.equal(math.subtract(math.unit(5, 'km'), math.unit(100, 'mile')).toString(), '-155.93 km');
 assert.throws(function () {
-    math.subtract(math.unit(5, 'km'), math.unit(100, 'gram'));
+  math.subtract(math.unit(5, 'km'), math.unit(100, 'gram'));
 });
 
 // string

@@ -21,7 +21,7 @@ assert.equal(math.add(10, math.complex(3, -4)), '13 - 4i');
 // unit
 assert.equal(math.add(math.unit(5, 'km'), math.unit(100, 'mile')).toString(), '165.93 km');
 assert.throws(function () {
-    math.add(math.unit(5, 'km'), math.unit(100, 'gram'));
+  math.add(math.unit(5, 'km'), math.unit(100, 'gram'));
 });
 
 // string

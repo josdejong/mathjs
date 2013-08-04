@@ -31,23 +31,23 @@ assert.throws(function () {math.eval(true)}, TypeError);
 
 // test providing a scope
 var scope = {
-    a: 3,
-    b: 4
+  a: 3,
+  b: 4
 };
 assert.deepEqual(math.eval('a*b', scope), 12);
 assert.deepEqual(math.eval('c=5', scope), 5);
 assert.deepEqual(math.eval('function f(x) = x^a', scope), 'f(x)');
 assert.deepEqual(scope, {
-    a: 3,
-    b: 4,
-    c: 5,
-    f: 'f(x)',
-    ans: 'f(x)'
+  a: 3,
+  b: 4,
+  c: 5,
+  f: 'f(x)',
+  ans: 'f(x)'
 });
 assert.equal(scope.f(3), 27);
 scope.a = 2;
 assert.equal(scope.f(3), 9);
 scope.hello = function (name) {
-    return 'hello, ' + name + '!';
+  return 'hello, ' + name + '!';
 };
 assert.deepEqual(math.eval('hello("jos")', scope), 'hello, jos!');

@@ -10,17 +10,17 @@
  * @return {Matrix} matrix
  */
 math.zeros = function zeros (size) {
-    var args = util.argsToArray(arguments);
+  var args = util.argsToArray(arguments);
 
-    if (args.length == 0) {
-        args = [1, 1];
-    }
-    else if (args.length == 1) {
-        args[1] = args[0];
-    }
+  if (args.length == 0) {
+    args = [1, 1];
+  }
+  else if (args.length == 1) {
+    args[1] = args[0];
+  }
 
-    // create and size the matrix
-    var matrix = new Matrix();
-    matrix.resize(args);
-    return matrix;
+  // create and size the matrix
+  var matrix = new Matrix();
+  matrix.resize(args);
+  return matrix;
 };

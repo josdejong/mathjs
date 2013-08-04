@@ -8,7 +8,7 @@ var math = require('../math.js');
  * @param {*} value
  */
 function print (value) {
-    console.log(math.format(value));
+  console.log(math.format(value));
 }
 
 // create matrices and arrays. a matrix is just a wrapper around an Array,

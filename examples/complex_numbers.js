@@ -8,7 +8,7 @@ var math = require('../math.js');
  * @param {*} value
  */
 function print (value) {
-    console.log(math.format(value));
+  console.log(math.format(value));
 }
 
 // create a complex number with a numeric real and complex part

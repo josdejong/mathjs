@@ -12,9 +12,9 @@ var assert = require('assert'),
 
 // parser
 /* TODO: emultiply for parser
-approx.equal(math.eval('4 .* 2'), 8);
-approx.equal(math.eval('8 .* 2 .* 2'), 32);
-*/
+ approx.equal(math.eval('4 .* 2'), 8);
+ approx.equal(math.eval('8 .* 2 .* 2'), 32);
+ */
 approx.equal(math.eval('emultiply(4, 2)'), 8);
 
 // number

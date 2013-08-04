@@ -5,48 +5,48 @@
  * @return {Help} help
  */
 math.help = function help(search) {
-    if (arguments.length != 1) {
-        throw new SyntaxError('Wrong number of arguments in function help ' +
-            '(' + arguments.length + ' provided, 1 expected)');
-    }
+  if (arguments.length != 1) {
+    throw new SyntaxError('Wrong number of arguments in function help ' +
+        '(' + arguments.length + ' provided, 1 expected)');
+  }
 
-    var text = null;
-    if ((search instanceof String) || (typeof(search) === 'string')) {
-        text = search;
-    }
-    else {
-        var prop;
-        for (prop in math) {
-            // search in functions and constants
-            if (math.hasOwnProperty(prop)) {
-                if (search === math[prop]) {
-                    text = prop;
-                    break;
-                }
-            }
+  var text = null;
+  if ((search instanceof String) || (typeof(search) === 'string')) {
+    text = search;
+  }
+  else {
+    var prop;
+    for (prop in math) {
+      // search in functions and constants
+      if (math.hasOwnProperty(prop)) {
+        if (search === math[prop]) {
+          text = prop;
+          break;
         }
-
-        if (!text) {
-            // search data type
-            for (prop in math.type) {
-                if (math.type.hasOwnProperty(prop)) {
-                    if (search === math.type[prop]) {
-                        text = prop;
-                        break;
-                    }
-                }
-            }
-        }
+      }
     }
 
     if (!text) {
-        throw new Error('Could not find search term "' + search + '"');
-    }
-    else {
-        var doc = math.docs[text];
-        if (!doc) {
-            throw new Error('No documentation found on "' + text + '"');
+      // search data type
+      for (prop in math.type) {
+        if (math.type.hasOwnProperty(prop)) {
+          if (search === math.type[prop]) {
+            text = prop;
+            break;
+          }
         }
-        return new Help(doc);
+      }
     }
+  }
+
+  if (!text) {
+    throw new Error('Could not find search term "' + search + '"');
+  }
+  else {
+    var doc = math.docs[text];
+    if (!doc) {
+      throw new Error('No documentation found on "' + text + '"');
+    }
+    return new Help(doc);
+  }
 };

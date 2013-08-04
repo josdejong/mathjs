@@ -16,12 +16,12 @@ assert.equal(math.abs(math.complex(3, -4)), 5);
 
 // unit
 assert.throws(function () {
-    math.abs(math.unit(5, 'km'));
+  math.abs(math.unit(5, 'km'));
 });
 
 // string
 assert.throws(function () {
-    math.abs('a string');
+  math.abs('a string');
 });
 
 // matrix, array

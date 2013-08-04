@@ -103,9 +103,9 @@ assert.deepEqual(parser.eval('10:-2:2').toArray(), [10,8,6,4,2]);
 
 // test matrix
 parser.set('a', matrix([
-    [1,2,3],
-    [4,5,6],
-    [7,8,9]
+  [1,2,3],
+  [4,5,6],
+  [7,8,9]
 ]));
 assert.deepEqual(parser.eval('a(1, :)'),        matrix([[4,5,6]]));
 assert.deepEqual(parser.eval('a(1, :1)'),       matrix([[4,5]]));
@@ -179,14 +179,14 @@ assert.deepEqual(parser.eval('size(f)'), matrix([2,2]));
  ]));
  */
 parser.set('f', matrix([
-    [
-        [1,5],
-        [2,6]
-    ],
-    [
-        [3,7],
-        [4,8]
-    ]
+  [
+    [1,5],
+    [2,6]
+  ],
+  [
+    [3,7],
+    [4,8]
+  ]
 ]));
 assert.deepEqual(parser.eval('size(f)'), matrix([2,2,2]));
 assert.deepEqual(parser.eval('f(:,:,0)'), matrix([[[1],[2]],[[3],[4]]])); // TODO: last dimension should be squeezed
@@ -197,10 +197,10 @@ assert.deepEqual(parser.eval('f(1,:,:)'), matrix([[[3,7],[4,8]]]));
 parser.eval('a=diag([1,2,3,4])');
 assert.deepEqual(parser.eval('a(2:end, 2:end)'), matrix([[3,0],[0,4]]));
 assert.deepEqual(parser.eval('a(2:end, 1:end)=9*ones(2,3)'), matrix([
-    [1,0,0,0],
-    [0,2,0,0],
-    [0,9,9,9],
-    [0,9,9,9]
+  [1,0,0,0],
+  [0,2,0,0],
+  [0,9,9,9],
+  [0,9,9,9]
 ]));
 assert.deepEqual(parser.eval('a(1:end-1, 1:end-1)'), matrix([[2,0],[9,9]]));
 
@@ -262,9 +262,9 @@ assert.equal(parser.eval('a = 5'), 5);
 assert.equal(parser.eval('f(2)'), 10);
 assert.equal(parser.eval('function g(x) = x^q'), 'g(x)');
 assert.throws(function () {
-    parser.eval('g(3)')
+  parser.eval('g(3)')
 }, function (err) {
-    return (err instanceof Error) && (err.toString() == 'Error: Undefined symbol q');
+  return (err instanceof Error) && (err.toString() == 'Error: Undefined symbol q');
 });
 assert.equal(parser.eval('q = 4/2'), 2);
 assert.equal(parser.eval('g(3)'), 9);
@@ -290,19 +290,19 @@ assert.throws(function () { n.eval(); });
 
 // test a custom node handler
 function CustomNode (params, paramScopes) {
-    this.params = params;
-    this.paramScopes = paramScopes;
+  this.params = params;
+  this.paramScopes = paramScopes;
 }
 CustomNode.prototype = new math.expr.node.Node();
 CustomNode.prototype.toString = function () {
-    return 'CustomNode';
+  return 'CustomNode';
 };
 CustomNode.prototype.eval = function () {
-    var strParams = [];
-    this.params.forEach(function (param) {
-        strParams.push(param.toString());
-    });
-    return 'CustomNode(' + strParams.join(', ') + ')';
+  var strParams = [];
+  this.params.forEach(function (param) {
+    strParams.push(param.toString());
+  });
+  return 'CustomNode(' + strParams.join(', ') + ')';
 };
 
 math.expr.node.handlers['custom'] = CustomNode;

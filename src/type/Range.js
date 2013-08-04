@@ -28,24 +28,24 @@
  * @param {Number} end
  */
 function Range(start, step, end) {
-    if (!(this instanceof Range)) {
-        throw new SyntaxError(
-            'Range constructor must be called with the new operator');
-    }
+  if (!(this instanceof Range)) {
+    throw new SyntaxError(
+        'Range constructor must be called with the new operator');
+  }
 
-    if (start != null && !isNumber(start)) {
-        throw new TypeError('Parameter start must be a number');
-    }
-    if (end != null && !isNumber(end)) {
-        throw new TypeError('Parameter end must be a number');
-    }
-    if (step != null && !isNumber(step)) {
-        throw new TypeError('Parameter step must be a number');
-    }
+  if (start != null && !isNumber(start)) {
+    throw new TypeError('Parameter start must be a number');
+  }
+  if (end != null && !isNumber(end)) {
+    throw new TypeError('Parameter end must be a number');
+  }
+  if (step != null && !isNumber(step)) {
+    throw new TypeError('Parameter step must be a number');
+  }
 
-    this.start = (start != null) ? start : 0;
-    this.end   = (end != null) ? end : 0;
-    this.step  = (step != null) ? step : 1;
+  this.start = (start != null) ? start : 0;
+  this.end   = (end != null) ? end : 0;
+  this.step  = (step != null) ? step : 1;
 }
 
 math.type.Range = Range;
@@ -59,27 +59,27 @@ math.type.Range = Range;
  * @return {Range | null} range
  */
 Range.parse = function (str) {
-    if (!isString(str)) {
-        return null;
-    }
+  if (!isString(str)) {
+    return null;
+  }
 
-    var args = str.split(':');
-    var nums = args.map(function (arg) {
-        return Number(arg);
-    });
+  var args = str.split(':');
+  var nums = args.map(function (arg) {
+    return Number(arg);
+  });
 
-    var invalid = nums.some(function (num) {
-        return isNaN(num);
-    });
-    if(invalid) {
-        return null;
-    }
+  var invalid = nums.some(function (num) {
+    return isNaN(num);
+  });
+  if(invalid) {
+    return null;
+  }
 
-    switch (nums.length) {
-        case 2: return new Range(nums[0], 1, nums[1]);
-        case 3: return new Range(nums[0], nums[1], nums[2]);
-        default: return null;
-    }
+  switch (nums.length) {
+    case 2: return new Range(nums[0], 1, nums[1]);
+    case 3: return new Range(nums[0], nums[1], nums[2]);
+    default: return null;
+  }
 };
 
 /**
@@ -87,7 +87,7 @@ Range.parse = function (str) {
  * @return {Range} clone
  */
 Range.prototype.clone = function () {
-    return new Range(this.start, this.step, this.end);
+  return new Range(this.start, this.step, this.end);
 };
 
 /**
@@ -95,23 +95,23 @@ Range.prototype.clone = function () {
  * @returns {Number[]} size
  */
 Range.prototype.size = function () {
-    var len = 0,
-        start = Number(this.start),
-        step = Number(this.step),
-        end = Number(this.end),
-        diff = end - start;
+  var len = 0,
+      start = Number(this.start),
+      step = Number(this.step),
+      end = Number(this.end),
+      diff = end - start;
 
-    if (math.sign(step) == math.sign(diff)) {
-        len = Math.floor((diff) / step) + 1;
-    }
-    else if (diff == 0) {
-        len = 1;
-    }
+  if (math.sign(step) == math.sign(diff)) {
+    len = Math.floor((diff) / step) + 1;
+  }
+  else if (diff == 0) {
+    len = 1;
+  }
 
-    if (isNaN(len)) {
-        len = 0;
-    }
-    return [len];
+  if (isNaN(len)) {
+    len = 0;
+  }
+  return [len];
 };
 
 /**
@@ -121,25 +121,25 @@ Range.prototype.size = function () {
  *                              of the element, and the Matrix being traversed.
  */
 Range.prototype.forEach = function (callback) {
-    var x = Number(this.start);
-    var step = Number(this.step);
-    var end = Number(this.end);
-    var i = 0;
+  var x = Number(this.start);
+  var step = Number(this.step);
+  var end = Number(this.end);
+  var i = 0;
 
-    if (step > 0) {
-        while (x <= end) {
-            callback(x, i, this);
-            x += step;
-            i++;
-        }
+  if (step > 0) {
+    while (x <= end) {
+      callback(x, i, this);
+      x += step;
+      i++;
     }
-    else if (step < 0) {
-        while (x >= end) {
-            callback(x, i, this);
-            x += step;
-            i++;
-        }
+  }
+  else if (step < 0) {
+    while (x >= end) {
+      callback(x, i, this);
+      x += step;
+      i++;
     }
+  }
 };
 
 /**
@@ -151,11 +151,11 @@ Range.prototype.forEach = function (callback) {
  * @returns {Array} array
  */
 Range.prototype.map = function (callback) {
-    var array = [];
-    this.forEach(function (value, index, obj) {
-        array[index] = callback(value, index, obj);
-    });
-    return array;
+  var array = [];
+  this.forEach(function (value, index, obj) {
+    array[index] = callback(value, index, obj);
+  });
+  return array;
 };
 
 /**
@@ -163,7 +163,7 @@ Range.prototype.map = function (callback) {
  * @return {Matrix} matrix
  */
 Range.prototype.toMatrix = function () {
-    return new Matrix(this.toArray());
+  return new Matrix(this.toArray());
 };
 
 /**
@@ -171,11 +171,11 @@ Range.prototype.toMatrix = function () {
  * @returns {Array} array
  */
 Range.prototype.toArray = function () {
-    var array = [];
-    this.forEach(function (value, index) {
-        array[index] = value;
-    });
-    return array;
+  var array = [];
+  this.forEach(function (value, index) {
+    array[index] = value;
+  });
+  return array;
 };
 
 /**
@@ -191,7 +191,7 @@ Range.prototype.toVector = Range.prototype.toArray;
  * return {boolean} isVector
  */
 Range.prototype.isVector = function () {
-    return true;
+  return true;
 };
 
 /**
@@ -200,13 +200,13 @@ Range.prototype.isVector = function () {
  * @return {* | null} scalar
  */
 Range.prototype.toScalar = function () {
-    var array = this.toArray();
-    if (array.length == 1) {
-        return array[0];
-    }
-    else {
-        return null;
-    }
+  var array = this.toArray();
+  if (array.length == 1) {
+    return array[0];
+  }
+  else {
+    return null;
+  }
 };
 
 /**
@@ -214,7 +214,7 @@ Range.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Range.prototype.isScalar = function () {
-    return (this.size()[0] == 1);
+  return (this.size()[0] == 1);
 };
 
 /**
@@ -222,8 +222,8 @@ Range.prototype.isScalar = function () {
  * @returns {Array} array
  */
 Range.prototype.valueOf = function () {
-    // TODO: implement a caching mechanism for range.valueOf()
-    return this.toArray();
+  // TODO: implement a caching mechanism for range.valueOf()
+  return this.toArray();
 };
 
 /**
@@ -231,10 +231,10 @@ Range.prototype.valueOf = function () {
  * @returns {String} str
  */
 Range.prototype.toString = function () {
-    var str = math.format(Number(this.start));
-    if (this.step != 1) {
-        str += ':' + math.format(Number(this.step));
-    }
-    str += ':' + math.format(Number(this.end));
-    return str;
+  var str = math.format(Number(this.start));
+  if (this.step != 1) {
+    str += ':' + math.format(Number(this.step));
+  }
+  str += ':' + math.format(Number(this.end));
+  return str;
 };

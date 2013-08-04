@@ -1,6 +1,6 @@
 // test edivide (element-wise divide)
 var assert = require('assert');
-    math = require('../../../math.js'),
+math = require('../../../math.js'),
     approx = require('../../../tools/approx.js'),
     edivide = math.edivide,
     complex = math.complex;
@@ -8,8 +8,8 @@ var assert = require('assert');
 
 // parser
 /* TODO: edivide for parser
-assert.equal(math.eval('4 ./ 2'), 2);
-assert.equal(math.eval('8 ./ 2 / 2'), 2);
+ assert.equal(math.eval('4 ./ 2'), 2);
+ assert.equal(math.eval('8 ./ 2 / 2'), 2);
  */
 assert.equal(math.eval('edivide(4, 2)'), 2);
 
@@ -44,13 +44,13 @@ assert.deepEqual(edivide(a.valueOf(), 2), [[0.5,1],[1.5,2]]);
 assert.deepEqual(edivide([], 2), []);
 assert.deepEqual(edivide([], 2), []);
 approx.deepEqual(math.format(edivide(1, [
-    [ 1, 4,  7],
-    [ 3, 0,  5],
-    [-1, 9, 11]
+  [ 1, 4,  7],
+  [ 3, 0,  5],
+  [-1, 9, 11]
 ])), math.format([
-    [ 1, 0.25, 1/7],
-    [ 1/3,  Infinity,  0.2],
-    [-1,  1/9,  1/11]
+  [ 1, 0.25, 1/7],
+  [ 1/3,  Infinity,  0.2],
+  [-1,  1/9,  1/11]
 ]));
 a = math.matrix([[1,2],[3,4]]);
 b = math.matrix([[5,6],[7,8]]);

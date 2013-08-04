@@ -45,9 +45,9 @@ approx.equal(asin(sin(2)), 1.14159265358979);
 // note: the results of asin(2) and asin(3) differs in octave
 // the next tests are verified with mathematica
 var asin123 = [
-    1.57079632679490,
-    complex(1.57079632679490, -1.31695789692482),
-    complex(1.57079632679490, -1.76274717403909)];
+  1.57079632679490,
+  complex(1.57079632679490, -1.31695789692482),
+  complex(1.57079632679490, -1.76274717403909)];
 approx.deepEqual(asin([1,2,3]), asin123);
 approx.deepEqual(asin(math.range('1:3')), asin123);
 approx.deepEqual(asin(matrix([1,2,3])), matrix(asin123));

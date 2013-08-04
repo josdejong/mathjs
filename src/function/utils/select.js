@@ -33,5 +33,5 @@
  * @return {math.type.Selector} selector
  */
 math.select = function select(value) {
-    return new math.type.Selector(value);
+  return new math.type.Selector(value);
 };

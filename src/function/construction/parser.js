@@ -35,5 +35,5 @@
  * @return {math.expr.Parser} Parser
  */
 math.parser = function parser() {
-    return new math.expr.Parser();
+  return new math.expr.Parser();
 };

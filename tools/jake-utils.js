@@ -35,8 +35,8 @@ var fs = require('fs'),
  * @return {String} today
  */
 function today (format) {
-    var date = new Date();
-    return dateable.format(date, format || 'YYYY-MM-DD');
+  var date = new Date();
+  return dateable.format(date, format || 'YYYY-MM-DD');
 }
 
 /**
@@ -46,11 +46,11 @@ function today (format) {
  * @throws {Error}
  */
 function version() {
-    var pkg = JSON.parse(read('./package.json'));
-    if (!pkg.version) {
-        throw new Error('No version found in package.json');
-    }
-    return pkg.version;
+  var pkg = JSON.parse(read('./package.json'));
+  if (!pkg.version) {
+    throw new Error('No version found in package.json');
+  }
+  return pkg.version;
 }
 
 /**
@@ -83,48 +83,48 @@ function version() {
  */
 // TODO: change params of src such that we can also use regex expressions
 function replace (params) {
-    // do some checks on the provided parameters
-    if (!(params instanceof Object)) {
-        throw new Error('Object with parameters expected as first argument.');
-    }
-    if (!params.replacements) {
-        throw new Error('Parameter "replacements" missing.');
-    }
-    if (!(params.replacements instanceof Array)) {
-        throw new Error('Parameter "replacements" must be an array.');
-    }
-    if (!params.src) {
-        throw new Error('Parameter "src" containing an array with filenames missing.');
-    }
+  // do some checks on the provided parameters
+  if (!(params instanceof Object)) {
+    throw new Error('Object with parameters expected as first argument.');
+  }
+  if (!params.replacements) {
+    throw new Error('Parameter "replacements" missing.');
+  }
+  if (!(params.replacements instanceof Array)) {
+    throw new Error('Parameter "replacements" must be an array.');
+  }
+  if (!params.src) {
+    throw new Error('Parameter "src" containing an array with filenames missing.');
+  }
 
-    var filelist = new jake.FileList();
-    filelist.include(params.src);
-    var filenames = filelist.toArray();
+  var filelist = new jake.FileList();
+  filelist.include(params.src);
+  var filenames = filelist.toArray();
 
-    filenames.forEach(function (filename) {
-        var file = String(read(filename));
-        params.replacements.forEach(function (replacement, index) {
-            // check the replacement parameters
-            if (!(replacement instanceof Object)) {
-                throw new Error('Parameter "replacement" must be an object.');
-            }
-            if (!replacement.pattern) {
-                throw new Error('Parameter "pattern" in missing replacement object ' +
-                    '(index ' + index + ')');
-            }
-            if (!replacement.replacement) {
-                throw new Error('Parameter "replacement" missing in replacement object ' +
-                    '(index ' + index + ')');
-            }
+  filenames.forEach(function (filename) {
+    var file = String(read(filename));
+    params.replacements.forEach(function (replacement, index) {
+      // check the replacement parameters
+      if (!(replacement instanceof Object)) {
+        throw new Error('Parameter "replacement" must be an object.');
+      }
+      if (!replacement.pattern) {
+        throw new Error('Parameter "pattern" in missing replacement object ' +
+            '(index ' + index + ')');
+      }
+      if (!replacement.replacement) {
+        throw new Error('Parameter "replacement" missing in replacement object ' +
+            '(index ' + index + ')');
+      }
 
-            file = file.replace(replacement.pattern, replacement.replacement);
-        });
-        write(filename, file);
+      file = file.replace(replacement.pattern, replacement.replacement);
     });
+    write(filename, file);
+  });
 
-    return {
-        src: filenames
-    }
+  return {
+    src: filenames
+  }
 }
 
 /**
@@ -160,45 +160,45 @@ function replace (params) {
  *                                              file
  */
 function concat (params) {
-    // do some checks on the provided parameters
-    if (!(params instanceof Object)) {
-        throw new Error('Object with parameters expected as first argument.');
-    }
-    if (!params.src) {
-        throw new Error('Parameter "src" containing an array with filenames missing.');
-    }
+  // do some checks on the provided parameters
+  if (!(params instanceof Object)) {
+    throw new Error('Object with parameters expected as first argument.');
+  }
+  if (!params.src) {
+    throw new Error('Parameter "src" containing an array with filenames missing.');
+  }
 
-    var code = '';
-    var separator = params.separator ? String(params.separator) : '';
+  var code = '';
+  var separator = params.separator ? String(params.separator) : '';
 
-    // header
-    if (params.header) {
-        code += String(params.header) + separator;
-    }
+  // header
+  if (params.header) {
+    code += String(params.header) + separator;
+  }
 
-    // files
-    var filelist = new jake.FileList();
-    filelist.include(params.src);
-    var filenames = filelist.toArray();
-    filenames.map(function(filename) {
-        code += read(filename) + separator;
-    });
+  // files
+  var filelist = new jake.FileList();
+  filelist.include(params.src);
+  var filenames = filelist.toArray();
+  filenames.map(function(filename) {
+    code += read(filename) + separator;
+  });
 
-    // footer
-    if (params.footer) {
-        code += String(params.footer);
-    }
+  // footer
+  if (params.footer) {
+    code += String(params.footer);
+  }
 
-    // write output
-    if (params.dest) {
-        // write file
-        write(params.dest, code);
-    }
+  // write output
+  if (params.dest) {
+    // write file
+    write(params.dest, code);
+  }
 
-    return {
-        src: filenames,
-        code: code
-    };
+  return {
+    src: filenames,
+    code: code
+  };
 }
 
 /**
@@ -237,63 +237,63 @@ function concat (params) {
  *                                              file.
  */
 function minify (params) {
-    // do some checks on the provided parameters
-    if (!(params instanceof Object)) {
-        throw new Error('Object with parameters expected as first argument.');
+  // do some checks on the provided parameters
+  if (!(params instanceof Object)) {
+    throw new Error('Object with parameters expected as first argument.');
+  }
+  if (!params.src) {
+    throw new Error('Parameter "src" containing an array with filenames missing.');
+  }
+  if (params.options) {
+    if (!(params.options instanceof Object)) {
+      throw new Error('Parameter "options" must be an object.');
     }
-    if (!params.src) {
-        throw new Error('Parameter "src" containing an array with filenames missing.');
-    }
-    if (params.options) {
-        if (!(params.options instanceof Object)) {
-            throw new Error('Parameter "options" must be an object.');
-        }
-    }
+  }
 
-    var code = '';
-    var separator = params.separator ? String(params.separator) : '';
-    var options = params.options || {};
+  var code = '';
+  var separator = params.separator ? String(params.separator) : '';
+  var options = params.options || {};
 
-    // header
-    if (params.header) {
-        code += String(params.header) + separator;
-    }
+  // header
+  if (params.header) {
+    code += String(params.header) + separator;
+  }
 
-    // src
-    var filelist = new jake.FileList();
-    filelist.include(params.src);
-    var filenames = filelist.toArray();
-    var minified = uglify.minify(filenames, options);
-    code += minified.code;
+  // src
+  var filelist = new jake.FileList();
+  filelist.include(params.src);
+  var filenames = filelist.toArray();
+  var minified = uglify.minify(filenames, options);
+  code += minified.code;
 
-    // footer
-    if (params.footer) {
-        code += separator + String(params.footer);
-    }
+  // footer
+  if (params.footer) {
+    code += separator + String(params.footer);
+  }
 
-    // write output
-    if (params.dest) {
-        write(params.dest, code);
-    }
+  // write output
+  if (params.dest) {
+    write(params.dest, code);
+  }
 
-    return {
-        src: filenames,
-        code: code
-    };
+  return {
+    src: filenames,
+    code: code
+  };
 }
 
 /**
  * Read a file from disk.
- * 
+ *
  * Example:
  *     var data = read(filename);
- * 
+ *
  * @param {String} filename
  * @param {String} [encoding]
  * @return {String} data
  */
 function read(filename, encoding) {
-    return fs.readFileSync(filename, encoding);
+  return fs.readFileSync(filename, encoding);
 }
 
 /**
@@ -307,16 +307,16 @@ function read(filename, encoding) {
  * @param {String} [encoding]
  */
 function write(filename, data, encoding) {
-    fs.writeFileSync(filename, data, encoding);
+  fs.writeFileSync(filename, data, encoding);
 }
 
 // export all methods
 module.exports = exports = {
-    read: read,
-    write: write,
-    concat: concat,
-    minify: minify,
-    replace: replace,
-    version: version,
-    today: today
+  read: read,
+  write: write,
+  concat: concat,
+  minify: minify,
+  replace: replace,
+  version: version,
+  today: today
 };

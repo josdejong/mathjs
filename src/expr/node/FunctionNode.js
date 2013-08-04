@@ -11,34 +11,34 @@
  *                                          function assignment
  */
 function FunctionNode(name, variables, expr, functionScope, scope) {
-    this.name = name;
-    this.variables = variables;
-    this.expr = expr;
-    this.scope = scope;
+  this.name = name;
+  this.variables = variables;
+  this.expr = expr;
+  this.scope = scope;
 
-    // create function
-    this.fn = function () {
-        var num = variables ? variables.length : 0;
+  // create function
+  this.fn = function () {
+    var num = variables ? variables.length : 0;
 
-        // validate correct number of arguments
-        if (arguments.length != num) {
-            throw newArgumentsError(name, arguments.length, num);
-        }
+    // validate correct number of arguments
+    if (arguments.length != num) {
+      throw newArgumentsError(name, arguments.length, num);
+    }
 
-        // fill in the provided arguments in the functionScope variables
-        for (var i = 0; i < num; i++) {
-            functionScope.set(variables[i], arguments[i]);
-        }
+    // fill in the provided arguments in the functionScope variables
+    for (var i = 0; i < num; i++) {
+      functionScope.set(variables[i], arguments[i]);
+    }
 
-        // evaluate the expression
-        return expr.eval();
-    };
+    // evaluate the expression
+    return expr.eval();
+  };
 
-    this.fn.toString = function() {
-        // TODO: what to return as toString?
-        return name + '(' + variables.join(', ') + ')';
-        //return name + '(' + variableNames.join(', ') + ') = ' + expr.toString();
-    };
+  this.fn.toString = function() {
+    // TODO: what to return as toString?
+    return name + '(' + variables.join(', ') + ')';
+    //return name + '(' + variableNames.join(', ') + ') = ' + expr.toString();
+  };
 }
 
 FunctionNode.prototype = new Node();
@@ -50,10 +50,10 @@ math.expr.node.FunctionNode = FunctionNode;
  * @return {function} fn
  */
 FunctionNode.prototype.eval = function() {
-    // put the definition in the scope
-    this.scope.set(this.name, this.fn);
+  // put the definition in the scope
+  this.scope.set(this.name, this.fn);
 
-    return this.fn;
+  return this.fn;
 };
 
 /**
@@ -62,19 +62,19 @@ FunctionNode.prototype.eval = function() {
  * @returns {Node[]} nodes
  */
 FunctionNode.prototype.find = function (filter) {
-    var nodes = [];
+  var nodes = [];
 
-    // check itself
-    if (this.match(filter)) {
-        nodes.push(this);
-    }
+  // check itself
+  if (this.match(filter)) {
+    nodes.push(this);
+  }
 
-    // search in expression
-    if (this.expr) {
-        nodes = nodes.concat(this.expr.find(filter));
-    }
+  // search in expression
+  if (this.expr) {
+    nodes = nodes.concat(this.expr.find(filter));
+  }
 
-    return nodes;
+  return nodes;
 };
 
 /**
@@ -82,5 +82,5 @@ FunctionNode.prototype.find = function (filter) {
  * @return {String} str
  */
 FunctionNode.prototype.toString = function() {
-    return this.fn.toString();
+  return this.fn.toString();
 };

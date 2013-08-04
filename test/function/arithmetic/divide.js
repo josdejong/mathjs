@@ -1,6 +1,6 @@
 // test divide
 var assert = require('assert');
-    math = require('../../../math.js'),
+math = require('../../../math.js'),
     approx = require('../../../tools/approx.js'),
     divide = math.divide,
     complex = math.complex;
@@ -69,13 +69,13 @@ assert.deepEqual(divide(a.valueOf(), 2), [[0.5,1],[1.5,2]]);
 assert.deepEqual(divide([], 2), []);
 assert.deepEqual(divide([], 2), []);
 assert.deepEqual(math.format(divide(1, [
-    [ 1, 4,  7],
-    [ 3, 0,  5],
-    [-1, 9, 11]
+  [ 1, 4,  7],
+  [ 3, 0,  5],
+  [-1, 9, 11]
 ])), math.format([
-    [ 5.625, -2.375, -2.5],
-    [ 4.75,  -2.25,  -2],
-    [-3.375,  1.625,  1.5]
+  [ 5.625, -2.375, -2.5],
+  [ 4.75,  -2.25,  -2],
+  [-3.375,  1.625,  1.5]
 ]));
 a = math.matrix([[1,2],[3,4]]);
 b = math.matrix([[5,6],[7,8]]);

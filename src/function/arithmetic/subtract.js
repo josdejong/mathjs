@@ -11,70 +11,70 @@
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
 math.subtract = function subtract(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('subtract', arguments.length, 2);
+  if (arguments.length != 2) {
+    throw newArgumentsError('subtract', arguments.length, 2);
+  }
+
+  if (isNumber(x)) {
+    if (isNumber(y)) {
+      // number - number
+      return x - y;
     }
-
-    if (isNumber(x)) {
-        if (isNumber(y)) {
-            // number - number
-            return x - y;
-        }
-        else if (y instanceof Complex) {
-            // number - complex
-            return Complex.create (
-                x - y.re,
-                  - y.im
-            );
-        }
+    else if (y instanceof Complex) {
+      // number - complex
+      return Complex.create (
+          x - y.re,
+          - y.im
+      );
     }
-    else if (x instanceof Complex) {
-        if (isNumber(y)) {
-            // complex - number
-            return Complex.create (
-                x.re - y,
-                x.im
-            )
-        }
-        else if (y instanceof Complex) {
-            // complex - complex
-            return Complex.create (
-                x.re - y.re,
-                x.im - y.im
-            )
-        }
+  }
+  else if (x instanceof Complex) {
+    if (isNumber(y)) {
+      // complex - number
+      return Complex.create (
+          x.re - y,
+          x.im
+      )
     }
-    else if (x instanceof Unit) {
-        if (y instanceof Unit) {
-            if (!x.equalBase(y)) {
-                throw new Error('Units do not match');
-            }
-
-            if (x.value == null) {
-                throw new Error('Unit on left hand side of operator - has an undefined value');
-            }
-
-            if (y.value == null) {
-                throw new Error('Unit on right hand side of operator - has an undefined value');
-            }
-
-            var res = x.clone();
-            res.value -= y.value;
-            res.fixPrefix = false;
-
-            return res;
-        }
+    else if (y instanceof Complex) {
+      // complex - complex
+      return Complex.create (
+          x.re - y.re,
+          x.im - y.im
+      )
     }
+  }
+  else if (x instanceof Unit) {
+    if (y instanceof Unit) {
+      if (!x.equalBase(y)) {
+        throw new Error('Units do not match');
+      }
 
-    if (x instanceof Array || x instanceof Matrix ||
-        y instanceof Array || y instanceof Matrix) {
-        return util.map2(x, y, math.subtract);
+      if (x.value == null) {
+        throw new Error('Unit on left hand side of operator - has an undefined value');
+      }
+
+      if (y.value == null) {
+        throw new Error('Unit on right hand side of operator - has an undefined value');
+      }
+
+      var res = x.clone();
+      res.value -= y.value;
+      res.fixPrefix = false;
+
+      return res;
     }
+  }
 
-    if (x.valueOf() !== x || y.valueOf() !== y) {
-        // fallback on the objects primitive values
-        return math.subtract(x.valueOf(), y.valueOf());
-    }
+  if (x instanceof Array || x instanceof Matrix ||
+      y instanceof Array || y instanceof Matrix) {
+    return util.map2(x, y, math.subtract);
+  }
 
-    throw newUnsupportedTypeError('subtract', x, y);
+  if (x.valueOf() !== x || y.valueOf() !== y) {
+    // fallback on the objects primitive values
+    return math.subtract(x.valueOf(), y.valueOf());
+  }
+
+  throw newUnsupportedTypeError('subtract', x, y);
 };

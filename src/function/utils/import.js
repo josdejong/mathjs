@@ -16,52 +16,52 @@
  */
 // TODO: return status information
 math['import'] = function math_import(object, options) {
-    var name;
-    var opts = {
-        override: false,
-        wrap: true
-    };
-    if (options && options instanceof Object) {
-        util.extend(opts, options);
-    }
+  var name;
+  var opts = {
+    override: false,
+    wrap: true
+  };
+  if (options && options instanceof Object) {
+    util.extend(opts, options);
+  }
 
-    if (isString(object)) {
-        // a string with a filename
-        if (typeof (require) !== 'undefined') {
-            // load the file using require
-            var _module = require(object);
-            math['import'](_module);
+  if (isString(object)) {
+    // a string with a filename
+    if (typeof (require) !== 'undefined') {
+      // load the file using require
+      var _module = require(object);
+      math['import'](_module);
+    }
+    else {
+      throw new Error('Cannot load file: require not available.');
+    }
+  }
+  else if (isSupportedType(object)) {
+    // a single function
+    name = object.name;
+    if (name) {
+      if (opts.override || math[name] === undefined) {
+        _import(name, object, opts);
+      }
+    }
+    else {
+      throw new Error('Cannot import an unnamed function or object');
+    }
+  }
+  else if (object instanceof Object) {
+    // a map with functions
+    for (name in object) {
+      if (object.hasOwnProperty(name)) {
+        var value = object[name];
+        if (isSupportedType(value)) {
+          _import(name, value, opts);
         }
         else {
-            throw new Error('Cannot load file: require not available.');
+          math['import'](value);
         }
+      }
     }
-    else if (isSupportedType(object)) {
-        // a single function
-        name = object.name;
-        if (name) {
-            if (opts.override || math[name] === undefined) {
-                _import(name, object, opts);
-            }
-        }
-        else {
-            throw new Error('Cannot import an unnamed function or object');
-        }
-    }
-    else if (object instanceof Object) {
-        // a map with functions
-        for (name in object) {
-            if (object.hasOwnProperty(name)) {
-                var value = object[name];
-                if (isSupportedType(value)) {
-                    _import(name, value, opts);
-                }
-                else {
-                    math['import'](value);
-                }
-            }
-        }
-    }
+  }
 };
 
 /**
@@ -72,26 +72,26 @@ math['import'] = function math_import(object, options) {
  * @private
  */
 function _import(name, value, options) {
-    if (options.override || math[name] === undefined) {
-        // add to math namespace
-        if (options.wrap && typeof value === 'function') {
-            // create a wrapper around the function
-            math[name] = function () {
-                var args = [];
-                for (var i = 0, len = arguments.length; i < len; i++) {
-                    args[i] = arguments[i].valueOf();
-                }
-                return value.apply(math, args);
-            };
+  if (options.override || math[name] === undefined) {
+    // add to math namespace
+    if (options.wrap && typeof value === 'function') {
+      // create a wrapper around the function
+      math[name] = function () {
+        var args = [];
+        for (var i = 0, len = arguments.length; i < len; i++) {
+          args[i] = arguments[i].valueOf();
         }
-        else {
-            // just create a link to the function or value
-            math[name] = value;
-        }
-
-        // create a proxy for the Selector
-        createSelectorProxy(name, value);
+        return value.apply(math, args);
+      };
     }
+    else {
+      // just create a link to the function or value
+      math[name] = value;
+    }
+
+    // create a proxy for the Selector
+    createSelectorProxy(name, value);
+  }
 
 }
 
@@ -102,8 +102,8 @@ function _import(name, value, options) {
  * @private
  */
 function isSupportedType(object) {
-    return (typeof object == 'function') ||
-        isNumber(object) || isString(object) ||
-        (object instanceof Complex) || (object instanceof Unit);
-    // TODO: add boolean?
+  return (typeof object == 'function') ||
+      isNumber(object) || isString(object) ||
+      (object instanceof Complex) || (object instanceof Unit);
+  // TODO: add boolean?
 }

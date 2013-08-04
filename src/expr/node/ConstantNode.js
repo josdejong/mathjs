@@ -4,7 +4,7 @@
  * @extends {Node}
  */
 function ConstantNode(value) {
-    this.value = value;
+  this.value = value;
 }
 
 ConstantNode.prototype = new Node();
@@ -16,7 +16,7 @@ math.expr.node.ConstantNode = ConstantNode;
  * @return {*} value
  */
 ConstantNode.prototype.eval = function () {
-    return this.value;
+  return this.value;
 };
 
 /**
@@ -24,5 +24,5 @@ ConstantNode.prototype.eval = function () {
  * @return {String} str
  */
 ConstantNode.prototype.toString = function() {
-    return math.format(this.value);
+  return math.format(this.value);
 };

@@ -13,64 +13,64 @@
  * @return {Matrix} matrix
  */
 math.diag = function diag (x, k) {
-    var data, vector, i, iMax;
+  var data, vector, i, iMax;
 
-    if (arguments.length != 1 && arguments.length != 2) {
-        throw newArgumentsError('diag', arguments.length, 1, 2);
-    }
+  if (arguments.length != 1 && arguments.length != 2) {
+    throw newArgumentsError('diag', arguments.length, 1, 2);
+  }
 
-    if (k) {
-        if (!isNumber(k) || !isInteger(k)) {
-            throw new TypeError ('Second parameter in function diag must be an integer');
-        }
+  if (k) {
+    if (!isNumber(k) || !isInteger(k)) {
+      throw new TypeError ('Second parameter in function diag must be an integer');
     }
-    else {
-        k = 0;
-    }
-    var kSuper = k > 0 ? k : 0;
-    var kSub = k < 0 ? -k : 0;
+  }
+  else {
+    k = 0;
+  }
+  var kSuper = k > 0 ? k : 0;
+  var kSub = k < 0 ? -k : 0;
 
-    // convert to matrix
-    if (!(x instanceof Matrix) && !(x instanceof Range)) {
-        x = new Matrix(x);
-    }
+  // convert to matrix
+  if (!(x instanceof Matrix) && !(x instanceof Range)) {
+    x = new Matrix(x);
+  }
 
-    // get as array when the matrix is a vector
-    var s;
-    if (x.isVector()) {
-        x = x.toVector();
-        s = [x.length];
-    }
-    else {
-        s = x.size();
-    }
+  // get as array when the matrix is a vector
+  var s;
+  if (x.isVector()) {
+    x = x.toVector();
+    s = [x.length];
+  }
+  else {
+    s = x.size();
+  }
 
-    switch (s.length) {
-        case 1:
-            // x is a vector. create diagonal matrix
-            vector = x.valueOf();
-            var matrix = new Matrix();
-            matrix.resize([vector.length + kSub, vector.length + kSuper]);
-            data = matrix.valueOf();
-            iMax = vector.length;
-            for (i = 0; i < iMax; i++) {
-                data[i + kSub][i + kSuper] = math.clone(vector[i]);
-            }
-            return matrix;
-        break;
+  switch (s.length) {
+    case 1:
+      // x is a vector. create diagonal matrix
+      vector = x.valueOf();
+      var matrix = new Matrix();
+      matrix.resize([vector.length + kSub, vector.length + kSuper]);
+      data = matrix.valueOf();
+      iMax = vector.length;
+      for (i = 0; i < iMax; i++) {
+        data[i + kSub][i + kSuper] = math.clone(vector[i]);
+      }
+      return matrix;
+      break;
 
-        case 2:
-            // x is a matrix get diagonal from matrix
-            vector = [];
-            data = x.valueOf();
-            iMax = Math.min(s[0] - kSub, s[1] - kSuper);
-            for (i = 0; i < iMax; i++) {
-                vector[i] = math.clone(data[i + kSub][i + kSuper]);
-            }
-            return new Matrix(vector);
-        break;
+    case 2:
+      // x is a matrix get diagonal from matrix
+      vector = [];
+      data = x.valueOf();
+      iMax = Math.min(s[0] - kSub, s[1] - kSuper);
+      for (i = 0; i < iMax; i++) {
+        vector[i] = math.clone(data[i + kSub][i + kSuper]);
+      }
+      return new Matrix(vector);
+      break;
 
-        default:
-            throw new RangeError('Matrix for function diag must be 2 dimensional');
-    }
+    default:
+      throw new RangeError('Matrix for function diag must be 2 dimensional');
+  }
 };

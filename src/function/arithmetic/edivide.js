@@ -9,9 +9,9 @@
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
 math.edivide = function edivide(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('edivide', arguments.length, 2);
-    }
+  if (arguments.length != 2) {
+    throw newArgumentsError('edivide', arguments.length, 2);
+  }
 
-    return util.deepMap2(x, y, math.divide);
+  return util.deepMap2(x, y, math.divide);
 };

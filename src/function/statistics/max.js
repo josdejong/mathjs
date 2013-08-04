@@ -8,50 +8,50 @@
  * @return {*} res
  */
 math.max = function max(args) {
-    if (arguments.length == 0) {
-        throw new Error('Function max requires one or more parameters (0 provided)');
+  if (arguments.length == 0) {
+    throw new Error('Function max requires one or more parameters (0 provided)');
+  }
+
+  if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
+    // max([a, b, c, d, ...]])
+    if (arguments.length > 1) {
+      throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
     }
 
-    if (args instanceof Array || args instanceof Matrix || args instanceof Range) {
-        // max([a, b, c, d, ...]])
-        if (arguments.length > 1) {
-            throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
-        }
+    var size = math.size(args).valueOf();
 
-        var size = math.size(args).valueOf();
+    if (size.length == 1) {
+      // vector
+      if (args.length == 0) {
+        throw new Error('Cannot calculate max of an empty vector');
+      }
 
-        if (size.length == 1) {
-            // vector
-            if (args.length == 0) {
-                throw new Error('Cannot calculate max of an empty vector');
-            }
-
-            return _max(args.valueOf());
-        }
-        else if (size.length == 2) {
-            // 2 dimensional matrix
-            if (size[0] == 0 || size[1] == 0) {
-                throw new Error('Cannot calculate max of an empty matrix');
-            }
-            if (args instanceof Array) {
-                return _max2(args, size[0], size[1]);
-            }
-            else if (args instanceof Matrix || args instanceof Range) {
-                return new Matrix(_max2(args.valueOf(), size[0], size[1]));
-            }
-            else {
-                throw newUnsupportedTypeError('max', args);
-            }
-        }
-        else {
-            // TODO: implement max for n-dimensional matrices
-            throw new RangeError('Cannot calculate max for multi dimensional matrix');
-        }
+      return _max(args.valueOf());
+    }
+    else if (size.length == 2) {
+      // 2 dimensional matrix
+      if (size[0] == 0 || size[1] == 0) {
+        throw new Error('Cannot calculate max of an empty matrix');
+      }
+      if (args instanceof Array) {
+        return _max2(args, size[0], size[1]);
+      }
+      else if (args instanceof Matrix || args instanceof Range) {
+        return new Matrix(_max2(args.valueOf(), size[0], size[1]));
+      }
+      else {
+        throw newUnsupportedTypeError('max', args);
+      }
     }
     else {
-        // max(a, b, c, d, ...)
-        return _max(arguments);
+      // TODO: implement max for n-dimensional matrices
+      throw new RangeError('Cannot calculate max for multi dimensional matrix');
     }
+  }
+  else {
+    // max(a, b, c, d, ...)
+    return _max(arguments);
+  }
 };
 
 /**
@@ -61,15 +61,15 @@ math.max = function max(args) {
  * @private
  */
 function _max(array) {
-    var larger = math.larger;
-    var res = array[0];
-    for (var i = 1, iMax = array.length; i < iMax; i++) {
-        var value = array[i];
-        if (larger(value, res)) {
-            res = value;
-        }
+  var larger = math.larger;
+  var res = array[0];
+  for (var i = 1, iMax = array.length; i < iMax; i++) {
+    var value = array[i];
+    if (larger(value, res)) {
+      res = value;
     }
-    return res;
+  }
+  return res;
 }
 
 /**
@@ -81,17 +81,17 @@ function _max(array) {
  * @private
  */
 function _max2(array, rows, cols) {
-    var larger = math.larger;
-    var res = [];
-    for (var c = 0; c < cols; c++) {
-        var max = array[0][c];
-        for (var r = 1; r < rows; r++) {
-            var value = array[r][c];
-            if (larger(value, max)) {
-                max = value;
-            }
-        }
-        res[c] = max;
+  var larger = math.larger;
+  var res = [];
+  for (var c = 0; c < cols; c++) {
+    var max = array[0][c];
+    for (var r = 1; r < rows; r++) {
+      var value = array[r][c];
+      if (larger(value, max)) {
+        max = value;
+      }
     }
-    return res;
+    res[c] = max;
+  }
+  return res;
 }

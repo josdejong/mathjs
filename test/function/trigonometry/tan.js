@@ -43,7 +43,7 @@ assert.throws(function () {tan('string')});
 
 // compare
 math.range(0, 0.1, 1).forEach(function (value) {
-    approx.equal(tan(value), sin(value) / cos(value));
+  approx.equal(tan(value), sin(value) / cos(value));
 });
 
 // array, matrix, range

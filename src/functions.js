@@ -11,23 +11,23 @@
  * @return {TypeError | Error} error
  */
 function newUnsupportedTypeError(name, value1, value2) {
-    var msg = undefined;
-    if (arguments.length == 2) {
-        var t = math['typeof'](value1);
-        msg = 'Function ' + name + '(' + t + ') not supported';
+  var msg = undefined;
+  if (arguments.length == 2) {
+    var t = math['typeof'](value1);
+    msg = 'Function ' + name + '(' + t + ') not supported';
+  }
+  else if (arguments.length > 2) {
+    var types = [];
+    for (var i = 1; i < arguments.length; i++) {
+      types.push(math['typeof'](arguments[i]));
     }
-    else if (arguments.length > 2) {
-        var types = [];
-        for (var i = 1; i < arguments.length; i++) {
-            types.push(math['typeof'](arguments[i]));
-        }
-        msg = 'Function ' + name + '(' + types.join(', ') + ') not supported';
-    }
-    else {
-        msg = 'Unsupported parameter in function ' + name;
-    }
+    msg = 'Function ' + name + '(' + types.join(', ') + ') not supported';
+  }
+  else {
+    msg = 'Unsupported parameter in function ' + name;
+  }
 
-    return new TypeError(msg);
+  return new TypeError(msg);
 }
 
 /**
@@ -39,8 +39,8 @@ function newUnsupportedTypeError(name, value1, value2) {
  * @param {Number} [max]  Maximum required argument count
  */
 function newArgumentsError(name, count, min, max) {
-    var msg = 'Wrong number of arguments in function ' + name +
-        ' (' + count + ' provided, ' +
-        min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
-    return new SyntaxError(msg);
+  var msg = 'Wrong number of arguments in function ' + name +
+      ' (' + count + ' provided, ' +
+      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
+  return new SyntaxError(msg);
 }

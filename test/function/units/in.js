@@ -14,9 +14,9 @@ assert.equal(math.in(unit('2 litre'), unit('m3')).toString(), '0.002 m3');
 
 // test with array and matrix
 assert.deepEqual(math.format(math.in([
-    unit('1cm'),
-    unit('2 inch'),
-    unit('2km')], unit('foot'))),
+  unit('1cm'),
+  unit('2 inch'),
+  unit('2km')], unit('foot'))),
     '[0.032808 foot, 0.16667 foot, 6561.7 foot]');
 
 var a = math.matrix([[unit('1cm'), unit('2cm')],[unit('3cm'),unit('4cm')]]);

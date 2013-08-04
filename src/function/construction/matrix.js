@@ -16,9 +16,9 @@
  * @return {Matrix} matrix
  */
 math.matrix = function matrix(data) {
-    if (arguments.length > 1) {
-        throw newArgumentsError('matrix', arguments.length, 0, 1);
-    }
+  if (arguments.length > 1) {
+    throw newArgumentsError('matrix', arguments.length, 0, 1);
+  }
 
-    return new Matrix(data);
+  return new Matrix(data);
 };

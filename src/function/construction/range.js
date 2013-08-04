@@ -27,39 +27,39 @@
  * @return {Range} range
  */
 math.range = function range(args) {
-    switch (arguments.length) {
-        case 1:
-            // parse string into a range
-            if (args instanceof Range) {
-                // create a clone
-                return args.clone();
-            }
-            else if (isString(args)) {
-                var r = Range.parse(args);
-                if (r) {
-                    return r;
-                }
-                else {
-                    throw new SyntaxError('String "' + r + '" is no valid range');
-                }
-            }
-            else {
-                throw new TypeError(
-                    'Two or three numbers or a single string expected in function range');
-            }
-            break;
+  switch (arguments.length) {
+    case 1:
+      // parse string into a range
+      if (args instanceof Range) {
+        // create a clone
+        return args.clone();
+      }
+      else if (isString(args)) {
+        var r = Range.parse(args);
+        if (r) {
+          return r;
+        }
+        else {
+          throw new SyntaxError('String "' + r + '" is no valid range');
+        }
+      }
+      else {
+        throw new TypeError(
+            'Two or three numbers or a single string expected in function range');
+      }
+      break;
 
-        case 2:
-            // range(start, end)
-            return new Range(arguments[0], null, arguments[1]);
-            break;
+    case 2:
+      // range(start, end)
+      return new Range(arguments[0], null, arguments[1]);
+      break;
 
-        case 3:
-            // range(start, step, end)
-            return new Range(arguments[0], arguments[1], arguments[2]);
-            break;
+    case 3:
+      // range(start, step, end)
+      return new Range(arguments[0], arguments[1], arguments[2]);
+      break;
 
-        default:
-            throw newArgumentsError('range', arguments.length, 2, 3);
-    }
+    default:
+      throw newArgumentsError('range', arguments.length, 2, 3);
+  }
 };

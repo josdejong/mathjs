@@ -83,15 +83,15 @@ assert.deepEqual(m.size(), [0]);
 m.resize([3,3,3], 6);
 assert.deepEqual(m.size(), [3,3,3]);
 assert.deepEqual(m.valueOf(), [
-    [[6,6,6],[6,6,6],[6,6,6]],
-    [[6,6,6],[6,6,6],[6,6,6]],
-    [[6,6,6],[6,6,6],[6,6,6]]
+  [[6,6,6],[6,6,6],[6,6,6]],
+  [[6,6,6],[6,6,6],[6,6,6]],
+  [[6,6,6],[6,6,6],[6,6,6]]
 ]);
 m.set([2,2,1], 3);
 assert.deepEqual(m.valueOf(), [
-    [[6,6,6],[6,6,6],[6,6,6]],
-    [[6,6,6],[6,6,6],[6,6,6]],
-    [[6,6,6],[6,6,6],[6,3,6]]
+  [[6,6,6],[6,6,6],[6,6,6]],
+  [[6,6,6],[6,6,6],[6,6,6]],
+  [[6,6,6],[6,6,6],[6,3,6]]
 ]);
 m.resize([2,2]);
 assert.deepEqual(m.size(), [2,2]);
@@ -171,28 +171,28 @@ assert.deepEqual(m.size(), [0]);
 m.set([[1,2], [1,2], [1,2]], [[[1,2],[3,4]],[[5,6],[7,8]]]);
 assert.deepEqual(m.size(), [3,3,3]);
 assert.deepEqual(m.valueOf(), [
-    [
-        [0,0,0],
-        [0,0,0],
-        [0,0,0]
-    ],
-    [
-        [0,0,0],
-        [0,1,2],
-        [0,3,4]
-    ],
-    [
-        [0,0,0],
-        [0,5,6],
-        [0,7,8]
-    ]
+  [
+    [0,0,0],
+    [0,0,0],
+    [0,0,0]
+  ],
+  [
+    [0,0,0],
+    [0,1,2],
+    [0,3,4]
+  ],
+  [
+    [0,0,0],
+    [0,5,6],
+    [0,7,8]
+  ]
 ]);
 
 
 // test matrix.map
 m = math.matrix([[1,2,3], [4,5,6]]);
 m2 = m.map(function (value) {
-    return value * 2;
+  return value * 2;
 });
 assert.deepEqual(m2.size(), [2,3]);
 assert.deepEqual(m2.valueOf(), [[2,4,6],[8,10,12]]);
@@ -200,29 +200,29 @@ assert.deepEqual(m2.valueOf(), [[2,4,6],[8,10,12]]);
 // test matrix.indexOf
 var output = [];
 m.forEach(function (value, index, obj) {
-    output.push(math.clone([value, index, obj === m]));
+  output.push(math.clone([value, index, obj === m]));
 });
 assert.deepEqual(output, [
+  [1, [0, 0], true ],
+  [2, [0, 1], true ],
+  [3, [0, 2], true ],
+  [4, [1, 0], true ],
+  [5, [1, 1], true ],
+  [6, [1, 2], true ]
+]);
+assert.deepEqual(m.map(function (value, index, obj) {
+  return math.clone([value, index, obj === m]);
+}).valueOf(), [
+  [
     [1, [0, 0], true ],
     [2, [0, 1], true ],
-    [3, [0, 2], true ],
+    [3, [0, 2], true ]
+  ],
+  [
     [4, [1, 0], true ],
     [5, [1, 1], true ],
     [6, [1, 2], true ]
-]);
-assert.deepEqual(m.map(function (value, index, obj) {
-    return math.clone([value, index, obj === m]);
-}).valueOf(), [
-    [
-        [1, [0, 0], true ],
-        [2, [0, 1], true ],
-        [3, [0, 2], true ]
-    ],
-    [
-        [4, [1, 0], true ],
-        [5, [1, 1], true ],
-        [6, [1, 2], true ]
-    ]
+  ]
 ]);
 
 // test clone

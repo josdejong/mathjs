@@ -6,8 +6,8 @@
  * @extends {Node}
  */
 function SymbolNode(name, scope) {
-    this.name = name;
-    this.scope = scope;
+  this.name = name;
+  this.scope = scope;
 }
 
 SymbolNode.prototype = new Node();
@@ -20,14 +20,14 @@ math.expr.node.SymbolNode = SymbolNode;
  * @override
  */
 SymbolNode.prototype.eval = function() {
-    // return the value of the symbol
-    var value = this.scope.get(this.name);
+  // return the value of the symbol
+  var value = this.scope.get(this.name);
 
-    if (value === undefined) {
-        throw new Error('Undefined symbol ' + this.name);
-    }
+  if (value === undefined) {
+    throw new Error('Undefined symbol ' + this.name);
+  }
 
-    return value;
+  return value;
 };
 
 /**
@@ -36,5 +36,5 @@ SymbolNode.prototype.eval = function() {
  * @override
  */
 SymbolNode.prototype.toString = function() {
-    return this.name;
+  return this.name;
 };

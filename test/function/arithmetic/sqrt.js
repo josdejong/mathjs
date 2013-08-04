@@ -16,12 +16,12 @@ assert.equal(math.sqrt(math.complex(3, -4)), '2 - i');
 
 // unit
 assert.throws(function () {
-    math.sqrt(math.unit(5, 'km'));
+  math.sqrt(math.unit(5, 'km'));
 });
 
 // string
 assert.throws(function () {
-    math.sqrt('a string');
+  math.sqrt('a string');
 });
 
 // array

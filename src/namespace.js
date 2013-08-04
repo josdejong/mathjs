@@ -5,14 +5,14 @@
  * Define namespace
  */
 var math = {
-    type: {},
-    expr: {
-        node: {
-            handlers: {}
-        }
-    },
-    docs: {},
-    options: {
-        precision: 5  // number of digits in formatted output
+  type: {},
+  expr: {
+    node: {
+      handlers: {}
     }
+  },
+  docs: {},
+  options: {
+    precision: 5  // number of digits in formatted output
+  }
 };

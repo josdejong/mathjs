@@ -11,28 +11,28 @@
  * @see http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
  */
 math.xgcd = function xgcd(a, b) {
-    if (arguments.length == 2) {
-        // two arguments
-        if (isNumber(a) && isNumber(b)) {
-            if (!isInteger(a) || !isInteger(b)) {
-                throw new Error('Parameters in function xgcd must be integer numbers');
-            }
+  if (arguments.length == 2) {
+    // two arguments
+    if (isNumber(a) && isNumber(b)) {
+      if (!isInteger(a) || !isInteger(b)) {
+        throw new Error('Parameters in function xgcd must be integer numbers');
+      }
 
-            if(b == 0) {
-                return [a, 1, 0];
-            }
+      if(b == 0) {
+        return [a, 1, 0];
+      }
 
-            var tmp = xgcd(b, a % b),
-                div = tmp[0],
-                x = tmp[1],
-                y = tmp[2];
+      var tmp = xgcd(b, a % b),
+          div = tmp[0],
+          x = tmp[1],
+          y = tmp[2];
 
-            return [div, y, x - y * Math.floor(a / b)];
-        }
-
-        throw newUnsupportedTypeError('xgcd', a, b);
+      return [div, y, x - y * Math.floor(a / b)];
     }
 
-    // zero or one argument
-    throw new SyntaxError('Function xgcd expects two arguments');
+    throw newUnsupportedTypeError('xgcd', a, b);
+  }
+
+  // zero or one argument
+  throw new SyntaxError('Function xgcd expects two arguments');
 };

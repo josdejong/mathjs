@@ -16,12 +16,12 @@ assert.throws(function() {math.max()});
 assert.throws(function() {math.max([5,2], 3)});
 assert.throws(function() {math.max([])});
 assert.deepEqual(math.max([
-    [ 1, 4,  7],
-    [ 3, 0,  5],
-    [-1, 9, 11]
+  [ 1, 4,  7],
+  [ 3, 0,  5],
+  [-1, 9, 11]
 ]), [ 3, 9, 11]);
 assert.deepEqual(math.max(math.matrix([
-    [ 1, 4,  7],
-    [ 3, 0,  5],
-    [-1, 9, 11]
+  [ 1, 4,  7],
+  [ 3, 0,  5],
+  [-1, 9, 11]
 ])), math.matrix([ 3, 9, 11]));

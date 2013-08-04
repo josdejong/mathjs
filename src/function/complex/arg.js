@@ -10,27 +10,27 @@
  * @return {Number | Array | Matrix} res
  */
 math.arg = function arg(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('arg', arguments.length, 1);
-    }
+  if (arguments.length != 1) {
+    throw newArgumentsError('arg', arguments.length, 1);
+  }
 
-    if (isNumber(x)) {
-        return Math.atan2(0, x);
-    }
+  if (isNumber(x)) {
+    return Math.atan2(0, x);
+  }
 
-    if (x instanceof Complex) {
-        return Math.atan2(x.im, x.re);
-    }
+  if (x instanceof Complex) {
+    return Math.atan2(x.im, x.re);
+  }
 
-    if (x instanceof Array || x instanceof Matrix) {
-        return util.map(x, math.arg);
-    }
+  if (x instanceof Array || x instanceof Matrix) {
+    return util.map(x, math.arg);
+  }
 
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.arg(x.valueOf());
-    }
+  if (x.valueOf() !== x) {
+    // fallback on the objects primitive value
+    return math.arg(x.valueOf());
+  }
 
-    // handle other types just as non-complex values
-    return math.atan2(0, x);
+  // handle other types just as non-complex values
+  return math.atan2(0, x);
 };

@@ -10,7 +10,7 @@ math.expr.node.Node = Node;
  * @return {*} result
  */
 Node.prototype.eval = function () {
-    throw new Error('Cannot evaluate a Node interface');
+  throw new Error('Cannot evaluate a Node interface');
 };
 
 /**
@@ -30,7 +30,7 @@ Node.prototype.eval = function () {
  * @return {Node[]} nodes       An array with nodes matching given filter criteria
  */
 Node.prototype.find = function (filter) {
-    return this.match(filter) ? [this] : [];
+  return this.match(filter) ? [this] : [];
 };
 
 /**
@@ -41,25 +41,25 @@ Node.prototype.find = function (filter) {
  * @return {Boolean} matches    True if there is a match
  */
 Node.prototype.match = function (filter) {
-    var match = true;
+  var match = true;
 
-    if (filter) {
-        if (filter.type && !(this instanceof filter.type)) {
-            match = false;
-        }
-        if (match && filter.properties) {
-            for (var prop in filter.properties) {
-                if (filter.properties.hasOwnProperty(prop)) {
-                    if (this[prop] != filter.properties[prop]) {
-                        match = false;
-                        break;
-                    }
-                }
-            }
-        }
+  if (filter) {
+    if (filter.type && !(this instanceof filter.type)) {
+      match = false;
     }
+    if (match && filter.properties) {
+      for (var prop in filter.properties) {
+        if (filter.properties.hasOwnProperty(prop)) {
+          if (this[prop] != filter.properties[prop]) {
+            match = false;
+            break;
+          }
+        }
+      }
+    }
+  }
 
-    return match;
+  return match;
 };
 
 /**
@@ -67,5 +67,5 @@ Node.prototype.match = function (filter) {
  * @return {String}
  */
 Node.prototype.toString = function() {
-    return '';
+  return '';
 };

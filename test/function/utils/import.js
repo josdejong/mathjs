@@ -4,10 +4,10 @@ var assert = require('assert'),
     approx = require('../../../tools/approx.js');
 
 math.import({
-    myvalue: 42,
-    hello: function (name) {
-        return 'hello, ' + name + '!';
-    }
+  myvalue: 42,
+  hello: function (name) {
+    return 'hello, ' + name + '!';
+  }
 });
 assert.equal(math.myvalue * 2, 84);
 assert.equal(math.hello('user'), 'hello, user!');
@@ -26,15 +26,15 @@ parser.eval('hello("user")');   // 'hello, user!'
 
 // test wrapping
 var getSize = function (array) {
-    return array.length;
+  return array.length;
 };
 math.import({
-    getSizeWrapped: getSize
+  getSizeWrapped: getSize
 });
 math.import({
-    getSizeNotWrapped: getSize
+  getSizeNotWrapped: getSize
 }, {
-    wrap: false
+  wrap: false
 });
 
 assert.equal(math.getSizeWrapped([1,2,3]), 3);
@@ -58,11 +58,11 @@ var followers = math.matrix([100, 50, 1000, 39, 283, 634, 3, 6123]);
 // and standard deviation.
 var report = math.report(followers);
 approx.deepEqual(report, {
-    mean: 1029,
-    firstQuartile: 44.5,
-    median: 191.5,
-    thirdQuartile: 817,
-    standardDev: 1953.0897316815733
+  mean: 1029,
+  firstQuartile: 44.5,
+  median: 191.5,
+  thirdQuartile: 817,
+  standardDev: 1953.0897316815733
 });
 
 // Maybe we decide to become a bit more curious about

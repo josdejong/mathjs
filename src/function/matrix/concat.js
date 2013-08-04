@@ -11,65 +11,65 @@
  * @return {Array | Matrix} res
  */
 math.concat = function concat (args) {
-    var i,
-        len = arguments.length,
-        dim = -1,  // zero-based dimension
-        prevDim,
-        asMatrix = false,
-        matrices = [];  // contains multi dimensional arrays
+  var i,
+      len = arguments.length,
+      dim = -1,  // zero-based dimension
+      prevDim,
+      asMatrix = false,
+      matrices = [];  // contains multi dimensional arrays
 
-    for (i = 0; i < len; i++) {
-        var arg = arguments[i];
+  for (i = 0; i < len; i++) {
+    var arg = arguments[i];
 
-        // test whether we need to return a Matrix (if not we return an Array)
-        if (arg instanceof Matrix) {
-            asMatrix = true;
-        }
-
-        if ((i == len - 1) && isNumber(arg)) {
-            // last argument contains the dimension on which to concatenate
-            prevDim = dim;
-            dim = arg;
-
-            if (!isInteger(dim) || dim < 0) {
-                throw new TypeError('Dimension number must be a positive integer ' +
-                    '(dim = ' + dim + ')');
-            }
-
-            if (i > 0 && dim > prevDim) {
-                throw new RangeError('Dimension out of range ' +
-                    '(' + dim + ' > ' + prevDim + ')');
-            }
-        }
-        else if (arg instanceof Array || arg instanceof Matrix) {
-            // this is a matrix or array
-            var matrix = math.clone(arg).valueOf();
-            var size = math.size(arg).valueOf();
-            matrices[i] = matrix;
-            prevDim = dim;
-            dim = size.length - 1;
-
-            // verify whether each of the matrices has the same number of dimensions
-            if (i > 0 && dim != prevDim) {
-                throw new RangeError('Dimension mismatch ' +
-                    '(' + prevDim + ' != ' + dim + ')');
-            }
-        }
-        else {
-            throw newUnsupportedTypeError('concat', arg);
-        }
+    // test whether we need to return a Matrix (if not we return an Array)
+    if (arg instanceof Matrix) {
+      asMatrix = true;
     }
 
-    if (matrices.length == 0) {
-        throw new SyntaxError('At least one matrix expected');
-    }
+    if ((i == len - 1) && isNumber(arg)) {
+      // last argument contains the dimension on which to concatenate
+      prevDim = dim;
+      dim = arg;
 
-    var res = matrices.shift();
-    while (matrices.length) {
-        res = _concat(res, matrices.shift(), dim, 0);
-    }
+      if (!isInteger(dim) || dim < 0) {
+        throw new TypeError('Dimension number must be a positive integer ' +
+            '(dim = ' + dim + ')');
+      }
 
-    return asMatrix ? new Matrix(res) : res;
+      if (i > 0 && dim > prevDim) {
+        throw new RangeError('Dimension out of range ' +
+            '(' + dim + ' > ' + prevDim + ')');
+      }
+    }
+    else if (arg instanceof Array || arg instanceof Matrix) {
+      // this is a matrix or array
+      var matrix = math.clone(arg).valueOf();
+      var size = math.size(arg).valueOf();
+      matrices[i] = matrix;
+      prevDim = dim;
+      dim = size.length - 1;
+
+      // verify whether each of the matrices has the same number of dimensions
+      if (i > 0 && dim != prevDim) {
+        throw new RangeError('Dimension mismatch ' +
+            '(' + prevDim + ' != ' + dim + ')');
+      }
+    }
+    else {
+      throw newUnsupportedTypeError('concat', arg);
+    }
+  }
+
+  if (matrices.length == 0) {
+    throw new SyntaxError('At least one matrix expected');
+  }
+
+  var res = matrices.shift();
+  while (matrices.length) {
+    res = _concat(res, matrices.shift(), dim, 0);
+  }
+
+  return asMatrix ? new Matrix(res) : res;
 };
 
 /**
@@ -83,20 +83,20 @@ math.concat = function concat (args) {
  * @private
  */
 function _concat(a, b, concatDim, dim) {
-    if (dim < concatDim) {
-        // recurse into next dimension
-        if (a.length != b.length) {
-            throw new Error('Dimensions mismatch (' + a.length + ' != ' + b.length + ')');
-        }
+  if (dim < concatDim) {
+    // recurse into next dimension
+    if (a.length != b.length) {
+      throw new Error('Dimensions mismatch (' + a.length + ' != ' + b.length + ')');
+    }
 
-        var c = [];
-        for (var i = 0; i < a.length; i++) {
-            c[i] = _concat(a[i], b[i], concatDim, dim + 1);
-        }
-        return c;
+    var c = [];
+    for (var i = 0; i < a.length; i++) {
+      c[i] = _concat(a[i], b[i], concatDim, dim + 1);
     }
-    else {
-        // concatenate this dimension
-        return a.concat(b);
-    }
+    return c;
+  }
+  else {
+    // concatenate this dimension
+    return a.concat(b);
+  }
 }

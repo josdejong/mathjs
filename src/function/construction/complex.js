@@ -21,40 +21,40 @@
  * @return {Complex} value
  */
 math.complex = function complex(args) {
-    switch (arguments.length) {
-        case 0:
-            // no parameters. Set re and im zero
-            return new Complex(0, 0);
-            break;
+  switch (arguments.length) {
+    case 0:
+      // no parameters. Set re and im zero
+      return new Complex(0, 0);
+      break;
 
-        case 1:
-            // parse string into a complex number
-            var arg = arguments[0];
-            if (arg instanceof Complex) {
-                // create a clone
-                return arg.clone();
-            }
-            else if (isString(arg)) {
-                var c = Complex.parse(arg);
-                if (c) {
-                    return c;
-                }
-                else {
-                    throw new SyntaxError('String "' + arg + '" is no valid complex number');
-                }
-            }
-            else {
-                throw new TypeError(
-                    'Two numbers or a single string expected in function complex');
-            }
-            break;
+    case 1:
+      // parse string into a complex number
+      var arg = arguments[0];
+      if (arg instanceof Complex) {
+        // create a clone
+        return arg.clone();
+      }
+      else if (isString(arg)) {
+        var c = Complex.parse(arg);
+        if (c) {
+          return c;
+        }
+        else {
+          throw new SyntaxError('String "' + arg + '" is no valid complex number');
+        }
+      }
+      else {
+        throw new TypeError(
+            'Two numbers or a single string expected in function complex');
+      }
+      break;
 
-        case 2:
-            // re and im provided
-            return new Complex(arguments[0], arguments[1]);
-            break;
+    case 2:
+      // re and im provided
+      return new Complex(arguments[0], arguments[1]);
+      break;
 
-        default:
-            throw newArgumentsError('complex', arguments.length, 0, 2);
-    }
+    default:
+      throw newArgumentsError('complex', arguments.length, 0, 2);
+  }
 };

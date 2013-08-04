@@ -7,9 +7,9 @@
  * @param {math.expr.Scope} scope       Scope to store the result
  */
 function AssignmentNode(name, expr, scope) {
-    this.name = name;
-    this.expr = expr;
-    this.scope = scope;
+  this.name = name;
+  this.expr = expr;
+  this.scope = scope;
 }
 
 AssignmentNode.prototype = new Node();
@@ -21,14 +21,14 @@ math.expr.node.AssignmentNode = AssignmentNode;
  * @return {*} result
  */
 AssignmentNode.prototype.eval = function() {
-    if (this.expr === undefined) {
-        throw new Error('Undefined symbol ' + this.name);
-    }
+  if (this.expr === undefined) {
+    throw new Error('Undefined symbol ' + this.name);
+  }
 
-    var result = this.expr.eval();
-    this.scope.set(this.name, result);
+  var result = this.expr.eval();
+  this.scope.set(this.name, result);
 
-    return result;
+  return result;
 };
 
 /**
@@ -37,19 +37,19 @@ AssignmentNode.prototype.eval = function() {
  * @returns {Node[]} nodes
  */
 AssignmentNode.prototype.find = function (filter) {
-    var nodes = [];
+  var nodes = [];
 
-    // check itself
-    if (this.match(filter)) {
-        nodes.push(this);
-    }
+  // check itself
+  if (this.match(filter)) {
+    nodes.push(this);
+  }
 
-    // search in expression
-    if (this.expr) {
-        nodes = nodes.concat(this.expr.find(filter));
-    }
+  // search in expression
+  if (this.expr) {
+    nodes = nodes.concat(this.expr.find(filter));
+  }
 
-    return nodes;
+  return nodes;
 };
 
 /**
@@ -57,5 +57,5 @@ AssignmentNode.prototype.find = function (filter) {
  * @return {String}
  */
 AssignmentNode.prototype.toString = function() {
-    return this.name + ' = ' + this.expr.toString();
+  return this.name + ' = ' + this.expr.toString();
 };

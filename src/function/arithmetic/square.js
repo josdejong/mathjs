@@ -10,26 +10,26 @@
  * @return {Number | Complex | Array | Matrix} res
  */
 math.square = function square(x) {
-    if (arguments.length != 1) {
-        throw newArgumentsError('square', arguments.length, 1);
-    }
+  if (arguments.length != 1) {
+    throw newArgumentsError('square', arguments.length, 1);
+  }
 
-    if (isNumber(x)) {
-        return x * x;
-    }
+  if (isNumber(x)) {
+    return x * x;
+  }
 
-    if (x instanceof Complex) {
-        return math.multiply(x, x);
-    }
+  if (x instanceof Complex) {
+    return math.multiply(x, x);
+  }
 
-    if (x instanceof Array || x instanceof Matrix) {
-        return util.map(x, math.square);
-    }
+  if (x instanceof Array || x instanceof Matrix) {
+    return util.map(x, math.square);
+  }
 
-    if (x.valueOf() !== x) {
-        // fallback on the objects primitive value
-        return math.square(x.valueOf());
-    }
+  if (x.valueOf() !== x) {
+    // fallback on the objects primitive value
+    return math.square(x.valueOf());
+  }
 
-    throw newUnsupportedTypeError('square', x);
+  throw newUnsupportedTypeError('square', x);
 };

@@ -36,7 +36,7 @@ assert.equal(symbols4['e'], undefined);
 
 // test sub scope
 var value5 = {
-    'aaa': 'bbb'
+  'aaa': 'bbb'
 };
 var scope5 = new Scope();
 scope5.set('value5', value5);
@@ -56,9 +56,9 @@ assert.equal(sub5.get('subValue5'), undefined);
 
 // test remove
 var symbols6 = {
-    aa: 'aa',
-    bb: 'bb',
-    cc: 'cc'
+  aa: 'aa',
+  bb: 'bb',
+  cc: 'cc'
 };
 var scope6 = new Scope(symbols6);
 assert.equal(scope6.get('aa'), 'aa');
@@ -69,8 +69,8 @@ assert.equal(scope6.get('aa'), 'aa');
 assert.equal(scope6.get('bb'), undefined);
 assert.equal(scope6.get('cc'), 'cc');
 assert.deepEqual(symbols6, {
-    aa: 'aa',
-    cc: 'cc'
+  aa: 'aa',
+  cc: 'cc'
 });
 
 

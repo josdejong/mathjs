@@ -6,9 +6,9 @@
  * @param {Node[]} params   Parameters
  */
 function OperatorNode (name, fn, params) {
-    this.name = name;
-    this.fn = fn;
-    this.params = params;
+  this.name = name;
+  this.fn = fn;
+  this.params = params;
 }
 
 OperatorNode.prototype = new Node();
@@ -20,9 +20,9 @@ math.expr.node.OperatorNode = OperatorNode;
  * @return {*} result
  */
 OperatorNode.prototype.eval = function() {
-    return this.fn.apply(this, this.params.map(function (param) {
-        return param.eval();
-    }));
+  return this.fn.apply(this, this.params.map(function (param) {
+    return param.eval();
+  }));
 };
 
 /**
@@ -31,22 +31,22 @@ OperatorNode.prototype.eval = function() {
  * @returns {Node[]} nodes
  */
 OperatorNode.prototype.find = function (filter) {
-    var nodes = [];
+  var nodes = [];
 
-    // check itself
-    if (this.match(filter)) {
-        nodes.push(this);
+  // check itself
+  if (this.match(filter)) {
+    nodes.push(this);
+  }
+
+  // search in parameters
+  var params = this.params;
+  if (params) {
+    for (var i = 0, len = params.length; i < len; i++) {
+      nodes = nodes.concat(params[i].find(filter));
     }
+  }
 
-    // search in parameters
-    var params = this.params;
-    if (params) {
-        for (var i = 0, len = params.length; i < len; i++) {
-            nodes = nodes.concat(params[i].find(filter));
-        }
-    }
-
-    return nodes;
+  return nodes;
 };
 
 /**
@@ -54,29 +54,29 @@ OperatorNode.prototype.find = function (filter) {
  * @return {String} str
  */
 OperatorNode.prototype.toString = function() {
-    var params = this.params;
+  var params = this.params;
 
-    // special case: unary minus
-    if (this.fn === math.unary) {
-        return '-' + params[0].toString();
-    }
+  // special case: unary minus
+  if (this.fn === math.unary) {
+    return '-' + params[0].toString();
+  }
 
-    switch (params.length) {
-        case 1: // for example '5!'
-            return params[0].toString() + this.name;
+  switch (params.length) {
+    case 1: // for example '5!'
+      return params[0].toString() + this.name;
 
-        case 2: // for example '2+3'
-            var lhs = params[0].toString();
-            if (params[0] instanceof OperatorNode) {
-                lhs = '(' + lhs + ')';
-            }
-            var rhs = params[1].toString();
-            if (params[1] instanceof OperatorNode) {
-                rhs = '(' + rhs + ')';
-            }
-            return lhs + ' ' + this.name + ' ' + rhs;
+    case 2: // for example '2+3'
+      var lhs = params[0].toString();
+      if (params[0] instanceof OperatorNode) {
+        lhs = '(' + lhs + ')';
+      }
+      var rhs = params[1].toString();
+      if (params[1] instanceof OperatorNode) {
+        rhs = '(' + rhs + ')';
+      }
+      return lhs + ' ' + this.name + ' ' + rhs;
 
-        default: // this should occur. format as a function call
-            return this.name + '(' + this.params.join(', ') + ')';
-    }
+    default: // this should occur. format as a function call
+      return this.name + '(' + this.params.join(', ') + ')';
+  }
 };

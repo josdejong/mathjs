@@ -16,14 +16,14 @@ assert.throws(function() {math.min()});
 assert.throws(function() {math.min([5,2], 3)});
 assert.throws(function() {math.min([])});
 assert.deepEqual(math.min([
-    [ 1, 4,  7],
-    [ 3, 0,  5],
-    [-1, 9, 11]
+  [ 1, 4,  7],
+  [ 3, 0,  5],
+  [-1, 9, 11]
 ]), [-1, 0,  5]);
 assert.deepEqual(math.min(math.matrix([
-    [ 1, 4,  7],
-    [ 3, 0,  5],
-    [-1, 9, 11]
+  [ 1, 4,  7],
+  [ 3, 0,  5],
+  [-1, 9, 11]
 ])), math.matrix([-1, 0, 5]));
 
 

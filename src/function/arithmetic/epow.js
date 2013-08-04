@@ -9,9 +9,9 @@
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
 math.epow = function epow(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('epow', arguments.length, 2);
-    }
+  if (arguments.length != 2) {
+    throw newArgumentsError('epow', arguments.length, 2);
+  }
 
-    return util.deepMap2(x, y, math.pow);
+  return util.deepMap2(x, y, math.pow);
 };

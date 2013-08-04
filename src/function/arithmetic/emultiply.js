@@ -9,9 +9,9 @@
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
 math.emultiply = function emultiply(x, y) {
-    if (arguments.length != 2) {
-        throw newArgumentsError('emultiply', arguments.length, 2);
-    }
+  if (arguments.length != 2) {
+    throw newArgumentsError('emultiply', arguments.length, 2);
+  }
 
-    return util.deepMap2(x, y, math.multiply);
+  return util.deepMap2(x, y, math.multiply);
 };

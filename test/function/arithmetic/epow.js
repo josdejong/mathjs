@@ -10,10 +10,10 @@ var assert = require('assert'),
 
 // parser
 /* TODO: epow for parser
-approx.equal(math.eval('2.^3'), 8);
-approx.equal(math.eval('-2.^2'), -4);  // -(2^2)
-approx.equal(math.eval('2.^3.^4'), 2.41785163922926e+24); // 2^(3^4)
-*/
+ approx.equal(math.eval('2.^3'), 8);
+ approx.equal(math.eval('-2.^2'), -4);  // -(2^2)
+ approx.equal(math.eval('2.^3.^4'), 2.41785163922926e+24); // 2^(3^4)
+ */
 approx.equal(math.eval('epow(2,3)'), 8);
 approx.equal(math.eval('epow(-2,2)'), 4);
 

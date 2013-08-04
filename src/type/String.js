@@ -8,5 +8,5 @@
  * @return {Boolean} isString
  */
 function isString(value) {
-    return (value instanceof String) || (typeof value == 'string');
+  return (value instanceof String) || (typeof value == 'string');
 }

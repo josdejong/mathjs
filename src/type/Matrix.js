@@ -20,30 +20,30 @@
  * @param {Array | Matrix} [data]    A multi dimensional array
  */
 function Matrix(data) {
-    if (!(this instanceof Matrix)) {
-        throw new SyntaxError(
-            'Matrix constructor must be called with the new operator');
-    }
+  if (!(this instanceof Matrix)) {
+    throw new SyntaxError(
+        'Matrix constructor must be called with the new operator');
+  }
 
-    if (data instanceof Matrix || data instanceof Range) {
-        // clone data from a Matrix or Range
-        this._data = data.toArray();
-    }
-    else if (data instanceof Array) {
-        // use array as is
-        this._data = data;
-    }
-    else if (data != null) {
-        // unsupported type
-        throw new TypeError('Unsupported type of data (' + math['typeof'](data) + ')');
-    }
-    else {
-        // nothing provided
-        this._data = [];
-    }
+  if (data instanceof Matrix || data instanceof Range) {
+    // clone data from a Matrix or Range
+    this._data = data.toArray();
+  }
+  else if (data instanceof Array) {
+    // use array as is
+    this._data = data;
+  }
+  else if (data != null) {
+    // unsupported type
+    throw new TypeError('Unsupported type of data (' + math['typeof'](data) + ')');
+  }
+  else {
+    // nothing provided
+    this._data = [];
+  }
 
-    // verify the size of the array
-    this._size = util.size(this._data);
+  // verify the size of the array
+  this._size = util.size(this._data);
 }
 
 math.type.Matrix = Matrix;
@@ -53,46 +53,46 @@ math.type.Matrix = Matrix;
  * @param {Array | Matrix} index    Zero-based index
  */
 Matrix.prototype.get = function (index) {
-    var isScalar;
-    if (index instanceof Matrix) {
-        // index is scalar when size==[n] or size==[1,1,...]
-        isScalar = (index.size().length == 1) || !index.size().some(function (i) {
-            return (i != 0);
-        });
-        index = index.valueOf();
-    }
-    else if (index instanceof Array) {
-        isScalar = !index.some(function (elem) {
-            var size = math.size(elem);
-            return (size.length != 0) && (size != [0]);
-        });
-    }
-    else {
-        throw new TypeError('Invalid index');
-    }
+  var isScalar;
+  if (index instanceof Matrix) {
+    // index is scalar when size==[n] or size==[1,1,...]
+    isScalar = (index.size().length == 1) || !index.size().some(function (i) {
+      return (i != 0);
+    });
+    index = index.valueOf();
+  }
+  else if (index instanceof Array) {
+    isScalar = !index.some(function (elem) {
+      var size = math.size(elem);
+      return (size.length != 0) && (size != [0]);
+    });
+  }
+  else {
+    throw new TypeError('Invalid index');
+  }
 
-    if (index.length != this._size.length) {
-        throw new RangeError('Dimension mismatch ' +
-            '(' + index.length + ' != ' + this._size.length + ')');
-    }
+  if (index.length != this._size.length) {
+    throw new RangeError('Dimension mismatch ' +
+        '(' + index.length + ' != ' + this._size.length + ')');
+  }
 
-    if (isScalar) {
-        // return a single value
-        switch (index.length) {
-            case 1:     return _get(this._data, index[0]);
-            case 2:     return _get(_get(this._data, index[0]), index[1]);
-            default:    return _getScalar(this._data, index);
-        }
+  if (isScalar) {
+    // return a single value
+    switch (index.length) {
+      case 1:     return _get(this._data, index[0]);
+      case 2:     return _get(_get(this._data, index[0]), index[1]);
+      default:    return _getScalar(this._data, index);
     }
-    else {
-        // return a submatrix
-        switch (index.length) {
-            case 1: return new Matrix(_getSubmatrix1D(this._data, index));
-            case 2: return new Matrix(_getSubmatrix2D(this._data, index));
-            default: return new Matrix(_getSubmatrix(this._data, index, 0));
-        }
-        // TODO: more efficient when creating an empty matrix and setting _data and _size manually
+  }
+  else {
+    // return a submatrix
+    switch (index.length) {
+      case 1: return new Matrix(_getSubmatrix1D(this._data, index));
+      case 2: return new Matrix(_getSubmatrix2D(this._data, index));
+      default: return new Matrix(_getSubmatrix(this._data, index, 0));
     }
+    // TODO: more efficient when creating an empty matrix and setting _data and _size manually
+  }
 };
 
 /**
@@ -105,8 +105,8 @@ Matrix.prototype.get = function (index) {
  * @private
  */
 function _get (array, index) {
-    util.validateIndex(index, array.length);
-    return array[index]; // zero-based index
+  util.validateIndex(index, array.length);
+  return array[index]; // zero-based index
 }
 
 /**
@@ -119,10 +119,10 @@ function _get (array, index) {
  * @private
  */
 function _getScalar (data, index) {
-    index.forEach(function (i) {
-        data = _get(data, i);
-    });
-    return math.clone(data);
+  index.forEach(function (i) {
+    data = _get(data, i);
+  });
+  return math.clone(data);
 }
 
 /**
@@ -134,19 +134,19 @@ function _getScalar (data, index) {
  * @private
  */
 function _getSubmatrix1D (data, index) {
-    var current = index[0];
-    if (current.map) {
-        // array or Range
-        return current.map(function (i) {
-            return _get(data, i);
-        });
-    }
-    else {
-        // scalar
-        return [
-            _get(data, current)
-        ];
-    }
+  var current = index[0];
+  if (current.map) {
+    // array or Range
+    return current.map(function (i) {
+      return _get(data, i);
+    });
+  }
+  else {
+    // scalar
+    return [
+      _get(data, current)
+    ];
+  }
 }
 
 /**
@@ -158,43 +158,43 @@ function _getSubmatrix1D (data, index) {
  * @private
  */
 function _getSubmatrix2D (data, index) {
-    var rows = index[0];
-    var cols = index[1];
+  var rows = index[0];
+  var cols = index[1];
 
-    if (rows.map) {
-        if (cols.map) {
-            return rows.map(function (row) {
-                var child = _get(data, row);
-                return cols.map(function (col) {
-                    return _get(child, col);
-                });
-            });
-        }
-        else {
-            return rows.map(function (row) {
-                return [
-                    _get(_get(data, row), cols)
-                ];
-            });
-        }
+  if (rows.map) {
+    if (cols.map) {
+      return rows.map(function (row) {
+        var child = _get(data, row);
+        return cols.map(function (col) {
+          return _get(child, col);
+        });
+      });
     }
     else {
-        if (cols.map) {
-            var child = _get(data, rows);
-            return [
-                cols.map(function (col) {
-                    return _get(child, col);
-                })
-            ]
-        }
-        else {
-            return [
-                [
-                    _get(_get(data, rows), cols)
-                ]
-            ];
-        }
+      return rows.map(function (row) {
+        return [
+          _get(_get(data, row), cols)
+        ];
+      });
     }
+  }
+  else {
+    if (cols.map) {
+      var child = _get(data, rows);
+      return [
+        cols.map(function (col) {
+          return _get(child, col);
+        })
+      ]
+    }
+    else {
+      return [
+        [
+          _get(_get(data, rows), cols)
+        ]
+      ];
+    }
+  }
 }
 
 /**
@@ -207,23 +207,23 @@ function _getSubmatrix2D (data, index) {
  * @private
  */
 function _getSubmatrix (data, index, dim) {
-    var last = (dim == index.length - 1);
-    var current = index[dim];
-    var recurse = function (i) {
-        var child = _get(data, i);
-        return last ? child : _getSubmatrix(child, index, dim + 1);
-    };
+  var last = (dim == index.length - 1);
+  var current = index[dim];
+  var recurse = function (i) {
+    var child = _get(data, i);
+    return last ? child : _getSubmatrix(child, index, dim + 1);
+  };
 
-    if (current.map) {
-        // array or Range
-        return current.map(recurse);
-    }
-    else {
-        // scalar
-        return [
-            recurse(current)
-        ];
-    }
+  if (current.map) {
+    // array or Range
+    return current.map(recurse);
+  }
+  else {
+    // scalar
+    return [
+      recurse(current)
+    ];
+  }
 }
 
 /**
@@ -234,57 +234,57 @@ function _getSubmatrix (data, index, dim) {
  * @return {Matrix} itself
  */
 Matrix.prototype.set = function (index, submatrix) {
-    var isScalar;
-    if (index instanceof Matrix) {
-        // index is scalar when size==[n] or size==[0,0,...]
-        isScalar = (index.size().length == 1) || !index.size().some(function (i) {
-            return (i != 0);
-        });
-        index = index.valueOf();
-    }
-    else if (index instanceof Array) {
-        isScalar = !index.some(function (elem) {
-            var size = math.size(elem);
-            return (size.length != 0) && (size != [0]);
-        });
-    }
-    else {
-        throw new TypeError('Invalid index');
+  var isScalar;
+  if (index instanceof Matrix) {
+    // index is scalar when size==[n] or size==[0,0,...]
+    isScalar = (index.size().length == 1) || !index.size().some(function (i) {
+      return (i != 0);
+    });
+    index = index.valueOf();
+  }
+  else if (index instanceof Array) {
+    isScalar = !index.some(function (elem) {
+      var size = math.size(elem);
+      return (size.length != 0) && (size != [0]);
+    });
+  }
+  else {
+    throw new TypeError('Invalid index');
+  }
+
+  if (submatrix instanceof Matrix || submatrix instanceof Range) {
+    submatrix = submatrix.valueOf();
+  }
+
+  if (index.length < this._size.length) {
+    throw new RangeError('Dimension mismatch ' +
+        '(' + index.length + ' != ' + this._size.length + ')');
+  }
+
+  if (isScalar) {
+    // set a scalar
+    // check whether submatrix is no matrix/array
+    if (math.size(submatrix).valueOf().length != 0) {
+      throw new TypeError('Scalar value expected');
     }
 
-    if (submatrix instanceof Matrix || submatrix instanceof Range) {
-        submatrix = submatrix.valueOf();
+    switch (index.length) {
+      case 1:  _setScalar1D(this._data, this._size, index, submatrix); break;
+      case 2:  _setScalar2D(this._data, this._size, index, submatrix); break;
+      default: _setScalar(this._data, this._size, index, submatrix); break;
     }
-
-    if (index.length < this._size.length) {
-        throw new RangeError('Dimension mismatch ' +
-            '(' + index.length + ' != ' + this._size.length + ')');
+  }
+  else {
+    // set a submatrix
+    var size = this._size.concat();
+    _setSubmatrix (this._data, size, index, 0, submatrix);
+    if (!util.deepEqual(this._size, size)) {
+      _init(this._data);
+      this.resize(size);
     }
+  }
 
-    if (isScalar) {
-        // set a scalar
-        // check whether submatrix is no matrix/array
-        if (math.size(submatrix).valueOf().length != 0) {
-            throw new TypeError('Scalar value expected');
-        }
-
-        switch (index.length) {
-            case 1:  _setScalar1D(this._data, this._size, index, submatrix); break;
-            case 2:  _setScalar2D(this._data, this._size, index, submatrix); break;
-            default: _setScalar(this._data, this._size, index, submatrix); break;
-        }
-    }
-    else {
-        // set a submatrix
-        var size = this._size.concat();
-        _setSubmatrix (this._data, size, index, 0, submatrix);
-        if (!util.deepEqual(this._size, size)) {
-            _init(this._data);
-            this.resize(size);
-        }
-    }
-
-    return this;
+  return this;
 };
 
 /**
@@ -296,11 +296,11 @@ Matrix.prototype.set = function (index, submatrix) {
  * @private
  */
 function _set (array, index, value) {
-    util.validateIndex(index);
-    if (value instanceof Array) {
-        throw new TypeError('Dimension mismatch, value expected instead of array');
-    }
-    array[index] = value; // zero-based index
+  util.validateIndex(index);
+  if (value instanceof Array) {
+    throw new TypeError('Dimension mismatch, value expected instead of array');
+  }
+  array[index] = value; // zero-based index
 }
 
 /**
@@ -312,34 +312,34 @@ function _set (array, index, value) {
  * @private
  */
 function _setScalar (data, size, index, value) {
-    var resized = false;
-    if (index.length > size.length) {
-        // dimension added
-        resized = true;
-    }
+  var resized = false;
+  if (index.length > size.length) {
+    // dimension added
+    resized = true;
+  }
 
-    for (var i = 0; i < index.length; i++) {
-        var index_i = index[i];
-        util.validateIndex(index_i);
-        if ((size[i] == null) || (index_i + 1 > size[i])) {
-            size[i] = index_i + 1; // size is index + 1 as index is zero-based
-            resized = true;
-        }
+  for (var i = 0; i < index.length; i++) {
+    var index_i = index[i];
+    util.validateIndex(index_i);
+    if ((size[i] == null) || (index_i + 1 > size[i])) {
+      size[i] = index_i + 1; // size is index + 1 as index is zero-based
+      resized = true;
     }
+  }
 
-    if (resized) {
-        util.resize(data, size, 0);
+  if (resized) {
+    util.resize(data, size, 0);
+  }
+
+  var len = size.length;
+  index.forEach(function (v, i) {
+    if (i < len - 1) {
+      data = data[v]; // zero-based index
     }
-
-    var len = size.length;
-    index.forEach(function (v, i) {
-        if (i < len - 1) {
-            data = data[v]; // zero-based index
-        }
-        else {
-            data[v] = value; // zero-based index
-        }
-    });
+    else {
+      data[v] = value; // zero-based index
+    }
+  });
 }
 
 /**
@@ -351,13 +351,13 @@ function _setScalar (data, size, index, value) {
  * @private
  */
 function _setScalar1D (data, size, index, value) {
-    var row = index[0];
-    util.validateIndex(row);
-    if (row + 1 > size[0]) {
-        util.resize(data, [row + 1], 0); // size is index + 1 as index is zero-based
-        size[0] = row + 1;
-    }
-    data[row] = value; // zero-based index
+  var row = index[0];
+  util.validateIndex(row);
+  if (row + 1 > size[0]) {
+    util.resize(data, [row + 1], 0); // size is index + 1 as index is zero-based
+    size[0] = row + 1;
+  }
+  data[row] = value; // zero-based index
 }
 
 /**
@@ -369,25 +369,25 @@ function _setScalar1D (data, size, index, value) {
  * @private
  */
 function _setScalar2D (data, size, index, value) {
-    var row = index[0];
-    var col = index[1];
-    util.validateIndex(row);
-    util.validateIndex(col);
+  var row = index[0];
+  var col = index[1];
+  util.validateIndex(row);
+  util.validateIndex(col);
 
-    var resized = false;
-    if (row + 1 > (size[0] || 0)) {
-        size[0] = row + 1;   // size is index + 1 as index is zero-based
-        resized = true;
-    }
-    if (col + 1 > (size[1] || 0)) {
-        size[1] = col + 1;   // size is index + 1 as index is zero-based
-        resized = true;
-    }
-    if (resized) {
-        util.resize(data, size, 0);
-    }
+  var resized = false;
+  if (row + 1 > (size[0] || 0)) {
+    size[0] = row + 1;   // size is index + 1 as index is zero-based
+    resized = true;
+  }
+  if (col + 1 > (size[1] || 0)) {
+    size[1] = col + 1;   // size is index + 1 as index is zero-based
+    resized = true;
+  }
+  if (resized) {
+    util.resize(data, size, 0);
+  }
 
-    data[row][col] = value; // zero-based index
+  data[row][col] = value; // zero-based index
 }
 
 /**
@@ -400,40 +400,40 @@ function _setScalar2D (data, size, index, value) {
  * @private
  */
 function _setSubmatrix (data, size, index, dim, submatrix) {
-    var last = (dim == index.length - 1);
-    var current = index[dim];
-    var recurse = function (dataIndex, subIndex) {
-        if (last) {
-            _set(data, dataIndex, submatrix[subIndex]);
-            if (dataIndex + 1 > (size[dim] || 0)) {
-                size[dim] = dataIndex + 1;
-            }
-        }
-        else {
-            var child = data[dataIndex]; // zero-based index
-            if (!(child instanceof Array)) {
-                data[dataIndex] = child = [child]; // zero-based index
-            }
-            if (dataIndex + 1 > (size[dim] || 0)) {
-                size[dim] = dataIndex + 1;
-            }
-            _setSubmatrix(child, size, index, dim + 1, submatrix[subIndex]);
-        }
-    };
-
-    if (current.map) {
-        // array or Range
-        var len = (current.size && current.size() || current.length);
-        if (len != submatrix.length) {
-            throw new RangeError('Dimensions mismatch ' +
-                '(' + len + ' != '+ submatrix.length + ')');
-        }
-        current.map(recurse);
+  var last = (dim == index.length - 1);
+  var current = index[dim];
+  var recurse = function (dataIndex, subIndex) {
+    if (last) {
+      _set(data, dataIndex, submatrix[subIndex]);
+      if (dataIndex + 1 > (size[dim] || 0)) {
+        size[dim] = dataIndex + 1;
+      }
     }
     else {
-        // scalar
-        recurse(current, 0)
+      var child = data[dataIndex]; // zero-based index
+      if (!(child instanceof Array)) {
+        data[dataIndex] = child = [child]; // zero-based index
+      }
+      if (dataIndex + 1 > (size[dim] || 0)) {
+        size[dim] = dataIndex + 1;
+      }
+      _setSubmatrix(child, size, index, dim + 1, submatrix[subIndex]);
     }
+  };
+
+  if (current.map) {
+    // array or Range
+    var len = (current.size && current.size() || current.length);
+    if (len != submatrix.length) {
+      throw new RangeError('Dimensions mismatch ' +
+          '(' + len + ' != '+ submatrix.length + ')');
+    }
+    current.map(recurse);
+  }
+  else {
+    // scalar
+    recurse(current, 0)
+  }
 }
 
 /**
@@ -442,15 +442,15 @@ function _setSubmatrix (data, size, index, dim, submatrix) {
  * @private
  */
 function _init(array) {
-    for (var i = 0, len = array.length; i < len; i++) {
-        var value = array[i];
-        if (value instanceof Array) {
-            _init(value);
-        }
-        else if (value == undefined) {
-            array[i] = 0;
-        }
+  for (var i = 0, len = array.length; i < len; i++) {
+    var value = array[i];
+    if (value instanceof Array) {
+      _init(value);
     }
+    else if (value == undefined) {
+      array[i] = 0;
+    }
+  }
 }
 
 /**
@@ -461,8 +461,8 @@ function _init(array) {
  *                                  with zeros.
  */
 Matrix.prototype.resize = function (size, defaultValue) {
-    util.resize(this._data, size, defaultValue);
-    this._size = math.clone(size);
+  util.resize(this._data, size, defaultValue);
+  this._size = math.clone(size);
 };
 
 /**
@@ -470,10 +470,10 @@ Matrix.prototype.resize = function (size, defaultValue) {
  * @return {Matrix} clone
  */
 Matrix.prototype.clone = function () {
-    var matrix = new Matrix();
-    matrix._data = math.clone(this._data);
-    matrix._size = math.clone(this._size);
-    return matrix;
+  var matrix = new Matrix();
+  matrix._data = math.clone(this._data);
+  matrix._size = math.clone(this._size);
+  return matrix;
 };
 
 /**
@@ -482,7 +482,7 @@ Matrix.prototype.clone = function () {
  * @returns {Number[]} size
  */
 Matrix.prototype.size = function () {
-    return this._size;
+  return this._size;
 };
 
 /**
@@ -494,24 +494,24 @@ Matrix.prototype.size = function () {
  * @return {Matrix} matrix
  */
 Matrix.prototype.map = function (callback) {
-    var me = this;
-    var matrix = new Matrix();
-    var index = [];
-    var recurse = function (value, dim) {
-        if (value instanceof Array) {
-            return value.map(function (child, i) {
-                index[dim] = i; // zero-based index
-                return recurse(child, dim + 1);
-            });
-        }
-        else {
-            return callback(value, index, me);
-        }
-    };
-    matrix._data = recurse(this._data, 0);
-    matrix._size = math.clone(this._size);
+  var me = this;
+  var matrix = new Matrix();
+  var index = [];
+  var recurse = function (value, dim) {
+    if (value instanceof Array) {
+      return value.map(function (child, i) {
+        index[dim] = i; // zero-based index
+        return recurse(child, dim + 1);
+      });
+    }
+    else {
+      return callback(value, index, me);
+    }
+  };
+  matrix._data = recurse(this._data, 0);
+  matrix._size = math.clone(this._size);
 
-    return matrix;
+  return matrix;
 };
 
 /**
@@ -521,20 +521,20 @@ Matrix.prototype.map = function (callback) {
  *                              of the element, and the Matrix being traversed.
  */
 Matrix.prototype.forEach = function (callback) {
-    var me = this;
-    var index = [];
-    var recurse = function (value, dim) {
-        if (value instanceof Array) {
-            value.forEach(function (child, i) {
-                index[dim] = i; // zero-based index
-                recurse(child, dim + 1);
-            });
-        }
-        else {
-            callback(value, index, me);
-        }
-    };
-    recurse(this._data, 0);
+  var me = this;
+  var index = [];
+  var recurse = function (value, dim) {
+    if (value instanceof Array) {
+      value.forEach(function (child, i) {
+        index[dim] = i; // zero-based index
+        recurse(child, dim + 1);
+      });
+    }
+    else {
+      callback(value, index, me);
+    }
+  };
+  recurse(this._data, 0);
 };
 
 /**
@@ -543,17 +543,17 @@ Matrix.prototype.forEach = function (callback) {
  * @return {* | null} scalar
  */
 Matrix.prototype.toScalar = function () {
-    var scalar = this._data;
-    while (scalar instanceof Array && scalar.length == 1) {
-        scalar = scalar[0];
-    }
+  var scalar = this._data;
+  while (scalar instanceof Array && scalar.length == 1) {
+    scalar = scalar[0];
+  }
 
-    if (scalar instanceof Array) {
-        return null;
-    }
-    else {
-        return math.clone(scalar);
-    }
+  if (scalar instanceof Array) {
+    return null;
+  }
+  else {
+    return math.clone(scalar);
+  }
 };
 
 /**
@@ -561,9 +561,9 @@ Matrix.prototype.toScalar = function () {
  * @return {boolean} isScalar
  */
 Matrix.prototype.isScalar = function () {
-    return this._size.every(function (s) {
-        return (s <= 1);
-    });
+  return this._size.every(function (s) {
+    return (s <= 1);
+  });
 };
 
 /**
@@ -575,45 +575,45 @@ Matrix.prototype.isScalar = function () {
  * return {Array | null} vector
  */
 Matrix.prototype.toVector = function () {
-    var count = 0;
-    var dim = undefined;
-    var index = [];
-    this._size.forEach(function (length, i) {
-        if (length > 1) {
-            count++;
-            dim = i;
-        }
-        index[i] = 0;
-    });
-
-    if (count == 0) {
-        // scalar or empty
-        var scalar = this.toScalar();
-        if (scalar) {
-            return [scalar];
-        }
-        else {
-            return [];
-        }
+  var count = 0;
+  var dim = undefined;
+  var index = [];
+  this._size.forEach(function (length, i) {
+    if (length > 1) {
+      count++;
+      dim = i;
     }
-    else if (count == 1) {
-        // valid vector
-        var vector = [];
-        var recurse = function (data) {
-            if (data instanceof Array) {
-                data.forEach(recurse);
-            }
-            else {
-                vector.push(data);
-            }
-        };
-        recurse(this._data);
-        return vector;
+    index[i] = 0;
+  });
+
+  if (count == 0) {
+    // scalar or empty
+    var scalar = this.toScalar();
+    if (scalar) {
+      return [scalar];
     }
     else {
-        // count > 1, this is no vector
-        return null;
+      return [];
     }
+  }
+  else if (count == 1) {
+    // valid vector
+    var vector = [];
+    var recurse = function (data) {
+      if (data instanceof Array) {
+        data.forEach(recurse);
+      }
+      else {
+        vector.push(data);
+      }
+    };
+    recurse(this._data);
+    return vector;
+  }
+  else {
+    // count > 1, this is no vector
+    return null;
+  }
 };
 
 /**
@@ -623,13 +623,13 @@ Matrix.prototype.toVector = function () {
  * return {boolean} isVector
  */
 Matrix.prototype.isVector = function () {
-    var count = 0;
-    this._size.forEach(function (length) {
-        if (length > 1) {
-            count++;
-        }
-    });
-    return (count <= 1);
+  var count = 0;
+  this._size.forEach(function (length) {
+    if (length > 1) {
+      count++;
+    }
+  });
+  return (count <= 1);
 };
 
 /**
@@ -637,7 +637,7 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {
-    return math.clone(this._data);
+  return math.clone(this._data);
 };
 
 /**
@@ -645,7 +645,7 @@ Matrix.prototype.toArray = function () {
  * @returns {Array} array
  */
 Matrix.prototype.valueOf = function () {
-    return this._data;
+  return this._data;
 };
 
 /**
@@ -653,5 +653,5 @@ Matrix.prototype.valueOf = function () {
  * @returns {String} str
  */
 Matrix.prototype.toString = function () {
-    return math.format(this._data);
+  return math.format(this._data);
 };

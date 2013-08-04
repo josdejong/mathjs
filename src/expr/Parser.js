@@ -50,12 +50,12 @@
  *    parser.clear();
  */
 math.expr.Parser = function Parser() {
-    if (!(this instanceof math.expr.Parser)) {
-        throw new SyntaxError(
-            'Parser constructor must be called with the new operator');
-    }
+  if (!(this instanceof math.expr.Parser)) {
+    throw new SyntaxError(
+        'Parser constructor must be called with the new operator');
+  }
 
-    this.scope = new math.expr.Scope();
+  this.scope = new math.expr.Scope();
 };
 
 /**
@@ -66,7 +66,7 @@ math.expr.Parser = function Parser() {
  * @throws {Error}
  */
 math.expr.Parser.prototype.parse = function (expr) {
-    return math.parse(expr, this.scope);
+  return math.parse(expr, this.scope);
 };
 
 /**
@@ -76,8 +76,8 @@ math.expr.Parser.prototype.parse = function (expr) {
  * @throws {Error}
  */
 math.expr.Parser.prototype.eval = function (expr) {
-    var node = math.parse(expr, this.scope);
-    return node.eval();
+  var node = math.parse(expr, this.scope);
+  return node.eval();
 };
 
 /**
@@ -87,7 +87,7 @@ math.expr.Parser.prototype.eval = function (expr) {
  * @return {* | undefined} value
  */
 math.expr.Parser.prototype.get = function (name) {
-    return this.scope.get(name);
+  return this.scope.get(name);
 };
 
 /**
@@ -96,7 +96,7 @@ math.expr.Parser.prototype.get = function (name) {
  * @param {* | undefined} value
  */
 math.expr.Parser.prototype.set = function (name, value) {
-    this.scope.set(name, value);
+  this.scope.set(name, value);
 };
 
 /**
@@ -104,12 +104,12 @@ math.expr.Parser.prototype.set = function (name, value) {
  * @param {String} name
  */
 math.expr.Parser.prototype.remove = function (name) {
-    this.scope.remove(name);
+  this.scope.remove(name);
 };
 
 /**
  * Clear the scope with variables and functions
  */
 math.expr.Parser.prototype.clear = function () {
-    this.scope.clear();
+  this.scope.clear();
 };
