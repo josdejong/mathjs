@@ -1,3 +1,10 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    string = require('../../util/string.js'),
+    Complex = require('../../type/Complex.js'),
+    Unit = require('../../type/Unit.js');
+
 /**
  * Check if value x unequals y, x != y
  * In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im
@@ -5,49 +12,48 @@
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix} res
  */
-math.unequal = function unequal(x, y) {
+module.exports = function unequal(x, y) {
   if (arguments.length != 2) {
-    throw newArgumentsError('unequal', arguments.length, 2);
+    throw new error.ArgumentsError('unequal', arguments.length, 2);
   }
 
-  if (isNumber(x)) {
-    if (isNumber(y)) {
+  if (number.isNumber(x)) {
+    if (number.isNumber(y)) {
       return x != y;
     }
-    else if (y instanceof Complex) {
+    else if (Complex.isComplex(y)) {
       return (x != y.re) || (y.im != 0);
     }
   }
 
-  if (x instanceof Complex) {
-    if (isNumber(y)) {
+  if (Complex.isComplex(x)) {
+    if (number.isNumber(y)) {
       return (x.re != y) || (x.im != 0);
     }
-    else if (y instanceof Complex) {
+    else if (Complex.isComplex(y)) {
       return (x.re != y.re) || (x.im != y.im);
     }
   }
 
-  if ((x instanceof Unit) && (y instanceof Unit)) {
+  if ((Unit.isUnit(x)) && (Unit.isUnit(y))) {
     if (!x.equalBase(y)) {
       throw new Error('Cannot compare units with different base');
     }
     return x.value != y.value;
   }
 
-  if (isString(x) || isString(y)) {
+  if (string.isString(x) || string.isString(y)) {
     return x != y;
   }
 
-  if (Array.isArray(x) || x instanceof Matrix ||
-      Array.isArray(y) || y instanceof Matrix) {
-    return util.map2(x, y, math.unequal);
+  if (collection.isCollection(x) || collection.isCollection(y)) {
+    return collection.map2(x, y, unequal);
   }
 
   if (x.valueOf() !== x || y.valueOf() !== y) {
     // fallback on the objects primitive values
-    return math.unequal(x.valueOf(), y.valueOf());
+    return unequal(x.valueOf(), y.valueOf());
   }
 
-  throw newUnsupportedTypeError('unequal', x, y);
+  throw new error.UnsupportedTypeError('unequal', x, y);
 };

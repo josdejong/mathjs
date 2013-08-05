@@ -1,3 +1,8 @@
+var error = require('../../util/error.js'),
+    collection = require('../../type/collection.js'),
+    array = require('../../util/array.js'),
+    Matrix = require('../../type/Matrix.js');
+
 /**
  * Compute the minimum value of a list of values
  *
@@ -7,18 +12,18 @@
  * @param {... *} args  A single matrix or multiple scalars
  * @return {*} res
  */
-math.min = function min(args) {
+module.exports = function min(args) {
   if (arguments.length == 0) {
     throw new Error('Function min requires one or more parameters (0 provided)');
   }
 
-  if (Array.isArray(args) || args instanceof Matrix || args instanceof Range) {
+  if (collection.isCollection(args)) {
     // min([a, b, c, d, ...]])
     if (arguments.length > 1) {
       throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
     }
 
-    var size = math.size(args).valueOf();
+    var size = array.size(args.valueOf());
 
     if (size.length == 1) {
       // vector
@@ -33,14 +38,13 @@ math.min = function min(args) {
       if (size[0] == 0 || size[1] == 0) {
         throw new Error('Cannot calculate min of an empty matrix');
       }
-      if (Array.isArray(args)) {
-        return _min2(args, size[0], size[1]);
-      }
-      else if (args instanceof Matrix || args instanceof Range) {
+
+      // TODO: make a generic collection method for this
+      if (Matrix.isMatrix(args)) {
         return new Matrix(_min2(args.valueOf(), size[0], size[1]));
       }
       else {
-        throw newUnsupportedTypeError('min', args);
+        return _min2(args, size[0], size[1]);
       }
     }
     else {
@@ -61,7 +65,6 @@ math.min = function min(args) {
  * @private
  */
 function _min(array) {
-  var smaller = math.smaller;
   var res = array[0];
   for (var i = 1, iMax = array.length; i < iMax; i++) {
     var value = array[i];
@@ -81,7 +84,6 @@ function _min(array) {
  * @private
  */
 function _min2(array, rows, cols) {
-  var smaller = math.smaller;
   var res = [];
   for (var c = 0; c < cols; c++) {
     var min = array[0][c];
@@ -95,3 +97,6 @@ function _min2(array, rows, cols) {
   }
   return res;
 }
+
+// require after module.exports because of possible circular references
+var smaller = require('../arithmetic/smaller.js');

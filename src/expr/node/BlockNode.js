@@ -1,3 +1,5 @@
+var Node = require('./Node.js');
+
 /**
  * @constructor BlockNode
  * Holds a set with nodes
@@ -9,8 +11,6 @@ function BlockNode() {
 }
 
 BlockNode.prototype = new Node();
-
-math.expr.node.BlockNode = BlockNode;
 
 /**
  * Add a parameter
@@ -81,3 +81,5 @@ BlockNode.prototype.toString = function() {
 
   return '[' + strings.join(',') + '\n]';
 };
+
+module.exports = BlockNode;

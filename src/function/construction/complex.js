@@ -1,3 +1,7 @@
+var error = require('../../util/error.js'),
+    string = require('../../util/string.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Create a complex value. Depending on the passed arguments, the function
  * will create and return a new math.type.Complex object.
@@ -20,7 +24,7 @@
  * @param {*} [args]
  * @return {Complex} value
  */
-math.complex = function complex(args) {
+module.exports = function complex(args) {
   switch (arguments.length) {
     case 0:
       // no parameters. Set re and im zero
@@ -30,11 +34,11 @@ math.complex = function complex(args) {
     case 1:
       // parse string into a complex number
       var arg = arguments[0];
-      if (arg instanceof Complex) {
+      if (Complex.isComplex(arg)) {
         // create a clone
         return arg.clone();
       }
-      else if (isString(arg)) {
+      else if (string.isString(arg)) {
         var c = Complex.parse(arg);
         if (c) {
           return c;
@@ -55,6 +59,6 @@ math.complex = function complex(args) {
       break;
 
     default:
-      throw newArgumentsError('complex', arguments.length, 0, 2);
+      throw new error.ArgumentsError('complex', arguments.length, 0, 2);
   }
 };

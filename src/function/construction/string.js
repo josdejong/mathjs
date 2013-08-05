@@ -1,9 +1,14 @@
+var error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    Matrix = require('../../type/Matrix.js'),
+    Range = require('../../type/Range.js');
+
 /**
  * Create a string or convert any object into a string
  * @param {*} [value]
  * @return {String} str
  */
-math.string = function (value) {
+module.exports = function string (value) {
   switch (arguments.length) {
     case 0:
       return '';
@@ -12,7 +17,7 @@ math.string = function (value) {
       return _toString(value);
 
     default:
-      throw newArgumentsError('string', arguments.length, 0, 1);
+      throw new error.ArgumentsError('string', arguments.length, 0, 1);
   }
 };
 
@@ -37,8 +42,8 @@ function _toString(value) {
     str += ']';
     return str;
   }
-  else if (isNumber(value)) {
-    return util.formatNumber(value); // no digits specified
+  else if (number.isNumber(value)) {
+    return number.format(value); // no digits specified
   }
   else {
     return value.toString();

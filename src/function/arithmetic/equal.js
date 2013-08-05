@@ -1,3 +1,10 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    string = require('../../util/string.js'),
+    Complex = require('../../type/Complex.js'),
+    Unit = require('../../type/Unit.js');
+
 /**
  * Check if value x equals y,
  *
@@ -11,42 +18,41 @@
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
  */
-math.equal = function equal(x, y) {
+module.exports = function equal(x, y) {
   if (arguments.length != 2) {
-    throw newArgumentsError('equal', arguments.length, 2);
+    throw new error.ArgumentsError('equal', arguments.length, 2);
   }
 
-  if (isNumber(x)) {
-    if (isNumber(y)) {
+  if (number.isNumber(x)) {
+    if (number.isNumber(y)) {
       return x == y;
     }
-    else if (y instanceof Complex) {
+    else if (Complex.isComplex(y)) {
       return (x == y.re) && (y.im == 0);
     }
   }
-  if (x instanceof Complex) {
-    if (isNumber(y)) {
+  if (Complex.isComplex(x)) {
+    if (number.isNumber(y)) {
       return (x.re == y) && (x.im == 0);
     }
-    else if (y instanceof Complex) {
+    else if (Complex.isComplex(y)) {
       return (x.re == y.re) && (x.im == y.im);
     }
   }
 
-  if ((x instanceof Unit) && (y instanceof Unit)) {
+  if ((Unit.isUnit(x)) && (Unit.isUnit(y))) {
     if (!x.equalBase(y)) {
       throw new Error('Cannot compare units with different base');
     }
     return x.value == y.value;
   }
 
-  if (isString(x) || isString(y)) {
+  if (string.isString(x) || string.isString(y)) {
     return x == y;
   }
 
-  if (Array.isArray(x) || x instanceof Matrix ||
-      Array.isArray(y) || y instanceof Matrix) {
-    return util.map2(x, y, math.equal);
+  if (collection.isCollection(x) || collection.isCollection(y)) {
+    return collection.map2(x, y, equal);
   }
 
   if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -54,5 +60,5 @@ math.equal = function equal(x, y) {
     return equal(x.valueOf(), y.valueOf());
   }
 
-  throw newUnsupportedTypeError('equal', x, y);
+  throw new error.UnsupportedTypeError('equal', x, y);
 };

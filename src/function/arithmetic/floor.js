@@ -1,3 +1,8 @@
+var error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    collection = require('../../type/collection.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Round a value towards minus infinity
  *
@@ -8,30 +13,30 @@
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-math.floor = function floor(x) {
+module.exports = function floor(x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('floor', arguments.length, 1);
+    throw new error.ArgumentsError('floor', arguments.length, 1);
   }
 
-  if (isNumber(x)) {
+  if (number.isNumber(x)) {
     return Math.floor(x);
   }
 
-  if (x instanceof Complex) {
+  if (Complex.isComplex(x)) {
     return Complex.create (
         Math.floor(x.re),
         Math.floor(x.im)
     );
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.floor);
+  if (collection.isCollection(x)) {
+    return collection.map(x, floor);
   }
 
   if (x.valueOf() !== x) {
     // fallback on the objects primitive value
-    return math.floor(x.valueOf());
+    return floor(x.valueOf());
   }
 
-  throw newUnsupportedTypeError('floor', x);
+  throw new error.UnsupportedTypeError('floor', x);
 };

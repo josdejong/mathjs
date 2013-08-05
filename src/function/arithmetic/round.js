@@ -1,3 +1,8 @@
+var error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    collection = require('../../type/collection.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Round a value towards the nearest integer
  *
@@ -10,38 +15,38 @@
  * @param {Number | Array} [n] number of decimals (by default n=0)
  * @return {Number | Complex | Array | Matrix} res
  */
-math.round = function round(x, n) {
+module.exports = function round(x, n) {
   if (arguments.length != 1 && arguments.length != 2) {
-    throw newArgumentsError('round', arguments.length, 1, 2);
+    throw new error.ArgumentsError('round', arguments.length, 1, 2);
   }
 
   if (n == undefined) {
     // round (x)
-    if (isNumber(x)) {
+    if (number.isNumber(x)) {
       return Math.round(x);
     }
 
-    if (x instanceof Complex) {
+    if (Complex.isComplex(x)) {
       return Complex.create (
           Math.round(x.re),
           Math.round(x.im)
       );
     }
 
-    if (Array.isArray(x) || x instanceof Matrix) {
-      return util.map(x, math.round);
+    if (collection.isCollection(x)) {
+      return collection.map(x, round);
     }
 
     if (x.valueOf() !== x) {
       // fallback on the objects primitive value
-      return math.round(x.valueOf());
+      return round(x.valueOf());
     }
 
-    throw newUnsupportedTypeError('round', x);
+    throw new error.UnsupportedTypeError('round', x);
   }
   else {
     // round (x, n)
-    if (!isNumber(n)) {
+    if (!number.isNumber(n)) {
       throw new TypeError('Number of decimals in function round must be an integer');
     }
     if (n !== Math.round(n)) {
@@ -51,28 +56,27 @@ math.round = function round(x, n) {
       throw new Error ('Number of decimals in function round must be in te range of 0-9');
     }
 
-    if (isNumber(x)) {
+    if (number.isNumber(x)) {
       return roundNumber(x, n);
     }
 
-    if (x instanceof Complex) {
+    if (Complex.isComplex(x)) {
       return Complex.create (
           roundNumber(x.re, n),
           roundNumber(x.im, n)
       );
     }
 
-    if (Array.isArray(x) || x instanceof Matrix ||
-        Array.isArray(n) || n instanceof Matrix) {
-      return util.map2(x, n, math.round);
+    if (collection.isCollection(x) || collection.isCollection(n)) {
+      return collection.map2(x, n, round);
     }
 
     if (x.valueOf() !== x || n.valueOf() !== n) {
       // fallback on the objects primitive values
-      return math.round(x.valueOf(), n.valueOf());
+      return round(x.valueOf(), n.valueOf());
     }
 
-    throw newUnsupportedTypeError('round', x, n);
+    throw new error.UnsupportedTypeError('round', x, n);
   }
 };
 

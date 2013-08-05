@@ -1,3 +1,8 @@
+var error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    collection = require('../../type/collection.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Round a value towards plus infinity
  *
@@ -8,30 +13,30 @@
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-math.ceil = function ceil(x) {
+module.exports = function ceil(x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('ceil', arguments.length, 1);
+    throw new error.ArgumentsError('ceil', arguments.length, 1);
   }
 
-  if (isNumber(x)) {
+  if (number.isNumber(x)) {
     return Math.ceil(x);
   }
 
-  if (x instanceof Complex) {
+  if (Complex.isComplex(x)) {
     return Complex.create (
         Math.ceil(x.re),
         Math.ceil(x.im)
     );
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.ceil);
+  if (collection.isCollection(x)) {
+    return collection.map(x, ceil);
   }
 
   if (x.valueOf() !== x) {
     // fallback on the objects primitive value
-    return math.ceil(x.valueOf());
+    return ceil(x.valueOf());
   }
 
-  throw newUnsupportedTypeError('ceil', x);
+  throw new error.UnsupportedTypeError('ceil', x);
 };

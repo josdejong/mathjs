@@ -1,3 +1,6 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js');
+
 /**
  * Calculates the power of x to y element wise
  *
@@ -8,10 +11,13 @@
  * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-math.epow = function epow(x, y) {
+module.exports = function epow(x, y) {
   if (arguments.length != 2) {
-    throw newArgumentsError('epow', arguments.length, 2);
+    throw new error.ArgumentsError('epow', arguments.length, 2);
   }
 
-  return util.deepMap2(x, y, math.pow);
+  return collection.deepMap2(x, y, pow);
 };
+
+// require after module.exports because of possible circular references
+var pow = require('./pow.js');

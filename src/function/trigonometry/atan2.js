@@ -1,3 +1,8 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Computes the principal value of the arc tangent of y/x in radians
  *
@@ -11,41 +16,40 @@
  *
  * @see http://mathworld.wolfram.com/InverseTangent.html
  */
-math.atan2 = function atan2(y, x) {
+module.exports = function atan2(y, x) {
   if (arguments.length != 2) {
-    throw newArgumentsError('atan2', arguments.length, 2);
+    throw new error.ArgumentsError('atan2', arguments.length, 2);
   }
 
-  if (isNumber(y)) {
-    if (isNumber(x)) {
+  if (number.isNumber(y)) {
+    if (number.isNumber(x)) {
       return Math.atan2(y, x);
     }
     /* TODO: support for complex computation of atan2
-     else if (x instanceof Complex) {
+     else if (Complex.isComplex(x)) {
      return Math.atan2(y.re, x.re);
      }
      */
   }
-  else if (y instanceof Complex) {
-    if (isNumber(x)) {
+  else if (Complex.isComplex(y)) {
+    if (number.isNumber(x)) {
       return Math.atan2(y.re, x);
     }
     /* TODO: support for complex computation of atan2
-     else if (x instanceof Complex) {
+     else if (Complex.isComplex(x)) {
      return Math.atan2(y.re, x.re);
      }
      */
   }
 
-  if (Array.isArray(y) || y instanceof Matrix ||
-      Array.isArray(x) || x instanceof Matrix) {
-    return util.map2(y, x, math.atan2);
+  if (collection.isCollection(y) || collection.isCollection(x)) {
+    return collection.map2(y, x, atan2);
   }
 
   if (x.valueOf() !== x || y.valueOf() !== y) {
     // fallback on the objects primitive values
-    return math.atan2(y.valueOf(), x.valueOf());
+    return atan2(y.valueOf(), x.valueOf());
   }
 
-  throw newUnsupportedTypeError('atan2', y, x);
+  throw new error.UnsupportedTypeError('atan2', y, x);
 };

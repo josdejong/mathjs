@@ -1,7 +1,7 @@
 // test floor
 var assert = require('assert'),
     approx = require('../../../tools/approx.js'),
-    math = require('../../../dist/math.js'),
+    math = require('../../../src/index.js'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,

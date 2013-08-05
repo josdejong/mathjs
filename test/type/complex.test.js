@@ -1,7 +1,7 @@
 // test data type Complex
 
 var assert = require('assert');
-var math = require('../../dist/math.js');
+var math = require('../../src/index.js');
 
 var complex1 = math.complex(3, -4);
 assert.equal(complex1.re, 3);

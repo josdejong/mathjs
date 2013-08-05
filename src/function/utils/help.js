@@ -1,10 +1,12 @@
+var Help = require('../../type/Help.js');
+
 /**
  * Retrieve help on a function or data type.
  * Help files are retrieved from the documentation in math.docs.
  * @param {function | string | Object} search
  * @return {Help} help
  */
-math.help = function help(search) {
+module.exports = function help(search) {
   if (arguments.length != 1) {
     throw new SyntaxError('Wrong number of arguments in function help ' +
         '(' + arguments.length + ' provided, 1 expected)');
@@ -50,3 +52,6 @@ math.help = function help(search) {
     return new Help(doc);
   }
 };
+
+// require after module.exports because of possible circular references
+var math = require('../../index.js');

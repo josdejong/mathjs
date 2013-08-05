@@ -1,3 +1,10 @@
+var collection = require('../../type/collection.js'),
+    parse = require('./parse.js'),
+    string = require('../../util/string.js'),
+    error = require('../../util/error.js'),
+    Matrix = require('../../type/Matrix.js'),
+    Scope = require('../../expr/Scope.js');
+
 /**
  * Evaluate an expression.
  *
@@ -19,38 +26,38 @@
  *     math.eval('a * b', scope);           // 12
  *
  * @param {String | String[] | Matrix} expr
- * @param {math.expr.Scope | Object} [scope]
+ * @param {Scope | Object} [scope]
  * @return {*} res
  * @throws {Error}
  */
-math.eval = function (expr, scope) {
+module.exports = function (expr, scope) {
   if (arguments.length != 1 && arguments.length != 2) {
-    throw newArgumentsError('eval', arguments.length, 1, 2);
+    throw new error.ArgumentsError('eval', arguments.length, 1, 2);
   }
 
   // instantiate a scope
   var evalScope;
   if (scope) {
-    if (scope instanceof math.expr.Scope) {
+    if (scope instanceof Scope) {
       evalScope = scope;
     }
     else {
-      evalScope = new math.expr.Scope(scope);
+      evalScope = new Scope(scope);
     }
   }
   else {
-    evalScope = new math.expr.Scope();
+    evalScope = new Scope();
   }
 
-  if (isString(expr)) {
+  if (string.isString(expr)) {
     // evaluate a single expression
-    var node = math.parse(expr, evalScope);
+    var node = parse(expr, evalScope);
     return node.eval();
   }
   else if (Array.isArray(expr) || expr instanceof Matrix) {
     // evaluate an array or matrix with expressions
-    return util.map(expr, function (elem) {
-      var node = math.parse(elem, evalScope);
+    return collection.map(expr, function (elem) {
+      var node = parse(elem, evalScope);
       return node.eval();
     });
   }

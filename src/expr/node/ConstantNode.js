@@ -1,3 +1,6 @@
+var Node = require('./Node.js'),
+    string = require('../../util/string.js');
+
 /**
  * @constructor ConstantNode
  * @param {*} value
@@ -8,8 +11,6 @@ function ConstantNode(value) {
 }
 
 ConstantNode.prototype = new Node();
-
-math.expr.node.ConstantNode = ConstantNode;
 
 /**
  * Evaluate the constant (just return it)
@@ -24,5 +25,7 @@ ConstantNode.prototype.eval = function () {
  * @return {String} str
  */
 ConstantNode.prototype.toString = function() {
-  return math.format(this.value);
+  return string.format(this.value);
 };
+
+module.exports = ConstantNode;

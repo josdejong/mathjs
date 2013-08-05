@@ -1,3 +1,9 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    Matrix = require('../../type/Matrix.js'),
+    abs = require('../arithmetic/abs.js');
+
 /**
  * Return a random number between 0 and 1
  *
@@ -43,21 +49,21 @@ var distributions = {
  *                                    randomInt([min, max])
  *                                    pickRandom(array)
  */
-math.distribution = function(name) {
+module.exports = function distribution(name) {
   if (!distributions.hasOwnProperty(name))
     throw new Error('unknown distribution ' + name);
 
   var args = Array.prototype.slice.call(arguments, 1),
-      distribution = distributions[name].apply(this, args);
+      dist = distributions[name].apply(this, args);
 
   // We wrap all the random functions into one object which uses the given distribution.
-  return (function(distribution) {
+  return (function(dist) {
 
     var randFunctions = {
 
       random: function(arg1, arg2, arg3) {
         if (arguments.length > 3)
-          throw newArgumentsError('random', arguments.length, 0, 3);
+          throw new error.ArgumentsError('random', arguments.length, 0, 3);
 
         // Random matrix
         else if (Array.isArray(arg1)) {
@@ -65,28 +71,29 @@ math.distribution = function(name) {
           if (max === undefined) max = 1;
           if (min === undefined) min = 0;
           return new Matrix(_randomDataForMatrix(arg1, min, max));
+          // TODO: return a matrix when input is a matrix, return an array when input is an array
 
           // Random float
         } else {
           // TODO: more precise error message?
           if (arguments.length > 2)
-            throw newArgumentsError('random', arguments.length, 0, 2);
+            throw new error.ArgumentsError('random', arguments.length, 0, 2);
           var min = arg1, max = arg2;
           if (max === undefined) max = 1;
           if (min === undefined) min = 0;
-          return min + distribution() * (max - min);
+          return min + dist() * (max - min);
         }
       },
 
       randomInt: function(min, max) {
         if (arguments.length > 2)
-          throw newArgumentsError('randomInt', arguments.length, 0, 2);
+          throw new error.ArgumentsError('randomInt', arguments.length, 0, 2);
         return Math.floor(this.random(min, max));
       },
 
       pickRandom: function(possibles) {
         if (arguments.length !== 1)
-          throw newArgumentsError('pickRandom', arguments.length, 1);
+          throw new error.ArgumentsError('pickRandom', arguments.length, 1);
         return possibles[Math.floor(Math.random() * possibles.length)];
       }
     };
@@ -108,13 +115,6 @@ math.distribution = function(name) {
 
     return randFunctions;
 
-  })(distribution);
+  })(dist);
 
 };
-
-// Default random functions use uniform distribution
-var uniformRandFunctions = math.distribution('uniform');
-math.random = uniformRandFunctions.random;
-math.randomInt = uniformRandFunctions.randomInt;
-math.pickRandom = uniformRandFunctions.pickRandom;
-math.randomMatrix = uniformRandFunctions.randomMatrix;

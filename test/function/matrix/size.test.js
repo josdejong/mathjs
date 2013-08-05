@@ -1,6 +1,6 @@
 // test size
 var assert = require('assert');
-var math = require('../../../dist/math.js');
+var math = require('../../../src/index.js');
 
 assert.deepEqual(math.size([[1,2,3],[4,5,6]]), [2,3]);
 assert.deepEqual(math.size([[[1,2],[3,4]],[[5,6],[7,8]]]), [2,2,2]);

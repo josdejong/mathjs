@@ -1,8 +1,10 @@
+var Node = require('./Node.js');
+
 /**
  * @constructor SymbolNode
  * A symbol node can hold and resolve a symbol
  * @param {String} name
- * @param {math.expr.Scope} scope
+ * @param {Scope} scope
  * @extends {Node}
  */
 function SymbolNode(name, scope) {
@@ -11,8 +13,6 @@ function SymbolNode(name, scope) {
 }
 
 SymbolNode.prototype = new Node();
-
-math.expr.node.SymbolNode = SymbolNode;
 
 /**
  * Evaluate the symbol. Throws an error when the symbol is undefined.
@@ -38,3 +38,5 @@ SymbolNode.prototype.eval = function() {
 SymbolNode.prototype.toString = function() {
   return this.name;
 };
+
+module.exports = SymbolNode;

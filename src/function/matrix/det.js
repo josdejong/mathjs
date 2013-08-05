@@ -1,3 +1,12 @@
+var error = require('../../util/error.js'),
+    collection = require('../../type/collection.js'),
+    number = require('../../util/number.js'),
+    string = require('../../util/string.js'),
+    array = require('../../util/array.js'),
+    object = require('../../util/object.js'),
+
+    Matrix = require('../../type/Matrix.js');
+
 /**
  * @constructor det
  * Calculate the determinant of a matrix
@@ -7,26 +16,26 @@
  * @param {Array | Matrix} x
  * @return {Number} determinant
  */
-math.det = function det (x) {
+module.exports = function det (x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('det', arguments.length, 1);
+    throw new error.ArgumentsError('det', arguments.length, 1);
   }
 
-  var size = math.size(x).valueOf();
+  var size = array.size(x.valueOf());
   switch (size.length) {
     case 0:
       // scalar
-      return math.clone(x);
+      return object.clone(x);
       break;
 
     case 1:
       // vector
       if (size[0] == 1) {
-        return math.clone(x.valueOf()[0]);
+        return object.clone(x.valueOf()[0]);
       }
       else {
         throw new RangeError('Matrix must be square ' +
-            '(size: ' + math.format(size) + ')');
+            '(size: ' + string.format(size) + ')');
       }
       break;
 
@@ -39,14 +48,14 @@ math.det = function det (x) {
       }
       else {
         throw new RangeError('Matrix must be square ' +
-            '(size: ' + math.format(size) + ')');
+            '(size: ' + string.format(size) + ')');
       }
       break;
 
     default:
       // multi dimensional array
       throw new RangeError('Matrix must be two dimensional ' +
-          '(size: ' + math.format(size) + ')');
+          '(size: ' + string.format(size) + ')');
   }
 };
 
@@ -59,9 +68,6 @@ math.det = function det (x) {
  * @private
  */
 function _det (matrix, rows, cols) {
-  var multiply = math.multiply,
-      subtract = math.subtract;
-
   if (rows == 1) {
     // this is a 1 x 1 matrix
     return matrix[0][0];
@@ -76,7 +82,7 @@ function _det (matrix, rows, cols) {
   }
   else {
     // this is an n x n matrix
-    var det = 1;
+    var d = 1;
     var lead = 0;
     for (var r = 0; r < rows; r++) {
       if (lead >= cols) {
@@ -91,8 +97,8 @@ function _det (matrix, rows, cols) {
           lead++;
           if (lead == cols) {
             // We found the last pivot.
-            if (util.deepEqual(matrix, math.eye(rows).valueOf())) {
-              return math.round(det, 6);
+            if (object.deepEqual(matrix, eye(rows).valueOf())) {
+              return round(d, 6);
             } else {
               return 0;
             }
@@ -106,14 +112,14 @@ function _det (matrix, rows, cols) {
           matrix[i][a] = matrix[r][a];
           matrix[r][a] = temp;
         }
-        det *= -1;
+        d *= -1;
       }
       // Scale row r and the determinant simultaneously.
       var div = matrix[r][lead];
       for (var a = 0; a < cols; a++) {
         matrix[r][a] = matrix[r][a] / div;
       }
-      det *= div;
+      d *= div;
       // Back-substitute upwards.
       for (var j = 0; j < rows; j++) {
         if (j != r) {
@@ -127,10 +133,17 @@ function _det (matrix, rows, cols) {
       lead++; // Now looking for a pivot further right.
     }
     // If reduction did not result in the identity, the matrix is singular.
-    if (util.deepEqual(matrix, math.eye(rows).valueOf())) {
-      return math.round(det, 6);
+    if (object.deepEqual(matrix, eye(rows).valueOf())) {
+      return round(d, 6);
     } else {
       return 0;
     }
   }
 }
+
+// require after module.exports because of possible circular references
+var round = require('../arithmetic/round.js'),
+    multiply = require('../arithmetic/multiply.js'),
+    subtract = require('../arithmetic/subtract.js'),
+    min = require('../statistics/min.js'),
+    eye = require('./eye.js');

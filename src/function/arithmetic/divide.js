@@ -1,3 +1,10 @@
+var error = require('../../util/error.js'),
+    collection = require('../../type/collection.js'),
+    number = require('../../util/number.js'),
+
+    Complex = require('../../type/Complex.js'),
+    Unit = require('../../type/Unit.js');
+
 /**
  * Divide two values.
  *
@@ -8,66 +15,66 @@
  * @param  {Number | Complex} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-math.divide = function divide(x, y) {
+module.exports = function divide(x, y) {
   if (arguments.length != 2) {
-    throw newArgumentsError('divide', arguments.length, 2);
+    throw new error.ArgumentsError('divide', arguments.length, 2);
   }
 
-  if (isNumber(x)) {
-    if (isNumber(y)) {
+  if (number.isNumber(x)) {
+    if (number.isNumber(y)) {
       // number / number
       return x / y;
     }
-    else if (y instanceof Complex) {
+    else if (Complex.isComplex(y)) {
       // number / complex
       return _divideComplex(new Complex(x, 0), y);
     }
   }
 
-  if (x instanceof Complex) {
-    if (isNumber(y)) {
+  if (Complex.isComplex(x)) {
+    if (number.isNumber(y)) {
       // complex / number
       return _divideComplex(x, new Complex(y, 0));
     }
-    else if (y instanceof Complex) {
+    else if (Complex.isComplex(y)) {
       // complex / complex
       return _divideComplex(x, y);
     }
   }
 
-  if (x instanceof Unit) {
-    if (isNumber(y)) {
+  if (Unit.isUnit(x)) {
+    if (number.isNumber(y)) {
       var res = x.clone();
       res.value /= y;
       return res;
     }
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    if (Array.isArray(y) || y instanceof Matrix) {
+  if (collection.isCollection(x)) {
+    if (collection.isCollection(y)) {
       // TODO: implement matrix right division using pseudo inverse
       // http://www.mathworks.nl/help/matlab/ref/mrdivide.html
       // http://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
       // http://stackoverflow.com/questions/12263932/how-does-gnu-octave-matrix-division-work-getting-unexpected-behaviour
-      return math.multiply(x, math.inv(y));
+      return multiply(x, inv(y));
     }
     else {
       // matrix / scalar
-      return util.map2(x, y, math.divide);
+      return collection.map2(x, y, divide);
     }
   }
 
-  if (Array.isArray(y) || y instanceof Matrix) {
+  if (collection.isCollection(y)) {
     // TODO: implement matrix right division using pseudo inverse
-    return math.multiply(x, math.inv(y));
+    return multiply(x, inv(y));
   }
 
   if (x.valueOf() !== x || y.valueOf() !== y) {
     // fallback on the objects primitive value
-    return math.divide(x.valueOf(), y.valueOf());
+    return divide(x.valueOf(), y.valueOf());
   }
 
-  throw newUnsupportedTypeError('divide', x, y);
+  throw new error.UnsupportedTypeError('divide', x, y);
 };
 
 /**
@@ -93,3 +100,7 @@ function _divideComplex (x, y) {
     );
   }
 }
+
+// require after module.exports because of possible circular references
+var multiply = require('./multiply.js'),
+    inv = require('../matrix/inv.js');

@@ -1,3 +1,9 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    Complex = require('../../type/Complex.js'),
+    Unit = require('../../type/Unit.js');
+
 /**
  * Calculate the cotangent of a value. cot(x) is defined as 1 / tan(x)
  *
@@ -8,16 +14,16 @@
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-math.cot = function cot(x) {
+module.exports = function cot(x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('cot', arguments.length, 1);
+    throw new error.ArgumentsError('cot', arguments.length, 1);
   }
 
-  if (isNumber(x)) {
+  if (number.isNumber(x)) {
     return 1 / Math.tan(x);
   }
 
-  if (x instanceof Complex) {
+  if (Complex.isComplex(x)) {
     var den = Math.exp(-4.0 * x.im) -
         2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) + 1.0;
 
@@ -27,21 +33,21 @@ math.cot = function cot(x) {
     );
   }
 
-  if (x instanceof Unit) {
+  if (Unit.isUnit(x)) {
     if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
       throw new TypeError ('Unit in function cot is no angle');
     }
     return 1 / Math.tan(x.value);
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.cot);
+  if (collection.isCollection(x)) {
+    return collection.map(x, cot);
   }
 
   if (x.valueOf() !== x) {
     // fallback on the objects primitive value
-    return math.cot(x.valueOf());
+    return cot(x.valueOf());
   }
 
-  throw newUnsupportedTypeError('cot', x);
+  throw new error.UnsupportedTypeError('cot', x);
 };

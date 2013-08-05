@@ -1,6 +1,6 @@
 // test import
 var assert = require('assert'),
-    math = require('../../../dist/math.js'),
+    math = require('../../../src/index.js'),
     approx = require('../../../tools/approx.js');
 
 math.import({

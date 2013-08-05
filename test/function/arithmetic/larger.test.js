@@ -1,6 +1,6 @@
 // test larger
 var assert = require('assert'),
-    math = require('../../../dist/math.js'),
+    math = require('../../../src/index.js'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,

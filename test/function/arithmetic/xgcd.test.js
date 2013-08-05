@@ -1,6 +1,6 @@
 // test xgcd
 var assert = require('assert');
-var math = require('../../../dist/math.js');
+var math = require('../../../src/index.js');
 
 // parser
 assert.deepEqual([1247, -7, 12], math.eval('xgcd(36163, 21199)'));

@@ -1,30 +1,31 @@
+var Unit = require('../type/Unit.js');
 
 /**
  * Scope
  * A scope stores values of symbols: variables and functions.
  *
  * Syntax:
- *     var scope = new math.expr.Scope();
- *     var scope = new math.expr.Scope(parentScope);
- *     var scope = new math.expr.Scope(symbols);
- *     var scope = new math.expr.Scope(parentScope, symbols);
+ *     var scope = new Scope();
+ *     var scope = new Scope(parentScope);
+ *     var scope = new Scope(symbols);
+ *     var scope = new Scope(parentScope, symbols);
  *
  * Where:
- *     {math.expr.Scope} parentScope    Scope will be linked to a parent scope,
+ *     {Scope} parentScope    Scope will be linked to a parent scope,
  *                                      which is traversed when resolving
  *                                      symbols.
  *     {Object} symbols                 A custom object that will be used to
  *                                      resolve and store variables.
  *
- * @constructor math.expr.Scope
+ * @constructor Scope
  * @param {...} [args]
  */
-math.expr.Scope = function Scope(args) {
-  /** @type {math.expr.Scope} */
+function Scope(args) {
+  /** @type {Scope} */
   this.parentScope = null;
   // TODO: rename parentScope to previousScope, add a nextScope, change Scope to a linked list node
 
-  /** @type {math.expr.Scope[]} */
+  /** @type {Scope[]} */
   this.subScopes = null;
   // TODO: rename subScopes to childScopes (or childNodes?)
 
@@ -38,7 +39,7 @@ math.expr.Scope = function Scope(args) {
   // read first argument (can be parentScope or symbols map)
   if (arguments.length > 0) {
     var arg0 = arguments[0];
-    if (arg0 instanceof math.expr.Scope) {
+    if (arg0 instanceof Scope) {
       this.parentScope = arg0;
     }
     else if (arg0 instanceof Object) {
@@ -53,16 +54,16 @@ math.expr.Scope = function Scope(args) {
       this.symbols = arg1;
     }
   }
-};
+}
 
-math.expr.Scope.prototype = {
+Scope.prototype = {
   /**
    * Create a sub scope
    * The variables in a sub scope are not accessible from the parent scope
-   * @return {math.expr.Scope} subScope
+   * @return {Scope} subScope
    */
   createSubScope: function () {
-    var subScope = new math.expr.Scope(this);
+    var subScope = new Scope(this);
     if (!this.subScopes) {
       this.subScopes = [];
     }
@@ -177,3 +178,8 @@ math.expr.Scope.prototype = {
     this.cache = {};
   }
 };
+
+module.exports = Scope;
+
+// load after module.exports because of circular reference
+var math = require('../index.js');

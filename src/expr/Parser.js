@@ -1,6 +1,8 @@
+var parse = require('../function/utils/parse.js'),
+    Scope = require('./Scope.js');
 
 /**
- * @constructor math.expr.Parser
+ * @constructor Parser
  * Parser contains methods to evaluate or parse expressions, and has a number
  * of convenience methods to get, set, and remove variables from memory. Parser
  * keeps a scope containing variables in memory, which is used for all
@@ -19,7 +21,7 @@
  *    var result = node.eval();          // evaluate a parsed node
  *
  * Example usage:
- *    var parser = new math.expr.Parser();
+ *    var parser = new Parser();
  *    // Note: there is a convenience method which can be used instead:
  *    // var parser = new math.parser();
  *
@@ -49,14 +51,14 @@
  *    // clear defined functions and variables
  *    parser.clear();
  */
-math.expr.Parser = function Parser() {
-  if (!(this instanceof math.expr.Parser)) {
+function Parser() {
+  if (!(this instanceof Parser)) {
     throw new SyntaxError(
         'Parser constructor must be called with the new operator');
   }
 
-  this.scope = new math.expr.Scope();
-};
+  this.scope = new Scope();
+}
 
 /**
  * Parse an expression end return the parsed function node.
@@ -65,8 +67,8 @@ math.expr.Parser = function Parser() {
  * @return {Node} node
  * @throws {Error}
  */
-math.expr.Parser.prototype.parse = function (expr) {
-  return math.parse(expr, this.scope);
+Parser.prototype.parse = function (expr) {
+  return parse(expr, this.scope);
 };
 
 /**
@@ -75,8 +77,8 @@ math.expr.Parser.prototype.parse = function (expr) {
  * @return {*} result     The result, or undefined when the expression was empty
  * @throws {Error}
  */
-math.expr.Parser.prototype.eval = function (expr) {
-  var node = math.parse(expr, this.scope);
+Parser.prototype.eval = function (expr) {
+  var node = parse(expr, this.scope);
   return node.eval();
 };
 
@@ -86,7 +88,7 @@ math.expr.Parser.prototype.eval = function (expr) {
  * @param {String} name
  * @return {* | undefined} value
  */
-math.expr.Parser.prototype.get = function (name) {
+Parser.prototype.get = function (name) {
   return this.scope.get(name);
 };
 
@@ -95,7 +97,7 @@ math.expr.Parser.prototype.get = function (name) {
  * @param {String} name
  * @param {* | undefined} value
  */
-math.expr.Parser.prototype.set = function (name, value) {
+Parser.prototype.set = function (name, value) {
   this.scope.set(name, value);
 };
 
@@ -103,13 +105,15 @@ math.expr.Parser.prototype.set = function (name, value) {
  * Remove a variable from the parsers scope
  * @param {String} name
  */
-math.expr.Parser.prototype.remove = function (name) {
+Parser.prototype.remove = function (name) {
   this.scope.remove(name);
 };
 
 /**
  * Clear the scope with variables and functions
  */
-math.expr.Parser.prototype.clear = function () {
+Parser.prototype.clear = function () {
   this.scope.clear();
 };
+
+module.exports = Parser;

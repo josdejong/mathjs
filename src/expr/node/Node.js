@@ -3,8 +3,6 @@
  */
 function Node() {}
 
-math.expr.node.Node = Node;
-
 /**
  * Evaluate the node
  * @return {*} result
@@ -69,3 +67,5 @@ Node.prototype.match = function (filter) {
 Node.prototype.toString = function() {
   return '';
 };
+
+module.exports = Node;

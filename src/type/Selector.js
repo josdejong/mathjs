@@ -1,3 +1,7 @@
+var string = require('../util/string.js'),
+    types = require('../util/types.js'),
+    subset = require('../function/matrix/subset.js'); // TODO: remove dependency on subset
+
 /**
  * @constructor math.type.Selector
  * Wrap any value in a Selector, allowing to perform chained operations on
@@ -20,21 +24,27 @@
  *
  * @param {*} [value]
  */
-math.type.Selector = function Selector (value) {
-  if (!(this instanceof math.type.Selector)) {
+function Selector (value) {
+  if (!(this instanceof Selector)) {
     throw new SyntaxError(
         'Selector constructor must be called with the new operator');
   }
 
-  if (value instanceof math.type.Selector) {
+  if (init) {
+    init();
+  }
+
+  if (value instanceof Selector) {
     this.value = value.value;
   }
   else {
     this.value = value;
   }
-};
+}
 
-math.type.Selector.prototype = {
+module.exports = Selector;
+
+Selector.prototype = {
   /**
    * Close the selector. Returns the final value.
    * Does the same as method valueOf()
@@ -54,7 +64,7 @@ math.type.Selector.prototype = {
       throw Error('Selector value is undefined');
     }
 
-    return new math.type.Selector(math.subset(value, index));
+    return new Selector(subset(value, index));
   },
 
   /**
@@ -67,7 +77,7 @@ math.type.Selector.prototype = {
       throw Error('Selector value is undefined');
     }
 
-    return new math.type.Selector(math.subset(value, index, replacement));
+    return new Selector(subset(value, index, replacement));
   },
 
   /**
@@ -84,7 +94,7 @@ math.type.Selector.prototype = {
    * @returns {String}
    */
   toString: function () {
-    return math.format(this.value);
+    return string.format(this.value);
   }
 };
 
@@ -93,8 +103,7 @@ math.type.Selector.prototype = {
  * @param {String} name
  * @param {*} value       The value or function to be proxied
  */
-function createSelectorProxy(name, value) {
-  var Selector = math.type.Selector;
+function createProxy(name, value) {
   var slice = Array.prototype.slice;
   if (typeof value === 'function') {
     // a function
@@ -108,3 +117,23 @@ function createSelectorProxy(name, value) {
     Selector.prototype[name] = new Selector(value);
   }
 }
+
+Selector.createProxy = exports.createProxy = createProxy;
+
+/**
+ * initialise the Chain prototype with all functions and constants in math
+ */
+function init () {
+  init = null; // delete, we are initialized
+
+  for (var prop in math) {
+    if (math.hasOwnProperty(prop) && prop) {
+      createProxy(prop, math[prop]);
+    }
+  }
+}
+
+types.addType('selector', Selector);
+
+// load after module.exports because of circular reference
+var math = require('../index.js');

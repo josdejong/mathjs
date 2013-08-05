@@ -1,3 +1,10 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    string = require('../../util/string.js'),
+    array = require('../../util/array.js'),
+    Matrix = require('../../type/Matrix.js'),
+    Range = require('../../type/Range.js');
+
 /**
  * Get or set a subset of a matrix or string
  *
@@ -13,7 +20,7 @@
  * @param args
  * @return res
  */
-math.subset = function subset (args) {
+module.exports = function subset (args) {
   switch (arguments.length) {
     case 2: // get subset
       return _getSubset(arguments[0], arguments[1]);
@@ -22,7 +29,7 @@ math.subset = function subset (args) {
       return _setSubset(arguments[0], arguments[1], arguments[2]);
 
     default: // wrong number of arguments
-      throw newArgumentsError('subset', arguments.length, 2, 3);
+      throw new error.ArgumentsError('subset', arguments.length, 2, 3);
   }
 };
 
@@ -38,23 +45,23 @@ math.subset = function subset (args) {
  * @private
  */
 function _getSubset(value, index) {
-  var matrix, subset;
+  var m, subset;
 
   if (Array.isArray(value) || value instanceof Range) {
-    matrix = math.matrix(value);
-    subset = matrix.get(index);
+    m = matrix(value);
+    subset = m.get(index);
     return subset.valueOf();
   }
   else if (value instanceof Matrix) {
     return value.get(index);
   }
-  else if (isString(value)) {
+  else if (string.isString(value)) {
     return _getSubstring(value, index);
   }
   else {
     // scalar
-    matrix = math.matrix([value]);
-    subset = matrix.get(index);
+    m = matrix([value]);
+    subset = m.get(index);
     return subset.valueOf();
   }
 }
@@ -89,7 +96,7 @@ function _getSubstring(str, index) {
   var strLen = str.length;
   for (i = 0, len = index.length; i < len; i++) {
     var index_i = index[i];
-    util.validateIndex(index_i, strLen);
+    array.validateIndex(index_i, strLen);
     substr += str.charAt(index_i);  // index_i is zero based
   }
 
@@ -110,28 +117,28 @@ function _getSubstring(str, index) {
  */
 function _setSubset(value, index, replacement) {
   if (Array.isArray(value) || value instanceof Range) {
-    var matrix = math.matrix(math.clone(value));
-    matrix.set(index, replacement);
-    return matrix.valueOf();
+    var m = matrix(clone(value));
+    m.set(index, replacement);
+    return m.valueOf();
   }
   else if (value instanceof Matrix) {
     return value.clone().set(index, replacement);
   }
-  else if (isString(value)) {
+  else if (string.isString(value)) {
     return _setSubstring(value, index, replacement);
   }
   else {
     // scalar
-    matrix = math.matrix([value]);
-    matrix.set(index, replacement);
+    m = matrix([value]);
+    m.set(index, replacement);
 
-    if (matrix.isScalar()) {
+    if (m.isScalar()) {
       // still a scalar
-      return matrix.toScalar();
+      return m.toScalar();
     }
     else {
       // changed into a matrix. return array
-      return matrix.valueOf();
+      return m.valueOf();
     }
   }
 }
@@ -177,7 +184,7 @@ function _setSubstring(str, index, replacement) {
 
   for (i = 0, len = index.length; i < len; i++) {
     var index_i = index[i];
-    util.validateIndex(index_i);
+    array.validateIndex(index_i);
     chars[index_i] = replacement.charAt(i); // index_i is zero based
   }
 
@@ -192,3 +199,8 @@ function _setSubstring(str, index, replacement) {
 
   return chars.join('');
 }
+
+
+// require after module.exports because of possible circular references
+var matrix = require('../../function/construction/matrix.js'),
+    clone = require('../../function/utils/clone.js');

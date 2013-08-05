@@ -1,3 +1,7 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js');
+
 /**
  * Calculates the modulus, the remainder of an integer division.
  *
@@ -6,35 +10,34 @@
  *
  * For matrices, the function is evaluated element wise.
  *
- * @param  {Number | Complex | Array | Matrix} x
- * @param  {Number | Complex | Array | Matrix} y
+ * @param  {Number | Array | Matrix} x
+ * @param  {Number | Array | Matrix} y
  * @return {Number | Array | Matrix} res
  */
-math.mod = function mod(x, y) {
+module.exports = function mod(x, y) {
   if (arguments.length != 2) {
-    throw newArgumentsError('mod', arguments.length, 2);
+    throw new error.ArgumentsError('mod', arguments.length, 2);
   }
 
   // see http://functions.wolfram.com/IntegerFunctions/Mod/
 
-  if (isNumber(x) && isNumber(y)) {
+  if (number.isNumber(x) && number.isNumber(y)) {
     // number % number
     return _mod(x, y);
   }
 
   // TODO: implement mod for complex values
 
-  if (Array.isArray(x) || x instanceof Matrix ||
-      Array.isArray(y) || y instanceof Matrix) {
-    return util.map2(x, y, math.mod);
+  if (collection.isCollection(x) || collection.isCollection(y)) {
+    return collection.map2(x, y, mod);
   }
 
   if (x.valueOf() !== x || y.valueOf() !== y) {
     // fallback on the objects primitive values
-    return math.mod(x.valueOf(), y.valueOf());
+    return mod(x.valueOf(), y.valueOf());
   }
 
-  throw newUnsupportedTypeError('mod', x, y);
+  throw new error.UnsupportedTypeError('mod', x, y);
 };
 
 /**

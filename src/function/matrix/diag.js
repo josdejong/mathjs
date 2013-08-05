@@ -1,3 +1,10 @@
+var error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    object = require('../../util/object.js'),
+
+    Range = require('../../type/Range.js'),
+    Matrix = require('../../type/Matrix.js');
+
 /**
  * Create a diagonal matrix or retrieve the diagonal of a matrix
  *
@@ -12,15 +19,15 @@
  * @param {Number} [k]
  * @return {Matrix} matrix
  */
-math.diag = function diag (x, k) {
+module.exports = function diag (x, k) {
   var data, vector, i, iMax;
 
   if (arguments.length != 1 && arguments.length != 2) {
-    throw newArgumentsError('diag', arguments.length, 1, 2);
+    throw new error.ArgumentsError('diag', arguments.length, 1, 2);
   }
 
   if (k) {
-    if (!isNumber(k) || !isInteger(k)) {
+    if (!number.isNumber(k) || !number.isInteger(k)) {
       throw new TypeError ('Second parameter in function diag must be an integer');
     }
   }
@@ -54,7 +61,7 @@ math.diag = function diag (x, k) {
       data = matrix.valueOf();
       iMax = vector.length;
       for (i = 0; i < iMax; i++) {
-        data[i + kSub][i + kSuper] = math.clone(vector[i]);
+        data[i + kSub][i + kSuper] = object.clone(vector[i]);
       }
       return matrix;
       break;
@@ -65,7 +72,7 @@ math.diag = function diag (x, k) {
       data = x.valueOf();
       iMax = Math.min(s[0] - kSub, s[1] - kSuper);
       for (i = 0; i < iMax; i++) {
-        vector[i] = math.clone(data[i + kSub][i + kSuper]);
+        vector[i] = object.clone(data[i + kSub][i + kSuper]);
       }
       return new Matrix(vector);
       break;

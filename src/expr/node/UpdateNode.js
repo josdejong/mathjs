@@ -1,3 +1,7 @@
+var Node = require('./Node.js'),
+    SymbolNode = require('./SymbolNode.js'),
+    subset = require('../../function/matrix/subset.js'); // TODO: remove dependency on subset?
+
 /**
  * @constructor UpdateNode
  * Update a symbol value, like a(2,3) = 4.5
@@ -7,7 +11,7 @@
  * @param {Scope[]}  paramScopes        A scope for every parameter, where the
  *                                      index variable 'end' can be defined.
  * @param {Node} expr                   The expression defining the symbol
- * @param {math.expr.Scope} scope       Scope to store the result
+ * @param {Scope} scope                 Scope to store the result
  */
 function UpdateNode(name, params, paramScopes, expr, scope) {
   this.name = name;
@@ -19,7 +23,7 @@ function UpdateNode(name, params, paramScopes, expr, scope) {
   // check whether any of the params expressions uses the context symbol 'end'
   this.hasContextParams = false;
   var filter = {
-    type: math.type.SymbolNode,
+    type: SymbolNode,
     properties: {
       name: 'end'
     }
@@ -33,8 +37,6 @@ function UpdateNode(name, params, paramScopes, expr, scope) {
 }
 
 UpdateNode.prototype = new Node();
-
-math.expr.node.UpdateNode = UpdateNode;
 
 /**
  * Evaluate the assignment
@@ -87,7 +89,7 @@ UpdateNode.prototype.eval = function() {
   var exprResult = this.expr.eval();
 
   // replace subset
-  result = math.subset(prevResult, paramResults, exprResult);
+  result = subset(prevResult, paramResults, exprResult);
 
   this.scope.set(this.name, result);
 
@@ -139,3 +141,5 @@ UpdateNode.prototype.toString = function() {
 
   return str;
 };
+
+module.exports = UpdateNode;

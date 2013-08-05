@@ -1,3 +1,8 @@
+var number = require('./../util/number.js'),
+    types = require('./../util/types.js'),
+    string = require('./../util/string.js'),
+    array = require('./../util/array.js');
+
 /**
  * @constructor Range
  * Create a range. A range works similar to an Array, with functions like
@@ -33,13 +38,13 @@ function Range(start, step, end) {
         'Range constructor must be called with the new operator');
   }
 
-  if (start != null && !isNumber(start)) {
+  if (start != null && !number.isNumber(start)) {
     throw new TypeError('Parameter start must be a number');
   }
-  if (end != null && !isNumber(end)) {
+  if (end != null && !number.isNumber(end)) {
     throw new TypeError('Parameter end must be a number');
   }
-  if (step != null && !isNumber(step)) {
+  if (step != null && !number.isNumber(step)) {
     throw new TypeError('Parameter step must be a number');
   }
 
@@ -48,7 +53,7 @@ function Range(start, step, end) {
   this.step  = (step != null) ? step : 1;
 }
 
-math.type.Range = Range;
+module.exports = Range;
 
 /**
  * Parse a string into a range,
@@ -58,8 +63,8 @@ math.type.Range = Range;
  * @param {String} str
  * @return {Range | null} range
  */
-Range.parse = function (str) {
-  if (!isString(str)) {
+Range.parse = exports.parse = function parse (str) {
+  if (!string.isString(str)) {
     return null;
   }
 
@@ -91,6 +96,15 @@ Range.prototype.clone = function () {
 };
 
 /**
+ * Test whether an object is a Range
+ * @param {*} object
+ * @return {Boolean} isRange
+ */
+Range.isRange = exports.isRange = function isRange(object) {
+  return (object instanceof Range);
+};
+
+/**
  * Retrieve the size of the range.
  * @returns {Number[]} size
  */
@@ -101,7 +115,7 @@ Range.prototype.size = function () {
       end = Number(this.end),
       diff = end - start;
 
-  if (math.sign(step) == math.sign(diff)) {
+  if (number.sign(step) == number.sign(diff)) {
     len = Math.floor((diff) / step) + 1;
   }
   else if (diff == 0) {
@@ -159,14 +173,6 @@ Range.prototype.map = function (callback) {
 };
 
 /**
- * Create a Matrix with a copy of the Ranges data
- * @return {Matrix} matrix
- */
-Range.prototype.toMatrix = function () {
-  return new Matrix(this.toArray());
-};
-
-/**
  * Create an Array with a copy of the Ranges data
  * @returns {Array} array
  */
@@ -180,8 +186,7 @@ Range.prototype.toArray = function () {
 
 /**
  * Create an array with a copy of the Ranges data.
- * This method is equal to Range.toArray, and is available for compatibility
- * with Matrix.
+ * This method is equal to Range.toArray.
  * @return {Array} vector
  */
 Range.prototype.toVector = Range.prototype.toArray;
@@ -231,10 +236,12 @@ Range.prototype.valueOf = function () {
  * @returns {String} str
  */
 Range.prototype.toString = function () {
-  var str = math.format(Number(this.start));
+  var str = number.format(Number(this.start));
   if (this.step != 1) {
-    str += ':' + math.format(Number(this.step));
+    str += ':' + number.format(Number(this.step));
   }
-  str += ':' + math.format(Number(this.end));
+  str += ':' + number.format(Number(this.end));
   return str;
 };
+
+types.addType('range', Range);

@@ -1,3 +1,5 @@
+var Selector = require('../../type/Selector.js');
+
 /**
  * Wrap any value in a Selector, allowing to perform chained operations on
  * the value.
@@ -30,8 +32,8 @@
  *              Matrix or Array.
  *
  * @param {*} value
- * @return {math.type.Selector} selector
+ * @return {Selector} selector
  */
-math.select = function select(value) {
-  return new math.type.Selector(value);
+module.exports = function select(value) {
+  return new Selector(value);
 };

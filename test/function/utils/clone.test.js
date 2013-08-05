@@ -1,6 +1,6 @@
 // test clone
 var assert = require('assert');
-var math = require('../../../dist/math.js');
+var math = require('../../../src/index.js');
 
 var a = 1;
 var b = math.clone(a);

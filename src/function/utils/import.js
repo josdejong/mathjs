@@ -1,3 +1,13 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    string = require('../../util/string.js'),
+    _object = require('../../util/object.js'),
+    Matrix = require('../../type/Matrix.js'),
+    Complex = require('../../type/Complex.js'),
+    Selector = require('../../type/Selector.js'),
+    Unit = require('../../type/Unit.js');
+
 /**
  * Import functions from an object or a file
  * @param {function | String | Object} object
@@ -15,22 +25,22 @@
  *                                      support the math.js data types.
  */
 // TODO: return status information
-math['import'] = function math_import(object, options) {
+module.exports = function math_import(object, options) {
   var name;
   var opts = {
     override: false,
     wrap: true
   };
   if (options && options instanceof Object) {
-    util.extend(opts, options);
+    _object.extend(opts, options);
   }
 
-  if (isString(object)) {
+  if (string.isString(object)) {
     // a string with a filename
     if (typeof (require) !== 'undefined') {
       // load the file using require
       var _module = require(object);
-      math['import'](_module);
+      math_import(_module);
     }
     else {
       throw new Error('Cannot load file: require not available.');
@@ -57,7 +67,7 @@ math['import'] = function math_import(object, options) {
           _import(name, value, opts);
         }
         else {
-          math['import'](value);
+          math_import(value);
         }
       }
     }
@@ -90,7 +100,7 @@ function _import(name, value, options) {
     }
 
     // create a proxy for the Selector
-    createSelectorProxy(name, value);
+    Selector.createProxy(name, value);
   }
 
 }
@@ -103,7 +113,10 @@ function _import(name, value, options) {
  */
 function isSupportedType(object) {
   return (typeof object == 'function') ||
-      isNumber(object) || isString(object) ||
-      (object instanceof Complex) || (object instanceof Unit);
+      number.isNumber(object) || string.isString(object) ||
+      Complex.isComplex(object) || Unit.isUnit(object);
   // TODO: add boolean?
 }
+
+// require after module.exports because of possible circular references
+var math = require('../../index.js');

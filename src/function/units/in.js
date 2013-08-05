@@ -1,3 +1,8 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    string = require('../../util/string.js'),
+    Unit = require('../../type/Unit.js');
+
 /**
  * Change the unit of a value.
  *
@@ -10,28 +15,27 @@
  * @param {Unit | Array | Matrix} unit
  * @return {Unit | Array | Matrix} res
  */
-math['in'] = function unit_in(x, unit) {
+module.exports = function unit_in(x, unit) {
   if (arguments.length != 2) {
-    throw newArgumentsError('in', arguments.length, 2);
+    throw new error.ArgumentsError('in', arguments.length, 2);
   }
 
-  if (x instanceof Unit) {
-    if (unit instanceof Unit || isString(unit)) {
+  if (Unit.isUnit(x)) {
+    if (Unit.isUnit(unit) || string.isString(unit)) {
       return x['in'](unit);
     }
   }
 
   // TODO: add support for string, in that case, convert to unit
 
-  if (Array.isArray(x) || x instanceof Matrix ||
-      Array.isArray(unit) || unit instanceof Matrix) {
-    return util.map2(x, unit, math['in']);
+  if (collection.isCollection(x) || collection.isCollection(unit)) {
+    return collection.map2(x, unit, unit_in);
   }
 
   if (x.valueOf() !== x || unit.valueOf() !== unit) {
     // fallback on the objects primitive value
-    return math['in'](x.valueOf(), unit.valueOf());
+    return unit_in(x.valueOf(), unit.valueOf());
   }
 
-  throw newUnsupportedTypeError('in', x, unit);
+  throw new error.UnsupportedTypeError('in', x, unit);
 };

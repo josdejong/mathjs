@@ -1,3 +1,10 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    Complex = require('../../type/Complex.js'),
+    Unit = require('../../type/Unit.js'),
+    Matrix = require('../../type/Matrix.js');
+
 /**
  * Inverse the sign of a value.
  *
@@ -9,39 +16,34 @@
  * @param  {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-math.unary = function unary(x) {
+module.exports = function unary(x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('unary', arguments.length, 1);
+    throw new error.ArgumentsError('unary', arguments.length, 1);
   }
 
-  if (isNumber(x)) {
+  if (number.isNumber(x)) {
     return -x;
   }
-  else if (x instanceof Complex) {
+  else if (Complex.isComplex(x)) {
     return Complex.create(
         -x.re,
         -x.im
     );
   }
-  else if (x instanceof Unit) {
+  else if (Unit.isUnit(x)) {
     var res = x.clone();
     res.value = -x.value;
     return res;
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.unary);
+  if (collection.isCollection(x)) {
+    return collection.map(x, unary);
   }
 
   if (x.valueOf() !== x) {
     // fallback on the objects primitive value
-    return math.unary(x.valueOf());
+    return unary(x.valueOf());
   }
 
-  throw newUnsupportedTypeError('unary', x);
-};
-
-// TODO: deprecated since version  0.10.0, cleanup some day
-math.unaryminus = function unaryminus(x) {
-  throw new Error('Function unaryminus is deprecated, use unary instead');
+  throw new error.UnsupportedTypeError('unary', x);
 };

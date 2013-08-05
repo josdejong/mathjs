@@ -1,3 +1,9 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    Complex = require('../../type/Complex.js'),
+    Matrix = require('../../type/Matrix.js');
+
 /**
  * Compute the sign of a value.
  *
@@ -9,38 +15,28 @@
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-math.sign = function sign(x) {
+module.exports = function sign(x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('sign', arguments.length, 1);
+    throw new error.ArgumentsError('sign', arguments.length, 1);
   }
 
-  if (isNumber(x)) {
-    var sign;
-    if (x > 0) {
-      sign = 1;
-    }
-    else if (x < 0) {
-      sign = -1;
-    }
-    else {
-      sign = 0;
-    }
-    return sign;
+  if (number.isNumber(x)) {
+    return number.sign(x);
   }
 
-  if (x instanceof Complex) {
+  if (Complex.isComplex(x)) {
     var abs = Math.sqrt(x.re * x.re + x.im * x.im);
     return Complex.create(x.re / abs, x.im / abs);
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.sign);
+  if (collection.isCollection(x)) {
+    return collection.map(x, sign);
   }
 
   if (x.valueOf() !== x) {
     // fallback on the objects primitive value
-    return math.sign(x.valueOf());
+    return sign(x.valueOf());
   }
 
-  throw newUnsupportedTypeError('sign', x);
+  throw new error.UnsupportedTypeError('sign', x);
 };

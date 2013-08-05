@@ -1,3 +1,8 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Calculate the square root of a value
  *
@@ -8,21 +13,21 @@
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-math.sqrt = function sqrt (x) {
+module.exports = function sqrt (x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('sqrt', arguments.length, 1);
+    throw new error.ArgumentsError('sqrt', arguments.length, 1);
   }
 
-  if (isNumber(x)) {
+  if (number.isNumber(x)) {
     if (x >= 0) {
       return Math.sqrt(x);
     }
     else {
-      return math.sqrt(new Complex(x, 0));
+      return sqrt(new Complex(x, 0));
     }
   }
 
-  if (x instanceof Complex) {
+  if (Complex.isComplex(x)) {
     var r = Math.sqrt(x.re * x.re + x.im * x.im);
     if (x.im >= 0) {
       return Complex.create(
@@ -38,14 +43,14 @@ math.sqrt = function sqrt (x) {
     }
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.sqrt);
+  if (collection.isCollection(x)) {
+    return collection.map(x, sqrt);
   }
 
   if (x.valueOf() !== x) {
     // fallback on the objects primitive value
-    return math.sqrt(x.valueOf());
+    return sqrt(x.valueOf());
   }
 
-  throw newUnsupportedTypeError('sqrt', x);
+  throw new error.UnsupportedTypeError('sqrt', x);
 };

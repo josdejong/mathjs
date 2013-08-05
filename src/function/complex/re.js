@@ -1,3 +1,9 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    object = require('../../util/object.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Get the real part of a complex number.
  *
@@ -8,28 +14,28 @@
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} re
  */
-math.re = function re(x) {
+module.exports = function re(x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('re', arguments.length, 1);
+    throw new error.ArgumentsError('re', arguments.length, 1);
   }
 
-  if (isNumber(x)) {
+  if (number.isNumber(x)) {
     return x;
   }
 
-  if (x instanceof Complex) {
+  if (Complex.isComplex(x)) {
     return x.re;
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.re);
+  if (collection.isCollection(x)) {
+    return collection.map(x, re);
   }
 
   if (x.valueOf() !== x) {
     // fallback on the objects primitive value
-    return math.re(x.valueOf());
+    return re(x.valueOf());
   }
 
   // return a clone of the value itself for all non-complex values
-  return math.clone(x);
+  return object.clone(x);
 };

@@ -1,3 +1,6 @@
+var error = require('../../util/error.js'),
+    number = require('../../util/number.js');
+
 /**
  * Calculate the extended greatest common divisor for two values.
  *
@@ -10,11 +13,11 @@
  *
  * @see http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
  */
-math.xgcd = function xgcd(a, b) {
+module.exports = function xgcd(a, b) {
   if (arguments.length == 2) {
     // two arguments
-    if (isNumber(a) && isNumber(b)) {
-      if (!isInteger(a) || !isInteger(b)) {
+    if (number.isNumber(a) && number.isNumber(b)) {
+      if (!number.isInteger(a) || !number.isInteger(b)) {
         throw new Error('Parameters in function xgcd must be integer numbers');
       }
 
@@ -30,7 +33,7 @@ math.xgcd = function xgcd(a, b) {
       return [div, y, x - y * Math.floor(a / b)];
     }
 
-    throw newUnsupportedTypeError('xgcd', a, b);
+    throw new error.UnsupportedTypeError('xgcd', a, b);
   }
 
   // zero or one argument

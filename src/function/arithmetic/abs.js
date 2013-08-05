@@ -1,3 +1,8 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Calculate the absolute value of a value.
  *
@@ -8,27 +13,27 @@
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-math.abs = function abs(x) {
+module.exports = function abs(x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('abs', arguments.length, 1);
+    throw new error.ArgumentsError('abs', arguments.length, 1);
   }
 
-  if (isNumber(x)) {
+  if (number.isNumber(x)) {
     return Math.abs(x);
   }
 
-  if (x instanceof Complex) {
+  if (Complex.isComplex(x)) {
     return Math.sqrt(x.re * x.re + x.im * x.im);
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.abs);
+  if (collection.isCollection(x)) {
+    return collection.map(x, abs);
   }
 
   if (x.valueOf() !== x) {
     // fallback on the objects primitive value
-    return math.abs(x.valueOf());
+    return abs(x.valueOf());
   }
 
-  throw newUnsupportedTypeError('abs', x);
+  throw new error.UnsupportedTypeError('abs', x);
 };

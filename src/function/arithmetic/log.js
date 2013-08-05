@@ -1,3 +1,8 @@
+var error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    collection = require('../../type/collection.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Calculate the logarithm of a value
  *
@@ -11,42 +16,45 @@
  * @param {Number | Complex} [base]
  * @return {Number | Complex | Array | Matrix} res
  */
-math.log = function log(x, base) {
+module.exports = function log(x, base) {
   if (arguments.length == 1) {
     // calculate natural logarithm, log(x)
-    if (isNumber(x)) {
+    if (number.isNumber(x)) {
       if (x >= 0) {
         return Math.log(x);
       }
       else {
         // negative value -> complex value computation
-        return math.log(new Complex(x, 0));
+        return log(new Complex(x, 0));
       }
     }
 
-    if (x instanceof Complex) {
+    if (Complex.isComplex(x)) {
       return Complex.create (
           Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
           Math.atan2(x.im, x.re)
       );
     }
 
-    if (Array.isArray(x) || x instanceof Matrix) {
-      return util.map(x, math.log);
+    if (collection.isCollection(x)) {
+      return collection.map(x, log);
     }
 
     if (x.valueOf() !== x) {
       // fallback on the objects primitive values
-      return math.log(x.valueOf());
+      return log(x.valueOf());
     }
 
-    throw newUnsupportedTypeError('log', x);
+    throw new error.UnsupportedTypeError('log', x);
   }
   else if (arguments.length == 2) {
     // calculate logarithm for a specified base, log(x, base)
-    return math.divide(math.log(x), math.log(base));
+    return divide(log(x), log(base));
   }
   else {
-    throw newArgumentsError('log', arguments.length, 1, 2);
+    throw new error.ArgumentsError('log', arguments.length, 1, 2);
   }
 };
+
+// require after module.exports because of possible circular references
+var divide = require('./divide.js');

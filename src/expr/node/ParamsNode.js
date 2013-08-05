@@ -1,3 +1,7 @@
+var Node = require('./Node.js'),
+    SymbolNode = require('./SymbolNode.js'),
+    subset = require('../../function/matrix/subset.js');// TODO: remove dependency on subset?
+
 /**
  * @constructor ParamsNode
  * invoke a list with parameters on the results of a node
@@ -15,7 +19,7 @@ function ParamsNode (object, params, paramScopes) {
   this.hasContextParams = false;
   if (params) {
     var filter = {
-      type: math.type.SymbolNode,
+      type: SymbolNode,
       properties: {
         name: 'end'
       }
@@ -31,8 +35,6 @@ function ParamsNode (object, params, paramScopes) {
 }
 
 ParamsNode.prototype = new Node();
-
-math.expr.node.ParamsNode = ParamsNode;
 
 /**
  * Evaluate the parameters
@@ -85,7 +87,7 @@ ParamsNode.prototype.eval = function() {
   }
   else {
     // get a subset of the object
-    return math.subset(obj, results);
+    return subset(obj, results);
   }
 };
 
@@ -130,3 +132,5 @@ ParamsNode.prototype.toString = function() {
   }
   return str;
 };
+
+module.exports = ParamsNode;

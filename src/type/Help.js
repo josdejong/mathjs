@@ -1,3 +1,7 @@
+var object = require('../util/object.js'),
+    types = require('../util/types.js'),
+    string = require('../util/string.js'),
+    parser = require('../function/construction/parser.js');// TODO: remove dependency on parser
 
 /**
  * Documentation object
@@ -11,11 +15,20 @@
  */
 function Help (doc) {
   if (doc) {
-    util.extend(this, doc);
+    object.extend(this, doc);
   }
 }
 
-math.type.Help = Help;
+module.exports = Help;
+
+/**
+ * Test whether a value is an instance of Help
+ * @param {*} value
+ * @return {Boolean} isHelp
+ */
+Help.isHelp = exports.isHelp = function isHelp (value) {
+  return (value instanceof Help);
+};
 
 /**
  * Generate readable description from a Help object
@@ -35,7 +48,7 @@ Help.prototype.toString = function () {
     desc += 'Syntax:\n    ' + this.syntax.join('\n    ') + '\n\n';
   }
   if (this.examples) {
-    var parser = math.parser();
+    var parser = parser();
     desc += 'Examples:\n';
     for (var i = 0; i < this.examples.length; i++) {
       var expr = this.examples[i];
@@ -48,7 +61,7 @@ Help.prototype.toString = function () {
       }
       desc += '    ' + expr + '\n';
       if (res && !(res instanceof Help)) {
-        desc += '        ' + math.format(res) + '\n';
+        desc += '        ' + string.format(res) + '\n';
       }
     }
     desc += '\n';
@@ -56,7 +69,6 @@ Help.prototype.toString = function () {
   if (this.seealso) {
     desc += 'See also: ' + this.seealso.join(', ') + '\n';
   }
-
 
   return desc;
 };
@@ -67,5 +79,7 @@ Help.prototype.toString = function () {
  * Export the help object to JSON
  */
 Help.prototype.toJSON = function () {
-  return util.extend({}, this);
+  return object.extend({}, this);
 };
+
+types.addType('help', Help);

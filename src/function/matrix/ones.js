@@ -1,3 +1,6 @@
+var collection = require('../../type/collection.js'),
+    Matrix = require('../../type/Matrix.js');
+
 /**
  * Create a matrix filled with ones
  *
@@ -9,8 +12,8 @@
  * @param {...Number | Array} size
  * @return {Matrix} matrix
  */
-math.ones = function ones (size) {
-  var args = util.argsToArray(arguments);
+module.exports = function ones (size) {
+  var args = collection.argsToArray(arguments);
 
   if (args.length == 0) {
     args = [1, 1];

@@ -1,3 +1,8 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Calculate the inverse sine of a value
  *
@@ -10,21 +15,21 @@
  *
  * @see http://mathworld.wolfram.com/InverseSine.html
  */
-math.asin = function asin(x) {
+module.exports = function asin(x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('asin', arguments.length, 1);
+    throw new error.ArgumentsError('asin', arguments.length, 1);
   }
 
-  if (isNumber(x)) {
+  if (number.isNumber(x)) {
     if (x >= -1 && x <= 1) {
       return Math.asin(x);
     }
     else {
-      return math.asin(new Complex(x, 0));
+      return asin(new Complex(x, 0));
     }
   }
 
-  if (x instanceof Complex) {
+  if (Complex.isComplex(x)) {
     // asin(z) = -i*log(iz + sqrt(1-z^2))
     var re = x.re;
     var im = x.im;
@@ -33,7 +38,7 @@ math.asin = function asin(x) {
         -2.0 * re * im
     );
 
-    var temp2 = math.sqrt(temp1);
+    var temp2 = sqrt(temp1);
     var temp3;
     if (temp2 instanceof Complex) {
       temp3 = Complex.create(
@@ -48,7 +53,7 @@ math.asin = function asin(x) {
       );
     }
 
-    var temp4 = math.log(temp3);
+    var temp4 = log(temp3);
 
     if (temp4 instanceof Complex) {
       return Complex.create(temp4.im, -temp4.re);
@@ -58,14 +63,18 @@ math.asin = function asin(x) {
     }
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.asin);
+  if (collection.isCollection(x)) {
+    return collection.map(x, asin);
   }
 
   if (x.valueOf() !== x) {
     // fallback on the objects primitive value
-    return math.asin(x.valueOf());
+    return asin(x.valueOf());
   }
 
-  throw newUnsupportedTypeError('asin', x);
+  throw new error.UnsupportedTypeError('asin', x);
 };
+
+// require after module.exports because of possible circular references
+var sqrt = require('../arithmetic/sqrt.js'),
+    log = require('../arithmetic/log.js');

@@ -1,3 +1,10 @@
+var error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    array = require('../../util/array.js'),
+    object = require('../../util/object.js'),
+
+    Matrix = require('../../type/Matrix.js');
+
 /**
  * Concatenate two or more matrices
  * Usage:
@@ -10,7 +17,7 @@
  * @param {... Array | Matrix} args
  * @return {Array | Matrix} res
  */
-math.concat = function concat (args) {
+module.exports = function concat (args) {
   var i,
       len = arguments.length,
       dim = -1,  // zero-based dimension
@@ -26,12 +33,12 @@ math.concat = function concat (args) {
       asMatrix = true;
     }
 
-    if ((i == len - 1) && isNumber(arg)) {
+    if ((i == len - 1) && number.isNumber(arg)) {
       // last argument contains the dimension on which to concatenate
       prevDim = dim;
       dim = arg;
 
-      if (!isInteger(dim) || dim < 0) {
+      if (!number.isInteger(dim) || dim < 0) {
         throw new TypeError('Dimension number must be a positive integer ' +
             '(dim = ' + dim + ')');
       }
@@ -43,8 +50,8 @@ math.concat = function concat (args) {
     }
     else if (Array.isArray(arg) || arg instanceof Matrix) {
       // this is a matrix or array
-      var matrix = math.clone(arg).valueOf();
-      var size = math.size(arg).valueOf();
+      var matrix = object.clone(arg).valueOf();
+      var size = array.size(arg.valueOf());
       matrices[i] = matrix;
       prevDim = dim;
       dim = size.length - 1;
@@ -56,7 +63,7 @@ math.concat = function concat (args) {
       }
     }
     else {
-      throw newUnsupportedTypeError('concat', arg);
+      throw new error.UnsupportedTypeError('concat', arg);
     }
   }
 

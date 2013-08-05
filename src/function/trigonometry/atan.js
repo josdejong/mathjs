@@ -1,3 +1,8 @@
+var collection = require('../../type/collection.js'),
+    error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    Complex = require('../../type/Complex.js');
+
 /**
  * Calculate the inverse tangent of a value
  *
@@ -10,16 +15,16 @@
  *
  * @see http://mathworld.wolfram.com/InverseTangent.html
  */
-math.atan = function atan(x) {
+module.exports = function atan(x) {
   if (arguments.length != 1) {
-    throw newArgumentsError('atan', arguments.length, 1);
+    throw new error.ArgumentsError('atan', arguments.length, 1);
   }
 
-  if (isNumber(x)) {
+  if (number.isNumber(x)) {
     return Math.atan(x);
   }
 
-  if (x instanceof Complex) {
+  if (Complex.isComplex(x)) {
     // atan(z) = 1/2 * i * (ln(1-iz) - ln(1+iz))
     var re = x.re;
     var im = x.im;
@@ -29,7 +34,7 @@ math.atan = function atan(x) {
         (1.0 - im * im - re * re) / den,
         (-2.0 * re) / den
     );
-    var temp2 = math.log(temp1);
+    var temp2 = log(temp1);
 
     if (temp2 instanceof Complex) {
       return Complex.create(
@@ -45,14 +50,17 @@ math.atan = function atan(x) {
     }
   }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.atan);
+  if (collection.isCollection(x)) {
+    return collection.map(x, atan);
   }
 
   if (x.valueOf() !== x) {
     // fallback on the objects primitive value
-    return math.atan(x.valueOf());
+    return atan(x.valueOf());
   }
 
-  throw newUnsupportedTypeError('atan', x);
+  throw new error.UnsupportedTypeError('atan', x);
 };
+
+// require after module.exports because of possible circular references
+var log = require('../arithmetic/log.js');

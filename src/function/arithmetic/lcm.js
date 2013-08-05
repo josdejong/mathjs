@@ -1,3 +1,7 @@
+var error = require('../../util/error.js'),
+    number = require('../../util/number.js'),
+    collection = require('../../type/collection.js');
+
 /**
  * Calculate the least common multiple for two or more values or arrays.
  *
@@ -12,15 +16,15 @@
  * @param {... Number | Array | Matrix} args    two or more integer numbers
  * @return {Number | Array | Matrix} least common multiple
  */
-math.lcm = function lcm(args) {
+module.exports = function lcm(args) {
   var a = arguments[0],
       b = arguments[1],
       t;
 
   if (arguments.length == 2) {
     // two arguments
-    if (isNumber(a) && isNumber(b)) {
-      if (!isInteger(a) || !isInteger(b)) {
+    if (number.isNumber(a) && number.isNumber(b)) {
+      if (!number.isInteger(a) || !number.isInteger(b)) {
         throw new Error('Parameters in function lcm must be integer numbers');
       }
 
@@ -36,23 +40,22 @@ math.lcm = function lcm(args) {
     }
 
     // evaluate lcm element wise
-    if (Array.isArray(a) || a instanceof Matrix ||
-        Array.isArray(b) || b instanceof Matrix) {
-      return util.map2(a, b, math.lcm);
+    if (collection.isCollection(a) || collection.isCollection(b)) {
+      return collection.map2(a, b, lcm);
     }
 
     if (a.valueOf() !== a || b.valueOf() !== b) {
       // fallback on the objects primitive value
-      return math.lcm(a.valueOf(), b.valueOf());
+      return lcm(a.valueOf(), b.valueOf());
     }
 
-    throw newUnsupportedTypeError('lcm', a, b);
+    throw new error.UnsupportedTypeError('lcm', a, b);
   }
 
   if (arguments.length > 2) {
     // multiple arguments. Evaluate them iteratively
     for (var i = 1; i < arguments.length; i++) {
-      a = math.lcm(a, arguments[i]);
+      a = lcm(a, arguments[i]);
     }
     return a;
   }

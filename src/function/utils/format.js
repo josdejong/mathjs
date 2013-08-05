@@ -1,3 +1,6 @@
+var error = require('../../util/error.js'),
+    string = require('../../util/string.js');
+
 /**
  * Format a value of any type into a string. Interpolate values into the string.
  * Numbers are rounded off to a maximum number of 5 digits by default.
@@ -17,51 +20,11 @@
  * @param {Object} values
  * @return {String} str
  */
-math.format = function format(template, values) {
+module.exports = function (template, values) {
   var num = arguments.length;
   if (num != 1 && num != 2) {
-    throw newArgumentsError('format', num, 1, 2);
+    throw new error.ArgumentsError('format', num, 1, 2);
   }
 
-  if (num == 1) {
-    // just format a value as string
-    var value = arguments[0];
-    if (isNumber(value)) {
-      return util.formatNumber(value, math.options.precision);
-    }
-
-    if (Array.isArray(value)) {
-      return util.formatArray(value);
-    }
-
-    if (isString(value)) {
-      return '"' + value + '"';
-    }
-
-    if (value instanceof Object) {
-      return value.toString();
-    }
-
-    return String(value);
-  }
-  else {
-    if (!isString(template)) {
-      throw new TypeError('String expected as first parameter in function format');
-    }
-    if (!(values instanceof Object)) {
-      throw new TypeError('Object expected as first parameter in function format');
-    }
-
-    // format values into a string
-    return template.replace(/\$([\w\.]+)/g, function (original, key) {
-          var keys = key.split('.');
-          var value = values[keys.shift()];
-          while (keys.length && value != undefined) {
-            var k = keys.shift();
-            value = k ? value[k] : value + '.';
-          }
-          return value != undefined ? value : original;
-        }
-    );
-  }
+  return string.format.apply(string.format, arguments);
 };

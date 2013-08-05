@@ -1,6 +1,6 @@
 // test arg
 var assert = require('assert');
-var math = require('../../../dist/math.js');
+var math = require('../../../src/index.js');
 
 assert.equal(math.arg(math.complex('0')) / math.pi, 0);
 assert.equal(math.arg(math.complex('1 + 0i')) / math.pi, 0);
