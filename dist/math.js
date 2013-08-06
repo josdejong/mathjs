@@ -26,8 +26,8 @@
  */
 (function(e){if("function"==typeof bootstrap)bootstrap("math",e);else if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else if("undefined"!=typeof ses){if(!ses.ok())return;ses.makeMath=e}else"undefined"!=typeof window?window.math=e():global.math=e()})(function(){var define,ses,bootstrap,module,exports;
 return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = require('./src/math.js');
-},{"./src/math.js":186}],2:[function(require,module,exports){
+module.exports = require('./src/index.js');
+},{"./src/index.js":185}],2:[function(require,module,exports){
 var math = require('./math'),
     Complex = require('./type/Complex.js').Complex;
 
@@ -9827,7 +9827,10 @@ require('./function/utils/typeof.js');
 // constants
 require('./constants.js');
 
-},{"./constants.js":2,"./function/arithmetic/abs.js":108,"./function/arithmetic/add.js":109,"./function/arithmetic/ceil.js":110,"./function/arithmetic/cube.js":111,"./function/arithmetic/divide.js":112,"./function/arithmetic/edivide.js":113,"./function/arithmetic/emultiply.js":114,"./function/arithmetic/epow.js":115,"./function/arithmetic/equal.js":116,"./function/arithmetic/exp.js":117,"./function/arithmetic/fix.js":118,"./function/arithmetic/floor.js":119,"./function/arithmetic/gcd.js":120,"./function/arithmetic/larger.js":121,"./function/arithmetic/largereq.js":122,"./function/arithmetic/lcm.js":123,"./function/arithmetic/log.js":124,"./function/arithmetic/log10.js":125,"./function/arithmetic/mod.js":126,"./function/arithmetic/multiply.js":127,"./function/arithmetic/pow.js":128,"./function/arithmetic/round.js":129,"./function/arithmetic/sign.js":130,"./function/arithmetic/smaller.js":131,"./function/arithmetic/smallereq.js":132,"./function/arithmetic/sqrt.js":133,"./function/arithmetic/square.js":134,"./function/arithmetic/subtract.js":135,"./function/arithmetic/unary.js":136,"./function/arithmetic/unequal.js":137,"./function/arithmetic/xgcd.js":138,"./function/complex/arg.js":139,"./function/complex/conj.js":140,"./function/complex/im.js":141,"./function/complex/re.js":142,"./function/construction/boolean.js":143,"./function/construction/complex.js":144,"./function/construction/matrix.js":145,"./function/construction/number.js":146,"./function/construction/parser.js":147,"./function/construction/range.js":148,"./function/construction/string.js":149,"./function/construction/unit.js":150,"./function/matrix/concat.js":151,"./function/matrix/det.js":152,"./function/matrix/diag.js":153,"./function/matrix/eye.js":154,"./function/matrix/inv.js":155,"./function/matrix/ones.js":156,"./function/matrix/size.js":157,"./function/matrix/squeeze.js":158,"./function/matrix/subset.js":159,"./function/matrix/transpose.js":160,"./function/matrix/zeros.js":161,"./function/probability/factorial.js":162,"./function/probability/random.js":163,"./function/statistics/max.js":164,"./function/statistics/min.js":165,"./function/trigonometry/acos.js":166,"./function/trigonometry/asin.js":167,"./function/trigonometry/atan.js":168,"./function/trigonometry/atan2.js":169,"./function/trigonometry/cos.js":170,"./function/trigonometry/cot.js":171,"./function/trigonometry/csc.js":172,"./function/trigonometry/sec.js":173,"./function/trigonometry/sin.js":174,"./function/trigonometry/tan.js":175,"./function/units/in.js":176,"./function/utils/clone.js":177,"./function/utils/eval.js":178,"./function/utils/format.js":179,"./function/utils/help.js":180,"./function/utils/import.js":181,"./function/utils/parse.js":182,"./function/utils/select.js":183,"./function/utils/typeof.js":184,"./math.js":186}],186:[function(require,module,exports){
+// initialize Selector
+require('./type/Selector.js').init();
+
+},{"./constants.js":2,"./function/arithmetic/abs.js":108,"./function/arithmetic/add.js":109,"./function/arithmetic/ceil.js":110,"./function/arithmetic/cube.js":111,"./function/arithmetic/divide.js":112,"./function/arithmetic/edivide.js":113,"./function/arithmetic/emultiply.js":114,"./function/arithmetic/epow.js":115,"./function/arithmetic/equal.js":116,"./function/arithmetic/exp.js":117,"./function/arithmetic/fix.js":118,"./function/arithmetic/floor.js":119,"./function/arithmetic/gcd.js":120,"./function/arithmetic/larger.js":121,"./function/arithmetic/largereq.js":122,"./function/arithmetic/lcm.js":123,"./function/arithmetic/log.js":124,"./function/arithmetic/log10.js":125,"./function/arithmetic/mod.js":126,"./function/arithmetic/multiply.js":127,"./function/arithmetic/pow.js":128,"./function/arithmetic/round.js":129,"./function/arithmetic/sign.js":130,"./function/arithmetic/smaller.js":131,"./function/arithmetic/smallereq.js":132,"./function/arithmetic/sqrt.js":133,"./function/arithmetic/square.js":134,"./function/arithmetic/subtract.js":135,"./function/arithmetic/unary.js":136,"./function/arithmetic/unequal.js":137,"./function/arithmetic/xgcd.js":138,"./function/complex/arg.js":139,"./function/complex/conj.js":140,"./function/complex/im.js":141,"./function/complex/re.js":142,"./function/construction/boolean.js":143,"./function/construction/complex.js":144,"./function/construction/matrix.js":145,"./function/construction/number.js":146,"./function/construction/parser.js":147,"./function/construction/range.js":148,"./function/construction/string.js":149,"./function/construction/unit.js":150,"./function/matrix/concat.js":151,"./function/matrix/det.js":152,"./function/matrix/diag.js":153,"./function/matrix/eye.js":154,"./function/matrix/inv.js":155,"./function/matrix/ones.js":156,"./function/matrix/size.js":157,"./function/matrix/squeeze.js":158,"./function/matrix/subset.js":159,"./function/matrix/transpose.js":160,"./function/matrix/zeros.js":161,"./function/probability/factorial.js":162,"./function/probability/random.js":163,"./function/statistics/max.js":164,"./function/statistics/min.js":165,"./function/trigonometry/acos.js":166,"./function/trigonometry/asin.js":167,"./function/trigonometry/atan.js":168,"./function/trigonometry/atan2.js":169,"./function/trigonometry/cos.js":170,"./function/trigonometry/cot.js":171,"./function/trigonometry/csc.js":172,"./function/trigonometry/sec.js":173,"./function/trigonometry/sin.js":174,"./function/trigonometry/tan.js":175,"./function/units/in.js":176,"./function/utils/clone.js":177,"./function/utils/eval.js":178,"./function/utils/format.js":179,"./function/utils/help.js":180,"./function/utils/import.js":181,"./function/utils/parse.js":182,"./function/utils/select.js":183,"./function/utils/typeof.js":184,"./math.js":186,"./type/Selector.js":192}],186:[function(require,module,exports){
 // options
 exports.options = require('./options');
 
@@ -11225,7 +11228,7 @@ exports.Range = Range;
 util.types.addType('range', Range);
 
 },{"../util/index.js":199}],192:[function(require,module,exports){
-var math = require('../../index.js'),
+var math = require('../math.js'),
     util = require('../util/index.js'),
 
     object = util.object,
@@ -11257,10 +11260,6 @@ function Selector (value) {
   if (!(this instanceof Selector)) {
     throw new SyntaxError(
         'Selector constructor must be called with the new operator');
-  }
-
-  if (init) {
-    init();
   }
 
   if (value instanceof Selector) {
@@ -11362,9 +11361,10 @@ function init () {
 
 // exports
 exports.Selector = Selector;
+exports.init = init;
 util.types.addType('selector', Selector);
 
-},{"../../index.js":1,"../util/index.js":199}],193:[function(require,module,exports){
+},{"../math.js":186,"../util/index.js":199}],193:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     number = util.number,

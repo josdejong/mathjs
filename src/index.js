@@ -99,3 +99,6 @@ require('./function/utils/typeof.js');
 
 // constants
 require('./constants.js');
+
+// initialize Selector
+require('./type/Selector.js').init();

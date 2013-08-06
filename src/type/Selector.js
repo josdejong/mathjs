@@ -1,4 +1,4 @@
-var math = require('../../index.js'),
+var math = require('../math.js'),
     util = require('../util/index.js'),
 
     object = util.object,
@@ -30,10 +30,6 @@ function Selector (value) {
   if (!(this instanceof Selector)) {
     throw new SyntaxError(
         'Selector constructor must be called with the new operator');
-  }
-
-  if (init) {
-    init();
   }
 
   if (value instanceof Selector) {
@@ -135,4 +131,5 @@ function init () {
 
 // exports
 exports.Selector = Selector;
+exports.init = init;
 util.types.addType('selector', Selector);
