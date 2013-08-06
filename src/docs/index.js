@@ -1,8 +1,20 @@
-// expression
-exports.expr = require('./expr/index.js');
-
-// types
-exports.type = require('./type/index.js');
+// constants
+exports.e = require('./constants/e.js');
+exports.E = require('./constants/e.js');
+exports['false'] = require('./constants/false.js');
+exports.i = require('./constants/i.js');
+exports['Infinity'] = require('./constants/Infinity.js');
+exports.LN2 = require('./constants/LN2.js');
+exports.LN10 = require('./constants/LN10.js');
+exports.LOG2E = require('./constants/LOG2E.js');
+exports.LOG10E = require('./constants/LOG10E.js');
+exports.NaN = require('./constants/NaN.js');
+exports.pi = require('./constants/pi.js');
+exports.PI = require('./constants/pi.js');
+exports.SQRT1_2 = require('./constants/SQRT1_2.js');
+exports.SQRT2 = require('./constants/SQRT2.js');
+exports.tau = require('./constants/tau.js');
+exports['true'] = require('./constants/true.js');
 
 // functions - arithmetic
 exports.abs = require('./function/arithmetic/abs.js');
@@ -48,7 +60,6 @@ exports.boolean = require('./function/construction/boolean.js');
 exports.complex = require('./function/construction/complex.js');
 exports.matrix = require('./function/construction/matrix.js');
 exports.number = require('./function/construction/number.js');
-exports.parser = require('./function/construction/parser.js');
 exports.range = require('./function/construction/range.js');
 exports.string = require('./function/construction/string.js');
 exports.unit = require('./function/construction/unit.js');
@@ -68,12 +79,8 @@ exports.zeros = require('./function/matrix/zeros.js');
 
 // functions - probability
 exports.factorial = require('./function/probability/factorial.js');
-exports.distribution = require('./function/probability/random.js');
-var uniform = exports.distribution('uniform');
-exports.random = uniform.random;
-exports.randomInt = uniform.randomInt;
-exports.pickRandom = uniform.pickRandom;
-exports.randomMatrix = uniform.randomMatrix;
+exports.random = require('./function/probability/random.js');
+exports.randomInt = require('./function/probability/randomInt.js');
 
 // functions - statistics
 exports.min = require('./function/statistics/min.js');
@@ -100,14 +107,4 @@ exports['eval'] =  require('./function/utils/eval.js');
 exports.format =  require('./function/utils/format.js');
 exports.help =  require('./function/utils/help.js');
 exports['import'] =  require('./function/utils/import.js');
-exports.parse =  require('./function/utils/parse.js');
-exports.select =  require('./function/utils/select.js');
 exports['typeof'] =  require('./function/utils/typeof.js');
-
-// constants
-var object = require('./util/object.js');
-var constants = require('./constants.js');
-object.extend(exports, constants);
-
-// docs
-exports.docs = require('./docs/index.js');

@@ -1,4 +1,4 @@
-math.docs.tan = {
+module.exports = {
   'name': 'tan',
   'category': 'Trigonometry',
   'syntax': [

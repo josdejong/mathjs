@@ -1,4 +1,4 @@
-math.docs.floor = {
+module.exports = {
   'name': 'floor',
   'category': 'Arithmetic',
   'syntax': [

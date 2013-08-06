@@ -1,4 +1,4 @@
-math.docs.ceil = {
+module.exports = {
   'name': 'ceil',
   'category': 'Arithmetic',
   'syntax': [

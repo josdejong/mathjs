@@ -1,4 +1,4 @@
-math.docs['import'] = {
+module.exports = {
   'name': 'import',
   'category': 'Utils',
   'syntax': [

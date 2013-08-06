@@ -1,4 +1,4 @@
-math.docs.complex = {
+module.exports = {
   'name': 'complex',
   'category': 'Type',
   'syntax': [

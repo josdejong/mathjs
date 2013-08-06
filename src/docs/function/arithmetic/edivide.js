@@ -1,4 +1,4 @@
-math.docs.edivide = {
+module.exports = {
   'name': 'edivide',
   'category': 'Operators',
   'syntax': [

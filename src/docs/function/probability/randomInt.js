@@ -1,13 +1,13 @@
 module.exports = {
-  'name': 'random',
+  'name': 'randInt',
   'category': 'Probability',
   'syntax': [
-    'random(min, max)'
+    'randInt()'
   ],
   'description':
       'Return a random number between 0 and 1.',
   'examples': [
-    'random()'
+    'randInt()'
   ],
   'seealso': []
 };

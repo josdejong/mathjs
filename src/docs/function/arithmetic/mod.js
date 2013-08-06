@@ -1,4 +1,4 @@
-math.docs.mod = {
+module.exports = {
   'name': 'mod',
   'category': 'Operators',
   'syntax': [

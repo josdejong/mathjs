@@ -1,4 +1,4 @@
-math.docs.LOG10E = {
+module.exports = {
   'name': 'LOG10E',
   'category': 'Constants',
   'syntax': [

@@ -1,4 +1,4 @@
-math.docs.max = {
+module.exports = {
   'name': 'max',
   'category': 'Statistics',
   'syntax': [

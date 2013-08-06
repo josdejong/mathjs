@@ -1,4 +1,4 @@
-math.docs.size = {
+module.exports = {
   'name': 'size',
   'category': 'Matrix',
   'syntax': [

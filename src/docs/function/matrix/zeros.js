@@ -1,4 +1,4 @@
-math.docs.zeros = {
+module.exports = {
   'name': 'zeros',
   'category': 'Matrix',
   'syntax': [

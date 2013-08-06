@@ -1,4 +1,4 @@
-math.docs.abs = {
+module.exports = {
   'name': 'abs',
   'category': 'Arithmetic',
   'syntax': [

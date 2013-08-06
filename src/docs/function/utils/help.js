@@ -1,4 +1,4 @@
-math.docs.help = {
+module.exports = {
   'name': 'help',
   'category': 'Utils',
   'syntax': [

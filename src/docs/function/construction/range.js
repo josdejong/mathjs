@@ -1,4 +1,4 @@
-math.docs.range = {
+module.exports = {
   'name': 'range',
   'category': 'Type',
   'syntax': [

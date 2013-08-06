@@ -1,4 +1,4 @@
-math.docs.inv = {
+module.exports = {
   'name': 'inv',
   'category': 'Matrix',
   'syntax': [

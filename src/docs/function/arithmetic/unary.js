@@ -1,4 +1,4 @@
-math.docs.unary = {
+module.exports = {
   'name': 'unary',
   'category': 'Operators',
   'syntax': [

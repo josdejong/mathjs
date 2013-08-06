@@ -1,4 +1,4 @@
-math.docs.number = {
+module.exports = {
   'name': 'number',
   'category': 'Type',
   'syntax': [

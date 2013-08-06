@@ -1,4 +1,4 @@
-math.docs.factorial = {
+module.exports = {
   'name': 'factorial',
   'category': 'Probability',
   'syntax': [

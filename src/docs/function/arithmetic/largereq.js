@@ -1,4 +1,4 @@
-math.docs.largereq = {
+module.exports = {
   'name': 'largereq',
   'category': 'Operators',
   'syntax': [

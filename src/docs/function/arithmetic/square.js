@@ -1,4 +1,4 @@
-math.docs.square = {
+module.exports = {
   'name': 'square',
   'category': 'Arithmetic',
   'syntax': [

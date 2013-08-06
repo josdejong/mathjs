@@ -1,4 +1,4 @@
-math.docs.string = {
+module.exports = {
   'name': 'string',
   'category': 'Type',
   'syntax': [

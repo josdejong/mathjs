@@ -1,4 +1,4 @@
-math.docs.sign = {
+module.exports = {
   'name': 'sign',
   'category': 'Arithmetic',
   'syntax': [

@@ -1,4 +1,4 @@
-math.docs.det = {
+module.exports = {
   'name': 'det',
   'category': 'Matrix',
   'syntax': [

@@ -1,4 +1,4 @@
-math.docs.equal = {
+module.exports = {
   'name': 'equal',
   'category': 'Operators',
   'syntax': [

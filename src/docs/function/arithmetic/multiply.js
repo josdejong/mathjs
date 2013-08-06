@@ -1,4 +1,4 @@
-math.docs.multiply = {
+module.exports = {
   'name': 'multiply',
   'category': 'Operators',
   'syntax': [

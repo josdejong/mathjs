@@ -1,4 +1,4 @@
-math.docs.min = {
+module.exports = {
   'name': 'min',
   'category': 'Statistics',
   'syntax': [

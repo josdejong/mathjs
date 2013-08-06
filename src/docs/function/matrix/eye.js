@@ -1,4 +1,4 @@
-math.docs.eye = {
+module.exports = {
   'name': 'eye',
   'category': 'Matrix',
   'syntax': [

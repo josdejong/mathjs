@@ -1,4 +1,4 @@
-math.docs.round = {
+module.exports = {
   'name': 'round',
   'category': 'Arithmetic',
   'syntax': [

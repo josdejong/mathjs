@@ -1,4 +1,4 @@
-math.docs['NaN'] = {
+module.exports = {
   'name': 'NaN',
   'category': 'Constants',
   'syntax': [

@@ -1,4 +1,4 @@
-math.docs.sec = {
+module.exports = {
   'name': 'sec',
   'category': 'Trigonometry',
   'syntax': [

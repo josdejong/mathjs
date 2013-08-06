@@ -1,4 +1,4 @@
-math.docs.sqrt = {
+module.exports = {
   'name': 'sqrt',
   'category': 'Arithmetic',
   'syntax': [

@@ -1,4 +1,4 @@
-math.docs.larger = {
+module.exports = {
   'name': 'larger',
   'category': 'Operators',
   'syntax': [

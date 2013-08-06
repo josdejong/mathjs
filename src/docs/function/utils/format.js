@@ -1,4 +1,4 @@
-math.docs.format = {
+module.exports = {
   'name': 'format',
   'category': 'Utils',
   'syntax': [

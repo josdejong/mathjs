@@ -1,4 +1,4 @@
-math.docs.acos = {
+module.exports = {
   'name': 'acos',
   'category': 'Trigonometry',
   'syntax': [

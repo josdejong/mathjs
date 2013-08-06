@@ -1,4 +1,4 @@
-math.docs.cube = {
+module.exports = {
   'name': 'cube',
   'category': 'Arithmetic',
   'syntax': [

@@ -1,4 +1,4 @@
-math.docs.lcm = {
+module.exports = {
   'name': 'lcm',
   'category': 'Arithmetic',
   'syntax': [
