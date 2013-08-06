@@ -115,6 +115,45 @@ task('test', ['concat'], function () {
 });
 
 /**
+ * build task
+ */
+desc('Build the library using browserify');
+task('dist', {async: true}, function () {
+  var browserify = require('browserify');
+  var b = browserify();
+  // TODO: make directory dist
+  var dist = './dist/math.js';
+  var distMin = './dist/math.min.js';
+  b.add('./src/index.js');
+  b.bundle({
+    standalone: 'math'
+  }, function (err, code) {
+    if(err) {
+      throw err;
+    }
+
+    // add header and footer
+    var lib = util.read('./src/header.js') + code;
+
+    // write bundled file
+    util.write(dist, lib);
+
+    // update version number and stuff in the javascript files
+    updateVersion(dist);
+
+    // minify
+    var result = util.minify({
+      src: dist,
+      dest: distMin,
+      header: util.read(HEADER)
+    });
+    updateVersion(distMin);
+
+    complete();
+  });
+});
+
+/**
  * Update version and date patterns in given file.
  * Patterns '@@date' and '@@version' will be replaced with current date and
  * version.

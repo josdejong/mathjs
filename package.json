@@ -29,6 +29,7 @@
   "dependencies": {},
   "devDependencies": {
     "jake": ">= 0.5.9",
+    "browserify": "2.x",
     "tap": ">= 0.4.3",
     "numbers" : "0.4.0",
     "uglify-js": ">= 2.2.5",
