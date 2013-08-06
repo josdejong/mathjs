@@ -1,9 +1,13 @@
-var error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    object = require('../../util/object.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
 
-    Range = require('../../type/Range.js'),
-    Matrix = require('../../type/Matrix.js');
+    Range = require('../../type/Range.js').Range,
+    Matrix = require('../../type/Matrix.js').Matrix,
+
+    object = util.object,
+    array = util.array,
+    isNumber = util.number.isNumber,
+    isInteger = util.number.isInteger;
 
 /**
  * Create a diagonal matrix or retrieve the diagonal of a matrix
@@ -19,15 +23,15 @@ var error = require('../../util/error.js'),
  * @param {Number} [k]
  * @return {Matrix} matrix
  */
-module.exports = function diag (x, k) {
+math.diag = function diag (x, k) {
   var data, vector, i, iMax;
 
   if (arguments.length != 1 && arguments.length != 2) {
-    throw new error.ArgumentsError('diag', arguments.length, 1, 2);
+    throw new util.error.ArgumentsError('diag', arguments.length, 1, 2);
   }
 
   if (k) {
-    if (!number.isNumber(k) || !number.isInteger(k)) {
+    if (!isNumber(k) || !isInteger(k)) {
       throw new TypeError ('Second parameter in function diag must be an integer');
     }
   }

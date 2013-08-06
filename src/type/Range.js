@@ -1,7 +1,8 @@
-var number = require('./../util/number.js'),
-    types = require('./../util/types.js'),
-    string = require('./../util/string.js'),
-    array = require('./../util/array.js');
+var util = require('../util/index.js'),
+
+    number = util.number,
+    string = util.string,
+    array = util.array;
 
 /**
  * @constructor Range
@@ -52,8 +53,6 @@ function Range(start, step, end) {
   this.end   = (end != null) ? end : 0;
   this.step  = (step != null) ? step : 1;
 }
-
-module.exports = Range;
 
 /**
  * Parse a string into a range,
@@ -244,4 +243,7 @@ Range.prototype.toString = function () {
   return str;
 };
 
-types.addType('range', Range);
+
+// exports
+exports.Range = Range;
+util.types.addType('range', Range);

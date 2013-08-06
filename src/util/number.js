@@ -1,3 +1,5 @@
+var options = require('../options.js');
+
 /**
  * Test whether value is a Number
  * @param {*} value
@@ -22,7 +24,7 @@ exports.isInteger = function isInteger(value) {
  * @param {Number} [precision]      number of digits in formatted output
  * @return {String} formattedValue  The formatted value
  */
-exports.format = function formatNumber(value, precision) {
+exports.format = function format(value, precision) {
   if (value === Infinity) {
     return 'Infinity';
   }
@@ -72,6 +74,10 @@ exports.sign = function sign (x) {
  * @returns {string} str
  */
 exports.toPrecision = function toPrecision (value, precision) {
+  if (precision === undefined) {
+    precision = options.precision;
+  }
+
   return value.toPrecision(precision).replace(_trailingZeros, function (a, b, c) {
     return a.substring(0, a.length - (b.length ? 0 : 1) - c.length);
   });

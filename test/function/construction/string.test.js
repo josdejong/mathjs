@@ -25,7 +25,7 @@ assert.equal(string(' '), ' ');
 // number
 assert.equal(string(1/8), '0.125');
 assert.equal(string(2.1e-3), '0.0021');
-assert.equal(string(123456789), '1.23456789e8');
+assert.equal(string(123456789), '1.2346e8'); // TODO: is it desirable that value is rounded?
 assert.equal(string(2000000), '2e6');
 
 // complex

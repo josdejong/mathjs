@@ -1,8 +1,11 @@
-var error = require('../../util/error.js'),
-    string = require('../../util/string.js'),
-    object = require('../../util/object.js'),
-    array = require('../../util/array.js'),
-    Matrix = require('../../type/Matrix.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Matrix = require('../../type/Matrix.js').Matrix,
+
+    object = util.object,
+    array = util.array,
+    string = util.string;
 
 /**
  * Create the transpose of a matrix
@@ -12,12 +15,12 @@ var error = require('../../util/error.js'),
  * @param {Array | Matrix} x
  * @return {Array | Matrix} transpose
  */
-module.exports = function transpose (x) {
+math.transpose = function transpose (x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('transpose', arguments.length, 1);
+    throw new util.error.ArgumentsError('transpose', arguments.length, 1);
   }
 
-  var size = array.size(x.valueOf());
+  var size = math.size(x).valueOf();
   switch (size.length) {
     case 0:
       // scalar

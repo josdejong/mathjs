@@ -1,6 +1,10 @@
-var error = require('../../util/error.js'),
-    string = require('../../util/string.js'),
-    Complex = require('../../type/Complex.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+
+    isString = util.string.isString,
+    isComplex = Complex.isComplex;
 
 /**
  * Create a complex value. Depending on the passed arguments, the function
@@ -24,7 +28,7 @@ var error = require('../../util/error.js'),
  * @param {*} [args]
  * @return {Complex} value
  */
-module.exports = function complex(args) {
+math.complex = function complex(args) {
   switch (arguments.length) {
     case 0:
       // no parameters. Set re and im zero
@@ -34,11 +38,11 @@ module.exports = function complex(args) {
     case 1:
       // parse string into a complex number
       var arg = arguments[0];
-      if (Complex.isComplex(arg)) {
+      if (isComplex(arg)) {
         // create a clone
         return arg.clone();
       }
-      else if (string.isString(arg)) {
+      else if (isString(arg)) {
         var c = Complex.parse(arg);
         if (c) {
           return c;
@@ -59,6 +63,6 @@ module.exports = function complex(args) {
       break;
 
     default:
-      throw new error.ArgumentsError('complex', arguments.length, 0, 2);
+      throw new util.error.ArgumentsError('complex', arguments.length, 0, 2);
   }
 };

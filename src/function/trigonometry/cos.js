@@ -1,8 +1,14 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Complex = require('../../type/Complex.js'),
-    Unit = require('../../type/Unit.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    Unit = require('../../type/Unit.js').Unit,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Calculate the cosine of a value
@@ -16,16 +22,16 @@ var collection = require('../../type/collection.js'),
  *
  * @see http://mathworld.wolfram.com/Cosine.html
  */
-module.exports = function cos(x) {
+math.cos = function cos(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('cos', arguments.length, 1);
+    throw new util.error.ArgumentsError('cos', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     return Math.cos(x);
   }
 
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     // cos(z) = (exp(iz) + exp(-iz)) / 2
     return Complex.create(
         0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp(x.im)),
@@ -33,14 +39,14 @@ module.exports = function cos(x) {
     );
   }
 
-  if (Unit.isUnit(x)) {
+  if (isUnit(x)) {
     if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
       throw new TypeError ('Unit in function cos is no angle');
     }
     return Math.cos(x.value);
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, cos);
   }
 
@@ -49,5 +55,5 @@ module.exports = function cos(x) {
     return cos(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('cos', x);
+  throw new util.error.UnsupportedTypeError('cos', x);
 };

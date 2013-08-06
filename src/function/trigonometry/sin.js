@@ -1,8 +1,14 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Complex = require('../../type/Complex.js'),
-    Unit = require('../../type/Unit.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    Unit = require('../../type/Unit.js').Unit,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Calculate the sine of a value
@@ -16,30 +22,30 @@ var collection = require('../../type/collection.js'),
  *
  * @see http://mathworld.wolfram.com/Sine.html
  */
-module.exports = function sin(x) {
+math.sin = function sin(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('sin', arguments.length, 1);
+    throw new util.error.ArgumentsError('sin', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     return Math.sin(x);
   }
 
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     return Complex.create(
         0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp( x.im)),
         0.5 * Math.cos(x.re) * (Math.exp( x.im) - Math.exp(-x.im))
     );
   }
 
-  if (Unit.isUnit(x)) {
+  if (isUnit(x)) {
     if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
       throw new TypeError ('Unit in function cos is no angle');
     }
     return Math.sin(x.value);
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, sin);
   }
 
@@ -48,5 +54,5 @@ module.exports = function sin(x) {
     return sin(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('sin', x);
+  throw new util.error.UnsupportedTypeError('sin', x);
 };

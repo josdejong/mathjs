@@ -1,6 +1,6 @@
-var Node = require('./Node.js'),
-    SymbolNode = require('./SymbolNode.js'),
-    subset = require('../../function/matrix/subset.js');// TODO: remove dependency on subset?
+var math = require('../../math.js'),
+    Node = require('./Node.js').Node,
+    SymbolNode = require('./SymbolNode.js').SymbolNode;
 
 /**
  * @constructor ParamsNode
@@ -87,7 +87,7 @@ ParamsNode.prototype.eval = function() {
   }
   else {
     // get a subset of the object
-    return subset(obj, results);
+    return math.subset(obj, results);
   }
 };
 
@@ -133,4 +133,4 @@ ParamsNode.prototype.toString = function() {
   return str;
 };
 
-module.exports = ParamsNode;
+exports.ParamsNode = ParamsNode;

@@ -1,5 +1,7 @@
-var error = require('../../util/error.js'),
-    Matrix = require('../../type/Matrix.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Matrix = require('../../type/Matrix.js').Matrix;
 
 /**
  * Create a matrix. The function creates a new math.type.Matrix object.
@@ -18,9 +20,9 @@ var error = require('../../util/error.js'),
  * @param {Array | Matrix} [data]    A multi dimensional array
  * @return {Matrix} matrix
  */
-module.exports = function matrix(data) {
+math.matrix = function matrix(data) {
   if (arguments.length > 1) {
-    throw new error.ArgumentsError('matrix', arguments.length, 0, 1);
+    throw new util.error.ArgumentsError('matrix', arguments.length, 0, 1);
   }
 
   return new Matrix(data);

@@ -1,7 +1,12 @@
-var error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
     collection = require('../../type/collection.js'),
-    Complex = require('../../type/Complex.js');
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isCollection = collection.isCollection;
 
 /**
  * Calculate the 10-base logarithm of a value
@@ -13,12 +18,12 @@ var error = require('../../util/error.js'),
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-module.exports = function log10(x) {
+math.log10 = function log10(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('log10', arguments.length, 1);
+    throw new util.error.ArgumentsError('log10', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     if (x >= 0) {
       return Math.log(x) / Math.LN10;
     }
@@ -28,14 +33,14 @@ module.exports = function log10(x) {
     }
   }
 
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     return Complex.create (
         Math.log(Math.sqrt(x.re * x.re + x.im * x.im)) / Math.LN10,
         Math.atan2(x.im, x.re) / Math.LN10
     );
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, log10);
   }
 
@@ -44,5 +49,5 @@ module.exports = function log10(x) {
     return log10(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('log10', x);
+  throw new util.error.UnsupportedTypeError('log10', x);
 };

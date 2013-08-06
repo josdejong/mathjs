@@ -1,11 +1,11 @@
-var error = require('../../util/error.js'),
-    collection = require('../../type/collection.js'),
-    number = require('../../util/number.js'),
-    string = require('../../util/string.js'),
-    array = require('../../util/array.js'),
-    object = require('../../util/object.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
 
-    Matrix = require('../../type/Matrix.js');
+    Matrix = require('../../type/Matrix.js').Matrix,
+
+    object = util.object,
+    array = util.array,
+    string = util.string;
 
 /**
  * @constructor det
@@ -16,9 +16,9 @@ var error = require('../../util/error.js'),
  * @param {Array | Matrix} x
  * @return {Number} determinant
  */
-module.exports = function det (x) {
+math.det = function det (x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('det', arguments.length, 1);
+    throw new util.error.ArgumentsError('det', arguments.length, 1);
   }
 
   var size = array.size(x.valueOf());
@@ -75,9 +75,9 @@ function _det (matrix, rows, cols) {
   else if (rows == 2) {
     // this is a 2 x 2 matrix
     // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12
-    return subtract(
-        multiply(matrix[0][0], matrix[1][1]),
-        multiply(matrix[1][0], matrix[0][1])
+    return math.subtract(
+        math.multiply(matrix[0][0], matrix[1][1]),
+        math.multiply(matrix[1][0], matrix[0][1])
     );
   }
   else {
@@ -98,7 +98,7 @@ function _det (matrix, rows, cols) {
           if (lead == cols) {
             // We found the last pivot.
             if (object.deepEqual(matrix, eye(rows).valueOf())) {
-              return round(d, 6);
+              return math.round(d, 6);
             } else {
               return 0;
             }
@@ -133,17 +133,10 @@ function _det (matrix, rows, cols) {
       lead++; // Now looking for a pivot further right.
     }
     // If reduction did not result in the identity, the matrix is singular.
-    if (object.deepEqual(matrix, eye(rows).valueOf())) {
-      return round(d, 6);
+    if (object.deepEqual(matrix, math.eye(rows).valueOf())) {
+      return math.round(d, 6);
     } else {
       return 0;
     }
   }
 }
-
-// require after module.exports because of possible circular references
-var round = require('../arithmetic/round.js'),
-    multiply = require('../arithmetic/multiply.js'),
-    subtract = require('../arithmetic/subtract.js'),
-    min = require('../statistics/min.js'),
-    eye = require('./eye.js');

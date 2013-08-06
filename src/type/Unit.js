@@ -1,7 +1,9 @@
-var options = require('../options.js'),
-    number = require('./../util/number.js'),
-    types = require('./../util/types.js'),
-    string = require('./../util/string.js');
+var util = require('../util/index.js'),
+
+    number = util.number,
+    string = util.string,
+    isNumber = util.number.isNumber,
+    isString = util.string.isString;
 
 /**
  * @constructor Unit
@@ -24,10 +26,10 @@ function Unit(value, unit) {
     throw new Error('Unit constructor must be called with the new operator');
   }
 
-  if (value != null && !number.isNumber(value)) {
+  if (value != null && !isNumber(value)) {
     throw new TypeError('First parameter in Unit constructor must be a number');
   }
-  if (unit != null && !string.isString(unit)) {
+  if (unit != null && !isString(unit)) {
     throw new TypeError('Second parameter in Unit constructor must be a string');
   }
 
@@ -54,8 +56,6 @@ function Unit(value, unit) {
     this.fixPrefix = true;
   }
 }
-
-module.exports = Unit;
 
 // private variables and functions for the Unit parser
 var text, index, c;
@@ -172,12 +172,12 @@ function parseUnit() {
  * @param {String} str        A string like "5.2 inch", "4e2 kg"
  * @return {Unit | null} unit
  */
-Unit.parse = exports.parse = function parse(str) {
+Unit.parse = function parse(str) {
   text = str;
   index = -1;
   c = '';
 
-  if (!string.isString(text)) {
+  if (!isString(text)) {
     return null;
   }
 
@@ -220,7 +220,7 @@ Unit.parse = exports.parse = function parse(str) {
  * @param {*} value
  * @return {Boolean} isUnit
  */
-Unit.isUnit = exports.isUnit = function isUnit(value) {
+Unit.isUnit = function isUnit(value) {
   return (value instanceof Unit);
 };
 
@@ -303,7 +303,7 @@ function _findUnit(str) {
  * @param {String} unit   A plain unit without value. Can have prefix, like "cm"
  * @return {Boolean}      true if the given string is a unit
  */
-Unit.isPlainUnit = exports.isPlainUnit = function (unit) {
+Unit.isPlainUnit = function (unit) {
   return (_findUnit(unit) != null);
 };
 
@@ -343,7 +343,7 @@ Unit.prototype.equals = function(other) {
  */
 Unit.prototype['in'] = function (plainUnit) {
   var other;
-  if (string.isString(plainUnit)) {
+  if (isString(plainUnit)) {
     other = new Unit(null, plainUnit);
 
     if (!this.equalBase(other)) {
@@ -394,12 +394,12 @@ Unit.prototype.toString = function() {
   if (!this.fixPrefix) {
     var bestPrefix = this._bestPrefix();
     value = this._unnormalize(this.value, bestPrefix.value);
-    str = (this.value != null) ? number.format(value, options.precision) + ' ' : '';
+    str = (this.value != null) ? number.format(value) + ' ' : '';
     str += bestPrefix.name + this.unit.name;
   }
   else {
     value = this._unnormalize(this.value);
-    str = (this.value != null) ? number.format(value, options.precision) + ' ' : '';
+    str = (this.value != null) ? number.format(value) + ' ' : '';
     str += this.prefix.name + this.unit.name;
   }
   return str;
@@ -709,8 +709,11 @@ var UNITS = [
   {'name': 'bytes', 'base': BASE_UNITS.BIT, 'prefixes': PREFIXES.BINARY_LONG, 'value': 8, 'offset': 0}
 ];
 
-Unit.PREFIXES = exports.PREFIXES = PREFIXES;
-Unit.BASE_UNITS = exports.BASE_UNITS = BASE_UNITS;
-Unit.UNITS = exports.UNITS = UNITS;
+Unit.PREFIXES = PREFIXES;
+Unit.BASE_UNITS = BASE_UNITS;
+Unit.UNITS = UNITS;
 
-types.addType('unit', Unit);
+
+// exports
+exports.Unit = Unit;
+util.types.addType('unit', Unit);

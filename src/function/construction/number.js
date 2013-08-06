@@ -1,11 +1,12 @@
-var error = require('../../util/error.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js');
 
-/**
+    /**
  * Create a number or convert a string to a number
  * @param {String | Number | Boolean} [value]
  * @return {Number} num
  */
-module.exports = function number (value) {
+math.number = function number (value) {
   switch (arguments.length) {
     case 0:
       return 0;
@@ -19,6 +20,6 @@ module.exports = function number (value) {
       }
       return num;
     default:
-      throw new error.ArgumentsError('number', arguments.length, 0, 1);
+      throw new util.error.ArgumentsError('number', arguments.length, 0, 1);
   }
 };

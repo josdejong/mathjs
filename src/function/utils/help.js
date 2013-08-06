@@ -1,4 +1,7 @@
-var Help = require('../../type/Help.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Help = require('../../type/Help.js').Help;
 
 /**
  * Retrieve help on a function or data type.
@@ -6,7 +9,7 @@ var Help = require('../../type/Help.js');
  * @param {function | string | Object} search
  * @return {Help} help
  */
-module.exports = function help(search) {
+math.help = function help(search) {
   if (arguments.length != 1) {
     throw new SyntaxError('Wrong number of arguments in function help ' +
         '(' + arguments.length + ' provided, 1 expected)');
@@ -52,6 +55,3 @@ module.exports = function help(search) {
     return new Help(doc);
   }
 };
-
-// require after module.exports because of possible circular references
-var math = require('../../index.js');

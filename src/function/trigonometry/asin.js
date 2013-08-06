@@ -1,7 +1,12 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Complex = require('../../type/Complex.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isCollection = collection.isCollection;
 
 /**
  * Calculate the inverse sine of a value
@@ -15,12 +20,12 @@ var collection = require('../../type/collection.js'),
  *
  * @see http://mathworld.wolfram.com/InverseSine.html
  */
-module.exports = function asin(x) {
+math.asin = function asin(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('asin', arguments.length, 1);
+    throw new util.error.ArgumentsError('asin', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     if (x >= -1 && x <= 1) {
       return Math.asin(x);
     }
@@ -29,7 +34,7 @@ module.exports = function asin(x) {
     }
   }
 
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     // asin(z) = -i*log(iz + sqrt(1-z^2))
     var re = x.re;
     var im = x.im;
@@ -38,7 +43,7 @@ module.exports = function asin(x) {
         -2.0 * re * im
     );
 
-    var temp2 = sqrt(temp1);
+    var temp2 = math.sqrt(temp1);
     var temp3;
     if (temp2 instanceof Complex) {
       temp3 = Complex.create(
@@ -53,7 +58,7 @@ module.exports = function asin(x) {
       );
     }
 
-    var temp4 = log(temp3);
+    var temp4 = math.log(temp3);
 
     if (temp4 instanceof Complex) {
       return Complex.create(temp4.im, -temp4.re);
@@ -63,7 +68,7 @@ module.exports = function asin(x) {
     }
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, asin);
   }
 
@@ -72,9 +77,5 @@ module.exports = function asin(x) {
     return asin(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('asin', x);
+  throw new util.error.UnsupportedTypeError('asin', x);
 };
-
-// require after module.exports because of possible circular references
-var sqrt = require('../arithmetic/sqrt.js'),
-    log = require('../arithmetic/log.js');

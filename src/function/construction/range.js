@@ -1,6 +1,8 @@
-var error = require('../../util/error.js'),
-    string = require('../../util/string.js'),
-    Range = require('../../type/Range.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    isString = util.string.isString,
+    Range = require('../../type/Range.js').Range;
 
 /**
  * Create a range. The function creates a new math.type.Range object.
@@ -30,7 +32,7 @@ var error = require('../../util/error.js'),
  * @param {...*} args
  * @return {Range} range
  */
-module.exports = function range(args) {
+math.range = function range(args) {
   switch (arguments.length) {
     case 1:
       // parse string into a range
@@ -38,7 +40,7 @@ module.exports = function range(args) {
         // create a clone
         return args.clone();
       }
-      else if (string.isString(args)) {
+      else if (isString(args)) {
         var r = Range.parse(args);
         if (r) {
           return r;
@@ -64,6 +66,6 @@ module.exports = function range(args) {
       break;
 
     default:
-      throw new error.ArgumentsError('range', arguments.length, 2, 3);
+      throw new util.error.ArgumentsError('range', arguments.length, 2, 3);
   }
 };

@@ -1,8 +1,11 @@
-var error = require('../../util/error.js'),
-    collection = require('../../type/collection.js'),
-    number = require('../../util/number.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
 
-    Matrix = require('../../type/Matrix.js');
+    Matrix = require('../../type/Matrix.js').Matrix,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isInteger = util.number.isInteger;
 
 /**
  * Create an identity matrix with size m x n
@@ -15,7 +18,7 @@ var error = require('../../util/error.js'),
  * @param {...Number | Matrix | Array} size
  * @return {Matrix} matrix
  */
-module.exports = function eye (size) {
+math.eye = function eye (size) {
   var args = collection.argsToArray(arguments);
   if (args.length == 0) {
     args = [1, 1];
@@ -24,17 +27,17 @@ module.exports = function eye (size) {
     args[1] = args[0];
   }
   else if (args.length > 2) {
-    throw new error.ArgumentsError('eye', args.length, 0, 2);
+    throw new util.error.ArgumentsError('eye', args.length, 0, 2);
   }
 
   var rows = args[0],
       cols = args[1];
 
-  if (!number.isNumber(rows) || !number.isInteger(rows) || rows < 1) {
+  if (!isNumber(rows) || !isInteger(rows) || rows < 1) {
     throw new Error('Parameters in function eye must be positive integers');
   }
   if (cols) {
-    if (!number.isNumber(cols) || !number.isInteger(cols) || cols < 1) {
+    if (!isNumber(cols) || !isInteger(cols) || cols < 1) {
       throw new Error('Parameters in function eye must be positive integers');
     }
   }
@@ -44,7 +47,7 @@ module.exports = function eye (size) {
   matrix.resize(args);
 
   // fill in ones on the diagonal
-  var minimum = min(args);
+  var minimum = math.min(args);
   var data = matrix.valueOf();
   for (var d = 0; d < minimum; d++) {
     data[d][d] = 1;
@@ -52,6 +55,3 @@ module.exports = function eye (size) {
 
   return matrix;
 };
-
-// require after module.exports because of possible circular references
-var min = require('../statistics/min.js');

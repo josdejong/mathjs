@@ -1,12 +1,14 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    string = require('../../util/string.js'),
-    _object = require('../../util/object.js'),
-    Matrix = require('../../type/Matrix.js'),
-    Complex = require('../../type/Complex.js'),
-    Selector = require('../../type/Selector.js'),
-    Unit = require('../../type/Unit.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Selector = require('../../type/Selector.js').Selector,
+    Complex = require('../../type/Complex.js').Complex,
+    Unit = require('../../type/Unit.js').Unit,
+
+    isNumber = util.number.isNumber,
+    isString = util.string.isString,
+    isComplex = Complex.isComplex,
+    isUnit = Unit.isUnit;
 
 /**
  * Import functions from an object or a file
@@ -25,17 +27,17 @@ var collection = require('../../type/collection.js'),
  *                                      support the math.js data types.
  */
 // TODO: return status information
-module.exports = function math_import(object, options) {
+math['import'] = function math_import(object, options) {
   var name;
   var opts = {
     override: false,
     wrap: true
   };
   if (options && options instanceof Object) {
-    _object.extend(opts, options);
+    util.object.extend(opts, options);
   }
 
-  if (string.isString(object)) {
+  if (isString(object)) {
     // a string with a filename
     if (typeof (require) !== 'undefined') {
       // load the file using require
@@ -113,10 +115,7 @@ function _import(name, value, options) {
  */
 function isSupportedType(object) {
   return (typeof object == 'function') ||
-      number.isNumber(object) || string.isString(object) ||
-      Complex.isComplex(object) || Unit.isUnit(object);
+      isNumber(object) || isString(object) ||
+      isComplex(object) || isUnit(object);
   // TODO: add boolean?
 }
-
-// require after module.exports because of possible circular references
-var math = require('../../index.js');

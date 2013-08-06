@@ -1,4 +1,4 @@
-var Node = require('./Node.js');
+var Node = require('./Node.js').Node;
 
 /**
  * @constructor BlockNode
@@ -82,4 +82,4 @@ BlockNode.prototype.toString = function() {
   return '[' + strings.join(',') + '\n]';
 };
 
-module.exports = BlockNode;
+exports.BlockNode = BlockNode;

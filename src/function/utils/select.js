@@ -1,4 +1,5 @@
-var Selector = require('../../type/Selector.js');
+var math = require('../../math.js'),
+    Selector = require('../../type/Selector.js').Selector;
 
 /**
  * Wrap any value in a Selector, allowing to perform chained operations on
@@ -34,6 +35,7 @@ var Selector = require('../../type/Selector.js');
  * @param {*} value
  * @return {Selector} selector
  */
-module.exports = function select(value) {
+math.select = function select(value) {
+  // TODO: check number of arguments
   return new Selector(value);
 };

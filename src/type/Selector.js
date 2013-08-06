@@ -1,6 +1,8 @@
-var string = require('../util/string.js'),
-    types = require('../util/types.js'),
-    subset = require('../function/matrix/subset.js'); // TODO: remove dependency on subset
+var math = require('../../index.js'),
+    util = require('../util/index.js'),
+
+    object = util.object,
+    string = util.string;
 
 /**
  * @constructor math.type.Selector
@@ -42,8 +44,6 @@ function Selector (value) {
   }
 }
 
-module.exports = Selector;
-
 Selector.prototype = {
   /**
    * Close the selector. Returns the final value.
@@ -64,7 +64,7 @@ Selector.prototype = {
       throw Error('Selector value is undefined');
     }
 
-    return new Selector(subset(value, index));
+    return new Selector(math.subset(value, index));
   },
 
   /**
@@ -77,7 +77,7 @@ Selector.prototype = {
       throw Error('Selector value is undefined');
     }
 
-    return new Selector(subset(value, index, replacement));
+    return new Selector(math.subset(value, index, replacement));
   },
 
   /**
@@ -118,7 +118,7 @@ function createProxy(name, value) {
   }
 }
 
-Selector.createProxy = exports.createProxy = createProxy;
+Selector.createProxy = createProxy;
 
 /**
  * initialise the Chain prototype with all functions and constants in math
@@ -133,7 +133,6 @@ function init () {
   }
 }
 
-types.addType('selector', Selector);
-
-// load after module.exports because of circular reference
-var math = require('../index.js');
+// exports
+exports.Selector = Selector;
+util.types.addType('selector', Selector);

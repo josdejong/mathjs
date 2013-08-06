@@ -1,4 +1,4 @@
-var Node = require('./Node.js'),
+var Node = require('./Node.js').Node,
     error = require('../../util/error.js');
 
 /**
@@ -84,4 +84,4 @@ FunctionNode.prototype.toString = function() {
   return this.fn.toString();
 };
 
-module.exports = FunctionNode;
+exports.FunctionNode = FunctionNode;

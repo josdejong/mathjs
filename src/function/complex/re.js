@@ -1,8 +1,13 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    object = require('../../util/object.js'),
-    Complex = require('../../type/Complex.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    collection = require('../../type/collection.js'),
+
+    object = util.object,
+    isNumber = util.number.isNumber,
+    isCollection =collection.isCollection,
+    isComplex = Complex.isComplex;
 
 /**
  * Get the real part of a complex number.
@@ -14,20 +19,20 @@ var collection = require('../../type/collection.js'),
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} re
  */
-module.exports = function re(x) {
+math.re = function re(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('re', arguments.length, 1);
+    throw new util.error.ArgumentsError('re', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     return x;
   }
 
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     return x.re;
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, re);
   }
 

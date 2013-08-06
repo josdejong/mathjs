@@ -1,5 +1,5 @@
-var error = require('../../util/error.js'),
-    types = require('../../util/types.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js');
 
 /**
  * Determine the type of a variable
@@ -10,10 +10,10 @@ var error = require('../../util/error.js'),
  * @return {String} type  Lower case type, for example "number", "string",
  *                        "array".
  */
-module.exports = function _typeof (x) {
+math['typeof'] = function _typeof (x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('typeof', arguments.length, 1);
+    throw new util.error.ArgumentsError('typeof', arguments.length, 1);
   }
 
-  return types.type(x);
+  return util.types.type(x);
 };

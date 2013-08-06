@@ -1,6 +1,10 @@
-var error = require('../../util/error.js'),
-    object = require('../../util/object.js'),
-    Matrix = require('../../type/Matrix.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Matrix = require('../../type/Matrix.js').Matrix,
+
+    object = util.object,
+    isArray = Array.isArray;
 
 /**
  * Remove singleton dimensions from a matrix
@@ -10,18 +14,18 @@ var error = require('../../util/error.js'),
  * @param {Matrix | Array} x
  * @return {Matrix | Array} res
  */
-module.exports = function squeeze (x) {
+math.squeeze = function squeeze (x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('squeeze', arguments.length, 1);
+    throw new util.error.ArgumentsError('squeeze', arguments.length, 1);
   }
 
-  if (Array.isArray(x)) {
+  if (isArray(x)) {
     return _squeezeArray(object.clone(x));
   }
   else if (x instanceof Matrix) {
     return new Matrix(_squeezeArray(x.toArray()));
   }
-  else if (Array.isArray(x.valueOf())) {
+  else if (isArray(x.valueOf())) {
     return _squeezeArray(object.clone(x.valueOf()));
   }
   else {
@@ -45,7 +49,7 @@ function _squeezeArray(array) {
     // process all childs
     for (var i = 0, len = array.length; i < len; i++) {
       var child = array[i];
-      if (Array.isArray(child)) {
+      if (isArray(child)) {
         array[i] = _squeezeArray(child);
       }
     }

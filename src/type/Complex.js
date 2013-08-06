@@ -1,7 +1,8 @@
-var options = require('../options.js'),
-    number = require('./../util/number.js'),
-    types = require('./../util/types.js'),
-    string = require('./../util/string.js');
+var util = require('../util/index.js'),
+
+    number = util.number,
+    isNumber = util.number.isNumber,
+    isString = util.string.isString;
 
 /**
  * @constructor Complex
@@ -35,7 +36,7 @@ function Complex(re, im) {
       break;
 
     case 2:
-      if (!number.isNumber(re) || !number.isNumber(im)) {
+      if (!isNumber(re) || !isNumber(im)) {
         throw new TypeError(
             'Two numbers expected in Complex constructor');
       }
@@ -52,14 +53,12 @@ function Complex(re, im) {
   }
 }
 
-module.exports = Complex;
-
 /**
  * Test whether value is a Complex value
  * @param {*} value
  * @return {Boolean} isComplex
  */
-Complex.isComplex = exports.isComplex = function isComplex(value) {
+Complex.isComplex = function isComplex(value) {
   return (value instanceof Complex);
 };
 
@@ -209,7 +208,7 @@ Complex.parse = exports.parse = function parse(str) {
   index = -1;
   c = '';
 
-  if (!string.isString(text)) {
+  if (!isString(text)) {
     return null;
   }
 
@@ -313,8 +312,8 @@ Complex.prototype.clone = function () {
  */
 Complex.prototype.toString = function () {
   var str = '';
-  var strRe = number.format(this.re, options.precision);
-  var strIm = number.format(this.im, options.precision);
+  var strRe = number.format(this.re);
+  var strIm = number.format(this.im);
 
   if (this.im == 0) {
     // real value
@@ -348,7 +347,7 @@ Complex.prototype.toString = function () {
       }
       else {
         str = strRe + ' - ' +
-            number.format(Math.abs(this.im), options.precision) + 'i';
+            number.format(Math.abs(this.im)) + 'i';
       }
     }
   }
@@ -356,4 +355,7 @@ Complex.prototype.toString = function () {
   return str;
 };
 
-types.addType('complex', Complex);
+
+// exports
+exports.Complex = Complex;
+util.types.addType('complex', Complex);

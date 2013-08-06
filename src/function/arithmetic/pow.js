@@ -1,8 +1,16 @@
-var error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    array = require('../../util/array.js'),
-    Complex = require('../../type/Complex.js'),
-    Matrix = require('../../type/Matrix.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    Matrix = require('../../type/Matrix.js').Matrix,
+    collection = require('../../type/collection.js'),
+
+    array = util.array,
+    isNumber = util.number.isNumber,
+    isArray = Array.isArray,
+    isInteger = util.number.isInteger,
+    isComplex = Complex.isComplex,
+    isCollection = collection.isCollection;
 
 /**
  * Calculates the power of x to y
@@ -14,14 +22,14 @@ var error = require('../../util/error.js'),
  * @param  {Number | Complex} y
  * @return {Number | Complex | Array | Matrix} res
  */
-module.exports = function pow(x, y) {
+math.pow = function pow(x, y) {
   if (arguments.length != 2) {
-    throw new error.ArgumentsError('pow', arguments.length, 2);
+    throw new util.error.ArgumentsError('pow', arguments.length, 2);
   }
 
-  if (number.isNumber(x)) {
-    if (number.isNumber(y)) {
-      if (number.isInteger(y) || x >= 0) {
+  if (isNumber(x)) {
+    if (isNumber(y)) {
+      if (isInteger(y) || x >= 0) {
         // real value computation
         return Math.pow(x, y);
       }
@@ -29,20 +37,20 @@ module.exports = function pow(x, y) {
         return powComplex(new Complex(x, 0), new Complex(y, 0));
       }
     }
-    else if (Complex.isComplex(y)) {
+    else if (isComplex(y)) {
       return powComplex(new Complex(x, 0), y);
     }
   }
-  else if (Complex.isComplex(x)) {
-    if (number.isNumber(y)) {
+  else if (isComplex(x)) {
+    if (isNumber(y)) {
       return powComplex(x, new Complex(y, 0));
     }
-    else if (Complex.isComplex(y)) {
+    else if (isComplex(y)) {
       return powComplex(x, y);
     }
   }
-  else if (Array.isArray(x)) {
-    if (!number.isNumber(y) || !number.isInteger(y) || y < 0) {
+  else if (isArray(x)) {
+    if (!isNumber(y) || !isInteger(y) || y < 0) {
       throw new TypeError('For A^b, b must be a positive integer ' +
           '(value is ' + y + ')');
     }
@@ -59,13 +67,13 @@ module.exports = function pow(x, y) {
 
     if (y == 0) {
       // return the identity matrix
-      return eye(s[0]);
+      return math.eye(s[0]);
     }
     else {
       // value > 0
       var res = x;
       for (var i = 1; i < y; i++) {
-        res = multiply(x, res);
+        res = math.multiply(x, res);
       }
       return res;
     }
@@ -79,7 +87,7 @@ module.exports = function pow(x, y) {
     return pow(x.valueOf(), y.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('pow', x, y);
+  throw new util.error.UnsupportedTypeError('pow', x, y);
 };
 
 /**
@@ -92,13 +100,7 @@ module.exports = function pow(x, y) {
 function powComplex (x, y) {
   // complex computation
   // x^y = exp(log(x)*y) = exp((abs(x)+i*arg(x))*y)
-  var temp1 = log(x);
-  var temp2 = multiply(temp1, y);
-  return exp(temp2);
+  var temp1 = math.log(x);
+  var temp2 = math.multiply(temp1, y);
+  return math.exp(temp2);
 }
-
-// require after module.exports because of possible circular references
-var multiply = require('./multiply.js'),
-    exp = require('./exp.js'),
-    log = require('./log.js'),
-    eye = require('../matrix/eye.js');

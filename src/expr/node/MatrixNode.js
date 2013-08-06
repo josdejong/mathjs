@@ -1,9 +1,9 @@
-var Node = require('./Node.js'),
+var Node = require('./Node.js').Node,
     object = require('../../util/object.js'),
     string = require('../../util/string.js'),
     collection = require('../../type/collection.js'),
-    Matrix = require('../../type/Matrix.js'),
-    Range = require('../../type/Range.js');
+    Matrix = require('../../type/Matrix.js').Matrix,
+    Range = require('../../type/Range.js').Range;
 
 /**
  * @constructor MatrixNode
@@ -152,4 +152,4 @@ MatrixNode.prototype.toString = function() {
   return string.format(this.nodes);
 };
 
-module.exports = MatrixNode;
+exports.MatrixNode = MatrixNode;

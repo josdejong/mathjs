@@ -1,9 +1,12 @@
-var collection = require('../../type/collection.js'),
-    parse = require('./parse.js'),
-    string = require('../../util/string.js'),
-    error = require('../../util/error.js'),
-    Matrix = require('../../type/Matrix.js'),
-    Scope = require('../../expr/Scope.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Scope = require('../../expr/Scope.js').Scope,
+
+    collection = require('../../type/collection.js'),
+
+    isString = util.string.isString,
+    isCollection = collection.isCollection;
 
 /**
  * Evaluate an expression.
@@ -30,9 +33,9 @@ var collection = require('../../type/collection.js'),
  * @return {*} res
  * @throws {Error}
  */
-module.exports = function (expr, scope) {
+math.eval = function _eval (expr, scope) {
   if (arguments.length != 1 && arguments.length != 2) {
-    throw new error.ArgumentsError('eval', arguments.length, 1, 2);
+    throw new util.error.ArgumentsError('eval', arguments.length, 1, 2);
   }
 
   // instantiate a scope
@@ -49,15 +52,15 @@ module.exports = function (expr, scope) {
     evalScope = new Scope();
   }
 
-  if (string.isString(expr)) {
+  if (isString(expr)) {
     // evaluate a single expression
-    var node = parse(expr, evalScope);
+    var node = math.parse(expr, evalScope);
     return node.eval();
   }
-  else if (Array.isArray(expr) || expr instanceof Matrix) {
+  else if (isCollection(expr)) {
     // evaluate an array or matrix with expressions
     return collection.map(expr, function (elem) {
-      var node = parse(elem, evalScope);
+      var node = math.parse(elem, evalScope);
       return node.eval();
     });
   }

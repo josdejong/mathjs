@@ -1,8 +1,9 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Matrix = require('../../type/Matrix.js'),
-    abs = require('../arithmetic/abs.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Matrix = require('../../type/Matrix.js').Matrix,
+
+    isArray = Array.isArray;
 
 /**
  * Return a random number between 0 and 1
@@ -49,7 +50,7 @@ var distributions = {
  *                                    randomInt([min, max])
  *                                    pickRandom(array)
  */
-module.exports = function distribution(name) {
+math.distribution = function distribution(name) {
   if (!distributions.hasOwnProperty(name))
     throw new Error('unknown distribution ' + name);
 
@@ -63,10 +64,10 @@ module.exports = function distribution(name) {
 
       random: function(arg1, arg2, arg3) {
         if (arguments.length > 3)
-          throw new error.ArgumentsError('random', arguments.length, 0, 3);
+          throw new util.error.ArgumentsError('random', arguments.length, 0, 3);
 
         // Random matrix
-        else if (Array.isArray(arg1)) {
+        else if (isArray(arg1)) {
           var min = arg2, max = arg3;
           if (max === undefined) max = 1;
           if (min === undefined) min = 0;
@@ -77,7 +78,7 @@ module.exports = function distribution(name) {
         } else {
           // TODO: more precise error message?
           if (arguments.length > 2)
-            throw new error.ArgumentsError('random', arguments.length, 0, 2);
+            throw new util.error.ArgumentsError('random', arguments.length, 0, 2);
           var min = arg1, max = arg2;
           if (max === undefined) max = 1;
           if (min === undefined) min = 0;
@@ -87,13 +88,13 @@ module.exports = function distribution(name) {
 
       randomInt: function(min, max) {
         if (arguments.length > 2)
-          throw new error.ArgumentsError('randomInt', arguments.length, 0, 2);
+          throw new util.error.ArgumentsError('randomInt', arguments.length, 0, 2);
         return Math.floor(this.random(min, max));
       },
 
       pickRandom: function(possibles) {
         if (arguments.length !== 1)
-          throw new error.ArgumentsError('pickRandom', arguments.length, 1);
+          throw new util.error.ArgumentsError('pickRandom', arguments.length, 1);
         return possibles[Math.floor(Math.random() * possibles.length)];
       }
     };
@@ -118,3 +119,9 @@ module.exports = function distribution(name) {
   })(dist);
 
 };
+
+// TODO: put random functions in separate files?
+var uniform = math.distribution('uniform');
+math.random = uniform.random;
+math.randomInt = uniform.randomInt;
+math.pickRandom = uniform.pickRandom;

@@ -1,9 +1,14 @@
-var error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    array = require('../../util/array.js'),
-    object = require('../../util/object.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
 
-    Matrix = require('../../type/Matrix.js');
+    Matrix = require('../../type/Matrix.js').Matrix,
+    collection = require('../../type/collection.js'),
+
+    object = util.object,
+    array = util.array,
+    isNumber = util.number.isNumber,
+    isInteger = util.number.isInteger,
+    isCollection = collection.isCollection;
 
 /**
  * Concatenate two or more matrices
@@ -17,7 +22,7 @@ var error = require('../../util/error.js'),
  * @param {... Array | Matrix} args
  * @return {Array | Matrix} res
  */
-module.exports = function concat (args) {
+math.concat = function concat (args) {
   var i,
       len = arguments.length,
       dim = -1,  // zero-based dimension
@@ -33,12 +38,12 @@ module.exports = function concat (args) {
       asMatrix = true;
     }
 
-    if ((i == len - 1) && number.isNumber(arg)) {
+    if ((i == len - 1) && isNumber(arg)) {
       // last argument contains the dimension on which to concatenate
       prevDim = dim;
       dim = arg;
 
-      if (!number.isInteger(dim) || dim < 0) {
+      if (!isInteger(dim) || dim < 0) {
         throw new TypeError('Dimension number must be a positive integer ' +
             '(dim = ' + dim + ')');
       }
@@ -48,7 +53,7 @@ module.exports = function concat (args) {
             '(' + dim + ' > ' + prevDim + ')');
       }
     }
-    else if (Array.isArray(arg) || arg instanceof Matrix) {
+    else if (isCollection(arg)) {
       // this is a matrix or array
       var matrix = object.clone(arg).valueOf();
       var size = array.size(arg.valueOf());
@@ -63,7 +68,7 @@ module.exports = function concat (args) {
       }
     }
     else {
-      throw new error.UnsupportedTypeError('concat', arg);
+      throw new util.error.UnsupportedTypeError('concat', arg);
     }
   }
 

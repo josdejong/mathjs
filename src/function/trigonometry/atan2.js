@@ -1,7 +1,12 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Complex = require('../../type/Complex.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isCollection = collection.isCollection;
 
 /**
  * Computes the principal value of the arc tangent of y/x in radians
@@ -16,33 +21,33 @@ var collection = require('../../type/collection.js'),
  *
  * @see http://mathworld.wolfram.com/InverseTangent.html
  */
-module.exports = function atan2(y, x) {
+math.atan2 = function atan2(y, x) {
   if (arguments.length != 2) {
-    throw new error.ArgumentsError('atan2', arguments.length, 2);
+    throw new util.error.ArgumentsError('atan2', arguments.length, 2);
   }
 
-  if (number.isNumber(y)) {
-    if (number.isNumber(x)) {
+  if (isNumber(y)) {
+    if (isNumber(x)) {
       return Math.atan2(y, x);
     }
     /* TODO: support for complex computation of atan2
-     else if (Complex.isComplex(x)) {
+     else if (isComplex(x)) {
      return Math.atan2(y.re, x.re);
      }
      */
   }
-  else if (Complex.isComplex(y)) {
-    if (number.isNumber(x)) {
+  else if (isComplex(y)) {
+    if (isNumber(x)) {
       return Math.atan2(y.re, x);
     }
     /* TODO: support for complex computation of atan2
-     else if (Complex.isComplex(x)) {
+     else if (isComplex(x)) {
      return Math.atan2(y.re, x.re);
      }
      */
   }
 
-  if (collection.isCollection(y) || collection.isCollection(x)) {
+  if (isCollection(y) || isCollection(x)) {
     return collection.map2(y, x, atan2);
   }
 
@@ -51,5 +56,5 @@ module.exports = function atan2(y, x) {
     return atan2(y.valueOf(), x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('atan2', y, x);
+  throw new util.error.UnsupportedTypeError('atan2', y, x);
 };

@@ -1,7 +1,9 @@
-var error = require('../../util/error.js'),
-    string = require('../../util/string.js'),
-    Unit = require('../../type/Unit.js'),
-    Range = require('../../type/Range.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Unit = require('../../type/Unit.js').Unit,
+
+    isString = util.string.isString;
 
 /**
  * Create a unit. Depending on the passed arguments, the function
@@ -19,7 +21,7 @@ var error = require('../../util/error.js'),
  * @param {*} args
  * @return {Unit} value
  */
-module.exports = function unit(args) {
+math.unit = function unit(args) {
   switch(arguments.length) {
     case 1:
       // parse a string
@@ -28,7 +30,7 @@ module.exports = function unit(args) {
         // create a clone of the unit
         return arg.clone();
       }
-      else if (string.isString(arg)) {
+      else if (isString(arg)) {
         if (Unit.isPlainUnit(arg)) {
           return new Unit(null, arg); // a pure unit
         }
@@ -51,6 +53,6 @@ module.exports = function unit(args) {
       break;
 
     default:
-      throw new error.ArgumentsError('unit', arguments.length, 1, 2);
+      throw new util.error.ArgumentsError('unit', arguments.length, 1, 2);
   }
 };

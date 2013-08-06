@@ -1,5 +1,6 @@
-var error = require('../../util/error.js'),
-    string = require('../../util/string.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+    string = util.string;
 
 /**
  * Format a value of any type into a string. Interpolate values into the string.
@@ -20,10 +21,10 @@ var error = require('../../util/error.js'),
  * @param {Object} values
  * @return {String} str
  */
-module.exports = function (template, values) {
+math.format = function format (template, values) {
   var num = arguments.length;
   if (num != 1 && num != 2) {
-    throw new error.ArgumentsError('format', num, 1, 2);
+    throw new util.error.ArgumentsError('format', num, 1, 2);
   }
 
   return string.format.apply(string.format, arguments);

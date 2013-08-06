@@ -1,5 +1,4 @@
-var options = require('../options.js'),
-    number = require('./number.js');
+var number = require('./number.js');
 
 /**
  * Test whether value is a String
@@ -47,7 +46,7 @@ exports.format = function format(template, values) {
     // just format a value as string
     var value = arguments[0];
     if (number.isNumber(value)) {
-      return number.format(value, options.precision);
+      return number.format(value);
     }
 
     if (Array.isArray(value)) {

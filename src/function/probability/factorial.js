@@ -1,6 +1,11 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isInteger = util.number.isInteger,
+    isCollection = collection.isCollection;
 
 /**
  * Compute the factorial of a value
@@ -14,13 +19,13 @@ var collection = require('../../type/collection.js'),
  * @Param {Number | Array | Matrix} x
  * @return {Number | Array | Matrix} res
  */
-module.exports = function factorial (x) {
+math.factorial = function factorial (x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('factorial', arguments.length, 1);
+    throw new util.error.ArgumentsError('factorial', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
-    if (!number.isInteger(x) || x < 0) {
+  if (isNumber(x)) {
+    if (!isInteger(x) || x < 0) {
       throw new TypeError('Positive integer value expected in function factorial');
     }
 
@@ -39,7 +44,7 @@ module.exports = function factorial (x) {
     return res;
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, factorial);
   }
 
@@ -48,8 +53,5 @@ module.exports = function factorial (x) {
     return factorial(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('factorial', x);
+  throw new util.error.UnsupportedTypeError('factorial', x);
 };
-
-// require after module.exports because of possible circular references
-var abs = require('../arithmetic/abs.js');

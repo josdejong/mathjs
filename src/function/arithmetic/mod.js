@@ -1,6 +1,10 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isCollection = collection.isCollection;
 
 /**
  * Calculates the modulus, the remainder of an integer division.
@@ -14,21 +18,21 @@ var collection = require('../../type/collection.js'),
  * @param  {Number | Array | Matrix} y
  * @return {Number | Array | Matrix} res
  */
-module.exports = function mod(x, y) {
+math.mod = function mod(x, y) {
   if (arguments.length != 2) {
-    throw new error.ArgumentsError('mod', arguments.length, 2);
+    throw new util.error.ArgumentsError('mod', arguments.length, 2);
   }
 
   // see http://functions.wolfram.com/IntegerFunctions/Mod/
 
-  if (number.isNumber(x) && number.isNumber(y)) {
+  if (isNumber(x) && isNumber(y)) {
     // number % number
     return _mod(x, y);
   }
 
   // TODO: implement mod for complex values
 
-  if (collection.isCollection(x) || collection.isCollection(y)) {
+  if (isCollection(x) || isCollection(y)) {
     return collection.map2(x, y, mod);
   }
 
@@ -37,7 +41,7 @@ module.exports = function mod(x, y) {
     return mod(x.valueOf(), y.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('mod', x, y);
+  throw new util.error.UnsupportedTypeError('mod', x, y);
 };
 
 /**

@@ -1,6 +1,10 @@
-var number = require('./../util/number.js'),
-    Matrix = require('./Matrix.js'),
-    Range = require('./Range.js');
+var util = require('../util/index.js'),
+
+    Matrix = require('./Matrix.js').Matrix,
+    Range = require('./Range.js').Range,
+
+    isArray = Array.isArray,
+    isString = util.string.isString;
 
 // utility methods for strings, objects, and arrays
 
@@ -30,7 +34,7 @@ exports.argsToArray = function argsToArray(args) {
     if (array instanceof Range) {
       array = array.valueOf();
     }
-    if (!Array.isArray(array)) {
+    if (!isArray(array)) {
       array = [array];
     }
   }
@@ -51,7 +55,7 @@ exports.argsToArray = function argsToArray(args) {
  * @returns {boolean} isCollection
  */
 exports.isCollection = function isCollection (x) {
-  return (Array.isArray(x) || (x instanceof Matrix) || (x instanceof Range));
+  return (isArray(x) || (x instanceof Matrix) || (x instanceof Range));
 };
 
 // TODO: write the map, deepMap, map2, and deepMap2 functions in a more concise way
@@ -111,12 +115,12 @@ exports.map2 = function map2(array1, array2, fn) {
 
   // handle Range
   if (array1 instanceof Range || array2 instanceof Range) {
-    // TODO: collection.map2 does not utilize Range.map
+    // TODO: exports.map2 does not utilize Range.map
     return map2(array1.valueOf(), array2.valueOf(), fn);
   }
 
-  if (Array.isArray(array1)) {
-    if (Array.isArray(array2)) {
+  if (isArray(array1)) {
+    if (isArray(array2)) {
       // fn(array, array)
       if (array1.length != array2.length) {
         throw new RangeError('Dimension mismatch ' +
@@ -139,7 +143,7 @@ exports.map2 = function map2(array1, array2, fn) {
     }
   }
   else {
-    if (Array.isArray(array2)) {
+    if (isArray(array2)) {
       // fn(object, array)
       res = [];
       len = array2.length;
@@ -179,8 +183,8 @@ exports.deepMap2 = function deepMap2(array1, array2, fn) {
     return deepMap2(array1.valueOf(), array2.valueOf(), fn);
   }
 
-  if (Array.isArray(array1)) {
-    if (Array.isArray(array2)) {
+  if (isArray(array1)) {
+    if (isArray(array2)) {
       // fn(array, array)
       if (array1.length != array2.length) {
         throw new RangeError('Dimension mismatch ' +
@@ -203,7 +207,7 @@ exports.deepMap2 = function deepMap2(array1, array2, fn) {
     }
   }
   else {
-    if (Array.isArray(array2)) {
+    if (isArray(array2)) {
       // fn(object, array)
       res = [];
       len = array2.length;

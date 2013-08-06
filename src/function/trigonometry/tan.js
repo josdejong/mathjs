@@ -1,8 +1,14 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Complex = require('../../type/Complex.js'),
-    Unit = require('../../type/Unit.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    Unit = require('../../type/Unit.js').Unit,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Calculate the tangent of a value
@@ -16,16 +22,16 @@ var collection = require('../../type/collection.js'),
  *
  * @see http://mathworld.wolfram.com/Tangent.html
  */
-module.exports = function tan(x) {
+math.tan = function tan(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('tan', arguments.length, 1);
+    throw new util.error.ArgumentsError('tan', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     return Math.tan(x);
   }
 
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     var den = Math.exp(-4.0 * x.im) +
         2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) +
         1.0;
@@ -36,14 +42,14 @@ module.exports = function tan(x) {
     );
   }
 
-  if (Unit.isUnit(x)) {
+  if (isUnit(x)) {
     if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
       throw new TypeError ('Unit in function tan is no angle');
     }
     return Math.tan(x.value);
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, tan);
   }
 
@@ -52,5 +58,5 @@ module.exports = function tan(x) {
     return tan(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('tan', x);
+  throw new util.error.UnsupportedTypeError('tan', x);
 };

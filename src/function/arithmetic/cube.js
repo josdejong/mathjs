@@ -1,7 +1,12 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Complex = require('../../type/Complex.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isCollection = collection.isCollection;
 
 /**
  * Compute the cube of a value
@@ -14,20 +19,20 @@ var collection = require('../../type/collection.js'),
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-module.exports = function cube(x) {
+math.cube = function cube(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('cube', arguments.length, 1);
+    throw new util.error.ArgumentsError('cube', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     return x * x * x;
   }
 
-  if (Complex.isComplex(x)) {
-    return multiply(multiply(x, x), x);
+  if (isComplex(x)) {
+    return math.multiply(math.multiply(x, x), x);
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, cube);
   }
 
@@ -36,8 +41,5 @@ module.exports = function cube(x) {
     return cube(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('cube', x);
+  throw new util.error.UnsupportedTypeError('cube', x);
 };
-
-// require after module.exports because of possible circular references
-var multiply = require('./multiply.js');

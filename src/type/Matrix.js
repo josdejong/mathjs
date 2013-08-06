@@ -1,8 +1,10 @@
-var string = require('./../util/string.js'),
-    array = require('./../util/array.js'),
-    object = require('./../util/object.js'),
-    types = require('./../util/types.js'),
-    Range = require('./Range.js');
+var util = require('../util/index.js'),
+    Range = require('./Range.js').Range,
+
+    number = util.number,
+    string = util.string,
+    array = util.array,
+    object = util.object;
 
 /**
  * @constructor Matrix
@@ -52,14 +54,12 @@ function Matrix(data) {
   this._size = array.size(this._data);
 }
 
-exports = module.exports = Matrix;
-
 /**
  * Test whether an object is a Matrix
  * @param {*} object
  * @return {Boolean} isMatrix
  */
-Matrix.isMatrix = exports.isMatrix = function (object) {
+Matrix.isMatrix = function (object) {
   return (object instanceof Matrix);
 };
 
@@ -671,4 +671,6 @@ Matrix.prototype.toString = function () {
   return string.format(this._data);
 };
 
-types.addType('matrix', Matrix);
+// exports
+exports.Matrix = Matrix;
+util.types.addType('matrix', Matrix);

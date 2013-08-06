@@ -1,8 +1,14 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Complex = require('../../type/Complex.js'),
-    Unit = require('../../type/Unit.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    Unit = require('../../type/Unit.js').Unit,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Calculate the cosecant of a value, csc(x) = 1/sin(x)
@@ -14,16 +20,16 @@ var collection = require('../../type/collection.js'),
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-module.exports = function csc(x) {
+math.csc = function csc(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('csc', arguments.length, 1);
+    throw new util.error.ArgumentsError('csc', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     return 1 / Math.sin(x);
   }
 
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     // csc(z) = 1/sin(z) = (2i) / (exp(iz) - exp(-iz))
     var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) -
         0.5 * Math.cos(2.0 * x.re);
@@ -34,14 +40,14 @@ module.exports = function csc(x) {
     );
   }
 
-  if (Unit.isUnit(x)) {
+  if (isUnit(x)) {
     if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
       throw new TypeError ('Unit in function csc is no angle');
     }
     return 1 / Math.sin(x.value);
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, csc);
   }
 
@@ -50,5 +56,5 @@ module.exports = function csc(x) {
     return csc(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('csc', x);
+  throw new util.error.UnsupportedTypeError('csc', x);
 };

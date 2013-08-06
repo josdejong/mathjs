@@ -1,9 +1,15 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    string = require('../../util/string.js'),
-    Complex = require('../../type/Complex.js'),
-    Unit = require('../../type/Unit.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    Unit = require('../../type/Unit.js').Unit,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isString = util.string.isString,
+    isComplex = Complex.isComplex,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Check if value x is smaller y
@@ -18,40 +24,40 @@ var collection = require('../../type/collection.js'),
  * @param  {Number | Complex | Unit | String | Array | Matrix} y
  * @return {Boolean | Array | Matrix} res
  */
-module.exports = function smaller(x, y) {
+math.smaller = function smaller(x, y) {
   if (arguments.length != 2) {
-    throw new error.ArgumentsError('smaller', arguments.length, 2);
+    throw new util.error.ArgumentsError('smaller', arguments.length, 2);
   }
 
-  if (number.isNumber(x)) {
-    if (number.isNumber(y)) {
+  if (isNumber(x)) {
+    if (isNumber(y)) {
       return x < y;
     }
-    else if (Complex.isComplex(y)) {
-      return x < abs(y);
+    else if (isComplex(y)) {
+      return x < math.abs(y);
     }
   }
-  if (Complex.isComplex(x)) {
-    if (number.isNumber(y)) {
-      return abs(x) < y;
+  if (isComplex(x)) {
+    if (isNumber(y)) {
+      return math.abs(x) < y;
     }
-    else if (Complex.isComplex(y)) {
-      return abs(x) < abs(y);
+    else if (isComplex(y)) {
+      return math.abs(x) < math.abs(y);
     }
   }
 
-  if ((Unit.isUnit(x)) && (Unit.isUnit(y))) {
+  if ((isUnit(x)) && (isUnit(y))) {
     if (!x.equalBase(y)) {
       throw new Error('Cannot compare units with different base');
     }
     return x.value < y.value;
   }
 
-  if (string.isString(x) || string.isString(y)) {
+  if (isString(x) || isString(y)) {
     return x < y;
   }
 
-  if (collection.isCollection(x) || collection.isCollection(y)) {
+  if (isCollection(x) || isCollection(y)) {
     return collection.map2(x, y, smaller);
   }
 
@@ -60,8 +66,5 @@ module.exports = function smaller(x, y) {
     return smaller(x.valueOf(), y.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('smaller', x, y);
+  throw new util.error.UnsupportedTypeError('smaller', x, y);
 };
-
-// require after module.exports because of possible circular references
-var abs = require('./abs.js');

@@ -1,7 +1,12 @@
-var error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
     collection = require('../../type/collection.js'),
-    Complex = require('../../type/Complex.js');
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isCollection = collection.isCollection;
 
 /**
  * Round a value towards the nearest integer
@@ -15,25 +20,25 @@ var error = require('../../util/error.js'),
  * @param {Number | Array} [n] number of decimals (by default n=0)
  * @return {Number | Complex | Array | Matrix} res
  */
-module.exports = function round(x, n) {
+math.round = function round(x, n) {
   if (arguments.length != 1 && arguments.length != 2) {
-    throw new error.ArgumentsError('round', arguments.length, 1, 2);
+    throw new util.error.ArgumentsError('round', arguments.length, 1, 2);
   }
 
   if (n == undefined) {
     // round (x)
-    if (number.isNumber(x)) {
+    if (isNumber(x)) {
       return Math.round(x);
     }
 
-    if (Complex.isComplex(x)) {
+    if (isComplex(x)) {
       return Complex.create (
           Math.round(x.re),
           Math.round(x.im)
       );
     }
 
-    if (collection.isCollection(x)) {
+    if (isCollection(x)) {
       return collection.map(x, round);
     }
 
@@ -42,11 +47,11 @@ module.exports = function round(x, n) {
       return round(x.valueOf());
     }
 
-    throw new error.UnsupportedTypeError('round', x);
+    throw new util.error.UnsupportedTypeError('round', x);
   }
   else {
     // round (x, n)
-    if (!number.isNumber(n)) {
+    if (!isNumber(n)) {
       throw new TypeError('Number of decimals in function round must be an integer');
     }
     if (n !== Math.round(n)) {
@@ -56,18 +61,18 @@ module.exports = function round(x, n) {
       throw new Error ('Number of decimals in function round must be in te range of 0-9');
     }
 
-    if (number.isNumber(x)) {
+    if (isNumber(x)) {
       return roundNumber(x, n);
     }
 
-    if (Complex.isComplex(x)) {
+    if (isComplex(x)) {
       return Complex.create (
           roundNumber(x.re, n),
           roundNumber(x.im, n)
       );
     }
 
-    if (collection.isCollection(x) || collection.isCollection(n)) {
+    if (isCollection(x) || isCollection(n)) {
       return collection.map2(x, n, round);
     }
 
@@ -76,7 +81,7 @@ module.exports = function round(x, n) {
       return round(x.valueOf(), n.valueOf());
     }
 
-    throw new error.UnsupportedTypeError('round', x, n);
+    throw new util.error.UnsupportedTypeError('round', x, n);
   }
 };
 

@@ -1,5 +1,5 @@
-var parse = require('../function/utils/parse.js'),
-    Scope = require('./Scope.js');
+var math = require('../math.js'),
+    Scope = require('./Scope.js').Scope;
 
 /**
  * @constructor Parser
@@ -68,7 +68,7 @@ function Parser() {
  * @throws {Error}
  */
 Parser.prototype.parse = function (expr) {
-  return parse(expr, this.scope);
+  return math.parse(expr, this.scope);
 };
 
 /**
@@ -78,7 +78,7 @@ Parser.prototype.parse = function (expr) {
  * @throws {Error}
  */
 Parser.prototype.eval = function (expr) {
-  var node = parse(expr, this.scope);
+  var node = math.parse(expr, this.scope);
   return node.eval();
 };
 
@@ -116,4 +116,4 @@ Parser.prototype.clear = function () {
   this.scope.clear();
 };
 
-module.exports = Parser;
+exports.Parser = Parser;

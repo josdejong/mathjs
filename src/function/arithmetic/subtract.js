@@ -1,9 +1,16 @@
-var error = require('../../util/error.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    Matrix = require('../../type/Matrix.js').Matrix,
+    Unit = require('../../type/Unit.js').Unit,
     collection = require('../../type/collection.js'),
-    number = require('../../util/number.js'),
-    string = require('../../util/string.js'),
-    Complex = require('../../type/Complex.js'),
-    Unit = require('../../type/Unit.js');
+
+    isNumber = util.number.isNumber,
+    isString = util.string.isString,
+    isComplex = Complex.isComplex,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Subtract two values
@@ -17,17 +24,17 @@ var error = require('../../util/error.js'),
  * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-module.exports = function subtract(x, y) {
+math.subtract = function subtract(x, y) {
   if (arguments.length != 2) {
-    throw new error.ArgumentsError('subtract', arguments.length, 2);
+    throw new util.error.ArgumentsError('subtract', arguments.length, 2);
   }
 
-  if (number.isNumber(x)) {
-    if (number.isNumber(y)) {
+  if (isNumber(x)) {
+    if (isNumber(y)) {
       // number - number
       return x - y;
     }
-    else if (Complex.isComplex(y)) {
+    else if (isComplex(y)) {
       // number - complex
       return Complex.create (
           x - y.re,
@@ -35,15 +42,15 @@ module.exports = function subtract(x, y) {
       );
     }
   }
-  else if (Complex.isComplex(x)) {
-    if (number.isNumber(y)) {
+  else if (isComplex(x)) {
+    if (isNumber(y)) {
       // complex - number
       return Complex.create (
           x.re - y,
           x.im
       )
     }
-    else if (Complex.isComplex(y)) {
+    else if (isComplex(y)) {
       // complex - complex
       return Complex.create (
           x.re - y.re,
@@ -51,8 +58,8 @@ module.exports = function subtract(x, y) {
       )
     }
   }
-  else if (Unit.isUnit(x)) {
-    if (Unit.isUnit(y)) {
+  else if (isUnit(x)) {
+    if (isUnit(y)) {
       if (!x.equalBase(y)) {
         throw new Error('Units do not match');
       }
@@ -73,7 +80,7 @@ module.exports = function subtract(x, y) {
     }
   }
 
-  if (collection.isCollection(x) || collection.isCollection(y)) {
+  if (isCollection(x) || isCollection(y)) {
     return collection.map2(x, y, subtract);
   }
 
@@ -82,5 +89,5 @@ module.exports = function subtract(x, y) {
     return subtract(x.valueOf(), y.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('subtract', x, y);
+  throw new util.error.UnsupportedTypeError('subtract', x, y);
 };

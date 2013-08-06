@@ -1,9 +1,12 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    string = require('../../util/string.js'),
-    array = require('../../util/array.js'),
-    Matrix = require('../../type/Matrix.js'),
-    Range = require('../../type/Range.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Matrix = require('../../type/Matrix.js').Matrix,
+    Range = require('../../type/Range.js').Range,
+
+    array = util.array,
+    isString = util.string.isString,
+    isArray = Array.isArray;
 
 /**
  * Get or set a subset of a matrix or string
@@ -20,7 +23,7 @@ var collection = require('../../type/collection.js'),
  * @param args
  * @return res
  */
-module.exports = function subset (args) {
+math.subset = function subset (args) {
   switch (arguments.length) {
     case 2: // get subset
       return _getSubset(arguments[0], arguments[1]);
@@ -29,7 +32,7 @@ module.exports = function subset (args) {
       return _setSubset(arguments[0], arguments[1], arguments[2]);
 
     default: // wrong number of arguments
-      throw new error.ArgumentsError('subset', arguments.length, 2, 3);
+      throw new util.error.ArgumentsError('subset', arguments.length, 2, 3);
   }
 };
 
@@ -47,20 +50,20 @@ module.exports = function subset (args) {
 function _getSubset(value, index) {
   var m, subset;
 
-  if (Array.isArray(value) || value instanceof Range) {
-    m = matrix(value);
+  if (isArray(value) || value instanceof Range) {
+    m = new Matrix(value);
     subset = m.get(index);
     return subset.valueOf();
   }
   else if (value instanceof Matrix) {
     return value.get(index);
   }
-  else if (string.isString(value)) {
+  else if (isString(value)) {
     return _getSubstring(value, index);
   }
   else {
     // scalar
-    m = matrix([value]);
+    m = new Matrix([value]);
     subset = m.get(index);
     return subset.valueOf();
   }
@@ -84,11 +87,11 @@ function _getSubstring(str, index) {
     throw new RangeError('Dimension mismatch (' + index.length + ' != 1)');
   }
 
-  if (Array.isArray(index)) {
+  if (isArray(index)) {
     index = index[0];   // read first dimension
   }
   index = index.valueOf(); // cast from matrix or range to array
-  if (!Array.isArray(index)) {
+  if (!isArray(index)) {
     index = [index];
   }
 
@@ -116,20 +119,20 @@ function _getSubstring(str, index) {
  * @private
  */
 function _setSubset(value, index, replacement) {
-  if (Array.isArray(value) || value instanceof Range) {
-    var m = matrix(clone(value));
+  if (isArray(value) || value instanceof Range) {
+    var m = new Matrix(math.clone(value));
     m.set(index, replacement);
     return m.valueOf();
   }
   else if (value instanceof Matrix) {
     return value.clone().set(index, replacement);
   }
-  else if (string.isString(value)) {
+  else if (isString(value)) {
     return _setSubstring(value, index, replacement);
   }
   else {
     // scalar
-    m = matrix([value]);
+    m = new Matrix([value]);
     m.set(index, replacement);
 
     if (m.isScalar()) {
@@ -162,11 +165,11 @@ function _setSubstring(str, index, replacement) {
   if (index.length != 1) {
     throw new RangeError('Dimension mismatch (' + index.length + ' != 1)');
   }
-  if (Array.isArray(index)) {
+  if (isArray(index)) {
     index = index[0];   // read first dimension
   }
   index = index.valueOf(); // cast from matrix or range to array
-  if (!Array.isArray(index)) {
+  if (!isArray(index)) {
     index = [index];
   }
 
@@ -199,8 +202,3 @@ function _setSubstring(str, index, replacement) {
 
   return chars.join('');
 }
-
-
-// require after module.exports because of possible circular references
-var matrix = require('../../function/construction/matrix.js'),
-    clone = require('../../function/utils/clone.js');

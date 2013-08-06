@@ -1,11 +1,19 @@
-var error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    string = require('../../util/string.js'),
-    array = require('../../util/array.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
 
-    Complex = require('../../type/Complex.js'),
-    Unit = require('../../type/Unit.js'),
-    Matrix = require('../../type/Matrix.js');
+    Complex = require('../../type/Complex.js').Complex,
+    Unit = require('../../type/Unit.js').Unit,
+    Matrix = require('../../type/Matrix.js').Matrix,
+    collection = require('../../type/collection.js'),
+
+    object = util.object,
+    array = util.array,
+    isNumber = util.number.isNumber,
+    isString = util.string.isString,
+    isArray = Array.isArray,
+    isComplex = Complex.isComplex,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Calculate the size of a matrix or scalar
@@ -15,16 +23,16 @@ var error = require('../../util/error.js'),
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-module.exports = function size (x) {
+math.size = function size (x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('size', arguments.length, 1);
+    throw new util.error.ArgumentsError('size', arguments.length, 1);
   }
 
-  if (number.isNumber(x) || Complex.isComplex(x) || Unit.isUnit(x) || x == null) {
+  if (isNumber(x) || isComplex(x) || isUnit(x) || x == null) {
     return [];
   }
 
-  if (string.isString(x)) {
+  if (isString(x)) {
     return [x.length];
   }
 
@@ -41,5 +49,5 @@ module.exports = function size (x) {
     return size(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('size', x);
+  throw new util.error.UnsupportedTypeError('size', x);
 };

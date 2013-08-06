@@ -1,9 +1,11 @@
-var error = require('../../util/error.js'),
-    collection = require('../../type/collection.js'),
-    string = require('../../util/string.js'),
-    array = require('../../util/array.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
 
-    Matrix = require('../../type/Matrix.js');
+    Matrix = require('../../type/Matrix.js').Matrix,
+
+    string = util.string,
+    isNumber = util.number.isNumber,
+    isInteger = util.number.isInteger;
 
 /**
  * Calculate the inverse of a matrix
@@ -15,41 +17,41 @@ var error = require('../../util/error.js'),
  * @param {Array | Matrix} x
  * @return {Array | Matrix} inv
  */
-module.exports = function inv (x) {
+math.inv = function inv (x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('inv', arguments.length, 1);
+    throw new util.error.ArgumentsError('inv', arguments.length, 1);
   }
-  var s = size(x).valueOf();
-  switch (s.length) {
+  var size = math.size(x).valueOf();
+  switch (size.length) {
     case 0:
       // scalar
-      return divide(1, x);
+      return math.divide(1, x);
       break;
 
     case 1:
       // vector
-      if (s[0] == 1) {
+      if (size[0] == 1) {
         if (x instanceof Matrix) {
           return new Matrix([
-            divide(1, x.valueOf()[0])
+            math.divide(1, x.valueOf()[0])
           ]);
         }
         else {
           return [
-            divide(1, x[0])
+            math.divide(1, x[0])
           ];
         }
       }
       else {
         throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(s) + ')');
+            '(size: ' + string.format(size) + ')');
       }
       break;
 
     case 2:
       // two dimensional array
-      var rows = s[0];
-      var cols = s[1];
+      var rows = size[0];
+      var cols = size[1];
       if (rows == cols) {
         if (x instanceof Matrix) {
           return new Matrix(
@@ -63,7 +65,7 @@ module.exports = function inv (x) {
       }
       else {
         throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(s) + ')');
+            '(size: ' + string.format(size) + ')');
       }
       break;
 
@@ -92,23 +94,23 @@ function _inv (matrix, rows, cols){
       throw Error('Cannot calculate inverse, determinant is zero');
     }
     return [[
-      divide(1, value)
+      math.divide(1, value)
     ]];
   }
   else if (rows == 2) {
     // this is a 2 x 2 matrix
-    var d = det(matrix);
+    var d = math.det(matrix);
     if (d == 0) {
       throw Error('Cannot calculate inverse, determinant is zero');
     }
     return [
       [
-        divide(matrix[1][1], d),
-        divide(unary(matrix[0][1]), d)
+        math.divide(matrix[1][1], d),
+        math.divide(math.unary(matrix[0][1]), d)
       ],
       [
-        divide(unary(matrix[1][0]), d),
-        divide(matrix[0][0], d)
+        math.divide(math.unary(matrix[1][0]), d),
+        math.divide(matrix[0][0], d)
       ]
     ];
   }
@@ -127,7 +129,7 @@ function _inv (matrix, rows, cols){
 
     // create an identity matrix which in the end will contain the
     // matrix inverse
-    var B = eye(rows).valueOf();
+    var B = math.eye(rows).valueOf();
 
     // loop over all columns, and perform row reductions
     for (var c = 0; c < cols; c++) {
@@ -154,15 +156,15 @@ function _inv (matrix, rows, cols){
         if(r != c) {
           // eliminate value at column c and row r
           if (Ar[c] != 0) {
-            f = divide(unary(Ar[c]), Ac[c]);
+            f = math.divide(math.unary(Ar[c]), Ac[c]);
 
             // add (f * row c) to row r to eliminate the value
             // at column c
             for (s = c; s < cols; s++) {
-              Ar[s] = add(Ar[s], multiply(f, Ac[s]));
+              Ar[s] = math.add(Ar[s], math.multiply(f, Ac[s]));
             }
             for (s = 0; s < cols; s++) {
-              Br[s] = add(Br[s], multiply(f, Bc[s]));
+              Br[s] = math.add(Br[s],  math.multiply(f, Bc[s]));
             }
           }
         }
@@ -171,10 +173,10 @@ function _inv (matrix, rows, cols){
           // divide each value on row r with the value at Acc
           f = Ac[c];
           for (s = c; s < cols; s++) {
-            Ar[s] = divide(Ar[s], f);
+            Ar[s] = math.divide(Ar[s], f);
           }
           for (s = 0; s < cols; s++) {
-            Br[s] = divide(Br[s], f);
+            Br[s] = math.divide(Br[s], f);
           }
         }
       }
@@ -182,12 +184,3 @@ function _inv (matrix, rows, cols){
     return B;
   }
 }
-
-// require after module.exports because of possible circular references
-var add = require('../arithmetic/add.js'),
-    unary = require('../arithmetic/unary.js'),
-    multiply = require('../arithmetic/multiply.js'),
-    divide = require('../arithmetic/divide.js'),
-    det = require('../matrix/det.js'),
-    eye = require('../matrix/eye.js'),
-    size = require('../matrix/size.js');

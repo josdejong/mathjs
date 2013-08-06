@@ -1,7 +1,12 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Complex = require('../../type/Complex.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isCollection =collection.isCollection,
+    isComplex = Complex.isComplex;
 
 /**
  * Compute the argument of a complex value.
@@ -14,20 +19,20 @@ var collection = require('../../type/collection.js'),
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} res
  */
-module.exports = function arg(x) {
+math.arg = function arg(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('arg', arguments.length, 1);
+    throw new util.error.ArgumentsError('arg', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     return Math.atan2(0, x);
   }
 
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     return Math.atan2(x.im, x.re);
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, arg);
   }
 
@@ -37,8 +42,5 @@ module.exports = function arg(x) {
   }
 
   // handle other types just as non-complex values
-  return atan2(0, x);
+  return math.atan2(0, x);
 };
-
-// require after module.exports because of possible circular references
-var atan2 = require('../trigonometry/atan2.js');

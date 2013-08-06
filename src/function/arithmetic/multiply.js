@@ -1,12 +1,17 @@
-var error = require('../../util/error.js'),
-    collection = require('../../type/collection.js'),
-    number = require('../../util/number.js'),
-    string = require('../../util/string.js'),
-    array = require('../../util/array.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
 
-    Complex = require('../../type/Complex.js'),
-    Matrix = require('../../type/Matrix.js'),
-    Unit = require('../../type/Unit.js');
+    Complex = require('../../type/Complex.js').Complex,
+    Matrix = require('../../type/Matrix.js').Matrix,
+    Unit = require('../../type/Unit.js').Unit,
+    collection = require('../../type/collection.js'),
+
+    array = util.array,
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isArray = Array.isArray,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Multiply two values.
@@ -18,45 +23,45 @@ var error = require('../../util/error.js'),
  * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-module.exports = function multiply(x, y) {
+math.multiply = function multiply(x, y) {
   if (arguments.length != 2) {
-    throw new error.ArgumentsError('multiply', arguments.length, 2);
+    throw new util.error.ArgumentsError('multiply', arguments.length, 2);
   }
 
-  if (number.isNumber(x)) {
-    if (number.isNumber(y)) {
+  if (isNumber(x)) {
+    if (isNumber(y)) {
       // number * number
       return x * y;
     }
-    else if (Complex.isComplex(y)) {
+    else if (isComplex(y)) {
       // number * complex
       return _multiplyComplex (new Complex(x, 0), y);
     }
-    else if (Unit.isUnit(y)) {
+    else if (isUnit(y)) {
       res = y.clone();
       res.value *= x;
       return res;
     }
   }
-  else if (Complex.isComplex(x)) {
-    if (number.isNumber(y)) {
+  else if (isComplex(x)) {
+    if (isNumber(y)) {
       // complex * number
       return _multiplyComplex (x, new Complex(y, 0));
     }
-    else if (Complex.isComplex(y)) {
+    else if (isComplex(y)) {
       // complex * complex
       return _multiplyComplex (x, y);
     }
   }
-  else if (Unit.isUnit(x)) {
-    if (number.isNumber(y)) {
+  else if (isUnit(x)) {
+    if (isNumber(y)) {
       res = x.clone();
       res.value *= y;
       return res;
     }
   }
-  else if (Array.isArray(x)) {
-    if (Array.isArray(y)) {
+  else if (isArray(x)) {
+    if (isArray(y)) {
       // matrix * matrix
       var sizeX = array.size(x);
       var sizeY = array.size(y);
@@ -88,7 +93,7 @@ module.exports = function multiply(x, y) {
           var result = null;
           for (var n = 0; n < num; n++) {
             var p = multiply(x[r][n], y[n][c]);
-            result = (result == null) ? p : add(result, p);
+            result = (result == null) ? p : math.add(result, p);
           }
           res[r][c] = result;
         }
@@ -108,7 +113,7 @@ module.exports = function multiply(x, y) {
     return new Matrix(multiply(x.valueOf(), y.valueOf()));
   }
 
-  if (Array.isArray(y)) {
+  if (isArray(y)) {
     // scalar * matrix
     return collection.map2(x, y, multiply);
   }
@@ -121,7 +126,7 @@ module.exports = function multiply(x, y) {
     return multiply(x.valueOf(), y.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('multiply', x, y);
+  throw new util.error.UnsupportedTypeError('multiply', x, y);
 };
 
 /**
@@ -203,6 +208,3 @@ function _multiplyComplex (x, y) {
     }
   }
 }
-
-// require after module.exports because of possible circular references
-var add = require('./add.js');

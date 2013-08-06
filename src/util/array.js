@@ -257,3 +257,10 @@ exports.resize = function resize(array, size, defaultValue) {
   // recursively resize
   _resize(array, size, 0, defaultValue);
 };
+
+/**
+ * Test whether an object is an array
+ * @param {*} value
+ * @return {Boolean} isArray
+ */
+exports.isArray = Array.isArray;

@@ -1,5 +1,6 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+    collection = require('../../type/collection.js');
 
 /**
  * Divide two values element wise.
@@ -11,13 +12,10 @@ var collection = require('../../type/collection.js'),
  * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-module.exports = function edivide(x, y) {
+math.edivide = function edivide(x, y) {
   if (arguments.length != 2) {
-    throw new error.ArgumentsError('edivide', arguments.length, 2);
+    throw new util.error.ArgumentsError('edivide', arguments.length, 2);
   }
 
-  return collection.deepMap2(x, y, divide);
+  return collection.deepMap2(x, y, math.divide);
 };
-
-// require after module.exports because of possible circular references
-var divide = require('./divide.js');

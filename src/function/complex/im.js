@@ -1,7 +1,12 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Complex = require('../../type/Complex.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isCollection =collection.isCollection,
+    isComplex = Complex.isComplex;
 
 /**
  * Get the imaginary part of a complex number.
@@ -13,20 +18,20 @@ var collection = require('../../type/collection.js'),
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Array | Matrix} im
  */
-module.exports = function im(x) {
+math.im = function im(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('im', arguments.length, 1);
+    throw new util.error.ArgumentsError('im', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     return 0;
   }
 
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     return x.im;
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, im);
   }
 

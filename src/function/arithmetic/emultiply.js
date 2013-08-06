@@ -1,5 +1,6 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+    collection = require('../../type/collection.js');
 
 /**
  * Multiply two values element wise.
@@ -11,13 +12,10 @@ var collection = require('../../type/collection.js'),
  * @param  {Number | Complex | Unit | Array | Matrix} y
  * @return {Number | Complex | Unit | Array | Matrix} res
  */
-module.exports = function emultiply(x, y) {
+math.emultiply = function emultiply(x, y) {
   if (arguments.length != 2) {
-    throw new error.ArgumentsError('emultiply', arguments.length, 2);
+    throw new util.error.ArgumentsError('emultiply', arguments.length, 2);
   }
 
-  return collection.deepMap2(x, y, multiply);
+  return collection.deepMap2(x, y, math.multiply);
 };
-
-// require after module.exports because of possible circular references
-var multiply = require('./multiply.js');

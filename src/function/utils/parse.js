@@ -1,49 +1,28 @@
-var range = require('./../construction/range.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
 
-    error = require('./../../util/error.js'),
-    number = require('./../../util/number.js'),
-    string = require('./../../util/string.js'),
-    collection = require('../../type/collection.js'),
+    isString = util.string.isString,
+    isArray = Array.isArray,
 
     // types
-    Complex = require('./../../type/Complex.js'),
-    Matrix = require('./../../type/Matrix.js'),
-    Unit = require('./../../type/Unit.js'),
-    Range = require('./../../type/Range.js'),
-
-    // operators
-    unary = require('../../function/arithmetic/unary.js'),
-    add = require('../../function/arithmetic/add.js'),
-    subtract = require('../../function/arithmetic/subtract.js'),
-    multiply = require('../../function/arithmetic/multiply.js'),
-    divide = require('../../function/arithmetic/divide.js'),
-    mod = require('../../function/arithmetic/mod.js'),
-    pow = require('../../function/arithmetic/pow.js'),
-    emultiply = require('../../function/arithmetic/emultiply.js'),
-    edivide = require('../../function/arithmetic/edivide.js'),
-    epow = require('../../function/arithmetic/epow.js'),
-    equal = require('../../function/arithmetic/equal.js'),
-    unequal = require('../../function/arithmetic/unequal.js'),
-    smaller = require('../../function/arithmetic/smaller.js'),
-    smallereq = require('../../function/arithmetic/smallereq.js'),
-    larger = require('../../function/arithmetic/larger.js'),
-    largereq = require('../../function/arithmetic/largereq.js'),
-    factorial = require('../../function/probability/factorial.js'),
-    transpose = require('../../function/matrix/transpose.js'),
-    unit_in = require('../../function/units/in.js'),
+    Complex = require('./../../type/Complex.js').Complex,
+    Matrix = require('./../../type/Matrix.js').Matrix,
+    Unit = require('./../../type/Unit.js').Unit,
+    Range = require('./../../type/Range.js').Range,
+    collection = require('../../type/collection.js'),
 
     // scope and nodes
-    Scope = require('./../../expr/Scope.js'),
-    handlers = require('../../expr/node/handlers.js'),
-    AssignmentNode = require('../../expr/node/AssignmentNode.js'),
-    BlockNode = require('../../expr/node/BlockNode.js'),
-    ConstantNode = require('../../expr/node/ConstantNode.js'),
-    FunctionNode = require('../../expr/node/FunctionNode.js'),
-    MatrixNode = require('../../expr/node/MatrixNode.js'),
-    OperatorNode = require('../../expr/node/OperatorNode.js'),
-    ParamsNode = require('../../expr/node/ParamsNode.js'),
-    SymbolNode = require('../../expr/node/SymbolNode.js'),
-    UpdateNode = require('../../expr/node/UpdateNode.js');
+    Scope = require('./../../expr/Scope.js').Scope,
+    AssignmentNode = require('../../expr/node/AssignmentNode.js').AssignmentNode,
+    BlockNode = require('../../expr/node/BlockNode.js').BlockNode,
+    ConstantNode = require('../../expr/node/ConstantNode.js').ConstantNode,
+    FunctionNode = require('../../expr/node/FunctionNode.js').FunctionNode,
+    MatrixNode = require('../../expr/node/MatrixNode.js').MatrixNode,
+    OperatorNode = require('../../expr/node/OperatorNode.js').OperatorNode,
+    ParamsNode = require('../../expr/node/ParamsNode.js').ParamsNode,
+    SymbolNode = require('../../expr/node/SymbolNode.js').SymbolNode,
+    UpdateNode = require('../../expr/node/UpdateNode.js').UpdateNode,
+    handlers = require('../../expr/node/handlers.js');
 
 /**
  * Parse an expression. Returns a node tree, which can be evaluated by
@@ -75,9 +54,9 @@ var range = require('./../construction/range.js'),
  * @return {Node | Node[]} node
  * @throws {Error}
  */
-function parse (expr, scope) {
+math.parse = function parse (expr, scope) {
   if (arguments.length != 1 && arguments.length != 2) {
-    throw new error.ArgumentsError('parse', arguments.length, 1, 2);
+    throw new util.error.ArgumentsError('parse', arguments.length, 1, 2);
   }
 
   // instantiate a scope
@@ -94,12 +73,12 @@ function parse (expr, scope) {
     parseScope = new Scope();
   }
 
-  if (string.isString(expr)) {
+  if (isString(expr)) {
     // parse a single expression
     expression = expr || '';
     return parseStart(parseScope);
   }
-  else if (Array.isArray(expr) || expr instanceof Matrix) {
+  else if (isArray(expr) || expr instanceof Matrix) {
     // parse an array or matrix with expressions
     return collection.map(expr, function (elem) {
       expression = elem || '';
@@ -605,7 +584,7 @@ function parseRange (scope) {
     if (params.length) {
       // create a range constructor
       name = 'range';
-      fn = range;
+      fn = math.range;
       node = new OperatorNode(name, fn, params);
     }
   }
@@ -627,7 +606,7 @@ function parseConditions (scope) {
   // TODO: precedence of And above Or?
   // TODO: implement a method for unit to number conversion
   operators = {
-    'in' : unit_in
+    'in' : math['in']
     /* TODO: implement conditions
      'and' : 'and',
      '&&' : 'and',
@@ -691,12 +670,12 @@ function parseComparison (scope) {
   node = parseAddSubtract(scope);
 
   operators = {
-    '==': equal,
-    '!=': unequal,
-    '<': smaller,
-    '>': larger,
-    '<=': smallereq,
-    '>=': largereq
+    '==': math.equal,
+    '!=': math.unequal,
+    '<': math.smaller,
+    '>': math.larger,
+    '<=': math.smallereq,
+    '>=': math.largereq
   };
   while (operators[token] !== undefined) {
     name = token;
@@ -722,8 +701,8 @@ function parseAddSubtract (scope)  {
   node = parseMultiplyDivide(scope);
 
   operators = {
-    '+': add,
-    '-': subtract
+    '+': math.add,
+    '-': math.subtract
   };
   while (operators[token] !== undefined) {
     name = token;
@@ -749,12 +728,12 @@ function parseMultiplyDivide (scope) {
   node = parseUnary(scope);
 
   operators = {
-    '*': multiply,
-    '.*': emultiply,
-    '/': divide,
-    './': edivide,
-    '%': mod,
-    'mod': mod
+    '*': math.multiply,
+    '.*': math.emultiply,
+    '/': math.divide,
+    './': math.edivide,
+    '%': math.mod,
+    'mod': math.mod
   };
 
   while (operators[token] !== undefined) {
@@ -780,7 +759,7 @@ function parseUnary (scope) {
 
   if (token == '-') {
     name = token;
-    fn = unary;
+    fn = math.unary;
     getToken();
     params = [parseUnary(scope)];
 
@@ -817,7 +796,7 @@ function parsePow (scope) {
   while (nodes.length) {
     leftNode = nodes.pop();
     name = ops.pop();
-    fn = (name == '^') ? pow : epow;
+    fn = (name == '^') ? math.pow : math.epow;
     params = [leftNode, node];
     node = new OperatorNode(name, fn, params);
   }
@@ -838,7 +817,7 @@ function parseFactorial (scope)  {
 
   while (token == '!') {
     name = token;
-    fn = factorial;
+    fn = math.factorial;
     getToken();
     params = [node];
 
@@ -861,7 +840,7 @@ function parseTranspose (scope)  {
 
   while (token == '\'') {
     name = token;
-    fn = transpose;
+    fn = math.transpose;
     getToken();
     params = [node];
 
@@ -1344,5 +1323,3 @@ function createTypeError(message) {
 function createError (message) {
   return new Error(createErrorMessage(message));
 }
-
-module.exports = parse;

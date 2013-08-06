@@ -1,6 +1,11 @@
-var error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    collection = require('../../type/collection.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isInteger = util.number.isInteger,
+    isCollection = collection.isCollection;
 
 /**
  * Calculate the greatest common divisor for two or more values or arrays.
@@ -13,15 +18,15 @@ var error = require('../../util/error.js'),
  * @param {... Number | Array | Matrix} args    two or more integer numbers
  * @return {Number | Array | Matrix} greatest common divisor
  */
-module.exports = function gcd(args) {
+math.gcd = function gcd(args) {
   var a = arguments[0],
       b = arguments[1],
       t;
 
   if (arguments.length == 2) {
     // two arguments
-    if (number.isNumber(a) && number.isNumber(b)) {
-      if (!number.isInteger(a) || !number.isInteger(b)) {
+    if (isNumber(a) && isNumber(b)) {
+      if (!isInteger(a) || !isInteger(b)) {
         throw new Error('Parameters in function gcd must be integer numbers');
       }
 
@@ -35,7 +40,7 @@ module.exports = function gcd(args) {
     }
 
     // evaluate gcd element wise
-    if (collection.isCollection(a) || collection.isCollection(b)) {
+    if (isCollection(a) || isCollection(b)) {
       return collection.map2(a, b, gcd);
     }
 
@@ -44,7 +49,7 @@ module.exports = function gcd(args) {
       return gcd(a.valueOf(), b.valueOf());
     }
 
-    throw new error.UnsupportedTypeError('gcd', a, b);
+    throw new util.error.UnsupportedTypeError('gcd', a, b);
   }
 
   if (arguments.length > 2) {

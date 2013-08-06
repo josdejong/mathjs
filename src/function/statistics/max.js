@@ -1,7 +1,10 @@
-var error = require('../../util/error.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Matrix = require('../../type/Matrix.js').Matrix,
     collection = require('../../type/collection.js'),
-    array = require('../../util/array.js'),
-    Matrix = require('../../type/Matrix.js');
+
+    isCollection = collection.isCollection;
 
 /**
  * Compute the maximum value of a list of values
@@ -12,18 +15,18 @@ var error = require('../../util/error.js'),
  * @param {... *} args  A single matrix or or multiple scalar values
  * @return {*} res
  */
-module.exports = function max(args) {
+math.max = function max(args) {
   if (arguments.length == 0) {
     throw new Error('Function max requires one or more parameters (0 provided)');
   }
 
-  if (collection.isCollection(args)) {
+  if (isCollection(args)) {
     // max([a, b, c, d, ...]])
     if (arguments.length > 1) {
       throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
     }
 
-    var size = array.size(args.valueOf());
+    var size = math.size(args).valueOf();
 
     if (size.length == 1) {
       // vector
@@ -68,7 +71,7 @@ function _max(array) {
   var res = array[0];
   for (var i = 1, iMax = array.length; i < iMax; i++) {
     var value = array[i];
-    if (larger(value, res)) {
+    if (math.larger(value, res)) {
       res = value;
     }
   }
@@ -89,7 +92,7 @@ function _max2(array, rows, cols) {
     var max = array[0][c];
     for (var r = 1; r < rows; r++) {
       var value = array[r][c];
-      if (larger(value, max)) {
+      if (math.larger(value, max)) {
         max = value;
       }
     }
@@ -97,6 +100,3 @@ function _max2(array, rows, cols) {
   }
   return res;
 }
-
-// require after module.exports because of possible circular references
-var larger = require('../arithmetic/larger.js');

@@ -1,4 +1,4 @@
-var Node = require('./Node.js');
+var Node = require('./Node.js').Node;
 
 /**
  * @constructor SymbolNode
@@ -39,4 +39,4 @@ SymbolNode.prototype.toString = function() {
   return this.name;
 };
 
-module.exports = SymbolNode;
+exports.SymbolNode = SymbolNode;

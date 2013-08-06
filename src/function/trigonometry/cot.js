@@ -1,8 +1,14 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    Complex = require('../../type/Complex.js'),
-    Unit = require('../../type/Unit.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    Unit = require('../../type/Unit.js').Unit,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Calculate the cotangent of a value. cot(x) is defined as 1 / tan(x)
@@ -14,16 +20,16 @@ var collection = require('../../type/collection.js'),
  * @param {Number | Complex | Unit | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-module.exports = function cot(x) {
+math.cot = function cot(x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('cot', arguments.length, 1);
+    throw new util.error.ArgumentsError('cot', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     return 1 / Math.tan(x);
   }
 
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     var den = Math.exp(-4.0 * x.im) -
         2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) + 1.0;
 
@@ -33,14 +39,14 @@ module.exports = function cot(x) {
     );
   }
 
-  if (Unit.isUnit(x)) {
+  if (isUnit(x)) {
     if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
       throw new TypeError ('Unit in function cot is no angle');
     }
     return 1 / Math.tan(x.value);
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, cot);
   }
 
@@ -49,5 +55,5 @@ module.exports = function cot(x) {
     return cot(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('cot', x);
+  throw new util.error.UnsupportedTypeError('cot', x);
 };

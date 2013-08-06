@@ -1,113 +1,101 @@
-// expression
-exports.expr = require('./expr/index.js');
-
-// types
-exports.type = require('./type/index.js');
+// main namespace
+module.exports = require('./math.js');
 
 // functions - arithmetic
-exports.abs = require('./function/arithmetic/abs.js');
-exports.add = require('./function/arithmetic/add.js');
-exports.ceil = require('./function/arithmetic/ceil.js');
-exports.cube = require('./function/arithmetic/cube.js');
-exports.divide = require('./function/arithmetic/divide.js');
-exports.edivide = require('./function/arithmetic/edivide.js');
-exports.emultiply = require('./function/arithmetic/emultiply.js');
-exports.epow = require('./function/arithmetic/epow.js');
-exports.equal = require('./function/arithmetic/equal.js');
-exports.exp = require('./function/arithmetic/exp.js');
-exports.fix = require('./function/arithmetic/fix.js');
-exports.floor = require('./function/arithmetic/floor.js');
-exports.gcd = require('./function/arithmetic/gcd.js');
-exports.larger = require('./function/arithmetic/larger.js');
-exports.largereq = require('./function/arithmetic/largereq.js');
-exports.lcm = require('./function/arithmetic/lcm.js');
-exports.log = require('./function/arithmetic/log.js');
-exports.log10 = require('./function/arithmetic/log10.js');
-exports.mod = require('./function/arithmetic/mod.js');
-exports.multiply = require('./function/arithmetic/multiply.js');
-exports.pow = require('./function/arithmetic/pow.js');
-exports.round = require('./function/arithmetic/round.js');
-exports.sign = require('./function/arithmetic/sign.js');
-exports.smaller = require('./function/arithmetic/smaller.js');
-exports.smallereq = require('./function/arithmetic/smallereq.js');
-exports.sqrt = require('./function/arithmetic/sqrt.js');
-exports.square = require('./function/arithmetic/square.js');
-exports.subtract = require('./function/arithmetic/subtract.js');
-exports.unary = require('./function/arithmetic/unary.js');
-exports.unequal = require('./function/arithmetic/unequal.js');
-exports.xgcd = require('./function/arithmetic/xgcd.js');
+require('./function/arithmetic/abs.js');
+require('./function/arithmetic/add.js');
+require('./function/arithmetic/add.js');
+require('./function/arithmetic/ceil.js');
+require('./function/arithmetic/cube.js');
+require('./function/arithmetic/divide.js');
+require('./function/arithmetic/edivide.js');
+require('./function/arithmetic/emultiply.js');
+require('./function/arithmetic/epow.js');
+require('./function/arithmetic/equal.js');
+require('./function/arithmetic/exp.js');
+require('./function/arithmetic/fix.js');
+require('./function/arithmetic/floor.js');
+require('./function/arithmetic/gcd.js');
+require('./function/arithmetic/larger.js');
+require('./function/arithmetic/largereq.js');
+require('./function/arithmetic/lcm.js');
+require('./function/arithmetic/log.js');
+require('./function/arithmetic/log10.js');
+require('./function/arithmetic/mod.js');
+require('./function/arithmetic/multiply.js');
+require('./function/arithmetic/pow.js');
+require('./function/arithmetic/round.js');
+require('./function/arithmetic/sign.js');
+require('./function/arithmetic/smaller.js');
+require('./function/arithmetic/smallereq.js');
+require('./function/arithmetic/sqrt.js');
+require('./function/arithmetic/square.js');
+require('./function/arithmetic/subtract.js');
+require('./function/arithmetic/unary.js');
+require('./function/arithmetic/unequal.js');
+require('./function/arithmetic/xgcd.js');
 
 // functions - complex
-exports.arg = require('./function/complex/arg.js');
-exports.conj = require('./function/complex/conj.js');
-exports.re = require('./function/complex/re.js');
-exports.im = require('./function/complex/im.js');
+require('./function/complex/arg.js');
+require('./function/complex/conj.js');
+require('./function/complex/re.js');
+require('./function/complex/im.js');
 
 // functions - construction
-exports.boolean = require('./function/construction/boolean.js');
-exports.complex = require('./function/construction/complex.js');
-exports.matrix = require('./function/construction/matrix.js');
-exports.number = require('./function/construction/number.js');
-exports.parser = require('./function/construction/parser.js');
-exports.range = require('./function/construction/range.js');
-exports.string = require('./function/construction/string.js');
-exports.unit = require('./function/construction/unit.js');
+require('./function/construction/boolean.js');
+require('./function/construction/complex.js');
+require('./function/construction/matrix.js');
+require('./function/construction/number.js');
+require('./function/construction/parser.js');
+require('./function/construction/range.js');
+require('./function/construction/string.js');
+require('./function/construction/unit.js');
 
 // functions - matrix
-exports.concat = require('./function/matrix/concat.js');
-exports.det = require('./function/matrix/det.js');
-exports.diag = require('./function/matrix/diag.js');
-exports.eye = require('./function/matrix/eye.js');
-exports.inv = require('./function/matrix/inv.js');
-exports.ones = require('./function/matrix/ones.js');
-exports.size = require('./function/matrix/size.js');
-exports.squeeze = require('./function/matrix/squeeze.js');
-exports.subset = require('./function/matrix/subset.js');
-exports.transpose = require('./function/matrix/transpose.js');
-exports.zeros = require('./function/matrix/zeros.js');
+require('./function/matrix/concat.js');
+require('./function/matrix/det.js');
+require('./function/matrix/diag.js');
+require('./function/matrix/eye.js');
+require('./function/matrix/inv.js');
+require('./function/matrix/ones.js');
+require('./function/matrix/size.js');
+require('./function/matrix/squeeze.js');
+require('./function/matrix/subset.js');
+require('./function/matrix/transpose.js');
+require('./function/matrix/zeros.js');
 
 // functions - probability
-exports.factorial = require('./function/probability/factorial.js');
-exports.distribution = require('./function/probability/random.js');
-var uniform = exports.distribution('uniform');
-exports.random = uniform.random;
-exports.randomInt = uniform.randomInt;
-exports.pickRandom = uniform.pickRandom;
-exports.randomMatrix = uniform.randomMatrix;
+require('./function/probability/factorial.js');
+require('./function/probability/random.js');
 
 // functions - statistics
-exports.min = require('./function/statistics/min.js');
-exports.max = require('./function/statistics/max.js');
+require('./function/statistics/min.js');
+require('./function/statistics/max.js');
 
 // functions - trigonometry
-exports.acos = require('./function/trigonometry/acos.js');
-exports.asin = require('./function/trigonometry/asin.js');
-exports.atan = require('./function/trigonometry/atan.js');
-exports.atan2 = require('./function/trigonometry/atan2.js');
-exports.cos = require('./function/trigonometry/cos.js');
-exports.cot = require('./function/trigonometry/cot.js');
-exports.csc = require('./function/trigonometry/csc.js');
-exports.sec = require('./function/trigonometry/sec.js');
-exports.sin = require('./function/trigonometry/sin.js');
-exports.tan = require('./function/trigonometry/tan.js');
+require('./function/trigonometry/acos.js');
+require('./function/trigonometry/asin.js');
+require('./function/trigonometry/atan.js');
+require('./function/trigonometry/atan2.js');
+require('./function/trigonometry/cos.js');
+require('./function/trigonometry/cot.js');
+require('./function/trigonometry/csc.js');
+require('./function/trigonometry/sec.js');
+require('./function/trigonometry/sin.js');
+require('./function/trigonometry/tan.js');
 
 // functions - units
-exports['in'] = require('./function/units/in.js');
+require('./function/units/in.js');
 
 // functions - utils
-exports.clone =  require('./function/utils/clone.js');
-exports['eval'] =  require('./function/utils/eval.js');
-exports.format =  require('./function/utils/format.js');
-exports.help =  require('./function/utils/help.js');
-exports['import'] =  require('./function/utils/import.js');
-exports.parse =  require('./function/utils/parse.js');
-exports.select =  require('./function/utils/select.js');
-exports['typeof'] =  require('./function/utils/typeof.js');
+require('./function/utils/clone.js');
+require('./function/utils/eval.js');
+require('./function/utils/format.js');
+require('./function/utils/help.js');
+require('./function/utils/import.js');
+require('./function/utils/parse.js');
+require('./function/utils/select.js');
+require('./function/utils/typeof.js');
 
 // constants
-var object = require('./util/object.js');
-var constants = require('./constants.js');
-object.extend(exports, constants);
-
-// docs
-exports.docs = require('./docs/index.js');
+require('./constants.js');

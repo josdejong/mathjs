@@ -1,4 +1,7 @@
-var Parser = require('../../expr/Parser.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Parser = require('../../expr/Parser.js').Parser;
 
 /**
  * Create a parser. The function creates a new math.expr.Parser object.
@@ -36,6 +39,6 @@ var Parser = require('../../expr/Parser.js');
  *
  * @return {Parser} Parser
  */
-module.exports = function parser() {
+math.parser = function parser() {
   return new Parser();
 };

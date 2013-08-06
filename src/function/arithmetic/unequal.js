@@ -1,9 +1,15 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
-    string = require('../../util/string.js'),
-    Complex = require('../../type/Complex.js'),
-    Unit = require('../../type/Unit.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    Unit = require('../../type/Unit.js').Unit,
+    collection = require('../../type/collection.js'),
+
+    isNumber = util.number.isNumber,
+    isString = util.string.isString,
+    isComplex = Complex.isComplex,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Check if value x unequals y, x != y
@@ -12,41 +18,41 @@ var collection = require('../../type/collection.js'),
  * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
  * @return {Boolean | Array | Matrix} res
  */
-module.exports = function unequal(x, y) {
+math.unequal = function unequal(x, y) {
   if (arguments.length != 2) {
-    throw new error.ArgumentsError('unequal', arguments.length, 2);
+    throw new util.error.ArgumentsError('unequal', arguments.length, 2);
   }
 
-  if (number.isNumber(x)) {
-    if (number.isNumber(y)) {
+  if (isNumber(x)) {
+    if (isNumber(y)) {
       return x != y;
     }
-    else if (Complex.isComplex(y)) {
+    else if (isComplex(y)) {
       return (x != y.re) || (y.im != 0);
     }
   }
 
-  if (Complex.isComplex(x)) {
-    if (number.isNumber(y)) {
+  if (isComplex(x)) {
+    if (isNumber(y)) {
       return (x.re != y) || (x.im != 0);
     }
-    else if (Complex.isComplex(y)) {
+    else if (isComplex(y)) {
       return (x.re != y.re) || (x.im != y.im);
     }
   }
 
-  if ((Unit.isUnit(x)) && (Unit.isUnit(y))) {
+  if ((isUnit(x)) && (isUnit(y))) {
     if (!x.equalBase(y)) {
       throw new Error('Cannot compare units with different base');
     }
     return x.value != y.value;
   }
 
-  if (string.isString(x) || string.isString(y)) {
+  if (isString(x) || isString(y)) {
     return x != y;
   }
 
-  if (collection.isCollection(x) || collection.isCollection(y)) {
+  if (isCollection(x) || isCollection(y)) {
     return collection.map2(x, y, unequal);
   }
 
@@ -55,5 +61,5 @@ module.exports = function unequal(x, y) {
     return unequal(x.valueOf(), y.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('unequal', x, y);
+  throw new util.error.UnsupportedTypeError('unequal', x, y);
 };

@@ -1,6 +1,6 @@
-var Node = require('./Node.js'),
-    SymbolNode = require('./SymbolNode.js'),
-    subset = require('../../function/matrix/subset.js'); // TODO: remove dependency on subset?
+var math = require('../../math.js'),
+    Node = require('./Node.js').Node,
+    SymbolNode = require('./SymbolNode.js').SymbolNode;
 
 /**
  * @constructor UpdateNode
@@ -48,7 +48,6 @@ UpdateNode.prototype.eval = function() {
   }
 
   var result;
-  var params = this.params;
 
   // test if definition is currently undefined
   var prevResult = this.scope.get(this.name);
@@ -89,7 +88,7 @@ UpdateNode.prototype.eval = function() {
   var exprResult = this.expr.eval();
 
   // replace subset
-  result = subset(prevResult, paramResults, exprResult);
+  result = math.subset(prevResult, paramResults, exprResult);
 
   this.scope.set(this.name, result);
 
@@ -142,4 +141,4 @@ UpdateNode.prototype.toString = function() {
   return str;
 };
 
-module.exports = UpdateNode;
+exports.UpdateNode = UpdateNode;

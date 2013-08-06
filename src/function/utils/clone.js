@@ -1,5 +1,6 @@
-var error = require('../../util/error.js'),
-    object = require('../../util/object.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+    object = util.object;
 
 /**
  * Clone an object
@@ -9,9 +10,9 @@ var error = require('../../util/error.js'),
  * @param {*} x
  * @return {*} clone
  */
-module.exports = function (x) {
+math.clone = function clone (x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('clone', arguments.length, 1);
+    throw new util.error.ArgumentsError('clone', arguments.length, 1);
   }
 
   return object.clone(x);

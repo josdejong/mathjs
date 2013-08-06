@@ -1,7 +1,13 @@
-var error = require('../../util/error.js'),
-    number = require('../../util/number.js'),
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Complex = require('../../type/Complex.js').Complex,
+    Matrix = require('../../type/Matrix.js').Matrix,
     collection = require('../../type/collection.js'),
-    Complex = require('../../type/Complex.js');
+
+    isNumber = util.number.isNumber,
+    isComplex = Complex.isComplex,
+    isCollection = collection.isCollection;
 
 /**
  * Calculate the exponent of a value
@@ -13,15 +19,15 @@ var error = require('../../util/error.js'),
  * @param {Number | Complex | Array | Matrix} x
  * @return {Number | Complex | Array | Matrix} res
  */
-module.exports = function exp (x) {
+math.exp = function exp (x) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('exp', arguments.length, 1);
+    throw new util.error.ArgumentsError('exp', arguments.length, 1);
   }
 
-  if (number.isNumber(x)) {
+  if (isNumber(x)) {
     return Math.exp(x);
   }
-  if (Complex.isComplex(x)) {
+  if (isComplex(x)) {
     var r = Math.exp(x.re);
     return Complex.create(
         r * Math.cos(x.im),
@@ -29,7 +35,7 @@ module.exports = function exp (x) {
     );
   }
 
-  if (collection.isCollection(x)) {
+  if (isCollection(x)) {
     return collection.map(x, exp);
   }
 
@@ -38,5 +44,5 @@ module.exports = function exp (x) {
     return exp(x.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('exp', x);
+  throw new util.error.UnsupportedTypeError('exp', x);
 };

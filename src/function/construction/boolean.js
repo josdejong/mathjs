@@ -1,6 +1,8 @@
-var error = require('../../util/error.js'),
-    string = require('../../util/string.js'),
-    number = require('../../util/number.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    isNumber = util.number.isNumber,
+    isString = util.string.isString;
 
 /**
  * Create a boolean or convert a string or number to a boolean.
@@ -10,9 +12,9 @@ var error = require('../../util/error.js'),
  * @param {String | Number | Boolean} value
  * @return {Boolean} bool
  */
-module.exports = function bool (value) {
+math['boolean'] = function bool (value) {
   if (arguments.length != 1) {
-    throw new error.ArgumentsError('boolean', arguments.length, 0, 1);
+    throw new util.error.ArgumentsError('boolean', arguments.length, 0, 1);
   }
 
   if (value === 'true' || value === true) {
@@ -21,10 +23,10 @@ module.exports = function bool (value) {
   else if (value === 'false' || value === false) {
     return false;
   }
-  else if (number.isNumber(value)) {
+  else if (isNumber(value)) {
     return (value !== 0);
   }
-  else if (string.isString(value)) {
+  else if (isString(value)) {
     // try case insensitive
     var lcase = value.toLowerCase();
     if (lcase === 'true') {

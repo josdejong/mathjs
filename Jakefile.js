@@ -132,8 +132,8 @@ task('dist', {async: true}, function () {
       throw err;
     }
 
-    // add header and footer
-    var lib = util.read('./src/header.js') + code;
+    // add header and shim
+    var lib = util.read('./src/header.js') + code + util.read('./src/shim.js');
 
     // write bundled file
     util.write(dist, lib);

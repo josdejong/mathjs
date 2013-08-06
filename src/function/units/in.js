@@ -1,7 +1,12 @@
-var collection = require('../../type/collection.js'),
-    error = require('../../util/error.js'),
-    string = require('../../util/string.js'),
-    Unit = require('../../type/Unit.js');
+var math = require('../../math.js'),
+    util = require('../../util/index.js'),
+
+    Unit = require('../../type/Unit.js').Unit,
+    collection = require('../../type/collection.js'),
+
+    isString = util.string.isString,
+    isUnit = Unit.isUnit,
+    isCollection = collection.isCollection;
 
 /**
  * Change the unit of a value.
@@ -15,20 +20,20 @@ var collection = require('../../type/collection.js'),
  * @param {Unit | Array | Matrix} unit
  * @return {Unit | Array | Matrix} res
  */
-module.exports = function unit_in(x, unit) {
+math['in'] = function unit_in(x, unit) {
   if (arguments.length != 2) {
-    throw new error.ArgumentsError('in', arguments.length, 2);
+    throw new util.error.ArgumentsError('in', arguments.length, 2);
   }
 
-  if (Unit.isUnit(x)) {
-    if (Unit.isUnit(unit) || string.isString(unit)) {
+  if (isUnit(x)) {
+    if (isUnit(unit) || isString(unit)) {
       return x['in'](unit);
     }
   }
 
   // TODO: add support for string, in that case, convert to unit
 
-  if (collection.isCollection(x) || collection.isCollection(unit)) {
+  if (isCollection(x) || isCollection(unit)) {
     return collection.map2(x, unit, unit_in);
   }
 
@@ -37,5 +42,5 @@ module.exports = function unit_in(x, unit) {
     return unit_in(x.valueOf(), unit.valueOf());
   }
 
-  throw new error.UnsupportedTypeError('in', x, unit);
+  throw new util.error.UnsupportedTypeError('in', x, unit);
 };

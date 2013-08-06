@@ -1,4 +1,5 @@
-var Unit = require('../type/Unit.js');
+var math = require('../math.js'),
+    Unit = require('../type/Unit.js').Unit;
 
 /**
  * Scope
@@ -179,7 +180,4 @@ Scope.prototype = {
   }
 };
 
-module.exports = Scope;
-
-// load after module.exports because of circular reference
-var math = require('../index.js');
+exports.Scope = Scope;

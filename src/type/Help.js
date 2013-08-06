@@ -1,7 +1,8 @@
-var object = require('../util/object.js'),
-    types = require('../util/types.js'),
-    string = require('../util/string.js'),
-    parser = require('../function/construction/parser.js');// TODO: remove dependency on parser
+var math = require('../../index.js'),
+    util = require('../util/index.js'),
+
+    object = util.object,
+    string = util.string;
 
 /**
  * Documentation object
@@ -19,14 +20,12 @@ function Help (doc) {
   }
 }
 
-module.exports = Help;
-
 /**
  * Test whether a value is an instance of Help
  * @param {*} value
  * @return {Boolean} isHelp
  */
-Help.isHelp = exports.isHelp = function isHelp (value) {
+Help.isHelp = function isHelp (value) {
   return (value instanceof Help);
 };
 
@@ -48,7 +47,7 @@ Help.prototype.toString = function () {
     desc += 'Syntax:\n    ' + this.syntax.join('\n    ') + '\n\n';
   }
   if (this.examples) {
-    var parser = parser();
+    var parser = math.parser();
     desc += 'Examples:\n';
     for (var i = 0; i < this.examples.length; i++) {
       var expr = this.examples[i];
@@ -82,4 +81,6 @@ Help.prototype.toJSON = function () {
   return object.extend({}, this);
 };
 
-types.addType('help', Help);
+// exports
+exports.Help = Help;
+util.types.addType('help', Help);
