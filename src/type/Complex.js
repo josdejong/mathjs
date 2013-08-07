@@ -187,7 +187,7 @@ function parseComplex () {
  * @param {Number} im
  * @return {Complex | Number} value
  */
-Complex.create = exports.create = function create (re, im) {
+Complex.create = function create (re, im) {
   if (im == 0) {
     return re;
   }
@@ -203,7 +203,7 @@ Complex.create = exports.create = function create (re, im) {
  * @param {String} str
  * @returns {Complex | null} complex
  */
-Complex.parse = exports.parse = function parse(str) {
+Complex.parse = function parse(str) {
   text = str;
   index = -1;
   c = '';
@@ -358,4 +358,10 @@ Complex.prototype.toString = function () {
 
 // exports
 module.exports = Complex;
+
+// to trick my IDE which doesn't get it
+exports.isComplex = Complex.isComplex;
+exports.parse = Complex.parse;
+exports.create = Complex.create;
+
 util.types.addType('complex', Complex);

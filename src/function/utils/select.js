@@ -1,5 +1,5 @@
 module.exports = function (math) {
-  var Selector = require('../../type/Selector.js');
+  var Selector = require('../../expr/Selector.js');
 
   /**
    * Wrap any value in a Selector, allowing to perform chained operations on

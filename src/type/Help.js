@@ -83,4 +83,8 @@ Help.prototype.toJSON = function () {
 
 // exports
 module.exports = Help;
+
+// to trick my IDE which doesn't get it
+exports.isHelp = Help.isHelp;
+
 util.types.addType('help', Help);

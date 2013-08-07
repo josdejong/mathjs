@@ -62,7 +62,7 @@ function Range(start, step, end) {
  * @param {String} str
  * @return {Range | null} range
  */
-Range.parse = exports.parse = function parse (str) {
+Range.parse = function parse (str) {
   if (!string.isString(str)) {
     return null;
   }
@@ -99,7 +99,7 @@ Range.prototype.clone = function () {
  * @param {*} object
  * @return {Boolean} isRange
  */
-Range.isRange = exports.isRange = function isRange(object) {
+Range.isRange = function isRange(object) {
   return (object instanceof Range);
 };
 
@@ -246,4 +246,9 @@ Range.prototype.toString = function () {
 
 // exports
 module.exports = Range;
+
+// to trick my IDE which doesn't get it
+exports.isRange = Range.isRange;
+exports.parse = Range.parse;
+
 util.types.addType('range', Range);

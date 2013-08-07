@@ -27,7 +27,7 @@
 (function(e){if("function"==typeof bootstrap)bootstrap("math",e);else if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else if("undefined"!=typeof ses){if(!ses.ok())return;ses.makeMath=e}else"undefined"!=typeof window?window.math=e():global.math=e()})(function(){var define,ses,bootstrap,module,exports;
 return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = function (math) {
-  var Complex = require('./type/Complex.js').Complex;
+  var Complex = require('./type/Complex.js');
 
   math.pi          = Math.PI;
   math.e           = Math.E;
@@ -50,7 +50,7 @@ module.exports = function (math) {
   math.SQRT2       = Math.SQRT2;
 };
 
-},{"./type/Complex.js":187}],2:[function(require,module,exports){
+},{"./type/Complex.js":188}],2:[function(require,module,exports){
 module.exports = {
   'name': 'Infinity',
   'category': 'Constants',
@@ -1895,7 +1895,7 @@ exports['typeof'] =  require('./function/utils/typeof.js');
 
 },{"./constants/Infinity.js":2,"./constants/LN10.js":3,"./constants/LN2.js":4,"./constants/LOG10E.js":5,"./constants/LOG2E.js":6,"./constants/NaN.js":7,"./constants/SQRT1_2.js":8,"./constants/SQRT2.js":9,"./constants/e.js":10,"./constants/false.js":11,"./constants/i.js":12,"./constants/pi.js":13,"./constants/tau.js":14,"./constants/true.js":15,"./function/arithmetic/abs.js":16,"./function/arithmetic/add.js":17,"./function/arithmetic/ceil.js":18,"./function/arithmetic/cube.js":19,"./function/arithmetic/divide.js":20,"./function/arithmetic/edivide.js":21,"./function/arithmetic/emultiply.js":22,"./function/arithmetic/epow.js":23,"./function/arithmetic/equal.js":24,"./function/arithmetic/exp.js":25,"./function/arithmetic/fix.js":26,"./function/arithmetic/floor.js":27,"./function/arithmetic/gcd.js":28,"./function/arithmetic/larger.js":29,"./function/arithmetic/largereq.js":30,"./function/arithmetic/lcm.js":31,"./function/arithmetic/log.js":32,"./function/arithmetic/log10.js":33,"./function/arithmetic/mod.js":34,"./function/arithmetic/multiply.js":35,"./function/arithmetic/pow.js":36,"./function/arithmetic/round.js":37,"./function/arithmetic/sign.js":38,"./function/arithmetic/smaller.js":39,"./function/arithmetic/smallereq.js":40,"./function/arithmetic/sqrt.js":41,"./function/arithmetic/square.js":42,"./function/arithmetic/subtract.js":43,"./function/arithmetic/unary.js":44,"./function/arithmetic/unequal.js":45,"./function/arithmetic/xgcd.js":46,"./function/complex/arg.js":47,"./function/complex/conj.js":48,"./function/complex/im.js":49,"./function/complex/re.js":50,"./function/construction/boolean.js":51,"./function/construction/complex.js":52,"./function/construction/matrix.js":53,"./function/construction/number.js":54,"./function/construction/range.js":55,"./function/construction/string.js":56,"./function/construction/unit.js":57,"./function/matrix/concat.js":58,"./function/matrix/det.js":59,"./function/matrix/diag.js":60,"./function/matrix/eye.js":61,"./function/matrix/inv.js":62,"./function/matrix/ones.js":63,"./function/matrix/size.js":64,"./function/matrix/squeeze.js":65,"./function/matrix/subset.js":66,"./function/matrix/transpose.js":67,"./function/matrix/zeros.js":68,"./function/probability/factorial.js":69,"./function/probability/random.js":70,"./function/probability/randomInt.js":71,"./function/statistics/max.js":72,"./function/statistics/min.js":73,"./function/trigonometry/acos.js":74,"./function/trigonometry/asin.js":75,"./function/trigonometry/atan.js":76,"./function/trigonometry/atan2.js":77,"./function/trigonometry/cos.js":78,"./function/trigonometry/cot.js":79,"./function/trigonometry/csc.js":80,"./function/trigonometry/sec.js":81,"./function/trigonometry/sin.js":82,"./function/trigonometry/tan.js":83,"./function/units/in.js":84,"./function/utils/clone.js":85,"./function/utils/eval.js":86,"./function/utils/format.js":87,"./function/utils/help.js":88,"./function/utils/import.js":89,"./function/utils/typeof.js":90}],92:[function(require,module,exports){
 var math = require('../math.js'),
-    Scope = require('./Scope.js').Scope;
+    Scope = require('./Scope.js');
 
 /**
  * @constructor Parser
@@ -2012,11 +2012,11 @@ Parser.prototype.clear = function () {
   this.scope.clear();
 };
 
-exports.Parser = Parser;
+module.exports = Parser;
 
-},{"../math.js":185,"./Scope.js":93}],93:[function(require,module,exports){
+},{"../math.js":186,"./Scope.js":93}],93:[function(require,module,exports){
 var math = require('../math.js'),
-    Unit = require('../type/Unit.js').Unit;
+    Unit = require('../type/Unit.js');
 
 /**
  * Scope
@@ -2197,15 +2197,152 @@ Scope.prototype = {
   }
 };
 
-exports.Scope = Scope;
+module.exports = Scope;
 
-},{"../math.js":185,"../type/Unit.js":192}],94:[function(require,module,exports){
+},{"../math.js":186,"../type/Unit.js":192}],94:[function(require,module,exports){
+module.exports = function (math) {
+  var util = require('../util/index.js'),
+      string = util.string;
+
+  /**
+   * @constructor math.type.Selector
+   * Wrap any value in a Selector, allowing to perform chained operations on
+   * the value.
+   *
+   * All methods available in the math.js library can be called upon the selector,
+   * and then will be evaluated with the value itself as first argument.
+   * The selector can be closed by executing selector.done(), which will return
+   * the final value.
+   *
+   * The Selector has a number of special functions:
+   * - done()     Finalize the chained operation and return the selectors value.
+   * - valueOf()  The same as done()
+   * - toString() Executes math.format() onto the selectors value, returning
+   *              a string representation of the value.
+   * - get(...)   Get a subset of the selectors value. Useful for example for
+   *              matrices and arrays.
+   * - set(...)   Replace a subset of the selectors value. Useful for example for
+   *              matrices and arrays.
+   *
+   * @param {*} [value]
+   */
+  function Selector (value) {
+    if (!(this instanceof Selector)) {
+      throw new SyntaxError(
+          'Selector constructor must be called with the new operator');
+    }
+
+    if (value instanceof Selector) {
+      this.value = value.value;
+    }
+    else {
+      this.value = value;
+    }
+  }
+
+  Selector.prototype = {
+    /**
+     * Close the selector. Returns the final value.
+     * Does the same as method valueOf()
+     * @returns {*} value
+     */
+    done: function () {
+      return this.value;
+    },
+
+    /**
+     * Get a submatrix or subselection from current value.
+     * Only applicable when the current value has a method get.
+     */
+    get: function (index) {
+      var value = this.value;
+      if (!value) {
+        throw Error('Selector value is undefined');
+      }
+
+      return new Selector(math.subset(value, index));
+    },
+
+    /**
+     * Set a submatrix or subselection on current value.
+     * Only applicable when the current value has a method set.
+     */
+    set: function (index, replacement) {
+      var value = this.value;
+      if (!value) {
+        throw Error('Selector value is undefined');
+      }
+
+      return new Selector(math.subset(value, index, replacement));
+    },
+
+    /**
+     * Close the selector. Returns the final value.
+     * Does the same as method done()
+     * @returns {*} value
+     */
+    valueOf: function () {
+      return this.value;
+    },
+
+    /**
+     * Get the string representation of the value in the selector
+     * @returns {String}
+     */
+    toString: function () {
+      return string.format(this.value);
+    }
+  };
+
+  /**
+   * Create a proxy method for the selector
+   * @param {String} name
+   * @param {*} value       The value or function to be proxied
+   */
+  function createProxy(name, value) {
+    var slice = Array.prototype.slice;
+    if (typeof value === 'function') {
+      // a function
+      Selector.prototype[name] = function () {
+        var args = [this.value].concat(slice.call(arguments, 0));
+        return new Selector(value.apply(this, args));
+      }
+    }
+    else {
+      // a constant
+      Selector.prototype[name] = new Selector(value);
+    }
+  }
+
+  Selector.createProxy = createProxy;
+
+  /**
+   * initialise the Chain prototype with all functions and constants in math
+   */
+  function init () {
+    init = null; // delete, we are initialized
+
+    for (var prop in math) {
+      if (math.hasOwnProperty(prop) && prop) {
+        createProxy(prop, math[prop]);
+      }
+    }
+  }
+
+  // exports
+  module.exports = Selector;
+  Selector.init = init;
+  util.types.addType('selector', Selector);
+};
+
+},{"../util/index.js":198}],95:[function(require,module,exports){
 exports.node = require('./node/index.js');
-exports.Parser = require('./Parser.js').Parser;
-exports.Scope = require('./Scope.js').Scope;
+exports.Scope = require('./Scope.js');
+exports.Parser = require('./Parser.js');
+exports.Selector = require('./Selector.js');
 
-},{"./Parser.js":92,"./Scope.js":93,"./node/index.js":106}],95:[function(require,module,exports){
-var Node = require('./Node.js').Node;
+},{"./Parser.js":92,"./Scope.js":93,"./Selector.js":94,"./node/index.js":107}],96:[function(require,module,exports){
+var Node = require('./Node.js');
 
 /**
  * @constructor AssignmentNode
@@ -2267,9 +2404,9 @@ AssignmentNode.prototype.toString = function() {
   return this.name + ' = ' + this.expr.toString();
 };
 
-exports.AssignmentNode = AssignmentNode;
-},{"./Node.js":100}],96:[function(require,module,exports){
-var Node = require('./Node.js').Node;
+module.exports = AssignmentNode;
+},{"./Node.js":101}],97:[function(require,module,exports){
+var Node = require('./Node.js');
 
 /**
  * @constructor BlockNode
@@ -2353,10 +2490,10 @@ BlockNode.prototype.toString = function() {
   return '[' + strings.join(',') + '\n]';
 };
 
-exports.BlockNode = BlockNode;
+module.exports = BlockNode;
 
-},{"./Node.js":100}],97:[function(require,module,exports){
-var Node = require('./Node.js').Node,
+},{"./Node.js":101}],98:[function(require,module,exports){
+var Node = require('./Node.js'),
     string = require('../../util/string.js');
 
 /**
@@ -2386,10 +2523,10 @@ ConstantNode.prototype.toString = function() {
   return string.format(this.value);
 };
 
-exports.ConstantNode = ConstantNode;
+module.exports = ConstantNode;
 
-},{"../../util/string.js":201,"./Node.js":100}],98:[function(require,module,exports){
-var Node = require('./Node.js').Node,
+},{"../../util/string.js":201,"./Node.js":101}],99:[function(require,module,exports){
+var Node = require('./Node.js'),
     error = require('../../util/error.js');
 
 /**
@@ -2475,15 +2612,15 @@ FunctionNode.prototype.toString = function() {
   return this.fn.toString();
 };
 
-exports.FunctionNode = FunctionNode;
+module.exports = FunctionNode;
 
-},{"../../util/error.js":197,"./Node.js":100}],99:[function(require,module,exports){
-var Node = require('./Node.js').Node,
+},{"../../util/error.js":197,"./Node.js":101}],100:[function(require,module,exports){
+var Node = require('./Node.js'),
     object = require('../../util/object.js'),
     string = require('../../util/string.js'),
     collection = require('../../type/collection.js'),
-    Matrix = require('../../type/Matrix.js').Matrix,
-    Range = require('../../type/Range.js').Range;
+    Matrix = require('../../type/Matrix.js'),
+    Range = require('../../type/Range.js');
 
 /**
  * @constructor MatrixNode
@@ -2632,9 +2769,9 @@ MatrixNode.prototype.toString = function() {
   return string.format(this.nodes);
 };
 
-exports.MatrixNode = MatrixNode;
+module.exports = MatrixNode;
 
-},{"../../type/Matrix.js":189,"../../type/Range.js":190,"../../type/collection.js":193,"../../util/object.js":200,"../../util/string.js":201,"./Node.js":100}],100:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../type/Range.js":191,"../../type/collection.js":193,"../../util/object.js":200,"../../util/string.js":201,"./Node.js":101}],101:[function(require,module,exports){
 /**
  * Node
  */
@@ -2705,10 +2842,10 @@ Node.prototype.toString = function() {
   return '';
 };
 
-exports.Node = Node;
+module.exports = Node;
 
-},{}],101:[function(require,module,exports){
-var Node = require('./Node.js').Node;
+},{}],102:[function(require,module,exports){
+var Node = require('./Node.js');
 
 /**
  * @constructor OperatorNode
@@ -2793,11 +2930,11 @@ OperatorNode.prototype.toString = function() {
   }
 };
 
-exports.OperatorNode = OperatorNode;
+module.exports = OperatorNode;
 
-},{"./Node.js":100}],102:[function(require,module,exports){
+},{"./Node.js":101}],103:[function(require,module,exports){
 var math = require('../../math.js'),
-    Node = require('./Node.js').Node,
+    Node = require('./Node.js'),
     SymbolNode = require('./SymbolNode.js').SymbolNode;
 
 /**
@@ -2931,10 +3068,10 @@ ParamsNode.prototype.toString = function() {
   return str;
 };
 
-exports.ParamsNode = ParamsNode;
+module.exports = ParamsNode;
 
-},{"../../math.js":185,"./Node.js":100,"./SymbolNode.js":103}],103:[function(require,module,exports){
-var Node = require('./Node.js').Node;
+},{"../../math.js":186,"./Node.js":101,"./SymbolNode.js":104}],104:[function(require,module,exports){
+var Node = require('./Node.js');
 
 /**
  * @constructor SymbolNode
@@ -2975,11 +3112,11 @@ SymbolNode.prototype.toString = function() {
   return this.name;
 };
 
-exports.SymbolNode = SymbolNode;
+module.exports = SymbolNode;
 
-},{"./Node.js":100}],104:[function(require,module,exports){
+},{"./Node.js":101}],105:[function(require,module,exports){
 var math = require('../../math.js'),
-    Node = require('./Node.js').Node,
+    Node = require('./Node.js'),
     SymbolNode = require('./SymbolNode.js').SymbolNode;
 
 /**
@@ -3121,34 +3258,34 @@ UpdateNode.prototype.toString = function() {
   return str;
 };
 
-exports.UpdateNode = UpdateNode;
+module.exports = UpdateNode;
 
-},{"../../math.js":185,"./Node.js":100,"./SymbolNode.js":103}],105:[function(require,module,exports){
+},{"../../math.js":186,"./Node.js":101,"./SymbolNode.js":104}],106:[function(require,module,exports){
 /**
  * Custom node handlers,
  * (can be added to the exports object)
  */
 
-},{}],106:[function(require,module,exports){
-exports.AssignmentNode = require('./AssignmentNode.js').AssignmentNode;
-exports.BlockNode = require('./BlockNode.js').BlockNode;
-exports.ConstantNode = require('./ConstantNode.js').ConstantNode;
-exports.FunctionNode = require('./FunctionNode.js').FunctionNode;
-exports.MatrixNode = require('./MatrixNode.js').MatrixNode;
-exports.Node = require('./Node.js').Node;
-exports.OperatorNode = require('./OperatorNode.js').OperatorNode;
-exports.ParamsNode = require('./ParamsNode.js').ParamsNode;
-exports.SymbolNode = require('./SymbolNode.js').SymbolNode;
-exports.UpdateNode = require('./UpdateNode.js').UpdateNode;
+},{}],107:[function(require,module,exports){
+exports.AssignmentNode = require('./AssignmentNode.js');
+exports.BlockNode = require('./BlockNode.js');
+exports.ConstantNode = require('./ConstantNode.js');
+exports.FunctionNode = require('./FunctionNode.js');
+exports.MatrixNode = require('./MatrixNode.js');
+exports.Node = require('./Node.js');
+exports.OperatorNode = require('./OperatorNode.js');
+exports.ParamsNode = require('./ParamsNode.js');
+exports.SymbolNode = require('./SymbolNode.js');
+exports.UpdateNode = require('./UpdateNode.js');
 
 exports.handlers = require('./handlers.js');
 
-},{"./AssignmentNode.js":95,"./BlockNode.js":96,"./ConstantNode.js":97,"./FunctionNode.js":98,"./MatrixNode.js":99,"./Node.js":100,"./OperatorNode.js":101,"./ParamsNode.js":102,"./SymbolNode.js":103,"./UpdateNode.js":104,"./handlers.js":105}],107:[function(require,module,exports){
+},{"./AssignmentNode.js":96,"./BlockNode.js":97,"./ConstantNode.js":98,"./FunctionNode.js":99,"./MatrixNode.js":100,"./Node.js":101,"./OperatorNode.js":102,"./ParamsNode.js":103,"./SymbolNode.js":104,"./UpdateNode.js":105,"./handlers.js":106}],108:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Complex = require('../../type/Complex.js'),
+      Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -3191,13 +3328,13 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Matrix.js":189,"../../type/collection.js":193,"../../util/index.js":198}],108:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Matrix.js":190,"../../type/collection.js":193,"../../util/index.js":198}],109:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Matrix = require('../../type/Matrix.js').Matrix,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Matrix = require('../../type/Matrix.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -3290,11 +3427,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Matrix.js":189,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],109:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Matrix.js":190,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],110:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -3340,11 +3477,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],110:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],111:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -3388,13 +3525,13 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],111:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],112:[function(require,module,exports){
 module.exports = function(math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Matrix = require('../../type/Matrix.js').Matrix,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Matrix = require('../../type/Matrix.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -3499,7 +3636,7 @@ module.exports = function(math) {
   }
 };
 
-},{"../../type/Complex.js":187,"../../type/Matrix.js":189,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],112:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Matrix.js":190,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],113:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -3523,7 +3660,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":193,"../../util/index.js":198}],113:[function(require,module,exports){
+},{"../../type/collection.js":193,"../../util/index.js":198}],114:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -3547,7 +3684,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":193,"../../util/index.js":198}],114:[function(require,module,exports){
+},{"../../type/collection.js":193,"../../util/index.js":198}],115:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -3571,12 +3708,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":193,"../../util/index.js":198}],115:[function(require,module,exports){
+},{"../../type/collection.js":193,"../../util/index.js":198}],116:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -3644,12 +3781,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],116:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],117:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Complex = require('../../type/Complex.js'),
+      Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -3695,11 +3832,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Matrix.js":189,"../../type/collection.js":193,"../../util/index.js":198}],117:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Matrix.js":190,"../../type/collection.js":193,"../../util/index.js":198}],118:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -3745,11 +3882,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],118:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],119:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -3795,7 +3932,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],119:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],120:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3863,12 +4000,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":193,"../../util/index.js":198}],120:[function(require,module,exports){
+},{"../../type/collection.js":193,"../../util/index.js":198}],121:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -3936,12 +4073,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],121:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],122:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -4009,7 +4146,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],122:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],123:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4082,11 +4219,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":193,"../../util/index.js":198}],123:[function(require,module,exports){
+},{"../../type/collection.js":193,"../../util/index.js":198}],124:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -4147,11 +4284,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],124:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],125:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -4203,7 +4340,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],125:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],126:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4279,13 +4416,13 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/collection.js":193,"../../util/index.js":198}],126:[function(require,module,exports){
+},{"../../type/collection.js":193,"../../util/index.js":198}],127:[function(require,module,exports){
 module.exports = function(math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Matrix = require('../../type/Matrix.js').Matrix,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Matrix = require('../../type/Matrix.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       array = util.array,
@@ -4491,12 +4628,12 @@ module.exports = function(math) {
   }
 };
 
-},{"../../type/Complex.js":187,"../../type/Matrix.js":189,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],127:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Matrix.js":190,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],128:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Complex = require('../../type/Complex.js'),
+      Matrix = require('../../type/Matrix.js'),
 
       array = util.array,
       isNumber = util.number.isNumber,
@@ -4598,11 +4735,11 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":187,"../../type/Matrix.js":189,"../../util/index.js":198}],128:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Matrix.js":190,"../../util/index.js":198}],129:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -4704,11 +4841,11 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],129:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],130:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       number = util.number,
@@ -4754,12 +4891,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],130:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],131:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -4827,12 +4964,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],131:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],132:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -4900,11 +5037,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],132:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],133:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -4964,11 +5101,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],133:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],134:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -5012,13 +5149,13 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],134:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],135:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Matrix = require('../../type/Matrix.js').Matrix,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Matrix = require('../../type/Matrix.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -5108,12 +5245,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Matrix.js":189,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],135:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Matrix.js":190,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],136:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -5165,12 +5302,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],136:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],137:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -5233,7 +5370,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],137:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],138:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5280,11 +5417,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":198}],138:[function(require,module,exports){
+},{"../../util/index.js":198}],139:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -5329,11 +5466,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],139:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],140:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       object = util.object,
@@ -5379,11 +5516,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],140:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],141:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -5427,11 +5564,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],141:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],142:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       object = util.object,
@@ -5476,7 +5613,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],142:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],143:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5526,11 +5663,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":198}],143:[function(require,module,exports){
+},{"../../util/index.js":198}],144:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
 
       isString = util.string.isString,
       isComplex = Complex.isComplex;
@@ -5597,11 +5734,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../util/index.js":198}],144:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../util/index.js":198}],145:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix;
+      Matrix = require('../../type/Matrix.js');
 
   /**
    * Create a matrix. The function creates a new math.type.Matrix object.
@@ -5629,7 +5766,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":189,"../../util/index.js":198}],145:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../util/index.js":198}],146:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js');
 
@@ -5657,11 +5794,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":198}],146:[function(require,module,exports){
+},{"../../util/index.js":198}],147:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Parser = require('../../expr/Parser.js').Parser;
+      Parser = require('../../expr/Parser.js');
 
   /**
    * Create a parser. The function creates a new math.expr.Parser object.
@@ -5704,11 +5841,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../expr/Parser.js":92,"../../util/index.js":198}],147:[function(require,module,exports){
+},{"../../expr/Parser.js":92,"../../util/index.js":198}],148:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Range = require('../../type/Range.js').Range,
+      Range = require('../../type/Range.js'),
 
       isString = util.string.isString;
 
@@ -5779,7 +5916,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Range.js":190,"../../util/index.js":198}],148:[function(require,module,exports){
+},{"../../type/Range.js":191,"../../util/index.js":198}],149:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5837,11 +5974,11 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/collection.js":193,"../../util/index.js":198}],149:[function(require,module,exports){
+},{"../../type/collection.js":193,"../../util/index.js":198}],150:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Unit = require('../../type/Unit.js').Unit,
+      Unit = require('../../type/Unit.js'),
 
       isString = util.string.isString;
 
@@ -5898,11 +6035,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Unit.js":192,"../../util/index.js":198}],150:[function(require,module,exports){
+},{"../../type/Unit.js":192,"../../util/index.js":198}],151:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
       object = util.object,
@@ -6015,11 +6152,11 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":189,"../../type/collection.js":193,"../../util/index.js":198}],151:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../type/collection.js":193,"../../util/index.js":198}],152:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
 
       object = util.object,
       array = util.array,
@@ -6160,12 +6297,12 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":189,"../../util/index.js":198}],152:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../util/index.js":198}],153:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Range = require('../../type/Range.js').Range,
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Range = require('../../type/Range.js'),
+      Matrix = require('../../type/Matrix.js'),
 
       object = util.object,
       isNumber = util.number.isNumber,
@@ -6249,11 +6386,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":189,"../../type/Range.js":190,"../../util/index.js":198}],153:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../type/Range.js":191,"../../util/index.js":198}],154:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -6309,11 +6446,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":189,"../../type/collection.js":193,"../../util/index.js":198}],154:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../type/collection.js":193,"../../util/index.js":198}],155:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
 
       string = util.string;
 
@@ -6496,11 +6633,11 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":189,"../../util/index.js":198}],155:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../util/index.js":198}],156:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js');
 
   /**
@@ -6532,13 +6669,13 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":189,"../../type/collection.js":193,"../../util/index.js":198}],156:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../type/collection.js":193,"../../util/index.js":198}],157:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
+      Matrix = require('../../type/Matrix.js'),
 
       array = util.array,
       isNumber = util.number.isNumber,
@@ -6584,11 +6721,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Matrix.js":189,"../../type/Unit.js":192,"../../util/index.js":198}],157:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Matrix.js":190,"../../type/Unit.js":192,"../../util/index.js":198}],158:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
 
       object = util.object,
       isArray = Array.isArray;
@@ -6645,12 +6782,12 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":189,"../../util/index.js":198}],158:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../util/index.js":198}],159:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
-      Range = require('../../type/Range.js').Range,
+      Matrix = require('../../type/Matrix.js'),
+      Range = require('../../type/Range.js'),
 
       array = util.array,
       isString = util.string.isString,
@@ -6852,11 +6989,11 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":189,"../../type/Range.js":190,"../../util/index.js":198}],159:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../type/Range.js":191,"../../util/index.js":198}],160:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
 
       object = util.object,
       string = util.string;
@@ -6916,11 +7053,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":189,"../../util/index.js":198}],160:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../util/index.js":198}],161:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js');
 
   /**
@@ -6951,7 +7088,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":189,"../../type/collection.js":193,"../../util/index.js":198}],161:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../type/collection.js":193,"../../util/index.js":198}],162:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7011,11 +7148,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":193,"../../util/index.js":198}],162:[function(require,module,exports){
+},{"../../type/collection.js":193,"../../util/index.js":198}],163:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
 
       isArray = Array.isArray;
 
@@ -7141,11 +7278,11 @@ module.exports = function (math) {
   math.pickRandom = uniform.pickRandom;
 };
 
-},{"../../type/Matrix.js":189,"../../util/index.js":198}],163:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../util/index.js":198}],164:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
       isCollection = collection.isCollection;
@@ -7246,11 +7383,11 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":189,"../../type/collection.js":193,"../../util/index.js":198}],164:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../type/collection.js":193,"../../util/index.js":198}],165:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
       isCollection = collection.isCollection;
@@ -7351,11 +7488,11 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":189,"../../type/collection.js":193,"../../util/index.js":198}],165:[function(require,module,exports){
+},{"../../type/Matrix.js":190,"../../type/collection.js":193,"../../util/index.js":198}],166:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -7438,11 +7575,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],166:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],167:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -7522,11 +7659,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],167:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],168:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -7593,11 +7730,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],168:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],169:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -7656,12 +7793,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/collection.js":193,"../../util/index.js":198}],169:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/collection.js":193,"../../util/index.js":198}],170:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -7718,12 +7855,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],170:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],171:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -7780,12 +7917,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],171:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],172:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -7843,12 +7980,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],172:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],173:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -7905,12 +8042,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],173:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],174:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -7966,12 +8103,12 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],174:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],175:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
@@ -8031,11 +8168,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":187,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],175:[function(require,module,exports){
+},{"../../type/Complex.js":188,"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],176:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Unit = require('../../type/Unit.js').Unit,
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       isString = util.string.isString,
@@ -8080,7 +8217,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],176:[function(require,module,exports){
+},{"../../type/Unit.js":192,"../../type/collection.js":193,"../../util/index.js":198}],177:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       object = util.object;
@@ -8102,11 +8239,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":198}],177:[function(require,module,exports){
+},{"../../util/index.js":198}],178:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Scope = require('../../expr/Scope.js').Scope,
+      Scope = require('../../expr/Scope.js'),
 
       collection = require('../../type/collection.js'),
 
@@ -8176,7 +8313,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../expr/Scope.js":93,"../../type/collection.js":193,"../../util/index.js":198}],178:[function(require,module,exports){
+},{"../../expr/Scope.js":93,"../../type/collection.js":193,"../../util/index.js":198}],179:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       string = util.string;
@@ -8210,11 +8347,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":198}],179:[function(require,module,exports){
+},{"../../util/index.js":198}],180:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Help = require('../../type/Help.js').Help;
+      Help = require('../../type/Help.js');
 
   /**
    * Retrieve help on a function or data type.
@@ -8270,13 +8407,13 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Help.js":188,"../../util/index.js":198}],180:[function(require,module,exports){
+},{"../../type/Help.js":189,"../../util/index.js":198}],181:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Selector = require('../../type/Selector.js').Selector,
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Selector = require('../../expr/Selector.js'),
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
 
       isNumber = util.number.isNumber,
       isString = util.string.isString,
@@ -8377,7 +8514,6 @@ module.exports = function (math) {
       // create a proxy for the Selector
       Selector.createProxy(name, value);
     }
-
   }
 
   /**
@@ -8394,7 +8530,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":187,"../../type/Selector.js":191,"../../type/Unit.js":192,"../../util/index.js":198}],181:[function(require,module,exports){
+},{"../../expr/Selector.js":94,"../../type/Complex.js":188,"../../type/Unit.js":192,"../../util/index.js":198}],182:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8402,23 +8538,23 @@ module.exports = function (math) {
       isArray = Array.isArray,
 
       // types
-      Complex = require('./../../type/Complex.js').Complex,
-      Matrix = require('./../../type/Matrix.js').Matrix,
-      Unit = require('./../../type/Unit.js').Unit,
-      Range = require('./../../type/Range.js').Range,
+      Complex = require('./../../type/Complex.js'),
+      Matrix = require('./../../type/Matrix.js'),
+      Unit = require('./../../type/Unit.js'),
+      Range = require('./../../type/Range.js'),
       collection = require('../../type/collection.js'),
 
       // scope and nodes
-      Scope = require('./../../expr/Scope.js').Scope,
-      AssignmentNode = require('../../expr/node/AssignmentNode.js').AssignmentNode,
-      BlockNode = require('../../expr/node/BlockNode.js').BlockNode,
-      ConstantNode = require('../../expr/node/ConstantNode.js').ConstantNode,
-      FunctionNode = require('../../expr/node/FunctionNode.js').FunctionNode,
-      MatrixNode = require('../../expr/node/MatrixNode.js').MatrixNode,
-      OperatorNode = require('../../expr/node/OperatorNode.js').OperatorNode,
-      ParamsNode = require('../../expr/node/ParamsNode.js').ParamsNode,
-      SymbolNode = require('../../expr/node/SymbolNode.js').SymbolNode,
-      UpdateNode = require('../../expr/node/UpdateNode.js').UpdateNode,
+      Scope = require('./../../expr/Scope.js'),
+      AssignmentNode = require('../../expr/node/AssignmentNode.js'),
+      BlockNode = require('../../expr/node/BlockNode.js'),
+      ConstantNode = require('../../expr/node/ConstantNode.js'),
+      FunctionNode = require('../../expr/node/FunctionNode.js'),
+      MatrixNode = require('../../expr/node/MatrixNode.js'),
+      OperatorNode = require('../../expr/node/OperatorNode.js'),
+      ParamsNode = require('../../expr/node/ParamsNode.js'),
+      SymbolNode = require('../../expr/node/SymbolNode.js'),
+      UpdateNode = require('../../expr/node/UpdateNode.js'),
       handlers = require('../../expr/node/handlers.js');
 
   /**
@@ -9722,9 +9858,9 @@ module.exports = function (math) {
   }
 };
 
-},{"../../expr/node/AssignmentNode.js":95,"../../expr/node/BlockNode.js":96,"../../expr/node/ConstantNode.js":97,"../../expr/node/FunctionNode.js":98,"../../expr/node/MatrixNode.js":99,"../../expr/node/OperatorNode.js":101,"../../expr/node/ParamsNode.js":102,"../../expr/node/SymbolNode.js":103,"../../expr/node/UpdateNode.js":104,"../../expr/node/handlers.js":105,"../../type/collection.js":193,"../../util/index.js":198,"./../../expr/Scope.js":93,"./../../type/Complex.js":187,"./../../type/Matrix.js":189,"./../../type/Range.js":190,"./../../type/Unit.js":192}],182:[function(require,module,exports){
+},{"../../expr/node/AssignmentNode.js":96,"../../expr/node/BlockNode.js":97,"../../expr/node/ConstantNode.js":98,"../../expr/node/FunctionNode.js":99,"../../expr/node/MatrixNode.js":100,"../../expr/node/OperatorNode.js":102,"../../expr/node/ParamsNode.js":103,"../../expr/node/SymbolNode.js":104,"../../expr/node/UpdateNode.js":105,"../../expr/node/handlers.js":106,"../../type/collection.js":193,"../../util/index.js":198,"./../../expr/Scope.js":93,"./../../type/Complex.js":188,"./../../type/Matrix.js":190,"./../../type/Range.js":191,"./../../type/Unit.js":192}],183:[function(require,module,exports){
 module.exports = function (math) {
-  var Selector = require('../../type/Selector.js').Selector;
+  var Selector = require('../../expr/Selector.js');
 
   /**
    * Wrap any value in a Selector, allowing to perform chained operations on
@@ -9766,7 +9902,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Selector.js":191}],183:[function(require,module,exports){
+},{"../../expr/Selector.js":94}],184:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js');
 
@@ -9788,7 +9924,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":198}],184:[function(require,module,exports){
+},{"../../util/index.js":198}],185:[function(require,module,exports){
 // main namespace
 var math = module.exports = require('./math.js');
 
@@ -9904,17 +10040,17 @@ require('./function/utils/typeof.js')(math);
 require('./constants.js')(math);
 
 // initialize Selector
-require('./type/Selector.js').init();
+require('./expr/Selector.js').init();
 
-},{"./constants.js":1,"./docs/index.js":91,"./expr/index.js":94,"./function/arithmetic/abs.js":107,"./function/arithmetic/add.js":108,"./function/arithmetic/ceil.js":109,"./function/arithmetic/cube.js":110,"./function/arithmetic/divide.js":111,"./function/arithmetic/edivide.js":112,"./function/arithmetic/emultiply.js":113,"./function/arithmetic/epow.js":114,"./function/arithmetic/equal.js":115,"./function/arithmetic/exp.js":116,"./function/arithmetic/fix.js":117,"./function/arithmetic/floor.js":118,"./function/arithmetic/gcd.js":119,"./function/arithmetic/larger.js":120,"./function/arithmetic/largereq.js":121,"./function/arithmetic/lcm.js":122,"./function/arithmetic/log.js":123,"./function/arithmetic/log10.js":124,"./function/arithmetic/mod.js":125,"./function/arithmetic/multiply.js":126,"./function/arithmetic/pow.js":127,"./function/arithmetic/round.js":128,"./function/arithmetic/sign.js":129,"./function/arithmetic/smaller.js":130,"./function/arithmetic/smallereq.js":131,"./function/arithmetic/sqrt.js":132,"./function/arithmetic/square.js":133,"./function/arithmetic/subtract.js":134,"./function/arithmetic/unary.js":135,"./function/arithmetic/unequal.js":136,"./function/arithmetic/xgcd.js":137,"./function/complex/arg.js":138,"./function/complex/conj.js":139,"./function/complex/im.js":140,"./function/complex/re.js":141,"./function/construction/boolean.js":142,"./function/construction/complex.js":143,"./function/construction/matrix.js":144,"./function/construction/number.js":145,"./function/construction/parser.js":146,"./function/construction/range.js":147,"./function/construction/string.js":148,"./function/construction/unit.js":149,"./function/matrix/concat.js":150,"./function/matrix/det.js":151,"./function/matrix/diag.js":152,"./function/matrix/eye.js":153,"./function/matrix/inv.js":154,"./function/matrix/ones.js":155,"./function/matrix/size.js":156,"./function/matrix/squeeze.js":157,"./function/matrix/subset.js":158,"./function/matrix/transpose.js":159,"./function/matrix/zeros.js":160,"./function/probability/factorial.js":161,"./function/probability/random.js":162,"./function/statistics/max.js":163,"./function/statistics/min.js":164,"./function/trigonometry/acos.js":165,"./function/trigonometry/asin.js":166,"./function/trigonometry/atan.js":167,"./function/trigonometry/atan2.js":168,"./function/trigonometry/cos.js":169,"./function/trigonometry/cot.js":170,"./function/trigonometry/csc.js":171,"./function/trigonometry/sec.js":172,"./function/trigonometry/sin.js":173,"./function/trigonometry/tan.js":174,"./function/units/in.js":175,"./function/utils/clone.js":176,"./function/utils/eval.js":177,"./function/utils/format.js":178,"./function/utils/help.js":179,"./function/utils/import.js":180,"./function/utils/parse.js":181,"./function/utils/select.js":182,"./function/utils/typeof.js":183,"./math.js":185,"./options":186,"./type/Selector.js":191,"./type/index.js":194}],185:[function(require,module,exports){
+},{"./constants.js":1,"./docs/index.js":91,"./expr/Selector.js":94,"./expr/index.js":95,"./function/arithmetic/abs.js":108,"./function/arithmetic/add.js":109,"./function/arithmetic/ceil.js":110,"./function/arithmetic/cube.js":111,"./function/arithmetic/divide.js":112,"./function/arithmetic/edivide.js":113,"./function/arithmetic/emultiply.js":114,"./function/arithmetic/epow.js":115,"./function/arithmetic/equal.js":116,"./function/arithmetic/exp.js":117,"./function/arithmetic/fix.js":118,"./function/arithmetic/floor.js":119,"./function/arithmetic/gcd.js":120,"./function/arithmetic/larger.js":121,"./function/arithmetic/largereq.js":122,"./function/arithmetic/lcm.js":123,"./function/arithmetic/log.js":124,"./function/arithmetic/log10.js":125,"./function/arithmetic/mod.js":126,"./function/arithmetic/multiply.js":127,"./function/arithmetic/pow.js":128,"./function/arithmetic/round.js":129,"./function/arithmetic/sign.js":130,"./function/arithmetic/smaller.js":131,"./function/arithmetic/smallereq.js":132,"./function/arithmetic/sqrt.js":133,"./function/arithmetic/square.js":134,"./function/arithmetic/subtract.js":135,"./function/arithmetic/unary.js":136,"./function/arithmetic/unequal.js":137,"./function/arithmetic/xgcd.js":138,"./function/complex/arg.js":139,"./function/complex/conj.js":140,"./function/complex/im.js":141,"./function/complex/re.js":142,"./function/construction/boolean.js":143,"./function/construction/complex.js":144,"./function/construction/matrix.js":145,"./function/construction/number.js":146,"./function/construction/parser.js":147,"./function/construction/range.js":148,"./function/construction/string.js":149,"./function/construction/unit.js":150,"./function/matrix/concat.js":151,"./function/matrix/det.js":152,"./function/matrix/diag.js":153,"./function/matrix/eye.js":154,"./function/matrix/inv.js":155,"./function/matrix/ones.js":156,"./function/matrix/size.js":157,"./function/matrix/squeeze.js":158,"./function/matrix/subset.js":159,"./function/matrix/transpose.js":160,"./function/matrix/zeros.js":161,"./function/probability/factorial.js":162,"./function/probability/random.js":163,"./function/statistics/max.js":164,"./function/statistics/min.js":165,"./function/trigonometry/acos.js":166,"./function/trigonometry/asin.js":167,"./function/trigonometry/atan.js":168,"./function/trigonometry/atan2.js":169,"./function/trigonometry/cos.js":170,"./function/trigonometry/cot.js":171,"./function/trigonometry/csc.js":172,"./function/trigonometry/sec.js":173,"./function/trigonometry/sin.js":174,"./function/trigonometry/tan.js":175,"./function/units/in.js":176,"./function/utils/clone.js":177,"./function/utils/eval.js":178,"./function/utils/format.js":179,"./function/utils/help.js":180,"./function/utils/import.js":181,"./function/utils/parse.js":182,"./function/utils/select.js":183,"./function/utils/typeof.js":184,"./math.js":186,"./options":187,"./type/index.js":194}],186:[function(require,module,exports){
 // math.js namespace
 // all constants and functions will be attached to this namespace
 
-},{}],186:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 // math.js options
 exports.precision = 5;  // number of digits in formatted output
 
-},{}],187:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     number = util.number,
@@ -10104,7 +10240,7 @@ function parseComplex () {
  * @param {Number} im
  * @return {Complex | Number} value
  */
-Complex.create = exports.create = function create (re, im) {
+Complex.create = function create (re, im) {
   if (im == 0) {
     return re;
   }
@@ -10120,7 +10256,7 @@ Complex.create = exports.create = function create (re, im) {
  * @param {String} str
  * @returns {Complex | null} complex
  */
-Complex.parse = exports.parse = function parse(str) {
+Complex.parse = function parse(str) {
   text = str;
   index = -1;
   c = '';
@@ -10274,10 +10410,16 @@ Complex.prototype.toString = function () {
 
 
 // exports
-exports.Complex = Complex;
+module.exports = Complex;
+
+// to trick my IDE which doesn't get it
+exports.isComplex = Complex.isComplex;
+exports.parse = Complex.parse;
+exports.create = Complex.create;
+
 util.types.addType('complex', Complex);
 
-},{"../util/index.js":198}],188:[function(require,module,exports){
+},{"../util/index.js":198}],189:[function(require,module,exports){
 var math = require('../math.js'),
     util = require('../util/index.js'),
 
@@ -10362,12 +10504,16 @@ Help.prototype.toJSON = function () {
 };
 
 // exports
-exports.Help = Help;
+module.exports = Help;
+
+// to trick my IDE which doesn't get it
+exports.isHelp = Help.isHelp;
+
 util.types.addType('help', Help);
 
-},{"../math.js":185,"../util/index.js":198}],189:[function(require,module,exports){
+},{"../math.js":186,"../util/index.js":198}],190:[function(require,module,exports){
 var util = require('../util/index.js'),
-    Range = require('./Range.js').Range,
+    Range = require('./Range.js'),
 
     number = util.number,
     string = util.string,
@@ -11040,10 +11186,14 @@ Matrix.prototype.toString = function () {
 };
 
 // exports
-exports.Matrix = Matrix;
+module.exports = Matrix;
+
+// to trick my IDE which doesn't get it
+exports.isMatrix = Matrix.isMatrix;
+
 util.types.addType('matrix', Matrix);
 
-},{"../util/index.js":198,"./Range.js":190}],190:[function(require,module,exports){
+},{"../util/index.js":198,"./Range.js":191}],191:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     number = util.number,
@@ -11108,7 +11258,7 @@ function Range(start, step, end) {
  * @param {String} str
  * @return {Range | null} range
  */
-Range.parse = exports.parse = function parse (str) {
+Range.parse = function parse (str) {
   if (!string.isString(str)) {
     return null;
   }
@@ -11145,7 +11295,7 @@ Range.prototype.clone = function () {
  * @param {*} object
  * @return {Boolean} isRange
  */
-Range.isRange = exports.isRange = function isRange(object) {
+Range.isRange = function isRange(object) {
   return (object instanceof Range);
 };
 
@@ -11291,147 +11441,15 @@ Range.prototype.toString = function () {
 
 
 // exports
-exports.Range = Range;
+module.exports = Range;
+
+// to trick my IDE which doesn't get it
+exports.isRange = Range.isRange;
+exports.parse = Range.parse;
+
 util.types.addType('range', Range);
 
-},{"../util/index.js":198}],191:[function(require,module,exports){
-var math = require('../math.js'),
-    util = require('../util/index.js'),
-
-    object = util.object,
-    string = util.string;
-
-/**
- * @constructor math.type.Selector
- * Wrap any value in a Selector, allowing to perform chained operations on
- * the value.
- *
- * All methods available in the math.js library can be called upon the selector,
- * and then will be evaluated with the value itself as first argument.
- * The selector can be closed by executing selector.done(), which will return
- * the final value.
- *
- * The Selector has a number of special functions:
- * - done()     Finalize the chained operation and return the selectors value.
- * - valueOf()  The same as done()
- * - toString() Executes math.format() onto the selectors value, returning
- *              a string representation of the value.
- * - get(...)   Get a subset of the selectors value. Useful for example for
- *              matrices and arrays.
- * - set(...)   Replace a subset of the selectors value. Useful for example for
- *              matrices and arrays.
- *
- * @param {*} [value]
- */
-function Selector (value) {
-  if (!(this instanceof Selector)) {
-    throw new SyntaxError(
-        'Selector constructor must be called with the new operator');
-  }
-
-  if (value instanceof Selector) {
-    this.value = value.value;
-  }
-  else {
-    this.value = value;
-  }
-}
-
-Selector.prototype = {
-  /**
-   * Close the selector. Returns the final value.
-   * Does the same as method valueOf()
-   * @returns {*} value
-   */
-  done: function () {
-    return this.value;
-  },
-
-  /**
-   * Get a submatrix or subselection from current value.
-   * Only applicable when the current value has a method get.
-   */
-  get: function (index) {
-    var value = this.value;
-    if (!value) {
-      throw Error('Selector value is undefined');
-    }
-
-    return new Selector(math.subset(value, index));
-  },
-
-  /**
-   * Set a submatrix or subselection on current value.
-   * Only applicable when the current value has a method set.
-   */
-  set: function (index, replacement) {
-    var value = this.value;
-    if (!value) {
-      throw Error('Selector value is undefined');
-    }
-
-    return new Selector(math.subset(value, index, replacement));
-  },
-
-  /**
-   * Close the selector. Returns the final value.
-   * Does the same as method done()
-   * @returns {*} value
-   */
-  valueOf: function () {
-    return this.value;
-  },
-
-  /**
-   * Get the string representation of the value in the selector
-   * @returns {String}
-   */
-  toString: function () {
-    return string.format(this.value);
-  }
-};
-
-/**
- * Create a proxy method for the selector
- * @param {String} name
- * @param {*} value       The value or function to be proxied
- */
-function createProxy(name, value) {
-  var slice = Array.prototype.slice;
-  if (typeof value === 'function') {
-    // a function
-    Selector.prototype[name] = function () {
-      var args = [this.value].concat(slice.call(arguments, 0));
-      return new Selector(value.apply(this, args));
-    }
-  }
-  else {
-    // a constant
-    Selector.prototype[name] = new Selector(value);
-  }
-}
-
-Selector.createProxy = createProxy;
-
-/**
- * initialise the Chain prototype with all functions and constants in math
- */
-function init () {
-  init = null; // delete, we are initialized
-
-  for (var prop in math) {
-    if (math.hasOwnProperty(prop) && prop) {
-      createProxy(prop, math[prop]);
-    }
-  }
-}
-
-// exports
-exports.Selector = Selector;
-exports.init = init;
-util.types.addType('selector', Selector);
-
-},{"../math.js":185,"../util/index.js":198}],192:[function(require,module,exports){
+},{"../util/index.js":198}],192:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     number = util.number,
@@ -12149,14 +12167,20 @@ Unit.UNITS = UNITS;
 
 
 // exports
-exports.Unit = Unit;
+module.exports = Unit;
+
+// to trick my IDE which doesn't get it
+exports.isUnit = Unit.isUnit;
+exports.isPlainUnit = Unit.isPlainUnit;
+exports.parse = Unit.parse;
+
 util.types.addType('unit', Unit);
 
 },{"../util/index.js":198}],193:[function(require,module,exports){
 var util = require('../util/index.js'),
 
-    Matrix = require('./Matrix.js').Matrix,
-    Range = require('./Range.js').Range,
+    Matrix = require('./Matrix.js'),
+    Range = require('./Range.js'),
 
     isArray = Array.isArray,
     isString = util.string.isString;
@@ -12379,17 +12403,16 @@ exports.deepMap2 = function deepMap2(array1, array2, fn) {
   return res;
 };
 
-},{"../util/index.js":198,"./Matrix.js":189,"./Range.js":190}],194:[function(require,module,exports){
-exports.Complex = require('./Complex.js').Complex;
-exports.Range = require('./Range.js').Range;
-exports.Matrix = require('./Matrix.js').Matrix;
-exports.Unit = require('./Unit.js').Unit;
-exports.Help = require('./Help.js').Help;
-exports.Selector = require('./Selector.js').Selector;
+},{"../util/index.js":198,"./Matrix.js":190,"./Range.js":191}],194:[function(require,module,exports){
+exports.Complex = require('./Complex.js');
+exports.Range = require('./Range.js');
+exports.Matrix = require('./Matrix.js');
+exports.Unit = require('./Unit.js');
+exports.Help = require('./Help.js');
 
 exports.collection = require('./collection.js');
 
-},{"./Complex.js":187,"./Help.js":188,"./Matrix.js":189,"./Range.js":190,"./Selector.js":191,"./Unit.js":192,"./collection.js":193}],195:[function(require,module,exports){
+},{"./Complex.js":188,"./Help.js":189,"./Matrix.js":190,"./Range.js":191,"./Unit.js":192,"./collection.js":193}],195:[function(require,module,exports){
 var number = require('./number'),
     string = require('./string'),
     object = require('./object');
@@ -12813,7 +12836,7 @@ exports.toPrecision = function toPrecision (value, precision) {
 /** @private */
 var _trailingZeros = /\.(\d*?)(0+)$/g;
 
-},{"../options.js":186}],200:[function(require,module,exports){
+},{"../options.js":187}],200:[function(require,module,exports){
 var number = require('./number.js'),
     string = require('./string.js'),
     bool = require('./boolean.js');
@@ -13165,7 +13188,7 @@ exports.addType = function addType (name, type) {
   types[name] = type;
 };
 
-},{}]},{},[184])(184)
+},{}]},{},[185])(185)
 });
 ;/**
  * Compatibility shims for legacy JavaScript engines

@@ -673,4 +673,8 @@ Matrix.prototype.toString = function () {
 
 // exports
 module.exports = Matrix;
+
+// to trick my IDE which doesn't get it
+exports.isMatrix = Matrix.isMatrix;
+
 util.types.addType('matrix', Matrix);

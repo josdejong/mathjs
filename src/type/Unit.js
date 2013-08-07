@@ -716,4 +716,10 @@ Unit.UNITS = UNITS;
 
 // exports
 module.exports = Unit;
+
+// to trick my IDE which doesn't get it
+exports.isUnit = Unit.isUnit;
+exports.isPlainUnit = Unit.isPlainUnit;
+exports.parse = Unit.parse;
+
 util.types.addType('unit', Unit);

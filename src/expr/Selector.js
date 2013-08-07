@@ -1,11 +1,9 @@
 var math = require('../math.js'),
     util = require('../util/index.js'),
-
-    object = util.object,
     string = util.string;
 
 /**
- * @constructor math.type.Selector
+ * @constructor Selector
  * Wrap any value in a Selector, allowing to perform chained operations on
  * the value.
  *
@@ -119,17 +117,18 @@ Selector.createProxy = createProxy;
 /**
  * initialise the Chain prototype with all functions and constants in math
  */
-function init () {
-  init = null; // delete, we are initialized
+Selector.init = function init () {
+  Selector.init = null; // delete, we are initialized
 
   for (var prop in math) {
     if (math.hasOwnProperty(prop) && prop) {
       createProxy(prop, math[prop]);
     }
   }
-}
+};
 
 // exports
 module.exports = Selector;
-Selector.init = init;
+exports.init = Selector.init;
+
 util.types.addType('selector', Selector);

@@ -113,4 +113,4 @@ require('./function/utils/typeof.js')(math);
 require('./constants.js')(math);
 
 // initialize Selector
-require('./type/Selector.js').init();
+require('./expr/Selector.js').init();
