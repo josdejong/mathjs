@@ -76,6 +76,8 @@ task('minify', ['bundle'], function () {
   console.log('Minified library ' + MATHJS_MIN + ' (' + filesize(result.code.length, 1) + ')');
 });
 
+// TODO: test the bundled library and minified library (not the sources)
+
 /**
  * Update version and date patterns in given file.
  * Patterns '@@date' and '@@version' will be replaced with current date and
