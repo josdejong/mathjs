@@ -1,5 +1,17 @@
 // main namespace
-module.exports = require('./math.js');
+var math = module.exports = require('./math.js');
+
+// options
+math.options = require('./options');
+
+// expression
+math.expr = require('./expr/index.js');
+
+// types
+math.type = require('./type/index.js');
+
+// docs
+math.docs = require('./docs/index.js');
 
 // functions - arithmetic
 require('./function/arithmetic/abs.js');

@@ -1,4 +1,4 @@
-var math = require('../../index.js'),
+var math = require('../math.js'),
     util = require('../util/index.js'),
 
     object = util.object,
