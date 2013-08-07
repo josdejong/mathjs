@@ -1,6 +1,6 @@
 // test complex construction
 var assert = require('assert'),
-    math = require('../../../dist/math.js'),
+    math = require('../../../src/index.js'),
     complex = math.complex;
 
 // 0 arguments

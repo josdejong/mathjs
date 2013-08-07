@@ -1,14 +1,15 @@
+var Node = require('./Node.js'),
+    error = require('../../util/error.js');
+
 /**
  * @constructor FunctionNode
  * Function assignment
  *
- * @param {String} name                     Function name
- * @param {String[]} variables              Variable names
- * @param {Node} expr                       The function expression
- * @param {math.expr.Scope} functionScope   Scope in which to write variable
- *                                          values
- * @param {math.expr.Scope} scope           Scope to store the resulting
- *                                          function assignment
+ * @param {String} name           Function name
+ * @param {String[]} variables    Variable names
+ * @param {Node} expr             The function expression
+ * @param {Scope} functionScope   Scope in which to write variable values
+ * @param {Scope} scope           Scope to store the resulting function assignment
  */
 function FunctionNode(name, variables, expr, functionScope, scope) {
   this.name = name;
@@ -22,7 +23,7 @@ function FunctionNode(name, variables, expr, functionScope, scope) {
 
     // validate correct number of arguments
     if (arguments.length != num) {
-      throw newArgumentsError(name, arguments.length, num);
+      throw new error.ArgumentsError(name, arguments.length, num);
     }
 
     // fill in the provided arguments in the functionScope variables
@@ -42,8 +43,6 @@ function FunctionNode(name, variables, expr, functionScope, scope) {
 }
 
 FunctionNode.prototype = new Node();
-
-math.expr.node.FunctionNode = FunctionNode;
 
 /**
  * Evaluate the function assignment
@@ -84,3 +83,5 @@ FunctionNode.prototype.find = function (filter) {
 FunctionNode.prototype.toString = function() {
   return this.fn.toString();
 };
+
+module.exports = FunctionNode;

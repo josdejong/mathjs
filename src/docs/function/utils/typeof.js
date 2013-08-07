@@ -1,4 +1,4 @@
-math.docs['typeof'] = {
+module.exports = {
   'name': 'typeof',
   'category': 'Utils',
   'syntax': [

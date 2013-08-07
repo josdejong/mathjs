@@ -1,4 +1,29 @@
-(function () {
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
+
+      isString = util.string.isString,
+      isArray = Array.isArray,
+
+      // types
+      Complex = require('./../../type/Complex.js'),
+      Matrix = require('./../../type/Matrix.js'),
+      Unit = require('./../../type/Unit.js'),
+      Range = require('./../../type/Range.js'),
+      collection = require('../../type/collection.js'),
+
+      // scope and nodes
+      Scope = require('./../../expr/Scope.js'),
+      AssignmentNode = require('../../expr/node/AssignmentNode.js'),
+      BlockNode = require('../../expr/node/BlockNode.js'),
+      ConstantNode = require('../../expr/node/ConstantNode.js'),
+      FunctionNode = require('../../expr/node/FunctionNode.js'),
+      MatrixNode = require('../../expr/node/MatrixNode.js'),
+      OperatorNode = require('../../expr/node/OperatorNode.js'),
+      ParamsNode = require('../../expr/node/ParamsNode.js'),
+      SymbolNode = require('../../expr/node/SymbolNode.js'),
+      UpdateNode = require('../../expr/node/UpdateNode.js'),
+      handlers = require('../../expr/node/handlers.js');
+
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.eval();
@@ -25,39 +50,39 @@
    *     nodes[2].eval(); // 12
    *
    * @param {String | String[] | Matrix} expr
-   * @param {math.expr.Scope | Object} [scope]
+   * @param {Scope | Object} [scope]
    * @return {Node | Node[]} node
    * @throws {Error}
    */
-  math.parse = function (expr, scope) {
+  math.parse = function parse (expr, scope) {
     if (arguments.length != 1 && arguments.length != 2) {
-      throw newArgumentsError('parse', arguments.length, 1, 2);
+      throw new util.error.ArgumentsError('parse', arguments.length, 1, 2);
     }
 
     // instantiate a scope
     var parseScope;
     if (scope) {
-      if (scope instanceof math.expr.Scope) {
+      if (scope instanceof Scope) {
         parseScope = scope;
       }
       else {
-        parseScope = new math.expr.Scope(scope);
+        parseScope = new Scope(scope);
       }
     }
     else {
-      parseScope = new math.expr.Scope();
+      parseScope = new Scope();
     }
 
     if (isString(expr)) {
       // parse a single expression
       expression = expr || '';
-      return parse_start(parseScope);
+      return parseStart(parseScope);
     }
-    else if (Array.isArray(expr) || expr instanceof Matrix) {
+    else if (isArray(expr) || expr instanceof Matrix) {
       // parse an array or matrix with expressions
-      return util.map(expr, function (elem) {
+      return collection.map(expr, function (elem) {
         expression = elem || '';
-        return parse_start(parseScope);
+        return parseStart(parseScope);
       });
     }
     else {
@@ -66,7 +91,7 @@
     }
   };
 
-  // token types enumeration
+// token types enumeration
   var TOKENTYPE = {
     NULL : 0,
     DELIMITER : 1,
@@ -75,7 +100,7 @@
     UNKNOWN : 4
   };
 
-  // map with all delimiters
+// map with all delimiters
   var DELIMITERS = {
     ',': true,
     '(': true,
@@ -107,8 +132,6 @@
     '<=': true,
     '>=': true
   };
-
-  var handlers = math.expr.node.handlers;
 
   var expression = '';  // current expression
   var index = 0;        // current index in expr
@@ -324,11 +347,11 @@
 
   /**
    * Start of the parse levels below, in order of precedence
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_start (scope) {
+  function parseStart (scope) {
     // get the first character in expression
     first();
 
@@ -340,7 +363,7 @@
       node = new ConstantNode(undefined);
     }
     else {
-      node = parse_block(scope);
+      node = parseBlock(scope);
     }
 
     // check for garbage at the end of the expression
@@ -364,15 +387,15 @@
    * Parse a block with expressions. Expressions can be separated by a newline
    * character '\n', or by a semicolon ';'. In case of a semicolon, no output
    * of the preceding line is returned.
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_block (scope) {
+  function parseBlock (scope) {
     var node, block, visible;
 
     if (token != '\n' && token != ';' && token != '') {
-      node = parse_ans(scope);
+      node = parseAns(scope);
     }
 
     while (token == '\n' || token == ';') {
@@ -387,7 +410,7 @@
 
       getToken();
       if (token != '\n' && token != ';' && token != '') {
-        node = parse_ans(scope);
+        node = parseAns(scope);
 
         visible = (token != ';');
         block.add(node, visible);
@@ -399,7 +422,7 @@
     }
 
     if (!node) {
-      node = parse_ans(scope);
+      node = parseAns(scope);
     }
 
     return node;
@@ -409,12 +432,12 @@
    * Parse assignment of ans.
    * Ans is assigned when the expression itself is no variable or function
    * assignment
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_ans (scope) {
-    var expression = parse_function_assignment(scope);
+  function parseAns (scope) {
+    var expression = parseFunctionAssignment(scope);
 
     // create a variable definition for ans
     var name = 'ans';
@@ -423,11 +446,11 @@
 
   /**
    * Parse a function assignment like "function f(a,b) = a*b"
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_function_assignment (scope) {
+  function parseFunctionAssignment (scope) {
     // TODO: keyword 'function' must become a reserved keyword
     // TODO: replace the 'function' keyword with an assignment operator '=>'
     if (token_type == TOKENTYPE.SYMBOL && token == 'function') {
@@ -477,25 +500,25 @@
 
       // parse the expression, with the correct function scope
       getToken();
-      var expression = parse_assignment(functionScope);
+      var expression = parseAssignment(functionScope);
 
       return new FunctionNode(name, variables, expression, functionScope, scope);
     }
 
-    return parse_assignment(scope);
+    return parseAssignment(scope);
   }
 
   /**
    * Assignment of a variable, can be a variable like "a=2.3" or a updating an
    * existing variable like "matrix(2,3:5)=[6,7,8]"
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_assignment (scope) {
+  function parseAssignment (scope) {
     var name, params, paramScopes, expr;
 
-    var node = parse_range(scope);
+    var node = parseRange(scope);
 
     if (token == '=') {
       if (node instanceof SymbolNode) {
@@ -503,7 +526,7 @@
         getToken();
         name = node.name;
         params = null;
-        expr = parse_assignment(scope);
+        expr = parseAssignment(scope);
         return new AssignmentNode(name, expr, scope);
       }
       else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
@@ -512,7 +535,7 @@
         name = node.object.name;
         params = node.params;
         paramScopes = node.paramScopes;
-        expr = parse_assignment(scope);
+        expr = parseAssignment(scope);
         return new UpdateNode(name, params, paramScopes, expr, scope);
       }
       else {
@@ -526,11 +549,11 @@
 
   /**
    * parse range, "start:end", "start:step:end", ":", "start:", ":end", etc
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_range (scope) {
+  function parseRange (scope) {
     var node, name, fn, params = [];
 
     if (token == ':') {
@@ -539,7 +562,7 @@
     }
     else {
       // explicit start
-      node = parse_conditions(scope);
+      node = parseConditions(scope);
     }
 
     if (token == ':') {
@@ -554,7 +577,7 @@
         }
         else {
           // explicit end
-          params.push(parse_conditions(scope));
+          params.push(parseConditions(scope));
         }
       }
 
@@ -571,19 +594,19 @@
 
   /**
    * conditions like and, or, in
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_conditions (scope) {
+  function parseConditions (scope) {
     var node, operators, name, fn, params;
 
-    node = parse_bitwise_conditions(scope);
+    node = parseBitwiseConditions(scope);
 
     // TODO: precedence of And above Or?
     // TODO: implement a method for unit to number conversion
     operators = {
-      'in' : 'in'
+      'in' : math['in']
       /* TODO: implement conditions
        'and' : 'and',
        '&&' : 'and',
@@ -595,10 +618,10 @@
 
     while (operators[token] !== undefined) {
       name = token;
-      fn = math[operators[name]];
+      fn = operators[name];
 
       getToken();
-      params = [node, parse_bitwise_conditions(scope)];
+      params = [node, parseBitwiseConditions(scope)];
       node = new OperatorNode(name, fn, params);
     }
 
@@ -607,27 +630,27 @@
 
   /**
    * conditional operators and bitshift
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_bitwise_conditions (scope) {
-    var node = parse_comparison(scope);
+  function parseBitwiseConditions (scope) {
+    var node = parseComparison(scope);
 
     /* TODO: implement bitwise conditions
      var operators = {
-     '&' : 'bitwiseand',
-     '|' : 'bitwiseor',
+     '&' : bitwiseand,
+     '|' : bitwiseor,
      // todo: bitwise xor?
-     '<<': 'bitshiftleft',
-     '>>': 'bitshiftright'
+     '<<': bitshiftleft,
+     '>>': bitshiftright
      };
      while (operators[token] !== undefined) {
      var name = token;
-     var fn = math[operators[name]];
+     var fn = operators[name];
 
      getToken();
-     var params = [node, parse_comparison()];
+     var params = [node, parseComparison()];
      node = new OperatorNode(name, fn, params);
      }
      */
@@ -637,29 +660,29 @@
 
   /**
    * comparison operators
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_comparison (scope) {
+  function parseComparison (scope) {
     var node, operators, name, fn, params;
 
-    node = parse_addsubtract(scope);
+    node = parseAddSubtract(scope);
 
     operators = {
-      '==': 'equal',
-      '!=': 'unequal',
-      '<': 'smaller',
-      '>': 'larger',
-      '<=': 'smallereq',
-      '>=': 'largereq'
+      '==': math.equal,
+      '!=': math.unequal,
+      '<': math.smaller,
+      '>': math.larger,
+      '<=': math.smallereq,
+      '>=': math.largereq
     };
     while (operators[token] !== undefined) {
       name = token;
-      fn = math[operators[name]];
+      fn = operators[name];
 
       getToken();
-      params = [node, parse_addsubtract(scope)];
+      params = [node, parseAddSubtract(scope)];
       node = new OperatorNode(name, fn, params);
     }
 
@@ -668,25 +691,25 @@
 
   /**
    * add or subtract
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_addsubtract (scope)  {
+  function parseAddSubtract (scope)  {
     var node, operators, name, fn, params;
 
-    node = parse_multiplydivide(scope);
+    node = parseMultiplyDivide(scope);
 
     operators = {
-      '+': 'add',
-      '-': 'subtract'
+      '+': math.add,
+      '-': math.subtract
     };
     while (operators[token] !== undefined) {
       name = token;
-      fn = math[operators[name]];
+      fn = operators[name];
 
       getToken();
-      params = [node, parse_multiplydivide(scope)];
+      params = [node, parseMultiplyDivide(scope)];
       node = new OperatorNode(name, fn, params);
     }
 
@@ -695,30 +718,30 @@
 
   /**
    * multiply, divide, modulus
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_multiplydivide (scope) {
+  function parseMultiplyDivide (scope) {
     var node, operators, name, fn, params;
 
-    node = parse_unary(scope);
+    node = parseUnary(scope);
 
     operators = {
-      '*': 'multiply',
-      '.*': 'emultiply',
-      '/': 'divide',
-      './': 'edivide',
-      '%': 'mod',
-      'mod': 'mod'
+      '*': math.multiply,
+      '.*': math.emultiply,
+      '/': math.divide,
+      './': math.edivide,
+      '%': math.mod,
+      'mod': math.mod
     };
 
     while (operators[token] !== undefined) {
       name = token;
-      fn = math[operators[name]];
+      fn = operators[name];
 
       getToken();
-      params = [node, parse_unary(scope)];
+      params = [node, parseUnary(scope)];
       node = new OperatorNode(name, fn, params);
     }
 
@@ -727,37 +750,37 @@
 
   /**
    * Unary minus
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_unary (scope) {
+  function parseUnary (scope) {
     var name, fn, params;
 
     if (token == '-') {
       name = token;
       fn = math.unary;
       getToken();
-      params = [parse_unary(scope)];
+      params = [parseUnary(scope)];
 
       return new OperatorNode(name, fn, params);
     }
 
-    return parse_pow(scope);
+    return parsePow(scope);
   }
 
   /**
    * power
    * Node: power operator is right associative
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_pow (scope) {
+  function parsePow (scope) {
     var node, leftNode, nodes, ops, name, fn, params;
 
     nodes = [
-      parse_factorial(scope)
+      parseFactorial(scope)
     ];
     ops = [];
 
@@ -765,7 +788,7 @@
     while (token == '^' || token == '.^') {
       ops.push(token);
       getToken();
-      nodes.push(parse_factorial(scope));
+      nodes.push(parseFactorial(scope));
     }
 
     // evaluate the operands from right to left (right associative)
@@ -783,14 +806,14 @@
 
   /**
    * Factorial
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_factorial (scope)  {
+  function parseFactorial (scope)  {
     var node, name, fn, params;
 
-    node = parse_transpose(scope);
+    node = parseTranspose(scope);
 
     while (token == '!') {
       name = token;
@@ -806,14 +829,14 @@
 
   /**
    * Transpose
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_transpose (scope)  {
+  function parseTranspose (scope)  {
     var node, name, fn, params;
 
-    node = parse_node_handler(scope);
+    node = parseNodeHandler(scope);
 
     while (token == '\'') {
       name = token;
@@ -847,11 +870,11 @@
    *
    *     node = math.parse('plot(sin(x), x)');
    *
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_node_handler (scope) {
+  function parseNodeHandler (scope) {
     var params,
         paramScopes,
         paramScope,
@@ -872,7 +895,7 @@
         if (token != ')') {
           paramScope = scope.createSubScope();
           paramScopes.push(paramScope);
-          params.push(parse_range(paramScope));
+          params.push(parseRange(paramScope));
 
           // parse a list with parameters
           while (token == ',') {
@@ -880,7 +903,7 @@
 
             paramScope = scope.createSubScope();
             paramScopes.push(paramScope);
-            params.push(parse_range(paramScope));
+            params.push(parseRange(paramScope));
           }
         }
 
@@ -895,16 +918,16 @@
       return new handler(params, paramScopes);
     }
 
-    return parse_symbol(scope);
+    return parseSymbol(scope);
   }
 
   /**
    * parse symbols: functions, variables, constants, units
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_symbol (scope) {
+  function parseSymbol (scope) {
     var node, name;
 
     if (token_type == TOKENTYPE.SYMBOL) {
@@ -916,22 +939,22 @@
       node = new SymbolNode(name, scope);
 
       // parse parameters
-      return parse_params(scope, node);
+      return parseParams(scope, node);
     }
 
-    return parse_string(scope);
+    return parseString(scope);
   }
 
   /**
    * parse parameters, enclosed in parenthesis
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @param {Node} node    Node on which to apply the parameters. If there
    *                       are no parameters in the expression, the node
    *                       itself is returned
    * @return {Node} node
    * @private
    */
-  function parse_params (scope, node) {
+  function parseParams (scope, node) {
     var params,
         paramScopes,
         paramScope;
@@ -945,7 +968,7 @@
       if (token != ')') {
         paramScope = scope.createSubScope();
         paramScopes.push(paramScope);
-        params.push(parse_range(paramScope));
+        params.push(parseRange(paramScope));
 
         // parse a list with parameters
         while (token == ',') {
@@ -953,7 +976,7 @@
 
           paramScope = scope.createSubScope();
           paramScopes.push(paramScope);
-          params.push(parse_range(paramScope));
+          params.push(parseRange(paramScope));
         }
       }
 
@@ -971,11 +994,11 @@
   /**
    * parse a string.
    * A string is enclosed by double quotes
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_string (scope) {
+  function parseString (scope) {
     var node, str, tPrev;
 
     if (token == '"') {
@@ -998,21 +1021,21 @@
       node = new ConstantNode(str);
 
       // parse parameters
-      node = parse_params(scope, node);
+      node = parseParams(scope, node);
 
       return node;
     }
 
-    return parse_matrix(scope);
+    return parseMatrix(scope);
   }
 
   /**
    * parse the matrix
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} A MatrixNode
    * @private
    */
-  function parse_matrix (scope) {
+  function parseMatrix (scope) {
     var array, params, r, c, rows, cols;
 
     if (token == '[') {
@@ -1031,7 +1054,7 @@
         r = 0;
         c = 0;
 
-        params[0] = [parse_assignment(scope)];
+        params[0] = [parseAssignment(scope)];
 
         // the columns in the matrix are separated by commas, and the rows by dot-comma's
         while (token == ',' || token == ';') {
@@ -1050,7 +1073,7 @@
             getToken();
           }
 
-          params[r][c] = parse_assignment(scope);
+          params[r][c] = parseAssignment(scope);
 
           // skip newlines
           while (token == '\n') {
@@ -1084,7 +1107,7 @@
 
          //TODO: math.eval('[1 -2 3]') is evaluated as '[(1-2) 3]' instead of '[(1) (-2) (3)]'
          //TODO: '[(1) (-2) (3)]' doesn't work
-         params[r][c] = parse_assignment(scope);
+         params[r][c] = parseAssignment(scope);
 
          // skip newlines
          while (token == '\n') {
@@ -1118,21 +1141,21 @@
       }
 
       // parse parameters
-      array = parse_params(scope, array);
+      array = parseParams(scope, array);
 
       return array;
     }
 
-    return parse_number(scope);
+    return parseNumber(scope);
   }
 
   /**
    * parse a number
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_number (scope) {
+  function parseNumber (scope) {
     var node, value, number;
 
     if (token_type == TOKENTYPE.NUMBER) {
@@ -1148,7 +1171,7 @@
        // TODO: how to calculate a=3; 2/2a ? is this (2/2)*a or 2/(2*a) ?
        // check for implicit multiplication
        if (token_type == TOKENTYPE.VARIABLE) {
-       node = multiply(node, parse_pow());
+       node = multiply(node, parsePow());
        }
        //*/
 
@@ -1172,28 +1195,28 @@
       node = new ConstantNode(number);
 
       // parse parameters
-      node = parse_params(scope, node);
+      node = parseParams(scope, node);
 
       return node;
     }
 
-    return parse_parentheses(scope);
+    return parseParentheses(scope);
   }
 
   /**
    * parentheses
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} node
    * @private
    */
-  function parse_parentheses (scope) {
+  function parseParentheses (scope) {
     var node;
 
     // check if it is a parenthesized expression
     if (token == '(') {
       // parentheses (...)
       getToken();
-      node = parse_assignment(scope); // start again
+      node = parseAssignment(scope); // start again
 
       if (token != ')') {
         throw createSyntaxError('Parenthesis ) expected');
@@ -1204,26 +1227,26 @@
        // TODO: how to calculate a=3; 2/2a ? is this (2/2)*a or 2/(2*a) ?
        // check for implicit multiplication
        if (token_type == TOKENTYPE.VARIABLE) {
-       node = multiply(node, parse_pow());
+       node = multiply(node, parsePow());
        }
        //*/
 
       // parse parameters
-      node = parse_params(scope, node);
+      node = parseParams(scope, node);
 
       return node;
     }
 
-    return parse_end(scope);
+    return parseEnd(scope);
   }
 
   /**
    * Evaluated when the expression is not yet ended but expected to end
-   * @param {math.expr.Scope} scope
+   * @param {Scope} scope
    * @return {Node} res
    * @private
    */
-  function parse_end (scope) {
+  function parseEnd (scope) {
     if (token == '') {
       // syntax error or unexpected end of expression
       throw createSyntaxError('Unexpected end of expression');
@@ -1300,5 +1323,4 @@
   function createError (message) {
     return new Error(createErrorMessage(message));
   }
-
-})();
+};

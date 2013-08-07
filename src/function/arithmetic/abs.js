@@ -1,34 +1,46 @@
-/**
- * Calculate the absolute value of a value.
- *
- *     abs(x)
- *
- * For matrices, the function is evaluated element wise.
- *
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.abs = function abs(x) {
-  if (arguments.length != 1) {
-    throw newArgumentsError('abs', arguments.length, 1);
-  }
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
 
-  if (isNumber(x)) {
-    return Math.abs(x);
-  }
+      Complex = require('../../type/Complex.js'),
+      Matrix = require('../../type/Matrix.js'),
+      collection = require('../../type/collection.js'),
 
-  if (x instanceof Complex) {
-    return Math.sqrt(x.re * x.re + x.im * x.im);
-  }
+      isNumber = util.number.isNumber,
+      isComplex = Complex.isComplex,
+      isCollection = collection.isCollection;
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.abs);
-  }
+  /**
+   * Calculate the absolute value of a value.
+   *
+   *     abs(x)
+   *
+   * For matrices, the function is evaluated element wise.
+   *
+   * @param {Number | Complex | Array | Matrix} x
+   * @return {Number | Complex | Array | Matrix} res
+   */
+  math.abs = function abs(x) {
+    if (arguments.length != 1) {
+      throw new util.error.ArgumentsError('abs', arguments.length, 1);
+    }
 
-  if (x.valueOf() !== x) {
-    // fallback on the objects primitive value
-    return math.abs(x.valueOf());
-  }
+    if (isNumber(x)) {
+      return Math.abs(x);
+    }
 
-  throw newUnsupportedTypeError('abs', x);
+    if (isComplex(x)) {
+      return Math.sqrt(x.re * x.re + x.im * x.im);
+    }
+
+    if (isCollection(x)) {
+      return collection.map(x, abs);
+    }
+
+    if (x.valueOf() !== x) {
+      // fallback on the objects primitive value
+      return abs(x.valueOf());
+    }
+
+    throw new util.error.UnsupportedTypeError('abs', x);
+  };
 };

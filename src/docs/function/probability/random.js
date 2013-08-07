@@ -1,4 +1,4 @@
-math.docs.random = {
+module.exports = {
   'name': 'random',
   'category': 'Probability',
   'syntax': [
@@ -8,20 +8,6 @@ math.docs.random = {
       'Return a random number between 0 and 1.',
   'examples': [
     'random()'
-  ],
-  'seealso': []
-};
-
-math.docs.randInt = {
-  'name': 'randInt',
-  'category': 'Probability',
-  'syntax': [
-    'randInt()'
-  ],
-  'description':
-      'Return a random number between 0 and 1.',
-  'examples': [
-    'randInt()'
   ],
   'seealso': []
 };

@@ -1,9 +1,9 @@
 // test select (chaining of operations)
 var assert = require('assert'),
     approx = require('../../../tools/approx.js'),
-    math = require('../../../dist/math.js');
+    math = require('../../../src/index.js');
 
-assert.ok(math.select(45) instanceof math.type.Selector);
+assert.ok(math.select(45) instanceof math.expr.Selector);
 assert.equal(math.select(3).add(4).subtract(2).done(), 5);
 assert.deepEqual(math.select(math.matrix([[1,2],[3,4]]))
     .set([0,0], 8)

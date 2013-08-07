@@ -1,10 +1,12 @@
+var Node = require('./Node.js');
+
 /**
  * @constructor AssignmentNode
  * Define a symbol, like "a = 3.2"
  *
- * @param {String} name                 Symbol name
- * @param {Node} expr                   The expression defining the symbol
- * @param {math.expr.Scope} scope       Scope to store the result
+ * @param {String} name       Symbol name
+ * @param {Node} expr         The expression defining the symbol
+ * @param {Scope} scope       Scope to store the result
  */
 function AssignmentNode(name, expr, scope) {
   this.name = name;
@@ -13,8 +15,6 @@ function AssignmentNode(name, expr, scope) {
 }
 
 AssignmentNode.prototype = new Node();
-
-math.expr.node.AssignmentNode = AssignmentNode;
 
 /**
  * Evaluate the assignment
@@ -59,3 +59,5 @@ AssignmentNode.prototype.find = function (filter) {
 AssignmentNode.prototype.toString = function() {
   return this.name + ' = ' + this.expr.toString();
 };
+
+module.exports = AssignmentNode;

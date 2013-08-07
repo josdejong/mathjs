@@ -1,6 +1,6 @@
 // test round
 var assert = require('assert');
-var math = require('../../../dist/math.js');
+var math = require('../../../src/index.js');
 
 // parser
 assert.equal(math.eval('round(pi)'), 3);

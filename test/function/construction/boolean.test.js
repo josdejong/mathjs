@@ -1,6 +1,6 @@
 // test bool construction
 var assert = require('assert'),
-    math = require('../../../dist/math.js'),
+    math = require('../../../src/index.js'),
     bool = math.boolean;
 
 // parser

@@ -1,4 +1,4 @@
-math.docs.re = {
+module.exports = {
   'name': 're',
   'category': 'Complex',
   'syntax': [

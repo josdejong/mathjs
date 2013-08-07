@@ -2,7 +2,7 @@
 
 var assert = require('assert'),
     approx = require('../../../tools/approx.js'),
-    math = require('../../../dist/math.js'),
+    math = require('../../../src/index.js'),
     unit = math.unit;
 
 // test function in

@@ -1,1 +1,1 @@
-exports = require ('./dist/math.js');
+module.exports = require('./src/index.js');

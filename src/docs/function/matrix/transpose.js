@@ -1,4 +1,4 @@
-math.docs.transpose = {
+module.exports = {
   'name': 'transpose',
   'category': 'Matrix',
   'syntax': [

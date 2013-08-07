@@ -1,5 +1,9 @@
+var math = require('../math.js'),
+    util = require('../util/index.js'),
+    string = util.string;
+
 /**
- * @constructor math.type.Selector
+ * @constructor Selector
  * Wrap any value in a Selector, allowing to perform chained operations on
  * the value.
  *
@@ -20,21 +24,21 @@
  *
  * @param {*} [value]
  */
-math.type.Selector = function Selector (value) {
-  if (!(this instanceof math.type.Selector)) {
+function Selector (value) {
+  if (!(this instanceof Selector)) {
     throw new SyntaxError(
         'Selector constructor must be called with the new operator');
   }
 
-  if (value instanceof math.type.Selector) {
+  if (value instanceof Selector) {
     this.value = value.value;
   }
   else {
     this.value = value;
   }
-};
+}
 
-math.type.Selector.prototype = {
+Selector.prototype = {
   /**
    * Close the selector. Returns the final value.
    * Does the same as method valueOf()
@@ -54,7 +58,7 @@ math.type.Selector.prototype = {
       throw Error('Selector value is undefined');
     }
 
-    return new math.type.Selector(math.subset(value, index));
+    return new Selector(math.subset(value, index));
   },
 
   /**
@@ -67,7 +71,7 @@ math.type.Selector.prototype = {
       throw Error('Selector value is undefined');
     }
 
-    return new math.type.Selector(math.subset(value, index, replacement));
+    return new Selector(math.subset(value, index, replacement));
   },
 
   /**
@@ -84,7 +88,7 @@ math.type.Selector.prototype = {
    * @returns {String}
    */
   toString: function () {
-    return math.format(this.value);
+    return string.format(this.value);
   }
 };
 
@@ -93,8 +97,7 @@ math.type.Selector.prototype = {
  * @param {String} name
  * @param {*} value       The value or function to be proxied
  */
-function createSelectorProxy(name, value) {
-  var Selector = math.type.Selector;
+function createProxy(name, value) {
   var slice = Array.prototype.slice;
   if (typeof value === 'function') {
     // a function
@@ -108,3 +111,24 @@ function createSelectorProxy(name, value) {
     Selector.prototype[name] = new Selector(value);
   }
 }
+
+Selector.createProxy = createProxy;
+
+/**
+ * initialise the Chain prototype with all functions and constants in math
+ */
+Selector.init = function init () {
+  Selector.init = null; // delete, we are initialized
+
+  for (var prop in math) {
+    if (math.hasOwnProperty(prop) && prop) {
+      createProxy(prop, math[prop]);
+    }
+  }
+};
+
+// exports
+module.exports = Selector;
+exports.init = Selector.init;
+
+util.types.addType('selector', Selector);

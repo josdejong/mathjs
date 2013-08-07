@@ -1,4 +1,4 @@
-math.docs.concat = {
+module.exports = {
   'name': 'concat',
   'category': 'Matrix',
   'syntax': [

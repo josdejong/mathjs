@@ -1,36 +1,50 @@
-/**
- * Calculate the size of a matrix or scalar
- *
- *     size(x)
- *
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.size = function size (x) {
-  if (arguments.length != 1) {
-    throw newArgumentsError('size', arguments.length, 1);
-  }
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
 
-  if (isNumber(x) || x instanceof Complex || x instanceof Unit || x == null) {
-    return [];
-  }
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
+      Matrix = require('../../type/Matrix.js'),
 
-  if (isString(x)) {
-    return [x.length];
-  }
+      array = util.array,
+      isNumber = util.number.isNumber,
+      isString = util.string.isString,
+      isComplex = Complex.isComplex,
+      isUnit = Unit.isUnit;
 
-  if (Array.isArray(x)) {
-    return util.size(x);
-  }
+  /**
+   * Calculate the size of a matrix or scalar
+   *
+   *     size(x)
+   *
+   * @param {Number | Complex | Array | Matrix} x
+   * @return {Number | Complex | Array | Matrix} res
+   */
+  math.size = function size (x) {
+    if (arguments.length != 1) {
+      throw new util.error.ArgumentsError('size', arguments.length, 1);
+    }
 
-  if (x instanceof Matrix) {
-    return new Matrix(x.size());
-  }
+    if (isNumber(x) || isComplex(x) || isUnit(x) || x == null) {
+      return [];
+    }
 
-  if (x.valueOf() !== x) {
-    // fallback on the objects primitive value
-    return math.size(x.valueOf());
-  }
+    if (isString(x)) {
+      return [x.length];
+    }
 
-  throw newUnsupportedTypeError('size', x);
+    if (Array.isArray(x)) {
+      return array.size(x);
+    }
+
+    if (x instanceof Matrix) {
+      return new Matrix(x.size());
+    }
+
+    if (x.valueOf() !== x) {
+      // fallback on the objects primitive value
+      return size(x.valueOf());
+    }
+
+    throw new util.error.UnsupportedTypeError('size', x);
+  };
 };

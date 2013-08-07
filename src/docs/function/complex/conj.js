@@ -1,4 +1,4 @@
-math.docs.conj = {
+module.exports = {
   'name': 'conj',
   'category': 'Complex',
   'syntax': [

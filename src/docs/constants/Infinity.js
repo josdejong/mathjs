@@ -1,4 +1,4 @@
-math.docs['Infinity'] = {
+module.exports = {
   'name': 'Infinity',
   'category': 'Constants',
   'syntax': [

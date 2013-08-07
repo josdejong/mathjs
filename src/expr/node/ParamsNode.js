@@ -1,3 +1,7 @@
+var math = require('../../math.js'),
+    Node = require('./Node.js'),
+    SymbolNode = require('./SymbolNode.js').SymbolNode;
+
 /**
  * @constructor ParamsNode
  * invoke a list with parameters on the results of a node
@@ -15,7 +19,7 @@ function ParamsNode (object, params, paramScopes) {
   this.hasContextParams = false;
   if (params) {
     var filter = {
-      type: math.type.SymbolNode,
+      type: SymbolNode,
       properties: {
         name: 'end'
       }
@@ -31,8 +35,6 @@ function ParamsNode (object, params, paramScopes) {
 }
 
 ParamsNode.prototype = new Node();
-
-math.expr.node.ParamsNode = ParamsNode;
 
 /**
  * Evaluate the parameters
@@ -130,3 +132,5 @@ ParamsNode.prototype.toString = function() {
   }
   return str;
 };
+
+module.exports = ParamsNode;

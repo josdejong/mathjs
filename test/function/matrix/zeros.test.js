@@ -1,6 +1,6 @@
 // test zeros
 var assert = require('assert');
-var math = require('../../../dist/math.js');
+var math = require('../../../src/index.js');
 
 assert.deepEqual(math.zeros().valueOf(), [[0]]);
 assert.deepEqual(math.zeros([]).valueOf(), [[0]]);

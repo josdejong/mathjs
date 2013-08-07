@@ -1,4 +1,4 @@
-math.docs.smallereq = {
+module.exports = {
   'name': 'smallereq',
   'category': 'Operators',
   'syntax': [

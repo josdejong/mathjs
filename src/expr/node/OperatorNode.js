@@ -1,3 +1,5 @@
+var Node = require('./Node.js');
+
 /**
  * @constructor OperatorNode
  * An operator with two arguments, like 2+3
@@ -12,8 +14,6 @@ function OperatorNode (name, fn, params) {
 }
 
 OperatorNode.prototype = new Node();
-
-math.expr.node.OperatorNode = OperatorNode;
 
 /**
  * Evaluate the parameters
@@ -56,14 +56,16 @@ OperatorNode.prototype.find = function (filter) {
 OperatorNode.prototype.toString = function() {
   var params = this.params;
 
-  // special case: unary minus
-  if (this.fn === math.unary) {
-    return '-' + params[0].toString();
-  }
-
   switch (params.length) {
-    case 1: // for example '5!'
-      return params[0].toString() + this.name;
+    case 1:
+      if (this.name == '-') {
+        // special case: unary minus
+        return '-' + params[0].toString();
+      }
+      else {
+        // for example '5!'
+        return params[0].toString() + this.name;
+      }
 
     case 2: // for example '2+3'
       var lhs = params[0].toString();
@@ -80,3 +82,5 @@ OperatorNode.prototype.toString = function() {
       return this.name + '(' + this.params.join(', ') + ')';
   }
 };
+
+module.exports = OperatorNode;

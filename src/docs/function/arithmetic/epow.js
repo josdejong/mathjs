@@ -1,4 +1,4 @@
-math.docs.epow = {
+module.exports = {
   'name': 'epow',
   'category': 'Operators',
   'syntax': [

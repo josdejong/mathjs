@@ -1,37 +1,48 @@
-/**
- * Round a value towards minus infinity
- *
- *     floor(x)
- *
- * For matrices, the function is evaluated element wise.
- *
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.floor = function floor(x) {
-  if (arguments.length != 1) {
-    throw newArgumentsError('floor', arguments.length, 1);
-  }
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
 
-  if (isNumber(x)) {
-    return Math.floor(x);
-  }
+      Complex = require('../../type/Complex.js'),
+      collection = require('../../type/collection.js'),
 
-  if (x instanceof Complex) {
-    return Complex.create (
-        Math.floor(x.re),
-        Math.floor(x.im)
-    );
-  }
+      isNumber = util.number.isNumber,
+      isComplex = Complex.isComplex,
+      isCollection = collection.isCollection;
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.floor);
-  }
+  /**
+   * Round a value towards minus infinity
+   *
+   *     floor(x)
+   *
+   * For matrices, the function is evaluated element wise.
+   *
+   * @param {Number | Complex | Array | Matrix} x
+   * @return {Number | Complex | Array | Matrix} res
+   */
+  math.floor = function floor(x) {
+    if (arguments.length != 1) {
+      throw new util.error.ArgumentsError('floor', arguments.length, 1);
+    }
 
-  if (x.valueOf() !== x) {
-    // fallback on the objects primitive value
-    return math.floor(x.valueOf());
-  }
+    if (isNumber(x)) {
+      return Math.floor(x);
+    }
 
-  throw newUnsupportedTypeError('floor', x);
+    if (isComplex(x)) {
+      return Complex.create (
+          Math.floor(x.re),
+          Math.floor(x.im)
+      );
+    }
+
+    if (isCollection(x)) {
+      return collection.map(x, floor);
+    }
+
+    if (x.valueOf() !== x) {
+      // fallback on the objects primitive value
+      return floor(x.valueOf());
+    }
+
+    throw new util.error.UnsupportedTypeError('floor', x);
+  };
 };

@@ -1,4 +1,4 @@
-math.docs.SQRT2 = {
+module.exports = {
   'name': 'SQRT2',
   'category': 'Constants',
   'syntax': [

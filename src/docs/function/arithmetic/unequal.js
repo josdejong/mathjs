@@ -1,4 +1,4 @@
-math.docs.unequal = {
+module.exports = {
   'name': 'unequal',
   'category': 'Operators',
   'syntax': [

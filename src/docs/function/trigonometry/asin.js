@@ -1,4 +1,4 @@
-math.docs.asin = {
+module.exports = {
   'name': 'asin',
   'category': 'Trigonometry',
   'syntax': [

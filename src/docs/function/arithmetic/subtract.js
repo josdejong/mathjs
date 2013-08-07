@@ -1,4 +1,4 @@
-math.docs.subtract = {
+module.exports = {
   'name': 'subtract',
   'category': 'Operators',
   'syntax': [

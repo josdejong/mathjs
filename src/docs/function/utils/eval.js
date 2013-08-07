@@ -1,4 +1,4 @@
-math.docs['eval'] = {
+module.exports = {
   'name': 'eval',
   'category': 'Utils',
   'syntax': [

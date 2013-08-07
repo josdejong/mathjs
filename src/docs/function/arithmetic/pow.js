@@ -1,4 +1,4 @@
-math.docs.pow = {
+module.exports = {
   'name': 'pow',
   'category': 'Operators',
   'syntax': [

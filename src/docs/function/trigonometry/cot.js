@@ -1,4 +1,4 @@
-math.docs.cot = {
+module.exports = {
   'name': 'cot',
   'category': 'Trigonometry',
   'syntax': [

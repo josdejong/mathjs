@@ -1,4 +1,4 @@
-math.docs.cos = {
+module.exports = {
   'name': 'cos',
   'category': 'Trigonometry',
   'syntax': [

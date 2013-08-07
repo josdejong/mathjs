@@ -1,4 +1,4 @@
-math.docs.sin = {
+module.exports = {
   'name': 'sin',
   'category': 'Trigonometry',
   'syntax': [

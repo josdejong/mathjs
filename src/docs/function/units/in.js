@@ -1,4 +1,4 @@
-math.docs['in'] = {
+module.exports = {
   'name': 'in',
   'category': 'Units',
   'syntax': [

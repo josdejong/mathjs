@@ -1,58 +1,71 @@
-/**
- * Check if value x is larger y
- *
- *    x > y
- *    larger(x, y)
- *
- * For matrices, the function is evaluated element wise.
- * In case of complex numbers, the absolute values of a and b are compared.
- *
- * @param  {Number | Complex | Unit | String | Array | Matrix} x
- * @param  {Number | Complex | Unit | String | Array | Matrix} y
- * @return {Boolean | Array | Matrix} res
- */
-math.larger = function larger(x, y) {
-  if (arguments.length != 2) {
-    throw newArgumentsError('larger', arguments.length, 2);
-  }
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
 
-  if (isNumber(x)) {
-    if (isNumber(y)) {
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
+      collection = require('../../type/collection.js'),
+
+      isNumber = util.number.isNumber,
+      isString = util.string.isString,
+      isComplex = Complex.isComplex,
+      isUnit = Unit.isUnit,
+      isCollection = collection.isCollection;
+
+  /**
+   * Check if value x is larger y
+   *
+   *    x > y
+   *    larger(x, y)
+   *
+   * For matrices, the function is evaluated element wise.
+   * In case of complex numbers, the absolute values of a and b are compared.
+   *
+   * @param  {Number | Complex | Unit | String | Array | Matrix} x
+   * @param  {Number | Complex | Unit | String | Array | Matrix} y
+   * @return {Boolean | Array | Matrix} res
+   */
+  math.larger = function larger(x, y) {
+    if (arguments.length != 2) {
+      throw new util.error.ArgumentsError('larger', arguments.length, 2);
+    }
+
+    if (isNumber(x)) {
+      if (isNumber(y)) {
+        return x > y;
+      }
+      else if (isComplex(y)) {
+        return x > math.abs(y);
+      }
+    }
+    if (isComplex(x)) {
+      if (isNumber(y)) {
+        return math.abs(x) > y;
+      }
+      else if (isComplex(y)) {
+        return math.abs(x) > math.abs(y);
+      }
+    }
+
+    if ((isUnit(x)) && (isUnit(y))) {
+      if (!x.equalBase(y)) {
+        throw new Error('Cannot compare units with different base');
+      }
+      return x.value > y.value;
+    }
+
+    if (isString(x) || isString(y)) {
       return x > y;
     }
-    else if (y instanceof Complex) {
-      return x > math.abs(y);
+
+    if (isCollection(x) || isCollection(y)) {
+      return collection.map2(x, y, larger);
     }
-  }
-  if (x instanceof Complex) {
-    if (isNumber(y)) {
-      return math.abs(x) > y;
+
+    if (x.valueOf() !== x || y.valueOf() !== y) {
+      // fallback on the objects primitive values
+      return larger(x.valueOf(), y.valueOf());
     }
-    else if (y instanceof Complex) {
-      return math.abs(x) > math.abs(y);
-    }
-  }
 
-  if ((x instanceof Unit) && (y instanceof Unit)) {
-    if (!x.equalBase(y)) {
-      throw new Error('Cannot compare units with different base');
-    }
-    return x.value > y.value;
-  }
-
-  if (isString(x) || isString(y)) {
-    return x > y;
-  }
-
-  if (Array.isArray(x) || x instanceof Matrix ||
-      Array.isArray(y) || y instanceof Matrix) {
-    return util.map2(x, y, math.larger);
-  }
-
-  if (x.valueOf() !== x || y.valueOf() !== y) {
-    // fallback on the objects primitive values
-    return math.larger(x.valueOf(), y.valueOf());
-  }
-
-  throw newUnsupportedTypeError('larger', x, y);
+    throw new util.error.UnsupportedTypeError('larger', x, y);
+  };
 };

@@ -11,7 +11,7 @@ if (typeof exports !== 'undefined') {
 /**
  * AMD module exports
  */
-if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
+if (typeof(require) !== 'undefined' && typeof(define) !== 'undefined') {
   define(function () {
     return math;
   });
@@ -20,9 +20,9 @@ if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
 /**
  * Browser exports
  */
-if (typeof(window) != 'undefined') {
+if (typeof(window) !== 'undefined') {
   if (window['math']) {
-    util.deepExtend(window['math'], math);
+    object.deepExtend(window['math'], math);
   }
   else {
     window['math'] = math;

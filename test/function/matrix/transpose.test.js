@@ -1,6 +1,6 @@
 // test transpose
 var assert = require('assert');
-var math = require('../../../dist/math.js');
+var math = require('../../../src/index.js');
 
 assert.deepEqual(math.transpose(3), 3);
 assert.deepEqual(math.transpose([1,2,3]), [1,2,3]);

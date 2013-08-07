@@ -1,4 +1,4 @@
-math.docs.matrix = {
+module.exports = {
   'name': 'matrix',
   'category': 'Type',
   'syntax': [

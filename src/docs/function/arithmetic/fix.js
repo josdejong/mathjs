@@ -1,4 +1,4 @@
-math.docs.fix = {
+module.exports = {
   'name': 'fix',
   'category': 'Arithmetic',
   'syntax': [

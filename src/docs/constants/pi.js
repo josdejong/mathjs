@@ -1,4 +1,4 @@
-math.docs.pi = math.docs.PI = {
+module.exports = {
   'name': 'pi',
   'category': 'Constants',
   'syntax': [

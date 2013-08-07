@@ -1,4 +1,4 @@
-math.docs.subset = {
+module.exports = {
   'name': 'subset',
   'category': 'Matrix',
   'syntax': [

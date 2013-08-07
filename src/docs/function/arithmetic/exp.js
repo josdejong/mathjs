@@ -1,4 +1,4 @@
-math.docs.exp = {
+module.exports = {
   'name': 'exp',
   'category': 'Arithmetic',
   'syntax': [

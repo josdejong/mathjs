@@ -1,37 +1,48 @@
-/**
- * Round a value towards zero
- *
- *     fix(x)
- *
- * For matrices, the function is evaluated element wise.
- *
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.fix = function fix(x) {
-  if (arguments.length != 1) {
-    throw newArgumentsError('fix', arguments.length, 1);
-  }
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
 
-  if (isNumber(x)) {
-    return (x > 0) ? Math.floor(x) : Math.ceil(x);
-  }
+      Complex = require('../../type/Complex.js'),
+      collection = require('../../type/collection.js'),
 
-  if (x instanceof Complex) {
-    return Complex.create(
-        (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
-        (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
-    );
-  }
+      isNumber = util.number.isNumber,
+      isComplex = Complex.isComplex,
+      isCollection = collection.isCollection;
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.fix);
-  }
+  /**
+   * Round a value towards zero
+   *
+   *     fix(x)
+   *
+   * For matrices, the function is evaluated element wise.
+   *
+   * @param {Number | Complex | Array | Matrix} x
+   * @return {Number | Complex | Array | Matrix} res
+   */
+  math.fix = function fix(x) {
+    if (arguments.length != 1) {
+      throw new util.error.ArgumentsError('fix', arguments.length, 1);
+    }
 
-  if (x.valueOf() !== x) {
-    // fallback on the objects primitive value
-    return math.fix(x.valueOf());
-  }
+    if (isNumber(x)) {
+      return (x > 0) ? Math.floor(x) : Math.ceil(x);
+    }
 
-  throw newUnsupportedTypeError('fix', x);
+    if (isComplex(x)) {
+      return Complex.create(
+          (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
+          (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
+      );
+    }
+
+    if (isCollection(x)) {
+      return collection.map(x, fix);
+    }
+
+    if (x.valueOf() !== x) {
+      // fallback on the objects primitive value
+      return fix(x.valueOf());
+    }
+
+    throw new util.error.UnsupportedTypeError('fix', x);
+  };
 };

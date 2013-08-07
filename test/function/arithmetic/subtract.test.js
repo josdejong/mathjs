@@ -1,6 +1,6 @@
 // test subtract
 var assert = require('assert');
-var math = require('../../../dist/math.js');
+var math = require('../../../src/index.js');
 
 // parser
 assert.equal(math.eval('4 - 2'), 2);

@@ -1,4 +1,4 @@
-math.docs.atan = {
+module.exports = {
   'name': 'atan',
   'category': 'Trigonometry',
   'syntax': [

@@ -1,4 +1,4 @@
-math.docs.gcd = {
+module.exports = {
   'name': 'gcd',
   'category': 'Arithmetic',
   'syntax': [

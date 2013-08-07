@@ -1,4 +1,4 @@
-math.docs.im = {
+module.exports = {
   'name': 'im',
   'category': 'Complex',
   'syntax': [

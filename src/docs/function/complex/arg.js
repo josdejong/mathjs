@@ -1,4 +1,4 @@
-math.docs.arg = {
+module.exports = {
   'name': 'arg',
   'category': 'Complex',
   'syntax': [

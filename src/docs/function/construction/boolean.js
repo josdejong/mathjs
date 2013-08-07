@@ -1,4 +1,4 @@
-math.docs['boolean'] = {
+module.exports = {
   'name': 'boolean',
   'category': 'Type',
   'syntax': [

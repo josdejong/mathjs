@@ -1,58 +1,69 @@
-/**
- * Calculate the inverse tangent of a value
- *
- *     atan(x)
- *
- * For matrices, the function is evaluated element wise.
- *
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
- *
- * @see http://mathworld.wolfram.com/InverseTangent.html
- */
-math.atan = function atan(x) {
-  if (arguments.length != 1) {
-    throw newArgumentsError('atan', arguments.length, 1);
-  }
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
 
-  if (isNumber(x)) {
-    return Math.atan(x);
-  }
+      Complex = require('../../type/Complex.js'),
+      collection = require('../../type/collection.js'),
 
-  if (x instanceof Complex) {
-    // atan(z) = 1/2 * i * (ln(1-iz) - ln(1+iz))
-    var re = x.re;
-    var im = x.im;
-    var den = re * re + (1.0 - im) * (1.0 - im);
+      isNumber = util.number.isNumber,
+      isComplex = Complex.isComplex,
+      isCollection = collection.isCollection;
 
-    var temp1 = Complex.create(
-        (1.0 - im * im - re * re) / den,
-        (-2.0 * re) / den
-    );
-    var temp2 = math.log(temp1);
-
-    if (temp2 instanceof Complex) {
-      return Complex.create(
-          -0.5 * temp2.im,
-          0.5 * temp2.re
-      );
+  /**
+   * Calculate the inverse tangent of a value
+   *
+   *     atan(x)
+   *
+   * For matrices, the function is evaluated element wise.
+   *
+   * @param {Number | Complex | Array | Matrix} x
+   * @return {Number | Complex | Array | Matrix} res
+   *
+   * @see http://mathworld.wolfram.com/InverseTangent.html
+   */
+  math.atan = function atan(x) {
+    if (arguments.length != 1) {
+      throw new util.error.ArgumentsError('atan', arguments.length, 1);
     }
-    else {
-      return Complex.create(
-          0,
-          0.5 * temp2
-      );
+
+    if (isNumber(x)) {
+      return Math.atan(x);
     }
-  }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.atan);
-  }
+    if (isComplex(x)) {
+      // atan(z) = 1/2 * i * (ln(1-iz) - ln(1+iz))
+      var re = x.re;
+      var im = x.im;
+      var den = re * re + (1.0 - im) * (1.0 - im);
 
-  if (x.valueOf() !== x) {
-    // fallback on the objects primitive value
-    return math.atan(x.valueOf());
-  }
+      var temp1 = Complex.create(
+          (1.0 - im * im - re * re) / den,
+          (-2.0 * re) / den
+      );
+      var temp2 = math.log(temp1);
 
-  throw newUnsupportedTypeError('atan', x);
+      if (temp2 instanceof Complex) {
+        return Complex.create(
+            -0.5 * temp2.im,
+            0.5 * temp2.re
+        );
+      }
+      else {
+        return Complex.create(
+            0,
+            0.5 * temp2
+        );
+      }
+    }
+
+    if (isCollection(x)) {
+      return collection.map(x, atan);
+    }
+
+    if (x.valueOf() !== x) {
+      // fallback on the objects primitive value
+      return atan(x.valueOf());
+    }
+
+    throw new util.error.UnsupportedTypeError('atan', x);
+  };
 };

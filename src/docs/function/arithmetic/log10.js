@@ -1,4 +1,4 @@
-math.docs.log10 = {
+module.exports = {
   'name': 'log10',
   'category': 'Arithmetic',
   'syntax': [

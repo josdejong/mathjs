@@ -1,7 +1,7 @@
 // test sqrt
 var assert = require('assert'),
     approx = require('../../../tools/approx.js'),
-    math = require('../../../dist/math.js');
+    math = require('../../../src/index.js');
 
 // parser
 assert.equal(math.eval('sqrt(25)'), 5);

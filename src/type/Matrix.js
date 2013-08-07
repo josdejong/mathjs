@@ -1,3 +1,11 @@
+var util = require('../util/index.js'),
+    Range = require('./Range.js'),
+
+    number = util.number,
+    string = util.string,
+    array = util.array,
+    object = util.object;
+
 /**
  * @constructor Matrix
  *
@@ -35,7 +43,7 @@ function Matrix(data) {
   }
   else if (data != null) {
     // unsupported type
-    throw new TypeError('Unsupported type of data (' + math['typeof'](data) + ')');
+    throw new TypeError('Unsupported type of data (' + object.type(data) + ')');
   }
   else {
     // nothing provided
@@ -43,10 +51,17 @@ function Matrix(data) {
   }
 
   // verify the size of the array
-  this._size = util.size(this._data);
+  this._size = array.size(this._data);
 }
 
-math.type.Matrix = Matrix;
+/**
+ * Test whether an object is a Matrix
+ * @param {*} object
+ * @return {Boolean} isMatrix
+ */
+Matrix.isMatrix = function (object) {
+  return (object instanceof Matrix);
+};
 
 /**
  * Get a value or a submatrix of the matrix.
@@ -63,7 +78,7 @@ Matrix.prototype.get = function (index) {
   }
   else if (Array.isArray(index)) {
     isScalar = !index.some(function (elem) {
-      var size = math.size(elem);
+      var size = array.size(elem.valueOf());
       return (size.length != 0) && (size != [0]);
     });
   }
@@ -99,14 +114,14 @@ Matrix.prototype.get = function (index) {
  * Get a single value from an array. The method tests whether:
  * - index is a non-negative integer
  * - index does not exceed the dimensions of array
- * @param {Array} array
+ * @param {Array} arr
  * @param {Number} index   Zero-based index
  * @return {*} value
  * @private
  */
-function _get (array, index) {
-  util.validateIndex(index, array.length);
-  return array[index]; // zero-based index
+function _get (arr, index) {
+  array.validateIndex(index, arr.length);
+  return arr[index]; // zero-based index
 }
 
 /**
@@ -122,7 +137,7 @@ function _getScalar (data, index) {
   index.forEach(function (i) {
     data = _get(data, i);
   });
-  return math.clone(data);
+  return object.clone(data);
 }
 
 /**
@@ -244,7 +259,7 @@ Matrix.prototype.set = function (index, submatrix) {
   }
   else if (Array.isArray(index)) {
     isScalar = !index.some(function (elem) {
-      var size = math.size(elem);
+      var size = array.size(elem.valueOf());
       return (size.length != 0) && (size != [0]);
     });
   }
@@ -264,7 +279,7 @@ Matrix.prototype.set = function (index, submatrix) {
   if (isScalar) {
     // set a scalar
     // check whether submatrix is no matrix/array
-    if (math.size(submatrix).valueOf().length != 0) {
+    if (array.size(submatrix.valueOf()).length != 0) {
       throw new TypeError('Scalar value expected');
     }
 
@@ -276,11 +291,11 @@ Matrix.prototype.set = function (index, submatrix) {
   }
   else {
     // set a submatrix
-    var size = this._size.concat();
-    _setSubmatrix (this._data, size, index, 0, submatrix);
-    if (!util.deepEqual(this._size, size)) {
+    var subsize = this._size.concat();
+    _setSubmatrix (this._data, subsize, index, 0, submatrix);
+    if (!object.deepEqual(this._size, subsize)) {
       _init(this._data);
-      this.resize(size);
+      this.resize(subsize);
     }
   }
 
@@ -290,17 +305,17 @@ Matrix.prototype.set = function (index, submatrix) {
 /**
  * Replace a single value in an array. The method tests whether index is a
  * non-negative integer
- * @param {Array} array
+ * @param {Array} arr
  * @param {Number} index   Zero-based index
  * @param {*} value
  * @private
  */
-function _set (array, index, value) {
-  util.validateIndex(index);
+function _set (arr, index, value) {
+  array.validateIndex(index);
   if (Array.isArray(value)) {
     throw new TypeError('Dimension mismatch, value expected instead of array');
   }
-  array[index] = value; // zero-based index
+  arr[index] = value; // zero-based index
 }
 
 /**
@@ -320,7 +335,7 @@ function _setScalar (data, size, index, value) {
 
   for (var i = 0; i < index.length; i++) {
     var index_i = index[i];
-    util.validateIndex(index_i);
+    array.validateIndex(index_i);
     if ((size[i] == null) || (index_i + 1 > size[i])) {
       size[i] = index_i + 1; // size is index + 1 as index is zero-based
       resized = true;
@@ -328,7 +343,7 @@ function _setScalar (data, size, index, value) {
   }
 
   if (resized) {
-    util.resize(data, size, 0);
+    array.resize(data, size, 0);
   }
 
   var len = size.length;
@@ -352,9 +367,9 @@ function _setScalar (data, size, index, value) {
  */
 function _setScalar1D (data, size, index, value) {
   var row = index[0];
-  util.validateIndex(row);
+  array.validateIndex(row);
   if (row + 1 > size[0]) {
-    util.resize(data, [row + 1], 0); // size is index + 1 as index is zero-based
+    array.resize(data, [row + 1], 0); // size is index + 1 as index is zero-based
     size[0] = row + 1;
   }
   data[row] = value; // zero-based index
@@ -371,8 +386,8 @@ function _setScalar1D (data, size, index, value) {
 function _setScalar2D (data, size, index, value) {
   var row = index[0];
   var col = index[1];
-  util.validateIndex(row);
-  util.validateIndex(col);
+  array.validateIndex(row);
+  array.validateIndex(col);
 
   var resized = false;
   if (row + 1 > (size[0] || 0)) {
@@ -384,7 +399,7 @@ function _setScalar2D (data, size, index, value) {
     resized = true;
   }
   if (resized) {
-    util.resize(data, size, 0);
+    array.resize(data, size, 0);
   }
 
   data[row][col] = value; // zero-based index
@@ -461,8 +476,8 @@ function _init(array) {
  *                                  with zeros.
  */
 Matrix.prototype.resize = function (size, defaultValue) {
-  util.resize(this._data, size, defaultValue);
-  this._size = math.clone(size);
+  array.resize(this._data, size, defaultValue);
+  this._size = object.clone(size);
 };
 
 /**
@@ -471,8 +486,8 @@ Matrix.prototype.resize = function (size, defaultValue) {
  */
 Matrix.prototype.clone = function () {
   var matrix = new Matrix();
-  matrix._data = math.clone(this._data);
-  matrix._size = math.clone(this._size);
+  matrix._data = object.clone(this._data);
+  matrix._size = object.clone(this._size);
   return matrix;
 };
 
@@ -509,7 +524,7 @@ Matrix.prototype.map = function (callback) {
     }
   };
   matrix._data = recurse(this._data, 0);
-  matrix._size = math.clone(this._size);
+  matrix._size = object.clone(this._size);
 
   return matrix;
 };
@@ -552,7 +567,7 @@ Matrix.prototype.toScalar = function () {
     return null;
   }
   else {
-    return math.clone(scalar);
+    return object.clone(scalar);
   }
 };
 
@@ -637,7 +652,7 @@ Matrix.prototype.isVector = function () {
  * @returns {Array} array
  */
 Matrix.prototype.toArray = function () {
-  return math.clone(this._data);
+  return object.clone(this._data);
 };
 
 /**
@@ -653,5 +668,13 @@ Matrix.prototype.valueOf = function () {
  * @returns {String} str
  */
 Matrix.prototype.toString = function () {
-  return math.format(this._data);
+  return string.format(this._data);
 };
+
+// exports
+module.exports = Matrix;
+
+// to trick my IDE which doesn't get it
+exports.isMatrix = Matrix.isMatrix;
+
+util.types.addType('matrix', Matrix);

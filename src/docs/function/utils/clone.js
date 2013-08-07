@@ -1,4 +1,4 @@
-math.docs.clone = {
+module.exports = {
   'name': 'clone',
   'category': 'Utils',
   'syntax': [

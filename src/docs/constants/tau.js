@@ -1,4 +1,4 @@
-math.docs.tau = {
+module.exports = {
   'name': 'tau',
   'category': 'Constants',
   'syntax': [

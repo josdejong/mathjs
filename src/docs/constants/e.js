@@ -1,4 +1,4 @@
-math.docs.e = math.docs.E = {
+module.exports = {
   'name': 'e',
   'category': 'Constants',
   'syntax': [

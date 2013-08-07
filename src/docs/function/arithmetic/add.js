@@ -1,4 +1,4 @@
-math.docs.add = {
+module.exports = {
   'name': 'add',
   'category': 'Operators',
   'syntax': [

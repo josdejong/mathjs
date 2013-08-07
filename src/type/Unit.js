@@ -1,3 +1,10 @@
+var util = require('../util/index.js'),
+
+    number = util.number,
+    string = util.string,
+    isNumber = util.number.isNumber,
+    isString = util.string.isString;
+
 /**
  * @constructor Unit
  *
@@ -36,8 +43,8 @@ function Unit(value, unit) {
     this.prefix = res.prefix;
   }
   else {
-    this.unit = Unit.UNIT_NONE;
-    this.prefix = Unit.PREFIX_NONE;  // link to a list with supported prefixes
+    this.unit = UNIT_NONE;
+    this.prefix = PREFIX_NONE;  // link to a list with supported prefixes
   }
 
   if (value != null) {
@@ -50,176 +57,172 @@ function Unit(value, unit) {
   }
 }
 
-math.type.Unit = Unit;
+// private variables and functions for the Unit parser
+var text, index, c;
 
-(function() {
-  var text, index, c;
+function skipWhitespace() {
+  while (c == ' ' || c == '\t') {
+    next();
+  }
+}
 
-  function skipWhitespace() {
-    while (c == ' ' || c == '\t') {
-      next();
-    }
+function isDigitDot (c) {
+  return ((c >= '0' && c <= '9') || c == '.');
+}
+
+function isDigit (c) {
+  return ((c >= '0' && c <= '9'));
+}
+
+function next() {
+  index++;
+  c = text.charAt(index);
+}
+
+function revert(oldIndex) {
+  index = oldIndex;
+  c = text.charAt(index);
+}
+
+function parseNumber () {
+  var number = '';
+  var oldIndex;
+  oldIndex = index;
+
+  if (c == '+') {
+    next();
+  }
+  else if (c == '-') {
+    number += c;
+    next();
   }
 
-  function isDigitDot (c) {
-    return ((c >= '0' && c <= '9') || c == '.');
+  if (!isDigitDot(c)) {
+    // a + or - must be followed by a digit
+    revert(oldIndex);
+    return null;
   }
 
-  function isDigit (c) {
-    return ((c >= '0' && c <= '9'));
-  }
-
-  function next() {
-    index++;
-    c = text.charAt(index);
-  }
-
-  function revert(oldIndex) {
-    index = oldIndex;
-    c = text.charAt(index);
-  }
-
-  function parseNumber () {
-    var number = '';
-    var oldIndex;
-    oldIndex = index;
-
-    if (c == '+') {
-      next();
-    }
-    else if (c == '-') {
-      number += c;
-      next();
-    }
-
-    if (!isDigitDot(c)) {
-      // a + or - must be followed by a digit
+  // get number, can have a single dot
+  if (c == '.') {
+    number += c;
+    next();
+    if (!isDigit(c)) {
+      // this is no legal number, it is just a dot
       revert(oldIndex);
       return null;
     }
-
-    // get number, can have a single dot
-    if (c == '.') {
-      number += c;
-      next();
-      if (!isDigit(c)) {
-        // this is no legal number, it is just a dot
-        revert(oldIndex);
-        return null;
-      }
-    }
-    else {
-      while (isDigit(c)) {
-        number += c;
-        next();
-      }
-      if (c == '.') {
-        number += c;
-        next();
-      }
-    }
+  }
+  else {
     while (isDigit(c)) {
       number += c;
       next();
     }
-
-    // check for scientific notation like "2.3e-4" or "1.23e50"
-    if (c == 'E' || c == 'e') {
+    if (c == '.') {
       number += c;
       next();
-
-      if (c == '+' || c == '-') {
-        number += c;
-        next();
-      }
-
-      // Scientific notation MUST be followed by an exponent
-      if (!isDigit(c)) {
-        // this is no legal number, exponent is missing.
-        revert(oldIndex);
-        return null;
-      }
-
-      while (isDigit(c)) {
-        number += c;
-        next();
-      }
     }
-
-    return number;
+  }
+  while (isDigit(c)) {
+    number += c;
+    next();
   }
 
-  function parseUnit() {
-    var unit = '';
+  // check for scientific notation like "2.3e-4" or "1.23e50"
+  if (c == 'E' || c == 'e') {
+    number += c;
+    next();
 
-    skipWhitespace();
-    while (c && c != ' ' && c != '\t') {
-      unit += c;
+    if (c == '+' || c == '-') {
+      number += c;
       next();
     }
 
-    return unit || null;
-  }
-
-  /**
-   * Parse a string into a unit. Returns null if the provided string does not
-   * contain a valid unit.
-   * @param {String} str        A string like "5.2 inch", "4e2 kg"
-   * @return {Unit | null} unit
-   */
-  Unit.parse = function parse(str) {
-    text = str;
-    index = -1;
-    c = '';
-
-    if (!isString(text)) {
+    // Scientific notation MUST be followed by an exponent
+    if (!isDigit(c)) {
+      // this is no legal number, exponent is missing.
+      revert(oldIndex);
       return null;
     }
 
+    while (isDigit(c)) {
+      number += c;
+      next();
+    }
+  }
+
+  return number;
+}
+
+function parseUnit() {
+  var unit = '';
+
+  skipWhitespace();
+  while (c && c != ' ' && c != '\t') {
+    unit += c;
+    next();
+  }
+
+  return unit || null;
+}
+
+/**
+ * Parse a string into a unit. Returns null if the provided string does not
+ * contain a valid unit.
+ * @param {String} str        A string like "5.2 inch", "4e2 kg"
+ * @return {Unit | null} unit
+ */
+Unit.parse = function parse(str) {
+  text = str;
+  index = -1;
+  c = '';
+
+  if (!isString(text)) {
+    return null;
+  }
+
+  next();
+  skipWhitespace();
+  var value = parseNumber();
+  var unit;
+  if (value) {
+    unit = parseUnit();
+
     next();
     skipWhitespace();
-    var value = parseNumber();
-    var unit;
-    if (value) {
-      unit = parseUnit();
-
-      next();
-      skipWhitespace();
-      if (c) {
-        // garbage at the end. not good.
-        return null;
-      }
-
-      if (value && unit) {
-        return new Unit(Number(value), unit);
-      }
-    }
-    else {
-      unit = parseUnit();
-
-      next();
-      skipWhitespace();
-      if (c) {
-        // garbage at the end. not good.
-        return null;
-      }
-
-      return new Unit(null, unit)
+    if (c) {
+      // garbage at the end. not good.
+      return null;
     }
 
-    return null;
-  };
+    if (value && unit) {
+      return new Unit(Number(value), unit);
+    }
+  }
+  else {
+    unit = parseUnit();
 
-})();
+    next();
+    skipWhitespace();
+    if (c) {
+      // garbage at the end. not good.
+      return null;
+    }
+
+    return new Unit(null, unit)
+  }
+
+  return null;
+};
 
 /**
  * Test whether value is of type Unit
  * @param {*} value
  * @return {Boolean} isUnit
  */
-function isUnit(value) {
+Unit.isUnit = function isUnit(value) {
   return (value instanceof Unit);
-}
+};
 
 /**
  * create a copy of this unit
@@ -274,11 +277,10 @@ Unit.prototype._unnormalize = function (value, prefixValue) {
  * @private
  */
 function _findUnit(str) {
-  var UNITS = Unit.UNITS;
   for (var i = 0, iMax = UNITS.length; i < iMax; i++) {
     var UNIT = UNITS[i];
 
-    if (util.endsWith(str, UNIT.name) ) {
+    if (string.endsWith(str, UNIT.name) ) {
       var prefixLen = (str.length - UNIT.name.length);
       var prefixName = str.substring(0, prefixLen);
       var prefix = UNIT.prefixes[prefixName];
@@ -307,7 +309,7 @@ Unit.isPlainUnit = function (unit) {
 
 /**
  * check if this unit has given base unit
- * @param {Unit.BASE_UNITS} base
+ * @param {BASE_UNITS | undefined} base
  */
 Unit.prototype.hasBase = function(base) {
   if (this.unit.base === undefined) {
@@ -392,12 +394,12 @@ Unit.prototype.toString = function() {
   if (!this.fixPrefix) {
     var bestPrefix = this._bestPrefix();
     value = this._unnormalize(this.value, bestPrefix.value);
-    str = (this.value != null) ? util.formatNumber(value, math.options.precision) + ' ' : '';
+    str = (this.value != null) ? number.format(value) + ' ' : '';
     str += bestPrefix.name + this.unit.name;
   }
   else {
     value = this._unnormalize(this.value);
-    str = (this.value != null) ? util.formatNumber(value, math.options.precision) + ' ' : '';
+    str = (this.value != null) ? number.format(value) + ' ' : '';
     str += this.prefix.name + this.unit.name;
   }
   return str;
@@ -414,7 +416,7 @@ Unit.prototype._bestPrefix = function () {
   // though with a little offset of 1.2 for nicer values: you get a
   // sequence 1mm 100mm 500mm 0.6m 1m 10m 100m 500m 0.6km 1km ...
   var absValue = Math.abs(this.value / this.unit.value);
-  var bestPrefix = Unit.PREFIX_NONE;
+  var bestPrefix = PREFIX_NONE;
   var bestDiff = Math.abs(
       Math.log(absValue / bestPrefix.value) / Math.LN10 - 1.2);
 
@@ -437,7 +439,7 @@ Unit.prototype._bestPrefix = function () {
   return bestPrefix;
 };
 
-Unit.PREFIXES = {
+var PREFIXES = {
   'NONE': {
     '': {'name': '', 'value': 1, 'scientific': true}
   },
@@ -534,9 +536,9 @@ Unit.PREFIXES = {
   }
 };
 
-Unit.PREFIX_NONE = {'name': '', 'value': 1, 'scientific': true};
+var PREFIX_NONE = {'name': '', 'value': 1, 'scientific': true};
 
-Unit.BASE_UNITS = {
+var BASE_UNITS = {
   'NONE': {},
 
   'LENGTH': {},               // meter
@@ -554,14 +556,11 @@ Unit.BASE_UNITS = {
   'BIT': {}           // bit (digital)
 };
 
-var BASE_UNITS = Unit.BASE_UNITS;
-var PREFIXES = Unit.PREFIXES;
+BASE_UNIT_NONE = {};
 
-Unit.BASE_UNIT_NONE = {};
+UNIT_NONE = {'name': '', 'base': BASE_UNIT_NONE, 'value': 1, 'offset': 0};
 
-Unit.UNIT_NONE = {'name': '', 'base': Unit.BASE_UNIT_NONE, 'value': 1, 'offset': 0};
-
-Unit.UNITS = [
+var UNITS = [
   // length
   {'name': 'meter', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.LONG, 'value': 1, 'offset': 0},
   {'name': 'inch', 'base': BASE_UNITS.LENGTH, 'prefixes': PREFIXES.NONE, 'value': 0.0254, 'offset': 0},
@@ -709,3 +708,18 @@ Unit.UNITS = [
   {'name': 'B', 'base': BASE_UNITS.BIT, 'prefixes': PREFIXES.BINARY_SHORT, 'value': 8, 'offset': 0},
   {'name': 'bytes', 'base': BASE_UNITS.BIT, 'prefixes': PREFIXES.BINARY_LONG, 'value': 8, 'offset': 0}
 ];
+
+Unit.PREFIXES = PREFIXES;
+Unit.BASE_UNITS = BASE_UNITS;
+Unit.UNITS = UNITS;
+
+
+// exports
+module.exports = Unit;
+
+// to trick my IDE which doesn't get it
+exports.isUnit = Unit.isUnit;
+exports.isPlainUnit = Unit.isPlainUnit;
+exports.parse = Unit.parse;
+
+util.types.addType('unit', Unit);

@@ -1,4 +1,4 @@
-math.docs.diag = {
+module.exports = {
   'name': 'diag',
   'category': 'Matrix',
   'syntax': [

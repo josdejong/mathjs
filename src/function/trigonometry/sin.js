@@ -1,46 +1,59 @@
-/**
- * Calculate the sine of a value
- *
- *     sin(x)
- *
- * For matrices, the function is evaluated element wise.
- *
- * @param {Number | Complex | Unit | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
- *
- * @see http://mathworld.wolfram.com/Sine.html
- */
-math.sin = function sin(x) {
-  if (arguments.length != 1) {
-    throw newArgumentsError('sin', arguments.length, 1);
-  }
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
 
-  if (isNumber(x)) {
-    return Math.sin(x);
-  }
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
+      collection = require('../../type/collection.js'),
 
-  if (x instanceof Complex) {
-    return Complex.create(
-        0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp( x.im)),
-        0.5 * Math.cos(x.re) * (Math.exp( x.im) - Math.exp(-x.im))
-    );
-  }
+      isNumber = util.number.isNumber,
+      isComplex = Complex.isComplex,
+      isUnit = Unit.isUnit,
+      isCollection = collection.isCollection;
 
-  if (x instanceof Unit) {
-    if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
-      throw new TypeError ('Unit in function cos is no angle');
+  /**
+   * Calculate the sine of a value
+   *
+   *     sin(x)
+   *
+   * For matrices, the function is evaluated element wise.
+   *
+   * @param {Number | Complex | Unit | Array | Matrix} x
+   * @return {Number | Complex | Array | Matrix} res
+   *
+   * @see http://mathworld.wolfram.com/Sine.html
+   */
+  math.sin = function sin(x) {
+    if (arguments.length != 1) {
+      throw new util.error.ArgumentsError('sin', arguments.length, 1);
     }
-    return Math.sin(x.value);
-  }
 
-  if (Array.isArray(x) || x instanceof Matrix) {
-    return util.map(x, math.sin);
-  }
+    if (isNumber(x)) {
+      return Math.sin(x);
+    }
 
-  if (x.valueOf() !== x) {
-    // fallback on the objects primitive value
-    return math.sin(x.valueOf());
-  }
+    if (isComplex(x)) {
+      return Complex.create(
+          0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp( x.im)),
+          0.5 * Math.cos(x.re) * (Math.exp( x.im) - Math.exp(-x.im))
+      );
+    }
 
-  throw newUnsupportedTypeError('sin', x);
+    if (isUnit(x)) {
+      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
+        throw new TypeError ('Unit in function cos is no angle');
+      }
+      return Math.sin(x.value);
+    }
+
+    if (isCollection(x)) {
+      return collection.map(x, sin);
+    }
+
+    if (x.valueOf() !== x) {
+      // fallback on the objects primitive value
+      return sin(x.valueOf());
+    }
+
+    throw new util.error.UnsupportedTypeError('sin', x);
+  };
 };

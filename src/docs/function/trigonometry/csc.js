@@ -1,4 +1,4 @@
-math.docs.csc = {
+module.exports = {
   'name': 'csc',
   'category': 'Trigonometry',
   'syntax': [

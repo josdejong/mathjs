@@ -1,4 +1,4 @@
-math.docs.divide = {
+module.exports = {
   'name': 'divide',
   'category': 'Operators',
   'syntax': [

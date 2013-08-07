@@ -1,4 +1,4 @@
-math.docs.squeeze = {
+module.exports = {
   'name': 'squeeze',
   'category': 'Matrix',
   'syntax': [

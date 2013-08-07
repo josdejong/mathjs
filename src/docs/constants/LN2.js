@@ -1,4 +1,4 @@
-math.docs.LN2 = {
+module.exports = {
   'name': 'LN2',
   'category': 'Constants',
   'syntax': [

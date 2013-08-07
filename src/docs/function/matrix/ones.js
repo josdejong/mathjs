@@ -1,4 +1,4 @@
-math.docs.ones = {
+module.exports = {
   'name': 'ones',
   'category': 'Matrix',
   'syntax': [

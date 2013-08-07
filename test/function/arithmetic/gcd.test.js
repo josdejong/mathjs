@@ -1,6 +1,6 @@
 // test gcd
 var assert = require('assert');
-var math = require('../../../dist/math.js');
+var math = require('../../../src/index.js');
 
 // parser
 assert.equal(math.eval('gcd(12, 8)'), 4);

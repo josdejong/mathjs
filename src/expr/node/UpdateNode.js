@@ -1,3 +1,7 @@
+var math = require('../../math.js'),
+    Node = require('./Node.js'),
+    SymbolNode = require('./SymbolNode.js').SymbolNode;
+
 /**
  * @constructor UpdateNode
  * Update a symbol value, like a(2,3) = 4.5
@@ -7,7 +11,7 @@
  * @param {Scope[]}  paramScopes        A scope for every parameter, where the
  *                                      index variable 'end' can be defined.
  * @param {Node} expr                   The expression defining the symbol
- * @param {math.expr.Scope} scope       Scope to store the result
+ * @param {Scope} scope                 Scope to store the result
  */
 function UpdateNode(name, params, paramScopes, expr, scope) {
   this.name = name;
@@ -19,7 +23,7 @@ function UpdateNode(name, params, paramScopes, expr, scope) {
   // check whether any of the params expressions uses the context symbol 'end'
   this.hasContextParams = false;
   var filter = {
-    type: math.type.SymbolNode,
+    type: SymbolNode,
     properties: {
       name: 'end'
     }
@@ -34,8 +38,6 @@ function UpdateNode(name, params, paramScopes, expr, scope) {
 
 UpdateNode.prototype = new Node();
 
-math.expr.node.UpdateNode = UpdateNode;
-
 /**
  * Evaluate the assignment
  * @return {*} result
@@ -46,7 +48,6 @@ UpdateNode.prototype.eval = function() {
   }
 
   var result;
-  var params = this.params;
 
   // test if definition is currently undefined
   var prevResult = this.scope.get(this.name);
@@ -139,3 +140,5 @@ UpdateNode.prototype.toString = function() {
 
   return str;
 };
+
+module.exports = UpdateNode;

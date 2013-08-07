@@ -1,6 +1,6 @@
 var assert = require('assert'),
     _ = require('underscore'),
-    math = require('../../../dist/math.js');
+    math = require('../../../src/index.js');
 
 var assertApproxEqual = function(testVal, val, tolerance) {
   var diff = Math.abs(val - testVal)
