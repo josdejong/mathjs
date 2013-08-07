@@ -1,45 +1,46 @@
-var math = require('../../math.js'),
-    util = require('../../util/index.js'),
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
 
-    Complex = require('../../type/Complex.js').Complex,
-    collection = require('../../type/collection.js'),
+      Complex = require('../../type/Complex.js').Complex,
+      collection = require('../../type/collection.js'),
 
-    isNumber = util.number.isNumber,
-    isComplex = Complex.isComplex,
-    isCollection = collection.isCollection;
+      isNumber = util.number.isNumber,
+      isComplex = Complex.isComplex,
+      isCollection = collection.isCollection;
 
-/**
- * Compute the square of a value
- *
- *     x .* x
- *     square(x)
- *
- * For matrices, the function is evaluated element wise.
- *
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.square = function square(x) {
-  if (arguments.length != 1) {
-    throw new util.error.ArgumentsError('square', arguments.length, 1);
-  }
+  /**
+   * Compute the square of a value
+   *
+   *     x .* x
+   *     square(x)
+   *
+   * For matrices, the function is evaluated element wise.
+   *
+   * @param {Number | Complex | Array | Matrix} x
+   * @return {Number | Complex | Array | Matrix} res
+   */
+  math.square = function square(x) {
+    if (arguments.length != 1) {
+      throw new util.error.ArgumentsError('square', arguments.length, 1);
+    }
 
-  if (isNumber(x)) {
-    return x * x;
-  }
+    if (isNumber(x)) {
+      return x * x;
+    }
 
-  if (isComplex(x)) {
-    return math.multiply(x, x);
-  }
+    if (isComplex(x)) {
+      return math.multiply(x, x);
+    }
 
-  if (isCollection(x)) {
-    return collection.map(x, square);
-  }
+    if (isCollection(x)) {
+      return collection.map(x, square);
+    }
 
-  if (x.valueOf() !== x) {
-    // fallback on the objects primitive value
-    return square(x.valueOf());
-  }
+    if (x.valueOf() !== x) {
+      // fallback on the objects primitive value
+      return square(x.valueOf());
+    }
 
-  throw new util.error.UnsupportedTypeError('square', x);
+    throw new util.error.UnsupportedTypeError('square', x);
+  };
 };

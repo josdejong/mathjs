@@ -1,53 +1,50 @@
-var math = require('../../math.js'),
-    util = require('../../util/index.js'),
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
 
-    Complex = require('../../type/Complex.js').Complex,
-    Unit = require('../../type/Unit.js').Unit,
-    Matrix = require('../../type/Matrix.js').Matrix,
-    collection = require('../../type/collection.js'),
+      Complex = require('../../type/Complex.js').Complex,
+      Unit = require('../../type/Unit.js').Unit,
+      Matrix = require('../../type/Matrix.js').Matrix,
 
-    object = util.object,
-    array = util.array,
-    isNumber = util.number.isNumber,
-    isString = util.string.isString,
-    isArray = Array.isArray,
-    isComplex = Complex.isComplex,
-    isUnit = Unit.isUnit,
-    isCollection = collection.isCollection;
+      array = util.array,
+      isNumber = util.number.isNumber,
+      isString = util.string.isString,
+      isComplex = Complex.isComplex,
+      isUnit = Unit.isUnit;
 
-/**
- * Calculate the size of a matrix or scalar
- *
- *     size(x)
- *
- * @param {Number | Complex | Array | Matrix} x
- * @return {Number | Complex | Array | Matrix} res
- */
-math.size = function size (x) {
-  if (arguments.length != 1) {
-    throw new util.error.ArgumentsError('size', arguments.length, 1);
-  }
+  /**
+   * Calculate the size of a matrix or scalar
+   *
+   *     size(x)
+   *
+   * @param {Number | Complex | Array | Matrix} x
+   * @return {Number | Complex | Array | Matrix} res
+   */
+  math.size = function size (x) {
+    if (arguments.length != 1) {
+      throw new util.error.ArgumentsError('size', arguments.length, 1);
+    }
 
-  if (isNumber(x) || isComplex(x) || isUnit(x) || x == null) {
-    return [];
-  }
+    if (isNumber(x) || isComplex(x) || isUnit(x) || x == null) {
+      return [];
+    }
 
-  if (isString(x)) {
-    return [x.length];
-  }
+    if (isString(x)) {
+      return [x.length];
+    }
 
-  if (Array.isArray(x)) {
-    return array.size(x);
-  }
+    if (Array.isArray(x)) {
+      return array.size(x);
+    }
 
-  if (x instanceof Matrix) {
-    return new Matrix(x.size());
-  }
+    if (x instanceof Matrix) {
+      return new Matrix(x.size());
+    }
 
-  if (x.valueOf() !== x) {
-    // fallback on the objects primitive value
-    return size(x.valueOf());
-  }
+    if (x.valueOf() !== x) {
+      // fallback on the objects primitive value
+      return size(x.valueOf());
+    }
 
-  throw new util.error.UnsupportedTypeError('size', x);
+    throw new util.error.UnsupportedTypeError('size', x);
+  };
 };

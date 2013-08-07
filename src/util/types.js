@@ -51,13 +51,13 @@ exports.type = function type (x) {
 };
 
 /**
- * custom registered types, for example {'matrix': Matrix}
+ * Custom registered types, for example {'matrix': Matrix}
  * @private
  */
 var types = {};
 
 /**
- *
+ * Register a new type, for example addType('matrix', Matrix)
  * @param {String} name                     Lower case name of the type
  * @param {Function} type                   Prototype function of the type
  */
