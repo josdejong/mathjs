@@ -1,9 +1,7 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js'),
-
-      isArray = Array.isArray;
+      Matrix = require('../../type/Matrix.js');
 
   /**
    * Return a random number between 0 and 1
@@ -63,28 +61,29 @@ module.exports = function (math) {
       var randFunctions = {
 
         random: function(arg1, arg2, arg3) {
-          var size, min, max
+          var size, min, max;
           if (arguments.length > 3) {
-            throw newArgumentsError(funcName, argCount, 0, 3);
+            throw new util.error.ArgumentsError('random', arguments.length, 0, 3);
 
           // `random(max)` or `random(size)`
           } else if (arguments.length === 1) {
             if (Object.prototype.toString.call(arg1) === '[object Array]')
-              size = arg1
-            else max = arg1
+              size = arg1;
+            else
+              max = arg1;
           // `random(min, max)` or `random(size, max)`
           } else if (arguments.length === 2) {
             if (Object.prototype.toString.call(arg1) === '[object Array]')
-              size = arg1
+              size = arg1;
             else {
-              min = arg1
-              max = arg2
+              min = arg1;
+              max = arg2;
             }
           // `random(size, min, max)`
           } else {
-            size = arg1
-            min = arg2
-            max = arg3
+            size = arg1;
+            min = arg2;
+            max = arg3;
           }
 
           if (max === undefined) max = 1;
@@ -94,25 +93,25 @@ module.exports = function (math) {
         },
 
         randomInt: function(arg1, arg2, arg3) {
-          var size, min, max
+          var size, min, max;
           if (arguments.length > 3 || arguments.length < 1)
-            throw newArgumentsError(funcName, argCount, 1, 3);
+            throw new util.error.ArgumentsError('randomInt', arguments.length, 1, 3);
 
           // `randomInt(max)`
-          else if (arguments.length === 1) max = arg1
+          else if (arguments.length === 1) max = arg1;
           // `randomInt(min, max)` or `randomInt(size, max)`
           else if (arguments.length === 2) {
             if (Object.prototype.toString.call(arg1) === '[object Array]')
-              size = arg1
+              size = arg1;
             else {
-              min = arg1
-              max = arg2
+              min = arg1;
+              max = arg2;
             }
           // `randomInt(size, min, max)`
           } else {
-            size = arg1
-            min = arg2
-            max = arg3
+            size = arg1;
+            min = arg2;
+            max = arg3;
           }
 
           if (min === undefined) min = 0;
@@ -122,7 +121,7 @@ module.exports = function (math) {
 
         pickRandom: function(possibles) {
           if (arguments.length !== 1)
-            throw newArgumentsError('pickRandom', arguments.length, 1);
+            throw new util.error.ArgumentsError('pickRandom', arguments.length, 1);
           return possibles[Math.floor(Math.random() * possibles.length)];
         }
 
