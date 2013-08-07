@@ -91,9 +91,9 @@ math.distribution = function(name) {
         if (arguments.length > 3 || arguments.length < 1)
           throw newArgumentsError(funcName, argCount, 1, 3);
 
-        // `random(max)`
+        // `randomInt(max)`
         else if (arguments.length === 1) max = arg1
-        // `random(min, max)` or `random(size, max)`
+        // `randomInt(min, max)` or `randomInt(size, max)`
         else if (arguments.length === 2) {
           if (Object.prototype.toString.call(arg1) === '[object Array]')
             size = arg1
@@ -101,7 +101,7 @@ math.distribution = function(name) {
             min = arg1
             max = arg2
           }
-        // `random(size, min, max)`
+        // `randomInt(size, min, max)`
         } else {
           size = arg1
           min = arg2

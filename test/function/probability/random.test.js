@@ -16,7 +16,6 @@ var assertUniformDistribution = function(values, min, max) {
   assert.equal(count, 0)
 
   count = _.filter(values, function(val) { return val < (min + interval) }).length
-  debugger
   assertApproxEqual(count/values.length, 0.1, 0.03)
   count = _.filter(values, function(val) { return val >= (min + interval) && val < (min + 2 * interval) }).length
   assertApproxEqual(count/values.length, 0.1, 0.03)
