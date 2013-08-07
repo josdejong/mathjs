@@ -1,7 +1,7 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Unit = require('../../type/Unit.js').Unit,
+      Unit = require('../../type/Unit.js'),
 
       isString = util.string.isString;
 

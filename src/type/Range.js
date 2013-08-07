@@ -245,5 +245,5 @@ Range.prototype.toString = function () {
 
 
 // exports
-exports.Range = Range;
+module.exports = Range;
 util.types.addType('range', Range);

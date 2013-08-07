@@ -1,7 +1,7 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,

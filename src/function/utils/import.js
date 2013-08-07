@@ -1,9 +1,9 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Selector = require('../../type/Selector.js').Selector,
-      Complex = require('../../type/Complex.js').Complex,
-      Unit = require('../../type/Unit.js').Unit,
+      Selector = require('../../type/Selector.js'),
+      Complex = require('../../type/Complex.js'),
+      Unit = require('../../type/Unit.js'),
 
       isNumber = util.number.isNumber,
       isString = util.string.isString,

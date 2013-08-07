@@ -1,7 +1,7 @@
 var util = require('../util/index.js'),
 
-    Matrix = require('./Matrix.js').Matrix,
-    Range = require('./Range.js').Range,
+    Matrix = require('./Matrix.js'),
+    Range = require('./Range.js'),
 
     isArray = Array.isArray,
     isString = util.string.isString;

@@ -130,6 +130,6 @@ function init () {
 }
 
 // exports
-exports.Selector = Selector;
-exports.init = init;
+module.exports = Selector;
+Selector.init = init;
 util.types.addType('selector', Selector);

@@ -1,7 +1,7 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix;
+      Matrix = require('../../type/Matrix.js');
 
   /**
    * Create a matrix. The function creates a new math.type.Matrix object.

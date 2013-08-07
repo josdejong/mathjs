@@ -1,8 +1,8 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Matrix = require('../../type/Matrix.js').Matrix,
-      Range = require('../../type/Range.js').Range,
+      Matrix = require('../../type/Matrix.js'),
+      Range = require('../../type/Range.js'),
 
       array = util.array,
       isString = util.string.isString,

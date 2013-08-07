@@ -68,4 +68,4 @@ Node.prototype.toString = function() {
   return '';
 };
 
-exports.Node = Node;
+module.exports = Node;

@@ -1,7 +1,7 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Scope = require('../../expr/Scope.js').Scope,
+      Scope = require('../../expr/Scope.js'),
 
       collection = require('../../type/collection.js'),
 

@@ -1,4 +1,4 @@
-var Node = require('./Node.js').Node,
+var Node = require('./Node.js'),
     string = require('../../util/string.js');
 
 /**
@@ -28,4 +28,4 @@ ConstantNode.prototype.toString = function() {
   return string.format(this.value);
 };
 
-exports.ConstantNode = ConstantNode;
+module.exports = ConstantNode;

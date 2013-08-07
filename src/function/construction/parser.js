@@ -1,7 +1,7 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Parser = require('../../expr/Parser.js').Parser;
+      Parser = require('../../expr/Parser.js');
 
   /**
    * Create a parser. The function creates a new math.expr.Parser object.

@@ -1,8 +1,8 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Matrix = require('../../type/Matrix.js').Matrix,
+      Complex = require('../../type/Complex.js'),
+      Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,

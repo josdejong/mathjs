@@ -1,5 +1,5 @@
 var math = require('../math.js'),
-    Unit = require('../type/Unit.js').Unit;
+    Unit = require('../type/Unit.js');
 
 /**
  * Scope
@@ -180,4 +180,4 @@ Scope.prototype = {
   }
 };
 
-exports.Scope = Scope;
+module.exports = Scope;

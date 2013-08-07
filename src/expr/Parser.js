@@ -1,5 +1,5 @@
 var math = require('../math.js'),
-    Scope = require('./Scope.js').Scope;
+    Scope = require('./Scope.js');
 
 /**
  * @constructor Parser
@@ -116,4 +116,4 @@ Parser.prototype.clear = function () {
   this.scope.clear();
 };
 
-exports.Parser = Parser;
+module.exports = Parser;

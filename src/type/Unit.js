@@ -715,5 +715,5 @@ Unit.UNITS = UNITS;
 
 
 // exports
-exports.Unit = Unit;
+module.exports = Unit;
 util.types.addType('unit', Unit);

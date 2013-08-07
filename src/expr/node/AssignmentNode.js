@@ -1,4 +1,4 @@
-var Node = require('./Node.js').Node;
+var Node = require('./Node.js');
 
 /**
  * @constructor AssignmentNode
@@ -60,4 +60,4 @@ AssignmentNode.prototype.toString = function() {
   return this.name + ' = ' + this.expr.toString();
 };
 
-exports.AssignmentNode = AssignmentNode;
+module.exports = AssignmentNode;

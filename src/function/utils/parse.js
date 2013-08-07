@@ -5,23 +5,23 @@ module.exports = function (math) {
       isArray = Array.isArray,
 
       // types
-      Complex = require('./../../type/Complex.js').Complex,
-      Matrix = require('./../../type/Matrix.js').Matrix,
-      Unit = require('./../../type/Unit.js').Unit,
-      Range = require('./../../type/Range.js').Range,
+      Complex = require('./../../type/Complex.js'),
+      Matrix = require('./../../type/Matrix.js'),
+      Unit = require('./../../type/Unit.js'),
+      Range = require('./../../type/Range.js'),
       collection = require('../../type/collection.js'),
 
       // scope and nodes
-      Scope = require('./../../expr/Scope.js').Scope,
-      AssignmentNode = require('../../expr/node/AssignmentNode.js').AssignmentNode,
-      BlockNode = require('../../expr/node/BlockNode.js').BlockNode,
-      ConstantNode = require('../../expr/node/ConstantNode.js').ConstantNode,
-      FunctionNode = require('../../expr/node/FunctionNode.js').FunctionNode,
-      MatrixNode = require('../../expr/node/MatrixNode.js').MatrixNode,
-      OperatorNode = require('../../expr/node/OperatorNode.js').OperatorNode,
-      ParamsNode = require('../../expr/node/ParamsNode.js').ParamsNode,
-      SymbolNode = require('../../expr/node/SymbolNode.js').SymbolNode,
-      UpdateNode = require('../../expr/node/UpdateNode.js').UpdateNode,
+      Scope = require('./../../expr/Scope.js'),
+      AssignmentNode = require('../../expr/node/AssignmentNode.js'),
+      BlockNode = require('../../expr/node/BlockNode.js'),
+      ConstantNode = require('../../expr/node/ConstantNode.js'),
+      FunctionNode = require('../../expr/node/FunctionNode.js'),
+      MatrixNode = require('../../expr/node/MatrixNode.js'),
+      OperatorNode = require('../../expr/node/OperatorNode.js'),
+      ParamsNode = require('../../expr/node/ParamsNode.js'),
+      SymbolNode = require('../../expr/node/SymbolNode.js'),
+      UpdateNode = require('../../expr/node/UpdateNode.js'),
       handlers = require('../../expr/node/handlers.js');
 
   /**

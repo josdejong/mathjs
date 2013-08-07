@@ -1,5 +1,5 @@
 var math = require('../../math.js'),
-    Node = require('./Node.js').Node,
+    Node = require('./Node.js'),
     SymbolNode = require('./SymbolNode.js').SymbolNode;
 
 /**
@@ -133,4 +133,4 @@ ParamsNode.prototype.toString = function() {
   return str;
 };
 
-exports.ParamsNode = ParamsNode;
+module.exports = ParamsNode;

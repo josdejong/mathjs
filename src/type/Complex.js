@@ -357,5 +357,5 @@ Complex.prototype.toString = function () {
 
 
 // exports
-exports.Complex = Complex;
+module.exports = Complex;
 util.types.addType('complex', Complex);

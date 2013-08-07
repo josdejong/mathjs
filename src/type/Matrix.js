@@ -1,5 +1,5 @@
 var util = require('../util/index.js'),
-    Range = require('./Range.js').Range,
+    Range = require('./Range.js'),
 
     number = util.number,
     string = util.string,
@@ -672,5 +672,5 @@ Matrix.prototype.toString = function () {
 };
 
 // exports
-exports.Matrix = Matrix;
+module.exports = Matrix;
 util.types.addType('matrix', Matrix);

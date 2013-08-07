@@ -1,9 +1,9 @@
 module.exports = function(math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
-      Matrix = require('../../type/Matrix.js').Matrix,
-      Unit = require('../../type/Unit.js').Unit,
+      Complex = require('../../type/Complex.js'),
+      Matrix = require('../../type/Matrix.js'),
+      Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
       array = util.array,

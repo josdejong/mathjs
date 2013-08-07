@@ -1,7 +1,7 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Complex = require('../../type/Complex.js').Complex,
+      Complex = require('../../type/Complex.js'),
 
       isString = util.string.isString,
       isComplex = Complex.isComplex;

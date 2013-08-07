@@ -82,5 +82,5 @@ Help.prototype.toJSON = function () {
 };
 
 // exports
-exports.Help = Help;
+module.exports = Help;
 util.types.addType('help', Help);

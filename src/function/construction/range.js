@@ -1,7 +1,7 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Range = require('../../type/Range.js').Range,
+      Range = require('../../type/Range.js'),
 
       isString = util.string.isString;
 

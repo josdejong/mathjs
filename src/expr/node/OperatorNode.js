@@ -1,4 +1,4 @@
-var Node = require('./Node.js').Node;
+var Node = require('./Node.js');
 
 /**
  * @constructor OperatorNode
@@ -83,4 +83,4 @@ OperatorNode.prototype.toString = function() {
   }
 };
 
-exports.OperatorNode = OperatorNode;
+module.exports = OperatorNode;

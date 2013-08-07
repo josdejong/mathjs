@@ -1,5 +1,5 @@
 module.exports = function (math) {
-  var Complex = require('./type/Complex.js').Complex;
+  var Complex = require('./type/Complex.js');
 
   math.pi          = Math.PI;
   math.e           = Math.E;

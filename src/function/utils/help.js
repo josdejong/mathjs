@@ -1,7 +1,7 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Help = require('../../type/Help.js').Help;
+      Help = require('../../type/Help.js');
 
   /**
    * Retrieve help on a function or data type.
