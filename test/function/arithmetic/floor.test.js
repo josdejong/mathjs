@@ -47,7 +47,7 @@ describe('floor', function() {
   it('should floor all elements in a matrix', function() {
     approx.deepEqual(floor([1.2, 3.4, 5.6, 7.8, 10.0]), [1, 3, 5, 7, 10]);
     approx.deepEqual(floor(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([1, 3, 5, 7, 10]));
-    approx.deepEqual(floor(range(1.2, 2.2, 11)), [1, 3, 5, 7, 10]);
+    approx.deepEqual(floor(range(1.2, 11, 2.2)), [1, 3, 5, 7, 10]);
   });
 
 });

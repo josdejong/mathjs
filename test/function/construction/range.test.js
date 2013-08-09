@@ -38,9 +38,9 @@ describe('range', function() {
   });
 
   it('should create a range start:step:end if called with 3 numbers', function() {
-    assert.deepEqual(range(0,2,10).valueOf(), [0,2,4,6,8]);
-    assert.deepEqual(range(5,-1,0).valueOf(), [5,4,3,2,1]);
-    assert.deepEqual(range(2,-2,-4).valueOf(), [2,0,-2]);
+    assert.deepEqual(range(0,10,2).valueOf(), [0,2,4,6,8]);
+    assert.deepEqual(range(5,0,-1).valueOf(), [5,4,3,2,1]);
+    assert.deepEqual(range(2,-4,-2).valueOf(), [2,0,-2]);
   });
 
   it('should throw an error if called with one invalid argument', function() {  

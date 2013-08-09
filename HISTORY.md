@@ -13,6 +13,8 @@ https://github.com/josdejong/mathjs
   distributions. Currently supporting `uniform` and `normal`.
 - Changed the behavior of `range` to exclude the upper bound, so `range(1, 4)`
   now returns `[1, 2, 3]` instead of `[1, 2, 3, 4]`.
+- Changed the syntax of `range`, which is now `range(start, end [, step])`
+  instead of `range(start, [step, ] end)`.
 - Fixed zeros being formatted as null. Thanks TimKraft.
 
 

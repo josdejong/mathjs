@@ -35,8 +35,8 @@ describe('round', function() {
   });
 
   it('should round each element in a matrix, array, range', function() {
-    assert.deepEqual(math.round(math.range(0,1/3,2), 2), [0,0.33,0.67,1,1.33,1.67,2]);
-    assert.deepEqual(math.round(math.range(0,1/3,2)), [0,0,1,1,1,2,2]);
+    assert.deepEqual(math.round(math.range(0,2.1,1/3), 2), [0,0.33,0.67,1,1.33,1.67,2]);
+    assert.deepEqual(math.round(math.range(0,2.1,1/3)), [0,0,1,1,1,2,2]);
     assert.deepEqual(math.round([1.7,2.3]), [2,2]);
     assert.deepEqual(math.round(math.matrix([1.7,2.3])).valueOf(), [2, 2]);
   });

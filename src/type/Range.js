@@ -12,7 +12,8 @@ var util = require('../util/index.js'),
  * the range.
  *
  * A range can be constructed as:
- *     var a = new Range(start, step, end);
+ *     var range = new Range(start, end);
+ *     var range = new Range(start, end, step);
  *
  * To get the result of the range:
  *     range.forEach(function (x) {
@@ -24,16 +25,16 @@ var util = require('../util/index.js'),
  *     range.toArray();
  *
  * Example usage:
- *     var c = new Range(2, 1, 6);      // 2:1:5
+ *     var c = new Range(2, 6);         // 2:1:5
  *     c.toArray();                     // [2, 3, 4, 5]
- *     var d = new Range(2, -1, -3);    // 2:-1:-2
+ *     var d = new Range(2, -3, -1);    // 2:-1:-2
  *     d.toArray();                     // [2, 1, 0, -1, -2]
  *
  * @param {Number} start  included lower bound
- * @param {Number} step   step size
  * @param {Number} end    excluded upper bound
+ * @param {Number} [step] step size, default value is 1
  */
-function Range(start, step, end) {
+function Range(start, end, step) {
   if (!(this instanceof Range)) {
     throw new SyntaxError(
         'Range constructor must be called with the new operator');
@@ -80,8 +81,8 @@ Range.parse = function parse (str) {
   }
 
   switch (nums.length) {
-    case 2: return new Range(nums[0], 1, nums[1]);
-    case 3: return new Range(nums[0], nums[1], nums[2]);
+    case 2: return new Range(nums[0], nums[1]);
+    case 3: return new Range(nums[0], nums[2], nums[1]);
     default: return null;
   }
 };
@@ -91,7 +92,7 @@ Range.parse = function parse (str) {
  * @return {Range} clone
  */
 Range.prototype.clone = function () {
-  return new Range(this.start, this.step, this.end);
+  return new Range(this.start, this.end, this.step);
 };
 
 /**

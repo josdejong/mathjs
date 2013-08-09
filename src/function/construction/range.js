@@ -19,16 +19,16 @@ module.exports = function (math) {
    *                                  and end, separated by a colon.
    *     range(start, end)            Create a range with start and end and a
    *                                  default step size of 1
-   *     range(start, step, end)      Create a range with start, step, and end.
+   *     range(start, end, step)      Create a range with start, step, and end.
    *
    * Example usage:
-   *     var c = math.range(2, 1, 5);     // 2:1:5
+   *     var c = math.range(2, 6);        // 2:1:5
    *     c.toArray();                     // [2, 3, 4, 5]
-   *     var d = math.range(2, -1, -2);   // 2:-1:-2
+   *     var d = math.range(2, -3, -1);   // 2:-1:-2
    *     d.forEach(function (value, index) {
  *         console.log(index, value);
  *     });
-   *     var e = math.range('2:1:5');     // 2:1:5
+   *     var e = math.range('2:1:6');     // 2:1:6
    *
    * @param {...*} args
    * @return {Range} range
@@ -58,11 +58,11 @@ module.exports = function (math) {
 
       case 2:
         // range(start, end)
-        return new Range(arguments[0], null, arguments[1]);
+        return new Range(arguments[0], arguments[1]);
         break;
 
       case 3:
-        // range(start, step, end)
+        // range(start, end, step)
         return new Range(arguments[0], arguments[1], arguments[2]);
         break;
 

@@ -585,6 +585,16 @@ module.exports = function (math) {
         // create a range constructor
         name = 'range';
         fn = math.range;
+
+        if (params.length == 3) {
+          // swap step and end
+          params = [
+              params[0],  // start
+              params[2],  // end
+              params[1]   // step
+          ];
+        }
+
         node = new OperatorNode(name, fn, params);
       }
     }

@@ -7,11 +7,11 @@ var r = math.range(2,6);
 assert.deepEqual(r.toArray(), [2,3,4,5]);
 assert.equal(r.size(), 4);
 
-r = math.range(10, -1, 4);
+r = math.range(10, 4, -1);
 assert.deepEqual(r.toArray(), [10,9,8,7,6,5]);
 assert.equal(r.size(), 6);
 
-r = math.range(1, 1.5, 5.5);
+r = math.range(1, 5.5, 1.5);
 assert.deepEqual(r.toArray(), [1,2.5,4]);
 assert.equal(r.size(), 3);
 
@@ -24,11 +24,11 @@ assert.deepEqual(r.toArray(), [0]);
 assert.equal(r.size(), 1);
 
 
-r = math.range(0,0,10);
+r = math.range(0,10,0);
 assert.deepEqual(r.toArray(), []);
 assert.equal(r.size(), 0);
 
-r = math.range(0,-1,10);
+r = math.range(0,10,-1);
 assert.deepEqual(r.toArray(), []);
 assert.equal(r.size(), 0);
 

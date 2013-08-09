@@ -11,7 +11,7 @@ assert.equal(math.min('A', 'C', 'D', 'B'), 'A');
 assert.equal(math.min([1,3,5,-5,2]), -5);
 assert.equal(math.min(math.matrix([1,3,5,-5,2])), -5);
 assert.equal(math.min(math.range(1,6)), 1);
-assert.equal(math.min(math.range(5,-1,1)), 2);
+assert.equal(math.min(math.range(5,1,-1)), 2);
 assert.throws(function() {math.min()});
 assert.throws(function() {math.min([5,2], 3)});
 assert.throws(function() {math.min([])});
