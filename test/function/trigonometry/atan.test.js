@@ -44,5 +44,5 @@ approx.equal(atan(tan(2)), -1.14159265358979);
 // matrix, array, range
 var atan123 = [0.785398163397448, 1.107148717794090, 1.249045772398254];
 approx.deepEqual(atan([1,2,3]), atan123);
-approx.deepEqual(atan(math.range('1:3')), atan123);
+approx.deepEqual(atan(math.range('1:4')), atan123);
 approx.deepEqual(atan(matrix([1,2,3])), matrix(atan123));

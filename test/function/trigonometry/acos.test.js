@@ -44,5 +44,5 @@ approx.equal(acos(cos(2)), 2);
 // the next tests are verified with mathematica
 var acos123 = [0, complex(0, 1.316957896924817), complex(0, 1.762747174039086)];
 approx.deepEqual(acos([1,2,3]), acos123);
-approx.deepEqual(acos(math.range('1:3')), acos123);
+approx.deepEqual(acos(math.range('1:4')), acos123);
 approx.deepEqual(acos(matrix([1,2,3])), matrix(acos123));

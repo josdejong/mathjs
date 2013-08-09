@@ -49,5 +49,5 @@ math.range(0, 0.1, 1).forEach(function (value) {
 // array, matrix, range
 var tan123 = [1.557407724654902, -2.185039863261519, -0.142546543074278];
 approx.deepEqual(tan([1,2,3]), tan123);
-approx.deepEqual(tan(math.range('1:3')), tan123);
+approx.deepEqual(tan(math.range('1:4')), tan123);
 approx.deepEqual(tan(matrix([1,2,3])), matrix(tan123));

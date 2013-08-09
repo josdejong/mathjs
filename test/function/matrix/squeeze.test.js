@@ -13,4 +13,4 @@ m = math.ones(3,1,1);
 assert.deepEqual(size(m), matrix([3,1,1]));
 assert.deepEqual(size(squeeze(m)), matrix([3]));
 assert.deepEqual(squeeze(2.3), 2.3);
-assert.deepEqual(size(squeeze(math.range(1,5))), [5]);
+assert.deepEqual(size(squeeze(math.range(1,6))), [5]);

@@ -51,5 +51,5 @@ assert.throws(function () {sec('string')});
 // array, matrix, range
 var sec123 = [1.85081571768093, -2.40299796172238, -1.01010866590799];
 approx.deepEqual(sec([1,2,3]), sec123);
-approx.deepEqual(sec(math.range('1:3')), sec123);
+approx.deepEqual(sec(math.range('1:4')), sec123);
 approx.deepEqual(sec(matrix([1,2,3])), matrix(sec123));

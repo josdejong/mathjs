@@ -43,5 +43,5 @@ assert.throws(function () {cos('string')});
 // array, matrix, range
 var cos123 = [0.540302305868140, -0.41614683654714, -0.989992496600445];
 approx.deepEqual(cos([1,2,3]), cos123);
-approx.deepEqual(cos(math.range('1:3')), cos123);
+approx.deepEqual(cos(math.range('1:4')), cos123);
 approx.deepEqual(cos(matrix([1,2,3])), matrix(cos123));

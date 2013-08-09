@@ -7,7 +7,7 @@ describe('string', function() {
   it('should be parsed correctly', function() {
     assert.equal(math.eval('string(123)'), '123');
     assert.equal(math.eval('string(2+3i)'), '2 + 3i');
-    assert.equal(math.eval('string(1:5)'), '[1, 2, 3, 4, 5]');
+    assert.equal(math.eval('string(1:6)'), '[1, 2, 3, 4, 5]');
     assert.equal(math.eval('string(2 inch)'), '2 inch');
     assert.equal(math.eval('string([1,2;3,4])'), '[[1, 2], [3, 4]]');
   });
@@ -45,7 +45,7 @@ describe('string', function() {
   it('should convert a matrix/range/array to string', function() {
     assert.equal(string([[1,2],[3,4]]), '[[1, 2], [3, 4]]');
     assert.equal(string(math.matrix([[1,2],[3,4]])), '[[1, 2], [3, 4]]');
-    assert.equal(string(math.range(1,5)), '[1, 2, 3, 4, 5]');
+    assert.equal(string(math.range(1,6)), '[1, 2, 3, 4, 5]');
   });
 
   it('should throw an error if called with wrong number of arguments', function() {

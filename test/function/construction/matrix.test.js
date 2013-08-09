@@ -27,7 +27,7 @@ describe('matrix', function() {
   });
 
   it('should create a matrix from a range correctly', function() {
-    var d = matrix(math.range(1,5));
+    var d = matrix(math.range(1,6));
     assert.ok(d instanceof math.type.Matrix);
     assert.deepEqual(d, new math.type.Matrix([1,2,3,4,5]));
     assert.deepEqual(math.size(d), matrix([5]));

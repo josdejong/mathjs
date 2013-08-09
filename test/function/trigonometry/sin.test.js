@@ -43,5 +43,5 @@ assert.throws(function () {sin('string')});
 // array, matrix, range
 var sin123 = [0.84147098480789, 0.909297426825682, 0.141120008059867];
 approx.deepEqual(sin([1,2,3]), sin123);
-approx.deepEqual(sin(math.range('1:3')), sin123);
+approx.deepEqual(sin(math.range('1:4')), sin123);
 approx.deepEqual(sin(matrix([1,2,3])), matrix(sin123));

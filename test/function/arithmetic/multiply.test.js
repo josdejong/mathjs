@@ -105,7 +105,7 @@ describe('multiply', function() {
     approx.deepEqual(multiply(d, b), matrix([[67,78]]));
     approx.deepEqual(multiply(d, c), matrix([[61]]));
     approx.deepEqual(multiply([[1,2],[3,4]], [[5,6],[7,8]]), [[19,22],[43,50]]);
-    approx.deepEqual(multiply(range(1, 4), 2), [2, 4, 6, 8]);
+    approx.deepEqual(multiply(range(1, 5), 2), [2, 4, 6, 8]);
   });
 
   it('should throw an error if multiplying matrices with incompatible sizes', function() {

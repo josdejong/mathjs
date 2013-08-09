@@ -4,7 +4,7 @@ var math = require('../../../src/index.js');
 
 assert.equal(math.det(3), 3);
 assert.equal(math.det([5]), 5);
-assert.equal(math.det(math.range(2,2)), 2);
+assert.equal(math.det(math.range(2,3)), 2);
 assert.equal(math.det([[1,2],[3,4]]), -2);
 assert.equal(math.det(math.matrix([[1,2],[3,4]])), -2);
 assert.equal(math.det([

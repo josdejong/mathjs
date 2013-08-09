@@ -2,13 +2,17 @@
 https://github.com/josdejong/mathjs
 
 
-## version 0.11.2
+## version 0.12.0
+
+*WARNING: version 0.12 is incompatible with previous versions.*
 
 - Implemented functions `random([min, max])`, `randomInt([min, max])`,
   `pickRandom(array)`. Thanks sebpiq.
 - Implemented function `distribution(name)`, generating a distribution object
   with functions `random`, `randomInt`, `pickRandom` for different
   distributions. Currently supporting `uniform` and `normal`.
+- Changed the behavior of `range` to exclude the upper bound, so `range(1, 4)`
+  now returns `[1, 2, 3]` instead of `[1, 2, 3, 4]`.
 - Fixed zeros being formatted as null. Thanks TimKraft.
 
 

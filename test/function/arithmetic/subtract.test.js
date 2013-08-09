@@ -57,7 +57,7 @@ describe('subtract', function() {
     assert.ok(a6 instanceof math.type.Matrix);
     assert.deepEqual(a6.size(), [2,2]);
     assert.deepEqual(a6.valueOf(), [[-4,-4],[-4,-4]]);
-    assert.deepEqual(math.subtract(math.range(1,5), 2), math.range(-1,3).valueOf());
+    assert.deepEqual(math.subtract(math.range(1,6), 2), math.range(-1,4).valueOf());
   });
 
 });

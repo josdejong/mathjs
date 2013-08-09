@@ -42,5 +42,5 @@ assert.throws(function () {cot('string')});
 // array, matrix, range
 var cot123 = [0.642092615934331, -0.457657554360286, -7.015252551434534];
 approx.deepEqual(cot([1,2,3]), cot123);
-approx.deepEqual(cot(math.range('1:3')), cot123);
+approx.deepEqual(cot(math.range('1:4')), cot123);
 approx.deepEqual(cot(matrix([1,2,3])), matrix(cot123));

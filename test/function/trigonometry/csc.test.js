@@ -43,5 +43,5 @@ assert.throws(function () {csc('string')});
 // array, matrix, range
 var csc123 = [1.18839510577812, 1.09975017029462, 7.08616739573719];
 approx.deepEqual(csc([1,2,3]), csc123);
-approx.deepEqual(csc(math.range('1:3')), csc123);
+approx.deepEqual(csc(math.range('1:4')), csc123);
 approx.deepEqual(csc(matrix([1,2,3])), matrix(csc123));

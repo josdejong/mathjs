@@ -24,14 +24,14 @@ var util = require('../util/index.js'),
  *     range.toArray();
  *
  * Example usage:
- *     var c = new Range(2, 1, 5);      // 2:1:5
+ *     var c = new Range(2, 1, 6);      // 2:1:5
  *     c.toArray();                     // [2, 3, 4, 5]
- *     var d = new Range(2, -1, -2);    // 2:-1:-2
+ *     var d = new Range(2, -1, -3);    // 2:-1:-2
  *     d.toArray();                     // [2, 1, 0, -1, -2]
  *
- * @param {Number} start
- * @param {Number} step
- * @param {Number} end
+ * @param {Number} start  included lower bound
+ * @param {Number} step   step size
+ * @param {Number} end    excluded upper bound
  */
 function Range(start, step, end) {
   if (!(this instanceof Range)) {
@@ -58,7 +58,7 @@ function Range(start, step, end) {
  * Parse a string into a range,
  * The string contains the start, optional step, and end, separated by a colon.
  * If the string does not contain a valid range, null is returned.
- * For example str='0:2:10'.
+ * For example str='0:2:11'.
  * @param {String} str
  * @return {Range | null} range
  */
@@ -115,10 +115,10 @@ Range.prototype.size = function () {
       diff = end - start;
 
   if (number.sign(step) == number.sign(diff)) {
-    len = Math.floor((diff) / step) + 1;
+    len = Math.floor((diff) / step);
   }
   else if (diff == 0) {
-    len = 1;
+    len = 0;
   }
 
   if (isNaN(len)) {
@@ -140,14 +140,14 @@ Range.prototype.forEach = function (callback) {
   var i = 0;
 
   if (step > 0) {
-    while (x <= end) {
+    while (x < end) {
       callback(x, i, this);
       x += step;
       i++;
     }
   }
   else if (step < 0) {
-    while (x >= end) {
+    while (x > end) {
       callback(x, i, this);
       x += step;
       i++;
@@ -231,7 +231,7 @@ Range.prototype.valueOf = function () {
 };
 
 /**
- * Get the string representation of the range, for example '2:5' or '0:0.2:10'
+ * Get the string representation of the range, for example '2:6' or '0:0.2:11'
  * @returns {String} str
  */
 Range.prototype.toString = function () {

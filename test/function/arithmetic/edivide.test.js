@@ -46,7 +46,7 @@ describe('edivide', function() {
   });
 
   it('should divide all the elements of a matrix by one number', function() {
-    assert.deepEqual(edivide(math.range(2,2,6), 2), [1,2,3]);
+    assert.deepEqual(edivide(math.range(2,2,7), 2), [1,2,3]);
     a  = math.matrix([[1,2],[3,4]]);
     assert.deepEqual(edivide(a, 2), math.matrix([[0.5,1],[1.5,2]]));
     assert.deepEqual(edivide(a.valueOf(), 2), [[0.5,1],[1.5,2]]);

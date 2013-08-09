@@ -1,16 +1,18 @@
-var math = require('../../math.js'),
-    Node = require('./Node.js'),
+var Node = require('./Node.js'),
     SymbolNode = require('./SymbolNode.js').SymbolNode;
 
 /**
  * @constructor ParamsNode
  * invoke a list with parameters on the results of a node
+ * @param {Object} math             The math namespace containing all functions
  * @param {Node} object
  * @param {Node[]} params
  * @param {Scope[]} paramScopes     A scope for every parameter, where the
  *                                  index variable 'end' can be defined.
  */
-function ParamsNode (object, params, paramScopes) {
+function ParamsNode (math, object, params, paramScopes) {
+  this.subset = math.subset;
+
   this.object = object;
   this.params = params;
   this.paramScopes = paramScopes;
@@ -68,7 +70,7 @@ ParamsNode.prototype.eval = function() {
       for (i = 0, len = this.params.length; i < len; i++) {
         var paramScope = paramScopes[i];
         if (paramScope) {
-          paramScope.set('end', size[i] - 1); // zero-based end
+          paramScope.set('end', size[i]);
         }
       }
     }
@@ -87,7 +89,7 @@ ParamsNode.prototype.eval = function() {
   }
   else {
     // get a subset of the object
-    return math.subset(obj, results);
+    return this.subset(obj, results);
   }
 };
 

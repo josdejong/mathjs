@@ -536,7 +536,7 @@ module.exports = function (math) {
         params = node.params;
         paramScopes = node.paramScopes;
         expr = parseAssignment(scope);
-        return new UpdateNode(name, params, paramScopes, expr, scope);
+        return new UpdateNode(math, name, params, paramScopes, expr, scope);
       }
       else {
         throw createSyntaxError('Symbol expected at the left hand side ' +
@@ -985,7 +985,7 @@ module.exports = function (math) {
       }
       getToken();
 
-      node = new ParamsNode(node, params, paramScopes);
+      node = new ParamsNode(math, node, params, paramScopes);
     }
 
     return node;

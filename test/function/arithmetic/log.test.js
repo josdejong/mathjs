@@ -59,7 +59,7 @@ describe('log', function() {
   it('should return the log of each element of a matrix', function() {
     var res = [0, 0.693147180559945, 1.098612288668110, 1.386294361119891];
     approx.deepEqual(log([1,2,3,4]), res);
-    approx.deepEqual(log(range('1:4')), res);
+    approx.deepEqual(log(range('1:5')), res);
     approx.deepEqual(log(matrix([1,2,3,4])), matrix(res));
     approx.deepEqual(log(matrix([[1,2],[3,4]])),
         matrix([[0, 0.693147180559945], [1.098612288668110, 1.386294361119891]]));

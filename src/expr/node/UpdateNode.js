@@ -1,11 +1,11 @@
-var math = require('../../math.js'),
-    Node = require('./Node.js'),
+var Node = require('./Node.js'),
     SymbolNode = require('./SymbolNode.js').SymbolNode;
 
 /**
  * @constructor UpdateNode
  * Update a symbol value, like a(2,3) = 4.5
  *
+ * @param {Object} math                 The math namespace containing all functions
  * @param {String} name                 Symbol name
  * @param {Node[] | undefined} params   One or more parameters
  * @param {Scope[]}  paramScopes        A scope for every parameter, where the
@@ -13,7 +13,9 @@ var math = require('../../math.js'),
  * @param {Node} expr                   The expression defining the symbol
  * @param {Scope} scope                 Scope to store the result
  */
-function UpdateNode(name, params, paramScopes, expr, scope) {
+function UpdateNode(math, name, params, paramScopes, expr, scope) {
+  this.subset = math.subset;
+
   this.name = name;
   this.params = params;
   this.paramScopes = paramScopes;
@@ -73,7 +75,7 @@ UpdateNode.prototype.eval = function() {
       for (var i = 0, len = this.params.length; i < len; i++) {
         var paramScope = paramScopes[i];
         if (paramScope) {
-          paramScope.set('end', size[i] - 1);
+          paramScope.set('end', size[i]);
         }
       }
     }
@@ -88,7 +90,7 @@ UpdateNode.prototype.eval = function() {
   var exprResult = this.expr.eval();
 
   // replace subset
-  result = math.subset(prevResult, paramResults, exprResult);
+  result = this.subset(prevResult, paramResults, exprResult);
 
   this.scope.set(this.name, result);
 
