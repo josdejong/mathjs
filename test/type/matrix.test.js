@@ -54,7 +54,7 @@ assert.deepEqual(m.toVector(), [3]);
 m = math.matrix([[]]);
 assert.equal(m.isScalar(), true);
 assert.equal(m.isVector(), true);
-assert.deepEqual(m.size(), [0,0]);
+assert.deepEqual(m.size(), [1,0]);
 assert.deepEqual(m.toVector(), []);
 
 m = math.matrix();

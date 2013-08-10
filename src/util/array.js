@@ -6,24 +6,15 @@ var number = require('./number'),
  * Recursively calculate the size of a multi dimensional array.
  * @param {Array} x
  * @Return {Number[]} size
- * @throws RangeError
  * @private
  */
 function _size(x) {
   if (Array.isArray(x)) {
-    var sizeX = x.length;
-    if (sizeX) {
-      var size0 = _size(x[0]);
-      if (size0[0] == 0) {
-        return [0].concat(size0);
-      }
-      else {
-        return [sizeX].concat(size0);
-      }
-    }
-    else {
-      return [sizeX];
-    }
+    var len = x.length;
+
+    var size = len ? _size(x[0]) : [];
+    size.unshift(len);
+    return size;
   }
   else {
     return [];
@@ -89,32 +80,6 @@ function _validate(array, size, dim) {
 }
 
 /**
- * Recursively validate whether each array in a multi dimensional array
- * is empty (zero size) and has the correct number dimensions.
- * @param {Array} array    Array to be validated
- * @param {Number[]} size  Array with the size of each dimension
- * @param {Number} dim   Current dimension
- * @throws RangeError
- * @private
- */
-function _validateEmpty(array, size, dim) {
-  if (dim < size.length - 1) {
-    var child = array[0];
-    if (array.length != 1 || !Array.isArray(child)) {
-      throw new RangeError('Dimension mismatch ' + '(' + array.length + ' > 0)');
-    }
-
-    _validateEmpty(child, size, dim + 1);
-  }
-  else {
-    // last dimension. test if empty
-    if (array.length) {
-      throw new RangeError('Dimension mismatch ' + '(' + array.length + ' > 0)');
-    }
-  }
-}
-
-/**
  * Validate whether each element in a multi dimensional array has
  * a size corresponding to the provided size array.
  * @param {Array} array    Array to be validated
@@ -128,22 +93,9 @@ exports.validate = function validate(array, size) {
     if (Array.isArray(array)) {
       throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
     }
-    return;
-  }
-
-  var hasZeros = (size.indexOf(0) != -1);
-  if (hasZeros) {
-    // array where all dimensions are zero
-    size.forEach(function (value) {
-      if (value != 0) {
-        throw new RangeError('Invalid size, all dimensions must be ' +
-            'either zero or non-zero (size: ' + exports.formatArray(size) + ')');
-      }
-    });
-
-    _validateEmpty(array, size, 0);
   }
   else {
+    // array
     _validate(array, size, 0);
   }
 };

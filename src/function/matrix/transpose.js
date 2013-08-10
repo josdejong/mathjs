@@ -28,19 +28,25 @@ module.exports = function (math) {
 
       case 1:
         // vector
-        // TODO: is it logic to return a 1 dimensional vector itself as transpose?
         return object.clone(x);
         break;
 
       case 2:
         // two dimensional array
-        var rows = size[1],  // index 1 is no error
-            cols = size[0],  // index 0 is no error
+        var rows = size[1],
+            cols = size[0],
             asMatrix = Matrix.isMatrix(x),
             data = x.valueOf(),
             transposed = [],
             transposedRow,
             clone = object.clone;
+
+        if (rows === 0) {
+          // whoops
+          throw new RangeError('Cannot transpose a 2D matrix with no rows' +
+              '(size: ' + string.format(size) + ')');
+        }
+
         for (var r = 0; r < rows; r++) {
           transposedRow = transposed[r] = [];
           for (var c = 0; c < cols; c++) {

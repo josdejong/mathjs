@@ -36,6 +36,7 @@ https://github.com/josdejong/mathjs
 - Fixed function `select` not accepting `0` as input.
   Thanks Elijah Manor (elijahmanor).
 - Parser now supports multiple unary minus operators after each other.
+- Fixed not accepting empty matrices like `[[], []]`.
 - Some fixes in the end user documentation.
 
 

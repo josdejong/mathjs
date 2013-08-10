@@ -2,14 +2,14 @@
 
 var assert = require('assert'),
     approx = require('../../tools/approx.js'),
-    math = require('../../src/index.js');
+    math = require('../../src/index.js'),
     matrix = math.matrix,
     range = math.range,
     round = math.round;
 
 describe('parser', function() {
 
-  var parser
+  var parser;
 
   beforeEach(function() {
     parser = math.parser();
@@ -256,7 +256,7 @@ describe('parser', function() {
     assert.deepEqual(parser.eval('[e,e]'), matrix([[2,3,4,2,3,4]]));
     assert.deepEqual(parser.eval('[e;e]'), matrix([[2,3,4],[2,3,4]]));
     assert.deepEqual(parser.eval('[[],[]]'), matrix([[]]));
-    assert.deepEqual(parser.eval('[[],[]]').size(), [0, 0]);
+    assert.deepEqual(parser.eval('[[],[]]').size(), [1, 0]);
   });
 
   it('should throw an error for invalid matrix concatenations', function() {
