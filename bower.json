@@ -3,6 +3,7 @@
   "version": "0.11.2-SNAPSHOT",
   "main": "./dist/math.js",
   "ignore": [
+    "coverage",
     "img",
     "misc",
     "node_modules",

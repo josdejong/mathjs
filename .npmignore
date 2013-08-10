@@ -1,8 +1,9 @@
-src
-test
+coverage
 img
 misc
 node_modules
+src
+test
 tools
 component.json
 bower.json

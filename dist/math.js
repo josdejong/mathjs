@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.11.2-SNAPSHOT
- * @date    2013-08-07
+ * @date    2013-08-10
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -3005,7 +3005,7 @@ ParamsNode.prototype.eval = function() {
       for (i = 0, len = this.params.length; i < len; i++) {
         var paramScope = paramScopes[i];
         if (paramScope) {
-          paramScope.set('end', size[i] - 1); // zero-based end
+          paramScope.set('end', size[i]);
         }
       }
     }
@@ -3194,7 +3194,7 @@ UpdateNode.prototype.eval = function() {
       for (var i = 0, len = this.params.length; i < len; i++) {
         var paramScope = paramScopes[i];
         if (paramScope) {
-          paramScope.set('end', size[i] - 1);
+          paramScope.set('end', size[i]);
         }
       }
     }
@@ -5867,16 +5867,16 @@ module.exports = function (math) {
    *                                  and end, separated by a colon.
    *     range(start, end)            Create a range with start and end and a
    *                                  default step size of 1
-   *     range(start, step, end)      Create a range with start, step, and end.
+   *     range(start, end, step)      Create a range with start, step, and end.
    *
    * Example usage:
-   *     var c = math.range(2, 1, 5);     // 2:1:5
+   *     var c = math.range(2, 6);        // 2:1:5
    *     c.toArray();                     // [2, 3, 4, 5]
-   *     var d = math.range(2, -1, -2);   // 2:-1:-2
+   *     var d = math.range(2, -3, -1);   // 2:-1:-2
    *     d.forEach(function (value, index) {
  *         console.log(index, value);
  *     });
-   *     var e = math.range('2:1:5');     // 2:1:5
+   *     var e = math.range('2:1:6');     // 2:1:6
    *
    * @param {...*} args
    * @return {Range} range
@@ -5906,11 +5906,11 @@ module.exports = function (math) {
 
       case 2:
         // range(start, end)
-        return new Range(arguments[0], null, arguments[1]);
+        return new Range(arguments[0], arguments[1]);
         break;
 
       case 3:
-        // range(start, step, end)
+        // range(start, end, step)
         return new Range(arguments[0], arguments[1], arguments[2]);
         break;
 
@@ -7024,19 +7024,25 @@ module.exports = function (math) {
 
       case 1:
         // vector
-        // TODO: is it logic to return a 1 dimensional vector itself as transpose?
         return object.clone(x);
         break;
 
       case 2:
         // two dimensional array
-        var rows = size[1],  // index 1 is no error
-            cols = size[0],  // index 0 is no error
+        var rows = size[1],
+            cols = size[0],
             asMatrix = Matrix.isMatrix(x),
             data = x.valueOf(),
             transposed = [],
             transposedRow,
             clone = object.clone;
+
+        if (rows === 0) {
+          // whoops
+          throw new RangeError('Cannot transpose a 2D matrix with no rows' +
+              '(size: ' + string.format(size) + ')');
+        }
+
         for (var r = 0; r < rows; r++) {
           transposedRow = transposed[r] = [];
           for (var c = 0; c < cols; c++) {
@@ -9160,6 +9166,16 @@ module.exports = function (math) {
         // create a range constructor
         name = 'range';
         fn = math.range;
+
+        if (params.length == 3) {
+          // swap step and end
+          params = [
+              params[0],  // start
+              params[2],  // end
+              params[1]   // step
+          ];
+        }
+
         node = new OperatorNode(name, fn, params);
       }
     }
@@ -11250,7 +11266,8 @@ var util = require('../util/index.js'),
  * the range.
  *
  * A range can be constructed as:
- *     var a = new Range(start, step, end);
+ *     var range = new Range(start, end);
+ *     var range = new Range(start, end, step);
  *
  * To get the result of the range:
  *     range.forEach(function (x) {
@@ -11262,16 +11279,16 @@ var util = require('../util/index.js'),
  *     range.toArray();
  *
  * Example usage:
- *     var c = new Range(2, 1, 5);      // 2:1:5
+ *     var c = new Range(2, 6);         // 2:1:5
  *     c.toArray();                     // [2, 3, 4, 5]
- *     var d = new Range(2, -1, -2);    // 2:-1:-2
+ *     var d = new Range(2, -3, -1);    // 2:-1:-2
  *     d.toArray();                     // [2, 1, 0, -1, -2]
  *
- * @param {Number} start
- * @param {Number} step
- * @param {Number} end
+ * @param {Number} start  included lower bound
+ * @param {Number} end    excluded upper bound
+ * @param {Number} [step] step size, default value is 1
  */
-function Range(start, step, end) {
+function Range(start, end, step) {
   if (!(this instanceof Range)) {
     throw new SyntaxError(
         'Range constructor must be called with the new operator');
@@ -11296,7 +11313,7 @@ function Range(start, step, end) {
  * Parse a string into a range,
  * The string contains the start, optional step, and end, separated by a colon.
  * If the string does not contain a valid range, null is returned.
- * For example str='0:2:10'.
+ * For example str='0:2:11'.
  * @param {String} str
  * @return {Range | null} range
  */
@@ -11318,8 +11335,8 @@ Range.parse = function parse (str) {
   }
 
   switch (nums.length) {
-    case 2: return new Range(nums[0], 1, nums[1]);
-    case 3: return new Range(nums[0], nums[1], nums[2]);
+    case 2: return new Range(nums[0], nums[1]);
+    case 3: return new Range(nums[0], nums[2], nums[1]);
     default: return null;
   }
 };
@@ -11329,7 +11346,7 @@ Range.parse = function parse (str) {
  * @return {Range} clone
  */
 Range.prototype.clone = function () {
-  return new Range(this.start, this.step, this.end);
+  return new Range(this.start, this.end, this.step);
 };
 
 /**
@@ -11353,10 +11370,10 @@ Range.prototype.size = function () {
       diff = end - start;
 
   if (number.sign(step) == number.sign(diff)) {
-    len = Math.floor((diff) / step) + 1;
+    len = Math.floor((diff) / step);
   }
   else if (diff == 0) {
-    len = 1;
+    len = 0;
   }
 
   if (isNaN(len)) {
@@ -11378,14 +11395,14 @@ Range.prototype.forEach = function (callback) {
   var i = 0;
 
   if (step > 0) {
-    while (x <= end) {
+    while (x < end) {
       callback(x, i, this);
       x += step;
       i++;
     }
   }
   else if (step < 0) {
-    while (x >= end) {
+    while (x > end) {
       callback(x, i, this);
       x += step;
       i++;
@@ -11469,7 +11486,7 @@ Range.prototype.valueOf = function () {
 };
 
 /**
- * Get the string representation of the range, for example '2:5' or '0:0.2:10'
+ * Get the string representation of the range, for example '2:6' or '0:0.2:11'
  * @returns {String} str
  */
 Range.prototype.toString = function () {
@@ -12463,24 +12480,15 @@ var number = require('./number'),
  * Recursively calculate the size of a multi dimensional array.
  * @param {Array} x
  * @Return {Number[]} size
- * @throws RangeError
  * @private
  */
 function _size(x) {
   if (Array.isArray(x)) {
-    var sizeX = x.length;
-    if (sizeX) {
-      var size0 = _size(x[0]);
-      if (size0[0] == 0) {
-        return [0].concat(size0);
-      }
-      else {
-        return [sizeX].concat(size0);
-      }
-    }
-    else {
-      return [sizeX];
-    }
+    var len = x.length;
+
+    var size = len ? _size(x[0]) : [];
+    size.unshift(len);
+    return size;
   }
   else {
     return [];
@@ -12546,32 +12554,6 @@ function _validate(array, size, dim) {
 }
 
 /**
- * Recursively validate whether each array in a multi dimensional array
- * is empty (zero size) and has the correct number dimensions.
- * @param {Array} array    Array to be validated
- * @param {Number[]} size  Array with the size of each dimension
- * @param {Number} dim   Current dimension
- * @throws RangeError
- * @private
- */
-function _validateEmpty(array, size, dim) {
-  if (dim < size.length - 1) {
-    var child = array[0];
-    if (array.length != 1 || !Array.isArray(child)) {
-      throw new RangeError('Dimension mismatch ' + '(' + array.length + ' > 0)');
-    }
-
-    _validateEmpty(child, size, dim + 1);
-  }
-  else {
-    // last dimension. test if empty
-    if (array.length) {
-      throw new RangeError('Dimension mismatch ' + '(' + array.length + ' > 0)');
-    }
-  }
-}
-
-/**
  * Validate whether each element in a multi dimensional array has
  * a size corresponding to the provided size array.
  * @param {Array} array    Array to be validated
@@ -12585,22 +12567,9 @@ exports.validate = function validate(array, size) {
     if (Array.isArray(array)) {
       throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
     }
-    return;
-  }
-
-  var hasZeros = (size.indexOf(0) != -1);
-  if (hasZeros) {
-    // array where all dimensions are zero
-    size.forEach(function (value) {
-      if (value != 0) {
-        throw new RangeError('Invalid size, all dimensions must be ' +
-            'either zero or non-zero (size: ' + exports.formatArray(size) + ')');
-      }
-    });
-
-    _validateEmpty(array, size, 0);
   }
   else {
+    // array
     _validate(array, size, 0);
   }
 };
