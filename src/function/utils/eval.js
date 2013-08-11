@@ -45,11 +45,11 @@ module.exports = function (math) {
         evalScope = scope;
       }
       else {
-        evalScope = new Scope(scope);
+        evalScope = new Scope(math, scope);
       }
     }
     else {
-      evalScope = new Scope();
+      evalScope = new Scope(math);
     }
 
     if (isString(expr)) {

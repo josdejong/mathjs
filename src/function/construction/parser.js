@@ -40,6 +40,6 @@ module.exports = function (math) {
    * @return {Parser} Parser
    */
   math.parser = function parser() {
-    return new Parser();
+    return new Parser(math);
   };
 };

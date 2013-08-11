@@ -1,7 +1,6 @@
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Selector = require('../../expr/Selector.js'),
       Complex = require('../../type/Complex.js'),
       Unit = require('../../type/Unit.js'),
 
@@ -102,7 +101,7 @@ module.exports = function (math) {
       }
 
       // create a proxy for the Selector
-      Selector.createProxy(name, value);
+      math.expr.Selector.createProxy(name, value);
     }
   }
 

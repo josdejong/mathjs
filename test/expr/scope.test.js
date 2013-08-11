@@ -8,10 +8,10 @@ describe('Scope', function() {
 
   describe('get', function() {
 
-    var scope1 = new Scope();
-    var scope2 = new Scope(scope1);
+    var scope1 = new Scope(math);
+    var scope2 = new Scope(math, scope1);
     var symbols3 = {myvar: 3};
-    var scope3 = new Scope(scope2, symbols3);
+    var scope3 = new Scope(math, scope2, symbols3);
 
     it('should get variables in the scope', function () {
       assert.equal(scope1.get('sin'), math.sin);
@@ -19,13 +19,13 @@ describe('Scope', function() {
       assert.equal(scope3.get('myvar'), 3);
       assert.equal(scope2.get('myvar'), undefined);
       assert.equal(scope1.get('myvar'), undefined);
-    })
+    });
 
     it('should support subscopes', function() {
       var value5 = {
         'aaa': 'bbb'
       };
-      var scope5 = new Scope();
+      var scope5 = new Scope(math);
       scope5.set('value5', value5);
       var sub5 = scope5.createSubScope();
       assert.equal(scope5.get('value5'), value5);
@@ -34,14 +34,14 @@ describe('Scope', function() {
       assert.equal(scope5.get('subValue5'), undefined);
       assert.equal(sub5.get('subValue5'), 5);
     })
-  })
+  });
 
   describe('set', function() {
 
-    var scope1 = new Scope();
-    var scope2 = new Scope(scope1);
+    var scope1 = new Scope(math);
+    var scope2 = new Scope(math, scope1);
     var symbols3 = {myvar: 3};
-    var scope3 = new Scope(scope2, symbols3);
+    var scope3 = new Scope(math, scope2, symbols3);
 
     it('should set variables in the scope', function() {
       scope3.set('d', 4);
@@ -55,13 +55,13 @@ describe('Scope', function() {
       approx.equal(scope1.get('pi'), Math.PI);
     })
 
-  })
+  });
 
   describe('clear', function() {
 
     it('should restore the constants', function() {
       var symbols4 = {e: 5};
-      var scope4 = new Scope(symbols4);
+      var scope4 = new Scope(math, symbols4);
       assert.equal(scope4.get('myvar'), undefined);
       assert.equal(scope4.get('e'), 5);
       scope4.clear();
@@ -73,7 +73,7 @@ describe('Scope', function() {
       var value5 = {
         'aaa': 'bbb'
       };
-      var scope5 = new Scope();
+      var scope5 = new Scope(math);
       scope5.set('value5', value5);
       var sub5 = scope5.createSubScope();
       sub5.set('subValue5', 5);
@@ -85,7 +85,7 @@ describe('Scope', function() {
       assert.equal(sub5.get('subValue5'), undefined);
     });
 
-  })
+  });
 
   describe('remove', function() {
 
@@ -95,7 +95,7 @@ describe('Scope', function() {
         bb: 'bb',
         cc: 'cc'
       };
-      var scope6 = new Scope(symbols6);
+      var scope6 = new Scope(math, symbols6);
       assert.equal(scope6.get('aa'), 'aa');
       assert.equal(scope6.get('bb'), 'bb');
       assert.equal(scope6.get('cc'), 'cc');
@@ -109,16 +109,16 @@ describe('Scope', function() {
       });
     })
 
-  })
+  });
 
 
   describe('clearCache', function() {
 
     it('should clear cached variables', function() {
-      var scope7 = new Scope();
+      var scope7 = new Scope(math);
       scope7.set('a', 123);
       assert.equal(scope7.get('a'), 123);
-      var scope8 = new Scope(scope7);
+      var scope8 = new Scope(math, scope7);
       assert.equal(scope8.get('a'), 123);
       // 'a' is now in the cache of scope8, refering to scope7
       scope8.parentScope = null;                  // remove scope7 as parent
@@ -128,4 +128,4 @@ describe('Scope', function() {
     })
   })
 
-})
+});

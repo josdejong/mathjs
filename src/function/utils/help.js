@@ -52,7 +52,7 @@ module.exports = function (math) {
       if (!doc) {
         throw new Error('No documentation found on "' + text + '"');
       }
-      return new Help(doc);
+      return new Help(math, doc);
     }
   };
 };

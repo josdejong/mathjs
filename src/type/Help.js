@@ -1,11 +1,10 @@
-var math = require('../math.js'),
-    util = require('../util/index.js'),
-
+var util = require('../util/index.js'),
     object = util.object,
     string = util.string;
 
 /**
  * Documentation object
+ * @param {Object} math The math.js namespace
  * @param {Object} doc  Object containing properties:
  *                      {String} name
  *                      {String} category
@@ -14,10 +13,9 @@ var math = require('../math.js'),
  *                      {String[]} seealso
  * @constructor
  */
-function Help (doc) {
-  if (doc) {
-    object.extend(this, doc);
-  }
+function Help (math, doc) {
+  this.math = math;
+  this.doc = doc;
 }
 
 /**
@@ -35,25 +33,26 @@ Help.isHelp = function isHelp (value) {
  * @private
  */
 Help.prototype.toString = function () {
+  var doc = this.doc || {};
   var desc = '\n';
 
-  if (this.name) {
-    desc += 'Name: ' + this.name + '\n\n';
+  if (doc.name) {
+    desc += 'Name: ' + doc.name + '\n\n';
   }
-  if (this.category) {
-    desc += 'Category: ' + this.category + '\n\n';
+  if (doc.category) {
+    desc += 'Category: ' + doc.category + '\n\n';
   }
-  if (this.description) {
-    desc += 'Description:\n    ' + this.description + '\n\n';
+  if (doc.description) {
+    desc += 'Description:\n    ' + doc.description + '\n\n';
   }
-  if (this.syntax) {
-    desc += 'Syntax:\n    ' + this.syntax.join('\n    ') + '\n\n';
+  if (doc.syntax) {
+    desc += 'Syntax:\n    ' + doc.syntax.join('\n    ') + '\n\n';
   }
-  if (this.examples) {
-    var parser = math.parser();
+  if (doc.examples) {
+    var parser = this.math.parser();
     desc += 'Examples:\n';
-    for (var i = 0; i < this.examples.length; i++) {
-      var expr = this.examples[i];
+    for (var i = 0; i < doc.examples.length; i++) {
+      var expr = doc.examples[i];
       var res;
       try {
         res = parser.eval(expr);
@@ -68,8 +67,8 @@ Help.prototype.toString = function () {
     }
     desc += '\n';
   }
-  if (this.seealso) {
-    desc += 'See also: ' + this.seealso.join(', ') + '\n';
+  if (doc.seealso) {
+    desc += 'See also: ' + doc.seealso.join(', ') + '\n';
   }
 
   return desc;
@@ -81,7 +80,7 @@ Help.prototype.toString = function () {
  * Export the help object to JSON
  */
 Help.prototype.toJSON = function () {
-  return object.extend({}, this);
+  return object.extend({}, this.doc);
 };
 
 // exports

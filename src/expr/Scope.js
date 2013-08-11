@@ -1,27 +1,31 @@
-var math = require('../math.js'),
-    Unit = require('../type/Unit.js');
+var Unit = require('../type/Unit.js');
 
 /**
  * Scope
  * A scope stores values of symbols: variables and functions.
  *
  * Syntax:
- *     var scope = new Scope();
- *     var scope = new Scope(parentScope);
- *     var scope = new Scope(symbols);
- *     var scope = new Scope(parentScope, symbols);
+ *     var scope = new Scope(math);
+ *     var scope = new Scope(math, parentScope);
+ *     var scope = new Scope(math, symbols);
+ *     var scope = new Scope(math, parentScope, symbols);
  *
  * Where:
- *     {Scope} parentScope    Scope will be linked to a parent scope,
- *                                      which is traversed when resolving
- *                                      symbols.
- *     {Object} symbols                 A custom object that will be used to
- *                                      resolve and store variables.
+ *     {Object} math                Link to the (static) math.js namespace
+ *     {Scope | Object} parentScope Scope will be linked to a parent scope,
+ *                                  which is traversed when resolving
+ *                                  symbols.
+ *     {Object} symbols             A custom object that will be used to
+ *                                  resolve and store variables.
  *
  * @constructor Scope
- * @param {...} [args]
+ * @param {...} [math]
+ * @param {*} [arg1]
+ * @param {*} [arg2]
  */
-function Scope(args) {
+function Scope(math, arg1, arg2) {
+  this.math = math;
+
   /** @type {Scope} */
   this.parentScope = null;
   // TODO: rename parentScope to previousScope, add a nextScope, change Scope to a linked list node
@@ -37,22 +41,20 @@ function Scope(args) {
   this.cache = {};    // cache, referring to the scope.symbols object where
   // a variable was last found
 
-  // read first argument (can be parentScope or symbols map)
-  if (arguments.length > 0) {
-    var arg0 = arguments[0];
-    if (arg0 instanceof Scope) {
-      this.parentScope = arg0;
+  // read second argument (can be parentScope or symbols map)
+  if (arg1) {
+    if (arg1 instanceof Scope) {
+      this.parentScope = arg1;
     }
-    else if (arg0 instanceof Object) {
-      this.symbols = arg0;
+    else if (arg1 instanceof Object) {
+      this.symbols = arg1;
     }
   }
 
   // read second argument (can be symbols map)
-  if (arguments.length > 1) {
-    var arg1 = arguments[1];
-    if (arg1 instanceof Object) {
-      this.symbols = arg1;
+  if (arg2) {
+    if (arg2 instanceof Object) {
+      this.symbols = arg2;
     }
   }
 }
@@ -64,7 +66,7 @@ Scope.prototype = {
    * @return {Scope} subScope
    */
   createSubScope: function () {
-    var subScope = new Scope(this);
+    var subScope = new Scope(this.math, this);
     if (!this.subScopes) {
       this.subScopes = [];
     }
@@ -105,10 +107,10 @@ Scope.prototype = {
       parent = parent.parentScope;
     }
 
-    // check math namespace
-    value = math[name];
+    // check static context
+    value = this.math[name];
     if (value !== undefined) {
-      this.cache[name] = math;
+      this.cache[name] = this.math;
       return value;
     }
 
@@ -179,5 +181,7 @@ Scope.prototype = {
     this.cache = {};
   }
 };
+
+Scope.context = []; // static context, for example the math namespace
 
 module.exports = Scope;

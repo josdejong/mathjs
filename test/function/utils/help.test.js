@@ -3,9 +3,9 @@ var assert = require('assert');
 var math = require('../../../src/index.js');
 var prop;
 
-var doc = math.help('sin');
-assert.ok(doc instanceof math.type.Help);
-assert.deepEqual(doc, math.docs.sin);
+var help = math.help('sin');
+assert.ok(help instanceof math.type.Help);
+assert.deepEqual(help.doc, math.docs.sin);
 
 // names to ignore
 var ignore = ['workspace', 'parse', 'parser', 'select', 'unaryminus'];

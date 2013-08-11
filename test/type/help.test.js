@@ -2,9 +2,7 @@
 var assert = require('assert');
 var math = require('../../src/index.js');
 
-var help = new math.type.Help(math.docs.sin);
+var help = new math.type.Help(math, math.docs.sin);
 
-assert.deepEqual(help.name, 'sin');
-assert.deepEqual(help, math.docs.sin);
-
-
+assert.deepEqual(help.doc.name, 'sin');
+assert.deepEqual(help.doc, math.docs.sin);

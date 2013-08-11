@@ -66,11 +66,11 @@ module.exports = function (math) {
         parseScope = scope;
       }
       else {
-        parseScope = new Scope(scope);
+        parseScope = new Scope(math, scope);
       }
     }
     else {
-      parseScope = new Scope();
+      parseScope = new Scope(math);
     }
 
     if (isString(expr)) {

@@ -1,5 +1,4 @@
-var math = require('../math.js'),
-    Scope = require('./Scope.js');
+var Scope = require('./Scope.js');
 
 /**
  * @constructor Parser
@@ -21,7 +20,7 @@ var math = require('../math.js'),
  *    var result = node.eval();          // evaluate a parsed node
  *
  * Example usage:
- *    var parser = new Parser();
+ *    var parser = new Parser(math);
  *    // Note: there is a convenience method which can be used instead:
  *    // var parser = new math.parser();
  *
@@ -50,14 +49,18 @@ var math = require('../math.js'),
  *
  *    // clear defined functions and variables
  *    parser.clear();
+ *
+ *
+ * @param {Object} math     Link to the math.js namespace
  */
-function Parser() {
+function Parser(math) {
   if (!(this instanceof Parser)) {
     throw new SyntaxError(
         'Parser constructor must be called with the new operator');
   }
 
-  this.scope = new Scope();
+  this.math = math;
+  this.scope = new Scope(math);
 }
 
 /**
@@ -68,7 +71,7 @@ function Parser() {
  * @throws {Error}
  */
 Parser.prototype.parse = function (expr) {
-  return math.parse(expr, this.scope);
+  return this.math.parse(expr, this.scope);
 };
 
 /**
@@ -78,7 +81,7 @@ Parser.prototype.parse = function (expr) {
  * @throws {Error}
  */
 Parser.prototype.eval = function (expr) {
-  var node = math.parse(expr, this.scope);
+  var node = this.math.parse(expr, this.scope);
   return node.eval();
 };
 

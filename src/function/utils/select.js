@@ -1,6 +1,4 @@
 module.exports = function (math) {
-  var Selector = require('../../expr/Selector.js');
-
   /**
    * Wrap any value in a Selector, allowing to perform chained operations on
    * the value.
@@ -33,10 +31,10 @@ module.exports = function (math) {
    *              Matrix or Array.
    *
    * @param {*} value
-   * @return {Selector} selector
+   * @return {math.expr.Selector} selector
    */
   math.select = function select(value) {
     // TODO: check number of arguments
-    return new Selector(value);
+    return new math.expr.Selector(value);
   };
 };
