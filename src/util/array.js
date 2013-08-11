@@ -1,6 +1,7 @@
 var number = require('./number'),
     string = require('./string'),
-    object = require('./object');
+    object = require('./object'),
+    types = require('./types');
 
 /**
  * Recursively calculate the size of a multi dimensional array.
@@ -184,7 +185,7 @@ exports.resize = function resize(array, size, defaultValue) {
 
   // check the type of size
   if (!Array.isArray(size)) {
-    throw new TypeError('Size must be an array (size is ' + object.type(size) + ')');
+    throw new TypeError('Size must be an array (size is ' + types.type(size) + ')');
   }
 
   // check whether size contains positive integers
@@ -195,6 +196,7 @@ exports.resize = function resize(array, size, defaultValue) {
     }
   });
 
+  /* TODO: cleanup
   var hasZeros = (size.indexOf(0) != -1);
   if (hasZeros) {
     // array where all dimensions are zero
@@ -205,6 +207,7 @@ exports.resize = function resize(array, size, defaultValue) {
       }
     });
   }
+  */
 
   // recursively resize
   _resize(array, size, 0, defaultValue);

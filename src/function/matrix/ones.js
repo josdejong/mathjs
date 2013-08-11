@@ -2,7 +2,9 @@ module.exports = function (math) {
   var util = require('../../util/index.js'),
 
       Matrix = require('../../type/Matrix.js'),
-      collection = require('../../type/collection.js');
+      collection = require('../../type/collection.js'),
+
+      array = util.array;
 
   /**
    * Create a matrix filled with ones
@@ -13,22 +15,22 @@ module.exports = function (math) {
    *     ones([m, n, p, ...])
    *
    * @param {...Number | Array} size
-   * @return {Matrix} matrix
+   * @return {Array | Matrix | Number} matrix
    */
   math.ones = function ones (size) {
     var args = collection.argsToArray(arguments);
+    var asMatrix = (size instanceof Matrix);
 
     if (args.length == 0) {
-      args = [1, 1];
+      // output a scalar
+      return 1;
     }
-    else if (args.length == 1) {
-      args[1] = args[0];
+    else {
+      // output an array or matrix
+      var res = [];
+      var defaultValue = 1;
+      array.resize(res, args, defaultValue);
+      return asMatrix ? new Matrix(res) : res;
     }
-
-    // create and size the matrix
-    var matrix = new Matrix();
-    var defaultValue = 1;
-    matrix.resize(args, defaultValue);
-    return matrix;
   };
 };

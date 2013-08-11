@@ -43,7 +43,7 @@ function Matrix(data) {
   }
   else if (data != null) {
     // unsupported type
-    throw new TypeError('Unsupported type of data (' + object.type(data) + ')');
+    throw new TypeError('Unsupported type of data (' + util.types.type(data) + ')');
   }
   else {
     // nothing provided

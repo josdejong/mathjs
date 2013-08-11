@@ -40,10 +40,13 @@ exports.argsToArray = function argsToArray(args) {
   }
   else {
     // fn(m, n, p, ...)
+    /* TODO: cleanup
     array = [];
     for (var i = 0; i < args.length; i++) {
       array[i] = args[i];
     }
+    */
+    array = Array.prototype.slice.apply(args);
   }
   return array;
 };

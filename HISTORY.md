@@ -15,6 +15,12 @@ https://github.com/josdejong/mathjs
   now returns `[1, 2, 3]` instead of `[1, 2, 3, 4]`.
 - Changed the syntax of `range`, which is now `range(start, end [, step])`
   instead of `range(start, [step, ] end)`.
+- Changed the behavior of `ones` and `zeros` to geometric dimensions, for
+  example `ones(3)` returns a vector with length 3, filled with ones, and
+  `ones(3,3)` returns a 2D array with size [3, 3].
+- Changed the return type of `ones` and `zeros`: they now return an Array when
+  arguments are Numbers or an Array, and returns a Matrix when the argument
+  is a Matrix.
 - Fixed zeros being formatted as null. Thanks TimKraft.
 
 

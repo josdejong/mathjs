@@ -1,10 +1,17 @@
 var assert = require('assert'),
     array = require('../../src/util/array.js'),
+    resize = array.resize;
     size = array.size;
 
 describe('util.array', function() {
 
-  // TODO: test resize
+  it('should resize an array', function () {
+    var a = [];
+    resize(a, [3], 123);
+    assert.deepEqual(a, [123,123,123]);
+
+    // TODO: extensively test array.resize, also with changing number of dimensions
+  });
 
   it('should calculate the size of a scalar', function () {
     assert.deepEqual(size(2), []);

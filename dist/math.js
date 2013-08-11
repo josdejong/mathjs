@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.11.2-SNAPSHOT
- * @date    2013-08-10
+ * @date    2013-08-11
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -6642,7 +6642,9 @@ module.exports = function (math) {
   var util = require('../../util/index.js'),
 
       Matrix = require('../../type/Matrix.js'),
-      collection = require('../../type/collection.js');
+      collection = require('../../type/collection.js'),
+
+      array = util.array;
 
   /**
    * Create a matrix filled with ones
@@ -6653,23 +6655,23 @@ module.exports = function (math) {
    *     ones([m, n, p, ...])
    *
    * @param {...Number | Array} size
-   * @return {Matrix} matrix
+   * @return {Array | Matrix | Number} matrix
    */
   math.ones = function ones (size) {
     var args = collection.argsToArray(arguments);
+    var asMatrix = (size instanceof Matrix);
 
     if (args.length == 0) {
-      args = [1, 1];
+      // output a scalar
+      return 1;
     }
-    else if (args.length == 1) {
-      args[1] = args[0];
+    else {
+      // output an array or matrix
+      var res = [];
+      var defaultValue = 1;
+      array.resize(res, args, defaultValue);
+      return asMatrix ? new Matrix(res) : res;
     }
-
-    // create and size the matrix
-    var matrix = new Matrix();
-    var defaultValue = 1;
-    matrix.resize(args, defaultValue);
-    return matrix;
   };
 };
 
@@ -7068,7 +7070,9 @@ module.exports = function (math) {
   var util = require('../../util/index.js'),
 
       Matrix = require('../../type/Matrix.js'),
-      collection = require('../../type/collection.js');
+      collection = require('../../type/collection.js'),
+
+      array = util.array;
 
   /**
    * create a matrix filled with zeros
@@ -7079,22 +7083,23 @@ module.exports = function (math) {
    *     zeros([m, n, p, ...])
    *
    * @param {...Number | Array} size
-   * @return {Matrix} matrix
+   * @return {Array | Matrix | Number} matrix
    */
   math.zeros = function zeros (size) {
     var args = collection.argsToArray(arguments);
+    var asMatrix = (size instanceof Matrix);
 
     if (args.length == 0) {
-      args = [1, 1];
+      // output a scalar
+      return 0;
     }
-    else if (args.length == 1) {
-      args[1] = args[0];
+    else {
+      // output an array or matrix
+      var res = [];
+      var defaultValue = 0;
+      array.resize(res, args, defaultValue);
+      return asMatrix ? new Matrix(res) : res;
     }
-
-    // create and size the matrix
-    var matrix = new Matrix();
-    matrix.resize(args);
-    return matrix;
   };
 };
 
@@ -10615,7 +10620,7 @@ function Matrix(data) {
   }
   else if (data != null) {
     // unsupported type
-    throw new TypeError('Unsupported type of data (' + object.type(data) + ')');
+    throw new TypeError('Unsupported type of data (' + util.types.type(data) + ')');
   }
   else {
     // nothing provided
@@ -12278,10 +12283,13 @@ exports.argsToArray = function argsToArray(args) {
   }
   else {
     // fn(m, n, p, ...)
+    /* TODO: cleanup
     array = [];
     for (var i = 0; i < args.length; i++) {
       array[i] = args[i];
     }
+    */
+    array = Array.prototype.slice.apply(args);
   }
   return array;
 };
@@ -12474,7 +12482,8 @@ exports.collection = require('./collection.js');
 },{"./Complex.js":188,"./Help.js":189,"./Matrix.js":190,"./Range.js":191,"./Unit.js":192,"./collection.js":193}],195:[function(require,module,exports){
 var number = require('./number'),
     string = require('./string'),
-    object = require('./object');
+    object = require('./object'),
+    types = require('./types');
 
 /**
  * Recursively calculate the size of a multi dimensional array.
@@ -12658,7 +12667,7 @@ exports.resize = function resize(array, size, defaultValue) {
 
   // check the type of size
   if (!Array.isArray(size)) {
-    throw new TypeError('Size must be an array (size is ' + object.type(size) + ')');
+    throw new TypeError('Size must be an array (size is ' + types.type(size) + ')');
   }
 
   // check whether size contains positive integers
@@ -12669,6 +12678,7 @@ exports.resize = function resize(array, size, defaultValue) {
     }
   });
 
+  /* TODO: cleanup
   var hasZeros = (size.indexOf(0) != -1);
   if (hasZeros) {
     // array where all dimensions are zero
@@ -12679,6 +12689,7 @@ exports.resize = function resize(array, size, defaultValue) {
       }
     });
   }
+  */
 
   // recursively resize
   _resize(array, size, 0, defaultValue);
@@ -12690,7 +12701,7 @@ exports.resize = function resize(array, size, defaultValue) {
  * @return {Boolean} isArray
  */
 exports.isArray = Array.isArray;
-},{"./number":199,"./object":200,"./string":201}],196:[function(require,module,exports){
+},{"./number":199,"./object":200,"./string":201,"./types":202}],196:[function(require,module,exports){
 /**
  * Test whether value is a Boolean
  * @param {*} value
