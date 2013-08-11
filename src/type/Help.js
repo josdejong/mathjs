@@ -43,6 +43,9 @@ Help.prototype.toString = function () {
   if (this.category) {
     desc += 'Category: ' + this.category + '\n\n';
   }
+  if (this.description) {
+    desc += 'Description:\n    ' + this.description + '\n\n';
+  }
   if (this.syntax) {
     desc += 'Syntax:\n    ' + this.syntax.join('\n    ') + '\n\n';
   }
