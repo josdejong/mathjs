@@ -14,7 +14,7 @@ var Node = require('./Node.js'),
  * @param {Scope} scope                 Scope to store the result
  */
 function UpdateNode(math, name, params, paramScopes, expr, scope) {
-  this.subset = math.subset;
+  this.math = math;
 
   this.name = name;
   this.params = params;
@@ -60,16 +60,7 @@ UpdateNode.prototype.eval = function() {
   // evaluate the values of context parameter 'end' when needed
   if (this.hasContextParams) {
     var paramScopes = this.paramScopes,
-        size;
-    if (prevResult.size) {
-      size = prevResult.size(); // matrix
-    }
-    else if (prevResult.length !== undefined) {
-      size = [prevResult.length];  // string
-    }
-    else {
-      size = [];  // scalar
-    }
+        size = this.math.size(prevResult).valueOf();
 
     if (paramScopes && size) {
       for (var i = 0, len = this.params.length; i < len; i++) {
@@ -90,7 +81,7 @@ UpdateNode.prototype.eval = function() {
   var exprResult = this.expr.eval();
 
   // replace subset
-  result = this.subset(prevResult, paramResults, exprResult);
+  result = this.math.subset(prevResult, paramResults, exprResult);
 
   this.scope.set(this.name, result);
 

@@ -150,19 +150,19 @@ describe('parser', function() {
 
 
   it('should parse matrix resizings', function() {
-    assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
+    assert.deepEqual(parser.eval('a = []'),    matrix([]));
     assert.deepEqual(parser.eval('a(0:3,0) = [1;2;3]'), matrix([[1],[2],[3]]));
     assert.deepEqual(parser.eval('a(:,1) = [4;5;6]'), matrix([[1,4],[2,5],[3,6]]));
 
-    assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
+    assert.deepEqual(parser.eval('a = []'),    matrix([]));
     assert.deepEqual(parser.eval('a(0,2) = 3'), matrix([[0,0,3]]));
     assert.deepEqual(parser.eval('a(1,:) = [4,5,6]'), matrix([[0,0,3],[4,5,6]]));
 
-    assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
+    assert.deepEqual(parser.eval('a = []'),    matrix([]));
     assert.deepEqual(parser.eval('a(2,0) = 3'), matrix([[0],[0],[3]]));
     assert.deepEqual(parser.eval('a(:,1) = [4;5;6]'), matrix([[0,4],[0,5],[3,6]]));
 
-    assert.deepEqual(parser.eval('a = []'),    matrix([[]]));
+    assert.deepEqual(parser.eval('a = []'),    matrix([]));
     assert.deepEqual(parser.eval('a(0,0:3) = [1,2,3]'), matrix([[1,2,3]]));
     assert.deepEqual(parser.eval('a(1,:) = [4,5,6]'), matrix([[1,2,3],[4,5,6]]));
   });
@@ -179,7 +179,7 @@ describe('parser', function() {
     b.set([1, [0, 1]], [[7, 8]]);
     assert.deepEqual(b.size(), [2,2]);
     assert.deepEqual(b.valueOf(), [[5,6],[7,8]]);
-    assert.deepEqual(parser.eval('[ ]').valueOf(), [[]]);
+    assert.deepEqual(parser.eval('[ ]').valueOf(), []);
   });
 
 
@@ -194,6 +194,9 @@ describe('parser', function() {
     var a = parser.get('a');
     assert.deepEqual(a.get([math.range('0:3'), math.range('0:2')]).valueOf(), [[100,2],[3,10],[0,12]]);
     assert.deepEqual(parser.eval('a(0:3,0:2)').valueOf(), [[100,2],[3,10],[0,12]]);
+
+    parser.set('b', [[1,2],[3,4]]);
+    assert.deepEqual(parser.eval('b(0,:)'), [[1, 2]]); // TODO: matrix should be squeezed
   });
 
 
@@ -287,7 +290,7 @@ describe('parser', function() {
   });
 
 
-  it('should parse measurment units', function() {
+  it('should parse measurement units', function() {
     assert.equal(parser.eval('5cm').toString(), '50 mm');
     assert.ok(parser.eval('5cm') instanceof math.type.Unit);
     //assert.equal(parser.eval('5.08 cm * 1000 in inch').toString(), '2000 inch'); // TODO: this gives an error

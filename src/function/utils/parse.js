@@ -583,16 +583,14 @@ module.exports = function (math) {
 
       if (params.length) {
         // create a range constructor
-        name = 'range';
+        name = ':';
         fn = math.range;
 
-        if (params.length == 3) {
+        if (params.length >= 3) {
           // swap step and end
-          params = [
-              params[0],  // start
-              params[2],  // end
-              params[1]   // step
-          ];
+          var step = params[2];
+          params[2] = params[1]; // end
+          params[1] = step;
         }
 
         node = new OperatorNode(name, fn, params);
@@ -1147,7 +1145,7 @@ module.exports = function (math) {
       else {
         // this is an empty matrix "[ ]"
         getToken();
-        array = new MatrixNode([[]]);
+        array = new MatrixNode([]);
       }
 
       // parse parameters

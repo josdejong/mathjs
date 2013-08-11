@@ -1078,19 +1078,19 @@ module.exports = {
     'start:end',
     'start:step:end',
     'range(start, end)',
-    'range(start, step, end)',
+    'range(start, end, step)',
     'range(string)'
   ],
   'description':
-      'Create a range.',
+      'Create a range. Lower bound of the range is included, upper bound is excluded.',
   'examples': [
     '1:5',
-    '3:-1:-3',
-    'range(3, 6)',
-    'range(0, 2, 10)',
-    'range("4:10")',
-    'a = [1, 2, 3; 4, 5, 6]',
-    'a(:, 1:2)'
+    '3:-1:-4',
+    'range(3, 7)',
+    'range(0, 12, 2)',
+    'range("4:11")',
+    'a = [0, 1, 2, 3; 4, 5, 6]',
+    'a(1:2)'
   ],
   'seealso': [
     'boolean', 'complex', 'matrix', 'number', 'string', 'unit'
@@ -2946,7 +2946,7 @@ var Node = require('./Node.js'),
  *                                  index variable 'end' can be defined.
  */
 function ParamsNode (math, object, params, paramScopes) {
-  this.subset = math.subset;
+  this.math = math;
 
   this.object = object;
   this.params = params;
@@ -2990,7 +2990,8 @@ ParamsNode.prototype.eval = function() {
   // evaluate the values of context parameter 'end' when needed
   if (this.hasContextParams) {
     var paramScopes = this.paramScopes,
-        size;
+        size = this.math.size(obj);
+    /* TODO: cleanup
     if (obj.size) {
       size = obj.size(); // matrix
     }
@@ -3000,6 +3001,7 @@ ParamsNode.prototype.eval = function() {
     else {
       size = [];  // scalar
     }
+    */
 
     if (paramScopes && size) {
       for (i = 0, len = this.params.length; i < len; i++) {
@@ -3024,7 +3026,7 @@ ParamsNode.prototype.eval = function() {
   }
   else {
     // get a subset of the object
-    return this.subset(obj, results);
+    return this.math.subset(obj, results);
   }
 };
 
@@ -9169,16 +9171,14 @@ module.exports = function (math) {
 
       if (params.length) {
         // create a range constructor
-        name = 'range';
+        name = ':';
         fn = math.range;
 
-        if (params.length == 3) {
+        if (params.length >= 3) {
           // swap step and end
-          params = [
-              params[0],  // start
-              params[2],  // end
-              params[1]   // step
-          ];
+          var step = params[2];
+          params[2] = params[1]; // end
+          params[1] = step;
         }
 
         node = new OperatorNode(name, fn, params);
@@ -9733,7 +9733,7 @@ module.exports = function (math) {
       else {
         // this is an empty matrix "[ ]"
         getToken();
-        array = new MatrixNode([[]]);
+        array = new MatrixNode([]);
       }
 
       // parse parameters
@@ -10527,6 +10527,9 @@ Help.prototype.toString = function () {
   }
   if (this.category) {
     desc += 'Category: ' + this.category + '\n\n';
+  }
+  if (this.description) {
+    desc += 'Description:\n    ' + this.description + '\n\n';
   }
   if (this.syntax) {
     desc += 'Syntax:\n    ' + this.syntax.join('\n    ') + '\n\n';
