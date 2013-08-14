@@ -1,6 +1,6 @@
 // test asin
 var assert = require('assert'),
-    math = require('../../../src/index.js'),
+    math = require('../../../lib/index.js'),
     approx = require('../../../tools/approx.js'),
     pi = math.pi,
     complex = math.complex,

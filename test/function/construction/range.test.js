@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    math = require('../../../src/index.js'),
+    math = require('../../../lib/index.js'),
     range = math.range;
 
 describe('range', function() {

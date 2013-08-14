@@ -1,6 +1,6 @@
 // test det
 var assert = require('assert');
-var math = require('../../../src/index.js');
+var math = require('../../../lib/index.js');
 
 assert.equal(math.det(3), 3);
 assert.equal(math.det([5]), 5);

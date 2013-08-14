@@ -1,7 +1,7 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx.js'),
-    math = require('../../../src/index.js'),
+    math = require('../../../lib/index.js'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,

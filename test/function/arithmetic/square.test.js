@@ -1,6 +1,6 @@
 // test square
 var assert = require('assert'),
-    math = require('../../../src/index.js'),
+    math = require('../../../lib/index.js'),
     unit = math.unit,
     matrix = math.matrix,
     range = math.range,

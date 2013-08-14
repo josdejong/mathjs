@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    math = require('../../../src/index.js'),
+    math = require('../../../lib/index.js'),
     complex = math.complex;
 
 describe('complex', function() {

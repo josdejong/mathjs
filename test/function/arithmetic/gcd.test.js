@@ -1,6 +1,6 @@
 // test gcd
 var assert = require('assert');
-var math = require('../../../src/index.js');
+var math = require('../../../lib/index.js');
 
 describe('gcd', function() {
 

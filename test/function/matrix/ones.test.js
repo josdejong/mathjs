@@ -1,6 +1,6 @@
 // test ones
 var assert = require('assert');
-var math = require('../../../src/index.js'),
+var math = require('../../../lib/index.js'),
     ones = math.ones;
 
 describe('ones', function() {
