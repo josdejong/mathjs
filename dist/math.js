@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.11.2-SNAPSHOT
- * @date    2013-08-11
+ * @date    2013-08-14
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -26,6 +26,124 @@
  */
 (function(e){if("function"==typeof bootstrap)bootstrap("math",e);else if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else if("undefined"!=typeof ses){if(!ses.ok())return;ses.makeMath=e}else"undefined"!=typeof window?window.math=e():global.math=e()})(function(){var define,ses,bootstrap,module,exports;
 return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+// options (global configuration settings)
+exports.options = require('./lib/options');
+
+// expression (Parser, Scope, Nodes)
+exports.expr = {};
+exports.expr.node = require('./lib/expr/node/index.js');
+exports.expr.Scope = require('./lib/expr/Scope.js');
+exports.expr.Parser = require('./lib/expr/Parser.js');
+
+// types (Matrix, Complex, Unit, ...)
+exports.type = require('./lib/type/index.js');
+
+// docs
+exports.docs = require('./lib/docs/index.js');
+
+// functions - arithmetic
+require('./lib/function/arithmetic/abs.js')(exports);
+require('./lib/function/arithmetic/add.js')(exports);
+require('./lib/function/arithmetic/add.js')(exports);
+require('./lib/function/arithmetic/ceil.js')(exports);
+require('./lib/function/arithmetic/cube.js')(exports);
+require('./lib/function/arithmetic/divide.js')(exports);
+require('./lib/function/arithmetic/edivide.js')(exports);
+require('./lib/function/arithmetic/emultiply.js')(exports);
+require('./lib/function/arithmetic/epow.js')(exports);
+require('./lib/function/arithmetic/equal.js')(exports);
+require('./lib/function/arithmetic/exp.js')(exports);
+require('./lib/function/arithmetic/fix.js')(exports);
+require('./lib/function/arithmetic/floor.js')(exports);
+require('./lib/function/arithmetic/gcd.js')(exports);
+require('./lib/function/arithmetic/larger.js')(exports);
+require('./lib/function/arithmetic/largereq.js')(exports);
+require('./lib/function/arithmetic/lcm.js')(exports);
+require('./lib/function/arithmetic/log.js')(exports);
+require('./lib/function/arithmetic/log10.js')(exports);
+require('./lib/function/arithmetic/mod.js')(exports);
+require('./lib/function/arithmetic/multiply.js')(exports);
+require('./lib/function/arithmetic/pow.js')(exports);
+require('./lib/function/arithmetic/round.js')(exports);
+require('./lib/function/arithmetic/sign.js')(exports);
+require('./lib/function/arithmetic/smaller.js')(exports);
+require('./lib/function/arithmetic/smallereq.js')(exports);
+require('./lib/function/arithmetic/sqrt.js')(exports);
+require('./lib/function/arithmetic/square.js')(exports);
+require('./lib/function/arithmetic/subtract.js')(exports);
+require('./lib/function/arithmetic/unary.js')(exports);
+require('./lib/function/arithmetic/unequal.js')(exports);
+require('./lib/function/arithmetic/xgcd.js')(exports);
+
+// functions - complex
+require('./lib/function/complex/arg.js')(exports);
+require('./lib/function/complex/conj.js')(exports);
+require('./lib/function/complex/re.js')(exports);
+require('./lib/function/complex/im.js')(exports);
+
+// functions - construction
+require('./lib/function/construction/boolean.js')(exports);
+require('./lib/function/construction/complex.js')(exports);
+require('./lib/function/construction/matrix.js')(exports);
+require('./lib/function/construction/number.js')(exports);
+require('./lib/function/construction/parser.js')(exports);
+require('./lib/function/construction/range.js')(exports);
+require('./lib/function/construction/string.js')(exports);
+require('./lib/function/construction/unit.js')(exports);
+
+// functions - matrix
+require('./lib/function/matrix/concat.js')(exports);
+require('./lib/function/matrix/det.js')(exports);
+require('./lib/function/matrix/diag.js')(exports);
+require('./lib/function/matrix/eye.js')(exports);
+require('./lib/function/matrix/inv.js')(exports);
+require('./lib/function/matrix/ones.js')(exports);
+require('./lib/function/matrix/size.js')(exports);
+require('./lib/function/matrix/squeeze.js')(exports);
+require('./lib/function/matrix/subset.js')(exports);
+require('./lib/function/matrix/transpose.js')(exports);
+require('./lib/function/matrix/zeros.js')(exports);
+
+// functions - probability
+require('./lib/function/probability/factorial.js')(exports);
+require('./lib/function/probability/random.js')(exports);
+
+// functions - statistics
+require('./lib/function/statistics/min.js')(exports);
+require('./lib/function/statistics/max.js')(exports);
+
+// functions - trigonometry
+require('./lib/function/trigonometry/acos.js')(exports);
+require('./lib/function/trigonometry/asin.js')(exports);
+require('./lib/function/trigonometry/atan.js')(exports);
+require('./lib/function/trigonometry/atan2.js')(exports);
+require('./lib/function/trigonometry/cos.js')(exports);
+require('./lib/function/trigonometry/cot.js')(exports);
+require('./lib/function/trigonometry/csc.js')(exports);
+require('./lib/function/trigonometry/sec.js')(exports);
+require('./lib/function/trigonometry/sin.js')(exports);
+require('./lib/function/trigonometry/tan.js')(exports);
+
+// functions - units
+require('./lib/function/units/in.js')(exports);
+
+// functions - utils
+require('./lib/function/utils/clone.js')(exports);
+require('./lib/function/utils/eval.js')(exports);
+require('./lib/function/utils/format.js')(exports);
+require('./lib/function/utils/help.js')(exports);
+require('./lib/function/utils/import.js')(exports);
+require('./lib/function/utils/parse.js')(exports);
+require('./lib/function/utils/select.js')(exports);
+require('./lib/function/utils/typeof.js')(exports);
+
+// constants
+require('./lib/constants.js')(exports);
+
+// selector (we initialize after all functions are loaded)
+exports.expr.Selector = require('./lib/expr/Selector.js')(exports);
+
+},{"./lib/constants.js":2,"./lib/docs/index.js":92,"./lib/expr/Parser.js":93,"./lib/expr/Scope.js":94,"./lib/expr/Selector.js":95,"./lib/expr/node/index.js":107,"./lib/function/arithmetic/abs.js":108,"./lib/function/arithmetic/add.js":109,"./lib/function/arithmetic/ceil.js":110,"./lib/function/arithmetic/cube.js":111,"./lib/function/arithmetic/divide.js":112,"./lib/function/arithmetic/edivide.js":113,"./lib/function/arithmetic/emultiply.js":114,"./lib/function/arithmetic/epow.js":115,"./lib/function/arithmetic/equal.js":116,"./lib/function/arithmetic/exp.js":117,"./lib/function/arithmetic/fix.js":118,"./lib/function/arithmetic/floor.js":119,"./lib/function/arithmetic/gcd.js":120,"./lib/function/arithmetic/larger.js":121,"./lib/function/arithmetic/largereq.js":122,"./lib/function/arithmetic/lcm.js":123,"./lib/function/arithmetic/log.js":124,"./lib/function/arithmetic/log10.js":125,"./lib/function/arithmetic/mod.js":126,"./lib/function/arithmetic/multiply.js":127,"./lib/function/arithmetic/pow.js":128,"./lib/function/arithmetic/round.js":129,"./lib/function/arithmetic/sign.js":130,"./lib/function/arithmetic/smaller.js":131,"./lib/function/arithmetic/smallereq.js":132,"./lib/function/arithmetic/sqrt.js":133,"./lib/function/arithmetic/square.js":134,"./lib/function/arithmetic/subtract.js":135,"./lib/function/arithmetic/unary.js":136,"./lib/function/arithmetic/unequal.js":137,"./lib/function/arithmetic/xgcd.js":138,"./lib/function/complex/arg.js":139,"./lib/function/complex/conj.js":140,"./lib/function/complex/im.js":141,"./lib/function/complex/re.js":142,"./lib/function/construction/boolean.js":143,"./lib/function/construction/complex.js":144,"./lib/function/construction/matrix.js":145,"./lib/function/construction/number.js":146,"./lib/function/construction/parser.js":147,"./lib/function/construction/range.js":148,"./lib/function/construction/string.js":149,"./lib/function/construction/unit.js":150,"./lib/function/matrix/concat.js":151,"./lib/function/matrix/det.js":152,"./lib/function/matrix/diag.js":153,"./lib/function/matrix/eye.js":154,"./lib/function/matrix/inv.js":155,"./lib/function/matrix/ones.js":156,"./lib/function/matrix/size.js":157,"./lib/function/matrix/squeeze.js":158,"./lib/function/matrix/subset.js":159,"./lib/function/matrix/transpose.js":160,"./lib/function/matrix/zeros.js":161,"./lib/function/probability/factorial.js":162,"./lib/function/probability/random.js":163,"./lib/function/statistics/max.js":164,"./lib/function/statistics/min.js":165,"./lib/function/trigonometry/acos.js":166,"./lib/function/trigonometry/asin.js":167,"./lib/function/trigonometry/atan.js":168,"./lib/function/trigonometry/atan2.js":169,"./lib/function/trigonometry/cos.js":170,"./lib/function/trigonometry/cot.js":171,"./lib/function/trigonometry/csc.js":172,"./lib/function/trigonometry/sec.js":173,"./lib/function/trigonometry/sin.js":174,"./lib/function/trigonometry/tan.js":175,"./lib/function/units/in.js":176,"./lib/function/utils/clone.js":177,"./lib/function/utils/eval.js":178,"./lib/function/utils/format.js":179,"./lib/function/utils/help.js":180,"./lib/function/utils/import.js":181,"./lib/function/utils/parse.js":182,"./lib/function/utils/select.js":183,"./lib/function/utils/typeof.js":184,"./lib/options":185,"./lib/type/index.js":192}],2:[function(require,module,exports){
 module.exports = function (math) {
   var Complex = require('./type/Complex.js');
 
@@ -50,7 +168,7 @@ module.exports = function (math) {
   math.SQRT2       = Math.SQRT2;
 };
 
-},{"./type/Complex.js":186}],2:[function(require,module,exports){
+},{"./type/Complex.js":186}],3:[function(require,module,exports){
 module.exports = {
   'name': 'Infinity',
   'category': 'Constants',
@@ -65,7 +183,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 module.exports = {
   'name': 'LN10',
   'category': 'Constants',
@@ -80,7 +198,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = {
   'name': 'LN2',
   'category': 'Constants',
@@ -95,7 +213,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = {
   'name': 'LOG10E',
   'category': 'Constants',
@@ -110,7 +228,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports = {
   'name': 'LOG2E',
   'category': 'Constants',
@@ -125,7 +243,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = {
   'name': 'NaN',
   'category': 'Constants',
@@ -140,7 +258,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = {
   'name': 'SQRT1_2',
   'category': 'Constants',
@@ -155,7 +273,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = {
   'name': 'SQRT2',
   'category': 'Constants',
@@ -170,7 +288,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = {
   'name': 'e',
   'category': 'Constants',
@@ -187,7 +305,7 @@ module.exports = {
   'seealso': ['exp']
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = {
   'name': 'false',
   'category': 'Constants',
@@ -201,7 +319,7 @@ module.exports = {
   'seealso': ['true']
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = {
   'name': 'i',
   'category': 'Constants',
@@ -217,7 +335,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = {
   'name': 'pi',
   'category': 'Constants',
@@ -232,7 +350,7 @@ module.exports = {
   'seealso': ['tau']
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = {
   'name': 'tau',
   'category': 'Constants',
@@ -247,7 +365,7 @@ module.exports = {
   'seealso': ['pi']
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = {
   'name': 'true',
   'category': 'Constants',
@@ -261,7 +379,7 @@ module.exports = {
   'seealso': ['false']
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = {
   'name': 'abs',
   'category': 'Arithmetic',
@@ -276,7 +394,7 @@ module.exports = {
   'seealso': ['sign']
 };
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = {
   'name': 'add',
   'category': 'Operators',
@@ -297,7 +415,7 @@ module.exports = {
   ]
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = {
   'name': 'ceil',
   'category': 'Arithmetic',
@@ -314,7 +432,7 @@ module.exports = {
   'seealso': ['floor', 'fix', 'round']
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = {
   'name': 'cube',
   'category': 'Arithmetic',
@@ -334,7 +452,7 @@ module.exports = {
   ]
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = {
   'name': 'divide',
   'category': 'Operators',
@@ -356,7 +474,7 @@ module.exports = {
   ]
 };
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = {
   'name': 'edivide',
   'category': 'Operators',
@@ -377,7 +495,7 @@ module.exports = {
   ]
 };
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = {
   'name': 'emultiply',
   'category': 'Operators',
@@ -398,7 +516,7 @@ module.exports = {
   ]
 };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = {
   'name': 'epow',
   'category': 'Operators',
@@ -417,7 +535,7 @@ module.exports = {
   ]
 };
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = {
   'name': 'equal',
   'category': 'Operators',
@@ -440,7 +558,7 @@ module.exports = {
   ]
 };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = {
   'name': 'exp',
   'category': 'Arithmetic',
@@ -462,7 +580,7 @@ module.exports = {
   ]
 };
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = {
   'name': 'fix',
   'category': 'Arithmetic',
@@ -480,7 +598,7 @@ module.exports = {
   'seealso': ['ceil', 'floor', 'round']
 };
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = {
   'name': 'floor',
   'category': 'Arithmetic',
@@ -497,7 +615,7 @@ module.exports = {
   'seealso': ['ceil', 'fix', 'round']
 };
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = {
   'name': 'gcd',
   'category': 'Arithmetic',
@@ -514,7 +632,7 @@ module.exports = {
   'seealso': [ 'lcm', 'xgcd' ]
 };
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports = {
   'name': 'larger',
   'category': 'Operators',
@@ -538,7 +656,7 @@ module.exports = {
   ]
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports = {
   'name': 'largereq',
   'category': 'Operators',
@@ -560,7 +678,7 @@ module.exports = {
   ]
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 module.exports = {
   'name': 'lcm',
   'category': 'Arithmetic',
@@ -576,7 +694,7 @@ module.exports = {
   'seealso': [ 'gcd' ]
 };
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 module.exports = {
   'name': 'log',
   'category': 'Arithmetic',
@@ -600,7 +718,7 @@ module.exports = {
     'log10'
   ]
 };
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = {
   'name': 'log10',
   'category': 'Arithmetic',
@@ -621,7 +739,7 @@ module.exports = {
   ]
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 module.exports = {
   'name': 'mod',
   'category': 'Operators',
@@ -643,7 +761,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 module.exports = {
   'name': 'multiply',
   'category': 'Operators',
@@ -664,7 +782,7 @@ module.exports = {
   ]
 };
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 module.exports = {
   'name': 'pow',
   'category': 'Operators',
@@ -684,7 +802,7 @@ module.exports = {
   ]
 };
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = {
   'name': 'round',
   'category': 'Arithmetic',
@@ -705,7 +823,7 @@ module.exports = {
   'seealso': ['ceil', 'floor', 'fix']
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 module.exports = {
   'name': 'sign',
   'category': 'Arithmetic',
@@ -724,7 +842,7 @@ module.exports = {
   ]
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = {
   'name': 'smaller',
   'category': 'Operators',
@@ -747,7 +865,7 @@ module.exports = {
   ]
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 module.exports = {
   'name': 'smallereq',
   'category': 'Operators',
@@ -769,7 +887,7 @@ module.exports = {
   ]
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 module.exports = {
   'name': 'sqrt',
   'category': 'Arithmetic',
@@ -789,7 +907,7 @@ module.exports = {
   ]
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 module.exports = {
   'name': 'square',
   'category': 'Arithmetic',
@@ -812,7 +930,7 @@ module.exports = {
   ]
 };
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 module.exports = {
   'name': 'subtract',
   'category': 'Operators',
@@ -833,7 +951,7 @@ module.exports = {
   ]
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 module.exports = {
   'name': 'unary',
   'category': 'Operators',
@@ -852,7 +970,7 @@ module.exports = {
   ]
 };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 module.exports = {
   'name': 'unequal',
   'category': 'Operators',
@@ -876,7 +994,7 @@ module.exports = {
   ]
 };
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 module.exports = {
   'name': 'xgcd',
   'category': 'Arithmetic',
@@ -892,7 +1010,7 @@ module.exports = {
   'seealso': [ 'gcd', 'lcm' ]
 };
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 module.exports = {
   'name': 'arg',
   'category': 'Complex',
@@ -914,7 +1032,7 @@ module.exports = {
   ]
 };
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 module.exports = {
   'name': 'conj',
   'category': 'Complex',
@@ -936,7 +1054,7 @@ module.exports = {
   ]
 };
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 module.exports = {
   'name': 'im',
   'category': 'Complex',
@@ -958,7 +1076,7 @@ module.exports = {
   ]
 };
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 module.exports = {
   'name': 're',
   'category': 'Complex',
@@ -980,7 +1098,7 @@ module.exports = {
   ]
 };
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 module.exports = {
   'name': 'boolean',
   'category': 'Type',
@@ -1002,7 +1120,7 @@ module.exports = {
   ]
 };
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 module.exports = {
   'name': 'complex',
   'category': 'Type',
@@ -1023,7 +1141,7 @@ module.exports = {
   ]
 };
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 module.exports = {
   'name': 'matrix',
   'category': 'Type',
@@ -1047,7 +1165,7 @@ module.exports = {
   ]
 };
 
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 module.exports = {
   'name': 'number',
   'category': 'Type',
@@ -1070,7 +1188,7 @@ module.exports = {
   ]
 };
 
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 module.exports = {
   'name': 'range',
   'category': 'Type',
@@ -1097,7 +1215,7 @@ module.exports = {
   ]
 };
 
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 module.exports = {
   'name': 'string',
   'category': 'Type',
@@ -1117,7 +1235,7 @@ module.exports = {
   ]
 };
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 module.exports = {
   'name': 'unit',
   'category': 'Type',
@@ -1139,7 +1257,7 @@ module.exports = {
   ]
 };
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports = {
   'name': 'concat',
   'category': 'Matrix',
@@ -1161,7 +1279,7 @@ module.exports = {
   ]
 };
 
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 module.exports = {
   'name': 'det',
   'category': 'Matrix',
@@ -1178,7 +1296,7 @@ module.exports = {
   ]
 };
 
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 module.exports = {
   'name': 'diag',
   'category': 'Matrix',
@@ -1198,7 +1316,7 @@ module.exports = {
   ]
 };
 
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 module.exports = {
   'name': 'eye',
   'category': 'Matrix',
@@ -1220,7 +1338,7 @@ module.exports = {
   ]
 };
 
-},{}],62:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 module.exports = {
   'name': 'inv',
   'category': 'Matrix',
@@ -1238,7 +1356,7 @@ module.exports = {
   ]
 };
 
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 module.exports = {
   'name': 'ones',
   'category': 'Matrix',
@@ -1263,7 +1381,7 @@ module.exports = {
   ]
 };
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = {
   'name': 'size',
   'category': 'Matrix',
@@ -1283,7 +1401,7 @@ module.exports = {
   ]
 };
 
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 module.exports = {
   'name': 'squeeze',
   'category': 'Matrix',
@@ -1302,7 +1420,7 @@ module.exports = {
   ]
 };
 
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 module.exports = {
   'name': 'subset',
   'category': 'Matrix',
@@ -1327,7 +1445,7 @@ module.exports = {
   ]
 };
 
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 module.exports = {
   'name': 'transpose',
   'category': 'Matrix',
@@ -1346,7 +1464,7 @@ module.exports = {
   ]
 };
 
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 module.exports = {
   'name': 'zeros',
   'category': 'Matrix',
@@ -1370,7 +1488,7 @@ module.exports = {
   ]
 };
 
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 module.exports = {
   'name': 'factorial',
   'category': 'Probability',
@@ -1387,7 +1505,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = {
   'name': 'random',
   'category': 'Probability',
@@ -1402,7 +1520,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = {
   'name': 'randInt',
   'category': 'Probability',
@@ -1416,7 +1534,7 @@ module.exports = {
   ],
   'seealso': []
 };
-},{}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports = {
   'name': 'max',
   'category': 'Statistics',
@@ -1440,7 +1558,7 @@ module.exports = {
   ]
 };
 
-},{}],73:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 module.exports = {
   'name': 'min',
   'category': 'Statistics',
@@ -1464,7 +1582,7 @@ module.exports = {
   ]
 };
 
-},{}],74:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 module.exports = {
   'name': 'acos',
   'category': 'Trigonometry',
@@ -1483,7 +1601,7 @@ module.exports = {
   ]
 };
 
-},{}],75:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 module.exports = {
   'name': 'asin',
   'category': 'Trigonometry',
@@ -1502,7 +1620,7 @@ module.exports = {
   ]
 };
 
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 module.exports = {
   'name': 'atan',
   'category': 'Trigonometry',
@@ -1521,7 +1639,7 @@ module.exports = {
   ]
 };
 
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 module.exports = {
   'name': 'atan2',
   'category': 'Trigonometry',
@@ -1544,7 +1662,7 @@ module.exports = {
   ]
 };
 
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 module.exports = {
   'name': 'cos',
   'category': 'Trigonometry',
@@ -1566,7 +1684,7 @@ module.exports = {
   ]
 };
 
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 module.exports = {
   'name': 'cot',
   'category': 'Trigonometry',
@@ -1585,7 +1703,7 @@ module.exports = {
   ]
 };
 
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 module.exports = {
   'name': 'csc',
   'category': 'Trigonometry',
@@ -1604,7 +1722,7 @@ module.exports = {
   ]
 };
 
-},{}],81:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 module.exports = {
   'name': 'sec',
   'category': 'Trigonometry',
@@ -1623,7 +1741,7 @@ module.exports = {
   ]
 };
 
-},{}],82:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 module.exports = {
   'name': 'sin',
   'category': 'Trigonometry',
@@ -1645,7 +1763,7 @@ module.exports = {
   ]
 };
 
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports = {
   'name': 'tan',
   'category': 'Trigonometry',
@@ -1666,7 +1784,7 @@ module.exports = {
   ]
 };
 
-},{}],84:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 module.exports = {
   'name': 'in',
   'category': 'Units',
@@ -1683,7 +1801,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],85:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = {
   'name': 'clone',
   'category': 'Utils',
@@ -1701,7 +1819,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],86:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 module.exports = {
   'name': 'eval',
   'category': 'Utils',
@@ -1717,7 +1835,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],87:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 module.exports = {
   'name': 'format',
   'category': 'Utils',
@@ -1733,7 +1851,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 module.exports = {
   'name': 'help',
   'category': 'Utils',
@@ -1749,7 +1867,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 module.exports = {
   'name': 'import',
   'category': 'Utils',
@@ -1764,7 +1882,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 module.exports = {
   'name': 'typeof',
   'category': 'Utils',
@@ -1781,7 +1899,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 // constants
 exports.e = require('./constants/e.js');
 exports.E = require('./constants/e.js');
@@ -1893,7 +2011,7 @@ exports.help =  require('./function/utils/help.js');
 exports['import'] =  require('./function/utils/import.js');
 exports['typeof'] =  require('./function/utils/typeof.js');
 
-},{"./constants/Infinity.js":2,"./constants/LN10.js":3,"./constants/LN2.js":4,"./constants/LOG10E.js":5,"./constants/LOG2E.js":6,"./constants/NaN.js":7,"./constants/SQRT1_2.js":8,"./constants/SQRT2.js":9,"./constants/e.js":10,"./constants/false.js":11,"./constants/i.js":12,"./constants/pi.js":13,"./constants/tau.js":14,"./constants/true.js":15,"./function/arithmetic/abs.js":16,"./function/arithmetic/add.js":17,"./function/arithmetic/ceil.js":18,"./function/arithmetic/cube.js":19,"./function/arithmetic/divide.js":20,"./function/arithmetic/edivide.js":21,"./function/arithmetic/emultiply.js":22,"./function/arithmetic/epow.js":23,"./function/arithmetic/equal.js":24,"./function/arithmetic/exp.js":25,"./function/arithmetic/fix.js":26,"./function/arithmetic/floor.js":27,"./function/arithmetic/gcd.js":28,"./function/arithmetic/larger.js":29,"./function/arithmetic/largereq.js":30,"./function/arithmetic/lcm.js":31,"./function/arithmetic/log.js":32,"./function/arithmetic/log10.js":33,"./function/arithmetic/mod.js":34,"./function/arithmetic/multiply.js":35,"./function/arithmetic/pow.js":36,"./function/arithmetic/round.js":37,"./function/arithmetic/sign.js":38,"./function/arithmetic/smaller.js":39,"./function/arithmetic/smallereq.js":40,"./function/arithmetic/sqrt.js":41,"./function/arithmetic/square.js":42,"./function/arithmetic/subtract.js":43,"./function/arithmetic/unary.js":44,"./function/arithmetic/unequal.js":45,"./function/arithmetic/xgcd.js":46,"./function/complex/arg.js":47,"./function/complex/conj.js":48,"./function/complex/im.js":49,"./function/complex/re.js":50,"./function/construction/boolean.js":51,"./function/construction/complex.js":52,"./function/construction/matrix.js":53,"./function/construction/number.js":54,"./function/construction/range.js":55,"./function/construction/string.js":56,"./function/construction/unit.js":57,"./function/matrix/concat.js":58,"./function/matrix/det.js":59,"./function/matrix/diag.js":60,"./function/matrix/eye.js":61,"./function/matrix/inv.js":62,"./function/matrix/ones.js":63,"./function/matrix/size.js":64,"./function/matrix/squeeze.js":65,"./function/matrix/subset.js":66,"./function/matrix/transpose.js":67,"./function/matrix/zeros.js":68,"./function/probability/factorial.js":69,"./function/probability/random.js":70,"./function/probability/randomInt.js":71,"./function/statistics/max.js":72,"./function/statistics/min.js":73,"./function/trigonometry/acos.js":74,"./function/trigonometry/asin.js":75,"./function/trigonometry/atan.js":76,"./function/trigonometry/atan2.js":77,"./function/trigonometry/cos.js":78,"./function/trigonometry/cot.js":79,"./function/trigonometry/csc.js":80,"./function/trigonometry/sec.js":81,"./function/trigonometry/sin.js":82,"./function/trigonometry/tan.js":83,"./function/units/in.js":84,"./function/utils/clone.js":85,"./function/utils/eval.js":86,"./function/utils/format.js":87,"./function/utils/help.js":88,"./function/utils/import.js":89,"./function/utils/typeof.js":90}],92:[function(require,module,exports){
+},{"./constants/Infinity.js":3,"./constants/LN10.js":4,"./constants/LN2.js":5,"./constants/LOG10E.js":6,"./constants/LOG2E.js":7,"./constants/NaN.js":8,"./constants/SQRT1_2.js":9,"./constants/SQRT2.js":10,"./constants/e.js":11,"./constants/false.js":12,"./constants/i.js":13,"./constants/pi.js":14,"./constants/tau.js":15,"./constants/true.js":16,"./function/arithmetic/abs.js":17,"./function/arithmetic/add.js":18,"./function/arithmetic/ceil.js":19,"./function/arithmetic/cube.js":20,"./function/arithmetic/divide.js":21,"./function/arithmetic/edivide.js":22,"./function/arithmetic/emultiply.js":23,"./function/arithmetic/epow.js":24,"./function/arithmetic/equal.js":25,"./function/arithmetic/exp.js":26,"./function/arithmetic/fix.js":27,"./function/arithmetic/floor.js":28,"./function/arithmetic/gcd.js":29,"./function/arithmetic/larger.js":30,"./function/arithmetic/largereq.js":31,"./function/arithmetic/lcm.js":32,"./function/arithmetic/log.js":33,"./function/arithmetic/log10.js":34,"./function/arithmetic/mod.js":35,"./function/arithmetic/multiply.js":36,"./function/arithmetic/pow.js":37,"./function/arithmetic/round.js":38,"./function/arithmetic/sign.js":39,"./function/arithmetic/smaller.js":40,"./function/arithmetic/smallereq.js":41,"./function/arithmetic/sqrt.js":42,"./function/arithmetic/square.js":43,"./function/arithmetic/subtract.js":44,"./function/arithmetic/unary.js":45,"./function/arithmetic/unequal.js":46,"./function/arithmetic/xgcd.js":47,"./function/complex/arg.js":48,"./function/complex/conj.js":49,"./function/complex/im.js":50,"./function/complex/re.js":51,"./function/construction/boolean.js":52,"./function/construction/complex.js":53,"./function/construction/matrix.js":54,"./function/construction/number.js":55,"./function/construction/range.js":56,"./function/construction/string.js":57,"./function/construction/unit.js":58,"./function/matrix/concat.js":59,"./function/matrix/det.js":60,"./function/matrix/diag.js":61,"./function/matrix/eye.js":62,"./function/matrix/inv.js":63,"./function/matrix/ones.js":64,"./function/matrix/size.js":65,"./function/matrix/squeeze.js":66,"./function/matrix/subset.js":67,"./function/matrix/transpose.js":68,"./function/matrix/zeros.js":69,"./function/probability/factorial.js":70,"./function/probability/random.js":71,"./function/probability/randomInt.js":72,"./function/statistics/max.js":73,"./function/statistics/min.js":74,"./function/trigonometry/acos.js":75,"./function/trigonometry/asin.js":76,"./function/trigonometry/atan.js":77,"./function/trigonometry/atan2.js":78,"./function/trigonometry/cos.js":79,"./function/trigonometry/cot.js":80,"./function/trigonometry/csc.js":81,"./function/trigonometry/sec.js":82,"./function/trigonometry/sin.js":83,"./function/trigonometry/tan.js":84,"./function/units/in.js":85,"./function/utils/clone.js":86,"./function/utils/eval.js":87,"./function/utils/format.js":88,"./function/utils/help.js":89,"./function/utils/import.js":90,"./function/utils/typeof.js":91}],93:[function(require,module,exports){
 var Scope = require('./Scope.js');
 
 /**
@@ -2017,7 +2135,7 @@ Parser.prototype.clear = function () {
 
 module.exports = Parser;
 
-},{"./Scope.js":93}],93:[function(require,module,exports){
+},{"./Scope.js":94}],94:[function(require,module,exports){
 var Unit = require('../type/Unit.js');
 
 /**
@@ -2206,7 +2324,7 @@ Scope.context = []; // static context, for example the math namespace
 
 module.exports = Scope;
 
-},{"../type/Unit.js":190}],94:[function(require,module,exports){
+},{"../type/Unit.js":190}],95:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../util/index.js'),
       string = util.string;
@@ -2337,7 +2455,7 @@ module.exports = function (math) {
   return Selector;
 };
 
-},{"../util/index.js":196}],95:[function(require,module,exports){
+},{"../util/index.js":196}],96:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -2401,7 +2519,7 @@ AssignmentNode.prototype.toString = function() {
 };
 
 module.exports = AssignmentNode;
-},{"./Node.js":100}],96:[function(require,module,exports){
+},{"./Node.js":101}],97:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -2488,7 +2606,7 @@ BlockNode.prototype.toString = function() {
 
 module.exports = BlockNode;
 
-},{"./Node.js":100}],97:[function(require,module,exports){
+},{"./Node.js":101}],98:[function(require,module,exports){
 var Node = require('./Node.js'),
     string = require('../../util/string.js');
 
@@ -2521,7 +2639,7 @@ ConstantNode.prototype.toString = function() {
 
 module.exports = ConstantNode;
 
-},{"../../util/string.js":199,"./Node.js":100}],98:[function(require,module,exports){
+},{"../../util/string.js":199,"./Node.js":101}],99:[function(require,module,exports){
 var Node = require('./Node.js'),
     error = require('../../util/error.js');
 
@@ -2610,7 +2728,7 @@ FunctionNode.prototype.toString = function() {
 
 module.exports = FunctionNode;
 
-},{"../../util/error.js":195,"./Node.js":100}],99:[function(require,module,exports){
+},{"../../util/error.js":195,"./Node.js":101}],100:[function(require,module,exports){
 var Node = require('./Node.js'),
     object = require('../../util/object.js'),
     string = require('../../util/string.js'),
@@ -2767,7 +2885,7 @@ MatrixNode.prototype.toString = function() {
 
 module.exports = MatrixNode;
 
-},{"../../type/Matrix.js":188,"../../type/Range.js":189,"../../type/collection.js":191,"../../util/object.js":198,"../../util/string.js":199,"./Node.js":100}],100:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../type/Range.js":189,"../../type/collection.js":191,"../../util/object.js":198,"../../util/string.js":199,"./Node.js":101}],101:[function(require,module,exports){
 /**
  * Node
  */
@@ -2840,7 +2958,7 @@ Node.prototype.toString = function() {
 
 module.exports = Node;
 
-},{}],101:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -2928,7 +3046,7 @@ OperatorNode.prototype.toString = function() {
 
 module.exports = OperatorNode;
 
-},{"./Node.js":100}],102:[function(require,module,exports){
+},{"./Node.js":101}],103:[function(require,module,exports){
 var Node = require('./Node.js'),
     SymbolNode = require('./SymbolNode.js').SymbolNode;
 
@@ -3059,7 +3177,7 @@ ParamsNode.prototype.toString = function() {
 
 module.exports = ParamsNode;
 
-},{"./Node.js":100,"./SymbolNode.js":103}],103:[function(require,module,exports){
+},{"./Node.js":101,"./SymbolNode.js":104}],104:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -3103,7 +3221,7 @@ SymbolNode.prototype.toString = function() {
 
 module.exports = SymbolNode;
 
-},{"./Node.js":100}],104:[function(require,module,exports){
+},{"./Node.js":101}],105:[function(require,module,exports){
 var Node = require('./Node.js'),
     SymbolNode = require('./SymbolNode.js').SymbolNode;
 
@@ -3242,13 +3360,13 @@ UpdateNode.prototype.toString = function() {
 
 module.exports = UpdateNode;
 
-},{"./Node.js":100,"./SymbolNode.js":103}],105:[function(require,module,exports){
+},{"./Node.js":101,"./SymbolNode.js":104}],106:[function(require,module,exports){
 /**
  * Custom node handlers,
  * (can be added to the exports object)
  */
 
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 exports.AssignmentNode = require('./AssignmentNode.js');
 exports.BlockNode = require('./BlockNode.js');
 exports.ConstantNode = require('./ConstantNode.js');
@@ -3262,7 +3380,7 @@ exports.UpdateNode = require('./UpdateNode.js');
 
 exports.handlers = require('./handlers.js');
 
-},{"./AssignmentNode.js":95,"./BlockNode.js":96,"./ConstantNode.js":97,"./FunctionNode.js":98,"./MatrixNode.js":99,"./Node.js":100,"./OperatorNode.js":101,"./ParamsNode.js":102,"./SymbolNode.js":103,"./UpdateNode.js":104,"./handlers.js":105}],107:[function(require,module,exports){
+},{"./AssignmentNode.js":96,"./BlockNode.js":97,"./ConstantNode.js":98,"./FunctionNode.js":99,"./MatrixNode.js":100,"./Node.js":101,"./OperatorNode.js":102,"./ParamsNode.js":103,"./SymbolNode.js":104,"./UpdateNode.js":105,"./handlers.js":106}],108:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3310,7 +3428,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],108:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],109:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3409,7 +3527,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],109:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],110:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3459,7 +3577,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],110:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],111:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3507,7 +3625,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],111:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],112:[function(require,module,exports){
 module.exports = function(math) {
   var util = require('../../util/index.js'),
 
@@ -3618,7 +3736,7 @@ module.exports = function(math) {
   }
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],112:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],113:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -3642,7 +3760,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],113:[function(require,module,exports){
+},{"../../type/collection.js":191,"../../util/index.js":196}],114:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -3666,7 +3784,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],114:[function(require,module,exports){
+},{"../../type/collection.js":191,"../../util/index.js":196}],115:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -3690,7 +3808,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],115:[function(require,module,exports){
+},{"../../type/collection.js":191,"../../util/index.js":196}],116:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3763,7 +3881,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],116:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],117:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3814,7 +3932,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],117:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],118:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3864,7 +3982,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],118:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],119:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3914,7 +4032,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],119:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],120:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3982,7 +4100,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],120:[function(require,module,exports){
+},{"../../type/collection.js":191,"../../util/index.js":196}],121:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4055,7 +4173,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],121:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],122:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4128,7 +4246,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],122:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],123:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4201,7 +4319,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],123:[function(require,module,exports){
+},{"../../type/collection.js":191,"../../util/index.js":196}],124:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4266,7 +4384,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],124:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],125:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4322,7 +4440,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],125:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],126:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4398,7 +4516,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],126:[function(require,module,exports){
+},{"../../type/collection.js":191,"../../util/index.js":196}],127:[function(require,module,exports){
 module.exports = function(math) {
   var util = require('../../util/index.js'),
 
@@ -4610,7 +4728,7 @@ module.exports = function(math) {
   }
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],127:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],128:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4717,7 +4835,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../util/index.js":196}],128:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../util/index.js":196}],129:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4823,7 +4941,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],129:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],130:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4873,7 +4991,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],130:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],131:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4946,7 +5064,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],131:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],132:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5019,7 +5137,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],132:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],133:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5083,7 +5201,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],133:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],134:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5131,7 +5249,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],134:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],135:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5227,7 +5345,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],135:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],136:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5284,7 +5402,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],136:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],137:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5352,7 +5470,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],137:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],138:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5399,7 +5517,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],138:[function(require,module,exports){
+},{"../../util/index.js":196}],139:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5448,7 +5566,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],139:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],140:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5498,7 +5616,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],140:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],141:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5546,7 +5664,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],141:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],142:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5595,7 +5713,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],142:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],143:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5645,7 +5763,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],143:[function(require,module,exports){
+},{"../../util/index.js":196}],144:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5716,7 +5834,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../util/index.js":196}],144:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../util/index.js":196}],145:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5748,7 +5866,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],145:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../util/index.js":196}],146:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js');
 
@@ -5776,7 +5894,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],146:[function(require,module,exports){
+},{"../../util/index.js":196}],147:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5823,7 +5941,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../expr/Parser.js":92,"../../util/index.js":196}],147:[function(require,module,exports){
+},{"../../expr/Parser.js":93,"../../util/index.js":196}],148:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5898,7 +6016,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Range.js":189,"../../util/index.js":196}],148:[function(require,module,exports){
+},{"../../type/Range.js":189,"../../util/index.js":196}],149:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5956,7 +6074,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],149:[function(require,module,exports){
+},{"../../type/collection.js":191,"../../util/index.js":196}],150:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6017,7 +6135,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Unit.js":190,"../../util/index.js":196}],150:[function(require,module,exports){
+},{"../../type/Unit.js":190,"../../util/index.js":196}],151:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6134,7 +6252,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],151:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],152:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6279,7 +6397,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],152:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../util/index.js":196}],153:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6368,7 +6486,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../type/Range.js":189,"../../util/index.js":196}],153:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../type/Range.js":189,"../../util/index.js":196}],154:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6428,7 +6546,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],154:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],155:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6615,7 +6733,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],155:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../util/index.js":196}],156:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6653,7 +6771,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],156:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],157:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6705,7 +6823,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../util/index.js":196}],157:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../util/index.js":196}],158:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6766,7 +6884,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],158:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../util/index.js":196}],159:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6973,7 +7091,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../type/Range.js":189,"../../util/index.js":196}],159:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../type/Range.js":189,"../../util/index.js":196}],160:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7043,7 +7161,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],160:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../util/index.js":196}],161:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7081,7 +7199,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],161:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],162:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7141,7 +7259,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],162:[function(require,module,exports){
+},{"../../type/collection.js":191,"../../util/index.js":196}],163:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7309,7 +7427,7 @@ module.exports = function (math) {
   math.pickRandom = uniformRandFunctions.pickRandom;
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],163:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../util/index.js":196}],164:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7414,7 +7532,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],164:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],165:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7519,7 +7637,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],165:[function(require,module,exports){
+},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],166:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7606,7 +7724,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],166:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],167:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7690,7 +7808,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],167:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],168:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7761,7 +7879,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],168:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],169:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7824,7 +7942,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],169:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],170:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7886,7 +8004,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],170:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],171:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7948,7 +8066,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],171:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],172:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8011,7 +8129,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],172:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],173:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8073,7 +8191,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],173:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],174:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8134,7 +8252,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],174:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],175:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8199,7 +8317,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],175:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],176:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8248,7 +8366,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],176:[function(require,module,exports){
+},{"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],177:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       object = util.object;
@@ -8270,7 +8388,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],177:[function(require,module,exports){
+},{"../../util/index.js":196}],178:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8344,7 +8462,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../expr/Scope.js":93,"../../type/collection.js":191,"../../util/index.js":196}],178:[function(require,module,exports){
+},{"../../expr/Scope.js":94,"../../type/collection.js":191,"../../util/index.js":196}],179:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       string = util.string;
@@ -8378,7 +8496,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],179:[function(require,module,exports){
+},{"../../util/index.js":196}],180:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8438,7 +8556,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Help.js":187,"../../util/index.js":196}],180:[function(require,module,exports){
+},{"../../type/Help.js":187,"../../util/index.js":196}],181:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8560,7 +8678,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../util/index.js":196}],181:[function(require,module,exports){
+},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../util/index.js":196}],182:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -9896,7 +10014,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../expr/node/AssignmentNode.js":95,"../../expr/node/BlockNode.js":96,"../../expr/node/ConstantNode.js":97,"../../expr/node/FunctionNode.js":98,"../../expr/node/MatrixNode.js":99,"../../expr/node/OperatorNode.js":101,"../../expr/node/ParamsNode.js":102,"../../expr/node/SymbolNode.js":103,"../../expr/node/UpdateNode.js":104,"../../expr/node/handlers.js":105,"../../type/collection.js":191,"../../util/index.js":196,"./../../expr/Scope.js":93,"./../../type/Complex.js":186,"./../../type/Matrix.js":188,"./../../type/Range.js":189,"./../../type/Unit.js":190}],182:[function(require,module,exports){
+},{"../../expr/node/AssignmentNode.js":96,"../../expr/node/BlockNode.js":97,"../../expr/node/ConstantNode.js":98,"../../expr/node/FunctionNode.js":99,"../../expr/node/MatrixNode.js":100,"../../expr/node/OperatorNode.js":102,"../../expr/node/ParamsNode.js":103,"../../expr/node/SymbolNode.js":104,"../../expr/node/UpdateNode.js":105,"../../expr/node/handlers.js":106,"../../type/collection.js":191,"../../util/index.js":196,"./../../expr/Scope.js":94,"./../../type/Complex.js":186,"./../../type/Matrix.js":188,"./../../type/Range.js":189,"./../../type/Unit.js":190}],183:[function(require,module,exports){
 module.exports = function (math) {
   /**
    * Wrap any value in a Selector, allowing to perform chained operations on
@@ -9938,7 +10056,7 @@ module.exports = function (math) {
   };
 };
 
-},{}],183:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js');
 
@@ -9960,125 +10078,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],184:[function(require,module,exports){
-// options (global configuration settings)
-exports.options = require('./options');
-
-// expression (Parser, Scope, Nodes)
-exports.expr = {};
-exports.expr.node = require('./expr/node/index.js');
-exports.expr.Scope = require('./expr/Scope.js');
-exports.expr.Parser = require('./expr/Parser.js');
-
-// types (Matrix, Complex, Unit, ...)
-exports.type = require('./type/index.js');
-
-// docs
-exports.docs = require('./docs/index.js');
-
-// functions - arithmetic
-require('./function/arithmetic/abs.js')(exports);
-require('./function/arithmetic/add.js')(exports);
-require('./function/arithmetic/add.js')(exports);
-require('./function/arithmetic/ceil.js')(exports);
-require('./function/arithmetic/cube.js')(exports);
-require('./function/arithmetic/divide.js')(exports);
-require('./function/arithmetic/edivide.js')(exports);
-require('./function/arithmetic/emultiply.js')(exports);
-require('./function/arithmetic/epow.js')(exports);
-require('./function/arithmetic/equal.js')(exports);
-require('./function/arithmetic/exp.js')(exports);
-require('./function/arithmetic/fix.js')(exports);
-require('./function/arithmetic/floor.js')(exports);
-require('./function/arithmetic/gcd.js')(exports);
-require('./function/arithmetic/larger.js')(exports);
-require('./function/arithmetic/largereq.js')(exports);
-require('./function/arithmetic/lcm.js')(exports);
-require('./function/arithmetic/log.js')(exports);
-require('./function/arithmetic/log10.js')(exports);
-require('./function/arithmetic/mod.js')(exports);
-require('./function/arithmetic/multiply.js')(exports);
-require('./function/arithmetic/pow.js')(exports);
-require('./function/arithmetic/round.js')(exports);
-require('./function/arithmetic/sign.js')(exports);
-require('./function/arithmetic/smaller.js')(exports);
-require('./function/arithmetic/smallereq.js')(exports);
-require('./function/arithmetic/sqrt.js')(exports);
-require('./function/arithmetic/square.js')(exports);
-require('./function/arithmetic/subtract.js')(exports);
-require('./function/arithmetic/unary.js')(exports);
-require('./function/arithmetic/unequal.js')(exports);
-require('./function/arithmetic/xgcd.js')(exports);
-
-// functions - complex
-require('./function/complex/arg.js')(exports);
-require('./function/complex/conj.js')(exports);
-require('./function/complex/re.js')(exports);
-require('./function/complex/im.js')(exports);
-
-// functions - construction
-require('./function/construction/boolean.js')(exports);
-require('./function/construction/complex.js')(exports);
-require('./function/construction/matrix.js')(exports);
-require('./function/construction/number.js')(exports);
-require('./function/construction/parser.js')(exports);
-require('./function/construction/range.js')(exports);
-require('./function/construction/string.js')(exports);
-require('./function/construction/unit.js')(exports);
-
-// functions - matrix
-require('./function/matrix/concat.js')(exports);
-require('./function/matrix/det.js')(exports);
-require('./function/matrix/diag.js')(exports);
-require('./function/matrix/eye.js')(exports);
-require('./function/matrix/inv.js')(exports);
-require('./function/matrix/ones.js')(exports);
-require('./function/matrix/size.js')(exports);
-require('./function/matrix/squeeze.js')(exports);
-require('./function/matrix/subset.js')(exports);
-require('./function/matrix/transpose.js')(exports);
-require('./function/matrix/zeros.js')(exports);
-
-// functions - probability
-require('./function/probability/factorial.js')(exports);
-require('./function/probability/random.js')(exports);
-
-// functions - statistics
-require('./function/statistics/min.js')(exports);
-require('./function/statistics/max.js')(exports);
-
-// functions - trigonometry
-require('./function/trigonometry/acos.js')(exports);
-require('./function/trigonometry/asin.js')(exports);
-require('./function/trigonometry/atan.js')(exports);
-require('./function/trigonometry/atan2.js')(exports);
-require('./function/trigonometry/cos.js')(exports);
-require('./function/trigonometry/cot.js')(exports);
-require('./function/trigonometry/csc.js')(exports);
-require('./function/trigonometry/sec.js')(exports);
-require('./function/trigonometry/sin.js')(exports);
-require('./function/trigonometry/tan.js')(exports);
-
-// functions - units
-require('./function/units/in.js')(exports);
-
-// functions - utils
-require('./function/utils/clone.js')(exports);
-require('./function/utils/eval.js')(exports);
-require('./function/utils/format.js')(exports);
-require('./function/utils/help.js')(exports);
-require('./function/utils/import.js')(exports);
-require('./function/utils/parse.js')(exports);
-require('./function/utils/select.js')(exports);
-require('./function/utils/typeof.js')(exports);
-
-// constants
-require('./constants.js')(exports);
-
-// selector (we initialize after all functions are loaded)
-exports.expr.Selector = require('./expr/Selector.js')(exports);
-
-},{"./constants.js":1,"./docs/index.js":91,"./expr/Parser.js":92,"./expr/Scope.js":93,"./expr/Selector.js":94,"./expr/node/index.js":106,"./function/arithmetic/abs.js":107,"./function/arithmetic/add.js":108,"./function/arithmetic/ceil.js":109,"./function/arithmetic/cube.js":110,"./function/arithmetic/divide.js":111,"./function/arithmetic/edivide.js":112,"./function/arithmetic/emultiply.js":113,"./function/arithmetic/epow.js":114,"./function/arithmetic/equal.js":115,"./function/arithmetic/exp.js":116,"./function/arithmetic/fix.js":117,"./function/arithmetic/floor.js":118,"./function/arithmetic/gcd.js":119,"./function/arithmetic/larger.js":120,"./function/arithmetic/largereq.js":121,"./function/arithmetic/lcm.js":122,"./function/arithmetic/log.js":123,"./function/arithmetic/log10.js":124,"./function/arithmetic/mod.js":125,"./function/arithmetic/multiply.js":126,"./function/arithmetic/pow.js":127,"./function/arithmetic/round.js":128,"./function/arithmetic/sign.js":129,"./function/arithmetic/smaller.js":130,"./function/arithmetic/smallereq.js":131,"./function/arithmetic/sqrt.js":132,"./function/arithmetic/square.js":133,"./function/arithmetic/subtract.js":134,"./function/arithmetic/unary.js":135,"./function/arithmetic/unequal.js":136,"./function/arithmetic/xgcd.js":137,"./function/complex/arg.js":138,"./function/complex/conj.js":139,"./function/complex/im.js":140,"./function/complex/re.js":141,"./function/construction/boolean.js":142,"./function/construction/complex.js":143,"./function/construction/matrix.js":144,"./function/construction/number.js":145,"./function/construction/parser.js":146,"./function/construction/range.js":147,"./function/construction/string.js":148,"./function/construction/unit.js":149,"./function/matrix/concat.js":150,"./function/matrix/det.js":151,"./function/matrix/diag.js":152,"./function/matrix/eye.js":153,"./function/matrix/inv.js":154,"./function/matrix/ones.js":155,"./function/matrix/size.js":156,"./function/matrix/squeeze.js":157,"./function/matrix/subset.js":158,"./function/matrix/transpose.js":159,"./function/matrix/zeros.js":160,"./function/probability/factorial.js":161,"./function/probability/random.js":162,"./function/statistics/max.js":163,"./function/statistics/min.js":164,"./function/trigonometry/acos.js":165,"./function/trigonometry/asin.js":166,"./function/trigonometry/atan.js":167,"./function/trigonometry/atan2.js":168,"./function/trigonometry/cos.js":169,"./function/trigonometry/cot.js":170,"./function/trigonometry/csc.js":171,"./function/trigonometry/sec.js":172,"./function/trigonometry/sin.js":173,"./function/trigonometry/tan.js":174,"./function/units/in.js":175,"./function/utils/clone.js":176,"./function/utils/eval.js":177,"./function/utils/format.js":178,"./function/utils/help.js":179,"./function/utils/import.js":180,"./function/utils/parse.js":181,"./function/utils/select.js":182,"./function/utils/typeof.js":183,"./options":185,"./type/index.js":192}],185:[function(require,module,exports){
+},{"../../util/index.js":196}],185:[function(require,module,exports){
 // math.js options
 exports.precision = 5;  // number of digits in formatted output
 
@@ -13181,7 +13181,7 @@ exports.addType = function addType (name, type) {
   types[name] = type;
 };
 
-},{}]},{},[184])(184)
+},{}]},{},[1])(1)
 });
 ;/**
  * Compatibility shims for legacy JavaScript engines

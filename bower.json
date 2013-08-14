@@ -7,7 +7,6 @@
     "img",
     "misc",
     "node_modules",
-    "lib",
     "test",
     "tools",
     ".gitignore",

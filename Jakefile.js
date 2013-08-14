@@ -9,7 +9,9 @@ var jake = require('jake'),
 /**
  * Constants
  */
+var INDEX       = './index.js';
 var HEADER      = './lib/header.js';
+var SHIM        = './lib/shim.js';
 var DIST        = './dist';
 var MATHJS      = DIST + '/math.js';
 var MATHJS_MIN  = DIST + '/math.min.js';
@@ -38,7 +40,7 @@ task('bundle', {async: true}, function () {
   // make directory dist
   jake.mkdirP(DIST);
 
-  b.add('./lib/index.js');
+  b.add(INDEX);
   b.bundle({
     standalone: 'math'
   }, function (err, code) {
@@ -47,7 +49,7 @@ task('bundle', {async: true}, function () {
     }
 
     // add header and shim
-    var lib = util.read('./lib/header.js') + code + util.read('./lib/shim.js');
+    var lib = util.read(HEADER) + code + util.read(SHIM);
 
     // write bundled file
     util.write(MATHJS, lib);
