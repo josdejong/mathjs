@@ -4,7 +4,7 @@
  * with functions and variables.
  */
 
-var math = require('../dist/math.js');
+var math = require('../index');
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
