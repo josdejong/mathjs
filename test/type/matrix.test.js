@@ -1,7 +1,7 @@
 // test data type Matrix
 
 var assert = require('assert');
-var math = require('../../lib/index.js');
+var math = require('../../index.js');
 
 var m = math.matrix();
 assert.equal(m.isScalar(), true);

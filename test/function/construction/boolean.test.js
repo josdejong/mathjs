@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    math = require('../../../lib/index.js'),
+    math = require('../../../index.js'),
     bool = math.boolean;
 
 describe('boolean', function() {

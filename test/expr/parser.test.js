@@ -2,7 +2,7 @@
 
 var assert = require('assert'),
     approx = require('../../tools/approx.js'),
-    math = require('../../lib/index.js'),
+    math = require('../../index.js'),
     matrix = math.matrix,
     range = math.range,
     round = math.round;

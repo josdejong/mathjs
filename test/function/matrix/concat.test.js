@@ -1,6 +1,6 @@
 // test concat
 var assert = require('assert');
-var math = require('../../../lib/index.js');
+var math = require('../../../index.js');
 
 assert.deepEqual(math.concat([1,2,3], [4]), [1,2,3,4]);
 assert.deepEqual(math.concat([[1],[2],[3]], [[4]], 0), [[1],[2],[3],[4]]);

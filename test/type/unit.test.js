@@ -1,7 +1,7 @@
 // test data type Unit
 
 var assert = require('assert');
-var math = require('../../lib/index.js');
+var math = require('../../index.js');
 
 
 var unit1 = math.unit(5000, 'cm');

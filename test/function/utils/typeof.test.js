@@ -1,6 +1,6 @@
 // test typeof
 var assert = require('assert');
-var math = require('../../../lib/index.js');
+var math = require('../../../index.js');
 
 assert.equal(math.typeof(2), 'number');
 assert.equal(math.typeof(new Number(2)), 'number');

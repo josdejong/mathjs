@@ -1,6 +1,6 @@
 // test parse
 var assert = require('assert');
-var math = require('../../../lib/index.js');
+var math = require('../../../index.js');
 
 // test some expressions
 assert.ok(math.parse('pi') instanceof math.expr.node.Node);
