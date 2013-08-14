@@ -1,6 +1,6 @@
 // test zeros
 var assert = require('assert');
-var math = require('../../../src/index.js'),
+var math = require('../../../index.js'),
     zeros = math.zeros;
 
 describe('zeros', function() {

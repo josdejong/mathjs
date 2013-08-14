@@ -1,7 +1,7 @@
 // test sqrt
 var assert = require('assert'),
     approx = require('../../../tools/approx.js'),
-    math = require('../../../src/index.js');
+    math = require('../../../index.js');
 
 describe('sqrt', function() {
 

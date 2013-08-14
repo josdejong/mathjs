@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    math = require('../../../src/index.js'),
+    math = require('../../../index.js'),
     unit = math.unit;
 
 describe('unit', function() {

@@ -1,6 +1,6 @@
 // test factorial
 var assert = require('assert');
-var math = require('../../../src/index.js');
+var math = require('../../../index.js');
 
 assert.equal(math.factorial(0), 1);
 assert.equal(math.factorial(1), 1);

@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../../src/index.js');
+var math = require('../../../index.js');
 
 // test diag
 assert.deepEqual(math.diag([1,2,3]).valueOf(), [[1,0,0],[0,2,0],[0,0,3]]);
