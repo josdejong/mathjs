@@ -1,6 +1,6 @@
 // test max
 var assert = require('assert');
-var math = require('../../../src/index.js');
+var math = require('../../../index.js');
 
 assert.equal(math.max(5), 5);
 assert.equal(math.max(3,1), 3);

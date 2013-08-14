@@ -133,9 +133,9 @@ function replace (params) {
  * Example:
  *     var result = concat({
  *         src: [
- *             './src/main.js',
- *             './src/extra.js',
- *             './src/functions/**',
+ *             './lib/main.js',
+ *             './lib/extra.js',
+ *             './lib/functions/**',
  *         ],
  *         dest: './lib/mylibrary.js',           // optional
  *         header: '// license information...',  // optional

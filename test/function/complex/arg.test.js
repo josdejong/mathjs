@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../../src/index.js');
+var math = require('../../../index.js');
 
 describe('arg', function() {
 

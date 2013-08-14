@@ -1,6 +1,6 @@
 // test subtract
 var assert = require('assert');
-var math = require('../../../src/index.js');
+var math = require('../../../index.js');
 
 describe('subtract', function() {
 
