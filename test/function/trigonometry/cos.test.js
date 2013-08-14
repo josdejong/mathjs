@@ -28,8 +28,8 @@ approx.deepEqual(cos(complex('2+3i')), complex(-re, -im));
 approx.deepEqual(cos(complex('2-3i')), complex(-re, im));
 approx.deepEqual(cos(complex('-2+3i')), complex(-re, im));
 approx.deepEqual(cos(complex('-2-3i')), complex(-re, -im));
-approx.deepEqual(cos(complex('i')), 1.54308063481524);
-approx.deepEqual(cos(complex('1')), 0.540302305868140);
+approx.deepEqual(cos(complex('i')), complex(1.54308063481524, 0));
+approx.deepEqual(cos(complex('1')), complex(0.540302305868140, 0));
 approx.deepEqual(cos(complex('1+i')), complex(0.833730025131149, -0.988897705762865));
 
 // unit

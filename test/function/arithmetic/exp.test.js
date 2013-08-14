@@ -39,7 +39,7 @@ describe('exp', function() {
     approx.deepEqual(exp(complex(1, -1)),  complex('1.46869393991589 - 2.28735528717884i'));
     approx.deepEqual(exp(complex(-1, -1)), complex('0.198766110346413 - 0.309559875653112i'));
     approx.deepEqual(exp(complex(-1, 1)),  complex('0.198766110346413 + 0.309559875653112i'));
-    approx.deepEqual(exp(complex(1, 0)),   2.71828182845905);
+    approx.deepEqual(exp(complex(1, 0)),   complex('2.71828182845905'));
 
     approx.deepEqual(math.eval('exp(0.5 * pi * i)'),  complex(0, 1));
     approx.deepEqual(math.eval('exp(1 * pi * i)'),    complex(-1, 0));

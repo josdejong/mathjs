@@ -28,7 +28,7 @@ approx.deepEqual(cot(complex('2-3i')), complex(-re, im));
 approx.deepEqual(cot(complex('-2+3i')), complex(re, -im));
 approx.deepEqual(cot(complex('-2-3i')), complex(re, im));
 approx.deepEqual(cot(complex('i')), complex(0, -1.313035285499331));
-approx.deepEqual(cot(complex('1')), 0.642092615934331);
+approx.deepEqual(cot(complex('1')), complex(0.642092615934331, 0));
 approx.deepEqual(cot(complex('1+i')), complex(0.217621561854403, -0.868014142895925));
 
 // unit

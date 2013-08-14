@@ -21,6 +21,8 @@ https://github.com/josdejong/mathjs
 - Changed the return type of `ones` and `zeros`: they now return an Array when
   arguments are Numbers or an Array, and returns a Matrix when the argument
   is a Matrix.
+- Removed the feature introduced in v0.10.0 to automatically convert a complex
+  value with an imaginary part equal to zero to a number.
 - Fixed zeros being formatted as null. Thanks TimKraft.
 
 

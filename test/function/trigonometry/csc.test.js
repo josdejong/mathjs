@@ -29,7 +29,7 @@ approx.deepEqual(csc(complex('2-3i')), complex(re, -im));
 approx.deepEqual(csc(complex('-2+3i')), complex(-re, im));
 approx.deepEqual(csc(complex('-2-3i')), complex(-re, -im));
 approx.deepEqual(csc(complex('i')), complex(0, -0.850918128239322));
-approx.deepEqual(csc(complex('1')), 1.18839510577812);
+approx.deepEqual(csc(complex('1')), complex(1.18839510577812, 0));
 approx.deepEqual(csc(complex('1+i')), complex(0.621518017170428, -0.303931001628426));
 
 // unit

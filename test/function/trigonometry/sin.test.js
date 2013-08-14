@@ -29,7 +29,7 @@ approx.deepEqual(sin(complex('2-3i')), complex(re, im));
 approx.deepEqual(sin(complex('-2+3i')), complex(-re, -im));
 approx.deepEqual(sin(complex('-2-3i')), complex(-re, im));
 approx.deepEqual(sin(complex('i')), complex(0, 1.175201193643801));
-approx.deepEqual(sin(complex('1')), 0.841470984807897);
+approx.deepEqual(sin(complex('1')), complex(0.841470984807897, 0));
 approx.deepEqual(sin(complex('1+i')), complex(1.298457581415977, 0.634963914784736));
 
 // unit

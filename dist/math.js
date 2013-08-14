@@ -3467,7 +3467,7 @@ module.exports = function (math) {
       }
       else if (isComplex(y)) {
         // number + complex
-        return Complex.create(
+        return new Complex(
             x + y.re,
             y.im
         )
@@ -3476,14 +3476,14 @@ module.exports = function (math) {
     else if (isComplex(x)) {
       if (isNumber(y)) {
         // complex + number
-        return Complex.create(
+        return new Complex(
             x.re + y,
             x.im
         )
       }
       else if (isComplex(y)) {
         // complex + complex
-        return Complex.create(
+        return new Complex(
             x.re + y.re,
             x.im + y.im
         );
@@ -3558,7 +3558,7 @@ module.exports = function (math) {
     }
 
     if (isComplex(x)) {
-      return Complex.create (
+      return new Complex (
           Math.ceil(x.re),
           Math.ceil(x.im)
       );
@@ -3721,14 +3721,14 @@ module.exports = function(math) {
   function _divideComplex (x, y) {
     var den = y.re * y.re + y.im * y.im;
     if (den != 0) {
-      return Complex.create(
+      return new Complex(
           (x.re * y.re + x.im * y.im) / den,
           (x.im * y.re - x.re * y.im) / den
       );
     }
     else {
       // both y.re and y.im are zero
-      return Complex.create(
+      return new Complex(
           (x.re != 0) ? (x.re / 0) : 0,
           (x.im != 0) ? (x.im / 0) : 0
       );
@@ -3913,7 +3913,7 @@ module.exports = function (math) {
     }
     if (isComplex(x)) {
       var r = Math.exp(x.re);
-      return Complex.create(
+      return new Complex(
           r * Math.cos(x.im),
           r * Math.sin(x.im)
       );
@@ -3963,7 +3963,7 @@ module.exports = function (math) {
     }
 
     if (isComplex(x)) {
-      return Complex.create(
+      return new Complex(
           (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
           (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
       );
@@ -4013,7 +4013,7 @@ module.exports = function (math) {
     }
 
     if (isComplex(x)) {
-      return Complex.create (
+      return new Complex (
           Math.floor(x.re),
           Math.floor(x.im)
       );
@@ -4357,7 +4357,7 @@ module.exports = function (math) {
       }
 
       if (isComplex(x)) {
-        return Complex.create (
+        return new Complex (
             Math.log(Math.sqrt(x.re * x.re + x.im * x.im)),
             Math.atan2(x.im, x.re)
         );
@@ -4421,7 +4421,7 @@ module.exports = function (math) {
     }
 
     if (isComplex(x)) {
-      return Complex.create (
+      return new Complex (
           Math.log(Math.sqrt(x.re * x.re + x.im * x.im)) / Math.LN10,
           Math.atan2(x.im, x.re) / Math.LN10
       );
@@ -4870,7 +4870,7 @@ module.exports = function (math) {
       }
 
       if (isComplex(x)) {
-        return Complex.create (
+        return new Complex (
             Math.round(x.re),
             Math.round(x.im)
         );
@@ -4904,7 +4904,7 @@ module.exports = function (math) {
       }
 
       if (isComplex(x)) {
-        return Complex.create (
+        return new Complex (
             roundNumber(x.re, n),
             roundNumber(x.im, n)
         );
@@ -4975,7 +4975,7 @@ module.exports = function (math) {
 
     if (isComplex(x)) {
       var abs = Math.sqrt(x.re * x.re + x.im * x.im);
-      return Complex.create(x.re / abs, x.im / abs);
+      return new Complex(x.re / abs, x.im / abs);
     }
 
     if (isCollection(x)) {
@@ -5175,13 +5175,13 @@ module.exports = function (math) {
     if (isComplex(x)) {
       var r = Math.sqrt(x.re * x.re + x.im * x.im);
       if (x.im >= 0) {
-        return Complex.create(
+        return new Complex(
             0.5 * Math.sqrt(2.0 * (r + x.re)),
             0.5 * Math.sqrt(2.0 * (r - x.re))
         );
       }
       else {
-        return Complex.create(
+        return new Complex(
             0.5 * Math.sqrt(2.0 * (r + x.re)),
             -0.5 * Math.sqrt(2.0 * (r - x.re))
         );
@@ -5288,7 +5288,7 @@ module.exports = function (math) {
       }
       else if (isComplex(y)) {
         // number - complex
-        return Complex.create (
+        return new Complex (
             x - y.re,
             - y.im
         );
@@ -5297,14 +5297,14 @@ module.exports = function (math) {
     else if (isComplex(x)) {
       if (isNumber(y)) {
         // complex - number
-        return Complex.create (
+        return new Complex (
             x.re - y,
             x.im
         )
       }
       else if (isComplex(y)) {
         // complex - complex
-        return Complex.create (
+        return new Complex (
             x.re - y.re,
             x.im - y.im
         )
@@ -5378,7 +5378,7 @@ module.exports = function (math) {
       return -x;
     }
     else if (isComplex(x)) {
-      return Complex.create(
+      return new Complex(
           -x.re,
           -x.im
       );
@@ -5599,7 +5599,7 @@ module.exports = function (math) {
     }
 
     if (isComplex(x)) {
-      return Complex.create(x.re, -x.im);
+      return new Complex(x.re, -x.im);
     }
 
     if (isCollection(x)) {
@@ -7676,20 +7676,20 @@ module.exports = function (math) {
 
     if (isComplex(x)) {
       // acos(z) = 0.5*pi + i*log(iz + sqrt(1-z^2))
-      var temp1 = Complex.create(
+      var temp1 = new Complex(
           x.im * x.im - x.re * x.re + 1.0,
           -2.0 * x.re * x.im
       );
       var temp2 = math.sqrt(temp1);
       var temp3;
       if (temp2 instanceof Complex) {
-        temp3 = Complex.create(
+        temp3 = new Complex(
             temp2.re - x.im,
             temp2.im + x.re
         )
       }
       else {
-        temp3 = Complex.create(
+        temp3 = new Complex(
             temp2 - x.im,
             x.re
         )
@@ -7698,7 +7698,7 @@ module.exports = function (math) {
 
       // 0.5*pi = 1.5707963267948966192313216916398
       if (temp4 instanceof Complex) {
-        return Complex.create(
+        return new Complex(
             1.57079632679489661923 - temp4.im,
             temp4.re
         );
@@ -7765,7 +7765,7 @@ module.exports = function (math) {
       // asin(z) = -i*log(iz + sqrt(1-z^2))
       var re = x.re;
       var im = x.im;
-      var temp1 = Complex.create(
+      var temp1 = new Complex(
           im * im - re * re + 1.0,
           -2.0 * re * im
       );
@@ -7773,13 +7773,13 @@ module.exports = function (math) {
       var temp2 = math.sqrt(temp1);
       var temp3;
       if (temp2 instanceof Complex) {
-        temp3 = Complex.create(
+        temp3 = new Complex(
             temp2.re - im,
             temp2.im + re
         );
       }
       else {
-        temp3 = Complex.create(
+        temp3 = new Complex(
             temp2 - im,
             re
         );
@@ -7788,10 +7788,10 @@ module.exports = function (math) {
       var temp4 = math.log(temp3);
 
       if (temp4 instanceof Complex) {
-        return Complex.create(temp4.im, -temp4.re);
+        return new Complex(temp4.im, -temp4.re);
       }
       else {
-        return Complex.create(0, -temp4);
+        return new Complex(0, -temp4);
       }
     }
 
@@ -7846,20 +7846,20 @@ module.exports = function (math) {
       var im = x.im;
       var den = re * re + (1.0 - im) * (1.0 - im);
 
-      var temp1 = Complex.create(
+      var temp1 = new Complex(
           (1.0 - im * im - re * re) / den,
           (-2.0 * re) / den
       );
       var temp2 = math.log(temp1);
 
       if (temp2 instanceof Complex) {
-        return Complex.create(
+        return new Complex(
             -0.5 * temp2.im,
             0.5 * temp2.re
         );
       }
       else {
-        return Complex.create(
+        return new Complex(
             0,
             0.5 * temp2
         );
@@ -7978,7 +7978,7 @@ module.exports = function (math) {
 
     if (isComplex(x)) {
       // cos(z) = (exp(iz) + exp(-iz)) / 2
-      return Complex.create(
+      return new Complex(
           0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp(x.im)),
           0.5 * Math.sin(x.re) * (Math.exp(-x.im) - Math.exp(x.im))
       );
@@ -8040,7 +8040,7 @@ module.exports = function (math) {
       var den = Math.exp(-4.0 * x.im) -
           2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) + 1.0;
 
-      return Complex.create(
+      return new Complex(
           2.0 * Math.exp(-2.0 * x.im) * Math.sin(2.0 * x.re) / den,
           (Math.exp(-4.0 * x.im) - 1.0) / den
       );
@@ -8103,7 +8103,7 @@ module.exports = function (math) {
       var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) -
           0.5 * Math.cos(2.0 * x.re);
 
-      return Complex.create (
+      return new Complex (
           0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp(x.im)) / den,
           0.5 * Math.cos(x.re) * (Math.exp(-x.im) - Math.exp(x.im)) / den
       );
@@ -8165,7 +8165,7 @@ module.exports = function (math) {
       // sec(z) = 1/cos(z) = 2 / (exp(iz) + exp(-iz))
       var den = 0.25 * (Math.exp(-2.0 * x.im) + Math.exp(2.0 * x.im)) +
           0.5 * Math.cos(2.0 * x.re);
-      return Complex.create(
+      return new Complex(
           0.5 * Math.cos(x.re) * (Math.exp(-x.im) + Math.exp( x.im)) / den,
           0.5 * Math.sin(x.re) * (Math.exp( x.im) - Math.exp(-x.im)) / den
       );
@@ -8226,7 +8226,7 @@ module.exports = function (math) {
     }
 
     if (isComplex(x)) {
-      return Complex.create(
+      return new Complex(
           0.5 * Math.sin(x.re) * (Math.exp(-x.im) + Math.exp( x.im)),
           0.5 * Math.cos(x.re) * (Math.exp( x.im) - Math.exp(-x.im))
       );
@@ -8291,7 +8291,7 @@ module.exports = function (math) {
           2.0 * Math.exp(-2.0 * x.im) * Math.cos(2.0 * x.re) +
           1.0;
 
-      return Complex.create(
+      return new Complex(
           2.0 * Math.exp(-2.0 * x.im) * Math.sin(2.0 * x.re) / den,
           (1.0 - Math.exp(-4.0 * x.im)) / den
       );
@@ -10262,26 +10262,6 @@ function parseComplex () {
 }
 
 /**
- * Create a complex number from a provided real and imaginary number.
- * When the imaginary part is zero, a real number is returned instead of
- * a complex number. For example:
- *     Complex.create(2, 3);        // returns a Complex(2, 3)
- *     Complex.create(2, 0);        // returns a Number 2
- *
- * @param {Number} re
- * @param {Number} im
- * @return {Complex | Number} value
- */
-Complex.create = function create (re, im) {
-  if (im == 0) {
-    return re;
-  }
-  else {
-    return new Complex(re, im);
-  }
-};
-
-/**
  * Parse a complex number from a string. For example Complex.parse("2 + 3i")
  * will return a Complex value where re = 2, im = 3.
  * Returns null if provided string does not contain a valid complex number.
@@ -10447,7 +10427,6 @@ module.exports = Complex;
 // to trick my IDE which doesn't get it
 exports.isComplex = Complex.isComplex;
 exports.parse = Complex.parse;
-exports.create = Complex.create;
 
 util.types.addType('complex', Complex);
 
