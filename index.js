@@ -64,6 +64,7 @@ require('./lib/function/complex/im.js')(exports);
 // functions - construction
 require('./lib/function/construction/boolean.js')(exports);
 require('./lib/function/construction/complex.js')(exports);
+require('./lib/function/construction/index.js')(exports);
 require('./lib/function/construction/matrix.js')(exports);
 require('./lib/function/construction/number.js')(exports);
 require('./lib/function/construction/parser.js')(exports);
