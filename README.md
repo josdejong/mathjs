@@ -425,27 +425,6 @@ parser.eval('e = c(1, 0:end)');                 // Matrix, [[43, 50]]
 ```
 
 
-### Range
-
-A `Range` creates a range with a start, end, and optionally a step.
-The upper bound of the range is excluded.
-A `Range` can be used to create indexes to get or set submatrices.
-
-```js
-var math = require('math.js');
-
-math.factorial(math.range(1,6));                // Array,  [1, 2, 6, 24, 120]
-
-var a = math.matrix();                          // Matrix, []
-a.set([math.range('2:6')], [7, 2, 1, 5]);       // Matrix, [0, 7, 2, 1, 5]
-
-var b = math.range(2, -1, -3);                  // Range, 2:-1:-3
-var c = b.valueOf();                            // Array,  [2, 1, 0, -1, -2]
-
-var d = math.eval('3:8');                       // Range, 3:7
-```
-
-
 ## Constants
 
 Math.js has the following built-in constants.

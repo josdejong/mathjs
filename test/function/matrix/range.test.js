@@ -5,20 +5,24 @@ var assert = require('assert'),
 describe('range', function() {
 
   it('should parse a valid string correctly', function() {
-    assert.deepEqual(range('1:6').valueOf(), [1,2,3,4,5]);
-    assert.deepEqual(range('0:2:10').valueOf(), [0,2,4,6,8]);
-    assert.deepEqual(range('5:-1:0').valueOf(), [5,4,3,2,1]);
-    assert.deepEqual(range('2:-2:-3').valueOf(), [2,0,-2]);
+    assert.deepEqual(range('1:6'), [1,2,3,4,5]);
+    assert.deepEqual(range('0:2:10'), [0,2,4,6,8]);
+    assert.deepEqual(range('5:-1:0'), [5,4,3,2,1]);
+    assert.deepEqual(range('2:-2:-3'), [2,0,-2]);
   });
 
   it('should create a range start:1:end if called with 2 numbers', function() {
-    var a = range(1,6);
-    var b = range(a);
-    a.start = 3;
-    assert.deepEqual(a.valueOf(), [3,4,5]);
-    assert.deepEqual(b.valueOf(), [1,2,3,4,5]);
-    assert.deepEqual(range(1,6).valueOf(), [1,2,3,4,5]);
-    assert.deepEqual(range(6,1).valueOf(), []);
+    assert.deepEqual(range(3,6), [3,4,5]);
+    assert.deepEqual(range(1,6), [1,2,3,4,5]);
+    assert.deepEqual(range(1,6.1), [1,2,3,4,5,6]);
+    assert.deepEqual(range(1,5.9), [1,2,3,4,5]);
+    assert.deepEqual(range(6,1), []);
+  });
+
+  it('should create a range start:step:end if called with 3 numbers', function() {
+    assert.deepEqual(range(0,10,2), [0,2,4,6,8]);
+    assert.deepEqual(range(5,0,-1), [5,4,3,2,1]);
+    assert.deepEqual(range(2,-4,-2), [2,0,-2]);
   });
 
   it('should throw an error if called with an invalid string', function() {
@@ -35,12 +39,6 @@ describe('range', function() {
 
   it('should throw an error if called with a complex number', function() {
     assert.throws(function () {range(math.complex(2,3))}, TypeError);
-  });
-
-  it('should create a range start:step:end if called with 3 numbers', function() {
-    assert.deepEqual(range(0,10,2).valueOf(), [0,2,4,6,8]);
-    assert.deepEqual(range(5,0,-1).valueOf(), [5,4,3,2,1]);
-    assert.deepEqual(range(2,-4,-2).valueOf(), [2,0,-2]);
   });
 
   it('should throw an error if called with one invalid argument', function() {  

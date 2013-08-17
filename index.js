@@ -8,7 +8,15 @@ exports.expr.Scope = require('./lib/expr/Scope.js');
 exports.expr.Parser = require('./lib/expr/Parser.js');
 
 // types (Matrix, Complex, Unit, ...)
-exports.type = require('./lib/type/index.js');
+exports.type = {};
+exports.type.Complex = require('./lib/type/Complex.js');
+exports.type.Index = require('./lib/type/Index.js');
+exports.type.Matrix = require('./lib/type/Matrix.js');
+exports.type.Unit = require('./lib/type/Unit.js');
+exports.type.Help = require('./lib/type/Help.js');
+
+exports.collection = require('./lib/type/collection.js');
+
 
 // docs
 exports.docs = require('./lib/docs/index.js');
@@ -59,7 +67,6 @@ require('./lib/function/construction/complex.js')(exports);
 require('./lib/function/construction/matrix.js')(exports);
 require('./lib/function/construction/number.js')(exports);
 require('./lib/function/construction/parser.js')(exports);
-require('./lib/function/construction/range.js')(exports);
 require('./lib/function/construction/string.js')(exports);
 require('./lib/function/construction/unit.js')(exports);
 
@@ -70,6 +77,7 @@ require('./lib/function/matrix/diag.js')(exports);
 require('./lib/function/matrix/eye.js')(exports);
 require('./lib/function/matrix/inv.js')(exports);
 require('./lib/function/matrix/ones.js')(exports);
+require('./lib/function/matrix/range.js')(exports);
 require('./lib/function/matrix/size.js')(exports);
 require('./lib/function/matrix/squeeze.js')(exports);
 require('./lib/function/matrix/subset.js')(exports);
