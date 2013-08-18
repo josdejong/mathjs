@@ -45,11 +45,11 @@ print(e);                                   // [[5, 6], [1, 1]]
 
 // set a submatrix.
 // Matrix indexes are zero-based.
-e.set([1, [0, 1]], [[7, 8]]);
+e.set(math.index(1, [0, 2]), [[7, 8]]);
 print(e);                                   // [[5, 6], [7, 8]]
 var f = math.multiply(d, e);
 print(f);                                   // [[19, 22], [43, 50]]
-var g = f.get([1, 0]);
+var g = f.get(math.index(1, 0));
 print(g);                                   // 43
 console.log();
 
@@ -58,7 +58,7 @@ console.log();
 console.log('get a sub matrix');
 var h = math.diag(math.range(1,4));
 print(h);                                   // [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
-print(h.get([[1, 2], [1, 2]]));             // [[2, 0], [0, 3]]
+print(h.get(math.index([1, 3], [1, 3])));   // [[2, 0], [0, 3]]
 console.log();
 
 // resize a multi dimensional matrix
@@ -70,7 +70,7 @@ print(i.size());                            // [2, 2, 2]
 i.resize([2, 2]);
 print(i);                                   // [[0, 0], [0, 0]]
 print(i.size());                            // [2, 2]
-i.set([2, 1], 6);
+i.set(math.index(2, 1), 6);
 print(i);                                   // [[0, 0], [0, 0], [0, 6]]
 print(i.size());                            // [3, 2]
 console.log();

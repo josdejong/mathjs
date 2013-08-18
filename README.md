@@ -22,6 +22,13 @@ Powerful and easy to use.
 
 ## Install
 
+Math.js can be installed using npm, bower, or by just downloading the library.
+
+WARNING: math.js is in early stage and the API is not yet stabilized,
+so be careful when upgrading to a newer version.
+See [the history](https://github.com/josdejong/mathjs/blob/master/HISTORY.md)
+for an overview of the changes.
+
 ### npm
 Math.js can be installed using [npm](https://npmjs.org/):
 
@@ -301,7 +308,7 @@ math.select(3)
     .done(); // 5
 
 math.select( [[1, 2], [3, 4]] )
-    .set([1, 1], 8)
+    .set(math.index(1, 1), 8)
     .multiply(3)
     .done(); // [[24, 6], [9, 12]]
 ```
@@ -405,9 +412,9 @@ math.factorial(array);                          // Array,  [1, 2, 6, 24, 120]
 
 var a = [[1, 2], [3, 4]];                       // Array,  [[1, 2], [3, 4]]
 var b = math.matrix([[5, 6], [1, 1]]);          // Matrix, [[5, 6], [1, 1]]
-b.set([2, [1, 2]], [[7, 8]]);                   // Matrix, [[5, 6], [7, 8]]
+b.set(math.index(2, [1, 2]), [[7, 8]]);         // Matrix, [[5, 6], [7, 8]]
 var c = math.multiply(a, b);                    // Matrix, [[19, 22], [43, 50]]
-var d = c.get([1, 0]);                          // 43
+var d = c.get(math.index(1, 0));                // 43
 ```
 
 Matrices are supported by the parser:
@@ -519,10 +526,10 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 
 - math.boolean(x)
 - math.complex(re, im)
+- math.index(a, b, c, ...)
 - math.matrix(x)
 - math.number(x)
 - math.parser()
-- math.range(start, end [, step])
 - math.string(x)
 - math.unit(x)
 
@@ -534,6 +541,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.eye(m, n, p, ...)
 - math.inv(x)
 - math.ones(m, n, p, ...)
+- math.range(start, end [, step])
 - math.size(x)
 - math.squeeze(x)
 - math.subset(x, index [, replacement])
