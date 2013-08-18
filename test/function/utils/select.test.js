@@ -6,10 +6,10 @@ var assert = require('assert'),
 assert.ok(math.select(45) instanceof math.expr.Selector);
 assert.equal(math.select(3).add(4).subtract(2).done(), 5);
 assert.deepEqual(math.select(math.matrix([[1,2],[3,4]]))
-    .set([0,0], 8)
+    .set(math.index(0,0), 8)
     .multiply(3).done(), math.matrix([[24, 6], [9, 12]]));
 assert.deepEqual(math.select([[1,2],[3,4]])
-    .set([0,0], 8)
+    .set(math.index(0,0), 8)
     .multiply(3).done(), [[24, 6], [9, 12]]);
 assert.deepEqual(math.select().i.multiply(2).add(3).done(), math.complex(3, 2));
 assert.deepEqual(math.select().pi.divide(4).sin().pow(2).format().done(), 0.5);

@@ -319,8 +319,7 @@ describe('parser', function() {
   });
 
 
-  it('should parse undefined symbols, defining symbols, and removing symbols', function() {
-    var n;
+  it.skip('should parse undefined symbols, defining symbols, and removing symbols', function() {
     var n = parser.parse('q');
     assert.throws(function () { n.eval(); });
     parser.eval('q=33');
