@@ -301,7 +301,7 @@ math.select(3)
     .done(); // 5
 
 math.select( [[1, 2], [3, 4]] )
-    .set([1, 1], 8)
+    .set([0, 0], 8)
     .multiply(3)
     .done(); // [[24, 6], [9, 12]]
 ```
@@ -405,7 +405,7 @@ math.factorial(array);                          // Array,  [1, 2, 6, 24, 120]
 
 var a = [[1, 2], [3, 4]];                       // Array,  [[1, 2], [3, 4]]
 var b = math.matrix([[5, 6], [1, 1]]);          // Matrix, [[5, 6], [1, 1]]
-b.set([2, [1, 2]], [[7, 8]]);                   // Matrix, [[5, 6], [7, 8]]
+b.set([1, [0, 1]], [[7, 8]]);                   // Matrix, [[5, 6], [7, 8]]
 var c = math.multiply(a, b);                    // Matrix, [[19, 22], [43, 50]]
 var d = c.get([1, 0]);                          // 43
 ```
@@ -436,7 +436,7 @@ var math = require('math.js');
 math.factorial(math.range(1,5));                // Array,  [1, 2, 6, 24, 120]
 
 var a = math.matrix();                          // Matrix, []
-a.set([math.range('2:5')], [7, 2, 1, 5]);       // Matrix, [0, 7, 2, 1, 5]
+a.set([math.range('1:4')], [7, 2, 1, 5]);       // Matrix, [0, 7, 2, 1, 5]
 
 var b = math.range(2, -1, -2);                  // Range, 2:-1:-2
 var c = b.valueOf();                            // Array,  [2, 1, 0, -1, -2]
