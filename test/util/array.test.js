@@ -50,5 +50,8 @@ describe('util.array', function() {
 
   // TODO: test isArray
 
+  // TODO: test squeeze
+
+  // TODO: test unsqueeze
 
 });

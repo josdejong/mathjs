@@ -10,6 +10,7 @@ exports.expr.Parser = require('./lib/expr/Parser.js');
 // types (Matrix, Complex, Unit, ...)
 exports.type = {};
 exports.type.Complex = require('./lib/type/Complex.js');
+exports.type.Range = require('./lib/type/Range.js');
 exports.type.Index = require('./lib/type/Index.js');
 exports.type.Matrix = require('./lib/type/Matrix.js');
 exports.type.Unit = require('./lib/type/Unit.js');

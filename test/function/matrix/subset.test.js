@@ -24,7 +24,6 @@ assert.deepEqual(subset(b, [[0,1], 1]), matrix([[2],[4]]));
 assert.deepEqual(subset(b, [range(0,2), [1]]), matrix([[2],[4]]));
 assert.deepEqual(subset(b, [matrix([0,1]), [1]]), matrix([[2],[4]]));
 assert.deepEqual(subset(b, [1, 0]), 3);
-assert.deepEqual(subset(b, matrix([1, 0])), 3);
 
 assert.throws(function () {subset(b, [6, 0])}, RangeError);
 assert.throws(function () {subset(b, [1])}, RangeError);
