@@ -12,8 +12,8 @@ describe('squeeze', function() {
     assert.deepEqual(size(m), matrix([1,3,2]));
     assert.deepEqual(size(m.valueOf()), [1,3,2]);
     assert.deepEqual(size(squeeze(m)), matrix([3,2]));
-    m = math.ones(matrix([3,1,1]));
-    assert.deepEqual(size(m), matrix([3,1,1]));
+    m = math.ones(matrix([1,1,3]));
+    assert.deepEqual(size(m), matrix([1,1,3]));
     assert.deepEqual(size(squeeze(m)), matrix([3]));
     assert.deepEqual(squeeze(2.3), 2.3);
     assert.deepEqual(size(squeeze(math.range(1,6))), [5]);
