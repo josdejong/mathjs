@@ -26,7 +26,7 @@ describe('select', function() {
         .multiply(3).done(), [[24, 6], [9, 12]]);
   });
 
-  it('should ???', function() {
+  it('should not break with null as value', function() {
     assert.equal(math.select(null).add('').done(), 'null');
   });
 

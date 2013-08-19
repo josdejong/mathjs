@@ -43,6 +43,15 @@ describe('unit', function() {
 
   });
 
+  describe('toNumber', function() {
+    it ('convert a unit to a number', function () {
+      var u = math.unit(5000, 'cm');
+      assert.strictEqual(u.toNumber('mm'), 50000);
+
+      assert.strictEqual(math.format(math.unit('5.08 cm').toNumber('inch')), '2');
+    });
+  });
+
   describe('toString', function() {
 
     it('should convert to string properly', function() {
@@ -107,23 +116,6 @@ describe('unit', function() {
       assert.equal(unit1.unit.name, 'g');
       assert.equal(unit1.prefix.name, 'm');
 
-    });
-
-  });
-
-  describe('in', function() {
-
-    it('??? isnt it already tested in function/units', function() {
-      // test unit.in and unit.as
-      var u = math.unit(5000, 'cm');
-      assert.equal(u.toString(), '50 m');
-      var u2 = u.in('mm');
-      assert.equal(u2.toString(), '50000 mm');
-      assert.strictEqual(u.toNumber('mm'), 50000);
-      assert.throws( function () {u.in('5mm'); });
-      var u3 = math.unit('5.08 cm').in('inch');
-      assert.equal(u3.toString(), '2 inch');
-      assert.strictEqual(math.format(math.unit('5.08 cm').toNumber('inch')), '2');
     });
 
   });

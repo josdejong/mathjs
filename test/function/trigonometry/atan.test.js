@@ -47,7 +47,7 @@ describe('atan', function() {
     assert.throws(function () {atan('string')});
   });
 
-  it('should ???', function() {
+  it('should calculate the arctan element-wise for arrays and matrices', function() {
     // matrix, array, range
     var atan123 = [0.785398163397448, 1.107148717794090, 1.249045772398254];
     approx.deepEqual(atan([1,2,3]), atan123);

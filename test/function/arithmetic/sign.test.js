@@ -16,7 +16,7 @@ describe('sign', function() {
     assert.equal(math.sign(0), 0);
   });
 
-  it('???', function() {
+  it('should calculate the sign of a complex value', function() {
     assert.equal(math.sign(math.complex(2,-3)).toString(), '0.5547 - 0.83205i');
   });
 

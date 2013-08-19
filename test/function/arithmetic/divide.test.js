@@ -70,7 +70,7 @@ describe('divide', function() {
     assert.deepEqual(divide([], 2), []);
   }); 
 
-  it('??? 1', function() {
+  it('should divide 1 over a matrix (matrix inverse)', function() {
     assert.deepEqual(math.format(divide(1, [
       [ 1, 4,  7],
       [ 3, 0,  5],
@@ -88,7 +88,7 @@ describe('divide', function() {
     assert.deepEqual(divide(a, b), math.matrix([[3,-2], [2,-1]]));
   });
 
-  it('??? 2', function() {
+  it('should divide a matrix by a matrix containing a scalar', function() {
     assert.throws(function () {divide(a, [[1]])});
   });
 

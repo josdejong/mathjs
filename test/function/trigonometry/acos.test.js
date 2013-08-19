@@ -45,7 +45,7 @@ describe('acos', function() {
     assert.throws(function () {acos('string')});
   });
 
-  it('should ???', function() {
+  it('should calculate the arccos element-wise for arrays and matrices', function() {
     // note: the results of acos(2) and acos(3) differs in octave
     // the next tests are verified with mathematica
     var acos123 = [0, complex(0, 1.316957896924817), complex(0, 1.762747174039086)];

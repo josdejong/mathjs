@@ -23,7 +23,7 @@ describe('atan2', function() {
 
   var re, im;
 
-  it('should ???', function() {
+  it('should calculate atan2 correctly', function() {
     approx.equal(atan2(0, 0) / pi, 0);
     approx.equal(atan2(0, 1) / pi, 0);
     approx.equal(atan2(1, 1) / pi, 0.25);
@@ -47,7 +47,7 @@ describe('atan2', function() {
     assert.throws(function () {atan2(unit('5cm'), 1)});
   });
 
-  it('should ???', function() {
+  it('should calculate the atan2 element-wise for arrays and matrices', function() {
     // array, matrix, range
     approx.deepEqual(divide(atan2([1,0,-1], [1,0,-1]), pi), [0.25, 0, -0.75]);
     approx.deepEqual(divide(atan2(

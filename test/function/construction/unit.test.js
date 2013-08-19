@@ -4,6 +4,9 @@ var assert = require('assert'),
 
 describe('unit', function() {
 
+  it ('should construct a unit', function () {
+  });
+
   it('should parse a valid string to a unit', function() {
     assert.deepEqual(unit('5 cm').toString(), '50 mm');
     assert.deepEqual(unit('5000 cm').toString(), '50 m');

@@ -54,7 +54,7 @@ describe('edivide', function() {
     assert.deepEqual(edivide([], 2), []);
   });
 
-  it('??? 1', function() {
+  it('should divide 1 over a matrix element-wise', function() {
     approx.deepEqual(math.format(edivide(1, [
       [ 1, 4,  7],
       [ 3, 0,  5],
@@ -72,7 +72,7 @@ describe('edivide', function() {
     assert.deepEqual(edivide(a, b), math.matrix([[1/5, 2/6], [3/7,4/8]]));
   });
 
-  it('??? 2', function() {
+  it('should throw an error when dividing element-wise by a matrix with differing size', function() {
     assert.throws(function () {edivide(a, [[1]])});
   });
 

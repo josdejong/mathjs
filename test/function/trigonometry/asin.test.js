@@ -47,7 +47,7 @@ describe('asin', function() {
     assert.throws(function () {asin('string')});
   });
 
-  it('should ???', function() {
+  it('should calculate the arcsin element-wise for arrays and matrices', function() {
     // note: the results of asin(2) and asin(3) differs in octave
     // the next tests are verified with mathematica
     var asin123 = [

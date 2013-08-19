@@ -11,6 +11,7 @@ describe('parse', function() {
 
   it('should parse arithmetic operations', function() {
     assert.equal(math.parse('(2+3)/4').eval(), 1.25);
+    assert.equal(math.parse('0 + 2').toString(), 'ans = 0 + 2');
   });
 
   it('should parse functions', function() {
@@ -81,10 +82,15 @@ describe('parse', function() {
     assert.deepEqual(math.parse('hello("jos")', scope).eval(), 'hello, jos!');
   });
 
-  it('should ???', function() {
+  it('should parse zero', function() {
     assert.equal(math.parse('0').toString(), 'ans = 0');
-    assert.equal(math.parse('0 + 2').toString(), 'ans = 0 + 2');
+  });
+
+  it('should parse a string', function() {
     assert.equal(math.parse('"hello"').toString(), 'ans = "hello"');
+  });
+
+  it('should parse a matrix', function() {
     assert.equal(math.parse('[1, 2 + 3i, 4]').toString(), 'ans = [[1, 2 + 3i, 4]]');
   });
 

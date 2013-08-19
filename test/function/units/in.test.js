@@ -44,6 +44,10 @@ describe('in', function() {
     assert.throws(function () {math.in(unit('20 kg'), unit('m'), unit('cm'))});
   });
 
+  it('should throw an error if called with a non-plain unit', function() {
+    assert.throws( function () {math.unit(5000, 'cm').in('5mm'); });
+  });
+
   it('should throw an error if called with a number', function() {
     assert.throws(function () {math.in(5, unit('m'))}, TypeError);
     assert.throws(function () {math.in(unit('5cm'), 2)}, TypeError);

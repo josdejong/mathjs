@@ -84,15 +84,21 @@ describe('pow', function() {
     assert.throws(function () {pow('text')});
   });
 
-  it('???', function() {
+  it('should raise a square matrix to the power 2', function() {
     var a = [[1,2],[3,4]];
     var res = [[7,10],[15,22]];
     approx.deepEqual(pow(a, 2), res);
     approx.deepEqual(pow(matrix(a), 2), matrix(res));
+  });
 
+  it('should throw an error when calculating the power of a non square matrix', function() {
     assert.throws(function () {pow([1,2,3,4],2);});
     assert.throws(function () {pow([[1,2,3],[4,5,6]],2);});
     assert.throws(function () {pow([[1,2,3],[4,5,6]],2);});
+  });
+
+  it('should throw an error when raising a matrix to a non-integer power', function() {
+    var a = [[1,2],[3,4]];
     assert.throws(function () {pow(a, 2.5);});
     assert.throws(function () {pow(a, [2,3]);});
   });

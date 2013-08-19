@@ -2,9 +2,9 @@
 var assert = require('assert');
 var math = require('../../../index.js');
 
-describe('format ???', function() {
+describe('format', function() {
 
-  it('should ???', function() {
+  it('should format numbers', function() {
     assert.equal(math.format(2/7), '0.28571');
     assert.equal(math.format(0.10400), '0.104');
     assert.equal(math.format(1000), '1000');
@@ -24,19 +24,30 @@ describe('format ???', function() {
     assert.equal(math.format(2.3e6), '2.3e6');
   });
 
-  it('should ???', function() {
+  it('should format numbers with correct number of digits', function() {
     assert.equal(math.format(math.eval('1000.000')), '1000');
     assert.equal(math.format(math.eval('1000.0010')), '1000'); // rounded off at 5 digits
-    assert.equal(math.format('hello'), '"hello"');
     assert.equal(math.format(math.pi), '3.1416');
     assert.equal(math.format(math.pi * 10000), '31416');
     assert.equal(math.format(math.pi / 100), '0.031416');
     assert.equal(math.format(math.e), '2.7183');
+  });
+
+  it('should format strings', function() {
+    assert.equal(math.format('hello'), '"hello"');
+  });
+
+  it('should format arrays', function() {
     assert.equal(math.format([[1,2],[3,4]]), '[[1, 2], [3, 4]]');
     assert.equal(math.format([[1,2/7],['hi', math.complex(2,3)]]),
         '[[1, 0.28571], ["hi", 2 + 3i]]');
-    assert.equal(math.format(math.divide(math.complex(2,5),3)), '0.66667 + 1.6667i');
+  });
 
+  it('should format complex values', function() {
+    assert.equal(math.format(math.divide(math.complex(2,5),3)), '0.66667 + 1.6667i');
+  });
+
+  it('should format a string with template values', function() {
     assert.equal(math.format('hello, $name!', {name: 'user'}), 'hello, user!');
     assert.equal(math.format('hello, $name.first $name.last!',
         {name: {first: 'first', last: 'last'}}),

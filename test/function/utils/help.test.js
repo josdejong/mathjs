@@ -2,9 +2,9 @@ var assert = require('assert');
 var math = require('../../../index.js');
 var prop;
 
-describe('help ???', function() {
+describe('help', function() {
 
-  it('should ???', function() {
+  it('should contain documentation for all available functions', function() {
     var help = math.help('sin');
     assert.ok(help instanceof math.type.Help);
     assert.deepEqual(help.doc, math.docs.sin);
