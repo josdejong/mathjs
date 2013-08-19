@@ -19,10 +19,10 @@ describe('select', function() {
 
   it('should chain operations with matrices', function() {
     assert.deepEqual(math.select(math.matrix([[1,2],[3,4]]))
-        .set([0,0], 8)
+        .set(math.index(0,0), 8)
         .multiply(3).done(), math.matrix([[24, 6], [9, 12]]));
     assert.deepEqual(math.select([[1,2],[3,4]])
-        .set([0,0], 8)
+        .set(math.index(0,0), 8)
         .multiply(3).done(), [[24, 6], [9, 12]]);
   });
 

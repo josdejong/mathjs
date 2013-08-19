@@ -103,7 +103,7 @@ describe('unit', function() {
       assert.equal(unit1.prefix.name, 'k');
 
       unit1 = math.unit('-5mg');
-      assert.equal(unit1.value, -5);
+      assert.equal(unit1.value, -0.000005);
       assert.equal(unit1.unit.name, 'g');
       assert.equal(unit1.prefix.name, 'm');
 
