@@ -1,55 +1,132 @@
-// test data type Unit
-
 var assert = require('assert');
 var math = require('../../index.js');
 
+describe('unit', function() {
 
-var unit1 = math.unit(5000, 'cm');
-assert.equal(unit1.toString(), '50 m');
-assert.equal(math.unit(5, 'kg').toString(), '5 kg');
-assert.equal(math.unit('5kg').toString(), '5 kg');
-assert.equal(math.unit('5 kg').toString(), '5 kg');
-assert.equal(math.unit(' 5 kg ').toString(), '5 kg');
-assert.equal(math.unit('5e-3kg').toString(), '5 g');
-assert.equal(math.unit('5e+3kg').toString(), '5 Mg');
-assert.equal(math.unit('-5kg').toString(), '-5 kg');
-assert.equal(math.unit('-5mg').toString(), '-5 mg');
-assert.equal(math.unit(null, 'kg').toString(), 'kg');
+  describe('constructor', function() {
 
-assert.throws(function () { Unit(2, 'inch'); });
-assert.throws(function () { new Unit('24', 'inch'); });
-assert.throws(function () { new Unit(0, 'bla'); });
-assert.throws(function () { new Unit(0, 3); });
+    it('should create unit correctly', function() {
+      var unit1 = math.unit(5000, 'cm');
+      assert.equal(unit1.value, 50);
+      assert.equal(unit1.unit.name, 'm');
 
-assert.equal(math.type.Unit.isPlainUnit('bla'), false);
-assert.equal(math.type.Unit.isPlainUnit('cm'), true);
-assert.equal(math.type.Unit.isPlainUnit('inch'), true);
-assert.equal(math.type.Unit.isPlainUnit('kb'), true);
-assert.equal(math.type.Unit.isPlainUnit('5cm'), false);
+      unit1 = math.unit(5, 'kg');
+      assert.equal(unit1.value, 5);
+      assert.equal(unit1.unit.name, 'g');
 
-// test unit.in and unit.as
-var u = math.unit(5000, 'cm');
-assert.equal(u.toString(), '50 m');
-var u2 = u.in('mm');
-assert.equal(u2.toString(), '50000 mm');
-assert.strictEqual(u.toNumber('mm'), 50000);
-assert.throws( function () {u.in('5mm'); });
-var u3 = math.unit('5.08 cm').in('inch');
-assert.equal(u3.toString(), '2 inch');
-assert.strictEqual(math.format(math.unit('5.08 cm').toNumber('inch')), '2');
+      unit1 = math.unit(null, 'kg');
+      assert.equal(unit1.value, null);
+      assert.equal(unit1.unit.name, 'g');
+    });
 
-// test calculation of best prefix
-assert.equal(math.unit('0.001m').toString(), '1 mm');
-assert.equal(math.unit('0.01m').toString(), '10 mm');
-assert.equal(math.unit('0.1m').toString(), '100 mm');
-assert.equal(math.unit('0.5m').toString(), '500 mm');
-assert.equal(math.unit('0.6m').toString(), '0.6 m');
-assert.equal(math.unit('1m').toString(), '1 m');
-assert.equal(math.unit('10m').toString(), '10 m');
-assert.equal(math.unit('100m').toString(), '100 m');
-assert.equal(math.unit('300m').toString(), '300 m');
-assert.equal(math.unit('500m').toString(), '500 m');
-assert.equal(math.unit('600m').toString(), '0.6 km');
-assert.equal(math.unit('1000m').toString(), '1 km');
+    it('should throw an error if called with wrong arguments', function() {
+      assert.throws(function () { Unit(2, 'inch'); });
+      assert.throws(function () { new Unit('24', 'inch'); });
+      assert.throws(function () { new Unit(0, 'bla'); });
+      assert.throws(function () { new Unit(0, 3); });
+    });
 
-// TODO: extensively test Unit
+  });
+
+  describe('isPlainUnit', function() {
+
+    it('should return true if the string is a plain unit', function() {
+      assert.equal(math.type.Unit.isPlainUnit('cm'), true);
+      assert.equal(math.type.Unit.isPlainUnit('inch'), true);
+      assert.equal(math.type.Unit.isPlainUnit('kb'), true);
+    });
+
+    it('should return false if the unit is not a plain unit', function() {
+      assert.equal(math.type.Unit.isPlainUnit('bla'), false);
+      assert.equal(math.type.Unit.isPlainUnit('5cm'), false);  
+    });
+
+  });
+
+  describe('toString', function() {
+
+    it('should convert to string properly', function() {
+      assert.equal(math.unit(5000, 'cm').toString(), '50 m');
+      assert.equal(math.unit(5, 'kg').toString(), '5 kg');
+    });
+
+    it('should render with the best prefix', function() {
+      assert.equal(math.unit('0.001m').toString(), '1 mm');
+      assert.equal(math.unit('0.01m').toString(), '10 mm');
+      assert.equal(math.unit('0.1m').toString(), '100 mm');
+      assert.equal(math.unit('0.5m').toString(), '500 mm');
+      assert.equal(math.unit('0.6m').toString(), '0.6 m');
+      assert.equal(math.unit('1m').toString(), '1 m');
+      assert.equal(math.unit('10m').toString(), '10 m');
+      assert.equal(math.unit('100m').toString(), '100 m');
+      assert.equal(math.unit('300m').toString(), '300 m');
+      assert.equal(math.unit('500m').toString(), '500 m');
+      assert.equal(math.unit('600m').toString(), '0.6 km');
+      assert.equal(math.unit('1000m').toString(), '1 km');
+    });
+
+  });
+
+  describe('parse', function() {
+
+    it('should parse units correctly', function() {
+      var unit1;
+
+      unit1 = math.unit('5kg');
+      assert.equal(unit1.value, 5);
+      assert.equal(unit1.unit.name, 'g');
+      assert.equal(unit1.prefix.name, 'k');
+
+      unit1 = math.unit('5 kg');
+      assert.equal(unit1.value, 5);
+      assert.equal(unit1.unit.name, 'g');
+      assert.equal(unit1.prefix.name, 'k');
+
+      unit1 = math.unit(' 5 kg ');
+      assert.equal(unit1.value, 5);
+      assert.equal(unit1.unit.name, 'g');
+      assert.equal(unit1.prefix.name, 'k');
+
+      unit1 = math.unit('5e-3kg');
+      assert.equal(unit1.value, 0.005);
+      assert.equal(unit1.unit.name, 'g');
+      assert.equal(unit1.prefix.name, 'k');
+
+      unit1 = math.unit('5e+3kg');
+      assert.equal(unit1.value, 5000);
+      assert.equal(unit1.unit.name, 'g');
+      assert.equal(unit1.prefix.name, 'k');
+
+      unit1 = math.unit('-5kg');
+      assert.equal(unit1.value, -5);
+      assert.equal(unit1.unit.name, 'g');
+      assert.equal(unit1.prefix.name, 'k');
+
+      unit1 = math.unit('-5mg');
+      assert.equal(unit1.value, -0.000005);
+      assert.equal(unit1.unit.name, 'g');
+      assert.equal(unit1.prefix.name, 'm');
+
+    });
+
+  });
+
+  describe('in', function() {
+
+    it('??? isnt it already tested in function/units', function() {
+      // test unit.in and unit.as
+      var u = math.unit(5000, 'cm');
+      assert.equal(u.toString(), '50 m');
+      var u2 = u.in('mm');
+      assert.equal(u2.toString(), '50000 mm');
+      assert.strictEqual(u.toNumber('mm'), 50000);
+      assert.throws( function () {u.in('5mm'); });
+      var u3 = math.unit('5.08 cm').in('inch');
+      assert.equal(u3.toString(), '2 inch');
+      assert.strictEqual(math.format(math.unit('5.08 cm').toNumber('inch')), '2');
+    });
+
+  });
+
+    // TODO: extensively test Unit
+});
