@@ -127,7 +127,7 @@ describe('parser', function() {
   });
 
 
-  it.skip('should parse matrices', function() {
+  it('should parse matrices', function() {
     parser.set('a', matrix([
       [1,2,3],
       [4,5,6],
@@ -149,7 +149,7 @@ describe('parser', function() {
   });
 
 
-  it.skip('should parse matrix resizings', function() {
+  it('should parse matrix resizings', function() {
     assert.deepEqual(parser.eval('a = []'),    matrix([]));
     assert.deepEqual(parser.eval('a(0:3,0) = [1;2;3]'), matrix([[1],[2],[3]]));
     assert.deepEqual(parser.eval('a(:,1) = [4;5;6]'), matrix([[1,4],[2,5],[3,6]]));
@@ -183,7 +183,7 @@ describe('parser', function() {
   });
 
 
-  it.skip('should get/set the matrix correctly', function() {
+  it('should get/set the matrix correctly', function() {
     parser.eval('a=[1,2;3,4]');
     parser.eval('a(0,0) = 100');
     assert.deepEqual(parser.get('a').size(), [2,2]);
@@ -192,7 +192,7 @@ describe('parser', function() {
     assert.deepEqual(parser.get('a').size(), [3,3]);
     assert.deepEqual(parser.get('a').valueOf(), [[100,2,0],[3,10,11],[0,12,13]]);
     var a = parser.get('a');
-    assert.deepEqual(a.get([math.range('0:3'), math.range('0:2')]).valueOf(), [[100,2],[3,10],[0,12]]);
+    assert.deepEqual(a.get(math.index([0,3], [0,2])).valueOf(), [[100,2],[3,10],[0,12]]);
     assert.deepEqual(parser.eval('a(0:3,0:2)').valueOf(), [[100,2],[3,10],[0,12]]);
 
     parser.set('b', [[1,2],[3,4]]);
@@ -200,7 +200,7 @@ describe('parser', function() {
   });
 
 
-  it.skip('should get/set the matrix correctly for 3d matrices', function() {
+  it('should get/set the matrix correctly for 3d matrices', function() {
     assert.deepEqual(parser.eval('f=[1,2;3,4]'), matrix([[1,2],[3,4]]));
     assert.deepEqual(parser.eval('size(f)'), matrix([2,2]));
     /* TODO: doesn't work correctly
@@ -319,7 +319,7 @@ describe('parser', function() {
   });
 
 
-  it.skip('should parse undefined symbols, defining symbols, and removing symbols', function() {
+  it('should parse undefined symbols, defining symbols, and removing symbols', function() {
     var n = parser.parse('q');
     assert.throws(function () { n.eval(); });
     parser.eval('q=33');
