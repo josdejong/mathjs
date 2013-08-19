@@ -21,7 +21,7 @@ var assertUniformDistribution = function(values, min, max) {
     count = _.filter(values, function(val) {
       return val >= (min + i * interval) && val < (min + (i + 1) * interval)
     }).length;
-    assertApproxEqual(count/values.length, 0.1, 0.03);
+    assertApproxEqual(count/values.length, 0.1, 0.02);
   }
 };
 
@@ -39,17 +39,21 @@ var assertUniformDistributionInt = function(values, min, max) {
 };
 
 describe('distribution', function () {
-  var originalRandom;
+  var originalRandom, uniformDistrib;
 
   before(function () {
     // replace the original Math.random with a reproducible one
     originalRandom = Math.random;
-    Math.random = seed('someconstantkey');
+    Math.random = seed('key');
   });
 
   after(function () {
     // restore the original random function
     Math.random = originalRandom;
+  });
+
+  beforeEach(function() {
+    uniformDistrib = math.distribution('uniform')
   });
 
   describe('random', function() {
@@ -59,7 +63,7 @@ describe('distribution', function () {
       var picked = [], count;
 
       _.times(1000, function() {
-        picked.push(math.random())
+        picked.push(uniformDistrib.random())
       });
       assertUniformDistribution(picked, 0, 1);
     });
@@ -69,7 +73,7 @@ describe('distribution', function () {
       var picked = [], count;
 
       _.times(1000, function() {
-        picked.push(math.random(-10, 10));
+        picked.push(uniformDistrib.random(-10, 10));
       });
       assertUniformDistribution(picked, -10, 10);
     });
@@ -81,7 +85,7 @@ describe('distribution', function () {
           count, matrix;
 
       _.times(100, function() {
-        matrices.push(math.random(size));
+        matrices.push(uniformDistrib.random(size));
       });
 
       // Collect all values in one array
@@ -103,7 +107,7 @@ describe('distribution', function () {
           matrix;
 
       _.times(100, function() {
-        matrices.push(math.random(size, -103, 8));
+        matrices.push(uniformDistrib.random(size, -103, 8));
       });
 
       // Collect all values in one array
@@ -118,8 +122,8 @@ describe('distribution', function () {
     });
 
     it('should throw an error if called with invalid arguments', function() {
-      assert.throws(function() { math.random(1, 2, [4, 8]); });
-      assert.throws(function() { math.random(1, 2, 3, 6); });
+      assert.throws(function() { uniformDistrib.random(1, 2, [4, 8]); });
+      assert.throws(function() { uniformDistrib.random(1, 2, 3, 6); });
     });
 
   });
@@ -130,7 +134,7 @@ describe('distribution', function () {
       var picked = [];
 
       _.times(10000, function() {
-        picked.push(math.randomInt(-15, -5));
+        picked.push(uniformDistrib.randomInt(-15, -5));
       });
 
       assertUniformDistributionInt(picked, -15, -5);
@@ -142,7 +146,7 @@ describe('distribution', function () {
           size = [2, 3, 4];
 
       _.times(1000, function() {
-        matrices.push(math.randomInt(size, -14.9, -2));
+        matrices.push(uniformDistrib.randomInt(size, -14.9, -2));
       });
 
       // Collect all values in one array
@@ -158,11 +162,11 @@ describe('distribution', function () {
 
     it('should throw an error if called with invalid arguments', function() {
       assert.throws(function() {
-        math.randomInt(1, 2, [4, 8]);
+        uniformDistrib.randomInt(1, 2, [4, 8]);
       });
 
       assert.throws(function() {
-        math.randomInt(1, 2, 3, 6);
+        uniformDistrib.randomInt(1, 2, 3, 6);
       });
     });
 
@@ -176,7 +180,7 @@ describe('distribution', function () {
           count;
 
       _.times(1000, function() {
-        picked.push(math.pickRandom(possibles));
+        picked.push(uniformDistrib.pickRandom(possibles));
       });
 
       count = _.filter(picked, function(val) { return val === 11 }).length;
