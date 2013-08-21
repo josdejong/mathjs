@@ -424,11 +424,11 @@ parser = math.parser();
 
 parser.eval('a = [1, 2; 3, 4]');                // Matrix, [[1, 2], [3, 4]]
 parser.eval('b = zeros(2, 2)');                 // Matrix, [[0, 0], [0, 0]]
-parser.eval('b(0, 0:1) = [5, 6]');              // Matrix, [[5, 6], [0, 0]]
-parser.eval('b(1, :) = [7, 8]');                // Matrix, [[5, 6], [7, 8]]
+parser.eval('b[0, 0:1] = [5, 6]');              // Matrix, [[5, 6], [0, 0]]
+parser.eval('b[1, :] = [7, 8]');                // Matrix, [[5, 6], [7, 8]]
 parser.eval('c = a * b');                       // Matrix, [[19, 22], [43, 50]]
-parser.eval('d = c(1, 0)');                     // 43
-parser.eval('e = c(1, 0:end)');                 // Matrix, [[43, 50]]
+parser.eval('d = c[1, 0]');                     // 43
+parser.eval('e = c[1, 0:end]');                 // Matrix, [[43, 50]]
 ```
 
 

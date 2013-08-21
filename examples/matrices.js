@@ -87,9 +87,9 @@ console.log('use the expression parser');
 var parser = math.parser();
 print(parser.eval('d = [1, 2; 3, 4]'));     // [[1, 2], [3, 4]]
 print(parser.eval('e = zeros(2, 2)'));      // [[0, 0], [0, 0]]
-print(parser.eval('e(0, 0:2) = [5, 6]'));   // [[5, 6], [0, 0]]
-print(parser.eval('e(1, :) = [7, 8]'));     // [[5, 6], [7, 8]]
+print(parser.eval('e[0, 0:2] = [5, 6]'));   // [[5, 6], [0, 0]]
+print(parser.eval('e[1, :] = [7, 8]'));     // [[5, 6], [7, 8]]
 print(parser.eval('f = d * e'));            // [[19, 22], [43, 50]]
-print(parser.eval('g = f(1, 0)'));          // 43
-print(parser.eval('g = f(:, 0)'));          // [[19], [43]]
+print(parser.eval('g = f[1, 0]'));          // 43
+print(parser.eval('g = f[:, 0]'));          // [[19], [43]]
 console.log();
