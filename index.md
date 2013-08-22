@@ -92,22 +92,27 @@ The latest version of math.js can be downloaded below:
     <tr>
         <td>
             <a href="js/lib/math.js" target="_blank">Development
-                (version <span class="version">0.11.1</span>)</a>
+                (version <span class="version">0.12.0</span>)</a>
         </td>
         <td>
-            <span id="development-size">319 kB</span>, uncompressed with comments
+            <span id="development-size">368 kB</span>, uncompressed with comments
         </td>
     </tr>
     <tr>
         <td>
             <a href="js/lib/math.min.js" target="_blank">Production
-                (version <span class="version">0.11.1</span>)</a>
+                (version <span class="version">0.12.0</span>)</a>
         </td>
         <td>
-            <span id="production-size">25 kB</span>, minified and gzipped
+            <span id="production-size">32 kB</span>, minified and gzipped
         </td>
     </tr>
 </table>
+
+Math.js is in early stage and the API is not yet stabilized.
+Please be careful when upgrading to a newer version.
+An overview of the changes is available
+[here](https://github.com/josdejong/mathjs/blob/master/HISTORY.md).
 
 
 # Documentation and source code
