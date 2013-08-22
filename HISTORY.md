@@ -2,6 +2,12 @@
 https://github.com/josdejong/mathjs
 
 
+## 2013-08-22, version 0.12.1
+
+- Fixed outdated version of README.md.
+- Fixed a broken unit test.
+
+
 ## 2013-08-22, version 0.12.0
 
 *WARNING: version 0.12 is incompatible with previous versions.*

@@ -11,7 +11,7 @@ Powerful and easy to use.
 ## Features
 
 - Supports numbers, complex numbers, units, strings, arrays, and matrices.
-- Is compatible with JavaScript’s built-in Math library.
+- Is compatible with JavaScript's built-in Math library.
 - Contains a flexible expression parser.
 - Supports chained operations.
 - Comes with a large set of built-in functions and constants.
@@ -21,6 +21,13 @@ Powerful and easy to use.
 
 
 ## Install
+
+Math.js can be installed using npm, bower, or by just downloading the library.
+
+WARNING: math.js is in early stage and the API is not yet stabilized.
+Please be careful when upgrading to a newer version.
+An overview of the changes is available
+[here](https://github.com/josdejong/mathjs/blob/master/HISTORY.md).
 
 ### npm
 Math.js can be installed using [npm](https://npmjs.org/):
@@ -301,7 +308,7 @@ math.select(3)
     .done(); // 5
 
 math.select( [[1, 2], [3, 4]] )
-    .set([0, 0], 8)
+    .set(math.index(0, 0), 8)
     .multiply(3)
     .done(); // [[24, 6], [9, 12]]
 ```
@@ -393,8 +400,10 @@ utility methods for easy matrix manipulation such as `get`, `set`, `size`,
 `resize`, `clone`, and more.
 
 Matrix indexes in math.js are zero-based, like most programming languages
-including JavaScript itself. Note that mathematical applications like Matlab
-and Octave use one-based indexes.
+including JavaScript itself.
+The lower-bound of a range is included, the upper-bound is excluded.
+Note that mathematical applications like Matlab and Octave work differently,
+as they use one-based indexes and include the upper-bound of a range.
 
 ```js
 var matrix = math.matrix([1, 4, 9, 16, 25]);    // Matrix, [1, 4, 9, 16, 25]
@@ -405,9 +414,9 @@ math.factorial(array);                          // Array,  [1, 2, 6, 24, 120]
 
 var a = [[1, 2], [3, 4]];                       // Array,  [[1, 2], [3, 4]]
 var b = math.matrix([[5, 6], [1, 1]]);          // Matrix, [[5, 6], [1, 1]]
-b.set([1, [0, 1]], [[7, 8]]);                   // Matrix, [[5, 6], [7, 8]]
+b.set(math.index(2, [1, 3]), [[7, 8]]);         // Matrix, [[5, 6], [7, 8]]
 var c = math.multiply(a, b);                    // Matrix, [[19, 22], [43, 50]]
-var d = c.get([1, 0]);                          // 43
+var d = c.get(math.index(1, 0));                // 43
 ```
 
 Matrices are supported by the parser:
@@ -417,31 +426,11 @@ parser = math.parser();
 
 parser.eval('a = [1, 2; 3, 4]');                // Matrix, [[1, 2], [3, 4]]
 parser.eval('b = zeros(2, 2)');                 // Matrix, [[0, 0], [0, 0]]
-parser.eval('b(0, 0:1) = [5, 6]');              // Matrix, [[5, 6], [0, 0]]
-parser.eval('b(1, :) = [7, 8]');                // Matrix, [[5, 6], [7, 8]]
+parser.eval('b[0, 0:2] = [5, 6]');              // Matrix, [[5, 6], [0, 0]]
+parser.eval('b[1, :] = [7, 8]');                // Matrix, [[5, 6], [7, 8]]
 parser.eval('c = a * b');                       // Matrix, [[19, 22], [43, 50]]
-parser.eval('d = c(1, 0)');                     // 43
-parser.eval('e = c(1, 0:end)');                 // Matrix, [[43, 50]]
-```
-
-
-### Range
-
-A `Range` creates a range with a start, end, and optionally a step.
-A `Range` can be used to create indexes to get or set submatrices.
-
-```js
-var math = require('math.js');
-
-math.factorial(math.range(1,5));                // Array,  [1, 2, 6, 24, 120]
-
-var a = math.matrix();                          // Matrix, []
-a.set([math.range('1:4')], [7, 2, 1, 5]);       // Matrix, [0, 7, 2, 1, 5]
-
-var b = math.range(2, -1, -2);                  // Range, 2:-1:-2
-var c = b.valueOf();                            // Array,  [2, 1, 0, -1, -2]
-
-var d = math.eval('3:7');                       // Range, 3:7
+parser.eval('d = c[1, 0]');                     // 43
+parser.eval('e = c[1, 0:end]');                 // Matrix, [[43, 50]]
 ```
 
 
@@ -539,10 +528,10 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 
 - math.boolean(x)
 - math.complex(re, im)
+- math.index(a, b, c, ...)
 - math.matrix(x)
 - math.number(x)
 - math.parser()
-- math.range(start [, step] , end)
 - math.string(x)
 - math.unit(x)
 
@@ -554,6 +543,7 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.eye(m, n, p, ...)
 - math.inv(x)
 - math.ones(m, n, p, ...)
+- math.range(start, end [, step])
 - math.size(x)
 - math.squeeze(x)
 - math.subset(x, index [, replacement])
@@ -563,7 +553,10 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 ### Probability
 
 - math.factorial(x)
-- math.random()
+- math.random([min, max])
+- math.randomInt([min, max])
+- math.pickRandom([min, max])
+- math.distribution(name)
 
 ### Statistics
 
@@ -725,8 +718,10 @@ ideas and suggestions, and contribute to the code.
 
 There are a few preferences regarding code contributions:
 
+- Math.js follows the node.js code style as described
+  [here](http://nodeguide.com/style.html).
 - Send pull requests to the `develop` branch, not the `master` branch.
-- Only commit changes done in the source files under `src`, not to the library
+- Only commit changes done in the source files under `lib`, not to the builds, which are under `dist`.
   builds `math.js` and `math.min.js`.
 
 Thanks!
