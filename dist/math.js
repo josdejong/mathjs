@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.11.2-SNAPSHOT
- * @date    2013-08-14
+ * @date    2013-08-22
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -36,7 +36,16 @@ exports.expr.Scope = require('./lib/expr/Scope.js');
 exports.expr.Parser = require('./lib/expr/Parser.js');
 
 // types (Matrix, Complex, Unit, ...)
-exports.type = require('./lib/type/index.js');
+exports.type = {};
+exports.type.Complex = require('./lib/type/Complex.js');
+exports.type.Range = require('./lib/type/Range.js');
+exports.type.Index = require('./lib/type/Index.js');
+exports.type.Matrix = require('./lib/type/Matrix.js');
+exports.type.Unit = require('./lib/type/Unit.js');
+exports.type.Help = require('./lib/type/Help.js');
+
+exports.collection = require('./lib/type/collection.js');
+
 
 // docs
 exports.docs = require('./lib/docs/index.js');
@@ -84,10 +93,10 @@ require('./lib/function/complex/im.js')(exports);
 // functions - construction
 require('./lib/function/construction/boolean.js')(exports);
 require('./lib/function/construction/complex.js')(exports);
+require('./lib/function/construction/index.js')(exports);
 require('./lib/function/construction/matrix.js')(exports);
 require('./lib/function/construction/number.js')(exports);
 require('./lib/function/construction/parser.js')(exports);
-require('./lib/function/construction/range.js')(exports);
 require('./lib/function/construction/string.js')(exports);
 require('./lib/function/construction/unit.js')(exports);
 
@@ -98,6 +107,7 @@ require('./lib/function/matrix/diag.js')(exports);
 require('./lib/function/matrix/eye.js')(exports);
 require('./lib/function/matrix/inv.js')(exports);
 require('./lib/function/matrix/ones.js')(exports);
+require('./lib/function/matrix/range.js')(exports);
 require('./lib/function/matrix/size.js')(exports);
 require('./lib/function/matrix/squeeze.js')(exports);
 require('./lib/function/matrix/subset.js')(exports);
@@ -143,7 +153,7 @@ require('./lib/constants.js')(exports);
 // selector (we initialize after all functions are loaded)
 exports.expr.Selector = require('./lib/expr/Selector.js')(exports);
 
-},{"./lib/constants.js":2,"./lib/docs/index.js":92,"./lib/expr/Parser.js":93,"./lib/expr/Scope.js":94,"./lib/expr/Selector.js":95,"./lib/expr/node/index.js":107,"./lib/function/arithmetic/abs.js":108,"./lib/function/arithmetic/add.js":109,"./lib/function/arithmetic/ceil.js":110,"./lib/function/arithmetic/cube.js":111,"./lib/function/arithmetic/divide.js":112,"./lib/function/arithmetic/edivide.js":113,"./lib/function/arithmetic/emultiply.js":114,"./lib/function/arithmetic/epow.js":115,"./lib/function/arithmetic/equal.js":116,"./lib/function/arithmetic/exp.js":117,"./lib/function/arithmetic/fix.js":118,"./lib/function/arithmetic/floor.js":119,"./lib/function/arithmetic/gcd.js":120,"./lib/function/arithmetic/larger.js":121,"./lib/function/arithmetic/largereq.js":122,"./lib/function/arithmetic/lcm.js":123,"./lib/function/arithmetic/log.js":124,"./lib/function/arithmetic/log10.js":125,"./lib/function/arithmetic/mod.js":126,"./lib/function/arithmetic/multiply.js":127,"./lib/function/arithmetic/pow.js":128,"./lib/function/arithmetic/round.js":129,"./lib/function/arithmetic/sign.js":130,"./lib/function/arithmetic/smaller.js":131,"./lib/function/arithmetic/smallereq.js":132,"./lib/function/arithmetic/sqrt.js":133,"./lib/function/arithmetic/square.js":134,"./lib/function/arithmetic/subtract.js":135,"./lib/function/arithmetic/unary.js":136,"./lib/function/arithmetic/unequal.js":137,"./lib/function/arithmetic/xgcd.js":138,"./lib/function/complex/arg.js":139,"./lib/function/complex/conj.js":140,"./lib/function/complex/im.js":141,"./lib/function/complex/re.js":142,"./lib/function/construction/boolean.js":143,"./lib/function/construction/complex.js":144,"./lib/function/construction/matrix.js":145,"./lib/function/construction/number.js":146,"./lib/function/construction/parser.js":147,"./lib/function/construction/range.js":148,"./lib/function/construction/string.js":149,"./lib/function/construction/unit.js":150,"./lib/function/matrix/concat.js":151,"./lib/function/matrix/det.js":152,"./lib/function/matrix/diag.js":153,"./lib/function/matrix/eye.js":154,"./lib/function/matrix/inv.js":155,"./lib/function/matrix/ones.js":156,"./lib/function/matrix/size.js":157,"./lib/function/matrix/squeeze.js":158,"./lib/function/matrix/subset.js":159,"./lib/function/matrix/transpose.js":160,"./lib/function/matrix/zeros.js":161,"./lib/function/probability/factorial.js":162,"./lib/function/probability/random.js":163,"./lib/function/statistics/max.js":164,"./lib/function/statistics/min.js":165,"./lib/function/trigonometry/acos.js":166,"./lib/function/trigonometry/asin.js":167,"./lib/function/trigonometry/atan.js":168,"./lib/function/trigonometry/atan2.js":169,"./lib/function/trigonometry/cos.js":170,"./lib/function/trigonometry/cot.js":171,"./lib/function/trigonometry/csc.js":172,"./lib/function/trigonometry/sec.js":173,"./lib/function/trigonometry/sin.js":174,"./lib/function/trigonometry/tan.js":175,"./lib/function/units/in.js":176,"./lib/function/utils/clone.js":177,"./lib/function/utils/eval.js":178,"./lib/function/utils/format.js":179,"./lib/function/utils/help.js":180,"./lib/function/utils/import.js":181,"./lib/function/utils/parse.js":182,"./lib/function/utils/select.js":183,"./lib/function/utils/typeof.js":184,"./lib/options":185,"./lib/type/index.js":192}],2:[function(require,module,exports){
+},{"./lib/constants.js":2,"./lib/docs/index.js":95,"./lib/expr/Parser.js":96,"./lib/expr/Scope.js":97,"./lib/expr/Selector.js":98,"./lib/expr/node/index.js":112,"./lib/function/arithmetic/abs.js":113,"./lib/function/arithmetic/add.js":114,"./lib/function/arithmetic/ceil.js":115,"./lib/function/arithmetic/cube.js":116,"./lib/function/arithmetic/divide.js":117,"./lib/function/arithmetic/edivide.js":118,"./lib/function/arithmetic/emultiply.js":119,"./lib/function/arithmetic/epow.js":120,"./lib/function/arithmetic/equal.js":121,"./lib/function/arithmetic/exp.js":122,"./lib/function/arithmetic/fix.js":123,"./lib/function/arithmetic/floor.js":124,"./lib/function/arithmetic/gcd.js":125,"./lib/function/arithmetic/larger.js":126,"./lib/function/arithmetic/largereq.js":127,"./lib/function/arithmetic/lcm.js":128,"./lib/function/arithmetic/log.js":129,"./lib/function/arithmetic/log10.js":130,"./lib/function/arithmetic/mod.js":131,"./lib/function/arithmetic/multiply.js":132,"./lib/function/arithmetic/pow.js":133,"./lib/function/arithmetic/round.js":134,"./lib/function/arithmetic/sign.js":135,"./lib/function/arithmetic/smaller.js":136,"./lib/function/arithmetic/smallereq.js":137,"./lib/function/arithmetic/sqrt.js":138,"./lib/function/arithmetic/square.js":139,"./lib/function/arithmetic/subtract.js":140,"./lib/function/arithmetic/unary.js":141,"./lib/function/arithmetic/unequal.js":142,"./lib/function/arithmetic/xgcd.js":143,"./lib/function/complex/arg.js":144,"./lib/function/complex/conj.js":145,"./lib/function/complex/im.js":146,"./lib/function/complex/re.js":147,"./lib/function/construction/boolean.js":148,"./lib/function/construction/complex.js":149,"./lib/function/construction/index.js":150,"./lib/function/construction/matrix.js":151,"./lib/function/construction/number.js":152,"./lib/function/construction/parser.js":153,"./lib/function/construction/string.js":154,"./lib/function/construction/unit.js":155,"./lib/function/matrix/concat.js":156,"./lib/function/matrix/det.js":157,"./lib/function/matrix/diag.js":158,"./lib/function/matrix/eye.js":159,"./lib/function/matrix/inv.js":160,"./lib/function/matrix/ones.js":161,"./lib/function/matrix/range.js":162,"./lib/function/matrix/size.js":163,"./lib/function/matrix/squeeze.js":164,"./lib/function/matrix/subset.js":165,"./lib/function/matrix/transpose.js":166,"./lib/function/matrix/zeros.js":167,"./lib/function/probability/factorial.js":168,"./lib/function/probability/random.js":169,"./lib/function/statistics/max.js":170,"./lib/function/statistics/min.js":171,"./lib/function/trigonometry/acos.js":172,"./lib/function/trigonometry/asin.js":173,"./lib/function/trigonometry/atan.js":174,"./lib/function/trigonometry/atan2.js":175,"./lib/function/trigonometry/cos.js":176,"./lib/function/trigonometry/cot.js":177,"./lib/function/trigonometry/csc.js":178,"./lib/function/trigonometry/sec.js":179,"./lib/function/trigonometry/sin.js":180,"./lib/function/trigonometry/tan.js":181,"./lib/function/units/in.js":182,"./lib/function/utils/clone.js":183,"./lib/function/utils/eval.js":184,"./lib/function/utils/format.js":185,"./lib/function/utils/help.js":186,"./lib/function/utils/import.js":187,"./lib/function/utils/parse.js":188,"./lib/function/utils/select.js":189,"./lib/function/utils/typeof.js":190,"./lib/options":191,"./lib/type/Complex.js":192,"./lib/type/Help.js":193,"./lib/type/Index.js":194,"./lib/type/Matrix.js":195,"./lib/type/Range.js":196,"./lib/type/Unit.js":197,"./lib/type/collection.js":198}],2:[function(require,module,exports){
 module.exports = function (math) {
   var Complex = require('./type/Complex.js');
 
@@ -168,7 +178,7 @@ module.exports = function (math) {
   math.SQRT2       = Math.SQRT2;
 };
 
-},{"./type/Complex.js":186}],3:[function(require,module,exports){
+},{"./type/Complex.js":192}],3:[function(require,module,exports){
 module.exports = {
   'name': 'Infinity',
   'category': 'Constants',
@@ -1116,7 +1126,7 @@ module.exports = {
     'boolean("false")'
   ],
   'seealso': [
-    'complex', 'matrix', 'range', 'string', 'unit'
+    'complex', 'index', 'matrix', 'number', 'string', 'unit'
   ]
 };
 
@@ -1137,11 +1147,38 @@ module.exports = {
     'complex("7 - 2i")'
   ],
   'seealso': [
-    'boolean', 'matrix', 'number', 'range', 'string', 'unit'
+    'boolean', 'index', 'matrix', 'number', 'string', 'unit'
   ]
 };
 
 },{}],54:[function(require,module,exports){
+module.exports = {
+  'name': 'index',
+  'category': 'Type',
+  'syntax': [
+    '[start]',
+    '[start:end]',
+    '[start:step:end]',
+    '[start1, start 2, ...]',
+    '[start1:end1, start2:end2, ...]',
+    '[start1:step1:end1, start2:step2:end2, ...]'
+  ],
+  'description':
+      'Create an index to get or replace a subset of a matrix',
+  'examples': [
+    '[]',
+    '[1, 2, 3]',
+    'A = [1, 2, 3; 4, 5, 6]',
+    'A[1, :]',
+    'A[1, 2] = 50',
+    'A[0:2, 0:2] = ones(2, 2)'
+  ],
+  'seealso': [
+    'boolean', 'complex', 'matrix,', 'number', 'range', 'string', 'unit'
+  ]
+};
+
+},{}],55:[function(require,module,exports){
 module.exports = {
   'name': 'matrix',
   'category': 'Type',
@@ -1161,11 +1198,11 @@ module.exports = {
     'matrix([3, 4])'
   ],
   'seealso': [
-    'boolean', 'complex', 'number', 'range', 'string', 'unit'
+    'boolean', 'complex', 'index', 'number', 'string', 'unit'
   ]
 };
 
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 module.exports = {
   'name': 'number',
   'category': 'Type',
@@ -1184,34 +1221,7 @@ module.exports = {
     'number(true)'
   ],
   'seealso': [
-    'boolean', 'complex', 'matrix', 'range', 'string', 'unit'
-  ]
-};
-
-},{}],56:[function(require,module,exports){
-module.exports = {
-  'name': 'range',
-  'category': 'Type',
-  'syntax': [
-    'start:end',
-    'start:step:end',
-    'range(start, end)',
-    'range(start, end, step)',
-    'range(string)'
-  ],
-  'description':
-      'Create a range. Lower bound of the range is included, upper bound is excluded.',
-  'examples': [
-    '1:5',
-    '3:-1:-4',
-    'range(3, 7)',
-    'range(0, 12, 2)',
-    'range("4:11")',
-    'a = [0, 1, 2, 3; 4, 5, 6]',
-    'a(1:2)'
-  ],
-  'seealso': [
-    'boolean', 'complex', 'matrix', 'number', 'string', 'unit'
+    'boolean', 'complex', 'index', 'matrix', 'string', 'unit'
   ]
 };
 
@@ -1231,7 +1241,7 @@ module.exports = {
     'string(3 + 2i)'
   ],
   'seealso': [
-    'boolean', 'complex', 'matrix', 'number', 'range', 'unit'
+    'boolean', 'complex', 'index', 'matrix', 'number', 'unit'
   ]
 };
 
@@ -1253,7 +1263,7 @@ module.exports = {
     'unit("23 deg")'
   ],
   'seealso': [
-    'boolean', 'complex', 'matrix', 'number', 'range', 'string'
+    'boolean', 'complex', 'index', 'matrix', 'number', 'string'
   ]
 };
 
@@ -1275,7 +1285,7 @@ module.exports = {
     '[a; b]'
   ],
   'seealso': [
-    'det', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
   ]
 };
 
@@ -1292,7 +1302,7 @@ module.exports = {
     'det([-2, 2, 3; -1, 1, 3; 2, 0, -1])'
   ],
   'seealso': [
-    'concat', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    'concat', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
   ]
 };
 
@@ -1312,7 +1322,7 @@ module.exports = {
     'diag(a)'
   ],
   'seealso': [
-    'concat', 'det', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    'concat', 'det', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
   ]
 };
 
@@ -1334,7 +1344,7 @@ module.exports = {
     'eye(size(a))'
   ],
   'seealso': [
-    'concat', 'det', 'diag', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    'concat', 'det', 'diag', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
   ]
 };
 
@@ -1352,7 +1362,7 @@ module.exports = {
     '1 / 4'
   ],
   'seealso': [
-    'concat', 'det', 'diag', 'eye', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    'concat', 'det', 'diag', 'eye', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
   ]
 };
 
@@ -1377,11 +1387,38 @@ module.exports = {
     'ones(size(a))'
   ],
   'seealso': [
-    'concat', 'det', 'diag', 'eye', 'inv', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+    'concat', 'det', 'diag', 'eye', 'inv', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
   ]
 };
 
 },{}],65:[function(require,module,exports){
+module.exports = {
+  'name': 'range',
+  'category': 'Type',
+  'syntax': [
+    'start:end',
+    'start:step:end',
+    'range(start, end)',
+    'range(start, end, step)',
+    'range(string)'
+  ],
+  'description':
+      'Create a range. Lower bound of the range is included, upper bound is excluded.',
+  'examples': [
+    '1:5',
+    '3:-1:-4',
+    'range(3, 7)',
+    'range(0, 12, 2)',
+    'range("4:11")',
+    'a = [0, 1, 2, 3; 4, 5, 6]',
+    'a(1:2)'
+  ],
+  'seealso': [
+    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+  ]
+};
+
+},{}],66:[function(require,module,exports){
 module.exports = {
   'name': 'size',
   'category': 'Matrix',
@@ -1397,11 +1434,11 @@ module.exports = {
     'size(1:6)'
   ],
   'seealso': [
-    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'squeeze', 'subset', 'transpose', 'zeros'
+    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'squeeze', 'subset', 'transpose', 'zeros'
   ]
 };
 
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 module.exports = {
   'name': 'squeeze',
   'category': 'Matrix',
@@ -1416,11 +1453,11 @@ module.exports = {
     'size(squeeze(b))'
   ],
   'seealso': [
-    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'size', 'subset', 'transpose', 'zeros'
+    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'subset', 'transpose', 'zeros'
   ]
 };
 
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 module.exports = {
   'name': 'subset',
   'category': 'Matrix',
@@ -1430,22 +1467,24 @@ module.exports = {
     'subset(value, [index])',
     'subset(value, [index], replacement)'
   ],
-  'description': 'Get or set a subset of a matrix or string.',
+  'description': 'Get or set a subset of a matrix or string. ' +
+      'Indexes are zero-based. ' +
+      'The lower bound of ranges is included, and the upper bound is excluded.',
   'examples': [
     'd = [1, 2; 3, 4]',
     'e = []',
-    'e(0, 0:1) = [5, 6]',
-    'e(1, :) = [7, 8]',
+    'e[0, 0:2] = [5, 6]',
+    'e[1, :] = [7, 8]',
     'f = d * e',
-    'f(1, 0)',
-    'f(:, 0)'
+    'f[1, 0]',
+    'f[:, 0]'
   ],
   'seealso': [
     'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
   ]
 };
 
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 module.exports = {
   'name': 'transpose',
   'category': 'Matrix',
@@ -1460,11 +1499,11 @@ module.exports = {
     'transpose(a)'
   ],
   'seealso': [
-    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'zeros'
+    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'zeros'
   ]
 };
 
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 module.exports = {
   'name': 'zeros',
   'category': 'Matrix',
@@ -1484,11 +1523,30 @@ module.exports = {
     'zeros(size(a))'
   ],
   'seealso': [
-    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose'
+    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose'
   ]
 };
 
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
+module.exports = {
+  'name': 'distribution',
+  'category': 'Probability',
+  'syntax': [
+    'distribution(name)',
+    'distribution(name, arg1, arg2, ...)'
+  ],
+  'description':
+      'Create a distribution object of a specific type. ' +
+          'A distribution object contains functions `random([size,] [min,] [max])`, ' +
+          '`randomInt([size,] [min,] [max])`, and `pickRandom(array)`. ' +
+          'Available types of distributions: "uniform", "normal". ' +
+          'Note that the function distribution is currently not available via the expression parser.',
+  'examples': [
+  ],
+  'seealso': ['random', 'randomInt']
+};
+
+},{}],72:[function(require,module,exports){
 module.exports = {
   'name': 'factorial',
   'category': 'Probability',
@@ -1505,36 +1563,66 @@ module.exports = {
   'seealso': []
 };
 
-},{}],71:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
+module.exports = {
+  'name': 'pickRandom',
+  'category': 'Probability',
+  'syntax': [
+    'pickRandom(array)'
+  ],
+  'description':
+      'Pick a random entry from a given array.',
+  'examples': [
+    'pickRandom(0:10)',
+    'pickRandom([1, 3, 1, 6])'
+  ],
+  'seealso': ['distribution', 'random', 'randomInt']
+};
+
+},{}],74:[function(require,module,exports){
 module.exports = {
   'name': 'random',
   'category': 'Probability',
   'syntax': [
-    'random(min, max)'
+    'random()',
+    'random(max)',
+    'random(min, max)',
+    'random(size)',
+    'random(size, max)',
+    'random(size, min, max)'
   ],
   'description':
-      'Return a random number between 0 and 1.',
+      'Return a random number.',
   'examples': [
-    'random()'
+    'random()',
+    'random(10, 20)',
+    'random([2, 3])'
   ],
-  'seealso': []
+  'seealso': ['distribution', 'pickRandom', 'randomInt']
 };
 
-},{}],72:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 module.exports = {
   'name': 'randInt',
   'category': 'Probability',
   'syntax': [
-    'randInt()'
+    'randInt()',
+    'randInt(max)',
+    'randInt(min, max)',
+    'randInt(size)',
+    'randInt(size, max)',
+    'randInt(size, min, max)'
   ],
   'description':
-      'Return a random number between 0 and 1.',
+      'Return a random integer number',
   'examples': [
-    'randInt()'
+    'randInt()',
+    'randInt(10, 20)',
+    'randInt([2, 3], 10)'
   ],
-  'seealso': []
+  'seealso': ['distribution', 'pickRandom', 'random']
 };
-},{}],73:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 module.exports = {
   'name': 'max',
   'category': 'Statistics',
@@ -1558,7 +1646,7 @@ module.exports = {
   ]
 };
 
-},{}],74:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 module.exports = {
   'name': 'min',
   'category': 'Statistics',
@@ -1582,7 +1670,7 @@ module.exports = {
   ]
 };
 
-},{}],75:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 module.exports = {
   'name': 'acos',
   'category': 'Trigonometry',
@@ -1601,7 +1689,7 @@ module.exports = {
   ]
 };
 
-},{}],76:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 module.exports = {
   'name': 'asin',
   'category': 'Trigonometry',
@@ -1620,7 +1708,7 @@ module.exports = {
   ]
 };
 
-},{}],77:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 module.exports = {
   'name': 'atan',
   'category': 'Trigonometry',
@@ -1639,7 +1727,7 @@ module.exports = {
   ]
 };
 
-},{}],78:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 module.exports = {
   'name': 'atan2',
   'category': 'Trigonometry',
@@ -1662,7 +1750,7 @@ module.exports = {
   ]
 };
 
-},{}],79:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 module.exports = {
   'name': 'cos',
   'category': 'Trigonometry',
@@ -1684,7 +1772,7 @@ module.exports = {
   ]
 };
 
-},{}],80:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 module.exports = {
   'name': 'cot',
   'category': 'Trigonometry',
@@ -1703,7 +1791,7 @@ module.exports = {
   ]
 };
 
-},{}],81:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports = {
   'name': 'csc',
   'category': 'Trigonometry',
@@ -1722,7 +1810,7 @@ module.exports = {
   ]
 };
 
-},{}],82:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 module.exports = {
   'name': 'sec',
   'category': 'Trigonometry',
@@ -1741,7 +1829,7 @@ module.exports = {
   ]
 };
 
-},{}],83:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = {
   'name': 'sin',
   'category': 'Trigonometry',
@@ -1763,7 +1851,7 @@ module.exports = {
   ]
 };
 
-},{}],84:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 module.exports = {
   'name': 'tan',
   'category': 'Trigonometry',
@@ -1784,7 +1872,7 @@ module.exports = {
   ]
 };
 
-},{}],85:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 module.exports = {
   'name': 'in',
   'category': 'Units',
@@ -1801,7 +1889,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],86:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 module.exports = {
   'name': 'clone',
   'category': 'Utils',
@@ -1819,7 +1907,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],87:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 module.exports = {
   'name': 'eval',
   'category': 'Utils',
@@ -1835,7 +1923,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],88:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 module.exports = {
   'name': 'format',
   'category': 'Utils',
@@ -1851,7 +1939,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],89:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 module.exports = {
   'name': 'help',
   'category': 'Utils',
@@ -1867,7 +1955,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],90:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 module.exports = {
   'name': 'import',
   'category': 'Utils',
@@ -1882,7 +1970,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],91:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 module.exports = {
   'name': 'typeof',
   'category': 'Utils',
@@ -1899,7 +1987,7 @@ module.exports = {
   'seealso': []
 };
 
-},{}],92:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 // constants
 exports.e = require('./constants/e.js');
 exports.E = require('./constants/e.js');
@@ -1960,9 +2048,9 @@ exports.im = require('./function/complex/im.js');
 // functions - construction
 exports.boolean = require('./function/construction/boolean.js');
 exports.complex = require('./function/construction/complex.js');
+exports.index = require('./function/construction/index.js');
 exports.matrix = require('./function/construction/matrix.js');
 exports.number = require('./function/construction/number.js');
-exports.range = require('./function/construction/range.js');
 exports.string = require('./function/construction/string.js');
 exports.unit = require('./function/construction/unit.js');
 
@@ -1973,6 +2061,7 @@ exports.diag = require('./function/matrix/diag.js');
 exports.eye = require('./function/matrix/eye.js');
 exports.inv = require('./function/matrix/inv.js');
 exports.ones = require('./function/matrix/ones.js');
+exports.range = require('./function/matrix/range.js');
 exports.size = require('./function/matrix/size.js');
 exports.squeeze = require('./function/matrix/squeeze.js');
 exports.subset = require('./function/matrix/subset.js');
@@ -1981,6 +2070,8 @@ exports.zeros = require('./function/matrix/zeros.js');
 
 // functions - probability
 exports.factorial = require('./function/probability/factorial.js');
+exports.distribution = require('./function/probability/distribution.js');
+exports.pickRandom = require('./function/probability/pickRandom.js');
 exports.random = require('./function/probability/random.js');
 exports.randomInt = require('./function/probability/randomInt.js');
 
@@ -2011,7 +2102,7 @@ exports.help =  require('./function/utils/help.js');
 exports['import'] =  require('./function/utils/import.js');
 exports['typeof'] =  require('./function/utils/typeof.js');
 
-},{"./constants/Infinity.js":3,"./constants/LN10.js":4,"./constants/LN2.js":5,"./constants/LOG10E.js":6,"./constants/LOG2E.js":7,"./constants/NaN.js":8,"./constants/SQRT1_2.js":9,"./constants/SQRT2.js":10,"./constants/e.js":11,"./constants/false.js":12,"./constants/i.js":13,"./constants/pi.js":14,"./constants/tau.js":15,"./constants/true.js":16,"./function/arithmetic/abs.js":17,"./function/arithmetic/add.js":18,"./function/arithmetic/ceil.js":19,"./function/arithmetic/cube.js":20,"./function/arithmetic/divide.js":21,"./function/arithmetic/edivide.js":22,"./function/arithmetic/emultiply.js":23,"./function/arithmetic/epow.js":24,"./function/arithmetic/equal.js":25,"./function/arithmetic/exp.js":26,"./function/arithmetic/fix.js":27,"./function/arithmetic/floor.js":28,"./function/arithmetic/gcd.js":29,"./function/arithmetic/larger.js":30,"./function/arithmetic/largereq.js":31,"./function/arithmetic/lcm.js":32,"./function/arithmetic/log.js":33,"./function/arithmetic/log10.js":34,"./function/arithmetic/mod.js":35,"./function/arithmetic/multiply.js":36,"./function/arithmetic/pow.js":37,"./function/arithmetic/round.js":38,"./function/arithmetic/sign.js":39,"./function/arithmetic/smaller.js":40,"./function/arithmetic/smallereq.js":41,"./function/arithmetic/sqrt.js":42,"./function/arithmetic/square.js":43,"./function/arithmetic/subtract.js":44,"./function/arithmetic/unary.js":45,"./function/arithmetic/unequal.js":46,"./function/arithmetic/xgcd.js":47,"./function/complex/arg.js":48,"./function/complex/conj.js":49,"./function/complex/im.js":50,"./function/complex/re.js":51,"./function/construction/boolean.js":52,"./function/construction/complex.js":53,"./function/construction/matrix.js":54,"./function/construction/number.js":55,"./function/construction/range.js":56,"./function/construction/string.js":57,"./function/construction/unit.js":58,"./function/matrix/concat.js":59,"./function/matrix/det.js":60,"./function/matrix/diag.js":61,"./function/matrix/eye.js":62,"./function/matrix/inv.js":63,"./function/matrix/ones.js":64,"./function/matrix/size.js":65,"./function/matrix/squeeze.js":66,"./function/matrix/subset.js":67,"./function/matrix/transpose.js":68,"./function/matrix/zeros.js":69,"./function/probability/factorial.js":70,"./function/probability/random.js":71,"./function/probability/randomInt.js":72,"./function/statistics/max.js":73,"./function/statistics/min.js":74,"./function/trigonometry/acos.js":75,"./function/trigonometry/asin.js":76,"./function/trigonometry/atan.js":77,"./function/trigonometry/atan2.js":78,"./function/trigonometry/cos.js":79,"./function/trigonometry/cot.js":80,"./function/trigonometry/csc.js":81,"./function/trigonometry/sec.js":82,"./function/trigonometry/sin.js":83,"./function/trigonometry/tan.js":84,"./function/units/in.js":85,"./function/utils/clone.js":86,"./function/utils/eval.js":87,"./function/utils/format.js":88,"./function/utils/help.js":89,"./function/utils/import.js":90,"./function/utils/typeof.js":91}],93:[function(require,module,exports){
+},{"./constants/Infinity.js":3,"./constants/LN10.js":4,"./constants/LN2.js":5,"./constants/LOG10E.js":6,"./constants/LOG2E.js":7,"./constants/NaN.js":8,"./constants/SQRT1_2.js":9,"./constants/SQRT2.js":10,"./constants/e.js":11,"./constants/false.js":12,"./constants/i.js":13,"./constants/pi.js":14,"./constants/tau.js":15,"./constants/true.js":16,"./function/arithmetic/abs.js":17,"./function/arithmetic/add.js":18,"./function/arithmetic/ceil.js":19,"./function/arithmetic/cube.js":20,"./function/arithmetic/divide.js":21,"./function/arithmetic/edivide.js":22,"./function/arithmetic/emultiply.js":23,"./function/arithmetic/epow.js":24,"./function/arithmetic/equal.js":25,"./function/arithmetic/exp.js":26,"./function/arithmetic/fix.js":27,"./function/arithmetic/floor.js":28,"./function/arithmetic/gcd.js":29,"./function/arithmetic/larger.js":30,"./function/arithmetic/largereq.js":31,"./function/arithmetic/lcm.js":32,"./function/arithmetic/log.js":33,"./function/arithmetic/log10.js":34,"./function/arithmetic/mod.js":35,"./function/arithmetic/multiply.js":36,"./function/arithmetic/pow.js":37,"./function/arithmetic/round.js":38,"./function/arithmetic/sign.js":39,"./function/arithmetic/smaller.js":40,"./function/arithmetic/smallereq.js":41,"./function/arithmetic/sqrt.js":42,"./function/arithmetic/square.js":43,"./function/arithmetic/subtract.js":44,"./function/arithmetic/unary.js":45,"./function/arithmetic/unequal.js":46,"./function/arithmetic/xgcd.js":47,"./function/complex/arg.js":48,"./function/complex/conj.js":49,"./function/complex/im.js":50,"./function/complex/re.js":51,"./function/construction/boolean.js":52,"./function/construction/complex.js":53,"./function/construction/index.js":54,"./function/construction/matrix.js":55,"./function/construction/number.js":56,"./function/construction/string.js":57,"./function/construction/unit.js":58,"./function/matrix/concat.js":59,"./function/matrix/det.js":60,"./function/matrix/diag.js":61,"./function/matrix/eye.js":62,"./function/matrix/inv.js":63,"./function/matrix/ones.js":64,"./function/matrix/range.js":65,"./function/matrix/size.js":66,"./function/matrix/squeeze.js":67,"./function/matrix/subset.js":68,"./function/matrix/transpose.js":69,"./function/matrix/zeros.js":70,"./function/probability/distribution.js":71,"./function/probability/factorial.js":72,"./function/probability/pickRandom.js":73,"./function/probability/random.js":74,"./function/probability/randomInt.js":75,"./function/statistics/max.js":76,"./function/statistics/min.js":77,"./function/trigonometry/acos.js":78,"./function/trigonometry/asin.js":79,"./function/trigonometry/atan.js":80,"./function/trigonometry/atan2.js":81,"./function/trigonometry/cos.js":82,"./function/trigonometry/cot.js":83,"./function/trigonometry/csc.js":84,"./function/trigonometry/sec.js":85,"./function/trigonometry/sin.js":86,"./function/trigonometry/tan.js":87,"./function/units/in.js":88,"./function/utils/clone.js":89,"./function/utils/eval.js":90,"./function/utils/format.js":91,"./function/utils/help.js":92,"./function/utils/import.js":93,"./function/utils/typeof.js":94}],96:[function(require,module,exports){
 var Scope = require('./Scope.js');
 
 /**
@@ -2135,7 +2226,7 @@ Parser.prototype.clear = function () {
 
 module.exports = Parser;
 
-},{"./Scope.js":94}],94:[function(require,module,exports){
+},{"./Scope.js":97}],97:[function(require,module,exports){
 var Unit = require('../type/Unit.js');
 
 /**
@@ -2324,7 +2415,7 @@ Scope.context = []; // static context, for example the math namespace
 
 module.exports = Scope;
 
-},{"../type/Unit.js":190}],95:[function(require,module,exports){
+},{"../type/Unit.js":197}],98:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../util/index.js'),
       string = util.string;
@@ -2455,7 +2546,7 @@ module.exports = function (math) {
   return Selector;
 };
 
-},{"../util/index.js":196}],96:[function(require,module,exports){
+},{"../util/index.js":202}],99:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -2519,7 +2610,7 @@ AssignmentNode.prototype.toString = function() {
 };
 
 module.exports = AssignmentNode;
-},{"./Node.js":101}],97:[function(require,module,exports){
+},{"./Node.js":105}],100:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -2606,7 +2697,7 @@ BlockNode.prototype.toString = function() {
 
 module.exports = BlockNode;
 
-},{"./Node.js":101}],98:[function(require,module,exports){
+},{"./Node.js":105}],101:[function(require,module,exports){
 var Node = require('./Node.js'),
     string = require('../../util/string.js');
 
@@ -2639,7 +2730,7 @@ ConstantNode.prototype.toString = function() {
 
 module.exports = ConstantNode;
 
-},{"../../util/string.js":199,"./Node.js":101}],99:[function(require,module,exports){
+},{"../../util/string.js":205,"./Node.js":105}],102:[function(require,module,exports){
 var Node = require('./Node.js'),
     error = require('../../util/error.js');
 
@@ -2728,13 +2819,155 @@ FunctionNode.prototype.toString = function() {
 
 module.exports = FunctionNode;
 
-},{"../../util/error.js":195,"./Node.js":101}],100:[function(require,module,exports){
+},{"../../util/error.js":201,"./Node.js":105}],103:[function(require,module,exports){
+var number= require('../../util/number.js'),
+
+    Node = require('./Node.js'),
+    RangeNode = require('./RangeNode.js'),
+    SymbolNode = require('./SymbolNode.js'),
+
+    Index = require('../../type/Index.js'),
+    Range = require('../../type/Range.js'),
+
+    isNumber = number.isNumber;
+
+/**
+ * @constructor IndexNode
+ * get a subset of a matrix
+ * @param {Object} math             The math namespace containing all functions
+ * @param {Node} object
+ * @param {Node[]} params
+ * @param {Scope[]} paramScopes     A scope for every parameter, where the
+ *                                  index variable 'end' can be defined.
+ */
+function IndexNode (math, object, params, paramScopes) {
+  this.math = math;
+
+  this.object = object;
+  this.params = params;
+  this.paramScopes = paramScopes;
+
+  // check whether any of the params expressions uses the context symbol 'end'
+  this.hasContextParams = false;
+  if (params) {
+    var filter = {
+      type: SymbolNode,
+      properties: {
+        name: 'end'
+      }
+    };
+
+    for (var i = 0, len = params.length; i < len; i++) {
+      if (params[i].find(filter).length > 0) {
+        this.hasContextParams = true;
+        break;
+      }
+    }
+  }
+}
+
+IndexNode.prototype = new Node();
+
+/**
+ * Evaluate the parameters
+ * @return {*} result
+ */
+IndexNode.prototype.eval = function() {
+  var i, len, params, results;
+
+  // evaluate the object
+  var object = this.object;
+  if (object == undefined) {
+    throw new Error ('Node undefined');
+  }
+  var obj = object.eval();
+
+  // evaluate the values of context parameter 'end' when needed
+  if (this.hasContextParams) {
+    var paramScopes = this.paramScopes,
+        size = this.math.size(obj).valueOf();
+
+    if (paramScopes && size) {
+      for (i = 0, len = this.params.length; i < len; i++) {
+        var paramScope = paramScopes[i];
+        if (paramScope) {
+          paramScope.set('end', size[i]);
+        }
+      }
+    }
+  }
+
+  // evaluate the parameters
+  params = this.params;
+  results = [];
+  for (i = 0, len = this.params.length; i < len; i++) {
+    var param = params[i];
+    if (param instanceof RangeNode) {
+      results[i] = param.toRange();
+    }
+    else {
+      results[i] = param.eval();
+    }
+
+    if (!(results[i] instanceof Range) && !isNumber(results[i])) {
+      throw new TypeError('Number or Range expected');
+    }
+  }
+  // get a subset of the object
+  var index = Index.create(results);
+  return this.math.subset(obj, index);
+};
+
+/**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+IndexNode.prototype.find = function (filter) {
+  var nodes = [];
+
+  // check itself
+  if (this.match(filter)) {
+    nodes.push(this);
+  }
+
+  // search object
+  if (this.object) {
+    nodes = nodes.concat(this.object.find(filter));
+  }
+
+  // search in parameters
+  var params = this.params;
+  if (params) {
+    for (var i = 0, len = params.length; i < len; i++) {
+      nodes = nodes.concat(params[i].find(filter));
+    }
+  }
+
+  return nodes;
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ */
+IndexNode.prototype.toString = function() {
+  // format the parameters like "[1, 0:5]"
+  var str = this.object ? this.object.toString() : '';
+  if (this.params) {
+    str += '[' + this.params.join(', ') + ']';
+  }
+  return str;
+};
+
+module.exports = IndexNode;
+
+},{"../../type/Index.js":194,"../../type/Range.js":196,"../../util/number.js":203,"./Node.js":105,"./RangeNode.js":108,"./SymbolNode.js":109}],104:[function(require,module,exports){
 var Node = require('./Node.js'),
     object = require('../../util/object.js'),
     string = require('../../util/string.js'),
     collection = require('../../type/collection.js'),
-    Matrix = require('../../type/Matrix.js'),
-    Range = require('../../type/Range.js');
+    Matrix = require('../../type/Matrix.js');
 
 /**
  * @constructor MatrixNode
@@ -2832,11 +3065,6 @@ function merge (array) {
           throw new Error('Cannot merge a multi dimensional matrix');
         }
       }
-      else if (entry instanceof Range) {
-        // change range into an 1xn matrix
-        entry = [entry.valueOf()];
-        size = [1, entry[0].length];
-      }
       else if (Array.isArray(entry)) {
         // change array into a 1xn matrix
         size = [1, entry.length];
@@ -2885,7 +3113,7 @@ MatrixNode.prototype.toString = function() {
 
 module.exports = MatrixNode;
 
-},{"../../type/Matrix.js":188,"../../type/Range.js":189,"../../type/collection.js":191,"../../util/object.js":198,"../../util/string.js":199,"./Node.js":101}],101:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/object.js":204,"../../util/string.js":205,"./Node.js":105}],105:[function(require,module,exports){
 /**
  * Node
  */
@@ -2958,7 +3186,7 @@ Node.prototype.toString = function() {
 
 module.exports = Node;
 
-},{}],102:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -3046,9 +3274,17 @@ OperatorNode.prototype.toString = function() {
 
 module.exports = OperatorNode;
 
-},{"./Node.js":101}],103:[function(require,module,exports){
-var Node = require('./Node.js'),
-    SymbolNode = require('./SymbolNode.js').SymbolNode;
+},{"./Node.js":105}],107:[function(require,module,exports){
+var number= require('../../util/number.js'),
+
+    Node = require('./Node.js'),
+    RangeNode = require('./RangeNode.js'),
+    SymbolNode = require('./SymbolNode.js'),
+
+    Index = require('../../type/Index.js'),
+    Range = require('../../type/Range.js'),
+
+    isNumber = number.isNumber;
 
 /**
  * @constructor ParamsNode
@@ -3092,7 +3328,7 @@ ParamsNode.prototype = new Node();
  * @return {*} result
  */
 ParamsNode.prototype.eval = function() {
-  var i, len;
+  var i, len, params, results;
 
   // evaluate the object
   var object = this.object;
@@ -3116,20 +3352,19 @@ ParamsNode.prototype.eval = function() {
     }
   }
 
-  // evaluate the parameters
-  var params = this.params,
-      results = [];
-  for (i = 0, len = this.params.length; i < len; i++) {
-    results[i] = params[i].eval();
-  }
-
   if (typeof obj === 'function') {
+    // evaluate the parameters
+    params = this.params;
+    results = [];
+    for (i = 0, len = this.params.length; i < len; i++) {
+      results[i] = params[i].eval();
+    }
+
     // invoke a function with the parameters
     return obj.apply(this, results);
   }
   else {
-    // get a subset of the object
-    return this.math.subset(obj, results);
+    throw new TypeError('Function expected');
   }
 };
 
@@ -3177,7 +3412,121 @@ ParamsNode.prototype.toString = function() {
 
 module.exports = ParamsNode;
 
-},{"./Node.js":101,"./SymbolNode.js":104}],104:[function(require,module,exports){
+},{"../../type/Index.js":194,"../../type/Range.js":196,"../../util/number.js":203,"./Node.js":105,"./RangeNode.js":108,"./SymbolNode.js":109}],108:[function(require,module,exports){
+var Node = require('./Node.js'),
+    Range = require('../../type/Range.js');
+
+/**
+ * @constructor RangeNode
+ * create a range
+ * @param {Object} math             The math namespace containing all functions
+ * @param {Node[]} params
+ */
+function RangeNode (math, params) {
+  this.math = math;
+
+  this.params = params;
+
+  if (params.length >= 3) {
+    // swap step and end
+    var step = params[2];
+    params[2] = params[1]; // end
+    params[1] = step;
+  }
+}
+
+RangeNode.prototype = new Node();
+
+/**
+ * Evaluate the range
+ * @return {*} result
+ */
+RangeNode.prototype.eval = function() {
+  // evaluate the parameters
+  var params = this.params,
+      results = [];
+  for (var i = 0, len = this.params.length; i < len; i++) {
+    results[i] = params[i].eval();
+  }
+
+  // create the range
+  return this.math.range.apply(this.math.range, results);
+};
+
+/**
+ * Create a Range from a RangeNode
+ * @return {Range} range
+ */
+RangeNode.prototype.toRange = function() {
+  // evaluate the parameters
+  var params = this.params,
+      results = [];
+  for (var i = 0, len = this.params.length; i < len; i++) {
+    results[i] = params[i].eval();
+  }
+
+  // create the range
+  return _createRange(results);
+};
+
+/**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+RangeNode.prototype.find = function (filter) {
+  var nodes = [];
+
+  // check itself
+  if (this.match(filter)) {
+    nodes.push(this);
+  }
+
+  // search object
+  if (this.object) {
+    nodes = nodes.concat(this.object.find(filter));
+  }
+
+  // search in parameters
+  var params = this.params;
+  if (params) {
+    for (var i = 0, len = params.length; i < len; i++) {
+      nodes = nodes.concat(params[i].find(filter));
+    }
+  }
+
+  return nodes;
+};
+
+/**
+ * Get string representation
+ * @return {String} str
+ */
+RangeNode.prototype.toString = function() {
+  // format the parameters like "(2, 4.2)"
+  var str = this.object ? this.object.toString() : '';
+  if (this.params) {
+    str += '(' + this.params.join(', ') + ')';
+  }
+  return str;
+};
+
+/**
+ * Create a Range from from parameters
+ * @param {Array.<Number>} params   An array with numbers start, end, and
+ *                                  optionally step.
+ * @return {Range} range
+ * @private
+ */
+function _createRange(params) {
+  var range = new Range();
+  Range.apply(range, params);
+  return range;
+}
+
+module.exports = RangeNode;
+
+},{"../../type/Range.js":196,"./Node.js":105}],109:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -3221,9 +3570,17 @@ SymbolNode.prototype.toString = function() {
 
 module.exports = SymbolNode;
 
-},{"./Node.js":101}],105:[function(require,module,exports){
-var Node = require('./Node.js'),
-    SymbolNode = require('./SymbolNode.js').SymbolNode;
+},{"./Node.js":105}],110:[function(require,module,exports){
+var number= require('../../util/number.js'),
+
+    Node = require('./Node.js'),
+    RangeNode = require('./RangeNode.js'),
+    SymbolNode = require('./SymbolNode.js'),
+
+    Index = require('../../type/Index.js'),
+    Range = require('../../type/Range.js'),
+
+    isNumber = number.isNumber;
 
 /**
  * @constructor UpdateNode
@@ -3299,13 +3656,28 @@ UpdateNode.prototype.eval = function() {
   // change part of a matrix, for example "a=[]", "a(2,3)=4.5"
   var paramResults = [];
   this.params.forEach(function (param) {
-    paramResults.push(param.eval());
+    var result;
+
+    if (param instanceof RangeNode) {
+      result = param.toRange();
+    }
+    else {
+      result = param.eval();
+    }
+
+    if (!(result instanceof Range) && !isNumber(result)) {
+      throw new TypeError('Number or Range expected');
+    }
+
+    paramResults.push(result);
   });
 
+  // evaluate the expression
   var exprResult = this.expr.eval();
 
   // replace subset
-  result = this.math.subset(prevResult, paramResults, exprResult);
+  var index = Index.create(paramResults);
+  result = this.math.subset(prevResult, index, exprResult);
 
   this.scope.set(this.name, result);
 
@@ -3360,27 +3732,29 @@ UpdateNode.prototype.toString = function() {
 
 module.exports = UpdateNode;
 
-},{"./Node.js":101,"./SymbolNode.js":104}],106:[function(require,module,exports){
+},{"../../type/Index.js":194,"../../type/Range.js":196,"../../util/number.js":203,"./Node.js":105,"./RangeNode.js":108,"./SymbolNode.js":109}],111:[function(require,module,exports){
 /**
  * Custom node handlers,
  * (can be added to the exports object)
  */
 
-},{}],107:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 exports.AssignmentNode = require('./AssignmentNode.js');
 exports.BlockNode = require('./BlockNode.js');
 exports.ConstantNode = require('./ConstantNode.js');
 exports.FunctionNode = require('./FunctionNode.js');
+exports.IndexNode = require('./IndexNode.js');
 exports.MatrixNode = require('./MatrixNode.js');
 exports.Node = require('./Node.js');
 exports.OperatorNode = require('./OperatorNode.js');
 exports.ParamsNode = require('./ParamsNode.js');
+exports.RangeNode = require('./RangeNode.js');
 exports.SymbolNode = require('./SymbolNode.js');
 exports.UpdateNode = require('./UpdateNode.js');
 
 exports.handlers = require('./handlers.js');
 
-},{"./AssignmentNode.js":96,"./BlockNode.js":97,"./ConstantNode.js":98,"./FunctionNode.js":99,"./MatrixNode.js":100,"./Node.js":101,"./OperatorNode.js":102,"./ParamsNode.js":103,"./SymbolNode.js":104,"./UpdateNode.js":105,"./handlers.js":106}],108:[function(require,module,exports){
+},{"./AssignmentNode.js":99,"./BlockNode.js":100,"./ConstantNode.js":101,"./FunctionNode.js":102,"./IndexNode.js":103,"./MatrixNode.js":104,"./Node.js":105,"./OperatorNode.js":106,"./ParamsNode.js":107,"./RangeNode.js":108,"./SymbolNode.js":109,"./UpdateNode.js":110,"./handlers.js":111}],113:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3428,7 +3802,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],109:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],114:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3527,7 +3901,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],110:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],115:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3577,7 +3951,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],111:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],116:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3625,7 +3999,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],112:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],117:[function(require,module,exports){
 module.exports = function(math) {
   var util = require('../../util/index.js'),
 
@@ -3736,7 +4110,7 @@ module.exports = function(math) {
   }
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],113:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],118:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -3760,7 +4134,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],114:[function(require,module,exports){
+},{"../../type/collection.js":198,"../../util/index.js":202}],119:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -3784,7 +4158,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],115:[function(require,module,exports){
+},{"../../type/collection.js":198,"../../util/index.js":202}],120:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -3808,7 +4182,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],116:[function(require,module,exports){
+},{"../../type/collection.js":198,"../../util/index.js":202}],121:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3881,7 +4255,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],117:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],122:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3932,7 +4306,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],118:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],123:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3982,7 +4356,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],119:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],124:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4032,7 +4406,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],120:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],125:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4100,7 +4474,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],121:[function(require,module,exports){
+},{"../../type/collection.js":198,"../../util/index.js":202}],126:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4173,7 +4547,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],122:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],127:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4246,7 +4620,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],123:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],128:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4319,7 +4693,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],124:[function(require,module,exports){
+},{"../../type/collection.js":198,"../../util/index.js":202}],129:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4384,7 +4758,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],125:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],130:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4440,7 +4814,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],126:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],131:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4516,7 +4890,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],127:[function(require,module,exports){
+},{"../../type/collection.js":198,"../../util/index.js":202}],132:[function(require,module,exports){
 module.exports = function(math) {
   var util = require('../../util/index.js'),
 
@@ -4728,7 +5102,7 @@ module.exports = function(math) {
   }
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],128:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],133:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4835,7 +5209,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../util/index.js":196}],129:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../util/index.js":202}],134:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4941,7 +5315,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],130:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],135:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4991,7 +5365,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],131:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],136:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5064,7 +5438,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],132:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],137:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5137,7 +5511,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],133:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],138:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5201,7 +5575,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],134:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],139:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5249,7 +5623,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],135:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],140:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5345,7 +5719,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],136:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],141:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5402,7 +5776,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],137:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],142:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5419,8 +5793,8 @@ module.exports = function (math) {
   /**
    * Check if value x unequals y, x != y
    * In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im
-   * @param  {Number | Complex | Unit | String | Array | Matrix | Range} x
-   * @param  {Number | Complex | Unit | String | Array | Matrix | Range} y
+   * @param  {Number | Complex | Unit | String | Array | Matrix} x
+   * @param  {Number | Complex | Unit | String | Array | Matrix} y
    * @return {Boolean | Array | Matrix} res
    */
   math.unequal = function unequal(x, y) {
@@ -5470,7 +5844,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],138:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],143:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5517,7 +5891,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],139:[function(require,module,exports){
+},{"../../util/index.js":202}],144:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5566,7 +5940,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],140:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],145:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5616,7 +5990,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],141:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],146:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5664,7 +6038,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],142:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],147:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5713,7 +6087,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],143:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],148:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5763,7 +6137,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],144:[function(require,module,exports){
+},{"../../util/index.js":202}],149:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5834,7 +6208,38 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../util/index.js":196}],145:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../util/index.js":202}],150:[function(require,module,exports){
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
+
+      Index = require('../../type/Index.js');
+
+  /**
+   * Create an index. An Index can store ranges having start, step, and end
+   * for multiple dimensions.
+   * Matrix.get, Matrix.set, and math.subset accept an Index as input.
+   *
+   * Usage:
+   *     var index = math.index(range1, range2, ...);
+   *
+   * Where each range can be any of:
+   *     An array [start, end]
+   *     An array [start, end, step]
+   *     A number
+   *     null, this will create select the whole dimension
+   *
+   * The parameters start, end, and step must be integer numbers.
+   *
+   * @param {...*} ranges
+   */
+  math.index = function matrix(ranges) {
+    var i = new Index();
+    Index.apply(i, arguments);
+    return i;
+  };
+};
+
+},{"../../type/Index.js":194,"../../util/index.js":202}],151:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5866,7 +6271,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],146:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../util/index.js":202}],152:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js');
 
@@ -5894,7 +6299,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],147:[function(require,module,exports){
+},{"../../util/index.js":202}],153:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5941,82 +6346,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../expr/Parser.js":93,"../../util/index.js":196}],148:[function(require,module,exports){
-module.exports = function (math) {
-  var util = require('../../util/index.js'),
-
-      Range = require('../../type/Range.js'),
-
-      isString = util.string.isString;
-
-  /**
-   * Create a range. The function creates a new math.type.Range object.
-   *
-   * A range works similar to an Array, with functions like
-   * forEach and map. However, a Range object is very cheap to create compared to
-   * a large Array with indexes, as it stores only a start, step and end value of
-   * the range.
-   *
-   * The method accepts the following arguments
-   *     range(str)                   Create a range from a string, where the
-   *                                  string contains the start, optional step,
-   *                                  and end, separated by a colon.
-   *     range(start, end)            Create a range with start and end and a
-   *                                  default step size of 1
-   *     range(start, end, step)      Create a range with start, step, and end.
-   *
-   * Example usage:
-   *     var c = math.range(2, 6);        // 2:1:5
-   *     c.toArray();                     // [2, 3, 4, 5]
-   *     var d = math.range(2, -3, -1);   // 2:-1:-2
-   *     d.forEach(function (value, index) {
- *         console.log(index, value);
- *     });
-   *     var e = math.range('2:1:6');     // 2:1:6
-   *
-   * @param {...*} args
-   * @return {Range} range
-   */
-  math.range = function range(args) {
-    switch (arguments.length) {
-      case 1:
-        // parse string into a range
-        if (args instanceof Range) {
-          // create a clone
-          return args.clone();
-        }
-        else if (isString(args)) {
-          var r = Range.parse(args);
-          if (r) {
-            return r;
-          }
-          else {
-            throw new SyntaxError('String "' + r + '" is no valid range');
-          }
-        }
-        else {
-          throw new TypeError(
-              'Two or three numbers or a single string expected in function range');
-        }
-        break;
-
-      case 2:
-        // range(start, end)
-        return new Range(arguments[0], arguments[1]);
-        break;
-
-      case 3:
-        // range(start, end, step)
-        return new Range(arguments[0], arguments[1], arguments[2]);
-        break;
-
-      default:
-        throw new util.error.ArgumentsError('range', arguments.length, 2, 3);
-    }
-  };
-};
-
-},{"../../type/Range.js":189,"../../util/index.js":196}],149:[function(require,module,exports){
+},{"../../expr/Parser.js":96,"../../util/index.js":202}],154:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6074,7 +6404,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],150:[function(require,module,exports){
+},{"../../type/collection.js":198,"../../util/index.js":202}],155:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6135,7 +6465,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Unit.js":190,"../../util/index.js":196}],151:[function(require,module,exports){
+},{"../../type/Unit.js":197,"../../util/index.js":202}],156:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6252,7 +6582,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],152:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],157:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6397,11 +6727,10 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],153:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../util/index.js":202}],158:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      Range = require('../../type/Range.js'),
       Matrix = require('../../type/Matrix.js'),
 
       object = util.object,
@@ -6441,7 +6770,7 @@ module.exports = function (math) {
     var kSub = k < 0 ? -k : 0;
 
     // convert to matrix
-    if (!(x instanceof Matrix) && !(x instanceof Range)) {
+    if (!(x instanceof Matrix)) {
       x = new Matrix(x);
     }
 
@@ -6486,7 +6815,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../type/Range.js":189,"../../util/index.js":196}],154:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../util/index.js":202}],159:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6546,7 +6875,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],155:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],160:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6733,7 +7062,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],156:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../util/index.js":202}],161:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6771,7 +7100,145 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],157:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],162:[function(require,module,exports){
+module.exports = function (math) {
+  var util = require('../../util/index.js'),
+
+      isString = util.string.isString,
+      isNumber = util.number.isNumber;
+
+  /**
+   * Create an array from a range.
+   *
+   * The method accepts the following arguments
+   *     range(str)                   Create a range from a string, where the
+   *                                  string contains the start, optional step,
+   *                                  and end, separated by a colon.
+   *     range(start, end)            Create a range with start and end and a
+   *                                  default step size of 1
+   *     range(start, end, step)      Create a range with start, step, and end.
+   *
+   * Example usage:
+   *     math.range(2, 6);        // [2,3,4,5]
+   *     math.range(2, -3, -1);   // [2,1,0,-1,-2]
+   *     math.range('2:1:6');     // [2,3,4,5]
+   *
+   * @param {...*} args
+   * @return {Array} range
+   */
+  math.range = function range(args) {
+    var start, end, step;
+
+    switch (arguments.length) {
+      case 1:
+        // parse string into a range
+        if (isString(args)) {
+          var r = _parse(args);
+          if (!r){
+            throw new SyntaxError('String "' + r + '" is no valid range');
+          }
+
+          start = r.start;
+          end = r.end;
+          step = r.step;
+        }
+        else {
+          throw new TypeError(
+              'Two or three numbers or a single string expected in function range');
+        }
+        break;
+
+      case 2:
+        // range(start, end)
+        start = arguments[0];
+        end = arguments[1];
+        step = 1;
+        break;
+
+      case 3:
+        // range(start, end, step)
+        start = arguments[0];
+        end = arguments[1];
+        step = arguments[2];
+        break;
+
+      default:
+        throw new util.error.ArgumentsError('range', arguments.length, 2, 3);
+    }
+
+    if (!isNumber(start)) {
+      throw new TypeError('Parameter start must be a number');
+    }
+    if (!isNumber(end)) {
+      throw new TypeError('Parameter end must be a number');
+    }
+    if (!isNumber(step)) {
+      throw new TypeError('Parameter step must be a number');
+    }
+
+    var array = [],
+        x = start;
+    if (step > 0) {
+      while (x < end) {
+        array.push(x);
+        x += step;
+      }
+    }
+    else if (step < 0) {
+      while (x > end) {
+        array.push(x);
+        x += step;
+      }
+    }
+
+    return array;
+  };
+
+  /**
+   * Parse a string into a range,
+   * The string contains the start, optional step, and end, separated by a colon.
+   * If the string does not contain a valid range, null is returned.
+   * For example str='0:2:11'.
+   * @param {String} str
+   * @return {Object | null} range Object containing properties start, end, step
+   * @private
+   */
+  function _parse (str) {
+    var args = str.split(':');
+    var nums = args.map(function (arg) {
+      return Number(arg);
+    });
+
+    var invalid = nums.some(function (num) {
+      return isNaN(num);
+    });
+    if(invalid) {
+      return null;
+    }
+
+    switch (nums.length) {
+      case 2:
+        return {
+          start: nums[0],
+          end: nums[1],
+          step: 1
+        };
+
+      case 3:
+        return {
+          start: nums[0],
+          end: nums[2],
+          step: nums[1]
+        };
+
+      default:
+        return null;
+    }
+  }
+
+};
+
+},{"../../util/index.js":202}],163:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6823,13 +7290,14 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Matrix.js":188,"../../type/Unit.js":190,"../../util/index.js":196}],158:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/Unit.js":197,"../../util/index.js":202}],164:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
       Matrix = require('../../type/Matrix.js'),
 
       object = util.object,
+      array = util.array,
       isArray = Array.isArray;
 
   /**
@@ -6846,50 +7314,27 @@ module.exports = function (math) {
     }
 
     if (isArray(x)) {
-      return _squeezeArray(object.clone(x));
+      return array.squeeze(object.clone(x));
     }
     else if (x instanceof Matrix) {
-      return new Matrix(_squeezeArray(x.toArray()));
+      return new Matrix(array.squeeze(x.toArray()));
     }
     else if (isArray(x.valueOf())) {
-      return _squeezeArray(object.clone(x.valueOf()));
+      return array.squeeze(object.clone(x.valueOf()));
     }
     else {
       // scalar
       return object.clone(x);
     }
   };
-
-  /**
-   * Recursively squeeze a multi dimensional array
-   * @param {Array} array
-   * @return {Array} array
-   * @private
-   */
-  function _squeezeArray(array) {
-    if (array.length == 1) {
-      // squeeze this array
-      return _squeezeArray(array[0]);
-    }
-    else {
-      // process all childs
-      for (var i = 0, len = array.length; i < len; i++) {
-        var child = array[i];
-        if (isArray(child)) {
-          array[i] = _squeezeArray(child);
-        }
-      }
-      return array;
-    }
-  }
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],159:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../util/index.js":202}],165:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
       Matrix = require('../../type/Matrix.js'),
-      Range = require('../../type/Range.js'),
+      Index = require('../../type/Index.js'),
 
       array = util.array,
       isString = util.string.isString,
@@ -6904,7 +7349,7 @@ module.exports = function (math) {
    *
    * Where:
    *     {*} value        An array, matrix, or scalar value
-   *     {Array} index    An array containing index values
+   *     {Index} index    An index containing ranges for each dimension
    *     {*} replacement  An array, matrix, or scalar
    *
    * @param args
@@ -6925,19 +7370,15 @@ module.exports = function (math) {
 
   /**
    * Retrieve a subset of an value such as an Array, Matrix, or String
-   * @param {*} value            Object from which to get a subset
-   * @param {Array[] | Range[] | Number[] | Matrix} index
-   *                              Two dimensional array (size 1 x n) containing
-   *                              the indexes to be retrieved. Can also be a two
-   *                              dimensional Matrix (size 1 x n), or an Array
-   *                              (size 1) containing a Range or a Number.
-   * @returns {*} subset
+   * @param {*} value               Object from which to get a subset
+   * @param {Index} index           An index containing ranges for each dimension
+   * @returns {Array | Matrix | *} subset
    * @private
    */
   function _getSubset(value, index) {
     var m, subset;
 
-    if (isArray(value) || value instanceof Range) {
+    if (isArray(value)) {
       m = new Matrix(value);
       subset = m.get(index);
       return subset.valueOf();
@@ -6958,56 +7399,45 @@ module.exports = function (math) {
 
   /**
    * Retrieve a subset of a string
-   * @param {String} str          String from which to get a substring
-   * @param {Array[] | Range[] | Number[] | Matrix} index
-   *                              Two dimensional array (size 1 x n) containing
-   *                              the indexes to be retrieved. Can also be a two
-   *                              dimensional Matrix (size 1 x n), or an Array
-   *                              (size 1) containing a Range or a Number.
+   * @param {String} str            String from which to get a substring
+   * @param {Index} index           An index containing ranges for each dimension
    * @returns {string} substring
    * @private
    */
   function _getSubstring(str, index) {
-    var i, len;
-    index = index.valueOf(); // cast from matrix or range to array
-    if (index.length != 1) {
-      throw new RangeError('Dimension mismatch (' + index.length + ' != 1)');
+    if (!(index instanceof Index)) {
+      // TODO: better error message
+      throw new TypeError('Index expected');
+    }
+    if (index.size().length != 1) {
+      throw new RangeError('Dimension mismatch (' + index.size().length + ' != 1)');
     }
 
-    if (isArray(index)) {
-      index = index[0];   // read first dimension
-    }
-    index = index.valueOf(); // cast from matrix or range to array
-    if (!isArray(index)) {
-      index = [index];
-    }
+    var range = index.range(0);
 
     var substr = '';
     var strLen = str.length;
-    for (i = 0, len = index.length; i < len; i++) {
-      var index_i = index[i];
-      array.validateIndex(index_i, strLen);
-      substr += str.charAt(index_i);  // index_i is zero based
-    }
+    range.forEach(function (v) {
+      array.validateIndex(v, strLen);
+      substr += str.charAt(v);
+    });
 
     return substr;
   }
 
   /**
    * Replace a subset in an value such as an Array, Matrix, or String
-   * @param {*} value            Object to be replaced
-   * @param {Array[] | Range[] | Number[] | Matrix} index
-   *                              Two dimensional array (size 1 x n) containing
-   *                              the indexes to be replaced. Can also be a two
-   *                              dimensional Matrix (size 1 x n), or an Array
-   *                              (size 1) containing a Range.
-   * @param {String} replacement
+   * @param {*} value               Object to be replaced
+   * @param {Index} index           An index containing ranges for each dimension
+   * @param {Array | Matrix | *} replacement
    * @returns {*} result
    * @private
    */
   function _setSubset(value, index, replacement) {
-    if (isArray(value) || value instanceof Range) {
-      var m = new Matrix(math.clone(value));
+    var m;
+
+    if (isArray(value)) {
+      m = new Matrix(math.clone(value));
       m.set(index, replacement);
       return m.valueOf();
     }
@@ -7035,48 +7465,40 @@ module.exports = function (math) {
 
   /**
    * Replace a substring in a string
-   * @param {String} str          String to be replaced
-   * @param {Array[] | Range[] | Number[] | Matrix} index
-   *                              Two dimensional array (size 1 x n) containing
-   *                              the indexes to be replaced. Can also be a two
-   *                              dimensional Matrix (size 1 x n), or an Array
-   *                              (size 1) containing a Range.
-   * @param {String} replacement  Replacement string
+   * @param {String} str            String to be replaced
+   * @param {Index} index           An index containing ranges for each dimension
+   * @param {String} replacement    Replacement string
    * @returns {string} result
    * @private
    */
   function _setSubstring(str, index, replacement) {
-    var i, len;
-    index = index.valueOf();  // cast from matrix or range to array
-
-    if (index.length != 1) {
-      throw new RangeError('Dimension mismatch (' + index.length + ' != 1)');
+    if (!(index instanceof Index)) {
+      // TODO: better error message
+      throw new TypeError('Index expected');
     }
-    if (isArray(index)) {
-      index = index[0];   // read first dimension
-    }
-    index = index.valueOf(); // cast from matrix or range to array
-    if (!isArray(index)) {
-      index = [index];
+    if (index.size().length != 1) {
+      throw new RangeError('Dimension mismatch (' + index.size().length + ' != 1)');
     }
 
-    if (index.length != replacement.length) {
+    var range = index.range(0);
+    var len = range.size()[0];
+
+    if (len != replacement.length) {
       throw new RangeError('Dimension mismatch ' +
-          '(' + index.length + ' != ' + replacement.length + ')');
+          '(' + range.size()[0] + ' != ' + replacement.length + ')');
     }
 
     // copy the string into an array with characters
     var strLen = str.length;
     var chars = [];
-    for (i = 0; i < strLen; i++) {
+    for (var i = 0; i < strLen; i++) {
       chars[i] = str.charAt(i);
     }
 
-    for (i = 0, len = index.length; i < len; i++) {
-      var index_i = index[i];
-      array.validateIndex(index_i);
-      chars[index_i] = replacement.charAt(i); // index_i is zero based
-    }
+    range.forEach(function (v, i) {
+      array.validateIndex(v);
+      chars[v] = replacement.charAt(i);
+    });
 
     // initialize undefined characters with a space
     if (chars.length > strLen) {
@@ -7091,7 +7513,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../type/Range.js":189,"../../util/index.js":196}],160:[function(require,module,exports){
+},{"../../type/Index.js":194,"../../type/Matrix.js":195,"../../util/index.js":202}],166:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7161,7 +7583,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],161:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../util/index.js":202}],167:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7199,7 +7621,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],162:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],168:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7259,7 +7681,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":191,"../../util/index.js":196}],163:[function(require,module,exports){
+},{"../../type/collection.js":198,"../../util/index.js":202}],169:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7382,6 +7804,7 @@ module.exports = function (math) {
         },
 
         pickRandom: function(possibles) {
+          // TODO: add support for matrices?
           if (arguments.length !== 1)
             throw new util.error.ArgumentsError('pickRandom', arguments.length, 1);
           return possibles[Math.floor(Math.random() * possibles.length)];
@@ -7427,7 +7850,7 @@ module.exports = function (math) {
   math.pickRandom = uniformRandFunctions.pickRandom;
 };
 
-},{"../../type/Matrix.js":188,"../../util/index.js":196}],164:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../util/index.js":202}],170:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7532,7 +7955,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],165:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],171:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7637,7 +8060,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":188,"../../type/collection.js":191,"../../util/index.js":196}],166:[function(require,module,exports){
+},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],172:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7724,7 +8147,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],167:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],173:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7808,7 +8231,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],168:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],174:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7879,7 +8302,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],169:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],175:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7942,7 +8365,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/collection.js":191,"../../util/index.js":196}],170:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],176:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8004,7 +8427,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],171:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],177:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8066,7 +8489,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],172:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],178:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8129,7 +8552,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],173:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],179:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8191,7 +8614,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],174:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],180:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8252,7 +8675,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],175:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],181:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8317,7 +8740,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],176:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],182:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8366,7 +8789,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Unit.js":190,"../../type/collection.js":191,"../../util/index.js":196}],177:[function(require,module,exports){
+},{"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],183:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       object = util.object;
@@ -8388,7 +8811,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],178:[function(require,module,exports){
+},{"../../util/index.js":202}],184:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8462,7 +8885,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../expr/Scope.js":94,"../../type/collection.js":191,"../../util/index.js":196}],179:[function(require,module,exports){
+},{"../../expr/Scope.js":97,"../../type/collection.js":198,"../../util/index.js":202}],185:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       string = util.string;
@@ -8496,7 +8919,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],180:[function(require,module,exports){
+},{"../../util/index.js":202}],186:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8556,7 +8979,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Help.js":187,"../../util/index.js":196}],181:[function(require,module,exports){
+},{"../../type/Help.js":193,"../../util/index.js":202}],187:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8678,7 +9101,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":186,"../../type/Unit.js":190,"../../util/index.js":196}],182:[function(require,module,exports){
+},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../util/index.js":202}],188:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8689,7 +9112,6 @@ module.exports = function (math) {
       Complex = require('./../../type/Complex.js'),
       Matrix = require('./../../type/Matrix.js'),
       Unit = require('./../../type/Unit.js'),
-      Range = require('./../../type/Range.js'),
       collection = require('../../type/collection.js'),
 
       // scope and nodes
@@ -8698,9 +9120,11 @@ module.exports = function (math) {
       BlockNode = require('../../expr/node/BlockNode.js'),
       ConstantNode = require('../../expr/node/ConstantNode.js'),
       FunctionNode = require('../../expr/node/FunctionNode.js'),
+      IndexNode = require('../../expr/node/IndexNode.js'),
       MatrixNode = require('../../expr/node/MatrixNode.js'),
       OperatorNode = require('../../expr/node/OperatorNode.js'),
       ParamsNode = require('../../expr/node/ParamsNode.js'),
+      RangeNode = require('../../expr/node/RangeNode.js'),
       SymbolNode = require('../../expr/node/SymbolNode.js'),
       UpdateNode = require('../../expr/node/UpdateNode.js'),
       handlers = require('../../expr/node/handlers.js');
@@ -9210,7 +9634,7 @@ module.exports = function (math) {
         expr = parseAssignment(scope);
         return new AssignmentNode(name, expr, scope);
       }
-      else if (node instanceof ParamsNode && node.object instanceof SymbolNode) {
+      else if (node instanceof IndexNode) {
         // parse the expression, with the correct function scope
         getToken();
         name = node.object.name;
@@ -9235,7 +9659,7 @@ module.exports = function (math) {
    * @private
    */
   function parseRange (scope) {
-    var node, name, fn, params = [];
+    var node, params = [];
 
     if (token == ':') {
       // implicit start=0
@@ -9252,7 +9676,7 @@ module.exports = function (math) {
       // parse step and end
       while (token == ':') {
         getToken();
-        if (token == ')' || token == ',' || token == '') {
+        if (token == ')' || token == ']' || token == ',' || token == '') {
           // implicit end
           params.push(new SymbolNode('end', scope));
         }
@@ -9263,18 +9687,7 @@ module.exports = function (math) {
       }
 
       if (params.length) {
-        // create a range constructor
-        name = ':';
-        fn = math.range;
-
-        if (params.length >= 3) {
-          // swap step and end
-          var step = params[2];
-          params[2] = params[1]; // end
-          params[1] = step;
-        }
-
-        node = new OperatorNode(name, fn, params);
+        node = new RangeNode(math, params);
       }
     }
 
@@ -9635,7 +10048,9 @@ module.exports = function (math) {
   }
 
   /**
-   * parse parameters, enclosed in parenthesis
+   * parse parameters, enclosed in parenthesis. Can be two types:
+   * - round brackets (...) will return a ParamsNode
+   * - square brackets [...] will return an IndexNode
    * @param {Scope} scope
    * @param {Node} node    Node on which to apply the parameters. If there
    *                       are no parameters in the expression, the node
@@ -9644,17 +10059,19 @@ module.exports = function (math) {
    * @private
    */
   function parseParams (scope, node) {
-    var params,
+    var bracket,
+        params,
         paramScopes,
         paramScope;
 
-    while (token == '(') {
+    while (token == '(' || token == '[') {
+      bracket = token;
       params = [];
       paramScopes = [];
 
       getToken();
 
-      if (token != ')') {
+      if (token != ')' && token != ']') {
         paramScope = scope.createSubScope();
         paramScopes.push(paramScope);
         params.push(parseRange(paramScope));
@@ -9669,12 +10086,20 @@ module.exports = function (math) {
         }
       }
 
-      if (token != ')') {
+      if ((bracket == '(' && token != ')')) {
         throw createSyntaxError('Parenthesis ) expected');
+      }
+      if ((bracket == '[' && token != ']')) {
+        throw createSyntaxError('Parenthesis ] expected');
       }
       getToken();
 
-      node = new ParamsNode(math, node, params, paramScopes);
+      if (bracket == '(') {
+        node = new ParamsNode(math, node, params, paramScopes);
+      }
+      else {
+        node = new IndexNode(math, node, params, paramScopes);
+      }
     }
 
     return node;
@@ -10014,7 +10439,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../expr/node/AssignmentNode.js":96,"../../expr/node/BlockNode.js":97,"../../expr/node/ConstantNode.js":98,"../../expr/node/FunctionNode.js":99,"../../expr/node/MatrixNode.js":100,"../../expr/node/OperatorNode.js":102,"../../expr/node/ParamsNode.js":103,"../../expr/node/SymbolNode.js":104,"../../expr/node/UpdateNode.js":105,"../../expr/node/handlers.js":106,"../../type/collection.js":191,"../../util/index.js":196,"./../../expr/Scope.js":94,"./../../type/Complex.js":186,"./../../type/Matrix.js":188,"./../../type/Range.js":189,"./../../type/Unit.js":190}],183:[function(require,module,exports){
+},{"../../expr/node/AssignmentNode.js":99,"../../expr/node/BlockNode.js":100,"../../expr/node/ConstantNode.js":101,"../../expr/node/FunctionNode.js":102,"../../expr/node/IndexNode.js":103,"../../expr/node/MatrixNode.js":104,"../../expr/node/OperatorNode.js":106,"../../expr/node/ParamsNode.js":107,"../../expr/node/RangeNode.js":108,"../../expr/node/SymbolNode.js":109,"../../expr/node/UpdateNode.js":110,"../../expr/node/handlers.js":111,"../../type/collection.js":198,"../../util/index.js":202,"./../../expr/Scope.js":97,"./../../type/Complex.js":192,"./../../type/Matrix.js":195,"./../../type/Unit.js":197}],189:[function(require,module,exports){
 module.exports = function (math) {
   /**
    * Wrap any value in a Selector, allowing to perform chained operations on
@@ -10056,7 +10481,7 @@ module.exports = function (math) {
   };
 };
 
-},{}],184:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js');
 
@@ -10078,11 +10503,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":196}],185:[function(require,module,exports){
+},{"../../util/index.js":202}],191:[function(require,module,exports){
 // math.js options
 exports.precision = 5;  // number of digits in formatted output
 
-},{}],186:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     number = util.number,
@@ -10430,7 +10855,7 @@ exports.parse = Complex.parse;
 
 util.types.addType('complex', Complex);
 
-},{"../util/index.js":196}],187:[function(require,module,exports){
+},{"../util/index.js":202}],193:[function(require,module,exports){
 var util = require('../util/index.js'),
     object = util.object,
     string = util.string;
@@ -10524,9 +10949,278 @@ exports.isHelp = Help.isHelp;
 
 util.types.addType('help', Help);
 
-},{"../util/index.js":196}],188:[function(require,module,exports){
-var util = require('../util/index.js'),
-    Range = require('./Range.js'),
+},{"../util/index.js":202}],194:[function(require,module,exports){
+var util = require('../util/index'),
+    Range = require('./Range');
+
+    number = util.number,
+
+    isNumber = number.isNumber,
+    isInteger = number.isInteger,
+    isArray = Array.isArray,
+    validateIndex = util.array.validateIndex;
+
+/**
+ * @Constructor Index
+ * Create an index. An Index can store ranges having start, step, and end
+ * for multiple dimensions.
+ * Matrix.get, Matrix.set, and math.subset accept an Index as input.
+ *
+ * Usage:
+ *     var index = new Index(range1, range2, ...);
+ *
+ * Where each range can be any of:
+ *     An array [start, end]
+ *     An array [start, end, step]
+ *     A number
+ *     An instance of Range
+ *
+ * The parameters start, end, and step must be integer numbers.
+ *
+ * @param {...*} ranges
+ */
+function Index(ranges) {
+  if (!(this instanceof Index)) {
+    throw new SyntaxError(
+        'Index constructor must be called with the new operator');
+  }
+
+  this._ranges = [];
+
+  for (var i = 0, ii = arguments.length; i < ii; i++) {
+    var arg = arguments[i];
+
+    if (arg instanceof Range) {
+      this._ranges.push(arg);
+    }
+    else {
+      if (arg) {
+        arg = arg.valueOf();
+      }
+
+      if (isArray(arg)) {
+        this._ranges.push(_createRange(arg));
+      }
+      else if (isNumber(arg)) {
+        this._ranges.push(_createRange([arg, arg + 1]));
+      }
+      // TODO: implement support for wildcard '*'
+      // TODO: implement support for a string 'start:step:end'
+      else {
+        throw new TypeError('Range expected as Array, Number, or String');
+      }
+    }
+  }
+}
+
+/**
+ * Parse an argument into a range and validate the range
+ * @param {Array} arg  An array with [start: Number, end: Number] and
+ *                     optional a third element step:Number
+ * @return {Range} range
+ * @private
+ */
+function _createRange(arg) {
+  // TODO: make function _createRange simpler/faster
+
+  // test whether all arguments are integers
+  var num = arg.length;
+  for (var i = 0; i < num; i++) {
+    if (!isNumber(arg[i]) || !isInteger(arg[i])) {
+      throw new TypeError('Index parameters must be integer numbers');
+    }
+  }
+
+  switch (arg.length) {
+    case 2:
+      return new Range(arg[0], arg[1]); // start, end
+    case 3:
+      return new Range(arg[0], arg[1], arg[2]); // start, end, step
+    default:
+      // TODO: improve error message
+      throw new SyntaxError('Wrong number of arguments in Index (2 or 3 expected)');
+  }
+}
+
+/**
+ * Create a clone of the index
+ * @return {Index} clone
+ */
+Index.prototype.clone = function clone () {
+  var index = new Index();
+  index._ranges = util.object.clone(this._ranges);
+  return index;
+};
+
+/**
+ * Test whether an object is an Index
+ * @param {*} object
+ * @return {Boolean} isIndex
+ */
+Index.isIndex = function isIndex(object) {
+  return (object instanceof Index);
+};
+
+/**
+ * Create an index from an array with ranges/numbers
+ * @param {Array.<Array | Number>} ranges
+ * @return {Index} index
+ * @private
+ */
+Index.create = function create(ranges) {
+  var index = new Index();
+  Index.apply(index, ranges);
+  return index;
+};
+
+/**
+ * Retrieve the size of the index.
+ * @returns {Number[]} size
+ */
+Index.prototype.size = function () {
+  var size = [];
+
+  for (var i = 0, ii = this._ranges.length; i < ii; i++) {
+    var range = this._ranges[i];
+
+    if (range instanceof Range) {
+      size.push(range.size()[0]);
+    }
+    else {
+      size.push(null);
+    }
+  }
+
+  return size;
+};
+
+/**
+ * Loop over each of the ranges of the index
+ * @param {function} callback   Called for each range with a Range as first
+ *                              argument, the dimension as second, and the
+ *                              index object as third.
+ */
+Index.prototype.forEach = function (callback) {
+  for (var i = 0, ii = this._ranges.length; i < ii; i++) {
+    callback(this._ranges[i], i, this);
+  }
+};
+
+/**
+ * Retrieve the range for a given dimension number from the index
+ * @param {Number} dim                  Number of the dimension
+ * @returns {Range | undefined} range
+ */
+Index.prototype.range = function (dim) {
+  return this._ranges[dim];
+};
+
+/**
+ * Expand the Index into an array.
+ * For example new Index([0,3], [2,7]) returns [[0,1,2], [2,3,4,5,6]]
+ * @returns {Array} array
+ */
+Index.prototype.toArray = function () {
+  var array = [];
+  for (var i = 0, ii = this._ranges.length; i < ii; i++) {
+    var range = this._ranges[i],
+        row = [],
+        x = range.start,
+        end = range.end,
+        step = range.step;
+
+    if (step > 0) {
+      while (x < end) {
+        row.push(x);
+        x += step;
+      }
+    }
+    else if (step < 0) {
+      while (x > end) {
+        row.push(x);
+        x += step;
+      }
+    }
+
+    array.push(row);
+  }
+
+  return array;
+};
+
+/**
+ * Get the primitive value of the Index, a two dimensional array.
+ * Equivalent to Index.toArray().
+ * @returns {Array} array
+ */
+Index.prototype.valueOf = Index.prototype.toArray;
+
+/**
+ * Get the string representation of the index, for example '[2:6]' or '[0:2:10, 4:7]'
+ * @returns {String} str
+ */
+Index.prototype.toString = function () {
+  var strings = [];
+
+  for (var i = 0, ii = this._ranges.length; i < ii; i++) {
+    var range = this._ranges[i];
+    var str = number.format(range.start);
+    if (range.step != 1) {
+      str += ':' + number.format(range.step);
+    }
+    str += ':' + number.format(range.end);
+    strings.push(str);
+  }
+
+  return '[' + strings.join(',') + ']';
+};
+
+/**
+ * Test whether a multidimensional array contains a scalar
+ * @param array
+ * @returns {*}
+ */
+function isScalar(array) {
+  while (isArray(array)) {
+    if (array.length !== 1) {
+      return false;
+    }
+    array = array[0];
+  }
+
+  return true;
+}
+
+/**
+ * Retrieve the scalar value from a multidimensional matrix containing only
+ * a single scalar.
+ * @param array
+ * @returns {*} scalar
+ * @private
+ */
+function toScalar(array) {
+  while (isArray(array)) {
+    if (array.length !== 1) {
+      throw new Error('Array does not contain a single scalar');
+    }
+    array = array[0];
+  }
+
+  return array;
+}
+
+// exports
+module.exports = Index;
+
+// to trick my IDE which doesn't get it
+exports.isIndex = Index.isIndex;
+exports.create = Index.create;
+
+util.types.addType('index', Index);
+
+},{"../util/index":202,"./Range":196}],195:[function(require,module,exports){
+var util = require('../util/index'),
+    Index = require('./Index'),
 
     number = util.number,
     string = util.string,
@@ -10560,8 +11254,8 @@ function Matrix(data) {
         'Matrix constructor must be called with the new operator');
   }
 
-  if (data instanceof Matrix || data instanceof Range) {
-    // clone data from a Matrix or Range
+  if (data instanceof Matrix) {
+    // clone data from a Matrix
     this._data = data.toArray();
   }
   else if (Array.isArray(data)) {
@@ -10592,43 +11286,34 @@ Matrix.isMatrix = function (object) {
 
 /**
  * Get a value or a submatrix of the matrix.
- * @param {Array | Matrix} index    Zero-based index
+ * @param {Index} index    Zero-based index
  */
 Matrix.prototype.get = function (index) {
-  var isScalar;
-  if (index instanceof Matrix) {
-    // index is scalar when size==[n] or size==[1,1,...]
-    isScalar = (index.size().length == 1) || !index.size().some(function (i) {
-      return (i != 0);
-    });
-    index = index.valueOf();
-  }
-  else if (Array.isArray(index)) {
-    isScalar = !index.some(function (elem) {
-      var size = array.size(elem.valueOf());
-      return (size.length != 0) && (size != [0]);
-    });
-  }
-  else {
+  if (!(index instanceof Index)) {
     throw new TypeError('Invalid index');
   }
 
-  if (index.length != this._size.length) {
+  var size = index.size();
+  var isScalar = !size.some(function (i) {
+    return (i != 1);
+  });
+
+  if (size.length != this._size.length) {
     throw new RangeError('Dimension mismatch ' +
-        '(' + index.length + ' != ' + this._size.length + ')');
+        '(' + size.length + ' != ' + this._size.length + ')');
   }
 
   if (isScalar) {
     // return a single value
-    switch (index.length) {
-      case 1:     return _get(this._data, index[0]);
-      case 2:     return _get(_get(this._data, index[0]), index[1]);
+    switch (size.length) {
+      case 1:     return _getScalar1D(this._data, index);
+      case 2:     return _getScalar2D(this._data, index);
       default:    return _getScalar(this._data, index);
     }
   }
   else {
     // return a submatrix
-    switch (index.length) {
+    switch (size.length) {
       case 1: return new Matrix(_getSubmatrix1D(this._data, index));
       case 2: return new Matrix(_getSubmatrix2D(this._data, index));
       default: return new Matrix(_getSubmatrix(this._data, index, 0));
@@ -10656,151 +11341,129 @@ function _get (arr, index) {
  * value in the matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Number[]} index   Zero-based index
+ * @param {Index} index
  * @return {*} scalar
  * @private
  */
 function _getScalar (data, index) {
-  index.forEach(function (i) {
-    data = _get(data, i);
+  index.forEach(function (range) {
+    data = _get(data, range.start);
   });
   return object.clone(data);
+}
+
+/**
+ * Get a single value from a one dimensional matrix.
+ * The value will be a copy of the original value in the matrix.
+ * Index is not checked for correct number of dimensions.
+ * @param {Array} data
+ * @param {Index} index
+ * @return {*} scalar
+ * @private
+ */
+function _getScalar1D (data, index) {
+  return _get(data, index.range(0).start);
+}
+
+/**
+ * Get a single value from a two dimensional matrix.
+ * The value will be a copy of the original value in the matrix.
+ * Index is not checked for correct number of dimensions.
+ * @param {Array} data
+ * @param {Index} index
+ * @return {*} scalar
+ * @private
+ */
+function _getScalar2D (data, index) {
+  return _get(_get(data, index.range(0).start), index.range(1).start);
 }
 
 /**
  * Get a submatrix of a zero dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index         Zero-based index
+ * @param {Index} index
  * @return {Array} submatrix
  * @private
  */
 function _getSubmatrix1D (data, index) {
-  var current = index[0];
-  if (current.map) {
-    // array or Range
-    return current.map(function (i) {
-      return _get(data, i);
-    });
-  }
-  else {
-    // scalar
-    return [
-      _get(data, current)
-    ];
-  }
+  var range = index.range(0);
+
+  return range.map(function (i) {
+    return _get(data, i);
+  });
 }
 
 /**
  * Get a submatrix of a 2 dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index         Zero-based index
+ * @param {Index} index
  * @return {Array} submatrix
  * @private
  */
 function _getSubmatrix2D (data, index) {
-  var rows = index[0];
-  var cols = index[1];
+  var rows = index.range(0);
+  var cols = index.range(1);
 
-  if (rows.map) {
-    if (cols.map) {
-      return rows.map(function (row) {
-        var child = _get(data, row);
-        return cols.map(function (col) {
-          return _get(child, col);
-        });
-      });
-    }
-    else {
-      return rows.map(function (row) {
-        return [
-          _get(_get(data, row), cols)
-        ];
-      });
-    }
-  }
-  else {
-    if (cols.map) {
-      var child = _get(data, rows);
-      return [
-        cols.map(function (col) {
-          return _get(child, col);
-        })
-      ]
-    }
-    else {
-      return [
-        [
-          _get(_get(data, rows), cols)
-        ]
-      ];
-    }
-  }
+  return rows.map(function (row) {
+    var child = _get(data, row);
+    return cols.map(function (col) {
+      return _get(child, col);
+    });
+  });
 }
 
 /**
  * Get a submatrix of a multi dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
- * @param {Array} index         Zero-based index
+ * @param {Index} index
  * @param {number} dim
  * @return {Array} submatrix
  * @private
  */
 function _getSubmatrix (data, index, dim) {
-  var last = (dim == index.length - 1);
-  var current = index[dim];
-  var recurse = function (i) {
-    var child = _get(data, i);
-    return last ? child : _getSubmatrix(child, index, dim + 1);
-  };
+  var last = (dim == index.size().length - 1);
+  var range = index.range(dim);
 
-  if (current.map) {
-    // array or Range
-    return current.map(recurse);
+  if (last) {
+    return range.map(function (i) {
+      return _get(data, i);
+    });
   }
   else {
-    // scalar
-    return [
-      recurse(current)
-    ];
+    return range.map(function (i) {
+      var child = _get(data, i);
+      return _getSubmatrix(child, index, dim + 1);
+    });
   }
 }
 
 /**
  * Replace a value or a submatrix in the matrix.
  * Indexes are zero-based.
- * @param {Array | Matrix} index        zero-based index
+ * @param {Index} index
  * @param {*} submatrix
  * @return {Matrix} itself
  */
 Matrix.prototype.set = function (index, submatrix) {
-  var isScalar;
-  if (index instanceof Matrix) {
-    // index is scalar when size==[n] or size==[0,0,...]
-    isScalar = (index.size().length == 1) || !index.size().some(function (i) {
-      return (i != 0);
-    });
-    index = index.valueOf();
-  }
-  else if (Array.isArray(index)) {
-    isScalar = !index.some(function (elem) {
-      var size = array.size(elem.valueOf());
-      return (size.length != 0) && (size != [0]);
-    });
-  }
-  else {
+  if (!(index instanceof Index)) {
     throw new TypeError('Invalid index');
   }
 
-  if (submatrix instanceof Matrix || submatrix instanceof Range) {
-    submatrix = submatrix.valueOf();
+  var size = index.size();
+  var isScalar = !size.some(function (i) {
+    return (i != 1);
+  });
+
+  if (size.length < this._size.length) {
+    throw new RangeError('Dimension mismatch ' +
+        '(' + size.length + ' != ' + this._size.length + ')');
   }
 
-  if (index.length < this._size.length) {
-    throw new RangeError('Dimension mismatch ' +
-        '(' + index.length + ' != ' + this._size.length + ')');
+  if (submatrix instanceof Matrix) {
+    submatrix = submatrix.valueOf();
   }
 
   if (isScalar) {
@@ -10818,11 +11481,11 @@ Matrix.prototype.set = function (index, submatrix) {
   }
   else {
     // set a submatrix
-    var subsize = this._size.concat();
-    _setSubmatrix (this._data, subsize, index, 0, submatrix);
-    if (!object.deepEqual(this._size, subsize)) {
+    var newSize = this._size.concat();
+    _setSubmatrix (this._data, newSize, index, 0, submatrix);
+    if (!object.deepEqual(this._size, newSize)) {
       _init(this._data);
-      this.resize(subsize);
+      this.resize(newSize);
     }
   }
 
@@ -10849,37 +11512,38 @@ function _set (arr, index, value) {
  * Replace a single value in a multi dimensional matrix
  * @param {Array} data
  * @param {Number[]} size
- * @param {Number[]} index  Zero-based index
+ * @param {Index} index
  * @param {*} value
  * @private
  */
 function _setScalar (data, size, index, value) {
   var resized = false;
-  if (index.length > size.length) {
+  if (index.size().length > size.length) {
     // dimension added
     resized = true;
   }
 
-  for (var i = 0; i < index.length; i++) {
-    var index_i = index[i];
-    array.validateIndex(index_i);
-    if ((size[i] == null) || (index_i + 1 > size[i])) {
-      size[i] = index_i + 1; // size is index + 1 as index is zero-based
+  index.forEach(function (range, i) {
+    var v = range.start;
+    array.validateIndex(v);
+    if ((size[i] == null) || (v + 1 > size[i])) {
+      size[i] = v + 1; // size is index + 1 as index is zero-based
       resized = true;
     }
-  }
+  });
 
   if (resized) {
     array.resize(data, size, 0);
   }
 
   var len = size.length;
-  index.forEach(function (v, i) {
-    if (i < len - 1) {
-      data = data[v]; // zero-based index
+  index.forEach(function (range, dim) {
+    var i = range.start;
+    if (dim < len - 1) {
+      data = data[i]; // zero-based index
     }
     else {
-      data[v] = value; // zero-based index
+      data[i] = value; // zero-based index
     }
   });
 }
@@ -10936,45 +11600,40 @@ function _setScalar2D (data, size, index, value) {
  * Replace a submatrix of a multi dimensional matrix.
  * @param {Array} data
  * @param {Array} size
- * @param {Array} index     zero-based index
+ * @param {Index} index
  * @param {number} dim
  * @param {Array} submatrix
  * @private
  */
 function _setSubmatrix (data, size, index, dim, submatrix) {
-  var last = (dim == index.length - 1);
-  var current = index[dim];
-  var recurse = function (dataIndex, subIndex) {
-    if (last) {
+  var last = (dim == index.size().length - 1);
+  var range = index.range(dim);
+
+  var len = (range.size()[0]);
+  if (len != submatrix.length) {
+    throw new RangeError('Dimensions mismatch ' +
+        '(' + len + ' != '+ submatrix.length + ')');
+  }
+
+  if (last) {
+    range.forEach(function (dataIndex, subIndex) {
       _set(data, dataIndex, submatrix[subIndex]);
       if (dataIndex + 1 > (size[dim] || 0)) {
         size[dim] = dataIndex + 1;
       }
-    }
-    else {
-      var child = data[dataIndex]; // zero-based index
+    });
+  }
+  else {
+    range.forEach(function (dataIndex, subIndex) {
+      var child = data[dataIndex];
       if (!Array.isArray(child)) {
-        data[dataIndex] = child = [child]; // zero-based index
+        data[dataIndex] = child = [child];
       }
       if (dataIndex + 1 > (size[dim] || 0)) {
         size[dim] = dataIndex + 1;
       }
       _setSubmatrix(child, size, index, dim + 1, submatrix[subIndex]);
-    }
-  };
-
-  if (current.map) {
-    // array or Range
-    var len = (current.size && current.size() || current.length);
-    if (len != submatrix.length) {
-      throw new RangeError('Dimensions mismatch ' +
-          '(' + len + ' != '+ submatrix.length + ')');
-    }
-    current.map(recurse);
-  }
-  else {
-    // scalar
-    recurse(current, 0)
+    });
   }
 }
 
@@ -11206,7 +11865,7 @@ exports.isMatrix = Matrix.isMatrix;
 
 util.types.addType('matrix', Matrix);
 
-},{"../util/index.js":196,"./Range.js":189}],189:[function(require,module,exports){
+},{"../util/index":202,"./Index":194}],196:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     number = util.number,
@@ -11215,10 +11874,8 @@ var util = require('../util/index.js'),
 
 /**
  * @constructor Range
- * Create a range. A range works similar to an Array, with functions like
- * forEach and map. However, a Range object is very cheap to create compared to
- * a large Array with indexes, as it stores only a start, step and end value of
- * the range.
+ * Create a range. A range has a start, step, and end, and contains functions
+ * to iterate over the range.
  *
  * A range can be constructed as:
  *     var range = new Range(start, end);
@@ -11325,7 +11982,7 @@ Range.prototype.size = function () {
       diff = end - start;
 
   if (number.sign(step) == number.sign(diff)) {
-    len = Math.floor((diff) / step);
+    len = Math.ceil((diff) / step);
   }
   else if (diff == 0) {
     len = 0;
@@ -11463,7 +12120,7 @@ exports.parse = Range.parse;
 
 util.types.addType('range', Range);
 
-},{"../util/index.js":196}],190:[function(require,module,exports){
+},{"../util/index.js":202}],197:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     number = util.number,
@@ -12190,11 +12847,10 @@ exports.parse = Unit.parse;
 
 util.types.addType('unit', Unit);
 
-},{"../util/index.js":196}],191:[function(require,module,exports){
+},{"../util/index.js":202}],198:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     Matrix = require('./Matrix.js'),
-    Range = require('./Range.js'),
 
     isArray = Array.isArray,
     isString = util.string.isString;
@@ -12224,9 +12880,6 @@ exports.argsToArray = function argsToArray(args) {
     if (array instanceof Matrix) {
       array = array.toVector();
     }
-    if (array instanceof Range) {
-      array = array.valueOf();
-    }
     if (!isArray(array)) {
       array = [array];
     }
@@ -12246,12 +12899,12 @@ exports.argsToArray = function argsToArray(args) {
 
 
 /**
- * Test whether a value is a collection: an Array, Matrix, or Range
+ * Test whether a value is a collection: an Array or Matrix
  * @param {*} x
  * @returns {boolean} isCollection
  */
 exports.isCollection = function isCollection (x) {
-  return (isArray(x) || (x instanceof Matrix) || (x instanceof Range));
+  return (isArray(x) || (x instanceof Matrix));
 };
 
 // TODO: write the map, deepMap, map2, and deepMap2 functions in a more concise way
@@ -12259,7 +12912,7 @@ exports.isCollection = function isCollection (x) {
 /**
  * Execute function fn element wise for each element in array.
  * Returns an array with the results
- * @param {Array | Matrix | Range} array
+ * @param {Array | Matrix} array
  * @param {function} fn
  * @return {Array | Matrix} res
  */
@@ -12278,7 +12931,7 @@ exports.map = function map(array, fn) {
  * Execute function fn element wise for each element in array and any nested
  * array
  * Returns an array with the results
- * @param {Array | Matrix | Range} array
+ * @param {Array | Matrix} array
  * @param {function} fn
  * @return {Array | Matrix} res
  */
@@ -12296,8 +12949,8 @@ exports.deepMap = function deepMap(array, fn) {
 /**
  * Execute function fn element wise for each entry in two given arrays, or
  * for a (scalar) object and array pair. Returns an array with the results
- * @param {Array | Matrix | Range | Object} array1
- * @param {Array | Matrix | Range | Object} array2
+ * @param {Array | Matrix | Object} array1
+ * @param {Array | Matrix | Object} array2
  * @param {function} fn
  * @return {Array | Matrix} res
  */
@@ -12307,12 +12960,6 @@ exports.map2 = function map2(array1, array2, fn) {
   // handle Matrix
   if (array1 instanceof Matrix || array2 instanceof Matrix) {
     return new Matrix(map2(array1.valueOf(), array2.valueOf(), fn));
-  }
-
-  // handle Range
-  if (array1 instanceof Range || array2 instanceof Range) {
-    // TODO: exports.map2 does not utilize Range.map
-    return map2(array1.valueOf(), array2.valueOf(), fn);
   }
 
   if (isArray(array1)) {
@@ -12360,8 +13007,8 @@ exports.map2 = function map2(array1, array2, fn) {
  * Execute function fn element wise for each entry in two given arrays,
  * and for any nested array. Objects can also be scalar objects.
  * Returns an array with the results.
- * @param {Array | Matrix | Range | Object} array1
- * @param {Array | Matrix | Range | Object} array2
+ * @param {Array | Matrix | Object} array1
+ * @param {Array | Matrix | Object} array2
  * @param {function} fn
  * @return {Array | Matrix} res
  */
@@ -12371,12 +13018,6 @@ exports.deepMap2 = function deepMap2(array1, array2, fn) {
   // handle Matrix
   if (array1 instanceof Matrix || array2 instanceof Matrix) {
     return new Matrix(deepMap2(array1.valueOf(), array2.valueOf(), fn));
-  }
-
-  // handle Range
-  if (array1 instanceof Range || array2 instanceof Range) {
-    // TODO: util.deepMap2 does not utilize Range.map
-    return deepMap2(array1.valueOf(), array2.valueOf(), fn);
   }
 
   if (isArray(array1)) {
@@ -12420,20 +13061,12 @@ exports.deepMap2 = function deepMap2(array1, array2, fn) {
   return res;
 };
 
-},{"../util/index.js":196,"./Matrix.js":188,"./Range.js":189}],192:[function(require,module,exports){
-exports.Complex = require('./Complex.js');
-exports.Range = require('./Range.js');
-exports.Matrix = require('./Matrix.js');
-exports.Unit = require('./Unit.js');
-exports.Help = require('./Help.js');
-
-exports.collection = require('./collection.js');
-
-},{"./Complex.js":186,"./Help.js":187,"./Matrix.js":188,"./Range.js":189,"./Unit.js":190,"./collection.js":191}],193:[function(require,module,exports){
+},{"../util/index.js":202,"./Matrix.js":195}],199:[function(require,module,exports){
 var number = require('./number'),
     string = require('./string'),
     object = require('./object'),
-    types = require('./types');
+    types = require('./types'),
+    isArray = Array.isArray;
 
 /**
  * Recursively calculate the size of a multi dimensional array.
@@ -12468,6 +13101,7 @@ exports.size = function size (x) {
 
   // verify the size
   exports.validate(x, s);
+  // TODO: don't validate here? only in a Matrix constructor?
 
   return s;
 };
@@ -12546,7 +13180,7 @@ exports.validateIndex = function validateIndex (index, length) {
     throw new RangeError('Index out of range (' + index + ' < 0)');
   }
   if (length !== undefined && index >= length) {
-    throw new RangeError('Index out of range (' + index + ' >= ' + length +  ')');
+    throw new RangeError('Index out of range (' + index + ' > ' + (length - 1) +  ')');
   }
 };
 
@@ -12646,12 +13280,43 @@ exports.resize = function resize(array, size, defaultValue) {
 };
 
 /**
+ * Squeeze a multi dimensional array
+ * @param {Array} array
+ * @return {Array} array
+ * @private
+ */
+exports.squeeze = function squeeze(array) {
+  while(isArray(array) && array.length === 1) {
+    array = array[0];
+  }
+
+  return array;
+};
+
+/**
+ * Unsqueeze a multi dimensional array: add dimensions when missing
+ * @param {Array} array
+ * @param {Number} dims   Number of desired dimensions
+ * @return {Array} array
+ * @private
+ */
+exports.unsqueeze = function unsqueeze(array, dims) {
+  var size = exports.size(array);
+
+  for (var i = 0, ii = (dims - size.length); i < ii; i++) {
+    array = [array];
+  }
+
+  return array;
+};
+
+/**
  * Test whether an object is an array
  * @param {*} value
  * @return {Boolean} isArray
  */
 exports.isArray = Array.isArray;
-},{"./number":197,"./object":198,"./string":199,"./types":200}],194:[function(require,module,exports){
+},{"./number":203,"./object":204,"./string":205,"./types":206}],200:[function(require,module,exports){
 /**
  * Test whether value is a Boolean
  * @param {*} value
@@ -12661,7 +13326,7 @@ exports.isBoolean = function isBoolean(value) {
   return (value instanceof Boolean) || (typeof value == 'boolean');
 };
 
-},{}],195:[function(require,module,exports){
+},{}],201:[function(require,module,exports){
 var types = require('./types.js');
 
 /**
@@ -12710,7 +13375,7 @@ exports.ArgumentsError = function ArgumentsError(name, count, min, max) {
 exports.ArgumentsError.prototype = new SyntaxError();
 exports.ArgumentsError.prototype.name = 'ArgumentError';
 
-},{"./types.js":200}],196:[function(require,module,exports){
+},{"./types.js":206}],202:[function(require,module,exports){
 exports.array = require('./array');
 exports.boolean = require('./boolean');
 exports.error = require('./error');
@@ -12719,7 +13384,7 @@ exports.object = require('./object');
 exports.string = require('./string');
 exports.types = require('./types');
 
-},{"./array":193,"./boolean":194,"./error":195,"./number":197,"./object":198,"./string":199,"./types":200}],197:[function(require,module,exports){
+},{"./array":199,"./boolean":200,"./error":201,"./number":203,"./object":204,"./string":205,"./types":206}],203:[function(require,module,exports){
 var options = require('../options.js');
 
 /**
@@ -12808,7 +13473,7 @@ exports.toPrecision = function toPrecision (value, precision) {
 /** @private */
 var _trailingZeros = /\.(\d*?)(0+)$/g;
 
-},{"../options.js":185}],198:[function(require,module,exports){
+},{"../options.js":191}],204:[function(require,module,exports){
 var number = require('./number.js'),
     string = require('./string.js'),
     bool = require('./boolean.js');
@@ -12941,7 +13606,7 @@ exports.deepEqual = function deepEqual (a, b) {
   }
 };
 
-},{"./boolean.js":194,"./number.js":197,"./string.js":199}],199:[function(require,module,exports){
+},{"./boolean.js":200,"./number.js":203,"./string.js":205}],205:[function(require,module,exports){
 var number = require('./number.js');
 
 /**
@@ -13092,7 +13757,7 @@ function formatArray2d (array) {
   return str;
 }
 */
-},{"./number.js":197}],200:[function(require,module,exports){
+},{"./number.js":203}],206:[function(require,module,exports){
 /**
  * Determine the type of a variable
  *

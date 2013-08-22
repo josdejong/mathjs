@@ -24,10 +24,10 @@ Powerful and easy to use.
 
 Math.js can be installed using npm, bower, or by just downloading the library.
 
-WARNING: math.js is in early stage and the API is not yet stabilized,
-so be careful when upgrading to a newer version.
-See [the history](https://github.com/josdejong/mathjs/blob/master/HISTORY.md)
-for an overview of the changes.
+WARNING: math.js is in early stage and the API is not yet stabilized.
+Please be careful when upgrading to a newer version.
+An overview of the changes is available
+[here](https://github.com/josdejong/mathjs/blob/master/HISTORY.md).
 
 ### npm
 Math.js can be installed using [npm](https://npmjs.org/):
@@ -400,8 +400,10 @@ utility methods for easy matrix manipulation such as `get`, `set`, `size`,
 `resize`, `clone`, and more.
 
 Matrix indexes in math.js are zero-based, like most programming languages
-including JavaScript itself. Note that mathematical applications like Matlab
-and Octave use one-based indexes.
+including JavaScript itself.
+The lower-bound of a range is included, the upper-bound is excluded.
+Note that mathematical applications like Matlab and Octave work differently,
+as they use one-based indexes and include the upper-bound of a range.
 
 ```js
 var matrix = math.matrix([1, 4, 9, 16, 25]);    // Matrix, [1, 4, 9, 16, 25]
@@ -424,7 +426,7 @@ parser = math.parser();
 
 parser.eval('a = [1, 2; 3, 4]');                // Matrix, [[1, 2], [3, 4]]
 parser.eval('b = zeros(2, 2)');                 // Matrix, [[0, 0], [0, 0]]
-parser.eval('b[0, 0:1] = [5, 6]');              // Matrix, [[5, 6], [0, 0]]
+parser.eval('b[0, 0:2] = [5, 6]');              // Matrix, [[5, 6], [0, 0]]
 parser.eval('b[1, :] = [7, 8]');                // Matrix, [[5, 6], [7, 8]]
 parser.eval('c = a * b');                       // Matrix, [[19, 22], [43, 50]]
 parser.eval('d = c[1, 0]');                     // 43
