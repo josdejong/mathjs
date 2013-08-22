@@ -414,7 +414,7 @@ math.factorial(array);                          // Array,  [1, 2, 6, 24, 120]
 
 var a = [[1, 2], [3, 4]];                       // Array,  [[1, 2], [3, 4]]
 var b = math.matrix([[5, 6], [1, 1]]);          // Matrix, [[5, 6], [1, 1]]
-b.set(math.index(2, [1, 3]), [[7, 8]]);         // Matrix, [[5, 6], [7, 8]]
+b.set(math.index(1, [0, 2]), [[7, 8]]);         // Matrix, [[5, 6], [7, 8]]
 var c = math.multiply(a, b);                    // Matrix, [[19, 22], [43, 50]]
 var d = c.get(math.index(1, 0));                // 43
 ```
