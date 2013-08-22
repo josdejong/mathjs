@@ -1,47 +1,49 @@
 {
-    "name": "mathjs",
-    "version": "0.11.1",
-    "description": "Math.js is an extensive math library for JavaScript and Node.js. It features real and complex numbers, units, matrices, a large set of mathematical functions, and a flexible expression parser.",
-    "author": "Jos de Jong <wjosdejong@gmail.com>",
-    "contributors": [
-        {
-            "name": "Jos de Jong",
-            "email": "wjosdejong@gmail.com"
-        }
-    ],
-    "homepage": "http://mathjs.org",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/josdejong/mathjs.git"
-    },
-    "keywords": [
-        "math",
-        "mathematics",
-        "functions",
-        "numeric",
-        "parser",
-        "expression",
-        "real",
-        "complex",
-        "matrix",
-        "unit"
-    ],
-    "dependencies": {},
-    "devDependencies": {
-        "jake": ">= 0.5.9",
-        "tap": ">= 0.4.3",
-        "numbers" : "0.4.0",
-        "uglify-js": ">= 2.2.5",
-        "dateable": ">= 0.1.2"
-    },
-    "scripts": {
-        "test": "jake test --trace"
-    },
-    "main": "./math.js",
-    "bin": {
-        "mathjs": "./bin/cli.js"
-    },
-    "engines": {
-        "node": "*"
+  "name": "mathjs",
+  "version": "0.12.0",
+  "description": "Math.js is an extensive math library for JavaScript and Node.js. It features real and complex numbers, units, matrices, a large set of mathematical functions, and a flexible expression parser.",
+  "author": "Jos de Jong <wjosdejong@gmail.com>",
+  "contributors": [
+    {
+      "name": "Jos de Jong",
+      "email": "wjosdejong@gmail.com"
     }
+  ],
+  "homepage": "http://mathjs.org",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/josdejong/mathjs.git"
+  },
+  "keywords": [
+    "math",
+    "mathematics",
+    "functions",
+    "numeric",
+    "parser",
+    "expression",
+    "real",
+    "complex",
+    "matrix",
+    "unit"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "jake": ">= 0.5.9",
+    "browserify": "2.x",
+    "mocha": "1.x",
+    "numbers" : "0.4.0",
+    "uglify-js": ">= 2.2.5",
+    "dateable": ">= 0.1.2",
+    "underscore": "1.4.x",
+    "seed-random": ">= 1.0.1"
+  },
+  "scripts": {
+    "test": "mocha test --recursive --reporter spec"
+  },
+  "bin": {
+    "mathjs": "./bin/cli.js"
+  },
+  "engines": {
+    "node": "*"
+  }
 }

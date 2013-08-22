@@ -1,14 +1,14 @@
 // complex numbers
 
 // load math.js
-var math = require('../math.js');
+var math = require('../index');
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-    console.log(math.format(value));
+  console.log(math.format(value));
 }
 
 // create a complex number with a numeric real and complex part

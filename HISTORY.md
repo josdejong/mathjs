@@ -2,6 +2,32 @@
 https://github.com/josdejong/mathjs
 
 
+## 2013-08-22, version 0.12.0
+
+*WARNING: version 0.12 is incompatible with previous versions.*
+
+- Implemented functions `random([min, max])`, `randomInt([min, max])`,
+  `pickRandom(array)`. Thanks sebpiq.
+- Implemented function `distribution(name)`, generating a distribution object
+  with functions `random`, `randomInt`, `pickRandom` for different
+  distributions. Currently supporting `uniform` and `normal`.
+- Changed the behavior of `range` to exclude the upper bound, so `range(1, 4)`
+  now returns `[1, 2, 3]` instead of `[1, 2, 3, 4]`.
+- Changed the syntax of `range`, which is now `range(start, end [, step])`
+  instead of `range(start, [step, ] end)`.
+- Changed the behavior of `ones` and `zeros` to geometric dimensions, for
+  example `ones(3)` returns a vector with length 3, filled with ones, and
+  `ones(3,3)` returns a 2D array with size [3, 3].
+- Changed the return type of `ones` and `zeros`: they now return an Array when
+  arguments are Numbers or an Array, and returns a Matrix when the argument
+  is a Matrix.
+- Change matrix index notation in parser from round brackets to square brackets,
+  for example `A[0, 0:3]`.
+- Removed the feature introduced in v0.10.0 to automatically convert a complex
+  value with an imaginary part equal to zero to a number.
+- Fixed zeros being formatted as null. Thanks TimKraft.
+
+
 ## 2013-07-23, version 0.11.1
 
 - Fixed missing development dependency
@@ -19,6 +45,8 @@ https://github.com/josdejong/mathjs
 - Added constructor function `boolean`.
 - Fixed function `select` not accepting `0` as input.
   Thanks Elijah Manor (elijahmanor).
+- Parser now supports multiple unary minus operators after each other.
+- Fixed not accepting empty matrices like `[[], []]`.
 - Some fixes in the end user documentation.
 
 

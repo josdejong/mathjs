@@ -1,18 +1,18 @@
 {
-    "name": "mathjs",
-    "version": "0.11.1",
-    "main": "math.js",
-    "ignore": [
-        "img",
-        "misc",
-        "node_modules",
-        "src",
-        "test",
-        "tools",
-        ".gitignore",
-        ".npmignore",
-        ".travis.yml",
-        "Jakefile.js",
-        "package.json"
-    ]
+  "name": "mathjs",
+  "version": "0.12.0",
+  "main": "./dist/math.js",
+  "ignore": [
+    "coverage",
+    "img",
+    "misc",
+    "node_modules",
+    "test",
+    "tools",
+    ".gitignore",
+    ".npmignore",
+    ".travis.yml",
+    "Jakefile.js",
+    "package.json"
+  ]
 }

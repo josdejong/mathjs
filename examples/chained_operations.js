@@ -1,14 +1,14 @@
 // chained operations
 
 // load math.js
-var math = require('../math.js');
+var math = require('../index');
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-    console.log(math.format(value));
+  console.log(math.format(value));
 }
 
 // create a chained operation using the function select
@@ -33,7 +33,7 @@ print(b);                       // 0.5
 // these are demonstrated in the following examples
 
 // toString will format the value in the selector
-var selector = math.select(2 / 3);
+var selector = math.select(2).divide(3);
 var str = selector.toString();
 print(str);                     // 0.66667
 
@@ -46,11 +46,11 @@ print(math.square(selector));   // 0.44444
 // the functions get and set can be used to get or replace sub matrices
 var array = [[1, 2], [3, 4]];
 var v = math.select(array)
-    .get([1, 0]);
+    .get(math.index(1, 0));
 print(v);                       // 3
 
 var m = math.select(array)
-    .set([0, 0], 8)
+    .set(math.index(0, 0), 8)
     .multiply(3)
     .done();
 print(m);                       // [[24, 6], [9, 12]]

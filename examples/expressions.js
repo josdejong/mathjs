@@ -8,14 +8,14 @@
  */
 
 // load math.js
-var math = require('../math.js');
+var math = require('../index');
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-    console.log(math.format(value));
+  console.log(math.format(value));
 }
 
 // 1. using the function math.eval
@@ -37,16 +37,16 @@ print(math.eval('cos(45 deg)'));            // d = 0.70711
 // evaluate multiple expressions at once
 console.log('\nevaluate multiple expressions at once');
 print(math.eval([
-    'f = 3',
-    'g = 4',
-    'f * g'
+  'f = 3',
+  'g = 4',
+  'f * g'
 ]));                                        // [3, 4, 12]
 
 // provide a scope (just a regular JavaScript Object)
 console.log('\nevaluate expressions providing a scope with variables and functions');
 var scope = {
-    a: 3,
-    b: 4
+  a: 3,
+  b: 4
 };
 
 // variables can be read from the scope
@@ -58,7 +58,7 @@ print(scope.c);                             // 6.8
 
 // scope can contain both variables and functions
 scope.hello = function (name) {
-    return 'hello, ' + name + '!';
+  return 'hello, ' + name + '!';
 };
 print(math.eval('hello("hero")', scope));   // "hello, hero!"
 
@@ -92,8 +92,8 @@ print(node1.eval());                        // 5
 // provide a scope
 console.log('\nprovide a scope');
 var scope = {
-    x: 3,
-    a: 2
+  x: 3,
+  a: 2
 };
 var node2 = math.parse('x^a', scope);
 print(node2.toString());                    // "ans = x ^ a"
@@ -140,7 +140,7 @@ console.log('g =', g);
 parser.set('h', 500);
 print(parser.eval('h / 2'));                    // 250
 parser.set('hello', function (name) {
-    return 'hello, ' + name + '!';
+  return 'hello, ' + name + '!';
 });
 print(parser.eval('hello("hero")'));            // "hello, hero!"
 

@@ -4,24 +4,24 @@
  * with functions and variables.
  */
 
-var math = require('../math.js');
+var math = require('../index');
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-    console.log(math.format(value));
+  console.log(math.format(value));
 }
 
 /**
  * Define new functions and variables
  */
 math.import({
-    myvalue: 42,
-    hello: function (name) {
-        return 'hello, ' + name + '!';
-    }
+  myvalue: 42,
+  hello: function (name) {
+    return 'hello, ' + name + '!';
+  }
 });
 
 // defined methods can be used in both JavaScript as well as the parser
@@ -38,18 +38,18 @@ print(math.eval('hello("user")'));  // 'hello, user!'
  *     npm install numbers
  */
 try {
-    // import the numbers.js library into math.js
-    math.import('numbers');
+  // import the numbers.js library into math.js
+  math.import('numbers');
 }
 catch (err) {
-    console.log('Warning: to import numbers.js, the library must\n' +
-        'be installed first via `npm install numbers`.');
+  console.log('Warning: to import numbers.js, the library must\n' +
+      'be installed first via `npm install numbers`.');
 }
 
 if (math.fibonacci) {
-    // calculate fibonacci
-    print(math.fibonacci(7));         // 13
-    print(math.eval('fibonacci(7)')); // 13
+  // calculate fibonacci
+  print(math.fibonacci(7));         // 13
+  print(math.eval('fibonacci(7)')); // 13
 }
 
 /**
@@ -58,20 +58,20 @@ if (math.fibonacci) {
  *     npm install numeric
  */
 try {
-    // import the numeric.js library into math.js
-    math.import('numeric');
+  // import the numeric.js library into math.js
+  math.import('numeric');
 }
 catch (err) {
-    console.log('Warning: to import numeric.js, the library must\n' +
-        'be installed first via `npm install numeric`.');
+  console.log('Warning: to import numeric.js, the library must\n' +
+      'be installed first via `npm install numeric`.');
 }
 
 if (math.eig) {
-    // calculate eigenvalues of a matrix
-    print(math.eval('eig([1, 2; 4, 3])').lambda.x); // [5, -1];
+  // calculate eigenvalues of a matrix
+  print(math.eval('eig([1, 2; 4, 3])').lambda.x); // [5, -1];
 
-    // solve AX = b
-    var A = math.eval('[1, 2, 3; 2, -1, 1; 3, 0, -1]');
-    var b = [9, 8, 3];
-    print(math.solve(A, b)); // [2, -1, 3]
+  // solve AX = b
+  var A = math.eval('[1, 2, 3; 2, -1, 1; 3, 0, -1]');
+  var b = [9, 8, 3];
+  print(math.solve(A, b)); // [2, -1, 3]
 }
