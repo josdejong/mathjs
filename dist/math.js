@@ -6,7 +6,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.11.2-SNAPSHOT
+ * @version 0.12.0
  * @date    2013-08-22
  *
  * @license
@@ -7751,13 +7751,13 @@ module.exports = function (math) {
 
           // `random(max)` or `random(size)`
           } else if (arguments.length === 1) {
-            if (Object.prototype.toString.call(arg1) === '[object Array]')
+            if (Array.isArray(arg1))
               size = arg1;
             else
               max = arg1;
           // `random(min, max)` or `random(size, max)`
           } else if (arguments.length === 2) {
-            if (Object.prototype.toString.call(arg1) === '[object Array]')
+            if (Array.isArray(arg1))
               size = arg1;
             else {
               min = arg1;
@@ -7772,6 +7772,7 @@ module.exports = function (math) {
 
           if (max === undefined) max = 1;
           if (min === undefined) min = 0;
+          // TODO: output Array if size is Array, output Matrix if size is Matrix
           if (size !== undefined) return new Matrix(_randomDataForMatrix(size, min, max, _random));
           else return _random(min, max);
         },
@@ -7799,14 +7800,20 @@ module.exports = function (math) {
           }
 
           if (min === undefined) min = 0;
+          // TODO: output Array if size is Array, output Matrix if size is Matrix
           if (size !== undefined) return new Matrix(_randomDataForMatrix(size, min, max, _randomInt));
           else return _randomInt(min, max);
         },
 
         pickRandom: function(possibles) {
-          // TODO: add support for matrices?
-          if (arguments.length !== 1)
+          if (arguments.length !== 1) {
             throw new util.error.ArgumentsError('pickRandom', arguments.length, 1);
+          }
+          if (!Array.isArray(possibles)) {
+            throw new util.error.UnsupportedTypeError('pickRandom', possibles);
+          }
+
+          // TODO: add support for matrices
           return possibles[Math.floor(Math.random() * possibles.length)];
         }
 
