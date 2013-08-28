@@ -1,5 +1,3 @@
-// test data type Matrix
-
 var assert = require('assert');
 var math = require('../../index.js'),
     index = math.index;
@@ -230,12 +228,10 @@ describe('matrix', function() {
 
   });
 
-
   describe('map', function() {
 
     it('should apply the given function to all elements in the matrix', function() {
       var m = math.matrix([[1,2,3], [4,5,6]]);
-
       var m2 = m.map(function (value) { return value * 2; });
       assert.deepEqual(m2.valueOf(), [[2,4,6],[8,10,12]]);
     });
