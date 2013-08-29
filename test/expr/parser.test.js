@@ -79,14 +79,6 @@ describe('parser', function() {
     assert.equal(parser.eval('atan2(2,2)'), 0.7853981633974483);
   });
 
-  it('should throw an error on invalid function calls', function() {
-    assert.deepEqual(parser.eval('a = [1,2;3,4]'), math.matrix([[1,2],[3,4]]));
-    assert.throws(function () {parser.eval('2(1,1)')}, TypeError);
-    assert.throws(function () {parser.eval('"hello"(1,1)')}, TypeError);
-    assert.throws(function () {parser.eval('a(1,1)')}, TypeError);
-  });
-
-
   it('should parse valid assignments', function() {
     assert.equal(parser.eval('a = 0.75'), 0.75);
     assert.equal(parser.eval('a + 2'), 2.75);
@@ -96,7 +88,7 @@ describe('parser', function() {
   });
 
   it('should throw an error on invalid assignments', function() {
-    assert.throws(function () {parser.eval('sin(2) = 0.75')}, SyntaxError);
+    //assert.throws(function () {parser.eval('sin(2) = 0.75')}, SyntaxError); // TODO: should this throw an exception?
     assert.throws(function () {parser.eval('sin + 2 = 3')}, SyntaxError);
   });
 
@@ -134,8 +126,8 @@ describe('parser', function() {
 
   it('should parse ranges', function() {
     assert.ok(parser.eval('2:5') instanceof Array);
-    assert.deepEqual(parser.eval('2:6'), [2,3,4,5]);
-    assert.deepEqual(parser.eval('10:-2:0'), [10,8,6,4,2]);
+    assert.deepEqual(parser.eval('2:5'), [2,3,4,5]);
+    assert.deepEqual(parser.eval('10:-2:0'), [10,8,6,4,2,0]);
   });
 
 
@@ -145,37 +137,37 @@ describe('parser', function() {
       [4,5,6],
       [7,8,9]
     ]));
-    assert.deepEqual(parser.eval('a[1, :]'),        matrix([[4,5,6]]));
-    assert.deepEqual(parser.eval('a[1, :2]'),       matrix([[4,5]]));
-    assert.deepEqual(parser.eval('a[1, :end-1]'),   matrix([[4,5]]));
-    assert.deepEqual(parser.eval('a[1, 1:]'),       matrix([[5,6]]));
-    assert.deepEqual(parser.eval('a[1, 1:3]'),      matrix([[5,6]]));
-    assert.deepEqual(parser.eval('a[1, 0:2:4]'),    matrix([[4,6]]));
-    assert.deepEqual(parser.eval('a[:, 1]'),        matrix([[2],[5],[8]]));
-    assert.deepEqual(parser.eval('a[:2, 1]'),       matrix([[2],[5]]));
-    assert.deepEqual(parser.eval('a[:end-1, 1]'),   matrix([[2],[5]]));
-    assert.deepEqual(parser.eval('a[1:, 1]'),       matrix([[5],[8]]));
-    assert.deepEqual(parser.eval('a[1:3, 1]'),      matrix([[5],[8]]));
-    assert.deepEqual(parser.eval('a[0:2:4, 1]'),    matrix([[2],[8]]));
+    assert.deepEqual(parser.eval('a(2, :)'),        matrix([[4,5,6]]));
+    assert.deepEqual(parser.eval('a(2, :2)'),       matrix([[4,5]]));
+    assert.deepEqual(parser.eval('a(2, :end-1)'),   matrix([[4,5]]));
+    assert.deepEqual(parser.eval('a(2, 2:)'),       matrix([[5,6]]));
+    assert.deepEqual(parser.eval('a(2, 2:3)'),      matrix([[5,6]]));
+    assert.deepEqual(parser.eval('a(2, 1:2:3)'),    matrix([[4,6]]));
+    assert.deepEqual(parser.eval('a(:, 2)'),        matrix([[2],[5],[8]]));
+    assert.deepEqual(parser.eval('a(:2, 2)'),       matrix([[2],[5]]));
+    assert.deepEqual(parser.eval('a(:end-1, 2)'),   matrix([[2],[5]]));
+    assert.deepEqual(parser.eval('a(2:, 2)'),       matrix([[5],[8]]));
+    assert.deepEqual(parser.eval('a(2:3, 2)'),      matrix([[5],[8]]));
+    assert.deepEqual(parser.eval('a(1:2:3, 2)'),    matrix([[2],[8]]));
     // TODO: implement and test support for Array (instead of Matrix)
   });
 
   it('should parse matrix resizings', function() {
     assert.deepEqual(parser.eval('a = []'),    matrix([]));
-    assert.deepEqual(parser.eval('a[0:3,0] = [1;2;3]'), matrix([[1],[2],[3]]));
-    assert.deepEqual(parser.eval('a[:,1] = [4;5;6]'), matrix([[1,4],[2,5],[3,6]]));
+    assert.deepEqual(parser.eval('a(1:3,1) = [1;2;3]'), matrix([[1],[2],[3]]));
+    assert.deepEqual(parser.eval('a(:,2) = [4;5;6]'), matrix([[1,4],[2,5],[3,6]]));
 
     assert.deepEqual(parser.eval('a = []'),    matrix([]));
-    assert.deepEqual(parser.eval('a[0,2] = 3'), matrix([[0,0,3]]));
-    assert.deepEqual(parser.eval('a[1,:] = [4,5,6]'), matrix([[0,0,3],[4,5,6]]));
+    assert.deepEqual(parser.eval('a(1,3) = 3'), matrix([[0,0,3]]));
+    assert.deepEqual(parser.eval('a(2,:) = [4,5,6]'), matrix([[0,0,3],[4,5,6]]));
 
     assert.deepEqual(parser.eval('a = []'),    matrix([]));
-    assert.deepEqual(parser.eval('a[2,0] = 3'), matrix([[0],[0],[3]]));
-    assert.deepEqual(parser.eval('a[:,1] = [4;5;6]'), matrix([[0,4],[0,5],[3,6]]));
+    assert.deepEqual(parser.eval('a(3,1) = 3'), matrix([[0],[0],[3]]));
+    assert.deepEqual(parser.eval('a(:,2) = [4;5;6]'), matrix([[0,4],[0,5],[3,6]]));
 
     assert.deepEqual(parser.eval('a = []'),    matrix([]));
-    assert.deepEqual(parser.eval('a[0,0:3] = [1,2,3]'), matrix([[1,2,3]]));
-    assert.deepEqual(parser.eval('a[1,:] = [4,5,6]'), matrix([[1,2,3],[4,5,6]]));
+    assert.deepEqual(parser.eval('a(1,1:3) = [1,2,3]'), matrix([[1,2,3]]));
+    assert.deepEqual(parser.eval('a(2,:) = [4,5,6]'), matrix([[1,2,3],[4,5,6]]));
   });
 
 
@@ -196,18 +188,18 @@ describe('parser', function() {
 
   it('should get/set the matrix correctly', function() {
     parser.eval('a=[1,2;3,4]');
-    parser.eval('a[0,0] = 100');
+    parser.eval('a(1,1) = 100');
     assert.deepEqual(parser.get('a').size(), [2,2]);
     assert.deepEqual(parser.get('a').valueOf(), [[100,2],[3,4]]);
-    parser.eval('a[1:3,1:3] = [10,11;12,13]');
+    parser.eval('a(2:3,2:3) = [10,11;12,13]');
     assert.deepEqual(parser.get('a').size(), [3,3]);
     assert.deepEqual(parser.get('a').valueOf(), [[100,2,0],[3,10,11],[0,12,13]]);
     var a = parser.get('a');
     assert.deepEqual(a.get(math.index([0,3], [0,2])).valueOf(), [[100,2],[3,10],[0,12]]);
-    assert.deepEqual(parser.eval('a[0:3,0:2]').valueOf(), [[100,2],[3,10],[0,12]]);
+    assert.deepEqual(parser.eval('a(1:3,1:2)').valueOf(), [[100,2],[3,10],[0,12]]);
 
     parser.set('b', [[1,2],[3,4]]);
-    assert.deepEqual(parser.eval('b[0,:]'), [[1, 2]]); // TODO: matrix should be squeezed
+    assert.deepEqual(parser.eval('b(1,:)'), [[1, 2]]); // TODO: matrix should be squeezed
   });
 
   it('should get/set the matrix correctly for 3d matrices', function() {
@@ -236,20 +228,20 @@ describe('parser', function() {
       ]
     ]));
     assert.deepEqual(parser.eval('size(f)'), matrix([2,2,2]));
-    assert.deepEqual(parser.eval('f[:,:,0]'), matrix([[[1],[2]],[[3],[4]]])); // TODO: last dimension should be squeezed
-    assert.deepEqual(parser.eval('f[:,:,1]'), matrix([[[5],[6]],[[7],[8]]])); // TODO: last dimension should be squeezed
-    assert.deepEqual(parser.eval('f[:,1,:]'), matrix([[[2,6]],[[4,8]]]));
-    assert.deepEqual(parser.eval('f[1,:,:]'), matrix([[[3,7],[4,8]]]));
+    assert.deepEqual(parser.eval('f(:,:,1)'), matrix([[[1],[2]],[[3],[4]]])); // TODO: last dimension should be squeezed
+    assert.deepEqual(parser.eval('f(:,:,2)'), matrix([[[5],[6]],[[7],[8]]])); // TODO: last dimension should be squeezed
+    assert.deepEqual(parser.eval('f(:,2,:)'), matrix([[[2,6]],[[4,8]]]));
+    assert.deepEqual(parser.eval('f(2,:,:)'), matrix([[[3,7],[4,8]]]));
 
     parser.eval('a=diag([1,2,3,4])');
-    assert.deepEqual(parser.eval('a[2:end, 2:end]'), matrix([[3,0],[0,4]]));
-    assert.deepEqual(parser.eval('a[2:end, 1:end]=9*ones(2,3)'), matrix([
+    assert.deepEqual(parser.eval('a(3:end, 3:end)'), matrix([[3,0],[0,4]]));
+    assert.deepEqual(parser.eval('a(3:end, 2:end)=9*ones(2,3)'), matrix([
       [1,0,0,0],
       [0,2,0,0],
       [0,9,9,9],
       [0,9,9,9]
     ]));
-    assert.deepEqual(parser.eval('a[1:end-1, 1:end-1]'), matrix([[2,0],[9,9]]));
+    assert.deepEqual(parser.eval('a(2:end-1, 2:end-1)'), matrix([[2,0],[9,9]]));
   });
 
 
@@ -261,7 +253,7 @@ describe('parser', function() {
     assert.deepEqual(parser.eval('c=[a,b;b,a]'), matrix([[1,2,5,6],[3,4,7,8],[5,6,1,2],[7,8,3,4]]));
     assert.deepEqual(parser.eval('c=[[1,2]; [3,4]]'), matrix([[1,2],[3,4]]));
     assert.deepEqual(parser.eval('c=[1; [2;3]]'), matrix([[1],[2],[3]]));
-    assert.deepEqual(parser.eval('d=1:4'), range(1,4));  // d is a Range
+    assert.deepEqual(parser.eval('d=1:3'), [1,2,3]);
     assert.deepEqual(parser.eval('[d,d]'), matrix([[1,2,3,1,2,3]]));
     assert.deepEqual(parser.eval('[d;d]'), matrix([[1,2,3],[1,2,3]]));
     assert.deepEqual(parser.eval('e=1+d'), [2,3,4]);  // e is an Array
@@ -280,9 +272,9 @@ describe('parser', function() {
     assert.deepEqual(parser.eval('[1,2,3;4,5,6]\'').valueOf(), [[1,4],[2,5],[3,6]]);
     assert.ok(parser.eval('[1,2,3;4,5,6]\'') instanceof math.type.Matrix);
     assert.deepEqual(parser.eval('23\'').valueOf(), 23);
-    assert.deepEqual(parser.eval('[1:5]').valueOf(), [[1,2,3,4]]);
-    assert.deepEqual(parser.eval('[1:5]\'').valueOf(), [[1],[2],[3],[4]]);
-    assert.deepEqual(parser.eval('size([1:5])').valueOf(), [1, 4]);
+    assert.deepEqual(parser.eval('[1:5]').valueOf(), [[1,2,3,4,5]]);
+    assert.deepEqual(parser.eval('[1:5]\'').valueOf(), [[1],[2],[3],[4],[5]]);
+    assert.deepEqual(parser.eval('size([1:5])').valueOf(), [1, 5]);
   });
 
 
@@ -337,7 +329,7 @@ describe('parser', function() {
     parser.remove('q');
     assert.throws(function () { n.eval(); });
 
-    n = parser.parse('qq[0,0]=33');
+    n = parser.parse('qq(1,1)=33');
     assert.throws(function () { n.eval(); });
     parser.eval('qq=[1,2;3,4]');
     assert.deepEqual(n.eval(), matrix([[33,2],[3,4]]));
@@ -375,5 +367,6 @@ describe('parser', function() {
 
 
   // TODO: extensively test the Parser
+  // TODO: move all tests from parser.test.js to parse.test.js
 
 });

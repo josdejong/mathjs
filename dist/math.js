@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.12.1
- * @date    2013-08-22
+ * @version 0.12.2-SNAPSHOT
+ * @date    2013-08-29
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -153,7 +153,7 @@ require('./lib/constants.js')(exports);
 // selector (we initialize after all functions are loaded)
 exports.expr.Selector = require('./lib/expr/Selector.js')(exports);
 
-},{"./lib/constants.js":2,"./lib/docs/index.js":95,"./lib/expr/Parser.js":96,"./lib/expr/Scope.js":97,"./lib/expr/Selector.js":98,"./lib/expr/node/index.js":112,"./lib/function/arithmetic/abs.js":113,"./lib/function/arithmetic/add.js":114,"./lib/function/arithmetic/ceil.js":115,"./lib/function/arithmetic/cube.js":116,"./lib/function/arithmetic/divide.js":117,"./lib/function/arithmetic/edivide.js":118,"./lib/function/arithmetic/emultiply.js":119,"./lib/function/arithmetic/epow.js":120,"./lib/function/arithmetic/equal.js":121,"./lib/function/arithmetic/exp.js":122,"./lib/function/arithmetic/fix.js":123,"./lib/function/arithmetic/floor.js":124,"./lib/function/arithmetic/gcd.js":125,"./lib/function/arithmetic/larger.js":126,"./lib/function/arithmetic/largereq.js":127,"./lib/function/arithmetic/lcm.js":128,"./lib/function/arithmetic/log.js":129,"./lib/function/arithmetic/log10.js":130,"./lib/function/arithmetic/mod.js":131,"./lib/function/arithmetic/multiply.js":132,"./lib/function/arithmetic/pow.js":133,"./lib/function/arithmetic/round.js":134,"./lib/function/arithmetic/sign.js":135,"./lib/function/arithmetic/smaller.js":136,"./lib/function/arithmetic/smallereq.js":137,"./lib/function/arithmetic/sqrt.js":138,"./lib/function/arithmetic/square.js":139,"./lib/function/arithmetic/subtract.js":140,"./lib/function/arithmetic/unary.js":141,"./lib/function/arithmetic/unequal.js":142,"./lib/function/arithmetic/xgcd.js":143,"./lib/function/complex/arg.js":144,"./lib/function/complex/conj.js":145,"./lib/function/complex/im.js":146,"./lib/function/complex/re.js":147,"./lib/function/construction/boolean.js":148,"./lib/function/construction/complex.js":149,"./lib/function/construction/index.js":150,"./lib/function/construction/matrix.js":151,"./lib/function/construction/number.js":152,"./lib/function/construction/parser.js":153,"./lib/function/construction/string.js":154,"./lib/function/construction/unit.js":155,"./lib/function/matrix/concat.js":156,"./lib/function/matrix/det.js":157,"./lib/function/matrix/diag.js":158,"./lib/function/matrix/eye.js":159,"./lib/function/matrix/inv.js":160,"./lib/function/matrix/ones.js":161,"./lib/function/matrix/range.js":162,"./lib/function/matrix/size.js":163,"./lib/function/matrix/squeeze.js":164,"./lib/function/matrix/subset.js":165,"./lib/function/matrix/transpose.js":166,"./lib/function/matrix/zeros.js":167,"./lib/function/probability/factorial.js":168,"./lib/function/probability/random.js":169,"./lib/function/statistics/max.js":170,"./lib/function/statistics/min.js":171,"./lib/function/trigonometry/acos.js":172,"./lib/function/trigonometry/asin.js":173,"./lib/function/trigonometry/atan.js":174,"./lib/function/trigonometry/atan2.js":175,"./lib/function/trigonometry/cos.js":176,"./lib/function/trigonometry/cot.js":177,"./lib/function/trigonometry/csc.js":178,"./lib/function/trigonometry/sec.js":179,"./lib/function/trigonometry/sin.js":180,"./lib/function/trigonometry/tan.js":181,"./lib/function/units/in.js":182,"./lib/function/utils/clone.js":183,"./lib/function/utils/eval.js":184,"./lib/function/utils/format.js":185,"./lib/function/utils/help.js":186,"./lib/function/utils/import.js":187,"./lib/function/utils/parse.js":188,"./lib/function/utils/select.js":189,"./lib/function/utils/typeof.js":190,"./lib/options":191,"./lib/type/Complex.js":192,"./lib/type/Help.js":193,"./lib/type/Index.js":194,"./lib/type/Matrix.js":195,"./lib/type/Range.js":196,"./lib/type/Unit.js":197,"./lib/type/collection.js":198}],2:[function(require,module,exports){
+},{"./lib/constants.js":2,"./lib/docs/index.js":95,"./lib/expr/Parser.js":96,"./lib/expr/Scope.js":97,"./lib/expr/Selector.js":98,"./lib/expr/node/index.js":111,"./lib/function/arithmetic/abs.js":112,"./lib/function/arithmetic/add.js":113,"./lib/function/arithmetic/ceil.js":114,"./lib/function/arithmetic/cube.js":115,"./lib/function/arithmetic/divide.js":116,"./lib/function/arithmetic/edivide.js":117,"./lib/function/arithmetic/emultiply.js":118,"./lib/function/arithmetic/epow.js":119,"./lib/function/arithmetic/equal.js":120,"./lib/function/arithmetic/exp.js":121,"./lib/function/arithmetic/fix.js":122,"./lib/function/arithmetic/floor.js":123,"./lib/function/arithmetic/gcd.js":124,"./lib/function/arithmetic/larger.js":125,"./lib/function/arithmetic/largereq.js":126,"./lib/function/arithmetic/lcm.js":127,"./lib/function/arithmetic/log.js":128,"./lib/function/arithmetic/log10.js":129,"./lib/function/arithmetic/mod.js":130,"./lib/function/arithmetic/multiply.js":131,"./lib/function/arithmetic/pow.js":132,"./lib/function/arithmetic/round.js":133,"./lib/function/arithmetic/sign.js":134,"./lib/function/arithmetic/smaller.js":135,"./lib/function/arithmetic/smallereq.js":136,"./lib/function/arithmetic/sqrt.js":137,"./lib/function/arithmetic/square.js":138,"./lib/function/arithmetic/subtract.js":139,"./lib/function/arithmetic/unary.js":140,"./lib/function/arithmetic/unequal.js":141,"./lib/function/arithmetic/xgcd.js":142,"./lib/function/complex/arg.js":143,"./lib/function/complex/conj.js":144,"./lib/function/complex/im.js":145,"./lib/function/complex/re.js":146,"./lib/function/construction/boolean.js":147,"./lib/function/construction/complex.js":148,"./lib/function/construction/index.js":149,"./lib/function/construction/matrix.js":150,"./lib/function/construction/number.js":151,"./lib/function/construction/parser.js":152,"./lib/function/construction/string.js":153,"./lib/function/construction/unit.js":154,"./lib/function/matrix/concat.js":155,"./lib/function/matrix/det.js":156,"./lib/function/matrix/diag.js":157,"./lib/function/matrix/eye.js":158,"./lib/function/matrix/inv.js":159,"./lib/function/matrix/ones.js":160,"./lib/function/matrix/range.js":161,"./lib/function/matrix/size.js":162,"./lib/function/matrix/squeeze.js":163,"./lib/function/matrix/subset.js":164,"./lib/function/matrix/transpose.js":165,"./lib/function/matrix/zeros.js":166,"./lib/function/probability/factorial.js":167,"./lib/function/probability/random.js":168,"./lib/function/statistics/max.js":169,"./lib/function/statistics/min.js":170,"./lib/function/trigonometry/acos.js":171,"./lib/function/trigonometry/asin.js":172,"./lib/function/trigonometry/atan.js":173,"./lib/function/trigonometry/atan2.js":174,"./lib/function/trigonometry/cos.js":175,"./lib/function/trigonometry/cot.js":176,"./lib/function/trigonometry/csc.js":177,"./lib/function/trigonometry/sec.js":178,"./lib/function/trigonometry/sin.js":179,"./lib/function/trigonometry/tan.js":180,"./lib/function/units/in.js":181,"./lib/function/utils/clone.js":182,"./lib/function/utils/eval.js":183,"./lib/function/utils/format.js":184,"./lib/function/utils/help.js":185,"./lib/function/utils/import.js":186,"./lib/function/utils/parse.js":187,"./lib/function/utils/select.js":188,"./lib/function/utils/typeof.js":189,"./lib/options":190,"./lib/type/Complex.js":191,"./lib/type/Help.js":192,"./lib/type/Index.js":193,"./lib/type/Matrix.js":194,"./lib/type/Range.js":195,"./lib/type/Unit.js":196,"./lib/type/collection.js":197}],2:[function(require,module,exports){
 module.exports = function (math) {
   var Complex = require('./type/Complex.js');
 
@@ -178,7 +178,7 @@ module.exports = function (math) {
   math.SQRT2       = Math.SQRT2;
 };
 
-},{"./type/Complex.js":192}],3:[function(require,module,exports){
+},{"./type/Complex.js":191}],3:[function(require,module,exports){
 module.exports = {
   'name': 'Infinity',
   'category': 'Constants',
@@ -1316,8 +1316,8 @@ module.exports = {
   ],
   'description': 'Create a diagonal matrix or retrieve the diagonal of a matrix. When x is a vector, a matrix with the vector values on the diagonal will be returned. When x is a matrix, a vector with the diagonal values of the matrix is returned.When k is provided, the k-th diagonal will be filled in or retrieved, if k is positive, the values are placed on the super diagonal. When k is negative, the values are placed on the sub diagonal.',
   'examples': [
-    'diag(1:4)',
-    'diag(1:4, 1)',
+    'diag(1:3)',
+    'diag(1:3, 1)',
     'a = [1, 2, 3; 4, 5, 6; 7, 8, 9]',
     'diag(a)'
   ],
@@ -1406,12 +1406,12 @@ module.exports = {
       'Create a range. Lower bound of the range is included, upper bound is excluded.',
   'examples': [
     '1:5',
-    '3:-1:-4',
+    '3:-1:-3',
     'range(3, 7)',
     'range(0, 12, 2)',
-    'range("4:11")',
-    'a = [0, 1, 2, 3; 4, 5, 6]',
-    'a(1:2)'
+    'range("4:10")',
+    'a = [1, 2, 3, 4; 5, 6, 7, 8]',
+    'a(1:2, 1:2)'
   ],
   'seealso': [
     'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
@@ -1473,11 +1473,11 @@ module.exports = {
   'examples': [
     'd = [1, 2; 3, 4]',
     'e = []',
-    'e[0, 0:2] = [5, 6]',
-    'e[1, :] = [7, 8]',
+    'e(1, 1:2) = [5, 6]',
+    'e(2, :) = [7, 8]',
     'f = d * e',
-    'f[1, 0]',
-    'f[:, 0]'
+    'f(2, 1)',
+    'f(:, 1)'
   ],
   'seealso': [
     'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'transpose', 'zeros'
@@ -2415,7 +2415,7 @@ Scope.context = []; // static context, for example the math namespace
 
 module.exports = Scope;
 
-},{"../type/Unit.js":197}],98:[function(require,module,exports){
+},{"../type/Unit.js":196}],98:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../util/index.js'),
       string = util.string;
@@ -2546,7 +2546,7 @@ module.exports = function (math) {
   return Selector;
 };
 
-},{"../util/index.js":202}],99:[function(require,module,exports){
+},{"../util/index.js":201}],99:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -2610,7 +2610,7 @@ AssignmentNode.prototype.toString = function() {
 };
 
 module.exports = AssignmentNode;
-},{"./Node.js":105}],100:[function(require,module,exports){
+},{"./Node.js":104}],100:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -2697,7 +2697,7 @@ BlockNode.prototype.toString = function() {
 
 module.exports = BlockNode;
 
-},{"./Node.js":105}],101:[function(require,module,exports){
+},{"./Node.js":104}],101:[function(require,module,exports){
 var Node = require('./Node.js'),
     string = require('../../util/string.js');
 
@@ -2730,7 +2730,7 @@ ConstantNode.prototype.toString = function() {
 
 module.exports = ConstantNode;
 
-},{"../../util/string.js":205,"./Node.js":105}],102:[function(require,module,exports){
+},{"../../util/string.js":204,"./Node.js":104}],102:[function(require,module,exports){
 var Node = require('./Node.js'),
     error = require('../../util/error.js');
 
@@ -2819,150 +2819,7 @@ FunctionNode.prototype.toString = function() {
 
 module.exports = FunctionNode;
 
-},{"../../util/error.js":201,"./Node.js":105}],103:[function(require,module,exports){
-var number= require('../../util/number.js'),
-
-    Node = require('./Node.js'),
-    RangeNode = require('./RangeNode.js'),
-    SymbolNode = require('./SymbolNode.js'),
-
-    Index = require('../../type/Index.js'),
-    Range = require('../../type/Range.js'),
-
-    isNumber = number.isNumber;
-
-/**
- * @constructor IndexNode
- * get a subset of a matrix
- * @param {Object} math             The math namespace containing all functions
- * @param {Node} object
- * @param {Node[]} params
- * @param {Scope[]} paramScopes     A scope for every parameter, where the
- *                                  index variable 'end' can be defined.
- */
-function IndexNode (math, object, params, paramScopes) {
-  this.math = math;
-
-  this.object = object;
-  this.params = params;
-  this.paramScopes = paramScopes;
-
-  // check whether any of the params expressions uses the context symbol 'end'
-  this.hasContextParams = false;
-  if (params) {
-    var filter = {
-      type: SymbolNode,
-      properties: {
-        name: 'end'
-      }
-    };
-
-    for (var i = 0, len = params.length; i < len; i++) {
-      if (params[i].find(filter).length > 0) {
-        this.hasContextParams = true;
-        break;
-      }
-    }
-  }
-}
-
-IndexNode.prototype = new Node();
-
-/**
- * Evaluate the parameters
- * @return {*} result
- */
-IndexNode.prototype.eval = function() {
-  var i, len, params, results;
-
-  // evaluate the object
-  var object = this.object;
-  if (object == undefined) {
-    throw new Error ('Node undefined');
-  }
-  var obj = object.eval();
-
-  // evaluate the values of context parameter 'end' when needed
-  if (this.hasContextParams) {
-    var paramScopes = this.paramScopes,
-        size = this.math.size(obj).valueOf();
-
-    if (paramScopes && size) {
-      for (i = 0, len = this.params.length; i < len; i++) {
-        var paramScope = paramScopes[i];
-        if (paramScope) {
-          paramScope.set('end', size[i]);
-        }
-      }
-    }
-  }
-
-  // evaluate the parameters
-  params = this.params;
-  results = [];
-  for (i = 0, len = this.params.length; i < len; i++) {
-    var param = params[i];
-    if (param instanceof RangeNode) {
-      results[i] = param.toRange();
-    }
-    else {
-      results[i] = param.eval();
-    }
-
-    if (!(results[i] instanceof Range) && !isNumber(results[i])) {
-      throw new TypeError('Number or Range expected');
-    }
-  }
-  // get a subset of the object
-  var index = Index.create(results);
-  return this.math.subset(obj, index);
-};
-
-/**
- * Find all nodes matching given filter
- * @param {Object} filter  See Node.find for a description of the filter options
- * @returns {Node[]} nodes
- */
-IndexNode.prototype.find = function (filter) {
-  var nodes = [];
-
-  // check itself
-  if (this.match(filter)) {
-    nodes.push(this);
-  }
-
-  // search object
-  if (this.object) {
-    nodes = nodes.concat(this.object.find(filter));
-  }
-
-  // search in parameters
-  var params = this.params;
-  if (params) {
-    for (var i = 0, len = params.length; i < len; i++) {
-      nodes = nodes.concat(params[i].find(filter));
-    }
-  }
-
-  return nodes;
-};
-
-/**
- * Get string representation
- * @return {String} str
- */
-IndexNode.prototype.toString = function() {
-  // format the parameters like "[1, 0:5]"
-  var str = this.object ? this.object.toString() : '';
-  if (this.params) {
-    str += '[' + this.params.join(', ') + ']';
-  }
-  return str;
-};
-
-module.exports = IndexNode;
-
-},{"../../type/Index.js":194,"../../type/Range.js":196,"../../util/number.js":203,"./Node.js":105,"./RangeNode.js":108,"./SymbolNode.js":109}],104:[function(require,module,exports){
+},{"../../util/error.js":200,"./Node.js":104}],103:[function(require,module,exports){
 var Node = require('./Node.js'),
     object = require('../../util/object.js'),
     string = require('../../util/string.js'),
@@ -3113,7 +2970,7 @@ MatrixNode.prototype.toString = function() {
 
 module.exports = MatrixNode;
 
-},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/object.js":204,"../../util/string.js":205,"./Node.js":105}],105:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../type/collection.js":197,"../../util/object.js":203,"../../util/string.js":204,"./Node.js":104}],104:[function(require,module,exports){
 /**
  * Node
  */
@@ -3186,7 +3043,7 @@ Node.prototype.toString = function() {
 
 module.exports = Node;
 
-},{}],106:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -3274,7 +3131,7 @@ OperatorNode.prototype.toString = function() {
 
 module.exports = OperatorNode;
 
-},{"./Node.js":105}],107:[function(require,module,exports){
+},{"./Node.js":104}],106:[function(require,module,exports){
 var number= require('../../util/number.js'),
 
     Node = require('./Node.js'),
@@ -3364,7 +3221,39 @@ ParamsNode.prototype.eval = function() {
     return obj.apply(this, results);
   }
   else {
-    throw new TypeError('Function expected');
+    // evaluate the parameters as index
+    params = this.params;
+    results = [];
+    for (i = 0, len = this.params.length; i < len; i++) {
+      var param = params[i];
+      var result;
+
+      if (param instanceof RangeNode) {
+        result = param.toRange();
+      }
+      else {
+        result = param.eval();
+      }
+
+      // change from one-based to zero-based range
+      if (result instanceof Range) {
+        result.start --;
+        result.end --;
+      }
+      else if (isNumber(result)) {
+        // number
+        result--;
+      }
+      else {
+        throw new TypeError('Number or Range expected');
+      }
+
+      results[i] = result;
+    }
+
+    // get a subset of the object
+    var index = Index.create(results);
+    return this.math.subset(obj, index);
   }
 };
 
@@ -3412,7 +3301,7 @@ ParamsNode.prototype.toString = function() {
 
 module.exports = ParamsNode;
 
-},{"../../type/Index.js":194,"../../type/Range.js":196,"../../util/number.js":203,"./Node.js":105,"./RangeNode.js":108,"./SymbolNode.js":109}],108:[function(require,module,exports){
+},{"../../type/Index.js":193,"../../type/Range.js":195,"../../util/number.js":202,"./Node.js":104,"./RangeNode.js":107,"./SymbolNode.js":108}],107:[function(require,module,exports){
 var Node = require('./Node.js'),
     Range = require('../../type/Range.js');
 
@@ -3425,13 +3314,22 @@ var Node = require('./Node.js'),
 function RangeNode (math, params) {
   this.math = math;
 
-  this.params = params;
+  this.start = null;  // included lower-bound
+  this.end = null;    // included upper-bound
+  this.step = null;   // optional step
 
-  if (params.length >= 3) {
-    // swap step and end
-    var step = params[2];
-    params[2] = params[1]; // end
-    params[1] = step;
+  if (params.length == 2) {
+    this.start = params[0];
+    this.end = params[1];
+  }
+  else if (params.length == 3) {
+    this.start = params[0];
+    this.step = params[1];
+    this.end = params[2];
+  }
+  else {
+    // TODO: better error message
+    throw new SyntaxError('Wrong number of arguments');
   }
 }
 
@@ -3443,14 +3341,15 @@ RangeNode.prototype = new Node();
  */
 RangeNode.prototype.eval = function() {
   // evaluate the parameters
-  var params = this.params,
-      results = [];
-  for (var i = 0, len = this.params.length; i < len; i++) {
-    results[i] = params[i].eval();
-  }
+  var start = this.start.eval();
+  var step = this.step ? this.step.eval() : 1;
+  var end = this.end.eval();
 
-  // create the range
-  return this.math.range.apply(this.math.range, results);
+  // upper-bound be included, so compensate for that
+  end = this.math.add(end, (step > 0) ? 1 : -1);
+
+  // generate the range
+  return this.math.range(start, end, step);
 };
 
 /**
@@ -3459,14 +3358,15 @@ RangeNode.prototype.eval = function() {
  */
 RangeNode.prototype.toRange = function() {
   // evaluate the parameters
-  var params = this.params,
-      results = [];
-  for (var i = 0, len = this.params.length; i < len; i++) {
-    results[i] = params[i].eval();
-  }
+  var start = this.start.eval();
+  var step = this.step ? this.step.eval() : 1;
+  var end = this.end.eval();
+
+  // upper-bound be included, so compensate for that
+  end = this.math.add(end, (step > 0) ? 1 : -1);
 
   // create the range
-  return _createRange(results);
+  return new Range(start, end, step);
 };
 
 /**
@@ -3482,17 +3382,15 @@ RangeNode.prototype.find = function (filter) {
     nodes.push(this);
   }
 
-  // search object
-  if (this.object) {
-    nodes = nodes.concat(this.object.find(filter));
-  }
-
   // search in parameters
-  var params = this.params;
-  if (params) {
-    for (var i = 0, len = params.length; i < len; i++) {
-      nodes = nodes.concat(params[i].find(filter));
-    }
+  if (this.start) {
+    nodes = nodes.concat(this.start.find(filter));
+  }
+  if (this.step) {
+    nodes = nodes.concat(this.step.find(filter));
+  }
+  if (this.end) {
+    nodes = nodes.concat(this.end.find(filter));
   }
 
   return nodes;
@@ -3503,30 +3401,19 @@ RangeNode.prototype.find = function (filter) {
  * @return {String} str
  */
 RangeNode.prototype.toString = function() {
-  // format the parameters like "(2, 4.2)"
-  var str = this.object ? this.object.toString() : '';
-  if (this.params) {
-    str += '(' + this.params.join(', ') + ')';
+  // format the range like "start:step:end"
+  var str = this.start.toString();
+  if (this.step) {
+    str += ':' + this.step.toString();
   }
+  str += ':' + this.end.toString();
+
   return str;
 };
 
-/**
- * Create a Range from from parameters
- * @param {Array.<Number>} params   An array with numbers start, end, and
- *                                  optionally step.
- * @return {Range} range
- * @private
- */
-function _createRange(params) {
-  var range = new Range();
-  Range.apply(range, params);
-  return range;
-}
-
 module.exports = RangeNode;
 
-},{"../../type/Range.js":196,"./Node.js":105}],109:[function(require,module,exports){
+},{"../../type/Range.js":195,"./Node.js":104}],108:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -3570,7 +3457,7 @@ SymbolNode.prototype.toString = function() {
 
 module.exports = SymbolNode;
 
-},{"./Node.js":105}],110:[function(require,module,exports){
+},{"./Node.js":104}],109:[function(require,module,exports){
 var number= require('../../util/number.js'),
 
     Node = require('./Node.js'),
@@ -3665,7 +3552,16 @@ UpdateNode.prototype.eval = function() {
       result = param.eval();
     }
 
-    if (!(result instanceof Range) && !isNumber(result)) {
+    // change from one-based to zero-based range
+    if (result instanceof Range) {
+      result.start --;
+      result.end --;
+    }
+    else if (isNumber(result)) {
+      // number
+      result--;
+    }
+    else {
       throw new TypeError('Number or Range expected');
     }
 
@@ -3732,18 +3628,17 @@ UpdateNode.prototype.toString = function() {
 
 module.exports = UpdateNode;
 
-},{"../../type/Index.js":194,"../../type/Range.js":196,"../../util/number.js":203,"./Node.js":105,"./RangeNode.js":108,"./SymbolNode.js":109}],111:[function(require,module,exports){
+},{"../../type/Index.js":193,"../../type/Range.js":195,"../../util/number.js":202,"./Node.js":104,"./RangeNode.js":107,"./SymbolNode.js":108}],110:[function(require,module,exports){
 /**
  * Custom node handlers,
  * (can be added to the exports object)
  */
 
-},{}],112:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 exports.AssignmentNode = require('./AssignmentNode.js');
 exports.BlockNode = require('./BlockNode.js');
 exports.ConstantNode = require('./ConstantNode.js');
 exports.FunctionNode = require('./FunctionNode.js');
-exports.IndexNode = require('./IndexNode.js');
 exports.MatrixNode = require('./MatrixNode.js');
 exports.Node = require('./Node.js');
 exports.OperatorNode = require('./OperatorNode.js');
@@ -3754,7 +3649,7 @@ exports.UpdateNode = require('./UpdateNode.js');
 
 exports.handlers = require('./handlers.js');
 
-},{"./AssignmentNode.js":99,"./BlockNode.js":100,"./ConstantNode.js":101,"./FunctionNode.js":102,"./IndexNode.js":103,"./MatrixNode.js":104,"./Node.js":105,"./OperatorNode.js":106,"./ParamsNode.js":107,"./RangeNode.js":108,"./SymbolNode.js":109,"./UpdateNode.js":110,"./handlers.js":111}],113:[function(require,module,exports){
+},{"./AssignmentNode.js":99,"./BlockNode.js":100,"./ConstantNode.js":101,"./FunctionNode.js":102,"./MatrixNode.js":103,"./Node.js":104,"./OperatorNode.js":105,"./ParamsNode.js":106,"./RangeNode.js":107,"./SymbolNode.js":108,"./UpdateNode.js":109,"./handlers.js":110}],112:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3802,7 +3697,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],114:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Matrix.js":194,"../../type/collection.js":197,"../../util/index.js":201}],113:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3901,7 +3796,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],115:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Matrix.js":194,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],114:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3951,7 +3846,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],116:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],115:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3999,7 +3894,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],117:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],116:[function(require,module,exports){
 module.exports = function(math) {
   var util = require('../../util/index.js'),
 
@@ -4110,7 +4005,7 @@ module.exports = function(math) {
   }
 };
 
-},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],118:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Matrix.js":194,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],117:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -4134,7 +4029,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":198,"../../util/index.js":202}],119:[function(require,module,exports){
+},{"../../type/collection.js":197,"../../util/index.js":201}],118:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -4158,7 +4053,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":198,"../../util/index.js":202}],120:[function(require,module,exports){
+},{"../../type/collection.js":197,"../../util/index.js":201}],119:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       collection = require('../../type/collection.js');
@@ -4182,7 +4077,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":198,"../../util/index.js":202}],121:[function(require,module,exports){
+},{"../../type/collection.js":197,"../../util/index.js":201}],120:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4255,7 +4150,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],122:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],121:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4306,7 +4201,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],123:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Matrix.js":194,"../../type/collection.js":197,"../../util/index.js":201}],122:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4356,7 +4251,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],124:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],123:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4406,7 +4301,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],125:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],124:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4474,7 +4369,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":198,"../../util/index.js":202}],126:[function(require,module,exports){
+},{"../../type/collection.js":197,"../../util/index.js":201}],125:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4547,7 +4442,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],127:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],126:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4620,7 +4515,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],128:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],127:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4693,7 +4588,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":198,"../../util/index.js":202}],129:[function(require,module,exports){
+},{"../../type/collection.js":197,"../../util/index.js":201}],128:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4758,7 +4653,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],130:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],129:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4814,7 +4709,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],131:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],130:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -4890,7 +4785,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/collection.js":198,"../../util/index.js":202}],132:[function(require,module,exports){
+},{"../../type/collection.js":197,"../../util/index.js":201}],131:[function(require,module,exports){
 module.exports = function(math) {
   var util = require('../../util/index.js'),
 
@@ -5102,7 +4997,7 @@ module.exports = function(math) {
   }
 };
 
-},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],133:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Matrix.js":194,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],132:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5209,7 +5104,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../util/index.js":202}],134:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Matrix.js":194,"../../util/index.js":201}],133:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5315,7 +5210,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],135:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],134:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5365,7 +5260,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],136:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],135:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5438,7 +5333,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],137:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],136:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5511,7 +5406,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],138:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],137:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5575,7 +5470,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],139:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],138:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5623,7 +5518,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],140:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],139:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5719,7 +5614,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],141:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Matrix.js":194,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],140:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5776,7 +5671,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],142:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],141:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5844,7 +5739,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],143:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],142:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5891,7 +5786,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":202}],144:[function(require,module,exports){
+},{"../../util/index.js":201}],143:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5940,7 +5835,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],145:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],144:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5990,7 +5885,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],146:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],145:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6038,7 +5933,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],147:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],146:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6087,7 +5982,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],148:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],147:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6137,7 +6032,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":202}],149:[function(require,module,exports){
+},{"../../util/index.js":201}],148:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6208,7 +6103,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../util/index.js":202}],150:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../util/index.js":201}],149:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6239,7 +6134,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Index.js":194,"../../util/index.js":202}],151:[function(require,module,exports){
+},{"../../type/Index.js":193,"../../util/index.js":201}],150:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6271,7 +6166,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":195,"../../util/index.js":202}],152:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../util/index.js":201}],151:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js');
 
@@ -6299,7 +6194,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":202}],153:[function(require,module,exports){
+},{"../../util/index.js":201}],152:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6346,7 +6241,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../expr/Parser.js":96,"../../util/index.js":202}],154:[function(require,module,exports){
+},{"../../expr/Parser.js":96,"../../util/index.js":201}],153:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6404,7 +6299,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/collection.js":198,"../../util/index.js":202}],155:[function(require,module,exports){
+},{"../../type/collection.js":197,"../../util/index.js":201}],154:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6465,7 +6360,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Unit.js":197,"../../util/index.js":202}],156:[function(require,module,exports){
+},{"../../type/Unit.js":196,"../../util/index.js":201}],155:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6582,7 +6477,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],157:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../type/collection.js":197,"../../util/index.js":201}],156:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6727,7 +6622,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":195,"../../util/index.js":202}],158:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../util/index.js":201}],157:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6815,7 +6710,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":195,"../../util/index.js":202}],159:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../util/index.js":201}],158:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6875,7 +6770,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],160:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../type/collection.js":197,"../../util/index.js":201}],159:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7062,7 +6957,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":195,"../../util/index.js":202}],161:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../util/index.js":201}],160:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7100,7 +6995,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],162:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../type/collection.js":197,"../../util/index.js":201}],161:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7238,7 +7133,7 @@ module.exports = function (math) {
 
 };
 
-},{"../../util/index.js":202}],163:[function(require,module,exports){
+},{"../../util/index.js":201}],162:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7290,7 +7185,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Matrix.js":195,"../../type/Unit.js":197,"../../util/index.js":202}],164:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Matrix.js":194,"../../type/Unit.js":196,"../../util/index.js":201}],163:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7329,7 +7224,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":195,"../../util/index.js":202}],165:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../util/index.js":201}],164:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7513,7 +7408,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Index.js":194,"../../type/Matrix.js":195,"../../util/index.js":202}],166:[function(require,module,exports){
+},{"../../type/Index.js":193,"../../type/Matrix.js":194,"../../util/index.js":201}],165:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7583,7 +7478,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":195,"../../util/index.js":202}],167:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../util/index.js":201}],166:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7621,7 +7516,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],168:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../type/collection.js":197,"../../util/index.js":201}],167:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7681,7 +7576,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/collection.js":198,"../../util/index.js":202}],169:[function(require,module,exports){
+},{"../../type/collection.js":197,"../../util/index.js":201}],168:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7857,7 +7752,7 @@ module.exports = function (math) {
   math.pickRandom = uniformRandFunctions.pickRandom;
 };
 
-},{"../../type/Matrix.js":195,"../../util/index.js":202}],170:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../util/index.js":201}],169:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -7962,7 +7857,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],171:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../type/collection.js":197,"../../util/index.js":201}],170:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8067,7 +7962,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":195,"../../type/collection.js":198,"../../util/index.js":202}],172:[function(require,module,exports){
+},{"../../type/Matrix.js":194,"../../type/collection.js":197,"../../util/index.js":201}],171:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8154,7 +8049,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],173:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],172:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8238,7 +8133,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],174:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],173:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8309,7 +8204,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],175:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],174:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8372,7 +8267,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/collection.js":198,"../../util/index.js":202}],176:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/collection.js":197,"../../util/index.js":201}],175:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8434,7 +8329,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],177:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],176:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8496,7 +8391,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],178:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],177:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8559,7 +8454,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],179:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],178:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8621,7 +8516,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],180:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],179:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8682,7 +8577,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],181:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],180:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8747,7 +8642,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],182:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],181:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8796,7 +8691,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Unit.js":197,"../../type/collection.js":198,"../../util/index.js":202}],183:[function(require,module,exports){
+},{"../../type/Unit.js":196,"../../type/collection.js":197,"../../util/index.js":201}],182:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       object = util.object;
@@ -8818,7 +8713,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":202}],184:[function(require,module,exports){
+},{"../../util/index.js":201}],183:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8892,7 +8787,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../expr/Scope.js":97,"../../type/collection.js":198,"../../util/index.js":202}],185:[function(require,module,exports){
+},{"../../expr/Scope.js":97,"../../type/collection.js":197,"../../util/index.js":201}],184:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
       string = util.string;
@@ -8926,7 +8821,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":202}],186:[function(require,module,exports){
+},{"../../util/index.js":201}],185:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8986,7 +8881,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Help.js":193,"../../util/index.js":202}],187:[function(require,module,exports){
+},{"../../type/Help.js":192,"../../util/index.js":201}],186:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -9108,7 +9003,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":192,"../../type/Unit.js":197,"../../util/index.js":202}],188:[function(require,module,exports){
+},{"../../type/Complex.js":191,"../../type/Unit.js":196,"../../util/index.js":201}],187:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -9127,7 +9022,6 @@ module.exports = function (math) {
       BlockNode = require('../../expr/node/BlockNode.js'),
       ConstantNode = require('../../expr/node/ConstantNode.js'),
       FunctionNode = require('../../expr/node/FunctionNode.js'),
-      IndexNode = require('../../expr/node/IndexNode.js'),
       MatrixNode = require('../../expr/node/MatrixNode.js'),
       OperatorNode = require('../../expr/node/OperatorNode.js'),
       ParamsNode = require('../../expr/node/ParamsNode.js'),
@@ -9641,7 +9535,7 @@ module.exports = function (math) {
         expr = parseAssignment(scope);
         return new AssignmentNode(name, expr, scope);
       }
-      else if (node instanceof IndexNode) {
+      else if ((node instanceof ParamsNode) && (node.object instanceof SymbolNode)) {
         // parse the expression, with the correct function scope
         getToken();
         name = node.object.name;
@@ -9669,8 +9563,8 @@ module.exports = function (math) {
     var node, params = [];
 
     if (token == ':') {
-      // implicit start=0
-      node = new ConstantNode(0);
+      // implicit start=1 (one-based)
+      node = new ConstantNode(1);
     }
     else {
       // explicit start
@@ -9683,7 +9577,7 @@ module.exports = function (math) {
       // parse step and end
       while (token == ':') {
         getToken();
-        if (token == ')' || token == ']' || token == ',' || token == '') {
+        if (token == ')' || token == ',' || token == '') {
           // implicit end
           params.push(new SymbolNode('end', scope));
         }
@@ -10055,9 +9949,7 @@ module.exports = function (math) {
   }
 
   /**
-   * parse parameters, enclosed in parenthesis. Can be two types:
-   * - round brackets (...) will return a ParamsNode
-   * - square brackets [...] will return an IndexNode
+   * parse parameters, enclosed in parenthesis
    * @param {Scope} scope
    * @param {Node} node    Node on which to apply the parameters. If there
    *                       are no parameters in the expression, the node
@@ -10071,14 +9963,14 @@ module.exports = function (math) {
         paramScopes,
         paramScope;
 
-    while (token == '(' || token == '[') {
+    while (token == '(') {
       bracket = token;
       params = [];
       paramScopes = [];
 
       getToken();
 
-      if (token != ')' && token != ']') {
+      if (token != ')') {
         paramScope = scope.createSubScope();
         paramScopes.push(paramScope);
         params.push(parseRange(paramScope));
@@ -10096,17 +9988,9 @@ module.exports = function (math) {
       if ((bracket == '(' && token != ')')) {
         throw createSyntaxError('Parenthesis ) expected');
       }
-      if ((bracket == '[' && token != ']')) {
-        throw createSyntaxError('Parenthesis ] expected');
-      }
       getToken();
 
-      if (bracket == '(') {
-        node = new ParamsNode(math, node, params, paramScopes);
-      }
-      else {
-        node = new IndexNode(math, node, params, paramScopes);
-      }
+      node = new ParamsNode(math, node, params, paramScopes);
     }
 
     return node;
@@ -10446,7 +10330,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../expr/node/AssignmentNode.js":99,"../../expr/node/BlockNode.js":100,"../../expr/node/ConstantNode.js":101,"../../expr/node/FunctionNode.js":102,"../../expr/node/IndexNode.js":103,"../../expr/node/MatrixNode.js":104,"../../expr/node/OperatorNode.js":106,"../../expr/node/ParamsNode.js":107,"../../expr/node/RangeNode.js":108,"../../expr/node/SymbolNode.js":109,"../../expr/node/UpdateNode.js":110,"../../expr/node/handlers.js":111,"../../type/collection.js":198,"../../util/index.js":202,"./../../expr/Scope.js":97,"./../../type/Complex.js":192,"./../../type/Matrix.js":195,"./../../type/Unit.js":197}],189:[function(require,module,exports){
+},{"../../expr/node/AssignmentNode.js":99,"../../expr/node/BlockNode.js":100,"../../expr/node/ConstantNode.js":101,"../../expr/node/FunctionNode.js":102,"../../expr/node/MatrixNode.js":103,"../../expr/node/OperatorNode.js":105,"../../expr/node/ParamsNode.js":106,"../../expr/node/RangeNode.js":107,"../../expr/node/SymbolNode.js":108,"../../expr/node/UpdateNode.js":109,"../../expr/node/handlers.js":110,"../../type/collection.js":197,"../../util/index.js":201,"./../../expr/Scope.js":97,"./../../type/Complex.js":191,"./../../type/Matrix.js":194,"./../../type/Unit.js":196}],188:[function(require,module,exports){
 module.exports = function (math) {
   /**
    * Wrap any value in a Selector, allowing to perform chained operations on
@@ -10488,7 +10372,7 @@ module.exports = function (math) {
   };
 };
 
-},{}],190:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js');
 
@@ -10510,11 +10394,11 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":202}],191:[function(require,module,exports){
+},{"../../util/index.js":201}],190:[function(require,module,exports){
 // math.js options
 exports.precision = 5;  // number of digits in formatted output
 
-},{}],192:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     number = util.number,
@@ -10862,7 +10746,7 @@ exports.parse = Complex.parse;
 
 util.types.addType('complex', Complex);
 
-},{"../util/index.js":202}],193:[function(require,module,exports){
+},{"../util/index.js":201}],192:[function(require,module,exports){
 var util = require('../util/index.js'),
     object = util.object,
     string = util.string;
@@ -10956,7 +10840,7 @@ exports.isHelp = Help.isHelp;
 
 util.types.addType('help', Help);
 
-},{"../util/index.js":202}],194:[function(require,module,exports){
+},{"../util/index.js":201}],193:[function(require,module,exports){
 var util = require('../util/index'),
     Range = require('./Range');
 
@@ -11225,7 +11109,7 @@ exports.create = Index.create;
 
 util.types.addType('index', Index);
 
-},{"../util/index":202,"./Range":196}],195:[function(require,module,exports){
+},{"../util/index":201,"./Range":195}],194:[function(require,module,exports){
 var util = require('../util/index'),
     Index = require('./Index'),
 
@@ -11872,7 +11756,7 @@ exports.isMatrix = Matrix.isMatrix;
 
 util.types.addType('matrix', Matrix);
 
-},{"../util/index":202,"./Index":194}],196:[function(require,module,exports){
+},{"../util/index":201,"./Index":193}],195:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     number = util.number,
@@ -12127,7 +12011,7 @@ exports.parse = Range.parse;
 
 util.types.addType('range', Range);
 
-},{"../util/index.js":202}],197:[function(require,module,exports){
+},{"../util/index.js":201}],196:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     number = util.number,
@@ -12854,7 +12738,7 @@ exports.parse = Unit.parse;
 
 util.types.addType('unit', Unit);
 
-},{"../util/index.js":202}],198:[function(require,module,exports){
+},{"../util/index.js":201}],197:[function(require,module,exports){
 var util = require('../util/index.js'),
 
     Matrix = require('./Matrix.js'),
@@ -12915,6 +12799,7 @@ exports.isCollection = function isCollection (x) {
 };
 
 // TODO: write the map, deepMap, map2, and deepMap2 functions in a more concise way
+// TODO: remove map and map2, only use deepMap and deepMap2 everywhere?
 
 /**
  * Execute function fn element wise for each element in array.
@@ -13068,7 +12953,7 @@ exports.deepMap2 = function deepMap2(array1, array2, fn) {
   return res;
 };
 
-},{"../util/index.js":202,"./Matrix.js":195}],199:[function(require,module,exports){
+},{"../util/index.js":201,"./Matrix.js":194}],198:[function(require,module,exports){
 var number = require('./number'),
     string = require('./string'),
     object = require('./object'),
@@ -13323,7 +13208,7 @@ exports.unsqueeze = function unsqueeze(array, dims) {
  * @return {Boolean} isArray
  */
 exports.isArray = Array.isArray;
-},{"./number":203,"./object":204,"./string":205,"./types":206}],200:[function(require,module,exports){
+},{"./number":202,"./object":203,"./string":204,"./types":205}],199:[function(require,module,exports){
 /**
  * Test whether value is a Boolean
  * @param {*} value
@@ -13333,7 +13218,7 @@ exports.isBoolean = function isBoolean(value) {
   return (value instanceof Boolean) || (typeof value == 'boolean');
 };
 
-},{}],201:[function(require,module,exports){
+},{}],200:[function(require,module,exports){
 var types = require('./types.js');
 
 /**
@@ -13382,7 +13267,7 @@ exports.ArgumentsError = function ArgumentsError(name, count, min, max) {
 exports.ArgumentsError.prototype = new SyntaxError();
 exports.ArgumentsError.prototype.name = 'ArgumentError';
 
-},{"./types.js":206}],202:[function(require,module,exports){
+},{"./types.js":205}],201:[function(require,module,exports){
 exports.array = require('./array');
 exports.boolean = require('./boolean');
 exports.error = require('./error');
@@ -13391,7 +13276,7 @@ exports.object = require('./object');
 exports.string = require('./string');
 exports.types = require('./types');
 
-},{"./array":199,"./boolean":200,"./error":201,"./number":203,"./object":204,"./string":205,"./types":206}],203:[function(require,module,exports){
+},{"./array":198,"./boolean":199,"./error":200,"./number":202,"./object":203,"./string":204,"./types":205}],202:[function(require,module,exports){
 var options = require('../options.js');
 
 /**
@@ -13480,7 +13365,7 @@ exports.toPrecision = function toPrecision (value, precision) {
 /** @private */
 var _trailingZeros = /\.(\d*?)(0+)$/g;
 
-},{"../options.js":191}],204:[function(require,module,exports){
+},{"../options.js":190}],203:[function(require,module,exports){
 var number = require('./number.js'),
     string = require('./string.js'),
     bool = require('./boolean.js');
@@ -13613,7 +13498,7 @@ exports.deepEqual = function deepEqual (a, b) {
   }
 };
 
-},{"./boolean.js":200,"./number.js":203,"./string.js":205}],205:[function(require,module,exports){
+},{"./boolean.js":199,"./number.js":202,"./string.js":204}],204:[function(require,module,exports){
 var number = require('./number.js');
 
 /**
@@ -13764,7 +13649,7 @@ function formatArray2d (array) {
   return str;
 }
 */
-},{"./number.js":203}],206:[function(require,module,exports){
+},{"./number.js":202}],205:[function(require,module,exports){
 /**
  * Determine the type of a variable
  *
@@ -13778,8 +13663,8 @@ exports.type = function type (x) {
   var type = typeof x,
       name;
 
-  if (type == 'object') {
-    if (x == null) {
+  if (type === 'object') {
+    if (x === null) {
       return 'null';
     }
     if (x instanceof Boolean) {

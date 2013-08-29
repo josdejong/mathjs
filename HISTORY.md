@@ -2,6 +2,13 @@
 https://github.com/josdejong/mathjs
 
 
+## 2013-08-22, version 0.13.0
+
+- Changed matrix indexes of the expression parser to one-based with the
+  upper-bound included, similar to most math applications. Note that on a
+  JavaScript level, math.js uses zero-based indexes with excluded upper-bound.
+
+
 ## 2013-08-22, version 0.12.1
 
 - Fixed outdated version of README.md.

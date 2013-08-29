@@ -128,6 +128,19 @@ print(parser.eval('x + 3'));                    // 6.5
 print(parser.eval('function f(x, y) = x^y'));   // f(x, y)
 print(parser.eval('f(2, 3)'));                  // 8
 
+// manipulate matrices
+// Note that matrix indexes in the expression parser are one-based with the
+// upper-bound included. On a JavaScript level however, math.js uses zero-based
+// indexes with an excluded upper-bound.
+console.log('\nmanipulate matrices');
+print(parser.eval('k = [1, 2; 3, 4]'));         // [[1, 2], [3, 4]]
+print(parser.eval('l = zeros(2, 2)'));          // [[0, 0], [0, 0]]
+print(parser.eval('l(1, 1:2) = [5, 6]'));       // [[5, 6], [0, 0]]
+print(parser.eval('l(2, :) = [7, 8]'));         // [[5, 6], [7, 8]]
+print(parser.eval('m = k * l'));                // [[19, 22], [43, 50]]
+print(parser.eval('n = m(2, 1)'));              // 43
+print(parser.eval('n = m(:, 1)'));              // [[19], [43]]
+
 // get and set variables and functions
 console.log('\nget and set variables and function in the scope of the parser');
 var x = parser.get('x');                        // x = 7

@@ -419,18 +419,21 @@ var c = math.multiply(a, b);                    // Matrix, [[19, 22], [43, 50]]
 var d = c.get(math.index(1, 0));                // 43
 ```
 
-Matrices are supported by the parser:
+Matrices are supported by the parser. *IMPORTANT:* matrix indexes and ranges work
+different from the indexes in JavaScript: They are one-based with an included
+upper-bound, similar to most math applications.
+
 
 ```js
 parser = math.parser();
 
 parser.eval('a = [1, 2; 3, 4]');                // Matrix, [[1, 2], [3, 4]]
 parser.eval('b = zeros(2, 2)');                 // Matrix, [[0, 0], [0, 0]]
-parser.eval('b[0, 0:2] = [5, 6]');              // Matrix, [[5, 6], [0, 0]]
-parser.eval('b[1, :] = [7, 8]');                // Matrix, [[5, 6], [7, 8]]
+parser.eval('b(1, 1:2) = [5, 6]');              // Matrix, [[5, 6], [0, 0]]
+parser.eval('b(2, :) = [7, 8]');                // Matrix, [[5, 6], [7, 8]]
 parser.eval('c = a * b');                       // Matrix, [[19, 22], [43, 50]]
-parser.eval('d = c[1, 0]');                     // 43
-parser.eval('e = c[1, 0:end]');                 // Matrix, [[43, 50]]
+parser.eval('d = c(2, 1)');                     // 43
+parser.eval('e = c(2, 1:end)');                 // Matrix, [[43, 50]]
 ```
 
 
