@@ -128,6 +128,15 @@ describe('parser', function() {
     assert.ok(parser.eval('2:5') instanceof Array);
     assert.deepEqual(parser.eval('2:5'), [2,3,4,5]);
     assert.deepEqual(parser.eval('10:-2:0'), [10,8,6,4,2,0]);
+    assert.deepEqual(parser.eval('2:4.0'), [2,3,4]);
+    assert.deepEqual(parser.eval('2:4.5'), [2,3,4]);
+    assert.deepEqual(parser.eval('2:4.1'), [2,3,4]);
+    assert.deepEqual(parser.eval('2:3.9'), [2,3]);
+    assert.deepEqual(parser.eval('2:3.5'), [2,3]);
+    assert.deepEqual(parser.eval('3:-1:0.5'), [3,2,1]);
+    assert.deepEqual(parser.eval('3:-1:0.5'), [3,2,1]);
+    assert.deepEqual(parser.eval('3:-1:0.1'), [3,2,1]);
+    assert.deepEqual(parser.eval('3:-1:-0.1'), [3,2,1,0]);
   });
 
 
