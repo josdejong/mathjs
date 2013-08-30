@@ -119,6 +119,7 @@ require('./lib/function/utils/parse.js')(exports);
 require('./lib/function/utils/select.js')(exports);
 require('./lib/function/utils/typeof.js')(exports);
 require('./lib/function/utils/map.js')(exports);
+require('./lib/function/utils/forEach.js')(exports);
 
 // constants
 require('./lib/constants.js')(exports);
