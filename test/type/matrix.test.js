@@ -1,5 +1,3 @@
-// test data type Matrix
-
 var assert = require('assert');
 var math = require('../../index.js'),
     index = math.index;
@@ -230,14 +228,39 @@ describe('matrix', function() {
 
   });
 
-
   describe('map', function() {
 
     it('should apply the given function to all elements in the matrix', function() {
-      var m = math.matrix([[1,2,3], [4,5,6]]);
+      var m, m2;
 
-      var m2 = m.map(function (value) { return value * 2; });
-      assert.deepEqual(m2.valueOf(), [[2,4,6],[8,10,12]]);
+      m = math.matrix([
+        [[1,2],[3,4]],
+        [[5,6],[7,8]],
+        [[9,10],[11,12]],
+        [[13,14],[15,16]]
+      ]);
+      m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.valueOf(), [
+        [[2,4],[6,8]],
+        [[10,12],[14,16]],
+        [[18,20],[22,24]],
+        [[26,28],[30,32]]
+      ]);
+
+      m = math.matrix([1]);
+      m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.valueOf(), [2]);
+
+      m = math.matrix([1,2,3]);
+      m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.valueOf(), [2,4,6]);
+    });
+
+    it('should work on empty matrices', function() {
+      var m, m2;
+      m = math.matrix([]);
+      m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.valueOf(), []);
     });
 
     it('should invoke callback with parameters value, index, obj', function() {
@@ -263,6 +286,37 @@ describe('matrix', function() {
   });
 
   describe('forEach', function() {
+
+    it('should run on all elements of the matrix, last dimension first', function() {
+      var m, output;
+
+      m = math.matrix([
+        [[1,2],[3,4]],
+        [[5,6],[7,8]],
+        [[9,10],[11,12]],
+        [[13,14],[15,16]]
+      ]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+
+      m = math.matrix([1]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, [1]);
+
+      m = math.matrix([1,2,3]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, [1,2,3]);
+    });
+
+    it('should work on empty matrices', function() {
+      m = math.matrix([]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, []);
+    });
 
     it('should invoke callback with parameters value, index, obj', function() {
       var m = math.matrix([[1,2,3], [4,5,6]]);
