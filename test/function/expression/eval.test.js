@@ -1,25 +1,22 @@
 // test eval
-var assert = require('assert');
-var math = require('../../../index.js');
+var assert = require('assert'),
+    approx = require('../../../tools/approx.js'),
+    math = require('../../../index.js'),
+    Complex = math.type.Complex,
+    Matrix = math.type.Matrix,
+    Unit = math.type.Unit;
 
 describe('eval', function() {
 
-  it('should evaluate constants', function() {
-    assert.equal(math.eval('pi'), Math.PI);
-  });
-
-  it('should arithmetic operations with numbers', function() {
-    assert.equal(math.eval('(2+3)/4'), 1.25);
-  });
-
-  it('should eval functions', function() {
-    assert.equal(math.eval('sqrt(-4)').toString(), '2i');
+  it('should evaluate expressions', function() {
+    approx.equal(math.eval('(2+3)/4'), 1.25);
+    assert.deepEqual(math.eval('sqrt(-4)'), new Complex(0, 2));
   });
 
   it('should eval a list of expressions', function() {
     assert.deepEqual(math.eval(['1+2', '3+4', '5+6']), [3, 7, 11]);
     assert.deepEqual(math.eval(['a=3', 'b=4', 'a*b']), [3, 4, 12]);
-    assert.deepEqual(math.eval(math.matrix(['a=3', 'b=4', 'a*b'])), math.matrix([3, 4, 12]));
+    assert.deepEqual(math.eval(new Matrix(['a=3', 'b=4', 'a*b'])), new Matrix([3, 4, 12]));
     assert.deepEqual(math.eval(['a=3', 'b=4', 'a*b']), [3, 4, 12]);
   });
 
@@ -39,11 +36,11 @@ describe('eval', function() {
   });
 
   it('should throw an error with a unit', function() {
-    assert.throws(function () {math.eval(math.unit('5cm'))}, TypeError);
+    assert.throws(function () {math.eval(new Unit(5, 'cm'))}, TypeError);
   });
 
   it('should throw an error with a complex number', function() {
-    assert.throws(function () {math.eval(math.complex(2,3))}, TypeError);
+    assert.throws(function () {math.eval(new Complex(2,3))}, TypeError);
   });
 
   it('should throw an error with a boolean', function() {
