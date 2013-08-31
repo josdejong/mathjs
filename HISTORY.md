@@ -12,6 +12,8 @@ https://github.com/josdejong/mathjs
   Array, Matrix, and String.
 - Removed the functions `get` and `set` from a selector, they are a duplicate
   of the function `subset`.
+- Replaced functions `get` and `set` of `Matrix` with a single function
+  `subset`.
 - Some moving around with code and namespaces:
   - Renamed namespace `math.expr` to `math.expression` (contains Scope, Parser,
     node objects).

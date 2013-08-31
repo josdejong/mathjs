@@ -128,7 +128,7 @@ describe('matrix', function() {
 
   });
 
-  describe('get', function() {
+  describe('get subset', function() {
 
     it('should get the right subset of the matrix', function() {
       var m;
@@ -136,76 +136,76 @@ describe('matrix', function() {
       // get 1-dimensional
       m = math.matrix(math.range(0,10));
       assert.deepEqual(m.size(), [10]);
-      assert.deepEqual(m.get(index([2,5])).valueOf(), [2,3,4]);
+      assert.deepEqual(m.subset(index([2,5])).valueOf(), [2,3,4]);
 
       // get 2-dimensional
       m = math.matrix([[1,2,3],[4,5,6],[7,8,9]]);
       assert.deepEqual(m.size(), [3,3]);
-      assert.deepEqual(m.get(index(1,1)), 5);
-      assert.deepEqual(m.get(index([0,2],[0,2])).valueOf(), [[1,2],[4,5]]);
-      assert.deepEqual(m.get(index(1, [1,3])).valueOf(), [[5,6]]);
-      assert.deepEqual(m.get(index(0, [1,3])).valueOf(), [[2,3]]);
-      assert.deepEqual(m.get(index([1,3], 1)).valueOf(), [[5],[8]]);
-      assert.deepEqual(m.get(index([1,3], 2)).valueOf(), [[6],[9]]);
+      assert.deepEqual(m.subset(index(1,1)), 5);
+      assert.deepEqual(m.subset(index([0,2],[0,2])).valueOf(), [[1,2],[4,5]]);
+      assert.deepEqual(m.subset(index(1, [1,3])).valueOf(), [[5,6]]);
+      assert.deepEqual(m.subset(index(0, [1,3])).valueOf(), [[2,3]]);
+      assert.deepEqual(m.subset(index([1,3], 1)).valueOf(), [[5],[8]]);
+      assert.deepEqual(m.subset(index([1,3], 2)).valueOf(), [[6],[9]]);
 
       // get n-dimensional
       m = math.matrix([[[1,2],[3,4]], [[5,6],[7,8]]]);
       assert.deepEqual(m.size(), [2,2,2]);
-      assert.deepEqual(m.get(index([0,2],[0,2],[0,2])).valueOf(), m.valueOf());
-      assert.deepEqual(m.get(index(0,0,0)), 1);
-      assert.deepEqual(m.get(index(1,1,1)).valueOf(), 8);
-      assert.deepEqual(m.get(index(1,1,[0,2])).valueOf(), [[[7,8]]]);
-      assert.deepEqual(m.get(index(1,[0,2],1)).valueOf(), [[[6],[8]]]);
+      assert.deepEqual(m.subset(index([0,2],[0,2],[0,2])).valueOf(), m.valueOf());
+      assert.deepEqual(m.subset(index(0,0,0)), 1);
+      assert.deepEqual(m.subset(index(1,1,1)).valueOf(), 8);
+      assert.deepEqual(m.subset(index(1,1,[0,2])).valueOf(), [[[7,8]]]);
+      assert.deepEqual(m.subset(index(1,[0,2],1)).valueOf(), [[[6],[8]]]);
     });
 
     it('should throw an error if the given subset is invalid', function() {
       var m = math.matrix();
-      assert.throws(function () { m.get([-1]); });
+      assert.throws(function () { m.subset([-1]); });
 
       m = math.matrix([[1,2,3],[4,5,6]]);
-      assert.throws(function () { m.get([1,2,3]); });
-      assert.throws(function () { m.get([3,0]); });
-      assert.throws(function () { m.get([1]); });
+      assert.throws(function () { m.subset([1,2,3]); });
+      assert.throws(function () { m.subset([3,0]); });
+      assert.throws(function () { m.subset([1]); });
     });
 
   });
 
-  describe('set', function() {
+  describe('set subset', function() {
 
     it('should set the given subset', function() {
       // set 1-dimensional
       var m = math.matrix(math.range(0,7));
-      m.set(index([2,4]), [20,30]);
+      m.subset(index([2,4]), [20,30]);
       assert.deepEqual(m.valueOf(), [0,1,20,30,4,5,6]);
-      m.set(index(4), 40);
+      m.subset(index(4), 40);
       assert.deepEqual(m.valueOf(), [0,1,20,30,40,5,6]);
 
       // set 2-dimensional
       m = math.matrix();
       m.resize([3,3]);
       assert.deepEqual(m.valueOf(), [[0,0,0],[0,0,0],[0,0,0]]);
-      m.set(index([1,3], [1,3]), [[1,2],[3,4]]);
+      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
       assert.deepEqual(m.valueOf(), [[0,0,0],[0,1,2],[0,3,4]]); 
     });
 
     it('should resize the matrix if the replacement subset is different size than selected subset', function() {
       // set 2-dimensional with resize
       var m = math.matrix([[123]]);
-      m.set(index([1,3], [1,3]), [[1,2],[3,4]]);
+      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
       assert.deepEqual(m.valueOf(), [[123,0,0],[0,1,2],[0,3,4]]);
 
       // set resize dimensions
       m = math.matrix([123]);
       assert.deepEqual(m.size(), [1]);
 
-      m.set(index([1,3], [1,3]), [[1,2],[3,4]]);
+      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
       assert.deepEqual(m.valueOf(), [[123,0,0],[0,1,2],[0,3,4]]);
 
-      m.set(index([0,2], [0,2]), [[55,55],[55,55]]);
+      m.subset(index([0,2], [0,2]), [[55,55],[55,55]]);
       assert.deepEqual(m.valueOf(), [[55,55,0],[55,55,2],[0,3,4]]);
 
       m = math.matrix();
-      m.set(index([1,3], [1,3], [1,3]), [[[1,2],[3,4]],[[5,6],[7,8]]]);
+      m.subset(index([1,3], [1,3], [1,3]), [[[1,2],[3,4]],[[5,6],[7,8]]]);
       assert.deepEqual(m.valueOf(), [
         [
           [0,0,0],

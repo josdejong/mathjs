@@ -208,7 +208,7 @@ describe('parse', function() {
       assert.deepEqual(scope.a.size(), [3,3]);
       assert.deepEqual(scope.a, new Matrix([[100,2,0],[3,10,11],[0,12,13]]));
       var a = scope.a;
-      assert.deepEqual(a.get(math.index([0,3], [0,2])), new Matrix([[100,2],[3,10],[0,12]]));
+      assert.deepEqual(a.subset(math.index([0,3], [0,2])), new Matrix([[100,2],[3,10],[0,12]]));
       assert.deepEqual(parseAndEval('a(1:3,1:2)', scope), new Matrix([[100,2],[3,10],[0,12]]));
 
       scope.b = [[1,2],[3,4]];

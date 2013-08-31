@@ -35,7 +35,7 @@ print(b);                       // 0.5
 // toString will format the value in the selector
 var selector = math.select(2).divide(3);
 var str = selector.toString();
-print(str);                     // 0.66667
+print(str);                     // "0.66667"
 
 // a selector has a .valueOf(), which returns the value hold by the selector.
 // This allows using it in regular operations. The function valueOf() acts the
@@ -43,14 +43,14 @@ print(str);                     // 0.66667
 print(selector + 2);            // 2.66667
 print(math.square(selector));   // 0.44444
 
-// the functions get and set can be used to get or replace sub matrices
+// the function subset can be used to get or replace sub matrices
 var array = [[1, 2], [3, 4]];
 var v = math.select(array)
-    .get(math.index(1, 0));
+    .subset(math.index(1, 0));
 print(v);                       // 3
 
 var m = math.select(array)
-    .set(math.index(0, 0), 8)
+    .subset(math.index(0, 0), 8)
     .multiply(3)
     .done();
 print(m);                       // [[24, 6], [9, 12]]

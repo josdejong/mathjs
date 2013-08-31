@@ -308,7 +308,7 @@ math.select(3)
     .done(); // 5
 
 math.select( [[1, 2], [3, 4]] )
-    .set(math.index(0, 0), 8)
+    .subset(math.index(0, 0), 8)
     .multiply(3)
     .done(); // [[24, 6], [9, 12]]
 ```
@@ -388,7 +388,7 @@ Math.js supports n-dimensional arrays and matrices. Both regular JavaScript
 functions.
 
 A `Matrix` is an object wrapped around a regular JavaScript Array, providing
-utility methods for easy matrix manipulation such as `get`, `set`, `size`,
+utility methods for easy matrix manipulation such as `subset`, `size`,
 `resize`, `clone`, and more.
 
 Matrix indexes in math.js are zero-based, like most programming languages
@@ -406,9 +406,9 @@ math.factorial(array);                          // Array,  [1, 2, 6, 24, 120]
 
 var a = [[1, 2], [3, 4]];                       // Array,  [[1, 2], [3, 4]]
 var b = math.matrix([[5, 6], [1, 1]]);          // Matrix, [[5, 6], [1, 1]]
-b.set(math.index(1, [0, 2]), [[7, 8]]);         // Matrix, [[5, 6], [7, 8]]
+b.subset(math.index(1, [0, 2]), [[7, 8]]);      // Matrix, [[5, 6], [7, 8]]
 var c = math.multiply(a, b);                    // Matrix, [[19, 22], [43, 50]]
-var d = c.get(math.index(1, 0));                // 43
+var d = c.subset(math.index(1, 0));             // 43
 ```
 
 Matrices are supported by the parser. *IMPORTANT:* matrix indexes and ranges work
