@@ -4,9 +4,15 @@ https://github.com/josdejong/mathjs
 
 ## 2013-08-22, version 0.13.0
 
+- Implemented functions `map` and `forEach`. Thanks Sebastien Piquemal (sebpic).
 - Changed matrix indexes of the expression parser to one-based with the
   upper-bound included, similar to most math applications. Note that on a
   JavaScript level, math.js uses zero-based indexes with excluded upper-bound.
+- Some moving around with code and namespaces:
+  - Renamed namespace `math.expr` to `math.expression` (contains Scope, Parser,
+    node objects).
+  - Renamed namespace `math.docs` to `math.expression.docs`.
+  - Moved `math.expr.Selector` to `math.chaining.Selector`.
 
 
 ## 2013-08-22, version 0.12.1
@@ -20,7 +26,7 @@ https://github.com/josdejong/mathjs
 *WARNING: version 0.12 is incompatible with previous versions.*
 
 - Implemented functions `random([min, max])`, `randomInt([min, max])`,
-  `pickRandom(array)`. Thanks sebpiq.
+  `pickRandom(array)`. Thanks Sebastien Piquemal (sebpic).
 - Implemented function `distribution(name)`, generating a distribution object
   with functions `random`, `randomInt`, `pickRandom` for different
   distributions. Currently supporting `uniform` and `normal`.

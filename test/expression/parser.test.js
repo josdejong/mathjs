@@ -355,7 +355,7 @@ describe('parser', function() {
       this.params = params;
       this.paramScopes = paramScopes;
     }
-    CustomNode.prototype = new math.expr.node.Node();
+    CustomNode.prototype = new math.expression.node.Node();
     CustomNode.prototype.toString = function () {
       return 'CustomNode';
     };
@@ -367,7 +367,7 @@ describe('parser', function() {
       return 'CustomNode(' + strParams.join(', ') + ')';
     };
 
-    math.expr.node.handlers['custom'] = CustomNode;
+    math.expression.node.handlers['custom'] = CustomNode;
 
     var node = math.parse('custom(x, (2+x), sin(x))');
     assert.equal(node.eval(), 'CustomNode(x, 2 + x, sin(x))');

@@ -2,7 +2,7 @@
 var assert = require('assert'),
     approx = require('../../tools/approx.js'),
     math = require('../../index.js'),
-    Scope = math.expr.Scope;
+    Scope = math.expression.Scope;
 
 describe('Scope', function() {
 

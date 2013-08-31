@@ -6,7 +6,7 @@ var assert = require('assert'),
 describe('select', function() {
 
   it('should chain operations with numbers', function() {
-    assert.ok(math.select(45) instanceof math.expr.Selector);
+    assert.ok(math.select(45) instanceof math.chaining.Selector);
     assert.equal(math.select(3).add(4).subtract(2).done(), 5);
     assert.equal(math.select(0).add(3).done(), 3);
   });

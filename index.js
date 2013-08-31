@@ -1,11 +1,22 @@
 // options (global configuration settings)
 exports.options = require('./lib/options');
 
-// expression (Parser, Scope, Nodes)
+// expression (Parser, Scope, nodes, docs)
+exports.expression = {};
+exports.expression.node = require('./lib/expression/node/index.js');
+exports.expression.Scope = require('./lib/expression/Scope.js');
+exports.expression.Parser = require('./lib/expression/Parser.js');
+exports.expression.docs = require('./lib/expression/docs/index.js');
+
+// TODO: deprecated since version 0.13.0. cleanup deprecated stuff some day
 exports.expr = {};
-exports.expr.node = require('./lib/expr/node/index.js');
-exports.expr.Scope = require('./lib/expr/Scope.js');
-exports.expr.Parser = require('./lib/expr/Parser.js');
+exports.expr.Scope = function () {
+  throw new Error('Moved to math.expression.Scope');
+};
+exports.expr.Parser = function () {
+  throw new Error('Moved to math.expression.Parser');
+};
+
 
 // types (Matrix, Complex, Unit, ...)
 exports.type = {};
@@ -18,9 +29,10 @@ exports.type.Help = require('./lib/type/Help.js');
 
 exports.collection = require('./lib/type/collection.js');
 
-
-// docs
-exports.docs = require('./lib/docs/index.js');
+// expression parser
+require('./lib/function/expression/eval.js')(exports);
+require('./lib/function/expression/help.js')(exports);
+require('./lib/function/expression/parse.js')(exports);
 
 // functions - arithmetic
 require('./lib/function/arithmetic/abs.js')(exports);
@@ -111,11 +123,8 @@ require('./lib/function/units/in.js')(exports);
 
 // functions - utils
 require('./lib/function/utils/clone.js')(exports);
-require('./lib/function/utils/eval.js')(exports);
 require('./lib/function/utils/format.js')(exports);
-require('./lib/function/utils/help.js')(exports);
 require('./lib/function/utils/import.js')(exports);
-require('./lib/function/utils/parse.js')(exports);
 require('./lib/function/utils/select.js')(exports);
 require('./lib/function/utils/typeof.js')(exports);
 require('./lib/function/utils/map.js')(exports);
@@ -125,4 +134,10 @@ require('./lib/function/utils/forEach.js')(exports);
 require('./lib/constants.js')(exports);
 
 // selector (we initialize after all functions are loaded)
-exports.expr.Selector = require('./lib/expr/Selector.js')(exports);
+exports.chaining = {};
+exports.chaining.Selector = require('./lib/chaining/Selector.js')(exports);
+
+// TODO: deprecated since version 0.13.0. Cleanup some day
+exports.expr.Selector = function () {
+  throw new Error('Moved to math.expression.Selector');
+};

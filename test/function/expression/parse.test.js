@@ -5,7 +5,7 @@ var math = require('../../../index.js');
 describe('parse', function() {
 
   it('should parse constants', function() {
-    assert.ok(math.parse('pi') instanceof math.expr.node.Node);
+    assert.ok(math.parse('pi') instanceof math.expression.node.Node);
     assert.equal(math.parse('pi').eval(), Math.PI);
   });
 
