@@ -72,7 +72,8 @@ describe('parse', function() {
       assert.throws(function () {parseAndEval('.'); }, SyntaxError);
       assert.throws(function () {parseAndEval('3.2.2'); }, SyntaxError);
       assert.throws(function () {parseAndEval('3.2e2.2'); }, SyntaxError);
-      // TODO: more extensively test invalid number formats
+      assert.throws(function () {parseAndEval('32e'); }, SyntaxError);
+      assert.throws(function () {parseAndEval('3abc'); }, TypeError);
     });
 
   });
@@ -129,8 +130,15 @@ describe('parse', function() {
 
   });
 
-  // TODO: complex
+  describe('complex', function () {
 
+    it('should parse complex values', function () {
+      assert.deepEqual(parseAndEval('i'), new Complex(0,1));
+      assert.deepEqual(parseAndEval('2+3i'), new Complex(2,3));
+      assert.deepEqual(parseAndEval('2+3*i'), new Complex(2,3));
+    });
+
+  });
 
   describe('matrix', function () {
 
@@ -169,7 +177,6 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('a(2:, 2)', scope),       new Matrix([[5],[8]]));
       assert.deepEqual(parseAndEval('a(2:3, 2)', scope),      new Matrix([[5],[8]]));
       assert.deepEqual(parseAndEval('a(1:2:3, 2)', scope),    new Matrix([[2],[8]]));
-      // TODO: implement and test support for Array (instead of Matrix)
     });
 
     it('should parse matrix resizings', function() {
@@ -277,7 +284,14 @@ describe('parse', function() {
     });
   });
 
-  // TODO: booleans
+  describe('boolean', function () {
+
+    it('should parse boolean values', function () {
+      assert.equal(parseAndEval('true'), true);
+      assert.equal(parseAndEval('false'), false);
+    });
+
+  });
 
 
   describe('constants', function () {
@@ -328,7 +342,7 @@ describe('parse', function() {
 
   });
 
-  // TODO: functions
+
   describe('functions', function () {
 
     it('should parse functions', function() {
@@ -377,9 +391,14 @@ describe('parse', function() {
     });
   });
 
-  // TODO: parentheses
-
-  // TODO: operators
+  describe ('parentheses', function () {
+    it('should parse parentheses overriding the default precedence', function () {
+      approx.equal(parseAndEval('2 - (2 - 2)'), 2);
+      approx.equal(parseAndEval('2 - ((2 - 2) - 2)'), 4);
+      approx.equal(parseAndEval('3 * (2 + 3)'), 15);
+      approx.equal(parseAndEval('(2 + 3) * 3'), 15);
+    });
+  });
 
   describe ('operators', function () {
 
