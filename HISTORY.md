@@ -8,6 +8,8 @@ https://github.com/josdejong/mathjs
 - Changed matrix indexes of the expression parser to one-based with the
   upper-bound included, similar to most math applications. Note that on a
   JavaScript level, math.js uses zero-based indexes with excluded upper-bound.
+- Removed support for scalars in the function `subset`, it now only supports
+  Array, Matrix, and String.
 - Some moving around with code and namespaces:
   - Renamed namespace `math.expr` to `math.expression` (contains Scope, Parser,
     node objects).

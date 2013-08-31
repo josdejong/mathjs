@@ -46,23 +46,6 @@ describe('subset', function() {
     assert.throws(function () {subset('hello', index([1.3]))}, TypeError);
   });
 
-  it('should get the right subset of a number', function() {
-    assert.deepEqual(subset(123, index(0)), 123);
-  });
-
-  it('should get the right subset of a complex number', function() {
-    assert.deepEqual(subset(math.complex('2+3i'), index(0)), math.complex(2,3));
-  });
-
-  it('should throw an error if trying to access an invalid subset for a number', function() {
-    assert.throws(function () {subset(123, index(1))}, RangeError);
-    assert.throws(function () {subset(123, index(-1))}, RangeError);
-    assert.throws(function () {subset(123, index(-2))}, RangeError);
-    assert.throws(function () {subset(123, index(1,2))}, RangeError);
-    assert.throws(function () {subset(123, index(0,0))}, RangeError); // TODO: this should be supported
-    assert.throws(function () {subset(123, index(2.4))}, TypeError);
-  });
-
   var d = [[1,2], [3,4]];
   var g  = matrix([[1,2], [3,4]]);
 
@@ -105,22 +88,6 @@ describe('subset', function() {
   it('should throw an error if setting the subset of a string with an invalid replacement', function() {
     assert.throws(function () {subset('hello', index([1,2]), '1234')}, RangeError);
     assert.throws(function () {subset('hello', index(1,2), 'a')}, RangeError);
-  });
-
-  it('should set the right subset of a number', function() {
-    assert.deepEqual(subset(123, index(0), 456), 456);
-    assert.deepEqual(subset(123, index(0,0), 456), 456);
-    assert.deepEqual(subset(123, index(1), 456), [123, 456]);
-  });
-
-  it('should throw an error if setting the subset of a number with invalid replacement', function() {
-    assert.throws(function () {subset(123, index(-1), 456)}, RangeError);
-    assert.throws(function () {subset(123, index(-2), 456)}, RangeError);
-    assert.throws(function () {subset(123, index(2.4), 456)}, TypeError);
-  });
-
-  it('should set the right subset of a complex number', function() {
-    assert.deepEqual(subset(math.complex('2+3i'), index(0), 123), 123);
   });
 
 });
