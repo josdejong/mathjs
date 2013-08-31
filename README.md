@@ -322,14 +322,6 @@ The Selector has a number of special functions:
  - `toString()`
    Executes `math.format(value)` onto the selectors value, returning
    a string representation of the value.
- - `get(index)`
-   Get a subselection of the selectors value. Only applicable when
-   the value has a function get, for example when value is a Matrix
-   or Array.
- - `set(index, replacement)`
-   Replace a subselection of the selectors value. Only applicable
-   when the value has a function get, for example when value is a
-   Matrix or Array.
 
 
 ## Data types

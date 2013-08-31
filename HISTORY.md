@@ -10,6 +10,8 @@ https://github.com/josdejong/mathjs
   JavaScript level, math.js uses zero-based indexes with excluded upper-bound.
 - Removed support for scalars in the function `subset`, it now only supports
   Array, Matrix, and String.
+- Removed the functions `get` and `set` from a selector, they are a duplicate
+  of the function `subset`.
 - Some moving around with code and namespaces:
   - Renamed namespace `math.expr` to `math.expression` (contains Scope, Parser,
     node objects).
