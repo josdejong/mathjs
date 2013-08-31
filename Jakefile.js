@@ -68,12 +68,12 @@ task('bundle', {async: true}, function () {
  */
 desc('Minify the library');
 task('minify', ['bundle'], function () {
-   var result = util.minify({
-     src: MATHJS,
-     dest: MATHJS_MIN,
-     header: util.read(HEADER)
-   });
-   updateVersion(MATHJS_MIN);
+  var result = util.minify({
+    src: MATHJS,
+    dest: MATHJS_MIN,
+    header: util.read(HEADER)
+  });
+  updateVersion(MATHJS_MIN);
 
   console.log('Minified library ' + MATHJS_MIN + ' (' + filesize(result.code.length, 1) + ')');
 });
