@@ -50,6 +50,8 @@ describe('parse', function() {
     assert.throws(function () {math.parse(true)}, TypeError);
   });
 
+  // TODO: parse comments
+
   describe('number', function () {
 
     it('should parse valid numbers', function() {
