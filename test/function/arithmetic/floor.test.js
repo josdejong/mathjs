@@ -9,12 +9,6 @@ var assert = require('assert'),
     floor = math.floor;
 
 describe('floor', function() {
-
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('floor(1.3)'), 1);
-    assert.equal(math.eval('floor(1.8)'), 1);
-  });
-
   it('should floor numbers correctly', function() {
     approx.equal(floor(0), 0);
     approx.equal(floor(1), 1);

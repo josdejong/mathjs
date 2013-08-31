@@ -9,12 +9,6 @@ var assert = require('assert'),
     fix = math.fix;
 
 describe('fix', function() {
-
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('fix(1.3)'), 1);
-    assert.equal(math.eval('fix(1.8)'), 1);
-  });
-
   it('should round values correctly', function() {
     approx.equal(fix(0), 0);
     approx.equal(fix(1), 1);

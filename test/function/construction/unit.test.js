@@ -5,6 +5,7 @@ var assert = require('assert'),
 describe('unit', function() {
 
   it ('should construct a unit', function () {
+    // TOD: test construction of a unit
   });
 
   it('should parse a valid string to a unit', function() {

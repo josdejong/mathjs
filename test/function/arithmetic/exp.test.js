@@ -10,11 +10,6 @@ var assert = require('assert'),
 
 describe('exp', function() {
 
-  it('should be parsed correctly', function() {
-    approx.equal(math.eval('exp(1)'), Math.E);
-    approx.deepEqual(math.eval('1+exp(pi*i)'), complex('0'));
-  });
-
   it('should exponentiate a number correctly', function() {
     // number
     approx.equal(exp(-3), 0.0497870683678639);
@@ -41,13 +36,17 @@ describe('exp', function() {
     approx.deepEqual(exp(complex(-1, 1)),  complex('0.198766110346413 + 0.309559875653112i'));
     approx.deepEqual(exp(complex(1, 0)),   complex('2.71828182845905'));
 
-    approx.deepEqual(math.eval('exp(0.5 * pi * i)'),  complex(0, 1));
-    approx.deepEqual(math.eval('exp(1 * pi * i)'),    complex(-1, 0));
-    approx.deepEqual(math.eval('exp(1.5 * pi * i)'),  complex(0, -1));
-    approx.deepEqual(math.eval('exp(2 * pi * i)'),    complex(1, 0));
-    approx.deepEqual(math.eval('exp(-0.5 * pi * i)'), complex(0, -1));
-    approx.deepEqual(math.eval('exp(-1 * pi * i)'),   complex(-1, 0));
-    approx.deepEqual(math.eval('exp(-1.5 * pi * i)'), complex(0, 1));
+    // test some logic identities
+    var multiply = math.multiply,
+        pi = math.pi,
+        i = math.i;
+    approx.deepEqual(exp(multiply( 0.5, multiply(pi, i))), complex(0, 1));
+    approx.deepEqual(exp(multiply( 1,   multiply(pi, i))), complex(-1, 0));
+    approx.deepEqual(exp(multiply( 1.5, multiply(pi, i))), complex(0, -1));
+    approx.deepEqual(exp(multiply( 2,   multiply(pi, i))), complex(1, 0));
+    approx.deepEqual(exp(multiply(-0.5, multiply(pi, i))), complex(0, -1));
+    approx.deepEqual(exp(multiply(-1,   multiply(pi, i))), complex(-1, 0));
+    approx.deepEqual(exp(multiply(-1.5, multiply(pi, i))), complex(0, 1));
   });
 
   it('should throw an error on a unit', function() {

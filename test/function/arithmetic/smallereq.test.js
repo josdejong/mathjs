@@ -8,15 +8,6 @@ var assert = require('assert'),
 
 describe('smallereq', function() {
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('2 <= 3'), true);
-    assert.equal(math.eval('2 <= 2'), true);
-    assert.equal(math.eval('2 <= 1'), false);
-    assert.equal(math.eval('smallereq(2, 3)'), true);
-    assert.equal(math.eval('smallereq(2, 2)'), true);
-    assert.equal(math.eval('smallereq(2, 1)'), false);
-  });
-
   it('should compare two numbers correctly', function() {
     assert.equal(smallereq(2, 3), true);
     assert.equal(smallereq(2, 2), true);

@@ -10,14 +10,6 @@ var assert = require('assert'),
 
 describe('pow', function() {
 
-  it('should be parsed correctly', function() {
-    approx.equal(math.eval('2^3'), 8);
-    approx.equal(math.eval('-2^2'), -4);  // -(2^2)
-    approx.equal(math.eval('2^3^4'), 2.41785163922926e+24); // 2^(3^4)
-    approx.equal(math.eval('pow(2,3)'), 8);
-    approx.equal(math.eval('pow(-2,2)'), 4);
-  });
-
   it('should elevate a number to the given power', function() {
     approx.deepEqual(pow(2,3), 8);
     approx.deepEqual(pow(2,4), 16);

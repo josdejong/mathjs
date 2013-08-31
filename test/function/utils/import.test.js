@@ -35,8 +35,8 @@ describe('import', function() {
 
   it('should parse the user defined members', function() {
     var parser = math.parser();
-    parser.eval('myvalue + 10');    // 52
-    parser.eval('hello("user")');   // 'hello, user!'
+    assert.equal(math.add(math.myvalue, 10), 52);
+    assert.equal(math.hello('user'), 'hello, user!');
   });
 
   var getSize = function (array) { return array.length; };

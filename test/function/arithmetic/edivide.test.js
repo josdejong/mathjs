@@ -6,15 +6,6 @@ math = require('../../../index.js'),
     complex = math.complex;
 
 describe('edivide', function() {
-
-  it('should be parsed correctly', function() {
-    /* TODO: edivide for parser
-     assert.equal(math.eval('4 ./ 2'), 2);
-     assert.equal(math.eval('8 ./ 2 / 2'), 2);
-     */
-    assert.equal(math.eval('edivide(4, 2)'), 2);
-  });
-
   it('should divide two numbers', function() {
     assert.equal(edivide(4, 2), 2);
     assert.equal(edivide(-4, 2), -2);

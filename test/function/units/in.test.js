@@ -28,11 +28,6 @@ describe('in', function() {
     assert.equal(math.format(b), '[[10 mm, 20 mm], [30 mm, 40 mm]]');
   });
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('2.54 cm in inch').toString(), '1 inch');
-    assert.equal(math.eval('2.54 cm + 2 inch in foot').toString(), '0.25 foot');
-  });
-
   it('should throw an error if converting between incompatible units', function() {
     assert.throws(function () {math.in(unit('20 kg'), unit('cm'))});
     assert.throws(function () {math.in(unit('20 celsius'), unit('litre'))});

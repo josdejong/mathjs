@@ -9,12 +9,6 @@ var assert = require('assert'),
     ceil = math.ceil;
 
 describe('ceil', function() {
-
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('ceil(1.3)'), 2);
-    assert.equal(math.eval('ceil(1.8)'), 2);
-  });
-
   it('should return the ceil of a number', function() {
     approx.equal(ceil(0), 0);
     approx.equal(ceil(1), 1);

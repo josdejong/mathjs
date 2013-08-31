@@ -25,8 +25,8 @@ describe('format', function() {
   });
 
   it('should format numbers with correct number of digits', function() {
-    assert.equal(math.format(math.eval('1000.000')), '1000');
-    assert.equal(math.format(math.eval('1000.0010')), '1000'); // rounded off at 5 digits
+    assert.equal(math.format(1000.000), '1000');
+    assert.equal(math.format(1000.0010), '1000'); // rounded off at 5 digits
     assert.equal(math.format(math.pi), '3.1416');
     assert.equal(math.format(math.pi * 10000), '31416');
     assert.equal(math.format(math.pi / 100), '0.031416');

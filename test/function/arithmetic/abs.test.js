@@ -3,11 +3,6 @@ var assert = require('assert');
 var math = require('../../../index.js');
 
 describe('abs', function () {
-
-  it('should be parsed correctly', function () {
-    assert.equal(math.eval('abs(-4.2)'), 4.2);
-  });
-
   it('should return the abs value of a number', function () {
     assert.equal(math.abs(-4.2), 4.2);
     assert.equal(math.abs(-3.5), 3.5);

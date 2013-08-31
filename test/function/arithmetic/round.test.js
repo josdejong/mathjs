@@ -4,11 +4,6 @@ var math = require('../../../index.js');
 
 describe('round', function() {
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('round(pi)'), 3);
-    assert.equal(math.eval('round(pi, 3)'), 3.142);
-  });
-
   it('should round a number to te given number of decimals', function() {
     assert.equal(math.round(math.pi), 3);
     assert.equal(math.round(math.pi * 1000), 3142);

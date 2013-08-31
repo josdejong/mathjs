@@ -4,12 +4,6 @@ var math = require('../../../index.js');
 
 describe('sign', function() {
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('sign(3)'), 1);
-    assert.equal(math.eval('sign(-3)'), -1);
-    assert.equal(math.eval('sign(0)'), 0);
-  });
-
   it('should return the sign of a number as 1, -1 or 0', function() {
     assert.equal(math.sign(3), 1);
     assert.equal(math.sign(-3), -1);

@@ -12,14 +12,6 @@ var assert = require('assert'),
 
 describe('emultiply', function() {
 
-  it('should be parsed correctly', function() {
-    /* TODO: emultiply for parser
-     approx.equal(math.eval('4 .* 2'), 8);
-     approx.equal(math.eval('8 .* 2 .* 2'), 32);
-     */
-    approx.equal(math.eval('emultiply(4, 2)'), 8);
-  });
-
   it('should multiply 2 numbers', function() {
     // number
     approx.equal(emultiply(2, 3), 6);

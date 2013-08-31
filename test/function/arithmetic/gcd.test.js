@@ -3,11 +3,6 @@ var assert = require('assert');
 var math = require('../../../index.js');
 
 describe('gcd', function() {
-
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('gcd(12, 8)'), 4);
-  });
-
   it('should find the greatest common divisor of two or more numbers', function() {
     assert.equal(math.gcd(12, 8), 4);
     assert.equal(math.gcd(8, 12), 4);

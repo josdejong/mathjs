@@ -5,10 +5,6 @@ var assert = require('assert'),
 
 describe('sqrt', function() {
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('sqrt(25)'), 5);
-  });
-
   it('should return the square root of a number', function() {
     assert.equal(math.sqrt(25), 5);
     assert.equal(math.sqrt(-4), '2i');

@@ -8,11 +8,6 @@ var assert = require('assert'),
 
 describe('mod', function() {
 
-  it('should be parsed correctly', function() {
-    approx.equal(math.eval('8 % 3'), 2);
-    approx.equal(math.eval('mod(8, 3)'), 2);
-  });
-
   it('should perform the modulus of two numbers', function() {
     approx.equal(mod(7, 2), 1);
     approx.equal(mod(9, 3), 0);

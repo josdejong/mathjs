@@ -3,13 +3,6 @@ var assert = require('assert');
 var math = require('../../../index.js');
 
 describe('add', function() {
-
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('add(2, 3)'), 5);
-    assert.equal(math.eval('2 + 3'), 5);
-    assert.equal(math.eval('2 + 3 + 4'), 9);
-  });
-
   it('should add two numbers', function() {
     assert.equal(math.add(2, 3), 5);
     assert.equal(math.add(-2, 3), 1);

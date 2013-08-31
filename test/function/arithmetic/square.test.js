@@ -8,10 +8,6 @@ var assert = require('assert'),
 
 describe('square', function() {
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('square(4)'), 16);
-  });
-
   it('should return the square of a number', function() {
     assert.equal(square(4), 16);
     assert.equal(square(-2), 4);

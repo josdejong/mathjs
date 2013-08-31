@@ -7,16 +7,6 @@ var assert = require('assert'),
     larger = math.larger;
 
 describe('larger', function() {
-
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('2 > 3'), false);
-    assert.equal(math.eval('2 > 2'), false);
-    assert.equal(math.eval('2 > 1'), true);
-    assert.equal(math.eval('larger(2, 3)'), false);
-    assert.equal(math.eval('larger(2, 2)'), false);
-    assert.equal(math.eval('larger(2, 1)'), true);
-  });
-
   it('should compare two numbers correctly', function() {
     assert.equal(larger(2, 3), false);
     assert.equal(larger(2, 2), false);

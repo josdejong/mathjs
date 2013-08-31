@@ -10,11 +10,6 @@ var assert = require('assert'),
 
 describe('log', function() {
 
-  it('should be parsed correctly', function() {
-    approx.equal(math.eval('log(e)'), 1);
-    approx.equal(math.eval('log(2.71828182845905)'), 1);
-  });
-
   it('should return the log of a number', function() {
     approx.deepEqual(log(-3), complex('1.098612288668110 + 3.141592653589793i'));
     approx.deepEqual(log(-2), complex('0.693147180559945 + 3.141592653589793i'));

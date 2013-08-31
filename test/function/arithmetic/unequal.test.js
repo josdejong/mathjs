@@ -8,14 +8,6 @@ var assert = require('assert'),
 
 describe('unequal', function() {
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('2 != 3'), true);
-    assert.equal(math.eval('2 != 2'), false);
-    assert.equal(math.eval('unequal(2, 3)'), true);
-    assert.equal(math.eval('unequal(2, 2)'), false);
-  });
-
-
   it('should compare two numbers correctly', function() {
     assert.equal(unequal(2, 3), true);
     assert.equal(unequal(2, 2), false);

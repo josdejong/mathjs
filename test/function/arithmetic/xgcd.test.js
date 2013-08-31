@@ -4,11 +4,6 @@ var math = require('../../../index.js');
 
 describe('xgcd', function() {
 
-  it('should be parsed correctly', function() {
-    // parser
-    assert.deepEqual([1247, -7, 12], math.eval('xgcd(36163, 21199)'));
-  });
-
   it('should return extended greatest common divisor of two numbers', function() {
     // xgcd(36163, 21199) = 1247 => -7(36163) + 12(21199) = 1247
     assert.deepEqual([1247, -7, 12], math.xgcd(36163, 21199));

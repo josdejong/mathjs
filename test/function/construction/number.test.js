@@ -5,11 +5,6 @@ var assert = require('assert'),
 
 describe('number', function() {
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('number("123")'), 123);
-    assert.equal(math.eval('number()'), 0);
-  });
-
   it('should be 0 if called with no argument', function() {
     approx.equal(number(), 0);
   });

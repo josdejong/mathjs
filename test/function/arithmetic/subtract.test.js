@@ -4,12 +4,6 @@ var math = require('../../../index.js');
 
 describe('subtract', function() {
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('4 - 2'), 2);
-    assert.equal(math.eval('8 - 2 - 2'), 4);
-    assert.equal(math.eval('subtract(4, 2)'), 2);
-  });
-
   it('should subtract two numbers correctly', function() {
     assert.deepEqual(math.subtract(4, 2), 2);
     assert.deepEqual(math.subtract(4, -4), 8);

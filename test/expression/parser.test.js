@@ -161,6 +161,21 @@ describe('parser', function() {
     // TODO: implement and test support for Array (instead of Matrix)
   });
 
+  it('should get a string subset', function() {
+    assert.deepEqual(parser.eval('c="hello"'), "hello");
+    assert.deepEqual(parser.eval('c(2:4)'), "ell");
+    assert.deepEqual(parser.eval('c(5:-1:1)'), "olleh");
+    assert.deepEqual(parser.eval('c(end-2:-1:1)'), "leh");
+  });
+
+  it('should set a string subset', function() {
+    assert.deepEqual(parser.eval('c="hello"'), "hello");
+    assert.deepEqual(parser.eval('c(1) = "H"'), "Hello");
+    assert.deepEqual(parser.eval('c'), "Hello");
+    assert.deepEqual(parser.eval('c(6:11) = " world"'), "Hello world");
+    assert.deepEqual(parser.eval('c'), "Hello world");
+  });
+
   it('should parse matrix resizings', function() {
     assert.deepEqual(parser.eval('a = []'),    matrix([]));
     assert.deepEqual(parser.eval('a(1:3,1) = [1;2;3]'), matrix([[1],[2],[3]]));
@@ -178,7 +193,6 @@ describe('parser', function() {
     assert.deepEqual(parser.eval('a(1,1:3) = [1,2,3]'), matrix([[1,2,3]]));
     assert.deepEqual(parser.eval('a(2,:) = [4,5,6]'), matrix([[1,2,3],[4,5,6]]));
   });
-
 
   it('should get the right matrix size', function() {
     assert.ok(parser.eval('[1,2;3,4]') instanceof math.type.Matrix);

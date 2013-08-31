@@ -4,14 +4,6 @@ var assert = require('assert'),
 
 describe('string', function() {
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('string(123)'), '123');
-    assert.equal(math.eval('string(2+3i)'), '2 + 3i');
-    assert.equal(math.eval('string(1:5)'), '[1, 2, 3, 4, 5]');
-    assert.equal(math.eval('string(2 inch)'), '2 inch');
-    assert.equal(math.eval('string([1,2;3,4])'), '[[1, 2], [3, 4]]');
-  });
-
   it('should be \'\' if called with no argument', function() {
     assert.equal(string(), '');
   });

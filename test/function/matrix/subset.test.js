@@ -123,25 +123,4 @@ describe('subset', function() {
     assert.deepEqual(subset(math.complex('2+3i'), index(0), 123), 123);
   });
 
-  /*
-  it('should parse subset operations correctly', function() {
-    var parser = math.parser();
-    assert.deepEqual(parser.eval('a = [1,2;3,4]'), matrix([[1,2],[3,4]]));
-    assert.deepEqual(parser.eval('a(1,1)'), 4);
-    assert.deepEqual(parser.eval('a(:,1)'), matrix([[2],[4]]));
-    assert.deepEqual(parser.eval('a(:,1) = [-2;-4]'), matrix([[1,-2],[3,-4]]));
-    assert.deepEqual(parser.eval('b=123'), 123);
-    assert.deepEqual(parser.eval('b(0)'), 123);
-    // assert.deepEqual(parser.eval('b(0,0)'), 123); // TODO: should be supported?
-    assert.deepEqual(parser.eval('b(0)=456'), 456);
-    assert.deepEqual(parser.eval('b'), 456);
-    assert.deepEqual(parser.eval('c="hello"'), "hello");
-    assert.deepEqual(parser.eval('c(1:4)'), "ell");
-    assert.deepEqual(parser.eval('c(0) = "H"'), "Hello");
-    assert.deepEqual(parser.eval('c'), "Hello");
-    assert.deepEqual(parser.eval('c(5:11) = " world"'), "Hello world");
-    assert.deepEqual(parser.eval('c(4:-1:-1)'), "olleH");
-    assert.deepEqual(parser.eval('c(end-1:-1:-1)'), "dlrow olleH");
-  });
-*/
 });

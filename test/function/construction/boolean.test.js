@@ -4,16 +4,6 @@ var assert = require('assert'),
 
 describe('boolean', function() {
 
-  it('should be parsed correctly', function() {
-    assert.equal(math.eval('boolean("true")'), true);
-    assert.equal(math.eval('boolean("false")'), false);
-    assert.equal(math.eval('boolean(true)'), true);
-    assert.equal(math.eval('boolean(false)'), false);
-    assert.equal(math.eval('boolean(1)'), true);
-    assert.equal(math.eval('boolean(2)'), true);
-    assert.equal(math.eval('boolean(0)'), false);
-  });
-
   it('should be the identity with a boolean', function() {
     assert.equal(bool(true), true);
     assert.equal(bool(false), false);
