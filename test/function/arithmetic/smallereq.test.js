@@ -19,6 +19,22 @@ describe('smallereq', function() {
     assert.equal(smallereq(-3, -2), true);
   });
 
+  it('should compare two booleans', function() {
+    assert.equal(smallereq(true, true), true);
+    assert.equal(smallereq(true, false), false);
+    assert.equal(smallereq(false, true), true);
+    assert.equal(smallereq(false, false), true);
+  });
+
+  it('should compare mixed numbers and booleans', function() {
+    assert.equal(smallereq(2, true), false);
+    assert.equal(smallereq(1, true), true);
+    assert.equal(smallereq(0, true), true);
+    assert.equal(smallereq(true, 2), true);
+    assert.equal(smallereq(true, 1), true);
+    assert.equal(smallereq(false, 2), true);
+  });
+
   it('should compare two complex numbers correctly', function() {
     assert.equal(smallereq(complex(1,1), complex(1,2)), true);
     assert.equal(smallereq(complex(1,1), complex(1,1)), true);

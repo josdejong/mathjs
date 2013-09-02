@@ -8,6 +8,10 @@ var assert = require('assert'),
     sec = math.sec;
 
 describe('sec', function() {
+  it('should return the secant of a boolean', function () {
+    approx.equal(sec(true), 1.85081571768093);
+    approx.equal(sec(false), Infinity);
+  });
 
   it('should return the secant of a number', function() {
     approx.equal(1 / sec(0), 1);

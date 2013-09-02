@@ -3,8 +3,12 @@ var assert = require('assert');
 var math = require('../../../index.js');
 
 describe('sign', function() {
+  it('should calculate the sign of a boolean', function () {
+    assert.equal(math.sign(true), 1);
+    assert.equal(math.sign(false), 0);
+  });
 
-  it('should return the sign of a number as 1, -1 or 0', function() {
+  it('should calculate the sign of a number as 1, -1 or 0', function() {
     assert.equal(math.sign(3), 1);
     assert.equal(math.sign(-3), -1);
     assert.equal(math.sign(0), 0);

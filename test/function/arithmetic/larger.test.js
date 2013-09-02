@@ -17,6 +17,20 @@ describe('larger', function() {
     assert.equal(larger(-3, -2), false);
   });
 
+  it('should compare two booleans', function() {
+    assert.equal(larger(true, true), false);
+    assert.equal(larger(true, false), true);
+    assert.equal(larger(false, true), false);
+    assert.equal(larger(false, false), false);
+  });
+
+  it('should compare mixed numbers and booleans', function() {
+    assert.equal(larger(2, true), true);
+    assert.equal(larger(0, true), false);
+    assert.equal(larger(true, 2), false);
+    assert.equal(larger(false, 2), false);
+  });
+
   it('should compare two complex numbers correctly', function() {
     assert.equal(larger(complex(1,1), complex(1,2)), false);
     assert.equal(larger(complex(1,1), complex(1,1)), false);

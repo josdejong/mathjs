@@ -4,6 +4,7 @@ https://github.com/josdejong/mathjs
 
 ## 2013-08-22, version 0.13.0
 
+- Implemented support for booleans in all relevant functions.
 - Implemented functions `map` and `forEach`. Thanks Sebastien Piquemal (sebpic).
 - Changed matrix indexes of the expression parser to one-based with the
   upper-bound included, similar to most math applications. Note that on a
@@ -19,6 +20,7 @@ https://github.com/josdejong/mathjs
     node objects).
   - Renamed namespace `math.docs` to `math.expression.docs`.
   - Moved `math.expr.Selector` to `math.chaining.Selector`.
+- Fixed some edge cases in functions `lcm` and `xgcd`.
 
 
 ## 2013-08-22, version 0.12.1

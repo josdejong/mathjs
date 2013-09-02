@@ -23,6 +23,20 @@ describe('pow', function() {
     approx.deepEqual(pow(-2,1.5), complex(0, -2.82842712474619));
   });
 
+  it('should elevate booleans to the given power', function() {
+    assert.equal(pow(true, true), 1);
+    assert.equal(pow(true, false), 1);
+    assert.equal(pow(false, true), 0);
+    assert.equal(pow(false, false), 1);
+  });
+
+  it('should add mixed numbers and booleans', function() {
+    assert.equal(pow(2, true), 2);
+    assert.equal(pow(2, false), 1);
+    assert.equal(pow(true, 2), 1);
+    assert.equal(pow(false, 2), 0);
+  });
+
   it('should throw an error if used with wrong number of arguments', function() {
     assert.throws(function () {pow(1)}, SyntaxError, 'Wrong number of arguments in function pow (1 provided, 2 expected)');
     assert.throws(function () {pow(1, 2, 3)}, SyntaxError, 'Wrong number of arguments in function pow (3 provided, 2 expected)');

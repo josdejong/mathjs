@@ -9,6 +9,10 @@ var assert = require('assert'),
     tan = math.tan;
 
 describe('atan', function() {
+  it('should return the arctan of a boolean', function () {
+    approx.equal(atan(true), 0.25 * pi);
+    approx.equal(atan(false), 0);
+  });
 
   it('should return the arctan of a number', function() {
     approx.equal(atan(-1) / pi, -0.25);

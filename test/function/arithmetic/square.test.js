@@ -7,6 +7,10 @@ var assert = require('assert'),
     square = math.square;
 
 describe('square', function() {
+  it('should return the square of a boolean', function () {
+    assert.equal(square(true), 1);
+    assert.equal(square(false), 0);
+  });
 
   it('should return the square of a number', function() {
     assert.equal(square(4), 16);

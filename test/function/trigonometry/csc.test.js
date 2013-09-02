@@ -8,6 +8,10 @@ var assert = require('assert'),
     csc = math.csc;
 
 describe('csc', function() {
+  it('should return the cosecant of a boolean', function () {
+    approx.equal(csc(true), 1.18839510577812);
+    approx.equal(csc(false), Infinity);
+  });
 
   it('should return the cosecant of a number', function() {
     approx.equal(1 / csc(0), 0);

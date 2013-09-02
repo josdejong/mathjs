@@ -23,6 +23,20 @@ describe('multiply', function() {
     approx.deepEqual(multiply(-2, Infinity), -Infinity);
   });
 
+  it('should multiply booleans', function() {
+    assert.equal(multiply(true, true), 1);
+    assert.equal(multiply(true, false), 0);
+    assert.equal(multiply(false, true), 0);
+    assert.equal(multiply(false, false), 0);
+  });
+
+  it('should multiply mixed numbers and booleans', function() {
+    assert.equal(multiply(2, true), 2);
+    assert.equal(multiply(2, false), 0);
+    assert.equal(multiply(true, 2), 2);
+    assert.equal(multiply(false, 2), 0);
+  });
+
   it('should multiply two complex numbers correctly', function() {
     approx.deepEqual(multiply(complex(2, 3), 2), complex(4, 6));
     approx.deepEqual(multiply(complex(2, -3), -2), complex(-4, 6));

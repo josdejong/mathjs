@@ -9,6 +9,10 @@ var assert = require('assert'),
     unit = math.unit;
 
 describe('acos', function() {
+  it('should return the arccos of a boolean', function () {
+    approx.equal(acos(true), 0);
+    approx.equal(acos(false), 0.5 * pi);
+  });
 
   it('should return the arccos of a number', function() {
     approx.equal(acos(-1) / pi, 1);

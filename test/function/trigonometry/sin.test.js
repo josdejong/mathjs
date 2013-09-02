@@ -8,6 +8,10 @@ var assert = require('assert'),
     sin = math.sin;
 
 describe('sin', function() {
+  it('should return the sine of a boolean', function () {
+    approx.equal(sin(true), 0.841470984807897);
+    approx.equal(sin(false), 0);
+  });
 
   it('should return the sine of a number', function() {
     approx.equal(sin(0), 0);

@@ -9,16 +9,22 @@ describe('im', function() {
     assert.equal(math.im(math.i), 1);
   });
 
-  it('should return 0 for a real number', function() {
+  it('should return the imaginary part of a real number', function() {
     assert.equal(math.im(2), 0);
   });
 
-  it('should return 0 for a string', function() {
+  it('should return the imaginary part of a boolean', function() {
+    assert.equal(math.im(true), 0);
+    assert.equal(math.im(false), 0);
+  });
+
+  it('should return the imaginary part of a string', function() {
     assert.equal(math.im('string'), 0);
   });
 
-  it('should return 0 for a boolean', function() {
+  it('should return the imaginary part of a boolean', function() {
     assert.equal(math.im(true), 0);
+    assert.equal(math.im(false), 0);
   });
 
   it('should return the imaginary part for each element in a matrix', function() {

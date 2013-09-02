@@ -21,6 +21,20 @@ describe('emultiply', function() {
     approx.equal(emultiply(0, 5), 0);
   });
 
+  it('should multiply booleans', function() {
+    assert.equal(emultiply(true, true), 1);
+    assert.equal(emultiply(true, false), 0);
+    assert.equal(emultiply(false, true), 0);
+    assert.equal(emultiply(false, false), 0);
+  });
+
+  it('should multiply mixed numbers and booleans', function() {
+    assert.equal(emultiply(2, true), 2);
+    assert.equal(emultiply(2, false), 0);
+    assert.equal(emultiply(true, 2), 2);
+    assert.equal(emultiply(false, 2), 0);
+  });
+
   it('should multiply 2 complex numbers', function() {
     // complex
     approx.deepEqual(emultiply(complex(2, 3), 2), complex(4, 6));

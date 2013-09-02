@@ -4,11 +4,20 @@ var assert = require('assert'),
     math = require('../../../index.js');
 
 describe('sqrt', function() {
+  it('should return the square root of a boolean', function () {
+    assert.equal(math.sqrt(true), 1);
+    assert.equal(math.sqrt(false), 0);
+  });
 
   it('should return the square root of a number', function() {
+    assert.equal(math.sqrt(0), 0);
+    assert.equal(math.sqrt(1), 1);
+    assert.equal(math.sqrt(4), 2);
+    assert.equal(math.sqrt(9), 3);
+    assert.equal(math.sqrt(16), 4);
     assert.equal(math.sqrt(25), 5);
+
     assert.equal(math.sqrt(-4), '2i');
-    assert.equal(math.sqrt(0), '');
   });
 
   it('should return the square root of a complex number', function() {

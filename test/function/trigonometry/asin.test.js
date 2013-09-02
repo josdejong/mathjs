@@ -9,6 +9,10 @@ var assert = require('assert'),
     sin = math.sin;
 
 describe('asin', function() {
+  it('should return the arcsin of a boolean', function () {
+    approx.equal(asin(true), 0.5 * pi);
+    approx.equal(asin(false), 0);
+  });
 
   it('should return the arcsin of a number', function() {
     approx.equal(asin(-1) / pi, -0.5);

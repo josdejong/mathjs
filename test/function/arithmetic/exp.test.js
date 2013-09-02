@@ -9,6 +9,10 @@ var assert = require('assert'),
     exp = math.exp;
 
 describe('exp', function() {
+  it('should exponentiate a boolean correctly', function () {
+    approx.equal(exp(true), 2.71828182845905);
+    approx.equal(exp(false), 1);
+  });
 
   it('should exponentiate a number correctly', function() {
     // number

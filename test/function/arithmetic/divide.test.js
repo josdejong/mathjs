@@ -17,6 +17,20 @@ describe('divide', function() {
     assert.ok(isNaN(divide(0, 0)));
   });
 
+  it('should divide booleans', function() {
+    assert.equal(divide(true, true), 1);
+    assert.equal(divide(true, false), Infinity);
+    assert.equal(divide(false, true), 0);
+    assert.ok(isNaN(divide(false, false)));
+  });
+
+  it('should add mixed numbers and booleans', function() {
+    assert.equal(divide(2, true), 2);
+    assert.equal(divide(2, false), Infinity);
+    approx.equal(divide(true, 2), 0.5);
+    assert.equal(divide(false, 2), 0);
+  });
+
   it('should divide two complex numbers', function() {
     approx.deepEqual(divide(complex('2+3i'), 2), complex('1+1.5i'));
     approx.deepEqual(divide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'));

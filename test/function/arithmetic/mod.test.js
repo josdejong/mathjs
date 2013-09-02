@@ -7,8 +7,19 @@ var assert = require('assert'),
     mod = math.mod;
 
 describe('mod', function() {
+  it('should calculate the modulus of booleans correctly', function () {
+    assert.equal(mod(true, true), 0);
+    assert.equal(mod(false, true), 0);
+    assert.equal(mod(true, false), 1);
+    assert.equal(mod(false, false), 0);
+  });
 
-  it('should perform the modulus of two numbers', function() {
+  it('should calculate the modulus of two numbers', function() {
+    assert.equal(mod(1, 1), 0);
+    assert.equal(mod(0, 1), 0);
+    assert.equal(mod(1, 0), 1);
+    assert.equal(mod(0, 0), 0);
+
     approx.equal(mod(7, 2), 1);
     approx.equal(mod(9, 3), 0);
     approx.equal(mod(10, 4), 2);

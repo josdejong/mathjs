@@ -8,6 +8,10 @@ var assert = require('assert'),
     cot = math.cot;
 
 describe('cot', function() {
+  it('should return the cotan of a boolean', function () {
+    approx.equal(cot(true), 0.642092615934331);
+    approx.equal(cot(false), Infinity);
+  });
 
   it('should return the cotan of a number', function() {
     approx.equal(cot(0), Infinity);

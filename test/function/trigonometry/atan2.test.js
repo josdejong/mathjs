@@ -21,8 +21,6 @@ var assert = require('assert'),
 
 describe('atan2', function() {
 
-  var re, im;
-
   it('should calculate atan2 correctly', function() {
     approx.equal(atan2(0, 0) / pi, 0);
     approx.equal(atan2(0, 1) / pi, 0);
@@ -33,6 +31,20 @@ describe('atan2', function() {
     approx.equal(atan2(-1, -1) / pi, -0.75);
     approx.equal(atan2(-1, 0) / pi, -0.5);
     approx.equal(atan2(-1, 1) / pi, -0.25);
+  });
+
+  it('should calculate atan2 for booleans', function() {
+    assert.equal(atan2(true, true), 0.25 * pi);
+    assert.equal(atan2(true, false), 0.5 * pi);
+    assert.equal(atan2(false, true), 0);
+    assert.equal(atan2(false, false), 0);
+  });
+
+  it('should calculate atan2 with mixed numbers and booleans', function() {
+    assert.equal(atan2(1, true), 0.25 * pi);
+    assert.equal(atan2(1, false), 0.5 * pi);
+    assert.equal(atan2(true, 1), 0.25 * pi);
+    assert.equal(atan2(false, 1), 0);
   });
 
   it('should throw an error if called with a complex', function() {

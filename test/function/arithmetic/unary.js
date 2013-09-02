@@ -3,6 +3,10 @@ var assert = require('assert');
 var math = require('../../../index.js');
 
 describe('unaryminus', function() {
+  it('should parform unary minus of a boolean', function () {
+    assert.equal(math.unary(true), -1);
+    assert.equal(math.unary(false), 0);
+  });
 
   it('should perform unary minus of a number', function() {
     assert.deepEqual(math.unary(2), -2);

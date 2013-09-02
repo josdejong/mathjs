@@ -10,8 +10,12 @@ var assert = require('assert'),
     tan = math.tan;
 
 describe('tan', function() {
+  it('should return the tangent of a boolean', function () {
+    approx.equal(tan(true), 1.55740772465490);
+    approx.equal(tan(false), 0);
+  });
 
-  it('should return the tan of a number', function() {
+  it('should return the tangent of a number', function() {
     approx.equal(tan(0), 0);
     approx.equal(tan(pi*1/4), 1);
     approx.equal(tan(pi*1/8), 0.414213562373095);
@@ -24,7 +28,7 @@ describe('tan', function() {
     approx.equal(tan(pi*8/4), 0);
   });
 
-  it('should return the tan of a complex number', function() {
+  it('should return the tangent of a complex number', function() {
     var re = 0.00376402564150425,
         im = 1.00323862735360980;
     approx.deepEqual(tan(complex('2+3i')), complex(-re, im));
@@ -36,7 +40,7 @@ describe('tan', function() {
     approx.deepEqual(tan(complex('1+i')), complex(0.271752585319512, 1.083923327338695));
   });
 
-  it('should return the tan of an angle', function() {
+  it('should return the tangent of an angle', function() {
     approx.equal(tan(unit(' 60deg')), math.sqrt(3));
     approx.equal(tan(unit('-135deg')), 1);
   });

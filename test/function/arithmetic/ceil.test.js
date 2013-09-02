@@ -9,6 +9,11 @@ var assert = require('assert'),
     ceil = math.ceil;
 
 describe('ceil', function() {
+  it('should return the ceil value of a boolean', function () {
+    assert.equal(ceil(true), 1);
+    assert.equal(ceil(false), 0);
+  });
+
   it('should return the ceil of a number', function() {
     approx.equal(ceil(0), 0);
     approx.equal(ceil(1), 1);

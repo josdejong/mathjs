@@ -1,30 +1,42 @@
-var assert = require('assert');
-var math = require('../../../index.js');
+var assert = require('assert'),
+    math = require('../../../index.js'),
+    conj = math.conj;
 
 describe('conj', function() {
+  it('should compute the conjugate of a boolean', function () {
+    assert.equal(conj(true), true);
+    assert.equal(conj(false), false);
+  });
+
+  it('should compute the conjugate of a number', function () {
+    assert.equal(conj(1), 1);
+    assert.equal(conj(2), 2);
+    assert.equal(conj(0), 0);
+    assert.equal(conj(-2), -2);
+  });
 
   it('should calculate the conjugate of a complex number correctly', function() {
-    assert.equal(math.conj(math.complex('2 + 3i')).toString(), '2 - 3i');
-    assert.equal(math.conj(123).toString(), '123');
-    assert.equal(math.conj(math.complex('2 - 3i')).toString(), '2 + 3i');
-    assert.equal(math.conj(math.complex('2')).toString(), '2');
-    assert.equal(math.conj(math.complex('-4i')).toString(), '4i');
-    assert.equal(math.conj(math.i).toString(), '-i');
+    assert.equal(conj(math.complex('2 + 3i')).toString(), '2 - 3i');
+    assert.equal(conj(123).toString(), '123');
+    assert.equal(conj(math.complex('2 - 3i')).toString(), '2 + 3i');
+    assert.equal(conj(math.complex('2')).toString(), '2');
+    assert.equal(conj(math.complex('-4i')).toString(), '4i');
+    assert.equal(conj(math.i).toString(), '-i');
   });
 
   it('should calculate the conjugate for each element in a matrix', function() {
-    assert.equal(math.format(math.conj([math.complex('2+3i'), math.complex('3-4i')])),
+    assert.equal(math.format(conj([math.complex('2+3i'), math.complex('3-4i')])),
         '[2 - 3i, 3 + 4i]');
-    assert.equal(math.conj(math.matrix([math.complex('2+3i'), math.complex('3-4i')])).toString(),
+    assert.equal(conj(math.matrix([math.complex('2+3i'), math.complex('3-4i')])).toString(),
         '[2 - 3i, 3 + 4i]');
   });
 
   it('should be identity if used with a string', function() {
-    assert.equal(math.conj('string'), 'string');
+    assert.equal(conj('string'), 'string');
   });
 
   it('should be identity if used with a unit', function() {
-    assert.deepEqual(math.conj(math.unit('5cm')), math.unit('5cm'));
+    assert.deepEqual(conj(math.unit('5cm')), math.unit('5cm'));
   });
 
 });

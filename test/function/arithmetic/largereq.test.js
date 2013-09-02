@@ -18,6 +18,21 @@ describe('largereq', function() {
     assert.equal(largereq(-3, -2), false);
   });
 
+  it('should compare two booleans', function() {
+    assert.equal(largereq(true, true), true);
+    assert.equal(largereq(true, false), true);
+    assert.equal(largereq(false, true), false);
+    assert.equal(largereq(false, false), true);
+  });
+
+  it('should compare mixed numbers and booleans', function() {
+    assert.equal(largereq(2, true), true);
+    assert.equal(largereq(0, true), false);
+    assert.equal(largereq(true, 2), false);
+    assert.equal(largereq(true, 1), true);
+    assert.equal(largereq(false, 0), true);
+  });
+
   it('should compare two complex numbers correctly', function() {
     assert.equal(largereq(complex(1,1), complex(1,2)), false);
     assert.equal(largereq(complex(1,1), complex(1,1)), true);

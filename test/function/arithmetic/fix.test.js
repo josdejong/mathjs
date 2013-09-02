@@ -9,6 +9,11 @@ var assert = require('assert'),
     fix = math.fix;
 
 describe('fix', function() {
+  it('should round booleans correctly', function () {
+    assert.equal(fix(true), 1);
+    assert.equal(fix(false), 0);
+  });
+
   it('should round values correctly', function() {
     approx.equal(fix(0), 0);
     approx.equal(fix(1), 1);

@@ -8,6 +8,10 @@ var assert = require('assert'),
     cos = math.cos;
 
 describe('cos', function() {
+  it('should return the cosine of a boolean', function () {
+    approx.equal(cos(true), 0.54030230586814);
+    approx.equal(cos(false), 1);
+  });
 
   it('should return the cosine of a number', function() {
     approx.equal(cos(0), 1);

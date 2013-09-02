@@ -15,6 +15,23 @@ describe('equal', function() {
     assert.equal(equal(-2, 2), false);
   });
 
+  it('should compare two booleans', function() {
+    assert.equal(equal(true, true), true);
+    assert.equal(equal(true, false), false);
+    assert.equal(equal(false, true), false);
+    assert.equal(equal(false, false), true);
+  });
+
+  it('should compare mixed numbers and booleans', function() {
+    assert.equal(equal(2, true), false);
+    assert.equal(equal(1, true), true);
+    assert.equal(equal(0, true), false);
+    assert.equal(equal(true, 2), false);
+    assert.equal(equal(true, 1), true);
+    assert.equal(equal(false, 2), false);
+    assert.equal(equal(false, 0), true);
+  });
+
   it('should compare two complex numbers correctly', function() {
     assert.equal(equal(complex(2,3), complex(2,4)), false);
     assert.equal(equal(complex(2,3), complex(2,3)), true);

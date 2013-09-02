@@ -16,6 +16,20 @@ describe('edivide', function() {
     assert.ok(isNaN(edivide(0, 0)));
   });
 
+  it('should divide booleans', function() {
+    assert.equal(edivide(true, true), 1);
+    assert.equal(edivide(true, false), Infinity);
+    assert.equal(edivide(false, true), 0);
+    assert.ok(isNaN(edivide(false, false)));
+  });
+
+  it('should add mixed numbers and booleans', function() {
+    assert.equal(edivide(2, true), 2);
+    assert.equal(edivide(2, false), Infinity);
+    approx.equal(edivide(true, 2), 0.5);
+    assert.equal(edivide(false, 2), 0);
+  });
+
   it('should throw an error if there\'s wrong number of arguments', function() {
     assert.throws(function () {edivide(2,3,4); });
     assert.throws(function () {edivide(2); });

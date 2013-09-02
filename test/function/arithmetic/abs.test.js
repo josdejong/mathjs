@@ -3,6 +3,11 @@ var assert = require('assert');
 var math = require('../../../index.js');
 
 describe('abs', function () {
+  it('should return the abs value of a boolean', function () {
+    assert.equal(math.abs(true), 1);
+    assert.equal(math.abs(false), 0);
+  });
+
   it('should return the abs value of a number', function () {
     assert.equal(math.abs(-4.2), 4.2);
     assert.equal(math.abs(-3.5), 3.5);
@@ -10,7 +15,7 @@ describe('abs', function () {
     assert.equal(math.abs(0), 0);
   });
 
-  it('should return the modulus of a complex number', function () {
+  it('should return the absolute value of a complex number', function () {
     assert.equal(math.abs(math.complex(3, -4)), 5);
   });
 

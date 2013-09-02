@@ -9,6 +9,10 @@ var assert = require('assert'),
     log = math.log;
 
 describe('log', function() {
+  it('should return the log of a boolean value', function () {
+    assert.equal(log(true), 0);
+    assert.equal(log(false), -Infinity);
+  });
 
   it('should return the log of a number', function() {
     approx.deepEqual(log(-3), complex('1.098612288668110 + 3.141592653589793i'));

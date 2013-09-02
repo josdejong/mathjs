@@ -18,6 +18,22 @@ describe('smaller', function() {
     assert.equal(smaller(-3, -2), true);
   });
 
+  it('should compare two booleans', function() {
+    assert.equal(smaller(true, true), false);
+    assert.equal(smaller(true, false), false);
+    assert.equal(smaller(false, true), true);
+    assert.equal(smaller(false, false), false);
+  });
+
+  it('should compare mixed numbers and booleans', function() {
+    assert.equal(smaller(2, true), false);
+    assert.equal(smaller(1, true), false);
+    assert.equal(smaller(0, true), true);
+    assert.equal(smaller(true, 2), true);
+    assert.equal(smaller(true, 1), false);
+    assert.equal(smaller(false, 2), true);
+  });
+
   it('should compare two complex numbers correctly', function() {
     assert.equal(smaller(complex(1,1), complex(1,2)), true);
     assert.equal(smaller(complex(1,1), complex(1,1)), false);

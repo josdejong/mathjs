@@ -23,6 +23,20 @@ describe('epow', function() {
     approx.deepEqual(epow(-2,1.5), complex(0, -2.82842712474619));
   });
 
+  it('should elevate booleans to the given power', function() {
+    assert.equal(epow(true, true), 1);
+    assert.equal(epow(true, false), 1);
+    assert.equal(epow(false, true), 0);
+    assert.equal(epow(false, false), 1);
+  });
+
+  it('should add mixed numbers and booleans', function() {
+    assert.equal(epow(2, true), 2);
+    assert.equal(epow(2, false), 1);
+    assert.equal(epow(true, 2), 1);
+    assert.equal(epow(false, 2), 0);
+  });
+
   it('should throw an error if invalid number of arguments', function() {
     assert.throws(function () {epow(1)}, SyntaxError, 'Wrong number of arguments in function epow (1 provided, 2 expected)');
     assert.throws(function () {epow(1, 2, 3)}, SyntaxError, 'Wrong number of arguments in function epow (3 provided, 2 expected)');
