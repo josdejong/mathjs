@@ -19,6 +19,15 @@ describe('string', function() {
     assert.equal(string(' '), ' ');
   });
 
+  it('should convert the elements of an array to strings', function() {
+    assert.deepEqual(string([[2,true],['hi',null]]), [['2', 'true'],['hi', 'null']]);
+  });
+
+  it('should convert the elements of a matrix to strings', function() {
+    assert.deepEqual(string(math.matrix([[2,true],['hi',null]])),
+        new math.type.Matrix([['2', 'true'],['hi', 'null']]));
+  });
+
   it('should convert a number to string', function() {
     assert.equal(string(1/8), '0.125');
     assert.equal(string(2.1e-3), '0.0021');
@@ -32,12 +41,6 @@ describe('string', function() {
 
   it('should convert a unit to string', function() {
     assert.equal(string(math.unit('5cm')), '50 mm');
-  });
-
-  it('should convert a matrix/range/array to string', function() {
-    assert.equal(string([[1,2],[3,4]]), '[[1, 2], [3, 4]]');
-    assert.equal(string(math.matrix([[1,2],[3,4]])), '[[1, 2], [3, 4]]');
-    assert.equal(string(math.range(1,6)), '[1, 2, 3, 4, 5]');
   });
 
   it('should throw an error if called with wrong number of arguments', function() {

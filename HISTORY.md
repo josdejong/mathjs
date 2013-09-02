@@ -6,6 +6,8 @@ https://github.com/josdejong/mathjs
 
 - Implemented support for booleans in all relevant functions.
 - Implemented functions `map` and `forEach`. Thanks Sebastien Piquemal (sebpic).
+- All construction functions can be used to convert the type of variables,
+  also element-wise for all elements in an Array or Matrix.
 - Changed matrix indexes of the expression parser to one-based with the
   upper-bound included, similar to most math applications. Note that on a
   JavaScript level, math.js uses zero-based indexes with excluded upper-bound.

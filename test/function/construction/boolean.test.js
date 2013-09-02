@@ -17,6 +17,11 @@ describe('boolean', function() {
     assert.equal(bool(2), true);
   });
 
+  it('should convert the elements of a matrix or array to booleans', function() {
+    assert.deepEqual(bool(math.matrix([1,0,1,1])), new math.type.Matrix([true, false, true, true]));
+    assert.deepEqual(bool([1,0,1,1]), [true, false, true, true]);
+  });
+
   it('should return false for \'0\', true for any other valid number string', function() {
     assert.equal(bool('2'), true);
     assert.equal(bool(' 4e2 '), true);
@@ -41,12 +46,6 @@ describe('boolean', function() {
 
   it('should throw an error if used with a unit', function() {  
     assert.throws(function () {bool(math.unit('5cm'))}, SyntaxError);
-  });
-
-  it('should throw an error if used with a range, matrix or array', function() {
-    assert.throws(function () {bool(math.range(1,3))}, SyntaxError);
-    assert.throws(function () {bool(math.matrix([1,3]))}, SyntaxError);
-    assert.throws(function () {bool([1,3])}, SyntaxError);
   });
 
 });

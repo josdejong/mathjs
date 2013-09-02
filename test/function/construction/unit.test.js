@@ -20,6 +20,14 @@ describe('unit', function() {
     assert.deepEqual(b.toString(), '50 mm');
   });
 
+  it('should create units from all elements in an array', function() {
+    assert.deepEqual(math.unit(['5 cm', '3kg']), [math.unit('5cm'), math.unit('3kg')]);
+  });
+
+  it('should create units from all elements in an array', function() {
+    assert.deepEqual(math.unit(math.matrix(['5 cm', '3kg'])), math.matrix([math.unit('5cm'), math.unit('3kg')]));
+  });
+
   it('should throw an error if called with an invalid string', function() {
     assert.throws(function () {unit('invalid unit')}, SyntaxError);
   });

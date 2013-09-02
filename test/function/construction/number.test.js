@@ -14,7 +14,7 @@ describe('number', function() {
     approx.equal(number(false), 0);
   });
 
-  it('should be the identity if called with a number', function() {
+  it('should accept a number as argument', function() {
     approx.equal(number(3), 3);
     approx.equal(number(-3), -3);
   });
@@ -31,6 +31,14 @@ describe('number', function() {
     assert.throws(function () {number('23a')}, SyntaxError);
   });
 
+  it('should convert the elements of a matrix to numbers', function() {
+    assert.deepEqual(number(math.matrix(['123',true])), new math.type.Matrix([123, 1]));
+  });
+
+  it('should convert the elements of an array to numbers', function() {
+    assert.deepEqual(number(['123',true]), [123, 1]);
+  });
+
   it('should throw an error if called with a wrong number of arguments', function() {
     assert.throws(function () {number(1,2)}, SyntaxError);
     assert.throws(function () {number(1,2,3)}, SyntaxError);
@@ -42,18 +50,6 @@ describe('number', function() {
 
   it('should throw an error if called with a unit', function() {
     assert.throws(function () {number(math.unit('5cm'))}, SyntaxError);
-  });
-    
-  it('should throw an error if called with a range', function() {
-    assert.throws(function () {number(math.range(1,3))}, SyntaxError);
-  });
-
-  it('should throw an error if called with a matrix', function() {
-    assert.throws(function () {number(math.matrix([1,3]))}, SyntaxError);
-  });
-    
-  it('should throw an error if called with an array', function() {
-    assert.throws(function () {number([1,3])}, SyntaxError);
   });
 });
 

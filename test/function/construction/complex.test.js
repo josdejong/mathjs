@@ -15,25 +15,31 @@ describe('complex', function() {
     assert.ok(complex('2+3i') instanceof math.type.Complex);
   });
 
-  it('should be the identity if called with a complex number', function() {
+  it('should convert a real number into a complex value', function() {
+    assert.deepEqual(complex(123), new math.type.Complex(123, 0));
+  });
+
+  it('should clone a complex value', function() {
     var b = complex(complex(2,3));
     assert.deepEqual(b, new math.type.Complex(2,3));
+  });
+
+  it('should convert the elements of a matrix or array to complex values', function() {
+    var result = [
+      new math.type.Complex(2, 0),
+      new math.type.Complex(1, 0),
+      new math.type.Complex(2, 3)
+    ];
+    assert.deepEqual(complex(math.matrix([2, true, complex(2, 3)])), new math.type.Matrix(result));
+    assert.deepEqual(complex([2, true, complex(2, 3)]), result);
   });
 
   it('should throw an error if called with a string', function() {
     assert.throws(function () {complex('no valid complex number')}, SyntaxError);
   });
 
-  it('should throw an error if called with a single number', function() {
-    assert.throws(function () {complex(123)}, TypeError);
-  });
-
   it('should throw an error if called with a unit', function() {
     assert.throws(function () {complex(math.unit('5cm'))}, TypeError);
-  });
-
-  it('should throw an error if called with a matrix', function() {
-    assert.throws(function () {complex(math.matrix())}, TypeError);
   });
 
   it('should accept two numbers as arguments', function() {

@@ -14,14 +14,15 @@ describe('Complex', function () {
 
     it('should create a complex number correctly', function () {
       var complex1 = math.complex(3, -4);
-      assertComplex(complex1, 3, -4)
+      assertComplex(complex1, 3, -4);
+      assertComplex(complex1, 3, -4);
+      assertComplex(math.complex(2), 2, 0);
     });
 
     it('should throw an error if called with wrong arguments', function() {
       assert.throws(function () { math.complex(3, -4, 5); });
       assert.throws(function () { math.complex(1, 2, 3); });
       assert.throws(function () { math.complex(1, true); });
-      assert.throws(function () { math.complex(2); });
     });
 
   });
