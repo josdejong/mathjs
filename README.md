@@ -24,10 +24,10 @@ Powerful and easy to use.
 
 Math.js can be installed using npm, bower, or by just downloading the library.
 
-WARNING: math.js is in early stage and the API is not yet stabilized.
+*WARNING: math.js is in early stage and the API is not yet stabilized.
 Please be careful when upgrading to a newer version.
 An overview of the changes is available
-[here](https://github.com/josdejong/mathjs/blob/master/HISTORY.md).
+[here](https://github.com/josdejong/mathjs/blob/master/HISTORY.md).*
 
 ### npm
 Math.js can be installed using [npm](https://npmjs.org/):
