@@ -109,10 +109,10 @@ The latest version of math.js can be downloaded below:
     </tr>
 </table>
 
-Math.js is in early stage and the API is not yet stabilized.
+*Math.js is in early stage and the API is not yet stabilized.
 Please be careful when upgrading to a newer version.
 An overview of the changes is available
-[here](https://github.com/josdejong/mathjs/blob/master/HISTORY.md).
+[here](https://github.com/josdejong/mathjs/blob/master/HISTORY.md).*
 
 
 # Documentation and source code
