@@ -530,6 +530,12 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 - math.string(x)
 - math.unit(x)
 
+### Expression
+
+- math.eval(expr [, scope])
+- math.help(text)
+- math.parse(expr [, scope])
+
 ### Matrix
 
 - math.concat(a, b, c, ... [, dim])
@@ -578,12 +584,11 @@ types (Number, Complex, Unit, String, and Array) where applicable.
 ### Utils
 
 - math.clone(x)
-- math.eval(expr [, scope])
+- math.forEach(x, callback)
 - math.format([template, ] values)
-- math.help(text)
 - math.import(filename | object, override)
+- math.map(x, callback)
 - math.select([x])
-- math.parse(expr [, scope])
 - math.typeof(x)
 
 

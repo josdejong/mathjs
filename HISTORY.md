@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## 2013-08-22, version 0.13.0
+## 2013-09-03, version 0.13.0
 
 - Implemented support for booleans in all relevant functions.
 - Implemented functions `map` and `forEach`. Thanks Sebastien Piquemal (sebpic).

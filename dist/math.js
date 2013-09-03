@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.12.2-SNAPSHOT
- * @date    2013-08-31
+ * @version 0.13.0
+ * @date    2013-09-03
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -1577,7 +1577,8 @@ module.exports = {
     'boolean(1)',
     'boolean(3)',
     'boolean("true")',
-    'boolean("false")'
+    'boolean("false")',
+    'boolean([1, 0, 1, 1])'
   ],
   'seealso': [
     'complex', 'index', 'matrix', 'number', 'string', 'unit'
@@ -1672,7 +1673,8 @@ module.exports = {
     '4.05',
     'number(2)',
     'number("7.2")',
-    'number(true)'
+    'number(true)',
+    'number([true, false, true, true])'
   ],
   'seealso': [
     'boolean', 'complex', 'index', 'matrix', 'string', 'unit'
@@ -1954,8 +1956,8 @@ module.exports = {
     'subset(value, [index], replacement)'
   ],
   'description': 'Get or set a subset of a matrix or string. ' +
-      'Indexes are zero-based. ' +
-      'The lower bound of ranges is included, and the upper bound is excluded.',
+      'Indexes are one-based. ' +
+      'Both the ranges lower-bound and upper-bound are included.',
   'examples': [
     'd = [1, 2; 3, 4]',
     'e = []',
@@ -3712,7 +3714,7 @@ module.exports = function (math) {
       Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -3723,7 +3725,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.abs = function abs(x) {
@@ -3731,7 +3733,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('abs', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return Math.abs(x);
     }
 
@@ -3761,7 +3763,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isString = util.string.isString,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
@@ -3775,8 +3777,8 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param  {Number | Complex | Unit | String | Array | Matrix} x
-   * @param  {Number | Complex | Unit | String | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} y
    * @return {Number | Complex | Unit | String | Array | Matrix} res
    */
   math.add = function add(x, y) {
@@ -3784,8 +3786,8 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('add', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         // number + number
         return x + y;
       }
@@ -3798,7 +3800,7 @@ module.exports = function (math) {
       }
     }
     else if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         // complex + number
         return new Complex(
             x.re + y,
@@ -3858,7 +3860,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isCollection =collection.isCollection,
       isComplex = Complex.isComplex;
 
@@ -3869,7 +3871,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.ceil = function ceil(x) {
@@ -3877,7 +3879,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('ceil', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return Math.ceil(x);
     }
 
@@ -3908,7 +3910,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -3920,7 +3922,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.cube = function cube(x) {
@@ -3928,7 +3930,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('cube', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return x * x * x;
     }
 
@@ -3958,7 +3960,7 @@ module.exports = function(math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
       isCollection = collection.isCollection;
@@ -3969,8 +3971,8 @@ module.exports = function(math) {
    *     x / y
    *     divide(x, y)
    *
-   * @param  {Number | Complex | Unit | Array | Matrix} x
-   * @param  {Number | Complex} y
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} x
+   * @param  {Number | Boolean | Complex} y
    * @return {Number | Complex | Unit | Array | Matrix} res
    */
   math.divide = function divide(x, y) {
@@ -3978,8 +3980,8 @@ module.exports = function(math) {
       throw new util.error.ArgumentsError('divide', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         // number / number
         return x / y;
       }
@@ -3990,7 +3992,7 @@ module.exports = function(math) {
     }
 
     if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         // complex / number
         return _divideComplex(x, new Complex(y, 0));
       }
@@ -4001,7 +4003,7 @@ module.exports = function(math) {
     }
 
     if (isUnit(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         var res = x.clone();
         res.value /= y;
         return res;
@@ -4071,8 +4073,8 @@ module.exports = function (math) {
    *     x ./ y
    *     edivide(x, y)
    *
-   * @param  {Number | Complex | Unit | Array | Matrix} x
-   * @param  {Number | Complex | Unit | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} y
    * @return {Number | Complex | Unit | Array | Matrix} res
    */
   math.edivide = function edivide(x, y) {
@@ -4095,8 +4097,8 @@ module.exports = function (math) {
    *     x .* y
    *     emultiply(x, y)
    *
-   * @param  {Number | Complex | Unit | Array | Matrix} x
-   * @param  {Number | Complex | Unit | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} y
    * @return {Number | Complex | Unit | Array | Matrix} res
    */
   math.emultiply = function emultiply(x, y) {
@@ -4119,8 +4121,8 @@ module.exports = function (math) {
    *     x .^ y
    *     epow(x, y)
    *
-   * @param  {Number | Complex | Unit | Array | Matrix} x
-   * @param  {Number | Complex | Unit | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} y
    * @return {Number | Complex | Unit | Array | Matrix} res
    */
   math.epow = function epow(x, y) {
@@ -4140,7 +4142,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isString = util.string.isString,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
@@ -4155,8 +4157,8 @@ module.exports = function (math) {
    * For matrices, the function is evaluated element wise.
    * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
    *
-   * @param  {Number | Complex | Unit | String | Array | Matrix} x
-   * @param  {Number | Complex | Unit | String | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} y
    * @return {Boolean | Array | Matrix} res
    */
   math.equal = function equal(x, y) {
@@ -4164,8 +4166,8 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('equal', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         return x == y;
       }
       else if (isComplex(y)) {
@@ -4173,7 +4175,7 @@ module.exports = function (math) {
       }
     }
     if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         return (x.re == y) && (x.im == 0);
       }
       else if (isComplex(y)) {
@@ -4213,7 +4215,7 @@ module.exports = function (math) {
       Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -4224,7 +4226,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.exp = function exp (x) {
@@ -4232,7 +4234,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('exp', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return Math.exp(x);
     }
     if (isComplex(x)) {
@@ -4263,7 +4265,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -4274,7 +4276,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.fix = function fix(x) {
@@ -4282,7 +4284,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('fix', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return (x > 0) ? Math.floor(x) : Math.ceil(x);
     }
 
@@ -4313,7 +4315,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -4324,7 +4326,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.floor = function floor(x) {
@@ -4332,7 +4334,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('floor', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return Math.floor(x);
     }
 
@@ -4362,7 +4364,7 @@ module.exports = function (math) {
 
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isInteger = util.number.isInteger,
       isCollection = collection.isCollection;
 
@@ -4374,28 +4376,28 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {... Number | Array | Matrix} args    two or more integer numbers
+   * @param {... Number | Boolean | Array | Matrix} args    two or more integer numbers
    * @return {Number | Array | Matrix} greatest common divisor
    */
   math.gcd = function gcd(args) {
     var a = arguments[0],
         b = arguments[1],
-        t;
+        r; // remainder
 
     if (arguments.length == 2) {
       // two arguments
-      if (isNumber(a) && isNumber(b)) {
+      if (isNumBool(a) && isNumBool(b)) {
         if (!isInteger(a) || !isInteger(b)) {
           throw new Error('Parameters in function gcd must be integer numbers');
         }
 
         // http://en.wikipedia.org/wiki/Euclidean_algorithm
         while (b != 0) {
-          t = b;
-          b = a % t;
-          a = t;
+          r = a % b;
+          a = b;
+          b = r;
         }
-        return Math.abs(a);
+        return (a < 0) ? -a : a;
       }
 
       // evaluate gcd element wise
@@ -4432,7 +4434,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isString = util.string.isString,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
@@ -4447,8 +4449,8 @@ module.exports = function (math) {
    * For matrices, the function is evaluated element wise.
    * In case of complex numbers, the absolute values of a and b are compared.
    *
-   * @param  {Number | Complex | Unit | String | Array | Matrix} x
-   * @param  {Number | Complex | Unit | String | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} y
    * @return {Boolean | Array | Matrix} res
    */
   math.larger = function larger(x, y) {
@@ -4456,8 +4458,8 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('larger', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         return x > y;
       }
       else if (isComplex(y)) {
@@ -4465,7 +4467,7 @@ module.exports = function (math) {
       }
     }
     if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         return math.abs(x) > y;
       }
       else if (isComplex(y)) {
@@ -4505,7 +4507,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isString = util.string.isString,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
@@ -4520,8 +4522,8 @@ module.exports = function (math) {
    * For matrices, the function is evaluated element wise.
    * In case of complex numbers, the absolute values of a and b are compared.
    *
-   * @param  {Number | Complex | Unit | String | Array | Matrix} x
-   * @param  {Number | Complex | Unit | String | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} y
    * @return {Boolean | Array | Matrix} res
    */
   math.largereq = function largereq(x, y) {
@@ -4529,8 +4531,8 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('largereq', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         return x >= y;
       }
       else if (isComplex(y)) {
@@ -4538,7 +4540,7 @@ module.exports = function (math) {
       }
     }
     if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         return math.abs(x) >= y;
       }
       else if (isComplex(y)) {
@@ -4576,7 +4578,7 @@ module.exports = function (math) {
 
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isInteger = util.number.isInteger,
       isCollection = collection.isCollection;
 
@@ -4591,7 +4593,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {... Number | Array | Matrix} args    two or more integer numbers
+   * @param {... Number | Boolean | Array | Matrix} args    two or more integer numbers
    * @return {Number | Array | Matrix} least common multiple
    */
   math.lcm = function lcm(args) {
@@ -4601,9 +4603,13 @@ module.exports = function (math) {
 
     if (arguments.length == 2) {
       // two arguments
-      if (isNumber(a) && isNumber(b)) {
+      if (isNumBool(a) && isNumBool(b)) {
         if (!isInteger(a) || !isInteger(b)) {
           throw new Error('Parameters in function lcm must be integer numbers');
+        }
+
+        if (a == 0 || b == 0) {
+          return 0;
         }
 
         // http://en.wikipedia.org/wiki/Euclidean_algorithm
@@ -4650,7 +4656,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -4663,14 +4669,14 @@ module.exports = function (math) {
    * base is optional. If not provided, the natural logarithm of x is calculated.
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
-   * @param {Number | Complex} [base]
+   * @param {Number | Boolean | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex} [base]
    * @return {Number | Complex | Array | Matrix} res
    */
   math.log = function log(x, base) {
     if (arguments.length == 1) {
       // calculate natural logarithm, log(x)
-      if (isNumber(x)) {
+      if (isNumBool(x)) {
         if (x >= 0) {
           return Math.log(x);
         }
@@ -4715,7 +4721,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -4726,7 +4732,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.log10 = function log10(x) {
@@ -4734,7 +4740,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('log10', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       if (x >= 0) {
         return Math.log(x) / Math.LN10;
       }
@@ -4771,6 +4777,7 @@ module.exports = function (math) {
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
+      isBoolean = util.boolean.isBoolean,
       isCollection = collection.isCollection;
 
   /**
@@ -4781,8 +4788,8 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param  {Number | Array | Matrix} x
-   * @param  {Number | Array | Matrix} y
+   * @param  {Number | Boolean | Array | Matrix} x
+   * @param  {Number | Boolean | Array | Matrix} y
    * @return {Number | Array | Matrix} res
    */
   math.mod = function mod(x, y) {
@@ -4792,9 +4799,25 @@ module.exports = function (math) {
 
     // see http://functions.wolfram.com/IntegerFunctions/Mod/
 
-    if (isNumber(x) && isNumber(y)) {
-      // number % number
-      return _mod(x, y);
+    if (isNumber(x)) {
+      if (isNumber(y)) {
+        // number % number
+        return _mod(x, y);
+      }
+      else if (isBoolean(y)) {
+        // number % boolean
+        return _mod(x, Number(y));
+      }
+    }
+    else if (isBoolean(x)) {
+      if (isNumber(y)) {
+        // boolean % number
+        return _mod(Number(x), y);
+      }
+      else if (isBoolean(y)) {
+        // boolean % boolean
+        return _mod(Number(x), Number(y));
+      }
     }
 
     // TODO: implement mod for complex values
@@ -4850,7 +4873,7 @@ module.exports = function(math) {
       collection = require('../../type/collection.js'),
 
       array = util.array,
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isArray = Array.isArray,
       isUnit = Unit.isUnit;
@@ -4861,8 +4884,8 @@ module.exports = function(math) {
    *     x * y
    *     multiply(x, y)
    *
-   * @param  {Number | Complex | Unit | Array | Matrix} x
-   * @param  {Number | Complex | Unit | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} y
    * @return {Number | Complex | Unit | Array | Matrix} res
    */
   math.multiply = function multiply(x, y) {
@@ -4870,8 +4893,8 @@ module.exports = function(math) {
       throw new util.error.ArgumentsError('multiply', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         // number * number
         return x * y;
       }
@@ -4886,7 +4909,7 @@ module.exports = function(math) {
       }
     }
     else if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         // complex * number
         return _multiplyComplex (x, new Complex(y, 0));
       }
@@ -4896,7 +4919,7 @@ module.exports = function(math) {
       }
     }
     else if (isUnit(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         res = x.clone();
         res.value *= y;
         return res;
@@ -5060,7 +5083,7 @@ module.exports = function (math) {
       Matrix = require('../../type/Matrix.js'),
 
       array = util.array,
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isArray = Array.isArray,
       isInteger = util.number.isInteger,
       isComplex = Complex.isComplex;
@@ -5071,8 +5094,8 @@ module.exports = function (math) {
    *     x ^ y
    *     pow(x, y)
    *
-   * @param  {Number | Complex | Array | Matrix} x
-   * @param  {Number | Complex} y
+   * @param  {Number | Boolean | Complex | Array | Matrix} x
+   * @param  {Number | Boolean | Complex} y
    * @return {Number | Complex | Array | Matrix} res
    */
   math.pow = function pow(x, y) {
@@ -5080,8 +5103,8 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('pow', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         if (isInteger(y) || x >= 0) {
           // real value computation
           return Math.pow(x, y);
@@ -5095,7 +5118,7 @@ module.exports = function (math) {
       }
     }
     else if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         return powComplex(x, new Complex(y, 0));
       }
       else if (isComplex(y)) {
@@ -5103,7 +5126,7 @@ module.exports = function (math) {
       }
     }
     else if (isArray(x)) {
-      if (!isNumber(y) || !isInteger(y) || y < 0) {
+      if (!isNumBool(y) || !isInteger(y) || y < 0) {
         throw new TypeError('For A^b, b must be a positive integer ' +
             '(value is ' + y + ')');
       }
@@ -5167,6 +5190,8 @@ module.exports = function (math) {
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
+      isInteger = util.number.isInteger,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -5178,8 +5203,8 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
-   * @param {Number | Array} [n] number of decimals (by default n=0)
+   * @param {Number | Boolean | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Array} [n] number of decimals (by default n=0)
    * @return {Number | Complex | Array | Matrix} res
    */
   math.round = function round(x, n) {
@@ -5189,7 +5214,7 @@ module.exports = function (math) {
 
     if (n == undefined) {
       // round (x)
-      if (isNumber(x)) {
+      if (isNumBool(x)) {
         return Math.round(x);
       }
 
@@ -5213,17 +5238,14 @@ module.exports = function (math) {
     }
     else {
       // round (x, n)
-      if (!isNumber(n)) {
+      if (!isNumber(n) || !isInteger(n)) {
         throw new TypeError('Number of decimals in function round must be an integer');
-      }
-      if (n !== Math.round(n)) {
-        throw new TypeError('Number of decimals in function round must be integer');
       }
       if (n < 0 || n > 9) {
         throw new Error ('Number of decimals in function round must be in te range of 0-9');
       }
 
-      if (isNumber(x)) {
+      if (isNumBool(x)) {
         return roundNumber(x, n);
       }
 
@@ -5273,7 +5295,7 @@ module.exports = function (math) {
       collection = require('../../type/collection.js'),
 
       number = util.number,
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -5285,7 +5307,7 @@ module.exports = function (math) {
    * The sign of a value x is 1 when x > 1, -1 when x < 0, and 0 when x == 0
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.sign = function sign(x) {
@@ -5293,7 +5315,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('sign', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return number.sign(x);
     }
 
@@ -5323,7 +5345,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isString = util.string.isString,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
@@ -5338,8 +5360,8 @@ module.exports = function (math) {
    * For matrices, the function is evaluated element wise.
    * In case of complex numbers, the absolute values of a and b are compared.
    *
-   * @param  {Number | Complex | Unit | String | Array | Matrix} x
-   * @param  {Number | Complex | Unit | String | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} y
    * @return {Boolean | Array | Matrix} res
    */
   math.smaller = function smaller(x, y) {
@@ -5347,8 +5369,8 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('smaller', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         return x < y;
       }
       else if (isComplex(y)) {
@@ -5356,7 +5378,7 @@ module.exports = function (math) {
       }
     }
     if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         return math.abs(x) < y;
       }
       else if (isComplex(y)) {
@@ -5396,7 +5418,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isString = util.string.isString,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
@@ -5411,8 +5433,8 @@ module.exports = function (math) {
    * For matrices, the function is evaluated element wise.
    * In case of complex numbers, the absolute values of a and b are compared.
    *
-   * @param  {Number | Complex | Unit | String | Array | Matrix} x
-   * @param  {Number | Complex | Unit | String | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} y
    * @return {Boolean | Array | Matrix} res
    */
   math.smallereq = function smallereq(x, y) {
@@ -5420,8 +5442,8 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('smallereq', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         return x <= y;
       }
       else if (isComplex(y)) {
@@ -5429,7 +5451,7 @@ module.exports = function (math) {
       }
     }
     if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         return math.abs(x) <= y;
       }
       else if (isComplex(y)) {
@@ -5468,7 +5490,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -5479,7 +5501,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.sqrt = function sqrt (x) {
@@ -5487,7 +5509,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('sqrt', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       if (x >= 0) {
         return Math.sqrt(x);
       }
@@ -5532,7 +5554,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -5544,7 +5566,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.square = function square(x) {
@@ -5552,7 +5574,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('square', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return x * x;
     }
 
@@ -5582,7 +5604,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isString = util.string.isString,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
@@ -5596,8 +5618,8 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param  {Number | Complex | Unit | Array | Matrix} x
-   * @param  {Number | Complex | Unit | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} y
    * @return {Number | Complex | Unit | Array | Matrix} res
    */
   math.subtract = function subtract(x, y) {
@@ -5605,8 +5627,8 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('subtract', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         // number - number
         return x - y;
       }
@@ -5619,7 +5641,7 @@ module.exports = function (math) {
       }
     }
     else if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         // complex - number
         return new Complex (
             x.re - y,
@@ -5677,7 +5699,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
       isCollection = collection.isCollection;
@@ -5690,7 +5712,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param  {Number | Complex | Unit | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | Array | Matrix} x
    * @return {Number | Complex | Unit | Array | Matrix} res
    */
   math.unary = function unary(x) {
@@ -5698,7 +5720,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('unary', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return -x;
     }
     else if (isComplex(x)) {
@@ -5734,7 +5756,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isString = util.string.isString,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
@@ -5743,8 +5765,8 @@ module.exports = function (math) {
   /**
    * Check if value x unequals y, x != y
    * In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im
-   * @param  {Number | Complex | Unit | String | Array | Matrix} x
-   * @param  {Number | Complex | Unit | String | Array | Matrix} y
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} x
+   * @param  {Number | Boolean | Complex | Unit | String | Array | Matrix} y
    * @return {Boolean | Array | Matrix} res
    */
   math.unequal = function unequal(x, y) {
@@ -5752,8 +5774,8 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('unequal', arguments.length, 2);
     }
 
-    if (isNumber(x)) {
-      if (isNumber(y)) {
+    if (isNumBool(x)) {
+      if (isNumBool(y)) {
         return x != y;
       }
       else if (isComplex(y)) {
@@ -5762,7 +5784,7 @@ module.exports = function (math) {
     }
 
     if (isComplex(x)) {
-      if (isNumber(y)) {
+      if (isNumBool(y)) {
         return (x.re != y) || (x.im != 0);
       }
       else if (isComplex(y)) {
@@ -5798,7 +5820,7 @@ module.exports = function (math) {
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isInteger = util.number.isInteger;
 
   /**
@@ -5806,31 +5828,22 @@ module.exports = function (math) {
    *
    *     xgcd(a, b)
    *
-   * @param {Number} a       An integer number
-   * @param {Number} b       An integer number
-   * @return {Array}         An array containing 3 integers [div, m, n]
-   *                         where div = gcd(a, b) and a*m + b*n = div
+   * @param {Number | Boolean} a  An integer number
+   * @param {Number | Boolean} b  An integer number
+   * @return {Array}              An array containing 3 integers [div, m, n]
+   *                              where div = gcd(a, b) and a*m + b*n = div
    *
    * @see http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
    */
   math.xgcd = function xgcd(a, b) {
     if (arguments.length == 2) {
       // two arguments
-      if (isNumber(a) && isNumber(b)) {
+      if (isNumBool(a) && isNumBool(b)) {
         if (!isInteger(a) || !isInteger(b)) {
           throw new Error('Parameters in function xgcd must be integer numbers');
         }
 
-        if(b == 0) {
-          return [a, 1, 0];
-        }
-
-        var tmp = xgcd(b, a % b),
-            div = tmp[0],
-            x = tmp[1],
-            y = tmp[2];
-
-        return [div, y, x - y * Math.floor(a / b)];
+        return _xgcd(a, b);
       }
 
       throw new util.error.UnsupportedTypeError('xgcd', a, b);
@@ -5839,6 +5852,45 @@ module.exports = function (math) {
     // zero or one argument
     throw new SyntaxError('Function xgcd expects two arguments');
   };
+
+  /**
+   * Calculate xgcd for two numbers
+   * @param {Number} a
+   * @param {Number} b
+   * @private
+   */
+  function _xgcd(a, b) {
+    //*
+    // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+    var t, // used to swap two variables
+        q, // quotient
+        r, // remainder
+        x = 0, lastx = 1,
+        y = 1, lasty = 0;
+
+    while (b) {
+      q = Math.floor(a / b);
+      r = a % b;
+
+      t = x;
+      x = lastx - q * x;
+      lastx = t;
+
+      t = y;
+      y = lasty - q * y;
+      lasty = t;
+
+      a = b;
+      b = r;
+    }
+
+    if (a < 0) {
+      return [-a, a ? -lastx : 0, -lasty];
+    }
+    else {
+      return [a, a ? lastx : 0, lasty];
+    }
+  }
 };
 
 },{"../../util/index.js":205}],145:[function(require,module,exports){
@@ -5848,7 +5900,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isCollection =collection.isCollection,
       isComplex = Complex.isComplex;
 
@@ -5860,7 +5912,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Complex | Array | Matrix | Boolean} x
    * @return {Number | Array | Matrix} res
    */
   math.arg = function arg(x) {
@@ -5868,7 +5920,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('arg', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return Math.atan2(0, x);
     }
 
@@ -5898,7 +5950,7 @@ module.exports = function (math) {
       collection = require('../../type/collection.js'),
 
       object = util.object,
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isCollection =collection.isCollection,
       isComplex = Complex.isComplex;
 
@@ -5910,7 +5962,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Complex | Array | Matrix | Boolean} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.conj = function conj(x) {
@@ -5918,7 +5970,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('conj', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return x;
     }
 
@@ -5947,7 +5999,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isCollection =collection.isCollection,
       isComplex = Complex.isComplex;
 
@@ -5958,7 +6010,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Complex | Array | Matrix | Boolean} x
    * @return {Number | Array | Matrix} im
    */
   math.im = function im(x) {
@@ -5966,7 +6018,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('im', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return 0;
     }
 
@@ -5996,7 +6048,7 @@ module.exports = function (math) {
       collection = require('../../type/collection.js'),
 
       object = util.object,
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isCollection =collection.isCollection,
       isComplex = Complex.isComplex;
 
@@ -6007,7 +6059,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Complex | Array | Matrix | Boolean} x
    * @return {Number | Array | Matrix} re
    */
   math.re = function re(x) {
@@ -6015,7 +6067,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('re', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return x;
     }
 
@@ -6041,6 +6093,9 @@ module.exports = function (math) {
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
+      collection = require('../../type/collection.js'),
+
+      isCollection = collection.isCollection,
       isNumber = util.number.isNumber,
       isString = util.string.isString;
 
@@ -6049,8 +6104,8 @@ module.exports = function (math) {
    * In case of a number, true is returned for non-zero numbers, and false in
    * case of zero.
    * Strings can be 'true' or 'false', or can contain a number.
-   * @param {String | Number | Boolean} value
-   * @return {Boolean} bool
+   * @param {String | Number | Boolean | Array | Matrix} value
+   * @return {Boolean | Array | Matrix} bool
    */
   math['boolean'] = function bool (value) {
     if (arguments.length != 1) {
@@ -6060,13 +6115,20 @@ module.exports = function (math) {
     if (value === 'true' || value === true) {
       return true;
     }
-    else if (value === 'false' || value === false) {
+
+    if (value === 'false' || value === false) {
       return false;
     }
-    else if (isNumber(value)) {
+
+    if (value instanceof Boolean) {
+      return value ? true : false;
+    }
+
+    if (isNumber(value)) {
       return (value !== 0);
     }
-    else if (isString(value)) {
+
+    if (isString(value)) {
       // try case insensitive
       var lcase = value.toLowerCase();
       if (lcase === 'true') {
@@ -6076,36 +6138,48 @@ module.exports = function (math) {
         return false;
       }
 
-      // try whether a number
+      // test whether value is a valid number
       var num = Number(value);
       if (value != '' && !isNaN(num)) {
         return (num !== 0);
       }
     }
 
+    if (isCollection(value)) {
+      return collection.map(value, bool);
+    }
+
     throw new SyntaxError(value.toString() + ' is no valid boolean');
   };
 };
 
-},{"../../util/index.js":205}],150:[function(require,module,exports){
+},{"../../type/collection.js":201,"../../util/index.js":205}],150:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
       Complex = require('../../type/Complex.js'),
+      collection = require('../../type/collection.js'),
 
+      isCollection = collection.isCollection,
+      isNumber = util.number.isNumber,
+      isBoolean = util.boolean.isBoolean,
       isString = util.string.isString,
       isComplex = Complex.isComplex;
 
   /**
-   * Create a complex value. Depending on the passed arguments, the function
-   * will create and return a new math.type.Complex object.
+   * Create a complex value or convert a value to a complex value.
    *
    * The method accepts the following arguments:
    *     complex()                           creates a complex value with zero
    *                                         as real and imaginary part.
    *     complex(re : number, im : string)   creates a complex value with provided
    *                                         values for real and imaginary part.
+   *     complex(re : number)                creates a complex value with provided
+   *                                         real value and zero imaginary part.
    *     complex(arg : string)               parses a string into a complex value.
+   *     complex(array : Array)              converts the elements of the array
+   *                                         or matrix element wise into a
+   *                                         complex value.
    *
    * Example usage:
    *     var a = math.complex(3, -4);     // 3 - 4i
@@ -6115,8 +6189,8 @@ module.exports = function (math) {
    *     var c = math.complex();          // 0 + 0i
    *     var d = math.add(a, b);          // 5 + 2i
    *
-   * @param {*} [args]
-   * @return {Complex} value
+   * @param {* | Array | Matrix} [args]
+   * @return {Complex | Array | Matrix} value
    */
   math.complex = function complex(args) {
     switch (arguments.length) {
@@ -6128,11 +6202,17 @@ module.exports = function (math) {
       case 1:
         // parse string into a complex number
         var arg = arguments[0];
+
+        if (isNumber(arg)) {
+          return new Complex(arg, 0);
+        }
+
         if (isComplex(arg)) {
           // create a clone
           return arg.clone();
         }
-        else if (isString(arg)) {
+
+        if (isString(arg)) {
           var c = Complex.parse(arg);
           if (c) {
             return c;
@@ -6141,10 +6221,17 @@ module.exports = function (math) {
             throw new SyntaxError('String "' + arg + '" is no valid complex number');
           }
         }
-        else {
-          throw new TypeError(
-              'Two numbers or a single string expected in function complex');
+
+        if (isCollection(arg)) {
+          return collection.map(arg, complex);
         }
+
+        if (isBoolean(arg)) {
+          return new Complex(Number(arg), 0);
+        }
+
+        throw new TypeError(
+            'Two numbers or a single string expected in function complex');
         break;
 
       case 2:
@@ -6158,7 +6245,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Complex.js":195,"../../util/index.js":205}],151:[function(require,module,exports){
+},{"../../type/Complex.js":195,"../../type/collection.js":201,"../../util/index.js":205}],151:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6223,18 +6310,26 @@ module.exports = function (math) {
 
 },{"../../type/Matrix.js":198,"../../util/index.js":205}],153:[function(require,module,exports){
 module.exports = function (math) {
-  var util = require('../../util/index.js');
+  var util = require('../../util/index.js'),
+      collection = require('../../type/collection.js'),
+
+      isCollection = collection.isCollection;
 
   /**
    * Create a number or convert a string to a number
-   * @param {String | Number | Boolean} [value]
-   * @return {Number} num
+   * @param {String | Number | Boolean | Array | Matrix} [value]
+   * @return {Number | Array | Matrix} num
    */
   math.number = function number (value) {
     switch (arguments.length) {
       case 0:
         return 0;
+
       case 1:
+        if (isCollection(value)) {
+          return collection.map(value, number);
+        }
+
         var num = Number(value);
         if (isNaN(num)) {
           num = Number(value.valueOf());
@@ -6249,7 +6344,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../util/index.js":205}],154:[function(require,module,exports){
+},{"../../type/collection.js":201,"../../util/index.js":205}],154:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -6307,9 +6402,10 @@ module.exports = function (math) {
       isCollection = collection.isCollection;
 
   /**
-   * Create a string or convert any object into a string
-   * @param {*} [value]
-   * @return {String} str
+   * Create a string or convert any object into a string.
+   * Elements of Arrays and Matrices are processed element wise
+   * @param {* | Array | Matrix} [value]
+   * @return {String | Array | Matrix} str
    */
   math.string = function string (value) {
     switch (arguments.length) {
@@ -6317,41 +6413,24 @@ module.exports = function (math) {
         return '';
 
       case 1:
-        return _toString(value);
+        if (isNumber(value)) {
+          return number.format(value);
+        }
+
+        if (isCollection(value)) {
+          return collection.map(value, string);
+        }
+
+        if (value === null) {
+          return 'null';
+        }
+
+        return value.toString();
 
       default:
         throw new util.error.ArgumentsError('string', arguments.length, 0, 1);
     }
   };
-
-  /**
-   * Recursive toString function
-   * @param {*} value  Value can be anything: number, string, array, Matrix, ...
-   * @returns {String} str
-   * @private
-   */
-  function _toString(value) {
-    if (isCollection(value)) {
-      var array = value.valueOf();
-
-      var str = '[';
-      var len = array.length;
-      for (var i = 0; i < len; i++) {
-        if (i != 0) {
-          str += ', ';
-        }
-        str += _toString(array[i]);
-      }
-      str += ']';
-      return str;
-    }
-    else if (isNumber(value)) {
-      return number.format(value);
-    }
-    else {
-      return value.toString();
-    }
-  }
 };
 
 },{"../../type/collection.js":201,"../../util/index.js":205}],156:[function(require,module,exports){
@@ -6359,7 +6438,9 @@ module.exports = function (math) {
   var util = require('../../util/index.js'),
 
       Unit = require('../../type/Unit.js'),
+      collection = require('../../type/collection.js'),
 
+      isCollection = collection.isCollection,
       isString = util.string.isString;
 
   /**
@@ -6375,19 +6456,21 @@ module.exports = function (math) {
    *     var b = math.unit('23 kg');          // 23 kg
    *     var c = math.in(a, math.unit('m');   // 0.05 m
    *
-   * @param {*} args
-   * @return {Unit} value
+   * @param {* | Array | Matrix} args
+   * @return {Unit | Array | Matrix} value
    */
   math.unit = function unit(args) {
     switch(arguments.length) {
       case 1:
         // parse a string
         var arg = arguments[0];
+
         if (arg instanceof Unit) {
           // create a clone of the unit
           return arg.clone();
         }
-        else if (isString(arg)) {
+
+        if (isString(arg)) {
           if (Unit.isPlainUnit(arg)) {
             return new Unit(null, arg); // a pure unit
           }
@@ -6399,9 +6482,12 @@ module.exports = function (math) {
 
           throw new SyntaxError('String "' + arg + '" is no valid unit');
         }
-        else {
-          throw new TypeError('A string or a number and string expected in function unit');
+
+        if (isCollection(args)) {
+          return collection.map(args, unit);
         }
+
+        throw new TypeError('A string or a number and string expected in function unit');
         break;
 
       case 2:
@@ -6415,7 +6501,7 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Unit.js":200,"../../util/index.js":205}],157:[function(require,module,exports){
+},{"../../type/Unit.js":200,"../../type/collection.js":201,"../../util/index.js":205}],157:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8659,6 +8745,7 @@ module.exports = function (math) {
 
       array = util.array,
       isNumber = util.number.isNumber,
+      isBoolean = util.boolean.isBoolean,
       isString = util.string.isString,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit;
@@ -8676,7 +8763,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('size', arguments.length, 1);
     }
 
-    if (isNumber(x) || isComplex(x) || isUnit(x) || x == null) {
+    if (isNumber(x) || isComplex(x) || isUnit(x) || isBoolean(x) || x == null) {
       return [];
     }
 
@@ -9028,6 +9115,7 @@ module.exports = function (math) {
       collection = require('../../type/collection.js'),
 
       isNumber = util.number.isNumber,
+      isBoolean = util.boolean.isBoolean,
       isInteger = util.number.isInteger,
       isCollection = collection.isCollection;
 
@@ -9066,6 +9154,10 @@ module.exports = function (math) {
       }
 
       return res;
+    }
+
+    if (isBoolean(x)) {
+      return 1; // factorial(1) = 1, factorial(0) = 1
     }
 
     if (isCollection(x)) {
@@ -9474,7 +9566,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -9485,7 +9577,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    *
    * @see http://mathworld.wolfram.com/InverseCosine.html
@@ -9495,7 +9587,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('acos', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       if (x >= -1 && x <= 1) {
         return Math.acos(x);
       }
@@ -9561,7 +9653,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -9572,7 +9664,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    *
    * @see http://mathworld.wolfram.com/InverseSine.html
@@ -9582,7 +9674,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('asin', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       if (x >= -1 && x <= 1) {
         return Math.asin(x);
       }
@@ -9645,7 +9737,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -9656,7 +9748,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    *
    * @see http://mathworld.wolfram.com/InverseTangent.html
@@ -9666,7 +9758,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('atan', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return Math.atan(x);
     }
 
@@ -9716,7 +9808,7 @@ module.exports = function (math) {
       Complex = require('../../type/Complex.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isCollection = collection.isCollection;
 
@@ -9727,8 +9819,8 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Array | Matrix} y
-   * @param {Number | Complex | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Array | Matrix} y
+   * @param {Number | Boolean | Complex | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    *
    * @see http://mathworld.wolfram.com/InverseTangent.html
@@ -9738,8 +9830,8 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('atan2', arguments.length, 2);
     }
 
-    if (isNumber(y)) {
-      if (isNumber(x)) {
+    if (isNumBool(y)) {
+      if (isNumBool(x)) {
         return Math.atan2(y, x);
       }
       /* TODO: support for complex computation of atan2
@@ -9749,7 +9841,7 @@ module.exports = function (math) {
        */
     }
     else if (isComplex(y)) {
-      if (isNumber(x)) {
+      if (isNumBool(x)) {
         return Math.atan2(y.re, x);
       }
       /* TODO: support for complex computation of atan2
@@ -9780,7 +9872,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
       isCollection = collection.isCollection;
@@ -9792,7 +9884,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Unit | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    *
    * @see http://mathworld.wolfram.com/Cosine.html
@@ -9802,7 +9894,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('cos', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return Math.cos(x);
     }
 
@@ -9842,7 +9934,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
       isCollection = collection.isCollection;
@@ -9854,7 +9946,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Unit | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.cot = function cot(x) {
@@ -9862,7 +9954,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('cot', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return 1 / Math.tan(x);
     }
 
@@ -9904,7 +9996,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
       isCollection = collection.isCollection;
@@ -9916,7 +10008,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Unit | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.csc = function csc(x) {
@@ -9924,7 +10016,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('csc', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return 1 / Math.sin(x);
     }
 
@@ -9967,7 +10059,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
       isCollection = collection.isCollection;
@@ -9979,7 +10071,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Unit | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    */
   math.sec = function sec(x) {
@@ -9987,7 +10079,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('sec', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return 1 / Math.cos(x);
     }
 
@@ -10029,7 +10121,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
       isCollection = collection.isCollection;
@@ -10041,7 +10133,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Unit | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    *
    * @see http://mathworld.wolfram.com/Sine.html
@@ -10051,7 +10143,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('sin', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return Math.sin(x);
     }
 
@@ -10090,7 +10182,7 @@ module.exports = function (math) {
       Unit = require('../../type/Unit.js'),
       collection = require('../../type/collection.js'),
 
-      isNumber = util.number.isNumber,
+      isNumBool = util.number.isNumBool,
       isComplex = Complex.isComplex,
       isUnit = Unit.isUnit,
       isCollection = collection.isCollection;
@@ -10102,7 +10194,7 @@ module.exports = function (math) {
    *
    * For matrices, the function is evaluated element wise.
    *
-   * @param {Number | Complex | Unit | Array | Matrix} x
+   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
    * @return {Number | Complex | Array | Matrix} res
    *
    * @see http://mathworld.wolfram.com/Tangent.html
@@ -10112,7 +10204,7 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('tan', arguments.length, 1);
     }
 
-    if (isNumber(x)) {
+    if (isNumBool(x)) {
       return Math.tan(x);
     }
 
@@ -10277,9 +10369,9 @@ module.exports = function (math) {
    *     math.format(2/7);                // '0.28571'
    *     math.format(new Complex(2, 3));  // '2 + 3i'
    *     math.format('Hello $name! The date is $date', {
- *         name: 'user',
- *         date: new Date().toISOString().substring(0, 10)
- *     });                              // 'hello user! The date is 2013-03-23'
+   *         name: 'user',
+   *         date: new Date().toISOString().substring(0, 10)
+   *     });                              // 'hello user! The date is 2013-03-23'
    *
    * @param {String} template
    * @param {Object} values
@@ -13465,12 +13557,24 @@ exports.isNumber = function isNumber(value) {
 };
 
 /**
+ * Test whether value is a Number or a Boolean
+ * @param {*} value
+ * @return {Boolean} isNumberOrBoolean
+ */
+exports.isNumBool = function isNumBool(value) {
+  var type = typeof value;
+  return (type === 'number') || (type === 'boolean') ||
+      (value instanceof Number) || (value instanceof Boolean);
+};
+
+/**
  * Check if a number is integer
- * @param {Number} value
+ * @param {Number | Boolean} value
  * @return {Boolean} isInteger
  */
 exports.isInteger = function isInteger(value) {
   return (value == Math.round(value));
+  // Note: we use ==, not ===, as we can have Booleans as well
 };
 
 /**
