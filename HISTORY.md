@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.13.1
+
+- Fixed non working operator `mod` (modulus operator).
+
+
 ## 2013-09-03, version 0.13.0
 
 - Implemented support for booleans in all relevant functions.
