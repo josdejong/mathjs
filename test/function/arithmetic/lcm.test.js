@@ -13,15 +13,25 @@ describe('lcm', function() {
     assert.equal(lcm(21, 6), 42);
     assert.equal(lcm(3, -4, 24), 24);
 
+    assert.throws(function () {lcm(1); }, SyntaxError, 'Wrong number of arguments in function lcm (3 provided, 1-2 expected)');
+  });
+
+  it ('should calculate lcm for edge cases around zero', function () {
     assert.equal(lcm(3, 0), 0);
+    assert.equal(lcm(-3, 0), 0);
     assert.equal(lcm(0, 3), 0);
+    assert.equal(lcm(0, -3), 0);
+    assert.equal(lcm(0, 0), 0);
 
     assert.equal(lcm(1, 1), 1);
     assert.equal(lcm(1, 0), 0);
+    assert.equal(lcm(1, -1), 1);
+    assert.equal(lcm(-1, 1), 1);
+    assert.equal(lcm(-1, 0), 0);
+    assert.equal(lcm(-1, -1), 1);
     assert.equal(lcm(0, 1), 0);
+    assert.equal(lcm(0, -1), 0);
     assert.equal(lcm(0, 0), 0);
-
-    assert.throws(function () {lcm(1); }, SyntaxError, 'Wrong number of arguments in function lcm (3 provided, 1-2 expected)');
   });
 
   it('should find the lowest common multiple of booleans', function() {

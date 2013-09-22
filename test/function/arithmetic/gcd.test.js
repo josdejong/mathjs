@@ -11,20 +11,37 @@ describe('gcd', function() {
     assert.equal(gcd(-12, 8), 4);
     assert.equal(gcd(12, -8), 4);
     assert.equal(gcd(15, 3), 3);
+    assert.equal(gcd(25, 15, -10, 30), 5);
+  });
+
+  it ('should calculate gcd for edge cases around zero', function () {
     assert.equal(gcd(3, 0), 3);
     assert.equal(gcd(-3, 0), 3);
     assert.equal(gcd(0, 3), 3);
     assert.equal(gcd(0, -3), 3);
     assert.equal(gcd(0, 0), 0);
-    assert.equal(gcd(25, 15, -10, 30), 5);
 
     assert.equal(gcd(1, 1), 1);
-    assert.equal(gcd(-1, -1), 1);
     assert.equal(gcd(1, 0), 1);
+    assert.equal(gcd(1, -1), 1);
+    assert.equal(gcd(-1, 1), 1);
     assert.equal(gcd(-1, 0), 1);
+    assert.equal(gcd(-1, -1), 1);
     assert.equal(gcd(0, 1), 1);
     assert.equal(gcd(0, -1), 1);
     assert.equal(gcd(0, 0), 0);
+  });
+
+  it ('should calculate gcd for edge cases with negative values', function () {
+    assert.deepEqual(1, gcd(2, 5));
+    assert.deepEqual(1, gcd(2, -5));
+    assert.deepEqual(1, gcd(-2, 5));
+    assert.deepEqual(1, gcd(-2, -5));
+
+    assert.deepEqual(2, gcd(2, 6));
+    assert.deepEqual(2, gcd(2, -6));
+    assert.deepEqual(2, gcd(-2, 6));
+    assert.deepEqual(2, gcd(-2, -6));
   });
 
   it('should find the greatest common divisor of booleans', function() {

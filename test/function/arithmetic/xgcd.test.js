@@ -17,20 +17,35 @@ describe('xgcd', function() {
     assert.deepEqual([21, -16, 27], xgcd(1239, 735));
     assert.deepEqual([21, 5, -2], xgcd(105, 252));
     assert.deepEqual([21, -2, 5], xgcd(252, 105));
+  });
 
+  it ('should calculate xgcd for edge cases around zero', function () {
     assert.deepEqual([3, 1, 0], xgcd(3, 0));
     assert.deepEqual([3, -1, 0], xgcd(-3, 0));
     assert.deepEqual([3, 0, 1], xgcd(0, 3));
     assert.deepEqual([3, 0, -1], xgcd(0, -3));
 
-    // test some edge cases around 0 and 1
     assert.deepEqual([1, 0, 1], xgcd(1, 1));
-    assert.deepEqual([1, 0, -1], xgcd(-1, -1));
     assert.deepEqual([1, 1, 0], xgcd(1, 0));
+    assert.deepEqual([1, 0, -1], xgcd(1, -1));
+    assert.deepEqual([1, 0, 1], xgcd(-1, 1));
     assert.deepEqual([1, -1, 0], xgcd(-1, 0));
+    assert.deepEqual([1, 0, -1], xgcd(-1, -1));
     assert.deepEqual([1, 0, 1], xgcd(0, 1));
     assert.deepEqual([1, 0, -1], xgcd(0, -1));
     assert.deepEqual([0, 0, 0], xgcd(0, 0));
+  });
+
+  it.skip ('should calculate xgcd for edge cases with negative values', function () {
+    assert.deepEqual([1, -2, 1], xgcd(2, 5));
+    assert.deepEqual([1, -2, -1], xgcd(2, -5));
+    assert.deepEqual([1, 2, 1], xgcd(-2, 5));
+    assert.deepEqual([1, 2, -1], xgcd(-2, -5));
+
+    assert.deepEqual([2, 1, 0], xgcd(2, 6));
+    assert.deepEqual([2, 1, 0], xgcd(2, -6));
+    assert.deepEqual([2, -1, 0], xgcd(-2, 6));
+    assert.deepEqual([2, -1, 0], xgcd(-2, -6));
   });
 
   it('should find the greatest common divisor of booleans', function() {
