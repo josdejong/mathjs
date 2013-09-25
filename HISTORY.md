@@ -2,8 +2,14 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.13.1
+## not yet released, version 0.14.0
 
+- Removed concatenation of nested arrays in the expression parser.
+  You can now input nested arrays like in JavaScript. Matrices can be
+  concatenated using the function `concat`.
+- The matrix syntax `[...]` in the expression parser now creates 1 dimensional
+  matrices by default. `math.eval('[1,2,3,4]')` returns a matrix with size `[4]`,
+  `math.eval('[1,2;3,4]')` returns a matrix with size `[2,2]`.
 - Fixed non working operator `mod` (modulus operator).
 
 

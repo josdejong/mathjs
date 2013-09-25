@@ -1,6 +1,4 @@
-# Overview
-
-The documentation of math.js contains the following pages:
+# Math.js Documentation
 
 - [Getting Started](getting_started.md)
 - [Constants](constants.md)

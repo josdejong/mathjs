@@ -155,7 +155,12 @@ describe('parse', function() {
       assert.deepEqual(b.size(), [2,2]);
       assert.deepEqual(b, new Matrix([[5,6],[1,1]]));
 
+      // from 1 to n dimensions
       assert.deepEqual(parseAndEval('[ ]'), new Matrix([]));
+      assert.deepEqual(parseAndEval('[1,2,3]'), new Matrix([1,2,3]));
+      assert.deepEqual(parseAndEval('[1;2;3]'), new Matrix([[1],[2],[3]]));
+      assert.deepEqual(parseAndEval('[[1,2],[3,4]]'), new Matrix([[1,2],[3,4]]));
+      assert.deepEqual(parseAndEval('[[[1],[2]],[[3],[4]]]'), new Matrix([[[1],[2]],[[3],[4]]]));
     });
 
 
@@ -189,15 +194,15 @@ describe('parse', function() {
 
       assert.deepEqual(parseAndEval('a = []', scope),    new Matrix([]));
       assert.deepEqual(parseAndEval('a(1,3) = 3', scope), new Matrix([[0,0,3]]));
-      assert.deepEqual(parseAndEval('a(2,:) = [4,5,6]', scope), new Matrix([[0,0,3],[4,5,6]]));
+      assert.deepEqual(parseAndEval('a(2,:) = [[4,5,6]]', scope), new Matrix([[0,0,3],[4,5,6]]));
 
       assert.deepEqual(parseAndEval('a = []', scope),    new Matrix([]));
       assert.deepEqual(parseAndEval('a(3,1) = 3', scope), new Matrix([[0],[0],[3]]));
       assert.deepEqual(parseAndEval('a(:,2) = [4;5;6]', scope), new Matrix([[0,4],[0,5],[3,6]]));
 
       assert.deepEqual(parseAndEval('a = []', scope),    new Matrix([]));
-      assert.deepEqual(parseAndEval('a(1,1:3) = [1,2,3]', scope), new Matrix([[1,2,3]]));
-      assert.deepEqual(parseAndEval('a(2,:) = [4,5,6]', scope), new Matrix([[1,2,3],[4,5,6]]));
+      assert.deepEqual(parseAndEval('a(1,1:3) = [[1,2,3]]', scope), new Matrix([[1,2,3]]));
+      assert.deepEqual(parseAndEval('a(2,:) = [[4,5,6]]', scope), new Matrix([[1,2,3],[4,5,6]]));
     });
 
     it('should get/set the matrix correctly', function() {
@@ -260,29 +265,33 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('a(2:end-1, 2:end-1)', scope), new Matrix([[2,0],[9,9]]));
     });
 
+    it('should merge nested matrices', function() {
+      var scope = {};
+      parseAndEval('a=[1,2;3,4]', scope);
+
+    });
+
     it('should parse matrix concatenations', function() {
       var scope = {};
       parseAndEval('a=[1,2;3,4]', scope);
       parseAndEval('b=[5,6;7,8]', scope);
-      assert.deepEqual(parseAndEval('c=[a,b]', scope), new Matrix([[1,2,5,6],[3,4,7,8]]));
-      assert.deepEqual(parseAndEval('c=[a;b]', scope), new Matrix([[1,2],[3,4],[5,6],[7,8]]));
-      assert.deepEqual(parseAndEval('c=[a,b;b,a]', scope), new Matrix([[1,2,5,6],[3,4,7,8],[5,6,1,2],[7,8,3,4]]));
-      assert.deepEqual(parseAndEval('c=[[1,2]; [3,4]]', scope), new Matrix([[1,2],[3,4]]));
-      assert.deepEqual(parseAndEval('c=[1; [2;3]]', scope), new Matrix([[1],[2],[3]]));
+      assert.deepEqual(parseAndEval('c=concat(a,b)', scope), new Matrix([[1,2,5,6],[3,4,7,8]]));
+      assert.deepEqual(parseAndEval('c=concat(a,b,0)', scope), new Matrix([[1,2],[3,4],[5,6],[7,8]]));
+      assert.deepEqual(parseAndEval('c=concat(concat(a,b), concat(b,a), 0)', scope), new Matrix([[1,2,5,6],[3,4,7,8],[5,6,1,2],[7,8,3,4]]));
+      assert.deepEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 0)', scope), new Matrix([[1,2],[3,4]]));
+      assert.deepEqual(parseAndEval('c=concat([[1]], [2;3], 0)', scope), new Matrix([[1],[2],[3]]));
       assert.deepEqual(parseAndEval('d=1:3', scope), [1,2,3]);
-      assert.deepEqual(parseAndEval('[d,d]', scope), new Matrix([[1,2,3,1,2,3]]));
-      assert.deepEqual(parseAndEval('[d;d]', scope), new Matrix([[1,2,3],[1,2,3]]));
+      assert.deepEqual(parseAndEval('concat(d,d)', scope), [1,2,3,1,2,3]);
       assert.deepEqual(parseAndEval('e=1+d', scope), [2,3,4]);  // e is an Array
       assert.deepEqual(parseAndEval('size(e)', scope), [3]);
-      assert.deepEqual(parseAndEval('[e,e]', scope), new Matrix([[2,3,4,2,3,4]]));
-      assert.deepEqual(parseAndEval('[e;e]', scope), new Matrix([[2,3,4],[2,3,4]]));
-      assert.deepEqual(parseAndEval('[[],[]]', scope), new Matrix([[]]));
-      assert.deepEqual(parseAndEval('[[],[]]', scope).size(), [1, 0]);
+      assert.deepEqual(parseAndEval('concat(e,e)', scope), [2,3,4,2,3,4]);
+      assert.deepEqual(parseAndEval('[[],[]]', scope), new Matrix([[],[]]));
+      assert.deepEqual(parseAndEval('[[],[]]', scope).size(), [2, 0]);
     });
 
     it('should throw an error for invalid matrix concatenations', function() {
       var scope = {};
-      assert.throws(function () {parseAndEval('c=[a; [1,2,3] ]', scope)});
+      assert.throws(function () {parseAndEval('c=concat(a, [1,2,3])', scope)});
     });
   });
 
@@ -332,7 +341,7 @@ describe('parse', function() {
       assert.equal(scope.c, 4.5);
       assert.equal(scope.d, 4.5);
       assert.equal(scope.e, 4.5);
-      assert.deepEqual(parseAndEval('a = [1,2,f=3]', scope), new Matrix([[1,2,3]]));
+      assert.deepEqual(parseAndEval('a = [1,2,f=3]', scope), new Matrix([1,2,3]));
       assert.equal(scope.f, 3);
       assert.equal(parseAndEval('2 + (g = 3 + 4)', scope), 9);
       assert.equal(scope.g, 7);
@@ -425,7 +434,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('4 ./ 2'), 2);
       assert.equal(parseAndEval('8 ./ 2 / 2'), 2);
 
-      assert.deepEqual(parseAndEval('[1,2,3] ./ [1,2,3]'), new Matrix([[1,1,1]]));
+      assert.deepEqual(parseAndEval('[1,2,3] ./ [1,2,3]'), new Matrix([1,1,1]));
     });
 
     it('should parse .*', function() {
@@ -436,7 +445,7 @@ describe('parse', function() {
       approx.deepEqual(parseAndEval('8 .* 2 .* 2'), 32);
       assert.deepEqual(parseAndEval('a=3; a.*4'), [12]);
 
-      assert.deepEqual(parseAndEval('[1,2,3] .* [1,2,3]'), new Matrix([[1,4,9]]));
+      assert.deepEqual(parseAndEval('[1,2,3] .* [1,2,3]'), new Matrix([1,4,9]));
     });
 
     it('should parse .^', function() {
@@ -446,7 +455,7 @@ describe('parse', function() {
       approx.deepEqual(parseAndEval('-2.^2'), -4);  // -(2^2)
       approx.deepEqual(parseAndEval('2.^3.^4'), 2.41785163922926e+24); // 2^(3^4)
 
-      assert.deepEqual(parseAndEval('[2,3] .^ [2,3]'), new Matrix([[4,27]]));
+      assert.deepEqual(parseAndEval('[2,3] .^ [2,3]'), new Matrix([4,27]));
     });
 
     it('should parse ==', function() {
@@ -640,7 +649,7 @@ describe('parse', function() {
     it('should correctly stringify a node tree', function() {
       assert.equal(math.parse('0').toString(), 'ans = 0');
       assert.equal(math.parse('"hello"').toString(), 'ans = "hello"');
-      assert.equal(math.parse('[1, 2 + 3i, 4]').toString(), 'ans = [[1, 2 + 3i, 4]]');
+      assert.equal(math.parse('[1, 2 + 3i, 4]').toString(), 'ans = [1, 2 + 3i, 4]');
     });
 
     it('should support custom node handlers', function() {
