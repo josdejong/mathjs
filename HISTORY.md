@@ -4,6 +4,10 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.14.0
 
+*WARNING: version 0.14 is incompatible with previous versions.*
+
+- Getting a subset of a matrix will automatically squeeze the resulting subset,
+  setting a subset of a matrix will automatically unsqueeze the given subset.
 - Removed concatenation of nested arrays in the expression parser.
   You can now input nested arrays like in JavaScript. Matrices can be
   concatenated using the function `concat`.

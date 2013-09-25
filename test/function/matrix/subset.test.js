@@ -49,6 +49,8 @@ describe('subset', function() {
   var d = [[1,2], [3,4]];
   var g  = matrix([[1,2], [3,4]]);
 
+  // TODO: test getting subset of an array and matrix
+
   it('should set the right subset of an array', function() {
     assert.deepEqual(d, [[1,2], [3,4]]);
     assert.deepEqual(subset(d, index([0,2], 1), [[-2],[-4]]), [[1,-2], [3,-4]]);

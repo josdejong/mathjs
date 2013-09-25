@@ -135,8 +135,8 @@ print(parser.eval('f(2, 3)'));                  // 8
 console.log('\nmanipulate matrices');
 print(parser.eval('k = [1, 2; 3, 4]'));         // [[1, 2], [3, 4]]
 print(parser.eval('l = zeros(2, 2)'));          // [[0, 0], [0, 0]]
-print(parser.eval('l(1, 1:2) = [[5, 6]]'));     // [[5, 6], [0, 0]]
-print(parser.eval('l(2, :) = [[7, 8]]'));       // [[5, 6], [7, 8]]
+print(parser.eval('l(1, 1:2) = [5, 6]'));       // [[5, 6], [0, 0]]
+print(parser.eval('l(2, :) = [7, 8]'));         // [[5, 6], [7, 8]]
 print(parser.eval('m = k * l'));                // [[19, 22], [43, 50]]
 print(parser.eval('n = m(2, 1)'));              // 43
 print(parser.eval('n = m(:, 1)'));              // [[19], [43]]
