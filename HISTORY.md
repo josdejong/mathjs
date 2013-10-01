@@ -6,6 +6,9 @@ https://github.com/josdejong/mathjs
 
 *WARNING: version 0.14 is incompatible with previous versions.*
 
+- Introduced an option `math.options.matrix.default` which can have values
+  `matrix` (default) or `array`. This option is used by the functions `eye`,
+  `ones`, `range`, and `zeros`, to determine the type of matrix output.
 - Getting a subset of a matrix will automatically squeeze the resulting subset,
   setting a subset of a matrix will automatically unsqueeze the given subset.
 - Removed concatenation of nested arrays in the expression parser.

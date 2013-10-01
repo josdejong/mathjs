@@ -51,7 +51,6 @@ describe('mod', function() {
   it('should perform element-wise modulus on a matrix', function() {
     approx.deepEqual(mod([-4,-3,-2,-1,0,1,2,3,4], 3), [2,0,1,2,0,1,2,0,1]);
     approx.deepEqual(mod(matrix([-4,-3,-2,-1,0,1,2,3,4]), 3), matrix([2,0,1,2,0,1,2,0,1]));
-    approx.deepEqual(mod(range(-4,5), 3), [2,0,1,2,0,1,2,0,1]);
   });
 
 });

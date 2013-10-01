@@ -73,7 +73,7 @@ describe('emultiply', function() {
   it('should perform element-wise matrix multiplication', function() {
     approx.deepEqual(emultiply(a, b), matrix([[5,12],[21,32]]));
     approx.deepEqual(emultiply([[1,2],[3,4]], [[5,6],[7,8]]), [[5,12],[21,32]]);
-    approx.deepEqual(emultiply(range(1, 5), 2), [2, 4, 6, 8]);
+    approx.deepEqual(emultiply([1,2,3,4], 2), [2, 4, 6, 8]);
   });
 
   it('should throw an error if matrices are of different sizes', function() {

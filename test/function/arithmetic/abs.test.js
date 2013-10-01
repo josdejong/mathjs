@@ -24,10 +24,10 @@ describe('abs', function () {
     assert.ok(a1 instanceof math.type.Matrix);
     assert.deepEqual(a1.size(), [3]);
     assert.deepEqual(a1.valueOf(), [1,2,3]);
-    a1 = math.abs(math.range(-2,3));
-    assert.ok(Array.isArray(a1));
-    assert.deepEqual(a1.length, 5);
-    assert.deepEqual(a1, [2,1,0,1,2])
+    a1 = math.abs(math.matrix([-2,-1,0,1,2]));
+    assert.ok(a1 instanceof math.type.Matrix);
+    assert.deepEqual(a1.size(), [5]);
+    assert.deepEqual(a1.valueOf(), [2,1,0,1,2])
   });
 
   it('should throw an error with a measurment unit', function () {

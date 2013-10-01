@@ -41,7 +41,6 @@ describe('cube', function() {
     // array, matrix, range
     // arrays are evaluated element wise
     assert.deepEqual(cube([2,3,4,5]), [8,27,64,125]);
-    assert.deepEqual(cube(range(2,6)), [8,27,64,125]);
     assert.deepEqual(cube(matrix([2,3,4,5])), matrix([8,27,64,125]));
     assert.deepEqual(cube(matrix([[1,2],[3,4]])), matrix([[1,8],[27,64]]));
   });

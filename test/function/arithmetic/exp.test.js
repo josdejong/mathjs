@@ -64,7 +64,6 @@ describe('exp', function() {
   it('should exponentiate matrices, arrays and ranges correctly', function() {
     var res = [1, 2.71828182845905, 7.38905609893065, 20.0855369231877];
     approx.deepEqual(exp([0,1,2,3]), res);
-    approx.deepEqual(exp(range('0:4')), res);
     approx.deepEqual(exp(matrix([0,1,2,3])), matrix(res));
     approx.deepEqual(exp(matrix([[0,1],[2,3]])),
         matrix([[1, 2.71828182845905], [7.38905609893065, 20.0855369231877]]));

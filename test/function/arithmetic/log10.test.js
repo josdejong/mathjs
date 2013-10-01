@@ -57,7 +57,6 @@ describe('log10', function() {
   it('should return the log base 10 of each element of a matrix', function() {
     var res = [0, 0.301029995663981, 0.477121254719662, 0.602059991327962];
     approx.deepEqual(log10([1,2,3,4]), res);
-    approx.deepEqual(log10(range('1:5')), res);
     approx.deepEqual(log10(matrix([1,2,3,4])), matrix(res));
     approx.deepEqual(math.divide(log10(matrix([1,2,3,4])), math.LOG10E),
         matrix([0, 0.693147180559945, 1.098612288668110, 1.386294361119891]));

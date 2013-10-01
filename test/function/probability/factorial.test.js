@@ -18,8 +18,12 @@ describe('factorial', function() {
     assert.equal(factorial(false), 1);
   });
 
+  it('should calculate the factorial of each element in a matrix', function() {
+    assert.deepEqual(factorial(math.matrix([0,1,2,3,4,5])), math.matrix([1,1,2,6,24,120]));
+  });
+
   it('should calculate the factorial of each element in an array', function() {
-    assert.deepEqual(factorial(math.range(0,6)), [1,1,2,6,24,120]);
+    assert.deepEqual(factorial([0,1,2,3,4,5]), [1,1,2,6,24,120]);
   });
 
   it('should throw an error if called with negative number', function() {

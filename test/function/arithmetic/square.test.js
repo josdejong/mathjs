@@ -39,7 +39,6 @@ describe('square', function() {
 
   it('should return the square of each element in a matrix', function() {
     assert.deepEqual(square([2,3,4,5]), [4,9,16,25]);
-    assert.deepEqual(square(range(2,6)), [4,9,16,25]);
     assert.deepEqual(square(matrix([2,3,4,5])), matrix([4,9,16,25]));
     assert.deepEqual(square(matrix([[1,2],[3,4]])), matrix([[1,4],[9,16]]));
   });

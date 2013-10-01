@@ -50,7 +50,6 @@ describe('fix', function() {
     // matrix, array, range
     approx.deepEqual(fix([1.2, 3.4, 5.6, 7.8, 10.0]), [1, 3, 5, 7, 10]);
     approx.deepEqual(fix(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([1, 3, 5, 7, 10]));
-    approx.deepEqual(fix(range(1.2, 11, 2.2)), [1, 3, 5, 7, 10]);
   });
 
 });

@@ -1,28 +1,39 @@
 var assert = require('assert'),
     math = require('../../../index.js'),
-    range = math.range;
+    range = math.range,
+    matrix = math.matrix;
 
 describe('range', function() {
 
   it('should parse a valid string correctly', function() {
-    assert.deepEqual(range('1:6'), [1,2,3,4,5]);
-    assert.deepEqual(range('0:2:10'), [0,2,4,6,8]);
-    assert.deepEqual(range('5:-1:0'), [5,4,3,2,1]);
-    assert.deepEqual(range('2:-2:-3'), [2,0,-2]);
+    assert.deepEqual(range('1:6'), matrix([1,2,3,4,5]));
+    assert.deepEqual(range('0:2:10'), matrix([0,2,4,6,8]));
+    assert.deepEqual(range('5:-1:0'), matrix([5,4,3,2,1]));
+    assert.deepEqual(range('2:-2:-3'), matrix([2,0,-2]));
   });
 
   it('should create a range start:1:end if called with 2 numbers', function() {
-    assert.deepEqual(range(3,6), [3,4,5]);
-    assert.deepEqual(range(1,6), [1,2,3,4,5]);
-    assert.deepEqual(range(1,6.1), [1,2,3,4,5,6]);
-    assert.deepEqual(range(1,5.9), [1,2,3,4,5]);
-    assert.deepEqual(range(6,1), []);
+    assert.deepEqual(range(3,6), matrix([3,4,5]));
+    assert.deepEqual(range(1,6), matrix([1,2,3,4,5]));
+    assert.deepEqual(range(1,6.1), matrix([1,2,3,4,5,6]));
+    assert.deepEqual(range(1,5.9), matrix([1,2,3,4,5]));
+    assert.deepEqual(range(6,1), matrix([]));
   });
 
   it('should create a range start:step:end if called with 3 numbers', function() {
+    assert.deepEqual(range(0,10,2), matrix([0,2,4,6,8]));
+    assert.deepEqual(range(5,0,-1), matrix([5,4,3,2,1]));
+    assert.deepEqual(range(2,-4,-2), matrix([2,0,-2]));
+  });
+
+  it('should output an array when math.options.matrix.default==="array"', function() {
+    var old = math.options.matrix.default;
+    math.options.matrix.default = 'array';
+
     assert.deepEqual(range(0,10,2), [0,2,4,6,8]);
     assert.deepEqual(range(5,0,-1), [5,4,3,2,1]);
-    assert.deepEqual(range(2,-4,-2), [2,0,-2]);
+
+    math.options.matrix.default = old;
   });
 
   it('should throw an error if called with an invalid string', function() {

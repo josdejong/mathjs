@@ -1,6 +1,7 @@
 // test size
-var assert = require('assert');
-var math = require('../../../index.js');
+var assert = require('assert'),
+    math = require('../../../index.js'),
+    matrix = math.matrix;
 
 describe('size', function() {
 
@@ -20,13 +21,13 @@ describe('size', function() {
   });
 
   it('should calculate the size of a matrix', function() {
-    assert.deepEqual(math.size(math.matrix()), math.matrix([0]));
-    assert.deepEqual(math.size(math.matrix([[1,2,3], [4,5,6]])), math.matrix([2,3]));
-    assert.deepEqual(math.size(math.matrix([[], []])), math.matrix([2,0]));
+    assert.deepEqual(math.size(matrix()), matrix([0]));
+    assert.deepEqual(math.size(matrix([[1,2,3], [4,5,6]])), matrix([2,3]));
+    assert.deepEqual(math.size(matrix([[], []])), matrix([2,0]));
   });
 
   it('should calculate the size of a range', function() {
-    assert.deepEqual(math.size(math.range(2,6)), [4]);
+    assert.deepEqual(math.size(math.range(2,6)), matrix([4]));
   });
 
   it('should calculate the size of a scalar', function() {

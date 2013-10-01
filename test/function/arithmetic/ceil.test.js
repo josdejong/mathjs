@@ -49,7 +49,6 @@ describe('ceil', function() {
   it('should ceil each element in a matrix, array or range', function() {
     approx.deepEqual(ceil([1.2, 3.4, 5.6, 7.8, 10.0]), [2, 4, 6, 8, 10]);
     approx.deepEqual(ceil(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([2, 4, 6, 8, 10]));
-    approx.deepEqual(ceil(range(1.2, 11, 2.2)), [2, 4, 6, 8, 10]);
   });
 
 });

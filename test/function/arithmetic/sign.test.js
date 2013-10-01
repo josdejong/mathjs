@@ -26,10 +26,12 @@ describe('sign', function() {
     assert.throws(function () { math.sign("hello world"); });
   });
 
+  it('should return a matrix of the signs of each elements in the given array', function() {
+    assert.deepEqual(math.sign([-2,-1,0,1,2]), [-1,-1,0,1,1]);
+  });
+
   it('should return a matrix of the signs of each elements in the given matrix', function() {
-    assert.deepEqual(math.sign(math.range(-2,3)), [-1,-1,0,1,1]);
-    assert.deepEqual(math.sign(math.matrix(math.range(-2,3))).valueOf(), [-1,-1,0,1,1]);
-    assert.deepEqual(math.sign([-2, -1, 0, 1, 2]), [-1,-1,0,1,1]);
+    assert.deepEqual(math.sign(math.matrix([-2,-1,0,1,2])), math.matrix([-1,-1,0,1,1]));
   });
 
 });

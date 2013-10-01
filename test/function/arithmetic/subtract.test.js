@@ -51,7 +51,7 @@ describe('subtract', function() {
     assert.throws(function () {
       subtract(math.unit(5, 'km'), math.unit(100, 'gram'));
     });
-  })
+  });
 
   it('should throw an error when used with a string', function() {
     assert.throws(function () {subtract('hello ', 'world'); });
@@ -60,13 +60,12 @@ describe('subtract', function() {
   });
 
   it('should perform element-wise subtraction of two matrices', function() {
-    a2 = math.matrix([[1,2],[3,4]]);
-    a3 = math.matrix([[5,6],[7,8]]);
+    var a2 = math.matrix([[1,2],[3,4]]);
+    var a3 = math.matrix([[5,6],[7,8]]);
     var a6 = subtract(a2, a3);
     assert.ok(a6 instanceof math.type.Matrix);
     assert.deepEqual(a6.size(), [2,2]);
     assert.deepEqual(a6.valueOf(), [[-4,-4],[-4,-4]]);
-    assert.deepEqual(subtract(math.range(1,6), 2), math.range(-1,4).valueOf());
   });
 
 });

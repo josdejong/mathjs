@@ -1,7 +1,8 @@
 // test zeros
 var assert = require('assert');
 var math = require('../../../index.js'),
-    zeros = math.zeros;
+    zeros = math.zeros,
+    matrix = math.matrix;
 
 describe('zeros', function() {
 
@@ -11,27 +12,28 @@ describe('zeros', function() {
   });
 
   it('should create a vector with zeros', function () {
-    assert.deepEqual(zeros(3), [0,0,0]);
+    assert.deepEqual(zeros(3), matrix([0,0,0]));
+    assert.deepEqual(zeros(matrix([4])), matrix([0,0,0,0]));
     assert.deepEqual(zeros([4]), [0,0,0,0]);
-    assert.deepEqual(zeros(0), []);
+    assert.deepEqual(zeros(0), matrix([]));
   });
 
   it('should create a 2D matrix with zeros from an array', function () {
-    assert.deepEqual(zeros(2,3), [[0,0,0],[0,0,0]]);
-    assert.deepEqual(zeros(3,2), [[0,0],[0,0],[0,0]]);
+    assert.deepEqual(zeros(2,3), matrix([[0,0,0],[0,0,0]]));
+    assert.deepEqual(zeros(3,2), matrix([[0,0],[0,0],[0,0]]));
     assert.deepEqual(zeros([3,2]), [[0,0],[0,0],[0,0]]);
   });
 
   it('should create a matrix with zeros from a matrix', function () {
-    assert.deepEqual(zeros(math.matrix([3])), math.matrix([0,0,0]));
-    assert.deepEqual(zeros(math.matrix([3,2])), math.matrix([[0,0],[0,0],[0,0]]));
+    assert.deepEqual(zeros(matrix([3])), matrix([0,0,0]));
+    assert.deepEqual(zeros(matrix([3,2])), matrix([[0,0],[0,0],[0,0]]));
 
     // TODO: do we want to support the following? maybe better not
-    assert.deepEqual(zeros(math.matrix([[[3]],[[2]]])), math.matrix([[0,0],[0,0],[0,0]]));
+    assert.deepEqual(zeros(matrix([[[3]],[[2]]])), matrix([[0,0],[0,0],[0,0]]));
   });
 
   it('should create a 3D matrix with zeros', function () {
-    assert.deepEqual(zeros(2,3,4), [
+    var res = [
       [
         [0,0,0,0],
         [0,0,0,0],
@@ -42,23 +44,17 @@ describe('zeros', function() {
         [0,0,0,0],
         [0,0,0,0]
       ]
-    ]);
-    assert.deepEqual(zeros([2,3,4]), [
-      [
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0]
-      ],
-      [
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0]
-      ]
-    ]);
+    ];
+
+    assert.deepEqual(zeros(2,3,4), matrix(res));
+    assert.deepEqual(zeros(matrix([2,3,4])), matrix(res));
+    assert.deepEqual(zeros([2,3,4]), res);
   });
 
+  // TODO: test option math.options.matrix.default
+
   it('should create a matrix with zeros with the same size as original matrix', function () {
-    var a = math.matrix([[1, 2, 3], [4, 5, 6]]);
+    var a = matrix([[1, 2, 3], [4, 5, 6]]);
     assert.deepEqual(zeros(math.size(a)).size(), a.size());
   });
 

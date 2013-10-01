@@ -38,7 +38,6 @@ describe('unaryminus', function() {
     assert.deepEqual(a7.size(), [2,2]);
     assert.deepEqual(a7.valueOf(), [[-1,-2],[-3,-4]]);
     assert.deepEqual(math.unary([[1,2],[3,4]]), [[-1,-2],[-3,-4]]);
-    assert.deepEqual(math.unary(math.range(1,6)), math.range(-1,-6,-1).valueOf());
   });
 
 });
