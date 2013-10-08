@@ -18,16 +18,16 @@ math.select( [[1, 2], [3, 4]] )
     .done(); // [[24, 6], [9, 12]]
 ```
 
-### Selector API
+### API
 
-A Selector is constructed as:
+A `Selector` is constructed as:
 
 ```js
 math.select()
 math.select(value)
 ```
 
-The Selector has all functions available in the `math` namespace, and has
+The `Selector` has all functions available in the `math` namespace, and has
 a number of special functions:
 
  - `done()`

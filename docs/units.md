@@ -4,13 +4,23 @@ Math.js supports units. Units can be used to do calculations and to perform
 conversions.
 
 
-## Unit API
+## API
 
 Units can be created using the function `math.unit`. This function accepts
 either a single string argument containing a value and unit, or two arguments,
 the first being a numeric value and the second a string containing a unit.
 Most units support prefixes like `k` or `kilo`, and many units have both a
 full name and an abbreviation. The returned object is a `Unit`.
+
+Syntax:
+
+```js
+math.unit(value: number, plainUnit: string) : Unit
+math.unit(unit: string) : Unit
+math.unit(unit: Unit) : Unit
+```
+
+Example usage:
 
 ```js
 var a = math.unit(45, 'cm');        // Unit 450 mm
@@ -31,7 +41,8 @@ A `Unit` contains the following functions:
   plain unit (a unit with optional prefix but without value).
 - `toString()`. Get a string representation of the unit. The function will
   determine the best fitting prefix for the unit. The units value is rounded
-  to a fixed precision. The precision is specified in `math.options.precision`.
+  to a fixed precision. The precision is defined in the option
+  `math.options.precision`.
 
 ```js
 var a = math.unit(55, 'cm');        // Unit 550 mm

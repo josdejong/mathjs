@@ -27,8 +27,8 @@ or to pipe input and output streams:
 
 ```bash
 $ mathjs                                 # Open a command prompt
-$ mathjs script.txt                      # Run a script file, output to console
+$ mathjs script.txt                      # Run a script file
 $ mathjs script.txt > results.txt        # Run a script file, output to file
-$ cat script.txt | mathjs                # Run input stream, output to console
+$ cat script.txt | mathjs                # Run input stream
 $ cat script.txt | mathjs > results.txt  # Run input stream, output to file
 ```
