@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.13.0
- * @date    2013-09-03
+ * @version 0.14.0
+ * @date    2013-10-08
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -2591,6 +2591,147 @@ exports['import'] =  require('./function/utils/import.js');
 exports['typeof'] =  require('./function/utils/typeof.js');
 
 },{"./constants/Infinity.js":6,"./constants/LN10.js":7,"./constants/LN2.js":8,"./constants/LOG10E.js":9,"./constants/LOG2E.js":10,"./constants/NaN.js":11,"./constants/SQRT1_2.js":12,"./constants/SQRT2.js":13,"./constants/e.js":14,"./constants/false.js":15,"./constants/i.js":16,"./constants/pi.js":17,"./constants/tau.js":18,"./constants/true.js":19,"./function/arithmetic/abs.js":20,"./function/arithmetic/add.js":21,"./function/arithmetic/ceil.js":22,"./function/arithmetic/cube.js":23,"./function/arithmetic/divide.js":24,"./function/arithmetic/edivide.js":25,"./function/arithmetic/emultiply.js":26,"./function/arithmetic/epow.js":27,"./function/arithmetic/equal.js":28,"./function/arithmetic/exp.js":29,"./function/arithmetic/fix.js":30,"./function/arithmetic/floor.js":31,"./function/arithmetic/gcd.js":32,"./function/arithmetic/larger.js":33,"./function/arithmetic/largereq.js":34,"./function/arithmetic/lcm.js":35,"./function/arithmetic/log.js":36,"./function/arithmetic/log10.js":37,"./function/arithmetic/mod.js":38,"./function/arithmetic/multiply.js":39,"./function/arithmetic/pow.js":40,"./function/arithmetic/round.js":41,"./function/arithmetic/sign.js":42,"./function/arithmetic/smaller.js":43,"./function/arithmetic/smallereq.js":44,"./function/arithmetic/sqrt.js":45,"./function/arithmetic/square.js":46,"./function/arithmetic/subtract.js":47,"./function/arithmetic/unary.js":48,"./function/arithmetic/unequal.js":49,"./function/arithmetic/xgcd.js":50,"./function/complex/arg.js":51,"./function/complex/conj.js":52,"./function/complex/im.js":53,"./function/complex/re.js":54,"./function/construction/boolean.js":55,"./function/construction/complex.js":56,"./function/construction/index.js":57,"./function/construction/matrix.js":58,"./function/construction/number.js":59,"./function/construction/string.js":60,"./function/construction/unit.js":61,"./function/expression/eval.js":62,"./function/expression/help.js":63,"./function/matrix/concat.js":64,"./function/matrix/det.js":65,"./function/matrix/diag.js":66,"./function/matrix/eye.js":67,"./function/matrix/inv.js":68,"./function/matrix/ones.js":69,"./function/matrix/range.js":70,"./function/matrix/size.js":71,"./function/matrix/squeeze.js":72,"./function/matrix/subset.js":73,"./function/matrix/transpose.js":74,"./function/matrix/zeros.js":75,"./function/probability/distribution.js":76,"./function/probability/factorial.js":77,"./function/probability/pickRandom.js":78,"./function/probability/random.js":79,"./function/probability/randomInt.js":80,"./function/statistics/max.js":81,"./function/statistics/min.js":82,"./function/trigonometry/acos.js":83,"./function/trigonometry/asin.js":84,"./function/trigonometry/atan.js":85,"./function/trigonometry/atan2.js":86,"./function/trigonometry/cos.js":87,"./function/trigonometry/cot.js":88,"./function/trigonometry/csc.js":89,"./function/trigonometry/sec.js":90,"./function/trigonometry/sin.js":91,"./function/trigonometry/tan.js":92,"./function/units/in.js":93,"./function/utils/clone.js":94,"./function/utils/forEach.js":95,"./function/utils/format.js":96,"./function/utils/import.js":97,"./function/utils/map.js":98,"./function/utils/typeof.js":99}],101:[function(require,module,exports){
+var options = require('../../options.js'),
+    Node = require('./Node.js'),
+    object = require('../../util/object.js'),
+    string = require('../../util/string.js'),
+    collection = require('../../type/collection.js'),
+    Matrix = require('../../type/Matrix.js');
+
+/**
+ * @constructor ArrayNode
+ * Holds an 1-dimensional array with nodes
+ * @param {Array} nodes    1 dimensional array with nodes
+ * @extends {Node}
+ */
+function ArrayNode(nodes) {
+  this.nodes = nodes || [];
+}
+
+ArrayNode.prototype = new Node();
+
+/**
+ * Evaluate the array
+ * @return {Matrix | Array} results
+ * @override
+ */
+ArrayNode.prototype.eval = function() {
+  // evaluate all nodes in the array, and merge the results into a matrix
+  var nodes = this.nodes,
+      results = [];
+
+  for (var i = 0, ii = nodes.length; i < ii; i++) {
+    var node = nodes[i];
+    var result = node.eval();
+    results[i] = (result instanceof Matrix) ? result.valueOf() : result;
+  }
+
+  return (options.matrix.default === 'array') ? results : new Matrix(results);
+};
+
+/**
+ * Find all nodes matching given filter
+ * @param {Object} filter  See Node.find for a description of the filter options
+ * @returns {Node[]} nodes
+ */
+ArrayNode.prototype.find = function (filter) {
+  var results = [];
+
+  // check itself
+  if (this.match(filter)) {
+    results.push(this);
+  }
+
+  // search in all nodes
+  var nodes = this.nodes;
+  for (var r = 0, rows = nodes.length; r < rows; r++) {
+    var nodes_r = nodes[r];
+    for (var c = 0, cols = nodes_r.length; c < cols; c++) {
+      results = results.concat(nodes_r[c].find(filter));
+    }
+  }
+
+  return results;
+};
+
+/**
+ * Merge nested Matrices in a two dimensional Array.
+ * @param {Array} array    Two-dimensional array containing Matrices
+ * @return {Array} merged  The merged array (two-dimensional)
+ */
+// TODO: cleanup merge function
+function merge (array) {
+  var merged = [];
+  var rows = array.length;
+  for (var r = 0; r < rows; r++) {
+    var array_r = array[r];
+    var cols = array_r.length;
+    var submatrix = null;
+    var submatrixRows = null;
+    for (var c = 0; c < cols; c++) {
+      var entry = object.clone(array_r[c]);
+      var size;
+      if (entry instanceof Matrix) {
+        // get the data from the matrix
+        size = entry.size();
+        entry = entry.valueOf();
+        if (size.length == 1) {
+          entry = [entry];
+          size = [1, size[0]];
+        }
+        else if (size.length > 2) {
+          throw new Error('Cannot merge a multi dimensional matrix');
+        }
+      }
+      else if (Array.isArray(entry)) {
+        // change array into a 1xn matrix
+        size = [1, entry.length];
+        entry = [entry];
+      }
+      else {
+        // change scalar into a 1x1 matrix
+        size = [1, 1];
+        entry = [[entry]];
+      }
+
+      // check the height of this row
+      if (submatrix == null) {
+        // first entry
+        submatrix = entry;
+        submatrixRows = size[0];
+      }
+      else if (size[0] == submatrixRows) {
+        // merge
+        for (var s = 0; s < submatrixRows; s++) {
+          submatrix[s] = submatrix[s].concat(entry[s]);
+        }
+      }
+      else {
+        // no good...
+        throw new Error('Dimension mismatch ' +
+            '(' + size[0] + ' != ' + submatrixRows + ')');
+      }
+    }
+
+    // merge the submatrix
+    merged = merged.concat(submatrix);
+  }
+
+  return merged;
+}
+
+/**
+ * Get string representation
+ * @return {String} str
+ * @override
+ */
+ArrayNode.prototype.toString = function() {
+  return string.format(this.nodes);
+};
+
+module.exports = ArrayNode;
+
+},{"../../options.js":194,"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/object.js":207,"../../util/string.js":208,"./Node.js":106}],102:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -2654,7 +2795,7 @@ AssignmentNode.prototype.toString = function() {
 };
 
 module.exports = AssignmentNode;
-},{"./Node.js":106}],102:[function(require,module,exports){
+},{"./Node.js":106}],103:[function(require,module,exports){
 var Node = require('./Node.js');
 
 /**
@@ -2741,7 +2882,7 @@ BlockNode.prototype.toString = function() {
 
 module.exports = BlockNode;
 
-},{"./Node.js":106}],103:[function(require,module,exports){
+},{"./Node.js":106}],104:[function(require,module,exports){
 var Node = require('./Node.js'),
     string = require('../../util/string.js');
 
@@ -2774,7 +2915,7 @@ ConstantNode.prototype.toString = function() {
 
 module.exports = ConstantNode;
 
-},{"../../util/string.js":208,"./Node.js":106}],104:[function(require,module,exports){
+},{"../../util/string.js":208,"./Node.js":106}],105:[function(require,module,exports){
 var Node = require('./Node.js'),
     error = require('../../util/error.js');
 
@@ -2863,158 +3004,7 @@ FunctionNode.prototype.toString = function() {
 
 module.exports = FunctionNode;
 
-},{"../../util/error.js":204,"./Node.js":106}],105:[function(require,module,exports){
-var Node = require('./Node.js'),
-    object = require('../../util/object.js'),
-    string = require('../../util/string.js'),
-    collection = require('../../type/collection.js'),
-    Matrix = require('../../type/Matrix.js');
-
-/**
- * @constructor MatrixNode
- * Holds an 2-dimensional array with nodes
- * @param {Array[]} nodes    2 dimensional array with nodes
- * @extends {Node}
- */
-function MatrixNode(nodes) {
-  this.nodes = nodes || [];
-}
-
-MatrixNode.prototype = new Node();
-
-/**
- * Evaluate the array
- * @return {Matrix} results
- * @override
- */
-MatrixNode.prototype.eval = function() {
-  // evaluate all nodes in the 2d array, and merge the results into a matrix
-  var nodes = this.nodes,
-      results = [],
-      mergeNeeded = false;
-
-  for (var r = 0, rows = nodes.length; r < rows; r++) {
-    var nodes_r = nodes[r];
-    var results_r = [];
-    for (var c = 0, cols = nodes_r.length; c < cols; c++) {
-      var results_rc = nodes_r[c].eval();
-      if (collection.isCollection(results_rc)) {
-        mergeNeeded = true;
-      }
-      results_r[c] = results_rc;
-    }
-    results[r] = results_r;
-  }
-
-  if (mergeNeeded) {
-    results = merge(results);
-  }
-
-  return new Matrix(results);
-};
-
-/**
- * Find all nodes matching given filter
- * @param {Object} filter  See Node.find for a description of the filter options
- * @returns {Node[]} nodes
- */
-MatrixNode.prototype.find = function (filter) {
-  var results = [];
-
-  // check itself
-  if (this.match(filter)) {
-    results.push(this);
-  }
-
-  // search in all nodes
-  var nodes = this.nodes;
-  for (var r = 0, rows = nodes.length; r < rows; r++) {
-    var nodes_r = nodes[r];
-    for (var c = 0, cols = nodes_r.length; c < cols; c++) {
-      results = results.concat(nodes_r[c].find(filter));
-    }
-  }
-
-  return results;
-};
-
-/**
- * Merge nested Matrices in a two dimensional Array.
- * @param {Array} array    Two-dimensional array containing Matrices
- * @return {Array} merged  The merged array (two-dimensional)
- */
-function merge (array) {
-  var merged = [];
-  var rows = array.length;
-  for (var r = 0; r < rows; r++) {
-    var array_r = array[r];
-    var cols = array_r.length;
-    var submatrix = null;
-    var submatrixRows = null;
-    for (var c = 0; c < cols; c++) {
-      var entry = object.clone(array_r[c]);
-      var size;
-      if (entry instanceof Matrix) {
-        // get the data from the matrix
-        size = entry.size();
-        entry = entry.valueOf();
-        if (size.length == 1) {
-          entry = [entry];
-          size = [1, size[0]];
-        }
-        else if (size.length > 2) {
-          throw new Error('Cannot merge a multi dimensional matrix');
-        }
-      }
-      else if (Array.isArray(entry)) {
-        // change array into a 1xn matrix
-        size = [1, entry.length];
-        entry = [entry];
-      }
-      else {
-        // change scalar into a 1x1 matrix
-        size = [1, 1];
-        entry = [[entry]];
-      }
-
-      // check the height of this row
-      if (submatrix == null) {
-        // first entry
-        submatrix = entry;
-        submatrixRows = size[0];
-      }
-      else if (size[0] == submatrixRows) {
-        // merge
-        for (var s = 0; s < submatrixRows; s++) {
-          submatrix[s] = submatrix[s].concat(entry[s]);
-        }
-      }
-      else {
-        // no good...
-        throw new Error('Dimension mismatch ' +
-            '(' + size[0] + ' != ' + submatrixRows + ')');
-      }
-    }
-
-    // merge the submatrix
-    merged = merged.concat(submatrix);
-  }
-
-  return merged;
-}
-
-/**
- * Get string representation
- * @return {String} str
- * @override
- */
-MatrixNode.prototype.toString = function() {
-  return string.format(this.nodes);
-};
-
-module.exports = MatrixNode;
-
-},{"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/object.js":207,"../../util/string.js":208,"./Node.js":106}],106:[function(require,module,exports){
+},{"../../util/error.js":204,"./Node.js":106}],106:[function(require,module,exports){
 /**
  * Node
  */
@@ -3696,7 +3686,7 @@ exports.AssignmentNode = require('./AssignmentNode.js');
 exports.BlockNode = require('./BlockNode.js');
 exports.ConstantNode = require('./ConstantNode.js');
 exports.FunctionNode = require('./FunctionNode.js');
-exports.MatrixNode = require('./MatrixNode.js');
+exports.ArrayNode = require('./ArrayNode.js');
 exports.Node = require('./Node.js');
 exports.OperatorNode = require('./OperatorNode.js');
 exports.ParamsNode = require('./ParamsNode.js');
@@ -3706,7 +3696,7 @@ exports.UpdateNode = require('./UpdateNode.js');
 
 exports.handlers = require('./handlers.js');
 
-},{"./AssignmentNode.js":101,"./BlockNode.js":102,"./ConstantNode.js":103,"./FunctionNode.js":104,"./MatrixNode.js":105,"./Node.js":106,"./OperatorNode.js":107,"./ParamsNode.js":108,"./RangeNode.js":109,"./SymbolNode.js":110,"./UpdateNode.js":111,"./handlers.js":112}],114:[function(require,module,exports){
+},{"./ArrayNode.js":101,"./AssignmentNode.js":102,"./BlockNode.js":103,"./ConstantNode.js":104,"./FunctionNode.js":105,"./Node.js":106,"./OperatorNode.js":107,"./ParamsNode.js":108,"./RangeNode.js":109,"./SymbolNode.js":110,"./UpdateNode.js":111,"./handlers.js":112}],114:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -3742,7 +3732,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, abs);
+      return collection.deepMap(x, abs);
     }
 
     if (x.valueOf() !== x) {
@@ -3841,7 +3831,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x) || isCollection(y)) {
-      return collection.map2(x, y, add);
+      return collection.deepMap2(x, y, add);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -3891,7 +3881,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, ceil);
+      return collection.deepMap(x, ceil);
     }
 
     if (x.valueOf() !== x) {
@@ -3939,7 +3929,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, cube);
+      return collection.deepMap(x, cube);
     }
 
     if (x.valueOf() !== x) {
@@ -4020,7 +4010,7 @@ module.exports = function(math) {
       }
       else {
         // matrix / scalar
-        return collection.map2(x, y, divide);
+        return collection.deepMap2(x, y, divide);
       }
     }
 
@@ -4195,7 +4185,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x) || isCollection(y)) {
-      return collection.map2(x, y, equal);
+      return collection.deepMap2(x, y, equal);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -4246,7 +4236,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, exp);
+      return collection.deepMap(x, exp);
     }
 
     if (x.valueOf() !== x) {
@@ -4296,7 +4286,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, fix);
+      return collection.deepMap(x, fix);
     }
 
     if (x.valueOf() !== x) {
@@ -4346,7 +4336,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, floor);
+      return collection.deepMap(x, floor);
     }
 
     if (x.valueOf() !== x) {
@@ -4402,7 +4392,7 @@ module.exports = function (math) {
 
       // evaluate gcd element wise
       if (isCollection(a) || isCollection(b)) {
-        return collection.map2(a, b, gcd);
+        return collection.deepMap2(a, b, gcd);
       }
 
       if (a.valueOf() !== a || b.valueOf() !== b) {
@@ -4487,7 +4477,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x) || isCollection(y)) {
-      return collection.map2(x, y, larger);
+      return collection.deepMap2(x, y, larger);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -4560,7 +4550,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x) || isCollection(y)) {
-      return collection.map2(x, y, largereq);
+      return collection.deepMap2(x, y, largereq);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -4625,7 +4615,7 @@ module.exports = function (math) {
 
       // evaluate lcm element wise
       if (isCollection(a) || isCollection(b)) {
-        return collection.map2(a, b, lcm);
+        return collection.deepMap2(a, b, lcm);
       }
 
       if (a.valueOf() !== a || b.valueOf() !== b) {
@@ -4694,7 +4684,7 @@ module.exports = function (math) {
       }
 
       if (isCollection(x)) {
-        return collection.map(x, log);
+        return collection.deepMap(x, log);
       }
 
       if (x.valueOf() !== x) {
@@ -4758,7 +4748,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, log10);
+      return collection.deepMap(x, log10);
     }
 
     if (x.valueOf() !== x) {
@@ -4823,7 +4813,7 @@ module.exports = function (math) {
     // TODO: implement mod for complex values
 
     if (isCollection(x) || isCollection(y)) {
-      return collection.map2(x, y, mod);
+      return collection.deepMap2(x, y, mod);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -4927,7 +4917,7 @@ module.exports = function(math) {
     }
     else if (isArray(x)) {
       if (isArray(y)) {
-        // matrix * matrix
+        // array * array
         var sizeX = array.size(x);
         var sizeY = array.size(y);
 
@@ -4967,23 +4957,33 @@ module.exports = function(math) {
         return res;
       }
       else if (y instanceof Matrix) {
-        return new Matrix(multiply(x.valueOf(), y.valueOf()));
+        // array * matrix
+        return new Matrix(multiply(x, y.valueOf()));
       }
       else {
-        // matrix * scalar
-        return collection.map2(x, y, multiply);
+        // array * scalar
+        return collection.deepMap2(x, y, multiply);
       }
     }
     else if (x instanceof Matrix) {
-      return new Matrix(multiply(x.valueOf(), y.valueOf()));
+      if (y instanceof Matrix) {
+        // matrix * matrix
+        return new Matrix(multiply(x.valueOf(), y.valueOf()));
+      }
+      else {
+        // matrix * array
+        // matrix * scalar
+        return new Matrix(multiply(x.valueOf(), y));
+      }
     }
 
     if (isArray(y)) {
-      // scalar * matrix
-      return collection.map2(x, y, multiply);
+      // scalar * array
+      return collection.deepMap2(x, y, multiply);
     }
     else if (y instanceof Matrix) {
-      return new Matrix(multiply(x.valueOf(), y.valueOf()));
+      // scalar * matrix
+      return new Matrix(collection.deepMap2(x, y.valueOf(), multiply));
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -5081,6 +5081,7 @@ module.exports = function (math) {
 
       Complex = require('../../type/Complex.js'),
       Matrix = require('../../type/Matrix.js'),
+      collection = require('../../type/collection.js'),
 
       array = util.array,
       isNumBool = util.number.isNumBool,
@@ -5182,7 +5183,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Complex.js":195,"../../type/Matrix.js":198,"../../util/index.js":205}],135:[function(require,module,exports){
+},{"../../type/Complex.js":195,"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],135:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -5226,7 +5227,7 @@ module.exports = function (math) {
       }
 
       if (isCollection(x)) {
-        return collection.map(x, round);
+        return collection.deepMap(x, round);
       }
 
       if (x.valueOf() !== x) {
@@ -5257,7 +5258,7 @@ module.exports = function (math) {
       }
 
       if (isCollection(x) || isCollection(n)) {
-        return collection.map2(x, n, round);
+        return collection.deepMap2(x, n, round);
       }
 
       if (x.valueOf() !== x || n.valueOf() !== n) {
@@ -5325,7 +5326,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, sign);
+      return collection.deepMap(x, sign);
     }
 
     if (x.valueOf() !== x) {
@@ -5398,7 +5399,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x) || isCollection(y)) {
-      return collection.map2(x, y, smaller);
+      return collection.deepMap2(x, y, smaller);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -5471,7 +5472,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x) || isCollection(y)) {
-      return collection.map2(x, y, smallereq);
+      return collection.deepMap2(x, y, smallereq);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -5535,7 +5536,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, sqrt);
+      return collection.deepMap(x, sqrt);
     }
 
     if (x.valueOf() !== x) {
@@ -5583,7 +5584,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, square);
+      return collection.deepMap(x, square);
     }
 
     if (x.valueOf() !== x) {
@@ -5679,7 +5680,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x) || isCollection(y)) {
-      return collection.map2(x, y, subtract);
+      return collection.deepMap2(x, y, subtract);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -5736,7 +5737,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, unary);
+      return collection.deepMap(x, unary);
     }
 
     if (x.valueOf() !== x) {
@@ -5804,7 +5805,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x) || isCollection(y)) {
-      return collection.map2(x, y, unequal);
+      return collection.deepMap2(x, y, unequal);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -5929,7 +5930,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, arg);
+      return collection.deepMap(x, arg);
     }
 
     if (x.valueOf() !== x) {
@@ -5979,7 +5980,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, conj);
+      return collection.deepMap(x, conj);
     }
 
     if (x.valueOf() !== x) {
@@ -6027,7 +6028,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, im);
+      return collection.deepMap(x, im);
     }
 
     if (x.valueOf() !== x) {
@@ -6076,7 +6077,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, re);
+      return collection.deepMap(x, re);
     }
 
     if (x.valueOf() !== x) {
@@ -6146,7 +6147,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(value)) {
-      return collection.map(value, bool);
+      return collection.deepMap(value, bool);
     }
 
     throw new SyntaxError(value.toString() + ' is no valid boolean');
@@ -6176,6 +6177,7 @@ module.exports = function (math) {
    *                                         values for real and imaginary part.
    *     complex(re : number)                creates a complex value with provided
    *                                         real value and zero imaginary part.
+   *     complex(complex : Complex)          clones the provided complex value.
    *     complex(arg : string)               parses a string into a complex value.
    *     complex(array : Array)              converts the elements of the array
    *                                         or matrix element wise into a
@@ -6223,7 +6225,7 @@ module.exports = function (math) {
         }
 
         if (isCollection(arg)) {
-          return collection.map(arg, complex);
+          return collection.deepMap(arg, complex);
         }
 
         if (isBoolean(arg)) {
@@ -6327,7 +6329,7 @@ module.exports = function (math) {
 
       case 1:
         if (isCollection(value)) {
-          return collection.map(value, number);
+          return collection.deepMap(value, number);
         }
 
         var num = Number(value);
@@ -6418,7 +6420,7 @@ module.exports = function (math) {
         }
 
         if (isCollection(value)) {
-          return collection.map(value, string);
+          return collection.deepMap(value, string);
         }
 
         if (value === null) {
@@ -6484,7 +6486,7 @@ module.exports = function (math) {
         }
 
         if (isCollection(args)) {
-          return collection.map(args, unit);
+          return collection.deepMap(args, unit);
         }
 
         throw new TypeError('A string or a number and string expected in function unit');
@@ -6563,7 +6565,7 @@ module.exports = function (math) {
     }
     else if (isCollection(expr)) {
       // evaluate an array or matrix with expressions
-      return collection.map(expr, function (elem) {
+      return collection.deepMap(expr, function (elem) {
         var node = math.parse(elem, evalScope);
         return node.eval();
       });
@@ -6654,7 +6656,7 @@ module.exports = function (math) {
       BlockNode = require('../../expression/node/BlockNode.js'),
       ConstantNode = require('../../expression/node/ConstantNode.js'),
       FunctionNode = require('../../expression/node/FunctionNode.js'),
-      MatrixNode = require('../../expression/node/MatrixNode.js'),
+      ArrayNode = require('../../expression/node/ArrayNode.js'),
       OperatorNode = require('../../expression/node/OperatorNode.js'),
       ParamsNode = require('../../expression/node/ParamsNode.js'),
       RangeNode = require('../../expression/node/RangeNode.js'),
@@ -6718,7 +6720,7 @@ module.exports = function (math) {
     }
     else if (isArray(expr) || expr instanceof Matrix) {
       // parse an array or matrix with expressions
-      return collection.map(expr, function (elem) {
+      return collection.deepMap(expr, function (elem) {
         expression = elem || '';
         return parseStart(parseScope);
       });
@@ -6769,6 +6771,11 @@ module.exports = function (math) {
     '>': true,
     '<=': true,
     '>=': true
+  };
+
+    // map with all named delimiters
+  var NAMED_DELIMITERS = {
+      'mod': true
   };
 
   var expression = '';  // current expression
@@ -6908,14 +6915,20 @@ module.exports = function (math) {
       return;
     }
 
-    // check for variables or functions
+    // check for variables, functions, named operators
     if (isAlpha(c)) {
-      token_type = TOKENTYPE.SYMBOL;
-
       while (isAlpha(c) || isDigit(c)) {
         token += c;
         next();
       }
+
+      if (NAMED_DELIMITERS[token]) {
+        token_type = TOKENTYPE.DELIMITER;
+      }
+      else {
+        token_type = TOKENTYPE.SYMBOL;
+      }
+
       return;
     }
 
@@ -7669,11 +7682,11 @@ module.exports = function (math) {
   /**
    * parse the matrix
    * @param {Scope} scope
-   * @return {Node} A MatrixNode
+   * @return {Node} node
    * @private
    */
   function parseMatrix (scope) {
-    var array, params, r, c, rows, cols;
+    var array, params, rows, cols;
 
     if (token == '[') {
       // matrix [...]
@@ -7684,97 +7697,63 @@ module.exports = function (math) {
         getToken();
       }
 
-      // check if this is an empty matrix "[ ]"
       if (token != ']') {
         // this is a non-empty matrix
-        params = [];
-        r = 0;
-        c = 0;
+        var row = parseRow(scope);
 
-        params[0] = [parseAssignment(scope)];
+        if (token == ';') {
+          // 2 dimensional array
+          rows = 1;
+          params = [row];
 
-        // the columns in the matrix are separated by commas, and the rows by dot-comma's
-        while (token == ',' || token == ';') {
-          if (token == ',') {
-            c++;
+          // the rows of the matrix are separated by dot-comma's
+          while (token == ';') {
+            getToken();
+
+            // skip newlines
+            while (token == '\n') {
+              getToken();
+            }
+
+            params[rows] = parseRow(scope);
+            rows++;
+
+            // skip newlines
+            while (token == '\n') {
+              getToken();
+            }
           }
-          else {
-            r++;
-            c = 0;
-            params[r] = [];
-          }
 
-          // skip newlines
+          if (token != ']') {
+            throw createSyntaxError('End of matrix ] expected');
+          }
           getToken();
-          while (token == '\n') {
-            getToken();
+
+          // check if the number of columns matches in all rows
+          cols = (params.length > 0) ? params[0].length : 0;
+          for (var r = 1; r < rows; r++) {
+            if (params[r].length != cols) {
+              throw createError('Number of columns must match ' +
+                  '(' + params[r].length + ' != ' + cols + ')');
+            }
           }
 
-          params[r][c] = parseAssignment(scope);
-
-          // skip newlines
-          while (token == '\n') {
-            getToken();
+          array = new ArrayNode(params);
+        }
+        else {
+          // 1 dimensional vector
+          if (token != ']') {
+            throw createSyntaxError('End of matrix ] expected');
           }
+          getToken();
+
+          array = row;
         }
-
-        // TODO: spaces as separator for matrix columns
-        /*
-         // the columns in the matrix are separated by commas or spaces,
-         // and the rows by dot-comma's
-         while (token && token != ']') {
-         if (token == ';') {
-         r++;
-         c = 0;
-         params[r] = [];
-         getToken();
-         }
-         else if (token == ',') {
-         c++;
-         getToken();
-         }
-         else {
-         c++;
-         }
-
-         // skip newlines
-         while (token == '\n') {
-         getToken();
-         }
-
-         //TODO: math.eval('[1 -2 3]') is evaluated as '[(1-2) 3]' instead of '[(1) (-2) (3)]'
-         //TODO: '[(1) (-2) (3)]' doesn't work
-         params[r][c] = parseAssignment(scope);
-
-         // skip newlines
-         while (token == '\n') {
-         getToken();
-         }
-         }
-         */
-
-        rows =  params.length;
-        cols = (params.length > 0) ? params[0].length : 0;
-
-        // check if the number of columns matches in all rows
-        for (r = 1; r < rows; r++) {
-          if (params[r].length != cols) {
-            throw createError('Number of columns must match ' +
-                '(' + params[r].length + ' != ' + cols + ')');
-          }
-        }
-
-        if (token != ']') {
-          throw createSyntaxError('End of matrix ] expected');
-        }
-
-        getToken();
-        array = new MatrixNode(params);
       }
       else {
         // this is an empty matrix "[ ]"
         getToken();
-        array = new MatrixNode([]);
+        array = new ArrayNode([]);
       }
 
       // parse parameters
@@ -7784,6 +7763,36 @@ module.exports = function (math) {
     }
 
     return parseNumber(scope);
+  }
+
+  /**
+   * Parse a single comma-separated row from a matrix, like 'a, b, c'
+   * @param {Scope} scope
+   * @return {ArrayNode} node
+   */
+  function parseRow (scope) {
+    var params = [parseAssignment(scope)];
+    var len = 1;
+
+    while (token == ',') {
+      getToken();
+
+      // skip newlines
+      while (token == '\n') {
+        getToken();
+      }
+
+      // parse expression
+      params[len] = parseAssignment(scope);
+      len++;
+
+      // skip newlines
+      while (token == '\n') {
+        getToken();
+      }
+    }
+
+    return new ArrayNode(params);
   }
 
   /**
@@ -7962,7 +7971,7 @@ module.exports = function (math) {
   }
 };
 
-},{"../../expression/node/AssignmentNode.js":101,"../../expression/node/BlockNode.js":102,"../../expression/node/ConstantNode.js":103,"../../expression/node/FunctionNode.js":104,"../../expression/node/MatrixNode.js":105,"../../expression/node/OperatorNode.js":107,"../../expression/node/ParamsNode.js":108,"../../expression/node/RangeNode.js":109,"../../expression/node/SymbolNode.js":110,"../../expression/node/UpdateNode.js":111,"../../expression/node/handlers.js":112,"../../type/collection.js":201,"../../util/index.js":205,"./../../expression/Scope.js":5,"./../../type/Complex.js":195,"./../../type/Matrix.js":198,"./../../type/Unit.js":200}],160:[function(require,module,exports){
+},{"../../expression/node/ArrayNode.js":101,"../../expression/node/AssignmentNode.js":102,"../../expression/node/BlockNode.js":103,"../../expression/node/ConstantNode.js":104,"../../expression/node/FunctionNode.js":105,"../../expression/node/OperatorNode.js":107,"../../expression/node/ParamsNode.js":108,"../../expression/node/RangeNode.js":109,"../../expression/node/SymbolNode.js":110,"../../expression/node/UpdateNode.js":111,"../../expression/node/handlers.js":112,"../../type/collection.js":201,"../../util/index.js":205,"./../../expression/Scope.js":5,"./../../type/Complex.js":195,"./../../type/Matrix.js":198,"./../../type/Unit.js":200}],160:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8227,8 +8236,10 @@ module.exports = function (math) {
 },{"../../type/Matrix.js":198,"../../util/index.js":205}],162:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
+      options = require('../../options.js'),
 
       Matrix = require('../../type/Matrix.js'),
+      collection = require('../../type/collection.js'),
 
       object = util.object,
       isNumber = util.number.isNumber,
@@ -8246,7 +8257,7 @@ module.exports = function (math) {
    *
    * @param {Number | Matrix | Array} x
    * @param {Number} [k]
-   * @return {Matrix} matrix
+   * @return {Matrix | Array} matrix
    */
   math.diag = function diag (x, k) {
     var data, vector, i, iMax;
@@ -8270,6 +8281,7 @@ module.exports = function (math) {
     if (!(x instanceof Matrix)) {
       x = new Matrix(x);
     }
+    // TODO: simplify this, more strict in accepting only a vector with size [n]
 
     // get as array when the matrix is a vector
     var s;
@@ -8292,7 +8304,7 @@ module.exports = function (math) {
         for (i = 0; i < iMax; i++) {
           data[i + kSub][i + kSuper] = object.clone(vector[i]);
         }
-        return matrix;
+        return (options.matrix.default === 'array') ? matrix.valueOf() : matrix;
         break;
 
       case 2:
@@ -8303,7 +8315,7 @@ module.exports = function (math) {
         for (i = 0; i < iMax; i++) {
           vector[i] = object.clone(data[i + kSub][i + kSuper]);
         }
-        return new Matrix(vector);
+        return (options.matrix.default === 'array') ? vector : new Matrix(vector);
         break;
 
       default:
@@ -8312,9 +8324,10 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":198,"../../util/index.js":205}],163:[function(require,module,exports){
+},{"../../options.js":194,"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],163:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
+      options = require('../../options.js'),
 
       Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
@@ -8331,7 +8344,7 @@ module.exports = function (math) {
    * TODO: more documentation on eye
    *
    * @param {...Number | Matrix | Array} size
-   * @return {Matrix} matrix
+   * @return {Matrix | Array} matrix
    */
   math.eye = function eye (size) {
     var args = collection.argsToArray(arguments);
@@ -8368,15 +8381,19 @@ module.exports = function (math) {
       data[d][d] = 1;
     }
 
-    return matrix;
+    var asMatrix = (size instanceof Matrix) ? true :
+        (isArray(size) ? false : (options.matrix.default === 'matrix'));
+
+    return asMatrix ? matrix : matrix.valueOf();
   };
 };
 
-},{"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],164:[function(require,module,exports){
+},{"../../options.js":194,"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],164:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
       Matrix = require('../../type/Matrix.js'),
+      collection = require('../../type/collection.js'),
 
       string = util.string;
 
@@ -8559,14 +8576,17 @@ module.exports = function (math) {
   }
 };
 
-},{"../../type/Matrix.js":198,"../../util/index.js":205}],165:[function(require,module,exports){
+},{"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],165:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
+      options = require('../../options.js'),
 
       Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
 
-      array = util.array;
+      array = util.array,
+
+      isArray = Array.isArray;
 
   /**
    * Create a matrix filled with ones
@@ -8581,7 +8601,8 @@ module.exports = function (math) {
    */
   math.ones = function ones (size) {
     var args = collection.argsToArray(arguments);
-    var asMatrix = (size instanceof Matrix);
+    var asMatrix = (size instanceof Matrix) ? true :
+        (isArray(size) ? false : (options.matrix.default === 'matrix'));
 
     if (args.length == 0) {
       // output a scalar
@@ -8597,9 +8618,13 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],166:[function(require,module,exports){
+},{"../../options.js":194,"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],166:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
+      options = require('../../options.js'),
+
+      Matrix = require('../../type/Matrix.js'),
+      collection = require('../../type/collection.js'),
 
       isString = util.string.isString,
       isNumber = util.number.isNumber;
@@ -8621,7 +8646,7 @@ module.exports = function (math) {
    *     math.range('2:1:6');     // [2,3,4,5]
    *
    * @param {...*} args
-   * @return {Array} range
+   * @return {Array | Matrix} range
    */
   math.range = function range(args) {
     var start, end, step;
@@ -8688,7 +8713,7 @@ module.exports = function (math) {
       }
     }
 
-    return array;
+    return (options.matrix.default === 'array') ? array : new Matrix(array);
   };
 
   /**
@@ -8735,7 +8760,7 @@ module.exports = function (math) {
 
 };
 
-},{"../../util/index.js":205}],167:[function(require,module,exports){
+},{"../../options.js":194,"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],167:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -8816,9 +8841,6 @@ module.exports = function (math) {
     }
     else if (x instanceof Matrix) {
       return new Matrix(array.squeeze(x.toArray()));
-    }
-    else if (isArray(x.valueOf())) {
-      return array.squeeze(object.clone(x.valueOf()));
     }
     else {
       // scalar
@@ -9005,6 +9027,7 @@ module.exports = function (math) {
   var util = require('../../util/index.js'),
 
       Matrix = require('../../type/Matrix.js'),
+      collection = require('../../type/collection.js'),
 
       object = util.object,
       string = util.string;
@@ -9038,7 +9061,7 @@ module.exports = function (math) {
         // two dimensional array
         var rows = size[1],
             cols = size[0],
-            asMatrix = Matrix.isMatrix(x),
+            asMatrix = (x instanceof Matrix),
             data = x.valueOf(),
             transposed = [],
             transposedRow,
@@ -9059,6 +9082,7 @@ module.exports = function (math) {
         if (cols == 0) {
           transposed[0] = [];
         }
+
         return asMatrix ? new Matrix(transposed) : transposed;
         break;
 
@@ -9070,9 +9094,10 @@ module.exports = function (math) {
   };
 };
 
-},{"../../type/Matrix.js":198,"../../util/index.js":205}],171:[function(require,module,exports){
+},{"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],171:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
+      options = require('../../options.js'),
 
       Matrix = require('../../type/Matrix.js'),
       collection = require('../../type/collection.js'),
@@ -9092,7 +9117,8 @@ module.exports = function (math) {
    */
   math.zeros = function zeros (size) {
     var args = collection.argsToArray(arguments);
-    var asMatrix = (size instanceof Matrix);
+    var asMatrix = (size instanceof Matrix) ? true :
+        (isArray(size) ? false : (options.matrix.default === 'matrix'));
 
     if (args.length == 0) {
       // output a scalar
@@ -9103,12 +9129,13 @@ module.exports = function (math) {
       var res = [];
       var defaultValue = 0;
       array.resize(res, args, defaultValue);
+
       return asMatrix ? new Matrix(res) : res;
     }
   };
 };
 
-},{"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],172:[function(require,module,exports){
+},{"../../options.js":194,"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],172:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -9161,7 +9188,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, factorial);
+      return collection.deepMap(x, factorial);
     }
 
     if (x.valueOf() !== x) {
@@ -9176,8 +9203,10 @@ module.exports = function (math) {
 },{"../../type/collection.js":201,"../../util/index.js":205}],173:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
+      options = require('../../options.js'),
 
-      Matrix = require('../../type/Matrix.js');
+      Matrix = require('../../type/Matrix.js'),
+      collection = require('../../type/collection.js');
 
   /**
    * Return a random number between 0 and 1
@@ -9264,8 +9293,10 @@ module.exports = function (math) {
 
           if (max === undefined) max = 1;
           if (min === undefined) min = 0;
-          // TODO: output Array if size is Array, output Matrix if size is Matrix
-          if (size !== undefined) return new Matrix(_randomDataForMatrix(size, min, max, _random));
+          if (size !== undefined) {
+            var res = _randomDataForMatrix(size, min, max, _random);
+            return (options.matrix.default === 'array') ? res : new Matrix(res);
+          }
           else return _random(min, max);
         },
 
@@ -9292,8 +9323,10 @@ module.exports = function (math) {
           }
 
           if (min === undefined) min = 0;
-          // TODO: output Array if size is Array, output Matrix if size is Matrix
-          if (size !== undefined) return new Matrix(_randomDataForMatrix(size, min, max, _randomInt));
+          if (size !== undefined) {
+            var res = _randomDataForMatrix(size, min, max, _randomInt);
+            return (options.matrix.default === 'array') ? res : new Matrix(res);
+          }
           else return _randomInt(min, max);
         },
 
@@ -9349,7 +9382,7 @@ module.exports = function (math) {
   math.pickRandom = uniformRandFunctions.pickRandom;
 };
 
-},{"../../type/Matrix.js":198,"../../util/index.js":205}],174:[function(require,module,exports){
+},{"../../options.js":194,"../../type/Matrix.js":198,"../../type/collection.js":201,"../../util/index.js":205}],174:[function(require,module,exports){
 module.exports = function (math) {
   var util = require('../../util/index.js'),
 
@@ -9378,7 +9411,9 @@ module.exports = function (math) {
         throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
       }
 
-      var size = math.size(args).valueOf();
+      var size = math.size(args).valueOf(),
+          asMatrix = (args instanceof Matrix),
+          array = asMatrix ? args.valueOf() : args;
 
       if (size.length == 1) {
         // vector
@@ -9386,7 +9421,7 @@ module.exports = function (math) {
           throw new Error('Cannot calculate max of an empty vector');
         }
 
-        return _max(args.valueOf());
+        return _max(array);
       }
       else if (size.length == 2) {
         // 2 dimensional matrix
@@ -9394,13 +9429,8 @@ module.exports = function (math) {
           throw new Error('Cannot calculate max of an empty matrix');
         }
 
-        // TODO: make a generic collection method for this
-        if (Matrix.isMatrix(args)) {
-          return new Matrix(_max2(args.valueOf(), size[0], size[1]));
-        }
-        else {
-          return _max2(args, size[0], size[1]);
-        }
+        var res = _max2(array, size[0], size[1]);
+        return asMatrix ? new Matrix(res) : res;
       }
       else {
         // TODO: implement max for n-dimensional matrices
@@ -9483,7 +9513,9 @@ module.exports = function (math) {
         throw Error('Wrong number of parameters (1 matrix or multiple scalars expected)');
       }
 
-      var size = math.size(args).valueOf();
+      var size = math.size(args).valueOf(),
+          asMatrix = (args instanceof Matrix),
+          array = asMatrix ? args.valueOf() : args;
 
       if (size.length == 1) {
         // vector
@@ -9491,7 +9523,7 @@ module.exports = function (math) {
           throw new Error('Cannot calculate min of an empty vector');
         }
 
-        return _min(args.valueOf());
+        return _min(array);
       }
       else if (size.length == 2) {
         // 2 dimensional matrix
@@ -9499,13 +9531,8 @@ module.exports = function (math) {
           throw new Error('Cannot calculate min of an empty matrix');
         }
 
-        // TODO: make a generic collection method for this
-        if (Matrix.isMatrix(args)) {
-          return new Matrix(_min2(args.valueOf(), size[0], size[1]));
-        }
-        else {
-          return _min2(args, size[0], size[1]);
-        }
+        var res = _min2(array, size[0], size[1]);
+        return asMatrix ? new Matrix(res) : res;
       }
       else {
         // TODO: implement min for n-dimensional matrices
@@ -9634,7 +9661,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, acos);
+      return collection.deepMap(x, acos);
     }
 
     if (x.valueOf() !== x) {
@@ -9718,7 +9745,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, asin);
+      return collection.deepMap(x, asin);
     }
 
     if (x.valueOf() !== x) {
@@ -9789,7 +9816,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, atan);
+      return collection.deepMap(x, atan);
     }
 
     if (x.valueOf() !== x) {
@@ -9852,7 +9879,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(y) || isCollection(x)) {
-      return collection.map2(y, x, atan2);
+      return collection.deepMap2(y, x, atan2);
     }
 
     if (x.valueOf() !== x || y.valueOf() !== y) {
@@ -9914,7 +9941,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, cos);
+      return collection.deepMap(x, cos);
     }
 
     if (x.valueOf() !== x) {
@@ -9976,7 +10003,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, cot);
+      return collection.deepMap(x, cot);
     }
 
     if (x.valueOf() !== x) {
@@ -10039,7 +10066,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, csc);
+      return collection.deepMap(x, csc);
     }
 
     if (x.valueOf() !== x) {
@@ -10101,7 +10128,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, sec);
+      return collection.deepMap(x, sec);
     }
 
     if (x.valueOf() !== x) {
@@ -10156,13 +10183,13 @@ module.exports = function (math) {
 
     if (isUnit(x)) {
       if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function cos is no angle');
+        throw new TypeError ('Unit in function sin is no angle');
       }
       return Math.sin(x.value);
     }
 
     if (isCollection(x)) {
-      return collection.map(x, sin);
+      return collection.deepMap(x, sin);
     }
 
     if (x.valueOf() !== x) {
@@ -10227,7 +10254,7 @@ module.exports = function (math) {
     }
 
     if (isCollection(x)) {
-      return collection.map(x, tan);
+      return collection.deepMap(x, tan);
     }
 
     if (x.valueOf() !== x) {
@@ -10276,7 +10303,7 @@ module.exports = function (math) {
     // TODO: add support for string, in that case, convert to unit
 
     if (isCollection(x) || isCollection(unit)) {
-      return collection.map2(x, unit, unit_in);
+      return collection.deepMap2(x, unit, unit_in);
     }
 
     if (x.valueOf() !== x || unit.valueOf() !== unit) {
@@ -10622,6 +10649,9 @@ module.exports = function (math) {
 },{"../../util/index.js":205}],194:[function(require,module,exports){
 // math.js options
 exports.precision = 5;  // number of digits in formatted output
+exports.matrix = {
+  'default': 'matrix' // type of default matrix output. Choose 'array' or 'matrix' (default)
+};
 
 },{}],195:[function(require,module,exports){
 var util = require('../util/index.js'),
@@ -10910,6 +10940,17 @@ Complex.parse = function parse(str) {
  */
 Complex.prototype.clone = function () {
   return new Complex(this.re, this.im);
+};
+
+/**
+ * Test whether this complex number equals an other complex value.
+ * Two complex numbers are equal when both their real and imaginary parts
+ * are equal.
+ * @param {Complex} other
+ * @return {boolean} isEqual
+ */
+Complex.prototype.equals = function (other) {
+  return (this.re === other.re) && (this.im === other.im);
 };
 
 /**
@@ -11341,7 +11382,9 @@ var util = require('../util/index'),
     number = util.number,
     string = util.string,
     array = util.array,
-    object = util.object;
+    object = util.object,
+
+    isArray = Array.isArray;
 
 /**
  * @constructor Matrix
@@ -11471,12 +11514,21 @@ function _get (matrix, index) {
   }
   else {
     // return a submatrix
+    var submatrix;
     switch (size.length) {
-      case 1: return new Matrix(_getSubmatrix1D(matrix._data, index));
-      case 2: return new Matrix(_getSubmatrix2D(matrix._data, index));
-      default: return new Matrix(_getSubmatrix(matrix._data, index, 0));
+      case 1: submatrix = new Matrix(_getSubmatrix1D(matrix._data, index)); break;
+      case 2: submatrix = new Matrix(_getSubmatrix2D(matrix._data, index)); break;
+      default: submatrix = new Matrix(_getSubmatrix(matrix._data, index, 0)); break;
     }
     // TODO: more efficient when creating an empty matrix and setting _data and _size manually
+
+    // squeeze matrix output
+    while (isArray(submatrix._data) && submatrix._data.length == 1) {
+      submatrix._data = submatrix._data[0];
+      submatrix._size.shift();
+    }
+
+    return submatrix;
   }
 }
 
@@ -11625,10 +11677,14 @@ function _set (matrix, index, submatrix) {
     submatrix = submatrix.valueOf();
   }
 
+  // calculate the size of the submatrix
+  var subsize = array.size(submatrix);
+
   if (isScalar) {
     // set a scalar
-    // check whether submatrix is no matrix/array
-    if (array.size(submatrix.valueOf()).length != 0) {
+
+    // check whether submatrix is a scalar
+    if (subsize.length != 0) {
       throw new TypeError('Scalar value expected');
     }
 
@@ -11640,6 +11696,12 @@ function _set (matrix, index, submatrix) {
   }
   else {
     // set a submatrix
+
+    // unsqueeze the submatrix when needed
+    for (var i = 0, ii = size.length - subsize.length; i < ii; i++) {
+      submatrix = [submatrix];
+    }
+
     var newSize = matrix._size.concat();
     _setSubmatrix (matrix._data, newSize, index, 0, submatrix);
     if (!object.deepEqual(matrix._size, newSize)) {
@@ -11838,7 +11900,6 @@ Matrix.prototype.clone = function () {
 
 /**
  * Retrieve the size of the matrix.
- * The size of the matrix will be validated too
  * @returns {Number[]} size
  */
 Matrix.prototype.size = function () {
@@ -13008,6 +13069,7 @@ util.types.addType('unit', Unit);
 
 },{"../util/index.js":205}],201:[function(require,module,exports){
 var util = require('../util/index.js'),
+    options = require('../options.js'),
 
     Matrix = require('./Matrix.js'),
 
@@ -13045,12 +13107,6 @@ exports.argsToArray = function argsToArray(args) {
   }
   else {
     // fn(m, n, p, ...)
-    /* TODO: cleanup
-    array = [];
-    for (var i = 0; i < args.length; i++) {
-      array[i] = args[i];
-    }
-    */
     array = Array.prototype.slice.apply(args);
   }
   return array;
@@ -13066,27 +13122,6 @@ exports.isCollection = function isCollection (x) {
   return (isArray(x) || (x instanceof Matrix));
 };
 
-// TODO: write the map, deepMap, map2, and deepMap2 functions in a more concise way
-// TODO: remove map and map2, only use deepMap and deepMap2 everywhere?
-
-/**
- * Execute function fn element wise for each element in array.
- * Returns an array with the results
- * @param {Array | Matrix} array
- * @param {function} fn
- * @return {Array | Matrix} res
- */
-exports.map = function map(array, fn) {
-  if (array && array.map) {
-    return array.map(function (x) {
-      return fn(x);
-    });
-  }
-  else {
-    throw new TypeError('Array expected');
-  }
-};
-
 /**
  * Execute function fn element wise for each element in array and any nested
  * array
@@ -13096,7 +13131,7 @@ exports.map = function map(array, fn) {
  * @return {Array | Matrix} res
  */
 exports.deepMap = function deepMap(array, fn) {
-  if (array && array.map) {
+  if (array && (typeof array.map === 'function')) {
     return array.map(function (x) {
       return deepMap(x, fn);
     });
@@ -13104,63 +13139,6 @@ exports.deepMap = function deepMap(array, fn) {
   else {
     return fn(array);
   }
-};
-
-/**
- * Execute function fn element wise for each entry in two given arrays, or
- * for a (scalar) object and array pair. Returns an array with the results
- * @param {Array | Matrix | Object} array1
- * @param {Array | Matrix | Object} array2
- * @param {function} fn
- * @return {Array | Matrix} res
- */
-exports.map2 = function map2(array1, array2, fn) {
-  var res, len, i;
-
-  // handle Matrix
-  if (array1 instanceof Matrix || array2 instanceof Matrix) {
-    return new Matrix(map2(array1.valueOf(), array2.valueOf(), fn));
-  }
-
-  if (isArray(array1)) {
-    if (isArray(array2)) {
-      // fn(array, array)
-      if (array1.length != array2.length) {
-        throw new RangeError('Dimension mismatch ' +
-            '(' +  array1.length + ' != ' + array2.length + ')');
-      }
-
-      res = [];
-      len = array1.length;
-      for (i = 0; i < len; i++) {
-        res[i] = fn(array1[i], array2[i]);
-      }
-    }
-    else {
-      // fn(array, object)
-      res = [];
-      len = array1.length;
-      for (i = 0; i < len; i++) {
-        res[i] = fn(array1[i], array2);
-      }
-    }
-  }
-  else {
-    if (isArray(array2)) {
-      // fn(object, array)
-      res = [];
-      len = array2.length;
-      for (i = 0; i < len; i++) {
-        res[i] = fn(array1, array2[i]);
-      }
-    }
-    else {
-      // fn(object, object)
-      res = fn(array1, array2);
-    }
-  }
-
-  return res;
 };
 
 /**
@@ -13174,11 +13152,6 @@ exports.map2 = function map2(array1, array2, fn) {
  */
 exports.deepMap2 = function deepMap2(array1, array2, fn) {
   var res, len, i;
-
-  // handle Matrix
-  if (array1 instanceof Matrix || array2 instanceof Matrix) {
-    return new Matrix(deepMap2(array1.valueOf(), array2.valueOf(), fn));
-  }
 
   if (isArray(array1)) {
     if (isArray(array2)) {
@@ -13194,6 +13167,11 @@ exports.deepMap2 = function deepMap2(array1, array2, fn) {
         res[i] = deepMap2(array1[i], array2[i], fn);
       }
     }
+    else if (array2 instanceof Matrix) {
+      // fn(array, matrix)
+      res = deepMap2(array1, array2.valueOf(), fn);
+      return (options.matrix.default === 'array') ? res : new Matrix(res);
+    }
     else {
       // fn(array, object)
       res = [];
@@ -13201,6 +13179,19 @@ exports.deepMap2 = function deepMap2(array1, array2, fn) {
       for (i = 0; i < len; i++) {
         res[i] = deepMap2(array1[i], array2, fn);
       }
+    }
+  }
+  else if (array1 instanceof Matrix) {
+    if (array2 instanceof Matrix) {
+      // fn(matrix, matrix)
+      res = deepMap2(array1.valueOf(), array2.valueOf(), fn);
+      return new Matrix(res);
+    }
+    else {
+      // fn(matrix, array)
+      // fn(matrix, object)
+      res = deepMap2(array1.valueOf(), array2, fn);
+      return (options.matrix.default === 'array') ? res : new Matrix(res);
     }
   }
   else {
@@ -13221,7 +13212,52 @@ exports.deepMap2 = function deepMap2(array1, array2, fn) {
   return res;
 };
 
-},{"../util/index.js":205,"./Matrix.js":198}],202:[function(require,module,exports){
+/**
+ * Convert a given array or matrix to the specified output type for matrices,
+ * as defined by options.output.matrix
+ * @param {Matrix | Array} coll
+ * @return {Matrix | Array} coll
+ */
+// TODO: throw away toCollection
+exports.toCollection = function toCollection (coll) {
+  switch (options.output.matrix) {
+    case 'array':
+        // convert to Array when needed
+      if (isArray(coll)) {
+        return coll;
+      }
+      else if (coll instanceof Matrix) {
+        return coll.valueOf();
+      }
+      else {
+        throw new TypeError('Unsupported type of array (' + util.types.type(coll) + ')');
+      }
+
+      break;
+
+    case 'matrix':
+      // convert to Matrix when needed
+      if (isArray(coll)) {
+        return new Matrix(coll);
+      }
+      else if (coll instanceof Matrix) {
+        return coll;
+      }
+      else {
+        throw new TypeError('Unsupported type of array (' + util.types.type(coll) + ')');
+      }
+
+      break;
+
+    default:
+      throw new TypeError('options.output.matrix has an unsupported value ' +
+          '(' + options.output.matrix + '). Available values: "array", "matrix".');
+
+      break;
+  }
+};
+
+},{"../options.js":194,"../util/index.js":205,"./Matrix.js":198}],202:[function(require,module,exports){
 var number = require('./number'),
     string = require('./string'),
     object = require('./object'),

@@ -2,11 +2,10 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.14.0
+## 2013-10-08, version 0.14.0
 
 *WARNING: version 0.14 has incompatibilities with previous versions.*
 
-- Documentation is restructured.
 - Introduced an option `math.options.matrix.default` which can have values
   `matrix` (default) or `array`. This option is used by the functions `eye`,
   `ones`, `range`, and `zeros`, to determine the type of matrix output.
@@ -18,6 +17,7 @@ https://github.com/josdejong/mathjs
 - The matrix syntax `[...]` in the expression parser now creates 1 dimensional
   matrices by default. `math.eval('[1,2,3,4]')` returns a matrix with size `[4]`,
   `math.eval('[1,2;3,4]')` returns a matrix with size `[2,2]`.
+- Documentation is restructured and extended.
 - Fixed non working operator `mod` (modulus operator).
 
 

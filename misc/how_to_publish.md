@@ -7,12 +7,12 @@ This document describes the steps required to publish a new version of math.js.
 
 Test whether the library works correctly by running the tests:
 
-  npm test
+    npm test
 
 Test whether the npm library is ok by installing it locally:
 
-  cd ../tmp-folder
-  npm install ../mathjs
+    cd ../tmp-folder
+    npm install ../mathjs
 
 Check whether the library works and looks ok.
 
@@ -32,7 +32,7 @@ changes in the new version are described.
 
 Build the distribution files ./dist/math.js and ./dist/math.min.js by running:
 
-  jake
+    jake
 
 After the build is complete, verify if the files are created and contain the
 correct date and version number in the header.
@@ -50,19 +50,19 @@ Now go to travis-ci and verify if the tests run fine there as well:
 
 If everything is well, create a tag for the new version, like:
 
-  git tag v1.2.4
-  git push --tags
+    git tag v1.2.4
+    git push --tags
 
 
 ## Publish
 
 Publish to npm:
 
-  npm publish
+    npm publish
 
 Publish to jam.js:
 
-  jam publish
+    jam publish
 
 No need to publish for bower: The library is already published because of the
 new version tag.
@@ -75,9 +75,9 @@ select the new version and press the button.
 
 Install the libraries locally and test whether they work correctly:
 
-  cd tmp-folder
-  npm install mathjs
-  bower install mathjs
+    cd tmp-folder
+    npm install mathjs
+    bower install mathjs
 
 
 ## Update the website
@@ -88,7 +88,7 @@ Copy the files `./dist/math.js` and `./dist/math.min.js` from the master branch
 to the folder `js/lib` of the gh-pages branch of the math.js project.
 Run the following script in the root of the project:
 
-  node updateversion.js
+    node updateversion.js
 
 Commit and push the changes in the gh-pages branch.
 
@@ -100,7 +100,7 @@ Test whether the website shows the updated library (can have a little delay).
 Switch to the develop branch, and update the version numbers in package.json and
 bower.json to a new snapshot version, like
 
-  1.2.5-SNAPSHOT
+    1.2.5-SNAPSHOT
 
 commit and push the changes.
 
