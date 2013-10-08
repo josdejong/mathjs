@@ -1,4 +1,4 @@
-# Unit
+# Units
 
 Math.js supports units. Units can be used to do calculations and to perform
 conversions.
@@ -81,6 +81,8 @@ math.cos(c);                        // Number 0.7071067811865476
 
 ## Reference
 
+### Units
+
 Math.js comes with the following built-in units.
 
 Base                | Unit
@@ -98,3 +100,48 @@ Amount of substance | mole (mol)
 Luminous            | intensity	candela (cd)
 Force               | newton (N), poundforce (lbf)
 Binary              | bit (b), byte (B)
+
+
+### Prefixes
+
+The following decimal prefixes are available.
+
+Name    | Abbreviation  | Value
+------- | ------------- | -----
+deca    | da            | 1e1
+hecto   | h             | 1e2
+kilo    | k             | 1e3
+mega    | M             | 1e6
+giga    | G             | 1e9
+tera    | T             | 1e12
+peta    | P             | 1e15
+exa     | E             | 1e18
+zetta   | Z             | 1e21
+yotta   | Y             | 1e24
+
+Name    | Abbreviation  | Value
+------  | ------------- | -----
+deci    | d             | 1e-1
+centi   | c             | 1e-2
+milli   | m             | 1e-3
+micro   | u             | 1e-6
+nano    | n             | 1e-9
+pico    | p             | 1e-12
+femto   | f             | 1e-15
+atto    | a             | 1e-18
+zepto   | z             | 1e-21
+yocto   | y             | 1e-24
+
+The following binary prefixes are available.
+They can be used with units `bit` (`b`) and `byte` (`B`).
+
+Name        | Abbreviation  | Value
+----------- | ------------- | -----
+kilo, kibi  | k, Ki         | 1024
+mega, mebi  | M, Mi         | 1024^2
+giga, gibi  | G, Gi         | 1024^3
+tera, tebi  | T, Ti         | 1024^4
+peta, pebi  | P, Pi         | 1024^5
+exa, exi    | E, Ei         | 1024^6
+zetta, zebi | Z, Zi         | 1024^7
+yotta, yobi | Y, Yi         | 1024^8
