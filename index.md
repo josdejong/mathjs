@@ -92,16 +92,16 @@ The latest version of math.js can be downloaded below:
     <tr>
         <td>
             <a href="js/lib/math.js" target="_blank">Development
-                (version <span class="version">0.13.0</span>)</a>
+                (version <span class="version">0.14.0</span>)</a>
         </td>
         <td>
-            <span id="development-size">375 kB</span>, uncompressed with comments
+            <span id="development-size">377 kB</span>, uncompressed with comments
         </td>
     </tr>
     <tr>
         <td>
             <a href="js/lib/math.min.js" target="_blank">Production
-                (version <span class="version">0.13.0</span>)</a>
+                (version <span class="version">0.14.0</span>)</a>
         </td>
         <td>
             <span id="production-size">33 kB</span>, minified and gzipped
