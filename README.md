@@ -65,6 +65,7 @@ math.select(3)
 - [Getting Started](https://github.com/josdejong/mathjs/blob/master/docs/getting_started.md)
 - [Examples](https://github.com/josdejong/mathjs/tree/master/examples/)
 - [Documentation](https://github.com/josdejong/mathjs/blob/master/docs/index.md)
+- [History](HISTORY.md)
 
 
 ## Build

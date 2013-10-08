@@ -10,4 +10,5 @@
 - [Expressions](expressions.md)
 - [Chained Operations](chained_operations.md)
 - [Extend](extend.md)
+- [Options](options.md)
 - [Command Line Interface](command_line_interface.md)
