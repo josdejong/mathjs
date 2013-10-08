@@ -479,7 +479,7 @@ describe('parse', function() {
       approx.equal(parseAndEval('8 % 3'), 2);
     });
 
-    it.skip('should parse mod', function() {
+    it('should parse mod', function() {
       approx.equal(parseAndEval('8 mod 3'), 2);
     });
 
