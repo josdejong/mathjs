@@ -28,11 +28,11 @@ var c = math.multiply(a, b);                    // Matrix, [[19, 22], [43, 50]]
 var d = c.subset(math.index(1, 0));             // 43
 ```
 
-The type of matrix output from functions is determined from the input:
-An array as input will return an Array, a Matrix as input will return a Matrix.
-In case of mixed input or no matrix as input, the type of output is determined
-by the option `math.matrix.default`, which can have a string `"array"` or
-`"matrix"` (default) as value.
+Where possible, the type of matrix output from functions is determined from the
+input: An array as input will return an Array, a Matrix as input will return a
+Matrix. In case of mixed input or no matrix as input, the type of output is
+determined by the option `math.matrix.default`, which can have a string
+`"array"` or `"matrix"` (default) as value.
 
 
 ## Expressions
