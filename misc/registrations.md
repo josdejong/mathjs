@@ -6,10 +6,11 @@ math.js is registered at the following places:
 - jam.js: mathjs (jam publish)
 
 # websites
-- http://jster.net/ (automatically updates via github)
-- http://www.jsdb.io/
-- http://jswiki.org/
-- http://jspkg.com/ (manually import a project from github)
+- http://jster.net (automatically updates via github)
+- http://www.jsdb.io
+- http://jswiki.org
+- http://jspkg.com (manually import a project from github)
+- http://cdnjs.com (add a project via a git pull-request)
 
 # other
 - travis-ci (automatically updates via github)

@@ -4,8 +4,9 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.14.0
 
-*WARNING: version 0.14 is incompatible with previous versions.*
+*WARNING: version 0.14 has incompatibilities with previous versions.*
 
+- Documentation is restructured.
 - Introduced an option `math.options.matrix.default` which can have values
   `matrix` (default) or `array`. This option is used by the functions `eye`,
   `ones`, `range`, and `zeros`, to determine the type of matrix output.
@@ -21,6 +22,8 @@ https://github.com/josdejong/mathjs
 
 
 ## 2013-09-03, version 0.13.0
+
+*WARNING: version 0.13 has incompatibilities with previous versions.*
 
 - Implemented support for booleans in all relevant functions.
 - Implemented functions `map` and `forEach`. Thanks Sebastien Piquemal (sebpic).
