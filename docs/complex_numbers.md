@@ -1,6 +1,15 @@
 # Complex
 
-Math.js supports complex numbers. Most functions support complex numbers.
+Math.js supports creation, manipulation, and calculations with complex numbers.
+
+In mathematics, a complex number is an expression of the form `a + bi`,
+where `a` and `b` are real numbers, and `i` represents the imaginary number
+defined as `i^2 = -1`. (In other words, `i` is the square root of `-1`.)
+The real number `a` is called the real part of the complex number,
+and the real number `b` is the imaginary part. For example, `3 + 2i` is a
+complex number, having real part `3` and imaginary part `2`.
+Complex numbers are often used in applied mathematics, control theory,
+signal analysis, fluid dynamics and other fields.
 
 ## API
 
@@ -57,6 +66,10 @@ can be used together.
 ```js
 var a = math.complex(2, 3);     // Complex 2 + 3i
 var b = math.complex('4 - 2i'); // Complex 4 - 2i
+
+math.re(a);                     // Number 2
+math.im(a);                     // Number 3
+math.conj(a);                   // Complex 2 - 3i
 
 math.add(a, b);                 // Complex 6 + i
 math.multiply(a, 2);            // Complex 4 + 6i
