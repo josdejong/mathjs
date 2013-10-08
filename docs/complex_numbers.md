@@ -22,8 +22,8 @@ Examples:
 
 ```js
 var a = math.complex(2, 3);     // Complex 2 + 3i
-a.re;                           // Complex 2
-a.im;                           // Complex 3
+a.re;                           // Number 2
+a.im;                           // Number 3
 
 var b = math.complex('4 - 2i'); // Complex 4 - 2i
 b.re = 5;                       // Number 5
@@ -40,6 +40,9 @@ The properties `re` and `im` of a complex number can be read and replaced.
 A `Complex` object has the following functions:
 
 - `clone()`. Create a clone of the complex number.
+- `equals(other)`. Test whether a complex number equals an other complex value.
+  Two complex numbers are equal when both their real and imaginary parts are
+  equal.
 - `toString()`. Returns a string representation of the complex number, formatted
   as `a + bi` where `a` is the real part and `b` the imaginary part. The
   values are rounded to a fixed precision. The precision is defined in the
