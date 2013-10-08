@@ -32,7 +32,7 @@ Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate
 [expressions](https://github.com/josdejong/mathjs/blob/master/docs/expressions.md)
 and supports
-[chained operations]([expressions](https://github.com/josdejong/mathjs/blob/master/docs/chained_operations.md).
+[chained operations](https://github.com/josdejong/mathjs/blob/master/docs/chained_operations.md).
 
 ```js
 // load math.js
@@ -65,7 +65,7 @@ math.select(3)
 - [Getting Started](https://github.com/josdejong/mathjs/blob/master/docs/getting_started.md)
 - [Examples](https://github.com/josdejong/mathjs/tree/master/examples/)
 - [Documentation](https://github.com/josdejong/mathjs/blob/master/docs/index.md)
-- [History](HISTORY.md)
+- [History](https://github.com/josdejong/mathjs/blob/master/HISTORY.md)
 
 
 ## Build
