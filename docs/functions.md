@@ -98,7 +98,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.factorial(x)
 - math.random([min, max])
 - math.randomInt([min, max])
-- math.pickRandom([min, max])
+- math.pickRandom(array)
 - math.distribution(name)
 
 ## Statistics
