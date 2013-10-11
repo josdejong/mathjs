@@ -2,6 +2,13 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.14.0
+
+- Fixed formatting numbers as scientific notation in some cases returning
+  a zero digit left from the decimal point. (like "0.33333e8" rather than
+  "3.3333e7"). Thanks husayt.
+
+
 ## 2013-10-08, version 0.14.0
 
 *WARNING: version 0.14 has incompatibilities with previous versions.*
