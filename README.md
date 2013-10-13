@@ -85,7 +85,7 @@ Then, the project can be build by executing jake in the root of the project:
     jake
 
 This will build the library math.js and math.min.js from the source files and
-execute tests.
+put them in the folder dist.
 
 
 ## Test

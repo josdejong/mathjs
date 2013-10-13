@@ -2,8 +2,10 @@
 
 To execute the tests, run the following in the root of the project:
 
+    mocha test --recursive --reporter spec
 
-    mocha test --reporter spec
+It's important to run mocha with the `--recursive` flag, as most tests are
+located in nested folders.
 
 
 ## Code coverage
