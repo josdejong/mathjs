@@ -117,8 +117,31 @@ describe('multiply', function() {
     approx.deepEqual(multiply(matrix([1,2,3,4]), 2), matrix([2, 4, 6, 8]));
   });
 
+  it('should multiply a vector with a matrix correctly', function () {
+    var a = [1, 2, 3];
+    var b = [
+      [8, 1, 6],
+      [3, 5, 7],
+      [4, 9, 2]
+    ];
+
+    approx.deepEqual(multiply(a, b), [26, 38, 26]);
+    approx.deepEqual(multiply(b, a), [28, 34, 28]);
+  });
+
+  it('should multiply vectors correctly (dot product)', function () {
+    var a = [1, 2, 3];
+    var b = [4, 5, 6];
+
+    approx.deepEqual(multiply(a, b), 32);
+  });
+
   it('should throw an error if multiplying matrices with incompatible sizes', function() {
     assert.throws(function () {multiply(c, b)});
+
+    // TODO: test vector*vector with wrong size
+    // TODO: test vector*matrix with wrong size
+    // TODO: test matrix*vector with wrong size
   });
 
 });
