@@ -15,6 +15,18 @@ describe('min', function() {
     assert.equal(math.min('A', 'C', 'D', 'B'), 'A');
   });
 
+  it('should return the min value for complex values', function() {
+    assert.deepEqual(math.min(math.complex(2,3), math.complex(2,1)), math.complex(2,1));
+    assert.deepEqual(math.min(math.complex(2,3), math.complex(2,5)), math.complex(2,3));
+  });
+
+  it('should return the min value for mixed real and complex values', function() {
+    assert.deepEqual(math.min(math.complex(3,4), 4), 4);
+    assert.deepEqual(math.min(math.complex(3,4), 5), math.complex(3,4));
+    assert.deepEqual(math.min(5, math.complex(3,4)), 5);
+    assert.deepEqual(math.min(math.complex(3,4), 6), math.complex(3,4));
+  });
+
   it('should return the min element from a vector', function() {
     assert.equal(math.min([1,3,5,-5,2]), -5);
   });

@@ -2,8 +2,10 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.14.0
+## not yet released, version 0.15.0
 
+- Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
+  (guillermobox).
 - Fixed formatting numbers as scientific notation in some cases returning
   a zero digit left from the decimal point. (like "0.33333e8" rather than
   "3.3333e7"). Thanks husayt.

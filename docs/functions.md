@@ -105,6 +105,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 
 - math.max(a, b, c, ...)
 - math.min(a, b, c, ...)
+- math.mean(a, b, c, ...)
 
 ## Trigonometry
 
