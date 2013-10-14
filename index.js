@@ -105,6 +105,7 @@ require('./lib/function/probability/random.js')(exports);
 // functions - statistics
 require('./lib/function/statistics/min.js')(exports);
 require('./lib/function/statistics/max.js')(exports);
+require('./lib/function/statistics/mean.js')(exports);
 
 // functions - trigonometry
 require('./lib/function/trigonometry/acos.js')(exports);
