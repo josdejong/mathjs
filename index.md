@@ -22,14 +22,14 @@ Powerful and easy to use.
 - Is easily extensible.
 
 <div class="cols">
-    <div class="left">
-        <h1>Example</h1>
-        <p>
-            Here some example code demonstrating how to use the library.
-            More examples are available
-            <a href="https://github.com/josdejong/mathjs/tree/master/examples/" target="_blank">here</a>.
-        </p>
-        <pre id="example">
+  <div class="left">
+    <h1>Example</h1>
+    <p>
+      Here some example code demonstrating how to use the library.
+      More examples are available
+      <a href="https://github.com/josdejong/mathjs/tree/master/examples/">here</a>.
+    </p>
+    <pre id="example">
 <span class="comment">// load math.js</span>
 <span class="keyword">var</span> math = require(<span class="string">'mathjs'</span>);
 
@@ -54,78 +54,77 @@ math.select(<span class="number">3</span>)
     .multiply(<span class="number">2</span>)
     .done(); <span class="comment">// 14</span>
 </pre>
+  </div>
+  <div class="right">
+    <h1>Demo</h1>
+    <p>
+      Try the expression parser below.<br>
+      See <a href="http://mathnotepad.com/">Math Notepad</a> for a full application.
+    </p>
+    <div id="commandline">loading...</div>
+    <script type="text/javascript">
+      var editor = new CommandLineEditor({
+          container: document.getElementById('commandline')
+      });
+    </script>
+    <div class="tips">
+      Shortcut keys:
+      <ul>
+        <li>Press <b>S</b> to set focus to the input field</li>
+        <li>Press <b>Ctrl+F11</b> to toggle full screen</li>
+        <li>Enter <b>"clear"</b> to clear history</li>
+      </ul>
     </div>
-    <div class="right">
-        <h1>Demo</h1>
-        <p>
-            Try the expression parser below.<br>
-            See <a href="http://mathnotepad.com/" target="_blank">Math Notepad</a> for a full application.
-        </p>
-        <div id="commandline">loading...</div>
-        <script type="text/javascript">
-            var editor = new CommandLineEditor({
-                container: document.getElementById('commandline')
-            });
-        </script>
-        <div class="tips">
-            Shortcut keys:
-            <ul>
-                <li>Press <b>S</b> to set focus to the input field</li>
-                <li>Press <b>Ctrl+F11</b> to toggle full screen</li>
-                <li>Enter <b>"clear"</b> to clear history</li>
-            </ul>
-        </div>
-    </div>
-    <div class="end">&nbsp;</div>
+  </div>
+  <div class="end">&nbsp;</div>
 </div>
 
 
 # Install or download
 
-Math.js can be installed using <a href="https://npmjs.org/" target="_blank">npm</a>:
+Math.js can be installed using [npm](https://npmjs.org/):
 
     npm install mathjs
 
-Math.js can be downloaded or linked from <a href="http://cdnjs.com/" target="_blank">cdnjs</a>:
+Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 
 <table>
-    <tr>
-        <td>
-            <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.14.0/math.js" target="_blank">
-                Development (version 0.14.0)</a>
-        </td>
-        <td>
-            <span id="development-size">377 kB</span>, uncompressed with comments
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.14.0/math.min.js" target="_blank">
-                Production (version 0.14.0)
-            </a>
-        </td>
-        <td>
-            <span id="production-size">33 kB</span>, minified and gzipped
-        </td>
-    </tr>
+  <tr>
+    <td>
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.14.0/math.js">
+        Development (version 0.14.0)
+      </a>
+    </td>
+    <td>
+      <span id="development-size">377 kB</span>, uncompressed with comments
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.14.0/math.min.js">
+        Production (version 0.14.0)
+      </a>
+    </td>
+    <td>
+      <span id="production-size">33 kB</span>, minified and gzipped
+    </td>
+  </tr>
 </table>
 
 *Math.js is in early stage and the API is not yet stabilized.
 Please be careful when upgrading to a newer version.
-An overview of the changes is available
-<a href="https://github.com/josdejong/mathjs/blob/master/HISTORY.md" target="_blank">here</a>.*
+Changes are listed in the [history](https://github.com/josdejong/mathjs/blob/master/HISTORY.md).*
 
 
-# Documentation and source code
+# Documentation
 
-Documentation and source code can be found on github:
-
-<p>
-    <a href="https://github.com/josdejong/mathjs" target="_blank">https://github.com/josdejong/mathjs</a>
-</p>
+- [Getting Started](https://github.com/josdejong/mathjs/blob/master/docs/getting_started.md)
+- [Documentation](https://github.com/josdejong/mathjs/blob/master/docs/index.md)
+- [Examples](https://github.com/josdejong/mathjs/tree/master/examples/)
+- [History](https://github.com/josdejong/mathjs/blob/master/HISTORY.md)
 
 
 # License
 
 Math.js is open source and licensend under the
-<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache 2.0 License</a>.
+[Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
