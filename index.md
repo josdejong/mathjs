@@ -59,7 +59,7 @@ math.select(<span class="number">3</span>)
         <h1>Demo</h1>
         <p>
             Try the expression parser below.<br>
-            See <a href="http://mathnotepad.com/">Math Notepad</a> for a full application.
+            See <a href="http://mathnotepad.com/" target="_blank">Math Notepad</a> for a full application.
         </p>
         <div id="commandline">loading...</div>
         <script type="text/javascript">
@@ -82,17 +82,17 @@ math.select(<span class="number">3</span>)
 
 # Install or download
 
-Math.js can be installed using [npm](https://npmjs.org/):
+Math.js can be installed using <a href="https://npmjs.org/" target="_blank">npm</a>:
 
     npm install mathjs
 
-The latest version of math.js can be downloaded below:
+Math.js can be downloaded or linked from <a href="http://cdnjs.com/" target="_blank">cdnjs</a>:
 
 <table>
     <tr>
         <td>
-            <a href="js/lib/math.js" target="_blank">Development
-                (version <span class="version">0.14.0</span>)</a>
+            <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.14.0/math.js" target="_blank">
+                Development (version 0.14.0)</a>
         </td>
         <td>
             <span id="development-size">377 kB</span>, uncompressed with comments
@@ -100,8 +100,9 @@ The latest version of math.js can be downloaded below:
     </tr>
     <tr>
         <td>
-            <a href="js/lib/math.min.js" target="_blank">Production
-                (version <span class="version">0.14.0</span>)</a>
+            <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.14.0/math.min.js" target="_blank">
+                Production (version 0.14.0)
+            </a>
         </td>
         <td>
             <span id="production-size">33 kB</span>, minified and gzipped
@@ -112,7 +113,7 @@ The latest version of math.js can be downloaded below:
 *Math.js is in early stage and the API is not yet stabilized.
 Please be careful when upgrading to a newer version.
 An overview of the changes is available
-[here](https://github.com/josdejong/mathjs/blob/master/HISTORY.md).*
+<a href="https://github.com/josdejong/mathjs/blob/master/HISTORY.md" target="_blank">here</a>.*
 
 
 # Documentation and source code
