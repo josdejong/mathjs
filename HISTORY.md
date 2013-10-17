@@ -7,6 +7,8 @@ https://github.com/josdejong/mathjs
 - Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
   (guillermobox).
 - Implemented support for multiplying vectors with matrices.
+- Removed support for comparing complex numbers in functions `smaller`,
+  `smallereq`, `larger`, `largereq`. Complex numbers cannot be ordered.
 - Fixed formatting numbers as scientific notation in some cases returning
   a zero digit left from the decimal point. (like "0.33333e8" rather than
   "3.3333e7"). Thanks husayt.

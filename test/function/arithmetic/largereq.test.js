@@ -33,20 +33,6 @@ describe('largereq', function() {
     assert.equal(largereq(false, 0), true);
   });
 
-  it('should compare two complex numbers correctly', function() {
-    assert.equal(largereq(complex(1,1), complex(1,2)), false);
-    assert.equal(largereq(complex(1,1), complex(1,1)), true);
-    assert.equal(largereq(complex(1,1), complex(2,1)), false);
-    assert.equal(largereq(complex(1,6), complex(7,1)), false);
-    assert.equal(largereq(complex(4,1), complex(2,2)), true);
-    assert.equal(largereq(complex(2,0), 3), false);
-    assert.equal(largereq(complex(2,0), 2), true);
-    assert.equal(largereq(complex(2,0), 1), true);
-    assert.equal(largereq(3, complex(2,0)), true);
-    assert.equal(largereq(2, complex(2,0)), true);
-    assert.equal(largereq(1, complex(2,0)), false);
-  });
-
   it('should compare two units correctly', function() {
     assert.equal(largereq(unit('100cm'), unit('10inch')), true);
     assert.equal(largereq(unit('99cm'), unit('1m')), false);
@@ -68,6 +54,12 @@ describe('largereq', function() {
   it('should perform element-wise comparison for two matrices of the same size', function() {
     assert.deepEqual(largereq([1,4,6], [3,4,5]), [false, true, true]);
     assert.deepEqual(largereq([1,4,6], matrix([3,4,5])), matrix([false, true, true]));
+  });
+
+  it('should throw an error when comparing complex numbers', function() {
+    assert.throws(function () {largereq(complex(1,1), complex(1,2))}, TypeError);
+    assert.throws(function () {largereq(complex(2,1), 3)}, TypeError);
+    assert.throws(function () {largereq(3, complex(2,4))}, TypeError);
   });
 
   it('should throw an error if comparing two matrices of different sizes', function() {

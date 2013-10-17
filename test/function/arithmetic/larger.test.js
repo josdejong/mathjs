@@ -31,20 +31,6 @@ describe('larger', function() {
     assert.equal(larger(false, 2), false);
   });
 
-  it('should compare two complex numbers correctly', function() {
-    assert.equal(larger(complex(1,1), complex(1,2)), false);
-    assert.equal(larger(complex(1,1), complex(1,1)), false);
-    assert.equal(larger(complex(1,1), complex(2,1)), false);
-    assert.equal(larger(complex(1,6), complex(7,1)), false);
-    assert.equal(larger(complex(4,1), complex(2,2)), true);
-    assert.equal(larger(complex(2,0), 3), false);
-    assert.equal(larger(complex(2,0), 2), false);
-    assert.equal(larger(complex(2,0), 1), true);
-    assert.equal(larger(3, complex(2,0)), true);
-    assert.equal(larger(2, complex(2,0)), false);
-    assert.equal(larger(1, complex(2,0)), false);
-  });
-
   it('should add two measures of the same unit', function() {
     assert.equal(larger(unit('100cm'), unit('10inch')), true);
     assert.equal(larger(unit('99cm'), unit('1m')), false);
@@ -67,6 +53,12 @@ describe('larger', function() {
   it('should perform element-wise comparison for two matrices of same size', function() {
     assert.deepEqual(larger([1,4,6], [3,4,5]), [false, false, true]);
     assert.deepEqual(larger([1,4,6], matrix([3,4,5])), matrix([false, false, true]));
+  });
+
+  it('should throw an error when comparing complex numbers', function() {
+    assert.throws(function () {larger(complex(1,1), complex(1,2))}, TypeError);
+    assert.throws(function () {larger(complex(2,1), 3)}, TypeError);
+    assert.throws(function () {larger(3, complex(2,4))}, TypeError);
   });
 
   it('should throw an error if matrices are different sizes', function() {

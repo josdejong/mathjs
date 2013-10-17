@@ -15,18 +15,6 @@ describe('max', function() {
     assert.equal(math.max('A', 'C', 'D', 'B'), 'D');
   });
 
-  it('should return the max value for complex values', function() {
-    assert.deepEqual(math.max(math.complex(2,3), math.complex(2,1)), math.complex(2,3));
-    assert.deepEqual(math.max(math.complex(2,3), math.complex(2,5)), math.complex(2,5));
-  });
-
-  it('should return the max value for mixed real and complex values', function() {
-    assert.deepEqual(math.max(math.complex(3,4), 4), math.complex(3,4));
-    assert.deepEqual(math.max(math.complex(3,4), 5), math.complex(3,4));
-    assert.deepEqual(math.max(5, math.complex(3,4)), 5);
-    assert.deepEqual(math.max(math.complex(3,4), 6), 6);
-  });
-
   it('should return the max element from a vector', function() {
     assert.equal(math.max(math.matrix([1,3,5,2,-5])), 5);
   });
@@ -42,6 +30,16 @@ describe('max', function() {
       [ 3, 0,  5],
       [-1, 9, 11]
     ])), math.matrix([ 3, 9, 11]));
+  });
+
+  it('should throw an error when called with complex numbers', function() {
+    assert.throws(function () {math.max(math.complex(2,3), math.complex(2,1))}, TypeError);
+    assert.throws(function () {math.max(math.complex(2,3), math.complex(2,5))}, TypeError);
+
+    assert.throws(function () {math.max(math.complex(3,4), 4)}, TypeError);
+    assert.throws(function () {math.max(math.complex(3,4), 5)}, TypeError);
+    assert.throws(function () {math.max(5, math.complex(3,4))}, TypeError);
+    assert.throws(function () {math.max(math.complex(3,4), 6)}, TypeError);
   });
 
   it('should throw an error if called with invalid number of arguments', function() {
