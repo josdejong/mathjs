@@ -126,5 +126,5 @@ Changes are listed in the [history](https://github.com/josdejong/mathjs/blob/mas
 
 # License
 
-Math.js is open source and licensend under the
+Math.js is open source and licensed under the
 [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
