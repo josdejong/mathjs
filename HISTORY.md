@@ -7,6 +7,8 @@ https://github.com/josdejong/mathjs
 - Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
   (guillermobox).
 - Implemented support for multiplying vectors with matrices.
+- Changed behavior of `max` and `min` on multi dimensional matrices: they now
+  return the maximum and minimum of the flattened array.
 - Removed support for comparing complex numbers in functions `smaller`,
   `smallereq`, `larger`, `largereq`. Complex numbers cannot be ordered.
 - Fixed formatting numbers as scientific notation in some cases returning

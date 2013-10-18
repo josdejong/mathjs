@@ -27,15 +27,13 @@ describe('mean', function() {
 
   it('should return the mean for each vector on the last dimension', function() {
     assert.deepEqual(math.mean([
-      [ 1, 6,  7],
-      [ 3, 0,  6],
-      [-1, 9, 11]
-    ]), [ 1, 5, 8]);
+      [ 2, 4],
+      [ 6, 8]
+    ]), 5);
     assert.deepEqual(math.mean(math.matrix([
-      [ 1, 6,  7],
-      [ 3, 0,  6],
-      [-1, 9, 11]
-    ])), math.matrix([ 1, 5, 8]));
+      [ 2, 4],
+      [ 6, 8]
+    ])), 5);
   });
 
   it('should throw an error if called with invalid number of arguments', function() {
