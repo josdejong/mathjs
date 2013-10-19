@@ -42,7 +42,7 @@ A `Unit` contains the following functions:
 - `toString()`. Get a string representation of the unit. The function will
   determine the best fitting prefix for the unit. The units value is rounded
   to a fixed precision. The precision is defined in the option
-  `math.options.precision`.
+  `math.options.format.precision`.
 
 ```js
 var a = math.unit(55, 'cm');        // Unit 550 mm

@@ -26,14 +26,14 @@ describe('range', function() {
     assert.deepEqual(range(2,-4,-2), matrix([2,0,-2]));
   });
 
-  it('should output an array when math.options.matrix.default==="array"', function() {
-    var old = math.options.matrix.default;
-    math.options.matrix.default = 'array';
+  it('should output an array when math.options.matrix.defaultType==="array"', function() {
+    var old = math.options.matrix.defaultType;
+    math.options.matrix.defaultType = 'array';
 
     assert.deepEqual(range(0,10,2), [0,2,4,6,8]);
     assert.deepEqual(range(5,0,-1), [5,4,3,2,1]);
 
-    math.options.matrix.default = old;
+    math.options.matrix.defaultType = old;
   });
 
   it('should throw an error if called with an invalid string', function() {

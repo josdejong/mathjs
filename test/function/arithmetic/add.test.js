@@ -62,7 +62,7 @@ describe('add', function() {
   });
 
   it('should add a matrix and an array correctly', function() {
-    var old = math.options.matrix.default;
+    var old = math.options.matrix.defaultType;
 
     var a = [1,2,3];
     var b = math.matrix([3,2,1]);
@@ -73,19 +73,19 @@ describe('add', function() {
     assert.deepEqual(c, math.matrix([4,4,4]));
 
     // test option default === 'array'
-    math.options.matrix.default = 'array';
+    math.options.matrix.defaultType = 'array';
     var d = add(a, b);
     assert.ok(Array.isArray(d));
     assert.deepEqual(d, [4,4,4]);
 
     // test option default === 'matrix'
-    math.options.matrix.default = 'matrix';
+    math.options.matrix.defaultType = 'matrix';
     var e = add(a, b);
     assert.ok(e instanceof math.type.Matrix);
     assert.deepEqual(e, math.matrix([4,4,4]));
 
     // restore original setting
-    math.options.matrix.default = old;
+    math.options.matrix.defaultType = old;
   });
 
 });

@@ -9,6 +9,8 @@ https://github.com/josdejong/mathjs
 - Implemented support for multiplying vectors with matrices.
 - Changed behavior of `max` and `min` on multi dimensional matrices: they now
   return the maximum and minimum of the flattened array.
+- Renamed option `math.options.precision` to `math.options.format.precision`.
+- Renamed option `math.options.matrix.default` to `math.options.matrix.defaultType`.
 - Removed support for comparing complex numbers in functions `smaller`,
   `smallereq`, `larger`, `largereq`. Complex numbers cannot be ordered.
 - Fixed formatting numbers as scientific notation in some cases returning
