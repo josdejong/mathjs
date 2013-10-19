@@ -1,3 +1,5 @@
+var object = require('./lib/util/object');
+
 /**
  * math.js factory function.
  *
@@ -16,7 +18,8 @@ function mathFactory (options) {
   // create new namespace
   var math = {};
 
-  // options (global configuration settings)
+  // options
+  // TODO: change options to properties with getters to validate the input value
   math.options = {
     format: {
       precision: 5   // number of digits in formatted output
@@ -27,14 +30,7 @@ function mathFactory (options) {
   };
 
   // merge options
-  if (options && options.format && options.format.precision) {
-    math.options.format.precision = options.format.precision;
-  }
-  if (options && options.matrix && options.matrix.defaultType) {
-    math.options.matrix.defaultType = options.matrix.defaultType;
-  }
-
-  // TODO: change options to properties with getters to validate the input value
+  object.deepExtend(math.options, options);
 
   // TODO: remove deprecated options some day (deprecated since version 0.15.0)
   if (Object.defineProperty) {
