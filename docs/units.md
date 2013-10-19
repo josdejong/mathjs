@@ -39,6 +39,10 @@ A `Unit` contains the following functions:
   a clone of the unit with a fixed prefix and unit.
 - `toNumber(plainUnit)`. Get the value of a unit when converted to the specified
   plain unit (a unit with optional prefix but without value).
+- `format([precision])`. Get a string representation of the unit. The function
+  will determine the best fitting prefix for the unit. The units value is
+  rounded to the provided precision or, if not defined, uses the the option
+  `math.options.format.precision`.
 - `toString()`. Get a string representation of the unit. The function will
   determine the best fitting prefix for the unit. The units value is rounded
   to a fixed precision. The precision is defined in the option

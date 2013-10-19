@@ -1,6 +1,7 @@
 // test subtract
-var assert = require('assert');
-var math = require('../../../index.js'),
+var assert = require('assert'),
+    approx = require('../../../tools/approx'),
+    math = require('../../../index'),
     subtract = math.subtract;
 
 describe('subtract', function() {
@@ -44,7 +45,7 @@ describe('subtract', function() {
   });
 
   it('should subtract two quantities of the same unit', function() {
-    assert.equal(subtract(math.unit(5, 'km'), math.unit(100, 'mile')).toString(), '-155.93 km');
+    approx.deepEqual(subtract(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(-155.93, 'km'));
   });
 
   it('should throw an error if subtracting two quantities of different units', function() {

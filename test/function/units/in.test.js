@@ -6,18 +6,29 @@ var assert = require('assert'),
 describe('in', function() {
 
   it('should perform the given unit conversion', function() {
-    assert.equal(math.in(unit('5m'), unit('cm')).toString(), '500 cm');
-    assert.equal(math.in(unit('12 inch'), unit('foot')).toString(), '1 foot');
-    assert.equal(math.in(unit('2.54 cm'), unit('inch')).toString(), '1 inch');
-    assert.equal(math.in(unit('20 celsius'), unit('fahrenheit')).toString(), '68 fahrenheit');
-    assert.equal(math.in(unit('2 litre'), unit('m3')).toString(), '0.002 m3');
+    // TODO: improve these tests
+    var a = math.unit('500 cm'); a.fixPrefix = true;
+    approx.deepEqual(math.in(unit('5m'), unit('cm')), a);
+
+    var b = math.unit('1 foot'); b.fixPrefix = true;
+    approx.deepEqual(math.in(unit('12 inch'), unit('foot')), b);
+
+    var c = math.unit('1 inch'); c.fixPrefix = true;
+    approx.deepEqual(math.in(unit('2.54 cm'), unit('inch')), c);
+
+    var d = math.unit('68 fahrenheit'); d.fixPrefix = true;
+    approx.deepEqual(math.in(unit('20 celsius'), unit('fahrenheit')), d);
+
+    var e = math.unit('0.002 m3'); e.fixPrefix = true;
+    approx.deepEqual(math.in(unit('2 litre'), unit('m3')), e);
   });
 
   it('should perform the given unit conversion on each element of an array', function() {
+    // TODO: do not use math.format here
     assert.deepEqual(math.format(math.in([
       unit('1cm'),
       unit('2 inch'),
-      unit('2km')], unit('foot'))),
+      unit('2km')], unit('foot')), 5),
         '[0.032808 foot, 0.16667 foot, 6561.7 foot]');
   });
 
@@ -25,6 +36,7 @@ describe('in', function() {
     var a = math.matrix([[unit('1cm'), unit('2cm')],[unit('3cm'),unit('4cm')]]);
     var b = math.in(a, unit('mm'));
     assert.ok(b instanceof math.type.Matrix);
+    // TODO: do not use math.format here
     assert.equal(math.format(b), '[[10 mm, 20 mm], [30 mm, 40 mm]]');
   });
 

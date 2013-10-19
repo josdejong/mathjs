@@ -7,8 +7,12 @@ https://github.com/josdejong/mathjs
 - Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
   (guillermobox).
 - Implemented support for multiplying vectors with matrices.
-- Splitted function `format` into `format` and `print`, the latter to
-  interpolate values in a template.
+- Implemented a function `format(precision)` for `Matrix`, `Complex`, `Unit`,
+  `Range` to output with a specific precision. The `toString` function does
+  no longer round the output values.
+- Implemented a function `print` to interpolate values in a template.
+- Changed function `format`: it only does stringify of values now, and has
+  a new parameter `precision` to stringify using a specific number of digits.
 - Changed behavior of `max` and `min` on multi dimensional matrices: they now
   return the maximum and minimum of the flattened array.
 - Renamed option `math.options.precision` to `math.options.format.precision`.

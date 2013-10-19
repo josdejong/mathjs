@@ -53,10 +53,14 @@ A `Complex` object has the following functions:
 - `equals(other)`. Test whether a complex number equals an other complex value.
   Two complex numbers are equal when both their real and imaginary parts are
   equal.
+- `format([precision])`. Get a string representation of the complex number,
+  formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
+  The values are rounded to given precision. If precision is not defined,
+  the precision in `math.options.format.precision` is used.
 - `toString()`. Returns a string representation of the complex number, formatted
   as `a + bi` where `a` is the real part and `b` the imaginary part. The
   values are rounded to a fixed precision. The precision is defined in the
-  option `math.option.precision`.
+  option `math.option.format.precision`.
 
 
 ## Calculations

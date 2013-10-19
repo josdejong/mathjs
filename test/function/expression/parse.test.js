@@ -120,9 +120,9 @@ describe('parse', function() {
       assert.ok(parseAndEval('5cm', scope) instanceof Unit);
 
       // TODO: not so nice comparing units via toString
-      assert.equal(parseAndEval('(5.08 cm * 1000) in inch', scope).toString(), '2000 inch');
-      assert.equal(parseAndEval('(5.08 cm * 1000) in mm', scope).toString(), '50800 mm');
-      assert.equal(parseAndEval('ans in inch', scope).toString(), '2000 inch');
+      approx.deepEqual(parseAndEval('(5.08 cm * 1000) in inch', scope), math.unit(2000, 'inch').in('inch'));
+      approx.deepEqual(parseAndEval('(5.08 cm * 1000) in mm', scope), math.unit(50800, 'mm').in('mm'));
+      approx.deepEqual(parseAndEval('ans in inch', scope), math.unit(2000, 'inch').in('inch'));
     });
 
     it.skip('should evaluate operator "in" with correct precedence ', function () {
@@ -549,8 +549,8 @@ describe('parse', function() {
     });
 
     it('should parse in', function() {
-      assert.equal(parseAndEval('2.54 cm in inch').toString(), '1 inch');
-      assert.equal(parseAndEval('2.54 cm + 2 inch in foot').toString(), '0.25 foot');
+      approx.deepEqual(parseAndEval('2.54 cm in inch'), math.unit(1, 'inch').in('inch'));
+      approx.deepEqual(parseAndEval('2.54 cm + 2 inch in foot'), math.unit(0.25, 'foot').in('foot'));
     });
 
     it('should parse \' (transpose)', function() {

@@ -58,6 +58,7 @@ describe('unit', function() {
     it('should convert to string properly', function() {
       assert.equal(math.unit(5000, 'cm').toString(), '50 m');
       assert.equal(math.unit(5, 'kg').toString(), '5 kg');
+      assert.equal(math.unit(2/3, 'm').toString(), '0.6666666666666666 m');
     });
 
     it('should render with the best prefix', function() {
@@ -73,6 +74,16 @@ describe('unit', function() {
       assert.equal(math.unit('500m').toString(), '500 m');
       assert.equal(math.unit('600m').toString(), '0.6 km');
       assert.equal(math.unit('1000m').toString(), '1 km');
+    });
+
+  });
+
+  describe('format', function () {
+
+    it('should format units with given precision', function() {
+      assert.equal(math.unit(2/3, 'm').format(3), '0.667 m');
+      assert.equal(math.unit(2/3, 'm').format(4), '0.6667 m');
+      assert.equal(math.unit(2/3, 'm').format(), '0.6666666666666666 m');
     });
 
   });

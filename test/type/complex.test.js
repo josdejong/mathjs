@@ -46,6 +46,20 @@ describe('Complex', function () {
       assert.equal(math.complex(-1, 1).toString(), '-1 + i');
     });
 
+    it('should not round off digits', function() {
+      assert.equal(math.complex(1/3, 1/3).toString(), '0.3333333333333333 + 0.3333333333333333i');
+
+    });
+  });
+
+  describe('format', function() {
+
+    it(' should render to <re> +/- <im>i with custom precision', function() {
+      assert.equal(math.complex(1/3, 1/3).format(3), '0.333 + 0.333i');
+      assert.equal(math.complex(1/3, 1/3).format(4), '0.3333 + 0.3333i');
+      assert.equal(math.complex(1/3, 1/3).format(), '0.3333333333333333 + 0.3333333333333333i');
+    });
+
   });
 
   describe('parse', function() {

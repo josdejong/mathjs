@@ -1,6 +1,7 @@
 // test add
-var assert = require('assert');
-var math = require('../../../index.js'),
+var assert = require('assert'),
+    approx = require('../../../tools/approx'),
+    math = require('../../../index'),
     add = math.add;
 
 describe('add', function() {
@@ -33,7 +34,7 @@ describe('add', function() {
   });
 
   it('should add two measures of the same unit', function() {
-    assert.equal(add(math.unit(5, 'km'), math.unit(100, 'mile')).toString(), '165.93 km');
+    approx.deepEqual(add(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(165.93, 'km'));
   });
 
   it('should throw an error for two measures of different units', function() {

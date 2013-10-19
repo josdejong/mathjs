@@ -1,6 +1,7 @@
 // test sign
-var assert = require('assert');
-var math = require('../../../index.js');
+var assert = require('assert'),
+    approx = require('../../../tools/approx'),
+    math = require('../../../index');
 
 describe('sign', function() {
   it('should calculate the sign of a boolean', function () {
@@ -15,7 +16,7 @@ describe('sign', function() {
   });
 
   it('should calculate the sign of a complex value', function() {
-    assert.equal(math.sign(math.complex(2,-3)).toString(), '0.5547 - 0.83205i');
+    approx.deepEqual(math.sign(math.complex(2,-3)), math.complex(0.554700196225229, -0.832050294337844));
   });
 
   it('should throw an error when used with a unit', function() {

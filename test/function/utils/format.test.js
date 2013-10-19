@@ -24,10 +24,34 @@ describe('format', function() {
     assert.equal(math.format(2.3e6), '2.3e6');
   });
 
-  it('should format numbers with provided precision', function() {
-    assert.equal(math.format(math.pi, 3), '3.14');
-    assert.equal(math.format(math.pi, 4), '3.142');
-    assert.equal(math.format(math.pi, 5), '3.1416');
+  describe('precision', function() {
+    it('should format numbers with given precision', function() {
+      assert.equal(math.format(1/3, 3), '0.333');
+      assert.equal(math.format(1/3, 4), '0.3333');
+      assert.equal(math.format(1/3, 5), '0.33333');
+      assert.equal(math.format(math.complex(1/3, 2), 3), '0.333 + 2i');
+    });
+
+    it('should format complex numbers with given precision', function() {
+      assert.equal(math.format(math.complex(1/3, 1/3), 3), '0.333 + 0.333i');
+      assert.equal(math.format(math.complex(1/3, 1/3), 4), '0.3333 + 0.3333i');
+    });
+
+    it('should format matrices with given precision', function() {
+      assert.equal(math.format([1/3, 1/3], 3), '[0.333, 0.333]');
+      assert.equal(math.format([1/3, 1/3], 4), '[0.3333, 0.3333]');
+      assert.equal(math.format(math.matrix([1/3, 1/3]), 4), '[0.3333, 0.3333]');
+    });
+
+    it('should format units with given precision', function() {
+      assert.equal(math.format(math.unit(2/3, 'm'), 3), '0.667 m');
+      assert.equal(math.format(math.unit(2/3, 'm'), 4), '0.6667 m');
+    });
+
+    it('should format ranges with given precision', function() {
+      assert.equal(math.format(new math.type.Range(1/3, 4/3, 2/3), 3), '0.333:0.667:1.33');
+    });
+
   });
 
   it('should format numbers with correct number of digits', function() {
@@ -45,8 +69,8 @@ describe('format', function() {
 
   it('should format arrays', function() {
     assert.equal(math.format([[1,2],[3,4]]), '[[1, 2], [3, 4]]');
-    assert.equal(math.format([[1,2/7],['hi', math.complex(2,3)]]),
-        '[[1, 0.28571], ["hi", 2 + 3i]]');
+    assert.equal(math.format([[math.unit(2/3, 'm'), 2/7],['hi', math.complex(2,1/3)]]),
+        '[[0.66667 m, 0.28571], ["hi", 2 + 0.33333i]]');
   });
 
   it('should format complex values', function() {

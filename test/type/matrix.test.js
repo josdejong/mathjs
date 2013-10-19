@@ -95,6 +95,17 @@ describe('matrix', function() {
 
   });
 
+  it('toString', function() {
+    assert.equal(math.matrix([[1,2],[3,4]]).toString(), '[[1, 2], [3, 4]]');
+    assert.equal(math.matrix([[1,2],[3,1/3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]');
+  });
+
+  it('format', function() {
+    assert.equal(math.matrix([[1,2],[3,1/3]]).format(), '[[1, 2], [3, 0.3333333333333333]]');
+    assert.equal(math.matrix([[1,2],[3,1/3]]).format(3), '[[1, 2], [3, 0.333]]');
+    assert.equal(math.matrix([[1,2],[3,1/3]]).format(4), '[[1, 2], [3, 0.3333]]');
+  });
+
   describe('resize', function() {
 
     it('should resize the matrix correctly', function() {

@@ -4,11 +4,6 @@ var assert = require('assert');
 var math = require('../../index.js'),
     Range = math.type.Range;
 
-
-var assert = require('assert');
-var math = require('../../index.js'),
-    index = math.index;
-
 describe('range', function() {
 
   it('should create a range', function() {
@@ -66,5 +61,15 @@ describe('range', function() {
     assert.equal(Range.parse(''), null);
   });
 
-  // TODO: extensively test Range
+  it('should stringify a range to format start:step:end', function () {
+    assert.equal(new math.type.Range(0,10).toString(), '0:10');
+    assert.equal(new math.type.Range(0,10,2).toString(), '0:2:10');
+  });
+
+  it('should stringify a range to format start:step:end with given precision', function () {
+    assert.equal(new math.type.Range(1/3, 4/3, 2/3).format(3), '0.333:0.667:1.33');
+    assert.equal(new math.type.Range(1/3, 4/3, 2/3).format(4), '0.3333:0.6667:1.333');
+    assert.equal(new math.type.Range(1/3, 4/3, 2/3).format(), '0.3333333333333333:0.6666666666666666:1.3333333333333333');
+  });
+
 });
