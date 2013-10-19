@@ -3,10 +3,10 @@
 Math.js contains a number of global options. The options are defined in
 `math.options`.
 
-- `precision`. The precision used when formatting numbers.
-  A number, default value is `5`. The precision is used by the function
-  `math.format` and by the `toString` functions of units, complex numbers,
-  and matrices.
+- `format.precision`. The precision used when formatting numbers,
+  numbers are rounded to a limited number of digits. Default value is `5`.
+  The precision is used by the function `math.format` and by the `toString`
+  functions of units, complex numbers, and matrices.
 
 - `matrix.defaultType`. The default type of matrix output for functions. Available
   values are: `"array"` or `"matrix"` (default).
