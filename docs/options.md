@@ -8,12 +8,13 @@ Math.js contains a number of global options. The options are defined in
   The precision is used by the function `math.format` and by the `toString`
   functions of units, complex numbers, and matrices.
 
-- `matrix.defaultType`. The default type of matrix output for functions. Available
-  values are: `"array"` or `"matrix"` (default).
+- `matrix.defaultType`. The default type of matrix output for functions.
+  Available values are: `"array"` or `"matrix"` (default).
   Where possible, the type of matrix output from functions is determined from
   the function input: An array as input will return an Array, a Matrix as input
-  will return a Matrix. In case of mixed input or no matrix as input, the type
-  of output is determined by the option `math.matrix.defaultType`.
+  will return a Matrix. In case of no matrix as input, the type of output is
+  determined by the option `math.matrix.defaultType`. In case of mixed matrix
+  inputs, a matrix will be returned always.
 
 Example usage:
 
