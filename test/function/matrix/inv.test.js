@@ -1,6 +1,7 @@
 // test inv
-var assert = require('assert');
-var math = require('../../../index.js');
+var assert = require('assert'),
+    approx = require('../../../tools/approx'),
+    math = require('../../../index');
 
 describe('inv', function() {
 
@@ -12,25 +13,25 @@ describe('inv', function() {
     assert.deepEqual(math.inv([4]), [1/4]);
     assert.deepEqual(math.inv([[4]]), [[1/4]]);
 
-    assert.deepEqual(math.format(math.inv([
+    approx.deepEqual(math.inv([
       [ 1, 4,  7],
       [ 3, 0,  5],
       [-1, 9, 11]
-    ])), math.format([
+    ]), [
       [ 5.625, -2.375, -2.5],
       [ 4.75,  -2.25,  -2],
       [-3.375,  1.625,  1.5]
-    ]));
+    ]);
 
-    assert.deepEqual(math.format(math.inv([
+    approx.deepEqual(math.inv([
       [ 2, -1,  0],
       [-1,  2, -1],
       [ 0, -1,  2]
-    ])), math.format([
+    ]), [
       [3/4, 1/2, 1/4],
       [1/2, 1,   1/2],
       [1/4, 1/2, 3/4]
-    ]));
+    ]);
   });
 
   it('should return the inverse for each element in a matrix', function() {

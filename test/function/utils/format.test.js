@@ -24,6 +24,12 @@ describe('format', function() {
     assert.equal(math.format(2.3e6), '2.3e6');
   });
 
+  it('should format numbers with provided precision', function() {
+    assert.equal(math.format(math.pi, 3), '3.14');
+    assert.equal(math.format(math.pi, 4), '3.142');
+    assert.equal(math.format(math.pi, 5), '3.1416');
+  });
+
   it('should format numbers with correct number of digits', function() {
     assert.equal(math.format(1000.000), '1000');
     assert.equal(math.format(1000.0010), '1000'); // rounded off at 5 digits
@@ -45,13 +51,6 @@ describe('format', function() {
 
   it('should format complex values', function() {
     assert.equal(math.format(math.divide(math.complex(2,5),3)), '0.66667 + 1.6667i');
-  });
-
-  it('should format a string with template values', function() {
-    assert.equal(math.format('hello, $name!', {name: 'user'}), 'hello, user!');
-    assert.equal(math.format('hello, $name.first $name.last!',
-        {name: {first: 'first', last: 'last'}}),
-        'hello, first last!');
   });
 
 });

@@ -126,9 +126,10 @@ require('./lib/function/units/in.js')(exports);
 require('./lib/function/utils/clone.js')(exports);
 require('./lib/function/utils/format.js')(exports);
 require('./lib/function/utils/import.js')(exports);
+require('./lib/function/utils/map.js')(exports);
+require('./lib/function/utils/print.js')(exports);
 require('./lib/function/utils/select.js')(exports);
 require('./lib/function/utils/typeof.js')(exports);
-require('./lib/function/utils/map.js')(exports);
 require('./lib/function/utils/forEach.js')(exports);
 
 // constants

@@ -1,5 +1,6 @@
-var assert = require('assert');
-var math = require('../../index.js');
+var assert = require('assert'),
+    approx = require('../../tools/approx'),
+    math = require('../../index');
 
 describe('unit', function() {
 
@@ -46,9 +47,9 @@ describe('unit', function() {
   describe('toNumber', function() {
     it ('convert a unit to a number', function () {
       var u = math.unit(5000, 'cm');
-      assert.strictEqual(u.toNumber('mm'), 50000);
+      approx.equal(u.toNumber('mm'), 50000);
 
-      assert.strictEqual(math.format(math.unit('5.08 cm').toNumber('inch')), '2');
+      approx.equal(math.unit('5.08 cm').toNumber('inch'), 2);
     });
   });
 

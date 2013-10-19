@@ -7,6 +7,8 @@ https://github.com/josdejong/mathjs
 - Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
   (guillermobox).
 - Implemented support for multiplying vectors with matrices.
+- Splitted function `format` into `format` and `print`, the latter to
+  interpolate values in a template.
 - Changed behavior of `max` and `min` on multi dimensional matrices: they now
   return the maximum and minimum of the flattened array.
 - Renamed option `math.options.precision` to `math.options.format.precision`.
