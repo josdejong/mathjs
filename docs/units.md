@@ -40,13 +40,10 @@ A `Unit` contains the following functions:
 - `toNumber(plainUnit)`. Get the value of a unit when converted to the specified
   plain unit (a unit with optional prefix but without value).
 - `format([precision])`. Get a string representation of the unit. The function
-  will determine the best fitting prefix for the unit. The units value is
-  rounded to the provided precision or, if not defined, uses the the option
-  `math.options.format.precision`.
+  will determine the best fitting prefix for the unit. If precision is defined,
+  the units value will be rounded to the provided number of digits.
 - `toString()`. Get a string representation of the unit. The function will
-  determine the best fitting prefix for the unit. The units value is rounded
-  to a fixed precision. The precision is defined in the option
-  `math.options.format.precision`.
+  determine the best fitting prefix for the unit.
 
 ```js
 var a = math.unit(55, 'cm');        // Unit 550 mm

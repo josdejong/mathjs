@@ -5,13 +5,13 @@ var math = require('../../../index.js');
 describe('format', function() {
 
   it('should format numbers', function() {
-    assert.equal(math.format(2/7), '0.28571');
+    assert.equal(math.format(2/7), '0.2857142857142857');
     assert.equal(math.format(0.10400), '0.104');
     assert.equal(math.format(1000), '1000');
-    assert.equal(math.format(2.3e-7), '2.3e-7');
-    assert.equal(math.format(2.3e-6), '2.3e-6');
-    assert.equal(math.format(2.3e-5), '2.3e-5');
-    assert.equal(math.format(2.3e-4), '2.3e-4');
+    assert.equal(math.format(2.4e-7), '2.4e-7');
+    assert.equal(math.format(2.4e-6), '2.4e-6');
+    assert.equal(math.format(2.4e-5), '2.4e-5');
+    assert.equal(math.format(2.4e-4), '2.4e-4');
     assert.equal(math.format(2.3e-3), '0.0023');
     assert.equal(math.format(2.3e-2), '0.023');
     assert.equal(math.format(2.3e-1), '0.23');
@@ -26,6 +26,7 @@ describe('format', function() {
 
   describe('precision', function() {
     it('should format numbers with given precision', function() {
+      assert.equal(math.format(1/3), '0.3333333333333333');
       assert.equal(math.format(1/3, 3), '0.333');
       assert.equal(math.format(1/3, 4), '0.3333');
       assert.equal(math.format(1/3, 5), '0.33333');
@@ -55,12 +56,12 @@ describe('format', function() {
   });
 
   it('should format numbers with correct number of digits', function() {
-    assert.equal(math.format(1000.000), '1000');
-    assert.equal(math.format(1000.0010), '1000'); // rounded off at 5 digits
-    assert.equal(math.format(math.pi), '3.1416');
-    assert.equal(math.format(math.pi * 10000), '31416');
-    assert.equal(math.format(math.pi / 100), '0.031416');
-    assert.equal(math.format(math.e), '2.7183');
+    assert.equal(math.format(1000.000, 5), '1000');
+    assert.equal(math.format(1000.0010, 5), '1000'); // rounded off at 5 digits
+    assert.equal(math.format(math.pi, 5), '3.1416');
+    assert.equal(math.format(math.pi * 10000, 5), '31416');
+    assert.equal(math.format(math.pi / 100, 5), '0.031416');
+    assert.equal(math.format(math.e, 5), '2.7183');
   });
 
   it('should format strings', function() {
@@ -69,12 +70,13 @@ describe('format', function() {
 
   it('should format arrays', function() {
     assert.equal(math.format([[1,2],[3,4]]), '[[1, 2], [3, 4]]');
-    assert.equal(math.format([[math.unit(2/3, 'm'), 2/7],['hi', math.complex(2,1/3)]]),
+    assert.equal(math.format([[math.unit(2/3, 'm'), 2/7],['hi', math.complex(2,1/3)]], 5),
         '[[0.66667 m, 0.28571], ["hi", 2 + 0.33333i]]');
   });
 
   it('should format complex values', function() {
-    assert.equal(math.format(math.divide(math.complex(2,5),3)), '0.66667 + 1.6667i');
+    assert.equal(math.format(math.divide(math.complex(2,5),3)), '0.6666666666666666 + 1.6666666666666667i');
+    assert.equal(math.format(math.divide(math.complex(2,5),3), 5), '0.66667 + 1.6667i');
   });
 
 });

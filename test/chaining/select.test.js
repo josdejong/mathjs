@@ -13,8 +13,8 @@ describe('select', function() {
 
   it('should chain operations with constants', function() {
     approx.equal(math.select().pi.done(), Math.PI);
-    assert.deepEqual(math.select().i.multiply(2).add(3).done(), math.complex(3, 2));
-    assert.deepEqual(math.select().pi.divide(4).sin().pow(2).format().done(), 0.5);
+    approx.deepEqual(math.select().i.multiply(2).add(3).done(), math.complex(3, 2));
+    approx.equal(math.select().pi.divide(4).sin().pow(2).done(), 0.5);
   });
 
   it('should chain operations with matrices', function() {

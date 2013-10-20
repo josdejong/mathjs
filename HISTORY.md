@@ -7,21 +7,26 @@ https://github.com/josdejong/mathjs
 - Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
   (guillermobox).
 - Implemented support for multiplying vectors with matrices.
-- Implemented a function `format(precision)` for `Matrix`, `Complex`, `Unit`,
-  `Range` to output with a specific precision. The `toString` function does
-  no longer round the output values.
-- Implemented a function `print` to interpolate values in a template.
-- Changed function `format`: it only does stringify of values now, and has
-  a new parameter `precision` to stringify using a specific number of digits.
+- Improved formatting numbers:
+  - Numbers are no longer rounded to 5 digits by default when formatted.
+  - Implemented a function `format([precision])` for `Matrix`, `Complex`,
+    `Unit`, and `Range` to output with a specific precision.
+  - Changed: The `toString` function of `Matrix`, `Complex`, `Unit`, and `Range`
+    does no longer round the output values.
+  - Function `format` does only stringify values now, and has a new parameter
+    `precision` to round to a specific number of digits.
+  - Removed option `math.options.precision`,
+    use `math.format(value [, precision])` instead.
+  - Fixed formatting numbers as scientific notation in some cases returning
+    a zero digit left from the decimal point. (like "0.33333e8" rather than
+    "3.3333e7"). Thanks husayt.
+- Implemented a function `print` to interpolate values in a template string.
 - Changed behavior of `max` and `min` on multi dimensional matrices: they now
   return the maximum and minimum of the flattened array.
-- Renamed option `math.options.precision` to `math.options.format.precision`.
-- Renamed option `math.options.matrix.default` to `math.options.matrix.defaultType`.
+- Renamed option `math.options.matrix.default` to
+  `math.options.matrix.defaultType`.
 - Removed support for comparing complex numbers in functions `smaller`,
   `smallereq`, `larger`, `largereq`. Complex numbers cannot be ordered.
-- Fixed formatting numbers as scientific notation in some cases returning
-  a zero digit left from the decimal point. (like "0.33333e8" rather than
-  "3.3333e7"). Thanks husayt.
 
 
 ## 2013-10-08, version 0.14.0
@@ -37,8 +42,8 @@ https://github.com/josdejong/mathjs
   You can now input nested arrays like in JavaScript. Matrices can be
   concatenated using the function `concat`.
 - The matrix syntax `[...]` in the expression parser now creates 1 dimensional
-  matrices by default. `math.eval('[1,2,3,4]')` returns a matrix with size `[4]`,
-  `math.eval('[1,2;3,4]')` returns a matrix with size `[2,2]`.
+  matrices by default. `math.eval('[1,2,3,4]')` returns a matrix with
+  size `[4]`, `math.eval('[1,2;3,4]')` returns a matrix with size `[2,2]`.
 - Documentation is restructured and extended.
 - Fixed non working operator `mod` (modulus operator).
 
@@ -250,7 +255,8 @@ https://github.com/josdejong/mathjs
   representation of the unit in inches has 2 as value.
 - Improved: method `math.in(x, unit)` now supports a string as second parameter,
   for example `math.in(math.unit('5.08 cm'), 'inch')`.
-- Split the end user documentation of the parser functions from the source files.
+- Split the end user documentation of the parser functions from the source
+  files.
 - Removed function help and the built-in documentation from the core library.
 - Fixed constant i being defined as -1i instead of 1i.
 - Minor bug fixes.

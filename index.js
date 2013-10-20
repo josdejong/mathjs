@@ -14,16 +14,13 @@ var object = require('./lib/util/object');
  *                            {String} matrix.defaultType
  *                              A string 'array' or 'matrix' (default).
  */
-function mathFactory (options) {
+function mathjs (options) {
   // create new namespace
   var math = {};
 
   // options
   // TODO: change options to properties with getters to validate the input value
   math.options = {
-    format: {
-      precision: 5   // number of digits in formatted output
-    },
     matrix: {
       'defaultType': 'matrix' // type of default matrix output. Choose 'array' or 'matrix' (default)
     }
@@ -36,7 +33,7 @@ function mathFactory (options) {
   if (Object.defineProperty) {
     var fnPrecision = function () {
       throw new Error('Option math.options.precision is deprecated. ' +
-          'Use math.options.format.precision instead.')
+          'Use math.format(value, precision) instead.')
     };
 
     Object.defineProperty(math.options, 'precision', {
@@ -210,4 +207,4 @@ function mathFactory (options) {
 
 // return a new instance
 // TODO: return the mathFactory itself
-module.exports = mathFactory();
+module.exports = mathjs();

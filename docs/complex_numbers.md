@@ -55,12 +55,10 @@ A `Complex` object has the following functions:
   equal.
 - `format([precision])`. Get a string representation of the complex number,
   formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
-  The values are rounded to given precision. If precision is not defined,
-  the precision in `math.options.format.precision` is used.
+  If precision is defined, the units value will be rounded to the provided
+  number of digits.
 - `toString()`. Returns a string representation of the complex number, formatted
-  as `a + bi` where `a` is the real part and `b` the imaginary part. The
-  values are rounded to a fixed precision. The precision is defined in the
-  option `math.option.format.precision`.
+  as `a + bi` where `a` is the real part and `b` the imaginary part.
 
 
 ## Calculations
