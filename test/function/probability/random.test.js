@@ -1,7 +1,7 @@
 var assert = require('assert'),
     seed = require('seed-random'),
     _ = require('underscore'),
-    math = require('../../../index.js');
+    math = require('../../../index');
 
 var assertApproxEqual = function(testVal, val, tolerance) {
   var diff = Math.abs(val - testVal);

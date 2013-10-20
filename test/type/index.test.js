@@ -1,6 +1,6 @@
 // test data type Index
 var assert = require('assert');
-var math = require('../../index.js'),
+var math = require('../../index'),
     Index = math.type.Index;
 
 describe('Index', function () {

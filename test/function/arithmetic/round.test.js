@@ -1,7 +1,7 @@
 // test round
 var assert = require('assert'),
-    approx = require('../../../tools/approx.js'),
-    math = require('../../../index.js'),
+    approx = require('../../../tools/approx'),
+    math = require('../../../index'),
     round = math.round;
 
 describe('round', function() {

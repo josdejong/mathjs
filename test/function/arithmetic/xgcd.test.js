@@ -1,6 +1,6 @@
 // test xgcd
 var assert = require('assert');
-var math = require('../../../index.js'),
+var math = require('../../../index'),
     gcd = math.gcd,
     xgcd = math.xgcd;
 

@@ -1,6 +1,6 @@
 // test approx itself...
 var assert = require('assert'),
-    approx = require('../tools/approx.js');
+    approx = require('../tools/approx');
 
 describe('approx', function() {
 

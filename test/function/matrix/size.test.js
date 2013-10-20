@@ -1,6 +1,6 @@
 // test size
 var assert = require('assert'),
-    math = require('../../../index.js'),
+    math = require('../../../index'),
     matrix = math.matrix;
 
 describe('size', function() {

@@ -1,6 +1,6 @@
 var assert = require('assert'),
-    math = require('../../../index.js'),
-    approx = require('../../../tools/approx.js'),
+    math = require('../../../index'),
+    approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
     matrix = math.matrix,

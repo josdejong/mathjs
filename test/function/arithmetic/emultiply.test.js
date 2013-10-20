@@ -1,7 +1,7 @@
 // test emultiply (element-wise multiply)
 var assert = require('assert'),
-    math = require('../../../index.js'),
-    approx = require('../../../tools/approx.js'),
+    math = require('../../../index'),
+    approx = require('../../../tools/approx'),
     emultiply = math.emultiply,
     divide = math.divide,
     matrix = math.matrix,

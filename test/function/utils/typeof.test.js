@@ -1,6 +1,6 @@
 // test typeof
 var assert = require('assert');
-var math = require('../../../index.js');
+var math = require('../../../index');
 
 describe('typeof', function() {
 

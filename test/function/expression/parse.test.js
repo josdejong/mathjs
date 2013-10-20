@@ -1,7 +1,7 @@
 // test parse
 var assert = require('assert'),
-    approx = require('../../../tools/approx.js'),
-    math = require('../../../index.js'),
+    approx = require('../../../tools/approx'),
+    math = require('../../../index'),
     Complex = math.type.Complex,
     Matrix = math.type.Matrix,
     Unit = math.type.Unit;

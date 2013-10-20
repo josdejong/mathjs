@@ -1,6 +1,6 @@
 // test ones
 var assert = require('assert');
-var math = require('../../../index.js'),
+var math = require('../../../index'),
     ones = math.ones,
     matrix = math.matrix;
 

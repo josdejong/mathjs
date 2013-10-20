@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../index.js'),
+var math = require('../../index'),
     index = math.index;
 
 describe('matrix', function() {

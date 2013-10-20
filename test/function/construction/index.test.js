@@ -1,6 +1,6 @@
 // test index construction
 var assert = require('assert'),
-    math = require('../../../index.js');
+    math = require('../../../index');
 
 describe('index', function() {
 

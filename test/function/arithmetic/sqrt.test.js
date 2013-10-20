@@ -1,7 +1,7 @@
 // test sqrt
 var assert = require('assert'),
-    approx = require('../../../tools/approx.js'),
-    math = require('../../../index.js');
+    approx = require('../../../tools/approx'),
+    math = require('../../../index');
 
 describe('sqrt', function() {
   it('should return the square root of a boolean', function () {

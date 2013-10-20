@@ -1,7 +1,7 @@
 // test atan2
 var assert = require('assert'),
-    math = require('../../../index.js'),
-    approx = require('../../../tools/approx.js'),
+    math = require('../../../index'),
+    approx = require('../../../tools/approx'),
     pi = math.pi,
     acos = math.acos,
     atan = math.atan,

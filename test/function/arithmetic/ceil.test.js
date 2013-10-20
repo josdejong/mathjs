@@ -1,7 +1,7 @@
 // test ceil
 var assert = require('assert'),
-    approx = require('../../../tools/approx.js'),
-    math = require('../../../index.js'),
+    approx = require('../../../tools/approx'),
+    math = require('../../../index'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,

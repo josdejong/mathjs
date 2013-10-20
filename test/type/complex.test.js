@@ -1,7 +1,7 @@
 // test data type Complex
 
 var assert = require('assert');
-var math = require('../../index.js');
+var math = require('../../index');
 
 describe('Complex', function () {
 

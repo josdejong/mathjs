@@ -1,7 +1,7 @@
 // test mod
 var assert = require('assert'),
-    approx = require('../../../tools/approx.js'),
-    math = require('../../../index.js'),
+    approx = require('../../../tools/approx'),
+    math = require('../../../index'),
     matrix = math.matrix,
     range = math.range,
     mod = math.mod;

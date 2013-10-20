@@ -1,7 +1,7 @@
 // test import
 var assert = require('assert'),
-    math = require('../../../index.js'),
-    approx = require('../../../tools/approx.js');
+    math = require('../../../index'),
+    approx = require('../../../tools/approx');
 
 describe('import', function() {
 
@@ -56,7 +56,7 @@ describe('import', function() {
     assert.equal(math.getSizeNotWrapped(math.matrix([1,2,3])), undefined);
   });
 
-  it('should extend math with numbers.js', function() {
+  it('should extend math with numbers', function() {
     // extend math.js with numbers.js
     // examples copied from https://github.com/sjkaliski/numbers.js/blob/master/examples/statistic.js
     math.import('numbers');
