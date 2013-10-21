@@ -91,6 +91,13 @@ describe('number', function() {
       assert.equal(number.format(2/7), '0.2857142857142857');
       assert.equal(number.format(0.10400), '0.104');
       assert.equal(number.format(1000), '1000');
+
+      assert.equal(number.format(0), '0');
+
+      assert.equal(number.format(Infinity), 'Infinity');
+      assert.equal(number.format(-Infinity), '-Infinity');
+      assert.equal(number.format('no number'), 'NaN');
+
       assert.equal(number.format(2.4e-7), '2.4e-7');
       assert.equal(number.format(2.4e-6), '2.4e-6');
       assert.equal(number.format(2.4e-5), '2.4e-5');
@@ -103,8 +110,14 @@ describe('number', function() {
       assert.equal(number.format(2.3e2), '230');
       assert.equal(number.format(2.3e3), '2300');
       assert.equal(number.format(2.3e4), '23000');
-      assert.equal(number.format(2.3e5), '2.3e5');
+      assert.equal(number.format(2.3e5), '230000');
       assert.equal(number.format(2.3e6), '2.3e6');
+
+      assert.equal(number.format(1234567), '1234567');
+      assert.equal(number.format(1.000000012), '1.000000012');
+
+      assert.equal(number.format(123456789123456), '123456789123456');
+      assert.equal(number.format(123456789123456789), '1.234567891234568e17');
     });
 
     it('should format numbers with given precision', function() {
@@ -117,6 +130,10 @@ describe('number', function() {
       assert.equal(number.format(1000.0010, 5), '1000'); // rounded off at 5 digits
       assert.equal(number.format(1234, 3), '1230');
       assert.equal(number.format(0.001234, 3), '0.00123');
+
+      assert.equal(number.format(1234567), '1234567');
+      assert.equal(number.format(1234567, 4), '1235000');
+      assert.equal(number.format(1234567, 2), '1.2e6');
     });
     
   });

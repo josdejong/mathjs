@@ -31,7 +31,7 @@ describe('string', function() {
   it('should convert a number to string', function() {
     assert.equal(string(1/8), '0.125');
     assert.equal(string(2.1e-3), '0.0021');
-    assert.equal(string(123456789), '1.23456789e8');
+    assert.equal(string(123456789), '123456789');
     assert.equal(string(2000000), '2e6');
   });
 
