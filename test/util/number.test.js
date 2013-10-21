@@ -110,13 +110,15 @@ describe('number', function() {
       assert.equal(number.format(2.3e2), '230');
       assert.equal(number.format(2.3e3), '2300');
       assert.equal(number.format(2.3e4), '23000');
-      assert.equal(number.format(2.3e5), '230000');
+      assert.equal(number.format(2.3e5), '2.3e5');
       assert.equal(number.format(2.3e6), '2.3e6');
 
-      assert.equal(number.format(1234567), '1234567');
       assert.equal(number.format(1.000000012), '1.000000012');
+      assert.equal(number.format(1000000012), '1.000000012e9');
 
-      assert.equal(number.format(123456789123456), '123456789123456');
+      assert.equal(number.format(1234567), '1.234567e6');
+      assert.equal(number.format(123456789123456), '1.23456789123456e14');
+      assert.equal(number.format(123456789123456e-14), '1.23456789123456');
       assert.equal(number.format(123456789123456789), '1.234567891234568e17');
     });
 
@@ -125,15 +127,18 @@ describe('number', function() {
       assert.equal(number.format(1/3, 3), '0.333');
       assert.equal(number.format(1/3, 4), '0.3333');
       assert.equal(number.format(1/3, 5), '0.33333');
+      assert.equal(number.format(0.9999e6), '9.999e5');
+      assert.equal(number.format(1.111e6), '1.111e6');
 
       assert.equal(number.format(1000.000, 5), '1000');
       assert.equal(number.format(1000.0010, 5), '1000'); // rounded off at 5 digits
       assert.equal(number.format(1234, 3), '1230');
       assert.equal(number.format(0.001234, 3), '0.00123');
 
-      assert.equal(number.format(1234567), '1234567');
-      assert.equal(number.format(1234567, 4), '1235000');
+      assert.equal(number.format(1234567), '1.234567e6');
+      assert.equal(number.format(1234567, 4), '1.235e6');
       assert.equal(number.format(1234567, 2), '1.2e6');
+      assert.equal(number.format(1234, 2), '1200');
     });
     
   });
