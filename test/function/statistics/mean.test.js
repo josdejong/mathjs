@@ -36,6 +36,15 @@ describe('mean', function() {
     ])), 5);
   });
 
+  it('should return the mean value along a dimension on a matrix', function() {
+	  assert.deepEqual(math.mean([
+			  [2, 6],
+			  [4, 10]],2), [4, 7]);
+	  assert.deepEqual(math.mean([
+			  [2, 6],
+			  [4, 10]],1), [3, 8]);
+  });
+
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {math.mean()});
   });
