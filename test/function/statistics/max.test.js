@@ -42,6 +42,10 @@ describe('max', function() {
 	   [ 1, 2, 3],
 	   [ 4, 5, 6],
 	   [ 7, 8, 9]], 2), [3, 6, 9]);
+	  assert.deepEqual(max([
+       [ [1,2], [3,4], [5,6]],
+       [ [6,7], [8,9], [10,11]]],3),
+		  [[2, 4, 6], [7, 9, 11]]);
   });
 
   it('should throw an error when called with complex numbers', function() {
