@@ -49,10 +49,6 @@ describe('mean', function() {
     assert.throws(function() {math.mean()});
   });
 
-  it('should throw an error if called with arguments of different types', function() {
-    assert.throws(function() {math.mean([5,2], 3)});
-  });
-
   it('should throw an error if called with an empty array', function() {
     assert.throws(function() {math.mean([])});
   });
