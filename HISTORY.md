@@ -4,15 +4,13 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.15.0
 
-- Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
-  (guillermobox).
 - Implemented support for multiplying vectors with matrices.
-- Improved formatting numbers:
+- Improved number formatting:
+  - Function `format` now support various options: precision, different
+    notations (`fixed`, `scientific`, `auto`), and more.
   - Numbers are no longer rounded to 5 digits by default when formatted.
-  - Implemented a function `format([precision])` for `Matrix`, `Complex`,
-    `Unit`, and `Range` to output with a specific precision.
-  - Changed: The `toString` function of `Matrix`, `Complex`, `Unit`, and `Range`
-    does no longer round the output values.
+  - Implemented a function `format` for `Matrix`, `Complex`, `Unit`, and `Range`
+    to format using options.
   - Function `format` does only stringify values now, and has a new parameter
     `precision` to round to a specific number of digits.
   - Removed option `math.options.precision`,
@@ -20,7 +18,10 @@ https://github.com/josdejong/mathjs
   - Fixed formatting numbers as scientific notation in some cases returning
     a zero digit left from the decimal point. (like "0.33333e8" rather than
     "3.3333e7"). Thanks husayt.
-- Implemented a function `print` to interpolate values in a template string.
+- Implemented a function `print` to interpolate values in a template string,
+  this functionality was moved from the function `format`.
+- Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
+  (guillermobox).
 - Changed behavior of `max` and `min` on multi dimensional matrices: they now
   return the maximum and minimum of the flattened array.
 - Renamed option `math.options.matrix.default` to
