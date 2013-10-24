@@ -33,6 +33,21 @@ describe('max', function() {
     ])), 11);
   });
 
+  it('should return a reduced n-1 matrix from a n matrix', function() {
+	  assert.deepEqual(max([
+	   [ 1, 2, 3],
+	   [ 4, 5, 6],
+	   [ 7, 8, 9]], 0), [7, 8, 9]);
+	  assert.deepEqual(max([
+	   [ 1, 2, 3],
+	   [ 4, 5, 6],
+	   [ 7, 8, 9]], 1), [3, 6, 9]);
+	  assert.deepEqual(max([
+       [ [1,2], [3,4], [5,6]],
+       [ [6,7], [8,9], [10,11]]],2),
+		  [[2, 4, 6], [7, 9, 11]]);
+  });
+
   it('should throw an error when called with complex numbers', function() {
     assert.throws(function () {max(math.complex(2,3), math.complex(2,1))}, TypeError);
     assert.throws(function () {max(math.complex(2,3), math.complex(2,5))}, TypeError);
