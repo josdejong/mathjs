@@ -2,7 +2,6 @@ var assert = require('assert');
 var math = require('../../../index.js');
 
 describe('mean', function() {
-
   it('should return the mean value of some numbers', function() {
     assert.equal(math.mean(5), 5);
     assert.equal(math.mean(3,1), 2);
@@ -36,13 +35,26 @@ describe('mean', function() {
     ])), 5);
   });
 
+  var inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
+          [ [10,20], [30,40], [50,60] ],
+          [ [70,80], [90,100], [110,120] ],
+          [ [130,140], [150,160], [170,180] ],
+          [ [190,200], [210,220], [230,240]]
+        ];
+
   it('should return the mean value along a dimension on a matrix', function() {
-	  assert.deepEqual(math.mean([
-			  [2, 6],
-			  [4, 10]],1), [4, 7]);
-	  assert.deepEqual(math.mean([
-			  [2, 6],
-			  [4, 10]],0), [3, 8]);
+    assert.deepEqual(math.mean([
+        [2, 6],
+        [4, 10]], 1), [4, 7]);
+    assert.deepEqual(math.mean([
+        [2, 6],
+        [4, 10]], 0), [3, 8]);
+    assert.deepEqual(math.mean(inputMatrix, 0),
+      [ [100, 110], [120, 130], [140,150] ]);
+    assert.deepEqual(math.mean(inputMatrix, 1),
+      [ [30, 40], [90,100], [150,160], [210,220]]);
+    assert.deepEqual(math.mean(inputMatrix, 2),
+      [[15, 35, 55],[75,95,115],[135,155,175],[195, 215, 235]]);
   });
 
   it('should throw an error if called with invalid number of arguments', function() {
