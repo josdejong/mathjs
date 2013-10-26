@@ -1,14 +1,15 @@
 // chained operations
 
-// load math.js
-var math = require('../index');
+// create an instance of math.js
+var math = require('../index')();
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-  console.log(math.format(value));
+  var precision = 5;
+  console.log(math.format(value, precision));
 }
 
 // create a chained operation using the function select
@@ -32,10 +33,10 @@ print(b);                       // 0.5
 // A selector has a few special methods: done, toString, valueOf, get, and set.
 // these are demonstrated in the following examples
 
-// toString will format the value in the selector
+// toString will return a string representation of the selectors value
 var selector = math.select(2).divide(3);
 var str = selector.toString();
-print(str);                     // "0.66667"
+print(str);                     // "0.6666666666666666"
 
 // a selector has a .valueOf(), which returns the value hold by the selector.
 // This allows using it in regular operations. The function valueOf() acts the

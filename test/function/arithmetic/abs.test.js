@@ -1,6 +1,6 @@
 // test abs
-var assert = require('assert');
-var math = require('../../../index');
+var assert = require('assert'),
+    math = require('../../../index')();
 
 describe('abs', function () {
   it('should return the abs value of a boolean', function () {

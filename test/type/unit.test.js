@@ -1,6 +1,6 @@
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    math = require('../../index');
+    math = require('../../index')();
 
 describe('unit', function() {
 

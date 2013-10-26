@@ -1,6 +1,6 @@
 // test unary minus
-var assert = require('assert');
-var math = require('../../../index');
+var assert = require('assert'),
+    math = require('../../../index')();
 
 describe('unaryminus', function() {
   it('should parform unary minus of a boolean', function () {

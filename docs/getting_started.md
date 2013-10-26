@@ -30,21 +30,24 @@ Or using [bower](http://twitter.github.io/bower/):
 Or by downloading the latest version from
 [mathjs.org](http://mathjs.org/#install_or_download):
 
-- [math.js](http://mathjs.org/js/lib/math.js) (Development version)
-- [math.min.js](http://mathjs.org/js/lib/math.min.js) (Production version)
-
 
 ## Load
+
+Math.js can be used in node.js and in the browser. The library must be loaded
+and instantiated. When creating an instance, one can optionally provide options
+as described in [Options](https://github.com/josdejong/mathjs/blob/master/docs/options.md).
 
 ### Node.js
 
 Load math.js in [node.js](http://nodejs.org/):
 
 ```js
-var math = require('mathjs');
+// create an instance of math.js
+var math = require('mathjs')();
 
 math.sqrt(-4); // 2i
 ```
+
 
 ### Browser
 
@@ -54,12 +57,16 @@ Math.js can be loaded as a regular javascript file in the browser:
 <!DOCTYPE HTML>
 <html>
 <head>
-    <script src="math.js" type="text/javascript"></script>
+  <script src="math.js" type="text/javascript"></script>
 </head>
 <body>
-    <script type="text/javascript">
-        math.sqrt(-4); // 2i
-    </script>
+  <script type="text/javascript">
+    // create an instance of math.js
+    var math = mathjs();
+
+    // use math.js
+    math.sqrt(-4); // 2i
+  </script>
 </body>
 </html>
 ```
@@ -70,15 +77,18 @@ Load math.js in the browser using [require.js](http://requirejs.org/):
 
 ```js
 require.config({
-    paths: {
-        mathjs: 'path/to/mathjs',
-    }
+  paths: {
+    mathjs: 'path/to/mathjs',
+  }
 });
-require(['mathjs'], function (math) {
-    math.sqrt(-4); // 2i
+require(['mathjs'], function (mathjs) {
+  // create an instance of math.js
+  var math = mathjs();
+
+  // use math.js
+  math.sqrt(-4); // 2i
 });
 ```
-
 
 ## Use
 
@@ -90,8 +100,8 @@ The example code below shows how to use math.js. More examples can be found in t
 [examples directory](https://github.com/josdejong/mathjs/tree/master/examples/).
 
 ```js
-// load math.js
-var math = require('mathjs');
+// create an instance of math.js
+var math = require('mathjs')();
 
 // functions and constants
 math.round(math.e, 3);            // 2.718

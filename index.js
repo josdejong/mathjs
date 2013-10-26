@@ -5,8 +5,8 @@ var object = require('./lib/util/object');
  *
  * Usage:
  *
- *     var math = mathFactory();
- *     var math = mathFactory(options);
+ *     var math = mathjs();
+ *     var math = mathjs(options);
  *
  * @param {Object} [options]  Available options:
  *                            {Number} format.precision
@@ -205,6 +205,33 @@ function mathjs (options) {
 }
 
 
-// return a new instance
-// TODO: return the mathFactory itself
-module.exports = mathjs();
+// return the mathjs factory
+module.exports = mathjs;
+
+// error messages for deprecated static library (deprecated since v0.15.0) TODO: remove some day
+var placeholder = function () {
+  throw new Error('Static function calls are deprecated. Create an instance of math.js:\n\t"var math = require(\'mathjs\')();" on node.js, \n\t"var math = mathjs();" in the browser.');
+};
+var instance = mathjs();
+for (var prop in instance) {
+  if (instance.hasOwnProperty(prop)) {
+    var fn = instance[prop];
+    if (typeof fn === 'function') {
+      mathjs[prop] = placeholder;
+    }
+    else {
+      if (Object.defineProperty) {
+        Object.defineProperty(mathjs, prop, {
+          get: placeholder,
+          set: placeholder,
+          enumerable: true,
+          configurable: false
+        });
+      }
+    }
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.math = mathjs;
+}

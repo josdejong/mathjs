@@ -1,6 +1,7 @@
 # Options
 
-Math.js contains a number of global options. The options are defined in
+Math.js contains a number of options. The options are defined in `math.options`.
+Options can be set when creating an instance, and can be adjusted later on in
 `math.options`.
 
 - `matrix.defaultType`. The default type of matrix output for functions.
@@ -14,12 +15,27 @@ Math.js contains a number of global options. The options are defined in
 Example usage:
 
 ```js
-var math = require('mathjs');
+// load the library
+var mathjs = require('mathjs');
+
+// create an instance of math.js with default settings
+var math1 = mathjs();
 
 // default setting
-math.ones(2, 2); // Matrix "[[1, 1], [1, 1]]"
+math1.range(0, 4); // Matrix [0, 1, 2, 3]
 
-// change default matrix output to array
-math.options.matrix.defaultType = 'array'
-math.ones(2, 2); // Array "[[1, 1], [1, 1]]"
+// create an instance of math.js with custom settings
+var options = {
+  matrix: {
+    defaultType: 'array'
+  }
+};
+var math2 = mathjs(options);
+
+math2.range(0, 4); // Array [0, 1, 2, 3]
+
+// change settings later on
+math2.options.matrix.defaultType = 'matrix';
+math2.range(0, 4); // Matrix [0, 1, 2, 3]
+
 ```

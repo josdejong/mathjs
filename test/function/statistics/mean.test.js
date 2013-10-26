@@ -1,5 +1,5 @@
-var assert = require('assert');
-var math = require('../../../index');
+var assert = require('assert'),
+    math = require('../../../index')();
 
 describe('mean', function() {
   it('should return the mean value of some numbers', function() {

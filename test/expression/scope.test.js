@@ -1,7 +1,7 @@
 // test Scope
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    math = require('../../index'),
+    math = require('../../index')(),
     Scope = math.expression.Scope;
 
 describe('Scope', function() {

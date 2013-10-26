@@ -39,7 +39,7 @@
  * the License.
  */
 
-var math = require('../index.js'),
+var math = require('../index')(),
     parser = math.parser(),
     fs = require('fs');
 

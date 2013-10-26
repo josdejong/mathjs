@@ -1,6 +1,6 @@
 // test cube
 var assert = require('assert'),
-    math = require('../../../index'),
+    math = require('../../../index')(),
     unit = math.unit,
     matrix = math.matrix,
     range = math.range,

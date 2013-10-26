@@ -4,13 +4,16 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.15.0
 
+- Math.js must be instantiated now, static calls are no longer supported. Usage:
+  - node.js: `var math = require('mathjs')();`
+  - browser: `var math = mathjs();`
 - Implemented support for multiplying vectors with matrices.
 - Improved number formatting:
   - Function `format` now support various options: precision, different
     notations (`fixed`, `scientific`, `auto`), and more.
   - Numbers are no longer rounded to 5 digits by default when formatted.
-  - Implemented a function `format` for `Matrix`, `Complex`, `Unit`, and `Range`
-    to format using options.
+  - Implemented a function `format` for `Matrix`, `Complex`, `Unit`, `Range`,
+    and `Selector` to format using options.
   - Function `format` does only stringify values now, and has a new parameter
     `precision` to round to a specific number of digits.
   - Removed option `math.options.precision`,
@@ -22,8 +25,9 @@ https://github.com/josdejong/mathjs
   this functionality was moved from the function `format`.
 - Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
   (guillermobox).
-- Changed behavior of `max` and `min` on multi dimensional matrices: they now
-  return the maximum and minimum of the flattened array.
+- Extended and changed `max` and `min` for multi dimensional matrices: they now
+  return the maximum and minimum of the flattened array. An optional second
+  argument `dim` allows to calculate the `max` or `min` for specified dimension.
 - Renamed option `math.options.matrix.default` to
   `math.options.matrix.defaultType`.
 - Removed support for comparing complex numbers in functions `smaller`,

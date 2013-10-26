@@ -1,5 +1,5 @@
-var assert = require('assert');
-var math = require('../../../index'),
+var assert = require('assert'),
+    math = require('../../../index')(),
     lcm = math.lcm;
 
 describe('lcm', function() {

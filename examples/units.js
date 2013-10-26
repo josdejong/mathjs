@@ -1,14 +1,15 @@
 // units
 
-// load math.js
-var math = require('../index');
+// create an instance of math.js
+var math = require('../index')();
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-  console.log(math.format(value));
+  var precision = 5;
+  console.log(math.format(value, precision));
 }
 
 // units can be created by providing a value and plain unit, or by providing

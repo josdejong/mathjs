@@ -4,32 +4,34 @@
  * with functions and variables.
  */
 
-var math = require('../index');
+// create an instance of math.js
+var math = require('../index')();
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-  console.log(math.format(value));
+  var precision = 5;
+  console.log(math.format(value, precision));
 }
 
 /**
  * Define new functions and variables
  */
 math.import({
-  myvalue: 42,
+  myConstant: 42,
   hello: function (name) {
     return 'hello, ' + name + '!';
   }
 });
 
 // defined methods can be used in both JavaScript as well as the parser
-print(math.myvalue * 2);            // 84
-print(math.hello('user'));          // 'hello, user!'
+print(math.myConstant * 2);           // 84
+print(math.hello('user'));            // 'hello, user!'
 
-print(math.eval('myvalue + 10'));   // 52
-print(math.eval('hello("user")'));  // 'hello, user!'
+print(math.eval('myConstant + 10'));  // 52
+print(math.eval('hello("user")'));    // 'hello, user!'
 
 
 /**
@@ -48,8 +50,8 @@ catch (err) {
 
 if (math.fibonacci) {
   // calculate fibonacci
-  print(math.fibonacci(7));         // 13
-  print(math.eval('fibonacci(7)')); // 13
+  print(math.fibonacci(7));           // 13
+  print(math.eval('fibonacci(7)'));   // 13
 }
 
 /**

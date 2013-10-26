@@ -1,6 +1,6 @@
 // test largereq
 var assert = require('assert'),
-    math = require('../../../index'),
+    math = require('../../../index')(),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,

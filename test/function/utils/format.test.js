@@ -1,6 +1,6 @@
 // test format
-var assert = require('assert');
-var math = require('../../../index');
+var assert = require('assert'),
+    math = require('../../../index')();
 
 describe('format', function() {
 

@@ -7,15 +7,16 @@
  *    and keeps a scope with assigned variables in memory
  */
 
-// load math.js
-var math = require('../index');
+// create an instance of math.js
+var math = require('../index')();
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-  console.log(math.format(value));
+  var precision = 5;
+  console.log(math.format(value, precision));
 }
 
 // 1. using the function math.eval
@@ -29,10 +30,10 @@ console.log('1. USING FUNCTION MATH.EVAL');
 
 // evaluate expressions
 console.log('\nevaluate expressions');
-print(math.eval('sqrt(3^2 + 4^2)'));        // a = 5
-print(math.eval('sqrt(-4)'));               // b = 2i
-print(math.eval('2 inch in cm'));           // c = 5.08 cm
-print(math.eval('cos(45 deg)'));            // d = 0.70711
+print(math.eval('sqrt(3^2 + 4^2)'));        // 5
+print(math.eval('sqrt(-4)'));               // 2i
+print(math.eval('2 inch in cm'));           // 5.08 cm
+print(math.eval('cos(45 deg)'));            // 0.70711
 
 // evaluate multiple expressions at once
 console.log('\nevaluate multiple expressions at once');
@@ -143,12 +144,12 @@ print(parser.eval('n = m(:, 1)'));              // [[19], [43]]
 
 // get and set variables and functions
 console.log('\nget and set variables and function in the scope of the parser');
-var x = parser.get('x');                        // x = 7
-console.log('x =', x);
-var f = parser.get('f');                        // f = function
-console.log('f =', f);
-var g = f(3, 3);                                // g = 27
-console.log('g =', g);
+var x = parser.get('x');
+console.log('x =', x);                          // x = 7
+var f = parser.get('f');
+console.log('f =', f);                          // f = f(x, y)
+var g = f(3, 3);
+console.log('g =', g);                          // g = 27
 
 parser.set('h', 500);
 print(parser.eval('h / 2'));                    // 250

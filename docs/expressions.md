@@ -30,8 +30,8 @@ assigned variables or function.
 The following code demonstrates how to evaluate expressions.
 
 ```js
-// load math.js
-var math = require('mathjs');
+// create an instance of math.js
+var math = require('mathjs')();
 
 // evaluate expressions
 math.eval('sqrt(3^2 + 4^2)');           // 5
@@ -71,8 +71,8 @@ provided scope.
 Example usage:
 
 ```js
-// load math.js
-var math = require('mathjs');
+// create an instance of math.js
+var math = require('mathjs')();
 
 // parse an expression into a node, and evaluate the node
 var node1 = math.parse('sqrt(3^2 + 4^2)');
@@ -125,8 +125,8 @@ The parser contains the following functions:
 The following code shows how to create and use a parser.
 
 ```js
-// load math.js
-var math = require('mathjs');
+// create an instance of math.js
+var math = require('mathjs')();
 
 // create a parser
 var parser = math.parser();

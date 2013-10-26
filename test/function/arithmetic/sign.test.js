@@ -1,7 +1,7 @@
 // test sign
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index');
+    math = require('../../../index')();
 
 describe('sign', function() {
   it('should calculate the sign of a boolean', function () {

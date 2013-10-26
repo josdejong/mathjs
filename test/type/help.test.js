@@ -1,6 +1,6 @@
 // test Help
-var assert = require('assert');
-var math = require('../../index');
+var assert = require('assert'),
+    math = require('../../index')();
 
 var help = new math.type.Help(math, math.expression.docs.sin);
 

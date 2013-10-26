@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    math = require('../../../index'),
+    math = require('../../../index')(),
     subset = math.subset,
     matrix = math.matrix,
     range = math.range,

@@ -1,6 +1,5 @@
-var assert = require('assert');
-var math = require('../../../index');
-var prop;
+var assert = require('assert'),
+    math = require('../../../index')();
 
 describe('help', function() {
 
@@ -13,7 +12,7 @@ describe('help', function() {
     var ignore = ['workspace', 'parse', 'parser', 'select', 'unary'];
 
     // test whether all functions are documented
-    for (prop in math) {
+    for (var prop in math) {
       if (math.hasOwnProperty(prop)) {
         var obj = math[prop];
         if (math['typeof'](obj) != 'object') {
@@ -29,7 +28,7 @@ describe('help', function() {
   it('should contain functions for all available documentation', function() {
     // test whether there is documentation for non existing functions
     var docs = math.expression.docs;
-    for (prop in docs) {
+    for (var prop in docs) {
       if (docs.hasOwnProperty(prop)) {
         if (math[prop] === undefined && !math.type[prop]) {
           // TODO: find a better solution for this

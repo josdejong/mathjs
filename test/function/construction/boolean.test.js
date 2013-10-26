@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    math = require('../../../index'),
+    math = require('../../../index')(),
     bool = math.boolean;
 
 describe('boolean', function() {

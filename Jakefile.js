@@ -42,7 +42,7 @@ task('bundle', {async: true}, function () {
 
   b.add(INDEX);
   b.bundle({
-    standalone: 'math'
+    standalone: 'mathjs'
   }, function (err, code) {
     if(err) {
       throw err;
