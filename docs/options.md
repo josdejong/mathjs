@@ -34,8 +34,8 @@ var math2 = mathjs(options);
 
 math2.range(0, 4); // Array [0, 1, 2, 3]
 
-// change settings later on
+// change settings
 math2.options.matrix.defaultType = 'matrix';
-math2.range(0, 4); // Matrix [0, 1, 2, 3]
 
+math2.range(0, 4); // Matrix [0, 1, 2, 3]
 ```

@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.15.0
+## 2013-10-26, version 0.15.0
 
 - Math.js must be instantiated now, static calls are no longer supported. Usage:
   - node.js: `var math = require('mathjs')();`

@@ -35,8 +35,8 @@ and supports
 [chained operations](https://github.com/josdejong/mathjs/blob/master/docs/chained_operations.md).
 
 ```js
-// load math.js
-var math = require('mathjs');
+// create an instance of math.js
+var math = require('mathjs')();
 
 // functions and constants
 math.round(math.e, 3);            // 2.718
