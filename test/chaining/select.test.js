@@ -1,7 +1,7 @@
 // test select (chaining of operations)
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    math = require('../../index');
+    math = require('../../index')();
 
 describe('select', function() {
 
@@ -24,6 +24,10 @@ describe('select', function() {
     assert.deepEqual(math.select([[1,2],[3,4]])
         .subset(math.index(0,0), 8)
         .multiply(3).done(), [[24, 6], [9, 12]]);
+  });
+
+  it('should get string representation', function() {
+    assert.equal(math.select(5.2).toString(), '5.2');
   });
 
   it('should not break with null as value', function() {
