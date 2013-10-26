@@ -63,8 +63,12 @@ math.select(<span class="number">3</span>)
     </p>
     <div id="commandline">loading...</div>
     <script type="text/javascript">
+      // create an instance of math.js
+      var math = mathjs();
+
       var editor = new CommandLineEditor({
-          container: document.getElementById('commandline')
+          container: document.getElementById('commandline'),
+          math: math
       });
     </script>
     <div class="tips">
@@ -91,8 +95,8 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 <table>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.14.0/math.js">
-        Development (version 0.14.0)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.15.0/math.js">
+        Development (version 0.15.0)
       </a>
     </td>
     <td>
@@ -101,8 +105,8 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
   </tr>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.14.0/math.min.js">
-        Production (version 0.14.0)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.15.0/math.min.js">
+        Production (version 0.15.0)
       </a>
     </td>
     <td>
