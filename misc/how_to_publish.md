@@ -70,6 +70,9 @@ new version tag.
 Pubish at http://jspkg.com: go to the website, select the github project,
 select the new version and press the button.
 
+Publish at cdnjs: add the new version of the library, then do a pull request
+with as title "[author] Update mathjs to 1.2.4" (with correct version)
+
 
 ## Test published libraries
 
@@ -83,6 +86,8 @@ Install the libraries locally and test whether they work correctly:
 ## Update the website
 
 The website is located in the gh-pages branch of the project.
+
+Wait until the new version is available on cdnjs.org.
 
 Copy the files `./dist/math.js` and `./dist/math.min.js` from the master branch
 to the folder `js/lib` of the gh-pages branch of the math.js project.
