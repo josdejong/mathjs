@@ -43,7 +43,8 @@ Load math.js in [node.js](http://nodejs.org/):
 
 ```js
 // create an instance of math.js
-var math = require('mathjs')();
+var mathjs = require('mathjs'),
+    math = mathjs();
 
 math.sqrt(-4); // 2i
 ```

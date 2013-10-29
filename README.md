@@ -36,7 +36,8 @@ and supports
 
 ```js
 // create an instance of math.js
-var math = require('mathjs')();
+var mathjs = require('mathjs'),
+    math = mathjs();
 
 // functions and constants
 math.round(math.e, 3);            // 2.718
