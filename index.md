@@ -30,7 +30,7 @@ Powerful and easy to use.
       <a href="https://github.com/josdejong/mathjs/tree/master/examples/">here</a>.
     </p>
     <pre id="example">
-<span class="comment">// create an instance of math.js</span>
+<span class="comment">// load math.js and create an instance</span>
 <span class="keyword">var</span> mathjs = require(<span class="string">'mathjs'</span>),
     math = mathjs();
 
