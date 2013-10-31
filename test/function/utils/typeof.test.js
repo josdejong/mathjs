@@ -11,6 +11,7 @@ describe('typeof', function() {
 
   it('should return string type for a string', function() {
     assert.equal(math.typeof('hello there'), 'string');
+    assert.equal(math.typeof(new String('hello there')), 'string');
   });
 
   it('should return complex type for a complex number', function() {
@@ -19,6 +20,7 @@ describe('typeof', function() {
 
   it('should return array type for an array', function() {  
     assert.equal(math.typeof([1,2,3]), 'array');
+    assert.equal(math.typeof(new Array()), 'array');
   });
 
   it('should return matrix type for a matrix', function() {  
@@ -32,6 +34,7 @@ describe('typeof', function() {
   it('should return boolean type for a boolean', function() {  
     assert.equal(math.typeof(true), 'boolean');
     assert.equal(math.typeof(false), 'boolean');
+    assert.equal(math.typeof(new Boolean(true)), 'boolean');
   });
 
   it('should return null type for null', function() {  
@@ -48,6 +51,7 @@ describe('typeof', function() {
 
   it('should return function type for a function', function() {  
     assert.equal(math.typeof(function () {}), 'function');
+    assert.equal(math.typeof(new Function ()), 'function');
   });
 
   it('should return function type for a selector', function() {
@@ -56,6 +60,7 @@ describe('typeof', function() {
 
   it('should return object type for an object', function() {  
     assert.equal(math.typeof({}), 'object');
+    assert.equal(math.typeof(new Object()), 'object');
   });
 
   it('should throw an error if called with a wrong number of arguments', function() {

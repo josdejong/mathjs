@@ -42,7 +42,7 @@ as described in [Options](https://github.com/josdejong/mathjs/blob/master/docs/o
 Load math.js in [node.js](http://nodejs.org/):
 
 ```js
-// create an instance of math.js
+// load math.js and create an instance
 var mathjs = require('mathjs'),
     math = mathjs();
 
