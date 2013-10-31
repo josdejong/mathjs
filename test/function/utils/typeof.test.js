@@ -50,6 +50,10 @@ describe('typeof', function() {
     assert.equal(math.typeof(function () {}), 'function');
   });
 
+  it('should return function type for a selector', function() {
+    assert.equal(math.typeof(math.select(3)), 'selector');
+  });
+
   it('should return object type for an object', function() {  
     assert.equal(math.typeof({}), 'object');
   });
