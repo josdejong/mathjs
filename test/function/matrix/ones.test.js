@@ -22,15 +22,11 @@ describe('ones', function() {
     assert.deepEqual(ones(2,3), matrix([[1,1,1],[1,1,1]]));
     assert.deepEqual(ones(3,2), matrix([[1,1],[1,1],[1,1]]));
     assert.deepEqual(ones([3,2]), [[1,1],[1,1],[1,1]]);
-    assert.deepEqual(ones(matrix([3,2])), matrix([[1,1],[1,1],[1,1]]));
   });
 
   it('should create a matrix with ones from a matrix', function () {
     assert.deepEqual(ones(matrix([3])), matrix([1,1,1]));
     assert.deepEqual(ones(matrix([3,2])), matrix([[1,1],[1,1],[1,1]]));
-
-    // TODO: do we want to support the following? maybe better not
-    assert.deepEqual(ones(matrix([[[3]],[[2]]])), matrix([[1,1],[1,1],[1,1]]));
   });
 
   it('should create a 3D matrix with ones', function () {

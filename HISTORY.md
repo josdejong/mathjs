@@ -2,6 +2,13 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.16.0
+
+- Removed utility functions `isScalar`, `toScalar`, `isVector`, `toVector`
+  from `Matrix` and `Range`. Use `math.squeeze` and `math.size` instead.
+- Fixed function `squeeze` not being able squeeze into a scalar.
+
+
 ## 2013-10-26, version 0.15.0
 
 - Math.js must be instantiated now, static calls are no longer supported. Usage:

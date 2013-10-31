@@ -27,9 +27,6 @@ describe('zeros', function() {
   it('should create a matrix with zeros from a matrix', function () {
     assert.deepEqual(zeros(matrix([3])), matrix([0,0,0]));
     assert.deepEqual(zeros(matrix([3,2])), matrix([[0,0],[0,0],[0,0]]));
-
-    // TODO: do we want to support the following? maybe better not
-    assert.deepEqual(zeros(matrix([[[3]],[[2]]])), matrix([[0,0],[0,0],[0,0]]));
   });
 
   it('should create a 3D matrix with zeros', function () {

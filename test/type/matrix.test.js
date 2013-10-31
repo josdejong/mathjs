@@ -13,43 +13,6 @@ describe('matrix', function() {
 
   });
 
-  describe('isScalar', function() {
-
-    it('should be true for single values', function() {
-      assert.equal(math.matrix([[23]]).isScalar(), true);
-      assert.equal(math.matrix().isScalar(), true);
-      assert.equal(math.matrix([[[3]]]).isScalar(), true);
-      assert.equal(math.matrix([[]]).isScalar(), true);
-    });
-
-    it('should be false for matrices', function() {
-      assert.equal(math.matrix([[1,2,3],[4,5,6]]).isScalar(), false);
-      assert.equal(math.matrix([1,2,3]).isScalar(), false);
-      assert.equal(math.matrix([[1],[2],[3]]).isScalar(), false);
-      assert.equal(math.matrix([[[1],[2],[3]]]).isScalar(), false);
-    });
-
-  });
-
-  describe('isVector', function() {
-
-    it('should be true for vectors', function() {
-      assert.equal(math.matrix().isVector(), true);
-      assert.equal(math.matrix([[23]]).isVector(), true);
-      assert.equal(math.matrix([1,2,3]).isVector(), true);
-      assert.equal(math.matrix([[1],[2],[3]]).isVector(), true);
-      assert.equal(math.matrix([[[1],[2],[3]]]).isVector(), true);
-      assert.equal(math.matrix([[[3]]]).isVector(), true);
-      assert.equal(math.matrix([[]]).isVector(), true);
-      assert.equal(math.matrix().isVector(), true);
-    });
-
-    it('should be false for matrices', function() {
-      assert.equal(math.matrix([[1,2,3],[4,5,6]]).isVector(), false);
-    });
-
-  });
-
   describe('size', function() {
 
     it('should return the expected size', function() {
@@ -61,36 +24,6 @@ describe('matrix', function() {
       assert.deepEqual(math.matrix([[[1],[2],[3]]]).size(), [1,3,1]);
       assert.deepEqual(math.matrix([[[3]]]).size(), [1,1,1]);
       assert.deepEqual(math.matrix([[]]).size(), [1,0]);
-    });
-
-  });
-
-  describe('toScalar', function() {
-
-    it('should return a scalar if the matrix is a scalar', function() {
-      assert.deepEqual(math.matrix().toScalar(), null);
-      assert.deepEqual(math.matrix([[23]]).toScalar(), 23);
-    });
-
-    it('should return null if the matrix is not a scalar', function() {
-      assert.equal(math.matrix([[1,2,3],[4,5,6]]).toScalar(), null);
-    });
-
-  });
-
-  describe('toVector', function() {
-
-    it('should return a vector if the matrix is a vector', function() {
-      assert.deepEqual(math.matrix([1,2,3]).toVector(), [1,2,3]);
-      assert.deepEqual(math.matrix([[1],[2],[3]]).toVector(), [1,2,3]);
-      assert.deepEqual(math.matrix([[[1],[2],[3]]]).toVector(), [1,2,3]);
-      assert.deepEqual(math.matrix([[[3]]]).toVector(), [3]);
-      assert.deepEqual(math.matrix([[]]).toVector(), []);
-      assert.deepEqual(math.matrix().toVector(), []);
-    });
-
-    it('should return null if the matrix is not a vector', function() {
-      assert.deepEqual(math.matrix([[1,2,3],[4,5,6]]).toVector(), null);
     });
 
   });

@@ -35,7 +35,7 @@ and supports
 [chained operations](https://github.com/josdejong/mathjs/blob/master/docs/chained_operations.md).
 
 ```js
-// create an instance of math.js
+// load math.js and create an instance
 var mathjs = require('mathjs'),
     math = mathjs();
 
