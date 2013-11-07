@@ -12,6 +12,8 @@ https://github.com/josdejong/mathjs
   filling them with zeros.
 - Fixed function `squeeze` not being able squeeze into a scalar.
 - Some fixes and improvements in the `resize` function.
+- Function `size` now adheres to the option `matrix.defaultType` for scalar
+  input.
 
 
 ## 2013-10-26, version 0.15.0
@@ -48,8 +50,6 @@ https://github.com/josdejong/mathjs
 
 ## 2013-10-08, version 0.14.0
 
-*WARNING: version 0.14 has incompatibilities with previous versions.*
-
 - Introduced an option `math.options.matrix.default` which can have values
   `matrix` (default) or `array`. This option is used by the functions `eye`,
   `ones`, `range`, and `zeros`, to determine the type of matrix output.
@@ -66,8 +66,6 @@ https://github.com/josdejong/mathjs
 
 
 ## 2013-09-03, version 0.13.0
-
-*WARNING: version 0.13 has incompatibilities with previous versions.*
 
 - Implemented support for booleans in all relevant functions.
 - Implemented functions `map` and `forEach`. Thanks Sebastien Piquemal (sebpic).
@@ -98,8 +96,6 @@ https://github.com/josdejong/mathjs
 
 ## 2013-08-22, version 0.12.0
 
-*WARNING: version 0.12 is incompatible with previous versions.*
-
 - Implemented functions `random([min, max])`, `randomInt([min, max])`,
   `pickRandom(array)`. Thanks Sebastien Piquemal (sebpic).
 - Implemented function `distribution(name)`, generating a distribution object
@@ -128,8 +124,6 @@ https://github.com/josdejong/mathjs
 
 
 ## 2013-07-23, version 0.11.0
-
-*WARNING: version 0.11 is incompatible with previous versions.*
 
 - Changed math.js from one-based to zero-based indexes.
   - Getting and setting matrix subset is now zero-based.
@@ -280,8 +274,6 @@ https://github.com/josdejong/mathjs
 
 
 ## 2013-04-06, version 0.5.0
-
-*WARNING: version 0.5 is incompatible with previous versions.*
 
 - Implemented data types Matrix and Range.
 - Implemented matrix methods clone, concat, det, diag, eye, inv, ones, size,

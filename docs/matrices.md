@@ -1,9 +1,9 @@
 # Matrices
 
-Math.js supports matrices. Matrices can be created and manipulated,
-and used in calculations. Both regular JavaScript arrays as well as the matrix
-type implemented by math.js can be used interchangeably in all relevant math.js
-functions.
+Math.js supports multi dimensional matrices and arrays. Matrices can be
+created, manipulated, and used in calculations. Both regular JavaScript
+arrays as well as the matrix type implemented by math.js can be used
+interchangeably in all relevant math.js functions.
 
 
 ## Arrays and matrices
