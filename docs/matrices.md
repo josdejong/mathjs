@@ -244,24 +244,30 @@ as they use one-based indexes and include the upper-bound of a range.
 // create some matrices
 var a = [0, 1, 2, 3];
 var b = [[0, 1], [2, 3]];
-var c = math.matrix([[0, 1], [0, 0]]);
+var c = math.zeros(2, 2);
 var d = math.matrix([[0, 1, 2], [3, 4, 5], [6, 7, 8]]);
 var e = math.matrix();
 
 // get a subset
-math.subset(a, math.index(1);                 // 1
-math.subset(a, math.index([2, 4]);            // Array, [2, 3]
+math.subset(a, math.index(1));                // 1
+math.subset(a, math.index([2, 4]));           // Array, [2, 3]
 math.subset(b, math.index(1, 0));             // 2
 math.subset(b, math.index(1, [0, 2]));        // Array, [2, 3]
-math.subset(c, math.index([0, 2], 0));        // Matrix, [[1], [0]]
+math.subset(b, math.index([0, 2], 0));        // Matrix, [[0], [2]]
+
+// get a subset
 d.subset(math.index([1, 3], [0, 2]));         // Matrix, [[3, 4], [6, 7]]
 d.subset(math.index(1, 2));                   // 5
 
-// replace a subset
+// replace a subset. The subset will be applied to a clone of the matrix
 math.subset(b, math.index(1, 0), 9);          // Array, [[0, 1], [9, 3]]
 math.subset(b, math.index(2, [0, 2]), [4, 5]);// Array, [[0, 1], [2, 3], [4, 5]]
+
+// replace a subset. The subset will be applied to the matrix itself
+c.subset(math.index(0, 1),1);                 // Matrix, [[0, 1], [0, 0]]
 c.subset(math.index(1, [0, 2]), [2, 3]);      // Matrix, [[0, 1], [2, 3]]
-e.subset(math.index(2, 3), 5);                // Matrix, [[0, 0, 0], [0, 0, 5]]
+e.resize([2, 3], 0);                          // Matrix, [[0, 0, 0], [0, 0, 0]]
+e.subset(math.index(1, 2), 5);                // Matrix, [[0, 0, 0], [0, 0, 5]]
 ```
 
 ## Iterating

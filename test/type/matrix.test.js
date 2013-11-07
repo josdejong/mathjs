@@ -1,13 +1,14 @@
 var assert = require('assert'),
     math = require('../../index')(),
-    index = math.index;
+    index = math.index,
+    Matrix = require('../../lib/type/Matrix');
 
 describe('matrix', function() {
 
   describe('constructor', function() {
 
     it('should build an emtpy if called with no argument', function() {
-      var m = math.matrix();
+      var m = new Matrix();
       assert.deepEqual(m.toArray(), []);
     });
 
@@ -16,35 +17,35 @@ describe('matrix', function() {
   describe('size', function() {
 
     it('should return the expected size', function() {
-      assert.deepEqual(math.matrix().size(), [0]);
-      assert.deepEqual(math.matrix([[23]]).size(), [1,1]);
-      assert.deepEqual(math.matrix([[1,2,3],[4,5,6]]).size(), [2,3]);
-      assert.deepEqual(math.matrix([1,2,3]).size(), [3]);
-      assert.deepEqual(math.matrix([[1],[2],[3]]).size(), [3,1]);
-      assert.deepEqual(math.matrix([[[1],[2],[3]]]).size(), [1,3,1]);
-      assert.deepEqual(math.matrix([[[3]]]).size(), [1,1,1]);
-      assert.deepEqual(math.matrix([[]]).size(), [1,0]);
+      assert.deepEqual(new Matrix().size(), [0]);
+      assert.deepEqual(new Matrix([[23]]).size(), [1,1]);
+      assert.deepEqual(new Matrix([[1,2,3],[4,5,6]]).size(), [2,3]);
+      assert.deepEqual(new Matrix([1,2,3]).size(), [3]);
+      assert.deepEqual(new Matrix([[1],[2],[3]]).size(), [3,1]);
+      assert.deepEqual(new Matrix([[[1],[2],[3]]]).size(), [1,3,1]);
+      assert.deepEqual(new Matrix([[[3]]]).size(), [1,1,1]);
+      assert.deepEqual(new Matrix([[]]).size(), [1,0]);
     });
 
   });
 
   it('toString', function() {
-    assert.equal(math.matrix([[1,2],[3,4]]).toString(), '[[1, 2], [3, 4]]');
-    assert.equal(math.matrix([[1,2],[3,1/3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]');
+    assert.equal(new Matrix([[1,2],[3,4]]).toString(), '[[1, 2], [3, 4]]');
+    assert.equal(new Matrix([[1,2],[3,1/3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]');
   });
 
   it('format', function() {
-    assert.equal(math.matrix([[1,2],[3,1/3]]).format(), '[[1, 2], [3, 0.3333333333333333]]');
-    assert.equal(math.matrix([[1,2],[3,1/3]]).format(3), '[[1, 2], [3, 0.333]]');
-    assert.equal(math.matrix([[1,2],[3,1/3]]).format(4), '[[1, 2], [3, 0.3333]]');
+    assert.equal(new Matrix([[1,2],[3,1/3]]).format(), '[[1, 2], [3, 0.3333333333333333]]');
+    assert.equal(new Matrix([[1,2],[3,1/3]]).format(3), '[[1, 2], [3, 0.333]]');
+    assert.equal(new Matrix([[1,2],[3,1/3]]).format(4), '[[1, 2], [3, 0.3333]]');
   });
 
   describe('resize', function() {
 
     it('should resize the matrix correctly', function() {
-      var m = math.matrix([[1,2,3],[4,5,6]]);
+      var m = new Matrix([[1,2,3],[4,5,6]]);
       m.resize([2,4]);
-      assert.deepEqual(m.valueOf(), [[1,2,3,0],[4,5,6,0]]);
+      assert.deepEqual(m.valueOf(), [arr(1,2,3,uninit),arr(4,5,6,uninit)]);
 
       m.resize([1,2]);
       assert.deepEqual(m.valueOf(), [[1,2]]);
@@ -55,7 +56,7 @@ describe('matrix', function() {
       m.resize([2,3], 9);
       assert.deepEqual(m.valueOf(), [[1, 2, 9], [9, 9, 9]]);
 
-      m = math.matrix();
+      m = new Matrix();
       m.resize([3,3,3], 6);
       assert.deepEqual(m.valueOf(), [
         [[6,6,6],[6,6,6],[6,6,6]],
@@ -78,12 +79,12 @@ describe('matrix', function() {
       var m;
 
       // get 1-dimensional
-      m = math.matrix(math.range(0,10));
+      m = new Matrix(math.range(0,10));
       assert.deepEqual(m.size(), [10]);
       assert.deepEqual(m.subset(index([2,5])).valueOf(), [2,3,4]);
 
       // get 2-dimensional
-      m = math.matrix([[1,2,3],[4,5,6],[7,8,9]]);
+      m = new Matrix([[1,2,3],[4,5,6],[7,8,9]]);
       assert.deepEqual(m.size(), [3,3]);
       assert.deepEqual(m.subset(index(1,1)), 5);
       assert.deepEqual(m.subset(index([0,2],[0,2])).valueOf(), [[1,2],[4,5]]);
@@ -93,7 +94,7 @@ describe('matrix', function() {
       assert.deepEqual(m.subset(index([1,3], 2)).valueOf(), [[6],[9]]);
 
       // get n-dimensional
-      m = math.matrix([[[1,2],[3,4]], [[5,6],[7,8]]]);
+      m = new Matrix([[[1,2],[3,4]], [[5,6],[7,8]]]);
       assert.deepEqual(m.size(), [2,2,2]);
       assert.deepEqual(m.subset(index([0,2],[0,2],[0,2])).valueOf(), m.valueOf());
       assert.deepEqual(m.subset(index(0,0,0)), 1);
@@ -103,10 +104,10 @@ describe('matrix', function() {
     });
 
     it('should throw an error if the given subset is invalid', function() {
-      var m = math.matrix();
+      var m = new Matrix();
       assert.throws(function () { m.subset([-1]); });
 
-      m = math.matrix([[1,2,3],[4,5,6]]);
+      m = new Matrix([[1,2,3],[4,5,6]]);
       assert.throws(function () { m.subset([1,2,3]); });
       assert.throws(function () { m.subset([3,0]); });
       assert.throws(function () { m.subset([1]); });
@@ -118,58 +119,65 @@ describe('matrix', function() {
 
     it('should set the given subset', function() {
       // set 1-dimensional
-      var m = math.matrix(math.range(0,7));
+      var m = new Matrix(math.range(0,7));
       m.subset(index([2,4]), [20,30]);
       assert.deepEqual(m.valueOf(), [0,1,20,30,4,5,6]);
       m.subset(index(4), 40);
       assert.deepEqual(m.valueOf(), [0,1,20,30,40,5,6]);
 
       // set 2-dimensional
-      m = math.matrix();
+      m = new Matrix();
       m.resize([3,3]);
-      assert.deepEqual(m.valueOf(), [[0,0,0],[0,0,0],[0,0,0]]);
+      assert.deepEqual(m.valueOf(), [
+        arr(uninit, uninit, uninit),
+        arr(uninit, uninit, uninit),
+        arr(uninit, uninit, uninit)
+      ]);
       m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
-      assert.deepEqual(m.valueOf(), [[0,0,0],[0,1,2],[0,3,4]]);
+      assert.deepEqual(m.valueOf(), [
+        arr(uninit, uninit, uninit),
+        arr(uninit, 1,2),
+        arr(uninit, 3,4)]);
       m.subset(index(0, [0,3]), [5,6,7]);  // unsqueezes the submatrix
-      assert.deepEqual(m.valueOf(), [[5,6,7],[0,1,2],[0,3,4]]);
+      assert.deepEqual(m.valueOf(), [[5,6,7],arr(uninit,1,2),arr(uninit,3,4)]);
     });
 
     it('should resize the matrix if the replacement subset is different size than selected subset', function() {
       // set 2-dimensional with resize
-      var m = math.matrix([[123]]);
+      var m = new Matrix([[123]]);
       m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
-      assert.deepEqual(m.valueOf(), [[123,0,0],[0,1,2],[0,3,4]]);
+      assert.deepEqual(m, new Matrix([arr(123,uninit, uninit),arr(uninit,1,2),arr(uninit,3,4)]));
 
       // set resize dimensions
-      m = math.matrix([123]);
+      m = new Matrix([123]);
       assert.deepEqual(m.size(), [1]);
 
       m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
-      assert.deepEqual(m.valueOf(), [[123,0,0],[0,1,2],[0,3,4]]);
+      assert.deepEqual(m, new Matrix([arr(123,uninit,uninit),arr(uninit,1,2),arr(uninit,3,4)]));
 
       m.subset(index([0,2], [0,2]), [[55,55],[55,55]]);
-      assert.deepEqual(m.valueOf(), [[55,55,0],[55,55,2],[0,3,4]]);
+      assert.deepEqual(m, new Matrix([arr(55,55,uninit),[55,55,2],arr(uninit,3,4)]));
 
-      m = math.matrix();
+      m = new Matrix();
       m.subset(index([1,3], [1,3], [1,3]), [[[1,2],[3,4]],[[5,6],[7,8]]]);
-      assert.deepEqual(m.valueOf(), [
+      var res = new Matrix([
         [
-          [0,0,0],
-          [0,0,0],
-          [0,0,0]
+          arr(uninit, uninit, uninit),
+          arr(uninit, uninit, uninit),
+          arr(uninit, uninit, uninit)
         ],
         [
-          [0,0,0],
-          [0,1,2],
-          [0,3,4]
+          arr(uninit, uninit, uninit),
+          arr(uninit, 1, 2),
+          arr(uninit, 3, 4)
         ],
         [
-          [0,0,0],
-          [0,5,6],
-          [0,7,8]
+          arr(uninit, uninit, uninit),
+          arr(uninit, 5, 6),
+          arr(uninit, 7, 8)
         ]
       ]);
-
+      assert.deepEqual(m, res);
     });
 
   });
@@ -179,7 +187,7 @@ describe('matrix', function() {
     it('should apply the given function to all elements in the matrix', function() {
       var m, m2;
 
-      m = math.matrix([
+      m = new Matrix([
         [[1,2],[3,4]],
         [[5,6],[7,8]],
         [[9,10],[11,12]],
@@ -193,24 +201,24 @@ describe('matrix', function() {
         [[26,28],[30,32]]
       ]);
 
-      m = math.matrix([1]);
+      m = new Matrix([1]);
       m2 = m.map(function (value) { return value * 2; });
       assert.deepEqual(m2.valueOf(), [2]);
 
-      m = math.matrix([1,2,3]);
+      m = new Matrix([1,2,3]);
       m2 = m.map(function (value) { return value * 2; });
       assert.deepEqual(m2.valueOf(), [2,4,6]);
     });
 
     it('should work on empty matrices', function() {
       var m, m2;
-      m = math.matrix([]);
+      m = new Matrix([]);
       m2 = m.map(function (value) { return value * 2; });
       assert.deepEqual(m2.valueOf(), []);
     });
 
     it('should invoke callback with parameters value, index, obj', function() {
-      var m = math.matrix([[1,2,3], [4,5,6]]);
+      var m = new Matrix([[1,2,3], [4,5,6]]);
 
       assert.deepEqual(m.map(function (value, index, obj) {
         return math.clone([value, index, obj === m]);
@@ -236,7 +244,7 @@ describe('matrix', function() {
     it('should run on all elements of the matrix, last dimension first', function() {
       var m, output;
 
-      m = math.matrix([
+      m = new Matrix([
         [[1,2],[3,4]],
         [[5,6],[7,8]],
         [[9,10],[11,12]],
@@ -246,26 +254,26 @@ describe('matrix', function() {
       m.forEach(function (value) { output.push(value); });
       assert.deepEqual(output, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 
-      m = math.matrix([1]);
+      m = new Matrix([1]);
       output = [];
       m.forEach(function (value) { output.push(value); });
       assert.deepEqual(output, [1]);
 
-      m = math.matrix([1,2,3]);
+      m = new Matrix([1,2,3]);
       output = [];
       m.forEach(function (value) { output.push(value); });
       assert.deepEqual(output, [1,2,3]);
     });
 
     it('should work on empty matrices', function() {
-      m = math.matrix([]);
+      m = new Matrix([]);
       output = [];
       m.forEach(function (value) { output.push(value); });
       assert.deepEqual(output, []);
     });
 
     it('should invoke callback with parameters value, index, obj', function() {
-      var m = math.matrix([[1,2,3], [4,5,6]]);
+      var m = new Matrix([[1,2,3], [4,5,6]]);
 
       var output = [];
       m.forEach(function (value, index, obj) {
@@ -286,7 +294,7 @@ describe('matrix', function() {
   describe('clone', function() {
 
     it('should clone the matrix properly', function() {
-      var m = math.matrix([[1,2,3], [4,5,6]]);
+      var m = new Matrix([[1,2,3], [4,5,6]]);
       var m4 = m.clone();
       assert.deepEqual(m4.size(), [2,3]);
       assert.deepEqual(m4.valueOf(), [[1,2,3], [4,5,6]]);
@@ -297,3 +305,21 @@ describe('matrix', function() {
 });
 
 // TODO: extensively test Matrix
+
+
+/**
+ * Helper function to create an Array containing uninitialized values
+ * Example: arr(uninit, uninit, 2);    // [ , , 2 ]
+ */
+var uninit = {};
+function arr() {
+  var array = [];
+  array.length = arguments.length;
+  for (var i = 0; i < arguments.length; i++) {
+    var value = arguments[i];
+    if (value !== uninit) {
+      array[i] = value;
+    }
+  }
+  return array;
+}
