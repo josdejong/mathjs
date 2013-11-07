@@ -7,6 +7,8 @@ https://github.com/josdejong/mathjs
 - Removed utility functions `isScalar`, `toScalar`, `isVector`, `toVector`
   from `Matrix` and `Range`. Use `math.squeeze` and `math.size` instead.
 - Fixed function `squeeze` not being able squeeze into a scalar.
+- Functions `ones` and `zeros` now return an empty matrix instead of a
+  number 1 or 0 when no arguments are provided.
 
 
 ## 2013-10-26, version 0.15.0

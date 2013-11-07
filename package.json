@@ -37,6 +37,7 @@
     "underscore": "1.4.x",
     "seed-random": ">= 1.0.1"
   },
+  "main": "./index",
   "scripts": {
     "test": "mocha test --recursive --reporter spec"
   },

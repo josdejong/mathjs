@@ -6,9 +6,10 @@ var assert = require('assert'),
 
 describe('zeros', function() {
 
-  it('should create a scalar', function () {
-    assert.deepEqual(zeros(), 0);
-    assert.deepEqual(zeros([]), 0);
+  it('should create an empty matrix', function () {
+    assert.deepEqual(zeros(), matrix());
+    assert.deepEqual(zeros([]), []);
+    assert.deepEqual(zeros(matrix([])), matrix());
   });
 
   it('should create a vector with zeros', function () {

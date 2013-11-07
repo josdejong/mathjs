@@ -6,9 +6,10 @@ var assert = require('assert'),
 
 describe('ones', function() {
 
-  it('should create a scalar', function () {
-    assert.deepEqual(ones(), 1);
-    assert.deepEqual(ones([]), 1);
+  it('should create an empty matrix', function () {
+    assert.deepEqual(ones(), matrix());
+    assert.deepEqual(ones([]), []);
+    assert.deepEqual(ones(matrix([])), matrix());
   });
 
   it('should create a vector with ones', function () {
