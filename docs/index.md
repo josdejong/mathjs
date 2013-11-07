@@ -1,4 +1,4 @@
-# Math.js Documentation
+# Math.js Overview
 
 - [Getting Started](getting_started.md)
 - [Constants](constants.md)
