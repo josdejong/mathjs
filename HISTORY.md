@@ -6,12 +6,16 @@ https://github.com/josdejong/mathjs
 
 - Removed utility functions `isScalar`, `toScalar`, `isVector`, `toVector`
   from `Matrix` and `Range`. Use `math.squeeze` and `math.size` instead.
+- Implemented functions `get` and `set` on `Matrix`, for easier and faster
+  retrieval/replacement of elements in a matrix.
 - Functions `ones` and `zeros` now return an empty matrix instead of a
   number 1 or 0 when no arguments are provided.
+- Implemented functions `min` and `max` for `Range` and `Index`.
 - Resizing matrices now leaves new elements undefined by default instead of
   filling them with zeros.
 - Fixed function `squeeze` not being able squeeze into a scalar.
-- Some fixes and improvements in the `resize` function.
+- Some fixes and performance improvements in the `resize` and `subset`
+  functions.
 - Function `size` now adheres to the option `matrix.defaultType` for scalar
   input.
 

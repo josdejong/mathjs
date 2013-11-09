@@ -41,9 +41,17 @@ describe('Index', function () {
     assert.deepEqual(new Index().max(), []);
   });
 
+  it('should test whether an Index contains a scalar', function () {
+    assert.equal(new Index(2, 5, 2).isScalar(), true);
+    assert.equal(new Index(2).isScalar(), true);
+    assert.equal(new Index([2, 10]).isScalar(), false);
+    assert.equal(new Index(2, [0, 4], 2).isScalar(), false);
+    assert.equal(new Index([0, 2], [0, 4]).isScalar(), false);
+    assert.equal(new Index().isScalar(), false);
+  });
+
   // TODO: test Index.clone
   // TODO: test Index.toString
-  // TODO: test Index.toArray
   // TODO: test Index.forEach
   // TODO: test Index.range
   // TODO: test Index.valueOf
