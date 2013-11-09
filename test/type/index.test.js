@@ -25,8 +25,28 @@ describe('Index', function () {
     assert.deepEqual(new Index().size(), []);
   });
 
+  it('should calculate the minimum values of an Index', function () {
+    assert.deepEqual(new Index([2, 10]).min(), [2]);
+    assert.deepEqual(new Index([4, 0, -1]).min(), [1]);
+    assert.deepEqual(new Index([0, 10], [4,6]).min(), [0, 4]);
+    assert.deepEqual(new Index([0, 10], [4,6], [3, -1, -1]).min(), [0, 4, 0]);
+    assert.deepEqual(new Index().min(), []);
+  });
+
+  it('should calculate the minimum values of an Index', function () {
+    assert.deepEqual(new Index([2, 10]).max(), [9]);
+    assert.deepEqual(new Index([4, 0, -1]).max(), [4]);
+    assert.deepEqual(new Index([0, 10], [4,6]).max(), [9, 5]);
+    assert.deepEqual(new Index([0, 10], [4,6], [3, -1, -1]).max(), [9, 5, 3]);
+    assert.deepEqual(new Index().max(), []);
+  });
+
   // TODO: test Index.clone
   // TODO: test Index.toString
+  // TODO: test Index.toArray
+  // TODO: test Index.forEach
+  // TODO: test Index.range
+  // TODO: test Index.valueOf
 
 
   it('should test whether an object is an Index', function () {
