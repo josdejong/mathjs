@@ -13,11 +13,13 @@ https://github.com/josdejong/mathjs
 - Implemented functions `min` and `max` for `Range` and `Index`.
 - Resizing matrices now leaves new elements undefined by default instead of
   filling them with zeros.
+- Range operator `:` in expression parser has been given a higher precedence.
 - Fixed function `squeeze` not being able squeeze into a scalar.
 - Some fixes and performance improvements in the `resize` and `subset`
   functions.
 - Function `size` now adheres to the option `matrix.defaultType` for scalar
   input.
+- Minor bug fixes.
 
 
 ## 2013-10-26, version 0.15.0
