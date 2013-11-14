@@ -182,8 +182,8 @@ applications. This is close to JavaScript as well, though there are a few
 important differences between the syntax of the expression parser and the
 lower level syntax of math.js. Differences are:
 
-- No need to prefix functions and constants with the `math.` namespace,
-  you can just enter `"sin(pi/4)"`.
+- No need to prefix functions and constants with the `math.*` namespace,
+  you can just enter `"sin(pi / 4)"`.
 - Matrix indexes, which are one-based instead of zero-based.
 - There are index and range operators which allow more conveniently getting
   and setting matrix indexes.
@@ -216,7 +216,7 @@ The following operators are available:
 
 Operator    | Name                  | Syntax    | Associativity | Example               | Result
 ----------- | --------------------- | --------- | ------------- | --------------------- | ---------------
-`(`, `)`    | Parentheses, index    | `(x)`<br>`x(y)` | None    | `2 * (3 + 4)          | `14`
+`(`, `)`    | Parentheses, index    | `(x)`     | None          | `2 * (3 + 4)`         | `14`
 `[`, `]`    | Matrix                | `[...]`   | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
 `,`         | Parameter separator   | `x, y`    | None          | `max(2, 1, 5)`        | `5`
 `;`         | Statement separator   | `x; y`    | Left to right | `a=2; b=3; a*b`       | `[6]`
@@ -284,11 +284,11 @@ only be defined on a single line.
 var parser = math.parser();
 
 parser.eval('function f(x) = x ^ 2 - 5');
-parser.eval('f(2)');                        // -1
-parser.eval('f(3)');                        // 4
+parser.eval('f(2)');    // -1
+parser.eval('f(3)');    // 4
 
 parser.eval('function g(x, y) = x ^ y');
-parser.eval('g(2, 3)');                     // 8
+parser.eval('g(2, 3)'); // 8
 ```
 
 
@@ -310,11 +310,13 @@ Variables can be defined using the assignment operator `=`, and can be used
 like constants.
 
 ```js
-// define and use variables
 var parser = math.parser();
 
+// define variables
 parser.eval('a = 3.4');     // 3.4
 parser.eval('b = 5 / 2');   // 2.5
+
+// use variables
 parser.eval('a * b');       // 8.5
 ```
 
@@ -330,9 +332,9 @@ Booleans `true` and `false` can be used in expressions.
 
 ```js
 // use booleans
-math.eval(`true`);              // true
-math.eval(`false`);             // false
-math.eval(`(2 == 3) == false`); // true
+math.eval('true');              // true
+math.eval('false');             // false
+math.eval('(2 == 3) == false'); // true
 ```
 
 Booleans can be converted to numbers and strings and vice versa using the
@@ -499,7 +501,8 @@ math.eval('eval("2 + 3")'); // 5
 
 #### Matrices
 
-Matrices can be created by entering a series of values between square brackets.
+Matrices can be created by entering a series of values between square brackets,
+elements are separated by a comma `,`.
 A matrix like `[1, 2, 3]` will create a vector, a 1 dimensional matrix with
 size `[3]`. To create a multi dimensional matrix, matrices can be nested into
 each other. For easier creation of two dimensional matrices, a semicolon `;`
@@ -515,8 +518,8 @@ math.eval('[[[1, 2], [3, 4]], [[5, 6], [7, 8]]]');    // Matrix, size [2, 2, 2]
 math.eval('[1, 2, 3; 4, 5, 6]');                      // Matrix, size [2, 3]
 ```
 
-An other way to create matrices is using the functions `zeros`, `ones`, `eye`,
-and `range`.
+An other way to create filled matrices is using the functions `zeros`, `ones`,
+`eye`, and `range`.
 
 ```js
 // initialize a matrix with ones or zeros
@@ -579,7 +582,7 @@ math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // Array, [1, 3, 9]
 
 // semicolon statements are hided from the output
 math.eval('a=3; b=4; a + b \n a * b');  // Array, [7, 12]
-```js
+```
 
 
 ### Comments
