@@ -31,7 +31,7 @@
     "jake": ">= 0.5.9",
     "browserify": "2.x",
     "mocha": "1.x",
-    "numbers" : "0.4.0",
+    "numbers": "0.4.0",
     "uglify-js": ">= 2.2.5",
     "dateable": ">= 0.1.2",
     "underscore": "1.4.x",

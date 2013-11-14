@@ -2,7 +2,22 @@
 
 Math.js contains a flexible and easy to use expression parser.
 The parser supports all data types, functions and constants available in math.js.
-Expressions can be evaluated in various ways:
+
+Whilst the math.js library is aimed at JavaScript developers, the expression
+parser is aimed at end users: mathematicians, engineers, students, pupils.
+The syntax of the expression parser differs from JavaScript and the low level
+math.js library.
+
+This page is divided in two sections:
+
+- [Parsing and evaluation](#parsing-and-evaluation) describes how to parse and
+  evaluate expressions with math.js
+- [Syntax](#syntax) describes how to write expressions.
+
+
+## Parsing and evaluation
+
+Expressions can be parsed and evaluated in various ways:
 
 - Using the function [`math.eval(expr [,scope])`](#eval).
 - Using the function [`math.parse(expr [,scope])`](#parse).
@@ -10,7 +25,7 @@ Expressions can be evaluated in various ways:
   `eval`, `parse`, and keeps a scope with assigned variables in memory.
 
 
-## Eval
+### Eval
 
 Math.js comes with a function `math.eval` to evaluate expressions. Syntax:
 
@@ -49,7 +64,7 @@ math.eval('c = 2.3 + 4.5', scope);      // 6.8
 scope.c;                                // 6.8
 ```
 
-## Parse
+### Parse
 
 Math.js contains a function `math.parse` to parse expressions into a node
 tree. The syntax is similar to [`math.eval`](#eval):
@@ -92,7 +107,7 @@ node2.eval(); // 27
 ```
 
 
-## Parser
+### Parser
 
 In addition to the static functions [`math.eval`](#eval) and
 [`math.parse`](#parse), math.js contains a parser with functions `eval` and
@@ -158,50 +173,426 @@ parser.eval('hello("user")');           // "hello, user!"
 parser.clear();
 ```
 
-## Operators
 
-The following operators are available in the expression parser.
+## Syntax
 
-- x + y (add)
-- x - y (subtract)
-- x * y (multiply)
-- x .* y (element-wise multiply)
-- x / y (divide)
-- x ./ y (element-wise divide)
-- x % y (mod)
-- x ^ y (power)
-- x ^ y (element-wise power)
-- -y (unary minus)
-- y' (transpose)
-- y! (factorial)
-- x = y (assignment)
-- x : y (range)
-- x in y (unit conversion)
-- x == y (equal)
-- x != y (unequal)
-- x < y (smaller)
-- x > y (larger)
-- x <= y (smallereq)
-- x >= y (largereq)
+The expression parser is aimed at a a mathematical audience, not a programming
+audience. The syntax is similar to most calculators and mathematical
+applications. This is close to JavaScript as well, though there are a few
+important differences between the syntax of the expression parser and the
+lower level syntax of math.js. Differences are:
+
+- No need to prefix functions and constants with the `math.` namespace,
+  you can just enter `"sin(pi/4)"`.
+- Matrix indexes, which are one-based instead of zero-based.
+- There are index and range operators which allow more conveniently getting
+  and setting matrix indexes.
+- Both indexes and ranges and have the upper-bound included.
+- There is a differing syntax for defining functions.
+- Can use operators like `x + y` instead of `math.add(x, y)`.
+
+This section describes how to work with the available data types, functions,
+operators, variables, and more.
 
 
-## Matrices
+### Operators
 
-Matrices are supported by the expression parser.
+The expression parser has operators for all common arithmetic operations such
+as addition and multiplication. The expression parser uses conventional infix
+notation for operators: an operator is placed between its parameters.
+Round parentheses can be used to override the default precedence of operators.
 
-*IMPORTANT:* matrix indexes and ranges work different from the math.js indexes
+```js
+// use operators
+math.eval('2 + 3'); // 5
+math.eval('2 * 3'); // 6
+
+// use parentheses to override the default precedence
+math.eval('2 + 3 * 4');   // 14
+math.eval('(2 + 3) * 4'); // 20
+```
+
+The following operators are available:
+
+Operator    | Name                  | Syntax    | Associativity | Example               | Result
+----------- | --------------------- | --------- | ------------- | --------------------- | ---------------
+`(`, `)`    | Parentheses, index    | `(x)`<br>`x(y)` | None    | `2 * (3 + 4)          | `14`
+`[`, `]`    | Matrix                | `[...]`   | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
+`,`         | Parameter separator   | `x, y`    | None          | `max(2, 1, 5)`        | `5`
+`;`         | Statement separator   | `x; y`    | Left to right | `a=2; b=3; a*b`       | `[6]`
+`;`         | Row separator         | `[x, y]`  | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
+`\n`        | Statement separator   | `x \n y`  | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
+`+`         | Add                   | `x + y`   | Left to right | `4 + 5`               | `9`
+`-`         | Subtract              | `x - y`   | Left to right | `7 - 3`               | `4`
+`*`         | Multiply              | `x * y`   | Left to right | `2 * 3`               | `6`
+`.*`        | Element-wise multiply | `x .* y`  | Left to right | `[1,2,3] .* [1,2,3]`  | `[1,4,9]`
+`/`         | Divide                | `x / y`   | Left to right | `6 / 2`               | `3`
+`./`        | Element-wise divide   | `x ./ y`  | Left to right | `[9,6,4] ./ [3,2,2]`  | `[3,3,2]`
+`%`, `mod`  | Modulus               | `x % y`   | Left to right | `8 % 3`               | `2`
+`^`         | Power                 | `x ^ y`   | Right to left | `2 ^ 3`               | `8`
+`.^`        | Element-wise power    | `x .^ y`  | Right to left | `[2,3] .^ [3,3]`      | `[9,27]`
+`-`         | Unary                 | `-y`      | None          | `-4`                  | `-4`
+`'`         | Transpose             | `y'`      | None          | `[[1,2],[3,4]]'`      | `[[1,3],[2,4]]`
+`!`         | Factorial             | `y!`      | None          | `5!`                  | `120`
+`=`         | Assignment            | `x = y`   | Right to left | `a = 5`               | `5`
+`:`         | Range                 | `x : y`   | None          | `1:4`                 | `[1,2,3,4]`
+`in`        | Unit conversion       | `x in y`  | Left to right | `2 inch in cm`        | `5.08 cm`
+`==`        | Equal                 | `x == y`  | Left to right | `2 == 4 - 2`          | `true`
+`!=`        | Unequal               | `x != y`  | Left to right | `2 != 3`              | `true`
+`<`         | Smaller               | `x < y`   | Left to right | `2 < 3`               | `true`
+`>`         | Larger                | `x > y`   | Left to right | `2 > 3`               | `false`
+`<=`        | Smallereq             | `x <= y`  | Left to right | `4 <= 3`              | `false`
+`>=`        | Largereq              | `x >= y`  | Left to right | `2 + 4 >= 6`          | `true`
+
+The operators have the following precedence, from highest to lowest:
+
+Operators                         | Description
+--------------------------------- | --------------------
+`x(...)`                          | Function call and matrix index
+`'`                               | Matrix transpose
+`!`                               | Factorial
+`^`, `.^`                         | Exponentiation
+`-`                               | Unary
+`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus
+`+`, `-`                          | Add, subtract
+`:`                               | Range
+`==`, `!=`, `<`, `>`, `<=`, `>=`  | Comparison
+`in`                              | Unit conversion
+`=`                               | Assignment
+`,`                               | Parameter and column separator
+`;`                               | Row separator
+`\n`, `;`                         | Statement separators
+
+
+### Functions
+
+Functions are called by entering their name, followed by zero or more
+parameters enclosed by parentheses. All available functions are listed on the
+page [Functions](https://github.com/josdejong/mathjs/blob/master/docs/functions.md).
+
+```js
+math.eval('sqrt(25)');          // 5
+math.eval('log(1000, 3 + 7)');  // 4
+math.eval('sin(pi / 4)');       // 0.7071067811865475
+```
+
+New functions can be defined using the `function` keyword. Functions can be
+defined with multiple variables. Function assignments are limited: they can
+only be defined on a single line.
+
+```js
+var parser = math.parser();
+
+parser.eval('function f(x) = x ^ 2 - 5');
+parser.eval('f(2)');                        // -1
+parser.eval('f(3)');                        // 4
+
+parser.eval('function g(x, y) = x ^ y');
+parser.eval('g(2, 3)');                     // 8
+```
+
+
+### Constants and variables
+
+Math.js has a number of built in constants such as `pi` and `e`.
+All available constants are listed on he page
+[Constants](https://github.com/josdejong/mathjs/blob/master/docs/constants.md).
+
+```js
+// use constants
+math.eval('pi');                // 3.141592653589793
+math.eval('e ^ 2');             // 7.3890560989306495
+math.eval('log(e)');            // 1
+math.eval('e ^ (pi * i) + 1');  // ~0 (Euler)
+```
+
+Variables can be defined using the assignment operator `=`, and can be used
+like constants.
+
+```js
+// define and use variables
+var parser = math.parser();
+
+parser.eval('a = 3.4');     // 3.4
+parser.eval('b = 5 / 2');   // 2.5
+parser.eval('a * b');       // 8.5
+```
+
+
+### Data types
+
+The expression parser supports booleans, numbers, complex numbers, units,
+strings, and matrices.
+
+#### Booleans
+
+Booleans `true` and `false` can be used in expressions.
+
+```js
+// use booleans
+math.eval(`true`);              // true
+math.eval(`false`);             // false
+math.eval(`(2 == 3) == false`); // true
+```
+
+Booleans can be converted to numbers and strings and vice versa using the
+functions `number` and `boolean`, and `string`.
+
+```js
+// convert booleans
+math.eval('number(true)');      // 1
+math.eval('string(false)');     // "false"
+math.eval('boolean(1)');        // true
+math.eval('boolean("false")');  // false
+```
+
+#### Numbers
+
+The most important and basic data type in math.js are numbers. Numbers use a
+point as decimal mark. Numbers can be entered with scientific notation.
+Examples:
+
+```js
+// numbers in math.js
+math.eval('2');       // 2
+math.eval('3.14');    // 3.14
+math.eval('1.4e3');   // 1400
+math.eval('22e-3');   // 0.022
+```
+
+A number can be converted to a string and vice versa using the functions
+`number` and `string`.
+
+```js
+// convert a string into a number
+math.eval('number("2.3")');   // 2.3
+math.eval('string(2.3)');     // "2.3"
+```
+
+Math.js uses regular JavaScript numbers, which are floating points with a
+limited precision of 64 bit, about 16 digits. The largest integer number which
+can be represented by a JavaScript number is `+/- 9007199254740992`
+(`+/- 2^53`).
+A number can store values between `5e-324` and `1.7976931348623157e+308`.
+Values smaller than the minimum are stored as `0`, and values larger than the
+maximum are stored as `+/- Infinity`.
+
+```js
+math.eval('1e-325');  // 0
+math.eval('1e309');   // Infinity
+math.eval('-1e309');  // -Infinity
+```
+
+When doing calculations with floats, one can very easily get round-off errors:
+
+```js
+// round-off error due to limited floating point precision
+math.eval('0.1 + 0.2'); // 0.30000000000000004
+```
+
+When outputting results, the function `math.format` can be used to hide
+these round-off errors for the user:
+
+```js
+var ans = math.eval('0.1 + 0.2'); // 0.30000000000000004
+var precision = 12;               // digits
+math.format(ans, precision);      // "0.3"
+```
+
+
+#### Complex numbers
+
+Complex numbers can be created using the imaginary unit `i`, which is defined
+as `i^2 = -1`. Complex numbers have a real and complex part, which can be
+retrieved using the functions `re` and `im`.
+
+```js
+var parser = math.parser();
+
+// create complex numbers
+parser.eval('a = 2 + 3i');  // Complex, 2 + 3i
+parser.eval('b = 4 - i');   // Complex, 4 - i
+
+// get real and imaginary part of a complex number
+parser.eval('re(a)');       // Number,  2
+parser.eval('im(a)');       // Number,  3
+
+// calculations with complex numbers
+parser.eval('a + b');       // Complex, 6 + 2i
+parser.eval('a * b');       // Complex, 11 + 10i
+parser.eval('i * i');       // Number,  -1
+parser.eval('sqrt(-4)');    // Complex, 2i
+```
+
+Math.js does not automatically convert complex numbers with an imaginary part
+of zero to numbers. They can be converted to a number using the function
+`number`.
+
+```js
+// convert a complex number to a number
+var parser = math.parser();
+parser.eval('a = 2 + 3i');  // Complex, 2 + 3i
+parser.eval('b = a - 3i');  // Complex, 2 + 0i
+parser.eval('number(b)');   // Number,  2
+parser.eval('number(a)');   // Error: 2 + i is no valid number
+```
+
+
+#### Units
+
+math.js supports units. Units can be used in basic arithmetic operations like
+add and subtract, and units can be converted from one to another.
+An overview of all available units can be found on the page
+[Units](https://github.com/josdejong/mathjs/blob/master/docs/units.md).
+
+Units can be converted using the operator `in`.
+
+```js
+// create a unit
+math.eval('5.4 kg');                    // Unit, 5.4 kg
+
+// convert a unit
+math.eval('2 inch in cm');              // Unit, 5.08 cm
+math.eval('20 celsius in fahrenheit');  // Unit, ~68 fahrenheit
+
+// calculations with units
+math.eval('0.5kg + 33g');               // Unit, 0.533 kg
+math.eval('3 inch + 2 cm');             // Unit, 3.7874 inch
+math.eval('3 inch + 2 cm');             // Unit, 3.7874 inch
+math.eval('12 seconds * 2');            // Unit, 24 seconds
+math.eval('sin(45 deg)');               // Number, 0.7071067811865475
+```
+
+
+#### Strings
+
+Strings are enclosed by double quotes ". Strings can be concatenated by adding
+them. Parts of a string can be retrieved or replaced by using indexes. Strings
+can be converted to a number using function `number`, and numbers can be
+converted to a string using function `string`.
+
+```js
+var parser = math.parser();
+
+// create a string
+parser.eval('"hello"');                 // String, "hello"
+
+// string manipulation
+parser.eval('a = "hello" + " world"');  // String, "hello world"
+parser.eval('size(a)');                 // Number, 11
+parser.eval('a(1:5)');                  // String, "hello"
+parser.eval('a(1) = "H"');              // String, "Hello"
+parser.eval('a(7:12) = "there!"');      // String, "Hello there!"
+
+// string conversion
+parser.eval('number("300")');           // Number, 300
+parser.eval('string(300)');             // String, "300"
+```
+
+Strings can be used in the `eval` function, to parse expressions inside
+the expression parser:
+
+```js
+math.eval('eval("2 + 3")'); // 5
+```
+
+
+#### Matrices
+
+Matrices can be created by entering a series of values between square brackets.
+A matrix like `[1, 2, 3]` will create a vector, a 1 dimensional matrix with
+size `[3]`. To create a multi dimensional matrix, matrices can be nested into
+each other. For easier creation of two dimensional matrices, a semicolon `;`
+can be used to separate rows in a matrix.
+
+```js
+// create a matrix
+math.eval('[1, 2, 3]');                               // Matrix, size [3]
+math.eval('[[1, 2, 3], [4, 5, 6]]');                  // Matrix, size [2, 3]
+math.eval('[[[1, 2], [3, 4]], [[5, 6], [7, 8]]]');    // Matrix, size [2, 2, 2]
+
+// create a two dimensional matrix
+math.eval('[1, 2, 3; 4, 5, 6]');                      // Matrix, size [2, 3]
+```
+
+An other way to create matrices is using the functions `zeros`, `ones`, `eye`,
+and `range`.
+
+```js
+// initialize a matrix with ones or zeros
+math.eval('zeros(3, 2)');     // Matrix, [[0, 0], [0, 0], [0, 0]],  size [3, 2]
+math.eval('ones(3)');         // Matrix, [1, 1, 1],                 size [3]
+math.eval('5 * ones(2, 2)');  // Matrix, [[5, 5], [5, 5]],          size [2, 2]
+
+// create an identity matrix
+math.eval('eye(2)');          // Matrix, [[1, 0], [0, 1]],          size [2, 2]
+
+// create a range
+math.eval('1:4');             // Matrix, [1, 2, 3, 4],              size [4]
+math.eval('0:2:10');          // Matrix, [0, 2, 4, 6, 8, 10],       size [6]
+```
+
+A subset can be retrieved from a matrix using indexes, and a subset of a matrix
+can be replaced by using indexes. Indexes are enclosed in parentheses, and
+contain a number or a range for each of the matrix dimensions. A range can have
+its start and/or end undefined. When start is undefined, the range will start
+at 1, when end is undefined, the range will end at the end of the matrix.
+There is a context variable `end` available as well to denote the end of the
+matrix.
+
+*IMPORTANT: matrix indexes and ranges work different from the math.js indexes
 in JavaScript: They are one-based with an included upper-bound, similar to most
-math applications.
-
+math applications.*
 
 ```js
 parser = math.parser();
 
-parser.eval('a = [1, 2; 3, 4]');                // Matrix, [[1, 2], [3, 4]]
-parser.eval('b = zeros(2, 2)');                 // Matrix, [[0, 0], [0, 0]]
-parser.eval('b(1, 1:2) = [5, 6]');              // Matrix, [[5, 6], [0, 0]]
-parser.eval('b(2, :) = [7, 8]');                // Matrix, [[5, 6], [7, 8]]
-parser.eval('c = a * b');                       // Matrix, [[19, 22], [43, 50]]
-parser.eval('d = c(2, 1)');                     // 43
-parser.eval('e = c(2, 1:end)');                 // Matrix, [[43, 50]]
+// create matrices
+parser.eval('a = [1, 2; 3, 4]');      // Matrix, [[1, 2], [3, 4]]
+parser.eval('b = zeros(2, 2)');       // Matrix, [[0, 0], [0, 0]]
+parser.eval('c = 5:9');               // Matrix, [5, 6, 7, 8, 9]
+
+// replace a subset in a matrix
+parser.eval('b(1, 1:2) = [5, 6]');    // Matrix, [[5, 6], [0, 0]]
+parser.eval('b(2, :) = [7, 8]');      // Matrix, [[5, 6], [7, 8]]
+
+// perform a matrix calculation
+parser.eval('d = a * b');             // Matrix, [[19, 22], [43, 50]]
+
+// retrieve a subset of a matrix
+parser.eval('d(2, 1)');               // 43
+parser.eval('d(2, 1:end)');           // Matrix, [[43, 50]]
+parser.eval('c(end - 1 : -1 : 2)');   // Matrix, [8, 7, 6]
+```
+
+
+### Multi line expressions
+
+An expression can contain multiple lines. Lines can be separated by a newline
+character `\n` or by a semicolon `;`. Output of statements followed by a
+semicolon will be hided from the output, and empty lines are ignored. The
+output is returned as an Array, with an entry for every statement.
+
+```js
+// a multi line expression
+math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // Array, [1, 3, 9]
+
+// semicolon statements are hided from the output
+math.eval('a=3; b=4; a + b \n a * b');  // Array, [7, 12]
+```js
+
+
+### Comments
+
+Comments can be added to explain or describe calculations in text. A comment
+starts with a sharp sign character `#`, and ends at the end of the line. A line
+can contain a comment only, or can contain an expression followed by a comment.
+
+```js
+var parser = math.parser();
+
+parser.eval('# define some variables');
+parser.eval('width = 3');                             // 3
+parser.eval('height = 4');                            // 4
+parser.eval('width * height   # calculate the area'); // 12
 ```

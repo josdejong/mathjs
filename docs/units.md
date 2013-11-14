@@ -59,7 +59,6 @@ c.equalBase(a);                     // true
 c.equalBase(b);                     // false
 
 d.toString();                       // String "5.08 cm"
-
 ```
 
 
