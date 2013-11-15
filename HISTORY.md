@@ -15,6 +15,7 @@ https://github.com/josdejong/mathjs
 - Resizing matrices now leaves new elements undefined by default instead of
   filling them with zeros.
 - Range operator `:` in expression parser has been given a higher precedence.
+- Functions don't allow arguments of unknown type anymore.
 - Fixed function `squeeze` not being able squeeze into a scalar.
 - Some fixes and performance improvements in the `resize` and `subset`
   functions.
