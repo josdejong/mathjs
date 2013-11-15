@@ -87,6 +87,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.inv(x)
 - math.ones(m, n, p, ...)
 - math.range(start, end [, step])
+- math.resize(x, size [, defaultValue])
 - math.size(x)
 - math.squeeze(x)
 - math.subset(x, index [, replacement])

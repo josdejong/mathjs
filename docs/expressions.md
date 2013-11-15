@@ -199,7 +199,7 @@ operators, variables, and more.
 
 The expression parser has operators for all common arithmetic operations such
 as addition and multiplication. The expression parser uses conventional infix
-notation for operators: an operator is placed between its parameters.
+notation for operators: an operator is placed between its arguments.
 Round parentheses can be used to override the default precedence of operators.
 
 ```js
@@ -267,7 +267,7 @@ Operators                         | Description
 ### Functions
 
 Functions are called by entering their name, followed by zero or more
-parameters enclosed by parentheses. All available functions are listed on the
+arguments enclosed by parentheses. All available functions are listed on the
 page [Functions](https://github.com/josdejong/mathjs/blob/master/docs/functions.md).
 
 ```js

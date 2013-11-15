@@ -8,6 +8,7 @@ https://github.com/josdejong/mathjs
   from `Matrix` and `Range`. Use `math.squeeze` and `math.size` instead.
 - Implemented functions `get` and `set` on `Matrix`, for easier and faster
   retrieval/replacement of elements in a matrix.
+- Implemented function `resize`, handling matrices, scalars, and strings.
 - Functions `ones` and `zeros` now return an empty matrix instead of a
   number 1 or 0 when no arguments are provided.
 - Implemented functions `min` and `max` for `Range` and `Index`.

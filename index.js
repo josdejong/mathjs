@@ -148,6 +148,7 @@ function mathjs (options) {
   require('./lib/function/matrix/inv.js')(math);
   require('./lib/function/matrix/ones.js')(math);
   require('./lib/function/matrix/range.js')(math);
+  require('./lib/function/matrix/resize.js')(math);
   require('./lib/function/matrix/size.js')(math);
   require('./lib/function/matrix/squeeze.js')(math);
   require('./lib/function/matrix/subset.js')(math);

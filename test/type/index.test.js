@@ -47,7 +47,7 @@ describe('Index', function () {
     assert.equal(new Index([2, 10]).isScalar(), false);
     assert.equal(new Index(2, [0, 4], 2).isScalar(), false);
     assert.equal(new Index([0, 2], [0, 4]).isScalar(), false);
-    assert.equal(new Index().isScalar(), false);
+    assert.equal(new Index().isScalar(), true);
   });
 
   // TODO: test Index.clone

@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.15.0
- * @date    2013-10-26
+ * @version 0.15.1-SNAPSHOT
+ * @date    2013-11-14
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -24,8 +24,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-(function(e){if("function"==typeof bootstrap)bootstrap("mathjs",e);else if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else if("undefined"!=typeof ses){if(!ses.ok())return;ses.makeMathjs=e}else"undefined"!=typeof window?window.mathjs=e():global.mathjs=e()})(function(){var define,ses,bootstrap,module,exports;
-return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(e){"object"==typeof exports?module.exports=e():"function"==typeof define&&define.amd?define(e):"undefined"!=typeof window?window.mathjs=e():"undefined"!=typeof global?global.mathjs=e():"undefined"!=typeof self&&(self.mathjs=e())}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var object = require('./lib/util/object');
 
 /**
@@ -265,8 +264,7 @@ if (typeof window !== 'undefined') {
 }
 },{"./lib/chaining/Selector.js":2,"./lib/constants.js":3,"./lib/expression/Parser.js":4,"./lib/expression/Scope.js":5,"./lib/expression/docs/index.js":101,"./lib/expression/node/index.js":114,"./lib/function/arithmetic/abs.js":115,"./lib/function/arithmetic/add.js":116,"./lib/function/arithmetic/ceil.js":117,"./lib/function/arithmetic/cube.js":118,"./lib/function/arithmetic/divide.js":119,"./lib/function/arithmetic/edivide.js":120,"./lib/function/arithmetic/emultiply.js":121,"./lib/function/arithmetic/epow.js":122,"./lib/function/arithmetic/equal.js":123,"./lib/function/arithmetic/exp.js":124,"./lib/function/arithmetic/fix.js":125,"./lib/function/arithmetic/floor.js":126,"./lib/function/arithmetic/gcd.js":127,"./lib/function/arithmetic/larger.js":128,"./lib/function/arithmetic/largereq.js":129,"./lib/function/arithmetic/lcm.js":130,"./lib/function/arithmetic/log.js":131,"./lib/function/arithmetic/log10.js":132,"./lib/function/arithmetic/mod.js":133,"./lib/function/arithmetic/multiply.js":134,"./lib/function/arithmetic/pow.js":135,"./lib/function/arithmetic/round.js":136,"./lib/function/arithmetic/sign.js":137,"./lib/function/arithmetic/smaller.js":138,"./lib/function/arithmetic/smallereq.js":139,"./lib/function/arithmetic/sqrt.js":140,"./lib/function/arithmetic/square.js":141,"./lib/function/arithmetic/subtract.js":142,"./lib/function/arithmetic/unary.js":143,"./lib/function/arithmetic/unequal.js":144,"./lib/function/arithmetic/xgcd.js":145,"./lib/function/complex/arg.js":146,"./lib/function/complex/conj.js":147,"./lib/function/complex/im.js":148,"./lib/function/complex/re.js":149,"./lib/function/construction/boolean.js":150,"./lib/function/construction/complex.js":151,"./lib/function/construction/index.js":152,"./lib/function/construction/matrix.js":153,"./lib/function/construction/number.js":154,"./lib/function/construction/parser.js":155,"./lib/function/construction/string.js":156,"./lib/function/construction/unit.js":157,"./lib/function/expression/eval.js":158,"./lib/function/expression/help.js":159,"./lib/function/expression/parse.js":160,"./lib/function/matrix/concat.js":161,"./lib/function/matrix/det.js":162,"./lib/function/matrix/diag.js":163,"./lib/function/matrix/eye.js":164,"./lib/function/matrix/inv.js":165,"./lib/function/matrix/ones.js":166,"./lib/function/matrix/range.js":167,"./lib/function/matrix/size.js":168,"./lib/function/matrix/squeeze.js":169,"./lib/function/matrix/subset.js":170,"./lib/function/matrix/transpose.js":171,"./lib/function/matrix/zeros.js":172,"./lib/function/probability/factorial.js":173,"./lib/function/probability/random.js":174,"./lib/function/statistics/max.js":175,"./lib/function/statistics/mean.js":176,"./lib/function/statistics/min.js":177,"./lib/function/trigonometry/acos.js":178,"./lib/function/trigonometry/asin.js":179,"./lib/function/trigonometry/atan.js":180,"./lib/function/trigonometry/atan2.js":181,"./lib/function/trigonometry/cos.js":182,"./lib/function/trigonometry/cot.js":183,"./lib/function/trigonometry/csc.js":184,"./lib/function/trigonometry/sec.js":185,"./lib/function/trigonometry/sin.js":186,"./lib/function/trigonometry/tan.js":187,"./lib/function/units/in.js":188,"./lib/function/utils/clone.js":189,"./lib/function/utils/forEach.js":190,"./lib/function/utils/format.js":191,"./lib/function/utils/import.js":192,"./lib/function/utils/map.js":193,"./lib/function/utils/print.js":194,"./lib/function/utils/select.js":195,"./lib/function/utils/typeof.js":196,"./lib/type/Complex.js":197,"./lib/type/Help.js":198,"./lib/type/Index.js":199,"./lib/type/Matrix.js":200,"./lib/type/Range.js":201,"./lib/type/Unit.js":202,"./lib/type/collection.js":203,"./lib/util/object":209}],2:[function(require,module,exports){
 module.exports = function (math) {
-  var util = require('../util/index'),
-      string = util.string;
+  var string = require('../util/string');
 
   /**
    * @constructor Selector
@@ -300,50 +298,48 @@ module.exports = function (math) {
     }
   }
 
-  Selector.prototype = {
-    /**
-     * Close the selector. Returns the final value.
-     * Does the same as method valueOf()
-     * @returns {*} value
-     */
-    done: function () {
-      return this.value;
-    },
+  /**
+   * Close the selector. Returns the final value.
+   * Does the same as method valueOf()
+   * @returns {*} value
+   */
+  Selector.prototype.done = function () {
+    return this.value;
+  };
 
-    /**
-     * Get a submatrix or subselection from current value.
-     * Only applicable when the current value has a method get.
-     */
-    // TODO: Selector.get is deprecated since version 0.13.0, remove it some day
-    get: function (index) {
-      throw new Error('Selector.get is removed. Use Selector.subset(index) instead.')
-    },
+  /**
+   * Get a submatrix or subselection from current value.
+   * Only applicable when the current value has a method get.
+   */
+  // TODO: Selector.get is deprecated since version 0.13.0, remove it some day
+  Selector.prototype.get = function (index) {
+    throw new Error('Selector.get is removed. Use Selector.subset(index) instead.')
+  };
 
-    /**
-     * Set a submatrix or subselection on current value.
-     * Only applicable when the current value has a method set.
-     */
-    // TODO: Selector.get is deprecated since version 0.13.0, remove it some day
-    set: function (index, replacement) {
-      throw new Error('Selector.set is removed. Use Selector.subset(index, replacement) instead.')
-    },
+  /**
+   * Set a submatrix or subselection on current value.
+   * Only applicable when the current value has a method set.
+   */
+  // TODO: Selector.get is deprecated since version 0.13.0, remove it some day
+  Selector.prototype.set = function (index, replacement) {
+    throw new Error('Selector.set is removed. Use Selector.subset(index, replacement) instead.')
+  };
 
-    /**
-     * Close the selector. Returns the final value.
-     * Does the same as method done()
-     * @returns {*} value
-     */
-    valueOf: function () {
-      return this.value;
-    },
+  /**
+   * Close the selector. Returns the final value.
+   * Does the same as method done()
+   * @returns {*} value
+   */
+  Selector.prototype.valueOf = function () {
+    return this.value;
+  };
 
-    /**
-     * Get a string representation of the value in the selector
-     * @returns {String}
-     */
-    toString: function () {
-      return string.format(this.value);
-    }
+  /**
+   * Get a string representation of the value in the selector
+   * @returns {String}
+   */
+  Selector.prototype.toString = function () {
+    return string.format(this.value);
   };
 
   /**
@@ -377,12 +373,10 @@ module.exports = function (math) {
     }
   }
 
-  util.types.addType('selector', Selector);
-
   return Selector;
 };
 
-},{"../util/index":207}],3:[function(require,module,exports){
+},{"../util/string":210}],3:[function(require,module,exports){
 module.exports = function (math) {
   var Complex = require('./type/Complex');
 
@@ -1952,9 +1946,10 @@ module.exports = {
   'name': 'ones',
   'category': 'Matrix',
   'syntax': [
-    'ones(n)',
+    'ones(m)',
     'ones(m, n)',
     'ones(m, n, p, ...)',
+    'ones([m])',
     'ones([m, n])',
     'ones([m, n, p, ...])',
     'ones'
@@ -2089,9 +2084,10 @@ module.exports = {
   'name': 'zeros',
   'category': 'Matrix',
   'syntax': [
-    'zeros(n)',
+    'zeros(m)',
     'zeros(m, n)',
     'zeros(m, n, p, ...)',
+    'zeros([m])',
     'zeros([m, n])',
     'zeros([m, n, p, ...])',
     'zeros'
@@ -2795,72 +2791,6 @@ ArrayNode.prototype.find = function (filter) {
 };
 
 /**
- * Merge nested Matrices in a two dimensional Array.
- * @param {Array} array    Two-dimensional array containing Matrices
- * @return {Array} merged  The merged array (two-dimensional)
- */
-// TODO: cleanup merge function
-function merge (array) {
-  var merged = [];
-  var rows = array.length;
-  for (var r = 0; r < rows; r++) {
-    var array_r = array[r];
-    var cols = array_r.length;
-    var submatrix = null;
-    var submatrixRows = null;
-    for (var c = 0; c < cols; c++) {
-      var entry = object.clone(array_r[c]);
-      var size;
-      if (entry instanceof Matrix) {
-        // get the data from the matrix
-        size = entry.size();
-        entry = entry.valueOf();
-        if (size.length == 1) {
-          entry = [entry];
-          size = [1, size[0]];
-        }
-        else if (size.length > 2) {
-          throw new Error('Cannot merge a multi dimensional matrix');
-        }
-      }
-      else if (Array.isArray(entry)) {
-        // change array into a 1xn matrix
-        size = [1, entry.length];
-        entry = [entry];
-      }
-      else {
-        // change scalar into a 1x1 matrix
-        size = [1, 1];
-        entry = [[entry]];
-      }
-
-      // check the height of this row
-      if (submatrix == null) {
-        // first entry
-        submatrix = entry;
-        submatrixRows = size[0];
-      }
-      else if (size[0] == submatrixRows) {
-        // merge
-        for (var s = 0; s < submatrixRows; s++) {
-          submatrix[s] = submatrix[s].concat(entry[s]);
-        }
-      }
-      else {
-        // no good...
-        throw new Error('Dimension mismatch ' +
-            '(' + size[0] + ' != ' + submatrixRows + ')');
-      }
-    }
-
-    // merge the submatrix
-    merged = merged.concat(submatrix);
-  }
-
-  return merged;
-}
-
-/**
  * Get string representation
  * @return {String} str
  * @override
@@ -3093,6 +3023,7 @@ function FunctionNode(name, variables, expr, functionScope, scope) {
     return expr.eval();
   };
 
+  // TODO: don't override the functions default toString()
   this.fn.toString = function() {
     // TODO: what to return as toString?
     return name + '(' + variables.join(', ') + ')';
@@ -3369,7 +3300,7 @@ ParamsNode.prototype.eval = function() {
   var obj = object.eval();
 
   // evaluate the values of context parameter 'end' when needed
-  if (this.hasContextParams) {
+  if (this.hasContextParams && typeof obj !== 'function') {
     var paramScopes = this.paramScopes,
         size = this.math.size(obj).valueOf();
 
@@ -3476,7 +3407,8 @@ ParamsNode.prototype.toString = function() {
 module.exports = ParamsNode;
 
 },{"../../type/Index":199,"../../type/Range":201,"../../util/number":208,"./Node":107,"./RangeNode":110,"./SymbolNode":111}],110:[function(require,module,exports){
-var Node = require('./Node'),
+var number = require('../../util/number'),
+    Node = require('./Node'),
     Range = require('../../type/Range');
 
 /**
@@ -3518,6 +3450,17 @@ RangeNode.prototype.eval = function() {
   var start = this.start.eval();
   var step = this.step ? this.step.eval() : 1;
   var end = this.end.eval();
+
+  // validate parameters
+  if (!number.isNumber(start)) {
+    throw new TypeError('Parameter start must be a number');
+  }
+  if (!number.isNumber(end)) {
+    throw new TypeError('Parameter end must be a number');
+  }
+  if (!number.isNumber(step)) {
+    throw new TypeError('Parameter step must be a number');
+  }
 
   // generate the range (upper-bound included!)
   var array = [],
@@ -3600,7 +3543,7 @@ RangeNode.prototype.toString = function() {
 
 module.exports = RangeNode;
 
-},{"../../type/Range":201,"./Node":107}],111:[function(require,module,exports){
+},{"../../type/Range":201,"../../util/number":208,"./Node":107}],111:[function(require,module,exports){
 var Node = require('./Node');
 
 /**
@@ -3685,6 +3628,7 @@ function UpdateNode(math, name, params, paramScopes, expr, scope) {
       name: 'end'
     }
   };
+
   for (var i = 0, len = params.length; i < len; i++) {
     if (params[i].find(filter).length > 0) {
       this.hasContextParams = true;
@@ -3713,7 +3657,7 @@ UpdateNode.prototype.eval = function() {
   }
 
   // evaluate the values of context parameter 'end' when needed
-  if (this.hasContextParams) {
+  if (this.hasContextParams && typeof prevResult !== 'function') {
     var paramScopes = this.paramScopes,
         size = this.math.size(prevResult).valueOf();
 
@@ -7366,12 +7310,10 @@ module.exports = function (math) {
         if (token_type == TOKENTYPE.SYMBOL) {
           // store variable name
           variables.push(token);
-        }
-        else {
-          throw createSyntaxError('Variable name expected');
+
+          getToken();
         }
 
-        getToken();
         if (token == ',') {
           // ok, nothing to do, read next variable
         }
@@ -7453,7 +7395,7 @@ module.exports = function (math) {
     }
     else {
       // explicit start
-      node = parseConditions(scope);
+      node = parseBitwiseConditions(scope);
     }
 
     if (token == ':') {
@@ -7468,49 +7410,13 @@ module.exports = function (math) {
         }
         else {
           // explicit end
-          params.push(parseConditions(scope));
+          params.push(parseBitwiseConditions(scope));
         }
       }
 
       if (params.length) {
         node = new RangeNode(math, params);
       }
-    }
-
-    return node;
-  }
-
-  /**
-   * conditions like and, or, in
-   * @param {Scope} scope
-   * @return {Node} node
-   * @private
-   */
-  function parseConditions (scope) {
-    var node, operators, name, fn, params;
-
-    node = parseBitwiseConditions(scope);
-
-    // TODO: precedence of And above Or?
-    // TODO: implement a method for unit to number conversion
-    operators = {
-      'in' : math['in']
-      /* TODO: implement conditions
-       'and' : 'and',
-       '&&' : 'and',
-       'or': 'or',
-       '||': 'or',
-       'xor': 'xor'
-       */
-    };
-
-    while (operators[token] !== undefined) {
-      name = token;
-      fn = operators[name];
-
-      getToken();
-      params = [node, parseBitwiseConditions(scope)];
-      node = new OperatorNode(name, fn, params);
     }
 
     return node;
@@ -7555,7 +7461,7 @@ module.exports = function (math) {
   function parseComparison (scope) {
     var node, operators, name, fn, params;
 
-    node = parseAddSubtract(scope);
+    node = parseConditions(scope);
 
     operators = {
       '==': math.equal,
@@ -7565,6 +7471,42 @@ module.exports = function (math) {
       '<=': math.smallereq,
       '>=': math.largereq
     };
+    while (operators[token] !== undefined) {
+      name = token;
+      fn = operators[name];
+
+      getToken();
+      params = [node, parseConditions(scope)];
+      node = new OperatorNode(name, fn, params);
+    }
+
+    return node;
+  }
+
+  /**
+   * conditions like and, or, in
+   * @param {Scope} scope
+   * @return {Node} node
+   * @private
+   */
+  function parseConditions (scope) {
+    var node, operators, name, fn, params;
+
+    node = parseAddSubtract(scope);
+
+    // TODO: precedence of And above Or?
+    // TODO: implement a method for unit to number conversion
+    operators = {
+      'in' : math['in']
+      /* TODO: implement conditions
+       'and' : 'and',
+       '&&' : 'and',
+       'or': 'or',
+       '||': 'or',
+       'xor': 'xor'
+       */
+    };
+
     while (operators[token] !== undefined) {
       name = token;
       fn = operators[name];
@@ -7659,7 +7601,7 @@ module.exports = function (math) {
 
   /**
    * power
-   * Node: power operator is right associative
+   * Note: power operator is right associative
    * @param {Scope} scope
    * @return {Node} node
    * @private
@@ -8481,6 +8423,7 @@ module.exports = function (math) {
       collection = require('../../type/collection'),
 
       object = util.object,
+      isArray = util.array.isArray,
       isNumber = util.number.isNumber,
       isInteger = util.number.isInteger;
 
@@ -8494,7 +8437,7 @@ module.exports = function (math) {
    *
    * TODO: more documentation on diag
    *
-   * @param {Number | Matrix | Array} x
+   * @param {Matrix | Array} x
    * @param {Number} [k]
    * @return {Matrix | Array} matrix
    */
@@ -8516,28 +8459,26 @@ module.exports = function (math) {
     var kSuper = k > 0 ? k : 0;
     var kSub = k < 0 ? -k : 0;
 
-    // convert to matrix
-    if (!(x instanceof Matrix)) {
+    // check type of input
+    if (x instanceof Matrix) {
+      // nice, nothing to do
+    }
+    else if (isArray(x)) {
+      // convert to matrix
       x = new Matrix(x);
     }
-    // TODO: simplify this, more strict in accepting only a vector with size [n]
-
-    // get as array when the matrix is a vector
-    var s;
-    if (x.isVector()) {
-      x = x.toVector();
-      s = [x.length];
-    }
     else {
-      s = x.size();
+      throw new TypeError ('First parameter in function diag must be a Matrix or Array');
     }
 
+    var s = x.size();
     switch (s.length) {
       case 1:
         // x is a vector. create diagonal matrix
         vector = x.valueOf();
         var matrix = new Matrix();
-        matrix.resize([vector.length + kSub, vector.length + kSuper]);
+        var defaultValue = 0;
+        matrix.resize([vector.length + kSub, vector.length + kSuper], defaultValue);
         data = matrix.valueOf();
         iMax = vector.length;
         for (i = 0; i < iMax; i++) {
@@ -8575,25 +8516,33 @@ module.exports = function (math) {
       isArray = Array.isArray;
 
   /**
-   * Create an identity matrix with size m x n
+   * Create a 2-dimensional identity matrix with size m x n or n x n
    *
-   *     eye(m)
+   *     eye(n)
    *     eye(m, n)
+   *     eye([m, n])
    *
    * TODO: more documentation on eye
    *
    * @param {...Number | Matrix | Array} size
-   * @return {Matrix | Array} matrix
+   * @return {Matrix | Array | Number} matrix
    */
   math.eye = function eye (size) {
-    var args = collection.argsToArray(arguments);
+    var args = collection.argsToArray(arguments),
+        asMatrix = (size instanceof Matrix) ? true :
+        (isArray(size) ? false : (math.options.matrix.defaultType === 'matrix'));
+
+
     if (args.length == 0) {
-      args = [1, 1];
+      // return an empty array
+      return asMatrix ? new Matrix() : [];
     }
     else if (args.length == 1) {
+      // change to a 2-dimensional square
       args[1] = args[0];
     }
     else if (args.length > 2) {
+      // error in case of an n-dimensional size
       throw new util.error.ArgumentsError('eye', args.length, 0, 2);
     }
 
@@ -8611,7 +8560,8 @@ module.exports = function (math) {
 
     // create and args the matrix
     var matrix = new Matrix();
-    matrix.resize(args);
+    var defaultValue = 0;
+    matrix.resize(args, defaultValue);
 
     // fill in ones on the diagonal
     var minimum = math.min(args);
@@ -8619,9 +8569,6 @@ module.exports = function (math) {
     for (var d = 0; d < minimum; d++) {
       data[d][d] = 1;
     }
-
-    var asMatrix = (size instanceof Matrix) ? true :
-        (isArray(size) ? false : (math.options.matrix.defaultType === 'matrix'));
 
     return asMatrix ? matrix : matrix.valueOf();
   };
@@ -8829,7 +8776,7 @@ module.exports = function (math) {
   /**
    * Create a matrix filled with ones
    *
-   *     ones(n)
+   *     ones(m)
    *     ones(m, n)
    *     ones([m, n])
    *     ones([m, n, p, ...])
@@ -8843,14 +8790,14 @@ module.exports = function (math) {
         (isArray(size) ? false : (math.options.matrix.defaultType === 'matrix'));
 
     if (args.length == 0) {
-      // output a scalar
-      return 1;
+      // output an empty matrix
+      return asMatrix ? new Matrix() : [];
     }
     else {
       // output an array or matrix
       var res = [];
       var defaultValue = 1;
-      array.resize(res, args, defaultValue);
+      res = array.resize(res, args, defaultValue);
       return asMatrix ? new Matrix(res) : res;
     }
   };
@@ -9025,12 +8972,14 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('size', arguments.length, 1);
     }
 
+    var asArray = (math.options.matrix.defaultType === 'array');
+
     if (isNumber(x) || isComplex(x) || isUnit(x) || isBoolean(x) || x == null) {
-      return [];
+      return asArray ? [] : new Matrix([]);
     }
 
     if (isString(x)) {
-      return [x.length];
+      return asArray ? [x.length] : new Matrix([x.length]);
     }
 
     if (Array.isArray(x)) {
@@ -9077,7 +9026,8 @@ module.exports = function (math) {
       return array.squeeze(object.clone(x));
     }
     else if (x instanceof Matrix) {
-      return new Matrix(array.squeeze(x.toArray()));
+      var res = array.squeeze(x.toArray());
+      return isArray(res) ? new Matrix(res) : res;
     }
     else {
       // scalar
@@ -9344,7 +9294,7 @@ module.exports = function (math) {
   /**
    * create a matrix filled with zeros
    *
-   *     zeros(n)
+   *     zeros(m)
    *     zeros(m, n)
    *     zeros([m, n])
    *     zeros([m, n, p, ...])
@@ -9358,14 +9308,14 @@ module.exports = function (math) {
         (isArray(size) ? false : (math.options.matrix.defaultType === 'matrix'));
 
     if (args.length == 0) {
-      // output a scalar
-      return 0;
+      // output an empty matrix
+      return asMatrix ? new Matrix() : [];
     }
     else {
       // output an array or matrix
       var res = [];
       var defaultValue = 0;
-      array.resize(res, args, defaultValue);
+      res = array.resize(res, args, defaultValue);
 
       return asMatrix ? new Matrix(res) : res;
     }
@@ -11006,7 +10956,14 @@ module.exports = function (math) {
 
 },{}],196:[function(require,module,exports){
 module.exports = function (math) {
-  var util = require('../../util/index');
+  var util = require('../../util/index'),
+
+      Complex = require('../../type/Complex'),
+      Matrix = require('../../type/Matrix'),
+      Unit = require('../../type/Unit'),
+      Index = require('../../type/Index'),
+      Range = require('../../type/Range'),
+      Help = require('../../type/Help');
 
   /**
    * Determine the type of a variable
@@ -11022,11 +10979,26 @@ module.exports = function (math) {
       throw new util.error.ArgumentsError('typeof', arguments.length, 1);
     }
 
-    return util.types.type(x);
+    // JavaScript types
+    var type = util.types.type(x);
+
+    // math.js types
+    if (type === 'object') {
+      if (x instanceof Complex) return 'complex';
+      if (x instanceof Matrix) return 'matrix';
+      if (x instanceof Unit) return 'unit';
+      if (x instanceof Index) return 'index';
+      if (x instanceof Range) return 'range';
+      if (x instanceof Help) return 'matrix';
+
+      if (x instanceof math.chaining.Selector) return 'selector';
+    }
+
+    return type;
   };
 };
 
-},{"../../util/index":207}],197:[function(require,module,exports){
+},{"../../type/Complex":197,"../../type/Help":198,"../../type/Index":199,"../../type/Matrix":200,"../../type/Range":201,"../../type/Unit":202,"../../util/index":207}],197:[function(require,module,exports){
 var util = require('../util/index'),
     number = util.number,
 
@@ -11394,8 +11366,6 @@ module.exports = Complex;
 exports.isComplex = Complex.isComplex;
 exports.parse = Complex.parse;
 
-util.types.addType('complex', Complex);
-
 },{"../util/index":207}],198:[function(require,module,exports){
 var util = require('../util/index'),
     object = util.object,
@@ -11488,8 +11458,6 @@ module.exports = Help;
 // to trick my IDE which doesn't get it
 exports.isHelp = Help.isHelp;
 
-util.types.addType('help', Help);
-
 },{"../util/index":207}],199:[function(require,module,exports){
 var util = require('../util/index'),
 
@@ -11547,7 +11515,6 @@ function Index(ranges) {
         this._ranges.push(_createRange([arg, arg + 1]));
       }
       // TODO: implement support for wildcard '*'
-      // TODO: implement support for a string 'start:step:end'
       else {
         throw new TypeError('Range expected as Array, Number, or String');
       }
@@ -11616,24 +11583,50 @@ Index.create = function create(ranges) {
 };
 
 /**
- * Retrieve the size of the index.
+ * Retrieve the size of the index, the number of elements for each dimension.
  * @returns {Number[]} size
  */
-Index.prototype.size = function () {
+Index.prototype.size = function size () {
   var size = [];
 
   for (var i = 0, ii = this._ranges.length; i < ii; i++) {
     var range = this._ranges[i];
 
-    if (range instanceof Range) {
-      size.push(range.size()[0]);
-    }
-    else {
-      size.push(null);
-    }
+    size[i] = range.size()[0];
   }
 
   return size;
+};
+
+/**
+ * Get the maximum value for each of the indexes ranges.
+ * @returns {Number[]} max
+ */
+Index.prototype.max = function max () {
+  var values = [];
+
+  for (var i = 0, ii = this._ranges.length; i < ii; i++) {
+    var range = this._ranges[i];
+    values[i] = range.max();
+  }
+
+  return values;
+};
+
+/**
+ * Get the minimum value for each of the indexes ranges.
+ * @returns {Number[]} min
+ */
+Index.prototype.min = function min () {
+  var values = [];
+
+  for (var i = 0, ii = this._ranges.length; i < ii; i++) {
+    var range = this._ranges[i];
+
+    values[i] = range.min();
+  }
+
+  return values;
 };
 
 /**
@@ -11642,7 +11635,7 @@ Index.prototype.size = function () {
  *                              argument, the dimension as second, and the
  *                              index object as third.
  */
-Index.prototype.forEach = function (callback) {
+Index.prototype.forEach = function forEach(callback) {
   for (var i = 0, ii = this._ranges.length; i < ii; i++) {
     callback(this._ranges[i], i, this);
   }
@@ -11653,8 +11646,28 @@ Index.prototype.forEach = function (callback) {
  * @param {Number} dim                  Number of the dimension
  * @returns {Range | undefined} range
  */
-Index.prototype.range = function (dim) {
+Index.prototype.range = function range (dim) {
   return this._ranges[dim];
+};
+
+/**
+ * Test whether this index contains only a single value
+ * @return {boolean} isScalar
+ */
+Index.prototype.isScalar = function isScalar () {
+  var size = this.size();
+
+  if (size.length === 0) {
+     return false;
+  }
+
+  for (var i = 0, ii = size.length; i < ii; i++) {
+    if (size[i] !== 1) {
+      return false;
+    }
+  }
+
+  return true;
 };
 
 /**
@@ -11662,7 +11675,7 @@ Index.prototype.range = function (dim) {
  * For example new Index([0,3], [2,7]) returns [[0,1,2], [2,3,4,5,6]]
  * @returns {Array} array
  */
-Index.prototype.toArray = function () {
+Index.prototype.toArray = function toArray() {
   var array = [];
   for (var i = 0, ii = this._ranges.length; i < ii; i++) {
     var range = this._ranges[i],
@@ -11717,48 +11730,12 @@ Index.prototype.toString = function () {
   return '[' + strings.join(',') + ']';
 };
 
-/**
- * Test whether a multidimensional array contains a scalar
- * @param array
- * @returns {*}
- */
-function isScalar(array) {
-  while (isArray(array)) {
-    if (array.length !== 1) {
-      return false;
-    }
-    array = array[0];
-  }
-
-  return true;
-}
-
-/**
- * Retrieve the scalar value from a multidimensional matrix containing only
- * a single scalar.
- * @param array
- * @returns {*} scalar
- * @private
- */
-function toScalar(array) {
-  while (isArray(array)) {
-    if (array.length !== 1) {
-      throw new Error('Array does not contain a single scalar');
-    }
-    array = array[0];
-  }
-
-  return array;
-}
-
 // exports
 module.exports = Index;
 
 // to trick my IDE which doesn't get it
 exports.isIndex = Index.isIndex;
 exports.create = Index.create;
-
-util.types.addType('index', Index);
 
 },{"../util/index":207,"./Range":201}],200:[function(require,module,exports){
 var util = require('../util/index'),
@@ -11769,7 +11746,8 @@ var util = require('../util/index'),
     array = util.array,
     object = util.object,
 
-    isArray = Array.isArray;
+    isArray = Array.isArray,
+    validateIndex = array.validateIndex;
 
 /**
  * @constructor Matrix
@@ -11781,7 +11759,7 @@ var util = require('../util/index'),
  * Matrix contains the functions to resize, get and set values, get the size,
  * clone the matrix and to convert the matrix to a vector, array, or scalar.
  * Furthermore, one can iterate over the matrix using map and forEach.
- * The internal Array of the Matrix can be accessed using the method valueOf.
+ * The internal Array of the Matrix can be accessed using the function valueOf.
  *
  * Example usage:
  *     var matrix = new Matrix([[1, 2], [3, 4]);
@@ -11802,7 +11780,7 @@ function Matrix(data) {
     // clone data from a Matrix
     this._data = data.clone()._data;
   }
-  else if (Array.isArray(data)) {
+  else if (isArray(data)) {
     // use array as is
     this._data = data;
   }
@@ -11848,63 +11826,95 @@ Matrix.prototype.subset = function subset(index, replacement) {
 };
 
 /**
- * Get a value or a submatrix of the matrix.
- * @param {Index} index   Zero-based index
+ * Get a single element from the matrix.
+ * @param {Number[]} index   Zero-based index
+ * @return {*} value
  */
-// TODO: Matrix.get is deprecated since version 0.13.0, remove it some day
 Matrix.prototype.get = function get(index) {
-  throw new Error('Matrix.get is removed. Use matrix.subet(index) instead.');
+  if (!isArray(index)) {
+    throw new Error('Array expected');
+  }
+  if (index.length != this._size.length) {
+    throw new RangeError('Dimension mismatch ' +
+        '(' + index.length + ' != ' + this._size.length + ')');
+  }
+
+  var data = this._data;
+  for (var i = 0, ii = index.length; i < ii; i++) {
+    var index_i = index[i];
+    validateIndex(index_i, data.length);
+    data = data[index_i];
+  }
+
+  return object.clone(data);
 };
 
-
 /**
- * Replace a value or a submatrix in the matrix.
- * Indexes are zero-based.
- * @param {Index} index
- * @param {Matrix | Array | *} submatrix
- * @return {Matrix} matrix
+ * Replace a single element in the matrix.
+ * @param {Number[]} index   Zero-based index
+ * @param {*} value
+ * @return {Matrix} self
  */
-// TODO: Matrix.set is deprecated since version 0.13.0, remove it some day
-Matrix.prototype.set = function set (index, submatrix) {
-  throw new Error('Matrix.set is removed. Use matrix.subet(index, replacement) instead.');
+Matrix.prototype.set = function set (index, value) {
+  var i, ii;
+
+  // validate input type and dimensions
+  if (!isArray(index)) {
+    throw new Error('Array expected');
+  }
+  if (index.length < this._size.length) {
+    throw new RangeError('Dimension mismatch ' +
+        '(' + index.length + ' < ' + this._size.length + ')');
+  }
+
+  // enlarge matrix when needed
+  var size = index.map(function (i) {
+    return i + 1;
+  });
+  _fit(this, size);
+
+  // traverse over the dimensions
+  var data = this._data;
+  for (i = 0, ii = index.length - 1; i < ii; i++) {
+    var index_i = index[i];
+    validateIndex(index_i, data.length);
+    data = data[index_i];
+  }
+
+  // set new value
+  index_i = index[index.length - 1];
+  validateIndex(index_i, data.length);
+  data[index_i] = value;
+
+  return this;
 };
 
 /**
- * Get a value or a submatrix of the matrix.
+ * Get a submatrix of this matrix
  * @param {Matrix} matrix
  * @param {Index} index   Zero-based index
+ * @private
  */
 function _get (matrix, index) {
   if (!(index instanceof Index)) {
     throw new TypeError('Invalid index');
   }
 
-  var size = index.size();
-  var isScalar = !size.some(function (i) {
-    return (i != 1);
-  });
-
-  if (size.length != matrix._size.length) {
-    throw new RangeError('Dimension mismatch ' +
-        '(' + size.length + ' != ' + matrix._size.length + ')');
-  }
-
+  var isScalar = index.isScalar();
   if (isScalar) {
-    // return a single value
-    switch (size.length) {
-      case 1:     return _getScalar1D(matrix._data, index);
-      case 2:     return _getScalar2D(matrix._data, index);
-      default:    return _getScalar(matrix._data, index);
-    }
+    // return a scalar
+    return matrix.get(index.min());
   }
   else {
-    // return a submatrix
-    var submatrix;
-    switch (size.length) {
-      case 1: submatrix = new Matrix(_getSubmatrix1D(matrix._data, index)); break;
-      case 2: submatrix = new Matrix(_getSubmatrix2D(matrix._data, index)); break;
-      default: submatrix = new Matrix(_getSubmatrix(matrix._data, index, 0)); break;
+    // validate dimensions
+    var size = index.size();
+    if (size.length != matrix._size.length) {
+      throw new RangeError('Dimension mismatch ' +
+          '(' + size.length + ' != ' + matrix._size.length + ')');
     }
+
+    // retrieve submatrix
+    var submatrix = new Matrix(_getSubmatrix(matrix._data, index, size.length, 0));
     // TODO: more efficient when creating an empty matrix and setting _data and _size manually
 
     // squeeze matrix output
@@ -11918,345 +11928,132 @@ function _get (matrix, index) {
 }
 
 /**
- * Get a single value from an array. The method tests whether:
- * - index is a non-negative integer
- * - index does not exceed the dimensions of array
- * @param {Array} arr
- * @param {Number} index   Zero-based index
- * @return {*} value
- * @private
- */
-function _getElement (arr, index) {
-  array.validateIndex(index, arr.length);
-  return arr[index]; // zero-based index
-}
-
-/**
- * Get a single value from the matrix. The value will be a copy of the original
- * value in the matrix.
+ * Recursively get a submatrix of a multi dimensional matrix.
  * Index is not checked for correct number of dimensions.
  * @param {Array} data
  * @param {Index} index
- * @return {*} scalar
- * @private
- */
-function _getScalar (data, index) {
-  index.forEach(function (range) {
-    data = _getElement(data, range.start);
-  });
-  return object.clone(data);
-}
-
-/**
- * Get a single value from a one dimensional matrix.
- * The value will be a copy of the original value in the matrix.
- * Index is not checked for correct number of dimensions.
- * @param {Array} data
- * @param {Index} index
- * @return {*} scalar
- * @private
- */
-function _getScalar1D (data, index) {
-  return _getElement(data, index.range(0).start);
-}
-
-/**
- * Get a single value from a two dimensional matrix.
- * The value will be a copy of the original value in the matrix.
- * Index is not checked for correct number of dimensions.
- * @param {Array} data
- * @param {Index} index
- * @return {*} scalar
- * @private
- */
-function _getScalar2D (data, index) {
-  return _getElement(_getElement(data, index.range(0).start), index.range(1).start);
-}
-
-/**
- * Get a submatrix of a zero dimensional matrix.
- * Index is not checked for correct number of dimensions.
- * @param {Array} data
- * @param {Index} index
+ * @param {number} dims   Total number of dimensions
+ * @param {number} dim    Current dimension
  * @return {Array} submatrix
  * @private
  */
-function _getSubmatrix1D (data, index) {
-  var range = index.range(0);
-
-  return range.map(function (i) {
-    return _getElement(data, i);
-  });
-}
-
-/**
- * Get a submatrix of a 2 dimensional matrix.
- * Index is not checked for correct number of dimensions.
- * @param {Array} data
- * @param {Index} index
- * @return {Array} submatrix
- * @private
- */
-function _getSubmatrix2D (data, index) {
-  var rows = index.range(0);
-  var cols = index.range(1);
-
-  return rows.map(function (row) {
-    var child = _getElement(data, row);
-    return cols.map(function (col) {
-      return _getElement(child, col);
-    });
-  });
-}
-
-/**
- * Get a submatrix of a multi dimensional matrix.
- * Index is not checked for correct number of dimensions.
- * @param {Array} data
- * @param {Index} index
- * @param {number} dim
- * @return {Array} submatrix
- * @private
- */
-function _getSubmatrix (data, index, dim) {
-  var last = (dim == index.size().length - 1);
+function _getSubmatrix (data, index, dims, dim) {
+  var last = (dim == dims - 1);
   var range = index.range(dim);
 
   if (last) {
     return range.map(function (i) {
-      return _getElement(data, i);
+      validateIndex(i, data.length);
+      return data[i];
     });
   }
   else {
     return range.map(function (i) {
-      var child = _getElement(data, i);
-      return _getSubmatrix(child, index, dim + 1);
+      validateIndex(i, data.length);
+      var child = data[i];
+      return _getSubmatrix(child, index, dims, dim + 1);
     });
   }
 }
 
 /**
- * Replace a value or a submatrix in the matrix.
+ * Replace a submatrix in this matrix
  * Indexes are zero-based.
  * @param {Matrix} matrix
  * @param {Index} index
  * @param {Matrix | Array | *} submatrix
  * @return {Matrix} matrix
+ * @private
  */
 function _set (matrix, index, submatrix) {
   if (!(index instanceof Index)) {
     throw new TypeError('Invalid index');
   }
 
-  var size = index.size();
-  var isScalar = !size.some(function (i) {
-    return (i != 1);
-  });
+  // get index size and check whether the index contains a single value
+  var iSize = index.size(),
+      isScalar = index.isScalar();
 
-  if (size.length < matrix._size.length) {
-    throw new RangeError('Dimension mismatch ' +
-        '(' + size.length + ' != ' + matrix._size.length + ')');
-  }
-
+  // calculate the size of the submatrix, and convert it into an Array if needed
+  var sSize;
   if (submatrix instanceof Matrix) {
+    sSize = submatrix.size();
     submatrix = submatrix.valueOf();
   }
-
-  // calculate the size of the submatrix
-  var subsize = array.size(submatrix);
+  else {
+    sSize = array.size(submatrix);
+  }
 
   if (isScalar) {
     // set a scalar
 
     // check whether submatrix is a scalar
-    if (subsize.length != 0) {
+    if (sSize.length != 0) {
       throw new TypeError('Scalar value expected');
     }
 
-    switch (index.length) {
-      case 1:  _setScalar1D(matrix._data, matrix._size, index, submatrix); break;
-      case 2:  _setScalar2D(matrix._data, matrix._size, index, submatrix); break;
-      default: _setScalar(matrix._data, matrix._size, index, submatrix); break;
-    }
+    matrix.set(index.min(), submatrix);
   }
   else {
     // set a submatrix
 
-    // unsqueeze the submatrix when needed
-    for (var i = 0, ii = size.length - subsize.length; i < ii; i++) {
-      submatrix = [submatrix];
+    // validate dimensions
+    if (iSize.length < matrix._size.length) {
+      throw new RangeError('Dimension mismatch ' +
+          '(' + iSize.length + ' < ' + matrix._size.length + ')');
     }
 
-    var newSize = matrix._size.concat();
-    _setSubmatrix (matrix._data, newSize, index, 0, submatrix);
-    if (!object.deepEqual(matrix._size, newSize)) {
-      _init(matrix._data);
-      matrix.resize(newSize);
+    // unsqueeze the submatrix when needed
+    for (var i = 0, ii = iSize.length - sSize.length; i < ii; i++) {
+      submatrix = [submatrix];
+      sSize.unshift(1);
     }
+
+    // check whether the size of the submatrix matches the index size
+    if (!object.deepEqual(iSize, sSize)) {
+      throw new RangeError('Dimensions mismatch ' +
+          '(' + string.format(iSize) + ' != '+ string.format(sSize) + ')');
+    }
+
+    // enlarge matrix when needed
+    var size = index.max().map(function (i) {
+      return i + 1;
+    });
+    _fit(matrix, size);
+
+    // insert the sub matrix
+    var dims = iSize.length,
+        dim = 0;
+    _setSubmatrix (matrix._data, index, submatrix, dims, dim);
   }
 
   return matrix;
 }
 
 /**
- * Replace a single value in an array. The method tests whether index is a
- * non-negative integer
- * @param {Array} arr
- * @param {Number} index   Zero-based index
- * @param {*} value
- * @private
- */
-function _setElement (arr, index, value) {
-  array.validateIndex(index);
-  if (Array.isArray(value)) {
-    throw new TypeError('Dimension mismatch, value expected instead of array');
-  }
-  arr[index] = value; // zero-based index
-}
-
-/**
- * Replace a single value in a multi dimensional matrix
- * @param {Array} data
- * @param {Number[]} size
- * @param {Index} index
- * @param {*} value
- * @private
- */
-function _setScalar (data, size, index, value) {
-  var resized = false;
-  if (index.size().length > size.length) {
-    // dimension added
-    resized = true;
-  }
-
-  index.forEach(function (range, i) {
-    var v = range.start;
-    array.validateIndex(v);
-    if ((size[i] == null) || (v + 1 > size[i])) {
-      size[i] = v + 1; // size is index + 1 as index is zero-based
-      resized = true;
-    }
-  });
-
-  if (resized) {
-    array.resize(data, size, 0);
-  }
-
-  var len = size.length;
-  index.forEach(function (range, dim) {
-    var i = range.start;
-    if (dim < len - 1) {
-      data = data[i]; // zero-based index
-    }
-    else {
-      data[i] = value; // zero-based index
-    }
-  });
-}
-
-/**
- * Replace a single value in a zero dimensional matrix
- * @param {Array} data
- * @param {Number[]} size
- * @param {Index} index
- * @param {*} value
- * @private
- */
-function _setScalar1D (data, size, index, value) {
-  var row = index.range(0).start;
-  array.validateIndex(row);
-  if (row + 1 > size[0]) {
-    array.resize(data, [row + 1], 0); // size is index + 1 as index is zero-based
-    size[0] = row + 1;
-  }
-  data[row] = value; // zero-based index
-}
-
-/**
- * Replace a single value in a two dimensional matrix
- * @param {Array} data
- * @param {Number[]} size
- * @param {Index} index  zero-based index
- * @param {*} value
- * @private
- */
-function _setScalar2D (data, size, index, value) {
-  var row = index.range(0).start;
-  var col = index.range(1).start;
-  array.validateIndex(row);
-  array.validateIndex(col);
-
-  var resized = false;
-  if (row + 1 > (size[0] || 0)) {
-    size[0] = row + 1;   // size is index + 1 as index is zero-based
-    resized = true;
-  }
-  if (col + 1 > (size[1] || 0)) {
-    size[1] = col + 1;   // size is index + 1 as index is zero-based
-    resized = true;
-  }
-  if (resized) {
-    array.resize(data, size, 0);
-  }
-
-  data[row][col] = value; // zero-based index
-}
-
-/**
  * Replace a submatrix of a multi dimensional matrix.
  * @param {Array} data
- * @param {Array} size
  * @param {Index} index
- * @param {number} dim
  * @param {Array} submatrix
+ * @param {number} dims   Total number of dimensions
+ * @param {number} dim
  * @private
  */
-function _setSubmatrix (data, size, index, dim, submatrix) {
-  var last = (dim == index.size().length - 1);
-  var range = index.range(dim);
-
-  var len = (range.size()[0]);
-  if (len != submatrix.length) {
-    throw new RangeError('Dimensions mismatch ' +
-        '(' + len + ' != '+ submatrix.length + ')');
-  }
+function _setSubmatrix (data, index, submatrix, dims, dim) {
+  var last = (dim == dims - 1),
+      range = index.range(dim);
 
   if (last) {
     range.forEach(function (dataIndex, subIndex) {
-      _setElement(data, dataIndex, submatrix[subIndex]);
-      if (dataIndex + 1 > (size[dim] || 0)) {
-        size[dim] = dataIndex + 1;
-      }
+      validateIndex(dataIndex);
+      data[dataIndex] = submatrix[subIndex];
     });
   }
   else {
     range.forEach(function (dataIndex, subIndex) {
-      var child = data[dataIndex];
-      if (!Array.isArray(child)) {
-        data[dataIndex] = child = [child];
-      }
-      if (dataIndex + 1 > (size[dim] || 0)) {
-        size[dim] = dataIndex + 1;
-      }
-      _setSubmatrix(child, size, index, dim + 1, submatrix[subIndex]);
+      validateIndex(dataIndex);
+      _setSubmatrix(data[dataIndex], index, submatrix[subIndex], dims, dim + 1);
     });
-  }
-}
-
-/**
- * Recursively initialize all undefined values in the array with zeros
- * @param array
- * @private
- */
-function _init(array) {
-  for (var i = 0, len = array.length; i < len; i++) {
-    var value = array[i];
-    if (Array.isArray(value)) {
-      _init(value);
-    }
-    else if (value == undefined) {
-      array[i] = 0;
-    }
   }
 }
 
@@ -12264,13 +12061,55 @@ function _init(array) {
  * Resize the matrix
  * @param {Number[]} size
  * @param {*} [defaultValue]        Default value, filled in on new entries.
- *                                  If not provided, the matrix will be filled
- *                                  with zeros.
+ *                                  If not provided, the matrix elements will
+ *                                  be left undefined.
+ * @return {Matrix} self            The matrix itself is returned
  */
 Matrix.prototype.resize = function resize(size, defaultValue) {
-  array.resize(this._data, size, defaultValue);
   this._size = object.clone(size);
+  this._data = array.resize(this._data, this._size, defaultValue);
+
+  // return the matrix itself
+  return this;
 };
+
+/**
+ * Enlarge the matrix when it is smaller than given size.
+ * If the matrix is larger or equal sized, nothing is done.
+ * @param {Matrix} matrix           The matrix to be resized
+ * @param {Number[]} size
+ * @param {*} [defaultValue]        Default value, filled in on new entries.
+ *                                  If not provided, the matrix elements will
+ *                                  be left undefined.
+ * @private
+ */
+function _fit(matrix, size, defaultValue) {
+  if (!isArray(size)) {
+    throw new Error('Array expected');
+  }
+
+  var newSize = object.clone(matrix._size),
+      changed = false;
+
+  // add dimensions when needed
+  while (newSize.length < size.length) {
+    newSize.unshift(0);
+    changed = true;
+  }
+
+  // enlarge size when needed
+  for (var i = 0, ii = size.length; i < ii; i++) {
+    if (size[i] > newSize[i]) {
+      newSize[i] = size[i];
+      changed = true;
+    }
+  }
+
+  if (changed) {
+    // resize only when size is changed
+    matrix.resize(newSize, defaultValue);
+  }
+}
 
 /**
  * Create a clone of the matrix
@@ -12294,7 +12133,7 @@ Matrix.prototype.size = function size() {
 /**
  * Create a new matrix with the results of the callback function executed on
  * each entry of the matrix.
- * @param {function} callback   The callback method is invoked with three
+ * @param {function} callback   The callback function is invoked with three
  *                              parameters: the value of the element, the index
  *                              of the element, and the Matrix being traversed.
  * @return {Matrix} matrix
@@ -12304,9 +12143,9 @@ Matrix.prototype.map = function map(callback) {
   var matrix = new Matrix();
   var index = [];
   var recurse = function (value, dim) {
-    if (Array.isArray(value)) {
+    if (isArray(value)) {
       return value.map(function (child, i) {
-        index[dim] = i; // zero-based index
+        index[dim] = i;
         return recurse(child, dim + 1);
       });
     }
@@ -12321,8 +12160,8 @@ Matrix.prototype.map = function map(callback) {
 };
 
 /**
- * Execute a callback method on each entry of the matrix.
- * @param {function} callback   The callback method is invoked with three
+ * Execute a callback function on each entry of the matrix.
+ * @param {function} callback   The callback function is invoked with three
  *                              parameters: the value of the element, the index
  *                              of the element, and the Matrix being traversed.
  */
@@ -12330,9 +12169,9 @@ Matrix.prototype.forEach = function forEach(callback) {
   var me = this;
   var index = [];
   var recurse = function (value, dim) {
-    if (Array.isArray(value)) {
+    if (isArray(value)) {
       value.forEach(function (child, i) {
-        index[dim] = i; // zero-based index
+        index[dim] = i;
         recurse(child, dim + 1);
       });
     }
@@ -12341,101 +12180,6 @@ Matrix.prototype.forEach = function forEach(callback) {
     }
   };
   recurse(this._data, 0);
-};
-
-/**
- * Create a scalar with a copy of the data of the Matrix
- * Will return null if the matrix does not consist of a scalar value
- * @return {* | null} scalar
- */
-Matrix.prototype.toScalar = function toScalar() {
-  var scalar = this._data;
-  while (Array.isArray(scalar) && scalar.length == 1) {
-    scalar = scalar[0];
-  }
-
-  if (Array.isArray(scalar)) {
-    return null;
-  }
-  else {
-    return object.clone(scalar);
-  }
-};
-
-/**
- * Test whether the matrix is a scalar.
- * @return {boolean} isScalar
- */
-Matrix.prototype.isScalar = function isScalar() {
-  return this._size.every(function (s) {
-    return (s <= 1);
-  });
-};
-
-/**
- * Create a vector with a copy of the data of the Matrix
- * Returns null if the Matrix does not contain a vector
- *
- * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
- * dimensions where maximum one of the dimensions has a size larger than 1.
- * return {Array | null} vector
- */
-Matrix.prototype.toVector = function toVector() {
-  var count = 0;
-  var dim = undefined;
-  var index = [];
-  this._size.forEach(function (length, i) {
-    if (length > 1) {
-      count++;
-      dim = i;
-    }
-    index[i] = 0;
-  });
-
-  if (count == 0) {
-    // scalar or empty
-    var scalar = this.toScalar();
-    if (scalar) {
-      return [scalar];
-    }
-    else {
-      return [];
-    }
-  }
-  else if (count == 1) {
-    // valid vector
-    var vector = [];
-    var recurse = function (data) {
-      if (Array.isArray(data)) {
-        data.forEach(recurse);
-      }
-      else {
-        vector.push(data);
-      }
-    };
-    recurse(this._data);
-    return vector;
-  }
-  else {
-    // count > 1, this is no vector
-    return null;
-  }
-};
-
-/**
- * Test if the matrix contains a vector.
- * A matrix is a vector when it has 0 or 1 dimensions, or has multiple
- * dimensions where maximum one of the dimensions has a size larger than 1.
- * return {boolean} isVector
- */
-Matrix.prototype.isVector = function isVector() {
-  var count = 0;
-  this._size.forEach(function (length) {
-    if (length > 1) {
-      count++;
-    }
-  });
-  return (count <= 1);
 };
 
 /**
@@ -12479,8 +12223,6 @@ module.exports = Matrix;
 
 // to trick my IDE which doesn't get it
 exports.isMatrix = Matrix.isMatrix;
-
-util.types.addType('matrix', Matrix);
 
 },{"../util/index":207,"./Index":199}],201:[function(require,module,exports){
 var util = require('../util/index'),
@@ -12533,9 +12275,9 @@ function Range(start, end, step) {
     throw new TypeError('Parameter step must be a number');
   }
 
-  this.start = (start != null) ? start : 0;
-  this.end   = (end != null) ? end : 0;
-  this.step  = (step != null) ? step : 1;
+  this.start = (start != null) ? parseFloat(start) : 0;
+  this.end   = (end != null) ? parseFloat(end) : 0;
+  this.step  = (step != null) ? parseFloat(step) : 1;
 }
 
 /**
@@ -12553,7 +12295,7 @@ Range.parse = function parse (str) {
 
   var args = str.split(':');
   var nums = args.map(function (arg) {
-    return Number(arg);
+    return parseFloat(arg);
   });
 
   var invalid = nums.some(function (num) {
@@ -12589,13 +12331,14 @@ Range.isRange = function isRange(object) {
 
 /**
  * Retrieve the size of the range.
+ * Returns an array containing one number, the number of elements in the range.
  * @returns {Number[]} size
  */
 Range.prototype.size = function size() {
   var len = 0,
-      start = Number(this.start),
-      step = Number(this.step),
-      end = Number(this.end),
+      start = this.start,
+      step = this.step,
+      end = this.end,
       diff = end - start;
 
   if (number.sign(step) == number.sign(diff)) {
@@ -12612,15 +12355,60 @@ Range.prototype.size = function size() {
 };
 
 /**
+ * Calculate the minimum value in the range
+ * @return {Number | undefined} min
+ */
+Range.prototype.min = function min () {
+  var size = this.size()[0];
+
+  if (size > 0) {
+    if (this.step > 0) {
+      // positive step
+      return this.start;
+    }
+    else {
+      // negative step
+      return this.start + (size - 1) * this.step;
+    }
+  }
+  else {
+    return undefined;
+  }
+};
+
+/**
+ * Calculate the maximum value in the range
+ * @return {Number | undefined} max
+ */
+Range.prototype.max = function max () {
+  var size = this.size()[0];
+
+  if (size > 0) {
+    if (this.step > 0) {
+      // positive step
+      return this.start + (size - 1) * this.step;
+    }
+    else {
+      // negative step
+      return this.start;
+    }
+  }
+  else {
+    return undefined;
+  }
+};
+
+
+/**
  * Execute a callback function for each value in the range.
  * @param {function} callback   The callback method is invoked with three
  *                              parameters: the value of the element, the index
  *                              of the element, and the Matrix being traversed.
  */
 Range.prototype.forEach = function forEach(callback) {
-  var x = Number(this.start);
-  var step = Number(this.step);
-  var end = Number(this.end);
+  var x = this.start;
+  var step = this.step;
+  var end = this.end;
   var i = 0;
 
   if (step > 0) {
@@ -12668,44 +12456,6 @@ Range.prototype.toArray = function toArray() {
 };
 
 /**
- * Create an array with a copy of the Ranges data.
- * This method is equal to Range.toArray.
- * @return {Array} vector
- */
-Range.prototype.toVector = Range.prototype.toArray;
-
-/**
- * Test if the range contains a vector. For a range, this is always the case
- * return {boolean} isVector
- */
-Range.prototype.isVector = function isVector() {
-  return true;
-};
-
-/**
- * Create a scalar with a copy of the data of the Range
- * Will return null if the range does not consist of a scalar value
- * @return {* | null} scalar
- */
-Range.prototype.toScalar = function toScalar() {
-  var array = this.toArray();
-  if (array.length == 1) {
-    return array[0];
-  }
-  else {
-    return null;
-  }
-};
-
-/**
- * Test whether the matrix is a scalar.
- * @return {boolean} isScalar
- */
-Range.prototype.isScalar = function isScalar() {
-  return (this.size()[0] == 1);
-};
-
-/**
  * Get the primitive value of the Range, a one dimensional array
  * @returns {Array} array
  */
@@ -12747,8 +12497,6 @@ module.exports = Range;
 // to trick my IDE which doesn't get it
 exports.isRange = Range.isRange;
 exports.parse = Range.parse;
-
-util.types.addType('range', Range);
 
 },{"../util/index":207}],202:[function(require,module,exports){
 var util = require('../util/index'),
@@ -13490,8 +13238,6 @@ exports.isUnit = Unit.isUnit;
 exports.isPlainUnit = Unit.isPlainUnit;
 exports.parse = Unit.parse;
 
-util.types.addType('unit', Unit);
-
 },{"../util/index":207}],203:[function(require,module,exports){
 // utility methods for arrays and matrices
 
@@ -13523,7 +13269,7 @@ exports.argsToArray = function argsToArray(args) {
     // fn([m, n, p, ...])
     array = args[0];
     if (array instanceof Matrix) {
-      array = array.toVector();
+      array = array.valueOf();
     }
     if (!isArray(array)) {
       array = [array];
@@ -13732,22 +13478,20 @@ var number = require('./number'),
     isArray = Array.isArray;
 
 /**
- * Recursively calculate the size of a multi dimensional array.
+ * Calculate the size of a multi dimensional array.
  * @param {Array} x
  * @Return {Number[]} size
  * @private
  */
 function _size(x) {
-  if (Array.isArray(x)) {
-    var len = x.length;
+  var size = [];
 
-    var size = len ? _size(x[0]) : [];
-    size.unshift(len);
-    return size;
+  while (isArray(x)) {
+    size.push(x.length);
+    x = x[0];
   }
-  else {
-    return [];
-  }
+
+  return size;
 }
 
 /**
@@ -13791,7 +13535,7 @@ function _validate(array, size, dim) {
     var dimNext = dim + 1;
     for (i = 0; i < len; i++) {
       var child = array[i];
-      if (!Array.isArray(child)) {
+      if (!isArray(child)) {
         throw new RangeError('Dimension mismatch ' +
             '(' + (size.length - 1) + ' < ' + size.length + ')');
       }
@@ -13801,7 +13545,7 @@ function _validate(array, size, dim) {
   else {
     // last dimension. none of the childs may be an array
     for (i = 0; i < len; i++) {
-      if (Array.isArray(array[i])) {
+      if (isArray(array[i])) {
         throw new RangeError('Dimension mismatch ' +
             '(' + (size.length + 1) + ' > ' + size.length + ')');
       }
@@ -13820,7 +13564,7 @@ exports.validate = function validate(array, size) {
   var isScalar = (size.length == 0);
   if (isScalar) {
     // scalar
-    if (Array.isArray(array)) {
+    if (isArray(array)) {
       throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
     }
   }
@@ -13848,73 +13592,22 @@ exports.validateIndex = function validateIndex (index, length) {
 };
 
 /**
- * Recursively resize a multi dimensional array
- * @param {Array} array         Array to be resized
- * @param {Number[]} size       Array with the size of each dimension
- * @param {Number} dim          Current dimension
- * @param {*} [defaultValue]    Value to be filled in in new entries,
- *                              0 by default.
- * @private
- */
-function _resize (array, size, dim, defaultValue) {
-  if (!Array.isArray(array)) {
-    throw new TypeError('Array expected');
-  }
-
-  var len = array.length,
-      newLen = size[dim];
-
-  if (len != newLen) {
-    if(newLen > array.length) {
-      // enlarge
-      for (var i = array.length; i < newLen; i++) {
-        array[i] = defaultValue ? object.clone(defaultValue) : 0;
-      }
-    }
-    else {
-      // shrink
-      array.length = size[dim];
-    }
-    len = array.length;
-  }
-
-  if (dim < size.length - 1) {
-    // recursively validate each child array
-    var dimNext = dim + 1;
-    for (i = 0; i < len; i++) {
-      child = array[i];
-      if (!Array.isArray(child)) {
-        child = [child];
-        array[i] = child;
-      }
-      _resize(child, size, dimNext, defaultValue);
-    }
-  }
-  else {
-    // last dimension
-    for (i = 0; i < len; i++) {
-      var child = array[i];
-      while (Array.isArray(child)) {
-        child = child[0];
-      }
-      array[i] = child;
-    }
-  }
-}
-
-/**
- * Resize a multi dimensional array
+ * Resize a multi dimensional array. The resized array is returned.
  * @param {Array} array         Array to be resized
  * @param {Array.<Number>} size Array with the size of each dimension
  * @param {*} [defaultValue]    Value to be filled in in new entries,
- *                              0 by default
+ *                              undefined by default
+ * @return {Array} array         The resized array
  */
 exports.resize = function resize(array, size, defaultValue) {
-  // TODO: what to do with scalars, when size=[] ?
+  // TODO: add support for scalars, having size=[] ?
 
-  // check the type of size
-  if (!Array.isArray(size)) {
-    throw new TypeError('Size must be an array (size is ' + types.type(size) + ')');
+  // check the type of the arguments
+  if (!isArray(array) || !isArray(size)) {
+    throw new TypeError('Array expected');
+  }
+  if (size.length === 0) {
+    throw new Error('Resizing to scalar is not supported');
   }
 
   // check whether size contains positive integers
@@ -13925,22 +13618,83 @@ exports.resize = function resize(array, size, defaultValue) {
     }
   });
 
-  /* TODO: cleanup
-  var hasZeros = (size.indexOf(0) != -1);
-  if (hasZeros) {
-    // array where all dimensions are zero
-    size.forEach(function (value) {
-      if (value != 0) {
-        throw new RangeError('Invalid size, all dimensions must be ' +
-            'either zero or non-zero (size: ' + string.format(size) + ')');
-      }
-    });
+  // count the current number of dimensions
+  var dims = 1;
+  var elem = array[0];
+  while (isArray(elem)) {
+    dims++;
+    elem = elem[0];
   }
-  */
 
-  // recursively resize
+  // adjust the number of dimensions when needed
+  while (dims < size.length) { // add dimensions
+    array = [array];
+    dims++;
+  }
+  while (dims > size.length) { // remove dimensions
+    array = array[0];
+    dims--;
+  }
+
+  // recursively resize the array
   _resize(array, size, 0, defaultValue);
+
+  return array;
 };
+
+/**
+ * Recursively resize a multi dimensional array
+ * @param {Array} array         Array to be resized
+ * @param {Number[]} size       Array with the size of each dimension
+ * @param {Number} dim          Current dimension
+ * @param {*} [defaultValue]    Value to be filled in in new entries,
+ *                              undefined by default.
+ * @private
+ */
+function _resize (array, size, dim, defaultValue) {
+  if (!isArray(array)) {
+    throw Error('Array expected');
+  }
+
+  var i, elem,
+      oldLen = array.length,
+      newLen = size[dim],
+      minLen = Math.min(oldLen, newLen);
+
+  // apply new length
+  array.length = newLen;
+
+  if (dim < size.length - 1) {
+    // non-last dimension
+    var dimNext = dim + 1;
+
+    // resize existing child arrays
+    for (i = 0; i < minLen; i++) {
+      // resize child array
+      elem = array[i];
+      _resize(elem, size, dimNext, defaultValue);
+    }
+
+    // create new child arrays
+    for (i = minLen; i < newLen; i++) {
+      // get child array
+      elem = [];
+      array[i] = elem;
+
+      // resize new child array
+      _resize(elem, size, dimNext, defaultValue);
+    }
+  }
+  else {
+    // last dimension
+    if(defaultValue !== undefined) {
+      // fill new elements with the default value
+      for (i = oldLen; i < newLen; i++) {
+        array[i] = object.clone(defaultValue);
+      }
+    }
+  }
+}
 
 /**
  * Squeeze a multi dimensional array
@@ -13978,7 +13732,7 @@ exports.unsqueeze = function unsqueeze(array, dims) {
  * @param {*} value
  * @return {Boolean} isArray
  */
-exports.isArray = Array.isArray;
+exports.isArray = isArray;
 },{"./number":208,"./object":209,"./string":210,"./types":211}],205:[function(require,module,exports){
 /**
  * Test whether value is a Boolean
@@ -14366,6 +14120,10 @@ exports.deepEqual = function deepEqual (a, b) {
       return false;
     }
 
+    if (a.length != b.length) {
+      return false;
+    }
+
     for (i = 0, len = a.length; i < len; i++) {
       if (!exports.deepEqual(a[i], b[i])) {
         return false;
@@ -14395,7 +14153,7 @@ exports.deepEqual = function deepEqual (a, b) {
     return true;
   }
   else {
-    return (a.valueOf() == b.valueOf());
+    return (a == b);
   }
 };
 
@@ -14503,11 +14261,10 @@ function formatArray (array, options) {
  *
  * @param {*} x
  * @return {String} type  Lower case type, for example "number", "string",
- *                        "array".
+ *                        "array", "date".
  */
 exports.type = function type (x) {
-  var type = typeof x,
-      name;
+  var type = typeof x;
 
   if (type === 'object') {
     if (x === null) {
@@ -14528,42 +14285,13 @@ exports.type = function type (x) {
     if (x instanceof Date) {
       return 'date';
     }
-    if (x.constructor) {
-      // search data types
-      for (name in types) {
-        if (types.hasOwnProperty(name)) {
-          if (x.constructor == types[name]) {
-            return name.toLowerCase();
-          }
-        }
-      }
-
-      // try the constructors name as last resort
-      if (x.constructor.name) {
-        return x.constructor.name.toLowerCase();
-      }
-    }
   }
 
   return type;
 };
 
-/**
- * Custom registered types, for example {'matrix': Matrix}
- * @private
- */
-var types = {};
-
-/**
- * Register a new type, for example addType('matrix', Matrix)
- * @param {String} name                     Lower case name of the type
- * @param {Function} type                   Prototype function of the type
- */
-exports.addType = function addType (name, type) {
-  types[name] = type;
-};
-
-},{}]},{},[1])(1)
+},{}]},{},[1])
+(1)
 });
 ;/**
  * Compatibility shims for legacy JavaScript engines
