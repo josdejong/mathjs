@@ -17,6 +17,8 @@ https://github.com/josdejong/mathjs
   filling them with zeros.
 - Range operator `:` in expression parser has been given a higher precedence.
 - Functions don't allow arguments of unknown type anymore.
+- Function `format` outputs scientific notation with positive exponents now
+  always with `+` sign, so outputs `2.1e+3` instead of `2.1e3`.
 - Fixed function `squeeze` not being able squeeze into a scalar.
 - Some fixes and performance improvements in the `resize` and `subset`
   functions.

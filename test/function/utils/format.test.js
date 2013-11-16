@@ -8,7 +8,7 @@ describe('format', function() {
     assert.equal(math.format(2/7), '0.2857142857142857');
     assert.equal(math.format(0.10400), '0.104');
     assert.equal(math.format(2.3), '2.3');
-    assert.equal(math.format(2.3e6), '2.3e6');
+    assert.equal(math.format(2.3e6), '2.3e+6');
   });
 
   it('should format strings', function() {
@@ -57,5 +57,24 @@ describe('format', function() {
       assert.equal(math.format(new math.type.Range(1/3, 4/3, 2/3), 3), '0.333:0.667:1.33');
     });
 
+  });
+
+  describe('bignumber', function () {
+
+    it('should format big numbers', function() {
+      assert.equal(math.format(math.bignumber(2).dividedBy(7)), '0.28571428571428571429');
+      assert.equal(math.format(math.bignumber(0.10400)), '0.104');
+      assert.equal(math.format(math.bignumber(2.3)), '2.3');
+      assert.equal(math.format(math.bignumber(2.3e6)), '2.3e+6');
+    });
+
+    it('should format big numbers with given precision', function() {
+      var oneThird = math.bignumber(1).div(3);
+      assert.equal(math.format(oneThird), '0.33333333333333333333'); // default, 20
+      assert.equal(math.format(oneThird, 3), '0.333');
+      assert.equal(math.format(oneThird, 4), '0.3333');
+      assert.equal(math.format(oneThird, 5), '0.33333');
+      assert.equal(math.format(oneThird, 18), '0.333333333333333333');
+    });
   });
 });
