@@ -2,6 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
+    bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
@@ -37,12 +38,27 @@ describe('pow', function() {
     assert.equal(pow(false, 2), 0);
   });
 
+  it('should exponentiate bignumbers', function() {
+    assert.deepEqual(pow(bignumber(2), bignumber(3)), bignumber(8));
+    assert.deepEqual(pow(bignumber(100), bignumber(500)), bignumber('1e1000'));
+  });
+
+  it('should exponentiate mixed numbers and bignumbers', function() {
+    assert.deepEqual(pow(bignumber(2), 3), bignumber(8));
+    assert.deepEqual(pow(2, bignumber(3)), bignumber(8));
+  });
+
+  it('should exponentiate mixed booleans and bignumbers', function() {
+    assert.deepEqual(pow(bignumber(true), bignumber(3)), bignumber(1));
+    assert.deepEqual(pow(bignumber(3), bignumber(false)), bignumber(1));
+  });
+
   it('should throw an error if used with wrong number of arguments', function() {
     assert.throws(function () {pow(1)}, SyntaxError, 'Wrong number of arguments in function pow (1 provided, 2 expected)');
     assert.throws(function () {pow(1, 2, 3)}, SyntaxError, 'Wrong number of arguments in function pow (3 provided, 2 expected)');
   });
 
-  it('should elevate a complex number to the given power', function() {
+  it('should exponentiate a complex number to the given power', function() {
     approx.deepEqual(pow(complex(3, 0), 2), 9);
     approx.deepEqual(pow(complex(0, 2), 2), complex(-4, 0));
 

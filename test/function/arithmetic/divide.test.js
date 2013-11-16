@@ -1,8 +1,9 @@
 // test divide
-var assert = require('assert');
-math = require('../../../index')(),
+var assert = require('assert'),
+    math = require('../../../index')(),
     approx = require('../../../tools/approx'),
     divide = math.divide,
+    bignumber = math.bignumber,
     complex = math.complex;
 
 describe('divide', function() {
@@ -24,11 +25,27 @@ describe('divide', function() {
     assert.ok(isNaN(divide(false, false)));
   });
 
-  it('should add mixed numbers and booleans', function() {
+  it('should divide mixed numbers and booleans', function() {
     assert.equal(divide(2, true), 2);
     assert.equal(divide(2, false), Infinity);
     approx.equal(divide(true, 2), 0.5);
     assert.equal(divide(false, 2), 0);
+  });
+
+  it('should divide bignumbers', function() {
+    assert.deepEqual(divide(bignumber(0.3), bignumber(0.2)), bignumber(1.5));
+    assert.deepEqual(divide(bignumber('2.6e5000'), bignumber('2')), bignumber('1.3e5000'));
+  });
+
+  it('should divide mixed numbers and bignumbers', function() {
+    assert.deepEqual(divide(bignumber(0.3), 0.2), bignumber(1.5));
+    assert.deepEqual(divide(0.3, bignumber(0.2)), bignumber(1.5));
+    assert.deepEqual(divide(bignumber('2.6e5000'), 2), bignumber('1.3e5000'));
+  });
+
+  it('should divide mixed booleans and bignumbers', function() {
+    assert.deepEqual(divide(bignumber(0.3), bignumber(true)), bignumber(0.3));
+    assert.deepEqual(divide(false, bignumber('2')), bignumber(0));
   });
 
   it('should divide two complex numbers', function() {

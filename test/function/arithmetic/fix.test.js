@@ -2,6 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
+    bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
@@ -14,7 +15,7 @@ describe('fix', function() {
     assert.equal(fix(false), 0);
   });
 
-  it('should round values correctly', function() {
+  it('should round numbers correctly', function() {
     approx.equal(fix(0), 0);
     approx.equal(fix(1), 1);
     approx.equal(fix(1.3), 1);
@@ -26,6 +27,19 @@ describe('fix', function() {
     approx.equal(fix(-2), -2);
     approx.equal(fix(-2.1), -2);
     approx.deepEqual(fix(math.pi), 3);
+  });
+
+  it('should round big numbers correctly', function() {
+    approx.deepEqual(fix(bignumber(0)), bignumber(0));
+    approx.deepEqual(fix(bignumber(1)), bignumber(1));
+    approx.deepEqual(fix(bignumber(1.3)), bignumber(1));
+    approx.deepEqual(fix(bignumber(1.8)), bignumber(1));
+    approx.deepEqual(fix(bignumber(2)), bignumber(2));
+    approx.deepEqual(fix(bignumber(-1)), bignumber(-1));
+    approx.deepEqual(fix(bignumber(-1.3)), bignumber(-1));
+    approx.deepEqual(fix(bignumber(-1.8)), bignumber(-1));
+    approx.deepEqual(fix(bignumber(-2)), bignumber(-2));
+    approx.deepEqual(fix(bignumber(-2.1)), bignumber(-2));
   });
 
   it('should round complex numbers correctly', function() {

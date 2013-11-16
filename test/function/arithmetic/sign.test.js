@@ -1,7 +1,8 @@
 // test sign
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')();
+    math = require('../../../index')(),
+    bignumber = math.bignumber;
 
 describe('sign', function() {
   it('should calculate the sign of a boolean', function () {
@@ -9,10 +10,16 @@ describe('sign', function() {
     assert.equal(math.sign(false), 0);
   });
 
-  it('should calculate the sign of a number as 1, -1 or 0', function() {
+  it('should calculate the sign of a number', function() {
     assert.equal(math.sign(3), 1);
     assert.equal(math.sign(-3), -1);
     assert.equal(math.sign(0), 0);
+  });
+
+  it('should calculate the sign of a big number', function() {
+    assert.deepEqual(math.sign(bignumber(3)), bignumber(1));
+    assert.deepEqual(math.sign(bignumber(-3)), bignumber(-1));
+    assert.deepEqual(math.sign(bignumber(0)), bignumber(0));
   });
 
   it('should calculate the sign of a complex value', function() {

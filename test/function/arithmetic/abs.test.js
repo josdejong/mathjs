@@ -15,6 +15,12 @@ describe('abs', function () {
     assert.equal(math.abs(0), 0);
   });
 
+  it('should return the absolute value of a big number', function () {
+    assert.deepEqual(math.abs(math.bignumber(-2.3)), math.bignumber(2.3));
+    assert.deepEqual(math.abs(math.bignumber('5e500')), math.bignumber('5e500'));
+    assert.deepEqual(math.abs(math.bignumber('-5e500')), math.bignumber('5e500'));
+  });
+
   it('should return the absolute value of a complex number', function () {
     assert.equal(math.abs(math.complex(3, -4)), 5);
   });

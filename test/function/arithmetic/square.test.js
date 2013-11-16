@@ -2,6 +2,7 @@
 var assert = require('assert'),
     math = require('../../../index')(),
     unit = math.unit,
+    bignumber = math.bignumber,
     matrix = math.matrix,
     range = math.range,
     square = math.square;
@@ -16,6 +17,12 @@ describe('square', function() {
     assert.equal(square(4), 16);
     assert.equal(square(-2), 4);
     assert.equal(square(0), 0);
+  });
+
+  it('should return the cube of a big number', function() {
+    assert.deepEqual(square(bignumber(4)), bignumber(16));
+    assert.deepEqual(square(bignumber(-2)), bignumber(4));
+    assert.deepEqual(square(bignumber(0)), bignumber(0));
   });
 
   it('should throw an error if used with wrong number of arguments', function() {

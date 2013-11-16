@@ -1,6 +1,7 @@
 // test unary minus
 var assert = require('assert'),
-    math = require('../../../index')();
+    math = require('../../../index')(),
+    bignumber = math.bignumber;
 
 describe('unaryminus', function() {
   it('should parform unary minus of a boolean', function () {
@@ -12,6 +13,12 @@ describe('unaryminus', function() {
     assert.deepEqual(math.unary(2), -2);
     assert.deepEqual(math.unary(-2), 2);
     assert.deepEqual(math.unary(0), 0);
+  });
+
+  it('should perform unary minus of a big number', function() {
+    assert.deepEqual(math.unary(bignumber(2)), bignumber(-2));
+    assert.deepEqual(math.unary(bignumber(-2)), bignumber(2));
+    assert.deepEqual(math.unary(bignumber(0)).valueOf(), bignumber(0).valueOf());
   });
 
   it('should perform unary minus of a complex number', function() {

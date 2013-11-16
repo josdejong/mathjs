@@ -6,6 +6,11 @@ var assert = require('assert'),
 describe('bignumber', function() {
 
   it('should create a bignumber', function() {
+    // no arguments
+    var n = bignumber();
+    assert.ok(n instanceof BigNumber);
+    assert.equal(n.valueOf(), '0');
+
     // from number
     var a = bignumber(0.1);
     assert.ok(a instanceof BigNumber);

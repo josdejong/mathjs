@@ -1,5 +1,6 @@
 var assert = require('assert'),
     math = require('../../../index')(),
+    bignumber = math.bignumber,
     min = math.min;
 
 describe('min', function() {
@@ -18,6 +19,11 @@ describe('min', function() {
 
   it('should return the min element from a vector', function() {
     assert.equal(min([1,3,5,-5,2]), -5);
+  });
+
+  it('should return the min of big numbers', function() {
+    assert.deepEqual(min(bignumber(1),bignumber(3),bignumber(5),bignumber(2),bignumber(-5)),
+        bignumber(-5));
   });
 
   it('should return the min element from a vector array', function() {

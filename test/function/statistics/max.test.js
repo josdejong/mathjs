@@ -1,15 +1,21 @@
 var assert = require('assert'),
     math = require('../../../index')(),
+    bignumber = math.bignumber,
     max = math.max;
 
 describe('max', function() {
 
-  it('should return the max between several numbers', function() {
+  it('should return the max of numbers', function() {
     assert.equal(max(5), 5);
     assert.equal(max(3,1), 3);
     assert.equal(max(1,3), 3);
     assert.equal(max(1,3,5,2,-5), 5);
     assert.equal(max(0,0,0,0), 0);
+  });
+
+  it('should return the max of big numbers', function() {
+    assert.deepEqual(max(bignumber(1),bignumber(3),bignumber(5),bignumber(2),bignumber(-5)),
+        bignumber(5));
   });
 
   it('should return the max string following lexical order', function() {

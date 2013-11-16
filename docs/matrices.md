@@ -20,7 +20,7 @@ In most cases, the type of matrix output from functions is determined by the
 function input: An `Array` as input will return an `Array`, a `Matrix` as input
 will return a `Matrix`. In case of mixed input, a `Matrix` is returned.
 For functions where the type of output cannot be determined from the
-input, the output is determined by the option `math.options.matrix.defaultType`,
+input, the output is determined by the configuration option `matrix.defaultType`,
 which can be a string `"array"` or `"matrix"` (default).
 
 ```js
@@ -37,7 +37,7 @@ math.add(array, matrix);                      // Matrix, [[9, 1], [-3, 6]]
 math.multiply(array, matrix);                 // Matrix, [[14, 2], [-13, 8]]
 
 // create a matrix. Type of output of function ones is determined by the
-// option math.options.matrix.defaultType
+// configuration option matrix.defaultType
 math.ones(2, 3);                              // Matrix, [[1, 1, 1], [1, 1, 1]]
 ```
 
@@ -156,8 +156,8 @@ Math.js uses geometric dimensions:
 - A matrix is two or multi dimensional.
 
 The size of a matrix can be calculated with the function `size`. Function `size`
-returns a `Matrix` or `Array`, depending on the option
-`math.options.matrix.defaultType`. Furthermore, matrices have a function `size`
+returns a `Matrix` or `Array`, depending on the configuration option
+`matrix.defaultType`. Furthermore, matrices have a function `size`
 as well, which always returns an Array.
 
 ```js

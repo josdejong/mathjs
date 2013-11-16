@@ -2,6 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
+    bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
@@ -28,6 +29,18 @@ describe('ceil', function() {
     approx.deepEqual(ceil(math.pi), 4);
   });
 
+  it('should return the ceil of a big number', function () {
+    approx.deepEqual(ceil(bignumber(0)), bignumber(0));
+    approx.deepEqual(ceil(bignumber(1)), bignumber(1));
+    approx.deepEqual(ceil(bignumber(1.3)), bignumber(2));
+    approx.deepEqual(ceil(bignumber(1.8)), bignumber(2));
+    approx.deepEqual(ceil(bignumber(2)), bignumber(2));
+    approx.deepEqual(ceil(bignumber(-1)), bignumber(-1));
+    approx.deepEqual(ceil(bignumber(-1.3)), bignumber(-1));
+    approx.deepEqual(ceil(bignumber(-1.8)), bignumber(-1));
+    approx.deepEqual(ceil(bignumber(-2)), bignumber(-2));
+    approx.deepEqual(ceil(bignumber(-2.1)), bignumber(-2));
+  });
 
   it('should return the ceil of real and imag part of a complex', function() {
     approx.deepEqual(ceil(complex(0, 0)), complex(0, 0));

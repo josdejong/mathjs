@@ -1,6 +1,7 @@
 // test largereq
 var assert = require('assert'),
     math = require('../../../index')(),
+    bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
@@ -31,6 +32,25 @@ describe('largereq', function() {
     assert.equal(largereq(true, 2), false);
     assert.equal(largereq(true, 1), true);
     assert.equal(largereq(false, 0), true);
+  });
+
+  it('should compare bignumbers', function() {
+    assert.deepEqual(largereq(bignumber(2), bignumber(3)), false);
+    assert.deepEqual(largereq(bignumber(2), bignumber(2)), true);
+    assert.deepEqual(largereq(bignumber(3), bignumber(2)), true);
+    assert.deepEqual(largereq(bignumber(0), bignumber(0)), true);
+    assert.deepEqual(largereq(bignumber(-2), bignumber(2)), false);
+  });
+
+  it('should compare mixed numbers and bignumbers', function() {
+    assert.deepEqual(largereq(bignumber(2), 3), false);
+    assert.deepEqual(largereq(2, bignumber(2)), true);
+  });
+
+  it('should compare mixed booleans and bignumbers', function() {
+    assert.deepEqual(largereq(bignumber(0.1), true), false);
+    assert.deepEqual(largereq(bignumber(1), true), true);
+    assert.deepEqual(largereq(false, bignumber(0)), true);
   });
 
   it('should compare two units correctly', function() {

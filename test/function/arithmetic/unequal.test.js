@@ -1,6 +1,7 @@
 // test equal
 var assert = require('assert'),
     math = require('../../../index')(),
+    bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
@@ -30,6 +31,25 @@ describe('unequal', function() {
     assert.equal(unequal(true, 1), false);
     assert.equal(unequal(false, 2), true);
     assert.equal(unequal(false, 0), false);
+  });
+
+  it('should compare bignumbers', function() {
+    assert.deepEqual(unequal(bignumber(2), bignumber(3)), true);
+    assert.deepEqual(unequal(bignumber(2), bignumber(2)), false);
+    assert.deepEqual(unequal(bignumber(3), bignumber(2)), true);
+    assert.deepEqual(unequal(bignumber(0), bignumber(0)), false);
+    assert.deepEqual(unequal(bignumber(-2), bignumber(2)), true);
+  });
+
+  it('should compare mixed numbers and bignumbers', function() {
+    assert.deepEqual(unequal(bignumber(2), 3), true);
+    assert.deepEqual(unequal(2, bignumber(2)), false);
+  });
+
+  it('should compare mixed booleans and bignumbers', function() {
+    assert.deepEqual(unequal(bignumber(0.1), true), true);
+    assert.deepEqual(unequal(bignumber(1), true), false);
+    assert.deepEqual(unequal(false, bignumber(0)), false);
   });
 
   it('should compare two complex numbers correctly', function() {

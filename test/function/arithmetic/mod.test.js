@@ -2,6 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
+    bignumber = math.bignumber,
     matrix = math.matrix,
     range = math.range,
     mod = math.mod;
@@ -36,6 +37,25 @@ describe('mod', function() {
   it('should throw an error if used with wrong number of arguments', function() {
     assert.throws(function () {mod(1)}, SyntaxError);
     assert.throws(function () {mod(1,2,3)}, SyntaxError);
+  });
+
+  it('should calculate the modulus of bignumbers', function() {
+    assert.deepEqual(mod(bignumber(7), bignumber(2)).valueOf(), bignumber(1).valueOf());
+    assert.deepEqual(mod(bignumber(8), bignumber(3)).valueOf(), bignumber(2).valueOf());
+
+    it.skip('should calculate the modulus of bignumbers for negative values', function () {
+      assert.deepEqual(mod(bignumber(-10), bignumber(4)).valueOf(), bignumber(2).valueOf());
+    });
+  });
+
+  it('should calculate the modulus of mixed numbers and bignumbers', function() {
+    assert.deepEqual(mod(bignumber(7), 2), bignumber(1));
+    assert.deepEqual(mod(8, bignumber(3)), bignumber(2));
+  });
+
+  it('should calculate the modulus of mixed booleans and bignumbers', function() {
+    assert.deepEqual(mod(bignumber(7), true), bignumber(0));
+    assert.deepEqual(mod(true, bignumber(3)), bignumber(1));
   });
 
   it('should throw an error if used on complex numbers', function() {

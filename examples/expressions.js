@@ -7,8 +7,9 @@
  *    and keeps a scope with assigned variables in memory
  */
 
-// create an instance of math.js
-var math = require('../index')();
+// load math.js and create an instance
+var mathjs = require('../index'),
+    math = mathjs();
 
 /**
  * Helper function to output a value in the console. Value will be formatted.

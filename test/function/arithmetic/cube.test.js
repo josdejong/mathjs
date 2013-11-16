@@ -2,6 +2,7 @@
 var assert = require('assert'),
     math = require('../../../index')(),
     unit = math.unit,
+    bignumber = math.bignumber,
     matrix = math.matrix,
     range = math.range,
     cube = math.cube;
@@ -16,6 +17,12 @@ describe('cube', function() {
     assert.equal(cube(4), 64);
     assert.equal(cube(-2), -8);
     assert.equal(cube(0), 0);
+  });
+
+  it('should return the cube of a big number', function() {
+    assert.deepEqual(cube(bignumber(4)), bignumber(64));
+    assert.deepEqual(cube(bignumber(-2)), bignumber(-8));
+    assert.deepEqual(cube(bignumber(0)), bignumber(0));
   });
 
   it('should return the cube of a complex number', function() {

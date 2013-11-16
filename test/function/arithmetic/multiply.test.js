@@ -6,6 +6,7 @@ var assert = require('assert'),
     divide = math.divide,
     matrix = math.matrix,
     complex = math.complex,
+    bignumber = math.bignumber,
     range = math.range,
     i = math.i,
     unit = math.unit;
@@ -35,6 +36,22 @@ describe('multiply', function() {
     assert.equal(multiply(2, false), 0);
     assert.equal(multiply(true, 2), 2);
     assert.equal(multiply(false, 2), 0);
+  });
+
+  it('should multiply bignumbers', function() {
+    assert.deepEqual(multiply(bignumber(1.5), bignumber(0.2)), bignumber(0.3));
+    assert.deepEqual(multiply(bignumber('1.3e5000'), bignumber('2')), bignumber('2.6e5000'));
+  });
+
+  it('should multiply mixed numbers and bignumbers', function() {
+    assert.deepEqual(multiply(bignumber(1.5), 0.2), bignumber(0.3));
+    assert.deepEqual(multiply(1.5, bignumber(0.2)), bignumber(0.3));
+    assert.deepEqual(multiply(bignumber('1.3e5000'), 2), bignumber('2.6e5000'));
+  });
+
+  it('should multiply mixed booleans and bignumbers', function() {
+    assert.deepEqual(multiply(bignumber(0.3), bignumber(true)), bignumber(0.3));
+    assert.deepEqual(multiply(false, bignumber('2')), bignumber(0));
   });
 
   it('should multiply two complex numbers correctly', function() {
