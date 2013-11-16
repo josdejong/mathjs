@@ -11,7 +11,7 @@ The default number type can be configured when instantiating math.js:
 var mathjs = require('mathjs'),
     math = mathjs({
       number: {
-        defaultType: 'number'; // Choose from: 'number' (default), 'bignumber'
+        defaultType: 'number' // Choose from: 'number' (default), 'bignumber'
       }
     });
 

@@ -421,7 +421,7 @@ of math.js. The expression parser can parser numbers as BigNumber by default:
 var mathjs = require('mathjs'),
     math = mathjs({
       number: {
-        defaultType: 'bignumber'; // Choose from: 'number' (default) or 'bignumber'
+        defaultType: 'bignumber' // Choose from: 'number' (default) or 'bignumber'
       }
     });
 
