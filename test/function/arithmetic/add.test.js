@@ -2,6 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
+    bignumber = math.bignumber,
     add = math.add;
 
 describe('add', function() {
@@ -11,6 +12,22 @@ describe('add', function() {
     assert.equal(add(-2, 3), 1);
     assert.equal(add(2, -3), -1);
     assert.equal(add(-5, -3), -8);
+  });
+
+  it('should add bignumbers', function() {
+    assert.deepEqual(add(bignumber(0.1), bignumber(0.2)), bignumber(0.3));
+    assert.deepEqual(add(bignumber('2e5001'), bignumber('3e5000')), bignumber('2.3e5001'));
+    assert.deepEqual(add(bignumber('9999999999999999999'), bignumber('1')), bignumber('1e19'));
+  });
+
+  it('should add mixed numbers and bignumbers', function() {
+    assert.deepEqual(add(bignumber(0.1), 0.2), bignumber(0.3));
+    assert.deepEqual(add(0.1, bignumber(0.2)), bignumber(0.3));
+  });
+
+  it('should add mixed booleans and bignumbers', function() {
+    assert.deepEqual(add(bignumber(0.1), true), bignumber(1.1));
+    assert.deepEqual(add(false, bignumber(0.2)), bignumber(0.2));
   });
 
   it('should add booleans', function() {

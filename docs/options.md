@@ -11,6 +11,9 @@ Options can be set when creating an instance, and can be adjusted later on in
   will return a Matrix. In case of no matrix as input, the type of output is
   determined by the option `math.matrix.defaultType`. In case of mixed matrix
   inputs, a matrix will be returned always.
+- `number.defaultType`. The default type of numbers. Available values are:
+  `"number"` (default) or `"bignumber"`. Big numbers have higher precision
+  than the default numbers of JavaScript.
 
 Example usage:
 

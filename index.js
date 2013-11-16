@@ -22,7 +22,15 @@ function mathjs (options) {
   // TODO: change options to properties with getters to validate the input value
   math.options = {
     matrix: {
-      'defaultType': 'matrix' // type of default matrix output. Choose 'array' or 'matrix' (default)
+      // type of default matrix output. Choose 'array' or 'matrix' (default)
+      'defaultType': 'matrix'
+    },
+    number: {
+      // type of default number output. Choose 'number' (default) or 'bignumber'
+      'defaultType': 'number'
+      // TODO: add more options for BigNumber
+      // TODO: document the new options
+      // TODO: check all functions to see whether they need to support BigNumber output
     }
   };
 
@@ -76,6 +84,7 @@ function mathjs (options) {
 
   // types (Matrix, Complex, Unit, ...)
   math.type = {};
+  math.type.BigNumber = require('bignumber.js');
   math.type.Complex = require('./lib/type/Complex.js');
   math.type.Range = require('./lib/type/Range.js');
   math.type.Index = require('./lib/type/Index.js');
@@ -131,6 +140,7 @@ function mathjs (options) {
   require('./lib/function/complex/im.js')(math);
 
   // functions - construction
+  require('./lib/function/construction/bignumber')(math);
   require('./lib/function/construction/boolean.js')(math);
   require('./lib/function/construction/complex.js')(math);
   require('./lib/function/construction/index.js')(math);

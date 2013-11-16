@@ -9,6 +9,11 @@ describe('typeof', function() {
     assert.equal(math.typeof(new Number(2)), 'number');
   });
 
+  it('should return bignumber type for a bignumber', function() {
+    assert.equal(math.typeof(math.bignumber(0.1)), 'bignumber');
+    assert.equal(math.typeof(new math.type.BigNumber('0.2')), 'bignumber');
+  });
+
   it('should return string type for a string', function() {
     assert.equal(math.typeof('hello there'), 'string');
     assert.equal(math.typeof(new String('hello there')), 'string');

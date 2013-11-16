@@ -1,7 +1,8 @@
 // test parse
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     Complex = math.type.Complex,
     Matrix = math.type.Matrix,
     Unit = math.type.Unit;
@@ -80,6 +81,26 @@ describe('parse', function() {
 
   });
 
+  describe('bignumber', function () {
+
+    it('should parse bignumbers', function() {
+      assert.deepEqual(parseAndEval('bignumber(0.1)'), math.bignumber(0.1));
+      assert.deepEqual(parseAndEval('bignumber("1.2e500")'), math.bignumber('1.2e500'));
+    });
+
+    it('should output bignumbers if default number type is bignumber', function() {
+      var math = mathjs({
+        number: {
+          defaultType: 'bignumber'
+        }
+      });
+
+      assert.deepEqual(math.parse('0.1').eval(), math.bignumber(0.1));
+      assert.deepEqual(math.parse('1.2e5000').eval(), math.bignumber('1.2e5000'));
+    });
+
+  });
+
   describe('string', function () {
 
     it('should parse a string', function() {
@@ -120,16 +141,18 @@ describe('parse', function() {
       assert.ok(parseAndEval('5cm', scope) instanceof Unit);
 
       // TODO: not so nice comparing units via toString
-      approx.deepEqual(parseAndEval('(5.08 cm * 1000) in inch', scope), math.unit(2000, 'inch').in('inch'));
-      approx.deepEqual(parseAndEval('(5.08 cm * 1000) in mm', scope), math.unit(50800, 'mm').in('mm'));
-      approx.deepEqual(parseAndEval('ans in inch', scope), math.unit(2000, 'inch').in('inch'));
+      approx.deepEqual(parseAndEval('(5.08 cm * 1000) in inch', scope),
+          math.unit(2000, 'inch').in('inch'));
+      approx.deepEqual(parseAndEval('(5.08 cm * 1000) in mm', scope),
+          math.unit(50800, 'mm').in('mm'));
+      approx.deepEqual(parseAndEval('ans in inch', scope),
+          math.unit(2000, 'inch').in('inch'));
     });
 
-    it.skip('should evaluate operator "in" with correct precedence ', function () {
-      // TODO: this following expression gives an error
-      assert.deepEqual(parseAndEval('5.08 cm * 1000 in inch'), new Unit(2000, 'inch'));
+    it('should evaluate operator "in" with correct precedence ', function () {
+      approx.equal(parseAndEval('5.08 cm * 1000 in inch').toNumber('inch'),
+          new Unit(2000, 'inch').toNumber('inch'));
     });
-
   });
 
   describe('complex', function () {

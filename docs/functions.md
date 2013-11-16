@@ -1,7 +1,8 @@
 # Functions
 
 Math.js contains the following functions. The functions support all available
-data types (Number, Complex, Unit, String, Matrix, and Array) where applicable.
+data types (Number, BigNumber, Complex, Unit, String, Matrix, and Array) where
+applicable.
 
 Example usage:
 
@@ -63,6 +64,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 
 ## Construction
 
+- math.bignumber(x)
 - math.boolean(x)
 - math.complex(re, im)
 - math.index(a, b, c, ...)

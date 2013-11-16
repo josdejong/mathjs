@@ -2,6 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
+    bignumber = math.bignumber,
     subtract = math.subtract;
 
 describe('subtract', function() {
@@ -30,6 +31,22 @@ describe('subtract', function() {
     assert.equal(subtract(2, false), 2);
     assert.equal(subtract(true, 2), -1);
     assert.equal(subtract(false, 2), -2);
+  });
+
+  it('should subtract bignumbers', function() {
+    assert.deepEqual(subtract(bignumber(0.3), bignumber(0.2)), bignumber(0.1));
+    assert.deepEqual(subtract(bignumber('2.3e5001'), bignumber('3e5000')), bignumber('2e5001'));
+    assert.deepEqual(subtract(bignumber('1e19'), bignumber('1')), bignumber('9999999999999999999'));
+  });
+
+  it('should subtract mixed numbers and bignumbers', function() {
+    assert.deepEqual(subtract(bignumber(0.3), 0.2), bignumber(0.1));
+    assert.deepEqual(subtract(0.3, bignumber(0.2)), bignumber(0.1));
+  });
+
+  it('should subtract mixed booleans and bignumbers', function() {
+    assert.deepEqual(subtract(bignumber(1.1), true), bignumber(0.1));
+    assert.deepEqual(subtract(false, bignumber(0.2)), bignumber(-0.2));
   });
 
   it('should subtract two complex numbers correctly', function() {

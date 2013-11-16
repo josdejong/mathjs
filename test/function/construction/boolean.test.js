@@ -9,7 +9,7 @@ describe('boolean', function() {
     assert.equal(bool(false), false);
   });
 
-  it('should return false for 0, true for any other number', function() {
+  it('should convert a number into a boolean', function() {
     assert.equal(bool(-2), true);
     assert.equal(bool(-1), true);
     assert.equal(bool(0), false);
@@ -17,12 +17,20 @@ describe('boolean', function() {
     assert.equal(bool(2), true);
   });
 
+  it('should convert a bignumber into a boolean', function() {
+    assert.equal(bool(math.bignumber(-2)), true);
+    assert.equal(bool(math.bignumber(-1)), true);
+    assert.equal(bool(math.bignumber(0)), false);
+    assert.equal(bool(math.bignumber(1)), true);
+    assert.equal(bool(math.bignumber(2)), true);
+  });
+
   it('should convert the elements of a matrix or array to booleans', function() {
     assert.deepEqual(bool(math.matrix([1,0,1,1])), new math.type.Matrix([true, false, true, true]));
     assert.deepEqual(bool([1,0,1,1]), [true, false, true, true]);
   });
 
-  it('should return false for \'0\', true for any other valid number string', function() {
+  it('should convert a string into a boolean', function() {
     assert.equal(bool('2'), true);
     assert.equal(bool(' 4e2 '), true);
     assert.equal(bool(' -4e2 '), true);

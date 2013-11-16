@@ -9,9 +9,14 @@ describe('number', function() {
     approx.equal(number(), 0);
   });
 
-  it('should be 1 if called with true, 0 if called with false', function() {
+  it('should convert a boolean to a number', function() {
     approx.equal(number(true), 1);
     approx.equal(number(false), 0);
+  });
+
+  it('should convert a bignumber to a number', function() {
+    approx.equal(number(math.bignumber(0.1)), 0.1);
+    approx.equal(number(math.bignumber('1.3e500')), Infinity);
   });
 
   it('should accept a number as argument', function() {
