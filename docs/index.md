@@ -4,6 +4,7 @@
 - [Constants](constants.md)
 - [Functions](functions.md)
 - [Data Types](data_types.md)
+  - [Numbers and Big Numbers](numbers.md)
   - [Complex Numbers](complex_numbers.md)
   - [Matrices](matrices.md)
   - [Units](units.md)

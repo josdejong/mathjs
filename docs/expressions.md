@@ -326,6 +326,7 @@ parser.eval('a * b');       // 8.5
 The expression parser supports booleans, numbers, complex numbers, units,
 strings, and matrices.
 
+
 #### Booleans
 
 Booleans `true` and `false` can be used in expressions.
@@ -347,6 +348,7 @@ math.eval('string(false)');     // "false"
 math.eval('boolean(1)');        // true
 math.eval('boolean("false")');  // false
 ```
+
 
 #### Numbers
 
@@ -372,12 +374,8 @@ math.eval('string(2.3)');     // "2.3"
 ```
 
 Math.js uses regular JavaScript numbers, which are floating points with a
-limited precision of 64 bit, about 16 digits. The largest integer number which
-can be represented by a JavaScript number is `+/- 9007199254740992`
-(`+/- 2^53`).
-A number can store values between `5e-324` and `1.7976931348623157e+308`.
-Values smaller than the minimum are stored as `0`, and values larger than the
-maximum are stored as `+/- Infinity`.
+limited precision and limited range. The limitations are described in detail
+on the page [Numbers](https://github.com/josdejong/mathjs/blob/master/docs/numbers.md).
 
 ```js
 math.eval('1e-325');  // 0
@@ -393,13 +391,48 @@ math.eval('0.1 + 0.2'); // 0.30000000000000004
 ```
 
 When outputting results, the function `math.format` can be used to hide
-these round-off errors for the user:
+these round-off errors when outputting results for the user:
 
 ```js
-var ans = math.eval('0.1 + 0.2'); // 0.30000000000000004
-var precision = 12;               // digits
-math.format(ans, precision);      // "0.3"
+var ans = math.eval('0.1 + 0.2');   //  0.30000000000000004
+math.format(ans, {precision: 14});  // "0.3"
 ```
+
+
+#### Big numbers
+
+Math.js supports big numbers for calculations with an arbitrary precision.
+The pros and cons of Number and BigNumber are explained in detail on the page
+[Numbers](https://github.com/josdejong/mathjs/blob/master/docs/numbers.md).
+
+BigNumbers are slower, but have a higher precision. Calculations with big
+numbers are supported only by arithmetic functions.
+
+BigNumbers can be created using the `bignumber` function:
+
+```js
+math.eval('bignumber(0.1) + bignumber(0.2)'); // BigNumber, 0.3
+```
+
+The default number type of the expression parser can be changed at instantation
+of math.js. The expression parser can parser numbers as BigNumber by default:
+
+```js
+var mathjs = require('mathjs'),
+    math = mathjs({
+      number: {
+        defaultType: 'bignumber'; // Choose from: 'number' (default) or 'bignumber'
+      }
+    });
+
+// all numbers are parsed as BigNumber
+math.eval('0.1 + 0.2'); // BigNumber, 0.3
+```
+
+Big numbers can be converted to numbers and vice versa using the functions
+`number` and `bignumber`. When converting a big number to a number, the high
+precision of the will be lost.When a BigNumber is too large to be represented
+as Number, it will be initialized as `Infinity`.
 
 
 #### Complex numbers
