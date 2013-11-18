@@ -3,7 +3,7 @@
 Math.js has the following built-in constants.
 
 - math.E, math.e
-- math.I, math.i
+- math.i
 - math.Infinity
 - math.LN2
 - math.LN10
@@ -13,6 +13,7 @@ Math.js has the following built-in constants.
 - math.PI, math.pi
 - math.SQRT1_2
 - math.SQRT2
+- math.tau
 
 Example usage:
 
