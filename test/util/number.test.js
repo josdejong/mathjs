@@ -41,27 +41,6 @@ describe('number', function() {
     assert.equal(number.isNumber(), false);
   });
 
-  it('isNumBool', function() {
-    assert.equal(number.isNumBool(1), true);
-    assert.equal(number.isNumBool(2e+3), true);
-    assert.equal(number.isNumBool(new Number(23)), true);
-    assert.equal(number.isNumBool(Number(2.3)), true);
-    assert.equal(number.isNumBool(-23), true);
-    assert.equal(number.isNumBool(parseFloat('123')), true);
-    assert.equal(number.isNumBool(true), true);
-    assert.equal(number.isNumBool(false), true);
-
-    assert.equal(number.isNumBool('23'), false);
-    assert.equal(number.isNumBool('str'), false);
-    assert.equal(number.isNumBool(new Date()), false);
-    assert.equal(number.isNumBool({}), false);
-    assert.equal(number.isNumBool([]), false);
-    assert.equal(number.isNumBool(/regexp/), false);
-    assert.equal(number.isNumBool(null), false);
-    assert.equal(number.isNumBool(undefined), false);
-    assert.equal(number.isNumBool(), false);
-  });
-
   it('sign', function() {
     assert.equal(number.sign(1), 1);
     assert.equal(number.sign(3), 1);

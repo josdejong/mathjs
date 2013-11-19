@@ -35,8 +35,8 @@ describe('round', function() {
     assert.deepEqual(round(bignumber(2.1)), bignumber(2));
     assert.deepEqual(round(bignumber(2.123456), bignumber(3)), bignumber(2.123));
     assert.deepEqual(round(bignumber(2.123456), 3), bignumber(2.123));
-    assert.deepEqual(round(2.1234567, bignumber(3)), bignumber(2.123));
-    assert.deepEqual(round(true, bignumber(3)), bignumber(1));
+    assert.deepEqual(round(2.1234567, bignumber(3)), 2.123);
+    assert.deepEqual(round(true, bignumber(3)), 1);
   });
 
   it('should round real and imag part of a complex number', function() {
