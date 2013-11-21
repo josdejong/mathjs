@@ -9,7 +9,7 @@ describe('factory', function() {
     assert.strictEqual(typeof math, 'object');
     assert.deepEqual(math.config(), {
       matrix: {defaultType: 'matrix'},
-      number: {defaultType: 'number'}
+      number: {defaultType: 'number', precision: 20}
     });
   });
 
@@ -22,7 +22,7 @@ describe('factory', function() {
     assert.strictEqual(typeof math, 'object');
     assert.deepEqual(math.config(), {
       matrix: {defaultType: 'array'},
-      number: {defaultType: 'bignumber'}
+      number: {defaultType: 'bignumber', precision: 20}
     });
   });
 
@@ -46,17 +46,17 @@ describe('factory', function() {
 
     assert.deepEqual(math.config(), {
       matrix: {defaultType: 'matrix'},
-      number: {defaultType: 'number'}
+      number: {defaultType: 'number', precision: 20}
     });
 
     math.config({
       matrix: {defaultType: 'array'},
-      number: {defaultType: 'bignumber'}
+      number: {defaultType: 'bignumber', precision: 32}
     });
 
     assert.deepEqual(math.config(), {
       matrix: {defaultType: 'array'},
-      number: {defaultType: 'bignumber'}
+      number: {defaultType: 'bignumber', precision: 32}
     });
   });
 

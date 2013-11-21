@@ -4,7 +4,9 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.16.0
 
-- Implemented BigNumber support for arbitrary precision calculations.
+- Implemented BigNumber support for arbitrary precision calculations,
+  added settings `number.defaultType` and `number.precision` to configure
+  big numbers.
 - Removed utility functions `isScalar`, `toScalar`, `isVector`, `toVector`
   from `Matrix` and `Range`. Use `math.squeeze` and `math.size` instead.
 - Implemented functions `get` and `set` on `Matrix`, for easier and faster

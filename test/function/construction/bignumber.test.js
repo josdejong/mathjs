@@ -1,6 +1,7 @@
 var assert = require('assert'),
     BigNumber = require('bignumber.js'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     bignumber = math.bignumber;
 
 describe('bignumber', function() {
@@ -51,4 +52,21 @@ describe('bignumber', function() {
     assert.equal(f.valueOf(), '1.2e+500');
   });
 
+  it('should apply precision setting to bignumbers', function() {
+    var math = mathjs({
+      number: {
+        precision: 32
+      }
+    });
+
+    var a = math.bignumber(1).dividedBy(3);
+    assert.equal(a.toString(), '0.33333333333333333333333333333333')
+
+    // restore default precision
+    math.config({
+      number: {
+        precision: 20
+      }
+    });
+  });
 });
