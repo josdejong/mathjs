@@ -24,7 +24,13 @@ Available configuration settings are:
   setting of the [bignumber.js](https://github.com/MikeMcl/bignumber.js)
   library used by math.js.*
 
-Example usage:
+
+## Examples
+
+This section shows a number of configuration examples.
+
+
+### Default settings
 
 ```js
 // load the library
@@ -36,6 +42,8 @@ var math1 = mathjs();
 // range will output a matrix
 math1.range(0, 4); // Matrix [0, 1, 2, 3]
 ```
+
+### Configuration for matrices
 
 ```js
 // load the library
@@ -62,6 +70,8 @@ math2.config({
 // range will output a Matrix
 math2.range(0, 4); // Matrix [0, 1, 2, 3]
 ```
+
+### Configuration for big numbers
 
 ```js
 // load the library
