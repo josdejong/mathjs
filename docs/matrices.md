@@ -21,7 +21,7 @@ function input: An `Array` as input will return an `Array`, a `Matrix` as input
 will return a `Matrix`. In case of mixed input, a `Matrix` is returned.
 For functions where the type of output cannot be determined from the
 input, the output is determined by the configuration option `matrix.defaultType`,
-which can be a string `"array"` or `"matrix"` (default).
+which can be a string `'matrix'` (default) or `'array'`.
 
 ```js
 // create an array and a matrix

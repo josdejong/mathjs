@@ -18,6 +18,8 @@ https://github.com/josdejong/mathjs
   parameter `defaultValue`.
 - Range operator `:` in expression parser has been given a higher precedence.
 - Functions don't allow arguments of unknown type anymore.
+- Options be set when constructing a math.js instance or using the new function
+  `config(options`. Options are no longer accessible via `math.options`.
 - Function `format` outputs scientific notation with positive exponents now
   always with `+` sign, so outputs `2.1e+3` instead of `2.1e3`.
 - Fixed function `squeeze` not being able squeeze into a scalar.
