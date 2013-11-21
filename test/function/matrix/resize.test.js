@@ -48,7 +48,7 @@ describe('resize', function() {
     assert.deepEqual(math.resize(matrix, []), 0);
   });
 
-  it('should resize a scalar into an array when array is specified in options', function() {
+  it('should resize a scalar into an array when array is specified in settings', function() {
     var math = require('../../../index')({
       matrix: {
         defaultType: 'array'

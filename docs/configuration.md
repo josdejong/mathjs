@@ -1,15 +1,15 @@
 # Configuration
 
-Math.js contains a number of configuration options. Configuration can be set
+Math.js contains a number of configuration settings. Configuration can be set
 when creating a math.js instance, or later on using the function `config`.
-The configuration options are available:
+Availablbe configuration settings are:
 
 - `matrix.defaultType`. The default type of matrix output for functions.
   Available values are: `'matrix'` (default) or `'array'`.
   Where possible, the type of matrix output from functions is determined from
   the function input: An array as input will return an Array, a Matrix as input
   will return a Matrix. In case of no matrix as input, the type of output is
-  determined by the option `options.matrix.defaultType`. In case of mixed matrix
+  determined by the option `matrix.defaultType`. In case of mixed matrix
   inputs, a matrix will be returned always.
 - `number.defaultType`. The default type of numbers. Available values are:
   `'number'` (default) or `'bignumber'`. Big numbers have higher precision
@@ -27,13 +27,13 @@ var math1 = mathjs();
 // range will output a matrix
 math1.range(0, 4); // Matrix [0, 1, 2, 3]
 
-// create an instance of math.js with configuration options
-var options = {
+// create an instance of math.js with configuration settings
+var settings = {
   matrix: {
     defaultType: 'array'
   }
 };
-var math2 = mathjs(options);
+var math2 = mathjs(settings);
 
 // range will output an Array
 math2.range(0, 4); // Array [0, 1, 2, 3]

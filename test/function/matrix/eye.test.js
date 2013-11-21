@@ -22,7 +22,7 @@ describe('eye', function() {
     assert.deepEqual(eye(3,3), matrix([[1,0,0],[0,1,0],[0,0,1]]));
   });
 
-  // TODO: test option math.options.matrix.defaultType
+  // TODO: test setting matrix.defaultType
 
   it('should throw an error with an invalid input', function() {
     assert.throws(function () {eye(3,3,2);});

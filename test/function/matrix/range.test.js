@@ -27,7 +27,7 @@ describe('range', function() {
     assert.deepEqual(range(2,-4,-2), matrix([2,0,-2]));
   });
 
-  it('should output an array when options.matrix.defaultType==="array"', function() {
+  it('should output an array when setting matrix.defaultType==="array"', function() {
     var math2 = mathjs({
       matrix: {defaultType: 'array'}
     });

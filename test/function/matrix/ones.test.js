@@ -48,7 +48,7 @@ describe('ones', function() {
     assert.deepEqual(ones([2,3,4]), res);
   });
 
-  // TODO: test option math.options.matrix.defaultType
+  // TODO: test setting matrix.defaultType
 
   it('should create a matrix with ones with the same size as original matrix', function () {
     var a = matrix([[1, 2, 3], [4, 5, 6]]);
