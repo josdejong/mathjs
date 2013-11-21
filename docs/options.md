@@ -8,7 +8,7 @@ creating a math.js instance.
   Where possible, the type of matrix output from functions is determined from
   the function input: An array as input will return an Array, a Matrix as input
   will return a Matrix. In case of no matrix as input, the type of output is
-  determined by the option `math.matrix.defaultType`. In case of mixed matrix
+  determined by the option `options.matrix.defaultType`. In case of mixed matrix
   inputs, a matrix will be returned always.
 - `number.defaultType`. The default type of numbers. Available values are:
   `"number"` (default) or `"bignumber"`. Big numbers have higher precision

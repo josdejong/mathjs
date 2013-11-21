@@ -1,5 +1,6 @@
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     range = math.range,
     matrix = math.matrix;
 
@@ -26,14 +27,13 @@ describe('range', function() {
     assert.deepEqual(range(2,-4,-2), matrix([2,0,-2]));
   });
 
-  it('should output an array when math.options.matrix.defaultType==="array"', function() {
-    var old = math.options.matrix.defaultType;
-    math.options.matrix.defaultType = 'array';
+  it('should output an array when options.matrix.defaultType==="array"', function() {
+    var math2 = mathjs({
+      matrix: {defaultType: 'array'}
+    });
 
-    assert.deepEqual(range(0,10,2), [0,2,4,6,8]);
-    assert.deepEqual(range(5,0,-1), [5,4,3,2,1]);
-
-    math.options.matrix.defaultType = old;
+    assert.deepEqual(math2.range(0,10,2), [0,2,4,6,8]);
+    assert.deepEqual(math2.range(5,0,-1), [5,4,3,2,1]);
   });
 
   it('should throw an error if called with an invalid string', function() {
