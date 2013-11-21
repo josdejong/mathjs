@@ -66,15 +66,28 @@ console.log();
 // resize a multi dimensional matrix
 console.log('resizing a matrix');
 var i = math.matrix();
-i.resize([2, 2, 2]);
+var defaultValue = 0;
+i.resize([2, 2, 2], defaultValue);
 print(i);                                   // [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]
 print(i.size());                            // [2, 2, 2]
 i.resize([2, 2]);
 print(i);                                   // [[0, 0], [0, 0]]
 print(i.size());                            // [2, 2]
-i.subset(math.index(2, 1), 6);
-print(i);                                   // [[0, 0], [0, 0], [0, 6]]
-print(i.size());                            // [3, 2]
+console.log();
+
+// setting a value outside the matrices range will resize the matrix.
+// new elements will be initialized with undefined.
+console.log('set a value outside a matrices range');
+var j = math.matrix();
+j.subset(math.index(2), 6);
+print(j);                                   // [undefined, undefined, 6]
+console.log();
+
+console.log('set a value outside a matrices range providing a default value');
+var k = math.matrix();
+defaultValue = 0;
+k.subset(math.index(2), 6, defaultValue);
+print(k);                                   // [0, 0, 6]
 console.log();
 
 // create ranges

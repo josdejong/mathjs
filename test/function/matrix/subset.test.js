@@ -87,6 +87,12 @@ describe('subset', function() {
     assert.deepEqual(j, 'hello');
   });
 
+  it('should set the right subset of a string with resizing', function() {
+    var j = '';
+    var defaultValue = 'i';
+    assert.deepEqual(subset(j, index(5), '!', defaultValue), 'iiiii!');
+  });
+
   it('should throw an error if setting the subset of a string with an invalid replacement', function() {
     assert.throws(function () {subset('hello', index([1,2]), '1234')}, RangeError);
     assert.throws(function () {subset('hello', index(1,2), 'a')}, RangeError);

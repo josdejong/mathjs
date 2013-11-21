@@ -14,7 +14,8 @@ https://github.com/josdejong/mathjs
   number 1 or 0 when no arguments are provided.
 - Implemented functions `min` and `max` for `Range` and `Index`.
 - Resizing matrices now leaves new elements undefined by default instead of
-  filling them with zeros.
+  filling them with zeros. Function `resize` now has an extra optional
+  parameter `defaultValue`.
 - Range operator `:` in expression parser has been given a higher precedence.
 - Functions don't allow arguments of unknown type anymore.
 - Function `format` outputs scientific notation with positive exponents now

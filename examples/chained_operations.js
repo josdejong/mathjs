@@ -42,8 +42,8 @@ print(str);                     // "0.6666666666666666"
 // a selector has a .valueOf(), which returns the value hold by the selector.
 // This allows using it in regular operations. The function valueOf() acts the
 // same as function done().
+print(selector.valueOf());      // 0.66667
 print(selector + 2);            // 2.66667
-print(math.square(selector));   // 0.44444
 
 // the function subset can be used to get or replace sub matrices
 var array = [[1, 2], [3, 4]];
