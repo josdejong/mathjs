@@ -166,9 +166,7 @@ function runStream (input, output) {
           var res = parser.eval(expr);
           if (!Array.isArray(res) || res.length) {
             // TODO: how to distinguish array output from multi-line output?
-            console.log(math.format(res, {
-              precision: 5
-            }));
+            console.log(math.format(res));
           }
         }
         catch (err) {
