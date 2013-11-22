@@ -98,6 +98,7 @@ function mathjs (options) {
   require('./lib/function/expression/eval.js')(math);
   require('./lib/function/expression/help.js')(math);
   require('./lib/function/expression/parse.js')(math);
+  require('./lib/function/expression/prettyprint.js')(math);
 
   // functions - arithmetic
   require('./lib/function/arithmetic/abs.js')(math);
