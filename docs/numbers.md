@@ -62,7 +62,15 @@ For calculations with an arbitrary precision, math.js supports BigNumber.
 BigNumber is powered by the the library
 [bignumber.js](https://github.com/MikeMcl/bignumber.js/).
 
-BigNumber is only supported by the arithmetic functions of math.js.
+*Important:
+BigNumber is not supported by the following functions:
+`exp`, `gcd`, `lcm`, `log`, `log10`, `xgcd`,
+`arg`,
+`random`,
+`acos`, `asin`, `atan`, `atan2`, `cos`, `cot`, `csc`, `sec`, `sin`, `tan`,
+`range`.
+These functions will downgrade BigNumber to Number, and return a Number.
+*
 
 Calculations with BigNumber are much slower than calculations with Number,
 but they can be executed with an arbitrary precision. By using a higher

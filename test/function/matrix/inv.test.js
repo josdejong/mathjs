@@ -7,6 +7,7 @@ describe('inv', function() {
 
   it('should return the inverse of a number', function() {
     assert.deepEqual(math.inv(4), 1/4);
+    assert.deepEqual(math.inv(math.bignumber(4)), math.bignumber(1/4));
   });
 
   it('should return the inverse for each element in an array', function() {

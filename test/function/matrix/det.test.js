@@ -7,6 +7,10 @@ describe('det', function() {
     assert.equal(math.det(3), 3);
   });
 
+  it('should calculate correctly the determinant of a bignumber', function() {
+    assert.deepEqual(math.det(math.bignumber(3)), math.bignumber(3));
+  });
+
   it('should calculate correctly the determinant of a 2x2 matrix', function() {
     assert.equal(math.det([5]), 5);
     assert.equal(math.det([[1,2],[3,4]]), -2);

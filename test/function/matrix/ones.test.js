@@ -30,6 +30,13 @@ describe('ones', function() {
     assert.deepEqual(ones(matrix([3,2])), matrix([[1,1],[1,1],[1,1]]));
   });
 
+  it('should create a matrix with bignumber ones', function () {
+    var one = math.bignumber(1);
+    var three = math.bignumber(3);
+    assert.deepEqual(ones(three), matrix([one,one,one]));
+    assert.deepEqual(ones([three]), [one,one,one]);
+  });
+
   it('should create a 3D matrix with ones', function () {
     var res = [
       [

@@ -4,13 +4,23 @@ var assert = require('assert'),
 
 describe('factorial', function() {
 
-  it('should calculate the factorial of an integer', function() {
+  it('should calculate the factorial of a number', function() {
     assert.equal(factorial(0), 1);
     assert.equal(factorial(1), 1);
     assert.equal(factorial(2), 2);
     assert.equal(factorial(3), 6);
     assert.equal(factorial(4), 24);
     assert.equal(factorial(5), 120);
+  });
+
+  it('should calculate the factorial of a bignumber', function() {
+    assert.deepEqual(factorial(math.bignumber(0)), math.bignumber(1));
+    assert.deepEqual(factorial(math.bignumber(1)), math.bignumber(1));
+    assert.deepEqual(factorial(math.bignumber(2)), math.bignumber(2));
+    assert.deepEqual(factorial(math.bignumber(3)), math.bignumber(6));
+    assert.deepEqual(factorial(math.bignumber(4)), math.bignumber(24));
+    assert.deepEqual(factorial(math.bignumber(5)), math.bignumber(120));
+    assert.deepEqual(factorial(math.bignumber(20)), math.bignumber('2432902008176640000'));
   });
 
   it('should calculate the factorial of a boolean', function() {

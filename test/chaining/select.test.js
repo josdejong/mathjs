@@ -11,6 +11,14 @@ describe('select', function() {
     assert.equal(math.select(0).add(3).done(), 3);
   });
 
+  it('should chain operations with bignumbers', function() {
+    var result = math.select(math.bignumber(3))
+        .add(4)
+        .subtract(math.bignumber(2))
+        .done();
+    assert.deepEqual(result, math.bignumber(5));
+  });
+
   it('should chain operations with constants', function() {
     approx.equal(math.select().pi.done(), Math.PI);
     approx.deepEqual(math.select().i.multiply(2).add(3).done(), math.complex(3, 2));

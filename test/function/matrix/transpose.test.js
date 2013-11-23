@@ -10,6 +10,7 @@ describe('transpose', function() {
 
   it('should transpose a vector', function() {
     assert.deepEqual(math.transpose([1,2,3]), [1,2,3]);
+    assert.deepEqual(math.transpose(math.matrix([1,2,3])), math.matrix([1,2,3]));
   });
 
   it('should transpose a 2d matrix', function() {

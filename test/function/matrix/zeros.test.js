@@ -19,6 +19,13 @@ describe('zeros', function() {
     assert.deepEqual(zeros(0), matrix([]));
   });
 
+  it('should create a matrix with bignumber zeros', function () {
+    var zero = math.bignumber(0);
+    var three = math.bignumber(3);
+    assert.deepEqual(zeros(three), matrix([zero,zero,zero]));
+    assert.deepEqual(zeros([three]), [zero,zero,zero]);
+  });
+
   it('should create a 2D matrix with zeros from an array', function () {
     assert.deepEqual(zeros(2,3), matrix([[0,0,0],[0,0,0]]));
     assert.deepEqual(zeros(3,2), matrix([[0,0],[0,0],[0,0]]));

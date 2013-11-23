@@ -22,6 +22,15 @@ describe('eye', function() {
     assert.deepEqual(eye(3,3), matrix([[1,0,0],[0,1,0],[0,0,1]]));
   });
 
+  it('should create an identity matrix with bignumbers', function() {
+    var zero = math.bignumber(0);
+    var one = math.bignumber(1);
+    var two = math.bignumber(2);
+    var three = math.bignumber(3);
+    assert.deepEqual(eye(two), matrix([[one,zero],[zero,one]]));
+    assert.deepEqual(eye(two, three), matrix([[one,zero,zero],[zero,one,zero]]));
+  });
+
   // TODO: test setting matrix.defaultType
 
   it('should throw an error with an invalid input', function() {

@@ -31,6 +31,7 @@ describe('size', function() {
 
   it('should calculate the size of a scalar', function() {
     assert.deepEqual(math.size(2), matrix([]));
+    assert.deepEqual(math.size(math.bignumber(2)), matrix([]));
     assert.deepEqual(math.size(math.complex(2,3)), matrix([]));
     assert.deepEqual(math.size(true), matrix([]));
     assert.deepEqual(math.size(null), matrix([]));

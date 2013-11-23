@@ -1,5 +1,6 @@
 var assert = require('assert'),
-    math = require('../../../index')();
+    math = require('../../../index')(),
+    bignumber = math.bignumber;
 
 describe('concat', function() {
 
@@ -17,6 +18,10 @@ describe('concat', function() {
 
   it('should concatenate compatible matrices on the last dimension by default', function() {
     assert.deepEqual(math.concat([1,2,3], [4]), [1,2,3,4]);
+    assert.deepEqual(math.concat(
+        [bignumber(1),bignumber(2),bignumber(3)],
+        [bignumber(4)]),
+        [bignumber(1),bignumber(2),bignumber(3),bignumber(4)]);
     assert.deepEqual(math.concat([[1],[2],[3]], [[4]], 0), [[1],[2],[3],[4]]);
     assert.deepEqual(math.concat([[],[]], [[1,2],[3,4]]), [[1,2],[3,4]]);
 
