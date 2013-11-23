@@ -37,6 +37,12 @@ describe('log', function() {
     assert.throws(function () {log(1, 2, 3)}, SyntaxError, 'Wrong number of arguments in function log (3 provided, 1-2 expected)');
   });
 
+  it('should return the log of a bignumber', function() {
+    approx.deepEqual(log(math.bignumber(2)), 0.693147180559945);
+    approx.deepEqual(log(math.bignumber(3)), 1.098612288668110);
+
+  });
+
   it('should return the log of a complex number', function() {
     approx.deepEqual(log(math.i),          complex('1.570796326794897i'));
     approx.deepEqual(log(complex(0, -1)),  complex('-1.570796326794897i'));

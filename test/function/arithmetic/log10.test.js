@@ -31,6 +31,12 @@ describe('log10', function() {
     approx.deepEqual(log10(1000), 3);
   });
 
+  it('should return the log of a bignumber', function() {
+    approx.deepEqual(log10(math.bignumber(2)), 0.301029995663981);
+    approx.deepEqual(log10(math.bignumber(3)), 0.477121254719662);
+
+  });
+
   it('should throw an error if used with a wrong number of arguments', function() {
     assert.throws(function () {log10()}, SyntaxError, 'Wrong number of arguments in function log10 (0 provided, 1 expected)');
     assert.throws(function () {log10(1, 2)}, SyntaxError, 'Wrong number of arguments in function log10 (2 provided, 1 expected)');
