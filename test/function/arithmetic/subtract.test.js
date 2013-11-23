@@ -42,6 +42,9 @@ describe('subtract', function() {
   it('should subtract mixed numbers and bignumbers', function() {
     assert.deepEqual(subtract(bignumber(0.3), 0.2), bignumber(0.1));
     assert.deepEqual(subtract(0.3, bignumber(0.2)), bignumber(0.1));
+
+    approx.equal(subtract(1/3, bignumber(1).div(3)), 0);
+    approx.equal(subtract(bignumber(1).div(3), 1/3), 0);
   });
 
   it('should subtract mixed booleans and bignumbers', function() {

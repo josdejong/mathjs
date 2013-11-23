@@ -46,6 +46,9 @@ describe('pow', function() {
   it('should exponentiate mixed numbers and bignumbers', function() {
     assert.deepEqual(pow(bignumber(2), 3), bignumber(8));
     assert.deepEqual(pow(2, bignumber(3)), bignumber(8));
+
+    approx.equal(pow(1/3, bignumber(2)), 1/9);
+    approx.equal(pow(bignumber(1), 1/3), 1);
   });
 
   it('should exponentiate mixed booleans and bignumbers', function() {

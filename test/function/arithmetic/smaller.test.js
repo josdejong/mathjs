@@ -46,6 +46,9 @@ describe('smaller', function() {
   it('should compare mixed numbers and bignumbers', function() {
     assert.deepEqual(smaller(bignumber(2), 3), true);
     assert.deepEqual(smaller(2, bignumber(2)), false);
+
+    assert.equal(smaller(1/3, bignumber(1).div(3)), false);
+    assert.equal(smaller(bignumber(1).div(3), 1/3), false);
   });
 
   it('should compare mixed booleans and bignumbers', function() {

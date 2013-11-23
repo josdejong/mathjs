@@ -34,22 +34,25 @@ describe('equal', function() {
   });
 
   it('should compare bignumbers', function() {
-    assert.deepEqual(equal(bignumber(2), bignumber(3)), false);
-    assert.deepEqual(equal(bignumber(2), bignumber(2)), true);
-    assert.deepEqual(equal(bignumber(3), bignumber(2)), false);
-    assert.deepEqual(equal(bignumber(0), bignumber(0)), true);
-    assert.deepEqual(equal(bignumber(-2), bignumber(2)), false);
+    assert.equal(equal(bignumber(2), bignumber(3)), false);
+    assert.equal(equal(bignumber(2), bignumber(2)), true);
+    assert.equal(equal(bignumber(3), bignumber(2)), false);
+    assert.equal(equal(bignumber(0), bignumber(0)), true);
+    assert.equal(equal(bignumber(-2), bignumber(2)), false);
   });
 
   it('should compare mixed numbers and bignumbers', function() {
     assert.deepEqual(equal(bignumber(2), 3), false);
     assert.deepEqual(equal(2, bignumber(2)), true);
+
+    assert.equal(equal(1/3, bignumber(1).div(3)), true);
+    assert.equal(equal(bignumber(1).div(3), 1/3), true);
   });
 
   it('should compare mixed booleans and bignumbers', function() {
-    assert.deepEqual(equal(bignumber(0.1), true), false);
-    assert.deepEqual(equal(bignumber(1), true), true);
-    assert.deepEqual(equal(false, bignumber(0)), true);
+    assert.equal(equal(bignumber(0.1), true), false);
+    assert.equal(equal(bignumber(1), true), true);
+    assert.equal(equal(false, bignumber(0)), true);
   });
 
   it('should compare two complex numbers correctly', function() {

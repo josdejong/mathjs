@@ -47,6 +47,9 @@ describe('multiply', function() {
     assert.deepEqual(multiply(bignumber(1.5), 0.2), bignumber(0.3));
     assert.deepEqual(multiply(1.5, bignumber(0.2)), bignumber(0.3));
     assert.deepEqual(multiply(bignumber('1.3e5000'), 2), bignumber('2.6e5000'));
+
+    approx.equal(multiply(1/3, bignumber(1).div(3)), 1/9);
+    approx.equal(multiply(bignumber(1).div(3), 1/3), 1/9);
   });
 
   it('should multiply mixed booleans and bignumbers', function() {

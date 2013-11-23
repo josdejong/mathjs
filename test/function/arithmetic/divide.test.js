@@ -41,6 +41,9 @@ describe('divide', function() {
     assert.deepEqual(divide(bignumber(0.3), 0.2), bignumber(1.5));
     assert.deepEqual(divide(0.3, bignumber(0.2)), bignumber(1.5));
     assert.deepEqual(divide(bignumber('2.6e5000'), 2), bignumber('1.3e5000'));
+
+    approx.equal(divide(1/3, bignumber(2)), 0.166666666666667);
+    approx.equal(divide(bignumber(1), 1/3), 3);
   });
 
   it('should divide mixed booleans and bignumbers', function() {

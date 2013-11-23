@@ -54,6 +54,35 @@ describe('number', function() {
     assert.equal(number.sign(-0.23), -1);
   });
 
+  it('should count the number of significant digits of a number', function() {
+    assert.equal(number.digits(2.34), 3);
+    assert.equal(number.digits(2), 1);
+    assert.equal(number.digits(0), 1);
+    assert.equal(number.digits(0.0034), 2);
+    assert.equal(number.digits(3000.000), 1);
+    assert.equal(number.digits(120.5e50), 4);
+  });
+
+  it('should convert a number into a bignumber (when possible)', function() {
+    assert.deepEqual(number.toBigNumber(2.34), new BigNumber(2.34));
+    assert.deepEqual(number.toBigNumber(0), new BigNumber(0));
+    assert.deepEqual(number.toBigNumber(2.3e-3), new BigNumber(2.3e-3));
+    assert.deepEqual(number.toBigNumber(2.3e+3), new BigNumber(2.3e+3));
+
+    approx.equal(number.toBigNumber(Math.PI), Math.PI);
+    approx.equal(number.toBigNumber(1/3), 1/3);
+  });
+
+  it('should convert a bignumber into a number', function () {
+    assert.deepEqual(number.toNumber(new BigNumber('2.34')), 2.34);
+    assert.deepEqual(number.toNumber(new BigNumber('0')), 0);
+    assert.deepEqual(number.toNumber(new BigNumber('2.3e-3')), 2.3e-3);
+    assert.deepEqual(number.toNumber(new BigNumber('2.3e+3')), 2.3e+3);
+
+    assert.deepEqual(number.toNumber(new BigNumber('2.3e+500')), Infinity);
+    assert.deepEqual(number.toNumber(new BigNumber('2.3e-500')), 0);
+  });
+
   describe('format', function () {
 
     it ('should format special values Infinity, NaN', function () {

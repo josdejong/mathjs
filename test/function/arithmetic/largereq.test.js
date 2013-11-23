@@ -35,22 +35,25 @@ describe('largereq', function() {
   });
 
   it('should compare bignumbers', function() {
-    assert.deepEqual(largereq(bignumber(2), bignumber(3)), false);
-    assert.deepEqual(largereq(bignumber(2), bignumber(2)), true);
-    assert.deepEqual(largereq(bignumber(3), bignumber(2)), true);
-    assert.deepEqual(largereq(bignumber(0), bignumber(0)), true);
-    assert.deepEqual(largereq(bignumber(-2), bignumber(2)), false);
+    assert.equal(largereq(bignumber(2), bignumber(3)), false);
+    assert.equal(largereq(bignumber(2), bignumber(2)), true);
+    assert.equal(largereq(bignumber(3), bignumber(2)), true);
+    assert.equal(largereq(bignumber(0), bignumber(0)), true);
+    assert.equal(largereq(bignumber(-2), bignumber(2)), false);
   });
 
   it('should compare mixed numbers and bignumbers', function() {
-    assert.deepEqual(largereq(bignumber(2), 3), false);
-    assert.deepEqual(largereq(2, bignumber(2)), true);
+    assert.equal(largereq(bignumber(2), 3), false);
+    assert.equal(largereq(2, bignumber(2)), true);
+
+    assert.equal(largereq(1/3, bignumber(1).div(3)), true);
+    assert.equal(largereq(bignumber(1).div(3), 1/3), true);
   });
 
   it('should compare mixed booleans and bignumbers', function() {
-    assert.deepEqual(largereq(bignumber(0.1), true), false);
-    assert.deepEqual(largereq(bignumber(1), true), true);
-    assert.deepEqual(largereq(false, bignumber(0)), true);
+    assert.equal(largereq(bignumber(0.1), true), false);
+    assert.equal(largereq(bignumber(1), true), true);
+    assert.equal(largereq(false, bignumber(0)), true);
   });
 
   it('should compare two units correctly', function() {

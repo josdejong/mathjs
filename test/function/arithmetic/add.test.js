@@ -37,6 +37,9 @@ describe('add', function() {
   it('should add mixed numbers and bignumbers', function() {
     assert.deepEqual(add(bignumber(0.1), 0.2), bignumber(0.3));
     assert.deepEqual(add(0.1, bignumber(0.2)), bignumber(0.3));
+
+    approx.equal(add(1/3, bignumber(1)), 1.333333333333333);
+    approx.equal(add(bignumber(1), 1/3), 1.333333333333333);
   });
 
   it('should add mixed booleans and bignumbers', function() {
