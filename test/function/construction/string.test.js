@@ -35,6 +35,10 @@ describe('string', function() {
     assert.equal(string(2000000), '2e+6');
   });
 
+  it('should convert a bignumber to string', function() {
+    assert.equal(string(math.bignumber('2.3e+500')), '2.3e+500');
+  });
+
   it('should convert a complex number to string', function() {
     assert.equal(string(math.complex(2,3)), '2 + 3i');
   });

@@ -35,6 +35,10 @@ describe('sec', function() {
     approx.equal(sec(-2*pi), 1);
   });
 
+  it('should return the secant of a bignumber (downgrades to number)', function() {
+    approx.equal(sec(math.bignumber(1)), 1.85081571768093);
+  });
+
   it('should return the secant of a complex number', function() {
     var re = 0.0416749644111443,
         im = 0.0906111371962376;

@@ -22,6 +22,10 @@ describe('acos', function() {
     approx.equal(acos(1) / pi, 0);
   });
 
+  it('should return the arccos of a bignumber (downgrades to number)', function() {
+    approx.equal(acos(math.bignumber(-1)), pi);
+  });
+
   it('should be the inverse function of cos', function() {
     approx.equal(acos(cos(-1)), 1);
     approx.equal(acos(cos(0)), 0);

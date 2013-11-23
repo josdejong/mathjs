@@ -21,7 +21,11 @@ describe('atan', function() {
     approx.equal(atan(0.5) / pi, 0.147583617650433);
     approx.equal(atan(1) / pi, 0.25);
   });
-  
+
+  it('should return the arctan of a bignumber (downgrades to number)', function() {
+    approx.equal(atan(math.bignumber(1)), pi / 4);
+  });
+
   it('should be the inverse function of tan', function() {
     approx.equal(atan(tan(-1)), -1);
     approx.equal(atan(tan(0)), 0);

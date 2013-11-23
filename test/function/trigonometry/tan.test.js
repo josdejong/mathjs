@@ -28,6 +28,10 @@ describe('tan', function() {
     approx.equal(tan(pi*8/4), 0);
   });
 
+  it('should return the tangent of a bignumber (downgrades to number)', function() {
+    approx.equal(tan(math.bignumber(1)), 1.55740772465490);
+  });
+
   it('should return the tangent of a complex number', function() {
     var re = 0.00376402564150425,
         im = 1.00323862735360980;

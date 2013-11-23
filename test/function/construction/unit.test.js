@@ -5,7 +5,7 @@ var assert = require('assert'),
 describe('unit', function() {
 
   it ('should construct a unit', function () {
-    // TOD: test construction of a unit
+    // TODO: test construction of a unit
   });
 
   it('should parse a valid string to a unit', function() {
@@ -14,7 +14,7 @@ describe('unit', function() {
     assert.deepEqual(unit('10 kg').toString(), '10 kg');
   });
 
-  it('should be the identity if called with a unit', function() {
+  it('should clone a unit', function() {
     var a = math.unit('5cm');
     var b = math.unit(a);
     assert.deepEqual(b.toString(), '50 mm');
@@ -45,12 +45,17 @@ describe('unit', function() {
     assert.deepEqual(unit(10, 'kg').toString(), '10 kg');
   });
 
+  it('should take a bignumber as the quantity and a string as the unit (downgrades to number)', function() {
+    assert.deepEqual(unit(math.bignumber(5), 'cm').toString(), '50 mm');
+  });
+
   it('should throw an error if called with 2 strings', function() {
     assert.throws(function () {unit('2', 'cm')}, TypeError);
   });
 
   it('should throw an error if called with one invalid argument', function() {
     assert.throws(function () {unit(2, math.complex(2,3))}, TypeError);
+    assert.throws(function () {unit(true, 'cm')}, TypeError);
   });
 
   it('should throw an error if called with no argument', function() {

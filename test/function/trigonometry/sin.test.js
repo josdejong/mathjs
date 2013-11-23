@@ -27,6 +27,10 @@ describe('sin', function() {
     approx.equal(sin(pi/4), math.sqrt(2)/2);
   });
 
+  it('should return the sine of a bignumber (downgrades to number)', function() {
+    approx.equal(sin(math.bignumber(1)), 0.841470984807897);
+  });
+
   it('should return the sine of a complex number', function() {
     var re = 9.15449914691143,
         im = 4.16890695996656;

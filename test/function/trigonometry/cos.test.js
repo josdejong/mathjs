@@ -27,6 +27,10 @@ describe('cos', function() {
     approx.equal(cos(pi/4), math.sqrt(2)/2);
   });
 
+  it('should return the cosine of a bignumber (downgrades to number)', function() {
+    approx.equal(cos(math.bignumber(1)), 0.54030230586814);
+  });
+
   it('should return the cosine of a complex number', function() {
     var re = 4.18962569096881,
         im = 9.10922789375534;

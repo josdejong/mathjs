@@ -16,6 +16,10 @@ describe('arg', function() {
     approx.equal(arg(-2), 3.141592653589793);
   });
 
+  it('should compute the argument of a bignumber (downgrades to number)', function () {
+    assert.equal(arg(math.bignumber(1)), 0);
+  });
+
   it('should compute the argument of a complex number correctly', function() {
     assert.equal(arg(math.complex('0')) / math.pi, 0);
     assert.equal(arg(math.complex('1 + 0i')) / math.pi, 0);

@@ -27,6 +27,10 @@ describe('csc', function() {
     approx.equal(1 / csc(pi/4), math.sqrt(2)/2);
   });
 
+  it('should return the cosecant of a bignumber (downgrades to number)', function() {
+    approx.equal(csc(math.bignumber(1)), 1.18839510577812);
+  });
+
   it('should return the cosecant of a complex number', function() {
     var re = 0.0904732097532074;
     var im = 0.0412009862885741;

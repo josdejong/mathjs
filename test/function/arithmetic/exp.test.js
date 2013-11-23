@@ -9,13 +9,12 @@ var assert = require('assert'),
     exp = math.exp;
 
 describe('exp', function() {
-  it('should exponentiate a boolean correctly', function () {
+  it('should exponentiate a boolean', function () {
     approx.equal(exp(true), 2.71828182845905);
     approx.equal(exp(false), 1);
   });
 
-  it('should exponentiate a number correctly', function() {
-    // number
+  it('should exponentiate a number', function() {
     approx.equal(exp(-3), 0.0497870683678639);
     approx.equal(exp(-2), 0.1353352832366127);
     approx.equal(exp(-1), 0.3678794411714423);
@@ -24,6 +23,10 @@ describe('exp', function() {
     approx.equal(exp(2), 7.38905609893065);
     approx.equal(exp(3), 20.0855369231877);
     approx.equal(exp(math.log(100)), 100);
+  });
+
+  it('should exponentiate a bignumber (downgrades to number)', function() {
+    approx.equal(exp(math.bignumber(1)), 2.71828182845905);
   });
 
   it('should throw an error if there\'s wrong number of arguments', function() {

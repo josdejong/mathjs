@@ -19,6 +19,11 @@ describe('complex', function() {
     assert.deepEqual(complex(123), new math.type.Complex(123, 0));
   });
 
+  it('should convert a big number into a complex value (downgrades to number', function() {
+    assert.deepEqual(complex(math.bignumber(123)), new math.type.Complex(123, 0));
+    assert.deepEqual(complex(math.bignumber(2), math.bignumber(3)), new math.type.Complex(2, 3));
+  });
+
   it('should clone a complex value', function() {
     var b = complex(complex(2,3));
     assert.deepEqual(b, new math.type.Complex(2,3));
@@ -30,12 +35,16 @@ describe('complex', function() {
       new math.type.Complex(1, 0),
       new math.type.Complex(2, 3)
     ];
-    assert.deepEqual(complex(math.matrix([2, true, complex(2, 3)])), new math.type.Matrix(result));
-    assert.deepEqual(complex([2, true, complex(2, 3)]), result);
+    assert.deepEqual(complex(math.matrix([2, 1, complex(2, 3)])), new math.type.Matrix(result));
+    assert.deepEqual(complex([2, 1, complex(2, 3)]), result);
   });
 
   it('should throw an error if called with a string', function() {
     assert.throws(function () {complex('no valid complex number')}, SyntaxError);
+  });
+
+  it('should throw an error if called with a boolean', function() {
+    assert.throws(function () {complex(false)}, TypeError);
   });
 
   it('should throw an error if called with a unit', function() {
@@ -50,6 +59,8 @@ describe('complex', function() {
   });
 
   it('should throw an error if passed two argument, one is invalid', function() {
+    assert.throws(function () {complex(true, 2)}, TypeError);
+    assert.throws(function () {complex(2, false)}, TypeError);
     assert.throws(function () {complex('string', 2)}, TypeError);
     assert.throws(function () {complex(2, 'string')}, TypeError);
   });

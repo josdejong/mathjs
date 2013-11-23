@@ -26,6 +26,10 @@ describe('cot', function() {
     approx.equal(1 / cot(pi*8/4), 0);
   });
 
+  it('should return the cotan of a bignumber (downgrades to number)', function() {
+    approx.equal(cot(math.bignumber(1)), 0.642092615934331);
+  });
+
   it('should return the cotan of a complex number', function() {
     var re = 0.00373971037633696;
     var im = 0.99675779656935837;

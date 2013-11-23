@@ -22,6 +22,10 @@ describe('asin', function() {
     approx.equal(asin(1) / pi, 0.5);
   });
 
+  it('should return the arcsin of a bignumber (downgrades to number)', function() {
+    approx.equal(asin(math.bignumber(-1)), -pi / 2);
+  });
+
   it('should be the inverse function of sin', function() {
     approx.equal(asin(sin(-1)), -1);
     approx.equal(asin(sin(0)), 0);

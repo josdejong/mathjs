@@ -47,6 +47,15 @@ describe('atan2', function() {
     assert.equal(atan2(false, 1), 0);
   });
 
+  it('should return the arctan of for bignumbers (downgrades to number)', function() {
+    approx.equal(atan2(math.bignumber(1), math.bignumber(1)), pi / 4);
+  });
+
+  it('should return the arctan of for mixed numbers and bignumbers (downgrades to number)', function() {
+    approx.equal(atan2(1, math.bignumber(1)), pi / 4);
+    approx.equal(atan2(math.bignumber(1), 1), pi / 4);
+  });
+
   it('should throw an error if called with a complex', function() {
     assert.throws(function () {atan2(complex('2+3i'), complex('1-2i')); });
   });

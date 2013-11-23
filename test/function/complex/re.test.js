@@ -13,6 +13,10 @@ describe('re', function() {
     assert.equal(math.re(2), 2);
   });
 
+  it('should return the real part of a big number', function() {
+    assert.deepEqual(math.re(math.bignumber(2)), math.bignumber(2));
+  });
+
   it('should return the real part of a string', function() {
     assert.equal(math.re('string'), 'string');
   });

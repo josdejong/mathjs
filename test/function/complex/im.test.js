@@ -13,6 +13,10 @@ describe('im', function() {
     assert.equal(math.im(2), 0);
   });
 
+  it('should return the imaginary part of a big number', function() {
+    assert.deepEqual(math.im(math.bignumber(2)), math.bignumber(0));
+  });
+
   it('should return the imaginary part of a boolean', function() {
     assert.equal(math.im(true), 0);
     assert.equal(math.im(false), 0);
