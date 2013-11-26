@@ -82,6 +82,16 @@ describe('add', function() {
     assert.deepEqual(a5.valueOf(), [[7,10],[15,22]]);
   });
 
+  it('should add a scalar and a matrix correctly', function() {
+    assert.deepEqual(add(2, math.matrix([3,4])), math.matrix([5,6]));
+    assert.deepEqual(add(math.matrix([3,4]), 2), math.matrix([5,6]));
+  });
+
+  it('should add a scalar and an array correctly', function() {
+    assert.deepEqual(add(2, [3,4]), [5,6]);
+    assert.deepEqual(add([3,4], 2), [5,6]);
+  });
+
   it('should add a matrix and an array correctly', function() {
     var a = [1,2,3];
     var b = math.matrix([3,2,1]);
