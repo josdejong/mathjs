@@ -3,6 +3,7 @@ var assert = require('assert'),
     approx = require('../../../tools/approx'),
     mathjs = require('../../../index'),
     math = mathjs(),
+    BigNumber = math.type.BigNumber,
     Complex = math.type.Complex,
     Matrix = math.type.Matrix,
     Unit = math.type.Unit;
@@ -304,13 +305,14 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('c=concat(concat(a,b), concat(b,a), 0)', scope), new Matrix([[1,2,5,6],[3,4,7,8],[5,6,1,2],[7,8,3,4]]));
       assert.deepEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 0)', scope), new Matrix([[1,2],[3,4]]));
       assert.deepEqual(parseAndEval('c=concat([[1]], [2;3], 0)', scope), new Matrix([[1],[2],[3]]));
-      assert.deepEqual(parseAndEval('d=1:3', scope), [1,2,3]);
-      assert.deepEqual(parseAndEval('concat(d,d)', scope), [1,2,3,1,2,3]);
-      assert.deepEqual(parseAndEval('e=1+d', scope), [2,3,4]);  // e is an Array
-      assert.deepEqual(parseAndEval('size(e)', scope), [3]);
-      assert.deepEqual(parseAndEval('concat(e,e)', scope), [2,3,4,2,3,4]);
+      assert.deepEqual(parseAndEval('d=1:3', scope), new Matrix([1,2,3]));
+      assert.deepEqual(parseAndEval('concat(d,d)', scope), new Matrix([1,2,3,1,2,3]));
+      assert.deepEqual(parseAndEval('e=1+d', scope), new Matrix([2,3,4]));
+      assert.deepEqual(parseAndEval('size(e)', scope), new Matrix([3]));
+      assert.deepEqual(parseAndEval('concat(e,e)', scope), new Matrix([2,3,4,2,3,4]));
       assert.deepEqual(parseAndEval('[[],[]]', scope), new Matrix([[],[]]));
       assert.deepEqual(parseAndEval('[[],[]]', scope).size(), [2, 0]);
+      assert.deepEqual(parseAndEval('size([[],[]])', scope), new Matrix([2, 0]));
     });
 
     it('should throw an error for invalid matrix concatenations', function() {
@@ -558,18 +560,18 @@ describe('parse', function() {
     });
 
     it('should parse : (range)', function() {
-      assert.ok(parseAndEval('2:5') instanceof Array);
-      assert.deepEqual(parseAndEval('2:5'), [2,3,4,5]);
-      assert.deepEqual(parseAndEval('10:-2:0'), [10,8,6,4,2,0]);
-      assert.deepEqual(parseAndEval('2:4.0'), [2,3,4]);
-      assert.deepEqual(parseAndEval('2:4.5'), [2,3,4]);
-      assert.deepEqual(parseAndEval('2:4.1'), [2,3,4]);
-      assert.deepEqual(parseAndEval('2:3.9'), [2,3]);
-      assert.deepEqual(parseAndEval('2:3.5'), [2,3]);
-      assert.deepEqual(parseAndEval('3:-1:0.5'), [3,2,1]);
-      assert.deepEqual(parseAndEval('3:-1:0.5'), [3,2,1]);
-      assert.deepEqual(parseAndEval('3:-1:0.1'), [3,2,1]);
-      assert.deepEqual(parseAndEval('3:-1:-0.1'), [3,2,1,0]);
+      assert.ok(parseAndEval('2:5') instanceof Matrix);
+      assert.deepEqual(parseAndEval('2:5'), new Matrix([2,3,4,5]));
+      assert.deepEqual(parseAndEval('10:-2:0'), new Matrix([10,8,6,4,2,0]));
+      assert.deepEqual(parseAndEval('2:4.0'), new Matrix([2,3,4]));
+      assert.deepEqual(parseAndEval('2:4.5'), new Matrix([2,3,4]));
+      assert.deepEqual(parseAndEval('2:4.1'), new Matrix([2,3,4]));
+      assert.deepEqual(parseAndEval('2:3.9'), new Matrix([2,3]));
+      assert.deepEqual(parseAndEval('2:3.5'), new Matrix([2,3]));
+      assert.deepEqual(parseAndEval('3:-1:0.5'), new Matrix([3,2,1]));
+      assert.deepEqual(parseAndEval('3:-1:0.5'), new Matrix([3,2,1]));
+      assert.deepEqual(parseAndEval('3:-1:0.1'), new Matrix([3,2,1]));
+      assert.deepEqual(parseAndEval('3:-1:-0.1'), new Matrix([3,2,1,0]));
     });
 
     it('should parse in', function() {
@@ -616,6 +618,61 @@ describe('parse', function() {
     });
   });
 
+  describe('bignumber', function () {
+    var math = mathjs({
+      number: {
+        defaultType: 'bignumber'
+      }
+    });
+
+    it('should parse numbers as bignumber', function() {
+      assert.deepEqual(math.eval('2.3'), new BigNumber('2.3'));
+    });
+
+    it('should evaluate functions supporting bignumbers', function() {
+      assert.deepEqual(math.eval('0.1 + 0.2'), new BigNumber('0.3'));
+    });
+
+    it('should evaluate functions not supporting bignumbers', function() {
+      approx.equal(math.eval('sin(0.1)'), 0.09983341664682815);
+    });
+
+    it('should create a range from bignumbers (downgrades to numbers)', function() {
+      assert.deepEqual(math.eval('4:6'), math.matrix([4, 5, 6]));
+      assert.deepEqual(math.eval('0:2:4'), math.matrix([0, 2, 4]));
+    });
+
+    it('should create a matrix with bignumbers', function() {
+      assert.deepEqual(math.eval('[0.1, 0.2]'),
+          math.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
+    });
+
+    it('should get a elements from a matrix with bignumbers', function() {
+      var scope = {};
+      assert.deepEqual(math.eval('a=[0.1, 0.2]', scope),
+          math.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
+
+      assert.deepEqual(math.eval('a(1)', scope), new BigNumber(0.1));
+      assert.deepEqual(math.eval('a(:)', scope),
+          math.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
+      assert.deepEqual(math.eval('a(1:2)', scope),
+          math.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
+    });
+
+    it('should replace elements in a matrix with bignumbers', function() {
+      var scope = {};
+      assert.deepEqual(math.eval('a=[0.1, 0.2]', scope),
+          math.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
+
+      assert.deepEqual(math.eval('a(1) = 0.3', scope),
+          math.matrix([new BigNumber(0.3), new BigNumber(0.2)]));
+      assert.deepEqual(math.eval('a(:) = [0.5, 0.6]', scope),
+          math.matrix([new BigNumber(0.5), new BigNumber(0.6)]));
+      assert.deepEqual(math.eval('a(1:2) = [0.7, 0.8]', scope),
+          math.matrix([new BigNumber(0.7), new BigNumber(0.8)]));
+    });
+
+  });
 
   describe('scope', function () {
 
