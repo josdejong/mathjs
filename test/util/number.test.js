@@ -271,12 +271,41 @@ describe('number', function() {
         };
         assert.deepEqual(number.format(new BigNumber('1.23456'), options), '1.23456e+0');
         assert.deepEqual(number.format(new BigNumber('12345678'), options), '1.2345678e+7');
+        assert.deepEqual(number.format(new BigNumber('2.3e+30'), options), '2.3e+30');
+        assert.deepEqual(number.format(new BigNumber('0.23e+30'), options), '2.3e+29');
+        assert.deepEqual(number.format(new BigNumber('2.3e-30'), options), '2.3e-30');
+        assert.deepEqual(number.format(new BigNumber('0.23e-30'), options), '2.3e-31');
 
         options = {
           notation: 'scientific',
           precision: 18
         };
         assert.deepEqual(number.format(new BigNumber(1).div(3), options), '3.33333333333333333e-1');
+      });
+
+      it.skip('sould format big numbers with custom precision, lower, and upper bound', function() {
+        var oldPrecision = BigNumber.config().DECIMAL_PLACES;
+        BigNumber.config({DECIMAL_PLACES: 100});
+
+        var options = {
+          notation: 'auto',
+          precision : 50,
+          scientific: {
+            lower: 1e-50,
+            upper: 1e+50
+          }
+        };
+
+        assert.deepEqual(number.format(new BigNumber(5).div(3), options), '1.6666666666666666666666666666666666666666666666667');
+        assert.deepEqual(number.format(new BigNumber(5e+40).div(3), options), '16666666666666666666666666666666666666666.666666667');
+        assert.deepEqual(number.format(new BigNumber(5e-40).div(3), options),
+            '0.00000000000000000000000000000000000000016666666666666666666666666666666666666666666666667');
+        assert.deepEqual(number.format(new BigNumber(5e+60).div(3), options), '1.6666666666666666666666666666666666666666666666667e+60');
+        assert.deepEqual(number.format(new BigNumber(5e-60).div(3), options), '1.6666666666666666666666666666666666666666666666667e-60');
+        assert.deepEqual(number.format(new BigNumber(5e-80).div(3), options), '1.6666666666666666666666666666666666666666666666667e-80');
+
+        // restore old precision
+        BigNumber.config({DECIMAL_PLACES: oldPrecision});
       });
 
       it('should format big numbers in fixed notation', function() {
@@ -288,6 +317,7 @@ describe('number', function() {
         assert.deepEqual(number.format(new BigNumber('1.7'), options), '2');
         assert.deepEqual(number.format(new BigNumber('12345678'), options), '12345678');
         assert.deepEqual(number.format(new BigNumber('12e18'), options), '12000000000000000000');
+        assert.deepEqual(number.format(new BigNumber('12e30'), options), '12000000000000000000000000000000');
 
         options = {
           notation: 'fixed',
@@ -296,6 +326,7 @@ describe('number', function() {
         assert.deepEqual(number.format(new BigNumber('1.23456'), options), '1.23');
         assert.deepEqual(number.format(new BigNumber('12345678'), options), '12345678.00');
         assert.deepEqual(number.format(new BigNumber('12e18'), options), '12000000000000000000.00');
+        assert.deepEqual(number.format(new BigNumber('12e30'), options), '12000000000000000000000000000000.00');
       });
     });
 
