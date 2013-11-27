@@ -627,10 +627,19 @@ describe('parse', function() {
 
     it('should parse numbers as bignumber', function() {
       assert.deepEqual(math.eval('2.3'), new BigNumber('2.3'));
+      assert.deepEqual(math.eval('2.3e+500'), new BigNumber('2.3e+500'));
     });
 
     it('should evaluate functions supporting bignumbers', function() {
       assert.deepEqual(math.eval('0.1 + 0.2'), new BigNumber('0.3'));
+    });
+
+    it('should evaluate functions supporting bignumbers', function() {
+      assert.deepEqual(math.eval('add(0.1, 0.2)'), new BigNumber('0.3'));
+    });
+
+    it('should work with mixed numbers and bignumbers', function() {
+      approx.equal(math.eval('pi + 1'), 4.141592653589793);
     });
 
     it('should evaluate functions not supporting bignumbers', function() {
@@ -672,6 +681,13 @@ describe('parse', function() {
           math.matrix([new BigNumber(0.7), new BigNumber(0.8)]));
     });
 
+    it('should work with complex numbers (downgrades bignumbers to number)', function() {
+      assert.deepEqual(math.eval('2 + 3i'), new Complex(2, 3));
+    });
+
+    it('should work with units (downgrades bignumbers to number)', function() {
+      assert.deepEqual(math.eval('2 cm'), new Unit('2 cm'));
+    });
   });
 
   describe('scope', function () {

@@ -254,6 +254,10 @@ describe('number', function() {
     });
 
     describe('bignumber', function () {
+      before (function () {
+        math.type.BigNumber.config(20); // ensure the precision is 20 digits, the default
+      });
+
       it('should format big numbers', function() {
         assert.deepEqual(number.format(new BigNumber('2.3')), '2.3');
         assert.deepEqual(number.format(new BigNumber('0.00000003')), '3e-8');

@@ -44,7 +44,8 @@ describe('factory', function() {
   it('should apply configuration using the config function', function() {
     var math = mathjs();
 
-    assert.deepEqual(math.config(), {
+    var config = math.config();
+    assert.deepEqual(config, {
       matrix: {defaultType: 'matrix'},
       number: {defaultType: 'number', precision: 20}
     });
@@ -58,6 +59,9 @@ describe('factory', function() {
       matrix: {defaultType: 'array'},
       number: {defaultType: 'bignumber', precision: 32}
     });
+
+    // restore the original config
+    math.config(config);
   });
 
 });
