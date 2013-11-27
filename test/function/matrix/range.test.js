@@ -36,6 +36,30 @@ describe('range', function() {
     assert.deepEqual(math2.range(5,0,-1), [5,4,3,2,1]);
   });
 
+  it('should create a range with bignumbers', function() {
+    assert.deepEqual(range(math.bignumber(1), math.bignumber(3)), matrix([math.bignumber(1),math.bignumber(2)]));
+  });
+
+  it('should create a range with mixed numbers and bignumbers', function() {
+    assert.deepEqual(range(math.bignumber(1), 3), matrix([math.bignumber(1),math.bignumber(2)]));
+    assert.deepEqual(range(1, math.bignumber(3)), matrix([math.bignumber(1),math.bignumber(2)]));
+
+    assert.deepEqual(range(1, math.bignumber(3), math.bignumber(1)), matrix([math.bignumber(1),math.bignumber(2)]));
+    assert.deepEqual(range(math.bignumber(1), 3, math.bignumber(1)), matrix([math.bignumber(1),math.bignumber(2)]));
+    assert.deepEqual(range(math.bignumber(1), math.bignumber(3), 1), matrix([math.bignumber(1),math.bignumber(2)]));
+
+    assert.deepEqual(range(math.bignumber(1), 3, 1), matrix([math.bignumber(1),math.bignumber(2)]));
+    assert.deepEqual(range(1, math.bignumber(3), 1), matrix([math.bignumber(1),math.bignumber(2)]));
+    assert.deepEqual(range(1, 3, math.bignumber(1)), matrix([math.bignumber(1),math.bignumber(2)]));
+  });
+
+  it('should parse a range with bignumbers', function() {
+    var math = mathjs({
+      number: {defaultType: 'bignumber'}
+    });
+    assert.deepEqual(math.range('1:3'), matrix([math.bignumber(1),math.bignumber(2)]));
+  });
+
   it('should throw an error if called with an invalid string', function() {
     assert.throws(function () {range('invalid range')}, SyntaxError);
   });
