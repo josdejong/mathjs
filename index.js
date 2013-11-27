@@ -233,5 +233,5 @@ for (var prop in instance) {
 }
 
 if (typeof window !== 'undefined') {
-  window.math = mathjs;
+  window.math = window.math || mathjs;
 }
