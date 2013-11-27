@@ -8,12 +8,13 @@ Complex number or Array.
 The supported data types are:
 
 - Boolean
-- Number
+- [Number](https://github.com/josdejong/mathjs/blob/master/docs/numbers.md)
+- [BigNumber](https://github.com/josdejong/mathjs/blob/master/docs/bignumbers.md)
+- [Complex](https://github.com/josdejong/mathjs/blob/master/docs/complex_numbers.md)
+- [Array](https://github.com/josdejong/mathjs/blob/master/docs/matrices.md)
+- [Matrix](https://github.com/josdejong/mathjs/blob/master/docs/matrices.md)
+- [Unit](https://github.com/josdejong/mathjs/blob/master/docs/units.md)
 - String
-- Array
-- Complex. See page [Complex Numbers](complex_numbers.md)
-- Matrix. See page [Matrices](matrices.md)
-- Unit. See page [Units](units.md)
 
 Example usage:
 
