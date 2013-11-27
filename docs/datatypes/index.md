@@ -19,12 +19,15 @@ The supported data types are:
 Example usage:
 
 ```js
-// use regular numbers
+// use numbers
 math.subtract(7.1, 2.3);        // 4.8
 math.round(math.pi, 3);         // 3.142
 math.sqrt(4.41e2);              // 21
 
-// use regular strings
+// use big numbers
+math.add(math.bignumber(0.1), math.bignumber(0.2)); // BigNumber, 0.3
+
+// use strings
 math.add('hello ', 'world');    // 'hello world'
 math.max('A', 'D', 'C');        // 'D'
 

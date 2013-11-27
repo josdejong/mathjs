@@ -1,4 +1,4 @@
-# Numbers
+# Big Numbers
 
 For calculations with an arbitrary precision, math.js supports BigNumber.
 BigNumber is powered by the the library

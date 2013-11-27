@@ -3,8 +3,8 @@
 Math.js supports two types of numbers:
 
 - Number for fast floating point arithmetic, described on this page.
-- [BigNumber](bignumbers.js)
-  for arbitrary precision arithmetic.
+- BigNumber for arbitrary precision arithmetic, describe on the page
+  [Big Numbers]](bignumbers.md).
 
 The default number type can be configured when instantiating math.js:
 
