@@ -47,6 +47,11 @@ describe('add', function() {
     assert.deepEqual(add(false, bignumber(0.2)), bignumber(0.2));
   });
 
+  it('should add mixed complex numbers and bignumbers', function() {
+    assert.deepEqual(add(math.complex(3, -4), bignumber(2)), math.complex(5, -4));
+    assert.deepEqual(add(bignumber(2), math.complex(3, -4)), math.complex(5, -4));
+  });
+
   it('should add two complex numbers', function() {
     assert.equal(add(math.complex(3, -4), math.complex(8, 2)), '11 - 2i');
     assert.equal(add(math.complex(3, -4), 10), '13 - 4i');

@@ -619,74 +619,76 @@ describe('parse', function() {
   });
 
   describe('bignumber', function () {
-    var math = mathjs({
+    var bigmath = mathjs({
       number: {
         defaultType: 'bignumber'
       }
     });
 
     it('should parse numbers as bignumber', function() {
-      assert.deepEqual(math.eval('2.3'), new BigNumber('2.3'));
-      assert.deepEqual(math.eval('2.3e+500'), new BigNumber('2.3e+500'));
+      assert.deepEqual(bigmath.eval('2.3'), new BigNumber('2.3'));
+      assert.deepEqual(bigmath.eval('2.3e+500'), new BigNumber('2.3e+500'));
     });
 
     it('should evaluate functions supporting bignumbers', function() {
-      assert.deepEqual(math.eval('0.1 + 0.2'), new BigNumber('0.3'));
+      assert.deepEqual(bigmath.eval('0.1 + 0.2'), new BigNumber('0.3'));
     });
 
     it('should evaluate functions supporting bignumbers', function() {
-      assert.deepEqual(math.eval('add(0.1, 0.2)'), new BigNumber('0.3'));
+      assert.deepEqual(bigmath.eval('add(0.1, 0.2)'), new BigNumber('0.3'));
     });
 
     it('should work with mixed numbers and bignumbers', function() {
-      approx.equal(math.eval('pi + 1'), 4.141592653589793);
+      approx.equal(bigmath.eval('pi + 1'), 4.141592653589793);
     });
 
     it('should evaluate functions not supporting bignumbers', function() {
-      approx.equal(math.eval('sin(0.1)'), 0.09983341664682815);
+      approx.equal(bigmath.eval('sin(0.1)'), 0.09983341664682815);
     });
 
     it('should create a range from bignumbers (downgrades to numbers)', function() {
-      assert.deepEqual(math.eval('4:6'), math.matrix([4, 5, 6]));
-      assert.deepEqual(math.eval('0:2:4'), math.matrix([0, 2, 4]));
+      assert.deepEqual(bigmath.eval('4:6'), bigmath.matrix([4, 5, 6]));
+      assert.deepEqual(bigmath.eval('0:2:4'), bigmath.matrix([0, 2, 4]));
     });
 
     it('should create a matrix with bignumbers', function() {
-      assert.deepEqual(math.eval('[0.1, 0.2]'),
-          math.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
+      assert.deepEqual(bigmath.eval('[0.1, 0.2]'),
+          bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
     });
 
     it('should get a elements from a matrix with bignumbers', function() {
       var scope = {};
-      assert.deepEqual(math.eval('a=[0.1, 0.2]', scope),
-          math.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
+      assert.deepEqual(bigmath.eval('a=[0.1, 0.2]', scope),
+          bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
 
-      assert.deepEqual(math.eval('a(1)', scope), new BigNumber(0.1));
-      assert.deepEqual(math.eval('a(:)', scope),
-          math.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
-      assert.deepEqual(math.eval('a(1:2)', scope),
-          math.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
+      assert.deepEqual(bigmath.eval('a(1)', scope), new BigNumber(0.1));
+      assert.deepEqual(bigmath.eval('a(:)', scope),
+          bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
+      assert.deepEqual(bigmath.eval('a(1:2)', scope),
+          bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
     });
 
     it('should replace elements in a matrix with bignumbers', function() {
       var scope = {};
-      assert.deepEqual(math.eval('a=[0.1, 0.2]', scope),
-          math.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
+      assert.deepEqual(bigmath.eval('a=[0.1, 0.2]', scope),
+          bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
 
-      assert.deepEqual(math.eval('a(1) = 0.3', scope),
-          math.matrix([new BigNumber(0.3), new BigNumber(0.2)]));
-      assert.deepEqual(math.eval('a(:) = [0.5, 0.6]', scope),
-          math.matrix([new BigNumber(0.5), new BigNumber(0.6)]));
-      assert.deepEqual(math.eval('a(1:2) = [0.7, 0.8]', scope),
-          math.matrix([new BigNumber(0.7), new BigNumber(0.8)]));
+      assert.deepEqual(bigmath.eval('a(1) = 0.3', scope),
+          bigmath.matrix([new BigNumber(0.3), new BigNumber(0.2)]));
+      assert.deepEqual(bigmath.eval('a(:) = [0.5, 0.6]', scope),
+          bigmath.matrix([new BigNumber(0.5), new BigNumber(0.6)]));
+      assert.deepEqual(bigmath.eval('a(1:2) = [0.7, 0.8]', scope),
+          bigmath.matrix([new BigNumber(0.7), new BigNumber(0.8)]));
     });
 
-    it('should work with complex numbers (downgrades bignumbers to number)', function() {
-      assert.deepEqual(math.eval('2 + 3i'), new Complex(2, 3));
+    it.skip('should work with complex numbers (downgrades bignumbers to number)', function() {
+      assert.deepEqual(bigmath.eval('3i'), new Complex(0, 3));
+      assert.deepEqual(bigmath.eval('2 + 3i'), new Complex(2, 3));
+      assert.deepEqual(bigmath.eval('2 * i'), new Complex(0, 2));
     });
 
     it('should work with units (downgrades bignumbers to number)', function() {
-      assert.deepEqual(math.eval('2 cm'), new Unit('2 cm'));
+      assert.deepEqual(bigmath.eval('2 cm'), new Unit(2, 'cm'));
     });
   });
 
