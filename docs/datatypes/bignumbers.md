@@ -28,11 +28,10 @@ math.eval('0.1 + 0.2'); // BigNumber, 0.3
 
 *Important:
 BigNumber is not supported by the following functions:
-`exp`, `gcd`, `lcm`, `log`, `log10`, `xgcd`,
-`arg`,
-`random`,
-`acos`, `asin`, `atan`, `atan2`, `cos`, `cot`, `csc`, `sec`, `sin`, `tan`,
-`range`.
+exp, gcd, lcm, log, log10, xgcd,
+arg,
+random,
+acos, asin, atan, atan2, cos, cot, csc, sec, sin, tan.
 These functions will downgrade BigNumber to Number, and return a Number.*
 
 Calculations with BigNumber are much slower than calculations with Number,
@@ -57,14 +56,12 @@ which can be changed by configuring BigNumber:
 BigNumber.config({DECIMAL_PLACES: 32});
 ```
 
-*Important: the bignumber.js library uses fixed point numbers and is therefore
-not suitable to handle extremely large (> 1e+100) and small (< 1e-100) numbers.
-To work with small numbers, `DECIMAL_PLACES` must be configured sufficiently
-large.*
+*Important: To work with small numbers, `DECIMAL_PLACES` must be configured
+sufficiently large.*
 
 Big numbers can be converted to numbers and vice versa using the functions
 `number` and `bignumber`. When converting a big number to a number, the high
-precision of the will be lost.When a BigNumber is too large to be represented
+precision of the will be lost. When a BigNumber is too large to be represented
 as Number, it will be initialized as `Infinity`.
 
 ```js

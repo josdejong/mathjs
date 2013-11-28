@@ -16,8 +16,9 @@ Available configuration settings are:
   `'number'` (default) or `'bignumber'`. Big numbers have higher precision
   than the default numbers of JavaScript.
 
-- `number.precision`. The number of significant digits for big numbers.
-  Only applies to big numbers, not to numbers. Default value is 20.
+- `number.precision`. The maximum number of decimal places behind the decimal
+  point (not the number of significant digits). Only applies to big numbers,
+  not to numbers. Default value is 20.
 
   *Important: This setting is applied application wide to all BigNumbers.
   Behind the scenes, this setting is applied as the global `DECIMAL_PLACES`
