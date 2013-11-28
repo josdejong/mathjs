@@ -39,9 +39,12 @@
  * the License.
  */
 
-var math = require('../index')(),
+var mathjs = require('../index'),
+    math = mathjs(),
     parser = math.parser(),
     fs = require('fs');
+
+var PRECISION = 14; // digits
 
 /**
  * auto complete a text
@@ -166,7 +169,8 @@ function runStream (input, output) {
           var res = parser.eval(expr);
           if (!Array.isArray(res) || res.length) {
             // TODO: how to distinguish array output from multi-line output?
-            console.log(math.format(res));
+
+            console.log(math.format(res, PRECISION));
           }
         }
         catch (err) {
