@@ -33,8 +33,7 @@ BigNumber is not supported by the following functions:
 `random`,
 `acos`, `asin`, `atan`, `atan2`, `cos`, `cot`, `csc`, `sec`, `sin`, `tan`,
 `range`.
-These functions will downgrade BigNumber to Number, and return a Number.
-*
+These functions will downgrade BigNumber to Number, and return a Number.*
 
 Calculations with BigNumber are much slower than calculations with Number,
 but they can be executed with an arbitrary precision. By using a higher
