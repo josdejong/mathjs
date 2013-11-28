@@ -48,7 +48,8 @@ print(selector + 2);            // 2.66667
 // the function subset can be used to get or replace sub matrices
 var array = [[1, 2], [3, 4]];
 var v = math.select(array)
-    .subset(math.index(1, 0));
+    .subset(math.index(1, 0))
+    .done();
 print(v);                       // 3
 
 var m = math.select(array)
