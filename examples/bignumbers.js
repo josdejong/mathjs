@@ -5,8 +5,8 @@
 var mathjs = require('../index'),
     math = mathjs({
       number: {
-        defaultType: 'number', // Choose from: 'number' (default), 'bignumber'
-        precision: 20          // number of digits for big numbers
+        defaultType: 'bignumber', // Choose from: 'number' (default), 'bignumber'
+        precision: 20             // number decimal places behind the dot for bignumbers
       }
     });
 
