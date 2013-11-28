@@ -104,11 +104,28 @@ describe('multiply', function() {
     approx.deepEqual(multiply(complex(-2, -3), complex(-4, -5)), complex(-7, 22));
   });
 
+  it('should multiply mixed complex numbers and numbers', function() {
+    assert.deepEqual(multiply(math.complex(6, -4), 2), math.complex(12, -8));
+    assert.deepEqual(multiply(2, math.complex(2, 4)), math.complex(4, 8));
+  });
+
+  it('should multiply mixed complex numbers and big numbers', function() {
+    assert.deepEqual(multiply(math.complex(6, -4), math.bignumber(2)), math.complex(12, -8));
+    assert.deepEqual(multiply(math.bignumber(2), math.complex(2, 4)), math.complex(4, 8));
+  });
+
   it('should multiply a number and a unit correctly', function() {
     assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm');
     assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm');
     assert.equal(multiply(unit('5 mm'), 2).toString(), '10 mm');
     assert.equal(multiply(unit('5 mm'), 0).toString(), '0 m');
+  });
+
+  it('should multiply a bignumber and a unit correctly', function() {
+    assert.equal(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm');
+    assert.equal(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm');
+    assert.equal(multiply(unit('5 mm'), bignumber(2)).toString(), '10 mm');
+    assert.equal(multiply(unit('5 mm'), bignumber(0)).toString(), '0 m');
   });
 
   it('should throw an error if used with strings', function() {

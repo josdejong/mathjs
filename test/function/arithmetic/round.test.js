@@ -43,8 +43,14 @@ describe('round', function() {
     assert.deepEqual(round(math.complex(2.2, math.pi)), math.complex(2,3));
   });
 
+  it('should round a complex number with a bignumber as number of decimals', function() {
+    assert.deepEqual(round(math.complex(2.157, math.pi), bignumber(2)), math.complex(2.16, 3.14));
+  });
+
   it('should throw an error if used with a unit', function() {
     assert.throws(function () { round(math.unit('5cm')); }, TypeError, 'Function round(unit) not supported');
+    assert.throws(function () { round(math.unit('5cm'), 2); }, TypeError, 'Function round(unit) not supported');
+    assert.throws(function () { round(math.unit('5cm'), bignumber(2)); }, TypeError, 'Function round(unit) not supported');
   });
 
   it('should throw an error if used with a string', function() {

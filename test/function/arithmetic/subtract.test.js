@@ -64,6 +64,11 @@ describe('subtract', function() {
     assert.equal(subtract(10, math.complex(0, 1)), '10 - i');
   });
 
+  it('should subtract mixed complex numbers and big numbers', function() {
+    assert.equal(subtract(math.complex(3, 4), math.bignumber(10)), '-7 + 4i');
+    assert.equal(subtract(math.bignumber(10), math.complex(3, 4)), '7 - 4i');
+  });
+
   it('should subtract two quantities of the same unit', function() {
     approx.deepEqual(subtract(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(-155.93, 'km'));
   });
@@ -72,6 +77,16 @@ describe('subtract', function() {
     assert.throws(function () {
       subtract(math.unit(5, 'km'), math.unit(100, 'gram'));
     });
+  });
+
+  it('should throw an error if subtracting numbers from units', function() {
+    assert.throws(function () { subtract(math.unit(5, 'km'), 2); }, TypeError);
+    assert.throws(function () { subtract(2, math.unit(5, 'km')); }, TypeError);
+  });
+
+  it('should throw an error if subtracting numbers from units', function() {
+    assert.throws(function () { subtract(math.unit(5, 'km'), bignumber(2)); }, TypeError);
+    assert.throws(function () { subtract(bignumber(2), math.unit(5, 'km')); }, TypeError);
   });
 
   it('should throw an error when used with a string', function() {

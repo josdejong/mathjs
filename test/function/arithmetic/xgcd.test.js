@@ -93,5 +93,4 @@ describe('xgcd', function() {
     assert.throws(function () { xgcd([5,2,3], [25,3,6]); }, TypeError, 'Function xgcd(array, array) not supported');
   });
 
-
 });

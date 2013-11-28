@@ -67,6 +67,12 @@ describe('smallereq', function() {
 
   it('should throw an error if comparing a unit with a number', function() {
     assert.throws(function () {smallereq(unit('100cm'), 22)});
+    assert.throws(function () {smallereq(22, unit('100cm'))});
+  });
+
+  it('should throw an error if comparing a unit with a bignumber', function() {
+    assert.throws(function () {smallereq(unit('100cm'), bignumber(22))});
+    assert.throws(function () {smallereq(bignumber(22), unit('100cm'))});
   });
 
   it('should perform lexical comparison of two strings', function() {
@@ -85,6 +91,8 @@ describe('smallereq', function() {
     assert.throws(function () {smallereq(complex(1,1), complex(1,2))}, TypeError);
     assert.throws(function () {smallereq(complex(2,1), 3)}, TypeError);
     assert.throws(function () {smallereq(3, complex(2,4))}, TypeError);
+    assert.throws(function () {smallereq(math.bignumber(3), complex(2,4))}, TypeError);
+    assert.throws(function () {smallereq(complex(2,4), math.bignumber(3))}, TypeError);
   });
 
   it('should throw an error with two matrices of different sizes', function () {

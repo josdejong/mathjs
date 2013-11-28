@@ -101,12 +101,19 @@ describe('pow', function() {
     approx.deepEqual(pow(complex(1,1),complex(1,1)), complex('0.2739572538301211 +  0.5837007587586147i'));
   });
 
+  it('should exponentiate a complex number to the given bignumber power', function() {
+    approx.deepEqual(pow(complex(3, 0), math.bignumber(2)), 9);
+    approx.deepEqual(pow(complex(0, 2), math.bignumber(2)), complex(-4, 0));
+  });
+
   it('should throw an error if used with a unit', function() {
-    assert.throws(function () {pow(unit('5cm'))});
+    assert.throws(function () {pow(unit('5cm'), 2)});
+    assert.throws(function () {pow(2, unit('5cm'))});
   });
 
   it('should throw an error if used with a string', function() {
-    assert.throws(function () {pow('text')});
+    assert.throws(function () {pow('text', 2)});
+    assert.throws(function () {pow(2, 'text')});
   });
 
   it('should raise a square matrix to the power 2', function() {

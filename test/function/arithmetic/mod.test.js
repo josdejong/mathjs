@@ -70,6 +70,7 @@ describe('mod', function() {
   it('should throw an error if used on complex numbers', function() {
     assert.throws(function () {mod(math.complex(1,2), 3)}, TypeError);
     assert.throws(function () {mod(3, math.complex(1,2))}, TypeError);
+    assert.throws(function () {mod(bignumber(3), math.complex(1,2))}, TypeError);
   });
 
   it('should an throw an error if used on a string', function() {

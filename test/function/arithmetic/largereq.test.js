@@ -67,6 +67,10 @@ describe('largereq', function() {
     assert.throws(function () {largereq(unit('100cm'), 22)});
   });
 
+  it('should throw an error if comparing a unit with a bignumber', function() {
+    assert.throws(function () {largereq(unit('100cm'), bignumber(22))});
+  });
+
   it('should perform lexical comparison for 2 strings', function() {
     assert.equal(largereq('0', 0), true);
     assert.equal(largereq('abd', 'abc'), true);
@@ -83,6 +87,8 @@ describe('largereq', function() {
     assert.throws(function () {largereq(complex(1,1), complex(1,2))}, TypeError);
     assert.throws(function () {largereq(complex(2,1), 3)}, TypeError);
     assert.throws(function () {largereq(3, complex(2,4))}, TypeError);
+    assert.throws(function () {largereq(math.bignumber(3), complex(2,4))}, TypeError);
+    assert.throws(function () {largereq(complex(2,4), math.bignumber(3))}, TypeError);
   });
 
   it('should throw an error if comparing two matrices of different sizes', function() {

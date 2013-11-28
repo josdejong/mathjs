@@ -66,7 +66,11 @@ describe('smaller', function() {
 
   it('should throw an error if comparing a unit and a number', function() {
     assert.throws(function () {smaller(unit('100cm'), 22)});
-  })
+  });
+
+  it('should throw an error if comparing a unit and a bignumber', function() {
+    assert.throws(function () {smaller(unit('100cm'), bignumber(22))});
+  });
 
   it('should perform lexical comparison on two strings', function() {
     assert.equal(smaller('0', 0), false);
@@ -84,6 +88,8 @@ describe('smaller', function() {
     assert.throws(function () {smaller(complex(1,1), complex(1,2))}, TypeError);
     assert.throws(function () {smaller(complex(2,1), 3)}, TypeError);
     assert.throws(function () {smaller(3, complex(2,4))}, TypeError);
+    assert.throws(function () {smaller(math.bignumber(3), complex(2,4))}, TypeError);
+    assert.throws(function () {smaller(complex(2,4), math.bignumber(3))}, TypeError);
   });
 
   it('should throw an error with two matrices of different sizes', function () {
