@@ -63,6 +63,62 @@ describe('number', function() {
     assert.equal(number.digits(120.5e50), 4);
   });
 
+  it('should format a number using toFixed', function() {
+    assert.equal(number.toFixed(2.34), '2');
+    assert.equal(number.toFixed(2.34, 1), '2.3');
+    assert.equal(number.toFixed(2.34e10, 1), '23400000000.0');
+    assert.equal(number.toFixed(2.34e-10, 1), '0.0');
+    assert.equal(number.toFixed(2, 20), '2.00000000000000000000');
+    assert.equal(number.toFixed(2, 21), '2.00000000000000000000');
+    assert.equal(number.toFixed(2, 22), '2.00000000000000000000');
+    assert.equal(number.toFixed(2, 30), '2.00000000000000000000');
+  });
+
+  it('should format a bignumber using toFixed', function() {
+    var DECIMAL_PLACES = BigNumber.config().DECIMAL_PLACES;
+    BigNumber.config(100);
+
+    assert.equal(number.toFixed(new BigNumber(2.34)), '2');
+    assert.equal(number.toFixed(new BigNumber(2.34), 1), '2.3');
+    assert.equal(number.toFixed(new BigNumber(2), 20), '2.00000000000000000000');
+    assert.equal(number.toFixed(new BigNumber(2), 21), '2.000000000000000000000');
+    assert.equal(number.toFixed(new BigNumber(2), 22), '2.0000000000000000000000');
+    assert.equal(number.toFixed(new BigNumber(2), 30), '2.000000000000000000000000000000');
+
+    // restore global bignumber configuration
+    BigNumber.config(DECIMAL_PLACES);
+  });
+
+  it('should format a number using toExponential', function() {
+    assert.equal(number.toExponential(2.34), '2.34e+0');
+    assert.equal(number.toExponential(2.34e+3), '2.34e+3');
+    assert.equal(number.toExponential(2.34e-3), '2.34e-3');
+    assert.equal(number.toExponential(2.34e+3, 2), '2.3e+3');
+    assert.equal(number.toExponential(2e+3, 20), '2.0000000000000000000e+3');
+    assert.equal(number.toExponential(2e+3, 21), '2.00000000000000000000e+3');
+    assert.equal(number.toExponential(2e+3, 22), '2.00000000000000000000e+3');
+    assert.equal(number.toExponential(2e+3, 30), '2.00000000000000000000e+3');
+  });
+
+  it('should format a bignumber using toExponential', function() {
+    var DECIMAL_PLACES = BigNumber.config().DECIMAL_PLACES;
+    BigNumber.config(100);
+
+    assert.equal(number.toExponential(new BigNumber(2.34)), '2.34e+0');
+    assert.equal(number.toExponential(new BigNumber(2.34e+3)), '2.34e+3');
+    assert.equal(number.toExponential(new BigNumber(2.34e-3)), '2.34e-3');
+    assert.equal(number.toExponential(new BigNumber(2.34e+3), 2), '2.3e+3');
+    assert.equal(number.toExponential(new BigNumber(2e+3), 20), '2.0000000000000000000e+3');
+    assert.equal(number.toExponential(new BigNumber(2e+3), 21), '2.00000000000000000000e+3');
+    assert.equal(number.toExponential(new BigNumber(2e+3), 22), '2.000000000000000000000e+3');
+    assert.equal(number.toExponential(new BigNumber(2e+3), 30), '2.00000000000000000000000000000e+3');
+    assert.equal(number.toExponential(new BigNumber('2e+300'), 30), '2.00000000000000000000000000000e+300');
+    assert.equal(number.toExponential(new BigNumber('2e-300'), 30), '2.00000000000000000000000000000e-300');
+
+    // restore global bignumber configuration
+    BigNumber.config(DECIMAL_PLACES);
+  });
+
   it('should convert a number into a bignumber (when possible)', function() {
     assert.deepEqual(number.toBigNumber(2.34), new BigNumber(2.34));
     assert.deepEqual(number.toBigNumber(0), new BigNumber(0));
@@ -189,6 +245,9 @@ describe('number', function() {
         assert.equal(number.format(123e-6, {precision: 8}), '1.23e-4'); // should remove trailing zeros
         assert.equal(number.format(3e+6, {precision: 8}), '3e+6');        // should remove trailing zeros
         assert.equal(number.format(1234, {precision: 2}), '1200');
+
+        // overflow the maximum allowed precision of 20
+        assert.equal(number.format(2.3, {precision: 30}), '2.3');
       });
 
       it('auto notation with custom lower and upper bound', function () {
