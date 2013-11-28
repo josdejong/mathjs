@@ -493,7 +493,7 @@ function CommandLineEditor (params) {
       var res;
       try {
         res = math.format(parser.eval(expr), {
-          precision: 5
+          precision: 14
         });
       }
       catch (err) {
