@@ -681,7 +681,7 @@ describe('parse', function() {
           bigmath.matrix([new BigNumber(0.7), new BigNumber(0.8)]));
     });
 
-    it.skip('should work with complex numbers (downgrades bignumbers to number)', function() {
+    it('should work with complex numbers (downgrades bignumbers to number)', function() {
       assert.deepEqual(bigmath.eval('3i'), new Complex(0, 3));
       assert.deepEqual(bigmath.eval('2 + 3i'), new Complex(2, 3));
       assert.deepEqual(bigmath.eval('2 * i'), new Complex(0, 2));

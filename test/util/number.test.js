@@ -172,8 +172,8 @@ describe('number', function() {
         assert.equal(number.format(123456789e+9, options), '123456789000000000.00');
       });
 
-      it('scientific notation', function () {
-        var options = {notation: 'scientific'};
+      it('exponential notation', function () {
+        var options = {notation: 'exponential'};
         assert.equal(number.format(0, options), '0e+0');
         assert.equal(number.format(123, options), '1.23e+2');
         assert.equal(number.format(123.456, options), '1.23456e+2');
@@ -183,8 +183,8 @@ describe('number', function() {
         assert.equal(number.format(123456789e-9, options), '1.23456789e-1');
       });
 
-      it('scientific notation with precision', function () {
-        var options = {notation: 'scientific', precision: 3};
+      it('exponential notation with precision', function () {
+        var options = {notation: 'exponential', precision: 3};
         assert.equal(number.format(123, options), '1.23e+2');
         assert.equal(number.format(123.456, options), '1.23e+2');
         assert.equal(number.format(2, options), '2.00e+0');
@@ -252,7 +252,7 @@ describe('number', function() {
 
       it('auto notation with custom lower and upper bound', function () {
         var options = {
-          scientific: {
+          exponential: {
             lower: 1e-6,
             upper: 1e+9
           }
@@ -265,13 +265,13 @@ describe('number', function() {
         assert.equal(number.format(0.999e-6, options), '9.99e-7');
         assert.equal(number.format(123456789123, options), '1.23456789123e+11');
 
-        assert.equal(number.format(Math.pow(2, 53), {scientific: {upper: 1e+20}}), '9007199254740992');
+        assert.equal(number.format(Math.pow(2, 53), {exponential: {upper: 1e+20}}), '9007199254740992');
       });
 
       it('auto notation with custom precision, lower, and upper bound', function () {
         var options = {
           precision: 4,
-          scientific: {
+          exponential: {
             lower: 1e-6,
             upper: 1e+9
           }
@@ -328,9 +328,9 @@ describe('number', function() {
         assert.deepEqual(number.format(new BigNumber('12345678'), 4), '1.235e+7');
       });
 
-      it('should format big numbers in scientific notation', function() {
+      it('should format big numbers in exponential notation', function() {
         var options = {
-          notation: 'scientific'
+          notation: 'exponential'
         };
         assert.deepEqual(number.format(new BigNumber('1.23456'), options), '1.23456e+0');
         assert.deepEqual(number.format(new BigNumber('12345678'), options), '1.2345678e+7');
@@ -339,10 +339,7 @@ describe('number', function() {
         assert.deepEqual(number.format(new BigNumber('2.3e-30'), options), '2.3e-30');
         assert.deepEqual(number.format(new BigNumber('0.23e-30'), options), '2.3e-31');
 
-        options = {
-          notation: 'scientific',
-          precision: 18
-        };
+        options.precision = 18;
         assert.deepEqual(number.format(new BigNumber(1).div(3), options), '3.33333333333333333e-1');
       });
 
@@ -353,7 +350,7 @@ describe('number', function() {
         var options = {
           notation: 'auto',
           precision : 50,
-          scientific: {
+          exponential: {
             lower: 1e-50,
             upper: 1e+50
           }
