@@ -7,13 +7,13 @@ title: Home
 
 Math.js is an extensive math library for JavaScript and Node.js.
 It features a flexible expression parser and offers an integrated solution
-to work with real and complex numbers, units, and matrices.
+to work with numbers, big numbers, complex numbers, units, and matrices.
 Powerful and easy to use.
 
 
 # Features
 
-- Supports numbers, complex numbers, units, strings, arrays, and matrices.
+- Supports numbers, big numbers, complex numbers, units, strings, arrays, and matrices.
 - Is compatible with JavaScript’s built-in Math library.
 - Contains a flexible expression parser.
 - Supports chained operations.
@@ -96,22 +96,22 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 <table>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.15.0/math.js">
-        Development (version 0.15.0)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.16.0-SNAPSHOT/math.js">
+        Development (version 0.16.0-SNAPSHOT)
       </a>
     </td>
     <td>
-      <span id="development-size">377 kB</span>, uncompressed with comments
+      <span id="development-size">482 kB</span>, uncompressed with comments
     </td>
   </tr>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.15.0/math.min.js">
-        Production (version 0.15.0)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.16.0-SNAPSHOT/math.min.js">
+        Production (version 0.16.0-SNAPSHOT)
       </a>
     </td>
     <td>
-      <span id="production-size">33 kB</span>, minified and gzipped
+      <span id="production-size">41 kB</span>, minified and gzipped
     </td>
   </tr>
 </table>
@@ -124,7 +124,7 @@ Changes are listed in the [history](https://github.com/josdejong/mathjs/blob/mas
 # Documentation
 
 - [Getting Started](https://github.com/josdejong/mathjs/blob/master/docs/getting_started.md)
-- [Documentation](https://github.com/josdejong/mathjs/blob/master/docs/index.md)
+- [Overview](https://github.com/josdejong/mathjs/blob/master/docs/index.md)
 - [Examples](https://github.com/josdejong/mathjs/tree/master/examples/)
 - [History](https://github.com/josdejong/mathjs/blob/master/HISTORY.md)
 
