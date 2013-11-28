@@ -353,7 +353,7 @@ math.eval('boolean("false")');  // false
 #### Numbers
 
 The most important and basic data type in math.js are numbers. Numbers use a
-point as decimal mark. Numbers can be entered with scientific notation.
+point as decimal mark. Numbers can be entered with exponential notation.
 Examples:
 
 ```js
