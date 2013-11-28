@@ -17,7 +17,8 @@ by default:
 var mathjs = require('mathjs'),
     math = mathjs({
       number: {
-        defaultType: 'bignumber' // Choose from: 'number' (default), 'bignumber'
+        defaultType: 'bignumber', // Choose from: 'number' (default), 'bignumber',
+        precision: 20             // For bignumbers. Default value is 20.
       }
     });
 
@@ -56,6 +57,11 @@ which can be changed by configuring BigNumber:
 ```js
 BigNumber.config({DECIMAL_PLACES: 32});
 ```
+
+*Important: the bignumber.js library uses fixed point numbers and is therefore
+not suitable to handle extremely large (> 1e+100) and small (< 1e-100) numbers.
+To work with small numbers, `DECIMAL_PLACES` must be configured sufficiently
+large.*
 
 Big numbers can be converted to numbers and vice versa using the functions
 `number` and `bignumber`. When converting a big number to a number, the high
