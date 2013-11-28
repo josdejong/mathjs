@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.16.0
+## 2013-11-28, version 0.16.0
 
 - Implemented BigNumber support for arbitrary precision calculations.
   Added settings `number.defaultType` and `number.precision` to configure
