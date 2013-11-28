@@ -38,7 +38,7 @@
     "browserify": "2.x",
     "mocha": "1.x",
     "numbers": "0.4.0",
-    "uglify-js": ">= 2.2.5",
+    "uglify-js": "2.4.4",
     "dateable": ">= 0.1.2",
     "underscore": "1.4.x",
     "seed-random": ">= 1.0.1"
