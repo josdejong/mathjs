@@ -64,8 +64,8 @@ function updateVersion(developmentSize, productionSize, version, callback) {
       data = String(data);
 
       // replace version
-      data = data.replace(/\(version [0-9]+\.[0-9]+\.[0-9]+?(-SNAPSHOT)\)/g, '(version ' + version + ')');
-      data = data.replace(/\/[0-9]+\.[0-9]+\.[0-9]+?(-SNAPSHOT)\//g, '/' + version + '/');
+      data = data.replace(/\(version [0-9]+\.[0-9]+\.[0-9]+(-SNAPSHOT)?\)/g, '(version ' + version + ')');
+      data = data.replace(/\/[0-9]+\.[0-9]+\.[0-9]+?(-SNAPSHOT)?\//g, '/' + version + '/');
 
       // replace development size
       data = data.replace(/<span id="development-size">([\w\s]*)<\/span>/g,
