@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.16.1
+
+- Function `multiply` now consistently outputs a complex number on complex input.
+
+
 ## 2013-11-28, version 0.16.0
 
 - Implemented BigNumber support for arbitrary precision calculations.

@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.16.1-SNAPSHOT
- * @date    2013-11-28
+ * @date    2013-11-30
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -5400,7 +5400,7 @@ module.exports = function(math) {
       // x is pure real
       if (y.im == 0) {
         // y is pure real
-        return x.re * y.re;
+        return new Complex(x.re * y.re, 0);
       }
       else if (y.re == 0) {
         // y is pure complex
@@ -5428,7 +5428,7 @@ module.exports = function(math) {
       }
       else if (y.re == 0) {
         // y is pure complex
-        return -x.im * y.im;
+        return new Complex(-x.im * y.im, 0);
       }
       else {
         // y has a real and complex part
