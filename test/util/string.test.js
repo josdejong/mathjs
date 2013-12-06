@@ -66,7 +66,7 @@ describe ('string', function () {
     });
 
     it ('should format unknown objects by converting them to string', function () {
-      assert.equal(string.format(new Date(2013,1,1)), 'Fri Feb 01 2013 00:00:00 GMT+0100 (CET)');
+      assert.equal(string.format({}), '[object Object]');
     });
 
   });
