@@ -5,6 +5,7 @@ https://github.com/josdejong/mathjs
 ## not yet released, version 0.16.1
 
 - Function `multiply` now consistently outputs a complex number on complex input.
+- Fixed `mod` and `in` not working as function (only as operator).
 
 
 ## 2013-11-28, version 0.16.0

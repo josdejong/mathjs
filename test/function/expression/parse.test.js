@@ -136,7 +136,7 @@ describe('parse', function() {
 
   describe('unit', function () {
 
-    it('should parse units', function() {
+    it('should convert units', function() {
       var scope = {};
       assert.deepEqual(parseAndEval('5cm', scope), new Unit(5, 'cm'));
       assert.ok(parseAndEval('5cm', scope) instanceof Unit);
@@ -616,6 +616,21 @@ describe('parse', function() {
       // TODO: extensively test operator precedence
 
     });
+  });
+
+  describe('functions', function () {
+    describe('functions', function () {
+      it('should evaluate function "mod"', function () {
+        approx.equal(parseAndEval('mod(8, 3)'), 2);
+
+      });
+
+      it('should evaluate function "in" ', function () {
+        approx.deepEqual(parseAndEval('in(5.08 cm * 1000, inch)'),
+            math.unit(2000, 'inch').in('inch'));
+      });
+    });
+
   });
 
   describe('bignumber', function () {
