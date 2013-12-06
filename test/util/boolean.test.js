@@ -1,1 +1,21 @@
-// TODO: boolean.test.js
+// test boolean utils
+var assert = require('assert'),
+    approx = require('../../tools/approx'),
+    boolean = require('../../lib/util/boolean');
+
+describe ('boolean', function () {
+
+  it('isBoolean', function() {
+    assert.equal(boolean.isBoolean(true), true);
+    assert.equal(boolean.isBoolean(false), true);
+    assert.equal(boolean.isBoolean(new Boolean(true)), true);
+    assert.equal(boolean.isBoolean(new Boolean(false)), true);
+
+    assert.equal(boolean.isBoolean('hi'), false);
+    assert.equal(boolean.isBoolean(23), false);
+    assert.equal(boolean.isBoolean([]), false);
+    assert.equal(boolean.isBoolean({}), false);
+    assert.equal(boolean.isBoolean(new Date()), false);
+  });
+
+});
