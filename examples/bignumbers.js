@@ -4,10 +4,8 @@
 // the default type of numbers is configured as big numbers
 var mathjs = require('../index'),
     math = mathjs({
-      number: {
-        defaultType: 'bignumber', // Choose from: 'number' (default), 'bignumber'
-        precision: 20             // number decimal places behind the dot for bignumbers
-      }
+      number: 'bignumber',  // Default type of number: 'number' (default) or 'bignumber'
+      decimals: 20          // number decimal places behind the dot for big numbers
     });
 
 /**

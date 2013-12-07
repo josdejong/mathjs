@@ -91,9 +91,7 @@ describe('parse', function() {
 
     it('should output bignumbers if default number type is bignumber', function() {
       var math = mathjs({
-        number: {
-          defaultType: 'bignumber'
-        }
+        number: 'bignumber'
       });
 
       assert.deepEqual(math.parse('0.1').eval(), math.bignumber(0.1));
@@ -635,9 +633,7 @@ describe('parse', function() {
 
   describe('bignumber', function () {
     var bigmath = mathjs({
-      number: {
-        defaultType: 'bignumber'
-      }
+      number: 'bignumber'
     });
 
     it('should parse numbers as bignumber', function() {

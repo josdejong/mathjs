@@ -56,7 +56,7 @@ describe('zeros', function() {
     assert.deepEqual(zeros([2,3,4]), res);
   });
 
-  // TODO: test setting matrix.defaultType
+  // TODO: test setting `matrix`
 
   it('should create a matrix with zeros with the same size as original matrix', function () {
     var a = matrix([[1, 2, 3], [4, 5, 6]]);

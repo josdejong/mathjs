@@ -4,6 +4,10 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.16.1
 
+- Renamed and flattened configuration settings:
+  - `number.defaultType` is now `number`.
+  - `number.precision` is now `decimals`.
+  - `matrix.defaultType` is now `matrix`.
 - Function `multiply` now consistently outputs a complex number on complex input.
 - Fixed `mod` and `in` not working as function (only as operator).
 

@@ -16,10 +16,8 @@ by default:
 ```js
 var mathjs = require('mathjs'),
     math = mathjs({
-      number: {
-        defaultType: 'bignumber', // Choose from: 'number' (default), 'bignumber',
-        precision: 20             // For bignumbers. Default value is 20.
-      }
+      number: 'bignumber', // Default type of number: 'number' (default) or 'bignumber'
+      decimals: 20         // Number decimal places behind the dot for big numbers
     });
 
 // use math

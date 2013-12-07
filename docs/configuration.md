@@ -4,19 +4,19 @@ Math.js contains a number of configuration settings. Configuration can be set
 when creating a math.js instance, or later on using the function `config`.
 Available configuration settings are:
 
-- `matrix.defaultType`. The default type of matrix output for functions.
+- `matrix`. The default type of matrix output for functions.
   Available values are: `'matrix'` (default) or `'array'`.
   Where possible, the type of matrix output from functions is determined from
   the function input: An array as input will return an Array, a Matrix as input
   will return a Matrix. In case of no matrix as input, the type of output is
-  determined by the option `matrix.defaultType`. In case of mixed matrix
+  determined by the option `matrix`. In case of mixed matrix
   inputs, a matrix will be returned always.
 
-- `number.defaultType`. The default type of numbers. Available values are:
+- `number`. The default type of numbers. Available values are:
   `'number'` (default) or `'bignumber'`. Big numbers have higher precision
   than the default numbers of JavaScript.
 
-- `number.precision`. The maximum number of decimal places behind the decimal
+- `decimals`. The maximum number of decimal places behind the decimal
   point (not the number of significant digits). Only applies to big numbers,
   not to numbers. Default value is 20.
 
@@ -52,9 +52,7 @@ var mathjs = require('mathjs');
 
 // create an instance of math.js with configuration settings
 var settings = {
-  matrix: {
-    defaultType: 'array'
-  }
+  matrix: 'array'
 };
 var math2 = mathjs(settings);
 
@@ -63,9 +61,7 @@ math2.range(0, 4); // Array [0, 1, 2, 3]
 
 // change configuration
 math2.config({
-  matrix: {
-    defaultType: 'matrix'
-  }
+  matrix: 'matrix'
 });
 
 // range will output a Matrix
@@ -80,10 +76,8 @@ var mathjs = require('mathjs');
 
 // use big numbers by default
 var math3 = mathjs({
-  number: {
-    defaultType: 'bignumber',
-    precision: 32
-  }
+  number: 'bignumber',
+  decimals: 32
 });
 
 // parser will parse numbers as BigNumber now:
