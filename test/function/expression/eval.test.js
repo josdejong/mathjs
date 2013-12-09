@@ -54,14 +54,16 @@ describe('eval', function() {
     };
     assert.deepEqual(math.eval('a*b', scope), 12);
     assert.deepEqual(math.eval('c=5', scope), 5);
-    assert.deepEqual(math.eval('function f(x) = x^a', scope), 'f(x)');
-    assert.deepEqual(scope, {
-      a: 3,
-      b: 4,
-      c: 5,
-      f: 'f(x)',
-      ans: 'f(x)'
-    });
+    assert.deepEqual(math.format(math.eval('function f(x) = x^a', scope)), 'f(x)');
+
+    assert.deepEqual(Object.keys(scope).length, 5);
+    assert.deepEqual(scope.a, 3);
+    assert.deepEqual(scope.b, 4);
+    assert.deepEqual(scope.c, 5);
+    assert.deepEqual(typeof scope.f, 'function');
+    assert.deepEqual(typeof scope.ans, 'function');
+    assert.strictEqual(scope.ans, scope.f);
+
     assert.equal(scope.f(3), 27);
     scope.a = 2;
     assert.equal(scope.f(3), 9);

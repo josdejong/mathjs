@@ -394,11 +394,11 @@ describe('parse', function() {
     it('should parse function assignments', function() {
       var scope = {};
       parseAndEval('x=100', scope); // for testing scoping of the function variables
-      assert.equal(parseAndEval('function f(x) = x^2', scope), 'f(x)');
+      assert.equal(parseAndEval('function f(x) = x^2', scope).syntax, 'f(x)');
       assert.equal(parseAndEval('f(3)', scope), 9);
       assert.equal(scope.f(3), 9);
       assert.equal(scope.x, 100);
-      assert.equal(parseAndEval('function g(x, y) = x^y', scope), 'g(x, y)');
+      assert.equal(parseAndEval('function g(x, y) = x^y', scope).syntax, 'g(x, y)');
       assert.equal(parseAndEval('g(4,5)', scope), 1024);
       assert.equal(scope.g(4,5), 1024);
     });
@@ -406,18 +406,18 @@ describe('parse', function() {
     it ('should correctly evaluate variables in assigned functions', function () {
       var scope = {};
       assert.equal(parseAndEval('a = 3', scope), 3);
-      assert.equal(parseAndEval('function f(x) = a * x', scope), 'f(x)');
+      assert.equal(parseAndEval('function f(x) = a * x', scope).syntax, 'f(x)');
       assert.equal(parseAndEval('f(2)', scope), 6);
       assert.equal(parseAndEval('a = 5', scope), 5);
       assert.equal(parseAndEval('f(2)', scope), 10);
-      assert.equal(parseAndEval('function g(x) = x^q', scope), 'g(x)');
+      assert.equal(parseAndEval('function g(x) = x^q', scope).syntax, 'g(x)');
       assert.equal(parseAndEval('q = 4/2', scope), 2);
       assert.equal(parseAndEval('g(3)', scope), 9);
     });
 
     it('should throw an error for undefined variables in an assigned function', function() {
       var scope = {};
-      assert.equal(parseAndEval('function g(x) = x^q', scope), 'g(x)');
+      assert.equal(parseAndEval('function g(x) = x^q', scope).syntax, 'g(x)');
       assert.throws(function () {
         parseAndEval('g(3)', scope);
       }, function (err) {
@@ -712,14 +712,17 @@ describe('parse', function() {
       };
       assert.deepEqual(math.parse('a*b', scope).eval(), 12);
       assert.deepEqual(math.parse('c=5', scope).eval(), 5);
-      assert.deepEqual(math.parse('function f(x) = x^a', scope).eval(), 'f(x)');
-      assert.deepEqual(scope, {
-        a: 3,
-        b: 4,
-        c: 5,
-        f: 'f(x)',
-        ans: 'f(x)'
-      });
+      assert.deepEqual(math.parse('function f(x) = x^a', scope).eval().syntax, 'f(x)');
+
+
+      assert.deepEqual(Object.keys(scope).length, 5);
+      assert.deepEqual(scope.a, 3);
+      assert.deepEqual(scope.b, 4);
+      assert.deepEqual(scope.c, 5);
+      assert.deepEqual(typeof scope.f, 'function');
+      assert.deepEqual(typeof scope.ans, 'function');
+      assert.strictEqual(scope.f, scope.ans);
+
       assert.equal(scope.f(3), 27);
       scope.a = 2;
       assert.equal(scope.f(3), 9);

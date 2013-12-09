@@ -62,7 +62,10 @@ describe ('string', function () {
     });
 
     it ('should format a function', function () {
-      assert.equal(string.format(function (a, b) {return a + b}), 'function (a, b) {return a + b}');
+      assert.equal(string.format(function (a, b) {return a + b}), 'function');
+      var f = function (a, b) {return a + b};
+      f.syntax = 'f(x, y)';
+      assert.equal(string.format(f), 'f(x, y)');
     });
 
     it ('should format unknown objects by converting them to string', function () {
