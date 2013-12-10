@@ -11967,7 +11967,7 @@ function mathjs (settings) {
       }
 
       // TODO: remove deprecated setting some day (deprecated since version 0.15.0)
-      if (settings.matrix && settings.matrix.default) {
+      if (settings.matrix && settings.matrix['default']) {
         throw new Error('setting matrix.default is deprecated. ' +
             'Use matrix.defaultType instead.')
       }
