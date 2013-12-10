@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.16.1
+## not yet released, version 0.17.0
 
 - Renamed and flattened configuration settings:
   - `number.defaultType` is now `number`.
@@ -10,6 +10,7 @@ https://github.com/josdejong/mathjs
   - `matrix.defaultType` is now `matrix`.
 - Function `multiply` now consistently outputs a complex number on complex input.
 - Fixed `mod` and `in` not working as function (only as operator).
+- Fixed math.js not working in the ScriptEngine of Java.
 
 
 ## 2013-11-28, version 0.16.0

@@ -35,11 +35,19 @@ describe ('object', function () {
       assert.equal(object.clone(new String('hello')), 'hello');
     });
 
-    // TODO
+    // TODO: clone objects, arrays, etc
   });
 
   it('extend', function() {
-    // TODO
+    it ('should extend an object with all properties of an other object', function () {
+      var o1 = {a: 2, b: 3};
+      var o2 = {a:4, b: null, c: undefined, d: 5};
+      var o3 = object.extend(o1, o2);
+
+      assert.strictEqual(o1, o3);
+      assert.deepEqual(o3, {a: 4, b: null, c: undefined, d: 5});
+      assert.deepEqual(o2, {a:4, b: null, c: undefined, d: 5}); // should be unchanged
+    });
   });
 
   it('deepExtend', function() {
