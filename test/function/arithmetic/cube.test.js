@@ -28,7 +28,7 @@ describe('cube', function() {
   it('should return the cube of a complex number', function() {
     assert.deepEqual(cube(math.complex('2i')), math.complex('-8i'));
     assert.deepEqual(cube(math.complex('2+3i')), math.complex('-46+9i'));
-    assert.deepEqual(cube(math.complex('2')), 8);
+    assert.deepEqual(cube(math.complex('2')), math.complex('8'));
   });
 
   it('should throw an error with strings', function() {

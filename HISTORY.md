@@ -2,6 +2,18 @@
 https://github.com/josdejong/mathjs
 
 
+## 2013-12-12, version 0.17.0
+
+- Renamed and flattened configuration settings:
+  - `number.defaultType` is now `number`.
+  - `number.precision` is now `decimals`.
+  - `matrix.defaultType` is now `matrix`.
+- Function `multiply` now consistently outputs a complex number on complex input.
+- Fixed `mod` and `in` not working as function (only as operator).
+- Fixed support for old browsers (IE8 and older), compatible when using es5-shim.
+- Fixed support for Java's ScriptEngine.
+
+
 ## 2013-11-28, version 0.16.0
 
 - Implemented BigNumber support for arbitrary precision calculations.

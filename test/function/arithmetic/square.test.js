@@ -31,9 +31,9 @@ describe('square', function() {
   });
 
   it('should return the square of a complex number', function() {
-    assert.deepEqual(square(math.complex('2i')), -4);
+    assert.deepEqual(square(math.complex('2i')), math.complex('-4'));
     assert.deepEqual(square(math.complex('2+3i')), math.complex('-5+12i'));
-    assert.deepEqual(square(math.complex('2')), 4);
+    assert.deepEqual(square(math.complex('2')), math.complex('4'));
   });
 
   it('should throw an error when used with a unit', function() {

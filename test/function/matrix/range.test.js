@@ -27,9 +27,9 @@ describe('range', function() {
     assert.deepEqual(range(2,-4,-2), matrix([2,0,-2]));
   });
 
-  it('should output an array when setting matrix.defaultType==="array"', function() {
+  it('should output an array when setting matrix==="array"', function() {
     var math2 = mathjs({
-      matrix: {defaultType: 'array'}
+      matrix: 'array'
     });
 
     assert.deepEqual(math2.range(0,10,2), [0,2,4,6,8]);
@@ -55,7 +55,7 @@ describe('range', function() {
 
   it('should parse a range with bignumbers', function() {
     var math = mathjs({
-      number: {defaultType: 'bignumber'}
+      number: 'bignumber'
     });
     assert.deepEqual(math.range('1:3'), matrix([math.bignumber(1),math.bignumber(2)]));
   });

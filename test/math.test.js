@@ -8,28 +8,30 @@ describe('factory', function() {
 
     assert.strictEqual(typeof math, 'object');
     assert.deepEqual(math.config(), {
-      matrix: {defaultType: 'matrix'},
-      number: {defaultType: 'number', precision: 20}
+      matrix: 'matrix',
+      number: 'number',
+      decimals: 20
     });
   });
 
   it('should create an instance of math.js with custom configuration', function() {
     var math = mathjs({
-      matrix: {defaultType: 'array'},
-      number: {defaultType: 'bignumber'}
+      matrix: 'array',
+      number: 'bignumber'
     });
 
     assert.strictEqual(typeof math, 'object');
     assert.deepEqual(math.config(), {
-      matrix: {defaultType: 'array'},
-      number: {defaultType: 'bignumber', precision: 20}
+      matrix: 'array',
+      number: 'bignumber',
+      decimals: 20
     });
   });
 
   it('two instances of math.js should be isolated from each other', function() {
     var math1 = mathjs();
     var math2 = mathjs({
-      matrix: {defaultType: 'array'}
+      matrix: 'array'
     });
 
     assert.notStrictEqual(math1, math2);
@@ -46,18 +48,21 @@ describe('factory', function() {
 
     var config = math.config();
     assert.deepEqual(config, {
-      matrix: {defaultType: 'matrix'},
-      number: {defaultType: 'number', precision: 20}
+      matrix: 'matrix',
+      number: 'number',
+      decimals: 20
     });
 
     math.config({
-      matrix: {defaultType: 'array'},
-      number: {defaultType: 'bignumber', precision: 32}
+      matrix: 'array',
+      number: 'bignumber',
+      decimals: 32
     });
 
     assert.deepEqual(math.config(), {
-      matrix: {defaultType: 'array'},
-      number: {defaultType: 'bignumber', precision: 32}
+      matrix: 'array',
+      number: 'bignumber',
+      decimals: 32
     });
 
     // restore the original config

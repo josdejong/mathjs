@@ -20,7 +20,7 @@ In most cases, the type of matrix output from functions is determined by the
 function input: An `Array` as input will return an `Array`, a `Matrix` as input
 will return a `Matrix`. In case of mixed input, a `Matrix` is returned.
 For functions where the type of output cannot be determined from the
-input, the output is determined by the configuration option `matrix.defaultType`,
+input, the output is determined by the configuration option `matrix`,
 which can be a string `'matrix'` (default) or `'array'`.
 
 ```js
@@ -37,7 +37,7 @@ math.add(array, matrix);                      // Matrix, [[9, 1], [-3, 6]]
 math.multiply(array, matrix);                 // Matrix, [[14, 2], [-13, 8]]
 
 // create a matrix. Type of output of function ones is determined by the
-// configuration option matrix.defaultType
+// configuration option `matrix`
 math.ones(2, 3);                              // Matrix, [[1, 1, 1], [1, 1, 1]]
 ```
 
@@ -100,7 +100,7 @@ The functions `ones`, `zeros`, and `eye` also accept a single array
 or matrix containing the dimensions for the matrix. When the input is an Array,
 the functions will output an Array. When the input is a Matrix, the output will
 be a Matrix. Note that in case of numbers as arguments, the output is
-determined by the option `matrix.defaultType` as discussed in section
+determined by the option `matrix` as discussed in section
 [Arrays and matrices](#Arrays_and_matrices).
 
 ```js
@@ -156,9 +156,9 @@ Math.js uses geometric dimensions:
 - A matrix is two or multi dimensional.
 
 The size of a matrix can be calculated with the function `size`. Function `size`
-returns a `Matrix` or `Array`, depending on the configuration option
-`matrix.defaultType`. Furthermore, matrices have a function `size`
-as well, which always returns an Array.
+returns a `Matrix` or `Array`, depending on the configuration option `matrix`.
+Furthermore, matrices have a function `size` as well, which always returns
+an Array.
 
 ```js
 // get the size of a scalar

@@ -62,7 +62,7 @@ describe('pow', function() {
   });
 
   it('should exponentiate a complex number to the given power', function() {
-    approx.deepEqual(pow(complex(3, 0), 2), 9);
+    approx.deepEqual(pow(complex(3, 0), 2), complex(9, 0));
     approx.deepEqual(pow(complex(0, 2), 2), complex(-4, 0));
 
     approx.deepEqual(pow(complex(-1,-1),complex(-1,-1)), complex('-0.0284750589322119 +  0.0606697332231795i'));
@@ -102,7 +102,7 @@ describe('pow', function() {
   });
 
   it('should exponentiate a complex number to the given bignumber power', function() {
-    approx.deepEqual(pow(complex(3, 0), math.bignumber(2)), 9);
+    approx.deepEqual(pow(complex(3, 0), math.bignumber(2)), complex(9, 0));
     approx.deepEqual(pow(complex(0, 2), math.bignumber(2)), complex(-4, 0));
   });
 

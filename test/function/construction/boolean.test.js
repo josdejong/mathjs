@@ -1,6 +1,6 @@
 var assert = require('assert'),
     math = require('../../../index')(),
-    bool = math.boolean;
+    bool = math['boolean'];
 
 describe('boolean', function() {
 
