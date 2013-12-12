@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>math.js | old browser example</title>
+
+  <!-- es5-shim for old browsers (IE8 and older) -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.1.0/es5-shim.min.js"></script>
+
+  <script type="text/javascript" src="../dist/math.js"></script>
+</head>
+<body>
+
+<p>
+  To run math.js in old browsers (IE8 and older),
+  the <a href="https://github.com/kriskowal/es5-shim">es5-shim</a> library is needed.
+</p>
+
+<script>
+  // create an instance of math.js
+  var math = mathjs();
+
+  function print(value) {
+    var precision = 5;
+    document.write(math.format(value, precision) + '<br>');
+  }
+
+  // functions and constants
+  print(math.round(math.e, 3));            // 2.718
+  print(math.atan2(3, -3) / math.pi);      // 0.75
+  print(math.log(1000, 10));               // 3
+  print(math.sqrt(-4));                    // 2i
+  print(math.pow([[-1, 2], [3, 1]], 2));   // [[7, 0], [0, 7]]
+
+  // expressions
+  print(math.eval('12 / (2.3 + 0.7)'));    // 4
+  print(math.eval('5.08 cm in inch'));     // 2 inch
+  print(math.eval('9 / 3 + 2i'));          // 3 + 2i
+  print(math.eval('det([-1, 2; 3, 1])'));  // -7
+
+  // chained operations
+  var a = math.select(3)
+      .add(4)
+      .multiply(2)
+      .done();
+  print(a);                                // 14
+</script>
+
+</body>
+</html>

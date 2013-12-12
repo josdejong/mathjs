@@ -10,6 +10,7 @@ https://github.com/josdejong/mathjs
   - `matrix.defaultType` is now `matrix`.
 - Function `multiply` now consistently outputs a complex number on complex input.
 - Fixed `mod` and `in` not working as function (only as operator).
+- Fixed support for old browsers (IE6 - IE8), compatible when using es5-shim.
 - Fixed math.js not working in the ScriptEngine of Java.
 
 

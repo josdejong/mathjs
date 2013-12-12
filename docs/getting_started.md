@@ -73,6 +73,11 @@ Math.js can be loaded as a regular javascript file in the browser:
 </html>
 ```
 
+If support for old browsers (Internet Explorer 8 and older) is required,
+the [es5-shim](https://github.com/kriskowal/es5-shim) library must be loaded
+as well.
+
+
 ### Require.js
 
 Load math.js in the browser using [require.js](http://requirejs.org/):

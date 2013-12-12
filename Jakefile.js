@@ -11,7 +11,6 @@ var jake = require('jake'),
  */
 var INDEX       = './index.js';
 var HEADER      = './lib/header.js';
-var SHIM        = './lib/shim.js';
 var DIST        = './dist';
 var MATHJS      = DIST + '/math.js';
 var MATHJS_MIN  = DIST + '/math.min.js';
@@ -48,8 +47,8 @@ task('bundle', {async: true}, function () {
       throw err;
     }
 
-    // add header and shim
-    var lib = util.read(HEADER) + code + util.read(SHIM);
+    // add header and shim to code
+    var lib = util.read(HEADER) + code;
 
     // write bundled file
     util.write(MATHJS, lib);
