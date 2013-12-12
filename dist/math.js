@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.17.0-SNAPSHOT
- * @date    2013-12-10
+ * @version 0.17.0
+ * @date    2013-12-12
  *
  * @license
  * Copyright (C) 2013 Jos de Jong <wjosdejong@gmail.com>
@@ -11925,6 +11925,12 @@ var object = require('./util/object');
  *                              point for BigNumber. Not applicable for Numbers.
  */
 function mathjs (settings) {
+  // simple test for ES5 support
+  if (typeof Array.prototype.map !== 'function') {
+    throw new Error('ES5 not supported by this JavaScript engine. ' +
+        'Please load the es5-shim library for compatibility.');
+  }
+
   // create new namespace
   var math = {};
 
@@ -12152,33 +12158,6 @@ function mathjs (settings) {
 // return the mathjs factory
 module.exports = mathjs;
 
-// error messages for deprecated static library (deprecated since v0.15.0) TODO: remove some day
-var placeholder = function () {
-  throw new Error('Static function calls are deprecated. Create an instance of math.js:\n\t"var math = require(\'mathjs\')();" on node.js, \n\t"var math = mathjs();" in the browser.');
-};
-var instance = mathjs();
-for (var prop in instance) {
-  if (instance.hasOwnProperty(prop)) {
-    var fn = instance[prop];
-    if (typeof fn === 'function') {
-      mathjs[prop] = placeholder;
-    }
-    else {
-      if (Object.defineProperty) {
-        Object.defineProperty(mathjs, prop, {
-          get: placeholder,
-          set: placeholder,
-          enumerable: true,
-          configurable: false
-        });
-      }
-    }
-  }
-}
-
-if (typeof window !== 'undefined') {
-  window.math = mathjs;
-}
 },{"./chaining/Selector.js":2,"./constants.js":3,"./expression/Parser.js":4,"./expression/Scope.js":5,"./expression/docs/index.js":103,"./expression/node/index.js":116,"./function/arithmetic/abs.js":117,"./function/arithmetic/add.js":118,"./function/arithmetic/ceil.js":119,"./function/arithmetic/cube.js":120,"./function/arithmetic/divide.js":121,"./function/arithmetic/edivide.js":122,"./function/arithmetic/emultiply.js":123,"./function/arithmetic/epow.js":124,"./function/arithmetic/equal.js":125,"./function/arithmetic/exp.js":126,"./function/arithmetic/fix.js":127,"./function/arithmetic/floor.js":128,"./function/arithmetic/gcd.js":129,"./function/arithmetic/larger.js":130,"./function/arithmetic/largereq.js":131,"./function/arithmetic/lcm.js":132,"./function/arithmetic/log.js":133,"./function/arithmetic/log10.js":134,"./function/arithmetic/mod.js":135,"./function/arithmetic/multiply.js":136,"./function/arithmetic/pow.js":137,"./function/arithmetic/round.js":138,"./function/arithmetic/sign.js":139,"./function/arithmetic/smaller.js":140,"./function/arithmetic/smallereq.js":141,"./function/arithmetic/sqrt.js":142,"./function/arithmetic/square.js":143,"./function/arithmetic/subtract.js":144,"./function/arithmetic/unary.js":145,"./function/arithmetic/unequal.js":146,"./function/arithmetic/xgcd.js":147,"./function/complex/arg.js":148,"./function/complex/conj.js":149,"./function/complex/im.js":150,"./function/complex/re.js":151,"./function/construction/bignumber":152,"./function/construction/boolean.js":153,"./function/construction/complex.js":154,"./function/construction/index.js":155,"./function/construction/matrix.js":156,"./function/construction/number.js":157,"./function/construction/parser.js":158,"./function/construction/string.js":159,"./function/construction/unit.js":160,"./function/expression/eval.js":161,"./function/expression/help.js":162,"./function/expression/parse.js":163,"./function/matrix/concat.js":164,"./function/matrix/det.js":165,"./function/matrix/diag.js":166,"./function/matrix/eye.js":167,"./function/matrix/inv.js":168,"./function/matrix/ones.js":169,"./function/matrix/range.js":170,"./function/matrix/resize.js":171,"./function/matrix/size.js":172,"./function/matrix/squeeze.js":173,"./function/matrix/subset.js":174,"./function/matrix/transpose.js":175,"./function/matrix/zeros.js":176,"./function/probability/factorial.js":177,"./function/probability/random.js":178,"./function/statistics/max.js":179,"./function/statistics/mean.js":180,"./function/statistics/min.js":181,"./function/trigonometry/acos.js":182,"./function/trigonometry/asin.js":183,"./function/trigonometry/atan.js":184,"./function/trigonometry/atan2.js":185,"./function/trigonometry/cos.js":186,"./function/trigonometry/cot.js":187,"./function/trigonometry/csc.js":188,"./function/trigonometry/sec.js":189,"./function/trigonometry/sin.js":190,"./function/trigonometry/tan.js":191,"./function/units/in.js":192,"./function/utils/clone.js":193,"./function/utils/forEach.js":194,"./function/utils/format.js":195,"./function/utils/import.js":196,"./function/utils/map.js":197,"./function/utils/print.js":198,"./function/utils/select.js":199,"./function/utils/typeof.js":200,"./type/Complex":202,"./type/Help":203,"./type/Index":204,"./type/Matrix":205,"./type/Range":206,"./type/Unit":207,"./type/collection":208,"./type/error":209,"./util/object":214,"bignumber.js":217}],202:[function(require,module,exports){
 var util = require('../util/index'),
     number = util.number,
@@ -15210,7 +15189,11 @@ exports.format = function format(value, options) {
           str = new BigNumber(value.toPrecision(precision)).toString();
         }
         else { // Number
-          str = parseFloat(value.toPrecision(precision ? Math.min(precision, 21) : precision)) + '';
+          // Note: IE7 does not allow value.toPrecision(undefined)
+          var valueStr = precision ?
+              value.toPrecision(Math.min(precision, 21)) :
+              value.toPrecision();
+          str = parseFloat(valueStr) + '';
         }
       }
       else {
@@ -17647,186 +17630,4 @@ exports.type = function type (x) {
 },{}]},{},[1])
 (1)
 });
-;/**
- * Compatibility shims for legacy JavaScript engines
- */
-
-// http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
-if(!Array.prototype.indexOf) {
-  Array.prototype.indexOf = function(obj){
-    for(var i = 0; i < this.length; i++){
-      if(this[i] == obj){
-        return i;
-      }
-    }
-    return -1;
-  };
-}
-
-// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
-if (!Array.prototype.forEach) {
-  Array.prototype.forEach = function(fn, scope) {
-    for(var i = 0, len = this.length; i < len; ++i) {
-      fn.call(scope || this, this[i], i, this);
-    }
-  }
-}
-
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
-if(!Array.isArray) {
-  Array.isArray = function (vArg) {
-    return Object.prototype.toString.call(vArg) === "[object Array]";
-  };
-}
-
-// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
-// Production steps of ECMA-262, Edition 5, 15.4.4.19
-// Reference: http://es5.github.com/#x15.4.4.19
-if (!Array.prototype.map) {
-  Array.prototype.map = function(callback, thisArg) {
-
-    var T, A, k;
-
-    if (this == null) {
-      throw new TypeError(" this is null or not defined");
-    }
-
-    // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
-    var O = Object(this);
-
-    // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
-    // 3. Let len be ToUint32(lenValue).
-    var len = O.length >>> 0;
-
-    // 4. If IsCallable(callback) is false, throw a TypeError exception.
-    // See: http://es5.github.com/#x9.11
-    if (typeof callback !== "function") {
-      throw new TypeError(callback + " is not a function");
-    }
-
-    // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
-    if (thisArg) {
-      T = thisArg;
-    }
-
-    // 6. Let A be a new array created as if by the expression new Array(len) where Array is
-    // the standard built-in constructor with that name and len is the value of len.
-    A = new Array(len);
-
-    // 7. Let k be 0
-    k = 0;
-
-    // 8. Repeat, while k < len
-    while(k < len) {
-
-      var kValue, mappedValue;
-
-      // a. Let Pk be ToString(k).
-      //   This is implicit for LHS operands of the in operator
-      // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
-      //   This step can be combined with c
-      // c. If kPresent is true, then
-      if (k in O) {
-
-        // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
-        kValue = O[ k ];
-
-        // ii. Let mappedValue be the result of calling the Call internal method of callback
-        // with T as the this value and argument list containing kValue, k, and O.
-        mappedValue = callback.call(T, kValue, k, O);
-
-        // iii. Call the DefineOwnProperty internal method of A with arguments
-        // Pk, Property Descriptor {Value: mappedValue, : true, Enumerable: true, Configurable: true},
-        // and false.
-
-        // In browsers that support Object.defineProperty, use the following:
-        // Object.defineProperty(A, Pk, { value: mappedValue, writable: true, enumerable: true, configurable: true });
-
-        // For best browser support, use the following:
-        A[ k ] = mappedValue;
-      }
-      // d. Increase k by 1.
-      k++;
-    }
-
-    // 9. return A
-    return A;
-  };
-}
-
-// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/every
-if (!Array.prototype.every) {
-  Array.prototype.every = function(fun /*, thisp */) {
-    "use strict";
-
-    if (this == null) {
-      throw new TypeError();
-    }
-
-    var t = Object(this);
-    var len = t.length >>> 0;
-    if (typeof fun != "function") {
-      throw new TypeError();
-    }
-
-    var thisp = arguments[1];
-    for (var i = 0; i < len; i++) {
-      if (i in t && !fun.call(thisp, t[i], i, t)) {
-        return false;
-      }
-    }
-
-    return true;
-  };
-}
-
-// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/some
-if (!Array.prototype.some) {
-  Array.prototype.some = function(fun /*, thisp */) {
-    "use strict";
-
-    if (this == null) {
-      throw new TypeError();
-    }
-
-    var t = Object(this);
-    var len = t.length >>> 0;
-    if (typeof fun != "function") {
-      throw new TypeError();
-    }
-
-    var thisp = arguments[1];
-    for (var i = 0; i < len; i++) {
-      if (i in t && fun.call(thisp, t[i], i, t)) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-}
-
-// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
-if (!Function.prototype.bind) {
-  Function.prototype.bind = function (oThis) {
-    if (typeof this !== "function") {
-      // closest thing possible to the ECMAScript 5 internal IsCallable function
-      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-    }
-
-    var aArgs = Array.prototype.slice.call(arguments, 1),
-        fToBind = this,
-        fNOP = function () {},
-        fBound = function () {
-          return fToBind.apply(this instanceof fNOP && oThis
-              ? this
-              : oThis,
-              aArgs.concat(Array.prototype.slice.call(arguments)));
-        };
-
-    fNOP.prototype = this.prototype;
-    fBound.prototype = new fNOP();
-
-    return fBound;
-  };
-}
+;
