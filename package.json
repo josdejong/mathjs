@@ -37,6 +37,7 @@
     "jake": "latest",
     "browserify": "latest",
     "mocha": "latest",
+    "istanbul": "latest",
     "numbers": "latest",
     "uglify-js": "latest",
     "dateable": "latest",
@@ -45,7 +46,8 @@
   },
   "main": "./index",
   "scripts": {
-    "test": "mocha test --recursive --reporter spec"
+    "test": "mocha test --recursive",
+    "coverage": "istanbul cover _mocha -- test --recursive; echo \"\nCoverage report is available at ./coverage/lcov-report/index.html\""
   },
   "bin": {
     "mathjs": "./bin/cli.js"

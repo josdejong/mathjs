@@ -12,7 +12,7 @@ var assert = require('assert'),
  * Helper function to parse an expression and immediately evaluate its results
  * @param {String} expr
  * @param {Object} [scope]
- * @return result
+ * @return {*} result
  */
 function parseAndEval(expr, scope) {
   var node = math.parse(expr, scope);
@@ -151,6 +151,8 @@ describe('parse', function() {
     it('should evaluate operator "in" with correct precedence ', function () {
       approx.equal(parseAndEval('5.08 cm * 1000 in inch').toNumber('inch'),
           new Unit(2000, 'inch').toNumber('inch'));
+
+      // TODO assert.deepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'));
     });
   });
 

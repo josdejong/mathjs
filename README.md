@@ -103,6 +103,16 @@ Then, the tests can be executed:
 
     npm test
 
+To test code coverage of the tests:
+
+    npm run coverage
+
+To see the results, open the generated report in your browser:
+
+    ./coverage/lcov-report/index.html
+
+
+
 
 ## License
 

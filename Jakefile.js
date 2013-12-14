@@ -9,11 +9,11 @@ var jake = require('jake'),
 /**
  * Constants
  */
-var INDEX       = './index.js';
-var HEADER      = './lib/header.js';
-var DIST        = './dist';
-var MATHJS      = DIST + '/math.js';
-var MATHJS_MIN  = DIST + '/math.min.js';
+var INDEX             = './index.js',
+    HEADER            = './lib/header.js',
+    DIST              = './dist',
+    MATHJS            = DIST + '/math.js',
+    MATHJS_MIN        = DIST + '/math.min.js';
 
 // register start time
 var start = +new Date();
@@ -73,6 +73,8 @@ task('minify', ['bundle'], function () {
     header: util.read(HEADER)
   });
   updateVersion(MATHJS_MIN);
+
+  // TODO: generate a file with map for debugging
 
   console.log('Minified library ' + MATHJS_MIN + ' (' + filesize(result.code.length, 1) + ')');
 });

@@ -1,8 +1,10 @@
 ## Tests
 
-To execute the tests, run the following in the root of the project:
+To execute the tests, install `mocha ` and run the following in the root of
+the project:
 
-    mocha test --recursive --reporter spec
+    npm install -g mocha
+    mocha test --recursive
 
 It's important to run mocha with the `--recursive` flag, as most tests are
 located in nested folders.
@@ -13,7 +15,7 @@ located in nested folders.
 To test code coverage of the tests, install `istanbul` and run it:
 
     npm install -g istanbul
-    istanbul cover _mocha -- test --reporter spec --recursive
+    istanbul cover _mocha -- test --recursive
 
 Note the underscore before mocha, and the `--` surrounded by spaces after _mocha.
 See also https://github.com/gotwarlost/istanbul/issues/44.

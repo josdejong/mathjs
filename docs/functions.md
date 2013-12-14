@@ -71,6 +71,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.matrix(x)
 - math.number(x)
 - math.parser()
+- math.select([x])
 - math.string(x)
 - math.unit(x)
 
@@ -136,5 +137,4 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.import(filename | object, override)
 - math.map(x, callback)
 - math.print(template, values [, precision])
-- math.select([x])
 - math.typeof(x)
