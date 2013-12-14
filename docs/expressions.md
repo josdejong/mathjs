@@ -253,6 +253,7 @@ Operators                         | Description
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
 `-`                               | Unary
+`x unit`                          | Unit
 `*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus
 `+`, `-`                          | Add, subtract
 `:`                               | Range

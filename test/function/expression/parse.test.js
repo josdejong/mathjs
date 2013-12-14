@@ -134,25 +134,38 @@ describe('parse', function() {
 
   describe('unit', function () {
 
+    it('should parse units', function() {
+      assert.deepEqual(parseAndEval('5cm'), new Unit(5, 'cm'));
+      assert.ok(parseAndEval('5cm') instanceof Unit);
+    });
+
+    it('should correctly parse negative temperatures', function () {
+      approx.deepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'));
+      approx.deepEqual(parseAndEval('--6 celsius'), new Unit(6, 'celsius'));
+      approx.deepEqual(parseAndEval('-6 celsius in fahrenheit'),
+          new Unit(21.2, 'fahrenheit').in('fahrenheit'));
+    });
+
     it('should convert units', function() {
       var scope = {};
-      assert.deepEqual(parseAndEval('5cm', scope), new Unit(5, 'cm'));
-      assert.ok(parseAndEval('5cm', scope) instanceof Unit);
-
-      // TODO: not so nice comparing units via toString
       approx.deepEqual(parseAndEval('(5.08 cm * 1000) in inch', scope),
           math.unit(2000, 'inch').in('inch'));
       approx.deepEqual(parseAndEval('(5.08 cm * 1000) in mm', scope),
           math.unit(50800, 'mm').in('mm'));
       approx.deepEqual(parseAndEval('ans in inch', scope),
           math.unit(2000, 'inch').in('inch'));
+
+      approx.deepEqual(parseAndEval('10 celsius in fahrenheit'),
+          math.unit(50, 'fahrenheit').in('fahrenheit'));
+      approx.deepEqual(parseAndEval('20 celsius in fahrenheit'),
+          math.unit(68, 'fahrenheit').in('fahrenheit'));
+      approx.deepEqual(parseAndEval('50 fahrenheit in celsius'),
+          math.unit(10, 'celsius').in('celsius'));
     });
 
     it('should evaluate operator "in" with correct precedence ', function () {
       approx.equal(parseAndEval('5.08 cm * 1000 in inch').toNumber('inch'),
           new Unit(2000, 'inch').toNumber('inch'));
-
-      // TODO assert.deepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'));
     });
   });
 
