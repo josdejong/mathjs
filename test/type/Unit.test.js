@@ -20,6 +20,18 @@ describe('unit', function() {
       assert.equal(unit1.unit.name, 'g');
     });
 
+    it('should create square meter correctly', function() {
+      var unit1 = math.unit(0.000001, 'km2');
+      assert.equal(unit1.value, 1);
+      assert.equal(unit1.unit.name, 'm2');
+    });
+
+    it('should create cubic meter correctly', function() {
+      var unit1 = math.unit(0.000000001, 'km3');
+      assert.equal(unit1.value, 1);
+      assert.equal(unit1.unit.name, 'm3');
+    });
+
     it('should throw an error if called with wrong arguments', function() {
       assert.throws(function () { Unit(2, 'inch'); });
       assert.throws(function () { new Unit('24', 'inch'); });

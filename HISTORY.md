@@ -2,6 +2,12 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.17.1
+
+- Fixed a bug with negative temperatures.
+- Fixed a bug with prefixes of units squared meter `m2` and cubic meter `m3`.
+
+
 ## 2013-12-12, version 0.17.0
 
 - Renamed and flattened configuration settings:
