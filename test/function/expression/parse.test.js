@@ -142,29 +142,29 @@ describe('parse', function() {
     it('should correctly parse negative temperatures', function () {
       approx.deepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'));
       approx.deepEqual(parseAndEval('--6 celsius'), new Unit(6, 'celsius'));
-      approx.deepEqual(parseAndEval('-6 celsius in fahrenheit'),
-          new Unit(21.2, 'fahrenheit').in('fahrenheit'));
+      approx.deepEqual(parseAndEval('-6 celsius to fahrenheit'),
+          new Unit(21.2, 'fahrenheit').to('fahrenheit'));
     });
 
     it('should convert units', function() {
       var scope = {};
-      approx.deepEqual(parseAndEval('(5.08 cm * 1000) in inch', scope),
-          math.unit(2000, 'inch').in('inch'));
-      approx.deepEqual(parseAndEval('(5.08 cm * 1000) in mm', scope),
-          math.unit(50800, 'mm').in('mm'));
-      approx.deepEqual(parseAndEval('ans in inch', scope),
-          math.unit(2000, 'inch').in('inch'));
+      approx.deepEqual(parseAndEval('(5.08 cm * 1000) to inch', scope),
+          math.unit(2000, 'inch').to('inch'));
+      approx.deepEqual(parseAndEval('(5.08 cm * 1000) to mm', scope),
+          math.unit(50800, 'mm').to('mm'));
+      approx.deepEqual(parseAndEval('ans to inch', scope),
+          math.unit(2000, 'inch').to('inch'));
 
-      approx.deepEqual(parseAndEval('10 celsius in fahrenheit'),
-          math.unit(50, 'fahrenheit').in('fahrenheit'));
-      approx.deepEqual(parseAndEval('20 celsius in fahrenheit'),
-          math.unit(68, 'fahrenheit').in('fahrenheit'));
-      approx.deepEqual(parseAndEval('50 fahrenheit in celsius'),
-          math.unit(10, 'celsius').in('celsius'));
+      approx.deepEqual(parseAndEval('10 celsius to fahrenheit'),
+          math.unit(50, 'fahrenheit').to('fahrenheit'));
+      approx.deepEqual(parseAndEval('20 celsius to fahrenheit'),
+          math.unit(68, 'fahrenheit').to('fahrenheit'));
+      approx.deepEqual(parseAndEval('50 fahrenheit to celsius'),
+          math.unit(10, 'celsius').to('celsius'));
     });
 
-    it('should evaluate operator "in" with correct precedence ', function () {
-      approx.equal(parseAndEval('5.08 cm * 1000 in inch').toNumber('inch'),
+    it('should evaluate operator "to" with correct precedence ', function () {
+      approx.equal(parseAndEval('5.08 cm * 1000 to inch').toNumber('inch'),
           new Unit(2000, 'inch').toNumber('inch'));
     });
   });
@@ -587,9 +587,9 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('3:-1:-0.1'), new Matrix([3,2,1,0]));
     });
 
-    it('should parse in', function() {
-      approx.deepEqual(parseAndEval('2.54 cm in inch'), math.unit(1, 'inch').in('inch'));
-      approx.deepEqual(parseAndEval('2.54 cm + 2 inch in foot'), math.unit(0.25, 'foot').in('foot'));
+    it('should parse to', function() {
+      approx.deepEqual(parseAndEval('2.54 cm to inch'), math.unit(1, 'inch').to('inch'));
+      approx.deepEqual(parseAndEval('2.54 cm + 2 inch to foot'), math.unit(0.25, 'foot').to('foot'));
     });
 
     it('should parse \' (transpose)', function() {
@@ -638,9 +638,9 @@ describe('parse', function() {
 
       });
 
-      it('should evaluate function "in" ', function () {
-        approx.deepEqual(parseAndEval('in(5.08 cm * 1000, inch)'),
-            math.unit(2000, 'inch').in('inch'));
+      it('should evaluate function "to" ', function () {
+        approx.deepEqual(parseAndEval('to(5.08 cm * 1000, inch)'),
+            math.unit(2000, 'inch').to('inch'));
       });
     });
 
