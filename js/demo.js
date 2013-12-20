@@ -2,8 +2,8 @@
 var math = mathjs();
 var editor;
 
-if (document.body.addEventListener) {
-  document.body.addEventListener('load', function () {
+if (document && document.addEventListener) {
+  document.addEventListener('load', function () {
     var container = document.getElementById('commandline');
     if (container) {
       editor = new CommandLineEditor({
