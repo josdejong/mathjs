@@ -71,6 +71,7 @@ math.select(<span class="number">3</span>)
           container: document.getElementById('commandline'),
           math: math
       });
+
     </script>
     <div class="tips">
       Shortcut keys:
