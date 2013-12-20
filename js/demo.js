@@ -2,14 +2,12 @@
 var math = mathjs();
 var editor;
 
-if (document && document.addEventListener) {
-  document.addEventListener('load', function () {
-    var container = document.getElementById('commandline');
-    if (container) {
-      editor = new CommandLineEditor({
-        container: container,
-        math: math
-      });
-    }
-  });
-}
+document.onload = function () {
+  var container = document.getElementById('commandline');
+  if (container) {
+    editor = new CommandLineEditor({
+      container: container,
+      math: math
+    });
+  }
+};
