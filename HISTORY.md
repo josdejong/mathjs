@@ -2,6 +2,13 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.18.0
+
+- Renamed unit conversion function and operator `in` to `to`. Operator `in` is
+  still available in the expression parser as an alias for `to`. Added unit
+  `in`, an abbreviation for `inch`. Thanks Elijah Insua (tmpvar).
+
+
 ## 2013-12-19, version 0.17.1
 
 - Fixed a bug with negative temperatures.

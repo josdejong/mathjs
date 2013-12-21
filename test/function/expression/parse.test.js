@@ -164,8 +164,26 @@ describe('parse', function() {
     });
 
     it('should evaluate operator "to" with correct precedence ', function () {
-      approx.equal(parseAndEval('5.08 cm * 1000 to inch').toNumber('inch'),
-          new Unit(2000, 'inch').toNumber('inch'));
+      approx.deepEqual(parseAndEval('5.08 cm * 1000 to inch'),
+          new Unit(2000, 'inch').to('inch'));
+    });
+
+    it('should evaluate operator "in" (alias of "to") ', function () {
+      approx.deepEqual(parseAndEval('5.08 cm in inch'),
+          new Unit(2, 'inch').to('inch'));
+    });
+
+    it('should evaluate unit "in" (should not conflict with operator "in")', function () {
+      approx.deepEqual(parseAndEval('2 in'),
+          new Unit(2, 'in'));
+      approx.deepEqual(parseAndEval('5.08 cm in in'),
+          new Unit(2, 'in').to('in'));
+      approx.deepEqual(parseAndEval('5 in in in'),
+          new Unit(5, 'in').to('in'));
+      approx.deepEqual(parseAndEval('2 in to meter'),
+          new Unit(2, 'inch').to('meter'));
+      approx.deepEqual(parseAndEval('2 in in meter'),
+          new Unit(2, 'inch').to('meter'));
     });
   });
 
@@ -590,6 +608,10 @@ describe('parse', function() {
     it('should parse to', function() {
       approx.deepEqual(parseAndEval('2.54 cm to inch'), math.unit(1, 'inch').to('inch'));
       approx.deepEqual(parseAndEval('2.54 cm + 2 inch to foot'), math.unit(0.25, 'foot').to('foot'));
+    });
+
+    it('should parse in', function() {
+      approx.deepEqual(parseAndEval('2.54 cm in inch'), math.unit(1, 'inch').to('inch'));
     });
 
     it('should parse \' (transpose)', function() {

@@ -48,7 +48,7 @@ math.pow([[-1, 2], [3, 1]], 2);   // [[7, 0], [0, 7]]
 
 // expressions
 math.eval('12 / (2.3 + 0.7)');    // 4
-math.eval('5.08 cm in inch');     // 2 inch
+math.eval('5.08 cm to inch');     // 2 inch
 math.eval('sin(45 deg) ^ 2');     // 0.5
 math.eval('9 / 3 + 2i');          // 3 + 2i
 math.eval('det([-1, 2; 3, 1])');  // -7
