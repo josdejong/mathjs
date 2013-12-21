@@ -51,7 +51,7 @@ var math = require('mathjs')();
 // evaluate expressions
 math.eval('sqrt(3^2 + 4^2)');           // 5
 math.eval('sqrt(-4)');                  // 2i
-math.eval('2 inch in cm');              // 5.08 cm
+math.eval('2 inch to cm');              // 5.08 cm
 math.eval('cos(45 deg)');               // 0.7071067811865476
 
 // provide a scope
@@ -149,7 +149,7 @@ var parser = math.parser();
 // evaluate expressions
 parser.eval('sqrt(3^2 + 4^2)');         // 5
 parser.eval('sqrt(-4)');                // 2i
-parser.eval('2 inch in cm');            // 5.08 cm
+parser.eval('2 inch to cm');            // 5.08 cm
 parser.eval('cos(45 deg)');             // 0.7071067811865476
 
 // define variables and functions
@@ -236,7 +236,7 @@ Operator    | Name                  | Syntax    | Associativity | Example       
 `!`         | Factorial             | `y!`      | None          | `5!`                  | `120`
 `=`         | Assignment            | `x = y`   | Right to left | `a = 5`               | `5`
 `:`         | Range                 | `x : y`   | None          | `1:4`                 | `[1,2,3,4]`
-`in`        | Unit conversion       | `x in y`  | Left to right | `2 inch in cm`        | `5.08 cm`
+`to`, `in`  | Unit conversion       | `x to y`  | Left to right | `2 inch to cm`        | `5.08 cm`
 `==`        | Equal                 | `x == y`  | Left to right | `2 == 4 - 2`          | `true`
 `!=`        | Unequal               | `x != y`  | Left to right | `2 != 3`              | `true`
 `<`         | Smaller               | `x < y`   | Left to right | `2 < 3`               | `true`
@@ -258,7 +258,7 @@ Operators                         | Description
 `+`, `-`                          | Add, subtract
 `:`                               | Range
 `==`, `!=`, `<`, `>`, `<=`, `>=`  | Comparison
-`in`                              | Unit conversion
+`to`, `in`                        | Unit conversion
 `=`                               | Assignment
 `,`                               | Parameter and column separator
 `;`                               | Row separator
@@ -479,14 +479,14 @@ add and subtract, and units can be converted from one to another.
 An overview of all available units can be found on the page
 [Units](datatypes/units.md).
 
-Units can be converted using the operator `in`.
+Units can be converted using the operator `to` or `in`.
 
 ```js
 // create a unit
 math.eval('5.4 kg');                    // Unit, 5.4 kg
 
 // convert a unit
-math.eval('2 inch in cm');              // Unit, 5.08 cm
+math.eval('2 inch to cm');              // Unit, 5.08 cm
 math.eval('20 celsius in fahrenheit');  // Unit, ~68 fahrenheit
 
 // calculations with units

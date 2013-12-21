@@ -12,7 +12,7 @@ command with `sudo`). After installation, the application `mathjs` is available:
 $ mathjs
 > 12 / (2.3 + 0.7)
 4
-> 5.08 cm in inch
+> 5.08 cm to inch
 2 inch
 > sin(45 deg) ^ 2
 0.5

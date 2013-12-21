@@ -35,7 +35,7 @@ A `Unit` contains the following functions:
   length, mass, etc.
 - `equals(unit)`. Test whether a unit equals an other unit. Units are equal
   when they have the same base and same value when normalized to SI units.
-- `in(plainUnit)`. Convert the unit to a specific prefix and unit. Returns
+- `to(plainUnit)`. Convert the unit to a specific prefix and unit. Returns
   a clone of the unit with a fixed prefix and unit.
 - `toNumber(plainUnit)`. Get the value of a unit when converted to the specified
   plain unit (a unit with optional prefix but without value).
@@ -50,7 +50,7 @@ var a = math.unit(55, 'cm');        // Unit 550 mm
 var b = math.unit('0.1 kilogram');  // Unit 100 gram
 var c = math.unit('2 inch');        // Unit 100 millimeter
 
-var d = c.in('cm');                 // Unit 5.08 cm
+var d = c.to('cm');                 // Unit 5.08 cm
 b.toNumber('gram');                 // Number 100
 
 c.equals(a);                        // false

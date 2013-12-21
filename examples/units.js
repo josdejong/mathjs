@@ -30,13 +30,13 @@ console.log();
 
 // units can be converted to a specific type, or to a number
 console.log('convert to another type or to a number');
-print(b.in('cm'));                  // 10 cm  Alternatively: math.in(b, 'cm')
-print(math.in(b, 'inch'));          // 3.937 inch
+print(b.to('cm'));                  // 10 cm  Alternatively: math.to(b, 'cm')
+print(math.to(b, 'inch'));          // 3.937 inch
 print(b.toNumber('cm'));            // 10
 console.log();
 
 // the expression parser supports units too
 console.log('parse expressions');
-print(math.eval('2 inch in cm'));   // 5.08 cm
+print(math.eval('2 inch to cm'));   // 5.08 cm
 print(math.eval('cos(45 deg)'));    // 0.70711
 console.log();

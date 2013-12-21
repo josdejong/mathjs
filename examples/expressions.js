@@ -33,7 +33,7 @@ console.log('1. USING FUNCTION MATH.EVAL');
 console.log('\nevaluate expressions');
 print(math.eval('sqrt(3^2 + 4^2)'));        // 5
 print(math.eval('sqrt(-4)'));               // 2i
-print(math.eval('2 inch in cm'));           // 5.08 cm
+print(math.eval('2 inch to cm'));           // 5.08 cm
 print(math.eval('cos(45 deg)'));            // 0.70711
 
 // evaluate multiple expressions at once
@@ -120,7 +120,7 @@ var parser = math.parser();
 console.log('\nevaluate expressions');
 print(parser.eval('sqrt(3^2 + 4^2)'));          // 5
 print(parser.eval('sqrt(-4)'));                 // 2i
-print(parser.eval('2 inch in cm'));             // 5.08 cm
+print(parser.eval('2 inch to cm'));             // 5.08 cm
 print(parser.eval('cos(45 deg)'));              // 0.70711
 
 // define variables and functions

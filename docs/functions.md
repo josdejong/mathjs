@@ -126,7 +126,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 
 ## Units
 
-- math.in(x, unit)
+- math.to(x, unit)
 
 ## Utils
 
