@@ -694,9 +694,11 @@ describe('parse', function() {
       approx.equal(bigmath.eval('sin(0.1)'), 0.09983341664682815);
     });
 
-    it('should create a range from bignumbers (downgrades to numbers)', function() {
-      assert.deepEqual(bigmath.eval('4:6'), bigmath.matrix([4, 5, 6]));
-      assert.deepEqual(bigmath.eval('0:2:4'), bigmath.matrix([0, 2, 4]));
+    it('should create a range from bignumbers', function() {
+      assert.deepEqual(bigmath.eval('4:6'),
+          bigmath.matrix([new BigNumber(4), new BigNumber(5), new BigNumber(6)]));
+      assert.deepEqual(bigmath.eval('0:2:4'),
+          bigmath.matrix([new BigNumber(0), new BigNumber(2), new BigNumber(4)]));
     });
 
     it('should create a matrix with bignumbers', function() {

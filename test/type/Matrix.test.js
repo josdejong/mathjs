@@ -7,9 +7,24 @@ describe('matrix', function() {
 
   describe('constructor', function() {
 
-    it('should build an emtpy if called with no argument', function() {
+    it('should build an empty if called with no argument', function() {
       var m = new Matrix();
       assert.deepEqual(m.toArray(), []);
+    });
+
+    it('should create a matrix from an other matrix', function () {
+      var m = new Matrix([1,2,3]);
+      var n = new Matrix(m);
+
+      m.resize([0]); // empty matrix m to ensure n is a clone
+
+      assert.deepEqual(n, new Matrix([1,2,3]));
+    });
+
+    it('should create a matrix an array containing matrices', function () {
+      var m = new Matrix([new Matrix([1,2]), new Matrix([3, 4])]);
+
+      assert.deepEqual(m, new Matrix([[1,2],[3, 4]]));
     });
 
   });

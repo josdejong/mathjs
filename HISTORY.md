@@ -8,6 +8,7 @@ https://github.com/josdejong/mathjs
   still available in the expression parser as an alias for `to`. Added unit
   `in`, an abbreviation for `inch`. Thanks Elijah Insua (tmpvar).
 - Implemented an argument `includeEnd` for function `range` (false by default).
+- Ranges in the expression parser now support big numbers.
 
 
 ## 2013-12-19, version 0.17.1

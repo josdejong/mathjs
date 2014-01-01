@@ -76,18 +76,13 @@ First clone the project from github:
     git clone git://github.com/josdejong/mathjs.git
     cd mathjs
 
-The project uses [jake](https://github.com/mde/jake) as build tool.
-To be able to run jake from the command line, jake must be installed globally:
-
-    sudo npm install -g jake
-
 Install the project dependencies:
 
     npm install
 
-Then, the project can be build by executing jake in the root of the project:
+Then, the project can be build by executing the build script via npm:
 
-    jake
+    npm run build
 
 This will build the library math.js and math.min.js from the source files and
 put them in the folder dist.
