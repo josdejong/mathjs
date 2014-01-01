@@ -60,6 +60,23 @@ describe('range', function() {
     assert.deepEqual(math.range('1:3'), matrix([math.bignumber(1),math.bignumber(2)]));
   });
 
+  describe ('option includeEnd', function () {
+    it('should parse a string and include end', function () {
+      assert.deepEqual(range('1:6', false), matrix([1,2,3,4,5]));
+      assert.deepEqual(range('1:6', true), matrix([1,2,3,4,5,6]));
+    });
+
+    it('should create a range start:1:end and include end', function () {
+      assert.deepEqual(range(3,6, false), matrix([3,4,5]));
+      assert.deepEqual(range(3,6, true), matrix([3,4,5,6]));
+    });
+
+    it('should create a range start:step:end and include end', function () {
+      assert.deepEqual(range(0,10,2, false), matrix([0,2,4,6,8]));
+      assert.deepEqual(range(0,10,2, true), matrix([0,2,4,6,8,10]));
+    });
+  });
+
   it('should throw an error if called with an invalid string', function() {
     assert.throws(function () {range('invalid range')}, SyntaxError);
   });
