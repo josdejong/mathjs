@@ -22,7 +22,7 @@ a command line application `mathjs`, see section
 [command line interface](https://github.com/josdejong/mathjs/blob/master/docs/command_line_interface.md).
 
 ### component(1)
-You could also integrate the library into your components like so:
+The library can be installed using [component(1)](https://github.com/component/component/):
 
     component install josdejong/mathjs
 
