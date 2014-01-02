@@ -21,6 +21,11 @@ Note: when installed globally (using the `-g` option), math.js is available as
 a command line application `mathjs`, see section
 [command line interface](https://github.com/josdejong/mathjs/blob/master/docs/command_line_interface.md).
 
+### component(1)
+You could also integrate the library into your components like so:
+
+    component install josdejong/mathjs
+
 ### bower
 Or using [bower](http://twitter.github.io/bower/):
 
