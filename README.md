@@ -27,6 +27,10 @@ The library can be used in both node.js and in the browser.
 See the [Getting Started](https://github.com/josdejong/mathjs/blob/master/docs/getting_started.md) for a more detailed tutorial. To install math.js using npm:
 
     npm install mathjs
+    
+You can also install ```Math.js``` with [component(1)](https://github.com/component/component/):
+
+    component install josdejong/mathjs
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate
