@@ -415,7 +415,7 @@ BigNumbers can be created using the `bignumber` function:
 math.eval('bignumber(0.1) + bignumber(0.2)'); // BigNumber, 0.3
 ```
 
-The default number type of the expression parser can be changed at instantation
+The default number type of the expression parser can be changed at instantiation
 of math.js. The expression parser can parser numbers as BigNumber by default:
 
 ```js

@@ -12,9 +12,13 @@ Available configuration settings are:
   determined by the option `matrix`. In case of mixed matrix
   inputs, a matrix will be returned always.
 
-- `number`. The default type of numbers. Available values are:
-  `'number'` (default) or `'bignumber'`. Big numbers have higher precision
-  than the default numbers of JavaScript.
+- `number`. The default type of numbers. This setting is used by functions
+  like `eval `which cannot determine the correct type of output from the
+  functions input. For most functions though, the type of output is determined
+  from the the input: a number as input will return a number as output,
+  a bignumber as input returns a bignumber as output.
+  Available values are: `'number'` (default) or `'bignumber'`.
+  Big numbers have higher precision than the default numbers of JavaScript.
 
 - `decimals`. The maximum number of decimal places behind the decimal
   point (not the number of significant digits). Only applies to big numbers,

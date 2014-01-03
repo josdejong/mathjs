@@ -10,8 +10,12 @@ A big number can be created using the function `bignumber`:
 math.bignumber('2.3e+500'); // BigNumber, 2.3e+500
 ```
 
-Math.js can be configured to use big numbers instead of [numbers](numbers.md)
-by default:
+Most functions can determine the type of output from the type of input:
+a number as input will return a number as output, a bignumber as input returns
+a bignumber as output. Functions which cannot determine the type of output
+from the input (for example `math.eval`) use the default number type `number`,
+which can be configured when instantiating math.js. To configure the use of big
+numbers instead of [numbers](numbers.md) by default, configure math.js like:
 
 ```js
 var mathjs = require('mathjs'),
