@@ -69,8 +69,8 @@ describe('UpdateNode', function() {
         new ConstantNode('number', '2'),
         new RangeNode(math, [
           new SymbolNode('end'),
-          new ConstantNode('number', '-1'),
-          new ConstantNode('number', '1')
+          new ConstantNode('number', '1'),
+          new ConstantNode('number', '-1')
         ])
     ];
     var b = new SymbolNode('b');
