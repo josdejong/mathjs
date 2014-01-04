@@ -1,7 +1,14 @@
 // test UpdateNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')();
+    mathjs = require('../../../index'),
+    math = mathjs(),
+    bigmath = mathjs({number: 'bignumber'}),
+    Node = require('../../../lib/expression/node/Node'),
+    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
+    RangeNode = require('../../../lib/expression/node/RangeNode'),
+    UpdateNode = require('../../../lib/expression/node/UpdateNode'),
+    SymbolNode = require('../../../lib/expression/node/SymbolNode');
 
 describe('UpdateNode', function() {
 
@@ -13,8 +20,91 @@ describe('UpdateNode', function() {
     // TODO
   });
 
-  it ('should compile a UpdateNode', function () {
-    // TODO
+  it.skip ('should compile a UpdateNode', function () {
+    var a = new SymbolNode('a');
+    var params = [
+        new ConstantNode('number', '2'),
+        new ConstantNode('number', '1')
+    ];
+    var v = new ConstantNode('number', '5');
+    var n = new UpdateNode(math, 'a', params, null, v, null);
+    var expr = n.compile(math);
+
+    var scope = {
+      a: [[0, 0], [0, 0]]
+    };
+    assert.deepEqual(expr.eval(scope), [[0, 0], [5, 0]]);
+    assert.deepEqual(scope, {
+      a: [[0, 0], [5, 0]]
+    });
+  });
+
+  it.skip ('should compile a UpdateNode with range and context parameters', function () {
+    var a = new SymbolNode('a');
+    var params = [
+        new ConstantNode('number', '2'),
+        new RangeNode(math, [
+          new ConstantNode('number', '1'),
+          new SymbolNode('end')
+        ])
+    ];
+    var b = new SymbolNode('b');
+    var n = new UpdateNode(math, 'a', params, null, b, null);
+    var expr = n.compile(math);
+
+    var scope = {
+      a: [[0, 0], [0, 0]],
+      b: [5, 6]
+    };
+    assert.deepEqual(expr.eval(scope), [[0, 0], [5, 6]]);
+    assert.deepEqual(scope, {
+      a: [[0, 0], [5, 6]],
+      b: [5, 6]
+    });
+  });
+
+  it ('should compile a UpdateNode with negative step range and context parameters', function () {
+    var a = new SymbolNode('a');
+    var params = [
+        new ConstantNode('number', '2'),
+        new RangeNode(math, [
+          new SymbolNode('end'),
+          new ConstantNode('number', '-1'),
+          new ConstantNode('number', '1')
+        ])
+    ];
+    var b = new SymbolNode('b');
+    var n = new UpdateNode(math, 'a', params, null, b, null);
+    var expr = n.compile(math);
+
+    var scope = {
+      a: [[0, 0], [0, 0]],
+      b: [5, 6]
+    };
+    assert.deepEqual(expr.eval(scope), [[0, 0], [6, 5]]);
+    assert.deepEqual(scope, {
+      a: [[0, 0], [6, 5]],
+      b: [5, 6]
+    });
+  });
+
+  it.skip ('should compile a UpdateNode with bignumber setting', function () {
+    var a = new SymbolNode('a');
+    var params = [
+      new ConstantNode('number', '2'),
+      new ConstantNode('number', '1')
+    ];
+    var v = new ConstantNode('number', '5');
+    var n = new UpdateNode(math, 'a', params, null, v, null);
+    var expr = n.compile(bigmath);
+
+    var scope = {
+      a: [[0, 0], [0, 0]]
+    };
+    assert.deepEqual(expr.eval(scope), [[0, 0], [math.bignumber(5), 0]]);
+    assert.deepEqual(scope, {
+      a: [[0, 0], [math.bignumber(5), 0]]
+    });
   });
 
   it ('should find a UpdateNode', function () {
@@ -26,7 +116,15 @@ describe('UpdateNode', function() {
   });
 
   it ('should stringify a UpdateNode', function () {
-    // TODO
+    var a = new SymbolNode('a');
+    var params = [
+      new ConstantNode('number', '2'),
+      new ConstantNode('number', '1')
+    ];
+    var v = new ConstantNode('number', '5');
+
+    var n = new UpdateNode(math, 'a', params, null, v, null);
+    assert.equal(n.toString(), 'a(2, 1) = 5');
   });
 
 });
