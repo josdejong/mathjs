@@ -28,4 +28,14 @@ describe('permutations', function() {
       assert.throws(function(){permutations(-12, -6);}, TypeError);
   });
 
+  it('should not accept more than two arguments', function() {
+      assert.throws(function(){permutations(12, 6, 13);});
+      assert.throws(function(){permutations(-12, 6, 13);});
+  });
+
+  it('should not accept arguments of the wrong type', function() {
+      assert.throws(function(){permutations("baa baa black sheep", true);});
+      assert.throws(function(){permutations(new Array(12));});
+  });
+
 });
