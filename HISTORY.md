@@ -4,6 +4,8 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.18.0
 
+- Changed matrix index notation of expression parser from round brackets to
+  square brackets, for example `A[1, 1:3]` instead of `A(1, 1:3)`.
 - Renamed unit conversion function and operator `in` to `to`. Operator `in` is
   still available in the expression parser as an alias for `to`. Added unit
   `in`, an abbreviation for `inch`. Thanks Elijah Insua (tmpvar).

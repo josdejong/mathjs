@@ -137,18 +137,18 @@ print(parser.eval('f(2, 3)'));                  // 8
 console.log('\nmanipulate matrices');
 print(parser.eval('k = [1, 2; 3, 4]'));         // [[1, 2], [3, 4]]
 print(parser.eval('l = zeros(2, 2)'));          // [[0, 0], [0, 0]]
-print(parser.eval('l(1, 1:2) = [5, 6]'));       // [[5, 6], [0, 0]]
-print(parser.eval('l(2, :) = [7, 8]'));         // [[5, 6], [7, 8]]
+print(parser.eval('l[1, 1:2] = [5, 6]'));       // [[5, 6], [0, 0]]
+print(parser.eval('l[2, :] = [7, 8]'));         // [[5, 6], [7, 8]]
 print(parser.eval('m = k * l'));                // [[19, 22], [43, 50]]
-print(parser.eval('n = m(2, 1)'));              // 43
-print(parser.eval('n = m(:, 1)'));              // [[19], [43]]
+print(parser.eval('n = m[2, 1]'));              // 43
+print(parser.eval('n = m[:, 1]'));              // [[19], [43]]
 
 // get and set variables and functions
 console.log('\nget and set variables and function in the scope of the parser');
 var x = parser.get('x');
 console.log('x =', x);                          // x = 7
 var f = parser.get('f');
-console.log('f =', f);                          // f = f(x, y)
+console.log('f =', math.format(f));             // f = f(x, y)
 var g = f(3, 3);
 console.log('g =', g);                          // g = 27
 

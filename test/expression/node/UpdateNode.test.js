@@ -63,7 +63,7 @@ describe('UpdateNode', function() {
     });
   });
 
-  it ('should compile a UpdateNode with negative step range and context parameters', function () {
+  it.skip ('should compile a UpdateNode with negative step range and context parameters', function () {
     var a = new SymbolNode('a');
     var params = [
         new ConstantNode('number', '2'),

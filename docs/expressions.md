@@ -160,7 +160,7 @@ parser.eval('f(2, 3)');                 // 8
 
 // get and set variables and functions
 var x = parser.get('x');                // x = 7
-var f = parser.get('f');                // f = function
+var f = parser.get('f');                // function
 var g = f(3, 3);                        // g = 27
 parser.set('h', 500);
 parser.eval('h / 2');                   // 250
@@ -176,7 +176,7 @@ parser.clear();
 
 ## Syntax
 
-The expression parser is aimed at a a mathematical audience, not a programming
+The expression parser is aimed at a mathematical audience, not a programming
 audience. The syntax is similar to most calculators and mathematical
 applications. This is close to JavaScript as well, though there are a few
 important differences between the syntax of the expression parser and the
@@ -216,8 +216,8 @@ The following operators are available:
 
 Operator    | Name                  | Syntax    | Associativity | Example               | Result
 ----------- | --------------------- | --------- | ------------- | --------------------- | ---------------
-`(`, `)`    | Parentheses, index    | `(x)`     | None          | `2 * (3 + 4)`         | `14`
-`[`, `]`    | Matrix                | `[...]`   | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
+`(`, `)`    | Parentheses           | `(x)`     | None          | `2 * (3 + 4)`         | `14`
+`[`, `]`    | Matrix, Index         | `[...]`   | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
 `,`         | Parameter separator   | `x, y`    | None          | `max(2, 1, 5)`        | `5`
 `;`         | Statement separator   | `x; y`    | Left to right | `a=2; b=3; a*b`       | `[6]`
 `;`         | Row separator         | `[x, y]`  | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
@@ -514,9 +514,9 @@ parser.eval('"hello"');                 // String, "hello"
 // string manipulation
 parser.eval('a = "hello" + " world"');  // String, "hello world"
 parser.eval('size(a)');                 // Number, 11
-parser.eval('a(1:5)');                  // String, "hello"
-parser.eval('a(1) = "H"');              // String, "Hello"
-parser.eval('a(7:12) = "there!"');      // String, "Hello there!"
+parser.eval('a[1:5]');                  // String, "hello"
+parser.eval('a[1] = "H"');              // String, "Hello"
+parser.eval('a[7:12] = "there!"');      // String, "Hello there!"
 
 // string conversion
 parser.eval('number("300")');           // Number, 300
@@ -568,7 +568,7 @@ math.eval('0:2:10');          // Matrix, [0, 2, 4, 6, 8, 10],       size [6]
 ```
 
 A subset can be retrieved from a matrix using indexes, and a subset of a matrix
-can be replaced by using indexes. Indexes are enclosed in parentheses, and
+can be replaced by using indexes. Indexes are enclosed in square brackets, and
 contain a number or a range for each of the matrix dimensions. A range can have
 its start and/or end undefined. When start is undefined, the range will start
 at 1, when end is undefined, the range will end at the end of the matrix.
@@ -588,16 +588,16 @@ parser.eval('b = zeros(2, 2)');       // Matrix, [[0, 0], [0, 0]]
 parser.eval('c = 5:9');               // Matrix, [5, 6, 7, 8, 9]
 
 // replace a subset in a matrix
-parser.eval('b(1, 1:2) = [5, 6]');    // Matrix, [[5, 6], [0, 0]]
-parser.eval('b(2, :) = [7, 8]');      // Matrix, [[5, 6], [7, 8]]
+parser.eval('b[1, 1:2] = [5, 6]');    // Matrix, [[5, 6], [0, 0]]
+parser.eval('b[2, :] = [7, 8]');      // Matrix, [[5, 6], [7, 8]]
 
 // perform a matrix calculation
 parser.eval('d = a * b');             // Matrix, [[19, 22], [43, 50]]
 
 // retrieve a subset of a matrix
-parser.eval('d(2, 1)');               // 43
-parser.eval('d(2, 1:end)');           // Matrix, [[43, 50]]
-parser.eval('c(end - 1 : -1 : 2)');   // Matrix, [8, 7, 6]
+parser.eval('d[2, 1]');               // 43
+parser.eval('d[2, 1:end]');           // Matrix, [[43, 50]]
+parser.eval('c[end - 1 : -1 : 2]');   // Matrix, [8, 7, 6]
 ```
 
 
