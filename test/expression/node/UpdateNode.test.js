@@ -20,7 +20,7 @@ describe('UpdateNode', function() {
     // TODO
   });
 
-  it.skip ('should compile a UpdateNode', function () {
+  it ('should compile a UpdateNode', function () {
     var a = new SymbolNode('a');
     var params = [
         new ConstantNode('number', '2'),
@@ -39,7 +39,7 @@ describe('UpdateNode', function() {
     });
   });
 
-  it.skip ('should compile a UpdateNode with range and context parameters', function () {
+  it ('should compile a UpdateNode with range and context parameters', function () {
     var a = new SymbolNode('a');
     var params = [
         new ConstantNode('number', '2'),
@@ -63,7 +63,7 @@ describe('UpdateNode', function() {
     });
   });
 
-  it.skip ('should compile a UpdateNode with negative step range and context parameters', function () {
+  it ('should compile a UpdateNode with negative step range and context parameters', function () {
     var a = new SymbolNode('a');
     var params = [
         new ConstantNode('number', '2'),
@@ -88,7 +88,7 @@ describe('UpdateNode', function() {
     });
   });
 
-  it.skip ('should compile a UpdateNode with bignumber setting', function () {
+  it ('should compile a UpdateNode with bignumber setting', function () {
     var a = new SymbolNode('a');
     var params = [
       new ConstantNode('number', '2'),
