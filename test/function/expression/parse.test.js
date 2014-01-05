@@ -711,10 +711,10 @@ describe('parse', function() {
       assert.deepEqual(bigmath.eval('a=[0.1, 0.2]', scope),
           bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
 
-      assert.deepEqual(bigmath.eval('a(1)', scope), new BigNumber(0.1));
-      assert.deepEqual(bigmath.eval('a(:)', scope),
+      assert.deepEqual(bigmath.eval('a[1]', scope), new BigNumber(0.1));
+      assert.deepEqual(bigmath.eval('a[:]', scope),
           bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
-      assert.deepEqual(bigmath.eval('a(1:2)', scope),
+      assert.deepEqual(bigmath.eval('a[1:2]', scope),
           bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
     });
 
