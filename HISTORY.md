@@ -7,6 +7,8 @@ https://github.com/josdejong/mathjs
 - Renamed unit conversion function and operator `in` to `to`. Operator `in` is
   still available in the expression parser as an alias for `to`. Added unit
   `in`, an abbreviation for `inch`. Thanks Elijah Insua (tmpvar).
+- Implemented functions `permutations` and `combinations`.
+  Thanks Daniel Levin (daniel-levin).
 
 
 ## 2013-12-19, version 0.17.1

@@ -99,11 +99,13 @@ math.add('hello ', 'world!');     // String  'hello world!'
 
 ## Probability
 
+- math.combinations(x, k)
 - math.factorial(x)
+- math.distribution(name)
+- math.permutations(x [, k])
+- math.pickRandom(array)
 - math.random([min, max])
 - math.randomInt([min, max])
-- math.pickRandom(array)
-- math.distribution(name)
 
 ## Statistics
 
