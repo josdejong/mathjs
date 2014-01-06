@@ -44,7 +44,12 @@
     "uglify-js": "latest",
     "dateable": "latest",
     "underscore": "latest",
-    "seed-random": "latest"
+    "seed-random": "latest",
+    "gulp": "~3.2.4",
+    "gulp-uglify": "~0.1.0",
+    "gulp-browserify": "~0.2.3",
+    "gulp-concat": "~2.1.7",
+    "gulp-replace": "~0.2.0"
   },
   "main": "./index",
   "scripts": {

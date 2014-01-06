@@ -71,6 +71,7 @@ task('minify', ['bundle'], function () {
     src: MATHJS,
     dest: MATHJS_MIN,
     header: util.read(HEADER)
+    // TODO: use options: {output: {comments: /@license/m } }
   });
   updateVersion(MATHJS_MIN);
 
