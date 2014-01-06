@@ -22,12 +22,12 @@ describe('UpdateNode', function() {
 
   it ('should compile a UpdateNode', function () {
     var a = new SymbolNode('a');
-    var params = [
+    var ranges = [
         new ConstantNode('number', '2'),
         new ConstantNode('number', '1')
     ];
     var v = new ConstantNode('number', '5');
-    var n = new UpdateNode(math, 'a', params, null, v, null);
+    var n = new UpdateNode(math, 'a', ranges, null, v, null);
     var expr = n.compile(math);
 
     var scope = {
@@ -41,7 +41,7 @@ describe('UpdateNode', function() {
 
   it ('should compile a UpdateNode with range and context parameters', function () {
     var a = new SymbolNode('a');
-    var params = [
+    var ranges = [
         new ConstantNode('number', '2'),
         new RangeNode(math, [
           new ConstantNode('number', '1'),
@@ -49,7 +49,7 @@ describe('UpdateNode', function() {
         ])
     ];
     var b = new SymbolNode('b');
-    var n = new UpdateNode(math, 'a', params, null, b, null);
+    var n = new UpdateNode(math, 'a', ranges, null, b, null);
     var expr = n.compile(math);
 
     var scope = {
@@ -65,7 +65,7 @@ describe('UpdateNode', function() {
 
   it ('should compile a UpdateNode with negative step range and context parameters', function () {
     var a = new SymbolNode('a');
-    var params = [
+    var ranges = [
         new ConstantNode('number', '2'),
         new RangeNode(math, [
           new SymbolNode('end'),
@@ -74,7 +74,7 @@ describe('UpdateNode', function() {
         ])
     ];
     var b = new SymbolNode('b');
-    var n = new UpdateNode(math, 'a', params, null, b, null);
+    var n = new UpdateNode(math, 'a', ranges, null, b, null);
     var expr = n.compile(math);
 
     var scope = {
@@ -90,12 +90,12 @@ describe('UpdateNode', function() {
 
   it ('should compile a UpdateNode with bignumber setting', function () {
     var a = new SymbolNode('a');
-    var params = [
+    var ranges = [
       new ConstantNode('number', '2'),
       new ConstantNode('number', '1')
     ];
     var v = new ConstantNode('number', '5');
-    var n = new UpdateNode(math, 'a', params, null, v, null);
+    var n = new UpdateNode(math, 'a', ranges, null, v, null);
     var expr = n.compile(bigmath);
 
     var scope = {
@@ -117,14 +117,14 @@ describe('UpdateNode', function() {
 
   it ('should stringify a UpdateNode', function () {
     var a = new SymbolNode('a');
-    var params = [
+    var ranges = [
       new ConstantNode('number', '2'),
       new ConstantNode('number', '1')
     ];
     var v = new ConstantNode('number', '5');
 
-    var n = new UpdateNode(math, 'a', params, null, v, null);
-    assert.equal(n.toString(), 'a(2, 1) = 5');
+    var n = new UpdateNode(math, 'a', ranges, null, v, null);
+    assert.equal(n.toString(), 'a[2, 1] = 5');
   });
 
 });
