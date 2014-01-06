@@ -13,6 +13,7 @@ describe('combinations', function() {
 
   it('should not work with non-integer and negative input', function() {
       assert.throws(function() {combinations(0.5, 3)});
+      assert.throws(function() {combinations(3, 5)});
   });
 
   it('should not work with the wrong number or type of arguments', function() {
