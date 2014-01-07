@@ -15,29 +15,32 @@ var assert = require('assert'),
  * @return {*} result
  */
 function parseAndEval(expr, scope) {
-  var node = math.parse(expr, scope);
-  return node.eval();
+  return math.parse(expr)
+      .compile(math)
+      .eval(scope);
 }
 
 describe('parse', function() {
 
   it('should parse a single expression', function() {
-    approx.equal(math.parse('2 + 6 / 3').eval(), 4);
+    approx.equal(math.parse('2 + 6 / 3').compile(math).eval(), 4);
   });
 
   it('should parse a series of expressions', function() {
+    var scope = {};
     assert.deepEqual(math.parse(['a=3', 'b=4', 'a*b']).map(function (node) {
-      return node.eval();
+      return node.compile(math).eval(scope);
     }), [3, 4, 12]);
 
+    scope = {};
     assert.deepEqual(math.parse(new Matrix(['a=3', 'b=4', 'a*b'])).map(function (node) {
-      return node.eval();
+      return node.compile(math).eval(scope);
     }), new Matrix([3, 4, 12]));
   });
 
   it('should parse multiline expressions', function() {
-    assert.deepEqual(math.parse('a=3\nb=4\na*b').eval(), [3, 4, 12]);
-    assert.deepEqual(math.parse('b = 43; b * 4').eval(), [172]);
+    assert.deepEqual(math.parse('a=3\nb=4\na*b').compile(math).eval(), [3, 4, 12]);
+    assert.deepEqual(math.parse('b = 43; b * 4').compile(math).eval(), [172]);
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
@@ -77,7 +80,7 @@ describe('parse', function() {
       assert.throws(function () {parseAndEval('3.2.2'); }, SyntaxError);
       assert.throws(function () {parseAndEval('3.2e2.2'); }, SyntaxError);
       assert.throws(function () {parseAndEval('32e'); }, SyntaxError);
-      assert.throws(function () {parseAndEval('3abc'); }, TypeError);
+      assert.throws(function () {parseAndEval('3abc'); }, SyntaxError);
     });
 
   });
@@ -94,8 +97,8 @@ describe('parse', function() {
         number: 'bignumber'
       });
 
-      assert.deepEqual(math.parse('0.1').eval(), math.bignumber(0.1));
-      assert.deepEqual(math.parse('1.2e5000').eval(), math.bignumber('1.2e5000'));
+      assert.deepEqual(math.parse('0.1').compile(math).eval(), math.bignumber(0.1));
+      assert.deepEqual(math.parse('1.2e5000').compile(math).eval(), math.bignumber('1.2e5000'));
     });
 
   });
@@ -749,9 +752,9 @@ describe('parse', function() {
         a: 3,
         b: 4
       };
-      assert.deepEqual(math.parse('a*b', scope).eval(), 12);
-      assert.deepEqual(math.parse('c=5', scope).eval(), 5);
-      assert.deepEqual(math.parse('function f(x) = x^a', scope).eval().syntax, 'f(x)');
+      assert.deepEqual(math.parse('a*b').compile(math).eval(scope), 12);
+      assert.deepEqual(math.parse('c=5').compile(math).eval(scope), 5);
+      assert.deepEqual(math.parse('function f(x) = x^a').compile(math).eval(scope).syntax, 'f(x)');
 
 
       assert.deepEqual(Object.keys(scope).length, 5);
@@ -768,26 +771,26 @@ describe('parse', function() {
       scope.hello = function (name) {
         return 'hello, ' + name + '!';
       };
-      assert.deepEqual(math.parse('hello("jos")', scope).eval(), 'hello, jos!');
+      assert.deepEqual(math.parse('hello("jos")').compile(math).eval(scope), 'hello, jos!');
     });
 
     it('should parse undefined symbols, defining symbols, and removing symbols', function() {
       var scope = {};
-      var n = math.parse('q', scope);
-      assert.throws(function () { n.eval(); });
-      math.parse('q=33', scope).eval();
-      assert.equal(n.eval(), 33);
+      var n = math.parse('q');
+      assert.throws(function () { n.compile(math).eval(scope); });
+      math.parse('q=33').compile(math).eval(scope);
+      assert.equal(n.compile(math).eval(scope), 33);
       delete scope.q;
-      assert.throws(function () { n.eval(); });
+      assert.throws(function () { n.compile(math).eval(scope); });
 
-      n = math.parse('qq[1,1]=33', scope);
-      assert.throws(function () { n.eval(); });
-      math.parse('qq=[1,2;3,4]', scope).eval();
-      assert.deepEqual(n.eval(), new Matrix([[33,2],[3,4]]));
-      math.parse('qq=[4]', scope).eval();
-      assert.deepEqual(n.eval(), new Matrix([[33]]));
+      n = math.parse('qq[1,1]=33');
+      assert.throws(function () { n.compile(math).eval(scope); });
+      math.parse('qq=[1,2;3,4]').compile(math).eval(scope);
+      assert.deepEqual(n.compile(math).eval(scope), new Matrix([[33,2],[3,4]]));
+      math.parse('qq=[4]').compile(math).eval(scope);
+      assert.deepEqual(n.compile(math).eval(scope), new Matrix([[33]]));
       delete scope.qq;
-      assert.throws(function () { n.eval(); });
+      assert.throws(function () { n.compile(math).eval(scope); });
     });
 
 
@@ -813,18 +816,18 @@ describe('parse', function() {
       CustomNode.prototype.toString = function () {
         return 'CustomNode';
       };
-      CustomNode.prototype.eval = function () {
+      CustomNode.prototype._compile = function (defs) {
         var strParams = [];
         this.params.forEach(function (param) {
           strParams.push(param.toString());
         });
-        return 'CustomNode(' + strParams.join(', ') + ')';
+        return '"CustomNode(' + strParams.join(', ') + ')"';
       };
 
       math.expression.node.handlers['custom'] = CustomNode;
 
       var node = math.parse('custom(x, (2+x), sin(x))');
-      assert.equal(node.eval(), 'CustomNode(x, 2 + x, sin(x))');
+      assert.equal(node.compile(math).eval(), 'CustomNode(x, 2 + x, sin(x))');
 
     });
 

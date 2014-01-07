@@ -9,13 +9,6 @@ var assert = require('assert'),
 
 describe('SymbolNode', function() {
 
-  it ('should create and evaluate a SymbolNode', function () {
-    var scope = new Scope(math);
-    scope.set('a', 5);
-    var s = new SymbolNode('a', scope);
-    assert.equal(s.eval(), 5);
-  });
-
   it ('should throw an error when evaluating an undefined symbol', function () {
     var scope = new Scope(math);
     var s = new SymbolNode('foo', scope);

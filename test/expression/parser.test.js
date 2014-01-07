@@ -16,7 +16,7 @@ describe('parser', function() {
 
     var node = parser.parse('2 + 3');
     assert.ok(node instanceof math.expression.node.Node);
-    assert.equal(node.eval(), 5);
+    assert.equal(node.compile(math).eval(), 5);
   });
 
   it ('should evaluate an expression', function () {
@@ -99,7 +99,7 @@ describe('parser', function() {
     assert.equal(parser.get('xx'), null);
     assert.equal(parser.get('yy'), null);
     assert.equal(parser.get('zz'), null);
-    approx.equal(parser.get('pi'), Math.PI);
+    approx.equal(parser.get('pi'), null);
 
     assert.throws(function () {parser.eval('xx')});
     assert.throws(function () {parser.eval('yy')});

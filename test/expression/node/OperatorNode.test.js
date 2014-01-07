@@ -8,15 +8,7 @@ var assert = require('assert'),
 
 describe('OperatorNode', function() {
 
-  it ('should create and evaluate an OperatorNode', function () {
-    var a = new ConstantNode('number', '2', math);
-    var b = new ConstantNode('number', '3', math);
-    var n = new OperatorNode('+', 'add', math.add, [a, b]);
-
-    assert.equal(n.eval(), 5);
-  });
-
-  it ('should compile a OperatorNode', function () {
+  it ('should compile an OperatorNode', function () {
     var a = new ConstantNode('number', '2', math);
     var b = new ConstantNode('number', '3', math);
     var n = new OperatorNode('+', 'add', math.add, [a, b]);
