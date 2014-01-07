@@ -41,6 +41,7 @@ describe('permutations', function() {
       assert.throws(function(){permutations(-12, -6);}, TypeError);
       assert.throws(function(){permutations(math.bignumber(-12), -6);}, TypeError);
       assert.throws(function(){permutations(math.bignumber(12.5), math.bignumber(6));}, TypeError);
+      assert.throws(function(){permutations(math.bignumber(12.5), math.pi);}, TypeError);
   });
 
   it('should not accept more than two arguments', function() {
