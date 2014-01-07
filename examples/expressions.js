@@ -88,22 +88,26 @@ console.log('\nparse an expression into a node tree');
 var node1 = math.parse('sqrt(3^2 + 4^2)');
 print(node1.toString());                    // "ans = sqrt((3 ^ 2) + (4 ^ 2))"
 
-// evaluate a node
-print(node1.eval());                        // 5
+// compile the node
+var code1 = node1.compile(math);
+
+// evaluate the compiled code
+print(code1.eval());                        // 5
 
 // provide a scope
 console.log('\nprovide a scope');
+var node2 = math.parse('x^a');
+var code2 = node2.compile(math);
+print(node2.toString());                    // "ans = x ^ a"
 var scope = {
   x: 3,
   a: 2
 };
-var node2 = math.parse('x^a', scope);
-print(node2.toString());                    // "ans = x ^ a"
-print(node2.eval());                        // 9
+print(code2.eval(scope));                   // 9
 
 // change a value in the scope and re-evaluate the node
 scope.a = 3;
-print(node2.eval());                        // 27
+print(code2.eval(scope));                   // 27
 
 
 

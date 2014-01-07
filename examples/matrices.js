@@ -60,7 +60,7 @@ console.log();
 console.log('get a sub matrix');
 var h = math.diag(math.range(1,4));
 print(h);                                   // [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
-print(h.subset(math.index([1, 3], [1, 3])));   // [[2, 0], [0, 3]]
+print(h.subset(math.index([1, 3], [1, 3])));// [[2, 0], [0, 3]]
 console.log();
 
 // resize a multi dimensional matrix

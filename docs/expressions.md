@@ -22,7 +22,8 @@ Expressions can be parsed and evaluated in various ways:
 - Using the function [`math.eval(expr [,scope])`](#eval).
 - Using the function [`math.parse(expr [,scope])`](#parse).
 - By creating a [parser](#parser), `math.parser()`, which contains functions
-  `eval`, `parse`, and keeps a scope with assigned variables in memory.
+  `parse`, `compile`, and `eval`, and keeps a scope with assigned variables in
+  memory.
 
 
 ### Eval
@@ -67,21 +68,27 @@ scope.c;                                // 6.8
 ### Parse
 
 Math.js contains a function `math.parse` to parse expressions into a node
-tree. The syntax is similar to [`math.eval`](#eval):
+tree. The syntax is:
 
 ```js
 math.parse(expr)
-math.parse(expr, scope)
 math.parse([expr1, expr2, expr3, ...])
-math.parse([expr1, expr2, expr3, ...], scope)
 ```
 
 Function `parse` accepts a single expression or an array with
-expressions as first argument, and has an optional second argument
-containing a scope with variables and functions. The scope is a regular
-JavaScript Object. The scope will be used to resolve symbols, and to write
-assigned variables or function. Variables are linked dynamically to the
-provided scope.
+expressions as argument. Function parse returns a node tree, which can
+be successively compiled and evaluated:
+
+```js
+var node = math.parse(expr);      // parse expression into a node tree
+var code = node.compile(math);    // compile the node tree
+var result = code.eval([scope]);  // evaluate the code with an optional scope
+```
+
+An expression needs to be parsed and compiled only once, after which the
+expression can be evaluated repeatedly. On evaluation, an optional scope
+can be provided, which is used to resolve symbols and to write assigned
+variables or functions. Parameter `scope` is a regular Object.
 
 Example usage:
 
@@ -91,19 +98,21 @@ var math = require('mathjs')();
 
 // parse an expression into a node, and evaluate the node
 var node1 = math.parse('sqrt(3^2 + 4^2)');
-node1.eval(); // 5
+var code1 = node1.compile(math);
+code1.eval(); // 5
 
 // provide a scope
+var node2 = math.parse('x^a', scope);
+var code2 = node2.compile(math);
 var scope = {
     x: 3,
     a: 2
 };
-var node2 = math.parse('x^a', scope);
-node2.eval(); // 9
+code2.eval(scope); // 9
 
 // change a value in the scope and re-evaluate the node
 scope.a = 3;
-node2.eval(); // 27
+code2.eval(scope); // 27
 ```
 
 
@@ -125,12 +134,17 @@ The parser contains the following functions:
 
 - `clear()`
   Completely clear the parsers scope.
+- `compile(expr)`
+  Parse and compile an expression into javascript code.
+  Returns an Object with function `eval([scope])`, which when executed
+  returns the result of the expression.
 - `eval(expr)`
-  Evaluate an expression.
+  Evaluate an expression. Returns the result of the expression.s
 - `get(name)`
   Retrieve a variable or function from the parsers scope.
 - `parse(expr)`
-  Parse an expression into a node tree.
+  Parse an expression into a node tree. Returns a `Node`, which can be
+  compiled and evaluated like `node.compile(math).eval([scope])`.
 - `remove(name)`
   Remove a variable or function from the parsers scope.
 - `set(name, value)`
