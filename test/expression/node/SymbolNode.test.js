@@ -3,16 +3,15 @@ var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
     Node = require('../../../lib/expression/node/Node'),
-    Scope = require('../../../lib/expression/Scope'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode');
 
 describe('SymbolNode', function() {
 
   it ('should throw an error when evaluating an undefined symbol', function () {
-    var scope = new Scope(math);
-    var s = new SymbolNode('foo', scope);
-    assert.throws(function () {s.eval()}, Error);
+    var scope = {};
+    var s = new SymbolNode('foo');
+    assert.throws(function () {s.compile(math).eval(scope)}, Error);
   });
 
   it ('should compile a SymbolNode', function () {

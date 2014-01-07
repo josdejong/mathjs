@@ -3,7 +3,6 @@ var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
     Node = require('../../../lib/expression/node/Node'),
-    Scope = require('../../../lib/expression/Scope'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode'),
     RangeNode = require('../../../lib/expression/node/RangeNode'),
@@ -22,7 +21,7 @@ describe('ParamsNode', function() {
   it ('should compile a ParamsNode', function () {
     var s = new SymbolNode('sqrt');
     var c = new ConstantNode('number', '4');
-    var n = new ParamsNode(math, s, [c]);
+    var n = new ParamsNode(s, [c]);
 
     var scope = {};
     assert.equal(n.compile(math).eval(scope), 2);
@@ -30,7 +29,7 @@ describe('ParamsNode', function() {
 
   it.skip ('should compile a ParamsNode acting on a matrix', function () {
     var s = new SymbolNode('a');
-    var n = new ParamsNode(math, s, [
+    var n = new ParamsNode(s, [
       new ConstantNode('number', '2'),
       new ConstantNode('number', '1')
     ]);
@@ -43,9 +42,9 @@ describe('ParamsNode', function() {
 
   it.skip ('should compile a ParamsNode acting on a matrix (2)', function () {
     var s = new SymbolNode('a');
-    var n = new ParamsNode(math, s, [
+    var n = new ParamsNode(s, [
       new ConstantNode('number', '2'),
-      new RangeNode(math, [
+      new RangeNode([
         new ConstantNode('number', '1'),
         new SymbolNode('end')
       ])
@@ -59,9 +58,9 @@ describe('ParamsNode', function() {
 
   it.skip ('should compile a ParamsNode acting on a matrix (3)', function () {
     var s = new SymbolNode('a');
-    var n = new ParamsNode(math, s, [
+    var n = new ParamsNode(s, [
       new ConstantNode('number', '2'),
-      new RangeNode(math, [
+      new RangeNode([
         new SymbolNode('end'),
         new ConstantNode('number', '1'),
         new ConstantNode('number', '-1')
@@ -85,7 +84,7 @@ describe('ParamsNode', function() {
   it ('should stringify a ParamsNode', function () {
     var s = new SymbolNode('sqrt');
     var c = new ConstantNode('number', '4');
-    var n = new ParamsNode(math, s, [c]);
+    var n = new ParamsNode(s, [c]);
 
     assert.equal(n.toString(), 'sqrt(4)');
   });

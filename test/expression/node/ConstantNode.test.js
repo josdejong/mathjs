@@ -11,7 +11,7 @@ var assert = require('assert'),
 describe('ConstantNode', function() {
 
   it ('should create a ConstantNode', function () {
-    var n = new ConstantNode('number', '3', math);
+    var n = new ConstantNode('number', '3');
     assert.ok(n instanceof Node);
   });
 

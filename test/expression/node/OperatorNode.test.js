@@ -9,9 +9,9 @@ var assert = require('assert'),
 describe('OperatorNode', function() {
 
   it ('should compile an OperatorNode', function () {
-    var a = new ConstantNode('number', '2', math);
-    var b = new ConstantNode('number', '3', math);
-    var n = new OperatorNode('+', 'add', math.add, [a, b]);
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    var n = new OperatorNode('+', 'add', [a, b]);
 
     var expr = n.compile(math);
 
@@ -27,15 +27,15 @@ describe('OperatorNode', function() {
   });
 
   it ('should stringify a OperatorNode', function () {
-    var a = new ConstantNode('number', '2', math);
-    var b = new ConstantNode('number', '3', math);
-    var n = new OperatorNode('+', 'add', math.add, [a, b]);
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    var n = new OperatorNode('+', 'add', [a, b]);
     assert.equal(n.toString(), '2 + 3');
 
-    var n2 = new OperatorNode('!', 'factorial', math.factorial, [b]);
+    var n2 = new OperatorNode('!', 'factorial', [b]);
     assert.equal(n2.toString(), '3!');
 
-    var n3 = new OperatorNode('-', 'unary', math.unary, [b]);
+    var n3 = new OperatorNode('-', 'unary', [b]);
     assert.equal(n3.toString(), '-3');
   });
 

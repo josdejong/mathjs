@@ -3,7 +3,6 @@ var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
     Node = require('../../../lib/expression/node/Node'),
-    Scope = require('../../../lib/expression/Scope'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     UnitNode = require('../../../lib/expression/node/UnitNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode');

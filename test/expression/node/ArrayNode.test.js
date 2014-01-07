@@ -22,7 +22,7 @@ describe('ArrayNode', function() {
     var b = new ConstantNode('number', '2');
     var c = new ConstantNode('number', '3');
     var d = new ConstantNode('number', '4');
-    var n = new ArrayNode(null, [a, b, c, d]);
+    var n = new ArrayNode([a, b, c, d]);
 
     var expr = n.compile(math);
     assert.deepEqual(expr.eval(), math.matrix([1,2,3,4]));
@@ -38,9 +38,9 @@ describe('ArrayNode', function() {
     var c = new ConstantNode('number', '3');
     var d = new ConstantNode('number', '4');
 
-    var n2 = new ArrayNode(null, [a, b]);
-    var n3 = new ArrayNode(null, [c, d]);
-    var n4 = new ArrayNode(null, [n2, n3]);
+    var n2 = new ArrayNode([a, b]);
+    var n3 = new ArrayNode([c, d]);
+    var n4 = new ArrayNode([n2, n3]);
 
     var expr = n4.compile(math);
     assert.deepEqual(expr.eval(), math.matrix([[1,2],[3,4]]));
@@ -59,7 +59,7 @@ describe('ArrayNode', function() {
     var b = new ConstantNode('number', '2');
     var c = new ConstantNode('number', '3');
     var d = new ConstantNode('number', '4');
-    var n = new ArrayNode(null, [a, b, c, d]);
+    var n = new ArrayNode([a, b, c, d]);
 
     assert.equal(n.toString(), '[1, 2, 3, 4]');
   });

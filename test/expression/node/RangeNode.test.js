@@ -21,7 +21,7 @@ describe('RangeNode', function() {
     var start = new ConstantNode('number', '0');
     var end = new ConstantNode('number', '10');
     var step = new ConstantNode('number', '2');
-    var n = new RangeNode(math, [start, end, step]);
+    var n = new RangeNode([start, end, step]);
 
     var expr = n.compile(math);
     assert.deepEqual(expr.eval(), math.matrix([0, 2, 4, 6, 8, 10]));
@@ -39,7 +39,7 @@ describe('RangeNode', function() {
     var start = new ConstantNode('number', '0');
     var end = new ConstantNode('number', '10');
     var step = new ConstantNode('number', '2');
-    var n = new RangeNode(math, [start, end, step]);
+    var n = new RangeNode([start, end, step]);
 
     assert.equal(n.toString(), '0:2:10');
   });

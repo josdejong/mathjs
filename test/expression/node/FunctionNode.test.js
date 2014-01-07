@@ -3,7 +3,6 @@ var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
     Node = require('../../../lib/expression/node/Node'),
-    Scope = require('../../../lib/expression/Scope'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     OperatorNode = require('../../../lib/expression/node/OperatorNode'),
     FunctionNode = require('../../../lib/expression/node/FunctionNode'),
@@ -20,9 +19,9 @@ describe('FunctionNode', function() {
   });
 
   it ('should compile a FunctionNode', function () {
-    var a = new ConstantNode('number', '2', math);
+    var a = new ConstantNode('number', '2');
     var x = new SymbolNode('x');
-    var o = new OperatorNode('+', 'add', math.add, [a, x]);
+    var o = new OperatorNode('+', 'add', [a, x]);
     var n = new FunctionNode('f', ['x'], o);
 
     var expr = n.compile(math);
@@ -45,9 +44,9 @@ describe('FunctionNode', function() {
   });
 
   it ('should stringify a FunctionNode', function () {
-    var a = new ConstantNode('number', '2', math);
+    var a = new ConstantNode('number', '2');
     var x = new SymbolNode('x');
-    var o = new OperatorNode('+', 'add', math.add, [a, x]);
+    var o = new OperatorNode('+', 'add', [a, x]);
     var n = new FunctionNode('f', ['x'], o);
 
     assert.equal(n.toString(), 'function f(x) = 2 + x');

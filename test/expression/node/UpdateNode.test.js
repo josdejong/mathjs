@@ -7,6 +7,7 @@ var assert = require('assert'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     RangeNode = require('../../../lib/expression/node/RangeNode'),
+    IndexNode = require('../../../lib/expression/node/IndexNode'),
     UpdateNode = require('../../../lib/expression/node/UpdateNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode');
 
@@ -27,7 +28,7 @@ describe('UpdateNode', function() {
         new ConstantNode('number', '1')
     ];
     var v = new ConstantNode('number', '5');
-    var n = new UpdateNode(math, 'a', ranges, null, v, null);
+    var n = new UpdateNode(new IndexNode(a, ranges), v);
     var expr = n.compile(math);
 
     var scope = {
@@ -43,13 +44,13 @@ describe('UpdateNode', function() {
     var a = new SymbolNode('a');
     var ranges = [
         new ConstantNode('number', '2'),
-        new RangeNode(math, [
+        new RangeNode([
           new ConstantNode('number', '1'),
           new SymbolNode('end')
         ])
     ];
     var b = new SymbolNode('b');
-    var n = new UpdateNode(math, 'a', ranges, null, b, null);
+    var n = new UpdateNode(new IndexNode(a, ranges), b);
     var expr = n.compile(math);
 
     var scope = {
@@ -67,14 +68,14 @@ describe('UpdateNode', function() {
     var a = new SymbolNode('a');
     var ranges = [
         new ConstantNode('number', '2'),
-        new RangeNode(math, [
+        new RangeNode([
           new SymbolNode('end'),
           new ConstantNode('number', '1'),
           new ConstantNode('number', '-1')
         ])
     ];
     var b = new SymbolNode('b');
-    var n = new UpdateNode(math, 'a', ranges, null, b, null);
+    var n = new UpdateNode(new IndexNode(a, ranges), b);
     var expr = n.compile(math);
 
     var scope = {
@@ -95,7 +96,7 @@ describe('UpdateNode', function() {
       new ConstantNode('number', '1')
     ];
     var v = new ConstantNode('number', '5');
-    var n = new UpdateNode(math, 'a', ranges, null, v, null);
+    var n = new UpdateNode(new IndexNode(a, ranges), v);
     var expr = n.compile(bigmath);
 
     var scope = {
@@ -123,7 +124,7 @@ describe('UpdateNode', function() {
     ];
     var v = new ConstantNode('number', '5');
 
-    var n = new UpdateNode(math, 'a', ranges, null, v, null);
+    var n = new UpdateNode(new IndexNode(a, ranges), v);
     assert.equal(n.toString(), 'a[2, 1] = 5');
   });
 

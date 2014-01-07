@@ -26,7 +26,7 @@ describe('IndexNode', function() {
       new ConstantNode('number', '2'),
       new ConstantNode('number', '1')
     ];
-    var n = new IndexNode(math, a, ranges);
+    var n = new IndexNode(a, ranges);
     var expr = n.compile(math);
 
     var scope = {
@@ -39,12 +39,12 @@ describe('IndexNode', function() {
     var a = new SymbolNode('a');
     var ranges = [
       new ConstantNode('number', '2'),
-      new RangeNode(math, [
+      new RangeNode([
         new ConstantNode('number', '1'),
         new SymbolNode('end')
       ])
     ];
-    var n = new IndexNode(math, a, ranges);
+    var n = new IndexNode(a, ranges);
     var expr = n.compile(math);
 
     var scope = {
@@ -57,13 +57,13 @@ describe('IndexNode', function() {
     var a = new SymbolNode('a');
     var ranges = [
       new ConstantNode('number', '2'),
-      new RangeNode(math, [
+      new RangeNode([
         new SymbolNode('end'),
         new ConstantNode('number', '1'),
         new ConstantNode('number', '-1')
       ])
     ];
-    var n = new IndexNode(math, a, ranges);
+    var n = new IndexNode(a, ranges);
     var expr = n.compile(math);
 
     var scope = {
@@ -78,7 +78,7 @@ describe('IndexNode', function() {
       new ConstantNode('number', '2'),
       new ConstantNode('number', '1')
     ];
-    var n = new IndexNode(math, a, ranges);
+    var n = new IndexNode(a, ranges);
     var expr = n.compile(bigmath);
 
     var scope = {
@@ -102,7 +102,7 @@ describe('IndexNode', function() {
       new ConstantNode('number', '1')
     ];
 
-    var n = new IndexNode(math, 'a', ranges);
+    var n = new IndexNode('a', ranges);
     assert.equal(n.toString(), 'a[2, 1]');
   });
 
