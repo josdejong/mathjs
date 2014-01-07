@@ -15,6 +15,7 @@ https://github.com/josdejong/mathjs
 - Ranges in the expression parser now support big numbers.
 - Implemented functions `permutations` and `combinations`.
   Thanks Daniel Levin (daniel-levin).
+- Added lower case abbreviation `l` for unit litre.
 
 
 ## 2013-12-19, version 0.17.1
