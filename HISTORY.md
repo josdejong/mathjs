@@ -11,6 +11,8 @@ https://github.com/josdejong/mathjs
   `in`, an abbreviation for `inch`. Thanks Elijah Insua (tmpvar).
 - Implemented an argument `includeEnd` for function `range` (false by default).
 - Ranges in the expression parser now support big numbers.
+- Implemented functions `permutations` and `combinations`.
+  Thanks Daniel Levin (daniel-levin).
 
 
 ## 2013-12-19, version 0.17.1
