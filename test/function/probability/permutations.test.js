@@ -33,6 +33,7 @@ describe('permutations', function() {
 
   it('should fail loudly when k is larger than x', function() {
       assert.throws(function(){permutations(5, 6);}, TypeError);
+      assert.throws(function(){permutations(math.bignumber(5), math.bignumber(6));}, TypeError);
   });
 
   it('should not accept negative or non-integer arguments', function() {
