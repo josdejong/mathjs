@@ -13,6 +13,18 @@ describe('permutations', function() {
     assert.equal(permutations(5), 120);
   });
 
+  it('should calculate the permutations of a BigNumber', function() {
+    assert.deepEqual(permutations(math.bignumber(4)), math.bignumber(24));
+    assert.deepEqual(permutations(math.bignumber(5)), math.bignumber(120));
+    assert.deepEqual(permutations(math.bignumber(8)), math.bignumber(40320));
+  });
+
+  it('should calculate the permutations of a BigNumber, taking k at a time', function() {
+    assert.deepEqual(permutations(math.bignumber(5), math.bignumber(4)), math.bignumber(120));
+    assert.deepEqual(permutations(math.bignumber(6), math.bignumber(3)), math.bignumber(120));
+    assert.deepEqual(permutations(math.bignumber(9), math.bignumber(8)), math.bignumber(362880));
+  });
+
   it('should calculate the permutations of a number, taking k at a time', function() {
     assert.equal(permutations(5, 4), 120);
     assert.equal(permutations(9, 8), 362880);
@@ -26,6 +38,8 @@ describe('permutations', function() {
   it('should not accept negative or non-integer arguments', function() {
       assert.throws(function(){permutations(12, -6);}, TypeError);
       assert.throws(function(){permutations(-12, -6);}, TypeError);
+      assert.throws(function(){permutations(math.bignumber(-12), -6);}, TypeError);
+      assert.throws(function(){permutations(math.bignumber(12.5), math.bignumber(6));}, TypeError);
   });
 
   it('should not accept more than two arguments', function() {
