@@ -9,13 +9,14 @@ var fs = require('fs'),
 
 // bundle the script using browserify
 gulp.task('build', function() {
-  gulp.src(['./index.js'])
+  gulp.src(['./index.js'], {read: false})  // read false because browserify doesn't support streams when using standalone
+      .pipe(browserify({
+        standalone: 'mathjs' // TODO: standalone not supported when using streams
+      }))
+
       .pipe(replace('@@date', today()))
       .pipe(replace('@@version', version()))
 
-      .pipe(browserify({
-        // standalone: 'mathjs' // TODO: standalone not yet supported
-      }))
       .pipe(concat('math.js'))
       .pipe(gulp.dest('./dist'))
 
