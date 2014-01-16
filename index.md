@@ -44,7 +44,7 @@ math.pow([[-1, 2], [3, 1]], 2);
 
 <span class="comment">// expressions</span>
 math.eval(<span class="string">'1.2 * (2 + 4.5)'</span>);     <span class="comment">// 7.8</span>
-math.eval(<span class="string">'5.08 cm in inch'</span>);     <span class="comment">// 2 inch</span>
+math.eval(<span class="string">'5.08 cm to inch'</span>);     <span class="comment">// 2 inch</span>
 math.eval(<span class="string">'sin(45 deg) ^ 2'</span>);     <span class="comment">// 0.5</span>
 math.eval(<span class="string">'9 / 3 + 2i'</span>);          <span class="comment">// 3 + 2i</span>
 math.eval(<span class="string">'det([-1, 2; 3, 1])'</span>);  <span class="comment">// -7</span>
@@ -58,19 +58,28 @@ math.select(<span class="number">3</span>)
   </div>
   <div class="right">
     <h1>Demo</h1>
-    <p>
-      Try the expression parser below.<br>
-      See <a href="http://mathnotepad.com/">Math Notepad</a> for a full application.
-    </p>
-    <div id="commandline">loading...</div>
-    <div class="tips">
-      Shortcut keys:
-      <ul>
-        <li>Press <b>S</b> to set focus to the input field</li>
-        <li>Press <b>Ctrl+F11</b> to toggle full screen</li>
-        <li>Enter <b>"clear"</b> to clear history</li>
-      </ul>
-    </div>
+      <p>
+        Try the expression parser below.<br>
+        See <a href="http://mathnotepad.com/">Math Notepad</a> for a full application.
+      </p>
+      <div id="commandline">loading...</div>
+      <script type="text/javascript">
+        // create an instance of math.js
+        var math = mathjs();
+
+        var editor = new CommandLineEditor({
+            container: document.getElementById('commandline'),
+            math: math
+        });
+      </script>
+      <div class="tips">
+        Shortcut keys:
+        <ul>
+          <li>Press <b>S</b> to set focus to the input field</li>
+          <li>Press <b>Ctrl+F11</b> to toggle full screen</li>
+          <li>Enter <b>"clear"</b> to clear history</li>
+        </ul>
+      </div>
   </div>
   <div class="end">&nbsp;</div>
 </div>
