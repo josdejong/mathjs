@@ -169,7 +169,7 @@ parser.eval('cos(45 deg)');             // 0.7071067811865476
 // define variables and functions
 parser.eval('x = 7 / 2');               // 3.5
 parser.eval('x + 3');                   // 6.5
-parser.eval('function f(x, y) = x^y');  // f(x, y)
+parser.eval('f(x, y) = x^y');  // f(x, y)
 parser.eval('f(2, 3)');                 // 8
 
 // get and set variables and functions
@@ -298,11 +298,11 @@ only be defined on a single line.
 ```js
 var parser = math.parser();
 
-parser.eval('function f(x) = x ^ 2 - 5');
+parser.eval('f(x) = x ^ 2 - 5');
 parser.eval('f(2)');    // -1
 parser.eval('f(3)');    // 4
 
-parser.eval('function g(x, y) = x ^ y');
+parser.eval('g(x, y) = x ^ y');
 parser.eval('g(2, 3)'); // 8
 ```
 

@@ -22,7 +22,7 @@ describe('eval', function() {
 
   it('should eval a series of expressions', function() {
     assert.deepEqual(math.eval('a=3\nb=4\na*b'), [3, 4, 12]);
-    assert.deepEqual(math.eval('function f(x) = a * x; a=2; f(4)'), [8]);
+    assert.deepEqual(math.eval('f(x) = a * x; a=2; f(4)'), [8]);
     assert.deepEqual(math.eval('b = 43; b * 4'), [172]);
   });
 
@@ -54,7 +54,7 @@ describe('eval', function() {
     };
     assert.deepEqual(math.eval('a*b', scope), 12);
     assert.deepEqual(math.eval('c=5', scope), 5);
-    assert.deepEqual(math.format(math.eval('function f(x) = x^a', scope)), 'f(x)');
+    assert.deepEqual(math.format(math.eval('f(x) = x^a', scope)), 'f(x)');
 
     assert.deepEqual(Object.keys(scope).length, 5);
     assert.deepEqual(scope.a, 3);

@@ -6,6 +6,8 @@ https://github.com/josdejong/mathjs
 
 - Changed matrix index notation of expression parser from round brackets to
   square brackets, for example `A[1, 1:3]` instead of `A(1, 1:3)`.
+- Removed need to use the `function` keyword for function assignments in the
+  expression parser, you can define a function now like `f(x) = x^2`.
 - Implemented a compilation step in the expression parser: expressions are
   compiled into JavaScript, giving much better performance (easily 10x as fast).
 - Renamed unit conversion function and operator `in` to `to`. Operator `in` is

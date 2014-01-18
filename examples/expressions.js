@@ -65,7 +65,7 @@ scope.hello = function (name) {
 print(math.eval('hello("hero")', scope));   // "hello, hero!"
 
 // define a function as an expression
-var f = math.eval('function f(x) = x ^ a', scope);
+var f = math.eval('f(x) = x ^ a', scope);
 print(f(2));                                // 8
 print(scope.f(2));                          // 8
 
@@ -131,7 +131,7 @@ print(parser.eval('cos(45 deg)'));              // 0.70711
 console.log('\ndefine variables and functions');
 print(parser.eval('x = 7 / 2'));                // 3.5
 print(parser.eval('x + 3'));                    // 6.5
-print(parser.eval('function f(x, y) = x^y'));   // f(x, y)
+print(parser.eval('f(x, y) = x^y'));            // f(x, y)
 print(parser.eval('f(2, 3)'));                  // 8
 
 // manipulate matrices
