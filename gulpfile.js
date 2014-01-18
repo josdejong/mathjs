@@ -11,7 +11,7 @@ var fs = require('fs'),
 gulp.task('build', function() {
   gulp.src(['./index.js'], {read: false})  // read false because browserify doesn't support streams when using standalone
       .pipe(browserify({
-        standalone: 'mathjs' // TODO: standalone not supported when using streams
+        standalone: 'mathjs'
       }))
 
       .pipe(replace('@@date', today()))
@@ -21,6 +21,7 @@ gulp.task('build', function() {
       .pipe(gulp.dest('./dist'))
 
       .pipe(uglify({
+        outSourceMap: './math.js.map', // FIXME: source map seems not to work
         output: {
           comments: /@license/
         }
