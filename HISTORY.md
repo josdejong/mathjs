@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.18.0
+## 2014-01-18, version 0.18.0
 
 - Changed matrix index notation of expression parser from round brackets to
   square brackets, for example `A[1, 1:3]` instead of `A(1, 1:3)`.

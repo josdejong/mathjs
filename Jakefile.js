@@ -13,7 +13,8 @@ var INDEX             = './index.js',
     HEADER            = './lib/header.js',
     DIST              = './dist',
     MATHJS            = DIST + '/math.js',
-    MATHJS_MIN        = DIST + '/math.min.js';
+    MATHJS_MIN        = DIST + '/math.min.js',
+    MATHJS_MAP        = MATHJS_MIN + '.map';
 
 // register start time
 var start = +new Date();
@@ -70,6 +71,9 @@ task('minify', ['bundle'], function () {
   var result = util.minify({
     src: MATHJS,
     dest: MATHJS_MIN,
+    options: {
+      outSourceMap: MATHJS_MAP // TODO: map doesn't work
+    },
     header: util.read(HEADER)
   });
   updateVersion(MATHJS_MIN);
