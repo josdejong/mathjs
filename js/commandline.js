@@ -179,6 +179,7 @@ function CommandLineEditor (params) {
 
   // Auto complete current input
   function autoComplete () {
+    var name;
     var text = dom.input.value;
     var end = /[a-zA-Z_0-9]+$/.exec(text);
     if (end) {
@@ -212,12 +213,14 @@ function CommandLineEditor (params) {
 
       // units
       var Unit = math.type.Unit;
-      Unit.UNITS.forEach(function (unit) {
-        if (unit.name.indexOf(keyword) == 0) {
-          matches.push(unit.name);
+      for (name in Unit.UNITS) {
+        if (Unit.UNITS.hasOwnProperty(name)) {
+          if (name.indexOf(keyword) == 0) {
+            matches.push(name);
+          }
         }
-      });
-      for (var name in Unit.PREFIXES) {
+      }
+      for (name in Unit.PREFIXES) {
         if (Unit.PREFIXES.hasOwnProperty(name)) {
           var prefixes = Unit.PREFIXES[name];
           for (var prefix in prefixes) {
@@ -227,13 +230,14 @@ function CommandLineEditor (params) {
               }
               else if (keyword.indexOf(prefix) == 0) {
                 var unitKeyword = keyword.substring(prefix.length);
-                Unit.UNITS.forEach(function (unit) {
-                  if (unit.name.indexOf(unitKeyword) == 0 &&
-                      Unit.isPlainUnit(prefix + unit.name)) {
-                    matches.push(prefix + unit.name);
-                  }
-                });
 
+                for (var n in Unit.UNITS) {
+                  if (Unit.UNITS.hasOwnProperty(n)) {
+                    if (n.indexOf(unitKeyword) == 0 && Unit.isPlainUnit(prefix + n)) {
+                      matches.push(prefix + n);
+                    }
+                  }
+                }
               }
             }
           }
@@ -445,9 +449,9 @@ function CommandLineEditor (params) {
       expressions = [
         '1.2 / (2.3 + 0.7)',
         'a = 5.08 cm + 1 inch',
-        'a in inch',
+        'a to inch',
         'sin(45 deg) ^ 2',
-        'function f(x, y) = x ^ y',
+        'f(x, y) = x ^ y',
         'f(2, 3)'
       ];
     }
