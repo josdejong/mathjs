@@ -144,5 +144,41 @@ describe('unit', function() {
 
   });
 
+  describe('plurals', function() {
+    it('should support plurals', function () {
+
+      var unit1 = math.unit('5 meters');
+      assert.equal(unit1.value, 5);
+      assert.equal(unit1.unit.name, 'meters');
+      assert.equal(unit1.prefix.name, '');
+
+      var unit2 = math.unit('5 kilometers');
+      assert.equal(unit2.value, 5000);
+      assert.equal(unit2.unit.name, 'meters');
+      assert.equal(unit2.prefix.name, 'kilo');
+
+      var unit3 = math.unit('5 inches');
+      approx.equal(unit3.value, 0.127);
+      assert.equal(unit3.unit.name, 'inches');
+      assert.equal(unit3.prefix.name, '');
+
+    });
+  });
+
+  describe('aliases', function() {
+    it('should support aliases', function () {
+
+      var unit1 = math.unit('5 lt');
+      assert.equal(unit1.value, 5e-3);
+      assert.equal(unit1.unit.name, 'l');
+      assert.equal(unit1.prefix.name, '');
+
+      var unit2 = math.unit('1 lb');
+      assert.equal(unit2.value, 453.59237e-3);
+      assert.equal(unit2.unit.name, 'lbm');
+      assert.equal(unit2.prefix.name, '');
+    });
+  });
+
     // TODO: extensively test Unit
 });

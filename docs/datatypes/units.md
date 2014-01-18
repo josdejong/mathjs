@@ -89,7 +89,7 @@ Base                | Unit
 ------------------- | ---
 Length              | meter (m), inch (in), foot (ft), yard (yd), mile (mi), link (li), rod (rd), chain (ch), angstrom, mil
 Surface             | m2, sqin, sqft, sqyd, sqmi, sqrd, sqch, sqmil
-Volume              | m3, litre (L), cuin, cuft, cuyd, teaspoon, tablespoon
+Volume              | m3, litre (l, L), cc, cuin, cuft, cuyd, teaspoon, tablespoon
 Liquid              | volume	minim (min), fluiddram (fldr), fluidounce (fldz), gill (gi), cup (cp), pint (pt), quart (qt), gallon (gal), beerbarrel (bbl), oilbarrel (obl), hogshead
 Angles              | rad, deg, grad, cycle
 Time                | second (s), seconds, minute, minutes, hour (h), hours, day, days
