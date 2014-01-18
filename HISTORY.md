@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.18.1
+
+- Fixed broken auto completion in the command line interface.
+
+
 ## 2014-01-18, version 0.18.0
 
 - Changed matrix index notation of expression parser from round brackets to

@@ -52,6 +52,7 @@ var PRECISION = 14; // digits
  * @return {[Array, String]} completions
  */
 function completer (text) {
+  var name;
   var matches = [];
   var m = /[a-zA-Z_0-9]+$/.exec(text);
   if (m) {
@@ -86,12 +87,14 @@ function completer (text) {
 
     // units
     var Unit = math.type.Unit;
-    Unit.UNITS.forEach(function (unit) {
-      if (unit.name.indexOf(keyword) == 0) {
-        matches.push(unit.name);
+    for (name in Unit.UNITS) {
+      if (Unit.UNITS.hasOwnProperty(name)) {
+        if (name.indexOf(keyword) == 0) {
+          matches.push(name);
+        }
       }
-    });
-    for (var name in Unit.PREFIXES) {
+    }
+    for (name in Unit.PREFIXES) {
       if (Unit.PREFIXES.hasOwnProperty(name)) {
         var prefixes = Unit.PREFIXES[name];
         for (var prefix in prefixes) {
@@ -101,12 +104,14 @@ function completer (text) {
             }
             else if (keyword.indexOf(prefix) == 0) {
               var unitKeyword = keyword.substring(prefix.length);
-              Unit.UNITS.forEach(function (unit) {
-                if (unit.name.indexOf(unitKeyword) == 0 &&
-                    Unit.isPlainUnit(prefix + unit.name)) {
-                  matches.push(prefix + unit.name);
+              for (var n in Unit.UNITS) {
+                if (Unit.UNITS.hasOwnProperty(n)) {
+                  if (n.indexOf(unitKeyword) == 0 &&
+                      Unit.isPlainUnit(prefix + n)) {
+                    matches.push(prefix + n);
+                  }
                 }
-              });
+              }
             }
           }
         }
