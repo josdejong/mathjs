@@ -4,6 +4,7 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.18.1
 
+- Added unit `feet`.
 - Fixed broken auto completion in the command line interface.
 
 
