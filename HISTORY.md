@@ -6,6 +6,8 @@ https://github.com/josdejong/mathjs
 
 - Added unit `feet`.
 - Fixed broken auto completion in the command line interface.
+- Fixed an error in function `combinations` for large numbers, and
+  improved performance of both functions `combinations` and `permutations`.
 
 
 ## 2014-01-18, version 0.18.0
