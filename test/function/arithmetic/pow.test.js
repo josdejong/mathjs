@@ -57,8 +57,8 @@ describe('pow', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {pow(1)}, SyntaxError, 'Wrong number of arguments in function pow (1 provided, 2 expected)');
-    assert.throws(function () {pow(1, 2, 3)}, SyntaxError, 'Wrong number of arguments in function pow (3 provided, 2 expected)');
+    assert.throws(function () {pow(1)}, math.error.ArgumentsError, 'Wrong number of arguments in function pow (1 provided, 2 expected)');
+    assert.throws(function () {pow(1, 2, 3)}, math.error.ArgumentsError, 'Wrong number of arguments in function pow (3 provided, 2 expected)');
   });
 
   it('should exponentiate a complex number to the given power', function() {

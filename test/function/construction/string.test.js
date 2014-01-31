@@ -48,7 +48,7 @@ describe('string', function() {
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
-    assert.throws(function () {string(1,2)}, SyntaxError);
-    assert.throws(function () {string(1,2,3)}, SyntaxError);
+    assert.throws(function () {string(1,2)}, math.error.ArgumentsError);
+    assert.throws(function () {string(1,2,3)}, math.error.ArgumentsError);
   });
 });

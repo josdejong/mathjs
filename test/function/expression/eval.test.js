@@ -27,8 +27,8 @@ describe('eval', function() {
   });
 
   it('should throw an error if wrong number of arguments', function() {
-    assert.throws(function () {math.eval()}, SyntaxError);
-    assert.throws(function () {math.eval(1,2,3)}, SyntaxError);
+    assert.throws(function () {math.eval()},  math.error.ArgumentsError);
+    assert.throws(function () {math.eval(1,2,3)}, math.error.ArgumentsError);
   });
 
   it('should throw an error with a number', function() {

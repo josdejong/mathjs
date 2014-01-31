@@ -44,8 +44,8 @@ describe('boolean', function() {
   });
 
   it('should throw an error if there\'s a wrong number of arguments', function() {
-    assert.throws(function () {bool(1,2)}, SyntaxError);
-    assert.throws(function () {bool(1,2,3)}, SyntaxError);
+    assert.throws(function () {bool(1,2)}, math.error.ArgumentsError);
+    assert.throws(function () {bool(1,2,3)}, math.error.ArgumentsError);
   });
 
   it('should throw an error if used with a complex', function() {

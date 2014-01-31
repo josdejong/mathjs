@@ -40,8 +40,8 @@ describe('cube', function() {
   });
 
   it('should throw an error if there\'s wrong number of args', function() {
-    assert.throws(function () {cube()}, SyntaxError, 'Wrong number of arguments in function cube (0 provided, 1 expected)');
-    assert.throws(function () {cube(1, 2)}, SyntaxError, 'Wrong number of arguments in function cube (2 provided, 1 expected)');
+    assert.throws(function () {cube()}, math.error.ArgumentsError, 'Wrong number of arguments in function cube (0 provided, 1 expected)');
+    assert.throws(function () {cube(1, 2)}, math.error.ArgumentsError, 'Wrong number of arguments in function cube (2 provided, 1 expected)');
   });
 
   it('should cube each element in a matrix, array or range', function() {

@@ -26,8 +26,8 @@ describe('square', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {square()}, SyntaxError, 'Wrong number of arguments in function square (0 provided, 1 expected)');
-    assert.throws(function () {square(1, 2)}, SyntaxError, 'Wrong number of arguments in function square (2 provided, 1 expected)');
+    assert.throws(function () {square()}, math.error.ArgumentsError, 'Wrong number of arguments in function square (0 provided, 1 expected)');
+    assert.throws(function () {square(1, 2)}, math.error.ArgumentsError, 'Wrong number of arguments in function square (2 provided, 1 expected)');
   });
 
   it('should return the square of a complex number', function() {

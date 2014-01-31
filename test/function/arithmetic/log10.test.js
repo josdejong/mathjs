@@ -38,8 +38,8 @@ describe('log10', function() {
   });
 
   it('should throw an error if used with a wrong number of arguments', function() {
-    assert.throws(function () {log10()}, SyntaxError, 'Wrong number of arguments in function log10 (0 provided, 1 expected)');
-    assert.throws(function () {log10(1, 2)}, SyntaxError, 'Wrong number of arguments in function log10 (2 provided, 1 expected)');
+    assert.throws(function () {log10()}, math.error.ArgumentsError, 'Wrong number of arguments in function log10 (0 provided, 1 expected)');
+    assert.throws(function () {log10(1, 2)}, math.error.ArgumentsError, 'Wrong number of arguments in function log10 (2 provided, 1 expected)');
   });
 
   it('should return the log base 10 of a complex number', function() {

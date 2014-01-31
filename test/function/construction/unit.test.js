@@ -59,10 +59,10 @@ describe('unit', function() {
   });
 
   it('should throw an error if called with no argument', function() {
-    assert.throws(function () {unit()}, SyntaxError);
+    assert.throws(function () {unit()}, math.error.ArgumentsError);
   });
 
   it('should throw an error if called with an invalid number of arguments', function() {  
-    assert.throws(function () {unit(1,2,3)}, SyntaxError);
+    assert.throws(function () {unit(1,2,3)}, math.error.ArgumentsError);
   });
 });

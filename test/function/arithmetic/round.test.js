@@ -26,8 +26,8 @@ describe('round', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {round();}, SyntaxError, 'Wrong number of arguments in function round (3 provided, 1-2 expected)');
-    assert.throws(function () {round(1,2,3);}, SyntaxError, 'Wrong number of arguments in function round (3 provided, 1-2 expected)');
+    assert.throws(function () {round();}, math.error.ArgumentsError, 'Wrong number of arguments in function round (3 provided, 1-2 expected)');
+    assert.throws(function () {round(1,2,3);}, math.error.ArgumentsError, 'Wrong number of arguments in function round (3 provided, 1-2 expected)');
   });
 
   it('should round bignumbers', function() {

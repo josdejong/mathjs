@@ -42,7 +42,7 @@ describe('matrix', function() {
   });
 
   it('should throw an error if called with 2 numbers', function() {
-    assert.throws(function () {matrix(2, 3)}, SyntaxError);
+    assert.throws(function () {matrix(2, 3)}, math.error.ArgumentsError);
   });
 
 });

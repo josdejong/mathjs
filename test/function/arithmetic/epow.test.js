@@ -38,8 +38,8 @@ describe('epow', function() {
   });
 
   it('should throw an error if invalid number of arguments', function() {
-    assert.throws(function () {epow(1)}, SyntaxError, 'Wrong number of arguments in function epow (1 provided, 2 expected)');
-    assert.throws(function () {epow(1, 2, 3)}, SyntaxError, 'Wrong number of arguments in function epow (3 provided, 2 expected)');
+    assert.throws(function () {epow(1)}, math.error.ArgumentsError, 'Wrong number of arguments in function epow (1 provided, 2 expected)');
+    assert.throws(function () {epow(1, 2, 3)}, math.error.ArgumentsError, 'Wrong number of arguments in function epow (3 provided, 2 expected)');
   });
 
   it('should elevate a complex number to the given power', function() {
