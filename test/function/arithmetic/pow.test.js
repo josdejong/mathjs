@@ -123,6 +123,19 @@ describe('pow', function() {
     approx.deepEqual(pow(matrix(a), 2), matrix(res));
   });
 
+  it('should return identity matrix for power 0', function() {
+    var a = [[1,2],[3,4]];
+    var res = [[1,0],[0,1]];
+    approx.deepEqual(pow(a, 0), res);
+    approx.deepEqual(pow(matrix(a), 0), matrix(res));
+  });
+
+  it('should compute large size of square matrix', function() {
+    var a = math.eye(30).valueOf();
+    approx.deepEqual(pow(a, 1000), a);
+    approx.deepEqual(pow(matrix(a), 1000), matrix(a));
+  });
+
   it('should throw an error when calculating the power of a non square matrix', function() {
     assert.throws(function () {pow([1,2,3,4],2);});
     assert.throws(function () {pow([[1,2,3],[4,5,6]],2);});
