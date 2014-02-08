@@ -5,6 +5,7 @@ https://github.com/josdejong/mathjs
 ## not yet released, version 0.18.1
 
 - Added unit `feet`.
+- Improved performance of function `pow` for matrices. Thanks hamadu.
 - Fixed broken auto completion in the command line interface.
 - Fixed an error in function `combinations` for large numbers, and
   improved performance of both functions `combinations` and `permutations`.
