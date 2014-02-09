@@ -49,7 +49,8 @@
   "main": "./index",
   "scripts": {
     "test": "mocha test --recursive",
-    "build": "jake",
+    "build": "gulp",
+    "watch": "gulp watch",
     "coverage": "istanbul cover _mocha -- test --recursive; echo \"\nCoverage report is available at ./coverage/lcov-report/index.html\""
   },
   "bin": {

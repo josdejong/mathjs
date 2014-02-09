@@ -14,6 +14,16 @@ var ENTRY       = './index.js',
     MATH_MIN_JS = DIST + '/' + FILE_MIN,
     MATH_MAP_JS = DIST + '/' + MAP;
 
+// generate banner with today's date and correct version
+function createBanner() {
+  var today = gutil.date(new Date(), 'yyyy-mm-dd'); // today, formatted as yyyy-mm-dd
+  var version = require('./package.json').version;  // math.js version
+
+  return String(fs.readFileSync(HEADER))
+      .replace('@@date', today)
+      .replace('@@version', version);
+}
+
 var bannerPlugin = new webpack.BannerPlugin(createBanner(), {
   entryOnly: true,
   raw: true
@@ -42,7 +52,7 @@ var uglifyConfig = {
 var compiler = webpack(webpackConfig);
 
 gulp.task('bundle', function (cb) {
-  // update the banner contents (has a date in it)
+  // update the banner contents (has a date in it which should stay up to date)
   bannerPlugin.banner = createBanner();
 
   compiler.run(function (err, stats) {
@@ -66,18 +76,10 @@ gulp.task('minify', ['bundle'], function () {
   gutil.log('Mapped ' + MATH_MAP_JS);
 });
 
-// generate banner with today's date and correct version
-function createBanner() {
-  var today = gutil.date(new Date(), 'yyyy-mm-dd'); // today, formatted as yyyy-mm-dd
-  var version = require('./package.json').version;  // math.js version
+// The default task (called when you run `gulp`)
+gulp.task('default', ['bundle', 'minify']);
 
-  return String(fs.readFileSync(HEADER))
-      .replace('@@date', today)
-      .replace('@@version', version);
-}
-
-gulp.task('default', ['bundle', 'minify']); // The default task (called when you run `gulp`)
-
+// The watch task (to automatically rebuild when the source code changes)
 gulp.task('watch', ['bundle', 'minify'], function () {
   gulp.watch(['index.js', 'lib/**/*.js'], ['bundle', 'minify']);
 });
