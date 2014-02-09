@@ -43,20 +43,20 @@
     "uglify-js": "latest",
     "underscore": "latest",
     "seed-random": "latest",
-    "gulp": "latest",
+    "gulp": "~3.5.2",
     "gulp-util": "latest"
   },
   "main": "./index",
   "scripts": {
-    "test": "mocha test --recursive",
     "build": "gulp",
     "watch": "gulp watch",
+    "test": "mocha test --recursive",
     "coverage": "istanbul cover _mocha -- test --recursive; echo \"\nCoverage report is available at ./coverage/lcov-report/index.html\""
   },
   "bin": {
     "mathjs": "./bin/cli.js"
   },
   "engines": {
-    "node": "*"
+    "node": ">= 0.8"
   }
 }
