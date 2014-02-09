@@ -75,6 +75,7 @@ task('minify', ['bundle'], function () {
       outSourceMap: MATHJS_MAP // TODO: map doesn't work
     },
     header: util.read(HEADER)
+    // TODO: use options: {output: {comments: /@license/m } }
   });
   updateVersion(MATHJS_MIN);
 

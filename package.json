@@ -36,15 +36,15 @@
     "bignumber.js": "~1.3.0"
   },
   "devDependencies": {
-    "jake": "latest",
-    "browserify": "latest",
+    "webpack": "latest",
     "mocha": "latest",
     "istanbul": "latest",
     "numbers": "latest",
     "uglify-js": "latest",
-    "dateable": "latest",
     "underscore": "latest",
-    "seed-random": "latest"
+    "seed-random": "latest",
+    "gulp": "latest",
+    "gulp-util": "latest"
   },
   "main": "./index",
   "scripts": {
