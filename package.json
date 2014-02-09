@@ -43,7 +43,7 @@
     "uglify-js": "latest",
     "underscore": "latest",
     "seed-random": "latest",
-    "gulp": "~3.5.2",
+    "gulp": "~3.4.0",
     "gulp-util": "latest"
   },
   "main": "./index",
