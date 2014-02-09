@@ -1,69 +1,83 @@
 var fs = require('fs'),
-    dateable = require('dateable'),
-
     gulp = require('gulp'),
-    replace = require('gulp-replace'),
-    concat = require('gulp-concat'),
-    browserify = require('gulp-browserify'),
-    uglify = require('gulp-uglify');
+    gutil = require('gulp-util'),
+    webpack = require('webpack'),
+    uglify = require('uglify-js');
 
-// bundle the script using browserify
-gulp.task('build', function() {
-  gulp.src(['./index.js'], {read: false})  // read false because browserify doesn't support streams when using standalone
-      .pipe(browserify({
-        standalone: 'mathjs'
-      }))
+var ENTRY       = './index.js',
+    FILE        = 'math.js',
+    FILE_MIN    = 'math.min.js',
+    MAP         = 'math.map.js',
+    DIST        = './dist',
+    HEADER      = './lib/header.js',
+    MATH_JS     = DIST + '/' + FILE,
+    MATH_MIN_JS = DIST + '/' + FILE_MIN,
+    MATH_MAP_JS = DIST + '/' + MAP;
 
-      .pipe(replace('@@date', today()))
-      .pipe(replace('@@version', version()))
-
-      .pipe(concat('math.js'))
-      .pipe(gulp.dest('./dist'))
-
-      .pipe(uglify({
-        outSourceMap: './math.js.map', // FIXME: source map seems not to work
-        output: {
-          comments: /@license/
-        }
-      }))
-      .pipe(concat('math.min.js'))
-      .pipe(gulp.dest('./dist'));
+var bannerPlugin = new webpack.BannerPlugin(createBanner(), {
+  entryOnly: true,
+  raw: true
 });
 
-gulp.task('watch', function () {
-  gulp.run('build');
+var webpackConfig = {
+  entry: ENTRY,
+  output: {
+    library: 'mathjs',
+    libraryTarget: 'umd',
+    path: DIST,
+    filename: FILE
+  },
+  plugins: [ bannerPlugin ],
+  cache: true
+};
 
-  gulp.watch('lib/**', function() {
-    gulp.run('build');
+var uglifyConfig = {
+  outSourceMap: MAP,
+  output: {
+    comments: /@license/
+  }
+};
+
+// create a single instance of the compiler to allow caching
+var compiler = webpack(webpackConfig);
+
+gulp.task('bundle', function (cb) {
+  // update the banner contents (has a date in it)
+  bannerPlugin.banner = createBanner();
+
+  compiler.run(function (err, stats) {
+    if (err) {
+      gutil.log(err);
+    }
+
+    gutil.log('bundled ' + MATH_JS);
+
+    cb();
   });
 });
 
-// The default task (called when you run `gulp`)
-gulp.task('default', function() {
-  gulp.run('build');
+gulp.task('minify', ['bundle'], function () {
+  var result = uglify.minify([MATH_JS], uglifyConfig);
+
+  fs.writeFileSync(MATH_MIN_JS, result.code);
+  fs.writeFileSync(MATH_MAP_JS, result.map);
+
+  gutil.log('Minified ' + MATH_MIN_JS);
+  gutil.log('Mapped ' + MATH_MAP_JS);
 });
 
-/**
- * Returns today's date as a formatted string.
- * Default format is 'YYYY-MM-DD', for example '2013-02-18'
- * @param {String} [format]
- * @return {String} today
- */
-function today (format) {
-  var date = new Date();
-  return dateable.format(date, format || 'YYYY-MM-DD');
+// generate banner with today's date and correct version
+function createBanner() {
+  var today = gutil.date(new Date(), 'yyyy-mm-dd'); // today, formatted as yyyy-mm-dd
+  var version = require('./package.json').version;  // math.js version
+
+  return String(fs.readFileSync(HEADER))
+      .replace('@@date', today)
+      .replace('@@version', version);
 }
 
-/**
- * Read the version number from the package.json file.
- * If not found, an error is thrown
- * @return {String} version
- * @throws {Error}
- */
-function version() {
-  var pkg = JSON.parse(fs.readFileSync('./package.json'));
-  if (!pkg.version) {
-    throw new Error('No version found in package.json');
-  }
-  return pkg.version;
-}
+gulp.task('default', ['bundle', 'minify']); // The default task (called when you run `gulp`)
+
+gulp.task('watch', ['bundle', 'minify'], function () {
+  gulp.watch(['index.js', 'lib/**/*.js'], ['bundle', 'minify']);
+});
