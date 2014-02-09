@@ -5,14 +5,14 @@ var fs = require('fs'),
     uglify = require('uglify-js');
 
 var ENTRY       = './index.js',
+    HEADER      = './lib/header.js',
     FILE        = 'math.js',
     FILE_MIN    = 'math.min.js',
-    MAP         = 'math.map.js',
+    FILE_MAP    = 'math.map',
     DIST        = './dist',
-    HEADER      = './lib/header.js',
     MATH_JS     = DIST + '/' + FILE,
     MATH_MIN_JS = DIST + '/' + FILE_MIN,
-    MATH_MAP_JS = DIST + '/' + MAP;
+    MATH_MAP_JS = DIST + '/' + FILE_MAP;
 
 // generate banner with today's date and correct version
 function createBanner() {
@@ -42,7 +42,8 @@ var webpackConfig = {
 };
 
 var uglifyConfig = {
-  outSourceMap: MAP,
+  // FIXME: source map is generated, but math.min.js misses a link to this source file
+  outSourceMap: FILE_MAP,
   output: {
     comments: /@license/
   }
