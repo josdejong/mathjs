@@ -2,10 +2,14 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.18.1
+## 2014-02-15, version 0.18.1
 
 - Added unit `feet`.
+- Implemented function `compile` (shortcut for parsing and then compiling).
+- Improved performance of function `pow` for matrices. Thanks hamadu.
 - Fixed broken auto completion in the command line interface.
+- Fixed an error in function `combinations` for large numbers, and
+  improved performance of both functions `combinations` and `permutations`.
 
 
 ## 2014-01-18, version 0.18.0

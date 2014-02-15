@@ -32,7 +32,7 @@ changes in the new version are described.
 
 Build the distribution files ./dist/math.js and ./dist/math.min.js by running:
 
-    jake
+    npm run build
 
 After the build is complete, verify if the files are created and contain the
 correct date and version number in the header.

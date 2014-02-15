@@ -35,8 +35,8 @@ describe('mod', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {mod(1)}, SyntaxError);
-    assert.throws(function () {mod(1,2,3)}, SyntaxError);
+    assert.throws(function () {mod(1)}, math.error.ArgumentsError);
+    assert.throws(function () {mod(1,2,3)}, math.error.ArgumentsError);
   });
 
   it('should calculate the modulus of bignumbers', function() {

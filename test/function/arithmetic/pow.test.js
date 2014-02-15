@@ -57,8 +57,8 @@ describe('pow', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {pow(1)}, SyntaxError, 'Wrong number of arguments in function pow (1 provided, 2 expected)');
-    assert.throws(function () {pow(1, 2, 3)}, SyntaxError, 'Wrong number of arguments in function pow (3 provided, 2 expected)');
+    assert.throws(function () {pow(1)}, math.error.ArgumentsError, 'Wrong number of arguments in function pow (1 provided, 2 expected)');
+    assert.throws(function () {pow(1, 2, 3)}, math.error.ArgumentsError, 'Wrong number of arguments in function pow (3 provided, 2 expected)');
   });
 
   it('should exponentiate a complex number to the given power', function() {
@@ -121,6 +121,19 @@ describe('pow', function() {
     var res = [[7,10],[15,22]];
     approx.deepEqual(pow(a, 2), res);
     approx.deepEqual(pow(matrix(a), 2), matrix(res));
+  });
+
+  it('should return identity matrix for power 0', function() {
+    var a = [[1,2],[3,4]];
+    var res = [[1,0],[0,1]];
+    approx.deepEqual(pow(a, 0), res);
+    approx.deepEqual(pow(matrix(a), 0), matrix(res));
+  });
+
+  it('should compute large size of square matrix', function() {
+    var a = math.eye(30).valueOf();
+    approx.deepEqual(pow(a, 1000), a);
+    approx.deepEqual(pow(matrix(a), 1000), matrix(a));
   });
 
   it('should throw an error when calculating the power of a non square matrix', function() {

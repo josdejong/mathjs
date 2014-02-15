@@ -45,16 +45,16 @@ describe('number', function() {
   });
 
   it('should throw an error if called with a wrong number of arguments', function() {
-    assert.throws(function () {number(1,2)}, SyntaxError);
-    assert.throws(function () {number(1,2,3)}, SyntaxError);
+    assert.throws(function () {number(1,2)}, math.error.ArgumentsError);
+    assert.throws(function () {number(1,2,3)}, math.error.ArgumentsError);
   });
 
   it('should throw an error if called with a complex number', function() {
-    assert.throws(function () {number(math.complex(2,3))}, SyntaxError);
+    assert.throws(function () {number(math.complex(2,3))}, TypeError);
   });
 
   it('should throw an error if called with a unit', function() {
-    assert.throws(function () {number(math.unit('5cm'))}, SyntaxError);
+    assert.throws(function () {number(math.unit('5cm'))}, TypeError);
   });
 });
 

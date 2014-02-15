@@ -33,8 +33,8 @@ describe('log', function() {
   });
 
   it('should throw an error if invalid number of arguments', function() {
-    assert.throws(function () {log()}, SyntaxError, 'Wrong number of arguments in function log (0 provided, 1-2 expected)');
-    assert.throws(function () {log(1, 2, 3)}, SyntaxError, 'Wrong number of arguments in function log (3 provided, 1-2 expected)');
+    assert.throws(function () {log()}, math.error.ArgumentsError, 'Wrong number of arguments in function log (0 provided, 1-2 expected)');
+    assert.throws(function () {log(1, 2, 3)}, math.error.ArgumentsError, 'Wrong number of arguments in function log (3 provided, 1-2 expected)');
   });
 
   it('should return the log of a bignumber', function() {

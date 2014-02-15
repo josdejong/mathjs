@@ -77,6 +77,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 
 ## Expression
 
+- math.compile(expr)
 - math.eval(expr [, scope])
 - math.help(text)
 - math.parse(expr [, scope])

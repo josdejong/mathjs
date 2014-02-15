@@ -44,8 +44,8 @@ describe('parse', function() {
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
-    assert.throws(function () {math.parse()}, SyntaxError);
-    assert.throws(function () {math.parse(1,2,3)}, SyntaxError);
+    assert.throws(function () {math.parse()}, Error);
+    assert.throws(function () {math.parse(1,2,3)}, Error);
   });
 
   it('should throw an error if called with a wrong type of argument', function() {
@@ -814,26 +814,27 @@ describe('parse', function() {
       assert.equal(math.parse('[1, 2 + 3i, 4]').toString(), 'ans = [1, 2 + 3i, 4]');
     });
 
-    it('should support custom node handlers', function() {
-      function CustomNode (params, paramScopes) {
-        this.params = params;
-        this.paramScopes = paramScopes;
+    it('should support custom nodes', function() {
+      function CustomNode (args) {
+        this.args = args;
       }
       CustomNode.prototype = new math.expression.node.Node();
       CustomNode.prototype.toString = function () {
         return 'CustomNode';
       };
       CustomNode.prototype._compile = function (defs) {
-        var strParams = [];
-        this.params.forEach(function (param) {
-          strParams.push(param.toString());
+        var strArgs = [];
+        this.args.forEach(function (arg) {
+          strArgs.push(arg.toString());
         });
-        return '"CustomNode(' + strParams.join(', ') + ')"';
+        return '"CustomNode(' + strArgs.join(', ') + ')"';
       };
 
-      math.expression.node.handlers['custom'] = CustomNode;
+      var nodes = {
+        custom: CustomNode
+      };
 
-      var node = math.parse('custom(x, (2+x), sin(x))');
+      var node = math.parse('custom(x, (2+x), sin(x))', nodes);
       assert.equal(node.compile(math).eval(), 'CustomNode(x, 2 + x, sin(x))');
 
     });

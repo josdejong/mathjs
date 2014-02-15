@@ -103,7 +103,7 @@ describe('range', function() {
   });
 
   it('should throw an error if called with an invalid number of arguments', function() {
-    assert.throws(function () {range()}, SyntaxError);
-    assert.throws(function () {range(1,2,3,4)}, SyntaxError);
+    assert.throws(function () {range()}, math.error.ArgumentsError);
+    assert.throws(function () {range(1,2,3,4)}, math.error.ArgumentsError);
   });
 });

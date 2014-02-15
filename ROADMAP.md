@@ -15,5 +15,4 @@ A rough roadmap for math.js.
 - Library has a plugin architecture.
 - A basic set of functions covering all common mathematical areas.
 - Functions and data types for numeral systems: Bin, Oct, Hex, Dec.
-- Arbitrary precision calculations with a BigNumber data type.
 - Support for derived units (like km/h, kg*m/s2, etc).
