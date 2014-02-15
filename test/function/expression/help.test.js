@@ -9,7 +9,7 @@ describe('help', function() {
     assert.deepEqual(help.doc, math.expression.docs.sin);
 
     // names to ignore
-    var ignore = ['workspace', 'parse', 'parser', 'select', 'unary', 'print', 'config', 'in'];
+    var ignore = ['workspace', 'compile', 'parse', 'parser', 'select', 'unary', 'print', 'config', 'in'];
 
     // test whether all functions are documented
     for (var prop in math) {

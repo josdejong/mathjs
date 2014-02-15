@@ -20,7 +20,8 @@ This page is divided in two sections:
 Expressions can be parsed and evaluated in various ways:
 
 - Using the function [`math.eval(expr [,scope])`](#eval).
-- Using the function [`math.parse(expr [,scope])`](#parse).
+- Using the function [`math.compile(expr)`](#compile).
+- Using the function [`math.parse(expr)`](#parse).
 - By creating a [parser](#parser), `math.parser()`, which contains functions
   `parse`, `compile`, and `eval`, and keeps a scope with assigned variables in
   memory.
@@ -65,6 +66,45 @@ math.eval('c = 2.3 + 4.5', scope);      // 6.8
 scope.c;                                // 6.8
 ```
 
+
+### Compile
+
+Math.js contains a function `math.compile` which compiles expressions
+into JavaScript code. This is a shortcut for first [parsing](#parse) and then
+compiling an expression. The syntax is:
+
+```js
+math.compile(expr)
+math.compile([expr1, expr2, expr3, ...])
+```
+
+Function `compile` accepts a single expression or an array with
+expressions as argument. Function `compile` returns an object with a function
+`eval([scope])`, which can executed to evaluate the expression against an
+(optional) scope:
+
+```js
+var code = math.compile(expr);    // compile an expression
+var result = code.eval([scope]);  // evaluate the code with an optional scope
+```
+
+An expression needs to be compiled only once, after which the
+expression can be evaluated repeatedly and against different scopes.
+The optional scope is used to resolve symbols and to write assigned
+variables or functions. Parameter `scope` is a regular Object.
+
+Example usage:
+
+```js
+// create an instance of math.js
+var math = require('mathjs')();
+
+// parse an expression into a node, and evaluate the node
+var code1 = math.compile('sqrt(3^2 + 4^2)');
+code1.eval(); // 5
+```
+
+
 ### Parse
 
 Math.js contains a function `math.parse` to parse expressions into a node
@@ -76,7 +116,7 @@ math.parse([expr1, expr2, expr3, ...])
 ```
 
 Function `parse` accepts a single expression or an array with
-expressions as argument. Function parse returns a node tree, which can
+expressions as argument. Function `parse` returns a node tree, which can
 be successively compiled and evaluated:
 
 ```js

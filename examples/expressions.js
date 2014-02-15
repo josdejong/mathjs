@@ -76,11 +76,10 @@ print(scope.f(2));                          // 8
 // Function `math.parse` parses expressions into a node tree. The syntax is
 // similar to function `math.eval`.
 // Function `parse` accepts a single expression or an array with
-// expressions as first argument, and has an optional second argument
-// containing a scope with variables and functions. The scope is a regular
-// JavaScript Object. The scope will be used to resolve symbols, and to write
-// assigned variables or function. Variables are linked dynamically to the
-// provided scope.
+// expressions as first argument. The function returns a node tree, which
+// then can be compiled against math, and then evaluated against an (optional
+// scope. This scope is a regular JavaScript Object. The scope will be used
+// to resolve symbols, and to write assigned variables or function.
 console.log('\n2. USING FUNCTION MATH.PARSE');
 
 // parse an expression
@@ -110,14 +109,41 @@ scope.a = 3;
 print(code2.eval(scope));                   // 27
 
 
+// 3. using function math.compile
+//
+// Function `math.compile` compiles expressions into a node tree. The syntax is
+// similar to function `math.eval`.
+// Function `compile` accepts a single expression or an array with
+// expressions as first argument, and returns an object with a function eval
+// to evaluate the compiled expression. On evaluation, an optional scope can
+// be provided. This scope will be used to resolve symbols, and to write
+// assigned variables or function.
+console.log('\n3. USING FUNCTION MATH.COMPILE');
 
-// 3. using a parser
+// parse an expression
+console.log('\ncompile an expression');
+var code3 = math.compile('sqrt(3^2 + 4^2)');
+
+// evaluate the compiled code
+print(code3.eval());                        // 5
+
+// provide a scope for the variable assignment
+console.log('\nprovide a scope');
+var code2 = math.compile('a = a + 3');
+var scope = {
+  a: 7
+};
+code2.eval(scope);
+print(scope.a);                             // 10
+
+
+// 4. using a parser
 //
 // In addition to the static functions `math.eval` and `math.parse`, math.js
 // contains a parser with functions `eval` and `parse`, which automatically
 // keeps a scope with assigned variables in memory. The parser also contains
 // some convenience methods to get, set, and remove variables from memory.
-console.log('\n3. USING A PARSER');
+console.log('\n4. USING A PARSER');
 var parser = math.parser();
 
 // evaluate with parser
