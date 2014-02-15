@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.19.0-SNAPSHOT
- * @date    2014-02-09
+ * @version 0.18.1
+ * @date    2014-02-15
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -221,9 +221,9 @@
 	  require(15)(math, _settings);
 	  require(16)(math, _settings);
 	  require(17)(math, _settings);
+	  require(18)(math, _settings);
 
 	  // functions - arithmetic
-	  require(18)(math, _settings);
 	  require(19)(math, _settings);
 	  require(20)(math, _settings);
 	  require(21)(math, _settings);
@@ -254,15 +254,15 @@
 	  require(46)(math, _settings);
 	  require(47)(math, _settings);
 	  require(48)(math, _settings);
+	  require(49)(math, _settings);
 
 	  // functions - complex
-	  require(49)(math, _settings);
 	  require(50)(math, _settings);
 	  require(51)(math, _settings);
 	  require(52)(math, _settings);
+	  require(53)(math, _settings);
 
 	  // functions - construction
-	  require(53)(math, _settings);
 	  require(54)(math, _settings);
 	  require(55)(math, _settings);
 	  require(56)(math, _settings);
@@ -272,9 +272,9 @@
 	  require(60)(math, _settings);
 	  require(61)(math, _settings);
 	  require(62)(math, _settings);
+	  require(63)(math, _settings);
 
 	  // functions - matrix
-	  require(63)(math, _settings);
 	  require(64)(math, _settings);
 	  require(65)(math, _settings);
 	  require(66)(math, _settings);
@@ -287,20 +287,20 @@
 	  require(73)(math, _settings);
 	  require(74)(math, _settings);
 	  require(75)(math, _settings);
+	  require(76)(math, _settings);
 
 	  // functions - probability
-	  require(76)(math, _settings);
 	  require(77)(math, _settings);
 	  require(78)(math, _settings);
 	  require(79)(math, _settings);
+	  require(80)(math, _settings);
 
 	  // functions - statistics
-	  require(80)(math, _settings);
 	  require(81)(math, _settings);
 	  require(82)(math, _settings);
+	  require(83)(math, _settings);
 
 	  // functions - trigonometry
-	  require(83)(math, _settings);
 	  require(84)(math, _settings);
 	  require(85)(math, _settings);
 	  require(86)(math, _settings);
@@ -310,25 +310,26 @@
 	  require(90)(math, _settings);
 	  require(91)(math, _settings);
 	  require(92)(math, _settings);
-
-	  // functions - units
 	  require(93)(math, _settings);
 
-	  // functions - utils
+	  // functions - units
 	  require(94)(math, _settings);
+
+	  // functions - utils
 	  require(95)(math, _settings);
 	  require(96)(math, _settings);
 	  require(97)(math, _settings);
 	  require(98)(math, _settings);
 	  require(99)(math, _settings);
 	  require(100)(math, _settings);
+	  require(101)(math, _settings);
 
 	  // constants
-	  require(101)(math, _settings);
+	  require(102)(math, _settings);
 
 	  // selector (we initialize after all functions are loaded)
 	  math.chaining = {};
-	  math.chaining.Selector = require(102)(math, _settings);
+	  math.chaining.Selector = require(103)(math, _settings);
 
 	  // return the new instance
 	  return math;
@@ -491,28 +492,27 @@
 	exports.AssignmentNode = require(105);
 	exports.BlockNode = require(106);
 	exports.ConstantNode = require(107);
-	exports.IndexNode = require(109);
-	exports.FunctionNode = require(108);
-	exports.Node = require(117);
-	exports.OperatorNode = require(110);
-	exports.ParamsNode = require(111);
-	exports.RangeNode = require(112);
-	exports.SymbolNode = require(113);
-	exports.UnitNode = require(114);
-	exports.UpdateNode = require(115);
-
-	exports.handlers = require(116);
+	exports.IndexNode = require(108);
+	exports.FunctionNode = require(109);
+	exports.Node = require(110);
+	exports.OperatorNode = require(111);
+	exports.ParamsNode = require(112);
+	exports.RangeNode = require(113);
+	exports.SymbolNode = require(114);
+	exports.UnitNode = require(115);
+	exports.UpdateNode = require(116);
 
 
 /***/ },
 /* 4 */
 /***/ function(module, exports, require) {
 
-	var util = require(103),
+	var util = require(117),
 
 	    toNumber = util.number.toNumber,
 	    isString = util.string.isString,
 	    isArray = Array.isArray,
+	    type = util.types.type,
 
 	    // types
 	    Complex = require(7),
@@ -525,15 +525,14 @@
 	    AssignmentNode = require(105),
 	    BlockNode = require(106),
 	    ConstantNode = require(107),
-	    FunctionNode = require(108),
-	    IndexNode = require(109),
-	    OperatorNode = require(110),
-	    ParamsNode = require(111),
-	    RangeNode = require(112),
-	    SymbolNode = require(113),
-	    UnitNode = require(114),
-	    UpdateNode = require(115),
-	    handlers = require(116);
+	    FunctionNode = require(109),
+	    IndexNode = require(108),
+	    OperatorNode = require(111),
+	    ParamsNode = require(112),
+	    RangeNode = require(113),
+	    SymbolNode = require(114),
+	    UnitNode = require(115),
+	    UpdateNode = require(116);
 
 	/**
 	 * Parse an expression. Returns a node tree, which can be evaluated by
@@ -542,7 +541,9 @@
 	 * Syntax:
 	 *
 	 *     parse(expr)
+	 *     parse(expr, nodes)
 	 *     parse([expr1, expr2, expr3, ...])
+	 *     parse([expr1, expr2, expr3, ...], nodes)
 	 *
 	 * Example:
 	 *
@@ -560,13 +561,17 @@
 	 *     nodes[2].compile(math).eval(); // 12
 	 *
 	 * @param {String | String[] | Matrix} expr
+	 * @param {Object<String, Node>} [nodes]    An set of custom nodes
 	 * @return {Node | Node[]} node
 	 * @throws {Error}
 	 */
-	function parse (expr) {
-	  if (arguments.length != 1) {
-	    throw new SyntaxError('Wrong number of arguments: 1 expected');
+	function parse (expr, nodes) {
+	  if (arguments.length != 1 && arguments.length != 2) {
+	    throw new SyntaxError('Wrong number of arguments: 1 or 2 expected');
 	  }
+
+	  // pass extra nodes
+	  extra_nodes = (type(nodes) === 'object') ? nodes : {};
 
 	  if (isString(expr)) {
 	    // parse a single expression
@@ -584,7 +589,7 @@
 	    // oops
 	    throw new TypeError('String or matrix expected');
 	  }
-	};
+	}
 
 	// token types enumeration
 	var TOKENTYPE = {
@@ -635,11 +640,12 @@
 	  'in': true
 	};
 
-	var expression = '';  // current expression
-	var index = 0;        // current index in expr
-	var c = '';           // current token character in expr
-	var token = '';       // current token
-	var token_type = TOKENTYPE.NULL; // type of the token
+	var extra_nodes = {};             // current extra nodes
+	var expression = '';              // current expression
+	var index = 0;                    // current index in expr
+	var c = '';                       // current token character in expr
+	var token = '';                   // current token
+	var token_type = TOKENTYPE.NULL;  // type of the token
 
 	/**
 	 * Get the first character from the expression.
@@ -1313,7 +1319,7 @@
 	function parseLeftHandOperators ()  {
 	  var node, operators, name, fn, params;
 
-	  node = parseNodeHandler();
+	  node = parseCustomNodes();
 
 	  operators = {
 	    '!': 'factorial',
@@ -1337,13 +1343,18 @@
 	 * Parse a custom node handler. A node handler can be used to process
 	 * nodes in a custom way, for example for handling a plot.
 	 *
-	 * A handler must be defined in the namespace math.expression.node.handlers,
-	 * and must extend math.expression.node.Node, and the handler must contain
-	 * functions eval(), find(filter), and toString().
+	 * A handler must be passed as second argument of the parse function.
+	 * - must extend math.expression.node.Node
+	 * - must contain a function _compile(defs: Object) : String
+	 * - must contain a function find(filter: Object) : Node[]
+	 * - must contain a function toString() : String
+	 * - the constructor is called with a single argument containing all parameters
 	 *
 	 * For example:
 	 *
-	 *     math.expression.node.handlers['plot'] = PlotHandler;
+	 *     nodes = {
+	 *       'plot': PlotHandler
+	 *     };
 	 *
 	 * The constructor of the handler is called as:
 	 *
@@ -1351,16 +1362,16 @@
 	 *
 	 * The handler will be invoked when evaluating an expression like:
 	 *
-	 *     node = math.parse('plot(sin(x), x)');
+	 *     node = math.parse('plot(sin(x), x)', nodes);
 	 *
 	 * @return {Node} node
 	 * @private
 	 */
-	function parseNodeHandler () {
+	function parseCustomNodes () {
 	  var params, handler;
 
-	  if (token_type == TOKENTYPE.SYMBOL && handlers[token]) {
-	    handler = handlers[token];
+	  if (token_type == TOKENTYPE.SYMBOL && extra_nodes[token]) {
+	    handler = extra_nodes[token];
 
 	    getToken();
 
@@ -2039,7 +2050,7 @@
 /* 7 */
 /***/ function(module, exports, require) {
 
-	var util = require(103),
+	var util = require(117),
 	    number = util.number,
 
 	    isNumber = util.number.isNumber,
@@ -2410,7 +2421,7 @@
 /* 8 */
 /***/ function(module, exports, require) {
 
-	var util = require(103),
+	var util = require(117),
 
 	    number = util.number,
 	    string = util.string,
@@ -2688,7 +2699,7 @@
 /* 9 */
 /***/ function(module, exports, require) {
 
-	var util = require(103),
+	var util = require(117),
 
 	    Range = require(8),
 
@@ -2967,7 +2978,7 @@
 /* 10 */
 /***/ function(module, exports, require) {
 
-	var util = require(103),
+	var util = require(117),
 	    Index = require(9),
 
 	    number = util.number,
@@ -3494,7 +3505,7 @@
 /* 11 */
 /***/ function(module, exports, require) {
 
-	var util = require(103),
+	var util = require(117),
 
 	    number = util.number,
 	    string = util.string,
@@ -4358,7 +4369,7 @@
 /* 12 */
 /***/ function(module, exports, require) {
 
-	var util = require(103),
+	var util = require(117),
 	    object = util.object,
 	    string = util.string;
 
@@ -4456,7 +4467,7 @@
 
 	// utility methods for arrays and matrices
 
-	var util = require(103),
+	var util = require(117),
 
 	    Matrix = require(10),
 
@@ -4776,8 +4787,73 @@
 /* 15 */
 /***/ function(module, exports, require) {
 
+	module.exports = function (math, settings) {
+	  var util = require(117),
+	      _parse = require(4),
+
+	      collection = require(13),
+
+	      isString = util.string.isString,
+	      isCollection = collection.isCollection;
+
+	  /**
+	   * Parse and compile an expression.
+	   * Returns a an object with a function `eval([scope])` to evaluate the
+	   * compiled expression.
+	   *
+	   * Syntax:
+	   *
+	   *     var code = math.compile(expr)
+	   *     var codes = math.compile([expr1, expr2, expr3, ...])
+	   *
+	   * Example:
+	   *
+	   *     var code = math.compile('sqrt(3^2 + 4^2)');
+	   *     code.eval(); // 5
+	   *
+	   *     var scope = {a: 3, b: 4}
+	   *     var code = math.compile('a * b'); // 12
+	   *     code.eval(scope); // 12
+	   *     scope.a = 5;
+	   *     code.eval(scope); // 20
+	   *
+	   *     var nodes = math.compile(['a = 3', 'b = 4', 'a * b']);
+	   *     nodes[2].eval(); // 12
+	   *
+	   * @param {String | String[] | Matrix} expr
+	   * @return {Object | Object[]} code
+	   * @throws {Error}
+	   */
+	  math.compile = function compile (expr) {
+	    if (arguments.length != 1) {
+	      throw new math.error.ArgumentsError('compile', arguments.length, 1);
+	    }
+
+	    if (isString(expr)) {
+	      // evaluate a single expression
+	      return _parse(expr).compile(math);
+	    }
+	    else if (isCollection(expr)) {
+	      // evaluate an array or matrix with expressions
+	      return collection.deepMap(expr, function (elem) {
+	        return _parse(elem).compile(math);
+	      });
+	    }
+	    else {
+	      // oops
+	      throw new TypeError('String, array, or matrix expected');
+	    }
+	  }
+	};
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, require) {
+
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
+	      _parse = require(4),
 
 	      collection = require(13),
 
@@ -4819,27 +4895,27 @@
 
 	    if (isString(expr)) {
 	      // evaluate a single expression
-	      return math.parse(expr)
+	      return _parse(expr)
 	          .compile(math)
 	          .eval(scope);
 	    }
 	    else if (isCollection(expr)) {
 	      // evaluate an array or matrix with expressions
 	      return collection.deepMap(expr, function (elem) {
-	        return math.parse(elem)
+	        return _parse(elem)
 	            .compile(math).eval(scope);
 	      });
 	    }
 	    else {
 	      // oops
-	      throw new TypeError('String or matrix expected');
+	      throw new TypeError('String, array, or matrix expected');
 	    }
 	  };
 	};
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -4901,7 +4977,7 @@
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math, settings) {
@@ -4914,7 +4990,9 @@
 	   * Syntax:
 	   *
 	   *     math.parse(expr)
+	   *     math.parse(expr, nodes)
 	   *     math.parse([expr1, expr2, expr3, ...])
+	   *     math.parse([expr1, expr2, expr3, ...], nodes)
 	   *
 	   * Example:
 	   *
@@ -4932,10 +5010,11 @@
 	   *     nodes[2].compile(math).eval(); // 12
 	   *
 	   * @param {String | String[] | Matrix} expr
+	   * @param {Object<String, Node>} [nodes]
 	   * @return {Node | Node[]} node
 	   * @throws {Error}
 	   */
-	  math.parse = function parse (expr) {
+	  math.parse = function parse (expr, nodes) {
 	    return _parse.apply(_parse, arguments);
 	  }
 
@@ -4943,11 +5022,11 @@
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -5000,11 +5079,11 @@
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -5144,11 +5223,11 @@
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -5203,11 +5282,11 @@
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -5260,11 +5339,11 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, require) {
 
 	module.exports = function(math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -5414,7 +5493,7 @@
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -5441,7 +5520,7 @@
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -5468,7 +5547,7 @@
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -5495,11 +5574,11 @@
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -5612,11 +5691,11 @@
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -5675,11 +5754,11 @@
 
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -5734,11 +5813,11 @@
 
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -5793,11 +5872,11 @@
 
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      collection = require(13),
@@ -5880,11 +5959,11 @@
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -5987,11 +6066,11 @@
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -6094,11 +6173,11 @@
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      collection = require(13),
@@ -6190,11 +6269,11 @@
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -6266,11 +6345,11 @@
 
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -6333,11 +6412,11 @@
 
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      collection = require(13),
@@ -6454,11 +6533,11 @@
 
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, require) {
 
 	module.exports = function(math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -6859,11 +6938,11 @@
 
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -7014,11 +7093,11 @@
 
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -7139,11 +7218,11 @@
 
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -7198,11 +7277,11 @@
 
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -7305,11 +7384,11 @@
 
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -7412,11 +7491,11 @@
 
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -7485,11 +7564,11 @@
 
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -7542,11 +7621,11 @@
 
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -7681,11 +7760,11 @@
 
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -7749,11 +7828,11 @@
 
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -7860,11 +7939,11 @@
 
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 
@@ -7962,11 +8041,11 @@
 
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -8021,11 +8100,11 @@
 
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -8080,11 +8159,11 @@
 
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -8138,11 +8217,11 @@
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -8195,11 +8274,11 @@
 
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      collection = require(13),
@@ -8255,11 +8334,11 @@
 
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      collection = require(13),
@@ -8329,11 +8408,11 @@
 
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -8448,11 +8527,11 @@
 
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Index = require(9),
@@ -8502,7 +8581,7 @@
 
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -8536,11 +8615,11 @@
 
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      collection = require(13),
@@ -8600,7 +8679,7 @@
 
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -8649,7 +8728,7 @@
 
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -8695,11 +8774,11 @@
 
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      collection = require(13),
 
@@ -8741,11 +8820,11 @@
 
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Unit = require(11),
@@ -8823,11 +8902,11 @@
 
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      Matrix = require(10),
 	      collection = require(13),
@@ -8944,11 +9023,11 @@
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      Matrix = require(10),
 
@@ -8970,7 +9049,16 @@
 	      throw new math.error.ArgumentsError('det', arguments.length, 1);
 	    }
 
-	    var size = array.size(x.valueOf());
+	    if (!(x instanceof Matrix)) {
+	      if (x instanceof Array) {
+	        x = new Matrix(x);
+	      } else {
+	        throw new TypeError('Determinant is only defined for Matrix or Array.');
+	      }
+	    } 
+
+	    var size = x.size();
+
 	    switch (size.length) {
 	      case 0:
 	        // scalar
@@ -8993,7 +9081,7 @@
 	        var rows = size[0];
 	        var cols = size[1];
 	        if (rows == cols) {
-	          return _det(x.valueOf(), rows, cols);
+	          return _det(x.clone().valueOf(), rows, cols);
 	        }
 	        else {
 	          throw new RangeError('Matrix must be square ' +
@@ -9046,7 +9134,7 @@
 	            lead++;
 	            if (lead == cols) {
 	              // We found the last pivot.
-	              if (object.deepEqual(matrix, eye(rows).valueOf())) {
+	              if (object.deepEqual(matrix, math.eye(rows).valueOf())) {
 	                return math.round(d, 6);
 	              } else {
 	                return 0;
@@ -9093,11 +9181,11 @@
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math, settings) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      Matrix = require(10),
 	      collection = require(13),
@@ -9186,11 +9274,11 @@
 
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math, settings) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Matrix = require(10),
@@ -9271,7 +9359,7 @@
 
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -9461,11 +9549,11 @@
 
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math, settings) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Matrix = require(10),
@@ -9509,11 +9597,11 @@
 
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math, settings) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Matrix = require(10),
@@ -9831,11 +9919,11 @@
 
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math, settings) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Matrix = require(10),
@@ -9948,11 +10036,11 @@
 
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math, settings) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -10004,11 +10092,11 @@
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      Matrix = require(10),
 
@@ -10045,11 +10133,11 @@
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      Matrix = require(10),
 	      Index = require(9),
@@ -10242,11 +10330,11 @@
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      Matrix = require(10),
 	      collection = require(13),
@@ -10318,11 +10406,11 @@
 
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math, settings) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Matrix = require(10),
@@ -10365,11 +10453,11 @@
 
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      collection = require(13),
@@ -10461,7 +10549,7 @@
 
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math, settings) {
@@ -10646,11 +10734,11 @@
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 
@@ -10746,11 +10834,11 @@
 
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      collection = require(13),
@@ -10831,7 +10919,7 @@
 
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -10909,7 +10997,7 @@
 
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -10987,7 +11075,7 @@
 
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -11072,11 +11160,11 @@
 
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -11170,11 +11258,11 @@
 
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -11265,11 +11353,11 @@
 
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -11347,11 +11435,11 @@
 
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -11427,11 +11515,11 @@
 
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -11500,11 +11588,11 @@
 
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -11573,11 +11661,11 @@
 
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -11647,11 +11735,11 @@
 
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -11720,11 +11808,11 @@
 
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -11792,11 +11880,11 @@
 
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      BigNumber = require(220),
 	      Complex = require(7),
@@ -11868,11 +11956,11 @@
 
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      Unit = require(11),
 	      collection = require(13),
@@ -11916,7 +12004,7 @@
 
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -11941,7 +12029,7 @@
 
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -12023,11 +12111,11 @@
 
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
-	  var util = require(103),
+	  var util = require(117),
 
 	      Complex = require(7),
 	      Unit = require(11),
@@ -12149,7 +12237,7 @@
 
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -12198,7 +12286,7 @@
 
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -12269,7 +12357,7 @@
 
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -12319,7 +12407,7 @@
 
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -12365,7 +12453,7 @@
 	};
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -12394,7 +12482,7 @@
 
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, require) {
 
 	module.exports = function (math) {
@@ -12494,22 +12582,10 @@
 
 
 /***/ },
-/* 103 */
-/***/ function(module, exports, require) {
-
-	exports.array = require(221);
-	exports['boolean'] = require(222);
-	exports.number = require(223);
-	exports.object = require(2);
-	exports.string = require(218);
-	exports.types = require(217);
-
-
-/***/ },
 /* 104 */
 /***/ function(module, exports, require) {
 
-	var Node = require(117),
+	var Node = require(110),
 	    object = require(2),
 	    string = require(218),
 	    collection = require(13),
@@ -12587,7 +12663,7 @@
 /* 105 */
 /***/ function(module, exports, require) {
 
-	var Node = require(117);
+	var Node = require(110);
 
 	/**
 	 * @constructor AssignmentNode
@@ -12650,7 +12726,7 @@
 /* 106 */
 /***/ function(module, exports, require) {
 
-	var Node = require(117);
+	var Node = require(110);
 
 	/**
 	 * @constructor BlockNode
@@ -12744,7 +12820,7 @@
 /* 107 */
 /***/ function(module, exports, require) {
 
-	var Node = require(117),
+	var Node = require(110),
 	    Complex = require(7),
 	    BigNumber = require(220),
 	    string = require(218),
@@ -12837,109 +12913,11 @@
 /* 108 */
 /***/ function(module, exports, require) {
 
-	var Node = require(117);
+	var number= require(221),
 
-	/**
-	 * @constructor FunctionNode
-	 * @extends {Node}
-	 * Function assignment
-	 *
-	 * @param {String} name           Function name
-	 * @param {String[]} args         Function arguments
-	 * @param {Node} expr             The function expression
-	 */
-	function FunctionNode(name, args, expr) {
-	  this.name = name;
-	  this.args = args;
-	  this.expr = expr;
-	}
-
-	FunctionNode.prototype = new Node();
-
-	/**
-	 * Evaluate the function assignment
-	 * @return {function} fn
-	 */
-	// TODO: cleanup
-	FunctionNode.prototype._eval = function() {
-	  // put the definition in the scope
-	  this.scope.set(this.name, this.fn);
-
-	  return this.fn;
-	};
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	FunctionNode.prototype._compile = function (defs) {
-
-	  // TODO: validate whether name and all arguments are strings
-
-	  return 'scope["' + this.name + '"] = ' +
-	      '  (function (scope) {' +
-	      '    scope = Object.create(scope); ' +
-	      '    var fn = function ' + this.name + '(' + this.args.join(',') + ') {' +
-	      '      if (arguments.length != ' + this.args.length + ') {' +
-	      '        throw new SyntaxError("Wrong number of arguments in function ' + this.name + ' (" + arguments.length + " provided, ' + this.args.length + ' expected)");' +
-	      '      }' +
-	      this.args.map(function (variable, index) {
-	        return 'scope["' + variable + '"] = arguments[' + index + '];';
-	      }).join('') +
-	      '      return ' + this.expr._compile(defs) + '' +
-	      '    };' +
-	      '    fn.syntax = "' + this.name + '(' + this.args.join(', ') + ')";' +
-	      '    return fn;' +
-	      '  })(scope);';
-	};
-
-	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter settings
-	 * @returns {Node[]} nodes
-	 */
-	FunctionNode.prototype.find = function (filter) {
-	  var nodes = [];
-
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
-
-	  // search in expression
-	  if (this.expr) {
-	    nodes = nodes.concat(this.expr.find(filter));
-	  }
-
-	  return nodes;
-	};
-
-	/**
-	 * get string representation
-	 * @return {String} str
-	 */
-	FunctionNode.prototype.toString = function() {
-	  return 'function ' + this.name +
-	      '(' + this.args.join(', ') + ') = ' +
-	      this.expr.toString();
-	};
-
-	module.exports = FunctionNode;
-
-
-/***/ },
-/* 109 */
-/***/ function(module, exports, require) {
-
-	var number= require(223),
-
-	    Node = require(117),
-	    RangeNode = require(112),
-	    SymbolNode = require(113),
+	    Node = require(110),
+	    RangeNode = require(113),
+	    SymbolNode = require(114),
 
 	    BigNumber = require(220),
 	    Index = require(9),
@@ -13124,461 +13102,39 @@
 	module.exports = IndexNode;
 
 /***/ },
-/* 110 */
+/* 109 */
 /***/ function(module, exports, require) {
 
-	var Node = require(117);
+	var Node = require(110);
 
 	/**
-	 * @constructor OperatorNode
+	 * @constructor FunctionNode
 	 * @extends {Node}
-	 * An operator with two arguments, like 2+3
+	 * Function assignment
 	 *
-	 * @param {String} op       Operator name, for example '+'
-	 * @param {String} fn       Function name, for example 'add'
-	 * @param {Node[]} params   Parameters
+	 * @param {String} name           Function name
+	 * @param {String[]} args         Function arguments
+	 * @param {Node} expr             The function expression
 	 */
-	function OperatorNode (op, fn, params) {
-	  this.op = op;
-	  this.fn = fn;
-	  this.params = params;
-	}
-
-	OperatorNode.prototype = new Node();
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	OperatorNode.prototype._compile = function (defs) {
-	  if (!(this.fn in defs.math)) {
-	    throw new Error('Function ' + this.fn + ' missing in provided namespace "math"');
-	  }
-
-	  var params = this.params.map(function (param) {
-	    return param._compile(defs);
-	  });
-	  return 'math.' + this.fn + '(' + params.join(', ') + ')';
-	};
-
-	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter settings
-	 * @returns {Node[]} nodes
-	 */
-	OperatorNode.prototype.find = function (filter) {
-	  var nodes = [];
-
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
-
-	  // search in parameters
-	  var params = this.params;
-	  if (params) {
-	    for (var i = 0, len = params.length; i < len; i++) {
-	      nodes = nodes.concat(params[i].find(filter));
-	    }
-	  }
-
-	  return nodes;
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	OperatorNode.prototype.toString = function() {
-	  var params = this.params;
-
-	  switch (params.length) {
-	    case 1:
-	      if (this.op == '-') {
-	        // special case: unary minus
-	        return '-' + params[0].toString();
-	      }
-	      else {
-	        // for example '5!'
-	        return params[0].toString() + this.op;
-	      }
-
-	    case 2: // for example '2+3'
-	      var lhs = params[0].toString();
-	      if (params[0] instanceof OperatorNode) {
-	        lhs = '(' + lhs + ')';
-	      }
-	      var rhs = params[1].toString();
-	      if (params[1] instanceof OperatorNode) {
-	        rhs = '(' + rhs + ')';
-	      }
-	      return lhs + ' ' + this.op + ' ' + rhs;
-
-	    default: // this should occur. format as a function call
-	      return this.op + '(' + this.params.join(', ') + ')';
-	  }
-	};
-
-	module.exports = OperatorNode;
-
-
-/***/ },
-/* 111 */
-/***/ function(module, exports, require) {
-
-	var number= require(223),
-
-	    Node = require(117),
-	    RangeNode = require(112),
-	    SymbolNode = require(113),
-
-	    BigNumber = require(220),
-	    Index = require(9),
-	    Range = require(8),
-
-	    isNumber = number.isNumber,
-	    toNumber = number.toNumber;
-
-	/**
-	 * @constructor ParamsNode
-	 * @extends {Node}
-	 * invoke a list with parameters on a node
-	 * @param {Node} object
-	 * @param {Node[]} params
-	 */
-	function ParamsNode (object, params) {
-	  this.object = object;
-	  this.params = params;
-	}
-
-	ParamsNode.prototype = new Node();
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	ParamsNode.prototype._compile = function (defs) {
-	  // TODO: implement support for matrix indexes and ranges
-	  var params = this.params.map(function (param) {
-	    return param._compile(defs);
-	  });
-
-	  return this.object._compile(defs) + '(' + params.join(', ') + ')';
-	};
-
-	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter settings
-	 * @returns {Node[]} nodes
-	 */
-	ParamsNode.prototype.find = function (filter) {
-	  var nodes = [];
-
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
-
-	  // search object
-	  if (this.object) {
-	    nodes = nodes.concat(this.object.find(filter));
-	  }
-
-	  // search in parameters
-	  var params = this.params;
-	  if (params) {
-	    for (var i = 0, len = params.length; i < len; i++) {
-	      nodes = nodes.concat(params[i].find(filter));
-	    }
-	  }
-
-	  return nodes;
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	ParamsNode.prototype.toString = function() {
-	  // format the parameters like "(2, 4.2)"
-	  var str = this.object ? this.object.toString() : '';
-	  if (this.params) {
-	    str += '(' + this.params.join(', ') + ')';
-	  }
-	  return str;
-	};
-
-	module.exports = ParamsNode;
-
-
-/***/ },
-/* 112 */
-/***/ function(module, exports, require) {
-
-	var number = require(223),
-	    Node = require(117),
-
-	    BigNumber = require(220),
-	    Range = require(8),
-	    Matrix = require(10),
-
-	    toNumber = number.toNumber;
-
-	/**
-	 * @constructor RangeNode
-	 * @extends {Node}
-	 * create a range
-	 * @param {Node[]} params           Array [start, end] or [start, end, step]
-	 */
-	function RangeNode (params) {
-	  if (params.length != 2 && params.length != 3) {
-	    throw new SyntaxError('Wrong number of arguments. ' +
-	        'Expected [start, end] or [start, end, step]');
-	  }
-
-	  this.start = params[0];  // included lower-bound
-	  this.end   = params[1];  // included upper-bound
-	  this.step  = params[2];  // optional step
-	}
-
-	RangeNode.prototype = new Node();
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	RangeNode.prototype._compile = function (defs) {
-	  return 'math.range(' +
-	      this.start._compile(defs) + ', ' +
-	      this.end._compile(defs) + ', ' +
-	      (this.step ? (this.step._compile(defs) + ', ') : '') +
-	      'true)'; // parameter includeEnd = true
-	};
-
-	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter settings
-	 * @returns {Node[]} nodes
-	 */
-	RangeNode.prototype.find = function (filter) {
-	  var nodes = [];
-
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
-
-	  // search in parameters
-	  if (this.start) {
-	    nodes = nodes.concat(this.start.find(filter));
-	  }
-	  if (this.step) {
-	    nodes = nodes.concat(this.step.find(filter));
-	  }
-	  if (this.end) {
-	    nodes = nodes.concat(this.end.find(filter));
-	  }
-
-	  return nodes;
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	RangeNode.prototype.toString = function() {
-	  // format the range like "start:step:end"
-	  var str = this.start.toString();
-	  if (this.step) {
-	    str += ':' + this.step.toString();
-	  }
-	  str += ':' + this.end.toString();
-
-	  return str;
-	};
-
-	module.exports = RangeNode;
-
-
-/***/ },
-/* 113 */
-/***/ function(module, exports, require) {
-
-	var Node = require(117),
-	    Unit = require(11);
-
-	/**
-	 * @constructor SymbolNode
-	 * @extends {Node}
-	 * A symbol node can hold and resolve a symbol
-	 * @param {String} name
-	 * @extends {Node}
-	 */
-	function SymbolNode(name) {
+	function FunctionNode(name, args, expr) {
 	  this.name = name;
-	}
-
-	SymbolNode.prototype = new Node();
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	SymbolNode.prototype._compile = function (defs) {
-	  // add a function to the definitions
-	  defs['undef'] = undef;
-	  defs['Unit'] = Unit;
-
-	  return '(' +
-	      'scope["' + this.name + '"] !== undefined ? scope["' + this.name + '"] : ' +
-	      'math["' + this.name + '"] !== undefined ? math["' + this.name + '"] : ' +
-	      (Unit.isPlainUnit(this.name) ?
-	        'new Unit(null, "' + this.name + '")' :
-	        'undef("' + this.name + '")') +
-	      ')';
-	};
-
-	/**
-	 * Throws an error 'Undefined symbol {name}'
-	 * @param {String} name
-	 */
-	function undef (name) {
-	  throw new Error('Undefined symbol ' + name);
-	}
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 * @override
-	 */
-	SymbolNode.prototype.toString = function() {
-	  return this.name;
-	};
-
-	module.exports = SymbolNode;
-
-
-/***/ },
-/* 114 */
-/***/ function(module, exports, require) {
-
-	var Node = require(117),
-
-	    BigNumber = require(220),
-	    Complex = require(7),
-	    Unit = require(11),
-
-	    number = require(223),
-	    toNumber = number.toNumber;
-
-	/**
-	 * @constructor UnitNode
-	 * @extends {Node}
-	 * Construct a unit, like '3 cm'
-	 * @param {Node} value
-	 * @param {String} unit     Unit name, for example  'meter' 'kg'
-	 */
-	function UnitNode (value, unit) {
-	  this.value = value;
-	  this.unit = unit;
-	}
-
-	UnitNode.prototype = new Node();
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	UnitNode.prototype._compile = function (defs) {
-	  return 'math.unit(' + this.value._compile(defs) + ', "' + this.unit + '")';
-	};
-
-	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter settings
-	 * @returns {Node[]} nodes
-	 */
-	UnitNode.prototype.find = function (filter) {
-	  var nodes = [];
-
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
-
-	  // check value
-	  nodes = nodes.concat(this.value.find(filter));
-
-	  return nodes;
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	UnitNode.prototype.toString = function() {
-	  return this.value + ' ' + this.unit;
-	};
-
-	module.exports = UnitNode;
-
-
-/***/ },
-/* 115 */
-/***/ function(module, exports, require) {
-
-	var number= require(223),
-
-	    Node = require(117),
-	    RangeNode = require(112),
-	    IndexNode = require(109),
-	    SymbolNode = require(113),
-
-	    BigNumber = require(220),
-	    Index = require(9),
-	    Range = require(8),
-
-	    isNumber = number.isNumber,
-	    toNumber = number.toNumber;
-
-	/**
-	 * @constructor UpdateNode
-	 * @extends {Node}
-	 * Update a symbol value, like a(2,3) = 4.5
-	 *
-	 * @param {IndexNode} index             IndexNode containing symbol and ranges
-	 * @param {Node} expr                   The expression defining the symbol
-	 */
-	function UpdateNode(index, expr) {
-	  if (!(index instanceof IndexNode)) {
-	    throw new TypeError('index mus be an IndexNode');
-	  }
-
-	  this.index = index;
+	  this.args = args;
 	  this.expr = expr;
 	}
 
-	UpdateNode.prototype = new Node();
+	FunctionNode.prototype = new Node();
+
+	/**
+	 * Evaluate the function assignment
+	 * @return {function} fn
+	 */
+	// TODO: cleanup
+	FunctionNode.prototype._eval = function() {
+	  // put the definition in the scope
+	  this.scope.set(this.name, this.fn);
+
+	  return this.fn;
+	};
 
 	/**
 	 * Compile the node to javascript code
@@ -13588,9 +13144,25 @@
 	 * @return {String} js
 	 * @private
 	 */
-	UpdateNode.prototype._compile = function (defs) {
-	  return 'scope["' + this.index.objectName() + '\"] = ' +
-	      this.index.compileSubset(defs,  this.expr._compile(defs));
+	FunctionNode.prototype._compile = function (defs) {
+
+	  // TODO: validate whether name and all arguments are strings
+
+	  return 'scope["' + this.name + '"] = ' +
+	      '  (function (scope) {' +
+	      '    scope = Object.create(scope); ' +
+	      '    var fn = function ' + this.name + '(' + this.args.join(',') + ') {' +
+	      '      if (arguments.length != ' + this.args.length + ') {' +
+	      '        throw new SyntaxError("Wrong number of arguments in function ' + this.name + ' (" + arguments.length + " provided, ' + this.args.length + ' expected)");' +
+	      '      }' +
+	      this.args.map(function (variable, index) {
+	        return 'scope["' + variable + '"] = arguments[' + index + '];';
+	      }).join('') +
+	      '      return ' + this.expr._compile(defs) + '' +
+	      '    };' +
+	      '    fn.syntax = "' + this.name + '(' + this.args.join(', ') + ')";' +
+	      '    return fn;' +
+	      '  })(scope);';
 	};
 
 	/**
@@ -13598,20 +13170,12 @@
 	 * @param {Object} filter  See Node.find for a description of the filter settings
 	 * @returns {Node[]} nodes
 	 */
-	UpdateNode.prototype.find = function (filter) {
+	FunctionNode.prototype.find = function (filter) {
 	  var nodes = [];
 
 	  // check itself
 	  if (this.match(filter)) {
 	    nodes.push(this);
-	  }
-
-	  // search in parameters
-	  var ranges = this.ranges;
-	  if (ranges) {
-	    for (var i = 0, len = ranges.length; i < len; i++) {
-	      nodes = nodes.concat(ranges[i].find(filter));
-	    }
 	  }
 
 	  // search in expression
@@ -13623,30 +13187,20 @@
 	};
 
 	/**
-	 * Get string representation
-	 * @return {String}
+	 * get string representation
+	 * @return {String} str
 	 */
-	UpdateNode.prototype.toString = function() {
-	  return this.index.toString() + ' = ' + this.expr.toString();
+	FunctionNode.prototype.toString = function() {
+	  return 'function ' + this.name +
+	      '(' + this.args.join(', ') + ') = ' +
+	      this.expr.toString();
 	};
 
-	module.exports = UpdateNode;
+	module.exports = FunctionNode;
 
 
 /***/ },
-/* 116 */
-/***/ function(module, exports, require) {
-
-	/**
-	 * Custom node handlers,
-	 * (can be added to the exports object)
-	 */
-
-	// TODO: remove use of global handlers
-
-
-/***/ },
-/* 117 */
+/* 110 */
 /***/ function(module, exports, require) {
 
 	/**
@@ -13771,6 +13325,528 @@
 	};
 
 	module.exports = Node;
+
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, require) {
+
+	var Node = require(110);
+
+	/**
+	 * @constructor OperatorNode
+	 * @extends {Node}
+	 * An operator with two arguments, like 2+3
+	 *
+	 * @param {String} op       Operator name, for example '+'
+	 * @param {String} fn       Function name, for example 'add'
+	 * @param {Node[]} params   Parameters
+	 */
+	function OperatorNode (op, fn, params) {
+	  this.op = op;
+	  this.fn = fn;
+	  this.params = params;
+	}
+
+	OperatorNode.prototype = new Node();
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	OperatorNode.prototype._compile = function (defs) {
+	  if (!(this.fn in defs.math)) {
+	    throw new Error('Function ' + this.fn + ' missing in provided namespace "math"');
+	  }
+
+	  var params = this.params.map(function (param) {
+	    return param._compile(defs);
+	  });
+	  return 'math.' + this.fn + '(' + params.join(', ') + ')';
+	};
+
+	/**
+	 * Find all nodes matching given filter
+	 * @param {Object} filter  See Node.find for a description of the filter settings
+	 * @returns {Node[]} nodes
+	 */
+	OperatorNode.prototype.find = function (filter) {
+	  var nodes = [];
+
+	  // check itself
+	  if (this.match(filter)) {
+	    nodes.push(this);
+	  }
+
+	  // search in parameters
+	  var params = this.params;
+	  if (params) {
+	    for (var i = 0, len = params.length; i < len; i++) {
+	      nodes = nodes.concat(params[i].find(filter));
+	    }
+	  }
+
+	  return nodes;
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	OperatorNode.prototype.toString = function() {
+	  var params = this.params;
+
+	  switch (params.length) {
+	    case 1:
+	      if (this.op == '-') {
+	        // special case: unary minus
+	        return '-' + params[0].toString();
+	      }
+	      else {
+	        // for example '5!'
+	        return params[0].toString() + this.op;
+	      }
+
+	    case 2: // for example '2+3'
+	      var lhs = params[0].toString();
+	      if (params[0] instanceof OperatorNode) {
+	        lhs = '(' + lhs + ')';
+	      }
+	      var rhs = params[1].toString();
+	      if (params[1] instanceof OperatorNode) {
+	        rhs = '(' + rhs + ')';
+	      }
+	      return lhs + ' ' + this.op + ' ' + rhs;
+
+	    default: // this should occur. format as a function call
+	      return this.op + '(' + this.params.join(', ') + ')';
+	  }
+	};
+
+	module.exports = OperatorNode;
+
+
+/***/ },
+/* 112 */
+/***/ function(module, exports, require) {
+
+	var number= require(221),
+
+	    Node = require(110),
+	    RangeNode = require(113),
+	    SymbolNode = require(114),
+
+	    BigNumber = require(220),
+	    Index = require(9),
+	    Range = require(8),
+
+	    isNumber = number.isNumber,
+	    toNumber = number.toNumber;
+
+	/**
+	 * @constructor ParamsNode
+	 * @extends {Node}
+	 * invoke a list with parameters on a node
+	 * @param {Node} object
+	 * @param {Node[]} params
+	 */
+	function ParamsNode (object, params) {
+	  this.object = object;
+	  this.params = params;
+	}
+
+	ParamsNode.prototype = new Node();
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	ParamsNode.prototype._compile = function (defs) {
+	  // TODO: implement support for matrix indexes and ranges
+	  var params = this.params.map(function (param) {
+	    return param._compile(defs);
+	  });
+
+	  return this.object._compile(defs) + '(' + params.join(', ') + ')';
+	};
+
+	/**
+	 * Find all nodes matching given filter
+	 * @param {Object} filter  See Node.find for a description of the filter settings
+	 * @returns {Node[]} nodes
+	 */
+	ParamsNode.prototype.find = function (filter) {
+	  var nodes = [];
+
+	  // check itself
+	  if (this.match(filter)) {
+	    nodes.push(this);
+	  }
+
+	  // search object
+	  if (this.object) {
+	    nodes = nodes.concat(this.object.find(filter));
+	  }
+
+	  // search in parameters
+	  var params = this.params;
+	  if (params) {
+	    for (var i = 0, len = params.length; i < len; i++) {
+	      nodes = nodes.concat(params[i].find(filter));
+	    }
+	  }
+
+	  return nodes;
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	ParamsNode.prototype.toString = function() {
+	  // format the parameters like "(2, 4.2)"
+	  var str = this.object ? this.object.toString() : '';
+	  if (this.params) {
+	    str += '(' + this.params.join(', ') + ')';
+	  }
+	  return str;
+	};
+
+	module.exports = ParamsNode;
+
+
+/***/ },
+/* 113 */
+/***/ function(module, exports, require) {
+
+	var number = require(221),
+	    Node = require(110),
+
+	    BigNumber = require(220),
+	    Range = require(8),
+	    Matrix = require(10),
+
+	    toNumber = number.toNumber;
+
+	/**
+	 * @constructor RangeNode
+	 * @extends {Node}
+	 * create a range
+	 * @param {Node[]} params           Array [start, end] or [start, end, step]
+	 */
+	function RangeNode (params) {
+	  if (params.length != 2 && params.length != 3) {
+	    throw new SyntaxError('Wrong number of arguments. ' +
+	        'Expected [start, end] or [start, end, step]');
+	  }
+
+	  this.start = params[0];  // included lower-bound
+	  this.end   = params[1];  // included upper-bound
+	  this.step  = params[2];  // optional step
+	}
+
+	RangeNode.prototype = new Node();
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	RangeNode.prototype._compile = function (defs) {
+	  return 'math.range(' +
+	      this.start._compile(defs) + ', ' +
+	      this.end._compile(defs) + ', ' +
+	      (this.step ? (this.step._compile(defs) + ', ') : '') +
+	      'true)'; // parameter includeEnd = true
+	};
+
+	/**
+	 * Find all nodes matching given filter
+	 * @param {Object} filter  See Node.find for a description of the filter settings
+	 * @returns {Node[]} nodes
+	 */
+	RangeNode.prototype.find = function (filter) {
+	  var nodes = [];
+
+	  // check itself
+	  if (this.match(filter)) {
+	    nodes.push(this);
+	  }
+
+	  // search in parameters
+	  if (this.start) {
+	    nodes = nodes.concat(this.start.find(filter));
+	  }
+	  if (this.step) {
+	    nodes = nodes.concat(this.step.find(filter));
+	  }
+	  if (this.end) {
+	    nodes = nodes.concat(this.end.find(filter));
+	  }
+
+	  return nodes;
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	RangeNode.prototype.toString = function() {
+	  // format the range like "start:step:end"
+	  var str = this.start.toString();
+	  if (this.step) {
+	    str += ':' + this.step.toString();
+	  }
+	  str += ':' + this.end.toString();
+
+	  return str;
+	};
+
+	module.exports = RangeNode;
+
+
+/***/ },
+/* 114 */
+/***/ function(module, exports, require) {
+
+	var Node = require(110),
+	    Unit = require(11);
+
+	/**
+	 * @constructor SymbolNode
+	 * @extends {Node}
+	 * A symbol node can hold and resolve a symbol
+	 * @param {String} name
+	 * @extends {Node}
+	 */
+	function SymbolNode(name) {
+	  this.name = name;
+	}
+
+	SymbolNode.prototype = new Node();
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	SymbolNode.prototype._compile = function (defs) {
+	  // add a function to the definitions
+	  defs['undef'] = undef;
+	  defs['Unit'] = Unit;
+
+	  return '(' +
+	      'scope["' + this.name + '"] !== undefined ? scope["' + this.name + '"] : ' +
+	      'math["' + this.name + '"] !== undefined ? math["' + this.name + '"] : ' +
+	      (Unit.isPlainUnit(this.name) ?
+	        'new Unit(null, "' + this.name + '")' :
+	        'undef("' + this.name + '")') +
+	      ')';
+	};
+
+	/**
+	 * Throws an error 'Undefined symbol {name}'
+	 * @param {String} name
+	 */
+	function undef (name) {
+	  throw new Error('Undefined symbol ' + name);
+	}
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 * @override
+	 */
+	SymbolNode.prototype.toString = function() {
+	  return this.name;
+	};
+
+	module.exports = SymbolNode;
+
+
+/***/ },
+/* 115 */
+/***/ function(module, exports, require) {
+
+	var Node = require(110),
+
+	    BigNumber = require(220),
+	    Complex = require(7),
+	    Unit = require(11),
+
+	    number = require(221),
+	    toNumber = number.toNumber;
+
+	/**
+	 * @constructor UnitNode
+	 * @extends {Node}
+	 * Construct a unit, like '3 cm'
+	 * @param {Node} value
+	 * @param {String} unit     Unit name, for example  'meter' 'kg'
+	 */
+	function UnitNode (value, unit) {
+	  this.value = value;
+	  this.unit = unit;
+	}
+
+	UnitNode.prototype = new Node();
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	UnitNode.prototype._compile = function (defs) {
+	  return 'math.unit(' + this.value._compile(defs) + ', "' + this.unit + '")';
+	};
+
+	/**
+	 * Find all nodes matching given filter
+	 * @param {Object} filter  See Node.find for a description of the filter settings
+	 * @returns {Node[]} nodes
+	 */
+	UnitNode.prototype.find = function (filter) {
+	  var nodes = [];
+
+	  // check itself
+	  if (this.match(filter)) {
+	    nodes.push(this);
+	  }
+
+	  // check value
+	  nodes = nodes.concat(this.value.find(filter));
+
+	  return nodes;
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	UnitNode.prototype.toString = function() {
+	  return this.value + ' ' + this.unit;
+	};
+
+	module.exports = UnitNode;
+
+
+/***/ },
+/* 116 */
+/***/ function(module, exports, require) {
+
+	var number= require(221),
+
+	    Node = require(110),
+	    RangeNode = require(113),
+	    IndexNode = require(108),
+	    SymbolNode = require(114),
+
+	    BigNumber = require(220),
+	    Index = require(9),
+	    Range = require(8),
+
+	    isNumber = number.isNumber,
+	    toNumber = number.toNumber;
+
+	/**
+	 * @constructor UpdateNode
+	 * @extends {Node}
+	 * Update a symbol value, like a(2,3) = 4.5
+	 *
+	 * @param {IndexNode} index             IndexNode containing symbol and ranges
+	 * @param {Node} expr                   The expression defining the symbol
+	 */
+	function UpdateNode(index, expr) {
+	  if (!(index instanceof IndexNode)) {
+	    throw new TypeError('index mus be an IndexNode');
+	  }
+
+	  this.index = index;
+	  this.expr = expr;
+	}
+
+	UpdateNode.prototype = new Node();
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	UpdateNode.prototype._compile = function (defs) {
+	  return 'scope["' + this.index.objectName() + '\"] = ' +
+	      this.index.compileSubset(defs,  this.expr._compile(defs));
+	};
+
+	/**
+	 * Find all nodes matching given filter
+	 * @param {Object} filter  See Node.find for a description of the filter settings
+	 * @returns {Node[]} nodes
+	 */
+	UpdateNode.prototype.find = function (filter) {
+	  var nodes = [];
+
+	  // check itself
+	  if (this.match(filter)) {
+	    nodes.push(this);
+	  }
+
+	  // search in parameters
+	  var ranges = this.ranges;
+	  if (ranges) {
+	    for (var i = 0, len = ranges.length; i < len; i++) {
+	      nodes = nodes.concat(ranges[i].find(filter));
+	    }
+	  }
+
+	  // search in expression
+	  if (this.expr) {
+	    nodes = nodes.concat(this.expr.find(filter));
+	  }
+
+	  return nodes;
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String}
+	 */
+	UpdateNode.prototype.toString = function() {
+	  return this.index.toString() + ' = ' + this.expr.toString();
+	};
+
+	module.exports = UpdateNode;
+
+
+/***/ },
+/* 117 */
+/***/ function(module, exports, require) {
+
+	exports.array = require(222);
+	exports['boolean'] = require(223);
+	exports.number = require(221);
+	exports.object = require(2);
+	exports.string = require(218);
+	exports.types = require(217);
 
 
 /***/ },
@@ -16170,7 +16246,7 @@
 /* 218 */
 /***/ function(module, exports, require) {
 
-	var number = require(223),
+	var number = require(221),
 	    BigNumber = require(220);
 
 	/**
@@ -16279,20 +16355,20 @@
 /***/ function(module, exports, require) {
 
 	var map = {
-		"./clone": 94,
-		"./clone.js": 94,
-		"./forEach": 100,
-		"./forEach.js": 100,
-		"./format": 95,
-		"./format.js": 95,
-		"./import": 96,
-		"./import.js": 96,
-		"./map": 97,
-		"./map.js": 97,
-		"./print": 98,
-		"./print.js": 98,
-		"./typeof": 99,
-		"./typeof.js": 99
+		"./clone": 95,
+		"./clone.js": 95,
+		"./forEach": 101,
+		"./forEach.js": 101,
+		"./format": 96,
+		"./format.js": 96,
+		"./import": 97,
+		"./import.js": 97,
+		"./map": 98,
+		"./map.js": 98,
+		"./print": 99,
+		"./print.js": 99,
+		"./typeof": 100,
+		"./typeof.js": 100
 	};
 	function webpackContext(req) {
 		return require(webpackContextResolve(req));
@@ -18325,287 +18401,6 @@
 /* 221 */
 /***/ function(module, exports, require) {
 
-	var number = require(223),
-	    string = require(218),
-	    object = require(2),
-	    types = require(217),
-	    isArray = Array.isArray;
-
-	/**
-	 * Calculate the size of a multi dimensional array.
-	 * @param {Array} x
-	 * @Return {Number[]} size
-	 * @private
-	 */
-	function _size(x) {
-	  var size = [];
-
-	  while (isArray(x)) {
-	    size.push(x.length);
-	    x = x[0];
-	  }
-
-	  return size;
-	}
-
-	/**
-	 * Calculate the size of a multi dimensional array.
-	 * All elements in the array are checked for matching dimensions using the
-	 * method validate
-	 * @param {Array} x
-	 * @Return {Number[]} size
-	 * @throws RangeError
-	 */
-	exports.size = function size (x) {
-	  // calculate the size
-	  var s = _size(x);
-
-	  // verify the size
-	  exports.validate(x, s);
-	  // TODO: don't validate here? only in a Matrix constructor?
-
-	  return s;
-	};
-
-	/**
-	 * Recursively validate whether each element in a multi dimensional array
-	 * has a size corresponding to the provided size array.
-	 * @param {Array} array    Array to be validated
-	 * @param {Number[]} size  Array with the size of each dimension
-	 * @param {Number} dim   Current dimension
-	 * @throws RangeError
-	 * @private
-	 */
-	function _validate(array, size, dim) {
-	  var i;
-	  var len = array.length;
-
-	  if (len != size[dim]) {
-	    throw new RangeError('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
-	  }
-
-	  if (dim < size.length - 1) {
-	    // recursively validate each child array
-	    var dimNext = dim + 1;
-	    for (i = 0; i < len; i++) {
-	      var child = array[i];
-	      if (!isArray(child)) {
-	        throw new RangeError('Dimension mismatch ' +
-	            '(' + (size.length - 1) + ' < ' + size.length + ')');
-	      }
-	      _validate(array[i], size, dimNext);
-	    }
-	  }
-	  else {
-	    // last dimension. none of the childs may be an array
-	    for (i = 0; i < len; i++) {
-	      if (isArray(array[i])) {
-	        throw new RangeError('Dimension mismatch ' +
-	            '(' + (size.length + 1) + ' > ' + size.length + ')');
-	      }
-	    }
-	  }
-	}
-
-	/**
-	 * Validate whether each element in a multi dimensional array has
-	 * a size corresponding to the provided size array.
-	 * @param {Array} array    Array to be validated
-	 * @param {Number[]} size  Array with the size of each dimension
-	 * @throws RangeError
-	 */
-	exports.validate = function validate(array, size) {
-	  var isScalar = (size.length == 0);
-	  if (isScalar) {
-	    // scalar
-	    if (isArray(array)) {
-	      throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
-	    }
-	  }
-	  else {
-	    // array
-	    _validate(array, size, 0);
-	  }
-	};
-
-	/**
-	 * Test whether index is an integer number with index >= 0 and index < length
-	 * @param {*} index         Zero-based index
-	 * @param {Number} [length] Length of the array
-	 */
-	exports.validateIndex = function validateIndex (index, length) {
-	  if (!number.isNumber(index) || !number.isInteger(index)) {
-	    throw new TypeError('Index must be an integer (value: ' + index + ')');
-	  }
-	  if (index < 0) {
-	    throw new RangeError('Index out of range (' + index + ' < 0)');
-	  }
-	  if (length !== undefined && index >= length) {
-	    throw new RangeError('Index out of range (' + index + ' > ' + (length - 1) +  ')');
-	  }
-	};
-
-	/**
-	 * Resize a multi dimensional array. The resized array is returned.
-	 * @param {Array} array         Array to be resized
-	 * @param {Array.<Number>} size Array with the size of each dimension
-	 * @param {*} [defaultValue]    Value to be filled in in new entries,
-	 *                              undefined by default
-	 * @return {Array} array         The resized array
-	 */
-	exports.resize = function resize(array, size, defaultValue) {
-	  // TODO: add support for scalars, having size=[] ?
-
-	  // check the type of the arguments
-	  if (!isArray(array) || !isArray(size)) {
-	    throw new TypeError('Array expected');
-	  }
-	  if (size.length === 0) {
-	    throw new Error('Resizing to scalar is not supported');
-	  }
-
-	  // check whether size contains positive integers
-	  size.forEach(function (value) {
-	    if (!number.isNumber(value) || !number.isInteger(value) || value < 0) {
-	      throw new TypeError('Invalid size, must contain positive integers ' +
-	          '(size: ' + string.format(size) + ')');
-	    }
-	  });
-
-	  // count the current number of dimensions
-	  var dims = 1;
-	  var elem = array[0];
-	  while (isArray(elem)) {
-	    dims++;
-	    elem = elem[0];
-	  }
-
-	  // adjust the number of dimensions when needed
-	  while (dims < size.length) { // add dimensions
-	    array = [array];
-	    dims++;
-	  }
-	  while (dims > size.length) { // remove dimensions
-	    array = array[0];
-	    dims--;
-	  }
-
-	  // recursively resize the array
-	  _resize(array, size, 0, defaultValue);
-
-	  return array;
-	};
-
-	/**
-	 * Recursively resize a multi dimensional array
-	 * @param {Array} array         Array to be resized
-	 * @param {Number[]} size       Array with the size of each dimension
-	 * @param {Number} dim          Current dimension
-	 * @param {*} [defaultValue]    Value to be filled in in new entries,
-	 *                              undefined by default.
-	 * @private
-	 */
-	function _resize (array, size, dim, defaultValue) {
-	  if (!isArray(array)) {
-	    throw Error('Array expected');
-	  }
-
-	  var i, elem,
-	      oldLen = array.length,
-	      newLen = size[dim],
-	      minLen = Math.min(oldLen, newLen);
-
-	  // apply new length
-	  array.length = newLen;
-
-	  if (dim < size.length - 1) {
-	    // non-last dimension
-	    var dimNext = dim + 1;
-
-	    // resize existing child arrays
-	    for (i = 0; i < minLen; i++) {
-	      // resize child array
-	      elem = array[i];
-	      _resize(elem, size, dimNext, defaultValue);
-	    }
-
-	    // create new child arrays
-	    for (i = minLen; i < newLen; i++) {
-	      // get child array
-	      elem = [];
-	      array[i] = elem;
-
-	      // resize new child array
-	      _resize(elem, size, dimNext, defaultValue);
-	    }
-	  }
-	  else {
-	    // last dimension
-	    if(defaultValue !== undefined) {
-	      // fill new elements with the default value
-	      for (i = oldLen; i < newLen; i++) {
-	        array[i] = object.clone(defaultValue);
-	      }
-	    }
-	  }
-	}
-
-	/**
-	 * Squeeze a multi dimensional array
-	 * @param {Array} array
-	 * @return {Array} array
-	 * @private
-	 */
-	exports.squeeze = function squeeze(array) {
-	  while(isArray(array) && array.length === 1) {
-	    array = array[0];
-	  }
-
-	  return array;
-	};
-
-	/**
-	 * Unsqueeze a multi dimensional array: add dimensions when missing
-	 * @param {Array} array
-	 * @param {Number} dims   Number of desired dimensions
-	 * @return {Array} array
-	 * @private
-	 */
-	exports.unsqueeze = function unsqueeze(array, dims) {
-	  var size = exports.size(array);
-
-	  for (var i = 0, ii = (dims - size.length); i < ii; i++) {
-	    array = [array];
-	  }
-
-	  return array;
-	};
-
-	/**
-	 * Test whether an object is an array
-	 * @param {*} value
-	 * @return {Boolean} isArray
-	 */
-	exports.isArray = isArray;
-
-/***/ },
-/* 222 */
-/***/ function(module, exports, require) {
-
-	/**
-	 * Test whether value is a Boolean
-	 * @param {*} value
-	 * @return {Boolean} isBoolean
-	 */
-	exports.isBoolean = function isBoolean(value) {
-	  return (value instanceof Boolean) || (typeof value == 'boolean');
-	};
-
-
-/***/ },
-/* 223 */
-/***/ function(module, exports, require) {
-
 	var BigNumber = require(220);
 
 	/**
@@ -18946,6 +18741,287 @@
 	 */
 	exports.toNumber = function toNumber (bignumber) {
 	  return parseFloat(bignumber.valueOf());
+	};
+
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, require) {
+
+	var number = require(221),
+	    string = require(218),
+	    object = require(2),
+	    types = require(217),
+	    isArray = Array.isArray;
+
+	/**
+	 * Calculate the size of a multi dimensional array.
+	 * @param {Array} x
+	 * @Return {Number[]} size
+	 * @private
+	 */
+	function _size(x) {
+	  var size = [];
+
+	  while (isArray(x)) {
+	    size.push(x.length);
+	    x = x[0];
+	  }
+
+	  return size;
+	}
+
+	/**
+	 * Calculate the size of a multi dimensional array.
+	 * All elements in the array are checked for matching dimensions using the
+	 * method validate
+	 * @param {Array} x
+	 * @Return {Number[]} size
+	 * @throws RangeError
+	 */
+	exports.size = function size (x) {
+	  // calculate the size
+	  var s = _size(x);
+
+	  // verify the size
+	  exports.validate(x, s);
+	  // TODO: don't validate here? only in a Matrix constructor?
+
+	  return s;
+	};
+
+	/**
+	 * Recursively validate whether each element in a multi dimensional array
+	 * has a size corresponding to the provided size array.
+	 * @param {Array} array    Array to be validated
+	 * @param {Number[]} size  Array with the size of each dimension
+	 * @param {Number} dim   Current dimension
+	 * @throws RangeError
+	 * @private
+	 */
+	function _validate(array, size, dim) {
+	  var i;
+	  var len = array.length;
+
+	  if (len != size[dim]) {
+	    throw new RangeError('Dimension mismatch (' + len + ' != ' + size[dim] + ')');
+	  }
+
+	  if (dim < size.length - 1) {
+	    // recursively validate each child array
+	    var dimNext = dim + 1;
+	    for (i = 0; i < len; i++) {
+	      var child = array[i];
+	      if (!isArray(child)) {
+	        throw new RangeError('Dimension mismatch ' +
+	            '(' + (size.length - 1) + ' < ' + size.length + ')');
+	      }
+	      _validate(array[i], size, dimNext);
+	    }
+	  }
+	  else {
+	    // last dimension. none of the childs may be an array
+	    for (i = 0; i < len; i++) {
+	      if (isArray(array[i])) {
+	        throw new RangeError('Dimension mismatch ' +
+	            '(' + (size.length + 1) + ' > ' + size.length + ')');
+	      }
+	    }
+	  }
+	}
+
+	/**
+	 * Validate whether each element in a multi dimensional array has
+	 * a size corresponding to the provided size array.
+	 * @param {Array} array    Array to be validated
+	 * @param {Number[]} size  Array with the size of each dimension
+	 * @throws RangeError
+	 */
+	exports.validate = function validate(array, size) {
+	  var isScalar = (size.length == 0);
+	  if (isScalar) {
+	    // scalar
+	    if (isArray(array)) {
+	      throw new RangeError('Dimension mismatch (' + array.length + ' != 0)');
+	    }
+	  }
+	  else {
+	    // array
+	    _validate(array, size, 0);
+	  }
+	};
+
+	/**
+	 * Test whether index is an integer number with index >= 0 and index < length
+	 * @param {*} index         Zero-based index
+	 * @param {Number} [length] Length of the array
+	 */
+	exports.validateIndex = function validateIndex (index, length) {
+	  if (!number.isNumber(index) || !number.isInteger(index)) {
+	    throw new TypeError('Index must be an integer (value: ' + index + ')');
+	  }
+	  if (index < 0) {
+	    throw new RangeError('Index out of range (' + index + ' < 0)');
+	  }
+	  if (length !== undefined && index >= length) {
+	    throw new RangeError('Index out of range (' + index + ' > ' + (length - 1) +  ')');
+	  }
+	};
+
+	/**
+	 * Resize a multi dimensional array. The resized array is returned.
+	 * @param {Array} array         Array to be resized
+	 * @param {Array.<Number>} size Array with the size of each dimension
+	 * @param {*} [defaultValue]    Value to be filled in in new entries,
+	 *                              undefined by default
+	 * @return {Array} array         The resized array
+	 */
+	exports.resize = function resize(array, size, defaultValue) {
+	  // TODO: add support for scalars, having size=[] ?
+
+	  // check the type of the arguments
+	  if (!isArray(array) || !isArray(size)) {
+	    throw new TypeError('Array expected');
+	  }
+	  if (size.length === 0) {
+	    throw new Error('Resizing to scalar is not supported');
+	  }
+
+	  // check whether size contains positive integers
+	  size.forEach(function (value) {
+	    if (!number.isNumber(value) || !number.isInteger(value) || value < 0) {
+	      throw new TypeError('Invalid size, must contain positive integers ' +
+	          '(size: ' + string.format(size) + ')');
+	    }
+	  });
+
+	  // count the current number of dimensions
+	  var dims = 1;
+	  var elem = array[0];
+	  while (isArray(elem)) {
+	    dims++;
+	    elem = elem[0];
+	  }
+
+	  // adjust the number of dimensions when needed
+	  while (dims < size.length) { // add dimensions
+	    array = [array];
+	    dims++;
+	  }
+	  while (dims > size.length) { // remove dimensions
+	    array = array[0];
+	    dims--;
+	  }
+
+	  // recursively resize the array
+	  _resize(array, size, 0, defaultValue);
+
+	  return array;
+	};
+
+	/**
+	 * Recursively resize a multi dimensional array
+	 * @param {Array} array         Array to be resized
+	 * @param {Number[]} size       Array with the size of each dimension
+	 * @param {Number} dim          Current dimension
+	 * @param {*} [defaultValue]    Value to be filled in in new entries,
+	 *                              undefined by default.
+	 * @private
+	 */
+	function _resize (array, size, dim, defaultValue) {
+	  if (!isArray(array)) {
+	    throw Error('Array expected');
+	  }
+
+	  var i, elem,
+	      oldLen = array.length,
+	      newLen = size[dim],
+	      minLen = Math.min(oldLen, newLen);
+
+	  // apply new length
+	  array.length = newLen;
+
+	  if (dim < size.length - 1) {
+	    // non-last dimension
+	    var dimNext = dim + 1;
+
+	    // resize existing child arrays
+	    for (i = 0; i < minLen; i++) {
+	      // resize child array
+	      elem = array[i];
+	      _resize(elem, size, dimNext, defaultValue);
+	    }
+
+	    // create new child arrays
+	    for (i = minLen; i < newLen; i++) {
+	      // get child array
+	      elem = [];
+	      array[i] = elem;
+
+	      // resize new child array
+	      _resize(elem, size, dimNext, defaultValue);
+	    }
+	  }
+	  else {
+	    // last dimension
+	    if(defaultValue !== undefined) {
+	      // fill new elements with the default value
+	      for (i = oldLen; i < newLen; i++) {
+	        array[i] = object.clone(defaultValue);
+	      }
+	    }
+	  }
+	}
+
+	/**
+	 * Squeeze a multi dimensional array
+	 * @param {Array} array
+	 * @return {Array} array
+	 * @private
+	 */
+	exports.squeeze = function squeeze(array) {
+	  while(isArray(array) && array.length === 1) {
+	    array = array[0];
+	  }
+
+	  return array;
+	};
+
+	/**
+	 * Unsqueeze a multi dimensional array: add dimensions when missing
+	 * @param {Array} array
+	 * @param {Number} dims   Number of desired dimensions
+	 * @return {Array} array
+	 * @private
+	 */
+	exports.unsqueeze = function unsqueeze(array, dims) {
+	  var size = exports.size(array);
+
+	  for (var i = 0, ii = (dims - size.length); i < ii; i++) {
+	    array = [array];
+	  }
+
+	  return array;
+	};
+
+	/**
+	 * Test whether an object is an array
+	 * @param {*} value
+	 * @return {Boolean} isArray
+	 */
+	exports.isArray = isArray;
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, require) {
+
+	/**
+	 * Test whether value is a Boolean
+	 * @param {*} value
+	 * @return {Boolean} isBoolean
+	 */
+	exports.isBoolean = function isBoolean(value) {
+	  return (value instanceof Boolean) || (typeof value == 'boolean');
 	};
 
 

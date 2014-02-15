@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.18.1
+## 2014-02-15, version 0.18.1
 
 - Added unit `feet`.
 - Implemented function `compile` (shortcut for parsing and then compiling).
