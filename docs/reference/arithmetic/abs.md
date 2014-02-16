@@ -13,7 +13,7 @@ math.abs(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | A number or matrix to get absolute value from
+`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | A number or matrix for which to get the absolute value
 
 ### Returns
 
@@ -30,3 +30,8 @@ math.abs(-4.2);               // returns Number 4.2
 
 math.abs([3, -5, -1, 0, 2]);  // returns Array [3, 5, 1, 0, 2]
 ```
+
+
+## See also
+
+[sign](#sign.md)
