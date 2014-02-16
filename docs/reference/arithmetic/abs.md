@@ -34,4 +34,4 @@ math.abs([3, -5, -1, 0, 2]);  // returns Array [3, 5, 1, 0, 2]
 
 ## See also
 
-[sign](#sign.md)
+[sign](sign.md)

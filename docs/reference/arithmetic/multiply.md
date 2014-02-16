@@ -43,4 +43,4 @@ math.multiply(3, e);          // returns Unit 6.3 km
 
 ## See also
 
-[divide](#divide.md)
+[divide](divide.md)
