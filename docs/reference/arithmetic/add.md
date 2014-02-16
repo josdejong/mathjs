@@ -26,6 +26,8 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; String &#124; Array &#
 ## Examples
 
 ```js
+var math = mathjs();
+
 math.add(2, 3);               // returns Number 5
 
 var a = math.complex(2, 3);

@@ -26,6 +26,8 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ## Examples
 
 ```js
+var math = mathjs();
+
 math.divide(2, 3);            // returns Number 0.6666666666666666
 
 var a = math.complex(5, 14);
