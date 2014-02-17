@@ -44,7 +44,8 @@
     "underscore": "latest",
     "seed-random": "latest",
     "gulp": "*",
-    "gulp-util": "latest"
+    "gulp-util": "latest",
+    "glob": "latest"
   },
   "main": "./index",
   "scripts": {

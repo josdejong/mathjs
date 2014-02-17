@@ -2,7 +2,8 @@ var fs = require('fs'),
     gulp = require('gulp'),
     gutil = require('gulp-util'),
     webpack = require('webpack'),
-    uglify = require('uglify-js');
+    uglify = require('uglify-js'),
+    docgenerator = require('./tools/docgenerator');
 
 var ENTRY       = './index.js',
     HEADER      = './lib/header.js',
@@ -10,6 +11,8 @@ var ENTRY       = './index.js',
     FILE_MIN    = 'math.min.js',
     FILE_MAP    = 'math.map',
     DIST        = './dist',
+    DOCS_SRC    = './lib/function/',
+    DOCS_DEST   = './dist/reference/',
     MATH_JS     = DIST + '/' + FILE,
     MATH_MIN_JS = DIST + '/' + FILE_MIN,
     MATH_MAP_JS = DIST + '/' + FILE_MAP;
@@ -74,6 +77,10 @@ gulp.task('minify', ['bundle'], function () {
 
   gutil.log('Minified ' + MATH_MIN_JS);
   gutil.log('Mapped ' + MATH_MAP_JS);
+});
+
+gulp.task('docs', function () {
+  docgenerator.iteratePath(DOCS_SRC, DOCS_DEST);
 });
 
 // The default task (called when you run `gulp`)
