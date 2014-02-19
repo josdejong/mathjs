@@ -135,3 +135,10 @@ math.select(3)
     .multiply(2)
     .done(); // 14
 ```
+
+## Next
+
+To learn more about math.js, check out the available documentation and examples:
+
+- [Documentation](https://github.com/josdejong/mathjs/blob/master/docs/index.md)
+- [Examples](https://github.com/josdejong/mathjs/blob/master/examples/)
