@@ -1,6 +1,6 @@
 # Function pow
 
-Calculates the value of `x` to the power of `y`, `x ^ y`.
+Calculates the power of x to y, `x ^ y`. Matrix exponentiation is supported for square matrices `x`, and positive integer exponents `y`.
 
 
 ## Syntax
@@ -13,8 +13,8 @@ math.pow(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | The base
-`y`       | Number &#124; BigNumber &#124; Boolean &#124; Complex | The exponent
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | The base
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex | The exponent
 
 ### Returns
 
@@ -24,8 +24,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The value of
 
 
 ## Examples
-
-TODO: examples
 
 ```js
 var math = mathjs();
@@ -44,3 +42,4 @@ math.pow(b, 2);               // returns Array [[9, 8], [16, 17]]
 
 [multiply](multiply.md),
 [sqrt](sqrt.md)
+

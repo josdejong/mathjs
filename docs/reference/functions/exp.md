@@ -13,7 +13,7 @@ math.exp(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | A number or matrix for which to calculate the exponent
+`x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | A number or matrix to exponentiate
 
 ### Returns
 
@@ -31,15 +31,17 @@ math.exp(2);                  // returns Number 7.3890560989306495
 math.pow(math.e, 2);          // returns Number 7.3890560989306495
 math.log(math.exp(2));        // returns Number 2
 
-math.exp([1, 2, 3]);          // returns Array [
-                              //   2.718281828459045,
-                              //   7.3890560989306495,
-                              //   20.085536923187668
-                              // ]
+math.exp([1, 2, 3]);
+// returns Array [
+//   2.718281828459045,
+//   7.3890560989306495,
+//   20.085536923187668
+// ]
 ```
 
 
 ## See also
 
-[pow](pow.md),
-[log](log.md)
+[log](log.md),
+[pow](pow.md)
+

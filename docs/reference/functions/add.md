@@ -1,6 +1,6 @@
 # Function add
 
-Add two values, `x + y`. Matrices are evaluated element wise.
+Add two values, `x + y`. For matrices, the function is evaluated element wise.
 
 
 ## Syntax
@@ -13,14 +13,14 @@ math.add(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | Value to add `y` to
-`y`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | Value to be added to `x`
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | First value to add
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | Second value to add
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | Sum of `x` and `y`, `x + y`
+Number &#124; BigNumber &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | Sum of `x` and `y`
 
 
 ## Examples
@@ -45,3 +45,4 @@ math.add(c, d);               // returns Unit 52.1 mm
 ## See also
 
 [subtract](subtract.md)
+

@@ -1,6 +1,6 @@
 # Function fix
 
-Round a value towards zero. If x is complex, both real and imaginary part are rounded towards zero. For matrices, the function is evaluated element wise.
+Round a value towards zero. For matrices, the function is evaluated element wise.
 
 
 ## Syntax
@@ -13,7 +13,7 @@ math.fix(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
 
 ### Returns
 
@@ -44,3 +44,4 @@ math.fix([3.2, 3.8, -4.7]);   // returns Array [3, 3, -4]
 [ceil](ceil.md),
 [floor](floor.md),
 [round](round.md)
+

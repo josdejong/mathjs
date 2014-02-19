@@ -1,6 +1,6 @@
 # Function ceil
 
-Round a value towards plus infinity. If x is complex, both real and imaginary part are rounded towards plus infinity. For matrices, the function is evaluated element wise.
+Round a value towards plus infinity If `x` is complex, both real and imaginary part are rounded towards plus infinity. For matrices, the function is evaluated element wise.
 
 
 ## Syntax
@@ -13,7 +13,7 @@ math.ceil(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
 
 ### Returns
 
@@ -44,3 +44,4 @@ math.ceil([3.2, 3.8, -4.7]);  // returns Array [4, 4, -4]
 [floor](floor.md),
 [fix](fix.md),
 [round](round.md)
+

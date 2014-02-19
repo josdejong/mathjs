@@ -1,6 +1,6 @@
 # Function abs
 
-Calculate the absolute value of a number.
+Calculate the absolute value of a number. For matrices, the function is evaluated element wise.
 
 
 ## Syntax
@@ -13,13 +13,13 @@ math.abs(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | A number or matrix for which to get the absolute value
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  A number or matrix for which to get the absolute value
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Absolute value of `x`
+Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Absolute value of `x`
 
 
 ## Examples
@@ -37,3 +37,4 @@ math.abs([3, -5, -1, 0, 2]);  // returns Array [3, 5, 1, 0, 2]
 ## See also
 
 [sign](sign.md)
+

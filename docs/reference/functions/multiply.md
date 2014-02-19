@@ -1,6 +1,6 @@
 # Function multiply
 
-Multiply two values, `x * y`.
+Multiply two values, `x * y`. For matrices, the matrix product is calculated.
 
 
 ## Syntax
@@ -13,14 +13,14 @@ math.multiply(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | First value to multiply
-`y`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Second value to multiply
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | First value to multiply
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Second value to multiply
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Multiplication of `x` and `y`, `x * y`
+Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Multiplication of `x` and `y`
 
 
 ## Examples
@@ -46,3 +46,4 @@ math.multiply(3, e);          // returns Unit 6.3 km
 ## See also
 
 [divide](divide.md)
+

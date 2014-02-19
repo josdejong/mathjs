@@ -1,6 +1,6 @@
 # Function square
 
-Calculate the square of a value, multiply a value with itself. The square of `x` is defined as `x * x`. For matrices, the function is evaluated element wise.
+Compute the square of a value, `x * x`. For matrices, the function is evaluated element wise.
 
 
 ## Syntax
@@ -13,13 +13,13 @@ math.square(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number for which to calculate the square
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  Number for which to calculate the square
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | x squared
+Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Squared value
 
 
 ## Examples
@@ -38,7 +38,8 @@ math.square([1, 2, 3, 4]);  // returns Array [1, 4, 9, 16]
 
 ## See also
 
-[cube](cube.md),
 [multiply](multiply.md),
+[cube](cube.md),
 [sqrt](sqrt.md),
 [pow](pow.md)
+

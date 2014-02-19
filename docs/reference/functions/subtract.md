@@ -1,6 +1,6 @@
 # Function subtract
 
-Subtract two values, `x - y`. Matrices are subtracted element wise.
+Subtract two values, `x - y`. For matrices, the function is evaluated element wise.
 
 
 ## Syntax
@@ -13,14 +13,14 @@ math.subtract(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Initial value
-`y`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Value to subtract from `x`
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Initial value
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Value to subtract from `x`
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Subtraction of `x` and `y`, `x - y`
+Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Subtraction of `x` and `y`
 
 
 ## Examples
@@ -45,3 +45,4 @@ math.subtract(c, d);          // returns Unit 1.6 km
 ## See also
 
 [add](add.md)
+

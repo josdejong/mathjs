@@ -1,6 +1,6 @@
 # Function round
 
-Round a value towards the nearest integer. When `n` is specified, the value is rounded to `n` decimals. If `x` is complex, both real and imaginary part are rounded towards the nearest integer. For matrices, the function is evaluated element wise.
+Round a value towards the nearest integer. For matrices, the function is evaluated element wise.
 
 
 ## Syntax
@@ -14,8 +14,8 @@ math.round(x, n)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
-`n`       | Number &#124; BigNumber &#124; Boolean &#124; Array | Number of decimals. Optional, 0 by default.
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
+`n` | Number &#124; BigNumber &#124; Boolean &#124; Array | Number of decimals Default value: 0
 
 ### Returns
 
@@ -46,5 +46,6 @@ math.round([3.2, 3.8, -4.7]); // returns Array [3, 4, -5]
 ## See also
 
 [ceil](ceil.md),
-[floor](floor.md),
-[fix](fix.md)
+[fix](fix.md),
+[floor](floor.md)
+

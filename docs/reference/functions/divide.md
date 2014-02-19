@@ -1,6 +1,6 @@
 # Function divide
 
-Divide two values, `x / y`.
+Divide two values, `x / y`. To divide matrices, `x` is multiplied with the inverse of `y`: `x * inv(y)`.
 
 
 ## Syntax
@@ -13,8 +13,8 @@ math.divide(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Numerator
-`y`       | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Denominator
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Numerator
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Denominator
 
 ### Returns
 
@@ -46,3 +46,4 @@ math.divide(e, 4.5);          // returns Unit 4 km
 ## See also
 
 [multiply](multiply.md)
+
