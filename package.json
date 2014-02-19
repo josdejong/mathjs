@@ -45,7 +45,8 @@
     "seed-random": "latest",
     "gulp": "*",
     "gulp-util": "latest",
-    "glob": "latest"
+    "glob": "latest",
+    "mkdirp": "latest"
   },
   "main": "./index",
   "scripts": {

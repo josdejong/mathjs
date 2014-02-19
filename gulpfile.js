@@ -11,8 +11,8 @@ var ENTRY       = './index.js',
     FILE_MIN    = 'math.min.js',
     FILE_MAP    = 'math.map',
     DIST        = './dist',
-    DOCS_SRC    = './lib/function/',
-    DOCS_DEST   = './dist/reference/',
+    REF_SRC     = './lib/function/',
+    REF_DEST    = './docs/reference/functions/',
     MATH_JS     = DIST + '/' + FILE,
     MATH_MIN_JS = DIST + '/' + FILE_MIN,
     MATH_MAP_JS = DIST + '/' + FILE_MAP;
@@ -80,7 +80,7 @@ gulp.task('minify', ['bundle'], function () {
 });
 
 gulp.task('docs', function () {
-  docgenerator.iteratePath(DOCS_SRC, DOCS_DEST);
+  docgenerator.iteratePath(REF_SRC, REF_DEST);
 });
 
 // The default task (called when you run `gulp`)

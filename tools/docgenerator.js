@@ -7,6 +7,7 @@
  */
 var fs = require('fs'),
     glob = require('glob'),
+    mkdirp = require('mkdirp'),
     gutil = require('gulp-util');
 
 /**
@@ -17,10 +18,10 @@ var fs = require('fs'),
  * @return {Object} doc    json document
  */
 function generateDoc(name, code) {
-  var match = /\/\*\*(.|\n)*\*\//.exec(code);
+  var match = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//.exec(code);
   var comment = match && match[0];
 
-  // remove block comment
+  // get text content inside block comment
   comment = comment.replace('/**', '')
       .replace('*/', '')
       .replace(/\n\s*\* ?/g, '\n');
@@ -129,6 +130,14 @@ function generateDoc(name, code) {
           })
         };
         doc.parameters.push(annotation);
+
+        // TODO: this is an ugly hack to extract the default value
+        var index = annotation.description.indexOf(']');
+        if (index != -1) {
+          var defaultValue = annotation.description.substring(1, index).trim();
+          annotation.description = annotation.description.substring(index + 1).trim() +
+              ' Default value: ' + defaultValue;
+        }
 
         // multi line description
         while (exists() && !empty() && /^\s{6}/.test(line)) {
@@ -260,9 +269,11 @@ function validateDoc (doc) {
 /**
  * Generate markdown
  * @param {Object} doc          A JSON object generated with generateDoc()
+ * @param {Object} functions    All functions, used to generate correct links
+ *                              under seeAlso
  * @returns {string} markdown   Markdown contents
  */
-function generateMarkdown (doc) {
+function generateMarkdown (doc, functions) {
   var text = '';
 
   text += '# Function ' + doc.name + '\n\n';
@@ -302,10 +313,8 @@ function generateMarkdown (doc) {
   if (doc.seeAlso && doc.seeAlso.length) {
     text += '## See also\n\n' +
         doc.seeAlso.map(function (name) {
-          // TODO: make the see also links working
-          return name;
-          //return '[' + name + '](' + name + '.md)';
-        }).join(', ') +
+          return '[' + name + '](' + name + '.md)';
+        }).join(',\n') +
         '\n';
   }
 
@@ -321,7 +330,7 @@ function generateMarkdown (doc) {
  */
 function iteratePath (inputPath, outputPath) {
   if (!fs.existsSync(outputPath)) {
-    fs.mkdirSync(outputPath);
+    mkdirp.sync(outputPath);
   }
 
   glob(inputPath + '**/*.js', null, function (err, files) {
@@ -350,15 +359,13 @@ function iteratePath (inputPath, outputPath) {
 
         issues = issues.concat(validateDoc(doc));
 
-        var markdown = generateMarkdown(doc);
+        var markdown = generateMarkdown(doc, functions);
 
-        var path = outputPath + fn.category;
-        if (!fs.existsSync(path)) {
-          fs.mkdirSync(path);
-        }
-        fs.writeFileSync(path + '/' + fn.name + '.md', markdown);
+        fs.writeFileSync(outputPath + '/' + fn.name + '.md', markdown);
       }
     }
+
+    // TODO: also generate index pages
 
     // output all issues
     if (issues.length) {
