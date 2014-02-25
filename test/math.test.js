@@ -69,4 +69,16 @@ describe('factory', function() {
     math.config(config);
   });
 
+  it('should throw an error when ES5 is not supported', function() {
+    var create = Object.create;
+    Object.create = undefined; // fake missing Object.create function
+
+    assert.throws(function () {
+      var math = mathjs();
+    }, /ES5 not supported/);
+
+    // restore Object.create
+    Object.create = create;
+  });
+
 });

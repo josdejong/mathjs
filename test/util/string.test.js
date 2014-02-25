@@ -72,6 +72,10 @@ describe ('string', function () {
       assert.equal(string.format({}), '[object Object]');
     });
 
+    it ('should format unknown primitives by converting them to string', function () {
+      assert.equal(string.format(true), 'true');
+    });
+
   });
 
 });

@@ -38,4 +38,39 @@ describe('help', function() {
     }
   });
 
+  it('should throw an error on wrong number of arguments', function() {
+    assert.throws(function () {math.help()}, SyntaxError);
+    assert.throws(function () {math.help('sin', 2)}, SyntaxError);
+  });
+
+  it('should find help from a function name', function() {
+    var help = math.help('sin');
+    assert(help instanceof math.type.Help);
+    assert.equal(help.doc.name, 'sin');
+  });
+
+  it('should find help from a function', function() {
+    var help = math.help(math.sin);
+    assert(help instanceof math.type.Help);
+    assert.equal(help.doc.name, 'sin');
+  });
+
+  it('should find help from a constant name', function() {
+    var help = math.help('pi');
+    assert(help instanceof math.type.Help);
+    assert.equal(help.doc.name, 'pi');
+  });
+
+  it('should find help from a constant', function() {
+    var help = math.help(math.pi);
+    assert(help instanceof math.type.Help);
+    assert.equal(help.doc.name, 'pi');
+  });
+
+  it('should throw an error when no help is found', function() {
+    assert.throws(function () {math.help(undefined)}, /No documentation found/);
+    assert.throws(function () {math.help('nonExistingFunction')}, /No documentation found/);
+    assert.throws(function () {math.help('parse')}, /No documentation found/);
+  });
+
 });
