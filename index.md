@@ -116,9 +116,7 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
   </tr>
 </table>
 
-*Math.js is in early stage and the API is not yet stabilized.
-Please be careful when upgrading to a newer version.
-Changes are listed in the [history](https://github.com/josdejong/mathjs/blob/master/HISTORY.md).*
+*Note: The API of math.js is not fully stabilized. Please read [what is changed](https://github.com/josdejong/mathjs/blob/master/HISTORY.md) before upgrading to a newer version.
 
 
 # Documentation
