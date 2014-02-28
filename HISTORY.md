@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.18.2
+
+- Some minor bug fixes.
+
+
 ## 2014-02-15, version 0.18.1
 
 - Added unit `feet`.

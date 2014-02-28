@@ -4,16 +4,17 @@ var assert = require('assert'),
     math = require('../../../index')(),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
+    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
+    ArrayNode = require('../../../lib/expression/node/ArrayNode'),
+    RangeNode = require('../../../lib/expression/node/RangeNode'),
     AssignmentNode = require('../../../lib/expression/node/AssignmentNode');
 
 describe('AssignmentNode', function() {
 
   it ('should create a AssignmentNode', function () {
-
-  });
-
-  it ('should evaluate a AssignmentNode', function () {
-    // TODO
+    var n = new AssignmentNode();
+    assert(n instanceof AssignmentNode);
+    assert(n instanceof Node);
   });
 
   it ('should compile a AssignmentNode', function () {
@@ -28,11 +29,30 @@ describe('AssignmentNode', function() {
   });
 
   it ('should find a AssignmentNode', function () {
-    // TODO
+    var a = new ConstantNode('number', '1');
+    var b = new SymbolNode('x');
+    var c = new ConstantNode('number', '2');
+    var d = new ArrayNode([a, b, c]);
+    var e = new AssignmentNode('array', d);
+
+    assert.deepEqual(e.find({type: AssignmentNode}),[e]);
+    assert.deepEqual(e.find({type: SymbolNode}),    [b]);
+    assert.deepEqual(e.find({type: RangeNode}),     []);
+    assert.deepEqual(e.find({type: ConstantNode}),  [a, c]);
+    assert.deepEqual(e.find({type: ConstantNode, properties: {value: '2'}}),  [c]);
+  });
+
+  it ('should find a AssignmentNode without expression', function () {
+    var e = new AssignmentNode();
+
+    assert.deepEqual(e.find({type: AssignmentNode}),[e]);
+    assert.deepEqual(e.find({type: SymbolNode}),    []);
   });
 
   it ('should match a AssignmentNode', function () {
-    // TODO
+    var a = new AssignmentNode();
+    assert.equal(a.match({type: AssignmentNode}),  true);
+    assert.equal(a.match({type: ConstantNode}), false);
   });
 
   it ('should stringify a AssignmentNode', function () {

@@ -13,11 +13,9 @@ var assert = require('assert'),
 describe('IndexNode', function() {
 
   it ('should create a IndexNode', function () {
-    // TODO
-  });
-
-  it ('should evaluate a IndexNode', function () {
-    // TODO
+    var n = new IndexNode();
+    assert(n instanceof IndexNode);
+    assert(n instanceof Node);
   });
 
   it ('should compile a IndexNode', function () {
@@ -72,6 +70,24 @@ describe('IndexNode', function() {
     assert.deepEqual(expr.eval(scope), [4, 3]);
   });
 
+  it ('should compile a IndexNode with "end" both as value and in a range', function () {
+    var a = new SymbolNode('a');
+    var ranges = [
+      new SymbolNode('end'),
+      new RangeNode([
+        new ConstantNode('number', '1'),
+        new SymbolNode('end')
+      ])
+    ];
+    var n = new IndexNode(a, ranges);
+    var expr = n.compile(math);
+
+    var scope = {
+      a: [[1, 2], [3, 4]]
+    };
+    assert.deepEqual(expr.eval(scope), [3, 4]);
+  });
+
   it ('should compile a IndexNode with bignumber setting', function () {
     var a = new SymbolNode('a');
     var ranges = [
@@ -87,15 +103,34 @@ describe('IndexNode', function() {
     assert.deepEqual(expr.eval(scope), 3);
   });
 
-  it ('should find a IndexNode', function () {
-    // TODO
+  it ('should find an IndexNode', function () {
+    var a = new SymbolNode('a'),
+        b = new ConstantNode('number', '2'),
+        c = new ConstantNode('number', '1');
+    var n = new IndexNode(a, [b, c]);
+
+    assert.deepEqual(n.find({type: IndexNode}),  [n]);
+    assert.deepEqual(n.find({type: SymbolNode}),    [a]);
+    assert.deepEqual(n.find({type: RangeNode}),     []);
+    assert.deepEqual(n.find({type: ConstantNode}),  [b, c]);
+    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [b]);
+    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
   });
 
-  it ('should match a IndexNode', function () {
-    // TODO
+  it ('should find an empty Indexnode', function () {
+    var n = new IndexNode();
+
+    assert.deepEqual(n.find({type: IndexNode}),  [n]);
+    assert.deepEqual(n.find({type: SymbolNode}), []);
   });
 
-  it ('should stringify a IndexNode', function () {
+  it ('should match an IndexNode', function () {
+    var a = new IndexNode();
+    assert.equal(a.match({type: IndexNode}),  true);
+    assert.equal(a.match({type: SymbolNode}), false);
+  });
+
+  it ('should stringify an IndexNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
       new ConstantNode('number', '2'),
@@ -104,6 +139,12 @@ describe('IndexNode', function() {
 
     var n = new IndexNode('a', ranges);
     assert.equal(n.toString(), 'a[2, 1]');
+
+    var n2 = new IndexNode('a');
+    assert.equal(n2.toString(), 'a')
+
+    var n3 = new IndexNode('');
+    assert.equal(n3.toString(), '')
   });
 
 });

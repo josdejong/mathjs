@@ -6,16 +6,15 @@ var assert = require('assert'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     OperatorNode = require('../../../lib/expression/node/OperatorNode'),
     FunctionNode = require('../../../lib/expression/node/FunctionNode'),
+    RangeNode = require('../../../lib/expression/node/RangeNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode');
 
 describe('FunctionNode', function() {
 
   it ('should create a FunctionNode', function () {
-    // TODO
-  });
-
-  it ('should evaluate a FunctionNode', function () {
-    // TODO
+    var n = new FunctionNode();
+    assert(n instanceof FunctionNode);
+    assert(n instanceof Node);
   });
 
   it ('should compile a FunctionNode', function () {
@@ -36,11 +35,30 @@ describe('FunctionNode', function() {
   });
 
   it ('should find a FunctionNode', function () {
-    // TODO
+    var a = new ConstantNode('number', '2');
+    var x = new SymbolNode('x');
+    var o = new OperatorNode('+', 'add', [a, x]);
+    var n = new FunctionNode('f', ['x'], o);
+
+    assert.deepEqual(n.find({type: FunctionNode}),  [n]);
+    assert.deepEqual(n.find({type: SymbolNode}),    [x]);
+    assert.deepEqual(n.find({type: RangeNode}),     []);
+    assert.deepEqual(n.find({type: ConstantNode}),  [a]);
+    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [a]);
+    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
+  });
+
+  it ('should find a FunctionNode without expression', function () {
+    var e = new FunctionNode();
+
+    assert.deepEqual(e.find({type: FunctionNode}),  [e]);
+    assert.deepEqual(e.find({type: SymbolNode}),    []);
   });
 
   it ('should match a FunctionNode', function () {
-    // TODO
+    var a = new FunctionNode();
+    assert.equal(a.match({type: FunctionNode}),  true);
+    assert.equal(a.match({type: SymbolNode}), false);
   });
 
   it ('should stringify a FunctionNode', function () {
