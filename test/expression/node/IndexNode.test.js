@@ -13,9 +13,20 @@ var assert = require('assert'),
 describe('IndexNode', function() {
 
   it ('should create a IndexNode', function () {
-    var n = new IndexNode();
+    var n = new IndexNode(new Node(), []);
     assert(n instanceof IndexNode);
     assert(n instanceof Node);
+  });
+
+  it ('should throw an error when calling with wrong arguments', function () {
+    assert.throws(function () {new IndexNode()}, TypeError);
+    assert.throws(function () {new IndexNode('a', [])}, TypeError);
+    assert.throws(function () {new IndexNode(new Node, [2, 3])}, TypeError);
+    assert.throws(function () {new IndexNode(new Node, [new Node(), 3])}, TypeError);
+  });
+
+  it ('should throw an error when calling without new operator', function () {
+    assert.throws(function () {IndexNode(new Node(), [])}, SyntaxError);
   });
 
   it ('should compile a IndexNode', function () {
@@ -118,14 +129,14 @@ describe('IndexNode', function() {
   });
 
   it ('should find an empty Indexnode', function () {
-    var n = new IndexNode();
+    var n = new IndexNode(new Node(), []);
 
     assert.deepEqual(n.find({type: IndexNode}),  [n]);
     assert.deepEqual(n.find({type: SymbolNode}), []);
   });
 
   it ('should match an IndexNode', function () {
-    var a = new IndexNode();
+    var a = new IndexNode(new Node(), []);
     assert.equal(a.match({type: IndexNode}),  true);
     assert.equal(a.match({type: SymbolNode}), false);
   });
@@ -137,14 +148,11 @@ describe('IndexNode', function() {
       new ConstantNode('number', '1')
     ];
 
-    var n = new IndexNode('a', ranges);
+    var n = new IndexNode(a, ranges);
     assert.equal(n.toString(), 'a[2, 1]');
 
-    var n2 = new IndexNode('a');
-    assert.equal(n2.toString(), 'a')
-
-    var n3 = new IndexNode('');
-    assert.equal(n3.toString(), '')
+    var n2 = new IndexNode(a, []);
+    assert.equal(n2.toString(), 'a[]')
   });
 
 });

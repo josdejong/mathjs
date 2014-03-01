@@ -14,9 +14,18 @@ describe('ArrayNode', function() {
   it ('should create an ArrayNode', function () {
     var c = new ConstantNode('number', '1');
     var a = new ArrayNode([c]);
-    var b = new ArrayNode();
+    var b = new ArrayNode([]);
     assert(a instanceof ArrayNode);
     assert(b instanceof ArrayNode);
+  });
+
+  it ('should throw an error when calling without new operator', function () {
+    assert.throws(function () {ArrayNode()}, SyntaxError);
+  });
+
+  it ('should throw an error on wrong constructor arguments', function () {
+    assert.throws(function () {new ArrayNode(2)}, TypeError);
+    assert.throws(function () {new ArrayNode([2, 3])}, TypeError);
   });
 
   it ('should evaluate an ArrayNode', function () {

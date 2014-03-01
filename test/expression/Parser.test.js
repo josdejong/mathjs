@@ -130,7 +130,7 @@ describe('parser', function() {
   });
 
   it ('should throw an exception when creating a parser without new', function () {
-    assert.throws(function () {Parser(math)}, /constructor must be called with the new operator/);
+    assert.throws(function () {Parser(math)}, /Constructor must be called with the new operator/);
   });
 
   it ('should throw an exception when creating a parser without math object', function () {

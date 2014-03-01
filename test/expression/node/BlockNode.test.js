@@ -17,6 +17,17 @@ describe('BlockNode', function() {
     assert(n instanceof Node);
   });
 
+  it ('should throw an error when calling without new operator', function () {
+    assert.throws(function () {BlockNode()}, SyntaxError);
+  });
+
+  it ('should throw an error when adding invalid nodes', function () {
+    var n = new BlockNode();
+    assert.throws(function () {n.add()}, TypeError);
+    assert.throws(function () {n.add(2)}, TypeError);
+    assert.throws(function () {n.add(new Node(), 2)}, TypeError);
+  });
+
   it ('should compile and evaluate a BlockNode', function () {
     var n = new BlockNode();
     n.add(new ConstantNode('number', '5'), true);

@@ -15,6 +15,12 @@ describe('OperatorNode', function() {
     assert(n instanceof Node);
   });
 
+  it ('should throw an error when calling without new operator', function () {
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    assert.throws(function () {OperatorNode('+', 'add', [a, b])}, SyntaxError);
+  });
+
   it ('should compile an OperatorNode', function () {
     var a = new ConstantNode('number', '2');
     var b = new ConstantNode('number', '3');

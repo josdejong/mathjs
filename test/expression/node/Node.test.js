@@ -11,6 +11,10 @@ describe('Node', function() {
     assert(n instanceof Node);
   });
 
+  it ('should throw an error when calling without new operator', function () {
+    assert.throws(function () {Node()}, SyntaxError);
+  });
+
   it ('should find a Node', function () {
     var n = new Node();
 
@@ -22,6 +26,12 @@ describe('Node', function() {
   it ('should match a Node when not providing a filter', function () {
     var node = new Node();
     assert.equal(node.match(), true);
+  });
+
+  it ('should test whether an object is a Node', function () {
+    assert.equal(Node.isNode(new Node()), true);
+    assert.equal(Node.isNode(new Date()), false);
+    assert.equal(Node.isNode(2), false);
   });
 
   it ('should stringify a Node', function () {

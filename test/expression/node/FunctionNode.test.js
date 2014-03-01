@@ -12,9 +12,21 @@ var assert = require('assert'),
 describe('FunctionNode', function() {
 
   it ('should create a FunctionNode', function () {
-    var n = new FunctionNode();
+    var n = new FunctionNode('f', ['x'], new Node());
     assert(n instanceof FunctionNode);
     assert(n instanceof Node);
+  });
+
+  it ('should throw an error when calling without new operator', function () {
+    assert.throws(function () {FunctionNode('f', ['x'], new Node())}, SyntaxError);
+  });
+
+  it ('should throw an error on wrong constructor arguments', function () {
+    assert.throws(function () {new FunctionNode()}, TypeError);
+    assert.throws(function () {new FunctionNode('a')}, TypeError);
+    assert.throws(function () {new FunctionNode('a', ['x'])}, TypeError);
+    assert.throws(function () {new FunctionNode('a', [2], new Node())}, TypeError);
+    assert.throws(function () {new FunctionNode(null, ['x'], new Node())}, TypeError);
   });
 
   it ('should compile a FunctionNode', function () {
@@ -49,14 +61,14 @@ describe('FunctionNode', function() {
   });
 
   it ('should find a FunctionNode without expression', function () {
-    var e = new FunctionNode();
+    var e = new FunctionNode('f', ['x'], new Node());
 
     assert.deepEqual(e.find({type: FunctionNode}),  [e]);
     assert.deepEqual(e.find({type: SymbolNode}),    []);
   });
 
   it ('should match a FunctionNode', function () {
-    var a = new FunctionNode();
+    var a = new FunctionNode('f', ['x'], new Node());
     assert.equal(a.match({type: FunctionNode}),  true);
     assert.equal(a.match({type: SymbolNode}), false);
   });

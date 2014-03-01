@@ -12,9 +12,21 @@ var assert = require('assert'),
 describe('AssignmentNode', function() {
 
   it ('should create a AssignmentNode', function () {
-    var n = new AssignmentNode();
+    var n = new AssignmentNode('a', new Node());
     assert(n instanceof AssignmentNode);
     assert(n instanceof Node);
+  });
+
+  it ('should throw an error when calling without new operator', function () {
+    assert.throws(function () {AssignmentNode('a', new Node())}, SyntaxError);
+  });
+
+  it ('should throw an error on wrong constructor arguments', function () {
+    assert.throws(function () {new AssignmentNode()}, TypeError );
+    assert.throws(function () {new AssignmentNode(new Node())}, TypeError );
+    assert.throws(function () {new AssignmentNode('a')}, TypeError );
+    assert.throws(function () {new AssignmentNode(2, new Node())}, TypeError );
+    assert.throws(function () {new AssignmentNode(new Node(), new Node())}, TypeError );
   });
 
   it ('should compile a AssignmentNode', function () {
@@ -43,14 +55,14 @@ describe('AssignmentNode', function() {
   });
 
   it ('should find a AssignmentNode without expression', function () {
-    var e = new AssignmentNode();
+    var e = new AssignmentNode('a', new Node());
 
     assert.deepEqual(e.find({type: AssignmentNode}),[e]);
     assert.deepEqual(e.find({type: SymbolNode}),    []);
   });
 
   it ('should match a AssignmentNode', function () {
-    var a = new AssignmentNode();
+    var a = new AssignmentNode('a', new Node());
     assert.equal(a.match({type: AssignmentNode}),  true);
     assert.equal(a.match({type: ConstantNode}), false);
   });

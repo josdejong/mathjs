@@ -18,14 +18,21 @@ describe('RangeNode', function() {
     assert(n instanceof Node);
   });
 
-  it ('should throw an error creating a RangeNode with wrong number of arguments', function () {
+  it ('should throw an error when calling without new operator', function () {
+    var start = new ConstantNode('number', '0');
+    var end = new ConstantNode('number', '10');
+    assert.throws(function () {RangeNode([start, end])}, SyntaxError);
+  });
+
+  it ('should throw an error creating a RangeNode with wrong number or type of arguments', function () {
     var start = new ConstantNode('number', '0');
     var end = new ConstantNode('number', '10');
 
-    assert.throws(function () { new RangeNode(); }, /Wrong number of/);
-    assert.throws(function () { new RangeNode(start, end); }, /Wrong number of/);
-    assert.throws(function () { new RangeNode([]); }, /Wrong number of/);
-    assert.throws(function () { new RangeNode([start, end, start, end]); }, /Wrong number of/);
+    assert.throws(function () { new RangeNode(); }, TypeError);
+    assert.throws(function () { new RangeNode(start, end); }, TypeError);
+    assert.throws(function () { new RangeNode([]); }, TypeError);
+    assert.throws(function () { new RangeNode([start, end, start, end]); }, TypeError);
+    assert.throws(function () { new RangeNode([0, 10]); }, TypeError);
   });
 
   it ('should compile a RangeNode', function () {

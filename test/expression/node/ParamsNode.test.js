@@ -11,11 +11,25 @@ var assert = require('assert'),
 describe('ParamsNode', function() {
 
   it ('should create a ParamsNode', function () {
-    // TODO
+    var s = new SymbolNode('sqrt');
+    var c = new ConstantNode('number', '4');
+    var n = new ParamsNode(s, [c]);
+    assert(n instanceof ParamsNode);
+    assert(n instanceof Node);
   });
 
-  it ('should evaluate a ParamsNode', function () {
-    // TODO
+  it ('should throw an error when calling without new operator', function () {
+    var s = new SymbolNode('sqrt');
+    var c = new ConstantNode('number', '4');
+    assert.throws(function () {ParamsNode(s, [c])}, SyntaxError);
+  });
+
+  it ('should throw an error when calling with wrong arguments', function () {
+    var s = new SymbolNode('sqrt');
+    var c = new ConstantNode('number', '4');
+    assert.throws(function () {new ParamsNode('sqrt', [])}, TypeError);
+    assert.throws(function () {new ParamsNode(s, [2, 3])}, TypeError);
+    assert.throws(function () {new ParamsNode(s, [c, 3])}, TypeError);
   });
 
   it ('should compile a ParamsNode', function () {
@@ -74,11 +88,23 @@ describe('ParamsNode', function() {
   });
 
   it ('should find a ParamsNode', function () {
-    // TODO
+    var a = new SymbolNode('a'),
+        b = new ConstantNode('number', '2'),
+        c = new ConstantNode('number', '1');
+    var n = new ParamsNode(a, [b, c]);
+
+    assert.deepEqual(n.find({type: ParamsNode}),  [n]);
+    assert.deepEqual(n.find({type: SymbolNode}),    [a]);
+    assert.deepEqual(n.find({type: RangeNode}),     []);
+    assert.deepEqual(n.find({type: ConstantNode}),  [b, c]);
+    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [b]);
+    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
   });
 
   it ('should match a ParamsNode', function () {
-    // TODO
+    var a = new ParamsNode(new Node(), []);
+    assert.equal(a.match({type: ParamsNode}),  true);
+    assert.equal(a.match({type: SymbolNode}), false);
   });
 
   it ('should stringify a ParamsNode', function () {

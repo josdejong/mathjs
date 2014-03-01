@@ -16,6 +16,10 @@ describe('ConstantNode', function() {
     assert(a instanceof Node);
   });
 
+  it ('should throw an error when calling without new operator', function () {
+    assert.throws(function () {ConstantNode('number', '3')}, SyntaxError);
+  });
+
   it ('should throw an error in case of wrong construction arguments', function () {
     assert.throws(function () {new ConstantNode('number', 3);}, TypeError);
     assert.throws(function () {new ConstantNode(3);}, TypeError);
@@ -64,6 +68,8 @@ describe('ConstantNode', function() {
   it ('should match a ConstantNode', function () {
     var a = new ConstantNode('number', '2');
     assert.equal(a.match({type: ConstantNode}),  true);
+    assert.equal(a.match({properties: {value: '2'}}), true);
+    assert.equal(a.match({properties: {value: '4'}}), false);
     assert.equal(a.match({type: SymbolNode}), false);
   });
 
