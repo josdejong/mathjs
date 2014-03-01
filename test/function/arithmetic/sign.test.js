@@ -42,4 +42,9 @@ describe('sign', function() {
     assert.deepEqual(math.sign(math.matrix([-2,-1,0,1,2])), math.matrix([-1,-1,0,1,1]));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {math.sign()}, math.error.ArgumentsError);
+    assert.throws(function () {math.sign(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

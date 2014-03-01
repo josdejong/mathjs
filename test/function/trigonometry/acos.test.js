@@ -61,4 +61,9 @@ describe('acos', function() {
     approx.deepEqual(acos(matrix([1,2,3])), matrix(acos123));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {acos()}, math.error.ArgumentsError);
+    assert.throws(function () {acos(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

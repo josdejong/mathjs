@@ -95,5 +95,9 @@ describe('largereq', function() {
     assert.throws(function () {largereq([1,4,6], [3,4])});
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {largereq(1)}, math.error.ArgumentsError);
+    assert.throws(function () {largereq(1, 2, 3)}, math.error.ArgumentsError);
+  });
 
 });

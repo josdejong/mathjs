@@ -58,4 +58,11 @@ describe('deprecated stuff', function() {
     }, /is deprecated/);
   });
 
+  it ('should throw an error when using deprecated function assignment', function () {
+    var math = mathjs();
+    assert.throws(function () {
+      new math.parse('function f(x) = x^2');
+    }, /Deprecated keyword "function"/);
+  });
+
 });

@@ -66,4 +66,9 @@ describe('csc', function() {
     approx.deepEqual(csc(matrix([1,2,3])), matrix(csc123));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {csc()}, math.error.ArgumentsError);
+    assert.throws(function () {csc(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

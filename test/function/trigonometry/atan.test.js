@@ -62,4 +62,9 @@ describe('atan', function() {
     approx.deepEqual(atan(matrix([1,2,3])), matrix(atan123));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {atan()}, math.error.ArgumentsError);
+    assert.throws(function () {atan(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

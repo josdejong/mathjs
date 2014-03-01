@@ -181,4 +181,9 @@ describe('multiply', function() {
     // TODO: test matrix*vector with wrong size
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {multiply(1)}, math.error.ArgumentsError);
+    assert.throws(function () {multiply(1, 2, 3)}, math.error.ArgumentsError);
+  });
+
 });

@@ -66,4 +66,9 @@ describe('sin', function() {
     approx.deepEqual(sin(matrix([1,2,3])), matrix(sin123));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {sin()}, math.error.ArgumentsError);
+    assert.throws(function () {sin(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

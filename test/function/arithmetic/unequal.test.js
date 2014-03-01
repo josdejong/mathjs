@@ -106,4 +106,9 @@ describe('unequal', function() {
     assert.throws(function () {unequal([1,4,5], [3,4])});
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {unequal(1)}, math.error.ArgumentsError);
+    assert.throws(function () {unequal(1, 2, 3)}, math.error.ArgumentsError);
+  });
+
 });

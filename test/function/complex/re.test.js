@@ -31,4 +31,9 @@ describe('re', function() {
     assert.deepEqual(math.re(math.matrix([2, math.complex('3-6i')])).valueOf(), [2, 3]);
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {math.re()}, math.error.ArgumentsError);
+    assert.throws(function () {math.re(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

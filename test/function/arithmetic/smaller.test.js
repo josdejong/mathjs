@@ -96,4 +96,9 @@ describe('smaller', function() {
     assert.throws(function () {smaller([1,4,6], [3,4])});
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {smaller(1)}, math.error.ArgumentsError);
+    assert.throws(function () {smaller(1, 2, 3)}, math.error.ArgumentsError);
+  });
+
 });

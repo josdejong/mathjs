@@ -4,7 +4,7 @@ var assert = require('assert'),
     bignumber = math.bignumber;
 
 describe('unaryminus', function() {
-  it('should parform unary minus of a boolean', function () {
+  it('should perform unary minus of a boolean', function () {
     assert.equal(math.unary(true), -1);
     assert.equal(math.unary(false), 0);
   });
@@ -33,9 +33,7 @@ describe('unaryminus', function() {
   });
 
   it('should throw an error when used with a string', function() {
-    assert.throws(function () {math.subtract('hello ', 'world'); });
-    assert.throws(function () {math.subtract('str', 123)});
-    assert.throws(function () {math.subtract(123, 'str')});
+    assert.throws(function () {math.unary('hello'); });
   });
 
   it('should perform element-wise unary minus on a matrix', function() {
@@ -45,6 +43,11 @@ describe('unaryminus', function() {
     assert.deepEqual(a7.size(), [2,2]);
     assert.deepEqual(a7.valueOf(), [[-1,-2],[-3,-4]]);
     assert.deepEqual(math.unary([[1,2],[3,4]]), [[-1,-2],[-3,-4]]);
+  });
+
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {math.unary()}, math.error.ArgumentsError);
+    assert.throws(function () {math.unary(1, 2)}, math.error.ArgumentsError);
   });
 
 });

@@ -106,4 +106,9 @@ describe('add', function() {
     assert.deepEqual(c, math.matrix([4,4,4]));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {add(1)}, math.error.ArgumentsError);
+    assert.throws(function () {add(1, 2, 3)}, math.error.ArgumentsError);
+  });
+
 });

@@ -53,4 +53,9 @@ describe('sqrt', function() {
     assert.deepEqual(sqrt(math.matrix([[4,9],[16,25]])), math.matrix([[2,3],[4,5]]));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {sqrt()}, math.error.ArgumentsError);
+    assert.throws(function () {sqrt(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

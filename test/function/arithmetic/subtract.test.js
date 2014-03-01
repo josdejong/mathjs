@@ -104,4 +104,9 @@ describe('subtract', function() {
     assert.deepEqual(a6.valueOf(), [[-4,-4],[-4,-4]]);
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {subtract(1)}, math.error.ArgumentsError);
+    assert.throws(function () {subtract(1, 2, 3)}, math.error.ArgumentsError);
+  });
+
 });

@@ -67,4 +67,9 @@ describe('tan', function() {
     approx.deepEqual(tan(matrix([1,2,3])), matrix(tan123));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {tan()}, math.error.ArgumentsError);
+    assert.throws(function () {tan(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

@@ -37,9 +37,9 @@ describe('epow', function() {
     assert.equal(epow(false, 2), 0);
   });
 
-  it('should throw an error if invalid number of arguments', function() {
-    assert.throws(function () {epow(1)}, math.error.ArgumentsError, 'Wrong number of arguments in function epow (1 provided, 2 expected)');
-    assert.throws(function () {epow(1, 2, 3)}, math.error.ArgumentsError, 'Wrong number of arguments in function epow (3 provided, 2 expected)');
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {epow(1)}, math.error.ArgumentsError);
+    assert.throws(function () {epow(1, 2, 3)}, math.error.ArgumentsError);
   });
 
   it('should elevate a complex number to the given power', function() {

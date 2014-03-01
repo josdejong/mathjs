@@ -59,4 +59,9 @@ describe('arg', function() {
     assert.throws(function () {arg(math.unit('5cm'))});
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {arg()}, math.error.ArgumentsError);
+    assert.throws(function () {arg(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

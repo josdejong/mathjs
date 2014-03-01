@@ -74,4 +74,9 @@ describe('sec', function() {
     approx.deepEqual(sec(matrix([1,2,3])), matrix(sec123));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {sec()}, math.error.ArgumentsError);
+    assert.throws(function () {sec(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

@@ -64,4 +64,9 @@ describe('ceil', function() {
     approx.deepEqual(ceil(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([2, 4, 6, 8, 10]));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {ceil()}, math.error.ArgumentsError);
+    assert.throws(function () {ceil(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

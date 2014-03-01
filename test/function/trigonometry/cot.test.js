@@ -65,4 +65,9 @@ describe('cot', function() {
     approx.deepEqual(cot(matrix([1,2,3])), matrix(cot123));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {cot()}, math.error.ArgumentsError);
+    assert.throws(function () {cot(1, 2)}, math.error.ArgumentsError);
+  });
+
 });
