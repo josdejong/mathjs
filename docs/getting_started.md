@@ -33,7 +33,7 @@ Or using [bower](http://twitter.github.io/bower/):
 
 ### download
 Or by downloading the latest version from
-[mathjs.org](http://mathjs.org/#install_or_download):
+[mathjs.org](http://mathjs.org/#install_or_download).
 
 
 ## Load
