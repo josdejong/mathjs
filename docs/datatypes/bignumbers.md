@@ -62,8 +62,8 @@ BigNumber.config({DECIMAL_PLACES: 32});
 sufficiently large.*
 
 Big numbers can be converted to numbers and vice versa using the functions
-`number` and `bignumber`. When converting a big number to a number, the high
-precision of the will be lost. When a BigNumber is too large to be represented
+`number` and `bignumber`. When converting a BigNumber to a Number, the high
+precision of the BigNumber will be lost. When a BigNumber is too large to be represented
 as Number, it will be initialized as `Infinity`.
 
 ```js
