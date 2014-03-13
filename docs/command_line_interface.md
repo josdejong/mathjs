@@ -22,7 +22,7 @@ $ mathjs
 -7
 ```
 
-The command line interface can be used open a prompt, to execute a script,
+The command line interface can be used to open a prompt, to execute a script,
 or to pipe input and output streams:
 
 ```bash
