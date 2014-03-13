@@ -74,13 +74,13 @@ into JavaScript code. This is a shortcut for first [parsing](#parse) and then
 compiling an expression. The syntax is:
 
 ```js
-math.compile(expr)
-math.compile([expr1, expr2, expr3, ...])
+math.compile(expr);
+math.compile([expr1, expr2, expr3, ...]);
 ```
 
 Function `compile` accepts a single expression or an array with
 expressions as argument. Function `compile` returns an object with a function
-`eval([scope])`, which can executed to evaluate the expression against an
+`eval([scope])`, which can be executed to evaluate the expression against an
 (optional) scope:
 
 ```js
@@ -173,22 +173,22 @@ var parser = math.parser();
 The parser contains the following functions:
 
 - `clear()`
-  Completely clear the parsers scope.
+  Completely clear the parser's scope.
 - `compile(expr)`
   Parse and compile an expression into javascript code.
   Returns an Object with function `eval([scope])`, which when executed
   returns the result of the expression.
 - `eval(expr)`
-  Evaluate an expression. Returns the result of the expression.s
+  Evaluate an expression. Returns the result of the expression.
 - `get(name)`
-  Retrieve a variable or function from the parsers scope.
+  Retrieve a variable or function from the parser's scope.
 - `parse(expr)`
   Parse an expression into a node tree. Returns a `Node`, which can be
   compiled and evaluated like `node.compile(math).eval([scope])`.
 - `remove(name)`
-  Remove a variable or function from the parsers scope.
+  Remove a variable or function from the parser's scope.
 - `set(name, value)`
-  Set a variable or function in the parsers scope.
+  Set a variable or function in the parser's scope.
   A node can be evaluated as `node.eval()`.
 
 The following code shows how to create and use a parser.
@@ -470,7 +470,7 @@ math.eval('bignumber(0.1) + bignumber(0.2)'); // BigNumber, 0.3
 ```
 
 The default number type of the expression parser can be changed at instantiation
-of math.js. The expression parser can parser numbers as BigNumber by default:
+of math.js. The expression parser parses numbers as BigNumber by default:
 
 ```js
 var mathjs = require('mathjs'),
@@ -483,8 +483,8 @@ math.eval('0.1 + 0.2'); // BigNumber, 0.3
 ```
 
 Big numbers can be converted to numbers and vice versa using the functions
-`number` and `bignumber`. When converting a big number to a number, the high
-precision of the will be lost.When a BigNumber is too large to be represented
+`number` and `bignumber`. When converting a BigNumber to a Number, the high
+precision of the BigNumber will be lost. When a BigNumber is too large to be represented
 as Number, it will be initialized as `Infinity`.
 
 
