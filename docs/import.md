@@ -1,8 +1,28 @@
-# Extend
+# Import
 
 The library can easily be extended with functions and variables using the
 `import` function. The function `import` accepts a filename or an object with
 functions and variables.
+
+Function `import` has the following syntax:
+
+```js
+    math.import(object: Object [, options: Object])
+    math.import(moduleName: String [, options: Object])
+```
+
+The first argument can be a module name or an object. The optional second
+argument can be an object with options. The following options are available:
+
+- `{Boolean} override`
+  If true, existing functions will be overwritten. False by default.
+- `{Boolean} wrap`
+  If true (default), the functions will be wrapped in a wrapper function which
+  converts data types like Matrix to primitive data types like Array.
+  The wrapper is needed when extending math.js with libraries which do not
+  support the math.js data types.
+
+Math.js can be extended with functions and variables:
 
 ```js
 // create an instance of math.js

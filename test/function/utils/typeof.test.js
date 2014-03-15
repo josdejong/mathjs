@@ -1,5 +1,11 @@
 // test typeof
 var assert = require('assert'),
+    Index = require('../../../lib/type/Index'),
+    Range = require('../../../lib/type/Range'),
+    Matrix = require('../../../lib/type/Matrix'),
+    Help = require('../../../lib/type/Help'),
+    Unit = require('../../../lib/type/Unit'),
+    Complex = require('../../../lib/type/Complex'),
     math = require('../../../index')();
 
 describe('typeof', function() {
@@ -20,6 +26,7 @@ describe('typeof', function() {
   });
 
   it('should return complex type for a complex number', function() {
+    assert.equal(math.typeof(new Complex(2,3)), 'complex');
     assert.equal(math.typeof(math.complex(2,3)), 'complex');
   });
 
@@ -28,11 +35,18 @@ describe('typeof', function() {
     assert.equal(math.typeof(new Array()), 'array');
   });
 
-  it('should return matrix type for a matrix', function() {  
-    assert.equal(math.typeof(math.matrix()), 'matrix');
+  it('should return array type for an array', function() {
+    assert.equal(math.typeof([1,2,3]), 'array');
+    assert.equal(math.typeof(new Array()), 'array');
   });
 
-  it('should return unit type for a unit', function() {  
+  it('should return matrix type for a matrix', function() {  
+    assert.equal(math.typeof(math.matrix()), 'matrix');
+    assert.equal(math.typeof(new Matrix()), 'matrix');
+  });
+
+  it('should return unit type for a unit', function() {
+    assert.equal(math.typeof(new Unit(5, 'cm')), 'unit');
     assert.equal(math.typeof(math.unit('5cm')), 'unit');
   });
 
@@ -61,6 +75,18 @@ describe('typeof', function() {
 
   it('should return function type for a selector', function() {
     assert.equal(math.typeof(math.select(3)), 'selector');
+  });
+
+  it('should return function type for an index', function() {
+    assert.equal(math.typeof(new Index([0, 10])), 'index');
+  });
+
+  it('should return function type for a range', function() {
+    assert.equal(math.typeof(new Range(0, 10)), 'range');
+  });
+
+  it('should return function type for a help object', function() {
+    assert.equal(math.typeof(new Help()), 'help');
   });
 
   it('should return object type for an object', function() {  

@@ -11,6 +11,6 @@
   - [Complex Numbers](datatypes/complex_numbers.md)
   - [Matrices](datatypes/matrices.md)
   - [Units](datatypes/units.md)
-- [Extension](extend.md)
+- [Import](import.md)
 - [Configuration](configuration.md)
 - [Command Line Interface](command_line_interface.md)

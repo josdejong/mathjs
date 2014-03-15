@@ -44,7 +44,7 @@ var mathjs = require('../index'),
     parser = math.parser(),
     fs = require('fs');
 
-var PRECISION = 14; // digits
+var PRECISION = 14; // decimals
 
 /**
  * auto complete a text

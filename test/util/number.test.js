@@ -314,7 +314,7 @@ describe('number', function() {
 
     describe('bignumber', function () {
       before (function () {
-        math.type.BigNumber.config(20); // ensure the precision is 20 digits, the default
+        BigNumber.config(20); // ensure the precision is 20 digits, the default
       });
 
       it('should format big numbers', function() {

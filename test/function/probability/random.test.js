@@ -59,7 +59,7 @@ describe('distribution', function () {
   describe('random', function() {
     var originalRandom;
 
-    it('should pick uniformely distributed numbers in [0, 1]', function() {
+    it('should pick uniformly distributed numbers in [0, 1]', function() {
       var picked = [];
 
       _.times(1000, function() {
@@ -69,7 +69,7 @@ describe('distribution', function () {
     });
 
 
-    it('should pick uniformely distributed numbers in [min, max]', function() {
+    it('should pick uniformly distributed numbers in [min, max]', function() {
       var picked = [];
 
       _.times(1000, function() {
@@ -78,7 +78,7 @@ describe('distribution', function () {
       assertUniformDistribution(picked, -10, 10);
     });
 
-    it('should pick uniformely distributed random matrix, with elements in [0, 1]', function() {
+    it('should pick uniformly distributed random matrix, with elements in [0, 1]', function() {
       var picked = [],
           matrices = [],
           size = [2, 3, 4];
@@ -99,7 +99,7 @@ describe('distribution', function () {
       assertUniformDistribution(picked, 0, 1);
     });
 
-    it('should pick uniformely distributed random matrix, with elements in [min, max]', function() {
+    it('should pick uniformly distributed random matrix, with elements in [min, max]', function() {
       var picked = [],
           matrices = [],
           size = [2, 3, 4];
@@ -131,7 +131,7 @@ describe('distribution', function () {
 
   describe('randomInt', function() {
 
-    it('should pick uniformely distributed integers in [min, max)', function() {
+    it('should pick uniformly distributed integers in [min, max)', function() {
       var picked = [];
 
       _.times(10000, function() {
@@ -141,7 +141,7 @@ describe('distribution', function () {
       assertUniformDistributionInt(picked, -15, -5);
     });
 
-    it('should pick uniformely distributed random matrix, with elements in [min, max)', function() {
+    it('should pick uniformly distributed random matrix, with elements in [min, max)', function() {
       var picked = [],
           matrices = [],
           size = [2, 3, 4];

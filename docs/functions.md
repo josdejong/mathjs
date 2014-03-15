@@ -137,6 +137,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.clone(x)
 - math.forEach(x, callback)
 - math.format(value [, precision])
+- math.ifElse(conditionalExpr, trueExpr, falseExpr)
 - math.import(filename | object, override)
 - math.map(x, callback)
 - math.print(template, values [, precision])

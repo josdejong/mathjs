@@ -99,4 +99,36 @@ describe('import', function() {
     approx.equal(estFollowers, 1422.431464053916);
   });
 
+  it.skip('should throw an error when trying to load a module when no module loader is available', function () {
+    // TODO: how to temporarily override the global function require?
+    var orig = require;
+    require = undefined;
+
+    assert.throws(function () {math.import('numbers');}, /Cannot load file: require not available/);
+
+    require = orig;
+  });
+
+  it('should throw an error in case of wrong number of arguments', function () {
+    assert.throws (function () {math.import()}, math.error.ArgumentsError);
+    assert.throws (function () {math.import('', {}, 3)}, math.error.ArgumentsError);
+
+  });
+
+  it('should throw an error in case of wrong type of arguments', function () {
+    assert.throws(function () {math.import(2)}, /Object or module name expected/);
+    assert.throws(function () {math.import(function () {})}, /Object or module name expected/);
+  });
+
+  it('should ignore properties on Object', function () {
+    Object.prototype.foo = 123;
+
+    math.import({bar: 456});
+
+    assert(!math.hasOwnProperty('foo'));
+    assert(math.hasOwnProperty('bar'));
+
+    delete Object.prototype.foo;
+  });
+
 });
