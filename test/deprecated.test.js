@@ -1,6 +1,7 @@
 // test error messages for deprecated functions
 var assert = require('assert'),
-    mathjs = require('../index');
+    mathjs = require('../index'),
+    number = require('../lib/util/number');
 
 describe('deprecated stuff', function() {
 
@@ -63,6 +64,18 @@ describe('deprecated stuff', function() {
     assert.throws(function () {
       new math.parse('function f(x) = x^2');
     }, /Deprecated keyword "function"/);
+  });
+
+  it ('should throw an error when using deprecated notation "scientific in number.format"', function () {
+    assert.throws(function () {
+      new number.format(2.3, {notation: 'scientific'});
+    }, /Format notation "scientific" is deprecated/);
+  });
+
+  it ('should throw an error when using deprecated option "scientific in number.format"', function () {
+    assert.throws(function () {
+      new number.format(2.3, {notation: 'auto', scientific: 5});
+    }, /options.scientific is deprecated/);
   });
 
 });

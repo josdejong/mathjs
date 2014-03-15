@@ -35,7 +35,34 @@ describe ('object', function () {
       assert.equal(object.clone(new String('hello')), 'hello');
     });
 
-    // TODO: clone objects, arrays, etc
+    it('should (deep) clone objects', function () {
+      var obj = {a: {b: 'c', d: new Date(2014,0,1)}};
+      var clone = object.clone(obj);
+
+      assert.deepEqual(obj, clone);
+
+      // check whether the clone remains unchanged when changing the original object
+      obj.a.b = 'cc';
+
+      assert.equal(clone.a.b, 'c');
+
+      obj.a.d.setMonth(2);
+      assert.equal(clone.a.d.valueOf(), new Date(2014,0,1).valueOf());
+    });
+
+    it('should clone dates', function () {
+      var d1 = new Date(2014,1,1);
+      var d2 = object.clone(d1);
+      assert.equal(d1.valueOf(), d2.valueOf());
+      d1.setMonth(2);
+      assert.notEqual(d1, d2);
+    });
+
+    it('should throw an error in case of an unsupported type', function () {
+      assert.throws(function () {object.clone(/a regexp/)}, /Cannot clone/);
+    });
+
+    // TODO: test clone arrays
   });
 
   it('extend', function() {

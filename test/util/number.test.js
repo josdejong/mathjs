@@ -268,6 +268,27 @@ describe('number', function() {
         assert.equal(number.format(Math.pow(2, 53), {exponential: {upper: 1e+20}}), '9007199254740992');
       });
 
+      it('auto notation with custom lower bound', function () {
+        var options = {
+          exponential: {
+            lower: 1e-6
+          }
+        };
+        assert.equal(number.format(0, options), '0');
+        assert.equal(number.format(1e-6, options), '0.000001');
+        assert.equal(number.format(0.999e-6, options), '9.99e-7');
+      });
+
+      it('auto notation with custom upper bound', function () {
+        var options = {
+          exponential: {
+            upper: 1e+9
+          }
+        };
+        assert.equal(number.format(1e+9, options), '1e+9');
+        assert.equal(number.format(1e+9-1, options), '999999999');
+      });
+
       it('auto notation with custom precision, lower, and upper bound', function () {
         var options = {
           precision: 4,
