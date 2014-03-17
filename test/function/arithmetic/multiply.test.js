@@ -53,8 +53,10 @@ describe('multiply', function() {
   });
 
   it('should multiply mixed booleans and bignumbers', function() {
-    assert.deepEqual(multiply(bignumber(0.3), bignumber(true)), bignumber(0.3));
+    assert.deepEqual(multiply(bignumber(0.3), true), bignumber(0.3));
+    assert.deepEqual(multiply(bignumber(0.3), false), bignumber(0));
     assert.deepEqual(multiply(false, bignumber('2')), bignumber(0));
+    assert.deepEqual(multiply(true, bignumber('2')), bignumber(2));
   });
 
   it('should multiply two complex numbers correctly', function() {
@@ -128,6 +130,12 @@ describe('multiply', function() {
     assert.equal(multiply(unit('5 mm'), bignumber(0)).toString(), '0 m');
   });
 
+  it('should throw an error in case of unit non-numeric argument', function() {
+    assert.throws(function () {multiply(math.unit('5cm'), math.unit('4cm'))}, math.error.UnsupportedTypeError);
+    assert.throws(function () {multiply(math.unit('5cm'), math.complex('2+3i'))}, math.error.UnsupportedTypeError);
+    assert.throws(function () {multiply(math.complex('2+3i'), math.unit('5cm'))}, math.error.UnsupportedTypeError);
+  });
+
   it('should throw an error if used with strings', function() {
     assert.throws(function () {multiply("hello", "world")});
     assert.throws(function () {multiply("hello", 2)});
@@ -173,12 +181,38 @@ describe('multiply', function() {
     approx.deepEqual(multiply(a, b), 32);
   });
 
-  it('should throw an error if multiplying matrices with incompatible sizes', function() {
-    assert.throws(function () {multiply(c, b)});
+  it('should throw an error when multiplying empty vectors', function () {
+    assert.throws(function () {multiply([], [])}, /Cannot multiply two empty vectors/);
+  });
 
-    // TODO: test vector*vector with wrong size
-    // TODO: test vector*matrix with wrong size
-    // TODO: test matrix*vector with wrong size
+  it('should multiply mixed array and matrix', function () {
+    var a = [[1, 2], [3, 4]];
+    var b = [[2, 0], [0, 2]];
+
+    approx.deepEqual(multiply(a, matrix(b)), matrix([[2, 4], [6, 8]]));
+    approx.deepEqual(multiply(matrix(a), b), matrix([[2, 4], [6, 8]]));
+  });
+
+  it('should throw an error when multiplying matrices with incompatible sizes', function() {
+    // vector * vector
+    assert.throws(function () {multiply([1,1], [1,1, 1])});
+
+    // matrix * matrix
+    assert.throws(function () {multiply([[1,1]], [[1,1]])});
+    assert.throws(function () {multiply([[1,1]], [[1,1], [1,1], [1,1]])});
+
+    // matrix * vector
+    assert.throws(function () {multiply([[1,1], [1,1]], [1,1,1])});
+
+    // vector * matrix
+    assert.throws(function () {multiply([1,1,1], [[1,1], [1,1]])});
+  });
+
+  it('should throw an error when multiplying multi dimensional matrices', function() {
+    assert.throws(function () {multiply([[[1]]], [1])});
+    assert.throws(function () {multiply([[[1]]], [[1]])});
+    assert.throws(function () {multiply([1], [[[1]]])});
+    assert.throws(function () {multiply([[1]], [[[1]]])});
   });
 
   it('should throw an error in case of invalid number of arguments', function() {

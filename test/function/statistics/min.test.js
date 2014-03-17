@@ -52,14 +52,22 @@ describe('min', function() {
 			  [ 1, 2, 3],
 			  [ 4, 5, 6],
 			  [ 7, 8, 9]], 1), [1, 4, 7]);
+
+	  assert.deepEqual(min([
+			  [ 1, 2, 3],
+			  [ 6, 5, 4],
+			  [ 8, 7, 9]], 1), [1, 4, 7]);
+
 	  assert.deepEqual(min([
 			  [ [1,2], [3,4], [5,6]],
 			  [ [6,7], [8,9], [10,11]]], 2),
 		  [[1, 3, 5], [6, 8, 10]]);
+
 	  assert.deepEqual(min([
 			  [ [1,2], [3,4], [5,6]],
 			  [ [6,7], [8,9], [10,11]]], 1),
 		  [[1, 2], [6,7]]);
+
 	  assert.deepEqual(min([
 			  [ [1,2], [3,4], [5,6]],
 			  [ [6,7], [8,9], [10,11]]], 0),
@@ -78,6 +86,7 @@ describe('min', function() {
 
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {min()});
+    assert.throws(function() {min([], 2, 3)});
   });
 
   it('should throw an error if called with an empty array', function() {

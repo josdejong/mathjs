@@ -16,12 +16,20 @@ describe('round', function() {
   });
 
   it('should round booleans (yeah, not really useful but it should be supported)', function() {
+    approx.equal(round(true), 1);
+    approx.equal(round(false), 0);
     approx.equal(round(true, 2), 1);
     approx.equal(round(false, 2), 0);
   });
 
   it('should throw an error on invalid type of n', function() {
-    assert.throws(function () {round(math.pi, true);}, TypeError);
+    assert.throws(function () {round(math.pi, new Date());}, TypeError);
+  });
+
+  it('should throw an error on invalid value of n', function() {
+    assert.throws(function () {round(math.pi, -2);}, /Number of decimals in function round must be in te range of 0-15/);
+    assert.throws(function () {round(math.pi, 20);}, /Number of decimals in function round must be in te range of 0-15/);
+    assert.throws(function () {round(math.pi, 2.5);}, /Number of decimals in function round must be an integer/);
     // TODO: also test other types
   });
 
@@ -37,6 +45,7 @@ describe('round', function() {
     assert.deepEqual(round(bignumber(2.123456), 3), bignumber(2.123));
     assert.deepEqual(round(2.1234567, bignumber(3)), 2.123);
     assert.deepEqual(round(true, bignumber(3)), 1);
+    assert.deepEqual(round(bignumber(1.23), true), bignumber(1.2));
   });
 
   it('should round real and imag part of a complex number', function() {

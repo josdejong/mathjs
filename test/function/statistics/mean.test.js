@@ -66,6 +66,7 @@ describe('mean', function() {
 
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {mean()});
+    assert.throws(function() {mean([], 2, 3)});
   });
 
   it('should throw an error if called with an empty array', function() {

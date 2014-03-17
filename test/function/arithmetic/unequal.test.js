@@ -52,7 +52,11 @@ describe('unequal', function() {
   it('should compare mixed booleans and bignumbers', function() {
     assert.deepEqual(unequal(bignumber(0.1), true), true);
     assert.deepEqual(unequal(bignumber(1), true), false);
+    assert.deepEqual(unequal(bignumber(1), false), true);
+    assert.deepEqual(unequal(bignumber(0), false), false);
     assert.deepEqual(unequal(false, bignumber(0)), false);
+    assert.deepEqual(unequal(true, bignumber(0)), true);
+    assert.deepEqual(unequal(true, bignumber(1)), false);
   });
 
   it('should compare two complex numbers correctly', function() {
@@ -89,6 +93,10 @@ describe('unequal', function() {
   it('should throw an error when comparing bignumbers and units', function() {
     assert.throws(function () {unequal(unit('100cm'), bignumber(22))});
     assert.throws(function () {unequal(bignumber(22), unit('100cm'))});
+  });
+
+  it('should throw an error for two measures of different units', function() {
+    assert.throws(function () {unequal(math.unit(5, 'km'), math.unit(100, 'gram'));});
   });
 
   it('should compare two strings correctly', function() {

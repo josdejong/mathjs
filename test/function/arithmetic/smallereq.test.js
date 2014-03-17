@@ -55,7 +55,11 @@ describe('smallereq', function() {
   it('should compare mixed booleans and bignumbers', function() {
     assert.deepEqual(smallereq(bignumber(0.1), true), true);
     assert.deepEqual(smallereq(bignumber(1), true), true);
+    assert.deepEqual(smallereq(bignumber(1), false), false);
+    assert.deepEqual(smallereq(bignumber(0), false), true);
     assert.deepEqual(smallereq(false, bignumber(0)), true);
+    assert.deepEqual(smallereq(true, bignumber(0)), false);
+    assert.deepEqual(smallereq(true, bignumber(1)), true);
   });
 
   it('should compare two measures of the same unit correctly', function() {
@@ -68,6 +72,10 @@ describe('smallereq', function() {
   it('should throw an error if comparing a unit with a number', function() {
     assert.throws(function () {smallereq(unit('100cm'), 22)});
     assert.throws(function () {smallereq(22, unit('100cm'))});
+  });
+
+  it('should throw an error for two measures of different units', function() {
+    assert.throws(function () {smallereq(math.unit(5, 'km'), math.unit(100, 'gram'));});
   });
 
   it('should throw an error if comparing a unit with a bignumber', function() {

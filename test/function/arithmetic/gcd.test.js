@@ -62,20 +62,25 @@ describe('gcd', function() {
   });
 
   it('should throw an error if only one argument', function() {
-    assert.throws(function () {gcd(1); }, SyntaxError, 'Wrong number of arguments in function gcd (3 provided, 1-2 expected)');
+    assert.throws(function () {gcd(1); }, SyntaxError);
+  })
+
+  it('should throw an error for non-integer numbers', function() {
+    assert.throws(function () {gcd(2, 4.1); }, /Parameters in function gcd must be integer numbers/);
+    assert.throws(function () {gcd(2.3, 4); }, /Parameters in function gcd must be integer numbers/);
   })
 
   it('should throw an error with complex numbers', function() {
-    assert.throws(function () {gcd(math.complex(1,3),2); }, TypeError, 'Function gcd(complex, number) not supported');
+    assert.throws(function () {gcd(math.complex(1,3),2); }, math.error.UnsupportedTypeError);
   });
 
   it('should throw an error with strings', function() {
-    assert.throws(function () {gcd('a', 2); }, TypeError, 'Function gcd(string, number) not supported');
-    assert.throws(function () {gcd(2, 'a'); }, TypeError, 'Function gcd(number, string) not supported');
+    assert.throws(function () {gcd('a', 2); }, /Function gcd\(string, number\) not supported/);
+    assert.throws(function () {gcd(2, 'a'); }, /Function gcd\(number, string\) not supported/);
   });
 
   it('should throw an error with units', function() {
-    assert.throws(function () { gcd(math.unit('5cm'), 2); }, TypeError, 'Function gcd(unit, number) not supported');
+    assert.throws(function () { gcd(math.unit('5cm'), 2); }, /Function gcd\(unit, number\) not supported/);
   });
 
   it('should find the greatest common divisor element-wise in a matrix', function() {

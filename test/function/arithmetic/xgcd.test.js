@@ -76,6 +76,11 @@ describe('xgcd', function() {
     assert.throws(function () {xgcd(1, 2, 3)});
   });
 
+  it('should throw an error for non-integer numbers', function() {
+    assert.throws(function () {xgcd(2, 4.1); }, /Parameters in function xgcd must be integer numbers/);
+    assert.throws(function () {xgcd(2.3, 4); }, /Parameters in function xgcd must be integer numbers/);
+  })
+
   it('should throw an error when used with a complex number', function() {
     assert.throws(function () {xgcd(math.complex(1,3),2); }, TypeError, 'Function xgcd(complex, number) not supported');
   });

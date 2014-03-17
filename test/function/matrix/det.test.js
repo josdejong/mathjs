@@ -42,6 +42,7 @@ describe('det', function() {
 
     // c2 should be a clone
     c1.re = 0;
+    assert.equal(c1.re, 0);
     assert.equal(c2.re, 2);
   });
 

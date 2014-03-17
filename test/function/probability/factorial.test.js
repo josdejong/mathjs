@@ -44,9 +44,18 @@ describe('factorial', function() {
     assert.throws(function() { factorial(1.5); });
   });
 
+  it('should throw an error if called with non-integer bignumber', function() {
+    assert.throws(function() { factorial(math.bignumber(1.5)); });
+  });
+
   it('should throw en error if called with invalid number of arguments', function() {
     assert.throws(function() { factorial(); });
     assert.throws(function() { factorial(1,3); });
+  });
+
+  it('should throw en error if called with invalid type of argument', function() {
+    assert.throws(function() { factorial(new Date()); });
+    assert.throws(function() { factorial('a string'); });
   });
 
 

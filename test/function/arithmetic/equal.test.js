@@ -52,7 +52,9 @@ describe('equal', function() {
   it('should compare mixed booleans and bignumbers', function() {
     assert.equal(equal(bignumber(0.1), true), false);
     assert.equal(equal(bignumber(1), true), true);
+    assert.equal(equal(bignumber(1), false), false);
     assert.equal(equal(false, bignumber(0)), true);
+    assert.equal(equal(true, bignumber(0)), false);
   });
 
   it('should compare two complex numbers correctly', function() {
@@ -87,6 +89,10 @@ describe('equal', function() {
 
   it('should throw an error when comparing a unit with a number', function() {
     assert.throws(function () {equal(unit('100cm'), 22)});
+  });
+
+  it('should throw an error for two measures of different units', function() {
+    assert.throws(function () {equal(math.unit(5, 'km'), math.unit(100, 'gram'));});
   });
 
   it('should compare two strings correctly', function() {
