@@ -1,33 +1,38 @@
 // test transpose
 var assert = require('assert'),
-    math = require('../../../index')();
+    math = require('../../../index')(),
+    transpose = math.transpose;
 
 describe('transpose', function() {
 
   it('should transpose a scalar', function() {
-    assert.deepEqual(math.transpose(3), 3);
+    assert.deepEqual(transpose(3), 3);
   });
 
   it('should transpose a vector', function() {
-    assert.deepEqual(math.transpose([1,2,3]), [1,2,3]);
-    assert.deepEqual(math.transpose(math.matrix([1,2,3])), math.matrix([1,2,3]));
+    assert.deepEqual(transpose([1,2,3]), [1,2,3]);
+    assert.deepEqual(transpose(math.matrix([1,2,3])), math.matrix([1,2,3]));
   });
 
   it('should transpose a 2d matrix', function() {
-    assert.deepEqual(math.transpose([[1,2,3],[4,5,6]]), [[1,4],[2,5],[3,6]]);
-    assert.deepEqual(math.transpose(math.matrix([[1,2,3],[4,5,6]])), math.matrix([[1,4],[2,5],[3,6]]));
-    assert.deepEqual(math.transpose([[1,2],[3,4]]), [[1,3],[2,4]]);
-    assert.deepEqual(math.transpose([[1,2,3,4]]), [[1],[2],[3],[4]]);
+    assert.deepEqual(transpose([[1,2,3],[4,5,6]]), [[1,4],[2,5],[3,6]]);
+    assert.deepEqual(transpose(math.matrix([[1,2,3],[4,5,6]])), math.matrix([[1,4],[2,5],[3,6]]));
+    assert.deepEqual(transpose([[1,2],[3,4]]), [[1,3],[2,4]]);
+    assert.deepEqual(transpose([[1,2,3,4]]), [[1],[2],[3],[4]]);
   });
 
   it('should throw an error for invalid matrix transpose', function() {
     assert.throws(function () {
-      assert.deepEqual(math.transpose([[]]), [[]]);  // size [2,0]
+      assert.deepEqual(transpose([[]]), [[]]);  // size [2,0]
     });
     assert.throws(function () {
-      math.transpose([[[1],[2]],[[3],[4]]]); // size [2,2,1]
+      transpose([[[1],[2]],[[3],[4]]]); // size [2,2,1]
     });
   });
 
+  it('should throw an error if called with an invalid number of arguments', function() {
+    assert.throws(function () {transpose()}, math.error.ArgumentsError);
+    assert.throws(function () {transpose([1,2],2)}, math.error.ArgumentsError);
+  });
 });
 

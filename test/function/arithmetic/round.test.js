@@ -22,6 +22,11 @@ describe('round', function() {
     approx.equal(round(false, 2), 0);
   });
 
+  it('should throw an error on invalid type of value', function() {
+    assert.throws(function () {round('string');}, TypeError);
+    assert.throws(function () {round(new Date());}, TypeError);
+  });
+
   it('should throw an error on invalid type of n', function() {
     assert.throws(function () {round(math.pi, new Date());}, TypeError);
   });
@@ -30,7 +35,6 @@ describe('round', function() {
     assert.throws(function () {round(math.pi, -2);}, /Number of decimals in function round must be in te range of 0-15/);
     assert.throws(function () {round(math.pi, 20);}, /Number of decimals in function round must be in te range of 0-15/);
     assert.throws(function () {round(math.pi, 2.5);}, /Number of decimals in function round must be an integer/);
-    // TODO: also test other types
   });
 
   it('should throw an error if used with wrong number of arguments', function() {

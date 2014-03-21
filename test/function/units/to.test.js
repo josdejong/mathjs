@@ -1,12 +1,13 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
+    Unit = require('../../../lib/type/Unit'),
+    Matrix = require('../../../lib/type/Matrix'),
     unit = math.unit;
 
 describe('to', function() {
 
   it('should perform the given unit conversion', function() {
-    // TODO: improve these tests
     var a = math.unit('500 cm'); a.fixPrefix = true;
     approx.deepEqual(math.to(unit('5m'), unit('cm')), a);
 
@@ -24,20 +25,30 @@ describe('to', function() {
   });
 
   it('should perform the given unit conversion on each element of an array', function() {
-    // TODO: do not use math.format here
-    assert.deepEqual(math.format(math.to([
+    approx.deepEqual(math.to([
       unit('1cm'),
       unit('2 inch'),
-      unit('2km')], unit('foot')), 5),
-        '[0.032808 foot, 0.16667 foot, 6561.7 foot]');
+      unit('2km')
+    ], unit('foot')), [
+      new Unit(0.032808, 'foot').to('foot'),
+      new Unit(0.16667, 'foot').to('foot'),
+      new Unit(6561.7, 'foot').to('foot')
+    ]);
   });
 
   it('should perform the given unit conversion on each element of a matrix', function() {
-    var a = math.matrix([[unit('1cm'), unit('2cm')],[unit('3cm'),unit('4cm')]]);
+    var a = math.matrix([
+      [unit('1cm'), unit('2cm')],
+      [unit('3cm'),unit('4cm')]
+    ]);
+
     var b = math.to(a, unit('mm'));
+
     assert.ok(b instanceof math.type.Matrix);
-    // TODO: do not use math.format here
-    assert.equal(math.format(b), '[[10 mm, 20 mm], [30 mm, 40 mm]]');
+    approx.deepEqual(b, new Matrix([
+      [new Unit(10, 'mm').to('mm'), new Unit(20, 'mm').to('mm')],
+      [new Unit(30, 'mm').to('mm'), new Unit(40, 'mm').to('mm')]
+    ]));
   });
 
   it('should throw an error if converting between incompatible units', function() {

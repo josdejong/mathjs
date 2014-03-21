@@ -27,6 +27,10 @@ describe('matrix', function() {
       assert.deepEqual(m, new Matrix([[1,2],[3, 4]]));
     });
 
+    it('should throw an error when called without new keyword', function () {
+      assert.throws(function () {Matrix()}, /Constructor must be called with the new operator/);
+    });
+
   });
 
   describe('size', function() {

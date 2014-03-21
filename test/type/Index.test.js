@@ -1,17 +1,30 @@
 // test data type Index
 var assert = require('assert'),
-    math = require('../../index')(),
-    Index = math.type.Index;
+    Index = require('../../lib/type/Index'),
+    Matrix = require('../../lib/type/Matrix'),
+    Range = require('../../lib/type/Range');
 
 describe('Index', function () {
 
   it('should create an Index', function () {
+    assert.deepEqual(new Index(0, 2)._ranges, [{start:0, end:1, step:1}, {start:2, end:3, step:1}]);
+
     assert.deepEqual(new Index([0, 10])._ranges, [{start:0, end:10, step:1}]);
     assert.deepEqual(new Index([0, 10, 2])._ranges, [{start:0, end:10, step:2}]);
     assert.deepEqual(new Index([0, 10], [4,6])._ranges, [
       {start:0, end:10, step:1},
       {start:4, end:6, step:1}
     ]);
+  });
+
+  it('should create an Index from a Range', function () {
+    assert.deepEqual(new Index(new Range(0, 10))._ranges, [{start:0, end:10, step:1}]);
+  });
+
+  it('should create an Index from an array with ranges', function () {
+    var index = Index.create([new Range(0, 10), 4]);
+    assert(index instanceof Index);
+    assert.deepEqual(index._ranges, [{start:0, end:10, step:1}, {start:4, end:5, step:1}]);
   });
 
   it('should calculate the size of an Index', function () {
@@ -50,16 +63,60 @@ describe('Index', function () {
     assert.equal(new Index().isScalar(), true);
   });
 
-  // TODO: test Index.clone
-  // TODO: test Index.toString
-  // TODO: test Index.forEach
-  // TODO: test Index.range
-  // TODO: test Index.valueOf
+  it('should clone an Index', function () {
+    var index1 = new Index(2, [0, 4]);
+    var index2 = index1.clone(0);
 
+    assert.deepEqual(index1, index2);
+    assert.notStrictEqual(index1, index2);
+    assert.notStrictEqual(index1._ranges[0], index2._ranges[0]);
+    assert.notStrictEqual(index1._ranges[1], index2._ranges[1]);
+  });
+
+  it('should stringify an index', function () {
+    assert.equal(new Index().toString(), '[]');
+    assert.equal(new Index(2, 3).toString(), '[2:3, 3:4]');
+    assert.equal(new Index(2, 3, 1).toString(), '[2:3, 3:4, 1:2]');
+    assert.equal(new Index(2, [0,3]).toString(), '[2:3, 0:3]');
+    assert.equal(new Index([0,6,2]).toString(), '[0:2:6]');
+  });
+
+  it('should get the range for a given dimension', function () {
+    var index = new Index(2, [0, 8, 2], [3,-1,-1]);
+
+    assert(index.range(0) instanceof Range);
+    assert.deepEqual(index.range(0), new Range(2, 3));
+
+    assert(index.range(1) instanceof Range);
+    assert.deepEqual(index.range(1), new Range(0, 8, 2));
+
+    assert(index.range(2) instanceof Range);
+    assert.deepEqual(index.range(2), new Range(3, -1, -1));
+    assert.strictEqual(index.range(3), null);
+  });
+
+  it('should iterate over all ranges', function () {
+    var index = new Index(2, [0, 8, 2], [3,-1,-1]);
+
+    var log = [];
+    index.forEach(function (range, i, obj) {
+      log.push({
+        range: range,
+        index: i
+      });
+      assert.strictEqual(obj, index);
+    });
+
+    assert.deepEqual(log, [
+      {range: new Range(2, 3), index: 0},
+      {range: new Range(0, 8, 2), index: 1},
+      {range: new Range(3, -1, -1), index: 2}
+    ]);
+  });
 
   it('should test whether an object is an Index', function () {
     assert.equal(Index.isIndex(new Index()), true);
-    assert.equal(Index.isIndex(math.matrix()), false);
+    assert.equal(Index.isIndex(new Matrix()), false);
     assert.equal(Index.isIndex(23.4), false);
     assert.equal(Index.isIndex([]), false);
     assert.equal(Index.isIndex({}), false);
@@ -76,17 +133,24 @@ describe('Index', function () {
         [0, 2, 4, 6]
     ]);
 
-    assert.deepEqual(new Index([2, 4], [0, 8, 2], [3,-1,-1]).toArray(), [
-      [2, 3],
+    assert.deepEqual(new Index(2, [0, 8, 2], [3,-1,-1], [2, 4, 0]).toArray(), [
+      [2],
+      [0, 2, 4, 6],
+      [3, 2, 1, 0],
+      []
+    ]);
+  });
+
+  it('valueOf should return the expanded array', function () {
+    assert.deepEqual(new Index(2, [0, 8, 2], [3,-1,-1]).valueOf(), [
+      [2],
       [0, 2, 4, 6],
       [3, 2, 1, 0]
     ]);
   });
 
   it('should complain when new operator is missing', function () {
-    assert.throws(function () {
-      var index = Index([2, 5]);
-    });
+    assert.throws(function () {Index([2, 5]);}, /Constructor must be called with the new operator/);
   });
 
   it('should throw an error on non-integer ranges', function () {
@@ -95,6 +159,8 @@ describe('Index', function () {
     assert.throws(function () {new Index([4,2,0.1])});
   });
 
-  // TODO: test wrong inputs
-
+  it('should throw an error on unsupported type of arguments', function () {
+    assert.throws(function () {new Index('string')}, TypeError);
+    assert.throws(function () {new Index(new Date())}, TypeError);
+  });
 });

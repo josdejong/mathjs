@@ -33,11 +33,42 @@ describe('det', function() {
     assert.equal(math.det(math.eye(1)), 1);
   });
 
+  it('should return 0 for a singular matrix',function() {
+    assert.equal(math.det([
+      [1, 0],
+      [0, 0]
+    ]), 0);
+    assert.equal(math.det([
+      [1, 0],
+      [1, 0]
+    ]), 0);
+    assert.equal(math.det([
+      [2, 6],
+      [1, 3]
+    ]), 0);
+    assert.equal(math.det([
+      [1, 0, 0],
+      [0, 0, 0],
+      [1, 0, 0]
+    ]), 0);
+  });
+
   it('should calculate the determinant for a scalar',function() {
     assert.equal(math.det(7), 7);
 
     var c1 = math.complex(2, 3);
     var c2 = math.det(c1);
+    assert.deepEqual(c1, c2);
+
+    // c2 should be a clone
+    c1.re = 0;
+    assert.equal(c1.re, 0);
+    assert.equal(c2.re, 2);
+  });
+
+  it('should calculate the determinant for a 1x1 matrix',function() {
+    var c1 = math.complex(2, 3);
+    var c2 = math.det([[c1]]);
     assert.deepEqual(c1, c2);
 
     // c2 should be a clone
