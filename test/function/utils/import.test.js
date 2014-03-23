@@ -1,11 +1,13 @@
 // test import
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
     approx = require('../../../tools/approx');
 
 describe('import', function() {
+  var math = null;
 
   beforeEach(function() {
+    math = mathjs();
     math.import({
       myvalue: 42,
       hello: function (name) {
@@ -15,7 +17,7 @@ describe('import', function() {
   });
 
   afterEach(function() {
-    //TODO forget the members added in beforeEach
+    math = null;
   });
 
   it('should import a custom member', function() {
@@ -121,7 +123,7 @@ describe('import', function() {
   });
 
   it('should ignore properties on Object', function () {
-    Object.prototype.foo = 123;
+    Object.prototype.foo = 'bar';
 
     math.import({bar: 456});
 

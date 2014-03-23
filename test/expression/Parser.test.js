@@ -120,13 +120,13 @@ describe('parser', function() {
   it ('should not clear inherited properties', function () {
     var parser = new Parser(math);
 
-    Object.prototype.xyz = 123;
+    Object.prototype.foo = 'bar';
 
     parser.clear();
 
-    assert.equal(parser.get('xyz'), 123);
+    assert.equal(parser.get('foo'), 'bar');
 
-    delete Object.prototype.xyz;
+    delete Object.prototype.foo;
   });
 
   it ('should throw an exception when creating a parser without new', function () {

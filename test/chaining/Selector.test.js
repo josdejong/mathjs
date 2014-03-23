@@ -65,15 +65,15 @@ describe('select', function() {
   });
 
   it ('should not clear inherited properties', function () {
-    Object.prototype.xyz = 123;
+    Object.prototype.foo = 'bar';
 
     var math = mathjs();
     var selector = new Selector();
 
-    assert.equal(selector.xyz, 123);
-    assert.equal(selector.hasOwnProperty('xyz'), false);
+    assert.equal(selector.foo, 'bar');
+    assert.equal(selector.hasOwnProperty('foo'), false);
 
-    delete Object.prototype.xyz;
+    delete Object.prototype.foo;
   });
 
 });

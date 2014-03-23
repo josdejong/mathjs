@@ -76,19 +76,19 @@ describe('Node', function() {
   });
 
   it ('should ignore inherited fields when matching', function () {
-    Object.prototype.xyz = 123;
+    Object.prototype.foo = 'bar';
     var node = new Node();
-    node.xyz = 'something else';
+    node.foo = 'something else';
 
     var filter = {
       properties: {}
     };
 
-    assert.equal(filter.xyz, 123);
-    assert.equal(node.xyz, 'something else');
+    assert.equal(filter.foo, 'bar');
+    assert.equal(node.foo, 'something else');
     assert.equal(node.match(filter), true);
 
-    delete Object.prototype.xyz;
+    delete Object.prototype.foo;
   });
 
 });
