@@ -27,7 +27,13 @@ describe('mean', function() {
     assert.deepEqual(mean(4, math.complex(2,4)), math.complex(3,2));
   });
 
-  it('should return the mean value from a vector', function() {
+  it('should return the mean value from an array', function() {
+    assert.equal(mean([5]), 5);
+    assert.equal(mean([1,3,5,2,-5]), 1.2);
+  });
+
+  it('should return the mean value from a 1d matrix', function() {
+    assert.equal(mean(math.matrix([5])), 5);
     assert.equal(mean(math.matrix([1,3,5,2,-5])), 1.2);
   });
 

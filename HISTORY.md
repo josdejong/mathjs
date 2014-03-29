@@ -2,9 +2,10 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.18.2
+## not yet released, version 0.19.0
 
-- Some minor bug fixes.
+- Implemented functions `sum`, `prod`, `var`, `std`.
+- Minor bug fixes.
 
 
 ## 2014-02-15, version 0.18.1

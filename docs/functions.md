@@ -111,8 +111,12 @@ math.add('hello ', 'world!');     // String  'hello world!'
 ## Statistics
 
 - math.max(a, b, c, ...)
-- math.min(a, b, c, ...)
 - math.mean(a, b, c, ...)
+- math.min(a, b, c, ...)
+- math.prod(a, b, c, ...)
+- math.std(a, b, c, ...)
+- math.sum(a, b, c, ...)
+- math.var(a, b, c, ...)
 
 ## Trigonometry
 
