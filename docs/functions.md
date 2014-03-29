@@ -113,6 +113,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 
 - math.max(a, b, c, ...)
 - math.mean(a, b, c, ...)
+- math.median(a, b, c, ...)
 - math.min(a, b, c, ...)
 - math.prod(a, b, c, ...)
 - math.std(a, b, c, ...)
