@@ -377,6 +377,26 @@ describe('util.array', function() {
 
   });
 
+  describe('flatten', function () {
+
+    it('should flatten a scalar', function () {
+      assert.deepEqual(array.flatten(1), 1);
+    });
+
+    it('should flatten a 1 dimensional array', function () {
+      assert.deepEqual(array.flatten([1,2,3]), [1,2,3]);
+    });
+
+    it('should flatten a 2 dimensional array', function () {
+      assert.deepEqual(array.flatten([[1,2],[3,4]]), [1,2,3,4]);
+    });
+
+    it('should flatten a 3 dimensional array', function () {
+      assert.deepEqual(array.flatten([[[1,2],[3,4]],[[5,6],[7,8]]]), [1,2,3,4,5,6,7,8]);
+    });
+
+  });
+
 });
 
 /**

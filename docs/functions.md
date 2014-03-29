@@ -26,6 +26,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.abs(x)
 - math.add(x, y)
 - math.ceil(x)
+- math.compare(x, y)
 - math.cube(x)
 - math.divide(x, y)
 - math.edivide(x, y)

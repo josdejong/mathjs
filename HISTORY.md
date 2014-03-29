@@ -4,7 +4,7 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.19.0
 
-- Implemented functions `sum`, `prod`, `var`, `std`.
+- Implemented functions `compare`, `sum`, `prod`, `var`, `std`.
 - Minor bug fixes.
 
 
