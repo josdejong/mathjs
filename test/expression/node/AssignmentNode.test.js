@@ -4,16 +4,29 @@ var assert = require('assert'),
     math = require('../../../index')(),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
+    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
+    ArrayNode = require('../../../lib/expression/node/ArrayNode'),
+    RangeNode = require('../../../lib/expression/node/RangeNode'),
     AssignmentNode = require('../../../lib/expression/node/AssignmentNode');
 
 describe('AssignmentNode', function() {
 
   it ('should create a AssignmentNode', function () {
-
+    var n = new AssignmentNode('a', new Node());
+    assert(n instanceof AssignmentNode);
+    assert(n instanceof Node);
   });
 
-  it ('should evaluate a AssignmentNode', function () {
-    // TODO
+  it ('should throw an error when calling without new operator', function () {
+    assert.throws(function () {AssignmentNode('a', new Node())}, SyntaxError);
+  });
+
+  it ('should throw an error on wrong constructor arguments', function () {
+    assert.throws(function () {new AssignmentNode()}, TypeError );
+    assert.throws(function () {new AssignmentNode(new Node())}, TypeError );
+    assert.throws(function () {new AssignmentNode('a')}, TypeError );
+    assert.throws(function () {new AssignmentNode(2, new Node())}, TypeError );
+    assert.throws(function () {new AssignmentNode(new Node(), new Node())}, TypeError );
   });
 
   it ('should compile a AssignmentNode', function () {
@@ -28,11 +41,30 @@ describe('AssignmentNode', function() {
   });
 
   it ('should find a AssignmentNode', function () {
-    // TODO
+    var a = new ConstantNode('number', '1');
+    var b = new SymbolNode('x');
+    var c = new ConstantNode('number', '2');
+    var d = new ArrayNode([a, b, c]);
+    var e = new AssignmentNode('array', d);
+
+    assert.deepEqual(e.find({type: AssignmentNode}),[e]);
+    assert.deepEqual(e.find({type: SymbolNode}),    [b]);
+    assert.deepEqual(e.find({type: RangeNode}),     []);
+    assert.deepEqual(e.find({type: ConstantNode}),  [a, c]);
+    assert.deepEqual(e.find({type: ConstantNode, properties: {value: '2'}}),  [c]);
+  });
+
+  it ('should find a AssignmentNode without expression', function () {
+    var e = new AssignmentNode('a', new Node());
+
+    assert.deepEqual(e.find({type: AssignmentNode}),[e]);
+    assert.deepEqual(e.find({type: SymbolNode}),    []);
   });
 
   it ('should match a AssignmentNode', function () {
-    // TODO
+    var a = new AssignmentNode('a', new Node());
+    assert.equal(a.match({type: AssignmentNode}),  true);
+    assert.equal(a.match({type: ConstantNode}), false);
   });
 
   it ('should stringify a AssignmentNode', function () {

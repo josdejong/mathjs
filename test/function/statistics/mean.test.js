@@ -27,7 +27,13 @@ describe('mean', function() {
     assert.deepEqual(mean(4, math.complex(2,4)), math.complex(3,2));
   });
 
-  it('should return the mean value from a vector', function() {
+  it('should return the mean value from an array', function() {
+    assert.equal(mean([5]), 5);
+    assert.equal(mean([1,3,5,2,-5]), 1.2);
+  });
+
+  it('should return the mean value from a 1d matrix', function() {
+    assert.equal(mean(math.matrix([5])), 5);
     assert.equal(mean(math.matrix([1,3,5,2,-5])), 1.2);
   });
 
@@ -66,6 +72,7 @@ describe('mean', function() {
 
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {mean()});
+    assert.throws(function() {mean([], 2, 3)});
   });
 
   it('should throw an error if called with an empty array', function() {

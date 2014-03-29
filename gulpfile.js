@@ -54,7 +54,7 @@ var uglifyConfig = {
 // create a single instance of the compiler to allow caching
 var compiler = webpack(webpackConfig);
 
-gulp.task('bundle', function (cb) {
+gulp.task('bundle', ['validate'], function (cb) {
   // update the banner contents (has a date in it which should stay up to date)
   bannerPlugin.banner = createBanner();
 
@@ -77,6 +77,20 @@ gulp.task('minify', ['bundle'], function () {
 
   gutil.log('Minified ' + MATH_MIN_JS);
   gutil.log('Mapped ' + MATH_MAP_JS);
+});
+
+// test whether the docs for the expression parser are complete
+gulp.task('validate', function (cb) {
+  var exec = require('exec');
+
+  // this is run in a separate process as the modules need to be reloaded
+  // with every validation (and required modules stay in cache).
+  exec(['node', 'tools/validate'], function(err, out, code) {
+    if (err instanceof Error) throw err;
+    process.stderr.write(err);
+    process.stdout.write(out);
+    cb();
+  });
 });
 
 gulp.task('docs', function () {

@@ -10,11 +10,23 @@ var assert = require('assert'),
 describe('UnitNode', function() {
 
   it ('should create a UnitNode', function () {
-    // TODO
+    var c = new ConstantNode('number', '5');
+    var n = new UnitNode(c, 'cm');
+    assert(n instanceof UnitNode);
+    assert(n instanceof Node);
   });
 
-  it ('should evaluate a UnitNode', function () {
-    // TODO
+  it ('should throw an error when calling without new operator', function () {
+    var c = new ConstantNode('number', '5');
+    assert.throws(function () {UnitNode(c, 'cm')}, SyntaxError);
+  });
+
+  it ('should throw an error when calling with wrong arguments', function () {
+    var c = new ConstantNode('number', '5');
+    assert.throws(function () {new UnitNode()}, TypeError);
+    assert.throws(function () {new UnitNode(2, 'cm')}, TypeError);
+    assert.throws(function () {new UnitNode(c, new Node())}, TypeError);
+    assert.throws(function () {new UnitNode(c, 2)}, TypeError);
   });
 
   it ('should compile a UnitNode', function () {
@@ -29,11 +41,25 @@ describe('UnitNode', function() {
   });
 
   it ('should find a UnitNode', function () {
-    // TODO
+    var c = new ConstantNode('number', '5');
+    var n = new UnitNode(c, 'cm');
+
+    assert.deepEqual(n.find({type: UnitNode}),  [n]);
+    assert.deepEqual(n.find({type: SymbolNode}),  []);
+    assert.deepEqual(n.find({type: ConstantNode}),  [c]);
+    assert.deepEqual(n.find({properties: {value: '5'}}),  [c]);
+    assert.deepEqual(n.find({properties: {name: 'q'}}),  []);
   });
 
   it ('should match a UnitNode', function () {
-    // TODO
+    var c = new ConstantNode('number', '5');
+    var n = new UnitNode(c, 'cm');
+
+    assert.equal(n.match({type: UnitNode}),  true);
+    assert.equal(n.match({properties: {unit: 'cm'}}),  true);
+    assert.equal(n.match({properties: {unit: 'km'}}),  false);
+    assert.equal(n.match({properties: {value: '5'}}),  false);
+    assert.equal(n.match({type: ConstantNode}), false);
   });
 
   it ('should stringify a UnitNode', function () {

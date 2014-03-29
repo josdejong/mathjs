@@ -8,6 +8,21 @@ var assert = require('assert'),
 
 describe('SymbolNode', function() {
 
+  it ('should create a SymbolNode', function () {
+    var s = new SymbolNode('sqrt');
+    assert(s instanceof SymbolNode);
+    assert(s instanceof Node);
+  });
+
+  it ('should throw an error when calling without new operator', function () {
+    assert.throws(function () {SymbolNode('sqrt')}, SyntaxError);
+  });
+
+  it ('should throw an error when calling with wrong arguments', function () {
+    assert.throws(function () {new SymbolNode()}, TypeError);
+    assert.throws(function () {new SymbolNode(2)}, TypeError);
+  });
+
   it ('should throw an error when evaluating an undefined symbol', function () {
     var scope = {};
     var s = new SymbolNode('foo');
@@ -29,11 +44,20 @@ describe('SymbolNode', function() {
   });
 
   it ('should find a SymbolNode', function () {
-    // TODO
+    var n = new SymbolNode('x');
+    assert.deepEqual(n.find({type: SymbolNode}),  [n]);
+    assert.deepEqual(n.find({properties: {name: 'x'}}),  [n]);
+    assert.deepEqual(n.find({properties: {name: 'q'}}),  []);
+    assert.deepEqual(n.find({type: ConstantNode}),  []);
   });
 
   it ('should match a SymbolNode', function () {
-    // TODO
+    var n = new SymbolNode('x');
+
+    assert.equal(n.match({type: SymbolNode}),  true);
+    assert.equal(n.match({properties: {name: 'x'}}),  true);
+    assert.equal(n.match({properties: {name: 'q'}}),  false);
+    assert.equal(n.match({type: ConstantNode}), false);
   });
 
   it ('should stringify a SymbolNode', function () {

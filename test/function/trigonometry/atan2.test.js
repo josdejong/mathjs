@@ -79,4 +79,9 @@ describe('atan2', function() {
     approx.equal(atan2(0, -2) / pi, 1);
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {atan2(1)}, math.error.ArgumentsError);
+    assert.throws(function () {atan2(1, 2, 3)}, math.error.ArgumentsError);
+  });
+
 });

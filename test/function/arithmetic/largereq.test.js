@@ -53,7 +53,10 @@ describe('largereq', function() {
   it('should compare mixed booleans and bignumbers', function() {
     assert.equal(largereq(bignumber(0.1), true), false);
     assert.equal(largereq(bignumber(1), true), true);
+    assert.equal(largereq(bignumber(1), false), true);
     assert.equal(largereq(false, bignumber(0)), true);
+    assert.equal(largereq(true, bignumber(0)), true);
+    assert.equal(largereq(true, bignumber(1)), true);
   });
 
   it('should compare two units correctly', function() {
@@ -65,6 +68,10 @@ describe('largereq', function() {
 
   it('should throw an error if comparing a unit with a number', function() {
     assert.throws(function () {largereq(unit('100cm'), 22)});
+  });
+
+  it('should throw an error for two measures of different units', function() {
+    assert.throws(function () {largereq(math.unit(5, 'km'), math.unit(100, 'gram')); });
   });
 
   it('should throw an error if comparing a unit with a bignumber', function() {
@@ -95,5 +102,9 @@ describe('largereq', function() {
     assert.throws(function () {largereq([1,4,6], [3,4])});
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {largereq(1)}, math.error.ArgumentsError);
+    assert.throws(function () {largereq(1, 2, 3)}, math.error.ArgumentsError);
+  });
 
 });

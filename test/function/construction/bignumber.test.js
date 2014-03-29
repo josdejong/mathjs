@@ -65,4 +65,13 @@ describe('bignumber', function() {
       decimals: 20
     });
   });
+
+  it('should throw an error in case of unsupported type of argument', function() {
+    assert.throws(function () {math.bignumber(new Date())}, TypeError);
+  });
+
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {math.bignumber(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

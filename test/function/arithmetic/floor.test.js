@@ -62,4 +62,9 @@ describe('floor', function() {
     approx.deepEqual(floor(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([1, 3, 5, 7, 10]));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {floor()}, math.error.ArgumentsError);
+    assert.throws(function () {floor(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

@@ -1,8 +1,10 @@
 var assert = require('assert'),
+    approx = require('../../../tools/approx'),
     mathjs = require('../../../index'),
     math = mathjs(),
     range = math.range,
-    matrix = math.matrix;
+    matrix = math.matrix,
+    bignumber = math.bignumber;
 
 describe('range', function() {
 
@@ -11,6 +13,14 @@ describe('range', function() {
     assert.deepEqual(range('0:2:10'), matrix([0,2,4,6,8]));
     assert.deepEqual(range('5:-1:0'), matrix([5,4,3,2,1]));
     assert.deepEqual(range('2:-2:-3'), matrix([2,0,-2]));
+  });
+
+  it('should throw an error in case of invalid string', function() {
+    assert.throws(function () {range('1:2:6:4')}, /is no valid range/);
+    assert.throws(function () {range('1')}, /is no valid range/);
+    assert.throws(function () {range('1,3:4')}, /is no valid range/);
+    assert.throws(function () {range('1:2,4')}, /is no valid range/);
+    assert.throws(function () {range('1:a')}, /is no valid range/);
   });
 
   it('should create a range start:1:end if called with 2 numbers', function() {
@@ -27,6 +37,11 @@ describe('range', function() {
     assert.deepEqual(range(2,-4,-2), matrix([2,0,-2]));
   });
 
+  it('should create an empty range when step==0', function() {
+    assert.deepEqual(range(0,10,0), matrix([]));
+    assert.deepEqual(range(0,10,0, true), matrix([]));
+  });
+
   it('should output an array when setting matrix==="array"', function() {
     var math2 = mathjs({
       matrix: 'array'
@@ -37,27 +52,41 @@ describe('range', function() {
   });
 
   it('should create a range with bignumbers', function() {
-    assert.deepEqual(range(math.bignumber(1), math.bignumber(3)), matrix([math.bignumber(1),math.bignumber(2)]));
+    assert.deepEqual(range(bignumber(1), bignumber(3)), matrix([bignumber(1),bignumber(2)]));
+    assert.deepEqual(range(bignumber(3), bignumber(1), bignumber(-1)), matrix([bignumber(3),bignumber(2)]));
+  });
+
+  it('should create a range with bignumbers and fall back to numbers if needed', function() {
+    approx.deepEqual(range(bignumber(0), bignumber(1), 1/3), matrix([0, 1/3, 2/3]));
+  });
+
+  it('should create an empty range from bignumbers when step==0', function() {
+    assert.deepEqual(range(bignumber(0),bignumber(10),bignumber(0)), matrix([]));
+    assert.deepEqual(range(bignumber(0),bignumber(10),bignumber(0), true), matrix([]));
   });
 
   it('should create a range with mixed numbers and bignumbers', function() {
-    assert.deepEqual(range(math.bignumber(1), 3), matrix([math.bignumber(1),math.bignumber(2)]));
-    assert.deepEqual(range(1, math.bignumber(3)), matrix([math.bignumber(1),math.bignumber(2)]));
+    assert.deepEqual(range(bignumber(1), 3), matrix([bignumber(1),bignumber(2)]));
+    assert.deepEqual(range(1, bignumber(3)), matrix([bignumber(1),bignumber(2)]));
 
-    assert.deepEqual(range(1, math.bignumber(3), math.bignumber(1)), matrix([math.bignumber(1),math.bignumber(2)]));
-    assert.deepEqual(range(math.bignumber(1), 3, math.bignumber(1)), matrix([math.bignumber(1),math.bignumber(2)]));
-    assert.deepEqual(range(math.bignumber(1), math.bignumber(3), 1), matrix([math.bignumber(1),math.bignumber(2)]));
+    assert.deepEqual(range(1, bignumber(3), bignumber(1)), matrix([bignumber(1),bignumber(2)]));
+    assert.deepEqual(range(bignumber(1), 3, bignumber(1)), matrix([bignumber(1),bignumber(2)]));
+    assert.deepEqual(range(bignumber(1), bignumber(3), 1), matrix([bignumber(1),bignumber(2)]));
 
-    assert.deepEqual(range(math.bignumber(1), 3, 1), matrix([math.bignumber(1),math.bignumber(2)]));
-    assert.deepEqual(range(1, math.bignumber(3), 1), matrix([math.bignumber(1),math.bignumber(2)]));
-    assert.deepEqual(range(1, 3, math.bignumber(1)), matrix([math.bignumber(1),math.bignumber(2)]));
+    assert.deepEqual(range(bignumber(1), 3, 1), matrix([bignumber(1),bignumber(2)]));
+    assert.deepEqual(range(1, bignumber(3), 1), matrix([bignumber(1),bignumber(2)]));
+    assert.deepEqual(range(1, 3, bignumber(1)), matrix([bignumber(1),bignumber(2)]));
   });
 
   it('should parse a range with bignumbers', function() {
-    var math = mathjs({
-      number: 'bignumber'
-    });
-    assert.deepEqual(math.range('1:3'), matrix([math.bignumber(1),math.bignumber(2)]));
+    var bigmath = mathjs({number: 'bignumber'});
+    assert.deepEqual(bigmath.range('1:3'), matrix([bignumber(1),bignumber(2)]));
+    assert.deepEqual(bigmath.range('3:-1:0'), matrix([bignumber(3),bignumber(2),bignumber(1)]));
+  });
+
+  it('should throw an error when parsing a an invalid string to a bignumber range', function() {
+    var bigmath = mathjs({number: 'bignumber'});
+    assert.throws(function () {bigmath.range('1:a')}, /is no valid range/);
   });
 
   describe ('option includeEnd', function () {
@@ -74,6 +103,17 @@ describe('range', function() {
     it('should create a range start:step:end and include end', function () {
       assert.deepEqual(range(0,10,2, false), matrix([0,2,4,6,8]));
       assert.deepEqual(range(0,10,2, true), matrix([0,2,4,6,8,10]));
+    });
+
+    it('should create a range with bignumbers and include end', function() {
+      assert.deepEqual(range(bignumber(1), bignumber(3), true), matrix([bignumber(1),bignumber(2),bignumber(3)]));
+      assert.deepEqual(range(bignumber(3), bignumber(1), bignumber(-1), true), matrix([bignumber(3),bignumber(2),bignumber(1)]));
+    });
+
+    it('should throw an error in case of invalid type of include end', function () {
+      assert.throws(function () {range(0,10,2, 0)}, /Parameter includeEnd must be a boolean/);
+      assert.throws(function () {range(0,10,2, 1)}, /Parameter includeEnd must be a boolean/);
+      assert.throws(function () {range(0,10,2, 'str')}, /Parameter includeEnd must be a boolean/);
     });
   });
 
@@ -104,6 +144,6 @@ describe('range', function() {
 
   it('should throw an error if called with an invalid number of arguments', function() {
     assert.throws(function () {range()}, math.error.ArgumentsError);
-    assert.throws(function () {range(1,2,3,4)}, math.error.ArgumentsError);
+    assert.throws(function () {range(1,2,3,4,5)}, math.error.ArgumentsError);
   });
 });

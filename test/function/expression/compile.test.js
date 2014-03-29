@@ -21,4 +21,14 @@ describe('parse', function() {
     assert.equal(codes[1].eval(), 9);
   });
 
+  it('should throw an error on wrong number of arguments', function() {
+    assert.throws(function () {math.compile()}, math.error.ArgumentsError);
+    assert.throws(function () {math.compile('2+3', '3+4')}, math.error.ArgumentsError);
+  });
+
+  it('should throw an error on wrong type of argument', function() {
+    assert.throws(function () {math.compile(2)}, TypeError);
+    assert.throws(function () {math.compile(math.complex(2, 3))}, TypeError);
+  });
+
 });

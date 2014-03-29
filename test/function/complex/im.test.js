@@ -36,4 +36,9 @@ describe('im', function() {
     assert.deepEqual(math.im(math.matrix([2, math.complex('3-6i')])).valueOf(), [0, -6]);
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {math.im()}, math.error.ArgumentsError);
+    assert.throws(function () {math.im(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

@@ -49,7 +49,9 @@ describe('subtract', function() {
 
   it('should subtract mixed booleans and bignumbers', function() {
     assert.deepEqual(subtract(bignumber(1.1), true), bignumber(0.1));
+    assert.deepEqual(subtract(bignumber(1.1), false), bignumber(1.1));
     assert.deepEqual(subtract(false, bignumber(0.2)), bignumber(-0.2));
+    assert.deepEqual(subtract(true, bignumber(0.2)), bignumber(0.8));
   });
 
   it('should subtract two complex numbers correctly', function() {
@@ -79,6 +81,15 @@ describe('subtract', function() {
     });
   });
 
+  it('should throw an error when one of the two units has undefined value', function() {
+    assert.throws(function () {
+      subtract(math.unit('km'), math.unit('5gram'));
+    }, /Parameter x contains a unit with undefined value/);
+    assert.throws(function () {
+      subtract(math.unit('5 km'), math.unit('gram'));
+    }, /Parameter y contains a unit with undefined value/);
+  });
+
   it('should throw an error if subtracting numbers from units', function() {
     assert.throws(function () { subtract(math.unit(5, 'km'), 2); }, TypeError);
     assert.throws(function () { subtract(2, math.unit(5, 'km')); }, TypeError);
@@ -102,6 +113,11 @@ describe('subtract', function() {
     assert.ok(a6 instanceof math.type.Matrix);
     assert.deepEqual(a6.size(), [2,2]);
     assert.deepEqual(a6.valueOf(), [[-4,-4],[-4,-4]]);
+  });
+
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {subtract(1)}, math.error.ArgumentsError);
+    assert.throws(function () {subtract(1, 2, 3)}, math.error.ArgumentsError);
   });
 
 });

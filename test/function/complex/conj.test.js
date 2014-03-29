@@ -42,4 +42,9 @@ describe('conj', function() {
     assert.deepEqual(conj(math.unit('5cm')), math.unit('5cm'));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {conj()}, math.error.ArgumentsError);
+    assert.throws(function () {conj(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

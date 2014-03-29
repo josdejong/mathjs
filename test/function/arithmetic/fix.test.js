@@ -66,4 +66,9 @@ describe('fix', function() {
     approx.deepEqual(fix(matrix([1.2, 3.4, 5.6, 7.8, 10.0])), matrix([1, 3, 5, 7, 10]));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {fix()}, math.error.ArgumentsError);
+    assert.throws(function () {fix(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

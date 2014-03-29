@@ -13,15 +13,41 @@ var assert = require('assert'),
 
 describe('UpdateNode', function() {
 
-  it ('should create a UpdateNode', function () {
-    // TODO
+  it ('should create an UpdateNode', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode('number', '2');
+    var c = new ConstantNode('number', '1');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode('number', '5');
+    var n = new UpdateNode(i, v);
+
+    assert(n instanceof UpdateNode);
+    assert(n instanceof Node);
   });
 
-  it ('should evaluate a UpdateNode', function () {
-    // TODO
+  it ('should throw an error when calling without new operator', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode('number', '2');
+    var c = new ConstantNode('number', '1');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode('number', '5');
+
+    assert.throws(function () {UpdateNode(i, v)}, SyntaxError);
   });
 
-  it ('should compile a UpdateNode', function () {
+  it ('should throw an error when calling with wrong arguments', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode('number', '2');
+    var c = new ConstantNode('number', '1');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode('number', '5');
+
+    assert.throws(function () {new UpdateNode([2, 3], v)}, TypeError);
+    assert.throws(function () {new UpdateNode(i, 5)}, TypeError);
+    assert.throws(function () {new UpdateNode()}, TypeError);
+  });
+
+  it ('should compile an UpdateNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
         new ConstantNode('number', '2'),
@@ -109,11 +135,31 @@ describe('UpdateNode', function() {
   });
 
   it ('should find a UpdateNode', function () {
-    // TODO
+    var a = new SymbolNode('a');
+    var b = new ConstantNode('number', '2');
+    var c = new ConstantNode('number', '1');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode('number', '2');
+    var n = new UpdateNode(i, v);
+
+    assert.deepEqual(n.find({type: UpdateNode}),  [n]);
+    assert.deepEqual(n.find({type: SymbolNode}),  [a]);
+    assert.deepEqual(n.find({type: ConstantNode}),  [b, c, v]);
+    assert.deepEqual(n.find({properties: {value: '1'}}),  [c]);
+    assert.deepEqual(n.find({properties: {value: '2'}}),  [b, v]);
+    assert.deepEqual(n.find({properties: {name: 'q'}}),  []);
   });
 
   it ('should match a UpdateNode', function () {
-    // TODO
+    var a = new SymbolNode('a');
+    var b = new ConstantNode('number', '2');
+    var c = new ConstantNode('number', '1');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode('number', '5');
+    var n = new UpdateNode(i, v);
+
+    assert.equal(n.match({type: UpdateNode}), true);
+    assert.equal(n.match({type: ConstantNode}), false);
   });
 
   it ('should stringify a UpdateNode', function () {

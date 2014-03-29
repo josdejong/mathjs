@@ -2,6 +2,7 @@
 var assert = require('assert'),
     approx = require('../../tools/approx'),
     mathjs = require('../../index'),
+    parse = require('../../lib/expression/parse'),
     math = mathjs(),
     BigNumber = math.type.BigNumber,
     Complex = math.type.Complex,
@@ -15,7 +16,7 @@ var assert = require('assert'),
  * @return {*} result
  */
 function parseAndEval(expr, scope) {
-  return math.parse(expr)
+  return parse(expr)
       .compile(math)
       .eval(scope);
 }
@@ -23,39 +24,83 @@ function parseAndEval(expr, scope) {
 describe('parse', function() {
 
   it('should parse a single expression', function() {
-    approx.equal(math.parse('2 + 6 / 3').compile(math).eval(), 4);
+    approx.equal(parse('2 + 6 / 3').compile(math).eval(), 4);
   });
 
-  it('should parse a series of expressions', function() {
+  it('should parse an empty expression', function() {
+    assert.strictEqual(parse('').compile(math).eval(), undefined);
+  });
+
+  it('should parse an array with expressions', function() {
     var scope = {};
-    assert.deepEqual(math.parse(['a=3', 'b=4', 'a*b']).map(function (node) {
+    assert.deepEqual(parse(['a=3', 'b=4', 'a*b']).map(function (node) {
       return node.compile(math).eval(scope);
     }), [3, 4, 12]);
+  });
 
-    scope = {};
-    assert.deepEqual(math.parse(new Matrix(['a=3', 'b=4', 'a*b'])).map(function (node) {
+  it('should parse a matrix with expressions', function() {
+    var scope = {};
+    assert.deepEqual(parse(new Matrix(['a=3', 'b=4', 'a*b'])).map(function (node) {
       return node.compile(math).eval(scope);
     }), new Matrix([3, 4, 12]));
   });
 
+  it('should parse an array with an empty expression', function() {
+    assert.deepEqual(parse(['']).map(function (node) {
+      return node.compile(math).eval();
+    }), [undefined]);
+  });
+
+  it('should parse an array with an empty expression', function() {
+    assert.deepEqual(parse(new Matrix([''])).map(function (node) {
+      return node.compile(math).eval();
+    }), new Matrix([undefined]));
+  });
+
   it('should parse multiline expressions', function() {
-    assert.deepEqual(math.parse('a=3\nb=4\na*b').compile(math).eval(), [3, 4, 12]);
-    assert.deepEqual(math.parse('b = 43; b * 4').compile(math).eval(), [172]);
+    assert.deepEqual(parse('a=3\nb=4\na*b').compile(math).eval(), [3, 4, 12]);
+    assert.deepEqual(parse('b = 43; b * 4').compile(math).eval(), [172]);
+  });
+
+  it('should skip empty lines in multiline expressions', function() {
+    assert.deepEqual(parse('\n;\n2 * 4\n').compile(math).eval(), [8]);
+  });
+
+  it('should give informative syntax errors', function() {
+    assert.throws(function () {parse('sin pi').compile(math).eval()}, /First parameter in Unit constructor must be a number/);
+    assert.throws(function () {parse('2 +')}, /Unexpected end of expression \(char 5\)/);
+    assert.throws(function () {parse('2 ~ 3')}, /Syntax error in part "~ 3" \(char 3\)/);
+    assert.throws(function () {parse('2 + 3\n3 +\n-4')}, /Value expected \(char 10\)/);
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
-    assert.throws(function () {math.parse()}, Error);
-    assert.throws(function () {math.parse(1,2,3)}, Error);
+    assert.throws(function () {parse()}, SyntaxError);
+    assert.throws(function () {parse(1,2,3)}, SyntaxError);
+    assert.throws(function () {parse([1, 2])}, TypeError);
   });
 
   it('should throw an error if called with a wrong type of argument', function() {
-    assert.throws(function () {math.parse(23)}, TypeError);
-    assert.throws(function () {math.parse(math.unit('5cm'))}, TypeError);
-    assert.throws(function () {math.parse(new Complex(2,3))}, TypeError);
-    assert.throws(function () {math.parse(true)}, TypeError);
+    assert.throws(function () {parse(23)}, TypeError);
+    assert.throws(function () {parse(math.unit('5cm'))}, TypeError);
+    assert.throws(function () {parse(new Complex(2,3))}, TypeError);
+    assert.throws(function () {parse(true)}, TypeError);
   });
 
-  // TODO: parse comments
+  it('should throw an error in case of unsupported characters', function() {
+    assert.throws(function () {parse('2\u00A1')}, /Syntax error in part "\u00A1"/);
+  });
+
+  describe('comments', function () {
+
+    it('should skip comments', function() {
+      assert.equal(parseAndEval('2 + 3 # - 4'), 5);
+    });
+
+    it('should skip comments in a block', function() {
+      assert.deepEqual(parseAndEval('2 + 3 # - 4\n6-2'), [5, 4]);
+    });
+
+  });
 
   describe('number', function () {
 
@@ -97,8 +142,8 @@ describe('parse', function() {
         number: 'bignumber'
       });
 
-      assert.deepEqual(math.parse('0.1').compile(math).eval(), math.bignumber(0.1));
-      assert.deepEqual(math.parse('1.2e5000').compile(math).eval(), math.bignumber('1.2e5000'));
+      assert.deepEqual(parse('0.1').compile(math).eval(), math.bignumber(0.1));
+      assert.deepEqual(parse('1.2e5000').compile(math).eval(), math.bignumber('1.2e5000'));
     });
 
   });
@@ -221,6 +266,13 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('[[[1],[2]],[[3],[4]]]'), new Matrix([[[1],[2]],[[3],[4]]]));
     });
 
+    it('should skip newlines in a matrix', function() {
+      assert.deepEqual(parseAndEval('[\n  1,2;\n  3,4\n]'), new Matrix([[1,2], [3,4]]));
+    });
+
+    it('should parse an empty matrix', function() {
+      assert.deepEqual(parseAndEval('[]'), new Matrix([]));
+    });
 
     it('should get a matrix subset', function() {
       var scope = {
@@ -349,6 +401,20 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('size([[],[]])', scope), new Matrix([2, 0]));
     });
 
+    it('should throw an error for invalid matrix', function() {
+      assert.throws(function () {parseAndEval('[1, 2')}, /End of matrix ] expected/);
+      assert.throws(function () {parseAndEval('[1; 2')}, /End of matrix ] expected/);
+    });
+
+    it('should throw an error when matrix rows mismatch', function() {
+      assert.throws(function () {parseAndEval('[1, 2; 1, 2, 3]')}, /Column dimensions mismatch/);
+    });
+
+    it('should throw an error for invalid matrix subsets', function() {
+      var scope = {a: [1,2,3]};
+      assert.throws(function () {parseAndEval('a[1', scope)}, /Parenthesis ] expected/);
+    });
+
     it('should throw an error for invalid matrix concatenations', function() {
       var scope = {};
       assert.throws(function () {parseAndEval('c=concat(a, [1,2,3])', scope)});
@@ -427,6 +493,10 @@ describe('parse', function() {
       assert.equal(parseAndEval('unequal(2, 3)'), true);
     });
 
+    it('should parse functions without parameters', function() {
+      assert.equal(parseAndEval('r()', {r: function() {return 2;}}), 2);
+    });
+
     it('should parse function assignments', function() {
       var scope = {};
       parseAndEval('x=100', scope); // for testing scoping of the function variables
@@ -466,6 +536,11 @@ describe('parse', function() {
         var scope = {};
         parseAndEval('g(x, 2) = x^2', scope);
       }, SyntaxError);
+
+      assert.throws(function () {
+        var scope = {};
+        parseAndEval('2(x, 2) = x^2', scope);
+      }, SyntaxError);
     });
   });
 
@@ -476,6 +551,10 @@ describe('parse', function() {
       approx.equal(parseAndEval('3 * (2 + 3)'), 15);
       approx.equal(parseAndEval('(2 + 3) * 3'), 15);
     });
+
+    it('should throw an error in case of unclosed parentheses', function () {
+      assert.throws(function () {parseAndEval('3 * (1 + 2')}, /Parenthesis \) expected/);
+    });
   });
 
   describe ('operators', function () {
@@ -483,7 +562,7 @@ describe('parse', function() {
     it('should parse operations', function() {
       approx.equal(parseAndEval('(2+3)/4'), 1.25);
       approx.equal(parseAndEval('2+3/4'), 2.75);
-      assert.equal(math.parse('0 + 2').toString(), 'ans = 0 + 2');
+      assert.equal(parse('0 + 2').toString(), 'ans = 0 + 2');
     });
 
     it('should parse +', function() {
@@ -759,9 +838,9 @@ describe('parse', function() {
         a: 3,
         b: 4
       };
-      assert.deepEqual(math.parse('a*b').compile(math).eval(scope), 12);
-      assert.deepEqual(math.parse('c=5').compile(math).eval(scope), 5);
-      assert.deepEqual(math.parse('f(x) = x^a').compile(math).eval(scope).syntax, 'f(x)');
+      assert.deepEqual(parse('a*b').compile(math).eval(scope), 12);
+      assert.deepEqual(parse('c=5').compile(math).eval(scope), 5);
+      assert.deepEqual(parse('f(x) = x^a').compile(math).eval(scope).syntax, 'f(x)');
 
 
       assert.deepEqual(Object.keys(scope).length, 5);
@@ -778,23 +857,23 @@ describe('parse', function() {
       scope.hello = function (name) {
         return 'hello, ' + name + '!';
       };
-      assert.deepEqual(math.parse('hello("jos")').compile(math).eval(scope), 'hello, jos!');
+      assert.deepEqual(parse('hello("jos")').compile(math).eval(scope), 'hello, jos!');
     });
 
     it('should parse undefined symbols, defining symbols, and removing symbols', function() {
       var scope = {};
-      var n = math.parse('q');
+      var n = parse('q');
       assert.throws(function () { n.compile(math).eval(scope); });
-      math.parse('q=33').compile(math).eval(scope);
+      parse('q=33').compile(math).eval(scope);
       assert.equal(n.compile(math).eval(scope), 33);
       delete scope.q;
       assert.throws(function () { n.compile(math).eval(scope); });
 
-      n = math.parse('qq[1,1]=33');
+      n = parse('qq[1,1]=33');
       assert.throws(function () { n.compile(math).eval(scope); });
-      math.parse('qq=[1,2;3,4]').compile(math).eval(scope);
+      parse('qq=[1,2;3,4]').compile(math).eval(scope);
       assert.deepEqual(n.compile(math).eval(scope), new Matrix([[33,2],[3,4]]));
-      math.parse('qq=[4]').compile(math).eval(scope);
+      parse('qq=[4]').compile(math).eval(scope);
       assert.deepEqual(n.compile(math).eval(scope), new Matrix([[33]]));
       delete scope.qq;
       assert.throws(function () { n.compile(math).eval(scope); });
@@ -809,12 +888,13 @@ describe('parse', function() {
     // TODO: test parsing into a node tree
 
     it('should correctly stringify a node tree', function() {
-      assert.equal(math.parse('0').toString(), 'ans = 0');
-      assert.equal(math.parse('"hello"').toString(), 'ans = "hello"');
-      assert.equal(math.parse('[1, 2 + 3i, 4]').toString(), 'ans = [1, 2 + 3i, 4]');
+      assert.equal(parse('0').toString(), 'ans = 0');
+      assert.equal(parse('"hello"').toString(), 'ans = "hello"');
+      assert.equal(parse('[1, 2 + 3i, 4]').toString(), 'ans = [1, 2 + 3i, 4]');
     });
 
-    it('should support custom nodes', function() {
+    describe('custom nodes', function () {
+      // define a custom node
       function CustomNode (args) {
         this.args = args;
       }
@@ -834,9 +914,25 @@ describe('parse', function() {
         custom: CustomNode
       };
 
-      var node = math.parse('custom(x, (2+x), sin(x))', nodes);
-      assert.equal(node.compile(math).eval(), 'CustomNode(x, 2 + x, sin(x))');
+      it('should parse custom nodes', function() {
+        var node = parse('custom(x, (2+x), sin(x))', nodes);
+        assert.equal(node.compile(math).eval(), 'CustomNode(x, 2 + x, sin(x))');
+      });
 
+      it('should parse custom nodes without parameters', function() {
+        var node = parse('custom()', nodes);
+        assert.equal(node.compile(math).eval(), 'CustomNode()');
+        assert.equal(node.find({type: CustomNode}).length, 1);
+
+        var node2 = parse('custom', nodes);
+        assert.equal(node2.compile(math).eval(), 'CustomNode()');
+        assert.equal(node2.find({type: CustomNode}).length, 1);
+      });
+
+      it('should throw an error on syntax errors in using custom nodes', function() {
+        assert.throws(function () {parse('custom(x', nodes)}, /Parenthesis \) expected/);
+        assert.throws(function () {parse('custom(x, ', nodes)}, /Unexpected end of expression/);
+      });
     });
 
   });

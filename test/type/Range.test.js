@@ -45,6 +45,16 @@ describe('range', function() {
       assert.deepEqual(r.toArray(), []);
       assert.equal(r.size(), 0);
     });
+
+    it('should throw an error when created without new keyword', function() {
+      assert.throws(function () {Range(0,10)}, /Constructor must be called with the new operator/)
+    });
+
+    it('should throw an error for wrong type of arguments', function() {
+      assert.throws(function () {new Range('str', 10, 1)}, /Parameter start must be a number/)
+      assert.throws(function () {new Range(0, 'str', 1)}, /Parameter end must be a number/)
+      assert.throws(function () {new Range(0, 10, 'str')}, /Parameter step must be a number/)
+    });
   });
 
   describe('parse', function () {
@@ -62,6 +72,7 @@ describe('range', function() {
       assert.equal(Range.parse('a:4'), null);
       assert.equal(Range.parse('3'), null);
       assert.equal(Range.parse(''), null);
+      assert.equal(Range.parse(2), null);
     });
 
   });
@@ -70,6 +81,7 @@ describe('range', function() {
     it('should calculate the size of a range', function() {
       assert.deepEqual(new Range(0, 0).size(), [0]);
       assert.deepEqual(new Range(0, 0, -1).size(), [0]);
+      assert.deepEqual(new Range(0, 0, 0).size(), [0]);
 
       assert.deepEqual(new Range(0, 4).size(), [4]);
       assert.deepEqual(new Range(2, 4).size(), [2]);
@@ -144,13 +156,94 @@ describe('range', function() {
     });
   });
 
+  describe('clone', function () {
+    it('should clone a Range', function () {
+      var r1 = new Range(0, 10, 2);
+      var r2 = r1.clone();
 
-  // TODO: test clone
-  // TODO: test forEach
-  // TODO: test format
-  // TODO: test map
-  // TODO: test isRange
-  // TODO: test toArray
-  // TODO: test valueOf
+      assert.deepEqual(r1, r2);
+      assert.notStrictEqual(r1, r2);
+
+      // changes in r1 should not affect r2
+      r1.start = 2;
+      r1.end = 8;
+      r1.step = 1;
+
+      assert.equal(r1.start, 2);
+      assert.equal(r1.end, 8);
+      assert.equal(r1.step, 1);
+      assert.equal(r2.start, 0);
+      assert.equal(r2.end, 10);
+      assert.equal(r2.step, 2);
+    });
+  });
+
+  describe('isRange', function () {
+    it('should test whether an object is a Range', function () {
+      assert.equal(Range.isRange(new Range()), true);
+      assert.equal(Range.isRange(new Date()), false);
+      assert.equal(Range.isRange('1:2:10'), false);
+    });
+  });
+
+  describe('map', function () {
+    it('should perform a transformation on all values in the range', function () {
+      var r = new Range(2, 6);
+      assert.deepEqual(r.map(function (value, index, range) {
+        assert.strictEqual(range, r);
+        return 'range[' + index + ']=' + value;
+      }), [
+          'range[0]=2',
+          'range[1]=3',
+          'range[2]=4',
+          'range[3]=5'
+      ]);
+    });
+  });
+
+  describe('forEach', function () {
+    it('should perform a given callback on all values in the range', function () {
+      var r = new Range(2, 6);
+      var log = [];
+      r.forEach(function (value, index, range) {
+        assert.strictEqual(range, r);
+        log.push('range[' + index + ']=' + value);
+      });
+
+      assert.deepEqual(log, [
+        'range[0]=2',
+        'range[1]=3',
+        'range[2]=4',
+        'range[3]=5'
+      ]);
+    });
+  });
+
+  describe('format', function () {
+    it('should format a range as string', function () {
+      assert.equal(new Range(0, 4).format(), '0:4');
+      assert.equal(new Range(0, 4, 2).format(), '0:2:4');
+
+      assert.equal(new Range(0.01, 0.09, 0.02).format(), '0.01:0.02:0.09');
+
+      assert.equal(new Range(0.01, 0.09, 0.02).format({
+        notation: 'exponential'
+      }), '1e-2:2e-2:9e-2');
+    });
+  });
+
+  describe('toArray', function () {
+    it('should expand a Range into an Array', function () {
+      assert.deepEqual(new Range(0, 4).toArray(), [0,1,2,3]);
+      assert.deepEqual(new Range(4, 0, -1).toArray(), [4, 3, 2, 1]);
+    });
+  });
+
+  describe('valueOf', function () {
+    it('valueOf should return the Range expanded as Array', function () {
+      assert.deepEqual(new Range(0, 4).valueOf(), [0,1,2,3]);
+      assert.deepEqual(new Range(4, 0, -1).valueOf(), [4, 3, 2, 1]);
+    });
+  });
 
 });

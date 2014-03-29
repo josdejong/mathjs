@@ -51,7 +51,9 @@ describe('larger', function() {
   it('should compare mixed booleans and bignumbers', function() {
     assert.equal(larger(bignumber(0.1), true), false);
     assert.equal(larger(bignumber(1), true), false);
+    assert.equal(larger(bignumber(1), false), true);
     assert.equal(larger(false, bignumber(0)), false);
+    assert.equal(larger(true, bignumber(0)), true);
   });
 
   it('should add two measures of the same unit', function() {
@@ -63,6 +65,10 @@ describe('larger', function() {
 
   it('should throw an error if comparing a unit with a number', function() {
     assert.throws(function () {larger(unit('100cm'), 22)});
+  });
+
+  it('should throw an error for two measures of different units', function() {
+    assert.throws(function () {larger(math.unit(5, 'km'), math.unit(100, 'gram'));});
   });
 
   it('should throw an error if comparing a unit with a bignumber', function() {
@@ -92,6 +98,11 @@ describe('larger', function() {
 
   it('should throw an error if matrices are different sizes', function() {
     assert.throws(function () {larger([1,4,6], [3,4])});
+  });
+
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {larger(1)}, math.error.ArgumentsError);
+    assert.throws(function () {larger(1, 2, 3)}, math.error.ArgumentsError);
   });
 
 });

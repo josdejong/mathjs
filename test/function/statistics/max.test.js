@@ -43,15 +43,26 @@ describe('max', function() {
 	  assert.deepEqual(max([
 	   [ 1, 2, 3],
 	   [ 4, 5, 6],
-	   [ 7, 8, 9]], 0), [7, 8, 9]);
-	  assert.deepEqual(max([
-	   [ 1, 2, 3],
-	   [ 4, 5, 6],
-	   [ 7, 8, 9]], 1), [3, 6, 9]);
-	  assert.deepEqual(max([
-       [ [1,2], [3,4], [5,6]],
-       [ [6,7], [8,9], [10,11]]],2),
-		  [[2, 4, 6], [7, 9, 11]]);
+	   [ 7, 8, 9]
+    ], 0), [7, 8, 9]);
+
+    assert.deepEqual(max([
+      [ 1, 2, 3],
+      [ 4, 5, 6],
+      [ 7, 8, 9]
+    ], 1), [3, 6, 9]);
+
+    assert.deepEqual(max([
+      [ 1, 2, 3],
+      [ 6, 5, 4],
+      [ 8, 7, 9]
+    ], 1), [3, 6, 9]);
+
+    assert.deepEqual(max([
+      [ [1,2], [3,4], [5,6]],
+      [ [6,7], [8,9], [10,11]]
+    ], 2),
+        [[2, 4, 6], [7, 9, 11]]);
   });
 
   it('should throw an error when called with complex numbers', function() {
@@ -66,6 +77,7 @@ describe('max', function() {
 
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {max()});
+    assert.throws(function() {max([], 2, 3)});
   });
 
   it('should return undefined if called with an empty array', function() {

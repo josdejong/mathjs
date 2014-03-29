@@ -1,5 +1,6 @@
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     matrix = math.matrix,
     eye = math.eye;
 
@@ -31,11 +32,22 @@ describe('eye', function() {
     assert.deepEqual(eye(two, three), matrix([[one,zero,zero],[zero,one,zero]]));
   });
 
-  // TODO: test setting `matrix`
+  it('should return an array when setting matrix=="array"', function() {
+    var math2 = mathjs({matrix: 'array'});
+    assert.deepEqual(math2.eye(2), [[1,0],[0,1]]);
+  });
 
   it('should throw an error with an invalid input', function() {
-    assert.throws(function () {eye(3,3,2);});
-    assert.throws(function () {eye([3,3,2]);});
+    assert.throws(function () {eye(3, 3, 2);});
+    assert.throws(function () {eye([3, 3, 2]);});
+    assert.throws(function () {eye([3, 3], 2);});
+    assert.throws(function () {eye([3.2, 3]);});
+    assert.throws(function () {eye([3, 3.2]);});
+    assert.throws(function () {eye([3.2, 3.2]);});
+    assert.throws(function () {eye([2, 'str']);});
+    assert.throws(function () {eye(['str', 2]);});
+    assert.throws(function () {eye([-2, 2]);});
+    assert.throws(function () {eye([2, -2]);});
   });
 
 });

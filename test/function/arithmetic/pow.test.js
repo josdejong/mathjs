@@ -52,13 +52,15 @@ describe('pow', function() {
   });
 
   it('should exponentiate mixed booleans and bignumbers', function() {
-    assert.deepEqual(pow(bignumber(true), bignumber(3)), bignumber(1));
-    assert.deepEqual(pow(bignumber(3), bignumber(false)), bignumber(1));
+    assert.deepEqual(pow(true, bignumber(3)), bignumber(1));
+    assert.deepEqual(pow(false, bignumber(3)), bignumber(0));
+    assert.deepEqual(pow(bignumber(3), false), bignumber(1));
+    assert.deepEqual(pow(bignumber(3), true), bignumber(3));
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {pow(1)}, math.error.ArgumentsError, 'Wrong number of arguments in function pow (1 provided, 2 expected)');
-    assert.throws(function () {pow(1, 2, 3)}, math.error.ArgumentsError, 'Wrong number of arguments in function pow (3 provided, 2 expected)');
+    assert.throws(function () {pow(1)}, math.error.ArgumentsError);
+    assert.throws(function () {pow(1, 2, 3)}, math.error.ArgumentsError);
   });
 
   it('should exponentiate a complex number to the given power', function() {

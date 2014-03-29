@@ -26,6 +26,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.abs(x)
 - math.add(x, y)
 - math.ceil(x)
+- math.compare(x, y)
 - math.cube(x)
 - math.divide(x, y)
 - math.edivide(x, y)
@@ -111,8 +112,13 @@ math.add('hello ', 'world!');     // String  'hello world!'
 ## Statistics
 
 - math.max(a, b, c, ...)
-- math.min(a, b, c, ...)
 - math.mean(a, b, c, ...)
+- math.median(a, b, c, ...)
+- math.min(a, b, c, ...)
+- math.prod(a, b, c, ...)
+- math.std(a, b, c, ...)
+- math.sum(a, b, c, ...)
+- math.var(a, b, c, ...)
 
 ## Trigonometry
 
@@ -137,6 +143,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.clone(x)
 - math.forEach(x, callback)
 - math.format(value [, precision])
+- math.ifElse(conditionalExpr, trueExpr, falseExpr)
 - math.import(filename | object, override)
 - math.map(x, callback)
 - math.print(template, values [, precision])

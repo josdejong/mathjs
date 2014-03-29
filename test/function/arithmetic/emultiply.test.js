@@ -84,4 +84,9 @@ describe('emultiply', function() {
     assert.throws(function () {emultiply(c, b)});
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {emultiply(1)}, math.error.ArgumentsError);
+    assert.throws(function () {emultiply(1, 2, 3)}, math.error.ArgumentsError);
+  });
+
 });

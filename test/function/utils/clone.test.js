@@ -10,6 +10,11 @@ describe('clone', function() {
     assert.strictEqual(b, 1);
   });
 
+  it('should throw an error on wrong number of arguments', function() {
+    assert.throws (function () {math.clone()}, math.error.ArgumentsError);
+    assert.throws (function () {math.clone(2, 4)}, math.error.ArgumentsError);
+  });
+
   it('should clone a bignumber', function() {
     var a = math.bignumber('2.3e500');
     var b = math.clone(a);
@@ -21,6 +26,7 @@ describe('clone', function() {
     var a = 'hello world';
     var b = math.clone(a);
     a = 'bye!';
+    assert.strictEqual(a, 'bye!');
     assert.strictEqual(b, 'hello world');
   });
 

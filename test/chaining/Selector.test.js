@@ -1,7 +1,8 @@
 // test select (chaining of operations)
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    math = require('../../index')(),
+    mathjs = require('../../index'),
+    math = mathjs(),
     Selector = math.chaining.Selector;
 
 describe('select', function() {
@@ -61,6 +62,18 @@ describe('select', function() {
 
   it('should throw an error if constructed without new keyword', function() {
     assert.throws(function () {Selector()}, SyntaxError);
+  });
+
+  it ('should not clear inherited properties', function () {
+    Object.prototype.foo = 'bar';
+
+    var math = mathjs();
+    var selector = new Selector();
+
+    assert.equal(selector.foo, 'bar');
+    assert.equal(selector.hasOwnProperty('foo'), false);
+
+    delete Object.prototype.foo;
   });
 
 });

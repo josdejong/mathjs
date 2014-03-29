@@ -4,9 +4,22 @@ var assert = require('assert'),
     math = require('../../../index')(),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
+    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
     OperatorNode = require('../../../lib/expression/node/OperatorNode');
 
 describe('OperatorNode', function() {
+
+  it ('should create an OperatorNode', function () {
+    var n = new OperatorNode();
+    assert(n instanceof OperatorNode);
+    assert(n instanceof Node);
+  });
+
+  it ('should throw an error when calling without new operator', function () {
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    assert.throws(function () {OperatorNode('+', 'add', [a, b])}, SyntaxError);
+  });
 
   it ('should compile an OperatorNode', function () {
     var a = new ConstantNode('number', '2');
@@ -18,25 +31,92 @@ describe('OperatorNode', function() {
     assert.equal(expr.eval(), 5);
   });
 
+  it ('should throw an error in case of unresolved operator function', function () {
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    var n = new OperatorNode('+', 'add', [a, b]);
+
+    var emptyNamespace = {};
+
+    assert.throws(function () {
+      n.compile(emptyNamespace);
+    }, /Function add missing in provided namespace/);
+  });
+
   it ('should find a OperatorNode', function () {
-    // TODO
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    var n = new OperatorNode('+', 'add', [a, b]);
+
+    assert.deepEqual(n.find({type: OperatorNode}),  [n]);
+    assert.deepEqual(n.find({type: SymbolNode}),    []);
+    assert.deepEqual(n.find({type: ConstantNode}),  [a, b]);
+    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [a]);
+    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
+  });
+
+  it ('should find an OperatorNode without contents', function () {
+    var n = new OperatorNode();
+
+    assert.deepEqual(n.find({type: OperatorNode}),  [n]);
+    assert.deepEqual(n.find({type: SymbolNode}),    []);
   });
 
   it ('should match a OperatorNode', function () {
-    // TODO
+    var a = new OperatorNode();
+    assert.equal(a.match({type: OperatorNode}),  true);
+    assert.equal(a.match({type: ConstantNode}), false);
   });
 
   it ('should stringify a OperatorNode', function () {
     var a = new ConstantNode('number', '2');
     var b = new ConstantNode('number', '3');
+    var c = new ConstantNode('number', '4');
+
     var n = new OperatorNode('+', 'add', [a, b]);
     assert.equal(n.toString(), '2 + 3');
+  });
 
-    var n2 = new OperatorNode('!', 'factorial', [b]);
-    assert.equal(n2.toString(), '3!');
+  it ('should stringify a OperatorNode with factorial', function () {
+    var a = new ConstantNode('number', '2');
+    var n = new OperatorNode('!', 'factorial', [a]);
+    assert.equal(n.toString(), '2!');
+  });
 
-    var n3 = new OperatorNode('-', 'unary', [b]);
-    assert.equal(n3.toString(), '-3');
+  it ('should stringify a OperatorNode with unary minus', function () {
+    var a = new ConstantNode('number', '2');
+    var n = new OperatorNode('-', 'unary', [a]);
+    assert.equal(n.toString(), '-2');
+  });
+
+  it ('should stringify a OperatorNode with zero arguments', function () {
+    var n = new OperatorNode('foo', 'foo', []);
+    assert.equal(n.toString(), 'foo()');
+  });
+
+  it ('should stringify a OperatorNode with more than two operators', function () {
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    var c = new ConstantNode('number', '4');
+
+    var n = new OperatorNode('foo', 'foo', [a, b, c]);
+    assert.equal(n.toString(), 'foo(2, 3, 4)');
+
+  });
+
+  it ('should stringify a OperatorNode with nested operator nodes', function () {
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    var c = new ConstantNode('number', '4');
+    var d = new ConstantNode('number', '5');
+
+    var n1 = new OperatorNode('+', 'add', [a, b]);
+    var n2 = new OperatorNode('-', 'subtract', [c, d]);
+    var n3 = new OperatorNode('*', 'multiply', [n1, n2]);
+
+    assert.equal(n1.toString(), '2 + 3');
+    assert.equal(n2.toString(), '4 - 5');
+    assert.equal(n3.toString(), '(2 + 3) * (4 - 5)');
   });
 
 });

@@ -1,11 +1,13 @@
 var assert = require('assert'),
     math = require('../../../index')(),
     unit = math.unit;
+    Unit = require('../../../lib/type/Unit');
 
 describe('unit', function() {
 
   it ('should construct a unit', function () {
-    // TODO: test construction of a unit
+    var u = unit('5 cm');
+    assert.deepEqual(u, new Unit(5, 'cm'));
   });
 
   it('should parse a valid string to a unit', function() {

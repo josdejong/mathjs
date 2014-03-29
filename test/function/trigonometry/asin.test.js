@@ -66,4 +66,9 @@ describe('asin', function() {
     approx.deepEqual(asin(matrix([1,2,3])), matrix(asin123));
   });
 
+  it('should throw an error in case of invalid number of arguments', function() {
+    assert.throws(function () {asin()}, math.error.ArgumentsError);
+    assert.throws(function () {asin(1, 2)}, math.error.ArgumentsError);
+  });
+
 });

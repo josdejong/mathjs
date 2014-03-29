@@ -80,4 +80,10 @@ describe('format', function() {
       assert.equal(math.format(oneThird, 18), '0.333333333333333333');
     });
   });
+
+  it('should throw an error on wrong number of arguments', function() {
+    assert.throws (function () {math.format()}, math.error.ArgumentsError);
+    assert.throws (function () {math.format(1, 2, 3)}, math.error.ArgumentsError);
+  });
+
 });

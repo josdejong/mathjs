@@ -51,6 +51,11 @@ describe('lcm', function() {
     assert.equal(lcm(false, false), 0);
   });
 
+  it('should throw an error for non-integer numbers', function() {
+    assert.throws(function () {lcm(2, 4.1); }, /Parameters in function lcm must be integer numbers/);
+    assert.throws(function () {lcm(2.3, 4); }, /Parameters in function lcm must be integer numbers/);
+  })
+
   it('should throw an error with complex numbers', function() {
     assert.throws(function () {lcm(math.complex(1,3),2); }, TypeError, 'Function lcm(complex, number) not supported');
   });

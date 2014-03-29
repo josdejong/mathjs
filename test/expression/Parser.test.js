@@ -2,32 +2,41 @@
 
 var assert = require('assert'),
     approx = require('../../tools/approx'),
+    Parser = require('../../lib/expression/Parser'),
     math = require('../../index')();
 
 describe('parser', function() {
 
   it ('should create a parser', function () {
-    var parser = math.parser();
-    assert.ok(parser instanceof math.expression.Parser);
+    var parser = new Parser(math);
+    assert.ok(parser instanceof Parser);
   });
 
   it ('should parse an expression', function () {
-    var parser = math.parser();
+    var parser = new Parser(math);
 
     var node = parser.parse('2 + 3');
     assert.ok(node instanceof math.expression.node.Node);
     assert.equal(node.compile(math).eval(), 5);
   });
 
+  it ('should compile an expression', function () {
+    var parser = new Parser(math);
+
+    var code = parser.compile('2 + 3');
+    assert.equal(typeof code.eval, 'function');
+    assert.equal(code.eval(), 5);
+  });
+
   it ('should evaluate an expression', function () {
-    var parser = math.parser();
+    var parser = new Parser(math);
 
     var result = parser.eval('2 + 3');
     assert.equal(result, 5);
   });
 
   it ('should get variables from the parsers namespace ', function () {
-    var parser = math.parser();
+    var parser = new Parser(math);
 
     parser.eval('a = 3');
     parser.eval('b = a + 2');
@@ -38,13 +47,13 @@ describe('parser', function() {
   });
 
   it ('should return null when getting a non existing variable', function () {
-    var parser = math.parser();
+    var parser = new Parser(math);
 
     assert.equal(parser.get('non_existing_variable'), null);
   });
 
   it ('should set variables in the parsers namespace ', function () {
-    var parser = math.parser();
+    var parser = new Parser(math);
 
     assert.equal(parser.set('a', 3), 3);
     assert.equal(parser.eval('a'), 3);
@@ -60,7 +69,7 @@ describe('parser', function() {
   });
 
   it ('should remove a variable from the parsers namespace ', function () {
-    var parser = math.parser();
+    var parser = new Parser(math);
 
     assert.equal(parser.set('qq', 3), 3);
     assert.equal(parser.eval('qq'), 3);
@@ -78,7 +87,7 @@ describe('parser', function() {
   });
 
   it ('should clear the parsers namespace ', function () {
-    var parser = math.parser();
+    var parser = new Parser(math);
 
     assert.equal(parser.eval('xx = yy = zz = 5'), 5);
 
@@ -106,6 +115,27 @@ describe('parser', function() {
     assert.throws(function () {parser.eval('zz')});
     assert.equal(parser.eval('pi'), Math.PI);
 
+  });
+
+  it ('should not clear inherited properties', function () {
+    var parser = new Parser(math);
+
+    Object.prototype.foo = 'bar';
+
+    parser.clear();
+
+    assert.equal(parser.get('foo'), 'bar');
+
+    delete Object.prototype.foo;
+  });
+
+  it ('should throw an exception when creating a parser without new', function () {
+    assert.throws(function () {Parser(math)}, /Constructor must be called with the new operator/);
+  });
+
+  it ('should throw an exception when creating a parser without math object', function () {
+    assert.throws(function () {new Parser()}, TypeError);
+    assert.throws(function () {new Parser(1)}, TypeError);
   });
 
 });

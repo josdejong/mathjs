@@ -5,16 +5,36 @@ var assert = require('assert'),
     math = mathjs(),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
+    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
+    RangeNode = require('../../../lib/expression/node/RangeNode'),
     ArrayNode = require('../../../lib/expression/node/ArrayNode');
 
 describe('ArrayNode', function() {
 
   it ('should create an ArrayNode', function () {
-    // TODO
+    var c = new ConstantNode('number', '1');
+    var a = new ArrayNode([c]);
+    var b = new ArrayNode([]);
+    assert(a instanceof ArrayNode);
+    assert(b instanceof ArrayNode);
+  });
+
+  it ('should throw an error when calling without new operator', function () {
+    assert.throws(function () {ArrayNode()}, SyntaxError);
+  });
+
+  it ('should throw an error on wrong constructor arguments', function () {
+    assert.throws(function () {new ArrayNode(2)}, TypeError);
+    assert.throws(function () {new ArrayNode([2, 3])}, TypeError);
   });
 
   it ('should evaluate an ArrayNode', function () {
-    // TODO
+    var c = new ConstantNode('number', '1');
+    var a = new ArrayNode([c]);
+    var b = new ArrayNode();
+
+    assert.deepEqual(a.compile(math).eval(), math.matrix([1]));
+    assert.deepEqual(b.compile(math).eval(), math.matrix([]));
   });
 
   it ('should compile an ArrayNode', function () {
@@ -47,11 +67,22 @@ describe('ArrayNode', function() {
   });
 
   it ('should find an ArrayNode', function () {
-    // TODO
+    var a = new ConstantNode('number', '1');
+    var b = new SymbolNode('x');
+    var c = new ConstantNode('number', '2');
+    var d = new ArrayNode([a, b, c]);
+
+    assert.deepEqual(d.find({type: ArrayNode}),     [d]);
+    assert.deepEqual(d.find({type: SymbolNode}),    [b]);
+    assert.deepEqual(d.find({type: RangeNode}),     []);
+    assert.deepEqual(d.find({type: ConstantNode}),  [a, c]);
+    assert.deepEqual(d.find({type: ConstantNode, properties: {value: '2'}}),  [c]);
   });
 
   it ('should match an ArrayNode', function () {
-    // TODO
+    var a = new ArrayNode();
+    assert.equal(a.match({type: ArrayNode}),  true);
+    assert.equal(a.match({type: SymbolNode}), false);
   });
 
   it ('should stringify an ArrayNode', function () {

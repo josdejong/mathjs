@@ -1,7 +1,7 @@
 /**
  * Math.js can easily be extended with functions and variables using the
- * `import` function. The function `import` accepts a filename or an object
- * with functions and variables.
+ * `import` function. The function `import` accepts a module name or an object
+ * containing functions and variables.
  */
 
 // load math.js and create an instance
@@ -78,3 +78,15 @@ if (math.eig) {
   var b = [9, 8, 3];
   print(math.solve(A, b)); // [2, -1, 3]
 }
+
+/**
+ * By default, the function import does not allow overriding existing functions.
+ * Existing functions can be overridden by specifying option `override=true`
+ */
+math.import({
+  pi: 3.14
+}, {
+  override: true
+});
+
+print(math.pi); // returns 3.14 instead of 3.141592653589793
