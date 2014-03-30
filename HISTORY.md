@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.19.0
+## 2014-03-30, version 0.19.0
 
 - Implemented functions `compare`, `sum`, `prod`, `var`, `std`, `median`.
 - Minor bug fixes.
