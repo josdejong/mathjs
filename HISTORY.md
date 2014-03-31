@@ -5,6 +5,7 @@ https://github.com/josdejong/mathjs
 ## 2014-03-30, version 0.19.0
 
 - Implemented functions `compare`, `sum`, `prod`, `var`, `std`, `median`.
+- Implemented function `ifElse` (thanks @mtraynham).
 - Minor bug fixes.
 
 
@@ -12,7 +13,7 @@ https://github.com/josdejong/mathjs
 
 - Added unit `feet`.
 - Implemented function `compile` (shortcut for parsing and then compiling).
-- Improved performance of function `pow` for matrices. Thanks hamadu.
+- Improved performance of function `pow` for matrices. Thanks @hamadu.
 - Fixed broken auto completion in the command line interface.
 - Fixed an error in function `combinations` for large numbers, and
   improved performance of both functions `combinations` and `permutations`.
@@ -28,12 +29,12 @@ https://github.com/josdejong/mathjs
   compiled into JavaScript, giving much better performance (easily 10x as fast).
 - Renamed unit conversion function and operator `in` to `to`. Operator `in` is
   still available in the expression parser as an alias for `to`. Added unit
-  `in`, an abbreviation for `inch`. Thanks Elijah Insua (tmpvar).
+  `in`, an abbreviation for `inch`. Thanks Elijah Insua (@tmpvar).
 - Added plurals and aliases for units.
 - Implemented an argument `includeEnd` for function `range` (false by default).
 - Ranges in the expression parser now support big numbers.
 - Implemented functions `permutations` and `combinations`.
-  Thanks Daniel Levin (daniel-levin).
+  Thanks Daniel Levin (@daniel-levin).
 - Added lower case abbreviation `l` for unit litre.
 
 
@@ -105,11 +106,11 @@ https://github.com/josdejong/mathjs
     use `math.format(value [, precision])` instead.
   - Fixed formatting numbers as scientific notation in some cases returning
     a zero digit left from the decimal point. (like "0.33333e8" rather than
-    "3.3333e7"). Thanks husayt.
+    "3.3333e7"). Thanks @husayt.
 - Implemented a function `print` to interpolate values in a template string,
   this functionality was moved from the function `format`.
 - Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
-  (guillermobox).
+  (@guillermobox).
 - Extended and changed `max` and `min` for multi dimensional matrices: they now
   return the maximum and minimum of the flattened array. An optional second
   argument `dim` allows to calculate the `max` or `min` for specified dimension.
@@ -139,7 +140,7 @@ https://github.com/josdejong/mathjs
 ## 2013-09-03, version 0.13.0
 
 - Implemented support for booleans in all relevant functions.
-- Implemented functions `map` and `forEach`. Thanks Sebastien Piquemal (sebpic).
+- Implemented functions `map` and `forEach`. Thanks Sebastien Piquemal (@sebpic).
 - All construction functions can be used to convert the type of variables,
   also element-wise for all elements in an Array or Matrix.
 - Changed matrix indexes of the expression parser to one-based with the
@@ -168,7 +169,7 @@ https://github.com/josdejong/mathjs
 ## 2013-08-22, version 0.12.0
 
 - Implemented functions `random([min, max])`, `randomInt([min, max])`,
-  `pickRandom(array)`. Thanks Sebastien Piquemal (sebpic).
+  `pickRandom(array)`. Thanks Sebastien Piquemal (@sebpic).
 - Implemented function `distribution(name)`, generating a distribution object
   with functions `random`, `randomInt`, `pickRandom` for different
   distributions. Currently supporting `uniform` and `normal`.
@@ -186,7 +187,7 @@ https://github.com/josdejong/mathjs
   for example `A[0, 0:3]`.
 - Removed the feature introduced in v0.10.0 to automatically convert a complex
   value with an imaginary part equal to zero to a number.
-- Fixed zeros being formatted as null. Thanks TimKraft.
+- Fixed zeros being formatted as null. Thanks @TimKraft.
 
 
 ## 2013-07-23, version 0.11.1
@@ -203,7 +204,7 @@ https://github.com/josdejong/mathjs
 - Added constants `true` and `false`.
 - Added constructor function `boolean`.
 - Fixed function `select` not accepting `0` as input.
-  Thanks Elijah Manor (elijahmanor).
+  Thanks Elijah Manor (@elijahmanor).
 - Parser now supports multiple unary minus operators after each other.
 - Fixed not accepting empty matrices like `[[], []]`.
 - Some fixes in the end user documentation.
@@ -219,7 +220,7 @@ https://github.com/josdejong/mathjs
 - Implemented end user documentation and a new `help` function.
 - Functions `size` and `squeeze` now return a Matrix instead of an Array as
   output on Matrix input.
-- Added a constant tau (2 * pi). Thanks Zak Zibrat (palimpsests).
+- Added a constant tau (2 * pi). Thanks Zak Zibrat (@palimpsests).
 - Renamed function `unaryminus` to `unary`.
 - Fixed a bug in determining node dependencies in function assignments.
 
@@ -246,7 +247,7 @@ https://github.com/josdejong/mathjs
   or other data types.
 - Implemented construction functions number and string (mainly useful inside
   the parser).
-- Improved function `det`. Thanks Bryan Cuccioli (bcuccioli).
+- Improved function `det`. Thanks Bryan Cuccioli (@bcuccioli).
 - Moved the parse code from prototype math.expr.Parser to function math.parse,
   simplified Parser a little bit.
 - Strongly simplified the code of Scope and Workspace.
@@ -286,7 +287,7 @@ https://github.com/josdejong/mathjs
 ## 2013-05-04, version 0.7.2
 
 - Fixed method unequal, which was checking for equality instead of inequality.
-  Thanks FJS2.
+  Thanks @FJS2.
 
 
 ## 2013-04-27, version 0.7.1
@@ -310,7 +311,7 @@ https://github.com/josdejong/mathjs
 - Implemented method `math.eval`, which uses a readonly parser to evaluate
   expressions.
 - Implemented method `xgcd` (extended eucledian algorithm). Thanks Bart Kiers
-  (bkiers).
+  (@bkiers).
 - Improved math.format, which now rounds values to a maximum number of digits
   instead of decimals (default is 5 digits, for example `math.format(math.pi)`
   returns `3.1416`).
