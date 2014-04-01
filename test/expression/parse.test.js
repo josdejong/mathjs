@@ -679,6 +679,17 @@ describe('parse', function() {
       assert.equal(parseAndEval('2 != 2'), false);
     });
 
+    it('should parse a ? b : c', function() {
+      assert.equal(parseAndEval('2 ? true : false'), true);
+      assert.equal(parseAndEval('0 ? true : false'), false);
+      assert.equal(parseAndEval('false ? true : false'), false);
+
+      assert.equal(parseAndEval('2 > 0 ? 1 : 2 < 0 ? -1 : 0'), 1);
+      assert.equal(parseAndEval('(2 > 0 ? 1 : 2 < 0) ? -1 : 0'), -1);
+      assert.equal(parseAndEval('-2 > 0 ? 1 : -2 < 0 ? -1 : 0'), -1);
+      assert.equal(parseAndEval('0 > 0 ? 1 : 0 < 0 ? -1 : 0'), 0);
+    });
+
     it('should parse : (range)', function() {
       assert.ok(parseAndEval('2:5') instanceof Matrix);
       assert.deepEqual(parseAndEval('2:5'), new Matrix([2,3,4,5]));
@@ -736,6 +747,14 @@ describe('parse', function() {
 
       assert.equal(parseAndEval('-4!'), -24);
       assert.equal(parseAndEval('3!+2'), 8);
+
+      assert.equal(parseAndEval('2 > 3 ? true : false'), false);
+      assert.equal(parseAndEval('2 == 3 ? true : false'), false);
+      assert.equal(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6);
+      assert.deepEqual(parseAndEval('3 ? true : false; 22'), [22]);
+      assert.deepEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'));
+      assert.deepEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), new Matrix([1,2]));
+      assert.deepEqual(parseAndEval('false ? 1:2:6'), new Matrix([2,3,4,5,6]));
 
       // TODO: extensively test operator precedence
 

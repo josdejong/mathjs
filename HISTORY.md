@@ -4,6 +4,7 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.19.1
 
+- Implemented conditional operator `a ? b : c` in expression parser.
 - Improved function `ifElse`, is now specified for special data types too.
 
 
