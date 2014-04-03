@@ -1,7 +1,8 @@
 // test data type Complex
 
 var assert = require('assert'),
-    Complex = require('../../lib/type/Complex');
+    Complex = require('../../lib/type/Complex'),
+    math = require('../../index')();
 
 describe('Complex', function () {
 
@@ -182,4 +183,32 @@ describe('Complex', function () {
 
   });
 
+  describe('fromPolar', function() {
+    it('should save polar coordinates input correctly', function() {
+      var complex1 = Complex.fromPolar({r: 0, phi: 4});
+      var complex2 = Complex.fromPolar({r: 5, phi: 0});
+      var complex3 = Complex.fromPolar({r: 1, phi: math.pi});
+      var complex4 = Complex.fromPolar({r: 3, phi: math.pi / 2});
+      assertComplex(complex1, 0, 0);
+      assertComplex(complex2, 5, 0);
+      assert.equal(complex3.re, -1);
+      assert.equal(complex4.im, 3);
+    });
+
+    it('should have the same value for the different import ways', function() {
+        var way1 = Complex.fromPolar(1, 1);
+        var way2 = Complex.fromPolar({r: 1, phi: 1});
+        assert(way1.equals(way2));
+    });
+
+    it('should accept angle units for phi properly', function() {
+      var fromDeg = Complex.fromPolar(1, math.unit('90deg')),
+          fromRad = Complex.fromPolar(1, math.unit('0rad')),
+          fromGrad = Complex.fromPolar(1, math.unit('100grad'));
+      assert.equal(fromDeg.im, 1);
+      assert.equal(fromGrad.im, 1);
+      assert.equal(fromRad.im, 0);
+
+    });
+  });
 });
