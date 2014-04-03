@@ -13,7 +13,7 @@ function print (value) {
   console.log(math.format(value, precision));
 }
 
-// units can be created by providing a value and plain unit, or by providing
+// units can be created by providing a value and unit name, or by providing
 // a string with a valued unit.
 console.log('create units');
 var a = math.unit(45, 'cm');

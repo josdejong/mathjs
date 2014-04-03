@@ -84,7 +84,7 @@ describe('concat', function() {
 
   it('should throw an error in case dimension mismatch', function() {
     assert.throws(function () {math.concat([1, 2], [[1,2], [3,4]])}, RangeError);
-    assert.throws(function () {math.concat([[1, 2]], [[1,2], [3,4]])}, /Dimensions mismatch/);
+    assert.throws(function () {math.concat([[1, 2]], [[1,2], [3,4]])}, /Dimension mismatch/);
   });
 
   it('should throw an error in case of invalid type of argument', function() {

@@ -107,6 +107,10 @@ describe('matrix', function() {
       assert.throws(function () {m.get([])});
     });
 
+    it('should throw an error in case of dimension mismatch', function() {
+      assert.throws(function () {m.get([0,2,0,2,0,2])}, /Dimension mismatch/);
+    });
+
     it('should throw an error when getting a value given a invalid index', function() {
       assert.throws(function () {m.get([1.2, 2])});
       assert.throws(function () {m.get([1,-2])});
@@ -190,6 +194,17 @@ describe('matrix', function() {
       assert.throws(function () { m.subset([1,2,3]); });
       assert.throws(function () { m.subset([3,0]); });
       assert.throws(function () { m.subset([1]); });
+    });
+
+    it('should throw an error in case of wrong number of arguments', function() {
+      var m = new Matrix();
+      assert.throws(function () { m.subset();}, /Wrong number of arguments/);
+      assert.throws(function () { m.subset(1,2,3,4); }, /Wrong number of arguments/);
+    });
+
+    it('should throw an error in case of dimension mismatch', function() {
+      var m = new Matrix([[1,2,3],[4,5,6]]);
+      assert.throws(function () {m.subset(index([0,2]))}, /Dimension mismatch/);
     });
 
   });
@@ -286,6 +301,20 @@ describe('matrix', function() {
         ]
       ]);
       assert.deepEqual(m, res);
+    });
+
+    it ('should throw an error in case of wrong type of index', function () {
+      assert.throws(function () {new Matrix().subset('no index', 2)}, /Invalid index/)
+    });
+
+    it ('should throw an error in case of wrong size of submatrix', function () {
+      assert.throws(function () {new Matrix().subset(index(0), [2,3])}, /Dimension mismatch/)
+    });
+
+    it('should throw an error in case of dimension mismatch', function() {
+      var m = new Matrix([[1,2,3],[4,5,6]]);
+      assert.throws(function () {m.subset(index([0,2]), [100,100])}, /Dimension mismatch/);
+      assert.throws(function () {m.subset(index([0,2], [0,2]), [100,100])}, /Dimension mismatch/);
     });
 
   });
