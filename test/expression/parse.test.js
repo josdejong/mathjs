@@ -679,7 +679,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('2 != 2'), false);
     });
 
-    it('should parse a ? b : c', function() {
+    it('should parse contitional expression a ? b : c', function() {
       assert.equal(parseAndEval('2 ? true : false'), true);
       assert.equal(parseAndEval('0 ? true : false'), false);
       assert.equal(parseAndEval('false ? true : false'), false);
@@ -688,6 +688,10 @@ describe('parse', function() {
       assert.equal(parseAndEval('(2 > 0 ? 1 : 2 < 0) ? -1 : 0'), -1);
       assert.equal(parseAndEval('-2 > 0 ? 1 : -2 < 0 ? -1 : 0'), -1);
       assert.equal(parseAndEval('0 > 0 ? 1 : 0 < 0 ? -1 : 0'), 0);
+    });
+
+    it('should throw an error when false part of contitional expression is missing', function() {
+      assert.throws(function() {parseAndEval('2 ? true')}, /False part of conditional expression expected/);
     });
 
     it('should parse : (range)', function() {

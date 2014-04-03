@@ -56,7 +56,7 @@ describe('compare', function() {
   it('should add two measures of the same unit', function() {
     assert.equal(compare(unit('100cm'), unit('10inch')), 1);
     assert.equal(compare(unit('99cm'), unit('1m')), -1);
-    //assert.equal(compare(unit('100cm'), unit('1m')), bignumber(0)); // dangerous, round-off errors
+    assert.equal(compare(unit('1m'), unit('1m')), bignumber(0));
     assert.equal(compare(unit('101cm'), unit('1m')), 1);
   });
 

@@ -24,6 +24,13 @@ describe('ifElse', function() {
     assert.equal(ifElse(math.bignumber(0), 1, 0), 0);
   });
 
+  it('should evaluate complex number conditions', function() {
+    assert.equal(ifElse(math.complex(2, 3), 1, 0), 1);
+    assert.equal(ifElse(math.complex(2, 0), 1, 0), 1);
+    assert.equal(ifElse(math.complex(0, 3), 1, 0), 1);
+    assert.equal(ifElse(math.complex(0, 0), 1, 0), 0);
+  });
+
   it('should evaluate string conditions', function() {
     assert.equal(ifElse('hello', 1, 0), 1);
     assert.equal(ifElse('', 1, 0), 0);
@@ -67,6 +74,18 @@ describe('ifElse', function() {
         math.matrix([[5,6],[7,8]]));
   });
 
+  it('should throw an error when matrix dimensions mismatch', function() {
+    assert.throws(function () {
+      ifElse(math.matrix([[1, 1], [1, 1]]), math.matrix([[1,2,3],[4,5,6]]), 1);
+    });
+    assert.throws(function () {
+      ifElse(math.matrix([[1, 1], [1, 1]]), 1, math.matrix([[1,2,3],[4,5,6]]));
+    });
+    assert.throws(function () {
+      ifElse(math.matrix([[1, 1], [1, 1]]), 1, math.matrix([1,2]));
+    });
+  });
+
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() { ifElse(true); });
     assert.throws(function() { ifElse(true, true); });
@@ -74,8 +93,8 @@ describe('ifElse', function() {
   });
 
   it('should throw an error if called with invalid type of arguments', function() {
-    assert.throws(function() { ifElse(new Date()); });
-    assert.throws(function() { ifElse(/regexp/); });
+    assert.throws(function() { ifElse(new Date(), 1, 0); }, math.type.UnsupportedTypeError);
+    assert.throws(function() { ifElse(/regexp/, 1, 0); }, math.type.UnsupportedTypeError);
   });
 
 });

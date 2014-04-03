@@ -102,7 +102,6 @@ describe('import', function() {
   });
 
   it.skip('should throw an error when trying to load a module when no module loader is available', function () {
-    // TODO: how to temporarily override the global function require?
     var orig = require;
     require = undefined;
 
