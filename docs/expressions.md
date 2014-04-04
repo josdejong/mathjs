@@ -456,9 +456,9 @@ math.format(ans, {precision: 14});  // "0.3"
 ```
 
 
-#### Big numbers
+#### BigNumbers
 
-Math.js supports big numbers for calculations with an arbitrary precision.
+Math.js supports BigNumbers for calculations with an arbitrary precision.
 The pros and cons of Number and BigNumber are explained in detail on the page
 [Numbers](datatypes/numbers.md).
 
@@ -484,7 +484,7 @@ var mathjs = require('mathjs'),
 math.eval('0.1 + 0.2'); // BigNumber, 0.3
 ```
 
-Big numbers can be converted to numbers and vice versa using the functions
+BigNumbers can be converted to numbers and vice versa using the functions
 `number` and `bignumber`. When converting a BigNumber to a Number, the high
 precision of the BigNumber will be lost. When a BigNumber is too large to be represented
 as Number, it will be initialized as `Infinity`.

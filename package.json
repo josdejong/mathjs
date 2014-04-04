@@ -39,7 +39,7 @@
     "unit"
   ],
   "dependencies": {
-    "bignumber.js": "^1.3.0"
+    "decimal.js": "^1.0.0"
   },
   "devDependencies": {
     "webpack": "latest",

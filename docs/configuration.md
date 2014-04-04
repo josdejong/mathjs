@@ -16,18 +16,13 @@ Available configuration settings are:
   like `eval `which cannot determine the correct type of output from the
   functions input. For most functions though, the type of output is determined
   from the the input: a number as input will return a number as output,
-  a bignumber as input returns a bignumber as output.
+  a BigNumber as input returns a BigNumber as output.
   Available values are: `'number'` (default) or `'bignumber'`.
-  Big numbers have higher precision than the default numbers of JavaScript.
+  BigNumbers have higher precision than the default numbers of JavaScript.
 
 - `decimals`. The maximum number of decimal places behind the decimal
-  point (not the number of significant digits). Only applies to big numbers,
+  point (not the number of significant digits). Only applies to BigNumbers,
   not to numbers. Default value is 20.
-
-  *Important: This setting is applied application wide to all BigNumbers.
-  Behind the scenes, this setting is applied as the global `DECIMAL_PLACES`
-  setting of the [bignumber.js](https://github.com/MikeMcl/bignumber.js)
-  library used by math.js.*
 
 
 ## Examples
@@ -72,13 +67,13 @@ math2.config({
 math2.range(0, 4); // Matrix [0, 1, 2, 3]
 ```
 
-### Configuration for big numbers
+### Configuration for BigNumbers
 
 ```js
 // load the library
 var mathjs = require('mathjs');
 
-// use big numbers by default
+// use BigNumbers by default
 var math3 = mathjs({
   number: 'bignumber',
   decimals: 32

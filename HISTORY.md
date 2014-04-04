@@ -2,8 +2,10 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.19.1
+## not yet released, version 0.20.0
 
+- Switched to module `decimal.js` for BigNumber support, instead of
+  `bignumber.js`.
 - Implemented conditional operator `a ? b : c` in expression parser.
 - Improved function `ifElse`, is now specified for special data types too.
 - Minor bug fixes.

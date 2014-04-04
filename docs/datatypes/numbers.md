@@ -4,11 +4,11 @@ Math.js supports two types of numbers:
 
 - Number for fast floating point arithmetic, described on this page.
 - BigNumber for arbitrary precision arithmetic, describe on the page
-  [Big Numbers](bignumbers.md).
+  [BigNumbers](bignumbers.md).
 
 Most functions can determine the type of output from the type of input:
-a number as input will return a number as output, a bignumber as input returns
-a bignumber as output. Functions which cannot determine the type of output
+a number as input will return a number as output, a BigNumber as input returns
+a BigNumber as output. Functions which cannot determine the type of output
 from the input (for example `math.eval`) use the default number type, which
 can be configured when instantiating math.js:
 

@@ -30,16 +30,16 @@ describe('fix', function() {
   });
 
   it('should round big numbers correctly', function() {
-    approx.deepEqual(fix(bignumber(0)), bignumber(0));
-    approx.deepEqual(fix(bignumber(1)), bignumber(1));
-    approx.deepEqual(fix(bignumber(1.3)), bignumber(1));
-    approx.deepEqual(fix(bignumber(1.8)), bignumber(1));
-    approx.deepEqual(fix(bignumber(2)), bignumber(2));
-    approx.deepEqual(fix(bignumber(-1)), bignumber(-1));
-    approx.deepEqual(fix(bignumber(-1.3)), bignumber(-1));
-    approx.deepEqual(fix(bignumber(-1.8)), bignumber(-1));
-    approx.deepEqual(fix(bignumber(-2)), bignumber(-2));
-    approx.deepEqual(fix(bignumber(-2.1)), bignumber(-2));
+    assert.deepEqual(fix(bignumber(0)), bignumber(0));
+    assert.deepEqual(fix(bignumber(1)), bignumber(1));
+    assert.deepEqual(fix(bignumber(1.3)), bignumber(1));
+    assert.deepEqual(fix(bignumber(1.8)), bignumber(1));
+    assert.deepEqual(fix(bignumber(2)), bignumber(2));
+    assert.deepEqual(fix(bignumber(-1)), bignumber(-1));
+    assert.deepEqual(fix(bignumber(-1.3)), bignumber(-1));
+    assert.deepEqual(fix(bignumber(-1.8)), bignumber(-1));
+    assert.deepEqual(fix(bignumber(-2)), bignumber(-2));
+    assert.deepEqual(fix(bignumber(-2.1)), bignumber(-2));
   });
 
   it('should round complex numbers correctly', function() {
