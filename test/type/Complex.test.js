@@ -189,10 +189,12 @@ describe('Complex', function () {
       var complex2 = Complex.fromPolar({r: 5, phi: 0});
       var complex3 = Complex.fromPolar({r: 1, phi: math.pi});
       var complex4 = Complex.fromPolar({r: 3, phi: math.pi / 2});
+      var complex5 = Complex.fromPolar({r: 3, phi: -math.pi / 2});
       assertComplex(complex1, 0, 0);
       assertComplex(complex2, 5, 0);
       assert.equal(complex3.re, -1);
       assert.equal(complex4.im, 3);
+      assert.equal(complex5.im, -3);
     });
 
     it('should have the same value for the different import ways', function() {
@@ -209,6 +211,29 @@ describe('Complex', function () {
       assert.equal(fromGrad.im, 1);
       assert.equal(fromRad.im, 0);
 
+    });
+  });
+
+  describe('toPolar', function() {
+    it('should return polar coordinates properly', function() {
+      var polar0 = (new Complex(0, 0)).toPolar();
+      var polar1 = (new Complex(3, 4)).toPolar();
+      var polar2 = (new Complex(-3, 4)).toPolar();
+      var polar3 = (new Complex(3, -4)).toPolar();
+      var polar4 = (new Complex(-3, -4)).toPolar();
+      var polar5 = (new Complex(0, -1)).toPolar();
+      assert.equal(polar0.r, 0);
+      assert.equal(polar1.r, 5);
+      assert.equal(polar2.r, 5);
+      assert.equal(polar3.r, 5);
+      assert.equal(polar4.r, 5);
+      assert.equal(polar5.r, 1);
+      assert.equal(polar0.phi, 0);
+      assert.equal(polar1.phi, 0.9272952180016122);
+      assert.equal(polar2.phi, 2.214297435588181);
+      assert.equal(polar3.phi, -0.9272952180016122);
+      assert.equal(polar4.phi, -2.214297435588181);
+      assert.equal(polar5.phi, -1.5707963267948966);
     });
   });
 });
