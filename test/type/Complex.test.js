@@ -36,6 +36,14 @@ describe('Complex', function () {
       assert.throws(function () { Complex(3, -4); });
     });
 
+    it('should accept an object with im and re as keys', function() {
+      assertComplex(new Complex({re: 1, im: 2}), 1, 2);
+    });
+
+    it('should accept an object with polar coordinates like fromPolar', function() {
+      assert.deepEqual(new Complex({r: 3, phi: 4}), Complex.fromPolar(3, 4));
+    });
+
   });
 
   describe('toString', function() {
@@ -210,7 +218,25 @@ describe('Complex', function () {
       assert.equal(fromDeg.im, 1);
       assert.equal(fromGrad.im, 1);
       assert.equal(fromRad.im, 0);
+    });
 
+    it('should only accept an object with r and phi keys for 1 argument', function() {
+      assert.throws(function() { Complex.fromPolar({}) }, TypeError);
+      assert.throws(function() { Complex.fromPolar({r: 1}) }, TypeError);
+      assert.throws(function() { Complex.fromPolar({phi: 1}) }, TypeError);
+      assert.throws(function() { Complex.fromPolar("") }, TypeError);
+    });
+
+    it('should only accept a number as r', function() {
+      assert.throws(function() { Complex.fromPolar("1", 0); });
+      assert.throws(function() { Complex.fromPolar(true, 0); });
+      assert.throws(function() { Complex.fromPolar({}, 0); });
+    });
+
+    it('should only accept units and numbers as phi', function() {
+      assert.throws(function() { Complex.fromPolar(1, "1")});
+      assert.throws(function() { Complex.fromPolar(1, true)});
+      assert.throws(function() { Complex.fromPolar(1, {})});
     });
   });
 
