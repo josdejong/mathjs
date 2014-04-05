@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    approx = require('../../../tools/approx'),
     math = require('../../../index')();
 
 describe('det', function() {
