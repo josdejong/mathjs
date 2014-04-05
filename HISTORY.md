@@ -6,6 +6,8 @@ https://github.com/josdejong/mathjs
 
 - Switched to module `decimal.js` for BigNumber support, instead of
   `bignumber.js`.
+- Implemented support for polar coordinates to the `Complex` datatype.
+  Thanks Finn Pauls (@finnp).
 - Implemented conditional operator `a ? b : c` in expression parser.
 - Improved function `ifElse`, is now specified for special data types too.
 - Minor bug fixes.
@@ -14,7 +16,7 @@ https://github.com/josdejong/mathjs
 ## 2014-03-30, version 0.19.0
 
 - Implemented functions `compare`, `sum`, `prod`, `var`, `std`, `median`.
-- Implemented function `ifElse` (thanks @mtraynham).
+- Implemented function `ifElse` Thanks @mtraynham.
 - Minor bug fixes.
 
 
