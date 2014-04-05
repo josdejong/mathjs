@@ -10,6 +10,7 @@ https://github.com/josdejong/mathjs
   Thanks Finn Pauls (@finnp).
 - Implemented conditional operator `a ? b : c` in expression parser.
 - Improved function `ifElse`, is now specified for special data types too.
+- Implemented `BigNumber` support for function `det`.
 - Minor bug fixes.
 
 

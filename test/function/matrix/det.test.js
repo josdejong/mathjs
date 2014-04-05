@@ -78,6 +78,23 @@ describe('det', function() {
     assert.equal(c2.re, 2);
   });
 
+  it('should calculate correctly the determinant of a matrix with bignumbers', function() {
+    var bignumber = math.bignumber;
+    assert.deepEqual(math.det([bignumber(5)]), bignumber(5));
+    assert.deepEqual(math.det([
+      [bignumber(1), bignumber(2)],
+      [bignumber(3), bignumber(4)]
+    ]), bignumber(-2));
+  });
+
+  it('should calculate the determinant of a matrix with mixed numbers and bignumbers', function() {
+    var bignumber = math.bignumber;
+    assert.deepEqual(math.det([
+      [1, bignumber(2)],
+      [bignumber(3), 4]
+    ]), bignumber(-2));
+  });
+
   it('should not change the value of the initial matrix', function() {
     var m_test = [[1,2,3],[4,5,6],[7,8,9]];
     math.det(m_test);
