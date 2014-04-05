@@ -85,6 +85,11 @@ describe('largereq', function() {
     assert.equal(largereq('abc', 'abd'), false);
   });
 
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(largereq('B', ['A', 'B', 'C']), [true, true, false]);
+    assert.deepEqual(largereq(['A', 'B', 'C'], 'B'), [false, true, true]);
+  });
+
   it('should perform element-wise comparison for two matrices of the same size', function() {
     assert.deepEqual(largereq([1,4,6], [3,4,5]), [false, true, true]);
     assert.deepEqual(largereq([1,4,6], matrix([3,4,5])), matrix([false, true, true]));

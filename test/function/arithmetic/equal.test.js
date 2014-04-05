@@ -101,6 +101,11 @@ describe('equal', function() {
     assert.equal(equal('hello', 'hello'), true);
   });
 
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(equal('B', ['A', 'B', 'C']), [false, true, false]);
+    assert.deepEqual(equal(['A', 'B', 'C'], 'B'), [false, true, false]);
+  });
+
   it('should compare two matrices correctly', function() {
     assert.deepEqual(equal([1,4,5], [3,4,5]), [false, true, true]);
     assert.deepEqual(equal([1,4,5], matrix([3,4,5])), matrix([false, true, true]));

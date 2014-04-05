@@ -11,6 +11,7 @@ https://github.com/josdejong/mathjs
 - Implemented conditional operator `a ? b : c` in expression parser.
 - Improved function `ifElse`, is now specified for special data types too.
 - Implemented `BigNumber` support for function `det`.
+- Fixed support for element-wise comparisons between a string and a matrix.
 - Minor bug fixes.
 
 

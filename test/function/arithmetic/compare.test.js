@@ -80,6 +80,11 @@ describe('compare', function() {
     assert.equal(compare('abc', 'abd'), -1);
   });
 
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(compare('B', ['A', 'B', 'C']), [1, 0, -1]);
+    assert.deepEqual(compare(['A', 'B', 'C'], 'B'), [-1, 0, 1]);
+  });
+
   it('should perform element-wise comparison for two matrices of same size', function() {
     assert.deepEqual(compare([1,4,6], [3,4,5]), [-1, 0, 1]);
     assert.deepEqual(compare([1,4,6], matrix([3,4,5])), matrix([-1, 0, 1]));

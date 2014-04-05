@@ -90,6 +90,11 @@ describe('smallereq', function() {
     assert.equal(smallereq('abc', 'abd'), true);
   });
 
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(smallereq('B', ['A', 'B', 'C']), [false, true, true]);
+    assert.deepEqual(smallereq(['A', 'B', 'C'], 'B'), [true, true, false]);
+  });
+
   it('should perform element-wise comparison on two matrices', function() {
     assert.deepEqual(smallereq([1,4,6], [3,4,5]), [true, true, false]);
     assert.deepEqual(smallereq([1,4,6], matrix([3,4,5])), matrix([true, true, false]));
