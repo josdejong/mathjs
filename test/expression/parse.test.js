@@ -4,7 +4,6 @@ var assert = require('assert'),
     mathjs = require('../../index'),
     parse = require('../../lib/expression/parse'),
     math = mathjs(),
-    BigNumber = math.type.BigNumber,
     Complex = math.type.Complex,
     Matrix = math.type.Matrix,
     Unit = math.type.Unit;
@@ -784,8 +783,10 @@ describe('parse', function() {
     var bigmath = mathjs({
       number: 'bignumber'
     });
+    var BigNumber = bigmath.type.BigNumber;
 
     it('should parse numbers as bignumber', function() {
+      assert.deepEqual(bigmath.bignumber('2.3'), new BigNumber('2.3'));
       assert.deepEqual(bigmath.eval('2.3'), new BigNumber('2.3'));
       assert.deepEqual(bigmath.eval('2.3e+500'), new BigNumber('2.3e+500'));
     });
