@@ -39,6 +39,15 @@ describe('complex', function() {
     assert.deepEqual(complex([2, 1, complex(2, 3)]), result);
   });
 
+  it('should accept polar coordinates as input', function() {
+    var polar = complex({r: 1, phi: 1});
+    assert.deepEqual(polar, new math.type.Complex.fromPolar(1, 1));
+  });
+
+  it('should accept an object with im and re as keys', function() {
+    assert.deepEqual(complex({re: 1, im: 2}), new math.type.Complex(1, 2));
+  });
+
   it('should throw an error if called with a string', function() {
     assert.throws(function () {complex('no valid complex number')}, SyntaxError);
   });
