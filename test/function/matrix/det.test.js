@@ -7,24 +7,24 @@ describe('det', function() {
     assert.equal(math.det([5]), 5);
     assert.equal(math.det([[1,2],[3,4]]), -2);
     assert.equal(math.det(math.matrix([[1,2],[3,4]])), -2);
-    assert.equal(math.det([
+    approx.equal(math.det([
       [-2, 2,  3],
       [-1, 1,  3],
       [ 2, 0, -1]
     ]), 6);
-    assert.equal(math.det([
+    approx.equal(math.det([
       [ 1, 4,  7],
       [ 3, 0,  5],
       [-1, 9, 11]
     ]), -8);
-    assert.equal(math.det([
+    approx.equal(math.det([
       [1,7,4,3,7], 
       [0,7,0,3,7], 
       [0,7,4,3,0], 
       [1,7,5,9,7], 
       [2,7,4,3,7]
     ]), -1176);
-    assert.equal(math.det(math.diag([4,-5,6])), -120);
+    approx.equal(math.det(math.diag([4,-5,6])), -120);
   });
 
   it('should return 1 for the identity matrix',function() {
