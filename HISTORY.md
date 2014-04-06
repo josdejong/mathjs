@@ -12,6 +12,7 @@ https://github.com/josdejong/mathjs
 - Implemented conditional operator `a ? b : c` in expression parser.
 - Improved function `ifElse`, is now specified for special data types too.
 - Implemented `BigNumber` support for functions `det` and `diag`.
+- Added unit alias `lbs` (pound mass).
 - Changed configuration option `decimals` to `precision` (applies to BigNumbers
   only).
 - Fixed support for element-wise comparisons between a string and a matrix.
