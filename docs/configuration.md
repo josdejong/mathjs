@@ -1,8 +1,8 @@
 # Configuration
 
-Math.js contains a number of configuration settings. Configuration can be set
+Math.js contains a number of configuration options. Configuration can be set
 when creating a math.js instance, or later on using the function `config`.
-Available configuration settings are:
+Available configuration options are:
 
 - `matrix`. The default type of matrix output for functions.
   Available values are: `'matrix'` (default) or `'array'`.
@@ -29,7 +29,7 @@ Available configuration settings are:
 This section shows a number of configuration examples.
 
 
-### Default settings
+### Default configuration
 
 ```js
 // load the library
@@ -48,11 +48,11 @@ math1.range(0, 4); // Matrix [0, 1, 2, 3]
 // load the library
 var mathjs = require('mathjs');
 
-// create an instance of math.js with configuration settings
-var settings = {
+// create an instance of math.js with configuration options
+var config = {
   matrix: 'array'
 };
-var math2 = mathjs(settings);
+var math2 = mathjs(config);
 
 // range will output an Array
 math2.range(0, 4); // Array [0, 1, 2, 3]

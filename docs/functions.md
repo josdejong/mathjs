@@ -139,7 +139,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 
 ## Utils
 
-- math.config(settings)
+- math.config(options)
 - math.clone(x)
 - math.forEach(x, callback)
 - math.format(value [, precision])
