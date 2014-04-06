@@ -32,6 +32,11 @@ describe('Complex', function () {
       assert.throws(function () { new Complex(true, 2); });
     });
 
+    it('should throw an error if called with wrong type of arguments', function() {
+      assert.throws(function () { new Complex(1, true); });
+      assert.throws(function () { new Complex({}); }, /Object with the re and im or r and phi properties expected/);
+    });
+
     it('should throw an error if called without new operator', function() {
       assert.throws(function () { Complex(3, -4); });
     });
@@ -237,6 +242,11 @@ describe('Complex', function () {
       assert.throws(function() { Complex.fromPolar(1, "1")});
       assert.throws(function() { Complex.fromPolar(1, true)});
       assert.throws(function() { Complex.fromPolar(1, {})});
+    });
+
+    it('should throw an error in case of wrong number of arguments', function() {
+      assert.throws(function() { Complex.fromPolar(1,2,3)}, /Wrong number of arguments/);
+      assert.throws(function() { Complex.fromPolar()}, /Wrong number of arguments/);
     });
   });
 
