@@ -33,7 +33,7 @@ the option `precision`.
 
 *Important:
 BigNumber is not supported by the following functions:
-exp, gcd, lcm, log, log10, xgcd,
+gcd, lcm, xgcd,
 arg,
 random,
 acos, asin, atan, atan2, cos, cot, csc, sec, sin, tan.
