@@ -1,5 +1,6 @@
 // test fix
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
     bignumber = math.bignumber,
@@ -67,8 +68,8 @@ describe('fix', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {fix()}, math.error.ArgumentsError);
-    assert.throws(function () {fix(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {fix()}, error.ArgumentsError);
+    assert.throws(function () {fix(1, 2)}, error.ArgumentsError);
   });
 
 });

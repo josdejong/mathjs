@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     unit = math.unit;
     Unit = require('../../../lib/type/Unit');
@@ -61,10 +62,10 @@ describe('unit', function() {
   });
 
   it('should throw an error if called with no argument', function() {
-    assert.throws(function () {unit()}, math.error.ArgumentsError);
+    assert.throws(function () {unit()}, error.ArgumentsError);
   });
 
   it('should throw an error if called with an invalid number of arguments', function() {  
-    assert.throws(function () {unit(1,2,3)}, math.error.ArgumentsError);
+    assert.throws(function () {unit(1,2,3)}, error.ArgumentsError);
   });
 });

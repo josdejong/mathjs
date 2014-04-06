@@ -1,6 +1,7 @@
 // test sqrt
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/util/error'),
     mathjs = require('../../../index'),
     math = mathjs();
     sqrt = math.sqrt,
@@ -59,8 +60,8 @@ describe('sqrt', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {sqrt()}, math.error.ArgumentsError);
-    assert.throws(function () {sqrt(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {sqrt()}, error.ArgumentsError);
+    assert.throws(function () {sqrt(1, 2)}, error.ArgumentsError);
   });
 
 });

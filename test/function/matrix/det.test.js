@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')();
 

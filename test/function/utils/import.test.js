@@ -1,5 +1,6 @@
 // test import
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     mathjs = require('../../../index'),
     approx = require('../../../tools/approx');
 
@@ -111,8 +112,8 @@ describe('import', function() {
   });
 
   it('should throw an error in case of wrong number of arguments', function () {
-    assert.throws (function () {math.import()}, math.error.ArgumentsError);
-    assert.throws (function () {math.import('', {}, 3)}, math.error.ArgumentsError);
+    assert.throws (function () {math.import()}, error.ArgumentsError);
+    assert.throws (function () {math.import('', {}, 3)}, error.ArgumentsError);
 
   });
 

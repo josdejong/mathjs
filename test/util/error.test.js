@@ -5,6 +5,28 @@ var assert = require('assert'),
 
 describe('error', function () {
 
+  describe('ArgumentsError', function () {
+
+    it('should construct an ArgumentsError without max', function () {
+      var err = new error.ArgumentsError('myfunction', 1, 2);
+      assert(err instanceof Error);
+      assert(err instanceof error.ArgumentsError);
+      assert.equal(err.toString(), 'ArgumentsError: Wrong number of arguments in function myfunction (1 provided, 2 expected)');
+    });
+
+    it('should construct an ArgumentsError with max', function () {
+      var err = new error.ArgumentsError('myfunction', 1, 2, 3);
+      assert(err instanceof Error);
+      assert(err instanceof error.ArgumentsError);
+      assert.equal(err.toString(), 'ArgumentsError: Wrong number of arguments in function myfunction (1 provided, 2-3 expected)');
+    });
+
+    it('should throw an error when operator new is missing', function () {
+      assert.throws(function () {error.ArgumentsError();}, SyntaxError);
+    });
+
+  });
+
   describe('DimensionError', function () {
 
     it('should construct a DimensionError with numbers', function () {

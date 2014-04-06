@@ -1,5 +1,6 @@
 // test format
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     mathjs = require('../../../index');
     math = mathjs();
 
@@ -81,8 +82,8 @@ describe('format', function() {
   });
 
   it('should throw an error on wrong number of arguments', function() {
-    assert.throws (function () {math.format()}, math.error.ArgumentsError);
-    assert.throws (function () {math.format(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws (function () {math.format()}, error.ArgumentsError);
+    assert.throws (function () {math.format(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

@@ -1,6 +1,7 @@
 // test mod
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     bignumber = math.bignumber,
     matrix = math.matrix,
@@ -36,8 +37,8 @@ describe('mod', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {mod(1)}, math.error.ArgumentsError);
-    assert.throws(function () {mod(1,2,3)}, math.error.ArgumentsError);
+    assert.throws(function () {mod(1)}, error.ArgumentsError);
+    assert.throws(function () {mod(1,2,3)}, error.ArgumentsError);
   });
 
   it('should throw an error if used with wrong type of arguments', function() {

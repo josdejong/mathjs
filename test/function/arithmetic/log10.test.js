@@ -1,6 +1,7 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/util/error'),
     mathjs = require('../../../index'),
     math = mathjs(),
     complex = math.complex,
@@ -44,8 +45,8 @@ describe('log10', function() {
   });
 
   it('should throw an error if used with a wrong number of arguments', function() {
-    assert.throws(function () {log10()}, math.error.ArgumentsError);
-    assert.throws(function () {log10(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {log10()}, error.ArgumentsError);
+    assert.throws(function () {log10(1, 2)}, error.ArgumentsError);
   });
 
   it('should return the log base 10 of a complex number', function() {

@@ -1,5 +1,6 @@
 // test transpose
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     transpose = math.transpose;
 
@@ -31,8 +32,8 @@ describe('transpose', function() {
   });
 
   it('should throw an error if called with an invalid number of arguments', function() {
-    assert.throws(function () {transpose()}, math.error.ArgumentsError);
-    assert.throws(function () {transpose([1,2],2)}, math.error.ArgumentsError);
+    assert.throws(function () {transpose()}, error.ArgumentsError);
+    assert.throws(function () {transpose([1,2],2)}, error.ArgumentsError);
   });
 });
 

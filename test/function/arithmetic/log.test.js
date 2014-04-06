@@ -1,6 +1,7 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/util/error'),
     mathjs = require('../../../index'),
     math = mathjs(),
     complex = math.complex,
@@ -34,8 +35,8 @@ describe('log', function() {
   });
 
   it('should throw an error if invalid number of arguments', function() {
-    assert.throws(function () {log()}, math.error.ArgumentsError);
-    assert.throws(function () {log(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {log()}, error.ArgumentsError);
+    assert.throws(function () {log(1, 2, 3)}, error.ArgumentsError);
   });
 
   it('should return the log of a bignumber', function() {

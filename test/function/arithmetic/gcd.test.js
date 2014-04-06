@@ -1,5 +1,6 @@
 // test gcd
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     gcd = math.gcd;
 

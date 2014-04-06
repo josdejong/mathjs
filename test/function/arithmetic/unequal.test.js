@@ -1,5 +1,6 @@
 // test equal
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     bignumber = math.bignumber,
     complex = math.complex,
@@ -120,8 +121,8 @@ describe('unequal', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {unequal(1)}, math.error.ArgumentsError);
-    assert.throws(function () {unequal(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {unequal(1)}, error.ArgumentsError);
+    assert.throws(function () {unequal(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

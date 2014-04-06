@@ -1,5 +1,6 @@
 // test size
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     mathjs = require('../../../index'),
     math = mathjs(),
     size = math.size,
@@ -53,8 +54,8 @@ describe('size', function() {
   });
 
   it('should throw an error if called with an invalid number of arguments', function() {
-    assert.throws(function () {size()}, math.error.ArgumentsError);
-    assert.throws(function () {size(1,2)}, math.error.ArgumentsError);
+    assert.throws(function () {size()}, error.ArgumentsError);
+    assert.throws(function () {size(1,2)}, error.ArgumentsError);
   });
 
   it('should throw an error if called with invalid type of arguments', function() {

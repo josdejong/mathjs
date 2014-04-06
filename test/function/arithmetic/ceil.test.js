@@ -1,6 +1,7 @@
 // test ceil
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     bignumber = math.bignumber,
     complex = math.complex,
@@ -65,8 +66,8 @@ describe('ceil', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {ceil()}, math.error.ArgumentsError);
-    assert.throws(function () {ceil(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {ceil()}, error.ArgumentsError);
+    assert.throws(function () {ceil(1, 2)}, error.ArgumentsError);
   });
 
 });

@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     complex = math.complex;
 
@@ -75,6 +76,6 @@ describe('complex', function() {
   });
 
   it('should throw an error if called with more than 2 arguments', function() {
-    assert.throws(function () {complex(2,3,4)}, math.error.ArgumentsError);
+    assert.throws(function () {complex(2,3,4)}, error.ArgumentsError);
   });
 });

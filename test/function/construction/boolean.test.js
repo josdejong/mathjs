@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     bool = math['boolean'];
 
@@ -57,8 +58,8 @@ describe('boolean', function() {
   });
 
   it('should throw an error if there\'s a wrong number of arguments', function() {
-    assert.throws(function () {bool(1,2)}, math.error.ArgumentsError);
-    assert.throws(function () {bool(1,2,3)}, math.error.ArgumentsError);
+    assert.throws(function () {bool(1,2)}, error.ArgumentsError);
+    assert.throws(function () {bool(1,2,3)}, error.ArgumentsError);
   });
 
   it('should throw an error if used with a complex', function() {

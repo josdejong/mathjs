@@ -1,5 +1,6 @@
 // test format
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     ifElse = math.ifElse;
 

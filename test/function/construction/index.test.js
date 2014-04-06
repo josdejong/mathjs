@@ -1,5 +1,6 @@
 // test index construction
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')();
 
 describe('index', function() {

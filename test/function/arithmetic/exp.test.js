@@ -1,6 +1,7 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/util/error'),
     mathjs = require('../../../index'),
     math = mathjs(),
     complex = math.complex,
@@ -33,8 +34,8 @@ describe('exp', function() {
   });
 
   it('should throw an error if there\'s wrong number of arguments', function() {
-    assert.throws(function () {exp()}, math.error.ArgumentsError);
-    assert.throws(function () {exp(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {exp()}, error.ArgumentsError);
+    assert.throws(function () {exp(1, 2)}, error.ArgumentsError);
   });
 
   it('should exponentiate a complex number correctly', function() {

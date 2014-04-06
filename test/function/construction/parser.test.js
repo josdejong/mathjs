@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     Parser = require('../../../lib/expression/Parser'),
     math = require('../../../index')();
 

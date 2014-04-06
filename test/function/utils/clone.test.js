@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')();
 
 describe('clone', function() {
@@ -11,8 +12,8 @@ describe('clone', function() {
   });
 
   it('should throw an error on wrong number of arguments', function() {
-    assert.throws (function () {math.clone()}, math.error.ArgumentsError);
-    assert.throws (function () {math.clone(2, 4)}, math.error.ArgumentsError);
+    assert.throws (function () {math.clone()}, error.ArgumentsError);
+    assert.throws (function () {math.clone(2, 4)}, error.ArgumentsError);
   });
 
   it('should clone a bignumber', function() {

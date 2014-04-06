@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     mathjs = require('../../../index'),
     math = mathjs(),
     bignumber = math.bignumber,
@@ -71,7 +72,7 @@ describe('bignumber', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.bignumber(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {math.bignumber(1, 2)}, error.ArgumentsError);
   });
 
 });

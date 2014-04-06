@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     subset = math.subset,
     matrix = math.matrix,
@@ -122,9 +123,9 @@ describe('subset', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {subset()}, math.error.ArgumentsError);
-    assert.throws(function () {subset(d)}, math.error.ArgumentsError);
-    assert.throws(function () {subset(d, index(0,0), 1, 0, 5)}, math.error.ArgumentsError);
+    assert.throws(function () {subset()}, error.ArgumentsError);
+    assert.throws(function () {subset(d)}, error.ArgumentsError);
+    assert.throws(function () {subset(d, index(0,0), 1, 0, 5)}, error.ArgumentsError);
   });
 
   it('should throw an error in case of invalid type of arguments', function() {

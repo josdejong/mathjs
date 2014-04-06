@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     bignumber = math.bignumber;
 
@@ -100,8 +101,8 @@ describe('diag', function() {
   });
 
   it('should throw an error in case of wrong number of arguments', function() {
-    assert.throws(function () {math.diag()}, math.error.ArgumentsError);
-    assert.throws(function () {math.diag([], 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {math.diag()}, error.ArgumentsError);
+    assert.throws(function () {math.diag([], 2, 3)}, error.ArgumentsError);
   });
 
   it('should throw an error in case of invalid type of arguments', function() {

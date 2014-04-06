@@ -1,6 +1,7 @@
 // test largereq
 var assert = require('assert'),
     math = require('../../../index')(),
+    error = require('../../../lib/util/error'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -108,8 +109,8 @@ describe('largereq', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {largereq(1)}, math.error.ArgumentsError);
-    assert.throws(function () {largereq(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {largereq(1)}, error.ArgumentsError);
+    assert.throws(function () {largereq(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

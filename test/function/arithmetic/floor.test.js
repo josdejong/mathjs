@@ -1,6 +1,7 @@
 // test floor
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     bignumber = math.bignumber,
     complex = math.complex,
@@ -63,8 +64,8 @@ describe('floor', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {floor()}, math.error.ArgumentsError);
-    assert.throws(function () {floor(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {floor()}, error.ArgumentsError);
+    assert.throws(function () {floor(1, 2)}, error.ArgumentsError);
   });
 
 });
