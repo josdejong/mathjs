@@ -5,7 +5,7 @@
 var mathjs = require('../index'),
     math = mathjs({
       number: 'bignumber',  // Default type of number: 'number' (default) or 'bignumber'
-      decimals: 20          // number of decimal places behind the dot for BigNumbers
+      precision: 20         // Number of significant digits for BigNumbers
     });
 
 /**

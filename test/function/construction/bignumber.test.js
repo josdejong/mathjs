@@ -54,7 +54,7 @@ describe('bignumber', function() {
 
   it('should apply precision setting to bignumbers', function() {
     var math = mathjs({
-      decimals: 32
+      precision: 32
     });
 
     var a = math.bignumber(1).dividedBy(3);
@@ -62,7 +62,7 @@ describe('bignumber', function() {
 
     // restore default precision
     math.config({
-      decimals: 20
+      precision: 20
     });
   });
 

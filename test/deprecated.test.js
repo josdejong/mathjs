@@ -25,6 +25,14 @@ describe('deprecated stuff', function() {
     }, /is deprecated/);
   });
 
+  it ('should throw an error when using deprecated setting decimals', function () {
+    assert.throws(function () {
+      mathjs({
+        decimals: 100
+      })
+    }, /is deprecated/);
+  });
+
   it ('should throw an error when using deprecated setting matrix.defaultType', function () {
     assert.throws(function () {
       mathjs({

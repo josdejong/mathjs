@@ -20,9 +20,8 @@ Available configuration settings are:
   Available values are: `'number'` (default) or `'bignumber'`.
   BigNumbers have higher precision than the default numbers of JavaScript.
 
-- `decimals`. The maximum number of decimal places behind the decimal
-  point (not the number of significant digits). Only applies to BigNumbers,
-  not to numbers. Default value is 20.
+- `precision`. The maximum number of significant digits for bigNumbers.
+  This setting only applies to BigNumbers, not to numbers. Default value is 20.
 
 
 ## Examples
@@ -76,7 +75,7 @@ var mathjs = require('mathjs');
 // use BigNumbers by default
 var math3 = mathjs({
   number: 'bignumber',
-  decimals: 32
+  precision: 32
 });
 
 // parser will parse numbers as BigNumber now:

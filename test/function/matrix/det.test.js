@@ -85,6 +85,12 @@ describe('det', function() {
       [bignumber(1), bignumber(2)],
       [bignumber(3), bignumber(4)]
     ]), bignumber(-2));
+
+    // the following would fail with regular Numbers due to a precision overflow
+    assert.deepEqual(math.det([
+      [bignumber(1e10+1), bignumber(1e10)],
+      [bignumber(1e10), bignumber(1e10-1)]
+    ]), bignumber(-1));
   });
 
   it('should calculate the determinant of a matrix with mixed numbers and bignumbers', function() {

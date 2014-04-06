@@ -11,7 +11,7 @@ describe('factory', function() {
     assert.deepEqual(math.config(), {
       matrix: 'matrix',
       number: 'number',
-      decimals: 20
+      precision: 20
     });
   });
 
@@ -25,7 +25,7 @@ describe('factory', function() {
     assert.deepEqual(math.config(), {
       matrix: 'array',
       number: 'bignumber',
-      decimals: 20
+      precision: 20
     });
   });
 
@@ -51,19 +51,19 @@ describe('factory', function() {
     assert.deepEqual(config, {
       matrix: 'matrix',
       number: 'number',
-      decimals: 20
+      precision: 20
     });
 
     math.config({
       matrix: 'array',
       number: 'bignumber',
-      decimals: 32
+      precision: 32
     });
 
     assert.deepEqual(math.config(), {
       matrix: 'array',
       number: 'bignumber',
-      decimals: 32
+      precision: 32
     });
 
     // restore the original config

@@ -8,7 +8,7 @@ describe('bignumber', function() {
 
   it('should format a bignumber using toFixed', function() {
     var Big = BigNumber.constructor();
-    Big.config({decimals: 100});
+    Big.config({precision: 100});
 
     assert.equal(bignumber.toFixed(new Big(2.34)), '2');
     assert.equal(bignumber.toFixed(new Big(2.34), 1), '2.3');
@@ -20,7 +20,7 @@ describe('bignumber', function() {
 
   it('should format a bignumber using toExponential', function() {
     var Big = BigNumber.constructor();
-    Big.config({decimals: 100});
+    Big.config({precision: 100});
 
     assert.equal(bignumber.toExponential(new Big(2.34)), '2.34e+0');
     assert.equal(bignumber.toExponential(new Big(2.34e+3)), '2.34e+3');
