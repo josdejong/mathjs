@@ -1,10 +1,18 @@
 // test bignumber utils
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    BigNumber = require('decimal.js'), // FIXME: don't use the global BigNumber
+    BigNumber = require('decimal.js'),
     bignumber = require('../../lib/util/bignumber');
 
 describe('bignumber', function() {
+
+  it('should test whether an object is a BigNumber', function() {
+    assert.equal(bignumber.isBigNumber(new BigNumber(2.34)), true);
+
+    assert.equal(bignumber.isBigNumber(new Date()), false);
+    assert.equal(bignumber.isBigNumber({}), false);
+    assert.equal(bignumber.isBigNumber(123), false);
+  });
 
   it('should format a bignumber using toFixed', function() {
     var Big = BigNumber.constructor();
