@@ -79,7 +79,7 @@ describe('concat', function() {
 
   it('should throw an error in case of invalid requested dimension number', function() {
     assert.throws(function () {math.concat([1, 2], [3,4], 2.3)}, /Dimension number must be a positive integer/);
-    assert.throws(function () {math.concat([1, 2], [3,4], 1)}, /Dimension out of range/);
+    assert.throws(function () {math.concat([1, 2], [3,4], 1)}, /Dimension mismatch \(1 > 0\)/);
   });
 
   it('should throw an error in case dimension mismatch', function() {

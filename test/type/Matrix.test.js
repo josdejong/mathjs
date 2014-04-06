@@ -308,7 +308,7 @@ describe('matrix', function() {
     });
 
     it ('should throw an error in case of wrong size of submatrix', function () {
-      assert.throws(function () {new Matrix().subset(index(0), [2,3])}, /Dimension mismatch/)
+      assert.throws(function () {new Matrix().subset(index(0), [2,3])}, /Scalar expected/)
     });
 
     it('should throw an error in case of dimension mismatch', function() {
