@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    approx = require('../tools/approx'),
     mathjs = require('../index');
 
 describe('factory', function() {
@@ -10,7 +11,7 @@ describe('factory', function() {
     assert.deepEqual(math.config(), {
       matrix: 'matrix',
       number: 'number',
-      decimals: 20
+      precision: 20
     });
   });
 
@@ -24,7 +25,7 @@ describe('factory', function() {
     assert.deepEqual(math.config(), {
       matrix: 'array',
       number: 'bignumber',
-      decimals: 20
+      precision: 20
     });
   });
 
@@ -50,24 +51,40 @@ describe('factory', function() {
     assert.deepEqual(config, {
       matrix: 'matrix',
       number: 'number',
-      decimals: 20
+      precision: 20
     });
 
     math.config({
       matrix: 'array',
       number: 'bignumber',
-      decimals: 32
+      precision: 32
     });
 
     assert.deepEqual(math.config(), {
       matrix: 'array',
       number: 'bignumber',
-      decimals: 32
+      precision: 32
     });
 
     // restore the original config
     math.config(config);
   });
+
+
+  it('should convert a number into a bignumber (when possible)', function() {
+    var BigNumber = math.type.BigNumber;
+
+    assert.deepEqual(BigNumber.convert(2.34), new BigNumber(2.34));
+    assert.deepEqual(BigNumber.convert(0), new BigNumber(0));
+    assert.deepEqual(BigNumber.convert(2.3e-3), new BigNumber(2.3e-3));
+    assert.deepEqual(BigNumber.convert(2.3e+3), new BigNumber(2.3e+3));
+
+    // The following values can't represented as bignumber
+    approx.equal(BigNumber.convert(Math.PI), Math.PI);
+    approx.equal(BigNumber.convert(1/3), 1/3);
+  });
+
+  // TODO: test whether two instances of mathjs do not influence each others (BigNumber) settings
 
   it('should throw an error when ES5 is not supported', function() {
     var create = Object.create;

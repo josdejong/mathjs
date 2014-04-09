@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
     arg = math.arg;
@@ -60,8 +61,8 @@ describe('arg', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {arg()}, math.error.ArgumentsError);
-    assert.throws(function () {arg(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {arg()}, error.ArgumentsError);
+    assert.throws(function () {arg(1, 2)}, error.ArgumentsError);
   });
 
 });

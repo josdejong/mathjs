@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     permutations = math.permutations;
 

@@ -1,6 +1,7 @@
 // test larger
 var assert = require('assert'),
     math = require('../../../index')(),
+    error = require('../../../lib/util/error'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -83,6 +84,11 @@ describe('larger', function() {
     assert.equal(larger('abc', 'abd'), false);
   });
 
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(larger('B', ['A', 'B', 'C']), [true, false, false]);
+    assert.deepEqual(larger(['A', 'B', 'C'], 'B'), [false, false, true]);
+  });
+
   it('should perform element-wise comparison for two matrices of same size', function() {
     assert.deepEqual(larger([1,4,6], [3,4,5]), [false, false, true]);
     assert.deepEqual(larger([1,4,6], matrix([3,4,5])), matrix([false, false, true]));
@@ -101,8 +107,8 @@ describe('larger', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {larger(1)}, math.error.ArgumentsError);
-    assert.throws(function () {larger(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {larger(1)}, error.ArgumentsError);
+    assert.throws(function () {larger(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

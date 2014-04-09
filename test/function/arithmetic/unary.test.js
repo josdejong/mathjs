@@ -1,6 +1,7 @@
 // test unary minus
 var assert = require('assert'),
     math = require('../../../index')(),
+    error = require('../../../lib/util/error'),
     bignumber = math.bignumber;
 
 describe('unaryminus', function() {
@@ -46,8 +47,8 @@ describe('unaryminus', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.unary()}, math.error.ArgumentsError);
-    assert.throws(function () {math.unary(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {math.unary()}, error.ArgumentsError);
+    assert.throws(function () {math.unary(1, 2)}, error.ArgumentsError);
   });
 
 });

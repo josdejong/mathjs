@@ -139,11 +139,11 @@ math.add('hello ', 'world!');     // String  'hello world!'
 
 ## Utils
 
-- math.config(settings)
+- math.config(options)
 - math.clone(x)
 - math.forEach(x, callback)
 - math.format(value [, precision])
-- math.ifElse(conditionalExpr, trueExpr, falseExpr)
+- math.ifElse(condition, trueExpr, falseExpr)
 - math.import(filename | object, override)
 - math.map(x, callback)
 - math.print(template, values [, precision])

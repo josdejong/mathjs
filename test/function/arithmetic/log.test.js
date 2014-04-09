@@ -1,7 +1,9 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    error = require('../../../lib/util/error'),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
@@ -33,14 +35,19 @@ describe('log', function() {
   });
 
   it('should throw an error if invalid number of arguments', function() {
-    assert.throws(function () {log()}, math.error.ArgumentsError);
-    assert.throws(function () {log(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {log()}, error.ArgumentsError);
+    assert.throws(function () {log(1, 2, 3)}, error.ArgumentsError);
   });
 
   it('should return the log of a bignumber', function() {
-    approx.deepEqual(log(math.bignumber(2)), 0.693147180559945);
-    approx.deepEqual(log(math.bignumber(3)), 1.098612288668110);
+    var bigmath = mathjs({precision: 100});
 
+    assert.deepEqual(bigmath.log(bigmath.bignumber(1)), bigmath.bignumber('0'));
+    assert.deepEqual(bigmath.log(bigmath.bignumber(2)), bigmath.bignumber('0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875'));
+    assert.deepEqual(bigmath.log(bigmath.bignumber(3)), bigmath.bignumber('1.098612288668109691395245236922525704647490557822749451734694333637494293218608966873615754813732089'));
+
+    // note: the following gives a round-off error with regular numbers
+    assert.deepEqual(bigmath.log(bigmath.bignumber(1000), bigmath.bignumber(10)), bigmath.bignumber(3));
   });
 
   it('should return the log of a complex number', function() {

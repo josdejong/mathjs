@@ -25,6 +25,14 @@ describe('deprecated stuff', function() {
     }, /is deprecated/);
   });
 
+  it ('should throw an error when using deprecated setting decimals', function () {
+    assert.throws(function () {
+      mathjs({
+        decimals: 100
+      })
+    }, /is deprecated/);
+  });
+
   it ('should throw an error when using deprecated setting matrix.defaultType', function () {
     assert.throws(function () {
       mathjs({
@@ -64,18 +72,6 @@ describe('deprecated stuff', function() {
     assert.throws(function () {
       new math.parse('function f(x) = x^2');
     }, /Deprecated keyword "function"/);
-  });
-
-  it ('should throw an error when using deprecated notation "scientific in number.format"', function () {
-    assert.throws(function () {
-      new number.format(2.3, {notation: 'scientific'});
-    }, /Format notation "scientific" is deprecated/);
-  });
-
-  it ('should throw an error when using deprecated option "scientific in number.format"', function () {
-    assert.throws(function () {
-      new number.format(2.3, {notation: 'auto', scientific: 5});
-    }, /options.scientific is deprecated/);
   });
 
 });

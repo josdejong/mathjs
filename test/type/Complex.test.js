@@ -1,6 +1,7 @@
 // test data type Complex
 
 var assert = require('assert'),
+    Unit = require('../../lib/type/Unit'),
     Complex = require('../../lib/type/Complex');
 
 describe('Complex', function () {
@@ -31,8 +32,21 @@ describe('Complex', function () {
       assert.throws(function () { new Complex(true, 2); });
     });
 
+    it('should throw an error if called with wrong type of arguments', function() {
+      assert.throws(function () { new Complex(1, true); });
+      assert.throws(function () { new Complex({}); }, /Object with the re and im or r and phi properties expected/);
+    });
+
     it('should throw an error if called without new operator', function() {
       assert.throws(function () { Complex(3, -4); });
+    });
+
+    it('should accept an object with im and re as keys', function() {
+      assertComplex(new Complex({re: 1, im: 2}), 1, 2);
+    });
+
+    it('should accept an object with polar coordinates like fromPolar', function() {
+      assert.deepEqual(new Complex({r: 3, phi: 4}), Complex.fromPolar(3, 4));
     });
 
   });
@@ -182,4 +196,80 @@ describe('Complex', function () {
 
   });
 
+  describe('fromPolar', function() {
+    it('should save polar coordinates input correctly', function() {
+      var complex1 = Complex.fromPolar({r: 0, phi: 4});
+      var complex2 = Complex.fromPolar({r: 5, phi: 0});
+      var complex3 = Complex.fromPolar({r: 1, phi: Math.PI});
+      var complex4 = Complex.fromPolar({r: 3, phi: Math.PI / 2});
+      var complex5 = Complex.fromPolar({r: 3, phi: -Math.PI / 2});
+      assertComplex(complex1, 0, 0);
+      assertComplex(complex2, 5, 0);
+      assert.equal(complex3.re, -1);
+      assert.equal(complex4.im, 3);
+      assert.equal(complex5.im, -3);
+    });
+
+    it('should have the same value for the different import ways', function() {
+        var way1 = Complex.fromPolar(1, 1);
+        var way2 = Complex.fromPolar({r: 1, phi: 1});
+        assert(way1.equals(way2));
+    });
+
+    it('should accept angle units for phi properly', function() {
+      var fromDeg = Complex.fromPolar(1, new Unit(90, 'deg')),
+          fromRad = Complex.fromPolar(1, new Unit(0, 'rad')),
+          fromGrad = Complex.fromPolar(1, new Unit(100, 'grad'));
+      assert.equal(fromDeg.im, 1);
+      assert.equal(fromGrad.im, 1);
+      assert.equal(fromRad.im, 0);
+    });
+
+    it('should only accept an object with r and phi keys for 1 argument', function() {
+      assert.throws(function() { Complex.fromPolar({}) }, TypeError);
+      assert.throws(function() { Complex.fromPolar({r: 1}) }, TypeError);
+      assert.throws(function() { Complex.fromPolar({phi: 1}) }, TypeError);
+      assert.throws(function() { Complex.fromPolar("") }, TypeError);
+    });
+
+    it('should only accept a number as r', function() {
+      assert.throws(function() { Complex.fromPolar("1", 0); });
+      assert.throws(function() { Complex.fromPolar(true, 0); });
+      assert.throws(function() { Complex.fromPolar({}, 0); });
+    });
+
+    it('should only accept units and numbers as phi', function() {
+      assert.throws(function() { Complex.fromPolar(1, "1")});
+      assert.throws(function() { Complex.fromPolar(1, true)});
+      assert.throws(function() { Complex.fromPolar(1, {})});
+    });
+
+    it('should throw an error in case of wrong number of arguments', function() {
+      assert.throws(function() { Complex.fromPolar(1,2,3)}, /Wrong number of arguments/);
+      assert.throws(function() { Complex.fromPolar()}, /Wrong number of arguments/);
+    });
+  });
+
+  describe('toPolar', function() {
+    it('should return polar coordinates properly', function() {
+      var polar0 = (new Complex(0, 0)).toPolar();
+      var polar1 = (new Complex(3, 4)).toPolar();
+      var polar2 = (new Complex(-3, 4)).toPolar();
+      var polar3 = (new Complex(3, -4)).toPolar();
+      var polar4 = (new Complex(-3, -4)).toPolar();
+      var polar5 = (new Complex(0, -1)).toPolar();
+      assert.equal(polar0.r, 0);
+      assert.equal(polar1.r, 5);
+      assert.equal(polar2.r, 5);
+      assert.equal(polar3.r, 5);
+      assert.equal(polar4.r, 5);
+      assert.equal(polar5.r, 1);
+      assert.equal(polar0.phi, 0);
+      assert.equal(polar1.phi, 0.9272952180016122);
+      assert.equal(polar2.phi, 2.214297435588181);
+      assert.equal(polar3.phi, -0.9272952180016122);
+      assert.equal(polar4.phi, -2.214297435588181);
+      assert.equal(polar5.phi, -1.5707963267948966);
+    });
+  });
 });

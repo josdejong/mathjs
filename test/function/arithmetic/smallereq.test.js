@@ -1,6 +1,7 @@
 // test smaller
 var assert = require('assert'),
     math = require('../../../index')(),
+    error = require('../../../lib/util/error'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -90,6 +91,11 @@ describe('smallereq', function() {
     assert.equal(smallereq('abc', 'abd'), true);
   });
 
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(smallereq('B', ['A', 'B', 'C']), [false, true, true]);
+    assert.deepEqual(smallereq(['A', 'B', 'C'], 'B'), [true, true, false]);
+  });
+
   it('should perform element-wise comparison on two matrices', function() {
     assert.deepEqual(smallereq([1,4,6], [3,4,5]), [true, true, false]);
     assert.deepEqual(smallereq([1,4,6], matrix([3,4,5])), matrix([true, true, false]));
@@ -108,8 +114,8 @@ describe('smallereq', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {smallereq(1)}, math.error.ArgumentsError);
-    assert.throws(function () {smallereq(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {smallereq(1)}, error.ArgumentsError);
+    assert.throws(function () {smallereq(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

@@ -4,7 +4,6 @@ var assert = require('assert'),
     math = require('../../../index')(),
     bigmath = require('../../../index')({number: 'bignumber'}),
     Complex = require('../../../lib/type/Complex'),
-    BigNumber = require('bignumber.js'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode');
@@ -56,7 +55,7 @@ describe('ConstantNode', function() {
 
   it ('should compile a ConstantNode with bigmath', function () {
     var expr = new ConstantNode('number', '2.3').compile(bigmath);
-    assert.deepEqual(expr.eval(), new BigNumber(2.3));
+    assert.deepEqual(expr.eval(), new bigmath.type.BigNumber(2.3));
   });
 
   it ('should find a ConstantNode', function () {

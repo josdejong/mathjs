@@ -1,6 +1,7 @@
 // test inv
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     inv = math.inv;
 
@@ -74,8 +75,8 @@ describe('inv', function() {
   });
 
   it('should throw an error in case of wrong number of arguments', function() {
-    assert.throws(function () {inv()}, math.error.ArgumentsError);
-    assert.throws(function () {inv([], [])}, math.error.ArgumentsError);
+    assert.throws(function () {inv()}, error.ArgumentsError);
+    assert.throws(function () {inv([], [])}, error.ArgumentsError);
   });
 
   it('should throw an error in case of invalid type of arguments', function() {

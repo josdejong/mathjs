@@ -73,8 +73,11 @@ select the new version and press the button.
 
 Publish at cdnjs:
 
+*Auto update should be enabled since v0.19.0, if so, no need to publish at cdnjs
+manually.*
+
 - clone the cdnjs project
-- pull changes: `git pull upstream`
+- pull changes: `git pull upstream master`
 - add the new version of the library under /ajax/libs/mathjs/
   - add new folder /x.y.z/ with the new library
   - update the version number in package.json

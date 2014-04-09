@@ -1,5 +1,6 @@
 // test resize
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     Matrix = math.type.Matrix;
 

@@ -128,9 +128,9 @@ describe('UpdateNode', function() {
     var scope = {
       a: [[0, 0], [0, 0]]
     };
-    assert.deepEqual(expr.eval(scope), [[0, 0], [math.bignumber(5), 0]]);
+    assert.deepEqual(expr.eval(scope), [[0, 0], [bigmath.bignumber(5), 0]]);
     assert.deepEqual(scope, {
-      a: [[0, 0], [math.bignumber(5), 0]]
+      a: [[0, 0], [bigmath.bignumber(5), 0]]
     });
   });
 

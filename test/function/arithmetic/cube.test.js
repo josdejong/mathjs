@@ -1,6 +1,7 @@
 // test cube
 var assert = require('assert'),
     math = require('../../../index')(),
+    error = require('../../../lib/util/error'),
     unit = math.unit,
     bignumber = math.bignumber,
     matrix = math.matrix,
@@ -40,8 +41,8 @@ describe('cube', function() {
   });
 
   it('should throw an error if there\'s wrong number of args', function() {
-    assert.throws(function () {cube()}, math.error.ArgumentsError);
-    assert.throws(function () {cube(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {cube()}, error.ArgumentsError);
+    assert.throws(function () {cube(1, 2)}, error.ArgumentsError);
   });
 
   it('should cube each element in a matrix, array or range', function() {

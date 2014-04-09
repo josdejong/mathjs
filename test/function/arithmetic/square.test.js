@@ -1,6 +1,7 @@
 // test square
 var assert = require('assert'),
     math = require('../../../index')(),
+    error = require('../../../lib/util/error'),
     unit = math.unit,
     bignumber = math.bignumber,
     matrix = math.matrix,
@@ -26,8 +27,8 @@ describe('square', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {square()}, math.error.ArgumentsError);
-    assert.throws(function () {square(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {square()}, error.ArgumentsError);
+    assert.throws(function () {square(1, 2)}, error.ArgumentsError);
   });
 
   it('should return the square of a complex number', function() {

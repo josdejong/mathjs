@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')();
 
 describe('re', function() {
@@ -32,8 +33,8 @@ describe('re', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.re()}, math.error.ArgumentsError);
-    assert.throws(function () {math.re(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {math.re()}, error.ArgumentsError);
+    assert.throws(function () {math.re(1, 2)}, error.ArgumentsError);
   });
 
 });

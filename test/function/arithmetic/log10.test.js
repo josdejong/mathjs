@@ -1,7 +1,9 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    error = require('../../../lib/util/error'),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
@@ -32,14 +34,19 @@ describe('log10', function() {
   });
 
   it('should return the log of a bignumber', function() {
-    approx.deepEqual(log10(math.bignumber(2)), 0.301029995663981);
-    approx.deepEqual(log10(math.bignumber(3)), 0.477121254719662);
+    var bigmath = mathjs({precision: 100});
 
+    assert.deepEqual(bigmath.log10(bigmath.bignumber(1)), bigmath.bignumber(0));
+    assert.deepEqual(bigmath.log10(bigmath.bignumber(10)), bigmath.bignumber(1));
+    assert.deepEqual(bigmath.log10(bigmath.bignumber(100)), bigmath.bignumber(2));
+    assert.deepEqual(bigmath.log10(bigmath.bignumber(1000)), bigmath.bignumber(3)); // note: this gives a round-off error with regular numbers
+    assert.deepEqual(bigmath.log10(bigmath.bignumber(10000)), bigmath.bignumber(4));
+    assert.deepEqual(bigmath.log10(bigmath.bignumber('1e500')), bigmath.bignumber(500));
   });
 
   it('should throw an error if used with a wrong number of arguments', function() {
-    assert.throws(function () {log10()}, math.error.ArgumentsError);
-    assert.throws(function () {log10(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {log10()}, error.ArgumentsError);
+    assert.throws(function () {log10(1, 2)}, error.ArgumentsError);
   });
 
   it('should return the log base 10 of a complex number', function() {

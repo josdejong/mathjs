@@ -23,7 +23,7 @@ and a reference describing all available functions in detail.
 - [Chained Operations](chained_operations.md)
 - [Data Types](datatypes/index.md)
   - [Numbers](datatypes/numbers.md)
-  - [Big Numbers](datatypes/bignumbers.md)
+  - [BigNumbers](datatypes/bignumbers.md)
   - [Complex Numbers](datatypes/complex_numbers.md)
   - [Matrices](datatypes/matrices.md)
   - [Units](datatypes/units.md)

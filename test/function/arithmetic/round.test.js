@@ -1,6 +1,7 @@
 // test round
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/util/error'),
     math = require('../../../index')(),
     bignumber = math.bignumber,
     round = math.round;
@@ -38,8 +39,8 @@ describe('round', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {round();}, math.error.ArgumentsError);
-    assert.throws(function () {round(1,2,3);}, math.error.ArgumentsError);
+    assert.throws(function () {round();}, error.ArgumentsError);
+    assert.throws(function () {round(1,2,3);}, error.ArgumentsError);
   });
 
   it('should round bignumbers', function() {
