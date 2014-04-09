@@ -11,6 +11,7 @@ https://github.com/josdejong/mathjs
 - Implemented BigNumber support for functions `exp`, `log`, and `log10`.
 - Implemented conditional operator `a ? b : c` in expression parser.
 - Improved function `ifElse`, is now specified for special data types too.
+- Improved function `det`. Thanks Bryan Cuccioli (@bcuccioli).
 - Implemented `BigNumber` support for functions `det` and `diag`.
 - Added unit alias `lbs` (pound mass).
 - Changed configuration option `decimals` to `precision` (applies to BigNumbers
