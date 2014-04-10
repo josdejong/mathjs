@@ -17,6 +17,22 @@ describe('equal', function() {
   });
 
   it('should compare two floating point numbers correctly', function() {
+	// NaN
+	assert.equal(equal(Number.NaN, Number.NaN), false);
+	// Infinity
+	assert.equal(equal(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), true);
+	assert.equal(equal(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), true);
+	assert.equal(equal(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), false);
+	assert.equal(equal(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), false);
+	assert.equal(equal(Number.POSITIVE_INFINITY, 2.0), false);
+	assert.equal(equal(2.0, Number.POSITIVE_INFINITY), false);
+	assert.equal(equal(Number.NEGATIVE_INFINITY, 2.0), false);
+	assert.equal(equal(2.0, Number.NEGATIVE_INFINITY), false);
+	assert.equal(equal(Number.NaN, Number.POSITIVE_INFINITY), false);
+	assert.equal(equal(Number.POSITIVE_INFINITY, Number.NaN), false);
+	assert.equal(equal(Number.NaN, Number.NEGATIVE_INFINITY), false);
+	assert.equal(equal(Number.NEGATIVE_INFINITY, Number.NaN), false);
+	// floating point numbers
     assert.equal(equal(0.3 - 0.2, 0.1), true);
   });
 
