@@ -16,6 +16,10 @@ describe('equal', function() {
     assert.equal(equal(-2, 2), false);
   });
 
+  it('should compare two floating point numbers correctly', function() {
+    assert.equal(equal(0.3 - 0.2, 0.1), true);
+  });
+
   it('should compare two booleans', function() {
     assert.equal(equal(true, true), true);
     assert.equal(equal(true, false), false);
