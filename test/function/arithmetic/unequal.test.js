@@ -16,6 +16,26 @@ describe('unequal', function() {
     assert.equal(unequal(-2, 2), true);
   });
 
+  it('should compare two floating point numbers correctly', function() {
+	// NaN
+	assert.equal(unequal(Number.NaN, Number.NaN), true);
+	// Infinity
+	assert.equal(unequal(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false);
+	assert.equal(unequal(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), false);
+	assert.equal(unequal(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), true);
+	assert.equal(unequal(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), true);
+	assert.equal(unequal(Number.POSITIVE_INFINITY, 2.0), true);
+	assert.equal(unequal(2.0, Number.POSITIVE_INFINITY), true);
+	assert.equal(unequal(Number.NEGATIVE_INFINITY, 2.0), true);
+	assert.equal(unequal(2.0, Number.NEGATIVE_INFINITY), true);
+	assert.equal(unequal(Number.NaN, Number.POSITIVE_INFINITY), true);
+	assert.equal(unequal(Number.POSITIVE_INFINITY, Number.NaN), true);
+	assert.equal(unequal(Number.NaN, Number.NEGATIVE_INFINITY), true);
+	assert.equal(unequal(Number.NEGATIVE_INFINITY, Number.NaN), true);
+	// floating point numbers
+    assert.equal(unequal(0.3 - 0.2, 0.1), false);
+  });
+  
   it('should compare two booleans', function() {
     assert.equal(unequal(true, true), false);
     assert.equal(unequal(true, false), true);
