@@ -20,6 +20,20 @@ describe('smallereq', function() {
     assert.equal(smallereq(-3, -2), true);
   });
 
+  it('should compare two floating point numbers correctly', function() {
+    // Infinity
+    assert.equal(smallereq(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), true);
+    assert.equal(smallereq(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), true);
+    assert.equal(smallereq(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), false);
+    assert.equal(smallereq(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), true);
+    assert.equal(smallereq(Number.POSITIVE_INFINITY, 2.0), false);
+    assert.equal(smallereq(2.0, Number.POSITIVE_INFINITY), true);
+    assert.equal(smallereq(Number.NEGATIVE_INFINITY, 2.0), true);
+    assert.equal(smallereq(2.0, Number.NEGATIVE_INFINITY), false);
+    // floating point numbers
+    assert.equal(smallereq(0.3 - 0.2, 0.1), true);
+  });
+
   it('should compare two booleans', function() {
     assert.equal(smallereq(true, true), true);
     assert.equal(smallereq(true, false), false);
