@@ -1,6 +1,6 @@
 // test import
 var assert = require('assert'),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     mathjs = require('../../../index'),
     approx = require('../../../tools/approx');
 

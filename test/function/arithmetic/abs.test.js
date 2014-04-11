@@ -1,6 +1,6 @@
 // test abs
 var assert = require('assert'),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error'),
     math = require('../../../index')();
 
 describe('abs', function () {

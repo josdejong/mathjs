@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     seed = require('seed-random'),
     _ = require('underscore'),
     math = require('../../../index')();

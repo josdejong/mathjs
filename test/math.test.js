@@ -70,14 +70,7 @@ describe('factory', function() {
     math.config(config);
   });
 
-
-  it('should contain error namespace', function() {
-    assert.equal (typeof math.error, 'object');
-    assert('ArgumentsError' in math.error);
-    assert('DimensionError' in math.error);
-    assert('IndexError' in math.error);
-    assert('UnsupportedTypeError' in math.error);
-  });
+  // TODO: test whether the namespace is correct: has functions like sin, constants like pi, objects like type and error.
 
   it('should convert a number into a bignumber (when possible)', function() {
     var BigNumber = math.type.BigNumber;
