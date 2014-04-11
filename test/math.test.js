@@ -71,6 +71,14 @@ describe('factory', function() {
   });
 
 
+  it('should contain error namespace', function() {
+    assert.equal (typeof math.error, 'object');
+    assert('ArgumentsError' in math.error);
+    assert('DimensionError' in math.error);
+    assert('IndexError' in math.error);
+    assert('UnsupportedTypeError' in math.error);
+  });
+
   it('should convert a number into a bignumber (when possible)', function() {
     var BigNumber = math.type.BigNumber;
 

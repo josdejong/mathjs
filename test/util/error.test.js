@@ -111,4 +111,47 @@ describe('error', function () {
 
   });
 
+  describe('UnsupportedTypeError', function () {
+
+    it('should construct an UnsupportedTypeError with no argument', function () {
+      var err = new error.UnsupportedTypeError();
+      assert(err instanceof Error);
+      assert(err instanceof error.UnsupportedTypeError);
+      assert.equal(err.toString(), 'UnsupportedTypeError: Unsupported type of argument');
+    });
+
+    it('should construct an UnsupportedTypeError with one argument', function () {
+      var err = new error.UnsupportedTypeError('myfunction');
+      assert(err instanceof Error);
+      assert(err instanceof error.UnsupportedTypeError);
+      assert.equal(err.toString(), 'UnsupportedTypeError: Unsupported type of argument in function myfunction');
+    });
+
+    it('should construct an UnsupportedTypeError with two arguments', function () {
+      var err = new error.UnsupportedTypeError('myfunction', 'number');
+      assert(err instanceof Error);
+      assert(err instanceof error.UnsupportedTypeError);
+      assert.equal(err.toString(), 'UnsupportedTypeError: Function myfunction(number) not supported');
+    });
+
+    it('should construct an UnsupportedTypeError with three arguments', function () {
+      var err = new error.UnsupportedTypeError('myfunction', 'number', 'string');
+      assert(err instanceof Error);
+      assert(err instanceof error.UnsupportedTypeError);
+      assert.equal(err.toString(), 'UnsupportedTypeError: Function myfunction(number, string) not supported');
+    });
+
+    it('should construct an UnsupportedTypeError with more than three arguments', function () {
+      var err = new error.UnsupportedTypeError('myfunction', 'number', 'string', 'date');
+      assert(err instanceof Error);
+      assert(err instanceof error.UnsupportedTypeError);
+      assert.equal(err.toString(), 'UnsupportedTypeError: Function myfunction(number, string, date) not supported');
+    });
+
+    it('should throw an error when operator new is missing', function () {
+      assert.throws(function () {error.UnsupportedTypeError();}, SyntaxError);
+    });
+
+  });
+
 });
