@@ -19,19 +19,19 @@ describe('larger', function() {
   });
 
   it('should compare two floating point numbers correctly', function() {
-	// Infinity
-	assert.equal(larger(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false);
-	assert.equal(larger(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), false);
-	assert.equal(larger(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), true);
-	assert.equal(larger(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), false);
-	assert.equal(larger(Number.POSITIVE_INFINITY, 2.0), true);
-	assert.equal(larger(2.0, Number.POSITIVE_INFINITY), false);
-	assert.equal(larger(Number.NEGATIVE_INFINITY, 2.0), false);
-	assert.equal(larger(2.0, Number.NEGATIVE_INFINITY), true);
-	// floating point numbers
+    // Infinity
+    assert.equal(larger(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false);
+    assert.equal(larger(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), false);
+    assert.equal(larger(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), true);
+    assert.equal(larger(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), false);
+    assert.equal(larger(Number.POSITIVE_INFINITY, 2.0), true);
+    assert.equal(larger(2.0, Number.POSITIVE_INFINITY), false);
+    assert.equal(larger(Number.NEGATIVE_INFINITY, 2.0), false);
+    assert.equal(larger(2.0, Number.NEGATIVE_INFINITY), true);
+    // floating point numbers
     assert.equal(larger(0.3 - 0.2, 0.1), false);
   });
-  
+
   it('should compare two booleans', function() {
     assert.equal(larger(true, true), false);
     assert.equal(larger(true, false), true);
