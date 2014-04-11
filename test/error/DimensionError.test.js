@@ -8,6 +8,9 @@ describe('DimensionError', function () {
     assert(err instanceof Error);
     assert(err instanceof RangeError);
     assert(err instanceof DimensionError);
+    assert.equal(err.actual, 3);
+    assert.equal(err.expected, 5);
+    assert.equal(err.relation, undefined);
     assert.equal(err.toString(), 'DimensionError: Dimension mismatch (3 != 5)');
   });
 
@@ -16,6 +19,9 @@ describe('DimensionError', function () {
     assert(err instanceof Error);
     assert(err instanceof RangeError);
     assert(err instanceof DimensionError);
+    assert.equal(err.actual, 3);
+    assert.equal(err.expected, 5);
+    assert.equal(err.relation, '<');
     assert.equal(err.toString(), 'DimensionError: Dimension mismatch (3 < 5)');
   });
 
@@ -24,6 +30,9 @@ describe('DimensionError', function () {
     assert(err instanceof Error);
     assert(err instanceof RangeError);
     assert(err instanceof DimensionError);
+    assert.deepEqual(err.actual, [2,3]);
+    assert.deepEqual(err.expected, [1,3]);
+    assert.equal(err.relation, undefined);
     assert.equal(err.toString(), 'DimensionError: Dimension mismatch ([2, 3] != [1, 3])');
   });
 
@@ -32,6 +41,9 @@ describe('DimensionError', function () {
     assert(err instanceof Error);
     assert(err instanceof RangeError);
     assert(err instanceof DimensionError);
+    assert.deepEqual(err.actual, [2,3]);
+    assert.deepEqual(err.expected, [1,3]);
+    assert.equal(err.relation, '<');
     assert.equal(err.toString(), 'DimensionError: Dimension mismatch ([2, 3] < [1, 3])');
   });
 

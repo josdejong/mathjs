@@ -8,6 +8,9 @@ describe('IndexError', function () {
     assert(err instanceof Error);
     assert(err instanceof RangeError);
     assert(err instanceof IndexError);
+    assert.equal(err.index, 5);
+    assert.equal(err.min, 0);
+    assert.equal(err.max, undefined);
     assert.equal(err.toString(), 'IndexError: Index out of range (5)');
   });
 
@@ -16,6 +19,9 @@ describe('IndexError', function () {
     assert(err instanceof Error);
     assert(err instanceof RangeError);
     assert(err instanceof IndexError);
+    assert.equal(err.index, -5);
+    assert.equal(err.min, 0);
+    assert.equal(err.max, undefined);
     assert.equal(err.toString(), 'IndexError: Index out of range (-5 < 0)');
   });
 
@@ -24,6 +30,9 @@ describe('IndexError', function () {
     assert(err instanceof Error);
     assert(err instanceof RangeError);
     assert(err instanceof IndexError);
+    assert.equal(err.index, 5);
+    assert.equal(err.min, 0);
+    assert.equal(err.max, 3);
     assert.equal(err.toString(), 'IndexError: Index out of range (5 > 2)');
   });
 
@@ -32,6 +41,9 @@ describe('IndexError', function () {
     assert(err instanceof Error);
     assert(err instanceof RangeError);
     assert(err instanceof IndexError);
+    assert.equal(err.index, 0);
+    assert.equal(err.min, 2);
+    assert.equal(err.max, 5);
     assert.equal(err.toString(), 'IndexError: Index out of range (0 < 2)');
   });
 
@@ -40,6 +52,9 @@ describe('IndexError', function () {
     assert(err instanceof Error);
     assert(err instanceof RangeError);
     assert(err instanceof IndexError);
+    assert.equal(err.index, 6);
+    assert.equal(err.min, 1);
+    assert.equal(err.max, 4);
     assert.equal(err.toString(), 'IndexError: Index out of range (6 > 3)');
   });
 

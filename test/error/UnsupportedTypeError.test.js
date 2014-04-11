@@ -7,6 +7,8 @@ describe('UnsupportedTypeError', function () {
     var err = new UnsupportedTypeError();
     assert(err instanceof Error);
     assert(err instanceof UnsupportedTypeError);
+    assert.equal(err.fn, undefined);
+    assert.deepEqual(err.types, []);
     assert.equal(err.toString(), 'UnsupportedTypeError: Unsupported type of argument');
   });
 
@@ -14,6 +16,8 @@ describe('UnsupportedTypeError', function () {
     var err = new UnsupportedTypeError('myfunction');
     assert(err instanceof Error);
     assert(err instanceof UnsupportedTypeError);
+    assert.equal(err.fn, 'myfunction');
+    assert.deepEqual(err.types, []);
     assert.equal(err.toString(), 'UnsupportedTypeError: Unsupported type of argument in function myfunction');
   });
 
@@ -21,6 +25,8 @@ describe('UnsupportedTypeError', function () {
     var err = new UnsupportedTypeError('myfunction', 'number');
     assert(err instanceof Error);
     assert(err instanceof UnsupportedTypeError);
+    assert.equal(err.fn, 'myfunction');
+    assert.deepEqual(err.types, ['number']);
     assert.equal(err.toString(), 'UnsupportedTypeError: Function myfunction(number) not supported');
   });
 
@@ -28,6 +34,8 @@ describe('UnsupportedTypeError', function () {
     var err = new UnsupportedTypeError('myfunction', 'number', 'string');
     assert(err instanceof Error);
     assert(err instanceof UnsupportedTypeError);
+    assert.equal(err.fn, 'myfunction');
+    assert.deepEqual(err.types, ['number', 'string']);
     assert.equal(err.toString(), 'UnsupportedTypeError: Function myfunction(number, string) not supported');
   });
 
@@ -35,6 +43,8 @@ describe('UnsupportedTypeError', function () {
     var err = new UnsupportedTypeError('myfunction', 'number', 'string', 'date');
     assert(err instanceof Error);
     assert(err instanceof UnsupportedTypeError);
+    assert.equal(err.fn, 'myfunction');
+    assert.deepEqual(err.types, ['number', 'string', 'date']);
     assert.equal(err.toString(), 'UnsupportedTypeError: Function myfunction(number, string, date) not supported');
   });
 
