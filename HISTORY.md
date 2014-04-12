@@ -17,6 +17,8 @@ https://github.com/josdejong/mathjs
 - Changed configuration option `decimals` to `precision` (applies to BigNumbers
   only).
 - Fixed support for element-wise comparisons between a string and a matrix.
+- Fixed: expression parser now trows IndexErrors with one-based indices instead
+  of zero-based.
 - Minor bug fixes.
 
 

@@ -906,6 +906,18 @@ describe('parse', function() {
 
   });
 
+  describe('errors', function () {
+
+    it('should return IndexErrors with one based indices', function () {
+      // functions throw a zero-based error
+      assert.throws(function () {math.subset([1,2,3], math.index(4))}, /Index out of range \(4 > 2\)/);
+      assert.throws(function () {math.subset([1,2,3], math.index(-2))}, /Index out of range \(-2 < 0\)/);
+
+      // evaluation via parser throws one-based error
+      assert.throws(function () {math.eval('[1,2,3][4]')}, /Index out of range \(4 > 3\)/);
+      assert.throws(function () {math.eval('[1,2,3][-2]')}, /Index out of range \(-2 < 1\)/);
+    })
+  });
 
   describe('node tree', function () {
 
