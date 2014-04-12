@@ -21,9 +21,9 @@ describe('norm', function () {
   });
   
   it('should return the absolute value of a big number', function () {
-    // assert.equal(math.norm(math.bignumber(-2.3)), math.bignumber(2.3));
-    // assert.deepEqual(math.norm(math.bignumber('5e500')), math.bignumber('5e500'));
-    // assert.deepEqual(math.norm(math.bignumber('-5e500')), math.bignumber('5e500'));
+    assert.deepEqual(math.norm(math.bignumber(-2.3)), math.bignumber(2.3));
+    assert.deepEqual(math.norm(math.bignumber('5e500')), math.bignumber('5e500'));
+    assert.deepEqual(math.norm(math.bignumber('-5e500')), math.bignumber('5e500'));
   });
 
   it('should return the norm of a complex number', function () {
@@ -31,16 +31,36 @@ describe('norm', function () {
   });
 
   it('should return the norm of a vector', function () {
-    // p = 0
+    // empty vector
     assert.equal(math.norm([]), 0.0);
+    assert.equal(math.norm(math.matrix([])), 0.0);
     // p = Infinity
     assert.equal(math.norm([1, 2, -3], Number.POSITIVE_INFINITY), 3);
+    assert.equal(math.norm(math.matrix([1, 2, -3]), Number.POSITIVE_INFINITY), 3);
     // p - positive
     assert.equal(math.norm([3, 4], 2), 5.0);
+    assert.equal(math.norm(math.matrix([3, 4]), 2), 5.0);
     // p - negative
     assert.equal(math.norm([3, 4], -2), 2.4);
+    assert.equal(math.norm(math.matrix([3, 4]), -2), 2.4);
+    // missing p (defaults to 2)
+    assert.equal(math.norm([3, 4], 2), 5.0);
+    assert.equal(math.norm(math.matrix([3, 4]), 2), 5.0);
   });
 
+  it('should return the norm of a matrix', function () {
+    // p = 1
+    assert.equal(math.norm([[1, 2], [3, 4]], 1), 6);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]]), 1), 6);
+    // p = Infinity
+    assert.equal(math.norm([[1, 2], [3, 4]], Number.POSITIVE_INFINITY), 7);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]]), Number.POSITIVE_INFINITY), 7);
+	// p - not implemented yet!
+	assert.throws(function() {
+		math.norm(math.norm([[1, 2], [3, 4]], 2), 6);
+	});
+  });
+  
   it('should throw an error in case of invalid number of arguments', function() {
     // assert.throws(function () {math.norm()}, error.ArgumentsError);
     // assert.throws(function () {math.norm(1, 2, 3)}, error.ArgumentsError);
