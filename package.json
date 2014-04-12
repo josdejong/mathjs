@@ -39,7 +39,7 @@
     "unit"
   ],
   "dependencies": {
-    "decimal.js": "^1.0.0"
+    "decimal.js": "^2.0.1"
   },
   "devDependencies": {
     "webpack": "latest",
