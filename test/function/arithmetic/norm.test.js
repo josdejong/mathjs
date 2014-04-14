@@ -44,7 +44,7 @@ describe('norm', function () {
     assert.equal(math.norm([3, 4], -2), 2.4);
     assert.equal(math.norm(math.matrix([3, 4]), -2), 2.4);
     // missing p (defaults to 2)
-    assert.equal(math.norm([3, 4], 2), 5.0);
+    assert.equal(math.norm([3, 4]), 5.0);
     assert.equal(math.norm(math.matrix([3, 4]), 2), 5.0);
   });
 
@@ -62,8 +62,8 @@ describe('norm', function () {
   });
   
   it('should throw an error in case of invalid number of arguments', function() {
-    // assert.throws(function () {math.norm()}, error.ArgumentsError);
-    // assert.throws(function () {math.norm(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {math.norm()}, error.ArgumentsError);
+    assert.throws(function () {math.norm(1, 2, 3)}, error.ArgumentsError);
   });
 
   it('should throw an error with a string', function () {
