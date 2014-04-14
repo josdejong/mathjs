@@ -1,7 +1,7 @@
 // test norm
 var assert = require('assert'),
-    error = require('../../../lib/util/error'),
-    math = require('../../../index')();
+  error = require('../../../lib/util/error'),
+  math = require('../../../index')();
 
 describe('norm', function () {
   
@@ -75,7 +75,7 @@ describe('norm', function () {
     assert.equal(math.norm(math.matrix([[1, 2], [-3, -4]]), 'fro'), math.sqrt(30));
 	// p - not implemented yet!
 	assert.throws(function() {
-		math.norm(math.norm([[1, 2], [3, 4]], 2), 6);
+	  math.norm(math.norm([[1, 2], [3, 4]], 2), 6);
 	});
   });
   
