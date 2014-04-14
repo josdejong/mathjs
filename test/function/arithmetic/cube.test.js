@@ -1,7 +1,7 @@
 // test cube
 var assert = require('assert'),
     math = require('../../../index')(),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     unit = math.unit,
     bignumber = math.bignumber,
     matrix = math.matrix,

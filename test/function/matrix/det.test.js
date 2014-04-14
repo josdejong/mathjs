@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')();
 
@@ -81,11 +81,22 @@ describe('det', function() {
 
   it('should calculate correctly the determinant of a matrix with bignumbers', function() {
     var bignumber = math.bignumber;
+
+    // 1x1
     assert.deepEqual(math.det([bignumber(5)]), bignumber(5));
+
+    // 2x2
     assert.deepEqual(math.det([
       [bignumber(1), bignumber(2)],
       [bignumber(3), bignumber(4)]
     ]), bignumber(-2));
+
+    // 3x3
+    assert.deepEqual(math.det([
+      [bignumber(-2), bignumber(2), bignumber( 3)],
+      [bignumber(-1), bignumber(1), bignumber( 3)],
+      [bignumber( 2), bignumber(0), bignumber(-1)]
+    ]), bignumber(6));
 
     // the following would fail with regular Numbers due to a precision overflow
     assert.deepEqual(math.det([

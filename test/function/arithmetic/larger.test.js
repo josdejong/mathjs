@@ -1,7 +1,7 @@
 // test larger
 var assert = require('assert'),
     math = require('../../../index')(),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -17,6 +17,20 @@ describe('larger', function() {
     assert.equal(larger(-2, 2), false);
     assert.equal(larger(-2, -3), true);
     assert.equal(larger(-3, -2), false);
+  });
+
+  it('should compare two floating point numbers correctly', function() {
+    // Infinity
+    assert.equal(larger(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false);
+    assert.equal(larger(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), false);
+    assert.equal(larger(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), true);
+    assert.equal(larger(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), false);
+    assert.equal(larger(Number.POSITIVE_INFINITY, 2.0), true);
+    assert.equal(larger(2.0, Number.POSITIVE_INFINITY), false);
+    assert.equal(larger(Number.NEGATIVE_INFINITY, 2.0), false);
+    assert.equal(larger(2.0, Number.NEGATIVE_INFINITY), true);
+    // floating point numbers
+    assert.equal(larger(0.3 - 0.2, 0.1), false);
   });
 
   it('should compare two booleans', function() {

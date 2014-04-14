@@ -1,6 +1,6 @@
 // test xgcd
 var assert = require('assert'),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     gcd = math.gcd,
     xgcd = math.xgcd;
