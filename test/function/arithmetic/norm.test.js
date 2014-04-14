@@ -1,6 +1,6 @@
 // test norm
 var assert = require('assert'),
-  error = require('../../../lib/error'),
+  error = require('../../../lib/error/index'),
   math = require('../../../index')();
 
 describe('norm', function () {
@@ -73,10 +73,10 @@ describe('norm', function () {
     // p = 'fro'
     assert.equal(math.norm([[1, 2], [-3, -4]], 'fro'), math.sqrt(30));
     assert.equal(math.norm(math.matrix([[1, 2], [-3, -4]]), 'fro'), math.sqrt(30));
-	// p - not implemented yet!
-	assert.throws(function() {
-	  math.norm(math.norm([[1, 2], [3, 4]], 2), 6);
-	});
+    // p - not implemented yet!
+    assert.throws(function() {
+      math.norm(math.norm([[1, 2], [3, 4]], 2), 6);
+    });
   });
   
   it('should throw an error in case of invalid number of arguments', function() {
