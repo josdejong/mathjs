@@ -37,6 +37,16 @@ describe('norm', function () {
     // p = Infinity
     assert.equal(math.norm([1, 2, -3], Number.POSITIVE_INFINITY), 3);
     assert.equal(math.norm(math.matrix([1, 2, -3]), Number.POSITIVE_INFINITY), 3);
+    assert.equal(math.norm([1, 2, -3], 'inf'), 3);
+    assert.equal(math.norm(math.matrix([1, 2, -3]), 'inf'), 3);
+    // p = -Infinity
+    assert.equal(math.norm([1, 2, -3], Number.NEGATIVE_INFINITY), 1);
+    assert.equal(math.norm(math.matrix([1, 2, -3]), Number.NEGATIVE_INFINITY), 1);
+    assert.equal(math.norm([1, 2, -3], '-inf'), 1);
+    assert.equal(math.norm(math.matrix([1, 2, -3]), '-inf'), 1);
+    // p == 1
+    assert.equal(math.norm([-3, -4], 1), 7.0);
+    assert.equal(math.norm(math.matrix([-3, -4]), 1), 7.0);
     // p - positive
     assert.equal(math.norm([3, 4], 2), 5.0);
     assert.equal(math.norm(math.matrix([3, 4]), 2), 5.0);
@@ -45,7 +55,10 @@ describe('norm', function () {
     assert.equal(math.norm(math.matrix([3, 4]), -2), 2.4);
     // missing p (defaults to 2)
     assert.equal(math.norm([3, 4]), 5.0);
-    assert.equal(math.norm(math.matrix([3, 4]), 2), 5.0);
+    assert.equal(math.norm(math.matrix([3, 4])), 5.0);
+    // p == 'fro'
+    assert.equal(math.norm([3, 4], 'fro'), 5.0);
+    assert.equal(math.norm(math.matrix([3, 4]), 'fro'), 5.0);
   });
 
   it('should return the norm of a matrix', function () {
@@ -55,6 +68,11 @@ describe('norm', function () {
     // p = Infinity
     assert.equal(math.norm([[1, 2], [3, 4]], Number.POSITIVE_INFINITY), 7);
     assert.equal(math.norm(math.matrix([[1, 2], [3, 4]]), Number.POSITIVE_INFINITY), 7);
+    assert.equal(math.norm([[1, 2], [3, 4]], 'inf'), 7);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]]), 'inf'), 7);
+    // p = 'fro'
+    assert.equal(math.norm([[1, 2], [-3, -4]], 'fro'), math.sqrt(30));
+    assert.equal(math.norm(math.matrix([[1, 2], [-3, -4]]), 'fro'), math.sqrt(30));
 	// p - not implemented yet!
 	assert.throws(function() {
 		math.norm(math.norm([[1, 2], [3, 4]], 2), 6);
