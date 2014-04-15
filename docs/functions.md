@@ -44,6 +44,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.log10(x)
 - math.mod(x, y)
 - math.multiply(x, y)
+- math.norm(x [, p])
 - math.pow(x, y)
 - math.round(x [, n])
 - math.sign()
