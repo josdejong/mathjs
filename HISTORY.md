@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.20.0
+## 2014-04-16, version 0.20.0
 
 - Switched to module `decimal.js` for BigNumber support, instead of
   `bignumber.js`.
