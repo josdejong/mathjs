@@ -39,7 +39,7 @@
     "unit"
   ],
   "dependencies": {
-    "decimal.js": "^2.0.1"
+    "decimal.js": "~2.0.1"
   },
   "devDependencies": {
     "webpack": "latest",
@@ -51,7 +51,7 @@
     "seed-random": "latest",
     "gulp": "latest",
     "gulp-util": "latest",
-    "exec": "^0.1.0"
+    "exec": "latest"
   },
   "main": "./index",
   "scripts": {

@@ -10,6 +10,9 @@ https://github.com/josdejong/mathjs
   Thanks Finn Pauls (@finnp).
 - Implemented BigNumber support for functions `exp`, `log`, and `log10`.
 - Implemented conditional operator `a ? b : c` in expression parser.
+- Improved floating point comparison: the functions now check whether values
+  are nearly equal, against a configured maximum relative difference `epsilon`.
+  Thanks Rogelio J. Baucells (@rjbaucells).
 - Improved function `ifElse`, is now specified for special data types too.
 - Improved function `det`. Thanks Bryan Cuccioli (@bcuccioli).
 - Implemented `BigNumber` support for functions `det` and `diag`.

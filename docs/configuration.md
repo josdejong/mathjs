@@ -4,6 +4,10 @@ Math.js contains a number of configuration options. Configuration can be set
 when creating a math.js instance, or later on using the function `config`.
 Available configuration options are:
 
+- `epsilon`. The minimum relative difference used to test equality between two
+  compared values. This value is used by all comparison functions.
+  Default value is `1e-14`.
+
 - `matrix`. The default type of matrix output for functions.
   Available values are: `'matrix'` (default) or `'array'`.
   Where possible, the type of matrix output from functions is determined from
@@ -21,7 +25,8 @@ Available configuration options are:
   BigNumbers have higher precision than the default numbers of JavaScript.
 
 - `precision`. The maximum number of significant digits for bigNumbers.
-  This setting only applies to BigNumbers, not to numbers. Default value is 20.
+  This setting only applies to BigNumbers, not to numbers.
+  Default value is `20`.
 
 
 ## Examples

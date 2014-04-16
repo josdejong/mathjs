@@ -6,6 +6,8 @@ Math.js supports two types of numbers:
 - BigNumber for arbitrary precision arithmetic, describe on the page
   [BigNumbers](bignumbers.md).
 
+## Configuration
+
 Most functions can determine the type of output from the type of input:
 a number as input will return a number as output, a BigNumber as input returns
 a BigNumber as output. Functions which cannot determine the type of output
@@ -18,6 +20,8 @@ var mathjs = require('mathjs'),
       number: 'number' // Default type of number: 'number' (default) or 'bignumber'
     });
 ```
+
+## Round-off errors
 
 Math.js uses the built-in JavaScript Number type. A Number is a floating point
 number with a limited precision of 64 bits, about 16 digits. The largest integer
@@ -43,6 +47,8 @@ var ans = math.add(0.1, 0.2);       //  0.30000000000000004
 math.format(ans, {precision: 14});  // '0.3'
 ```
 
+## Minimum and maximum
+
 A Number can store values between `5e-324` and `1.7976931348623157e+308`.
 Values smaller than the minimum are stored as `0`, and values larger than the
 maximum are stored as `+/- Infinity`.
@@ -52,3 +58,43 @@ maximum are stored as `+/- Infinity`.
 console.log(1e309);   // Infinity
 console.log(1e-324);  // 0
 ```
+
+## Comparison
+
+Because of rounding errors in calculations, it is unsafe to compare JavaScript
+Numbers. For example executing `0.1 + 0.2 == 0.3` in JavaScript will return
+false, as the addition `0.1 + 0.2` introduces a round-off error and does not
+return exactly `0.3`.
+
+To solve this problem, the comparison functions of math.js check whether the
+relative difference between the compared values is smaller than the configured
+option `epsilon`. In pseudo code (without exceptions for 0, Infinity and NaN):
+
+    diff = abs(x - y)
+    nearlyEqual = (diff <= max(abs(x), abs(y)) * EPSILON) OR (diff < DBL_EPSILON)
+
+where:
+
+ - `EPSILON` is the relative difference between x and y. Epsilon is configurable
+   and is `1e-14` by default. See [Configuration](../configuration.md).
+ - `DBL_EPSILON` is the minimum positive floating point number such that
+   `1.0 + DBL_EPSILON != 1.0`. This is a constant with a value of approximately
+   `2.2204460492503130808472633361816e-16`;
+
+Note that the comparison functions cannot be used to compare small values
+(`< 2.22e-16`). These values are all considered equal to zero.
+
+Examples:
+
+```js
+// compare values having a round-off error
+console.log(0.1 + 0.2 == 0.3);            // false
+console.log(math.equal(0.1 + 0.2, 0.3));  // true
+
+// small values (< 2.22e-16) cannot be compared
+console.log(3e-20 == 3.1e-20);            // false
+console.log(math.equal(3e-20, 3.1e-20));  // true
+```
+
+The available comparison functions are: `compare`, `equal`, `larger`,
+`largereq`, `smaller`, `smallereq`, `unequal`.

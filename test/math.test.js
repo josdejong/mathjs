@@ -12,7 +12,7 @@ describe('factory', function() {
       matrix: 'matrix',
       number: 'number',
       precision: 20,
-      epsilon: 1e-6
+      epsilon: 1e-14
     });
   });
 
@@ -27,7 +27,7 @@ describe('factory', function() {
       matrix: 'array',
       number: 'bignumber',
       precision: 20,
-      epsilon: 1e-6
+      epsilon: 1e-14
     });
   });
 
@@ -54,7 +54,7 @@ describe('factory', function() {
       matrix: 'matrix',
       number: 'number',
       precision: 20,
-      epsilon: 1e-6
+      epsilon: 1e-14
     });
 
     math.config({
