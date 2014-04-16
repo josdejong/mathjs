@@ -1,8 +1,12 @@
 # Configuration
 
-Math.js contains a number of configuration settings. Configuration can be set
+Math.js contains a number of configuration options. Configuration can be set
 when creating a math.js instance, or later on using the function `config`.
-Available configuration settings are:
+Available configuration options are:
+
+- `epsilon`. The minimum relative difference used to test equality between two
+  compared values. This value is used by all comparison functions.
+  Default value is `1e-14`.
 
 - `matrix`. The default type of matrix output for functions.
   Available values are: `'matrix'` (default) or `'array'`.
@@ -16,18 +20,13 @@ Available configuration settings are:
   like `eval `which cannot determine the correct type of output from the
   functions input. For most functions though, the type of output is determined
   from the the input: a number as input will return a number as output,
-  a bignumber as input returns a bignumber as output.
+  a BigNumber as input returns a BigNumber as output.
   Available values are: `'number'` (default) or `'bignumber'`.
-  Big numbers have higher precision than the default numbers of JavaScript.
+  BigNumbers have higher precision than the default numbers of JavaScript.
 
-- `decimals`. The maximum number of decimal places behind the decimal
-  point (not the number of significant digits). Only applies to big numbers,
-  not to numbers. Default value is 20.
-
-  *Important: This setting is applied application wide to all BigNumbers.
-  Behind the scenes, this setting is applied as the global `DECIMAL_PLACES`
-  setting of the [bignumber.js](https://github.com/MikeMcl/bignumber.js)
-  library used by math.js.*
+- `precision`. The maximum number of significant digits for bigNumbers.
+  This setting only applies to BigNumbers, not to numbers.
+  Default value is `20`.
 
 
 ## Examples
@@ -35,7 +34,7 @@ Available configuration settings are:
 This section shows a number of configuration examples.
 
 
-### Default settings
+### Default configuration
 
 ```js
 // load the library
@@ -54,11 +53,11 @@ math1.range(0, 4); // Matrix [0, 1, 2, 3]
 // load the library
 var mathjs = require('mathjs');
 
-// create an instance of math.js with configuration settings
-var settings = {
+// create an instance of math.js with configuration options
+var config = {
   matrix: 'array'
 };
-var math2 = mathjs(settings);
+var math2 = mathjs(config);
 
 // range will output an Array
 math2.range(0, 4); // Array [0, 1, 2, 3]
@@ -72,16 +71,16 @@ math2.config({
 math2.range(0, 4); // Matrix [0, 1, 2, 3]
 ```
 
-### Configuration for big numbers
+### Configuration for BigNumbers
 
 ```js
 // load the library
 var mathjs = require('mathjs');
 
-// use big numbers by default
+// use BigNumbers by default
 var math3 = mathjs({
   number: 'bignumber',
-  decimals: 32
+  precision: 32
 });
 
 // parser will parse numbers as BigNumber now:

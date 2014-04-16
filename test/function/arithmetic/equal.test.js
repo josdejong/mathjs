@@ -1,6 +1,8 @@
 // test equal
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
+    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -103,6 +105,13 @@ describe('equal', function() {
     //assert.equal(equal(unit('2.54cm'), unit('1inch')), true); // round-off error :(
   });
 
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.equal(1, 0.991), false);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.equal(1, 0.991), true);
+  });
+
   it('should throw an error when comparing a unit with a big number', function() {
     assert.throws( function () {equal(math.unit('5 m'), bignumber(10)).toString() });
   });
@@ -121,6 +130,11 @@ describe('equal', function() {
     assert.equal(equal('hello', 'hello'), true);
   });
 
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(equal('B', ['A', 'B', 'C']), [false, true, false]);
+    assert.deepEqual(equal(['A', 'B', 'C'], 'B'), [false, true, false]);
+  });
+
   it('should compare two matrices correctly', function() {
     assert.deepEqual(equal([1,4,5], [3,4,5]), [false, true, true]);
     assert.deepEqual(equal([1,4,5], matrix([3,4,5])), matrix([false, true, true]));
@@ -131,8 +145,8 @@ describe('equal', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {equal(1)}, math.error.ArgumentsError);
-    assert.throws(function () {equal(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {equal(1)}, error.ArgumentsError);
+    assert.throws(function () {equal(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

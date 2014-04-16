@@ -1,5 +1,6 @@
 // test squeeze
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     squeeze = math.squeeze,
     size = math.size,
@@ -27,7 +28,7 @@ describe('squeeze', function() {
   });
 
   it('should throw an error if called with an invalid number of arguments', function() {
-    assert.throws(function () {squeeze()}, math.error.ArgumentsError);
-    assert.throws(function () {squeeze(1,2)}, math.error.ArgumentsError);
+    assert.throws(function () {squeeze()}, error.ArgumentsError);
+    assert.throws(function () {squeeze(1,2)}, error.ArgumentsError);
   });
 });

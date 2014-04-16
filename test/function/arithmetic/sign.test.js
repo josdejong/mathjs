@@ -1,6 +1,7 @@
 // test sign
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     bignumber = math.bignumber;
 
@@ -43,8 +44,8 @@ describe('sign', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.sign()}, math.error.ArgumentsError);
-    assert.throws(function () {math.sign(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {math.sign()}, error.ArgumentsError);
+    assert.throws(function () {math.sign(1, 2)}, error.ArgumentsError);
   });
 
 });

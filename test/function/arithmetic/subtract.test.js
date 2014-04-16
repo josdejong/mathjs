@@ -1,6 +1,7 @@
 // test subtract
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     bignumber = math.bignumber,
     subtract = math.subtract;
@@ -116,8 +117,8 @@ describe('subtract', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {subtract(1)}, math.error.ArgumentsError);
-    assert.throws(function () {subtract(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {subtract(1)}, error.ArgumentsError);
+    assert.throws(function () {subtract(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

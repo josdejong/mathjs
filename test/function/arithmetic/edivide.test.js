@@ -1,6 +1,7 @@
 // test edivide (element-wise divide)
-var assert = require('assert');
-math = require('../../../index')(),
+var assert = require('assert'),
+    math = require('../../../index')(),
+    error = require('../../../lib/error/index'),
     approx = require('../../../tools/approx'),
     edivide = math.edivide,
     complex = math.complex;

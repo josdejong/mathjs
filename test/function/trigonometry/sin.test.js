@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     approx = require('../../../tools/approx'),
     pi = math.pi,
@@ -67,8 +68,8 @@ describe('sin', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {sin()}, math.error.ArgumentsError);
-    assert.throws(function () {sin(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {sin()}, error.ArgumentsError);
+    assert.throws(function () {sin(1, 2)}, error.ArgumentsError);
   });
 
 });

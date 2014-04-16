@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     bignumber = math.bignumber;
 
@@ -79,12 +80,12 @@ describe('concat', function() {
 
   it('should throw an error in case of invalid requested dimension number', function() {
     assert.throws(function () {math.concat([1, 2], [3,4], 2.3)}, /Dimension number must be a positive integer/);
-    assert.throws(function () {math.concat([1, 2], [3,4], 1)}, /Dimension out of range/);
+    assert.throws(function () {math.concat([1, 2], [3,4], 1)}, /Dimension mismatch \(1 > 0\)/);
   });
 
   it('should throw an error in case dimension mismatch', function() {
     assert.throws(function () {math.concat([1, 2], [[1,2], [3,4]])}, RangeError);
-    assert.throws(function () {math.concat([[1, 2]], [[1,2], [3,4]])}, /Dimensions mismatch/);
+    assert.throws(function () {math.concat([[1, 2]], [[1,2], [3,4]])}, /Dimension mismatch/);
   });
 
   it('should throw an error in case of invalid type of argument', function() {

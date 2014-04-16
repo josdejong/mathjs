@@ -1,6 +1,8 @@
 // test format
 var assert = require('assert'),
-    math = require('../../../index')();
+    error = require('../../../lib/error/index'),
+    mathjs = require('../../../index');
+    math = mathjs();
 
 describe('format', function() {
 
@@ -60,9 +62,7 @@ describe('format', function() {
   });
 
   describe('bignumber', function () {
-    before (function () {
-      math.type.BigNumber.config(20); // ensure the precision is 20 digits, the default
-    });
+    var math = mathjs({precision: 20}); // ensure the precision is 20 digits, the default
 
     it('should format big numbers', function() {
       assert.equal(math.format(math.bignumber(2).dividedBy(7)), '0.28571428571428571429');
@@ -82,8 +82,8 @@ describe('format', function() {
   });
 
   it('should throw an error on wrong number of arguments', function() {
-    assert.throws (function () {math.format()}, math.error.ArgumentsError);
-    assert.throws (function () {math.format(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws (function () {math.format()}, error.ArgumentsError);
+    assert.throws (function () {math.format(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

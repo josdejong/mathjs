@@ -1,6 +1,8 @@
 // test compare
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
+    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -70,7 +72,7 @@ describe('compare', function() {
   it('should add two measures of the same unit', function() {
     assert.equal(compare(unit('100cm'), unit('10inch')), 1);
     assert.equal(compare(unit('99cm'), unit('1m')), -1);
-    //assert.equal(compare(unit('100cm'), unit('1m')), bignumber(0)); // dangerous, round-off errors
+    assert.equal(compare(unit('1m'), unit('1m')), bignumber(0));
     assert.equal(compare(unit('101cm'), unit('1m')), 1);
   });
 
@@ -94,9 +96,21 @@ describe('compare', function() {
     assert.equal(compare('abc', 'abd'), -1);
   });
 
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(compare('B', ['A', 'B', 'C']), [1, 0, -1]);
+    assert.deepEqual(compare(['A', 'B', 'C'], 'B'), [-1, 0, 1]);
+  });
+
   it('should perform element-wise comparison for two matrices of same size', function() {
     assert.deepEqual(compare([1,4,6], [3,4,5]), [-1, 0, 1]);
     assert.deepEqual(compare([1,4,6], matrix([3,4,5])), matrix([-1, 0, 1]));
+  });
+
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.compare(1, 0.991), 1);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.compare(1, 0.991), 0);
   });
 
   it('should throw an error when comparing complex numbers', function() {
@@ -112,8 +126,8 @@ describe('compare', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {compare(1)}, math.error.ArgumentsError);
-    assert.throws(function () {compare(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {compare(1)}, error.ArgumentsError);
+    assert.throws(function () {compare(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

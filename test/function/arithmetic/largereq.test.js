@@ -1,6 +1,8 @@
 // test largereq
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index')
+    math = mathjs(),
+    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -80,6 +82,13 @@ describe('largereq', function() {
     assert.equal(largereq(unit('101cm'), unit('1m')), true);
   });
 
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.largereq(1, 1.01), false);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.largereq(1, 1.01), true);
+  });
+
   it('should throw an error if comparing a unit with a number', function() {
     assert.throws(function () {largereq(unit('100cm'), 22)});
   });
@@ -97,6 +106,11 @@ describe('largereq', function() {
     assert.equal(largereq('abd', 'abc'), true);
     assert.equal(largereq('abc', 'abc'), true);
     assert.equal(largereq('abc', 'abd'), false);
+  });
+
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(largereq('B', ['A', 'B', 'C']), [true, true, false]);
+    assert.deepEqual(largereq(['A', 'B', 'C'], 'B'), [false, true, true]);
   });
 
   it('should perform element-wise comparison for two matrices of the same size', function() {
@@ -117,8 +131,8 @@ describe('largereq', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {largereq(1)}, math.error.ArgumentsError);
-    assert.throws(function () {largereq(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {largereq(1)}, error.ArgumentsError);
+    assert.throws(function () {largereq(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

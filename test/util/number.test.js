@@ -1,7 +1,6 @@
 // test number utils
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    BigNumber = require('bignumber.js'),
     number = require('../../lib/util/number');
 
 describe('number', function() {
@@ -55,12 +54,16 @@ describe('number', function() {
   });
 
   it('should count the number of significant digits of a number', function() {
-    assert.equal(number.digits(2.34), 3);
+    assert.equal(number.digits(0), 0);
     assert.equal(number.digits(2), 1);
-    assert.equal(number.digits(0), 1);
+    assert.equal(number.digits(1234), 4);
+    assert.equal(number.digits(2.34), 3);
+    assert.equal(number.digits(3000), 1);
     assert.equal(number.digits(0.0034), 2);
-    assert.equal(number.digits(3000.000), 1);
     assert.equal(number.digits(120.5e50), 4);
+    assert.equal(number.digits(1120.5e+50), 5);
+    assert.equal(number.digits(120.52e-50), 5);
+    assert.equal(number.digits(Math.PI), 16);
   });
 
   it('should format a number using toFixed', function() {
@@ -74,21 +77,6 @@ describe('number', function() {
     assert.equal(number.toFixed(2, 30), '2.00000000000000000000');
   });
 
-  it('should format a bignumber using toFixed', function() {
-    var DECIMAL_PLACES = BigNumber.config().DECIMAL_PLACES;
-    BigNumber.config(100);
-
-    assert.equal(number.toFixed(new BigNumber(2.34)), '2');
-    assert.equal(number.toFixed(new BigNumber(2.34), 1), '2.3');
-    assert.equal(number.toFixed(new BigNumber(2), 20), '2.00000000000000000000');
-    assert.equal(number.toFixed(new BigNumber(2), 21), '2.000000000000000000000');
-    assert.equal(number.toFixed(new BigNumber(2), 22), '2.0000000000000000000000');
-    assert.equal(number.toFixed(new BigNumber(2), 30), '2.000000000000000000000000000000');
-
-    // restore global bignumber configuration
-    BigNumber.config(DECIMAL_PLACES);
-  });
-
   it('should format a number using toExponential', function() {
     assert.equal(number.toExponential(2.34), '2.34e+0');
     assert.equal(number.toExponential(2.34e+3), '2.34e+3');
@@ -100,48 +88,9 @@ describe('number', function() {
     assert.equal(number.toExponential(2e+3, 30), '2.00000000000000000000e+3');
   });
 
-  it('should format a bignumber using toExponential', function() {
-    var DECIMAL_PLACES = BigNumber.config().DECIMAL_PLACES;
-    BigNumber.config(100);
-
-    assert.equal(number.toExponential(new BigNumber(2.34)), '2.34e+0');
-    assert.equal(number.toExponential(new BigNumber(2.34e+3)), '2.34e+3');
-    assert.equal(number.toExponential(new BigNumber(2.34e-3)), '2.34e-3');
-    assert.equal(number.toExponential(new BigNumber(2.34e+3), 2), '2.3e+3');
-    assert.equal(number.toExponential(new BigNumber(2e+3), 20), '2.0000000000000000000e+3');
-    assert.equal(number.toExponential(new BigNumber(2e+3), 21), '2.00000000000000000000e+3');
-    assert.equal(number.toExponential(new BigNumber(2e+3), 22), '2.000000000000000000000e+3');
-    assert.equal(number.toExponential(new BigNumber(2e+3), 30), '2.00000000000000000000000000000e+3');
-    assert.equal(number.toExponential(new BigNumber('2e+300'), 30), '2.00000000000000000000000000000e+300');
-    assert.equal(number.toExponential(new BigNumber('2e-300'), 30), '2.00000000000000000000000000000e-300');
-
-    // restore global bignumber configuration
-    BigNumber.config(DECIMAL_PLACES);
-  });
-
-  it('should convert a number into a bignumber (when possible)', function() {
-    assert.deepEqual(number.toBigNumber(2.34), new BigNumber(2.34));
-    assert.deepEqual(number.toBigNumber(0), new BigNumber(0));
-    assert.deepEqual(number.toBigNumber(2.3e-3), new BigNumber(2.3e-3));
-    assert.deepEqual(number.toBigNumber(2.3e+3), new BigNumber(2.3e+3));
-
-    approx.equal(number.toBigNumber(Math.PI), Math.PI);
-    approx.equal(number.toBigNumber(1/3), 1/3);
-  });
-
-  it('should convert a bignumber into a number', function () {
-    assert.deepEqual(number.toNumber(new BigNumber('2.34')), 2.34);
-    assert.deepEqual(number.toNumber(new BigNumber('0')), 0);
-    assert.deepEqual(number.toNumber(new BigNumber('2.3e-3')), 2.3e-3);
-    assert.deepEqual(number.toNumber(new BigNumber('2.3e+3')), 2.3e+3);
-
-    assert.deepEqual(number.toNumber(new BigNumber('2.3e+500')), Infinity);
-    assert.deepEqual(number.toNumber(new BigNumber('2.3e-500')), 0);
-  });
-
   describe('format', function () {
 
-    it ('should format special values Infinity, NaN', function () {
+    it('should format special values Infinity, NaN', function () {
       assert.equal(number.format(Infinity), 'Infinity');
       assert.equal(number.format(-Infinity), '-Infinity');
       assert.equal(number.format('no number'), 'NaN');
@@ -333,82 +282,89 @@ describe('number', function() {
       assert.equal(number.format(1.2e+6, asCurrency), '$1200000.00');
     });
 
-    describe('bignumber', function () {
-      before (function () {
-        BigNumber.config(20); // ensure the precision is 20 digits, the default
-      });
+  });
 
-      it('should format big numbers', function() {
-        assert.deepEqual(number.format(new BigNumber('2.3')), '2.3');
-        assert.deepEqual(number.format(new BigNumber('0.00000003')), '3e-8');
-        assert.deepEqual(number.format(new BigNumber('12345678')), '1.2345678e+7');
-      });
+  describe('nearlyEqual', function () {
 
-      it('should format big numbers with given precision', function() {
-        assert.deepEqual(number.format(new BigNumber('1.23456'), 3), '1.23');
-        assert.deepEqual(number.format(new BigNumber('12345678'), 4), '1.235e+7');
-      });
+    it('should test whether two numbers are nearly equal', function () {
+      var epsilon = 1e-2;
+      assert.equal(number.nearlyEqual(1, 0.9, epsilon), false);
+      assert.equal(number.nearlyEqual(1, 0.95, epsilon), false);
+      assert.equal(number.nearlyEqual(1, 0.98, epsilon), false);
+      assert.equal(number.nearlyEqual(1, 0.99, epsilon), false);
+      assert.equal(number.nearlyEqual(1, 0.991, epsilon), true);
+      assert.equal(number.nearlyEqual(1, 1.1, epsilon), false);
+      assert.equal(number.nearlyEqual(1, 1.05, epsilon), false);
+      assert.equal(number.nearlyEqual(1, 1.02, epsilon), false);
+      assert.equal(number.nearlyEqual(1, 1.01, epsilon), true);
+      assert.equal(number.nearlyEqual(1, 1, epsilon), true);
 
-      it('should format big numbers in exponential notation', function() {
-        var options = {
-          notation: 'exponential'
-        };
-        assert.deepEqual(number.format(new BigNumber('1.23456'), options), '1.23456e+0');
-        assert.deepEqual(number.format(new BigNumber('12345678'), options), '1.2345678e+7');
-        assert.deepEqual(number.format(new BigNumber('2.3e+30'), options), '2.3e+30');
-        assert.deepEqual(number.format(new BigNumber('0.23e+30'), options), '2.3e+29');
-        assert.deepEqual(number.format(new BigNumber('2.3e-30'), options), '2.3e-30');
-        assert.deepEqual(number.format(new BigNumber('0.23e-30'), options), '2.3e-31');
+      // smaller epsilon
+      var epsilon2 = 1e-4;
+      assert.equal(number.nearlyEqual(1, 0.99, epsilon2), false);
+      assert.equal(number.nearlyEqual(1, 0.999, epsilon2), false);
+      assert.equal(number.nearlyEqual(1, 0.9999, epsilon2), true);
 
-        options.precision = 18;
-        assert.deepEqual(number.format(new BigNumber(1).div(3), options), '3.33333333333333333e-1');
-      });
+      // test one of these famous round-off errors
+      assert.equal((0.1+0.2) == 0.3, false);
+      assert.equal(number.nearlyEqual(0.1+0.2, 0.3, 1e-14), true);
+    });
 
-      it.skip('sould format big numbers with custom precision, lower, and upper bound', function() {
-        var oldPrecision = BigNumber.config().DECIMAL_PLACES;
-        BigNumber.config({DECIMAL_PLACES: 100});
+    it('should test whether a positive and negative number are nearly equal', function () {
+      var epsilon = 1e-3;
+      assert.equal(number.nearlyEqual( 1.2,  1.2, epsilon), true);
+      assert.equal(number.nearlyEqual( 1.2, -1.2, epsilon), false);
+      assert.equal(number.nearlyEqual(-1.2,  1.2, epsilon), false);
+      assert.equal(number.nearlyEqual(-1.2, -1.2, epsilon), true);
+    });
 
-        var options = {
-          notation: 'auto',
-          precision : 50,
-          exponential: {
-            lower: 1e-50,
-            upper: 1e+50
-          }
-        };
+    it('should test whether two large numbers are nearly equal', function () {
+      var epsilon = 1e-2;
+      assert.equal(number.nearlyEqual(1e200, 0.90e200, epsilon), false);
+      assert.equal(number.nearlyEqual(1e200, 0.95e200, epsilon), false);
+      assert.equal(number.nearlyEqual(1e200, 0.98e200, epsilon), false);
+      assert.equal(number.nearlyEqual(1e200, 0.99e200, epsilon), true);
+    });
 
-        assert.deepEqual(number.format(new BigNumber(5).div(3), options), '1.6666666666666666666666666666666666666666666666667');
-        assert.deepEqual(number.format(new BigNumber(5e+40).div(3), options), '16666666666666666666666666666666666666666.666666667');
-        assert.deepEqual(number.format(new BigNumber(5e-40).div(3), options),
-            '0.00000000000000000000000000000000000000016666666666666666666666666666666666666666666666667');
-        assert.deepEqual(number.format(new BigNumber(5e+60).div(3), options), '1.6666666666666666666666666666666666666666666666667e+60');
-        assert.deepEqual(number.format(new BigNumber(5e-60).div(3), options), '1.6666666666666666666666666666666666666666666666667e-60');
-        assert.deepEqual(number.format(new BigNumber(5e-80).div(3), options), '1.6666666666666666666666666666666666666666666666667e-80');
+    it('should test whether two small numbers are nearly equal (always true)', function () {
+      var epsilon = 1e-2;
+      assert.equal(number.nearlyEqual(1e-200, 0.99e-200, epsilon), true);
+      assert.equal(number.nearlyEqual(1e-200, 10e-200, epsilon), true);
+    });
 
-        // restore old precision
-        BigNumber.config({DECIMAL_PLACES: oldPrecision});
-      });
+    it('should compare with zero', function () {
+      var epsilon = 1e-3;
+      assert.equal(number.nearlyEqual(0, 0, epsilon), true);
+      assert.equal(number.nearlyEqual(0, -0, epsilon), true);
+      assert.equal(number.nearlyEqual(0, 1.2, epsilon), false);
+      assert.equal(number.nearlyEqual(0, 1e30, epsilon), false);
+      assert.equal(number.nearlyEqual(0, 1e-30, epsilon), true);
+    });
 
-      it('should format big numbers in fixed notation', function() {
-        var options = {
-          notation: 'fixed'
-        };
+    it('should compare with Infinity', function () {
+      var epsilon = 1e-3;
 
-        assert.deepEqual(number.format(new BigNumber('1.23456'), options), '1');
-        assert.deepEqual(number.format(new BigNumber('1.7'), options), '2');
-        assert.deepEqual(number.format(new BigNumber('12345678'), options), '12345678');
-        assert.deepEqual(number.format(new BigNumber('12e18'), options), '12000000000000000000');
-        assert.deepEqual(number.format(new BigNumber('12e30'), options), '12000000000000000000000000000000');
+      assert.equal(number.nearlyEqual(1.2, Infinity, epsilon), false);
+      assert.equal(number.nearlyEqual(Infinity, 1.2, epsilon), false);
+      assert.equal(number.nearlyEqual(Infinity, Infinity, epsilon), true);
+      assert.equal(number.nearlyEqual(Infinity, -Infinity, epsilon), false);
+      assert.equal(number.nearlyEqual(-Infinity, Infinity, epsilon), false);
+      assert.equal(number.nearlyEqual(-Infinity, -Infinity, epsilon), true);
+    });
 
-        options = {
-          notation: 'fixed',
-          precision: 2
-        };
-        assert.deepEqual(number.format(new BigNumber('1.23456'), options), '1.23');
-        assert.deepEqual(number.format(new BigNumber('12345678'), options), '12345678.00');
-        assert.deepEqual(number.format(new BigNumber('12e18'), options), '12000000000000000000.00');
-        assert.deepEqual(number.format(new BigNumber('12e30'), options), '12000000000000000000000000000000.00');
-      });
+    it('should compare with NaN', function () {
+      var epsilon = 1e-3;
+      assert.equal(number.nearlyEqual(1.2, NaN, epsilon), false);
+      assert.equal(number.nearlyEqual(NaN, 1.2, epsilon), false);
+      assert.equal(number.nearlyEqual(NaN, NaN, epsilon), false);
+    });
+
+    it('should do exact comparison when epsilon is null or undefined', function () {
+      assert.equal(number.nearlyEqual(1.2, 1.2), true);
+      assert.equal(number.nearlyEqual(1.2, 1.2, null), true);
+
+      assert.equal(number.nearlyEqual(0.1 + 0.2, 0.3), false);
+      assert.equal(number.nearlyEqual(0.1 + 0.2, 0.3, null), false);
     });
 
   });

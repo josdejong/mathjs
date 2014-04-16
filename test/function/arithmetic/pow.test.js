@@ -1,6 +1,7 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     bignumber = math.bignumber,
     complex = math.complex,
@@ -59,8 +60,8 @@ describe('pow', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {pow(1)}, math.error.ArgumentsError);
-    assert.throws(function () {pow(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {pow(1)}, error.ArgumentsError);
+    assert.throws(function () {pow(1, 2, 3)}, error.ArgumentsError);
   });
 
   it('should exponentiate a complex number to the given power', function() {

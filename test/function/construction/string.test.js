@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     string = math.string;
 
@@ -48,7 +49,7 @@ describe('string', function() {
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
-    assert.throws(function () {string(1,2)}, math.error.ArgumentsError);
-    assert.throws(function () {string(1,2,3)}, math.error.ArgumentsError);
+    assert.throws(function () {string(1,2)}, error.ArgumentsError);
+    assert.throws(function () {string(1,2,3)}, error.ArgumentsError);
   });
 });

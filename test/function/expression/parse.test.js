@@ -1,5 +1,6 @@
 // test parse
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     Node = require('../../../lib/expression/node/Node');
 

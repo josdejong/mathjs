@@ -1,6 +1,8 @@
 // test smaller
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
+    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -82,6 +84,13 @@ describe('smaller', function() {
     assert.equal(smaller(unit('101cm'), unit('1m')), false);
   });
 
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.smaller(0.991, 1), true);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.smaller(0.991, 1), false);
+  });
+
   it('should throw an error if comparing a unit and a number', function() {
     assert.throws(function () {smaller(unit('100cm'), 22)});
   });
@@ -99,6 +108,11 @@ describe('smaller', function() {
     assert.equal(smaller('abd', 'abc'), false);
     assert.equal(smaller('abc', 'abc'), false);
     assert.equal(smaller('abc', 'abd'), true);
+  });
+
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(smaller('B', ['A', 'B', 'C']), [false, false, true]);
+    assert.deepEqual(smaller(['A', 'B', 'C'], 'B'), [true, false, false]);
   });
 
   it('should perform element-wise comparison on two matrices of same size', function() {
@@ -119,8 +133,8 @@ describe('smaller', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {smaller(1)}, math.error.ArgumentsError);
-    assert.throws(function () {smaller(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {smaller(1)}, error.ArgumentsError);
+    assert.throws(function () {smaller(1, 2, 3)}, error.ArgumentsError);
   });
 
 });

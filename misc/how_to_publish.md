@@ -71,16 +71,8 @@ component(1) uses GitHub as it's registry.
 Publish at http://jspkg.com: go to the website, select the github project,
 select the new version and press the button.
 
-Publish at cdnjs:
-
-- clone the cdnjs project
-- pull changes: `git pull upstream`
-- add the new version of the library under /ajax/libs/mathjs/
-  - add new folder /x.y.z/ with the new library
-  - update the version number in package.json
-- test the library by running `npm test`
-- then do a pull request with as title "[author] Update mathjs to x.y.z"
-  (with correct version).
+Publish at cdnjs: test after 30 to 60 minutes whether the new version is
+published at cdnjs (should auto update).
 
 
 ## Test published libraries

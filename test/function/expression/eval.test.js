@@ -1,6 +1,7 @@
 // test eval
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     Complex = math.type.Complex,
     Matrix = math.type.Matrix,
@@ -27,8 +28,8 @@ describe('eval', function() {
   });
 
   it('should throw an error if wrong number of arguments', function() {
-    assert.throws(function () {math.eval()},  math.error.ArgumentsError);
-    assert.throws(function () {math.eval(1,2,3)}, math.error.ArgumentsError);
+    assert.throws(function () {math.eval()},  error.ArgumentsError);
+    assert.throws(function () {math.eval(1,2,3)}, error.ArgumentsError);
   });
 
   it('should throw an error with a number', function() {

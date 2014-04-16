@@ -37,7 +37,7 @@ Or by downloading the latest version from
 
 Math.js can be used in node.js and in the browser. The library must be loaded
 and instantiated. When creating an instance, one can optionally provide
-configuration settings as described in
+configuration options as described in
 [Configuration](https://github.com/josdejong/mathjs/blob/master/docs/configuration.md).
 
 ### Node.js

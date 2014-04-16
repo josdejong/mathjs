@@ -1,7 +1,9 @@
 // test sqrt
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    error = require('../../../lib/error/index'),
+    mathjs = require('../../../index'),
+    math = mathjs();
     sqrt = math.sqrt,
     bignumber = math.bignumber;
 
@@ -29,6 +31,10 @@ describe('sqrt', function() {
     assert.deepEqual(sqrt(bignumber(9)), bignumber(3));
     assert.deepEqual(sqrt(bignumber(16)), bignumber(4));
     assert.deepEqual(sqrt(bignumber(25)), bignumber(5));
+
+    // validate whether we are really working at high precision
+    var bigmath = mathjs({precision: 100});
+    assert.deepEqual(bigmath.sqrt(bigmath.bignumber(2)), bigmath.bignumber('1.414213562373095048801688724209698078569671875376948073176679737990732478462107038850387534327641573'));
   });
 
   it('should return the square root of a complex number', function() {
@@ -54,8 +60,8 @@ describe('sqrt', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {sqrt()}, math.error.ArgumentsError);
-    assert.throws(function () {sqrt(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {sqrt()}, error.ArgumentsError);
+    assert.throws(function () {sqrt(1, 2)}, error.ArgumentsError);
   });
 
 });

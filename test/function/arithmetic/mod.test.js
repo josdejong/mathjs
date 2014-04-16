@@ -1,6 +1,7 @@
 // test mod
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     bignumber = math.bignumber,
     matrix = math.matrix,
@@ -20,6 +21,7 @@ describe('mod', function() {
     assert.equal(mod(0, 1), 0);
     assert.equal(mod(1, 0), 1);
     assert.equal(mod(0, 0), 0);
+    assert.equal(mod(7, 0), 7);
 
     approx.equal(mod(7, 2), 1);
     approx.equal(mod(9, 3), 0);
@@ -35,12 +37,19 @@ describe('mod', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {mod(1)}, math.error.ArgumentsError);
-    assert.throws(function () {mod(1,2,3)}, math.error.ArgumentsError);
+    assert.throws(function () {mod(1)}, error.ArgumentsError);
+    assert.throws(function () {mod(1,2,3)}, error.ArgumentsError);
+  });
+
+  it('should throw an error if used with wrong type of arguments', function() {
+    assert.throws(function () {mod(1, 'string')}, math.error.UnsupportedTypeError);
+    assert.throws(function () {mod('string', bignumber(2))}, math.error.UnsupportedTypeError);
   });
 
   it('should calculate the modulus of bignumbers', function() {
     assert.deepEqual(mod(bignumber(7), bignumber(2)), bignumber(1));
+    assert.deepEqual(mod(bignumber(7), bignumber(0)), bignumber(7));
+    assert.deepEqual(mod(bignumber(0), bignumber(3)), bignumber(0));
     assert.deepEqual(mod(bignumber(7), bignumber(2)), bignumber(1));
     assert.deepEqual(mod(bignumber(8), bignumber(3)).valueOf(), bignumber(2).valueOf());
   });
@@ -55,7 +64,11 @@ describe('mod', function() {
 
   it('should calculate the modulus of mixed numbers and bignumbers', function() {
     assert.deepEqual(mod(bignumber(7), 2), bignumber(1));
+    assert.deepEqual(mod(bignumber(7), 0), bignumber(7));
     assert.deepEqual(mod(8, bignumber(3)), bignumber(2));
+    assert.deepEqual(mod(7, bignumber(0)), bignumber(7));
+    assert.deepEqual(mod(bignumber(0), 3), bignumber(0));
+    assert.deepEqual(mod(bignumber(7), 0), bignumber(7));
 
     approx.equal(mod(7/3, bignumber(2)), 1/3);
     approx.equal(mod(7/3, 1/3), 0);
@@ -64,7 +77,9 @@ describe('mod', function() {
 
   it('should calculate the modulus of mixed booleans and bignumbers', function() {
     assert.deepEqual(mod(bignumber(7), true), bignumber(0));
+    assert.deepEqual(mod(bignumber(7), false), bignumber(7));
     assert.deepEqual(mod(true, bignumber(3)), bignumber(1));
+    assert.deepEqual(mod(false, bignumber(3)), bignumber(0));
   });
 
   it('should throw an error if used on complex numbers', function() {

@@ -1,5 +1,6 @@
 // test typeof
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     Index = require('../../../lib/type/Index'),
     Range = require('../../../lib/type/Range'),
     Matrix = require('../../../lib/type/Matrix'),

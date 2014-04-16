@@ -1,8 +1,9 @@
 var assert = require('assert'),
-    BigNumber = require('bignumber.js'),
+    error = require('../../../lib/error/index'),
     mathjs = require('../../../index'),
     math = mathjs(),
-    bignumber = math.bignumber;
+    bignumber = math.bignumber,
+    BigNumber = math.type.BigNumber;
 
 describe('bignumber', function() {
 
@@ -54,7 +55,7 @@ describe('bignumber', function() {
 
   it('should apply precision setting to bignumbers', function() {
     var math = mathjs({
-      decimals: 32
+      precision: 32
     });
 
     var a = math.bignumber(1).dividedBy(3);
@@ -62,7 +63,7 @@ describe('bignumber', function() {
 
     // restore default precision
     math.config({
-      decimals: 20
+      precision: 20
     });
   });
 
@@ -71,7 +72,7 @@ describe('bignumber', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.bignumber(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {math.bignumber(1, 2)}, error.ArgumentsError);
   });
 
 });

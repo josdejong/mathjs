@@ -1,5 +1,6 @@
 // test abs
 var assert = require('assert'),
+    error = require('../../../lib/error'),
     math = require('../../../index')();
 
 describe('abs', function () {
@@ -43,8 +44,8 @@ describe('abs', function () {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.abs()}, math.error.ArgumentsError);
-    assert.throws(function () {math.abs(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {math.abs()}, error.ArgumentsError);
+    assert.throws(function () {math.abs(1, 2)}, error.ArgumentsError);
   });
 
   it('should throw an error with a string', function () {

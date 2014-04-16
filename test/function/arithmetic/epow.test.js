@@ -1,6 +1,7 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     complex = math.complex,
     matrix = math.matrix,
@@ -38,8 +39,8 @@ describe('epow', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {epow(1)}, math.error.ArgumentsError);
-    assert.throws(function () {epow(1, 2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {epow(1)}, error.ArgumentsError);
+    assert.throws(function () {epow(1, 2, 3)}, error.ArgumentsError);
   });
 
   it('should elevate a complex number to the given power', function() {

@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     approx = require('../../../tools/approx'),
     pi = math.pi,
@@ -67,8 +68,8 @@ describe('cos', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {cos()}, math.error.ArgumentsError);
-    assert.throws(function () {cos(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {cos()}, error.ArgumentsError);
+    assert.throws(function () {cos(1, 2)}, error.ArgumentsError);
   });
 
 });

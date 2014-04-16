@@ -15,7 +15,7 @@ full name and an abbreviation. The returned object is a `Unit`.
 Syntax:
 
 ```js
-math.unit(value: number, plainUnit: string) : Unit
+math.unit(value: number, name: string) : Unit
 math.unit(unit: string) : Unit
 math.unit(unit: Unit) : Unit
 ```
@@ -35,10 +35,10 @@ A `Unit` contains the following functions:
   length, mass, etc.
 - `equals(unit)`. Test whether a unit equals an other unit. Units are equal
   when they have the same base and same value when normalized to SI units.
-- `to(plainUnit)`. Convert the unit to a specific prefix and unit. Returns
-  a clone of the unit with a fixed prefix and unit.
-- `toNumber(plainUnit)`. Get the value of a unit when converted to the specified
-  plain unit (a unit with optional prefix but without value).
+- `to(unitName)`. Convert the unit to a specific unit name. Returns a clone of
+  the unit with a fixed prefix and unit.
+- `toNumber(unitName)`. Get the value of a unit when converted to the
+  specified unit (a unit with optional prefix but without value).
 - `format([precision])`. Get a string representation of the unit. The function
   will determine the best fitting prefix for the unit. If precision is defined,
   the units value will be rounded to the provided number of digits.

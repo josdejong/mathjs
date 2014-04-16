@@ -1,5 +1,6 @@
 // test matrix construction
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     matrix = math.matrix;
 
@@ -42,7 +43,7 @@ describe('matrix', function() {
   });
 
   it('should throw an error if called with 2 numbers', function() {
-    assert.throws(function () {matrix(2, 3)}, math.error.ArgumentsError);
+    assert.throws(function () {matrix(2, 3)}, error.ArgumentsError);
   });
 
 });

@@ -1,7 +1,9 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    error = require('../../../lib/error/index'),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
@@ -25,13 +27,15 @@ describe('exp', function() {
     approx.equal(exp(math.log(100)), 100);
   });
 
-  it('should exponentiate a bignumber (downgrades to number)', function() {
-    approx.equal(exp(math.bignumber(1)), 2.71828182845905);
+  it('should exponentiate a bignumber', function() {
+    var bigmath = mathjs({precision: 100});
+
+    assert.deepEqual(bigmath.exp(bigmath.bignumber(1)), bigmath.bignumber('2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427'));
   });
 
   it('should throw an error if there\'s wrong number of arguments', function() {
-    assert.throws(function () {exp()}, math.error.ArgumentsError);
-    assert.throws(function () {exp(1, 2)}, math.error.ArgumentsError);
+    assert.throws(function () {exp()}, error.ArgumentsError);
+    assert.throws(function () {exp(1, 2)}, error.ArgumentsError);
   });
 
   it('should exponentiate a complex number correctly', function() {

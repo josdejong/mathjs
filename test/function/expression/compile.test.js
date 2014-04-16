@@ -1,5 +1,6 @@
 // test parse
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     Node = require('../../../lib/expression/node/Node');
 
@@ -22,8 +23,8 @@ describe('parse', function() {
   });
 
   it('should throw an error on wrong number of arguments', function() {
-    assert.throws(function () {math.compile()}, math.error.ArgumentsError);
-    assert.throws(function () {math.compile('2+3', '3+4')}, math.error.ArgumentsError);
+    assert.throws(function () {math.compile()}, error.ArgumentsError);
+    assert.throws(function () {math.compile('2+3', '3+4')}, error.ArgumentsError);
   });
 
   it('should throw an error on wrong type of argument', function() {

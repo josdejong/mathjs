@@ -4,7 +4,6 @@ var assert = require('assert'),
     mathjs = require('../../index'),
     parse = require('../../lib/expression/parse'),
     math = mathjs(),
-    BigNumber = math.type.BigNumber,
     Complex = math.type.Complex,
     Matrix = math.type.Matrix,
     Unit = math.type.Unit;
@@ -679,6 +678,21 @@ describe('parse', function() {
       assert.equal(parseAndEval('2 != 2'), false);
     });
 
+    it('should parse contitional expression a ? b : c', function() {
+      assert.equal(parseAndEval('2 ? true : false'), true);
+      assert.equal(parseAndEval('0 ? true : false'), false);
+      assert.equal(parseAndEval('false ? true : false'), false);
+
+      assert.equal(parseAndEval('2 > 0 ? 1 : 2 < 0 ? -1 : 0'), 1);
+      assert.equal(parseAndEval('(2 > 0 ? 1 : 2 < 0) ? -1 : 0'), -1);
+      assert.equal(parseAndEval('-2 > 0 ? 1 : -2 < 0 ? -1 : 0'), -1);
+      assert.equal(parseAndEval('0 > 0 ? 1 : 0 < 0 ? -1 : 0'), 0);
+    });
+
+    it('should throw an error when false part of contitional expression is missing', function() {
+      assert.throws(function() {parseAndEval('2 ? true')}, /False part of conditional expression expected/);
+    });
+
     it('should parse : (range)', function() {
       assert.ok(parseAndEval('2:5') instanceof Matrix);
       assert.deepEqual(parseAndEval('2:5'), new Matrix([2,3,4,5]));
@@ -737,6 +751,14 @@ describe('parse', function() {
       assert.equal(parseAndEval('-4!'), -24);
       assert.equal(parseAndEval('3!+2'), 8);
 
+      assert.equal(parseAndEval('2 > 3 ? true : false'), false);
+      assert.equal(parseAndEval('2 == 3 ? true : false'), false);
+      assert.equal(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6);
+      assert.deepEqual(parseAndEval('3 ? true : false; 22'), [22]);
+      assert.deepEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'));
+      assert.deepEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), new Matrix([1,2]));
+      assert.deepEqual(parseAndEval('false ? 1:2:6'), new Matrix([2,3,4,5,6]));
+
       // TODO: extensively test operator precedence
 
     });
@@ -761,8 +783,10 @@ describe('parse', function() {
     var bigmath = mathjs({
       number: 'bignumber'
     });
+    var BigNumber = bigmath.type.BigNumber;
 
     it('should parse numbers as bignumber', function() {
+      assert.deepEqual(bigmath.bignumber('2.3'), new BigNumber('2.3'));
       assert.deepEqual(bigmath.eval('2.3'), new BigNumber('2.3'));
       assert.deepEqual(bigmath.eval('2.3e+500'), new BigNumber('2.3e+500'));
     });
@@ -882,6 +906,18 @@ describe('parse', function() {
 
   });
 
+  describe('errors', function () {
+
+    it('should return IndexErrors with one based indices', function () {
+      // functions throw a zero-based error
+      assert.throws(function () {math.subset([1,2,3], math.index(4))}, /Index out of range \(4 > 2\)/);
+      assert.throws(function () {math.subset([1,2,3], math.index(-2))}, /Index out of range \(-2 < 0\)/);
+
+      // evaluation via parser throws one-based error
+      assert.throws(function () {math.eval('[1,2,3][4]')}, /Index out of range \(4 > 3\)/);
+      assert.throws(function () {math.eval('[1,2,3][-2]')}, /Index out of range \(-2 < 1\)/);
+    })
+  });
 
   describe('node tree', function () {
 

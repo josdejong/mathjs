@@ -1,5 +1,6 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
+    error = require('../../../lib/error/index'),
     mathjs = require('../../../index'),
     math = mathjs(),
     range = math.range,
@@ -80,6 +81,7 @@ describe('range', function() {
 
   it('should parse a range with bignumbers', function() {
     var bigmath = mathjs({number: 'bignumber'});
+    var bignumber = bigmath.bignumber;
     assert.deepEqual(bigmath.range('1:3'), matrix([bignumber(1),bignumber(2)]));
     assert.deepEqual(bigmath.range('3:-1:0'), matrix([bignumber(3),bignumber(2),bignumber(1)]));
   });
@@ -143,7 +145,7 @@ describe('range', function() {
   });
 
   it('should throw an error if called with an invalid number of arguments', function() {
-    assert.throws(function () {range()}, math.error.ArgumentsError);
-    assert.throws(function () {range(1,2,3,4,5)}, math.error.ArgumentsError);
+    assert.throws(function () {range()}, error.ArgumentsError);
+    assert.throws(function () {range(1,2,3,4,5)}, error.ArgumentsError);
   });
 });

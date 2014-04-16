@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     approx = require('../../../tools/approx'),
     number = math.number;
@@ -45,8 +46,8 @@ describe('number', function() {
   });
 
   it('should throw an error if called with a wrong number of arguments', function() {
-    assert.throws(function () {number(1,2)}, math.error.ArgumentsError);
-    assert.throws(function () {number(1,2,3)}, math.error.ArgumentsError);
+    assert.throws(function () {number(1,2)}, error.ArgumentsError);
+    assert.throws(function () {number(1,2,3)}, error.ArgumentsError);
   });
 
   it('should throw an error if called with a complex number', function() {

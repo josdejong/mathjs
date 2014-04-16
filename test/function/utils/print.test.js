@@ -1,5 +1,6 @@
 // test print
 var assert = require('assert'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')();
 
 describe('print', function() {
@@ -33,9 +34,9 @@ describe('print', function() {
   });
 
   it('should throw an error on wrong number of arguments', function() {
-    assert.throws (function () {math.print()}, math.error.ArgumentsError);
-    assert.throws (function () {math.print('')}, math.error.ArgumentsError);
-    assert.throws (function () {math.print('', {}, 6, 2)}, math.error.ArgumentsError);
+    assert.throws (function () {math.print()}, error.ArgumentsError);
+    assert.throws (function () {math.print('')}, error.ArgumentsError);
+    assert.throws (function () {math.print('', {}, 6, 2)}, error.ArgumentsError);
   });
 
   it('should throw an error on wrong type of arguments', function() {
