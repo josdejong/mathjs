@@ -14,9 +14,14 @@ signal analysis, fluid dynamics and other fields.
 ## API
 
 A complex number is created using the function `math.complex`. This function
-accepts two numbers representing the real and imaginary part of the value,
-or a single string containing a complex value in the form `a + bi` where `a`
-and `b` respectively represent the real and imaginary part of the complex number.
+accepts:
+
+- two numbers representing the real and imaginary part of the value,
+- a single string containing a complex value in the form `a + bi` where `a`
+  and `b` respectively represent the real and imaginary part of the complex number.
+- an object with either properties `re` and `im` for the real and imaginary
+  part of the value, or two properties `r` and `phi` containing the polar
+  coordinates of a complex value.
 The function returns a `Complex` object.
 
 Syntax:
@@ -25,6 +30,8 @@ Syntax:
 math.complex(re: number) : Complex
 math.complex(re: number, im: number) : Complex
 math.complex(complex: Complex) : Complex
+math.complex({re: Number, im: Number}) : Complex
+math.complex({r: number, phi: number}) : Complex
 math.complex(str: string) : Complex
 ```
 
@@ -53,7 +60,13 @@ A `Complex` object has the following functions:
 - `equals(other)`. Test whether a complex number equals an other complex value.
   Two complex numbers are equal when both their real and imaginary parts are
   equal.
-- `format([precision])`. Get a string representation of the complex number,
+- `fromPolar(r: number, phi: number)`. Create a complex number from polar
+  coordinates.
+- `fromPolar({r: number, phi: number})`. Create a complex number from polar
+  coordinates.
+- `toPolar()`. Get the polar coordinates of the complex number, returns
+  an object with properties `r` and `phi`.
+- `format([precision: number])`. Get a string representation of the complex number,
   formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
   If precision is defined, the units value will be rounded to the provided
   number of digits.

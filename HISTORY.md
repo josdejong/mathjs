@@ -13,6 +13,7 @@ https://github.com/josdejong/mathjs
 - Improved floating point comparison: the functions now check whether values
   are nearly equal, against a configured maximum relative difference `epsilon`.
   Thanks Rogelio J. Baucells (@rjbaucells).
+- Implemented function `norm`. Thanks Rogelio J. Baucells (@rjbaucells).
 - Improved function `ifElse`, is now specified for special data types too.
 - Improved function `det`. Thanks Bryan Cuccioli (@bcuccioli).
 - Implemented `BigNumber` support for functions `det` and `diag`.
