@@ -1,6 +1,7 @@
 // test compare
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
@@ -103,6 +104,13 @@ describe('compare', function() {
   it('should perform element-wise comparison for two matrices of same size', function() {
     assert.deepEqual(compare([1,4,6], [3,4,5]), [-1, 0, 1]);
     assert.deepEqual(compare([1,4,6], matrix([3,4,5])), matrix([-1, 0, 1]));
+  });
+
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.compare(1, 0.991), 1);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.compare(1, 0.991), 0);
   });
 
   it('should throw an error when comparing complex numbers', function() {

@@ -1,6 +1,7 @@
 // test larger
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
@@ -76,6 +77,13 @@ describe('larger', function() {
     assert.equal(larger(unit('99cm'), unit('1m')), false);
     //assert.equal(larger(unit('100cm'), unit('1m')), false); // dangerous, round-off errors
     assert.equal(larger(unit('101cm'), unit('1m')), true);
+  });
+
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.larger(1, 0.991), true);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.larger(1, 0.991), false);
   });
 
   it('should throw an error if comparing a unit with a number', function() {

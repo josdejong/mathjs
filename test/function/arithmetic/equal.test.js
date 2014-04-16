@@ -1,6 +1,7 @@
 // test equal
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
@@ -102,6 +103,13 @@ describe('equal', function() {
     assert.equal(equal(unit('100cm'), unit('1m')), true);
     //assert.equal(equal(unit('12inch'), unit('1foot')), true); // round-off error :(
     //assert.equal(equal(unit('2.54cm'), unit('1inch')), true); // round-off error :(
+  });
+
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.equal(1, 0.991), false);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.equal(1, 0.991), true);
   });
 
   it('should throw an error when comparing a unit with a big number', function() {
