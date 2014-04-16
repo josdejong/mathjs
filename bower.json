@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "0.20.0",
+  "version": "0.20.0-SNAPSHOT",
   "main": "./dist/math.js",
   "ignore": [
     "coverage",
@@ -12,7 +12,8 @@
     ".gitignore",
     ".npmignore",
     ".travis.yml",
-    "Jakefile.js",
+    "gulpfile.js",
+    "component.json",
     "package.json"
   ]
 }

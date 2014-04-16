@@ -6,7 +6,7 @@ test
 tools
 component.json
 bower.json
-Jakefile.js
+gulpfile.js
 .idea
 .npmignore
 .travis.yml
