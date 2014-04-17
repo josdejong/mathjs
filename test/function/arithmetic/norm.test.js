@@ -59,6 +59,9 @@ describe('norm', function () {
     // p == 'fro'
     assert.equal(math.norm([3, 4], 'fro'), 5.0);
     assert.equal(math.norm(math.matrix([3, 4]), 'fro'), 5.0);
+    // p == 0
+    assert.equal(math.norm([3, 4], 0), Number.POSITIVE_INFINITY);
+    assert.equal(math.norm(math.matrix([3, 4]), 0), Number.POSITIVE_INFINITY);
   });
 
   it('should return the norm of a matrix', function () {
