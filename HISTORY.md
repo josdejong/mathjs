@@ -2,6 +2,12 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.21.0
+
+- Implemented trigonometric hyperbolic functions `cosh`, `coth`, `csch`,
+  `sech`, `sinh`, `tanh`. Thanks Rogelio J. Baucells (@rjbaucells).
+
+
 ## 2014-04-16, version 0.20.0
 
 - Switched to module `decimal.js` for BigNumber support, instead of
