@@ -128,11 +128,17 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.atan(x)
 - math.atan2(y, x)
 - math.cos(x)
+- math.cosh(x)
 - math.cot(x)
+- math.coth(x)
 - math.csc(x)
+- math.csch(x)
 - math.sec(x)
+- math.sech(x)
 - math.sin(x)
+- math.sinh(x)
 - math.tan(x)
+- math.tanh(x)
 
 ## Units
 
