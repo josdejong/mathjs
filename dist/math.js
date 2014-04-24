@@ -6,7 +6,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.21.0
+ * @version 0.22.0-SNAPSHOT
  * @date    2014-04-24
  *
  * @license
@@ -188,7 +188,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  // create a new BigNumber factory for this instance of math.js
-	  var BigNumber = __webpack_require__(122).constructor();
+	  var BigNumber = __webpack_require__(118).constructor();
 
 	  // extend BigNumber with a function clone
 	  if (typeof BigNumber.prototype.clone !== 'function') {
@@ -571,10 +571,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports.ArgumentsError = __webpack_require__(118);
-	exports.DimensionError = __webpack_require__(119);
-	exports.IndexError = __webpack_require__(120);
-	exports.UnsupportedTypeError = __webpack_require__(121);
+	exports.ArgumentsError = __webpack_require__(119);
+	exports.DimensionError = __webpack_require__(120);
+	exports.IndexError = __webpack_require__(121);
+	exports.UnsupportedTypeError = __webpack_require__(122);
 
 	// TODO: implement an InvalidValueError?
 
@@ -1563,7 +1563,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var util = __webpack_require__(123),
-	    DimensionError = __webpack_require__(119),
+	    DimensionError = __webpack_require__(120),
 
 	    Index = __webpack_require__(7),
 
@@ -3046,7 +3046,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var util = __webpack_require__(123),
 
-	    DimensionError = __webpack_require__(119),
+	    DimensionError = __webpack_require__(120),
 
 	    Matrix = __webpack_require__(8),
 
@@ -13842,171 +13842,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Create a syntax error with the message:
-	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
-	 * @param {String} fn     Function name
-	 * @param {Number} count  Actual argument count
-	 * @param {Number} min    Minimum required argument count
-	 * @param {Number} [max]  Maximum required argument count
-	 * @extends Error
-	 */
-	function ArgumentsError(fn, count, min, max) {
-	  if (!(this instanceof ArgumentsError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.fn = fn;
-	  this.count = count;
-	  this.min = min;
-	  this.max = max;
-
-	  this.message = 'Wrong number of arguments in function ' + fn +
-	      ' (' + count + ' provided, ' +
-	      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	ArgumentsError.prototype = new Error();
-	ArgumentsError.prototype.constructor = Error;
-	ArgumentsError.prototype.name = 'ArgumentsError';
-
-	module.exports = ArgumentsError;
-
-
-/***/ },
-/* 119 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Create a range error with the message:
-	 *     'Dimension mismatch (<actual size> != <expected size>)'
-	 * @param {number | number[]} actual        The actual size
-	 * @param {number | number[]} expected      The expected size
-	 * @param {string} [relation='!=']          Optional relation between actual
-	 *                                          and expected size: '!=', '<', etc.
-	 * @extends RangeError
-	 */
-	function DimensionError(actual, expected, relation) {
-	  if (!(this instanceof DimensionError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.actual   = actual;
-	  this.expected = expected;
-	  this.relation = relation;
-
-	  this.message = 'Dimension mismatch (' +
-	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
-	      ' ' + (this.relation || '!=') + ' ' +
-	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
-	      ')';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	DimensionError.prototype = new RangeError();
-	DimensionError.prototype.constructor = RangeError;
-	DimensionError.prototype.name = 'DimensionError';
-
-	module.exports = DimensionError;
-
-
-/***/ },
-/* 120 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Create a range error with the message:
-	 *     'Index out of range (index < min)'
-	 *     'Index out of range (index < max)'
-	 *
-	 * @param {number} index     The actual index
-	 * @param {number} [min=0]   Minimum index (included)
-	 * @param {number} [max]     Maximum index (excluded)
-	 * @extends RangeError
-	 */
-	function IndexError(index, min, max) {
-	  if (!(this instanceof IndexError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.index = index;
-	  if (arguments.length < 3) {
-	    this.min = 0;
-	    this.max = min;
-	  }
-	  else {
-	    this.min = min;
-	    this.max = max;
-	  }
-
-	  if (this.min !== undefined && this.index < this.min) {
-	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
-	  }
-	  else if (this.max !== undefined && this.index >= this.max) {
-	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
-	  }
-	  else {
-	    this.message = 'Index out of range (' + this.index + ')';
-	  }
-
-	  this.stack = (new Error()).stack;
-	}
-
-	IndexError.prototype = new RangeError();
-	IndexError.prototype.constructor = RangeError;
-	IndexError.prototype.name = 'IndexError';
-
-	module.exports = IndexError;
-
-
-/***/ },
-/* 121 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Create a TypeError with message:
-	 *      'Function <fn> does not support a parameter of type <type>';
-	 * @param {String} fn     Function name
-	 * @param {*...} [types]  The types of the function arguments
-	 * @extends TypeError
-	 */
-	function UnsupportedTypeError(fn, types) {
-	  if (!(this instanceof UnsupportedTypeError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.fn = fn;
-	  this.types = Array.prototype.splice.call(arguments, 1);
-
-	  if (!fn) {
-	    this.message = 'Unsupported type of argument';
-	  }
-	  else {
-	    if (this.types.length == 0) {
-	      this.message = 'Unsupported type of argument in function ' + fn;
-	    }
-	    else {
-	      this.message = 'Function ' + fn + '(' + this.types.join(', ') + ') not supported';
-	    }
-	  }
-
-	  this.stack = (new Error()).stack;
-	}
-
-	UnsupportedTypeError.prototype = new TypeError();
-	UnsupportedTypeError.prototype.constructor = TypeError;
-	UnsupportedTypeError.prototype.name = 'UnsupportedTypeError';
-
-	module.exports = UnsupportedTypeError;
-
-
-/***/ },
-/* 122 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {/*! decimal.js v2.0.1 https://github.com/MikeMcl/decimal.js/LICENCE */
 	;(function (global) {
 	    'use strict';
@@ -17634,6 +17469,171 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(259)(module)))
 
 /***/ },
+/* 119 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Create a syntax error with the message:
+	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
+	 * @param {String} fn     Function name
+	 * @param {Number} count  Actual argument count
+	 * @param {Number} min    Minimum required argument count
+	 * @param {Number} [max]  Maximum required argument count
+	 * @extends Error
+	 */
+	function ArgumentsError(fn, count, min, max) {
+	  if (!(this instanceof ArgumentsError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.fn = fn;
+	  this.count = count;
+	  this.min = min;
+	  this.max = max;
+
+	  this.message = 'Wrong number of arguments in function ' + fn +
+	      ' (' + count + ' provided, ' +
+	      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	ArgumentsError.prototype = new Error();
+	ArgumentsError.prototype.constructor = Error;
+	ArgumentsError.prototype.name = 'ArgumentsError';
+
+	module.exports = ArgumentsError;
+
+
+/***/ },
+/* 120 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Create a range error with the message:
+	 *     'Dimension mismatch (<actual size> != <expected size>)'
+	 * @param {number | number[]} actual        The actual size
+	 * @param {number | number[]} expected      The expected size
+	 * @param {string} [relation='!=']          Optional relation between actual
+	 *                                          and expected size: '!=', '<', etc.
+	 * @extends RangeError
+	 */
+	function DimensionError(actual, expected, relation) {
+	  if (!(this instanceof DimensionError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.actual   = actual;
+	  this.expected = expected;
+	  this.relation = relation;
+
+	  this.message = 'Dimension mismatch (' +
+	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
+	      ' ' + (this.relation || '!=') + ' ' +
+	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
+	      ')';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	DimensionError.prototype = new RangeError();
+	DimensionError.prototype.constructor = RangeError;
+	DimensionError.prototype.name = 'DimensionError';
+
+	module.exports = DimensionError;
+
+
+/***/ },
+/* 121 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Create a range error with the message:
+	 *     'Index out of range (index < min)'
+	 *     'Index out of range (index < max)'
+	 *
+	 * @param {number} index     The actual index
+	 * @param {number} [min=0]   Minimum index (included)
+	 * @param {number} [max]     Maximum index (excluded)
+	 * @extends RangeError
+	 */
+	function IndexError(index, min, max) {
+	  if (!(this instanceof IndexError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.index = index;
+	  if (arguments.length < 3) {
+	    this.min = 0;
+	    this.max = min;
+	  }
+	  else {
+	    this.min = min;
+	    this.max = max;
+	  }
+
+	  if (this.min !== undefined && this.index < this.min) {
+	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
+	  }
+	  else if (this.max !== undefined && this.index >= this.max) {
+	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
+	  }
+	  else {
+	    this.message = 'Index out of range (' + this.index + ')';
+	  }
+
+	  this.stack = (new Error()).stack;
+	}
+
+	IndexError.prototype = new RangeError();
+	IndexError.prototype.constructor = RangeError;
+	IndexError.prototype.name = 'IndexError';
+
+	module.exports = IndexError;
+
+
+/***/ },
+/* 122 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Create a TypeError with message:
+	 *      'Function <fn> does not support a parameter of type <type>';
+	 * @param {String} fn     Function name
+	 * @param {*...} [types]  The types of the function arguments
+	 * @extends TypeError
+	 */
+	function UnsupportedTypeError(fn, types) {
+	  if (!(this instanceof UnsupportedTypeError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.fn = fn;
+	  this.types = Array.prototype.splice.call(arguments, 1);
+
+	  if (!fn) {
+	    this.message = 'Unsupported type of argument';
+	  }
+	  else {
+	    if (this.types.length == 0) {
+	      this.message = 'Unsupported type of argument in function ' + fn;
+	    }
+	    else {
+	      this.message = 'Function ' + fn + '(' + this.types.join(', ') + ') not supported';
+	    }
+	  }
+
+	  this.stack = (new Error()).stack;
+	}
+
+	UnsupportedTypeError.prototype = new TypeError();
+	UnsupportedTypeError.prototype.constructor = TypeError;
+	UnsupportedTypeError.prototype.name = 'UnsupportedTypeError';
+
+	module.exports = UnsupportedTypeError;
+
+
+/***/ },
 /* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -19021,7 +19021,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var number = __webpack_require__(154),
 	    bignumber = __webpack_require__(257),
-	    BigNumber = __webpack_require__(122);
+	    BigNumber = __webpack_require__(118);
 
 	/**
 	 * Test whether value is a String
@@ -19404,8 +19404,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    object = __webpack_require__(3),
 	    types = __webpack_require__(156),
 
-	    DimensionError = __webpack_require__(119),
-	    IndexError = __webpack_require__(120),
+	    DimensionError = __webpack_require__(120),
+	    IndexError = __webpack_require__(121),
 
 	    isArray = Array.isArray;
 
@@ -22504,7 +22504,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var BigNumber = __webpack_require__(122),
+	var BigNumber = __webpack_require__(118),
 	    isNumber = __webpack_require__(154).isNumber;
 	    digits = __webpack_require__(154).digits;
 
@@ -22999,7 +22999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	var base64 = __webpack_require__(272)
-	var ieee754 = __webpack_require__(268)
+	var ieee754 = __webpack_require__(271)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = Buffer
@@ -24283,11 +24283,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	var Buffer = __webpack_require__(264).Buffer
-	var Hash   = __webpack_require__(269)(Buffer)
+	var Hash   = __webpack_require__(268)(Buffer)
 
 	exports.sha =
-	exports.sha1 = __webpack_require__(270)(Buffer, Hash)
-	exports.sha256 = __webpack_require__(271)(Buffer, Hash)
+	exports.sha1 = __webpack_require__(269)(Buffer, Hash)
+	exports.sha256 = __webpack_require__(270)(Buffer, Hash)
 
 
 /***/ },
@@ -24333,96 +24333,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 268 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports.read = function(buffer, offset, isLE, mLen, nBytes) {
-	  var e, m,
-	      eLen = nBytes * 8 - mLen - 1,
-	      eMax = (1 << eLen) - 1,
-	      eBias = eMax >> 1,
-	      nBits = -7,
-	      i = isLE ? (nBytes - 1) : 0,
-	      d = isLE ? -1 : 1,
-	      s = buffer[offset + i];
-
-	  i += d;
-
-	  e = s & ((1 << (-nBits)) - 1);
-	  s >>= (-nBits);
-	  nBits += eLen;
-	  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8);
-
-	  m = e & ((1 << (-nBits)) - 1);
-	  e >>= (-nBits);
-	  nBits += mLen;
-	  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8);
-
-	  if (e === 0) {
-	    e = 1 - eBias;
-	  } else if (e === eMax) {
-	    return m ? NaN : ((s ? -1 : 1) * Infinity);
-	  } else {
-	    m = m + Math.pow(2, mLen);
-	    e = e - eBias;
-	  }
-	  return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
-	};
-
-	exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
-	  var e, m, c,
-	      eLen = nBytes * 8 - mLen - 1,
-	      eMax = (1 << eLen) - 1,
-	      eBias = eMax >> 1,
-	      rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0),
-	      i = isLE ? 0 : (nBytes - 1),
-	      d = isLE ? 1 : -1,
-	      s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0;
-
-	  value = Math.abs(value);
-
-	  if (isNaN(value) || value === Infinity) {
-	    m = isNaN(value) ? 1 : 0;
-	    e = eMax;
-	  } else {
-	    e = Math.floor(Math.log(value) / Math.LN2);
-	    if (value * (c = Math.pow(2, -e)) < 1) {
-	      e--;
-	      c *= 2;
-	    }
-	    if (e + eBias >= 1) {
-	      value += rt / c;
-	    } else {
-	      value += rt * Math.pow(2, 1 - eBias);
-	    }
-	    if (value * c >= 2) {
-	      e++;
-	      c /= 2;
-	    }
-
-	    if (e + eBias >= eMax) {
-	      m = 0;
-	      e = eMax;
-	    } else if (e + eBias >= 1) {
-	      m = (value * c - 1) * Math.pow(2, mLen);
-	      e = e + eBias;
-	    } else {
-	      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen);
-	      e = 0;
-	    }
-	  }
-
-	  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8);
-
-	  e = (e << mLen) | m;
-	  eLen += mLen;
-	  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8);
-
-	  buffer[offset + i - d] |= s * 128;
-	};
-
-
-/***/ },
-/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var u = __webpack_require__(273)
@@ -24526,7 +24436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 270 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -24691,7 +24601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 271 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -24858,6 +24768,96 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return Sha256
 
 	}
+
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports.read = function(buffer, offset, isLE, mLen, nBytes) {
+	  var e, m,
+	      eLen = nBytes * 8 - mLen - 1,
+	      eMax = (1 << eLen) - 1,
+	      eBias = eMax >> 1,
+	      nBits = -7,
+	      i = isLE ? (nBytes - 1) : 0,
+	      d = isLE ? -1 : 1,
+	      s = buffer[offset + i];
+
+	  i += d;
+
+	  e = s & ((1 << (-nBits)) - 1);
+	  s >>= (-nBits);
+	  nBits += eLen;
+	  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8);
+
+	  m = e & ((1 << (-nBits)) - 1);
+	  e >>= (-nBits);
+	  nBits += mLen;
+	  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8);
+
+	  if (e === 0) {
+	    e = 1 - eBias;
+	  } else if (e === eMax) {
+	    return m ? NaN : ((s ? -1 : 1) * Infinity);
+	  } else {
+	    m = m + Math.pow(2, mLen);
+	    e = e - eBias;
+	  }
+	  return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
+	};
+
+	exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
+	  var e, m, c,
+	      eLen = nBytes * 8 - mLen - 1,
+	      eMax = (1 << eLen) - 1,
+	      eBias = eMax >> 1,
+	      rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0),
+	      i = isLE ? 0 : (nBytes - 1),
+	      d = isLE ? 1 : -1,
+	      s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0;
+
+	  value = Math.abs(value);
+
+	  if (isNaN(value) || value === Infinity) {
+	    m = isNaN(value) ? 1 : 0;
+	    e = eMax;
+	  } else {
+	    e = Math.floor(Math.log(value) / Math.LN2);
+	    if (value * (c = Math.pow(2, -e)) < 1) {
+	      e--;
+	      c *= 2;
+	    }
+	    if (e + eBias >= 1) {
+	      value += rt / c;
+	    } else {
+	      value += rt * Math.pow(2, 1 - eBias);
+	    }
+	    if (value * c >= 2) {
+	      e++;
+	      c /= 2;
+	    }
+
+	    if (e + eBias >= eMax) {
+	      m = 0;
+	      e = eMax;
+	    } else if (e + eBias >= 1) {
+	      m = (value * c - 1) * Math.pow(2, mLen);
+	      e = e + eBias;
+	    } else {
+	      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen);
+	      e = 0;
+	    }
+	  }
+
+	  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8);
+
+	  e = (e << mLen) | m;
+	  eLen += mLen;
+	  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8);
+
+	  buffer[offset + i - d] |= s * 128;
+	};
 
 
 /***/ },
