@@ -16,6 +16,7 @@ describe('ParamsNode', function() {
     var n = new ParamsNode(s, [c]);
     assert(n instanceof ParamsNode);
     assert(n instanceof Node);
+    assert.equal(n.type, 'ParamsNode');
   });
 
   it ('should throw an error when calling without new operator', function () {

@@ -13,6 +13,7 @@ describe('ConstantNode', function() {
   it ('should create a ConstantNode', function () {
     var a = new ConstantNode('number', '3');
     assert(a instanceof Node);
+    assert.equal(a.type, 'ConstantNode');
   });
 
   it ('should throw an error when calling without new operator', function () {

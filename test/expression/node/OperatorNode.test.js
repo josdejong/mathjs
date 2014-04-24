@@ -13,6 +13,7 @@ describe('OperatorNode', function() {
     var n = new OperatorNode();
     assert(n instanceof OperatorNode);
     assert(n instanceof Node);
+    assert.equal(n.type, 'OperatorNode');
   });
 
   it ('should throw an error when calling without new operator', function () {

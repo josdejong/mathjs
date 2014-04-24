@@ -6,8 +6,9 @@ https://github.com/josdejong/mathjs
 
 - Implemented trigonometric hyperbolic functions `cosh`, `coth`, `csch`,
   `sech`, `sinh`, `tanh`. Thanks Rogelio J. Baucells (@rjbaucells).
+- Added property `type` to all expression nodes in a node tree.
 - Fixed functions `log`, `log10`, `pow`, and `sqrt` not supporting BigNumbers
-  arguments resulting in complex numbers.
+  arguments resulting in complex numb ers.
 
 
 ## 2014-04-16, version 0.20.0

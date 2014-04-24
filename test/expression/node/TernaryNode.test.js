@@ -14,6 +14,7 @@ describe('TernaryNode', function() {
     var n = new TernaryNode('ifElse');
     assert(n instanceof TernaryNode);
     assert(n instanceof Node);
+    assert.equal(n.type, 'TernaryNode');
   });
 
   it ('should throw an error when calling without new operator', function () {
