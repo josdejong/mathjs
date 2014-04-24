@@ -13,18 +13,21 @@ describe('sqrt', function() {
     assert.equal(sqrt(false), 0);
   });
 
-  it('should return the square root of a number', function() {
+  it('should return the square root of a positive number', function() {
     assert.equal(sqrt(0), 0);
     assert.equal(sqrt(1), 1);
     assert.equal(sqrt(4), 2);
     assert.equal(sqrt(9), 3);
     assert.equal(sqrt(16), 4);
     assert.equal(sqrt(25), 5);
-
-    assert.equal(sqrt(-4), '2i');
   });
 
-  it('should return the square root of a big number', function() {
+  it('should return the square root of a negative number', function() {
+    assert.deepEqual(sqrt(-4), math.complex(0, 2));
+    assert.deepEqual(sqrt(-16), math.complex(0, 4));
+  });
+
+  it('should return the square root of a positive bignumber', function() {
     assert.deepEqual(sqrt(bignumber(0)), bignumber(0));
     assert.deepEqual(sqrt(bignumber(1)), bignumber(1));
     assert.deepEqual(sqrt(bignumber(4)), bignumber(2));
@@ -37,8 +40,12 @@ describe('sqrt', function() {
     assert.deepEqual(bigmath.sqrt(bigmath.bignumber(2)), bigmath.bignumber('1.414213562373095048801688724209698078569671875376948073176679737990732478462107038850387534327641573'));
   });
 
+  it('should return the square root of a negative bignumber', function() {
+    assert.deepEqual(sqrt(bignumber(-4)), math.complex(0, 2));
+  });
+
   it('should return the square root of a complex number', function() {
-    assert.equal(sqrt(math.complex(3, -4)), '2 - i');
+    assert.deepEqual(sqrt(math.complex(3, -4)), math.complex(2, -1));
   });
 
   it('should throw an error when used with a unit', function() {
