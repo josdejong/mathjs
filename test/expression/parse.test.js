@@ -2,6 +2,7 @@
 var assert = require('assert'),
     approx = require('../../tools/approx'),
     mathjs = require('../../index'),
+    ArgumentsError = require('../../lib/error/ArgumentsError'),
     parse = require('../../lib/expression/parse'),
     math = mathjs(),
     Complex = math.type.Complex,
@@ -73,8 +74,8 @@ describe('parse', function() {
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
-    assert.throws(function () {parse()}, SyntaxError);
-    assert.throws(function () {parse(1,2,3)}, SyntaxError);
+    assert.throws(function () {parse()}, ArgumentsError);
+    assert.throws(function () {parse(1,2,3)}, ArgumentsError);
     assert.throws(function () {parse([1, 2])}, TypeError);
   });
 
