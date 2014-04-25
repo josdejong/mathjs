@@ -1,7 +1,8 @@
 // test largereq
 var assert = require('assert'),
-    math = require('../../../index')(),
-    error = require('../../../lib/util/error'),
+    mathjs = require('../../../index')
+    math = mathjs(),
+    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -18,6 +19,20 @@ describe('largereq', function() {
     assert.equal(largereq(-2, 2), false);
     assert.equal(largereq(-2, -3), true);
     assert.equal(largereq(-3, -2), false);
+  });
+
+  it('should compare two floating point numbers correctly', function() {
+    // Infinity
+    assert.equal(largereq(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), true);
+    assert.equal(largereq(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), true);
+    assert.equal(largereq(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), true);
+    assert.equal(largereq(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), false);
+    assert.equal(largereq(Number.POSITIVE_INFINITY, 2.0), true);
+    assert.equal(largereq(2.0, Number.POSITIVE_INFINITY), false);
+    assert.equal(largereq(Number.NEGATIVE_INFINITY, 2.0), false);
+    assert.equal(largereq(2.0, Number.NEGATIVE_INFINITY), true);
+    // floating point numbers
+    assert.equal(largereq(0.3 - 0.2, 0.1), true);
   });
 
   it('should compare two booleans', function() {
@@ -65,6 +80,13 @@ describe('largereq', function() {
     assert.equal(largereq(unit('99cm'), unit('1m')), false);
     //assert.equal(largereq(unit('100cm'), unit('1m')), true); // dangerous, round-off errors
     assert.equal(largereq(unit('101cm'), unit('1m')), true);
+  });
+
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.largereq(1, 1.01), false);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.largereq(1, 1.01), true);
   });
 
   it('should throw an error if comparing a unit with a number', function() {

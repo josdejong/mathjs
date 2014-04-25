@@ -44,3 +44,12 @@ print(math.sin(a));             // -9.6541 + 2.8417i
 // some operations will return a complex number depending on the arguments
 print(math.sqrt(4));           // 2
 print(math.sqrt(-4));          // 2i
+
+// create a complex number from polar coordinates
+console.log('create complex numbers with polar coordinates');
+var c = math.complex({r: math.sqrt(2), phi: math.pi / 4});
+print(c);                      // 1 + i
+
+// get polar coordinates of a complex number
+var d = math.complex(3, 4);
+console.log(d.toPolar());      // { r: 5, phi: 0.9272952180016122 }

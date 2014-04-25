@@ -2,6 +2,7 @@
 var assert = require('assert'),
     approx = require('../../tools/approx'),
     mathjs = require('../../index'),
+    ArgumentsError = require('../../lib/error/ArgumentsError'),
     parse = require('../../lib/expression/parse'),
     math = mathjs(),
     Complex = math.type.Complex,
@@ -73,8 +74,8 @@ describe('parse', function() {
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
-    assert.throws(function () {parse()}, SyntaxError);
-    assert.throws(function () {parse(1,2,3)}, SyntaxError);
+    assert.throws(function () {parse()}, ArgumentsError);
+    assert.throws(function () {parse(1,2,3)}, ArgumentsError);
     assert.throws(function () {parse([1, 2])}, TypeError);
   });
 
@@ -906,6 +907,18 @@ describe('parse', function() {
 
   });
 
+  describe('errors', function () {
+
+    it('should return IndexErrors with one based indices', function () {
+      // functions throw a zero-based error
+      assert.throws(function () {math.subset([1,2,3], math.index(4))}, /Index out of range \(4 > 2\)/);
+      assert.throws(function () {math.subset([1,2,3], math.index(-2))}, /Index out of range \(-2 < 0\)/);
+
+      // evaluation via parser throws one-based error
+      assert.throws(function () {math.eval('[1,2,3][4]')}, /Index out of range \(4 > 3\)/);
+      assert.throws(function () {math.eval('[1,2,3][-2]')}, /Index out of range \(-2 < 1\)/);
+    })
+  });
 
   describe('node tree', function () {
 

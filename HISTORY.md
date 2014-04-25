@@ -2,7 +2,16 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.20.0
+## 2014-04-24, version 0.21.0
+
+- Implemented trigonometric hyperbolic functions `cosh`, `coth`, `csch`,
+  `sech`, `sinh`, `tanh`. Thanks Rogelio J. Baucells (@rjbaucells).
+- Added property `type` to all expression nodes in a node tree.
+- Fixed functions `log`, `log10`, `pow`, and `sqrt` not supporting complex
+  results from BigNumber input (like `sqrt(bignumber(-4))`).
+
+
+## 2014-04-16, version 0.20.0
 
 - Switched to module `decimal.js` for BigNumber support, instead of
   `bignumber.js`.
@@ -10,6 +19,10 @@ https://github.com/josdejong/mathjs
   Thanks Finn Pauls (@finnp).
 - Implemented BigNumber support for functions `exp`, `log`, and `log10`.
 - Implemented conditional operator `a ? b : c` in expression parser.
+- Improved floating point comparison: the functions now check whether values
+  are nearly equal, against a configured maximum relative difference `epsilon`.
+  Thanks Rogelio J. Baucells (@rjbaucells).
+- Implemented function `norm`. Thanks Rogelio J. Baucells (@rjbaucells).
 - Improved function `ifElse`, is now specified for special data types too.
 - Improved function `det`. Thanks Bryan Cuccioli (@bcuccioli).
 - Implemented `BigNumber` support for functions `det` and `diag`.
@@ -17,6 +30,8 @@ https://github.com/josdejong/mathjs
 - Changed configuration option `decimals` to `precision` (applies to BigNumbers
   only).
 - Fixed support for element-wise comparisons between a string and a matrix.
+- Fixed: expression parser now trows IndexErrors with one-based indices instead
+  of zero-based.
 - Minor bug fixes.
 
 

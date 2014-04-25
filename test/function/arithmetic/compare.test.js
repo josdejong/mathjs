@@ -1,7 +1,8 @@
 // test compare
 var assert = require('assert'),
-    math = require('../../../index')(),
-    error = require('../../../lib/util/error'),
+    mathjs = require('../../../index'),
+    math = mathjs(),
+    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -17,6 +18,20 @@ describe('compare', function() {
     assert.equal(compare(-2, 2), -1);
     assert.equal(compare(-2, -3), 1);
     assert.equal(compare(-3, -2), -1);
+  });
+
+  it('should compare two floating point numbers correctly', function() {
+    // Infinity
+    assert.equal(compare(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), 0);
+    assert.equal(compare(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), 0);
+    assert.equal(compare(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), 1);
+    assert.equal(compare(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), -1);
+    assert.equal(compare(Number.POSITIVE_INFINITY, 2.0), 1);
+    assert.equal(compare(2.0, Number.POSITIVE_INFINITY), -1);
+    assert.equal(compare(Number.NEGATIVE_INFINITY, 2.0), -1);
+    assert.equal(compare(2.0, Number.NEGATIVE_INFINITY), 1);
+    // floating point numbers
+    assert.equal(compare(0.3 - 0.2, 0.1), 0);
   });
 
   it('should compare two booleans', function() {
@@ -89,6 +104,13 @@ describe('compare', function() {
   it('should perform element-wise comparison for two matrices of same size', function() {
     assert.deepEqual(compare([1,4,6], [3,4,5]), [-1, 0, 1]);
     assert.deepEqual(compare([1,4,6], matrix([3,4,5])), matrix([-1, 0, 1]));
+  });
+
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.compare(1, 0.991), 1);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.compare(1, 0.991), 0);
   });
 
   it('should throw an error when comparing complex numbers', function() {

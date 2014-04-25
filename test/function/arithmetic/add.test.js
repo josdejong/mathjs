@@ -1,7 +1,7 @@
 // test add
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     math = require('../../../index')(),
     bignumber = math.bignumber,
     add = math.add;

@@ -1,7 +1,8 @@
 // test smaller
 var assert = require('assert'),
-    math = require('../../../index')(),
-    error = require('../../../lib/util/error'),
+    mathjs = require('../../../index'),
+    math = mathjs(),
+    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -18,6 +19,20 @@ describe('smaller', function() {
     assert.equal(smaller(-2, 2), true);
     assert.equal(smaller(-2, -3), false);
     assert.equal(smaller(-3, -2), true);
+  });
+
+  it('should compare two floating point numbers correctly', function() {
+    // Infinity
+    assert.equal(smaller(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false);
+    assert.equal(smaller(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), false);
+    assert.equal(smaller(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), false);
+    assert.equal(smaller(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), true);
+    assert.equal(smaller(Number.POSITIVE_INFINITY, 2.0), false);
+    assert.equal(smaller(2.0, Number.POSITIVE_INFINITY), true);
+    assert.equal(smaller(Number.NEGATIVE_INFINITY, 2.0), true);
+    assert.equal(smaller(2.0, Number.NEGATIVE_INFINITY), false);
+    // floating point numbers
+    assert.equal(smaller(0.3 - 0.2, 0.1), false);
   });
 
   it('should compare two booleans', function() {
@@ -67,6 +82,13 @@ describe('smaller', function() {
     assert.equal(smaller(unit('99cm'), unit('1m')), true);
     //assert.equal(smaller(unit('100cm'), unit('1m')), false); // dangerous, round-off errors
     assert.equal(smaller(unit('101cm'), unit('1m')), false);
+  });
+
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.smaller(0.991, 1), true);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.smaller(0.991, 1), false);
   });
 
   it('should throw an error if comparing a unit and a number', function() {

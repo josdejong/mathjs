@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     mathjs = require('../../../index'),
     math = mathjs(),
     matrix = math.matrix,

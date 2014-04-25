@@ -17,6 +17,8 @@ describe('ArrayNode', function() {
     var b = new ArrayNode([]);
     assert(a instanceof ArrayNode);
     assert(b instanceof ArrayNode);
+    assert.equal(a.type, 'ArrayNode');
+    assert.equal(b.type, 'ArrayNode');
   });
 
   it ('should throw an error when calling without new operator', function () {

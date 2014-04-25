@@ -16,6 +16,7 @@ describe('RangeNode', function() {
     var n = new RangeNode([start, end]);
     assert(n instanceof RangeNode);
     assert(n instanceof Node);
+    assert.equal(n.type, 'RangeNode');
   });
 
   it ('should throw an error when calling without new operator', function () {

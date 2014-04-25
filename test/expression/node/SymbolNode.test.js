@@ -9,9 +9,10 @@ var assert = require('assert'),
 describe('SymbolNode', function() {
 
   it ('should create a SymbolNode', function () {
-    var s = new SymbolNode('sqrt');
-    assert(s instanceof SymbolNode);
-    assert(s instanceof Node);
+    var n = new SymbolNode('sqrt');
+    assert(n instanceof SymbolNode);
+    assert(n instanceof Node);
+    assert.equal(n.type, 'SymbolNode');
   });
 
   it ('should throw an error when calling without new operator', function () {

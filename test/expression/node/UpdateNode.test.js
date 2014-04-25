@@ -23,6 +23,7 @@ describe('UpdateNode', function() {
 
     assert(n instanceof UpdateNode);
     assert(n instanceof Node);
+    assert.equal(n.type, 'UpdateNode');
   });
 
   it ('should throw an error when calling without new operator', function () {

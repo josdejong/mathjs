@@ -16,6 +16,7 @@ describe('IndexNode', function() {
     var n = new IndexNode(new Node(), []);
     assert(n instanceof IndexNode);
     assert(n instanceof Node);
+    assert.equal(n.type, 'IndexNode');
   });
 
   it ('should throw an error when calling with wrong arguments', function () {

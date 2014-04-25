@@ -1,7 +1,7 @@
 // test multiply
 var assert = require('assert'),
     math = require('../../../index')(),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     approx = require('../../../tools/approx'),
     multiply = math.multiply,
     divide = math.divide,

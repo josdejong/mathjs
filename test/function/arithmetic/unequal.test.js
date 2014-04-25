@@ -1,7 +1,8 @@
 // test equal
 var assert = require('assert'),
-    error = require('../../../lib/util/error'),
-    math = require('../../../index')(),
+    error = require('../../../lib/error/index'),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -15,6 +16,26 @@ describe('unequal', function() {
     assert.equal(unequal(2, 2), false);
     assert.equal(unequal(0, 0), false);
     assert.equal(unequal(-2, 2), true);
+  });
+
+  it('should compare two floating point numbers correctly', function() {
+    // NaN
+    assert.equal(unequal(Number.NaN, Number.NaN), true);
+    // Infinity
+    assert.equal(unequal(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false);
+    assert.equal(unequal(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), false);
+    assert.equal(unequal(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), true);
+    assert.equal(unequal(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), true);
+    assert.equal(unequal(Number.POSITIVE_INFINITY, 2.0), true);
+    assert.equal(unequal(2.0, Number.POSITIVE_INFINITY), true);
+    assert.equal(unequal(Number.NEGATIVE_INFINITY, 2.0), true);
+    assert.equal(unequal(2.0, Number.NEGATIVE_INFINITY), true);
+    assert.equal(unequal(Number.NaN, Number.POSITIVE_INFINITY), true);
+    assert.equal(unequal(Number.POSITIVE_INFINITY, Number.NaN), true);
+    assert.equal(unequal(Number.NaN, Number.NEGATIVE_INFINITY), true);
+    assert.equal(unequal(Number.NEGATIVE_INFINITY, Number.NaN), true);
+    // floating point numbers
+    assert.equal(unequal(0.3 - 0.2, 0.1), false);
   });
 
   it('should compare two booleans', function() {
@@ -84,6 +105,13 @@ describe('unequal', function() {
     assert.equal(unequal(unit('100cm'), unit('1m')), false);
     //assert.equal(unequal(unit('12inch'), unit('1foot')), false); // round-off error :(
     //assert.equal(unequal(unit('2.54cm'), unit('1inch')), false); // round-off error :(
+  });
+
+  it('should apply configuration option epsilon', function() {
+    var mymath = mathjs();
+    assert.equal(mymath.unequal(1, 0.991), true);
+    mymath.config({epsilon: 1e-2});
+    assert.equal(mymath.unequal(1, 0.991), false);
   });
 
   it('should throw an error when comparing numbers and units', function() {

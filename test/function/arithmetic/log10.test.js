@@ -1,7 +1,7 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     mathjs = require('../../../index'),
     math = mathjs(),
     complex = math.complex,
@@ -16,11 +16,7 @@ describe('log10', function() {
     assert.equal(log10(false), -Infinity);
   });
 
-  it('should return the log base 10 of a number', function() {
-    approx.deepEqual(log10(-3), complex('0.477121254719662 + 1.364376353841841i'));
-    approx.deepEqual(log10(-2), complex('0.301029995663981 + 1.364376353841841i'));
-    approx.deepEqual(log10(-1), complex('0.000000000000000 + 1.364376353841841i'));
-    approx.deepEqual(log10(0), -Infinity);
+  it('should return the log base 10 of positive numbers', function() {
     approx.deepEqual(log10(1), 0);
     approx.deepEqual(log10(2), 0.301029995663981);
     approx.deepEqual(log10(3), 0.477121254719662);
@@ -33,7 +29,17 @@ describe('log10', function() {
     approx.deepEqual(log10(1000), 3);
   });
 
-  it('should return the log of a bignumber', function() {
+  it('should return the log base 10 of negative numbers', function() {
+    approx.deepEqual(log10(-1), complex('0.000000000000000 + 1.364376353841841i'));
+    approx.deepEqual(log10(-2), complex('0.301029995663981 + 1.364376353841841i'));
+    approx.deepEqual(log10(-3), complex('0.477121254719662 + 1.364376353841841i'));
+  });
+
+  it('should return the log base 10 of zero', function() {
+    approx.deepEqual(log10(0), -Infinity);
+  });
+
+  it('should return the log of positive bignumbers', function() {
     var bigmath = mathjs({precision: 100});
 
     assert.deepEqual(bigmath.log10(bigmath.bignumber(1)), bigmath.bignumber(0));
@@ -42,6 +48,20 @@ describe('log10', function() {
     assert.deepEqual(bigmath.log10(bigmath.bignumber(1000)), bigmath.bignumber(3)); // note: this gives a round-off error with regular numbers
     assert.deepEqual(bigmath.log10(bigmath.bignumber(10000)), bigmath.bignumber(4));
     assert.deepEqual(bigmath.log10(bigmath.bignumber('1e500')), bigmath.bignumber(500));
+  });
+
+  it('should return the log of negative bignumbers', function() {
+    var bigmath = mathjs({precision: 100});
+
+    approx.deepEqual(bigmath.log10(bigmath.bignumber(-1)), bigmath.complex('0.000000000000000 + 1.364376353841841i'));
+    approx.deepEqual(bigmath.log10(bigmath.bignumber(-2)), bigmath.complex('0.301029995663981 + 1.364376353841841i'));
+    approx.deepEqual(bigmath.log10(bigmath.bignumber(-3)), bigmath.complex('0.477121254719662 + 1.364376353841841i'));
+  });
+
+  it('should return the log of a bignumber with value zero', function() {
+    var bigmath = mathjs({precision: 100});
+
+    assert.deepEqual(bigmath.log10(bigmath.bignumber(0)), bigmath.bignumber(-Infinity));
   });
 
   it('should throw an error if used with a wrong number of arguments', function() {

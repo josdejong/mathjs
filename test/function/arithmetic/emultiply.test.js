@@ -2,7 +2,7 @@
 var assert = require('assert'),
     math = require('../../../index')(),
     approx = require('../../../tools/approx'),
-    error = require('../../../lib/util/error'),
+    error = require('../../../lib/error/index'),
     emultiply = math.emultiply,
     divide = math.divide,
     matrix = math.matrix,
