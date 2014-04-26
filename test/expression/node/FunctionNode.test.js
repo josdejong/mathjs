@@ -15,6 +15,7 @@ describe('FunctionNode', function() {
     var n = new FunctionNode('f', ['x'], new Node());
     assert(n instanceof FunctionNode);
     assert(n instanceof Node);
+    assert.equal(n.type, 'FunctionNode');
   });
 
   it ('should throw an error when calling without new operator', function () {

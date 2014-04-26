@@ -14,6 +14,7 @@ describe('UnitNode', function() {
     var n = new UnitNode(c, 'cm');
     assert(n instanceof UnitNode);
     assert(n instanceof Node);
+    assert.equal(n.type, 'UnitNode');
   });
 
   it ('should throw an error when calling without new operator', function () {

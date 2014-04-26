@@ -12,7 +12,7 @@ var assert = require('assert'),
 
 describe('pow', function() {
 
-  it('should elevate a number to the given power', function() {
+  it('should exponentiate a number to the given power', function() {
     approx.deepEqual(pow(2,3), 8);
     approx.deepEqual(pow(2,4), 16);
     approx.deepEqual(pow(-2,2), 4);
@@ -22,17 +22,20 @@ describe('pow', function() {
     approx.deepEqual(pow(3,-3), 0.0370370370370370);
     approx.deepEqual(pow(-3,-3), -0.0370370370370370);
     approx.deepEqual(pow(2,1.5), 2.82842712474619);
+  });
+
+  it('should exponentiate a negative number to a non-integer power', function() {
     approx.deepEqual(pow(-2,1.5), complex(0, -2.82842712474619));
   });
 
-  it('should elevate booleans to the given power', function() {
+  it('should exponentiate booleans to the given power', function() {
     assert.equal(pow(true, true), 1);
     assert.equal(pow(true, false), 1);
     assert.equal(pow(false, true), 0);
     assert.equal(pow(false, false), 1);
   });
 
-  it('should add mixed numbers and booleans', function() {
+  it('should exponentiate mixed numbers and booleans', function() {
     assert.equal(pow(2, true), 2);
     assert.equal(pow(2, false), 1);
     assert.equal(pow(true, 2), 1);
@@ -42,6 +45,12 @@ describe('pow', function() {
   it('should exponentiate bignumbers', function() {
     assert.deepEqual(pow(bignumber(2), bignumber(3)), bignumber(8));
     assert.deepEqual(pow(bignumber(100), bignumber(500)), bignumber('1e1000'));
+  });
+
+  it('should exponentiate a negative bignumber to a non-integer power', function() {
+    approx.deepEqual(pow(bignumber(-2), bignumber(1.5)), complex(0, -2.82842712474619));
+    approx.deepEqual(pow(-2, bignumber(1.5)), complex(0, -2.82842712474619));
+    approx.deepEqual(pow(bignumber(-2), 1.5), complex(0, -2.82842712474619));
   });
 
   it('should exponentiate mixed numbers and bignumbers', function() {

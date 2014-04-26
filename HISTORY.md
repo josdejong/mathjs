@@ -2,6 +2,15 @@
 https://github.com/josdejong/mathjs
 
 
+## 2014-04-24, version 0.21.0
+
+- Implemented trigonometric hyperbolic functions `cosh`, `coth`, `csch`,
+  `sech`, `sinh`, `tanh`. Thanks Rogelio J. Baucells (@rjbaucells).
+- Added property `type` to all expression nodes in a node tree.
+- Fixed functions `log`, `log10`, `pow`, and `sqrt` not supporting complex
+  results from BigNumber input (like `sqrt(bignumber(-4))`).
+
+
 ## 2014-04-16, version 0.20.0
 
 - Switched to module `decimal.js` for BigNumber support, instead of

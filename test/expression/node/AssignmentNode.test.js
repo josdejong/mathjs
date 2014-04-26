@@ -15,6 +15,7 @@ describe('AssignmentNode', function() {
     var n = new AssignmentNode('a', new Node());
     assert(n instanceof AssignmentNode);
     assert(n instanceof Node);
+    assert.equal(n.type, 'AssignmentNode');
   });
 
   it ('should throw an error when calling without new operator', function () {
