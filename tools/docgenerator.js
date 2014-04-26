@@ -18,11 +18,11 @@ var fs = require('fs'),
  * @return {Object} doc    json document
  */
 function generateDoc(name, code) {
+  // get block comment from code
   var match = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//.exec(code);
-  var comment = match && match[0];
 
   // get text content inside block comment
-  comment = comment.replace('/**', '')
+  var comment = match[0].replace('/**', '')
       .replace('*/', '')
       .replace(/\n\s*\* ?/g, '\n');
 
@@ -44,15 +44,39 @@ function generateDoc(name, code) {
     return line !== undefined;
   }
 
+  // returns true if current line is a header like 'Syntax:'
+  function isHeader() {
+    return /^(Name|Syntax|Description|Examples|See also)/i.test(line);
+  }
+
+  // returns true if the current line starts with an annotation like @param
+  function isAnnotation() {
+    return /^@/.test(line);
+  }
+
   function skipEmptyLines () {
     while (exists() && empty()) next();
   }
 
   function parseDescription () {
     var description = '';
-    while (exists() && !empty()) {
-      description += (description  ? ' ' : '') + line;
+
+    while (exists() && !isHeader() && !isAnnotation()) {
+      if (empty()) {
+        description += '\n\n';
+      }
+      else {
+        var last = description.charAt(description.length - 1);
+        if (last && last != '\n') description += ' ';
+      }
+      description += line;
+
       next();
+    }
+
+    // remove trailing returns
+    while (description.charAt(description.length - 1) == '\n') {
+      description = description.substring(0, description.length - 1);
     }
 
     doc.description = description;
@@ -318,7 +342,9 @@ function generateMarkdown (doc, functions) {
         '\n';
   }
 
-  text += '\n';
+  text += '\n\n';
+
+  text += '<!-- Note: This documentation is automatically generated from source code comments. Changes made in this file will be overridden. -->\n';
 
   return text;
 }
