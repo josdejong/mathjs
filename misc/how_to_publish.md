@@ -37,6 +37,13 @@ Build the distribution files ./dist/math.js and ./dist/math.min.js by running:
 After the build is complete, verify if the files are created and contain the
 correct date and version number in the header.
 
+To update the reference documentation, run:
+
+    npm run docs
+
+This will regenerate all documentation in docs/reference/functions from the
+functions code comments.
+
 
 ## Commit
 
