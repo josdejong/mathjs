@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.21.1
+
+- Fixed function `add` not adding strings and matrices element wise.
+
+
 ## 2014-04-24, version 0.21.0
 
 - Implemented trigonometric hyperbolic functions `cosh`, `coth`, `csch`,
