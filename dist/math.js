@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.22.0-SNAPSHOT
- * @date    2014-04-24
+ * @date    2014-05-07
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -3299,6 +3299,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var util = __webpack_require__(123),
 
+	    ArgumentsError = __webpack_require__(119),
+
 	    isString = util.string.isString,
 	    isArray = Array.isArray,
 	    type = util.types.type,
@@ -3357,7 +3359,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function parse (expr, nodes) {
 	  if (arguments.length != 1 && arguments.length != 2) {
-	    throw new SyntaxError('Wrong number of arguments: 1 or 2 expected');
+	    throw new ArgumentsError('parse', arguments.length, 1, 2);
 	  }
 
 	  // pass extra nodes
@@ -3761,7 +3763,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function parseFunctionAssignment () {
 	  // TODO: function assignment using keyword 'function' is deprecated since version 0.18.0, cleanup some day
 	  if (token_type == TOKENTYPE.SYMBOL && token == 'function') {
-	    throw new Error('Deprecated keyword "function". ' +
+	    throw createSyntaxError('Deprecated keyword "function". ' +
 	        'Functions can now be assigned without it, like "f(x) = x^2".');
 	  }
 
@@ -4518,23 +4520,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * Build up an error message
-	 * @param {String} message
-	 * @return {String} message with char information
-	 * @private
-	 */
-	function createErrorMessage (message) {
-	  return message + ' (char ' + col() + ')';
-	}
-
-	/**
 	 * Create an error
 	 * @param {String} message
 	 * @return {SyntaxError} instantiated error
 	 * @private
 	 */
 	function createSyntaxError (message) {
-	  return new SyntaxError(createErrorMessage(message));
+	  var c = col();
+	  var error = new SyntaxError(message + ' (char ' + c + ')');
+	  error['char'] = c;
+
+	  return error;
 	}
 
 	/**
@@ -4544,7 +4540,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @private
 	 */
 	function createError (message) {
-	  return new Error(createErrorMessage(message));
+	  var c = col();
+	  var error = new Error(message + ' (char ' + c + ')');
+	  error['char'] = c;
+
+	  return error;
 	}
 
 	module.exports = parse;
@@ -5386,12 +5386,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return add(x, y.toNumber());
 	    }
 
-	    if (isString(x) || isString(y)) {
-	      return x + y;
-	    }
-
 	    if (isCollection(x) || isCollection(y)) {
 	      return collection.deepMap2(x, y, add);
+	    }
+
+	    if (isString(x) || isString(y)) {
+	      return x + y;
 	    }
 
 	    if (isBoolean(x)) {
@@ -13842,13 +13842,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {/*! decimal.js v2.0.1 https://github.com/MikeMcl/decimal.js/LICENCE */
+	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {/*! decimal.js v2.0.2 https://github.com/MikeMcl/decimal.js/LICENCE */
 	;(function (global) {
 	    'use strict';
 
 
 	    /*
-	     *  decimal.js v2.0.1
+	     *  decimal.js v2.0.2
 	     *  An arbitrary-precision Decimal type for JavaScript.
 	     *  https://github.com/MikeMcl/decimal.js
 	     *  Copyright (c) 2014 Michael Mclaughlin <M8ch88l@gmail.com>
@@ -22998,7 +22998,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @license  MIT
 	 */
 
-	var base64 = __webpack_require__(272)
+	var base64 = __webpack_require__(273)
 	var ieee754 = __webpack_require__(271)
 
 	exports.Buffer = Buffer
@@ -24335,7 +24335,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var u = __webpack_require__(273)
+	var u = __webpack_require__(272)
 	var write = u.write
 	var fill = u.zeroFill
 
@@ -24449,7 +24449,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	module.exports = function (Buffer, Hash) {
 
-	  var inherits = __webpack_require__(275).inherits
+	  var inherits = __webpack_require__(274).inherits
 
 	  inherits(Sha1, Hash)
 
@@ -24613,11 +24613,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 */
 
-	var inherits = __webpack_require__(275).inherits
+	var inherits = __webpack_require__(274).inherits
 	var BE       = false
 	var LE       = true
-	var hexpp    = __webpack_require__(274)
-	var u        = __webpack_require__(273)
+	var u        = __webpack_require__(272)
 
 	module.exports = function (Buffer, Hash) {
 
@@ -24864,6 +24863,48 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
+	exports.write = write
+	exports.zeroFill = zeroFill
+
+	exports.toString = toString
+
+	function write (buffer, string, enc, start, from, to, LE) {
+	  var l = (to - from)
+	  if(enc === 'ascii' || enc === 'binary') {
+	    for( var i = 0; i < l; i++) {
+	      buffer[start + i] = string.charCodeAt(i + from)
+	    }
+	  }
+	  else if(enc == null) {
+	    for( var i = 0; i < l; i++) {
+	      buffer[start + i] = string[i + from]
+	    }
+	  }
+	  else if(enc === 'hex') {
+	    for(var i = 0; i < l; i++) {
+	      var j = from + i
+	      buffer[start + i] = parseInt(string[j*2] + string[(j*2)+1], 16)
+	    }
+	  }
+	  else if(enc === 'base64') {
+	    throw new Error('base64 encoding not yet supported')
+	  }
+	  else
+	    throw new Error(enc +' encoding not yet supported')
+	}
+
+	//always fill to the end!
+	function zeroFill(buf, from) {
+	  for(var i = from; i < buf.length; i++)
+	    buf[i] = 0
+	}
+
+
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 	;(function (exports) {
@@ -24988,100 +25029,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 273 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports.write = write
-	exports.zeroFill = zeroFill
-
-	exports.toString = toString
-
-	function write (buffer, string, enc, start, from, to, LE) {
-	  var l = (to - from)
-	  if(enc === 'ascii' || enc === 'binary') {
-	    for( var i = 0; i < l; i++) {
-	      buffer[start + i] = string.charCodeAt(i + from)
-	    }
-	  }
-	  else if(enc == null) {
-	    for( var i = 0; i < l; i++) {
-	      buffer[start + i] = string[i + from]
-	    }
-	  }
-	  else if(enc === 'hex') {
-	    for(var i = 0; i < l; i++) {
-	      var j = from + i
-	      buffer[start + i] = parseInt(string[j*2] + string[(j*2)+1], 16)
-	    }
-	  }
-	  else if(enc === 'base64') {
-	    throw new Error('base64 encoding not yet supported')
-	  }
-	  else
-	    throw new Error(enc +' encoding not yet supported')
-	}
-
-	//always fill to the end!
-	function zeroFill(buf, from) {
-	  for(var i = from; i < buf.length; i++)
-	    buf[i] = 0
-	}
-
-
-
-/***/ },
 /* 274 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(module, Buffer) {
-
-	function toHex (buf, group, wrap, LE) {
-	  buf = buf.buffer || buf
-	  var s = ''
-	  var l = buf.byteLength || buf.length
-	  for(var i = 0; i < l ; i++) {
-	    var byte = (i&0xfffffffc)|(!LE ? i%4 : 3 - i%4)
-	    s = s + ((buf[byte]>>4).toString(16))
-	          + ((buf[byte]&0xf).toString(16))
-	          + (group-1==i%group ? ' ' : '')
-	          + (wrap-1==i%wrap ? '\n' : '')
-	  }
-	  return s
-	}
-
-	function reverseByteOrder(n) {
-	  return (
-	    ((n << 24) & 0xff000000)
-	  | ((n <<  8) & 0x00ff0000)
-	  | ((n >>  8) & 0x0000ff00)
-	  | ((n >> 24) & 0x000000ff)
-	  )
-	}
-
-	var hexpp = module.exports = function (buffer, opts) {
-	  opts = opts || {}
-	  opts.groups = opts.groups || 4
-	  opts.wrap = opts.wrap || 16
-	  return toHex(buffer, opts.groups, opts.wrap, opts.bigendian, opts.ints)
-	}
-
-	hexpp.defaults = function (opts) {
-	  return function (b) {
-	    return hexpp(b, opts)
-	  }
-	}
-
-	if(!module.parent) {
-	  var b = new Buffer (64)
-	  console.log(hexpp(b))
-	  console.log(hexpp(b, {bigendian: true}))
-	}
-
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(259)(module), __webpack_require__(264).Buffer))
-
-/***/ },
-/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -25609,7 +25557,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	exports.isPrimitive = isPrimitive;
 
-	exports.isBuffer = __webpack_require__(276);
+	exports.isBuffer = __webpack_require__(275);
 
 	function objectToString(o) {
 	  return Object.prototype.toString.call(o);
@@ -25653,7 +25601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     prototype.
 	 * @param {function} superCtor Constructor function to inherit prototype from.
 	 */
-	exports.inherits = __webpack_require__(278);
+	exports.inherits = __webpack_require__(277);
 
 	exports._extend = function(origin, add) {
 	  // Don't do anything if add isn't an object
@@ -25671,10 +25619,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return Object.prototype.hasOwnProperty.call(obj, prop);
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(277)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(276)))
 
 /***/ },
-/* 276 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function isBuffer(arg) {
@@ -25685,7 +25633,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 277 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// shim for using process in browser
@@ -25751,7 +25699,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 278 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	if (typeof Object.create === 'function') {
