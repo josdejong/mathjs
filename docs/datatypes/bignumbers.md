@@ -36,7 +36,8 @@ BigNumber is not supported by the following functions:
 gcd, lcm, xgcd,
 arg,
 random,
-acos, asin, atan, atan2, cos, cot, csc, sec, sin, tan.
+acos, asin, atan, atan2, cos, cot, csc, sec, sin, tan,
+cosh, coth, csch, sech, sinh, tanh.
 These functions will downgrade BigNumber to Number, and return a Number.*
 
 Calculations with BigNumber are much slower than calculations with Number,
