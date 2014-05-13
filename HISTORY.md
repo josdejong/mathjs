@@ -5,6 +5,9 @@ https://github.com/josdejong/mathjs
 ## not yet released, version 0.21.1
 
 - Fixed function `add` not adding strings and matrices element wise.
+- Removed `crypto` library from the bundle.
+- Deprecated functions `Parser.parse` and `Parser.compile`. Use
+  `math.parse` and `math.compile` instead.
 
 
 ## 2014-04-24, version 0.21.0
