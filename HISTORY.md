@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.21.1
+## 2014-05-13, version 0.21.1
 
 - Removed `crypto` library from the bundle.
 - Deprecated functions `Parser.parse` and `Parser.compile`. Use

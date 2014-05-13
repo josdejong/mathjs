@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.22.0-SNAPSHOT
- * @date    2014-05-09
+ * @version 0.21.1
+ * @date    2014-05-13
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -242,9 +242,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.expression = {};
 	  math.expression.node = __webpack_require__(14);
 	  math.expression.parse = __webpack_require__(12);
-	  math.expression.Scope = function () {
-	    throw new Error('Scope is deprecated. Use a regular Object instead');
-	  };
 	  math.expression.Parser = __webpack_require__(13);
 	  math.expression.docs = __webpack_require__(15);
 
@@ -4053,7 +4050,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * parse units like in '2i', '2 cm'
+	 * parse units conversion 'in' like '5cm in inch'
 	 * @return {Node} node
 	 * @private
 	 */
@@ -4110,7 +4107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    fn = (name == '^') ? 'pow' : 'epow';
 
 	    getToken();
-	    params = [node, parsePow()];
+	    params = [node, parseUnary()]; // Go back to unary, we can have '2^-3'
 	    node = new OperatorNode(name, fn, params);
 	  }
 
@@ -4140,6 +4137,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    params = [node];
 
 	    node = new OperatorNode(name, fn, params);
+
+	    node = parseParams(node); // cases like "A'[2,3]"
 	  }
 
 	  return node;
@@ -4571,17 +4570,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *                                       // parsers scope
 	 *    parser.clear();                    // clear the parsers scope
 	 *
-	 *    // it is possible to parse an expression into a node tree:
-	 *    var node = parser.parse(expr);     // parse an expression into a node tree
-	 *    var code = node.compile(math);     // compile a node tree into javascript
-	 *                                       // code
-	 *    var code = parser.compile(expr);   // parse and compile an expression into
-	 *                                       // javascript code. Equivalent of
-	 *                                       // parser.parse(expr).compile(math)
-	 *
-	 *    // A compiled expression can be evaluated as
-	 *    var result = code.eval([scope]);   // scope is an optional object
-	 *
 	 * Example usage:
 	 *    var parser = new Parser(math);
 	 *    // Note: there is a convenience method which can be used instead:
@@ -4639,8 +4627,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @throws {Error}
 	 */
 	Parser.prototype.parse = function (expr) {
-	  // TODO: validate arguments
-	  return _parse(expr);
+	  throw new Error('Parser.parse is deprecated. Use math.parse instead.');
 	};
 
 	/**
@@ -4651,8 +4638,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @throws {Error}
 	 */
 	Parser.prototype.compile = function (expr) {
-	  // TODO: validate arguments
-	  return _parse(expr).compile(this.math);
+	  throw new Error('Parser.compile is deprecated. Use math.compile instead.');
 	};
 
 	/**
