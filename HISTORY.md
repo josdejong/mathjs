@@ -4,10 +4,12 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.21.1
 
-- Fixed function `add` not adding strings and matrices element wise.
 - Removed `crypto` library from the bundle.
 - Deprecated functions `Parser.parse` and `Parser.compile`. Use
   `math.parse` and `math.compile` instead.
+- Fixed function `add` not adding strings and matrices element wise.
+- Fixed parser not being able to evaluate an exponent followed by a unary minus
+  like `2^-3`, and a transpose followed by an index like `[3]'[1]`.
 
 
 ## 2014-04-24, version 0.21.0

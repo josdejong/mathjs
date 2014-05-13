@@ -718,6 +718,17 @@ describe('parse', function() {
       approx.deepEqual(parseAndEval('2.54 cm in inch'), math.unit(1, 'inch').to('inch'));
     });
 
+    it('should parse ! (factorial)', function() {
+      assert.deepEqual(parseAndEval('5!'), 120);
+      assert.deepEqual(parseAndEval('[1,2,3,4]!'), new Matrix([1,2,6,24]));
+      assert.deepEqual(parseAndEval('4!+2'), 26);
+      assert.deepEqual(parseAndEval('4!-2'), 22);
+      assert.deepEqual(parseAndEval('4!*2'), 48);
+      assert.deepEqual(parseAndEval('3!!'), 720);
+      assert.deepEqual(parseAndEval('[1,2;3,1]!\'!'), new Matrix([[1, 720], [2, 1]]));
+      assert.deepEqual(parseAndEval('[2,3]![2]'), 6);
+    });
+
     it('should parse \' (transpose)', function() {
       assert.deepEqual(parseAndEval('23\''), 23);
       assert.deepEqual(parseAndEval('[1,2,3;4,5,6]\''), new Matrix([[1,4],[2,5],[3,6]]));
@@ -726,39 +737,73 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('[1:5]\''), new Matrix([[1],[2],[3],[4],[5]]));
       assert.deepEqual(parseAndEval('size([1:5])'), new Matrix([1, 5]));
       assert.deepEqual(parseAndEval('[1,2;3,4]\''), new Matrix([[1,3],[2,4]]));
+      assert.deepEqual(parseAndEval('[1,2;3,4]\'[1,2]'), 3);
     });
 
-    it('should respect operator precedence', function() {
-      assert.equal(parseAndEval('4-2+3'), 5);
-      assert.equal(parseAndEval('4-(2+3)'), -1);
-      assert.equal(parseAndEval('4-2-3'), -1);
-      assert.equal(parseAndEval('4-(2-3)'), 5);
+    describe('operator precedence', function() {
+      it('should respect precedence of plus and minus', function () {
+        assert.equal(parseAndEval('4-2+3'), 5);
+        assert.equal(parseAndEval('4-(2+3)'), -1);
+        assert.equal(parseAndEval('4-2-3'), -1);
+        assert.equal(parseAndEval('4-(2-3)'), 5);
+      });
 
-      assert.equal(parseAndEval('2+3*4'), 14);
-      assert.equal(parseAndEval('2*3+4'), 10);
-      assert.equal(parseAndEval('2*3^2'), 18);
+      it('should respect precedence of plus/minus and multiply/divide', function () {
+        assert.equal(parseAndEval('2+3*4'), 14);
+        assert.equal(parseAndEval('2*3+4'), 10);
+      });
 
-      assert.equal(parseAndEval('2^3'), 8);
-      assert.equal(parseAndEval('2^3^4'), Math.pow(2, Math.pow(3, 4)));
-      assert.equal(parseAndEval('1.5^1.5^1.5'), parseAndEval('1.5^(1.5^1.5)'));
-      assert.equal(parseAndEval('1.5^1.5^1.5^1.5'), parseAndEval('1.5^(1.5^(1.5^1.5))'));
+      it('should respect precedence of plus/minus and pow', function () {
+        assert.equal(parseAndEval('2+3^2'), 11);
+        assert.equal(parseAndEval('3^2+2'), 11);
+        assert.equal(parseAndEval('8-2^2'), 4);
+        assert.equal(parseAndEval('4^2-2'), 14);
+      });
 
-      assert.equal(parseAndEval('-3^2'), -9);
-      assert.equal(parseAndEval('(-3)^2'), 9);
+      it('should respect precedence of multiply/divide and pow', function () {
+        assert.equal(parseAndEval('2*3^2'), 18);
+        assert.equal(parseAndEval('3^2*2'), 18);
+        assert.equal(parseAndEval('8/2^2'), 2);
+        assert.equal(parseAndEval('4^2/2'), 8);
+      });
 
-      assert.equal(parseAndEval('2^3!'), 64);
-      assert.equal(parseAndEval('2^(3!)'), 64);
+      it('should respect precedence of pow', function () {
+        assert.equal(parseAndEval('2^3'), 8);
+        assert.equal(parseAndEval('2^3^4'), Math.pow(2, Math.pow(3, 4)));
+        assert.equal(parseAndEval('1.5^1.5^1.5'), parseAndEval('1.5^(1.5^1.5)'));
+        assert.equal(parseAndEval('1.5^1.5^1.5^1.5'), parseAndEval('1.5^(1.5^(1.5^1.5))'));
+      });
 
-      assert.equal(parseAndEval('-4!'), -24);
-      assert.equal(parseAndEval('3!+2'), 8);
+      it('should respect precedence of unary minus and pow', function () {
+        assert.equal(parseAndEval('-3^2'), -9);
+        assert.equal(parseAndEval('(-3)^2'), 9);
+        assert.equal(parseAndEval('2^-2'), 0.25);
+      });
 
-      assert.equal(parseAndEval('2 > 3 ? true : false'), false);
-      assert.equal(parseAndEval('2 == 3 ? true : false'), false);
-      assert.equal(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6);
-      assert.deepEqual(parseAndEval('3 ? true : false; 22'), [22]);
-      assert.deepEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'));
-      assert.deepEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), new Matrix([1,2]));
-      assert.deepEqual(parseAndEval('false ? 1:2:6'), new Matrix([2,3,4,5,6]));
+      it('should respect precedence of factorial and pow', function () {
+        assert.equal(parseAndEval('2^3!'), 64);
+        assert.equal(parseAndEval('2^(3!)'), 64);
+        assert.equal(parseAndEval('3!^2'), 36);
+      });
+
+      it('should respect precedence of factorial and (unary) plus/minus', function () {
+        assert.equal(parseAndEval('-4!'), -24);
+        assert.equal(parseAndEval('3!+2'), 8);
+      });
+
+      it('should respect precedence of transpose', function () {
+        // TODO: test transpose
+      });
+
+      it('should respect precedence of conditional operator and other operators', function () {
+        assert.equal(parseAndEval('2 > 3 ? true : false'), false);
+        assert.equal(parseAndEval('2 == 3 ? true : false'), false);
+        assert.equal(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6);
+        assert.deepEqual(parseAndEval('3 ? true : false; 22'), [22]);
+        assert.deepEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'));
+        assert.deepEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), new Matrix([1,2]));
+        assert.deepEqual(parseAndEval('false ? 1:2:6'), new Matrix([2,3,4,5,6]));
+      });
 
       // TODO: extensively test operator precedence
 
