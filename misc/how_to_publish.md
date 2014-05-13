@@ -90,9 +90,9 @@ The website is located in the gh-pages branch of the project.
 
 Wait until the new version is available on cdnjs.org.
 
-Copy the files `./dist/math.js` and `./dist/math.min.js` from the master branch
-to the folder `js/lib` of the gh-pages branch of the math.js project.
-Run the following script in the root of the project:
+Copy the files `./dist/math.js`, `./dist/math.min.js`, and `./dist/math.map` 
+from the master branch to the folder `js/lib` of the gh-pages branch of the 
+math.js project. Run the following script in the root of the project:
 
     node updateversion.js
 

@@ -6,7 +6,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.21.1
+ * @version 0.21.2-SNAPSHOT
  * @date    2014-05-13
  *
  * @license
@@ -13828,13 +13828,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {/*! decimal.js v2.0.2 https://github.com/MikeMcl/decimal.js/LICENCE */
+	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {/*! decimal.js v2.0.3 https://github.com/MikeMcl/decimal.js/LICENCE */
 	;(function (global) {
 	    'use strict';
 
 
 	    /*
-	     *  decimal.js v2.0.2
+	     *  decimal.js v2.0.3
 	     *  An arbitrary-precision Decimal type for JavaScript.
 	     *  https://github.com/MikeMcl/decimal.js
 	     *  Copyright (c) 2014 Michael Mclaughlin <M8ch88l@gmail.com>
@@ -15282,7 +15282,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var x = this;
 
 	        // Ensure zero has correct sign.
-	        return +x || ( x | 0 ) * x['s'];
+	        return +x || ( x['s'] ? 0 * x['s'] : NaN );
 	    };
 
 
@@ -16375,7 +16375,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return x;
 	            }
 
-	            // Remove any digits after the required decimal places.
+	            // Truncate excess digits.
 	            if ( xc.length > sd ) {
 	                xc.length = sd;
 	            }
