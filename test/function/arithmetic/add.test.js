@@ -92,6 +92,14 @@ describe('add', function() {
     assert.equal(add(123, 'str'), '123str');
   });
 
+  it('should concatenate strings and matrices element wise', function() {
+    assert.deepEqual(add('A', ['B', 'C']), ['AB', 'AC']);
+    assert.deepEqual(add(['B', 'C'], 'A'), ['BA', 'CA']);
+
+    assert.deepEqual(add('A', math.matrix(['B', 'C'])), math.matrix(['AB', 'AC']));
+    assert.deepEqual(add(math.matrix(['B', 'C']), 'A'), math.matrix(['BA', 'CA']));
+  });
+
   it('should add matrices correctly', function() {
     var a2 = math.matrix([[1,2],[3,4]]);
     var a3 = math.matrix([[5,6],[7,8]]);

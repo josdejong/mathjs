@@ -174,17 +174,10 @@ The parser contains the following functions:
 
 - `clear()`
   Completely clear the parser's scope.
-- `compile(expr)`
-  Parse and compile an expression into javascript code.
-  Returns an Object with function `eval([scope])`, which when executed
-  returns the result of the expression.
 - `eval(expr)`
   Evaluate an expression. Returns the result of the expression.
 - `get(name)`
   Retrieve a variable or function from the parser's scope.
-- `parse(expr)`
-  Parse an expression into a node tree. Returns a `Node`, which can be
-  compiled and evaluated like `node.compile(math).eval([scope])`.
 - `remove(name)`
   Remove a variable or function from the parser's scope.
 - `set(name, value)`

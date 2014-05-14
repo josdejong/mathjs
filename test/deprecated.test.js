@@ -53,13 +53,6 @@ describe('deprecated stuff', function() {
     }, /is deprecated/);
   });
 
-  it ('should throw an error when using deprecated math.expression.Scope', function () {
-    var math = mathjs();
-    assert.throws(function () {
-      new math.expression.Scope();
-    }, /is deprecated/);
-  });
-
   it ('should throw an error when using deprecated Node.eval', function () {
     var math = mathjs();
     assert.throws(function () {

@@ -40,6 +40,9 @@ var webpackConfig = {
     path: DIST,
     filename: FILE
   },
+  externals: [
+    'crypto' // is referenced by decimal.js
+  ],
   plugins: [ bannerPlugin ],
   cache: true
 };
