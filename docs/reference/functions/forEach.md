@@ -1,20 +1,38 @@
 # Function forEach
 
-Execute a callback method on each entry of the matrix or the array.
+Iterate over all elements of a matrix/array, and executes the given callback function.
 
+
+## Syntax
+
+```js
+math.forEach(x, callback)
+```
 
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Matrix/array | The container to iterate on.
-`callback` | function | The callback method is invoked with three parameters: the value of the element, the index of the element, and the Matrix/array being traversed.
+`x` | Matrix &#124; Array | The matrix to iterate on.
+`callback` | Function | The callback function is invoked with three parameters: the value of the element, the index of the element, and the Matrix/array being traversed.
 
 ### Returns
 
 Type | Description
 ---- | -----------
  | undefined
+
+
+## Examples
+
+```js
+var math = mathjs();
+
+math.forEach([1, 2, 3], function(value) {
+console.log(value);
+});
+// outputs 1, 2, 3
+```
 
 
 

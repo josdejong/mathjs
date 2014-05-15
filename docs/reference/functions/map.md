@@ -3,18 +3,35 @@
 Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.
 
 
+## Syntax
+
+```js
+math.map(x, callback)
+```
+
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Matrix/array | The container to iterate on.
-`callback` | function | The callback method is invoked with three parameters: the value of the element, the index of the element, and the Matrix being traversed.
+`x` | Matrix &#124; Array | The matrix to iterate on.
+`callback` | Function | The callback method is invoked with three parameters: the value of the element, the index of the element, and the matrix being traversed.
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Matrix/array | container
+Matrix &#124; array | Transformed map of x
+
+
+## Examples
+
+```js
+var math = mathjs();
+
+math.map([1, 2, 3], function(value) {
+return value * value;
+});  // returns [1, 4, 9]
+```
 
 
 

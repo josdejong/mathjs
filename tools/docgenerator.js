@@ -279,7 +279,7 @@ function validateDoc (doc) {
     issues.push('function "' + doc.name + '": parameters missing');
   }
 
-  if (doc.returns) {
+  if (Object.keys(doc.returns).length > 0) {
     if (!doc.returns.description || !doc.returns.description.trim()) {
       issues.push('function "' + doc.name + '": description missing of returns');
     }

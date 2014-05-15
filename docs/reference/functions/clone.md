@@ -1,21 +1,38 @@
 # Function clone
 
-Clone an object
+Clone an object.
 
-    clone(x)
 
+## Syntax
+
+```js
+math.clone(x)
+```
 
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | * | 
+`x` | * | Object to be cloned
 
 ### Returns
 
 Type | Description
 ---- | -----------
-* | clone
+* | A clone of object x
+
+
+## Examples
+
+```js
+var math = mathjs();
+
+math.clone(3.5);              // returns number 3.5
+math.clone(2 - 4i);           // returns Complex 2 - 4i
+math.clone(45 deg);           // returns Unit 45 deg
+math.clone([[1, 2], [3, 4]]); // returns Array [[1, 2], [3, 4]]
+math.clone("hello world");    // returns string "hello world"
+```
 
 
 

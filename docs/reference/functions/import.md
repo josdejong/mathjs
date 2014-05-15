@@ -3,18 +3,49 @@
 Import functions from an object or a module
 
 
+## Syntax
+
+```js
+math.import(x)
+```
+
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`object` | String &#124; Object | 
-`options` | Object | Available options: {Boolean} override If true, existing functions will be overwritten. False by default. {Boolean} wrap If true (default), the functions will be wrapped in a wrapper function which converts data types like Matrix to primitive data types like Array. The wrapper is needed when extending math.js with libraries which do not support the math.js data types.
+`object` | String &#124; Object | Object with functions to be imported.
+`options` | Object | Available options: {Boolean} override If true, existing functions will be overwritten. False by default. {Boolean} wrap If true (default), the functions will be wrapped in a wrapper function which converts data types like Matrix to primitive data types like Array. The wrapper is needed when extending math.js with libraries which do not
 
 ### Returns
 
 Type | Description
 ---- | -----------
  | undefined
+
+
+## Examples
+
+```js
+var math = mathjs();
+
+// define new functions and variables
+math.import({
+myvalue: 42,
+hello: function (name) {
+return 'hello, ' + name + '!';
+}
+});
+
+// use the imported function and variable
+math.myvalue * 2;               // 84
+math.hello('user');             // 'hello, user!'
+
+// import the npm module numbers
+// (must be installed first with `npm install numbers`)
+math.import('numbers');
+
+math.fibonacci(7); // returns 13
+```
 
 
 

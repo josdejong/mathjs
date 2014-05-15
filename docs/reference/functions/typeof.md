@@ -1,6 +1,6 @@
 # Function typeof
 
-Determines the type of a variable.
+Determine the type of a variable.
 
 
 ## Syntax
@@ -13,13 +13,25 @@ math.typeof(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | * | 
+`x` | * | The variable for which to test the type.
 
 ### Returns
 
 Type | Description
 ---- | -----------
 String | Lower case type, for example 'number', 'string', 'array'.
+
+
+## Examples
+
+```js
+var math = mathjs();
+
+math.typeof(3.5);             // returns 'number'
+math.typeof(2 - 4i);          // returns 'complex'
+math.typeof(45 deg);          // returns 'unit'
+math.typeof("hello world");   // returns 'string'
+```
 
 
 

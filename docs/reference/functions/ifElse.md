@@ -5,6 +5,12 @@ Execute a conditional expression.
 In case of a matrix or array, the test is done element wise, the true and false part can be either a matrix/array with the same size of the condition, or a scalar value.
 
 
+## Syntax
+
+```js
+math.ifElse(condition, trueExpr, falseExpr
+```
+
 ### Parameters
 
 Parameter | Type | Description
@@ -18,6 +24,16 @@ Parameter | Type | Description
 Type | Description
 ---- | -----------
 * | The evaluated return expression
+
+
+## Examples
+
+```js
+var math = mathjs();
+
+math.ifElse(true, 'yes', 'no');           // returns 'yes'
+math.ifElse([4, 6, 0, -1], true, false);  // returns [true, true, false, true]
+```
 
 
 
