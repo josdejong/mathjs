@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.21.2
+
+- Fixed a bug in multiplying units without value with a number (like `5 * cm`).
+
+
 ## 2014-05-13, version 0.21.1
 
 - Removed `crypto` library from the bundle.

@@ -124,11 +124,29 @@ describe('multiply', function() {
     assert.equal(multiply(unit('5 mm'), 0).toString(), '0 m');
   });
 
+  it('should multiply a number and a unit without value correctly', function() {
+    assert.equal(multiply(2, unit('mm')).toString(), '2 mm');
+    assert.equal(multiply(2, unit('km')).toString(), '2 km');
+    assert.equal(multiply(2, unit('inch')).toString(), '2 inch');
+    assert.equal(multiply(unit('mm'), 2).toString(), '2 mm');
+    assert.equal(multiply(unit('km'), 2).toString(), '2 km');
+    assert.equal(multiply(unit('inch'), 2).toString(), '2 inch');
+  });
+
   it('should multiply a bignumber and a unit correctly', function() {
     assert.equal(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm');
     assert.equal(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm');
     assert.equal(multiply(unit('5 mm'), bignumber(2)).toString(), '10 mm');
     assert.equal(multiply(unit('5 mm'), bignumber(0)).toString(), '0 m');
+  });
+
+  it('should multiply a bignumber and a unit without value correctly', function() {
+    assert.equal(multiply(bignumber(2), unit('mm')).toString(), '2 mm');
+    assert.equal(multiply(bignumber(2), unit('km')).toString(), '2 km');
+    assert.equal(multiply(bignumber(2), unit('inch')).toString(), '2 inch');
+    assert.equal(multiply(unit('mm'), bignumber(2)).toString(), '2 mm');
+    assert.equal(multiply(unit('km'), bignumber(2)).toString(), '2 km');
+    assert.equal(multiply(unit('inch'), bignumber(2)).toString(), '2 inch');
   });
 
   it('should throw an error in case of unit non-numeric argument', function() {
