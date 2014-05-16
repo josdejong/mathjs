@@ -16,13 +16,6 @@ Parameter | Type | Description
 `x` | Matrix &#124; Array | The matrix to iterate on.
 `callback` | Function | The callback function is invoked with three parameters: the value of the element, the index of the element, and the Matrix/array being traversed.
 
-### Returns
-
-Type | Description
----- | -----------
- | undefined
-
-
 ## Examples
 
 ```js

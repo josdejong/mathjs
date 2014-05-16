@@ -16,13 +16,6 @@ Parameter | Type | Description
 `object` | String &#124; Object | Object with functions to be imported.
 `options` | Object | Available options: {Boolean} override If true, existing functions will be overwritten. False by default. {Boolean} wrap If true (default), the functions will be wrapped in a wrapper function which converts data types like Matrix to primitive data types like Array. The wrapper is needed when extending math.js with libraries which do not
 
-### Returns
-
-Type | Description
----- | -----------
- | undefined
-
-
 ## Examples
 
 ```js
