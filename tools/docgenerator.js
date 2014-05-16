@@ -24,7 +24,8 @@ function generateDoc(name, code) {
   // get text content inside block comment
   var comment = match[0].replace('/**', '')
       .replace('*/', '')
-      .replace(/\n\s*\* ?/g, '\n');
+      .replace(/\n\s*\* ?/g, '\n')
+      .replace(/\r/g, '');
 
   var lines = comment.split('\n'),
       line = '';
@@ -183,7 +184,7 @@ function generateDoc(name, code) {
   }
 
   function parseReturns() {
-    var match = /\s*@return\s*{(.*)}\s*(.*)?$/.exec(line);
+    var match = /\s*@returns?\s*{(.*)}\s*(.*)?$/.exec(line);
     if (match) {
       next();
 
@@ -213,7 +214,7 @@ function generateDoc(name, code) {
     examples: [],
     seeAlso: [],
     parameters: [],
-    returns: {}
+    returns: null
   };
 
   next();
@@ -279,7 +280,7 @@ function validateDoc (doc) {
     issues.push('function "' + doc.name + '": parameters missing');
   }
 
-  if (Object.keys(doc.returns).length > 0) {
+  if (doc.returns) {
     if (!doc.returns.description || !doc.returns.description.trim()) {
       issues.push('function "' + doc.name + '": description missing of returns');
     }
@@ -331,11 +332,13 @@ function generateMarkdown (doc, functions) {
       }).join('\n') +
       '\n\n';
 
-  text += '### Returns\n\n' +
-      'Type | Description\n' +
-      '---- | -----------\n' +
-      (doc.returns.types ? doc.returns.types.join(' &#124; ') : '') + ' | ' + doc.returns.description +
-      '\n\n\n';
+  if (doc.returns) {
+    text += '### Returns\n\n' +
+        'Type | Description\n' +
+        '---- | -----------\n' +
+        (doc.returns.types ? doc.returns.types.join(' &#124; ') : '') + ' | ' + doc.returns.description +
+        '\n\n\n';
+  }
 
   if (doc.examples && doc.examples.length) {
     text += '## Examples\n\n' +
