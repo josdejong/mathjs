@@ -84,4 +84,15 @@ describe('ConstantNode', function() {
     assert.equal(new ConstantNode('null', 'null').toString(), 'null');
   });
 
+  it ('should LaTeX a ConstantNode', function () {
+    assert.equal(new ConstantNode('number', '3').toTex(), '3');
+    assert.deepEqual(new ConstantNode('number', '3', bigmath).toTex(), '3');
+    assert.equal(new ConstantNode('string', 'hi').toTex(), '\\text{hi}');
+    assert.deepEqual(new ConstantNode('complex', '3').toTex(), '3i');
+    assert.equal(new ConstantNode('boolean', 'true').toTex(), 'true');
+    assert.equal(new ConstantNode('boolean', 'false').toTex(), 'false');
+    assert.equal(new ConstantNode('undefined', 'undefined').toTex(), 'undefined');
+    assert.equal(new ConstantNode('null', 'null').toTex(), 'null');
+  });
+
 });

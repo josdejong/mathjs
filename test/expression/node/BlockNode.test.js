@@ -79,4 +79,13 @@ describe('BlockNode', function() {
     assert.equal(n.toString(), '5\nfoo = 3;\nfoo');
   });
 
+  it ('should LaTeX a BlockNode', function () {
+    var n = new BlockNode();
+    n.add(new ConstantNode('number', '5'), true);
+    n.add(new AssignmentNode('foo', new ConstantNode('number', '3')), false);
+    n.add(new SymbolNode('foo'), true);
+
+    assert.equal(n.toTex(), '5\n{foo}={3};\nfoo');
+  });
+
 });

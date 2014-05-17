@@ -83,4 +83,14 @@ describe('FunctionNode', function() {
     assert.equal(n.toString(), 'function f(x) = 2 + x');
   });
 
+  it ('should LaTeX a FunctionNode', function() {
+    var a = new ConstantNode('number', '2');
+    var x = new SymbolNode('x');
+    var o = new OperatorNode('/', 'divide', [x, a]);
+    var p = new OperatorNode('^', 'pow', [o, a]);
+    var n = new FunctionNode('f', ['x'], p);
+
+    assert.equal(n.toTex(), 'f\\left({x}\\right)={\\left({\\frac{x}{2}}\\right)^{2}}');
+  });
+
 });

@@ -39,6 +39,11 @@ describe('Node', function() {
     assert.equal(node.toString(), '');
   });
 
+  it ('should LaTeX a Node', function () {
+    var node = new Node();
+    assert.equal(node.toTex(), '');
+  });
+
   it ('should throw an error in case of wrong arguments for compile', function () {
     var node = new Node();
     assert.throws(function () {

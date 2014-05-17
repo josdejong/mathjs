@@ -120,4 +120,59 @@ describe('OperatorNode', function() {
     assert.equal(n3.toString(), '(2 + 3) * (4 - 5)');
   });
 
+  it ('should LaTeX a OperatorNode', function () {
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    var c = new ConstantNode('number', '4');
+
+    var n = new OperatorNode('+', 'add', [a, b]);
+    assert.equal(n.toTex(), '{2}+{3}');
+  });
+
+  it ('should LaTeX a OperatorNode with factorial', function () {
+    var a = new ConstantNode('number', '2');
+    var n = new OperatorNode('!', 'factorial', [a]);
+    assert.equal(n.toTex(), '2!');
+  });
+
+  it ('should LaTeX a OperatorNode with unary minus', function () {
+    var a = new ConstantNode('number', '2');
+    var n = new OperatorNode('-', 'unary', [a]);
+    assert.equal(n.toTex(), '-2');
+  });
+
+  it ('should LaTeX a OperatorNode with zero arguments', function () {
+    var n = new OperatorNode('foo', 'foo', []);
+    assert.equal(n.toTex(), 'foo()');
+  });
+
+  it ('should LaTeX a OperatorNode with more than two operators', function () {
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    var c = new ConstantNode('number', '4');
+
+    var n = new OperatorNode('foo', 'foo', [a, b, c]);
+    assert.equal(n.toTex(), 'foo(2, 3, 4)');
+
+  });
+
+  it ('should LaTeX a OperatorNode with nested operator nodes', function () {
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    var c = new ConstantNode('number', '4');
+    var d = new ConstantNode('number', '5');
+
+    var n1 = new OperatorNode('+', 'add', [a, b]);
+    var n2 = new OperatorNode('-', 'subtract', [c, d]);
+    var n3 = new OperatorNode('*', 'multiply', [n1, n2]);
+
+    var m2 = new OperatorNode('*', 'multiply', [n1, c]);
+    var m3 = new OperatorNode('-', 'subtract', [m2, d]);
+
+    assert.equal(n1.toTex(), '{2}+{3}');
+    assert.equal(n2.toTex(), '{4}-{5}');
+    assert.equal(n3.toTex(), '\\left({{2}+{3}}\\right)\\cdot\\left({{4}-{5}}\\right)');
+    assert.equal(m3.toTex(), '{\\left({{2}+{3}}\\right)\\cdot{4}}-{5}');
+  });
+
 });

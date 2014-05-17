@@ -70,4 +70,13 @@ describe('UnitNode', function() {
     assert.equal(n.toString(), '5 cm');
   });
 
+  it ('should LaTeX a UnitNode', function () {
+    var c = new ConstantNode('number', '5');
+    var n = new UnitNode(c, 'cm');
+    var d = new UnitNode(c, 'deg');
+
+    assert.equal(n.toTex(), '5\\,\\mathrm{cm}');
+    assert.equal(d.toTex(), '5^{\\circ}');
+  });
+
 });

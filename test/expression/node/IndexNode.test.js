@@ -156,4 +156,18 @@ describe('IndexNode', function() {
     assert.equal(n2.toString(), 'a[]')
   });
 
+  it ('should LaTeX an IndexNode', function () {
+    var a = new SymbolNode('a');
+    var ranges = [
+      new ConstantNode('number', '2'),
+      new ConstantNode('number', '1')
+    ];
+
+    var n = new IndexNode(a, ranges);
+    assert.equal(n.toTex(), 'a[2, 1]');
+
+    var n2 = new IndexNode(a, []);
+    assert.equal(n2.toTex(), 'a[]')
+  });
+
 });

@@ -97,4 +97,16 @@ describe('ArrayNode', function() {
     assert.equal(n.toString(), '[1, 2, 3, 4]');
   });
 
+  it ('should LaTeX an ArrayNode', function () {
+    var a = new ConstantNode('number', '1');
+    var b = new ConstantNode('number', '2');
+    var c = new ConstantNode('number', '3');
+    var d = new ConstantNode('number', '4');
+    var v1 = new ArrayNode([a, b]);
+    var v2 = new ArrayNode([c, d]);
+    var n = new ArrayNode([v1, v2]);
+
+    assert.equal(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}');
+  });
+
 });
