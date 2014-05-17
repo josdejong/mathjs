@@ -1,6 +1,7 @@
 # Function xgcd
 
-Calculate the extended greatest common divisor for two values. See http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
+Calculate the extended greatest common divisor for two values.
+See http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
 
 
 ## Syntax

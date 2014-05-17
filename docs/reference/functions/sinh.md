@@ -1,6 +1,7 @@
 # Function sinh
 
-Calculate the hyperbolic sine of a value, defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
+Calculate the hyperbolic sine of a value,
+defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
 
 For matrices, the function is evaluated element wise.
 

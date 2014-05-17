@@ -1,8 +1,10 @@
 # Function combinations
 
-Compute the number of ways of picking `k` unordered outcomes from `n` possibilities.
+Compute the number of ways of picking `k` unordered outcomes from `n`
+possibilities.
 
-Combinations only takes integer arguments. The following condition must be enforced: k <= n.
+Combinations only takes integer arguments.
+The following condition must be enforced: k <= n.
 
 
 ## Syntax

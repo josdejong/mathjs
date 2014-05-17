@@ -2,11 +2,21 @@
 
 Get or set a subset of a matrix or string
 
-Usage:     // retrieve subset:     var subset = math.subset(value, index)
+Usage:
+    // retrieve subset:
+    var subset = math.subset(value, index)
 
-    // replace subset:     var value = math.subset(value, index, replacement [, defaultValue])
+    // replace subset:
+    var value = math.subset(value, index, replacement [, defaultValue])
 
-Where:     {Array | Matrix | String} value  An array, matrix, or string     {Index} index                    An index containing ranges for each                                      dimension     {*} replacement                  An array, matrix, or scalar     {*} [defaultValue]        Default value, filled in on new entries when                               the matrix is resized. If not provided,                               new matrix elements will be left undefined.
+Where:
+    {Array | Matrix | String} value  An array, matrix, or string
+    {Index} index                    An index containing ranges for each
+                                     dimension
+    {*} replacement                  An array, matrix, or scalar
+    {*} [defaultValue]        Default value, filled in on new entries when
+                              the matrix is resized. If not provided,
+                              new matrix elements will be left undefined.
 
 
 ### Parameters

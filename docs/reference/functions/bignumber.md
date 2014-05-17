@@ -1,6 +1,7 @@
 # Function bignumber
 
-Create a BigNumber, which can store numbers with arbitrary precision. When a matrix is provided, all elements will be converted to BigNumber.
+Create a BigNumber, which can store numbers with arbitrary precision.
+When a matrix is provided, all elements will be converted to BigNumber.
 
 
 ## Syntax
@@ -33,7 +34,6 @@ math.bignumber(0.1) + math.bignumber(0.2);  // returns BigNumber 0.3
 
 7.2e500;                                    // returns Number Infinity
 math.bignumber('7.2e500');                  // returns BigNumber 7.2e500
-
 ```
 
 

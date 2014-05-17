@@ -1,6 +1,7 @@
 # Function divide
 
-Divide two values, `x / y`. To divide matrices, `x` is multiplied with the inverse of `y`: `x * inv(y)`.
+Divide two values, `x / y`.
+To divide matrices, `x` is multiplied with the inverse of `y`: `x * inv(y)`.
 
 
 ## Syntax

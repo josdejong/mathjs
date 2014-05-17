@@ -1,6 +1,7 @@
 # Function re
 
-Get the real part of a complex number. For a complex number `a + bi`, the function returns `a`.
+Get the real part of a complex number.
+For a complex number `a + bi`, the function returns `a`.
 
 For matrices, the function is evaluated element wise.
 

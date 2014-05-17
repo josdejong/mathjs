@@ -1,6 +1,7 @@
 # Function arg
 
-Compute the argument of a complex value. For a complex number `a + bi`, the argument is computed as `atan2(b, a)`.
+Compute the argument of a complex value.
+For a complex number `a + bi`, the argument is computed as `atan2(b, a)`.
 
 For matrices, the function is evaluated element wise.
 

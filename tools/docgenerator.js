@@ -59,26 +59,28 @@ function generateDoc(name, code) {
     while (exists() && empty()) next();
   }
 
+  function stripLeadingSpaces(lines) {
+    var spaces = null;
+    lines.forEach(function (line) {
+      var match = /^ +/.exec(line);
+      var s = match && match[0] && match[0].length;
+      if (s > 0 && (spaces == null || s < spaces)) {
+        spaces = s;
+      }
+    });
+
+    if (spaces) {
+      lines.forEach(function (line, index) {
+        lines[index] = line.substring(spaces);
+      })
+    }
+  }
+
   function parseDescription () {
     var description = '';
 
     while (exists() && !isHeader() && !isAnnotation()) {
-      if (empty()) {
-        description += '\n\n';
-      }
-      else {
-        var last = description.charAt(description.length - 1);
-        var first = line.charAt(0);
-        if ((first == '-' || first == '+') && last != '\n') {
-          // markdown list
-          description += '\n';
-          // TODO: numbered list
-        }
-        else {
-          if (last && last != '\n') description += ' ';
-        }
-      }
-      description += line;
+      description += line + '\n';
 
       next();
     }
@@ -97,9 +99,10 @@ function generateDoc(name, code) {
       skipEmptyLines();
 
       while (exists() && !empty()) {
-        doc.syntax.push(line.trim());
+        doc.syntax.push(line);
         next();
       }
+      stripLeadingSpaces(doc.syntax);
 
       skipEmptyLines();
 
@@ -114,9 +117,10 @@ function generateDoc(name, code) {
       skipEmptyLines();
 
       while (exists() && (empty() || line.charAt(0) == ' ')) {
-        doc.examples.push(line.trim());
+        doc.examples.push(line);
         next();
       }
+      stripLeadingSpaces(doc.examples);
 
       if (doc.examples[doc.examples.length - 1].trim() == '') doc.examples.pop();
 

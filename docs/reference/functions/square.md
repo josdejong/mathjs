@@ -1,6 +1,7 @@
 # Function square
 
-Compute the square of a value, `x * x`. For matrices, the function is evaluated element wise.
+Compute the square of a value, `x * x`.
+For matrices, the function is evaluated element wise.
 
 
 ## Syntax

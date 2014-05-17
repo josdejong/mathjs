@@ -1,6 +1,8 @@
 # Function atan2
 
-Calculate the inverse tangent function with two arguments, y/x. By providing two arguments, the right quadrant of the computed angle can be determined.
+Calculate the inverse tangent function with two arguments, y/x.
+By providing two arguments, the right quadrant of the computed angle can be
+determined.
 
 For matrices, the function is evaluated element wise.
 

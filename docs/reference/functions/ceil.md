@@ -1,6 +1,8 @@
 # Function ceil
 
-Round a value towards plus infinity If `x` is complex, both real and imaginary part are rounded towards plus infinity. For matrices, the function is evaluated element wise.
+Round a value towards plus infinity
+If `x` is complex, both real and imaginary part are rounded towards plus infinity.
+For matrices, the function is evaluated element wise.
 
 
 ## Syntax

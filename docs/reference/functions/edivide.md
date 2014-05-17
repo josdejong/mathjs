@@ -1,6 +1,7 @@
 # Function edivide
 
-Divide two matrices element wise. The function accepts both matrices and scalar values.
+Divide two matrices element wise. The function accepts both matrices and
+scalar values.
 
 
 ## Syntax

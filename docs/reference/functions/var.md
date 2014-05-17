@@ -1,8 +1,12 @@
 # Function var
 
-Compute the variance of a list of values In case of a (multi dimensional) array or matrix, the variance over all elements will be calculated.
+Compute the variance of a list of values
+In case of a (multi dimensional) array or matrix, the variance over all
+elements will be calculated.
 
-    var(a, b, c, ...)     var(A)     var(A, normalization)
+    var(a, b, c, ...)
+    var(A)
+    var(A, normalization)
 
 Where `normalization` is a string having one of the following values:
 

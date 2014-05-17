@@ -1,6 +1,7 @@
 # Function coth
 
-Calculate the hyperbolic cotangent of a value, defined as `coth(x) = 1 / tanh(x)`.
+Calculate the hyperbolic cotangent of a value,
+defined as `coth(x) = 1 / tanh(x)`.
 
 For matrices, the function is evaluated element wise.
 

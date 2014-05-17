@@ -23,10 +23,10 @@ var math = mathjs();
 
 // define new functions and variables
 math.import({
-myvalue: 42,
-hello: function (name) {
-return 'hello, ' + name + '!';
-}
+  myvalue: 42,
+  hello: function (name) {
+    return 'hello, ' + name + '!';
+  }
 });
 
 // use the imported function and variable

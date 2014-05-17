@@ -2,7 +2,10 @@
 
 Create a diagonal matrix or retrieve the diagonal of a matrix
 
-    diag(v)     diag(v, k)     diag(X)     diag(X, k)
+    diag(v)
+    diag(v, k)
+    diag(X)
+    diag(X, k)
 
 TODO: more documentation on diag
 

@@ -1,6 +1,7 @@
 # Function sech
 
-Calculate the hyperbolic secant of a value, defined as `sech(x) = 1 / cosh(x)`.
+Calculate the hyperbolic secant of a value,
+defined as `sech(x) = 1 / cosh(x)`.
 
 For matrices, the function is evaluated element wise.
 

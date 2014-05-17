@@ -1,10 +1,15 @@
 # Function median
 
-Compute the median of a list of values. The values are sorted and the middle value is returned. In case of an even number of values, the average of the two middle values is returned. Supported types of values are: Number, BigNumber, Unit
+Compute the median of a list of values. The values are sorted and the
+middle value is returned. In case of an even number of values,
+the average of the two middle values is returned.
+Supported types of values are: Number, BigNumber, Unit
 
-In case of a (multi dimensional) array or matrix, the median of all elements will be calculated.
+In case of a (multi dimensional) array or matrix, the median of all
+elements will be calculated.
 
-    median(a, b, c, ...)     median(A)
+    median(a, b, c, ...)
+    median(A)
 
 
 ### Parameters

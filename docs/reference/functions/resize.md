@@ -2,7 +2,8 @@
 
 Resize a matrix
 
-    resize(x, size)     resize(x, size, defaultValue)
+    resize(x, size)
+    resize(x, size, defaultValue)
 
 
 ### Parameters

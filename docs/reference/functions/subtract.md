@@ -1,6 +1,7 @@
 # Function subtract
 
-Subtract two values, `x - y`. For matrices, the function is evaluated element wise.
+Subtract two values, `x - y`.
+For matrices, the function is evaluated element wise.
 
 
 ## Syntax

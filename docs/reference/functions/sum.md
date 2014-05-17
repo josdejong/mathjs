@@ -1,8 +1,11 @@
 # Function sum
 
-Compute the sum of a list of values In case of a (multi dimensional) array or matrix, the sum of all elements will be calculated.
+Compute the sum of a list of values
+In case of a (multi dimensional) array or matrix, the sum of all
+elements will be calculated.
 
-    sum(a, b, c, ...)     sum(A)
+    sum(a, b, c, ...)
+    sum(A)
 
 
 ### Parameters

@@ -2,7 +2,8 @@
 
 Compute the factorial of a value
 
-Factorial only supports an integer value as argument. For matrices, the function is evaluated element wise.
+Factorial only supports an integer value as argument.
+For matrices, the function is evaluated element wise.
 
 
 ## Syntax

@@ -1,6 +1,7 @@
 # Function im
 
-Get the imaginary part of a complex number. For a complex number `a + bi`, the function returns `b`.
+Get the imaginary part of a complex number.
+For a complex number `a + bi`, the function returns `b`.
 
 For matrices, the function is evaluated element wise.
 

@@ -1,6 +1,7 @@
 # Function cube
 
-Compute the cube of a value, `x * x * x`. For matrices, the function is evaluated element wise.
+Compute the cube of a value, `x * x * x`.
+For matrices, the function is evaluated element wise.
 
 
 ## Syntax

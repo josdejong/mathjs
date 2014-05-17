@@ -1,6 +1,7 @@
 # Function cosh
 
-Calculate the hyperbolic cosine of a value, defined as `cosh(x) = 1/2 * (exp(x) + exp(-x))`.
+Calculate the hyperbolic cosine of a value,
+defined as `cosh(x) = 1/2 * (exp(x) + exp(-x))`.
 
 For matrices, the function is evaluated element wise.
 

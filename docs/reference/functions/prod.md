@@ -1,8 +1,11 @@
 # Function prod
 
-Compute the product of a list of values In case of a (multi dimensional) array or matrix, the product of all elements will be calculated.
+Compute the product of a list of values
+In case of a (multi dimensional) array or matrix, the product of all
+elements will be calculated.
 
-    prod(a, b, c, ...)     prod(A)
+    prod(a, b, c, ...)
+    prod(A)
 
 
 ### Parameters

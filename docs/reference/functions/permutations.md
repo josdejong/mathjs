@@ -1,8 +1,10 @@
 # Function permutations
 
-Compute the number of ways of obtaining an ordered subset of `k` elements from a set of `n` elements.
+Compute the number of ways of obtaining an ordered subset of `k` elements
+from a set of `n` elements.
 
-Permutations only takes integer arguments. The following condition must be enforced: k <= n.
+Permutations only takes integer arguments.
+The following condition must be enforced: k <= n.
 
 
 ## Syntax

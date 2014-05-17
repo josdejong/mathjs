@@ -1,6 +1,7 @@
 # Function emultiply
 
-Multiply two matrices element wise. The function accepts both matrices and scalar values.
+Multiply two matrices element wise. The function accepts both matrices and
+scalar values.
 
 
 ## Syntax

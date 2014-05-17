@@ -2,7 +2,9 @@
 
 Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
 
-x and y are considered equal when the relative difference between x and y is smaller than the configured epsilon. The function cannot be used to compare values smaller than approximately 2.22e-16.
+x and y are considered equal when the relative difference between x and y
+is smaller than the configured epsilon. The function cannot be used to
+compare values smaller than approximately 2.22e-16.
 
 For matrices, the function is evaluated element wise.
 

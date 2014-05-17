@@ -1,8 +1,12 @@
 # Function concat
 
-Concatenate two or more matrices Usage:     math.concat(A, B, C, ...)     math.concat(A, B, C, ..., dim)
+Concatenate two or more matrices
+Usage:
+    math.concat(A, B, C, ...)
+    math.concat(A, B, C, ..., dim)
 
-Where the optional dim is the zero-based number of the dimension to be concatenated.
+Where the optional dim is the zero-based number of the dimension to be
+concatenated.
 
 
 ### Parameters

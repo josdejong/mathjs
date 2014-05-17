@@ -1,6 +1,7 @@
 # Function parse
 
-Parse an expression. Returns a node tree which can be compiled and evaluated.
+Parse an expression.
+Returns a node tree which can be compiled and evaluated.
 
 
 ## Syntax
@@ -16,19 +17,21 @@ math.parse([expr1, expr2, expr3, ...], nodes)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`expr` | String &#124; String[] &#124; Matrix | 
-`nodes` | Object<String, Node> | 
+`expr` | String &#124; String[] &#124; Matrix | Expression to be parsed
+`nodes` | Object<String, Node> | Optional custom nodes
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Node &#124; Node[] | node
+Node &#124; Node[] | A node tree
 
 
 ## Examples
 
 ```js
+var math = mathjs();
+
 var node = math.parse('sqrt(3^2 + 4^2)');
 node.compile(math).eval(); // 5
 

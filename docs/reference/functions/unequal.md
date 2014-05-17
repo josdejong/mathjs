@@ -2,9 +2,12 @@
 
 Test whether two values are unequal.
 
-The function tests whether the relative difference between x and y is larger than the configured epsilon. The function cannot be used to compare values smaller than approximately 2.22e-16.
+The function tests whether the relative difference between x and y is
+larger than the configured epsilon. The function cannot be used to compare
+values smaller than approximately 2.22e-16.
 
-For matrices, the function is evaluated element wise. In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im.
+For matrices, the function is evaluated element wise.
+In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im.
 
 
 ## Syntax

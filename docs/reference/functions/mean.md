@@ -1,8 +1,13 @@
 # Function mean
 
-Compute the mean value of a list of values In case of a multi dimensional array, the mean of the flattened array will be calculated. When dim is provided, the maximum over the selected dimension will be calculated.
+Compute the mean value of a list of values
+In case of a multi dimensional array, the mean of the flattened array
+will be calculated. When dim is provided, the maximum over the selected
+dimension will be calculated.
 
-    mean(a, b, c, ...)     mean(A)     mean(A, dim)
+    mean(a, b, c, ...)
+    mean(A)
+    mean(A, dim)
 
 
 ### Parameters

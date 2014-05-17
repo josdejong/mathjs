@@ -1,6 +1,7 @@
 # Function csch
 
-Calculate the hyperbolic cosecant of a value, defined as `csch(x) = 1 / sinh(x)`.
+Calculate the hyperbolic cosecant of a value,
+defined as `csch(x) = 1 / sinh(x)`.
 
 For matrices, the function is evaluated element wise.
 

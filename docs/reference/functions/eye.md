@@ -2,7 +2,9 @@
 
 Create a 2-dimensional identity matrix with size m x n or n x n
 
-    eye(n)     eye(m, n)     eye([m, n])
+    eye(n)
+    eye(m, n)
+    eye([m, n])
 
 TODO: more documentation on eye
 

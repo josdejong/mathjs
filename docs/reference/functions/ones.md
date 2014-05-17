@@ -2,7 +2,10 @@
 
 Create a matrix filled with ones
 
-    ones(m)     ones(m, n)     ones([m, n])     ones([m, n, p, ...])
+    ones(m)
+    ones(m, n)
+    ones([m, n])
+    ones([m, n, p, ...])
 
 
 ### Parameters

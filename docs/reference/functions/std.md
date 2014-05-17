@@ -1,8 +1,13 @@
 # Function std
 
-Compute the standard deviation of a list of values, defined as the square root of the variance: std(A) = sqrt(var(A)). In case of a (multi dimensional) array or matrix, the standard deviation over all elements will be calculated.
+Compute the standard deviation of a list of values, defined as the
+square root of the variance: std(A) = sqrt(var(A)).
+In case of a (multi dimensional) array or matrix, the standard deviation
+over all elements will be calculated.
 
-    std(a, b, c, ...)     std(A)     std(A, normalization)
+    std(a, b, c, ...)
+    std(A)
+    std(A, normalization)
 
 Where `normalization` is a string having one of the following values:
 

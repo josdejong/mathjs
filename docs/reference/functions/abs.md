@@ -1,6 +1,7 @@
 # Function abs
 
-Calculate the absolute value of a number. For matrices, the function is evaluated element wise.
+Calculate the absolute value of a number. For matrices, the function is
+evaluated element wise.
 
 
 ## Syntax

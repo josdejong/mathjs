@@ -1,6 +1,7 @@
 # Function conj
 
-Compute the complex conjugate of a complex value. If `x = a+bi`, the complex conjugate of `x` is `a - bi`.
+Compute the complex conjugate of a complex value.
+If `x = a+bi`, the complex conjugate of `x` is `a - bi`.
 
 For matrices, the function is evaluated element wise.
 

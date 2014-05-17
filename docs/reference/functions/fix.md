@@ -1,6 +1,7 @@
 # Function fix
 
-Round a value towards zero. For matrices, the function is evaluated element wise.
+Round a value towards zero.
+For matrices, the function is evaluated element wise.
 
 
 ## Syntax

@@ -2,7 +2,10 @@
 
 create a matrix filled with zeros
 
-    zeros(m)     zeros(m, n)     zeros([m, n])     zeros([m, n, p, ...])
+    zeros(m)
+    zeros(m, n)
+    zeros([m, n])
+    zeros([m, n, p, ...])
 
 
 ### Parameters

@@ -1,6 +1,7 @@
 # Function exp
 
-Calculate the exponent of a value. For matrices, the function is evaluated element wise.
+Calculate the exponent of a value.
+For matrices, the function is evaluated element wise.
 
 
 ## Syntax

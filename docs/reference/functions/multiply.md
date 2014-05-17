@@ -1,6 +1,7 @@
 # Function multiply
 
-Multiply two values, `x * y`. For matrices, the matrix product is calculated.
+Multiply two values, `x * y`.
+For matrices, the matrix product is calculated.
 
 
 ## Syntax

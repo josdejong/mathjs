@@ -1,6 +1,8 @@
 # Function pow
 
-Calculates the power of x to y, `x ^ y`. Matrix exponentiation is supported for square matrices `x`, and positive integer exponents `y`.
+Calculates the power of x to y, `x ^ y`.
+Matrix exponentiation is supported for square matrices `x`, and positive
+integer exponents `y`.
 
 
 ## Syntax

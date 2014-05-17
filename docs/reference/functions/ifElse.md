@@ -2,7 +2,9 @@
 
 Execute a conditional expression.
 
-In case of a matrix or array, the test is done element wise, the true and false part can be either a matrix/array with the same size of the condition, or a scalar value.
+In case of a matrix or array, the test is done element wise, the
+true and false part can be either a matrix/array with the same size
+of the condition, or a scalar value.
 
 
 ## Syntax

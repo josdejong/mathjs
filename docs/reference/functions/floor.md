@@ -1,6 +1,7 @@
 # Function floor
 
-Round a value towards minus infinity. For matrices, the function is evaluated element wise.
+Round a value towards minus infinity.
+For matrices, the function is evaluated element wise.
 
 
 ## Syntax

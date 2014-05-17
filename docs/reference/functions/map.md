@@ -1,6 +1,7 @@
 # Function map
 
-Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.
+Create a new matrix or array with the results of the callback function executed on
+each entry of the matrix/array.
 
 
 ## Syntax
@@ -29,7 +30,7 @@ Matrix &#124; array | Transformed map of x
 var math = mathjs();
 
 math.map([1, 2, 3], function(value) {
-return value * value;
+  return value * value;
 });  // returns [1, 4, 9]
 ```
 

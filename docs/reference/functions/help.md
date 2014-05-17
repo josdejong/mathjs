@@ -1,19 +1,37 @@
 # Function help
 
-Retrieve help on a function or data type. Help files are retrieved from the documentation in math.expression.docs.
+Retrieve help on a function or data type.
+Help files are retrieved from the documentation in math.expression.docs.
 
+
+## Syntax
+
+```js
+math.help(search)
+```
 
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`search` | function &#124; string &#124; Object | 
+`search` | function &#124; string &#124; Object | A function or function name for which to get help
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Help | help
+Help | A help object
+
+
+## Examples
+
+```js
+var math = mathjs();
+
+console.log(math.help('sin').toString());
+console.log(math.help(math.add).toString());
+console.log(math.help(math.add).toJSON());
+```
 
 
 

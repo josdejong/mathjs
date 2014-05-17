@@ -2,7 +2,9 @@
 
 Inverse the sign of a value, apply a unary minus operation.
 
-For matrices, the function is evaluated element wise. Boolean values will be converted to a number. For complex numbers, both real and complex value are inverted.
+For matrices, the function is evaluated element wise. Boolean values will
+be converted to a number. For complex numbers, both real and complex
+value are inverted.
 
 
 ## Syntax

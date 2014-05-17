@@ -1,6 +1,7 @@
 # Function round
 
-Round a value towards the nearest integer. For matrices, the function is evaluated element wise.
+Round a value towards the nearest integer.
+For matrices, the function is evaluated element wise.
 
 
 ## Syntax
