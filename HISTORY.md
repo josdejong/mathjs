@@ -5,6 +5,8 @@ https://github.com/josdejong/mathjs
 ## not yet released, version 0.21.2
 
 - Fixed a bug in multiplying units without value with a number (like `5 * cm`).
+- Fixed a bug in multiplying two matrices containing vectors (worked fine for 
+  arrays).
 
 
 ## 2014-05-13, version 0.21.1

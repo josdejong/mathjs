@@ -191,6 +191,9 @@ describe('multiply', function() {
 
     approx.deepEqual(multiply(a, b), [26, 38, 26]);
     approx.deepEqual(multiply(b, a), [28, 34, 28]);
+
+    approx.deepEqual(multiply(matrix(a), matrix(b)), matrix([26, 38, 26]));
+    approx.deepEqual(multiply(matrix(b), matrix(a)), matrix([28, 34, 28]));
   });
 
   it('should multiply vectors correctly (dot product)', function () {
@@ -198,6 +201,7 @@ describe('multiply', function() {
     var b = [4, 5, 6];
 
     approx.deepEqual(multiply(a, b), 32);
+    approx.deepEqual(multiply(matrix(a), matrix(b)), 32);
   });
 
   it('should throw an error when multiplying empty vectors', function () {
@@ -210,6 +214,13 @@ describe('multiply', function() {
 
     approx.deepEqual(multiply(a, matrix(b)), matrix([[2, 4], [6, 8]]));
     approx.deepEqual(multiply(matrix(a), b), matrix([[2, 4], [6, 8]]));
+
+    // test with vectors, returning a scalar
+    var c = [1, 2, 3];
+    var d = [4, 5, 6];
+
+    assert.strictEqual(multiply(c, matrix(d)), 32);
+    assert.strictEqual(multiply(matrix(c), d), 32);
   });
 
   it('should throw an error when multiplying matrices with incompatible sizes', function() {
