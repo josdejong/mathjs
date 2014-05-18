@@ -173,9 +173,9 @@ describe('multiply', function() {
   it('should perform matrix multiplication', function () {
     approx.deepEqual(multiply(a, b), matrix([[19,22],[43,50]]));
     approx.deepEqual(multiply(a, c), matrix([[17],[39]]));
-    approx.deepEqual(multiply(d, a), matrix([[23,34]]));
-    approx.deepEqual(multiply(d, b), matrix([[67,78]]));
-    approx.deepEqual(multiply(d, c), matrix([[61]]));
+    approx.deepEqual(multiply(d, a), matrix([23,34]));
+    approx.deepEqual(multiply(d, b), matrix([67,78]));
+    approx.deepEqual(multiply(d, c), 61);
     approx.deepEqual(multiply([[1,2],[3,4]], [[5,6],[7,8]]), [[19,22],[43,50]]);
     approx.deepEqual(multiply([1,2,3,4], 2), [2, 4, 6, 8]);
     approx.deepEqual(multiply(matrix([1,2,3,4]), 2), matrix([2, 4, 6, 8]));
@@ -221,6 +221,26 @@ describe('multiply', function() {
 
     assert.strictEqual(multiply(c, matrix(d)), 32);
     assert.strictEqual(multiply(matrix(c), d), 32);
+  });
+
+  describe('squeeze', function () {
+    it ('should squeeze matrix * matrix', function () {
+      var a = [[1, 2, 3]];
+      var b = [[4], [5], [6]];
+      assert.strictEqual(multiply(a, b), 32);
+    });
+
+    it ('should squeeze vector * matrix', function () {
+      var a = [1, 2, 3];
+      var b = [[4], [5], [6]];
+      assert.strictEqual(multiply(a, b), 32);
+    });
+
+    it ('should squeeze matrix * vector', function () {
+      var a = [[1, 2, 3]];
+      var b = [4, 5, 6];
+      assert.strictEqual(multiply(a, b), 32);
+    });
   });
 
   it('should throw an error when multiplying matrices with incompatible sizes', function() {

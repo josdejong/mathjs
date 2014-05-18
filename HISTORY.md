@@ -4,6 +4,7 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.21.2
 
+- Output of matrix multiplication is now consistently squeezed.
 - Fixed a bug in multiplying units without value with a number (like `5 * cm`).
 - Fixed a bug in multiplying two matrices containing vectors (worked fine for 
   arrays).
