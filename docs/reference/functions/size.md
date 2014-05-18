@@ -1,21 +1,39 @@
 # Function size
 
-Calculate the size of a matrix or scalar
+Calculate the size of a matrix or scalar.
 
-    size(x)
 
+## Syntax
+
+```js
+math.size(x)
+```
 
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Boolean &#124; Number &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | 
+`x` | Boolean &#124; Number &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | A matrix
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Array &#124; Matrix | res
+Array &#124; Matrix | A vector with size of `x`.
+
+
+## Examples
+
+```js
+var math = mathjs();
+
+math.size(2.3);                  // returns []
+math.size('hello world');        // returns [11]
+
+var A = [[1, 2, 3], [4, 5, 6]];
+math.size(A);                    // returns [2, 3]
+math.size(math.range(1,6));      // returns [5]
+```
 
 
 

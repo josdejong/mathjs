@@ -43,7 +43,10 @@ scope.a = 5;
 code.eval(scope); // 20
 
 var nodes = math.parse(['a = 3', 'b = 4', 'a * b']);
-nodes[2].compile(math).eval(); // 12
+var scope2 = {};
+nodes.map(function(node) {
+  return node.compile(math).eval(scope2);
+});  // returns [3, 4, 12]
 ```
 
 

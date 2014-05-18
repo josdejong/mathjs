@@ -1,6 +1,6 @@
 # Function multiply
 
-Multiply two values, `x * y`.
+Multiply two values, `x * y`. The result is squeezed.
 For matrices, the matrix product is calculated.
 
 

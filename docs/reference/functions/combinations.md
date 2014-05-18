@@ -17,7 +17,8 @@ math.combinations(n, k)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-
+`n` | Number &#124; BigNumber | Total number of objects in the set
+`k` | Number &#124; BigNumber | Number of objects in the subset
 
 ### Returns
 
