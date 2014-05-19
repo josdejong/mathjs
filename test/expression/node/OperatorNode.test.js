@@ -171,8 +171,8 @@ describe('OperatorNode', function() {
 
     assert.equal(n1.toTex(), '{2}+{3}');
     assert.equal(n2.toTex(), '{4}-{5}');
-    assert.equal(n3.toTex(), '\\left({{2}+{3}}\\right)\\cdot\\left({{4}-{5}}\\right)');
-    assert.equal(m3.toTex(), '{\\left({{2}+{3}}\\right)\\cdot{4}}-{5}');
+    assert.equal(n3.toTex(), '\\left({{2}+{3}}\\right) \\cdot \\left({{4}-{5}}\\right)');
+    assert.equal(m3.toTex(), '{\\left({{2}+{3}}\\right) \\cdot {4}}-{5}');
   });
 
 });
