@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.21.2-SNAPSHOT
- * @date    2014-05-13
+ * @date    2014-05-20
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -4983,7 +4983,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     var code = math.compile(expr)
 	   *     var codes = math.compile([expr1, expr2, expr3, ...])
 	   *
-	   * Example:
+	   * Examples:
 	   *
 	   *     var code = math.compile('sqrt(3^2 + 4^2)');
 	   *     code.eval(); // 5
@@ -4997,8 +4997,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     var nodes = math.compile(['a = 3', 'b = 4', 'a * b']);
 	   *     nodes[2].eval(); // 12
 	   *
+	   * See also:
+	   *
+	   *    parse, eval
+	   *
 	   * @param {String | String[] | Matrix} expr
-	   * @return {Object | Object[]} code
+	   *            The expression to be compiled
+	   * @return {{eval: Function} | Array.<{eval: Function}>} code
+	   *            An object with the compiled expression
 	   * @throws {Error}
 	   */
 	  math.compile = function compile (expr) {
@@ -5057,9 +5063,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     var scope = {a:3, b:4};
 	   *     math.eval('a * b', scope);           // 12
 	   *
-	   * @param {String | String[] | Matrix} expr
-	   * @param {Object} [scope]
-	   * @return {*} res
+	   * See also:
+	   *
+	   *    parse, compile
+	   *
+	   * @param {String | String[] | Matrix} expr   The expression to be evaluated
+	   * @param {Object} [scope]                    Scope to read/write variables
+	   * @return {*} The result of the expression
 	   * @throws {Error}
 	   */
 	  math.eval = function _eval (expr, scope) {
@@ -5101,8 +5111,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Retrieve help on a function or data type.
 	   * Help files are retrieved from the documentation in math.expression.docs.
-	   * @param {function | string | Object} search
-	   * @return {Help} help
+	   *
+	   * Syntax:
+	   *
+	   *    math.help(search)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    console.log(math.help('sin').toString());
+	   *    console.log(math.help(math.add).toString());
+	   *    console.log(math.help(math.add).toJSON());
+	   *
+	   * @param {function | string | Object} search   A function or function name
+	   *                                              for which to get help
+	   * @return {Help} A help object
 	   */
 	  math.help = function help(search) {
 	    if (arguments.length != 1) {
@@ -5168,6 +5192,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Example:
 	   *
+	   *     var math = mathjs();
+	   *
 	   *     var node = math.parse('sqrt(3^2 + 4^2)');
 	   *     node.compile(math).eval(); // 5
 	   *
@@ -5179,11 +5205,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     code.eval(scope); // 20
 	   *
 	   *     var nodes = math.parse(['a = 3', 'b = 4', 'a * b']);
-	   *     nodes[2].compile(math).eval(); // 12
+	   *     var scope2 = {};
+	   *     nodes.map(function(node) {
+	   *       return node.compile(math).eval(scope2);
+	   *     });  // returns [3, 4, 12]
 	   *
-	   * @param {String | String[] | Matrix} expr
-	   * @param {Object<String, Node>} [nodes]
-	   * @return {Node | Node[]} node
+	   * @param {String | String[] | Matrix} expr   Expression to be parsed
+	   * @param {Object<String, Node>} [nodes]      Optional custom nodes
+	   * @return {Node | Node[]} A node tree
 	   * @throws {Error}
 	   */
 	  math.parse = function parse (expr, nodes) {
@@ -5211,14 +5240,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the absolute value of a value.
+	   * Calculate the absolute value of a number. For matrices, the function is
+	   * evaluated element wise.
 	   *
-	   *     abs(x)
+	   * Syntax:
 	   *
-	   * For matrices, the function is evaluated element wise.
+	   *    math.abs(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.abs(3.5);                // returns Number 3.5
+	   *    math.abs(-4.2);               // returns Number 4.2
+	   *
+	   *    math.abs([3, -5, -1, 0, 2]);  // returns Array [3, 5, 1, 0, 2]
+	   *
+	   * See also:
+	   *
+	   *    sign
 	   *
 	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   *            A number or matrix for which to get the absolute value
+	   * @return {Number | BigNumber | Complex | Array | Matrix}
+	   *            Absolute value of `x`
 	   */
 	  math.abs = function abs(x) {
 	    if (arguments.length != 1) {
@@ -5271,16 +5316,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Add two values
-	   *
-	   *     x + y
-	   *     add(x, y)
-	   *
+	   * Add two values, `x + y`.
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y
-	   * @return {Number | BigNumber | Complex | Unit | String | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.add(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.add(2, 3);               // returns Number 5
+	   *
+	   *    var a = math.complex(2, 3);
+	   *    var b = math.complex(-4, 1);
+	   *    math.add(a, b);               // returns Complex -2 + 4i
+	   *
+	   *    math.add([1, 2, 3], 4);       // returns Array [5, 6, 7]
+	   *
+	   *    var c = math.unit('5 cm');
+	   *    var d = math.unit('2.1 mm');
+	   *    math.add(c, d);               // returns Unit 52.1 mm
+	   *
+	   * See also:
+	   *
+	   *    subtract
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x First value to add
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y Second value to add
+	   * @return {Number | BigNumber | Complex | Unit | String | Array | Matrix} Sum of `x` and `y`
 	   */
 	  math.add = function add(x, y) {
 	    if (arguments.length != 2) {
@@ -5410,13 +5475,33 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Round a value towards plus infinity
-	   *
-	   *     ceil(x)
-	   *
+	   * If `x` is complex, both real and imaginary part are rounded towards plus infinity.
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.ceil(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.ceil(3.2);               // returns Number 4
+	   *    math.ceil(3.8);               // returns Number 4
+	   *    math.ceil(-4.2);              // returns Number -4
+	   *    math.ceil(-4.7);              // returns Number -4
+	   *
+	   *    var c = math.complex(3.2, -2.7);
+	   *    math.ceil(c);                 // returns Complex 4 - 2i
+	   *
+	   *    math.ceil([3.2, 3.8, -4.7]);  // returns Array [4, 4, -4]
+	   *
+	   * See also:
+	   *
+	   *    floor, fix, round
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x  Number to be rounded
+	   * @return {Number | BigNumber | Complex | Array | Matrix} Rounded value
 	   */
 	  math.ceil = function ceil(x) {
 	    if (arguments.length != 1) {
@@ -5472,18 +5557,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   *    compare(x, y)
+	   * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
 	   *
 	   * x and y are considered equal when the relative difference between x and y
 	   * is smaller than the configured epsilon. The function cannot be used to
 	   * compare values smaller than approximately 2.22e-16.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y
-	   * @return {Number | BigNumber | Array | Matrix} res
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.compare(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.compare(6, 1);           // returns 1
+	   *    math.compare(2, 3);           // returns -1
+	   *    math.compare(7, 7);           // returns 0
+	   *
+	   *    var a = math.unit('5 cm');
+	   *    var b = math.unit('40 mm');
+	   *    math.compare(a, b);           // returns 1
+	   *
+	   *    math.compare(2, [1, 2, 3]);   // returns [1, 0, -1]
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smaller, smallereq, larger, largereq
+	   *
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Number | BigNumber | Array | Matrix} Returns the result of the comparison: 1, 0 or -1.
 	   */
 	  math.compare = function compare(x, y) {
 	    if (arguments.length != 2) {
@@ -5577,15 +5683,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Compute the cube of a value
-	   *
-	   *     x .* x .* x
-	   *     cube(x)
-	   *
+	   * Compute the cube of a value, `x * x * x`.
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.cube(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.cube(2);            // returns Number 8
+	   *    math.pow(2, 3);          // returns Number 8
+	   *    math.cube(4);            // returns Number 64
+	   *    4 * 4 * 4;               // returns Number 64
+	   *
+	   *    math.cube([1, 2, 3, 4]); // returns Array [1, 8, 27, 64]
+	   *
+	   * See also:
+	   *
+	   *    multiply, square, pow
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x  Number for which to calculate the cube
+	   * @return {Number | BigNumber | Complex | Array | Matrix} Cube of x
 	   */
 	  math.cube = function cube(x) {
 	    if (arguments.length != 1) {
@@ -5637,14 +5758,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Divide two values.
+	   * Divide two values, `x / y`.
+	   * To divide matrices, `x` is multiplied with the inverse of `y`: `x * inv(y)`.
 	   *
-	   *     x / y
-	   *     divide(x, y)
+	   * Syntax:
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Complex} y
-	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} res
+	   *    math.divide(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.divide(2, 3);            // returns Number 0.6666666666666666
+	   *
+	   *    var a = math.complex(5, 14);
+	   *    var b = math.complex(4, 1);
+	   *    math.divide(a, b);            // returns Complex 2 + 3i
+	   *
+	   *    var c = [[7, -6], [13, -4]];
+	   *    var d = [[1, 2], [4, 3]];
+	   *    math.divide(c, d);            // returns Array [[-9, 4], [-11, 6]]
+	   *
+	   *    var e = math.unit('18 km');
+	   *    math.divide(e, 4.5);          // returns Unit 4 km
+	   *
+	   * See also:
+	   *
+	   *    multiply
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x   Numerator
+	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} y          Denominator
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}               Quotient, `x / y`
 	   */
 	  math.divide = function divide(x, y) {
 	    if (arguments.length != 2) {
@@ -5777,14 +5921,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var collection = __webpack_require__(11);
 
 	  /**
-	   * Divide two values element wise.
+	   * Divide two matrices element wise. The function accepts both matrices and
+	   * scalar values.
 	   *
-	   *     x ./ y
-	   *     edivide(x, y)
+	   * Syntax:
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y
-	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} res
+	   *    math.edivide(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.edivide(2, 4);   // returns 0.5
+	   *
+	   *    a = [[9, 5], [6, 1]];
+	   *    b = [[3, 2], [5, 2]];
+	   *
+	   *    math.edivide(a, b);   // returns [[3, 2.5], [1.2, 0.5]]
+	   *    math.divide(a, b);    // returns [[1.75, 0.75], [-1.75, 2.25]]
+	   *
+	   * See also:
+	   *
+	   *    divide, multiply, emultiply
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x Numerator
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y Denominator
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}             Quotient, `x ./ y`
 	   */
 	  math.edivide = function edivide(x, y) {
 	    if (arguments.length != 2) {
@@ -5805,14 +5967,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	      collection = __webpack_require__(11);
 
 	  /**
-	   * Multiply two values element wise.
+	   * Multiply two matrices element wise. The function accepts both matrices and
+	   * scalar values.
 	   *
-	   *     x .* y
-	   *     emultiply(x, y)
+	   * Syntax:
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y
-	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} res
+	   *    math.emultiply(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.emultiply(2, 4); // returns 8
+	   *
+	   *    a = [[9, 5], [6, 1]];
+	   *    b = [[3, 2], [5, 2]];
+	   *
+	   *    math.emultiply(a, b); // returns [[27, 10], [30, 2]]
+	   *    math.multiply(a, b);  // returns [[52, 28], [23, 14]]
+	   *
+	   * See also:
+	   *
+	   *    multiply, divide, edivide
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x Left hand value
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y Right hand value
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}             Multiplication of `x` and `y`
 	   */
 	  math.emultiply = function emultiply(x, y) {
 	    if (arguments.length != 2) {
@@ -5833,14 +6013,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      collection = __webpack_require__(11);
 
 	  /**
-	   * Calculates the power of x to y element wise
+	   * Calculates the power of x to y element wise.
 	   *
-	   *     x .^ y
-	   *     epow(x, y)
+	   * Syntax:
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y
-	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} res
+	   *    math.epow(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.epow(2, 3);              // returns Number 8
+	   *
+	   *    var a = [[1, 2], [4, 3]];
+	   *    math.epow(a, 2);              // returns Array [[1, 4], [16, 9]]
+	   *    math.pow(a, 2);               // returns Array [[9, 8], [16, 17]]
+	   *
+	   * See also:
+	   *
+	   *    pow, sqrt, multiply
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x  The base
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y  The exponent
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}              The value of `x` to the power `y`
 	   */
 	  math.epow = function epow(x, y) {
 	    if (arguments.length != 2) {
@@ -5873,21 +6068,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Check if value x equals y,
+	   * Test whether two values are equal.
 	   *
-	   *     x == y
-	   *     equal(x, y)
+	   * The function tests whether the relative difference between x and y is
+	   * smaller than the configured epsilon. The function cannot be used to
+	   * compare values smaller than approximately 2.22e-16.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
 	   *
-	   * The function checks whether the relative difference between x and y is
-	   * smaller than the configured epsilon. The function cannot be used to
-	   * compare values smaller than approximately 2.22e-16.
+	   * Syntax:
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y
-	   * @return {Boolean | Array | Matrix} res
+	   *    math.equal(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.equal(2 + 2, 3);         // returns false
+	   *    math.equal(2 + 2, 4);         // returns true
+	   *
+	   *    var a = math.unit('50 cm');
+	   *    var b = math.unit('5 m');
+	   *    math.equal(a, b);             // returns true
+	   *
+	   * See also:
+	   *
+	   *    unequal, smaller, smallereq, larger, largereq, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the compared values are equal, else returns false
 	   */
 	  math.equal = function equal(x, y) {
 	    if (arguments.length != 2) {
@@ -5992,14 +6203,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the exponent of a value
-	   *
-	   *     exp(x)
-	   *
+	   * Calculate the exponent of a value.
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.exp(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.exp(2);                  // returns Number 7.3890560989306495
+	   *    math.pow(math.e, 2);          // returns Number 7.3890560989306495
+	   *    math.log(math.exp(2));        // returns Number 2
+	   *
+	   *    math.exp([1, 2, 3]);
+	   *    // returns Array [
+	   *    //   2.718281828459045,
+	   *    //   7.3890560989306495,
+	   *    //   20.085536923187668
+	   *    // ]
+	   *
+	   * See also:
+	   *
+	   *    log, pow
+	   *
+	   * @param {Number | BigNumber | Boolean | Complex | Array | Matrix} x  A number or matrix to exponentiate
+	   * @return {Number | BigNumber | Complex | Array | Matrix} Exponent of `x`
 	   */
 	  math.exp = function exp (x) {
 	    if (arguments.length != 1) {
@@ -6052,14 +6283,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Round a value towards zero
-	   *
-	   *     fix(x)
-	   *
+	   * Round a value towards zero.
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.fix(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.fix(3.2);                // returns Number 3
+	   *    math.fix(3.8);                // returns Number 3
+	   *    math.fix(-4.2);               // returns Number -4
+	   *    math.fix(-4.7);               // returns Number -4
+	   *
+	   *    var c = math.complex(3.2, -2.7);
+	   *    math.fix(c);                  // returns Complex 3 - 2i
+	   *
+	   *    math.fix([3.2, 3.8, -4.7]);   // returns Array [3, 3, -4]
+	   *
+	   * See also:
+	   *
+	   *    ceil, floor, round
+	   *
+	   * @param {Number | BigNumber | Boolean | Complex | Array | Matrix} x Number to be rounded
+	   * @return {Number | BigNumber | Complex | Array | Matrix}            Rounded value
 	   */
 	  math.fix = function fix(x) {
 	    if (arguments.length != 1) {
@@ -6111,14 +6361,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Round a value towards minus infinity
-	   *
-	   *     floor(x)
-	   *
+	   * Round a value towards minus infinity.
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.floor(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.floor(3.2);              // returns Number 3
+	   *    math.floor(3.8);              // returns Number 3
+	   *    math.floor(-4.2);             // returns Number -5
+	   *    math.floor(-4.7);             // returns Number -5
+	   *
+	   *    var c = math.complex(3.2, -2.7);
+	   *    math.floor(c);                // returns Complex 3 - 3i
+	   *
+	   *    math.floor([3.2, 3.8, -4.7]); // returns Array [3, 3, -5]
+	   *
+	   * See also:
+	   *
+	   *    ceil, fix, round
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x  Number to be rounded
+	   * @return {Number | BigNumber | Complex | Array | Matrix} Rounded value
 	   */
 	  math.floor = function floor(x) {
 	    if (arguments.length != 1) {
@@ -6171,13 +6440,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Calculate the greatest common divisor for two or more values or arrays.
 	   *
-	   *     gcd(a, b)
-	   *     gcd(a, b, c, ...)
-	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {... Number | Boolean | Array | Matrix} args    two or more integer numbers
-	   * @return {Number | Array | Matrix} greatest common divisor
+	   * Syntax:
+	   *
+	   *    math.gcd(a, b)
+	   *    math.gcd(a, b, c, ...)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.gcd(8, 12);              // returns 4
+	   *    math.gcd(-4, 6);              // returns 2
+	   *    math.gcd(25, 15, -10);        // returns 5
+	   *
+	   *    math.gcd([8, -4], [12, 6]);   // returns [4, 2]
+	   *
+	   * See also:
+	   *
+	   *    lcm, xgcd
+	   *
+	   * @param {... Number | Boolean | Array | Matrix} args  Two or more integer numbers
+	   * @return {Number | Array | Matrix}                    The greatest common divisor
 	   */
 	  math.gcd = function gcd(args) {
 	    var a = arguments[0],
@@ -6260,20 +6545,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Check if value x is larger y
-	   *
-	   *    x > y
-	   *    larger(x, y)
-	   *
-	   * For matrices, the function is evaluated element wise.
+	   * Test whether value x is larger than y.
 	   *
 	   * The function returns true when x is larger than y and the relative
 	   * difference between x and y is larger than the configured epsilon. The
 	   * function cannot be used to compare values smaller than approximately 2.22e-16.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y
-	   * @return {Boolean | Array | Matrix} res
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.larger(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.larger(2, 3);             // returns false
+	   *    math.larger(5, 2 + 2);         // returns true
+	   *
+	   *    var a = math.unit('5 cm');
+	   *    var b = math.unit('2 inch');
+	   *    math.larger(a, b);             // returns false
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smaller, smallereq, largereq, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
 	   */
 	  math.larger = function larger(x, y) {
 	    if (arguments.length != 2) {
@@ -6371,20 +6672,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Check if value x is larger or equal to y
-	   *
-	   *     x >= y
-	   *     largereq(x, y)
-	   *
-	   * For matrices, the function is evaluated element wise.
+	   * Test whether value x is larger or equal to y.
 	   *
 	   * The function returns true when x is larger than y or the relative
 	   * difference between x and y is smaller than the configured epsilon. The
 	   * function cannot be used to compare values smaller than approximately 2.22e-16.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y
-	   * @return {Boolean | Array | Matrix} res
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.largereq(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.larger(2, 1 + 1);         // returns false
+	   *    math.largereq(2, 1 + 1);       // returns true
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smaller, smallereq, larger, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the x is larger or equal to y, else returns false
 	   */
 	  math.largereq = function largereq(x, y) {
 	    if (arguments.length != 2) {
@@ -6479,16 +6792,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Calculate the least common multiple for two or more values or arrays.
 	   *
-	   *     lcm(a, b)
-	   *     lcm(a, b, c, ...)
-	   *
 	   * lcm is defined as:
+	   *
 	   *     lcm(a, b) = abs(a * b) / gcd(a, b)
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {... Number | Boolean | Array | Matrix} args    two or more integer numbers
-	   * @return {Number | Array | Matrix} least common multiple
+	   * Syntax:
+	   *
+	   *    math.lcm(a, b)
+	   *    math.lcm(a, b, c, ...)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.lcm(4, 6);               // returns 12
+	   *    math.lcm(6, 21);              // returns 42
+	   *    math.lcm(6, 21, 5);           // returns 210
+	   *
+	   *    math.lcm([4, 6], [6, 21]);    // returns [12, 42]
+	   *
+	   * See also:
+	   *
+	   *    gcd, xgcd
+	   *
+	   * @param {... Number | Boolean | Array | Matrix} args  Two or more integer numbers
+	   * @return {Number | Array | Matrix}                    The least common multiple
 	   */
 	  math.lcm = function lcm(args) {
 	    var a = arguments[0],
@@ -6573,17 +6903,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the logarithm of a value
+	   * Calculate the logarithm of a value.
 	   *
-	   *     log(x)
-	   *     log(x, base)
-	   *
-	   * base is optional. If not provided, the natural logarithm of x is calculated.
 	   * For matrices, the function is evaluated element wise.
 	   *
+	   * Syntax:
+	   *
+	   *    math.log(x)
+	   *    math.log(x, base)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.log(3.5);                  // returns 1.252762968495368
+	   *    math.exp(math.log(2.4));        // returns 2.4
+	   *
+	   *    math.pow(10, 4);                // returns 10000
+	   *    math.log(10000, 10);            // returns 4
+	   *    math.log(10000) / math.log(10); // returns 4
+	   *
+	   *    math.log(1024, 2);              // returns 10
+	   *    math.pow(2, 10);                // returns 1024
+	   *
+	   * See also:
+	   *
+	   *    exp, log10
+	   *
 	   * @param {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @param {Number | BigNumber | Boolean | Complex} [base]
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   *            Value for which to calculate the logarithm.
+	   * @param {Number | BigNumber | Boolean | Complex} [base=e]
+	   *            Optional base for the logarithm. If not provided, the natural
+	   *            logarithm of `x` is calculated.
+	   * @return {Number | BigNumber | Complex | Array | Matrix}
+	   *            Returns the logarithm of `x`
 	   */
 	  math.log = function log(x, base) {
 	    if (arguments.length == 1) {
@@ -6653,14 +7006,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the 10-base logarithm of a value
-	   *
-	   *     log10(x)
+	   * Calculate the 10-base of a value. This is the same as calculating `log(x, 10)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
+	   * Syntax:
+	   *
+	   *    math.log10(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.log10(0.00001);            // returns -5
+	   *    math.log10(10000);              // returns 4
+	   *    math.log(10000) / math.log(10); // returns 4
+	   *    math.pow(10, 4);                // returns 10000
+	   *
+	   * See also:
+	   *
+	   *    exp, log
+	   *
 	   * @param {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   *            Value for which to calculate the logarithm.
+	   * @return {Number | BigNumber | Complex | Array | Matrix}
+	   *            Returns the 10-base logarithm of `x`
 	   */
 	  math.log10 = function log10(x) {
 	    if (arguments.length != 1) {
@@ -6724,14 +7094,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Calculates the modulus, the remainder of an integer division.
 	   *
-	   *     x % y
-	   *     mod(x, y)
-	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Array | Matrix} y
-	   * @return {Number | BigNumber | Array | Matrix} res
+	   * The modulus is defined as:
+	   *
+	   *     x - y * floor(x / y)
+	   *
+	   * See http://en.wikipedia.org/wiki/Modulo_operation.
+	   *
+	   * Syntax:
+	   *
+	   *    math.mod(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.mod(8, 3);                // returns 2
+	   *    math.mod(11, 2);               // returns 1
+	   *
+	   *    function isOdd(x) {
+	   *      return math.mod(x, 2) != 0;
+	   *    }
+	   *
+	   *    isOdd(2);                      // returns false
+	   *    isOdd(3);                      // returns true
+	   *
+	   * See also:
+	   *
+	   *    divide
+	   *
+	   * @param  {Number | BigNumber | Boolean | Array | Matrix} x Dividend
+	   * @param  {Number | BigNumber | Boolean | Array | Matrix} y Divisor
+	   * @return {Number | BigNumber | Array | Matrix} Returns the remainder of `x` divided by `y`.
 	   */
 	  math.mod = function mod(x, y) {
 	    if (arguments.length != 2) {
@@ -6842,14 +7237,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isUnit = Unit.isUnit;
 
 	  /**
-	   * Multiply two values.
+	   * Multiply two values, `x * y`. The result is squeezed.
+	   * For matrices, the matrix product is calculated.
 	   *
-	   *     x * y
-	   *     multiply(x, y)
+	   * Syntax:
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y
-	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} res
+	   *    math.multiply(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.multiply(4, 5.2);        // returns Number 20.8
+	   *
+	   *    var a = math.complex(2, 3);
+	   *    var b = math.complex(4, 1);
+	   *    math.multiply(a, b);          // returns Complex 5 + 14i
+	   *
+	   *    var c = [[1, 2], [4, 3]];
+	   *    var d = [[1, 2, 3], [3, -4, 7]];
+	   *    math.multiply(c, d);          // returns Array [[7, -6, 17], [13, -4, 33]]
+	   *
+	   *    var e = math.unit('2.1 km');
+	   *    math.multiply(3, e);          // returns Unit 6.3 km
+	   *
+	   * See also:
+	   *
+	   *    divide
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x First value to multiply
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y Second value to multiply
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
 	   */
 	  math.multiply = function multiply(x, y) {
 	    var res;
@@ -6869,6 +7287,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      else if (isUnit(y)) {
 	        res = y.clone();
+	        if (res.value === null) res.value = res._normalize(1);
 	        res.value *= x;
 	        return res;
 	      }
@@ -6921,6 +7340,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (isUnit(x)) {
 	      if (isNumber(y)) {
 	        res = x.clone();
+	        if (res.value === null) res.value = res._normalize(1);
 	        res.value *= y;
 	        return res;
 	      }
@@ -6999,7 +7419,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      else if (y instanceof Matrix) {
 	        // array * matrix
-	        return new Matrix(multiply(x, y.valueOf()));
+	        res = multiply(x, y.valueOf());
+	        return isArray(res) ? new Matrix(res) : res;
 	      }
 	      else {
 	        // array * scalar
@@ -7010,12 +7431,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (x instanceof Matrix) {
 	      if (y instanceof Matrix) {
 	        // matrix * matrix
-	        return new Matrix(multiply(x.valueOf(), y.valueOf()));
+	        res = multiply(x.valueOf(), y.valueOf());
+	        return isArray(res) ? new Matrix(res) : res;
 	      }
 	      else {
 	        // matrix * array
 	        // matrix * scalar
-	        return new Matrix(multiply(x.valueOf(), y));
+	        res = multiply(x.valueOf(), y);
+	        return isArray(res) ? new Matrix(res) : res;
 	      }
 	    }
 
@@ -7043,7 +7466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * The size of the matrices is not validated.
 	   * @param {Array} x   A 2d matrix
 	   * @param {Array} y   A 2d matrix
-	   * @return {Array} result
+	   * @return {Array | Number} result
 	   * @private
 	   */
 	  function _multiplyMatrixMatrix(x, y) {
@@ -7065,7 +7488,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
-	    return res;
+	    return array.squeeze(res);
 	  }
 
 	  /**
@@ -7073,7 +7496,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * The size of the matrices is not validated.
 	   * @param {Array} x   A vector
 	   * @param {Array} y   A 2d matrix
-	   * @return {Array} result
+	   * @return {Array | Number} result
 	   * @private
 	   */
 	  function _multiplyVectorMatrix(x, y) {
@@ -7091,7 +7514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      res[c] = result;
 	    }
 
-	    return res;
+	    return array.squeeze(res);
 	  }
 
 	  /**
@@ -7099,7 +7522,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * The size of the matrices is not validated.
 	   * @param {Array} x   A 2d matrix
 	   * @param {Array} y   A vector
-	   * @return {Array} result
+	   * @return {Array | Number} result
 	   * @private
 	   */
 	  function _multiplyMatrixVector(x, y) {
@@ -7117,7 +7540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      res[r] = result;
 	    }
 
-	    return res;
+	    return array.squeeze(res);
 	  }
 
 	  /**
@@ -7247,13 +7670,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Calculate the norm of a number, vector or matrix.
 	   *
-	   *     norm(x)
-	   *     norm(x, p)
+	   * The second parameter p is optional. If not provided, it defaults to 2.
 	   *
-	   * p is optional. If not provided, defaults to 2 (The Frobenius norm or 'fro')).
+	   * Syntax:
+	   *
+	   *    math.norm(x)
+	   *    math.norm(x, p)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.abs(-3.5);                         // returns 3.5
+	   *    math.norm(-3.5);                        // returns 3.5
+	   *
+	   *    math.norm(math.complex(3, -4));         // returns 5
+	   *
+	   *    math.norm([1, 2, -3], Infinity);        // returns 3
+	   *    math.norm([1, 2, -3], -Infinity);       // returns 1
+	   *
+	   *    math.norm([3, 4], 2);                   // returns 5
+	   *
+	   *    math.norm([[1, 2], [3, 4]], 1)          // returns 6
+	   *    math.norm([[1, 2], [3, 4]], 'inf');     // returns 7
+	   *    math.norm([[1, 2], [3, 4]], 'fro');     // returns 5.477225575051661
+	   *
+	   * See also:
+	   *
+	   *    abs
 	   *
 	   * @param  {Number | BigNumber | Complex | Boolean | Array | Matrix} x
-	   * @param  {Number | Infinity | -Infinity, 'inf', '-inf', 'fro'} [p]
+	   *            Value for which to calculate the norm
+	   * @param  {Number | String} [p=2]
+	   *            Vector space.
+	   *            Supported numbers include Infinity and -Infinity.
+	   *            Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm)
 	   * @return {Number} the p-norm
 	   */
 	  math.norm = function norm(x, p) {
@@ -7267,7 +7718,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (isComplex(x)) {
-	      // ignore p, complex numbers 
+	      // ignore p, complex numbers
 	      return Math.sqrt(x.re * x.re + x.im * x.im);
 	    }
 
@@ -7280,7 +7731,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // norm(x) = abs(x)
 	      return Math.abs(x);
 	    }
-	    
+
 	    if (isArray(x)) {
 	      // size
 	      var sizeX = array.size(x);
@@ -7346,7 +7797,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          // norm(x) = the largest row sum
 	          var n = 0;
 	          // loop rows
-	          for (var i = 0; i < x.length; i++) {            
+	          for (var i = 0; i < x.length; i++) {
 	            var rs = 0;
 	            var r = x[i];
 	            // loop columns
@@ -7405,14 +7856,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isComplex = Complex.isComplex;
 
 	  /**
-	   * Calculates the power of x to y
+	   * Calculates the power of x to y, `x ^ y`.
+	   * Matrix exponentiation is supported for square matrices `x`, and positive
+	   * integer exponents `y`.
 	   *
-	   *     x ^ y
-	   *     pow(x, y)
+	   * Syntax:
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Complex} y
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   *    math.pow(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.pow(2, 3);               // returns Number 8
+	   *
+	   *    var a = math.complex(2, 3);
+	   *    math.pow(a, 2)                // returns Complex -5 + 12i
+	   *
+	   *    var b = [[1, 2], [4, 3]];
+	   *    math.pow(b, 2);               // returns Array [[9, 8], [16, 17]]
+	   *
+	   * See also:
+	   *
+	   *    multiply, sqrt
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x  The base
+	   * @param  {Number | BigNumber | Boolean | Complex} y                   The exponent
+	   * @return {Number | BigNumber | Complex | Array | Matrix} The value of `x` to the power `y`
 	   */
 	  math.pow = function pow(x, y) {
 	    if (arguments.length != 2) {
@@ -7568,17 +8038,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Round a value towards the nearest integer
-	   *
-	   *     round(x)
-	   *     round(x, n)
-	   *
+	   * Round a value towards the nearest integer.
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Array} [n] number of decimals (by default n=0)
-	   *                                                    Must be an integer between 0 and 15
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.round(x)
+	   *    math.round(x, n)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.round(3.2);              // returns Number 3
+	   *    math.round(3.8);              // returns Number 4
+	   *    math.round(-4.2);             // returns Number -4
+	   *    math.round(-4.7);             // returns Number -5
+	   *    math.round(math.pi, 3);       // returns Number 3.14
+	   *    math.round(123.45678, 2);     // returns Number 123.46
+	   *
+	   *    var c = math.complex(3.2, -2.7);
+	   *    math.round(c);                // returns Complex 3 - 3i
+	   *
+	   *    math.round([3.2, 3.8, -4.7]); // returns Array [3, 4, -5]
+	   *
+	   * See also:
+	   *
+	   *    ceil, fix, floor
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x   Number to be rounded
+	   * @param  {Number | BigNumber | Boolean | Array} [n=0]                 Number of decimals
+	   * @return {Number | BigNumber | Complex | Array | Matrix} Rounded value
 	   */
 	  math.round = function round(x, n) {
 	    if (arguments.length != 1 && arguments.length != 2) {
@@ -7688,15 +8178,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Compute the sign of a value.
+	   * Compute the sign of a value. The sign of a value x is:
 	   *
-	   *     sign(x)
+	   * -  1 when x > 1
+	   * - -1 when x < 0
+	   * -  0 when x == 0
 	   *
-	   * The sign of a value x is 1 when x > 1, -1 when x < 0, and 0 when x == 0
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.sign(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.sign(3.5);               // returns 1
+	   *    math.sign(-4.2);              // returns -1
+	   *    math.sign(0);                 // returns 0
+	   *
+	   *    math.sign([3, 5, -2, 0, 2]);  // returns [1, 1, -1, 0, 1]
+	   *
+	   * See also:
+	   *
+	   *    abs
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x
+	   *            The number for which to determine the sign
+	   * @return {Number | BigNumber | Complex | Array | Matrix}e
+	   *            The sign of `x`
 	   */
 	  math.sign = function sign(x) {
 	    if (arguments.length != 1) {
@@ -7750,20 +8261,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Check if value x is smaller y
-	   *
-	   *     x < y
-	   *     smaller(x, y)
-	   *
-	   * For matrices, the function is evaluated element wise.
+	   * Test whether value x is smaller than y.
 	   *
 	   * The function returns true when x is smaller than y and the relative
 	   * difference between x and y is larger than the configured epsilon. The
 	   * function cannot be used to compare values smaller than approximately 2.22e-16.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y
-	   * @return {Boolean | Array | Matrix} res
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.smaller(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.smaller(2, 3);            // returns true
+	   *    math.smaller(5, 2 * 2);        // returns false
+	   *
+	   *    var a = math.unit('5 cm');
+	   *    var b = math.unit('2 inch');
+	   *    math.smaller(a, b);            // returns true
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smallereq, larger, largereq, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
 	   */
 	  math.smaller = function smaller(x, y) {
 	    if (arguments.length != 2) {
@@ -7861,20 +8388,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Check if value x is smaller or equal to y
-	   *
-	   *     x <= y
-	   *     smallereq(x, y)
-	   *
-	   * For matrices, the function is evaluated element wise.
+	   * Test whether value x is smaller or equal to y.
 	   *
 	   * The function returns true when x is smaller than y or the relative
 	   * difference between x and y is smaller than the configured epsilon. The
 	   * function cannot be used to compare values smaller than approximately 2.22e-16.
+	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y
-	   * @return {Boolean | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.smallereq(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.smaller(1 + 2, 3);        // returns false
+	   *    math.smallereq(1 + 2, 3);      // returns true
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smaller, larger, largereq, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
 	   */
 	  math.smallereq = function smallereq(x, y) {
 	    if (arguments.length != 2) {
@@ -7968,14 +8506,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the square root of a value
-	   *
-	   *     sqrt(x)
+	   * Calculate the square root of a value.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
+	   * Syntax:
+	   *
+	   *    math.sqrt(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.sqrt(25);                // returns 5
+	   *    math.square(5);               // returns 25
+	   *    math.sqrt(-4);                // returns Complex -2i
+	   *
+	   * See also:
+	   *
+	   *    square, multiply
+	   *
 	   * @param {Number | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   *            Value for which to calculate the square root.
+	   * @return {Number | Complex | Array | Matrix}
+	   *            Returns the square root of `x`
 	   */
 	  math.sqrt = function sqrt (x) {
 	    if (arguments.length != 1) {
@@ -8047,15 +8601,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Compute the square of a value
-	   *
-	   *     x .* x
-	   *     square(x)
-	   *
+	   * Compute the square of a value, `x * x`.
 	   * For matrices, the function is evaluated element wise.
 	   *
+	   * Syntax:
+	   *
+	   *    math.square(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.square(2);           // returns Number 4
+	   *    math.square(3);           // returns Number 9
+	   *    math.pow(3, 2);           // returns Number 9
+	   *    math.multiply(3, 3);      // returns Number 9
+	   *
+	   *    math.square([1, 2, 3, 4]);  // returns Array [1, 4, 9, 16]
+	   *
+	   * See also:
+	   *
+	   *    multiply, cube, sqrt, pow
+	   *
 	   * @param  {Number | BigNumber | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   *            Number for which to calculate the square
+	   * @return {Number | BigNumber | Complex | Array | Matrix}
+	   *            Squared value
 	   */
 	  math.square = function square(x) {
 	    if (arguments.length != 1) {
@@ -8107,16 +8678,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Subtract two values
-	   *
-	   *     x - y
-	   *     subtract(x, y)
-	   *
+	   * Subtract two values, `x - y`.
 	   * For matrices, the function is evaluated element wise.
 	   *
+	   * Syntax:
+	   *
+	   *    math.subtract(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.subtract(5.3, 2);        // returns Number 3.3
+	   *
+	   *    var a = math.complex(2, 3);
+	   *    var b = math.complex(4, 1);
+	   *    math.subtract(a, b);          // returns Complex -2 + 2i
+	   *
+	   *    math.subtract([5, 7, 4], 4);  // returns Array [1, 3, 0]
+	   *
+	   *    var c = math.unit('2.1 km');
+	   *    var d = math.unit('500m');
+	   *    math.subtract(c, d);          // returns Unit 1.6 km
+	   *
+	   * See also:
+	   *
+	   *    add
+	   *
 	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x
+	   *            Initial value
 	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y
-	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} res
+	   *            Value to subtract from `x`
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}
+	   *            Subtraction of `x` and `y`
 	   */
 	  math.subtract = function subtract(x, y) {
 	    if (arguments.length != 2) {
@@ -8243,15 +8837,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Inverse the sign of a value.
+	   * Inverse the sign of a value, apply a unary minus operation.
 	   *
-	   *     -x
-	   *     unary(x)
+	   * For matrices, the function is evaluated element wise. Boolean values will
+	   * be converted to a number. For complex numbers, both real and complex
+	   * value are inverted.
 	   *
-	   * For matrices, the function is evaluated element wise.
+	   * Syntax:
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} res
+	   *    math.unary(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.unary(3.5);      // returns -3.5
+	   *    math.unary(-4.2);     // returns 4.2
+	   *
+	   * See also:
+	   *
+	   *    add, subtract
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x Number to be inverted.
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
 	   */
 	  math.unary = function unary(x) {
 	    if (arguments.length != 1) {
@@ -8313,16 +8921,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Check if value x unequals y, x != y
-	   * In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im
+	   * Test whether two values are unequal.
 	   *
-	   * The function checks whether the relative difference between x and y is
+	   * The function tests whether the relative difference between x and y is
 	   * larger than the configured epsilon. The function cannot be used to compare
 	   * values smaller than approximately 2.22e-16.
 	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y
-	   * @return {Boolean | Array | Matrix} res
+	   * For matrices, the function is evaluated element wise.
+	   * In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im.
+	   *
+	   * Syntax:
+	   *
+	   *    math.unequal(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.unequal(2 + 2, 3);       // returns true
+	   *    math.unequal(2 + 2, 4);       // returns false
+	   *
+	   *    var a = math.unit('50 cm');
+	   *    var b = math.unit('5 m');
+	   *    math.unequal(a, b);           // returns false
+	   *
+	   * See also:
+	   *
+	   *    equal, smaller, smallereq, larger, largereq, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the compared values are unequal, else returns false
 	   */
 	  math.unequal = function unequal(x, y) {
 	    if (arguments.length != 2) {
@@ -8424,15 +9053,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Calculate the extended greatest common divisor for two values.
+	   * See http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
 	   *
-	   *     xgcd(a, b)
+	   * Syntax:
+	   *
+	   *    math.xgcd(a, b)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.xgcd(8, 12);             // returns [4, -1, 1]
+	   *    math.gcd(8, 12);              // returns 4
+	   *    math.xgcd(36163, 21199);      // returns [1247, -7, 12]
+	   *
+	   * See also:
+	   *
+	   *    gcd, lcm
 	   *
 	   * @param {Number | Boolean} a  An integer number
 	   * @param {Number | Boolean} b  An integer number
-	   * @return {Array}              An array containing 3 integers [div, m, n]
-	   *                              where div = gcd(a, b) and a*m + b*n = div
-	   *
-	   * @see http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+	   * @return {Array}              Returns an array containing 3 integers `[div, m, n]`
+	   *                              where `div = gcd(a, b)` and `a*m + b*n = div`
 	   */
 	  math.xgcd = function xgcd(a, b) {
 	    if (arguments.length == 2) {
@@ -8476,7 +9118,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @private
 	   */
 	  function _xgcd(a, b) {
-	    //*
 	    // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
 	    var t, // used to swap two variables
 	        q, // quotient
@@ -8528,14 +9169,32 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Compute the argument of a complex value.
-	   * If x = a + bi, the argument is computed as atan2(b, a).
-	   *
-	   *     arg(x)
+	   * For a complex number `a + bi`, the argument is computed as `atan2(b, a)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
+	   * Syntax:
+	   *
+	   *    math.arg(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    var a = math.complex(2, 2);
+	   *    math.arg(a) / math.pi;          // returns Number 0.25
+	   *
+	   *    var b = math.complex('2 + 3i');
+	   *    math.arg(b);                    // returns Number 0.982793723247329
+	   *    math.atan2(3, 2);               // returns Number 0.982793723247329
+	   *
+	   * See also:
+	   *
+	   *    re, im, conj, abs
+	   *
 	   * @param {Number | Complex | Array | Matrix | Boolean} x
-	   * @return {Number | Array | Matrix} res
+	   *            A complex number or array with complex numbers
+	   * @return {Number | Array | Matrix} The argument of x
 	   */
 	  math.arg = function arg(x) {
 	    if (arguments.length != 1) {
@@ -8588,14 +9247,30 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Compute the complex conjugate of a complex value.
-	   * If x = a+bi, the complex conjugate is a-bi.
-	   *
-	   *     conj(x)
+	   * If `x = a+bi`, the complex conjugate of `x` is `a - bi`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
+	   * Syntax:
+	   *
+	   *    math.conj(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.conj(math.complex('2 + 3i'));  // returns Complex 2 - 3i
+	   *    math.conj(math.complex('2 - 3i'));  // returns Complex 2 + 3i
+	   *    math.conj(math.complex('-5.2i'));  // returns Complex 5.2i
+	   *
+	   * See also:
+	   *
+	   *    re, im, arg, abs
+	   *
 	   * @param {Number | BigNumber | Complex | Array | Matrix | Boolean} x
-	   * @return {Number | BigNumber | Complex | Array | Matrix} res
+	   *            A complex number or array with complex numbers
+	   * @return {Number | BigNumber | Complex | Array | Matrix}
+	   *            The complex conjugate of x
 	   */
 	  math.conj = function conj(x) {
 	    if (arguments.length != 1) {
@@ -8647,13 +9322,32 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get the real part of a complex number.
-	   *
-	   *     re(x)
+	   * For a complex number `a + bi`, the function returns `a`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
+	   * Syntax:
+	   *
+	   *    math.re(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    var a = math.complex(2, 3);
+	   *    math.re(a);                     // returns Number 2
+	   *    math.im(a);                     // returns Number 3
+	   *
+	   *    math.re(math.complex('-5.2i')); // returns Number 0
+	   *    math.re(math.complex(2.4));     // returns Number 2.4
+	   *
+	   * See also:
+	   *
+	   *    im, conj, abs, arg
+	   *
 	   * @param {Number | BigNumber | Complex | Array | Matrix | Boolean} x
-	   * @return {Number | BigNumber | Array | Matrix} re
+	   *            A complex number or array with complex numbers
+	   * @return {Number | BigNumber | Array | Matrix} The real part of x
 	   */
 	  math.re = function re(x) {
 	    if (arguments.length != 1) {
@@ -8704,13 +9398,32 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get the imaginary part of a complex number.
-	   *
-	   *     im(x)
+	   * For a complex number `a + bi`, the function returns `b`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
+	   * Syntax:
+	   *
+	   *    math.im(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    var a = math.complex(2, 3);
+	   *    math.re(a);                     // returns Number 2
+	   *    math.im(a);                     // returns Number 3
+	   *
+	   *    math.re(math.complex('-5.2i')); // returns Number -5.2
+	   *    math.re(math.complex(2.4));     // returns Number 0
+	   *
+	   * See also:
+	   *
+	   *    re, conj, abs, arg
+	   *
 	   * @param {Number | BigNumber | Complex | Array | Matrix | Boolean} x
-	   * @return {Number | BigNumber | Array | Matrix} im
+	   *            A complex number or array with complex numbers
+	   * @return {Number | BigNumber | Array | Matrix} The imaginary part of x
 	   */
 	  math.im = function im(x) {
 	    if (arguments.length != 1) {
@@ -8760,12 +9473,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isBoolean = util['boolean'].isBoolean;
 
 	  /**
-	   * Create a big number, which can store numbers with higher precision than
-	   * a JavaScript Number.
-	   * When value is a matrix, all elements will be converted to bignumber.
+	   * Create a BigNumber, which can store numbers with arbitrary precision.
+	   * When a matrix is provided, all elements will be converted to BigNumber.
+	   *
+	   * Syntax:
+	   *
+	   *    math.bignumber(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    0.1 + 0.2;                                  // returns Number 0.30000000000000004
+	   *    math.bignumber(0.1) + math.bignumber(0.2);  // returns BigNumber 0.3
+	   *
+	   *
+	   *    7.2e500;                                    // returns Number Infinity
+	   *    math.bignumber('7.2e500');                  // returns BigNumber 7.2e500
+	   *
+	   * See also:
+	   *
+	   *    boolean, complex, index, matrix, string, unit
 	   *
 	   * @param {Number | String | Array | Matrix} [value]  Value for the big number,
 	   *                                                    0 by default.
+	   * @returns {BigNumber} The created bignumber
 	   */
 	  math.bignumber = function bignumber(value) {
 	    if (arguments.length > 1) {
@@ -8809,12 +9541,32 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Create a boolean or convert a string or number to a boolean.
-	   * In case of a number, true is returned for non-zero numbers, and false in
+	   * In case of a number, `true` is returned for non-zero numbers, and `false` in
 	   * case of zero.
-	   * Strings can be 'true' or 'false', or can contain a number.
+	   * Strings can be `'true'` or `'false'`, or can contain a number.
 	   * When value is a matrix, all elements will be converted to boolean.
-	   * @param {String | Number | Boolean | Array | Matrix} value
-	   * @return {Boolean | Array | Matrix} bool
+	   *
+	   * Syntax:
+	   *
+	   *    math.boolean(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.boolean(0);     // returns false
+	   *    math.boolean(1);     // returns true
+	   *    math.boolean(-3);     // returns true
+	   *    math.boolean('true');     // returns true
+	   *    math.boolean('false');     // returns false
+	   *    math.boolean([1, 0, 1, 1]);     // returns [true, false, true, true]
+	   *
+	   * See also:
+	   *
+	   *    bignumber, complex, index, matrix, string, unit
+	   *
+	   * @param {String | Number | Boolean | Array | Matrix} value  A value of any type
+	   * @return {Boolean | Array | Matrix} The boolean value
 	   */
 	  math['boolean'] = function bool (value) {
 	    if (arguments.length != 1) {
@@ -8886,33 +9638,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Create a complex value or convert a value to a complex value.
 	   *
-	   * The method accepts the following arguments:
-	   *     complex()                           creates a complex value with zero
-	   *                                         as real and imaginary part.
-	   *     complex(re : number, im : string)   creates a complex value with provided
-	   *                                         values for real and imaginary part.
-	   *     complex(re : number)                creates a complex value with provided
-	   *                                         real value and zero imaginary part.
-	   *     complex(complex : Complex)          clones the provided complex value.
-	   *     complex(arg : string)               parses a string into a complex value.
-	   *     complex(array : Array)              converts the elements of the array
-	   *                                         or matrix element wise into a
-	   *                                         complex value.
-	   *     complex({re: number, im: number})   creates a complex value with provided
-	   *                                         values for real an imaginary part.
-	   *     complex({r: number, phi: number})   creates a complex value with provided
-	   *                                         polar coordinates
+	   * Syntax:
 	   *
-	   * Example usage:
-	   *     var a = math.complex(3, -4);     // 3 - 4i
-	   *     a.re = 5;                        // a = 5 - 4i
-	   *     var i = a.im;                    // -4;
-	   *     var b = math.complex('2 + 6i');  // 2 + 6i
-	   *     var c = math.complex();          // 0 + 0i
-	   *     var d = math.add(a, b);          // 5 + 2i
+	   *     math.complex()                           // creates a complex value with zero
+	   *                                              // as real and imaginary part.
+	   *     math.complex(re : number, im : string)   // creates a complex value with provided
+	   *                                              // values for real and imaginary part.
+	   *     math.complex(re : number)                // creates a complex value with provided
+	   *                                              // real value and zero imaginary part.
+	   *     math.complex(complex : Complex)          // clones the provided complex value.
+	   *     math.complex(arg : string)               // parses a string into a complex value.
+	   *     math.complex(array : Array)              // converts the elements of the array
+	   *                                              // or matrix element wise into a
+	   *                                              // complex value.
+	   *     math.complex({re: number, im: number})   // creates a complex value with provided
+	   *                                              // values for real an imaginary part.
+	   *     math.complex({r: number, phi: number})   // creates a complex value with provided
+	   *                                              // polar coordinates
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    var a = math.complex(3, -4);     // a = Complex 3 - 4i
+	   *    a.re = 5;                        // a = Complex 5 - 4i
+	   *    var i = a.im;                    // Number -4;
+	   *    var b = math.complex('2 + 6i');  // Complex 2 + 6i
+	   *    var c = math.complex();          // Complex 0 + 0i
+	   *    var d = math.add(a, b);          // Complex 5 + 2i
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, index, matrix, number, string, unit
 	   *
 	   * @param {* | Array | Matrix} [args]
-	   * @return {Complex | Array | Matrix} value
+	   *            Arguments specifying the real and imaginary part of the complex number
+	   * @return {Complex | Array | Matrix} Returns a complex value
 	   */
 	  math.complex = function complex(args) {
 	    switch (arguments.length) {
@@ -9006,18 +9767,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * for multiple dimensions.
 	   * Matrix.get, Matrix.set, and math.subset accept an Index as input.
 	   *
-	   * Usage:
-	   *     var index = math.index(range1, range2, ...);
+	   * Syntax:
 	   *
-	   * Where each range can be any of:
-	   *     An array [start, end]
-	   *     An array [start, end, step]
-	   *     A number
-	   *     null, this will create select the whole dimension
+	   *     math.index(range1, range2, ...);
 	   *
-	   * The parameters start, end, and step must be integer numbers.
+	   * Where:
 	   *
-	   * @param {...*} ranges
+	   * Each range can be any of:
+	   *
+	   * - An array [start, end]
+	   * - An array [start, end, step]
+	   * - A number
+	   * - An instance of `Range`
+	   *
+	   * The parameters start, end, and step must be integer numbers. Start and end
+	   * are zero based. The start of a range is included, the end is excluded.
+	   *
+	   * Examples:
+	   *
+	   *    var math = math.js
+	   *
+	   *    var b = [1, 2, 3, 4, 5];
+	   *    math.subset(b, math.index([1, 3]));     // returns [2, 3]
+	   *
+	   *    var a = math.matrix([[1, 2], [3, 4]]);
+	   *    a.subset(math.index(0, 1));             // returns 2
+	   *    a.subset(math.index(1, null));          // returns [3, 4]
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, complex, matrix, number, string, unit
+	   *
+	   * @param {...*} ranges   Zero or more ranges or numbers.
+	   * @return {Index}        Returns the created index
 	   */
 	  math.index = function matrix(ranges) {
 	    var i = new Index();
@@ -9052,21 +9834,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	      Matrix = __webpack_require__(8);
 
 	  /**
-	   * Create a matrix. The function creates a new math.type.Matrix object.
+	   * Create a Matrix. The function creates a new `math.type.Matrix` object from
+	   * an `Array`. A Matrix has utility functions to manipulate the data in the
+	   * matrix, like getting the size and getting or setting values in the matrix.
 	   *
-	   * The method accepts the following arguments:
-	   *     matrix()       creates an empty matrix
-	   *     matrix(data)   creates a matrix with initial data.
+	   * Syntax:
 	   *
-	   * Example usage:
-	   *     var m = matrix([[1, 2], [3, 4]);
-	   *     m.size();                        // [2, 2]
-	   *     m.resize([3, 2], 5);
-	   *     m.valueOf();                     // [[1, 2], [3, 4], [5, 5]]
-	   *     m.get([1, 0])                    // 3
+	   *    math. matrix()     // creates an empty matrix
+	   *    math.matrix(data)  // creates a matrix with initial data.
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    var m = math.matrix([[1, 2], [3, 4]);
+	   *    m.size();                        // Array [2, 2]
+	   *    m.resize([3, 2], 5);
+	   *    m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]
+	   *    m.get([1, 0])                    // number 3
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, complex, index, number, string, unit
 	   *
 	   * @param {Array | Matrix} [data]    A multi dimensional array
-	   * @return {Matrix} matrix
+	   * @return {Matrix} The created matrix
 	   */
 	  math.matrix = function matrix(data) {
 	    if (arguments.length > 1) {
@@ -9096,8 +9888,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Create a number or convert a string to a number.
 	   * When value is a matrix, all elements will be converted to number.
-	   * @param {String | Number | Boolean | Array | Matrix} [value]
-	   * @return {Number | Array | Matrix} num
+	   *
+	   * Syntax:
+	   *
+	   *    math.number(value)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.number(2);                         // returns number 2
+	   *    math.number('7.2');                     // returns number 7.2
+	   *    math.number(true);                      // returns number 1
+	   *    math.number([true, false, true, true]); // returns [1, 0, 1, 1]
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, complex, index, matrix, string, unit
+	   *
+	   * @param {String | Number | Boolean | Array | Matrix} [value]  Value to be converted
+	   * @return {Number | Array | Matrix} The created number
 	   */
 	  math.number = function number (value) {
 	    switch (arguments.length) {
@@ -9149,11 +9959,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var Parser = __webpack_require__(13);
 
 	  /**
-	   * Create a parser. The function creates a new math.expression.Parser object.
+	   * Create a parser. The function creates a new `math.expression.Parser` object.
 	   *
-	   *    parser()
+	   * Syntax:
 	   *
-	   * Example usage:
+	   *    math.parser()
+	   *
+	   * Examples:
+	   *
 	   *     var parser = new math.parser();
 	   *
 	   *     // evaluate expressions
@@ -9175,12 +9988,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     parser.set('h', 500);
 	   *     var i = parser.eval('h / 2');           // 250
 	   *     parser.set('hello', function (name) {
-	 *         return 'hello, ' + name + '!';
-	 *     });
+	   *       return 'hello, ' + name + '!';
+	   *     });
 	   *     parser.eval('hello("user")');           // "hello, user!"
 	   *
 	   *     // clear defined functions and variables
 	   *     parser.clear();
+	   *
+	   * See also:
+	   *
+	   *    eval, compile, parse
 	   *
 	   * @return {Parser} Parser
 	   */
@@ -9201,33 +10018,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * All methods available in the math.js library can be called upon the selector,
 	   * and then will be evaluated with the value itself as first argument.
-	   * The selector can be closed by executing selector.done(), which will return
+	   * The selector can be closed by executing `selector.done()`, which returns
 	   * the final value.
 	   *
-	   * Example usage:
+	   * The Selector has a number of special functions:
+	   *
+	   * - `done()`     Finalize the chained operation and return the selectors value.
+	   * - `valueOf()`  The same as `done()`
+	   * - `toString()` Executes `math.format()` onto the selectors value, returning
+	   *                a string representation of the value.
+	   *
+	   * Syntax:
+	   *
+	   *    math.select(value)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
 	   *     math.select(3)
 	   *         .add(4)
 	   *         .subtract(2)
 	   *         .done();     // 5
+	   *
 	   *     math.select( [[1, 2], [3, 4]] )
 	   *         .set([1, 1], 8)
 	   *         .multiply(3)
 	   *         .done();     // [[24, 6], [9, 12]]
 	   *
-	   * The Selector has a number of special functions:
-	   * - done()     Finalize the chained operation and return the selectors value.
-	   * - valueOf()  The same as done()
-	   * - toString() Executes math.format() onto the selectors value, returning
-	   *              a string representation of the value.
-	   * - get(...)   Get a subselection of the selectors value. Only applicable when
-	   *              the value has a method get, for example when value is a Matrix
-	   *              or Array.
-	   * - set(...)   Replace a subselection of the selectors value. Only applicable
-	   *              when the value has a method get, for example when value is a
-	   *              Matrix or Array.
-	   *
-	   * @param {*} value
-	   * @return {math.chaining.Selector} selector
+	   * @param {*} [value]   A value of any type on which to start a chained operation.
+	   * @return {math.chaining.Selector} The created selector
 	   */
 	  math.select = function select(value) {
 	    // TODO: check number of arguments
@@ -9251,9 +10071,30 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Create a string or convert any object into a string.
-	   * Elements of Arrays and Matrices are processed element wise
-	   * @param {* | Array | Matrix} [value]
-	   * @return {String | Array | Matrix} str
+	   * Elements of Arrays and Matrices are processed element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.string(value)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.string(4.2);               // returns string '4.2'
+	   *    math.string(math.complex(3, 2); // returns string '3 + 2i'
+	   *
+	   *    var u = math.unit(5, 'km');
+	   *    math.string(u.to('m'));         // returns string '5000 m'
+	   *
+	   *    math.string([true, false]);     // returns ['true', 'false']
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, complex, index, matrix, number, unit
+	   *
+	   * @param {* | Array | Matrix} [value]  A value to convert to a string
+	   * @return {String | Array | Matrix} The created string
 	   */
 	  math.string = function string (value) {
 	    switch (arguments.length) {
@@ -9301,17 +10142,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * will create and return a new math.type.Unit object.
 	   * When a matrix is provided, all elements will be converted to units.
 	   *
-	   * The method accepts the following arguments:
-	   *     unit(unit : string)
-	   *     unit(value : number, unit : string)
+	   * Syntax:
 	   *
-	   * Example usage:
-	   *     var a = math.unit(5, 'cm');          // 50 mm
-	   *     var b = math.unit('23 kg');          // 23 kg
-	   *     var c = math.in(a, math.unit('m');   // 0.05 m
+	   *     math.unit(unit : string)
+	   *     math.unit(value : number, unit : string)
 	   *
-	   * @param {* | Array | Matrix} args
-	   * @return {Unit | Array | Matrix} value
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    var a = math.unit(5, 'cm');    // returns Unit 50 mm
+	   *    var b = math.unit('23 kg');    // returns Unit 23 kg
+	   *    a.to('m');                     // returns Unit 0.05 m
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, complex, index, matrix, number, string
+	   *
+	   * @param {* | Array | Matrix} args   A number and unit.
+	   * @return {Unit | Array | Matrix}    The created unit
 	   */
 	  math.unit = function unit(args) {
 	    switch(arguments.length) {
@@ -9378,16 +10227,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Concatenate two or more matrices
-	   * Usage:
+	   * Concatenate two or more matrices.
+	   *
+	   * Syntax:
+	   *
 	   *     math.concat(A, B, C, ...)
 	   *     math.concat(A, B, C, ..., dim)
 	   *
-	   * Where the optional dim is the zero-based number of the dimension to be
-	   * concatenated.
+	   * Where:
 	   *
-	   * @param {... Array | Matrix} args
-	   * @return {Array | Matrix} res
+	   * - `dim` is a zero-based dimension over which to concatenate the matrices.
+	   *   By default the last dimension of the matrices.
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    var A = [[1, 2], [5, 6]];
+	   *    var B = [[3, 4], [7, 8]];
+	   *
+	   *    math.concat(A, B);      // returns [[1, 2, 3, 4], [5, 6, 7, 8]]
+	   *    math.concat(A, B, 0);   // returns [[1, 2], [5, 6], [3, 4], [7, 8]]
+	   *
+	   * See also:
+	   *
+	   *    size, squeeze, subset, transpose
+	   *
+	   * @param {... Array | Matrix} args     Two or more matrices
+	   * @return {Array | Matrix} Concatenated matrix
 	   */
 	  math.concat = function concat (args) {
 	    var i,
@@ -9493,13 +10360,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	      string = util.string;
 
 	  /**
-	   * @constructor det
-	   * Calculate the determinant of a matrix
+	   * Calculate the determinant of a matrix.
 	   *
-	   *     det(x)
+	   * Syntax:
 	   *
-	   * @param {Array | Matrix} x
-	   * @return {Number} determinant
+	   *    math.det(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.det([[1, 2], [3, 4]]); // returns -2
+	   *
+	   *    var A = [
+	   *      [-2, 2, 3],
+	   *      [-1, 1, 3],
+	   *      [2, 0, -1]
+	   *    ]
+	   *    math.det(A); // returns 6
+	   *
+	   * See also:
+	   *
+	   *    inv
+	   *
+	   * @param {Array | Matrix} x  A matrix
+	   * @return {Number} The determinant of `x`
 	   */
 	  math.det = function det (x) {
 	    if (arguments.length != 1) {
@@ -9735,16 +10620,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isArray = Array.isArray;
 
 	  /**
-	   * Create a 2-dimensional identity matrix with size m x n or n x n
+	   * Create a 2-dimensional identity matrix with size m x n or n x n.
+	   * The matrix has ones on the diagonal and zeros elsewhere.
 	   *
-	   *     eye(n)
-	   *     eye(m, n)
-	   *     eye([m, n])
+	   * Syntax:
 	   *
-	   * TODO: more documentation on eye
+	   *    math.eye(n)
+	   *    math.eye(m, n)
+	   *    math.eye([m, n])
 	   *
-	   * @param {...Number | Matrix | Array} size
-	   * @return {Matrix | Array | Number} matrix
+	   * Examples:
+	   *
+	   *    math.eye(3);                    // returns [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+	   *    math.eye(3, 2);                 // returns [[1, 0], [0, 1], [0, 0]]
+	   *
+	   *    var A = [[1, 2, 3], [4, 5, 6]];
+	   *    math.eye(math.size(b));         // returns [[1, 0, 0], [0, 1, 0]]
+	   *
+	   * See also:
+	   *
+	   *    diag, ones, zeros, size, range
+	   *
+	   * @param {...Number | Matrix | Array} size   The size for the matrix
+	   * @return {Matrix | Array | Number} A matrix with ones on the diagonal.
 	   */
 	  math.eye = function eye (size) {
 	    var args = collection.argsToArray(arguments),
@@ -9815,18 +10713,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var util = __webpack_require__(123),
 	      string = util.string,
 
-	      Matrix = __webpack_require__(8),
-	      collection = __webpack_require__(11);
+	      Matrix = __webpack_require__(8);
 
 	  /**
-	   * Calculate the inverse of a matrix
+	   * Calculate the inverse of a square matrix.
 	   *
-	   *     inv(x)
+	   * Syntax:
 	   *
-	   * TODO: more documentation on inv
+	   *     math.inv(x)
 	   *
-	   * @param {Number | Complex | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} inv
+	   * Examples:
+	   *
+	   *     math.inv([[1, 2], [3, 4]]);  // returns [[-2, 1], [1.5, -0.5]]
+	   *     math.inv(4);                 // returns 0.25
+	   *     1 / 4;                       // returns 0.25
+	   *
+	   * See also:
+	   *
+	   *     det, transpose
+	   *
+	   * @param {Number | Complex | Array | Matrix} x     Matrix to be inversed
+	   * @return {Number | Complex | Array | Matrix} The inverse of `x`.
 	   */
 	  math.inv = function inv (x) {
 	    if (arguments.length != 1) {
@@ -10011,15 +10918,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isArray = Array.isArray;
 
 	  /**
-	   * Create a matrix filled with ones
+	   * Create a matrix filled with ones. The created matrix can have one or
+	   * multiple dimensions.
 	   *
-	   *     ones(m)
-	   *     ones(m, n)
-	   *     ones([m, n])
-	   *     ones([m, n, p, ...])
+	   * Syntax:
 	   *
-	   * @param {...Number | Array} size
-	   * @return {Array | Matrix | Number} matrix
+	   *    math.ones(m)
+	   *    math.ones(m, n)
+	   *    math.ones([m, n])
+	   *    math.ones([m, n, p, ...])
+	   *
+	   * Examples:
+	   *
+	   *    math.ones(3);                   // returns [1, 1, 1]
+	   *    math.ones(3, 2);                // returns [[1, 1], [1, 1], [1, 1]]
+	   *
+	   *    var A = [[1, 2, 3], [4, 5, 6]];
+	   *    math.zeros(math.size(A));       // returns [[1, 1, 1], [1, 1, 1]]
+	   *
+	   * See also:
+	   *
+	   *    zeros, eye, size, range
+	   *
+	   * @param {...Number | Array} size    The size of each dimension of the matrix
+	   * @return {Array | Matrix | Number}  A matrix filled with ones
 	   */
 	  math.ones = function ones (size) {
 	    var args = collection.argsToArray(arguments);
@@ -10075,18 +10997,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * By default, the range end is excluded. This can be customized by providing
 	   * an extra parameter `includeEnd`.
 	   *
-	   * The method accepts the following arguments
-	   *     range(str [, includeEnd])              Create a range from a string,
-	   *                                            where the string contains the
-	   *                                            start, optional step, and end,
-	   *                                            separated by a colon.
-	   *     range(start, end [, includeEnd])       Create a range with start and
-	   *                                            end and a step size of 1.
-	   *     range(start, end, step [, includeEnd]) Create a range with start, step,
-	   *                                            and end.
+	   * Syntax:
+	   *
+	   *     range(str [, includeEnd])              // Create a range from a string,
+	   *                                            // where the string contains the
+	   *                                            // start, optional step, and end,
+	   *                                            // separated by a colon.
+	   *     range(start, end [, includeEnd])       // Create a range with start and
+	   *                                            // end and a step size of 1.
+	   *     range(start, end, step [, includeEnd]) // Create a range with start, step,
+	   *                                            // and end.
 	   *
 	   * Where:
-	   *     {String} str
+	   *
+	   *     {String} str                 A string 'start:end' or 'start:step:end'
 	   *     {Number | BigNumber} start   Start of the range
 	   *     {Number | BigNumber} end     End of the range, excluded by default,
 	   *                                  included when parameter includeEnd=true
@@ -10094,13 +11018,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     {boolean} includeEnd=false   Option to specify whether to include
 	   *                                  the end or not.
 	   *
-	   * Example usage:
-	   *     math.range(2, 6);        // [2,3,4,5]
-	   *     math.range(2, -3, -1);   // [2,1,0,-1,-2]
-	   *     math.range('2:1:6');     // [2,3,4,5]
-	   *     math.range(2, 6, true);  // [2,3,4,5,6]
+	   * Examples:
 	   *
-	   * @param {...*} args
+	   *     var math = mathjs();
+	   *
+	   *     math.range(2, 6);        // [2, 3, 4, 5]
+	   *     math.range(2, -3, -1);   // [2, 1, 0, -1, -2]
+	   *     math.range('2:1:6');     // [2, 3, 4, 5]
+	   *     math.range(2, 6, true);  // [2, 3, 4, 5, 6]
+	   *
+	   * See also:
+	   *
+	   *     ones, zeros, size, subset
+	   *
+	   * @param {...*} args   Parameters describing the ranges `start`, `end`, and optional `step`.
 	   * @return {Array | Matrix} range
 	   */
 	  math.range = function range(args) {
@@ -10509,12 +11440,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isUnit = Unit.isUnit;
 
 	  /**
-	   * Calculate the size of a matrix or scalar
+	   * Calculate the size of a matrix or scalar.
 	   *
-	   *     size(x)
+	   * Syntax:
 	   *
-	   * @param {Boolean | Number | Complex | Unit | String | Array | Matrix} x
-	   * @return {Array | Matrix} res
+	   *     math.size(x)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.size(2.3);                  // returns []
+	   *     math.size('hello world');        // returns [11]
+	   *
+	   *     var A = [[1, 2, 3], [4, 5, 6]];
+	   *     math.size(A);                    // returns [2, 3]
+	   *     math.size(math.range(1,6));      // returns [5]
+	   *
+	   * @param {Boolean | Number | Complex | Unit | String | Array | Matrix} x  A matrix
+	   * @return {Array | Matrix} A vector with size of `x`.
 	   */
 	  math.size = function size (x) {
 	    if (arguments.length != 1) {
@@ -10559,12 +11503,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isArray = Array.isArray;
 
 	  /**
-	   * Remove singleton dimensions from a matrix
+	   * Squeeze a matrix, remove outer singleton dimensions from a matrix.
 	   *
-	   *     squeeze(x)
+	   * Syntax:
 	   *
-	   * @param {Matrix | Array} x
-	   * @return {Matrix | Array} res
+	   *     math.squeeze(x)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.squeeze([3]);           // returns 3
+	   *     math.squeeze([[3]]);         // returns 3
+	   *
+	   *     var A = math.zeros(1, 3, 2); // returns [[[0, 0], [0, 0], [0, 0]]] (size 1x3x2)
+	   *     math.squeeze(A);             // returns [[0, 0], [0, 0], [0, 0]] (size 3x2)
+	   *
+	   *     // only outer dimensions will be squeezed, so the following B will be left as as
+	   *     var B = math.zeros(3, 1, 1); // returns [[[0]], [[0]], [[0]]] (size 3x1x1)
+	   *     math.squeeze(B);             // returns [[[0]], [[0]], [[0]]] (size 3x1x1)
+	   *
+	   * See also:
+	   *
+	   *     subset
+	   *
+	   * @param {Matrix | Array} x      Matrix to be squeezed
+	   * @return {Matrix | Array} Squeezed matrix
 	   */
 	  math.squeeze = function squeeze (x) {
 	    if (arguments.length != 1) {
@@ -10790,18 +11754,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var util = __webpack_require__(123),
 
 	      Matrix = __webpack_require__(8),
-	      collection = __webpack_require__(11),
 
 	      object = util.object,
 	      string = util.string;
 
 	  /**
-	   * Create the transpose of a matrix
+	   * Transpose a matrix. All values of the matrix are reflected over its
+	   * main diagonal. Only two dimensional matrices are supported.
 	   *
-	   *     transpose(x)
+	   * Syntax:
 	   *
-	   * @param {Array | Matrix} x
-	   * @return {Array | Matrix} transpose
+	   *     math.transpose(x)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     var A = [[1, 2, 3], [4, 5, 6]];
+	   *     math.transpose(A);               // returns [[1, 4], [2, 5], [3, 6]]
+	   *
+	   * See also:
+	   *
+	   *     diag, inv, subset, squeeze
+	   *
+	   * @param {Array | Matrix} x  Matrix to be transposed
+	   * @return {Array | Matrix}   The transposed matrix
 	   */
 	  math.transpose = function transpose (x) {
 	    if (arguments.length != 1) {
@@ -10867,15 +11844,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isArray = Array.isArray;
 
 	  /**
-	   * create a matrix filled with zeros
+	   * Create a matrix filled with zeros. The created matrix can have one or
+	   * multiple dimensions.
 	   *
-	   *     zeros(m)
-	   *     zeros(m, n)
-	   *     zeros([m, n])
-	   *     zeros([m, n, p, ...])
+	   * Syntax:
 	   *
-	   * @param {...Number | Array} size
-	   * @return {Array | Matrix | Number} matrix
+	   *    math.zeros(m)
+	   *    math.zeros(m, n)
+	   *    math.zeros([m, n])
+	   *    math.zeros([m, n, p, ...])
+	   *
+	   * Examples:
+	   *
+	   *    math.zeros(3);                  // returns [0, 0, 0]
+	   *    math.zeros(3, 2);               // returns [[0, 0], [0, 0], [0, 0]]
+	   *
+	   *    var A = [[1, 2, 3], [4, 5, 6]];
+	   *    math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]
+	   *
+	   * See also:
+	   *
+	   *    ones, eye, size, range
+	   *
+	   * @param {...Number | Array} size    The size of each dimension of the matrix
+	   * @return {Array | Matrix | Number}  A matrix filled with zeros
 	   */
 	  math.zeros = function zeros (size) {
 	    var args = collection.argsToArray(arguments);
@@ -10929,14 +11921,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Compute the factorial of a value
 	   *
-	   *     n!
-	   *     factorial(n)
-	   *
 	   * Factorial only supports an integer value as argument.
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @Param {Number | BigNumber | Array | Matrix} n
-	   * @return {Number | BigNumber | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.factorial(n)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.factorial(5);    // returns 120
+	   *    math.factorial(3);    // returns 6
+	   *
+	   * See also:
+	   *
+	   *    combinations, permutations
+	   *
+	   * @param {Number | BigNumber | Array | Matrix} n   An integer number
+	   * @return {Number | BigNumber | Array | Matrix}    The factorial of `n`
 	   */
 	  math.factorial = function factorial (n) {
 	    var value, res;
@@ -11205,17 +12209,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isInteger = util.number.isInteger;
 
 	  /**
-	   * Compute the number of permutations of n items taken k at a time
+	   * Compute the number of ways of obtaining an ordered subset of `k` elements
+	   * from a set of `n` elements.
 	   *
-	   *     permutations(n)
-	   *     permutations(n, k)
+	   * Permutations only takes integer arguments.
+	   * The following condition must be enforced: k <= n.
 	   *
-	   * permutations only takes integer arguments
-	   * the following condition must be enforced: k <= n
+	   * Syntax:
 	   *
-	   * @Param {Number | BigNumber} n
-	   * @Param {Number | BigNumber} k
-	   * @return {Number | BigNumber} permutations
+	   *     math.permutations(n)
+	   *     math.permutations(n, k)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.permutations(5);     // 120
+	   *    math.permutations(5, 3);  // 60
+	   *
+	   * See also:
+	   *
+	   *    combinations, factorial
+	   *
+	   * @param {Number | BigNumber} n  The number of objects in total
+	   * @param {Number | BigNumber} k  The number of objects in the subset
+	   * @return {Number | BigNumber}   The number of permutations
 	   */
 	  math.permutations = function permutations (n, k) {
 	    var result, i;
@@ -11305,16 +12323,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isInteger = util.number.isInteger;
 
 	  /**
-	   * Compute the number of combinations of n items taken k at a time
+	   * Compute the number of ways of picking `k` unordered outcomes from `n`
+	   * possibilities.
 	   *
-	   *     combinations(n, k)
+	   * Combinations only takes integer arguments.
+	   * The following condition must be enforced: k <= n.
 	   *
-	   * combinations only takes integer arguments
-	   * the following condition must be enforced: k <= n
+	   * Syntax:
 	   *
-	   * @Param {Number | BigNumber} n
-	   * @Param {Number | BigNumber} k
-	   * @return {Number | BigNumber} combinations
+	   *     math.combinations(n, k)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.combinations(7, 5); // returns 21
+	   *
+	   * See also:
+	   *
+	   *    permutations, factorial
+	   *
+	   * @param {Number | BigNumber} n    Total number of objects in the set
+	   * @param {Number | BigNumber} k    Number of objects in the subset
+	   * @return {Number | BigNumber}     Number of possible combinations.
 	   */
 	  math.combinations = function combinations (n, k) {
 	    var max, result, i,ii;
@@ -11386,17 +12417,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Compute the minimum value of a list of values.
-	   * In case of a multi dimensional array, the minimum of the flattened array
-	   * will be calculated. When dim is provided, the maximum over the selected
-	   * dimension will be calculated.
+	   * Compute the maximum value of a matrix or a  list of values.
+	   * In case of a multi dimensional array, the maximum of the flattened array
+	   * will be calculated. When `dim` is provided, the maximum over the selected
+	   * dimension will be calculated. Parameter `dim` is zero-based.
 	   *
-	   *     min(a, b, c, ...)
-	   *     min(A)
-	   *     min(A, dim)
+	   * Syntax:
 	   *
-	   * @param {... *} args  A single matrix or multiple scalar values
-	   * @return {*} res
+	   *     math.min(a, b, c, ...)
+	   *     math.min(A)
+	   *     math.min(A, dim)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.min(2, 1, 4, 3);                  // returns 1
+	   *     math.min([2, 1, 4, 3]);                // returns 1
+	   *
+	   *     // maximum over a specified dimension (zero-based)
+	   *     math.min([[2, 5], [4, 3], [1, 7]], 0); // returns [1, 3]
+	   *     math.min([[2, 5], [4, 3], [1, 7]], 1); // returns [2, 3, 1]
+	   *
+	   *     math.max(2.7, 7.1, -4.5, 2.0, 4.1);    // returns 7.1
+	   *     math.min(2.7, 7.1, -4.5, 2.0, 4.1);    // returns -4.5
+	   *
+	   * See also:
+	   *
+	   *    mean, median, max, prod, std, sum, var
+	   *
+	   * @param {... *} args  A single matrix or or multiple scalar values
+	   * @return {*} The minimum value
 	   */
 	  math.min = function min(args) {
 	    if (arguments.length == 0) {
@@ -11461,17 +12512,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Compute the maximum value of a list of values
+	   * Compute the maximum value of a matrix or a  list with values.
 	   * In case of a multi dimensional array, the maximum of the flattened array
-	   * will be calculated. When dim is provided, the maximum over the selected
-	   * dimension will be calculated.
+	   * will be calculated. When `dim` is provided, the maximum over the selected
+	   * dimension will be calculated. Parameter `dim` is zero-based.
 	   *
-	   *     max(a, b, c, ...)
-	   *     max(A)
-	   *     max(A, dim)
+	   * Syntax:
+	   *
+	   *     math.max(a, b, c, ...)
+	   *     math.max(A)
+	   *     math.max(A, dim)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.max(2, 1, 4, 3);                  // returns 4
+	   *     math.max([2, 1, 4, 3]);                // returns 4
+	   *
+	   *     // maximum over a specified dimension (zero-based)
+	   *     math.max([[2, 5], [4, 3], [1, 7]], 0); // returns [4, 7]
+	   *     math.max([[2, 5], [4, 3]], [1, 7], 1); // returns [5, 4, 7]
+	   *
+	   *     math.max(2.7, 7.1, -4.5, 2.0, 4.1);    // returns 7.1
+	   *     math.min(2.7, 7.1, -4.5, 2.0, 4.1);    // returns -4.5
+	   *
+	   * See also:
+	   *
+	   *    mean, median, min, prod, std, sum, var
 	   *
 	   * @param {... *} args  A single matrix or or multiple scalar values
-	   * @return {*} res
+	   * @return {*} The maximum value
 	   */
 	  math.max = function max(args) {
 	    if (arguments.length == 0) {
@@ -11538,17 +12609,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	      size = __webpack_require__(153).size;
 
 	  /**
-	   * Compute the mean value of a list of values
+	   * Compute the mean value of matrix or a list with values.
 	   * In case of a multi dimensional array, the mean of the flattened array
-	   * will be calculated. When dim is provided, the maximum over the selected
-	   * dimension will be calculated.
+	   * will be calculated. When `dim` is provided, the maximum over the selected
+	   * dimension will be calculated. Parameter `dim` is zero-based.
 	   *
-	   *     mean(a, b, c, ...)
-	   *     mean(A)
-	   *     mean(A, dim)
+	   * Syntax:
+	   *
+	   *     mean.mean(a, b, c, ...)
+	   *     mean.mean(A)
+	   *     mean.mean(A, dim)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.mean(2, 1, 4, 3);                     // returns 2.5
+	   *     math.mean([1, 2.7, 3.2, 4]);               // returns 2.725
+	   *
+	   *     math.mean([[2, 5], [6, 3], [1, 7]], 0);    // returns [3, 5]
+	   *     math.mean([[2, 5], [6, 3], [1, 7]], 1);    // returns [3.5, 4.5, 4]
+	   *
+	   * See also:
+	   *
+	   *     median, min, max, sum, prod, std, var
 	   *
 	   * @param {... *} args  A single matrix or or multiple scalar values
-	   * @return {*} res
+	   * @return {*} The mean of all values
 	   */
 	  math.mean = function mean(args) {
 	    if (arguments.length == 0) {
@@ -11628,19 +12715,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	      flatten = __webpack_require__(153).flatten;
 
 	  /**
-	   * Compute the median of a list of values. The values are sorted and the
-	   * middle value is returned. In case of an even number of values,
-	   * the average of the two middle values is returned.
+	   * Compute the median of a matrix or a list with values. The values are
+	   * sorted and the middle value is returned. In case of an even number of
+	   * values, the average of the two middle values is returned.
 	   * Supported types of values are: Number, BigNumber, Unit
 	   *
 	   * In case of a (multi dimensional) array or matrix, the median of all
 	   * elements will be calculated.
 	   *
-	   *     median(a, b, c, ...)
-	   *     median(A)
+	   * Syntax:
+	   *
+	   *     mean.median(a, b, c, ...)
+	   *     mean.median(A)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.median(5, 2, 7);        // returns 5
+	   *     math.median([3, -1, 5, 7]);  // returns 4
+	   *
+	   * See also:
+	   *
+	   *     mean, min, max, sum, prod, std, var
 	   *
 	   * @param {... *} args  A single matrix or or multiple scalar values
-	   * @return {*} res
+	   * @return {*} The median
 	   */
 	  math.median = function median(args) {
 	    if (arguments.length == 0) {
@@ -11724,15 +12824,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Compute the product of a list of values
-	   * In case of a (multi dimensional) array or matrix, the product of all
+	   * Compute the product of a matrix or a list with values.
+	   * In case of a (multi dimensional) array or matrix, the sum of all
 	   * elements will be calculated.
 	   *
-	   *     prod(a, b, c, ...)
-	   *     prod(A)
+	   * Syntax:
+	   *
+	   *     math.prod(a, b, c, ...)
+	   *     math.prod(A)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.multiply(2, 3);           // returns 6
+	   *     math.prod(2, 3);               // returns 6
+	   *     math.prod(2, 3, 4);            // returns 24
+	   *     math.prod([2, 3, 4]);          // returns 24
+	   *     math.prod([[2, 5], [4, 3]]);   // returns 120
+	   *
+	   * See also:
+	   *
+	   *    mean, median, min, max, sum, std, var
 	   *
 	   * @param {... *} args  A single matrix or or multiple scalar values
-	   * @return {*} res
+	   * @return {*} The product of all values
 	   */
 	  math.prod = function prod(args) {
 	    if (arguments.length == 0) {
@@ -11787,25 +12903,49 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
+
+
 	  /**
-	   * Compute the standard deviation of a list of values, defined as the
-	   * square root of the variance: std(A) = sqrt(var(A)).
+	   * Compute the standard deviation of a matrix or a  list with values.
+	   * The standard deviations is defined as the square root of the variance:
+	   * `std(A) = sqrt(var(A))`.
 	   * In case of a (multi dimensional) array or matrix, the standard deviation
 	   * over all elements will be calculated.
 	   *
-	   *     std(a, b, c, ...)
-	   *     std(A)
-	   *     std(A, normalization)
+	   * Optionally, the type of normalization can be specified as second
+	   * parameter. The parameter `normalization` can be one of the following values:
 	   *
-	   * Where `normalization` is a string having one of the following values:
+	   * - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
+	   * - 'uncorrected'        The sum of squared errors is divided by n
+	   * - 'biased'             The sum of squared errors is divided by (n + 1)
 	   *
-	   * @param {Array | Matrix} array                 A single matrix or or multiple scalar values
+	   * Syntax:
+	   *
+	   *     math.std(a, b, c, ...)
+	   *     math.std(A)
+	   *     math.std(A, normalization)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.std(2, 4, 6);                     // returns 2
+	   *     math.std([2, 4, 6, 8]);                // returns 2.581988897471611
+	   *     math.std([2, 4, 6, 8], 'uncorrected'); // returns 2.23606797749979
+	   *     math.std([2, 4, 6, 8], 'biased');      // returns 2
+	   *
+	   *     math.std([[1, 2, 3], [4, 5, 6]]);      // returns 1.8708286933869707
+	   *
+	   * See also:
+	   *
+	   *    mean, median, max, min, prod, sum, var
+	   *
+	   * @param {Array | Matrix} array
+	   *                        A single matrix or or multiple scalar values
 	   * @param {String} [normalization='unbiased']
-	   *                        Determines how to normalize the standard deviation:
-	   *                        - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
-	   *                        - 'uncorrected'        The sum of squared errors is divided by n
-	   *                        - 'biased'             The sum of squared errors is divided by (n + 1)
-	   * @return {*} res
+	   *                        Determines how to normalize the variance.
+	   *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
+	   * @return {*} The standard deviation
 	   */
 	  math.std = function std(array, normalization) {
 	    if (arguments.length == 0) {
@@ -11829,15 +12969,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Compute the sum of a list of values
+	   * Compute the sum of a matrix or a list with values.
 	   * In case of a (multi dimensional) array or matrix, the sum of all
 	   * elements will be calculated.
 	   *
-	   *     sum(a, b, c, ...)
-	   *     sum(A)
+	   * Syntax:
+	   *
+	   *     math.sum(a, b, c, ...)
+	   *     math.sum(A)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.sum(2, 1, 4, 3);               // returns 10
+	   *     math.sum([2, 1, 4, 3]);             // returns 10
+	   *     math.sum([[2, 5], [4, 3], [1, 7]]); // returns 22
+	   *
+	   * See also:
+	   *
+	   *    mean, median, min, max, prod, std, var
 	   *
 	   * @param {... *} args  A single matrix or or multiple scalar values
-	   * @return {*} res
+	   * @return {*} The sum of all values
 	   */
 	  math.sum = function sum(args) {
 	    if (arguments.length == 0) {
@@ -11902,23 +13056,48 @@ return /******/ (function(modules) { // webpackBootstrap
 	      DEFAULT_NORMALIZATION = 'unbiased';
 
 	  /**
-	   * Compute the variance of a list of values
+	   * Compute the variance of a matrix or a  list with values.
 	   * In case of a (multi dimensional) array or matrix, the variance over all
 	   * elements will be calculated.
 	   *
-	   *     var(a, b, c, ...)
-	   *     var(A)
-	   *     var(A, normalization)
+	   * Optionally, the type of normalization can be specified as second
+	   * parameter. The parameter `normalization` can be one of the following values:
 	   *
-	   * Where `normalization` is a string having one of the following values:
+	   * - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
+	   * - 'uncorrected'        The sum of squared errors is divided by n
+	   * - 'biased'             The sum of squared errors is divided by (n + 1)
+
+	   * Note that older browser may not like the variable name `var`. In that
+	   * case, the function can be called as `math['var'](...)` instead of
+	   * `math.var(...)`.
 	   *
-	   * @param {Array | Matrix} array                 A single matrix or or multiple scalar values
+	   * Syntax:
+	   *
+	   *     math.var(a, b, c, ...)
+	   *     math.var(A)
+	   *     math.var(A, normalization)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.var(2, 4, 6);                     // returns 4
+	   *     math.var([2, 4, 6, 8]);                // returns 6.666666666666667
+	   *     math.var([2, 4, 6, 8], 'uncorrected'); // returns 5
+	   *     math.var([2, 4, 6, 8], 'biased');      // returns 4
+	   *
+	   *     math.var([[1, 2, 3], [4, 5, 6]]);      // returns 3.5
+	   *
+	   * See also:
+	   *
+	   *    mean, median, max, min, prod, std, sum
+	   *
+	   * @param {Array | Matrix} array
+	   *                        A single matrix or or multiple scalar values
 	   * @param {String} [normalization='unbiased']
-	   *                        Determines how to normalize the variance:
-	   *                        - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
-	   *                        - 'uncorrected'        The sum of squared errors is divided by n
-	   *                        - 'biased'             The sum of squared errors is divided by (n + 1)
-	   * @return {*} res
+	   *                        Determines how to normalize the variance.
+	   *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
+	   * @return {*} The variance
 	   */
 	  math['var'] = function variance(array, normalization) {
 	    if (arguments.length == 0) {
@@ -12023,16 +13202,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the inverse cosine of a value
-	   *
-	   *     acos(x)
+	   * Calculate the inverse cosine of a value.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/InverseCosine.html
+	   *    math.acos(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.acos(0.5);           // returns Number 1.0471975511965979
+	   *    math.acos(math.cos(1.5)); // returns Number 1.5
+	   *
+	   *    math.acos(2);             // returns Complex 0 + 1.3169578969248166 i
+	   *
+	   * See also:
+	   *
+	   *    cos, atan, asin
+	   *
+	   * @param {Number | Boolean | Complex | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} The arc cosine of x
 	   */
 	  math.acos = function acos(x) {
 	    if (arguments.length != 1) {
@@ -12104,16 +13296,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the inverse sine of a value
-	   *
-	   *     asin(x)
+	   * Calculate the inverse sine of a value.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/InverseSine.html
+	   *    math.asin(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.asin(0.5);           // returns Number 0.5235987755982989
+	   *    math.asin(math.sin(1.5)); // returns Number ~1.5
+	   *
+	   *    math.asin(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+	   *
+	   * See also:
+	   *
+	   *    sin, atan, acos
+	   *
+	   * @param {Number | Boolean | Complex | Array | Matrix} x   Function input
+	   * @return {Number | Complex | Array | Matrix} The arc sine of x
 	   */
 	  math.asin = function asin(x) {
 	    if (arguments.length != 1) {
@@ -12183,16 +13388,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the inverse tangent of a value
-	   *
-	   *     atan(x)
+	   * Calculate the inverse tangent of a value.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/InverseTangent.html
+	   *    math.atan(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.atan(0.5);           // returns Number 0.4636476090008061
+	   *    math.atan(math.tan(1.5)); // returns Number 1.5
+	   *
+	   *    math.atan(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+	   *
+	   * See also:
+	   *
+	   *    tan, asin, acos
+	   *
+	   * @param {Number | Boolean | Complex | Array | Matrix} x   Function input
+	   * @return {Number | Complex | Array | Matrix} The arc tangent of x
 	   */
 	  math.atan = function atan(x) {
 	    if (arguments.length != 1) {
@@ -12257,17 +13475,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Computes the principal value of the arc tangent of y/x in radians
-	   *
-	   *     atan2(y, x)
+	   * Calculate the inverse tangent function with two arguments, y/x.
+	   * By providing two arguments, the right quadrant of the computed angle can be
+	   * determined.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Array | Matrix} y
-	   * @param {Number | Boolean | Complex | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/InverseTangent.html
+	   *    math.atan2(y, x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.atan2(2, 2) / math.pi;       // returns number 0.25
+	   *
+	   *    var angle = math.unit(60, 'deg'); // returns Unit 60 deg
+	   *    var x = math.cos(angle);
+	   *    var y = math.sin(angle);
+	   *
+	   *    math.atan(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+	   *
+	   * See also:
+	   *
+	   *    tan, atan, sin, cos
+	   *
+	   * @param {Number | Boolean | Complex | Array | Matrix} y  Second dimension
+	   * @param {Number | Boolean | Complex | Array | Matrix} x  First dimension
+	   * @return {Number | Complex | Array | Matrix} Four-quadrant inverse tangent
 	   */
 	  math.atan2 = function atan2(y, x) {
 	    if (arguments.length != 2) {
@@ -12325,16 +13561,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the cosine of a value
-	   *
-	   *     cos(x)
+	   * Calculate the cosine of a value.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/Cosine.html
+	   *    math.cos(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.cos(2);                      // returns Number -0.4161468365471422
+	   *    math.cos(math.pi / 4);            // returns Number  0.7071067811865475
+	   *    math.cos(math.unit(180, 'deg'));  // returns Number -1
+	   *    math.cos(math.unit(60, 'deg'));   // returns Number  0.5
+	   *
+	   *    var angle = 0.2;
+	   *    math.pow(math.sin(angle), 2) + math.pow(math.cos(angle), 2); // returns Number ~1
+	   *
+	   * See also:
+	   *
+	   *    cos, tan
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Cosine of x
 	   */
 	  math.cos = function cos(x) {
 	    if (arguments.length != 1) {
@@ -12398,16 +13650,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the hyperbolic cosine of a value
-	   *
-	   *     cosh(x)
+	   * Calculate the hyperbolic cosine of a value,
+	   * defined as `cosh(x) = 1/2 * (exp(x) + exp(-x))`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/HyperbolicCosine.html
+	   *    math.cosh(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.cosh(0.5);       // returns Number 1.1276259652063807
+	   *
+	   * See also:
+	   *
+	   *    sinh, tanh
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic cosine of x
 	   */
 	  math.cosh = function cosh(x) {
 	    if (arguments.length != 1) {
@@ -12469,14 +13732,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the cotangent of a value. cot(x) is defined as 1 / tan(x)
-	   *
-	   *     cot(x)
+	   * Calculate the cotangent of a value. `cot(x)` is defined as `1 / tan(x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.cot(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.cot(2);      // returns Number -0.45765755436028577
+	   *    1 / math.tan(2);  // returns Number -0.45765755436028577
+	   *
+	   * See also:
+	   *
+	   *    tan, sec, csc
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Cotangent of x
 	   */
 	  math.cot = function cot(x) {
 	    if (arguments.length != 1) {
@@ -12542,16 +13818,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the hyperbolic cotangent of a value
-	   *
-	   *     coth(x)
+	   * Calculate the hyperbolic cotangent of a value,
+	   * defined as `coth(x) = 1 / tanh(x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/HyperbolicCotangent.html
+	   *    math.coth(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    // coth(x) = 1 / tanh(x)
+	   *    math.coth(2);         // returns 1.0373147207275482
+	   *    1 / math.tanh(2);     // returns 1.0373147207275482
+	   *
+	   * See also:
+	   *
+	   *    sinh, tanh, cosh
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic cotangent of x
 	   */
 	  math.coth = function coth(x) {
 	    if (arguments.length != 1) {
@@ -12619,14 +13908,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the cosecant of a value, csc(x) = 1/sin(x)
-	   *
-	   *     csc(x)
+	   * Calculate the cosecant of a value, defined as `csc(x) = 1/sin(x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.csc(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.csc(2);      // returns Number 1.099750170294617
+	   *    1 / math.sin(2);  // returns Number 1.099750170294617
+	   *
+	   * See also:
+	   *
+	   *    sin, sec, cot
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Cosecant of x
 	   */
 	  math.csc = function csc(x) {
 	    if (arguments.length != 1) {
@@ -12694,16 +13996,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the hyperbolic cosecant of a value
-	   *
-	   *     csch(x)
+	   * Calculate the hyperbolic cosecant of a value,
+	   * defined as `csch(x) = 1 / sinh(x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/HyperbolicCosecant.html
+	   *    math.csch(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    // csch(x) = 1/ sinh(x)
+	   *    math.csch(0.5);       // returns 1.9190347513349437
+	   *    1 / math.sinh(0.5);   // returns 1.9190347513349437
+	   *
+	   * See also:
+	   *
+	   *    sinh, sech, coth
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic cosecant of x
 	   */
 	  math.csch = function csch(x) {
 	    if (arguments.length != 1) {
@@ -12771,14 +14086,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the secant of a value, sec(x) = 1/cos(x)
-	   *
-	   *     sec(x)
+	   * Calculate the secant of a value, defined as `sec(x) = 1/cos(x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.sec(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.sec(2);      // returns Number -2.4029979617223822
+	   *    1 / math.cos(2);  // returns Number -2.4029979617223822
+	   *
+	   * See also:
+	   *
+	   *    cos, csc, cot
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Secant of x
 	   */
 	  math.sec = function sec(x) {
 	    if (arguments.length != 1) {
@@ -12845,16 +14173,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the hyperbolic secant of a value; sech(x)=1/cosh(x)
-	   *
-	   *     sech(x)
+	   * Calculate the hyperbolic secant of a value,
+	   * defined as `sech(x) = 1 / cosh(x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/HyperbolicSecant.html
+	   *    math.sech(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    // sech(x) = 1/ cosh(x)
+	   *    math.sech(0.5);       // returns 0.886818883970074
+	   *    1 / math.cosh(0.5);   // returns 1.9190347513349437
+	   *
+	   * See also:
+	   *
+	   *    cosh, csch, coth
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic secant of x
 	   */
 	  math.sech = function sech(x) {
 	    if (arguments.length != 1) {
@@ -12918,6 +14259,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isUnit = Unit.isUnit,
 	      isCollection = collection.isCollection;
 
+	  /**
+	   * Calculate the sine of a value.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.sin(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.sin(2);                      // returns Number 0.9092974268256813
+	   *    math.sin(math.pi / 4);            // returns Number 0.7071067811865475
+	   *    math.sin(math.unit(90, 'deg'));   // returns Number 1
+	   *    math.sin(math.unit(30, 'deg'));   // returns Number 0.5
+	   *
+	   *    var angle = 0.2;
+	   *    math.pow(math.sin(angle), 2) + math.pow(math.cos(angle), 2); // returns Number ~1
+	   *
+	   * See also:
+	   *
+	   *    cos, tan
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Sine of x
+	   */
 	  /**
 	   * Calculate the sine of a value
 	   *
@@ -12991,16 +14360,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the hyperbolic sine of a value
-	   *
-	   *     sinh(x)
+	   * Calculate the hyperbolic sine of a value,
+	   * defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/HyperbolicSine.html
+	   *    math.sinh(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.sinh(0.5);       // returns Number 0.5210953054937474
+	   *
+	   * See also:
+	   *
+	   *    cosh, tanh
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic sine of x
 	   */
 	  math.sinh = function sinh(x) {
 	    if (arguments.length != 1) {
@@ -13064,16 +14444,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the tangent of a value
-	   *
-	   *     tan(x)
+	   * Calculate the tangent of a value. `tan(x)` is equal to `sin(x) / cos(x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/Tangent.html
+	   *    math.tan(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.tan(0.5);                    // returns Number 0.5463024898437905
+	   *    math.sin(0.5) / math.cos(0.5);    // returns Number 0.5463024898437905
+	   *    math.tan(math.pi / 4);            // returns Number 1
+	   *    math.tan(math.unit(45, 'deg'));   // returns Number 1
+	   *
+	   * See also:
+	   *
+	   *    atan, sin, cos
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Tangent of x
 	   */
 	  math.tan = function tan(x) {
 	    if (arguments.length != 1) {
@@ -13140,16 +14533,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isCollection = collection.isCollection;
 
 	  /**
-	   * Calculate the hyperbolic tangent of a value
-	   *
-	   *     tanh(x)
+	   * Calculate the hyperbolic tangent of a value,
+	   * defined as `tanh(x) = (exp(2 * x) - 1) / (exp(2 * x) + 1)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x
-	   * @return {Number | Complex | Array | Matrix} res
+	   * Syntax:
 	   *
-	   * @see http://mathworld.wolfram.com/HyperbolicTangent.html
+	   *    math.tanh(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    // tanh(x) = sinh(x) / cosh(x) = 1 / coth(x)
+	   *    math.tanh(0.5);                   // returns 0.46211715726000974
+	   *    math.sinh(0.5) / math.cosh(0.5);  // returns 0.46211715726000974
+	   *    1 / math.coth(0.5);               // returns 0.46211715726000974
+	   *
+	   * See also:
+	   *
+	   *    sinh, cosh, coth
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic tangent of x
 	   */
 	  math.tanh = function tanh(x) {
 	    if (arguments.length != 1) {
@@ -13215,14 +14622,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Change the unit of a value.
 	   *
-	   *     x to unit
-	   *     to(x, unit)
-	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
-	   * @param {Unit | Array | Matrix} x
-	   * @param {Unit | Array | Matrix} unit
-	   * @return {Unit | Array | Matrix} res
+	   * Syntax:
+	   *
+	   *    math.to(x, unit)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.to(math.unit('2 inch'), 'cm');                   // returns Unit 5.08 cm
+	   *    math.to(math.unit('2 inch'), math.unit(null, 'cm'));  // returns Unit 5.08 cm
+	   *    math.to(math.unit(16, 'bytes'), 'bits');              // returns Unit 128 bits
+	   *
+	   * See also:
+	   *
+	   *    unit
+	   *
+	   * @param {Unit | Array | Matrix} x     The unit to be converted.
+	   * @param {Unit | Array | Matrix} unit  New unit. Can be a string like "cm"
+	   *                                      or a unit without value.
+	   * @return {Unit | Array | Matrix} value with changed, fixed unit.
 	   */
 	  math.to = function to(x, unit) {
 	    if (arguments.length != 2) {
@@ -13255,12 +14676,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	      object = util.object;
 
 	  /**
-	   * Clone an object
+	   * Clone an object.
 	   *
-	   *     clone(x)
+	   * Syntax:
 	   *
-	   * @param {*} x
-	   * @return {*} clone
+	   *     math.clone(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.clone(3.5);              // returns number 3.5
+	   *    math.clone(2 - 4i);           // returns Complex 2 - 4i
+	   *    math.clone(45 deg);           // returns Unit 45 deg
+	   *    math.clone([[1, 2], [3, 4]]); // returns Array [[1, 2], [3, 4]]
+	   *    math.clone("hello world");    // returns string "hello world"
+	   *
+	   * @param {*} x   Object to be cloned
+	   * @return {*} A clone of object x
 	   */
 	  math.clone = function clone (x) {
 	    if (arguments.length != 1) {
@@ -13285,10 +14718,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Syntax:
 	   *
-	   *    format(value)
-	   *    format(value, options)
-	   *    format(value, precision)
-	   *    format(value, fn)
+	   *    math.format(value)
+	   *    math.format(value, options)
+	   *    math.format(value, precision)
+	   *    math.format(value, fn)
 	   *
 	   * Where:
 	   *
@@ -13331,17 +14764,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    format(6.4);                                        // '6.4'
-	   *    format(1240000);                                    // '1.24e6'
-	   *    format(1/3);                                        // '0.3333333333333333'
-	   *    format(1/3, 3);                                     // '0.333'
-	   *    format(21385, 2);                                   // '21000'
-	   *    format(12.071, {notation: 'fixed'});                // '12'
-	   *    format(2.3,    {notation: 'fixed', precision: 2});  // '2.30'
-	   *    format(52.8,   {notation: 'exponential'});          // '5.28e+1'
+	   *    math.format(6.4);                                        // returns '6.4'
+	   *    math.format(1240000);                                    // returns '1.24e6'
+	   *    math.format(1/3);                                        // returns '0.3333333333333333'
+	   *    math.format(1/3, 3);                                     // returns '0.333'
+	   *    math.format(21385, 2);                                   // returns '21000'
+	   *    math.format(12.071, {notation: 'fixed'});                // returns '12'
+	   *    math.format(2.3,    {notation: 'fixed', precision: 2});  // returns '2.30'
+	   *    math.format(52.8,   {notation: 'exponential'});          // returns '5.28e+1'
 	   *
-	   * @param {*} value             Value to be stringified
-	   * @param {Object | Function | Number} [options]
+	   * See also:
+	   *
+	   *    print
+	   *
+	   * @param {*} value                               Value to be stringified
+	   * @param {Object | Function | Number} [options]  Formatting options
 	   * @return {String} str The formatted value
 	   */
 	  math.format = function format (value, options) {
@@ -13382,6 +14819,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * In case of a matrix or array, the test is done element wise, the
 	   * true and false part can be either a matrix/array with the same size
 	   * of the condition, or a scalar value.
+	   *
+	   * Syntax:
+	   *
+	   *    math.ifElse(condition, trueExpr, falseExpr
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.ifElse(true, 'yes', 'no');           // returns 'yes'
+	   *    math.ifElse([4, 6, 0, -1], true, false);  // returns [true, true, false, true]
 	   *
 	   * @param {Number | Boolean | String | Complex | BigNumber | Unit | Matrix | Array} condition
 	   *                        The conditional expression
@@ -13497,7 +14945,34 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Import functions from an object or a module
-	   * @param {String | Object} object
+	   *
+	   * Syntax:
+	   *
+	   *    math.import(x)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    // define new functions and variables
+	   *    math.import({
+	   *      myvalue: 42,
+	   *      hello: function (name) {
+	   *        return 'hello, ' + name + '!';
+	   *      }
+	   *    });
+	   *
+	   *    // use the imported function and variable
+	   *    math.myvalue * 2;               // 84
+	   *    math.hello('user');             // 'hello, user!'
+	   *
+	   *    // import the npm module numbers
+	   *    // (must be installed first with `npm install numbers`)
+	   *    math.import('numbers');
+	   *
+	   *    math.fibonacci(7); // returns 13
+	   *
+	   * @param {String | Object} object  Object with functions to be imported.
 	   * @param {Object} [options]        Available options:
 	   *                                  {Boolean} override
 	   *                                      If true, existing functions will be
@@ -13509,9 +14984,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *                                      primitive data types like Array.
 	   *                                      The wrapper is needed when extending
 	   *                                      math.js with libraries which do not
-	   *                                      support the math.js data types.
 	   */
-	// TODO: return status information
+	  // TODO: return status information
 	  math['import'] = function math_import(object, options) {
 	    var num = arguments.length;
 	    if (num != 1 && num != 2) {
@@ -13611,14 +15085,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = function (math) {
 	  var isMatrix = __webpack_require__(8).isMatrix;
 
+
 	  /**
 	   * Create a new matrix or array with the results of the callback function executed on
 	   * each entry of the matrix/array.
-	   * @param {Matrix/array} x      The container to iterate on.
-	   * @param {function} callback   The callback method is invoked with three
+	   *
+	   * Syntax:
+	   *
+	   *    math.map(x, callback)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.map([1, 2, 3], function(value) {
+	   *      return value * value;
+	   *    });  // returns [1, 4, 9]
+	   *
+	   * @param {Matrix | Array} x    The matrix to iterate on.
+	   * @param {Function} callback   The callback method is invoked with three
 	   *                              parameters: the value of the element, the index
-	   *                              of the element, and the Matrix being traversed.
-	   * @return {Matrix/array} container
+	   *                              of the element, and the matrix being traversed.
+	   * @return {Matrix | array}     Transformed map of x
 	   */
 	  math.map = function (x, callback) {
 	    if (arguments.length != 2) {
@@ -13672,22 +15160,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Example usage:
 	   *
+	   *     var math = mathjs();
+	   *
+	   *     // the following outputs: 'Lucy is 5 years old'
+	   *     math.print('Lucy is $age years old', {age: 5});
+	   *
 	   *     // the following outputs: 'The value of pi is 3.141592654'
-	   *     math.format('The value of pi is $pi', {pi: math.pi}, 10);
+	   *     math.print('The value of pi is $pi', {pi: math.pi}, 10);
 	   *
 	   *     // the following outputs: 'hello Mary! The date is 2013-03-23'
-	   *     math.format('Hello $user.name! The date is $date', {
+	   *     math.print('Hello $user.name! The date is $date', {
 	   *       user: {
 	   *         name: 'Mary',
 	   *       },
-	   *       date: new Date().toISOString().substring(0, 10)
+	   *       date: new Date(2013, 2, 23).toISOString().substring(0, 10)
 	   *     });
 	   *
-	   * @param {String} template
-	   * @param {Object} values
+	   * See also:
+	   *
+	   *     format
+	   *
+	   * @param {String} template     A string containing variable placeholders.
+	   * @param {Object} values       An object containing variables which will
+	   *                              be filled in in the template.
 	   * @param {Number} [precision]  Number of digits to format numbers.
 	   *                              If not provided, the value will not be rounded.
-	   * @return {String} str
+	   * @return {String} Interpolated string
 	   */
 	  math.print = function print (template, values, precision) {
 	    var num = arguments.length;
@@ -13742,13 +15240,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      Help = __webpack_require__(10);
 
 	  /**
-	   * Determines the type of a variable.
+	   * Determine the type of a variable.
 	   *
 	   * Syntax:
 	   *
-	   *     math.typeof(x)
+	   *    math.typeof(x)
 	   *
-	   * @param {*} x
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.typeof(3.5);             // returns 'number'
+	   *    math.typeof(2 - 4i);          // returns 'complex'
+	   *    math.typeof(45 deg);          // returns 'unit'
+	   *    math.typeof("hello world");   // returns 'string'
+	   *
+	   * @param {*} x  The variable for which to test the type.
 	   * @return {String} Lower case type, for example 'number', 'string', 'array'.
 	   */
 	  math['typeof'] = function _typeof (x) {
@@ -13786,9 +15293,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var isMatrix = __webpack_require__(8).isMatrix;
 
 	  /**
-	   * Execute a callback method on each entry of the matrix or the array.
-	   * @param {Matrix/array} x      The container to iterate on.
-	   * @param {function} callback   The callback method is invoked with three
+	   * Iterate over all elements of a matrix/array, and executes the given callback function.
+	   *
+	   * Syntax:
+	   *
+	   *    math.forEach(x, callback)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.forEach([1, 2, 3], function(value) {
+	   *      console.log(value);
+	   *    });
+	   *    // outputs 1, 2, 3
+	   *
+	   * @param {Matrix | Array} x    The matrix to iterate on.
+	   * @param {Function} callback   The callback function is invoked with three
 	   *                              parameters: the value of the element, the index
 	   *                              of the element, and the Matrix/array being traversed.
 	   */
@@ -13820,7 +15341,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    };
 	    recurse(array, 0);
-	  };
+	  }
 
 	};
 
@@ -17452,7 +18973,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	})(this);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(259)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(260)(module)))
 
 /***/ },
 /* 119 */
@@ -17718,6 +19239,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return string.format(this.nodes);
 	};
 
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	ArrayNode.prototype.toTex = function(type) {
+	  type = type || 'bmatrix';
+	  var s = '\\begin{' + type + '}';
+
+	  this.nodes.forEach(function(node) {
+	    if (node.nodes) {
+	      s += node.nodes.map(function(childNode) {
+	        return childNode.toTex();
+	      }).join('&');
+	    }
+	    else {
+	      s += node.toTex();
+	    }
+
+	    // new line
+	    s += '\\\\';
+	  });
+	  s += '\\end{' + type + '}';
+	  return s;
+	};
+
 	module.exports = ArrayNode;
 
 
@@ -17726,6 +19272,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Node = __webpack_require__(137),
+	    ArrayNode = __webpack_require__(124),
+
+	    latex = __webpack_require__(259),
 	    isString = __webpack_require__(138).isString;
 
 	/**
@@ -17789,6 +19338,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	AssignmentNode.prototype.toString = function() {
 	  return this.name + ' = ' + this.expr.toString();
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String}
+	 */
+	AssignmentNode.prototype.toTex = function() {
+	  var brace;
+	  if (this.expr instanceof ArrayNode) {
+	    brace = ['\\mathbf{', '}'];
+	  }
+	  return latex.addBraces(latex.toSymbol(this.name), brace) + '=' +
+	      latex.addBraces(this.expr.toTex());
 	};
 
 	module.exports = AssignmentNode;
@@ -17896,6 +19458,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }).join('\n');
 	};
 
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	BlockNode.prototype.toTex = function() {
+	  return this.params.map(function (param) {
+	    return param.node.toTex() + (param.visible ? '' : ';');
+	  }).join('\n');
+	};
+
 	module.exports = BlockNode;
 
 
@@ -17988,6 +19560,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	ConstantNode.prototype.toTex = function() {
+	  var value = this.value,
+	      index;
+	  switch (this.valueType) {
+	    case 'string':
+	      return '\\text{' + value + '}';
+
+	    case 'complex':
+	      return value + 'i';
+
+	    case 'number':
+	      index = value.toLowerCase().indexOf('e');
+	      if (index !== -1) {
+	        return value.substring(0, index) + ' \\cdot 10^{' +
+	            value.substring(index + 1) + '}';
+	      }
+	      return value;
+
+	    default:
+	      return value;
+	  }
+	};
+
 	module.exports = ConstantNode;
 
 
@@ -17996,6 +19595,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Node = __webpack_require__(137),
+	    latex = __webpack_require__(259),
 	    isString = __webpack_require__(138).isString;
 	    isArray = Array.isArray;
 
@@ -18082,6 +19682,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return 'function ' + this.name +
 	      '(' + this.args.join(', ') + ') = ' +
 	      this.expr.toString();
+	};
+
+	/**
+	 * get LaTeX representation
+	 * @return {String} str
+	 */
+	FunctionNode.prototype.toTex = function() {
+	  return this.name +
+	      latex.addBraces(this.args.map(latex.toSymbol).join(', '), true) + '=' +
+	      latex.addBraces(this.expr.toTex());
 	};
 
 	module.exports = FunctionNode;
@@ -18277,13 +19887,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return this.object.toString() + '[' + this.ranges.join(', ') + ']';
 	};
 
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	IndexNode.prototype.toTex = function() {
+	  return this.object.toTex() + '[' + this.ranges.join(', ') + ']';
+	};
+
 	module.exports = IndexNode;
 
 /***/ },
 /* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(137);
+	var Node = __webpack_require__(137),
+	    ConstantNode = __webpack_require__(127),
+	    SymbolNode = __webpack_require__(133),
+	    ParamsNode = __webpack_require__(131),
+	    latex = __webpack_require__(259);
 
 	/**
 	 * @constructor OperatorNode
@@ -18386,6 +20008,91 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	OperatorNode.prototype.toTex = function() {
+	  var params = this.params,
+	      mop = latex.toOperator(this.op),
+	      lp = params[0],
+	      rp = params[1];
+
+	  switch (params.length) {
+	    case 1:
+	      if (this.op === '-' || this.op === '+') {
+	        // special case: unary minus
+	        return this.op + lp.toTex();
+	      }
+	      // for example '5!'
+	      return lp.toTex() + this.op;
+
+	    case 2: // for example '2+3'
+	      var lhs = lp.toTex(),
+	          lhb = false,
+	          rhs = rp.toTex(),
+	          rhb = false,
+	          lop = '',
+	          rop = '';
+
+	      switch (this.op) {
+	        case '/':
+	          lop = mop;
+	          mop = '';
+
+	          break;
+
+	        case '*':
+	          if (lp instanceof OperatorNode) {
+	            if (lp.op === '+' || lp.op === '-') {
+	              lhb = true;
+	            }
+	          }
+
+	          if (rp instanceof OperatorNode) {
+	            if (rp.op === '+' || rp.op === '-') {
+	              rhb = true;
+	            }
+	            else if (rp.op === '*') {
+	              rhb = true;
+	            }
+	          }
+
+	          if ((lp instanceof ConstantNode || lp instanceof OperatorNode) &&
+	              (rp instanceof ConstantNode || rp instanceof OperatorNode)) {
+	            mop = ' \\cdot ';
+	          }
+	          else {
+	            mop = ' \\, ';
+	          }
+
+	          break;
+
+	        case '^':
+	          if (lp instanceof OperatorNode || lp instanceof ParamsNode) {
+	            lhb = true;
+	          }
+	          else if (lp instanceof SymbolNode) {
+	            lhb = null;
+	          }
+
+	          break;
+
+	        case 'to':
+	          rhs = latex.toUnit(rhs, true);
+	          break;
+	      }
+
+	      lhs = latex.addBraces(lhs, lhb);
+	      rhs = latex.addBraces(rhs, rhb);
+
+	      return lop + lhs + mop + rhs + rop;
+
+	    default: // this should not occur. format as a function call
+	      return mop + '(' + this.params.map(latex.toSymbol).join(', ') + ')';
+	  }
+	};
+
 	module.exports = OperatorNode;
 
 
@@ -18395,6 +20102,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Node = __webpack_require__(137),
 
+	    latex = __webpack_require__(259),
 	    isNode = Node.isNode;
 
 	/**
@@ -18472,6 +20180,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	ParamsNode.prototype.toString = function() {
 	  // format the parameters like "add(2, 4.2)"
 	  return this.object.toString() + '(' + this.params.join(', ') + ')';
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	ParamsNode.prototype.toTex = function() {
+	  return latex.toParams(this);
 	};
 
 	module.exports = ParamsNode;
@@ -18566,6 +20282,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return str;
 	};
 
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	RangeNode.prototype.toTex = function() {
+	  var str = this.start.toTex();
+	  if (this.step) {
+	    str += ':' + this.step.toTex();
+	  }
+	  str += ':' + this.end.toTex();
+
+	  return str;
+	};
+
 	module.exports = RangeNode;
 
 
@@ -18576,6 +20306,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Node = __webpack_require__(137),
 	    Unit = __webpack_require__(9),
 
+	    latex = __webpack_require__(259),
 	    isString = __webpack_require__(138).isString;
 
 	/**
@@ -18639,6 +20370,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return this.name;
 	};
 
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 * @override
+	 */
+	SymbolNode.prototype.toTex = function() {
+	  return latex.toSymbol(this.name);
+	};
+
 	module.exports = SymbolNode;
 
 
@@ -18646,7 +20386,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var OperatorNode = __webpack_require__(130);
+	var OperatorNode = __webpack_require__(130),
+
+	    latex = __webpack_require__(259);
 
 	/**
 	 * @constructor TernaryNode
@@ -18685,6 +20427,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.params[2];
 	};
 
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	TernaryNode.prototype.toTex = function() {
+	  var s = (
+	        latex.addBraces(this.params[1].toTex()) +
+	        ', &\\quad' +
+	        latex.addBraces('\\text{if}\\;' + this.params[0].toTex())
+	      ) + '\\\\' + (
+	        latex.addBraces(this.params[2].toTex()) +
+	        ', &\\quad' +
+	        latex.addBraces('\\text{otherwise}')
+	      );
+
+	  return latex.addBraces(s, [
+	        '\\left\\{\\begin{array}{l l}',
+	        '\\end{array}\\right.'
+	      ]);
+	};
+
 	module.exports = TernaryNode;
 
 
@@ -18696,6 +20459,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    Unit = __webpack_require__(9),
 
+	    latex = __webpack_require__(259),
 	    isString = __webpack_require__(138).isString;
 
 	/**
@@ -18759,6 +20523,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	UnitNode.prototype.toString = function() {
 	  return this.value + ' ' + this.unit;
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	UnitNode.prototype.toTex = function() {
+	  return this.value + latex.toUnit(this.unit);
 	};
 
 	module.exports = UnitNode;
@@ -18840,6 +20612,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	UpdateNode.prototype.toString = function() {
 	  return this.index.toString() + ' = ' + this.expr.toString();
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String}
+	 */
+	UpdateNode.prototype.toTex = function() {
+	  return this.index.toTex() + ' = ' + this.expr.toTex();
 	};
 
 	module.exports = UpdateNode;
@@ -18986,6 +20766,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String}
 	 */
 	Node.prototype.toString = function() {
+	  return '';
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String}
+	 */
+	Node.prototype.toTex = function() {
 	  return '';
 	};
 
@@ -20083,7 +21871,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'ceil(x)'
 	  ],
 	  'description':
-	      'Round a value towards plus infinity.If x is complex, both real and imaginary part are rounded towards plus infinity.',
+	      'Round a value towards plus infinity. If x is complex, both real and imaginary part are rounded towards plus infinity.',
 	  'examples': [
 	    'ceil(3.2)',
 	    'ceil(3.8)',
@@ -20287,8 +22075,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    '(exp(i*x) == cos(x) + i*sin(x))   # Euler\'s formula'
 	  ],
 	  'seealso': [
-	    'square',
-	    'multiply',
+	    'pow',
 	    'log'
 	  ]
 	};
@@ -20305,7 +22092,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'fix(x)'
 	  ],
 	  'description':
-	      'Round a value towards zero.If x is complex, both real and imaginary part are rounded towards zero.',
+	      'Round a value towards zero. If x is complex, both real and imaginary part are rounded towards zero.',
 	  'examples': [
 	    'fix(3.2)',
 	    'fix(3.8)',
@@ -20448,10 +22235,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'log(3.5)',
 	    'a = log(2.4)',
 	    'exp(a)',
-	    '10 ^ 3',
-	    'log(1000, 10)',
-	    'log(1000) / log(10)',
-	    'b = logb(1024, 2)',
+	    '10 ^ 4',
+	    'log(10000, 10)',
+	    'log(10000) / log(10)',
+	    'b = log(1024, 2)',
 	    '2 ^ b'
 	  ],
 	  'seealso': [
@@ -20472,11 +22259,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Compute the 10-base logarithm of a value.',
 	  'examples': [
-	    'log10(1000)',
-	    '10 ^ 3',
-	    'log10(0.01)',
-	    'log(1000) / log(10)',
-	    'log(1000, 10)'
+	    'log10(0.00001)',
+	    'log10(10000)',
+	    '10 ^ 4',
+	    'log(10000) / log(10)',
+	    'log(10000, 10)'
 	  ],
 	  'seealso': [
 	    'exp',
@@ -20507,7 +22294,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'isOdd(2)',
 	    'isOdd(3)'
 	  ],
-	  'seealso': []
+	  'seealso': ['divide']
 	};
 
 
@@ -20524,8 +22311,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'multiply two values.',
 	  'examples': [
-	    '2.1 * 3.6',
-	    'ans / 3.6',
+	    '2.1 * 3.4',
+	    'ans / 3.4',
 	    '2 * 3 + 4',
 	    '2 * (3 + 4)',
 	    '3 * 2.1 km'
@@ -20549,10 +22336,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Calculate the norm of a number, vector or matrix.',
 	  'examples': [
-	    'norm([[1, 2], [3, 4]])',
-	    'norm([[1, 2, 3, 4]], 3.5)',
-	    'norm(-4.2)',
-	    'norm([[1, 2], [-3, -4]], \'fro\')'
+	    'abs(-3.5)',
+	    'norm(-3.5)',
+	    'norm(3 - 4i))',
+	    'norm([1, 2, -3], Infinity)',
+	    'norm([1, 2, -3], -Infinity)',
+	    'norm([3, 4], 2)',
+	    'norm([[1, 2], [3, 4]], 1)',
+	    'norm([[1, 2], [3, 4]], \'inf\')',
+	    'norm([[1, 2], [3, 4]], \'fro\')'
 	  ]
 	};
 
@@ -20575,9 +22367,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    '2*2*2',
 	    '1 + e ^ (pi * i)'
 	  ],
-	  'seealso': [
-	    'unequal', 'smaller', 'larger', 'smallereq', 'largereq'
-	  ]
+	  'seealso': [ 'multiply' ]
 	};
 
 
@@ -20844,7 +22634,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'examples': [
 	    'arg(2 + 2i)',
 	    'atan2(3, 2)',
-	    'arg(2 - 3i)'
+	    'arg(2 + 3i)'
 	  ],
 	  'seealso': [
 	    're',
@@ -21195,17 +22985,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'name': 'concat',
 	  'category': 'Matrix',
 	  'syntax': [
-	    'concat(a, b, c, ...)',
-	    'concat(a, b, c, ..., dim)'
+	    'concat(A, B, C, ...)',
+	    'concat(A, B, C, ..., dim)'
 	  ],
 	  'description': 'Concatenate matrices. By default, the matrices are concatenated by the first dimension. The dimension on which to concatenate can be provided as last argument.',
 	  'examples': [
-	    'a = [1, 2; 5, 6]',
-	    'b = [3, 4; 7, 8]',
-	    'concat(a, b)',
-	    '[a, b]',
-	    'concat(a, b, 2)',
-	    '[a; b]'
+	    'A = [1, 2; 5, 6]',
+	    'B = [3, 4; 7, 8]',
+	    'concat(A, B)',
+	    '[A, B]',
+	    'concat(A, B, 1)',
+	    '[A; B]'
 	  ],
 	  'seealso': [
 	    'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
@@ -21579,7 +23369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    '5*4*3*2*1',
 	    '3!'
 	  ],
-	  'seealso': []
+	  'seealso': ['combinations', 'permutations']
 	};
 
 
@@ -21597,7 +23387,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'description': 'Compute the number of permutations of n items taken k at a time',
 	  'examples': [
 	    'permutations(5)',
-	    'permutations(5, 4)'
+	    'permutations(5, 3)'
 	  ],
 	  'seealso': ['combinations', 'factorial']
 	};
@@ -21752,7 +23542,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Compute the median of all values. The values are sorted and the middle value is returned. In case of an even number of values, the average of the two middle values is returned.',
 	  'examples': [
-	    'median(4, 2, 7)',
+	    'median(5, 2, 7)',
 	    'median([3, -1, 5, 7])'
 	  ],
 	  'seealso': [
@@ -21943,7 +23733,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'seealso': [
 	    'cos',
-	    'acos',
+	    'atan',
 	    'asin'
 	  ]
 	};
@@ -21967,7 +23757,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'seealso': [
 	    'sin',
 	    'acos',
-	    'asin'
+	    'atan'
 	  ]
 	};
 
@@ -22060,11 +23850,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Compute the hyperbolic cosine of x in radians.',
 	  'examples': [
-	    'cosh(2)',
-	    'cosh(pi / 4) ^ 2',
-	    'cosh(180 deg)',
-	    'cosh(60 deg)',
-	    'sinh(0.2)^2 + cosh(0.2)^2'
+	    'cosh(0.5)'
 	  ],
 	  'seealso': [
 	    'sinh',
@@ -22109,7 +23895,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Compute the hyperbolic cotangent of x in radians.',
 	  'examples': [
-	    'coth(2)'
+	    'coth(2)',
+	    '1 / tanh(2)'
 	  ],
 	  'seealso': [
 	    'sech',
@@ -22249,11 +24036,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Compute the hyperbolic sine of x in radians.',
 	  'examples': [
-	    'sinh(2)',
-	    'sinh(pi / 4) ^ 2',
-	    'sinh(90 deg)',
-	    'sinh(30 deg)',
-	    'sinh(0.2)^2 + cosh(0.2)^2'
+	    'sinh(0.5)'
 	  ],
 	  'seealso': [
 	    'cosh',
@@ -22300,9 +24083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'description': 'Compute the hyperbolic tangent of x in radians.',
 	  'examples': [
 	    'tanh(0.5)',
-	    'sinh(0.5) / cosh(0.5)',
-	    'tanh(pi / 4)',
-	    'tanh(45 deg)'
+	    'sinh(0.5) / cosh(0.5)'
 	  ],
 	  'seealso': [
 	    'sinh',
@@ -22324,8 +24105,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Change the unit of a value.',
 	  'examples': [
-	    '5 inch in cm',
-	    '3.2kg in g',
+	    '5 inch to cm',
+	    '3.2kg to g',
 	    '16 bytes in bits'
 	  ],
 	  'seealso': []
@@ -22366,7 +24147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.',
 	  'examples': [
-	    'map([1, 2, 3], function(val) { return math.max(val, 1.5) })'
+	    'map([1, 2, 3], function(val) { return value * value })'
 	  ],
 	  'seealso': []
 	};
@@ -22382,11 +24163,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'syntax': [
 	    'forEach(x, callback)'
 	  ],
-	  'description': 'Iterates over all elements of a matrix/array, and executes the given callback.',
+	  'description': 'Iterates over all elements of a matrix/array, and executes the given callback function.',
 	  'examples': [
 	    'forEach([1, 2, 3], function(val) { console.log(val) })'
 	  ],
-	  'seealso': []
+	  'seealso': ['unit']
 	};
 
 
@@ -22424,7 +24205,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Executes a conditional expression.',
 	  'examples': [
-	    'ifElse(10 > 0, 10, 0)',
+	    'ifElse(10 > 0, 1, 0)',
 	    'ifElse("", true, false)',
 	    'ifElse([4, 6, 0, -1], true, false)'
 	  ],
@@ -22696,6 +24477,501 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ArrayNode = __webpack_require__(124),
+	    OperatorNode = __webpack_require__(130);
+
+	// GREEK LETTERS
+	var greek = {
+	  Alpha: 'A',     alpha: true,
+	  Beta: 'B',      beta: true,
+	  Gamma: true,    gamma: true,
+	  Delta: true,    delta: true,
+	  Epsilon: 'E',   epsilon: true,  varepsilon: true,
+	  Zeta: 'Z',      zeta: true,
+	  Eta: 'H',       eta: true,
+	  Theta: true,    theta: true,    vartheta: true,
+	  Iota: 'I',      iota: true,
+	  Kappa: 'K',     kappa: true,    varkappa: true,
+	  Lambda: true,   lambda: true,
+	  Mu: 'M',        mu: true,
+	  Nu: 'N',        nu: true,
+	  Xi: true,       xi: true,
+	  Omicron: 'O',   omicron: true,
+	  Pi: true,       pi: true,       varpi: true,
+	  Rho: 'P',       rho: true,      varrho: true,
+	  Sigma: true,    sigma: true,    varsigma: true,
+	  Tau: 'T',       tau: true,
+	  Upsilon: true,  upsilon: true,
+	  Phi: true,      phi: true,      varphi: true,
+	  Chi: 'X',       chi: true,
+	  Psi: true,      psi: true,
+	  Omega: true,    omega: true
+	};
+
+	var dots = {
+	  dots: true,
+	  ldots: true,
+	  cdots: true,
+	  vdots: true,
+	  ddots: true,
+	  idots: true
+	};
+
+	var logic = {
+	  'true': '\\mathrm{True}',
+	  'false': '\\mathrm{False}'
+	};
+
+	var other = {
+	  inf: '\\infty',
+	  Inf: '\\infty',
+	  infinity: '\\infty',
+	  Infinity: '\\infty',
+	  oo: '\\infty',
+	  lim: true,
+	  'undefined': '\\mathbf{?}'
+	};
+
+	// FUNCTIONS
+	var functions = {
+	  acos: '\\cos^{-1}',
+	  arccos: '\\cos^{-1}',
+	  cos: true,
+	  csc: true,
+	  csch: false,
+	  exp: true,
+	  ker: true,
+	  limsup: true,
+	  min: true,
+	  sinh: true,
+	  asin: '\\sin^{-1}',
+	  arcsin: '\\sin^{-1}',
+	  cosh: true,
+	  deg: true,
+	  gcd: true,
+	  lg: true,
+	  ln: true,
+	  Pr: true,
+	  sup: true,
+	  atan: '\\tan^{-1}',
+	  atan2: '\\tan2^{-1}',
+	  arctan: '\\tan^{-1}',
+	  cot: true,
+	  det: true,
+	  hom: true,
+	  log: true,
+	  log10: '\\log_{10}',
+	  sec: true,
+	  sech: false,
+	  tan: true,
+	  arg: true,
+	  coth: true,
+	  dim: true,
+	  inf: true,
+	  max: true,
+	  sin: true,
+	  tanh: true,
+
+	  fix: false,
+	  lcm: false,
+	  sign: false,
+	  xgcd: false,
+	  unary: false,
+
+	  // complex
+	  complex: false,
+	  conj: false,
+	  im: false,
+	  re: false,
+
+	  // matrix
+	  diag: false,
+	  resize: false,
+	  size: false,
+	  squeeze: false,
+	  subset: false,
+	  index: false,
+	  ones: false,
+	  zeros: false,
+	  range: false,
+
+	  // probability
+	  random: false,
+
+	  // statistics
+	  mean: '\\mu',
+	  median: false,
+	  prod: false,
+	  std: '\\sigma',
+	  'var': '\\sigma^2'
+	};
+
+	// CURLY FUNCTIONS
+	// wrap parameters with {}
+	var curlyFunctions = {
+	  sqrt: true,
+	  inv: true,
+	  int: '\\int',
+	  Int: '\\int',
+	  integrate: '\\int',
+	  eigenvalues: '\\lambda',
+	  liminf: true,
+	  lim: true,
+	  exp: 'e^',
+	  sum: true,
+
+	  eye: '\\mathbf{I}'
+	};
+
+	var operators = {
+	  '<=': '\\leq',
+	  '>=': '\\geq',
+	  '!=': '\\neq',
+	  'in': true,
+	  '*': '\\cdot',
+	  '/': '\\frac',
+	  'mod': '\\bmod',
+	  'to': '\\rightarrow'
+	};
+
+	var units = {
+	  deg: '^{\\circ}'
+	};
+
+	var symbols = {};
+
+	function mapSymbols() {
+	  var args = Array.prototype.slice.call(arguments),
+	      obj;
+	  for (var i = 0, len = args.length; i < len; i++) {
+	    obj = args[i];
+	    for (var key in obj) {
+	      if (obj.hasOwnProperty(key)) {
+	        symbols[key] = obj[key];
+	      }
+	    }
+	  }
+	}
+
+	mapSymbols(
+	  functions,
+	  curlyFunctions,
+	  greek,
+	  dots,
+	  logic,
+	  other
+	);
+
+	function latexIs(arr, value) {
+	  return typeof arr[value] !== 'undefined';
+	}
+
+	function latexIsFn(arr) {
+	  return function(value) {
+	    return latexIs(arr, value);
+	  };
+	}
+
+	function latexToFn(arr) {
+	  return function(value) {
+	    if (typeof arr[value] === 'boolean') {
+	      if (arr[value] === true) {
+	        value = '\\' + value;
+	      }
+	      else {
+	        value = '\\mathrm{' + value + '}';
+	      }
+	    }
+	    else if (typeof arr[value] === 'string') {
+	      value = arr[value];
+	    }
+	    else if (typeof value === 'string') {
+	      var index = value.indexOf('_');
+	      if (index !== -1) {
+	        value = exports.toSymbol(value.substring(0, index)) + '_{' +
+	            exports.toSymbol(value.substring(index+1)) + '}';
+	      }
+	    }
+
+	    return value;
+	  };
+	}
+
+	exports.isSymbol = latexIsFn(symbols);
+	exports.toSymbol = latexToFn(symbols);
+
+	exports.isFunction = latexIsFn(functions);
+	exports.toFunction = latexToFn(functions);
+
+	exports.isCurlyFunction = latexIsFn(curlyFunctions);
+	exports.toCurlyFunction = latexToFn(curlyFunctions);
+
+	exports.isOperator = latexIsFn(operators);
+	exports.toOperator = latexToFn(operators);
+
+	exports.isUnit = latexIsFn(units);
+	exports.toUnit = (function() {
+	  var _toUnit = latexToFn(units);
+
+	  return function(value, notSpaced) {
+	    if (exports.isUnit(value)) {
+	      return _toUnit(value);
+	    }
+
+	    return (notSpaced ? '' : '\\,') + '\\mathrm{' + value + '}';
+	  };
+	}());
+
+	exports.addBraces = function(s, brace, type) {
+	  if (brace === null) {
+	    return s;
+	  }
+
+	  var braces = ['', ''];
+	  type = type || 'normal';
+
+	  if (typeof brace === 'undefined' || brace === false) {
+	    braces = ['{', '}'];
+	  }
+	  else if (brace === true) {
+	    braces = ['(', ')'];
+	    type = 'lr';
+	  }
+	  else if (Array.isArray(brace) && brace.length === 2) {
+	    braces = brace;
+	  }
+	  else {
+	    braces = [brace, brace];
+	  }
+
+	  switch (type) {
+	    case 'normal':
+	    case false:
+	      return braces[0] + s + braces[1];
+
+	    case 'lr':
+	      return '\\left' + braces[0] + '{' + s + '}' + '\\right' + braces[1];
+
+	    case 'be':
+	      return '\\begin{' + braces[0] + '}' + s + '\\end{' + braces[1] + '}';
+	  }
+
+	  return braces[0] + s + braces[1];
+	};
+
+	exports.toParams = function(that) {
+	  var object = that.object,
+	      params = that.params,
+	      func = object.toTex(),
+	      texParams = null,
+	      brace = null,
+	      type = false,
+	      showFunc = false,
+	      prefix = '',
+	      suffix = '',
+	      op = null;
+
+	  switch (object.name) {
+	    // OPERATORS
+	    case 'add':
+	      op = '+';
+	      break;
+
+	    case 'subtract':
+	      op = '-';
+	      break;
+
+	    case 'larger':
+	      op = '>';
+	      break;
+
+	    case 'largereq':
+	      op = '>=';
+	      break;
+
+	    case 'smaller':
+	      op = '<';
+	      break;
+
+	    case 'smallereq':
+	      op = '<=';
+	      break;
+
+	    case 'unequal':
+	      op = '!=';
+	      break;
+
+	    case 'equal':
+	      op = '=';
+	      break;
+
+	    case 'mod':
+	      op = 'mod';
+	      break;
+
+	    case 'multiply':
+	      op = '*';
+	      break;
+
+	    case 'pow':
+	      op = '^';
+	      break;
+
+	    case 'concat':
+	      op = '||';
+	      break;
+
+	    case 'factorial':
+	      op = '!';
+	      break;
+
+	    case 'permutations':
+	      if (params.length === 1) {
+	        op = '!';
+	      }
+	      else {
+	        // op = 'P';
+	        var n = params[0].toTex(),
+	            k = params[1].toTex();
+	        return '\\frac{' + n + '!}{\\left(' + n + ' - ' + k + '\\right)!}';
+	      }
+	      break;
+
+	    // probability
+	    case 'combinations':
+	      op = '\\choose';
+	      break;
+
+	    // LR BRACES
+	    case 'abs':
+	      brace = '|';
+	      type = 'lr';
+	      break;
+
+	    case 'norm':
+	      brace = '\\|';
+	      type = 'lr';
+
+	      if (params.length === 2) {
+	        var tmp = params[1].toTex();
+
+	        if (tmp === '\\text{inf}') {
+	          tmp = '\\infty';
+	        }
+	        else if (tmp === '\\text{-inf}') {
+	          tmp = '{- \\infty}';
+	        }
+	        else if (tmp === '\\text{fro}') {
+	          tmp = 'F';
+	        }
+
+	        suffix = '_{' + tmp + '}';
+	        params = [params[0]];
+	      }
+	      break;
+
+	    case 'ceil':
+	      brace = ['\\lceil', '\\rceil'];
+	      type = 'lr';
+	      break;
+
+	    case 'floor':
+	      brace = ['\\lfloor', '\\rfloor'];
+	      type = 'lr';
+	      break;
+
+	    case 'round':
+	      brace = ['\\lfloor', '\\rceil'];
+	      type = 'lr';
+
+	      if (params.length === 2) {
+	        suffix = '_' + exports.addBraces(params[1].toTex());
+	        params = [params[0]];
+	      }
+	      break;
+
+
+	    // NORMAL BRACES
+	    case 'inv':
+	      suffix = '^{-1}';
+	      break;
+
+	    case 'transpose':
+	      suffix = '^{T}';
+	      brace = false;
+	      break;
+
+	    // SPECIAL NOTATION
+	    case 'log':
+	      var base = 'e';
+	      if (params.length === 2) {
+	        base = params[1].toTex();
+	        func = '\\log_{' + base + '}';
+	        params = [params[0]];
+	      }
+	      if (base === 'e') {
+	        func = '\\ln';
+	      }
+
+	      showFunc = true;
+	      break;
+
+	    case 'square':
+	      suffix = '^{2}';
+	      break;
+
+	    case 'cube':
+	      suffix = '^{3}';
+	      break;
+
+
+	    // MATRICES
+	    case 'eye':
+	      showFunc = true;
+	      brace = false;
+	      func += '_';
+	      break;
+
+	    case 'det':
+	      if (that.params[0] instanceof ArrayNode) {
+	        return that.params[0].toTex('vmatrix');
+	      }
+
+	      brace = 'vmatrix';
+	      type = 'be';
+	      break;
+
+	    default:
+	      showFunc = true;
+	      break;
+	  }
+
+	  if (op !== null) {
+	    brace = (op === '+' || op === '-');
+	    texParams = (new OperatorNode(op, object.name, params)).toTex();
+	  }
+	  else {
+	    op = ', ';
+	  }
+
+	  if (brace === null && !exports.isCurlyFunction(object.name)) {
+	    brace = true;
+	  }
+
+	  texParams = texParams || params.map(function(param) {
+	    return '{' + param.toTex() + '}'  ;
+	  }).join(op);
+
+	  return prefix + (showFunc ? func : '') +
+	      exports.addBraces(texParams, brace, type) +
+	      suffix;
+	};
+
+
+/***/ },
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(module) {

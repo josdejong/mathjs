@@ -155,6 +155,21 @@ scope.a = 3;
 code2.eval(scope); // 27
 ```
 
+Parsed expressions can be exported to text using `node.toString()`, and can
+be exported to LaTeX using `node.toTex()`. The LaTeX export can be used to 
+pretty print an expression in the browser with a library like 
+[MathJax](http://www.mathjax.org/). Example usage:
+
+```js
+// create an instance of math.js
+var math = require('mathjs')();
+
+// parse an expression
+var node = math.parse('sqrt(x/x+1)');
+node.toString();  // returns 'ans = sqrt((x / x) + 1)'
+node.toTex();     // returns '{ans}={\sqrt{{\frac{x}{x}}+{1}}}'
+```
+
 
 ### Parser
 
