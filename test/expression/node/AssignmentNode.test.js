@@ -75,4 +75,11 @@ describe('AssignmentNode', function() {
     assert.equal(n.toString(), 'b = 3');
   });
 
+  it ('should LaTeX a AssignmentNode', function () {
+    var b = new ConstantNode('number', '3');
+    var n = new AssignmentNode('b', b);
+
+    assert.equal(n.toTex(), '{b}={3}');
+  });
+
 });

@@ -175,4 +175,16 @@ describe('UpdateNode', function() {
     assert.equal(n.toString(), 'a[2, 1] = 5');
   });
 
+  it ('should LaTeX a UpdateNode', function () {
+    var a = new SymbolNode('a');
+    var ranges = [
+      new ConstantNode('number', '2'),
+      new ConstantNode('number', '1')
+    ];
+    var v = new ConstantNode('number', '5');
+
+    var n = new UpdateNode(new IndexNode(a, ranges), v);
+    assert.equal(n.toString(), 'a[2, 1] = 5');
+  });
+
 });

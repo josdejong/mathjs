@@ -116,4 +116,12 @@ describe('ParamsNode', function() {
     assert.equal(n.toString(), 'sqrt(4)');
   });
 
+  it ('should LaTeX a ParamsNode', function () {
+    var s = new SymbolNode('sqrt');
+    var c = new ConstantNode('number', '4');
+    var n = new ParamsNode(s, [c]);
+
+    assert.equal(n.toTex(), '\\sqrt{4}');
+  });
+
 });

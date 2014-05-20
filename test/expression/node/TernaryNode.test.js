@@ -98,4 +98,32 @@ describe('TernaryNode', function() {
     assert.equal(n.toString(), 'a ? 2 + 3 : 4 - 5');
   });
 
+  it ('should LaTeX a TernaryNode', function () {
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('boolean', 'true');
+    var c = new ConstantNode('boolean', 'false');
+    var n = new TernaryNode(['?', ':'], 'ifElse', [a, b, c]);
+
+    assert.equal(n.toTex(), '\\left\\{\\begin{array}{l l}{true}, &\\quad' +
+        '{\\text{if}\\;2}\\\\{false}, &\\quad' +
+        '{\\text{otherwise}}\\end{array}\\right.');
+  });
+
+  it.skip ('should LaTeX a TernaryNode with nested operator nodes', function () {
+    var a = new ConstantNode('number', '2');
+    var b = new ConstantNode('number', '3');
+    var c = new ConstantNode('number', '4');
+    var d = new ConstantNode('number', '5');
+
+    var n1 = new SymbolNode('a');
+    var n2 = new OperatorNode('+', 'add', [a, b]);
+    var n3 = new OperatorNode('-', 'subtract', [c, d]);
+
+    var n = new TernaryNode(['?', ':'], 'ifElse', [n1, n2, n3]);
+
+    assert.equal(n.toTex(), '\\left\\{\\begin{array}{l l}{{2}+{3}}, &\\quad' +
+        '{\\text{if}\\;a}\\\\{{4}-{5}}, &\\quad' +
+        '{\\text{otherwise}}\\end{array}\\right.');
+  });
+
 });

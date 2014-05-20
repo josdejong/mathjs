@@ -67,4 +67,10 @@ describe('SymbolNode', function() {
     assert.equal(s.toString(), 'foo');
   });
 
+  it ('should LaTeX a SymbolNode', function () {
+    var s = new SymbolNode('foo');
+
+    assert.equal(s.toTex(), 'foo');
+  });
+
 });

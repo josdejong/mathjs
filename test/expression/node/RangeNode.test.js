@@ -85,4 +85,21 @@ describe('RangeNode', function() {
     assert.equal(n.toString(), '0:2:10');
   });
 
+  it ('should LaTeX a RangeNode without step', function () {
+    var start = new ConstantNode('number', '0');
+    var end = new ConstantNode('number', '10');
+    var n = new RangeNode([start, end]);
+
+    assert.equal(n.toTex(), '0:10');
+  });
+
+  it ('should LaTeX a RangeNode with step', function () {
+    var start = new ConstantNode('number', '0');
+    var end = new ConstantNode('number', '10');
+    var step = new ConstantNode('number', '2');
+    var n = new RangeNode([start, end, step]);
+
+    assert.equal(n.toTex(), '0:2:10');
+  });
+
 });
