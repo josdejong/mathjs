@@ -6,7 +6,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.22.0
+ * @version 0.22.1-SNAPSHOT
  * @date    2014-05-22
  *
  * @license

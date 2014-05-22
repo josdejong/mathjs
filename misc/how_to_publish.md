@@ -5,7 +5,7 @@ This document describes the steps required to publish a new version of math.js.
 
 ## Update version number
 
-Update the version number in both package.json and bower.json.
+Update the version number in both package.json, bower.json, and component.json.
 
 
 ## Update history
