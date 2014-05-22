@@ -17,7 +17,7 @@ math.norm(x, p)
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Complex &#124; Boolean &#124; Array &#124; Matrix |  Value for which to calculate the norm
-`p` | Number &#124; String |  Default value: 2 Vector space. Supported numbers include Infinity and -Infinity. Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm)
+`p` | Number &#124; String |  Vector space. Supported numbers include Infinity and -Infinity. Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm) Default value: 2.
 
 ### Returns
 

@@ -17,7 +17,7 @@ math.log(x, base)
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the logarithm.
-`base` | Number &#124; BigNumber &#124; Boolean &#124; Complex |  Default value: e Optional base for the logarithm. If not provided, the natural logarithm of `x` is calculated.
+`base` | Number &#124; BigNumber &#124; Boolean &#124; Complex |  Optional base for the logarithm. If not provided, the natural logarithm of `x` is calculated. Default value: e.
 
 ### Returns
 

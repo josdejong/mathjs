@@ -170,16 +170,20 @@ function generateDoc(name, code) {
 
         // TODO: this is an ugly hack to extract the default value
         var index = annotation.description.indexOf(']');
+        var defaultValue = null;
         if (index != -1) {
-          var defaultValue = annotation.description.substring(1, index).trim();
-          annotation.description = annotation.description.substring(index + 1).trim() +
-              ' Default value: ' + defaultValue;
+          defaultValue = annotation.description.substring(1, index).trim();
+          annotation.description = annotation.description.substring(index + 1).trim();
         }
 
         // multi line description
         while (exists() && !empty() && /^\s{6}/.test(line)) {
           annotation.description += ' ' + line.trim();
           next();
+        }
+
+        if (defaultValue !== null) {
+          annotation.description += ' Default value: ' + defaultValue + '.';
         }
       }
     } while (match);

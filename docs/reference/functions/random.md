@@ -1,21 +1,39 @@
 # Function random
 
-Return a random number between 0 and 1
+Return a random number between `min` and `max` using a uniform distribution.
 
-    random()
 
+## Syntax
+
+```js
+math.random()          // generate a random number between 0 and 1
+math.random(max)       // generate a random number between 0 and max
+math.random(min, max)  // generate a random number between min and max
+```
 
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-
+`min` | Number | Minimum boundary for the random value
+`max` | Number | Maximum boundary for the random value
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number | res
+Number | A random number
+
+
+## Examples
+
+```js
+var math = mathjs();
+
+math.random();       // returns a random number between 0 and 1
+math.random(100);    // returns a random number between 0 and 100
+math.random(30, 40); // returns a random number between 30 and 40
+```
 
 
 

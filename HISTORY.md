@@ -7,6 +7,7 @@ https://github.com/josdejong/mathjs
 - Implemented support to export expressions to LaTeX. Thanks Niels Heisterkamp
   (@nheisterkamp).
 - Output of matrix multiplication is now consistently squeezed.
+- Added reference documentation in the section /docs/reference.
 - Fixed a bug in multiplying units without value with a number (like `5 * cm`).
 - Fixed a bug in multiplying two matrices containing vectors (worked fine for 
   arrays).

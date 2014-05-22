@@ -27,7 +27,7 @@ math.std(A, normalization)
 Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
-`normalization` | String |  Default value: 'unbiased' Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'.
+`normalization` | String |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
 
 ### Returns
 
