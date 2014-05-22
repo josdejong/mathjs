@@ -96,22 +96,22 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 <table>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.21.1/math.js">
-        Development (version 0.21.1)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.22.0/math.js">
+        Development (version 0.22.0)
       </a>
     </td>
     <td>
-      <span id="development-size">611 kB</span>, uncompressed with comments
+      <span id="development-size">672 kB</span>, uncompressed with comments
     </td>
   </tr>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.21.1/math.min.js">
-        Production (version 0.21.1)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.22.0/math.min.js">
+        Production (version 0.22.0)
       </a>
     </td>
     <td>
-      <span id="production-size">45 kB</span>, minified and gzipped
+      <span id="production-size">48 kB</span>, minified and gzipped
     </td>
   </tr>
 </table>
