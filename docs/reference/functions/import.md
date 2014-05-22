@@ -6,15 +6,28 @@ Import functions from an object or a module
 ## Syntax
 
 ```js
-math.import(x)
+math.import(object)
+math.import(object, options)
 ```
+
+### Where
+
+- `object: Object`
+  An object with functions to be imported.
+- `options: Object` An object with import options. Available options:
+  - `override: boolean`
+    If true, existing functions will be overwritten. False by default.
+  - `wrap: boolean`
+    If true (default), the functions will be wrapped in a wrapper function
+    which converts data types like Matrix to primitive data types like Array.
+    The wrapper is needed when extending math.js with libraries which do not
 
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `object` | String &#124; Object | Object with functions to be imported.
-`options` | Object | Available options: {Boolean} override If true, existing functions will be overwritten. False by default. {Boolean} wrap If true (default), the functions will be wrapped in a wrapper function which converts data types like Matrix to primitive data types like Array. The wrapper is needed when extending math.js with libraries which do not
+`options` | Object | Import options.
 
 ## Examples
 

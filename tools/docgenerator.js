@@ -111,6 +111,23 @@ function generateDoc(name, code) {
     return false;
   }
 
+  function parseWhere() {
+    if (/^where/i.test(line)) {
+      next();
+      skipEmptyLines();
+
+      while (exists() && !empty()) {
+        doc.where.push(line);
+        next();
+      }
+
+      skipEmptyLines();
+
+      return true;
+    }
+    return false;
+  }
+
   function parseExamples() {
     if (/^example/i.test(line)) {
       next();
@@ -219,6 +236,7 @@ function generateDoc(name, code) {
     name: name,
     description: '',
     syntax: [],
+    where: [],
     examples: [],
     seeAlso: [],
     parameters: [],
@@ -233,6 +251,7 @@ function generateDoc(name, code) {
     skipEmptyLines();
 
     var handled = parseSyntax() ||
+        parseWhere() ||
         parseExamples() ||
         parseSeeAlso() ||
         parseParameters() ||
@@ -328,6 +347,10 @@ function generateMarkdown (doc, functions) {
         '```js\n' +
         doc.syntax.join('\n') +
         '\n```\n\n';
+  }
+
+  if (doc.where && doc.where.length) {
+    text += '### Where\n\n' + doc.where.join('\n') + '\n\n';
   }
 
   text += '### Parameters\n\n' +

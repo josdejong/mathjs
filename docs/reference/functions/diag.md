@@ -20,7 +20,7 @@ math.diag(X, k)
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Matrix &#124; Array | A two dimensional matrix or a vector
-`k` | Number &#124; BigNumber | The diagonal where the vector will be filled in or retrieved. Default value: "0".
+`k` | Number &#124; BigNumber | The diagonal where the vector will be filled in or retrieved. Default value: 0.
 
 ### Returns
 

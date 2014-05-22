@@ -11,6 +11,10 @@ Matrix.get, Matrix.set, and math.subset accept an Index as input.
 math.index(range1, range2, ...);
 ```
 
+### Where
+
+Each range can be any of:
+
 ### Parameters
 
 Parameter | Type | Description

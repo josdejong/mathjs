@@ -18,11 +18,24 @@ range(start, end, step [, includeEnd]) // Create a range with start, step,
                                        // and end.
 ```
 
+### Where
+
+- `str: String`
+  A string 'start:end' or 'start:step:end'
+- `start: {Number | BigNumber}`
+  Start of the range
+- `end: Number | BigNumber`
+  End of the range, excluded by default, included when parameter includeEnd=true
+- `step: Number | BigNumber`
+  Step size. Default value is 1.
+- `includeEnd: boolean`
+  Option to specify whether to include the end or not. False by default.
+
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | ...* | Parameters describing the ranges `start`, `end`, and optional `step`.
+`args` | * | Parameters describing the ranges `start`, `end`, and optional `step`.
 
 ### Returns
 

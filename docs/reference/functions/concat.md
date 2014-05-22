@@ -10,6 +10,11 @@ math.concat(A, B, C, ...)
 math.concat(A, B, C, ..., dim)
 ```
 
+### Where
+
+- `dim: number` is a zero-based dimension over which to concatenate the matrices.
+  By default the last dimension of the matrices.
+
 ### Parameters
 
 Parameter | Type | Description
