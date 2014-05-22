@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.21.2-SNAPSHOT
- * @date    2014-05-20
+ * @version 0.22.0
+ * @date    2014-05-22
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -10236,7 +10236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Where:
 	   *
-	   * - `dim` is a zero-based dimension over which to concatenate the matrices.
+	   * - `dim: number` is a zero-based dimension over which to concatenate the matrices.
 	   *   By default the last dimension of the matrices.
 	   *
 	   * Examples:
@@ -10526,16 +10526,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Create a diagonal matrix or retrieve the diagonal of a matrix
 	   *
-	   *     diag(v)
-	   *     diag(v, k)
-	   *     diag(X)
-	   *     diag(X, k)
+	   * When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
+	   * When `x` is a two dimensional matrix, the matrixes `k`th diagonal will be returned as vector.
+	   * When k is positive, the values are placed on the super diagonal.
+	   * When k is negative, the values are placed on the sub diagonal.
 	   *
-	   * TODO: more documentation on diag
+	   * Syntax:
 	   *
-	   * @param {Matrix | Array} x
-	   * @param {Number | BigNumber} [k]
-	   * @return {Matrix | Array} matrix
+	   *     math.diag(X)
+	   *     math.diag(X, k)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     // create a diagonal matrix
+	   *     math.diag([1, 2, 3]);      // returns [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
+	   *     math.diag([1, 2, 3], 1);   // returns [[0, 1, 0, 0], [0, 0, 2, 0], [0, 0, 0, 3]]
+	   *     math.diag([1, 2, 3], -1);  // returns [[0, 0, 0], [1, 0, 0], [0, 2, 0], [0, 0, 3]]
+	   *
+	   *    // retrieve the diagonal from a matrix
+	   *    var a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+	   *    math.diag(a);   // returns [1, 5, 9]
+	   *
+	   * See also:
+	   *
+	   *     ones, zeros, eye
+	   *
+	   * @param {Matrix | Array} x          A two dimensional matrix or a vector
+	   * @param {Number | BigNumber} [k=0]  The diagonal where the vector will be filled
+	   *                                    in or retrieved.
+	   * @returns {Matrix | Array} Diagonal matrix from input vector, or diagonal from input matrix.
 	   */
 	  math.diag = function diag (x, k) {
 	    var data, vector, i, iMax;
@@ -11010,13 +11031,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Where:
 	   *
-	   *     {String} str                 A string 'start:end' or 'start:step:end'
-	   *     {Number | BigNumber} start   Start of the range
-	   *     {Number | BigNumber} end     End of the range, excluded by default,
-	   *                                  included when parameter includeEnd=true
-	   *     {Number | BigNumber} step=1  Step size.
-	   *     {boolean} includeEnd=false   Option to specify whether to include
-	   *                                  the end or not.
+	   * - `str: String`
+	   *   A string 'start:end' or 'start:step:end'
+	   * - `start: {Number | BigNumber}`
+	   *   Start of the range
+	   * - `end: Number | BigNumber`
+	   *   End of the range, excluded by default, included when parameter includeEnd=true
+	   * - `step: Number | BigNumber`
+	   *   Step size. Default value is 1.
+	   * - `includeEnd: boolean`
+	   *   Option to specify whether to include the end or not. False by default.
 	   *
 	   * Examples:
 	   *
@@ -11031,7 +11055,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   *     ones, zeros, size, subset
 	   *
-	   * @param {...*} args   Parameters describing the ranges `start`, `end`, and optional `step`.
+	   * @param {*} args   Parameters describing the ranges `start`, `end`, and optional `step`.
 	   * @return {Array | Matrix} range
 	   */
 	  math.range = function range(args) {
@@ -11321,15 +11345,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Resize a matrix
 	   *
-	   *     resize(x, size)
-	   *     resize(x, size, defaultValue)
+	   * Syntax:
 	   *
-	   * @param {* | Array | Matrix} x
+	   *     math.resize(x, size)
+	   *     math.resize(x, size, defaultValue)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.resize([1, 2, 3, 4, 5], [3]); // returns Array  [1, 2, 3]
+	   *     math.resize([1, 2, 3], [5], 0);    // returns Array  [1, 2, 3, 0, 0]
+	   *     math.resize(2, [2, 3], 0);         // returns Matrix [[2, 0, 0], [0, 0, 0]]
+	   *     math.resize("hello", [8], "!");    // returns String 'hello!!!'
+	   *
+	   * See also:
+	   *
+	   *     size, squeeze, subset
+	   *
+	   * @param {* | Array | Matrix} x            Matrix to be resized
 	   * @param {Array | Matrix} size             One dimensional array with numbers
 	   * @param {Number | String} [defaultValue]  Undefined by default, except in
 	   *                                          case of a string, in that case
 	   *                                          defaultValue = ' '
-	   * @return {* | Array | Matrix} res
+	   * @return {* | Array | Matrix} A resized clone of matrix `x`
 	   */
 	  math.resize = function resize (x, size, defaultValue) {
 	    if (arguments.length != 2 && arguments.length != 3) {
@@ -11457,6 +11496,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.size(A);                    // returns [2, 3]
 	   *     math.size(math.range(1,6));      // returns [5]
 	   *
+	   * See also:
+	   *
+	   *     resize, squeeze, subset
+	   *
 	   * @param {Boolean | Number | Complex | Unit | String | Array | Matrix} x  A matrix
 	   * @return {Array | Matrix} A vector with size of `x`.
 	   */
@@ -11565,27 +11608,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isArray = Array.isArray;
 
 	  /**
-	   * Get or set a subset of a matrix or string
+	   * Get or set a subset of a matrix or string.
 	   *
-	   * Usage:
-	   *     // retrieve subset:
-	   *     var subset = math.subset(value, index)
+	   * Syntax:
+	   *     math.subset(value, index)                                // retrieve a subset
+	   *     math.subset(value, index, replacement [, defaultValue])  // replace a subset
 	   *
-	   *     // replace subset:
-	   *     var value = math.subset(value, index, replacement [, defaultValue])
+	   * Examples:
 	   *
-	   * Where:
-	   *     {Array | Matrix | String} value  An array, matrix, or string
-	   *     {Index} index                    An index containing ranges for each
-	   *                                      dimension
-	   *     {*} replacement                  An array, matrix, or scalar
-	   *     {*} [defaultValue]        Default value, filled in on new entries when
-	   *                               the matrix is resized. If not provided,
-	   *                               new matrix elements will be left undefined.
-	   * @param args
-	   * @return res
+	   *     var math = mathjs();
+	   *
+	   *     // get a subset
+	   *     var d = [[1, 2], [3, 4]];
+	   *     math.subset(d, math.index(1, 0));        // returns 3
+	   *     math.subset(d, math.index([0, 2], 1));   // returns [[2], [4]]
+	   *
+	   *     // replace a subset
+	   *     var e = [];
+	   *     var f = math.subset(e, math.index(0, [0, 2]), [5, 6]);  // f = [[5, 6]]
+	   *     var g = math.subset(f, math.index(1, 1), 7, 0);         // g = [[5, 6], [0, 7]]
+	   *
+	   * See also:
+	   *
+	   *     size, resize, squeeze, index
+	   *
+	   * @param {Array | Matrix | String} matrix  An array, matrix, or string
+	   * @param {Index} index                     An index containing ranges for each
+	   *                                          dimension
+	   * @param {*} [replacement]                 An array, matrix, or scalar.
+	   *                                          If provided, the subset is replaced with replacement.
+	   *                                          If not provided, the subset is returned
+	   * @param {*} [defaultValue=undefined]      Default value, filled in on new entries when
+	   *                                          the matrix is resized. If not provided,
+	   *                                          new matrix elements will be left undefined.
+	   * @return {Array | Matrix | String} Either the retrieved subset or the updated matrix.
 	   */
-	  math.subset = function subset (args) {
+	  math.subset = function subset (matrix, index, replacement, defaultValue) {
 	    switch (arguments.length) {
 	      case 2: // get subset
 	        return _getSubset(arguments[0], arguments[1]);
@@ -12022,12 +12080,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // TODO: implement BigNumber support for random
 
 	  /**
-	   * Return a random number between 0 and 1
+	   * Return a random number between `min` and `max` using a uniform distribution.
 	   *
-	   *     random()
+	   * Syntax:
 	   *
-	   * @return {Number} res
+	   *     math.random()          // generate a random number between 0 and 1
+	   *     math.random(max)       // generate a random number between 0 and max
+	   *     math.random(min, max)  // generate a random number between min and max
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.random();       // returns a random number between 0 and 1
+	   *     math.random(100);    // returns a random number between 0 and 100
+	   *     math.random(30, 40); // returns a random number between 30 and 40
+	   *
+	   * @param {Number} [min]  Minimum boundary for the random value
+	   * @param {Number} [max]  Maximum boundary for the random value
+	   * @return {Number} A random number
 	   */
+
+	  // TODO: improve structure of random.js, split it in one file per function
 
 	  // Each distribution is a function that takes no argument and when called returns
 	  // a number between 0 and 1.
@@ -14725,42 +14799,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Where:
 	   *
-	   *    {*} value        The value to be formatted
-	   *    {Object} options An object with formatting options. Available options:
-	   *                     {String} notation
-	   *                         Number notation. Choose from:
-	   *                         'fixed'          Always use regular number notation.
-	   *                                          For example '123.40' and '14000000'
-	   *                         'exponential'    Always use exponential notation.
-	   *                                          For example '1.234e+2' and '1.4e+7'
-	   *                         'auto' (default) Regular number notation for numbers
-	   *                                          having an absolute value between
-	   *                                          `lower` and `upper` bounds, and uses
-	   *                                          exponential notation elsewhere.
-	   *                                          Lower bound is included, upper bound
-	   *                                          is excluded.
-	   *                                          For example '123.4' and '1.4e7'.
-	   *                     {Number} precision   A number between 0 and 16 to round
-	   *                                          the digits of the number.
-	   *                                          In case of notations 'exponential' and
-	   *                                          'auto', `precision` defines the total
-	   *                                          number of significant digits returned
-	   *                                          and is undefined by default.
-	   *                                          In case of notation 'fixed',
-	   *                                          `precision` defines the number of
-	   *                                          significant digits after the decimal
-	   *                                          point, and is 0 by default.
-	   *                     {Object} exponential An object containing two parameters,
-	   *                                          {Number} lower and {Number} upper,
-	   *                                          used by notation 'auto' to determine
-	   *                                          when to return exponential notation.
-	   *                                          Default values are `lower=1e-3` and
-	   *                                          `upper=1e5`.
-	   *                                          Only applicable for notation `auto`.
-	   *    {Function} fn    A custom formatting function. Can be used to override the
-	   *                     built-in notations. Function `fn` is called with `value` as
-	   *                     parameter and must return a string. Is useful for example to
-	   *                     format all values inside a matrix in a particular way.
+	   *  - `value: *`
+	   *    The value to be formatted
+	   *  - `options: Object`
+	   *    An object with formatting options. Available options:
+	   *    - `notation: String`
+	   *      Number notation. Choose from:
+	   *      - 'fixed'
+	   *        Always use regular number notation.
+	   *        For example '123.40' and '14000000'
+	   *      - 'exponential'
+	   *        Always use exponential notation.
+	   *        For example '1.234e+2' and '1.4e+7'
+	   *      - 'auto' (default)
+	   *        Regular number notation for numbers having an absolute value between
+	   *        `lower` and `upper` bounds, and uses exponential notation elsewhere.
+	   *        Lower bound is included, upper bound is excluded.
+	   *        For example '123.4' and '1.4e7'.
+	   *    - `precision: Number`
+	   *      A number between 0 and 16 to round the digits of the number. In case
+	   *      of notations 'exponential' and 'auto', `precision` defines the total
+	   *      number of significant digits returned and is undefined by default.
+	   *      In case of notation 'fixed', `precision` defines the number of
+	   *      significant digits after the decimal point, and is 0 by default.
+	   *    - `exponential: Object`
+	   *      An object containing two parameters, {Number} lower and {Number} upper,
+	   *      used by notation 'auto' to determine when to return exponential
+	   *      notation. Default values are `lower=1e-3` and `upper=1e5`. Only
+	   *      applicable for notation `auto`.
+	   * - `fn: Function`
+	   *   A custom formatting function. Can be used to override the built-in notations.
+	   *   Function `fn` is called with `value` as parameter and must return a string.
+	   *   Is useful for example to format all values inside a matrix in a particular way.
 	   *
 	   * Examples:
 	   *
@@ -14948,7 +15018,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Syntax:
 	   *
-	   *    math.import(x)
+	   *    math.import(object)
+	   *    math.import(object, options)
+	   *
+	   * Where:
+	   *
+	   * - `object: Object`
+	   *   An object with functions to be imported.
+	   * - `options: Object` An object with import options. Available options:
+	   *   - `override: boolean`
+	   *     If true, existing functions will be overwritten. False by default.
+	   *   - `wrap: boolean`
+	   *     If true (default), the functions will be wrapped in a wrapper function
+	   *     which converts data types like Matrix to primitive data types like Array.
+	   *     The wrapper is needed when extending math.js with libraries which do not
 	   *
 	   * Examples:
 	   *
@@ -14973,17 +15056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.fibonacci(7); // returns 13
 	   *
 	   * @param {String | Object} object  Object with functions to be imported.
-	   * @param {Object} [options]        Available options:
-	   *                                  {Boolean} override
-	   *                                      If true, existing functions will be
-	   *                                      overwritten. False by default.
-	   *                                  {Boolean} wrap
-	   *                                      If true (default), the functions will
-	   *                                      be wrapped in a wrapper function which
-	   *                                      converts data types like Matrix to
-	   *                                      primitive data types like Array.
-	   *                                      The wrapper is needed when extending
-	   *                                      math.js with libraries which do not
+	   * @param {Object} [options]        Import options.
 	   */
 	  // TODO: return status information
 	  math['import'] = function math_import(object, options) {
@@ -23035,7 +23108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'diag(x)',
 	    'diag(x, k)'
 	  ],
-	  'description': 'Create a diagonal matrix or retrieve the diagonal of a matrix. When x is a vector, a matrix with the vector values on the diagonal will be returned. When x is a matrix, a vector with the diagonal values of the matrix is returned.When k is provided, the k-th diagonal will be filled in or retrieved, if k is positive, the values are placed on the super diagonal. When k is negative, the values are placed on the sub diagonal.',
+	  'description': 'Create a diagonal matrix or retrieve the diagonal of a matrix. When x is a vector, a matrix with the vector values on the diagonal will be returned. When x is a matrix, a vector with the diagonal values of the matrix is returned. When k is provided, the k-th diagonal will be filled in or retrieved, if k is positive, the values are placed on the super diagonal. When k is negative, the values are placed on the sub diagonal.',
 	  'examples': [
 	    'diag(1:3)',
 	    'diag(1:3, 1)',

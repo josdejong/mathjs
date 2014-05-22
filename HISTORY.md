@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.22.0
+## 2014-05-22, version 0.22.0
 
 - Implemented support to export expressions to LaTeX. Thanks Niels Heisterkamp
   (@nheisterkamp).

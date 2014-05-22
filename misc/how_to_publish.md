@@ -3,20 +3,6 @@
 This document describes the steps required to publish a new version of math.js.
 
 
-## Test
-
-Test whether the library works correctly by running the tests:
-
-    npm test
-
-Test whether the npm library is ok by installing it locally:
-
-    cd ../tmp-folder
-    npm install ../mathjs
-
-Check whether the library works and looks ok.
-
-
 ## Update version number
 
 Update the version number in both package.json and bower.json.
@@ -43,6 +29,20 @@ To update the reference documentation, run:
 
 This will regenerate all documentation in docs/reference/functions from the
 functions code comments.
+
+
+## Test
+
+Test whether the library works correctly by running the tests:
+
+    npm test
+
+Test whether the npm library is ok by installing it locally:
+
+    cd ../tmp-folder
+    npm install ../mathjs
+
+Check whether the library works and looks ok.
 
 
 ## Commit
