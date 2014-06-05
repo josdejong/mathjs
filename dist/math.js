@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.22.1-SNAPSHOT
- * @date    2014-05-22
+ * @date    2014-06-05
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -27,53 +27,52 @@
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("crypto"));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(["crypto"], factory);
+		define(factory);
 	else if(typeof exports === 'object')
-		exports["mathjs"] = factory(require("crypto"));
+		exports["mathjs"] = factory();
 	else
-		root["mathjs"] = factory(root["crypto"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_256__) {
+		root["mathjs"] = factory();
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
-/******/ 	
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-/******/ 		
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 		
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/ 		
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
-/******/ 	
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/ 	
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/ 	
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/ 	
-/******/ 	
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -188,7 +187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  // create a new BigNumber factory for this instance of math.js
-	  var BigNumber = __webpack_require__(118).constructor();
+	  var BigNumber = __webpack_require__(122).constructor();
 
 	  // extend BigNumber with a function clone
 	  if (typeof BigNumber.prototype.clone !== 'function') {
@@ -568,10 +567,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports.ArgumentsError = __webpack_require__(119);
-	exports.DimensionError = __webpack_require__(120);
-	exports.IndexError = __webpack_require__(121);
-	exports.UnsupportedTypeError = __webpack_require__(122);
+	exports.ArgumentsError = __webpack_require__(118);
+	exports.DimensionError = __webpack_require__(119);
+	exports.IndexError = __webpack_require__(120);
+	exports.UnsupportedTypeError = __webpack_require__(121);
 
 	// TODO: implement an InvalidValueError?
 
@@ -1560,7 +1559,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var util = __webpack_require__(123),
-	    DimensionError = __webpack_require__(120),
+	    DimensionError = __webpack_require__(119),
 
 	    Index = __webpack_require__(7),
 
@@ -3043,7 +3042,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var util = __webpack_require__(123),
 
-	    DimensionError = __webpack_require__(120),
+	    DimensionError = __webpack_require__(119),
 
 	    Matrix = __webpack_require__(8),
 
@@ -3296,7 +3295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var util = __webpack_require__(123),
 
-	    ArgumentsError = __webpack_require__(119),
+	    ArgumentsError = __webpack_require__(118),
 
 	    isString = util.string.isString,
 	    isArray = Array.isArray,
@@ -10478,7 +10477,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          mu[i][i] = math.unary(sum);
 
 	          for (j = 0; j < i; j++) {
-	            mu[i][j] = 0;
+	            mu[i][j] = 0; // TODO: make bignumber 0 in case of bignumber computation
 	          }
 
 	          for (j = i + 1; j < matrix.length; j++) {
@@ -10876,6 +10875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          r++;
 	        }
 	        if (r == rows || A[r][c] == 0) {
+	          // TODO: in case of zero det, just return a matrix wih Infinity values? (like octave)
 	          throw Error('Cannot calculate inverse, determinant is zero');
 	        }
 	        if (r != c) {
@@ -15422,13 +15422,178 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {/*! decimal.js v2.0.3 https://github.com/MikeMcl/decimal.js/LICENCE */
+	/**
+	 * Create a syntax error with the message:
+	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
+	 * @param {String} fn     Function name
+	 * @param {Number} count  Actual argument count
+	 * @param {Number} min    Minimum required argument count
+	 * @param {Number} [max]  Maximum required argument count
+	 * @extends Error
+	 */
+	function ArgumentsError(fn, count, min, max) {
+	  if (!(this instanceof ArgumentsError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.fn = fn;
+	  this.count = count;
+	  this.min = min;
+	  this.max = max;
+
+	  this.message = 'Wrong number of arguments in function ' + fn +
+	      ' (' + count + ' provided, ' +
+	      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	ArgumentsError.prototype = new Error();
+	ArgumentsError.prototype.constructor = Error;
+	ArgumentsError.prototype.name = 'ArgumentsError';
+
+	module.exports = ArgumentsError;
+
+
+/***/ },
+/* 119 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Create a range error with the message:
+	 *     'Dimension mismatch (<actual size> != <expected size>)'
+	 * @param {number | number[]} actual        The actual size
+	 * @param {number | number[]} expected      The expected size
+	 * @param {string} [relation='!=']          Optional relation between actual
+	 *                                          and expected size: '!=', '<', etc.
+	 * @extends RangeError
+	 */
+	function DimensionError(actual, expected, relation) {
+	  if (!(this instanceof DimensionError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.actual   = actual;
+	  this.expected = expected;
+	  this.relation = relation;
+
+	  this.message = 'Dimension mismatch (' +
+	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
+	      ' ' + (this.relation || '!=') + ' ' +
+	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
+	      ')';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	DimensionError.prototype = new RangeError();
+	DimensionError.prototype.constructor = RangeError;
+	DimensionError.prototype.name = 'DimensionError';
+
+	module.exports = DimensionError;
+
+
+/***/ },
+/* 120 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Create a range error with the message:
+	 *     'Index out of range (index < min)'
+	 *     'Index out of range (index < max)'
+	 *
+	 * @param {number} index     The actual index
+	 * @param {number} [min=0]   Minimum index (included)
+	 * @param {number} [max]     Maximum index (excluded)
+	 * @extends RangeError
+	 */
+	function IndexError(index, min, max) {
+	  if (!(this instanceof IndexError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.index = index;
+	  if (arguments.length < 3) {
+	    this.min = 0;
+	    this.max = min;
+	  }
+	  else {
+	    this.min = min;
+	    this.max = max;
+	  }
+
+	  if (this.min !== undefined && this.index < this.min) {
+	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
+	  }
+	  else if (this.max !== undefined && this.index >= this.max) {
+	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
+	  }
+	  else {
+	    this.message = 'Index out of range (' + this.index + ')';
+	  }
+
+	  this.stack = (new Error()).stack;
+	}
+
+	IndexError.prototype = new RangeError();
+	IndexError.prototype.constructor = RangeError;
+	IndexError.prototype.name = 'IndexError';
+
+	module.exports = IndexError;
+
+
+/***/ },
+/* 121 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Create a TypeError with message:
+	 *      'Function <fn> does not support a parameter of type <type>';
+	 * @param {String} fn     Function name
+	 * @param {*...} [types]  The types of the function arguments
+	 * @extends TypeError
+	 */
+	function UnsupportedTypeError(fn, types) {
+	  if (!(this instanceof UnsupportedTypeError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.fn = fn;
+	  this.types = Array.prototype.splice.call(arguments, 1);
+
+	  if (!fn) {
+	    this.message = 'Unsupported type of argument';
+	  }
+	  else {
+	    if (this.types.length == 0) {
+	      this.message = 'Unsupported type of argument in function ' + fn;
+	    }
+	    else {
+	      this.message = 'Function ' + fn + '(' + this.types.join(', ') + ') not supported';
+	    }
+	  }
+
+	  this.stack = (new Error()).stack;
+	}
+
+	UnsupportedTypeError.prototype = new TypeError();
+	UnsupportedTypeError.prototype.constructor = TypeError;
+	UnsupportedTypeError.prototype.name = 'UnsupportedTypeError';
+
+	module.exports = UnsupportedTypeError;
+
+
+/***/ },
+/* 122 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v3.0.0 https://github.com/MikeMcl/decimal.js/LICENCE */
 	;(function (global) {
 	    'use strict';
 
 
 	    /*
-	     *  decimal.js v2.0.3
+	     *  decimal.js v3.0.0
 	     *  An arbitrary-precision Decimal type for JavaScript.
 	     *  https://github.com/MikeMcl/decimal.js
 	     *  Copyright (c) 2014 Michael Mclaughlin <M8ch88l@gmail.com>
@@ -15441,25 +15606,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	        outOfRange,
 	        id = 0,
 	        external = true,
+	        mathfloor = Math.floor,
+	        mathpow = Math.pow,
+	        BASE = 1e7,
+	        LOGBASE = 7,
 	        NUMERALS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_',
 	        P = {},
 
 	        /*
 	         The maximum exponent magnitude.
-	         The limit on the value of #toExpNeg, #toExpPos, #minE and #maxE.
+	         The limit on the value of toExpNeg, toExpPos, minE and maxE.
 	         */
 	        EXP_LIMIT = 9e15,                      // 0 to 9e15
 
 	        /*
-	         The limit on the value of #precision, and on the argument to #toDecimalPlaces,
-	         #toExponential, #toFixed, #toFormat, #toPrecision and #toSignificantDigits.
+	         The limit on the value of precision, and on the argument to toDecimalPlaces,
+	         toExponential, toFixed, toFormat, toPrecision and toSignificantDigits.
 	         */
 	        MAX_DIGITS = 1E9,                      // 0 to 1e+9
 
 	        /*
 	         To decide whether or not to calculate x.pow(integer y) using the 'exponentiation by
 	         squaring' algorithm or by exp(y*ln(x)), the number of significant digits of x is multiplied
-	         by y. If this number is less than #INT_POW_LIMIT then the former algorithm is used.
+	         by y. If this number is less than INT_POW_LIMIT then the former algorithm is used.
 	         */
 	        INT_POW_LIMIT = 3000,                  // 0 to 5000
 
@@ -15563,10 +15732,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Return the number of decimal places of the value of this Decimal.
 	     *
 	     */
-	    P['decimalPlaces'] = P['dp'] = function () {
-	        var x = this;
+	     P['decimalPlaces'] = P['dp'] = function () {
+	        var c, v,
+	            n = null;
 
-	        return x['c'] ? Math.max( x['c'].length - x['e'] - 1, 0 ) : null;
+	        if ( c = this['c'] ) {
+	            n = ( ( v = c.length - 1 ) - mathfloor( this['e'] / LOGBASE ) ) * LOGBASE;
+
+	            if ( v = c[v] ) {
+
+	                // Subtract the number of trailing zeros of the last number.
+	                for ( ; v % 10 == 0; v /= 10, n-- );
+	            }
+
+	            if ( n < 0 ) {
+	                n = 0;
+	            }
+	        }
+
+	        return n;
 	    };
 
 
@@ -15588,7 +15772,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *  I / I = N
 	     *
 	     * Return a new Decimal whose value is the value of this Decimal divided by Decimal(y, b),
-	     * rounded to #precision significant digits using rounding mode #rounding.
+	     * rounded to precision significant digits using rounding mode rounding.
 	     *
 	     */
 	    P['dividedBy'] = P['div'] = function ( y, b ) {
@@ -15600,8 +15784,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /*
 	     * Return a new Decimal whose value is the integer part of dividing the value of this Decimal by
-	     * the value of Decimal(y, b), rounded to #precision significant digits using rounding mode
-	     * #rounding.
+	     * the value of Decimal(y, b), rounded to precision significant digits using rounding mode
+	     * rounding.
 	     *
 	     */
 	    P['dividedToIntegerBy'] = P['divToInt'] = function ( y, b ) {
@@ -15629,8 +15813,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /*
 	     * Return a new Decimal whose value is the exponential of the value of this Decimal, i.e. the
-	     * base e raised to the power the value of this Decimal, rounded to #precision significant digits
-	     * using rounding mode #rounding.
+	     * base e raised to the power the value of this Decimal, rounded to precision significant digits
+	     * using rounding mode rounding.
 	     *
 	     */
 	    P['exponential'] = P['exp'] = function () {
@@ -15691,7 +15875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    P['isInteger'] = P['isInt'] = function () {
 
-	        return !!this['c'] && this['e'] > this['c'].length - 2;
+	        return !!this['c'] && mathfloor( this['e'] / LOGBASE ) > this['c'].length - 2;
 	    };
 
 
@@ -15751,7 +15935,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /*
 	     * Return the logarithm of the value of this Decimal to the specified base, rounded
-	     * to #precision significant digits using rounding mode #rounding.
+	     * to precision significant digits using rounding mode rounding.
 	     *
 	     * If no base is specified, return log[10](arg).
 	     *
@@ -15797,7 +15981,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            base = new Decimal( base, b );
 	            c = base['c'];
 
-	            // If #base < 0 or +-Infinity/NaN or 0 or 1.
+	            // If base < 0 or +-Infinity/NaN or 0 or 1.
 	            if ( base['s'] < 0 || !c || !c[0] || !base['e'] && c[0] == 1 && c.length == 1 ) {
 
 	                return new Decimal(NaN);
@@ -15806,27 +15990,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        c = arg['c'];
 
-	        // If #arg < 0 or +-Infinity/NaN or 0 or 1.
+	        // If arg < 0 or +-Infinity/NaN or 0 or 1.
 	        if ( arg['s'] < 0 || !c || !c[0] || !arg['e'] && c[0] == 1 && c.length == 1 ) {
 
 	            return new Decimal( c && !c[0] ? -1 / 0 : arg['s'] != 1 ? NaN : c ? 0 : 1 / 0 );
 	        }
 
 	        /*
-	          The result will have an infinite decimal expansion if #base is 10 and #arg is not an
+	          The result will have an infinite decimal expansion if base is 10 and arg is not an
 	          integer power of 10...
 	         */
-	        inf = base10 && ( c[0] != 1 || c.length > 1 ) ||
-
-	          // ...or if #base last digit's evenness is not the same as #arg last digit's evenness...
-	          ( base['c'][ base['c'].length - 1 ] & 1 ) != ( c[ c.length - 1 ] & 1 ) || 0 &&
-
-	              // ...or if #base is 2 and there is more than one 1 in #arg in base 2.
-	              base['eq'](2) && arg.toString(2).replace( /[^1]+/g, '' ) != '1';
+	        inf = base10 && ( i = c[0], c.length > 1 || i != 1 && i != 10 &&
+	          i != 1e2 && i != 1e3 && i != 1e4 && i != 1e5 && i != 1e6 );
+	            /*
+	            // or if base last digit's evenness is not the same as arg last digit's evenness...
+	            // (FAILS when e.g. base.c[0] = 10 and c[0] = 1)
+	            || ( base['c'][ base['c'].length - 1 ] & 1 ) != ( c[ c.length - 1 ] & 1 )
+	              // or if base is 2 and there is more than one 1 in arg in base 2.
+	              // (SLOWS the method down significantly)
+	              || base['eq'](2) && arg.toString(2).replace( /[^1]+/g, '' ) != '1';
+	             */
 
 	        external = false;
 	        sd = pr + guard;
 	        sd10 = sd + 10;
+
 	        num = ln( arg, sd );
 
 	        if (base10) {
@@ -15880,10 +16068,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                if ( !inf ) {
 
 	                    // Check for 14 nines from the 2nd rounding digit, as the first may be 4.
-	                    for ( c = r['c']; c[++i] == 9; ) {
-	                    }
-
-	                    if ( i == pr + guard + 10 ) {
+	                    if ( +coefficientToString( r['c'] ).slice( i + 1, i + 15 ) + 1 == 1e14 ) {
 	                        r = rnd( r, pr + 1, 0 );
 	                    }
 
@@ -15915,7 +16100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *  I - I = N
 	     *
 	     * Return a new Decimal whose value is the value of this Decimal minus Decimal(y, b), rounded
-	     * to #precision significant digits using rounding mode #rounding.
+	     * to precision significant digits using rounding mode rounding.
 	     *
 	     */
 	    P['minus'] = function ( y, b ) {
@@ -15942,13 +16127,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        var xc = x['c'],
-	            xe = x['e'],
 	            yc = y['c'],
-	            ye = y['e'],
+	            e = mathfloor( y['e'] / LOGBASE ),
+	            k = mathfloor( x['e'] / LOGBASE ),
 	            pr = Decimal['precision'],
 	            rm = Decimal['rounding'];
 
-	        if ( !xe || !ye ) {
+	        if ( !k || !e ) {
 
 	            // Either Infinity?
 	            if ( !xc || !yc ) {
@@ -15959,7 +16144,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // Either zero?
 	            if ( !xc[0] || !yc[0] ) {
 
-	                // Return #y if #y is non-zero, #x if #x is non-zero, or zero if both are zero.
+	                // Return y if y is non-zero, x if x is non-zero, or zero if both are zero.
 	                x = yc[0] ? ( y['s'] = -b, y ) : new Decimal( xc[0] ? x :
 
 	                  // IEEE 754 (2008) 6.3: n - n = -0 when rounding to -Infinity
@@ -15973,38 +16158,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	        i = xc.length;
 
 	        // Determine which is the bigger number. Prepend zeros to equalise exponents.
-	        if ( a = xe - ye ) {
+	        if ( a = k - e ) {
 
 	            if ( xLTy = a < 0 ) {
 	                a = -a;
 	                t = xc;
 	                i = yc.length;
 	            } else {
-	                ye = xe;
+	                e = k;
 	                t = yc;
 	            }
 
-	            if ( pr > i ) {
-	                i = pr;
+	            if ( ( k = Math.ceil( pr / LOGBASE ) ) > i ) {
+	                i = k;
 	            }
 
 	            /*
 	             Numbers with massively different exponents would result in a massive number of
 	             zeros needing to be prepended, but this can be avoided while still ensuring correct
-	             rounding by limiting the number of zeros to max( #precision, #i ) + 2, where #pr is
-	             #precision and #i is the length of the coefficient of whichever is greater #x or #y.
+	             rounding by limiting the number of zeros to max( precision, i ) + 2, where pr is
+	             precision and i is the length of the coefficient of whichever is greater x or y.
 	             */
 	            if ( a > ( i += 2 ) ) {
 	                a = i;
 	                t.length = 1;
 	            }
 
-	            for ( t.reverse(), b = a; b--; t.push(0) ) {
-	            }
+	            for ( t.reverse(), b = a; b--; t.push(0) );
 	            t.reverse();
 	        } else {
+	            // Exponents equal. Check digits.
 
-	            // Exponents equal. Check digit by digit.
 	            if ( xLTy = i < ( j = yc.length ) ) {
 	                j = i;
 	            }
@@ -16019,54 +16203,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 
-	        // #x < #y? Point #xc to the array of the bigger number.
+	        // x < y? Point xc to the array of the bigger number.
 	        if ( xLTy ) {
 	            t = xc, xc = yc, yc = t;
 	            y['s'] = -y['s'];
 	        }
 
 	        /*
-	         Append zeros to #xc if shorter. No need to add zeros to #yc if shorter as subtraction only
-	         needs to start at #yc length.
+	         Append zeros to xc if shorter. No need to add zeros to yc if shorter as subtraction only
+	         needs to start at yc length.
 	         */
 	        if ( ( b = -( ( j = xc.length ) - yc.length ) ) > 0 ) {
 
-	            for ( ; b--; xc[j++] = 0 ) {
-	            }
+	            for ( ; b--; xc[j++] = 0 );
 	        }
 
-	        // Subtract #yc from #xc.
-	        for ( b = yc.length; b > a; ){
+	        // Subtract yc from xc.
+	        for ( k = BASE - 1, b = yc.length; b > a; ) {
 
 	            if ( xc[--b] < yc[b] ) {
 
-	                for ( i = b; i && !xc[--i]; xc[i] = 9 ) {
-	                }
+	                for ( i = b; i && !xc[--i]; xc[i] = k );
 	                --xc[i];
-	                xc[b] += 10;
+	                xc[b] += BASE;
 	            }
 	            xc[b] -= yc[b];
 	        }
 
 	        // Remove trailing zeros.
-	        for ( ; xc[--j] == 0; xc.pop() ) {
-	        }
+	        for ( ; xc[--j] == 0; xc.pop() );
 
 	        // Remove leading zeros and adjust exponent accordingly.
-	        for ( ; xc[0] == 0; xc.shift(), --ye ) {
-	        }
+	        for ( ; xc[0] == 0; xc.shift(), --e );
 
 	        if ( !xc[0] ) {
 
 	            // Zero.
-	            xc = [ ye = 0 ];
+	            xc = [ e = 0 ];
 
 	            // Following IEEE 754 (2008) 6.3, n - n = -0 when rounding towards -Infinity.
 	            y['s'] = rm == 3 ? -1 : 1;
 	        }
 
 	        y['c'] = xc;
-	        y['e'] = ye;
+
+	        // Get the number of digits of xc[0].
+	        for ( a = 1, b = xc[0]; b >= 10; b /= 10, a++ );
+	        y['e'] = a + e * LOGBASE - 1;
 
 	        return external ? rnd( y, pr, rm ) : y;
 	    };
@@ -16091,7 +16274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *   I % I =  N
 	     *
 	     * Return a new Decimal whose value is the value of this Decimal modulo Decimal(y, b), rounded
-	     * to #precision significant digits using rounding mode #rounding.
+	     * to precision significant digits using rounding mode rounding.
 	     *
 	     * The result depends on the modulo mode.
 	     *
@@ -16108,8 +16291,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        n = !x['c'] || !b || y['c'] && !y['c'][0];
 
 	        /*
-	         Return NaN if #x is Infinity or NaN, or #y is NaN or zero, else return #x if #y is Infinity
-	         or #x is zero.
+	         Return NaN if x is Infinity or NaN, or y is NaN or zero, else return x if y is Infinity
+	         or x is zero.
 	         */
 	        if ( n || !y['c'] || x['c'] && !x['c'][0] ) {
 
@@ -16141,7 +16324,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /*
 	     * Return a new Decimal whose value is the natural logarithm of the value of this Decimal,
-	     * rounded to #precision significant digits using rounding mode #rounding.
+	     * rounded to precision significant digits using rounding mode rounding.
 	     *
 	     */
 	    P['naturalLogarithm'] = P['ln'] = function () {
@@ -16181,7 +16364,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *  I + I = I
 	     *
 	     * Return a new Decimal whose value is the value of this Decimal plus Decimal(y, b), rounded
-	     * to #precision significant digits using rounding mode #rounding.
+	     * to precision significant digits using rounding mode rounding.
 	     *
 	     */
 	    P['plus'] = function ( y, b ) {
@@ -16191,7 +16374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            a = x['s'];
 
 	        id = 10;
-	        y = new Decimal( y, b ) ;
+	        y = new Decimal( y, b );
 	        b = y['s'];
 
 	        // Either NaN?
@@ -16207,14 +16390,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return x['minus'](y);
 	        }
 
-	        var xe = x['e'],
-	            xc = x['c'],
-	            ye = y['e'],
+	        var xc = x['c'],
 	            yc = y['c'],
+	            e = mathfloor( y['e'] / LOGBASE ),
+	            k = mathfloor( x['e'] / LOGBASE ),
 	            pr = Decimal['precision'],
 	            rm = Decimal['rounding'];
 
-	        if ( !xe || !ye ) {
+	        if ( !k || !e ) {
 
 	            // Either Infinity?
 	            if ( !xc || !yc ) {
@@ -16226,7 +16409,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // Either zero?
 	            if ( !xc[0] || !yc[0] ) {
 
-	                // Return #y if #y is non-zero, #x if #x is non-zero, or zero if both are zero.
+	                // Return y if y is non-zero, x if x is non-zero, or zero if both are zero.
 	                x = yc[0] ? y: new Decimal( xc[0] ? x : a * 0 );
 
 	                return external ? rnd( x, pr, rm ) : x;
@@ -16236,56 +16419,57 @@ return /******/ (function(modules) { // webpackBootstrap
 	        xc = xc.slice();
 
 	        // Prepend zeros to equalise exponents. Note: Faster to use reverse then do unshifts.
-	        if ( a = xe - ye ) {
+	        if ( a = k - e ) {
 
 	            if ( a < 0 ) {
 	                a = -a;
 	                t = xc;
 	                b = yc.length;
 	            } else {
-	                ye = xe;
+	                e = k;
 	                t = yc;
 	                b = xc.length;
 	            }
 
-	            if ( pr > b ) {
-	                b = pr;
+	            if ( ( k = Math.ceil( pr / LOGBASE ) ) > b ) {
+	                b = k;
 	            }
 
-	            // Limit number of zeros prepended to max( #pr, #b ) + 1.
+	            // Limit number of zeros prepended to max( pr, b ) + 1.
 	            if ( a > ++b ) {
 	                a = b;
 	                t.length = 1;
 	            }
 
-	            for ( t.reverse(); a--; t.push(0) ) {
-	            }
+	            for ( t.reverse(); a--; t.push(0) );
 	            t.reverse();
 	        }
 
-	        // Point #xc to the longer array.
+	        // Point xc to the longer array.
 	        if ( xc.length - yc.length < 0 ) {
 	            t = yc, yc = xc, xc = t;
 	        }
 
-	        // Only start adding at yc.length - 1 as the further digits of #xc can be left as they are.
-	        for ( a = yc.length, b = 0; a; xc[a] %= 10 ) {
-	             b = ( xc[--a] = xc[a] + yc[a] + b ) / 10 | 0;
+	        // Only start adding at yc.length - 1 as the further digits of xc can be left as they are.
+	        for ( a = yc.length, b = 0, k = BASE; a; xc[a] %= k ) {
+	            b = ( xc[--a] = xc[a] + yc[a] + b ) / k | 0;
 	        }
 
 	        if (b) {
 	            xc.unshift(b);
-	            ++ye;
+	            ++e;
 	        }
 
-	         // Remove trailing zeros.
-	        for ( a = xc.length; xc[--a] == 0; xc.pop() ) {
-	        }
+	        // Remove trailing zeros.
+	        for ( a = xc.length; xc[--a] == 0; xc.pop() );
 
 	        // No need to check for zero, as +x + +y != 0 && -x + -y != 0
 
 	        y['c'] = xc;
-	        y['e'] = ye;
+
+	        // Get the number of digits of xc[0].
+	        for ( a = 1, b = xc[0]; b >= 10; b /= 10, a++ );
+	        y['e'] = a + e * LOGBASE - 1;
 
 	        return external ? rnd( y, pr, rm ) : y;
 	    };
@@ -16298,9 +16482,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     */
 	    P['precision'] = P['sd'] = function (z) {
-	        var x = this;
+	        var n = null,
+	            x = this;
 
-	        if ( z != null ) {
+	        if ( z != n ) {
 
 	            if ( z !== !!z && z !== 1 && z !== 0 ) {
 
@@ -16309,13 +16494,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 
-	        return x['c'] ? z ? Math.max( x['e'] + 1, x['c'].length ) : x['c'].length : null;
+	        if ( x['c'] ) {
+	            n = getCoeffLength( x['c'] );
+
+	            if ( z && x['e'] + 1 > n ) {
+	                n = x['e'] + 1;
+	            }
+	        }
+
+	        return n;
 	    };
 
 
 	    /*
 	     * Return a new Decimal whose value is the value of this Decimal rounded to a whole number using
-	     * rounding mode #rounding.
+	     * rounding mode rounding.
 	     *
 	     */
 	    P['round'] = function () {
@@ -16334,12 +16527,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *  sqrt( 0) =  0
 	     *  sqrt(-0) = -0
 	     *
-	     * Return a new Decimal whose value is the square root of this Decimal, rounded to #precision
-	     * significant digits using rounding mode #rounding.
+	     * Return a new Decimal whose value is the square root of this Decimal, rounded to precision
+	     * significant digits using rounding mode rounding.
 	     *
 	     */
 	    P['squareRoot'] = P['sqrt'] = function () {
-	        var n, sd, r, rep, t,
+	        var m, n, sd, r, rep, t,
 	            x = this,
 	            c = x['c'],
 	            s = x['s'],
@@ -16363,19 +16556,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	         Pass x to Math.sqrt as integer, then adjust the exponent of the result.
 	         */
 	        if ( s == 0 || s == 1 / 0 ) {
-	            n = c.join('');
+	            n = coefficientToString(c);
 
 	            if ( ( n.length + e ) % 2 == 0 ) {
 	                n += '0';
 	            }
-	            r = new Decimal( Math.sqrt(n) + '' );
 
-	            // r may not be finite.
-	            if ( !r['c'] ) {
-	                r['c'] = [1];
+	            s = Math.sqrt(n);
+	            e = mathfloor( ( e + 1 ) / 2 ) - ( e < 0 || e % 2 );
+
+	            if ( s == 1 / 0 ) {
+	                n = '1e' + e;
+	            } else {
+	                n = s.toExponential();
+	                n = n.slice( 0, n.indexOf('e') + 1 ) + e;
 	            }
 
-	            r['e'] = Math.floor( ( e + 1 ) / 2 ) - ( e < 0 || e % 2 );
+	            r = new Decimal(n);
 	        } else {
 	            r = new Decimal( s.toString() );
 	        }
@@ -16387,22 +16584,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	            t = r;
 	            r = half['times']( t['plus']( div( x, t, sd + 2, 1 ) ) );
 
-	            if ( t['c'].slice( 0, sd ).join('') === r['c'].slice( 0, sd ).join('') ) {
-	                c = r['c'];
+	            if ( coefficientToString( t['c'] ).slice( 0, sd ) ===
+	                ( n = coefficientToString( r['c'] ) ).slice( 0, sd ) ) {
+	                n = n.slice( sd - 3, sd + 1 );
 
 	                /*
 	                 The 4th rounding digit may be in error by -1 so if the 4 rounding digits are
 	                 9999 or 4999 (i.e. approaching a rounding boundary) continue the iteration.
 	                 */
-	                if ( ( c[sd - 3] == 9 || !rep && c[sd - 3] == 4 ) &&
-	                       c[sd - 2] == 9 && c[sd - 1] == 9 && c[sd] == 9 ) {
+	                if ( n == '9999' || !rep && n == '4999' ) {
 
 	                    /*
-	                     On the first run through, check to see if rounding up gives the exact result as
-	                     the nines may infinitely repeat.
+	                     On the first iteration only, check to see if rounding up gives the exact result
+	                     as the nines may infinitely repeat.
 	                     */
 	                    if ( !rep ) {
-	                        t = rnd( t, e + 1, 0 );
+	                        rnd( t, e + 1, 0 );
 
 	                        if ( t['times'](t)['eq'](x) ) {
 	                            r = t;
@@ -16415,25 +16612,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	                } else {
 
 	                    /*
-	                     If the rounding digits are null, 0000 or 5000, check for an exact result.
-	                     If not, then there are further digits so increment the 1st rounding digit
-	                     to ensure correct rounding.
+	                     If the rounding digits are null, 0{0,4} or 50{0,3}, check for an exact result.
+	                     If not, then there are further digits and m will be truthy.
 	                     */
-	                    if ( ( !c[sd - 3] || c[sd - 3] == 5 ) && !c[sd - 2] &&
-	                      !c[sd - 1] && !c[sd] ) {
+	                    if ( !+n || !+n.slice(1) && n.charAt(0) == '5' ) {
 
 	                        // Truncate to the first rounding digit.
-	                        if ( c.length > e + 1 ) {
-	                            c.length = e + 1;
-	                        }
-
-	                        if ( !r['times'](r)['eq'](x) ) {
-
-	                            while ( c.length < e ) {
-	                                c.push(0);
-	                            }
-	                            c[e]++;
-	                        }
+	                        rnd( r, e + 1, 1 );
+	                        m = !r['times'](r)['eq'](x);
 	                    }
 
 	                    break;
@@ -16442,7 +16628,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        external = true;
 
-	        return rnd( r, e, Decimal['rounding'] );
+	        return rnd( r, e, Decimal['rounding'], m );
 	    };
 
 
@@ -16463,18 +16649,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *  I * N = N
 	     *  I * I = I
 	     *
-	     * Return a new Decimal whose value is this Decimal times Decimal(y), rounded to #precision
-	     * significant digits using rounding mode #rounding.
+	     * Return a new Decimal whose value is this Decimal times Decimal(y), rounded to precision
+	     * significant digits using rounding mode rounding.
 	     *
 	     */
 	    P['times'] = function ( y, b ) {
-	        var c,
+	        var c, e,
 	            x = this,
 	            Decimal = x['constructor'],
 	            xc = x['c'],
 	            yc = ( id = 11, y = new Decimal( y, b ), y['c'] ),
-	            i = x['e'],
-	            j = y['e'],
+	            i = mathfloor( x['e'] / LOGBASE ),
+	            j = mathfloor( y['e'] / LOGBASE ),
 	            a = x['s'];
 
 	        b = y['s'];
@@ -16487,7 +16673,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // Either NaN?
 	            return new Decimal( !a || !b ||
 
-	              // #x is 0 and #y is Infinity  or #y is 0 and #x is Infinity?
+	              // x is 0 and y is Infinity  or y is 0 and x is Infinity?
 	              xc && !xc[0] && !yc || yc && !yc[0] && !xc
 
 	                // Return NaN.
@@ -16499,11 +16685,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                  // Return +-Infinity.
 	                  ? y['s'] / 0
 
-	                  // #x or #y is 0. Return +-0.
+	                  // x or y is 0. Return +-0.
 	                  : y['s'] * 0 );
 	        }
 
-	        y['e'] = i + j;
+	        e = i + j;
 	        a = xc.length;
 	        b = yc.length;
 
@@ -16514,24 +16700,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	            j = a, a = b, b = j;
 	        }
 
-	        for ( j = a + b, c = []; j--; c.push(0) ) {
-	        }
+	        for ( j = a + b, c = []; j--; c.push(0) );
 
 	        // Multiply!
 	        for ( i = b - 1; i > -1; i-- ) {
 
-	            for ( b = 0, j = a + i; j > i; b = b / 10 | 0 ) {
+	            for ( b = 0, j = a + i; j > i; b = b / BASE | 0 ) {
 	                  b = c[j] + yc[i] * xc[j - i - 1] + b;
-	                  c[j--] = b % 10 | 0;
+	                  c[j--] = b % BASE | 0;
 	            }
 
 	            if (b) {
-	                c[j] = ( c[j] + b ) % 10;
+	                c[j] = ( c[j] + b ) % BASE;
 	            }
 	        }
 
 	        if (b) {
-	            ++y['e'];
+	            ++e;
 	        }
 
 	        // Remove any leading zero.
@@ -16540,19 +16725,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        // Remove trailing zeros.
-	        for ( j = c.length; !c[--j]; c.pop() ) {
-	        }
+	        for ( j = c.length; !c[--j]; c.pop() );
+
 	        y['c'] = c;
+
+	        // Get the number of digits of c[0].
+	        for ( a = 1, b = c[0]; b >= 10; b /= 10, a++ );
+	        y['e'] = a + e * LOGBASE - 1;
 
 	        return external ? rnd( y, Decimal['precision'], Decimal['rounding'] ) : y;
 	    };
 
 
 	    /*
-	     * Return a new Decimal whose value is the value of this Decimal rounded to a maximum of #dp
-	     * decimal places using rounding mode #rm or #rounding if #rm is omitted.
+	     * Return a new Decimal whose value is the value of this Decimal rounded to a maximum of dp
+	     * decimal places using rounding mode rm or rounding if rm is omitted.
 	     *
-	     * If #dp is omitted, return a new Decimal whose value is the value of this Decimal.
+	     * If dp is omitted, return a new Decimal whose value is the value of this Decimal.
 	     *
 	     * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
 	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
@@ -16574,14 +16763,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	    /*
-	     * Return a string representing the value of this Decimal in exponential notation rounded to #dp
-	     * fixed decimal places using rounding mode #rounding.
+	     * Return a string representing the value of this Decimal in exponential notation rounded to dp
+	     * fixed decimal places using rounding mode rounding.
 	     *
 	     * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
 	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
 	     *
-	     * #errors true: Throw if #dp and #rm are not undefined, null or integers in range.
-	     * #errors false: Ignore #dp and #rm if not numbers or not in range, and truncate non-integers.
+	     * errors true: Throw if dp and rm are not undefined, null or integers in range.
+	     * errors false: Ignore dp and rm if not numbers or not in range, and truncate non-integers.
 	     *
 	     * 'toExponential() dp not an integer: {dp}'
 	     * 'toExponential() dp out of range: {dp}'
@@ -16592,22 +16781,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    P['toExponential'] = function ( dp, rm ) {
 	        var x = this;
 
-	        return format( x, dp != null && checkArg( x, dp, 'toExponential' ) || !x['c']
-	          ? dp | 0 : x['c'].length - 1, dp != null && checkRM( x, rm, 'toExponential' ), 1 );
+	        return x['c']
+	          ? format( x, dp != null && checkArg( x, dp, 'toExponential' ) ? dp | 0 : null,
+	            dp != null && checkRM( x, rm, 'toExponential' ), 1 )
+	          : x.toString();
 	    };
 
 
 	    /*
 	     * Return a string representing the value of this Decimal in normal (fixed-point) notation to
-	     * #dp fixed decimal places and rounded using rounding mode #rm or #rounding if #rm is omitted.
+	     * dp fixed decimal places and rounded using rounding mode rm or rounding if rm is omitted.
 	     *
 	     * Note: as with JS numbers, (-0).toFixed(0) is '0', but e.g. (-0.00001).toFixed(0) is '-0'.
 	     *
 	     * [dp] {number} Decimal places. Integer, -MAX_DIGITS to MAX_DIGITS inclusive.
 	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
 	     *
-	     * #errors true: Throw if #dp and #rm are not undefined, null or integers in range.
-	     * #errors false: Ignore #dp and #rm if not numbers or not in range, and truncate non-integers.
+	     * errors true: Throw if dp and rm are not undefined, null or integers in range.
+	     * errors false: Ignore dp and rm if not numbers or not in range, and truncate non-integers.
 	     *
 	     * 'toFixed() dp not an integer: {dp}'
 	     * 'toFixed() dp out of range: {dp}'
@@ -16623,14 +16814,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	            pos = Decimal['toExpPos'];
 
 	        if ( dp != null ) {
-	            dp = checkArg( x, dp, str = 'toFixed', -MAX_DIGITS ) ? x['e'] + ( dp | 0 ) : null;
+	            dp = checkArg( x, dp, str = 'toFixed' ) ? x['e'] + ( dp | 0 ) : null;
 	            rm = checkRM( x, rm, str );
 	        }
 
-	        // Prevent #toString returning exponential notation;
+	        // Prevent toString returning exponential notation;
 	        Decimal['toExpNeg'] = -( Decimal['toExpPos'] = 1 / 0 );
 
-	        if ( dp == null ) {
+	        if ( dp == null || !x['c'] ) {
 	            str = x.toString();
 	        } else {
 	            str = format( x, dp, rm );
@@ -16658,9 +16849,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /*
 	     * Return a string representing the value of this Decimal in normal notation rounded using
-	     * rounding mode #rounding to #dp fixed decimal places, with the integer part of the number
-	     * separated into thousands by string #sep1 or ',' if #sep1 is null or undefined, and the fraction
-	     * part separated into groups of five digits by string #sep2.
+	     * rounding mode rounding to dp fixed decimal places, with the integer part of the number
+	     * separated into thousands by string sep1 or ',' if sep1 is null or undefined, and the
+	     * fraction part separated into groups of five digits by string sep2.
 	     *
 	     * [sep1] {string} The grouping separator of the integer part of the number.
 	     * [sep2] {string} The grouping separator of the fraction part of the number.
@@ -16668,7 +16859,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * Non-breaking thin-space: \u202f
 	     *
-	     * If #dp is invalid the error message will incorrectly give the method as toFixed.
+	     * If dp is invalid the error message will incorrectly give the method as toFixed.
 	     *
 	     */
 	    P['toFormat'] = function ( sep1, dp, sep2 ) {
@@ -16691,14 +16882,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     */
 	    P['toFraction'] = function (maxD) {
-	        var d0, d2, e, frac, n, n0, q,
+	        var d0, d2, e, frac, n, n0, p, q,
 	            x = this,
 	            Decimal = x['constructor'],
 	            n1 = d0 = new Decimal( Decimal['ONE'] ),
 	            d1 = n0 = new Decimal(0),
 	            xc = x['c'],
-	            d = new Decimal( Decimal['ONE'] ),
-	            pr = Decimal['precision'];
+	            d = new Decimal(d1);
 
 	        // NaN, Infinity.
 	        if ( !xc ) {
@@ -16706,9 +16896,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return x.toString();
 	        }
 
-	        e = d['e'] = xc.length - x['e'] - 1;
+	        e = d['e'] = getCoeffLength(xc) - x['e'] - 1;
+	        d['c'][0] = mathpow( 10, ( p = e % LOGBASE ) < 0 ? LOGBASE + p : p );
 
-	        // If #maxD is undefined or null...
+	        // If maxD is undefined or null...
 	        if ( maxD == null ||
 
 	             // or NaN...
@@ -16718,7 +16909,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	               ( outOfRange = n['cmp'](n1) < 0 || !n['c'] ) ||
 
 	                 // or not an integer...
-	                 ( Decimal['errors'] && n['e'] < n['c'].length - 1 ) ) &&
+	                 ( Decimal['errors'] && mathfloor( n['e'] / LOGBASE ) < n['c'].length - 1 ) ) &&
 
 	                   // 'toFraction() max denominator not an integer: {maxD}'
 	                   // 'toFraction() max denominator out of range: {maxD}'
@@ -16732,10 +16923,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        external = false;
-	        n = new Decimal( xc.join('') );
-
-	        // #plus and #minus need #precision to be at least xc.length.
-	        Decimal['precision'] = xc.length;
+	        n = new Decimal( coefficientToString(xc) );
+	        p = Decimal['precision'];
+	        Decimal['precision'] = e = xc.length * LOGBASE * 2;
 
 	        for ( ; ; )  {
 	            q = div( n, d, 0, 1, 1 );
@@ -16757,40 +16947,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	        d2 = div( maxD['minus'](d0), d1, 0, 1, 1 );
 	        n0 = n0['plus']( d2['times'](n1) );
 	        d0 = d0['plus']( d2['times'](d1) );
-
 	        n0['s'] = n1['s'] = x['s'];
 
-	        // The required decimal places.
-	        e *= 2;
-
-	        // Determine which fraction is closer to #x, #n0 /# d0 or #n1 / #d1?
-	        frac = div( n1, d1, e, 1, 1 )['minus'](x)['abs']()['cmp'](
-	               div( n0, d0, e, 1, 1 )['minus'](x)['abs']() ) < 1
-	          ? [ n1.toString(), d1.toString() ]
-	          : [ n0.toString(), d0.toString() ];
+	        // Determine which fraction is closer to x, n0/d0 or n1/d1?
+	        frac = div( n1, d1, e, 1 )['minus'](x)['abs']()['cmp'](
+	               div( n0, d0, e, 1 )['minus'](x)['abs']() ) < 1
+	          ? [ n1 + '', d1 + '' ]
+	          : [ n0 + '', d0 + '' ];
 
 	        external = true;
-	        Decimal['precision'] = pr;
+	        Decimal['precision'] = p;
 
 	        return frac;
 	    };
 
 
 	    /*
-	     * Returns a new Decimal whose value is the nearest multiple of the magnitude of #n to the value
+	     * Returns a new Decimal whose value is the nearest multiple of the magnitude of n to the value
 	     * of this Decimal.
 	     *
-	     * If the value of this Decimal is equidistant from two multiples of #n, the rounding mode #rm,
-	     * or #rounding if #rm is omitted or is null or undefined, determines the direction of the
+	     * If the value of this Decimal is equidistant from two multiples of n, the rounding mode rm,
+	     * or rounding if rm is omitted or is null or undefined, determines the direction of the
 	     * nearest multiple.
 	     *
 	     * In the context of this method, rounding mode 4 (ROUND_HALF_UP) is the same as rounding mode 0
 	     * (ROUND_UP), and so on.
 	     *
 	     * The return value will always have the same sign as this Decimal, unless either this Decimal
-	     * or #n is NaN, in which case the return value will be also be NaN.
+	     * or n is NaN, in which case the return value will be also be NaN.
 	     *
-	     * The return value is not rounded to #precision significant digits.
+	     * The return value is not rounded to precision significant digits.
 	     *
 	     * n {number|string|Decimal} The magnitude to round to a multiple of.
 	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
@@ -16814,50 +17000,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	            rm = checkRM( x, rm, 'toNearest' );
 	        }
 
-	        // If #n is not NaN/+-Infinity...
+	        // If n is finite...
 	        if ( n['c'] ) {
 
-	           // If #x is not NaN/+-Infinity...
+	           // If x is finite...
 	            if ( x['c'] ) {
-	                external = false;
 
-	                /*
-	                 4  ROUND_HALF_UP
-	                 5  ROUND_HALF_DOWN
-	                 6  ROUND_HALF_EVEN
-	                 7  ROUND_HALF_CEIL
-	                 8  ROUND_HALF_FLOOR
-	                 */
-	                if ( rm < 4 ) {
-	                    rm = [4, 5, 7, 8][rm];
-	                }
-
-	                // If #n is a power of 10...
-	                if ( n['c'][0] == 1 && n['c'].length == 1 ) {
-	                    x['e'] -= n['e'];
-
-	                    // 0 dp
-	                    rnd( x, x['e'] + 1, rm );
-
-	                    if ( x['c'][0] ) {
-	                        x['e'] += n['e'];
-	                    }
-
-	                // else if #n is not zero...
-	                } else if ( n['c'][0] ) {
-	                    x = div( x, n, 0, rm, 1 )['times'](n);
+	                if ( n['c'][0] ) {
+	                    external = false;
+	                    x = div( x, n, 0, rm < 4 ? [4, 5, 7, 8][rm] : rm, 1 )['times'](n);
+	                    external = true;
+	                    rnd(x);
 	                } else {
 	                    x['c'] = [ x['e'] = 0 ];
 	                }
-
-	                external = true;
-	                rnd(x);
 	            }
 
-	        // # is NaN/+-Infinity. If #x is not NaN...
+	        // n is NaN or +-Infinity. If x is not NaN...
 	        } else if ( x['s'] ) {
 
-	            // If #n is not NaN...
+	            // If n is +-Infinity...
 	            if ( n['s'] ) {
 	                n['s'] = x['s'];
 	            }
@@ -16882,7 +17044,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /*
 	     * Return a new Decimal whose value is the value of this Decimal raised to the power
-	     * Decimal(y, b), rounded to #precision significant digits using rounding mode #rounding.
+	     * Decimal(y, b), rounded to precision significant digits using rounding mode rounding.
 	     *
 	     * ECMAScript compliant.
 	     *
@@ -16941,13 +17103,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if ( !x['c'] || !y['c'] || ( n = !x['c'][0] ) || !y['c'][0] ) {
 
 	            // valueOf -0 is 0, so check for 0 then multiply it by the sign.
-	            return new Decimal( Math.pow( n ? s * 0 : +x, yN ) );
+	            return new Decimal( mathpow( n ? s * 0 : +x, yN ) );
 	        }
 
 	        x = new Decimal(x);
 	        a = x['c'].length;
 
-	        // if #x == 1
+	        // if x == 1
 	        if ( !x['e'] && x['c'][0] == x['s'] && a == 1 ) {
 
 	            return x;
@@ -16955,22 +17117,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        b = y['c'].length - 1;
 
-	        // if #y == 1
+	        // if y == 1
 	        if ( !y['e'] && y['c'][0] == y['s'] && !b ) {
 	            r = rnd( x, pr, rm );
 	        } else {
-	            n = y['e'] >= b;
+	            e = mathfloor( y['e'] / LOGBASE );
+	            n = e >= b;
 
-	            // If #y is not an integer and #x is negative, return NaN.
+	            // If y is not an integer and x is negative, return NaN.
 	            if ( !n && s < 0 ) {
 	                r = new Decimal(NaN);
 	            } else {
 
 	                /*
-	                 If the number of significant digits of #x multiplied by abs(#y) is less than
-	                 INT_POW_LIMIT use the 'exponentiation by squaring' algorithm.
+	                 If the approximate number of significant digits of x multiplied by abs(y) is less
+	                 than INT_POW_LIMIT use the 'exponentiation by squaring' algorithm.
 	                 */
-	                if ( n && a * i < INT_POW_LIMIT ) {
+	                if ( n && a * LOGBASE * i < INT_POW_LIMIT ) {
 	                    r = intPow( Decimal, x, i );
 
 	                    if ( y['s'] < 0 ) {
@@ -16979,21 +17142,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                } else {
 
-	                    // Result is negative if #x is negative and the last digit of integer #y is odd.
-	                    s = s < 0 && y['c'][ Math.max( y['e'], b ) ] & 1 ? -1 : 1;
+	                    // Result is negative if x is negative and the last digit of integer y is odd.
+	                    s = s < 0 && y['c'][ Math.max( e, b ) ] & 1 ? -1 : 1;
 
-	                    b = Math.pow( +x, yN );
+	                    b = mathpow( +x, yN );
 
-	                    // Estimate result exponent.
+	                    /*
+	                     Estimate result exponent.
+	                     x^y = 10^e,  where e = y * log10(x)
+	                     log10(x) = log10(x_significand) + x_exponent
+	                     log10(x_significand) = ln(x_significand) / ln(10)
+	                     */
 	                    e = b == 0 || !isFinite(b)
-
-	                      /*
-	                       x^y = 10^e,  where e = y * log10(x)
-	                       log10(x) = log10(x_significand) + x_exponent
-	                       log10(x_significand) = ln(x_significand) / ln(10)
-	                       */
-	                      ? Math.floor( yN * (
-	                        Math.log( '0.' + x['c'].join('') ) / Math.LN10 + x['e'] + 1 ) )
+	                      ? mathfloor( yN * (
+	                        Math.log( '0.' + coefficientToString( x['c'] ) ) / Math.LN10 + x['e'] + 1 ) )
 	                      : new Decimal( b + '' )['e'];
 
 	                    // Estimate may be incorrect e.g.: x: 0.999999999999999999, y: 2.29, e: 0, r.e:-1
@@ -17009,8 +17171,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                    /*
 	                     Estimate extra digits needed from ln(x) to ensure five correct rounding digits
-	                     in result (#i was unnecessary before max exponent was extended?).
-	                     Example of failure before #i was introduced: (precision: 10),
+	                     in result (i was unnecessary before max exponent was extended?).
+	                     Example of failure before i was introduced: (precision: 10),
 	                     new Decimal(2.32456).pow('2087987436534566.46411')
 	                     should be 1.162377823e+764914905173815, but is 1.162355823e+764914905173815
 	                     */
@@ -17036,11 +17198,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                          Check for 14 nines from the 2nd rounding digit (the first rounding digit
 	                          may be 4 or 9).
 	                         */
-	                        for ( i = pr; r['c'][++i] == 9; ) {
-	                        }
-
-	                        // If there are 14 nines round up the first rounding digit.
-	                        if ( i == pr + 15 ) {
+	                        if ( +coefficientToString( r['c'] ).slice( pr + 1, pr + 15 ) + 1 == 1e14 ) {
 	                            r = rnd( r, pr + 1, 0 );
 	                        }
 	                    }
@@ -17059,17 +17217,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	    /*
-	     * Return a string representing the value of this Decimal rounded to #sd significant digits
-	     * using rounding mode #rounding.
+	     * Return a string representing the value of this Decimal rounded to sd significant digits
+	     * using rounding mode rounding.
 	     *
-	     * Return exponential notation if #sd is less than the number of digits necessary to represent
+	     * Return exponential notation if sd is less than the number of digits necessary to represent
 	     * the integer part of the value in normal notation.
 	     *
 	     * sd {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
 	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
 	     *
-	     * #errors true: Throw if #sd and #rm are not undefined, null or integers in range.
-	     * #errors false: Ignore #sd and #rm if not numbers or not in range, and truncate non-integers.
+	     * errors true: Throw if sd and rm are not undefined, null or integers in range.
+	     * errors false: Ignore sd and rm if not numbers or not in range, and truncate non-integers.
 	     *
 	     * 'toPrecision() sd not an integer: {sd}'
 	     * 'toPrecision() sd out of range: {sd}'
@@ -17078,16 +17236,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     */
 	    P['toPrecision'] = function ( sd, rm ) {
+	        var x = this;
 
-	        return sd != null && checkArg( this, sd, 'toPrecision', 1 )
-	          ? format( this, --sd | 0, checkRM( this, rm, 'toPrecision' ), 2 )
-	          : this.toString();
+	        return sd != null && checkArg( x, sd, 'toPrecision', 1 ) && x['c']
+	          ? format( x, --sd | 0, checkRM( x, rm, 'toPrecision' ), 2 )
+	          : x.toString();
 	    };
 
 
 	    /*
-	     * Return a new Decimal whose value is this Decimal rounded to a maximum of #d significant
-	     * digits using rounding mode #rm, or to #precision and #rounding respectively if omitted.
+	     * Return a new Decimal whose value is this Decimal rounded to a maximum of d significant
+	     * digits using rounding mode rm, or to precision and rounding respectively if omitted.
 	     *
 	     * [d] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
 	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
@@ -17111,18 +17270,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	    /*
-	     * Return a string representing the value of this Decimal in base #b, or base 10 if #b is
-	     * omitted. If a base is specified, including base 10, round to #precision significant digits
-	     * using rounding mode #rounding.
+	     * Return a string representing the value of this Decimal in base b, or base 10 if b is
+	     * omitted. If a base is specified, including base 10, round to precision significant digits
+	     * using rounding mode rounding.
 	     *
 	     * Return exponential notation if a base is not specified, and this Decimal has a positive
-	     * exponent equal to or greater than #toExpPos, or a negative exponent equal to or less than
-	     * #toExpNeg.
+	     * exponent equal to or greater than toExpPos, or a negative exponent equal to or less than
+	     * toExpNeg.
 	     *
 	     * [b] {number} Base. Integer, 2 to 64 inclusive.
 	     *
 	     */
-	    P['toString'] = function (b) {
+	     P['toString'] = function (b) {
 	        var u, str, strL,
 	            x = this,
 	            Decimal = x['constructor'],
@@ -17135,16 +17294,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // Exponential format?
 	        } else if ( b === u && ( xe <= Decimal['toExpNeg'] || xe >= Decimal['toExpPos'] ) ) {
 
-	            return format( x, x['c'].length - 1, Decimal['rounding'], 1 );
+	            return format( x, null, Decimal['rounding'], 1 );
 	        } else {
-	            str = x['c'].join('');
+	            str = coefficientToString( x['c'] );
 
 	            // Negative exponent?
 	            if ( xe < 0 ) {
 
 	                // Prepend zeros.
-	                for ( ; ++xe; str = '0' + str ) {
-	                }
+	                for ( ; ++xe; str = '0' + str );
 	                str = '0.' + str;
 
 	            // Positive exponent?
@@ -17153,8 +17311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                if ( ++xe > strL ) {
 
 	                    // Append zeros.
-	                    for ( xe -= strL; xe-- ; str += '0' ) {
-	                    }
+	                    for ( xe -= strL; xe-- ; str += '0' );
 
 	                } else if ( xe < strL ) {
 	                    str = str.slice( 0, xe ) + '.' + str.slice(xe);
@@ -17209,9 +17366,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	    /*
-	     * Return as #toString, but do not accept a base argument.
+	     * Return as toString, but do not accept a base argument.
 	     *
-	     * Ensures that JSON.stringify() uses #toString for serialization.
+	     * Ensures that JSON.stringify() uses toString for serialization.
 	     *
 	     */
 	    P['valueOf'] = P['toJSON'] = function () {
@@ -17236,37 +17393,121 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	    /*
-	     *  #checkRoundingDigits
-	     *  #checkRM
-	     *  #checkArg
-	     *  #convertBase
-	     *  #div
-	     *  #exp
-	     *  #format
-	     *  #ifExceptionsThrow
-	     *  #intPow
-	     *  #ln
-	     *  #rnd
+	     *  coefficientToString
+	     *  checkRoundingDigits
+	     *  checkRM
+	     *  checkArg
+	     *  convertBase
+	     *  div
+	     *  exp
+	     *  format
+	     *  getCoeffLength
+	     *  ifExceptionsThrow
+	     *  intPow
+	     *  ln
+	     *  rnd
 	     */
 
 
-	    /*
-	     * Check 5 rounding digits if #repeating is null, 4 otherwise.
-	     * #repeating == null if caller is #log or #pow,
-	     * #repeating != null if caller is #ln or #exp.
-	     */
-	    function checkRoundingDigits( c, i, rm, repeating ) {
+	    function coefficientToString(a) {
+	        var s, z,
+	            i = 1,
+	            j = a.length,
+	            r = a[0] + '';
 
-	        return ( !repeating && rm > 3 && c[i] == 4 ||
-	          ( repeating || rm < 4 ) && c[i] == 9 ) && c[i + 1] == 9 && c[i + 2] == 9 &&
-	            c[i + 3] == 9 && ( repeating != null || c[i + 4] == 9 ) ||
-	              repeating == null && ( c[i] == 5 || !c[i] ) && !c[i + 1] && !c[i + 2] &&
-	                !c[i + 3] && !c[i + 4];
+	        for ( ; i < j; i++ ) {
+	            s = a[i] + '';
+
+	            for ( z = LOGBASE - s.length; z--; ) {
+	                s = '0' + s;
+	            }
+
+	            r += s;
+	        }
+
+	        for ( j = r.length; r.charAt(--j) == '0'; );
+
+	        return r.slice( 0, j + 1 || 1 );
 	    }
 
 
 	    /*
-	     * Check and return rounding mode. If #rm is invalid, return rounding mode #rounding.
+	     * Check 5 rounding digits if repeating is null, 4 otherwise.
+	     * repeating == null if caller is log or pow,
+	     * repeating != null if caller is ln or exp.
+	     *
+	     *
+	     // Previous, much simpler implementation when coefficient was base 10.
+	     function checkRoundingDigits( c, i, rm, repeating ) {
+	         return ( !repeating && rm > 3 && c[i] == 4 ||
+	           ( repeating || rm < 4 ) && c[i] == 9 ) && c[i + 1] == 9 && c[i + 2] == 9 &&
+	             c[i + 3] == 9 && ( repeating != null || c[i + 4] == 9 ) ||
+	               repeating == null && ( c[i] == 5 || !c[i] ) && !c[i + 1] && !c[i + 2] &&
+	                 !c[i + 3] && !c[i + 4];
+	     }
+	     */
+	    function checkRoundingDigits( c, i, rm, repeating ) {
+	        var ci, k, n, r, rd;
+
+	        // Get the length of the first element of the array c.
+	        for ( k = 1, n = c[0]; n >= 10; n /= 10, k++ );
+
+	        n = i - k;
+
+	        // Is the rounding digit in the first element of c?
+	        if ( n < 0 ) {
+	            n += LOGBASE;
+	            ci = 0;
+	        } else {
+	            ci = Math.ceil( ( n + 1 ) / LOGBASE );
+	            n %= LOGBASE;
+	        }
+
+	        k =mathpow( 10, LOGBASE - n );
+	        rd = c[ci] % k | 0;
+
+	        if ( repeating == null ) {
+
+	            if ( n < 3 ) {
+
+	                if ( n == 0 ) {
+	                    rd = rd / 100 | 0;
+	                } else if ( n == 1 ) {
+	                    rd = rd / 10 | 0;
+	                }
+
+	                r = rm < 4 && rd == 99999 || rm > 3 && rd == 49999 || rd == 50000 || rd == 0;
+	            } else {
+	                r = ( rm < 4 && rd + 1 == k || rm > 3 && rd + 1 == k / 2 ) &&
+	                    ( c[ci + 1] / k / 100 | 0 ) == mathpow( 10, n - 2 ) - 1 ||
+	                        ( rd == k / 2 || rd == 0 ) && ( c[ci + 1] / k / 100 | 0 ) == 0;
+	            }
+	        } else {
+
+	            if ( n < 4 ) {
+
+	                if ( n == 0 ) {
+	                    rd = rd / 1000 | 0;
+	                } else if ( n == 1 ) {
+	                    rd = rd / 100 | 0;
+	                } else if ( n == 2 ) {
+	                    rd = rd / 10 | 0;
+	                }
+
+	                r = ( repeating || rm < 4 ) && rd == 9999 || !repeating && rm > 3 && rd == 4999;
+	            } else {
+	                r = ( ( repeating || rm < 4 ) && rd + 1 == k ||
+	                ( !repeating && rm > 3 ) && rd + 1 == k / 2 ) &&
+	                    ( c[ci + 1] / k / 1000 | 0 ) == mathpow( 10, n - 3 ) - 1;
+	            }
+	        }
+
+	        return r;
+	    }
+
+
+	    /*
+	     * Check and return rounding mode. If rm is invalid, return rounding mode rounding.
 	     */
 	    function checkRM( x, rm, method ) {
 	        var Decimal = x['constructor'];
@@ -17278,9 +17519,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 
-	     /*
-	      * Check that argument #n is in range, return true or false.
-	      */
+	    /*
+	     * Check that argument n is in range, return true or false.
+	     */
 	    function checkArg( x, n, method, min ) {
 	        var Decimal = x['constructor'];
 
@@ -17296,12 +17537,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	    /*
-	     * Convert a numeric string of #baseIn to a numeric string of #baseOut.
+	     * Convert a numeric string of baseIn to a numeric string of baseOut.
 	     */
 	    convertBase = (function () {
 
 	        /*
-	         * Convert string of #baseIn to an array of numbers of #baseOut.
+	         * Convert string of baseIn to an array of numbers of baseOut.
 	         * Eg. convertBase('255', 10, 16) returns [15, 15].
 	         * Eg. convertBase('ff', 16, 10) returns [2, 5, 5].
 	         */
@@ -17314,8 +17555,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            for ( ; i < strL; ) {
 
-	                for ( arrL = arr.length; arrL--; arr[arrL] *= baseIn ) {
-	                }
+	                for ( arrL = arr.length; arrL--; arr[arrL] *= baseIn );
+
 	                arr[ j = 0 ] += NUMERALS.indexOf( str.charAt( i++ ) );
 
 	                for ( ; j < arr.length; j++ ) {
@@ -17334,200 +17575,409 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return arr.reverse();
 	        }
 
-	        // #sign is needed to enable the correct rounding of the division.
 	        return function ( Decimal, str, baseOut, baseIn, sign ) {
-	            var x, xc, yc,
+	            var e, j, r, x, xc, y,
 	                i = str.indexOf( '.' ),
-	                y = new Decimal(baseIn);
+	                pr = Decimal['precision'],
+	                rm = Decimal['rounding'];
 
 	            if ( baseIn < 37 ) {
 	                str = str.toLowerCase();
 	            }
 
-	            if ( i < 0 ) {
-	                x = new Decimal(y);
-	                yc = [1];
-	            } else {
+	            // Non-integer.
+	            if ( i >= 0 ) {
+	                str = str.replace( '.', '' );
+	                y = new Decimal(baseIn);
+	                x = intPow( Decimal, y, str.length - i );
 
 	                /*
-	                 Convert the base of #str as if #str is an integer, then divide the result by its
-	                 base raised to a power such that the fraction part will be restored.
-	                 Use #toFixed to avoid possible exponential notation.
+	                 Convert str as if an integer, then divide the result by its base raised to a power
+	                 such that the fraction part will be restored.
+	                 Use toFixed to avoid possible exponential notation.
 	                 */
-	                x = intPow( Decimal, y, str.length - i - 1 );
-	                yc = toBaseOut( x.toFixed(), 10, baseOut );
-	                str = str.replace( '.', '' );
+	                y['c'] = toBaseOut( x.toFixed(), 10, baseOut );
+	                y['e'] = y['c'].length;
 	            }
-
-	            // #xc and #yc may have trailing zeros.
-
-	            y['c'] = yc;
-	            y['e'] = yc.length;
 
 	            // Convert the number as integer.
 	            xc = toBaseOut( str, baseIn, baseOut );
+	            e = j = xc.length;
 
-	            x['c'] = xc;
-	            x['e'] = xc.length;
-	            x['s'] = sign;
+	            // Remove trailing zeros.
+	            for ( ; xc[--j] == 0; xc.pop() );
 
-	            x = div( x, y, Decimal['precision'], Decimal['rounding'], 0, baseOut );
+	            if ( !xc[0] ) {
 
-	            // E.g. [4, 11, 15] becomes [4, b, f].
-	            for ( xc = x['c'], i = xc.length; i--; ) {
-	                xc[i] = NUMERALS.charAt( xc[i] );
+	                return '0';
+	            }
+
+	            if ( i < 0 ) {
+	                e--;
+	            } else {
+	                x['c'] = xc;
+	                x['e'] = e;
+
+	                // sign is needed for correct rounding.
+	                x['s'] = sign;
+	                x = div( x, y, pr, rm, 0, baseOut );
+	                xc = x['c'];
+	                r = x['r'];
+	                e = x['e'];
+	            }
+
+	            // The rounding digit, i.e. the digit after the digit that may be rounded up.
+	            i = xc[pr];
+	            j = baseOut / 2;
+	            r = r || xc[pr + 1] != null;
+
+	            if ( rm < 4
+	              ? ( i != null || r ) && ( rm == 0 || rm == ( x['s'] < 0 ? 3 : 2 ) )
+	              : i > j || i == j && ( rm == 4 || r || rm == 6 && xc[pr - 1] & 1 ||
+	                rm == ( x['s'] < 0 ? 8 : 7 ) ) ) {
+
+	                xc.length = pr;
+
+	                // Rounding up may mean the previous digit has to be rounded up and so on.
+	                for ( --baseOut; ++xc[--pr] > baseOut; ) {
+	                    xc[pr] = 0;
+
+	                    if ( !pr ) {
+	                        ++e;
+	                        xc.unshift(1);
+	                    }
+	                }
+	            } else {
+	                xc.length = pr;
+	            }
+
+	            // Determine trailing zeros.
+	            for ( j = xc.length; !xc[--j]; );
+
+	            // E.g. [4, 11, 15] becomes 4bf.
+	            for ( i = 0, str = ''; i <= j; str += NUMERALS.charAt( xc[i++] ) );
+
+	            // Negative exponent?
+	            if ( e < 0 ) {
+
+	                // Prepend zeros.
+	                for ( ; ++e; str = '0' + str );
+
+	                str = '0.' + str;
+
+	            // Positive exponent?
+	            } else {
+	                i = str.length;
+
+	                if ( ++e > i ) {
+
+	                    // Append zeros.
+	                    for ( e -= i; e-- ; str += '0' );
+
+	                } else if ( e < i ) {
+	                    str = str.slice( 0, e ) + '.' + str.slice(e);
+	                }
 	            }
 
 	            // No negative numbers: the caller will add the sign.
-	            x['s'] = 1;
-
-	            return x.toFixed();
+	            return str;
 	        }
 	    })();
 
 
 	    /*
-	     * Perform division in the specified base. Called by #div and #convertBase.
+	     * Perform division in the specified base. Called by div and convertBase.
 	     */
-	    function div( x, y, pr, rm, dp, b ) {
-	        var Decimal = x['constructor'],
-	            e = x['e'] - y['e'],
-	            s = x['s'] == y['s'] ? 1 : -1,
-	            xc = x['c'],
-	            yc = y['c'];
+	    var div = ( function () {
 
-	        // Either NaN, Infinity or 0?
-	        if ( !xc || !xc[0] || !yc || !yc[0] ) {
+	        // Assumes non-zero x and k, and hence non-zero result.
+	        function multiplyInteger( x, k, base ) {
+	            var temp,
+	                carry = 0,
+	                i = x.length;
 
-	            return new Decimal(
-
-	              // Return NaN if either NaN, or both Infinity or 0.
-	              !x['s'] || !y['s'] || ( xc ? yc && xc[0] == yc[0] : !yc ) ? NaN :
-
-	                // Return +-0 if #x is 0 or #y is +-Infinity, or return +-Infinity as y is 0.
-	                xc && xc[0] == 0 || !yc ? s * 0 : s / 0
-	            );
-	        }
-
-	        var cmp, i, n, ri, t, yL,
-	            yz = yc.slice(),
-	            xi = yL = yc.length,
-	            xL = xc.length,
-	            r = xc.slice( 0, yL ),
-	            rL = r.length,
-	            q = new Decimal(s),
-	            qc = q['c'] = [];
-
-	        for ( i = s = 0; yc[i] == ( xc[i] || 0 ); i++ ) {
-	        }
-
-	        // Result exponent may be one less then the current value of #e.
-	        // The coefficients of the Decimals from #convertBase may have trailing zeros.
-	        if ( yc[i] > ( xc[i] || 0 ) ) {
-	            e--;
-
-	            /*
-	             The result of the division has a leading zero so an extra digit will be needed to
-	             maintain the correct precision (plus the rounding digit).
-	             */
-	            s = 1;
-	        }
-
-	        q['e'] = e;
-
-	        if ( pr == null ) {
-	            pr = Decimal['precision'];
-	            rm = Decimal['rounding'];
-	        } else if (dp) {
-	            pr += e + 1;
-	        }
-
-	        // Default base is 10.
-	        b = b || 10;
-
-	        if ( pr >= 0 ) {
-	            s += pr;
-
-	            // Add zeros to make remainder as long as divisor.
-	            for ( ; rL++ < yL; r.push(0) ) {
+	            for ( x = x.slice(); i--; ) {
+	                temp = x[i] * k + carry;
+	                x[i] = temp % base | 0;
+	                carry = temp / base | 0;
 	            }
 
-	            // Create version of divisor with leading zero.
-	            yz.unshift( i = 0 );
+	            if (carry) {
+	                x.unshift(carry);
+	            }
 
-	            do {
+	            return x;
+	        }
 
-	                // #n is how many times the divisor goes into the current remainder.
-	                for ( n = 0; n < b; n++ ) {
+	        function compare( a, b, aL, bL ) {
+	            var i, cmp;
 
-	                    // Compare divisor and remainder.
-	                    if ( yL != ( rL = r.length ) ) {
-	                        cmp = yL > rL ? 1 : -1;
-	                    } else {
+	            if ( aL != bL ) {
+	                cmp = aL > bL ? 1 : -1;
+	            } else {
 
-	                        for ( ri = -1, cmp = 0; ++ri < yL; ) {
+	                for ( i = cmp = 0; i < aL; i++ ) {
 
-	                            if ( yc[ri] != r[ri] ) {
-	                                cmp = yc[ri] > r[ri] ? 1 : -1;
-
-	                                break;
-	                            }
-	                        }
-	                    }
-
-	                    // If divisor < remainder, subtract divisor from remainder.
-	                    if ( cmp < 0 ) {
-
-	                        // Remainder cannot be more than one digit longer than divisor.
-	                        // Equalise lengths using divisor with extra leading zero?
-	                        for ( t = rL == yL ? yc : yz; rL; ) {
-
-	                            if ( r[--rL] < t[rL] ) {
-
-	                                for ( ri = rL;
-	                                  ri && !r[--ri];
-	                                    r[ri] = b - 1 ) {
-	                                }
-	                                --r[ri];
-	                                r[rL] += b;
-	                            }
-	                            r[rL] -= t[rL];
-	                        }
-
-	                        for ( ; !r[0]; r.shift() ) {
-	                        }
-	                    } else {
+	                    if ( a[i] != b[i] ) {
+	                        cmp = a[i] > b[i] ? 1 : -1;
 
 	                        break;
 	                    }
 	                }
-
-	                // Add the next digit n to the result array.
-	                qc[i++] = cmp ? n : ++n;
-
-	                // Update the remainder.
-	                if ( r[0] && cmp ) {
-	                    r[rL] = xc[xi] || 0;
-	                } else {
-	                    r = [ xc[xi] ];
-	                }
-
-	            } while ( ( xi++ < xL || r[0] != null ) && s-- );
-
-	            // Leading zero? Do not remove if result is simply zero, i.e. i is 1.
-	            if ( !qc[0] && i > 1 ) {
-	                qc.shift();
 	            }
 
-	            // No need to round if #i <= #pr, just check for underflow/overflow.
-	            if ( i <= pr ) {
-	                pr = null;
-	            }
+	            return cmp;
 	        }
 
-	        // If #pr < 0, r[0] != null will be true.
-	        return rnd( q, pr, rm, r[0] != null, b );
-	    }
+	        function subtract( a, b, aL, base ) {
+	            var i = 0;
+
+	            // Subtract b from a.
+	            for ( ; aL--; ) {
+	                a[aL] -= i;
+	                i = a[aL] < b[aL] ? 1 : 0;
+	                a[aL] = i * base + a[aL] - b[aL];
+	            }
+
+	            // Remove leading zeros.
+	            for ( ; !a[0] && a.length > 1; a.shift() );
+	        }
+
+	        // x: dividend, y: divisor.
+	        return function ( x, y, pr, rm, dp, base ) {
+	            var cmp, e, i, logbase, more, n, prod, prodL, q, qc, rem, remL, rem0, t, xi, xL, yc0,
+	                yL, yz,
+	                Decimal = x['constructor'],
+	                s = x['s'] == y['s'] ? 1 : -1,
+	                xc = x['c'],
+	                yc = y['c'];
+
+	            // Either NaN, Infinity or 0?
+	            if ( !xc || !xc[0] || !yc || !yc[0] ) {
+
+	                return new Decimal(
+
+	                  // Return NaN if either NaN, or both Infinity or 0.
+	                  !x['s'] || !y['s'] || ( xc ? yc && xc[0] == yc[0] : !yc ) ? NaN :
+
+	                    // Return +-0 if x is 0 or y is +-Infinity, or return +-Infinity as y is 0.
+	                    xc && xc[0] == 0 || !yc ? s * 0 : s / 0
+	                );
+	            }
+
+	            if (base) {
+	                logbase = 1;
+	                e = x['e'] - y['e'];
+	            } else {
+	                base = BASE;
+	                logbase = LOGBASE;
+	                e = mathfloor( x['e'] / logbase ) - mathfloor( y['e'] / logbase );
+	            }
+
+	            yL = yc.length;
+	            xL = xc.length;
+	            q = new Decimal(s);
+	            qc = q['c'] = [];
+
+	            // Result exponent may be one less then the current value of e.
+	            // The coefficients of the Decimals from convertBase may have trailing zeros.
+	            for ( i = 0; yc[i] == ( xc[i] || 0 ); i++ );
+
+	            if ( yc[i] > ( xc[i] || 0 ) ) {
+	                e--;
+	            }
+
+	            if ( pr == null ) {
+	                s = pr = Decimal['precision'];
+	                rm = Decimal['rounding'];
+	            } else if (dp) {
+	                s = pr + ( x['e'] - y['e'] ) + 1;
+	            } else {
+	                s = pr;
+	            }
+
+	            if ( s < 0 ) {
+	                qc.push(1);
+	                more = true;
+	            } else {
+
+	                // Convert base 10 decimal places to base 1e7 decimal places.
+	                s = s / logbase + 2 | 0;
+	                i = 0;
+
+	                // divisor < 1e7
+	                if ( yL == 1 ) {
+	                    n = 0;
+	                    yc = yc[0];
+	                    s++;
+
+	                    // 'n' is the carry.
+	                    for ( ; ( i < xL || n ) && s--; i++ ) {
+	                        t = n * base + ( xc[i] || 0 );
+	                        qc[i] = t / yc | 0;
+	                        n = t % yc | 0;
+	                    }
+
+	                    more = n || i < xL;
+
+	                // divisor >= 1e7
+	                } else {
+
+	                    // Normalise xc and yc so highest order digit of yc is >= base/2
+	                    n = base / ( yc[0] + 1 ) | 0;
+
+	                    if ( n > 1 ) {
+	                        yc = multiplyInteger( yc, n, base );
+	                        xc = multiplyInteger( xc, n, base );
+	                        yL = yc.length;
+	                        xL = xc.length;
+	                    }
+
+	                    xi = yL;
+	                    rem = xc.slice( 0, yL );
+	                    remL = rem.length;
+
+	                    // Add zeros to make remainder as long as divisor.
+	                    for ( ; remL < yL; rem[remL++] = 0 );
+
+	                    yz = yc.slice();
+	                    yz.unshift(0);
+	                    yc0 = yc[0];
+
+	                    if ( yc[1] >= base / 2 ) {
+	                        yc0++;
+	                    }
+
+	                    do {
+	                        n = 0;
+
+	                        // Compare divisor and remainder.
+	                        cmp = compare( yc, rem, yL, remL );
+
+	                        // If divisor < remainder.
+	                        if ( cmp < 0 ) {
+
+	                            // Calculate trial digit, n.
+	                            rem0 = rem[0];
+
+	                            if ( yL != remL ) {
+	                                rem0 = rem0 * base + ( rem[1] || 0 );
+	                            }
+
+	                            // n will be how many times the divisor goes into the current remainder.
+	                            n = rem0 / yc0 | 0;
+
+	                            /*
+	                              Algorithm:
+	                              1. product = divisor * trial digit (n)
+	                              2. if product > remainder: product -= divisor, n--
+	                              3. remainder -= product
+	                              4. if product was < remainder at 2:
+	                                5. compare new remainder and divisor
+	                                6. If remainder > divisor: remainder -= divisor, n++
+	                            */
+
+	                            if ( n > 1 ) {
+
+	                                if ( n >= base ) {
+	                                    n = base - 1;
+	                                }
+
+	                                // product = divisor * trial digit.
+	                                prod = multiplyInteger( yc, n, base );
+	                                prodL = prod.length;
+	                                remL = rem.length;
+
+	                                // Compare product and remainder.
+	                                cmp = compare( prod, rem, prodL, remL );
+
+	                                // product > remainder.
+	                                if ( cmp == 1 ) {
+	                                    n--;
+
+	                                    // Subtract divisor from product.
+	                                    subtract( prod, yL < prodL ? yz : yc, prodL, base );
+	                                }
+	                            } else {
+
+	                                // cmp is -1.
+	                                // If n is 0, there is no need to compare yc and rem again below, so change cmp to 1 to avoid it.
+	                                // If n is 1 there IS a need to compare yc and rem again below.
+	                                if ( n == 0 ) {
+	                                    cmp = n = 1;
+	                                }
+	                                prod = yc.slice();
+	                            }
+	                            prodL = prod.length;
+
+	                            if ( prodL < remL ) {
+	                                prod.unshift(0);
+	                            }
+
+	                            // Subtract product from remainder.
+	                            subtract( rem, prod, remL, base );
+
+	                            // If product was < previous remainder.
+	                            if ( cmp == -1 ) {
+	                                remL = rem.length;
+
+	                                // Compare divisor and new remainder.
+	                                cmp = compare( yc, rem, yL, remL );
+
+	                                // If divisor < new remainder, subtract divisor from remainder.
+	                                if ( cmp < 1 ) {
+	                                    n++;
+
+	                                    // Subtract divisor from remainder.
+	                                    subtract( rem, yL < remL ? yz : yc, remL, base );
+	                                }
+	                            }
+
+	                            remL = rem.length;
+
+	                        } else if ( cmp === 0 ) {
+	                            n++;
+	                            rem = [0];
+	                        }    // if cmp === 1, n will be 0
+
+	                        // Add the next digit, n, to the result array.
+	                        qc[i++] = n;
+
+	                        // Update the remainder.
+	                        if ( cmp && rem[0] ) {
+	                            rem[remL++] = xc[xi] || 0;
+	                        } else {
+	                            rem = [ xc[xi] ];
+	                            remL = 1;
+	                        }
+
+	                    } while ( ( xi++ < xL || rem[0] != null ) && s-- );
+
+	                    more = rem[0] != null;
+	                }
+
+	                // Leading zero?
+	                if ( !qc[0] ) {
+	                    qc.shift();
+	                }
+	            }
+
+	            // If div is being used for base conversion.
+	            if ( logbase == 1 ) {
+	                q['e'] = e;
+	                q['r'] = +more;
+	            } else {
+
+	                // To calculate q.e, first get the number of digits of qc[0].
+	                for ( i = 1, s = qc[0]; s >= 10; s /= 10, i++ );
+	                q['e'] = i + e * logbase - 1;
+
+	                rnd( q, dp ? pr + q['e'] + 1 : pr, rm, more );
+	            }
+
+	            return q;
+	        }
+	    })();
 
 
 	    /*
@@ -17583,7 +18033,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	             e^x = 10^j, where j = x * log10(e) and
 	             log10(e) = ln(e) / ln(10) = 1 / ln(10),
 	             so j = x / ln(10)
-	            j = Math.floor( x / Math.LN10 );
+	            j = mathfloor( x / Math.LN10 );
 
 	            // Overflow/underflow? Estimate may be +-1 of true value.
 	            if ( j > Decimal['maxE'] + 1 || j < Decimal['minE'] - 1 ) {
@@ -17612,17 +18062,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	         Use 2 * log10(2^k) + 5 to estimate the increase in precision necessary to ensure the first
 	         4 rounding digits are correct.
 	         */
-	        guard = Math.log( Math.pow( 2, k ) ) / Math.LN10 * 2 + 5 | 0;
+	        guard = Math.log( mathpow( 2, k ) ) / Math.LN10 * 2 + 5 | 0;
 	        sd += guard;
+
 	        denom = pow = sum = new Decimal(one);
 	        Decimal['precision'] = sd;
 
-	        for( ; ; ) {
+	        for ( ; ; ) {
 	            pow = rnd( pow['times'](x), sd, 1 );
 	            denom = denom['times'](++i);
 	            t = sum['plus']( div( pow, denom, sd, 1 ) );
 
-	            if ( t['c'].slice( 0, sd ).join('') === sum['c'].slice( 0, sd ).join('') ) {
+	            if ( coefficientToString( t['c'] ).slice( 0, sd ) ===
+	                 coefficientToString( sum['c'] ).slice( 0, sd ) ) {
 	                j = k;
 
 	                while ( j-- ) {
@@ -17632,11 +18084,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                /*
 	                 Check to see if the first 4 rounding digits are [49]999.
 	                 If so, repeat the summation with a higher precision, otherwise
-	                 E.g. with #precision: 18, #rounding: 1
+	                 E.g. with precision: 18, rounding: 1
 	                 exp(18.404272462595034083567793919843761) = 98372560.1229999999
 	                                           when it should be 98372560.123
 
-	                 #sd - #guard is the index of first rounding digit.
+	                 sd - guard is the index of first rounding digit.
 	                 */
 	                if ( pr == null ) {
 
@@ -17661,49 +18113,110 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	    /*
-	     * Return a string representing the value of Decimal #n in normal or exponential notation
+	     * Return a string representing the value of Decimal n in normal or exponential notation
 	     * rounded to the specified decimal places or significant digits.
-	     * Called by #toString, #toExponential (#exp is 1), #toFixed, and #toPrecision (#exp is 2).
-	     * #i is the index (with the value in normal notation) of the digit that may be rounded up.
+	     * Called by toString, toExponential (k is 1), toFixed, and toPrecision (k is 2).
+	     * i is the index (with the value in normal notation) of the digit that may be rounded up.
+	     * j is the rounding mode, then the number of digits required including fraction-part trailing
+	     * zeros.
 	     */
-	    function format( n, i, rm, exp ) {
-	        var Decimal = n['constructor'],
-	            e = ( n = new Decimal(n) )['e'],
-	            c = n['c'];
+	    function format( n, i, j, k ) {
+	        var s, z,
+	            Decimal = n['constructor'],
+	            e = ( n = new Decimal(n) )['e'];
 
-	        // +-Infinity or NaN?
-	        if ( !c ) {
+	        // i == null when toExponential(no arg), or toString() when x >= toExpPos etc.
+	        if ( i == null ) {
+	            j = 0;
+	        } else {
+	            rnd( n, ++i, j );
 
-	            return n.toString();
+	            // If toFixed, n['e'] may have changed if the value was rounded up.
+	            j = k ? i : i + n['e'] - e;
 	        }
 
-	        // Round?
-	        if ( c.length > ++i ) {
-	            rnd( n, i, rm );
-	        }
-
-	        // If #toFixed, n['e'] may have changed if the value was rounded up.
-	        e = exp ? i : i + n['e'] - e;
-
-	        // Append zeros?
-	        for ( ; c.length < e; c.push(0) ) {
-	        }
 	        e = n['e'];
+	        s = coefficientToString( n['c'] );
 
 	        /*
-	         #toPrecision returns exponential notation if the number of significant digits specified
+	         toPrecision returns exponential notation if the number of significant digits specified
 	         is less than the number of digits necessary to represent the integer part of the value
 	         in normal notation.
 	         */
-	        return exp == 1 || exp == 2 && ( i <= e || e <= Decimal['toExpNeg'] )
 
-	          // Exponential notation.
-	          ? ( n['s'] < 0 && c[0] ? '-' : '' ) +
-	            ( c.length > 1 ? c[0] + '.' + c.slice(1).join('') : c[0] ) +
-	            ( e < 0 ? 'e' : 'e+' ) + e
+	        // Exponential notation.
+	        if ( k == 1 || k == 2 && ( i <= e || e <= Decimal['toExpNeg'] ) ) {
 
-	          // Normal notation.
-	          : n.toString();
+	            // Append zeros?
+	            for ( ; s.length < j; s += '0' );
+
+	            if ( s.length > 1 ) {
+	                s = s.charAt(0) + '.' + s.slice(1);
+	            }
+
+	            s += ( e < 0 ? 'e' : 'e+' ) + e;
+
+	        // Normal notation.
+	        } else {
+	            k = s.length;
+
+	            // Negative exponent?
+	            if ( e < 0 ) {
+	                z = j - k;
+
+	                // Prepend zeros.
+	                for ( ; ++e; s = '0' + s );
+	                s = '0.' + s;
+
+	            // Positive exponent?
+	            } else {
+
+	                if ( ++e > k ) {
+	                    z = j - e;
+
+	                    // Append zeros.
+	                    for ( e -= k; e-- ; s += '0' );
+
+	                    if ( z > 0 ) {
+	                        s += '.';
+	                    }
+
+	                } else {
+	                    z = j - k;
+
+	                    if ( e < k ) {
+	                        s = s.slice( 0, e ) + '.' + s.slice(e);
+	                    } else if ( z > 0 ) {
+	                        s += '.';
+	                    }
+	                }
+	            }
+
+	            // Append more zeros?
+	            if ( z > 0 ) {
+
+	                for ( ; z--; s += '0' );
+	            }
+	        }
+
+	        return n['s'] < 0 && n['c'][0] ? '-' + s : s;
+	    }
+
+
+	    function getCoeffLength(c) {
+	        var v = c.length - 1,
+	            n = v * LOGBASE + 1;
+
+	        if ( v = c[v] ) {
+
+	            // Subtract the number of trailing zeros of the last number.
+	            for ( ; v % 10 == 0; v /= 10, n-- );
+
+	            // Add the number of digits of the first number.
+	            for ( v = c[0]; v >= 10; v /= 10, n++ );
+	        }
+
+	        return n;
 	    }
 
 
@@ -17730,7 +18243,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	    /*
-	     * Use 'exponentiation by squaring' for small integers. Called by #convertBase and #pow.
+	     * Use 'exponentiation by squaring' for small integers. Called by convertBase and pow.
 	     */
 	    function intPow( Decimal, x, i ) {
 	        var r = new Decimal( Decimal['ONE'] );
@@ -17743,7 +18256,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            i >>= 1;
 
 	            if ( !i ) {
-
 
 	                break;
 	            }
@@ -17768,20 +18280,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     */
 	    function ln( y, pr ) {
-	        var denom, e, num, rep, sd, sum, t, x1, x2,
+	        var c, c0, denom, e, num, rep, sd, sum, t, x1, x2,
 	            n = 1,
 	            guard = 10,
 	            x = y,
-	            c = x['c'],
+	            xc = x['c'],
 	            Decimal = x['constructor'],
 	            one = Decimal['ONE'],
 	            rm = Decimal['rounding'],
 	            precision = Decimal['precision'];
 
-	        // #x < 0 or +-Infinity/NaN or 0 or 1.
-	        if ( x['s'] < 0 || !c || !c[0] || !x['e'] && c[0] == 1 && c.length == 1 ) {
+	        // x < 0 or +-Infinity/NaN or 0 or 1.
+	        if ( x['s'] < 0 || !xc || !xc[0] || !x['e'] && xc[0] == 1 && xc.length == 1 ) {
 
-	            return new Decimal( c && !c[0] ? -1 / 0 : x['s'] != 1 ? NaN : c ? 0 : x );
+	            return new Decimal( xc && !xc[0] ? -1 / 0 : x['s'] != 1 ? NaN : xc ? 0 : x );
 	        }
 
 	        if ( pr == null ) {
@@ -17793,6 +18305,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        Decimal['precision'] = sd += guard;
 
+	        c = coefficientToString(xc);
+	        c0 = c.charAt(0);
+
 	        if ( Math.abs( e = x['e'] ) < 1.5e15 ) {
 
 	            /*
@@ -17800,42 +18315,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	             The series converges faster the closer the argument is to 1, so using
 	             ln(a^b) = b * ln(a),   ln(a) = ln(a^b) / b
 	             multiply the argument by itself until the leading digits of the significand are 7, 8,
-	             9, 10, 11, 12 or 13 recording the number of multiplications so the sum of the series
+	             9, 10, 11, 12 or 13, recording the number of multiplications so the sum of the series
 	             can later be divided by this number, then separate out the power of 10 using
 	             ln(a*10^b) = ln(a) + b*ln(10).
 	             */
-	            // max #n is 6 ( gives 0.7 - 1.3 )
-	            while ( c[0] < 7 && c[0] != 1 || c[0] == 1 && c[1] > 3 ) {
 
-	            // max #n is 21 ( gives 0.9, 1.0 or 1.1 ) ( 9e15 / 21 = 4.2e14 ).
-	            //while ( c[0] < 9 && c[0] != 1 || c[0] == 1 && c[1] > 1 ) {
+	            // max n is 21 ( gives 0.9, 1.0 or 1.1 ) ( 9e15 / 21 = 4.2e14 ).
+	            //while ( c0 < 9 && c0 != 1 || c0 == 1 && c.charAt(1) > 1 ) {
+	            // max n is 6 ( gives 0.7 - 1.3 )
+	            while ( c0 < 7 && c0 != 1 || c0 == 1 && c.charAt(1) > 3 ) {
 	                x = x['times'](y);
-	                c = x['c'];
+	                c = coefficientToString( x['c'] );
+	                c0 = c.charAt(0);
 	                n++;
 	            }
 
 	            e = x['e'];
 
-	            if ( c[0] > 1 ) {
-
-	                if ( n == 1 ) {
-	                    x = new Decimal( '0.' + c.join('') );
-	                } else {
-	                    x['e'] = -1;
-	                }
+	            if ( c0 > 1 ) {
+	                x = new Decimal( '0.' + c );
 	                e++;
 	            } else {
-	                x = new Decimal( '1.' + c.slice(1).join('') );
+	                x = new Decimal( c0 + '.' + c.slice(1) );
 	            }
 	        } else {
 
 	            /*
-	             The argument reduction method above may result in overflow if the argument #y is a
+	             The argument reduction method above may result in overflow if the argument y is a
 	             massive number with exponent >= 1500000000000000 ( 9e15 / 6 = 1.5e15 ), so instead
 	             recall this function using ln(x*10^e) = ln(x) + e*ln(10).
 	             */
-	            x = new Decimal(x);
-	            x['e'] = 0;
+	            x = new Decimal( c0 + '.' + c.slice(1) );
 
 	            if ( sd + 2 > LN10.length ) {
 	                ifExceptionsThrow( Decimal, 1, sd + 2, 'ln' );
@@ -17850,7 +18360,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return pr == null ? rnd( x, precision, rm, external = true ) : x;
 	        }
 
-	        // #x1 is #x reduced to a value near 1.
+	        // x1 is x reduced to a value near 1.
 	        x1 = x;
 
 	        /*
@@ -17863,15 +18373,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        x2 = rnd( x['times'](x), sd, 1 );
 	        denom = 3;
 
-	        for( ; ; ) {
+	        for ( ; ; ) {
 	            num = rnd( num['times'](x2), sd, 1 );
 	            t = sum['plus']( div( num, new Decimal(denom), sd, 1 ) );
 
-	            if ( t['c'].slice( 0, sd ).join('') === sum['c'].slice( 0, sd ).join('') ) {
+	            if ( coefficientToString( t['c'] ).slice( 0, sd ) ===
+	                 coefficientToString( sum['c'] ).slice( 0, sd ) ) {
 	                sum = sum['times'](2);
 
 	                /*
-	                 Reverse the argument reduction. Check that #e is not 0 because, as well as
+	                 Reverse the argument reduction. Check that e is not 0 because, as well as
 	                 preventing an unnecessary calculation, -0 + 0 = +0 and to ensure correct
 	                 rounding later -0 needs to stay -0.
 	                 */
@@ -17889,14 +18400,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	                sum = div( sum, new Decimal(n), sd, 1 );
 
 	                /*
-	                 Is #rm > 3 and the first 4 rounding digits 4999, or #rm < 4 (or the summation has
+	                 Is rm > 3 and the first 4 rounding digits 4999, or rm < 4 (or the summation has
 	                 been repeated previously) and the first 4 rounding digits 9999?
 
 	                 If so, restart the summation with a higher precision, otherwise
-	                 E.g. with #precision: 12, #rounding: 1
+	                 E.g. with precision: 12, rounding: 1
 	                 ln(135520028.6126091714265381533) = 18.7246299999 when it should be 18.72463.
 
-	                 #sd - #guard is the index of first rounding digit.
+	                 sd - guard is the index of first rounding digit.
 	                 */
 	                if ( pr == null ) {
 
@@ -17923,42 +18434,108 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	    /*
-	     * Round #x to #sd significant digits using rounding mode #rm. Check for over/under-flow.
+	     * Round x to sd significant digits using rounding mode rm. Check for over/under-flow.
 	     */
-	    function rnd( x, sd, rm, r, b ) {
-	        var rd, half, isNeg, xc,
+	     function rnd( x, sd, rm, r ) {
+	        var digits, i, j, k, n, rd, xc, xci,
 	            Decimal = x['constructor'];
 
-	        // Don't round if #sd is null or undefined.
-	        if ( sd != rd ) {
+	        // Don't round if sd is null or undefined.
+	        r: if ( sd != i ) {
 
+	            // Infinity/NaN.
 	            if ( !( xc = x['c'] ) ) {
 
 	                return x;
 	            }
 
-	            isNeg = x['s'] < 0,
-	            half = ( b = b || 10 ) / 2;
+	            /*
+	             rd, the rounding digit, i.e. the digit after the digit that may be rounded up,
+	             n, a base 1e7 number, the element of xc containing rd,
+	             xci, the index of n within xc,
+	             digits, the number of digits of n,
+	             i, what would be the index of rd within n if all the numbers were 7 digits long (i.e. they had leading zeros)
+	             j, if > 0, the actual index of rd within n (if < 0, rd is a leading zero),
+	             nLeadingZeros, the number of leading zeros n would have if it were 7 digits long.
+	             */
 
-	            // #rd is the rounding digit, i.e. the digit after the digit that may be rounded up.
-	            rd = xc[sd];
-	            r = r || sd < 0 || xc[sd + 1] != null;
+	            // Get the length of the first element of the coefficient array xc.
+	            for ( digits = 1, k = xc[0]; k >= 10; k /= 10, digits++ );
+
+	            i = sd - digits;
+
+	            // Is the rounding digit in the first element of xc?
+	            if ( i < 0 ) {
+	                i += LOGBASE;
+	                j = sd;
+	                n = xc[ xci = 0 ];
+
+	                // Get the rounding digit at index j of n.
+	                rd = n / mathpow( 10, digits - j - 1 ) % 10 | 0;
+	            } else {
+	                xci = Math.ceil( ( i + 1 ) / LOGBASE );
+
+	                if ( xci >= xc.length ) {
+
+	                    if (r) {
+
+	                        // Needed by exp, ln and sqrt.
+	                        for ( ; xc.length <= xci; xc.push(0) );
+
+	                        n = rd = 0;
+	                        digits = 1;
+	                        i %= LOGBASE;
+	                        j = i - LOGBASE + 1;
+	                    } else {
+
+	                      break r;
+	                    }
+	                } else {
+	                    n = k = xc[xci];
+
+	                    // Get the number of digits of n.
+	                    for ( digits = 1; k >= 10; k /= 10, digits++ );
+
+	                    // Get the index of rd within n.
+	                    i %= LOGBASE;
+
+	                    // Get the index of rd within n, adjusted for leading zeros.
+	                    // The number of leading zeros of n is given by LOGBASE - digits.
+	                    j = i - LOGBASE + digits;
+
+	                    // Get the rounding digit at index j of n.
+	                    // Floor using Math.floor instead of | 0 as rd may be outside int range.
+	                    rd = j < 0 ? 0 : mathfloor( n / mathpow( 10, digits - j - 1 ) % 10 );
+	                }
+	            }
+
+	            r = r || sd < 0 ||
+	              // Are there any non-zero digits after the rounding digit?
+	              xc[xci + 1] != null || ( j < 0 ? n : n % mathpow( 10, digits - j - 1 ) );
+
+	            /*
+	             The expression  n % mathpow( 10, digits - j - 1 )  returns all the digits of n to the
+	             right of the digit at (left-to-right) index j,
+	             e.g. if n is 908714 and j is 2, the expression will give 714.
+	             */
 
 	            r = rm < 4
-	              ? ( rd != null || r ) && ( rm == 0 || rm == 2 && !isNeg || rm == 3 && isNeg )
-	              : rd > half || rd == half && ( rm == 4 || r || rm == 6 && xc[sd - 1] & 1 ||
-	                rm == 7 && !isNeg || rm == 8 && isNeg );
+	              ? ( rd || r ) && ( rm == 0 || rm == ( x['s'] < 0 ? 3 : 2 ) )
+	              : rd > 5 || rd == 5 && ( rm == 4 || r ||
+	                // Check whether the digit to the left of the rounding digit is odd.
+	                rm == 6 && ( ( i > 0 ? j > 0 ? n / mathpow( 10, digits - j ) : 0 : xc[xci - 1] ) % 10 ) & 1 ||
+	                  rm == ( x['s'] < 0 ? 8 : 7 ) );
 
 	            if ( sd < 1 || !xc[0] ) {
 	                xc.length = 0;
 
 	                if (r) {
 
-	                    // Convert #sd to decimal places.
-	                    sd = sd - x['e'] - 1;
+	                    // Convert sd to decimal places.
+	                    sd -= x['e'] + 1;
 
 	                    // 1, 0.1, 0.01, 0.001, 0.0001 etc.
-	                    xc[0] = 1;
+	                    xc[0] = mathpow( 10, sd % LOGBASE );
 	                    x['e'] = -sd || 0;
 	                } else {
 
@@ -17969,34 +18546,62 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return x;
 	            }
 
-	            // Truncate excess digits.
-	            if ( xc.length > sd ) {
-	                xc.length = sd;
+	            // Remove excess digits.
+
+	            if ( i == 0 ) {
+	                xc.length = xci;
+	                k = 1;
+	                xci--;
+	            } else {
+	                xc.length = xci + 1;
+	                k = mathpow( 10, LOGBASE - i );
+
+	                // E.g. 56700 becomes 56000 if 7 is the rounding digit.
+	                // j > 0 means i > number of leading zeros of n.
+	                xc[xci] = j > 0 ? ( n / mathpow( 10, digits - j ) % mathpow( 10, j ) | 0 ) * k : 0;
 	            }
-	            sd--;
 
 	            // Round up?
 	            if (r) {
 
-	                // Set to zero any undefined elements before the digit to be rounded up.
-	                // Only used by #ln?
-	                for ( rd = sd; xc[rd] == null; xc[rd--] = 0 ) {
-	                }
+	                for ( ; ; ) {
 
-	                // Rounding up may mean the previous digit has to be rounded up and so on.
-	                for ( --b; ++xc[sd] > b; ) {
-	                    xc[sd] = 0;
+	                    // Is the digit to be rounded up in the first element of xc.
+	                    if ( xci == 0 ) {
 
-	                    if ( !sd-- ) {
-	                        ++x['e'];
-	                        xc.unshift(1);
+	                        // i will be the length of xc[0] before k is added.
+	                        for ( i = 1, j = xc[0]; j >= 10; j /= 10, i++ );
+
+	                        j = xc[0] += k;
+
+	                        for ( k = 1; j >= 10; j /= 10, k++ );
+
+	                        // if i != k the length has increased.
+	                        if ( i != k ) {
+	                            x['e']++;
+
+	                            if ( xc[0] == BASE ) {
+	                                xc[0] = 1;
+	                            }
+	                        }
+
+	                        break;
+	                    } else {
+	                        xc[xci] += k;
+
+	                        if ( xc[xci] != BASE ) {
+
+	                            break;
+	                        }
+
+	                        xc[xci--] = 0;
+	                        k = 1;
 	                    }
 	                }
 	            }
 
 	            // Remove trailing zeros.
-	            for ( sd = xc.length; !xc[--sd]; xc.pop() ) {
-	            }
+	            for ( i = xc.length; xc[--i] === 0; xc.pop() );
 	        }
 
 	        if (external) {
@@ -18026,26 +18631,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         *  The following emulations or wrappers of #Math object functions are currently
+	         *  The following emulations or wrappers of Math object functions are currently
 	         *  commented-out and not in the public API.
 	         *
-	         *  #abs
-	         *  #acos
-	         *  #asin
-	         *  #atan
-	         *  #atan2
-	         *  #ceil
-	         *  #cos
-	         *  #floor
-	         *  #round
-	         *  #sin
-	         *  #tan
-	         *  #trunc
+	         *  abs
+	         *  acos
+	         *  asin
+	         *  atan
+	         *  atan2
+	         *  ceil
+	         *  cos
+	         *  floor
+	         *  round
+	         *  sin
+	         *  tan
+	         *  trunc
 	         */
 
 
 	        /*
-	         * Return a new Decimal whose value is the absolute value of #n.
+	         * Return a new Decimal whose value is the absolute value of n.
 	         *
 	         * n {number|string|Decimal}
 	         *
@@ -18054,7 +18659,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the arccosine in radians of #n.
+	         * Return a new Decimal whose value is the arccosine in radians of n.
 	         *
 	         * n {number|string|Decimal}
 	         *
@@ -18063,7 +18668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the arcsine in radians of #n.
+	         * Return a new Decimal whose value is the arcsine in radians of n.
 	         *
 	         * n {number|string|Decimal}
 	         *
@@ -18072,7 +18677,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the arctangent in radians of #n.
+	         * Return a new Decimal whose value is the arctangent in radians of n.
 	         *
 	         * n {number|string|Decimal}
 	         *
@@ -18081,7 +18686,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the arctangent in radians of #y/#x in the range
+	         * Return a new Decimal whose value is the arctangent in radians of y/x in the range
 	         * -PI to PI (inclusive).
 	         *
 	         * y {number|string|Decimal} The y-coordinate.
@@ -18092,7 +18697,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is #n round to an integer using ROUND_CEIL.
+	         * Return a new Decimal whose value is n round to an integer using ROUND_CEIL.
 	         *
 	         * n {number|string|Decimal}
 	         *
@@ -18103,17 +18708,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        /*
 	         * Configure global settings for a Decimal constructor.
 	         *
-	         * #obj is an object with any of the following properties,
+	         * obj is an object with any of the following properties,
 	         *
-	         *   #precision  {number}
-	         *   #rounding   {number}
-	         *   #toExpNeg   {number}
-	         *   #toExpPos   {number}
-	         *   #minE       {number}
-	         *   #maxE       {number}
-	         *   #errors     {boolean|number}
-	         *   #crypto     {boolean|number}
-	         *   #modulo     {number}
+	         *   precision  {number}
+	         *   rounding   {number}
+	         *   toExpNeg   {number}
+	         *   toExpPos   {number}
+	         *   minE       {number}
+	         *   maxE       {number}
+	         *   errors     {boolean|number}
+	         *   crypto     {boolean|number}
+	         *   modulo     {number}
 	         *
 	         * E.g.
 	         *   Decimal.config({ precision: 20, rounding: 4 })
@@ -18131,7 +18736,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return Decimal;
 	            }
 
-	            // #precision {number|number[]} Integer, 1 to MAX_DIGITS inclusive.
+	            // precision {number|number[]} Integer, 1 to MAX_DIGITS inclusive.
 	            if ( ( v = obj[ p = 'precision' ] ) != u ) {
 
 	                if ( !( outOfRange = v < 1 || v > MAX_DIGITS ) && parse(v) == v ) {
@@ -18144,7 +18749,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	            // #rounding {number} Integer, 0 to 8 inclusive.
+	            // rounding {number} Integer, 0 to 8 inclusive.
 	            if ( ( v = obj[ p = 'rounding' ] ) != u ) {
 
 	                if ( !( outOfRange = v < 0 || v > 8 ) && parse(v) == v ) {
@@ -18157,11 +18762,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	            // #toExpNeg {number} Integer, -EXP_LIMIT to 0 inclusive.
+	            // toExpNeg {number} Integer, -EXP_LIMIT to 0 inclusive.
 	            if ( ( v = obj[ p = 'toExpNeg' ] ) != u ) {
 
 	                if ( !( outOfRange = v < -EXP_LIMIT || v > 0 ) && parse(v) == v ) {
-	                    Decimal[p] = Math.floor(v);
+	                    Decimal[p] = mathfloor(v);
 	                } else {
 
 	                    // 'config() toExpNeg not an integer: {v}'
@@ -18170,11 +18775,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	            // #toExpPos {number} Integer, 0 to EXP_LIMIT inclusive.
+	            // toExpPos {number} Integer, 0 to EXP_LIMIT inclusive.
 	            if ( ( v = obj[ p = 'toExpPos' ] ) != u ) {
 
 	                if ( !( outOfRange = v < 0 || v > EXP_LIMIT ) && parse(v) == v ) {
-	                    Decimal[p] = Math.floor(v);
+	                    Decimal[p] = mathfloor(v);
 	                } else {
 
 	                    // 'config() toExpPos not an integer: {v}'
@@ -18183,11 +18788,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	             // #minE {number} Integer, -EXP_LIMIT to 0 inclusive.
+	             // minE {number} Integer, -EXP_LIMIT to 0 inclusive.
 	            if ( ( v = obj[ p = 'minE' ] ) != u ) {
 
 	                if ( !( outOfRange = v < -EXP_LIMIT || v > 0 ) && parse(v) == v ) {
-	                    Decimal[p] = Math.floor(v);
+	                    Decimal[p] = mathfloor(v);
 	                } else {
 
 	                    // 'config() minE not an integer: {v}'
@@ -18196,11 +18801,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	            // #maxE {number} Integer, 0 to EXP_LIMIT inclusive.
+	            // maxE {number} Integer, 0 to EXP_LIMIT inclusive.
 	            if ( ( v = obj[ p = 'maxE' ] ) != u ) {
 
 	                if ( !( outOfRange = v < 0 || v > EXP_LIMIT ) && parse(v) == v ) {
-	                    Decimal[p] = Math.floor(v);
+	                    Decimal[p] = mathfloor(v);
 	                } else {
 
 	                    // 'config() maxE not an integer: {v}'
@@ -18209,7 +18814,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	            // #errors {boolean|number} true, false, 1 or 0.
+	            // errors {boolean|number} true, false, 1 or 0.
 	            if ( ( v = obj[ p = 'errors' ] ) != u ) {
 
 	                if ( v === !!v || v === 1 || v === 0 ) {
@@ -18222,7 +18827,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	            // #crypto {boolean|number} true, false, 1 or 0.
+	            // crypto {boolean|number} true, false, 1 or 0.
 	            if ( ( v = obj[ p = 'crypto' ] ) != u ) {
 
 	                if ( v === !!v || v === 1 || v === 0 ) {
@@ -18234,7 +18839,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
-	            // #modulo {number} Integer, 0 to 9 inclusive.
+	            // modulo {number} Integer, 0 to 9 inclusive.
 	            if ( ( v = obj[ p = 'modulo' ] ) != u ) {
 
 	                if ( !( outOfRange = v < 0 || v > 9 ) && parse(v) == v ) {
@@ -18252,7 +18857,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the cosine of #n.
+	         * Return a new Decimal whose value is the cosine of n.
 	         *
 	         * n {number|string|Decimal} A number given in radians.
 	         *
@@ -18261,7 +18866,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the exponential of #n,
+	         * Return a new Decimal whose value is the exponential of n,
 	         *
 	         * n {number|string|Decimal} The power to which to raise the base of the natural log.
 	         *
@@ -18270,7 +18875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is #n round to an integer using ROUND_FLOOR.
+	         * Return a new Decimal whose value is n round to an integer using ROUND_FLOOR.
 	         *
 	         * n {number|string|Decimal}
 	         *
@@ -18279,7 +18884,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the natural logarithm of #n.
+	         * Return a new Decimal whose value is the natural logarithm of n.
 	         *
 	         * n {number|string|Decimal}
 	         *
@@ -18288,7 +18893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the log of #x to the base #y, or to base 10 if no
+	         * Return a new Decimal whose value is the log of x to the base y, or to base 10 if no
 	         * base is specified.
 	         *
 	         * log[y](x)
@@ -18301,7 +18906,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Handle #max and #min. #ltgt is 'lt' or 'gt'.
+	         * Handle max and min. ltgt is 'lt' or 'gt'.
 	         */
 	        function maxOrMin( Decimal, args, ltgt ) {
 	            var m, n,
@@ -18359,7 +18964,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                if ( typeof n != 'string' ) {
 
-	                    // If #n is a number, check if minus zero.
+	                    // TODO: modify so regex test below is avoided if type is number.
+	                    // If n is a number, check if minus zero.
 	                    n = ( isNum = typeof n == 'number' || toString.call(n) == '[object Number]' ) &&
 	                        n === 0 && 1 / n < 0 ? '-0' : n + '';
 	                }
@@ -18370,12 +18976,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    // Determine sign.
 	                    x['s'] = n.charAt(0) == '-' ? ( n = n.slice(1), -1 ) : 1;
 
-	                // Either #n is not a valid Decimal or a base has been specified.
+	                // Either n is not a valid Decimal or a base has been specified.
 	                } else {
 
 	                    /*
 	                     Enable exponential notation to be used with base 10 argument.
-	                     Ensure return value is rounded to #precision as with other bases.
+	                     Ensure return value is rounded to precision as with other bases.
 	                     */
 	                    if ( b == 10 ) {
 
@@ -18394,7 +19000,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                           // Remove the `.` from e.g. '1.', and replace e.g. '.1' with '0.1'.
 	                            n = n.replace( /\.$/, '' ).replace( /^\./, '0.' );
-
 
 	                            // Any number in exponential form will fail due to the e+/-.
 	                            if ( valid = new RegExp(
@@ -18457,7 +19062,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                // Decimal point?
 	                if ( ( e = n.indexOf('.') ) > -1 ) {
-
 	                    n = n.replace( '.', '' );
 	                }
 
@@ -18478,32 +19082,56 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 
 	                // Determine leading zeros.
-	                for ( i = 0; n.charAt(i) == '0'; i++ ) {
-	                }
+	                for ( i = 0; n.charAt(i) == '0'; i++ );
 
-	                if ( i == ( b = n.length ) ) {
+	                // Determine trailing zeros.
+	                for ( b = n.length; n.charAt(--b) == '0'; );
 
-	                    // Zero.
-	                    x['c'] = [ x['e'] = 0 ];
-	                } else {
+	                n = n.slice( i, b + 1 );
+
+	                if (n) {
+	                    b = n.length;
 
 	                    // Disallow numbers with over 15 significant digits if number type.
-	                    if ( isNum && b > 15 && n.slice(i).length > 15 ) {
+	                    if ( isNum && b > 15 ) {
 
 	                        // '{method} number type has more than 15 significant digits: {n}'
 	                        ifExceptionsThrow( Decimal, 0, orig );
 	                    }
 
-	                    // Determine trailing zeros.
-	                    for ( ; n.charAt(--b) == '0'; ) {
-	                    }
-
-	                    x['e'] = e - i - 1;
+	                    x['e'] = e = e - i - 1;
 	                    x['c'] = [];
 
-	                    // Convert string to array of digits (without leading and trailing zeros).
-	                    for ( e = 0; i <= b; x['c'][e++] = +n.charAt(i++) ) {
+	                    // Transform base
+
+	                    // e is the base 10 exponent.
+	                    // i is where to slice n to get the first element of the coefficient array.
+	                    i = ( e + 1 ) % LOGBASE;
+
+	                    if ( e < 0 ) {
+	                        i += LOGBASE;
 	                    }
+
+	                    // b is n.length.
+	                    if ( i < b ) {
+
+	                        if (i) {
+	                            x['c'].push( +n.slice( 0, i ) );
+	                        }
+
+	                        for ( b -= LOGBASE; i < b; ) {
+	                            x['c'].push( +n.slice( i, i += LOGBASE ) );
+	                        }
+
+	                        n = n.slice(i);
+	                        i = LOGBASE - n.length;
+	                    } else {
+	                        i -= b;
+	                    }
+
+	                    for ( ; i--; n += '0' );
+
+	                    x['c'].push( +n );
 
 	                    if (external) {
 
@@ -18520,14 +19148,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            x['c'] = [ x['e'] = 0 ];
 	                        }
 	                    }
+	                } else {
+
+	                    // Zero.
+	                    x['c'] = [ x['e'] = 0 ];
 	                }
+
 	                id = 0;
 	            }
 	        })();
 
 
 	        /*
-	         * Return a new Decimal whose value is #x raised to the power #y.
+	         * Return a new Decimal whose value is x raised to the power y.
 	         *
 	         * x {number|string|Decimal} The base.
 	         * y {number|string|Decimal} The exponent.
@@ -18537,251 +19170,138 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Generate a new Decimal with a random value.
+	         * Returns a new Decimal with a random value equal to or greater than 0 and less than 1, and
+	         * with dp, or Decimal.precision if dp is omitted, decimal places (or less if trailing
+	         * zeros are produced).
+	         *
+	         * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
+	         *
 	         */
-	        var random = (function () {
-
-	            /*
-	             * #crypto false.
-	             *
-	             * Return a string of random decimal digits.
-	             * If #max is falsey return up to 14 digits (almost always 13 or 14 digits),
-	             * else return a number >= 0 and < #max (#max < 256).
-	             */
-	            function getMathRandom(max) {
-	                var r = Math.random();
-
-	                /*
-	                  Add 1 to avoid exponential notation and keep leading zeros. Omit the first and the
-	                  last two digits for a maximum of 14 significant digits and to ensure that trailing
-	                  digits can be zero.
-	                 */
-	                return max ? ( r * max | 0 ) + '' : ( 1 + r + '' ).slice( 2, -2 );
-	            }
-
-
-	            /*
-	             * #crypto true.
-	             * Browsers supporting crypto.getRandomValues.
-	             *
-	             * Return a string of random decimal digits.
-	             * If #max is falsey return 9 digits, else return a number >= 0 and < #max (#max < 256).
-	             */
-	            function getRandomValues(max) {
-	                var n;
-
-	                return max
-
-	                  // 0 >= n < 256
-	                  ? ( n = crypto['getRandomValues']( new global['Uint8Array'](1) )[0],
-	                      n > ( 256 / max | 0 ) * max - 1
-
-	                        // Probability of recall if #max is 10 is 6 / 256 = 0.023 (i.e. 1 in 42.7).
-	                        ? getRandomValues(max)
-	                        : n % max + '' )
-
-	                  // 0 >= n < 4294967296
-	                  : ( n = crypto['getRandomValues']( new global['Uint32Array'](1) )[0],
-	                      n >= 4e9
-
-	                        // Probability of recall is 294967297 / 4294967296 = 0.0687 (i.e. 1 in 14.6).
-	                        ? getRandomValues(max)
-
-	                        // Add 1e9 so 1000000000 >= n <= 4999999999 and omit leading digit.
-	                        : ( n + 1e9 + '' ).slice(1) );
-	            }
-
-
-	            /*
-	             * #crypto true.
-	             * Node.js supporting crypto.randomBytes.
-	             *
-	             * Return a string of random decimal digits.
-	             * If #max is falsey return 14 digits, else return a number >= 0 and < #max (#max < 256).
-	             */
-	            function getRandomBytes(max) {
-	                var buf, n,
-	                    rb = crypto['randomBytes'];
-
-	                return max
-	                  ? ( n = rb(1)[0], n > ( 256 / max | 0 ) * max - 1
-	                    ? getRandomBytes(max)
-	                    : n % max + '' )
-
-	                  // 01000011 0011XXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-	                  : ( buf = rb(8), buf[0] = 0x43, buf[1] = buf[1] & 0xf | 0x30,
-
-	                      /*
-	                        (mantissa all zeros) 4503599627370496 >= n <= 9007199254740991 (mantissa all ones).
-	                        4503599627370496 - 3599627370496 = 4500000000000000
-	                        9007199254740991 - 3599627370496 = 9003599627370495
-	                       */
-	                      n = buf.readDoubleBE(0),
-	                      n > 9003599627370495
-
-	                        /*
-	                          Probability of recall is
-	                          3599627370497 / 4503599627370496 = 0.000799 (i.e. 1 in 1251).
-	                         */
-	                        ? getRandomBytes(max)
-
-	                        /*
-	                         Subtracting 4503599627370496 gives 0 >= n <= 4499999999999999,
-	                         so subtracting 1e15 less than that gives
-	                         1000000000000000 >= n <= 5499999999999999.
-	                         Return the last 14 digits as a string.
-	                         */
-	                        : ( n - 3503599627370496 + '' ).slice(2) );
-	            }
-
-	            /*
-	             * Returns a new Decimal with a random value equal to or greater than 0 and lower in
-	             * magnitude than #limit.
-	             *
-	             * If #limit is omitted then it will be 1 and the return value will have #precision
-	             * significant digits (or less if trailing zeros are produced).
-	             *
-	             * If #limit is included and #pr is omitted then the return value will be an integer. If
-	             * #pr is included, the return value will have #pr significant digits (or less if
-	             * trailing zeros are produced).
-	             *
-	             * [limit] {number|string|Decimal}
-	             * [pr] {number} Significant digits. Integer, 0 to MAX_DIGITS inclusive.
-	             *
-	             */
-	            return function ( limit, pr ) {
-	                var c, e, i, ld, n, one, rd, str,
-	                    Decimal = this,
-	                    r = new Decimal(0),
-	                    rand = getMathRandom;
-
-	                // null/+-Infinity/NaN?
-	                if ( one = limit == e || !( id = 14, limit = new Decimal(limit) )['c'] &&
-	                  !ifExceptionsThrow( Decimal, 'limit must be finite', limit, 'random' ) ) {
-	                    limit = new Decimal( Decimal['ONE'] );
-
-	                // Zero?
-	                } else if ( !limit['c'][0] ) {
-
-	                    return r;
-	                }
-
-	                if ( Decimal['crypto'] ) {
-
-	                    // Recent browsers.
-	                    if ( crypto['getRandomValues'] ) {
-	                        rand = getRandomValues;
-
-	                    // Node.js.
-	                    } else if ( crypto['randomBytes'] ) {
-	                        rand = getRandomBytes;
-	                    }
-	                }
-
-	                e = limit['e'];
-	                n = ( c = limit['c'] ).length;
-
-	                // Ensure #r < limit.
-	                do {
-	                    i = 0;
-	                    str = rand( c[0] + 1 ) + rand();
-
-	                    do {
-	                        ld = c[i];               // #limit digit
-	                        rd = str.charAt(i++);    // random digit
-	                    } while ( ld == rd );
-	                } while ( rd > ld || i > n || rd == '' );
-
-	                // Decrement exponent of result for every leading zero.
-	                for ( i = 0; str.charAt(i) == '0'; i++, e-- ) {
-	                }
-
-	                if (one) {
-	                    pr = Decimal['precision'];
-	                } else if ( pr == null || !checkArg( limit, pr, 'random', 1 ) ) {
-	                    pr = e + 1;
-	                } else {
-	                    pr |= 0;
-	                }
-
-	                pr += i;
-
-	                // Add further random digits.
-	                while ( str.length < pr ) {
-	                    str += rand();
-	                }
-
-	                // Determine trailing zeros.
-	                for ( ; str.charAt(--pr) == '0'; ) {
-	                }
-
-	                if ( ++pr > 0 ) {
-
-	                    // Convert #str to number array without leading and trailing zeros.
-	                    for ( r['c'] = []; i < pr; r['c'].push( +str.charAt(i++) ) ) {
-	                    }
-	                } else {
-
-	                   // Zero.
-	                    r['c'] = [ e = 0 ];
-	                }
-
-	                r['e'] = e;
-	                r['s'] = limit['s'];
-
-	                return r;
-	            }
-	        })();
-
-
-	        /*
-	         * Not currently in public api.
-	         *
-	         * Generate random numbers for testing purposes.
-	         *
-	         * Returns a Decimal with a random sign, a random exponent in the range [-MIN.E, MAX-E]
-	         * and a random number of significant digits in the range [1, #precision].
-	         *
-	         * Within the limits of the #precision setting, this method can produce any finite Decimal.
-	         * It will not, though, produce a uniform distribution. Intentionally, it is heavily biased
-	         * toward smaller exponents.
-	         *
-	         * Math.random is always used as the source of randomness.
-	         *
-	        function randomE() {
-	            var i,
+	        function random(dp) {
+	            var a, n, v,
+	                i = 0,
+	                r = [],
 	                Decimal = this,
-	                // 1 in 4 chance of negative exponent.
-	                isNeg = Math.random() < 0.25,
-	                n = Math.floor( Math.random() * ( (
-	                  isNeg ? -Decimal['minE'] : Decimal['maxE'] ) + 1 ) ) + '',
-	                c = [ Math.random() * 9 + 1 | 0 ],
-	                pr = i = Math.random() * Decimal['precision'] | 0,
-	                r = new Decimal( Decimal['ONE'] );
+	                rand = new Decimal( Decimal['ONE'] );
 
-	            while ( i-- ) {
-	                c.push( Math.random() * 10 | 0 );
-	            }
-	            c[pr] = Math.random() * 9 + 1 | 0;
-
-	            // Further increase likelihood of smaller exponent. Comment-out if not required.
-	            while ( Math.random() < 0.9 ) {
-	                n = n.slice( Math.random() * n.length | 0 );
+	            if ( dp == null || !checkArg( rand, dp, 'random' ) ) {
+	                dp = Decimal['precision'];
+	            } else {
+	                dp |= 0;
 	            }
 
-	            r['e'] = ( isNeg ? -1 : 1 ) * n.slice( Math.random() * n.length | 0 );
-	            r['c'] = r['e'] == Decimal['minE'] ? [1] : c;
-	            r['s'] = Math.random() < 0.4 ? -1 : 1;
+	            n = Math.ceil( dp / LOGBASE );
 
-	            return r;
+	            if ( Decimal['crypto'] ) {
+
+	                // Browsers supporting crypto.getRandomValues.
+	                if ( crypto && crypto['getRandomValues'] ) {
+
+	                    a = crypto['getRandomValues']( new Uint32Array(n) );
+
+	                    for ( ; i < n; ) {
+	                        v = a[i];
+
+	                        // 0 >= v < 4294967296
+	                        // Probability that v >= 4.29e9, is 4967296 / 4294967296 = 0.00116 (1 in 865).
+	                        if ( v >= 4.29e9 ) {
+
+	                            a[i] = crypto['getRandomValues']( new Uint32Array(1) )[0];
+	                        } else {
+
+	                            // 0 <= v <= 4289999999
+	                            // 0 <= ( v % 1e7 ) <= 9999999
+	                            r[i++] = v % 1e7;
+	                        }
+	                    }
+
+	                // Node.js supporting crypto.randomBytes.
+	                } else if ( crypto && crypto['randomBytes'] ) {
+
+	                    // buffer
+	                    a = crypto['randomBytes']( n *= 4 );
+
+	                    for ( ; i < n; ) {
+
+	                        // 0 <= v < 2147483648
+	                        v = a[i] + ( a[i + 1] << 8 ) + ( a[i + 2] << 16 ) +
+	                            ( ( a[i + 3] & 0x7f ) << 24 );
+
+	                        // Probability that v >= 2.14e9, is 7483648 / 2147483648 = 0.0035 (1 in 286).
+	                        if ( v >= 2.14e9 ) {
+	                            crypto['randomBytes'](4).copy( a, i );
+	                        } else {
+
+	                            // 0 <= v <= 4289999999
+	                            // 0 <= ( v % 1e7 ) <= 9999999
+	                            r.push( v % 1e7 );
+	                            i += 4;
+	                        }
+	                    }
+	                    i = n / 4;
+
+	                } else {
+	                    ifExceptionsThrow( Decimal, 'crypto unavailable', crypto, 'random' );
+	                }
+	            }
+
+	            // Use Math.random: either Decimal.crypto is false or crypto is unavailable and errors is false.
+	            if (!i) {
+
+	                for ( ; i < n; ) {
+	                    r[i++] = Math.random() * 1e7 | 0;
+	                }
+	            }
+
+	            n = r[--i];
+	            dp %= LOGBASE;
+
+	            // Convert trailing digits to zeros according to dp.
+	            if ( n && dp ) {
+	                v = mathpow( 10, LOGBASE - dp );
+	                r[i] = ( n / v | 0 ) * v;
+	            }
+
+	            // Remove trailing elements which are zero.
+	            for ( ; r[i] === 0; i-- ) {
+	                r.pop();
+	            }
+
+	            // Zero?
+	            if ( i < 0 ) {
+	                r = [ n = 0 ];
+	            } else {
+	                n = -1;
+
+	                // Remove leading elements which are zero and adjust exponent accordingly.
+	                for ( ; r[0] === 0; ) {
+	                    r.shift();
+	                    n -= LOGBASE;
+	                }
+
+	                // Count the digits of the first element of r to determine leading zeros.
+	                for ( i = 1, v = r[0]; v >= 10; ) {
+	                    v /= 10;
+	                    i++;
+	                }
+
+	                // Adjust the exponent for leading zeros of the first element of r.
+	                if ( i < LOGBASE ) {
+	                    n -= LOGBASE - i;
+	                }
+	            }
+
+	            rand['e'] = n;
+	            rand['c'] = r;
+
+	            return rand;
 	        }
-	         */
 
 
 	        /*
-	         * Return a new Decimal whose value is #n round to an integer using rounding mode #rounding.
+	         * Return a new Decimal whose value is n round to an integer using rounding mode rounding.
 	         *
-	         * To emulate Math.round, set #rounding to 7 (ROUND_HALF_CEIL).
+	         * To emulate Math.round, set rounding to 7 (ROUND_HALF_CEIL).
 	         *
 	         * n {number|string|Decimal}
 	         *
@@ -18794,7 +19314,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the sine of #n.
+	         * Return a new Decimal whose value is the sine of n.
 	         *
 	         * n {number|string|Decimal} A number given in radians.
 	         *
@@ -18803,7 +19323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the square root of #n.
+	         * Return a new Decimal whose value is the square root of n.
 	         *
 	         * n {number|string|Decimal}
 	         *
@@ -18812,7 +19332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is the tangent of #n.
+	         * Return a new Decimal whose value is the tangent of n.
 	         *
 	         * n {number|string|Decimal} A number given in radians.
 	         *
@@ -18821,7 +19341,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Return a new Decimal whose value is #n truncated to an integer.
+	         * Return a new Decimal whose value is n truncated to an integer.
 	         *
 	         * n {number|string|Decimal}
 	         *
@@ -18891,7 +19411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            Decimal['precision'] = 20;                        // 1 to MAX_DIGITS
 
 	            /*
-	             The rounding mode used when rounding to #precision.
+	             The rounding mode used when rounding to precision.
 
 	             ROUND_UP         0 Away from zero.
 	             ROUND_DOWN       1 Towards zero.
@@ -18929,11 +19449,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	             */
 	            Decimal['modulo'] = 1;                            // 0 to 9
 
-	            // The exponent value at and beneath which #toString returns exponential notation.
+	            // The exponent value at and beneath which toString returns exponential notation.
 	            // Number type: -7
 	            Decimal['toExpNeg'] = -7;                       // 0 to -EXP_LIMIT
 
-	            // The exponent value at and above which #toString returns exponential notation.
+	            // The exponent value at and above which toString returns exponential notation.
 	            // Number type: 21
 	            Decimal['toExpPos'] = 21;                       // 0 to EXP_LIMIT
 
@@ -19002,7 +19522,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            Decimal['pow'] = pow;
 	            Decimal['sqrt'] = sqrt;
 	            Decimal['random'] = random;
-	            //Decimal['randomE'] = randomE;
 
 	            if ( obj != null ) {
 	                Decimal['config'](obj);
@@ -19018,199 +19537,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Export.
 
 
-	    // Node and other CommonJS-like environments that support module.exports.
-	    if ( typeof module != 'undefined' && module && module.exports ) {
-	        module.exports = DecimalConstructor;
-
-	        if ( true ) {
-	            crypto = __webpack_require__(256);
-	        }
-	    } else {
+	    // AMD.
+	    if ( true ) {
 	        crypto = global['crypto'];
 
-	        //AMD.
-	        if ( true ) {
-	            !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () { return DecimalConstructor }.call(exports, __webpack_require__, exports, module)), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	        !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
 
-	        //Browser.
-	        } else {
-	            noConflict = global['Decimal'];
+	            return DecimalConstructor;
+	        }.call(exports, __webpack_require__, exports, module)), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-	            DecimalConstructor['noConflict'] = function () {
-	                global['Decimal'] = noConflict;
+	    // Node and other CommonJS-like environments that support module.exports.
+	    } else if ( typeof module != 'undefined' && module && module.exports ) {
+	        module.exports = DecimalConstructor;
 
-	                return DecimalConstructor;
-	            };
-	            global['Decimal'] = DecimalConstructor;
+	        if ( typeof require == 'function' ) {
+	            crypto = require('crypto');
 	        }
+
+	    // Browser.
+	    } else {
+	        crypto = global['crypto'];
+	        noConflict = global['Decimal'];
+
+	        DecimalConstructor['noConflict'] = function () {
+	            global['Decimal'] = noConflict;
+
+	            return DecimalConstructor;
+	        };
+
+	        global['Decimal'] = DecimalConstructor;
 	    }
 	})(this);
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(260)(module)))
-
-/***/ },
-/* 119 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Create a syntax error with the message:
-	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
-	 * @param {String} fn     Function name
-	 * @param {Number} count  Actual argument count
-	 * @param {Number} min    Minimum required argument count
-	 * @param {Number} [max]  Maximum required argument count
-	 * @extends Error
-	 */
-	function ArgumentsError(fn, count, min, max) {
-	  if (!(this instanceof ArgumentsError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.fn = fn;
-	  this.count = count;
-	  this.min = min;
-	  this.max = max;
-
-	  this.message = 'Wrong number of arguments in function ' + fn +
-	      ' (' + count + ' provided, ' +
-	      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	ArgumentsError.prototype = new Error();
-	ArgumentsError.prototype.constructor = Error;
-	ArgumentsError.prototype.name = 'ArgumentsError';
-
-	module.exports = ArgumentsError;
-
-
-/***/ },
-/* 120 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Create a range error with the message:
-	 *     'Dimension mismatch (<actual size> != <expected size>)'
-	 * @param {number | number[]} actual        The actual size
-	 * @param {number | number[]} expected      The expected size
-	 * @param {string} [relation='!=']          Optional relation between actual
-	 *                                          and expected size: '!=', '<', etc.
-	 * @extends RangeError
-	 */
-	function DimensionError(actual, expected, relation) {
-	  if (!(this instanceof DimensionError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.actual   = actual;
-	  this.expected = expected;
-	  this.relation = relation;
-
-	  this.message = 'Dimension mismatch (' +
-	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
-	      ' ' + (this.relation || '!=') + ' ' +
-	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
-	      ')';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	DimensionError.prototype = new RangeError();
-	DimensionError.prototype.constructor = RangeError;
-	DimensionError.prototype.name = 'DimensionError';
-
-	module.exports = DimensionError;
-
-
-/***/ },
-/* 121 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Create a range error with the message:
-	 *     'Index out of range (index < min)'
-	 *     'Index out of range (index < max)'
-	 *
-	 * @param {number} index     The actual index
-	 * @param {number} [min=0]   Minimum index (included)
-	 * @param {number} [max]     Maximum index (excluded)
-	 * @extends RangeError
-	 */
-	function IndexError(index, min, max) {
-	  if (!(this instanceof IndexError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.index = index;
-	  if (arguments.length < 3) {
-	    this.min = 0;
-	    this.max = min;
-	  }
-	  else {
-	    this.min = min;
-	    this.max = max;
-	  }
-
-	  if (this.min !== undefined && this.index < this.min) {
-	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
-	  }
-	  else if (this.max !== undefined && this.index >= this.max) {
-	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
-	  }
-	  else {
-	    this.message = 'Index out of range (' + this.index + ')';
-	  }
-
-	  this.stack = (new Error()).stack;
-	}
-
-	IndexError.prototype = new RangeError();
-	IndexError.prototype.constructor = RangeError;
-	IndexError.prototype.name = 'IndexError';
-
-	module.exports = IndexError;
-
-
-/***/ },
-/* 122 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Create a TypeError with message:
-	 *      'Function <fn> does not support a parameter of type <type>';
-	 * @param {String} fn     Function name
-	 * @param {*...} [types]  The types of the function arguments
-	 * @extends TypeError
-	 */
-	function UnsupportedTypeError(fn, types) {
-	  if (!(this instanceof UnsupportedTypeError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.fn = fn;
-	  this.types = Array.prototype.splice.call(arguments, 1);
-
-	  if (!fn) {
-	    this.message = 'Unsupported type of argument';
-	  }
-	  else {
-	    if (this.types.length == 0) {
-	      this.message = 'Unsupported type of argument in function ' + fn;
-	    }
-	    else {
-	      this.message = 'Function ' + fn + '(' + this.types.join(', ') + ') not supported';
-	    }
-	  }
-
-	  this.stack = (new Error()).stack;
-	}
-
-	UnsupportedTypeError.prototype = new TypeError();
-	UnsupportedTypeError.prototype.constructor = TypeError;
-	UnsupportedTypeError.prototype.name = 'UnsupportedTypeError';
-
-	module.exports = UnsupportedTypeError;
 
 
 /***/ },
@@ -19218,9 +19575,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	exports.array = __webpack_require__(153);
-	exports['boolean'] = __webpack_require__(257);
+	exports['boolean'] = __webpack_require__(256);
 	exports.number = __webpack_require__(154);
-	exports.bignumber = __webpack_require__(258);
+	exports.bignumber = __webpack_require__(257);
 	exports.object = __webpack_require__(3);
 	exports.string = __webpack_require__(138);
 	exports.types = __webpack_require__(156);
@@ -19347,7 +19704,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Node = __webpack_require__(137),
 	    ArrayNode = __webpack_require__(124),
 
-	    latex = __webpack_require__(259),
+	    latex = __webpack_require__(258),
 	    isString = __webpack_require__(138).isString;
 
 	/**
@@ -19433,7 +19790,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Node = __webpack_require__(137),
-	    isBoolean = __webpack_require__(257).isBoolean;
+	    isBoolean = __webpack_require__(256).isBoolean;
 
 	/**
 	 * @constructor BlockNode
@@ -19668,7 +20025,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Node = __webpack_require__(137),
-	    latex = __webpack_require__(259),
+	    latex = __webpack_require__(258),
 	    isString = __webpack_require__(138).isString;
 	    isArray = Array.isArray;
 
@@ -19978,7 +20335,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ConstantNode = __webpack_require__(127),
 	    SymbolNode = __webpack_require__(133),
 	    ParamsNode = __webpack_require__(131),
-	    latex = __webpack_require__(259);
+	    latex = __webpack_require__(258);
 
 	/**
 	 * @constructor OperatorNode
@@ -20175,7 +20532,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Node = __webpack_require__(137),
 
-	    latex = __webpack_require__(259),
+	    latex = __webpack_require__(258),
 	    isNode = Node.isNode;
 
 	/**
@@ -20379,7 +20736,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Node = __webpack_require__(137),
 	    Unit = __webpack_require__(9),
 
-	    latex = __webpack_require__(259),
+	    latex = __webpack_require__(258),
 	    isString = __webpack_require__(138).isString;
 
 	/**
@@ -20461,7 +20818,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var OperatorNode = __webpack_require__(130),
 
-	    latex = __webpack_require__(259);
+	    latex = __webpack_require__(258);
 
 	/**
 	 * @constructor TernaryNode
@@ -20532,7 +20889,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    Unit = __webpack_require__(9),
 
-	    latex = __webpack_require__(259),
+	    latex = __webpack_require__(258),
 	    isString = __webpack_require__(138).isString;
 
 	/**
@@ -20867,8 +21224,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var number = __webpack_require__(154),
-	    bignumber = __webpack_require__(258),
-	    BigNumber = __webpack_require__(118);
+	    bignumber = __webpack_require__(257),
+	    BigNumber = __webpack_require__(122);
 
 	/**
 	 * Test whether value is a String
@@ -21251,8 +21608,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    object = __webpack_require__(3),
 	    types = __webpack_require__(156),
 
-	    DimensionError = __webpack_require__(120),
-	    IndexError = __webpack_require__(121),
+	    DimensionError = __webpack_require__(119),
+	    IndexError = __webpack_require__(120),
 
 	    isArray = Array.isArray;
 
@@ -21656,7 +22013,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var notation = 'auto';
 	  var precision = undefined;
 
-	  if (options !== undefined) {
+	  if (options) {
 	    // determine notation from options
 	    if (options.notation) {
 	      notation = options.notation;
@@ -24330,12 +24687,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_256__;
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/**
 	 * Test whether value is a Boolean
 	 * @param {*} value
@@ -24347,10 +24698,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 258 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var BigNumber = __webpack_require__(118),
+	var BigNumber = __webpack_require__(122),
 	    isNumber = __webpack_require__(154).isNumber;
 	    digits = __webpack_require__(154).digits;
 
@@ -24549,7 +24900,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 259 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ArrayNode = __webpack_require__(124),
@@ -25041,22 +25392,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      exports.addBraces(texParams, brace, type) +
 	      suffix;
 	};
-
-
-/***/ },
-/* 260 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function(module) {
-		if(!module.webpackPolyfill) {
-			module.deprecate = function() {};
-			module.paths = [];
-			// module.parent = undefined by default
-			module.children = [];
-			module.webpackPolyfill = 1;
-		}
-		return module;
-	}
 
 
 /***/ }

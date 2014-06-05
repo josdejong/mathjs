@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.22.1
+
+- Fixed not being able to load math.js using AMD/require.js.
+
+
 ## 2014-05-22, version 0.22.0
 
 - Implemented support to export expressions to LaTeX. Thanks Niels Heisterkamp
