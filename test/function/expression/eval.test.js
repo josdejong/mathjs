@@ -57,13 +57,11 @@ describe('eval', function() {
     assert.deepEqual(math.eval('c=5', scope), 5);
     assert.deepEqual(math.format(math.eval('f(x) = x^a', scope)), 'f(x)');
 
-    assert.deepEqual(Object.keys(scope).length, 5);
+    assert.deepEqual(Object.keys(scope).length, 4);
     assert.deepEqual(scope.a, 3);
     assert.deepEqual(scope.b, 4);
     assert.deepEqual(scope.c, 5);
     assert.deepEqual(typeof scope.f, 'function');
-    assert.deepEqual(typeof scope.ans, 'function');
-    assert.strictEqual(scope.ans, scope.f);
 
     assert.equal(scope.f(3), 27);
     scope.a = 2;

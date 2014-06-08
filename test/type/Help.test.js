@@ -13,8 +13,8 @@ describe('help', function() {
     ],
     'description': 'Add two values.',
     'examples': [
-      '2.1 + 3.6',
-      'ans - 3.6'
+      'a = 2.1 + 3.6',
+      'a - 3.6'
     ],
     'seealso': [
       'subtract'
@@ -58,9 +58,9 @@ describe('help', function() {
         '    add(x, y)\n' +
         '\n' +
         'Examples:\n' +
-        '    2.1 + 3.6\n' +
+        '    a = 2.1 + 3.6\n' +
         '        5.7\n' +
-        '    ans - 3.6\n' +
+        '    a - 3.6\n' +
         '        2.1\n' +
         '\n' +
         'See also: subtract\n');

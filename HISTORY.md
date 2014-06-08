@@ -10,6 +10,20 @@ https://github.com/josdejong/mathjs
 - Added constant `version`, returning the version number of math.js as string.
 - Fixed not being able to load math.js using AMD/require.js.
 - Removed matrix support from conditional function `ifElse`.
+- Removed automatic assignment of expression results to variable `ans`. 
+  This functionality can be restored by overriding `math.eval`, `math.parse`,
+  and `math.compile` to something like:
+  ```js
+  var math = mathjs();
+  
+  var origEval = math.eval;
+  math.import({
+    eval: function (expr, scope) {
+      return origEval('ans=(' + expr + ')', scope);
+    }
+    // ... and the same with math.parse and math.compile
+  }, {override: true, wrap: false});  
+  ```
 
 
 ## 2014-05-22, version 0.22.0

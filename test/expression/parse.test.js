@@ -198,9 +198,9 @@ describe('parse', function() {
       var scope = {};
       approx.deepEqual(parseAndEval('(5.08 cm * 1000) to inch', scope),
           math.unit(2000, 'inch').to('inch'));
-      approx.deepEqual(parseAndEval('(5.08 cm * 1000) to mm', scope),
+      approx.deepEqual(parseAndEval('a = (5.08 cm * 1000) to mm', scope),
           math.unit(50800, 'mm').to('mm'));
-      approx.deepEqual(parseAndEval('ans to inch', scope),
+      approx.deepEqual(parseAndEval('a to inch', scope),
           math.unit(2000, 'inch').to('inch'));
 
       approx.deepEqual(parseAndEval('10 celsius to fahrenheit'),
@@ -562,7 +562,7 @@ describe('parse', function() {
     it('should parse operations', function() {
       approx.equal(parseAndEval('(2+3)/4'), 1.25);
       approx.equal(parseAndEval('2+3/4'), 2.75);
-      assert.equal(parse('0 + 2').toString(), 'ans = 0 + 2');
+      assert.equal(parse('0 + 2').toString(), '0 + 2');
     });
 
     it('should parse +', function() {
@@ -950,13 +950,11 @@ describe('parse', function() {
       assert.deepEqual(parse('f(x) = x^a').compile(math).eval(scope).syntax, 'f(x)');
 
 
-      assert.deepEqual(Object.keys(scope).length, 5);
+      assert.deepEqual(Object.keys(scope).length, 4);
       assert.deepEqual(scope.a, 3);
       assert.deepEqual(scope.b, 4);
       assert.deepEqual(scope.c, 5);
       assert.deepEqual(typeof scope.f, 'function');
-      assert.deepEqual(typeof scope.ans, 'function');
-      assert.strictEqual(scope.f, scope.ans);
 
       assert.equal(scope.f(3), 27);
       scope.a = 2;
@@ -1007,9 +1005,9 @@ describe('parse', function() {
     // TODO: test parsing into a node tree
 
     it('should correctly stringify a node tree', function() {
-      assert.equal(parse('0').toString(), 'ans = 0');
-      assert.equal(parse('"hello"').toString(), 'ans = "hello"');
-      assert.equal(parse('[1, 2 + 3i, 4]').toString(), 'ans = [1, 2 + 3i, 4]');
+      assert.equal(parse('0').toString(), '0');
+      assert.equal(parse('"hello"').toString(), '"hello"');
+      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3i, 4]');
     });
 
     describe('custom nodes', function () {
