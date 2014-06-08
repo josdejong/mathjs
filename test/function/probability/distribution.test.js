@@ -79,7 +79,7 @@ describe('distribution', function () {
       assertUniformDistribution(picked, -10, 10);
     });
 
-    it('should pick uniformly distributed random matrix, with elements in [0, 1]', function() {
+    it('should pick uniformly distributed random array, with elements in [0, 1]', function() {
       var picked = [],
           matrices = [],
           size = [2, 3, 4];
@@ -90,7 +90,52 @@ describe('distribution', function () {
 
       // Collect all values in one array
       matrices.forEach(function(matrix) {
-        assert.deepEqual(matrix.size(), size);
+        assert(Array.isArray(matrix));
+        assert.deepEqual(math.size(matrix), size);
+        math.forEach(matrix, function(val) {
+          picked.push(val);
+        })
+      });
+      assert.equal(picked.length, 2 * 3 * 4 * 100);
+
+      assertUniformDistribution(picked, 0, 1);
+    });
+
+    it('should pick uniformly distributed random array, with elements in [0, max]', function() {
+      var picked = [],
+          matrices = [],
+          size = [2, 3, 4];
+
+      _.times(100, function() {
+        matrices.push(uniformDistrib.random(size, 8));
+      });
+
+      // Collect all values in one array
+      matrices.forEach(function(matrix) {
+        assert(Array.isArray(matrix));
+        assert.deepEqual(math.size(matrix), size);
+        math.forEach(matrix, function(val) {
+          picked.push(val);
+        })
+      });
+      assert.equal(picked.length, 2 * 3 * 4 * 100);
+
+      assertUniformDistribution(picked, 0, 8);
+    });
+
+    it('should pick uniformly distributed random matrix, with elements in [0, 1]', function() {
+      var picked = [],
+          matrices = [],
+          size = math.matrix([2, 3, 4]);
+
+      _.times(100, function() {
+        matrices.push(uniformDistrib.random(size));
+      });
+
+      // Collect all values in one array
+      matrices.forEach(function(matrix) {
+        assert(matrix instanceof math.type.Matrix);
+        assert.deepEqual(matrix.size(), size.valueOf());
         matrix.forEach(function(val) {
           picked.push(val);
         })
@@ -100,7 +145,7 @@ describe('distribution', function () {
       assertUniformDistribution(picked, 0, 1);
     });
 
-    it('should pick uniformly distributed random matrix, with elements in [min, max]', function() {
+    it('should pick uniformly distributed random array, with elements in [min, max]', function() {
       var picked = [],
           matrices = [],
           size = [2, 3, 4];
@@ -111,8 +156,8 @@ describe('distribution', function () {
 
       // Collect all values in one array
       matrices.forEach(function(matrix) {
-        assert.deepEqual(matrix.size(), size);
-        matrix.forEach(function(val) {
+        assert.deepEqual(math.size(matrix), size);
+        math.forEach(matrix, function(val) {
           picked.push(val);
         })
       });
@@ -142,7 +187,7 @@ describe('distribution', function () {
       assertUniformDistributionInt(picked, -15, -5);
     });
 
-    it('should pick uniformly distributed random matrix, with elements in [min, max)', function() {
+    it('should pick uniformly distributed random array, with elements in [min, max)', function() {
       var picked = [],
           matrices = [],
           size = [2, 3, 4];
@@ -153,8 +198,8 @@ describe('distribution', function () {
 
       // Collect all values in one array
       matrices.forEach(function(matrix) {
-        assert.deepEqual(matrix.size(), size);
-        matrix.forEach(function(val) {
+        assert.deepEqual(math.size(matrix), size);
+        math.forEach(matrix, function(val) {
           picked.push(val)
         });
       });
