@@ -2,22 +2,18 @@
 
 Execute a conditional expression.
 
-In case of a matrix or array, the test is done element wise, the
-true and false part can be either a matrix/array with the same size
-of the condition, or a scalar value.
-
 
 ## Syntax
 
 ```js
-math.ifElse(condition, trueExpr, falseExpr
+math.ifElse(condition, trueExpr, falseExpr)
 ```
 
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`condition` | Number &#124; Boolean &#124; String &#124; Complex &#124; BigNumber &#124; Unit &#124; Matrix &#124; Array |  The conditional expression
+`condition` | Number &#124; Boolean &#124; String &#124; Complex &#124; BigNumber &#124; Unit |  The conditional expression
 `trueExpr` | * | The true expression
 `falseExpr` | * | The false expression
 
@@ -34,7 +30,6 @@ Type | Description
 var math = mathjs();
 
 math.ifElse(true, 'yes', 'no');           // returns 'yes'
-math.ifElse([4, 6, 0, -1], true, false);  // returns [true, true, false, true]
 ```
 
 
