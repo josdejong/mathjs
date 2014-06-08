@@ -4,6 +4,7 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.22.1
 
+- Added constant `phi`, the golden ratio (`phi = 1.618...`).
 - Fixed not being able to load math.js using AMD/require.js.
 
 

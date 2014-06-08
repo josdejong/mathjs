@@ -14,10 +14,11 @@ Math.js has the following built-in constants.
 - math.SQRT1_2
 - math.SQRT2
 - math.tau
+- math.phi, golden ratio
 
 Example usage:
 
 ```js
-math.sin(math.pi / 4);  // 0.70711
-math.i * math.i;        // -1
+math.sin(math.pi / 4);          // 0.70711
+math.multiply(math.i, math.i);  // -1
 ```
