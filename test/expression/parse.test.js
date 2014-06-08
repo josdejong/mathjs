@@ -659,6 +659,9 @@ describe('parse', function() {
 
     it('should parse unary -', function() {
       assert.equal(parseAndEval('-2'), -2);
+      assert.equal(parseAndEval('--2'), 2);
+      assert.equal(parseAndEval('---2'), -2);
+
       assert.equal(parseAndEval('4*-2'), -8);
       assert.equal(parseAndEval('4 * -2'), -8);
       assert.equal(parseAndEval('4+-2'), 2);
@@ -674,7 +677,33 @@ describe('parse', function() {
       assert.equal(parseAndEval('5+--(2+1)'), 8);
     });
 
-    it('should parse unary !=', function() {
+    it('should parse unary +', function() {
+      assert.equal(parseAndEval('+2'), 2);
+      assert.equal(parseAndEval('++2'), 2);
+      assert.equal(parseAndEval('+++2'), 2);
+      assert.equal(parseAndEval('+true'), 1);
+
+      assert.equal(parseAndEval('4*+2'), 8);
+      assert.equal(parseAndEval('4 * +2'), 8);
+      assert.equal(parseAndEval('4-+2'), 2);
+      assert.equal(parseAndEval('4 - +2'), 2);
+      assert.equal(parseAndEval('4++2'), 6);
+      assert.equal(parseAndEval('4 + +2'), 6);
+
+      assert.equal(parseAndEval('5+3'), 8);
+      assert.equal(parseAndEval('5++3'), 8);
+    });
+
+    it('should parse unary + and -', function() {
+      assert.equal(parseAndEval('-+2'), -2);
+      assert.equal(parseAndEval('-+-2'), 2);
+      assert.equal(parseAndEval('+-+-2'), 2);
+      assert.equal(parseAndEval('+-2'), -2);
+      assert.equal(parseAndEval('+-+2'), -2);
+      assert.equal(parseAndEval('+-+-2'), 2);
+    });
+
+    it('should parse !=', function() {
       assert.equal(parseAndEval('2 != 3'), true);
       assert.equal(parseAndEval('2 != 2'), false);
     });
@@ -774,10 +803,15 @@ describe('parse', function() {
         assert.equal(parseAndEval('1.5^1.5^1.5^1.5'), parseAndEval('1.5^(1.5^(1.5^1.5))'));
       });
 
-      it('should respect precedence of unary minus and pow', function () {
+      it('should respect precedence of unary plus and minus and pow', function () {
         assert.equal(parseAndEval('-3^2'), -9);
         assert.equal(parseAndEval('(-3)^2'), 9);
         assert.equal(parseAndEval('2^-2'), 0.25);
+        assert.equal(parseAndEval('2^(-2)'), 0.25);
+
+        assert.equal(parseAndEval('+3^2'), 9);
+        assert.equal(parseAndEval('(+3)^2'), 9);
+        assert.equal(parseAndEval('2^(+2)'), 4);
       });
 
       it('should respect precedence of factorial and pow', function () {
@@ -788,7 +822,10 @@ describe('parse', function() {
 
       it('should respect precedence of factorial and (unary) plus/minus', function () {
         assert.equal(parseAndEval('-4!'), -24);
+        assert.equal(parseAndEval('-(4!)'), -24);
         assert.equal(parseAndEval('3!+2'), 8);
+        assert.equal(parseAndEval('(3!)+2'), 8);
+        assert.equal(parseAndEval('+4!'), 24);
       });
 
       it('should respect precedence of transpose', function () {

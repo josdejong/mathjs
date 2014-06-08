@@ -99,7 +99,7 @@ describe('help', function() {
     var help = new Help(math, {
       'name': 'add',
       'examples': [
-        '2 ++ 3'
+        '2 ^^ 3'
       ]
     });
 
@@ -107,7 +107,7 @@ describe('help', function() {
         '\nName: add\n' +
         '\n'+
         'Examples:\n' +
-        '    2 ++ 3\n' +
+        '    2 ^^ 3\n' +
         '        SyntaxError: Value expected (char 4)\n' +
         '\n');
   });

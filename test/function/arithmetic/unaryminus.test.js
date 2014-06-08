@@ -1,13 +1,31 @@
 // test unary minus
 var assert = require('assert'),
-    math = require('../../../index')(),
+    mathjs = require('../../../index'),
+    math = mathjs(),
     error = require('../../../lib/error/index'),
     bignumber = math.bignumber;
 
 describe('unaryminus', function() {
-  it('should perform unary minus of a boolean', function () {
+  it('should return unary minus of a boolean', function () {
     assert.equal(math.unaryminus(true), -1);
     assert.equal(math.unaryminus(false), 0);
+  });
+
+  it('should return bignumber unary minus of a boolean', function () {
+    var bigmath = mathjs({number: 'bignumber'});
+    assert.deepEqual(bigmath.unaryminus(true), bigmath.bignumber(-1));
+    assert.deepEqual(bigmath.unaryminus(false), bigmath.bignumber(-0));
+  });
+
+  it('should return unary minus on a string', function() {
+    assert.equal(math.unaryminus('2'), -2);
+    assert.equal(math.unaryminus('-2'), 2);
+  });
+
+  it('should return bignumber unary minus on a string', function() {
+    var bigmath = mathjs({number: 'bignumber'});
+    assert.deepEqual(bigmath.unaryminus('2'), bigmath.bignumber(-2));
+    assert.deepEqual(bigmath.unaryminus('-2'), bigmath.bignumber(2));
   });
 
   it('should perform unary minus of a number', function() {
@@ -31,10 +49,6 @@ describe('unaryminus', function() {
 
   it('should perform unary minus of a unit', function() {
     assert.equal(math.unaryminus(math.unit(5, 'km')).toString(), '-5 km');
-  });
-
-  it('should throw an error when used with a string', function() {
-    assert.throws(function () {math.unaryminus('hello'); });
   });
 
   it('should perform element-wise unary minus on a matrix', function() {

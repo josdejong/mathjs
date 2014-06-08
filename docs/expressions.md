@@ -285,7 +285,9 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `;`         | Row separator           | `[x, y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
 `\n`        | Statement separator     | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
 `+`         | Add                     | `x + y`     | Left to right | `4 + 5`               | `9`
+`+`         | Unary plus              | `+y`        | None          | `+"4"`                | `4`
 `-`         | Subtract                | `x - y`     | Left to right | `7 - 3`               | `4`
+`-`         | Unary minus             | `-y`        | None          | `-4`                  | `-4`
 `*`         | Multiply                | `x * y`     | Left to right | `2 * 3`               | `6`
 `.*`        | Element-wise multiply   | `x .* y`    | Left to right | `[1,2,3] .* [1,2,3]`  | `[1,4,9]`
 `/`         | Divide                  | `x / y`     | Left to right | `6 / 2`               | `3`
@@ -293,7 +295,6 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `%`, `mod`  | Modulus                 | `x % y`     | Left to right | `8 % 3`               | `2`
 `^`         | Power                   | `x ^ y`     | Right to left | `2 ^ 3`               | `8`
 `.^`        | Element-wise power      | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[9,27]`
-`-`         | Unary minus             | `-y`        | None          | `-4`                  | `-4`
 `'`         | Transpose               | `y'`        | None          | `[[1,2],[3,4]]'`      | `[[1,3],[2,4]]`
 `!`         | Factorial               | `y!`        | None          | `5!`                  | `120`
 `=`         | Assignment              | `x = y`     | Right to left | `a = 5`               | `5`
@@ -315,7 +316,7 @@ Operators                         | Description
 `'`                               | Matrix transpose
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
-`-`                               | Unary minus
+`+`, `-`                          | Unary plus, unary minus
 `x unit`                          | Unit
 `*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus
 `+`, `-`                          | Add, subtract

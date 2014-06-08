@@ -2,8 +2,10 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.22.1
+## not yet released, version 0.23.0
 
+- Renamed function `unary` to `unaryminus` and added support for strings.
+- Implemented function `unaryplus` and unary plus operator.
 - Added constant `phi`, the golden ratio (`phi = 1.618...`).
 - Fixed not being able to load math.js using AMD/require.js.
 
