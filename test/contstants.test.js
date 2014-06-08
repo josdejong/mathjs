@@ -8,17 +8,18 @@ describe('constants', function() {
     approx.equal(math.pi, 3.14159265358979);
     approx.equal(math.sin(math.pi / 2), 1);
     approx.equal(math.PI, math.pi);
-    approx.equal(math.eval('pi'), 3.14159265358979);
   });
 
   it('should have tau', function() {
     approx.equal(math.tau, 6.28318530717959);
-    approx.equal(math.eval('tau'), 6.28318530717959);
   });
+
+  it('should have phi, golden ratio', function() {
+    approx.equal(math.phi, 1.61803398874989484820458683436563811772030917980576286213545);
+    });
 
   it('should have euler constant', function() {
     approx.equal(math.e, 2.71828182845905);
-    approx.equal(math.eval('e'), 2.71828182845905);
     assert.equal(math.round(math.add(1,math.pow(math.e, math.multiply(math.pi, math.i))), 5), 0);
     assert.equal(math.round(math.eval('1+e^(pi*i)'), 5), 0);
   });

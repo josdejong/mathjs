@@ -53,7 +53,7 @@ math.add('hello ', 'world!');     // String  'hello world!'
 - math.subtract(x, y)
 - math.sqrt(x)
 - math.square(x)
-- math.unary(x)
+- math.unaryminus(x)
 - math.unequal(x)
 - math.xgcd(a, b)
 

@@ -293,7 +293,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `%`, `mod`  | Modulus                 | `x % y`     | Left to right | `8 % 3`               | `2`
 `^`         | Power                   | `x ^ y`     | Right to left | `2 ^ 3`               | `8`
 `.^`        | Element-wise power      | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[9,27]`
-`-`         | Unary                   | `-y`        | None          | `-4`                  | `-4`
+`-`         | Unary minus             | `-y`        | None          | `-4`                  | `-4`
 `'`         | Transpose               | `y'`        | None          | `[[1,2],[3,4]]'`      | `[[1,3],[2,4]]`
 `!`         | Factorial               | `y!`        | None          | `5!`                  | `120`
 `=`         | Assignment              | `x = y`     | Right to left | `a = 5`               | `5`
@@ -315,7 +315,7 @@ Operators                         | Description
 `'`                               | Matrix transpose
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
-`-`                               | Unary
+`-`                               | Unary minus
 `x unit`                          | Unit
 `*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus
 `+`, `-`                          | Add, subtract

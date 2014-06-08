@@ -86,7 +86,7 @@ describe('OperatorNode', function() {
 
   it ('should stringify a OperatorNode with unary minus', function () {
     var a = new ConstantNode('number', '2');
-    var n = new OperatorNode('-', 'unary', [a]);
+    var n = new OperatorNode('-', 'unaryminus', [a]);
     assert.equal(n.toString(), '-2');
   });
 
@@ -137,7 +137,7 @@ describe('OperatorNode', function() {
 
   it ('should LaTeX a OperatorNode with unary minus', function () {
     var a = new ConstantNode('number', '2');
-    var n = new OperatorNode('-', 'unary', [a]);
+    var n = new OperatorNode('-', 'unaryminus', [a]);
     assert.equal(n.toTex(), '-2');
   });
 
