@@ -2,6 +2,7 @@ var assert = require('assert'),
     error = require('../../../lib/error/index'),
     seed = require('seed-random'),
     _ = require('underscore'),
+    Matrix = require('../../../lib/type/Matrix'),
     math = require('../../../index')();
 
 var assertApproxEqual = function(testVal, val, tolerance) {
@@ -246,6 +247,36 @@ describe('distribution', function () {
       assert.equal(math.round(count/picked.length, 1), 0.2);
     });
 
+    it('should pick numbers from the given matrix following an uniform distribution', function() {
+      var possibles = new Matrix([11, 22, 33, 44, 55]),
+          picked = [],
+          count;
+
+      _.times(1000, function() {
+        picked.push(uniformDistrib.pickRandom(possibles));
+      });
+
+      count = _.filter(picked, function(val) { return val === 11 }).length;
+      assert.equal(math.round(count/picked.length, 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val === 22 }).length;
+      assert.equal(math.round(count/picked.length, 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val === 33 }).length;
+      assert.equal(math.round(count/picked.length, 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val === 44 }).length;
+      assert.equal(math.round(count/picked.length, 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val === 55 }).length;
+      assert.equal(math.round(count/picked.length, 1), 0.2);
+    });
+
+    it('should throw an error when providing a multi dimensional matrix', function() {
+      assert.throws(function () {
+        uniformDistrib.pickRandom(new Matrix([[1,2], [3,4]]));
+      }, math.error.DimensionError);
+    });
   });
 
   describe('distribution.normal', function() {

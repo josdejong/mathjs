@@ -29,7 +29,8 @@ https://github.com/josdejong/mathjs
 - Fixed a bug in multiplying units without value with a number (like `5 * cm`).
 - Fixed a bug in multiplying two matrices containing vectors (worked fine for 
   arrays).
-- Fixed random functions returning a Matrix on Array input.
+- Fixed random functions not accepting Matrix as input, and always returning
+  a Matrix as output.
 
 
 ## 2014-05-13, version 0.21.1
