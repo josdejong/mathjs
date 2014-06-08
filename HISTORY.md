@@ -7,7 +7,9 @@ https://github.com/josdejong/mathjs
 - Renamed function `unary` to `unaryminus` and added support for strings.
 - Implemented function `unaryplus` and unary plus operator.
 - Added constant `phi`, the golden ratio (`phi = 1.618...`).
+- Added constant `version`, returning the version number of math.js as string.
 - Fixed not being able to load math.js using AMD/require.js.
+- Removed matrix support from conditional function `ifElse`.
 
 
 ## 2014-05-22, version 0.22.0

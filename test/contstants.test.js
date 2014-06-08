@@ -47,4 +47,8 @@ describe('constants', function() {
     assert.ok(isNaN(math.NaN));
   });
 
+  it('should have version number', function() {
+    assert.equal(math.version, require('../package.json').version);
+  });
+
 });

@@ -15,6 +15,7 @@ Math.js has the following built-in constants.
 - math.SQRT2
 - math.tau
 - math.phi, golden ratio
+- math.version, version number of math.js
 
 Example usage:
 
