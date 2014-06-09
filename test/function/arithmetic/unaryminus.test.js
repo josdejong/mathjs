@@ -65,4 +65,8 @@ describe('unaryminus', function() {
     assert.throws(function () {math.unaryminus(1, 2)}, error.ArgumentsError);
   });
 
+  it('should throw an error in case of invalid type of argument', function() {
+    assert.throws(function () {math.unaryminus(new Date())}, error.UnsupportedTypeError);
+  });
+
 });

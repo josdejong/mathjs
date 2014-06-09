@@ -67,4 +67,32 @@ describe('deprecated stuff', function() {
     }, /Deprecated keyword "function"/);
   });
 
+  it ('should throw an error when using deprecated function unary', function () {
+    var math = mathjs();
+    assert.throws(function () {
+      new math.unary(2);
+    }, /deprecated/);
+  });
+
+  it ('should throw an error when using deprecated function epow', function () {
+    var math = mathjs();
+    assert.throws(function () {
+      new math.epow(2, 3);
+    }, /is renamed/);
+  });
+
+  it ('should throw an error when using deprecated function edivide', function () {
+    var math = mathjs();
+    assert.throws(function () {
+      new math.edivide(2, 3);
+    }, /is renamed/);
+  });
+
+  it ('should throw an error when using deprecated function emultiply', function () {
+    var math = mathjs();
+    assert.throws(function () {
+      new math.emultiply(2, 3);
+    }, /is renamed/);
+  });
+
 });
