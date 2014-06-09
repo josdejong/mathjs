@@ -172,6 +172,7 @@ function runStream (input, output) {
       if (expr) {
         try {
           var res = parser.eval(expr);
+          parser.set('ans', res); // TODO: in case of multi line input, set ans as the last of the expressions
           if (!Array.isArray(res) || res.length) {
             // TODO: how to distinguish array output from multi-line output?
 
