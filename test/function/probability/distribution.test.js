@@ -306,4 +306,23 @@ describe('distribution', function () {
 
   });
 
+  it('should throw an error in case of unknown distribution name', function() {
+    assert.throws(function () {
+      math.distribution('non-existing');
+    }, /Unknown distribution/)
+  });
+
+  it('created random functions should throw an error in case of wrong number of arguments', function() {
+    var dist = math.distribution('uniform');
+    assert.throws(function () {dist.random([2,3], 10, 100, 12); }, error.ArgumentsError);
+    assert.throws(function () {dist.randomInt([2,3], 10, 100, 12); }, error.ArgumentsError);
+    assert.throws(function () {dist.pickRandom(); }, error.ArgumentsError);
+    assert.throws(function () {dist.pickRandom([], 23); }, error.ArgumentsError);
+  });
+
+  it('created random functions should throw an error in case of wrong type of arguments', function() {
+    var dist = math.distribution('uniform');
+    assert.throws(function () {dist.pickRandom(23); }, error.TypeError);
+    // TODO: more type testing...
+  });
 });
