@@ -47,9 +47,9 @@ math.smaller(a, b);            // returns true
 
 [equal](equal.md),
 [unequal](unequal.md),
-[smallereq](smallereq.md),
+[smallerEq](smallerEq.md),
 [larger](larger.md),
-[largereq](largereq.md),
+[largerEq](largerEq.md),
 [compare](compare.md)
 
 

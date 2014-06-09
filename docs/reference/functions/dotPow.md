@@ -1,4 +1,4 @@
-# Function dotpow
+# Function dotPow
 
 Calculates the power of x to y element wise.
 
@@ -6,7 +6,7 @@ Calculates the power of x to y element wise.
 ## Syntax
 
 ```js
-math.dotpow(x, y)
+math.dotPow(x, y)
 ```
 
 ### Parameters
@@ -28,10 +28,10 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ```js
 var math = mathjs();
 
-math.dotpow(2, 3);            // returns Number 8
+math.dotPow(2, 3);            // returns Number 8
 
 var a = [[1, 2], [4, 3]];
-math.dotpow(a, 2);            // returns Array [[1, 4], [16, 9]]
+math.dotPow(a, 2);            // returns Array [[1, 4], [16, 9]]
 math.pow(a, 2);               // returns Array [[9, 8], [16, 17]]
 ```
 

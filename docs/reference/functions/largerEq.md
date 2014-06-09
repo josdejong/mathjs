@@ -1,4 +1,4 @@
-# Function largereq
+# Function largerEq
 
 Test whether value x is larger or equal to y.
 
@@ -12,7 +12,7 @@ For matrices, the function is evaluated element wise.
 ## Syntax
 
 ```js
-math.largereq(x, y)
+math.largerEq(x, y)
 ```
 
 ### Parameters
@@ -35,7 +35,7 @@ Boolean &#124; Array &#124; Matrix | Returns true when the x is larger or equal 
 var math = mathjs();
 
 math.larger(2, 1 + 1);         // returns false
-math.largereq(2, 1 + 1);       // returns true
+math.largerEq(2, 1 + 1);       // returns true
 ```
 
 
@@ -44,7 +44,7 @@ math.largereq(2, 1 + 1);       // returns true
 [equal](equal.md),
 [unequal](unequal.md),
 [smaller](smaller.md),
-[smallereq](smallereq.md),
+[smallerEq](smallerEq.md),
 [larger](larger.md),
 [compare](compare.md)
 

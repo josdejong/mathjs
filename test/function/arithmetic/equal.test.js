@@ -130,18 +130,32 @@ describe('equal', function() {
     assert.equal(equal('hello', 'hello'), true);
   });
 
-  it('should compare a string an matrix elementwise', function() {
-    assert.deepEqual(equal('B', ['A', 'B', 'C']), [false, true, false]);
-    assert.deepEqual(equal(['A', 'B', 'C'], 'B'), [false, true, false]);
+  it('should compare a string an matrix', function() {
+    assert.deepEqual(equal('B', ['A', 'B', 'C']), false);
+    assert.deepEqual(equal(['A', 'B', 'C'], 'B'), false);
   });
 
-  it('should compare two matrices correctly', function() {
-    assert.deepEqual(equal([1,4,5], [3,4,5]), [false, true, true]);
-    assert.deepEqual(equal([1,4,5], matrix([3,4,5])), matrix([false, true, true]));
+  it('should compare two matrices (deepEqual)', function() {
+    assert.deepEqual(equal([1,4,5], [3,4,5]), false);
+    assert.deepEqual(equal([1,4,5], [1,4,5]), true);
+    assert.deepEqual(equal([1,4,5], [1,4]), false);
+    assert.deepEqual(equal([1,4], [1,4,5]), false);
+    assert.deepEqual(equal([1,4,5], matrix([3,4,5])), false);
+    assert.deepEqual(equal([1,4,5], matrix([1,4,5])), true);
+    assert.deepEqual(equal(matrix([1,4,5]), matrix([1,4,5])), true);
+
+    assert.deepEqual(equal(matrix([[1,2], [3,4]]), matrix([[1,2], [3,4]])), true);
+    assert.deepEqual(equal(matrix([[1,2], [3,4]]), matrix([[1,2], [3,5]])), false);
+    assert.deepEqual(equal(matrix([[1,2], [3,4]]), matrix([[1,2], [3,4], [5,6]])), false);
+    assert.deepEqual(equal(matrix([[1,2], [3,4], [5,6]]), matrix([[1,2], [3,4]])), false);
   });
 
-  it('should throw an error if matrices have different sizes', function() {
-    assert.throws(function () {equal([1,4,5], [3,4])});
+  it('should compare two matrices with mixed types', function() {
+    assert.deepEqual(equal([1,4,5], [true,4,5]), true);
+    assert.deepEqual(equal([2,3], [2, bignumber(3)]), true);
+    assert.deepEqual(equal([2,3], [2, bignumber(4)]), false);
+    assert.deepEqual(equal([complex(2,3),3], [complex(2,3),3]), true);
+    assert.deepEqual(equal([complex(2,3),3], [complex(2,4),3]), false);
   });
 
   it('should throw an error in case of invalid number of arguments', function() {

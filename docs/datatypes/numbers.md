@@ -97,4 +97,4 @@ console.log(math.equal(3e-20, 3.1e-20));  // true
 ```
 
 The available comparison functions are: `compare`, `equal`, `larger`,
-`largereq`, `smaller`, `smallereq`, `unequal`.
+`largerEq`, `smaller`, `smallerEq`, `unequal`.

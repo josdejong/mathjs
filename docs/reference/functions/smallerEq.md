@@ -1,4 +1,4 @@
-# Function smallereq
+# Function smallerEq
 
 Test whether value x is smaller or equal to y.
 
@@ -11,7 +11,7 @@ For matrices, the function is evaluated element wise.
 ## Syntax
 
 ```js
-math.smallereq(x, y)
+math.smallerEq(x, y)
 ```
 
 ### Parameters
@@ -34,7 +34,7 @@ Boolean &#124; Array &#124; Matrix | Returns true when the x is smaller than y, 
 var math = mathjs();
 
 math.smaller(1 + 2, 3);        // returns false
-math.smallereq(1 + 2, 3);      // returns true
+math.smallerEq(1 + 2, 3);      // returns true
 ```
 
 
@@ -44,7 +44,7 @@ math.smallereq(1 + 2, 3);      // returns true
 [unequal](unequal.md),
 [smaller](smaller.md),
 [larger](larger.md),
-[largereq](largereq.md),
+[largerEq](largerEq.md),
 [compare](compare.md)
 
 

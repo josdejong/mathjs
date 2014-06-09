@@ -6,7 +6,9 @@ var gutil = require('gulp-util'),
     prop;
 
 // names to ignore
-var ignore = ['workspace', 'compile', 'parse', 'parser', 'select', 'unary', 'print', 'config', 'in'];
+var ignore = ['compile', 'parse', 'parser', 'select', 'print', 'config', 'in',
+  'workspace', 'unary', 'edivide', 'emultiply', 'epow'
+];
 
 // test whether all functions are documented
 var undocumentedCount = 0;

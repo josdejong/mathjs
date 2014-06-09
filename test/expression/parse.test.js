@@ -68,7 +68,7 @@ describe('parse', function() {
 
   it('should give informative syntax errors', function() {
     assert.throws(function () {parse('sin pi').compile(math).eval()}, /First parameter in Unit constructor must be a number/);
-    assert.throws(function () {parse('2 +')}, /Unexpected end of expression \(char 5\)/);
+    assert.throws(function () {parse('2 +')}, /Unexpected end of expression \(char 4\)/);
     assert.throws(function () {parse('2 ~ 3')}, /Syntax error in part "~ 3" \(char 3\)/);
     assert.throws(function () {parse('2 + 3\n3 +\n-4')}, /Value expected \(char 10\)/);
   });
@@ -605,8 +605,15 @@ describe('parse', function() {
     });
 
     it('should parse ==', function() {
-      assert.equal(parseAndEval('2 == 3'), false);
-      assert.equal(parseAndEval('2 == 2'), true);
+      assert.strictEqual(parseAndEval('2 == 3'), false);
+      assert.strictEqual(parseAndEval('2 == 2'), true);
+      assert.strictEqual(parseAndEval('[2,3] == [2,4]'), false);
+    });
+
+    it('should parse .==', function() {
+      assert.equal(parseAndEval('2 .== 3'), false);
+      assert.equal(parseAndEval('2 .== 2'), true);
+      assert.deepEqual(parseAndEval('[2,3] .== [2,4]'), new Matrix([true, false]));
     });
 
     it('should parse >', function() {
@@ -704,8 +711,15 @@ describe('parse', function() {
     });
 
     it('should parse !=', function() {
-      assert.equal(parseAndEval('2 != 3'), true);
-      assert.equal(parseAndEval('2 != 2'), false);
+      assert.strictEqual(parseAndEval('2 != 3'), true);
+      assert.strictEqual(parseAndEval('2 != 2'), false);
+      assert.strictEqual(parseAndEval('[2,3] != [2,4]'), true);
+    });
+
+    it('should parse .!=', function() {
+      assert.equal(parseAndEval('2 .!= 3'), true);
+      assert.equal(parseAndEval('2 .!= 2'), false);
+      assert.deepEqual(parseAndEval('[2,3] .!= [2,4]'), new Matrix([false, true]));
     });
 
     it('should parse contitional expression a ? b : c', function() {

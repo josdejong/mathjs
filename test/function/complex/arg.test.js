@@ -36,12 +36,12 @@ describe('arg', function() {
 
   it('should calculate the argument for each element in a matrix', function() {
     assert.deepEqual(math.divide(arg([
-      math.i, math.unaryminus(math.i), math.add(1,math.i)
+      math.i, math.unaryMinus(math.i), math.add(1,math.i)
     ]), math.pi), [
       0.5, -0.5, 0.25
     ]);
     assert.deepEqual(math.matrix(math.divide(arg([
-      math.i, math.unaryminus(math.i), math.add(1,math.i)
+      math.i, math.unaryMinus(math.i), math.add(1,math.i)
     ]), math.pi)).valueOf(), [
       0.5, -0.5, 0.25
     ]);

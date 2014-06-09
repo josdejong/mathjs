@@ -1,4 +1,4 @@
-# Function unaryplus
+# Function unaryPlus
 
 Unary plus operation.
 Boolean values and strings will be converted to a number, numeric values will be returned as is.
@@ -9,7 +9,7 @@ For matrices, the function is evaluated element wise.
 ## Syntax
 
 ```js
-math.unaryplus(x)
+math.unaryPlus(x)
 ```
 
 ### Parameters
@@ -30,14 +30,14 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ```js
 var math = mathjs();
 
-math.unaryplus(3.5);      // returns 3.5
-math.unaryplus(1);     // returns 1
+math.unaryPlus(3.5);      // returns 3.5
+math.unaryPlus(1);     // returns 1
 ```
 
 
 ## See also
 
-[unaryminus](unaryminus.md),
+[unaryMinus](unaryMinus.md),
 [add](add.md),
 [subtract](subtract.md)
 

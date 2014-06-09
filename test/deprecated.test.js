@@ -95,4 +95,18 @@ describe('deprecated stuff', function() {
     }, /is renamed/);
   });
 
+  it ('should throw an error when using deprecated function smallereq', function () {
+    var math = mathjs();
+    assert.throws(function () {
+      new math.smallereq(2, 3);
+    }, /is renamed/);
+  });
+
+  it ('should throw an error when using deprecated function largereq', function () {
+    var math = mathjs();
+    assert.throws(function () {
+      new math.largereq(2, 3);
+    }, /is renamed/);
+  });
+
 });

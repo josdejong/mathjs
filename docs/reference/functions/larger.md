@@ -48,8 +48,8 @@ math.larger(a, b);             // returns false
 [equal](equal.md),
 [unequal](unequal.md),
 [smaller](smaller.md),
-[smallereq](smallereq.md),
-[largereq](largereq.md),
+[smallerEq](smallerEq.md),
+[largerEq](largerEq.md),
 [compare](compare.md)
 
 

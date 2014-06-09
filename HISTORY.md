@@ -4,10 +4,15 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.23.0
 
-- Renamed functions `edivide`, `emultiply`, and `epow` to `dotdivide`, 
-  `dotmultiply`, and `dotpow` respectively. 
-- Renamed function `unary` to `unaryminus` and added support for strings.
-- Implemented function `unaryplus` and unary plus operator.
+- Renamed some functions (everything now has a logical, camel case name):
+  - Renamed functions `edivide`, `emultiply`, and `epow` to `dotDivide`, 
+    `dotMultiply`, and `dotPow` respectively. 
+  - Renamed functions `smallereq` and `largereq` to `smallerEq` and `largerEq`.
+  - Renamed function `unary` to `unaryMinus` and added support for strings.
+- Implemented function `unaryPlus` and unary plus operator.
+- Matrix comparison of `equal` and `unequal` are now deep comparisons, 
+  element wise comparisons can be done with the new explicit functions 
+  `dotEqual` and `dotUnequal`. 
 - Added constant `phi`, the golden ratio (`phi = 1.618...`).
 - Added constant `version`, returning the version number of math.js as string.
 - Added unit `drop` (`gtt`).
