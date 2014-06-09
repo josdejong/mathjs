@@ -58,4 +58,9 @@ describe('IndexError', function () {
     assert.equal(err.toString(), 'IndexError: Index out of range (6 > 3)');
   });
 
+  it('should throw an error when constructed without new operator', function() {
+    assert.throws(function () {
+      IndexError(5);
+    });
+  });
 });
