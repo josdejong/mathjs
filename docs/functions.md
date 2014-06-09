@@ -53,9 +53,8 @@ math.add('hello ', 'world!');     // String  'hello world!'
 ## Comparison
 
 - math.compare(x, y)
-- math.dotEqual(x, y)
-- math.dotUnequal(x, y)
-- math.equal(x)
+- math.deepEqual(x, y)
+- math.equal(x, y)
 - math.larger(x, y)
 - math.largerEq(x, y)
 - math.smaller(x, y)

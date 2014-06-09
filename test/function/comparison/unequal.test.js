@@ -1,4 +1,4 @@
-// test equal
+// test unequal
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
     mathjs = require('../../../index'),
@@ -135,32 +135,18 @@ describe('unequal', function() {
     assert.equal(unequal('hello', 'hello'), false);
   });
 
-  it('should compare a string an matrix', function() {
-    assert.deepEqual(unequal('B', ['A', 'B', 'C']), true);
-    assert.deepEqual(unequal(['A', 'B', 'C'], 'B'), true);
+  it('should compare a string an matrix elementwise', function() {
+    assert.deepEqual(unequal('B', ['A', 'B', 'C']), [true, false, true]);
+    assert.deepEqual(unequal(['A', 'B', 'C'], 'B'), [true, false, true]);
   });
 
-  it('should compare two matrices (deepEqual)', function() {
-    assert.deepEqual(unequal([1,4,5], [3,4,5]), true);
-    assert.deepEqual(unequal([1,4,5], [1,4,5]), false);
-    assert.deepEqual(unequal([1,4,5], [1,4]), true);
-    assert.deepEqual(unequal([1,4], [1,4,5]), true);
-    assert.deepEqual(unequal([1,4,5], matrix([3,4,5])), true);
-    assert.deepEqual(unequal([1,4,5], matrix([1,4,5])), false);
-    assert.deepEqual(unequal(matrix([1,4,5]), matrix([1,4,5])), false);
-
-    assert.deepEqual(unequal(matrix([[1,2], [3,4]]), matrix([[1,2], [3,4]])), false);
-    assert.deepEqual(unequal(matrix([[1,2], [3,4]]), matrix([[1,2], [3,5]])), true);
-    assert.deepEqual(unequal(matrix([[1,2], [3,4]]), matrix([[1,2], [3,4], [5,6]])), true);
-    assert.deepEqual(unequal(matrix([[1,2], [3,4], [5,6]]), matrix([[1,2], [3,4]])), true);
+  it('should compare two matrices element wise', function() {
+    assert.deepEqual(unequal([1,4,5], [3,4,5]), [true, false, false]);
+    assert.deepEqual(unequal([1,4,5], matrix([3,4,5])), matrix([true, false, false]));
   });
 
-  it('should compare two matrices with mixed types', function() {
-    assert.deepEqual(unequal([1,4,5], [true,4,5]), false);
-    assert.deepEqual(unequal([2,3], [2, bignumber(3)]), false);
-    assert.deepEqual(unequal([2,3], [2, bignumber(4)]), true);
-    assert.deepEqual(unequal([complex(2,3),3], [complex(2,3),3]), false);
-    assert.deepEqual(unequal([complex(2,3),3], [complex(2,4),3]), true);
+  it('should throw an error if matrices have different sizes', function() {
+    assert.throws(function () {unequal([1,4,5], [3,4])});
   });
 
   it('should throw an error in case of invalid number of arguments', function() {

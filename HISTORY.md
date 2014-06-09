@@ -10,9 +10,7 @@ https://github.com/josdejong/mathjs
   - Renamed functions `smallereq` and `largereq` to `smallerEq` and `largerEq`.
   - Renamed function `unary` to `unaryMinus` and added support for strings.
 - Implemented function `unaryPlus` and unary plus operator.
-- Matrix comparison of `equal` and `unequal` are now deep comparisons, 
-  element wise comparisons can be done with the new explicit functions 
-  `dotEqual` and `dotUnequal`. 
+- Implemented function `deepEqual` for matrix comparisons. 
 - Added constant `phi`, the golden ratio (`phi = 1.618...`).
 - Added constant `version`, returning the version number of math.js as string.
 - Added unit `drop` (`gtt`).

@@ -6,8 +6,11 @@ var gutil = require('gulp-util'),
     prop;
 
 // names to ignore
-var ignore = ['compile', 'parse', 'parser', 'select', 'print', 'config', 'in',
-  'workspace', 'unary', 'edivide', 'emultiply', 'epow'
+var ignore = [
+  // functions not supported by the parser:
+  'compile', 'parse', 'parser', 'select', 'print', 'config', 'in',
+    // deprecated functions:
+  'workspace', 'unary', 'edivide', 'emultiply', 'epow', 'smallereq', 'largereq'
 ];
 
 // test whether all functions are documented

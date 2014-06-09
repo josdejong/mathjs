@@ -607,13 +607,7 @@ describe('parse', function() {
     it('should parse ==', function() {
       assert.strictEqual(parseAndEval('2 == 3'), false);
       assert.strictEqual(parseAndEval('2 == 2'), true);
-      assert.strictEqual(parseAndEval('[2,3] == [2,4]'), false);
-    });
-
-    it('should parse .==', function() {
-      assert.equal(parseAndEval('2 .== 3'), false);
-      assert.equal(parseAndEval('2 .== 2'), true);
-      assert.deepEqual(parseAndEval('[2,3] .== [2,4]'), new Matrix([true, false]));
+      assert.deepEqual(parseAndEval('[2,3] == [2,4]'), new Matrix([true, false]));
     });
 
     it('should parse >', function() {
@@ -713,13 +707,7 @@ describe('parse', function() {
     it('should parse !=', function() {
       assert.strictEqual(parseAndEval('2 != 3'), true);
       assert.strictEqual(parseAndEval('2 != 2'), false);
-      assert.strictEqual(parseAndEval('[2,3] != [2,4]'), true);
-    });
-
-    it('should parse .!=', function() {
-      assert.equal(parseAndEval('2 .!= 3'), true);
-      assert.equal(parseAndEval('2 .!= 2'), false);
-      assert.deepEqual(parseAndEval('[2,3] .!= [2,4]'), new Matrix([false, true]));
+      assert.deepEqual(parseAndEval('[2,3] != [2,4]'), new Matrix([false, true]));
     });
 
     it('should parse contitional expression a ? b : c', function() {
