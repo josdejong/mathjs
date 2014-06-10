@@ -22,6 +22,12 @@ describe('AssignmentNode', function() {
     assert.throws(function () {AssignmentNode('a', new Node())}, SyntaxError);
   });
 
+  it ('should throw an error when creating an AssignmentNode with a reserved keyword', function () {
+    assert.throws(function () {
+      new AssignmentNode('end', new Node());
+    }, /Illegal symbol name/)
+  });
+
   it ('should throw an error on wrong constructor arguments', function () {
     assert.throws(function () {new AssignmentNode()}, TypeError );
     assert.throws(function () {new AssignmentNode(new Node())}, TypeError );

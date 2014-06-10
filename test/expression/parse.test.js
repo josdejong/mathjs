@@ -66,6 +66,15 @@ describe('parse', function() {
     assert.deepEqual(parse('\n;\n2 * 4\n').compile(math).eval(), [8]);
   });
 
+  it('should throw an error when scope contains a reserved keyword', function() {
+    var scope = {
+      end: 2
+    };
+    assert.throws(function () {
+      parse('2+3').compile(math).eval(scope);
+    }, /Scope contains an illegal symbol/);
+  });
+
   it('should give informative syntax errors', function() {
     assert.throws(function () {parse('sin pi').compile(math).eval()}, /First parameter in Unit constructor must be a number/);
     assert.throws(function () {parse('2 +')}, /Unexpected end of expression \(char 4\)/);

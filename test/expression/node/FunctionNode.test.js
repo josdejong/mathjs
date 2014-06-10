@@ -61,6 +61,12 @@ describe('FunctionNode', function() {
     assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
   });
 
+  it ('should throw an error when creating a FunctionNode with a reserved keyword', function () {
+    assert.throws(function () {
+      new FunctionNode('end', ['x'], new Node());
+    }, /Illegal function name/)
+  });
+
   it ('should find a FunctionNode without expression', function () {
     var e = new FunctionNode('f', ['x'], new Node());
 

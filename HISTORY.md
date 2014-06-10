@@ -9,6 +9,9 @@ https://github.com/josdejong/mathjs
     `dotMultiply`, and `dotPow` respectively. 
   - Renamed functions `smallereq` and `largereq` to `smallerEq` and `largerEq`.
   - Renamed function `unary` to `unaryMinus` and added support for strings.
+- `end` is now a reserved keyword which cannot be used as function or symbol
+  name in the expression parser, and is not allowed in the scope against which
+  an expression is evaluated.
 - Implemented function `unaryPlus` and unary plus operator.
 - Implemented function `deepEqual` for matrix comparisons. 
 - Added constant `phi`, the golden ratio (`phi = 1.618...`).
