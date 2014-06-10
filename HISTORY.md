@@ -18,6 +18,8 @@ https://github.com/josdejong/mathjs
 - Added constant `version`, returning the version number of math.js as string.
 - Added unit `drop` (`gtt`).
 - Fixed not being able to load math.js using AMD/require.js.
+- Changed signature of `math.parse(expr, nodes)` to `math.parse(expr, options)`
+  where `options: {nodes: Object.<String, Node>}`
 - Removed matrix support from conditional function `ifElse`.
 - Removed automatic assignment of expression results to variable `ans`. 
   This functionality can be restored by pre- or postprocessing every evaluation, 

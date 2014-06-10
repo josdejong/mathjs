@@ -1038,28 +1038,30 @@ describe('parse', function() {
         return '"CustomNode(' + strArgs.join(', ') + ')"';
       };
 
-      var nodes = {
-        custom: CustomNode
+      var options = {
+        nodes: {
+          custom: CustomNode
+        }
       };
 
       it('should parse custom nodes', function() {
-        var node = parse('custom(x, (2+x), sin(x))', nodes);
+        var node = parse('custom(x, (2+x), sin(x))', options);
         assert.equal(node.compile(math).eval(), 'CustomNode(x, 2 + x, sin(x))');
       });
 
       it('should parse custom nodes without parameters', function() {
-        var node = parse('custom()', nodes);
+        var node = parse('custom()', options);
         assert.equal(node.compile(math).eval(), 'CustomNode()');
         assert.equal(node.find({type: CustomNode}).length, 1);
 
-        var node2 = parse('custom', nodes);
+        var node2 = parse('custom', options);
         assert.equal(node2.compile(math).eval(), 'CustomNode()');
         assert.equal(node2.find({type: CustomNode}).length, 1);
       });
 
       it('should throw an error on syntax errors in using custom nodes', function() {
-        assert.throws(function () {parse('custom(x', nodes)}, /Parenthesis \) expected/);
-        assert.throws(function () {parse('custom(x, ', nodes)}, /Unexpected end of expression/);
+        assert.throws(function () {parse('custom(x', options)}, /Parenthesis \) expected/);
+        assert.throws(function () {parse('custom(x, ', options)}, /Unexpected end of expression/);
       });
     });
 
