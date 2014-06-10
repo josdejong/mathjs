@@ -72,7 +72,7 @@
 
   // initialize with an example expression
   expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2';
-  pretty.innerHTML = '$$' + math.parse(expr.value).expr.toTex() + '$$';
+  pretty.innerHTML = '$$' + math.parse(expr.value).toTex() + '$$';
   result.innerHTML = math.eval(expr.value);
 
   expr.oninput = function () {
@@ -91,7 +91,7 @@
 
     try {
       // export the expression to LaTeX
-      var latex = node ? node.expr.toTex() : '';
+      var latex = node ? node.toTex() : '';
       console.log('LaTeX expression:', latex);
 
       // display and re-render the expression

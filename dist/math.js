@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.22.1-SNAPSHOT
- * @date    2014-06-08
+ * @version 0.23.0
+ * @date    2014-06-10
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -187,7 +187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  // create a new BigNumber factory for this instance of math.js
-	  var BigNumber = __webpack_require__(119).constructor();
+	  var BigNumber = __webpack_require__(124).constructor();
 
 	  // extend BigNumber with a function clone
 	  if (typeof BigNumber.prototype.clone !== 'function') {
@@ -278,6 +278,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(45)(math, _config);
 	  __webpack_require__(46)(math, _config);
 	  __webpack_require__(47)(math, _config);
+
+	  // functions - comparison
 	  __webpack_require__(48)(math, _config);
 	  __webpack_require__(49)(math, _config);
 	  __webpack_require__(50)(math, _config);
@@ -285,15 +287,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(52)(math, _config);
 	  __webpack_require__(53)(math, _config);
 	  __webpack_require__(54)(math, _config);
+	  __webpack_require__(55)(math, _config);
 
 	  // functions - complex
-	  __webpack_require__(55)(math, _config);
 	  __webpack_require__(56)(math, _config);
 	  __webpack_require__(57)(math, _config);
 	  __webpack_require__(58)(math, _config);
+	  __webpack_require__(59)(math, _config);
 
 	  // functions - construction
-	  __webpack_require__(59)(math, _config);
 	  __webpack_require__(60)(math, _config);
 	  __webpack_require__(61)(math, _config);
 	  __webpack_require__(62)(math, _config);
@@ -303,9 +305,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(66)(math, _config);
 	  __webpack_require__(67)(math, _config);
 	  __webpack_require__(68)(math, _config);
+	  __webpack_require__(69)(math, _config);
 
 	  // functions - matrix
-	  __webpack_require__(69)(math, _config);
 	  __webpack_require__(70)(math, _config);
 	  __webpack_require__(71)(math, _config);
 	  __webpack_require__(72)(math, _config);
@@ -318,28 +320,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(79)(math, _config);
 	  __webpack_require__(80)(math, _config);
 	  __webpack_require__(81)(math, _config);
+	  __webpack_require__(82)(math, _config);
 
 	  // functions - probability
-	  __webpack_require__(82)(math, _config);
 	  __webpack_require__(83)(math, _config);
 	  __webpack_require__(84)(math, _config);
 	  __webpack_require__(85)(math, _config);
-
-	  // functions - statistics
 	  __webpack_require__(86)(math, _config);
 	  __webpack_require__(87)(math, _config);
 	  __webpack_require__(88)(math, _config);
 	  __webpack_require__(89)(math, _config);
+
+	  // functions - statistics
 	  __webpack_require__(90)(math, _config);
 	  __webpack_require__(91)(math, _config);
 	  __webpack_require__(92)(math, _config);
 	  __webpack_require__(93)(math, _config);
-
-	  // functions - trigonometry
 	  __webpack_require__(94)(math, _config);
 	  __webpack_require__(95)(math, _config);
 	  __webpack_require__(96)(math, _config);
 	  __webpack_require__(97)(math, _config);
+
+	  // functions - trigonometry
 	  __webpack_require__(98)(math, _config);
 	  __webpack_require__(99)(math, _config);
 	  __webpack_require__(100)(math, _config);
@@ -352,19 +354,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(107)(math, _config);
 	  __webpack_require__(108)(math, _config);
 	  __webpack_require__(109)(math, _config);
-
-	  // functions - units
 	  __webpack_require__(110)(math, _config);
-
-	  // functions - utils
 	  __webpack_require__(111)(math, _config);
 	  __webpack_require__(112)(math, _config);
 	  __webpack_require__(113)(math, _config);
+
+	  // functions - units
 	  __webpack_require__(114)(math, _config);
+
+	  // functions - utils
 	  __webpack_require__(115)(math, _config);
 	  __webpack_require__(116)(math, _config);
 	  __webpack_require__(117)(math, _config);
 	  __webpack_require__(118)(math, _config);
+	  __webpack_require__(119)(math, _config);
+	  __webpack_require__(120)(math, _config);
+	  __webpack_require__(121)(math, _config);
+	  __webpack_require__(122)(math, _config);
 
 	  // constants
 	  __webpack_require__(2)(math, _config);
@@ -391,6 +397,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = function (math) {
 	  var Complex = __webpack_require__(5);
+
+	  math.version     = __webpack_require__(123);
 
 	  math.pi          = Math.PI;
 	  math.e           = Math.E;
@@ -569,10 +577,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports.ArgumentsError = __webpack_require__(120);
-	exports.DimensionError = __webpack_require__(121);
-	exports.IndexError = __webpack_require__(122);
-	exports.UnsupportedTypeError = __webpack_require__(123);
+	exports.ArgumentsError = __webpack_require__(125);
+	exports.DimensionError = __webpack_require__(126);
+	exports.IndexError = __webpack_require__(127);
+	exports.UnsupportedTypeError = __webpack_require__(128);
 
 	// TODO: implement an InvalidValueError?
 
@@ -581,7 +589,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(124),
+	var util = __webpack_require__(129),
 	    Unit = __webpack_require__(9),
 	    number = util.number,
 
@@ -1017,7 +1025,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(124),
+	var util = __webpack_require__(129),
 
 	    number = util.number,
 	    string = util.string,
@@ -1290,7 +1298,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(124),
+	var util = __webpack_require__(129),
 
 	    Range = __webpack_require__(6),
 
@@ -1560,8 +1568,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(124),
-	    DimensionError = __webpack_require__(121),
+	var util = __webpack_require__(129),
+	    DimensionError = __webpack_require__(126),
 
 	    Index = __webpack_require__(7),
 
@@ -2076,7 +2084,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(124),
+	var util = __webpack_require__(129),
 
 	    number = util.number,
 	    string = util.string,
@@ -2750,6 +2758,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  teaspoon: {name: 'teaspoon', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.000005, offset: 0}, // 5 mL
 	  tablespoon: {name: 'tablespoon', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.000015, offset: 0}, // 15 mL
 	  //{name: 'cup', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.000240, offset: 0}, // 240 mL  // not possible, we have already another cup
+	  drop: {name: 'drop', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 5e-8, offset: 0},  // 0.05 mL = 5e-8 m3
+	  gtt: {name: 'gtt', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 5e-8, offset: 0},  // 0.05 mL = 5e-8 m3
 
 	  // Liquid volume
 	  minim: {name: 'minim', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.00000006161152, offset: 0}, // 0.06161152 mL
@@ -2883,6 +2893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  beerbarrels: 'beerbarrel',
 	  oilbarrels: 'oilbarrel',
 	  hogsheads: 'hogshead',
+	  gtts: 'gtt',
 
 	  grams: 'gram',
 	  tons: 'ton',
@@ -2941,7 +2952,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(124),
+	var util = __webpack_require__(129),
 	    object = util.object,
 	    string = util.string;
 
@@ -3042,9 +3053,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// utility methods for arrays and matrices
 
-	var util = __webpack_require__(124),
+	var util = __webpack_require__(129),
 
-	    DimensionError = __webpack_require__(121),
+	    DimensionError = __webpack_require__(126),
 
 	    Matrix = __webpack_require__(8),
 
@@ -3295,9 +3306,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var util = __webpack_require__(124),
+	var util = __webpack_require__(129),
 
-	    ArgumentsError = __webpack_require__(120),
+	    ArgumentsError = __webpack_require__(125),
 
 	    isString = util.string.isString,
 	    isArray = Array.isArray,
@@ -3310,19 +3321,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    collection = __webpack_require__(11),
 
 	    // scope and nodes
-	    ArrayNode = __webpack_require__(125),
-	    AssignmentNode = __webpack_require__(126),
-	    BlockNode = __webpack_require__(127),
-	    ConstantNode = __webpack_require__(128),
-	    FunctionNode = __webpack_require__(129),
-	    IndexNode = __webpack_require__(130),
-	    OperatorNode = __webpack_require__(131),
-	    ParamsNode = __webpack_require__(132),
-	    RangeNode = __webpack_require__(133),
-	    SymbolNode = __webpack_require__(134),
-	    TernaryNode = __webpack_require__(135),
-	    UnitNode = __webpack_require__(136),
-	    UpdateNode = __webpack_require__(137);
+	    ArrayNode = __webpack_require__(130),
+	    AssignmentNode = __webpack_require__(131),
+	    BlockNode = __webpack_require__(132),
+	    ConstantNode = __webpack_require__(133),
+	    FunctionNode = __webpack_require__(134),
+	    IndexNode = __webpack_require__(135),
+	    OperatorNode = __webpack_require__(136),
+	    ParamsNode = __webpack_require__(137),
+	    RangeNode = __webpack_require__(138),
+	    SymbolNode = __webpack_require__(139),
+	    TernaryNode = __webpack_require__(140),
+	    UnitNode = __webpack_require__(141),
+	    UpdateNode = __webpack_require__(142);
 
 	/**
 	 * Parse an expression. Returns a node tree, which can be evaluated by
@@ -3331,9 +3342,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Syntax:
 	 *
 	 *     parse(expr)
-	 *     parse(expr, nodes)
+	 *     parse(expr, options)
 	 *     parse([expr1, expr2, expr3, ...])
-	 *     parse([expr1, expr2, expr3, ...], nodes)
+	 *     parse([expr1, expr2, expr3, ...], options)
 	 *
 	 * Example:
 	 *
@@ -3351,17 +3362,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     nodes[2].compile(math).eval(); // 12
 	 *
 	 * @param {String | String[] | Matrix} expr
-	 * @param {Object<String, Node>} [nodes]    A set of custom nodes
+	 * @param {{nodes: Object<String, Node>}} [options]  Available options:
+	 *                                                   - `nodes` a set of custom nodes
 	 * @return {Node | Node[]} node
 	 * @throws {Error}
 	 */
-	function parse (expr, nodes) {
+	function parse (expr, options) {
 	  if (arguments.length != 1 && arguments.length != 2) {
 	    throw new ArgumentsError('parse', arguments.length, 1, 2);
 	  }
 
 	  // pass extra nodes
-	  extra_nodes = (type(nodes) === 'object') ? nodes : {};
+	  extra_nodes = (options && options.nodes) ? options.nodes : {};
 
 	  if (isString(expr)) {
 	    // parse a single expression
@@ -3500,9 +3512,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return;
 	  }
 
+	  // TODO: make this checking for operators of 3, 2, and 1 characters less stupid
+
 	  // check for delimiters consisting of 2 characters
 	  var c2 = c + nextPreview();
-	  if (DELIMITERS[c2]) {
+	  if (c2.length == 2 && DELIMITERS[c2]) {
 	    token_type = TOKENTYPE.DELIMITER;
 	    token = c2;
 	    next();
@@ -3608,28 +3622,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * Check if a given name is valid
-	 * if not, an error is thrown
-	 * @param {String} name
-	 * @return {boolean} valid
-	 * @private
-	 */
-	  /** TODO: check for valid symbol name
-	function isValidSymbolName (name) {
-	  for (var i = 0, iMax = name.length; i < iMax; i++) {
-	    var c = name.charAt(i);
-	    //var valid = (isAlpha(c) || (i > 0 && isDigit(c))); // TODO: allow digits in symbol name
-	    var valid = (isAlpha(c));
-	    if (!valid) {
-	      return false;
-	    }
-	  }
-
-	  return true;
-	}
-	*/
-
-	/**
 	 * checks if the given char c is a letter (upper or lower case)
 	 * or underscore
 	 * @param {String} c   a string with one character
@@ -3709,7 +3701,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  if (token != '\n' && token != ';') {
-	    node = parseAns();
+	    node = parseFunctionAssignment();
 	  }
 
 	  while (token == '\n' || token == ';') {
@@ -3724,7 +3716,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    getToken();
 	    if (token != '\n' && token != ';' && token != '') {
-	      node = parseAns();
+	      node = parseFunctionAssignment();
 
 	      visible = (token != ';');
 	      block.add(node, visible);
@@ -3736,21 +3728,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  return node;
-	}
-
-	/**
-	 * Parse assignment of ans.
-	 * Ans is assigned when the expression itself is no variable or function
-	 * assignment
-	 * @return {Node} node
-	 * @private
-	 */
-	function parseAns () {
-	  var expression = parseFunctionAssignment();
-
-	  // create a variable definition for ans
-	  var name = 'ans';
-	  return new AssignmentNode(name, expression);
 	}
 
 	/**
@@ -3942,8 +3919,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    '!=': 'unequal',
 	    '<': 'smaller',
 	    '>': 'larger',
-	    '<=': 'smallereq',
-	    '>=': 'largereq'
+	    '<=': 'smallerEq',
+	    '>=': 'largerEq'
 	  };
 	  while (token in operators) {
 	    name = token;
@@ -4031,9 +4008,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  operators = {
 	    '*': 'multiply',
-	    '.*': 'emultiply',
+	    '.*': 'dotMultiply',
 	    '/': 'divide',
-	    './': 'edivide',
+	    './': 'dotDivide',
 	    '%': 'mod',
 	    'mod': 'mod'
 	  };
@@ -4082,7 +4059,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  if (token == '-' || token == '+') {
 	    name = token;
-	    fn = name == '+' ? 'unaryplus' : 'unaryminus';
+	    fn = name == '+' ? 'unaryPlus' : 'unaryMinus';
 	    getToken();
 	    params = [parseUnary()];
 
@@ -4105,7 +4082,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  if (token == '^' || token == '.^') {
 	    name = token;
-	    fn = (name == '^') ? 'pow' : 'epow';
+	    fn = (name == '^') ? 'pow' : 'dotPow';
 
 	    getToken();
 	    params = [node, parseUnary()]; // Go back to unary, we can have '2^-3'
@@ -4703,20 +4680,20 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports.ArrayNode = __webpack_require__(125);
-	exports.AssignmentNode = __webpack_require__(126);
-	exports.BlockNode = __webpack_require__(127);
-	exports.ConstantNode = __webpack_require__(128);
-	exports.IndexNode = __webpack_require__(130);
-	exports.FunctionNode = __webpack_require__(129);
-	exports.Node = __webpack_require__(138);
-	exports.OperatorNode = __webpack_require__(131);
-	exports.ParamsNode = __webpack_require__(132);
-	exports.RangeNode = __webpack_require__(133);
-	exports.SymbolNode = __webpack_require__(134);
-	exports.TernaryNode = __webpack_require__(135);
-	exports.UnitNode = __webpack_require__(136);
-	exports.UpdateNode = __webpack_require__(137);
+	exports.ArrayNode = __webpack_require__(130);
+	exports.AssignmentNode = __webpack_require__(131);
+	exports.BlockNode = __webpack_require__(132);
+	exports.ConstantNode = __webpack_require__(133);
+	exports.IndexNode = __webpack_require__(135);
+	exports.FunctionNode = __webpack_require__(134);
+	exports.Node = __webpack_require__(143);
+	exports.OperatorNode = __webpack_require__(136);
+	exports.ParamsNode = __webpack_require__(137);
+	exports.RangeNode = __webpack_require__(138);
+	exports.SymbolNode = __webpack_require__(139);
+	exports.TernaryNode = __webpack_require__(140);
+	exports.UnitNode = __webpack_require__(141);
+	exports.UpdateNode = __webpack_require__(142);
 
 
 /***/ },
@@ -4724,144 +4701,148 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// constants
-	exports.e = __webpack_require__(140);
-	exports.E = __webpack_require__(140);
-	exports['false'] = __webpack_require__(141);
-	exports.i = __webpack_require__(142);
-	exports['Infinity'] = __webpack_require__(143);
-	exports.LN2 = __webpack_require__(144);
-	exports.LN10 = __webpack_require__(145);
-	exports.LOG2E = __webpack_require__(146);
-	exports.LOG10E = __webpack_require__(147);
-	exports.NaN = __webpack_require__(148);
-	exports.pi = __webpack_require__(149);
-	exports.PI = __webpack_require__(149);
-	exports.phi = __webpack_require__(150);
-	exports.SQRT1_2 = __webpack_require__(151);
-	exports.SQRT2 = __webpack_require__(152);
-	exports.tau = __webpack_require__(153);
-	exports['true'] = __webpack_require__(154);
+	exports.e = __webpack_require__(145);
+	exports.E = __webpack_require__(145);
+	exports['false'] = __webpack_require__(146);
+	exports.i = __webpack_require__(147);
+	exports['Infinity'] = __webpack_require__(148);
+	exports.LN2 = __webpack_require__(149);
+	exports.LN10 = __webpack_require__(150);
+	exports.LOG2E = __webpack_require__(151);
+	exports.LOG10E = __webpack_require__(152);
+	exports.NaN = __webpack_require__(153);
+	exports.pi = __webpack_require__(154);
+	exports.PI = __webpack_require__(154);
+	exports.phi = __webpack_require__(155);
+	exports.SQRT1_2 = __webpack_require__(156);
+	exports.SQRT2 = __webpack_require__(157);
+	exports.tau = __webpack_require__(158);
+	exports.version = __webpack_require__(159);
+	exports['true'] = __webpack_require__(160);
 
 	// functions - arithmetic
-	exports.abs = __webpack_require__(159);
-	exports.add = __webpack_require__(160);
-	exports.ceil = __webpack_require__(161);
-	exports.compare = __webpack_require__(162);
-	exports.cube = __webpack_require__(163);
-	exports.divide = __webpack_require__(164);
-	exports.edivide = __webpack_require__(165);
-	exports.emultiply = __webpack_require__(166);
-	exports.epow = __webpack_require__(167);
-	exports['equal'] = __webpack_require__(168);
-	exports.exp = __webpack_require__(169);
-	exports.fix = __webpack_require__(170);
-	exports.floor = __webpack_require__(171);
-	exports.gcd = __webpack_require__(172);
-	exports.larger = __webpack_require__(173);
-	exports.largereq = __webpack_require__(174);
-	exports.lcm = __webpack_require__(175);
-	exports.log = __webpack_require__(176);
-	exports.log10 = __webpack_require__(177);
-	exports.mod = __webpack_require__(178);
-	exports.multiply = __webpack_require__(179);
-	exports.norm = __webpack_require__(180);
-	exports.pow = __webpack_require__(181);
-	exports.round = __webpack_require__(182);
-	exports.sign = __webpack_require__(183);
-	exports.smaller = __webpack_require__(184);
-	exports.smallereq = __webpack_require__(185);
+	exports.abs = __webpack_require__(165);
+	exports.add = __webpack_require__(166);
+	exports.ceil = __webpack_require__(167);
+	exports.cube = __webpack_require__(168);
+	exports.divide = __webpack_require__(169);
+	exports.dotDivide = __webpack_require__(170);
+	exports.dotMultiply = __webpack_require__(171);
+	exports.dotPow = __webpack_require__(172);
+	exports.exp = __webpack_require__(173);
+	exports.fix = __webpack_require__(174);
+	exports.floor = __webpack_require__(175);
+	exports.gcd = __webpack_require__(176);
+	exports.lcm = __webpack_require__(177);
+	exports.log = __webpack_require__(178);
+	exports.log10 = __webpack_require__(179);
+	exports.mod = __webpack_require__(180);
+	exports.multiply = __webpack_require__(181);
+	exports.norm = __webpack_require__(182);
+	exports.pow = __webpack_require__(183);
+	exports.round = __webpack_require__(184);
+	exports.sign = __webpack_require__(185);
 	exports.sqrt = __webpack_require__(186);
 	exports.square = __webpack_require__(187);
 	exports.subtract = __webpack_require__(188);
-	exports.unaryminus = __webpack_require__(189);
-	exports.unaryplus = __webpack_require__(190);
-	exports.unequal = __webpack_require__(191);
-	exports.xgcd = __webpack_require__(192);
+	exports.unaryMinus = __webpack_require__(189);
+	exports.unaryPlus = __webpack_require__(190);
+	exports.xgcd = __webpack_require__(191);
+
+	// functions - comparison
+	exports.compare = __webpack_require__(192);
+	exports.deepEqual = __webpack_require__(193);
+	exports['equal'] = __webpack_require__(194);
+	exports.larger = __webpack_require__(195);
+	exports.largerEq = __webpack_require__(196);
+	exports.smaller = __webpack_require__(197);
+	exports.smallerEq = __webpack_require__(198);
+	exports.unequal = __webpack_require__(199);
 
 	// functions - complex
-	exports.arg = __webpack_require__(193);
-	exports.conj = __webpack_require__(194);
-	exports.re = __webpack_require__(195);
-	exports.im = __webpack_require__(196);
+	exports.arg = __webpack_require__(200);
+	exports.conj = __webpack_require__(201);
+	exports.re = __webpack_require__(202);
+	exports.im = __webpack_require__(203);
 
 	// functions - construction
-	exports.bignumber = __webpack_require__(197);
-	exports['boolean'] = __webpack_require__(198);
-	exports.complex = __webpack_require__(199);
-	exports.index = __webpack_require__(200);
-	exports.matrix = __webpack_require__(201);
-	exports.number = __webpack_require__(202);
-	exports.string = __webpack_require__(203);
-	exports.unit = __webpack_require__(204);
+	exports.bignumber = __webpack_require__(204);
+	exports['boolean'] = __webpack_require__(205);
+	exports.complex = __webpack_require__(206);
+	exports.index = __webpack_require__(207);
+	exports.matrix = __webpack_require__(208);
+	exports.number = __webpack_require__(209);
+	exports.string = __webpack_require__(210);
+	exports.unit = __webpack_require__(211);
 
 	// functions - epxression
-	exports['eval'] =  __webpack_require__(205);
-	exports.help =  __webpack_require__(206);
+	exports['eval'] =  __webpack_require__(212);
+	exports.help =  __webpack_require__(213);
 
 	// functions - matrix
-	exports['concat'] = __webpack_require__(207);
-	exports.det = __webpack_require__(208);
-	exports.diag = __webpack_require__(209);
-	exports.eye = __webpack_require__(210);
-	exports.inv = __webpack_require__(211);
-	exports.ones = __webpack_require__(212);
-	exports.range = __webpack_require__(213);
-	exports.resize = __webpack_require__(214);
-	exports.size = __webpack_require__(215);
-	exports.squeeze = __webpack_require__(216);
-	exports.subset = __webpack_require__(217);
-	exports.transpose = __webpack_require__(218);
-	exports.zeros = __webpack_require__(219);
+	exports['concat'] = __webpack_require__(214);
+	exports.det = __webpack_require__(215);
+	exports.diag = __webpack_require__(216);
+	exports.eye = __webpack_require__(217);
+	exports.inv = __webpack_require__(218);
+	exports.ones = __webpack_require__(219);
+	exports.range = __webpack_require__(220);
+	exports.resize = __webpack_require__(221);
+	exports.size = __webpack_require__(222);
+	exports.squeeze = __webpack_require__(223);
+	exports.subset = __webpack_require__(224);
+	exports.transpose = __webpack_require__(225);
+	exports.zeros = __webpack_require__(226);
 
 	// functions - probability
-	exports.combinations = __webpack_require__(220);
-	exports.distribution = __webpack_require__(221);
-	exports.factorial = __webpack_require__(222);
-	exports.permutations = __webpack_require__(223);
-	exports.pickRandom = __webpack_require__(224);
-	exports.random = __webpack_require__(225);
-	exports.randomInt = __webpack_require__(226);
+	exports.combinations = __webpack_require__(227);
+	exports.distribution = __webpack_require__(228);
+	exports.factorial = __webpack_require__(229);
+	exports.permutations = __webpack_require__(230);
+	exports.pickRandom = __webpack_require__(231);
+	exports.random = __webpack_require__(232);
+	exports.randomInt = __webpack_require__(233);
 
 	// functions - statistics
-	exports.max = __webpack_require__(227);
-	exports.mean = __webpack_require__(228);
-	exports.median = __webpack_require__(229);
-	exports.min = __webpack_require__(230);
-	exports.prod = __webpack_require__(231);
-	exports.std = __webpack_require__(232);
-	exports.sum = __webpack_require__(233);
-	exports['var'] = __webpack_require__(234);
+	exports.max = __webpack_require__(234);
+	exports.mean = __webpack_require__(235);
+	exports.median = __webpack_require__(236);
+	exports.min = __webpack_require__(237);
+	exports.prod = __webpack_require__(238);
+	exports.std = __webpack_require__(239);
+	exports.sum = __webpack_require__(240);
+	exports['var'] = __webpack_require__(241);
 
 	// functions - trigonometry
-	exports.acos = __webpack_require__(235);
-	exports.asin = __webpack_require__(236);
-	exports.atan = __webpack_require__(237);
-	exports.atan2 = __webpack_require__(238);
-	exports.cos = __webpack_require__(239);
-	exports.cosh = __webpack_require__(240);
-	exports.cot = __webpack_require__(241);
-	exports.coth = __webpack_require__(242);
-	exports.csc = __webpack_require__(243);
-	exports.csch = __webpack_require__(244);
-	exports.sec = __webpack_require__(245);
-	exports.sech = __webpack_require__(246);
-	exports.sin = __webpack_require__(247);
-	exports.sinh = __webpack_require__(248);
-	exports.tan = __webpack_require__(249);
-	exports.tanh = __webpack_require__(250);
+	exports.acos = __webpack_require__(242);
+	exports.asin = __webpack_require__(243);
+	exports.atan = __webpack_require__(244);
+	exports.atan2 = __webpack_require__(245);
+	exports.cos = __webpack_require__(246);
+	exports.cosh = __webpack_require__(247);
+	exports.cot = __webpack_require__(248);
+	exports.coth = __webpack_require__(249);
+	exports.csc = __webpack_require__(250);
+	exports.csch = __webpack_require__(251);
+	exports.sec = __webpack_require__(252);
+	exports.sech = __webpack_require__(253);
+	exports.sin = __webpack_require__(254);
+	exports.sinh = __webpack_require__(255);
+	exports.tan = __webpack_require__(256);
+	exports.tanh = __webpack_require__(257);
 
 	// functions - units
-	exports.to = __webpack_require__(251);
+	exports.to = __webpack_require__(258);
 
 	// functions - utils
-	exports.clone =  __webpack_require__(252);
-	exports.map =  __webpack_require__(253);
-	exports.forEach =  __webpack_require__(254);
-	exports.format =  __webpack_require__(255);
+	exports.clone =  __webpack_require__(259);
+	exports.map =  __webpack_require__(260);
+	exports.forEach =  __webpack_require__(261);
+	exports.format =  __webpack_require__(262);
 	// exports.print =  require('./function/utils/print'); // TODO: add documentation for print as soon as the parser supports objects.
-	exports.ifElse =  __webpack_require__(256);
-	exports['import'] =  __webpack_require__(257);
-	exports['typeof'] =  __webpack_require__(258);
+	exports.ifElse =  __webpack_require__(263);
+	exports['import'] =  __webpack_require__(264);
+	exports['typeof'] =  __webpack_require__(265);
 
 
 /***/ },
@@ -4869,7 +4850,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var string = __webpack_require__(139);
+	  var string = __webpack_require__(144);
 
 	  /**
 	   * @constructor Selector
@@ -4968,7 +4949,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 	      _parse = __webpack_require__(12),
 
 	      collection = __webpack_require__(11),
@@ -5038,7 +5019,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 	      _parse = __webpack_require__(12),
 
 	      collection = __webpack_require__(11),
@@ -5230,7 +5211,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -5303,7 +5284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -5465,7 +5446,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -5543,138 +5524,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
-
-	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(5),
-	      Unit = __webpack_require__(9),
-	      collection = __webpack_require__(11),
-
-	      isNumber = util.number.isNumber,
-	      nearlyEqual = util.number.nearlyEqual,
-	      isBoolean = util['boolean'].isBoolean,
-	      isString = util.string.isString,
-	      isComplex = Complex.isComplex,
-	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
-
-	  /**
-	   * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
-	   *
-	   * x and y are considered equal when the relative difference between x and y
-	   * is smaller than the configured epsilon. The function cannot be used to
-	   * compare values smaller than approximately 2.22e-16.
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.compare(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    var math = mathjs();
-	   *
-	   *    math.compare(6, 1);           // returns 1
-	   *    math.compare(2, 3);           // returns -1
-	   *    math.compare(7, 7);           // returns 0
-	   *
-	   *    var a = math.unit('5 cm');
-	   *    var b = math.unit('40 mm');
-	   *    math.compare(a, b);           // returns 1
-	   *
-	   *    math.compare(2, [1, 2, 3]);   // returns [1, 0, -1]
-	   *
-	   * See also:
-	   *
-	   *    equal, unequal, smaller, smallereq, larger, largereq
-	   *
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
-	   * @return {Number | BigNumber | Array | Matrix} Returns the result of the comparison: 1, 0 or -1.
-	   */
-	  math.compare = function compare(x, y) {
-	    if (arguments.length != 2) {
-	      throw new math.error.ArgumentsError('compare', arguments.length, 2);
-	    }
-
-	    if (isNumber(x) && isNumber(y)) {
-	      return nearlyEqual(x, y, config.epsilon) ? 0 : (x > y ? 1 : -1);
-	    }
-
-	    if (x instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(y)) {
-	        y = BigNumber.convert(y);
-	      }
-	      else if (isBoolean(y)) {
-	        y = new BigNumber(y ? 1 : 0);
-	      }
-
-	      if (y instanceof BigNumber) {
-	        return new BigNumber(x.cmp(y));
-	      }
-
-	      // downgrade to Number
-	      return compare(x.toNumber(), y);
-	    }
-	    if (y instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(x)) {
-	        x = BigNumber.convert(x);
-	      }
-	      else if (isBoolean(x)) {
-	        x = new BigNumber(x ? 1 : 0);
-	      }
-
-	      if (x instanceof BigNumber) {
-	        return new BigNumber(x.cmp(y));
-	      }
-
-	      // downgrade to Number
-	      return compare(x, y.toNumber());
-	    }
-
-	    if ((isUnit(x)) && (isUnit(y))) {
-	      if (!x.equalBase(y)) {
-	        throw new Error('Cannot compare units with different base');
-	      }
-	      return (x.value > y.value) ? 1 : ((x.value < y.value) ? -1 : 0);
-	    }
-
-	    if (isCollection(x) || isCollection(y)) {
-	      return collection.deepMap2(x, y, compare);
-	    }
-
-	    // Note: test strings after testing collections,
-	    // else we can't compare a string with a matrix
-	    if (isString(x) || isString(y)) {
-	      return (x > y) ? 1 : ((x < y) ? -1 : 0);
-	    }
-
-	    if (isBoolean(x)) {
-	      return compare(+x, y);
-	    }
-	    if (isBoolean(y)) {
-	      return compare(x, +y);
-	    }
-
-	    if (isComplex(x) || isComplex(y)) {
-	      throw new TypeError('No ordering relation is defined for complex numbers');
-	    }
-
-	    throw new math.error.UnsupportedTypeError('compare', math['typeof'](x), math['typeof'](y));
-	  };
-	};
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -5742,11 +5593,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -5917,7 +5768,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -5929,44 +5780,49 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Syntax:
 	   *
-	   *    math.edivide(x, y)
+	   *    math.dotDivide(x, y)
 	   *
 	   * Examples:
 	   *
 	   *    var math = mathjs();
 	   *
-	   *    math.edivide(2, 4);   // returns 0.5
+	   *    math.dotDivide(2, 4);   // returns 0.5
 	   *
 	   *    a = [[9, 5], [6, 1]];
 	   *    b = [[3, 2], [5, 2]];
 	   *
-	   *    math.edivide(a, b);   // returns [[3, 2.5], [1.2, 0.5]]
-	   *    math.divide(a, b);    // returns [[1.75, 0.75], [-1.75, 2.25]]
+	   *    math.dotDivide(a, b);   // returns [[3, 2.5], [1.2, 0.5]]
+	   *    math.divide(a, b);      // returns [[1.75, 0.75], [-1.75, 2.25]]
 	   *
 	   * See also:
 	   *
-	   *    divide, multiply, emultiply
+	   *    divide, multiply, dotMultiply
 	   *
 	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x Numerator
 	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y Denominator
 	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}             Quotient, `x ./ y`
 	   */
-	  math.edivide = function edivide(x, y) {
+	  math.dotDivide = function dotDivide(x, y) {
 	    if (arguments.length != 2) {
-	      throw new math.error.ArgumentsError('edivide', arguments.length, 2);
+	      throw new math.error.ArgumentsError('dotDivide', arguments.length, 2);
 	    }
 
 	    return collection.deepMap2(x, y, math.divide);
 	  };
+
+	  // TODO: deprecated since version 0.23.0, clean up some day
+	  math.edivide = function () {
+	    throw new Error('Function edivide is renamed to dotDivide');
+	  }
 	};
 
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 	      collection = __webpack_require__(11);
 
 	  /**
@@ -5975,44 +5831,49 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Syntax:
 	   *
-	   *    math.emultiply(x, y)
+	   *    math.dotMultiply(x, y)
 	   *
 	   * Examples:
 	   *
 	   *    var math = mathjs();
 	   *
-	   *    math.emultiply(2, 4); // returns 8
+	   *    math.dotMultiply(2, 4); // returns 8
 	   *
 	   *    a = [[9, 5], [6, 1]];
 	   *    b = [[3, 2], [5, 2]];
 	   *
-	   *    math.emultiply(a, b); // returns [[27, 10], [30, 2]]
-	   *    math.multiply(a, b);  // returns [[52, 28], [23, 14]]
+	   *    math.dotMultiply(a, b); // returns [[27, 10], [30, 2]]
+	   *    math.multiply(a, b);    // returns [[52, 28], [23, 14]]
 	   *
 	   * See also:
 	   *
-	   *    multiply, divide, edivide
+	   *    multiply, divide, dotDivide
 	   *
 	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x Left hand value
 	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y Right hand value
 	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}             Multiplication of `x` and `y`
 	   */
-	  math.emultiply = function emultiply(x, y) {
+	  math.dotMultiply = function dotMultiply(x, y) {
 	    if (arguments.length != 2) {
-	      throw new math.error.ArgumentsError('emultiply', arguments.length, 2);
+	      throw new math.error.ArgumentsError('dotMultiply', arguments.length, 2);
 	    }
 
 	    return collection.deepMap2(x, y, math.multiply);
 	  };
+
+	  // TODO: deprecated since version 0.23.0, clean up some day
+	  math.emultiply = function () {
+	    throw new Error('Function emultiply is renamed to dotMultiply');
+	  }
 	};
 
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 	      collection = __webpack_require__(11);
 
 	  /**
@@ -6020,16 +5881,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Syntax:
 	   *
-	   *    math.epow(x, y)
+	   *    math.dotPow(x, y)
 	   *
 	   * Examples:
 	   *
 	   *    var math = mathjs();
 	   *
-	   *    math.epow(2, 3);              // returns Number 8
+	   *    math.dotPow(2, 3);            // returns Number 8
 	   *
 	   *    var a = [[1, 2], [4, 3]];
-	   *    math.epow(a, 2);              // returns Array [[1, 4], [16, 9]]
+	   *    math.dotPow(a, 2);            // returns Array [[1, 4], [16, 9]]
 	   *    math.pow(a, 2);               // returns Array [[9, 8], [16, 17]]
 	   *
 	   * See also:
@@ -6040,160 +5901,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y  The exponent
 	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}              The value of `x` to the power `y`
 	   */
-	  math.epow = function epow(x, y) {
+	  math.dotPow = function dotPow(x, y) {
 	    if (arguments.length != 2) {
-	      throw new math.error.ArgumentsError('epow', arguments.length, 2);
+	      throw new math.error.ArgumentsError('dotPow', arguments.length, 2);
 	    }
 
 	    return collection.deepMap2(x, y, math.pow);
 	  };
+
+	  // TODO: deprecated since version 0.23.0, clean up some day
+	  math.epow = function () {
+	    throw new Error('Function epow is renamed to dotPow');
+	  }
 	};
 
 
 /***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
-
-	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(5),
-	      Unit = __webpack_require__(9),
-	      collection = __webpack_require__(11),
-
-	      isNumber = util.number.isNumber,
-	      nearlyEqual = util.number.nearlyEqual,
-	      isBoolean = util['boolean'].isBoolean,
-	      isString = util.string.isString,
-	      isComplex = Complex.isComplex,
-	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
-
-	  /**
-	   * Test whether two values are equal.
-	   *
-	   * The function tests whether the relative difference between x and y is
-	   * smaller than the configured epsilon. The function cannot be used to
-	   * compare values smaller than approximately 2.22e-16.
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
-	   *
-	   * Syntax:
-	   *
-	   *    math.equal(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    var math = mathjs();
-	   *
-	   *    math.equal(2 + 2, 3);         // returns false
-	   *    math.equal(2 + 2, 4);         // returns true
-	   *
-	   *    var a = math.unit('50 cm');
-	   *    var b = math.unit('5 m');
-	   *    math.equal(a, b);             // returns true
-	   *
-	   * See also:
-	   *
-	   *    unequal, smaller, smallereq, larger, largereq, compare
-	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x First value to compare
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y Second value to compare
-	   * @return {Boolean | Array | Matrix} Returns true when the compared values are equal, else returns false
-	   */
-	  math.equal = function equal(x, y) {
-	    if (arguments.length != 2) {
-	      throw new math.error.ArgumentsError('equal', arguments.length, 2);
-	    }
-
-	    if (isNumber(x)) {
-	      if (isNumber(y)) {
-	        return nearlyEqual(x, y, config.epsilon);
-	      }
-	      else if (isComplex(y)) {
-	        return nearlyEqual(x, y.re, config.epsilon) && nearlyEqual(y.im, 0, config.epsilon);
-	      }
-	    }
-
-	    if (isComplex(x)) {
-	      if (isNumber(y)) {
-	        return nearlyEqual(x.re, y, config.epsilon) && nearlyEqual(x.im, 0, config.epsilon);
-	      }
-	      else if (isComplex(y)) {
-	        return nearlyEqual(x.re, y.re, config.epsilon) && nearlyEqual(x.im, y.im, config.epsilon);
-	      }
-	    }
-
-	    if (x instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(y)) {
-	        y = BigNumber.convert(y);
-	      }
-	      else if (isBoolean(y)) {
-	        y = new BigNumber(y ? 1 : 0);
-	      }
-
-	      if (y instanceof BigNumber) {
-	        return x.eq(y);
-	      }
-
-	      // downgrade to Number
-	      return equal(x.toNumber(), y);
-	    }
-	    if (y instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(x)) {
-	        x = BigNumber.convert(x);
-	      }
-	      else if (isBoolean(x)) {
-	        x = new BigNumber(x ? 1 : 0);
-	      }
-
-	      if (x instanceof BigNumber) {
-	        return x.eq(y)
-	      }
-
-	      // downgrade to Number
-	      return equal(x, y.toNumber());
-	    }
-
-	    if ((isUnit(x)) && (isUnit(y))) {
-	      if (!x.equalBase(y)) {
-	        throw new Error('Cannot compare units with different base');
-	      }
-	      return x.value == y.value;
-	    }
-
-	    if (isCollection(x) || isCollection(y)) {
-	      return collection.deepMap2(x, y, equal);
-	    }
-
-	    // Note: test strings after testing collections,
-	    // else we can't compare a string with a matrix
-	    if (isString(x) || isString(y)) {
-	      return x == y;
-	    }
-
-	    if (isBoolean(x)) {
-	      return equal(+x, y);
-	    }
-	    if (isBoolean(y)) {
-	      return equal(x, +y);
-	    }
-
-	    throw new math.error.UnsupportedTypeError('equal', math['typeof'](x), math['typeof'](y));
-	  };
-	};
-
-
-/***/ },
-/* 31 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -6270,11 +5998,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 32 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -6348,11 +6076,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 33 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -6426,11 +6154,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 34 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(11),
@@ -6528,261 +6256,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
-
-	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(5),
-	      Unit = __webpack_require__(9),
-	      collection = __webpack_require__(11),
-
-	      isNumber = util.number.isNumber,
-	      nearlyEqual = util.number.nearlyEqual,
-	      isBoolean = util['boolean'].isBoolean,
-	      isString = util.string.isString,
-	      isComplex = Complex.isComplex,
-	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
-
-	  /**
-	   * Test whether value x is larger than y.
-	   *
-	   * The function returns true when x is larger than y and the relative
-	   * difference between x and y is larger than the configured epsilon. The
-	   * function cannot be used to compare values smaller than approximately 2.22e-16.
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.larger(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    var math = mathjs();
-	   *
-	   *    math.larger(2, 3);             // returns false
-	   *    math.larger(5, 2 + 2);         // returns true
-	   *
-	   *    var a = math.unit('5 cm');
-	   *    var b = math.unit('2 inch');
-	   *    math.larger(a, b);             // returns false
-	   *
-	   * See also:
-	   *
-	   *    equal, unequal, smaller, smallereq, largereq, compare
-	   *
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
-	   * @return {Boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
-	   */
-	  math.larger = function larger(x, y) {
-	    if (arguments.length != 2) {
-	      throw new math.error.ArgumentsError('larger', arguments.length, 2);
-	    }
-
-	    if (isNumber(x) && isNumber(y)) {
-	      return !nearlyEqual(x, y, config.epsilon) && x > y;
-	    }
-
-	    if (x instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(y)) {
-	        y = BigNumber.convert(y);
-	      }
-	      else if (isBoolean(y)) {
-	        y = new BigNumber(y ? 1 : 0);
-	      }
-
-	      if (y instanceof BigNumber) {
-	        return x.gt(y);
-	      }
-
-	      // downgrade to Number
-	      return larger(x.toNumber(), y);
-	    }
-	    if (y instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(x)) {
-	        x = BigNumber.convert(x);
-	      }
-	      else if (isBoolean(x)) {
-	        x = new BigNumber(x ? 1 : 0);
-	      }
-
-	      if (x instanceof BigNumber) {
-	        return x.gt(y)
-	      }
-
-	      // downgrade to Number
-	      return larger(x, y.toNumber());
-	    }
-
-	    if ((isUnit(x)) && (isUnit(y))) {
-	      if (!x.equalBase(y)) {
-	        throw new Error('Cannot compare units with different base');
-	      }
-	      return x.value > y.value;
-	    }
-
-	    if (isCollection(x) || isCollection(y)) {
-	      return collection.deepMap2(x, y, larger);
-	    }
-
-	    // Note: test strings after testing collections,
-	    // else we can't compare a string with a matrix
-	    if (isString(x) || isString(y)) {
-	      return x > y;
-	    }
-
-	    if (isBoolean(x)) {
-	      return larger(+x, y);
-	    }
-	    if (isBoolean(y)) {
-	      return larger(x, +y);
-	    }
-
-	    if (isComplex(x) || isComplex(y)) {
-	      throw new TypeError('No ordering relation is defined for complex numbers');
-	    }
-
-	    throw new math.error.UnsupportedTypeError('larger', math['typeof'](x), math['typeof'](y));
-	  };
-	};
-
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
-
-	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(5),
-	      Unit = __webpack_require__(9),
-	      collection = __webpack_require__(11),
-
-	      isNumber = util.number.isNumber,
-	      nearlyEqual = util.number.nearlyEqual,
-	      isBoolean = util['boolean'].isBoolean,
-	      isString = util.string.isString,
-	      isComplex = Complex.isComplex,
-	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
-
-	  /**
-	   * Test whether value x is larger or equal to y.
-	   *
-	   * The function returns true when x is larger than y or the relative
-	   * difference between x and y is smaller than the configured epsilon. The
-	   * function cannot be used to compare values smaller than approximately 2.22e-16.
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.largereq(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    var math = mathjs();
-	   *
-	   *    math.larger(2, 1 + 1);         // returns false
-	   *    math.largereq(2, 1 + 1);       // returns true
-	   *
-	   * See also:
-	   *
-	   *    equal, unequal, smaller, smallereq, larger, compare
-	   *
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
-	   * @return {Boolean | Array | Matrix} Returns true when the x is larger or equal to y, else returns false
-	   */
-	  math.largereq = function largereq(x, y) {
-	    if (arguments.length != 2) {
-	      throw new math.error.ArgumentsError('largereq', arguments.length, 2);
-	    }
-
-	    if (isNumber(x) && isNumber(y)) {
-	      return nearlyEqual(x, y, config.epsilon) || x > y;
-	    }
-
-	    if (x instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(y)) {
-	        y = BigNumber.convert(y);
-	      }
-	      else if (isBoolean(y)) {
-	        y = new BigNumber(y ? 1 : 0);
-	      }
-
-	      if (y instanceof BigNumber) {
-	        return x.gte(y);
-	      }
-
-	      // downgrade to Number
-	      return largereq(x.toNumber(), y);
-	    }
-	    if (y instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(x)) {
-	        x = BigNumber.convert(x);
-	      }
-	      else if (isBoolean(x)) {
-	        x = new BigNumber(x ? 1 : 0);
-	      }
-
-	      if (x instanceof BigNumber) {
-	        return x.gte(y)
-	      }
-
-	      // downgrade to Number
-	      return largereq(x, y.toNumber());
-	    }
-
-	    if ((isUnit(x)) && (isUnit(y))) {
-	      if (!x.equalBase(y)) {
-	        throw new Error('Cannot compare units with different base');
-	      }
-	      return x.value >= y.value;
-	    }
-
-	    if (isCollection(x) || isCollection(y)) {
-	      return collection.deepMap2(x, y, largereq);
-	    }
-
-	    // Note: test strings after testing collections,
-	    // else we can't compare a string with a matrix
-	    if (isString(x) || isString(y)) {
-	      return x >= y;
-	    }
-
-	    if (isBoolean(x)) {
-	      return largereq(+x, y);
-	    }
-	    if (isBoolean(y)) {
-	      return largereq(x, +y);
-	    }
-
-	    if (isComplex(x) || isComplex(y)) {
-	      throw new TypeError('No ordering relation is defined for complex numbers');
-	    }
-
-	    throw new math.error.UnsupportedTypeError('largereq', math['typeof'](x), math['typeof'](y));
-	  };
-	};
-
-
-/***/ },
-/* 37 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(11),
@@ -6890,11 +6368,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 38 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -6993,11 +6471,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 39 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -7081,11 +6559,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 40 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(11),
@@ -7220,11 +6698,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 41 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -7652,13 +7130,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 42 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
-	    array = __webpack_require__(155),
+	    array = __webpack_require__(161),
 	          
 	    BigNumber = math.type.BigNumber,
 	    Complex = __webpack_require__(5),
@@ -7840,11 +7318,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 43 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -8024,11 +7502,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 44 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -8164,11 +7642,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 45 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -8244,260 +7722,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
-
-	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(5),
-	      Unit = __webpack_require__(9),
-	      collection = __webpack_require__(11),
-
-	      isNumber = util.number.isNumber,
-	      nearlyEqual = util.number.nearlyEqual,
-	      isBoolean = util['boolean'].isBoolean,
-	      isString = util.string.isString,
-	      isComplex = Complex.isComplex,
-	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
-
-	  /**
-	   * Test whether value x is smaller than y.
-	   *
-	   * The function returns true when x is smaller than y and the relative
-	   * difference between x and y is larger than the configured epsilon. The
-	   * function cannot be used to compare values smaller than approximately 2.22e-16.
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.smaller(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    var math = mathjs();
-	   *
-	   *    math.smaller(2, 3);            // returns true
-	   *    math.smaller(5, 2 * 2);        // returns false
-	   *
-	   *    var a = math.unit('5 cm');
-	   *    var b = math.unit('2 inch');
-	   *    math.smaller(a, b);            // returns true
-	   *
-	   * See also:
-	   *
-	   *    equal, unequal, smallereq, larger, largereq, compare
-	   *
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
-	   * @return {Boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
-	   */
-	  math.smaller = function smaller(x, y) {
-	    if (arguments.length != 2) {
-	      throw new math.error.ArgumentsError('smaller', arguments.length, 2);
-	    }
-
-	    if (isNumber(x) && isNumber(y)) {
-	      return !nearlyEqual(x, y, config.epsilon) && x < y;
-	    }
-
-	    if (x instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(y)) {
-	        y = BigNumber.convert(y);
-	      }
-	      else if (isBoolean(y)) {
-	        y = new BigNumber(y ? 1 : 0);
-	      }
-
-	      if (y instanceof BigNumber) {
-	        return x.lt(y);
-	      }
-
-	      // downgrade to Number
-	      return smaller(x.toNumber(), y);
-	    }
-	    if (y instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(x)) {
-	        x = BigNumber.convert(x);
-	      }
-	      else if (isBoolean(x)) {
-	        x = new BigNumber(x ? 1 : 0);
-	      }
-
-	      if (x instanceof BigNumber) {
-	        return x.lt(y)
-	      }
-
-	      // downgrade to Number
-	      return smaller(x, y.toNumber());
-	    }
-
-	    if ((isUnit(x)) && (isUnit(y))) {
-	      if (!x.equalBase(y)) {
-	        throw new Error('Cannot compare units with different base');
-	      }
-	      return x.value < y.value;
-	    }
-
-	    if (isCollection(x) || isCollection(y)) {
-	      return collection.deepMap2(x, y, smaller);
-	    }
-
-	    // Note: test strings after testing collections,
-	    // else we can't compare a string with a matrix
-	    if (isString(x) || isString(y)) {
-	      return x < y;
-	    }
-
-	    if (isBoolean(x)) {
-	      return smaller(+x, y);
-	    }
-	    if (isBoolean(y)) {
-	      return smaller(x, +y);
-	    }
-
-	    if (isComplex(x) || isComplex(y)) {
-	      throw new TypeError('No ordering relation is defined for complex numbers');
-	    }
-
-	    throw new math.error.UnsupportedTypeError('smaller', math['typeof'](x), math['typeof'](y));
-	  };
-	};
-
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
-
-	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(5),
-	      Unit = __webpack_require__(9),
-	      collection = __webpack_require__(11),
-
-	      isNumber = util.number.isNumber,
-	      nearlyEqual = util.number.nearlyEqual,
-	      isBoolean = util['boolean'].isBoolean,
-	      isString = util.string.isString,
-	      isComplex = Complex.isComplex,
-	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
-
-	  /**
-	   * Test whether value x is smaller or equal to y.
-	   *
-	   * The function returns true when x is smaller than y or the relative
-	   * difference between x and y is smaller than the configured epsilon. The
-	   * function cannot be used to compare values smaller than approximately 2.22e-16.
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.smallereq(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    var math = mathjs();
-	   *
-	   *    math.smaller(1 + 2, 3);        // returns false
-	   *    math.smallereq(1 + 2, 3);      // returns true
-	   *
-	   * See also:
-	   *
-	   *    equal, unequal, smaller, larger, largereq, compare
-	   *
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
-	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
-	   * @return {Boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
-	   */
-	  math.smallereq = function smallereq(x, y) {
-	    if (arguments.length != 2) {
-	      throw new math.error.ArgumentsError('smallereq', arguments.length, 2);
-	    }
-
-	    if (isNumber(x) && isNumber(y)) {
-	      return nearlyEqual(x, y, config.epsilon) || x < y;
-	    }
-
-	    if (x instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(y)) {
-	        y = BigNumber.convert(y);
-	      }
-	      else if (isBoolean(y)) {
-	        y = new BigNumber(y ? 1 : 0);
-	      }
-
-	      if (y instanceof BigNumber) {
-	        return x.lte(y);
-	      }
-
-	      // downgrade to Number
-	      return smallereq(x.toNumber(), y);
-	    }
-	    if (y instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(x)) {
-	        x = BigNumber.convert(x);
-	      }
-	      else if (isBoolean(x)) {
-	        x = new BigNumber(x ? 1 : 0);
-	      }
-
-	      if (x instanceof BigNumber) {
-	        return x.lte(y)
-	      }
-
-	      // downgrade to Number
-	      return smallereq(x, y.toNumber());
-	    }
-
-	    if ((isUnit(x)) && (isUnit(y))) {
-	      if (!x.equalBase(y)) {
-	        throw new Error('Cannot compare units with different base');
-	      }
-	      return x.value <= y.value;
-	    }
-
-	    if (isCollection(x) || isCollection(y)) {
-	      return collection.deepMap2(x, y, smallereq);
-	    }
-
-	    // Note: test strings after testing collections,
-	    // else we can't compare a string with a matrix
-	    if (isString(x) || isString(y)) {
-	      return x <= y;
-	    }
-
-	    if (isBoolean(x)) {
-	      return smallereq(+x, y);
-	    }
-	    if (isBoolean(y)) {
-	      return smallereq(x, +y);
-	    }
-
-	    if (isComplex(x) || isComplex(y)) {
-	      throw new TypeError('No ordering relation is defined for complex numbers');
-	    }
-
-	    throw new math.error.UnsupportedTypeError('smallereq', math['typeof'](x), math['typeof'](y));
-	  };
-	};
-
-
-/***/ },
-/* 48 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -8588,11 +7817,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 49 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -8662,11 +7891,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 50 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -8822,11 +8051,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 51 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -8849,25 +8078,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Syntax:
 	   *
-	   *    math.unaryminus(x)
+	   *    math.unaryMinus(x)
 	   *
 	   * Examples:
 	   *
 	   *    var math = mathjs();
 	   *
-	   *    math.unaryminus(3.5);      // returns -3.5
-	   *    math.unaryminus(-4.2);     // returns 4.2
+	   *    math.unaryMinus(3.5);      // returns -3.5
+	   *    math.unaryMinus(-4.2);     // returns 4.2
 	   *
 	   * See also:
 	   *
-	   *    add, subtract, unaryplus
+	   *    add, subtract, unaryPlus
 	   *
 	   * @param  {Number | BigNumber | Boolean | String | Complex | Unit | Array | Matrix} x Number to be inverted.
 	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
 	   */
-	  math.unaryminus = function unaryminus(x) {
+	  math.unaryMinus = function unaryMinus(x) {
 	    if (arguments.length != 1) {
-	      throw new math.error.ArgumentsError('unaryminus', arguments.length, 1);
+	      throw new math.error.ArgumentsError('unaryMinus', arguments.length, 1);
 	    }
 
 	    if (isNumber(x)) {
@@ -8892,7 +8121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (isCollection(x)) {
-	      return collection.deepMap(x, unaryminus);
+	      return collection.deepMap(x, unaryMinus);
 	    }
 
 	    if (isBoolean(x) || isString(x)) {
@@ -8900,22 +8129,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return (config.number == 'bignumber') ? new BigNumber(-x): -x;
 	    }
 
-	    throw new math.error.UnsupportedTypeError('unaryminus', math['typeof'](x));
+	    throw new math.error.UnsupportedTypeError('unaryMinus', math['typeof'](x));
 	  };
 
-	  // TODO: function unary is renamed to unaryminus since version 0.22.1. Cleanup some day
+	  // TODO: function unary is renamed to unaryMinus since version 0.23.0. Cleanup some day
 	  math.unary = function unary() {
-	    throw new Error('Function unary is deprecated. Use unaryminus instead.');
+	    throw new Error('Function unary is deprecated. Use unaryMinus instead.');
 	  }
 	};
 
 
 /***/ },
-/* 52 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -8937,27 +8166,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Syntax:
 	   *
-	   *    math.unaryplus(x)
+	   *    math.unaryPlus(x)
 	   *
 	   * Examples:
 	   *
 	   *    var math = mathjs();
 	   *
-	   *    math.unaryplus(3.5);      // returns 3.5
-	   *    math.unaryplus(1);     // returns 1
+	   *    math.unaryPlus(3.5);      // returns 3.5
+	   *    math.unaryPlus(1);     // returns 1
 	   *
 	   * See also:
 	   *
-	   *    unaryminus, add, subtract
+	   *    unaryMinus, add, subtract
 	   *
 	   * @param  {Number | BigNumber | Boolean | String | Complex | Unit | Array | Matrix} x
 	   *            Input value
 	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}
 	   *            Returns the input value when numeric, converts to a number when input is non-numeric.
 	   */
-	  math.unaryplus = function unaryplus(x) {
+	  math.unaryPlus = function unaryPlus(x) {
 	    if (arguments.length != 1) {
-	      throw new math.error.ArgumentsError('unaryplus', arguments.length, 1);
+	      throw new math.error.ArgumentsError('unaryPlus', arguments.length, 1);
 	    }
 
 	    if (isNumber(x)) {
@@ -8977,7 +8206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (isCollection(x)) {
-	      return collection.deepMap(x, unaryplus);
+	      return collection.deepMap(x, unaryPlus);
 	    }
 
 	    if (isBoolean(x) || isString(x)) {
@@ -8985,155 +8214,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return (config.number == 'bignumber') ? new BigNumber(+x): +x;
 	    }
 
-	    throw new math.error.UnsupportedTypeError('unaryplus', math['typeof'](x));
+	    throw new math.error.UnsupportedTypeError('unaryPlus', math['typeof'](x));
 	  };
 	};
 
 
 /***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
-
-	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(5),
-	      Unit = __webpack_require__(9),
-	      collection = __webpack_require__(11),
-
-	      isNumber = util.number.isNumber,
-	      nearlyEqual = util.number.nearlyEqual,
-	      isBoolean = util['boolean'].isBoolean,
-	      isString = util.string.isString,
-	      isComplex = Complex.isComplex,
-	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
-
-	  /**
-	   * Test whether two values are unequal.
-	   *
-	   * The function tests whether the relative difference between x and y is
-	   * larger than the configured epsilon. The function cannot be used to compare
-	   * values smaller than approximately 2.22e-16.
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   * In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im.
-	   *
-	   * Syntax:
-	   *
-	   *    math.unequal(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    var math = mathjs();
-	   *
-	   *    math.unequal(2 + 2, 3);       // returns true
-	   *    math.unequal(2 + 2, 4);       // returns false
-	   *
-	   *    var a = math.unit('50 cm');
-	   *    var b = math.unit('5 m');
-	   *    math.unequal(a, b);           // returns false
-	   *
-	   * See also:
-	   *
-	   *    equal, smaller, smallereq, larger, largereq, compare
-	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x First value to compare
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y Second value to compare
-	   * @return {Boolean | Array | Matrix} Returns true when the compared values are unequal, else returns false
-	   */
-	  math.unequal = function unequal(x, y) {
-	    if (arguments.length != 2) {
-	      throw new math.error.ArgumentsError('unequal', arguments.length, 2);
-	    }
-
-	    if (isNumber(x)) {
-	      if (isNumber(y)) {
-	        return !nearlyEqual(x, y, config.epsilon);
-	      }
-	      else if (isComplex(y)) {
-	        return !nearlyEqual(x, y.re, config.epsilon) || !nearlyEqual(y.im, 0, config.epsilon);
-	      }
-	    }
-
-	    if (isComplex(x)) {
-	      if (isNumber(y)) {
-	        return !nearlyEqual(x.re, y, config.epsilon) || !nearlyEqual(x.im, 0, config.epsilon);
-	      }
-	      else if (isComplex(y)) {
-	        return !nearlyEqual(x.re, y.re, config.epsilon) || !nearlyEqual(x.im, y.im, config.epsilon);
-	      }
-	    }
-
-	    if (x instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(y)) {
-	        y = BigNumber.convert(y);
-	      }
-	      else if (isBoolean(y)) {
-	        y = new BigNumber(y ? 1 : 0);
-	      }
-
-	      if (y instanceof BigNumber) {
-	        return !x.eq(y);
-	      }
-
-	      // downgrade to Number
-	      return unequal(x.toNumber(), y);
-	    }
-	    if (y instanceof BigNumber) {
-	      // try to convert to big number
-	      if (isNumber(x)) {
-	        x = BigNumber.convert(x);
-	      }
-	      else if (isBoolean(x)) {
-	        x = new BigNumber(x ? 1 : 0);
-	      }
-
-	      if (x instanceof BigNumber) {
-	        return !x.eq(y)
-	      }
-
-	      // downgrade to Number
-	      return unequal(x, y.toNumber());
-	    }
-
-	    if ((isUnit(x)) && (isUnit(y))) {
-	      if (!x.equalBase(y)) {
-	        throw new Error('Cannot compare units with different base');
-	      }
-	      return x.value != y.value;
-	    }
-
-	    if (isCollection(x) || isCollection(y)) {
-	      return collection.deepMap2(x, y, unequal);
-	    }
-
-	    // Note: test strings after testing collections,
-	    // else we can't compare a string with a matrix
-	    if (isString(x) || isString(y)) {
-	      return x != y;
-	    }
-
-	    if (isBoolean(x)) {
-	      return unequal(+x, y);
-	    }
-	    if (isBoolean(y)) {
-	      return unequal(x, +y);
-	    }
-
-	    throw new math.error.UnsupportedTypeError('unequal', math['typeof'](x), math['typeof'](y));
-	  };
-	};
-
-
-/***/ },
-/* 54 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 
@@ -9242,11 +8333,1023 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 55 */
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(129),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(5),
+	      Unit = __webpack_require__(9),
+	      collection = __webpack_require__(11),
+
+	      isNumber = util.number.isNumber,
+	      nearlyEqual = util.number.nearlyEqual,
+	      isBoolean = util['boolean'].isBoolean,
+	      isString = util.string.isString,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection;
+
+	  /**
+	   * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
+	   *
+	   * x and y are considered equal when the relative difference between x and y
+	   * is smaller than the configured epsilon. The function cannot be used to
+	   * compare values smaller than approximately 2.22e-16.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.compare(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.compare(6, 1);           // returns 1
+	   *    math.compare(2, 3);           // returns -1
+	   *    math.compare(7, 7);           // returns 0
+	   *
+	   *    var a = math.unit('5 cm');
+	   *    var b = math.unit('40 mm');
+	   *    math.compare(a, b);           // returns 1
+	   *
+	   *    math.compare(2, [1, 2, 3]);   // returns [1, 0, -1]
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smaller, smallerEq, larger, largerEq
+	   *
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Number | BigNumber | Array | Matrix} Returns the result of the comparison: 1, 0 or -1.
+	   */
+	  math.compare = function compare(x, y) {
+	    if (arguments.length != 2) {
+	      throw new math.error.ArgumentsError('compare', arguments.length, 2);
+	    }
+
+	    if (isNumber(x) && isNumber(y)) {
+	      return nearlyEqual(x, y, config.epsilon) ? 0 : (x > y ? 1 : -1);
+	    }
+
+	    if (x instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(y)) {
+	        y = BigNumber.convert(y);
+	      }
+	      else if (isBoolean(y)) {
+	        y = new BigNumber(y ? 1 : 0);
+	      }
+
+	      if (y instanceof BigNumber) {
+	        return new BigNumber(x.cmp(y));
+	      }
+
+	      // downgrade to Number
+	      return compare(x.toNumber(), y);
+	    }
+	    if (y instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(x)) {
+	        x = BigNumber.convert(x);
+	      }
+	      else if (isBoolean(x)) {
+	        x = new BigNumber(x ? 1 : 0);
+	      }
+
+	      if (x instanceof BigNumber) {
+	        return new BigNumber(x.cmp(y));
+	      }
+
+	      // downgrade to Number
+	      return compare(x, y.toNumber());
+	    }
+
+	    if ((isUnit(x)) && (isUnit(y))) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return (x.value > y.value) ? 1 : ((x.value < y.value) ? -1 : 0);
+	    }
+
+	    if (isCollection(x) || isCollection(y)) {
+	      return collection.deepMap2(x, y, compare);
+	    }
+
+	    // Note: test strings after testing collections,
+	    // else we can't compare a string with a matrix
+	    if (isString(x) || isString(y)) {
+	      return (x > y) ? 1 : ((x < y) ? -1 : 0);
+	    }
+
+	    if (isBoolean(x)) {
+	      return compare(+x, y);
+	    }
+	    if (isBoolean(y)) {
+	      return compare(x, +y);
+	    }
+
+	    if (isComplex(x) || isComplex(y)) {
+	      throw new TypeError('No ordering relation is defined for complex numbers');
+	    }
+
+	    throw new math.error.UnsupportedTypeError('compare', math['typeof'](x), math['typeof'](y));
+	  };
+	};
+
+
+/***/ },
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var collection = __webpack_require__(11),
+
+	      isCollection = collection.isCollection,
+	      isArray = Array.isArray;
+
+	  /**
+	   * Test element wise whether two matrices are equal.
+	   * The function accepts both matrices and scalar values.
+	   *
+	   * Syntax:
+	   *
+	   *    math.deepEqual(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.deepEqual(2, 4);   // returns false
+	   *
+	   *    a = [2, 5, 1];
+	   *    b = [2, 7, 1];
+	   *
+	   *    math.deepEqual(a, b);   // returns false
+	   *    math.equal(a, b);       // returns [true, false, true]
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} x First matrix to compare
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix} y Second matrix to compare
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}
+	   *            Returns true when the input matrices have the same size and each of their elements is equal.
+	   */
+	  math.deepEqual = function deepEqual(x, y) {
+	    if (arguments.length != 2) {
+	      throw new math.error.ArgumentsError('deepEqual', arguments.length, 2);
+	    }
+
+	    if (isCollection(x) || isCollection(y)) {
+	      return _deepEqual(x.valueOf(), y.valueOf());
+	    }
+
+	    return math.equal(x, y);
+	  };
+
+	  /**
+	   * Test whether two arrays have the same size and all elements are equal
+	   * @param {Array | *} x
+	   * @param {Array | *} y
+	   * @return {boolean} Returns true if both arrays are deep equal
+	   */
+	  function _deepEqual(x, y) {
+	    if (isArray(x)) {
+	      if (isArray(y)) {
+	        var len = x.length;
+	        if (len !== y.length) return false;
+
+	        for (var i = 0; i < len; i++) {
+	          if (!_deepEqual(x[i], y[i])) return false;
+	        }
+
+	        return true;
+	      }
+	      else {
+	        return false;
+	      }
+	    }
+	    else {
+	      if (isArray(y)) {
+	        return false;
+	      }
+	      else {
+	        return math.equal(x, y);
+	      }
+	    }
+	  }
+	};
+
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(129),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(5),
+	      Unit = __webpack_require__(9),
+	      collection = __webpack_require__(11),
+
+	      isNumber = util.number.isNumber,
+	      nearlyEqual = util.number.nearlyEqual,
+	      isBoolean = util['boolean'].isBoolean,
+	      isString = util.string.isString,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection;
+
+	  /**
+	   * Test whether two values are equal.
+	   *
+	   * The function tests whether the relative difference between x and y is
+	   * smaller than the configured epsilon. The function cannot be used to
+	   * compare values smaller than approximately 2.22e-16.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   * In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
+	   *
+	   * Syntax:
+	   *
+	   *    math.equal(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.equal(2 + 2, 3);         // returns false
+	   *    math.equal(2 + 2, 4);         // returns true
+	   *
+	   *    var a = math.unit('50 cm');
+	   *    var b = math.unit('5 m');
+	   *    math.equal(a, b);             // returns true
+	   *
+	   *    var c = [2, 5, 1];
+	   *    var d = [2, 7, 1];
+	   *
+	   *    math.equal(c, d);             // returns [true, false, true]
+	   *    math.deepEqual(c, d);         // returns false
+	   *
+	   * See also:
+	   *
+	   *    unequal, smaller, smallerEq, larger, largerEq, compare, deepEqual
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the compared values are equal, else returns false
+	   */
+	  math.equal = function equal(x, y) {
+	    if (arguments.length != 2) {
+	      throw new math.error.ArgumentsError('equal', arguments.length, 2);
+	    }
+
+	    if (isNumber(x)) {
+	      if (isNumber(y)) {
+	        return nearlyEqual(x, y, config.epsilon);
+	      }
+	      else if (isComplex(y)) {
+	        return nearlyEqual(x, y.re, config.epsilon) && nearlyEqual(y.im, 0, config.epsilon);
+	      }
+	    }
+
+	    if (isComplex(x)) {
+	      if (isNumber(y)) {
+	        return nearlyEqual(x.re, y, config.epsilon) && nearlyEqual(x.im, 0, config.epsilon);
+	      }
+	      else if (isComplex(y)) {
+	        return nearlyEqual(x.re, y.re, config.epsilon) && nearlyEqual(x.im, y.im, config.epsilon);
+	      }
+	    }
+
+	    if (x instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(y)) {
+	        y = BigNumber.convert(y);
+	      }
+	      else if (isBoolean(y)) {
+	        y = new BigNumber(y ? 1 : 0);
+	      }
+
+	      if (y instanceof BigNumber) {
+	        return x.eq(y);
+	      }
+
+	      // downgrade to Number
+	      return equal(x.toNumber(), y);
+	    }
+	    if (y instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(x)) {
+	        x = BigNumber.convert(x);
+	      }
+	      else if (isBoolean(x)) {
+	        x = new BigNumber(x ? 1 : 0);
+	      }
+
+	      if (x instanceof BigNumber) {
+	        return x.eq(y)
+	      }
+
+	      // downgrade to Number
+	      return equal(x, y.toNumber());
+	    }
+
+	    if ((isUnit(x)) && (isUnit(y))) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return x.value == y.value;
+	    }
+
+	    if (isCollection(x) || isCollection(y)) {
+	      return collection.deepMap2(x, y, equal);
+	    }
+
+	    // Note: test strings after testing collections,
+	    // else we can accidentally compare a stringified array with a string
+	    if (isString(x) || isString(y)) {
+	      return x == y;
+	    }
+
+	    if (isBoolean(x)) {
+	      return equal(+x, y);
+	    }
+	    if (isBoolean(y)) {
+	      return equal(x, +y);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('equal', math['typeof'](x), math['typeof'](y));
+	  };
+	};
+
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(129),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(5),
+	      Unit = __webpack_require__(9),
+	      collection = __webpack_require__(11),
+
+	      isNumber = util.number.isNumber,
+	      nearlyEqual = util.number.nearlyEqual,
+	      isBoolean = util['boolean'].isBoolean,
+	      isString = util.string.isString,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection;
+
+	  /**
+	   * Test whether value x is larger than y.
+	   *
+	   * The function returns true when x is larger than y and the relative
+	   * difference between x and y is larger than the configured epsilon. The
+	   * function cannot be used to compare values smaller than approximately 2.22e-16.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.larger(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.larger(2, 3);             // returns false
+	   *    math.larger(5, 2 + 2);         // returns true
+	   *
+	   *    var a = math.unit('5 cm');
+	   *    var b = math.unit('2 inch');
+	   *    math.larger(a, b);             // returns false
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smaller, smallerEq, largerEq, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
+	   */
+	  math.larger = function larger(x, y) {
+	    if (arguments.length != 2) {
+	      throw new math.error.ArgumentsError('larger', arguments.length, 2);
+	    }
+
+	    if (isNumber(x) && isNumber(y)) {
+	      return !nearlyEqual(x, y, config.epsilon) && x > y;
+	    }
+
+	    if (x instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(y)) {
+	        y = BigNumber.convert(y);
+	      }
+	      else if (isBoolean(y)) {
+	        y = new BigNumber(y ? 1 : 0);
+	      }
+
+	      if (y instanceof BigNumber) {
+	        return x.gt(y);
+	      }
+
+	      // downgrade to Number
+	      return larger(x.toNumber(), y);
+	    }
+	    if (y instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(x)) {
+	        x = BigNumber.convert(x);
+	      }
+	      else if (isBoolean(x)) {
+	        x = new BigNumber(x ? 1 : 0);
+	      }
+
+	      if (x instanceof BigNumber) {
+	        return x.gt(y)
+	      }
+
+	      // downgrade to Number
+	      return larger(x, y.toNumber());
+	    }
+
+	    if ((isUnit(x)) && (isUnit(y))) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return x.value > y.value;
+	    }
+
+	    if (isCollection(x) || isCollection(y)) {
+	      return collection.deepMap2(x, y, larger);
+	    }
+
+	    // Note: test strings after testing collections,
+	    // else we can't compare a string with a matrix
+	    if (isString(x) || isString(y)) {
+	      return x > y;
+	    }
+
+	    if (isBoolean(x)) {
+	      return larger(+x, y);
+	    }
+	    if (isBoolean(y)) {
+	      return larger(x, +y);
+	    }
+
+	    if (isComplex(x) || isComplex(y)) {
+	      throw new TypeError('No ordering relation is defined for complex numbers');
+	    }
+
+	    throw new math.error.UnsupportedTypeError('larger', math['typeof'](x), math['typeof'](y));
+	  };
+	};
+
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(129),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(5),
+	      Unit = __webpack_require__(9),
+	      collection = __webpack_require__(11),
+
+	      isNumber = util.number.isNumber,
+	      nearlyEqual = util.number.nearlyEqual,
+	      isBoolean = util['boolean'].isBoolean,
+	      isString = util.string.isString,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection;
+
+	  /**
+	   * Test whether value x is larger or equal to y.
+	   *
+	   * The function returns true when x is larger than y or the relative
+	   * difference between x and y is smaller than the configured epsilon. The
+	   * function cannot be used to compare values smaller than approximately 2.22e-16.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.largerEq(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.larger(2, 1 + 1);         // returns false
+	   *    math.largerEq(2, 1 + 1);       // returns true
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smaller, smallerEq, larger, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the x is larger or equal to y, else returns false
+	   */
+	  math.largerEq = function largerEq(x, y) {
+	    if (arguments.length != 2) {
+	      throw new math.error.ArgumentsError('largerEq', arguments.length, 2);
+	    }
+
+	    if (isNumber(x) && isNumber(y)) {
+	      return nearlyEqual(x, y, config.epsilon) || x > y;
+	    }
+
+	    if (x instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(y)) {
+	        y = BigNumber.convert(y);
+	      }
+	      else if (isBoolean(y)) {
+	        y = new BigNumber(y ? 1 : 0);
+	      }
+
+	      if (y instanceof BigNumber) {
+	        return x.gte(y);
+	      }
+
+	      // downgrade to Number
+	      return largerEq(x.toNumber(), y);
+	    }
+	    if (y instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(x)) {
+	        x = BigNumber.convert(x);
+	      }
+	      else if (isBoolean(x)) {
+	        x = new BigNumber(x ? 1 : 0);
+	      }
+
+	      if (x instanceof BigNumber) {
+	        return x.gte(y)
+	      }
+
+	      // downgrade to Number
+	      return largerEq(x, y.toNumber());
+	    }
+
+	    if ((isUnit(x)) && (isUnit(y))) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return x.value >= y.value;
+	    }
+
+	    if (isCollection(x) || isCollection(y)) {
+	      return collection.deepMap2(x, y, largerEq);
+	    }
+
+	    // Note: test strings after testing collections,
+	    // else we can't compare a string with a matrix
+	    if (isString(x) || isString(y)) {
+	      return x >= y;
+	    }
+
+	    if (isBoolean(x)) {
+	      return largerEq(+x, y);
+	    }
+	    if (isBoolean(y)) {
+	      return largerEq(x, +y);
+	    }
+
+	    if (isComplex(x) || isComplex(y)) {
+	      throw new TypeError('No ordering relation is defined for complex numbers');
+	    }
+
+	    throw new math.error.UnsupportedTypeError('largerEq', math['typeof'](x), math['typeof'](y));
+	  };
+
+	  // TODO: deprecated since version 0.23.0, cleanup some day
+	  math.largereq = function () {
+	    throw new Error('Function largereq is renamed to largerEq');
+	  }
+	};
+
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(129),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(5),
+	      Unit = __webpack_require__(9),
+	      collection = __webpack_require__(11),
+
+	      isNumber = util.number.isNumber,
+	      nearlyEqual = util.number.nearlyEqual,
+	      isBoolean = util['boolean'].isBoolean,
+	      isString = util.string.isString,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection;
+
+	  /**
+	   * Test whether value x is smaller than y.
+	   *
+	   * The function returns true when x is smaller than y and the relative
+	   * difference between x and y is larger than the configured epsilon. The
+	   * function cannot be used to compare values smaller than approximately 2.22e-16.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.smaller(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.smaller(2, 3);            // returns true
+	   *    math.smaller(5, 2 * 2);        // returns false
+	   *
+	   *    var a = math.unit('5 cm');
+	   *    var b = math.unit('2 inch');
+	   *    math.smaller(a, b);            // returns true
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smallerEq, larger, largerEq, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
+	   */
+	  math.smaller = function smaller(x, y) {
+	    if (arguments.length != 2) {
+	      throw new math.error.ArgumentsError('smaller', arguments.length, 2);
+	    }
+
+	    if (isNumber(x) && isNumber(y)) {
+	      return !nearlyEqual(x, y, config.epsilon) && x < y;
+	    }
+
+	    if (x instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(y)) {
+	        y = BigNumber.convert(y);
+	      }
+	      else if (isBoolean(y)) {
+	        y = new BigNumber(y ? 1 : 0);
+	      }
+
+	      if (y instanceof BigNumber) {
+	        return x.lt(y);
+	      }
+
+	      // downgrade to Number
+	      return smaller(x.toNumber(), y);
+	    }
+	    if (y instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(x)) {
+	        x = BigNumber.convert(x);
+	      }
+	      else if (isBoolean(x)) {
+	        x = new BigNumber(x ? 1 : 0);
+	      }
+
+	      if (x instanceof BigNumber) {
+	        return x.lt(y)
+	      }
+
+	      // downgrade to Number
+	      return smaller(x, y.toNumber());
+	    }
+
+	    if ((isUnit(x)) && (isUnit(y))) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return x.value < y.value;
+	    }
+
+	    if (isCollection(x) || isCollection(y)) {
+	      return collection.deepMap2(x, y, smaller);
+	    }
+
+	    // Note: test strings after testing collections,
+	    // else we can't compare a string with a matrix
+	    if (isString(x) || isString(y)) {
+	      return x < y;
+	    }
+
+	    if (isBoolean(x)) {
+	      return smaller(+x, y);
+	    }
+	    if (isBoolean(y)) {
+	      return smaller(x, +y);
+	    }
+
+	    if (isComplex(x) || isComplex(y)) {
+	      throw new TypeError('No ordering relation is defined for complex numbers');
+	    }
+
+	    throw new math.error.UnsupportedTypeError('smaller', math['typeof'](x), math['typeof'](y));
+	  };
+	};
+
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(129),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(5),
+	      Unit = __webpack_require__(9),
+	      collection = __webpack_require__(11),
+
+	      isNumber = util.number.isNumber,
+	      nearlyEqual = util.number.nearlyEqual,
+	      isBoolean = util['boolean'].isBoolean,
+	      isString = util.string.isString,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection;
+
+	  /**
+	   * Test whether value x is smaller or equal to y.
+	   *
+	   * The function returns true when x is smaller than y or the relative
+	   * difference between x and y is smaller than the configured epsilon. The
+	   * function cannot be used to compare values smaller than approximately 2.22e-16.
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.smallerEq(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.smaller(1 + 2, 3);        // returns false
+	   *    math.smallerEq(1 + 2, 3);      // returns true
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smaller, larger, largerEq, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
+	   */
+	  math.smallerEq = function smallerEq(x, y) {
+	    if (arguments.length != 2) {
+	      throw new math.error.ArgumentsError('smallerEq', arguments.length, 2);
+	    }
+
+	    if (isNumber(x) && isNumber(y)) {
+	      return nearlyEqual(x, y, config.epsilon) || x < y;
+	    }
+
+	    if (x instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(y)) {
+	        y = BigNumber.convert(y);
+	      }
+	      else if (isBoolean(y)) {
+	        y = new BigNumber(y ? 1 : 0);
+	      }
+
+	      if (y instanceof BigNumber) {
+	        return x.lte(y);
+	      }
+
+	      // downgrade to Number
+	      return smallerEq(x.toNumber(), y);
+	    }
+	    if (y instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(x)) {
+	        x = BigNumber.convert(x);
+	      }
+	      else if (isBoolean(x)) {
+	        x = new BigNumber(x ? 1 : 0);
+	      }
+
+	      if (x instanceof BigNumber) {
+	        return x.lte(y)
+	      }
+
+	      // downgrade to Number
+	      return smallerEq(x, y.toNumber());
+	    }
+
+	    if ((isUnit(x)) && (isUnit(y))) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return x.value <= y.value;
+	    }
+
+	    if (isCollection(x) || isCollection(y)) {
+	      return collection.deepMap2(x, y, smallerEq);
+	    }
+
+	    // Note: test strings after testing collections,
+	    // else we can't compare a string with a matrix
+	    if (isString(x) || isString(y)) {
+	      return x <= y;
+	    }
+
+	    if (isBoolean(x)) {
+	      return smallerEq(+x, y);
+	    }
+	    if (isBoolean(y)) {
+	      return smallerEq(x, +y);
+	    }
+
+	    if (isComplex(x) || isComplex(y)) {
+	      throw new TypeError('No ordering relation is defined for complex numbers');
+	    }
+
+	    throw new math.error.UnsupportedTypeError('smallerEq', math['typeof'](x), math['typeof'](y));
+	  };
+
+	  // TODO: deprecated since version 0.23.0, cleanup some day
+	  math.smallereq = function () {
+	    throw new Error('Function smallereq is renamed to smallerEq');
+	  }
+	};
+
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(129),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(5),
+	      Unit = __webpack_require__(9),
+	      collection = __webpack_require__(11),
+
+	      isNumber = util.number.isNumber,
+	      nearlyEqual = util.number.nearlyEqual,
+	      isBoolean = util['boolean'].isBoolean,
+	      isString = util.string.isString,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection;
+
+	  /**
+	   * Test whether two values are unequal.
+	   *
+	   * The function tests whether the relative difference between x and y is
+	   * larger than the configured epsilon. The function cannot be used to compare
+	   * values smaller than approximately 2.22e-16.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   * In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im.
+	   *
+	   * Syntax:
+	   *
+	   *    math.unequal(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    var math = mathjs();
+	   *
+	   *    math.unequal(2 + 2, 3);       // returns true
+	   *    math.unequal(2 + 2, 4);       // returns false
+	   *
+	   *    var a = math.unit('50 cm');
+	   *    var b = math.unit('5 m');
+	   *    math.unequal(a, b);           // returns false
+	   *
+	   *    var c = [2, 5, 1];
+	   *    var d = [2, 7, 1];
+	   *
+	   *    math.unequal(c, d);           // returns [false, true, false]
+	   *    math.deepEqual(c, d);         // returns false
+	   *
+	   * See also:
+	   *
+	   *    equal, deepEqual, smaller, smallerEq, larger, largerEq, compare
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} x First value to compare
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | String | Array | Matrix} y Second value to compare
+	   * @return {Boolean | Array | Matrix} Returns true when the compared values are unequal, else returns false
+	   */
+	  math.unequal = function unequal(x, y) {
+	    if (arguments.length != 2) {
+	      throw new math.error.ArgumentsError('unequal', arguments.length, 2);
+	    }
+
+	    if (isNumber(x)) {
+	      if (isNumber(y)) {
+	        return !nearlyEqual(x, y, config.epsilon);
+	      }
+	      else if (isComplex(y)) {
+	        return !nearlyEqual(x, y.re, config.epsilon) || !nearlyEqual(y.im, 0, config.epsilon);
+	      }
+	    }
+
+	    if (isComplex(x)) {
+	      if (isNumber(y)) {
+	        return !nearlyEqual(x.re, y, config.epsilon) || !nearlyEqual(x.im, 0, config.epsilon);
+	      }
+	      else if (isComplex(y)) {
+	        return !nearlyEqual(x.re, y.re, config.epsilon) || !nearlyEqual(x.im, y.im, config.epsilon);
+	      }
+	    }
+
+	    if (x instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(y)) {
+	        y = BigNumber.convert(y);
+	      }
+	      else if (isBoolean(y)) {
+	        y = new BigNumber(y ? 1 : 0);
+	      }
+
+	      if (y instanceof BigNumber) {
+	        return !x.eq(y);
+	      }
+
+	      // downgrade to Number
+	      return unequal(x.toNumber(), y);
+	    }
+	    if (y instanceof BigNumber) {
+	      // try to convert to big number
+	      if (isNumber(x)) {
+	        x = BigNumber.convert(x);
+	      }
+	      else if (isBoolean(x)) {
+	        x = new BigNumber(x ? 1 : 0);
+	      }
+
+	      if (x instanceof BigNumber) {
+	        return !x.eq(y)
+	      }
+
+	      // downgrade to Number
+	      return unequal(x, y.toNumber());
+	    }
+
+	    if ((isUnit(x)) && (isUnit(y))) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return x.value != y.value;
+	    }
+
+	    if (isCollection(x) || isCollection(y)) {
+	      return collection.deepMap2(x, y, unequal);
+	    }
+
+	    // Note: test strings after testing collections,
+	    // else we can accidentally compare a stringified array with a string
+	    if (isString(x) || isString(y)) {
+	      return x != y;
+	    }
+
+	    if (isBoolean(x)) {
+	      return unequal(+x, y);
+	    }
+	    if (isBoolean(y)) {
+	      return unequal(x, +y);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('unequal', math['typeof'](x), math['typeof'](y));
+	  };
+	};
+
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -9319,11 +9422,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -9394,11 +9497,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -9471,11 +9574,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -9547,11 +9650,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      // take the BigNumber instance the provided math.js instance
 	      BigNumber = math.type.BigNumber,
@@ -9616,11 +9719,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(11),
@@ -9710,11 +9813,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -9843,11 +9946,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Index = __webpack_require__(7);
@@ -9916,11 +10019,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 	      Matrix = __webpack_require__(8);
 
 	  /**
@@ -9961,11 +10064,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(11),
@@ -10042,7 +10145,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -10098,7 +10201,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -10147,11 +10250,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      collection = __webpack_require__(11),
 
@@ -10214,11 +10317,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Unit = __webpack_require__(9),
@@ -10301,11 +10404,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      Matrix = __webpack_require__(8),
 	      collection = __webpack_require__(11),
@@ -10438,11 +10541,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      Matrix = __webpack_require__(8),
 
@@ -10565,7 +10668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        for (i = 0; i < matrix.length; i++) {
 	          mu[i] = new Array(matrix.length);
-	          mu[i][i] = math.unaryminus(sum);
+	          mu[i][i] = math.unaryMinus(sum);
 
 	          for (j = 0; j < i; j++) {
 	            mu[i][j] = 0; // TODO: make bignumber 0 in case of bignumber computation
@@ -10589,7 +10692,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      if (rows % 2 == 0) {
-	        return math.unaryminus(fa[0][0]);
+	        return math.unaryMinus(fa[0][0]);
 	      } else {
 	        return fa[0][0];
 	      }
@@ -10599,11 +10702,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(8),
@@ -10716,11 +10819,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(8),
@@ -10817,11 +10920,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 	      string = util.string,
 
 	      Matrix = __webpack_require__(8);
@@ -10932,10 +11035,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return [
 	        [
 	          math.divide(matrix[1][1], d),
-	          math.divide(math.unaryminus(matrix[0][1]), d)
+	          math.divide(math.unaryMinus(matrix[0][1]), d)
 	        ],
 	        [
-	          math.divide(math.unaryminus(matrix[1][0]), d),
+	          math.divide(math.unaryMinus(matrix[1][0]), d),
 	          math.divide(matrix[0][0], d)
 	        ]
 	      ];
@@ -10983,7 +11086,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          if(r != c) {
 	            // eliminate value at column c and row r
 	            if (Ar[c] != 0) {
-	              f = math.divide(math.unaryminus(Ar[c]), Ac[c]);
+	              f = math.divide(math.unaryMinus(Ar[c]), Ac[c]);
 
 	              // add (f * row c) to row r to eliminate the value
 	              // at column c
@@ -11015,11 +11118,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(8),
@@ -11090,11 +11193,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(8),
@@ -11416,11 +11519,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(8),
@@ -11551,11 +11654,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -11624,11 +11727,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      Matrix = __webpack_require__(8),
 
@@ -11685,11 +11788,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      Matrix = __webpack_require__(8),
 	      Index = __webpack_require__(7),
@@ -11896,11 +11999,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      Matrix = __webpack_require__(8),
 
@@ -11979,11 +12082,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(8),
@@ -12053,11 +12156,222 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var Matrix = __webpack_require__(8),
+	      array = __webpack_require__(161),
+	      collection = __webpack_require__(11),
+
+	      isCollection = collection.isCollection;
+
+	  // TODO: implement BigNumber support for random
+
+	  /**
+	   * Create a distribution object with a set of random functions for given
+	   * random distribution.
+	   *
+	   * Syntax:
+	   *
+	   *     math.distribution(name)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     var normalDist = math.distribution('normal'); // create a normal distribution
+	   *     normalDist.random(0, 10);                      // get a random value between 0 and 10
+	   *
+	   * See also:
+	   *
+	   *     random, randomInt, pickRandom
+	   *
+	   * @param {String} name   Name of a distribution. Choose from 'uniform', 'normal'.
+	   * @return {Object}       Returns a distribution object containing functions:
+	   *                        `random([size] [, min] [, max])`,
+	   *                        `randomInt([min] [, max])`,
+	   *                        `pickRandom(array)`
+	   */
+	  math.distribution = function(name) {
+	    if (!distributions.hasOwnProperty(name))
+	      throw new Error('Unknown distribution ' + name);
+
+	    var args = Array.prototype.slice.call(arguments, 1),
+	        distribution = distributions[name].apply(this, args);
+
+	    return (function(distribution) {
+
+	      // This is the public API for all distributions
+	      var randFunctions = {
+
+	        random: function(arg1, arg2, arg3) {
+	          var size, min, max;
+	          if (arguments.length > 3) {
+	            throw new math.error.ArgumentsError('random', arguments.length, 0, 3);
+
+	          // `random(max)` or `random(size)`
+	          } else if (arguments.length === 1) {
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	            }
+	            else {
+	              max = arg1;
+	            }
+	          // `random(min, max)` or `random(size, max)`
+	          } else if (arguments.length === 2) {
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	              max = arg2;
+	            }
+	            else {
+	              min = arg1;
+	              max = arg2;
+	            }
+	          // `random(size, min, max)`
+	          } else {
+	            size = arg1;
+	            min = arg2;
+	            max = arg3;
+	          }
+
+	          // TODO: validate type of min, max, and size
+
+	          if (max === undefined) max = 1;
+	          if (min === undefined) min = 0;
+	          if (size !== undefined) {
+	            var res = _randomDataForMatrix(size.valueOf(), min, max, _random);
+	            return (size instanceof Matrix) ? new Matrix(res) : res;
+	          }
+	          else return _random(min, max);
+	        },
+
+	        randomInt: function(arg1, arg2, arg3) {
+	          var size, min, max;
+	          if (arguments.length > 3 || arguments.length < 1)
+	            throw new math.error.ArgumentsError('randomInt', arguments.length, 1, 3);
+
+	          // `random(max)` or `random(size)`
+	          else if (arguments.length === 1)
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	            }
+	            else {
+	              max = arg1;
+	            }
+	          // `randomInt(min, max)` or `randomInt(size, max)`
+	          else if (arguments.length === 2) {
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	              max = arg2;
+	            }
+	            else {
+	              min = arg1;
+	              max = arg2;
+	            }
+	          // `randomInt(size, min, max)`
+	          } else {
+	            size = arg1;
+	            min = arg2;
+	            max = arg3;
+	          }
+
+	          // TODO: validate type of min, max, and size
+
+	          if (min === undefined) min = 0;
+	          if (size !== undefined) {
+	            var res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt);
+	            return (size instanceof Matrix) ? new Matrix(res) : res;
+	          }
+	          else return _randomInt(min, max);
+	        },
+
+	        pickRandom: function(possibles) {
+	          if (arguments.length !== 1) {
+	            throw new math.error.ArgumentsError('pickRandom', arguments.length, 1);
+	          }
+	          if (possibles instanceof Matrix) {
+	            possibles = possibles.valueOf(); // get Array
+	          }
+	          else if (!Array.isArray(possibles)) {
+	            throw new math.error.UnsupportedTypeError('pickRandom', math['typeof'](possibles));
+	          }
+
+	          if (array.size(possibles).length > 1) {
+	            throw new math.error.DimensionError('Only one dimensional vectors supported');
+	          }
+
+	          // TODO: add support for multi dimensional matrices
+	          return possibles[Math.floor(Math.random() * possibles.length)];
+	        }
+
+	      };
+
+	      var _random = function(min, max) {
+	        return min + distribution() * (max - min);
+	      };
+
+	      var _randomInt = function(min, max) {
+	        return Math.floor(min + distribution() * (max - min));
+	      };
+
+	      // This is a function for generating a random matrix recursively.
+	      var _randomDataForMatrix = function(size, min, max, randFunc) {
+	        var data = [], length, i;
+	        size = size.slice(0);
+
+	        if (size.length > 1) {
+	          for (i = 0, length = size.shift(); i < length; i++)
+	            data.push(_randomDataForMatrix(size, min, max, randFunc));
+	        } else {
+	          for (i = 0, length = size.shift(); i < length; i++)
+	            data.push(randFunc(min, max));
+	        }
+
+	        return data;
+	      };
+
+	      return randFunctions;
+
+	    })(distribution);
+	  };
+
+	  // Each distribution is a function that takes no argument and when called returns
+	  // a number between 0 and 1.
+	  var distributions = {
+
+	    uniform: function() {
+	      return Math.random;
+	    },
+
+	    // Implementation of normal distribution using Box-Muller transform
+	    // ref : http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+	    // We take : mean = 0.5, standard deviation = 1/6
+	    // so that 99.7% values are in [0, 1].
+	    normal: function() {
+	      return function() {
+	        var u1, u2,
+	            picked = -1;
+	        // We reject values outside of the interval [0, 1]
+	        // TODO: check if it is ok to do that?
+	        while (picked < 0 || picked > 1) {
+	          u1 = Math.random();
+	          u2 = Math.random();
+	          picked = 1/6 * Math.pow(-2 * Math.log(u1), 0.5) * Math.cos(2 * Math.PI * u2) + 0.5;
+	        }
+	        return picked;
+	      }
+	    }
+	  };
+	};
+
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(11),
@@ -12161,23 +12475,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = function (math, config) {
-	  var Matrix = __webpack_require__(8),
-	      collection = __webpack_require__(11);
-
-	  // TODO: implement BigNumber support for random
-
+	module.exports = function (math) {
 	  /**
 	   * Return a random number between `min` and `max` using a uniform distribution.
 	   *
 	   * Syntax:
 	   *
-	   *     math.random()          // generate a random number between 0 and 1
-	   *     math.random(max)       // generate a random number between 0 and max
-	   *     math.random(min, max)  // generate a random number between min and max
+	   *     math.random()                // generate a random number between 0 and 1
+	   *     math.random(max)             // generate a random number between 0 and max
+	   *     math.random(min, max)        // generate a random number between min and max
+	   *     math.random(size)            // generate a matrix with random numbers between 0 and 1
+	   *     math.random(size, max)       // generate a matrix with random numbers between 0 and max
+	   *     math.random(size, min, max)  // generate a matrix with random numbers between min and max
 	   *
 	   * Examples:
 	   *
@@ -12186,187 +12498,98 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.random();       // returns a random number between 0 and 1
 	   *     math.random(100);    // returns a random number between 0 and 100
 	   *     math.random(30, 40); // returns a random number between 30 and 40
+	   *     math.random([2, 3]); // returns a 2x3 matrix with random numbers between 0 and 1
 	   *
+	   * See also:
+	   *
+	   *     randomInt, pickRandom, distribution
+	   *
+	   * @param {Number} [size] If provided, an array with `size` number of random values is returned
 	   * @param {Number} [min]  Minimum boundary for the random value
 	   * @param {Number} [max]  Maximum boundary for the random value
-	   * @return {Number} A random number
+	   * @return {Number | Array | Matrix} A random number
 	   */
-
-	  // TODO: improve structure of random.js, split it in one file per function
-
-	  // Each distribution is a function that takes no argument and when called returns
-	  // a number between 0 and 1.
-	  var distributions = {
-
-	    uniform: function() {
-	      return Math.random;
-	    },
-
-	    // Implementation of normal distribution using Box-Muller transform
-	    // ref : http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
-	    // We take : mean = 0.5, standard deviation = 1/6
-	    // so that 99.7% values are in [0, 1].
-	    normal: function() {
-	      return function() {
-	        var u1, u2,
-	            picked = -1;
-	        // We reject values outside of the interval [0, 1]
-	        // TODO: check if it is ok to do that?
-	        while (picked < 0 || picked > 1) {
-	          u1 = Math.random();
-	          u2 = Math.random();
-	          picked = 1/6 * Math.pow(-2 * Math.log(u1), 0.5) * Math.cos(2 * Math.PI * u2) + 0.5;
-	        }
-	        return picked;
-	      }
-	    }
-	  };
-
-	  /**
-	   * Create a distribution object.
-	   * @param {String} name           Name of a distribution.
-	   *                                Choose from 'uniform', 'normal'.
-	   * @return {Object} distribution  A distribution object containing functions:
-	   *                                    random([size, min, max])
-	   *                                    randomInt([min, max])
-	   *                                    pickRandom(array)
-	   */
-	  math.distribution = function(name) {
-	    if (!distributions.hasOwnProperty(name))
-	      throw new Error('unknown distribution ' + name);
-
-	    var args = Array.prototype.slice.call(arguments, 1),
-	        distribution = distributions[name].apply(this, args);
-
-	    return (function(distribution) {
-
-	      // This is the public API for all distributions
-	      var randFunctions = {
-
-	        random: function(arg1, arg2, arg3) {
-	          var size, min, max;
-	          if (arguments.length > 3) {
-	            throw new math.error.ArgumentsError('random', arguments.length, 0, 3);
-
-	          // `random(max)` or `random(size)`
-	          } else if (arguments.length === 1) {
-	            if (Array.isArray(arg1))
-	              size = arg1;
-	            else
-	              max = arg1;
-	          // `random(min, max)` or `random(size, max)`
-	          } else if (arguments.length === 2) {
-	            if (Array.isArray(arg1))
-	              size = arg1;
-	            else {
-	              min = arg1;
-	              max = arg2;
-	            }
-	          // `random(size, min, max)`
-	          } else {
-	            size = arg1;
-	            min = arg2;
-	            max = arg3;
-	          }
-
-	          if (max === undefined) max = 1;
-	          if (min === undefined) min = 0;
-	          if (size !== undefined) {
-	            var res = _randomDataForMatrix(size, min, max, _random);
-	            return (config.matrix === 'array') ? res : new Matrix(res);
-	          }
-	          else return _random(min, max);
-	        },
-
-	        randomInt: function(arg1, arg2, arg3) {
-	          var size, min, max;
-	          if (arguments.length > 3 || arguments.length < 1)
-	            throw new math.error.ArgumentsError('randomInt', arguments.length, 1, 3);
-
-	          // `randomInt(max)`
-	          else if (arguments.length === 1) max = arg1;
-	          // `randomInt(min, max)` or `randomInt(size, max)`
-	          else if (arguments.length === 2) {
-	            if (Object.prototype.toString.call(arg1) === '[object Array]')
-	              size = arg1;
-	            else {
-	              min = arg1;
-	              max = arg2;
-	            }
-	          // `randomInt(size, min, max)`
-	          } else {
-	            size = arg1;
-	            min = arg2;
-	            max = arg3;
-	          }
-
-	          if (min === undefined) min = 0;
-	          if (size !== undefined) {
-	            var res = _randomDataForMatrix(size, min, max, _randomInt);
-	            return (config.matrix === 'array') ? res : new Matrix(res);
-	          }
-	          else return _randomInt(min, max);
-	        },
-
-	        pickRandom: function(possibles) {
-	          if (arguments.length !== 1) {
-	            throw new math.error.ArgumentsError('pickRandom', arguments.length, 1);
-	          }
-	          if (!Array.isArray(possibles)) {
-	            throw new math.error.UnsupportedTypeError('pickRandom', math['typeof'](possibles));
-	          }
-
-	          // TODO: add support for matrices
-	          return possibles[Math.floor(Math.random() * possibles.length)];
-	        }
-
-	      };
-
-	      var _random = function(min, max) {
-	        return min + distribution() * (max - min);
-	      };
-
-	      var _randomInt = function(min, max) {
-	        return Math.floor(min + distribution() * (max - min));
-	      };
-
-	      // This is a function for generating a random matrix recursively.
-	      var _randomDataForMatrix = function(size, min, max, randFunc) {
-	        var data = [], length, i;
-	        size = size.slice(0);
-
-	        if (size.length > 1) {
-	          for (i = 0, length = size.shift(); i < length; i++)
-	            data.push(_randomDataForMatrix(size, min, max, randFunc));
-	        } else {
-	          for (i = 0, length = size.shift(); i < length; i++)
-	            data.push(randFunc(min, max));
-	        }
-
-	        return data;
-	      };
-
-	      return randFunctions;
-
-	    })(distribution);
-
-	  };
-
-	  // Default random functions use uniform distribution
-	  // TODO: put random functions in separate files?
-	  var uniformRandFunctions = math.distribution('uniform');
-	  math.random = uniformRandFunctions.random;
-	  math.randomInt = uniformRandFunctions.randomInt;
-	  math.pickRandom = uniformRandFunctions.pickRandom;
+	  math.random = math.distribution('uniform').random;
 	};
 
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  /**
+	   * Return a random integer number between `min` and `max` using a uniform distribution.
+	   *
+	   * Syntax:
+	   *
+	   *     math.randomInt()                // generate a random integer between 0 and 1
+	   *     math.randomInt(max)             // generate a random integer between 0 and max
+	   *     math.randomInt(min, max)        // generate a random integer between min and max
+	   *     math.randomInt(size)            // generate a matrix with random integer between 0 and 1
+	   *     math.randomInt(size, max)       // generate a matrix with random integer between 0 and max
+	   *     math.randomInt(size, min, max)  // generate a matrix with random integer between min and max
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.randomInt();       // returns a random integer between 0 and 1
+	   *     math.randomInt(100);    // returns a random integer between 0 and 100
+	   *     math.randomInt(30, 40); // returns a random integer between 30 and 40
+	   *     math.randomInt([2, 3]); // returns a 2x3 matrix with random integers between 0 and 1
+	   *
+	   * See also:
+	   *
+	   *     randomInt, pickRandom, distribution
+	   *
+	   * @param {Number} [size] If provided, an array with `size` number of random values is returned
+	   * @param {Number} [min]  Minimum boundary for the random value
+	   * @param {Number} [max]  Maximum boundary for the random value
+	   * @return {Number | Array | Matrix} A random integer value
+	   */
+	  math.randomInt = math.distribution('uniform').randomInt;
+	};
+
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math) {
+	  var uniformRandFunctions = math.distribution('uniform');
+
+	  /**
+	   * Random pick a value from a one dimensional array.
+	   * Array element is picked using a random function with uniform distribution.
+	   *
+	   * Syntax:
+	   *
+	   *     math.pickRandom(array)
+	   *
+	   * Examples:
+	   *
+	   *     var math = mathjs();
+	   *
+	   *     math.pickRandom([3, 6, 12, 2]);       // returns one of the values in the array
+	   *
+	   * See also:
+	   *
+	   *     random, randomInt, distribution
+	   *
+	   * @param {Array} array     A one dimensional array
+	   * @return {Number} One of the elements of the provided input array
+	   */
+	  math.pickRandom = math.distribution('uniform').pickRandom;
+	};
+
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 
@@ -12475,11 +12698,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 85 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(11),
@@ -12572,7 +12795,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 86 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -12667,7 +12890,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 87 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -12762,7 +12985,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 88 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -12771,7 +12994,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      isCollection = collection.isCollection,
 
-	      size = __webpack_require__(155).size;
+	      size = __webpack_require__(161).size;
 
 	  /**
 	   * Compute the mean value of matrix or a list with values.
@@ -12865,7 +13088,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 89 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -12874,10 +13097,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(11),
 
-	      isNumber = __webpack_require__(156).isNumber,
+	      isNumber = __webpack_require__(162).isNumber,
 	      isCollection = collection.isCollection,
 
-	      flatten = __webpack_require__(155).flatten;
+	      flatten = __webpack_require__(161).flatten;
 
 	  /**
 	   * Compute the median of a matrix or a list with values. The values are
@@ -12979,7 +13202,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 90 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -13064,7 +13287,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 91 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -13124,7 +13347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 92 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -13207,7 +13430,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 93 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -13216,7 +13439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      collection = __webpack_require__(11),
 
 	      isCollection = collection.isCollection,
-	      isString = __webpack_require__(139).isString,
+	      isString = __webpack_require__(144).isString,
 
 	      DEFAULT_NORMALIZATION = 'unbiased';
 
@@ -13351,11 +13574,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 94 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -13445,11 +13668,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 95 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -13537,11 +13760,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 96 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -13624,11 +13847,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 97 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -13708,11 +13931,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 98 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -13797,11 +14020,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 99 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -13879,11 +14102,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 100 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -13965,11 +14188,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 101 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -14055,11 +14278,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 102 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -14142,11 +14365,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 103 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -14233,11 +14456,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 104 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -14320,11 +14543,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 105 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -14407,11 +14630,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 106 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -14507,11 +14730,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 107 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -14591,11 +14814,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 108 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -14680,11 +14903,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 109 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(5),
@@ -14771,11 +14994,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 110 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      Unit = __webpack_require__(9),
 	      collection = __webpack_require__(11),
@@ -14833,11 +15056,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 111 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 	      object = util.object;
 
 	  /**
@@ -14871,11 +15094,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 112 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 	      string = util.string;
 
 	  /**
@@ -14954,11 +15177,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 113 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(8),
@@ -14966,33 +15189,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	      Unit = __webpack_require__(9),
 	      collection = __webpack_require__(11),
 
-	      deepEqual = util.object.deepEqual,
 	      isNumber = util.number.isNumber,
 	      isString = util.string.isString,
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
-	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
+	      isUnit = Unit.isUnit;
 
 	  /**
 	   * Execute a conditional expression.
 	   *
-	   * In case of a matrix or array, the test is done element wise, the
-	   * true and false part can be either a matrix/array with the same size
-	   * of the condition, or a scalar value.
-	   *
 	   * Syntax:
 	   *
-	   *    math.ifElse(condition, trueExpr, falseExpr
+	   *    math.ifElse(condition, trueExpr, falseExpr)
 	   *
 	   * Examples:
 	   *
 	   *    var math = mathjs();
 	   *
 	   *    math.ifElse(true, 'yes', 'no');           // returns 'yes'
-	   *    math.ifElse([4, 6, 0, -1], true, false);  // returns [true, true, false, true]
 	   *
-	   * @param {Number | Boolean | String | Complex | BigNumber | Unit | Matrix | Array} condition
+	   * @param {Number | Boolean | String | Complex | BigNumber | Unit} condition
 	   *                        The conditional expression
 	   * @param {*} trueExpr    The true expression
 	   * @param {*} falseExpr   The false expression
@@ -15027,74 +15243,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return falseExpr;
 	    }
 
-	    if (isCollection(condition)) {
-	      return _ifElseCollection(condition, trueExpr, falseExpr);
-	    }
-
 	    throw new math.error.UnsupportedTypeError('ifElse', math['typeof'](condition));
 	  };
-
-	  /**
-	   * Execute the if-else condition element wise
-	   * @param {Matrix | Array} condition
-	   * @param {*} trueExpr
-	   * @param {*} falseExpr
-	   * @returns {*}
-	   * @private
-	   */
-	  function _ifElseCollection(condition, trueExpr, falseExpr) {
-	    var asMatrix = (condition instanceof Matrix) ||
-	        (trueExpr instanceof Matrix) ||
-	        (falseExpr instanceof Matrix);
-
-	    // change an array into a matrix
-	    if (!(condition instanceof Matrix)) condition = new Matrix(condition);
-
-	    // change the true expression into a matrix and check whether the size
-	    // matches with the condition matrix
-	    if (isCollection(trueExpr)) {
-	      if (!(trueExpr instanceof Matrix)) trueExpr = new Matrix(trueExpr);
-
-	      if (!deepEqual(condition.size(), trueExpr.size())) {
-	        throw new RangeError('Dimension mismatch ([' +
-	            condition.size().join(', ') + '] != [' +
-	            trueExpr.size().join(', ')
-	            + '])');
-	        throw new math.error.DimensionError(condition.size(), trueExpr.size());
-	      }
-	    }
-
-	    // change the false expression into a matrix and check whether the size
-	    // matches with the condition matrix
-	    if (isCollection(falseExpr)) {
-	      if (!(falseExpr instanceof Matrix)) falseExpr = new Matrix(falseExpr);
-
-	      if (!deepEqual(condition.size(), falseExpr.size())) {
-	        throw new math.error.DimensionError(condition.size(), falseExpr.size());
-	      }
-	    }
-
-	    // do the actual conditional test element wise
-	    var trueIsMatrix = trueExpr instanceof Matrix,
-	        falseIsMatrix = falseExpr instanceof Matrix;
-	    var result = condition.map(function (value, index) {
-	      return math.ifElse(value,
-	          trueIsMatrix ? trueExpr.get(index) : trueExpr,
-	          falseIsMatrix ? falseExpr.get(index) : falseExpr
-	      );
-	    });
-
-	    return asMatrix ? result : result.valueOf();
-	  }
 	};
 
 
 /***/ },
-/* 114 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      Complex = __webpack_require__(5),
 	      Unit = __webpack_require__(9),
@@ -15171,7 +15330,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // istanbul ignore else (we cannot unit test the else case in a node.js environment)
 	      if (true) {
 	        // load the file using require
-	        var _module = __webpack_require__(157)(object);
+	        var _module = __webpack_require__(163)(object);
 	        math_import(_module);
 	      }
 	      else {
@@ -15243,7 +15402,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 115 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -15306,11 +15465,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 116 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(124),
+	  var util = __webpack_require__(129),
 
 	      isString = util.string.isString;
 
@@ -15390,11 +15549,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 117 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
-	  var types = __webpack_require__(158),
+	  var types = __webpack_require__(164),
 
 	      Complex = __webpack_require__(5),
 	      Matrix = __webpack_require__(8),
@@ -15450,7 +15609,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 118 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (math) {
@@ -15510,16 +15669,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 119 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v3.0.0 https://github.com/MikeMcl/decimal.js/LICENCE */
+	module.exports = '0.23.0';
+	// Note: This file is automatically generated when building math.js.
+	// Changes made in this file will be overwritten.
+
+
+/***/ },
+/* 124 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v3.0.1 https://github.com/MikeMcl/decimal.js/LICENCE */
 	;(function (global) {
 	    'use strict';
 
 
 	    /*
-	     *  decimal.js v3.0.0
+	     *  decimal.js v3.0.1
 	     *  An arbitrary-precision Decimal type for JavaScript.
 	     *  https://github.com/MikeMcl/decimal.js
 	     *  Copyright (c) 2014 Michael Mclaughlin <M8ch88l@gmail.com>
@@ -15527,13 +15695,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 
 
-	    var convertBase, crypto, DecimalConstructor, noConflict,
-	        toString = Object.prototype.toString,
-	        outOfRange,
-	        id = 0,
+	    var convertBase, DecimalConstructor, noConflict,
+	        crypto = global['crypto'],
 	        external = true,
+	        id = 0,
 	        mathfloor = Math.floor,
 	        mathpow = Math.pow,
+	        outOfRange,
+	        toString = Object.prototype.toString,
 	        BASE = 1e7,
 	        LOGBASE = 7,
 	        NUMERALS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_',
@@ -19465,24 +19634,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // AMD.
 	    if ( true ) {
-	        crypto = global['crypto'];
 
 	        !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
-
 	            return DecimalConstructor;
 	        }.call(exports, __webpack_require__, exports, module)), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-	    // Node and other CommonJS-like environments that support module.exports.
-	    } else if ( typeof module != 'undefined' && module && module.exports ) {
+	    // Node and other environments that support module.exports.
+	    } else if ( typeof module != 'undefined' && module.exports ) {
 	        module.exports = DecimalConstructor;
 
-	        if ( typeof require == 'function' ) {
-	            crypto = require('crypto');
+	        if ( !crypto ) {
+
+	            try {
+	                crypto = require('crypto');
+	            } catch (e) {}
 	        }
 
 	    // Browser.
 	    } else {
-	        crypto = global['crypto'];
 	        noConflict = global['Decimal'];
 
 	        DecimalConstructor['noConflict'] = function () {
@@ -19493,11 +19662,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        global['Decimal'] = DecimalConstructor;
 	    }
+
 	})(this);
 
 
 /***/ },
-/* 120 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19534,7 +19704,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 121 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19572,7 +19742,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 122 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19621,7 +19791,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 123 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19662,27 +19832,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 124 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports.array = __webpack_require__(155);
-	exports['boolean'] = __webpack_require__(259);
-	exports.number = __webpack_require__(156);
-	exports.bignumber = __webpack_require__(260);
+	exports.array = __webpack_require__(161);
+	exports['boolean'] = __webpack_require__(266);
+	exports.number = __webpack_require__(162);
+	exports.bignumber = __webpack_require__(267);
 	exports.object = __webpack_require__(3);
-	exports.string = __webpack_require__(139);
-	exports.types = __webpack_require__(158);
+	exports.string = __webpack_require__(144);
+	exports.types = __webpack_require__(164);
 
 
 /***/ },
-/* 125 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
+	var Node = __webpack_require__(143),
 	    object = __webpack_require__(3),
-	    string = __webpack_require__(139),
+	    string = __webpack_require__(144),
 	    collection = __webpack_require__(11),
-	    util = __webpack_require__(124),
+	    util = __webpack_require__(129),
 
 	    isArray = Array.isArray,
 	    isNode = Node.isNode;
@@ -19789,14 +19959,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 126 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
-	    ArrayNode = __webpack_require__(125),
+	var Node = __webpack_require__(143),
+	    ArrayNode = __webpack_require__(130),
 
-	    latex = __webpack_require__(261),
-	    isString = __webpack_require__(139).isString;
+	    keywords = __webpack_require__(268),
+
+	    latex = __webpack_require__(269),
+	    isString = __webpack_require__(144).isString;
 
 	/**
 	 * @constructor AssignmentNode
@@ -19812,8 +19984,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  // validate input
-	  if (!isString(name))         throw new TypeError('String expected for parameter "name"');
-	  if (!(expr instanceof Node)) throw new TypeError('Node expected for parameter "expr"');
+	  if (!isString(name))          throw new TypeError('String expected for parameter "name"');
+	  if (!(expr instanceof Node))  throw new TypeError('Node expected for parameter "expr"');
+	  if (name in keywords)         throw new Error('Illegal symbol name, "'  + name +  '" is a reserved keyword');
 
 	  this.name = name;
 	  this.expr = expr;
@@ -19877,11 +20050,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = AssignmentNode;
 
 /***/ },
-/* 127 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
-	    isBoolean = __webpack_require__(259).isBoolean;
+	var Node = __webpack_require__(143),
+	    isBoolean = __webpack_require__(266).isBoolean;
 
 	/**
 	 * @constructor BlockNode
@@ -19993,11 +20166,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 128 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
-	    string = __webpack_require__(139),
+	var Node = __webpack_require__(143),
+	    string = __webpack_require__(144),
 	    isString = string.isString;
 
 	/**
@@ -20112,12 +20285,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 129 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
-	    latex = __webpack_require__(261),
-	    isString = __webpack_require__(139).isString;
+	var Node = __webpack_require__(143),
+	    keywords = __webpack_require__(268),
+	    latex = __webpack_require__(269),
+	    isString = __webpack_require__(144).isString;
 	    isArray = Array.isArray;
 
 	/**
@@ -20138,6 +20312,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!isString(name)) throw new TypeError('String expected for parameter "name"');
 	  if (!isArray(args) || !args.every(isString))  throw new TypeError('Array containing strings expected for parameter "args"');
 	  if (!(expr instanceof Node)) throw new TypeError('Node expected for parameter "expr"');
+	  if (name in keywords) throw new Error('Illegal function name, "'  + name +  '" is a reserved keyword');
 
 	  this.name = name;
 	  this.args = args;
@@ -20219,12 +20394,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 130 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
-	    RangeNode = __webpack_require__(133),
-	    SymbolNode = __webpack_require__(134),
+	var Node = __webpack_require__(143),
+	    RangeNode = __webpack_require__(138),
+	    SymbolNode = __webpack_require__(139),
 
 	    isNode = Node.isNode;
 
@@ -20419,14 +20594,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = IndexNode;
 
 /***/ },
-/* 131 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
-	    ConstantNode = __webpack_require__(128),
-	    SymbolNode = __webpack_require__(134),
-	    ParamsNode = __webpack_require__(132),
-	    latex = __webpack_require__(261);
+	var Node = __webpack_require__(143),
+	    ConstantNode = __webpack_require__(133),
+	    SymbolNode = __webpack_require__(139),
+	    ParamsNode = __webpack_require__(137),
+	    latex = __webpack_require__(269);
 
 	/**
 	 * @constructor OperatorNode
@@ -20618,12 +20793,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 132 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
+	var Node = __webpack_require__(143),
 
-	    latex = __webpack_require__(261),
+	    latex = __webpack_require__(269),
 	    isNode = Node.isNode;
 
 	/**
@@ -20715,10 +20890,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 133 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
+	var Node = __webpack_require__(143),
 
 	    isNode = Node.isNode;
 
@@ -20821,14 +20996,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 134 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
+	var Node = __webpack_require__(143),
 	    Unit = __webpack_require__(9),
 
-	    latex = __webpack_require__(261),
-	    isString = __webpack_require__(139).isString;
+	    latex = __webpack_require__(269),
+	    isString = __webpack_require__(144).isString;
 
 	/**
 	 * @constructor SymbolNode
@@ -20904,12 +21079,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 135 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var OperatorNode = __webpack_require__(131),
+	var OperatorNode = __webpack_require__(136),
 
-	    latex = __webpack_require__(261);
+	    latex = __webpack_require__(269);
 
 	/**
 	 * @constructor TernaryNode
@@ -20973,15 +21148,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 136 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
+	var Node = __webpack_require__(143),
 
 	    Unit = __webpack_require__(9),
 
-	    latex = __webpack_require__(261),
-	    isString = __webpack_require__(139).isString;
+	    latex = __webpack_require__(269),
+	    isString = __webpack_require__(144).isString;
 
 	/**
 	 * @constructor UnitNode
@@ -21058,11 +21233,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 137 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(138),
-	    IndexNode = __webpack_require__(130);
+	var Node = __webpack_require__(143),
+	    IndexNode = __webpack_require__(135);
 
 	/**
 	 * @constructor UpdateNode
@@ -21147,10 +21322,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 138 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var error = __webpack_require__(4);
+	var error = __webpack_require__(4),
+	    keywords = __webpack_require__(268);
 
 	    /**
 	 * Node
@@ -21189,7 +21365,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // definitions globally available inside the closure of the compiled expressions
 	  var defs = {
 	    math: math,
-	    error: error
+	    error: error,
+	    validateScope: validateScope
 	  };
 
 	  var code = this._compile(defs);
@@ -21203,6 +21380,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          'return {' +
 	          '  "eval": function (scope) {' +
 	          '    try {' +
+	          '      if (scope) defs.validateScope(scope);' +
 	          '      scope = scope || {};' +
 	          '      return ' + code + ';' +
 	          '    } catch (err) {' +
@@ -21305,18 +21483,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	Node.isNode = function isNode (object) {
 	  return object instanceof Node;
+	};
+
+	/**
+	 * Validate the symbol names of a scope.
+	 * Throws an error when the scope contains an illegal symbol.
+	 * @param {Object} scope
+	 */
+	function validateScope (scope) {
+	  for (var symbol in scope) {
+	    if (scope.hasOwnProperty(symbol)) {
+	      if (symbol in keywords) {
+	        throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword');
+	      }
+	    }
+	  }
 	}
 
 	module.exports = Node;
 
 
 /***/ },
-/* 139 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var number = __webpack_require__(156),
-	    bignumber = __webpack_require__(260),
-	    BigNumber = __webpack_require__(119);
+	var number = __webpack_require__(162),
+	    bignumber = __webpack_require__(267),
+	    BigNumber = __webpack_require__(124);
 
 	/**
 	 * Test whether value is a String
@@ -21424,7 +21617,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 140 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21445,7 +21638,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 141 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21463,7 +21656,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 142 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21483,7 +21676,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 143 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21502,7 +21695,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 144 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21521,7 +21714,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 145 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21540,7 +21733,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 146 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21559,7 +21752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 147 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21578,7 +21771,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 148 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21597,7 +21790,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 149 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21616,7 +21809,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 150 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21634,7 +21827,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 151 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21653,7 +21846,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 152 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21672,7 +21865,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 153 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21691,7 +21884,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 154 */
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'version',
+	  'category': 'Constants',
+	  'syntax': [
+	    'version'
+	  ],
+	  'description': 'A string with the version number of math.js',
+	  'examples': [
+	    'version'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -21709,16 +21920,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 155 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var number = __webpack_require__(156),
-	    string = __webpack_require__(139),
+	var number = __webpack_require__(162),
+	    string = __webpack_require__(144),
 	    object = __webpack_require__(3),
-	    types = __webpack_require__(158),
+	    types = __webpack_require__(164),
 
-	    DimensionError = __webpack_require__(121),
-	    IndexError = __webpack_require__(122),
+	    DimensionError = __webpack_require__(126),
+	    IndexError = __webpack_require__(127),
 
 	    isArray = Array.isArray;
 
@@ -21998,7 +22209,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.isArray = isArray;
 
 /***/ },
-/* 156 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22280,26 +22491,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 157 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./clone": 111,
-		"./clone.js": 111,
-		"./forEach": 118,
-		"./forEach.js": 118,
-		"./format": 112,
-		"./format.js": 112,
-		"./ifElse": 113,
-		"./ifElse.js": 113,
-		"./import": 114,
-		"./import.js": 114,
-		"./map": 115,
-		"./map.js": 115,
-		"./print": 116,
-		"./print.js": 116,
-		"./typeof": 117,
-		"./typeof.js": 117
+		"./clone": 115,
+		"./clone.js": 115,
+		"./forEach": 122,
+		"./forEach.js": 122,
+		"./format": 116,
+		"./format.js": 116,
+		"./ifElse": 117,
+		"./ifElse.js": 117,
+		"./import": 118,
+		"./import.js": 118,
+		"./map": 119,
+		"./map.js": 119,
+		"./print": 120,
+		"./print.js": 120,
+		"./typeof": 121,
+		"./typeof.js": 121
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -22315,7 +22526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 158 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22356,7 +22567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 159 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22375,7 +22586,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 160 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22387,8 +22598,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Add two values.',
 	  'examples': [
-	    '2.1 + 3.6',
-	    'ans - 3.6',
+	    'a = 2.1 + 3.6',
+	    'a - 3.6',
 	    '3 + 2i',
 	    '"hello" + " world"',
 	    '3 cm + 2 inch'
@@ -22400,7 +22611,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 161 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22421,32 +22632,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 162 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'compare',
-	  'category': 'Operators',
-	  'syntax': [
-	    'compare(x, y)'
-	  ],
-	  'description':
-	      'Compare two values. Returns 1 if x is larger than y, -1 if x is smaller than y, and 0 if x and y are equal.',
-	  'examples': [
-	    'compare(2, 3)',
-	    'compare(3, 2)',
-	    'compare(2, 2)',
-	    'compare(5cm, 40mm)',
-	    'compare(2, [1, 2, 3])'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'smaller', 'smallereq', 'largereq'
-	  ]
-	};
-
-
-/***/ },
-/* 163 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22470,7 +22656,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 164 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22482,8 +22668,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'Divide two values.',
 	  'examples': [
-	    '2 / 3',
-	    'ans * 3',
+	    'a = 2 / 3',
+	    'a * 3',
 	    '4.5 / 2',
 	    '3 + 4 / 2',
 	    '(3 + 4) / 2',
@@ -22496,17 +22682,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 165 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  'name': 'edivide',
+	  'name': 'dotDivide',
 	  'category': 'Operators',
 	  'syntax': [
 	    'x ./ y',
-	    'edivide(x, y)'
+	    'dotDivide(x, y)'
 	  ],
-	  'description': 'divide two values element wise.',
+	  'description': 'Divide two values element wise.',
 	  'examples': [
 	    'a = [1, 2, 3; 4, 5, 6]',
 	    'b = [2, 1, 1; 3, 2, 5]',
@@ -22514,24 +22700,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'seealso': [
 	    'multiply',
-	    'emultiply',
+	    'dotMultiply',
 	    'divide'
 	  ]
 	};
 
 
 /***/ },
-/* 166 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  'name': 'emultiply',
+	  'name': 'dotMultiply',
 	  'category': 'Operators',
 	  'syntax': [
 	    'x .* y',
-	    'emultiply(x, y)'
+	    'dotMultiply(x, y)'
 	  ],
-	  'description': 'multiply two values element wise.',
+	  'description': 'Multiply two values element wise.',
 	  'examples': [
 	    'a = [1, 2, 3; 4, 5, 6]',
 	    'b = [2, 1, 1; 3, 2, 5]',
@@ -22540,21 +22726,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'seealso': [
 	    'multiply',
 	    'divide',
-	    'edivide'
+	    'dotDivide'
 	  ]
 	};
 
 
 /***/ },
-/* 167 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  'name': 'epow',
+	  'name': 'dotpow',
 	  'category': 'Operators',
 	  'syntax': [
 	    'x .^ y',
-	    'epow(x, y)'
+	    'dotpow(x, y)'
 	  ],
 	  'description':
 	      'Calculates the power of x to y element wise.',
@@ -22569,34 +22755,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'equal',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x == y',
-	    'equal(x, y)'
-	  ],
-	  'description':
-	      'Check equality of two values. Returns true if the values are equal, and false if not.',
-	  'examples': [
-	    '2+2 == 3',
-	    '2+2 == 4',
-	    'a = 3.2',
-	    'b = 6-2.8',
-	    'a == b',
-	    '50cm == 0.5m'
-	  ],
-	  'seealso': [
-	    'unequal', 'smaller', 'larger', 'smallereq', 'largereq', 'compare'
-	  ]
-	};
-
-
-/***/ },
-/* 169 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22621,7 +22780,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 170 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22643,7 +22802,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 171 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22664,7 +22823,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 172 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22685,61 +22844,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 173 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'larger',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x > y',
-	    'larger(x, y)'
-	  ],
-	  'description':
-	      'Check if value x is larger than y. Returns true if x is larger than y, and false if not.',
-	  'examples': [
-	    '2 > 3',
-	    '5 > 2*2',
-	    'a = 3.3',
-	    'b = 6-2.8',
-	    '(a > b)',
-	    '(b < a)',
-	    '5 cm > 2 inch'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'smaller', 'smallereq', 'largereq', 'compare'
-	  ]
-	};
-
-
-/***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'largereq',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x >= y',
-	    'largereq(x, y)'
-	  ],
-	  'description':
-	      'Check if value x is larger or equal to y. Returns true if x is larger or equal to y, and false if not.',
-	  'examples': [
-	    '2 > 1+1',
-	    '2 >= 1+1',
-	    'a = 3.2',
-	    'b = 6-2.8',
-	    '(a > b)'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'smallereq', 'smaller', 'largereq', 'compare'
-	  ]
-	};
-
-
-/***/ },
-/* 175 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22759,7 +22864,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 176 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22787,7 +22892,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 177 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22812,7 +22917,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 178 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22838,7 +22943,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 179 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22850,8 +22955,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'multiply two values.',
 	  'examples': [
-	    '2.1 * 3.4',
-	    'ans / 3.4',
+	    'a = 2.1 * 3.4',
+	    'a / 3.4',
 	    '2 * 3 + 4',
 	    '2 * (3 + 4)',
 	    '3 * 2.1 km'
@@ -22863,7 +22968,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 180 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22889,7 +22994,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 181 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22911,7 +23016,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 182 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22936,7 +23041,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 183 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -22954,59 +23059,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'seealso': [
 	    'abs'
-	  ]
-	};
-
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'smaller',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x < y',
-	    'smaller(x, y)'
-	  ],
-	  'description':
-	      'Check if value x is smaller than value y. Returns true if x is smaller than y, and false if not.',
-	  'examples': [
-	    '2 < 3',
-	    '5 < 2*2',
-	    'a = 3.3',
-	    'b = 6-2.8',
-	    '(a < b)',
-	    '5 cm < 2 inch'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'larger', 'smallereq', 'largereq', 'compare'
-	  ]
-	};
-
-
-/***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'smallereq',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x <= y',
-	    'smallereq(x, y)'
-	  ],
-	  'description':
-	      'Check if value x is smaller or equal to value y. Returns true if x is smaller than y, and false if not.',
-	  'examples': [
-	    '2 < 1+1',
-	    '2 <= 1+1',
-	    'a = 3.2',
-	    'b = 6-2.8',
-	    '(a < b)'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'larger', 'smaller', 'largereq', 'compare'
 	  ]
 	};
 
@@ -23075,8 +23127,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'description': 'subtract two values.',
 	  'examples': [
-	    '5.3 - 2',
-	    'ans + 2',
+	    'a = 5.3 - 2',
+	    'a + 2',
 	    '2/3 - 1/6',
 	    '2 * 3 - 3',
 	    '2.1 km - 500m'
@@ -23092,11 +23144,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  'name': 'unaryminus',
+	  'name': 'unaryMinus',
 	  'category': 'Operators',
 	  'syntax': [
 	    '-x',
-	    'unaryminus(x)'
+	    'unaryMinus(x)'
 	  ],
 	  'description':
 	      'Inverse the sign of a value. Converts booleans and strings to numbers.',
@@ -23106,7 +23158,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    '-"22"'
 	  ],
 	  'seealso': [
-	    'add', 'subtract', 'unaryplus'
+	    'add', 'subtract', 'unaryPlus'
 	  ]
 	};
 
@@ -23116,11 +23168,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  'name': 'unaryplus',
+	  'name': 'unaryPlus',
 	  'category': 'Operators',
 	  'syntax': [
 	    '+x',
-	    'unaryplus(x)'
+	    'unaryPlus(x)'
 	  ],
 	  'description':
 	      'Converts booleans and strings to numbers.',
@@ -23129,41 +23181,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    '+"2"'
 	  ],
 	  'seealso': [
-	    'add', 'subtract', 'unaryminus'
+	    'add', 'subtract', 'unaryMinus'
 	  ]
 	};
 
 
 /***/ },
 /* 191 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'unequal',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x != y',
-	    'unequal(x, y)'
-	  ],
-	  'description':
-	      'Check unequality of two values. Returns true if the values are unequal, and false if they are equal.',
-	  'examples': [
-	    '2+2 != 3',
-	    '2+2 != 4',
-	    'a = 3.2',
-	    'b = 6-2.8',
-	    'a != b',
-	    '50cm != 0.5m',
-	    '5 cm != 2 inch'
-	  ],
-	  'seealso': [
-	    'equal', 'smaller', 'larger', 'smallereq', 'largereq', 'compare'
-	  ]
-	};
-
-
-/***/ },
-/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23183,7 +23207,216 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'compare',
+	  'category': 'Comparison',
+	  'syntax': [
+	    'compare(x, y)'
+	  ],
+	  'description':
+	      'Compare two values. Returns 1 if x is larger than y, -1 if x is smaller than y, and 0 if x and y are equal.',
+	  'examples': [
+	    'compare(2, 3)',
+	    'compare(3, 2)',
+	    'compare(2, 2)',
+	    'compare(5cm, 40mm)',
+	    'compare(2, [1, 2, 3])'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'smaller', 'smallerEq', 'largerEq'
+	  ]
+	};
+
+
+/***/ },
 /* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'deepEqual',
+	  'category': 'Comparison',
+	  'syntax': [
+	    'deepEqual(x, y)'
+	  ],
+	  'description':
+	      'Check equality of two matrices element wise. Returns true if the size of both matrices is equal and when and each of the elements are equal.',
+	  'examples': [
+	    '[1,3,4] == [1,3,4]',
+	    '[1,3,4] == [1,3]'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare'
+	  ]
+	};
+
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'equal',
+	  'category': 'Comparison',
+	  'syntax': [
+	    'x == y',
+	    'equal(x, y)'
+	  ],
+	  'description':
+	      'Check equality of two values. Returns true if the values are equal, and false if not.',
+	  'examples': [
+	    '2+2 == 3',
+	    '2+2 == 4',
+	    'a = 3.2',
+	    'b = 6-2.8',
+	    'a == b',
+	    '50cm == 0.5m'
+	  ],
+	  'seealso': [
+	    'unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual'
+	  ]
+	};
+
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'larger',
+	  'category': 'Comparison',
+	  'syntax': [
+	    'x > y',
+	    'larger(x, y)'
+	  ],
+	  'description':
+	      'Check if value x is larger than y. Returns true if x is larger than y, and false if not.',
+	  'examples': [
+	    '2 > 3',
+	    '5 > 2*2',
+	    'a = 3.3',
+	    'b = 6-2.8',
+	    '(a > b)',
+	    '(b < a)',
+	    '5 cm > 2 inch'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compare'
+	  ]
+	};
+
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'largerEq',
+	  'category': 'Comparison',
+	  'syntax': [
+	    'x >= y',
+	    'largerEq(x, y)'
+	  ],
+	  'description':
+	      'Check if value x is larger or equal to y. Returns true if x is larger or equal to y, and false if not.',
+	  'examples': [
+	    '2 > 1+1',
+	    '2 >= 1+1',
+	    'a = 3.2',
+	    'b = 6-2.8',
+	    '(a > b)'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'smallerEq', 'smaller', 'largerEq', 'compare'
+	  ]
+	};
+
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'smaller',
+	  'category': 'Comparison',
+	  'syntax': [
+	    'x < y',
+	    'smaller(x, y)'
+	  ],
+	  'description':
+	      'Check if value x is smaller than value y. Returns true if x is smaller than y, and false if not.',
+	  'examples': [
+	    '2 < 3',
+	    '5 < 2*2',
+	    'a = 3.3',
+	    'b = 6-2.8',
+	    '(a < b)',
+	    '5 cm < 2 inch'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'larger', 'smallerEq', 'largerEq', 'compare'
+	  ]
+	};
+
+
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'smallerEq',
+	  'category': 'Comparison',
+	  'syntax': [
+	    'x <= y',
+	    'smallerEq(x, y)'
+	  ],
+	  'description':
+	      'Check if value x is smaller or equal to value y. Returns true if x is smaller than y, and false if not.',
+	  'examples': [
+	    '2 < 1+1',
+	    '2 <= 1+1',
+	    'a = 3.2',
+	    'b = 6-2.8',
+	    '(a < b)'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'larger', 'smaller', 'largerEq', 'compare'
+	  ]
+	};
+
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'unequal',
+	  'category': 'Comparison',
+	  'syntax': [
+	    'x != y',
+	    'unequal(x, y)'
+	  ],
+	  'description':
+	      'Check unequality of two values. Returns true if the values are unequal, and false if they are equal.',
+	  'examples': [
+	    '2+2 != 3',
+	    '2+2 != 4',
+	    'a = 3.2',
+	    'b = 6-2.8',
+	    'a != b',
+	    '50cm != 0.5m',
+	    '5 cm != 2 inch'
+	  ],
+	  'seealso': [
+	    'equal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual'
+	  ]
+	};
+
+
+/***/ },
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23209,7 +23442,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 194 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23235,7 +23468,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 195 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23261,7 +23494,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 196 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23287,7 +23520,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 197 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23312,7 +23545,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 198 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23339,7 +23572,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 199 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23364,7 +23597,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 200 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23395,7 +23628,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 201 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23423,7 +23656,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 202 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23451,7 +23684,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 203 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23475,7 +23708,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 204 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23501,7 +23734,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 205 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23521,7 +23754,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 206 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23541,7 +23774,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 207 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23567,7 +23800,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 208 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23588,7 +23821,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 209 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23612,7 +23845,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 210 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23638,7 +23871,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 211 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23660,7 +23893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 212 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23690,7 +23923,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 213 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23721,7 +23954,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 214 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23745,7 +23978,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 215 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23769,7 +24002,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 216 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23792,7 +24025,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 217 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23823,7 +24056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 218 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23846,7 +24079,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 219 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23875,7 +24108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 220 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23893,7 +24126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 221 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23916,7 +24149,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 222 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23937,7 +24170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 223 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23957,7 +24190,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 224 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23977,7 +24210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 225 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24003,7 +24236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 226 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24028,7 +24261,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 227 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24061,7 +24294,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 228 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24093,7 +24326,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 229 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24121,7 +24354,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 230 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24154,7 +24387,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 231 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24184,7 +24417,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 232 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24217,7 +24450,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 233 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24247,7 +24480,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 234 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24280,7 +24513,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 235 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24303,7 +24536,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 236 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24326,7 +24559,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 237 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24349,7 +24582,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 238 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24376,7 +24609,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 239 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24402,7 +24635,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 240 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24424,7 +24657,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 241 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24447,7 +24680,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 242 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24470,7 +24703,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 243 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24493,7 +24726,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 244 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24516,7 +24749,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 245 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24539,7 +24772,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 246 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24562,7 +24795,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 247 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24588,7 +24821,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 248 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24609,7 +24842,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 249 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24634,7 +24867,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 250 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24656,7 +24889,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 251 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24677,7 +24910,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 252 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24699,7 +24932,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 253 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24717,7 +24950,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 254 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24735,7 +24968,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 255 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24757,7 +24990,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 256 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24769,15 +25002,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'description': 'Executes a conditional expression.',
 	  'examples': [
 	    'ifElse(10 > 0, 1, 0)',
-	    'ifElse("", true, false)',
-	    'ifElse([4, 6, 0, -1], true, false)'
+	    'ifElse("", true, false)'
 	  ],
 	  'seealso': []
 	};
 
 
 /***/ },
-/* 257 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24796,7 +25028,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 258 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24817,7 +25049,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 259 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24831,12 +25063,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 260 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var BigNumber = __webpack_require__(119),
-	    isNumber = __webpack_require__(156).isNumber;
-	    digits = __webpack_require__(156).digits;
+	var BigNumber = __webpack_require__(124),
+	    isNumber = __webpack_require__(162).isNumber;
+	    digits = __webpack_require__(162).digits;
 
 	/**
 	 * Test whether value is a BigNumber
@@ -25033,11 +25265,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 261 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ArrayNode = __webpack_require__(125),
-	    OperatorNode = __webpack_require__(131);
+	// Reserved keywords not allowed to use in the parser
+	module.exports = {
+	  end: true
+	};
+
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ArrayNode = __webpack_require__(130),
+	    OperatorNode = __webpack_require__(136);
 
 	// GREEK LETTERS
 	var greek = {
@@ -25135,7 +25377,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  lcm: false,
 	  sign: false,
 	  xgcd: false,
-	  unaryminus: false,
+	  unaryMinus: false,
+	  unaryPlus: false,
 
 	  // complex
 	  complex: false,
@@ -25344,7 +25587,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      op = '>';
 	      break;
 
-	    case 'largereq':
+	    case 'largerEq':
 	      op = '>=';
 	      break;
 
@@ -25352,7 +25595,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      op = '<';
 	      break;
 
-	    case 'smallereq':
+	    case 'smallerEq':
 	      op = '<=';
 	      break;
 

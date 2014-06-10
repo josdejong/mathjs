@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.23.0
+## 2014-06-10, version 0.23.0
 
 - Renamed some functions (everything now has a logical, camel case name):
   - Renamed functions `edivide`, `emultiply`, and `epow` to `dotDivide`, 
