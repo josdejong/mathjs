@@ -4,6 +4,7 @@ https://github.com/josdejong/mathjs
 
 ## not yet released, version 0.23.1
 
+- Added constant `null`.
 - Fixed imported, wrapped functions not accepting `null` and `undefined` as
   function arguments.
 
