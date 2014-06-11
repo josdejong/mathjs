@@ -2,6 +2,12 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.23.1
+
+- Fixed imported, wrapped functions not accepting `null` and `undefined` as
+  function arguments.
+
+
 ## 2014-06-10, version 0.23.0
 
 - Renamed some functions (everything now has a logical, camel case name):

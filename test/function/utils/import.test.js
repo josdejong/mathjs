@@ -59,6 +59,26 @@ describe('import', function() {
     assert.equal(math.getSizeNotWrapped(math.matrix([1,2,3])), undefined);
   });
 
+  it('wrapped imported functions should accept undefined and null', function () {
+    math.import({
+      isNull: function (obj) {
+        return obj === null;
+      }
+    }, { wrap: true });
+    assert.equal(math.isNull(null), true);
+    assert.equal(math.isNull(0), false);
+
+    math.import({
+      isUndefined: function (obj) {
+        return obj === undefined;
+      }
+    }, { wrap: true });
+    assert.equal(math.isUndefined(undefined), true);
+    assert.equal(math.isUndefined(0), false);
+    assert.equal(math.isUndefined(null), false);
+
+  });
+
   it('should extend math with numbers', function() {
     // extend math.js with numbers.js
     // examples copied from https://github.com/sjkaliski/numbers.js/blob/master/examples/statistic.js
