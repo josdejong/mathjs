@@ -21,14 +21,14 @@ BigNumbers instead of [numbers](numbers.md) by default, configure math.js like:
 var mathjs = require('mathjs'),
     math = mathjs({
       number: 'bignumber', // Default type of number: 'number' (default) or 'bignumber'
-      precision: 20        // Number of significant digits for BigNumbers
+      precision: 64        // Number of significant digits for BigNumbers
     });
 
 // use math
 math.eval('0.1 + 0.2'); // BigNumber, 0.3
 ```
 
-The default precision for BigNumber is 20 digits, and can be configured with
+The default precision for BigNumber is 64 digits, and can be configured with
 the option `precision`.
 
 *Important:

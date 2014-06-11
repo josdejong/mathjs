@@ -63,7 +63,7 @@ describe('bignumber', function() {
 
     // restore default precision
     math.config({
-      precision: 20
+      precision: 64
     });
   });
 

@@ -62,7 +62,7 @@ describe('format', function() {
   });
 
   describe('bignumber', function () {
-    var math = mathjs({precision: 20}); // ensure the precision is 20 digits, the default
+    var math = mathjs({precision: 20}); // ensure the precision is 20 digits
 
     it('should format big numbers', function() {
       assert.equal(math.format(math.bignumber(2).dividedBy(7)), '0.28571428571428571429');
@@ -73,7 +73,7 @@ describe('format', function() {
 
     it('should format big numbers with given precision', function() {
       var oneThird = math.bignumber(1).div(3);
-      assert.equal(math.format(oneThird), '0.33333333333333333333'); // default, 20
+      assert.equal(math.format(oneThird), '0.33333333333333333333'); // 20 digits
       assert.equal(math.format(oneThird, 3), '0.333');
       assert.equal(math.format(oneThird, 4), '0.3333');
       assert.equal(math.format(oneThird, 5), '0.33333');
