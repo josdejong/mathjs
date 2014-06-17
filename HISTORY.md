@@ -5,6 +5,7 @@ https://github.com/josdejong/mathjs
 ## not yet released, version 0.23.1
 
 - Added constant `null`.
+- Function `typeof` now recognizes regular expressions as well.
 - Changed the default number of significant digits for BigNumbers from 20 to 64.
 - Fixed imported, wrapped functions not accepting `null` and `undefined` as
   function arguments.
