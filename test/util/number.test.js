@@ -17,6 +17,7 @@ describe('number', function() {
     assert.equal(number.isInteger(0.1), false);
     assert.equal(number.isInteger(-2.3), false);
     assert.equal(number.isInteger(-2.3), false);
+    assert.equal(number.isInteger(NaN), false);
   });
 
   it('isNumber', function() {
@@ -24,6 +25,7 @@ describe('number', function() {
     assert.equal(number.isNumber(2e+3), true);
     assert.equal(number.isNumber(new Number(23)), true);
     assert.equal(number.isNumber(Number(2.3)), true);
+    assert.equal(number.isNumber(NaN), true);
     assert.equal(number.isNumber(-23), true);
     assert.equal(number.isNumber(parseFloat('123')), true);
 

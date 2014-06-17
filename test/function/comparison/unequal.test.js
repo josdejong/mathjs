@@ -108,6 +108,20 @@ describe('unequal', function() {
     //assert.equal(unequal(unit('2.54cm'), unit('1inch')), false); // round-off error :(
   });
 
+  it('should compare null', function() {
+    assert.equal(unequal(null, null), false);
+    assert.equal(unequal(null, undefined), true);
+    assert.equal(unequal(0, null), true);
+    assert.equal(unequal('null', null), true);
+  });
+
+  it('should compare undefined', function() {
+    assert.equal(unequal(undefined, undefined), false);
+    assert.equal(unequal(undefined, 'undefined'), true);
+    assert.equal(unequal(undefined, null), true);
+    assert.equal(unequal(2, undefined), true);
+  });
+
   it('should apply configuration option epsilon', function() {
     var mymath = mathjs();
     assert.equal(mymath.unequal(1, 0.991), true);

@@ -104,14 +104,21 @@ describe('equal', function() {
     //assert.equal(equal(unit('12inch'), unit('1foot')), true); // round-off error :(
     //assert.equal(equal(unit('2.54cm'), unit('1inch')), true); // round-off error :(
   });
-/*
+
   it('should compare null', function() {
     assert.equal(equal(null, null), true);
     assert.equal(equal(null, undefined), false);
     assert.equal(equal(0, null), false);
     assert.equal(equal('null', null), false);
   });
-*/
+
+  it('should compare undefined', function() {
+    assert.equal(equal(undefined, undefined), true);
+    assert.equal(equal(undefined, 'undefined'), false);
+    assert.equal(equal(undefined, null), false);
+    assert.equal(equal(2, undefined), false);
+  });
+
   it('should apply configuration option epsilon', function() {
     var mymath = mathjs();
     assert.equal(mymath.equal(1, 0.991), false);
