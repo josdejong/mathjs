@@ -23,6 +23,7 @@ body {
   padding: 40px 50px;
   border: 1px solid lightgray;
   border-radius: 3px;
+  overflow: hidden;
 
   box-shadow: 2px 2px 10px rgba(128, 128, 128, 0.2);
 }
@@ -49,6 +50,44 @@ body {
   height: 50px;
 }
 
+#menu {
+  background: #5f5f5f;
+  margin: 40px -50px;
+  padding: 0 50px;
+  text-transform: uppercase;
+  box-shadow: 0 0 15px #d6d6d6;
+}
+
+#page.small #menu {
+  margin: 40px -4%;
+  padding: 0 4%;
+}
+
+#menu a {
+  color: white;
+  height: 100%;
+  display: inline-block;
+  border-right: 2px solid #f5f5f5;
+  font-weight: bold;
+  padding: 10px 20px;
+  margin: 0;
+  position: relative;
+  text-decoration: none;
+}
+
+#menu a:first-child {
+  border-left: 2px solid #f5f5f5;
+}
+
+#menu a div.selection {
+  position: absolute;
+  bottom: -7px;
+  left: 0;
+  height: 5px;
+  width: 100%;
+  background: #5f5f5f;
+  background: #dc3912;
+}
 
 #likes {
   min-height: 42px;
