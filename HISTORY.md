@@ -2,11 +2,13 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.23.1
+## not yet released, version 0.24.0
 
 - Added constant `null`.
 - Functions `equal` and `unequal` support `null` and `undefined` now.
 - Function `typeof` now recognizes regular expressions as well.
+- Objects `Complex`, `Unit`, and `Help` now return their string representation
+  when calling `.valueOf()`.
 - Changed the default number of significant digits for BigNumbers from 20 to 64.
 - Fixed imported, wrapped functions not accepting `null` and `undefined` as
   function arguments.

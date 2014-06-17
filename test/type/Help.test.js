@@ -112,6 +112,23 @@ describe('help', function() {
         '\n');
   });
 
+  it('should return string representation on valueOf', function() {
+    var help = new Help(math, {
+      'name': 'add',
+      'examples': [
+        '2 ^^ 3'
+      ]
+    });
+
+    assert.strictEqual(help.valueOf(),
+            '\nName: add\n' +
+            '\n'+
+            'Examples:\n' +
+            '    2 ^^ 3\n' +
+            '        SyntaxError: Value expected (char 4)\n' +
+            '\n');
+  });
+
   it('should export doc to JSON', function() {
     var help = new Help(math, doc);
     var json = help.toJSON();
