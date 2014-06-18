@@ -1,3 +1,5 @@
 # exclude: updateversion.js // TODO: for some reason this also excludes the js folder...
 
 markdown: kramdown
+
+exclude: [node_modules, coverage]

@@ -1,0 +1,7 @@
+{
+  "name": "mathjs-website",
+  "version": "0.1.0",
+  "dependencies": {
+    "mathjs": "latest"
+  }
+}

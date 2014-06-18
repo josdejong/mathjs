@@ -58,11 +58,6 @@ body {
   box-shadow: 0 0 15px #d6d6d6;
 }
 
-#page.small #menu {
-  margin: 40px -4%;
-  padding: 0 4%;
-}
-
 #menu a {
   color: white;
   height: 100%;
@@ -73,10 +68,17 @@ body {
   margin: 0;
   position: relative;
   text-decoration: none;
+
+  -webkit-transition: background .2s ease;
+  transition:         background .2s ease;
 }
 
 #menu a:first-child {
   border-left: 2px solid #f5f5f5;
+}
+
+#menu a:hover {
+  background: #808080;
 }
 
 #menu a div.selection {
@@ -88,6 +90,30 @@ body {
   background: #5f5f5f;
   background: #dc3912;
 }
+
+#page.small #menu {
+  margin: 40px -4%;
+  padding: 0 4%;
+}
+
+#page.tiny #menu {
+  margin: 0;
+  padding: 0;
+}
+
+#page.tiny #menu a {
+  display: block;
+  border-right: none;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+#page.tiny #menu a div.selection {
+  left: -7px;
+  top: 0;
+  height: 100%;
+  width: 5px;
+}
+
 
 #likes {
   min-height: 42px;
