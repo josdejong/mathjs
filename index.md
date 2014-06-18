@@ -131,3 +131,55 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 
 Math.js is open source and licensed under the
 [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
+
+
+<div id="likes">
+  <!-- github -->
+  <!-- https://github.com/mdo/github-buttons -->
+  <div class="like github">
+    <iframe src="http://ghbtns.com/github-btn.html?user=josdejong&repo=mathjs&type=watch&count=true"
+            allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+  </div>
+
+  <!-- twitter -->
+  <div class="like twitter">
+    <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  </div>
+
+  <!-- facebook -->
+  <div class="like facebook">
+    <div id="fb-root" style="display: none;"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=537047263003274";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    <div class="fb-like" data-href="http://mathjs.org" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="verdana"></div>
+  </div>
+
+  <!-- linkedin -->
+  <div class="like linkedin">
+    <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+    <script type="IN/Share" data-url="http://mathjs.org" data-counter="right"></script>
+  </div>
+
+  <!-- google+ -->
+  <div class="like googleplus">
+    <!-- Place this tag where you want the +1 button to render. -->
+    <div class="g-plusone" data-size="medium"></div>
+
+    <!-- Place this tag after the last +1 button tag. -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>
+  </div>
+
+  <div style="clear: both;"></div>
+</div>
