@@ -25,8 +25,6 @@ Matrix &#124; Array | Squeezed matrix
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.squeeze([3]);           // returns 3
 math.squeeze([[3]]);         // returns 3
 

@@ -1,8 +1,7 @@
 importScripts('../../../dist/math.js');
 
-// create an instance of math.js and create a parser
-var math = mathjs(),
-    parser = math.parser();
+// create a parser
+var parser = math.parser();
 
 self.addEventListener('message', function(event) {
   var request = JSON.parse(event.data),

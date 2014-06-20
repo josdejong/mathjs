@@ -26,8 +26,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Cube of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.cube(2);            // returns Number 8
 math.pow(2, 3);          // returns Number 8
 math.cube(4);            // returns Number 64

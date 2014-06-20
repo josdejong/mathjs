@@ -28,8 +28,6 @@ Matrix | The created matrix
 ## Examples
 
 ```js
-var math = mathjs();
-
 var m = math.matrix([[1, 2], [3, 4]);
 m.size();                        // Array [2, 2]
 m.resize([3, 2], 5);

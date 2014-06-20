@@ -1,7 +1,6 @@
 // test deepEqual
 var assert = require('assert'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
+    math = require('../../../index'),
     error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,

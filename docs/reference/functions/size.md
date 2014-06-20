@@ -25,8 +25,6 @@ Array &#124; Matrix | A vector with size of `x`.
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.size(2.3);                  // returns []
 math.size('hello world');        // returns [11]
 

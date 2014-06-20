@@ -1,8 +1,7 @@
 // complex numbers
 
-// load math.js and create an instance
-var mathjs = require('../index'),
-    math = mathjs();
+// load math.js
+var math = require('../index');
 
 /**
  * Helper function to output a value in the console. Value will be formatted.

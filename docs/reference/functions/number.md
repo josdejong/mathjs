@@ -26,8 +26,6 @@ Number &#124; Array &#124; Matrix | The created number
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.number(2);                         // returns number 2
 math.number('7.2');                     // returns number 7.2
 math.number(true);                      // returns number 1

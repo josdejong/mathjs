@@ -30,8 +30,6 @@ Number &#124; BigNumber | Number of possible combinations.
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.combinations(7, 5); // returns 21
 ```
 

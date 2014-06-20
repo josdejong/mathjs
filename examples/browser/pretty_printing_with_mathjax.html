@@ -68,8 +68,6 @@
       pretty = document.getElementById('pretty'),
       result = document.getElementById('result');
 
-  var math = mathjs();
-
   // initialize with an example expression
   expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2';
   pretty.innerHTML = '$$' + math.parse(expr.value).toTex() + '$$';

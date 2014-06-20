@@ -1,7 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
+    math = require('../../../index'),
     bignumber = math.bignumber,
     BigNumber = math.type.BigNumber;
 
@@ -54,17 +53,12 @@ describe('bignumber', function() {
   });
 
   it('should apply precision setting to bignumbers', function() {
-    var math = mathjs({
+    var mymath = math({
       precision: 32
     });
 
-    var a = math.bignumber(1).dividedBy(3);
+    var a = mymath.bignumber(1).dividedBy(3);
     assert.equal(a.toString(), '0.33333333333333333333333333333333')
-
-    // restore default precision
-    math.config({
-      precision: 64
-    });
   });
 
   it('should throw an error in case of unsupported type of argument', function() {

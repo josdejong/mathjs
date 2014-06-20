@@ -26,8 +26,6 @@ Object | Returns a distribution object containing functions: `random([size] [, m
 ## Examples
 
 ```js
-var math = mathjs();
-
 var normalDist = math.distribution('normal'); // create a normal distribution
 normalDist.random(0, 10);                      // get a random value between 0 and 10
 ```

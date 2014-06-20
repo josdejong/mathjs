@@ -27,8 +27,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.log10(0.00001);            // returns -5
 math.log10(10000);              // returns 4
 math.log(10000) / math.log(10); // returns 4

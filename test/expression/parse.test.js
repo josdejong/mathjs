@@ -1,10 +1,9 @@
 // test parse
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    mathjs = require('../../index'),
+    math = require('../../index'),
     ArgumentsError = require('../../lib/error/ArgumentsError'),
     parse = require('../../lib/expression/parse'),
-    math = mathjs(),
     Complex = math.type.Complex,
     Matrix = math.type.Matrix,
     Unit = math.type.Unit;
@@ -147,12 +146,12 @@ describe('parse', function() {
     });
 
     it('should output bignumbers if default number type is bignumber', function() {
-      var math = mathjs({
+      var bigmath = math({
         number: 'bignumber'
       });
 
-      assert.deepEqual(parse('0.1').compile(math).eval(), math.bignumber(0.1));
-      assert.deepEqual(parse('1.2e5000').compile(math).eval(), math.bignumber('1.2e5000'));
+      assert.deepEqual(parse('0.1').compile(bigmath).eval(), bigmath.bignumber(0.1));
+      assert.deepEqual(parse('1.2e5000').compile(bigmath).eval(), bigmath.bignumber('1.2e5000'));
     });
 
   });
@@ -880,7 +879,7 @@ describe('parse', function() {
   });
 
   describe('bignumber', function () {
-    var bigmath = mathjs({
+    var bigmath = math({
       number: 'bignumber'
     });
     var BigNumber = bigmath.type.BigNumber;

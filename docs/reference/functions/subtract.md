@@ -27,8 +27,6 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.subtract(5.3, 2);        // returns Number 3.3
 
 var a = math.complex(2, 3);

@@ -27,8 +27,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | The arc tangent of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.atan(0.5);           // returns Number 0.4636476090008061
 math.atan(math.tan(1.5)); // returns Number 1.5
 

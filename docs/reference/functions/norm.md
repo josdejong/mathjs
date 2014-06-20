@@ -29,8 +29,6 @@ Number | the p-norm
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.abs(-3.5);                         // returns 3.5
 math.norm(-3.5);                        // returns 3.5
 

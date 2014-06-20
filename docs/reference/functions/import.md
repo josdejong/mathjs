@@ -32,8 +32,6 @@ Parameter | Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 // define new functions and variables
 math.import({
   myvalue: 42,

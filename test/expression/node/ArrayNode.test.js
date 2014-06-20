@@ -1,8 +1,7 @@
 // test ArrayNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
+    math = require('../../../index'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode'),
@@ -49,7 +48,7 @@ describe('ArrayNode', function() {
     var expr = n.compile(math);
     assert.deepEqual(expr.eval(), math.matrix([1,2,3,4]));
 
-    var mathArray = mathjs({matrix: 'array'});
+    var mathArray = math({matrix: 'array'});
     var expr2 = n.compile(mathArray);
     assert.deepEqual(expr2.eval(), [1,2,3,4]);
   });

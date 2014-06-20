@@ -28,8 +28,6 @@ Number &#124; Array &#124; Matrix | The greatest common divisor
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.gcd(8, 12);              // returns 4
 math.gcd(-4, 6);              // returns 2
 math.gcd(25, 15, -10);        // returns 5

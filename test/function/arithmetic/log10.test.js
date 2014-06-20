@@ -2,8 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
+    math = require('../../../index'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
@@ -40,7 +39,7 @@ describe('log10', function() {
   });
 
   it('should return the log of positive bignumbers', function() {
-    var bigmath = mathjs({precision: 100});
+    var bigmath = math({precision: 100});
 
     assert.deepEqual(bigmath.log10(bigmath.bignumber(1)), bigmath.bignumber(0));
     assert.deepEqual(bigmath.log10(bigmath.bignumber(10)), bigmath.bignumber(1));
@@ -51,7 +50,7 @@ describe('log10', function() {
   });
 
   it('should return the log of negative bignumbers', function() {
-    var bigmath = mathjs({precision: 100});
+    var bigmath = math({precision: 100});
 
     approx.deepEqual(bigmath.log10(bigmath.bignumber(-1)), bigmath.complex('0.000000000000000 + 1.364376353841841i'));
     approx.deepEqual(bigmath.log10(bigmath.bignumber(-2)), bigmath.complex('0.301029995663981 + 1.364376353841841i'));
@@ -59,7 +58,7 @@ describe('log10', function() {
   });
 
   it('should return the log of a bignumber with value zero', function() {
-    var bigmath = mathjs({precision: 100});
+    var bigmath = math({precision: 100});
 
     assert.deepEqual(bigmath.log10(bigmath.bignumber(0)), bigmath.bignumber(-Infinity));
   });

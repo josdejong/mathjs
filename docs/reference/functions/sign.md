@@ -31,8 +31,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | e The sign o
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.sign(3.5);               // returns 1
 math.sign(-4.2);              // returns -1
 math.sign(0);                 // returns 0

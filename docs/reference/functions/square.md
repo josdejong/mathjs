@@ -26,8 +26,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Squared val
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.square(2);           // returns Number 4
 math.square(3);           // returns Number 9
 math.pow(3, 2);           // returns Number 9

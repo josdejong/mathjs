@@ -29,8 +29,6 @@ Boolean &#124; Array &#124; Matrix | The boolean value
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.boolean(0);     // returns false
 math.boolean(1);     // returns true
 math.boolean(-3);     // returns true

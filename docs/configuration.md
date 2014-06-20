@@ -1,7 +1,7 @@
 # Configuration
 
 Math.js contains a number of configuration options. Configuration can be set
-when creating a math.js instance, or later on using the function `config`.
+when creating a new math.js instance, or later on using the function `config`.
 Available configuration options are:
 
 - `epsilon`. The minimum relative difference used to test equality between two
@@ -34,55 +34,33 @@ Available configuration options are:
 This section shows a number of configuration examples.
 
 
-### Default configuration
-
 ```js
-// load the library
-var mathjs = require('mathjs');
+// load the default instance of math.js
+var math = require('mathjs');
 
-// create an instance of math.js with default configuration
-var math1 = mathjs();
+// range will output a Matrix
+math.range(0, 4); // Matrix [0, 1, 2, 3]
 
-// range will output a matrix
-math1.range(0, 4); // Matrix [0, 1, 2, 3]
-```
 
-### Configuration for matrices
+// create a new instance configured to use Arrays
+var math2 = math({matrix: 'Array'});
 
-```js
-// load the library
-var mathjs = require('mathjs');
-
-// create an instance of math.js with configuration options
-var config = {
-  matrix: 'array'
-};
-var math2 = mathjs(config);
-
-// range will output an Array
+// range will output an Array 
 math2.range(0, 4); // Array [0, 1, 2, 3]
 
-// change configuration
-math2.config({
-  matrix: 'matrix'
-});
+// change the configuration of math2 from Arrays to Matrices
+math2.config({matrix: 'matrix'});
 
 // range will output a Matrix
 math2.range(0, 4); // Matrix [0, 1, 2, 3]
-```
 
-### Configuration for BigNumbers
 
-```js
-// load the library
-var mathjs = require('mathjs');
-
-// use BigNumbers by default
-var math3 = mathjs({
+// create an instanceof of math.js with bignumber configuration
+var bigmath = math({
   number: 'bignumber',
-  precision: 32
+  precision: 128
 });
 
 // parser will parse numbers as BigNumber now:
-math3.eval('1 / 3'); // BigNumber, 0.33333333333333333333333333333333
+bigmath.eval('1 / 3'); // BigNumber, 0.33333333333333333333333333333333
 ```

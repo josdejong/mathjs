@@ -28,8 +28,6 @@ String | Interpolated string
 ## Examples
 
 ```js
-var math = mathjs();
-
 // the following outputs: 'Lucy is 5 years old'
 math.print('Lucy is $age years old', {age: 5});
 

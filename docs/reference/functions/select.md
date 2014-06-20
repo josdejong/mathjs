@@ -38,8 +38,6 @@ math.chaining.Selector | The created selector
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.select(3)
     .add(4)
     .subtract(2)

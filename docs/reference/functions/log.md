@@ -29,8 +29,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.log(3.5);                  // returns 1.252762968495368
 math.exp(math.log(2.4));        // returns 2.4
 

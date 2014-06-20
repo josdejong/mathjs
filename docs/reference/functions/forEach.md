@@ -19,8 +19,6 @@ Parameter | Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.forEach([1, 2, 3], function(value) {
   console.log(value);
 });

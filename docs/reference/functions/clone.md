@@ -25,8 +25,6 @@ Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.clone(3.5);              // returns number 3.5
 math.clone(2 - 4i);           // returns Complex 2 - 4i
 math.clone(45 deg);           // returns Unit 45 deg

@@ -1,9 +1,7 @@
 // test IndexNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
-    bigmath = mathjs({number: 'bignumber'}),
+    bigmath = require('../../../index')({number: 'bignumber'}),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     RangeNode = require('../../../lib/expression/node/RangeNode'),
@@ -37,7 +35,7 @@ describe('IndexNode', function() {
       new ConstantNode('number', '1')
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile(bigmath);
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -55,7 +53,7 @@ describe('IndexNode', function() {
       ])
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile(bigmath);
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -74,7 +72,7 @@ describe('IndexNode', function() {
       ])
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile(bigmath);
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -92,7 +90,7 @@ describe('IndexNode', function() {
       ])
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile(bigmath);
 
     var scope = {
       a: [[1, 2], [3, 4]]

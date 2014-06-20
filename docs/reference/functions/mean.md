@@ -30,8 +30,6 @@ Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.mean(2, 1, 4, 3);                     // returns 2.5
 math.mean([1, 2.7, 3.2, 4]);               // returns 2.725
 

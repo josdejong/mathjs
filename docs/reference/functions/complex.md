@@ -39,8 +39,6 @@ Complex &#124; Array &#124; Matrix | Returns a complex value
 ## Examples
 
 ```js
-var math = mathjs();
-
 var a = math.complex(3, -4);     // a = Complex 3 - 4i
 a.re = 5;                        // a = Complex 5 - 4i
 var i = a.im;                    // Number -4;

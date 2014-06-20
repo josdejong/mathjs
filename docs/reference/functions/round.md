@@ -28,8 +28,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Rounded valu
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.round(3.2);              // returns Number 3
 math.round(3.8);              // returns Number 4
 math.round(-4.2);             // returns Number -4

@@ -26,8 +26,6 @@ BigNumber | The created bignumber
 ## Examples
 
 ```js
-var math = mathjs();
-
 0.1 + 0.2;                                  // returns Number 0.30000000000000004
 math.bignumber(0.1) + math.bignumber(0.2);  // returns BigNumber 0.3
 

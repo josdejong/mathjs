@@ -32,8 +32,6 @@ Matrix &#124; Array | Diagonal matrix from input vector, or diagonal from input 
 ## Examples
 
 ```js
- var math = mathjs();
-
  // create a diagonal matrix
  math.diag([1, 2, 3]);      // returns [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
  math.diag([1, 2, 3], 1);   // returns [[0, 1, 0, 0], [0, 0, 2, 0], [0, 0, 0, 3]]

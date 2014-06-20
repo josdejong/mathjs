@@ -1,8 +1,7 @@
 // test RangeNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
+    math = require('../../../index'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode'),

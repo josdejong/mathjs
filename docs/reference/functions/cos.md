@@ -27,8 +27,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | Cosine of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.cos(2);                      // returns Number -0.4161468365471422
 math.cos(math.pi / 4);            // returns Number  0.7071067811865475
 math.cos(math.unit(180, 'deg'));  // returns Number -1

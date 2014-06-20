@@ -27,8 +27,6 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.deepEqual(2, 4);   // returns false
 
 a = [2, 5, 1];

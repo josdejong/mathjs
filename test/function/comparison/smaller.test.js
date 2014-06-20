@@ -1,7 +1,6 @@
 // test smaller
 var assert = require('assert'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
+    math = require('../../../index'),
     error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
@@ -85,7 +84,7 @@ describe('smaller', function() {
   });
 
   it('should apply configuration option epsilon', function() {
-    var mymath = mathjs();
+    var mymath = math();
     assert.equal(mymath.smaller(0.991, 1), true);
     mymath.config({epsilon: 1e-2});
     assert.equal(mymath.smaller(0.991, 1), false);

@@ -1,8 +1,7 @@
 // test unequal
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
+    math = require('../../../index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -123,7 +122,7 @@ describe('unequal', function() {
   });
 
   it('should apply configuration option epsilon', function() {
-    var mymath = mathjs();
+    var mymath = math();
     assert.equal(mymath.unequal(1, 0.991), true);
     mymath.config({epsilon: 1e-2});
     assert.equal(mymath.unequal(1, 0.991), false);

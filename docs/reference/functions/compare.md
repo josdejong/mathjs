@@ -32,8 +32,6 @@ Number &#124; BigNumber &#124; Array &#124; Matrix | Returns the result of the c
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.compare(6, 1);           // returns 1
 math.compare(2, 3);           // returns -1
 math.compare(7, 7);           // returns 0

@@ -39,8 +39,6 @@ Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.std(2, 4, 6);                     // returns 2
 math.std([2, 4, 6, 8]);                // returns 2.581988897471611
 math.std([2, 4, 6, 8], 'uncorrected'); // returns 2.23606797749979

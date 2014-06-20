@@ -29,8 +29,6 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.unaryMinus(3.5);      // returns -3.5
 math.unaryMinus(-4.2);     // returns 4.2
 ```

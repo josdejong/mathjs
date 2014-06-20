@@ -30,8 +30,6 @@ Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.max(2, 1, 4, 3);                  // returns 4
 math.max([2, 1, 4, 3]);                // returns 4
 

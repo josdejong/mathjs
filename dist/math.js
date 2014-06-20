@@ -31,9 +31,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(factory);
 	else if(typeof exports === 'object')
-		exports["mathjs"] = factory();
+		exports["math"] = factory();
 	else
-		root["mathjs"] = factory();
+		root["math"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -93,11 +93,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * math.js factory function.
 	 *
-	 * Usage:
-	 *
-	 *     var math = mathjs();
-	 *     var math = mathjs(config);
-	 *
 	 * @param {Object} [config] Available configuration options:
 	 *                            {String} matrix
 	 *                              A string 'matrix' (default) or 'array'.
@@ -107,15 +102,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *                              The number of significant digits for BigNumbers.
 	 *                              Not applicable for Numbers.
 	 */
-	function mathjs (config) {
+	function factory (config) {
 	  // simple test for ES5 support
 	  if (typeof Object.create !== 'function') {
 	    throw new Error('ES5 not supported by this JavaScript engine. ' +
 	        'Please load the es5-shim and es5-sham library for compatibility.');
 	  }
 
-	  // create new namespace
-	  var math = {};
+	  // create namespace (and factory for a new instance)
+	  function math (config) {
+	    return factory(config);
+	  }
 
 	  // create configuration options. These are private
 	  var _config = {
@@ -127,7 +124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // number of significant digits in BigNumbers
 	    precision: 64,
-	    
+
 	    // minimum relative difference between two compared values,
 	    // used by all comparison functions
 	    epsilon: 1e-14
@@ -145,7 +142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *                              Not applicable for Numbers.
 	   * @return {Object} Returns the current configuration
 	   */
-	  math.config = function config (options) {
+	  math.config = function config(options) {
 	    if (options) {
 	      // merge options
 	      object.deepExtend(_config, options);
@@ -195,7 +192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Clone a bignumber
 	     * @return {BigNumber} clone
 	     */
-	    BigNumber.prototype.clone = function clone () {
+	    BigNumber.prototype.clone = function clone() {
 	      return new BigNumber(this);
 	    };
 	  }
@@ -387,9 +384,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return math;
 	}
 
+	// create a default instance of math.js
+	var math = factory();
 
-	// return the mathjs factory
-	module.exports = mathjs;
+	if (typeof window !== 'undefined') {
+	  window.mathjs = math; // TODO: deprecate the mathjs namespace some day (replaced with 'math' since version 0.25.0)
+	}
+
+	// export the default instance
+	module.exports = factory();
+
 
 
 /***/ },
@@ -4607,7 +4611,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'Constructor must be called with the new operator');
 	  }
 
-	  if (typeof math !== 'object') {
+	  if (!(math instanceof Object)) {
 	    throw new TypeError('Object expected as parameter math');
 	  }
 
@@ -5122,8 +5126,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    console.log(math.help('sin').toString());
 	   *    console.log(math.help(math.add).toString());
 	   *    console.log(math.help(math.add).toJSON());
@@ -5196,8 +5198,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Example:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     var node = math.parse('sqrt(3^2 + 4^2)');
 	   *     node.compile(math).eval(); // 5
 	   *
@@ -5252,8 +5252,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.abs(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.abs(3.5);                // returns Number 3.5
 	   *    math.abs(-4.2);               // returns Number 4.2
@@ -5328,8 +5326,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.add(x, y)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.add(2, 3);               // returns Number 5
 	   *
@@ -5488,8 +5484,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.ceil(3.2);               // returns Number 4
 	   *    math.ceil(3.8);               // returns Number 4
 	   *    math.ceil(-4.2);              // returns Number -4
@@ -5566,8 +5560,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.cube(2);            // returns Number 8
 	   *    math.pow(2, 3);          // returns Number 8
 	   *    math.cube(4);            // returns Number 64
@@ -5640,8 +5632,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.divide(x, y)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.divide(2, 3);            // returns Number 0.6666666666666666
 	   *
@@ -5804,8 +5794,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.dotDivide(2, 4);   // returns 0.5
 	   *
 	   *    a = [[9, 5], [6, 1]];
@@ -5855,8 +5843,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.dotMultiply(2, 4); // returns 8
 	   *
 	   *    a = [[9, 5], [6, 1]];
@@ -5904,8 +5890,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.dotPow(x, y)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.dotPow(2, 3);            // returns Number 8
 	   *
@@ -5962,8 +5946,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.exp(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.exp(2);                  // returns Number 7.3890560989306495
 	   *    math.pow(math.e, 2);          // returns Number 7.3890560989306495
@@ -6043,8 +6025,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.fix(3.2);                // returns Number 3
 	   *    math.fix(3.8);                // returns Number 3
 	   *    math.fix(-4.2);               // returns Number -4
@@ -6120,8 +6100,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.floor(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.floor(3.2);              // returns Number 3
 	   *    math.floor(3.8);              // returns Number 3
@@ -6199,8 +6177,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.gcd(a, b, c, ...)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.gcd(8, 12);              // returns 4
 	   *    math.gcd(-4, 6);              // returns 2
@@ -6305,8 +6281,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.lcm(a, b, c, ...)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.lcm(4, 6);               // returns 12
 	   *    math.lcm(6, 21);              // returns 42
@@ -6415,8 +6389,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.log(3.5);                  // returns 1.252762968495368
 	   *    math.exp(math.log(2.4));        // returns 2.4
 	   *
@@ -6517,8 +6489,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.log10(0.00001);            // returns -5
 	   *    math.log10(10000);              // returns 4
 	   *    math.log(10000) / math.log(10); // returns 4
@@ -6608,8 +6578,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.mod(x, y)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.mod(8, 3);                // returns 2
 	   *    math.mod(11, 2);               // returns 1
@@ -6746,8 +6714,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.multiply(x, y)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.multiply(4, 5.2);        // returns Number 20.8
 	   *
@@ -7180,8 +7146,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.abs(-3.5);                         // returns 3.5
 	   *    math.norm(-3.5);                        // returns 3.5
 	   *
@@ -7367,8 +7331,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.pow(2, 3);               // returns Number 8
 	   *
 	   *    var a = math.complex(2, 3);
@@ -7549,8 +7511,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.round(3.2);              // returns Number 3
 	   *    math.round(3.8);              // returns Number 4
 	   *    math.round(-4.2);             // returns Number -4
@@ -7693,8 +7653,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.sign(3.5);               // returns 1
 	   *    math.sign(-4.2);              // returns -1
 	   *    math.sign(0);                 // returns 0
@@ -7767,8 +7725,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.sqrt(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.sqrt(25);                // returns 5
 	   *    math.square(5);               // returns 25
@@ -7862,8 +7818,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.square(2);           // returns Number 4
 	   *    math.square(3);           // returns Number 9
 	   *    math.pow(3, 2);           // returns Number 9
@@ -7938,8 +7892,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.subtract(x, y)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.subtract(5.3, 2);        // returns Number 3.3
 	   *
@@ -8102,8 +8054,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.unaryMinus(3.5);      // returns -3.5
 	   *    math.unaryMinus(-4.2);     // returns 4.2
 	   *
@@ -8190,8 +8140,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.unaryPlus(3.5);      // returns 3.5
 	   *    math.unaryPlus(1);     // returns 1
 	   *
@@ -8261,8 +8209,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.xgcd(a, b)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.xgcd(8, 12);             // returns [4, -1, 1]
 	   *    math.gcd(8, 12);              // returns 4
@@ -8387,8 +8333,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.compare(6, 1);           // returns 1
 	   *    math.compare(2, 3);           // returns -1
 	   *    math.compare(7, 7);           // returns 0
@@ -8502,8 +8446,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.deepEqual(2, 4);   // returns false
 	   *
 	   *    a = [2, 5, 1];
@@ -8602,8 +8544,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.equal(x, y)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.equal(2 + 2, 3);         // returns false
 	   *    math.equal(2 + 2, 4);         // returns true
@@ -8760,8 +8700,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.larger(2, 3);             // returns false
 	   *    math.larger(5, 2 + 2);         // returns true
 	   *
@@ -8886,8 +8824,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.largerEq(x, y)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.larger(2, 1 + 1);         // returns false
 	   *    math.largerEq(2, 1 + 1);       // returns true
@@ -9015,8 +8951,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.smaller(2, 3);            // returns true
 	   *    math.smaller(5, 2 * 2);        // returns false
 	   *
@@ -9140,8 +9074,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.smallerEq(x, y)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.smaller(1 + 2, 3);        // returns false
 	   *    math.smallerEq(1 + 2, 3);      // returns true
@@ -9269,8 +9201,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.unequal(x, y)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.unequal(2 + 2, 3);       // returns true
 	   *    math.unequal(2 + 2, 4);       // returns false
@@ -9420,8 +9350,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    var a = math.complex(2, 2);
 	   *    math.arg(a) / math.pi;          // returns Number 0.25
 	   *
@@ -9498,8 +9426,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.conj(math.complex('2 + 3i'));  // returns Complex 2 - 3i
 	   *    math.conj(math.complex('2 - 3i'));  // returns Complex 2 + 3i
 	   *    math.conj(math.complex('-5.2i'));  // returns Complex 5.2i
@@ -9572,8 +9498,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.re(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    var a = math.complex(2, 3);
 	   *    math.re(a);                     // returns Number 2
@@ -9649,8 +9573,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    var a = math.complex(2, 3);
 	   *    math.re(a);                     // returns Number 2
 	   *    math.im(a);                     // returns Number 3
@@ -9723,8 +9645,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    0.1 + 0.2;                                  // returns Number 0.30000000000000004
 	   *    math.bignumber(0.1) + math.bignumber(0.2);  // returns BigNumber 0.3
 	   *
@@ -9792,8 +9712,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.boolean(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.boolean(0);     // returns false
 	   *    math.boolean(1);     // returns true
@@ -9898,8 +9816,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *                                              // polar coordinates
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    var a = math.complex(3, -4);     // a = Complex 3 - 4i
 	   *    a.re = 5;                        // a = Complex 5 - 4i
@@ -10086,8 +10002,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    var m = math.matrix([[1, 2], [3, 4]);
 	   *    m.size();                        // Array [2, 2]
 	   *    m.resize([3, 2], 5);
@@ -10135,8 +10049,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.number(value)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.number(2);                         // returns number 2
 	   *    math.number('7.2');                     // returns number 7.2
@@ -10275,8 +10187,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.select(3)
 	   *         .add(4)
 	   *         .subtract(2)
@@ -10319,8 +10229,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.string(value)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.string(4.2);               // returns string '4.2'
 	   *    math.string(math.complex(3, 2); // returns string '3 + 2i'
@@ -10389,8 +10297,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.unit(value : number, unit : string)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    var a = math.unit(5, 'cm');    // returns Unit 50 mm
 	   *    var b = math.unit('23 kg');    // returns Unit 23 kg
@@ -10481,8 +10387,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *   By default the last dimension of the matrices.
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    var A = [[1, 2], [5, 6]];
 	   *    var B = [[3, 4], [7, 8]];
@@ -10608,8 +10512,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.det(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.det([[1, 2], [3, 4]]); // returns -2
 	   *
@@ -10778,8 +10680,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.diag(X, k)
 	   *
 	   * Examples:
-	   *
-	   *     var math = mathjs();
 	   *
 	   *     // create a diagonal matrix
 	   *     math.diag([1, 2, 3]);      // returns [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
@@ -11286,8 +11186,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.range(2, 6);        // [2, 3, 4, 5]
 	   *     math.range(2, -3, -1);   // [2, 1, 0, -1, -2]
 	   *     math.range('2:1:6');     // [2, 3, 4, 5]
@@ -11594,8 +11492,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.resize([1, 2, 3, 4, 5], [3]); // returns Array  [1, 2, 3]
 	   *     math.resize([1, 2, 3], [5], 0);    // returns Array  [1, 2, 3, 0, 0]
 	   *     math.resize(2, [2, 3], 0);         // returns Matrix [[2, 0, 0], [0, 0, 0]]
@@ -11729,8 +11625,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.size(2.3);                  // returns []
 	   *     math.size('hello world');        // returns [11]
 	   *
@@ -11796,8 +11690,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.squeeze([3]);           // returns 3
 	   *     math.squeeze([[3]]);         // returns 3
 	   *
@@ -11857,8 +11749,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.subset(value, index, replacement [, defaultValue])  // replace a subset
 	   *
 	   * Examples:
-	   *
-	   *     var math = mathjs();
 	   *
 	   *     // get a subset
 	   *     var d = [[1, 2], [3, 4]];
@@ -12068,8 +11958,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     var A = [[1, 2, 3], [4, 5, 6]];
 	   *     math.transpose(A);               // returns [[1, 4], [2, 5], [3, 6]]
 	   *
@@ -12225,8 +12113,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.distribution(name)
 	   *
 	   * Examples:
-	   *
-	   *     var math = mathjs();
 	   *
 	   *     var normalDist = math.distribution('normal'); // create a normal distribution
 	   *     normalDist.random(0, 10);                      // get a random value between 0 and 10
@@ -12441,8 +12327,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.factorial(5);    // returns 120
 	   *    math.factorial(3);    // returns 6
 	   *
@@ -12541,8 +12425,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.random();       // returns a random number between 0 and 1
 	   *     math.random(100);    // returns a random number between 0 and 100
 	   *     math.random(30, 40); // returns a random number between 30 and 40
@@ -12580,8 +12462,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.randomInt();       // returns a random integer between 0 and 1
 	   *     math.randomInt(100);    // returns a random integer between 0 and 100
 	   *     math.randomInt(30, 40); // returns a random integer between 30 and 40
@@ -12616,8 +12496,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.pickRandom(array)
 	   *
 	   * Examples:
-	   *
-	   *     var math = mathjs();
 	   *
 	   *     math.pickRandom([3, 6, 12, 2]);       // returns one of the values in the array
 	   *
@@ -12657,8 +12535,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.permutations(n, k)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.permutations(5);     // 120
 	   *    math.permutations(5, 3);  // 60
@@ -12771,8 +12647,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.combinations(7, 5); // returns 21
 	   *
 	   * See also:
@@ -12866,8 +12740,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.min(2, 1, 4, 3);                  // returns 1
 	   *     math.min([2, 1, 4, 3]);                // returns 1
 	   *
@@ -12960,8 +12832,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.max(A, dim)
 	   *
 	   * Examples:
-	   *
-	   *     var math = mathjs();
 	   *
 	   *     math.max(2, 1, 4, 3);                  // returns 4
 	   *     math.max([2, 1, 4, 3]);                // returns 4
@@ -13057,8 +12927,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     mean.mean(A, dim)
 	   *
 	   * Examples:
-	   *
-	   *     var math = mathjs();
 	   *
 	   *     math.mean(2, 1, 4, 3);                     // returns 2.5
 	   *     math.mean([1, 2.7, 3.2, 4]);               // returns 2.725
@@ -13166,8 +13034,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.median(5, 2, 7);        // returns 5
 	   *     math.median([3, -1, 5, 7]);  // returns 4
 	   *
@@ -13271,8 +13137,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.multiply(2, 3);           // returns 6
 	   *     math.prod(2, 3);               // returns 6
 	   *     math.prod(2, 3, 4);            // returns 24
@@ -13363,8 +13227,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *     var math = mathjs();
-	   *
 	   *     math.std(2, 4, 6);                     // returns 2
 	   *     math.std([2, 4, 6, 8]);                // returns 2.581988897471611
 	   *     math.std([2, 4, 6, 8], 'uncorrected'); // returns 2.23606797749979
@@ -13415,8 +13277,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.sum(A)
 	   *
 	   * Examples:
-	   *
-	   *     var math = mathjs();
 	   *
 	   *     math.sum(2, 1, 4, 3);               // returns 10
 	   *     math.sum([2, 1, 4, 3]);             // returns 10
@@ -13514,8 +13374,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.var(A, normalization)
 	   *
 	   * Examples:
-	   *
-	   *     var math = mathjs();
 	   *
 	   *     math.var(2, 4, 6);                     // returns 4
 	   *     math.var([2, 4, 6, 8]);                // returns 6.666666666666667
@@ -13648,8 +13506,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.acos(0.5);           // returns Number 1.0471975511965979
 	   *    math.acos(math.cos(1.5)); // returns Number 1.5
 	   *
@@ -13742,8 +13598,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.asin(0.5);           // returns Number 0.5235987755982989
 	   *    math.asin(math.sin(1.5)); // returns Number ~1.5
 	   *
@@ -13834,8 +13688,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.atan(0.5);           // returns Number 0.4636476090008061
 	   *    math.atan(math.tan(1.5)); // returns Number 1.5
 	   *
@@ -13923,8 +13775,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.atan2(2, 2) / math.pi;       // returns number 0.25
 	   *
 	   *    var angle = math.unit(60, 'deg'); // returns Unit 60 deg
@@ -14006,8 +13856,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.cos(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.cos(2);                      // returns Number -0.4161468365471422
 	   *    math.cos(math.pi / 4);            // returns Number  0.7071067811865475
@@ -14097,8 +13945,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.cosh(0.5);       // returns Number 1.1276259652063807
 	   *
 	   * See also:
@@ -14177,8 +14023,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.cot(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.cot(2);      // returns Number -0.45765755436028577
 	   *    1 / math.tan(2);  // returns Number -0.45765755436028577
@@ -14264,8 +14108,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.coth(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    // coth(x) = 1 / tanh(x)
 	   *    math.coth(2);         // returns 1.0373147207275482
@@ -14354,8 +14196,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.csc(2);      // returns Number 1.099750170294617
 	   *    1 / math.sin(2);  // returns Number 1.099750170294617
 	   *
@@ -14442,8 +14282,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.csch(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    // csch(x) = 1/ sinh(x)
 	   *    math.csch(0.5);       // returns 1.9190347513349437
@@ -14532,8 +14370,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.sec(2);      // returns Number -2.4029979617223822
 	   *    1 / math.cos(2);  // returns Number -2.4029979617223822
 	   *
@@ -14620,8 +14456,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    // sech(x) = 1/ cosh(x)
 	   *    math.sech(0.5);       // returns 0.886818883970074
 	   *    1 / math.cosh(0.5);   // returns 1.9190347513349437
@@ -14705,8 +14539,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.sin(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.sin(2);                      // returns Number 0.9092974268256813
 	   *    math.sin(math.pi / 4);            // returns Number 0.7071067811865475
@@ -14807,8 +14639,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.sinh(0.5);       // returns Number 0.5210953054937474
 	   *
 	   * See also:
@@ -14889,8 +14719,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.tan(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.tan(0.5);                    // returns Number 0.5463024898437905
 	   *    math.sin(0.5) / math.cos(0.5);    // returns Number 0.5463024898437905
@@ -14980,8 +14808,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    // tanh(x) = sinh(x) / cosh(x) = 1 / coth(x)
 	   *    math.tanh(0.5);                   // returns 0.46211715726000974
 	   *    math.sinh(0.5) / math.cosh(0.5);  // returns 0.46211715726000974
@@ -15066,8 +14892,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.to(math.unit('2 inch'), 'cm');                   // returns Unit 5.08 cm
 	   *    math.to(math.unit('2 inch'), math.unit(null, 'cm'));  // returns Unit 5.08 cm
 	   *    math.to(math.unit(16, 'bytes'), 'bits');              // returns Unit 128 bits
@@ -15119,8 +14943,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.clone(x)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.clone(3.5);              // returns number 3.5
 	   *    math.clone(2 - 4i);           // returns Complex 2 - 4i
@@ -15252,8 +15074,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.ifElse(true, 'yes', 'no');           // returns 'yes'
 	   *
 	   * @param {Number | Boolean | String | Complex | BigNumber | Unit} condition
@@ -15332,8 +15152,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     The wrapper is needed when extending math.js with libraries which do not
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    // define new functions and variables
 	   *    math.import({
@@ -15468,8 +15286,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.map([1, 2, 3], function(value) {
 	   *      return value * value;
 	   *    });  // returns [1, 4, 9]
@@ -15531,8 +15347,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     math.print(template, values, precision)
 	   *
 	   * Example usage:
-	   *
-	   *     var math = mathjs();
 	   *
 	   *     // the following outputs: 'Lucy is 5 years old'
 	   *     math.print('Lucy is $age years old', {age: 5});
@@ -15642,8 +15456,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    var math = mathjs();
-	   *
 	   *    math.typeof(3.5);                     // returns 'number'
 	   *    math.typeof(math.complex('2 - 4i'));  // returns 'complex'
 	   *    math.typeof(math.unit('45 deg'));     // returns 'unit'
@@ -15694,8 +15506,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.forEach(x, callback)
 	   *
 	   * Examples:
-	   *
-	   *    var math = mathjs();
 	   *
 	   *    math.forEach([1, 2, 3], function(value) {
 	   *      console.log(value);
@@ -21468,7 +21278,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *                                  variables.
 	 */
 	Node.prototype.compile = function (math) {
-	  if (typeof math !== 'object') {
+	  if (!(math instanceof Object)) {
 	    throw new TypeError('Object expected for parameter math');
 	  }
 

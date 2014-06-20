@@ -1,9 +1,8 @@
 // test UpdateNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
-    bigmath = mathjs({number: 'bignumber'}),
+    math = require('../../../index'),
+    bigmath = math({number: 'bignumber'}),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     RangeNode = require('../../../lib/expression/node/RangeNode'),

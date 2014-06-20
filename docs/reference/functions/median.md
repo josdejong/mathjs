@@ -32,8 +32,6 @@ Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.median(5, 2, 7);        // returns 5
 math.median([3, -1, 5, 7]);  // returns 4
 ```

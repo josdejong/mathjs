@@ -30,8 +30,6 @@ Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.min(2, 1, 4, 3);                  // returns 1
 math.min([2, 1, 4, 3]);                // returns 1
 

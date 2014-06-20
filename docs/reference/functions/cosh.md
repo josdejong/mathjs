@@ -28,8 +28,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic cosine of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.cosh(0.5);       // returns Number 1.1276259652063807
 ```
 

@@ -27,8 +27,6 @@ Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.ifElse(true, 'yes', 'no');           // returns 'yes'
 ```
 

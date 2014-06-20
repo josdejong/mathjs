@@ -28,8 +28,6 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.unaryPlus(3.5);      // returns 3.5
 math.unaryPlus(1);     // returns 1
 ```

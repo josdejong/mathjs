@@ -26,8 +26,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Absolute va
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.abs(3.5);                // returns Number 3.5
 math.abs(-4.2);               // returns Number 4.2
 

@@ -46,7 +46,7 @@ var bannerPlugin = new webpack.BannerPlugin(createBanner(), {
 var webpackConfig = {
   entry: ENTRY,
   output: {
-    library: 'mathjs',
+    library: 'math',
     libraryTarget: 'umd',
     path: DIST,
     filename: FILE

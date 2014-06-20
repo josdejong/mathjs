@@ -28,8 +28,6 @@ Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.multiply(2, 3);           // returns 6
 math.prod(2, 3);               // returns 6
 math.prod(2, 3, 4);            // returns 24
