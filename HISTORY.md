@@ -2,6 +2,11 @@
 https://github.com/josdejong/mathjs
 
 
+## 2014-06-20, version 0.24.1
+
+- Something went wrong with publishing on npm.
+
+
 ## 2014-06-20, version 0.24.0
 
 - Added constant `null`.
