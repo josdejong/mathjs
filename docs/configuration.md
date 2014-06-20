@@ -33,6 +33,7 @@ Available configuration options are:
 
 This section shows a number of configuration examples.
 
+### node.js
 
 ```js
 // load the default instance of math.js
@@ -55,7 +56,7 @@ math2.config({matrix: 'matrix'});
 math2.range(0, 4); // Matrix [0, 1, 2, 3]
 
 
-// create an instanceof of math.js with bignumber configuration
+// create an instance of math.js with bignumber configuration
 var bigmath = math({
   number: 'bignumber',
   precision: 128
@@ -63,4 +64,40 @@ var bigmath = math({
 
 // parser will parse numbers as BigNumber now:
 bigmath.eval('1 / 3'); // BigNumber, 0.33333333333333333333333333333333
+```
+
+### browser
+
+
+```js
+<!DOCTYPE HTML>
+<html>
+<head>
+  <script src="math.js" type="text/javascript"></script>
+</head>
+<body>
+  <script type="text/javascript">
+    // the default instance of math.js is available as 'math'
+  
+    // range will output a Matrix
+    math.range(0, 4); // Matrix [0, 1, 2, 3]
+    
+    // change the configuration of math from Arrays to Matrices
+    math.config({matrix: 'matrix'});
+    
+    // range will output an Array 
+    math.range(0, 4); // Array [0, 1, 2, 3]
+    
+    // create a new instance of math.js with bignumber configuration
+    var bigmath = math({
+      number: 'bignumber',
+      precision: 128
+    });
+    
+    // parser will parse numbers as BigNumber now:
+    bigmath.eval('1 / 3'); // BigNumber, 0.33333333333333333333333333333333
+  </script>
+</body>
+</html>
+
 ```
