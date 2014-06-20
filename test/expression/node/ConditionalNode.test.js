@@ -64,7 +64,7 @@ describe('ConditionalNode', function() {
   it ('should LaTeX a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 
-    assert.equal(n.toTex(), '-\left\{\begin{array}{l l}{{a}={2}}, &\quad{\text{if}\;true}\\{{b}={3}}, &\quad{\text{otherwise}}\end{array}\right.');
+    assert.equal(n.toTex(), '\\left\\{\\begin{array}{l l}{{a}={2}}, &\\quad{\\text{if}\\;true}\\\\{{b}={3}}, &\\quad{\\text{otherwise}}\\end{array}\\right.');
   });
 
 });
