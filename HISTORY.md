@@ -2,7 +2,7 @@
 https://github.com/josdejong/mathjs
 
 
-## not yet released, version 0.24.0
+## 2014-06-20, version 0.24.0
 
 - Added constant `null`.
 - Functions `equal` and `unequal` support `null` and `undefined` now.

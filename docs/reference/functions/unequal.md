@@ -20,8 +20,8 @@ math.unequal(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | First value to compare
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | Second value to compare
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null &#124; undefined | First value to compare
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null &#124; undefined | Second value to compare
 
 ### Returns
 
