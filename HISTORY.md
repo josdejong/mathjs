@@ -10,6 +10,8 @@ https://github.com/josdejong/mathjs
 - Objects `Complex`, `Unit`, and `Help` now return their string representation
   when calling `.valueOf()`.
 - Changed the default number of significant digits for BigNumbers from 20 to 64.
+- Changed the behavior of the conditional operator (a ? b : c) to lazy 
+  evaluating.
 - Fixed imported, wrapped functions not accepting `null` and `undefined` as
   function arguments.
 

@@ -1,4 +1,5 @@
 .idea
+_site
 coverage
 *swp
 node_modules

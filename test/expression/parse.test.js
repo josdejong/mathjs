@@ -719,7 +719,7 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('[2,3] != [2,4]'), new Matrix([false, true]));
     });
 
-    it('should parse contitional expression a ? b : c', function() {
+    it('should parse conditional expression a ? b : c', function() {
       assert.equal(parseAndEval('2 ? true : false'), true);
       assert.equal(parseAndEval('0 ? true : false'), false);
       assert.equal(parseAndEval('false ? true : false'), false);
@@ -730,7 +730,13 @@ describe('parse', function() {
       assert.equal(parseAndEval('0 > 0 ? 1 : 0 < 0 ? -1 : 0'), 0);
     });
 
-    it('should throw an error when false part of contitional expression is missing', function() {
+    it('should lazily evaluate conditional expression a ? b : c', function() {
+      var scope = {};
+      math.parse('true ? (a = 2) : (b = 2)').compile(math).eval(scope);
+      assert.deepEqual(scope, {a: 2});
+    });
+
+    it('should throw an error when false part of conditional expression is missing', function() {
       assert.throws(function() {parseAndEval('2 ? true')}, /False part of conditional expression expected/);
     });
 
