@@ -2,6 +2,10 @@
 https://github.com/josdejong/mathjs
 
 
+## not yet released, version 0.25.0
+
+
+
 ## 2014-06-20, version 0.24.1
 
 - Something went wrong with publishing on npm.
