@@ -96,8 +96,8 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 <table>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.24.1/math.js">
-        Development (version 0.24.1)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.23.0/math.js">
+        Development (version 0.23.0)
       </a>
     </td>
     <td>
@@ -106,8 +106,8 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
   </tr>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.24.1/math.min.js">
-        Production (version 0.24.1)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.23.0/math.min.js">
+        Production (version 0.23.0)
       </a>
     </td>
     <td>
