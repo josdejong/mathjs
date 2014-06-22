@@ -88,7 +88,7 @@ gulp.task('bundle', ['validate'], function (cb) {
 gulp.task('minify', ['bundle'], function () {
   var result = uglify.minify([MATH_JS], uglifyConfig);
 
-  fs.writeFileSync(MATH_MIN_JS, result.code + '\n//# sourceMappingURL=' + FILE_MAP);
+  fs.writeFileSync(MATH_MIN_JS, result.code);
   fs.writeFileSync(MATH_MAP_JS, result.map);
 
   gutil.log('Minified ' + MATH_MIN_JS);
