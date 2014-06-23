@@ -167,7 +167,7 @@ var math = require('mathjs')();
 // parse an expression
 var node = math.parse('sqrt(x/x+1)');
 node.toString();  // returns 'sqrt((x / x) + 1)'
-node.toTex();     // returns '\sqrt{{\frac{x}{x}}+{1}}'
+node.toTex();     // returns '\sqrt{ {\frac{x}{x} }+{1} }'
 ```
 
 
