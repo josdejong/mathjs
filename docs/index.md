@@ -34,4 +34,6 @@ and a reference describing all available functions in detail.
 
 ## Reference
 
-  - [Functions](reference/functions/alphabetical.md)
+  - Functions: 
+    [alphabetical](reference/functions/alphabetical.md)
+    [categorical](reference/functions/categorical.md)

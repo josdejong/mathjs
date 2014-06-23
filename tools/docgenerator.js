@@ -436,15 +436,44 @@ function iteratePath (inputPath, outputPath) {
       }
     }
 
-    // generate index pages
-    var alphabetical = '# Function reference (alphabetical)\n\n';
-    alphabetical += Object.keys(functions).sort().map(function (name) {
+    /**
+     * Helper function to generate a markdown list entry for a function.
+     * Used to generate both alphabetical and categorical index pages.
+     * @param {string} name Function name
+     * @returns {string}    Returns a markdown list entry
+     */
+    function functionEntry (name) {
       var fn = functions[name];
       var syntax = fn.doc && fn.doc.syntax && fn.doc.syntax[0] || name;
-      syntax = syntax.replace(/\s+\/\/.*$/, '');
+      syntax = syntax
+          .replace(/^math\./, '')
+          .replace(/\s+\/\/.*$/, '');
       return '- [' + syntax + '](' + name + '.md)';
-    }).join('\n');
+    }
+
+    // generate alphabetical index page
+    var alphabetical = '# Function reference (alphabetical)\n\n';
+    alphabetical += Object.keys(functions).sort().map(functionEntry).join('\n');
     fs.writeFileSync(outputPath + '/alphabetical.md', alphabetical);
+
+    // generate categorical index page
+    var categories = {};
+    Object.keys(functions).forEach(function (name) {
+      var fn = functions[name];
+      var category = categories[fn.category];
+      if (!category) {
+        categories[fn.category] = {};
+      }
+      categories[fn.category][name] = fn;
+    });
+    var categorical = '# Function reference (categorical)\n\n';
+    categorical += Object.keys(categories).sort().map(function (category) {
+      var functions = categories[category];
+      return '## ' + category + '\n\n' +
+        Object.keys(functions).sort().map(functionEntry).join('\n') + '\n';
+    }).join('\n');
+    fs.writeFileSync(outputPath + '/categorical.md', categorical);
+
 
     // output all issues
     if (issues.length) {
