@@ -8,16 +8,12 @@ https://github.com/josdejong/mathjs
   no need to instantiate math.js in a separate step unless one ones to set 
   configuration options. Instead of:
 
-  ```js
-  var mathjs = require('mathjs'),  // load math.js
-      math = mathjs();             // create an instance
-  ```
+        var mathjs = require('mathjs'),  // load math.js
+            math = mathjs();             // create an instance
   
   just do:
   
-  ```js
-  var math = require('mathjs');
-  ```
+        var math = require('mathjs');
 
 ## 2014-06-20, version 0.24.1
 
