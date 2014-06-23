@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Function clone
 
 Clone an object.

@@ -93,7 +93,7 @@ Math.js can be installed using [npm](https://npmjs.org/):
 
 Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 
-<table>
+<table class="download">
   <tr>
     <td>
       <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.23.0/math.js">

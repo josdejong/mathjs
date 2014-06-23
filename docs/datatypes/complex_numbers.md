@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Complex Numbers
 
 Math.js supports creation, manipulation, and calculations with complex numbers.

@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Command Line Interface (CLI)
 
 When math.js is installed globally using npm, its expression parser can be used

@@ -167,13 +167,51 @@ div.cols .end {
 
 table {
   border-collapse: collapse;
+  margin: 15px 0;
 }
 
+table th,
 table td {
+  border: 1px solid #ddd;
+  padding: 6px 13px;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+table.download tr {
+  background-color: transparent;
+}
+
+table.download td,
+table.download th {
+  border: none;
   padding: 5px 20px 5px 0;
 }
 
 pre {
+  overflow: auto;
+}
+
+code {
+  margin: 0;
+  border: 1px solid #ddd;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+  padding: 0;
+}
+
+pre code {
+  margin: inherit;
+  border: none;
+  background-color: transparent;
+  border-radius: inherit;
+  padding: inherit;
+}
+
+
+#example {
   font-family: monospace;
   font-size: 12px;
   color: #363636;
@@ -185,19 +223,17 @@ pre {
   background-color: #f5f5f5;
   border: 1px solid #e5e5e5;
   border-radius: 2px;
-}
 
-.tiny pre {
-  font-size: 10px;
-}
-
-#example {
   overflow: auto;
   width: 100%;
 
   border: 1px solid #e5e5e5;
   background-color: #f5f5f5;
   border-radius: 2px;
+}
+
+.tiny #example {
+  font-size: 10px;
 }
 
 #example .keyword {

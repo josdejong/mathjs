@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Units
 
 Math.js supports units. Units can be used to do calculations and to perform

@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Function import
 
 Import functions from an object or a module

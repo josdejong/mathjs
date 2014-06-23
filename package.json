@@ -3,5 +3,9 @@
   "version": "0.1.0",
   "dependencies": {
     "mathjs": "latest"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.1",
+    "gulp-header": "^1.0.2"
   }
 }

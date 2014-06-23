@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Function parse
 
 Parse an expression.

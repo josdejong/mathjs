@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Function help
 
 Retrieve help on a function or data type.

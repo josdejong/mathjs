@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Expressions
 
 Math.js contains a flexible and easy to use expression parser.
@@ -167,7 +171,6 @@ var math = require('mathjs')();
 // parse an expression
 var node = math.parse('sqrt(x/x+1)');
 node.toString();  // returns 'sqrt((x / x) + 1)'
-node.toTex();     // returns '\sqrt{{\frac{x}{x}}+{1}}'
 ```
 
 
@@ -334,7 +337,7 @@ Operators                         | Description
 
 Functions are called by entering their name, followed by zero or more
 arguments enclosed by parentheses. All available functions are listed on the
-page [Functions](functions.md).
+page [Functions](functions.html).
 
 ```js
 math.eval('sqrt(25)');          // 5
@@ -362,7 +365,7 @@ parser.eval('g(2, 3)'); // 8
 
 Math.js has a number of built in constants such as `pi` and `e`.
 All available constants are listed on he page
-[Constants](constants.md).
+[Constants](constants.html).
 
 ```js
 // use constants
@@ -441,7 +444,7 @@ math.eval('string(2.3)');     // "2.3"
 
 Math.js uses regular JavaScript numbers, which are floating points with a
 limited precision and limited range. The limitations are described in detail
-on the page [Numbers](datatypes/numbers.md).
+on the page [Numbers](datatypes/numbers.html).
 
 ```js
 math.eval('1e-325');  // 0
@@ -469,7 +472,7 @@ math.format(ans, {precision: 14});  // "0.3"
 
 Math.js supports BigNumbers for calculations with an arbitrary precision.
 The pros and cons of Number and BigNumber are explained in detail on the page
-[Numbers](datatypes/numbers.md).
+[Numbers](datatypes/numbers.html).
 
 BigNumbers are slower, but have a higher precision. Calculations with big
 numbers are supported only by arithmetic functions.
@@ -542,7 +545,7 @@ parser.eval('number(a)');   // Error: 2 + i is no valid number
 math.js supports units. Units can be used in basic arithmetic operations like
 add and subtract, and units can be converted from one to another.
 An overview of all available units can be found on the page
-[Units](datatypes/units.md).
+[Units](datatypes/units.html).
 
 Units can be converted using the operator `to` or `in`.
 

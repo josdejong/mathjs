@@ -1,10 +1,14 @@
+---
+layout: default
+---
+
 # Numbers
 
 Math.js supports two types of numbers:
 
 - Number for fast floating point arithmetic, described on this page.
 - BigNumber for arbitrary precision arithmetic, describe on the page
-  [BigNumbers](bignumbers.md).
+  [BigNumbers](bignumbers.html).
 
 ## Configuration
 
@@ -76,7 +80,7 @@ option `epsilon`. In pseudo code (without exceptions for 0, Infinity and NaN):
 where:
 
  - `EPSILON` is the relative difference between x and y. Epsilon is configurable
-   and is `1e-14` by default. See [Configuration](../configuration.md).
+   and is `1e-14` by default. See [Configuration](../configuration.html).
  - `DBL_EPSILON` is the minimum positive floating point number such that
    `1.0 + DBL_EPSILON != 1.0`. This is a constant with a value of approximately
    `2.2204460492503130808472633361816e-16`;

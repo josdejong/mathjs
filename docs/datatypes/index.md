@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Data Types
 
 The functions of math.js support multiple data types, both native JavaScript
@@ -8,12 +12,12 @@ Complex number or Array.
 The supported data types are:
 
 - Boolean
-- [Number](numbers.md)
-- [BigNumber](bignumbers.md)
-- [Complex](complex_numbers.md)
-- [Array](matrices.md)
-- [Matrix](matrices.md)
-- [Unit](units.md)
+- [Number](numbers.html)
+- [BigNumber](bignumbers.html)
+- [Complex](complex_numbers.html)
+- [Array](matrices.html)
+- [Matrix](matrices.html)
+- [Unit](units.html)
 - String
 
 Example usage:

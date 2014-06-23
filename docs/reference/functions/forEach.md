@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Function forEach
 
 Iterate over all elements of a matrix/array, and executes the given callback function.

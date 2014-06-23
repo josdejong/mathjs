@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Matrices
 
 Math.js supports multi dimensional matrices and arrays. Matrices can be

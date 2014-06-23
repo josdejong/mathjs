@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Function map
 
 Create a new matrix or array with the results of the callback function executed on

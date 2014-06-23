@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Function select
 
 Wrap any value in a Selector, allowing to perform chained operations on

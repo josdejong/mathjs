@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Functions
 
 Math.js contains the following functions. The functions support all available

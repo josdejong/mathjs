@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Import
 
 The library can easily be extended with functions and variables using the

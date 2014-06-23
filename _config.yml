@@ -1,5 +1,8 @@
 # exclude: updateversion.js // TODO: for some reason this also excludes the js folder...
 
-markdown: kramdown
+markdown: redcarpet
 
 exclude: [node_modules, coverage]
+
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]

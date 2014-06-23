@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Constants
 
 Math.js has the following built-in constants.
@@ -10,6 +14,7 @@ Math.js has the following built-in constants.
 - math.LOG2E
 - math.LOG10E
 - math.NaN
+- math.null
 - math.PI, math.pi
 - math.SQRT1_2
 - math.SQRT2

@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Chained operations
 
 Math.js supports chaining operations by wrapping a value into a `Selector`.

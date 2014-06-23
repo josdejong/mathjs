@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Configuration
 
 Math.js contains a number of configuration options. Configuration can be set
@@ -26,7 +30,7 @@ Available configuration options are:
 
 - `precision`. The maximum number of significant digits for bigNumbers.
   This setting only applies to BigNumbers, not to numbers.
-  Default value is `20`.
+  Default value is `64`.
 
 
 ## Examples

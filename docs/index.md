@@ -16,24 +16,24 @@ and a reference describing all available functions in detail.
 
 ## Getting Started
 
-- [Getting Started](getting_started.md)
+- [Getting Started](getting_started.html)
 
 
 ## Overview
 
-- [Constants](constants.md)
-- [Functions](functions.md)
-- [Expressions](expressions.md)
-- [Chained Operations](chained_operations.md)
-- [Data Types](datatypes/index.md)
-  - [Numbers](datatypes/numbers.md)
-  - [BigNumbers](datatypes/bignumbers.md)
-  - [Complex Numbers](datatypes/complex_numbers.md)
-  - [Matrices](datatypes/matrices.md)
-  - [Units](datatypes/units.md)
-- [Import](import.md)
-- [Configuration](configuration.md)
-- [Command Line Interface](command_line_interface.md)
+- [Constants](constants.html)
+- [Functions](functions.html)
+- [Expressions](expressions.html)
+- [Chained Operations](chained_operations.html)
+- [Data Types](datatypes/index.html)
+  - [Numbers](datatypes/numbers.html)
+  - [BigNumbers](datatypes/bignumbers.html)
+  - [Complex Numbers](datatypes/complex_numbers.html)
+  - [Matrices](datatypes/matrices.html)
+  - [Units](datatypes/units.html)
+- [Import](import.html)
+- [Configuration](configuration.html)
+- [Command Line Interface](command_line_interface.html)
 
 
 ## Reference
