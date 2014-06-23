@@ -51,8 +51,6 @@ String | Lower case type, for example 'number', 'string', 'array'.
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.typeof(3.5);                     // returns 'number'
 math.typeof(math.complex('2 - 4i'));  // returns 'complex'
 math.typeof(math.unit('45 deg'));     // returns 'unit'

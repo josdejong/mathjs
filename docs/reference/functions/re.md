@@ -32,8 +32,6 @@ Number &#124; BigNumber &#124; Array &#124; Matrix | The real part of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 var a = math.complex(2, 3);
 math.re(a);                     // returns Number 2
 math.im(a);                     // returns Number 3

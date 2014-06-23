@@ -51,8 +51,6 @@ Array &#124; Matrix | range
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.range(2, 6);        // [2, 3, 4, 5]
 math.range(2, -3, -1);   // [2, 1, 0, -1, -2]
 math.range('2:1:6');     // [2, 3, 4, 5]

@@ -33,8 +33,6 @@ Array &#124; Matrix &#124; String | Either the retrieved subset or the updated m
 ## Examples
 
 ```js
-var math = mathjs();
-
 // get a subset
 var d = [[1, 2], [3, 4]];
 math.subset(d, math.index(1, 0));        // returns 3

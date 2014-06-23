@@ -30,8 +30,6 @@ Number | One of the elements of the provided input array
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.pickRandom([3, 6, 12, 2]);       // returns one of the values in the array
 ```
 

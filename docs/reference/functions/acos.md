@@ -31,8 +31,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | The arc cosine of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.acos(0.5);           // returns Number 1.0471975511965979
 math.acos(math.cos(1.5)); // returns Number 1.5
 

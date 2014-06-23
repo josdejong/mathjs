@@ -38,8 +38,6 @@ Number &#124; BigNumber &#124; Array &#124; Matrix | Returns the remainder of `x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.mod(8, 3);                // returns 2
 math.mod(11, 2);               // returns 1
 

@@ -31,8 +31,6 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.multiply(4, 5.2);        // returns Number 20.8
 
 var a = math.complex(2, 3);

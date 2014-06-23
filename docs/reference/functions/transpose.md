@@ -30,8 +30,6 @@ Array &#124; Matrix | The transposed matrix
 ## Examples
 
 ```js
-var math = mathjs();
-
 var A = [[1, 2, 3], [4, 5, 6]];
 math.transpose(A);               // returns [[1, 4], [2, 5], [3, 6]]
 ```

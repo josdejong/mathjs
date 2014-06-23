@@ -31,8 +31,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Rounded valu
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.ceil(3.2);               // returns Number 4
 math.ceil(3.8);               // returns Number 4
 math.ceil(-4.2);              // returns Number -4

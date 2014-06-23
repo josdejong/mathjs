@@ -35,8 +35,6 @@ Array &#124; Matrix | Concatenated matrix
 ## Examples
 
 ```js
-var math = mathjs();
-
 var A = [[1, 2], [5, 6]];
 var B = [[3, 4], [7, 8]];
 

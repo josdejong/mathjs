@@ -34,8 +34,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | Four-quadrant inverse tangent
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.atan2(2, 2) / math.pi;       // returns number 0.25
 
 var angle = math.unit(60, 'deg'); // returns Unit 60 deg

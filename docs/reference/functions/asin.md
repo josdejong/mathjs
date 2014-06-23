@@ -31,8 +31,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | The arc sine of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.asin(0.5);           // returns Number 0.5235987755982989
 math.asin(math.sin(1.5)); // returns Number ~1.5
 

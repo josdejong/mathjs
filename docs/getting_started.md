@@ -49,10 +49,10 @@ configuration options as described in
 Load math.js in [node.js](http://nodejs.org/):
 
 ```js
-// load math.js and create an instance
-var mathjs = require('mathjs'),
-    math = mathjs();
+// load math.js
+var math = require('mathjs');
 
+// use math.js
 math.sqrt(-4); // 2i
 ```
 
@@ -69,9 +69,6 @@ Math.js can be loaded as a regular javascript file in the browser:
 </head>
 <body>
   <script type="text/javascript">
-    // create an instance of math.js
-    var math = mathjs();
-
     // use math.js
     math.sqrt(-4); // 2i
   </script>
@@ -94,10 +91,7 @@ require.config({
     mathjs: 'path/to/mathjs',
   }
 });
-require(['mathjs'], function (mathjs) {
-  // create an instance of math.js
-  var math = mathjs();
-
+require(['mathjs'], function (math) {
   // use math.js
   math.sqrt(-4); // 2i
 });
@@ -114,7 +108,7 @@ The example code below shows how to use math.js. More examples can be found in t
 
 ```js
 // create an instance of math.js
-var math = require('mathjs')();
+var math = require('mathjs');
 
 // functions and constants
 math.round(math.e, 3);            // 2.718

@@ -34,8 +34,6 @@ Node &#124; Node[] | A node tree
 ## Examples
 
 ```js
-var math = mathjs();
-
 var node = math.parse('sqrt(3^2 + 4^2)');
 node.compile(math).eval(); // 5
 

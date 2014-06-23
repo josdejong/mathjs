@@ -31,8 +31,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | Secant of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.sec(2);      // returns Number -2.4029979617223822
 1 / math.cos(2);  // returns Number -2.4029979617223822
 ```

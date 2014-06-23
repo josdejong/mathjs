@@ -30,8 +30,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Exponent of 
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.exp(2);                  // returns Number 7.3890560989306495
 math.pow(math.e, 2);          // returns Number 7.3890560989306495
 math.log(math.exp(2));        // returns Number 2

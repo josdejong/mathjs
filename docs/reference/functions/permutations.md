@@ -35,8 +35,6 @@ Number &#124; BigNumber | The number of permutations
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.permutations(5);     // 120
 math.permutations(5, 3);  // 60
 ```

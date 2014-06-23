@@ -32,8 +32,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The value of
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.pow(2, 3);               // returns Number 8
 
 var a = math.complex(2, 3);

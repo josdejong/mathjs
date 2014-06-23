@@ -44,8 +44,6 @@ Type | Description
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.var(2, 4, 6);                     // returns 4
 math.var([2, 4, 6, 8]);                // returns 6.666666666666667
 math.var([2, 4, 6, 8], 'uncorrected'); // returns 5

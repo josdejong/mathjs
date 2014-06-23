@@ -31,8 +31,6 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.dotMultiply(2, 4); // returns 8
 
 a = [[9, 5], [6, 1]];

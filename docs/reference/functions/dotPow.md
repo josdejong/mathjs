@@ -30,8 +30,6 @@ Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.dotPow(2, 3);            // returns Number 8
 
 var a = [[1, 2], [4, 3]];

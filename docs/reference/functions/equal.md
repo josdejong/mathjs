@@ -37,8 +37,6 @@ Boolean &#124; Array &#124; Matrix | Returns true when the compared values are e
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.equal(2 + 2, 3);         // returns false
 math.equal(2 + 2, 4);         // returns true
 

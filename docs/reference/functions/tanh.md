@@ -32,8 +32,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic tangent of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 // tanh(x) = sinh(x) / cosh(x) = 1 / coth(x)
 math.tanh(0.5);                   // returns 0.46211715726000974
 math.sinh(0.5) / math.cosh(0.5);  // returns 0.46211715726000974

@@ -32,8 +32,6 @@ Number &#124; BigNumber &#124; Array &#124; Matrix | The factorial of `n`
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.factorial(5);    // returns 120
 math.factorial(3);    // returns 6
 ```

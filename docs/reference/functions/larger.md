@@ -36,8 +36,6 @@ Boolean &#124; Array &#124; Matrix | Returns true when the x is larger than y, e
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.larger(2, 3);             // returns false
 math.larger(5, 2 + 2);         // returns true
 

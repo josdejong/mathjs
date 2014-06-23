@@ -36,8 +36,6 @@ Number &#124; Array &#124; Matrix | The least common multiple
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.lcm(4, 6);               // returns 12
 math.lcm(6, 21);              // returns 42
 math.lcm(6, 21, 5);           // returns 210

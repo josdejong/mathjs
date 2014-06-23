@@ -31,8 +31,6 @@ Number &#124; Complex &#124; Array &#124; Matrix |  Returns the square root of `
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.sqrt(25);                // returns 5
 math.square(5);               // returns 25
 math.sqrt(-4);                // returns Complex -2i

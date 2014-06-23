@@ -32,8 +32,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic sine of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.sinh(0.5);       // returns Number 0.5210953054937474
 ```
 

@@ -31,8 +31,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | Cotangent of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.cot(2);      // returns Number -0.45765755436028577
 1 / math.tan(2);  // returns Number -0.45765755436028577
 ```

@@ -30,8 +30,6 @@ String &#124; Array &#124; Matrix | The created string
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.string(4.2);               // returns string '4.2'
 math.string(math.complex(3, 2); // returns string '3 + 2i'
 

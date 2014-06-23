@@ -37,8 +37,6 @@ Boolean &#124; Array &#124; Matrix | Returns true when the compared values are u
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.unequal(2 + 2, 3);       // returns true
 math.unequal(2 + 2, 4);       // returns false
 

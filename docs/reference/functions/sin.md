@@ -31,8 +31,6 @@ Number &#124; Complex &#124; Array &#124; Matrix | Sine of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.sin(2);                      // returns Number 0.9092974268256813
 math.sin(math.pi / 4);            // returns Number 0.7071067811865475
 math.sin(math.unit(90, 'deg'));   // returns Number 1

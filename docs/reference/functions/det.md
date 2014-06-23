@@ -29,8 +29,6 @@ Number | The determinant of `x`
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.det([[1, 2], [3, 4]]); // returns -2
 
 var A = [

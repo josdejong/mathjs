@@ -32,8 +32,6 @@ Number &#124; Array &#124; Matrix | The argument of x
 ## Examples
 
 ```js
-var math = mathjs();
-
 var a = math.complex(2, 2);
 math.arg(a) / math.pi;          // returns Number 0.25
 

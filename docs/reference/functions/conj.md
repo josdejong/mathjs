@@ -32,8 +32,6 @@ Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  The complex
 ## Examples
 
 ```js
-var math = mathjs();
-
 math.conj(math.complex('2 + 3i'));  // returns Complex 2 - 3i
 math.conj(math.complex('2 - 3i'));  // returns Complex 2 + 3i
 math.conj(math.complex('-5.2i'));  // returns Complex 5.2i
