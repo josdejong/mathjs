@@ -8,14 +8,14 @@ an extra parameter `includeEnd`.
 ## Syntax
 
 ```js
-range(str [, includeEnd])              // Create a range from a string,
-                                       // where the string contains the
-                                       // start, optional step, and end,
-                                       // separated by a colon.
-range(start, end [, includeEnd])       // Create a range with start and
-                                       // end and a step size of 1.
-range(start, end, step [, includeEnd]) // Create a range with start, step,
-                                       // and end.
+math.range(str [, includeEnd])               // Create a range from a string,
+                                             // where the string contains the
+                                             // start, optional step, and end,
+                                             // separated by a colon.
+math.range(start, end [, includeEnd])        // Create a range with start and
+                                             // end and a step size of 1.
+math.range(start, end, step [, includeEnd])  // Create a range with start, step,
+                                             // and end.
 ```
 
 ### Where

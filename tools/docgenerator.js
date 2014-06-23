@@ -426,6 +426,7 @@ function iteratePath (inputPath, outputPath) {
 
         var code = fs.readFileSync(fn.fullPath);
         var doc = generateDoc(name, code);
+        fn.doc = doc;
 
         issues = issues.concat(validateDoc(doc));
 
@@ -435,7 +436,15 @@ function iteratePath (inputPath, outputPath) {
       }
     }
 
-    // TODO: also generate index pages
+    // generate index pages
+    var alphabetical = '# Function reference (alphabetical)\n\n';
+    alphabetical += Object.keys(functions).sort().map(function (name) {
+      var fn = functions[name];
+      var syntax = fn.doc && fn.doc.syntax && fn.doc.syntax[0] || name;
+      syntax = syntax.replace(/\s+\/\/.*$/, '');
+      return '- [' + syntax + '](' + name + '.md)';
+    }).join('\n');
+    fs.writeFileSync(outputPath + '/alphabetical.md', alphabetical);
 
     // output all issues
     if (issues.length) {
