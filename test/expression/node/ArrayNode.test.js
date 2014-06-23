@@ -11,7 +11,7 @@ var assert = require('assert'),
 describe('ArrayNode', function() {
 
   it ('should create an ArrayNode', function () {
-    var c = new ConstantNode('number', '1');
+    var c = new ConstantNode(1);
     var a = new ArrayNode([c]);
     var b = new ArrayNode([]);
     assert(a instanceof ArrayNode);
@@ -30,7 +30,7 @@ describe('ArrayNode', function() {
   });
 
   it ('should evaluate an ArrayNode', function () {
-    var c = new ConstantNode('number', '1');
+    var c = new ConstantNode(1);
     var a = new ArrayNode([c]);
     var b = new ArrayNode();
 
@@ -39,10 +39,10 @@ describe('ArrayNode', function() {
   });
 
   it ('should compile an ArrayNode', function () {
-    var a = new ConstantNode('number', '1');
-    var b = new ConstantNode('number', '2');
-    var c = new ConstantNode('number', '3');
-    var d = new ConstantNode('number', '4');
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+    var d = new ConstantNode(4);
     var n = new ArrayNode([a, b, c, d]);
 
     var expr = n.compile(math);
@@ -54,10 +54,10 @@ describe('ArrayNode', function() {
   });
 
   it ('should compile nested ArrayNodes', function () {
-    var a = new ConstantNode('number', '1');
-    var b = new ConstantNode('number', '2');
-    var c = new ConstantNode('number', '3');
-    var d = new ConstantNode('number', '4');
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+    var d = new ConstantNode(4);
 
     var n2 = new ArrayNode([a, b]);
     var n3 = new ArrayNode([c, d]);
@@ -68,9 +68,9 @@ describe('ArrayNode', function() {
   });
 
   it ('should find an ArrayNode', function () {
-    var a = new ConstantNode('number', '1');
+    var a = new ConstantNode(1);
     var b = new SymbolNode('x');
-    var c = new ConstantNode('number', '2');
+    var c = new ConstantNode(2);
     var d = new ArrayNode([a, b, c]);
 
     assert.deepEqual(d.find({type: ArrayNode}),     [d]);
@@ -87,20 +87,20 @@ describe('ArrayNode', function() {
   });
 
   it ('should stringify an ArrayNode', function () {
-    var a = new ConstantNode('number', '1');
-    var b = new ConstantNode('number', '2');
-    var c = new ConstantNode('number', '3');
-    var d = new ConstantNode('number', '4');
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+    var d = new ConstantNode(4);
     var n = new ArrayNode([a, b, c, d]);
 
     assert.equal(n.toString(), '[1, 2, 3, 4]');
   });
 
   it ('should LaTeX an ArrayNode', function () {
-    var a = new ConstantNode('number', '1');
-    var b = new ConstantNode('number', '2');
-    var c = new ConstantNode('number', '3');
-    var d = new ConstantNode('number', '4');
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+    var d = new ConstantNode(4);
     var v1 = new ArrayNode([a, b]);
     var v2 = new ArrayNode([c, d]);
     var n = new ArrayNode([v1, v2]);

@@ -31,7 +31,7 @@ describe('FunctionNode', function() {
   });
 
   it ('should compile a FunctionNode', function () {
-    var a = new ConstantNode('number', '2');
+    var a = new ConstantNode(2);
     var x = new SymbolNode('x');
     var o = new OperatorNode('+', 'add', [a, x]);
     var n = new FunctionNode('f', ['x'], o);
@@ -48,7 +48,7 @@ describe('FunctionNode', function() {
   });
 
   it ('should find a FunctionNode', function () {
-    var a = new ConstantNode('number', '2');
+    var a = new ConstantNode(2);
     var x = new SymbolNode('x');
     var o = new OperatorNode('+', 'add', [a, x]);
     var n = new FunctionNode('f', ['x'], o);
@@ -81,7 +81,7 @@ describe('FunctionNode', function() {
   });
 
   it ('should stringify a FunctionNode', function () {
-    var a = new ConstantNode('number', '2');
+    var a = new ConstantNode(2);
     var x = new SymbolNode('x');
     var o = new OperatorNode('+', 'add', [a, x]);
     var n = new FunctionNode('f', ['x'], o);
@@ -90,7 +90,7 @@ describe('FunctionNode', function() {
   });
 
   it ('should LaTeX a FunctionNode', function() {
-    var a = new ConstantNode('number', '2');
+    var a = new ConstantNode(2);
     var x = new SymbolNode('x');
     var o = new OperatorNode('/', 'divide', [x, a]);
     var p = new OperatorNode('^', 'pow', [o, a]);

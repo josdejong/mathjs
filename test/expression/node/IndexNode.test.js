@@ -31,8 +31,8 @@ describe('IndexNode', function() {
   it ('should compile a IndexNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ];
     var n = new IndexNode(a, ranges);
     var expr = n.compile(bigmath);
@@ -46,9 +46,9 @@ describe('IndexNode', function() {
   it ('should compile a IndexNode with range and context parameters', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
+      new ConstantNode(2),
       new RangeNode([
-        new ConstantNode('number', '1'),
+        new ConstantNode(1),
         new SymbolNode('end')
       ])
     ];
@@ -64,11 +64,11 @@ describe('IndexNode', function() {
   it ('should compile a IndexNode with negative step range and context parameters', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
+      new ConstantNode(2),
       new RangeNode([
         new SymbolNode('end'),
-        new ConstantNode('number', '1'),
-        new ConstantNode('number', '-1')
+        new ConstantNode(1),
+        new ConstantNode(-1)
       ])
     ];
     var n = new IndexNode(a, ranges);
@@ -85,7 +85,7 @@ describe('IndexNode', function() {
     var ranges = [
       new SymbolNode('end'),
       new RangeNode([
-        new ConstantNode('number', '1'),
+        new ConstantNode(1),
         new SymbolNode('end')
       ])
     ];
@@ -101,8 +101,8 @@ describe('IndexNode', function() {
   it ('should compile a IndexNode with bignumber setting', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ];
     var n = new IndexNode(a, ranges);
     var expr = n.compile(bigmath);
@@ -115,8 +115,8 @@ describe('IndexNode', function() {
 
   it ('should find an IndexNode', function () {
     var a = new SymbolNode('a'),
-        b = new ConstantNode('number', '2'),
-        c = new ConstantNode('number', '1');
+        b = new ConstantNode(2),
+        c = new ConstantNode(1);
     var n = new IndexNode(a, [b, c]);
 
     assert.deepEqual(n.find({type: IndexNode}),  [n]);
@@ -143,8 +143,8 @@ describe('IndexNode', function() {
   it ('should stringify an IndexNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ];
 
     var n = new IndexNode(a, ranges);
@@ -157,8 +157,8 @@ describe('IndexNode', function() {
   it ('should LaTeX an IndexNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ];
 
     var n = new IndexNode(a, ranges);

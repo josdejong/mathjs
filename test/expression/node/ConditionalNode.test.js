@@ -9,9 +9,9 @@ var assert = require('assert'),
     ConditionalNode = require('../../../lib/expression/node/ConditionalNode');
 
 describe('ConditionalNode', function() {
-  var condition = new ConstantNode('boolean', 'true');
-  var two = new ConstantNode('number', '2');
-  var three = new ConstantNode('number', '3');
+  var condition = new ConstantNode(true);
+  var two = new ConstantNode(2);
+  var three = new ConstantNode(3);
   var a = new AssignmentNode('a', two);
   var b = new AssignmentNode('b', three);
 

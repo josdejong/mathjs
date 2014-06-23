@@ -31,8 +31,8 @@ describe('BlockNode', function() {
 
   it ('should compile and evaluate a BlockNode', function () {
     var n = new BlockNode();
-    n.add(new ConstantNode('number', '5'), true);
-    n.add(new AssignmentNode('foo', new ConstantNode('number', '3')), false);
+    n.add(new ConstantNode(5), true);
+    n.add(new AssignmentNode('foo', new ConstantNode(3)), false);
     n.add(new SymbolNode('foo'), true);
 
     var scope = {};
@@ -42,14 +42,14 @@ describe('BlockNode', function() {
 
   it ('expressions should be visible by default', function () {
     var n = new BlockNode();
-    n.add(new ConstantNode('number', '5'));
+    n.add(new ConstantNode(5));
 
     assert.deepEqual(n.compile(math).eval(), [5]);
   });
 
   it ('should find a BlockNode', function () {
-    var a = new ConstantNode('number', '5');
-    var b2 = new ConstantNode('number', '3');
+    var a = new ConstantNode(5);
+    var b2 = new ConstantNode(3);
     var b = new AssignmentNode('foo', b2);
     var c = new SymbolNode('foo');
     var d = new BlockNode();
@@ -72,8 +72,8 @@ describe('BlockNode', function() {
 
   it ('should stringify a BlockNode', function () {
     var n = new BlockNode();
-    n.add(new ConstantNode('number', '5'), true);
-    n.add(new AssignmentNode('foo', new ConstantNode('number', '3')), false);
+    n.add(new ConstantNode(5), true);
+    n.add(new AssignmentNode('foo', new ConstantNode(3)), false);
     n.add(new SymbolNode('foo'), true);
 
     assert.equal(n.toString(), '5\nfoo = 3;\nfoo');
@@ -81,8 +81,8 @@ describe('BlockNode', function() {
 
   it ('should LaTeX a BlockNode', function () {
     var n = new BlockNode();
-    n.add(new ConstantNode('number', '5'), true);
-    n.add(new AssignmentNode('foo', new ConstantNode('number', '3')), false);
+    n.add(new ConstantNode(5), true);
+    n.add(new AssignmentNode('foo', new ConstantNode(3)), false);
     n.add(new SymbolNode('foo'), true);
 
     assert.equal(n.toTex(), '5\n{foo}={3};\nfoo');

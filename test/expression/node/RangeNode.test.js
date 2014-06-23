@@ -10,8 +10,8 @@ var assert = require('assert'),
 describe('RangeNode', function() {
 
   it ('should create a RangeNode', function () {
-    var start = new ConstantNode('number', '0');
-    var end = new ConstantNode('number', '10');
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
     var n = new RangeNode([start, end]);
     assert(n instanceof RangeNode);
     assert(n instanceof Node);
@@ -19,14 +19,14 @@ describe('RangeNode', function() {
   });
 
   it ('should throw an error when calling without new operator', function () {
-    var start = new ConstantNode('number', '0');
-    var end = new ConstantNode('number', '10');
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
     assert.throws(function () {RangeNode([start, end])}, SyntaxError);
   });
 
   it ('should throw an error creating a RangeNode with wrong number or type of arguments', function () {
-    var start = new ConstantNode('number', '0');
-    var end = new ConstantNode('number', '10');
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
 
     assert.throws(function () { new RangeNode(); }, TypeError);
     assert.throws(function () { new RangeNode(start, end); }, TypeError);
@@ -36,9 +36,9 @@ describe('RangeNode', function() {
   });
 
   it ('should compile a RangeNode', function () {
-    var start = new ConstantNode('number', '0');
-    var end = new ConstantNode('number', '10');
-    var step = new ConstantNode('number', '2');
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     var expr = n.compile(math);
@@ -46,9 +46,9 @@ describe('RangeNode', function() {
   });
 
   it ('should find a RangeNode', function () {
-    var start = new ConstantNode('number', '0');
-    var end = new ConstantNode('number', '10');
-    var step = new ConstantNode('number', '2');
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     assert.deepEqual(n.find({type: RangeNode}),  [n]);
@@ -59,8 +59,8 @@ describe('RangeNode', function() {
   });
 
   it ('should match a RangeNode', function () {
-    var start = new ConstantNode('number', '0');
-    var end = new ConstantNode('number', '10');
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
     var a = new RangeNode([start, end]);
 
     assert.equal(a.match({type: RangeNode}),  true);
@@ -68,34 +68,34 @@ describe('RangeNode', function() {
   });
 
   it ('should stringify a RangeNode without step', function () {
-    var start = new ConstantNode('number', '0');
-    var end = new ConstantNode('number', '10');
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
     var n = new RangeNode([start, end]);
 
     assert.equal(n.toString(), '0:10');
   });
 
   it ('should stringify a RangeNode with step', function () {
-    var start = new ConstantNode('number', '0');
-    var end = new ConstantNode('number', '10');
-    var step = new ConstantNode('number', '2');
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     assert.equal(n.toString(), '0:2:10');
   });
 
   it ('should LaTeX a RangeNode without step', function () {
-    var start = new ConstantNode('number', '0');
-    var end = new ConstantNode('number', '10');
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
     var n = new RangeNode([start, end]);
 
     assert.equal(n.toTex(), '0:10');
   });
 
   it ('should LaTeX a RangeNode with step', function () {
-    var start = new ConstantNode('number', '0');
-    var end = new ConstantNode('number', '10');
-    var step = new ConstantNode('number', '2');
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     assert.equal(n.toTex(), '0:2:10');

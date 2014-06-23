@@ -14,10 +14,10 @@ describe('UpdateNode', function() {
 
   it ('should create an UpdateNode', function () {
     var a = new SymbolNode('a');
-    var b = new ConstantNode('number', '2');
-    var c = new ConstantNode('number', '1');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
     var i = new IndexNode(a, [b, c]);
-    var v = new ConstantNode('number', '5');
+    var v = new ConstantNode(5);
     var n = new UpdateNode(i, v);
 
     assert(n instanceof UpdateNode);
@@ -27,20 +27,20 @@ describe('UpdateNode', function() {
 
   it ('should throw an error when calling without new operator', function () {
     var a = new SymbolNode('a');
-    var b = new ConstantNode('number', '2');
-    var c = new ConstantNode('number', '1');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
     var i = new IndexNode(a, [b, c]);
-    var v = new ConstantNode('number', '5');
+    var v = new ConstantNode(5);
 
     assert.throws(function () {UpdateNode(i, v)}, SyntaxError);
   });
 
   it ('should throw an error when calling with wrong arguments', function () {
     var a = new SymbolNode('a');
-    var b = new ConstantNode('number', '2');
-    var c = new ConstantNode('number', '1');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
     var i = new IndexNode(a, [b, c]);
-    var v = new ConstantNode('number', '5');
+    var v = new ConstantNode(5);
 
     assert.throws(function () {new UpdateNode([2, 3], v)}, TypeError);
     assert.throws(function () {new UpdateNode(i, 5)}, TypeError);
@@ -50,10 +50,10 @@ describe('UpdateNode', function() {
   it ('should compile an UpdateNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
-        new ConstantNode('number', '2'),
-        new ConstantNode('number', '1')
+        new ConstantNode(2),
+        new ConstantNode(1)
     ];
-    var v = new ConstantNode('number', '5');
+    var v = new ConstantNode(5);
     var n = new UpdateNode(new IndexNode(a, ranges), v);
     var expr = n.compile(math);
 
@@ -69,9 +69,9 @@ describe('UpdateNode', function() {
   it ('should compile a UpdateNode with range and context parameters', function () {
     var a = new SymbolNode('a');
     var ranges = [
-        new ConstantNode('number', '2'),
+        new ConstantNode(2),
         new RangeNode([
-          new ConstantNode('number', '1'),
+          new ConstantNode(1),
           new SymbolNode('end')
         ])
     ];
@@ -93,11 +93,11 @@ describe('UpdateNode', function() {
   it ('should compile a UpdateNode with negative step range and context parameters', function () {
     var a = new SymbolNode('a');
     var ranges = [
-        new ConstantNode('number', '2'),
+        new ConstantNode(2),
         new RangeNode([
           new SymbolNode('end'),
-          new ConstantNode('number', '1'),
-          new ConstantNode('number', '-1')
+          new ConstantNode(1),
+          new ConstantNode(-1)
         ])
     ];
     var b = new SymbolNode('b');
@@ -118,10 +118,10 @@ describe('UpdateNode', function() {
   it ('should compile a UpdateNode with bignumber setting', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ];
-    var v = new ConstantNode('number', '5');
+    var v = new ConstantNode(5);
     var n = new UpdateNode(new IndexNode(a, ranges), v);
     var expr = n.compile(bigmath);
 
@@ -136,10 +136,10 @@ describe('UpdateNode', function() {
 
   it ('should find a UpdateNode', function () {
     var a = new SymbolNode('a');
-    var b = new ConstantNode('number', '2');
-    var c = new ConstantNode('number', '1');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
     var i = new IndexNode(a, [b, c]);
-    var v = new ConstantNode('number', '2');
+    var v = new ConstantNode(2);
     var n = new UpdateNode(i, v);
 
     assert.deepEqual(n.find({type: UpdateNode}),  [n]);
@@ -152,10 +152,10 @@ describe('UpdateNode', function() {
 
   it ('should match a UpdateNode', function () {
     var a = new SymbolNode('a');
-    var b = new ConstantNode('number', '2');
-    var c = new ConstantNode('number', '1');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
     var i = new IndexNode(a, [b, c]);
-    var v = new ConstantNode('number', '5');
+    var v = new ConstantNode(5);
     var n = new UpdateNode(i, v);
 
     assert.equal(n.match({type: UpdateNode}), true);
@@ -165,10 +165,10 @@ describe('UpdateNode', function() {
   it ('should stringify a UpdateNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ];
-    var v = new ConstantNode('number', '5');
+    var v = new ConstantNode(5);
 
     var n = new UpdateNode(new IndexNode(a, ranges), v);
     assert.equal(n.toString(), 'a[2, 1] = 5');
@@ -177,10 +177,10 @@ describe('UpdateNode', function() {
   it ('should LaTeX a UpdateNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ];
-    var v = new ConstantNode('number', '5');
+    var v = new ConstantNode(5);
 
     var n = new UpdateNode(new IndexNode(a, ranges), v);
     assert.equal(n.toString(), 'a[2, 1] = 5');

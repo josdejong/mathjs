@@ -12,7 +12,7 @@ describe('ParamsNode', function() {
 
   it ('should create a ParamsNode', function () {
     var s = new SymbolNode('sqrt');
-    var c = new ConstantNode('number', '4');
+    var c = new ConstantNode(4);
     var n = new ParamsNode(s, [c]);
     assert(n instanceof ParamsNode);
     assert(n instanceof Node);
@@ -21,13 +21,13 @@ describe('ParamsNode', function() {
 
   it ('should throw an error when calling without new operator', function () {
     var s = new SymbolNode('sqrt');
-    var c = new ConstantNode('number', '4');
+    var c = new ConstantNode(4);
     assert.throws(function () {ParamsNode(s, [c])}, SyntaxError);
   });
 
   it ('should throw an error when calling with wrong arguments', function () {
     var s = new SymbolNode('sqrt');
-    var c = new ConstantNode('number', '4');
+    var c = new ConstantNode(4);
     assert.throws(function () {new ParamsNode('sqrt', [])}, TypeError);
     assert.throws(function () {new ParamsNode(s, [2, 3])}, TypeError);
     assert.throws(function () {new ParamsNode(s, [c, 3])}, TypeError);
@@ -35,7 +35,7 @@ describe('ParamsNode', function() {
 
   it ('should compile a ParamsNode', function () {
     var s = new SymbolNode('sqrt');
-    var c = new ConstantNode('number', '4');
+    var c = new ConstantNode(4);
     var n = new ParamsNode(s, [c]);
 
     var scope = {};
@@ -45,8 +45,8 @@ describe('ParamsNode', function() {
   it.skip ('should compile a ParamsNode acting on a matrix', function () {
     var s = new SymbolNode('a');
     var n = new ParamsNode(s, [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ]);
 
     var scope = {
@@ -58,9 +58,9 @@ describe('ParamsNode', function() {
   it.skip ('should compile a ParamsNode acting on a matrix (2)', function () {
     var s = new SymbolNode('a');
     var n = new ParamsNode(s, [
-      new ConstantNode('number', '2'),
+      new ConstantNode(2),
       new RangeNode([
-        new ConstantNode('number', '1'),
+        new ConstantNode(1),
         new SymbolNode('end')
       ])
     ]);
@@ -74,11 +74,11 @@ describe('ParamsNode', function() {
   it.skip ('should compile a ParamsNode acting on a matrix (3)', function () {
     var s = new SymbolNode('a');
     var n = new ParamsNode(s, [
-      new ConstantNode('number', '2'),
+      new ConstantNode(2),
       new RangeNode([
         new SymbolNode('end'),
-        new ConstantNode('number', '1'),
-        new ConstantNode('number', '-1')
+        new ConstantNode(1),
+        new ConstantNode(-1)
       ])
     ]);
 
@@ -90,8 +90,8 @@ describe('ParamsNode', function() {
 
   it ('should find a ParamsNode', function () {
     var a = new SymbolNode('a'),
-        b = new ConstantNode('number', '2'),
-        c = new ConstantNode('number', '1');
+        b = new ConstantNode(2),
+        c = new ConstantNode(1);
     var n = new ParamsNode(a, [b, c]);
 
     assert.deepEqual(n.find({type: ParamsNode}),  [n]);
@@ -110,7 +110,7 @@ describe('ParamsNode', function() {
 
   it ('should stringify a ParamsNode', function () {
     var s = new SymbolNode('sqrt');
-    var c = new ConstantNode('number', '4');
+    var c = new ConstantNode(4);
     var n = new ParamsNode(s, [c]);
 
     assert.equal(n.toString(), 'sqrt(4)');
@@ -118,7 +118,7 @@ describe('ParamsNode', function() {
 
   it ('should LaTeX a ParamsNode', function () {
     var s = new SymbolNode('sqrt');
-    var c = new ConstantNode('number', '4');
+    var c = new ConstantNode(4);
     var n = new ParamsNode(s, [c]);
 
     assert.equal(n.toTex(), '\\sqrt{4}');

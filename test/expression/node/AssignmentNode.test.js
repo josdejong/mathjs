@@ -37,7 +37,7 @@ describe('AssignmentNode', function() {
   });
 
   it ('should compile a AssignmentNode', function () {
-    var b = new ConstantNode('number', '3');
+    var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
     var expr = n.compile(math);
@@ -48,9 +48,9 @@ describe('AssignmentNode', function() {
   });
 
   it ('should find a AssignmentNode', function () {
-    var a = new ConstantNode('number', '1');
+    var a = new ConstantNode(1);
     var b = new SymbolNode('x');
-    var c = new ConstantNode('number', '2');
+    var c = new ConstantNode(2);
     var d = new ArrayNode([a, b, c]);
     var e = new AssignmentNode('array', d);
 
@@ -75,14 +75,14 @@ describe('AssignmentNode', function() {
   });
 
   it ('should stringify a AssignmentNode', function () {
-    var b = new ConstantNode('number', '3');
+    var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
     assert.equal(n.toString(), 'b = 3');
   });
 
   it ('should LaTeX a AssignmentNode', function () {
-    var b = new ConstantNode('number', '3');
+    var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
     assert.equal(n.toTex(), '{b}={3}');

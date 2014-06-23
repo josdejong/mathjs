@@ -10,7 +10,7 @@ var assert = require('assert'),
 describe('UnitNode', function() {
 
   it ('should create a UnitNode', function () {
-    var c = new ConstantNode('number', '5');
+    var c = new ConstantNode(5);
     var n = new UnitNode(c, 'cm');
     assert(n instanceof UnitNode);
     assert(n instanceof Node);
@@ -18,12 +18,12 @@ describe('UnitNode', function() {
   });
 
   it ('should throw an error when calling without new operator', function () {
-    var c = new ConstantNode('number', '5');
+    var c = new ConstantNode(5);
     assert.throws(function () {UnitNode(c, 'cm')}, SyntaxError);
   });
 
   it ('should throw an error when calling with wrong arguments', function () {
-    var c = new ConstantNode('number', '5');
+    var c = new ConstantNode(5);
     assert.throws(function () {new UnitNode()}, TypeError);
     assert.throws(function () {new UnitNode(2, 'cm')}, TypeError);
     assert.throws(function () {new UnitNode(c, new Node())}, TypeError);
@@ -31,7 +31,7 @@ describe('UnitNode', function() {
   });
 
   it ('should compile a UnitNode', function () {
-    var c = new ConstantNode('number', '5');
+    var c = new ConstantNode(5);
     var n = new UnitNode(c, 'cm');
     assert.deepEqual(n.compile(math).eval(), new math.type.Unit(5, 'cm'));
 
@@ -42,7 +42,7 @@ describe('UnitNode', function() {
   });
 
   it ('should find a UnitNode', function () {
-    var c = new ConstantNode('number', '5');
+    var c = new ConstantNode(5);
     var n = new UnitNode(c, 'cm');
 
     assert.deepEqual(n.find({type: UnitNode}),  [n]);
@@ -53,7 +53,7 @@ describe('UnitNode', function() {
   });
 
   it ('should match a UnitNode', function () {
-    var c = new ConstantNode('number', '5');
+    var c = new ConstantNode(5);
     var n = new UnitNode(c, 'cm');
 
     assert.equal(n.match({type: UnitNode}),  true);
@@ -64,14 +64,14 @@ describe('UnitNode', function() {
   });
 
   it ('should stringify a UnitNode', function () {
-    var c = new ConstantNode('number', '5');
+    var c = new ConstantNode(5);
     var n = new UnitNode(c, 'cm');
 
     assert.equal(n.toString(), '5 cm');
   });
 
   it ('should LaTeX a UnitNode', function () {
-    var c = new ConstantNode('number', '5');
+    var c = new ConstantNode(5);
     var n = new UnitNode(c, 'cm');
     var d = new UnitNode(c, 'deg');
 
