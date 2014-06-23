@@ -12,8 +12,8 @@ compiled expression.
 ## Syntax
 
 ```js
-var code = math.compile(expr)
-var codes = math.compile([expr1, expr2, expr3, ...])
+math.compile(expr)                       // returns one node
+math.compile([expr1, expr2, expr3, ...]) // returns an array with nodes
 ```
 
 ### Parameters

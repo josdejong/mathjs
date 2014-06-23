@@ -12,7 +12,7 @@ Matrix.get, Matrix.set, and math.subset accept an Index as input.
 ## Syntax
 
 ```js
-math.index(range1, range2, ...);
+math.index(range1, range2, ...)
 ```
 
 ### Where

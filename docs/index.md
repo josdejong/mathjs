@@ -38,4 +38,6 @@ and a reference describing all available functions in detail.
 
 ## Reference
 
-  - [Functions](reference/functions)
+  - Functions: 
+    [alphabetical](reference/functions/alphabetical.html),
+    [categorical](reference/functions/categorical.html)

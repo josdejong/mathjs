@@ -11,7 +11,7 @@ This getting started describes how to install, load, and use math.js.
 
 Math.js can be installed using npm, bower, or by just downloading the library.
 
-*Note: The API of math.js is not fully stabilized. Please read [what is changed](https://github.com/josdejong/mathjs/blob/master/HISTORY.md) before upgrading to the newest version.*
+*Note: The API of math.js is not fully stabilized. Please read [what is changed](http://mathjs.org/history.html) before upgrading to the newest version.*
 
 ### npm
 Math.js can be installed using [npm](https://npmjs.org/):
@@ -20,7 +20,7 @@ Math.js can be installed using [npm](https://npmjs.org/):
 
 Note: when installed globally (using the `-g` option), math.js is available as
 a command line application `mathjs`, see section
-[command line interface](https://github.com/josdejong/mathjs/blob/master/docs/command_line_interface.md).
+[command line interface](command_line_interface.html).
 
 ### component(1)
 The library can be installed using [component(1)](https://github.com/component/component/):
@@ -42,7 +42,7 @@ Or by downloading the latest version from
 Math.js can be used in node.js and in the browser. The library must be loaded
 and instantiated. When creating an instance, one can optionally provide
 configuration options as described in
-[Configuration](https://github.com/josdejong/mathjs/blob/master/docs/configuration.md).
+[Configuration](configuration.html).
 
 ### Node.js
 
@@ -100,8 +100,8 @@ require(['mathjs'], function (math) {
 ## Use
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
-math.js can evaluate expressions (see [Expressions](https://github.com/josdejong/mathjs/blob/master/docs/expressions.md)) and supports
-chained operations (see [Chained operations](https://github.com/josdejong/mathjs/blob/master/docs/chained_operations.md)).
+math.js can evaluate expressions (see [Expressions](expressions.html)) and supports
+chained operations (see [Chained operations](chained_operations.html)).
 
 The example code below shows how to use math.js. More examples can be found in the
 [examples directory](https://github.com/josdejong/mathjs/tree/master/examples/).
@@ -135,5 +135,5 @@ math.select(3)
 
 To learn more about math.js, check out the available documentation and examples:
 
-- [Documentation](https://github.com/josdejong/mathjs/blob/master/docs/index.md)
+- [Documentation](index.html)
 - [Examples](https://github.com/josdejong/mathjs/blob/master/examples/)

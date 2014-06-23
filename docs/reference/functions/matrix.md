@@ -12,7 +12,7 @@ matrix, like getting the size and getting or setting values in the matrix.
 ## Syntax
 
 ```js
-math. matrix()     // creates an empty matrix
+math.matrix()      // creates an empty matrix
 math.matrix(data)  // creates a matrix with initial data.
 ```
 
