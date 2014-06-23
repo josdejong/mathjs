@@ -131,5 +131,5 @@ math.select(3)
 
 To learn more about math.js, check out the available documentation and examples:
 
-- [Documentation](docs/index.md)
+- [Documentation](index.md)
 - [Examples](https://github.com/josdejong/mathjs/blob/master/examples/)
