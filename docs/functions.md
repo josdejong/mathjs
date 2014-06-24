@@ -6,8 +6,8 @@ applicable.
 
 A full reference with all available functions can be found here:
 
-- [Alphabetical function reference](reference/functions/alphabetical.md)
-- [Categorical function reference](reference/functions/categorical.md)
+- [Function reference (alphabetical)](reference/functions/alphabetical.md)
+- [Function reference (categorical)](reference/functions/categorical.md)
 
 
 Example usage:

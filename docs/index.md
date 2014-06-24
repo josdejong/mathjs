@@ -30,7 +30,6 @@ and a reference describing all available functions in detail.
 - [Configuration](configuration.md)
 - [Extension](extension.md)
 - [Command Line Interface](command_line_interface.md)
-- [History](../HISTORY.md)
 
 ## Examples
 
@@ -38,7 +37,8 @@ and a reference describing all available functions in detail.
 
 ## Reference
 
-- Functions: 
-  [alphabetical](reference/functions/alphabetical.md),
-  [categorical](reference/functions/categorical.md)
+- [Constants](reference/constants.md)
+- [Functions (alphabetical)](reference/functions/alphabetical.md)
+- [Functions (categorical)](reference/functions/categorical.md)
+- [History](../HISTORY.md)
 - [Units](reference/units.md)

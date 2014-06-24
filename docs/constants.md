@@ -1,22 +1,7 @@
 # Constants
 
-Math.js has the following built-in constants.
-
-- math.E, math.e
-- math.i
-- math.Infinity
-- math.LN2
-- math.LN10
-- math.LOG2E
-- math.LOG10E
-- math.NaN
-- math.null
-- math.PI, math.pi
-- math.SQRT1_2
-- math.SQRT2
-- math.tau
-- math.phi, golden ratio
-- math.version, version number of math.js
+Math.js contains a number of mathematical constants.
+All available constants are listed on the page [Constant reference](reference/constants.md).
 
 Example usage:
 

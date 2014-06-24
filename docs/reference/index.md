@@ -1,6 +1,6 @@
 # Reference
 
-- Functions: 
-  [alphabetical](functions/alphabetical.md),
-  [categorical](functions/categorical.md)
+- [Constants](constants.md)
+- [Functions (alphabetical)](functions/alphabetical.md)
+- [Functions (categorical)](functions/categorical.md)
 - [Units](units.md)
