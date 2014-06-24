@@ -7,6 +7,7 @@
   "devDependencies": {
     "gulp": "^3.8.1",
     "gulp-header": "^1.0.2",
-    "gulp-rename": "^1.2.0"
+    "gulp-rename": "^1.2.0",
+    "gulp-util": "^2.2.17"
   }
 }
