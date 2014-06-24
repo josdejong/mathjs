@@ -30,10 +30,14 @@ and a reference describing all available functions in detail.
 - [Import](import.md)
 - [Configuration](configuration.md)
 - [Command Line Interface](command_line_interface.md)
+- [History](../HISTORY.md)
 
+## Examples
+
+- [Examples](https://github.com/josdejong/mathjs/tree/master/examples/)
 
 ## Reference
 
-  - Functions: 
-    [alphabetical](reference/functions/alphabetical.md),
-    [categorical](reference/functions/categorical.md)
+- Functions: 
+  [alphabetical](reference/functions/alphabetical.md),
+  [categorical](reference/functions/categorical.md)
