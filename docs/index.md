@@ -41,3 +41,4 @@ and a reference describing all available functions in detail.
 - Functions: 
   [alphabetical](reference/functions/alphabetical.md),
   [categorical](reference/functions/categorical.md)
+- [Units](reference/units.md)
