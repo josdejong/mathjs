@@ -15,7 +15,7 @@ from the input (for example `math.eval`) use the default number type, which
 can be configured when instantiating math.js:
 
 ```js
-var math = require('mathjs')({
+math.config({
   number: 'number' // Default type of number: 'number' (default) or 'bignumber'
 });
 ```
