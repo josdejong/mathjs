@@ -34,10 +34,14 @@ and a reference describing all available functions in detail.
 - [Import](import.html)
 - [Configuration](configuration.html)
 - [Command Line Interface](command_line_interface.html)
+- [History](../history.html)
 
+## Examples
+
+- [Examples](https://github.com/josdejong/mathjs/tree/master/examples/)
 
 ## Reference
 
-  - Functions: 
-    [alphabetical](reference/functions/alphabetical.html),
-    [categorical](reference/functions/categorical.html)
+- Functions: 
+  [alphabetical](reference/functions/alphabetical.html),
+  [categorical](reference/functions/categorical.html)

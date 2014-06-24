@@ -2,9 +2,7 @@
 layout: default
 ---
 
-# math.js history
-https://github.com/josdejong/mathjs
-
+# History
 
 ## not yet released, version 0.25.0
 

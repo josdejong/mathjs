@@ -73,7 +73,7 @@ bigmath.eval('1 / 3'); // BigNumber, 0.33333333333333333333333333333333
 ### browser
 
 
-```js
+```html
 <!DOCTYPE HTML>
 <html>
 <head>

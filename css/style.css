@@ -197,8 +197,8 @@ pre {
 code {
   margin: 0;
   border: 1px solid #ddd;
-  background-color: #f8f8f8;
-  border-radius: 3px;
+  background-color: #fcfcfc;
+  border-radius: 2px;
   padding: 0;
 }
 
@@ -269,10 +269,6 @@ h1, h2 {
 
 h3 {
   font-size: 100%;
-}
-
-p {
-  max-width: 600px;
 }
 
 ul {

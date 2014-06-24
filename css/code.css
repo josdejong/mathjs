@@ -1,0 +1,34 @@
+.highlight pre {
+  background-color: #fcfcfc;
+  border: 1px solid #ddd;
+  line-height: 1.4em;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.highlight pre code {
+  padding: 0;
+}
+
+.highlight .c1 {
+  color: #808080;
+}
+
+.highlight .kd ,
+.highlight .nt {
+  color: #004ED0;
+}
+
+.highlight .mi {
+  color: #dc3912;
+}
+
+.highlight .s {
+  color: #008000;
+}
+
+.highlight .cp,
+.highlight .na,
+.highlight .s1 {
+  color: #ffa500;
+}

@@ -119,14 +119,6 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 *Note: The API of math.js is not fully stabilized. Please read [what is changed](https://github.com/josdejong/mathjs/blob/master/HISTORY.md) before upgrading to the newest version.*
 
 
-# Documentation
-
-- [Getting Started](https://github.com/josdejong/mathjs/blob/master/docs/getting_started.md)
-- [Overview](https://github.com/josdejong/mathjs/blob/master/docs/index.md)
-- [Examples](https://github.com/josdejong/mathjs/tree/master/examples/)
-- [History](https://github.com/josdejong/mathjs/blob/master/HISTORY.md)
-
-
 # License
 
 Math.js is open source and licensed under the
