@@ -1,4 +1,4 @@
-# Import
+# Extension
 
 The library can easily be extended with functions and variables using the
 `import` function. The function `import` accepts a filename or an object with
