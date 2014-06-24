@@ -30,7 +30,7 @@ gulp.task('update', function (cb) {
 /**
  * copy math.js and math.min.js
  */
-gulp.task('lib', function () {
+gulp.task('lib', ['install', 'update'], function () {
   return gulp.src(LIB_SRC)
       .pipe(gulp.dest(LIB_DEST));
 });
@@ -42,7 +42,7 @@ gulp.task('lib', function () {
  * - Add a markdown header containing the layout page
  * - Replace internal links to other markdown documents with *.html
  */
-gulp.task('docs', function () {
+gulp.task('docs', ['install', 'update'], function () {
   return gulp.src(DOCS_SRC)
       .pipe(replace(/HISTORY.md/g, 'history.html'))        // change links to history.md to lowercase
       .pipe(replace(/(\([\w\./]*).md(\))/g, '$1.html$2'))  // replace urls to *.md with *.html
@@ -53,7 +53,7 @@ gulp.task('docs', function () {
 /**
  * Copy and preprocess the history file
  */
-gulp.task('history', function () {
+gulp.task('history', ['install', 'update'], function () {
   return gulp.src(HISTORY_SRC)
       .pipe(header(MD_HEADER))    // add header with markdown layout
       .pipe(rename('history.md')) // rename to lower case

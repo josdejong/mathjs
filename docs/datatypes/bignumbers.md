@@ -22,7 +22,7 @@ which can be configured when instantiating math.js. To configure the use of
 BigNumbers instead of [numbers](numbers.html) by default, configure math.js like:
 
 ```js
-var math = require('mathjs')({
+math.config({
   number: 'bignumber', // Default type of number: 'number' (default) or 'bignumber'
   precision: 64        // Number of significant digits for BigNumbers
 });

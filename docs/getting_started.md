@@ -107,9 +107,6 @@ The example code below shows how to use math.js. More examples can be found in t
 [examples directory](https://github.com/josdejong/mathjs/tree/master/examples/).
 
 ```js
-// create an instance of math.js
-var math = require('mathjs');
-
 // functions and constants
 math.round(math.e, 3);            // 2.718
 math.atan2(3, -3) / math.pi;      // 0.75

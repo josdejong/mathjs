@@ -8,14 +8,15 @@ layout: default
 
 - The library now immediately returns a default instance of mathjs, there is
   no need to instantiate math.js in a separate step unless one ones to set 
-  configuration options. Instead of:
-
+  configuration options: 
+  
+        // instead of:
         var mathjs = require('mathjs'),  // load math.js
             math = mathjs();             // create an instance
-  
-  just do:
-  
+      
+        // just do:
         var math = require('mathjs');
+
 
 ## 2014-06-20, version 0.24.1
 
@@ -58,15 +59,14 @@ layout: default
 - Removed automatic assignment of expression results to variable `ans`. 
   This functionality can be restored by pre- or postprocessing every evaluation, 
   something like:
-  ```js
-  function evalWithAns (expr, scope) {
-    var ans = math.eval(expr, scope);
-    if (scope) {
-      scope.ans = ans;
-    }
-    return ans;
-  }
-  ```
+  
+        function evalWithAns (expr, scope) {
+          var ans = math.eval(expr, scope);
+          if (scope) {
+            scope.ans = ans;
+          }
+          return ans;
+        }
 
 
 ## 2014-05-22, version 0.22.0

@@ -29,9 +29,6 @@ argument can be an object with options. The following options are available:
 Math.js can be extended with functions and variables:
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // define new functions and variables
 math.import({
     myvalue: 42,
@@ -63,9 +60,6 @@ function around the imported functions which converts data types like `Matrix`
 to primitive types like `Array`.
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // import the numbers.js and numeric.js libraries into math.js
 math.import('numbers');
 math.import('numeric');

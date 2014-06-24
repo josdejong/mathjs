@@ -44,7 +44,7 @@
       {% endif %}
   </a><a href="/docs/index.html">
       Docs
-      {% if page.url == '/docs/index.html' %}
+      {% if page.url contains '/docs/' and page.url != '/docs/getting_started.html' %}
       <div class="selection"></div>
       {% endif %}
   </a>

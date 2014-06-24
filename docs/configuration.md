@@ -4,9 +4,16 @@ layout: default
 
 # Configuration
 
-Math.js contains a number of configuration options. Configuration can be set
-when creating a new math.js instance, or later on using the function `config`.
-Available configuration options are:
+Math.js contains a number of configuration options. There are two ways to 
+configure math.js:
+
+- Configure an existing instance of math.js using `math.config(options)`,
+  for example `math.config({number: 'bignumber'})` to change to BigNumbers.
+- Create and configure a new instance of math.js using `math([options])`,
+  for example `var bigmath = math({number: 'bignumber'})` to create a new
+  instance configured to use BigNumbers.
+
+The following configuration options are available:
 
 - `epsilon`. The minimum relative difference used to test equality between two
   compared values. This value is used by all comparison functions.

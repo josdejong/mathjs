@@ -51,9 +51,6 @@ assigned variables or function.
 The following code demonstrates how to evaluate expressions.
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // evaluate expressions
 math.eval('sqrt(3^2 + 4^2)');           // 5
 math.eval('sqrt(-4)');                  // 2i
@@ -100,9 +97,6 @@ variables or functions. Parameter `scope` is a regular Object.
 Example usage:
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // parse an expression into a node, and evaluate the node
 var code1 = math.compile('sqrt(3^2 + 4^2)');
 code1.eval(); // 5
@@ -137,9 +131,6 @@ variables or functions. Parameter `scope` is a regular Object.
 Example usage:
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // parse an expression into a node, and evaluate the node
 var node1 = math.parse('sqrt(3^2 + 4^2)');
 var code1 = node1.compile(math);
@@ -165,9 +156,6 @@ pretty print an expression in the browser with a library like
 [MathJax](http://www.mathjax.org/). Example usage:
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // parse an expression
 var node = math.parse('sqrt(x/x+1)');
 node.toString();  // returns 'sqrt((x / x) + 1)'
@@ -206,9 +194,6 @@ The parser contains the following functions:
 The following code shows how to create and use a parser.
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // create a parser
 var parser = math.parser();
 
@@ -489,7 +474,7 @@ of math.js. The expression parser parses numbers as BigNumber by default:
 
 ```js
 // Configure the type of number: 'number' (default) or 'bignumber'
-var math = require('mathjs')({number: 'bignumber'});
+math.config({number: 'bignumber'});
 
 // all numbers are parsed as BigNumber
 math.eval('0.1 + 0.2'); // BigNumber, 0.3
