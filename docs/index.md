@@ -31,10 +31,9 @@ and a reference describing all available functions in detail.
   - [Complex Numbers](datatypes/complex_numbers.html)
   - [Matrices](datatypes/matrices.html)
   - [Units](datatypes/units.html)
-- [Import](import.html)
 - [Configuration](configuration.html)
+- [Extension](extension.html)
 - [Command Line Interface](command_line_interface.html)
-- [History](../history.html)
 
 ## Examples
 
@@ -42,6 +41,8 @@ and a reference describing all available functions in detail.
 
 ## Reference
 
-- Functions: 
-  [alphabetical](reference/functions/alphabetical.html),
-  [categorical](reference/functions/categorical.html)
+- [Constants](reference/constants.html)
+- [Functions (alphabetical)](reference/functions/alphabetical.html)
+- [Functions (categorical)](reference/functions/categorical.html)
+- [History](../history.html)
+- [Units](reference/units.html)

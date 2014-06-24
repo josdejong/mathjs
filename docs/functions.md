@@ -10,8 +10,8 @@ applicable.
 
 A full reference with all available functions can be found here:
 
-- [Alphabetical function reference](reference/functions/alphabetical.html)
-- [Categorical function reference](reference/functions/categorical.html)
+- [Function reference (alphabetical)](reference/functions/alphabetical.html)
+- [Function reference (categorical)](reference/functions/categorical.html)
 
 
 Example usage:

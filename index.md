@@ -20,6 +20,7 @@ Powerful and easy to use.
 - Comes with a large set of built-in functions and constants.
 - Has no dependencies. Runs on any JavaScript engine.
 - Is easily extensible.
+- Is open source.
 
 <div class="cols">
   <div class="left">
@@ -79,46 +80,6 @@ Powerful and easy to use.
   </div>
   <div class="end">&nbsp;</div>
 </div>
-
-
-# Install or download
-
-Math.js can be installed using [npm](https://npmjs.org/):
-
-    npm install mathjs
-
-Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
-
-<table class="download">
-  <tr>
-    <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.23.0/math.js">
-        Development (version 0.23.0)
-      </a>
-    </td>
-    <td>
-      <span id="development-size">697 kB</span>, uncompressed with comments
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/0.23.0/math.min.js">
-        Production (version 0.23.0)
-      </a>
-    </td>
-    <td>
-      <span id="production-size">50 kB</span>, minified and gzipped
-    </td>
-  </tr>
-</table>
-
-*Note: The API of math.js is not fully stabilized. Please read [what is changed](history.html) before upgrading to the newest version.*
-
-
-# License
-
-Math.js is open source and licensed under the
-[Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
 
 
 <div id="likes">

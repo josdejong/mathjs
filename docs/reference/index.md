@@ -4,6 +4,7 @@ layout: default
 
 # Reference
 
-- Functions: 
-  [alphabetical](functions/alphabetical.html),
-  [categorical](functions/categorical.html)
+- [Constants](constants.html)
+- [Functions (alphabetical)](functions/alphabetical.html)
+- [Functions (categorical)](functions/categorical.html)
+- [Units](units.html)
