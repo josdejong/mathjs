@@ -22,7 +22,7 @@ Powerful and easy to use.
 
 ## Usage
 
-Math.js can be installed using npm or bower, or by [downloading](http://mathjs.org/#install_or_download) the library.
+Math.js can be installed using npm or bower, or by [downloading](http://mathjs.org/download.html) the library.
 The library can be used in both node.js and in the browser.
 See the [Getting Started](http://mathjs.org/docs/getting_started.html) for a more detailed tutorial. To install math.js using npm:
 
