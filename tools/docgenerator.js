@@ -33,7 +33,7 @@ var SYNTAX = {
   randomInt: 'randomInt([min, max])',
   format: 'format(value [, precision])',
   'import': 'import(filename | object, override)',
-  print: 'print(template, values [, precision])',
+  print: 'print(template, values [, precision])'
 };
 
 /**
