@@ -15,13 +15,13 @@
 - [floor(x)](floor.md)
 - [gcd(a, b)](gcd.md)
 - [lcm(a, b)](lcm.md)
-- [log(x)](log.md)
+- [log(x [, base])](log.md)
 - [log10(x)](log10.md)
 - [mod(x, y)](mod.md)
 - [multiply(x, y)](multiply.md)
-- [norm(x)](norm.md)
+- [norm(x [, p])](norm.md)
 - [pow(x, y)](pow.md)
-- [round(x)](round.md)
+- [round(x [, n])](round.md)
 - [sign(x)](sign.md)
 - [sqrt(x)](sqrt.md)
 - [square(x)](square.md)
@@ -52,37 +52,37 @@
 
 - [bignumber(x)](bignumber.md)
 - [boolean(x)](boolean.md)
-- [complex()](complex.md)
+- [complex(re, im)](complex.md)
 - [index(range1, range2, ...)](index.md)
-- [matrix()](matrix.md)
+- [matrix(x)](matrix.md)
 - [number(value)](number.md)
 - [parser()](parser.md)
 - [select(value)](select.md)
 - [string(value)](string.md)
-- [unit(unit : string)](unit.md)
+- [unit(x)](unit.md)
 
 ## expression
 
 - [compile(expr)](compile.md)
-- [eval(expr)](eval.md)
+- [eval(expr [, scope])](eval.md)
 - [help(search)](help.md)
-- [parse(expr)](parse.md)
+- [parse(expr [, scope])](parse.md)
 
 ## matrix
 
-- [concat(A, B, C, ...)](concat.md)
+- [concat(a, b, c, ... [, dim])](concat.md)
 - [det(x)](det.md)
 - [diag(X)](diag.md)
 - [eye(n)](eye.md)
 - [inv(x)](inv.md)
-- [ones(m)](ones.md)
-- [range(str [, includeEnd])](range.md)
-- [resize(x, size)](resize.md)
+- [ones(m, n, p, ...)](ones.md)
+- [range(start, end [, step])](range.md)
+- [resize(x, size [, defaultValue])](resize.md)
 - [size(x)](size.md)
 - [squeeze(x)](squeeze.md)
-- [subset(value, index)](subset.md)
+- [subset(x, index [, replacement])](subset.md)
 - [transpose(x)](transpose.md)
-- [zeros(m)](zeros.md)
+- [zeros(m, n, p, ...)](zeros.md)
 
 ## probability
 
@@ -91,8 +91,8 @@
 - [factorial(n)](factorial.md)
 - [permutations(n)](permutations.md)
 - [pickRandom(array)](pickRandom.md)
-- [random()](random.md)
-- [randomInt()](randomInt.md)
+- [random([min, max])](random.md)
+- [randomInt([min, max])](randomInt.md)
 
 ## statistics
 
@@ -132,9 +132,9 @@
 
 - [clone(x)](clone.md)
 - [forEach(x, callback)](forEach.md)
-- [format(value)](format.md)
+- [format(value [, precision])](format.md)
 - [ifElse(condition, trueExpr, falseExpr)](ifElse.md)
-- [import(object)](import.md)
+- [import(filename | object, override)](import.md)
 - [map(x, callback)](map.md)
-- [print(template, values)](print.md)
+- [print(template, values [, precision])](print.md)
 - [typeof(x)](typeof.md)

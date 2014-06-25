@@ -10,6 +10,32 @@ var fs = require('fs'),
     mkdirp = require('mkdirp'),
     gutil = require('gulp-util');
 
+// special cases for function syntax
+var SYNTAX = {
+  gcd: 'gcd(a, b)',
+  log: 'log(x [, base])',
+  lcm: 'lcm(a, b)',
+  norm: 'norm(x [, p])',
+  round: 'round(x [, n])',
+  complex: 'complex(re, im)',
+  matrix: 'matrix(x)',
+  unit: 'unit(x)',
+  eval: 'eval(expr [, scope])',
+  parse: 'parse(expr [, scope])',
+  concat: 'concat(a, b, c, ... [, dim])',
+  ones: 'ones(m, n, p, ...)',
+  range: 'range(start, end [, step])',
+  resize: 'resize(x, size [, defaultValue])',
+  subset: 'subset(x, index [, replacement])',
+  zeros: 'zeros(m, n, p, ...)',
+  pernutations: 'permutations(n [, k])',
+  random: 'random([min, max])',
+  randomInt: 'randomInt([min, max])',
+  format: 'format(value [, precision])',
+  'import': 'import(filename | object, override)',
+  print: 'print(template, values [, precision])',
+};
+
 /**
  * Extract JSON documentation from the comments in a file with JavaScript code
  * @param {String} name    Function name
@@ -444,7 +470,7 @@ function iteratePath (inputPath, outputPath) {
      */
     function functionEntry (name) {
       var fn = functions[name];
-      var syntax = fn.doc && fn.doc.syntax && fn.doc.syntax[0] || name;
+      var syntax = SYNTAX[name] || fn.doc && fn.doc.syntax && fn.doc.syntax[0] || name;
       syntax = syntax
           .replace(/^math\./, '')
           .replace(/\s+\/\/.*$/, '');
