@@ -10,8 +10,8 @@ to work with numbers, big numbers, complex numbers, units, and matrices.
 Powerful and easy to use.
 
 This documentation of contains a getting started tutorial,
-an extensive overview describing math.js on a high level,
-and a reference describing all available functions in detail.
+an extensive overview describing math.js on a high level, and a reference 
+describing all available functions, constants, and units in detail.
 
 
 ## Getting Started
@@ -21,8 +21,7 @@ and a reference describing all available functions in detail.
 
 ## Overview
 
-- [Constants](constants.html)
-- [Functions](functions.html)
+- [Introduction](introduction.html)
 - [Expressions](expressions.html)
 - [Chained Operations](chained_operations.html)
 - [Data Types](datatypes/index.html)

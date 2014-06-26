@@ -13,7 +13,7 @@ Math.js can be installed using various package managers like [npm](https://npmjs
 
     npm install mathjs
 
-Or download math.js from the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
+Other ways to install math.js and downloads are available on the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
 
 
 ## Load

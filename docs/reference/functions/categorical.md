@@ -19,13 +19,13 @@ layout: default
 - [floor(x)](floor.html)
 - [gcd(a, b)](gcd.html)
 - [lcm(a, b)](lcm.html)
-- [log(x)](log.html)
+- [log(x [, base])](log.html)
 - [log10(x)](log10.html)
 - [mod(x, y)](mod.html)
 - [multiply(x, y)](multiply.html)
-- [norm(x)](norm.html)
+- [norm(x [, p])](norm.html)
 - [pow(x, y)](pow.html)
-- [round(x)](round.html)
+- [round(x [, n])](round.html)
 - [sign(x)](sign.html)
 - [sqrt(x)](sqrt.html)
 - [square(x)](square.html)
@@ -56,37 +56,37 @@ layout: default
 
 - [bignumber(x)](bignumber.html)
 - [boolean(x)](boolean.html)
-- [complex()](complex.html)
+- [complex(re, im)](complex.html)
 - [index(range1, range2, ...)](index.html)
-- [matrix()](matrix.html)
+- [matrix(x)](matrix.html)
 - [number(value)](number.html)
 - [parser()](parser.html)
 - [select(value)](select.html)
 - [string(value)](string.html)
-- [unit(unit : string)](unit.html)
+- [unit(x)](unit.html)
 
 ## expression
 
 - [compile(expr)](compile.html)
-- [eval(expr)](eval.html)
+- [eval(expr [, scope])](eval.html)
 - [help(search)](help.html)
-- [parse(expr)](parse.html)
+- [parse(expr [, scope])](parse.html)
 
 ## matrix
 
-- [concat(A, B, C, ...)](concat.html)
+- [concat(a, b, c, ... [, dim])](concat.html)
 - [det(x)](det.html)
 - [diag(X)](diag.html)
 - [eye(n)](eye.html)
 - [inv(x)](inv.html)
-- [ones(m)](ones.html)
-- [range(str [, includeEnd])](range.html)
-- [resize(x, size)](resize.html)
+- [ones(m, n, p, ...)](ones.html)
+- [range(start, end [, step])](range.html)
+- [resize(x, size [, defaultValue])](resize.html)
 - [size(x)](size.html)
 - [squeeze(x)](squeeze.html)
-- [subset(value, index)](subset.html)
+- [subset(x, index [, replacement])](subset.html)
 - [transpose(x)](transpose.html)
-- [zeros(m)](zeros.html)
+- [zeros(m, n, p, ...)](zeros.html)
 
 ## probability
 
@@ -95,8 +95,8 @@ layout: default
 - [factorial(n)](factorial.html)
 - [permutations(n)](permutations.html)
 - [pickRandom(array)](pickRandom.html)
-- [random()](random.html)
-- [randomInt()](randomInt.html)
+- [random([min, max])](random.html)
+- [randomInt([min, max])](randomInt.html)
 
 ## statistics
 
@@ -136,9 +136,9 @@ layout: default
 
 - [clone(x)](clone.html)
 - [forEach(x, callback)](forEach.html)
-- [format(value)](format.html)
+- [format(value [, precision])](format.html)
 - [ifElse(condition, trueExpr, falseExpr)](ifElse.html)
-- [import(object)](import.html)
+- [import(filename | object, override)](import.html)
 - [map(x, callback)](map.html)
-- [print(template, values)](print.html)
+- [print(template, values [, precision])](print.html)
 - [typeof(x)](typeof.html)

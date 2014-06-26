@@ -23,32 +23,27 @@ var MD_HEADER =
     '---\n' +
     '\n';
 
-gulp.task('install', function (cb) {
-  // TODO: change to online library
-  exec('npm install ../mathjs', cb);
-});
-
+/**
+ * Update the dependencies (mathjs) to the latest version
+ */
 gulp.task('update', function (cb) {
-  // TODO: change to online library
-  exec('npm update ../mathjs', cb);
+  exec('npm install ../mathjs', cb); // TODO: replace with 'npm update'
 });
 
 /**
  * copy math.js and math.min.js
  */
-gulp.task('lib', ['install', 'update'], function () {
+gulp.task('lib', ['update'], function () {
   return gulp.src(LIB_SRC)
       .pipe(gulp.dest(LIB_DEST));
 });
-
-// TODO: get version number and size and update this on the download page
 
 /**
  * Import docs and preprocess them for the static HTML web page:
  * - Add a markdown header containing the layout page
  * - Replace internal links to other markdown documents with *.html
  */
-gulp.task('docs', ['install', 'update'], function () {
+gulp.task('docs', ['update'], function () {
   return gulp.src(DOCS_SRC)
       .pipe(replace(/HISTORY.md/g, 'history.html'))        // change links to history.md to lowercase
       .pipe(replace(/(\([\w\./]*).md(\))/g, '$1.html$2'))  // replace urls to *.md with *.html
@@ -59,7 +54,7 @@ gulp.task('docs', ['install', 'update'], function () {
 /**
  * Copy and preprocess the history file
  */
-gulp.task('history', ['install', 'update'], function () {
+gulp.task('history', ['update'], function () {
   return gulp.src(HISTORY_SRC)
       .pipe(header(MD_HEADER))    // add header with markdown layout
       .pipe(rename('history.md')) // rename to lower case
@@ -69,7 +64,7 @@ gulp.task('history', ['install', 'update'], function () {
 /**
  * Update size and version number on the downloads page
  */
-gulp.task('version', ['install', 'update'], function (cb) {
+gulp.task('version', ['update'], function (cb) {
   // get development size
   function developmentSize(callback) {
     fs.readFile(MATHJS, function (err, data) {
@@ -147,11 +142,11 @@ gulp.task('version', ['install', 'update'], function (cb) {
   }
 
   developmentSize(function (err, devSize) {
-    console.log('development size: ' + devSize);
+    gutil.log('development size: ' + devSize);
     productionSize(function (err, prodSize) {
-      console.log('production size: ' + prodSize);
+      gutil.log('production size: ' + prodSize);
       version(function (err, version) {
-        console.log('version: ' + version);
+        gutil.log('version: ' + version);
         if (devSize && prodSize && version) {
           updateVersion(devSize, prodSize, version, cb);
         }
@@ -164,4 +159,4 @@ gulp.task('version', ['install', 'update'], function (cb) {
 
 });
 
-gulp.task('default', ['install', 'update', 'lib', 'docs', 'history', 'version']);
+gulp.task('default', ['update', 'lib', 'docs', 'history', 'version']);
