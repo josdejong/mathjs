@@ -65,8 +65,8 @@ math2.range(0, 4); // Matrix [0, 1, 2, 3]
 
 // create an instance of math.js with bignumber configuration
 var bigmath = math({
-  number: 'bignumber',
-  precision: 128
+  number: 'bignumber', // 'number' (default) or 'bignumber'
+  precision: 32        // 64 by default, only applicable for BigNumbers.
 });
 
 // parser will parse numbers as BigNumber now:
@@ -97,8 +97,8 @@ bigmath.eval('1 / 3'); // BigNumber, 0.33333333333333333333333333333333
     
     // create a new instance of math.js with bignumber configuration
     var bigmath = math({
-      number: 'bignumber',
-      precision: 128
+      number: 'bignumber', // 'number' (default) or 'bignumber'
+      precision: 32        // 64 by default, only applicable for BigNumbers.
     });
     
     // parser will parse numbers as BigNumber now:
