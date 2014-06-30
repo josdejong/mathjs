@@ -63,7 +63,7 @@ math.select(3)
 ## Documentation
 
 - [Getting Started](http://mathjs.org/docs/getting_started.html)
-- [Examples](https://github.com/josdejong/mathjs/tree/master/examples/)
+- [Examples](http://mathjs.org/examples/index.html)
 - [Overview](http://mathjs.org/docs/index.html)
 - [History](http://mathjs.org/history.html)
 

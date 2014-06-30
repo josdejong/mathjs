@@ -4,7 +4,7 @@
 It features a flexible expression parser and offers an integrated solution
 to work with numbers, big numbers, complex numbers, units, and matrices.
 
-Math.js can be used in node.js and in the browser. Installation and download instructions are available on the [Downloads page](http://mathjs.org/downloads.html) of the website. A [Getting Started](getting_started.md) tutorial describes how to start using math.js. Code examples are available [here](https://github.com/josdejong/mathjs/tree/master/examples/).
+Math.js can be used in node.js and in the browser. Installation and download instructions are available on the [Downloads page](http://mathjs.org/downloads.html) of the website. A [Getting Started](getting_started.md) tutorial describes how to start using math.js. Code examples are available [here](http://mathjs.org/examples/index.html).
 
 
 ## Usage
