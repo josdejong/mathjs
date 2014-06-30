@@ -85,7 +85,7 @@ math.js can evaluate expressions (see [Expressions](expressions.html)) and suppo
 chained operations (see [Chained operations](chained_operations.html)).
 
 The example code below shows how to use math.js. More examples can be found in the
-[examples directory](https://github.com/josdejong/mathjs/tree/master/examples/).
+section [Examples](http://mathjs.org/examples/index.html).
 
 ```js
 // functions and constants
@@ -114,4 +114,4 @@ math.select(3)
 To learn more about math.js, check out the available documentation and examples:
 
 - [Documentation](index.html)
-- [Examples](https://github.com/josdejong/mathjs/blob/master/examples/)
+- [Examples](http://mathjs.org/examples/index.html)

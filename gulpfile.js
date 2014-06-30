@@ -88,6 +88,7 @@ gulp.task('cleanExamples', function (cb) {
  * Copy all examples
  */
 gulp.task('copyExamples', ['update', 'cleanExamples'], function () {
+  // TODO: make these script replacements more robust
   return gulp.src(EXAMPLES_SRC)
       .pipe(replace(/src=".*dist\/math.js"/, 'src="/js/lib/math.js"'))
       .pipe(replace(/src=".*dist\/math.min.js"/, 'src="/js/lib/math.min.js"'))

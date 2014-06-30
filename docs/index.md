@@ -36,7 +36,7 @@ describing all available functions, constants, and units in detail.
 
 ## Examples
 
-- [Examples](https://github.com/josdejong/mathjs/tree/master/examples/)
+- [Examples](http://mathjs.org/examples/index.html)
 
 ## Reference
 

@@ -28,7 +28,7 @@ Powerful and easy to use.
     <p>
       Here some example code demonstrating how to use the library.
       More examples are available
-      <a href="https://github.com/josdejong/mathjs/tree/master/examples/">here</a>.
+      <a href="examples/index.html">here</a>.
     </p>
     <div class="highlight">
 <pre><code class="language-js" data-lang="js"><span class="c1">// functions and constants</span>
