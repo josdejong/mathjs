@@ -3,7 +3,6 @@ var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index')(),
     bigmath = require('../../../index')({number: 'bignumber'}),
-    Complex = require('../../../lib/type/Complex'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode');
@@ -51,9 +50,6 @@ describe('ConstantNode', function() {
     expr = new ConstantNode('002.3', 'number').compile(math);
     assert.strictEqual(expr.eval(), 2.3);
 
-    expr = new ConstantNode('3', 'complex').compile(math);
-    assert.deepEqual(expr.eval(), math.complex(0, 3));
-
     expr = new ConstantNode('hello', 'string').compile(math);
     assert.strictEqual(expr.eval(), 'hello');
 
@@ -91,7 +87,6 @@ describe('ConstantNode', function() {
     assert.equal(new ConstantNode('3', 'number').toString(), '3');
     assert.deepEqual(new ConstantNode('3', 'number').toString(), '3');
     assert.equal(new ConstantNode('hi', 'string').toString(), '"hi"');
-    assert.deepEqual(new ConstantNode('3', 'complex').toString(), '3i');
     assert.equal(new ConstantNode('true', 'boolean').toString(), 'true');
     assert.equal(new ConstantNode('false', 'boolean').toString(), 'false');
     assert.equal(new ConstantNode('undefined', 'undefined').toString(), 'undefined');
@@ -102,7 +97,6 @@ describe('ConstantNode', function() {
     assert.equal(new ConstantNode('3', 'number').toTex(), '3');
     assert.deepEqual(new ConstantNode('3', 'number').toTex(), '3');
     assert.equal(new ConstantNode('hi', 'string').toTex(), '\\text{hi}');
-    assert.deepEqual(new ConstantNode('3', 'complex').toTex(), '3i');
     assert.equal(new ConstantNode('true', 'boolean').toTex(), 'true');
     assert.equal(new ConstantNode('false', 'boolean').toTex(), 'false');
     assert.equal(new ConstantNode('undefined', 'undefined').toTex(), 'undefined');

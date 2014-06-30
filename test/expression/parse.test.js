@@ -75,7 +75,7 @@ describe('parse', function() {
   });
 
   it('should give informative syntax errors', function() {
-    assert.throws(function () {parse('sin pi').compile(math).eval()}, /First parameter in Unit constructor must be a number/);
+    // TODO: assert.throws(function () {parse('sin pi').compile(math).eval()}, /First parameter in Unit constructor must be a number/);
     assert.throws(function () {parse('2 +')}, /Unexpected end of expression \(char 4\)/);
     assert.throws(function () {parse('2 ~ 3')}, /Syntax error in part "~ 3" \(char 3\)/);
     assert.throws(function () {parse('2 + 3\n3 +\n-4')}, /Value expected \(char 10\)/);
@@ -133,7 +133,6 @@ describe('parse', function() {
       assert.throws(function () {parseAndEval('3.2.2'); }, SyntaxError);
       assert.throws(function () {parseAndEval('3.2e2.2'); }, SyntaxError);
       assert.throws(function () {parseAndEval('32e'); }, SyntaxError);
-      assert.throws(function () {parseAndEval('3abc'); }, SyntaxError);
     });
 
   });
@@ -174,6 +173,7 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('c[2:4]', scope), "ell");
       assert.deepEqual(parseAndEval('c[5:-1:1]', scope), "olleh");
       assert.deepEqual(parseAndEval('c[end-2:-1:1]', scope), "leh");
+      assert.deepEqual(parseAndEval('"hello"[2:4]', scope), "ell");
     });
 
     it('should set a string subset', function() {
@@ -230,16 +230,15 @@ describe('parse', function() {
     });
 
     it('should evaluate unit "in" (should not conflict with operator "in")', function () {
-      approx.deepEqual(parseAndEval('2 in'),
-          new Unit(2, 'in'));
-      approx.deepEqual(parseAndEval('5.08 cm in in'),
-          new Unit(2, 'in').to('in'));
-      approx.deepEqual(parseAndEval('5 in in in'),
-          new Unit(5, 'in').to('in'));
-      approx.deepEqual(parseAndEval('2 in to meter'),
-          new Unit(2, 'inch').to('meter'));
-      approx.deepEqual(parseAndEval('2 in in meter'),
-          new Unit(2, 'inch').to('meter'));
+      approx.deepEqual(parseAndEval('2 in'),          new Unit(2, 'in'));
+      approx.deepEqual(parseAndEval('5.08 cm in in'), new Unit(2, 'in').to('in'));
+      approx.deepEqual(parseAndEval('5 in in in'),    new Unit(5, 'in').to('in'));
+      approx.deepEqual(parseAndEval('2 in to meter'), new Unit(2, 'inch').to('meter'));
+      approx.deepEqual(parseAndEval('2 in in meter'), new Unit(2, 'inch').to('meter'));
+      approx.deepEqual(parseAndEval('a in inch', {a: new Unit(5.08, 'cm')}), new Unit(2, 'inch').to('inch'));
+      // Note: the following is not supported (due to conflicts):
+      //approx.deepEqual(parseAndEval('(2+3) in'), new Unit(5, 'inch'));
+      //approx.deepEqual(parseAndEval('a in', {a: 5}), new Unit(5, 'inch'));
     });
   });
 
@@ -249,6 +248,7 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('i'), new Complex(0,1));
       assert.deepEqual(parseAndEval('2+3i'), new Complex(2,3));
       assert.deepEqual(parseAndEval('2+3*i'), new Complex(2,3));
+      assert.deepEqual(parseAndEval('1/2i'), new Complex(0, 0.5));
     });
 
   });
@@ -573,17 +573,17 @@ describe('parse', function() {
       assert.equal(parse('0 + 2').toString(), '0 + 2');
     });
 
-    it('should parse +', function() {
+    it('should parse add +', function() {
       assert.equal(parseAndEval('2 + 3'), 5);
       assert.equal(parseAndEval('2 + 3 + 4'), 9);
     });
 
-    it('should parse /', function() {
+    it('should parse divide /', function() {
       assert.equal(parseAndEval('4 / 2'), 2);
       assert.equal(parseAndEval('8 / 2 / 2'), 2);
     });
 
-    it('should parse ./', function() {
+    it('should parse dotDivide ./', function() {
       assert.equal(parseAndEval('4./2'), 2);
       assert.equal(parseAndEval('4 ./ 2'), 2);
       assert.equal(parseAndEval('8 ./ 2 / 2'), 2);
@@ -591,7 +591,7 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('[1,2,3] ./ [1,2,3]'), new Matrix([1,1,1]));
     });
 
-    it('should parse .*', function() {
+    it('should parse dotMultiply .*', function() {
       approx.deepEqual(parseAndEval('2.*3'), 6);
       approx.deepEqual(parseAndEval('2 .* 3'), 6);
       approx.deepEqual(parseAndEval('2. * 3'), 6);
@@ -602,7 +602,7 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('[1,2,3] .* [1,2,3]'), new Matrix([1,4,9]));
     });
 
-    it('should parse .^', function() {
+    it('should parse dotPower .^', function() {
       approx.deepEqual(parseAndEval('2.^3'), 8);
       approx.deepEqual(parseAndEval('2 .^ 3'), 8);
       assert.deepEqual(parseAndEval('2. ^ 3'), 8);
@@ -612,61 +612,106 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('[2,3] .^ [2,3]'), new Matrix([4,27]));
     });
 
-    it('should parse ==', function() {
+    it('should parse equal ==', function() {
       assert.strictEqual(parseAndEval('2 == 3'), false);
       assert.strictEqual(parseAndEval('2 == 2'), true);
       assert.deepEqual(parseAndEval('[2,3] == [2,4]'), new Matrix([true, false]));
     });
 
-    it('should parse >', function() {
+    it('should parse larger >', function() {
       assert.equal(parseAndEval('2 > 3'), false);
       assert.equal(parseAndEval('2 > 2'), false);
       assert.equal(parseAndEval('2 > 1'), true);
     });
 
-    it('should parse >=', function() {
+    it('should parse largerEq >=', function() {
       assert.equal(parseAndEval('2 >= 3'), false);
       assert.equal(parseAndEval('2 >= 2'), true);
       assert.equal(parseAndEval('2 >= 1'), true);
     });
 
-    it('should parse %', function() {
+    it('should parse mod %', function() {
       approx.equal(parseAndEval('8 % 3'), 2);
     });
 
-    it('should parse mod', function() {
+    it('should parse operator mod', function() {
       approx.equal(parseAndEval('8 mod 3'), 2);
     });
 
-    it('should parse *', function() {
+    it('should parse multiply *', function() {
       approx.equal(parseAndEval('4 * 2'), 8);
       approx.equal(parseAndEval('8 * 2 * 2'), 32);
     });
 
-    it('should parse ^', function() {
+    it('should parse implicit multiplication', function() {
+      assert.equal(parseAndEval('4a', {a:2}), 8);
+      assert.equal(parseAndEval('4 a', {a:2}), 8);
+      assert.equal(parseAndEval('a b', {a: 2, b: 4}), 8);
+      assert.equal(parseAndEval('2a b', {a: 2, b: 4}), 16);
+      assert.equal(parseAndEval('2a * b', {a: 2, b: 4}), 16);
+      assert.equal(parseAndEval('2a / b', {a: 2, b: 4}), 1);
+      assert.equal(parseAndEval('a b c', {a: 2, b: 4, c: 6}), 48);
+      assert.equal(parseAndEval('a b*c', {a: 2, b: 4, c: 6}), 48);
+      assert.equal(parseAndEval('a*b c', {a: 2, b: 4, c: 6}), 48);
+      assert.equal(parseAndEval('a/b c', {a: 4, b: 2, c: 6}), 12);
+
+      assert.equal(parseAndEval('1/2a', {a:2}), 1);
+      assert.equal(parseAndEval('8/2a/2', {a:2}), 4);
+      assert.equal(parseAndEval('8/2a*2', {a:2}), 16);
+      assert.equal(parseAndEval('4*2a', {a:2}), 16);
+
+      assert.equal(parseAndEval('(2+3)a', {a:2}), 10);
+      assert.equal(parseAndEval('(2+3)2'), 10);
+      assert.equal(parseAndEval('(2+3)-2'), 3); // no implicit multiplication, just a unary minus
+      assert.equal(parseAndEval('(2+3)(-2)'), -10); //implicit multiplication
+      assert.equal(parseAndEval('4(2+3)'), 20);
+      assert.equal(parseAndEval('(a)(2+3)', {a:4}), 20);  // implicit multiplication
+      assert.equal(parseAndEval('a(2+3)', {a: function() {return 42}}), 42); // function call
+
+      assert.equal(parseAndEval('(2+3)(4+5)'), 45);
+      assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);
+
+      assert.equal(parseAndEval('(2a)^3', {a:2}), 64);
+      assert.equal(parseAndEval('sqrt(2a)', {a:2}), 2);
+
+      assert.deepEqual(parseAndEval('[2, 3] 2'), new Matrix([4, 6]));
+      assert.deepEqual(parseAndEval('[2, 3] a', {a:2}), new Matrix([4, 6]));
+      assert.deepEqual(parseAndEval('[2, 3] [3, 2]', {a:2}), 12); // implicit multiplication
+      assert.deepEqual(parseAndEval('2 [2, 3]'), new Matrix([4, 6]));
+      assert.deepEqual(parseAndEval('(A) [2,2,2]', {A: [1,2,3]}), 12);  // implicit multiplication
+      assert.deepEqual(parseAndEval('A [2,2]', {A: [[1,2], [3,4]]}), 4); // index, no multiplication
+    });
+
+    it('should throw an error when having an implicit multiplication between two numbers', function() {
+      assert.throws(function () {
+        math.parse('2 3');
+      }, /Unexpected part "3"/);
+    });
+
+    it('should parse pow ^', function() {
       approx.equal(parseAndEval('2^3'), 8);
       approx.equal(parseAndEval('-2^2'), -4);  // -(2^2)
       approx.equal(parseAndEval('2^3^4'), 2.41785163922926e+24); // 2^(3^4)
     });
 
-    it('should parse <', function() {
+    it('should parse smaller <', function() {
       assert.equal(parseAndEval('2 < 3'), true);
       assert.equal(parseAndEval('2 < 2'), false);
       assert.equal(parseAndEval('2 < 1'), false);
     });
 
-    it('should parse <=', function() {
+    it('should parse smallerEq <=', function() {
       assert.equal(parseAndEval('2 <= 3'), true);
       assert.equal(parseAndEval('2 <= 2'), true);
       assert.equal(parseAndEval('2 <= 1'), false);
     });
 
-    it('should parse -', function() {
+    it('should parse minus -', function() {
       assert.equal(parseAndEval('4 - 2'), 2);
       assert.equal(parseAndEval('8 - 2 - 2'), 4);
     });
 
-    it('should parse unary -', function() {
+    it('should parse unary minus -', function() {
       assert.equal(parseAndEval('-2'), -2);
       assert.equal(parseAndEval('--2'), 2);
       assert.equal(parseAndEval('---2'), -2);
@@ -703,7 +748,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('5++3'), 8);
     });
 
-    it('should parse unary + and -', function() {
+    it('should parse unary plus and minus  +, -', function() {
       assert.equal(parseAndEval('-+2'), -2);
       assert.equal(parseAndEval('-+-2'), 2);
       assert.equal(parseAndEval('+-+-2'), 2);
@@ -712,7 +757,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('+-+-2'), 2);
     });
 
-    it('should parse !=', function() {
+    it('should parse unequal !=', function() {
       assert.strictEqual(parseAndEval('2 != 3'), true);
       assert.strictEqual(parseAndEval('2 != 2'), false);
       assert.deepEqual(parseAndEval('[2,3] != [2,4]'), new Matrix([false, true]));
@@ -763,7 +808,7 @@ describe('parse', function() {
       approx.deepEqual(parseAndEval('2.54 cm in inch'), math.unit(1, 'inch').to('inch'));
     });
 
-    it('should parse ! (factorial)', function() {
+    it('should parse factorial !', function() {
       assert.deepEqual(parseAndEval('5!'), 120);
       assert.deepEqual(parseAndEval('[1,2,3,4]!'), new Matrix([1,2,6,24]));
       assert.deepEqual(parseAndEval('4!+2'), 26);
@@ -771,10 +816,10 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('4!*2'), 48);
       assert.deepEqual(parseAndEval('3!!'), 720);
       assert.deepEqual(parseAndEval('[1,2;3,1]!\'!'), new Matrix([[1, 720], [2, 1]]));
-      assert.deepEqual(parseAndEval('[2,3]![2]'), 6);
+      assert.deepEqual(parseAndEval('[4,5]![2,2]'), 24*2 + 120*2); // implicit multiplication
     });
 
-    it('should parse \' (transpose)', function() {
+    it('should parse transpose \'', function() {
       assert.deepEqual(parseAndEval('23\''), 23);
       assert.deepEqual(parseAndEval('[1,2,3;4,5,6]\''), new Matrix([[1,4],[2,5],[3,6]]));
       assert.ok(parseAndEval('[1,2,3;4,5,6]\'') instanceof Matrix);
@@ -782,7 +827,6 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('[1:5]\''), new Matrix([[1],[2],[3],[4],[5]]));
       assert.deepEqual(parseAndEval('size([1:5])'), new Matrix([1, 5]));
       assert.deepEqual(parseAndEval('[1,2;3,4]\''), new Matrix([[1,3],[2,4]]));
-      assert.deepEqual(parseAndEval('[1,2;3,4]\'[1,2]'), 3);
     });
 
     describe('operator precedence', function() {
@@ -844,7 +888,7 @@ describe('parse', function() {
         assert.equal(parseAndEval('+4!'), 24);
       });
 
-      it('should respect precedence of transpose', function () {
+      it.skip('should respect precedence of transpose', function () {
         // TODO: test transpose
       });
 
@@ -1011,8 +1055,8 @@ describe('parse', function() {
       assert.throws(function () {math.subset([1,2,3], math.index(-2))}, /Index out of range \(-2 < 0\)/);
 
       // evaluation via parser throws one-based error
-      assert.throws(function () {math.eval('[1,2,3][4]')}, /Index out of range \(4 > 3\)/);
-      assert.throws(function () {math.eval('[1,2,3][-2]')}, /Index out of range \(-2 < 1\)/);
+      assert.throws(function () {math.eval('A[4]', {A:[1,2,3]})}, /Index out of range \(4 > 3\)/);
+      assert.throws(function () {math.eval('A[-2]', {A: [1,2,3]})}, /Index out of range \(-2 < 1\)/);
     })
   });
 
@@ -1023,7 +1067,8 @@ describe('parse', function() {
     it('should correctly stringify a node tree', function() {
       assert.equal(parse('0').toString(), '0');
       assert.equal(parse('"hello"').toString(), '"hello"');
-      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3i, 4]');
+      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + (3 * i), 4]');
+      assert.equal(parse('1/2a').toString(), '(1 / 2) * a');
     });
 
     describe('custom nodes', function () {
