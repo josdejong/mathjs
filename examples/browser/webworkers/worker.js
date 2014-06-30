@@ -1,4 +1,4 @@
-importScripts('../../../dist/math.js');
+importScripts('/js/lib/math.js');
 
 // create a parser
 var parser = math.parser();

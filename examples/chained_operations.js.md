@@ -65,4 +65,6 @@ var m = math.select(array)
     .multiply(3)
     .done();
 print(m);                       // [[24, 6], [9, 12]]
+
 ```
+

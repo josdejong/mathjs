@@ -105,4 +105,6 @@ print(math.range(0, 18, 3));                // [0, 3, 6, 9, 12, 15]
 print(math.range('2:-1:-3'));               // [2, 1, 0, -1, -2]
 print(math.factorial(math.range('1:6')));   // [1, 2, 6, 24, 120]
 console.log();
+
 ```
+

@@ -48,4 +48,6 @@ console.log('parse expressions');
 print(math.eval('2 inch to cm'));   // 5.08 cm
 print(math.eval('cos(45 deg)'));    // 0.70711
 console.log();
+
 ```
+

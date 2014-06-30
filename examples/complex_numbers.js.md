@@ -61,4 +61,6 @@ print(c);                      // 1 + i
 // get polar coordinates of a complex number
 var d = math.complex(3, 4);
 console.log(d.toPolar());      // { r: 5, phi: 0.9272952180016122 }
+
 ```
+

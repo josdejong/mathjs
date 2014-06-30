@@ -199,4 +199,6 @@ print(parser.eval('hello("hero")'));            // "hello, hero!"
 
 // clear defined functions and variables
 parser.clear();
+
 ```
+

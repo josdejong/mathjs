@@ -17,7 +17,7 @@ Raw file: [requirejs_loading.html](requirejs_loading.html)
 
 <script>
   // load math.js using require.js
-  require(['../../dist/math.js'], function (math) {
+  require(['/js/lib/math.js'], function (math) {
     // evaluate some expression
     var result = math.eval('1.2 * (2 + 4.5)');
     document.write(result);
@@ -25,4 +25,6 @@ Raw file: [requirejs_loading.html](requirejs_loading.html)
 </script>
 
 </body>
-</html>```
+</html>
+```
+

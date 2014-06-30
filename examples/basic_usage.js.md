@@ -55,4 +55,6 @@ print(math.multiply(math.unit('5 mm'), 3));   // Unit * Number,  15 mm
 print(math.subtract([2, 3, 4], 5));           // Array - Number, [-3, -2, -1]
 print(math.add(math.matrix([2, 3]), [4, 5])); // Matrix + Array, [6, 8]
 console.log();
+
 ```
+

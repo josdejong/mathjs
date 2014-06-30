@@ -21,3 +21,4 @@ layout: default
 - [Old browsers](browser/old_browsers.html.html)
 - [Pretty printing with mathjax](browser/pretty_printing_with_mathjax.html.html)
 - [Requirejs loading](browser/requirejs_loading.html.html)
+- [Webworkers](browser/webworkers/index.html)

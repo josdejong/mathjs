@@ -31,10 +31,12 @@ var MD_HEADER =
 
 var EXAMPLE_TEMPLATE = MD_HEADER +
     '# {{title}}\n\n' +
+    '{{#each files}}' +
     'Raw file: [{{url}}]({{url}})\n\n' +
     '```{{type}}\n' +
     '{{{code}}}' +
-    '```\n';
+    '\n```\n\n' +
+    '{{/each}}';
 
 var INDEX_TEMPLATE = MD_HEADER +
     '# Examples\n\n' +
@@ -89,6 +91,7 @@ gulp.task('copyExamples', ['update', 'cleanExamples'], function () {
   return gulp.src(EXAMPLES_SRC)
       .pipe(replace(/src=".*dist\/math.js"/, 'src="/js/lib/math.js"'))
       .pipe(replace(/src=".*dist\/math.min.js"/, 'src="/js/lib/math.min.js"'))
+      .pipe(replace(/'.*dist\/math.js'/, "'/js/lib/math.js'"))
       .pipe(gulp.dest(EXAMPLES_DEST));
 });
 
@@ -98,9 +101,30 @@ gulp.task('copyExamples', ['update', 'cleanExamples'], function () {
 gulp.task('examples', ['update', 'copyExamples'], function (cb) {
   var template = handlebars.compile(EXAMPLE_TEMPLATE);
 
+  function createPage (files, title, url) {
+    if (!Array.isArray(files)) {
+      files = [files];
+    }
+
+    var page = template({
+      title: title,                               // for example 'Basic usage'
+      files: files.map(function (file) {
+        return {
+          url: path.basename(file),               // for example 'basic_usage.js'
+          type: path.extname(file).substring(1),  // for example 'js'
+          code: fs.readFileSync(file)             // the actual code contents
+        };
+      })
+    });
+    fs.writeFileSync(url, page);
+  }
+
   function generate(pattern, callback) {
     glob(EXAMPLES_DEST + '/' + pattern, function (err, files) {
+      files.sort();
+
       var results = files.map(function (file) {
+        var isDir = fs.statSync(file).isDirectory();
         var extension = path.extname(file);
         var title = path.basename(file, extension)  // filename without extension
             .replace(/^\w/g, function (c) { // replace first character with upper case letter
@@ -108,13 +132,16 @@ gulp.task('examples', ['update', 'copyExamples'], function (cb) {
             })
             .replace(/_/g, ' ');  // replace underscores with spaces
 
-        var page = template({
-          title: title,                 // for example 'Basic usage'
-          url: path.basename(file),     // for example 'basic_usage.js'
-          type: extension.substring(1), // for example 'js'
-          code: fs.readFileSync(file)   // the actual code contents
-        });
-        fs.writeFileSync(file + '.md', page);
+        if (isDir) {
+          var files = fs.readdirSync(file).map(function (f) {
+            return file + '/' + f;
+          });
+          file = file + '/index';
+          createPage(files, title, file + '.md');
+        }
+        else {
+          createPage(file, title, file + '.md');
+        }
 
         return {
           title: title,                                     // for example 'Basic usage'
@@ -127,7 +154,7 @@ gulp.task('examples', ['update', 'copyExamples'], function (cb) {
   }
 
   generate('*.js', function (files) {
-    generate('browser/*.html', function (browserFiles) {
+    generate('browser/*', function (browserFiles) {
       // create an index page
       var template = handlebars.compile(INDEX_TEMPLATE);
       var page = template({
