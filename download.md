@@ -27,7 +27,7 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
       </a>
     </td>
     <td>
-      <span id="development-size">696 kB</span>, uncompressed with comments
+      <span id="development-size">692 kB</span>, uncompressed with comments
     </td>
   </tr>
   <tr>

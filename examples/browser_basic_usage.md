@@ -1,0 +1,46 @@
+---
+layout: default
+---
+
+# Basic usage
+
+Raw file: [basic_usage.html](raw/browser/basic_usage.html)
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>math.js | basic usage</title>
+  <script type="text/javascript" src="/js/lib/math.js"></script>
+</head>
+<body>
+
+<script>
+  function print(value) {
+    var precision = 5;
+    document.write(math.format(value, precision) + '<br>');
+  }
+
+  // functions and constants
+  print(math.round(math.e, 3));            // 2.718
+  print(math.atan2(3, -3) / math.pi);      // 0.75
+  print(math.log(1000, 10));               // 3
+  print(math.sqrt(-4));                    // 2i
+  print(math.pow([[-1, 2], [3, 1]], 2));   // [[7, 0], [0, 7]]
+
+  // expressions
+  print(math.eval('12 / (2.3 + 0.7)'));    // 4
+  print(math.eval('5.08 cm to inch'));     // 2 inch
+  print(math.eval('9 / 3 + 2i'));          // 3 + 2i
+  print(math.eval('det([-1, 2; 3, 1])'));  // -7
+
+  // chained operations
+  var a = math.select(3)
+      .add(4)
+      .multiply(2)
+      .done();
+  print(a);                                // 14
+</script>
+
+</body>
+</html>```

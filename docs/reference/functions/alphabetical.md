@@ -47,7 +47,6 @@ layout: default
 - [format(value [, precision])](format.html)
 - [gcd(a, b)](gcd.html)
 - [help(search)](help.html)
-- [ifElse(condition, trueExpr, falseExpr)](ifElse.html)
 - [im(x)](im.html)
 - [import(filename | object, override)](import.html)
 - [index(range1, range2, ...)](index.html)

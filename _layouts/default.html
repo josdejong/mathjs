@@ -52,6 +52,11 @@
       {% if page.url contains '/docs/' and page.url != '/docs/getting_started.html' %}
       <div class="selection"></div>
       {% endif %}
+  </a><a href="/examples/index.html">
+      Examples
+      {% if page.url contains '/examples/' %}
+      <div class="selection"></div>
+      {% endif %}
   </a>
   </div>
 
@@ -78,7 +83,7 @@
 
     var page = document.getElementById('page');
     page.className = (width < 810) ? 'small' : 'normal';
-    if (width < 500) {
+    if (width < 620) {
       page.className += ' tiny';
     }
 

@@ -137,7 +137,6 @@ layout: default
 - [clone(x)](clone.html)
 - [forEach(x, callback)](forEach.html)
 - [format(value [, precision])](format.html)
-- [ifElse(condition, trueExpr, falseExpr)](ifElse.html)
 - [import(filename | object, override)](import.html)
 - [map(x, callback)](map.html)
 - [print(template, values [, precision])](print.html)

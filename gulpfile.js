@@ -1,27 +1,52 @@
 var exec = require('child_process').exec;
 var fs = require('fs');
+var path = require('path');
 var zlib = require('zlib');
+var glob = require('glob');
+var rimraf = require('rimraf');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
 var header = require('gulp-header');
+var handlebars = require('handlebars');
 
-var LIB_SRC = './node_modules/mathjs/dist/*';
-var LIB_DEST = './js/lib';
-var DOCS_SRC = './node_modules/mathjs/docs/**/*.md';
-var DOCS_DEST = './docs';
-var HISTORY_SRC = './node_modules/mathjs/HISTORY.md';
-var HISTORY_DEST = '.';
-var MATHJS = './js/lib/math.js';
-var MATHJS_MIN = './js/lib/math.min.js';
-var DOWNLOAD = './download.md';
+var LIB_SRC           = './node_modules/mathjs/dist/*';
+var LIB_DEST          = './js/lib';
+var DOCS_SRC          = './node_modules/mathjs/docs/**/*.md';
+var DOCS_DEST         = './docs';
+var EXAMPLES_SRC      = './node_modules/mathjs/examples/**/*';
+var EXAMPLES_DEST     = './examples';
+var EXAMPLES_RAW_DEST = EXAMPLES_DEST + '/raw';
+var HISTORY_SRC       = './node_modules/mathjs/HISTORY.md';
+var HISTORY_DEST      = '.';
+var MATHJS            = LIB_DEST + '/math.js';
+var MATHJS_MIN        = LIB_DEST + '/math.min.js';
+var DOWNLOAD          = './download.md';
 
 var MD_HEADER =
     '---\n' +
     'layout: default\n' +
     '---\n' +
     '\n';
+
+var EXAMPLE_TEMPLATE = MD_HEADER +
+    '# {{title}}\n\n' +
+    'Raw file: [{{filename}}]({{path}})\n\n' +
+    '```{{type}}\n' +
+    '{{{code}}}' +
+    '```\n';
+
+var INDEX_TEMPLATE = MD_HEADER +
+    '# Examples\n\n' +
+    '{{#each files}}' +
+    '- [{{title}}]({{page}})\n' +
+    '{{/each}}' +
+    '\n' +
+    '# Browser examples\n\n' +
+    '{{#each browserFiles}}' +
+    '- [{{title}}]({{page}})\n' +
+    '{{/each}}';
 
 /**
  * Update the dependencies (mathjs) to the latest version
@@ -49,6 +74,72 @@ gulp.task('docs', ['update'], function () {
       .pipe(replace(/(\([\w\./]*).md(\))/g, '$1.html$2'))  // replace urls to *.md with *.html
       .pipe(header(MD_HEADER))                             // add header with markdown layout
       .pipe(gulp.dest(DOCS_DEST));
+});
+
+/**
+ * Clean all examples
+ */
+gulp.task('cleanExamples', function (cb) {
+  rimraf(EXAMPLES_DEST, cb);
+});
+
+/**
+ * Copy all examples
+ */
+gulp.task('copyExamples', ['update', 'cleanExamples'], function () {
+  return gulp.src(EXAMPLES_SRC)
+      .pipe(replace(/src=".*dist\/math.js"/, 'src="/js/lib/math.js"'))
+      .pipe(replace(/src=".*dist\/math.min.js"/, 'src="/js/lib/math.min.js"'))
+      .pipe(gulp.dest(EXAMPLES_RAW_DEST));
+});
+
+/**
+ * Create markdown pages for every example
+ */
+gulp.task('examples', ['update', 'copyExamples'], function (cb) {
+  var template = handlebars.compile(EXAMPLE_TEMPLATE);
+
+  function generate(pattern, callback) {
+    glob(EXAMPLES_RAW_DEST + '/' + pattern, function (err, files) {
+      var results = files.map(function (file) {
+        var relative = path.relative(EXAMPLES_RAW_DEST, file);
+        var prefix = path.dirname(relative);
+        var extension = path.extname(file);
+        var filename = path.basename(file, extension); // filename without extension
+        var title = filename.charAt(0).toUpperCase() + filename.substring(1).replace(/_/g, ' ');
+
+        var page = template({
+          title: title,
+          filename: filename + extension,
+          path: 'raw/' + relative,
+          type: extension.substring(1),
+          code: fs.readFileSync(file)
+        });
+        fs.writeFileSync(EXAMPLES_DEST + '/' + (prefix != '.' ? prefix + '_' : '') + filename + '.md', page);
+
+        return {
+          title: title,
+          page: (prefix != '.' ? prefix + '_' : '') + filename + '.html'
+        };
+      });
+
+      callback(results);
+    })
+  }
+
+  generate('*.js', function (files) {
+    generate('browser/*.html', function (browserFiles) {
+      // create an index page
+      var template = handlebars.compile(INDEX_TEMPLATE);
+      var page = template({
+        files: files,
+        browserFiles: browserFiles
+      });
+      fs.writeFileSync(EXAMPLES_DEST + '/index.md', page);
+
+      cb();
+    });
+  });
 });
 
 /**
@@ -159,4 +250,4 @@ gulp.task('version', ['update'], function (cb) {
 
 });
 
-gulp.task('default', ['update', 'lib', 'docs', 'history', 'version']);
+gulp.task('default', ['update', 'lib', 'docs', 'examples', 'history', 'version']);

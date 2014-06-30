@@ -1,0 +1,64 @@
+---
+layout: default
+---
+
+# Complex numbers
+
+Raw file: [complex_numbers.js](raw/complex_numbers.js)
+
+```js
+// complex numbers
+
+// load math.js
+var math = require('../index');
+
+/**
+ * Helper function to output a value in the console. Value will be formatted.
+ * @param {*} value
+ */
+function print (value) {
+  var precision = 5;
+  console.log(math.format(value, precision));
+}
+
+// create a complex number with a numeric real and complex part
+console.log('create and manipulate complex numbers');
+var a = math.complex(2, 3);
+print(a);                       // 2 + 3i
+
+// read the real and complex parts of the complex number
+print(a.re);                    // 2
+print(a.im);                    // 3
+
+// clone a complex value
+var clone = a.clone();
+print(clone);                   // 2 + 3i
+
+// adjust the complex value
+a.re = 5;
+print(a);                       // 5 + 3i
+
+// create a complex number by providing a string with real and complex parts
+var b = math.complex('3 - 7i');
+print(b);                       // 3 - 7i
+console.log();
+
+// perform operations with complex numbers
+console.log('perform operations');
+print(math.add(a, b));          // 8 - 4i
+print(math.multiply(a, b));     // 36 - 26i
+print(math.sin(a));             // -9.6541 + 2.8417i
+
+// some operations will return a complex number depending on the arguments
+print(math.sqrt(4));           // 2
+print(math.sqrt(-4));          // 2i
+
+// create a complex number from polar coordinates
+console.log('create complex numbers with polar coordinates');
+var c = math.complex({r: math.sqrt(2), phi: math.pi / 4});
+print(c);                      // 1 + i
+
+// get polar coordinates of a complex number
+var d = math.complex(3, 4);
+console.log(d.toPolar());      // { r: 5, phi: 0.9272952180016122 }
+```

@@ -11,7 +11,8 @@
   padding: 0;
 }
 
-.highlight .c1 {
+.highlight .c1,
+.highlight .cm {
   color: #808080;
 }
 

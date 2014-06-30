@@ -16,6 +16,15 @@ layout: default
       
         // just do:
         var math = require('mathjs');
+- Implemented support for implicit multiplication, like `math.eval('2a', {a:3})`
+  and `math.eval('(2+3)(1-3)')`. This changes behavior of matrix indexes as 
+  well: an expression like `[...][...]` is not evaluated as taking a subset of 
+  the first matrix, but as an implicit multiplication of two matrices.
+- Removed utility function `ifElse`. This function is redundant now the 
+  expression parser has a conditional operator `a ? b : c`.
+- Fixed a bug with multiplying a number with a temperature,  
+  like `math.eval('10 * celsius')`.
+- Fixed a bug with symbols having value `undefined` not being evaluated.
 
 
 ## 2014-06-20, version 0.24.1

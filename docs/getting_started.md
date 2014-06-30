@@ -9,11 +9,13 @@ This getting started describes how to install, load, and use math.js.
 
 ## Install
 
-Math.js can be installed using various package managers like [npm](https://npmjs.org/) and [bower](http://twitter.github.io/bower/), or by just downloading the library. To install via npm, run:
+Math.js can be installed using various package managers like [npm](https://npmjs.org/) and [bower](http://twitter.github.io/bower/), or by just downloading the library from the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
+
+To install via npm, run:
 
     npm install mathjs
 
-Other ways to install math.js and downloads are available on the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
+Other ways to install math.js are described on the [website](http://mathjs.org/download.html).
 
 
 ## Load
@@ -38,7 +40,7 @@ math.sqrt(-4); // 2i
 
 ### Browser
 
-Math.js can be loaded as a regular javascript file in the browser:
+Math.js can be loaded as a regular JavaScript file in the browser:
 
 ```html
 <!DOCTYPE HTML>
