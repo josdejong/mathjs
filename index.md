@@ -20,7 +20,7 @@ Powerful and easy to use.
 - Comes with a large set of built-in functions and constants.
 - Has no dependencies. Runs on any JavaScript engine.
 - Is easily extensible.
-- Is open source.
+- Open source.
 
 <div class="cols">
   <div class="left">

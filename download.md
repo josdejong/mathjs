@@ -12,7 +12,7 @@ Package Manager                                         | Installation
 [bower](http://twitter.github.io/bower/)                | <div class="highlight"><pre>bower install mathjs</pre></div>
 [component(1)](https://github.com/component/component/) | <div class="highlight"><pre>component install josdejong/mathjs</pre></div>
 
-When installed globally with [npm](https://npmjs.org/) (using the `-g` option), math.js is available as a command line application `mathjs`, see section [command line interface](command_line_interface.html).
+When installed globally with [npm](https://npmjs.org/) (using the `-g` option), math.js is available as a command line application `mathjs`, see documentation on [Command Line Interface](docs/command_line_interface.html).
 
 
 # Download
@@ -41,6 +41,11 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
     </td>
   </tr>
 </table>
+
+
+# History
+
+A changelog describing the changes with each release is available on the page [History](history.html).
 
 
 # License
