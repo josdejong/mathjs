@@ -4,7 +4,7 @@ layout: default
 
 # Import
 
-Raw file: [import.js](raw/import.js)
+Raw file: [import.js](import.js)
 
 ```js
 /**

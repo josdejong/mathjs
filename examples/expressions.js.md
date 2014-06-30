@@ -4,7 +4,7 @@ layout: default
 
 # Expressions
 
-Raw file: [expressions.js](raw/expressions.js)
+Raw file: [expressions.js](expressions.js)
 
 ```js
 /**

@@ -4,7 +4,7 @@ layout: default
 
 # Chained operations
 
-Raw file: [chained_operations.js](raw/chained_operations.js)
+Raw file: [chained_operations.js](chained_operations.js)
 
 ```js
 // chained operations

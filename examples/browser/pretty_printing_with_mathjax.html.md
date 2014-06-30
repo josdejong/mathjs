@@ -4,7 +4,7 @@ layout: default
 
 # Pretty printing with mathjax
 
-Raw file: [pretty_printing_with_mathjax.html](raw/browser/pretty_printing_with_mathjax.html)
+Raw file: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html)
 
 ```html
 <!DOCTYPE html>

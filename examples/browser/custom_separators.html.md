@@ -4,7 +4,7 @@ layout: default
 
 # Custom separators
 
-Raw file: [custom_separators.html](raw/browser/custom_separators.html)
+Raw file: [custom_separators.html](custom_separators.html)
 
 ```html
 <!DOCTYPE html>

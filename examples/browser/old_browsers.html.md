@@ -4,7 +4,7 @@ layout: default
 
 # Old browsers
 
-Raw file: [old_browsers.html](raw/browser/old_browsers.html)
+Raw file: [old_browsers.html](old_browsers.html)
 
 ```html
 <!DOCTYPE html>

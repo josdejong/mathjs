@@ -17,7 +17,6 @@ var DOCS_SRC          = './node_modules/mathjs/docs/**/*.md';
 var DOCS_DEST         = './docs';
 var EXAMPLES_SRC      = './node_modules/mathjs/examples/**/*';
 var EXAMPLES_DEST     = './examples';
-var EXAMPLES_RAW_DEST = EXAMPLES_DEST + '/raw';
 var HISTORY_SRC       = './node_modules/mathjs/HISTORY.md';
 var HISTORY_DEST      = '.';
 var MATHJS            = LIB_DEST + '/math.js';
@@ -32,7 +31,7 @@ var MD_HEADER =
 
 var EXAMPLE_TEMPLATE = MD_HEADER +
     '# {{title}}\n\n' +
-    'Raw file: [{{filename}}]({{path}})\n\n' +
+    'Raw file: [{{url}}]({{url}})\n\n' +
     '```{{type}}\n' +
     '{{{code}}}' +
     '```\n';
@@ -40,12 +39,12 @@ var EXAMPLE_TEMPLATE = MD_HEADER +
 var INDEX_TEMPLATE = MD_HEADER +
     '# Examples\n\n' +
     '{{#each files}}' +
-    '- [{{title}}]({{page}})\n' +
+    '- [{{title}}]({{url}})\n' +
     '{{/each}}' +
     '\n' +
     '# Browser examples\n\n' +
     '{{#each browserFiles}}' +
-    '- [{{title}}]({{page}})\n' +
+    '- [{{title}}]({{url}})\n' +
     '{{/each}}';
 
 /**
@@ -90,7 +89,7 @@ gulp.task('copyExamples', ['update', 'cleanExamples'], function () {
   return gulp.src(EXAMPLES_SRC)
       .pipe(replace(/src=".*dist\/math.js"/, 'src="/js/lib/math.js"'))
       .pipe(replace(/src=".*dist\/math.min.js"/, 'src="/js/lib/math.min.js"'))
-      .pipe(gulp.dest(EXAMPLES_RAW_DEST));
+      .pipe(gulp.dest(EXAMPLES_DEST));
 });
 
 /**
@@ -100,26 +99,26 @@ gulp.task('examples', ['update', 'copyExamples'], function (cb) {
   var template = handlebars.compile(EXAMPLE_TEMPLATE);
 
   function generate(pattern, callback) {
-    glob(EXAMPLES_RAW_DEST + '/' + pattern, function (err, files) {
+    glob(EXAMPLES_DEST + '/' + pattern, function (err, files) {
       var results = files.map(function (file) {
-        var relative = path.relative(EXAMPLES_RAW_DEST, file);
-        var prefix = path.dirname(relative);
         var extension = path.extname(file);
-        var filename = path.basename(file, extension); // filename without extension
-        var title = filename.charAt(0).toUpperCase() + filename.substring(1).replace(/_/g, ' ');
+        var title = path.basename(file, extension)  // filename without extension
+            .replace(/^\w/g, function (c) { // replace first character with upper case letter
+              return c.toUpperCase();
+            })
+            .replace(/_/g, ' ');  // replace underscores with spaces
 
         var page = template({
-          title: title,
-          filename: filename + extension,
-          path: 'raw/' + relative,
-          type: extension.substring(1),
-          code: fs.readFileSync(file)
+          title: title,                 // for example 'Basic usage'
+          url: path.basename(file),     // for example 'basic_usage.js'
+          type: extension.substring(1), // for example 'js'
+          code: fs.readFileSync(file)   // the actual code contents
         });
-        fs.writeFileSync(EXAMPLES_DEST + '/' + (prefix != '.' ? prefix + '_' : '') + filename + '.md', page);
+        fs.writeFileSync(file + '.md', page);
 
         return {
-          title: title,
-          page: (prefix != '.' ? prefix + '_' : '') + filename + '.html'
+          title: title,                                     // for example 'Basic usage'
+          url: path.relative(EXAMPLES_DEST, file + '.html') // for example 'basic_usage.js.html'
         };
       });
 

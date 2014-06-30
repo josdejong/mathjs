@@ -4,7 +4,7 @@ layout: default
 
 # Basic usage
 
-Raw file: [basic_usage.html](raw/browser/basic_usage.html)
+Raw file: [basic_usage.html](basic_usage.html)
 
 ```html
 <!DOCTYPE html>

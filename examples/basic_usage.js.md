@@ -4,7 +4,7 @@ layout: default
 
 # Basic usage
 
-Raw file: [basic_usage.js](raw/basic_usage.js)
+Raw file: [basic_usage.js](basic_usage.js)
 
 ```js
 // basic usage

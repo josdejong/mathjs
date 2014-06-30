@@ -4,7 +4,7 @@ layout: default
 
 # Requirejs loading
 
-Raw file: [requirejs_loading.html](raw/browser/requirejs_loading.html)
+Raw file: [requirejs_loading.html](requirejs_loading.html)
 
 ```html
 <!DOCTYPE html>

@@ -4,7 +4,7 @@ layout: default
 
 # Angle configuration
 
-Raw file: [angle_configuration.html](raw/browser/angle_configuration.html)
+Raw file: [angle_configuration.html](angle_configuration.html)
 
 ```html
 <!DOCTYPE html>
