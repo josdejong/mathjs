@@ -37,27 +37,27 @@
       {% if page.url == '/index.html' %}
       <div class="selection"></div>
       {% endif %}
-    </a><a href="/download.html">
-      Download
-      {% if page.url == '/download.html' %}
-      <div class="selection"></div>
-      {% endif %}
     </a><a href="/docs/getting_started.html">
       Get started
       {% if page.url == '/docs/getting_started.html' %}
       <div class="selection"></div>
       {% endif %}
-  </a><a href="/docs/index.html">
-      Docs
-      {% if page.url contains '/docs/' and page.url != '/docs/getting_started.html' %}
+    </a><a href="/download.html">
+      Download
+      {% if page.url == '/download.html' %}
       <div class="selection"></div>
       {% endif %}
-  </a><a href="/examples/index.html">
-      Examples
-      {% if page.url contains '/examples/' %}
-      <div class="selection"></div>
-      {% endif %}
-  </a>
+    </a><a href="/docs/index.html">
+        Docs
+        {% if page.url contains '/docs/' and page.url != '/docs/getting_started.html' %}
+        <div class="selection"></div>
+        {% endif %}
+    </a><a href="/examples/index.html">
+        Examples
+        {% if page.url contains '/examples/' %}
+        <div class="selection"></div>
+        {% endif %}
+    </a>
   </div>
 
   {{content}}
