@@ -1043,6 +1043,10 @@ describe('parse', function() {
       assert.throws(function () { n.compile(math).eval(scope); });
     });
 
+    it('should evaluate a symbol with value null or undefined', function () {
+      assert.equal(parse('a').compile(math).eval({a: null}), null);
+      assert.equal(parse('a').compile(math).eval({a: undefined}), undefined);
+    });
 
   });
 

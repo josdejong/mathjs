@@ -5,7 +5,7 @@ var assert = require('assert'),
 describe('node/index', function() {
 
   it('should contain all nodes', function() {
-    assert.equal(Object.keys(index).length, 14);
+    assert.equal(Object.keys(index).length, 13);
 
     assert.strictEqual(index.ArrayNode, require('../../../lib/expression/node/ArrayNode'));
     assert.strictEqual(index.AssignmentNode, require('../../../lib/expression/node/AssignmentNode'));
@@ -18,7 +18,6 @@ describe('node/index', function() {
     assert.strictEqual(index.ParamsNode, require('../../../lib/expression/node/ParamsNode'));
     assert.strictEqual(index.RangeNode, require('../../../lib/expression/node/RangeNode'));
     assert.strictEqual(index.SymbolNode, require('../../../lib/expression/node/SymbolNode'));
-    assert.strictEqual(index.UnitNode, require('../../../lib/expression/node/UnitNode'));
     assert.strictEqual(index.UpdateNode, require('../../../lib/expression/node/UpdateNode'));
   });
 

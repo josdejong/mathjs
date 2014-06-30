@@ -43,7 +43,6 @@
 - [format(value [, precision])](format.md)
 - [gcd(a, b)](gcd.md)
 - [help(search)](help.md)
-- [ifElse(condition, trueExpr, falseExpr)](ifElse.md)
 - [im(x)](im.md)
 - [import(filename | object, override)](import.md)
 - [index(range1, range2, ...)](index.md)

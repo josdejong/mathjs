@@ -133,7 +133,6 @@
 - [clone(x)](clone.md)
 - [forEach(x, callback)](forEach.md)
 - [format(value [, precision])](format.md)
-- [ifElse(condition, trueExpr, falseExpr)](ifElse.md)
 - [import(filename | object, override)](import.md)
 - [map(x, callback)](map.md)
 - [print(template, values [, precision])](print.md)

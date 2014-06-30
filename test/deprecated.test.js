@@ -101,4 +101,10 @@ describe('deprecated stuff', function() {
     }, /is renamed/);
   });
 
+  it ('should throw an error when using deprecated function ifElse', function () {
+    assert.throws(function () {
+      new math.ifElse(true, 1, 0);
+    }, /is deprecated/);
+  });
+
 });
