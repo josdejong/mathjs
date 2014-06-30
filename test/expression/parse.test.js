@@ -75,7 +75,6 @@ describe('parse', function() {
   });
 
   it('should give informative syntax errors', function() {
-    // TODO: assert.throws(function () {parse('sin pi').compile(math).eval()}, /First parameter in Unit constructor must be a number/);
     assert.throws(function () {parse('2 +')}, /Unexpected end of expression \(char 4\)/);
     assert.throws(function () {parse('2 ~ 3')}, /Syntax error in part "~ 3" \(char 3\)/);
     assert.throws(function () {parse('2 + 3\n3 +\n-4')}, /Value expected \(char 10\)/);
