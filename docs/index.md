@@ -41,3 +41,4 @@ describing all available functions, constants, and units in detail.
 - [Functions (categorical)](reference/functions/categorical.md)
 - [History](../HISTORY.md)
 - [Units](reference/units.md)
+

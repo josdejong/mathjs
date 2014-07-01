@@ -1,6 +1,6 @@
 # History
 
-## not yet released, version 0.25.0
+## 2014-07-01, version 0.25.0
 
 - The library now immediately returns a default instance of mathjs, there is
   no need to instantiate math.js in a separate step unless one ones to set 
