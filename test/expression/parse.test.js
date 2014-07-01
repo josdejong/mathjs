@@ -4,6 +4,8 @@ var assert = require('assert'),
     math = require('../../index'),
     ArgumentsError = require('../../lib/error/ArgumentsError'),
     parse = require('../../lib/expression/parse'),
+    ConditionalNode = require('../../lib/expression/node/ConditionalNode'),
+    OperatorNode = require('../../lib/expression/node/OperatorNode'),
     Complex = math.type.Complex,
     Matrix = math.type.Matrix,
     Unit = math.type.Unit;
@@ -899,6 +901,29 @@ describe('parse', function() {
         assert.deepEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'));
         assert.deepEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), new Matrix([1,2]));
         assert.deepEqual(parseAndEval('false ? 1:2:6'), new Matrix([2,3,4,5,6]));
+      });
+
+      it('should respect precedence of conditional operator and comparison operators', function () {
+        var node = math.parse('a == b ? a > b : a < b');
+        assert(node instanceof ConditionalNode);
+        assert.equal(node.condition.toString(), 'a == b');
+        assert.equal(node.trueExpr.toString(), 'a > b');
+        assert.equal(node.falseExpr.toString(), 'a < b');
+      });
+
+      it('should respect precedence of conditional operator and range operator', function () {
+        var node = math.parse('a ? b : c : d');
+        assert(node instanceof ConditionalNode);
+        assert.equal(node.condition.toString(), 'a');
+        assert.equal(node.trueExpr.toString(), 'b');
+        assert.equal(node.falseExpr.toString(), 'c:d');
+      });
+
+      it.skip('should respect precedence of range  operator and comparison operators', function () {
+        var node = math.parse('a:b == c:d');
+        assert(node instanceof OperatorNode);
+        assert.equal(node.params[0].toString(), 'a:b');
+        assert.equal(node.params[1].toString(), 'c:d');
       });
 
       // TODO: extensively test operator precedence

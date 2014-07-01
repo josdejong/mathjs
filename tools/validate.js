@@ -10,7 +10,7 @@ var ignore = [
   // functions not supported by the parser:
   'compile', 'parse', 'parser', 'select', 'print', 'config', 'in',
     // deprecated functions:
-  'workspace', 'unary', 'edivide', 'emultiply', 'epow', 'smallereq', 'largereq'
+  'workspace', 'unary', 'edivide', 'emultiply', 'epow', 'smallereq', 'largereq', 'ifElse'
 ];
 
 // test whether all functions are documented
