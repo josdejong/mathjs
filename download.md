@@ -43,6 +43,10 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 </table>
 
 
+# Source code
+
+The source code of math.js is available on GitHub: https://github.com/josdejong/mathjs.
+
 # History
 
 A changelog describing the changes with each release is available on the page [History](history.html).
