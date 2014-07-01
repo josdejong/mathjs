@@ -16,7 +16,7 @@ Raw file: [old_browsers.html](old_browsers.html)
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-sham.min.js"></script>
 
-  <script type="text/javascript" src="/js/lib/math.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/0.25.0/math.min.js"></script>
 </head>
 <body>
 
@@ -27,7 +27,7 @@ Raw file: [old_browsers.html](old_browsers.html)
 
 <script>
   function print(value) {
-    var precision = 5;
+    var precision = 14;
     document.write(math.format(value, precision) + '<br>');
   }
 

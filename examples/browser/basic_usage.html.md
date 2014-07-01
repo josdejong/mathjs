@@ -11,13 +11,13 @@ Raw file: [basic_usage.html](basic_usage.html)
 <html>
 <head>
   <title>math.js | basic usage</title>
-  <script type="text/javascript" src="/js/lib/math.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/0.25.0/math.min.js"></script>
 </head>
 <body>
 
 <script>
   function print(value) {
-    var precision = 5;
+    var precision = 14;
     document.write(math.format(value, precision) + '<br>');
   }
 

@@ -17,7 +17,7 @@ var math = require('../index');
  * @param {*} value
  */
 function print (value) {
-  var precision = 5;
+  var precision = 14;
   console.log(math.format(value, precision));
 }
 
@@ -47,7 +47,7 @@ console.log();
 console.log('perform operations');
 print(math.add(a, b));          // 8 - 4i
 print(math.multiply(a, b));     // 36 - 26i
-print(math.sin(a));             // -9.6541 + 2.8417i
+print(math.sin(a));             // -9.6541254768548 + 2.8416922956064i
 
 // some operations will return a complex number depending on the arguments
 print(math.sqrt(4));           // 2

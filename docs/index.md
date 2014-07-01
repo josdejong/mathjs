@@ -45,3 +45,4 @@ describing all available functions, constants, and units in detail.
 - [Functions (categorical)](reference/functions/categorical.html)
 - [History](../history.html)
 - [Units](reference/units.html)
+

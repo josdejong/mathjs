@@ -24,7 +24,7 @@ var math = require('../index');
  * @param {*} value
  */
 function print (value) {
-  var precision = 5;
+  var precision = 14;
   console.log(math.format(value, precision));
 }
 

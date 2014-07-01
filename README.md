@@ -10,8 +10,7 @@ To update the website with the latest version of math.js:
 
 - Install the latest math.js via npm:
 
-      npm install mathjs
-      npm update mathjs
+      npm install
 
 - Update the docs, examples, and version number via the build tool:
 

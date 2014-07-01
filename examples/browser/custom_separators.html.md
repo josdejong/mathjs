@@ -23,7 +23,7 @@ Raw file: [custom_separators.html](custom_separators.html)
     }
   </style>
 
-  <script type="text/javascript" src="/js/lib/math.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/0.25.0/math.min.js"></script>
 </head>
 <body>
 

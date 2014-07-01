@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 0.25.0-SNAPSHOT
- * @date    2014-06-30
+ * @version 0.25.0
+ * @date    2014-07-01
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -367,6 +367,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(119)(math, _config);
 	  __webpack_require__(120)(math, _config);
 	  __webpack_require__(121)(math, _config);
+
+	  // TODO: deprecated since version 0.25.0, remove some day.
+	  math.ifElse = function () {
+	    throw new Error('Function ifElse is deprecated. Use the conditional operator instead.');
+	  };
 
 	  // constants
 	  __webpack_require__(2)(math, _config);
@@ -3346,13 +3351,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    BlockNode = __webpack_require__(131),
 	    ConditionalNode = __webpack_require__(132),
 	    ConstantNode = __webpack_require__(133),
-	    FunctionNode = __webpack_require__(134),
-	    IndexNode = __webpack_require__(135),
-	    OperatorNode = __webpack_require__(136),
-	    ParamsNode = __webpack_require__(137),
-	    RangeNode = __webpack_require__(138),
-	    SymbolNode = __webpack_require__(139),
-	    UpdateNode = __webpack_require__(140);
+	    FunctionNode = __webpack_require__(135),
+	    IndexNode = __webpack_require__(134),
+	    OperatorNode = __webpack_require__(137),
+	    ParamsNode = __webpack_require__(138),
+	    RangeNode = __webpack_require__(139),
+	    SymbolNode = __webpack_require__(140),
+	    UpdateNode = __webpack_require__(141);
 
 	/**
 	 * Parse an expression. Returns a node tree, which can be evaluated by
@@ -3771,7 +3776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function parseAssignment () {
 	  var name, args, expr;
 
-	  var node = parseRange();
+	  var node = parseConditional();
 
 	  if (token == '=') {
 	    if (node instanceof SymbolNode) {
@@ -3820,6 +3825,63 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
+	 * conditional operation
+	 *
+	 *     condition ? truePart : falsePart
+	 *
+	 * Note: conditional operator is right-associative
+	 *
+	 * @return {Node} node
+	 * @private
+	 */
+	function parseConditional () {
+	  var node = parseRange();
+
+	  while (token == '?') {
+	    getToken();
+	    var condition = node;
+	    var trueExpr = parseConditions(); // Note: we don't do parseRange here
+
+	    if (token != ':') throw createSyntaxError('False part of conditional expression expected');
+	    getToken();
+
+	    var falseExpr = parseConditional();
+
+	    node = new ConditionalNode(condition, trueExpr, falseExpr);
+	  }
+
+	  return node;
+	}
+
+	/**
+	 * conditional operators and bitshift
+	 * @return {Node} node
+	 * @private
+	 */
+	/* TODO: implement bitwise conditions. put on right place for precedence
+	function parseBitwiseConditions () {
+	  var node = parseRange();
+
+	   var operators = {
+	   '&' : 'bitwiseand',
+	   '|' : 'bitwiseor',
+	   // todo: bitwise xor?
+	   '<<': 'bitshiftleft',
+	   '>>': 'bitshiftright'
+	   };
+	   while (token in operators) {
+	   var name = token;
+
+	   getToken();
+	   var params = [node, parseComparison()];
+	   node = new OperatorNode(name, fn, params);
+	   }
+
+	  return node;
+	}
+	*/
+
+	/**
 	 * parse range, "start:end", "start:step:end", ":", "start:", ":end", etc
 	 * @return {Node} node
 	 * @private
@@ -3833,7 +3895,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  else {
 	    // explicit start
-	    node = parseBitwiseConditions();
+	    node = parseConditions();
 	  }
 
 	  if (token == ':') {
@@ -3848,7 +3910,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      else {
 	        // explicit end
-	        params.push(parseBitwiseConditions());
+	        params.push(parseConditions());
 	      }
 	    }
 
@@ -3865,93 +3927,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * conditional operators and bitshift
-	 * @return {Node} node
-	 * @private
-	 */
-	function parseBitwiseConditions () {
-	  var node = parseConditional();
-
-	  /* TODO: implement bitwise conditions
-	   var operators = {
-	   '&' : 'bitwiseand',
-	   '|' : 'bitwiseor',
-	   // todo: bitwise xor?
-	   '<<': 'bitshiftleft',
-	   '>>': 'bitshiftright'
-	   };
-	   while (token in operators) {
-	   var name = token;
-
-	   getToken();
-	   var params = [node, parseComparison()];
-	   node = new OperatorNode(name, fn, params);
-	   }
-	   */
-
-	  return node;
-	}
-
-	/**
-	 * conditional operation
-	 *
-	 *     condition ? truePart : falsePart
-	 *
-	 * Note: conditional operator is right-associative
-	 *
-	 * @return {Node} node
-	 * @private
-	 */
-	function parseConditional () {
-	  var node = parseComparison();
-
-	  while (token == '?') {
-	    getToken();
-	    var condition = node;
-	    var trueExpr = parseComparison();
-
-	    if (token != ':') throw createSyntaxError('False part of conditional expression expected');
-	    getToken();
-
-	    var falseExpr = parseConditional();
-
-	    node = new ConditionalNode(condition, trueExpr, falseExpr);
-	  }
-
-	  return node;
-	}
-
-	/**
-	 * comparison operators
-	 * @return {Node} node
-	 * @private
-	 */
-	function parseComparison () {
-	  var node, operators, name, fn, params;
-
-	  node = parseConditions();
-
-	  operators = {
-	    '==': 'equal',
-	    '!=': 'unequal',
-	    '<': 'smaller',
-	    '>': 'larger',
-	    '<=': 'smallerEq',
-	    '>=': 'largerEq'
-	  };
-	  while (token in operators) {
-	    name = token;
-	    fn = operators[name];
-
-	    getToken();
-	    params = [node, parseConditions()];
-	    node = new OperatorNode(name, fn, params);
-	  }
-
-	  return node;
-	}
-
-	/**
 	 * conditions like and, or, in
 	 * @return {Node} node
 	 * @private
@@ -3959,7 +3934,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function parseConditions () {
 	  var node, operators, name, fn, params;
 
-	  node = parseAddSubtract();
+	  node = parseComparison();
 
 	  // TODO: precedence of And above Or?
 	  // TODO: implement a method for unit to number conversion
@@ -3975,6 +3950,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	  };
 
+	  while (token in operators) {
+	    name = token;
+	    fn = operators[name];
+
+	    getToken();
+	    params = [node, parseComparison()];
+	    node = new OperatorNode(name, fn, params);
+	  }
+
+	  return node;
+	}
+
+	/**
+	 * comparison operators
+	 * @return {Node} node
+	 * @private
+	 */
+	function parseComparison () {
+	  var node, operators, name, fn, params;
+
+	  node = parseAddSubtract();
+
+	  operators = {
+	    '==': 'equal',
+	    '!=': 'unequal',
+	    '<': 'smaller',
+	    '>': 'larger',
+	    '<=': 'smallerEq',
+	    '>=': 'largerEq'
+	  };
 	  while (token in operators) {
 	    name = token;
 	    fn = operators[name];
@@ -4173,13 +4178,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      getToken();
 
 	      if (token != ')') {
-	        params.push(parseRange());
+	        params.push(parseConditional());
 
 	        // parse a list with parameters
 	        while (token == ',') {
 	          getToken();
 
-	          params.push(parseRange());
+	          params.push(parseConditional());
 	        }
 	      }
 
@@ -4240,12 +4245,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    getToken();
 
 	    if (token != ')') {
-	      params.push(parseRange());
+	      params.push(parseConditional());
 
 	      // parse a list with parameters
 	      while (token == ',') {
 	        getToken();
-	        params.push(parseRange());
+	        params.push(parseConditional());
 	      }
 	    }
 
@@ -4277,12 +4282,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    getToken();
 
 	    if (token != ']') {
-	      params.push(parseRange());
+	      params.push(parseConditional());
 
 	      // parse a list with parameters
 	      while (token == ',') {
 	        getToken();
-	        params.push(parseRange());
+	        params.push(parseConditional());
 	      }
 	    }
 
@@ -4708,14 +4713,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.BlockNode = __webpack_require__(131);
 	exports.ConditionalNode = __webpack_require__(132);
 	exports.ConstantNode = __webpack_require__(133);
-	exports.IndexNode = __webpack_require__(135);
-	exports.FunctionNode = __webpack_require__(134);
-	exports.Node = __webpack_require__(141);
-	exports.OperatorNode = __webpack_require__(136);
-	exports.ParamsNode = __webpack_require__(137);
-	exports.RangeNode = __webpack_require__(138);
-	exports.SymbolNode = __webpack_require__(139);
-	exports.UpdateNode = __webpack_require__(140);
+	exports.IndexNode = __webpack_require__(134);
+	exports.FunctionNode = __webpack_require__(135);
+	exports.Node = __webpack_require__(136);
+	exports.OperatorNode = __webpack_require__(137);
+	exports.ParamsNode = __webpack_require__(138);
+	exports.RangeNode = __webpack_require__(139);
+	exports.SymbolNode = __webpack_require__(140);
+	exports.UpdateNode = __webpack_require__(141);
 
 
 /***/ },
@@ -15479,7 +15484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = '0.25.0-SNAPSHOT';
+	module.exports = '0.25.0';
 	// Note: This file is automatically generated when building math.js.
 	// Changes made in this file will be overwritten.
 
@@ -19655,7 +19660,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141),
+	var Node = __webpack_require__(136),
 	    object = __webpack_require__(3),
 	    string = __webpack_require__(142),
 	    collection = __webpack_require__(11),
@@ -19769,12 +19774,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141),
+	var Node = __webpack_require__(136),
 	    ArrayNode = __webpack_require__(129),
 
-	    keywords = __webpack_require__(266),
+	    keywords = __webpack_require__(267),
 
-	    latex = __webpack_require__(267),
+	    latex = __webpack_require__(266),
 	    isString = __webpack_require__(142).isString;
 
 	/**
@@ -19860,7 +19865,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141),
+	var Node = __webpack_require__(136),
 	    isBoolean = __webpack_require__(264).isBoolean;
 
 	/**
@@ -19976,8 +19981,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141);
-	var latex = __webpack_require__(267);
+	var Node = __webpack_require__(136);
+	var latex = __webpack_require__(266);
 	var BigNumber = __webpack_require__(123);
 	var Complex = __webpack_require__(5);
 	var util = __webpack_require__(128);
@@ -20118,7 +20123,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141),
+	var Node = __webpack_require__(136),
 	    BigNumber = __webpack_require__(123),
 	    type = __webpack_require__(163).type,
 	    isString = __webpack_require__(142).isString;
@@ -20276,118 +20281,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141),
-	    keywords = __webpack_require__(266),
-	    latex = __webpack_require__(267),
-	    isString = __webpack_require__(142).isString;
-	    isArray = Array.isArray;
-
-	/**
-	 * @constructor FunctionNode
-	 * @extends {Node}
-	 * Function assignment
-	 *
-	 * @param {String} name           Function name
-	 * @param {String[]} args         Function argument names
-	 * @param {Node} expr             The function expression
-	 */
-	function FunctionNode(name, args, expr) {
-	  if (!(this instanceof FunctionNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (!isString(name)) throw new TypeError('String expected for parameter "name"');
-	  if (!isArray(args) || !args.every(isString))  throw new TypeError('Array containing strings expected for parameter "args"');
-	  if (!(expr instanceof Node)) throw new TypeError('Node expected for parameter "expr"');
-	  if (name in keywords) throw new Error('Illegal function name, "'  + name +  '" is a reserved keyword');
-
-	  this.name = name;
-	  this.args = args;
-	  this.expr = expr;
-	}
-
-	FunctionNode.prototype = new Node();
-
-	FunctionNode.prototype.type = 'FunctionNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	FunctionNode.prototype._compile = function (defs) {
-	  return 'scope["' + this.name + '"] = ' +
-	      '  (function (scope) {' +
-	      '    scope = Object.create(scope); ' +
-	      '    var fn = function ' + this.name + '(' + this.args.join(',') + ') {' +
-	      '      if (arguments.length != ' + this.args.length + ') {' +
-	      // TODO: use util.error.ArgumentsError here
-	      // TODO: test arguments error
-	      '        throw new SyntaxError("Wrong number of arguments in function ' + this.name + ' (" + arguments.length + " provided, ' + this.args.length + ' expected)");' +
-	      '      }' +
-	      this.args.map(function (variable, index) {
-	        return 'scope["' + variable + '"] = arguments[' + index + '];';
-	      }).join('') +
-	      '      return ' + this.expr._compile(defs) + '' +
-	      '    };' +
-	      '    fn.syntax = "' + this.name + '(' + this.args.join(', ') + ')";' +
-	      '    return fn;' +
-	      '  })(scope);';
-	};
-
-	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
-	 */
-	FunctionNode.prototype.find = function (filter) {
-	  var nodes = [];
-
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
-
-	  // search in expression
-	  nodes = nodes.concat(this.expr.find(filter));
-
-	  return nodes;
-	};
-
-	/**
-	 * get string representation
-	 * @return {String} str
-	 */
-	FunctionNode.prototype.toString = function() {
-	  return 'function ' + this.name +
-	      '(' + this.args.join(', ') + ') = ' +
-	      this.expr.toString();
-	};
-
-	/**
-	 * get LaTeX representation
-	 * @return {String} str
-	 */
-	FunctionNode.prototype.toTex = function() {
-	  return this.name +
-	      latex.addBraces(this.args.map(latex.toSymbol).join(', '), true) + '=' +
-	      latex.addBraces(this.expr.toTex());
-	};
-
-	module.exports = FunctionNode;
-
-
-/***/ },
-/* 135 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Node = __webpack_require__(141),
-	    RangeNode = __webpack_require__(138),
-	    SymbolNode = __webpack_require__(139),
+	var Node = __webpack_require__(136),
+	    RangeNode = __webpack_require__(139),
+	    SymbolNode = __webpack_require__(140),
 
 	    isNode = Node.isNode;
 
@@ -20582,14 +20478,305 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = IndexNode;
 
 /***/ },
+/* 135 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Node = __webpack_require__(136),
+	    keywords = __webpack_require__(267),
+	    latex = __webpack_require__(266),
+	    isString = __webpack_require__(142).isString;
+	    isArray = Array.isArray;
+
+	/**
+	 * @constructor FunctionNode
+	 * @extends {Node}
+	 * Function assignment
+	 *
+	 * @param {String} name           Function name
+	 * @param {String[]} args         Function argument names
+	 * @param {Node} expr             The function expression
+	 */
+	function FunctionNode(name, args, expr) {
+	  if (!(this instanceof FunctionNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (!isString(name)) throw new TypeError('String expected for parameter "name"');
+	  if (!isArray(args) || !args.every(isString))  throw new TypeError('Array containing strings expected for parameter "args"');
+	  if (!(expr instanceof Node)) throw new TypeError('Node expected for parameter "expr"');
+	  if (name in keywords) throw new Error('Illegal function name, "'  + name +  '" is a reserved keyword');
+
+	  this.name = name;
+	  this.args = args;
+	  this.expr = expr;
+	}
+
+	FunctionNode.prototype = new Node();
+
+	FunctionNode.prototype.type = 'FunctionNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	FunctionNode.prototype._compile = function (defs) {
+	  return 'scope["' + this.name + '"] = ' +
+	      '  (function (scope) {' +
+	      '    scope = Object.create(scope); ' +
+	      '    var fn = function ' + this.name + '(' + this.args.join(',') + ') {' +
+	      '      if (arguments.length != ' + this.args.length + ') {' +
+	      // TODO: use util.error.ArgumentsError here
+	      // TODO: test arguments error
+	      '        throw new SyntaxError("Wrong number of arguments in function ' + this.name + ' (" + arguments.length + " provided, ' + this.args.length + ' expected)");' +
+	      '      }' +
+	      this.args.map(function (variable, index) {
+	        return 'scope["' + variable + '"] = arguments[' + index + '];';
+	      }).join('') +
+	      '      return ' + this.expr._compile(defs) + '' +
+	      '    };' +
+	      '    fn.syntax = "' + this.name + '(' + this.args.join(', ') + ')";' +
+	      '    return fn;' +
+	      '  })(scope);';
+	};
+
+	/**
+	 * Find all nodes matching given filter
+	 * @param {Object} filter  See Node.find for a description of the filter options
+	 * @returns {Node[]} nodes
+	 */
+	FunctionNode.prototype.find = function (filter) {
+	  var nodes = [];
+
+	  // check itself
+	  if (this.match(filter)) {
+	    nodes.push(this);
+	  }
+
+	  // search in expression
+	  nodes = nodes.concat(this.expr.find(filter));
+
+	  return nodes;
+	};
+
+	/**
+	 * get string representation
+	 * @return {String} str
+	 */
+	FunctionNode.prototype.toString = function() {
+	  return 'function ' + this.name +
+	      '(' + this.args.join(', ') + ') = ' +
+	      this.expr.toString();
+	};
+
+	/**
+	 * get LaTeX representation
+	 * @return {String} str
+	 */
+	FunctionNode.prototype.toTex = function() {
+	  return this.name +
+	      latex.addBraces(this.args.map(latex.toSymbol).join(', '), true) + '=' +
+	      latex.addBraces(this.expr.toTex());
+	};
+
+	module.exports = FunctionNode;
+
+
+/***/ },
 /* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141),
+	var error = __webpack_require__(4),
+	    keywords = __webpack_require__(267);
+
+	    /**
+	 * Node
+	 */
+	function Node() {
+	  if (!(this instanceof Node)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+	}
+
+	/**
+	 * Evaluate the node
+	 * @return {*} result
+	 */
+	// TODO: cleanup deprecated code one day. Deprecated since version 0.19.0
+	Node.prototype.eval = function () {
+	  throw new Error('Node.eval is deprecated. ' +
+	      'Use Node.compile(math).eval([scope]) instead.');
+	};
+
+	Node.prototype.type = 'Node';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} math             math.js instance
+	 * @return {{eval: function}} expr  Returns an object with a function 'eval',
+	 *                                  which can be invoked as expr.eval([scope]),
+	 *                                  where scope is an optional object with
+	 *                                  variables.
+	 */
+	Node.prototype.compile = function (math) {
+	  if (!(math instanceof Object)) {
+	    throw new TypeError('Object expected for parameter math');
+	  }
+
+	  // definitions globally available inside the closure of the compiled expressions
+	  var defs = {
+	    math: math,
+	    error: error,
+	    validateScope: validateScope
+	  };
+
+	  var code = this._compile(defs);
+
+	  var defsCode = Object.keys(defs).map(function (name) {
+	    return '    var ' + name + ' = defs["' + name + '"];';
+	  });
+
+	  var factoryCode =
+	      defsCode.join(' ') +
+	          'return {' +
+	          '  "eval": function (scope) {' +
+	          '    try {' +
+	          '      if (scope) defs.validateScope(scope);' +
+	          '      scope = scope || {};' +
+	          '      return ' + code + ';' +
+	          '    } catch (err) {' +
+	                 // replace an index-out-of-range-error with a one-based message
+	          '      if (err instanceof defs.error.IndexError) {' +
+	          '        err = new defs.error.IndexError(err.index + 1, err.min + 1, err.max + 1);' +
+	          '      }' +
+	          '      throw err;' +
+	          '    }' +
+	          '  }' +
+	          '};';
+
+	  var factory = new Function ('defs', factoryCode);
+	  return factory(defs);
+	};
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          and constants globally available inside the closure
+	 *                          of the compiled expression
+	 * @return {String} js
+	 * @private
+	 */
+	Node.prototype._compile = function (defs) {
+	  throw new Error('Cannot compile a Node interface');
+	};
+
+	/**
+	 * Find any node in the node tree matching given filter. For example, to
+	 * find all nodes of type SymbolNode having name 'x':
+	 *
+	 *     var results = Node.find({
+	 *         type: SymbolNode,
+	 *         properties: {
+	 *             name: 'x'
+	 *         }
+	 *     });
+	 *
+	 * @param {Object} filter       Available parameters:
+	 *                                  {Function} type
+	 *                                  {Object<String, String>} properties
+	 * @return {Node[]} nodes       An array with nodes matching given filter criteria
+	 */
+	Node.prototype.find = function (filter) {
+	  return this.match(filter) ? [this] : [];
+	};
+
+	/**
+	 * Test if this object matches given filter
+	 * @param {Object} [filter]     Available parameters:
+	 *                              {Function} type
+	 *                              {Object<String, *>} properties
+	 * @return {Boolean} matches    True if there is a match
+	 */
+	Node.prototype.match = function (filter) {
+	  var match = true;
+
+	  if (filter) {
+	    if (filter.type && !(this instanceof filter.type)) {
+	      match = false;
+	    }
+
+	    var properties = filter.properties;
+	    if (match && properties) {
+	      for (var prop in properties) {
+	        if (properties.hasOwnProperty(prop)) {
+	          if (this[prop] !== properties[prop]) {
+	            match = false;
+	            break;
+	          }
+	        }
+	      }
+	    }
+	  }
+
+	  return match;
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String}
+	 */
+	Node.prototype.toString = function() {
+	  return '';
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String}
+	 */
+	Node.prototype.toTex = function() {
+	  return '';
+	};
+
+	/**
+	 * Test whether an object is a Node
+	 * @param {*} object
+	 * @returns {boolean} isNode
+	 */
+	Node.isNode = function isNode (object) {
+	  return object instanceof Node;
+	};
+
+	/**
+	 * Validate the symbol names of a scope.
+	 * Throws an error when the scope contains an illegal symbol.
+	 * @param {Object} scope
+	 */
+	function validateScope (scope) {
+	  for (var symbol in scope) {
+	    if (scope.hasOwnProperty(symbol)) {
+	      if (symbol in keywords) {
+	        throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword');
+	      }
+	    }
+	  }
+	}
+
+	module.exports = Node;
+
+
+/***/ },
+/* 137 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Node = __webpack_require__(136),
 	    ConstantNode = __webpack_require__(133),
-	    SymbolNode = __webpack_require__(139),
-	    ParamsNode = __webpack_require__(137),
-	    latex = __webpack_require__(267);
+	    SymbolNode = __webpack_require__(140),
+	    ParamsNode = __webpack_require__(138),
+	    latex = __webpack_require__(266);
 
 	/**
 	 * @constructor OperatorNode
@@ -20781,12 +20968,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 137 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141),
+	var Node = __webpack_require__(136),
 
-	    latex = __webpack_require__(267),
+	    latex = __webpack_require__(266),
 	    isNode = Node.isNode;
 
 	/**
@@ -20878,10 +21065,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 138 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141),
+	var Node = __webpack_require__(136),
 
 	    isNode = Node.isNode;
 
@@ -20984,13 +21171,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 139 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141),
+	var Node = __webpack_require__(136),
 	    Unit = __webpack_require__(9),
 
-	    latex = __webpack_require__(267),
+	    latex = __webpack_require__(266),
 	    isString = __webpack_require__(142).isString;
 
 	/**
@@ -21067,11 +21254,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 140 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Node = __webpack_require__(141),
-	    IndexNode = __webpack_require__(135);
+	var Node = __webpack_require__(136),
+	    IndexNode = __webpack_require__(134);
 
 	/**
 	 * @constructor UpdateNode
@@ -21153,188 +21340,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = UpdateNode;
-
-
-/***/ },
-/* 141 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var error = __webpack_require__(4),
-	    keywords = __webpack_require__(266);
-
-	    /**
-	 * Node
-	 */
-	function Node() {
-	  if (!(this instanceof Node)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-	}
-
-	/**
-	 * Evaluate the node
-	 * @return {*} result
-	 */
-	// TODO: cleanup deprecated code one day. Deprecated since version 0.19.0
-	Node.prototype.eval = function () {
-	  throw new Error('Node.eval is deprecated. ' +
-	      'Use Node.compile(math).eval([scope]) instead.');
-	};
-
-	Node.prototype.type = 'Node';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} math             math.js instance
-	 * @return {{eval: function}} expr  Returns an object with a function 'eval',
-	 *                                  which can be invoked as expr.eval([scope]),
-	 *                                  where scope is an optional object with
-	 *                                  variables.
-	 */
-	Node.prototype.compile = function (math) {
-	  if (!(math instanceof Object)) {
-	    throw new TypeError('Object expected for parameter math');
-	  }
-
-	  // definitions globally available inside the closure of the compiled expressions
-	  var defs = {
-	    math: math,
-	    error: error,
-	    validateScope: validateScope
-	  };
-
-	  var code = this._compile(defs);
-
-	  var defsCode = Object.keys(defs).map(function (name) {
-	    return '    var ' + name + ' = defs["' + name + '"];';
-	  });
-
-	  var factoryCode =
-	      defsCode.join(' ') +
-	          'return {' +
-	          '  "eval": function (scope) {' +
-	          '    try {' +
-	          '      if (scope) defs.validateScope(scope);' +
-	          '      scope = scope || {};' +
-	          '      return ' + code + ';' +
-	          '    } catch (err) {' +
-	                 // replace an index-out-of-range-error with a one-based message
-	          '      if (err instanceof defs.error.IndexError) {' +
-	          '        err = new defs.error.IndexError(err.index + 1, err.min + 1, err.max + 1);' +
-	          '      }' +
-	          '      throw err;' +
-	          '    }' +
-	          '  }' +
-	          '};';
-
-	  var factory = new Function ('defs', factoryCode);
-	  return factory(defs);
-	};
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          and constants globally available inside the closure
-	 *                          of the compiled expression
-	 * @return {String} js
-	 * @private
-	 */
-	Node.prototype._compile = function (defs) {
-	  throw new Error('Cannot compile a Node interface');
-	};
-
-	/**
-	 * Find any node in the node tree matching given filter. For example, to
-	 * find all nodes of type SymbolNode having name 'x':
-	 *
-	 *     var results = Node.find({
-	 *         type: SymbolNode,
-	 *         properties: {
-	 *             name: 'x'
-	 *         }
-	 *     });
-	 *
-	 * @param {Object} filter       Available parameters:
-	 *                                  {Function} type
-	 *                                  {Object<String, String>} properties
-	 * @return {Node[]} nodes       An array with nodes matching given filter criteria
-	 */
-	Node.prototype.find = function (filter) {
-	  return this.match(filter) ? [this] : [];
-	};
-
-	/**
-	 * Test if this object matches given filter
-	 * @param {Object} [filter]     Available parameters:
-	 *                              {Function} type
-	 *                              {Object<String, *>} properties
-	 * @return {Boolean} matches    True if there is a match
-	 */
-	Node.prototype.match = function (filter) {
-	  var match = true;
-
-	  if (filter) {
-	    if (filter.type && !(this instanceof filter.type)) {
-	      match = false;
-	    }
-
-	    var properties = filter.properties;
-	    if (match && properties) {
-	      for (var prop in properties) {
-	        if (properties.hasOwnProperty(prop)) {
-	          if (this[prop] !== properties[prop]) {
-	            match = false;
-	            break;
-	          }
-	        }
-	      }
-	    }
-	  }
-
-	  return match;
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String}
-	 */
-	Node.prototype.toString = function() {
-	  return '';
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String}
-	 */
-	Node.prototype.toTex = function() {
-	  return '';
-	};
-
-	/**
-	 * Test whether an object is a Node
-	 * @param {*} object
-	 * @returns {boolean} isNode
-	 */
-	Node.isNode = function isNode (object) {
-	  return object instanceof Node;
-	};
-
-	/**
-	 * Validate the symbol names of a scope.
-	 * Throws an error when the scope contains an illegal symbol.
-	 * @param {Object} scope
-	 */
-	function validateScope (scope) {
-	  for (var symbol in scope) {
-	    if (scope.hasOwnProperty(symbol)) {
-	      if (symbol in keywords) {
-	        throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword');
-	      }
-	    }
-	  }
-	}
-
-	module.exports = Node;
 
 
 /***/ },
@@ -25088,18 +25093,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// Reserved keywords not allowed to use in the parser
-	module.exports = {
-	  end: true
-	};
-
-
-/***/ },
-/* 267 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var ArrayNode = __webpack_require__(129),
-	    OperatorNode = __webpack_require__(136);
+	    OperatorNode = __webpack_require__(137);
 
 	// GREEK LETTERS
 	var greek = {
@@ -25587,6 +25582,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return prefix + (showFunc ? func : '') +
 	      exports.addBraces(texParams, brace, type) +
 	      suffix;
+	};
+
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// Reserved keywords not allowed to use in the parser
+	module.exports = {
+	  end: true
 	};
 
 
