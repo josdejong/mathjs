@@ -903,6 +903,14 @@ describe('parse', function() {
         assert.deepEqual(parseAndEval('false ? 1:2:6'), new Matrix([2,3,4,5,6]));
       });
 
+      it('should respect precedence of comparison operator and conversion operators', function () {
+        var node = math.parse('a == b to c'); // (a == b) to c
+        assert.equal(node.op, 'to');
+
+        var node2 = math.parse('a to b == c');
+        assert.equal(node2.op, 'to');
+      });
+
       it('should respect precedence of conditional operator and comparison operators', function () {
         var node = math.parse('a == b ? a > b : a < b');
         assert(node instanceof ConditionalNode);
