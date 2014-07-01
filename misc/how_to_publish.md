@@ -93,19 +93,10 @@ Install the libraries locally and test whether they work correctly:
 
 ## Update the website
 
-The website is located in the gh-pages branch of the project.
+Wait until the new version of math.js is available on cdnjs.org.
 
-Wait until the new version is available on cdnjs.org.
-
-Copy the files `./dist/math.js`, `./dist/math.min.js`, and `./dist/math.map` 
-from the master branch to the folder `js/lib` of the gh-pages branch of the 
-math.js project. Run the following script in the root of the project:
-
-    node updateversion.js
-
-Commit and push the changes in the gh-pages branch.
-
-Test whether the website shows the updated library (can have a little delay).
+The website is located in the `gh-pages` branch of the project.
+Follow the readme in the `gh-pages` branch on how to update the website.
 
 
 ## Update version number
