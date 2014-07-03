@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function permutations
+<h1 id="function-permutations">Function permutations</h1>
 
 Compute the number of ways of obtaining an ordered subset of `k` elements
 from a set of `n` elements.
@@ -11,28 +11,28 @@ Permutations only takes integer arguments.
 The following condition must be enforced: k <= n.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.permutations(n)
 math.permutations(n, k)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `n` | Number &#124; BigNumber | The number of objects in total
 `k` | Number &#124; BigNumber | The number of objects in the subset
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber | The number of permutations
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.permutations(5);     // 120
@@ -40,7 +40,7 @@ math.permutations(5, 3);  // 60
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [combinations](combinations.html),
 [factorial](factorial.html)

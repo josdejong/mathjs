@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function sec
+<h1 id="function-sec">Function sec</h1>
 
 Calculate the secant of a value, defined as `sec(x) = 1/cos(x)`.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.sec(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Secant of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.sec(2);      // returns Number -2.4029979617223822
@@ -36,7 +36,7 @@ math.sec(2);      // returns Number -2.4029979617223822
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [cos](cos.html),
 [csc](csc.html),

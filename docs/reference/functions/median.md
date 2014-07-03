@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function median
+<h1 id="function-median">Function median</h1>
 
 Compute the median of a matrix or a list with values. The values are
 sorted and the middle value is returned. In case of an even number of
@@ -13,27 +13,27 @@ In case of a (multi dimensional) array or matrix, the median of all
 elements will be calculated.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 mean.median(a, b, c, ...)
 mean.median(A)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | ... * | A single matrix or or multiple scalar values
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 * | The median
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.median(5, 2, 7);        // returns 5
@@ -41,7 +41,7 @@ math.median([3, -1, 5, 7]);  // returns 4
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [mean](mean.html),
 [min](min.html),

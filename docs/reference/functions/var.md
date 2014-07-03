@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function var
+<h1 id="function-var">Function var</h1>
 
 Compute the variance of a matrix or a  list with values.
 In case of a (multi dimensional) array or matrix, the variance over all
@@ -19,7 +19,7 @@ case, the function can be called as `math['var'](...)` instead of
 `math.var(...)`.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.var(a, b, c, ...)
@@ -27,21 +27,21 @@ math.var(A)
 math.var(A, normalization)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
 `normalization` | String |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 * | The variance
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.var(2, 4, 6);                     // returns 4
@@ -53,7 +53,7 @@ math.var([[1, 2, 3], [4, 5, 6]]);      // returns 3.5
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [mean](mean.html),
 [median](median.html),

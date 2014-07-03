@@ -2,32 +2,32 @@
 layout: default
 ---
 
-# Function exp
+<h1 id="function-exp">Function exp</h1>
 
 Calculate the exponent of a value.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.exp(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | A number or matrix to exponentiate
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Exponent of `x`
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.exp(2);                  // returns Number 7.3890560989306495
@@ -43,7 +43,7 @@ math.exp([1, 2, 3]);
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [log](log.html),
 [pow](pow.html)

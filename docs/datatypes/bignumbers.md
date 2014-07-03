@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# BigNumbers
+<h1 id="bignumbers">BigNumbers</h1>
 
 For calculations with an arbitrary precision, math.js supports a `BigNumber`
 data type. BigNumber support is powered by

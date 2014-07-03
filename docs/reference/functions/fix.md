@@ -2,32 +2,32 @@
 layout: default
 ---
 
-# Function fix
+<h1 id="function-fix">Function fix</h1>
 
 Round a value towards zero.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.fix(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Rounded value
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.fix(3.2);                // returns Number 3
@@ -42,7 +42,7 @@ math.fix([3.2, 3.8, -4.7]);   // returns Array [3, 3, -4]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [ceil](ceil.html),
 [floor](floor.html),

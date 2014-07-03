@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function tan
+<h1 id="function-tan">Function tan</h1>
 
 Calculate the tangent of a value. `tan(x)` is equal to `sin(x) / cos(x)`.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.tan(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Tangent of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.tan(0.5);                    // returns Number 0.5463024898437905
@@ -38,7 +38,7 @@ math.tan(math.unit(45, 'deg'));   // returns Number 1
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [atan](atan.html),
 [sin](sin.html),

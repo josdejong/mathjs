@@ -2,31 +2,31 @@
 layout: default
 ---
 
-# Function clone
+<h1 id="function-clone">Function clone</h1>
 
 Clone an object.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.clone(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | * | Object to be cloned
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 * | A clone of object x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.clone(3.5);              // returns number 3.5

@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function add
+<h1 id="function-add">Function add</h1>
 
 Add two values, `x + y`.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.add(x, y)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | First value to add
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | Second value to add
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | Sum of `x` and `y`
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.add(2, 3);               // returns Number 5
@@ -45,7 +45,7 @@ math.add(c, d);               // returns Unit 52.1 mm
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [subtract](subtract.html)
 

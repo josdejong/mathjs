@@ -2,13 +2,13 @@
 layout: default
 ---
 
-# Units
+<h1 id="units">Units</h1>
 
 Math.js supports units. Units can be used to do calculations and to perform
 conversions.
 
 
-## API
+<h2 id="api">API</h2>
 
 Units can be created using the function `math.unit`. This function accepts
 either a single string argument containing a value and unit, or two arguments,
@@ -66,7 +66,7 @@ d.toString();                       // String "5.08 cm"
 ```
 
 
-## Calculations
+<h2 id="calculations">Calculations</h2>
 
 Basic operations `add`, `subtract`, `multiply`, and `divide` can be performed
 on units. Trigonometric functions like `sin` support units with an angle as
@@ -83,6 +83,6 @@ math.cos(c);                        // Number 0.7071067811865476
 ```
 
 
-## Reference
+<h2 id="reference">Reference</h2>
 
 All available units and prefixes are listed on the page [Unit reference](../reference/units.html).

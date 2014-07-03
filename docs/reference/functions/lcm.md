@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function lcm
+<h1 id="function-lcm">Function lcm</h1>
 
 Calculate the least common multiple for two or more values or arrays.
 
@@ -13,27 +13,27 @@ lcm is defined as:
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.lcm(a, b)
 math.lcm(a, b, c, ...)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | ... Number &#124; Boolean &#124; Array &#124; Matrix | Two or more integer numbers
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Array &#124; Matrix | The least common multiple
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.lcm(4, 6);               // returns 12
@@ -44,7 +44,7 @@ math.lcm([4, 6], [6, 21]);    // returns [12, 42]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [gcd](gcd.html),
 [xgcd](xgcd.html)

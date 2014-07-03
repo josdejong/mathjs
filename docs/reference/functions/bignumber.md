@@ -2,32 +2,32 @@
 layout: default
 ---
 
-# Function bignumber
+<h1 id="function-bignumber">Function bignumber</h1>
 
 Create a BigNumber, which can store numbers with arbitrary precision.
 When a matrix is provided, all elements will be converted to BigNumber.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.bignumber(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `value` | Number &#124; String &#124; Array &#124; Matrix | Value for the big number, 0 by default.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 BigNumber | The created bignumber
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 0.1 + 0.2;                                  // returns Number 0.30000000000000004
@@ -39,7 +39,7 @@ math.bignumber('7.2e500');                  // returns BigNumber 7.2e500
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [boolean](boolean.html),
 [complex](complex.html),

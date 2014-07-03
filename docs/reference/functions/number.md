@@ -2,32 +2,32 @@
 layout: default
 ---
 
-# Function number
+<h1 id="function-number">Function number</h1>
 
 Create a number or convert a string to a number.
 When value is a matrix, all elements will be converted to number.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.number(value)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix | Value to be converted
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Array &#124; Matrix | The created number
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.number(2);                         // returns number 2
@@ -37,7 +37,7 @@ math.number([true, false, true, true]); // returns [1, 0, 1, 1]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [bignumber](bignumber.html),
 [boolean](boolean.html),

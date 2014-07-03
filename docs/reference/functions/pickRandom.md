@@ -2,39 +2,39 @@
 layout: default
 ---
 
-# Function pickRandom
+<h1 id="function-pickrandom">Function pickRandom</h1>
 
 Random pick a value from a one dimensional array.
 Array element is picked using a random function with uniform distribution.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.pickRandom(array)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array | A one dimensional array
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number | One of the elements of the provided input array
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.pickRandom([3, 6, 12, 2]);       // returns one of the values in the array
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [random](random.html),
 [randomInt](randomInt.html),

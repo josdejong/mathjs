@@ -2,12 +2,12 @@
 layout: default
 ---
 
-# Function complex
+<h1 id="function-complex">Function complex</h1>
 
 Create a complex value or convert a value to a complex value.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.complex()                           // creates a complex value with zero
@@ -27,20 +27,20 @@ math.complex({r: number, phi: number})   // creates a complex value with provide
                                          // polar coordinates
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | * &#124; Array &#124; Matrix |  Arguments specifying the real and imaginary part of the complex number
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Complex &#124; Array &#124; Matrix | Returns a complex value
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 var a = math.complex(3, -4);     // a = Complex 3 - 4i
@@ -52,7 +52,7 @@ var d = math.add(a, b);          // Complex 5 + 2i
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [bignumber](bignumber.html),
 [boolean](boolean.html),

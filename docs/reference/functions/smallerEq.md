@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function smallerEq
+<h1 id="function-smallereq">Function smallerEq</h1>
 
 Test whether value x is smaller or equal to y.
 
@@ -12,27 +12,27 @@ function cannot be used to compare values smaller than approximately 2.22e-16.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.smallerEq(x, y)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix | First value to compare
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix | Second value to compare
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Boolean &#124; Array &#124; Matrix | Returns true when the x is smaller than y, else returns false
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.smaller(1 + 2, 3);        // returns false
@@ -40,7 +40,7 @@ math.smallerEq(1 + 2, 3);      // returns true
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [equal](equal.html),
 [unequal](unequal.html),

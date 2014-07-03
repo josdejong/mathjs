@@ -2,31 +2,31 @@
 layout: default
 ---
 
-# Function size
+<h1 id="function-size">Function size</h1>
 
 Calculate the size of a matrix or scalar.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.size(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Boolean &#124; Number &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | A matrix
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Array &#124; Matrix | A vector with size of `x`.
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.size(2.3);                  // returns []
@@ -38,7 +38,7 @@ math.size(math.range(1,6));      // returns [5]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [resize](resize.html),
 [squeeze](squeeze.html),

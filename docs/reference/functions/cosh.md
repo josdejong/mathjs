@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function cosh
+<h1 id="function-cosh">Function cosh</h1>
 
 Calculate the hyperbolic cosine of a value,
 defined as `cosh(x) = 1/2 * (exp(x) + exp(-x))`.
@@ -10,33 +10,33 @@ defined as `cosh(x) = 1/2 * (exp(x) + exp(-x))`.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.cosh(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic cosine of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.cosh(0.5);       // returns Number 1.1276259652063807
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [sinh](sinh.html),
 [tanh](tanh.html)

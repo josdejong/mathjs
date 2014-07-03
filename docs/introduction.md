@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Introduction
+<h1 id="introduction">Introduction</h1>
 
 [Math.js](http://mathjs.org) is an extensive math library.
 It features a flexible expression parser and offers an integrated solution
@@ -11,7 +11,7 @@ to work with numbers, big numbers, complex numbers, units, and matrices.
 Math.js can be used in node.js and in the browser. Installation and download instructions are available on the [Download page](http://mathjs.org/download.html) of the website. A [Getting Started](getting_started.html) tutorial describes how to start using math.js. Code examples are available [here](http://mathjs.org/examples/index.html).
 
 
-## Usage
+<h2 id="usage">Usage</h2>
 
 Math.js can be used in three different ways:
 
@@ -50,7 +50,7 @@ Math.js can be used in three different ways:
 A listing with all available functions, units, and constants can be found in the [reference section](reference/index.html).
 
 
-## Data types
+<h2 id="data-types">Data types</h2>
 
 The functions available in math.js support multiple data types: Number, BigNumber, Complex, Unit, String, Matrix, and Array. Different data types can be mixed together in calculations.
 

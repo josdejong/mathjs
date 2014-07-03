@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function csch
+<h1 id="function-csch">Function csch</h1>
 
 Calculate the hyperbolic cosecant of a value,
 defined as `csch(x) = 1 / sinh(x)`.
@@ -10,26 +10,26 @@ defined as `csch(x) = 1 / sinh(x)`.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.csch(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic cosecant of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 // csch(x) = 1/ sinh(x)
@@ -38,7 +38,7 @@ math.csch(0.5);       // returns 1.9190347513349437
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [sinh](sinh.html),
 [sech](sech.html),

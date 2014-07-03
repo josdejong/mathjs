@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function csc
+<h1 id="function-csc">Function csc</h1>
 
 Calculate the cosecant of a value, defined as `csc(x) = 1/sin(x)`.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.csc(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Cosecant of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.csc(2);      // returns Number 1.099750170294617
@@ -36,7 +36,7 @@ math.csc(2);      // returns Number 1.099750170294617
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [sin](sin.html),
 [sec](sec.html),

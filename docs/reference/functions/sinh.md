@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function sinh
+<h1 id="function-sinh">Function sinh</h1>
 
 Calculate the hyperbolic sine of a value,
 defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
@@ -10,33 +10,33 @@ defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.sinh(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic sine of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.sinh(0.5);       // returns Number 0.5210953054937474
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [cosh](cosh.html),
 [tanh](tanh.html)

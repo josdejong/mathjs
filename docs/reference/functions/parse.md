@@ -2,13 +2,13 @@
 layout: default
 ---
 
-# Function parse
+<h1 id="function-parse">Function parse</h1>
 
 Parse an expression.
 Returns a node tree which can be compiled and evaluated.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.parse(expr)
@@ -17,21 +17,21 @@ math.parse([expr1, expr2, expr3, ...])
 math.parse([expr1, expr2, expr3, ...], nodes)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `expr` | String &#124; String[] &#124; Matrix | Expression to be parsed
 `nodes` | Object<String, Node> | Optional custom nodes
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Node &#124; Node[] | A node tree
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 var node = math.parse('sqrt(3^2 + 4^2)');

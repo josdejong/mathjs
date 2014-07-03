@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function sqrt
+<h1 id="function-sqrt">Function sqrt</h1>
 
 Calculate the square root of a value.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.sqrt(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the square root.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix |  Returns the square root of `x`
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.sqrt(25);                // returns 5
@@ -37,7 +37,7 @@ math.sqrt(-4);                // returns Complex -2i
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [square](square.html),
 [multiply](multiply.html)

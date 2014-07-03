@@ -2,32 +2,32 @@
 layout: default
 ---
 
-# Function cube
+<h1 id="function-cube">Function cube</h1>
 
 Compute the cube of a value, `x * x * x`.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.cube(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number for which to calculate the cube
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Cube of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.cube(2);            // returns Number 8
@@ -39,7 +39,7 @@ math.cube([1, 2, 3, 4]); // returns Array [1, 8, 27, 64]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [multiply](multiply.html),
 [square](square.html),

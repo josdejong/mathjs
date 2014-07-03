@@ -2,11 +2,11 @@
 layout: default
 ---
 
-# Unit reference
+<h1 id="unit-reference">Unit reference</h1>
 
 This page lists all available units and prefixes. How to use units is explained on the page [Units](../datatypes/units.html).
 
-## Units
+<h2 id="units">Units</h2>
 
 Math.js comes with the following built-in units.
 
@@ -27,7 +27,7 @@ Force               | newton (N), poundforce (lbf)
 Binary              | bit (b), byte (B)
 
 
-## Prefixes
+<h2 id="prefixes">Prefixes</h2>
 
 The following decimal prefixes are available.
 

@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Complex Numbers
+<h1 id="complex-numbers">Complex Numbers</h1>
 
 Math.js supports creation, manipulation, and calculations with complex numbers.
 
@@ -15,7 +15,7 @@ complex number, having real part `3` and imaginary part `2`.
 Complex numbers are often used in applied mathematics, control theory,
 signal analysis, fluid dynamics and other fields.
 
-## API
+<h2 id="api">API</h2>
 
 A complex number is created using the function `math.complex`. This function
 accepts:
@@ -78,7 +78,7 @@ A `Complex` object has the following functions:
   as `a + bi` where `a` is the real part and `b` the imaginary part.
 
 
-## Calculations
+<h2 id="calculations">Calculations</h2>
 
 Most functions of math.js support complex numbers. Complex and real numbers
 can be used together.

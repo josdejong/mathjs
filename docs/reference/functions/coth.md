@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function coth
+<h1 id="function-coth">Function coth</h1>
 
 Calculate the hyperbolic cotangent of a value,
 defined as `coth(x) = 1 / tanh(x)`.
@@ -10,26 +10,26 @@ defined as `coth(x) = 1 / tanh(x)`.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.coth(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic cotangent of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 // coth(x) = 1 / tanh(x)
@@ -38,7 +38,7 @@ math.coth(2);         // returns 1.0373147207275482
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [sinh](sinh.html),
 [tanh](tanh.html),

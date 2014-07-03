@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function equal
+<h1 id="function-equal">Function equal</h1>
 
 Test whether two values are equal.
 
@@ -14,27 +14,27 @@ For matrices, the function is evaluated element wise.
 In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.equal(x, y)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null &#124; undefined | First value to compare
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null &#124; undefined | Second value to compare
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Boolean &#124; Array &#124; Matrix | Returns true when the compared values are equal, else returns false
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.equal(2 + 2, 3);         // returns false
@@ -52,7 +52,7 @@ math.deepEqual(c, d);         // returns false
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [unequal](unequal.html),
 [smaller](smaller.html),

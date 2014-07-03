@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Numbers
+<h1 id="numbers">Numbers</h1>
 
 Math.js supports two types of numbers:
 
@@ -10,7 +10,7 @@ Math.js supports two types of numbers:
 - BigNumber for arbitrary precision arithmetic, describe on the page
   [BigNumbers](bignumbers.html).
 
-## Configuration
+<h2 id="configuration">Configuration</h2>
 
 Most functions can determine the type of output from the type of input:
 a number as input will return a number as output, a BigNumber as input returns
@@ -24,7 +24,7 @@ math.config({
 });
 ```
 
-## Round-off errors
+<h2 id="round">Round</h2>-off errors
 
 Math.js uses the built-in JavaScript Number type. A Number is a floating point
 number with a limited precision of 64 bits, about 16 digits. The largest integer
@@ -50,7 +50,7 @@ var ans = math.add(0.1, 0.2);       //  0.30000000000000004
 math.format(ans, {precision: 14});  // '0.3'
 ```
 
-## Minimum and maximum
+<h2 id="minimum-and-maximum">Minimum and maximum</h2>
 
 A Number can store values between `5e-324` and `1.7976931348623157e+308`.
 Values smaller than the minimum are stored as `0`, and values larger than the
@@ -62,7 +62,7 @@ console.log(1e309);   // Infinity
 console.log(1e-324);  // 0
 ```
 
-## Comparison
+<h2 id="comparison">Comparison</h2>
 
 Because of rounding errors in calculations, it is unsafe to compare JavaScript
 Numbers. For example executing `0.1 + 0.2 == 0.3` in JavaScript will return

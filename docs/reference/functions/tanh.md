@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function tanh
+<h1 id="function-tanh">Function tanh</h1>
 
 Calculate the hyperbolic tangent of a value,
 defined as `tanh(x) = (exp(2 * x) - 1) / (exp(2 * x) + 1)`.
@@ -10,26 +10,26 @@ defined as `tanh(x) = (exp(2 * x) - 1) / (exp(2 * x) + 1)`.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.tanh(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic tangent of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 // tanh(x) = sinh(x) / cosh(x) = 1 / coth(x)
@@ -39,7 +39,7 @@ math.sinh(0.5) / math.cosh(0.5);  // returns 0.46211715726000974
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [sinh](sinh.html),
 [cosh](cosh.html),

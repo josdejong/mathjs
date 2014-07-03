@@ -2,32 +2,32 @@
 layout: default
 ---
 
-# Function transpose
+<h1 id="function-transpose">Function transpose</h1>
 
 Transpose a matrix. All values of the matrix are reflected over its
 main diagonal. Only two dimensional matrices are supported.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.transpose(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Array &#124; Matrix | Matrix to be transposed
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Array &#124; Matrix | The transposed matrix
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 var A = [[1, 2, 3], [4, 5, 6]];
@@ -35,7 +35,7 @@ math.transpose(A);               // returns [[1, 4], [2, 5], [3, 6]]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [diag](diag.html),
 [inv](inv.html),

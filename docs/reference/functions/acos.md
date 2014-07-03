@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function acos
+<h1 id="function-acos">Function acos</h1>
 
 Calculate the inverse cosine of a value.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.acos(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | The arc cosine of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.acos(0.5);           // returns Number 1.0471975511965979
@@ -38,7 +38,7 @@ math.acos(2);             // returns Complex 0 + 1.3169578969248166 i
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [cos](cos.html),
 [atan](atan.html),

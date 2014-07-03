@@ -2,34 +2,34 @@
 layout: default
 ---
 
-# Function compile
+<h1 id="function-compile">Function compile</h1>
 
 Parse and compile an expression.
 Returns a an object with a function `eval([scope])` to evaluate the
 compiled expression.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.compile(expr)                       // returns one node
 math.compile([expr1, expr2, expr3, ...]) // returns an array with nodes
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `expr` | String &#124; String[] &#124; Matrix |  The expression to be compiled
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 {eval: Function} &#124; Array.<{eval: Function}> | code An object with the compiled expression
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 var code = math.compile('sqrt(3^2 + 4^2)');
@@ -46,7 +46,7 @@ nodes[2].eval(); // 12
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [parse](parse.html),
 [eval](eval.html)

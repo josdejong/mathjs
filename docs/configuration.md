@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Configuration
+<h1 id="configuration">Configuration</h1>
 
 Math.js contains a number of configuration options. There are two ways to 
 configure math.js:
@@ -40,11 +40,11 @@ The following configuration options are available:
   Default value is `64`.
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 This section shows a number of configuration examples.
 
-### node.js
+<h3 id="node">node</h3>.js
 
 ```js
 // load the default instance of math.js
@@ -81,7 +81,7 @@ var bigmath = math({
 bigmath.eval('1 / 3');  // BigNumber, 0.33333333333333333333333333333333
 ```
 
-### browser
+<h3 id="browser">browser</h3>
 
 
 ```html

@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function log10
+<h1 id="function-log10">Function log10</h1>
 
 Calculate the 10-base of a value. This is the same as calculating `log(x, 10)`.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.log10(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the logarithm.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the 10-base logarithm of `x`
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.log10(0.00001);            // returns -5
@@ -38,7 +38,7 @@ math.pow(10, 4);                // returns 10000
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [exp](exp.html),
 [log](log.html)

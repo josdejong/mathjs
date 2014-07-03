@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function min
+<h1 id="function-min">Function min</h1>
 
 Compute the maximum value of a matrix or a  list of values.
 In case of a multi dimensional array, the maximum of the flattened array
@@ -10,7 +10,7 @@ will be calculated. When `dim` is provided, the maximum over the selected
 dimension will be calculated. Parameter `dim` is zero-based.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.min(a, b, c, ...)
@@ -18,20 +18,20 @@ math.min(A)
 math.min(A, dim)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | ... * | A single matrix or or multiple scalar values
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 * | The minimum value
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.min(2, 1, 4, 3);                  // returns 1
@@ -46,7 +46,7 @@ math.min(2.7, 7.1, -4.5, 2.0, 4.1);    // returns -4.5
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [mean](mean.html),
 [median](median.html),

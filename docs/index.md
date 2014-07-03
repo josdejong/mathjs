@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Documentation
+<h1 id="documentation">Documentation</h1>
 
 [Math.js](http://mathjs.org) is an extensive math library for JavaScript and Node.js.
 It features a flexible expression parser and offers an integrated solution
@@ -14,12 +14,12 @@ an extensive overview describing math.js on a high level, and a reference
 describing all available functions, constants, and units in detail.
 
 
-## Getting Started
+<h2 id="getting-started">Getting Started</h2>
 
 - [Getting Started](getting_started.html)
 
 
-## Overview
+<h2 id="overview">Overview</h2>
 
 - [Introduction](introduction.html)
 - [Expressions](expressions.html)
@@ -34,11 +34,11 @@ describing all available functions, constants, and units in detail.
 - [Extension](extension.html)
 - [Command Line Interface](command_line_interface.html)
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 - [Examples](http://mathjs.org/examples/index.html)
 
-## Reference
+<h2 id="reference">Reference</h2>
 
 - [Constants](reference/constants.html)
 - [Functions (alphabetical)](reference/functions/alphabetical.html)

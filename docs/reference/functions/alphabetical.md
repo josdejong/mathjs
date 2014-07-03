@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function reference (alphabetical)
+<h1 id="function-reference-">Function reference </h1>(alphabetical)
 
 - [abs(x)](abs.html)
 - [acos(x)](acos.html)

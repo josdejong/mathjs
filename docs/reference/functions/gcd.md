@@ -2,34 +2,34 @@
 layout: default
 ---
 
-# Function gcd
+<h1 id="function-gcd">Function gcd</h1>
 
 Calculate the greatest common divisor for two or more values or arrays.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.gcd(a, b)
 math.gcd(a, b, c, ...)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | ... Number &#124; Boolean &#124; Array &#124; Matrix | Two or more integer numbers
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Array &#124; Matrix | The greatest common divisor
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.gcd(8, 12);              // returns 4
@@ -40,7 +40,7 @@ math.gcd([8, -4], [12, 6]);   // returns [4, 2]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [lcm](lcm.html),
 [xgcd](xgcd.html)

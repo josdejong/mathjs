@@ -23,7 +23,9 @@
   color: #2B7CE9;
 }
 
-.highlight .mi {
+.highlight .m,
+.highlight .mi,
+.highlight .mf {
   color: #dc3912;
 }
 
@@ -32,6 +34,7 @@
 }
 
 .highlight .cp,
+.highlight .n,
 .highlight .na,
 .highlight .s1 {
   color: #ffa500;

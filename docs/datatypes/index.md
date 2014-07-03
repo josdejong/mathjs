@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Data Types
+<h1 id="data-types">Data Types</h1>
 
 The functions of math.js support multiple data types, both native JavaScript
 types as well as more advanced types implemented in math.js. The data types can

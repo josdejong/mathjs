@@ -2,34 +2,34 @@
 layout: default
 ---
 
-# Function round
+<h1 id="function-round">Function round</h1>
 
 Round a value towards the nearest integer.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.round(x)
 math.round(x, n)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
 `n` | Number &#124; BigNumber &#124; Boolean &#124; Array | Number of decimals Default value: 0.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Rounded value
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.round(3.2);              // returns Number 3
@@ -46,7 +46,7 @@ math.round([3.2, 3.8, -4.7]); // returns Array [3, 4, -5]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [ceil](ceil.html),
 [fix](fix.html),

@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function im
+<h1 id="function-im">Function im</h1>
 
 Get the imaginary part of a complex number.
 For a complex number `a + bi`, the function returns `b`.
@@ -10,26 +10,26 @@ For a complex number `a + bi`, the function returns `b`.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.im(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Boolean |  A complex number or array with complex numbers
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Array &#124; Matrix | The imaginary part of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 var a = math.complex(2, 3);
@@ -41,7 +41,7 @@ math.re(math.complex(2.4));     // returns Number 0
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [re](re.html),
 [conj](conj.html),

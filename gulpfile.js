@@ -81,9 +81,13 @@ gulp.task('clean', function (cb) {
  */
 gulp.task('docs', ['clean'], function () {
   return gulp.src(DOCS_SRC)
-      .pipe(replace(/HISTORY.md/g, 'history.html'))        // change links to history.md to lowercase
-      .pipe(replace(/(\([\w\./]*).md(\))/g, '$1.html$2'))  // replace urls to *.md with *.html
-      .pipe(header(MD_HEADER))                             // add header with markdown layout
+      .pipe(replace(/HISTORY.md/g, 'history.html'))             // change links to history.md to lowercase
+      .pipe(replace(/(\([\w\./]*).md(\))/g, '$1.html$2'))       // replace urls to *.md with *.html
+      .pipe(replace(/^(#+) ([\w\ ]*)/mg, function (a, b, c) {   // create headers with an id
+          var id = c.toLowerCase().replace(/ /g, '-');
+          return '<h' + b.length + ' id="' + id + '">' + c + '</h' + b.length + '>';
+      }))
+      .pipe(header(MD_HEADER))                                  // add header with markdown layout
       .pipe(gulp.dest(DOCS_DEST));
 });
 

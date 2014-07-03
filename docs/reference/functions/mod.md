@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function mod
+<h1 id="function-mod">Function mod</h1>
 
 Calculates the modulus, the remainder of an integer division.
 
@@ -15,27 +15,27 @@ The modulus is defined as:
 See http://en.wikipedia.org/wiki/Modulo_operation.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.mod(x, y)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix | Dividend
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix | Divisor
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Array &#124; Matrix | Returns the remainder of `x` divided by `y`.
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.mod(8, 3);                // returns 2
@@ -50,7 +50,7 @@ isOdd(3);                      // returns true
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [divide](divide.html)
 

@@ -2,14 +2,14 @@
 layout: default
 ---
 
-# Function range
+<h1 id="function-range">Function range</h1>
 
 Create an array from a range.
 By default, the range end is excluded. This can be customized by providing
 an extra parameter `includeEnd`.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.range(str [, includeEnd])               // Create a range from a string,
@@ -22,7 +22,7 @@ math.range(start, end, step [, includeEnd])  // Create a range with start, step,
                                              // and end.
 ```
 
-### Where
+<h3 id="where">Where</h3>
 
 - `str: String`
   A string 'start:end' or 'start:step:end'
@@ -35,20 +35,20 @@ math.range(start, end, step [, includeEnd])  // Create a range with start, step,
 - `includeEnd: boolean`
   Option to specify whether to include the end or not. False by default.
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | * | Parameters describing the ranges `start`, `end`, and optional `step`.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Array &#124; Matrix | range
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.range(2, 6);        // [2, 3, 4, 5]
@@ -58,7 +58,7 @@ math.range(2, 6, true);  // [2, 3, 4, 5, 6]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [ones](ones.html),
 [zeros](zeros.html),

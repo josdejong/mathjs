@@ -2,31 +2,31 @@
 layout: default
 ---
 
-# Function det
+<h1 id="function-det">Function det</h1>
 
 Calculate the determinant of a matrix.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.det(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Array &#124; Matrix | A matrix
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number | The determinant of `x`
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.det([[1, 2], [3, 4]]); // returns -2
@@ -40,7 +40,7 @@ math.det(A); // returns 6
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [inv](inv.html)
 

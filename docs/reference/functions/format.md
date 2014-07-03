@@ -2,12 +2,12 @@
 layout: default
 ---
 
-# Function format
+<h1 id="function-format">Function format</h1>
 
 Format a value of any type into a string.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.format(value)
@@ -16,7 +16,7 @@ math.format(value, precision)
 math.format(value, fn)
 ```
 
-### Where
+<h3 id="where">Where</h3>
 
  - `value: *`
    The value to be formatted
@@ -51,21 +51,21 @@ math.format(value, fn)
   Function `fn` is called with `value` as parameter and must return a string.
   Is useful for example to format all values inside a matrix in a particular way.
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `value` | * | Value to be stringified
 `options` | Object &#124; Function &#124; Number | Formatting options
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 String | str The formatted value
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.format(6.4);                                        // returns '6.4'
@@ -79,7 +79,7 @@ math.format(52.8,   {notation: 'exponential'});          // returns '5.28e+1'
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [print](print.html)
 

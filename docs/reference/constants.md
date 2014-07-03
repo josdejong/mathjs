@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Constant reference
+<h1 id="constant-reference">Constant reference</h1>
 
 Math.js contains the following constants. 
 

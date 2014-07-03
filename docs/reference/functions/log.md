@@ -2,35 +2,35 @@
 layout: default
 ---
 
-# Function log
+<h1 id="function-log">Function log</h1>
 
 Calculate the logarithm of a value.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.log(x)
 math.log(x, base)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the logarithm.
 `base` | Number &#124; BigNumber &#124; Boolean &#124; Complex |  Optional base for the logarithm. If not provided, the natural logarithm of `x` is calculated. Default value: e.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the logarithm of `x`
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.log(3.5);                  // returns 1.252762968495368
@@ -45,7 +45,7 @@ math.pow(2, 10);                // returns 1024
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [exp](exp.html),
 [log10](log10.html)

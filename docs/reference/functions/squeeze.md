@@ -2,31 +2,31 @@
 layout: default
 ---
 
-# Function squeeze
+<h1 id="function-squeeze">Function squeeze</h1>
 
 Squeeze a matrix, remove outer singleton dimensions from a matrix.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.squeeze(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Matrix &#124; Array | Matrix to be squeezed
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Matrix &#124; Array | Squeezed matrix
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.squeeze([3]);           // returns 3
@@ -41,7 +41,7 @@ math.squeeze(B);             // returns [[[0]], [[0]], [[0]]] (size 3x1x1)
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [subset](subset.html)
 

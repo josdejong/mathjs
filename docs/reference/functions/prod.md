@@ -2,34 +2,34 @@
 layout: default
 ---
 
-# Function prod
+<h1 id="function-prod">Function prod</h1>
 
 Compute the product of a matrix or a list with values.
 In case of a (multi dimensional) array or matrix, the sum of all
 elements will be calculated.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.prod(a, b, c, ...)
 math.prod(A)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | ... * | A single matrix or or multiple scalar values
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 * | The product of all values
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.multiply(2, 3);           // returns 6
@@ -40,7 +40,7 @@ math.prod([[2, 5], [4, 3]]);   // returns 120
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [mean](mean.html),
 [median](median.html),

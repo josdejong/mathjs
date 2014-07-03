@@ -2,13 +2,13 @@
 layout: default
 ---
 
-# Function ones
+<h1 id="function-ones">Function ones</h1>
 
 Create a matrix filled with ones. The created matrix can have one or
 multiple dimensions.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.ones(m)
@@ -17,20 +17,20 @@ math.ones([m, n])
 math.ones([m, n, p, ...])
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `size` | ...Number &#124; Array | The size of each dimension of the matrix
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Array &#124; Matrix &#124; Number | A matrix filled with ones
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.ones(3);                   // returns [1, 1, 1]
@@ -41,7 +41,7 @@ math.zeros(math.size(A));       // returns [[1, 1, 1], [1, 1, 1]]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [zeros](zeros.html),
 [eye](eye.html),

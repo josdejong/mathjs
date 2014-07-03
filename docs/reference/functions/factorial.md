@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function factorial
+<h1 id="function-factorial">Function factorial</h1>
 
 Compute the factorial of a value
 
@@ -10,26 +10,26 @@ Factorial only supports an integer value as argument.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.factorial(n)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `n` | Number &#124; BigNumber &#124; Array &#124; Matrix | An integer number
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Array &#124; Matrix | The factorial of `n`
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.factorial(5);    // returns 120
@@ -37,7 +37,7 @@ math.factorial(3);    // returns 6
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [combinations](combinations.html),
 [permutations](permutations.html)

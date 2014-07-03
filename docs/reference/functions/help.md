@@ -2,32 +2,32 @@
 layout: default
 ---
 
-# Function help
+<h1 id="function-help">Function help</h1>
 
 Retrieve help on a function or data type.
 Help files are retrieved from the documentation in math.expression.docs.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.help(search)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `search` | function &#124; string &#124; Object | A function or function name for which to get help
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Help | A help object
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 console.log(math.help('sin').toString());

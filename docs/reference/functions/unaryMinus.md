@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function unaryMinus
+<h1 id="function-unaryminus">Function unaryMinus</h1>
 
 Inverse the sign of a value, apply a unary minus operation.
 
@@ -11,26 +11,26 @@ strings will be converted to a number. For complex numbers, both real and
 complex value are inverted.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.unaryMinus(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; String &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Number to be inverted.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Returns the value with inverted sign.
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.unaryMinus(3.5);      // returns -3.5
@@ -38,7 +38,7 @@ math.unaryMinus(-4.2);     // returns 4.2
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [add](add.html),
 [subtract](subtract.html),

@@ -2,12 +2,12 @@
 layout: default
 ---
 
-# Function randomInt
+<h1 id="function-randomint">Function randomInt</h1>
 
 Return a random integer number between `min` and `max` using a uniform distribution.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.randomInt()                // generate a random integer between 0 and 1
@@ -18,7 +18,7 @@ math.randomInt(size, max)       // generate a matrix with random integer between
 math.randomInt(size, min, max)  // generate a matrix with random integer between min and max
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
@@ -26,14 +26,14 @@ Parameter | Type | Description
 `min` | Number | Minimum boundary for the random value
 `max` | Number | Maximum boundary for the random value
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Array &#124; Matrix | A random integer value
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.randomInt();       // returns a random integer between 0 and 1
@@ -43,7 +43,7 @@ math.randomInt([2, 3]); // returns a 2x3 matrix with random integers between 0 a
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [randomInt](randomInt.html),
 [pickRandom](pickRandom.html),

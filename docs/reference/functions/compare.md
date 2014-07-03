@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function compare
+<h1 id="function-compare">Function compare</h1>
 
 Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
 
@@ -13,27 +13,27 @@ compare values smaller than approximately 2.22e-16.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.compare(x, y)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix | First value to compare
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix | Second value to compare
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Array &#124; Matrix | Returns the result of the comparison: 1, 0 or -1.
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.compare(6, 1);           // returns 1
@@ -48,7 +48,7 @@ math.compare(2, [1, 2, 3]);   // returns [1, 0, -1]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [equal](equal.html),
 [unequal](unequal.html),

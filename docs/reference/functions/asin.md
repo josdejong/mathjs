@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function asin
+<h1 id="function-asin">Function asin</h1>
 
 Calculate the inverse sine of a value.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.asin(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | The arc sine of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.asin(0.5);           // returns Number 0.5235987755982989
@@ -38,7 +38,7 @@ math.asin(2);             // returns Complex 1.5707963267948966 -1.3169578969248
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [sin](sin.html),
 [atan](atan.html),

@@ -2,31 +2,31 @@
 layout: default
 ---
 
-# Function parser
+<h1 id="function-parser">Function parser</h1>
 
 Create a parser. The function creates a new `math.expression.Parser` object.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.parser()
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Parser | Parser
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 var parser = new math.parser();
@@ -59,7 +59,7 @@ parser.clear();
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [eval](eval.html),
 [compile](compile.html),

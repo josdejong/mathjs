@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function atan2
+<h1 id="function-atan2">Function atan2</h1>
 
 Calculate the inverse tangent function with two arguments, y/x.
 By providing two arguments, the right quadrant of the computed angle can be
@@ -11,27 +11,27 @@ determined.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.atan2(y, x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `y` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Second dimension
 `x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | First dimension
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Four-quadrant inverse tangent
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.atan2(2, 2) / math.pi;       // returns number 0.25
@@ -44,7 +44,7 @@ math.atan(2);             // returns Complex 1.5707963267948966 -1.3169578969248
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [tan](tan.html),
 [atan](atan.html),

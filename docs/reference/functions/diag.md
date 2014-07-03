@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function diag
+<h1 id="function-diag">Function diag</h1>
 
 Create a diagonal matrix or retrieve the diagonal of a matrix
 
@@ -12,28 +12,28 @@ When k is positive, the values are placed on the super diagonal.
 When k is negative, the values are placed on the sub diagonal.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.diag(X)
 math.diag(X, k)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Matrix &#124; Array | A two dimensional matrix or a vector
 `k` | Number &#124; BigNumber | The diagonal where the vector will be filled in or retrieved. Default value: 0.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Matrix &#124; Array | Diagonal matrix from input vector, or diagonal from input matrix.
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
  // create a diagonal matrix
@@ -47,7 +47,7 @@ math.diag(a);   // returns [1, 5, 9]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [ones](ones.html),
 [zeros](zeros.html),

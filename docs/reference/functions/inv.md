@@ -2,31 +2,31 @@
 layout: default
 ---
 
-# Function inv
+<h1 id="function-inv">Function inv</h1>
 
 Calculate the inverse of a square matrix.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.inv(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Complex &#124; Array &#124; Matrix | Matrix to be inversed
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | The inverse of `x`.
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.inv([[1, 2], [3, 4]]);  // returns [[-2, 1], [1.5, -0.5]]
@@ -35,7 +35,7 @@ math.inv(4);                 // returns 0.25
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [det](det.html),
 [transpose](transpose.html)

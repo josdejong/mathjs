@@ -2,9 +2,9 @@
 layout: default
 ---
 
-# Function reference (categorical)
+<h1 id="function-reference-">Function reference </h1>(categorical)
 
-## arithmetic
+<h2 id="arithmetic">arithmetic</h2>
 
 - [abs(x)](abs.html)
 - [add(x, y)](add.html)
@@ -34,7 +34,7 @@ layout: default
 - [unaryPlus(x)](unaryPlus.html)
 - [xgcd(a, b)](xgcd.html)
 
-## comparison
+<h2 id="comparison">comparison</h2>
 
 - [compare(x, y)](compare.html)
 - [deepEqual(x, y)](deepEqual.html)
@@ -45,14 +45,14 @@ layout: default
 - [smallerEq(x, y)](smallerEq.html)
 - [unequal(x, y)](unequal.html)
 
-## complex
+<h2 id="complex">complex</h2>
 
 - [arg(x)](arg.html)
 - [conj(x)](conj.html)
 - [im(x)](im.html)
 - [re(x)](re.html)
 
-## construction
+<h2 id="construction">construction</h2>
 
 - [bignumber(x)](bignumber.html)
 - [boolean(x)](boolean.html)
@@ -65,14 +65,14 @@ layout: default
 - [string(value)](string.html)
 - [unit(x)](unit.html)
 
-## expression
+<h2 id="expression">expression</h2>
 
 - [compile(expr)](compile.html)
 - [eval(expr [, scope])](eval.html)
 - [help(search)](help.html)
 - [parse(expr [, scope])](parse.html)
 
-## matrix
+<h2 id="matrix">matrix</h2>
 
 - [concat(a, b, c, ... [, dim])](concat.html)
 - [det(x)](det.html)
@@ -88,7 +88,7 @@ layout: default
 - [transpose(x)](transpose.html)
 - [zeros(m, n, p, ...)](zeros.html)
 
-## probability
+<h2 id="probability">probability</h2>
 
 - [combinations(n, k)](combinations.html)
 - [distribution(name)](distribution.html)
@@ -98,7 +98,7 @@ layout: default
 - [random([min, max])](random.html)
 - [randomInt([min, max])](randomInt.html)
 
-## statistics
+<h2 id="statistics">statistics</h2>
 
 - [max(a, b, c, ...)](max.html)
 - [mean.mean(a, b, c, ...)](mean.html)
@@ -109,7 +109,7 @@ layout: default
 - [sum(a, b, c, ...)](sum.html)
 - [var(a, b, c, ...)](var.html)
 
-## trigonometry
+<h2 id="trigonometry">trigonometry</h2>
 
 - [acos(x)](acos.html)
 - [asin(x)](asin.html)
@@ -128,11 +128,11 @@ layout: default
 - [tan(x)](tan.html)
 - [tanh(x)](tanh.html)
 
-## units
+<h2 id="units">units</h2>
 
 - [to(x, unit)](to.html)
 
-## utils
+<h2 id="utils">utils</h2>
 
 - [clone(x)](clone.html)
 - [forEach(x, callback)](forEach.html)

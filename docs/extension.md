@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Extension
+<h1 id="extension">Extension</h1>
 
 The library can easily be extended with functions and variables using the
 `import` function. The function `import` accepts a filename or an object with

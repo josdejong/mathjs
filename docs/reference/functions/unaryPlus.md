@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function unaryPlus
+<h1 id="function-unaryplus">Function unaryPlus</h1>
 
 Unary plus operation.
 Boolean values and strings will be converted to a number, numeric values will be returned as is.
@@ -10,26 +10,26 @@ Boolean values and strings will be converted to a number, numeric values will be
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.unaryPlus(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; String &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Input value
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Returns the input value when numeric, converts to a number when input is non-numeric.
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.unaryPlus(3.5);      // returns 3.5
@@ -37,7 +37,7 @@ math.unaryPlus(1);     // returns 1
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [unaryMinus](unaryMinus.html),
 [add](add.html),

@@ -2,19 +2,19 @@
 layout: default
 ---
 
-# Function subset
+<h1 id="function-subset">Function subset</h1>
 
 Get or set a subset of a matrix or string.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.subset(value, index)                                // retrieve a subset
 math.subset(value, index, replacement [, defaultValue])  // replace a subset
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
@@ -23,14 +23,14 @@ Parameter | Type | Description
 `replacement` | * | An array, matrix, or scalar. If provided, the subset is replaced with replacement. If not provided, the subset is returned
 `defaultValue` | * | Default value, filled in on new entries when the matrix is resized. If not provided, new matrix elements will be left undefined. Default value: undefined.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Array &#124; Matrix &#124; String | Either the retrieved subset or the updated matrix.
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 // get a subset
@@ -45,7 +45,7 @@ var g = math.subset(f, math.index(1, 1), 7, 0);         // g = [[5, 6], [0, 7]]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [size](size.html),
 [resize](resize.html),

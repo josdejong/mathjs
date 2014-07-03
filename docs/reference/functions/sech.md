@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function sech
+<h1 id="function-sech">Function sech</h1>
 
 Calculate the hyperbolic secant of a value,
 defined as `sech(x) = 1 / cosh(x)`.
@@ -10,26 +10,26 @@ defined as `sech(x) = 1 / cosh(x)`.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.sech(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic secant of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 // sech(x) = 1/ cosh(x)
@@ -38,7 +38,7 @@ math.sech(0.5);       // returns 0.886818883970074
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [cosh](cosh.html),
 [csch](csch.html),

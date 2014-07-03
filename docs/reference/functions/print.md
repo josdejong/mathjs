@@ -2,19 +2,19 @@
 layout: default
 ---
 
-# Function print
+<h1 id="function-print">Function print</h1>
 
 Interpolate values into a string template.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.print(template, values)
 math.print(template, values, precision)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
@@ -22,14 +22,14 @@ Parameter | Type | Description
 `values` | Object | An object containing variables which will be filled in in the template.
 `precision` | Number | Number of digits to format numbers. If not provided, the value will not be rounded.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 String | Interpolated string
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 // the following outputs: 'Lucy is 5 years old'
@@ -48,7 +48,7 @@ math.print('Hello $user.name! The date is $date', {
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [format](format.html)
 

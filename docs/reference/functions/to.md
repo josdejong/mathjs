@@ -2,34 +2,34 @@
 layout: default
 ---
 
-# Function to
+<h1 id="function-to">Function to</h1>
 
 Change the unit of a value.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.to(x, unit)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Unit &#124; Array &#124; Matrix | The unit to be converted.
 `unit` | Unit &#124; Array &#124; Matrix | New unit. Can be a string like "cm" or a unit without value.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Unit &#124; Array &#124; Matrix | value with changed, fixed unit.
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.to(math.unit('2 inch'), 'cm');                   // returns Unit 5.08 cm
@@ -38,7 +38,7 @@ math.to(math.unit(16, 'bytes'), 'bits');              // returns Unit 128 bits
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [unit](unit.html)
 

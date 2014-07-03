@@ -2,32 +2,32 @@
 layout: default
 ---
 
-# Function distribution
+<h1 id="function-distribution">Function distribution</h1>
 
 Create a distribution object with a set of random functions for given
 random distribution.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.distribution(name)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `name` | String | Name of a distribution. Choose from 'uniform', 'normal'.
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Object | Returns a distribution object containing functions: `random([size] [, min] [, max])`, `randomInt([min] [, max])`, `pickRandom(array)`
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 var normalDist = math.distribution('normal'); // create a normal distribution
@@ -35,7 +35,7 @@ normalDist.random(0, 10);                      // get a random value between 0 a
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [random](random.html),
 [randomInt](randomInt.html),

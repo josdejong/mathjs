@@ -2,13 +2,13 @@
 layout: default
 ---
 
-# Function zeros
+<h1 id="function-zeros">Function zeros</h1>
 
 Create a matrix filled with zeros. The created matrix can have one or
 multiple dimensions.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.zeros(m)
@@ -17,20 +17,20 @@ math.zeros([m, n])
 math.zeros([m, n, p, ...])
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `size` | ...Number &#124; Array | The size of each dimension of the matrix
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Array &#124; Matrix &#124; Number | A matrix filled with zeros
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.zeros(3);                  // returns [0, 0, 0]
@@ -41,7 +41,7 @@ math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [ones](ones.html),
 [eye](eye.html),

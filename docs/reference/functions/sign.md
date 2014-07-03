@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function sign
+<h1 id="function-sign">Function sign</h1>
 
 Compute the sign of a value. The sign of a value x is:
 
@@ -13,26 +13,26 @@ Compute the sign of a value. The sign of a value x is:
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.sign(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  The number for which to determine the sign
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | e The sign of `x`
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.sign(3.5);               // returns 1
@@ -43,7 +43,7 @@ math.sign([3, 5, -2, 0, 2]);  // returns [1, 1, -1, 0, 1]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [abs](abs.html)
 

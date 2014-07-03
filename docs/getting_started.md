@@ -2,12 +2,12 @@
 layout: default
 ---
 
-# Getting Started
+<h1 id="getting-started">Getting Started</h1>
 
 This getting started describes how to install, load, and use math.js.
 
 
-## Install
+<h2 id="install">Install</h2>
 
 Math.js can be installed using various package managers like [npm](https://npmjs.org/) and [bower](http://twitter.github.io/bower/), or by just downloading the library from the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
 
@@ -18,14 +18,14 @@ To install via npm, run:
 Other ways to install math.js are described on the [website](http://mathjs.org/download.html).
 
 
-## Load
+<h2 id="load">Load</h2>
 
 Math.js can be used in node.js and in the browser. The library must be loaded
 and instantiated. When creating an instance, one can optionally provide
 configuration options as described in
 [Configuration](configuration.html).
 
-### Node.js
+<h3 id="node">Node</h3>.js
 
 Load math.js in [node.js](http://nodejs.org/):
 
@@ -38,7 +38,7 @@ math.sqrt(-4); // 2i
 ```
 
 
-### Browser
+<h3 id="browser">Browser</h3>
 
 Math.js can be loaded as a regular JavaScript file in the browser:
 
@@ -62,7 +62,7 @@ the [es5-shim](https://github.com/kriskowal/es5-shim) library must be loaded
 as well.
 
 
-### Require.js
+<h3 id="require">Require</h3>.js
 
 Load math.js in the browser using [require.js](http://requirejs.org/):
 
@@ -78,7 +78,7 @@ require(['mathjs'], function (math) {
 });
 ```
 
-## Use
+<h2 id="use">Use</h2>
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate expressions (see [Expressions](expressions.html)) and supports
@@ -109,7 +109,7 @@ math.select(3)
     .done(); // 14
 ```
 
-## Next
+<h2 id="next">Next</h2>
 
 To learn more about math.js, check out the available documentation and examples:
 

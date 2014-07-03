@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Matrices
+<h1 id="matrices">Matrices</h1>
 
 Math.js supports multi dimensional matrices and arrays. Matrices can be
 created, manipulated, and used in calculations. Both regular JavaScript
@@ -10,7 +10,7 @@ arrays as well as the matrix type implemented by math.js can be used
 interchangeably in all relevant math.js functions.
 
 
-## Arrays and matrices
+<h2 id="arrays-and-matrices">Arrays and matrices</h2>
 
 Math.js supports two types of matrices:
 
@@ -46,7 +46,7 @@ math.ones(2, 3);                              // Matrix, [[1, 1, 1], [1, 1, 1]]
 ```
 
 
-## Creation
+<h2 id="creation">Creation</h2>
 
 A matrix can be created from an array using the function `math.matrix`. The
 provided array can contain nested arrays in order to create a multi
@@ -124,7 +124,7 @@ math.range(3, -1, -1);  // [3, 2, 1, 0]
 ```
 
 
-## Calculations
+<h2 id="calculations">Calculations</h2>
 
 All relevant functions of math.js support matrices and arrays.
 
@@ -151,7 +151,7 @@ math.det(d);                              // 23
 ```
 
 
-## Size and Dimensions
+<h2 id="size-and-dimensions">Size and Dimensions</h2>
 
 Math.js uses geometric dimensions:
 
@@ -189,7 +189,7 @@ math.size(c);                                 // Array, [2, 2, 3]
 ```
 
 
-## Resizing
+<h2 id="resizing">Resizing</h2>
 
 Matrices can be resized using their `resize` function. This function is called
 with an Array with the new size as first argument, and accepts an optional
@@ -225,7 +225,7 @@ b.subset([1, 0]);       // 2
 ```
 
 
-## Getting or replacing subsets
+<h2 id="getting-or-replacing-subsets">Getting or replacing subsets</h2>
 
 Subsets of a matrix can be retrieved or replaced using the function `subset`.
 Matrices have a `subset` function, which is applied to the matrix itself:
@@ -274,7 +274,7 @@ e.resize([2, 3], 0);                          // Matrix, [[0, 0, 0], [0, 0, 0]]
 e.subset(math.index(1, 2), 5);                // Matrix, [[0, 0, 0], [0, 0, 5]]
 ```
 
-## Iterating
+<h2 id="iterating">Iterating</h2>
 
 Matrices contain functions `map` and `forEach` to iterate over all elements of
 the (multidimensional) matrix. The callback function of `map` and `forEach` has

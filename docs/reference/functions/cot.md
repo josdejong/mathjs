@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function cot
+<h1 id="function-cot">Function cot</h1>
 
 Calculate the cotangent of a value. `cot(x)` is defined as `1 / tan(x)`.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.cot(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Cotangent of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.cot(2);      // returns Number -0.45765755436028577
@@ -36,7 +36,7 @@ math.cot(2);      // returns Number -0.45765755436028577
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [tan](tan.html),
 [sec](sec.html),

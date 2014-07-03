@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function cos
+<h1 id="function-cos">Function cos</h1>
 
 Calculate the cosine of a value.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.cos(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Cosine of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.cos(2);                      // returns Number -0.4161468365471422
@@ -41,7 +41,7 @@ math.pow(math.sin(angle), 2) + math.pow(math.cos(angle), 2); // returns Number ~
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [cos](cos.html),
 [tan](tan.html)

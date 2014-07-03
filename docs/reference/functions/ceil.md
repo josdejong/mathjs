@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function ceil
+<h1 id="function-ceil">Function ceil</h1>
 
 Round a value towards plus infinity
 If `x` is complex, both real and imaginary part are rounded towards plus infinity.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.ceil(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Rounded value
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.ceil(3.2);               // returns Number 4
@@ -43,7 +43,7 @@ math.ceil([3.2, 3.8, -4.7]);  // returns Array [4, 4, -4]
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [floor](floor.html),
 [fix](fix.html),

@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Function conj
+<h1 id="function-conj">Function conj</h1>
 
 Compute the complex conjugate of a complex value.
 If `x = a+bi`, the complex conjugate of `x` is `a - bi`.
@@ -10,26 +10,26 @@ If `x = a+bi`, the complex conjugate of `x` is `a - bi`.
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.conj(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Boolean |  A complex number or array with complex numbers
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  The complex conjugate of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.conj(math.complex('2 + 3i'));  // returns Complex 2 - 3i
@@ -38,7 +38,7 @@ math.conj(math.complex('-5.2i'));  // returns Complex 5.2i
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [re](re.html),
 [im](im.html),

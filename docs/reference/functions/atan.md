@@ -2,33 +2,33 @@
 layout: default
 ---
 
-# Function atan
+<h1 id="function-atan">Function atan</h1>
 
 Calculate the inverse tangent of a value.
 
 For matrices, the function is evaluated element wise.
 
 
-## Syntax
+<h2 id="syntax">Syntax</h2>
 
 ```js
 math.atan(x)
 ```
 
-### Parameters
+<h3 id="parameters">Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Function input
 
-### Returns
+<h3 id="returns">Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | The arc tangent of x
 
 
-## Examples
+<h2 id="examples">Examples</h2>
 
 ```js
 math.atan(0.5);           // returns Number 0.4636476090008061
@@ -38,7 +38,7 @@ math.atan(2);             // returns Complex 1.5707963267948966 -1.3169578969248
 ```
 
 
-## See also
+<h2 id="see-also">See also</h2>
 
 [tan](tan.html),
 [asin](asin.html),
