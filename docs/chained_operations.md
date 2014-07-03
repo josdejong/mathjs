@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="chained-operations"><a href="#chained-operations">&sect;</a>Chained operations</h1>
+<h1 id="chained-operations">Chained operations <a href="#chained-operations" title="Permalink">#</a></h1>
 
 Math.js supports chaining operations by wrapping a value into a `Selector`.
 A selector can be created with the function `math.select(value)`.
@@ -22,7 +22,7 @@ math.select( [[1, 2], [3, 4]] )
     .done(); // [[24, 6], [9, 12]]
 ```
 
-<h3 id="api"><a href="#api">&sect;</a>API</h3>
+<h3 id="api">API <a href="#api" title="Permalink">#</a></h3>
 
 A `Selector` is constructed as:
 

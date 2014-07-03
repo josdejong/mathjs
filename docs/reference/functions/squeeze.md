@@ -2,31 +2,31 @@
 layout: default
 ---
 
-<h1 id="function-squeeze"><a href="#function-squeeze">&sect;</a>Function squeeze</h1>
+<h1 id="function-squeeze">Function squeeze <a href="#function-squeeze" title="Permalink">#</a></h1>
 
 Squeeze a matrix, remove outer singleton dimensions from a matrix.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.squeeze(x)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Matrix &#124; Array | Matrix to be squeezed
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Matrix &#124; Array | Squeezed matrix
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.squeeze([3]);           // returns 3
@@ -41,7 +41,7 @@ math.squeeze(B);             // returns [[[0]], [[0]], [[0]]] (size 3x1x1)
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [subset](subset.html)
 

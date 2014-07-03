@@ -2,33 +2,33 @@
 layout: default
 ---
 
-<h1 id="function-asin"><a href="#function-asin">&sect;</a>Function asin</h1>
+<h1 id="function-asin">Function asin <a href="#function-asin" title="Permalink">#</a></h1>
 
 Calculate the inverse sine of a value.
 
 For matrices, the function is evaluated element wise.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.asin(x)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Function input
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | The arc sine of x
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.asin(0.5);           // returns Number 0.5235987755982989
@@ -38,7 +38,7 @@ math.asin(2);             // returns Complex 1.5707963267948966 -1.3169578969248
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [sin](sin.html),
 [atan](atan.html),

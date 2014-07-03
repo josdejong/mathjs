@@ -2,12 +2,12 @@
 layout: default
 ---
 
-<h1 id="function-format"><a href="#function-format">&sect;</a>Function format</h1>
+<h1 id="function-format">Function format <a href="#function-format" title="Permalink">#</a></h1>
 
 Format a value of any type into a string.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.format(value)
@@ -16,7 +16,7 @@ math.format(value, precision)
 math.format(value, fn)
 ```
 
-<h3 id="where"><a href="#where">&sect;</a>Where</h3>
+<h3 id="where">Where <a href="#where" title="Permalink">#</a></h3>
 
  - `value: *`
    The value to be formatted
@@ -51,21 +51,21 @@ math.format(value, fn)
   Function `fn` is called with `value` as parameter and must return a string.
   Is useful for example to format all values inside a matrix in a particular way.
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `value` | * | Value to be stringified
 `options` | Object &#124; Function &#124; Number | Formatting options
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 String | str The formatted value
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.format(6.4);                                        // returns '6.4'
@@ -79,7 +79,7 @@ math.format(52.8,   {notation: 'exponential'});          // returns '5.28e+1'
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [print](print.html)
 

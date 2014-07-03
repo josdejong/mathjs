@@ -2,31 +2,31 @@
 layout: default
 ---
 
-<h1 id="function-det"><a href="#function-det">&sect;</a>Function det</h1>
+<h1 id="function-det">Function det <a href="#function-det" title="Permalink">#</a></h1>
 
 Calculate the determinant of a matrix.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.det(x)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Array &#124; Matrix | A matrix
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Number | The determinant of `x`
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.det([[1, 2], [3, 4]]); // returns -2
@@ -40,7 +40,7 @@ math.det(A); // returns 6
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [inv](inv.html)
 

@@ -2,19 +2,19 @@
 layout: default
 ---
 
-<h1 id="function-print"><a href="#function-print">&sect;</a>Function print</h1>
+<h1 id="function-print">Function print <a href="#function-print" title="Permalink">#</a></h1>
 
 Interpolate values into a string template.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.print(template, values)
 math.print(template, values, precision)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
@@ -22,14 +22,14 @@ Parameter | Type | Description
 `values` | Object | An object containing variables which will be filled in in the template.
 `precision` | Number | Number of digits to format numbers. If not provided, the value will not be rounded.
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 String | Interpolated string
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 // the following outputs: 'Lucy is 5 years old'
@@ -48,7 +48,7 @@ math.print('Hello $user.name! The date is $date', {
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [format](format.html)
 

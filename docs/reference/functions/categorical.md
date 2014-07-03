@@ -2,9 +2,9 @@
 layout: default
 ---
 
-<h1 id="function-reference-"><a href="#function-reference-">&sect;</a>Function reference </h1>(categorical)
+<h1 id="function-reference-">Function reference  <a href="#function-reference-" title="Permalink">#</a></h1>(categorical)
 
-<h2 id="arithmetic"><a href="#arithmetic">&sect;</a>arithmetic</h2>
+<h2 id="arithmetic">arithmetic <a href="#arithmetic" title="Permalink">#</a></h2>
 
 - [abs(x)](abs.html)
 - [add(x, y)](add.html)
@@ -34,7 +34,7 @@ layout: default
 - [unaryPlus(x)](unaryPlus.html)
 - [xgcd(a, b)](xgcd.html)
 
-<h2 id="comparison"><a href="#comparison">&sect;</a>comparison</h2>
+<h2 id="comparison">comparison <a href="#comparison" title="Permalink">#</a></h2>
 
 - [compare(x, y)](compare.html)
 - [deepEqual(x, y)](deepEqual.html)
@@ -45,14 +45,14 @@ layout: default
 - [smallerEq(x, y)](smallerEq.html)
 - [unequal(x, y)](unequal.html)
 
-<h2 id="complex"><a href="#complex">&sect;</a>complex</h2>
+<h2 id="complex">complex <a href="#complex" title="Permalink">#</a></h2>
 
 - [arg(x)](arg.html)
 - [conj(x)](conj.html)
 - [im(x)](im.html)
 - [re(x)](re.html)
 
-<h2 id="construction"><a href="#construction">&sect;</a>construction</h2>
+<h2 id="construction">construction <a href="#construction" title="Permalink">#</a></h2>
 
 - [bignumber(x)](bignumber.html)
 - [boolean(x)](boolean.html)
@@ -65,14 +65,14 @@ layout: default
 - [string(value)](string.html)
 - [unit(x)](unit.html)
 
-<h2 id="expression"><a href="#expression">&sect;</a>expression</h2>
+<h2 id="expression">expression <a href="#expression" title="Permalink">#</a></h2>
 
 - [compile(expr)](compile.html)
 - [eval(expr [, scope])](eval.html)
 - [help(search)](help.html)
 - [parse(expr [, scope])](parse.html)
 
-<h2 id="matrix"><a href="#matrix">&sect;</a>matrix</h2>
+<h2 id="matrix">matrix <a href="#matrix" title="Permalink">#</a></h2>
 
 - [concat(a, b, c, ... [, dim])](concat.html)
 - [det(x)](det.html)
@@ -88,7 +88,7 @@ layout: default
 - [transpose(x)](transpose.html)
 - [zeros(m, n, p, ...)](zeros.html)
 
-<h2 id="probability"><a href="#probability">&sect;</a>probability</h2>
+<h2 id="probability">probability <a href="#probability" title="Permalink">#</a></h2>
 
 - [combinations(n, k)](combinations.html)
 - [distribution(name)](distribution.html)
@@ -98,7 +98,7 @@ layout: default
 - [random([min, max])](random.html)
 - [randomInt([min, max])](randomInt.html)
 
-<h2 id="statistics"><a href="#statistics">&sect;</a>statistics</h2>
+<h2 id="statistics">statistics <a href="#statistics" title="Permalink">#</a></h2>
 
 - [max(a, b, c, ...)](max.html)
 - [mean.mean(a, b, c, ...)](mean.html)
@@ -109,7 +109,7 @@ layout: default
 - [sum(a, b, c, ...)](sum.html)
 - [var(a, b, c, ...)](var.html)
 
-<h2 id="trigonometry"><a href="#trigonometry">&sect;</a>trigonometry</h2>
+<h2 id="trigonometry">trigonometry <a href="#trigonometry" title="Permalink">#</a></h2>
 
 - [acos(x)](acos.html)
 - [asin(x)](asin.html)
@@ -128,11 +128,11 @@ layout: default
 - [tan(x)](tan.html)
 - [tanh(x)](tanh.html)
 
-<h2 id="units"><a href="#units">&sect;</a>units</h2>
+<h2 id="units">units <a href="#units" title="Permalink">#</a></h2>
 
 - [to(x, unit)](to.html)
 
-<h2 id="utils"><a href="#utils">&sect;</a>utils</h2>
+<h2 id="utils">utils <a href="#utils" title="Permalink">#</a></h2>
 
 - [clone(x)](clone.html)
 - [forEach(x, callback)](forEach.html)

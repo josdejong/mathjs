@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="extension"><a href="#extension">&sect;</a>Extension</h1>
+<h1 id="extension">Extension <a href="#extension" title="Permalink">#</a></h1>
 
 The library can easily be extended with functions and variables using the
 `import` function. The function `import` accepts a filename or an object with

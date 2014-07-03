@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-max"><a href="#function-max">&sect;</a>Function max</h1>
+<h1 id="function-max">Function max <a href="#function-max" title="Permalink">#</a></h1>
 
 Compute the maximum value of a matrix or a  list with values.
 In case of a multi dimensional array, the maximum of the flattened array
@@ -10,7 +10,7 @@ will be calculated. When `dim` is provided, the maximum over the selected
 dimension will be calculated. Parameter `dim` is zero-based.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.max(a, b, c, ...)
@@ -18,20 +18,20 @@ math.max(A)
 math.max(A, dim)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | ... * | A single matrix or or multiple scalar values
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 * | The maximum value
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.max(2, 1, 4, 3);                  // returns 4
@@ -46,7 +46,7 @@ math.min(2.7, 7.1, -4.5, 2.0, 4.1);    // returns -4.5
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [mean](mean.html),
 [median](median.html),

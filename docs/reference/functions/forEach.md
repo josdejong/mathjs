@@ -2,25 +2,25 @@
 layout: default
 ---
 
-<h1 id="function-foreach"><a href="#function-foreach">&sect;</a>Function forEach</h1>
+<h1 id="function-foreach">Function forEach <a href="#function-foreach" title="Permalink">#</a></h1>
 
 Iterate over all elements of a matrix/array, and executes the given callback function.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.forEach(x, callback)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Matrix &#124; Array | The matrix to iterate on.
 `callback` | Function | The callback function is invoked with three parameters: the value of the element, the index of the element, and the Matrix/array being traversed.
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.forEach([1, 2, 3], function(value) {

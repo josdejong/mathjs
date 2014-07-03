@@ -2,14 +2,14 @@
 layout: default
 ---
 
-<h1 id="function-range"><a href="#function-range">&sect;</a>Function range</h1>
+<h1 id="function-range">Function range <a href="#function-range" title="Permalink">#</a></h1>
 
 Create an array from a range.
 By default, the range end is excluded. This can be customized by providing
 an extra parameter `includeEnd`.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.range(str [, includeEnd])               // Create a range from a string,
@@ -22,7 +22,7 @@ math.range(start, end, step [, includeEnd])  // Create a range with start, step,
                                              // and end.
 ```
 
-<h3 id="where"><a href="#where">&sect;</a>Where</h3>
+<h3 id="where">Where <a href="#where" title="Permalink">#</a></h3>
 
 - `str: String`
   A string 'start:end' or 'start:step:end'
@@ -35,20 +35,20 @@ math.range(start, end, step [, includeEnd])  // Create a range with start, step,
 - `includeEnd: boolean`
   Option to specify whether to include the end or not. False by default.
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | * | Parameters describing the ranges `start`, `end`, and optional `step`.
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Array &#124; Matrix | range
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.range(2, 6);        // [2, 3, 4, 5]
@@ -58,7 +58,7 @@ math.range(2, 6, true);  // [2, 3, 4, 5, 6]
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [ones](ones.html),
 [zeros](zeros.html),

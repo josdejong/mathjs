@@ -81,16 +81,29 @@ gulp.task('clean', function (cb) {
  */
 gulp.task('docs', ['clean'], function () {
   return gulp.src(DOCS_SRC)
-      .pipe(replace(/HISTORY.md/g, 'history.html'))             // change links to history.md to lowercase
-      .pipe(replace(/(\([\w\./]*).md(\))/g, '$1.html$2'))       // replace urls to *.md with *.html
-      .pipe(replace(/^(#+) ([\w\ ]*)/mg, function (a, b, c) {   // create headers with an id
-          var id = c.toLowerCase().replace(/ /g, '-');
-          return '<h' + b.length + ' id="' + id + '">' +
-              '<a href="#' + id + '">&sect;</a>' +
-              c +
-              '</h' + b.length + '>';
+      // change links to history.md to lowercase
+      .pipe(replace(/HISTORY.md/g, 'history.html'))
+
+      // replace urls to *.md with *.html
+      .pipe(replace(/(\([\w\./]*).md(\))/g, '$1.html$2'))
+
+      // create headers with an id
+      .pipe(replace(/^(#+) ([\w\ ]*)/mg, function (header, level, title) {
+        // for example:
+        //   header is '## My Header',
+        //   level is '##',
+        //   title is 'My Header'
+        var tag = 'h' + level.length;                       // for example 'h2'
+        var id = title.toLowerCase().replace(/ /g, '-');    // for example 'my-header'
+        var link = '<a href="#' + id + '" title="Permalink">#</a>'; // clickable link to header
+
+        // returns for example '<h2 id="my-header">My Header <a href="#my-header" title="Permalink">#</a></h2>'
+        return '<' + tag + ' id="' + id + '">' + title + ' ' + link + '</' + tag + '>';
       }))
-      .pipe(header(MD_HEADER))                                  // add header with markdown layout
+
+      // add header with markdown layout
+      .pipe(header(MD_HEADER))
+
       .pipe(gulp.dest(DOCS_DEST));
 });
 

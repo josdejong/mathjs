@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-atan2"><a href="#function-atan2">&sect;</a>Function atan2</h1>
+<h1 id="function-atan2">Function atan2 <a href="#function-atan2" title="Permalink">#</a></h1>
 
 Calculate the inverse tangent function with two arguments, y/x.
 By providing two arguments, the right quadrant of the computed angle can be
@@ -11,27 +11,27 @@ determined.
 For matrices, the function is evaluated element wise.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.atan2(y, x)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `y` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Second dimension
 `x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | First dimension
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Complex &#124; Array &#124; Matrix | Four-quadrant inverse tangent
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.atan2(2, 2) / math.pi;       // returns number 0.25
@@ -44,7 +44,7 @@ math.atan(2);             // returns Complex 1.5707963267948966 -1.3169578969248
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [tan](tan.html),
 [atan](atan.html),

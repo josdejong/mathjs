@@ -2,32 +2,32 @@
 layout: default
 ---
 
-<h1 id="function-abs"><a href="#function-abs">&sect;</a>Function abs</h1>
+<h1 id="function-abs">Function abs <a href="#function-abs" title="Permalink">#</a></h1>
 
 Calculate the absolute value of a number. For matrices, the function is
 evaluated element wise.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.abs(x)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  A number or matrix for which to get the absolute value
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Absolute value of `x`
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.abs(3.5);                // returns Number 3.5
@@ -37,7 +37,7 @@ math.abs([3, -5, -1, 0, 2]);  // returns Array [3, 5, 1, 0, 2]
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [sign](sign.html)
 

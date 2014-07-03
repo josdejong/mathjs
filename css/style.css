@@ -235,26 +235,55 @@ h3, h4 {
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5,
+h6 {
+  position: relative;
+  padding-left: 30px;
   margin-left: -30px;
 }
 
 h1 a,
 h2 a,
 h3 a,
-h4 a {
-  text-decoration: none;
+h4 a,
+h5 a,
+h6 a {
+  position: absolute;
   width: 30px;
+  left: 0;
+  top: 0;
   display: inline-block;
   text-align: center;
   visibility: hidden;
+  text-decoration: none;
+}
+
+.small h1 a,
+.small h2 a,
+.small h3 a,
+.small h4 a,
+.small h5 a,
+.small h6 a {
+  position: relative;
 }
 
 h1:hover a,
 h2:hover a,
 h3:hover a,
-h4:hover a {
+h4:hover a,
+h5:hover a,
+h6:hover a {
   visibility: visible;
+}
+
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover,
+h5 a:hover,
+h6 a:hover {
+  text-decoration: underline;
 }
 
 ul {

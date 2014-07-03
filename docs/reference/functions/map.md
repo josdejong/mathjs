@@ -2,33 +2,33 @@
 layout: default
 ---
 
-<h1 id="function-map"><a href="#function-map">&sect;</a>Function map</h1>
+<h1 id="function-map">Function map <a href="#function-map" title="Permalink">#</a></h1>
 
 Create a new matrix or array with the results of the callback function executed on
 each entry of the matrix/array.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.map(x, callback)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Matrix &#124; Array | The matrix to iterate on.
 `callback` | Function | The callback method is invoked with three parameters: the value of the element, the index of the element, and the matrix being traversed.
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Matrix &#124; array | Transformed map of x
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.map([1, 2, 3], function(value) {

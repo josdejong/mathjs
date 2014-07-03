@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="data-types"><a href="#data-types">&sect;</a>Data Types</h1>
+<h1 id="data-types">Data Types <a href="#data-types" title="Permalink">#</a></h1>
 
 The functions of math.js support multiple data types, both native JavaScript
 types as well as more advanced types implemented in math.js. The data types can

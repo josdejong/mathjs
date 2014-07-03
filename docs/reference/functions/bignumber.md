@@ -2,32 +2,32 @@
 layout: default
 ---
 
-<h1 id="function-bignumber"><a href="#function-bignumber">&sect;</a>Function bignumber</h1>
+<h1 id="function-bignumber">Function bignumber <a href="#function-bignumber" title="Permalink">#</a></h1>
 
 Create a BigNumber, which can store numbers with arbitrary precision.
 When a matrix is provided, all elements will be converted to BigNumber.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.bignumber(x)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `value` | Number &#124; String &#124; Array &#124; Matrix | Value for the big number, 0 by default.
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 BigNumber | The created bignumber
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 0.1 + 0.2;                                  // returns Number 0.30000000000000004
@@ -39,7 +39,7 @@ math.bignumber('7.2e500');                  // returns BigNumber 7.2e500
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [boolean](boolean.html),
 [complex](complex.html),

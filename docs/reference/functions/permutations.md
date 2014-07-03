@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-permutations"><a href="#function-permutations">&sect;</a>Function permutations</h1>
+<h1 id="function-permutations">Function permutations <a href="#function-permutations" title="Permalink">#</a></h1>
 
 Compute the number of ways of obtaining an ordered subset of `k` elements
 from a set of `n` elements.
@@ -11,28 +11,28 @@ Permutations only takes integer arguments.
 The following condition must be enforced: k <= n.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.permutations(n)
 math.permutations(n, k)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `n` | Number &#124; BigNumber | The number of objects in total
 `k` | Number &#124; BigNumber | The number of objects in the subset
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber | The number of permutations
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.permutations(5);     // 120
@@ -40,7 +40,7 @@ math.permutations(5, 3);  // 60
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [combinations](combinations.html),
 [factorial](factorial.html)

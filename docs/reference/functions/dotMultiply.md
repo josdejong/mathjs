@@ -2,33 +2,33 @@
 layout: default
 ---
 
-<h1 id="function-dotmultiply"><a href="#function-dotmultiply">&sect;</a>Function dotMultiply</h1>
+<h1 id="function-dotmultiply">Function dotMultiply <a href="#function-dotmultiply" title="Permalink">#</a></h1>
 
 Multiply two matrices element wise. The function accepts both matrices and
 scalar values.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.dotMultiply(x, y)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Left hand value
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Right hand value
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Multiplication of `x` and `y`
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.dotMultiply(2, 4); // returns 8
@@ -41,7 +41,7 @@ math.multiply(a, b);    // returns [[52, 28], [23, 14]]
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [multiply](multiply.html),
 [divide](divide.html),

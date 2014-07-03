@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-unequal"><a href="#function-unequal">&sect;</a>Function unequal</h1>
+<h1 id="function-unequal">Function unequal <a href="#function-unequal" title="Permalink">#</a></h1>
 
 Test whether two values are unequal.
 
@@ -14,27 +14,27 @@ For matrices, the function is evaluated element wise.
 In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.unequal(x, y)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null &#124; undefined | First value to compare
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null &#124; undefined | Second value to compare
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Boolean &#124; Array &#124; Matrix | Returns true when the compared values are unequal, else returns false
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.unequal(2 + 2, 3);       // returns true
@@ -52,7 +52,7 @@ math.deepEqual(c, d);         // returns false
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [equal](equal.html),
 [deepEqual](deepEqual.html),

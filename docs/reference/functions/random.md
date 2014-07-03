@@ -2,12 +2,12 @@
 layout: default
 ---
 
-<h1 id="function-random"><a href="#function-random">&sect;</a>Function random</h1>
+<h1 id="function-random">Function random <a href="#function-random" title="Permalink">#</a></h1>
 
 Return a random number between `min` and `max` using a uniform distribution.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.random()                // generate a random number between 0 and 1
@@ -18,7 +18,7 @@ math.random(size, max)       // generate a matrix with random numbers between 0 
 math.random(size, min, max)  // generate a matrix with random numbers between min and max
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
@@ -26,14 +26,14 @@ Parameter | Type | Description
 `min` | Number | Minimum boundary for the random value
 `max` | Number | Maximum boundary for the random value
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Array &#124; Matrix | A random number
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.random();       // returns a random number between 0 and 1
@@ -43,7 +43,7 @@ math.random([2, 3]); // returns a 2x3 matrix with random numbers between 0 and 1
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [randomInt](randomInt.html),
 [pickRandom](pickRandom.html),

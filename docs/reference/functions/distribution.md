@@ -2,32 +2,32 @@
 layout: default
 ---
 
-<h1 id="function-distribution"><a href="#function-distribution">&sect;</a>Function distribution</h1>
+<h1 id="function-distribution">Function distribution <a href="#function-distribution" title="Permalink">#</a></h1>
 
 Create a distribution object with a set of random functions for given
 random distribution.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.distribution(name)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `name` | String | Name of a distribution. Choose from 'uniform', 'normal'.
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Object | Returns a distribution object containing functions: `random([size] [, min] [, max])`, `randomInt([min] [, max])`, `pickRandom(array)`
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 var normalDist = math.distribution('normal'); // create a normal distribution
@@ -35,7 +35,7 @@ normalDist.random(0, 10);                      // get a random value between 0 a
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [random](random.html),
 [randomInt](randomInt.html),

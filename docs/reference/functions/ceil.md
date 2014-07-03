@@ -2,33 +2,33 @@
 layout: default
 ---
 
-<h1 id="function-ceil"><a href="#function-ceil">&sect;</a>Function ceil</h1>
+<h1 id="function-ceil">Function ceil <a href="#function-ceil" title="Permalink">#</a></h1>
 
 Round a value towards plus infinity
 If `x` is complex, both real and imaginary part are rounded towards plus infinity.
 For matrices, the function is evaluated element wise.
 
 
-<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
+<h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.ceil(x)
 ```
 
-<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
+<h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
 
-<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
+<h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Rounded value
 
 
-<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.ceil(3.2);               // returns Number 4
@@ -43,7 +43,7 @@ math.ceil([3.2, 3.8, -4.7]);  // returns Array [4, 4, -4]
 ```
 
 
-<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
+<h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [floor](floor.html),
 [fix](fix.html),
