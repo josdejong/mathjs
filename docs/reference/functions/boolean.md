@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-boolean">Function boolean</h1>
+<h1 id="function-boolean"><a href="#function-boolean">&sect;</a>Function boolean</h1>
 
 Create a boolean or convert a string or number to a boolean.
 In case of a number, `true` is returned for non-zero numbers, and `false` in
@@ -11,26 +11,26 @@ Strings can be `'true'` or `'false'`, or can contain a number.
 When value is a matrix, all elements will be converted to boolean.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.boolean(x)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix | A value of any type
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Boolean &#124; Array &#124; Matrix | The boolean value
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.boolean(0);     // returns false
@@ -42,7 +42,7 @@ math.boolean([1, 0, 1, 1]);     // returns [true, false, true, true]
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [bignumber](bignumber.html),
 [complex](complex.html),

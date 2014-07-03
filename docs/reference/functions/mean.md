@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-mean">Function mean</h1>
+<h1 id="function-mean"><a href="#function-mean">&sect;</a>Function mean</h1>
 
 Compute the mean value of matrix or a list with values.
 In case of a multi dimensional array, the mean of the flattened array
@@ -10,7 +10,7 @@ will be calculated. When `dim` is provided, the maximum over the selected
 dimension will be calculated. Parameter `dim` is zero-based.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 mean.mean(a, b, c, ...)
@@ -18,20 +18,20 @@ mean.mean(A)
 mean.mean(A, dim)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | ... * | A single matrix or or multiple scalar values
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 * | The mean of all values
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.mean(2, 1, 4, 3);                     // returns 2.5
@@ -42,7 +42,7 @@ math.mean([[2, 5], [6, 3], [1, 7]], 1);    // returns [3.5, 4.5, 4]
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [median](median.html),
 [min](min.html),

@@ -2,33 +2,33 @@
 layout: default
 ---
 
-<h1 id="function-xgcd">Function xgcd</h1>
+<h1 id="function-xgcd"><a href="#function-xgcd">&sect;</a>Function xgcd</h1>
 
 Calculate the extended greatest common divisor for two values.
 See http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.xgcd(a, b)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `a` | Number &#124; Boolean | An integer number
 `b` | Number &#124; Boolean | An integer number
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Array | Returns an array containing 3 integers `[div, m, n]` where `div = gcd(a, b)` and `a*m + b*n = div`
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.xgcd(8, 12);             // returns [4, -1, 1]
@@ -37,7 +37,7 @@ math.xgcd(36163, 21199);      // returns [1247, -7, 12]
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [gcd](gcd.html),
 [lcm](lcm.html)

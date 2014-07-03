@@ -2,32 +2,32 @@
 layout: default
 ---
 
-<h1 id="function-string">Function string</h1>
+<h1 id="function-string"><a href="#function-string">&sect;</a>Function string</h1>
 
 Create a string or convert any object into a string.
 Elements of Arrays and Matrices are processed element wise.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.string(value)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `value` | * &#124; Array &#124; Matrix | A value to convert to a string
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 String &#124; Array &#124; Matrix | The created string
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.string(4.2);               // returns string '4.2'
@@ -40,7 +40,7 @@ math.string([true, false]);     // returns ['true', 'false']
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [bignumber](bignumber.html),
 [boolean](boolean.html),

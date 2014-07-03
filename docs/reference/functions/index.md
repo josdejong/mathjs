@@ -2,37 +2,37 @@
 layout: default
 ---
 
-<h1 id="function-index">Function index</h1>
+<h1 id="function-index"><a href="#function-index">&sect;</a>Function index</h1>
 
 Create an index. An Index can store ranges having start, step, and end
 for multiple dimensions.
 Matrix.get, Matrix.set, and math.subset accept an Index as input.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.index(range1, range2, ...)
 ```
 
-<h3 id="where">Where</h3>
+<h3 id="where"><a href="#where">&sect;</a>Where</h3>
 
 Each range can be any of:
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `ranges` | ...* | Zero or more ranges or numbers.
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Index | Returns the created index
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 var math = math.js
@@ -46,7 +46,7 @@ a.subset(math.index(1, null));          // returns [3, 4]
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [bignumber](bignumber.html),
 [boolean](boolean.html),

@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-std">Function std</h1>
+<h1 id="function-std"><a href="#function-std">&sect;</a>Function std</h1>
 
 Compute the standard deviation of a matrix or a  list with values.
 The standard deviations is defined as the square root of the variance:
@@ -18,7 +18,7 @@ parameter. The parameter `normalization` can be one of the following values:
 - 'biased'             The sum of squared errors is divided by (n + 1)
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.std(a, b, c, ...)
@@ -26,21 +26,21 @@ math.std(A)
 math.std(A, normalization)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
 `normalization` | String |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 * | The standard deviation
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.std(2, 4, 6);                     // returns 2
@@ -52,7 +52,7 @@ math.std([[1, 2, 3], [4, 5, 6]]);      // returns 1.8708286933869707
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [mean](mean.html),
 [median](median.html),

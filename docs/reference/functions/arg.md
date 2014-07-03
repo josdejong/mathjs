@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-arg">Function arg</h1>
+<h1 id="function-arg"><a href="#function-arg">&sect;</a>Function arg</h1>
 
 Compute the argument of a complex value.
 For a complex number `a + bi`, the argument is computed as `atan2(b, a)`.
@@ -10,26 +10,26 @@ For a complex number `a + bi`, the argument is computed as `atan2(b, a)`.
 For matrices, the function is evaluated element wise.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.arg(x)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; Complex &#124; Array &#124; Matrix &#124; Boolean |  A complex number or array with complex numbers
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Array &#124; Matrix | The argument of x
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 var a = math.complex(2, 2);
@@ -41,7 +41,7 @@ math.atan2(3, 2);               // returns Number 0.982793723247329
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [re](re.html),
 [im](im.html),

@@ -228,8 +228,33 @@ h1, h2 {
   margin-top: 20px;
 }
 
-h3 {
+h3, h4 {
   font-size: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin-left: -30px;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a {
+  text-decoration: none;
+  width: 30px;
+  display: inline-block;
+  text-align: center;
+  visibility: hidden;
+}
+
+h1:hover a,
+h2:hover a,
+h3:hover a,
+h4:hover a {
+  visibility: visible;
 }
 
 ul {

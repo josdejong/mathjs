@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="constant-reference">Constant reference</h1>
+<h1 id="constant-reference"><a href="#constant-reference">&sect;</a>Constant reference</h1>
 
 Math.js contains the following constants. 
 

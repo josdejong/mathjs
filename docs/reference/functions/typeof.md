@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-typeof">Function typeof</h1>
+<h1 id="function-typeof"><a href="#function-typeof">&sect;</a>Function typeof</h1>
 
 Determine the type of a variable.
 
@@ -29,26 +29,26 @@ math.type.Range        | `'range'`     | `math.typeof (math.range(0, 10))`
 math.type.Unit         | `'unit'`      | `math.typeof (math.unit('45 deg'))`
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.typeof(x)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | * | The variable for which to test the type.
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 String | Lower case type, for example 'number', 'string', 'array'.
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.typeof(3.5);                     // returns 'number'

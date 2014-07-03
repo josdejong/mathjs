@@ -2,34 +2,34 @@
 layout: default
 ---
 
-<h1 id="function-matrix">Function matrix</h1>
+<h1 id="function-matrix"><a href="#function-matrix">&sect;</a>Function matrix</h1>
 
 Create a Matrix. The function creates a new `math.type.Matrix` object from
 an `Array`. A Matrix has utility functions to manipulate the data in the
 matrix, like getting the size and getting or setting values in the matrix.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.matrix()      // creates an empty matrix
 math.matrix(data)  // creates a matrix with initial data.
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `data` | Array &#124; Matrix | A multi dimensional array
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Matrix | The created matrix
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 var m = math.matrix([[1, 2], [3, 4]);
@@ -40,7 +40,7 @@ m.get([1, 0])                    // number 3
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [bignumber](bignumber.html),
 [boolean](boolean.html),

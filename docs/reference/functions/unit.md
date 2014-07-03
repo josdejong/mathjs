@@ -2,34 +2,34 @@
 layout: default
 ---
 
-<h1 id="function-unit">Function unit</h1>
+<h1 id="function-unit"><a href="#function-unit">&sect;</a>Function unit</h1>
 
 Create a unit. Depending on the passed arguments, the function
 will create and return a new math.type.Unit object.
 When a matrix is provided, all elements will be converted to units.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.unit(unit : string)
 math.unit(value : number, unit : string)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | * &#124; Array &#124; Matrix | A number and unit.
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Unit &#124; Array &#124; Matrix | The created unit
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 var a = math.unit(5, 'cm');    // returns Unit 50 mm
@@ -38,7 +38,7 @@ a.to('m');                     // returns Unit 0.05 m
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [bignumber](bignumber.html),
 [boolean](boolean.html),

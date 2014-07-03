@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-select">Function select</h1>
+<h1 id="function-select"><a href="#function-select">&sect;</a>Function select</h1>
 
 Wrap any value in a Selector, allowing to perform chained operations on
 the value.
@@ -20,26 +20,26 @@ The Selector has a number of special functions:
                a string representation of the value.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.select(value)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `value` | * | A value of any type on which to start a chained operation.
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 math.chaining.Selector | The created selector
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.select(3)

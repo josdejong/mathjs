@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="expressions">Expressions</h1>
+<h1 id="expressions"><a href="#expressions">&sect;</a>Expressions</h1>
 
 Math.js contains a flexible and easy to use expression parser.
 The parser supports all data types, functions and constants available in math.js.
@@ -19,7 +19,7 @@ This page is divided in two sections:
 - [Syntax](#syntax) describes how to write expressions.
 
 
-<h2 id="parsing-and-evaluation">Parsing and evaluation</h2>
+<h2 id="parsing-and-evaluation"><a href="#parsing-and-evaluation">&sect;</a>Parsing and evaluation</h2>
 
 Expressions can be parsed and evaluated in various ways:
 
@@ -31,7 +31,7 @@ Expressions can be parsed and evaluated in various ways:
   memory.
 
 
-<h3 id="eval">Eval</h3>
+<h3 id="eval"><a href="#eval">&sect;</a>Eval</h3>
 
 Math.js comes with a function `math.eval` to evaluate expressions. Syntax:
 
@@ -68,7 +68,7 @@ scope.c;                                // 6.8
 ```
 
 
-<h3 id="compile">Compile</h3>
+<h3 id="compile"><a href="#compile">&sect;</a>Compile</h3>
 
 Math.js contains a function `math.compile` which compiles expressions
 into JavaScript code. This is a shortcut for first [parsing](#parse) and then
@@ -103,7 +103,7 @@ code1.eval(); // 5
 ```
 
 
-<h3 id="parse">Parse</h3>
+<h3 id="parse"><a href="#parse">&sect;</a>Parse</h3>
 
 Math.js contains a function `math.parse` to parse expressions into a node
 tree. The syntax is:
@@ -163,7 +163,7 @@ node.toTex();     // returns '\sqrt{ {\frac{x}{x} }+{1} }'
 ```
 
 
-<h3 id="parser">Parser</h3>
+<h3 id="parser"><a href="#parser">&sect;</a>Parser</h3>
 
 In addition to the static functions [`math.eval`](#eval) and
 [`math.parse`](#parse), math.js contains a parser with functions `eval` and
@@ -225,7 +225,7 @@ parser.clear();
 ```
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 The expression parser is aimed at a mathematical audience, not a programming
 audience. The syntax is similar to most calculators and mathematical
@@ -246,7 +246,7 @@ This section describes how to work with the available data types, functions,
 operators, variables, and more.
 
 
-<h3 id="operators">Operators</h3>
+<h3 id="operators"><a href="#operators">&sect;</a>Operators</h3>
 
 The expression parser has operators for all common arithmetic operations such
 as addition and multiplication. The expression parser uses conventional infix
@@ -319,7 +319,7 @@ Operators                         | Description
 `\n`, `;`                         | Statement separators
 
 
-<h3 id="functions">Functions</h3>
+<h3 id="functions"><a href="#functions">&sect;</a>Functions</h3>
 
 Functions are called by entering their name, followed by zero or more
 arguments enclosed by parentheses. All available functions are listed on the
@@ -347,7 +347,7 @@ parser.eval('g(2, 3)'); // 8
 ```
 
 
-<h3 id="constants-and-variables">Constants and variables</h3>
+<h3 id="constants-and-variables"><a href="#constants-and-variables">&sect;</a>Constants and variables</h3>
 
 Math.js has a number of built in constants such as `pi` and `e`.
 All available constants are listed on he page
@@ -376,13 +376,13 @@ parser.eval('a * b');       // 8.5
 ```
 
 
-<h3 id="data-types">Data types</h3>
+<h3 id="data-types"><a href="#data-types">&sect;</a>Data types</h3>
 
 The expression parser supports booleans, numbers, complex numbers, units,
 strings, and matrices.
 
 
-<h4 id="booleans">Booleans</h4>
+<h4 id="booleans"><a href="#booleans">&sect;</a>Booleans</h4>
 
 Booleans `true` and `false` can be used in expressions.
 
@@ -405,7 +405,7 @@ math.eval('boolean("false")');  // false
 ```
 
 
-<h4 id="numbers">Numbers</h4>
+<h4 id="numbers"><a href="#numbers">&sect;</a>Numbers</h4>
 
 The most important and basic data type in math.js are numbers. Numbers use a
 point as decimal mark. Numbers can be entered with exponential notation.
@@ -454,7 +454,7 @@ math.format(ans, {precision: 14});  // "0.3"
 ```
 
 
-<h4 id="bignumbers">BigNumbers</h4>
+<h4 id="bignumbers"><a href="#bignumbers">&sect;</a>BigNumbers</h4>
 
 Math.js supports BigNumbers for calculations with an arbitrary precision.
 The pros and cons of Number and BigNumber are explained in detail on the page
@@ -486,7 +486,7 @@ precision of the BigNumber will be lost. When a BigNumber is too large to be rep
 as Number, it will be initialized as `Infinity`.
 
 
-<h4 id="complex-numbers">Complex numbers</h4>
+<h4 id="complex-numbers"><a href="#complex-numbers">&sect;</a>Complex numbers</h4>
 
 Complex numbers can be created using the imaginary unit `i`, which is defined
 as `i^2 = -1`. Complex numbers have a real and complex part, which can be
@@ -524,7 +524,7 @@ parser.eval('number(a)');   // Error: 2 + i is no valid number
 ```
 
 
-<h4 id="units">Units</h4>
+<h4 id="units"><a href="#units">&sect;</a>Units</h4>
 
 math.js supports units. Units can be used in basic arithmetic operations like
 add and subtract, and units can be converted from one to another.
@@ -550,7 +550,7 @@ math.eval('sin(45 deg)');               // Number, 0.7071067811865475
 ```
 
 
-<h4 id="strings">Strings</h4>
+<h4 id="strings"><a href="#strings">&sect;</a>Strings</h4>
 
 Strings are enclosed by double quotes ". Strings can be concatenated by adding
 them. Parts of a string can be retrieved or replaced by using indexes. Strings
@@ -583,7 +583,7 @@ math.eval('eval("2 + 3")'); // 5
 ```
 
 
-<h4 id="matrices">Matrices</h4>
+<h4 id="matrices"><a href="#matrices">&sect;</a>Matrices</h4>
 
 Matrices can be created by entering a series of values between square brackets,
 elements are separated by a comma `,`.
@@ -653,7 +653,7 @@ parser.eval('c[end - 1 : -1 : 2]');   // Matrix, [8, 7, 6]
 ```
 
 
-<h3 id="multi-line-expressions">Multi line expressions</h3>
+<h3 id="multi-line-expressions"><a href="#multi-line-expressions">&sect;</a>Multi line expressions</h3>
 
 An expression can contain multiple lines. Lines can be separated by a newline
 character `\n` or by a semicolon `;`. Output of statements followed by a
@@ -669,7 +669,7 @@ math.eval('a=3; b=4; a + b \n a * b');  // Array, [7, 12]
 ```
 
 
-<h3 id="implicit-multiplication">Implicit multiplication</h3>
+<h3 id="implicit-multiplication"><a href="#implicit-multiplication">&sect;</a>Implicit multiplication</h3>
 
 The expression parser supports implicit multiplication. Implicit multiplication
 has the same precedence as explicit multiplications and divisions, so `3/4 mm`
@@ -695,7 +695,7 @@ math.eval('2 + 3i');          // Complex, 2 + 3i
 ```
 
 
-<h3 id="comments">Comments</h3>
+<h3 id="comments"><a href="#comments">&sect;</a>Comments</h3>
 
 Comments can be added to explain or describe calculations in text. A comment
 starts with a sharp sign character `#`, and ends at the end of the line. A line

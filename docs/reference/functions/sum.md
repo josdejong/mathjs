@@ -2,34 +2,34 @@
 layout: default
 ---
 
-<h1 id="function-sum">Function sum</h1>
+<h1 id="function-sum"><a href="#function-sum">&sect;</a>Function sum</h1>
 
 Compute the sum of a matrix or a list with values.
 In case of a (multi dimensional) array or matrix, the sum of all
 elements will be calculated.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.sum(a, b, c, ...)
 math.sum(A)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `args` | ... * | A single matrix or or multiple scalar values
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 * | The sum of all values
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.sum(2, 1, 4, 3);               // returns 10
@@ -38,7 +38,7 @@ math.sum([[2, 5], [4, 3], [1, 7]]); // returns 22
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [mean](mean.html),
 [median](median.html),

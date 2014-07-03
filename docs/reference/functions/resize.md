@@ -2,19 +2,19 @@
 layout: default
 ---
 
-<h1 id="function-resize">Function resize</h1>
+<h1 id="function-resize"><a href="#function-resize">&sect;</a>Function resize</h1>
 
 Resize a matrix
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.resize(x, size)
 math.resize(x, size, defaultValue)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
@@ -22,14 +22,14 @@ Parameter | Type | Description
 `size` | Array &#124; Matrix | One dimensional array with numbers
 `defaultValue` | Number &#124; String | Undefined by default, except in case of a string, in that case defaultValue = ' '
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 * &#124; Array &#124; Matrix | A resized clone of matrix `x`
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.resize([1, 2, 3, 4, 5], [3]); // returns Array  [1, 2, 3]
@@ -39,7 +39,7 @@ math.resize("hello", [8], "!");    // returns String 'hello!!!'
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [size](size.html),
 [squeeze](squeeze.html),

@@ -2,12 +2,12 @@
 layout: default
 ---
 
-<h1 id="function-randomint">Function randomInt</h1>
+<h1 id="function-randomint"><a href="#function-randomint">&sect;</a>Function randomInt</h1>
 
 Return a random integer number between `min` and `max` using a uniform distribution.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.randomInt()                // generate a random integer between 0 and 1
@@ -18,7 +18,7 @@ math.randomInt(size, max)       // generate a matrix with random integer between
 math.randomInt(size, min, max)  // generate a matrix with random integer between min and max
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
@@ -26,14 +26,14 @@ Parameter | Type | Description
 `min` | Number | Minimum boundary for the random value
 `max` | Number | Maximum boundary for the random value
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; Array &#124; Matrix | A random integer value
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.randomInt();       // returns a random integer between 0 and 1
@@ -43,7 +43,7 @@ math.randomInt([2, 3]); // returns a 2x3 matrix with random integers between 0 a
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [randomInt](randomInt.html),
 [pickRandom](pickRandom.html),

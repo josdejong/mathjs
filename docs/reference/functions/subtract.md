@@ -2,33 +2,33 @@
 layout: default
 ---
 
-<h1 id="function-subtract">Function subtract</h1>
+<h1 id="function-subtract"><a href="#function-subtract">&sect;</a>Function subtract</h1>
 
 Subtract two values, `x - y`.
 For matrices, the function is evaluated element wise.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.subtract(x, y)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Initial value
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Value to subtract from `x`
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Subtraction of `x` and `y`
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.subtract(5.3, 2);        // returns Number 3.3
@@ -45,7 +45,7 @@ math.subtract(c, d);          // returns Unit 1.6 km
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [add](add.html)
 

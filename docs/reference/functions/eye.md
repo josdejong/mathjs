@@ -2,13 +2,13 @@
 layout: default
 ---
 
-<h1 id="function-eye">Function eye</h1>
+<h1 id="function-eye"><a href="#function-eye">&sect;</a>Function eye</h1>
 
 Create a 2-dimensional identity matrix with size m x n or n x n.
 The matrix has ones on the diagonal and zeros elsewhere.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.eye(n)
@@ -16,20 +16,20 @@ math.eye(m, n)
 math.eye([m, n])
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `size` | ...Number &#124; Matrix &#124; Array | The size for the matrix
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Matrix &#124; Array &#124; Number | A matrix with ones on the diagonal.
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.eye(3);                    // returns [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
@@ -40,7 +40,7 @@ math.eye(math.size(b));         // returns [[1, 0, 0], [0, 1, 0]]
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [diag](diag.html),
 [ones](ones.html),

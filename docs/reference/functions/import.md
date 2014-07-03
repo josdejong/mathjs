@@ -2,19 +2,19 @@
 layout: default
 ---
 
-<h1 id="function-import">Function import</h1>
+<h1 id="function-import"><a href="#function-import">&sect;</a>Function import</h1>
 
 Import functions from an object or a module
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.import(object)
 math.import(object, options)
 ```
 
-<h3 id="where">Where</h3>
+<h3 id="where"><a href="#where">&sect;</a>Where</h3>
 
 - `object: Object`
   An object with functions to be imported.
@@ -26,14 +26,14 @@ math.import(object, options)
     which converts data types like Matrix to primitive data types like Array.
     The wrapper is needed when extending math.js with libraries which do not
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `object` | String &#124; Object | Object with functions to be imported.
 `options` | Object | Import options.
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 // define new functions and variables

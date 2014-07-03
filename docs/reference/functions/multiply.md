@@ -2,33 +2,33 @@
 layout: default
 ---
 
-<h1 id="function-multiply">Function multiply</h1>
+<h1 id="function-multiply"><a href="#function-multiply">&sect;</a>Function multiply</h1>
 
 Multiply two values, `x * y`. The result is squeezed.
 For matrices, the matrix product is calculated.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.multiply(x, y)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | First value to multiply
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Second value to multiply
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Multiplication of `x` and `y`
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.multiply(4, 5.2);        // returns Number 20.8
@@ -46,7 +46,7 @@ math.multiply(3, e);          // returns Unit 6.3 km
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [divide](divide.html)
 

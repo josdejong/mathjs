@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-largereq">Function largerEq</h1>
+<h1 id="function-largereq"><a href="#function-largereq">&sect;</a>Function largerEq</h1>
 
 Test whether value x is larger or equal to y.
 
@@ -13,27 +13,27 @@ function cannot be used to compare values smaller than approximately 2.22e-16.
 For matrices, the function is evaluated element wise.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.largerEq(x, y)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix | First value to compare
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix | Second value to compare
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Boolean &#124; Array &#124; Matrix | Returns true when the x is larger or equal to y, else returns false
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.larger(2, 1 + 1);         // returns false
@@ -41,7 +41,7 @@ math.largerEq(2, 1 + 1);       // returns true
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [equal](equal.html),
 [unequal](unequal.html),

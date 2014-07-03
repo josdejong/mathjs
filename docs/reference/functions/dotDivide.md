@@ -2,33 +2,33 @@
 layout: default
 ---
 
-<h1 id="function-dotdivide">Function dotDivide</h1>
+<h1 id="function-dotdivide"><a href="#function-dotdivide">&sect;</a>Function dotDivide</h1>
 
 Divide two matrices element wise. The function accepts both matrices and
 scalar values.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.dotDivide(x, y)
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Numerator
 `y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Denominator
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Quotient, `x ./ y`
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.dotDivide(2, 4);   // returns 0.5
@@ -41,7 +41,7 @@ math.divide(a, b);      // returns [[1.75, 0.75], [-1.75, 2.25]]
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [divide](divide.html),
 [multiply](multiply.html),

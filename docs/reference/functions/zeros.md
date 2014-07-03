@@ -2,13 +2,13 @@
 layout: default
 ---
 
-<h1 id="function-zeros">Function zeros</h1>
+<h1 id="function-zeros"><a href="#function-zeros">&sect;</a>Function zeros</h1>
 
 Create a matrix filled with zeros. The created matrix can have one or
 multiple dimensions.
 
 
-<h2 id="syntax">Syntax</h2>
+<h2 id="syntax"><a href="#syntax">&sect;</a>Syntax</h2>
 
 ```js
 math.zeros(m)
@@ -17,20 +17,20 @@ math.zeros([m, n])
 math.zeros([m, n, p, ...])
 ```
 
-<h3 id="parameters">Parameters</h3>
+<h3 id="parameters"><a href="#parameters">&sect;</a>Parameters</h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
 `size` | ...Number &#124; Array | The size of each dimension of the matrix
 
-<h3 id="returns">Returns</h3>
+<h3 id="returns"><a href="#returns">&sect;</a>Returns</h3>
 
 Type | Description
 ---- | -----------
 Array &#124; Matrix &#124; Number | A matrix filled with zeros
 
 
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">&sect;</a>Examples</h2>
 
 ```js
 math.zeros(3);                  // returns [0, 0, 0]
@@ -41,7 +41,7 @@ math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]
 ```
 
 
-<h2 id="see-also">See also</h2>
+<h2 id="see-also"><a href="#see-also">&sect;</a>See also</h2>
 
 [ones](ones.html),
 [eye](eye.html),
