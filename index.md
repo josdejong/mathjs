@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-# An extensive math library for JavaScript and Node.js
+<h1 id="an-extensive-math-library-for-javascript-and-nodejs">An extensive math library for JavaScript and Node.js <a href="#an-extensive-math-library-for-javascript-and-nodejs" title="Permalink">#</a></h1>
 
 Math.js is an extensive math library for JavaScript and Node.js.
 It features a flexible expression parser and offers an integrated solution
@@ -11,7 +11,7 @@ to work with numbers, big numbers, complex numbers, units, and matrices.
 Powerful and easy to use.
 
 
-# Features
+<h1 id="features">Features <a href="#features" title="Permalink">#</a></h1>
 
 - Supports numbers, big numbers, complex numbers, units, strings, arrays, and matrices.
 - Is compatible with JavaScript’s built-in Math library.
@@ -24,7 +24,7 @@ Powerful and easy to use.
 
 <div class="cols">
   <div class="left">
-    <h1>Example</h1>
+    <h1 id="example">Example <a href="#example" title="Permalink">#</a></h1>
     <p>
       Here some example code demonstrating how to use the library.
       More examples are available
@@ -54,29 +54,29 @@ Powerful and easy to use.
   </div>
   </div>
   <div class="right">
-    <h1>Demo</h1>
-      <p>
-        Try the expression parser below.<br>
-        See <a href="http://mathnotepad.com/">Math Notepad</a> for a full application.
-      </p>
-      <div id="commandline">loading...</div>
-      <script type="text/javascript">
-        // create an instance of math.js
-        var math = mathjs();
+    <h1 id="demo">Demo <a href="#demo" title="Permalink">#</a></h1>
+    <p>
+      Try the expression parser below.<br>
+      See <a href="http://mathnotepad.com/">Math Notepad</a> for a full application.
+    </p>
+    <div id="commandline">loading...</div>
+    <script type="text/javascript">
+      // create an instance of math.js
+      var math = mathjs();
 
-        var editor = new CommandLineEditor({
-            container: document.getElementById('commandline'),
-            math: math
-        });
-      </script>
-      <div class="tips">
-        Shortcut keys:
-        <ul>
-          <li>Press <b>S</b> to set focus to the input field</li>
-          <li>Press <b>Ctrl+F11</b> to toggle full screen</li>
-          <li>Enter <b>"clear"</b> to clear history</li>
-        </ul>
-      </div>
+      var editor = new CommandLineEditor({
+          container: document.getElementById('commandline'),
+          math: math
+      });
+    </script>
+    <div class="tips">
+      Shortcut keys:
+      <ul>
+        <li>Press <b>S</b> to set focus to the input field</li>
+        <li>Press <b>Ctrl+F11</b> to toggle full screen</li>
+        <li>Enter <b>"clear"</b> to clear history</li>
+      </ul>
+    </div>
   </div>
   <div class="end">&nbsp;</div>
 </div>

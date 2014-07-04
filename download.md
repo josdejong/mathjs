@@ -2,7 +2,8 @@
 layout: default
 ---
 
-# Install
+<h1 id="install">Install <a href="#install" title="Permalink">#</a></h1>
+
 
 Math.js can be installed via various package managers: 
 
@@ -15,7 +16,7 @@ Package Manager                                         | Installation
 When installed globally with [npm](https://npmjs.org/) (using the `-g` option), math.js is available as a command line application `mathjs`, see documentation on [Command Line Interface](docs/command_line_interface.html).
 
 
-# Download
+<h1 id="download">Download <a href="#download" title="Permalink">#</a></h1>
 
 Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 
@@ -43,16 +44,17 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 </table>
 
 
-# History
+<h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 A changelog describing the changes with each release is available on the page [History](history.html).
 
 
-# Source code
+<h1 id="source-code">Source code <a href="#source-code" title="Permalink">#</a></h1>
 
 The source code of math.js is available on GitHub: https://github.com/josdejong/mathjs.
 
-# License
+
+<h1 id="license">License <a href="#license" title="Permalink">#</a></h1>
 
 Math.js is open source and licensed under the
 [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)

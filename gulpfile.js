@@ -57,6 +57,20 @@ function version() {
   return require('mathjs/package.json').version;
 }
 
+// inject permalinks in markdown files in a gulp pipe
+var injectPermalinks = replace(/^(#+) ([\w\ ]*)/mg, function (header, level, title) {
+  // for example:
+  //   header is '## My Header',
+  //   level is '##',
+  //   title is 'My Header'
+  var tag = 'h' + level.length;                       // for example 'h2'
+  var id = title.toLowerCase().replace(/ /g, '-');    // for example 'my-header'
+  var link = '<a href="#' + id + '" title="Permalink">#</a>'; // clickable link to header
+
+  // returns for example '<h2 id="my-header">My Header <a href="#my-header" title="Permalink">#</a></h2>'
+  return '<' + tag + ' id="' + id + '">' + title + ' ' + link + '</' + tag + '>';
+});
+
 /**
  * copy math.js and math.min.js
  */
@@ -81,29 +95,10 @@ gulp.task('clean', function (cb) {
  */
 gulp.task('docs', ['clean'], function () {
   return gulp.src(DOCS_SRC)
-      // change links to history.md to lowercase
-      .pipe(replace(/HISTORY.md/g, 'history.html'))
-
-      // replace urls to *.md with *.html
-      .pipe(replace(/(\([\w\./]*).md(\))/g, '$1.html$2'))
-
-      // create headers with an id
-      .pipe(replace(/^(#+) ([\w\ ]*)/mg, function (header, level, title) {
-        // for example:
-        //   header is '## My Header',
-        //   level is '##',
-        //   title is 'My Header'
-        var tag = 'h' + level.length;                       // for example 'h2'
-        var id = title.toLowerCase().replace(/ /g, '-');    // for example 'my-header'
-        var link = '<a href="#' + id + '" title="Permalink">#</a>'; // clickable link to header
-
-        // returns for example '<h2 id="my-header">My Header <a href="#my-header" title="Permalink">#</a></h2>'
-        return '<' + tag + ' id="' + id + '">' + title + ' ' + link + '</' + tag + '>';
-      }))
-
-      // add header with markdown layout
-      .pipe(header(MD_HEADER))
-
+      .pipe(replace(/HISTORY.md/g, 'history.html'))       // change links to history.md to lowercase
+      .pipe(replace(/(\([\w\./]*).md(\))/g, '$1.html$2')) // replace urls to *.md with *.html
+      .pipe(injectPermalinks)                             // create headers with an id
+      .pipe(header(MD_HEADER))                            // add banner with markdown layout
       .pipe(gulp.dest(DOCS_DEST));
 });
 
@@ -141,6 +136,9 @@ gulp.task('examples', ['copyExamples'], function (cb) {
         };
       })
     });
+
+    // TODO: inject permalinks
+
     fs.writeFileSync(url, page);
   }
 
@@ -186,6 +184,8 @@ gulp.task('examples', ['copyExamples'], function (cb) {
         files: files,
         browserFiles: browserFiles
       });
+      // TODO: inject permalinks
+
       fs.writeFileSync(EXAMPLES_DEST + '/index.md', page);
 
       cb();
@@ -199,6 +199,7 @@ gulp.task('examples', ['copyExamples'], function (cb) {
 gulp.task('history', function () {
   return gulp.src(HISTORY_SRC)
       .pipe(header(MD_HEADER))    // add header with markdown layout
+      // TODO: inject permalinks
       .pipe(rename('history.md')) // rename to lower case
       .pipe(gulp.dest(HISTORY_DEST));
 });
