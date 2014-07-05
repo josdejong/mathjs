@@ -25,7 +25,7 @@ and instantiated. When creating an instance, one can optionally provide
 configuration options as described in
 [Configuration](configuration.html).
 
-<h3 id="node">Node <a href="#node" title="Permalink">#</a></h3>.js
+<h3 id="nodejs">Node.js <a href="#nodejs" title="Permalink">#</a></h3>
 
 Load math.js in [node.js](http://nodejs.org/):
 
@@ -62,7 +62,7 @@ the [es5-shim](https://github.com/kriskowal/es5-shim) library must be loaded
 as well.
 
 
-<h3 id="require">Require <a href="#require" title="Permalink">#</a></h3>.js
+<h3 id="requirejs">Require.js <a href="#requirejs" title="Permalink">#</a></h3>
 
 Load math.js in the browser using [require.js](http://requirejs.org/):
 

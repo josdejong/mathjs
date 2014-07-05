@@ -24,7 +24,7 @@ math.config({
 });
 ```
 
-<h2 id="round">Round <a href="#round" title="Permalink">#</a></h2>-off errors
+<h2 id="roundoff-errors">Round-off errors <a href="#roundoff-errors" title="Permalink">#</a></h2>
 
 Math.js uses the built-in JavaScript Number type. A Number is a floating point
 number with a limited precision of 64 bits, about 16 digits. The largest integer

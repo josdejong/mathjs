@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="command-line-interface-">Command Line Interface  <a href="#command-line-interface-" title="Permalink">#</a></h1>(CLI)
+<h1 id="command-line-interface-cli">Command Line Interface (CLI) <a href="#command-line-interface-cli" title="Permalink">#</a></h1>
 
 When math.js is installed globally using npm, its expression parser can be used
 from the command line. To install math.js globally:

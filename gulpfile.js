@@ -58,13 +58,15 @@ function version() {
 }
 
 // inject permalinks in markdown files in a gulp pipe
-var injectPermalinks = replace(/^(#+) ([\w\ ]*)/mg, function (header, level, title) {
+var injectPermalinks = replace(/^(#+) (.*)$/mg, function (header, level, title) {
   // for example:
   //   header is '## My Header',
   //   level is '##',
   //   title is 'My Header'
   var tag = 'h' + level.length;                       // for example 'h2'
-  var id = title.toLowerCase().replace(/ /g, '-');    // for example 'my-header'
+  var id = title.toLowerCase()                        // for example 'my-header'
+      .replace(/[^\w\s]/g, '')
+      .replace(/\s/g, '-');
   var link = '<a href="#' + id + '" title="Permalink">#</a>'; // clickable link to header
 
   // returns for example '<h2 id="my-header">My Header <a href="#my-header" title="Permalink">#</a></h2>'

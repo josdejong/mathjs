@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-reference-">Function reference  <a href="#function-reference-" title="Permalink">#</a></h1>(categorical)
+<h1 id="function-reference-categorical">Function reference (categorical) <a href="#function-reference-categorical" title="Permalink">#</a></h1>
 
 <h2 id="arithmetic">arithmetic <a href="#arithmetic" title="Permalink">#</a></h2>
 

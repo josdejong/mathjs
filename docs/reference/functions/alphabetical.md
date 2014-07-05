@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<h1 id="function-reference-">Function reference  <a href="#function-reference-" title="Permalink">#</a></h1>(alphabetical)
+<h1 id="function-reference-alphabetical">Function reference (alphabetical) <a href="#function-reference-alphabetical" title="Permalink">#</a></h1>
 
 - [abs(x)](abs.html)
 - [acos(x)](acos.html)

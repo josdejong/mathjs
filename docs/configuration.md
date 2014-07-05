@@ -44,7 +44,7 @@ The following configuration options are available:
 
 This section shows a number of configuration examples.
 
-<h3 id="node">node <a href="#node" title="Permalink">#</a></h3>.js
+<h3 id="nodejs">node.js <a href="#nodejs" title="Permalink">#</a></h3>
 
 ```js
 // load the default instance of math.js
