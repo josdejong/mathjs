@@ -1,5 +1,11 @@
 # History
 
+
+## not yet released, version 0.25.1
+
+- Improved index out of range errors.
+
+
 ## 2014-07-01, version 0.25.0
 
 - The library now immediately returns a default instance of mathjs, there is
