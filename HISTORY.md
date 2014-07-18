@@ -3,6 +3,7 @@
 
 ## not yet released, version 0.25.1
 
+- Multi-line expressions now return a `ResultSet` instead of an `Array`.
 - Improved index out of range errors.
 
 

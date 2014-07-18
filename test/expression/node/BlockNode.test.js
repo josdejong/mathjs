@@ -1,13 +1,14 @@
 // test BlockNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    AssignmentNode = require('../../../lib/expression/node/AssignmentNode'),
-    BlockNode = require('../../../lib/expression/node/BlockNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index')();
+var Node = require('../../../lib/expression/node/Node');
+var ConstantNode = require('../../../lib/expression/node/ConstantNode');
+var SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var RangeNode = require('../../../lib/expression/node/RangeNode');
+var AssignmentNode = require('../../../lib/expression/node/AssignmentNode');
+var BlockNode = require('../../../lib/expression/node/BlockNode');
+var ResultSet = require('../../../lib/type/ResultSet');
 
 describe('BlockNode', function() {
 
@@ -36,7 +37,7 @@ describe('BlockNode', function() {
     n.add(new SymbolNode('foo'), true);
 
     var scope = {};
-    assert.deepEqual(n.compile(math).eval(scope), [5, 3]);
+    assert.deepEqual(n.compile(math).eval(scope), new ResultSet([5, 3]));
     assert.deepEqual(scope, {foo: 3});
   });
 
@@ -44,7 +45,7 @@ describe('BlockNode', function() {
     var n = new BlockNode();
     n.add(new ConstantNode(5));
 
-    assert.deepEqual(n.compile(math).eval(), [5]);
+    assert.deepEqual(n.compile(math).eval(), new ResultSet([5]));
   });
 
   it ('should find a BlockNode', function () {

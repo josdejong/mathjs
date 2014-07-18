@@ -1,14 +1,15 @@
 // test parse
-var assert = require('assert'),
-    approx = require('../../tools/approx'),
-    math = require('../../index'),
-    ArgumentsError = require('../../lib/error/ArgumentsError'),
-    parse = require('../../lib/expression/parse'),
-    ConditionalNode = require('../../lib/expression/node/ConditionalNode'),
-    OperatorNode = require('../../lib/expression/node/OperatorNode'),
-    Complex = math.type.Complex,
-    Matrix = math.type.Matrix,
-    Unit = math.type.Unit;
+var assert = require('assert');
+var approx = require('../../tools/approx');
+var math = require('../../index');
+var ArgumentsError = require('../../lib/error/ArgumentsError');
+var parse = require('../../lib/expression/parse');
+var ConditionalNode = require('../../lib/expression/node/ConditionalNode');
+var OperatorNode = require('../../lib/expression/node/OperatorNode');
+var Complex = math.type.Complex;
+var Matrix = math.type.Matrix;
+var Unit = math.type.Unit;
+var ResultSet = math.type.ResultSet;
 
 /**
  * Helper function to parse an expression and immediately evaluate its results
@@ -41,6 +42,7 @@ describe('parse', function() {
 
   it('should parse a matrix with expressions', function() {
     var scope = {};
+    // TODO: remove support for matrix input? doesn't really make much sense
     assert.deepEqual(parse(new Matrix(['a=3', 'b=4', 'a*b'])).map(function (node) {
       return node.compile(math).eval(scope);
     }), new Matrix([3, 4, 12]));
@@ -59,12 +61,12 @@ describe('parse', function() {
   });
 
   it('should parse multiline expressions', function() {
-    assert.deepEqual(parse('a=3\nb=4\na*b').compile(math).eval(), [3, 4, 12]);
-    assert.deepEqual(parse('b = 43; b * 4').compile(math).eval(), [172]);
+    assert.deepEqual(parse('a=3\nb=4\na*b').compile(math).eval(), new ResultSet([3, 4, 12]));
+    assert.deepEqual(parse('b = 43; b * 4').compile(math).eval(), new ResultSet([172]));
   });
 
   it('should skip empty lines in multiline expressions', function() {
-    assert.deepEqual(parse('\n;\n2 * 4\n').compile(math).eval(), [8]);
+    assert.deepEqual(parse('\n;\n2 * 4\n').compile(math).eval(), new ResultSet([8]));
   });
 
   it('should throw an error when scope contains a reserved keyword', function() {
@@ -105,8 +107,8 @@ describe('parse', function() {
       assert.equal(parseAndEval('2 + 3 # - 4'), 5);
     });
 
-    it('should skip comments in a block', function() {
-      assert.deepEqual(parseAndEval('2 + 3 # - 4\n6-2'), [5, 4]);
+    it('should skip comments in a ResultSet', function() {
+      assert.deepEqual(parseAndEval('2 + 3 # - 4\n6-2'), new ResultSet([5, 4]));
     });
 
   });
@@ -598,7 +600,7 @@ describe('parse', function() {
       approx.deepEqual(parseAndEval('2. * 3'), 6);
       approx.deepEqual(parseAndEval('4 .* 2'), 8);
       approx.deepEqual(parseAndEval('8 .* 2 .* 2'), 32);
-      assert.deepEqual(parseAndEval('a=3; a.*4'), [12]);
+      assert.deepEqual(parseAndEval('a=3; a.*4'), new ResultSet([12]));
 
       assert.deepEqual(parseAndEval('[1,2,3] .* [1,2,3]'), new Matrix([1,4,9]));
     });
@@ -897,7 +899,7 @@ describe('parse', function() {
         assert.equal(parseAndEval('2 > 3 ? true : false'), false);
         assert.equal(parseAndEval('2 == 3 ? true : false'), false);
         assert.equal(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6);
-        assert.deepEqual(parseAndEval('3 ? true : false; 22'), [22]);
+        assert.deepEqual(parseAndEval('3 ? true : false; 22'), new ResultSet([22]));
         assert.deepEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'));
         assert.deepEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), new Matrix([1,2]));
         assert.deepEqual(parseAndEval('false ? 1:2:6'), new Matrix([2,3,4,5,6]));
