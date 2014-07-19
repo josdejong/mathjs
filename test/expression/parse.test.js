@@ -398,10 +398,11 @@ describe('parse', function() {
       parseAndEval('a=[1,2;3,4]', scope);
       parseAndEval('b=[5,6;7,8]', scope);
       assert.deepEqual(parseAndEval('c=concat(a,b)', scope), new Matrix([[1,2,5,6],[3,4,7,8]]));
-      assert.deepEqual(parseAndEval('c=concat(a,b,0)', scope), new Matrix([[1,2],[3,4],[5,6],[7,8]]));
-      assert.deepEqual(parseAndEval('c=concat(concat(a,b), concat(b,a), 0)', scope), new Matrix([[1,2,5,6],[3,4,7,8],[5,6,1,2],[7,8,3,4]]));
-      assert.deepEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 0)', scope), new Matrix([[1,2],[3,4]]));
-      assert.deepEqual(parseAndEval('c=concat([[1]], [2;3], 0)', scope), new Matrix([[1],[2],[3]]));
+      assert.deepEqual(parseAndEval('c=concat(a,b,1)', scope), new Matrix([[1,2],[3,4],[5,6],[7,8]]));
+      assert.deepEqual(parseAndEval('c=concat(concat(a,b), concat(b,a), 1)', scope), new Matrix([[1,2,5,6],[3,4,7,8],[5,6,1,2],[7,8,3,4]]));
+      assert.deepEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 1)', scope), new Matrix([[1,2],[3,4]]));
+      assert.deepEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 2)', scope), new Matrix([[1,2,3,4]]));
+      assert.deepEqual(parseAndEval('c=concat([[1]], [2;3], 1)', scope), new Matrix([[1],[2],[3]]));
       assert.deepEqual(parseAndEval('d=1:3', scope), new Matrix([1,2,3]));
       assert.deepEqual(parseAndEval('concat(d,d)', scope), new Matrix([1,2,3,1,2,3]));
       assert.deepEqual(parseAndEval('e=1+d', scope), new Matrix([2,3,4]));
