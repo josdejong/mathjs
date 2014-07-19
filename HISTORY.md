@@ -3,6 +3,8 @@
 
 ## not yet released, version 0.25.1
 
+- Implemented `BigNumber` support for all constants: `pi`, `tau`, `e`, `phi`,
+  `E`, `LN2`, `LN10`, `LOG2E`, `LOG10E`, `PI`, `SQRT1_2`, and `SQRT2`.
 - Multi-line expressions now return a `ResultSet` instead of an `Array`.
 - Improved index out of range errors.
 
