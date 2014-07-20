@@ -275,7 +275,7 @@ describe('distribution', function () {
     it('should throw an error when providing a multi dimensional matrix', function() {
       assert.throws(function () {
         uniformDistrib.pickRandom(new Matrix([[1,2], [3,4]]));
-      }, math.error.DimensionError);
+      }, /Only one dimensional vectors supported/);
     });
   });
 
