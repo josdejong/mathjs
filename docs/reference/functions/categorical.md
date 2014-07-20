@@ -30,17 +30,6 @@
 - [unaryPlus(x)](unaryPlus.md)
 - [xgcd(a, b)](xgcd.md)
 
-## comparison
-
-- [compare(x, y)](compare.md)
-- [deepEqual(x, y)](deepEqual.md)
-- [equal(x, y)](equal.md)
-- [larger(x, y)](larger.md)
-- [largerEq(x, y)](largerEq.md)
-- [smaller(x, y)](smaller.md)
-- [smallerEq(x, y)](smallerEq.md)
-- [unequal(x, y)](unequal.md)
-
 ## complex
 
 - [arg(x)](arg.md)
@@ -93,6 +82,17 @@
 - [pickRandom(array)](pickRandom.md)
 - [random([min, max])](random.md)
 - [randomInt([min, max])](randomInt.md)
+
+## relational
+
+- [compare(x, y)](compare.md)
+- [deepEqual(x, y)](deepEqual.md)
+- [equal(x, y)](equal.md)
+- [larger(x, y)](larger.md)
+- [largerEq(x, y)](largerEq.md)
+- [smaller(x, y)](smaller.md)
+- [smallerEq(x, y)](smallerEq.md)
+- [unequal(x, y)](unequal.md)
 
 ## statistics
 

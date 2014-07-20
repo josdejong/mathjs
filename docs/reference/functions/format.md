@@ -58,7 +58,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-String | str The formatted value
+String | The formatted value
 
 
 ## Examples

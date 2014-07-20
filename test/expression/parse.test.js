@@ -906,7 +906,7 @@ describe('parse', function() {
         assert.deepEqual(parseAndEval('false ? 1:2:6'), new Matrix([2,3,4,5,6]));
       });
 
-      it('should respect precedence of comparison operator and conversion operators', function () {
+      it('should respect precedence of equal operator and conversion operators', function () {
         var node = math.parse('a == b to c'); // (a == b) to c
         assert.equal(node.op, 'to');
 
@@ -914,7 +914,7 @@ describe('parse', function() {
         assert.equal(node2.op, 'to');
       });
 
-      it('should respect precedence of conditional operator and comparison operators', function () {
+      it('should respect precedence of conditional operator and relational operators', function () {
         var node = math.parse('a == b ? a > b : a < b');
         assert(node instanceof ConditionalNode);
         assert.equal(node.condition.toString(), 'a == b');
@@ -930,7 +930,7 @@ describe('parse', function() {
         assert.equal(node.falseExpr.toString(), 'c:d');
       });
 
-      it.skip('should respect precedence of range  operator and comparison operators', function () {
+      it.skip('should respect precedence of range  operator and relational operators', function () {
         var node = math.parse('a:b == c:d');
         assert(node instanceof OperatorNode);
         assert.equal(node.params[0].toString(), 'a:b');

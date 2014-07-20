@@ -305,7 +305,7 @@ Operators                         | Description
 `x unit`                          | Unit
 `*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus, implicit multiply
 `+`, `-`                          | Add, subtract
-`==`, `!=`, `<`, `>`, `<=`, `>=`  | Comparison
+`==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
 `to`, `in`                        | Unit conversion
 `:`                               | Range
 `?`, `:`                          | Conditional expression
