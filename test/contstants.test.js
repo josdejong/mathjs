@@ -7,7 +7,7 @@ describe('constants', function() {
   describe('number', function () {
 
     it('should have pi', function() {
-      approx.equal(math.pi, 3.14159265358979);
+      approx.equal(math.pi, 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664);
       approx.equal(math.sin(math.pi / 2), 1);
       approx.equal(math.PI, math.pi);
     });
@@ -60,7 +60,7 @@ describe('constants', function() {
     var bigmath = math({number: 'bignumber', precision: 64});
 
     it('should have bignumber pi', function() {
-      assert.equal(bigmath.pi.toString(),  '3.141592653589793238462643383279502884197169399375105820974944591');
+      assert.equal(bigmath.pi.toString(),  '3.141592653589793238462643383279502884197169399375105820974944592');
     });
 
     it('should have bignumber tau', function() {
@@ -91,8 +91,8 @@ describe('constants', function() {
       assert.equal(bigmath.LOG10E.toString(), '0.4342944819032518276511289189166050822943970058036665661144537832');
     });
 
-    it('should have bignumber PI', function() {
-      assert.equal(bigmath.PI.toString(), '3.141592653589793238462643383279502884197169399375105820974944591');
+    it('should have bignumber PI (upper case)', function() {
+      assert.equal(bigmath.PI.toString(), '3.141592653589793238462643383279502884197169399375105820974944592');
     });
 
     it('should have bignumber SQRT1_2', function() {
