@@ -31,8 +31,8 @@
     // Machin: Pi / 4 = 4 * arctan(1 / 5) - arctan(1/239)
     // http://milan.milanovic.org/math/english/pi/machin.html
 
-    // we calculate pi with one decimal place extra to prevent round off issues
-    var DecimalPlus = Decimal.constructor({precision: Decimal.config().precision + 1});
+    // we calculate pi with a few decimal places extra to prevent round off issues
+    var DecimalPlus = Decimal.constructor({precision: Decimal.precision + 4});
     var pi4th = new DecimalPlus(4).times(arctan(new DecimalPlus(1).div(5)))
         .minus(arctan(new DecimalPlus(1).div(239)));
 

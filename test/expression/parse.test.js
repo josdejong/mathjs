@@ -1098,21 +1098,71 @@ describe('parse', function() {
       assert.throws(function () {math.eval('A[-2]', {A: [1,2,3]})}, /Index out of range \(-2 < 1\)/);
     });
 
-    it('should return DimensionErrors with one based indices', function () {
+    it('should return DimensionErrors with one based indices (subset)', function () {
       // TODO: it would be more clear when all errors where DimensionErrors
 
       // functions throw a zero-based error
       assert.throws(function () {math.subset([1,2,3], math.index(1,1))}, /DimensionError: Dimension mismatch \(2 != 1\)/);
+
+      // evaluation via parser throws one-based error
+      assert.throws(function () {math.eval('A[1,1]', {A: [1,2,3]})}, /DimensionError: Dimension mismatch \(2 != 1\)/);
+    });
+
+    it('should return DimensionErrors with one based indices (concat)', function () {
+      // TODO: it would be more clear when all errors where DimensionErrors
+
+      // functions throw a zero-based error
       assert.throws(function () {math.concat([1,2], [[3,4]])}, /DimensionError: Dimension mismatch \(1 != 2\)/);
       assert.throws(function () {math.concat([[1,2]], [[3,4]], 2)}, /IndexError: Index out of range \(2 > 1\)/);
       assert.throws(function () {math.concat([[1,2]], [[3,4]], -1)}, /IndexError: Index out of range \(-1 < 0\)/);
 
       // evaluation via parser throws one-based error
-      assert.throws(function () {math.eval('A[1,1]', {A: [1,2,3]})}, /DimensionError: Dimension mismatch \(2 != 1\)/);
       assert.throws(function () {math.eval('concat([1,2], [[3,4]])')}, /DimensionError: Dimension mismatch \(1 != 2\)/);
       assert.throws(function () {math.eval('concat([[1,2]], [[3,4]], 3)')}, /IndexError: Index out of range \(3 > 2\)/);
       assert.throws(function () {math.eval('concat([[1,2]], [[3,4]], 0)')}, /IndexError: Index out of range \(0 < 1\)/);
-    })
+    });
+
+    it('should return DimensionErrors with one based indices (max)', function () {
+      // TODO: it would be more clear when all errors where DimensionErrors
+
+      // functions throw a zero-based error
+      // TODO
+
+      // evaluation via parser throws one-based error
+      assert.deepEqual(math.eval('max([[1,2], [3,4]])'), 4);
+      assert.deepEqual(math.eval('max([[1,2], [3,4]], 1)'), new Matrix([3, 4]));
+      assert.deepEqual(math.eval('max([[1,2], [3,4]], 2)'), new Matrix([2, 4]));
+      assert.throws(function () {math.eval('max([[1,2], [3,4]], 3)')}, /IndexError: Index out of range \(3 > 2\)/);
+      assert.throws(function () {math.eval('max([[1,2], [3,4]], 0)')}, /IndexError: Index out of range \(0 < 1\)/);
+    });
+
+    it('should return DimensionErrors with one based indices (min)', function () {
+      // TODO: it would be more clear when all errors where DimensionErrors
+
+      // functions throw a zero-based error
+      // TODO
+
+      // evaluation via parser throws one-based error
+      assert.deepEqual(math.eval('min([[1,2], [3,4]])'), 1);
+      assert.deepEqual(math.eval('min([[1,2], [3,4]], 1)'), new Matrix([1, 2]));
+      assert.deepEqual(math.eval('min([[1,2], [3,4]], 2)'), new Matrix([1, 3]));
+      assert.throws(function () {math.eval('min([[1,2], [3,4]], 3)')}, /IndexError: Index out of range \(3 > 2\)/);
+      assert.throws(function () {math.eval('min([[1,2], [3,4]], 0)')}, /IndexError: Index out of range \(0 < 1\)/);
+    });
+
+    it('should return DimensionErrors with one based indices (mean)', function () {
+      // TODO: it would be more clear when all errors where DimensionErrors
+
+      // functions throw a zero-based error
+      // TODO
+
+      // evaluation via parser throws one-based error
+      assert.deepEqual(math.eval('mean([[1,2], [3,4]])'), 2.5);
+//      assert.deepEqual(math.eval('mean([[1,2], [3,4]], 1)'), new Matrix([2, 3]));
+      assert.deepEqual(math.eval('mean([[1,2], [3,4]], 2)'), new Matrix([1.5, 3.5]));
+      assert.throws(function () {math.eval('mean([[1,2], [3,4]], 3)')}, /IndexError: Index out of range \(3 > 2\)/);
+      assert.throws(function () {math.eval('mean([[1,2], [3,4]], 0)')}, /IndexError: Index out of range \(0 < 1\)/);
+    });
 
   });
 

@@ -8,6 +8,8 @@
 - Multi-line expressions now return a `ResultSet` instead of an `Array`.
 - Implemented transforms (used right now to transform one-based indices to 
   zero-based for expressions).
+- When used inside the expression parser, functions `concat`, `min`, `max`,
+  and `mean` expect an one-based dimension number.
 - Improved index out of range errors.
 - Fixed function `concat` not accepting a `BigNumber` for parameter `dim`.
 

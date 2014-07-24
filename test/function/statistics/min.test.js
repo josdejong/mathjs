@@ -84,6 +84,11 @@ describe('min', function() {
     assert.throws(function () {min(math.complex(3,4), 6)}, TypeError);
   });
 
+  it('should throw an error if called a dimension out of range', function() {
+    assert.throws(function() {min([1,2,3], -1)}, /IndexError: Index out of range \(-1 < 0\)/);
+    assert.throws(function() {min([1,2,3], 1)}, /IndexError: Index out of range \(1 > 0\)/);
+  });
+
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {min()});
     assert.throws(function() {min([], 2, 3)});

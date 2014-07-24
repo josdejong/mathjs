@@ -75,6 +75,11 @@ describe('max', function() {
     assert.throws(function () {max(math.complex(3,4), 6)}, TypeError);
   });
 
+  it('should throw an error if called a dimension out of range', function() {
+    assert.throws(function() {max([1,2,3], -1)}, /IndexError: Index out of range \(-1 < 0\)/);
+    assert.throws(function() {max([1,2,3], 1)}, /IndexError: Index out of range \(1 > 0\)/);
+  });
+
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {max()});
     assert.throws(function() {max([], 2, 3)});
