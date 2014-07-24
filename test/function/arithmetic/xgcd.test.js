@@ -37,14 +37,14 @@ describe('xgcd', function() {
     assert.deepEqual([0, 0, 0], xgcd(0, 0));
   });
 
-  it('should calculate xgcd for BigNumbers (downgrades to Number)', function() {
-    assert.deepEqual(xgcd(math.bignumber(65), math.bignumber(40)), [5, -3, 5]);
-    assert.deepEqual(xgcd(math.bignumber(65), math.bignumber(40)), [5, -3, 5]);
+  it('should calculate xgcd for BigNumbers', function() {
+    assert.deepEqual(xgcd(math.bignumber(65), math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)]);
+    assert.deepEqual(xgcd(math.bignumber(65), math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)]);
   });
 
-  it('should calculate xgcd for mixed BigNumbers to Numbers (downgrades to Number)', function() {
-    assert.deepEqual(xgcd(math.bignumber(65), 40), [5, -3, 5]);
-    assert.deepEqual(xgcd(65, math.bignumber(40)), [5, -3, 5]);
+  it('should calculate xgcd for mixed BigNumbers and Numbers', function() {
+    assert.deepEqual(xgcd(math.bignumber(65), 40), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)]);
+    assert.deepEqual(xgcd(65, math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)]);
   });
 
   it.skip ('should calculate xgcd for edge cases with negative values', function () {

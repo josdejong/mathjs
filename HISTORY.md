@@ -5,6 +5,7 @@
 
 - Implemented `BigNumber` support for all constants: `pi`, `tau`, `e`, `phi`,
   `E`, `LN2`, `LN10`, `LOG2E`, `LOG10E`, `PI`, `SQRT1_2`, and `SQRT2`.
+- Implemented `BigNumber` support for functions `gcd`, `xgcd`, and `lcm`.
 - Multi-line expressions now return a `ResultSet` instead of an `Array`.
 - Implemented transforms (used right now to transform one-based indices to 
   zero-based for expressions).

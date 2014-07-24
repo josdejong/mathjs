@@ -1158,7 +1158,7 @@ describe('parse', function() {
 
       // evaluation via parser throws one-based error
       assert.deepEqual(math.eval('mean([[1,2], [3,4]])'), 2.5);
-//      assert.deepEqual(math.eval('mean([[1,2], [3,4]], 1)'), new Matrix([2, 3]));
+      assert.deepEqual(math.eval('mean([[1,2], [3,4]], 1)'), new Matrix([2, 3]));
       assert.deepEqual(math.eval('mean([[1,2], [3,4]], 2)'), new Matrix([1.5, 3.5]));
       assert.throws(function () {math.eval('mean([[1,2], [3,4]], 3)')}, /IndexError: Index out of range \(3 > 2\)/);
       assert.throws(function () {math.eval('mean([[1,2], [3,4]], 0)')}, /IndexError: Index out of range \(0 < 1\)/);
