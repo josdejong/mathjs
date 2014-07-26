@@ -1,4 +1,3 @@
-var exec = require('child_process').exec;
 var fs = require('fs');
 var path = require('path');
 var zlib = require('zlib');
@@ -58,7 +57,7 @@ function version() {
 }
 
 // inject permalinks in markdown files in a gulp pipe
-var injectPermalinks = replace(/^(#+) (.*)$/mg, function (header, level, title) {
+var fn = function (header, level, title) {
   // for example:
   //   header is '## My Header',
   //   level is '##',
@@ -71,7 +70,9 @@ var injectPermalinks = replace(/^(#+) (.*)$/mg, function (header, level, title) 
 
   // returns for example '<h2 id="my-header">My Header <a href="#my-header" title="Permalink">#</a></h2>'
   return '<' + tag + ' id="' + id + '">' + title + ' ' + link + '</' + tag + '>';
-});
+};
+var injectPermalinks = replace(/^(#+) (.*)$/mg, fn);
+var injectPermalinks2 = replace(/^(#+) (.*)$/mg, fn);
 
 /**
  * copy math.js and math.min.js
@@ -201,7 +202,7 @@ gulp.task('examples', ['copyExamples'], function (cb) {
 gulp.task('history', function () {
   return gulp.src(HISTORY_SRC)
       .pipe(header(MD_HEADER))    // add header with markdown layout
-      // TODO: inject permalinks
+      .pipe(injectPermalinks2)
       .pipe(rename('history.md')) // rename to lower case
       .pipe(gulp.dest(HISTORY_DEST));
 });

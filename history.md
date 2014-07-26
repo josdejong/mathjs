@@ -2,9 +2,9 @@
 layout: default
 ---
 
-# History
+<h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
-## 2014-07-01, version 0.25.0
+<h2 id="20140701-version-0250">2014-07-01, version 0.25.0 <a href="#20140701-version-0250" title="Permalink">#</a></h2>
 
 - The library now immediately returns a default instance of mathjs, there is
   no need to instantiate math.js in a separate step unless one ones to set 
@@ -27,12 +27,12 @@ layout: default
 - Fixed a bug with symbols having value `undefined` not being evaluated.
 
 
-## 2014-06-20, version 0.24.1
+<h2 id="20140620-version-0241">2014-06-20, version 0.24.1 <a href="#20140620-version-0241" title="Permalink">#</a></h2>
 
 - Something went wrong with publishing on npm.
 
 
-## 2014-06-20, version 0.24.0
+<h2 id="20140620-version-0240">2014-06-20, version 0.24.0 <a href="#20140620-version-0240" title="Permalink">#</a></h2>
 
 - Added constant `null`.
 - Functions `equal` and `unequal` support `null` and `undefined` now.
@@ -46,7 +46,7 @@ layout: default
   function arguments.
 
 
-## 2014-06-10, version 0.23.0
+<h2 id="20140610-version-0230">2014-06-10, version 0.23.0 <a href="#20140610-version-0230" title="Permalink">#</a></h2>
 
 - Renamed some functions (everything now has a logical, camel case name):
   - Renamed functions `edivide`, `emultiply`, and `epow` to `dotDivide`, 
@@ -78,7 +78,7 @@ layout: default
         }
 
 
-## 2014-05-22, version 0.22.0
+<h2 id="20140522-version-0220">2014-05-22, version 0.22.0 <a href="#20140522-version-0220" title="Permalink">#</a></h2>
 
 - Implemented support to export expressions to LaTeX. Thanks Niels Heisterkamp
   (@nheisterkamp).
@@ -91,7 +91,7 @@ layout: default
   a Matrix as output.
 
 
-## 2014-05-13, version 0.21.1
+<h2 id="20140513-version-0211">2014-05-13, version 0.21.1 <a href="#20140513-version-0211" title="Permalink">#</a></h2>
 
 - Removed `crypto` library from the bundle.
 - Deprecated functions `Parser.parse` and `Parser.compile`. Use
@@ -101,7 +101,7 @@ layout: default
   like `2^-3`, and a transpose followed by an index like `[3]'[1]`.
 
 
-## 2014-04-24, version 0.21.0
+<h2 id="20140424-version-0210">2014-04-24, version 0.21.0 <a href="#20140424-version-0210" title="Permalink">#</a></h2>
 
 - Implemented trigonometric hyperbolic functions `cosh`, `coth`, `csch`,
   `sech`, `sinh`, `tanh`. Thanks Rogelio J. Baucells (@rjbaucells).
@@ -110,7 +110,7 @@ layout: default
   results from BigNumber input (like `sqrt(bignumber(-4))`).
 
 
-## 2014-04-16, version 0.20.0
+<h2 id="20140416-version-0200">2014-04-16, version 0.20.0 <a href="#20140416-version-0200" title="Permalink">#</a></h2>
 
 - Switched to module `decimal.js` for BigNumber support, instead of
   `bignumber.js`.
@@ -134,14 +134,14 @@ layout: default
 - Minor bug fixes.
 
 
-## 2014-03-30, version 0.19.0
+<h2 id="20140330-version-0190">2014-03-30, version 0.19.0 <a href="#20140330-version-0190" title="Permalink">#</a></h2>
 
 - Implemented functions `compare`, `sum`, `prod`, `var`, `std`, `median`.
 - Implemented function `ifElse` Thanks @mtraynham.
 - Minor bug fixes.
 
 
-## 2014-02-15, version 0.18.1
+<h2 id="20140215-version-0181">2014-02-15, version 0.18.1 <a href="#20140215-version-0181" title="Permalink">#</a></h2>
 
 - Added unit `feet`.
 - Implemented function `compile` (shortcut for parsing and then compiling).
@@ -151,7 +151,7 @@ layout: default
   improved performance of both functions `combinations` and `permutations`.
 
 
-## 2014-01-18, version 0.18.0
+<h2 id="20140118-version-0180">2014-01-18, version 0.18.0 <a href="#20140118-version-0180" title="Permalink">#</a></h2>
 
 - Changed matrix index notation of expression parser from round brackets to
   square brackets, for example `A[1, 1:3]` instead of `A(1, 1:3)`.
@@ -170,13 +170,13 @@ layout: default
 - Added lower case abbreviation `l` for unit litre.
 
 
-## 2013-12-19, version 0.17.1
+<h2 id="20131219-version-0171">2013-12-19, version 0.17.1 <a href="#20131219-version-0171" title="Permalink">#</a></h2>
 
 - Fixed a bug with negative temperatures.
 - Fixed a bug with prefixes of units squared meter `m2` and cubic meter `m3`.
 
 
-## 2013-12-12, version 0.17.0
+<h2 id="20131212-version-0170">2013-12-12, version 0.17.0 <a href="#20131212-version-0170" title="Permalink">#</a></h2>
 
 - Renamed and flattened configuration settings:
   - `number.defaultType` is now `number`.
@@ -188,7 +188,7 @@ layout: default
 - Fixed support for Java's ScriptEngine.
 
 
-## 2013-11-28, version 0.16.0
+<h2 id="20131128-version-0160">2013-11-28, version 0.16.0 <a href="#20131128-version-0160" title="Permalink">#</a></h2>
 
 - Implemented BigNumber support for arbitrary precision calculations.
   Added settings `number.defaultType` and `number.precision` to configure
@@ -220,7 +220,7 @@ layout: default
 - Minor bug fixes.
 
 
-## 2013-10-26, version 0.15.0
+<h2 id="20131026-version-0150">2013-10-26, version 0.15.0 <a href="#20131026-version-0150" title="Permalink">#</a></h2>
 
 - Math.js must be instantiated now, static calls are no longer supported. Usage:
   - node.js: `var math = require('mathjs')();`
@@ -252,7 +252,7 @@ layout: default
   `smallereq`, `larger`, `largereq`. Complex numbers cannot be ordered.
 
 
-## 2013-10-08, version 0.14.0
+<h2 id="20131008-version-0140">2013-10-08, version 0.14.0 <a href="#20131008-version-0140" title="Permalink">#</a></h2>
 
 - Introduced an option `math.options.matrix.default` which can have values
   `matrix` (default) or `array`. This option is used by the functions `eye`,
@@ -269,7 +269,7 @@ layout: default
 - Fixed non working operator `mod` (modulus operator).
 
 
-## 2013-09-03, version 0.13.0
+<h2 id="20130903-version-0130">2013-09-03, version 0.13.0 <a href="#20130903-version-0130" title="Permalink">#</a></h2>
 
 - Implemented support for booleans in all relevant functions.
 - Implemented functions `map` and `forEach`. Thanks Sebastien Piquemal (@sebpic).
@@ -292,13 +292,13 @@ layout: default
 - Fixed some edge cases in functions `lcm` and `xgcd`.
 
 
-## 2013-08-22, version 0.12.1
+<h2 id="20130822-version-0121">2013-08-22, version 0.12.1 <a href="#20130822-version-0121" title="Permalink">#</a></h2>
 
 - Fixed outdated version of README.md.
 - Fixed a broken unit test.
 
 
-## 2013-08-22, version 0.12.0
+<h2 id="20130822-version-0120">2013-08-22, version 0.12.0 <a href="#20130822-version-0120" title="Permalink">#</a></h2>
 
 - Implemented functions `random([min, max])`, `randomInt([min, max])`,
   `pickRandom(array)`. Thanks Sebastien Piquemal (@sebpic).
@@ -322,12 +322,12 @@ layout: default
 - Fixed zeros being formatted as null. Thanks @TimKraft.
 
 
-## 2013-07-23, version 0.11.1
+<h2 id="20130723-version-0111">2013-07-23, version 0.11.1 <a href="#20130723-version-0111" title="Permalink">#</a></h2>
 
 - Fixed missing development dependency
 
 
-## 2013-07-23, version 0.11.0
+<h2 id="20130723-version-0110">2013-07-23, version 0.11.0 <a href="#20130723-version-0110" title="Permalink">#</a></h2>
 
 - Changed math.js from one-based to zero-based indexes.
   - Getting and setting matrix subset is now zero-based.
@@ -342,7 +342,7 @@ layout: default
 - Some fixes in the end user documentation.
 
 
-## 2013-07-08, version 0.10.0
+<h2 id="20130708-version-0100">2013-07-08, version 0.10.0 <a href="#20130708-version-0100" title="Permalink">#</a></h2>
 
 - For complex calculations, all functions now automatically replace results
   having an imaginary part of zero with a Number. (`2i * 2i` now returns a
@@ -357,7 +357,7 @@ layout: default
 - Fixed a bug in determining node dependencies in function assignments.
 
 
-## 2013-06-14, version 0.9.1
+<h2 id="20130614-version-091">2013-06-14, version 0.9.1 <a href="#20130614-version-091" title="Permalink">#</a></h2>
 
 - Implemented element-wise functions and operators: `emultiply` (`x .* y`),
   `edivide` (`x ./ y`), `epow` (`x .^ y`).
@@ -369,7 +369,7 @@ layout: default
   Infinity.
 
 
-## 2013-05-29, version 0.9.0
+<h2 id="20130529-version-090">2013-05-29, version 0.9.0 <a href="#20130529-version-090" title="Permalink">#</a></h2>
 
 - Implemented function `math.parse(expr [,scope])`. Optional parameter scope can
   be a plain JavaScript Object containing variables.
@@ -387,7 +387,7 @@ layout: default
   of wrong input.
 
 
-## 2013-05-18, version 0.8.2
+<h2 id="20130518-version-082">2013-05-18, version 0.8.2 <a href="#20130518-version-082" title="Permalink">#</a></h2>
 
 - Extended the import function and some other minor improvements.
 - Fixed a bug in merging one dimensional vectors into a matrix.
@@ -395,12 +395,12 @@ layout: default
   real number.
 
 
-## 2013-05-10, version 0.8.1
+<h2 id="20130510-version-081">2013-05-10, version 0.8.1 <a href="#20130510-version-081" title="Permalink">#</a></h2>
 
 - Fixed an npm warning when installing mathjs globally.
 
 
-## 2013-05-10, version 0.8.0
+<h2 id="20130510-version-080">2013-05-10, version 0.8.0 <a href="#20130510-version-080" title="Permalink">#</a></h2>
 
 - Implemented a command line interface. When math.js is installed globally via
   npm, the application is available on your system as 'mathjs'.
@@ -416,13 +416,13 @@ layout: default
 - Minor bug fixes.
 
 
-## 2013-05-04, version 0.7.2
+<h2 id="20130504-version-072">2013-05-04, version 0.7.2 <a href="#20130504-version-072" title="Permalink">#</a></h2>
 
 - Fixed method unequal, which was checking for equality instead of inequality.
   Thanks @FJS2.
 
 
-## 2013-04-27, version 0.7.1
+<h2 id="20130427-version-071">2013-04-27, version 0.7.1 <a href="#20130427-version-071" title="Permalink">#</a></h2>
 
 - Improvements in the parser:
   - Added support for chained arguments.
@@ -438,7 +438,7 @@ layout: default
 - Fixed: math.js now works on IE 6-8 too.
 
 
-## 2013-04-20, version 0.7.0
+<h2 id="20130420-version-070">2013-04-20, version 0.7.0 <a href="#20130420-version-070" title="Permalink">#</a></h2>
 
 - Implemented method `math.eval`, which uses a readonly parser to evaluate
   expressions.
@@ -455,7 +455,7 @@ layout: default
 - Minor bug fixes and improvements.
 
 
-## 2013-04-13, version 0.6.0
+<h2 id="20130413-version-060">2013-04-13, version 0.6.0 <a href="#20130413-version-060" title="Permalink">#</a></h2>
 
 - Implemented chained operations via method math.select(). For example
   `math.select(3).add(4).subtract(2).done()` will return `5`.
@@ -477,7 +477,7 @@ layout: default
 - Minor bug fixes.
 
 
-## 2013-04-06, version 0.5.0
+<h2 id="20130406-version-050">2013-04-06, version 0.5.0 <a href="#20130406-version-050" title="Permalink">#</a></h2>
 
 - Implemented data types Matrix and Range.
 - Implemented matrix methods clone, concat, det, diag, eye, inv, ones, size,
@@ -498,7 +498,7 @@ layout: default
 - Fixed: method 'in' did not check for units to have the same base.
 
 
-## 2013-03-16, version 0.4.0
+<h2 id="20130316-version-040">2013-03-16, version 0.4.0 <a href="#20130316-version-040" title="Permalink">#</a></h2>
 
 - Implemented Array support for all methods.
 - Implemented Array support in the Parser.
@@ -511,14 +511,14 @@ layout: default
 - Fixed: errors in determining the best prefix for a unit.
 
 
-## 2013-03-09, version 0.3.0
+<h2 id="20130309-version-030">2013-03-09, version 0.3.0 <a href="#20130309-version-030" title="Permalink">#</a></h2>
 
 - Implemented Workspace
 - Implemented methods cot, csc, sec.
 - Implemented Array support for methods with one parameter.
 
 
-## 2013-02-25, version 0.2.0
+<h2 id="20130225-version-020">2013-02-25, version 0.2.0 <a href="#20130225-version-020" title="Permalink">#</a></h2>
 
 - Parser, Scope, and Node tree implemented.
 - Implemented method import which makes it easy to extend math.js.
@@ -526,20 +526,20 @@ layout: default
   log(x, base), log10, mod, re, sign, smallereq, square, unequal.
 
 
-## 2013-02-18, version 0.1.0
+<h2 id="20130218-version-010">2013-02-18, version 0.1.0 <a href="#20130218-version-010" title="Permalink">#</a></h2>
 
 - Reached full compatibility with Javascripts built-in Math library.
 - More functions implemented.
 - Some bugfixes.
 
 
-## 2013-02-16, version 0.0.2
+<h2 id="20130216-version-002">2013-02-16, version 0.0.2 <a href="#20130216-version-002" title="Permalink">#</a></h2>
 
 - All constants of Math implemented, plus the imaginary unit i.
 - Data types Complex and Unit implemented.
 - First set of functions implemented.
 
 
-## 2013-02-15, version 0.0.1
+<h2 id="20130215-version-001">2013-02-15, version 0.0.1 <a href="#20130215-version-001" title="Permalink">#</a></h2>
 
 - First publish of the mathjs package. (package is still empty)
