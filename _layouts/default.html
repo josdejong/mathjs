@@ -25,11 +25,27 @@
 <!-- itemscope, itemtype, and  itemprop for google+ meta information -->
 <body itemscope itemtype="http://schema.org/Product">
 <div id="page">
-  <p>
+  <div>
     <a href="http://mathjs.org">
       <img src="/css/img/mathjs_330x100.png" id="logo" alt="math.js" itemprop="image" >
     </a>
-  </p>
+  </div>
+
+  <div id="search">
+    <script>
+      (function() {
+        var cx = '017327835323070913148:__zkzh4scga';
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+            '//www.google.com/cse/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(gcse, s);
+      })();
+    </script>
+    <gcse:search></gcse:search>
+  </div>
 
   <div id="menu">
     <a href="/index.html">
@@ -60,7 +76,9 @@
     </a>
   </div>
 
-  {{content}}
+  <div id="content">
+    {{content}}
+  </div>
 
 </div>
 
@@ -88,7 +106,7 @@
     }
 
     var forkme = document.getElementById('forkme');
-    forkme.className = (width < 500) ? 'small' : 'normal';
+    forkme.className = (width < 810) ? 'small' : 'normal';
   }
   resize();
   window.onresize = resize;

@@ -34,6 +34,29 @@ body {
   padding: 4%;
 }
 
+#search {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  width: 300px;
+}
+
+#search .gsib_a {
+  padding: 2px 6px;
+}
+
+.small #search {
+  right: 4%;
+}
+
+.tiny #search {
+  position: static;
+  width: 100%;
+}
+
+.gsc-result .gs-title {
+  height: 1.4em !important;
+}
 
 #logo {
   width: 330px;
@@ -165,27 +188,27 @@ div.cols .end {
   overflow: hidden;
 }
 
-table {
+#content table {
   border-collapse: collapse;
   margin: 15px 0;
 }
 
-table th,
-table td {
+#content table th,
+#content table td {
   border: 1px solid #ddd;
   padding: 6px 13px;
 }
 
-table tr:nth-child(2n) {
+#content table tr:nth-child(2n) {
   background-color: #f8f8f8;
 }
 
-table.download tr {
+#content table.download tr {
   background-color: transparent;
 }
 
-table.download td,
-table.download th {
+#content table.download td,
+#content table.download th {
   border: none;
   padding: 5px 20px 5px 0;
 }
@@ -286,23 +309,23 @@ h6 a:hover {
   text-decoration: underline;
 }
 
-ul {
+#content ul {
   list-style-type: square;
 }
 
-img {
+#content img {
   border: none;
 }
 
-a {
+#content a {
   color: #dc3912;
 }
 
-a:visited {
+#content a:visited {
   color: #b82e12;
 }
 
-a:hover {
+#content a:hover {
   color: #f43f14;
 }
 
