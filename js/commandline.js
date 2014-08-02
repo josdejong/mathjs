@@ -233,7 +233,7 @@ function CommandLineEditor (params) {
 
                 for (var n in Unit.UNITS) {
                   if (Unit.UNITS.hasOwnProperty(n)) {
-                    if (n.indexOf(unitKeyword) == 0 && Unit.isPlainUnit(prefix + n)) {
+                    if (n.indexOf(unitKeyword) == 0 && Unit.isValuelessUnit(prefix + n)) {
                       matches.push(prefix + n);
                     }
                   }
