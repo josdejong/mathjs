@@ -106,7 +106,7 @@ function completer (text) {
               for (var n in Unit.UNITS) {
                 if (Unit.UNITS.hasOwnProperty(n)) {
                   if (n.indexOf(unitKeyword) == 0 &&
-                      Unit.isPlainUnit(prefix + n)) {
+                      Unit.isValuelessUnit(prefix + n)) {
                     matches.push(prefix + n);
                   }
                 }
