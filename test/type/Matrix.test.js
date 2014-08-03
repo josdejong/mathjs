@@ -239,7 +239,7 @@ describe('matrix', function() {
         arr(uninit, uninit, uninit),
         arr(uninit, 1,2),
         arr(uninit, 3,4)]));
-      m.subset(index(0, [0,3]), [[5,6,7]]);
+      m.subset(index(0, [0,3]), [5,6,7]);
       assert.deepEqual(m, new Matrix([[5,6,7],arr(uninit,1,2),arr(uninit,3,4)]));
       m.subset(index([0,3], 0), [8,9,10]);  // unsqueezes the submatrix
       assert.deepEqual(m, new Matrix([[8,6,7],arr(9,1,2),arr(10,3,4)]));

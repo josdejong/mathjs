@@ -42,7 +42,6 @@ describe('parse', function() {
 
   it('should parse a matrix with expressions', function() {
     var scope = {};
-    // TODO: remove support for matrix input? doesn't really make much sense
     assert.deepEqual(parse(new Matrix(['a=3', 'b=4', 'a*b'])).map(function (node) {
       return node.compile(math).eval(scope);
     }), new Matrix([3, 4, 12]));
@@ -349,20 +348,7 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('f=[1,2;3,4]', scope), new Matrix([[1,2],[3,4]]));
       assert.deepEqual(parseAndEval('size(f)', scope), new Matrix([2,2]));
 
-      /* TODO: matrix resizing doesn't work correctly for 3d
       assert.deepEqual(parseAndEval('f[:,:,2]=[5,6;7,8]', scope), new Matrix([
-        [
-          [1,2],
-          [3,4]
-        ],
-        [
-          [5,6],
-          [7,8]
-        ]
-      ]));
-      */
-
-      scope.f = new Matrix([
         [
           [1,5],
           [2,6]
@@ -371,7 +357,8 @@ describe('parse', function() {
           [3,7],
           [4,8]
         ]
-      ]);
+      ]));
+
       assert.deepEqual(parseAndEval('size(f)', scope), new Matrix([2,2,2]));
       assert.deepEqual(parseAndEval('f[:,:,1]', scope), new Matrix([[[1],[2]],[[3],[4]]]));
       assert.deepEqual(parseAndEval('f[:,:,2]', scope), new Matrix([[[5],[6]],[[7],[8]]]));
