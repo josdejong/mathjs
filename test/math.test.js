@@ -5,7 +5,7 @@ var assert = require('assert'),
 describe('factory', function() {
 
   it('should get a default instance of mathjs', function() {
-    assert.strictEqual(typeof math, 'function');
+    assert.strictEqual(typeof math, 'object');
     assert.deepEqual(math.config(), {
       matrix: 'matrix',
       number: 'number',
@@ -15,12 +15,12 @@ describe('factory', function() {
   });
 
   it('should create an instance of math.js with custom configuration', function() {
-    var math1 = math({
+    var math1 = math.create({
       matrix: 'array',
       number: 'bignumber'
     });
 
-    assert.strictEqual(typeof math1, 'function');
+    assert.strictEqual(typeof math1, 'object');
     assert.deepEqual(math1.config(), {
       matrix: 'array',
       number: 'bignumber',
@@ -30,8 +30,8 @@ describe('factory', function() {
   });
 
   it('two instances of math.js should be isolated from each other', function() {
-    var math1 = math();
-    var math2 = math({
+    var math1 = math.create();
+    var math2 = math.create({
       matrix: 'array'
     });
 
@@ -54,7 +54,7 @@ describe('factory', function() {
   });
 
   it('should apply configuration using the config function', function() {
-    var math1 = math();
+    var math1 = math.create();
 
     var config = math1.config();
     assert.deepEqual(config, {
@@ -89,7 +89,7 @@ describe('factory', function() {
     Object.create = undefined; // fake missing Object.create function
 
     assert.throws(function () {
-      var math1 = math();
+      var math1 = math.create();
     }, /ES5 not supported/);
 
     // restore Object.create

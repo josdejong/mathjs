@@ -1,7 +1,7 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')();
+    math = require('../../../index');
 
 describe('det', function() {
 

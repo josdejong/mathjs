@@ -147,7 +147,7 @@ describe('parse', function() {
     });
 
     it('should output bignumbers if default number type is bignumber', function() {
-      var bigmath = math({
+      var bigmath = math.create({
         number: 'bignumber'
       });
 
@@ -1007,7 +1007,7 @@ describe('parse', function() {
   });
 
   describe('bignumber', function () {
-    var bigmath = math({
+    var bigmath = math.create({
       number: 'bignumber'
     });
     var BigNumber = bigmath.type.BigNumber;

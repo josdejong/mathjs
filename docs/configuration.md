@@ -5,8 +5,8 @@ configure math.js:
 
 - Configure an existing instance of math.js using `math.config(options)`,
   for example `math.config({number: 'bignumber'})` to change to BigNumbers.
-- Create and configure a new instance of math.js using `math([options])`,
-  for example `var bigmath = math({number: 'bignumber'})` to create a new
+- Create and configure a new instance of math.js using `math.create([options])`,
+  for example `var bigmath = math.create({number: 'bignumber'})` to create a new
   instance configured to use BigNumbers.
 
 The following configuration options are available:
@@ -51,7 +51,7 @@ math.range(0, 4);       // Matrix [0, 1, 2, 3]
 
 
 // create a new instance configured to use Arrays
-var math2 = math({
+var math2 = math.create({
   matrix: 'array'       // Choose 'matrix' (default) or 'array'
 });
 
@@ -68,7 +68,7 @@ math2.range(0, 4);      // Matrix [0, 1, 2, 3]
 
 
 // create an instance of math.js with bignumber configuration
-var bigmath = math({
+var bigmath = math.create({
   number: 'bignumber',  // Choose 'number' (default) or 'bignumber'
   precision: 32         // 64 by default, only applicable for BigNumbers
 });
@@ -102,7 +102,7 @@ bigmath.eval('1 / 3');  // BigNumber, 0.33333333333333333333333333333333
     math.range(0, 4);       // Array [0, 1, 2, 3]
     
     // create a new instance of math.js with bignumber configuration
-    var bigmath = math({
+    var bigmath = math.create({
       number: 'bignumber',  // Choose 'number' (default) or 'bignumber'
       precision: 32         // 64 by default, only applicable for BigNumbers
     });

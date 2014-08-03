@@ -1,7 +1,7 @@
 // test BlockNode
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index')();
+var math = require('../../../index');
 var Node = require('../../../lib/expression/node/Node');
 var ConstantNode = require('../../../lib/expression/node/ConstantNode');
 var SymbolNode = require('../../../lib/expression/node/SymbolNode');

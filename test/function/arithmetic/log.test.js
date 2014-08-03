@@ -45,7 +45,7 @@ describe('log', function() {
   });
 
   it('should return the log of positive bignumbers', function() {
-    var bigmath = math({precision: 100});
+    var bigmath = math.create({precision: 100});
 
     assert.deepEqual(bigmath.log(bigmath.bignumber(1)), bigmath.bignumber('0'));
     assert.deepEqual(bigmath.log(bigmath.bignumber(2)), bigmath.bignumber('0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875'));
@@ -56,7 +56,7 @@ describe('log', function() {
   });
 
   it('should return the log of negative bignumbers', function() {
-    var bigmath = math({precision: 100});
+    var bigmath = math.create({precision: 100});
 
     approx.deepEqual(bigmath.log(bigmath.bignumber(-1)), bigmath.complex('0.000000000000000 + 3.141592653589793i'));
     approx.deepEqual(bigmath.log(bigmath.bignumber(-2)), bigmath.complex('0.693147180559945 + 3.141592653589793i'));
@@ -64,7 +64,7 @@ describe('log', function() {
   });
 
   it('should return the log of a bignumber with value zero', function() {
-    var bigmath = math({precision: 100});
+    var bigmath = math.create({precision: 100});
 
     assert.deepEqual(bigmath.log(bigmath.bignumber(0)), bigmath.bignumber(-Infinity));
   });

@@ -106,7 +106,7 @@ describe('compare', function() {
   });
 
   it('should apply configuration option epsilon', function() {
-    var mymath = math();
+    var mymath = math.create();
     assert.equal(mymath.compare(1, 0.991), 1);
     mymath.config({epsilon: 1e-2});
     assert.equal(mymath.compare(1, 0.991), 0);

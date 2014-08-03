@@ -85,7 +85,7 @@ describe('smallerEq', function() {
   });
 
   it('should apply configuration option epsilon', function() {
-    var mymath = math();
+    var mymath = math.create();
     assert.equal(mymath.smallerEq(1.01, 1), false);
     mymath.config({epsilon: 1e-2});
     assert.equal(mymath.smallerEq(1.01, 1), true);

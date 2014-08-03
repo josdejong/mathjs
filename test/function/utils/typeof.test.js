@@ -7,7 +7,7 @@ var assert = require('assert'),
     Help = require('../../../lib/type/Help'),
     Unit = require('../../../lib/type/Unit'),
     Complex = require('../../../lib/type/Complex'),
-    math = require('../../../index')();
+    math = require('../../../index');
 
 describe('typeof', function() {
 

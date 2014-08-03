@@ -53,7 +53,7 @@ describe('bignumber', function() {
   });
 
   it('should apply precision setting to bignumbers', function() {
-    var mymath = math({
+    var mymath = math.create({
       precision: 32
     });
 

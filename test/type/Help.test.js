@@ -1,7 +1,7 @@
 // test Help
 var assert = require('assert'),
     Help = require('../../lib/type/Help'),
-    math = require('../../index')();
+    math = require('../../index');
 
 describe('help', function() {
   var doc = {

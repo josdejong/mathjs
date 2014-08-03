@@ -1,7 +1,7 @@
 // test FunctionAssignmentNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     OperatorNode = require('../../../lib/expression/node/OperatorNode'),

@@ -33,7 +33,7 @@ describe('eye', function() {
   });
 
   it('should return an array when setting matrix=="array"', function() {
-    var math2 = math({matrix: 'array'});
+    var math2 = math.create({matrix: 'array'});
     assert.deepEqual(math2.eye(2), [[1,0],[0,1]]);
   });
 

@@ -3,6 +3,9 @@
 
 ## not yet released, version 0.25.1
 
+- A new instance of math.js can no longer be created like `math([options])`,
+  to prevent side effects from math being a function instead of an object.
+  Instead, use the function `math.create([options])` to create a new instance.
 - Implemented `BigNumber` support for all constants: `pi`, `tau`, `e`, `phi`,
   `E`, `LN2`, `LN10`, `LOG2E`, `LOG10E`, `PI`, `SQRT1_2`, and `SQRT2`.
 - Implemented `BigNumber` support for functions `gcd`, `xgcd`, and `lcm`.

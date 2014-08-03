@@ -7,7 +7,7 @@ describe('deprecated stuff', function() {
 
   it ('should throw an error when using deprecated setting number.defaultType', function () {
     assert.throws(function () {
-      math({
+      math.create({
         number: {
           defaultType: 'number'
         }
@@ -17,7 +17,7 @@ describe('deprecated stuff', function() {
 
   it ('should throw an error when using deprecated setting number.precision', function () {
     assert.throws(function () {
-      math({
+      math.create({
         number: {
           precision: 14
         }
@@ -27,7 +27,7 @@ describe('deprecated stuff', function() {
 
   it ('should throw an error when using deprecated setting decimals', function () {
     assert.throws(function () {
-      math({
+      math.create({
         decimals: 100
       })
     }, /is deprecated/);
@@ -35,7 +35,7 @@ describe('deprecated stuff', function() {
 
   it ('should throw an error when using deprecated setting matrix.defaultType', function () {
     assert.throws(function () {
-      math({
+      math.create({
         matrix: {
           defaultType: 'array'
         }
@@ -45,7 +45,7 @@ describe('deprecated stuff', function() {
 
   it ('should throw an error when using deprecated setting matrix.default', function () {
     assert.throws(function () {
-      math({
+      math.create({
         matrix: {
           'default': 'array'
         }

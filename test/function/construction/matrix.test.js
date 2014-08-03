@@ -1,7 +1,7 @@
 // test matrix construction
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     matrix = math.matrix;
 
 describe('matrix', function() {

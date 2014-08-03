@@ -48,7 +48,7 @@ describe('ArrayNode', function() {
     var expr = n.compile(math);
     assert.deepEqual(expr.eval(), math.matrix([1,2,3,4]));
 
-    var mathArray = math({matrix: 'array'});
+    var mathArray = math.create({matrix: 'array'});
     var expr2 = n.compile(mathArray);
     assert.deepEqual(expr2.eval(), [1,2,3,4]);
   });

@@ -3,7 +3,7 @@ var assert = require('assert'),
     seed = require('seed-random'),
     _ = require('underscore'),
     Matrix = require('../../../lib/type/Matrix'),
-    math = require('../../../index')();
+    math = require('../../../index');
 
 var assertApproxEqual = function(testVal, val, tolerance) {
   var diff = Math.abs(val - testVal);

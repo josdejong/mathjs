@@ -1,6 +1,6 @@
 // test dotMultiply (element-wise multiply)
 var assert = require('assert'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
     dotMultiply = math.dotMultiply,

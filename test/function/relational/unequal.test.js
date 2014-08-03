@@ -122,7 +122,7 @@ describe('unequal', function() {
   });
 
   it('should apply configuration option epsilon', function() {
-    var mymath = math();
+    var mymath = math.create();
     assert.equal(mymath.unequal(1, 0.991), true);
     mymath.config({epsilon: 1e-2});
     assert.equal(mymath.unequal(1, 0.991), false);

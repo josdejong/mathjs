@@ -1,7 +1,7 @@
 // test IndexNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    bigmath = require('../../../index')({number: 'bignumber'}),
+    bigmath = require('../../../index').create({number: 'bignumber'}),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     RangeNode = require('../../../lib/expression/node/RangeNode'),

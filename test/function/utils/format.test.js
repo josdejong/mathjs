@@ -61,7 +61,7 @@ describe('format', function() {
   });
 
   describe('bignumber', function () {
-    var bigmath = math({precision: 20}); // ensure the precision is 20 digits
+    var bigmath = math.create({precision: 20}); // ensure the precision is 20 digits
 
     it('should format big numbers', function() {
       assert.equal(math.format(bigmath.bignumber(2).dividedBy(7)), '0.28571428571428571429');

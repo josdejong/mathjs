@@ -1,7 +1,7 @@
 // test xgcd
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')({matrix: 'array'}),
+    math = require('../../../index').create({matrix: 'array'}),
     gcd = math.gcd,
     xgcd = math.xgcd;
 
@@ -73,10 +73,10 @@ describe('xgcd', function() {
   });
 
   it('should return a matrix when configured to use matrices', function() {
-    var math1 = math({matrix: 'matrix'});
+    var math1 = math.create({matrix: 'matrix'});
     assert.deepEqual(math1.xgcd(65, 40), math.matrix([5, -3, 5]));
 
-    var math2 = math({matrix: 'array'});
+    var math2 = math.create({matrix: 'array'});
     assert.deepEqual(math2.xgcd(65, 40), [5, -3, 5]);
   });
 

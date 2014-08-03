@@ -3,7 +3,7 @@
 var assert = require('assert'),
     approx = require('../../tools/approx'),
     Parser = require('../../lib/expression/Parser'),
-    math = require('../../index')();
+    math = require('../../index');
 
 describe('parser', function() {
 

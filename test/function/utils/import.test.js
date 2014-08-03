@@ -8,7 +8,7 @@ describe('import', function() {
   var math = null;
 
   beforeEach(function() {
-    math = mathjs();
+    math = mathjs.create();
     math.import({
       myvalue: 42,
       hello: function (name) {
