@@ -402,6 +402,66 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('size([[],[]])', scope), new Matrix([2, 0]));
     });
 
+    it('should execute map on an array with one based indices', function () {
+      var logs = [];
+      var scope = {
+        A: [1,2,3],
+        callback: function (value, index, matrix) {
+          assert.strictEqual(matrix, scope.A);
+          logs.push([value, index.map(function (v) {return v})]);
+          return value + 1;
+        }
+      };
+      var res = math.eval('map(A, callback)', scope);
+      assert.deepEqual(res, [2,3,4]);
+
+      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
+    });
+
+    it('should execute map on a Matrix with one based indices', function () {
+      var logs = [];
+      var scope = {
+        A: new Matrix([1,2,3]),
+        callback: function (value, index, matrix) {
+          assert.strictEqual(matrix, scope.A);
+          logs.push([value, index.map(function (v) {return v})]);
+          return value + 1;
+        }
+      };
+      var res = math.eval('map(A, callback)', scope);
+      assert.deepEqual(res, new Matrix([2,3,4]));
+
+      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
+    });
+
+    it('should execute forEach on an array with one based indices', function () {
+      var logs = [];
+      var scope = {
+        A: [1,2,3],
+        callback: function (value, index, matrix) {
+          assert.strictEqual(matrix, scope.A);
+          logs.push([value, index.map(function (v) {return v})]);
+        }
+      };
+      math.eval('forEach(A, callback)', scope);
+
+      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
+    });
+
+    it('should execute forEach on a Matrix with one based indices', function () {
+      var logs = [];
+      var scope = {
+        A: new Matrix([1,2,3]),
+        callback: function (value, index, matrix) {
+          assert.strictEqual(matrix, scope.A);
+          logs.push([value, index.map(function (v) {return v})]);
+        }
+      };
+      math.eval('forEach(A, callback)', scope);
+
+      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
+    });
+
     it('should throw an error for invalid matrix', function() {
       assert.throws(function () {parseAndEval('[1, 2')}, /End of matrix ] expected/);
       assert.throws(function () {parseAndEval('[1; 2')}, /End of matrix ] expected/);

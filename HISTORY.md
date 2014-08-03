@@ -13,6 +13,10 @@
   zero-based for expressions).
 - When used inside the expression parser, functions `concat`, `min`, `max`,
   and `mean` expect an one-based dimension number.
+- Functions `map` and `forEach` invoke the callback with one-based indices
+  when used from within the expression parser.
+- When adding or removing dimensions when resizing a matrix, the dimensions
+  are added/removed from the inner side (right) instead of outer side (left).
 - Improved index out of range errors.
 - Fixed function `concat` not accepting a `BigNumber` for parameter `dim`.
 - Function `squeeze` now squeezes both inner and outer singleton dimensions.
