@@ -61,9 +61,6 @@ Powerful and easy to use.
     </p>
     <div id="commandline">loading...</div>
     <script type="text/javascript">
-      // create an instance of math.js
-      var math = mathjs();
-
       var editor = new CommandLineEditor({
           container: document.getElementById('commandline'),
           math: math
