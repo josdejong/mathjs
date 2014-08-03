@@ -293,12 +293,12 @@ describe('parse', function() {
           [7,8,9]
         ])
       };
-      assert.deepEqual(parseAndEval('a[2, :]', scope),        new Matrix([4,5,6]));
-      assert.deepEqual(parseAndEval('a[2, :2]', scope),       new Matrix([4,5]));
-      assert.deepEqual(parseAndEval('a[2, :end-1]', scope),   new Matrix([4,5]));
-      assert.deepEqual(parseAndEval('a[2, 2:]', scope),       new Matrix([5,6]));
-      assert.deepEqual(parseAndEval('a[2, 2:3]', scope),      new Matrix([5,6]));
-      assert.deepEqual(parseAndEval('a[2, 1:2:3]', scope),    new Matrix([4,6]));
+      assert.deepEqual(parseAndEval('a[2, :]', scope),        new Matrix([[4,5,6]]));
+      assert.deepEqual(parseAndEval('a[2, :2]', scope),       new Matrix([[4,5]]));
+      assert.deepEqual(parseAndEval('a[2, :end-1]', scope),   new Matrix([[4,5]]));
+      assert.deepEqual(parseAndEval('a[2, 2:]', scope),       new Matrix([[5,6]]));
+      assert.deepEqual(parseAndEval('a[2, 2:3]', scope),      new Matrix([[5,6]]));
+      assert.deepEqual(parseAndEval('a[2, 1:2:3]', scope),    new Matrix([[4,6]]));
       assert.deepEqual(parseAndEval('a[:, 2]', scope),        new Matrix([[2],[5],[8]]));
       assert.deepEqual(parseAndEval('a[:2, 2]', scope),       new Matrix([[2],[5]]));
       assert.deepEqual(parseAndEval('a[:end-1, 2]', scope),   new Matrix([[2],[5]]));
@@ -341,25 +341,27 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('a[1:3,1:2]', scope), new Matrix([[100,2],[3,10],[undefined,12]]));
 
       scope.b = [[1,2],[3,4]];
-      assert.deepEqual(parseAndEval('b[1,:]', scope), [1, 2]);
+      assert.deepEqual(parseAndEval('b[1,:]', scope), [[1, 2]]);
     });
 
     it('should get/set the matrix correctly for 3d matrices', function() {
       var scope = {};
       assert.deepEqual(parseAndEval('f=[1,2;3,4]', scope), new Matrix([[1,2],[3,4]]));
       assert.deepEqual(parseAndEval('size(f)', scope), new Matrix([2,2]));
-      /* TODO: doesn't work correctly
-       assert.deepEqual(parseAndEval('f[:,:,1]=[5,6;7,8]', scope), new Matrix([
-       [
-       [1,2],
-       [3,4]
-       ],
-       [
-       [5,6],
-       [7,8]
-       ]
-       ]));
-       */
+
+      /* TODO: matrix resizing doesn't work correctly for 3d
+      assert.deepEqual(parseAndEval('f[:,:,2]=[5,6;7,8]', scope), new Matrix([
+        [
+          [1,2],
+          [3,4]
+        ],
+        [
+          [5,6],
+          [7,8]
+        ]
+      ]));
+      */
+
       scope.f = new Matrix([
         [
           [1,5],
@@ -374,7 +376,7 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('f[:,:,1]', scope), new Matrix([[[1],[2]],[[3],[4]]]));
       assert.deepEqual(parseAndEval('f[:,:,2]', scope), new Matrix([[[5],[6]],[[7],[8]]]));
       assert.deepEqual(parseAndEval('f[:,2,:]', scope), new Matrix([[[2,6]],[[4,8]]]));
-      assert.deepEqual(parseAndEval('f[2,:,:]', scope), new Matrix([[3,7],[4,8]]));
+      assert.deepEqual(parseAndEval('f[2,:,:]', scope), new Matrix([[[3,7],[4,8]]]));
 
       parseAndEval('a=diag([1,2,3,4])', scope);
       assert.deepEqual(parseAndEval('a[3:end, 3:end]', scope), new Matrix([[3,0],[0,4]]));

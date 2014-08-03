@@ -70,10 +70,10 @@ describe('matrix', function() {
       assert.deepEqual(m.valueOf(), [[1,2]]);
 
       m.resize([1,2,2], 8);
-      assert.deepEqual(m.valueOf(), [[[1,2],[8,8]]]);
+      assert.deepEqual(m.valueOf(), [[[1,8],[2,8]]]);
 
       m.resize([2,3], 9);
-      assert.deepEqual(m.valueOf(), [[1, 2, 9], [8, 8, 9]]);
+      assert.deepEqual(m.valueOf(), [[1,2, 9], [9,9,9]]);
 
       m = new Matrix();
       m.resize([3,3,3], 6);
@@ -125,15 +125,21 @@ describe('matrix', function() {
     it('should set a value in a matrix', function() {
       var m = new Matrix([[0, 0], [0, 0]]);
       m.set([1,0], 5);
-      assert.deepEqual(m, new Matrix([[0, 0], [5, 0]]));
+      assert.deepEqual(m, new Matrix([
+        [0, 0],
+        [5, 0]
+      ]));
 
       m.set([0, 2], 4);
-      assert.deepEqual(m, new Matrix([[0, 0, 4], arr(5, 0, uninit)]));
-
-      m.set([1,0,0], 3);
       assert.deepEqual(m, new Matrix([
-        [[0, 0, 4], arr(5, 0, uninit)],
-        [arr(3, uninit, uninit), arr(uninit, uninit, uninit)]
+        [0, 0, 4],
+        arr(5, 0, uninit)
+      ]));
+
+      m.set([0,0,1], 3);
+      assert.deepEqual(m, new Matrix([
+        [arr(0,3), arr(0,uninit), arr(4,uninit)],
+        [arr(5,uninit), arr(0,uninit), arr(undefined,uninit)]
       ]));
     });
 
@@ -171,8 +177,8 @@ describe('matrix', function() {
       assert.deepEqual(m.size(), [3,3]);
       assert.deepEqual(m.subset(index(1,1)), 5);
       assert.deepEqual(m.subset(index([0,2],[0,2])).valueOf(), [[1,2],[4,5]]);
-      assert.deepEqual(m.subset(index(1, [1,3])).valueOf(), [5,6]);
-      assert.deepEqual(m.subset(index(0, [1,3])).valueOf(), [2,3]);
+      assert.deepEqual(m.subset(index(1, [1,3])).valueOf(), [[5,6]]);
+      assert.deepEqual(m.subset(index(0, [1,3])).valueOf(), [[2,3]]);
       assert.deepEqual(m.subset(index([1,3], 1)).valueOf(), [[5],[8]]);
       assert.deepEqual(m.subset(index([1,3], 2)).valueOf(), [[6],[9]]);
 
@@ -182,8 +188,9 @@ describe('matrix', function() {
       assert.deepEqual(m.subset(index([0,2],[0,2],[0,2])).valueOf(), m.valueOf());
       assert.deepEqual(m.subset(index(0,0,0)), 1);
       assert.deepEqual(m.subset(index(1,1,1)).valueOf(), 8);
-      assert.deepEqual(m.subset(index(1,1,[0,2])).valueOf(), [7,8]);
-      assert.deepEqual(m.subset(index(1,[0,2],1)).valueOf(), [[6],[8]]);
+      assert.deepEqual(m.subset(index(1,1,[0,2])).valueOf(), [[[7,8]]]);
+      assert.deepEqual(m.subset(index(1,[0,2],1)).valueOf(), [[[6],[8]]]);
+      assert.deepEqual(m.subset(index([0,2],1,1)).valueOf(), [[[4]],[[8]]]);
     });
 
     it('should throw an error if the given subset is invalid', function() {
@@ -232,8 +239,10 @@ describe('matrix', function() {
         arr(uninit, uninit, uninit),
         arr(uninit, 1,2),
         arr(uninit, 3,4)]));
-      m.subset(index(0, [0,3]), [5,6,7]);  // unsqueezes the submatrix
+      m.subset(index(0, [0,3]), [[5,6,7]]);
       assert.deepEqual(m, new Matrix([[5,6,7],arr(uninit,1,2),arr(uninit,3,4)]));
+      m.subset(index([0,3], 0), [8,9,10]);  // unsqueezes the submatrix
+      assert.deepEqual(m, new Matrix([[8,6,7],arr(9,1,2),arr(10,3,4)]));
     });
 
     it('should set the given subset with defaultValue for new elements', function() {
@@ -244,18 +253,23 @@ describe('matrix', function() {
       assert.deepEqual(m, new Matrix([0, 0, 0, 3, 4]));
 
       defaultValue = 1;
-      m.subset(index(1, [3,5]), [5, 6], defaultValue);
+      m.subset(index([3,5],1), [5, 6], defaultValue);
       assert.deepEqual(m, new Matrix([
-        [0, 0, 0, 3, 4],
-        [1, 1, 1, 5, 6]
+        [0, 1],
+        [0, 1],
+        [0, 1],
+        [3, 5],
+        [4, 6]
       ]));
 
       defaultValue = 2;
-      m.subset(index(2, [3,5]), [7, 8], defaultValue);
+      m.subset(index([3,5],2), [7, 8], defaultValue);
       assert.deepEqual(m, new Matrix([
-        [0, 0, 0, 3, 4],
-        [1, 1, 1, 5, 6],
-        [2, 2, 2, 7, 8]
+        [0, 1, 2],
+        [0, 1, 2],
+        [0, 1, 2],
+        [3, 5, 7],
+        [4, 6, 8]
       ]));
 
       // a single value
@@ -263,6 +277,28 @@ describe('matrix', function() {
       defaultValue = 0;
       i.subset(math.index(2, 1), 6, defaultValue);
       assert.deepEqual(i, new Matrix([[0, 0], [0, 0], [0, 6]]));
+    });
+
+    it('should unsqueeze the replacement subset if needed', function() {
+      var m = new Matrix([[0,0],[0,0]]); // 2x2
+
+      m.subset(index(0, [0,2]), [1,1]);
+      assert.deepEqual(m, new Matrix([[1,1],[0,0]]));
+
+      m.subset(index([0,2], 0), [2,2]);
+      assert.deepEqual(m, new Matrix([[2,1],[2,0]]));
+
+      var m2 = new Matrix([[[0],[0],[0]]]); // 1x3x1
+      m2.subset(index(0, [0,3], 0), [1,2,3]);
+      assert.deepEqual(m2, new Matrix([[[1],[2],[3]]]));
+
+      var m3 = new Matrix([[[0,0,0]]]); // 1x1x3
+      m3.subset(index(0, 0, [0,3]), [1,2,3]);
+      assert.deepEqual(m3, new Matrix([[[1,2,3]]]));
+
+      var m4 = new Matrix([[[0]],[[0]],[[0]]]); // 3x1x1
+      m4.subset(index([0,3], 0, 0), [1,2,3]);
+      assert.deepEqual(m4, new Matrix([[[1]],[[2]],[[3]]]));
     });
 
     it('should resize the matrix if the replacement subset is different size than selected subset', function() {

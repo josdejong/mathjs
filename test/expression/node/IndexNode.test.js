@@ -58,7 +58,7 @@ describe('IndexNode', function() {
     var scope = {
       a: [[1, 2], [3, 4]]
     };
-    assert.deepEqual(expr.eval(scope), [3, 4]);
+    assert.deepEqual(expr.eval(scope), [[3, 4]]);
   });
 
   it ('should compile a IndexNode with negative step range and context parameters', function () {
@@ -77,7 +77,7 @@ describe('IndexNode', function() {
     var scope = {
       a: [[1, 2], [3, 4]]
     };
-    assert.deepEqual(expr.eval(scope), [4, 3]);
+    assert.deepEqual(expr.eval(scope), [[4, 3]]);
   });
 
   it ('should compile a IndexNode with "end" both as value and in a range', function () {
@@ -95,7 +95,7 @@ describe('IndexNode', function() {
     var scope = {
       a: [[1, 2], [3, 4]]
     };
-    assert.deepEqual(expr.eval(scope), [3, 4]);
+    assert.deepEqual(expr.eval(scope), [[3, 4]]);
   });
 
   it ('should compile a IndexNode with bignumber setting', function () {

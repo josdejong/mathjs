@@ -15,6 +15,11 @@
   and `mean` expect an one-based dimension number.
 - Improved index out of range errors.
 - Fixed function `concat` not accepting a `BigNumber` for parameter `dim`.
+- Function `squeeze` now squeezes both inner and outer singleton dimensions.
+- Output of getting a matrix subset is not automatically squeezed anymore
+  except for scalar output.
+- Fixed broken auto completion in CLI.
+- Some minor fixes.
 
 
 ## 2014-07-01, version 0.25.0
