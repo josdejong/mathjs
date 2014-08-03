@@ -12,10 +12,10 @@ describe('node/index', function() {
     assert.strictEqual(index.BlockNode, require('../../../lib/expression/node/BlockNode'));
     assert.strictEqual(index.ConditionalNode, require('../../../lib/expression/node/ConditionalNode'));
     assert.strictEqual(index.ConstantNode, require('../../../lib/expression/node/ConstantNode'));
+    assert.strictEqual(index.FunctionAssignmentNode, require('../../../lib/expression/node/FunctionAssignmentNode'));
     assert.strictEqual(index.FunctionNode, require('../../../lib/expression/node/FunctionNode'));
     assert.strictEqual(index.IndexNode, require('../../../lib/expression/node/IndexNode'));
     assert.strictEqual(index.OperatorNode, require('../../../lib/expression/node/OperatorNode'));
-    assert.strictEqual(index.ParamsNode, require('../../../lib/expression/node/ParamsNode'));
     assert.strictEqual(index.RangeNode, require('../../../lib/expression/node/RangeNode'));
     assert.strictEqual(index.SymbolNode, require('../../../lib/expression/node/SymbolNode'));
     assert.strictEqual(index.UpdateNode, require('../../../lib/expression/node/UpdateNode'));

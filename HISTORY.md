@@ -22,6 +22,8 @@
 - Function `squeeze` now squeezes both inner and outer singleton dimensions.
 - Output of getting a matrix subset is not automatically squeezed anymore
   except for scalar output.
+- Renamed `FunctionNode` to `FunctionAssignmentNode`, and renamed `ParamsNode`
+  to `FunctionNode` for more clarity.
 - Fixed broken auto completion in CLI.
 - Some minor fixes.
 
