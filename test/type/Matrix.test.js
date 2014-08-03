@@ -282,23 +282,31 @@ describe('matrix', function() {
     it('should unsqueeze the replacement subset if needed', function() {
       var m = new Matrix([[0,0],[0,0]]); // 2x2
 
-      m.subset(index(0, [0,2]), [1,1]);
+      m.subset(index(0, [0,2]), [1,1]); // 2
       assert.deepEqual(m, new Matrix([[1,1],[0,0]]));
 
-      m.subset(index([0,2], 0), [2,2]);
+      m.subset(index([0,2], 0), [2,2]); // 2
       assert.deepEqual(m, new Matrix([[2,1],[2,0]]));
 
-      var m2 = new Matrix([[[0],[0],[0]]]); // 1x3x1
-      m2.subset(index(0, [0,3], 0), [1,2,3]);
-      assert.deepEqual(m2, new Matrix([[[1],[2],[3]]]));
+      m = new Matrix([[[0],[0],[0]]]); // 1x3x1
+      m.subset(index(0, [0,3], 0), [1,2,3]); // 3
+      assert.deepEqual(m, new Matrix([[[1],[2],[3]]]));
 
-      var m3 = new Matrix([[[0,0,0]]]); // 1x1x3
-      m3.subset(index(0, 0, [0,3]), [1,2,3]);
-      assert.deepEqual(m3, new Matrix([[[1,2,3]]]));
+      m = new Matrix([[[0,0,0]]]); // 1x1x3
+      m.subset(index(0, 0, [0,3]), [1,2,3]); // 3
+      assert.deepEqual(m, new Matrix([[[1,2,3]]]));
 
-      var m4 = new Matrix([[[0]],[[0]],[[0]]]); // 3x1x1
-      m4.subset(index([0,3], 0, 0), [1,2,3]);
-      assert.deepEqual(m4, new Matrix([[[1]],[[2]],[[3]]]));
+      m = new Matrix([[[0]],[[0]],[[0]]]); // 3x1x1
+      m.subset(index([0,3], 0, 0), [1,2,3]); // 3
+      assert.deepEqual(m, new Matrix([[[1]],[[2]],[[3]]]));
+
+      m = new Matrix([[[0,0,0]]]); // 1x1x3
+      m.subset(index(0, 0, [0,3]), [[1,2,3]]); // 1x3
+      assert.deepEqual(m, new Matrix([[[1,2,3]]]));
+
+      m = new Matrix([[[0]],[[0]],[[0]]]); // 3x1x1
+      m.subset(index([0,3], 0, 0), [[1],[2],[3]]); // 3x1
+      assert.deepEqual(m, new Matrix([[[1]],[[2]],[[3]]]));
     });
 
     it('should resize the matrix if the replacement subset is different size than selected subset', function() {
