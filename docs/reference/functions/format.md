@@ -62,7 +62,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-String | str The formatted value
+String | The formatted value
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

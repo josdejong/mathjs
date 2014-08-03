@@ -14,11 +14,11 @@ Base                | Unit
 ------------------- | ---
 Length              | meter (m), inch (in), foot (ft), yard (yd), mile (mi), link (li), rod (rd), chain (ch), angstrom, mil
 Surface             | m2, sqin, sqft, sqyd, sqmi, sqrd, sqch, sqmil
-Volume              | m3, litre (l, L), cc, cuin, cuft, cuyd, teaspoon, tablespoon
+Volume              | m3, litre (l, L, lt, liter), cc, cuin, cuft, cuyd, teaspoon, tablespoon
 Liquid              | volume	minim (min), fluiddram (fldr), fluidounce (fldz), gill (gi), cup (cp), pint (pt), quart (qt), gallon (gal), beerbarrel (bbl), oilbarrel (obl), hogshead, drop (gtt)
 Angles              | rad, deg, grad, cycle
 Time                | second (s), seconds, minute, minutes, hour (h), hours, day, days
-Mass                | gram(g), tonne, ton, grain (gr), dram(dr), ounce (oz), poundmass (lbm), hundredweight (cwt), stick
+Mass                | gram(g), tonne, ton, grain (gr), dram(dr), ounce (oz), poundmass (lbm, lb, lbs), hundredweight (cwt), stick
 Electric current    | ampere (A)
 Temperature         | kelvin (K), celsius (degC), fahrenheit (degF), rankine (degR)
 Amount of substance | mole (mol)
@@ -26,6 +26,7 @@ Luminous            | intensity	candela (cd)
 Force               | newton (N), poundforce (lbf)
 Binary              | bit (b), byte (B)
 
+Note that all relevant units can also be written in plural form, for example `5 meters` instead of `5 meter` or `10 seconds` instead of `10 second`. 
 
 <h2 id="prefixes">Prefixes <a href="#prefixes" title="Permalink">#</a></h2>
 

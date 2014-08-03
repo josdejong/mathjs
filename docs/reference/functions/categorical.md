@@ -34,17 +34,6 @@ layout: default
 - [unaryPlus(x)](unaryPlus.html)
 - [xgcd(a, b)](xgcd.html)
 
-<h2 id="comparison">comparison <a href="#comparison" title="Permalink">#</a></h2>
-
-- [compare(x, y)](compare.html)
-- [deepEqual(x, y)](deepEqual.html)
-- [equal(x, y)](equal.html)
-- [larger(x, y)](larger.html)
-- [largerEq(x, y)](largerEq.html)
-- [smaller(x, y)](smaller.html)
-- [smallerEq(x, y)](smallerEq.html)
-- [unequal(x, y)](unequal.html)
-
 <h2 id="complex">complex <a href="#complex" title="Permalink">#</a></h2>
 
 - [arg(x)](arg.html)
@@ -97,6 +86,17 @@ layout: default
 - [pickRandom(array)](pickRandom.html)
 - [random([min, max])](random.html)
 - [randomInt([min, max])](randomInt.html)
+
+<h2 id="relational">relational <a href="#relational" title="Permalink">#</a></h2>
+
+- [compare(x, y)](compare.html)
+- [deepEqual(x, y)](deepEqual.html)
+- [equal(x, y)](equal.html)
+- [larger(x, y)](larger.html)
+- [largerEq(x, y)](largerEq.html)
+- [smaller(x, y)](smaller.html)
+- [smallerEq(x, y)](smallerEq.html)
+- [unequal(x, y)](unequal.html)
 
 <h2 id="statistics">statistics <a href="#statistics" title="Permalink">#</a></h2>
 

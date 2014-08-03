@@ -4,6 +4,37 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h2 id="20140803-version-0260">2014-08-03, version 0.26.0 <a href="#20140803-version-0260" title="Permalink">#</a></h2>
+
+- A new instance of math.js can no longer be created like `math([options])`,
+  to prevent side effects from math being a function instead of an object.
+  Instead, use the function `math.create([options])` to create a new instance.
+- Implemented `BigNumber` support for all constants: `pi`, `tau`, `e`, `phi`,
+  `E`, `LN2`, `LN10`, `LOG2E`, `LOG10E`, `PI`, `SQRT1_2`, and `SQRT2`.
+- Implemented `BigNumber` support for functions `gcd`, `xgcd`, and `lcm`.
+- Fixed function `gxcd` returning an Array when math.js was configured 
+  as `{matrix: 'matrix'}`.
+- Multi-line expressions now return a `ResultSet` instead of an `Array`.
+- Implemented transforms (used right now to transform one-based indices to 
+  zero-based for expressions).
+- When used inside the expression parser, functions `concat`, `min`, `max`,
+  and `mean` expect an one-based dimension number.
+- Functions `map` and `forEach` invoke the callback with one-based indices
+  when used from within the expression parser.
+- When adding or removing dimensions when resizing a matrix, the dimensions
+  are added/removed from the inner side (right) instead of outer side (left).
+- Improved index out of range errors.
+- Fixed function `concat` not accepting a `BigNumber` for parameter `dim`.
+- Function `squeeze` now squeezes both inner and outer singleton dimensions.
+- Output of getting a matrix subset is not automatically squeezed anymore
+  except for scalar output.
+- Renamed `FunctionNode` to `FunctionAssignmentNode`, and renamed `ParamsNode`
+  to `FunctionNode` for more clarity.
+- Fixed broken auto completion in CLI.
+- Some minor fixes.
+
+
 <h2 id="20140701-version-0250">2014-07-01, version 0.25.0 <a href="#20140701-version-0250" title="Permalink">#</a></h2>
 
 - The library now immediately returns a default instance of mathjs, there is

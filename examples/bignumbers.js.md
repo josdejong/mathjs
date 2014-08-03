@@ -10,8 +10,10 @@ Raw file: [bignumbers.js](bignumbers.js)
 // BigNumbers
 
 // load math.js
-// the default type of numbers is configured as BigNumbers
-var math = require('../index')({
+var math = require('../index');
+
+// configure the default type of numbers as BigNumbers
+math.config({
   number: 'bignumber',  // Default type of number: 'number' (default) or 'bignumber'
   precision: 20         // Number of significant digits for BigNumbers
 });

@@ -18,8 +18,8 @@ math.xgcd(a, b)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`a` | Number &#124; Boolean | An integer number
-`b` | Number &#124; Boolean | An integer number
+`a` | Number &#124; BigNumber &#124; Boolean | An integer number
+`b` | Number &#124; BigNumber &#124; Boolean | An integer number
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

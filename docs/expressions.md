@@ -309,7 +309,7 @@ Operators                         | Description
 `x unit`                          | Unit
 `*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus, implicit multiply
 `+`, `-`                          | Add, subtract
-`==`, `!=`, `<`, `>`, `<=`, `>=`  | Comparison
+`==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
 `to`, `in`                        | Unit conversion
 `:`                               | Range
 `?`, `:`                          | Conditional expression
@@ -658,15 +658,19 @@ parser.eval('c[end - 1 : -1 : 2]');   // Matrix, [8, 7, 6]
 An expression can contain multiple lines. Lines can be separated by a newline
 character `\n` or by a semicolon `;`. Output of statements followed by a
 semicolon will be hided from the output, and empty lines are ignored. The
-output is returned as an Array, with an entry for every statement.
+output is returned as a `ResultSet`, with an entry for every visible statement.
 
 ```js
 // a multi line expression
-math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // Array, [1, 3, 9]
+math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [1, 3, 9]
 
 // semicolon statements are hided from the output
-math.eval('a=3; b=4; a + b \n a * b');  // Array, [7, 12]
+math.eval('a=3; b=4; a + b \n a * b');  // ResultSet, [7, 12]
 ```
+
+The results can be read from a `ResultSet` via the property `ResultSet.entries`
+which is an `Array`, or by calling `ResultSet.valueOf()`, which returns the 
+array with results.
 
 
 <h3 id="implicit-multiplication">Implicit multiplication <a href="#implicit-multiplication" title="Permalink">#</a></h3>

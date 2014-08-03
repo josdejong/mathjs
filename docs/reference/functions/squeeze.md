@@ -4,7 +4,7 @@ layout: default
 
 <h1 id="function-squeeze">Function squeeze <a href="#function-squeeze" title="Permalink">#</a></h1>
 
-Squeeze a matrix, remove outer singleton dimensions from a matrix.
+Squeeze a matrix, remove inner and outer singleton dimensions from a matrix.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -32,12 +32,15 @@ Matrix &#124; Array | Squeezed matrix
 math.squeeze([3]);           // returns 3
 math.squeeze([[3]]);         // returns 3
 
-var A = math.zeros(1, 3, 2); // returns [[[0, 0], [0, 0], [0, 0]]] (size 1x3x2)
-math.squeeze(A);             // returns [[0, 0], [0, 0], [0, 0]] (size 3x2)
+var A = math.zeros(3, 1);    // returns [[0], [0], [0]] (size 3x1)
+math.squeeze(A);             // returns [0, 0, 0] (size 3)
 
-// only outer dimensions will be squeezed, so the following B will be left as as
-var B = math.zeros(3, 1, 1); // returns [[[0]], [[0]], [[0]]] (size 3x1x1)
-math.squeeze(B);             // returns [[[0]], [[0]], [[0]]] (size 3x1x1)
+var B = math.zeros(1, 3);    // returns [[0, 0, 0]] (size 1x3)
+math.squeeze(B);             // returns [0, 0, 0] (size 3)
+
+// only inner and outer dimensions are removed
+var C = math.zeros(2, 1, 3); // returns [[[0, 0, 0]], [[0, 0, 0]]] (size 2x1x3)
+math.squeeze(C);             // returns [[[0, 0, 0]], [[0, 0, 0]]] (size 2x1x3)
 ```
 
 
