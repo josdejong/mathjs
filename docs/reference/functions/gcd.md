@@ -16,13 +16,13 @@ math.gcd(a, b, c, ...)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | ... Number &#124; Boolean &#124; Array &#124; Matrix | Two or more integer numbers
+`args` | ... Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix | Two or more integer numbers
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Array &#124; Matrix | The greatest common divisor
+Number &#124; BigNumber &#124; Array &#124; Matrix | The greatest common divisor
 
 
 ## Examples

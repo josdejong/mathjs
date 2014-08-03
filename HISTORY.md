@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 0.25.1
+## 2014-08-03, version 0.26.0
 
 - A new instance of math.js can no longer be created like `math([options])`,
   to prevent side effects from math being a function instead of an object.
