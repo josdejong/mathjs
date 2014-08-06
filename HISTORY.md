@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 0.26.1
+
+- Fixed function `subset` not being able to return a scalar value `null` or 
+  `undefined`.
+
+
 ## 2014-08-03, version 0.26.0
 
 - A new instance of math.js can no longer be created like `math([options])`,
