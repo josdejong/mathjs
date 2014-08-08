@@ -1,50 +1,47 @@
 # Function parse
 
-Parse an expression.
-Returns a node tree which can be compiled and evaluated.
+Parse an expression. Returns a node tree, which can be evaluated by
+invoking node.eval();
 
 
 ## Syntax
 
 ```js
-math.parse(expr)
-math.parse(expr, nodes)
-math.parse([expr1, expr2, expr3, ...])
-math.parse([expr1, expr2, expr3, ...], nodes)
+parse(expr)
+parse(expr, options)
+parse([expr1, expr2, expr3, ...])
+parse([expr1, expr2, expr3, ...], options)
 ```
 
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`expr` | String &#124; String[] &#124; Matrix | Expression to be parsed
-`nodes` | Object<String, Node> | Optional custom nodes
+`expr` | String &#124; String[] &#124; Matrix | 
+`options` | {nodes: Object<String, Node>} | Available options: - `nodes` a set of custom nodes
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Node &#124; Node[] | A node tree
+Node &#124; Node[] | node
 
 
 ## Examples
 
 ```js
-var node = math.parse('sqrt(3^2 + 4^2)');
+var node = parse('sqrt(3^2 + 4^2)');
 node.compile(math).eval(); // 5
 
-var scope = {a: 3, b: 4}
-var node = math.parse('a * b'); // 12
+var scope = {a:3, b:4}
+var node = parse('a * b'); // 12
 var code = node.compile(math);
 code.eval(scope); // 12
 scope.a = 5;
 code.eval(scope); // 20
 
 var nodes = math.parse(['a = 3', 'b = 4', 'a * b']);
-var scope2 = {};
-nodes.map(function(node) {
-  return node.compile(math).eval(scope2);
-});  // returns [3, 4, 12]
+nodes[2].compile(math).eval(); // 12
 ```
 
 
