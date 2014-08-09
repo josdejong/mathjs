@@ -62,9 +62,15 @@ describe('gcd', function() {
     assert.equal(gcd(false, false), 0);
   });
 
+  it('should find the greatest common divisor of numbers and null', function () {
+    assert.equal(gcd(1, null), 1);
+    assert.equal(gcd(null, 1), 1);
+    assert.equal(gcd(null, null), 0);
+  });
+
   it('should throw an error if only one argument', function() {
     assert.throws(function () {gcd(1); }, SyntaxError);
-  })
+  });
 
   it('should throw an error for non-integer numbers', function() {
     assert.throws(function () {gcd(2, 4.1); }, /Parameters in function gcd must be integer numbers/);

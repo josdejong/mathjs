@@ -23,8 +23,12 @@ describe('re', function() {
   });
 
   it('should return the real part of a boolean', function() {
-    assert.equal(math.re(true), true);
-    assert.equal(math.re(false), false);
+    assert.strictEqual(math.re(true), 1);
+    assert.strictEqual(math.re(false), 0);
+  });
+
+  it('should return the real part of null', function() {
+    assert.strictEqual(math.re(null), 0);
   });
 
   it('should return the real part for each element in a matrix', function() {

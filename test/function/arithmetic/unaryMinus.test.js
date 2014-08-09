@@ -16,6 +16,10 @@ describe('unaryMinus', function() {
     assert.deepEqual(bigmath.unaryMinus(false), bigmath.bignumber(-0));
   });
 
+  it('should return unary minus of null', function () {
+    assert.equal(math.unaryMinus(null), 0);
+  });
+
   it('should return unary minus on a string', function() {
     assert.equal(math.unaryMinus('2'), -2);
     assert.equal(math.unaryMinus('-2'), 2);

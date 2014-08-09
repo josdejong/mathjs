@@ -52,6 +52,12 @@ describe('lcm', function() {
     assert.equal(lcm(false, false), 0);
   });
 
+  it('should find the lowest common multiple of numbers and null', function () {
+    assert.equal(lcm(1, null), 0);
+    assert.equal(lcm(null, 1), 0);
+    assert.equal(lcm(null, null), 0);
+  });
+
   it('should throw an error for non-integer numbers', function() {
     assert.throws(function () {lcm(2, 4.1); }, /Parameters in function lcm must be integer numbers/);
     assert.throws(function () {lcm(2.3, 4); }, /Parameters in function lcm must be integer numbers/);

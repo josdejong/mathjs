@@ -27,6 +27,11 @@ describe('bignumber', function() {
     assert.ok(c instanceof BigNumber);
     assert.equal(c.valueOf(), '1');
 
+    // from null
+    var c = bignumber(null);
+    assert.ok(c instanceof BigNumber);
+    assert.equal(c.valueOf(), '0');
+
     // from array
     var d = bignumber([0.1, 0.2, '0.3']);
     assert.ok(Array.isArray(d));

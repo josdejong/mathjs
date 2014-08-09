@@ -26,6 +26,12 @@ describe('divide', function() {
     assert.ok(isNaN(divide(false, false)));
   });
 
+  it('should divide numbers and null', function () {
+    assert.equal(divide(1, null), Infinity);
+    assert.equal(divide(null, 1), 0);
+    assert(isNaN(divide(null, null)));
+  });
+
   it('should divide mixed numbers and booleans', function() {
     assert.equal(divide(2, true), 2);
     assert.equal(divide(2, false), Infinity);

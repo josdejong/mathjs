@@ -11,6 +11,10 @@ describe('sign', function() {
     assert.equal(math.sign(false), 0);
   });
 
+  it('should calculate the sign of null', function () {
+    assert.equal(math.sign(null), 0);
+  });
+
   it('should calculate the sign of a number', function() {
     assert.equal(math.sign(3), 1);
     assert.equal(math.sign(-3), -1);

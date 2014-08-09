@@ -31,11 +31,16 @@ describe('dotPow', function() {
     assert.equal(dotPow(false, false), 1);
   });
 
-  it('should add mixed numbers and booleans', function() {
+  it('should exponentiate mixed numbers and booleans', function() {
     assert.equal(dotPow(2, true), 2);
     assert.equal(dotPow(2, false), 1);
     assert.equal(dotPow(true, 2), 1);
     assert.equal(dotPow(false, 2), 0);
+  });
+
+  it('should exponentiate numbers and null', function () {
+    assert.equal(dotPow(1, null), 1);
+    assert.equal(dotPow(null, 1), 0);
   });
 
   it('should throw an error in case of invalid number of arguments', function() {

@@ -15,6 +15,10 @@ describe('log10', function() {
     assert.equal(log10(false), -Infinity);
   });
 
+  it('should return the log base 10 of null', function () {
+    assert.equal(log10(null), -Infinity);
+  });
+
   it('should return the log base 10 of positive numbers', function() {
     approx.deepEqual(log10(1), 0);
     approx.deepEqual(log10(2), 0.301029995663981);

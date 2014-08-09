@@ -12,6 +12,10 @@ describe('sqrt', function() {
     assert.equal(sqrt(false), 0);
   });
 
+  it('should return the square root of null', function () {
+    assert.equal(sqrt(null), 0);
+  });
+
   it('should return the square root of a positive number', function() {
     assert.equal(sqrt(0), 0);
     assert.equal(sqrt(1), 1);

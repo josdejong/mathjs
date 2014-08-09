@@ -5,8 +5,12 @@ var assert = require('assert'),
 
 describe('conj', function() {
   it('should compute the conjugate of a boolean', function () {
-    assert.equal(conj(true), true);
-    assert.equal(conj(false), false);
+    assert.strictEqual(conj(true), 1);
+    assert.strictEqual(conj(false), 0);
+  });
+
+  it('should compute the conjugate of null', function () {
+    assert.strictEqual(conj(null), 0);
   });
 
   it('should compute the conjugate of a number', function () {

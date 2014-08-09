@@ -14,6 +14,10 @@ describe('sinh', function() {
     approx.equal(sinh(false), 0);
   });
 
+  it('should return the sinh of a null', function () {
+    approx.equal(sinh(null), 0);
+  });
+
   it('should return the sinh of a number', function() {
     approx.equal(sinh(0), 0);
     approx.equal(sinh(pi), 11.548739357257748);

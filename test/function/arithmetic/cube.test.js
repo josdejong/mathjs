@@ -14,6 +14,10 @@ describe('cube', function() {
     assert.equal(cube(false), 0);
   });
 
+  it('should return the cube of null', function () {
+    assert.equal(math.ceil(null), 0);
+  });
+
   it('should return the cube of a number', function() {
     assert.equal(cube(4), 64);
     assert.equal(cube(-2), -8);

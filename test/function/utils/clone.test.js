@@ -4,6 +4,15 @@ var assert = require('assert'),
 
 describe('clone', function() {
 
+  it('should clone a boolean', function() {
+    assert.strictEqual(math.clone(true), true);
+    assert.strictEqual(math.clone(false), false);
+  });
+
+  it('should clone null', function() {
+    assert.strictEqual(math.clone(null), null);
+  });
+
   it('should clone a number', function() {
     var a = 1;
     var b = math.clone(a);

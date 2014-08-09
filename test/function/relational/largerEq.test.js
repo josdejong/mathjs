@@ -49,6 +49,13 @@ describe('largerEq', function() {
     assert.equal(largerEq(false, 0), true);
   });
 
+  it('should compare mixed numbers and null', function() {
+    assert.equal(largerEq(1, null), true);
+    assert.equal(largerEq(0, null), true);
+    assert.equal(largerEq(null, 1), false);
+    assert.equal(largerEq(null, 0), true);
+  });
+
   it('should compare bignumbers', function() {
     assert.equal(largerEq(bignumber(2), bignumber(3)), false);
     assert.equal(largerEq(bignumber(2), bignumber(2)), true);

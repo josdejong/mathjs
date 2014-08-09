@@ -15,6 +15,10 @@ describe('number', function() {
     approx.equal(number(false), 0);
   });
 
+  it('should convert null to a number', function() {
+    approx.equal(number(null), 0);
+  });
+
   it('should convert a bignumber to a number', function() {
     approx.equal(number(math.bignumber(0.1)), 0.1);
     approx.equal(number(math.bignumber('1.3e500')), Infinity);

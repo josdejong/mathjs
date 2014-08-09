@@ -16,6 +16,10 @@ describe('fix', function() {
     assert.equal(fix(false), 0);
   });
 
+  it('should round null', function () {
+    assert.equal(math.ceil(null), 0);
+  });
+
   it('should round numbers correctly', function() {
     approx.equal(fix(0), 0);
     approx.equal(fix(1), 1);

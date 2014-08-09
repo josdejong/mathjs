@@ -39,6 +39,11 @@ describe('multiply', function() {
     assert.equal(multiply(false, 2), 0);
   });
 
+  it('should multiply numbers and null', function () {
+    assert.equal(multiply(1, null), 0);
+    assert.equal(multiply(null, 1), 0);
+  });
+
   it('should multiply bignumbers', function() {
     assert.deepEqual(multiply(bignumber(1.5), bignumber(0.2)), bignumber(0.3));
     assert.deepEqual(multiply(bignumber('1.3e5000'), bignumber('2')), bignumber('2.6e5000'));

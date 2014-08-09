@@ -9,6 +9,10 @@ describe('abs', function () {
     assert.equal(math.abs(false), 0);
   });
 
+  it('should return the abs value of null', function () {
+    assert.equal(math.abs(null), 0);
+  });
+
   it('should return the abs value of a number', function () {
     assert.equal(math.abs(-4.2), 4.2);
     assert.equal(math.abs(-3.5), 3.5);

@@ -22,6 +22,12 @@ describe('add', function() {
     assert.equal(add(false, false), 0);
   });
 
+  it('should add numbers and null', function () {
+    assert.equal(math.add(null, null), 0);
+    assert.equal(math.add(null, 1), 1);
+    assert.equal(math.add(1, null), 1);
+  });
+
   it('should add mixed numbers and booleans', function() {
     assert.equal(add(2, true), 3);
     assert.equal(add(2, false), 2);

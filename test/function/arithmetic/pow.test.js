@@ -42,6 +42,11 @@ describe('pow', function() {
     assert.equal(pow(false, 2), 0);
   });
 
+  it('should exponentiate numbers and null', function () {
+    assert.equal(pow(1, null), 1);
+    assert.equal(pow(null, 1), 0);
+  });
+
   it('should exponentiate bignumbers', function() {
     assert.deepEqual(pow(bignumber(2), bignumber(3)), bignumber(8));
     assert.deepEqual(pow(bignumber(100), bignumber(500)), bignumber('1e1000'));

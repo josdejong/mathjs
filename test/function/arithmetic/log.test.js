@@ -13,6 +13,12 @@ describe('log', function() {
   it('should return the log of a boolean value', function () {
     assert.equal(log(true), 0);
     assert.equal(log(false), -Infinity);
+    assert.equal(log(1,false), 0);
+  });
+
+  it('should return the log of null', function () {
+    assert.equal(log(null), -Infinity);
+    assert.equal(log(1, null), 0);
   });
 
   it('should return the log of positive numbers', function() {
