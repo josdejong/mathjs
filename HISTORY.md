@@ -4,6 +4,8 @@
 ## not yet released, version 0.27.0
 
 - Implemented support for `null` in all functions.
+- A returned matrix subset is now only squeezed when the `index` consists of
+  scalar values, and no longer for ranges resolving into a single value. 
 
 
 ## 2014-08-03, version 0.26.0

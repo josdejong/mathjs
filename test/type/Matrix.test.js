@@ -193,6 +193,18 @@ describe('matrix', function() {
       assert.deepEqual(m.subset(index([0,2],1,1)).valueOf(), [[[4]],[[8]]]);
     });
 
+    it('should squeeze the output when index contains a scalar', function() {
+      var m = new Matrix(math.range(0,10));
+      assert.deepEqual(m.subset(index(1)), 1);
+      assert.deepEqual(m.subset(index([1,2])), new Matrix([1]));
+
+      m = new Matrix([[1,2], [3,4]]);
+      assert.deepEqual(m.subset(index(1,1)), 4);
+      assert.deepEqual(m.subset(index([1,2], 1)), new Matrix([[4]]));
+      assert.deepEqual(m.subset(index(1, [1,2])), new Matrix([[4]]));
+      assert.deepEqual(m.subset(index([1,2], [1,2])), new Matrix([[4]]));
+    });
+
     it('should throw an error if the given subset is invalid', function() {
       var m = new Matrix();
       assert.throws(function () { m.subset([-1]); });
