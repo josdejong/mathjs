@@ -49,6 +49,12 @@ describe('subset', function() {
     assert.deepEqual(subset(d, index(0,0), 123), [[123,2], [3,4]]);
   });
 
+  it('should set a subset of an array with uninitialized default value', function() {
+    var a = [];
+    assert.deepEqual(subset(a, index(2), 1), [0,0,1]);
+    assert.deepEqual(subset(a, index(2), 1, math.uninitialized), arr(uninit, uninit,1));
+  });
+
   it('should throw an error if setting the subset of an array with an invalid replacement', function() {
     assert.throws(function () {subset(d, index(1), 123)}, RangeError);
     assert.throws(function () {subset(d, index(1.3,0), 123)}, TypeError);
@@ -134,3 +140,20 @@ describe('subset', function() {
     assert.throws(function () {subset([1,2], [0])}, math.error.TypeError);
   });
 });
+
+/**
+ * Helper function to create an Array containing uninitialized values
+ * Example: arr(uninit, uninit, 2);    // [ , , 2 ]
+ */
+var uninit = {};
+function arr() {
+  var array = [];
+  array.length = arguments.length;
+  for (var i = 0; i < arguments.length; i++) {
+    var value = arguments[i];
+    if (value !== uninit) {
+      array[i] = value;
+    }
+  }
+  return array;
+}

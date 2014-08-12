@@ -313,12 +313,12 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('a[:,2] = [4;5;6]', scope), new Matrix([[1,4],[2,5],[3,6]]));
 
       assert.deepEqual(parseAndEval('a = []', scope),    new Matrix([]));
-      assert.deepEqual(parseAndEval('a[1,3] = 3', scope), new Matrix([arr(uninit,uninit,3)]));
-      assert.deepEqual(parseAndEval('a[2,:] = [[4,5,6]]', scope), new Matrix([arr(uninit, uninit, 3),[4,5,6]]));
+      assert.deepEqual(parseAndEval('a[1,3] = 3', scope), new Matrix([[0,0,3]]));
+      assert.deepEqual(parseAndEval('a[2,:] = [[4,5,6]]', scope), new Matrix([[0,0,3],[4,5,6]]));
 
       assert.deepEqual(parseAndEval('a = []', scope),    new Matrix([]));
-      assert.deepEqual(parseAndEval('a[3,1] = 3', scope), new Matrix([arr(uninit),arr(uninit),[3]]));
-      assert.deepEqual(parseAndEval('a[:,2] = [4;5;6]', scope), new Matrix([arr(uninit,4),arr(uninit,5),[3,6]]));
+      assert.deepEqual(parseAndEval('a[3,1] = 3', scope), new Matrix([[0],[0],[3]]));
+      assert.deepEqual(parseAndEval('a[:,2] = [4;5;6]', scope), new Matrix([[0,4],[0,5],[3,6]]));
 
       assert.deepEqual(parseAndEval('a = []', scope),    new Matrix([]));
       assert.deepEqual(parseAndEval('a[1,1:3] = [[1,2,3]]', scope), new Matrix([[1,2,3]]));
@@ -333,11 +333,11 @@ describe('parse', function() {
       assert.deepEqual(scope.a, new Matrix([[100,2],[3,4]]));
       parseAndEval('a[2:3,2:3] = [10,11;12,13]', scope);
       assert.deepEqual(scope.a.size(), [3,3]);
-      assert.deepEqual(scope.a, new Matrix([arr(100, 2, uninit),[3,10,11],arr(uninit,12,13)]));
+      assert.deepEqual(scope.a, new Matrix([[100, 2, 0],[3,10,11],[0,12,13]]));
       var a = scope.a;
       // note: after getting subset, uninitialized elements are replaced by elements with an undefined value
-      assert.deepEqual(a.subset(math.index([0,3], [0,2])), new Matrix([[100,2],[3,10],[undefined,12]]));
-      assert.deepEqual(parseAndEval('a[1:3,1:2]', scope), new Matrix([[100,2],[3,10],[undefined,12]]));
+      assert.deepEqual(a.subset(math.index([0,3], [0,2])), new Matrix([[100,2],[3,10],[0,12]]));
+      assert.deepEqual(parseAndEval('a[1:3,1:2]', scope), new Matrix([[100,2],[3,10],[0,12]]));
 
       scope.b = [[1,2],[3,4]];
       assert.deepEqual(parseAndEval('b[1,:]', scope), [[1, 2]]);
@@ -1273,21 +1273,3 @@ describe('parse', function() {
   });
 
 });
-
-
-/**
- * Helper function to create an Array containing uninitialized values
- * Example: arr(uninit, uninit, 2);    // [ , , 2 ]
- */
-var uninit = {};
-function arr() {
-  var array = [];
-  array.length = arguments.length;
-  for (var i = 0; i < arguments.length; i++) {
-    var value = arguments[i];
-    if (value !== uninit) {
-      array[i] = value;
-    }
-  }
-  return array;
-}

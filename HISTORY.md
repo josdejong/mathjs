@@ -5,6 +5,9 @@
 
 - Implemented function `flatten(x)`
 - Implemented support for `null` in all functions.
+- Changed the default value for new entries in a resized matrix when to zero. 
+  To leave new entries uninitialized, use the new constant `math.uninitialized` 
+  as default value.
 - A returned matrix subset is now only squeezed when the `index` consists of
   scalar values, and no longer for ranges resolving into a single value. 
 
