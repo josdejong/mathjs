@@ -101,7 +101,7 @@ or matrix containing the dimensions for the matrix. When the input is an Array,
 the functions will output an Array. When the input is a Matrix, the output will
 be a Matrix. Note that in case of numbers as arguments, the output is
 determined by the option `matrix` as discussed in section
-[Arrays and matrices](#Arrays_and_matrices).
+[Arrays and matrices](#arrays-and-matrices).
 
 ```js
 // Array as input gives Array as output
