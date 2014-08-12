@@ -49,6 +49,7 @@ describe('sqrt', function() {
 
   it('should return the square root of a complex number', function() {
     assert.deepEqual(sqrt(math.complex(3, -4)), math.complex(2, -1));
+    assert.deepEqual(sqrt(math.complex(1e10, 1e-10)), math.complex(1e5, 5e-16));
   });
 
   it('should throw an error when used with a unit', function() {
