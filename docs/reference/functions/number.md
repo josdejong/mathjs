@@ -14,7 +14,7 @@ math.number(value)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix | Value to be converted
+`value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix &#124; null | Value to be converted
 
 ### Returns
 

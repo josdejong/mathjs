@@ -63,6 +63,7 @@
 - [det(x)](det.md)
 - [diag(X)](diag.md)
 - [eye(n)](eye.md)
+- [flatten(x)](flatten.md)
 - [inv(x)](inv.md)
 - [ones(m, n, p, ...)](ones.md)
 - [range(start, end [, step])](range.md)

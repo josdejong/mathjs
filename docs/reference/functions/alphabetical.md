@@ -38,6 +38,7 @@
 - [eye(n)](eye.md)
 - [factorial(n)](factorial.md)
 - [fix(x)](fix.md)
+- [flatten(x)](flatten.md)
 - [floor(x)](floor.md)
 - [forEach(x, callback)](forEach.md)
 - [format(value [, precision])](format.md)

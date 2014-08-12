@@ -16,7 +16,7 @@ math.factorial(n)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`n` | Number &#124; BigNumber &#124; Array &#124; Matrix | An integer number
+`n` | Number &#124; BigNumber &#124; Array &#124; Matrix &#124; Boolean &#124; null | An integer number
 
 ### Returns
 

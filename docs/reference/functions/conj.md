@@ -16,7 +16,7 @@ math.conj(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Boolean |  A complex number or array with complex numbers
+`x` | Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Boolean &#124; null |  A complex number or array with complex numbers
 
 ### Returns
 

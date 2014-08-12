@@ -16,7 +16,7 @@ math.gcd(a, b, c, ...)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | ... Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix | Two or more integer numbers
+`args` | ... Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Two or more integer numbers
 
 ### Returns
 

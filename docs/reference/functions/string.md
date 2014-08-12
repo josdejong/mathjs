@@ -14,7 +14,7 @@ math.string(value)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | * &#124; Array &#124; Matrix | A value to convert to a string
+`value` | * &#124; Array &#124; Matrix &#124; null | A value to convert to a string
 
 ### Returns
 
