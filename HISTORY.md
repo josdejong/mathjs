@@ -3,7 +3,7 @@
 
 ## not yet released, version 0.27.0
 
-- Implemented function `flatten(x)`
+- Implemented functions `sort(x [, compare])` and `flatten(x)`.
 - Implemented support for `null` in all functions.
 - Changed the default value for new entries in a resized matrix when to zero. 
   To leave new entries uninitialized, use the new constant `math.uninitialized` 

@@ -86,6 +86,7 @@
 - [size(x)](size.md)
 - [smaller(x, y)](smaller.md)
 - [smallerEq(x, y)](smallerEq.md)
+- [sort(x)](sort.md)
 - [sqrt(x)](sqrt.md)
 - [square(x)](square.md)
 - [squeeze(x)](squeeze.md)
