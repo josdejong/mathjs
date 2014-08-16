@@ -39,24 +39,26 @@ describe('import', function() {
   it('should parse the user defined members', function() {
     if (math.parser) {
       var parser = math.parser();
-      math.add(math.myvalue, 10)
+      math.add(math.myvalue, 10);
       parser.eval('myvalue + 10');    // 52
       parser.eval('hello("user")');   // 'hello, user!'
     }
   });
 
-  var getSize = function (array) { return array.length; };
+  var getSize = function (array) {
+    return array.length;
+  };
 
-  it('should wrap the custom functions automatically', function () {
-    math.import({ getSizeWrapped: getSize });
-    assert.equal(math.getSizeWrapped([1,2,3]), 3);
-    assert.equal(math.getSizeWrapped(math.matrix([1,2,3])), 3);
+  it('shouldn\'t wrap custom functions by default', function () {
+    math.import({ getSizeNotWrapped: getSize });
+    assert.strictEqual(math.getSizeNotWrapped([1,2,3]), 3);
+    assert.strictEqual(math.getSizeNotWrapped(math.matrix([1,2,3])), undefined);
   });
 
-  it('shouldn\'t wrap the custom functions if wrap = false', function () {
-    math.import({ getSizeNotWrapped: getSize }, { wrap: false });
-    assert.equal(math.getSizeNotWrapped([1,2,3]), 3);
-    assert.equal(math.getSizeNotWrapped(math.matrix([1,2,3])), undefined);
+  it('should wrap custom functions if wrap = true', function () {
+    math.import({ getSizeWrapped: getSize }, { wrap: true});
+    assert.strictEqual(math.getSizeWrapped([1,2,3]), 3);
+    assert.strictEqual(math.getSizeWrapped(math.matrix([1,2,3])), 3);
   });
 
   it('wrapped imported functions should accept undefined and null', function () {
@@ -82,7 +84,7 @@ describe('import', function() {
   it('should extend math with numbers', function() {
     // extend math.js with numbers.js
     // examples copied from https://github.com/sjkaliski/numbers.js/blob/master/examples/statistic.js
-    math.import('numbers');
+    math.import('numbers', {wrap: true});
 
     assert.equal(math.fibonacci(7), 13);
 

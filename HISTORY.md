@@ -7,9 +7,11 @@
 - Implemented support for `null` in all functions.
 - Implemented support for "raw" functions in the expression parser. Raw 
   functions are invoked with unevaluated parameters (nodes).
+- Changed default value of the option `wrap` of function `math.import` to false.
 - Changed the default value for new entries in a resized matrix when to zero. 
   To leave new entries uninitialized, use the new constant `math.uninitialized` 
   as default value.
+- Fixed a bug in `math.import` not applying options when passing a module name.
 - A returned matrix subset is now only squeezed when the `index` consists of
   scalar values, and no longer for ranges resolving into a single value. 
 
