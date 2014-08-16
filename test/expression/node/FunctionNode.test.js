@@ -53,7 +53,7 @@ describe('FunctionNode', function() {
       return 'myFunction(' + args.join(', ') + ')';
     }
     myFunction.raw = true;
-    mymath.import({myFunction: myFunction}, {wrap: false});
+    mymath.import({myFunction: myFunction});
 
     var s = new SymbolNode('myFunction');
     var a = new ConstantNode(4);
@@ -70,7 +70,7 @@ describe('FunctionNode', function() {
       assert.ok(false, 'should not be executed');
     }
     myFunction.raw = true;
-    mymath.import({myFunction: myFunction}, {wrap: false});
+    mymath.import({myFunction: myFunction});
 
     var s = new SymbolNode('myFunction');
     var a = new ConstantNode(4);
