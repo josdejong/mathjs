@@ -44,12 +44,12 @@ describe('FunctionNode', function() {
 
   it ('should compile a FunctionNode with a raw function', function () {
     var mymath = math.create();
-    function myFunction () {
-      var args = [];
-      for (var i = 0; i < arguments.length; i++) {
-        assert(arguments[i] instanceof Node);
-        args[i] = arguments[i].toString();
-      }
+    function myFunction (args, _math, _scope) {
+      assert.equal(args.length, 2);
+      assert(args[0] instanceof Node);
+      assert(args[1] instanceof Node);
+      assert.deepEqual(_math.__proto__, mymath);
+      assert.strictEqual(_scope, scope);
       return 'myFunction(' + args.join(', ') + ')';
     }
     myFunction.raw = true;
@@ -66,13 +66,8 @@ describe('FunctionNode', function() {
 
   it ('should compile a FunctionNode with overloaded a raw function', function () {
     var mymath = math.create();
-    function myFunction () {
-      var args = [];
-      for (var i = 0; i < arguments.length; i++) {
-        assert(arguments[i] instanceof Node);
-        args[i] = arguments[i].toString();
-      }
-      return 'myFunction(' + args.join(', ') + ')';
+    function myFunction (args, _math, _scope) {
+      assert.ok(false, 'should not be executed');
     }
     myFunction.raw = true;
     mymath.import({myFunction: myFunction}, {wrap: false});

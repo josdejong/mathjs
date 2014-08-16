@@ -5,6 +5,8 @@
 
 - Implemented functions `sort(x [, compare])` and `flatten(x)`.
 - Implemented support for `null` in all functions.
+- Implemented support for "raw" functions in the expression parser. Raw 
+  functions are invoked with unevaluated parameters (nodes).
 - Changed the default value for new entries in a resized matrix when to zero. 
   To leave new entries uninitialized, use the new constant `math.uninitialized` 
   as default value.
