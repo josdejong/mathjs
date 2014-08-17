@@ -59,13 +59,56 @@ describe('parse', function() {
     }), new Matrix([undefined]));
   });
 
-  it('should parse multiline expressions', function() {
-    assert.deepEqual(parse('a=3\nb=4\na*b').compile(math).eval(), new ResultSet([3, 4, 12]));
-    assert.deepEqual(parse('b = 43; b * 4').compile(math).eval(), new ResultSet([172]));
-  });
+  describe('multiline', function () {
 
-  it('should skip empty lines in multiline expressions', function() {
-    assert.deepEqual(parse('\n;\n2 * 4\n').compile(math).eval(), new ResultSet([8]));
+    it('should parse multiline expressions', function() {
+      assert.deepEqual(parse('a=3\nb=4\na*b').compile(math).eval(), new ResultSet([3, 4, 12]));
+      assert.deepEqual(parse('b = 43; b * 4').compile(math).eval(), new ResultSet([172]));
+    });
+
+    it('should skip empty lines in multiline expressions', function() {
+      assert.deepEqual(parse('\n;\n2 * 4\n').compile(math).eval(), new ResultSet([8]));
+    });
+
+    it('should spread operators over multiple lines', function() {
+      assert.deepEqual(parse('2+\n3').compile(math).eval(), 5);
+      assert.deepEqual(parse('2+\n\n3').compile(math).eval(), 5);
+      assert.deepEqual(parse('2*\n3').compile(math).eval(), 6);
+      assert.deepEqual(parse('2^\n3').compile(math).eval(), 8);
+      assert.deepEqual(parse('2==\n3').compile(math).eval(), false);
+      assert.deepEqual(parse('2*-\n3').compile(math).eval(), -6);
+    });
+
+    it('should spread a function over multiple lines', function() {
+      assert.deepEqual(parse('add(\n4\n,\n2\n)').compile(math).eval(), 6);
+    });
+
+    it('should spread contents of parameters over multiple lines', function() {
+      assert.deepEqual(parse('(\n4\n+\n2\n)').compile(math).eval(), 6);
+    });
+
+    it('should spread a function assignment over multiple lines', function() {
+      assert.deepEqual(typeof parse('f(\nx\n,\ny\n)=\nx+\ny').compile(math).eval(), 'function');
+    });
+
+    it('should spread a variable assignment over multiple lines', function() {
+      assert.deepEqual(parse('x=\n2').compile(math).eval(), 2);
+    });
+
+    it('should spread a matrix over multiple lines', function() {
+      assert.deepEqual(parse('[\n1\n,\n2\n]').compile(math).eval(), new Matrix([1, 2]));
+    });
+
+    it('should spread a range over multiple lines', function() {
+      assert.deepEqual(parse('2:\n4').compile(math).eval(), new Matrix([2,3,4]));
+      assert.deepEqual(parse('2:\n2:\n6').compile(math).eval(), new Matrix([2,4,6]));
+    });
+
+    it('should spread an index over multiple lines', function() {
+      assert.deepEqual(parse('a[\n1\n,\n1\n]').compile(math).eval({a: [[1,2],[3,4]]}), 1);
+      assert.deepEqual(parse('a[\n1\n,\n1\n]=\n100').compile(math).eval({a: [[1,2],[3,4]]}), [[100,2],[3,4]]);
+    });
+
   });
 
   it('should throw an error when scope contains a reserved keyword', function() {
@@ -80,7 +123,7 @@ describe('parse', function() {
   it('should give informative syntax errors', function() {
     assert.throws(function () {parse('2 +')}, /Unexpected end of expression \(char 4\)/);
     assert.throws(function () {parse('2 ~ 3')}, /Syntax error in part "~ 3" \(char 3\)/);
-    assert.throws(function () {parse('2 + 3\n3 +\n-4')}, /Value expected \(char 10\)/);
+    assert.throws(function () {parse('2 + 3 + *')}, /Value expected \(char 9\)/);
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
@@ -274,10 +317,6 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('[1;2;3]'), new Matrix([[1],[2],[3]]));
       assert.deepEqual(parseAndEval('[[1,2],[3,4]]'), new Matrix([[1,2],[3,4]]));
       assert.deepEqual(parseAndEval('[[[1],[2]],[[3],[4]]]'), new Matrix([[[1],[2]],[[3],[4]]]));
-    });
-
-    it('should skip newlines in a matrix', function() {
-      assert.deepEqual(parseAndEval('[\n  1,2;\n  3,4\n]'), new Matrix([[1,2], [3,4]]));
     });
 
     it('should parse an empty matrix', function() {
