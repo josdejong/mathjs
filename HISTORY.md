@@ -11,6 +11,8 @@
 - Changed the default value for new entries in a resized matrix when to zero. 
   To leave new entries uninitialized, use the new constant `math.uninitialized` 
   as default value.
+- Renamed transform property from `__transform__` to `transform`, and documented
+  the transform feature.
 - Fixed a bug in `math.import` not applying options when passing a module name.
 - A returned matrix subset is now only squeezed when the `index` consists of
   scalar values, and no longer for ranges resolving into a single value. 
