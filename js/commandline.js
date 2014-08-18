@@ -266,7 +266,7 @@ function CommandLineEditor (params) {
     var target = event.target || event.srcElement;
     var keynum = event.which || event.keyCode;
     if (keynum == 83) { // s
-      if (target != dom.input) {
+      if (target.nodeName.toUpperCase() != 'INPUT') {
         dom.input.focus();
         util.preventDefault(event);
         util.stopPropagation(event);

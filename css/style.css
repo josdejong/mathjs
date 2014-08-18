@@ -58,6 +58,11 @@ body {
   height: 1.4em !important;
 }
 
+.gsc-search-button .gsc-search-button {
+  vertical-align: middle;
+  margin: 0;
+}
+
 #logo {
   width: 330px;
   height: 100px;
