@@ -74,9 +74,9 @@ integrate.transform = function (args, math, scope) {
   return integrate(f, start, end, step);
 };
 
-// mark the transform function as "raw", so it will be called with unevaluated
-// arguments.
-integrate.transform.raw = true;
+// mark the transform function with a "rawArgs" property, so it will be called
+// with uncompiled, unevaluated arguments.
+integrate.transform.rawArgs = true;
 
 // import the function into math.js. Raw functions must be imported in the
 // math namespace, they can't be used via `eval(scope)`.

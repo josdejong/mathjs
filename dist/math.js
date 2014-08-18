@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 0.27.0-SNAPSHOT
- * @date    2014-08-17
+ * @date    2014-08-18
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -3909,7 +3909,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  '[': true,
 	  ']': true,
 	  '\"': true,
-	  '\n': true,
 	  ';': true,
 
 	  '+': true,
@@ -3948,6 +3947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var c = '';                       // current token character in expr
 	var token = '';                   // current token
 	var token_type = TOKENTYPE.NULL;  // type of the token
+	var nesting_level = 0;            // level of nesting inside parameters, used to ignore newline characters
 
 	/**
 	 * Get the first character from the expression.
@@ -3958,6 +3958,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function first() {
 	  index = 0;
 	  c = expression.charAt(0);
+	  nesting_level = 0;
 	}
 
 	/**
@@ -3990,7 +3991,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  token = '';
 
 	  // skip over whitespaces
-	  while (c == ' ' || c == '\t') {  // space, tab
+	  // space, tab, and newline when inside parameters
+	  while (c == ' ' || c == '\t' || (c == '\n' && nesting_level)) {
 	    // TODO: also take '\r' carriage return as newline? Or does that give problems on mac?
 	    next();
 	  }
@@ -4006,6 +4008,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (c == '') {
 	    // token is still empty
 	    token_type = TOKENTYPE.DELIMITER;
+	    return;
+	  }
+
+	  // check for new line character
+	  if (c == '\n' && !nesting_level) {
+	    token_type = TOKENTYPE.DELIMITER;
+	    token = c;
+	    next();
 	    return;
 	  }
 
@@ -4108,12 +4118,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * Skip newline tokens
+	 * Get next token and skip newline tokens
 	 */
-	function skipNewlines () {
-	  while (token == '\n') {
+	function getTokenSkipNewline () {
+	  do {
 	    getToken();
 	  }
+	  while (token == '\n');
+	}
+
+	/**
+	 * Open parameters.
+	 * New line characters will be ignored until closeParams() is called
+	 */
+	function openParams() {
+	  nesting_level++;
+	}
+
+	/**
+	 * Close parameters.
+	 * New line characters will no longer be ignored
+	 */
+	function closeParams() {
+	  nesting_level--;
 	}
 
 	/**
@@ -4255,13 +4282,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (node instanceof SymbolNode) {
 	      // parse a variable assignment like 'a = 2/3'
 	      name = node.name;
-	      getToken();
+	      getTokenSkipNewline();
 	      expr = parseAssignment();
 	      return new AssignmentNode(name, expr);
 	    }
 	    else if (node instanceof IndexNode) {
 	      // parse a matrix subset assignment like 'A[1,2] = 4'
-	      getToken();
+	      getTokenSkipNewline();
 	      expr = parseAssignment();
 	      return new UpdateNode(node, expr);
 	    }
@@ -4281,7 +4308,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 
 	      if (valid) {
-	        getToken();
+	        getTokenSkipNewline();
 	        expr = parseAssignment();
 	        return new FunctionAssignmentNode(name, args, expr);
 	      }
@@ -4307,12 +4334,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var node = parseRange();
 
 	  while (token == '?') {
-	    getToken();
+	    getTokenSkipNewline();
 	    var condition = node;
 	    var trueExpr = parseConditions(); // Note: we don't do parseRange here
 
 	    if (token != ':') throw createSyntaxError('False part of conditional expression expected');
-	    getToken();
+	    getTokenSkipNewline();
 
 	    var falseExpr = parseConditional();
 
@@ -4341,7 +4368,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   while (token in operators) {
 	   var name = token;
 
-	   getToken();
+	   getTokenSkipNewline();
 	   var params = [node, parseRelational()];
 	   node = new OperatorNode(name, fn, params);
 	   }
@@ -4372,7 +4399,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // parse step and end
 	    while (token == ':') {
-	      getToken();
+	      getTokenSkipNewline();
+
 	      if (token == ')' || token == ']' || token == ',' || token == '') {
 	        // implicit end
 	        params.push(new SymbolNode('end'));
@@ -4423,7 +4451,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    name = token;
 	    fn = operators[name];
 
-	    getToken();
+	    getTokenSkipNewline();
 	    params = [node, parseRelational()];
 	    node = new OperatorNode(name, fn, params);
 	  }
@@ -4453,7 +4481,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    name = token;
 	    fn = operators[name];
 
-	    getToken();
+	    getTokenSkipNewline();
 	    params = [node, parseAddSubtract()];
 	    node = new OperatorNode(name, fn, params);
 	  }
@@ -4479,7 +4507,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    name = token;
 	    fn = operators[name];
 
-	    getToken();
+	    getTokenSkipNewline();
 	    params = [node, parseMultiplyDivide()];
 	    node = new OperatorNode(name, fn, params);
 	  }
@@ -4511,7 +4539,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      name = token;
 	      fn = operators[name];
 
-	      getToken();
+	      getTokenSkipNewline();
 	      params = [node, parseUnary()];
 	      node = new OperatorNode(name, fn, params);
 	    }
@@ -4544,7 +4572,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (token == '-' || token == '+') {
 	    name = token;
 	    fn = name == '+' ? 'unaryPlus' : 'unaryMinus';
-	    getToken();
+
+	    getTokenSkipNewline();
 	    params = [parseUnary()];
 
 	    return new OperatorNode(name, fn, params);
@@ -4568,7 +4597,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    name = token;
 	    fn = (name == '^') ? 'pow' : 'dotPow';
 
-	    getToken();
+	    getTokenSkipNewline();
 	    params = [node, parseUnary()]; // Go back to unary, we can have '2^-3'
 	    node = new OperatorNode(name, fn, params);
 	  }
@@ -4644,6 +4673,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (token == '(') {
 	      params = [];
 
+	      openParams();
 	      getToken();
 
 	      if (token != ')') {
@@ -4652,7 +4682,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // parse a list with parameters
 	        while (token == ',') {
 	          getToken();
-
 	          params.push(parseConditional());
 	        }
 	      }
@@ -4660,6 +4689,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (token != ')') {
 	        throw createSyntaxError('Parenthesis ) expected');
 	      }
+	      closeParams();
 	      getToken();
 	    }
 
@@ -4689,7 +4719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    node = new SymbolNode(name);
 
 	    // parse function parameters and matrix index
-	    node = parseParams(node);
+	    node = parseFunctions(node);
 	    node = parseIndex(node);
 	    return node;
 	  }
@@ -4698,19 +4728,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * parse parameters, a function call like fn(a, b, c)
+	 * parse a function call like fn(a, b, c)
 	 * @param {SymbolNode} symbol   SymbolNode on which to apply the parameters.
 	 *                              If there are no parameters in the expression,
 	 *                              the node itself is returned
 	 * @return {Node} node
 	 * @private
 	 */
-	function parseParams (symbol) {
+	function parseFunctions (symbol) {
 	  var params;
 
 	  if (token == '(') {
 	    params = [];
 
+	    openParams();
 	    getToken();
 
 	    if (token != ')') {
@@ -4726,6 +4757,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (token != ')') {
 	      throw createSyntaxError('Parenthesis ) expected');
 	    }
+	    closeParams();
 	    getToken();
 
 	    return new FunctionNode(symbol, params);
@@ -4748,6 +4780,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  while (token == '[') {
 	    params = [];
 
+	    openParams();
 	    getToken();
 
 	    if (token != ']') {
@@ -4763,6 +4796,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (token != ']') {
 	      throw createSyntaxError('Parenthesis ] expected');
 	    }
+	    closeParams();
 	    getToken();
 
 	    node = new IndexNode(node, params);
@@ -4818,8 +4852,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  if (token == '[') {
 	    // matrix [...]
+	    openParams();
 	    getToken();
-	    skipNewlines();
 
 	    if (token != ']') {
 	      // this is a non-empty matrix
@@ -4833,17 +4867,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // the rows of the matrix are separated by dot-comma's
 	        while (token == ';') {
 	          getToken();
-	          skipNewlines();
 
 	          params[rows] = parseRow();
 	          rows++;
-
-	          skipNewlines();
 	        }
 
 	        if (token != ']') {
 	          throw createSyntaxError('End of matrix ] expected');
 	        }
+	        closeParams();
 	        getToken();
 
 	        // check if the number of columns matches in all rows
@@ -4862,6 +4894,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (token != ']') {
 	          throw createSyntaxError('End of matrix ] expected');
 	        }
+	        closeParams();
 	        getToken();
 
 	        array = row;
@@ -4869,6 +4902,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    else {
 	      // this is an empty matrix "[ ]"
+	      closeParams();
 	      getToken();
 	      array = new ArrayNode([]);
 	    }
@@ -4889,13 +4923,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  while (token == ',') {
 	    getToken();
-	    skipNewlines();
 
 	    // parse expression
 	    params[len] = parseAssignment();
 	    len++;
-
-	    skipNewlines();
 	  }
 
 	  return new ArrayNode(params);
@@ -4907,28 +4938,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @private
 	 */
 	function parseNumber () {
-	  var node, complex, number;
+	  var number;
 
 	  if (token_type == TOKENTYPE.NUMBER) {
 	    // this is a number
 	    number = token;
 	    getToken();
 
-	    /*
-	    if (token == 'i' || token == 'I') {
-	      // create a complex number
-	      getToken();
-	      node = new ConstantNode(number, 'complex');
-	    }
-	    else {
-	      // a number
-	      node = new ConstantNode(number, 'number');
-	    }
-	    */
-	    node = new ConstantNode(number, 'number');
-
-
-	    return node;
+	    return new ConstantNode(number, 'number');
 	  }
 
 	  return parseParentheses();
@@ -4945,12 +4962,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // check if it is a parenthesized expression
 	  if (token == '(') {
 	    // parentheses (...)
+	    openParams();
 	    getToken();
+
 	    node = parseAssignment(); // start again
 
 	    if (token != ')') {
 	      throw createSyntaxError('Parenthesis ) expected');
 	    }
+	    closeParams();
 	    getToken();
 
 	    return node;
@@ -22845,7 +22865,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	FunctionNode.prototype._compile = function (defs) {
 	  var fn = defs.math[this.symbol.name];
-	  var isRaw = (typeof fn === 'function') && (fn.raw == true);
+	  var isRaw = (typeof fn === 'function') && (fn.rawArgs == true);
 
 	  // compile the parameters
 	  var params = this.params.map(function (param) {

@@ -52,7 +52,7 @@ describe('FunctionNode', function() {
       assert.strictEqual(_scope, scope);
       return 'myFunction(' + args.join(', ') + ')';
     }
-    myFunction.raw = true;
+    myFunction.rawArgs = true;
     mymath.import({myFunction: myFunction});
 
     var s = new SymbolNode('myFunction');
@@ -69,7 +69,7 @@ describe('FunctionNode', function() {
     function myFunction (args, _math, _scope) {
       assert.ok(false, 'should not be executed');
     }
-    myFunction.raw = true;
+    myFunction.rawArgs = true;
     mymath.import({myFunction: myFunction});
 
     var s = new SymbolNode('myFunction');

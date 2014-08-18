@@ -806,7 +806,7 @@ arguments need to be processed in a special way. In these cases, the expression
 `f(x)` will be evaluated repeatedly by the function, and `x` is not evaluated
 but used to specify the variable looping over the function `f(x)`.
 
-Functions having a property `raw` with value `true` are treated in a special
+Functions having a property `rawArgs` with value `true` are treated in a special
 way by the expression parser: they will be invoked with unevaluated arguments, 
 allowing the function to process the arguments in a customized way. Raw 
 functions are called as:
@@ -842,8 +842,8 @@ function myFunction(args, math, scope) {
   return 'arguments: ' + str.join(',') + ', evaluated: ' + res.join(',');
 }
 
-// mark the function as "raw", so it will be called with unevaluated arguments
-myFunction.raw = true;
+// mark the function as "rawArgs", so it will be called with unevaluated arguments
+myFunction.rawArgs = true;
 
 // import the new function in the math namespace
 math.import({

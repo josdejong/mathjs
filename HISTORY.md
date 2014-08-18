@@ -5,7 +5,7 @@
 
 - Implemented functions `sort(x [, compare])` and `flatten(x)`.
 - Implemented support for `null` in all functions.
-- Implemented support for "raw" functions in the expression parser. Raw 
+- Implemented support for "rawArgs" functions in the expression parser. Raw 
   functions are invoked with unevaluated parameters (nodes).
 - Expressions in the expression parser can now be spread over multiple lines,
   like '2 +\n3'.
