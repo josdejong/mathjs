@@ -653,10 +653,11 @@ parser.eval('c[end - 1 : -1 : 2]');   // Matrix, [8, 7, 6]
 
 ### Multi line expressions
 
-An expression can contain multiple lines. Lines can be separated by a newline
-character `\n` or by a semicolon `;`. Output of statements followed by a
-semicolon will be hided from the output, and empty lines are ignored. The
-output is returned as a `ResultSet`, with an entry for every visible statement.
+An expression can contain multiple lines, and expressions can be spread over
+multiple lines. Lines can be separated by a newline character `\n` or by a 
+semicolon `;`. Output of statements followed by a semicolon will be hided from 
+the output, and empty lines are ignored. The output is returned as a `ResultSet`, 
+with an entry for every visible statement.
 
 ```js
 // a multi line expression
@@ -664,6 +665,10 @@ math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [1, 3, 9]
 
 // semicolon statements are hided from the output
 math.eval('a=3; b=4; a + b \n a * b');  // ResultSet, [7, 12]
+
+// single expression spread over multiple lines
+math.eval('a = 2 +\n  3');              // 5 
+math.eval('[\n  1, 2;\n  3, 4\n]');     // Matrix, [[1, 2], [3, 4]] 
 ```
 
 The results can be read from a `ResultSet` via the property `ResultSet.entries`

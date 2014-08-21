@@ -3,7 +3,6 @@ coverage
 img
 misc
 node_modules
-test
 tools
 component.json
 bower.json

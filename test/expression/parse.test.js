@@ -6,6 +6,7 @@ var ArgumentsError = require('../../lib/error/ArgumentsError');
 var parse = require('../../lib/expression/parse');
 var ConditionalNode = require('../../lib/expression/node/ConditionalNode');
 var OperatorNode = require('../../lib/expression/node/OperatorNode');
+var RangeNode = require('../../lib/expression/node/RangeNode');
 var Complex = math.type.Complex;
 var Matrix = math.type.Matrix;
 var Unit = math.type.Unit;
@@ -1018,11 +1019,18 @@ describe('parse', function() {
         assert.equal(node.falseExpr.toString(), 'c:d');
       });
 
-      it.skip('should respect precedence of range  operator and relational operators', function () {
+      it.skip('should respect precedence of range operator and relational operators', function () {
         var node = math.parse('a:b == c:d');
         assert(node instanceof OperatorNode);
         assert.equal(node.params[0].toString(), 'a:b');
         assert.equal(node.params[1].toString(), 'c:d');
+      });
+
+      it('should respect precedence of range operator and operator plus and minus', function () {
+        var node = math.parse('a + b : c - d');
+        assert(node instanceof RangeNode);
+        assert.equal(node.start.toString(), 'a + b');
+        assert.equal(node.end.toString(), 'c - d');
       });
 
       // TODO: extensively test operator precedence

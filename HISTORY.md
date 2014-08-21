@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 0.27.0
+## 2014-08-21, version 0.27.0
 
 - Implemented functions `sort(x [, compare])` and `flatten(x)`.
 - Implemented support for `null` in all functions.
