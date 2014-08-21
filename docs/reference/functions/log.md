@@ -20,8 +20,8 @@ math.log(x, base)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the logarithm.
-`base` | Number &#124; BigNumber &#124; Boolean &#124; Complex |  Optional base for the logarithm. If not provided, the natural logarithm of `x` is calculated. Default value: e.
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null |  Value for which to calculate the logarithm.
+`base` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; null |  Optional base for the logarithm. If not provided, the natural logarithm of `x` is calculated. Default value: e.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

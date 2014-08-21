@@ -13,6 +13,10 @@ compare values smaller than approximately 2.22e-16.
 For matrices, the function is evaluated element wise.
 In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
 
+Values `null` and `undefined` are compared strictly, thus `null` is only
+equal to `null` and nothing else, and `undefined` is only equal to
+`undefined` and nothing else.
+
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
@@ -49,6 +53,8 @@ var d = [2, 7, 1];
 
 math.equal(c, d);             // returns [true, false, true]
 math.deepEqual(c, d);         // returns false
+
+math.equal(0, null);          // returns false
 ```
 
 

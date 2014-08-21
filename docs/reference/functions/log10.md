@@ -19,7 +19,7 @@ math.log10(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the logarithm.
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null |  Value for which to calculate the logarithm.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

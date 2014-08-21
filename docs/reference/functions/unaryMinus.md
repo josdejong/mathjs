@@ -21,7 +21,7 @@ math.unaryMinus(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; String &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Number to be inverted.
+`x` | Number &#124; BigNumber &#124; Boolean &#124; String &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Number to be inverted.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

@@ -25,8 +25,8 @@ math.mod(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix | Dividend
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix | Divisor
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Dividend
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Divisor
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

@@ -20,7 +20,7 @@ Parameter | Type | Description
 --------- | ---- | -----------
 `x` | * &#124; Array &#124; Matrix | Matrix to be resized
 `size` | Array &#124; Matrix | One dimensional array with numbers
-`defaultValue` | Number &#124; String | Undefined by default, except in case of a string, in that case defaultValue = ' '
+`defaultValue` | Number &#124; String | Zero by default, except in case of a string, in that case defaultValue = ' ' Default value: 0.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

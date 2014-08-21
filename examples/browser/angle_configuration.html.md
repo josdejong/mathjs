@@ -23,7 +23,7 @@ Raw file: [angle_configuration.html](angle_configuration.html)
     }
   </style>
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/0.26.0/math.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/0.27.0/math.min.js"></script>
 </head>
 <body>
 
@@ -118,7 +118,7 @@ Raw file: [angle_configuration.html](angle_configuration.html)
   });
 
   // import all replacements into math.js, override existing trigonometric functions
-  math.import(replacements, {override: true, wrap: false});
+  math.import(replacements, {override: true});
 
   // pointers to the input elements
   var expression = document.getElementById('expression');

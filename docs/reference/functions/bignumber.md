@@ -18,7 +18,7 @@ math.bignumber(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | Number &#124; String &#124; Array &#124; Matrix | Value for the big number, 0 by default.
+`value` | Number &#124; String &#124; Array &#124; Matrix &#124; Boolean &#124; null | Value for the big number, 0 by default.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

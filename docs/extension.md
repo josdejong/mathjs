@@ -21,10 +21,10 @@ argument can be an object with options. The following options are available:
 - `{Boolean} override`
   If true, existing functions will be overwritten. False by default.
 - `{Boolean} wrap`
-  If true (default), the functions will be wrapped in a wrapper function which
+  If true, the functions will be wrapped in a wrapper function which
   converts data types like Matrix to primitive data types like Array.
   The wrapper is needed when extending math.js with libraries which do not
-  support the math.js data types.
+  support the math.js data types. Default value is false.
 
 Math.js can be extended with functions and variables:
 
@@ -61,8 +61,8 @@ to primitive types like `Array`.
 
 ```js
 // import the numbers.js and numeric.js libraries into math.js
-math.import('numbers');
-math.import('numeric');
+math.import('numbers', {wrap: true});
+math.import('numeric', {wrap: true});
 
 // use functions from numbers.js
 math.fibonacci(7);                          // 13

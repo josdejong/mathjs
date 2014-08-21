@@ -67,6 +67,7 @@ layout: default
 - [det(x)](det.html)
 - [diag(X)](diag.html)
 - [eye(n)](eye.html)
+- [flatten(x)](flatten.html)
 - [inv(x)](inv.html)
 - [ones(m, n, p, ...)](ones.html)
 - [range(start, end [, step])](range.html)
@@ -140,4 +141,5 @@ layout: default
 - [import(filename | object, override)](import.html)
 - [map(x, callback)](map.html)
 - [print(template, values [, precision])](print.html)
+- [sort(x)](sort.html)
 - [typeof(x)](typeof.html)

@@ -5,6 +5,25 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20140821-version-0270">2014-08-21, version 0.27.0 <a href="#20140821-version-0270" title="Permalink">#</a></h2>
+
+- Implemented functions `sort(x [, compare])` and `flatten(x)`.
+- Implemented support for `null` in all functions.
+- Implemented support for "rawArgs" functions in the expression parser. Raw 
+  functions are invoked with unevaluated parameters (nodes).
+- Expressions in the expression parser can now be spread over multiple lines,
+  like '2 +\n3'.
+- Changed default value of the option `wrap` of function `math.import` to false.
+- Changed the default value for new entries in a resized matrix when to zero. 
+  To leave new entries uninitialized, use the new constant `math.uninitialized` 
+  as default value.
+- Renamed transform property from `__transform__` to `transform`, and documented
+  the transform feature.
+- Fixed a bug in `math.import` not applying options when passing a module name.
+- A returned matrix subset is now only squeezed when the `index` consists of
+  scalar values, and no longer for ranges resolving into a single value. 
+
+
 <h2 id="20140803-version-0260">2014-08-03, version 0.26.0 <a href="#20140803-version-0260" title="Permalink">#</a></h2>
 
 - A new instance of math.js can no longer be created like `math([options])`,

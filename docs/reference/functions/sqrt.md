@@ -19,7 +19,7 @@ math.sqrt(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the square root.
+`x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null |  Value for which to calculate the square root.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

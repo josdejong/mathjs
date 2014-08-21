@@ -11,7 +11,7 @@ Raw file: [basic_usage.html](basic_usage.html)
 <html>
 <head>
   <title>math.js | basic usage</title>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/0.26.0/math.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/0.27.0/math.min.js"></script>
 </head>
 <body>
 

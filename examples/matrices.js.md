@@ -84,18 +84,18 @@ print(i.size());                            // [2, 2]
 console.log();
 
 // setting a value outside the matrices range will resize the matrix.
-// new elements will be initialized with undefined.
+// new elements will be initialized with zero.
 console.log('set a value outside a matrices range');
 var j = math.matrix();
 j.subset(math.index(2), 6);
-print(j);                                   // [undefined, undefined, 6]
+print(j);                                   // [0, 0, 6]
 console.log();
 
-console.log('set a value outside a matrices range providing a default value');
+console.log('set a value outside a matrices range, leaving new entries uninitialized');
 var k = math.matrix();
-defaultValue = 0;
+defaultValue = math.uninitialized;
 k.subset(math.index(2), 6, defaultValue);
-print(k);                                   // [0, 0, 6]
+print(k);                                   // [undefined, undefined, 6]
 console.log();
 
 // create ranges

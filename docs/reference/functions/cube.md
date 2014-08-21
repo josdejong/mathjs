@@ -18,7 +18,7 @@ math.cube(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number for which to calculate the cube
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Number for which to calculate the cube
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

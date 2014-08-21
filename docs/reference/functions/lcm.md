@@ -24,7 +24,7 @@ math.lcm(a, b, c, ...)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | ... Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix | Two or more integer numbers
+`args` | ... Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Two or more integer numbers
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
