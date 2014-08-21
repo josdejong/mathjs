@@ -14,7 +14,7 @@ math.abs(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix |  A number or matrix for which to get the absolute value
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null |  A number or matrix for which to get the absolute value
 
 ### Returns
 

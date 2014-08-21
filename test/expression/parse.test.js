@@ -6,6 +6,7 @@ var ArgumentsError = require('../../lib/error/ArgumentsError');
 var parse = require('../../lib/expression/parse');
 var ConditionalNode = require('../../lib/expression/node/ConditionalNode');
 var OperatorNode = require('../../lib/expression/node/OperatorNode');
+var RangeNode = require('../../lib/expression/node/RangeNode');
 var Complex = math.type.Complex;
 var Matrix = math.type.Matrix;
 var Unit = math.type.Unit;
@@ -59,13 +60,56 @@ describe('parse', function() {
     }), new Matrix([undefined]));
   });
 
-  it('should parse multiline expressions', function() {
-    assert.deepEqual(parse('a=3\nb=4\na*b').compile(math).eval(), new ResultSet([3, 4, 12]));
-    assert.deepEqual(parse('b = 43; b * 4').compile(math).eval(), new ResultSet([172]));
-  });
+  describe('multiline', function () {
 
-  it('should skip empty lines in multiline expressions', function() {
-    assert.deepEqual(parse('\n;\n2 * 4\n').compile(math).eval(), new ResultSet([8]));
+    it('should parse multiline expressions', function() {
+      assert.deepEqual(parse('a=3\nb=4\na*b').compile(math).eval(), new ResultSet([3, 4, 12]));
+      assert.deepEqual(parse('b = 43; b * 4').compile(math).eval(), new ResultSet([172]));
+    });
+
+    it('should skip empty lines in multiline expressions', function() {
+      assert.deepEqual(parse('\n;\n2 * 4\n').compile(math).eval(), new ResultSet([8]));
+    });
+
+    it('should spread operators over multiple lines', function() {
+      assert.deepEqual(parse('2+\n3').compile(math).eval(), 5);
+      assert.deepEqual(parse('2+\n\n3').compile(math).eval(), 5);
+      assert.deepEqual(parse('2*\n3').compile(math).eval(), 6);
+      assert.deepEqual(parse('2^\n3').compile(math).eval(), 8);
+      assert.deepEqual(parse('2==\n3').compile(math).eval(), false);
+      assert.deepEqual(parse('2*-\n3').compile(math).eval(), -6);
+    });
+
+    it('should spread a function over multiple lines', function() {
+      assert.deepEqual(parse('add(\n4\n,\n2\n)').compile(math).eval(), 6);
+    });
+
+    it('should spread contents of parameters over multiple lines', function() {
+      assert.deepEqual(parse('(\n4\n+\n2\n)').compile(math).eval(), 6);
+    });
+
+    it('should spread a function assignment over multiple lines', function() {
+      assert.deepEqual(typeof parse('f(\nx\n,\ny\n)=\nx+\ny').compile(math).eval(), 'function');
+    });
+
+    it('should spread a variable assignment over multiple lines', function() {
+      assert.deepEqual(parse('x=\n2').compile(math).eval(), 2);
+    });
+
+    it('should spread a matrix over multiple lines', function() {
+      assert.deepEqual(parse('[\n1\n,\n2\n]').compile(math).eval(), new Matrix([1, 2]));
+    });
+
+    it('should spread a range over multiple lines', function() {
+      assert.deepEqual(parse('2:\n4').compile(math).eval(), new Matrix([2,3,4]));
+      assert.deepEqual(parse('2:\n2:\n6').compile(math).eval(), new Matrix([2,4,6]));
+    });
+
+    it('should spread an index over multiple lines', function() {
+      assert.deepEqual(parse('a[\n1\n,\n1\n]').compile(math).eval({a: [[1,2],[3,4]]}), 1);
+      assert.deepEqual(parse('a[\n1\n,\n1\n]=\n100').compile(math).eval({a: [[1,2],[3,4]]}), [[100,2],[3,4]]);
+    });
+
   });
 
   it('should throw an error when scope contains a reserved keyword', function() {
@@ -80,7 +124,7 @@ describe('parse', function() {
   it('should give informative syntax errors', function() {
     assert.throws(function () {parse('2 +')}, /Unexpected end of expression \(char 4\)/);
     assert.throws(function () {parse('2 ~ 3')}, /Syntax error in part "~ 3" \(char 3\)/);
-    assert.throws(function () {parse('2 + 3\n3 +\n-4')}, /Value expected \(char 10\)/);
+    assert.throws(function () {parse('2 + 3 + *')}, /Value expected \(char 9\)/);
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
@@ -276,10 +320,6 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('[[[1],[2]],[[3],[4]]]'), new Matrix([[[1],[2]],[[3],[4]]]));
     });
 
-    it('should skip newlines in a matrix', function() {
-      assert.deepEqual(parseAndEval('[\n  1,2;\n  3,4\n]'), new Matrix([[1,2], [3,4]]));
-    });
-
     it('should parse an empty matrix', function() {
       assert.deepEqual(parseAndEval('[]'), new Matrix([]));
     });
@@ -313,12 +353,12 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('a[:,2] = [4;5;6]', scope), new Matrix([[1,4],[2,5],[3,6]]));
 
       assert.deepEqual(parseAndEval('a = []', scope),    new Matrix([]));
-      assert.deepEqual(parseAndEval('a[1,3] = 3', scope), new Matrix([arr(uninit,uninit,3)]));
-      assert.deepEqual(parseAndEval('a[2,:] = [[4,5,6]]', scope), new Matrix([arr(uninit, uninit, 3),[4,5,6]]));
+      assert.deepEqual(parseAndEval('a[1,3] = 3', scope), new Matrix([[0,0,3]]));
+      assert.deepEqual(parseAndEval('a[2,:] = [[4,5,6]]', scope), new Matrix([[0,0,3],[4,5,6]]));
 
       assert.deepEqual(parseAndEval('a = []', scope),    new Matrix([]));
-      assert.deepEqual(parseAndEval('a[3,1] = 3', scope), new Matrix([arr(uninit),arr(uninit),[3]]));
-      assert.deepEqual(parseAndEval('a[:,2] = [4;5;6]', scope), new Matrix([arr(uninit,4),arr(uninit,5),[3,6]]));
+      assert.deepEqual(parseAndEval('a[3,1] = 3', scope), new Matrix([[0],[0],[3]]));
+      assert.deepEqual(parseAndEval('a[:,2] = [4;5;6]', scope), new Matrix([[0,4],[0,5],[3,6]]));
 
       assert.deepEqual(parseAndEval('a = []', scope),    new Matrix([]));
       assert.deepEqual(parseAndEval('a[1,1:3] = [[1,2,3]]', scope), new Matrix([[1,2,3]]));
@@ -333,11 +373,11 @@ describe('parse', function() {
       assert.deepEqual(scope.a, new Matrix([[100,2],[3,4]]));
       parseAndEval('a[2:3,2:3] = [10,11;12,13]', scope);
       assert.deepEqual(scope.a.size(), [3,3]);
-      assert.deepEqual(scope.a, new Matrix([arr(100, 2, uninit),[3,10,11],arr(uninit,12,13)]));
+      assert.deepEqual(scope.a, new Matrix([[100, 2, 0],[3,10,11],[0,12,13]]));
       var a = scope.a;
       // note: after getting subset, uninitialized elements are replaced by elements with an undefined value
-      assert.deepEqual(a.subset(math.index([0,3], [0,2])), new Matrix([[100,2],[3,10],[undefined,12]]));
-      assert.deepEqual(parseAndEval('a[1:3,1:2]', scope), new Matrix([[100,2],[3,10],[undefined,12]]));
+      assert.deepEqual(a.subset(math.index([0,3], [0,2])), new Matrix([[100,2],[3,10],[0,12]]));
+      assert.deepEqual(parseAndEval('a[1:3,1:2]', scope), new Matrix([[100,2],[3,10],[0,12]]));
 
       scope.b = [[1,2],[3,4]];
       assert.deepEqual(parseAndEval('b[1,:]', scope), [[1, 2]]);
@@ -979,11 +1019,18 @@ describe('parse', function() {
         assert.equal(node.falseExpr.toString(), 'c:d');
       });
 
-      it.skip('should respect precedence of range  operator and relational operators', function () {
+      it.skip('should respect precedence of range operator and relational operators', function () {
         var node = math.parse('a:b == c:d');
         assert(node instanceof OperatorNode);
         assert.equal(node.params[0].toString(), 'a:b');
         assert.equal(node.params[1].toString(), 'c:d');
+      });
+
+      it('should respect precedence of range operator and operator plus and minus', function () {
+        var node = math.parse('a + b : c - d');
+        assert(node instanceof RangeNode);
+        assert.equal(node.start.toString(), 'a + b');
+        assert.equal(node.end.toString(), 'c - d');
       });
 
       // TODO: extensively test operator precedence
@@ -1273,21 +1320,3 @@ describe('parse', function() {
   });
 
 });
-
-
-/**
- * Helper function to create an Array containing uninitialized values
- * Example: arr(uninit, uninit, 2);    // [ , , 2 ]
- */
-var uninit = {};
-function arr() {
-  var array = [];
-  array.length = arguments.length;
-  for (var i = 0; i < arguments.length; i++) {
-    var value = arguments[i];
-    if (value !== uninit) {
-      array[i] = value;
-    }
-  }
-  return array;
-}

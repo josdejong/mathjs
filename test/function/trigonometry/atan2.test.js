@@ -48,6 +48,11 @@ describe('atan2', function() {
     assert.equal(atan2(false, 1), 0);
   });
 
+  it('should calculate atan2 with mixed numbers and null', function() {
+    assert.equal(atan2(1, null), 0.5 * pi);
+    assert.equal(atan2(null, 1), 0);
+  });
+
   it('should return the arctan of for bignumbers (downgrades to number)', function() {
     approx.equal(atan2(math.bignumber(1), math.bignumber(1)), pi / 4);
   });

@@ -12,6 +12,11 @@ describe('norm', function () {
     assert.equal(math.norm(false, 10), 0);
   });
 
+  it('should return the absolute value of null', function () {
+    assert.equal(math.norm(null), 0);
+    assert.equal(math.norm(null, 10), 0);
+  });
+
   it('should return the absolute value of a number', function () {
     assert.equal(math.norm(-4.2), 4.2);
     assert.equal(math.norm(-3.5), 3.5);

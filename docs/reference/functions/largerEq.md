@@ -19,8 +19,8 @@ math.largerEq(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix | First value to compare
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix | Second value to compare
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null | First value to compare
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null | Second value to compare
 
 ### Returns
 

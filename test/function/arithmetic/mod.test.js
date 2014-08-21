@@ -16,6 +16,12 @@ describe('mod', function() {
     assert.equal(mod(false, false), 0);
   });
 
+  it('should calculate the modulus of numbers and null', function () {
+    assert.equal(mod(null, null), 0);
+    assert.equal(mod(null, 1), 0);
+    assert.equal(mod(1, null), 1);
+  });
+
   it('should calculate the modulus of two numbers', function() {
     assert.equal(mod(1, 1), 0);
     assert.equal(mod(0, 1), 0);

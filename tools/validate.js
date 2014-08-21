@@ -2,13 +2,13 @@
  * Validate whether all functions in math.js are documented in math.expression.docs
  */
 var gutil = require('gulp-util'),
-    math = require('../index')(),
+    math = require('../index'),
     prop;
 
 // names to ignore
 var ignore = [
   // functions not supported by the parser:
-  'compile', 'parse', 'parser', 'select', 'print', 'config', 'in',
+  'compile', 'parse', 'parser', 'select', 'print', 'config', 'in', 'create',
     // deprecated functions:
   'workspace', 'unary', 'edivide', 'emultiply', 'epow', 'smallereq', 'largereq', 'ifElse'
 ];

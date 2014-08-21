@@ -14,7 +14,7 @@ math.exp(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | A number or matrix to exponentiate
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | A number or matrix to exponentiate
 
 ### Returns
 

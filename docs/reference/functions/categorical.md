@@ -63,6 +63,7 @@
 - [det(x)](det.md)
 - [diag(X)](diag.md)
 - [eye(n)](eye.md)
+- [flatten(x)](flatten.md)
 - [inv(x)](inv.md)
 - [ones(m, n, p, ...)](ones.md)
 - [range(start, end [, step])](range.md)
@@ -136,4 +137,5 @@
 - [import(filename | object, override)](import.md)
 - [map(x, callback)](map.md)
 - [print(template, values [, precision])](print.md)
+- [sort(x)](sort.md)
 - [typeof(x)](typeof.md)

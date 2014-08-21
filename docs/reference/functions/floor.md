@@ -14,7 +14,7 @@ math.floor(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Number to be rounded
 
 ### Returns
 

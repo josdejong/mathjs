@@ -42,50 +42,47 @@ describe('FunctionNode', function() {
     assert.equal(n.compile(math).eval(scope), 2);
   });
 
-  it.skip ('should compile a FunctionNode acting on a matrix', function () {
-    var s = new SymbolNode('a');
-    var n = new FunctionNode(s, [
-      new ConstantNode(2),
-      new ConstantNode(1)
-    ]);
+  it ('should compile a FunctionNode with a raw function', function () {
+    var mymath = math.create();
+    function myFunction (args, _math, _scope) {
+      assert.equal(args.length, 2);
+      assert(args[0] instanceof Node);
+      assert(args[1] instanceof Node);
+      assert.deepEqual(_math.__proto__, mymath);
+      assert.strictEqual(_scope, scope);
+      return 'myFunction(' + args.join(', ') + ')';
+    }
+    myFunction.rawArgs = true;
+    mymath.import({myFunction: myFunction});
 
-    var scope = {
-      a: [[1, 2], [3, 4]]
-    };
-    assert.equal(n.compile(math).eval(scope), 3);
+    var s = new SymbolNode('myFunction');
+    var a = new ConstantNode(4);
+    var b = new ConstantNode(5);
+    var n = new FunctionNode(s, [a, b]);
+
+    var scope = {};
+    assert.equal(n.compile(mymath).eval(scope), 'myFunction(4, 5)');
   });
 
-  it.skip ('should compile a FunctionNode acting on a matrix (2)', function () {
-    var s = new SymbolNode('a');
-    var n = new FunctionNode(s, [
-      new ConstantNode(2),
-      new RangeNode([
-        new ConstantNode(1),
-        new SymbolNode('end')
-      ])
-    ]);
+  it ('should compile a FunctionNode with overloaded a raw function', function () {
+    var mymath = math.create();
+    function myFunction (args, _math, _scope) {
+      assert.ok(false, 'should not be executed');
+    }
+    myFunction.rawArgs = true;
+    mymath.import({myFunction: myFunction});
+
+    var s = new SymbolNode('myFunction');
+    var a = new ConstantNode(4);
+    var b = new ConstantNode(5);
+    var n = new FunctionNode(s, [a, b]);
 
     var scope = {
-      a: [[1, 2], [3, 4]]
+      myFunction: function () {
+        return 42;
+      }
     };
-    assert.deepEqual(n.compile(math).eval(scope), [3, 4]);
-  });
-
-  it.skip ('should compile a FunctionNode acting on a matrix (3)', function () {
-    var s = new SymbolNode('a');
-    var n = new FunctionNode(s, [
-      new ConstantNode(2),
-      new RangeNode([
-        new SymbolNode('end'),
-        new ConstantNode(1),
-        new ConstantNode(-1)
-      ])
-    ]);
-
-    var scope = {
-      a: [[1, 2], [3, 4]]
-    };
-    assert.deepEqual(n.compile(math).eval(scope), [4, 3]);
+    assert.equal(n.compile(mymath).eval(scope), 42);
   });
 
   it ('should find a FunctionNode', function () {

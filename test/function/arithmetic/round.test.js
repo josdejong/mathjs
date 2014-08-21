@@ -23,6 +23,11 @@ describe('round', function() {
     approx.equal(round(false, 2), 0);
   });
 
+  it('should round null', function () {
+    assert.equal(round(null), 0);
+    assert.equal(round(null, 2), 0);
+  });
+
   it('should throw an error on invalid type of value', function() {
     assert.throws(function () {round('string');}, TypeError);
     assert.throws(function () {round(new Date());}, TypeError);

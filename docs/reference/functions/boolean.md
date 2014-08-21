@@ -17,7 +17,7 @@ math.boolean(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix | A value of any type
+`value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix &#124; null | A value of any type
 
 ### Returns
 

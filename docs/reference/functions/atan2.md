@@ -17,8 +17,8 @@ math.atan2(y, x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`y` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Second dimension
-`x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | First dimension
+`y` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Second dimension
+`x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | First dimension
 
 ### Returns
 

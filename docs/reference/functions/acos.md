@@ -15,7 +15,7 @@ math.acos(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Function input
+`x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Function input
 
 ### Returns
 

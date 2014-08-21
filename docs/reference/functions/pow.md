@@ -15,8 +15,8 @@ math.pow(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | The base
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex | The exponent
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | The base
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; null | The exponent
 
 ### Returns
 

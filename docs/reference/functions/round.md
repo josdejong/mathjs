@@ -15,8 +15,8 @@ math.round(x, n)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
-`n` | Number &#124; BigNumber &#124; Boolean &#124; Array | Number of decimals Default value: 0.
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Number to be rounded
+`n` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; null | Number of decimals Default value: 0.
 
 ### Returns
 

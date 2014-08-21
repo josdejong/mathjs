@@ -14,6 +14,10 @@ describe('sec', function() {
     approx.equal(sec(false), Infinity);
   });
 
+  it('should return the secant of null', function () {
+    approx.equal(sec(null), Infinity);
+  });
+
   it('should return the secant of a number', function() {
     approx.equal(1 / sec(0), 1);
     approx.equal(1 / sec(pi*1/4), 0.707106781186548);

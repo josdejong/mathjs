@@ -10,6 +10,10 @@ describe('unaryPlus', function() {
     assert.equal(math.unaryPlus(false), 0);
   });
 
+  it('should return unary plus of null', function () {
+    assert.equal(math.unaryPlus(null), 0);
+  });
+
   it('should return bignumber unary plus of a boolean', function () {
     var bigmath = math.create({number: 'bignumber'});
     assert.deepEqual(bigmath.unaryPlus(true), bigmath.bignumber(1));

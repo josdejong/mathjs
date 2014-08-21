@@ -8,7 +8,7 @@ describe('resize', function() {
 
   it('should resize an array', function() {
     var array = [[0,1,2],[3,4,5]];
-    assert.deepEqual(math.resize(array, [3, 2]), [[0,1], [3,4], arr(uninit, uninit)]);
+    assert.deepEqual(math.resize(array, [3, 2]), [[0,1], [3,4], [0, 0]]);
 
     // content should be cloned
     var x = math.complex(2, 3);
@@ -24,6 +24,11 @@ describe('resize', function() {
     assert.deepEqual(math.resize(array, [2]), arr(0,3));
   });
 
+  it('should resize an array with uninitialized as default value', function() {
+    var array = [];
+    assert.deepEqual(math.resize(array, [3], math.uninitialized), arr(uninit, uninit, uninit));
+  });
+
   it('should resize an array with bignumbers', function() {
     var zero = math.bignumber(0);
     var one = math.bignumber(1);
@@ -37,9 +42,9 @@ describe('resize', function() {
   it('should resize a matrix', function() {
     var matrix = new Matrix([[0,1,2],[3,4,5]]);
     assert.deepEqual(math.resize(matrix, [3, 2]),
-        new Matrix([[0,1], [3,4], arr(uninit, uninit)]));
+        new Matrix([[0,1], [3,4], [0,0]]));
     assert.deepEqual(math.resize(matrix, new Matrix([3, 2])),
-        new Matrix([[0,1], [3,4], arr(uninit, uninit)]));
+        new Matrix([[0,1], [3,4], [0,0]]));
 
     // content should be cloned
     var x = math.complex(2, 3);

@@ -14,6 +14,10 @@ describe('sin', function() {
     approx.equal(sin(false), 0);
   });
 
+  it('should return the sine of null', function () {
+    approx.equal(sin(null), 0);
+  });
+
   it('should return the sine of a number', function() {
     approx.equal(sin(0), 0);
     approx.equal(sin(pi*1/4), 0.707106781186548);

@@ -18,9 +18,10 @@ math.import(object, options)
   - `override: boolean`
     If true, existing functions will be overwritten. False by default.
   - `wrap: boolean`
-    If true (default), the functions will be wrapped in a wrapper function
+    If true, the functions will be wrapped in a wrapper function
     which converts data types like Matrix to primitive data types like Array.
     The wrapper is needed when extending math.js with libraries which do not
+    support these data types. False by default.
 
 ### Parameters
 
@@ -46,7 +47,7 @@ math.hello('user');             // 'hello, user!'
 
 // import the npm module numbers
 // (must be installed first with `npm install numbers`)
-math.import('numbers');
+math.import('numbers', {wrap: true});
 
 math.fibonacci(7); // returns 13
 ```

@@ -14,6 +14,10 @@ describe('csch', function() {
     approx.equal(csch(false), Number.NaN);
   });
 
+  it('should return the csch of null', function () {
+    approx.equal(csch(null), Number.NaN);
+  });
+
   it('should return the csch of a number', function() {
     approx.equal(csch(0), Number.NaN);
     approx.equal(csch(pi), 0.086589537530047);

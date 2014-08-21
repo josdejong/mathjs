@@ -50,6 +50,13 @@ describe('smaller', function() {
     assert.equal(smaller(false, 2), true);
   });
 
+  it('should compare mixed numbers and null', function() {
+    assert.equal(smaller(1, null), false);
+    assert.equal(smaller(0, null), false);
+    assert.equal(smaller(null, 1), true);
+    assert.equal(smaller(null, 0), false);
+  });
+
   it('should compare bignumbers', function() {
     assert.deepEqual(smaller(bignumber(2), bignumber(3)), true);
     assert.deepEqual(smaller(bignumber(2), bignumber(2)), false);

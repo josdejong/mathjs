@@ -14,6 +14,10 @@ describe('square', function() {
     assert.equal(square(false), 0);
   });
 
+  it('should return the square of null', function () {
+    assert.equal(square(null), 0);
+  });
+
   it('should return the square of a number', function() {
     assert.equal(square(4), 16);
     assert.equal(square(-2), 4);

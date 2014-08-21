@@ -15,6 +15,10 @@ describe('exp', function() {
     approx.equal(exp(false), 1);
   });
 
+  it('should exponentiate null', function () {
+    assert.equal(exp(null), 1);
+  });
+
   it('should exponentiate a number', function() {
     approx.equal(exp(-3), 0.0497870683678639);
     approx.equal(exp(-2), 0.1353352832366127);

@@ -34,6 +34,11 @@ describe('subtract', function() {
     assert.equal(subtract(false, 2), -2);
   });
 
+  it('should subtract numbers and null', function () {
+    assert.equal(subtract(1, null), 1);
+    assert.equal(subtract(null, 1), -1);
+  });
+
   it('should subtract bignumbers', function() {
     assert.deepEqual(subtract(bignumber(0.3), bignumber(0.2)), bignumber(0.1));
     assert.deepEqual(subtract(bignumber('2.3e5001'), bignumber('3e5000')), bignumber('2e5001'));

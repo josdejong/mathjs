@@ -14,6 +14,10 @@ describe('csc', function() {
     approx.equal(csc(false), Infinity);
   });
 
+  it('should return the cosecant of null', function () {
+    approx.equal(csc(null), Infinity);
+  });
+
   it('should return the cosecant of a number', function() {
     approx.equal(1 / csc(0), 0);
     approx.equal(1 / csc(pi*1/4), 0.707106781186548);

@@ -45,16 +45,24 @@ describe('util.array', function() {
     it('should resize a 1 dimensional array', function () {
       var a = [];
 
-      // resize with default value
+      // resize with a default value
       a = resize(a, [3], 100);
       assert.deepEqual(a, [100,100,100]);
 
       // resize without default value
       a = resize(a, [5]);
-      assert.deepEqual(a, arr(100,100,100, uninit, uninit));
+      assert.deepEqual(a, [100,100,100, 0, 0]);
 
       a = resize(a, [2]);
       assert.deepEqual(a, [100,100]);
+    });
+
+    it('should resize a 1 dimensional array with UNINITIALIZED defaultValue', function () {
+      var a = [];
+
+      // resize with default value UNINITIALIZED
+      a = resize(a, [3], array.UNINITIALIZED);
+      assert.deepEqual(a, arr(uninit, uninit, uninit));
     });
 
     it('should resize a 2 dimensional array', function () {
@@ -65,24 +73,24 @@ describe('util.array', function() {
 
       a = resize(a, [2, 4]);
       assert.deepEqual(a, [
-        arr(0, 1, uninit, uninit),
-        arr(2, 3, uninit, uninit)
+        [0, 1, 0, 0],
+        [2, 3, 0, 0]
       ]);
 
       a = resize(a, [4, 4]);
       assert.deepEqual(a, [
-        arr(0, 1, uninit, uninit),
-        arr(2, 3, uninit, uninit),
-        arr(uninit, uninit, uninit, uninit),
-        arr(uninit, uninit, uninit, uninit)
+        [0, 1, 0, 0],
+        [2, 3, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
       ]);
 
       a = resize(a, [4, 2]);
       assert.deepEqual(a, [
         [0, 1],
         [2, 3],
-        arr(uninit, uninit),
-        arr(uninit, uninit)
+        [0, 0],
+        [0, 0]
       ]);
 
       a = resize(a, [2, 2]);
@@ -155,14 +163,14 @@ describe('util.array', function() {
       var b = [1, 2];
 
       b = resize(b, [4]);
-      assert.deepEqual(b, arr(1, 2, uninit, uninit));
+      assert.deepEqual(b, [1, 2, 0, 0]);
 
       b = resize(b, [4, 2]);
       assert.deepEqual(b, [
-          arr(1, uninit),
-          arr(2, uninit),
-          arr(undefined, uninit),
-          arr(undefined, uninit)
+          [1, 0],
+          [2, 0],
+          [0, 0],
+          [0, 0]
       ]);
       // TODO: would be nicer if this returns uninit everwhere and not undefined on some places
     });
@@ -170,7 +178,7 @@ describe('util.array', function() {
     it('should resize a 2 dimensional array to 1 dimensional', function () {
       var a = [[1,2],[3,4],[5,6],[7,8]];
       a = resize(a, [6]);
-      assert.deepEqual(a, arr(1,3,5,7, uninit, uninit));
+      assert.deepEqual(a, [1,3,5,7,0,0]);
 
       var b = [[],[]];
       b = resize(b, [2], 8);

@@ -16,6 +16,10 @@ describe('floor', function() {
     assert.equal(floor(false), 0);
   });
 
+  it('should round null', function () {
+    assert.equal(floor(null), 0);
+  });
+
   it('should floor numbers correctly', function() {
     approx.equal(floor(0), 0);
     approx.equal(floor(1), 1);

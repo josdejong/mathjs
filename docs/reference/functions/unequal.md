@@ -9,6 +9,10 @@ values smaller than approximately 2.22e-16.
 For matrices, the function is evaluated element wise.
 In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im.
 
+Values `null` and `undefined` are compared strictly, thus `null` is unequal
+with everything except `null`, and `undefined` is unequal with everying
+except. `undefined`.
+
 
 ## Syntax
 
@@ -45,6 +49,8 @@ var d = [2, 7, 1];
 
 math.unequal(c, d);           // returns [false, true, false]
 math.deepEqual(c, d);         // returns false
+
+math.unequal(0, null);        // returns true
 ```
 
 
