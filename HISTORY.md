@@ -3,7 +3,7 @@
 
 ## not yet released, version 0.27.1
 
-- Fixed a precedence issue with the range operator.
+- Fixed some precedence issues with the range and conversion operators.
 
 
 ## 2014-08-21, version 0.27.0

@@ -308,8 +308,8 @@ Operators                         | Description
 `*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus, implicit multiply
 `+`, `-`                          | Add, subtract
 `:`                               | Range
-`==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
 `to`, `in`                        | Unit conversion
+`==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
 `?`, `:`                          | Conditional expression
 `=`                               | Assignment
 `,`                               | Parameter and column separator
