@@ -1019,7 +1019,23 @@ describe('parse', function() {
         assert.equal(node.falseExpr.toString(), 'c:d');
       });
 
-      it.skip('should respect precedence of range operator and relational operators', function () {
+      it('should respect precedence of conditional operator and range operator (2)', function () {
+        var node = math.parse('a ? (b : c) : (d : e)');
+        assert(node instanceof ConditionalNode);
+        assert.equal(node.condition.toString(), 'a');
+        assert.equal(node.trueExpr.toString(), 'b:c');
+        assert.equal(node.falseExpr.toString(), 'd:e');
+      });
+
+      it('should respect precedence of conditional operator and range operator (2)', function () {
+        var node = math.parse('a ? (b ? c : d) : (e ? f : g)');
+        assert(node instanceof ConditionalNode);
+        assert.equal(node.condition.toString(), 'a');
+        assert.equal(node.trueExpr.toString(), '(b) ? (c) : (d)');
+        assert.equal(node.falseExpr.toString(), '(e) ? (f) : (g)');
+      });
+
+      it('should respect precedence of range operator and relational operators', function () {
         var node = math.parse('a:b == c:d');
         assert(node instanceof OperatorNode);
         assert.equal(node.params[0].toString(), 'a:b');
