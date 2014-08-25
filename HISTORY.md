@@ -4,6 +4,8 @@
 ## not yet released, version 0.27.1
 
 - Fixed some precedence issues with the range and conversion operators.
+- Fixed an zero-based issue when getting a matrix subset using an index 
+  containing a matrix.
 
 
 ## 2014-08-21, version 0.27.0

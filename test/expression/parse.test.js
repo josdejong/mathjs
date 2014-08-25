@@ -337,6 +337,7 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('a[2, :end-1]', scope),   new Matrix([[4,5]]));
       assert.deepEqual(parseAndEval('a[2, 2:]', scope),       new Matrix([[5,6]]));
       assert.deepEqual(parseAndEval('a[2, 2:3]', scope),      new Matrix([[5,6]]));
+      assert.deepEqual(parseAndEval('a[2, [2,3]]', scope),    new Matrix([[5,6]]));
       assert.deepEqual(parseAndEval('a[2, 1:2:3]', scope),    new Matrix([[4,6]]));
       assert.deepEqual(parseAndEval('a[:, 2]', scope),        new Matrix([[2],[5],[8]]));
       assert.deepEqual(parseAndEval('a[:2, 2]', scope),       new Matrix([[2],[5]]));
