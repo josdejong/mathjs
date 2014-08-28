@@ -1,9 +1,10 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    seed = require('seed-random'),
-    _ = require('underscore'),
-    Matrix = require('../../../lib/type/Matrix'),
-    math = require('../../../index');
+var assert = require('assert');
+var error = require('../../../lib/error/index');
+var seed = require('seed-random');
+var _ = require('underscore');
+var Matrix = require('../../../lib/type/Matrix');
+var math = require('../../../index');
+var distribution = require('../../../lib/function/probability/distribution')(math);
 
 var assertApproxEqual = function(testVal, val, tolerance) {
   var diff = Math.abs(val - testVal);
@@ -55,7 +56,7 @@ describe('distribution', function () {
   });
 
   beforeEach(function() {
-    uniformDistrib = math.distribution('uniform')
+    uniformDistrib = distribution('uniform')
   });
 
   describe('random', function() {
@@ -282,10 +283,10 @@ describe('distribution', function () {
   describe('distribution.normal', function() {
 
     it('should pick numbers in [0, 1] following a normal distribution', function() {
-      var picked = [], count, distribution = math.distribution('normal');
+      var picked = [], count, dist = distribution('normal');
 
       _.times(100000, function() {
-        picked.push(distribution.random())
+        picked.push(dist.random())
       });
       count = _.filter(picked, function(val) { return val < 0 }).length;
       assert.equal(count, 0);
@@ -308,12 +309,12 @@ describe('distribution', function () {
 
   it('should throw an error in case of unknown distribution name', function() {
     assert.throws(function () {
-      math.distribution('non-existing');
+      distribution('non-existing');
     }, /Unknown distribution/)
   });
 
   it('created random functions should throw an error in case of wrong number of arguments', function() {
-    var dist = math.distribution('uniform');
+    var dist = distribution('uniform');
     assert.throws(function () {dist.random([2,3], 10, 100, 12); }, error.ArgumentsError);
     assert.throws(function () {dist.randomInt([2,3], 10, 100, 12); }, error.ArgumentsError);
     assert.throws(function () {dist.pickRandom(); }, error.ArgumentsError);
@@ -321,7 +322,7 @@ describe('distribution', function () {
   });
 
   it('created random functions should throw an error in case of wrong type of arguments', function() {
-    var dist = math.distribution('uniform');
+    var dist = distribution('uniform');
     assert.throws(function () {dist.pickRandom(23); }, error.TypeError);
     // TODO: more type testing...
   });
