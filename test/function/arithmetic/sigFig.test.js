@@ -39,4 +39,13 @@ describe('sigFig', function() {
     assert.throws(function () {sigFig(1,2,3);}, error.ArgumentsError);
   });
 
+  it('should throw an error on invalid type of value', function() {
+    assert.throws(function () {sigFig('string', 1);}, TypeError);
+    assert.throws(function () {sigFig(new Date(), 1);}, TypeError);
+  });
+
+  it('should round real and imag part of a complex number to the given number of significant figures', function() {
+    assert.deepEqual(sigFig(math.complex(0.22, math.pi), 1), math.complex(0.2,3));
+  });
+
 });
