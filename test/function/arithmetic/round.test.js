@@ -8,7 +8,7 @@ var assert = require('assert'),
 
 describe('round', function() {
 
-  it('should round a number to te given number of decimals', function() {
+  it('should round a number to the given number of decimals', function() {
     approx.equal(round(math.pi), 3);
     approx.equal(round(math.pi * 1000), 3142);
     approx.equal(round(math.pi, 3), 3.142);
