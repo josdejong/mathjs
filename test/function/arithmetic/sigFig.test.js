@@ -24,5 +24,19 @@ describe('sigFig', function() {
     approx.equal(sigFig(false, 2), 0);
   });
 
+  it('should throw an error on invalid type of n', function() {
+    assert.throws(function () {sigFig(math.pi, new Date());}, TypeError);
+  });
+
+  it('should throw an error on invalid value of n', function() {
+    assert.throws(function () {sigFig(math.pi, -2);}, /Number of decimals in function sigFig must be in the range of 1-15/);
+    assert.throws(function () {sigFig(math.pi, 20);}, /Number of decimals in function sigFig must be in the range of 1-15/);
+    assert.throws(function () {sigFig(math.pi, 2.5);}, /Number of decimals in function sigFig must be an integer/);
+  });
+
+  it('should throw an error if used with wrong number of arguments', function() {
+    assert.throws(function () {sigFig(1);}, error.ArgumentsError);
+    assert.throws(function () {sigFig(1,2,3);}, error.ArgumentsError);
+  });
 
 });
