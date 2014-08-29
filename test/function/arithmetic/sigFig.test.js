@@ -48,4 +48,16 @@ describe('sigFig', function() {
     assert.deepEqual(sigFig(math.complex(0.22, math.pi), 1), math.complex(0.2,3));
   });
 
+  it('should round a number to the given number of significant figures when given as a bignumber', function() {
+    approx.equal(sigFig(math.pi, bignumber(1)), 3);
+    approx.equal(sigFig(math.pi * 10, bignumber(1)), 30);
+    approx.equal(sigFig(math.pi * 10, bignumber(2)), 31);
+  });
+
+  it('should round a bignumber to the given number of significant figures', function() {
+    approx.equal(sigFig(math.pi, bignumber(1)), 3);
+    approx.equal(sigFig(math.pi * 10, bignumber(1)), 30);
+    approx.equal(sigFig(math.pi * 10, bignumber(2)), 31);
+  });
+
 });
