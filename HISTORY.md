@@ -4,6 +4,7 @@
 ## not yet released, version 0.27.1
 
 - Removed `math.distribution` for now, needs some rethinking.
+- `math.number` can convert units to numbers (requires a second argument)
 - Fixed some precedence issues with the range and conversion operators.
 - Fixed an zero-based issue when getting a matrix subset using an index 
   containing a matrix.

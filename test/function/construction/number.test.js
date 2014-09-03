@@ -29,6 +29,10 @@ describe('number', function() {
     approx.equal(number(-3), -3);
   });
 
+  it('should convert a unit to a number', function() {
+    approx.equal(number(math.unit('52cm'), 'm'), 0.52);
+  });
+
   it('should parse the string if called with a valid string', function() {
     approx.equal(number('2.1e3'), 2100);
     approx.equal(number(' 2.1e-3 '), 0.0021);
@@ -50,7 +54,6 @@ describe('number', function() {
   });
 
   it('should throw an error if called with a wrong number of arguments', function() {
-    assert.throws(function () {number(1,2)}, error.ArgumentsError);
     assert.throws(function () {number(1,2,3)}, error.ArgumentsError);
   });
 
@@ -58,8 +61,10 @@ describe('number', function() {
     assert.throws(function () {number(math.complex(2,3))}, TypeError);
   });
 
-  it('should throw an error if called with a unit', function() {
-    assert.throws(function () {number(math.unit('5cm'))}, TypeError);
+  it('should throw an error with wrong type of arguments', function() {
+    assert.throws(function () {number(math.unit('5cm'))}, /Second argument with valueless unit expected/);
+    assert.throws(function () {number(math.unit('5cm'), 2)}, TypeError);
+    assert.throws(function () {number('23', 2)}, TypeError);
   });
 });
 
