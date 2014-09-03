@@ -17,7 +17,7 @@ parse([expr1, expr2, expr3, ...], options)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`expr` | String &#124; String[] &#124; Matrix | 
+`expr` | String &#124; String[] &#124; Matrix | Expression to be parsed
 `options` | {nodes: Object<String, Node>} | Available options: - `nodes` a set of custom nodes
 
 ### Returns
