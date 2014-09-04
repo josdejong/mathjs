@@ -272,6 +272,14 @@ function CommandLineEditor (params) {
         util.stopPropagation(event);
       }
     }
+    else if (keynum == 71) { // g
+      if (target.nodeName.toUpperCase() != 'INPUT') {
+        var search = document.getElementById('gsc-i-id1');
+        if (search) search.focus();
+        util.preventDefault(event);
+        util.stopPropagation(event);
+      }
+    }
     else if (keynum == 27) { // ESC
       if (fullscreen) {
         exitFullscreen();
