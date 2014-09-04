@@ -1,8 +1,9 @@
 # History
 
 
-## not yet released, version 0.27.1
+## not yet released, version 1.0.0
 
+- Implemented a function `filter(x, test)`.
 - Removed `math.distribution` for now, needs some rethinking.
 - `math.number` can convert units to numbers (requires a second argument)
 - Fixed some precedence issues with the range and conversion operators.

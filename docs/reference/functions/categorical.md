@@ -132,6 +132,7 @@
 ## utils
 
 - [clone(x)](clone.md)
+- [filter(x, test)](filter.md)
 - [forEach(x, callback)](forEach.md)
 - [format(value [, precision])](format.md)
 - [import(filename | object, override)](import.md)

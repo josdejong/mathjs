@@ -13,6 +13,7 @@ describe('sort', function() {
   });
 
   it('should sort a Matrix', function() {
+    assert.deepEqual(math.sort(math.matrix([5,10,1])), math.matrix([1,5, 10]));
   });
 
   it('should sort an array in ascending order', function() {
