@@ -37,6 +37,7 @@
 - [exp(x)](exp.md)
 - [eye(n)](eye.md)
 - [factorial(n)](factorial.md)
+- [filter(x, test)](filter.md)
 - [fix(x)](fix.md)
 - [flatten(x)](flatten.md)
 - [floor(x)](floor.md)

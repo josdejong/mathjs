@@ -337,6 +337,7 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('a[2, :end-1]', scope),   new Matrix([[4,5]]));
       assert.deepEqual(parseAndEval('a[2, 2:]', scope),       new Matrix([[5,6]]));
       assert.deepEqual(parseAndEval('a[2, 2:3]', scope),      new Matrix([[5,6]]));
+      assert.deepEqual(parseAndEval('a[2, [2,3]]', scope),    new Matrix([[5,6]]));
       assert.deepEqual(parseAndEval('a[2, 1:2:3]', scope),    new Matrix([[4,6]]));
       assert.deepEqual(parseAndEval('a[:, 2]', scope),        new Matrix([[2],[5],[8]]));
       assert.deepEqual(parseAndEval('a[:2, 2]', scope),       new Matrix([[2],[5]]));
@@ -981,8 +982,20 @@ describe('parse', function() {
         assert.equal(parseAndEval('+4!'), 24);
       });
 
-      it.skip('should respect precedence of transpose', function () {
-        // TODO: test transpose
+      it('should respect precedence of transpose', function () {
+        var node = math.parse('a + b\'');
+        assert(node instanceof OperatorNode);
+        assert.equal(node.op, '+');
+        assert.equal(node.params[0].toString(), 'a');
+        assert.equal(node.params[1].toString(), 'b\'');
+      });
+
+      it('should respect precedence of transpose (2)', function () {
+        var node = math.parse('a ^ b\'');
+        assert(node instanceof OperatorNode);
+        assert.equal(node.op, '^');
+        assert.equal(node.params[0].toString(), 'a');
+        assert.equal(node.params[1].toString(), 'b\'');
       });
 
       it('should respect precedence of conditional operator and other operators', function () {
@@ -993,14 +1006,6 @@ describe('parse', function() {
         assert.deepEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'));
         assert.deepEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), new Matrix([1,2]));
         assert.deepEqual(parseAndEval('false ? 1:2:6'), new Matrix([2,3,4,5,6]));
-      });
-
-      it('should respect precedence of equal operator and conversion operators', function () {
-        var node = math.parse('a == b to c'); // (a == b) to c
-        assert.equal(node.op, 'to');
-
-        var node2 = math.parse('a to b == c');
-        assert.equal(node2.op, 'to');
       });
 
       it('should respect precedence of conditional operator and relational operators', function () {
@@ -1019,7 +1024,23 @@ describe('parse', function() {
         assert.equal(node.falseExpr.toString(), 'c:d');
       });
 
-      it.skip('should respect precedence of range operator and relational operators', function () {
+      it('should respect precedence of conditional operator and range operator (2)', function () {
+        var node = math.parse('a ? (b : c) : (d : e)');
+        assert(node instanceof ConditionalNode);
+        assert.equal(node.condition.toString(), 'a');
+        assert.equal(node.trueExpr.toString(), 'b:c');
+        assert.equal(node.falseExpr.toString(), 'd:e');
+      });
+
+      it('should respect precedence of conditional operator and range operator (2)', function () {
+        var node = math.parse('a ? (b ? c : d) : (e ? f : g)');
+        assert(node instanceof ConditionalNode);
+        assert.equal(node.condition.toString(), 'a');
+        assert.equal(node.trueExpr.toString(), '(b) ? (c) : (d)');
+        assert.equal(node.falseExpr.toString(), '(e) ? (f) : (g)');
+      });
+
+      it('should respect precedence of range operator and relational operators', function () {
         var node = math.parse('a:b == c:d');
         assert(node instanceof OperatorNode);
         assert.equal(node.params[0].toString(), 'a:b');
@@ -1031,6 +1052,20 @@ describe('parse', function() {
         assert(node instanceof RangeNode);
         assert.equal(node.start.toString(), 'a + b');
         assert.equal(node.end.toString(), 'c - d');
+      });
+
+      it('should respect precedence of "to" operator and relational operators', function () {
+        var node = math.parse('a == b to c');
+        assert(node instanceof OperatorNode);
+        assert.equal(node.params[0].toString(), 'a');
+        assert.equal(node.params[1].toString(), 'b to c');
+      });
+
+      it('should respect precedence of "to" operator and relational operators (2)', function () {
+        var node = math.parse('a to b == c');
+        assert(node instanceof OperatorNode);
+        assert.equal(node.params[0].toString(), 'a to b');
+        assert.equal(node.params[1].toString(), 'c');
       });
 
       // TODO: extensively test operator precedence
@@ -1049,6 +1084,26 @@ describe('parse', function() {
         approx.deepEqual(parseAndEval('to(5.08 cm * 1000, inch)'),
             math.unit(2000, 'inch').to('inch'));
       });
+
+      it('should evaluate function "sort" with a custom sort function', function () {
+        var scope = {};
+        parseAndEval('sortByLength(a, b) = size(a)[1] - size(b)[1]', scope);
+        assert.deepEqual(parseAndEval('sort(["Langdon", "Tom", "Sara"], sortByLength)', scope),
+            math.matrix(["Tom", "Sara", "Langdon"]));
+      });
+
+      it('should evaluate function "filter" with a custom test function', function () {
+        var scope = {};
+        parseAndEval('isPositive(x) = x > 0', scope);
+        assert.deepEqual(parseAndEval('filter([6, -2, -1, 4, 3], isPositive)', scope),
+            math.matrix([6, 4, 3]));
+      });
+
+      it('should evaluate function "filter" with a custom test equation', function () {
+        assert.deepEqual(parseAndEval('filter([6, -2, -1, 4, 3], x > 0)'),
+            math.matrix([6, 4, 3]));
+      });
+
     });
 
   });

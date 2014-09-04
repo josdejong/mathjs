@@ -1,6 +1,16 @@
 # History
 
 
+## 2014-09-04, version 1.0.0
+
+- Implemented a function `filter(x, test)`.
+- Removed `math.distribution` for now, needs some rethinking.
+- `math.number` can convert units to numbers (requires a second argument)
+- Fixed some precedence issues with the range and conversion operators.
+- Fixed an zero-based issue when getting a matrix subset using an index 
+  containing a matrix.
+
+
 ## 2014-08-21, version 0.27.0
 
 - Implemented functions `sort(x [, compare])` and `flatten(x)`.

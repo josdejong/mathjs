@@ -1,6 +1,6 @@
 # Function number
 
-Create a number or convert a string to a number.
+Create a number or convert a string, boolean, or unit to a number.
 When value is a matrix, all elements will be converted to number.
 
 
@@ -8,13 +8,15 @@ When value is a matrix, all elements will be converted to number.
 
 ```js
 math.number(value)
+math.number(unit, valuelessUnit)
 ```
 
 ### Parameters
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix &#124; null | Value to be converted
+`value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix &#124; Unit &#124; null | Value to be converted
+`valuelessUnit` | Unit &#124; string | A valueless unit, used to convert a unit to a number
 
 ### Returns
 
@@ -30,6 +32,7 @@ math.number(2);                         // returns number 2
 math.number('7.2');                     // returns number 7.2
 math.number(true);                      // returns number 1
 math.number([true, false, true, true]); // returns [1, 0, 1, 1]
+math.number(math.unit('52cm'), 'm');    // returns 0.52
 ```
 
 
