@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 1.0.0
+## 2014-09-04, version 1.0.0
 
 - Implemented a function `filter(x, test)`.
 - Removed `math.distribution` for now, needs some rethinking.
