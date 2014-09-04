@@ -41,6 +41,7 @@ layout: default
 - [exp(x)](exp.html)
 - [eye(n)](eye.html)
 - [factorial(n)](factorial.html)
+- [filter(x, test)](filter.html)
 - [fix(x)](fix.html)
 - [flatten(x)](flatten.html)
 - [floor(x)](floor.html)

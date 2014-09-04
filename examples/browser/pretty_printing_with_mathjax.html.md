@@ -12,8 +12,8 @@ Raw file: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html)
 <head>
   <title>math.js | pretty printing with MathJax</title>
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/0.27.0/math.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/1.0.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
 
   <style>
     body,

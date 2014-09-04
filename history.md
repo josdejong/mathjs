@@ -5,6 +5,16 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20140904-version-100">2014-09-04, version 1.0.0 <a href="#20140904-version-100" title="Permalink">#</a></h2>
+
+- Implemented a function `filter(x, test)`.
+- Removed `math.distribution` for now, needs some rethinking.
+- `math.number` can convert units to numbers (requires a second argument)
+- Fixed some precedence issues with the range and conversion operators.
+- Fixed an zero-based issue when getting a matrix subset using an index 
+  containing a matrix.
+
+
 <h2 id="20140821-version-0270">2014-08-21, version 0.27.0 <a href="#20140821-version-0270" title="Permalink">#</a></h2>
 
 - Implemented functions `sort(x [, compare])` and `flatten(x)`.

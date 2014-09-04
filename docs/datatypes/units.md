@@ -56,6 +56,7 @@ var c = math.unit('2 inch');        // Unit 100 millimeter
 
 var d = c.to('cm');                 // Unit 5.08 cm
 b.toNumber('gram');                 // Number 100
+math.number(b, 'gram');             // Number 100
 
 c.equals(a);                        // false
 c.equals(d);                        // true

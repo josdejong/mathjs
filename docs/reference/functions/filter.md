@@ -2,45 +2,47 @@
 layout: default
 ---
 
-<h1 id="function-map">Function map <a href="#function-map" title="Permalink">#</a></h1>
+<h1 id="function-filter">Function filter <a href="#function-filter" title="Permalink">#</a></h1>
 
-Create a new matrix or array with the results of the callback function executed on
-each entry of the matrix/array.
+Sort the items in a matrix.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.map(x, callback)
+math.filter(x, test)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Matrix &#124; Array | The matrix to iterate on.
-`callback` | Function | The callback method is invoked with three parameters: the value of the element, the index of the element, and the matrix being traversed.
+`x` | Matrix &#124; Array | A one dimensional matrix or array to filter
+`test` | Function &#124; RegExp |  A function or regular expression to test items. When `test` is a function, it must return a boolean. All entries for which `test` returns true are returned.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Matrix &#124; array | Transformed map of x
+Matrix &#124; Array | Returns the filtered matrix.
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.map([1, 2, 3], function(value) {
-  return value * value;
-});  // returns [1, 4, 9]
+function isPositive (x) {
+  return x > 0;
+}
+math.filter([6, -2, -1, 4, 3], isPositive); // returns [6, 4, 3]
+
+math.filter(["23", "foo", "100", "55", "bar"], /[0-9]+/); // returns ["23", "100", "55"]
 ```
 
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
-[filter](filter.html),
 [forEach](forEach.html),
+[map](map.html),
 [sort](sort.html)
 
 

@@ -136,6 +136,7 @@ layout: default
 <h2 id="utils">utils <a href="#utils" title="Permalink">#</a></h2>
 
 - [clone(x)](clone.html)
+- [filter(x, test)](filter.html)
 - [forEach(x, callback)](forEach.html)
 - [format(value [, precision])](format.html)
 - [import(filename | object, override)](import.html)
