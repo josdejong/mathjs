@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 1.0.1-SNAPSHOT
- * @date    2014-09-04
+ * @date    2014-09-08
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -3465,7 +3465,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      desc += '    ' + expr + '\n';
 	      if (res && !(res instanceof Help)) {
-	        desc += '        ' + string.format(res) + '\n';
+	        desc += '        ' + string.format(res, {precision: 14}) + '\n';
 	      }
 	    }
 	    desc += '\n';
@@ -13199,8 +13199,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (isArray(value)) {
 	      m = new Matrix(value);
-	      subset = m.subset(index);
-	      return subset.valueOf();
+	      subset = m.subset(index);           // returns a Matrix
+	      return subset && subset.valueOf();  // return an Array (like the input)
 	    }
 	    else if (value instanceof Matrix) {
 	      return value.subset(index);
@@ -13635,7 +13635,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * See also:
 	   *
-	   *     randomInt, pickRandom, distribution
+	   *     randomInt, pickRandom
 	   *
 	   * @param {Number} [size] If provided, an array with `size` number of random values is returned
 	   * @param {Number} [min]  Minimum boundary for the random value
@@ -13676,7 +13676,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * See also:
 	   *
-	   *     randomInt, pickRandom, distribution
+	   *     randomInt, pickRandom
 	   *
 	   * @param {Number} [size] If provided, an array with `size` number of random values is returned
 	   * @param {Number} [min]  Minimum boundary for the random value
@@ -13710,7 +13710,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * See also:
 	   *
-	   *     random, randomInt, distribution
+	   *     random, randomInt
 	   *
 	   * @param {Array} array     A one dimensional array
 	   * @return {Number} One of the elements of the provided input array
@@ -25830,7 +25830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'pickRandom(0:10)',
 	    'pickRandom([1, 3, 1, 6])'
 	  ],
-	  'seealso': ['distribution', 'random', 'randomInt']
+	  'seealso': ['random', 'randomInt']
 	};
 
 
@@ -25856,7 +25856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'random(10, 20)',
 	    'random([2, 3])'
 	  ],
-	  'seealso': ['distribution', 'pickRandom', 'randomInt']
+	  'seealso': ['pickRandom', 'randomInt']
 	};
 
 
@@ -25882,7 +25882,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'randInt(10, 20)',
 	    'randInt([2, 3], 10)'
 	  ],
-	  'seealso': ['distribution', 'pickRandom', 'random']
+	  'seealso': ['pickRandom', 'random']
 	};
 
 /***/ },
