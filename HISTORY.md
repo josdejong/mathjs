@@ -1,6 +1,15 @@
 # History
 
 
+## not yet released, version 1.0.1
+
+- Disabled array notation for ranges in a matrix index in the expression parser 
+  (it is confusing and redundant there).
+- Fixed a regression in the build of function subset not being able to return
+  a scalar.
+- Fixed some missing docs and broken links in the docs.
+
+
 ## 2014-09-04, version 1.0.0
 
 - Implemented a function `filter(x, test)`.

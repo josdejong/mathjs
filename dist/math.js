@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 1.0.1-SNAPSHOT
- * @date    2014-09-08
+ * @date    2014-09-09
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -1451,11 +1451,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(144),
+	var util = __webpack_require__(144);
 
-	    number = util.number,
-	    string = util.string,
-	    array = util.array;
+	var number = util.number;
+	var string = util.string;
+	var array = util.array;
 
 	/**
 	 * @constructor Range
@@ -5596,27 +5596,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    for (var i = 0, ii = arguments.length; i < ii; i++) {
 	      var arg = arguments[i];
 
-	      if (arg instanceof Matrix) arg = arg.toArray();
-
 	      // change from one-based to zero based, and convert BigNumber to number
 	      if (arg instanceof Range) {
 	        arg.start--;
-	        arg.end -= (arg.step.valueOf() > 0 ? 0 : 2);
-	      }
-	      else if (isArray(arg)) {
-	        for (var j = 0, jj = arg.length; j < jj; j++) {
-	          arg[j] = (arg[j] instanceof BigNumber) ? arg[j].toNumber() : arg[j];
-	        }
-
-	        var step = arg.length > 2 ? arg[2] : 1;
-	        arg[0]--; // start
-	        arg[1] -= (step > 0 ? 0 : 2); // end
+	        arg.end -= (arg.step > 0 ? 0 : 2);
 	      }
 	      else if (isNumber(arg)) {
 	        arg--;
 	      }
 	      else if (arg instanceof BigNumber) {
 	        arg = arg.toNumber() - 1;
+	      }
+	      else {
+	        throw new TypeError('Ranges must be a Number or Range');
 	      }
 
 	      args[i] = arg;
@@ -22434,12 +22426,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(157),
-	    RangeNode = __webpack_require__(154),
-	    SymbolNode = __webpack_require__(155),
+	var Node = __webpack_require__(157);
+	var RangeNode = __webpack_require__(154);
+	var SymbolNode = __webpack_require__(155);
 
-	    isNode = Node.isNode,
-	    isArray = Array.isArray;
+	var BigNumber = __webpack_require__(139);
+	var Range = __webpack_require__(7);
+
+	var isNode = Node.isNode;
+	var isArray = Array.isArray;
 
 	/**
 	 * @constructor IndexNode
@@ -22508,6 +22503,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return useEnd;
 	  });
 
+	  // create a Range from start, step and end
+	  defs.range = function (start, end, step) {
+	    return new Range(
+	            start instanceof BigNumber ? start.toNumber() : start,
+	            end instanceof BigNumber ? end.toNumber() : end,
+	            step instanceof BigNumber ? step.toNumber() : step
+	    );
+	  };
+
 	  // TODO: implement support for bignumber (currently bignumbers are silently
 	  //       reduced to numbers when changing the value to zero-based)
 
@@ -22518,31 +22522,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var useEnd = rangesUseEnd[i];
 	    if (range instanceof RangeNode) {
 	      if (useEnd) {
-	        // resolve end and create range (change from one based to zero based)
+	        // resolve end and create range
 	        return '(function (scope) {' +
 	            '  scope = Object.create(scope); ' +
 	            '  scope["end"] = size[' + i + '];' +
-	            '  return [' +
+	            '  return range(' +
 	            '    ' + range.start._compile(defs) + ', ' +
 	            '    ' + range.end._compile(defs) + ', ' +
 	            '    ' + (range.step ? range.step._compile(defs) : '1') +
-	            '  ];' +
+	            '  );' +
 	            '})(scope)';
 	      }
 	      else {
-	        // create range (change from one based to zero based)
-	        return '(function () {' +
-	            '  return [' +
-	            '    ' + range.start._compile(defs) + ', ' +
-	            '    ' + range.end._compile(defs) + ', ' +
-	            '    ' + (range.step ? range.step._compile(defs) : '1') +
-	            '  ];' +
-	            '})()';
+	        // create range
+	        return 'range(' +
+	            range.start._compile(defs) + ', ' +
+	            range.end._compile(defs) + ', ' +
+	            (range.step ? range.step._compile(defs) : '1') +
+	            ')';
 	      }
 	    }
 	    else {
 	      if (useEnd) {
-	        // resolve the parameter 'end', adjust the index value to zero-based
+	        // resolve the parameter 'end'
 	        return '(function (scope) {' +
 	            '  scope = Object.create(scope); ' +
 	            '  scope["end"] = size[' + i + '];' +
@@ -22550,7 +22552,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            '})(scope)'
 	      }
 	      else {
-	        // just evaluate the expression, and change from one-based to zero-based
+	        // just evaluate the expression
 	        return range._compile(defs);
 	      }
 	    }
@@ -22956,9 +22958,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(157),
+	var Node = __webpack_require__(157);
 
-	    isNode = Node.isNode;
+	var isNode = Node.isNode;
 
 	/**
 	 * @constructor RangeNode

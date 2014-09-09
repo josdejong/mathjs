@@ -337,7 +337,6 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('a[2, :end-1]', scope),   new Matrix([[4,5]]));
       assert.deepEqual(parseAndEval('a[2, 2:]', scope),       new Matrix([[5,6]]));
       assert.deepEqual(parseAndEval('a[2, 2:3]', scope),      new Matrix([[5,6]]));
-      assert.deepEqual(parseAndEval('a[2, [2,3]]', scope),    new Matrix([[5,6]]));
       assert.deepEqual(parseAndEval('a[2, 1:2:3]', scope),    new Matrix([[4,6]]));
       assert.deepEqual(parseAndEval('a[:, 2]', scope),        new Matrix([[2],[5],[8]]));
       assert.deepEqual(parseAndEval('a[:2, 2]', scope),       new Matrix([[2],[5]]));
@@ -501,6 +500,16 @@ describe('parse', function() {
       math.eval('forEach(A, callback)', scope);
 
       assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
+    });
+
+    it('should disable arrays as range in a matrix index', function () {
+      var scope = {
+        a: [[1,2,3],[4,5,6]]
+      };
+
+      assert.throws(function () {
+        parseAndEval('a[2, [2,3]]', scope);
+      }, /TypeError: Ranges must be a Number or Range/);
     });
 
     it('should throw an error for invalid matrix', function() {
