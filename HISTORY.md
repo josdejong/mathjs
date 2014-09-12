@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 1.0.1
+## 2014-10-12, version 1.0.1
 
 - Disabled array notation for ranges in a matrix index in the expression parser 
   (it is confusing and redundant there).
