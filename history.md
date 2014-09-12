@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20141012-version-101">2014-10-12, version 1.0.1 <a href="#20141012-version-101" title="Permalink">#</a></h2>
+
+- Disabled array notation for ranges in a matrix index in the expression parser 
+  (it is confusing and redundant there).
+- Fixed a regression in the build of function subset not being able to return
+  a scalar.
+- Fixed some missing docs and broken links in the docs.
+
+
 <h2 id="20140904-version-100">2014-09-04, version 1.0.0 <a href="#20140904-version-100" title="Permalink">#</a></h2>
 
 - Implemented a function `filter(x, test)`.
