@@ -1,7 +1,7 @@
 // test atan2
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     acos = math.acos,
@@ -46,6 +46,11 @@ describe('atan2', function() {
     assert.equal(atan2(1, false), 0.5 * pi);
     assert.equal(atan2(true, 1), 0.25 * pi);
     assert.equal(atan2(false, 1), 0);
+  });
+
+  it('should calculate atan2 with mixed numbers and null', function() {
+    assert.equal(atan2(1, null), 0.5 * pi);
+    assert.equal(atan2(null, 1), 0);
   });
 
   it('should return the arctan of for bignumbers (downgrades to number)', function() {

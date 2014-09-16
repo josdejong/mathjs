@@ -1,7 +1,7 @@
 // test Node
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     Node = require('../../../lib/expression/node/Node');
 
 describe('Node', function() {
@@ -37,6 +37,11 @@ describe('Node', function() {
   it ('should stringify a Node', function () {
     var node = new Node();
     assert.equal(node.toString(), '');
+  });
+
+  it ('should LaTeX a Node', function () {
+    var node = new Node();
+    assert.equal(node.toTex(), '');
   });
 
   it ('should throw an error in case of wrong arguments for compile', function () {

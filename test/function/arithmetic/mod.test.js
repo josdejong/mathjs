@@ -2,7 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bignumber = math.bignumber,
     matrix = math.matrix,
     range = math.range,
@@ -14,6 +14,12 @@ describe('mod', function() {
     assert.equal(mod(false, true), 0);
     assert.equal(mod(true, false), 1);
     assert.equal(mod(false, false), 0);
+  });
+
+  it('should calculate the modulus of numbers and null', function () {
+    assert.equal(mod(null, null), 0);
+    assert.equal(mod(null, 1), 0);
+    assert.equal(mod(1, null), 1);
   });
 
   it('should calculate the modulus of two numbers', function() {

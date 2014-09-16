@@ -1,13 +1,17 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bool = math['boolean'];
 
 describe('boolean', function() {
 
-  it('should be the identity with a boolean', function() {
+  it('should convert a boolean to a boolean', function() {
     assert.equal(bool(true), true);
     assert.equal(bool(false), false);
+  });
+
+  it('should convert null to a boolean', function() {
+    assert.equal(bool(null), false);
   });
 
   it('should convert a number into a boolean', function() {

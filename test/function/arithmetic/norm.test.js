@@ -1,7 +1,7 @@
 // test norm
 var assert = require('assert'),
   error = require('../../../lib/error/index'),
-  math = require('../../../index')();
+  math = require('../../../index');
 
 describe('norm', function () {
   
@@ -10,6 +10,11 @@ describe('norm', function () {
     assert.equal(math.norm(true, 10), 1);
     assert.equal(math.norm(false), 0);
     assert.equal(math.norm(false, 10), 0);
+  });
+
+  it('should return the absolute value of null', function () {
+    assert.equal(math.norm(null), 0);
+    assert.equal(math.norm(null, 10), 0);
   });
 
   it('should return the absolute value of a number', function () {

@@ -1,7 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
+    math = require('../../../index'),
     matrix = math.matrix,
     eye = math.eye;
 
@@ -34,7 +33,7 @@ describe('eye', function() {
   });
 
   it('should return an array when setting matrix=="array"', function() {
-    var math2 = mathjs({matrix: 'array'});
+    var math2 = math.create({matrix: 'array'});
     assert.deepEqual(math2.eye(2), [[1,0],[0,1]]);
   });
 

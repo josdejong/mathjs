@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -12,6 +12,10 @@ describe('cosh', function() {
   it('should return the cosh of a boolean', function () {
     approx.equal(cosh(true), 1.5430806348152);
     approx.equal(cosh(false), 1);
+  });
+
+  it('should return the cosh of null', function () {
+    approx.equal(cosh(null), 1);
   });
 
   it('should return the cosh of a number', function() {

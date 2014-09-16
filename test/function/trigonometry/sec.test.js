@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -12,6 +12,10 @@ describe('sec', function() {
   it('should return the secant of a boolean', function () {
     approx.equal(sec(true), 1.85081571768093);
     approx.equal(sec(false), Infinity);
+  });
+
+  it('should return the secant of null', function () {
+    approx.equal(sec(null), Infinity);
   });
 
   it('should return the secant of a number', function() {

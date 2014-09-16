@@ -2,7 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -11,9 +11,13 @@ var assert = require('assert'),
     ceil = math.ceil;
 
 describe('ceil', function() {
-  it('should return the ceil value of a boolean', function () {
+  it('should return the ceil of a boolean', function () {
     assert.equal(ceil(true), 1);
     assert.equal(ceil(false), 0);
+  });
+
+  it('should return the ceil of null', function () {
+    assert.equal(math.ceil(null), 0);
   });
 
   it('should return the ceil of a number', function() {

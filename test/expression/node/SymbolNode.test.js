@@ -1,7 +1,7 @@
 // test SymbolNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode');
@@ -65,6 +65,12 @@ describe('SymbolNode', function() {
     var s = new SymbolNode('foo');
 
     assert.equal(s.toString(), 'foo');
+  });
+
+  it ('should LaTeX a SymbolNode', function () {
+    var s = new SymbolNode('foo');
+
+    assert.equal(s.toTex(), 'foo');
   });
 
 });

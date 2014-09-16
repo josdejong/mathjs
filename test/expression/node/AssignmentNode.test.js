@@ -1,7 +1,7 @@
 // test AssignmentNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode'),
@@ -22,6 +22,12 @@ describe('AssignmentNode', function() {
     assert.throws(function () {AssignmentNode('a', new Node())}, SyntaxError);
   });
 
+  it ('should throw an error when creating an AssignmentNode with a reserved keyword', function () {
+    assert.throws(function () {
+      new AssignmentNode('end', new Node());
+    }, /Illegal symbol name/)
+  });
+
   it ('should throw an error on wrong constructor arguments', function () {
     assert.throws(function () {new AssignmentNode()}, TypeError );
     assert.throws(function () {new AssignmentNode(new Node())}, TypeError );
@@ -31,7 +37,7 @@ describe('AssignmentNode', function() {
   });
 
   it ('should compile a AssignmentNode', function () {
-    var b = new ConstantNode('number', '3');
+    var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
     var expr = n.compile(math);
@@ -42,9 +48,9 @@ describe('AssignmentNode', function() {
   });
 
   it ('should find a AssignmentNode', function () {
-    var a = new ConstantNode('number', '1');
+    var a = new ConstantNode(1);
     var b = new SymbolNode('x');
-    var c = new ConstantNode('number', '2');
+    var c = new ConstantNode(2);
     var d = new ArrayNode([a, b, c]);
     var e = new AssignmentNode('array', d);
 
@@ -69,10 +75,17 @@ describe('AssignmentNode', function() {
   });
 
   it ('should stringify a AssignmentNode', function () {
-    var b = new ConstantNode('number', '3');
+    var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
     assert.equal(n.toString(), 'b = 3');
+  });
+
+  it ('should LaTeX a AssignmentNode', function () {
+    var b = new ConstantNode(3);
+    var n = new AssignmentNode('b', b);
+
+    assert.equal(n.toTex(), '{b}={3}');
   });
 
 });

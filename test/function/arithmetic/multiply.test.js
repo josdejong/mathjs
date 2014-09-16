@@ -1,6 +1,6 @@
 // test multiply
 var assert = require('assert'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     error = require('../../../lib/error/index'),
     approx = require('../../../tools/approx'),
     multiply = math.multiply,
@@ -37,6 +37,11 @@ describe('multiply', function() {
     assert.equal(multiply(2, false), 0);
     assert.equal(multiply(true, 2), 2);
     assert.equal(multiply(false, 2), 0);
+  });
+
+  it('should multiply numbers and null', function () {
+    assert.equal(multiply(1, null), 0);
+    assert.equal(multiply(null, 1), 0);
   });
 
   it('should multiply bignumbers', function() {
@@ -120,8 +125,19 @@ describe('multiply', function() {
   it('should multiply a number and a unit correctly', function() {
     assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm');
     assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm');
+    assert.equal(multiply(10, unit('celsius')).toString(), '10 celsius');
     assert.equal(multiply(unit('5 mm'), 2).toString(), '10 mm');
     assert.equal(multiply(unit('5 mm'), 0).toString(), '0 m');
+    assert.equal(multiply(unit('celsius'), 10).toString(), '10 celsius');
+  });
+
+  it('should multiply a number and a unit without value correctly', function() {
+    assert.equal(multiply(2, unit('mm')).toString(), '2 mm');
+    assert.equal(multiply(2, unit('km')).toString(), '2 km');
+    assert.equal(multiply(2, unit('inch')).toString(), '2 inch');
+    assert.equal(multiply(unit('mm'), 2).toString(), '2 mm');
+    assert.equal(multiply(unit('km'), 2).toString(), '2 km');
+    assert.equal(multiply(unit('inch'), 2).toString(), '2 inch');
   });
 
   it('should multiply a bignumber and a unit correctly', function() {
@@ -129,6 +145,15 @@ describe('multiply', function() {
     assert.equal(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm');
     assert.equal(multiply(unit('5 mm'), bignumber(2)).toString(), '10 mm');
     assert.equal(multiply(unit('5 mm'), bignumber(0)).toString(), '0 m');
+  });
+
+  it('should multiply a bignumber and a unit without value correctly', function() {
+    assert.equal(multiply(bignumber(2), unit('mm')).toString(), '2 mm');
+    assert.equal(multiply(bignumber(2), unit('km')).toString(), '2 km');
+    assert.equal(multiply(bignumber(2), unit('inch')).toString(), '2 inch');
+    assert.equal(multiply(unit('mm'), bignumber(2)).toString(), '2 mm');
+    assert.equal(multiply(unit('km'), bignumber(2)).toString(), '2 km');
+    assert.equal(multiply(unit('inch'), bignumber(2)).toString(), '2 inch');
   });
 
   it('should throw an error in case of unit non-numeric argument', function() {
@@ -157,7 +182,7 @@ describe('multiply', function() {
     approx.deepEqual(multiply(a, c), matrix([[17],[39]]));
     approx.deepEqual(multiply(d, a), matrix([[23,34]]));
     approx.deepEqual(multiply(d, b), matrix([[67,78]]));
-    approx.deepEqual(multiply(d, c), matrix([[61]]));
+    approx.deepEqual(multiply(d, c), 61);
     approx.deepEqual(multiply([[1,2],[3,4]], [[5,6],[7,8]]), [[19,22],[43,50]]);
     approx.deepEqual(multiply([1,2,3,4], 2), [2, 4, 6, 8]);
     approx.deepEqual(multiply(matrix([1,2,3,4]), 2), matrix([2, 4, 6, 8]));
@@ -173,6 +198,9 @@ describe('multiply', function() {
 
     approx.deepEqual(multiply(a, b), [26, 38, 26]);
     approx.deepEqual(multiply(b, a), [28, 34, 28]);
+
+    approx.deepEqual(multiply(matrix(a), matrix(b)), matrix([26, 38, 26]));
+    approx.deepEqual(multiply(matrix(b), matrix(a)), matrix([28, 34, 28]));
   });
 
   it('should multiply vectors correctly (dot product)', function () {
@@ -180,6 +208,7 @@ describe('multiply', function() {
     var b = [4, 5, 6];
 
     approx.deepEqual(multiply(a, b), 32);
+    approx.deepEqual(multiply(matrix(a), matrix(b)), 32);
   });
 
   it('should throw an error when multiplying empty vectors', function () {
@@ -192,6 +221,33 @@ describe('multiply', function() {
 
     approx.deepEqual(multiply(a, matrix(b)), matrix([[2, 4], [6, 8]]));
     approx.deepEqual(multiply(matrix(a), b), matrix([[2, 4], [6, 8]]));
+
+    // test with vectors, returning a scalar
+    var c = [1, 2, 3];
+    var d = [4, 5, 6];
+
+    assert.strictEqual(multiply(c, matrix(d)), 32);
+    assert.strictEqual(multiply(matrix(c), d), 32);
+  });
+
+  describe('squeeze', function () {
+    it ('should squeeze scalar results of matrix * matrix', function () {
+      var a = [[1, 2, 3]];
+      var b = [[4], [5], [6]];
+      assert.strictEqual(multiply(a, b), 32);
+    });
+
+    it ('should squeeze scalar results of vector * matrix', function () {
+      var a = [1, 2, 3];
+      var b = [[4], [5], [6]];
+      assert.strictEqual(multiply(a, b), 32);
+    });
+
+    it ('should squeeze scalar results of matrix * vector', function () {
+      var a = [[1, 2, 3]];
+      var b = [4, 5, 6];
+      assert.strictEqual(multiply(a, b), 32);
+    });
   });
 
   it('should throw an error when multiplying matrices with incompatible sizes', function() {

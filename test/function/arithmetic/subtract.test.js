@@ -2,7 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bignumber = math.bignumber,
     subtract = math.subtract;
 
@@ -32,6 +32,11 @@ describe('subtract', function() {
     assert.equal(subtract(2, false), 2);
     assert.equal(subtract(true, 2), -1);
     assert.equal(subtract(false, 2), -2);
+  });
+
+  it('should subtract numbers and null', function () {
+    assert.equal(subtract(1, null), 1);
+    assert.equal(subtract(null, 1), -1);
   });
 
   it('should subtract bignumbers', function() {

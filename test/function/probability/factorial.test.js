@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     factorial = math.factorial;
 
 describe('factorial', function() {
@@ -27,6 +27,10 @@ describe('factorial', function() {
   it('should calculate the factorial of a boolean', function() {
     assert.equal(factorial(true), 1);
     assert.equal(factorial(false), 1);
+  });
+
+  it('should calculate the factorial of null', function() {
+    assert.equal(factorial(null), 1);
   });
 
   it('should calculate the factorial of each element in a matrix', function() {

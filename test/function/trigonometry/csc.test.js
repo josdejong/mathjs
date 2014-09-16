@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -12,6 +12,10 @@ describe('csc', function() {
   it('should return the cosecant of a boolean', function () {
     approx.equal(csc(true), 1.18839510577812);
     approx.equal(csc(false), Infinity);
+  });
+
+  it('should return the cosecant of null', function () {
+    approx.equal(csc(null), Infinity);
   });
 
   it('should return the cosecant of a number', function() {

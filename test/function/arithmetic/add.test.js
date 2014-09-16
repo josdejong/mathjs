@@ -2,7 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bignumber = math.bignumber,
     add = math.add;
 
@@ -20,6 +20,12 @@ describe('add', function() {
     assert.equal(add(true, false), 1);
     assert.equal(add(false, true), 1);
     assert.equal(add(false, false), 0);
+  });
+
+  it('should add numbers and null', function () {
+    assert.equal(math.add(null, null), 0);
+    assert.equal(math.add(null, 1), 1);
+    assert.equal(math.add(1, null), 1);
   });
 
   it('should add mixed numbers and booleans', function() {
@@ -90,6 +96,14 @@ describe('add', function() {
     assert.equal(add('hello ', 'world'), 'hello world');
     assert.equal(add('str', 123), 'str123');
     assert.equal(add(123, 'str'), '123str');
+  });
+
+  it('should concatenate strings and matrices element wise', function() {
+    assert.deepEqual(add('A', ['B', 'C']), ['AB', 'AC']);
+    assert.deepEqual(add(['B', 'C'], 'A'), ['BA', 'CA']);
+
+    assert.deepEqual(add('A', math.matrix(['B', 'C'])), math.matrix(['AB', 'AC']));
+    assert.deepEqual(add(math.matrix(['B', 'C']), 'A'), math.matrix(['BA', 'CA']));
   });
 
   it('should add matrices correctly', function() {

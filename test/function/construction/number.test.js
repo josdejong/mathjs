@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     number = math.number;
 
@@ -15,6 +15,10 @@ describe('number', function() {
     approx.equal(number(false), 0);
   });
 
+  it('should convert null to a number', function() {
+    approx.equal(number(null), 0);
+  });
+
   it('should convert a bignumber to a number', function() {
     approx.equal(number(math.bignumber(0.1)), 0.1);
     approx.equal(number(math.bignumber('1.3e500')), Infinity);
@@ -23,6 +27,10 @@ describe('number', function() {
   it('should accept a number as argument', function() {
     approx.equal(number(3), 3);
     approx.equal(number(-3), -3);
+  });
+
+  it('should convert a unit to a number', function() {
+    approx.equal(number(math.unit('52cm'), 'm'), 0.52);
   });
 
   it('should parse the string if called with a valid string', function() {
@@ -46,7 +54,6 @@ describe('number', function() {
   });
 
   it('should throw an error if called with a wrong number of arguments', function() {
-    assert.throws(function () {number(1,2)}, error.ArgumentsError);
     assert.throws(function () {number(1,2,3)}, error.ArgumentsError);
   });
 
@@ -54,8 +61,10 @@ describe('number', function() {
     assert.throws(function () {number(math.complex(2,3))}, TypeError);
   });
 
-  it('should throw an error if called with a unit', function() {
-    assert.throws(function () {number(math.unit('5cm'))}, TypeError);
+  it('should throw an error with wrong type of arguments', function() {
+    assert.throws(function () {number(math.unit('5cm'))}, /Second argument with valueless unit expected/);
+    assert.throws(function () {number(math.unit('5cm'), 2)}, TypeError);
+    assert.throws(function () {number('23', 2)}, TypeError);
   });
 });
 

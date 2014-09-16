@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -12,6 +12,10 @@ describe('tanh', function() {
   it('should return the tanh of a boolean', function () {
     approx.equal(tanh(true), 0.76159415595576);
     approx.equal(tanh(false), 0);
+  });
+
+  it('should return the tanh of null', function () {
+    approx.equal(tanh(null), 0);
   });
 
   it('should return the tanh of a number', function() {

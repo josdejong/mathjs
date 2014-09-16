@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -12,6 +12,10 @@ describe('sinh', function() {
   it('should return the sinh of a boolean', function () {
     approx.equal(sinh(true), 1.1752011936438014);
     approx.equal(sinh(false), 0);
+  });
+
+  it('should return the sinh of a null', function () {
+    approx.equal(sinh(null), 0);
   });
 
   it('should return the sinh of a number', function() {

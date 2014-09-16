@@ -1,13 +1,17 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     arg = math.arg;
 
 describe('arg', function() {
   it('should compute the argument of a boolean', function () {
     assert.equal(arg(true), 0);
     assert.equal(arg(false), 0);
+  });
+
+  it('should compute the argument of null', function () {
+    assert.equal(arg(null), 0);
   });
 
   it('should compute the argument of a number', function () {
@@ -36,12 +40,12 @@ describe('arg', function() {
 
   it('should calculate the argument for each element in a matrix', function() {
     assert.deepEqual(math.divide(arg([
-      math.i, math.unary(math.i), math.add(1,math.i)
+      math.i, math.unaryMinus(math.i), math.add(1,math.i)
     ]), math.pi), [
       0.5, -0.5, 0.25
     ]);
     assert.deepEqual(math.matrix(math.divide(arg([
-      math.i, math.unary(math.i), math.add(1,math.i)
+      math.i, math.unaryMinus(math.i), math.add(1,math.i)
     ]), math.pi)).valueOf(), [
       0.5, -0.5, 0.25
     ]);

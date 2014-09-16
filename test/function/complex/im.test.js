@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')();
+    math = require('../../../index');
 
 describe('im', function() {
 
@@ -21,6 +21,10 @@ describe('im', function() {
   it('should return the imaginary part of a boolean', function() {
     assert.equal(math.im(true), 0);
     assert.equal(math.im(false), 0);
+  });
+
+  it('should return the imaginary part of null', function() {
+    assert.equal(math.im(null), 0);
   });
 
   it('should return the imaginary part of a string', function() {

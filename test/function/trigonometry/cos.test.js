@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -12,6 +12,10 @@ describe('cos', function() {
   it('should return the cosine of a boolean', function () {
     approx.equal(cos(true), 0.54030230586814);
     approx.equal(cos(false), 1);
+  });
+
+  it('should return the cosine of null', function () {
+    approx.equal(cos(null), 1);
   });
 
   it('should return the cosine of a number', function() {

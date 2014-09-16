@@ -1,5 +1,169 @@
-# math.js history
-https://github.com/josdejong/mathjs
+# History
+
+
+## 2014-10-12, version 1.0.1
+
+- Disabled array notation for ranges in a matrix index in the expression parser 
+  (it is confusing and redundant there).
+- Fixed a regression in the build of function subset not being able to return
+  a scalar.
+- Fixed some missing docs and broken links in the docs.
+
+
+## 2014-09-04, version 1.0.0
+
+- Implemented a function `filter(x, test)`.
+- Removed `math.distribution` for now, needs some rethinking.
+- `math.number` can convert units to numbers (requires a second argument)
+- Fixed some precedence issues with the range and conversion operators.
+- Fixed an zero-based issue when getting a matrix subset using an index 
+  containing a matrix.
+
+
+## 2014-08-21, version 0.27.0
+
+- Implemented functions `sort(x [, compare])` and `flatten(x)`.
+- Implemented support for `null` in all functions.
+- Implemented support for "rawArgs" functions in the expression parser. Raw 
+  functions are invoked with unevaluated parameters (nodes).
+- Expressions in the expression parser can now be spread over multiple lines,
+  like '2 +\n3'.
+- Changed default value of the option `wrap` of function `math.import` to false.
+- Changed the default value for new entries in a resized matrix when to zero. 
+  To leave new entries uninitialized, use the new constant `math.uninitialized` 
+  as default value.
+- Renamed transform property from `__transform__` to `transform`, and documented
+  the transform feature.
+- Fixed a bug in `math.import` not applying options when passing a module name.
+- A returned matrix subset is now only squeezed when the `index` consists of
+  scalar values, and no longer for ranges resolving into a single value. 
+
+
+## 2014-08-03, version 0.26.0
+
+- A new instance of math.js can no longer be created like `math([options])`,
+  to prevent side effects from math being a function instead of an object.
+  Instead, use the function `math.create([options])` to create a new instance.
+- Implemented `BigNumber` support for all constants: `pi`, `tau`, `e`, `phi`,
+  `E`, `LN2`, `LN10`, `LOG2E`, `LOG10E`, `PI`, `SQRT1_2`, and `SQRT2`.
+- Implemented `BigNumber` support for functions `gcd`, `xgcd`, and `lcm`.
+- Fixed function `gxcd` returning an Array when math.js was configured 
+  as `{matrix: 'matrix'}`.
+- Multi-line expressions now return a `ResultSet` instead of an `Array`.
+- Implemented transforms (used right now to transform one-based indices to 
+  zero-based for expressions).
+- When used inside the expression parser, functions `concat`, `min`, `max`,
+  and `mean` expect an one-based dimension number.
+- Functions `map` and `forEach` invoke the callback with one-based indices
+  when used from within the expression parser.
+- When adding or removing dimensions when resizing a matrix, the dimensions
+  are added/removed from the inner side (right) instead of outer side (left).
+- Improved index out of range errors.
+- Fixed function `concat` not accepting a `BigNumber` for parameter `dim`.
+- Function `squeeze` now squeezes both inner and outer singleton dimensions.
+- Output of getting a matrix subset is not automatically squeezed anymore
+  except for scalar output.
+- Renamed `FunctionNode` to `FunctionAssignmentNode`, and renamed `ParamsNode`
+  to `FunctionNode` for more clarity.
+- Fixed broken auto completion in CLI.
+- Some minor fixes.
+
+
+## 2014-07-01, version 0.25.0
+
+- The library now immediately returns a default instance of mathjs, there is
+  no need to instantiate math.js in a separate step unless one ones to set 
+  configuration options: 
+  
+        // instead of:
+        var mathjs = require('mathjs'),  // load math.js
+            math = mathjs();             // create an instance
+      
+        // just do:
+        var math = require('mathjs');
+- Implemented support for implicit multiplication, like `math.eval('2a', {a:3})`
+  and `math.eval('(2+3)(1-3)')`. This changes behavior of matrix indexes as 
+  well: an expression like `[...][...]` is not evaluated as taking a subset of 
+  the first matrix, but as an implicit multiplication of two matrices.
+- Removed utility function `ifElse`. This function is redundant now the 
+  expression parser has a conditional operator `a ? b : c`.
+- Fixed a bug with multiplying a number with a temperature,  
+  like `math.eval('10 * celsius')`.
+- Fixed a bug with symbols having value `undefined` not being evaluated.
+
+
+## 2014-06-20, version 0.24.1
+
+- Something went wrong with publishing on npm.
+
+
+## 2014-06-20, version 0.24.0
+
+- Added constant `null`.
+- Functions `equal` and `unequal` support `null` and `undefined` now.
+- Function `typeof` now recognizes regular expressions as well.
+- Objects `Complex`, `Unit`, and `Help` now return their string representation
+  when calling `.valueOf()`.
+- Changed the default number of significant digits for BigNumbers from 20 to 64.
+- Changed the behavior of the conditional operator (a ? b : c) to lazy 
+  evaluating.
+- Fixed imported, wrapped functions not accepting `null` and `undefined` as
+  function arguments.
+
+
+## 2014-06-10, version 0.23.0
+
+- Renamed some functions (everything now has a logical, camel case name):
+  - Renamed functions `edivide`, `emultiply`, and `epow` to `dotDivide`, 
+    `dotMultiply`, and `dotPow` respectively. 
+  - Renamed functions `smallereq` and `largereq` to `smallerEq` and `largerEq`.
+  - Renamed function `unary` to `unaryMinus` and added support for strings.
+- `end` is now a reserved keyword which cannot be used as function or symbol
+  name in the expression parser, and is not allowed in the scope against which
+  an expression is evaluated.
+- Implemented function `unaryPlus` and unary plus operator.
+- Implemented function `deepEqual` for matrix comparisons. 
+- Added constant `phi`, the golden ratio (`phi = 1.618...`).
+- Added constant `version`, returning the version number of math.js as string.
+- Added unit `drop` (`gtt`).
+- Fixed not being able to load math.js using AMD/require.js.
+- Changed signature of `math.parse(expr, nodes)` to `math.parse(expr, options)`
+  where `options: {nodes: Object.<String, Node>}`
+- Removed matrix support from conditional function `ifElse`.
+- Removed automatic assignment of expression results to variable `ans`. 
+  This functionality can be restored by pre- or postprocessing every evaluation, 
+  something like:
+  
+        function evalWithAns (expr, scope) {
+          var ans = math.eval(expr, scope);
+          if (scope) {
+            scope.ans = ans;
+          }
+          return ans;
+        }
+
+
+## 2014-05-22, version 0.22.0
+
+- Implemented support to export expressions to LaTeX. Thanks Niels Heisterkamp
+  (@nheisterkamp).
+- Output of matrix multiplication is now consistently squeezed.
+- Added reference documentation in the section /docs/reference.
+- Fixed a bug in multiplying units without value with a number (like `5 * cm`).
+- Fixed a bug in multiplying two matrices containing vectors (worked fine for 
+  arrays).
+- Fixed random functions not accepting Matrix as input, and always returning
+  a Matrix as output.
+
+
+## 2014-05-13, version 0.21.1
+
+- Removed `crypto` library from the bundle.
+- Deprecated functions `Parser.parse` and `Parser.compile`. Use
+  `math.parse` and `math.compile` instead.
+- Fixed function `add` not adding strings and matrices element wise.
+- Fixed parser not being able to evaluate an exponent followed by a unary minus
+  like `2^-3`, and a transpose followed by an index like `[3]'[1]`.
 
 
 ## 2014-04-24, version 0.21.0

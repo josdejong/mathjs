@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -13,6 +13,10 @@ describe('atan', function() {
   it('should return the arctan of a boolean', function () {
     approx.equal(atan(true), 0.25 * pi);
     approx.equal(atan(false), 0);
+  });
+
+  it('should return the arctan of null', function () {
+    approx.equal(atan(null), 0);
   });
 
   it('should return the arctan of a number', function() {

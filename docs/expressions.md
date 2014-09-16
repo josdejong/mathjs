@@ -8,11 +8,13 @@ parser is aimed at end users: mathematicians, engineers, students, pupils.
 The syntax of the expression parser differs from JavaScript and the low level
 math.js library.
 
-This page is divided in two sections:
+This page is divided in the following sections:
 
 - [Parsing and evaluation](#parsing-and-evaluation) describes how to parse and
   evaluate expressions with math.js
 - [Syntax](#syntax) describes how to write expressions.
+- [Customization](#customization) describes how to customize processing and 
+  evaluation of expressions.
 
 
 ## Parsing and evaluation
@@ -47,9 +49,6 @@ assigned variables or function.
 The following code demonstrates how to evaluate expressions.
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // evaluate expressions
 math.eval('sqrt(3^2 + 4^2)');           // 5
 math.eval('sqrt(-4)');                  // 2i
@@ -96,9 +95,6 @@ variables or functions. Parameter `scope` is a regular Object.
 Example usage:
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // parse an expression into a node, and evaluate the node
 var code1 = math.compile('sqrt(3^2 + 4^2)');
 code1.eval(); // 5
@@ -133,9 +129,6 @@ variables or functions. Parameter `scope` is a regular Object.
 Example usage:
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // parse an expression into a node, and evaluate the node
 var node1 = math.parse('sqrt(3^2 + 4^2)');
 var code1 = node1.compile(math);
@@ -153,6 +146,18 @@ code2.eval(scope); // 9
 // change a value in the scope and re-evaluate the node
 scope.a = 3;
 code2.eval(scope); // 27
+```
+
+Parsed expressions can be exported to text using `node.toString()`, and can
+be exported to LaTeX using `node.toTex()`. The LaTeX export can be used to 
+pretty print an expression in the browser with a library like 
+[MathJax](http://www.mathjax.org/). Example usage:
+
+```js
+// parse an expression
+var node = math.parse('sqrt(x/x+1)');
+node.toString();  // returns 'sqrt((x / x) + 1)'
+node.toTex();     // returns '\sqrt{ {\frac{x}{x} }+{1} }'
 ```
 
 
@@ -174,17 +179,10 @@ The parser contains the following functions:
 
 - `clear()`
   Completely clear the parser's scope.
-- `compile(expr)`
-  Parse and compile an expression into javascript code.
-  Returns an Object with function `eval([scope])`, which when executed
-  returns the result of the expression.
 - `eval(expr)`
   Evaluate an expression. Returns the result of the expression.
 - `get(name)`
   Retrieve a variable or function from the parser's scope.
-- `parse(expr)`
-  Parse an expression into a node tree. Returns a `Node`, which can be
-  compiled and evaluated like `node.compile(math).eval([scope])`.
 - `remove(name)`
   Remove a variable or function from the parser's scope.
 - `set(name, value)`
@@ -194,9 +192,6 @@ The parser contains the following functions:
 The following code shows how to create and use a parser.
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // create a parser
 var parser = math.parser();
 
@@ -277,7 +272,9 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `;`         | Row separator           | `[x, y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
 `\n`        | Statement separator     | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
 `+`         | Add                     | `x + y`     | Left to right | `4 + 5`               | `9`
+`+`         | Unary plus              | `+y`        | None          | `+"4"`                | `4`
 `-`         | Subtract                | `x - y`     | Left to right | `7 - 3`               | `4`
+`-`         | Unary minus             | `-y`        | None          | `-4`                  | `-4`
 `*`         | Multiply                | `x * y`     | Left to right | `2 * 3`               | `6`
 `.*`        | Element-wise multiply   | `x .* y`    | Left to right | `[1,2,3] .* [1,2,3]`  | `[1,4,9]`
 `/`         | Divide                  | `x / y`     | Left to right | `6 / 2`               | `3`
@@ -285,7 +282,6 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `%`, `mod`  | Modulus                 | `x % y`     | Left to right | `8 % 3`               | `2`
 `^`         | Power                   | `x ^ y`     | Right to left | `2 ^ 3`               | `8`
 `.^`        | Element-wise power      | `x .^ y`    | Right to left | `[2,3] .^ [3,3]`      | `[9,27]`
-`-`         | Unary                   | `-y`        | None          | `-4`                  | `-4`
 `'`         | Transpose               | `y'`        | None          | `[[1,2],[3,4]]'`      | `[[1,3],[2,4]]`
 `!`         | Factorial               | `y!`        | None          | `5!`                  | `120`
 `=`         | Assignment              | `x = y`     | Right to left | `a = 5`               | `5`
@@ -307,13 +303,13 @@ Operators                         | Description
 `'`                               | Matrix transpose
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
-`-`                               | Unary
+`+`, `-`                          | Unary plus, unary minus
 `x unit`                          | Unit
-`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus
+`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus, implicit multiply
 `+`, `-`                          | Add, subtract
 `:`                               | Range
-`==`, `!=`, `<`, `>`, `<=`, `>=`  | Comparison
 `to`, `in`                        | Unit conversion
+`==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
 `?`, `:`                          | Conditional expression
 `=`                               | Assignment
 `,`                               | Parameter and column separator
@@ -475,10 +471,8 @@ The default number type of the expression parser can be changed at instantiation
 of math.js. The expression parser parses numbers as BigNumber by default:
 
 ```js
-var mathjs = require('mathjs'),
-    math = mathjs({
-      number: 'bignumber' // Default type of number: 'number' (default) or 'bignumber'
-    });
+// Configure the type of number: 'number' (default) or 'bignumber'
+math.config({number: 'bignumber'});
 
 // all numbers are parsed as BigNumber
 math.eval('0.1 + 0.2'); // BigNumber, 0.3
@@ -659,17 +653,52 @@ parser.eval('c[end - 1 : -1 : 2]');   // Matrix, [8, 7, 6]
 
 ### Multi line expressions
 
-An expression can contain multiple lines. Lines can be separated by a newline
-character `\n` or by a semicolon `;`. Output of statements followed by a
-semicolon will be hided from the output, and empty lines are ignored. The
-output is returned as an Array, with an entry for every statement.
+An expression can contain multiple lines, and expressions can be spread over
+multiple lines. Lines can be separated by a newline character `\n` or by a 
+semicolon `;`. Output of statements followed by a semicolon will be hided from 
+the output, and empty lines are ignored. The output is returned as a `ResultSet`, 
+with an entry for every visible statement.
 
 ```js
 // a multi line expression
-math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // Array, [1, 3, 9]
+math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [1, 3, 9]
 
 // semicolon statements are hided from the output
-math.eval('a=3; b=4; a + b \n a * b');  // Array, [7, 12]
+math.eval('a=3; b=4; a + b \n a * b');  // ResultSet, [7, 12]
+
+// single expression spread over multiple lines
+math.eval('a = 2 +\n  3');              // 5 
+math.eval('[\n  1, 2;\n  3, 4\n]');     // Matrix, [[1, 2], [3, 4]] 
+```
+
+The results can be read from a `ResultSet` via the property `ResultSet.entries`
+which is an `Array`, or by calling `ResultSet.valueOf()`, which returns the 
+array with results.
+
+
+### Implicit multiplication
+
+The expression parser supports implicit multiplication. Implicit multiplication
+has the same precedence as explicit multiplications and divisions, so `3/4 mm`
+is evaluated as `(3 / 4) * mm`. Here some examples:
+
+Expression      | Evaluated as:
+--------------- | ----------------------
+(3 + 2) b       | (3 + 2) * b
+3 / 4 mm        | (3 / 4) * mm
+(1 + 2) (4 - 2) | (1 + 2) * (4 - 2)
+sqrt(2)(4 + 1)  | sqrt(2) * (4 + 1)
+A[2, 3]         | A[2, 3]   # get subset
+(A)[2, 3]       | (A) * [2, 3]
+[2, 3][1, 3]    | [2, 3] * [1, 3]
+
+Implicit multiplication can be tricky as there is ambiguity on how an expression
+is evaluated. Use it carefully.
+
+```js
+math.eval('(1 + 2)(4 - 2)');  // Number, 6
+math.eval('3/4 mm');          // Unit, 0.75 mm
+math.eval('2 + 3i');          // Complex, 2 + 3i
 ```
 
 
@@ -686,4 +715,147 @@ parser.eval('# define some variables');
 parser.eval('width = 3');                             // 3
 parser.eval('height = 4');                            // 4
 parser.eval('width * height   # calculate the area'); // 12
+```
+
+
+## Customization
+
+Besides parsing and evaluating expressions, the expression parser supports
+a number of features to customize processing and evaluation of expressions.
+
+### Function transforms
+
+It is possible to preprocess function arguments and post process a functions
+return value by writing a *transform* for the function. A transform is a 
+function wrapping around a function to be transformed or completely replaces
+a function.
+
+For example, the functions or math.js use zero-based matrix indices (as is 
+common in programing languages), but the expression parser uses one-based 
+indices. To enable this, all functions dealing with indices have a transform,
+which changes input from one-based to zero-based, and transforms output (and
+error message) from zero-based to one-based.
+
+```js
+// using plain JavaScript, indices are zero-based:
+var a = [[1, 2], [3, 4]]; // a 2x2 matrix
+math.subset(a, math.index(0, 1)); // returns 2
+
+// using the expression parser, indices are transformed to one-based:
+var a = [[1, 2], [3, 4]]; // a 2x2 matrix
+var scope = {
+  a: a
+};
+math.eval('subset(a, index(1, 2))', scope); // returns 2
+```
+
+To create a transform for a function, the transform function must be attached
+to the function as property `transform`:
+
+```js
+var math = require('../index');
+
+// create a function
+function addIt(a, b) {
+  return a + b;
+}
+
+// attach a transform function to the function addIt
+addIt.transform = function (a, b) {
+  console.log('input: a=' + a + ', b=' + b);
+  // we can manipulate input here before executing addIt
+
+  var res = addIt(a, b);
+
+  console.log('result: ' + res);
+  // we can manipulate result here before returning
+
+  return res;
+};
+
+// import the function into math.js
+math.import({
+  addIt: addIt
+});
+
+// use the function via the expression parser
+console.log('Using expression parser:');
+console.log('2+4=' + math.eval('addIt(2, 4)'));
+// This will output:
+//
+//     input: a=2, b=4
+//     result: 6
+//     2+4=6
+
+// when used via plain JavaScript, the transform is not invoked
+console.log('');
+console.log('Using plain JavaScript:');
+console.log('2+4=' + math.addIt(2, 4));
+// This will output:
+//
+//     6
+```
+
+Functions with a transform must be imported in the `math` namespace, as they 
+need to be processed at compile time. They are not supported when passed via a 
+scope at evaluation time.
+
+
+### Custom argument parsing
+
+The expression parser of math.js has support for letting functions
+parse and evaluate arguments themselves, instead of calling them with
+evaluated arguments. This is useful for example when creating a function
+like `plot(f(x), x)` or `integrate(f(x), x, start, end)`, where some of the
+arguments need to be processed in a special way. In these cases, the expression
+`f(x)` will be evaluated repeatedly by the function, and `x` is not evaluated
+but used to specify the variable looping over the function `f(x)`.
+
+Functions having a property `rawArgs` with value `true` are treated in a special
+way by the expression parser: they will be invoked with unevaluated arguments, 
+allowing the function to process the arguments in a customized way. Raw 
+functions are called as:
+
+```
+rawFunction(args, math, scope)
+```
+
+Where :
+
+- `args` is an Array with nodes of the parsed arguments.
+- `math` is the math namespace with which the expression was compiled.
+- `scope` is the scope provided when evaluating the expression.
+
+Raw functions must be imported in the `math` namespace, as they need to be
+processed at compile time. They are not supported when passed via a scope
+at evaluation time.
+
+A simple example:
+
+```js
+function myFunction(args, math, scope) {
+  // get string representation of the arguments
+  var str = args.map(function (arg) {
+    return arg.toString();
+  })
+  
+  // evaluate the arguments
+  var res = args.map(function (arg) {
+    return arg.compile(math).eval(scope);
+  });
+  
+  return 'arguments: ' + str.join(',') + ', evaluated: ' + res.join(',');
+}
+
+// mark the function as "rawArgs", so it will be called with unevaluated arguments
+myFunction.rawArgs = true;
+
+// import the new function in the math namespace
+math.import({
+  myFunction: myFunction
+})
+
+// use the function
+math.eval('myFunction(2 + 3, sqrt(4))'); 
+// returns 'arguments: 2 + 3, sqrt(4), evaluated: 5, 2'
 ```

@@ -3,7 +3,7 @@
 var assert = require('assert'),
     approx = require('../../tools/approx'),
     Parser = require('../../lib/expression/Parser'),
-    math = require('../../index')();
+    math = require('../../index');
 
 describe('parser', function() {
 
@@ -12,20 +12,16 @@ describe('parser', function() {
     assert.ok(parser instanceof Parser);
   });
 
-  it ('should parse an expression', function () {
+  it ('should throw an error when using deprecated function parse', function () {
     var parser = new Parser(math);
 
-    var node = parser.parse('2 + 3');
-    assert.ok(node instanceof math.expression.node.Node);
-    assert.equal(node.compile(math).eval(), 5);
+    assert.throws(function () {parser.parse('2 + 3');}, /is deprecated/);
   });
 
-  it ('should compile an expression', function () {
+  it ('should throw an error when using deprecated function compile', function () {
     var parser = new Parser(math);
 
-    var code = parser.compile('2 + 3');
-    assert.equal(typeof code.eval, 'function');
-    assert.equal(code.eval(), 5);
+    assert.throws(function () {parser.compile('2 + 3');}, /is deprecated/);
   });
 
   it ('should evaluate an expression', function () {

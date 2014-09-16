@@ -2,8 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
+    math = require('../../../index'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
@@ -14,6 +13,10 @@ describe('exp', function() {
   it('should exponentiate a boolean', function () {
     approx.equal(exp(true), 2.71828182845905);
     approx.equal(exp(false), 1);
+  });
+
+  it('should exponentiate null', function () {
+    assert.equal(exp(null), 1);
   });
 
   it('should exponentiate a number', function() {
@@ -28,7 +31,7 @@ describe('exp', function() {
   });
 
   it('should exponentiate a bignumber', function() {
-    var bigmath = mathjs({precision: 100});
+    var bigmath = math.create({precision: 100});
 
     assert.deepEqual(bigmath.exp(bigmath.bignumber(1)), bigmath.bignumber('2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427'));
   });

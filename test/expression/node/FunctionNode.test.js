@@ -1,86 +1,124 @@
 // test FunctionNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    OperatorNode = require('../../../lib/expression/node/OperatorNode'),
-    FunctionNode = require('../../../lib/expression/node/FunctionNode'),
+    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
     RangeNode = require('../../../lib/expression/node/RangeNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+    FunctionNode = require('../../../lib/expression/node/FunctionNode');
 
 describe('FunctionNode', function() {
 
   it ('should create a FunctionNode', function () {
-    var n = new FunctionNode('f', ['x'], new Node());
+    var s = new SymbolNode('sqrt');
+    var c = new ConstantNode(4);
+    var n = new FunctionNode(s, [c]);
     assert(n instanceof FunctionNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'FunctionNode');
   });
 
   it ('should throw an error when calling without new operator', function () {
-    assert.throws(function () {FunctionNode('f', ['x'], new Node())}, SyntaxError);
+    var s = new SymbolNode('sqrt');
+    var c = new ConstantNode(4);
+    assert.throws(function () {FunctionNode(s, [c])}, SyntaxError);
   });
 
-  it ('should throw an error on wrong constructor arguments', function () {
-    assert.throws(function () {new FunctionNode()}, TypeError);
-    assert.throws(function () {new FunctionNode('a')}, TypeError);
-    assert.throws(function () {new FunctionNode('a', ['x'])}, TypeError);
-    assert.throws(function () {new FunctionNode('a', [2], new Node())}, TypeError);
-    assert.throws(function () {new FunctionNode(null, ['x'], new Node())}, TypeError);
+  it ('should throw an error when calling with wrong arguments', function () {
+    var s = new SymbolNode('sqrt');
+    var c = new ConstantNode(4);
+    assert.throws(function () {new FunctionNode('sqrt', [])}, TypeError);
+    assert.throws(function () {new FunctionNode(s, [2, 3])}, TypeError);
+    assert.throws(function () {new FunctionNode(s, [c, 3])}, TypeError);
   });
 
   it ('should compile a FunctionNode', function () {
-    var a = new ConstantNode('number', '2');
-    var x = new SymbolNode('x');
-    var o = new OperatorNode('+', 'add', [a, x]);
-    var n = new FunctionNode('f', ['x'], o);
+    var s = new SymbolNode('sqrt');
+    var c = new ConstantNode(4);
+    var n = new FunctionNode(s, [c]);
 
-    var expr = n.compile(math);
     var scope = {};
-    var f = expr.eval(scope);
-    assert.equal(typeof scope.f, 'function');
-    assert.equal(scope.f(3), 5);
-    assert.equal(scope.f(5), 7);
-    assert.throws(function () {scope.f()}, SyntaxError);
-    assert.throws(function () {scope.f(2, 3)}, SyntaxError);
+    assert.equal(n.compile(math).eval(scope), 2);
+  });
 
+  it ('should compile a FunctionNode with a raw function', function () {
+    var mymath = math.create();
+    function myFunction (args, _math, _scope) {
+      assert.equal(args.length, 2);
+      assert(args[0] instanceof Node);
+      assert(args[1] instanceof Node);
+      assert.deepEqual(_math.__proto__, mymath);
+      assert.strictEqual(_scope, scope);
+      return 'myFunction(' + args.join(', ') + ')';
+    }
+    myFunction.rawArgs = true;
+    mymath.import({myFunction: myFunction});
+
+    var s = new SymbolNode('myFunction');
+    var a = new ConstantNode(4);
+    var b = new ConstantNode(5);
+    var n = new FunctionNode(s, [a, b]);
+
+    var scope = {};
+    assert.equal(n.compile(mymath).eval(scope), 'myFunction(4, 5)');
+  });
+
+  it ('should compile a FunctionNode with overloaded a raw function', function () {
+    var mymath = math.create();
+    function myFunction (args, _math, _scope) {
+      assert.ok(false, 'should not be executed');
+    }
+    myFunction.rawArgs = true;
+    mymath.import({myFunction: myFunction});
+
+    var s = new SymbolNode('myFunction');
+    var a = new ConstantNode(4);
+    var b = new ConstantNode(5);
+    var n = new FunctionNode(s, [a, b]);
+
+    var scope = {
+      myFunction: function () {
+        return 42;
+      }
+    };
+    assert.equal(n.compile(mymath).eval(scope), 42);
   });
 
   it ('should find a FunctionNode', function () {
-    var a = new ConstantNode('number', '2');
-    var x = new SymbolNode('x');
-    var o = new OperatorNode('+', 'add', [a, x]);
-    var n = new FunctionNode('f', ['x'], o);
+    var a = new SymbolNode('a'),
+        b = new ConstantNode(2),
+        c = new ConstantNode(1);
+    var n = new FunctionNode(a, [b, c]);
 
     assert.deepEqual(n.find({type: FunctionNode}),  [n]);
-    assert.deepEqual(n.find({type: SymbolNode}),    [x]);
+    assert.deepEqual(n.find({type: SymbolNode}),    [a]);
     assert.deepEqual(n.find({type: RangeNode}),     []);
-    assert.deepEqual(n.find({type: ConstantNode}),  [a]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [a]);
+    assert.deepEqual(n.find({type: ConstantNode}),  [b, c]);
+    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [b]);
     assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
   });
 
-  it ('should find a FunctionNode without expression', function () {
-    var e = new FunctionNode('f', ['x'], new Node());
-
-    assert.deepEqual(e.find({type: FunctionNode}),  [e]);
-    assert.deepEqual(e.find({type: SymbolNode}),    []);
-  });
-
   it ('should match a FunctionNode', function () {
-    var a = new FunctionNode('f', ['x'], new Node());
+    var a = new FunctionNode(new Node(), []);
     assert.equal(a.match({type: FunctionNode}),  true);
     assert.equal(a.match({type: SymbolNode}), false);
   });
 
   it ('should stringify a FunctionNode', function () {
-    var a = new ConstantNode('number', '2');
-    var x = new SymbolNode('x');
-    var o = new OperatorNode('+', 'add', [a, x]);
-    var n = new FunctionNode('f', ['x'], o);
+    var s = new SymbolNode('sqrt');
+    var c = new ConstantNode(4);
+    var n = new FunctionNode(s, [c]);
 
-    assert.equal(n.toString(), 'function f(x) = 2 + x');
+    assert.equal(n.toString(), 'sqrt(4)');
+  });
+
+  it ('should LaTeX a FunctionNode', function () {
+    var s = new SymbolNode('sqrt');
+    var c = new ConstantNode(4);
+    var n = new FunctionNode(s, [c]);
+
+    assert.equal(n.toTex(), '\\sqrt{4}');
   });
 
 });

@@ -2,13 +2,17 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bignumber = math.bignumber;
 
 describe('sign', function() {
   it('should calculate the sign of a boolean', function () {
     assert.equal(math.sign(true), 1);
     assert.equal(math.sign(false), 0);
+  });
+
+  it('should calculate the sign of null', function () {
+    assert.equal(math.sign(null), 0);
   });
 
   it('should calculate the sign of a number', function() {

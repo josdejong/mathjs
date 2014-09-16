@@ -1,8 +1,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
+    math = require('../../../index'),
     range = math.range,
     matrix = math.matrix,
     bignumber = math.bignumber;
@@ -44,7 +43,7 @@ describe('range', function() {
   });
 
   it('should output an array when setting matrix==="array"', function() {
-    var math2 = mathjs({
+    var math2 = math.create({
       matrix: 'array'
     });
 
@@ -80,14 +79,14 @@ describe('range', function() {
   });
 
   it('should parse a range with bignumbers', function() {
-    var bigmath = mathjs({number: 'bignumber'});
+    var bigmath = math.create({number: 'bignumber'});
     var bignumber = bigmath.bignumber;
     assert.deepEqual(bigmath.range('1:3'), matrix([bignumber(1),bignumber(2)]));
     assert.deepEqual(bigmath.range('3:-1:0'), matrix([bignumber(3),bignumber(2),bignumber(1)]));
   });
 
   it('should throw an error when parsing a an invalid string to a bignumber range', function() {
-    var bigmath = mathjs({number: 'bignumber'});
+    var bigmath = math.create({number: 'bignumber'});
     assert.throws(function () {bigmath.range('1:a')}, /is no valid range/);
   });
 

@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -12,6 +12,10 @@ describe('cot', function() {
   it('should return the cotan of a boolean', function () {
     approx.equal(cot(true), 0.642092615934331);
     approx.equal(cot(false), Infinity);
+  });
+
+  it('should return the cotan of null', function () {
+    approx.equal(cot(null), Infinity);
   });
 
   it('should return the cotan of a number', function() {

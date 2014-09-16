@@ -7,16 +7,15 @@
  *    and keeps a scope with assigned variables in memory
  */
 
-// load math.js and create an instance
-var mathjs = require('../index'),
-    math = mathjs();
+// load math.js
+var math = require('../index');
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-  var precision = 5;
+  var precision = 14;
   console.log(math.format(value, precision));
 }
 
@@ -85,7 +84,7 @@ console.log('\n2. USING FUNCTION MATH.PARSE');
 // parse an expression
 console.log('\nparse an expression into a node tree');
 var node1 = math.parse('sqrt(3^2 + 4^2)');
-print(node1.toString());                    // "ans = sqrt((3 ^ 2) + (4 ^ 2))"
+print(node1.toString());                    // "sqrt((3 ^ 2) + (4 ^ 2))"
 
 // compile the node
 var code1 = node1.compile(math);
@@ -97,7 +96,7 @@ print(code1.eval());                        // 5
 console.log('\nprovide a scope');
 var node2 = math.parse('x^a');
 var code2 = node2.compile(math);
-print(node2.toString());                    // "ans = x ^ a"
+print(node2.toString());                    // "x ^ a"
 var scope = {
   x: 3,
   a: 2

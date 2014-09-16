@@ -1,6 +1,6 @@
 // test cube
 var assert = require('assert'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     error = require('../../../lib/error/index'),
     unit = math.unit,
     bignumber = math.bignumber,
@@ -12,6 +12,10 @@ describe('cube', function() {
   it('should return the cube of a boolean', function () {
     assert.equal(cube(true), 1);
     assert.equal(cube(false), 0);
+  });
+
+  it('should return the cube of null', function () {
+    assert.equal(math.ceil(null), 0);
   });
 
   it('should return the cube of a number', function() {

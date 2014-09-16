@@ -1,7 +1,7 @@
 // test Help
 var assert = require('assert'),
     Help = require('../../lib/type/Help'),
-    math = require('../../index')();
+    math = require('../../index');
 
 describe('help', function() {
   var doc = {
@@ -13,8 +13,8 @@ describe('help', function() {
     ],
     'description': 'Add two values.',
     'examples': [
-      '2.1 + 3.6',
-      'ans - 3.6'
+      'a = 2.1 + 3.6',
+      'a - 3.6'
     ],
     'seealso': [
       'subtract'
@@ -58,9 +58,9 @@ describe('help', function() {
         '    add(x, y)\n' +
         '\n' +
         'Examples:\n' +
-        '    2.1 + 3.6\n' +
+        '    a = 2.1 + 3.6\n' +
         '        5.7\n' +
-        '    ans - 3.6\n' +
+        '    a - 3.6\n' +
         '        2.1\n' +
         '\n' +
         'See also: subtract\n');
@@ -99,7 +99,7 @@ describe('help', function() {
     var help = new Help(math, {
       'name': 'add',
       'examples': [
-        '2 ++ 3'
+        '2 ^^ 3'
       ]
     });
 
@@ -107,9 +107,26 @@ describe('help', function() {
         '\nName: add\n' +
         '\n'+
         'Examples:\n' +
-        '    2 ++ 3\n' +
+        '    2 ^^ 3\n' +
         '        SyntaxError: Value expected (char 4)\n' +
         '\n');
+  });
+
+  it('should return string representation on valueOf', function() {
+    var help = new Help(math, {
+      'name': 'add',
+      'examples': [
+        '2 ^^ 3'
+      ]
+    });
+
+    assert.strictEqual(help.valueOf(),
+            '\nName: add\n' +
+            '\n'+
+            'Examples:\n' +
+            '    2 ^^ 3\n' +
+            '        SyntaxError: Value expected (char 4)\n' +
+            '\n');
   });
 
   it('should export doc to JSON', function() {

@@ -1,6 +1,6 @@
 // test square
 var assert = require('assert'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     error = require('../../../lib/error/index'),
     unit = math.unit,
     bignumber = math.bignumber,
@@ -12,6 +12,10 @@ describe('square', function() {
   it('should return the square of a boolean', function () {
     assert.equal(square(true), 1);
     assert.equal(square(false), 0);
+  });
+
+  it('should return the square of null', function () {
+    assert.equal(square(null), 0);
   });
 
   it('should return the square of a number', function() {

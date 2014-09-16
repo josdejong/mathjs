@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -13,6 +13,10 @@ describe('asin', function() {
   it('should return the arcsin of a boolean', function () {
     approx.equal(asin(true), 0.5 * pi);
     approx.equal(asin(false), 0);
+  });
+
+  it('should return the arcsin of null', function () {
+    approx.equal(asin(null), 0);
   });
 
   it('should return the arcsin of a number', function() {

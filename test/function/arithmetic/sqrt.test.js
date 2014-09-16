@@ -2,8 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    mathjs = require('../../../index'),
-    math = mathjs();
+    math = require('../../../index'),
     sqrt = math.sqrt,
     bignumber = math.bignumber;
 
@@ -11,6 +10,10 @@ describe('sqrt', function() {
   it('should return the square root of a boolean', function () {
     assert.equal(sqrt(true), 1);
     assert.equal(sqrt(false), 0);
+  });
+
+  it('should return the square root of null', function () {
+    assert.equal(sqrt(null), 0);
   });
 
   it('should return the square root of a positive number', function() {
@@ -36,7 +39,7 @@ describe('sqrt', function() {
     assert.deepEqual(sqrt(bignumber(25)), bignumber(5));
 
     // validate whether we are really working at high precision
-    var bigmath = mathjs({precision: 100});
+    var bigmath = math.create({precision: 100});
     assert.deepEqual(bigmath.sqrt(bigmath.bignumber(2)), bigmath.bignumber('1.414213562373095048801688724209698078569671875376948073176679737990732478462107038850387534327641573'));
   });
 
@@ -46,6 +49,7 @@ describe('sqrt', function() {
 
   it('should return the square root of a complex number', function() {
     assert.deepEqual(sqrt(math.complex(3, -4)), math.complex(2, -1));
+    assert.deepEqual(sqrt(math.complex(1e10, 1e-10)), math.complex(1e5, 5e-16));
   });
 
   it('should throw an error when used with a unit', function() {

@@ -1,8 +1,7 @@
 // test select (chaining of operations)
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    mathjs = require('../../index'),
-    math = mathjs(),
+    math = require('../../index'),
     Selector = math.chaining.Selector;
 
 describe('select', function() {
@@ -67,7 +66,6 @@ describe('select', function() {
   it ('should not clear inherited properties', function () {
     Object.prototype.foo = 'bar';
 
-    var math = mathjs();
     var selector = new Selector();
 
     assert.equal(selector.foo, 'bar');

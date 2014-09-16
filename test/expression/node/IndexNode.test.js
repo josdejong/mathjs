@@ -1,9 +1,7 @@
 // test IndexNode
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    mathjs = require('../../../index'),
-    math = mathjs(),
-    bigmath = mathjs({number: 'bignumber'}),
+    bigmath = require('../../../index').create({number: 'bignumber'}),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     RangeNode = require('../../../lib/expression/node/RangeNode'),
@@ -33,11 +31,11 @@ describe('IndexNode', function() {
   it ('should compile a IndexNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile(bigmath);
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -48,38 +46,38 @@ describe('IndexNode', function() {
   it ('should compile a IndexNode with range and context parameters', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
+      new ConstantNode(2),
       new RangeNode([
-        new ConstantNode('number', '1'),
+        new ConstantNode(1),
         new SymbolNode('end')
       ])
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile(bigmath);
 
     var scope = {
       a: [[1, 2], [3, 4]]
     };
-    assert.deepEqual(expr.eval(scope), [3, 4]);
+    assert.deepEqual(expr.eval(scope), [[3, 4]]);
   });
 
   it ('should compile a IndexNode with negative step range and context parameters', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
+      new ConstantNode(2),
       new RangeNode([
         new SymbolNode('end'),
-        new ConstantNode('number', '1'),
-        new ConstantNode('number', '-1')
+        new ConstantNode(1),
+        new ConstantNode(-1)
       ])
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile(bigmath);
 
     var scope = {
       a: [[1, 2], [3, 4]]
     };
-    assert.deepEqual(expr.eval(scope), [4, 3]);
+    assert.deepEqual(expr.eval(scope), [[4, 3]]);
   });
 
   it ('should compile a IndexNode with "end" both as value and in a range', function () {
@@ -87,24 +85,24 @@ describe('IndexNode', function() {
     var ranges = [
       new SymbolNode('end'),
       new RangeNode([
-        new ConstantNode('number', '1'),
+        new ConstantNode(1),
         new SymbolNode('end')
       ])
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile(bigmath);
 
     var scope = {
       a: [[1, 2], [3, 4]]
     };
-    assert.deepEqual(expr.eval(scope), [3, 4]);
+    assert.deepEqual(expr.eval(scope), [[3, 4]]);
   });
 
   it ('should compile a IndexNode with bignumber setting', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ];
     var n = new IndexNode(a, ranges);
     var expr = n.compile(bigmath);
@@ -117,8 +115,8 @@ describe('IndexNode', function() {
 
   it ('should find an IndexNode', function () {
     var a = new SymbolNode('a'),
-        b = new ConstantNode('number', '2'),
-        c = new ConstantNode('number', '1');
+        b = new ConstantNode(2),
+        c = new ConstantNode(1);
     var n = new IndexNode(a, [b, c]);
 
     assert.deepEqual(n.find({type: IndexNode}),  [n]);
@@ -145,8 +143,8 @@ describe('IndexNode', function() {
   it ('should stringify an IndexNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode('number', '2'),
-      new ConstantNode('number', '1')
+      new ConstantNode(2),
+      new ConstantNode(1)
     ];
 
     var n = new IndexNode(a, ranges);
@@ -154,6 +152,20 @@ describe('IndexNode', function() {
 
     var n2 = new IndexNode(a, []);
     assert.equal(n2.toString(), 'a[]')
+  });
+
+  it ('should LaTeX an IndexNode', function () {
+    var a = new SymbolNode('a');
+    var ranges = [
+      new ConstantNode(2),
+      new ConstantNode(1)
+    ];
+
+    var n = new IndexNode(a, ranges);
+    assert.equal(n.toTex(), 'a[2, 1]');
+
+    var n2 = new IndexNode(a, []);
+    assert.equal(n2.toTex(), 'a[]')
   });
 
 });

@@ -5,32 +5,13 @@ This getting started describes how to install, load, and use math.js.
 
 ## Install
 
-Math.js can be installed using npm, bower, or by just downloading the library.
+Math.js can be installed using various package managers like [npm](https://npmjs.org/) and [bower](http://twitter.github.io/bower/), or by just downloading the library from the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
 
-*Note: The API of math.js is not fully stabilized. Please read [what is changed](https://github.com/josdejong/mathjs/blob/master/HISTORY.md) before upgrading to the newest version.*
-
-### npm
-Math.js can be installed using [npm](https://npmjs.org/):
+To install via npm, run:
 
     npm install mathjs
 
-Note: when installed globally (using the `-g` option), math.js is available as
-a command line application `mathjs`, see section
-[command line interface](https://github.com/josdejong/mathjs/blob/master/docs/command_line_interface.md).
-
-### component(1)
-The library can be installed using [component(1)](https://github.com/component/component/):
-
-    component install josdejong/mathjs
-
-### bower
-Or using [bower](http://twitter.github.io/bower/):
-
-    bower install mathjs
-
-### download
-Or by downloading the latest version from
-[mathjs.org](http://mathjs.org/#install_or_download).
+Other ways to install math.js are described on the [website](http://mathjs.org/download.html).
 
 
 ## Load
@@ -38,24 +19,24 @@ Or by downloading the latest version from
 Math.js can be used in node.js and in the browser. The library must be loaded
 and instantiated. When creating an instance, one can optionally provide
 configuration options as described in
-[Configuration](https://github.com/josdejong/mathjs/blob/master/docs/configuration.md).
+[Configuration](configuration.md).
 
 ### Node.js
 
 Load math.js in [node.js](http://nodejs.org/):
 
 ```js
-// load math.js and create an instance
-var mathjs = require('mathjs'),
-    math = mathjs();
+// load math.js
+var math = require('mathjs');
 
+// use math.js
 math.sqrt(-4); // 2i
 ```
 
 
 ### Browser
 
-Math.js can be loaded as a regular javascript file in the browser:
+Math.js can be loaded as a regular JavaScript file in the browser:
 
 ```html
 <!DOCTYPE HTML>
@@ -65,9 +46,6 @@ Math.js can be loaded as a regular javascript file in the browser:
 </head>
 <body>
   <script type="text/javascript">
-    // create an instance of math.js
-    var math = mathjs();
-
     // use math.js
     math.sqrt(-4); // 2i
   </script>
@@ -90,10 +68,7 @@ require.config({
     mathjs: 'path/to/mathjs',
   }
 });
-require(['mathjs'], function (mathjs) {
-  // create an instance of math.js
-  var math = mathjs();
-
+require(['mathjs'], function (math) {
   // use math.js
   math.sqrt(-4); // 2i
 });
@@ -102,16 +77,13 @@ require(['mathjs'], function (mathjs) {
 ## Use
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
-math.js can evaluate expressions (see [Expressions](https://github.com/josdejong/mathjs/blob/master/docs/expressions.md)) and supports
-chained operations (see [Chained operations](https://github.com/josdejong/mathjs/blob/master/docs/chained_operations.md)).
+math.js can evaluate expressions (see [Expressions](expressions.md)) and supports
+chained operations (see [Chained operations](chained_operations.md)).
 
 The example code below shows how to use math.js. More examples can be found in the
-[examples directory](https://github.com/josdejong/mathjs/tree/master/examples/).
+section [Examples](http://mathjs.org/examples/index.html).
 
 ```js
-// create an instance of math.js
-var math = require('mathjs')();
-
 // functions and constants
 math.round(math.e, 3);            // 2.718
 math.atan2(3, -3) / math.pi;      // 0.75
@@ -132,3 +104,10 @@ math.select(3)
     .multiply(2)
     .done(); // 14
 ```
+
+## Next
+
+To learn more about math.js, check out the available documentation and examples:
+
+- [Documentation](index.md)
+- [Examples](http://mathjs.org/examples/index.html)

@@ -15,10 +15,9 @@ from the input (for example `math.eval`) use the default number type, which
 can be configured when instantiating math.js:
 
 ```js
-var mathjs = require('mathjs'),
-    math = mathjs({
-      number: 'number' // Default type of number: 'number' (default) or 'bignumber'
-    });
+math.config({
+  number: 'number' // Default type of number: 'number' (default) or 'bignumber'
+});
 ```
 
 ## Round-off errors
@@ -59,14 +58,14 @@ console.log(1e309);   // Infinity
 console.log(1e-324);  // 0
 ```
 
-## Comparison
+## Equality
 
 Because of rounding errors in calculations, it is unsafe to compare JavaScript
 Numbers. For example executing `0.1 + 0.2 == 0.3` in JavaScript will return
 false, as the addition `0.1 + 0.2` introduces a round-off error and does not
 return exactly `0.3`.
 
-To solve this problem, the comparison functions of math.js check whether the
+To solve this problem, the relational functions of math.js check whether the
 relative difference between the compared values is smaller than the configured
 option `epsilon`. In pseudo code (without exceptions for 0, Infinity and NaN):
 
@@ -81,7 +80,7 @@ where:
    `1.0 + DBL_EPSILON != 1.0`. This is a constant with a value of approximately
    `2.2204460492503130808472633361816e-16`;
 
-Note that the comparison functions cannot be used to compare small values
+Note that the relational functions cannot be used to compare small values
 (`< 2.22e-16`). These values are all considered equal to zero.
 
 Examples:
@@ -96,5 +95,5 @@ console.log(3e-20 == 3.1e-20);            // false
 console.log(math.equal(3e-20, 3.1e-20));  // true
 ```
 
-The available comparison functions are: `compare`, `equal`, `larger`,
-`largereq`, `smaller`, `smallereq`, `unequal`.
+The available relational functions are: `compare`, `equal`, `larger`,
+`largerEq`, `smaller`, `smallerEq`, `unequal`.

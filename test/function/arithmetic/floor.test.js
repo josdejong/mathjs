@@ -2,7 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -14,6 +14,10 @@ describe('floor', function() {
   it('should round booleans correctly', function () {
     assert.equal(floor(true), 1);
     assert.equal(floor(false), 0);
+  });
+
+  it('should round null', function () {
+    assert.equal(floor(null), 0);
   });
 
   it('should floor numbers correctly', function() {

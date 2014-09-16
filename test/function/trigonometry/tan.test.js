@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -14,6 +14,10 @@ describe('tan', function() {
   it('should return the tangent of a boolean', function () {
     approx.equal(tan(true), 1.55740772465490);
     approx.equal(tan(false), 0);
+  });
+
+  it('should return the tangent of null', function () {
+    approx.equal(tan(null), 0);
   });
 
   it('should return the tangent of a number', function() {

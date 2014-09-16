@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     lcm = math.lcm;
 
 describe('lcm', function() {
@@ -35,14 +35,14 @@ describe('lcm', function() {
     assert.equal(lcm(0, 0), 0);
   });
 
-  it('should calculate lcm for BigNumbers (downgrades to Number)', function() {
-    assert.equal(lcm(math.bignumber(4), math.bignumber(6)), 12);
-    assert.equal(lcm(math.bignumber(4), math.bignumber(6)), 12);
+  it('should calculate lcm for BigNumbers', function() {
+    assert.deepEqual(lcm(math.bignumber(4), math.bignumber(6)), math.bignumber(12));
+    assert.deepEqual(lcm(math.bignumber(4), math.bignumber(6)), math.bignumber(12));
   });
 
-  it('should calculate lcm for mixed BigNumbers to Numbers (downgrades to Number)', function() {
-    assert.equal(lcm(math.bignumber(4), 6), 12);
-    assert.equal(lcm(4, math.bignumber(6)), 12);
+  it('should calculate lcm for mixed BigNumbers and Numbers', function() {
+    assert.deepEqual(lcm(math.bignumber(4), 6), math.bignumber(12));
+    assert.deepEqual(lcm(4, math.bignumber(6)), math.bignumber(12));
   });
 
   it('should find the lowest common multiple of booleans', function() {
@@ -50,6 +50,12 @@ describe('lcm', function() {
     assert.equal(lcm(true, false), 0);
     assert.equal(lcm(false, true), 0);
     assert.equal(lcm(false, false), 0);
+  });
+
+  it('should find the lowest common multiple of numbers and null', function () {
+    assert.equal(lcm(1, null), 0);
+    assert.equal(lcm(null, 1), 0);
+    assert.equal(lcm(null, null), 0);
   });
 
   it('should throw an error for non-integer numbers', function() {

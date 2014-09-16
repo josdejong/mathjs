@@ -1,12 +1,16 @@
 // test abs
 var assert = require('assert'),
     error = require('../../../lib/error'),
-    math = require('../../../index')();
+    math = require('../../../index');
 
 describe('abs', function () {
   it('should return the abs value of a boolean', function () {
     assert.equal(math.abs(true), 1);
     assert.equal(math.abs(false), 0);
+  });
+
+  it('should return the abs value of null', function () {
+    assert.equal(math.abs(null), 0);
   });
 
   it('should return the abs value of a number', function () {

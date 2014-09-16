@@ -1,7 +1,7 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
     Parser = require('../../../lib/expression/Parser'),
-    math = require('../../../index')();
+    math = require('../../../index');
 
 describe('parser', function() {
 

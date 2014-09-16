@@ -1,7 +1,7 @@
 // test gcd
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     gcd = math.gcd;
 
 describe('gcd', function() {
@@ -45,14 +45,14 @@ describe('gcd', function() {
     assert.deepEqual(2, gcd(-2, -6));
   });
 
-  it('should calculate gcd for BigNumbers (downgrades to Number)', function() {
-    assert.equal(gcd(math.bignumber(12), math.bignumber(8)), 4);
-    assert.equal(gcd(math.bignumber(8), math.bignumber(12)), 4);
+  it('should calculate gcd for BigNumbers', function() {
+    assert.deepEqual(gcd(math.bignumber(12), math.bignumber(8)), math.bignumber(4));
+    assert.deepEqual(gcd(math.bignumber(8), math.bignumber(12)), math.bignumber(4));
   });
 
-  it('should calculate gcd for mixed BigNumbers to Numbers (downgrades to Number)', function() {
-    assert.equal(gcd(math.bignumber(12), 8), 4);
-    assert.equal(gcd(8, math.bignumber(12)), 4);
+  it('should calculate gcd for mixed BigNumbers and Numbers', function() {
+    assert.deepEqual(gcd(math.bignumber(12), 8), math.bignumber(4));
+    assert.deepEqual(gcd(8, math.bignumber(12)), math.bignumber(4));
   });
 
   it('should find the greatest common divisor of booleans', function() {
@@ -62,9 +62,15 @@ describe('gcd', function() {
     assert.equal(gcd(false, false), 0);
   });
 
+  it('should find the greatest common divisor of numbers and null', function () {
+    assert.equal(gcd(1, null), 1);
+    assert.equal(gcd(null, 1), 1);
+    assert.equal(gcd(null, null), 0);
+  });
+
   it('should throw an error if only one argument', function() {
     assert.throws(function () {gcd(1); }, SyntaxError);
-  })
+  });
 
   it('should throw an error for non-integer numbers', function() {
     assert.throws(function () {gcd(2, 4.1); }, /Parameters in function gcd must be integer numbers/);

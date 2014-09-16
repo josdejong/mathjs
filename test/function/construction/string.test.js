@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     string = math.string;
 
 describe('string', function() {
@@ -9,9 +9,13 @@ describe('string', function() {
     assert.equal(string(), '');
   });
 
-  it('should be \'true\' if called with true, \'false\' if called with false', function() {
+  it('should convert a boolean to a string', function() {
     assert.equal(string(true), 'true');
     assert.equal(string(false), 'false');
+  });
+
+  it('should convert null to a string', function() {
+    assert.equal(string(null), 'null');
   });
 
   it('should be the identity if called with a string', function() {

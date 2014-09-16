@@ -219,6 +219,16 @@ describe('unit', function() {
 
   });
 
+  describe('valueOf', function() {
+
+    it('should return string representation wen calling valueOf', function() {
+      assert.strictEqual(new Unit(5000, 'cm').valueOf(), '50 m');
+      assert.strictEqual(new Unit(5, 'kg').valueOf(), '5 kg');
+      assert.strictEqual(new Unit(2/3, 'm').valueOf(), '0.6666666666666666 m');
+    });
+
+  });
+
   describe('format', function () {
 
     it('should format units with given precision', function() {

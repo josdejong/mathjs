@@ -1,15 +1,14 @@
 // units
 
-// load math.js and create an instance
-var mathjs = require('../index'),
-    math = mathjs();
+// load math.js
+var math = require('../index');
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-  var precision = 5;
+  var precision = 14;
   console.log(math.format(value, precision));
 }
 

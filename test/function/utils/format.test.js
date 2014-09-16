@@ -1,8 +1,7 @@
 // test format
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    mathjs = require('../../../index');
-    math = mathjs();
+    math = require('../../../index');
 
 describe('format', function() {
 
@@ -62,22 +61,22 @@ describe('format', function() {
   });
 
   describe('bignumber', function () {
-    var math = mathjs({precision: 20}); // ensure the precision is 20 digits, the default
+    var bigmath = math.create({precision: 20}); // ensure the precision is 20 digits
 
     it('should format big numbers', function() {
-      assert.equal(math.format(math.bignumber(2).dividedBy(7)), '0.28571428571428571429');
-      assert.equal(math.format(math.bignumber(0.10400)), '0.104');
-      assert.equal(math.format(math.bignumber(2.3)), '2.3');
-      assert.equal(math.format(math.bignumber(2.3e6)), '2.3e+6');
+      assert.equal(math.format(bigmath.bignumber(2).dividedBy(7)), '0.28571428571428571429');
+      assert.equal(math.format(bigmath.bignumber(0.10400)), '0.104');
+      assert.equal(math.format(bigmath.bignumber(2.3)), '2.3');
+      assert.equal(math.format(bigmath.bignumber(2.3e6)), '2.3e+6');
     });
 
     it('should format big numbers with given precision', function() {
-      var oneThird = math.bignumber(1).div(3);
-      assert.equal(math.format(oneThird), '0.33333333333333333333'); // default, 20
-      assert.equal(math.format(oneThird, 3), '0.333');
-      assert.equal(math.format(oneThird, 4), '0.3333');
-      assert.equal(math.format(oneThird, 5), '0.33333');
-      assert.equal(math.format(oneThird, 18), '0.333333333333333333');
+      var oneThird = bigmath.bignumber(1).div(3);
+      assert.equal(bigmath.format(oneThird), '0.33333333333333333333'); // 20 digits
+      assert.equal(bigmath.format(oneThird, 3), '0.333');
+      assert.equal(bigmath.format(oneThird, 4), '0.3333');
+      assert.equal(bigmath.format(oneThird, 5), '0.33333');
+      assert.equal(bigmath.format(oneThird, 18), '0.333333333333333333');
     });
   });
 

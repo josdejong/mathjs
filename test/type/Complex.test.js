@@ -77,6 +77,16 @@ describe('Complex', function () {
     });
   });
 
+  describe('valueOf', function() {
+
+    it('should return string representation when calling valueOf', function() {
+      assert.strictEqual(new Complex(3, -4).valueOf(), '3 - 4i');
+      assert.strictEqual(new Complex().valueOf(), '0');
+      assert.strictEqual(new Complex(2, 3).valueOf(), '2 + 3i');
+    });
+
+  });
+
   describe('format', function() {
 
     it('should format a complex number', function() {

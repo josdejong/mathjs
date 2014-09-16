@@ -45,16 +45,24 @@ describe('util.array', function() {
     it('should resize a 1 dimensional array', function () {
       var a = [];
 
-      // resize with default value
+      // resize with a default value
       a = resize(a, [3], 100);
       assert.deepEqual(a, [100,100,100]);
 
       // resize without default value
       a = resize(a, [5]);
-      assert.deepEqual(a, arr(100,100,100, uninit, uninit));
+      assert.deepEqual(a, [100,100,100, 0, 0]);
 
       a = resize(a, [2]);
       assert.deepEqual(a, [100,100]);
+    });
+
+    it('should resize a 1 dimensional array with UNINITIALIZED defaultValue', function () {
+      var a = [];
+
+      // resize with default value UNINITIALIZED
+      a = resize(a, [3], array.UNINITIALIZED);
+      assert.deepEqual(a, arr(uninit, uninit, uninit));
     });
 
     it('should resize a 2 dimensional array', function () {
@@ -65,24 +73,24 @@ describe('util.array', function() {
 
       a = resize(a, [2, 4]);
       assert.deepEqual(a, [
-        arr(0, 1, uninit, uninit),
-        arr(2, 3, uninit, uninit)
+        [0, 1, 0, 0],
+        [2, 3, 0, 0]
       ]);
 
       a = resize(a, [4, 4]);
       assert.deepEqual(a, [
-        arr(0, 1, uninit, uninit),
-        arr(2, 3, uninit, uninit),
-        arr(uninit, uninit, uninit, uninit),
-        arr(uninit, uninit, uninit, uninit)
+        [0, 1, 0, 0],
+        [2, 3, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
       ]);
 
       a = resize(a, [4, 2]);
       assert.deepEqual(a, [
         [0, 1],
         [2, 3],
-        arr(uninit, uninit),
-        arr(uninit, uninit)
+        [0, 0],
+        [0, 0]
       ]);
 
       a = resize(a, [2, 2]);
@@ -138,35 +146,45 @@ describe('util.array', function() {
     });
 
     it('should resize a 1 dimensional array to 2 dimensional', function () {
-      var a = [0, 0];
+      var a = [1, 2];
 
-      a = resize(a, [4]);
-      assert.deepEqual(a, arr(0, 0, uninit, uninit));
+      a = resize(a, [4], 3);
+      assert.deepEqual(a, [1, 2, 3, 3]);
 
-      a = resize(a, [2, 4]);
+      a = resize(a, [4, 2], 4);
       assert.deepEqual(a, [
-        arr(0, 0, uninit, uninit),
-        arr(uninit, uninit, uninit, uninit)
+          [1, 4],
+          [2, 4],
+          [3, 4],
+          [3, 4]
       ]);
 
-      var b = [0, 0];
+      // without default value
+      var b = [1, 2];
 
       b = resize(b, [4]);
-      assert.deepEqual(b, arr(0, 0, uninit, uninit));
+      assert.deepEqual(b, [1, 2, 0, 0]);
 
-      b = resize(b, [2, 5], 8); // with a default value
+      b = resize(b, [4, 2]);
       assert.deepEqual(b, [
-        arr(0, 0, uninit, uninit, 8),
-        arr(8, 8, 8, 8, 8)
+          [1, 0],
+          [2, 0],
+          [0, 0],
+          [0, 0]
       ]);
+      // TODO: would be nicer if this returns uninit everwhere and not undefined on some places
     });
 
     it('should resize a 2 dimensional array to 1 dimensional', function () {
-      var a = [[1,2,3,4], [5,6,7,8]];
+      var a = [[1,2],[3,4],[5,6],[7,8]];
       a = resize(a, [6]);
-      assert.deepEqual(a, arr(1,2,3,4, uninit, uninit));
+      assert.deepEqual(a, [1,3,5,7,0,0]);
 
       var b = [[],[]];
+      b = resize(b, [2], 8);
+      assert.deepEqual(b, [undefined, undefined]);
+
+      var b = [];
       b = resize(b, [2], 8);
       assert.deepEqual(b, [8, 8]);
 
@@ -177,8 +195,8 @@ describe('util.array', function() {
       a = resize(a, [2,3], 5);
       assert.deepEqual(a, [[5,5,5], [5,5,5]]);
 
-      a = resize(a, [2,2,3], 7);
-      assert.deepEqual(a, [[[5,5,5], [5,5,5]], [[7,7,7], [7,7,7]]]);
+      a = resize(a, [2,3,2], 7);
+      assert.deepEqual(a, [[[5,7],[5,7],[5,7]], [[5,7],[5,7],[5,7]]]);
 
       a = resize(a, [3,2], 9);
       assert.deepEqual(a, [[5,5], [5,5], [9, 9]]);
@@ -202,10 +220,6 @@ describe('util.array', function() {
       assert.throws(function () {resize([], 2)}, /Array expected/);
       assert.throws(function () {resize(2)}, /Array expected/);
     });
-
-    it('should throw an error in case of invalid array', function () {
-      assert.throws(function () {resize([[1, 2], 3], [2, 2])}, /Array expected/);
-    });
   });
 
   describe('squeeze', function () {
@@ -217,20 +231,45 @@ describe('util.array', function() {
     });
 
     it('should squeeze an array', function () {
+      // leave zero dimensions as is
       assert.deepEqual(array.squeeze([]), []);
       assert.deepEqual(array.squeeze([[]]), []);
       assert.deepEqual(array.squeeze([[[]]]), []);
       assert.deepEqual(array.squeeze([[[], []]]), [[], []]);
       assert.deepEqual(array.squeeze([[[]], [[]]]), [[[]], [[]]]);
 
+      assert.deepEqual(array.squeeze(2), 2);
+      assert.deepEqual(array.squeeze([[2]]), 2);
+      assert.deepEqual(array.squeeze([[[2]]]), 2);
       assert.deepEqual(array.squeeze([1, 2, 3]), [1, 2, 3]);
       assert.deepEqual(array.squeeze([[1, 2, 3]]), [1, 2, 3]);
       assert.deepEqual(array.squeeze([[[1, 2, 3]]]), [1, 2, 3]);
-      assert.deepEqual(array.squeeze([[1], [2], [3]]), [[1], [2], [3]]);
+      assert.deepEqual(array.squeeze([[1], [2], [3]]), [1, 2, 3]);
       assert.deepEqual(array.squeeze([[1, 2], [3, 4]]), [[1, 2], [3, 4]]);
       assert.deepEqual(array.squeeze([[[1, 2]], [[3, 4]]]), [[[1, 2]], [[3, 4]]]);
       assert.deepEqual(array.squeeze([[[1, 2], [3, 4]]]), [[1, 2], [3, 4]]);
-      assert.deepEqual(array.squeeze([[[1], [2]], [[3], [4]]]), [[[1], [2]], [[3], [4]]]);
+      assert.deepEqual(array.squeeze([[[1], [2]], [[3], [4]]]), [[1, 2], [3, 4]]);
+      assert.deepEqual(array.squeeze([[[1]], [[2]], [[3]], [[4]]]), [1, 2, 3, 4]);
+    });
+
+    it('should adjust size when squeezing an array', function () {
+      var a = [[[1], [2]], [[3], [4]]];
+      var size = [2,2,1];
+      a = array.squeeze(a, size);
+      assert.deepEqual(a, [[1, 2], [3, 4]]);
+      assert.deepEqual(size, [2,2]);
+
+      a = [[1,2]];
+      size = [1,2];
+      a = array.squeeze(a, size);
+      assert.deepEqual(a, [1,2]);
+      assert.deepEqual(size, [2]);
+
+      a = [[[1]], [[2]], [[3]], [[4]]];
+      size = [4,1,1];
+      a = array.squeeze(a, size);
+      assert.deepEqual(a, [1, 2, 3, 4]);
+      assert.deepEqual(size, [4]);
     });
 
   });
@@ -244,24 +283,42 @@ describe('util.array', function() {
       assert.deepEqual(array.unsqueeze('string', 2), [['string']]);
     });
 
-    it('should unsqueeze an array', function () {
+    it('should ignore empty arrays in unsqueeze', function () {
+      // should do nothing with empty arrays
       assert.deepEqual(array.unsqueeze([], 0), []);
       assert.deepEqual(array.unsqueeze([], 1), []);
-      assert.deepEqual(array.unsqueeze([], 2), [[]]);
-      assert.deepEqual(array.unsqueeze([], 3), [[[]]]);
-
+      assert.deepEqual(array.unsqueeze([], 2), []);
+      assert.deepEqual(array.unsqueeze([], 3), []);
       assert.deepEqual(array.unsqueeze([[]], 0), [[]]);
       assert.deepEqual(array.unsqueeze([[]], 1), [[]]);
       assert.deepEqual(array.unsqueeze([[]], 2), [[]]);
-      assert.deepEqual(array.unsqueeze([[]], 3), [[[]]]);
+      assert.deepEqual(array.unsqueeze([[]], 3), [[]]);
+    });
 
+    it('should unsqueeze an array', function () {
       assert.deepEqual(array.unsqueeze([1, 2, 3], 1), [1, 2, 3]);
-      assert.deepEqual(array.unsqueeze([1, 2, 3], 2), [[1, 2, 3]]);
-      assert.deepEqual(array.unsqueeze([1, 2, 3], 3), [[[1, 2, 3]]]);
+      assert.deepEqual(array.unsqueeze([1, 2, 3], 2), [[1], [2], [3]]);
+      assert.deepEqual(array.unsqueeze([1, 2, 3], 3), [[[1]], [[2]], [[3]]]);
+      assert.deepEqual(array.unsqueeze([1, 2, 3], 3, 1), [[[1], [2], [3]]]);
+      assert.deepEqual(array.unsqueeze([1, 2, 3], 3, 2), [[[1, 2, 3]]]);
 
       assert.deepEqual(array.unsqueeze([[1, 2], [3, 4]], 1), [[1, 2], [3, 4]]);
       assert.deepEqual(array.unsqueeze([[1, 2], [3, 4]], 2), [[1, 2], [3, 4]]);
-      assert.deepEqual(array.unsqueeze([[1, 2], [3, 4]], 3), [[[1, 2], [3, 4]]]);
+      assert.deepEqual(array.unsqueeze([[1, 2], [3, 4]], 3), [[[1], [2]], [[3], [4]]]);
+    });
+
+    it('should adjust size when unsqueezing an array', function () {
+      var a = [[1, 2], [3, 4]];
+      var size = [2,2];
+      array.unsqueeze(a, 3, 0, size);
+      assert.deepEqual(a, [[[1], [2]], [[3], [4]]]);
+      assert.deepEqual(size, [2,2,1]);
+
+      a = [1, 2, 3, 4];
+      size = [4];
+      array.unsqueeze(a, 3, 0, size);
+      assert.deepEqual(a, [[[1]], [[2]], [[3]], [[4]]]);
+      assert.deepEqual(size, [4,1,1]);
     });
 
   });

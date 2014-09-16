@@ -1,14 +1,14 @@
 // test resize
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     Matrix = math.type.Matrix;
 
 describe('resize', function() {
 
   it('should resize an array', function() {
     var array = [[0,1,2],[3,4,5]];
-    assert.deepEqual(math.resize(array, [3, 2]), [[0,1], [3,4], arr(uninit, uninit)]);
+    assert.deepEqual(math.resize(array, [3, 2]), [[0,1], [3,4], [0, 0]]);
 
     // content should be cloned
     var x = math.complex(2, 3);
@@ -21,7 +21,12 @@ describe('resize', function() {
   it('should resize an array with a default value', function() {
     var array = [[0,1,2],[3,4,5]];
     assert.deepEqual(math.resize(array, [3, 2], 5), [[0,1], [3,4], [5,5]]);
-    assert.deepEqual(math.resize(array, [3]), [0,1,2]);
+    assert.deepEqual(math.resize(array, [2]), arr(0,3));
+  });
+
+  it('should resize an array with uninitialized as default value', function() {
+    var array = [];
+    assert.deepEqual(math.resize(array, [3], math.uninitialized), arr(uninit, uninit, uninit));
   });
 
   it('should resize an array with bignumbers', function() {
@@ -31,15 +36,15 @@ describe('resize', function() {
     var three = math.bignumber(3);
     var array = [one, two, three];
     assert.deepEqual(math.resize(array, [three, two], zero),
-        [[one,two], [zero, zero], [zero, zero]]);
+        [[one,zero], [two, zero], [three, zero]]);
   });
 
   it('should resize a matrix', function() {
     var matrix = new Matrix([[0,1,2],[3,4,5]]);
     assert.deepEqual(math.resize(matrix, [3, 2]),
-        new Matrix([[0,1], [3,4], arr(uninit, uninit)]));
+        new Matrix([[0,1], [3,4], [0,0]]));
     assert.deepEqual(math.resize(matrix, new Matrix([3, 2])),
-        new Matrix([[0,1], [3,4], arr(uninit, uninit)]));
+        new Matrix([[0,1], [3,4], [0,0]]));
 
     // content should be cloned
     var x = math.complex(2, 3);
@@ -60,12 +65,22 @@ describe('resize', function() {
   });
 
   it('should resize a scalar into an array when array is specified in settings', function() {
-    var math = require('../../../index')({
-      matrix: 'array'
-    });
+    var math2 = math.create({matrix: 'array'});
 
-    assert.deepEqual(math.resize(2, [3], 4), [2, 4, 4]);
-    assert.deepEqual(math.resize(2, [2,2], 4), [[2,4], [4,4]]);
+    assert.deepEqual(math2.resize(2, [3], 4), [2, 4, 4]);
+    assert.deepEqual(math2.resize(2, [2,2], 4), [[2,4], [4,4]]);
+  });
+
+  it('should resize a vector into a 2d matrix', function() {
+    var math2 = math.create({matrix: 'array'});
+
+    assert.deepEqual(math2.resize([1,2,3], [3,2], 0), [[1, 0], [2, 0], [3, 0]]);
+  });
+
+  it('should resize 2d matrix into a vector', function() {
+    var math2 = math.create({matrix: 'array'});
+
+    assert.deepEqual(math2.resize([[1,2],[3,4],[5,6]], [3], 0), [1,3,5]);
   });
 
   it('should resize a scalar into a matrix', function() {

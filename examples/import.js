@@ -4,16 +4,15 @@
  * containing functions and variables.
  */
 
-// load math.js and create an instance
-var mathjs = require('../index'),
-    math = mathjs();
+// load math.js
+var math = require('../index');
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-  var precision = 5;
+  var precision = 14;
   console.log(math.format(value, precision));
 }
 
@@ -42,7 +41,7 @@ print(math.eval('hello("user")'));    // 'hello, user!'
  */
 try {
   // import the numbers.js library into math.js
-  math.import('numbers');
+  math.import('numbers', {wrap: true});
 }
 catch (err) {
   console.log('Warning: to import numbers.js, the library must\n' +
@@ -62,7 +61,7 @@ if (math.fibonacci) {
  */
 try {
   // import the numeric.js library into math.js
-  math.import('numeric');
+  math.import('numeric', {wrap: true});
 }
 catch (err) {
   console.log('Warning: to import numeric.js, the library must\n' +

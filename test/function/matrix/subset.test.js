@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     subset = math.subset,
     matrix = math.matrix,
     range = math.range,
@@ -28,6 +28,14 @@ describe('subset', function() {
     assert.deepEqual(subset(b, index(1, 0)), 3);
   });
 
+  it('should get a subset of a matrix returning a null or undefined value', function() {
+    assert.deepEqual(subset([0], index(0)), 0);
+    assert.deepEqual(subset([null], index(0)), null);
+    assert.deepEqual(subset([undefined], index(0)), undefined);
+
+    assert.deepEqual(subset([null, undefined], index([0,2])), [null, undefined]);
+  });
+
   it('should throw an error if trying to access an invalid subset of a matrix', function() {
     assert.throws(function () {subset(b, index(6, 0))}, RangeError);
     assert.throws(function () {subset(b, index(1))}, RangeError);
@@ -47,6 +55,12 @@ describe('subset', function() {
     assert.deepEqual(subset(d, index(2, [0,2]), [[5,6]]), [[1,2], [3,4], [5,6]]);
     assert.deepEqual(d, [[1,2], [3,4]]);
     assert.deepEqual(subset(d, index(0,0), 123), [[123,2], [3,4]]);
+  });
+
+  it('should set a subset of an array with uninitialized default value', function() {
+    var a = [];
+    assert.deepEqual(subset(a, index(2), 1), [0,0,1]);
+    assert.deepEqual(subset(a, index(2), 1, math.uninitialized), arr(uninit, uninit,1));
   });
 
   it('should throw an error if setting the subset of an array with an invalid replacement', function() {
@@ -134,3 +148,20 @@ describe('subset', function() {
     assert.throws(function () {subset([1,2], [0])}, math.error.TypeError);
   });
 });
+
+/**
+ * Helper function to create an Array containing uninitialized values
+ * Example: arr(uninit, uninit, 2);    // [ , , 2 ]
+ */
+var uninit = {};
+function arr() {
+  var array = [];
+  array.length = arguments.length;
+  for (var i = 0; i < arguments.length; i++) {
+    var value = arguments[i];
+    if (value !== uninit) {
+      array[i] = value;
+    }
+  }
+  return array;
+}

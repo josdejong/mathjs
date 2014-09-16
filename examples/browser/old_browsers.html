@@ -7,7 +7,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-sham.min.js"></script>
 
-  <script type="text/javascript" src="../../dist/math.js"></script>
+  <script src="../../dist/math.js"></script>
 </head>
 <body>
 
@@ -17,11 +17,8 @@
 </p>
 
 <script>
-  // create an instance of math.js
-  var math = mathjs();
-
   function print(value) {
-    var precision = 5;
+    var precision = 14;
     document.write(math.format(value, precision) + '<br>');
   }
 

@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bignumber = math.bignumber;
 
 describe('concat', function() {
@@ -75,12 +75,17 @@ describe('concat', function() {
       [ [1,2],  [3,4], [9,10], [11,12] ],
       [ [5,6],  [7,8], [13,14], [15,16] ]
     ]);
-    
+
+    assert.deepEqual(math.concat(d,e, bignumber(1)), [
+      [ [1,2],  [3,4], [9,10], [11,12] ],
+      [ [5,6],  [7,8], [13,14], [15,16] ]
+    ]);
+
   });
 
   it('should throw an error in case of invalid requested dimension number', function() {
-    assert.throws(function () {math.concat([1, 2], [3,4], 2.3)}, /Dimension number must be a positive integer/);
-    assert.throws(function () {math.concat([1, 2], [3,4], 1)}, /Dimension mismatch \(1 > 0\)/);
+    assert.throws(function () {math.concat([1, 2], [3,4], 2.3)}, /Integer number expected for dimension/);
+    assert.throws(function () {math.concat([1, 2], [3,4], 1)}, /Index out of range \(1 > 0\)/);
   });
 
   it('should throw an error in case dimension mismatch', function() {

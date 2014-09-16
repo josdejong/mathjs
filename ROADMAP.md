@@ -2,17 +2,25 @@
 
 A rough roadmap for math.js.
 
-## Version 1.0
 
-- An expression parser.
-- A basic set of functions and constants.
-- Data types Number, Complex, Matrix, Unit, String.
-- Examples and documentation.
-- Extensive testing.
+## Version 1.x
 
-## Version 2.0
-
-- Library has a plugin architecture.
-- A basic set of functions covering all common mathematical areas.
+- Support for derived units (like `km/h`, `kg*m/s2`, etc).
+- Improve performance. Rewrite `Matrix` to support typed arrays.
+- Change to a modular architecture, split the library into separate modules 
+  like `mathjs-core`, `mathjs-expression`, `mathjs-unit`, `mathjs-matrix`,
+  `mathjs-complex`, `mathjs-bignumber`, and maybe separate modules 
+  `mathjs-statistics`, `mathjs-numeric`, etc.
+- Support for fractions.
 - Functions and data types for numeral systems: Bin, Oct, Hex, Dec.
-- Support for derived units (like km/h, kg*m/s2, etc).
+- BigNumber support for all functions and constants (for example trigonometric 
+  functions still miss BigNumber support).
+- Full scripting capabilities for the expression parser (for and while loops, 
+  function blocks, etc).
+- Implement a more broad set of common functions covering all common 
+  mathematical areas.
+
+
+## Version 2.x
+
+- Support for symbolic algebra.

@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -12,6 +12,10 @@ describe('coth', function() {
   it('should return the coth of a boolean', function () {
     approx.equal(coth(true), 1.3130352854993);
     approx.equal(coth(false), Number.POSITIVE_INFINITY);
+  });
+
+  it('should return the coth of null', function () {
+    approx.equal(coth(null), Number.POSITIVE_INFINITY);
   });
 
   it('should return the coth of a number', function() {

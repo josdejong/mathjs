@@ -2,16 +2,13 @@
 <html>
 <head>
   <title>math.js | basic usage</title>
-  <script type="text/javascript" src="../../dist/math.js"></script>
+  <script src="../../dist/math.js"></script>
 </head>
 <body>
 
 <script>
-  // create an instance of math.js
-  var math = mathjs();
-
   function print(value) {
-    var precision = 5;
+    var precision = 14;
     document.write(math.format(value, precision) + '<br>');
   }
 

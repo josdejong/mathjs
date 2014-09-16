@@ -2,7 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -40,6 +40,11 @@ describe('pow', function() {
     assert.equal(pow(2, false), 1);
     assert.equal(pow(true, 2), 1);
     assert.equal(pow(false, 2), 0);
+  });
+
+  it('should exponentiate numbers and null', function () {
+    assert.equal(pow(1, null), 1);
+    assert.equal(pow(null, 1), 0);
   });
 
   it('should exponentiate bignumbers', function() {

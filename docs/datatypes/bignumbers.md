@@ -18,17 +18,16 @@ which can be configured when instantiating math.js. To configure the use of
 BigNumbers instead of [numbers](numbers.md) by default, configure math.js like:
 
 ```js
-var mathjs = require('mathjs'),
-    math = mathjs({
-      number: 'bignumber', // Default type of number: 'number' (default) or 'bignumber'
-      precision: 20        // Number of significant digits for BigNumbers
-    });
+math.config({
+  number: 'bignumber', // Default type of number: 'number' (default) or 'bignumber'
+  precision: 64        // Number of significant digits for BigNumbers
+});
 
 // use math
 math.eval('0.1 + 0.2'); // BigNumber, 0.3
 ```
 
-The default precision for BigNumber is 20 digits, and can be configured with
+The default precision for BigNumber is 64 digits, and can be configured with
 the option `precision`.
 
 *Important:
@@ -36,7 +35,8 @@ BigNumber is not supported by the following functions:
 gcd, lcm, xgcd,
 arg,
 random,
-acos, asin, atan, atan2, cos, cot, csc, sec, sin, tan.
+acos, asin, atan, atan2, cos, cot, csc, sec, sin, tan,
+cosh, coth, csch, sech, sinh, tanh.
 These functions will downgrade BigNumber to Number, and return a Number.*
 
 Calculations with BigNumber are much slower than calculations with Number,

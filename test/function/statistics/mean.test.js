@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bignumber = math.bignumber,
     mean = math.mean;
 
@@ -73,6 +73,11 @@ describe('mean', function() {
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {mean()});
     assert.throws(function() {mean([], 2, 3)});
+  });
+
+  it('should throw an error if called a dimension out of range', function() {
+    assert.throws(function() {mean([1,2,3], -1)}, /IndexError: Index out of range \(-1 < 0\)/);
+    assert.throws(function() {mean([1,2,3], 1)}, /IndexError: Index out of range \(1 > 0\)/);
   });
 
   it('should throw an error if called with an empty array', function() {

@@ -1,6 +1,6 @@
 // test divide
 var assert = require('assert'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     error = require('../../../lib/error/index'),
     approx = require('../../../tools/approx'),
     divide = math.divide,
@@ -24,6 +24,12 @@ describe('divide', function() {
     assert.equal(divide(true, false), Infinity);
     assert.equal(divide(false, true), 0);
     assert.ok(isNaN(divide(false, false)));
+  });
+
+  it('should divide numbers and null', function () {
+    assert.equal(divide(1, null), Infinity);
+    assert.equal(divide(null, 1), 0);
+    assert(isNaN(divide(null, null)));
   });
 
   it('should divide mixed numbers and booleans', function() {

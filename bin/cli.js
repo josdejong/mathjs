@@ -39,8 +39,7 @@
  * the License.
  */
 
-var mathjs = require('../index'),
-    math = mathjs(),
+var math = require('../index'),
     parser = math.parser(),
     fs = require('fs');
 
@@ -107,7 +106,7 @@ function completer (text) {
               for (var n in Unit.UNITS) {
                 if (Unit.UNITS.hasOwnProperty(n)) {
                   if (n.indexOf(unitKeyword) == 0 &&
-                      Unit.isPlainUnit(prefix + n)) {
+                      Unit.isValuelessUnit(prefix + n)) {
                     matches.push(prefix + n);
                   }
                 }
@@ -172,6 +171,7 @@ function runStream (input, output) {
       if (expr) {
         try {
           var res = parser.eval(expr);
+          parser.set('ans', res); // TODO: in case of multi line input, set ans as the last of the expressions
           if (!Array.isArray(res) || res.length) {
             // TODO: how to distinguish array output from multi-line output?
 

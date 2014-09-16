@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -12,6 +12,10 @@ describe('sin', function() {
   it('should return the sine of a boolean', function () {
     approx.equal(sin(true), 0.841470984807897);
     approx.equal(sin(false), 0);
+  });
+
+  it('should return the sine of null', function () {
+    approx.equal(sin(null), 0);
   });
 
   it('should return the sine of a number', function() {

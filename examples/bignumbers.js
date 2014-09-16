@@ -1,12 +1,13 @@
 // BigNumbers
 
-// load math.js and create an instance
-// the default type of numbers is configured as BigNumbers
-var mathjs = require('../index'),
-    math = mathjs({
-      number: 'bignumber',  // Default type of number: 'number' (default) or 'bignumber'
-      precision: 20         // Number of significant digits for BigNumbers
-    });
+// load math.js
+var math = require('../index');
+
+// configure the default type of numbers as BigNumbers
+math.config({
+  number: 'bignumber',  // Default type of number: 'number' (default) or 'bignumber'
+  precision: 20         // Number of significant digits for BigNumbers
+});
 
 /**
  * Helper function to output a value in the console. Value will be formatted.

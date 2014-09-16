@@ -101,7 +101,7 @@ or matrix containing the dimensions for the matrix. When the input is an Array,
 the functions will output an Array. When the input is a Matrix, the output will
 be a Matrix. Note that in case of numbers as arguments, the output is
 determined by the option `matrix` as discussed in section
-[Arrays and matrices](#Arrays_and_matrices).
+[Arrays and matrices](#arrays-and-matrices).
 
 ```js
 // Array as input gives Array as output
@@ -190,7 +190,8 @@ math.size(c);                                 // Array, [2, 2, 3]
 Matrices can be resized using their `resize` function. This function is called
 with an Array with the new size as first argument, and accepts an optional
 default value. If no default value is provided, new entries will be filled with
-zero.
+zero. To leave new entries uninitialized, specify `math.uninitialized` as 
+default value.
 
 ```js
 var a = math.matrix();  // Matrix, size [0],       []

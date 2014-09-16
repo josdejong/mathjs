@@ -2,7 +2,7 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     bignumber = math.bignumber,
     round = math.round;
 
@@ -21,6 +21,11 @@ describe('round', function() {
     approx.equal(round(false), 0);
     approx.equal(round(true, 2), 1);
     approx.equal(round(false, 2), 0);
+  });
+
+  it('should round null', function () {
+    assert.equal(round(null), 0);
+    assert.equal(round(null, 2), 0);
   });
 
   it('should throw an error on invalid type of value', function() {

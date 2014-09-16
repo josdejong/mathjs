@@ -1,6 +1,6 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')(),
+    math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
@@ -12,6 +12,10 @@ describe('sech', function() {
   it('should return the sech of a boolean', function () {
     approx.equal(sech(true), 0.64805427366389);
     approx.equal(sech(false), 1);
+  });
+
+  it('should return the sech of null', function () {
+    approx.equal(sech(null), 1);
   });
 
   it('should return the sech of a number', function() {

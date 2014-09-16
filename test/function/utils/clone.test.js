@@ -1,8 +1,17 @@
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
-    math = require('../../../index')();
+    math = require('../../../index');
 
 describe('clone', function() {
+
+  it('should clone a boolean', function() {
+    assert.strictEqual(math.clone(true), true);
+    assert.strictEqual(math.clone(false), false);
+  });
+
+  it('should clone null', function() {
+    assert.strictEqual(math.clone(null), null);
+  });
 
   it('should clone a number', function() {
     var a = 1;

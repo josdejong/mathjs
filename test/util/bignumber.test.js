@@ -48,7 +48,7 @@ describe('bignumber', function() {
 
     before (function () {
       B = BigNumber.constructor();
-      B.config({precision: 20}); // ensure the precision is 20 digits, the default
+      B.config({precision: 20}); // ensure the precision is 20 digits
     });
 
     it ('should format special values Infinity, NaN', function () {
