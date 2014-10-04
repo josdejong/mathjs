@@ -44,6 +44,13 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 </table>
 
 
+<h1 id="webservice">Web Service <a href="#webservice" title="Permalink">#</a></h1>
+
+Math.js is available as a RESTful web service:
+
+<a href="http://api.mathjs.org">http://api.mathjs.org</a>
+
+
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 A changelog describing the changes with each release is available on the page [History](history.html).
