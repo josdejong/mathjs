@@ -180,6 +180,21 @@ describe('IndexNode', function() {
     assert.strictEqual(f, e);
   });
 
+  it ('should clone an IndexNode', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var n = new IndexNode(a, [b, c]);
+
+    var d = n.clone();
+    assert(d instanceof IndexNode);
+    assert.deepEqual(d, n);
+    assert.notStrictEqual(d, n);
+    assert.notStrictEqual(d.object, n.object);
+    assert.notStrictEqual(d.ranges[0], n.ranges[0]);
+    assert.notStrictEqual(d.ranges[1], n.ranges[1]);
+  });
+
   it ('should stringify an IndexNode', function () {
     var a = new SymbolNode('a');
     var ranges = [

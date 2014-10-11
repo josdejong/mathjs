@@ -50,6 +50,13 @@ describe('Node', function() {
     assert.deepEqual(c, b);
   });
 
+  it ('should clone a Node', function () {
+    var a = new Node();
+    var b = a.clone();
+    assert.deepEqual(a, b);
+    assert.notStrictEqual(a, b);
+  });
+
   it ('should test whether an object is a Node', function () {
     assert.equal(Node.isNode(new Node()), true);
     assert.equal(Node.isNode(new Date()), false);

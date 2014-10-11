@@ -211,6 +211,24 @@ describe('UpdateNode', function() {
     assert.strictEqual(f, e);
   });
 
+  it ('should clone an UpdateNode', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
+    var b = new ConstantNode(2);
+    var c = new SymbolNode('x');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(3);
+    var d = new UpdateNode(i, v);
+
+    var e = d.clone();
+
+    assert(e instanceof UpdateNode);
+    assert.deepEqual(e, d);
+    assert.notStrictEqual(e, d);
+    assert.notStrictEqual(e.index, d.index);
+    assert.notStrictEqual(e.expr, d.expr);
+  });
+
   it ('should stringify an UpdateNode', function () {
     var a = new SymbolNode('a');
     var ranges = [

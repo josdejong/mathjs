@@ -138,6 +138,37 @@ describe('RangeNode', function() {
     assert.strictEqual(f, e);
   });
 
+  it ('should clone a RangeNode', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
+    var c = new RangeNode([start, end, step]);
+
+    var d = c.clone();
+
+    assert.deepEqual(d, c);
+    assert.notStrictEqual(d, c);
+    assert.notStrictEqual(d.start, c.start);
+    assert.notStrictEqual(d.end, c.end);
+    assert.notStrictEqual(d.step, c.step);
+  });
+
+  it ('should clone a RangeNode without step', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var c = new RangeNode([start, end]);
+
+    var d = c.clone();
+
+    assert(d instanceof RangeNode);
+    assert.deepEqual(d, c);
+    assert.notStrictEqual(d, c);
+    assert.notStrictEqual(d.start, c.start);
+    assert.notStrictEqual(d.end, c.end);
+    assert.strictEqual(d.step, c.step);
+    assert.strictEqual(d.step, undefined);
+  });
+
   it ('should stringify a RangeNode without step', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);

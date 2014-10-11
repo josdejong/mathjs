@@ -171,6 +171,22 @@ describe('ConditionalNode', function() {
     assert.strictEqual(f, e);
   });
 
+  it ('should clone a ConditionalNode itself', function () {
+    var condition = new ConstantNode(1);
+    var a = new ConstantNode(2);
+    var b = new ConstantNode(3);
+    var c = new ConditionalNode(condition, a, b);
+
+    var d = c.clone();
+
+    assert(d instanceof ConditionalNode);
+    assert.deepEqual(d, c);
+    assert.notStrictEqual(d, c);
+    assert.notStrictEqual(d.condition, c.condition);
+    assert.notStrictEqual(d.trueExpr, c.trueExpr);
+    assert.notStrictEqual(d.falseExpr, c.falseExpr);
+  });
+
   it ('should stringify a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 

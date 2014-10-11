@@ -67,6 +67,16 @@ describe('SymbolNode', function() {
     assert.deepEqual(d,  a);
   });
 
+  it ('should clone a SymbolNode', function () {
+    var a = new SymbolNode('x');
+    var b = a.clone();
+
+    assert(b instanceof SymbolNode);
+    assert.deepEqual(a, b);
+    assert.notStrictEqual(a, b);
+    assert.equal(a.name, b.name);
+  });
+
   it ('should stringify a SymbolNode', function () {
     var s = new SymbolNode('foo');
 

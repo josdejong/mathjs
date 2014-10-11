@@ -109,6 +109,20 @@ describe('ArrayNode', function() {
     assert.strictEqual(e, d);
   });
 
+  it ('should clone an ArrayNode', function () {
+    // [x, 2]
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new ArrayNode([a, b]);
+
+    var d = c.clone();
+    assert(d instanceof ArrayNode);
+    assert.deepEqual(c, d);
+    assert.notStrictEqual(c, d);
+    assert.notStrictEqual(c.nodes[0], d.nodes[0]);
+    assert.notStrictEqual(c.nodes[1], d.nodes[1]);
+  });
+
   it ('should stringify an ArrayNode', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);

@@ -44,7 +44,7 @@ describe('OperatorNode', function() {
     }, /Function add missing in provided namespace/);
   });
 
-  it ('should filter a OperatorNode', function () {
+  it ('should filter an OperatorNode', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var n = new OperatorNode('+', 'add', [a, b]);
@@ -97,7 +97,21 @@ describe('OperatorNode', function() {
     assert.deepEqual(g,  f);
   });
 
-  it ('should stringify a OperatorNode', function () {
+  it ('should clone an OperatorNode', function () {
+    // x^2-x
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [a, b]);
+
+    var d = c.clone();
+    assert(d instanceof OperatorNode);
+    assert.deepEqual(d, c);
+    assert.notStrictEqual(d, c);
+    assert.notStrictEqual(d.params[0], c.params[0]);
+    assert.notStrictEqual(d.params[1], c.params[1]);
+  });
+
+  it ('should stringify an OperatorNode', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var c = new ConstantNode(4);
@@ -106,24 +120,24 @@ describe('OperatorNode', function() {
     assert.equal(n.toString(), '2 + 3');
   });
 
-  it ('should stringify a OperatorNode with factorial', function () {
+  it ('should stringify an OperatorNode with factorial', function () {
     var a = new ConstantNode(2);
     var n = new OperatorNode('!', 'factorial', [a]);
     assert.equal(n.toString(), '2!');
   });
 
-  it ('should stringify a OperatorNode with unary minus', function () {
+  it ('should stringify an OperatorNode with unary minus', function () {
     var a = new ConstantNode(2);
     var n = new OperatorNode('-', 'unaryMinus', [a]);
     assert.equal(n.toString(), '-2');
   });
 
-  it ('should stringify a OperatorNode with zero arguments', function () {
+  it ('should stringify an OperatorNode with zero arguments', function () {
     var n = new OperatorNode('foo', 'foo', []);
     assert.equal(n.toString(), 'foo()');
   });
 
-  it ('should stringify a OperatorNode with more than two operators', function () {
+  it ('should stringify an OperatorNode with more than two operators', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var c = new ConstantNode(4);
@@ -133,7 +147,7 @@ describe('OperatorNode', function() {
 
   });
 
-  it ('should stringify a OperatorNode with nested operator nodes', function () {
+  it ('should stringify an OperatorNode with nested operator nodes', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var c = new ConstantNode(4);
@@ -148,7 +162,7 @@ describe('OperatorNode', function() {
     assert.equal(n3.toString(), '(2 + 3) * (4 - 5)');
   });
 
-  it ('should LaTeX a OperatorNode', function () {
+  it ('should LaTeX an OperatorNode', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var c = new ConstantNode(4);
@@ -157,24 +171,24 @@ describe('OperatorNode', function() {
     assert.equal(n.toTex(), '{2}+{3}');
   });
 
-  it ('should LaTeX a OperatorNode with factorial', function () {
+  it ('should LaTeX an OperatorNode with factorial', function () {
     var a = new ConstantNode(2);
     var n = new OperatorNode('!', 'factorial', [a]);
     assert.equal(n.toTex(), '2!');
   });
 
-  it ('should LaTeX a OperatorNode with unary minus', function () {
+  it ('should LaTeX an OperatorNode with unary minus', function () {
     var a = new ConstantNode(2);
     var n = new OperatorNode('-', 'unaryMinus', [a]);
     assert.equal(n.toTex(), '-2');
   });
 
-  it ('should LaTeX a OperatorNode with zero arguments', function () {
+  it ('should LaTeX an OperatorNode with zero arguments', function () {
     var n = new OperatorNode('foo', 'foo', []);
     assert.equal(n.toTex(), 'foo()');
   });
 
-  it ('should LaTeX a OperatorNode with more than two operators', function () {
+  it ('should LaTeX an OperatorNode with more than two operators', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var c = new ConstantNode(4);
@@ -184,7 +198,7 @@ describe('OperatorNode', function() {
 
   });
 
-  it ('should LaTeX a OperatorNode with nested operator nodes', function () {
+  it ('should LaTeX an OperatorNode with nested operator nodes', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var c = new ConstantNode(4);

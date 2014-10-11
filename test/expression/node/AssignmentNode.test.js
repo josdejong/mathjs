@@ -101,6 +101,20 @@ describe('AssignmentNode', function() {
     assert.strictEqual(f, e);
   });
 
+  it ('should clone an AssignmentNode', function () {
+    // a = x + 2
+    var a = new SymbolNode('add');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [a, b]);
+    var d = new AssignmentNode('a', c);
+
+    var e = d.clone();
+    assert(e instanceof AssignmentNode);
+    assert.deepEqual(e, d);
+    assert.notStrictEqual(e, d);
+    assert.notStrictEqual(e.expr, d.expr);
+  });
+
   it ('should stringify a AssignmentNode', function () {
     var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);

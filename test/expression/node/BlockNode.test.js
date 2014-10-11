@@ -65,7 +65,7 @@ describe('BlockNode', function() {
     assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode && node.value == '3'}),  [b2]);
   });
 
-  it ('should transform an BlockNodes parameters', function () {
+  it ('should transform a BlockNodes parameters', function () {
     // [x, 2]
     var a = new BlockNode();
     var b = new SymbolNode('x');
@@ -79,11 +79,11 @@ describe('BlockNode', function() {
     });
 
     assert.notStrictEqual(e, a);
-    assert.deepEqual(e.params[0].node,  d);
-    assert.deepEqual(e.params[1].node,  c);
+    assert.deepEqual(e.nodes[0].node,  d);
+    assert.deepEqual(e.nodes[1].node,  c);
   });
 
-  it ('should transform an BlockNode itself', function () {
+  it ('should transform a BlockNode itself', function () {
     // [x, 2]
     var a = new BlockNode();
 
@@ -92,6 +92,22 @@ describe('BlockNode', function() {
       return node instanceof BlockNode ? d : node;
     });
     assert.strictEqual(e, d);
+  });
+
+  it ('should clone a BlockNode', function () {
+    // [x, 2]
+    var a = new BlockNode();
+    var b = new SymbolNode('x');
+    var c = new ConstantNode(2);
+    a.add(b);
+    a.add(c);
+
+    var d = a.clone();
+    assert(d instanceof BlockNode);
+    assert.deepEqual(a, d);
+    assert.notStrictEqual(a, d);
+    assert.notStrictEqual(a.nodes[0], d.nodes[0]);
+    assert.notStrictEqual(a.nodes[1], d.nodes[1]);
   });
 
   it ('should stringify a BlockNode', function () {

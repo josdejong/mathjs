@@ -152,6 +152,22 @@ describe('FunctionNode', function() {
     assert.strictEqual(f, e);
   });
 
+  it ('should clone a FunctionNode', function () {
+    // add(2, 3)
+    var a = new SymbolNode('add');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+    var d = new FunctionNode(a, [b, c]);
+
+    var e = d.clone();
+    assert(e instanceof FunctionNode);
+    assert.deepEqual(e, d);
+    assert.notStrictEqual(e, d);
+    assert.notStrictEqual(e.symbol, d.symbol);
+    assert.notStrictEqual(e.params[0], d.params[0]);
+    assert.notStrictEqual(e.params[1], d.params[1]);
+  });
+
   it ('should stringify a FunctionNode', function () {
     var s = new SymbolNode('sqrt');
     var c = new ConstantNode(4);

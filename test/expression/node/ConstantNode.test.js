@@ -91,6 +91,17 @@ describe('ConstantNode', function() {
     assert.deepEqual(d,  a);
   });
 
+  it ('should clone a ConstantNode', function () {
+    var a = new ConstantNode(2);
+    var b = a.clone();
+
+    assert(b instanceof ConstantNode);
+    assert.deepEqual(a, b);
+    assert.notStrictEqual(a, b);
+    assert.equal(a.value, b.value);
+    assert.equal(a.valueType, b.valueType);
+  });
+
   it ('should stringify a ConstantNode', function () {
     assert.equal(new ConstantNode('3', 'number').toString(), '3');
     assert.deepEqual(new ConstantNode('3', 'number').toString(), '3');
