@@ -61,6 +61,25 @@ describe('SymbolNode', function() {
     assert.equal(n.match({type: ConstantNode}), false);
   });
 
+  it ('should replace an SymbolNode', function () {
+    var a = new SymbolNode('x');
+    var b = new SymbolNode('y');
+    var c = a.replace({
+      type: SymbolNode,
+      properties: {name: 'x'},
+      replacement: b
+    });
+    assert.strictEqual(c,  b);
+
+    // no match should leave the symbol as is
+    var d = a.replace({
+      type: SymbolNode,
+      properties: {name: 'q'},
+      replacement: b
+    });
+    assert.strictEqual(d,  a);
+  });
+
   it ('should stringify a SymbolNode', function () {
     var s = new SymbolNode('foo');
 

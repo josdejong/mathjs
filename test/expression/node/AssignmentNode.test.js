@@ -1,17 +1,18 @@
 // test AssignmentNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    ArrayNode = require('../../../lib/expression/node/ArrayNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    AssignmentNode = require('../../../lib/expression/node/AssignmentNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = require('../../../lib/expression/node/Node');
+var ConstantNode = require('../../../lib/expression/node/ConstantNode');
+var SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var ArrayNode = require('../../../lib/expression/node/ArrayNode');
+var RangeNode = require('../../../lib/expression/node/RangeNode');
+var AssignmentNode = require('../../../lib/expression/node/AssignmentNode');
+var OperatorNode = require('../../../lib/expression/node/OperatorNode');
 
 describe('AssignmentNode', function() {
 
-  it ('should create a AssignmentNode', function () {
+  it ('should create an AssignmentNode', function () {
     var n = new AssignmentNode('a', new Node());
     assert(n instanceof AssignmentNode);
     assert(n instanceof Node);
@@ -36,7 +37,7 @@ describe('AssignmentNode', function() {
     assert.throws(function () {new AssignmentNode(new Node(), new Node())}, TypeError );
   });
 
-  it ('should compile a AssignmentNode', function () {
+  it ('should compile an AssignmentNode', function () {
     var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
@@ -47,7 +48,7 @@ describe('AssignmentNode', function() {
     assert.equal(scope.b, 3);
   });
 
-  it ('should find a AssignmentNode', function () {
+  it ('should find an AssignmentNode', function () {
     var a = new ConstantNode(1);
     var b = new SymbolNode('x');
     var c = new ConstantNode(2);
@@ -61,17 +62,53 @@ describe('AssignmentNode', function() {
     assert.deepEqual(e.find({type: ConstantNode, properties: {value: '2'}}),  [c]);
   });
 
-  it ('should find a AssignmentNode without expression', function () {
+  it ('should find an AssignmentNode without expression', function () {
     var e = new AssignmentNode('a', new Node());
 
     assert.deepEqual(e.find({type: AssignmentNode}),[e]);
     assert.deepEqual(e.find({type: SymbolNode}),    []);
   });
 
-  it ('should match a AssignmentNode', function () {
+  it ('should match an AssignmentNode', function () {
     var a = new AssignmentNode('a', new Node());
     assert.equal(a.match({type: AssignmentNode}),  true);
     assert.equal(a.match({type: ConstantNode}), false);
+  });
+
+  it ('should replace an AssignmentNodes (nested) parameters', function () {
+    // a = x + 2
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [a, b]);
+    var d = new AssignmentNode('a', c);
+
+    var e = new ConstantNode(3);
+    var f = d.replace({
+      type: SymbolNode,
+      properties: {name: 'x'},
+      replacement: e
+    });
+
+    assert.strictEqual(f, d);
+    assert.strictEqual(d.expr,  c);
+    assert.strictEqual(d.expr.params[0],  e);
+    assert.strictEqual(d.expr.params[1],  b);
+  });
+
+  it ('should replace an AssignmentNode itself', function () {
+    // a = x + 2
+    var a = new SymbolNode('add');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [a, b]);
+    var d = new AssignmentNode('a', c);
+
+    var e = new ConstantNode(5);
+    var f = d.replace({
+      type: AssignmentNode,
+      replacement: e
+    });
+
+    assert.strictEqual(f, e);
   });
 
   it ('should stringify a AssignmentNode', function () {

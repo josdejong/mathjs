@@ -100,11 +100,9 @@ describe('IndexNode', function() {
 
   it ('should compile a IndexNode with bignumber setting', function () {
     var a = new SymbolNode('a');
-    var ranges = [
-      new ConstantNode(2),
-      new ConstantNode(1)
-    ];
-    var n = new IndexNode(a, ranges);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var n = new IndexNode(a, [b, c]);
     var expr = n.compile(bigmath);
 
     var scope = {
@@ -127,7 +125,7 @@ describe('IndexNode', function() {
     assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
   });
 
-  it ('should find an empty Indexnode', function () {
+  it ('should find an empty IndexNode', function () {
     var n = new IndexNode(new Node(), []);
 
     assert.deepEqual(n.find({type: IndexNode}),  [n]);
@@ -138,6 +136,58 @@ describe('IndexNode', function() {
     var a = new IndexNode(new Node(), []);
     assert.equal(a.match({type: IndexNode}),  true);
     assert.equal(a.match({type: SymbolNode}), false);
+  });
+
+  it ('should replace an IndexNodes object', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var n = new IndexNode(a, [b, c]);
+
+    var e = new SymbolNode('c');
+    var f = n.replace({
+      type: SymbolNode,
+      replacement: e
+    });
+
+    assert.strictEqual(f, n);
+    assert.strictEqual(f.object, e);
+    assert.strictEqual(f.ranges[0], b);
+    assert.strictEqual(f.ranges[1], c);
+  });
+
+  it ('should replace an IndexNodes (nested) parameters', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var n = new IndexNode(a, [b, c]);
+
+    var e = new SymbolNode('c');
+    var f = n.replace({
+      type: ConstantNode,
+      properties: {value: '1'},
+      replacement: e
+    });
+
+    assert.strictEqual(f, n);
+    assert.strictEqual(f.object, a);
+    assert.strictEqual(f.ranges[0], b);
+    assert.strictEqual(f.ranges[1], e);
+  });
+
+  it ('should replace an IndexNode itself', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var n = new IndexNode(a, [b, c]);
+
+    var e = new ConstantNode(5);
+    var f = n.replace({
+      type: IndexNode,
+      replacement: e
+    });
+
+    assert.strictEqual(f, e);
   });
 
   it ('should stringify an IndexNode', function () {

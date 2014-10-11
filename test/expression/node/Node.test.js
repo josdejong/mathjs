@@ -28,6 +28,29 @@ describe('Node', function() {
     assert.equal(node.match(), true);
   });
 
+  it ('should replace a Node', function () {
+    var a = new Node();
+    var b = new Node();
+    var c = a.replace({replacement: b});
+    assert.strictEqual(c, b);
+
+    // no match
+    var a = new Node();
+    var b = new Node();
+    var c = a.replace({properties: {nonExistingProp: false}, replacement: b});
+    assert.strictEqual(c, a);
+  });
+
+  it ('should replace a Node using a replacement function', function () {
+    var a = new Node();
+    var b = new Node();
+    var c = a.replace({replacement: function (node) {
+      assert.strictEqual(node, a);
+      return b;
+    }});
+    assert.strictEqual(c, b);
+  });
+
   it ('should test whether an object is a Node', function () {
     assert.equal(Node.isNode(new Node()), true);
     assert.equal(Node.isNode(new Date()), false);

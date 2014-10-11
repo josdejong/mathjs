@@ -80,6 +80,42 @@ describe('FunctionAssignmentNode', function() {
     assert.equal(a.match({type: SymbolNode}), false);
   });
 
+  it ('should replace an FunctionAssignmentNodes (nested) parameters', function () {
+    // f(x) = 2 + x
+    var a = new ConstantNode(2);
+    var x = new SymbolNode('x');
+    var c = new OperatorNode('+', 'add', [a, x]);
+    var n = new FunctionAssignmentNode('f', ['x'], c);
+
+    var e = new ConstantNode(3);
+    var f = n.replace({
+      type: SymbolNode,
+      properties: {name: 'x'},
+      replacement: e
+    });
+
+    assert.strictEqual(f, n);
+    assert.strictEqual(n.expr,  c);
+    assert.strictEqual(n.expr.params[0], a);
+    assert.strictEqual(n.expr.params[1], e);
+  });
+
+  it ('should replace an FunctionAssignmentNode itself', function () {
+    // f(x) = 2 + x
+    var a = new ConstantNode(2);
+    var x = new SymbolNode('x');
+    var c = new OperatorNode('+', 'add', [a, x]);
+    var n = new FunctionAssignmentNode('f', ['x'], c);
+
+    var e = new ConstantNode(5);
+    var f = n.replace({
+      type: FunctionAssignmentNode,
+      replacement: e
+    });
+
+    assert.strictEqual(f, e);
+  });
+
   it ('should stringify a FunctionAssignmentNode', function () {
     var a = new ConstantNode(2);
     var x = new SymbolNode('x');

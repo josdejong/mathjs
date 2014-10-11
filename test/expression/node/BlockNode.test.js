@@ -71,6 +71,38 @@ describe('BlockNode', function() {
     assert.equal(a.match({type: SymbolNode}), false);
   });
 
+  it ('should replace an BlockNodes parameters', function () {
+    // [x, 2]
+    var a = new BlockNode();
+    var b = new SymbolNode('x');
+    var c = new ConstantNode(2);
+    a.add(b);
+    a.add(c);
+
+    var d = new ConstantNode(3);
+    var e = a.replace({
+      type: SymbolNode,
+      properties: {name: 'x'},
+      replacement: d
+    });
+
+    assert.strictEqual(e, a);
+    assert.strictEqual(a.params[0].node,  d);
+    assert.strictEqual(a.params[1].node,  c);
+  });
+
+  it ('should replace an BlockNode itself', function () {
+    // [x, 2]
+    var a = new BlockNode();
+
+    var d = new ConstantNode(3);
+    var e = a.replace({
+      type: BlockNode,
+      replacement: d
+    });
+    assert.strictEqual(e, d);
+  });
+
   it ('should stringify a BlockNode', function () {
     var n = new BlockNode();
     n.add(new ConstantNode(5), true);

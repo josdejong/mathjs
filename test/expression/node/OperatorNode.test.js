@@ -69,6 +69,43 @@ describe('OperatorNode', function() {
     assert.equal(a.match({type: ConstantNode}), false);
   });
 
+  it ('should replace an OperatorNodes parameters', function () {
+    // x^2-x
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('^', 'pow', [a, b]);
+    var d = new SymbolNode('x');
+    var e = new OperatorNode('-', 'subtract', [c, d]);
+
+    var f = new ConstantNode(3);
+    var g = e.replace({
+      type: SymbolNode,
+      properties: {name: 'x'},
+      replacement: f
+    });
+
+    assert.strictEqual(g,  e);
+    assert.strictEqual(c.params[0],  f);
+    assert.strictEqual(c.params[1],  b);
+    assert.strictEqual(e.params[0],  c);
+    assert.strictEqual(e.params[1],  f);
+  });
+
+  it ('should replace an OperatorNode itself', function () {
+    // x^2-x
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [a, b]);
+
+    var f = new ConstantNode(3);
+    var g = c.replace({
+      type: OperatorNode,
+      replacement: f
+    });
+
+    assert.strictEqual(g,  f);
+  });
+
   it ('should stringify a OperatorNode', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);

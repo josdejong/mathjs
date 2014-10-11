@@ -112,6 +112,78 @@ describe('ConditionalNode', function() {
     assert.equal(n.match({type: ConstantNode}), false);
   });
 
+  it ('should replace a ConditionalNodes condition', function () {
+    var condition = new ConstantNode(1);
+    var a = new ConstantNode(2);
+    var b = new ConstantNode(3);
+    var n = new ConditionalNode(condition, a, b);
+
+    var e = new ConstantNode(4);
+    var f = n.replace({
+      type: ConstantNode,
+      properties: {value: '1'},
+      replacement: e
+    });
+
+    assert.strictEqual(f, n);
+    assert.strictEqual(n.condition,  e);
+    assert.strictEqual(n.trueExpr,  a);
+    assert.strictEqual(n.falseExpr,  b);
+  });
+
+  it ('should replace a ConditionalNodes trueExpr', function () {
+    var condition = new ConstantNode(1);
+    var a = new ConstantNode(2);
+    var b = new ConstantNode(3);
+    var n = new ConditionalNode(condition, a, b);
+
+    var e = new ConstantNode(4);
+    var f = n.replace({
+      type: ConstantNode,
+      properties: {value: '2'},
+      replacement: e
+    });
+
+    assert.strictEqual(f, n);
+    assert.strictEqual(n.condition,  condition);
+    assert.strictEqual(n.trueExpr,  e);
+    assert.strictEqual(n.falseExpr,  b);
+  });
+
+  it ('should replace a ConditionalNodes falseExpr', function () {
+    var condition = new ConstantNode(1);
+    var a = new ConstantNode(2);
+    var b = new ConstantNode(3);
+    var n = new ConditionalNode(condition, a, b);
+
+    var e = new ConstantNode(4);
+    var f = n.replace({
+      type: ConstantNode,
+      properties: {value: '3'},
+      replacement: e
+    });
+
+    assert.strictEqual(f, n);
+    assert.strictEqual(n.condition, condition);
+    assert.strictEqual(n.trueExpr, a);
+    assert.strictEqual(n.falseExpr, e);
+  });
+
+  it ('should replace a RangeNode itself', function () {
+    var condition = new ConstantNode(1);
+    var a = new ConstantNode(2);
+    var b = new ConstantNode(3);
+    var n = new ConditionalNode(condition, a, b);
+
+    var e = new ConstantNode(5);
+    var f = n.replace({
+      type: ConditionalNode,
+      replacement: e
+    });
+
+    assert.strictEqual(f, e);
+  });
+
   it ('should stringify a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 

@@ -83,6 +83,25 @@ describe('ConstantNode', function() {
     assert.equal(a.match({type: SymbolNode}), false);
   });
 
+  it ('should replace a ConstantNode', function () {
+    var a = new ConstantNode(2);
+    var b = new ConstantNode(3);
+    var c = a.replace({
+      type: ConstantNode,
+      properties: {value: '2'},
+      replacement: b
+    });
+    assert.strictEqual(c,  b);
+
+    // no match should leave the node as is
+    var d = a.replace({
+      type: ConstantNode,
+      properties: {value: '99'},
+      replacement: b
+    });
+    assert.strictEqual(d,  a);
+  });
+
   it ('should stringify a ConstantNode', function () {
     assert.equal(new ConstantNode('3', 'number').toString(), '3');
     assert.deepEqual(new ConstantNode('3', 'number').toString(), '3');

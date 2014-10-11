@@ -67,6 +67,95 @@ describe('RangeNode', function() {
     assert.equal(a.match({type: ConstantNode}), false);
   });
 
+  it ('should replace a RangeNodes start', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
+    var n = new RangeNode([start, end, step]);
+
+    var e = new ConstantNode(3);
+    var f = n.replace({
+      type: ConstantNode,
+      properties: {value: '0'},
+      replacement: e
+    });
+
+    assert.strictEqual(f, n);
+    assert.strictEqual(n.start,  e);
+    assert.strictEqual(n.end,  end);
+    assert.strictEqual(n.step,  step);
+  });
+
+  it ('should replace a RangeNodes end', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
+    var n = new RangeNode([start, end, step]);
+
+    var e = new ConstantNode(3);
+    var f = n.replace({
+      type: ConstantNode,
+      properties: {value: '10'},
+      replacement: e
+    });
+
+    assert.strictEqual(f, n);
+    assert.strictEqual(n.start,  start);
+    assert.strictEqual(n.end,  e);
+    assert.strictEqual(n.step,  step);
+  });
+
+  it ('should replace a RangeNodes step', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
+    var n = new RangeNode([start, end, step]);
+
+    var e = new ConstantNode(3);
+    var f = n.replace({
+      type: ConstantNode,
+      properties: {value: '2'},
+      replacement: e
+    });
+
+    assert.strictEqual(f, n);
+    assert.strictEqual(n.start,  start);
+    assert.strictEqual(n.end,  end);
+    assert.strictEqual(n.step,  e);
+  });
+
+  it ('should replace a RangeNodes without step', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var n = new RangeNode([start, end]);
+
+    var e = new ConstantNode(3);
+    var f = n.replace({
+      type: ConstantNode,
+      properties: {value: '10'},
+      replacement: e
+    });
+
+    assert.strictEqual(f, n);
+    assert.strictEqual(n.start,  start);
+    assert.strictEqual(n.end,  e);
+  });
+
+  it ('should replace a RangeNode itself', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
+    var n = new RangeNode([start, end, step]);
+
+    var e = new ConstantNode(5);
+    var f = n.replace({
+      type: RangeNode,
+      replacement: e
+    });
+
+    assert.strictEqual(f, e);
+  });
+
   it ('should stringify a RangeNode without step', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);

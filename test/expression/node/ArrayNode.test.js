@@ -86,6 +86,38 @@ describe('ArrayNode', function() {
     assert.equal(a.match({type: SymbolNode}), false);
   });
 
+  it ('should replace an ArrayNodes parameters', function () {
+    // [x, 2]
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new ArrayNode([a, b]);
+
+    var d = new ConstantNode(3);
+    var e = c.replace({
+      type: SymbolNode,
+      properties: {name: 'x'},
+      replacement: d
+    });
+
+    assert.strictEqual(e,  c);
+    assert.strictEqual(c.nodes[0],  d);
+    assert.strictEqual(c.nodes[1],  b);
+  });
+
+  it ('should replace an ArrayNode itself', function () {
+    // [x, 2]
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new ArrayNode([a, b]);
+
+    var d = new ConstantNode(3);
+    var e = c.replace({
+      type: ArrayNode,
+      replacement: d
+    });
+    assert.strictEqual(e, d);
+  });
+
   it ('should stringify an ArrayNode', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);

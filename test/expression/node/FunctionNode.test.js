@@ -1,12 +1,13 @@
 // test FunctionNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    FunctionNode = require('../../../lib/expression/node/FunctionNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = require('../../../lib/expression/node/Node');
+var ConstantNode = require('../../../lib/expression/node/ConstantNode');
+var SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var RangeNode = require('../../../lib/expression/node/RangeNode');
+var FunctionNode = require('../../../lib/expression/node/FunctionNode');
+var OperatorNode = require('../../../lib/expression/node/OperatorNode');
 
 describe('FunctionNode', function() {
 
@@ -103,6 +104,63 @@ describe('FunctionNode', function() {
     var a = new FunctionNode(new Node(), []);
     assert.equal(a.match({type: FunctionNode}),  true);
     assert.equal(a.match({type: SymbolNode}), false);
+  });
+
+  it ('should replace an FunctionNodes (nested) parameters', function () {
+    // multiply(x + 2, x)
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [a, b]);
+    var d = new SymbolNode('x');
+    var e = new SymbolNode('multiply');
+    var f = new FunctionNode(e, [c, d]);
+
+    var g = new ConstantNode(3);
+    var h = f.replace({
+      type: SymbolNode,
+      properties: {name: 'x'},
+      replacement: g
+    });
+
+    assert.strictEqual(h, f);
+    assert.strictEqual(c.params[0],  g);
+    assert.strictEqual(c.params[1],  b);
+    assert.strictEqual(f.symbol, e);
+    assert.strictEqual(f.params[0],  c);
+    assert.strictEqual(f.params[1],  g);
+  });
+
+  it ('should replace an FunctionNodes symbol', function () {
+    // add(2, 3)
+    var a = new SymbolNode('add');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+    var d = new FunctionNode(a, [b, c]);
+
+    var e = new SymbolNode('subtract');
+    var f = d.replace({
+      type: SymbolNode,
+      replacement: e
+    });
+
+    assert.strictEqual(f, d);
+    assert.strictEqual(d.symbol, e);
+  });
+
+  it ('should replace an FunctionNode itself', function () {
+    // add(2, 3)
+    var a = new SymbolNode('add');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+    var d = new FunctionNode(a, [b, c]);
+
+    var e = new ConstantNode(5);
+    var f = d.replace({
+      type: FunctionNode,
+      replacement: e
+    });
+
+    assert.strictEqual(f, e);
   });
 
   it ('should stringify a FunctionNode', function () {
