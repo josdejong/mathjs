@@ -76,11 +76,10 @@ describe('OperatorNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? f : node;
     });
 
-    assert.strictEqual(g,  e);
-    assert.strictEqual(c.params[0],  f);
-    assert.strictEqual(c.params[1],  b);
-    assert.strictEqual(e.params[0],  c);
-    assert.strictEqual(e.params[1],  f);
+    assert.notStrictEqual(g,  e);
+    assert.strictEqual(g.params[0].params[0],  f);
+    assert.deepEqual(g.params[0].params[1],  b);
+    assert.deepEqual(g.params[1],  f);
   });
 
   it ('should transform an OperatorNode itself', function () {
@@ -94,7 +93,8 @@ describe('OperatorNode', function() {
       return node instanceof OperatorNode ? f : node;
     });
 
-    assert.strictEqual(g,  f);
+    assert.notStrictEqual(g, c);
+    assert.deepEqual(g,  f);
   });
 
   it ('should stringify a OperatorNode', function () {

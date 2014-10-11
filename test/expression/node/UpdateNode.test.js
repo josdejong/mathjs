@@ -164,12 +164,11 @@ describe('UpdateNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? e : node;
     });
 
-    assert.strictEqual(f, n);
-    assert.strictEqual(n.index,  i);
-    assert.strictEqual(n.index.object,  a);
-    assert.strictEqual(n.index.ranges[0],  b);
-    assert.strictEqual(n.index.ranges[1],  e);
-    assert.strictEqual(n.expr, v);
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.index.object,  a);
+    assert.deepEqual(f.index.ranges[0],  b);
+    assert.deepEqual(f.index.ranges[1],  e);
+    assert.deepEqual(f.expr, v);
   });
 
   it ('should transform an UpdateNodes replacement expr', function () {
@@ -186,12 +185,12 @@ describe('UpdateNode', function() {
       return node instanceof ConstantNode && node.value == '3' ? e : node;
     });
 
-    assert.strictEqual(g, n);
-    assert.strictEqual(n.index,  i);
-    assert.strictEqual(n.index.object,  a);
-    assert.strictEqual(n.index.ranges[0],  b);
-    assert.strictEqual(n.index.ranges[1],  c);
-    assert.strictEqual(n.expr, e);
+    assert.notStrictEqual(g, n);
+    assert.deepEqual(g.index,  i);
+    assert.deepEqual(g.index.object,  a);
+    assert.deepEqual(g.index.ranges[0],  b);
+    assert.deepEqual(g.index.ranges[1],  c);
+    assert.deepEqual(g.expr, e);
 
   });
 

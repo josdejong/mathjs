@@ -91,9 +91,9 @@ describe('ArrayNode', function() {
       return (node instanceof SymbolNode) && (node.name == 'x') ? d : node;
     });
 
-    assert.strictEqual(e,  c);
-    assert.strictEqual(c.nodes[0],  d);
-    assert.strictEqual(c.nodes[1],  b);
+    assert.notStrictEqual(e,  c);
+    assert.deepEqual(e.nodes[0],  d);
+    assert.deepEqual(e.nodes[1],  b);
   });
 
   it ('should transform an ArrayNode itself', function () {

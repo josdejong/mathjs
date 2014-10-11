@@ -58,13 +58,13 @@ describe('SymbolNode', function() {
     var c = a.transform(function (node) {
       return node instanceof SymbolNode && node.name == 'x' ? b : node;
     });
-    assert.strictEqual(c,  b);
+    assert.deepEqual(c,  b);
 
     // no match should leave the symbol as is
     var d = a.transform(function (node) {
       return node instanceof SymbolNode && node.name == 'q' ? b : node;
     });
-    assert.strictEqual(d,  a);
+    assert.deepEqual(d,  a);
   });
 
   it ('should stringify a SymbolNode', function () {

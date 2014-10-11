@@ -114,12 +114,11 @@ describe('FunctionNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? g : node;
     });
 
-    assert.strictEqual(h, f);
-    assert.strictEqual(c.params[0],  g);
-    assert.strictEqual(c.params[1],  b);
-    assert.strictEqual(f.symbol, e);
-    assert.strictEqual(f.params[0],  c);
-    assert.strictEqual(f.params[1],  g);
+    assert.notStrictEqual(h, f);
+    assert.deepEqual(h.params[0].params[0],  g);
+    assert.deepEqual(h.params[0].params[1],  b);
+    assert.deepEqual(h.symbol, e);
+    assert.deepEqual(h.params[1],  g);
   });
 
   it ('should transform an FunctionNodes symbol', function () {
@@ -134,8 +133,8 @@ describe('FunctionNode', function() {
       return node instanceof SymbolNode ? e : node;
     });
 
-    assert.strictEqual(f, d);
-    assert.strictEqual(d.symbol, e);
+    assert.notStrictEqual(f, d);
+    assert.deepEqual(f.symbol, e);
   });
 
   it ('should transform an FunctionNode itself', function () {

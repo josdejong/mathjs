@@ -29,7 +29,7 @@ describe('Node', function() {
     var c = a.transform(function (node) {
       return b;
     });
-    assert.strictEqual(c, b);
+    assert.deepEqual(c, b);
 
     // no match
     a = new Node();
@@ -37,17 +37,17 @@ describe('Node', function() {
     c = a.transform(function (node) {
       return node;
     });
-    assert.strictEqual(c, a);
+    assert.deepEqual(c, a);
   });
 
   it ('should transform a Node using a replacement function', function () {
     var a = new Node();
     var b = new Node();
     var c = a.transform(function (node) {
-      assert.strictEqual(node, a);
+      assert.deepEqual(node, a);
       return b;
     });
-    assert.strictEqual(c, b);
+    assert.deepEqual(c, b);
   });
 
   it ('should test whether an object is a Node', function () {

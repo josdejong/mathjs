@@ -78,9 +78,9 @@ describe('BlockNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? d : node;
     });
 
-    assert.strictEqual(e, a);
-    assert.strictEqual(a.params[0].node,  d);
-    assert.strictEqual(a.params[1].node,  c);
+    assert.notStrictEqual(e, a);
+    assert.deepEqual(e.params[0].node,  d);
+    assert.deepEqual(e.params[1].node,  c);
   });
 
   it ('should transform an BlockNode itself', function () {

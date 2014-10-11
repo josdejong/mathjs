@@ -69,10 +69,10 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '0' ? e : node;
     });
 
-    assert.strictEqual(f, n);
-    assert.strictEqual(n.start,  e);
-    assert.strictEqual(n.end,  end);
-    assert.strictEqual(n.step,  step);
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.start,  e);
+    assert.deepEqual(f.end,  end);
+    assert.deepEqual(f.step,  step);
   });
 
   it ('should transform a RangeNodes end', function () {
@@ -86,10 +86,10 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '10' ? e : node;
     });
 
-    assert.strictEqual(f, n);
-    assert.strictEqual(n.start,  start);
-    assert.strictEqual(n.end,  e);
-    assert.strictEqual(n.step,  step);
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.start,  start);
+    assert.deepEqual(f.end,  e);
+    assert.deepEqual(f.step,  step);
   });
 
   it ('should transform a RangeNodes step', function () {
@@ -103,10 +103,10 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '2' ? e : node;
     });
 
-    assert.strictEqual(f, n);
-    assert.strictEqual(n.start,  start);
-    assert.strictEqual(n.end,  end);
-    assert.strictEqual(n.step,  e);
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.start, start);
+    assert.deepEqual(f.end, end);
+    assert.deepEqual(f.step, e);
   });
 
   it ('should transform a RangeNodes without step', function () {
@@ -119,9 +119,9 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '10' ? e : node;
     });
 
-    assert.strictEqual(f, n);
-    assert.strictEqual(n.start,  start);
-    assert.strictEqual(n.end,  e);
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.start, start);
+    assert.deepEqual(f.end, e);
   });
 
   it ('should transform a RangeNode itself', function () {

@@ -143,10 +143,10 @@ describe('IndexNode', function() {
       return node instanceof SymbolNode ? e : node;
     });
 
-    assert.strictEqual(f, n);
-    assert.strictEqual(f.object, e);
-    assert.strictEqual(f.ranges[0], b);
-    assert.strictEqual(f.ranges[1], c);
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.object, e);
+    assert.deepEqual(f.ranges[0], b);
+    assert.deepEqual(f.ranges[1], c);
   });
 
   it ('should transform an IndexNodes (nested) parameters', function () {
@@ -160,10 +160,10 @@ describe('IndexNode', function() {
       return node instanceof ConstantNode && node.value == '1' ? e : node;
     });
 
-    assert.strictEqual(f, n);
-    assert.strictEqual(f.object, a);
-    assert.strictEqual(f.ranges[0], b);
-    assert.strictEqual(f.ranges[1], e);
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.object, a);
+    assert.deepEqual(f.ranges[0], b);
+    assert.deepEqual(f.ranges[1], e);
   });
 
   it ('should transform an IndexNode itself', function () {

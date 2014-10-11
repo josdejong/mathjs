@@ -81,10 +81,9 @@ describe('AssignmentNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? e : node;
     });
 
-    assert.strictEqual(f, d);
-    assert.strictEqual(d.expr,  c);
-    assert.strictEqual(d.expr.params[0],  e);
-    assert.strictEqual(d.expr.params[1],  b);
+    assert.notStrictEqual(f, d);
+    assert.deepEqual(f.expr.params[0],  e);
+    assert.deepEqual(f.expr.params[1],  b);
   });
 
   it ('should transform an AssignmentNode itself', function () {
