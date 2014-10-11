@@ -45,39 +45,28 @@ describe('RangeNode', function() {
     assert.deepEqual(expr.eval(), math.matrix([0, 2, 4, 6, 8, 10]));
   });
 
-  it ('should find a RangeNode', function () {
+  it ('should filter a RangeNode', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
-    assert.deepEqual(n.find({type: RangeNode}),  [n]);
-    assert.deepEqual(n.find({type: SymbolNode}),  []);
-    assert.deepEqual(n.find({type: ConstantNode}),  [start, step, end]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [step]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof RangeNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  [start, step, end]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [step]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '4'}),  []);
   });
 
-  it ('should match a RangeNode', function () {
-    var start = new ConstantNode(0);
-    var end = new ConstantNode(10);
-    var a = new RangeNode([start, end]);
-
-    assert.equal(a.match({type: RangeNode}),  true);
-    assert.equal(a.match({type: ConstantNode}), false);
-  });
-
-  it ('should replace a RangeNodes start', function () {
+  it ('should transform a RangeNodes start', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     var e = new ConstantNode(3);
-    var f = n.replace({
-      type: ConstantNode,
-      properties: {value: '0'},
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '0' ? e : node;
     });
 
     assert.strictEqual(f, n);
@@ -86,17 +75,15 @@ describe('RangeNode', function() {
     assert.strictEqual(n.step,  step);
   });
 
-  it ('should replace a RangeNodes end', function () {
+  it ('should transform a RangeNodes end', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     var e = new ConstantNode(3);
-    var f = n.replace({
-      type: ConstantNode,
-      properties: {value: '10'},
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '10' ? e : node;
     });
 
     assert.strictEqual(f, n);
@@ -105,17 +92,15 @@ describe('RangeNode', function() {
     assert.strictEqual(n.step,  step);
   });
 
-  it ('should replace a RangeNodes step', function () {
+  it ('should transform a RangeNodes step', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     var e = new ConstantNode(3);
-    var f = n.replace({
-      type: ConstantNode,
-      properties: {value: '2'},
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '2' ? e : node;
     });
 
     assert.strictEqual(f, n);
@@ -124,16 +109,14 @@ describe('RangeNode', function() {
     assert.strictEqual(n.step,  e);
   });
 
-  it ('should replace a RangeNodes without step', function () {
+  it ('should transform a RangeNodes without step', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var n = new RangeNode([start, end]);
 
     var e = new ConstantNode(3);
-    var f = n.replace({
-      type: ConstantNode,
-      properties: {value: '10'},
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '10' ? e : node;
     });
 
     assert.strictEqual(f, n);
@@ -141,16 +124,15 @@ describe('RangeNode', function() {
     assert.strictEqual(n.end,  e);
   });
 
-  it ('should replace a RangeNode itself', function () {
+  it ('should transform a RangeNode itself', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     var e = new ConstantNode(5);
-    var f = n.replace({
-      type: RangeNode,
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof RangeNode ? e : node;
     });
 
     assert.strictEqual(f, e);

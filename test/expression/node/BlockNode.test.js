@@ -48,7 +48,7 @@ describe('BlockNode', function() {
     assert.deepEqual(n.compile(math).eval(), new ResultSet([5]));
   });
 
-  it ('should find a BlockNode', function () {
+  it ('should filter a BlockNode', function () {
     var a = new ConstantNode(5);
     var b2 = new ConstantNode(3);
     var b = new AssignmentNode('foo', b2);
@@ -58,20 +58,14 @@ describe('BlockNode', function() {
     d.add(b, false);
     d.add(c, true);
 
-    assert.deepEqual(d.find({type: BlockNode}),     [d]);
-    assert.deepEqual(d.find({type: SymbolNode}),    [c]);
-    assert.deepEqual(d.find({type: RangeNode}),     []);
-    assert.deepEqual(d.find({type: ConstantNode}),  [a, b2]);
-    assert.deepEqual(d.find({type: ConstantNode, properties: {value: '3'}}),  [b2]);
+    assert.deepEqual(d.filter(function (node) {return node instanceof BlockNode}),     [d]);
+    assert.deepEqual(d.filter(function (node) {return node instanceof SymbolNode}),    [c]);
+    assert.deepEqual(d.filter(function (node) {return node instanceof RangeNode}),     []);
+    assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode}),  [a, b2]);
+    assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode && node.value == '3'}),  [b2]);
   });
 
-  it ('should match a BlockNode', function () {
-    var a = new BlockNode();
-    assert.equal(a.match({type: BlockNode}),  true);
-    assert.equal(a.match({type: SymbolNode}), false);
-  });
-
-  it ('should replace an BlockNodes parameters', function () {
+  it ('should transform an BlockNodes parameters', function () {
     // [x, 2]
     var a = new BlockNode();
     var b = new SymbolNode('x');
@@ -80,10 +74,8 @@ describe('BlockNode', function() {
     a.add(c);
 
     var d = new ConstantNode(3);
-    var e = a.replace({
-      type: SymbolNode,
-      properties: {name: 'x'},
-      replacement: d
+    var e = a.transform(function (node) {
+      return node instanceof SymbolNode && node.name == 'x' ? d : node;
     });
 
     assert.strictEqual(e, a);
@@ -91,14 +83,13 @@ describe('BlockNode', function() {
     assert.strictEqual(a.params[1].node,  c);
   });
 
-  it ('should replace an BlockNode itself', function () {
+  it ('should transform an BlockNode itself', function () {
     // [x, 2]
     var a = new BlockNode();
 
     var d = new ConstantNode(3);
-    var e = a.replace({
-      type: BlockNode,
-      replacement: d
+    var e = a.transform(function (node) {
+      return node instanceof BlockNode ? d : node;
     });
     assert.strictEqual(e, d);
   });

@@ -15,39 +15,38 @@ describe('Node', function() {
     assert.throws(function () {Node()}, SyntaxError);
   });
 
-  it ('should find a Node', function () {
+  it ('should filter a Node', function () {
     var n = new Node();
 
-    assert.deepEqual(n.find(), [n]);
-    assert.deepEqual(n.find({type: Node}), [n]);
-    assert.deepEqual(n.find({type: Date}), []);
+    assert.deepEqual(n.filter(function () {return true}), [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof Node}), [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof Date}), []);
   });
 
-  it ('should match a Node when not providing a filter', function () {
-    var node = new Node();
-    assert.equal(node.match(), true);
-  });
-
-  it ('should replace a Node', function () {
+  it ('should transform a Node', function () {
     var a = new Node();
     var b = new Node();
-    var c = a.replace({replacement: b});
+    var c = a.transform(function (node) {
+      return b;
+    });
     assert.strictEqual(c, b);
 
     // no match
-    var a = new Node();
-    var b = new Node();
-    var c = a.replace({properties: {nonExistingProp: false}, replacement: b});
+    a = new Node();
+    b = new Node();
+    c = a.transform(function (node) {
+      return node;
+    });
     assert.strictEqual(c, a);
   });
 
-  it ('should replace a Node using a replacement function', function () {
+  it ('should transform a Node using a replacement function', function () {
     var a = new Node();
     var b = new Node();
-    var c = a.replace({replacement: function (node) {
+    var c = a.transform(function (node) {
       assert.strictEqual(node, a);
       return b;
-    }});
+    });
     assert.strictEqual(c, b);
   });
 
@@ -79,44 +78,6 @@ describe('Node', function() {
     assert.throws(function () {
       node.compile(math)
     }, /Cannot compile a Node interface/);
-  });
-
-  it ('should match a node by its type', function () {
-    var node = new Node();
-
-    assert.equal(node.match(), true);
-    assert.equal(node.match({type: Node}), true);
-  });
-
-  it ('should match a node by its properties', function () {
-    var node = new Node();
-    node.a = 2;
-    node.b = 'c';
-
-    assert.equal(node.match(), true);
-    assert.equal(node.match({type: Node}), true);
-    assert.equal(node.match({type: Date}), false);
-    assert.equal(node.match({properties: {a: 2}}), true);
-    assert.equal(node.match({properties: {a: 3}}), false);
-    assert.equal(node.match({properties: {a: 2, b: 'c'}}), true);
-    assert.equal(node.match({properties: {a: 2, b: 'd'}}), false);
-    assert.equal(node.match({properties: {b: 'c'}}), true);
-  });
-
-  it ('should ignore inherited fields when matching', function () {
-    Object.prototype.foo = 'bar';
-    var node = new Node();
-    node.foo = 'something else';
-
-    var filter = {
-      properties: {}
-    };
-
-    assert.equal(filter.foo, 'bar');
-    assert.equal(node.foo, 'something else');
-    assert.equal(node.match(filter), true);
-
-    delete Object.prototype.foo;
   });
 
 });

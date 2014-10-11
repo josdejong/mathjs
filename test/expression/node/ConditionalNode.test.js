@@ -98,31 +98,23 @@ describe('ConditionalNode', function() {
     });
   });
 
-  it ('should find a ConditionalNode', function () {
+  it ('should filter a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 
-    assert.deepEqual(n.find({type: ConditionalNode}),  [n]);
-    assert.deepEqual(n.find({type: ConstantNode}),  [condition, two, three]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [two]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConditionalNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  [condition, two, three]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [two]);
   });
 
-  it ('should match a ConditionalNode', function () {
-    var n = new ConditionalNode(condition, a, b);
-    assert.equal(n.match({type: ConditionalNode}), true);
-    assert.equal(n.match({type: ConstantNode}), false);
-  });
-
-  it ('should replace a ConditionalNodes condition', function () {
+  it ('should transform a ConditionalNodes condition', function () {
     var condition = new ConstantNode(1);
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var n = new ConditionalNode(condition, a, b);
 
     var e = new ConstantNode(4);
-    var f = n.replace({
-      type: ConstantNode,
-      properties: {value: '1'},
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '1' ? e : node;
     });
 
     assert.strictEqual(f, n);
@@ -131,17 +123,15 @@ describe('ConditionalNode', function() {
     assert.strictEqual(n.falseExpr,  b);
   });
 
-  it ('should replace a ConditionalNodes trueExpr', function () {
+  it ('should transform a ConditionalNodes trueExpr', function () {
     var condition = new ConstantNode(1);
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var n = new ConditionalNode(condition, a, b);
 
     var e = new ConstantNode(4);
-    var f = n.replace({
-      type: ConstantNode,
-      properties: {value: '2'},
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '2' ? e : node;
     });
 
     assert.strictEqual(f, n);
@@ -150,17 +140,15 @@ describe('ConditionalNode', function() {
     assert.strictEqual(n.falseExpr,  b);
   });
 
-  it ('should replace a ConditionalNodes falseExpr', function () {
+  it ('should transform a ConditionalNodes falseExpr', function () {
     var condition = new ConstantNode(1);
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var n = new ConditionalNode(condition, a, b);
 
     var e = new ConstantNode(4);
-    var f = n.replace({
-      type: ConstantNode,
-      properties: {value: '3'},
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '3' ? e : node;
     });
 
     assert.strictEqual(f, n);
@@ -169,16 +157,15 @@ describe('ConditionalNode', function() {
     assert.strictEqual(n.falseExpr, e);
   });
 
-  it ('should replace a RangeNode itself', function () {
+  it ('should transform a ConditionalNode itself', function () {
     var condition = new ConstantNode(1);
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var n = new ConditionalNode(condition, a, b);
 
     var e = new ConstantNode(5);
-    var f = n.replace({
-      type: ConditionalNode,
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof ConditionalNode ? e : node;
     });
 
     assert.strictEqual(f, e);

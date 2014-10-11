@@ -86,27 +86,21 @@ describe('FunctionNode', function() {
     assert.equal(n.compile(mymath).eval(scope), 42);
   });
 
-  it ('should find a FunctionNode', function () {
+  it ('should filter a FunctionNode', function () {
     var a = new SymbolNode('a'),
         b = new ConstantNode(2),
         c = new ConstantNode(1);
     var n = new FunctionNode(a, [b, c]);
 
-    assert.deepEqual(n.find({type: FunctionNode}),  [n]);
-    assert.deepEqual(n.find({type: SymbolNode}),    [a]);
-    assert.deepEqual(n.find({type: RangeNode}),     []);
-    assert.deepEqual(n.find({type: ConstantNode}),  [b, c]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [b]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof FunctionNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),    [a]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof RangeNode}),     []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  [b, c]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [b]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '4'}),  []);
   });
 
-  it ('should match a FunctionNode', function () {
-    var a = new FunctionNode(new Node(), []);
-    assert.equal(a.match({type: FunctionNode}),  true);
-    assert.equal(a.match({type: SymbolNode}), false);
-  });
-
-  it ('should replace an FunctionNodes (nested) parameters', function () {
+  it ('should transform an FunctionNodes (nested) parameters', function () {
     // multiply(x + 2, x)
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
@@ -116,10 +110,8 @@ describe('FunctionNode', function() {
     var f = new FunctionNode(e, [c, d]);
 
     var g = new ConstantNode(3);
-    var h = f.replace({
-      type: SymbolNode,
-      properties: {name: 'x'},
-      replacement: g
+    var h = f.transform(function (node) {
+      return node instanceof SymbolNode && node.name == 'x' ? g : node;
     });
 
     assert.strictEqual(h, f);
@@ -130,7 +122,7 @@ describe('FunctionNode', function() {
     assert.strictEqual(f.params[1],  g);
   });
 
-  it ('should replace an FunctionNodes symbol', function () {
+  it ('should transform an FunctionNodes symbol', function () {
     // add(2, 3)
     var a = new SymbolNode('add');
     var b = new ConstantNode(2);
@@ -138,16 +130,15 @@ describe('FunctionNode', function() {
     var d = new FunctionNode(a, [b, c]);
 
     var e = new SymbolNode('subtract');
-    var f = d.replace({
-      type: SymbolNode,
-      replacement: e
+    var f = d.transform(function (node) {
+      return node instanceof SymbolNode ? e : node;
     });
 
     assert.strictEqual(f, d);
     assert.strictEqual(d.symbol, e);
   });
 
-  it ('should replace an FunctionNode itself', function () {
+  it ('should transform an FunctionNode itself', function () {
     // add(2, 3)
     var a = new SymbolNode('add');
     var b = new ConstantNode(2);
@@ -155,9 +146,8 @@ describe('FunctionNode', function() {
     var d = new FunctionNode(a, [b, c]);
 
     var e = new ConstantNode(5);
-    var f = d.replace({
-      type: FunctionNode,
-      replacement: e
+    var f = d.transform(function (node) {
+      return node instanceof FunctionNode ? e : node;
     });
 
     assert.strictEqual(f, e);

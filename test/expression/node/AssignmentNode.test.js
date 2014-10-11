@@ -48,34 +48,28 @@ describe('AssignmentNode', function() {
     assert.equal(scope.b, 3);
   });
 
-  it ('should find an AssignmentNode', function () {
+  it ('should filter an AssignmentNode', function () {
     var a = new ConstantNode(1);
     var b = new SymbolNode('x');
     var c = new ConstantNode(2);
     var d = new ArrayNode([a, b, c]);
     var e = new AssignmentNode('array', d);
 
-    assert.deepEqual(e.find({type: AssignmentNode}),[e]);
-    assert.deepEqual(e.find({type: SymbolNode}),    [b]);
-    assert.deepEqual(e.find({type: RangeNode}),     []);
-    assert.deepEqual(e.find({type: ConstantNode}),  [a, c]);
-    assert.deepEqual(e.find({type: ConstantNode, properties: {value: '2'}}),  [c]);
+    assert.deepEqual(e.filter(function (node) {return node instanceof AssignmentNode}),[e]);
+    assert.deepEqual(e.filter(function (node) {return node instanceof SymbolNode}),    [b]);
+    assert.deepEqual(e.filter(function (node) {return node instanceof RangeNode}),     []);
+    assert.deepEqual(e.filter(function (node) {return node instanceof ConstantNode}),  [a, c]);
+    assert.deepEqual(e.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [c]);
   });
 
-  it ('should find an AssignmentNode without expression', function () {
+  it ('should filter an AssignmentNode without expression', function () {
     var e = new AssignmentNode('a', new Node());
 
-    assert.deepEqual(e.find({type: AssignmentNode}),[e]);
-    assert.deepEqual(e.find({type: SymbolNode}),    []);
+    assert.deepEqual(e.filter(function (node) {return node instanceof AssignmentNode}),[e]);
+    assert.deepEqual(e.filter(function (node) {return node instanceof SymbolNode}),    []);
   });
 
-  it ('should match an AssignmentNode', function () {
-    var a = new AssignmentNode('a', new Node());
-    assert.equal(a.match({type: AssignmentNode}),  true);
-    assert.equal(a.match({type: ConstantNode}), false);
-  });
-
-  it ('should replace an AssignmentNodes (nested) parameters', function () {
+  it ('should transform an AssignmentNodes (nested) parameters', function () {
     // a = x + 2
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
@@ -83,10 +77,8 @@ describe('AssignmentNode', function() {
     var d = new AssignmentNode('a', c);
 
     var e = new ConstantNode(3);
-    var f = d.replace({
-      type: SymbolNode,
-      properties: {name: 'x'},
-      replacement: e
+    var f = d.transform(function (node) {
+      return node instanceof SymbolNode && node.name == 'x' ? e : node;
     });
 
     assert.strictEqual(f, d);
@@ -95,7 +87,7 @@ describe('AssignmentNode', function() {
     assert.strictEqual(d.expr.params[1],  b);
   });
 
-  it ('should replace an AssignmentNode itself', function () {
+  it ('should transform an AssignmentNode itself', function () {
     // a = x + 2
     var a = new SymbolNode('add');
     var b = new ConstantNode(2);
@@ -103,9 +95,8 @@ describe('AssignmentNode', function() {
     var d = new AssignmentNode('a', c);
 
     var e = new ConstantNode(5);
-    var f = d.replace({
-      type: AssignmentNode,
-      replacement: e
+    var f = d.transform(function (node) {
+      return node instanceof AssignmentNode ? e : node;
     });
 
     assert.strictEqual(f, e);

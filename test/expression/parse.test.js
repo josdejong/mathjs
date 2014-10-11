@@ -1368,11 +1368,11 @@ describe('parse', function() {
       it('should parse custom nodes without parameters', function() {
         var node = parse('custom()', options);
         assert.equal(node.compile(math).eval(), 'CustomNode()');
-        assert.equal(node.find({type: CustomNode}).length, 1);
+        assert.equal(node.filter(function (node) {return node instanceof CustomNode}).length, 1);
 
         var node2 = parse('custom', options);
         assert.equal(node2.compile(math).eval(), 'CustomNode()');
-        assert.equal(node2.find({type: CustomNode}).length, 1);
+        assert.equal(node2.filter(function (node) {return node instanceof CustomNode}).length, 1);
       });
 
       it('should throw an error on syntax errors in using custom nodes', function() {

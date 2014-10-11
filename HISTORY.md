@@ -3,7 +3,8 @@
 
 ## not yet released, version 1.1.0
 
-- Implemented a function `replace` for nodes of a parsed expression.
+- Implemented recursive functions `traverse` and `transform` for nodes of a 
+  parsed expression.
 
 
 ## 2014-10-12, version 1.0.1

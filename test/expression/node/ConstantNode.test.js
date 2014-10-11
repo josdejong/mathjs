@@ -71,33 +71,21 @@ describe('ConstantNode', function() {
 
   it ('should find a ConstantNode', function () {
     var a = new ConstantNode('2', 'number');
-    assert.deepEqual(a.find({type: ConstantNode}),  [a]);
-    assert.deepEqual(a.find({type: SymbolNode}), []);
+    assert.deepEqual(a.filter(function (node) {return node instanceof ConstantNode}),  [a]);
+    assert.deepEqual(a.filter(function (node) {return node instanceof SymbolNode}), []);
   });
 
-  it ('should match a ConstantNode', function () {
-    var a = new ConstantNode('2', 'number');
-    assert.equal(a.match({type: ConstantNode}),  true);
-    assert.equal(a.match({properties: {value: '2'}}), true);
-    assert.equal(a.match({properties: {value: '4'}}), false);
-    assert.equal(a.match({type: SymbolNode}), false);
-  });
-
-  it ('should replace a ConstantNode', function () {
+  it ('should transform a ConstantNode', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
-    var c = a.replace({
-      type: ConstantNode,
-      properties: {value: '2'},
-      replacement: b
+    var c = a.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '2' ? b : node;
     });
     assert.strictEqual(c,  b);
 
     // no match should leave the node as is
-    var d = a.replace({
-      type: ConstantNode,
-      properties: {value: '99'},
-      replacement: b
+    var d = a.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '99' ? b : node;
     });
     assert.strictEqual(d,  a);
   });

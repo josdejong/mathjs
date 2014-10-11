@@ -44,32 +44,26 @@ describe('OperatorNode', function() {
     }, /Function add missing in provided namespace/);
   });
 
-  it ('should find a OperatorNode', function () {
+  it ('should filter a OperatorNode', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var n = new OperatorNode('+', 'add', [a, b]);
 
-    assert.deepEqual(n.find({type: OperatorNode}),  [n]);
-    assert.deepEqual(n.find({type: SymbolNode}),    []);
-    assert.deepEqual(n.find({type: ConstantNode}),  [a, b]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [a]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof OperatorNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),    []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  [a, b]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [a]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '4'}),  []);
   });
 
-  it ('should find an OperatorNode without contents', function () {
+  it ('should filter an OperatorNode without contents', function () {
     var n = new OperatorNode();
 
-    assert.deepEqual(n.find({type: OperatorNode}),  [n]);
-    assert.deepEqual(n.find({type: SymbolNode}),    []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof OperatorNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),    []);
   });
 
-  it ('should match a OperatorNode', function () {
-    var a = new OperatorNode();
-    assert.equal(a.match({type: OperatorNode}),  true);
-    assert.equal(a.match({type: ConstantNode}), false);
-  });
-
-  it ('should replace an OperatorNodes parameters', function () {
+  it ('should transform an OperatorNodes parameters', function () {
     // x^2-x
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
@@ -78,10 +72,8 @@ describe('OperatorNode', function() {
     var e = new OperatorNode('-', 'subtract', [c, d]);
 
     var f = new ConstantNode(3);
-    var g = e.replace({
-      type: SymbolNode,
-      properties: {name: 'x'},
-      replacement: f
+    var g = e.transform(function (node) {
+      return node instanceof SymbolNode && node.name == 'x' ? f : node;
     });
 
     assert.strictEqual(g,  e);
@@ -91,16 +83,15 @@ describe('OperatorNode', function() {
     assert.strictEqual(e.params[1],  f);
   });
 
-  it ('should replace an OperatorNode itself', function () {
+  it ('should transform an OperatorNode itself', function () {
     // x^2-x
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
     var c = new OperatorNode('+', 'add', [a, b]);
 
     var f = new ConstantNode(3);
-    var g = c.replace({
-      type: OperatorNode,
-      replacement: f
+    var g = c.transform(function (node) {
+      return node instanceof OperatorNode ? f : node;
     });
 
     assert.strictEqual(g,  f);

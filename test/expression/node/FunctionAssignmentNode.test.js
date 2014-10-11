@@ -47,18 +47,18 @@ describe('FunctionAssignmentNode', function() {
 
   });
 
-  it ('should find a FunctionAssignmentNode', function () {
+  it ('should filter a FunctionAssignmentNode', function () {
     var a = new ConstantNode(2);
     var x = new SymbolNode('x');
     var o = new OperatorNode('+', 'add', [a, x]);
     var n = new FunctionAssignmentNode('f', ['x'], o);
 
-    assert.deepEqual(n.find({type: FunctionAssignmentNode}),  [n]);
-    assert.deepEqual(n.find({type: SymbolNode}),    [x]);
-    assert.deepEqual(n.find({type: RangeNode}),     []);
-    assert.deepEqual(n.find({type: ConstantNode}),  [a]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [a]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof FunctionAssignmentNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),    [x]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof RangeNode}),     []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  [a]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [a]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '4'}),  []);
   });
 
   it ('should throw an error when creating a FunctionAssignmentNode with a reserved keyword', function () {
@@ -67,20 +67,14 @@ describe('FunctionAssignmentNode', function() {
     }, /Illegal function name/)
   });
 
-  it ('should find a FunctionAssignmentNode without expression', function () {
+  it ('should filter a FunctionAssignmentNode without expression', function () {
     var e = new FunctionAssignmentNode('f', ['x'], new Node());
 
-    assert.deepEqual(e.find({type: FunctionAssignmentNode}),  [e]);
-    assert.deepEqual(e.find({type: SymbolNode}),    []);
+    assert.deepEqual(e.filter(function (node) {return node instanceof FunctionAssignmentNode}),  [e]);
+    assert.deepEqual(e.filter(function (node) {return node instanceof SymbolNode}),    []);
   });
 
-  it ('should match a FunctionAssignmentNode', function () {
-    var a = new FunctionAssignmentNode('f', ['x'], new Node());
-    assert.equal(a.match({type: FunctionAssignmentNode}),  true);
-    assert.equal(a.match({type: SymbolNode}), false);
-  });
-
-  it ('should replace an FunctionAssignmentNodes (nested) parameters', function () {
+  it ('should transform an FunctionAssignmentNodes (nested) parameters', function () {
     // f(x) = 2 + x
     var a = new ConstantNode(2);
     var x = new SymbolNode('x');
@@ -88,10 +82,8 @@ describe('FunctionAssignmentNode', function() {
     var n = new FunctionAssignmentNode('f', ['x'], c);
 
     var e = new ConstantNode(3);
-    var f = n.replace({
-      type: SymbolNode,
-      properties: {name: 'x'},
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof SymbolNode && node.name == 'x' ? e : node;
     });
 
     assert.strictEqual(f, n);
@@ -100,7 +92,7 @@ describe('FunctionAssignmentNode', function() {
     assert.strictEqual(n.expr.params[1], e);
   });
 
-  it ('should replace an FunctionAssignmentNode itself', function () {
+  it ('should transform an FunctionAssignmentNode itself', function () {
     // f(x) = 2 + x
     var a = new ConstantNode(2);
     var x = new SymbolNode('x');
@@ -108,9 +100,8 @@ describe('FunctionAssignmentNode', function() {
     var n = new FunctionAssignmentNode('f', ['x'], c);
 
     var e = new ConstantNode(5);
-    var f = n.replace({
-      type: FunctionAssignmentNode,
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof FunctionAssignmentNode ? e : node;
     });
 
     assert.strictEqual(f, e);

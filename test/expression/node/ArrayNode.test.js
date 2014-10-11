@@ -73,30 +73,22 @@ describe('ArrayNode', function() {
     var c = new ConstantNode(2);
     var d = new ArrayNode([a, b, c]);
 
-    assert.deepEqual(d.find({type: ArrayNode}),     [d]);
-    assert.deepEqual(d.find({type: SymbolNode}),    [b]);
-    assert.deepEqual(d.find({type: RangeNode}),     []);
-    assert.deepEqual(d.find({type: ConstantNode}),  [a, c]);
-    assert.deepEqual(d.find({type: ConstantNode, properties: {value: '2'}}),  [c]);
+    assert.deepEqual(d.filter(function (node) {return node instanceof ArrayNode}),     [d]);
+    assert.deepEqual(d.filter(function (node) {return node instanceof SymbolNode}),    [b]);
+    assert.deepEqual(d.filter(function (node) {return node instanceof RangeNode}),     []);
+    assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode}),  [a, c]);
+    assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [c]);
   });
 
-  it ('should match an ArrayNode', function () {
-    var a = new ArrayNode();
-    assert.equal(a.match({type: ArrayNode}),  true);
-    assert.equal(a.match({type: SymbolNode}), false);
-  });
-
-  it ('should replace an ArrayNodes parameters', function () {
+  it ('should transform an ArrayNodes parameters', function () {
     // [x, 2]
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
     var c = new ArrayNode([a, b]);
 
     var d = new ConstantNode(3);
-    var e = c.replace({
-      type: SymbolNode,
-      properties: {name: 'x'},
-      replacement: d
+    var e = c.transform(function (node) {
+      return (node instanceof SymbolNode) && (node.name == 'x') ? d : node;
     });
 
     assert.strictEqual(e,  c);
@@ -104,16 +96,15 @@ describe('ArrayNode', function() {
     assert.strictEqual(c.nodes[1],  b);
   });
 
-  it ('should replace an ArrayNode itself', function () {
+  it ('should transform an ArrayNode itself', function () {
     // [x, 2]
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
     var c = new ArrayNode([a, b]);
 
     var d = new ConstantNode(3);
-    var e = c.replace({
-      type: ArrayNode,
-      replacement: d
+    var e = c.transform(function (node) {
+      return (node instanceof ArrayNode) ? d : node;
     });
     assert.strictEqual(e, d);
   });

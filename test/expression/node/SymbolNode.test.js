@@ -44,38 +44,25 @@ describe('SymbolNode', function() {
     assert.strictEqual(expr2.eval(scope2), math.sqrt);
   });
 
-  it ('should find a SymbolNode', function () {
+  it ('should filter a SymbolNode', function () {
     var n = new SymbolNode('x');
-    assert.deepEqual(n.find({type: SymbolNode}),  [n]);
-    assert.deepEqual(n.find({properties: {name: 'x'}}),  [n]);
-    assert.deepEqual(n.find({properties: {name: 'q'}}),  []);
-    assert.deepEqual(n.find({type: ConstantNode}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node.name == 'x'}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node.name == 'q'}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  []);
   });
 
-  it ('should match a SymbolNode', function () {
-    var n = new SymbolNode('x');
-
-    assert.equal(n.match({type: SymbolNode}),  true);
-    assert.equal(n.match({properties: {name: 'x'}}),  true);
-    assert.equal(n.match({properties: {name: 'q'}}),  false);
-    assert.equal(n.match({type: ConstantNode}), false);
-  });
-
-  it ('should replace an SymbolNode', function () {
+  it ('should transform an SymbolNode', function () {
     var a = new SymbolNode('x');
     var b = new SymbolNode('y');
-    var c = a.replace({
-      type: SymbolNode,
-      properties: {name: 'x'},
-      replacement: b
+    var c = a.transform(function (node) {
+      return node instanceof SymbolNode && node.name == 'x' ? b : node;
     });
     assert.strictEqual(c,  b);
 
     // no match should leave the symbol as is
-    var d = a.replace({
-      type: SymbolNode,
-      properties: {name: 'q'},
-      replacement: b
+    var d = a.transform(function (node) {
+      return node instanceof SymbolNode && node.name == 'q' ? b : node;
     });
     assert.strictEqual(d,  a);
   });

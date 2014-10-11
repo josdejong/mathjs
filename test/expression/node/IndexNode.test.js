@@ -111,43 +111,36 @@ describe('IndexNode', function() {
     assert.deepEqual(expr.eval(scope), 3);
   });
 
-  it ('should find an IndexNode', function () {
+  it ('should filter an IndexNode', function () {
     var a = new SymbolNode('a'),
         b = new ConstantNode(2),
         c = new ConstantNode(1);
     var n = new IndexNode(a, [b, c]);
 
-    assert.deepEqual(n.find({type: IndexNode}),  [n]);
-    assert.deepEqual(n.find({type: SymbolNode}),    [a]);
-    assert.deepEqual(n.find({type: RangeNode}),     []);
-    assert.deepEqual(n.find({type: ConstantNode}),  [b, c]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '2'}}),  [b]);
-    assert.deepEqual(n.find({type: ConstantNode, properties: {value: '4'}}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof IndexNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),    [a]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof RangeNode}),     []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  [b, c]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [b]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '4'}),  []);
   });
 
-  it ('should find an empty IndexNode', function () {
+  it ('should filter an empty IndexNode', function () {
     var n = new IndexNode(new Node(), []);
 
-    assert.deepEqual(n.find({type: IndexNode}),  [n]);
-    assert.deepEqual(n.find({type: SymbolNode}), []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof IndexNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}), []);
   });
 
-  it ('should match an IndexNode', function () {
-    var a = new IndexNode(new Node(), []);
-    assert.equal(a.match({type: IndexNode}),  true);
-    assert.equal(a.match({type: SymbolNode}), false);
-  });
-
-  it ('should replace an IndexNodes object', function () {
+  it ('should transform an IndexNodes object', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);
     var c = new ConstantNode(1);
     var n = new IndexNode(a, [b, c]);
 
     var e = new SymbolNode('c');
-    var f = n.replace({
-      type: SymbolNode,
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof SymbolNode ? e : node;
     });
 
     assert.strictEqual(f, n);
@@ -156,17 +149,15 @@ describe('IndexNode', function() {
     assert.strictEqual(f.ranges[1], c);
   });
 
-  it ('should replace an IndexNodes (nested) parameters', function () {
+  it ('should transform an IndexNodes (nested) parameters', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);
     var c = new ConstantNode(1);
     var n = new IndexNode(a, [b, c]);
 
     var e = new SymbolNode('c');
-    var f = n.replace({
-      type: ConstantNode,
-      properties: {value: '1'},
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '1' ? e : node;
     });
 
     assert.strictEqual(f, n);
@@ -175,16 +166,15 @@ describe('IndexNode', function() {
     assert.strictEqual(f.ranges[1], e);
   });
 
-  it ('should replace an IndexNode itself', function () {
+  it ('should transform an IndexNode itself', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);
     var c = new ConstantNode(1);
     var n = new IndexNode(a, [b, c]);
 
     var e = new ConstantNode(5);
-    var f = n.replace({
-      type: IndexNode,
-      replacement: e
+    var f = n.transform(function (node) {
+      return node instanceof IndexNode ? e : node;
     });
 
     assert.strictEqual(f, e);
