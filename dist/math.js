@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 1.0.2-SNAPSHOT
- * @date    2014-09-12
+ * @date    2014-10-12
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -5491,11 +5491,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // find an undefined symbol
 	      var _scope = scope || {};
 	      var symbol = args[1]
-	          .find({
-	            type: SymbolNode
-	          })
-	          .filter(function (symbol) {
-	            return !(symbol.name in math) && !(symbol.name in _scope);
+	          .filter(function (node) {
+	            return (node instanceof SymbolNode) &&
+	                !(node.name in math) &&
+	                !(node.name in _scope);
 	          })[0];
 
 	      // create a test function for this equation
@@ -21733,25 +21732,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
+	 * Recursively execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	ArrayNode.prototype.find = function (filter) {
-	  var results = [];
-
-	  // check itself
-	  if (this.match(filter)) {
-	    results.push(this);
+	ArrayNode.prototype._traverse = function (callback) {
+	  for (var i = 0; i < this.nodes.length; i++) {
+	    var node = this.nodes[i];
+	    callback(node, 'nodes.' + i, this);
+	    node._traverse(callback);
 	  }
+	};
 
-	  // search in all nodes
-	  var nodes = this.nodes;
-	  for (var r = 0, rows = nodes.length; r < rows; r++) {
-	    results = results.concat(nodes[r].find(filter));
-	  }
-
-	  return results;
+	/**
+	 * Create a clone of this node
+	 * @return {ArrayNode}
+	 */
+	ArrayNode.prototype.clone = function() {
+	  return new ArrayNode(this.nodes.map(function(node) {
+	    return node.clone();
+	  }))
 	};
 
 	/**
@@ -21842,23 +21842,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return 'scope["' + this.name + '"] = ' + this.expr._compile(defs) + '';
 	};
 
+
 	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
+	 * Recursively execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	AssignmentNode.prototype.find = function (filter) {
-	  var nodes = [];
+	AssignmentNode.prototype._traverse = function (callback) {
+	  callback(this.expr, 'expr', this);
+	  this.expr._traverse(callback);
+	};
 
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
-
-	  // search in expression
-	  nodes = nodes.concat(this.expr.find(filter));
-
-	  return nodes;
+	/**
+	 * Create a clone of this node
+	 * @return {AssignmentNode}
+	 */
+	AssignmentNode.prototype.clone = function() {
+	  return new AssignmentNode(this.name, this.expr.clone());
 	};
 
 	/**
@@ -21904,7 +21904,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new SyntaxError('Constructor must be called with the new operator');
 	  }
 
-	  this.params = [];
+	  this.nodes = [];
 	}
 
 	BlockNode.prototype = new Node();
@@ -21924,8 +21924,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!(expr instanceof Node))  throw new TypeError('Node expected for parameter "expr"');
 	  if (!isBoolean(visible))      throw new TypeError('Boolean expected for parameter "visible"');
 
-	  var index = this.params.length;
-	  this.params[index] = {
+	  var index = this.nodes.length;
+	  this.nodes[index] = {
 	    node: expr,
 	    visible: visible
 	  };
@@ -21941,7 +21941,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	BlockNode.prototype._compile = function (defs) {
 	  defs.ResultSet = ResultSet;
-	  var params = this.params.map(function (param) {
+	  var nodes = this.nodes.map(function (param) {
 	    var js = param.node._compile(defs);
 	    if (param.visible) {
 	      return 'results.push(' + js + ');';
@@ -21953,31 +21953,39 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return '(function () {' +
 	      'var results = [];' +
-	      params.join('') +
+	      nodes.join('') +
 	      'return new ResultSet(results);' +
 	      '})()';
 	};
 
 	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
+	 * Recursively execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	BlockNode.prototype.find = function (filter) {
-	  var nodes = [];
-
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
+	BlockNode.prototype._traverse = function (callback) {
+	  for (var i = 0; i < this.nodes.length; i++) {
+	    var node = this.nodes[i].node;
+	    callback(node, 'nodes.' + i + '.node', this);
+	    node._traverse(callback);
 	  }
+	};
 
-	  // search in parameters
-	  var params = this.params;
-	  for (var i = 0, len = params.length; i < len; i++) {
-	    nodes = nodes.concat(params[i].node.find(filter));
-	  }
+	/**
+	 * Create a clone of this node
+	 * @return {BlockNode}
+	 */
+	BlockNode.prototype.clone = function() {
+	  var clone = new BlockNode();
 
-	  return nodes;
+	  this.nodes.forEach(function(param) {
+	    clone.nodes.push({
+	      node: param.node.clone(),
+	      visible: param.visible
+	    })
+	  });
+
+	  return clone;
 	};
 
 	/**
@@ -21986,7 +21994,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @override
 	 */
 	BlockNode.prototype.toString = function() {
-	  return this.params.map(function (param) {
+	  return this.nodes.map(function (param) {
 	    return param.node.toString() + (param.visible ? '' : ';');
 	  }).join('\n');
 	};
@@ -21996,7 +22004,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String} str
 	 */
 	BlockNode.prototype.toTex = function() {
-	  return this.params.map(function (param) {
+	  return this.nodes.map(function (param) {
 	    return param.node.toTex() + (param.visible ? '' : ';');
 	  }).join('\n');
 	};
@@ -22093,25 +22101,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
+	 * Recursively execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	ConditionalNode.prototype.find = function (filter) {
-	  var nodes = [];
+	ConditionalNode.prototype._traverse = function (callback) {
+	  callback(this.condition, 'condition', this);
+	  this.condition._traverse(callback);
 
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
+	  callback(this.trueExpr, 'trueExpr', this);
+	  this.trueExpr._traverse(callback);
 
-	  // search in parameters
-	  nodes = nodes.concat(
-	      this.condition.find(filter),
-	      this.trueExpr.find(filter),
-	      this.falseExpr.find(filter));
+	  callback(this.falseExpr, 'falseExpr', this);
+	  this.falseExpr._traverse(callback);
+	};
 
-	  return nodes;
+	/**
+	 * Create a clone of this node
+	 * @return {ConditionalNode}
+	 */
+	ConditionalNode.prototype.clone = function() {
+	  return new ConditionalNode(this.condition.clone(), this.trueExpr.clone(), this.falseExpr.clone());
 	};
 
 	/**
@@ -22269,6 +22279,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
+	 * Create a clone of this node
+	 * @return {ConstantNode}
+	 */
+	ConstantNode.prototype.clone = function() {
+	  return new ConstantNode(this.value, this.valueType);
+	};
+
+	/**
 	 * Get string representation
 	 * @return {String} str
 	 */
@@ -22379,22 +22397,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
+	 * Recursively execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	FunctionAssignmentNode.prototype.find = function (filter) {
-	  var nodes = [];
+	FunctionAssignmentNode.prototype._traverse = function (callback) {
+	  callback(this.expr, 'expr', this);
+	  this.expr._traverse(callback);
+	};
 
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
-
-	  // search in expression
-	  nodes = nodes.concat(this.expr.find(filter));
-
-	  return nodes;
+	/**
+	 * Create a clone of this node
+	 * @return {FunctionAssignmentNode}
+	 */
+	FunctionAssignmentNode.prototype.clone = function() {
+	  return new FunctionAssignmentNode(this.name, this.args.concat(), this.expr.clone());
 	};
 
 	/**
@@ -22490,15 +22507,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	IndexNode.prototype.compileSubset = function(defs, replacement) {
 	  // check whether any of the ranges expressions uses the context symbol 'end'
-	  var filter = {
-	    type: SymbolNode,
-	    properties: {
-	      name: 'end'
-	    }
-	  };
+	  function test(node) {
+	    return (node instanceof SymbolNode) && (node.name == 'end');
+	  }
+
 	  var someUseEnd = false;
 	  var rangesUseEnd = this.ranges.map(function (range) {
-	    var useEnd = range.find(filter).length > 0;
+	    var useEnd = range.filter(test).length > 0;
 	    someUseEnd = useEnd ? useEnd : someUseEnd;
 	    return useEnd;
 	  });
@@ -22580,28 +22595,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
+	 * Recursively execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	IndexNode.prototype.find = function (filter) {
-	  var nodes = [];
+	IndexNode.prototype._traverse = function (callback) {
+	  // object
+	  callback(this.object, 'object', this);
+	  this.object._traverse(callback);
 
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
+	  // ranges
+	  for (var i = 0; i < this.ranges.length; i++) {
+	    var range = this.ranges[i];
+	    callback(range, 'ranges.' + i, this);
+	    range._traverse(callback);
 	  }
-
-	  // search object
-	  nodes = nodes.concat(this.object.find(filter));
-
-	  // search in parameters
-	  var ranges = this.ranges;
-	  for (var i = 0, len = ranges.length; i < len; i++) {
-	    nodes = nodes.concat(ranges[i].find(filter));
-	  }
-
-	  return nodes;
 	};
 
 	/**
@@ -22610,6 +22618,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	IndexNode.prototype.objectName = function() {
 	  return this.object.name;
+	};
+
+	/**
+	 * Create a clone of this node
+	 * @return {IndexNode}
+	 */
+	IndexNode.prototype.clone = function() {
+	  return new IndexNode(this.object.clone(), this.ranges.map(function (range) {
+	    return range.clone();
+	  }));
 	};
 
 	/**
@@ -22660,7 +22678,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // TODO: validate input
 	  this.op = op;
 	  this.fn = fn;
-	  this.params = params;
+	  this.params = params || [];
 	}
 
 	OperatorNode.prototype = new Node();
@@ -22687,27 +22705,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
+	 * Recursively execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	OperatorNode.prototype.find = function (filter) {
-	  var nodes = [];
-
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
+	OperatorNode.prototype._traverse = function (callback) {
+	  for (var i = 0; i < this.params.length; i++) {
+	    var param = this.params[i];
+	    callback(param, 'params.' + i, this);
+	    param._traverse(callback);
 	  }
+	};
 
-	  // search in parameters
-	  var params = this.params;
-	  if (params) {
-	    for (var i = 0, len = params.length; i < len; i++) {
-	      nodes = nodes.concat(params[i].find(filter));
-	    }
-	  }
-
-	  return nodes;
+	/**
+	 * Create a clone of this node
+	 * @return {OperatorNode}
+	 */
+	OperatorNode.prototype.clone = function() {
+	  return new OperatorNode(this.op, this.fn, this.params.map(function (param) {
+	    return param.clone();
+	  }));
 	};
 
 	/**
@@ -22863,7 +22880,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  this.symbol = symbol;
-	  this.params = params;
+	  this.params = params || [];
 	}
 
 	FunctionNode.prototype = new Node();
@@ -22908,28 +22925,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
+	 * Recursively execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	FunctionNode.prototype.find = function (filter) {
-	  var nodes = [];
+	FunctionNode.prototype._traverse = function (callback) {
+	  // symbol
+	  callback(this.symbol, 'symbol', this);
+	  this.symbol._traverse(callback);
 
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
+	  // params
+	  for (var i = 0; i < this.params.length; i++) {
+	    var param = this.params[i];
+	    callback(param, 'params.' + i, this);
+	    param._traverse(callback);
 	  }
+	};
 
-	  // search symbol
-	  nodes = nodes.concat(this.symbol.find(filter));
-
-	  // search in parameters
-	  var params = this.params;
-	  for (var i = 0, len = params.length; i < len; i++) {
-	    nodes = nodes.concat(params[i].find(filter));
-	  }
-
-	  return nodes;
+	/**
+	 * Create a clone of this node
+	 * @return {FunctionNode}
+	 */
+	FunctionNode.prototype.clone = function() {
+	  return new FunctionNode(this.symbol.clone(), this.params.map(function (param) {
+	    return param.clone();
+	  }));
 	};
 
 	/**
@@ -23006,26 +23026,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
+	 * Recursively execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	RangeNode.prototype.find = function (filter) {
-	  var nodes = [];
+	RangeNode.prototype._traverse = function (callback) {
+	  callback(this.start, 'start', this);
+	  this.start._traverse(callback);
 
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
-
-	  // search in parameters
-	  nodes = nodes.concat(this.start.find(filter));
 	  if (this.step) {
-	    nodes = nodes.concat(this.step.find(filter));
+	    callback(this.step, 'step', this);
+	    this.step._traverse(callback);
 	  }
-	  nodes = nodes.concat(this.end.find(filter));
 
-	  return nodes;
+	  callback(this.end, 'end', this);
+	  this.end._traverse(callback);
+	};
+
+	/**
+	 * Create a clone of this node
+	 * @return {RangeNode}
+	 */
+	RangeNode.prototype.clone = function() {
+	  var params = [this.start.clone(), this.end.clone()];
+	  if (this.step) {
+	    params.push(this.step.clone());
+	  }
+	  return new RangeNode(params);
 	};
 
 	/**
@@ -23129,6 +23156,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
+	 * Create a clone of this node
+	 * @return {SymbolNode}
+	 */
+	SymbolNode.prototype.clone = function() {
+	  return new SymbolNode(this.name);
+	};
+
+	/**
 	 * Get string representation
 	 * @return {String} str
 	 * @override
@@ -23200,25 +23235,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Find all nodes matching given filter
-	 * @param {Object} filter  See Node.find for a description of the filter options
-	 * @returns {Node[]} nodes
+	 * Recursively execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	UpdateNode.prototype.find = function (filter) {
-	  var nodes = [];
+	UpdateNode.prototype._traverse = function (callback) {
+	  callback(this.index, 'index', this);
+	  this.index._traverse(callback);
 
-	  // check itself
-	  if (this.match(filter)) {
-	    nodes.push(this);
-	  }
+	  callback(this.expr, 'expr', this);
+	  this.expr._traverse(callback);
+	};
 
-	  // search in index
-	  nodes = nodes.concat(this.index.find(filter));
-
-	  // search in expression
-	  nodes = nodes.concat(this.expr.find(filter));
-
-	  return nodes;
+	/**
+	 * Create a clone of this node
+	 * @return {UpdateNode}
+	 */
+	UpdateNode.prototype.clone = function() {
+	  return new UpdateNode(this.index.clone(), this.expr.clone());
 	};
 
 	/**
@@ -23321,54 +23355,118 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Find any node in the node tree matching given filter. For example, to
-	 * find all nodes of type SymbolNode having name 'x':
-	 *
-	 *     var results = Node.find({
-	 *         type: SymbolNode,
-	 *         properties: {
-	 *             name: 'x'
-	 *         }
-	 *     });
-	 *
-	 * @param {Object} filter       Available parameters:
-	 *                                  {Function} type
-	 *                                  {Object<String, String>} properties
-	 * @return {Node[]} nodes       An array with nodes matching given filter criteria
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(Node, string, Node)} callback
+	 * @private
 	 */
-	Node.prototype.find = function (filter) {
-	  return this.match(filter) ? [this] : [];
+	Node.prototype._traverse = function (callback) {
+	  // must be implemented by each of the Node implementations having child nodes
 	};
 
 	/**
-	 * Test if this object matches given filter
-	 * @param {Object} [filter]     Available parameters:
-	 *                              {Function} type
-	 *                              {Object<String, *>} properties
-	 * @return {Boolean} matches    True if there is a match
+	 * Recursively execute a callback for this node and each of its child nodes
+	 * @param {function(Node, string, Node)} callback
+	 *          A callback called for every node in the node tree.
+	 *          Signature: callback(node: Node, index: string, parent: Node) : Node
 	 */
-	Node.prototype.match = function (filter) {
-	  var match = true;
+	Node.prototype.forEach = function (callback) {
+	  // execute callback for itself
+	  callback(this, null, null);
 
-	  if (filter) {
-	    if (filter.type && !(this instanceof filter.type)) {
-	      match = false;
-	    }
+	  // traverse over all children
+	  this._traverse(callback);
+	};
 
-	    var properties = filter.properties;
-	    if (match && properties) {
-	      for (var prop in properties) {
-	        if (properties.hasOwnProperty(prop)) {
-	          if (this[prop] !== properties[prop]) {
-	            match = false;
-	            break;
-	          }
+	/**
+	 * Transform a node tree via a mapping function.
+	 *
+	 * For example, to replace all nodes of type SymbolNode having name 'x' with a
+	 * ConstantNode with value 2:
+	 *
+	 *     var res = Node.transform(function (node) {
+	 *       if (node instanceof SymbolNode) && (node.name == 'x')) {
+	 *         return new ConstantNode(2);
+	 *       }
+	 *       else {
+	 *         return node;
+	 *       }
+	 *     });
+	 *
+	 * @param {function(Node, string, Node)} callback
+	 *          A mapping function accepting a node, and returning
+	 *          a replacement for the node or the original node.
+	 *          Signature: callback(node: Node, index: string, parent: Node) : Node
+	 * @return {Node} Returns the original node or its replacement
+	 */
+	Node.prototype.map = function (callback) {
+	  var clone = this.clone();
+
+	  // check itself
+	  var res = callback(clone, null, null);
+
+	  if (res === clone) {
+	    // recurse over the child nodes
+	    res._traverse(function (node, index, parent) {
+	      var replacement = callback(node, index, parent);
+	      if (index.indexOf('.') !== -1) {
+	        // traverse path
+	        var props = index.split('.');
+	        var obj = parent;
+	        while (props.length > 1) {
+	          obj = obj[props.shift()];
 	        }
+	        obj[props.shift()] = replacement;
 	      }
-	    }
+	      else {
+	        parent[index] = replacement;
+	      }
+	    });
 	  }
 
-	  return match;
+	  return res;
+	};
+
+	/**
+	 * Find any node in the node tree matching given filter function. For example, to
+	 * find all nodes of type SymbolNode having name 'x':
+	 *
+	 *     var results = Node.filter(function (node) {
+	 *       return (node instanceof SymbolNode) && (node.name == 'x');
+	 *     });
+	 *
+	 * @param {function} test       A test function returning true when the node
+	 *                              matches, and false otherwise. The function
+	 *                              is called as filter(node: Node).
+	 * @return {Node[]} nodes       An array with nodes matching given filter criteria
+	 */
+	Node.prototype.filter = function (test) {
+	  var nodes = [];
+
+	  this.forEach(function (node) {
+	    if (test(node)) {
+	      nodes.push(node);
+	    }
+	  });
+
+	  return nodes;
+	};
+
+	// TODO: deprecated since version 1.1.0, remove this some day
+	Node.prototype.find = function () {
+	  throw new Error('Function Node.find is deprecated. Use Node.filter instead.');
+	};
+
+	// TODO: deprecated since version 1.1.0, remove this some day
+	Node.prototype.match = function () {
+	  throw new Error('Function Node.match is deprecated. See functions Node.filter, Node.traverse, Node.transform.');
+	};
+
+	/**
+	 * Create a clone of this node
+	 * @return {Node}
+	 */
+	Node.prototype.clone = function() {
+	  return new Node();
 	};
 
 	/**
