@@ -63,7 +63,7 @@ describe('OperatorNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),    []);
   });
 
-  it ('should transform an OperatorNodes parameters', function () {
+  it ('should map an OperatorNodes parameters', function () {
     // x^2-x
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
@@ -72,7 +72,7 @@ describe('OperatorNode', function() {
     var e = new OperatorNode('-', 'subtract', [c, d]);
 
     var f = new ConstantNode(3);
-    var g = e.transform(function (node) {
+    var g = e.map(function (node) {
       return node instanceof SymbolNode && node.name == 'x' ? f : node;
     });
 
@@ -82,14 +82,14 @@ describe('OperatorNode', function() {
     assert.deepEqual(g.params[1],  f);
   });
 
-  it ('should transform an OperatorNode itself', function () {
+  it ('should map an OperatorNode itself', function () {
     // x^2-x
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
     var c = new OperatorNode('+', 'add', [a, b]);
 
     var f = new ConstantNode(3);
-    var g = c.transform(function (node) {
+    var g = c.map(function (node) {
       return node instanceof OperatorNode ? f : node;
     });
 

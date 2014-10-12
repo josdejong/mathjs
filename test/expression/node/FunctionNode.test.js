@@ -100,7 +100,7 @@ describe('FunctionNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '4'}),  []);
   });
 
-  it ('should transform an FunctionNodes (nested) parameters', function () {
+  it ('should map an FunctionNodes (nested) parameters', function () {
     // multiply(x + 2, x)
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
@@ -110,7 +110,7 @@ describe('FunctionNode', function() {
     var f = new FunctionNode(e, [c, d]);
 
     var g = new ConstantNode(3);
-    var h = f.transform(function (node) {
+    var h = f.map(function (node) {
       return node instanceof SymbolNode && node.name == 'x' ? g : node;
     });
 
@@ -121,7 +121,7 @@ describe('FunctionNode', function() {
     assert.deepEqual(h.params[1],  g);
   });
 
-  it ('should transform an FunctionNodes symbol', function () {
+  it ('should map an FunctionNodes symbol', function () {
     // add(2, 3)
     var a = new SymbolNode('add');
     var b = new ConstantNode(2);
@@ -129,7 +129,7 @@ describe('FunctionNode', function() {
     var d = new FunctionNode(a, [b, c]);
 
     var e = new SymbolNode('subtract');
-    var f = d.transform(function (node) {
+    var f = d.map(function (node) {
       return node instanceof SymbolNode ? e : node;
     });
 
@@ -137,7 +137,7 @@ describe('FunctionNode', function() {
     assert.deepEqual(f.symbol, e);
   });
 
-  it ('should transform an FunctionNode itself', function () {
+  it ('should map an FunctionNode itself', function () {
     // add(2, 3)
     var a = new SymbolNode('add');
     var b = new ConstantNode(2);
@@ -145,7 +145,7 @@ describe('FunctionNode', function() {
     var d = new FunctionNode(a, [b, c]);
 
     var e = new ConstantNode(5);
-    var f = d.transform(function (node) {
+    var f = d.map(function (node) {
       return node instanceof FunctionNode ? e : node;
     });
 

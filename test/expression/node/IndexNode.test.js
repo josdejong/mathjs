@@ -132,14 +132,14 @@ describe('IndexNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}), []);
   });
 
-  it ('should transform an IndexNodes object', function () {
+  it ('should map an IndexNodes object', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);
     var c = new ConstantNode(1);
     var n = new IndexNode(a, [b, c]);
 
     var e = new SymbolNode('c');
-    var f = n.transform(function (node) {
+    var f = n.map(function (node) {
       return node instanceof SymbolNode ? e : node;
     });
 
@@ -149,14 +149,14 @@ describe('IndexNode', function() {
     assert.deepEqual(f.ranges[1], c);
   });
 
-  it ('should transform an IndexNodes (nested) parameters', function () {
+  it ('should map an IndexNodes (nested) parameters', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);
     var c = new ConstantNode(1);
     var n = new IndexNode(a, [b, c]);
 
     var e = new SymbolNode('c');
-    var f = n.transform(function (node) {
+    var f = n.map(function (node) {
       return node instanceof ConstantNode && node.value == '1' ? e : node;
     });
 
@@ -166,14 +166,14 @@ describe('IndexNode', function() {
     assert.deepEqual(f.ranges[1], e);
   });
 
-  it ('should transform an IndexNode itself', function () {
+  it ('should map an IndexNode itself', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);
     var c = new ConstantNode(1);
     var n = new IndexNode(a, [b, c]);
 
     var e = new ConstantNode(5);
-    var f = n.transform(function (node) {
+    var f = n.map(function (node) {
       return node instanceof IndexNode ? e : node;
     });
 

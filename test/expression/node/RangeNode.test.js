@@ -58,14 +58,14 @@ describe('RangeNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '4'}),  []);
   });
 
-  it ('should transform a RangeNodes start', function () {
+  it ('should map a RangeNodes start', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     var e = new ConstantNode(3);
-    var f = n.transform(function (node) {
+    var f = n.map(function (node) {
       return node instanceof ConstantNode && node.value == '0' ? e : node;
     });
 
@@ -75,14 +75,14 @@ describe('RangeNode', function() {
     assert.deepEqual(f.step,  step);
   });
 
-  it ('should transform a RangeNodes end', function () {
+  it ('should map a RangeNodes end', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     var e = new ConstantNode(3);
-    var f = n.transform(function (node) {
+    var f = n.map(function (node) {
       return node instanceof ConstantNode && node.value == '10' ? e : node;
     });
 
@@ -92,14 +92,14 @@ describe('RangeNode', function() {
     assert.deepEqual(f.step,  step);
   });
 
-  it ('should transform a RangeNodes step', function () {
+  it ('should map a RangeNodes step', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     var e = new ConstantNode(3);
-    var f = n.transform(function (node) {
+    var f = n.map(function (node) {
       return node instanceof ConstantNode && node.value == '2' ? e : node;
     });
 
@@ -109,13 +109,13 @@ describe('RangeNode', function() {
     assert.deepEqual(f.step, e);
   });
 
-  it ('should transform a RangeNodes without step', function () {
+  it ('should map a RangeNodes without step', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var n = new RangeNode([start, end]);
 
     var e = new ConstantNode(3);
-    var f = n.transform(function (node) {
+    var f = n.map(function (node) {
       return node instanceof ConstantNode && node.value == '10' ? e : node;
     });
 
@@ -124,14 +124,14 @@ describe('RangeNode', function() {
     assert.deepEqual(f.end, e);
   });
 
-  it ('should transform a RangeNode itself', function () {
+  it ('should map a RangeNode itself', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
     var step = new ConstantNode(2);
     var n = new RangeNode([start, end, step]);
 
     var e = new ConstantNode(5);
-    var f = n.transform(function (node) {
+    var f = n.map(function (node) {
       return node instanceof RangeNode ? e : node;
     });
 

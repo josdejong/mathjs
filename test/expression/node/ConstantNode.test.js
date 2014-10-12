@@ -75,16 +75,16 @@ describe('ConstantNode', function() {
     assert.deepEqual(a.filter(function (node) {return node instanceof SymbolNode}), []);
   });
 
-  it ('should transform a ConstantNode', function () {
+  it ('should map a ConstantNode', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
-    var c = a.transform(function (node) {
+    var c = a.map(function (node) {
       return node instanceof ConstantNode && node.value == '2' ? b : node;
     });
     assert.strictEqual(c,  b);
 
     // no match should leave the node as is
-    var d = a.transform(function (node) {
+    var d = a.map(function (node) {
       return node instanceof ConstantNode && node.value == '99' ? b : node;
     });
     assert.notStrictEqual(d,  a);

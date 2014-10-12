@@ -150,7 +150,7 @@ describe('UpdateNode', function() {
     assert.deepEqual(n.filter(function (node) {return node.name == 'q'}),  []);
   });
 
-  it ('should transform an UpdateNodes (nested) parameters', function () {
+  it ('should map an UpdateNodes (nested) parameters', function () {
     // A[1, x] = 3
     var a = new SymbolNode('A');
     var b = new ConstantNode(2);
@@ -160,7 +160,7 @@ describe('UpdateNode', function() {
     var n = new UpdateNode(i, v);
 
     var e = new ConstantNode(4);
-    var f = n.transform(function (node) {
+    var f = n.map(function (node) {
       return node instanceof SymbolNode && node.name == 'x' ? e : node;
     });
 
@@ -171,7 +171,7 @@ describe('UpdateNode', function() {
     assert.deepEqual(f.expr, v);
   });
 
-  it ('should transform an UpdateNodes replacement expr', function () {
+  it ('should map an UpdateNodes replacement expr', function () {
     // A[1, x] = 3
     var a = new SymbolNode('A');
     var b = new ConstantNode(2);
@@ -181,7 +181,7 @@ describe('UpdateNode', function() {
     var n = new UpdateNode(i, v);
 
     var e = new ConstantNode(4);
-    var g = n.transform(function (node) {
+    var g = n.map(function (node) {
       return node instanceof ConstantNode && node.value == '3' ? e : node;
     });
 
@@ -194,7 +194,7 @@ describe('UpdateNode', function() {
 
   });
 
-  it ('should transform an UpdateNode itself', function () {
+  it ('should map an UpdateNode itself', function () {
     // A[1, x] = 3
     var a = new SymbolNode('A');
     var b = new ConstantNode(2);
@@ -204,7 +204,7 @@ describe('UpdateNode', function() {
     var n = new UpdateNode(i, v);
 
     var e = new ConstantNode(5);
-    var f = n.transform(function (node) {
+    var f = n.map(function (node) {
       return node instanceof UpdateNode ? e : node;
     });
 
