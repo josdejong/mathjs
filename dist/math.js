@@ -23458,7 +23458,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// TODO: deprecated since version 1.1.0, remove this some day
 	Node.prototype.match = function () {
-	  throw new Error('Function Node.match is deprecated. See functions Node.filter, Node.traverse, Node.transform.');
+	  throw new Error('Function Node.match is deprecated. See functions Node.filter, Node.map, Node.forEach.');
 	};
 
 	/**
