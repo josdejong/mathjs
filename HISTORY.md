@@ -5,6 +5,8 @@
 
 - Implemented recursive functions `clone`, `traverse`, `transform`, and `filter` 
   for Nodes.
+- Parameter `index` in the callbacks of `map` and `forEach` are now cloned
+  for every callback.
 
 
 ## 2014-09-12, version 1.0.1

@@ -23,7 +23,8 @@ describe('forEach', function() {
     var output = [];
 
     math.forEach(arr, function (value, index, obj) {
-      output.push(math.clone([value, index, obj === arr]));
+      // note: we don't copy index, it should be a copy with each iteration
+      output.push([value, index, obj === arr]);
     });
     assert.deepEqual(output, [
       [1, [0, 0], true ],
