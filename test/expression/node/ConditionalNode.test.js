@@ -106,14 +106,14 @@ describe('ConditionalNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [two]);
   });
 
-  it ('should map a ConditionalNodes condition', function () {
+  it ('should transform a ConditionalNodes condition', function () {
     var condition = new ConstantNode(1);
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var n = new ConditionalNode(condition, a, b);
 
     var e = new ConstantNode(4);
-    var f = n.map(function (node) {
+    var f = n.transform(function (node) {
       return node instanceof ConstantNode && node.value == '1' ? e : node;
     });
 
@@ -123,14 +123,14 @@ describe('ConditionalNode', function() {
     assert.deepEqual(f.falseExpr,  b);
   });
 
-  it ('should map a ConditionalNodes trueExpr', function () {
+  it ('should transform a ConditionalNodes trueExpr', function () {
     var condition = new ConstantNode(1);
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var n = new ConditionalNode(condition, a, b);
 
     var e = new ConstantNode(4);
-    var f = n.map(function (node) {
+    var f = n.transform(function (node) {
       return node instanceof ConstantNode && node.value == '2' ? e : node;
     });
 
@@ -140,14 +140,14 @@ describe('ConditionalNode', function() {
     assert.deepEqual(f.falseExpr,  b);
   });
 
-  it ('should map a ConditionalNodes falseExpr', function () {
+  it ('should transform a ConditionalNodes falseExpr', function () {
     var condition = new ConstantNode(1);
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var n = new ConditionalNode(condition, a, b);
 
     var e = new ConstantNode(4);
-    var f = n.map(function (node) {
+    var f = n.transform(function (node) {
       return node instanceof ConstantNode && node.value == '3' ? e : node;
     });
 
@@ -157,14 +157,14 @@ describe('ConditionalNode', function() {
     assert.deepEqual(f.falseExpr, e);
   });
 
-  it ('should map a ConditionalNode itself', function () {
+  it ('should transform a ConditionalNode itself', function () {
     var condition = new ConstantNode(1);
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
     var n = new ConditionalNode(condition, a, b);
 
     var e = new ConstantNode(5);
-    var f = n.map(function (node) {
+    var f = n.transform(function (node) {
       return node instanceof ConditionalNode ? e : node;
     });
 

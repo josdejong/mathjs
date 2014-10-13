@@ -80,14 +80,14 @@ describe('ArrayNode', function() {
     assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [c]);
   });
 
-  it ('should map an ArrayNodes parameters', function () {
+  it ('should transform an ArrayNodes parameters', function () {
     // [x, 2]
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
     var c = new ArrayNode([a, b]);
 
     var d = new ConstantNode(3);
-    var e = c.map(function (node) {
+    var e = c.transform(function (node) {
       return (node instanceof SymbolNode) && (node.name == 'x') ? d : node;
     });
 
@@ -96,14 +96,14 @@ describe('ArrayNode', function() {
     assert.deepEqual(e.nodes[1],  b);
   });
 
-  it ('should map an ArrayNode itself', function () {
+  it ('should transform an ArrayNode itself', function () {
     // [x, 2]
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
     var c = new ArrayNode([a, b]);
 
     var d = new ConstantNode(3);
-    var e = c.map(function (node) {
+    var e = c.transform(function (node) {
       return (node instanceof ArrayNode) ? d : node;
     });
     assert.strictEqual(e, d);

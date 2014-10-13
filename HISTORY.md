@@ -3,7 +3,7 @@
 
 ## not yet released, version 1.1.0
 
-- Implemented recursive functions `clone`, `forEach`, `map`, and `filter` 
+- Implemented recursive functions `clone`, `traverse`, `transform`, and `filter` 
   for Nodes.
 
 

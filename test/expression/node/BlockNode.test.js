@@ -65,7 +65,7 @@ describe('BlockNode', function() {
     assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode && node.value == '3'}),  [b2]);
   });
 
-  it ('should map a BlockNodes parameters', function () {
+  it ('should transform a BlockNodes parameters', function () {
     // [x, 2]
     var a = new BlockNode();
     var b = new SymbolNode('x');
@@ -74,7 +74,7 @@ describe('BlockNode', function() {
     a.add(c);
 
     var d = new ConstantNode(3);
-    var e = a.map(function (node) {
+    var e = a.transform(function (node) {
       return node instanceof SymbolNode && node.name == 'x' ? d : node;
     });
 
@@ -83,12 +83,12 @@ describe('BlockNode', function() {
     assert.deepEqual(e.nodes[1].node,  c);
   });
 
-  it ('should map a BlockNode itself', function () {
+  it ('should transform a BlockNode itself', function () {
     // [x, 2]
     var a = new BlockNode();
 
     var d = new ConstantNode(3);
-    var e = a.map(function (node) {
+    var e = a.transform(function (node) {
       return node instanceof BlockNode ? d : node;
     });
     assert.strictEqual(e, d);

@@ -52,16 +52,16 @@ describe('SymbolNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  []);
   });
 
-  it ('should map an SymbolNode', function () {
+  it ('should transform an SymbolNode', function () {
     var a = new SymbolNode('x');
     var b = new SymbolNode('y');
-    var c = a.map(function (node) {
+    var c = a.transform(function (node) {
       return node instanceof SymbolNode && node.name == 'x' ? b : node;
     });
     assert.deepEqual(c,  b);
 
     // no match should leave the symbol as is
-    var d = a.map(function (node) {
+    var d = a.transform(function (node) {
       return node instanceof SymbolNode && node.name == 'q' ? b : node;
     });
     assert.deepEqual(d,  a);

@@ -23,10 +23,10 @@ describe('Node', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof Date}), []);
   });
 
-  it ('should map a Node', function () {
+  it ('should transform a Node', function () {
     var a = new Node();
     var b = new Node();
-    var c = a.map(function (node) {
+    var c = a.transform(function (node) {
       return b;
     });
     assert.deepEqual(c, b);
@@ -34,16 +34,16 @@ describe('Node', function() {
     // no match
     a = new Node();
     b = new Node();
-    c = a.map(function (node) {
+    c = a.transform(function (node) {
       return node;
     });
     assert.deepEqual(c, a);
   });
 
-  it ('should map a Node using a replacement function', function () {
+  it ('should transform a Node using a replacement function', function () {
     var a = new Node();
     var b = new Node();
-    var c = a.map(function (node) {
+    var c = a.transform(function (node) {
       assert.deepEqual(node, a);
       return b;
     });
