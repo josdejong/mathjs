@@ -109,6 +109,39 @@ describe('ArrayNode', function() {
     assert.strictEqual(e, d);
   });
 
+  it ('should traverse an ArrayNode', function () {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ArrayNode([a, b]);
+
+    var count = 0;
+    c.traverse(function (node, index, parent) {
+      count++;
+
+      switch(count) {
+        case 1:
+          assert.strictEqual(node, c);
+          assert.strictEqual(index, null);
+          assert.strictEqual(parent, null);
+          break;
+
+        case 2:
+          assert.strictEqual(node, a);
+          assert.strictEqual(index, 'nodes.0');
+          assert.strictEqual(parent, c);
+          break;
+
+        case 3:
+          assert.strictEqual(node, b);
+          assert.strictEqual(index, 'nodes.1');
+          assert.strictEqual(parent, c);
+          break;
+      }
+    });
+
+    assert.equal(count, 3);
+  });
+
   it ('should clone an ArrayNode', function () {
     // [x, 2]
     var a = new SymbolNode('x');

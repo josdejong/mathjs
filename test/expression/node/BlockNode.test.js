@@ -94,6 +94,41 @@ describe('BlockNode', function() {
     assert.strictEqual(e, d);
   });
 
+  it ('should traverse a BlockNode', function () {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new BlockNode();
+    c.add(a);
+    c.add(b);
+
+    var count = 0;
+    c.traverse(function (node, index, parent) {
+      count++;
+
+      switch(count) {
+        case 1:
+          assert.strictEqual(node, c);
+          assert.strictEqual(index, null);
+          assert.strictEqual(parent, null);
+          break;
+
+        case 2:
+          assert.strictEqual(node, a);
+          assert.strictEqual(index, 'nodes.0.node');
+          assert.strictEqual(parent, c);
+          break;
+
+        case 3:
+          assert.strictEqual(node, b);
+          assert.strictEqual(index, 'nodes.1.node');
+          assert.strictEqual(parent, c);
+          break;
+      }
+    });
+
+    assert.equal(count, 3);
+  });
+
   it ('should clone a BlockNode', function () {
     // [x, 2]
     var a = new BlockNode();

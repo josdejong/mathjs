@@ -101,6 +101,33 @@ describe('AssignmentNode', function() {
     assert.strictEqual(f, e);
   });
 
+  it ('should traverse an AssignmentNode', function () {
+    // a = x + 2
+    var b = new ConstantNode(2);
+    var a = new AssignmentNode('a', b);
+
+    var count = 0;
+    a.traverse(function (node, index, parent) {
+      count++;
+
+      switch(count) {
+        case 1:
+          assert.strictEqual(node, a);
+          assert.strictEqual(index, null);
+          assert.strictEqual(parent, null);
+          break;
+
+        case 2:
+          assert.strictEqual(node, b);
+          assert.strictEqual(index, 'expr');
+          assert.strictEqual(parent, a);
+          break;
+      }
+    });
+
+    assert.equal(count, 2);
+  });
+
   it ('should clone an AssignmentNode', function () {
     // a = x + 2
     var a = new SymbolNode('add');

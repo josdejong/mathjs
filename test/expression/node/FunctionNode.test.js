@@ -100,7 +100,7 @@ describe('FunctionNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '4'}),  []);
   });
 
-  it ('should transform an FunctionNodes (nested) parameters', function () {
+  it ('should transform a FunctionNodes (nested) parameters', function () {
     // multiply(x + 2, x)
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
@@ -121,7 +121,7 @@ describe('FunctionNode', function() {
     assert.deepEqual(h.params[1],  g);
   });
 
-  it ('should transform an FunctionNodes symbol', function () {
+  it ('should transform a FunctionNodes symbol', function () {
     // add(2, 3)
     var a = new SymbolNode('add');
     var b = new ConstantNode(2);
@@ -137,7 +137,7 @@ describe('FunctionNode', function() {
     assert.deepEqual(f.symbol, e);
   });
 
-  it ('should transform an FunctionNode itself', function () {
+  it ('should transform a FunctionNode itself', function () {
     // add(2, 3)
     var a = new SymbolNode('add');
     var b = new ConstantNode(2);
@@ -150,6 +150,47 @@ describe('FunctionNode', function() {
     });
 
     assert.strictEqual(f, e);
+  });
+
+  it ('should traverse a FunctionNode', function () {
+    // add(2, 3)
+    var a = new SymbolNode('add');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+    var d = new FunctionNode(a, [b, c]);
+
+    var count = 0;
+    d.traverse(function (node, index, parent) {
+      count++;
+
+      switch(count) {
+        case 1:
+          assert.strictEqual(node, d);
+          assert.strictEqual(index, null);
+          assert.strictEqual(parent, null);
+          break;
+
+        case 2:
+          assert.strictEqual(node, a);
+          assert.strictEqual(index, 'symbol');
+          assert.strictEqual(parent, d);
+          break;
+
+        case 3:
+          assert.strictEqual(node, b);
+          assert.strictEqual(index, 'params.0');
+          assert.strictEqual(parent, d);
+          break;
+
+        case 4:
+          assert.strictEqual(node, c);
+          assert.strictEqual(index, 'params.1');
+          assert.strictEqual(parent, d);
+          break;
+      }
+    });
+
+    assert.equal(count, 4);
   });
 
   it ('should clone a FunctionNode', function () {

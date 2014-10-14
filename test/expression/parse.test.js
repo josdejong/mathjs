@@ -448,7 +448,8 @@ describe('parse', function() {
         A: [1,2,3],
         callback: function (value, index, matrix) {
           assert.strictEqual(matrix, scope.A);
-          logs.push([value, index.map(function (v) {return v})]);
+          // note: we don't copy index, index should be a new Array for every call of callback
+          logs.push([value, index]);
           return value + 1;
         }
       };
@@ -464,7 +465,8 @@ describe('parse', function() {
         A: new Matrix([1,2,3]),
         callback: function (value, index, matrix) {
           assert.strictEqual(matrix, scope.A);
-          logs.push([value, index.map(function (v) {return v})]);
+          // note: we don't copy index, index should be a new Array for every call of callback
+          logs.push([value, index]);
           return value + 1;
         }
       };
@@ -480,7 +482,8 @@ describe('parse', function() {
         A: [1,2,3],
         callback: function (value, index, matrix) {
           assert.strictEqual(matrix, scope.A);
-          logs.push([value, index.map(function (v) {return v})]);
+          // note: we don't copy index, index should be a new Array for every call of callback
+          logs.push([value, index]);
         }
       };
       math.eval('forEach(A, callback)', scope);
@@ -494,7 +497,8 @@ describe('parse', function() {
         A: new Matrix([1,2,3]),
         callback: function (value, index, matrix) {
           assert.strictEqual(matrix, scope.A);
-          logs.push([value, index.map(function (v) {return v})]);
+          // note: we don't copy index, index should be a new Array for every call of callback
+          logs.push([value, index]);
         }
       };
       math.eval('forEach(A, callback)', scope);
