@@ -29,6 +29,7 @@
 - [diag(X)](diag.md)
 - [distribution(name)](distribution.md)
 - [divide(x, y)](divide.md)
+- [dot(x, y)](dot.md)
 - [dotDivide(x, y)](dotDivide.md)
 - [dotMultiply(x, y)](dotMultiply.md)
 - [dotPow(x, y)](dotPow.md)

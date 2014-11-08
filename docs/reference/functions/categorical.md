@@ -62,6 +62,7 @@
 - [concat(a, b, c, ... [, dim])](concat.md)
 - [det(x)](det.md)
 - [diag(X)](diag.md)
+- [dot(x, y)](dot.md)
 - [eye(n)](eye.md)
 - [flatten(x)](flatten.md)
 - [inv(x)](inv.md)
