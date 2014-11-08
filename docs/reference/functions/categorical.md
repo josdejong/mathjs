@@ -60,6 +60,7 @@
 ## matrix
 
 - [concat(a, b, c, ... [, dim])](concat.md)
+- [cross(x, y)](cross.md)
 - [det(x)](det.md)
 - [diag(X)](diag.md)
 - [dot(x, y)](dot.md)

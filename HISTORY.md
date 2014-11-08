@@ -3,7 +3,8 @@
 
 ## not yet released, version 1.1.0
 
-- Implemented function `dot` (dot product for vectors).
+- Implemented functions `dot` and `cross` (dot product  and cross product for
+  vectors).
 - Implemented recursive functions `clone`, `traverse`, `transform`, and `filter` 
   for Nodes.
 - Parameter `index` in the callbacks of `map` and `forEach` are now cloned

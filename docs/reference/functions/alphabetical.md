@@ -21,6 +21,7 @@
 - [cosh(x)](cosh.md)
 - [cot(x)](cot.md)
 - [coth(x)](coth.md)
+- [cross(x, y)](cross.md)
 - [csc(x)](csc.md)
 - [csch(x)](csch.md)
 - [cube(x)](cube.md)
