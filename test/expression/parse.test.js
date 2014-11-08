@@ -174,11 +174,14 @@ describe('parse', function() {
       assert.equal(parseAndEval('3.2e2'), 320);
     });
 
+    it('should parse a number followed by e', function() {
+      approx.equal(parseAndEval('2e'), 2 * Math.E);
+    });
+
     it('should throw an error with invalid numbers', function() {
       assert.throws(function () {parseAndEval('.'); }, SyntaxError);
       assert.throws(function () {parseAndEval('3.2.2'); }, SyntaxError);
       assert.throws(function () {parseAndEval('3.2e2.2'); }, SyntaxError);
-      assert.throws(function () {parseAndEval('32e'); }, SyntaxError);
     });
 
   });

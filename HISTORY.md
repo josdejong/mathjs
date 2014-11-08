@@ -7,6 +7,7 @@
   for Nodes.
 - Parameter `index` in the callbacks of `map` and `forEach` are now cloned
   for every callback.
+- Fixed `2e` giving a syntax error instead of being parsed as `2 * e`.
 
 
 ## 2014-09-12, version 1.0.1
