@@ -65,6 +65,7 @@
 - [mod(x, y)](mod.md)
 - [multiply(x, y)](multiply.md)
 - [norm(x [, p])](norm.md)
+- [nthRoot(a, root)](nthRoot.md)
 - [number(value)](number.md)
 - [ones(m, n, p, ...)](ones.md)
 - [parse(expr [, scope])](parse.md)

@@ -20,6 +20,7 @@
 - [mod(x, y)](mod.md)
 - [multiply(x, y)](multiply.md)
 - [norm(x [, p])](norm.md)
+- [nthRoot(a, root)](nthRoot.md)
 - [pow(x, y)](pow.md)
 - [round(x [, n])](round.md)
 - [sign(x)](sign.md)

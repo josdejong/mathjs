@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 1.0.2-SNAPSHOT
- * @date    2014-10-14
+ * @date    2014-11-09
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -203,7 +203,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.create = create;
 
 	  // create a new BigNumber factory for this instance of math.js
-	  var BigNumber = __webpack_require__(139).constructor();
+	  var BigNumber = __webpack_require__(142).constructor();
 
 	  // extend BigNumber with a function clone
 	  if (typeof BigNumber.prototype.clone !== 'function') {
@@ -295,9 +295,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(57)(math, _config);
 	  __webpack_require__(58)(math, _config);
 	  __webpack_require__(59)(math, _config);
+	  __webpack_require__(60)(math, _config);
 
 	  // functions - relational
-	  __webpack_require__(60)(math, _config);
 	  __webpack_require__(61)(math, _config);
 	  __webpack_require__(62)(math, _config);
 	  __webpack_require__(63)(math, _config);
@@ -305,15 +305,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(65)(math, _config);
 	  __webpack_require__(66)(math, _config);
 	  __webpack_require__(67)(math, _config);
+	  __webpack_require__(68)(math, _config);
 
 	  // functions - complex
-	  __webpack_require__(68)(math, _config);
 	  __webpack_require__(69)(math, _config);
 	  __webpack_require__(70)(math, _config);
 	  __webpack_require__(71)(math, _config);
+	  __webpack_require__(72)(math, _config);
 
 	  // functions - construction
-	  __webpack_require__(72)(math, _config);
 	  __webpack_require__(73)(math, _config);
 	  __webpack_require__(74)(math, _config);
 	  __webpack_require__(75)(math, _config);
@@ -323,9 +323,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(79)(math, _config);
 	  __webpack_require__(80)(math, _config);
 	  __webpack_require__(81)(math, _config);
+	  __webpack_require__(82)(math, _config);
 
 	  // functions - matrix
-	  __webpack_require__(82)(math, _config);
 	  __webpack_require__(83)(math, _config);
 	  __webpack_require__(84)(math, _config);
 	  __webpack_require__(85)(math, _config);
@@ -339,30 +339,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(93)(math, _config);
 	  __webpack_require__(94)(math, _config);
 	  __webpack_require__(95)(math, _config);
-
-	  // functions - probability
-	  //require('./function/probability/distribution')(math, _config); // TODO: rethink math.distribution
 	  __webpack_require__(96)(math, _config);
 	  __webpack_require__(97)(math, _config);
 	  __webpack_require__(98)(math, _config);
+
+	  // functions - probability
+	  //require('./function/probability/distribution')(math, _config); // TODO: rethink math.distribution
 	  __webpack_require__(99)(math, _config);
 	  __webpack_require__(100)(math, _config);
 	  __webpack_require__(101)(math, _config);
-
-	  // functions - statistics
 	  __webpack_require__(102)(math, _config);
 	  __webpack_require__(103)(math, _config);
 	  __webpack_require__(104)(math, _config);
+
+	  // functions - statistics
 	  __webpack_require__(105)(math, _config);
 	  __webpack_require__(106)(math, _config);
 	  __webpack_require__(107)(math, _config);
 	  __webpack_require__(108)(math, _config);
 	  __webpack_require__(109)(math, _config);
-
-	  // functions - trigonometry
 	  __webpack_require__(110)(math, _config);
 	  __webpack_require__(111)(math, _config);
 	  __webpack_require__(112)(math, _config);
+
+	  // functions - trigonometry
 	  __webpack_require__(113)(math, _config);
 	  __webpack_require__(114)(math, _config);
 	  __webpack_require__(115)(math, _config);
@@ -376,20 +376,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(123)(math, _config);
 	  __webpack_require__(124)(math, _config);
 	  __webpack_require__(125)(math, _config);
-
-	  // functions - units
 	  __webpack_require__(126)(math, _config);
-
-	  // functions - utils
 	  __webpack_require__(127)(math, _config);
 	  __webpack_require__(128)(math, _config);
+
+	  // functions - units
 	  __webpack_require__(129)(math, _config);
+
+	  // functions - utils
 	  __webpack_require__(130)(math, _config);
 	  __webpack_require__(131)(math, _config);
 	  __webpack_require__(132)(math, _config);
 	  __webpack_require__(133)(math, _config);
 	  __webpack_require__(134)(math, _config);
 	  __webpack_require__(135)(math, _config);
+	  __webpack_require__(136)(math, _config);
+	  __webpack_require__(137)(math, _config);
+	  __webpack_require__(138)(math, _config);
 
 	  // TODO: deprecated since version 0.25.0, remove some day.
 	  math.ifElse = function () {
@@ -442,7 +445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var bignumber = __webpack_require__(136);
+	  var bignumber = __webpack_require__(139);
 	  var Complex = __webpack_require__(6);
 	  var BigNumber = math.type.BigNumber;
 
@@ -534,7 +537,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math['true']     = true;
 	  math['false']    = false;
 	  math['null']     = null;
-	  math['uninitialized'] = __webpack_require__(137).UNINITIALIZED;
+	  math['uninitialized'] = __webpack_require__(140).UNINITIALIZED;
 
 	  // uppercase constants (for compatibility with built-in Math)
 	  math.E           = math.e;
@@ -547,7 +550,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.SQRT2       = big ? new BigNumber(2).sqrt()                      : Math.SQRT2;
 
 	  // meta information
-	  math.version = __webpack_require__(138);
+	  math.version = __webpack_require__(141);
 	};
 
 
@@ -993,10 +996,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	exports.ArgumentsError = __webpack_require__(141);
-	exports.DimensionError = __webpack_require__(142);
-	exports.IndexError = __webpack_require__(143);
-	exports.UnsupportedTypeError = __webpack_require__(144);
+	exports.ArgumentsError = __webpack_require__(143);
+	exports.DimensionError = __webpack_require__(144);
+	exports.IndexError = __webpack_require__(145);
+	exports.UnsupportedTypeError = __webpack_require__(146);
 
 	// TODO: implement an InvalidValueError?
 
@@ -1007,7 +1010,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(140),
+	var util = __webpack_require__(147),
 	    Unit = __webpack_require__(10),
 	    number = util.number,
 
@@ -1451,7 +1454,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(140);
+	var util = __webpack_require__(147);
 
 	var number = util.number;
 	var string = util.string;
@@ -1726,7 +1729,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(140),
+	var util = __webpack_require__(147),
 
 	    Range = __webpack_require__(7),
 
@@ -2001,8 +2004,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(140),
-	    DimensionError = __webpack_require__(142),
+	var util = __webpack_require__(147),
+	    DimensionError = __webpack_require__(144),
 
 	    Index = __webpack_require__(8),
 
@@ -2522,7 +2525,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(140),
+	var util = __webpack_require__(147),
 
 	    number = util.number,
 	    string = util.string,
@@ -3393,7 +3396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(140),
+	var util = __webpack_require__(147),
 	    object = util.object,
 	    string = util.string;
 
@@ -3538,10 +3541,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	// utility methods for arrays and matrices
 	'use strict';
 
-	var util = __webpack_require__(140),
+	var util = __webpack_require__(147),
 
-	    IndexError = __webpack_require__(143),
-	    DimensionError = __webpack_require__(142),
+	    IndexError = __webpack_require__(145),
+	    DimensionError = __webpack_require__(144),
 
 	    Matrix = __webpack_require__(9),
 
@@ -3804,9 +3807,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(140),
+	var util = __webpack_require__(147),
 
-	    ArgumentsError = __webpack_require__(141),
+	    ArgumentsError = __webpack_require__(143),
 
 	    isString = util.string.isString,
 	    isArray = Array.isArray,
@@ -3819,18 +3822,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    collection = __webpack_require__(13),
 
 	    // scope and nodes
-	    ArrayNode = __webpack_require__(145),
-	    AssignmentNode = __webpack_require__(146),
-	    BlockNode = __webpack_require__(147),
-	    ConditionalNode = __webpack_require__(148),
-	    ConstantNode = __webpack_require__(149),
-	    FunctionAssignmentNode = __webpack_require__(150),
-	    IndexNode = __webpack_require__(151),
-	    OperatorNode = __webpack_require__(152),
-	    FunctionNode = __webpack_require__(153),
-	    RangeNode = __webpack_require__(154),
-	    SymbolNode = __webpack_require__(155),
-	    UpdateNode = __webpack_require__(156);
+	    ArrayNode = __webpack_require__(148),
+	    AssignmentNode = __webpack_require__(149),
+	    BlockNode = __webpack_require__(150),
+	    ConditionalNode = __webpack_require__(151),
+	    ConstantNode = __webpack_require__(152),
+	    FunctionAssignmentNode = __webpack_require__(153),
+	    IndexNode = __webpack_require__(154),
+	    OperatorNode = __webpack_require__(155),
+	    FunctionNode = __webpack_require__(156),
+	    RangeNode = __webpack_require__(157),
+	    SymbolNode = __webpack_require__(158),
+	    UpdateNode = __webpack_require__(159);
 
 	/**
 	 * Parse an expression. Returns a node tree, which can be evaluated by
@@ -4068,8 +4071,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      next();
 	    }
 
-	    // check for exponential notation like "2.3e-4" or "1.23e50"
-	    if (c == 'E' || c == 'e') {
+	    // check for exponential notation like "2.3e-4", "1.23e50" or "2e+4"
+	    c2 = nextPreview();
+	    if ((c == 'E' || c == 'e') && (isDigit(c2) || c2 == '-' || c2 == '+')) {
 	      token += c;
 	      next();
 
@@ -5239,19 +5243,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	exports.ArrayNode = __webpack_require__(145);
-	exports.AssignmentNode = __webpack_require__(146);
-	exports.BlockNode = __webpack_require__(147);
-	exports.ConditionalNode = __webpack_require__(148);
-	exports.ConstantNode = __webpack_require__(149);
-	exports.IndexNode = __webpack_require__(151);
-	exports.FunctionAssignmentNode = __webpack_require__(150);
-	exports.FunctionNode = __webpack_require__(153);
-	exports.Node = __webpack_require__(157);
-	exports.OperatorNode = __webpack_require__(152);
-	exports.RangeNode = __webpack_require__(154);
-	exports.SymbolNode = __webpack_require__(155);
-	exports.UpdateNode = __webpack_require__(156);
+	exports.ArrayNode = __webpack_require__(148);
+	exports.AssignmentNode = __webpack_require__(149);
+	exports.BlockNode = __webpack_require__(150);
+	exports.ConditionalNode = __webpack_require__(151);
+	exports.ConstantNode = __webpack_require__(152);
+	exports.IndexNode = __webpack_require__(154);
+	exports.FunctionAssignmentNode = __webpack_require__(153);
+	exports.FunctionNode = __webpack_require__(156);
+	exports.Node = __webpack_require__(160);
+	exports.OperatorNode = __webpack_require__(155);
+	exports.RangeNode = __webpack_require__(157);
+	exports.SymbolNode = __webpack_require__(158);
+	exports.UpdateNode = __webpack_require__(159);
 
 
 /***/ },
@@ -5259,151 +5263,154 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// constants
-	exports.e = __webpack_require__(161);
-	exports.E = __webpack_require__(161);
-	exports['false'] = __webpack_require__(162);
-	exports.i = __webpack_require__(163);
-	exports['Infinity'] = __webpack_require__(164);
-	exports.LN2 = __webpack_require__(165);
-	exports.LN10 = __webpack_require__(166);
-	exports.LOG2E = __webpack_require__(167);
-	exports.LOG10E = __webpack_require__(168);
-	exports.NaN = __webpack_require__(169);
-	exports['null'] = __webpack_require__(170);
-	exports.pi = __webpack_require__(171);
-	exports.PI = __webpack_require__(171);
-	exports.phi = __webpack_require__(172);
-	exports.SQRT1_2 = __webpack_require__(173);
-	exports.SQRT2 = __webpack_require__(174);
-	exports.tau = __webpack_require__(175);
-	exports['true'] = __webpack_require__(176);
-	exports.version = __webpack_require__(177);
+	exports.e = __webpack_require__(164);
+	exports.E = __webpack_require__(164);
+	exports['false'] = __webpack_require__(165);
+	exports.i = __webpack_require__(166);
+	exports['Infinity'] = __webpack_require__(167);
+	exports.LN2 = __webpack_require__(168);
+	exports.LN10 = __webpack_require__(169);
+	exports.LOG2E = __webpack_require__(170);
+	exports.LOG10E = __webpack_require__(171);
+	exports.NaN = __webpack_require__(172);
+	exports['null'] = __webpack_require__(173);
+	exports.pi = __webpack_require__(174);
+	exports.PI = __webpack_require__(174);
+	exports.phi = __webpack_require__(175);
+	exports.SQRT1_2 = __webpack_require__(176);
+	exports.SQRT2 = __webpack_require__(177);
+	exports.tau = __webpack_require__(178);
+	exports['true'] = __webpack_require__(179);
+	exports.version = __webpack_require__(180);
 
 	// functions - arithmetic
-	exports.abs = __webpack_require__(181);
-	exports.add = __webpack_require__(182);
-	exports.ceil = __webpack_require__(183);
-	exports.cube = __webpack_require__(184);
-	exports.divide = __webpack_require__(185);
-	exports.dotDivide = __webpack_require__(186);
-	exports.dotMultiply = __webpack_require__(187);
-	exports.dotPow = __webpack_require__(188);
-	exports.exp = __webpack_require__(189);
-	exports.fix = __webpack_require__(190);
-	exports.floor = __webpack_require__(191);
-	exports.gcd = __webpack_require__(192);
-	exports.lcm = __webpack_require__(193);
-	exports.log = __webpack_require__(194);
-	exports.log10 = __webpack_require__(195);
-	exports.mod = __webpack_require__(196);
-	exports.multiply = __webpack_require__(197);
-	exports.norm = __webpack_require__(198);
-	exports.pow = __webpack_require__(199);
-	exports.round = __webpack_require__(200);
-	exports.sign = __webpack_require__(201);
-	exports.sqrt = __webpack_require__(202);
-	exports.square = __webpack_require__(203);
-	exports.subtract = __webpack_require__(204);
-	exports.unaryMinus = __webpack_require__(205);
-	exports.unaryPlus = __webpack_require__(206);
-	exports.xgcd = __webpack_require__(207);
+	exports.abs = __webpack_require__(184);
+	exports.add = __webpack_require__(185);
+	exports.ceil = __webpack_require__(186);
+	exports.cube = __webpack_require__(187);
+	exports.divide = __webpack_require__(188);
+	exports.dotDivide = __webpack_require__(189);
+	exports.dotMultiply = __webpack_require__(190);
+	exports.dotPow = __webpack_require__(191);
+	exports.exp = __webpack_require__(192);
+	exports.fix = __webpack_require__(193);
+	exports.floor = __webpack_require__(194);
+	exports.gcd = __webpack_require__(195);
+	exports.lcm = __webpack_require__(196);
+	exports.log = __webpack_require__(197);
+	exports.log10 = __webpack_require__(198);
+	exports.mod = __webpack_require__(199);
+	exports.multiply = __webpack_require__(200);
+	exports.norm = __webpack_require__(201);
+	exports.nthRoot = __webpack_require__(202);
+	exports.pow = __webpack_require__(203);
+	exports.round = __webpack_require__(204);
+	exports.sign = __webpack_require__(205);
+	exports.sqrt = __webpack_require__(206);
+	exports.square = __webpack_require__(207);
+	exports.subtract = __webpack_require__(208);
+	exports.unaryMinus = __webpack_require__(209);
+	exports.unaryPlus = __webpack_require__(210);
+	exports.xgcd = __webpack_require__(211);
 
 	// functions - relational
-	exports.compare = __webpack_require__(208);
-	exports.deepEqual = __webpack_require__(209);
-	exports['equal'] = __webpack_require__(210);
-	exports.larger = __webpack_require__(211);
-	exports.largerEq = __webpack_require__(212);
-	exports.smaller = __webpack_require__(213);
-	exports.smallerEq = __webpack_require__(214);
-	exports.unequal = __webpack_require__(215);
+	exports.compare = __webpack_require__(212);
+	exports.deepEqual = __webpack_require__(213);
+	exports['equal'] = __webpack_require__(214);
+	exports.larger = __webpack_require__(215);
+	exports.largerEq = __webpack_require__(216);
+	exports.smaller = __webpack_require__(217);
+	exports.smallerEq = __webpack_require__(218);
+	exports.unequal = __webpack_require__(219);
 
 	// functions - complex
-	exports.arg = __webpack_require__(216);
-	exports.conj = __webpack_require__(217);
-	exports.re = __webpack_require__(218);
-	exports.im = __webpack_require__(219);
+	exports.arg = __webpack_require__(220);
+	exports.conj = __webpack_require__(221);
+	exports.re = __webpack_require__(222);
+	exports.im = __webpack_require__(223);
 
 	// functions - construction
-	exports.bignumber = __webpack_require__(220);
-	exports['boolean'] = __webpack_require__(221);
-	exports.complex = __webpack_require__(222);
-	exports.index = __webpack_require__(223);
-	exports.matrix = __webpack_require__(224);
-	exports.number = __webpack_require__(225);
-	exports.string = __webpack_require__(226);
-	exports.unit = __webpack_require__(227);
+	exports.bignumber = __webpack_require__(224);
+	exports['boolean'] = __webpack_require__(225);
+	exports.complex = __webpack_require__(226);
+	exports.index = __webpack_require__(227);
+	exports.matrix = __webpack_require__(228);
+	exports.number = __webpack_require__(229);
+	exports.string = __webpack_require__(230);
+	exports.unit = __webpack_require__(231);
 
-	// functions - epxression
-	exports['eval'] =  __webpack_require__(228);
-	exports.help =  __webpack_require__(229);
+	// functions - expression
+	exports['eval'] =  __webpack_require__(232);
+	exports.help =  __webpack_require__(233);
 
 	// functions - matrix
-	exports['concat'] = __webpack_require__(230);
-	exports.det = __webpack_require__(231);
-	exports.diag = __webpack_require__(232);
-	exports.eye = __webpack_require__(233);
-	exports.flatten = __webpack_require__(234);
-	exports.inv = __webpack_require__(235);
-	exports.ones = __webpack_require__(236);
-	exports.range = __webpack_require__(237);
-	exports.resize = __webpack_require__(238);
-	exports.size = __webpack_require__(239);
-	exports.squeeze = __webpack_require__(240);
-	exports.subset = __webpack_require__(241);
-	exports.transpose = __webpack_require__(242);
-	exports.zeros = __webpack_require__(243);
+	exports['concat'] = __webpack_require__(234);
+	exports.cross = __webpack_require__(235);
+	exports.det = __webpack_require__(236);
+	exports.diag = __webpack_require__(237);
+	exports.dot = __webpack_require__(238);
+	exports.eye = __webpack_require__(239);
+	exports.flatten = __webpack_require__(240);
+	exports.inv = __webpack_require__(241);
+	exports.ones = __webpack_require__(242);
+	exports.range = __webpack_require__(243);
+	exports.resize = __webpack_require__(244);
+	exports.size = __webpack_require__(245);
+	exports.squeeze = __webpack_require__(246);
+	exports.subset = __webpack_require__(247);
+	exports.transpose = __webpack_require__(248);
+	exports.zeros = __webpack_require__(249);
 
 	// functions - probability
-	exports.combinations = __webpack_require__(244);
+	exports.combinations = __webpack_require__(250);
 	//exports.distribution = require('./function/probability/distribution');
-	exports.factorial = __webpack_require__(245);
-	exports.permutations = __webpack_require__(246);
-	exports.pickRandom = __webpack_require__(247);
-	exports.random = __webpack_require__(248);
-	exports.randomInt = __webpack_require__(249);
+	exports.factorial = __webpack_require__(251);
+	exports.permutations = __webpack_require__(252);
+	exports.pickRandom = __webpack_require__(253);
+	exports.random = __webpack_require__(254);
+	exports.randomInt = __webpack_require__(255);
 
 	// functions - statistics
-	exports.max = __webpack_require__(250);
-	exports.mean = __webpack_require__(251);
-	exports.median = __webpack_require__(252);
-	exports.min = __webpack_require__(253);
-	exports.prod = __webpack_require__(254);
-	exports.std = __webpack_require__(255);
-	exports.sum = __webpack_require__(256);
-	exports['var'] = __webpack_require__(257);
+	exports.max = __webpack_require__(256);
+	exports.mean = __webpack_require__(257);
+	exports.median = __webpack_require__(258);
+	exports.min = __webpack_require__(259);
+	exports.prod = __webpack_require__(260);
+	exports.std = __webpack_require__(261);
+	exports.sum = __webpack_require__(262);
+	exports['var'] = __webpack_require__(263);
 
 	// functions - trigonometry
-	exports.acos = __webpack_require__(258);
-	exports.asin = __webpack_require__(259);
-	exports.atan = __webpack_require__(260);
-	exports.atan2 = __webpack_require__(261);
-	exports.cos = __webpack_require__(262);
-	exports.cosh = __webpack_require__(263);
-	exports.cot = __webpack_require__(264);
-	exports.coth = __webpack_require__(265);
-	exports.csc = __webpack_require__(266);
-	exports.csch = __webpack_require__(267);
-	exports.sec = __webpack_require__(268);
-	exports.sech = __webpack_require__(269);
-	exports.sin = __webpack_require__(270);
-	exports.sinh = __webpack_require__(271);
-	exports.tan = __webpack_require__(272);
-	exports.tanh = __webpack_require__(273);
+	exports.acos = __webpack_require__(264);
+	exports.asin = __webpack_require__(265);
+	exports.atan = __webpack_require__(266);
+	exports.atan2 = __webpack_require__(267);
+	exports.cos = __webpack_require__(268);
+	exports.cosh = __webpack_require__(269);
+	exports.cot = __webpack_require__(270);
+	exports.coth = __webpack_require__(271);
+	exports.csc = __webpack_require__(272);
+	exports.csch = __webpack_require__(273);
+	exports.sec = __webpack_require__(274);
+	exports.sech = __webpack_require__(275);
+	exports.sin = __webpack_require__(276);
+	exports.sinh = __webpack_require__(277);
+	exports.tan = __webpack_require__(278);
+	exports.tanh = __webpack_require__(279);
 
 	// functions - units
-	exports.to = __webpack_require__(274);
+	exports.to = __webpack_require__(280);
 
 	// functions - utils
-	exports.clone =  __webpack_require__(275);
-	exports.map =  __webpack_require__(276);
-	exports.filter =  __webpack_require__(277);
-	exports.forEach =  __webpack_require__(278);
-	exports.format =  __webpack_require__(279);
+	exports.clone =  __webpack_require__(281);
+	exports.map =  __webpack_require__(282);
+	exports.filter =  __webpack_require__(283);
+	exports.forEach =  __webpack_require__(284);
+	exports.format =  __webpack_require__(285);
 	// exports.print =  require('./function/utils/print'); // TODO: add documentation for print as soon as the parser supports objects.
-	exports['import'] =  __webpack_require__(280);
-	exports.sort =  __webpack_require__(281);
-	exports['typeof'] =  __webpack_require__(282);
+	exports['import'] =  __webpack_require__(286);
+	exports.sort =  __webpack_require__(287);
+	exports['typeof'] =  __webpack_require__(288);
 
 
 /***/ },
@@ -5412,10 +5419,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(139);
-	var errorTransform = __webpack_require__(158).transform;
+	var BigNumber = __webpack_require__(142);
+	var errorTransform = __webpack_require__(161).transform;
 	var isNumber = __webpack_require__(4).isNumber;
-	var argsToArray = __webpack_require__(137).argsToArray;
+	var argsToArray = __webpack_require__(140).argsToArray;
 
 	/**
 	 * Attach a transform function to math.range
@@ -5456,10 +5463,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var SymbolNode = __webpack_require__(155);
-	var isBoolean = __webpack_require__(159).isBoolean;
-	var argsToArray = __webpack_require__(137).argsToArray;
-	var ArgumentsError = __webpack_require__(141);
+	var SymbolNode = __webpack_require__(158);
+	var isBoolean = __webpack_require__(162).isBoolean;
+	var argsToArray = __webpack_require__(140).argsToArray;
+	var ArgumentsError = __webpack_require__(143);
 
 	/**
 	 * Attach a transform function to math.filter
@@ -5571,7 +5578,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(139);
+	var BigNumber = __webpack_require__(142);
 	var Range = __webpack_require__(7);
 	var Index = __webpack_require__(8);
 	var Matrix = __webpack_require__(9);
@@ -5623,7 +5630,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Matrix = __webpack_require__(9);
-	var BigNumber = __webpack_require__(139);
+	var BigNumber = __webpack_require__(142);
 	var Range = __webpack_require__(7);
 	var Index = __webpack_require__(8);
 	var isNumber = __webpack_require__(4).isNumber;
@@ -5675,11 +5682,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(139);
-	var errorTransform = __webpack_require__(158).transform;
+	var BigNumber = __webpack_require__(142);
+	var errorTransform = __webpack_require__(161).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var isCollection = __webpack_require__(13).isCollection;
-	var argsToArray = __webpack_require__(137).argsToArray;
+	var argsToArray = __webpack_require__(140).argsToArray;
 
 	/**
 	 * Attach a transform function to math.max
@@ -5720,11 +5727,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(139);
-	var errorTransform = __webpack_require__(158).transform;
+	var BigNumber = __webpack_require__(142);
+	var errorTransform = __webpack_require__(161).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var isCollection = __webpack_require__(13).isCollection;
-	var argsToArray = __webpack_require__(137).argsToArray;
+	var argsToArray = __webpack_require__(140).argsToArray;
 
 	/**
 	 * Attach a transform function to math.mean
@@ -5765,11 +5772,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(139);
-	var errorTransform = __webpack_require__(158).transform;
+	var BigNumber = __webpack_require__(142);
+	var errorTransform = __webpack_require__(161).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var isCollection = __webpack_require__(13).isCollection;
-	var argsToArray = __webpack_require__(137).argsToArray;
+	var argsToArray = __webpack_require__(140).argsToArray;
 
 	/**
 	 * Attach a transform function to math.min
@@ -5810,8 +5817,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isBoolean = __webpack_require__(159).isBoolean;
-	var argsToArray = __webpack_require__(137).argsToArray;
+	var isBoolean = __webpack_require__(162).isBoolean;
+	var argsToArray = __webpack_require__(140).argsToArray;
 
 	/**
 	 * Attach a transform function to math.range
@@ -5841,9 +5848,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var errorTransform = __webpack_require__(158).transform;
-	var isBoolean = __webpack_require__(159).isBoolean;
-	var argsToArray = __webpack_require__(137).argsToArray;
+	var errorTransform = __webpack_require__(161).transform;
+	var isBoolean = __webpack_require__(162).isBoolean;
+	var argsToArray = __webpack_require__(140).argsToArray;
 
 	/**
 	 * Attach a transform function to math.subset
@@ -5871,7 +5878,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var string = __webpack_require__(160);
+	  var string = __webpack_require__(163);
 
 	  /**
 	   * @constructor Selector
@@ -5972,7 +5979,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 	      _parse = __webpack_require__(14),
 
 	      collection = __webpack_require__(13),
@@ -6044,7 +6051,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 	      _parse = __webpack_require__(14),
 
 	      collection = __webpack_require__(13),
@@ -6236,7 +6243,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6309,7 +6316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6471,7 +6478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6550,7 +6557,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6622,7 +6629,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function(math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6847,7 +6854,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 	      collection = __webpack_require__(13);
 
 	  /**
@@ -6898,7 +6905,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 	      collection = __webpack_require__(13);
 
 	  /**
@@ -6946,7 +6953,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7027,7 +7034,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7105,7 +7112,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7183,7 +7190,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -7330,7 +7337,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -7492,7 +7499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7595,7 +7602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7683,7 +7690,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -7822,7 +7829,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function(math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -8253,9 +8260,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
-	    array = __webpack_require__(137),
+	    array = __webpack_require__(140),
 	          
 	    BigNumber = math.type.BigNumber,
 	    Complex = __webpack_require__(6),
@@ -8441,7 +8448,206 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147);
+
+	  var BigNumber = math.type.BigNumber;
+	  var collection = __webpack_require__(13);
+
+	  var isNumber = util.number.isNumber;
+	  var isBoolean = util['boolean'].isBoolean;
+	  var isCollection = collection.isCollection;
+
+	  /**
+	   * Calculate the nth root of a value.
+	   * The principal nth root of a positive real number A, is the positive real
+	   * solution of the equation
+	   *
+	   *     x^root = A
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *     math.nthRoot(a, root)
+	   *
+	   * Examples:
+	   *
+	   *     math.nthRoot(9, 2);    // returns 3, as 3^2 == 9
+	   *     math.sqrt(9);          // returns 3, as 3^2 == 9
+	   *     math.nthRoot(64, 3);   // returns 4, as 4^3 == 64
+	   *
+	   * See also:
+	   *
+	   *     sqrt, pow
+	   *
+	   * @param {Number | BigNumber | Boolean | Array | Matrix | null} a
+	   *              Value for which to calculate the nth root
+	   * @param {Number | BigNumber | Boolean | null} [root=2]    The root.
+	   * @return {Number | Complex | Array | Matrix} Returns the nth root of `a`
+	   */
+	  math.nthRoot = function nthRoot (a, root) {
+	    if (arguments.length != 1 && arguments.length != 2) {
+	      throw new math.error.ArgumentsError('nthRoot', arguments.length, 1, 2);
+	    }
+
+	    switch(arguments.length) {
+	      case 1:
+	        if (isNumber(a)) {
+	          return _nthRoot(a);
+	        }
+	        else if (a instanceof BigNumber) {
+	          return _nthRootBig(a);
+	        }
+	        else if (isCollection(a)) {
+	          return collection.deepMap(x, nthRoot);
+	        }
+
+	        if (isBoolean(a) || a === null) {
+	          return nthRoot(+a);
+	        }
+
+	        break;
+
+	      case 2:
+	        if (isNumber(a)) {
+	          if (isNumber(root)) {
+	            return _nthRoot(a, root);
+	          }
+	          else if (root instanceof BigNumber) {
+	            // try to convert to bignumber
+	            a = BigNumber.convert(a);
+
+	            if (a instanceof BigNumber) {
+	              return _nthRootBig(a, root);
+	            }
+	            else {
+	              // downgrade to number
+	              return _nthRoot(a, root.toNumber());
+	            }
+	          }
+	        }
+	        else if (a instanceof BigNumber) {
+	          // try to convert to bignumber
+	          if (isNumber(root)) {
+	            root = BigNumber.convert(root);
+	          }
+
+	          if (root instanceof BigNumber) {
+	            return _nthRootBig(a, root);
+	          }
+	          else {
+	            // downgrade to number
+	            return _nthRoot(a.toNumber(), root);
+	          }
+	        }
+	        else if (isCollection(a) && !isCollection(root)) {
+	          return collection.deepMap2(a, root, nthRoot);
+	        }
+
+	        if (isBoolean(a) || a === null) {
+	          return nthRoot(+a, root);
+	        }
+	        if (isBoolean(root) || root === null) {
+	          return nthRoot(a, +root);
+	        }
+
+	        break;
+
+	      default:
+	        throw new math.error.ArgumentsError('nthRoot', arguments.length, 1, 2);
+	    }
+
+	    if (isBoolean(x) || x === null) {
+	      return arguments.length == 2 ? nthRoot(+x, n) : nthRoot(+x);
+	    }
+
+
+	    throw new math.error.UnsupportedTypeError('nthRoot', math['typeof'](a), math['typeof'](root));
+	  };
+
+	  /**
+	   * Calculate the nth root of a, solve x^root == a
+	   * http://rosettacode.org/wiki/Nth_root#JavaScript
+	   * @param {number} a
+	   * @param {number} [root=2]
+	   * @private
+	   */
+	  function _nthRoot(a, root) {
+	    var _root = (root != undefined) ? root : 2;
+	    var inv = _root < 0;
+	    if (inv) _root = -_root;
+
+	    if (_root == 0) throw new Error('Root must be non-zero');
+	    if (a < 0 && (Math.abs(_root) % 2 != 1)) throw new Error('Root must be odd when a is negative.');
+
+	    // edge cases zero and infinity
+	    if (a == 0) return 0;
+	    if (!Number.isFinite(a)) {
+	      return inv ? 0 : a;
+	    }
+
+	    var epsilon = 1e-16;
+	    var x = 1; // Initial guess
+	    var i = 0;
+	    var iMax = 100;
+	    do {
+	      var delta = (a / Math.pow(x, _root - 1) - x) / _root;
+	      x = x + delta;
+	      i++;
+	    }
+	    while (Math.abs(delta) > epsilon && i < iMax);
+
+	    return inv ? 1 / x : x;
+	  }
+
+	  /**
+	   * Calculate the nth root of a for BigNumbers, solve x^root == a
+	   * http://rosettacode.org/wiki/Nth_root#JavaScript
+	   * @param {BigNumber} a
+	   * @param {BigNumber} [root=2]
+	   * @private
+	   */
+	  function _nthRootBig(a, root) {
+	    var _root = (root != undefined) ? root : new BigNumber(2);
+	    var zero = new BigNumber(0);
+	    var one = new BigNumber(1);
+	    var inv = _root.isNegative();
+	    if (inv) _root = _root.negated();
+
+	    if (_root.isZero()) throw new Error('Root must be non-zero');
+	    if (a.isNegative() && !_root.abs().mod(2).equals(1)) throw new Error('Root must be odd when a is negative.');
+
+	    // edge cases zero and infinity
+	    if (a.isZero()) return zero;
+	    if (!a.isFinite())
+	    {
+	      return inv ? zero : a;
+	    }
+
+	    var x = one; // Initial guess
+	    var i = 0;
+	    var iMax = 100;
+	    do {
+	      var xPrev = x;
+	      var delta = a.div(x.pow(_root.minus(1))).minus(x).div(_root);
+	      x = x.plus(delta);
+	      i++;
+	    }
+	    while (!x.equals(xPrev) && i < iMax);
+
+	    return inv ? one.div(x) : x;
+	  }
+	};
+
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -8619,13 +8825,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -8759,13 +8965,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -8839,13 +9045,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -8875,9 +9081,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   *    square, multiply
 	   *
-	   * @param {Number | Boolean | Complex | Array | Matrix | null} x
+	   * @param {Number | BigNumber | Boolean | Complex | Array | Matrix | null} x
 	   *            Value for which to calculate the square root.
-	   * @return {Number | Complex | Array | Matrix}
+	   * @return {Number | BigNumber | Complex | Array | Matrix}
 	   *            Returns the square root of `x`
 	   */
 	  math.sqrt = function sqrt (x) {
@@ -8945,13 +9151,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9019,13 +9225,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9179,13 +9385,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9268,13 +9474,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9348,13 +9554,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      Matrix = __webpack_require__(9),
 	      BigNumber = math.type.BigNumber,
@@ -9530,13 +9736,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9660,7 +9866,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9745,13 +9951,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9909,13 +10115,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10036,13 +10242,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10164,13 +10370,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10291,13 +10497,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10418,13 +10624,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10581,13 +10787,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10658,13 +10864,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10733,13 +10939,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10810,13 +11016,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10886,13 +11092,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      // take the BigNumber instance the provided math.js instance
 	      BigNumber = math.type.BigNumber,
@@ -10955,13 +11161,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -11049,13 +11255,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -11182,13 +11388,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Index = __webpack_require__(8);
@@ -11256,13 +11462,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 	      Matrix = __webpack_require__(9);
 
 	  /**
@@ -11301,13 +11507,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140);
+	  var util = __webpack_require__(147);
 
 	  var BigNumber = math.type.BigNumber;
 	  var Unit = math.type.Unit;
@@ -11398,7 +11604,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11456,7 +11662,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11505,13 +11711,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      collection = __webpack_require__(13),
 
@@ -11572,13 +11778,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Unit = __webpack_require__(10),
@@ -11659,15 +11865,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
-	      BigNumber = __webpack_require__(139),
+	      BigNumber = __webpack_require__(142),
 	      Matrix = __webpack_require__(9),
 	      collection = __webpack_require__(13),
 
@@ -11801,13 +12007,98 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 83 */
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function(math) {
+	  var array = __webpack_require__(140);
+	  var Matrix = __webpack_require__(9);
+
+	  /**
+	   * Calculate the cross product for two vectors in three dimensional space.
+	   * The cross product of `A = [a1, a2, a3]` and `B =[b1, b2, b3]` is defined
+	   * as:
+	   *
+	   *    cross(A, B) = [
+	   *      a2 * b3 - a3 * b2,
+	   *      a3 * b1 - a1 * b3,
+	   *      a1 * b2 - a2 * b1
+	   *    ]
+	   *
+	   * Syntax:
+	   *
+	   *    math.cross(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    math.cross([1, 1, 0],  [0, 1, 1]);  // Returns [1, -1, 1]
+	   *    math.cross([3, -3, 1], [4, 9, 2]);  // Returns [-15, -2, 39]
+	   *    math.cross([2, 3, 4],  [5, 6, 7]);  // Returns [-3, 6, -3]
+	   *
+	   * See also:
+	   *
+	   *    dot, multiply
+	   *
+	   * @param  {Array | Matrix} x   First vector
+	   * @param  {Array | Matrix} y   Second vector
+	   * @return {Array | Matrix}     Returns the cross product of `x` and `y`
+	   */
+	  math.cross = function cross(x, y) {
+	    if (x instanceof Matrix) {
+	      if (y instanceof Matrix) {
+	        return new Matrix(_cross(x.toArray(), y.toArray()));
+	      }
+	      else if (Array.isArray(y)) {
+	        return new Matrix(_cross(x.toArray(), y));
+	      }
+	    }
+	    else if (Array.isArray(x)) {
+	      if (y instanceof Matrix) {
+	        return new Matrix(_cross(x, y.toArray()));
+	      }
+	      else if (Array.isArray(y)) {
+	        return _cross(x, y);
+	      }
+	    }
+
+	    throw new math.error.UnsupportedTypeError('cross', math['typeof'](x), math['typeof'](y));
+	  };
+
+	  /**
+	   * Calculate the cross product for two arrays
+	   * @param {Array} x  First vector
+	   * @param {Array} y  Second vector
+	   * @returns {Array} Returns the cross product of x and y
+	   * @private
+	   */
+	  function _cross(x, y) {
+	    var xSize= array.size(x);
+	    var ySize = array.size(y);
+
+	    if (xSize.length != 1 || ySize.length != 1 || xSize[0] != 3 || ySize[0] != 3) {
+	      throw new RangeError('Vectors with length 3 expected ' +
+	      '(Size A = [' + xSize.join(', ') + '], B = [' + ySize.join(', ') + '])');
+	    }
+
+	    return [
+	      math.subtract(math.multiply(x[1], y[2]), math.multiply(x[2], y[1])),
+	      math.subtract(math.multiply(x[2], y[0]), math.multiply(x[0], y[2])),
+	      math.subtract(math.multiply(x[0], y[1]), math.multiply(x[1], y[0]))
+	    ];
+	  }
+	};
+
+
+/***/ },
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      Matrix = __webpack_require__(9),
 
@@ -11962,13 +12253,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -12079,13 +12370,94 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 85 */
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function(math) {
+	  var array = __webpack_require__(140);
+	  var Matrix = __webpack_require__(9);
+
+	  /**
+	   * Calculate the dot product of two vectors. The dot product of
+	   * `A = [a1, a2, a3, ..., an]` and `B = [b1, b2, b3, ..., bn]` is defined as:
+	   *
+	   *    dot(A, B) = a1 * b1 + a2 * b2 + a3 * b3 + ... + an * bn
+	   *
+	   * Syntax:
+	   *
+	   *    math.dot(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    math.dot([2, 4, 1], [2, 2, 3]);       // returns Number 15
+	   *    math.multiply([2, 4, 1], [2, 2, 3]);  // returns Number 15
+	   *
+	   * See also:
+	   *
+	   *    multiply, cross
+	   *
+	   * @param  {Array | Matrix} x     First vector
+	   * @param  {Array | Matrix} y     Second vector
+	   * @return {Number}               Returns the dot product of `x` and `y`
+	   */
+	  math.dot = function dot(x, y) {
+	    if (x instanceof Matrix) {
+	      if (y instanceof Matrix) {
+	        return _dot(x.toArray(), y.toArray());
+	      }
+	      else if (Array.isArray(y)) {
+	        return _dot(x.toArray(), y);
+	      }
+	    }
+	    else if (Array.isArray(x)) {
+	      if (y instanceof Matrix) {
+	        return _dot(x, y.toArray());
+	      }
+	      else if (Array.isArray(y)) {
+	        return _dot(x, y);
+	      }
+	    }
+
+	    throw new math.error.UnsupportedTypeError('dot', math['typeof'](x), math['typeof'](y));
+	  };
+
+	  /**
+	   * Calculate the dot product for two arrays
+	   * @param {Array} x  First vector
+	   * @param {Array} y  Second vector
+	   * @returns {Number} Returns the dot product of x and y
+	   * @private
+	   */
+	  // TODO: double code with math.multiply
+	  function _dot(x, y) {
+	    var xSize= array.size(x);
+	    var ySize = array.size(y);
+	    var len = xSize[0];
+
+	    if (xSize.length !== 1 || ySize.length !== 1) throw new RangeError('Vector expected'); // TODO: better error message
+	    if (xSize[0] != ySize[0]) throw new RangeError('Vectors must have equal length (' + xSize[0] + ' != ' + ySize[0] + ')');
+	    if (len == 0) throw new RangeError('Cannot calculate the dot product of empty vectors');
+
+	    var prod = 0;
+	    for (var i = 0; i < len; i++) {
+	      prod = math.add(prod, math.multiply(x[i], y[i]));
+	    }
+
+	    return prod;
+	  }
+	};
+
+
+/***/ },
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -12182,13 +12554,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 86 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140);
+	  var util = __webpack_require__(147);
 
 	  var Matrix = __webpack_require__(9);
 
@@ -12235,13 +12607,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 87 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 	      string = util.string,
 
 	      Matrix = __webpack_require__(9);
@@ -12435,13 +12807,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 88 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -12512,13 +12884,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 89 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -12838,13 +13210,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 90 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -12973,13 +13345,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 91 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -13046,13 +13418,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 92 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      Matrix = __webpack_require__(9),
 
@@ -13110,13 +13482,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 93 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      Matrix = __webpack_require__(9),
 	      Index = __webpack_require__(8),
@@ -13327,13 +13699,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 94 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      Matrix = __webpack_require__(9),
 
@@ -13410,13 +13782,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 95 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -13486,13 +13858,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 96 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -13594,16 +13966,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 97 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var distribution = __webpack_require__(178)(math);
+	  var distribution = __webpack_require__(181)(math);
 
 	  /**
-	   * Return a random number between `min` and `max` using a uniform distribution.
+	   * Return a random number larger or equal to `min` and smaller than `max`
+	   * using a uniform distribution.
 	   *
 	   * Syntax:
 	   *
@@ -13627,8 +14000,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @param {Array | Matrix} [size] If provided, an array or matrix with given
 	   *                                size and filled with random values is returned
-	   * @param {Number} [min]  Minimum boundary for the random value
-	   * @param {Number} [max]  Maximum boundary for the random value
+	   * @param {Number} [min]  Minimum boundary for the random value, included
+	   * @param {Number} [max]  Maximum boundary for the random value, excluded
 	   * @return {Number | Array | Matrix} A random number
 	   */
 	  math.random = distribution('uniform').random;
@@ -13636,16 +14009,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 98 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var distribution = __webpack_require__(178)(math);
+	  var distribution = __webpack_require__(181)(math);
 
 	  /**
-	   * Return a random integer number between `min` and `max` using a uniform distribution.
+	   * Return a random integer number larger or equal to `min` and smaller than `max`
+	   * using a uniform distribution.
 	   *
 	   * Syntax:
 	   *
@@ -13669,8 +14043,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @param {Array | Matrix} [size] If provided, an array or matrix with given
 	   *                                size and filled with random values is returned
-	   * @param {Number} [min]  Minimum boundary for the random value
-	   * @param {Number} [max]  Maximum boundary for the random value
+	   * @param {Number} [min]  Minimum boundary for the random value, included
+	   * @param {Number} [max]  Maximum boundary for the random value, excluded
 	   * @return {Number | Array | Matrix} A random integer value
 	   */
 	  math.randomInt = distribution('uniform').randomInt;
@@ -13678,13 +14052,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 99 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var distribution = __webpack_require__(178)(math);
+	  var distribution = __webpack_require__(181)(math);
 
 	  /**
 	   * Random pick a value from a one dimensional array.
@@ -13710,13 +14084,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 100 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 
@@ -13823,13 +14197,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 101 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -13920,7 +14294,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 102 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14015,7 +14389,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 103 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14110,7 +14484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 104 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14121,7 +14495,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      isCollection = collection.isCollection,
 
-	      size = __webpack_require__(137).size,
+	      size = __webpack_require__(140).size,
 	      isArray = Array.isArray;
 
 	  /**
@@ -14214,7 +14588,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 105 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14228,7 +14602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isNumber = __webpack_require__(4).isNumber,
 	      isCollection = collection.isCollection,
 
-	      flatten = __webpack_require__(137).flatten;
+	      flatten = __webpack_require__(140).flatten;
 
 	  /**
 	   * Compute the median of a matrix or a list with values. The values are
@@ -14328,7 +14702,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 106 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14413,7 +14787,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 107 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14473,7 +14847,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 108 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14556,7 +14930,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 109 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14567,7 +14941,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      collection = __webpack_require__(13),
 
 	      isCollection = collection.isCollection,
-	      isString = __webpack_require__(160).isString,
+	      isString = __webpack_require__(163).isString,
 
 	      DEFAULT_NORMALIZATION = 'unbiased';
 
@@ -14700,13 +15074,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 110 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -14794,13 +15168,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 111 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -14886,13 +15260,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 112 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -14973,13 +15347,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 113 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15057,13 +15431,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 114 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15146,13 +15520,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 115 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15228,13 +15602,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 116 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15314,13 +15688,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 117 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15404,13 +15778,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 118 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15491,13 +15865,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 119 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15582,13 +15956,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 120 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15669,13 +16043,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 121 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15756,13 +16130,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 122 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15844,13 +16218,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 123 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15928,13 +16302,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 124 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16017,13 +16391,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 125 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16108,13 +16482,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 126 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      Unit = __webpack_require__(10),
 	      collection = __webpack_require__(13),
@@ -16170,13 +16544,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 127 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 	      object = util.object;
 
 	  /**
@@ -16208,7 +16582,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 128 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16288,13 +16662,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 129 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 	      string = util.string;
 
 	  /**
@@ -16373,13 +16747,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 130 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      Complex = __webpack_require__(6),
 	      Unit = __webpack_require__(10),
@@ -16452,7 +16826,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // istanbul ignore else (we cannot unit test the else case in a node.js environment)
 	      if (true) {
 	        // load the file using require
-	        var _module = __webpack_require__(179)(object);
+	        var _module = __webpack_require__(182)(object);
 	        math_import(_module, options);
 	      }
 	      else {
@@ -16525,7 +16899,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 131 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16591,13 +16965,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 132 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(140),
+	  var util = __webpack_require__(147),
 
 	      isString = util.string.isString;
 
@@ -16675,7 +17049,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 133 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16755,13 +17129,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 134 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var types = __webpack_require__(180),
+	  var types = __webpack_require__(183),
 
 	      Complex = __webpack_require__(6),
 	      Matrix = __webpack_require__(9),
@@ -16837,7 +17211,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 135 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16899,12 +17273,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 136 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(139);
+	var BigNumber = __webpack_require__(142);
 	var isNumber = __webpack_require__(4).isNumber;
 	var digits = __webpack_require__(4).digits;
 
@@ -17103,18 +17477,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 137 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var number = __webpack_require__(4),
-	    string = __webpack_require__(160),
+	    string = __webpack_require__(163),
 	    object = __webpack_require__(3),
-	    types = __webpack_require__(180),
+	    types = __webpack_require__(183),
 
-	    DimensionError = __webpack_require__(142),
-	    IndexError = __webpack_require__(143),
+	    DimensionError = __webpack_require__(144),
+	    IndexError = __webpack_require__(145),
 
 	    isArray = Array.isArray;
 
@@ -17485,7 +17859,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.isArray = isArray;
 
 /***/ },
-/* 138 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = '1.0.2-SNAPSHOT';
@@ -17494,7 +17868,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 139 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v3.0.1 https://github.com/MikeMcl/decimal.js/LICENCE */
@@ -21483,22 +21857,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 140 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.array = __webpack_require__(137);
-	exports['boolean'] = __webpack_require__(159);
-	exports.number = __webpack_require__(4);
-	exports.bignumber = __webpack_require__(136);
-	exports.object = __webpack_require__(3);
-	exports.string = __webpack_require__(160);
-	exports.types = __webpack_require__(180);
-
-
-/***/ },
-/* 141 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21537,7 +21896,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 142 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21577,7 +21936,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 143 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21628,7 +21987,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 144 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21671,16 +22030,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 145 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157),
+	exports.array = __webpack_require__(140);
+	exports['boolean'] = __webpack_require__(162);
+	exports.number = __webpack_require__(4);
+	exports.bignumber = __webpack_require__(139);
+	exports.object = __webpack_require__(3);
+	exports.string = __webpack_require__(163);
+	exports.types = __webpack_require__(183);
+
+
+/***/ },
+/* 148 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(160),
 	    object = __webpack_require__(3),
-	    string = __webpack_require__(160),
+	    string = __webpack_require__(163),
 	    collection = __webpack_require__(13),
-	    util = __webpack_require__(140),
+	    util = __webpack_require__(147),
 
 	    isArray = Array.isArray,
 	    isNode = Node.isNode;
@@ -21788,18 +22162,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 146 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157),
-	    ArrayNode = __webpack_require__(145),
+	var Node = __webpack_require__(160),
+	    ArrayNode = __webpack_require__(148),
 
-	    keywords = __webpack_require__(283),
+	    keywords = __webpack_require__(289),
 
-	    latex = __webpack_require__(284),
-	    isString = __webpack_require__(160).isString;
+	    latex = __webpack_require__(290),
+	    isString = __webpack_require__(163).isString;
 
 	/**
 	 * @constructor AssignmentNode
@@ -21881,14 +22255,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = AssignmentNode;
 
 /***/ },
-/* 147 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157);
+	var Node = __webpack_require__(160);
 	var ResultSet = __webpack_require__(12);
-	var isBoolean = __webpack_require__(159).isBoolean;
+	var isBoolean = __webpack_require__(162).isBoolean;
 
 	/**
 	 * @constructor BlockNode
@@ -22009,17 +22383,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 148 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157);
-	var latex = __webpack_require__(284);
-	var BigNumber = __webpack_require__(139);
+	var Node = __webpack_require__(160);
+	var latex = __webpack_require__(290);
+	var BigNumber = __webpack_require__(142);
 	var Complex = __webpack_require__(6);
 	var Unit = __webpack_require__(10);
-	var util = __webpack_require__(140);
+	var util = __webpack_require__(147);
 	var isString = util.string.isString;
 	var isNumber = util.number.isNumber;
 	var isBoolean = util['boolean'].isBoolean;
@@ -22156,15 +22530,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 149 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157),
-	    BigNumber = __webpack_require__(139),
-	    type = __webpack_require__(180).type,
-	    isString = __webpack_require__(160).isString;
+	var Node = __webpack_require__(160),
+	    BigNumber = __webpack_require__(142),
+	    type = __webpack_require__(183).type,
+	    isString = __webpack_require__(163).isString;
 
 	/**
 	 * A ConstantNode holds a constant value like a number or string. A ConstantNode
@@ -22324,15 +22698,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 150 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157);
-	var keywords = __webpack_require__(283);
-	var latex = __webpack_require__(284);
-	var isString = __webpack_require__(160).isString;
+	var Node = __webpack_require__(160);
+	var keywords = __webpack_require__(289);
+	var latex = __webpack_require__(290);
+	var isString = __webpack_require__(163).isString;
 	var isArray = Array.isArray;
 
 	/**
@@ -22434,16 +22808,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 151 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157);
-	var RangeNode = __webpack_require__(154);
-	var SymbolNode = __webpack_require__(155);
+	var Node = __webpack_require__(160);
+	var RangeNode = __webpack_require__(157);
+	var SymbolNode = __webpack_require__(158);
 
-	var BigNumber = __webpack_require__(139);
+	var BigNumber = __webpack_require__(142);
 	var Range = __webpack_require__(7);
 
 	var isNode = Node.isNode;
@@ -22646,16 +23020,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = IndexNode;
 
 /***/ },
-/* 152 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157),
-	    ConstantNode = __webpack_require__(149),
-	    SymbolNode = __webpack_require__(155),
-	    FunctionNode = __webpack_require__(153),
-	    latex = __webpack_require__(284);
+	var Node = __webpack_require__(160),
+	    ConstantNode = __webpack_require__(152),
+	    SymbolNode = __webpack_require__(158),
+	    FunctionNode = __webpack_require__(156),
+	    latex = __webpack_require__(290);
 
 	/**
 	 * @constructor OperatorNode
@@ -22846,14 +23220,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 153 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157);
+	var Node = __webpack_require__(160);
 
-	var latex = __webpack_require__(284);
+	var latex = __webpack_require__(290);
 	var isNode = Node.isNode;
 	var isArray = Array.isArray;
 
@@ -22969,12 +23343,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 154 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157);
+	var Node = __webpack_require__(160);
 
 	var isNode = Node.isNode;
 
@@ -23084,16 +23458,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 155 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157),
+	var Node = __webpack_require__(160),
 	    Unit = __webpack_require__(10),
 
-	    latex = __webpack_require__(284),
-	    isString = __webpack_require__(160).isString;
+	    latex = __webpack_require__(290),
+	    isString = __webpack_require__(163).isString;
 
 	/**
 	 * @constructor SymbolNode
@@ -23181,13 +23555,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 156 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(157),
-	    IndexNode = __webpack_require__(151);
+	var Node = __webpack_require__(160),
+	    IndexNode = __webpack_require__(154);
 
 	/**
 	 * @constructor UpdateNode
@@ -23271,12 +23645,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 157 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var keywords = __webpack_require__(283);
+	var keywords = __webpack_require__(289);
 
 	/**
 	 * Node
@@ -23535,11 +23909,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 158 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var DimensionError = __webpack_require__(142);
-	var IndexError = __webpack_require__(143);
+	var DimensionError = __webpack_require__(144);
+	var IndexError = __webpack_require__(145);
 
 	/**
 	 * Transform zero-based indices to one-based indices in errors
@@ -23556,7 +23930,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 159 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23572,14 +23946,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 160 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var number = __webpack_require__(4),
-	    bignumber = __webpack_require__(136),
-	    BigNumber = __webpack_require__(139);
+	    bignumber = __webpack_require__(139),
+	    BigNumber = __webpack_require__(142);
 
 	/**
 	 * Test whether value is a String
@@ -23687,7 +24061,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 161 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23708,7 +24082,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 162 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23726,7 +24100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 163 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23746,7 +24120,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 164 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23765,7 +24139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 165 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23784,7 +24158,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 166 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23803,7 +24177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 167 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23822,7 +24196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 168 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23841,7 +24215,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 169 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23860,7 +24234,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 170 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23878,7 +24252,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 171 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23897,7 +24271,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 172 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23915,7 +24289,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 173 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23934,7 +24308,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 174 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23953,7 +24327,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 175 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23972,7 +24346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 176 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -23990,7 +24364,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 177 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24008,7 +24382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 178 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24018,7 +24392,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = function (math) {
 	  var Matrix = __webpack_require__(9);
-	  var array = __webpack_require__(137);
+	  var array = __webpack_require__(140);
 	  var collection = __webpack_require__(13);
 	  var isCollection = collection.isCollection;
 
@@ -24221,28 +24595,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 179 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./clone": 127,
-		"./clone.js": 127,
-		"./filter": 128,
-		"./filter.js": 128,
-		"./forEach": 135,
-		"./forEach.js": 135,
-		"./format": 129,
-		"./format.js": 129,
-		"./import": 130,
-		"./import.js": 130,
-		"./map": 131,
-		"./map.js": 131,
-		"./print": 132,
-		"./print.js": 132,
-		"./sort": 133,
-		"./sort.js": 133,
-		"./typeof": 134,
-		"./typeof.js": 134
+		"./clone": 130,
+		"./clone.js": 130,
+		"./filter": 131,
+		"./filter.js": 131,
+		"./forEach": 138,
+		"./forEach.js": 138,
+		"./format": 132,
+		"./format.js": 132,
+		"./import": 133,
+		"./import.js": 133,
+		"./map": 134,
+		"./map.js": 134,
+		"./print": 135,
+		"./print.js": 135,
+		"./sort": 136,
+		"./sort.js": 136,
+		"./typeof": 137,
+		"./typeof.js": 137
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -24258,7 +24632,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 180 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24282,6 +24656,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (x instanceof String)  return 'string';
 	    if (Array.isArray(x))     return 'array';
 	    if (x instanceof Date)    return 'date';
+	    if (x instanceof Function)return 'function';
 	    if (x instanceof RegExp)  return 'regexp';
 	  }
 
@@ -24290,7 +24665,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 181 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24309,7 +24684,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 182 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24334,7 +24709,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 183 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24355,7 +24730,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 184 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24379,7 +24754,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 185 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24405,7 +24780,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 186 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24430,7 +24805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 187 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24455,7 +24830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 188 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24478,7 +24853,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 189 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24503,7 +24878,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 190 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24525,7 +24900,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 191 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24546,7 +24921,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 192 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24567,7 +24942,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 193 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24587,7 +24962,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 194 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24615,7 +24990,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 195 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24640,7 +25015,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 196 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24666,7 +25041,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 197 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24691,7 +25066,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 198 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24717,7 +25092,33 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 199 */
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'nthRoot',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'nthRoot(a)',
+	    'nthRoot(a, root)'
+	  ],
+	  'description': 'Calculate the nth root of a value. ' +
+	      'The principal nth root of a positive real number A, ' +
+	      'is the positive real solution of the equation "x^root = A".',
+	  'examples': [
+	    '4 ^ 3',
+	    'nthRoot(64, 3)',
+	    'nthRoot(9, 2)',
+	    'sqrt(9)'
+	  ],
+	  'seealso': [
+	    'sqrt',
+	    'pow'
+	  ]
+	};
+
+/***/ },
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24739,7 +25140,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 200 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24764,7 +25165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 201 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24787,7 +25188,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 202 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24811,7 +25212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 203 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24838,7 +25239,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 204 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24863,7 +25264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 205 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24887,7 +25288,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 206 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24910,7 +25311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 207 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24930,7 +25331,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 208 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24955,7 +25356,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 209 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -24977,7 +25378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 210 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25004,7 +25405,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 211 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25032,7 +25433,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 212 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25058,7 +25459,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 213 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25085,7 +25486,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 214 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25111,7 +25512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 215 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25139,7 +25540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 216 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25165,7 +25566,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 217 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25191,7 +25592,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 218 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25217,7 +25618,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 219 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25243,7 +25644,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 220 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25268,7 +25669,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 221 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25295,7 +25696,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 222 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25320,7 +25721,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 223 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25351,7 +25752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 224 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25379,7 +25780,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 225 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25408,7 +25809,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 226 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25432,7 +25833,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 227 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25458,7 +25859,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 228 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25478,7 +25879,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 229 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25498,7 +25899,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 230 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25523,7 +25924,30 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 231 */
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'cross',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'cross(A, B)'
+	  ],
+	  'description': 'Calculate the cross product for two vectors in three dimensional space.',
+	  'examples': [
+	    'cross([1, 1, 0],  [0, 1, 1])',
+	    'cross([3, -3, 1], [4, 9, 2])',
+	    'cross([2, 3, 4],  [5, 6, 7])'
+	  ],
+	  'seealso': [
+	    'multiply',
+	    'dot'
+	  ]
+	};
+
+
+/***/ },
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25544,7 +25968,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 232 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25568,7 +25992,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 233 */
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'dot',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'dot(A, B)'
+	  ],
+	  'description': 'Calculate the dot product of two vectors. ' +
+	      'The dot product of A = [a1, a2, a3, ..., an] and B = [b1, b2, b3, ..., bn] ' +
+	      'is defined as dot(A, B) = a1 * b1 + a2 * b2 + a3 * b3 + ... + an * bn',
+	  'examples': [
+	    'dot([2, 4, 1], [2, 2, 3])',
+	    '[2, 4, 1] * [2, 2, 3]'
+	  ],
+	  'seealso': [
+	    'multiply',
+	    'cross'
+	  ]
+	};
+
+
+/***/ },
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25594,7 +26042,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 234 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25617,7 +26065,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 235 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25639,7 +26087,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 236 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25669,7 +26117,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 237 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25700,7 +26148,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 238 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25725,7 +26173,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 239 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25749,7 +26197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 240 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25772,7 +26220,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 241 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25803,7 +26251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 242 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25826,7 +26274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 243 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25855,7 +26303,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 244 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25873,7 +26321,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 245 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25894,7 +26342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 246 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25914,7 +26362,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 247 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25934,7 +26382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 248 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25960,7 +26408,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 249 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25985,7 +26433,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 250 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26018,7 +26466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 251 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26050,7 +26498,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 252 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26078,7 +26526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 253 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26111,7 +26559,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 254 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26141,7 +26589,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 255 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26174,7 +26622,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 256 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26204,7 +26652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 257 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26237,7 +26685,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 258 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26260,7 +26708,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 259 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26283,7 +26731,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 260 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26306,7 +26754,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 261 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26333,7 +26781,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 262 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26359,7 +26807,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 263 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26381,7 +26829,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 264 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26404,7 +26852,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 265 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26427,7 +26875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 266 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26450,7 +26898,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 267 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26473,7 +26921,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 268 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26496,7 +26944,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 269 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26519,7 +26967,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 270 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26545,7 +26993,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 271 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26566,7 +27014,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 272 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26591,7 +27039,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 273 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26613,7 +27061,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 274 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26634,7 +27082,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 275 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26656,7 +27104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 276 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26674,7 +27122,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 277 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26694,7 +27142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 278 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26712,7 +27160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 279 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26734,7 +27182,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 280 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26753,7 +27201,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 281 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26775,7 +27223,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 282 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -26796,7 +27244,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 283 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26808,13 +27256,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 284 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ArrayNode = __webpack_require__(145),
-	    OperatorNode = __webpack_require__(152);
+	var ArrayNode = __webpack_require__(148),
+	    OperatorNode = __webpack_require__(155);
 
 	// GREEK LETTERS
 	var greek = {
