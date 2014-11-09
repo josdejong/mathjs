@@ -9,7 +9,7 @@ Math.js can be installed via various package managers:
 
 Package Manager                                         | Installation
 ------------------------------------------------------- | ------------------------------------
-[npm](https://npmjs.org/)                               | <div class="highlight"><pre>npm install mathjs</pre></div>
+[npm](https://npmjs.org/) (recommended)                 | <div class="highlight"><pre>npm install mathjs</pre></div>
 [bower](http://twitter.github.io/bower/)                | <div class="highlight"><pre>bower install mathjs</pre></div>
 [component(1)](https://github.com/component/component/) | <div class="highlight"><pre>component install josdejong/mathjs</pre></div>
 
