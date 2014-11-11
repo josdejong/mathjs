@@ -32,7 +32,7 @@ math.round(3.2);              // returns Number 3
 math.round(3.8);              // returns Number 4
 math.round(-4.2);             // returns Number -4
 math.round(-4.7);             // returns Number -5
-math.round(math.pi, 3);       // returns Number 3.14
+math.round(math.pi, 3);       // returns Number 3.142
 math.round(123.45678, 2);     // returns Number 123.46
 
 var c = math.complex(3.2, -2.7);
