@@ -182,7 +182,9 @@ namespace `math.expression.node`.
 `new AssignmentNode(name: string, expr: Node)`
 
 #### Properties
-- `name: string`<br>`expr: Node`
+
+- `name: string`
+- `expr: Node`
 
 #### Syntax example
 `a = 3`
