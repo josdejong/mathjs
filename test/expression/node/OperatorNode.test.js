@@ -77,9 +77,9 @@ describe('OperatorNode', function() {
     });
 
     assert.notStrictEqual(g,  e);
-    assert.strictEqual(g.params[0].params[0],  f);
-    assert.deepEqual(g.params[0].params[1],  b);
-    assert.deepEqual(g.params[1],  f);
+    assert.strictEqual(g.args[0].args[0],  f);
+    assert.deepEqual(g.args[0].args[1],  b);
+    assert.deepEqual(g.args[1],  f);
   });
 
   it ('should transform an OperatorNode itself', function () {
@@ -107,8 +107,8 @@ describe('OperatorNode', function() {
     assert(d instanceof OperatorNode);
     assert.deepEqual(d, c);
     assert.notStrictEqual(d, c);
-    assert.notStrictEqual(d.params[0], c.params[0]);
-    assert.notStrictEqual(d.params[1], c.params[1]);
+    assert.notStrictEqual(d.args[0], c.args[0]);
+    assert.notStrictEqual(d.args[1], c.args[1]);
   });
 
   it ('should stringify an OperatorNode', function () {

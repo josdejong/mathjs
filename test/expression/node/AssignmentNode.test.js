@@ -82,8 +82,8 @@ describe('AssignmentNode', function() {
     });
 
     assert.notStrictEqual(f, d);
-    assert.deepEqual(f.expr.params[0],  e);
-    assert.deepEqual(f.expr.params[1],  b);
+    assert.deepEqual(f.expr.args[0],  e);
+    assert.deepEqual(f.expr.args[1],  b);
   });
 
   it ('should transform an AssignmentNode itself', function () {

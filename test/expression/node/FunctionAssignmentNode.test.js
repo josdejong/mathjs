@@ -87,8 +87,8 @@ describe('FunctionAssignmentNode', function() {
     });
 
     assert.notStrictEqual(f, n);
-    assert.deepEqual(f.expr.params[0], a);
-    assert.deepEqual(f.expr.params[1], e);
+    assert.deepEqual(f.expr.args[0], a);
+    assert.deepEqual(f.expr.args[1], e);
   });
 
   it ('should transform a FunctionAssignmentNode itself', function () {

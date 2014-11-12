@@ -23,7 +23,7 @@ describe('BlockNode', function() {
     assert.throws(function () {BlockNode()}, SyntaxError);
   });
 
-  it ('should throw an error when adding invalid nodes', function () {
+  it ('should throw an error when adding invalid blocks', function () {
     var n = new BlockNode();
     assert.throws(function () {n.add()}, TypeError);
     assert.throws(function () {n.add(2)}, TypeError);
@@ -79,8 +79,8 @@ describe('BlockNode', function() {
     });
 
     assert.notStrictEqual(e, a);
-    assert.deepEqual(e.nodes[0].node,  d);
-    assert.deepEqual(e.nodes[1].node,  c);
+    assert.deepEqual(e.blocks[0].node,  d);
+    assert.deepEqual(e.blocks[1].node,  c);
   });
 
   it ('should transform a BlockNode itself', function () {
@@ -114,13 +114,13 @@ describe('BlockNode', function() {
 
         case 2:
           assert.strictEqual(node, a);
-          assert.strictEqual(index, 'nodes.0.node');
+          assert.strictEqual(index, 'blocks.0.node');
           assert.strictEqual(parent, c);
           break;
 
         case 3:
           assert.strictEqual(node, b);
-          assert.strictEqual(index, 'nodes.1.node');
+          assert.strictEqual(index, 'blocks.1.node');
           assert.strictEqual(parent, c);
           break;
       }
@@ -141,8 +141,8 @@ describe('BlockNode', function() {
     assert(d instanceof BlockNode);
     assert.deepEqual(a, d);
     assert.notStrictEqual(a, d);
-    assert.notStrictEqual(a.nodes[0], d.nodes[0]);
-    assert.notStrictEqual(a.nodes[1], d.nodes[1]);
+    assert.notStrictEqual(a.blocks[0], d.blocks[0]);
+    assert.notStrictEqual(a.blocks[1], d.blocks[1]);
   });
 
   it ('should stringify a BlockNode', function () {

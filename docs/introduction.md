@@ -22,7 +22,7 @@ Math.js can be used in three different ways:
   math.multiply(math.i, math.i);          // Number -1
   ```
 
-- Evaluate **expressions** using [`math.eval`](reference/functions/eval.md). See section [Expressions](expressions.md). Some examples:
+- Evaluate **expressions** using [`math.eval`](reference/functions/eval.md). See section [Expressions](expressions/index.md). Some examples:
 
   ```js
   math.eval('12 / (2.3 + 0.7)');          // 4

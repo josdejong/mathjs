@@ -1002,16 +1002,16 @@ describe('parse', function() {
         var node = math.parse('a + b\'');
         assert(node instanceof OperatorNode);
         assert.equal(node.op, '+');
-        assert.equal(node.params[0].toString(), 'a');
-        assert.equal(node.params[1].toString(), 'b\'');
+        assert.equal(node.args[0].toString(), 'a');
+        assert.equal(node.args[1].toString(), 'b\'');
       });
 
       it('should respect precedence of transpose (2)', function () {
         var node = math.parse('a ^ b\'');
         assert(node instanceof OperatorNode);
         assert.equal(node.op, '^');
-        assert.equal(node.params[0].toString(), 'a');
-        assert.equal(node.params[1].toString(), 'b\'');
+        assert.equal(node.args[0].toString(), 'a');
+        assert.equal(node.args[1].toString(), 'b\'');
       });
 
       it('should respect precedence of conditional operator and other operators', function () {
@@ -1059,8 +1059,8 @@ describe('parse', function() {
       it('should respect precedence of range operator and relational operators', function () {
         var node = math.parse('a:b == c:d');
         assert(node instanceof OperatorNode);
-        assert.equal(node.params[0].toString(), 'a:b');
-        assert.equal(node.params[1].toString(), 'c:d');
+        assert.equal(node.args[0].toString(), 'a:b');
+        assert.equal(node.args[1].toString(), 'c:d');
       });
 
       it('should respect precedence of range operator and operator plus and minus', function () {
@@ -1073,15 +1073,15 @@ describe('parse', function() {
       it('should respect precedence of "to" operator and relational operators', function () {
         var node = math.parse('a == b to c');
         assert(node instanceof OperatorNode);
-        assert.equal(node.params[0].toString(), 'a');
-        assert.equal(node.params[1].toString(), 'b to c');
+        assert.equal(node.args[0].toString(), 'a');
+        assert.equal(node.args[1].toString(), 'b to c');
       });
 
       it('should respect precedence of "to" operator and relational operators (2)', function () {
         var node = math.parse('a to b == c');
         assert(node instanceof OperatorNode);
-        assert.equal(node.params[0].toString(), 'a to b');
-        assert.equal(node.params[1].toString(), 'c');
+        assert.equal(node.args[0].toString(), 'a to b');
+        assert.equal(node.args[1].toString(), 'c');
       });
 
       // TODO: extensively test operator precedence
