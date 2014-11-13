@@ -165,172 +165,289 @@ namespace `math.expression.node`.
 
 ### ArrayNode
 
-#### Construction
-`new ArrayNode(nodes: Node[])`
+Construction:
+```
+new ArrayNode(nodes: Node[])
+```
 
-#### Properties
+Properties:
 
 - `nodes: Node[]`
 
-#### Syntax example
-`[1, 2, 3]`
+Examples:
+```js
+var node1 = math.parse('[1, 2, 3]');
+
+var one    = new math.expression.node.ConstantNode(1);
+var two    = new math.expression.node.ConstantNode(2);
+var three  = new math.expression.node.ConstantNode(3);
+var node2  = new math.expression.node.ArrayNode([one, two, three]);
+```
 
 
 ### AssignmentNode
 
-#### Construction
-`new AssignmentNode(name: string, expr: Node)`
+Construction:
+```
+new AssignmentNode(name: string, expr: Node)
+```
 
-#### Properties
+Properties:
 
 - `name: string`
 - `expr: Node`
 
-#### Syntax example
-`a = 3`
+Examples:
+```js
+var node1 = math.parse('a = 3');
+
+var expr  = new math.expression.node.ConstantNode(3);
+var node2 = new math.expression.node.AssignmentNode('a', expr);
+```
 
 
 ### BlockNode
 
-#### Construction
+Construction:
 ```
 block = new BlockNode()
 block.add(expr: Node, visible: boolean)
 ```
 
-#### Properties
+Properties:
 
 - `blocks: Array.<{node: Node, visible: boolean}>`
 
-#### Syntax example
-`a=1; b=2; c=3`
+Examples:
+```js
+var block1 = math.parse('a=1; b=2; c=3');
+
+var block2 = new BlockNode();
+
+var one = new math.expression.node.ConstantNode(1);
+var a = new math.expression.node.AssignmentNode('a', one);
+block2.add(a, false);  // visible==false
+
+var two = new math.expression.node.ConstantNode(2);
+var b = new math.expression.node.AssignmentNode('b', two);
+block2.add(b, false);  // visible==false
+
+var three = new math.expression.node.ConstantNode(3);
+var c = new math.expression.node.AssignmentNode('c', three);
+block2.add(c, true);  // visible==true
+```
 
 
 ### ConditionalNode
 
-#### Construction
-`new ConditionalNode(condition: Node, trueExpr: Node, falseExpr: Node)`
+Construction:
+```
+new ConditionalNode(condition: Node, trueExpr: Node, falseExpr: Node)
+```
 
-#### Properties
+Properties:
 
 - `condition: Node`
 - `trueExpr: Node`
 - `falseExpr: Node`
 
-#### Syntax example
-`a > 0 ? a : -a`
+Examples:
+```js
+var node1 = math.parse('a > 0 ? a : -a');
 
+var a         = new math.expression.node.SymbolNode('a');
+var zero      = new math.expression.node.ConstantNode(0);
+var condition = new math.expression.node.OperatorNode('>', 'larger', [a, zero]);
+var trueExpr  = a;
+var falseExpr = new math.expression.node.OperatorNode('-', 'unaryMinus', [a]);
+var node2     = new math.expression.node.ConditionalNode(condition, trueExpr, falseExpr);
+```
 
 ### ConstantNode
 
-#### Construction
-`new ConstantNode(value: * [, valueType: string])`
+Construction:
+```
+new ConstantNode(value: * [, valueType: string])
+```
 
-#### Properties
+Properties:
 
 - `value: *`
 - `valueType: string`
 
-#### Syntax example
-`2.4`
+Examples:
+```js
+var node1 = math.parse('2.4');
+
+var node2 = new math.expression.node.ConstantNode(2.4);
+var node3 = new math.expression.node.ConstantNode('2.4', 'number');
+```
 
 
 ### FunctionAssignmentNode
 
-#### Construction
-`new FunctionAssignmentNode(name: string, params: string[], expr: Node)`
+Construction:
+```
+new FunctionAssignmentNode(name: string, params: string[], expr: Node)
+```
 
-#### Properties
+Properties:
 
 - `name: string`
 - `params: string[]`
 - `expr: Node`
 
-#### Syntax example
-`f(x) = x^2`
+Examples:
+```js
+var node1 = math.parse('f(x) = x^2');
+
+var x      = new math.expression.node.SymbolNode('x');
+var two    = new math.expression.node.ConstantNode(2);
+var expr   = new math.expression.node.OperatorNode('^', 'pow', [x, 2]);
+var node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr);
+```
 
 
 ### FunctionNode
 
-#### Construction
-`new FunctionNode(name: string, args: Node[])`
+Construction:
+```
+new FunctionNode(name: string, args: Node[])
+```
 
-#### Properties
+Properties:
 
 - `symbol: Node`
 - `args: Node[]`
 
-#### Syntax example
-`sqrt(4)`
+Examples:
+```js
+var node1 = math.parse('sqrt(4)');
+
+var four  = new math.expression.node.ConstantNode(4);
+var node2 = new math.expression.node.FunctionNode('sqrt', [four]);
+```
 
 
 ### IndexNode
 
-#### Construction
-`new IndexNode(object: Node, ranges: Node[])`
+Construction:
+```
+new IndexNode(object: Node, ranges: Node[])
+```
 
-#### Properties
+Note that ranges are one-based, including range end.
+
+Properties:
 
 - `object: Node`
 - `ranges: Node[]`
 
-#### Syntax example
-`A[1:3, 2]`
+Examples:
 
+```js
+var node1 = math.parse('A[1:3, 2]');
+
+var A     = new math.expression.node.SymbolNode('A');
+var one   = new math.expression.node.ConstantNode(1);
+var two   = new math.expression.node.ConstantNode(2);
+var three = new math.expression.node.ConstantNode(3);
+
+var range = new math.expression.node.RangeNode([one, three]);
+var node2 = new math.expression.node.IndexNode(A, [range, two]);
+```
 
 ### OperatorNode
 
-#### Construction
-`new OperatorNode(op: string, fn: string, args: Node[])`
+Construction:
+```
+new OperatorNode(op: string, fn: string, args: Node[])
+```
 
-#### Properties
+Properties:
 
 - `op: string`
 - `fn: string`
 - `args: Node[]`
 
-#### Syntax example
-`2.3 + 5`
+Examples:
+```js
+var node1 = math.parse('2.3 + 5');
 
+var a     = new math.expression.node.ConstantNode(2.3);
+var b     = new math.expression.node.ConstantNode(5);
+var node2 = new math.expression.node.OperatorNode('+', 'add', [a, b]);
+```
 
 ### RangeNode
 
-#### Construction
-`new RangeNode(params: Node)`
+Construction:
+```
+new RangeNode(params: Node)
+```
+Where params can be `[start, end]` or `[start, end, step]`.
 
-#### Properties
+Properties:
 
 - `start: Node`
 - `end: Node`
 - `step: Node`
 
-#### Syntax example
-`1:10`
-`0:2:10`
+Examples:
+```js
+var node1 = math.parse('1:10');
+var node2 = math.parse('0:2:10');
+
+var zero = new math.expression.node.ConstantNode(0);
+var one = new math.expression.node.ConstantNode(1);
+var two = new math.expression.node.ConstantNode(2);
+var ten = new math.expression.node.ConstantNode(10);
+
+var node3 = new math.expression.node.RangeNode([one, ten]);
+var node4 = new math.expression.node.RangeNode([zero, ten, two]);
+```
 
 
 ### SymbolNode
 
-#### Construction
-`new SymbolNode(name: string)`
+Construction:
+```
+new SymbolNode(name: string)
+```
 
-#### Properties
+Properties:
 
 - `name: string`
 
-#### Syntax example
-`x`
+Examples:
+```js
+var node = math.parse('x');
+
+var x = new math.expression.node.SymbolNode('x');
+```
 
 
 ### UpdateNode
 
-#### Construction
-`new UpdateNode(index: IndexNode, expr: Node)`
+Construction:
+```
+new UpdateNode(index: IndexNode, expr: Node)
+```
 
-#### Properties
+Properties:
 
 - `index: IndexNode`
 - `expr: Node`
 
-#### Syntax example
-`A[3, 1] = 4`
+Examples:
+```js
+var node1 = math.parse('A[3, 1] = 4');
+
+var A     = new math.expression.node.SymbolNode('A');
+var one   = new math.expression.node.ConstantNode(1);
+var three = new math.expression.node.ConstantNode(3);
+var four  = new math.expression.node.ConstantNode(4);
+
+var index = new math.expression.node.IndexNode(A, [three, one]);
+var node2 = new math.expression.node.UpdateNode(index, four);
+```
