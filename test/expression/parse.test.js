@@ -1360,6 +1360,9 @@ describe('parse', function() {
         });
         return '"CustomNode(' + strArgs.join(', ') + ')"';
       };
+      CustomNode.prototype._traverse = function (callback) {
+        // we don't have childs
+      };
 
       var options = {
         nodes: {

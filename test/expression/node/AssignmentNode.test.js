@@ -63,7 +63,7 @@ describe('AssignmentNode', function() {
   });
 
   it ('should filter an AssignmentNode without expression', function () {
-    var e = new AssignmentNode('a', new Node());
+    var e = new AssignmentNode('a', new ConstantNode(2));
 
     assert.deepEqual(e.filter(function (node) {return node instanceof AssignmentNode}),[e]);
     assert.deepEqual(e.filter(function (node) {return node instanceof SymbolNode}),    []);

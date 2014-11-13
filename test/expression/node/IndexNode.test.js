@@ -126,10 +126,10 @@ describe('IndexNode', function() {
   });
 
   it ('should filter an empty IndexNode', function () {
-    var n = new IndexNode(new Node(), []);
+    var n = new IndexNode(new SymbolNode('a'), []);
 
     assert.deepEqual(n.filter(function (node) {return node instanceof IndexNode}),  [n]);
-    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}), []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}), []);
   });
 
   it ('should transform an IndexNodes object', function () {

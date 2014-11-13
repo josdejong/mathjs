@@ -1,10 +1,13 @@
 // test Node
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = require('../../../lib/expression/node/Node');
 
 describe('Node', function() {
+  function MyNode () {}
+  MyNode.prototype = new Node();
+  MyNode.prototype._traverse = function () {};
 
   it ('should create a Node', function () {
     var n = new Node();
@@ -16,7 +19,7 @@ describe('Node', function() {
   });
 
   it ('should filter a Node', function () {
-    var n = new Node();
+    var n = new MyNode();
 
     assert.deepEqual(n.filter(function () {return true}), [n]);
     assert.deepEqual(n.filter(function (node) {return node instanceof Node}), [n]);
@@ -24,30 +27,30 @@ describe('Node', function() {
   });
 
   it ('should transform a Node', function () {
-    var a = new Node();
-    var b = new Node();
+    var a = new MyNode();
+    var b = new MyNode();
     var c = a.transform(function (node) {
       return b;
     });
-    assert.deepEqual(c, b);
+    assert.strictEqual(c, b);
 
     // no match
-    a = new Node();
-    b = new Node();
+    a = new MyNode();
+    b = new MyNode();
     c = a.transform(function (node) {
       return node;
     });
-    assert.deepEqual(c, a);
+    assert.strictEqual(c, a);
   });
 
   it ('should transform a Node using a replacement function', function () {
-    var a = new Node();
-    var b = new Node();
+    var a = new MyNode();
+    var b = new MyNode();
     var c = a.transform(function (node) {
       assert.deepEqual(node, a);
       return b;
     });
-    assert.deepEqual(c, b);
+    assert.strictEqual(c, b);
   });
 
   it ('should clone a Node', function () {

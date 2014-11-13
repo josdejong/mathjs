@@ -12,22 +12,22 @@ var assert = require('assert'),
 describe('FunctionAssignmentNode', function() {
 
   it ('should create a FunctionAssignmentNode', function () {
-    var n = new FunctionAssignmentNode('f', ['x'], new Node());
+    var n = new FunctionAssignmentNode('f', ['x'], new ConstantNode(2));
     assert(n instanceof FunctionAssignmentNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'FunctionAssignmentNode');
   });
 
   it ('should throw an error when calling without new operator', function () {
-    assert.throws(function () {FunctionAssignmentNode('f', ['x'], new Node())}, SyntaxError);
+    assert.throws(function () {FunctionAssignmentNode('f', ['x'], new ConstantNode(2))}, SyntaxError);
   });
 
   it ('should throw an error on wrong constructor arguments', function () {
     assert.throws(function () {new FunctionAssignmentNode()}, TypeError);
     assert.throws(function () {new FunctionAssignmentNode('a')}, TypeError);
     assert.throws(function () {new FunctionAssignmentNode('a', ['x'])}, TypeError);
-    assert.throws(function () {new FunctionAssignmentNode('a', [2], new Node())}, TypeError);
-    assert.throws(function () {new FunctionAssignmentNode(null, ['x'], new Node())}, TypeError);
+    assert.throws(function () {new FunctionAssignmentNode('a', [2], new ConstantNode(2))}, TypeError);
+    assert.throws(function () {new FunctionAssignmentNode(null, ['x'], new ConstantNode(2))}, TypeError);
   });
 
   it ('should compile a FunctionAssignmentNode', function () {
@@ -63,12 +63,12 @@ describe('FunctionAssignmentNode', function() {
 
   it ('should throw an error when creating a FunctionAssignmentNode with a reserved keyword', function () {
     assert.throws(function () {
-      new FunctionAssignmentNode('end', ['x'], new Node());
+      new FunctionAssignmentNode('end', ['x'], new ConstantNode(2));
     }, /Illegal function name/)
   });
 
   it ('should filter a FunctionAssignmentNode without expression', function () {
-    var e = new FunctionAssignmentNode('f', ['x'], new Node());
+    var e = new FunctionAssignmentNode('f', ['x'], new ConstantNode(2));
 
     assert.deepEqual(e.filter(function (node) {return node instanceof FunctionAssignmentNode}),  [e]);
     assert.deepEqual(e.filter(function (node) {return node instanceof SymbolNode}),    []);
