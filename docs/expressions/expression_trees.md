@@ -95,8 +95,7 @@ All nodes have the following methods:
   The callback function is a mapping function accepting a node, and returning
   a replacement for the node or the original node. Function `callback` is
   called as `callback(node: Node, index: string, parent: Node)` for every node
-  in the tree, and must return a `Node`. The `transform` first creates a clone
-  of the expression tree, so the original tree is left unchanged.
+  in the tree, and must return a `Node`.
 
   For example, to replace all nodes of type `SymbolNode` having name 'x' with a
   ConstantNode with value 2:

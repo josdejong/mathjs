@@ -87,7 +87,7 @@ describe('ConstantNode', function() {
     var d = a.transform(function (node) {
       return node instanceof ConstantNode && node.value == '99' ? b : node;
     });
-    assert.notStrictEqual(d,  a);
+    assert.strictEqual(d,  a);
     assert.deepEqual(d,  a);
   });
 

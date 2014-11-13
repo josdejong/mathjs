@@ -117,7 +117,7 @@ describe('ConditionalNode', function() {
       return node instanceof ConstantNode && node.value == '1' ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.condition,  e);
     assert.deepEqual(f.trueExpr,  a);
     assert.deepEqual(f.falseExpr,  b);
@@ -134,7 +134,7 @@ describe('ConditionalNode', function() {
       return node instanceof ConstantNode && node.value == '2' ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.condition,  condition);
     assert.deepEqual(f.trueExpr,  e);
     assert.deepEqual(f.falseExpr,  b);
@@ -151,7 +151,7 @@ describe('ConditionalNode', function() {
       return node instanceof ConstantNode && node.value == '3' ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.condition, condition);
     assert.deepEqual(f.trueExpr, a);
     assert.deepEqual(f.falseExpr, e);

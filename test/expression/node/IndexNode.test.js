@@ -143,7 +143,7 @@ describe('IndexNode', function() {
       return node instanceof SymbolNode ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.object, e);
     assert.deepEqual(f.ranges[0], b);
     assert.deepEqual(f.ranges[1], c);
@@ -160,7 +160,7 @@ describe('IndexNode', function() {
       return node instanceof ConstantNode && node.value == '1' ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.object, a);
     assert.deepEqual(f.ranges[0], b);
     assert.deepEqual(f.ranges[1], e);

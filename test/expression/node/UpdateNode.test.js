@@ -164,7 +164,7 @@ describe('UpdateNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.index.object,  a);
     assert.deepEqual(f.index.ranges[0],  b);
     assert.deepEqual(f.index.ranges[1],  e);
@@ -185,7 +185,7 @@ describe('UpdateNode', function() {
       return node instanceof ConstantNode && node.value == '3' ? e : node;
     });
 
-    assert.notStrictEqual(g, n);
+    assert.strictEqual(g, n);
     assert.deepEqual(g.index,  i);
     assert.deepEqual(g.index.object,  a);
     assert.deepEqual(g.index.ranges[0],  b);

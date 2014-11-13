@@ -86,7 +86,7 @@ describe('FunctionAssignmentNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.expr.args[0], a);
     assert.deepEqual(f.expr.args[1], e);
   });

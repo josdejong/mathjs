@@ -69,7 +69,7 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '0' ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.start,  e);
     assert.deepEqual(f.end,  end);
     assert.deepEqual(f.step,  step);
@@ -86,7 +86,7 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '10' ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.start,  start);
     assert.deepEqual(f.end,  e);
     assert.deepEqual(f.step,  step);
@@ -103,7 +103,7 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '2' ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.start, start);
     assert.deepEqual(f.end, end);
     assert.deepEqual(f.step, e);
@@ -119,7 +119,7 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '10' ? e : node;
     });
 
-    assert.notStrictEqual(f, n);
+    assert.strictEqual(f, n);
     assert.deepEqual(f.start, start);
     assert.deepEqual(f.end, e);
   });

@@ -107,7 +107,7 @@ describe('FunctionNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? g : node;
     });
 
-    assert.notStrictEqual(h, f);
+    assert.strictEqual(h, f);
     assert.deepEqual(h.args[0].args[0],  g);
     assert.deepEqual(h.args[0].args[1],  b);
     assert.deepEqual(h.name, 'multiply');
@@ -127,7 +127,7 @@ describe('FunctionNode', function() {
       return node;
     });
 
-    assert.notStrictEqual(f, d);
+    assert.strictEqual(f, d);
     assert.deepEqual(f.name, 'subtract');
   });
 

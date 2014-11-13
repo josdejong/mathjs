@@ -91,7 +91,7 @@ describe('ArrayNode', function() {
       return (node instanceof SymbolNode) && (node.name == 'x') ? d : node;
     });
 
-    assert.notStrictEqual(e,  c);
+    assert.strictEqual(e,  c);
     assert.deepEqual(e.nodes[0],  d);
     assert.deepEqual(e.nodes[1],  b);
   });
