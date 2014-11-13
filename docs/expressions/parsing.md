@@ -1,4 +1,4 @@
-# Parsing and evaluation
+# Expression parsing and evaluation
 
 Expressions can be parsed and evaluated in various ways:
 

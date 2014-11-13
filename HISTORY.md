@@ -14,6 +14,8 @@
   - Renamed `params` to `args` and vice versa to make things consistent.
   - Renamed `Block.nodes` to `Block.blocks`.
   - `FunctionNode` now has a `name: string` instead of a `symbol: SymbolNode`.
+  - Changed constructor of `RangeNode` to
+    `new RangeNode(start: Node, end: Node [, step: Node])`.
 - Fixed `2e` giving a syntax error instead of being parsed as `2 * e`.
 
 

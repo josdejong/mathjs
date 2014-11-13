@@ -97,7 +97,7 @@ allowing the function to process the arguments in a customized way. Raw
 functions are called as:
 
 ```
-rawFunction(args, math, scope)
+rawFunction(args : Node[], math: Object, scope: Object)
 ```
 
 Where :

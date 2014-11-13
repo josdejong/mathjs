@@ -47,10 +47,10 @@ describe('IndexNode', function() {
     var a = new SymbolNode('a');
     var ranges = [
       new ConstantNode(2),
-      new RangeNode([
+      new RangeNode(
         new ConstantNode(1),
         new SymbolNode('end')
-      ])
+      )
     ];
     var n = new IndexNode(a, ranges);
     var expr = n.compile(bigmath);
@@ -65,11 +65,11 @@ describe('IndexNode', function() {
     var a = new SymbolNode('a');
     var ranges = [
       new ConstantNode(2),
-      new RangeNode([
+      new RangeNode(
         new SymbolNode('end'),
         new ConstantNode(1),
         new ConstantNode(-1)
-      ])
+      )
     ];
     var n = new IndexNode(a, ranges);
     var expr = n.compile(bigmath);
@@ -84,10 +84,10 @@ describe('IndexNode', function() {
     var a = new SymbolNode('a');
     var ranges = [
       new SymbolNode('end'),
-      new RangeNode([
+      new RangeNode(
         new ConstantNode(1),
         new SymbolNode('end')
-      ])
+      )
     ];
     var n = new IndexNode(a, ranges);
     var expr = n.compile(bigmath);

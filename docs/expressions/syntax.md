@@ -1,22 +1,25 @@
-# Syntax
+# Expression syntax
 
-The expression parser is aimed at a mathematical audience, not a programming
-audience. The syntax is similar to most calculators and mathematical
-applications. This is close to JavaScript as well, though there are a few
-important differences between the syntax of the expression parser and the
-lower level syntax of math.js. Differences are:
+This page describes the syntax of expression parser of math.js. It describes
+how to work with the available data types, functions, operators, variables,
+and more.
+
+## Differences from JavaScript
+
+The expression parser of math.js is aimed at a mathematical audience,
+not a programming audience. The syntax is similar to most calculators and
+mathematical applications. This is close to JavaScript as well, though there
+are a few important differences between the syntax of the expression parser and
+the lower level syntax of math.js. Differences are:
 
 - No need to prefix functions and constants with the `math.*` namespace,
-  you can just enter `"sin(pi / 4)"`.
-- Matrix indexes, which are one-based instead of zero-based.
+  you can just enter `sin(pi / 4)`.
+- Matrix indexes are one-based instead of zero-based.
 - There are index and range operators which allow more conveniently getting
-  and setting matrix indexes.
+  and setting matrix indexes, like `A[2:4, 1]`.
 - Both indexes and ranges and have the upper-bound included.
-- There is a differing syntax for defining functions.
-- Can use operators like `x + y` instead of `add(x, y)`.
-
-This section describes how to work with the available data types, functions,
-operators, variables, and more.
+- There is a differing syntax for defining functions. Example: `f(x) = x^2`.
+- There are custom operators like `x + y` instead of `add(x, y)`.
 
 
 ## Operators

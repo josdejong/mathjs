@@ -10,7 +10,7 @@ Example:
 var node = math.parse('sqrt(2 + x)');
 ```
 
-In this case, the expression `sqrt(2 + x)` is basically parsed as:
+In this case, the expression `sqrt(2 + x)` is parsed as:
 
 ```
   FunctionNode    sqrt
@@ -353,7 +353,7 @@ var one   = new math.expression.node.ConstantNode(1);
 var two   = new math.expression.node.ConstantNode(2);
 var three = new math.expression.node.ConstantNode(3);
 
-var range = new math.expression.node.RangeNode([one, three]);
+var range = new math.expression.node.RangeNode(one, three);
 var node2 = new math.expression.node.IndexNode(A, [range, two]);
 ```
 
@@ -383,15 +383,14 @@ var node2 = new math.expression.node.OperatorNode('+', 'add', [a, b]);
 
 Construction:
 ```
-new RangeNode(params: Node)
+new RangeNode(start: Node, end: Node [, step: Node])
 ```
-Where params can be `[start, end]` or `[start, end, step]`.
 
 Properties:
 
 - `start: Node`
 - `end: Node`
-- `step: Node`
+- `step: Node | null`
 
 Examples:
 ```js
@@ -403,8 +402,8 @@ var one = new math.expression.node.ConstantNode(1);
 var two = new math.expression.node.ConstantNode(2);
 var ten = new math.expression.node.ConstantNode(10);
 
-var node3 = new math.expression.node.RangeNode([one, ten]);
-var node4 = new math.expression.node.RangeNode([zero, ten, two]);
+var node3 = new math.expression.node.RangeNode(one, ten);
+var node4 = new math.expression.node.RangeNode(zero, ten, two);
 ```
 
 

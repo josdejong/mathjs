@@ -70,10 +70,10 @@ describe('UpdateNode', function() {
     var a = new SymbolNode('a');
     var ranges = [
         new ConstantNode(2),
-        new RangeNode([
+        new RangeNode(
           new ConstantNode(1),
           new SymbolNode('end')
-        ])
+        )
     ];
     var b = new SymbolNode('b');
     var n = new UpdateNode(new IndexNode(a, ranges), b);
@@ -94,11 +94,11 @@ describe('UpdateNode', function() {
     var a = new SymbolNode('a');
     var ranges = [
         new ConstantNode(2),
-        new RangeNode([
+        new RangeNode(
           new SymbolNode('end'),
           new ConstantNode(1),
           new ConstantNode(-1)
-        ])
+        )
     ];
     var b = new SymbolNode('b');
     var n = new UpdateNode(new IndexNode(a, ranges), b);
