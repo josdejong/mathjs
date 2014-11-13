@@ -13,7 +13,7 @@ var ResultSet = require('../../../lib/type/ResultSet');
 describe('BlockNode', function() {
 
   it ('should create a BlockNode', function () {
-    var n = new BlockNode();
+    var n = new BlockNode([]);
     assert(n instanceof BlockNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'BlockNode');
@@ -24,17 +24,27 @@ describe('BlockNode', function() {
   });
 
   it ('should throw an error when adding invalid blocks', function () {
-    var n = new BlockNode();
-    assert.throws(function () {n.add()}, TypeError);
-    assert.throws(function () {n.add(2)}, TypeError);
-    assert.throws(function () {n.add(new Node(), 2)}, TypeError);
+    assert.throws(function () {new BlockNode()}, /Array expected/);
+    assert.throws(function () {new BlockNode([2])}, /Property "node" must be a Node/);
+    assert.throws(function () {new BlockNode([{node: 2, visible:true}])}, /Property "node" must be a Node/);
+    assert.throws(function () {new BlockNode([{node: new Node(), visible: 2}])}, /Property "visible" must be a boolean/);
   });
 
   it ('should compile and evaluate a BlockNode', function () {
-    var n = new BlockNode();
-    n.add(new ConstantNode(5), true);
-    n.add(new AssignmentNode('foo', new ConstantNode(3)), false);
-    n.add(new SymbolNode('foo'), true);
+    var n = new BlockNode([
+      {
+        node: new ConstantNode(5),
+        visible: true
+      },
+      {
+        node: new AssignmentNode('foo', new ConstantNode(3)),
+        visible: false
+      },
+      {
+        node: new SymbolNode('foo'),
+        visible: true
+      }
+    ]);
 
     var scope = {};
     assert.deepEqual(n.compile(math).eval(scope), new ResultSet([5, 3]));
@@ -42,8 +52,9 @@ describe('BlockNode', function() {
   });
 
   it ('expressions should be visible by default', function () {
-    var n = new BlockNode();
-    n.add(new ConstantNode(5));
+    var n = new BlockNode([
+      {node: new ConstantNode(5)}
+    ]);
 
     assert.deepEqual(n.compile(math).eval(), new ResultSet([5]));
   });
@@ -53,10 +64,11 @@ describe('BlockNode', function() {
     var b2 = new ConstantNode(3);
     var b = new AssignmentNode('foo', b2);
     var c = new SymbolNode('foo');
-    var d = new BlockNode();
-    d.add(a, true);
-    d.add(b, false);
-    d.add(c, true);
+    var d = new BlockNode([
+      {node: a, visible: true},
+      {node: b, visible: false},
+      {node: c, visible: true}
+    ]);
 
     assert.deepEqual(d.filter(function (node) {return node instanceof BlockNode}),     [d]);
     assert.deepEqual(d.filter(function (node) {return node instanceof SymbolNode}),    [c]);
@@ -67,11 +79,12 @@ describe('BlockNode', function() {
 
   it ('should transform a BlockNodes parameters', function () {
     // [x, 2]
-    var a = new BlockNode();
     var b = new SymbolNode('x');
     var c = new ConstantNode(2);
-    a.add(b);
-    a.add(c);
+    var a = new BlockNode([
+      {node: b},
+      {node: c}
+    ]);
 
     var d = new ConstantNode(3);
     var e = a.transform(function (node) {
@@ -85,7 +98,7 @@ describe('BlockNode', function() {
 
   it ('should transform a BlockNode itself', function () {
     // [x, 2]
-    var a = new BlockNode();
+    var a = new BlockNode([]);
 
     var d = new ConstantNode(3);
     var e = a.transform(function (node) {
@@ -97,9 +110,10 @@ describe('BlockNode', function() {
   it ('should traverse a BlockNode', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);
-    var c = new BlockNode();
-    c.add(a);
-    c.add(b);
+    var c = new BlockNode([
+      {node: a, visible: true},
+      {node: b, visible: true}
+    ]);
 
     var count = 0;
     c.traverse(function (node, index, parent) {
@@ -131,11 +145,12 @@ describe('BlockNode', function() {
 
   it ('should clone a BlockNode', function () {
     // [x, 2]
-    var a = new BlockNode();
     var b = new SymbolNode('x');
     var c = new ConstantNode(2);
-    a.add(b);
-    a.add(c);
+    var a = new BlockNode([
+      {node: b},
+      {node: c}
+    ]);
 
     var d = a.clone();
     assert(d instanceof BlockNode);
@@ -146,19 +161,21 @@ describe('BlockNode', function() {
   });
 
   it ('should stringify a BlockNode', function () {
-    var n = new BlockNode();
-    n.add(new ConstantNode(5), true);
-    n.add(new AssignmentNode('foo', new ConstantNode(3)), false);
-    n.add(new SymbolNode('foo'), true);
+    var n = new BlockNode([
+      {node: new ConstantNode(5), visible:true},
+      {node: new AssignmentNode('foo', new ConstantNode(3)), visible:false},
+      {node: new SymbolNode('foo'), visible:true}
+    ]);
 
     assert.equal(n.toString(), '5\nfoo = 3;\nfoo');
   });
 
   it ('should LaTeX a BlockNode', function () {
-    var n = new BlockNode();
-    n.add(new ConstantNode(5), true);
-    n.add(new AssignmentNode('foo', new ConstantNode(3)), false);
-    n.add(new SymbolNode('foo'), true);
+    var n = new BlockNode([
+      {node: new ConstantNode(5), visible:true},
+      {node: new AssignmentNode('foo', new ConstantNode(3)), visible:false},
+      {node: new SymbolNode('foo'), visible:true}
+    ]);
 
     assert.equal(n.toTex(), '5\n{foo}={3};\nfoo');
   });

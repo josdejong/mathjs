@@ -210,8 +210,7 @@ var node2 = new math.expression.node.AssignmentNode('a', expr);
 
 Construction:
 ```
-block = new BlockNode()
-block.add(expr: Node, visible: boolean)
+block = new BlockNode(Array.<{node: Node} | {node: Node, visible: boolean}>)
 ```
 
 Properties:
@@ -222,19 +221,20 @@ Examples:
 ```js
 var block1 = math.parse('a=1; b=2; c=3');
 
-var block2 = new BlockNode();
-
 var one = new math.expression.node.ConstantNode(1);
 var a = new math.expression.node.AssignmentNode('a', one);
-block2.add(a, false);  // visible==false
 
 var two = new math.expression.node.ConstantNode(2);
 var b = new math.expression.node.AssignmentNode('b', two);
-block2.add(b, false);  // visible==false
 
 var three = new math.expression.node.ConstantNode(3);
 var c = new math.expression.node.AssignmentNode('c', three);
-block2.add(c, true);  // visible==true
+
+var block2 = new BlockNode([
+  {node: a, visible: false},
+  {node: b, visible: false},
+  {node: c, visible: true}
+]);
 ```
 
 

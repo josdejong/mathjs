@@ -16,6 +16,8 @@
   - `FunctionNode` now has a `name: string` instead of a `symbol: SymbolNode`.
   - Changed constructor of `RangeNode` to
     `new RangeNode(start: Node, end: Node [, step: Node])`.
+  - Nodes for a `BlockNode` must now be passed via the constructor instead
+    of via a function `add`.
 - Fixed `2e` giving a syntax error instead of being parsed as `2 * e`.
 
 
