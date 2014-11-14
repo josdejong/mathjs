@@ -128,13 +128,13 @@ describe('BlockNode', function() {
 
         case 2:
           assert.strictEqual(node, a);
-          assert.strictEqual(index, 'blocks.0.node');
+          assert.strictEqual(index, 'blocks[0].node');
           assert.strictEqual(parent, c);
           break;
 
         case 3:
           assert.strictEqual(node, b);
-          assert.strictEqual(index, 'blocks.1.node');
+          assert.strictEqual(index, 'blocks[1].node');
           assert.strictEqual(parent, c);
           break;
       }

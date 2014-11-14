@@ -128,13 +128,13 @@ describe('ArrayNode', function() {
 
         case 2:
           assert.strictEqual(node, a);
-          assert.strictEqual(path, 'nodes.0');
+          assert.strictEqual(path, 'nodes[0]');
           assert.strictEqual(parent, c);
           break;
 
         case 3:
           assert.strictEqual(node, b);
-          assert.strictEqual(path, 'nodes.1');
+          assert.strictEqual(path, 'nodes[1]');
           assert.strictEqual(parent, c);
           break;
       }

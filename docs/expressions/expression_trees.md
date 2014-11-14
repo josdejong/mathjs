@@ -59,9 +59,10 @@ All nodes have the following methods:
 - `filter(test: function) : Array.<Node>`
 
   Filter nodes in an expression tree. The `test` function is called as
-  `test(node: Node, index: string, parent: Node)` for every node in the tree,
+  `test(node: Node, path: string, parent: Node)` for every node in the tree,
   and must return a boolean. The function `filter` returns an array with nodes
-  for which the test returned true. Example:
+  for which the test returned true. Parameter `path` is a string containing a
+  relative JSON Path. Example:
 
   ```js
   var node = math.parse('x^2 + x/4 + 3*y');
@@ -94,15 +95,16 @@ All nodes have the following methods:
   but recursively executed on all nodes in the expression tree.
   The callback function is a mapping function accepting a node, and returning
   a replacement for the node or the original node. Function `callback` is
-  called as `callback(node: Node, index: string, parent: Node)` for every node
-  in the tree, and must return a `Node`.
+  called as `callback(node: Node, path: string, parent: Node)` for every node
+  in the tree, and must return a `Node`. Parameter `path` is a string containing
+  a relative JSON Path.
 
   For example, to replace all nodes of type `SymbolNode` having name 'x' with a
   ConstantNode with value 2:
 
   ```js
   var node = math.parse('x^2 + 5*x');
-  var transformed = node.transform(function (node, index, parent) {
+  var transformed = node.transform(function (node, path, parent) {
     if (node.type == 'SymbolNode' && node.name == 'x') {
       return new math.expression.node.ConstantNode(2);
     }
@@ -120,12 +122,13 @@ All nodes have the following methods:
   recursive.
   The callback function is a mapping function accepting a node, and returning
   a replacement for the node or the original node. Function `callback` is
-  called as `callback(node: Node, index: string, parent: Node)` for every node
-  in the tree. Example:
+  called as `callback(node: Node, path: string, parent: Node)` for every node
+  in the tree. Parameter `path` is a string containing a relative JSON Path.
+  Example:
 
   ```js
   var node = math.parse('2 + x');
-  node.traverse(function (node, index, parent) {
+  node.traverse(function (node, path, parent) {
     switch (node.type) {
       case 'OperatorNode': console.log(node.type, node.op); break;
       case 'ConstantNode': console.log(node.type, node.value); break;
