@@ -107,7 +107,7 @@ describe('FunctionNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? g : node;
     });
 
-    assert.strictEqual(h, f);
+    assert.notStrictEqual(h, f);
     assert.deepEqual(h.args[0].args[0],  g);
     assert.deepEqual(h.args[0].args[1],  b);
     assert.deepEqual(h.name, 'multiply');
@@ -127,7 +127,7 @@ describe('FunctionNode', function() {
       return node;
     });
 
-    assert.strictEqual(f, d);
+    assert.notStrictEqual(f, d);
     assert.deepEqual(f.name, 'subtract');
   });
 
@@ -152,25 +152,25 @@ describe('FunctionNode', function() {
     var d = new FunctionNode('add', [b, c]);
 
     var count = 0;
-    d.traverse(function (node, index, parent) {
+    d.traverse(function (node, path, parent) {
       count++;
 
       switch(count) {
         case 1:
           assert.strictEqual(node, d);
-          assert.strictEqual(index, null);
+          assert.strictEqual(path, null);
           assert.strictEqual(parent, null);
           break;
 
         case 2:
           assert.strictEqual(node, b);
-          assert.strictEqual(index, 'args.0');
+          assert.strictEqual(path, 'args.0');
           assert.strictEqual(parent, d);
           break;
 
         case 3:
           assert.strictEqual(node, c);
-          assert.strictEqual(index, 'args.1');
+          assert.strictEqual(path, 'args.1');
           assert.strictEqual(parent, d);
           break;
       }
@@ -190,8 +190,9 @@ describe('FunctionNode', function() {
     assert.deepEqual(e, d);
     assert.notStrictEqual(e, d);
     assert.equal(e.name, d.name);
-    assert.notStrictEqual(e.args[0], d.args[0]);
-    assert.notStrictEqual(e.args[1], d.args[1]);
+    assert.notStrictEqual(e.args, d.args);
+    assert.strictEqual(e.args[0], d.args[0]);
+    assert.strictEqual(e.args[1], d.args[1]);
   });
 
   it ('should stringify a FunctionNode', function () {

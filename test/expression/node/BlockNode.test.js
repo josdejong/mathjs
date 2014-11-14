@@ -91,7 +91,7 @@ describe('BlockNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? d : node;
     });
 
-    assert.strictEqual(e, a);
+    assert.notStrictEqual(e, a);
     assert.deepEqual(e.blocks[0].node,  d);
     assert.deepEqual(e.blocks[1].node,  c);
   });
@@ -156,8 +156,11 @@ describe('BlockNode', function() {
     assert(d instanceof BlockNode);
     assert.deepEqual(a, d);
     assert.notStrictEqual(a, d);
+    assert.notStrictEqual(a.blocks, d.blocks);
     assert.notStrictEqual(a.blocks[0], d.blocks[0]);
     assert.notStrictEqual(a.blocks[1], d.blocks[1]);
+    assert.strictEqual(a.blocks[0].node, d.blocks[0].node);
+    assert.strictEqual(a.blocks[1].node, d.blocks[1].node);
   });
 
   it ('should stringify a BlockNode', function () {

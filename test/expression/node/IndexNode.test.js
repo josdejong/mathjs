@@ -143,7 +143,7 @@ describe('IndexNode', function() {
       return node instanceof SymbolNode ? e : node;
     });
 
-    assert.strictEqual(f, n);
+    assert.notStrictEqual(f, n);
     assert.deepEqual(f.object, e);
     assert.deepEqual(f.ranges[0], b);
     assert.deepEqual(f.ranges[1], c);
@@ -160,7 +160,7 @@ describe('IndexNode', function() {
       return node instanceof ConstantNode && node.value == '1' ? e : node;
     });
 
-    assert.strictEqual(f, n);
+    assert.notStrictEqual(f, n);
     assert.deepEqual(f.object, a);
     assert.deepEqual(f.ranges[0], b);
     assert.deepEqual(f.ranges[1], e);
@@ -190,9 +190,10 @@ describe('IndexNode', function() {
     assert(d instanceof IndexNode);
     assert.deepEqual(d, n);
     assert.notStrictEqual(d, n);
-    assert.notStrictEqual(d.object, n.object);
-    assert.notStrictEqual(d.ranges[0], n.ranges[0]);
-    assert.notStrictEqual(d.ranges[1], n.ranges[1]);
+    assert.strictEqual(d.object, n.object);
+    assert.notStrictEqual(d.ranges, n.ranges);
+    assert.strictEqual(d.ranges[0], n.ranges[0]);
+    assert.strictEqual(d.ranges[1], n.ranges[1]);
   });
 
   it ('should stringify an IndexNode', function () {

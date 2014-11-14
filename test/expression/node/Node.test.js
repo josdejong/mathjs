@@ -7,7 +7,10 @@ var Node = require('../../../lib/expression/node/Node');
 describe('Node', function() {
   function MyNode () {}
   MyNode.prototype = new Node();
-  MyNode.prototype._traverse = function () {};
+  MyNode.prototype.forEach = function () {};
+  MyNode.prototype.map = function () {
+    return new MyNode();
+  };
 
   it ('should create a Node', function () {
     var n = new Node();
@@ -40,7 +43,7 @@ describe('Node', function() {
     c = a.transform(function (node) {
       return node;
     });
-    assert.strictEqual(c, a);
+    assert.notStrictEqual(c, a);
   });
 
   it ('should transform a Node using a replacement function', function () {
@@ -53,11 +56,11 @@ describe('Node', function() {
     assert.strictEqual(c, b);
   });
 
-  it ('should clone a Node', function () {
-    var a = new Node();
-    var b = a.clone();
-    assert.deepEqual(a, b);
-    assert.notStrictEqual(a, b);
+  it ('should throw an error when cloning a Node interface', function () {
+    assert.throws(function () {
+      var a = new Node();
+      a.clone();
+    }, /Cannot clone a Node interface/);
   });
 
   it ('should test whether an object is a Node', function () {

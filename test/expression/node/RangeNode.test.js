@@ -69,7 +69,7 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '0' ? e : node;
     });
 
-    assert.strictEqual(f, n);
+    assert.notStrictEqual(f, n);
     assert.deepEqual(f.start,  e);
     assert.deepEqual(f.end,  end);
     assert.deepEqual(f.step,  step);
@@ -86,7 +86,7 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '10' ? e : node;
     });
 
-    assert.strictEqual(f, n);
+    assert.notStrictEqual(f, n);
     assert.deepEqual(f.start,  start);
     assert.deepEqual(f.end,  e);
     assert.deepEqual(f.step,  step);
@@ -103,7 +103,7 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '2' ? e : node;
     });
 
-    assert.strictEqual(f, n);
+    assert.notStrictEqual(f, n);
     assert.deepEqual(f.start, start);
     assert.deepEqual(f.end, end);
     assert.deepEqual(f.step, e);
@@ -119,7 +119,7 @@ describe('RangeNode', function() {
       return node instanceof ConstantNode && node.value == '10' ? e : node;
     });
 
-    assert.strictEqual(f, n);
+    assert.notStrictEqual(f, n);
     assert.deepEqual(f.start, start);
     assert.deepEqual(f.end, e);
   });
@@ -148,9 +148,9 @@ describe('RangeNode', function() {
 
     assert.deepEqual(d, c);
     assert.notStrictEqual(d, c);
-    assert.notStrictEqual(d.start, c.start);
-    assert.notStrictEqual(d.end, c.end);
-    assert.notStrictEqual(d.step, c.step);
+    assert.strictEqual(d.start, c.start);
+    assert.strictEqual(d.end, c.end);
+    assert.strictEqual(d.step, c.step);
   });
 
   it ('should clone a RangeNode without step', function () {
@@ -163,8 +163,8 @@ describe('RangeNode', function() {
     assert(d instanceof RangeNode);
     assert.deepEqual(d, c);
     assert.notStrictEqual(d, c);
-    assert.notStrictEqual(d.start, c.start);
-    assert.notStrictEqual(d.end, c.end);
+    assert.strictEqual(d.start, c.start);
+    assert.strictEqual(d.end, c.end);
     assert.strictEqual(d.step, c.step);
     assert.strictEqual(d.step, null);
   });

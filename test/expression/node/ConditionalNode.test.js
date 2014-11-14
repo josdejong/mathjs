@@ -117,7 +117,7 @@ describe('ConditionalNode', function() {
       return node instanceof ConstantNode && node.value == '1' ? e : node;
     });
 
-    assert.strictEqual(f, n);
+    assert.notStrictEqual(f, n);
     assert.deepEqual(f.condition,  e);
     assert.deepEqual(f.trueExpr,  a);
     assert.deepEqual(f.falseExpr,  b);
@@ -134,7 +134,7 @@ describe('ConditionalNode', function() {
       return node instanceof ConstantNode && node.value == '2' ? e : node;
     });
 
-    assert.strictEqual(f, n);
+    assert.notStrictEqual(f, n);
     assert.deepEqual(f.condition,  condition);
     assert.deepEqual(f.trueExpr,  e);
     assert.deepEqual(f.falseExpr,  b);
@@ -151,7 +151,7 @@ describe('ConditionalNode', function() {
       return node instanceof ConstantNode && node.value == '3' ? e : node;
     });
 
-    assert.strictEqual(f, n);
+    assert.notStrictEqual(f, n);
     assert.deepEqual(f.condition, condition);
     assert.deepEqual(f.trueExpr, a);
     assert.deepEqual(f.falseExpr, e);
@@ -182,9 +182,9 @@ describe('ConditionalNode', function() {
     assert(d instanceof ConditionalNode);
     assert.deepEqual(d, c);
     assert.notStrictEqual(d, c);
-    assert.notStrictEqual(d.condition, c.condition);
-    assert.notStrictEqual(d.trueExpr, c.trueExpr);
-    assert.notStrictEqual(d.falseExpr, c.falseExpr);
+    assert.strictEqual(d.condition, c.condition);
+    assert.strictEqual(d.trueExpr, c.trueExpr);
+    assert.strictEqual(d.falseExpr, c.falseExpr);
   });
 
   it ('should stringify a ConditionalNode', function () {

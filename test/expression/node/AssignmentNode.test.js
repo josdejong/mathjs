@@ -81,7 +81,7 @@ describe('AssignmentNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? e : node;
     });
 
-    assert.strictEqual(f, d);
+    assert.notStrictEqual(f, d);
     assert.deepEqual(f.expr.args[0],  e);
     assert.deepEqual(f.expr.args[1],  b);
   });
@@ -139,7 +139,7 @@ describe('AssignmentNode', function() {
     assert(e instanceof AssignmentNode);
     assert.deepEqual(e, d);
     assert.notStrictEqual(e, d);
-    assert.notStrictEqual(e.expr, d.expr);
+    assert.strictEqual(e.expr, d.expr);
   });
 
   it ('should stringify a AssignmentNode', function () {

@@ -91,7 +91,7 @@ describe('ArrayNode', function() {
       return (node instanceof SymbolNode) && (node.name == 'x') ? d : node;
     });
 
-    assert.strictEqual(e,  c);
+    assert.notStrictEqual(e,  c);
     assert.deepEqual(e.nodes[0],  d);
     assert.deepEqual(e.nodes[1],  b);
   });
@@ -115,25 +115,26 @@ describe('ArrayNode', function() {
     var c = new ArrayNode([a, b]);
 
     var count = 0;
-    c.traverse(function (node, index, parent) {
+    c.traverse(function (node, path, parent) {
+      console.log('traverse', node.toString(), path)
       count++;
 
       switch(count) {
         case 1:
           assert.strictEqual(node, c);
-          assert.strictEqual(index, null);
+          assert.strictEqual(path, null);
           assert.strictEqual(parent, null);
           break;
 
         case 2:
           assert.strictEqual(node, a);
-          assert.strictEqual(index, 'nodes.0');
+          assert.strictEqual(path, 'nodes.0');
           assert.strictEqual(parent, c);
           break;
 
         case 3:
           assert.strictEqual(node, b);
-          assert.strictEqual(index, 'nodes.1');
+          assert.strictEqual(path, 'nodes.1');
           assert.strictEqual(parent, c);
           break;
       }
@@ -152,8 +153,8 @@ describe('ArrayNode', function() {
     assert(d instanceof ArrayNode);
     assert.deepEqual(c, d);
     assert.notStrictEqual(c, d);
-    assert.notStrictEqual(c.nodes[0], d.nodes[0]);
-    assert.notStrictEqual(c.nodes[1], d.nodes[1]);
+    assert.strictEqual(c.nodes[0], d.nodes[0]);
+    assert.strictEqual(c.nodes[1], d.nodes[1]);
   });
 
   it ('should stringify an ArrayNode', function () {
