@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 1.1.0
+## 2014-11-15, version 1.1.0
 
 - Implemented functions `dot` (dot product), `cross` (cross product), and
   `nthRoot`.

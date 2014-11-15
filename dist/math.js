@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 1.0.2-SNAPSHOT
- * @date    2014-11-11
+ * @version 1.1.0
+ * @date    2014-11-15
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -996,10 +996,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	exports.ArgumentsError = __webpack_require__(144);
-	exports.DimensionError = __webpack_require__(145);
-	exports.IndexError = __webpack_require__(146);
-	exports.UnsupportedTypeError = __webpack_require__(147);
+	exports.ArgumentsError = __webpack_require__(143);
+	exports.DimensionError = __webpack_require__(144);
+	exports.IndexError = __webpack_require__(145);
+	exports.UnsupportedTypeError = __webpack_require__(146);
 
 	// TODO: implement an InvalidValueError?
 
@@ -1010,7 +1010,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(143),
+	var util = __webpack_require__(147),
 	    Unit = __webpack_require__(10),
 	    number = util.number,
 
@@ -1454,7 +1454,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(143);
+	var util = __webpack_require__(147);
 
 	var number = util.number;
 	var string = util.string;
@@ -1729,7 +1729,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(143),
+	var util = __webpack_require__(147),
 
 	    Range = __webpack_require__(7),
 
@@ -2004,8 +2004,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(143),
-	    DimensionError = __webpack_require__(145),
+	var util = __webpack_require__(147),
+	    DimensionError = __webpack_require__(144),
 
 	    Index = __webpack_require__(8),
 
@@ -2525,7 +2525,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(143),
+	var util = __webpack_require__(147),
 
 	    number = util.number,
 	    string = util.string,
@@ -3396,7 +3396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(143),
+	var util = __webpack_require__(147),
 	    object = util.object,
 	    string = util.string;
 
@@ -3541,10 +3541,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	// utility methods for arrays and matrices
 	'use strict';
 
-	var util = __webpack_require__(143),
+	var util = __webpack_require__(147),
 
-	    IndexError = __webpack_require__(146),
-	    DimensionError = __webpack_require__(145),
+	    IndexError = __webpack_require__(145),
+	    DimensionError = __webpack_require__(144),
 
 	    Matrix = __webpack_require__(9),
 
@@ -3807,9 +3807,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(143),
+	var util = __webpack_require__(147),
 
-	    ArgumentsError = __webpack_require__(144),
+	    ArgumentsError = __webpack_require__(143),
 
 	    isString = util.string.isString,
 	    isArray = Array.isArray,
@@ -4221,7 +4221,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @private
 	 */
 	function parseBlock () {
-	  var node, block, visible;
+	  var node;
+	  var blocks = [];
+	  var visible;
 
 	  if (token == '') {
 	    // empty expression
@@ -4232,14 +4234,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    node = parseFunctionAssignment();
 	  }
 
+	  // TODO: simplify this loop
 	  while (token == '\n' || token == ';') {
-	    if (!block) {
-	      // initialize the block
-	      block = new BlockNode();
-	      if (node) {
-	        visible = (token != ';');
-	        block.add(node, visible);
-	      }
+	    if (blocks.length == 0 && node) {
+	      visible = (token != ';');
+	      blocks.push({
+	        node: node,
+	        visible: visible
+	      });
 	    }
 
 	    getToken();
@@ -4247,15 +4249,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      node = parseFunctionAssignment();
 
 	      visible = (token != ';');
-	      block.add(node, visible);
+	      blocks.push({
+	        node: node,
+	        visible: visible
+	      });
 	    }
 	  }
 
-	  if (block) {
-	    return block;
+	  if (blocks.length > 0) {
+	    return new BlockNode(blocks);
 	  }
-
-	  return node;
+	  else {
+	    return node;
+	  }
 	}
 
 	/**
@@ -4506,7 +4512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    params.push(node);
 
 	    // parse step and end
-	    while (token == ':') {
+	    while (token == ':' && params.length < 3) {
 	      getTokenSkipNewline();
 
 	      if (token == ')' || token == ']' || token == ',' || token == '') {
@@ -4519,13 +4525,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
-	    // swap step and end
 	    if (params.length == 3) {
-	      var step = params[2];
-	      params[2] = params[1];
-	      params[1] = step;
+	      // params = [start, step, end]
+	      node = new RangeNode(params[0], params[2], params[1]); // start, end, step
 	    }
-	    node = new RangeNode(params);
+	    else { // length == 2
+	      // params = [start, end]
+	      node = new RangeNode(params[0], params[1]); // start, end
+	    }
 	  }
 
 	  return node;
@@ -5461,7 +5468,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var SymbolNode = __webpack_require__(158);
 	var isBoolean = __webpack_require__(162).isBoolean;
 	var argsToArray = __webpack_require__(140).argsToArray;
-	var ArgumentsError = __webpack_require__(144);
+	var ArgumentsError = __webpack_require__(143);
 
 	/**
 	 * Attach a transform function to math.filter
@@ -5974,7 +5981,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 	      _parse = __webpack_require__(14),
 
 	      collection = __webpack_require__(13),
@@ -6046,7 +6053,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 	      _parse = __webpack_require__(14),
 
 	      collection = __webpack_require__(13),
@@ -6225,19 +6232,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @throws {Error}
 	   */
 	  math.parse = function parse (expr, options) {
-	    var node = _parse.apply(_parse, arguments);
-
-	    var _math = math;
-	    var _compile = math.type.Node.prototype.compile;
-	    var compile = function (math) {
-	      return _compile(math || _math);
-	    };
-
-	    node.traverse(function (node) {
-	      node.compile = compile;
-	    });
-
-	    return node;
+	    return _parse.apply(_parse, arguments);
 	  }
 
 	};
@@ -6250,7 +6245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6323,7 +6318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6485,7 +6480,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6564,7 +6559,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6636,7 +6631,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function(math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6861,7 +6856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 	      collection = __webpack_require__(13);
 
 	  /**
@@ -6912,7 +6907,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 	      collection = __webpack_require__(13);
 
 	  /**
@@ -6960,7 +6955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7041,7 +7036,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7119,7 +7114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7197,7 +7192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -7344,7 +7339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -7506,7 +7501,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7609,7 +7604,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7697,7 +7692,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -7836,7 +7831,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function(math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -8267,7 +8262,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	    array = __webpack_require__(140),
 	          
@@ -8455,7 +8450,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143);
+	  var util = __webpack_require__(147);
 
 	  var BigNumber = math.type.BigNumber;
 	  var collection = __webpack_require__(13);
@@ -8654,7 +8649,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -8838,7 +8833,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -8978,7 +8973,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9058,7 +9053,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9164,7 +9159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9238,7 +9233,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9398,7 +9393,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9487,7 +9482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9567,7 +9562,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      Matrix = __webpack_require__(9),
 	      BigNumber = math.type.BigNumber,
@@ -9749,7 +9744,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9964,7 +9959,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10128,7 +10123,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10255,7 +10250,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10383,7 +10378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10510,7 +10505,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10637,7 +10632,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10800,7 +10795,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10877,7 +10872,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10952,7 +10947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -11029,7 +11024,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -11105,7 +11100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      // take the BigNumber instance the provided math.js instance
 	      BigNumber = math.type.BigNumber,
@@ -11174,7 +11169,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -11268,7 +11263,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -11401,7 +11396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Index = __webpack_require__(8);
@@ -11475,7 +11470,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 	      Matrix = __webpack_require__(9);
 
 	  /**
@@ -11520,7 +11515,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143);
+	  var util = __webpack_require__(147);
 
 	  var BigNumber = math.type.BigNumber;
 	  var Unit = math.type.Unit;
@@ -11724,7 +11719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      collection = __webpack_require__(13),
 
@@ -11791,7 +11786,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Unit = __webpack_require__(10),
@@ -11878,7 +11873,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = __webpack_require__(142),
 	      Matrix = __webpack_require__(9),
@@ -12105,7 +12100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      Matrix = __webpack_require__(9),
 
@@ -12266,7 +12261,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -12464,7 +12459,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -12567,7 +12562,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143);
+	  var util = __webpack_require__(147);
 
 	  var Matrix = __webpack_require__(9);
 
@@ -12620,7 +12615,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 	      string = util.string,
 
 	      Matrix = __webpack_require__(9);
@@ -12820,7 +12815,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -12897,7 +12892,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -13223,7 +13218,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -13358,7 +13353,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -13431,7 +13426,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      Matrix = __webpack_require__(9),
 
@@ -13495,7 +13490,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      Matrix = __webpack_require__(9),
 	      Index = __webpack_require__(8),
@@ -13712,7 +13707,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      Matrix = __webpack_require__(9),
 
@@ -13795,7 +13790,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -13871,7 +13866,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -14097,7 +14092,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 
@@ -14210,7 +14205,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -15087,7 +15082,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15181,7 +15176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15273,7 +15268,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15360,7 +15355,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15444,7 +15439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15533,7 +15528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15615,7 +15610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15701,7 +15696,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15791,7 +15786,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15878,7 +15873,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15969,7 +15964,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16056,7 +16051,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16143,7 +16138,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16231,7 +16226,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16315,7 +16310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16404,7 +16399,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16495,7 +16490,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      Unit = __webpack_require__(10),
 	      collection = __webpack_require__(13),
@@ -16557,7 +16552,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 	      object = util.object;
 
 	  /**
@@ -16675,7 +16670,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 	      string = util.string;
 
 	  /**
@@ -16760,7 +16755,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      Complex = __webpack_require__(6),
 	      Unit = __webpack_require__(10),
@@ -16978,7 +16973,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(143),
+	  var util = __webpack_require__(147),
 
 	      isString = util.string.isString;
 
@@ -17494,8 +17489,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    object = __webpack_require__(3),
 	    types = __webpack_require__(183),
 
-	    DimensionError = __webpack_require__(145),
-	    IndexError = __webpack_require__(146),
+	    DimensionError = __webpack_require__(144),
+	    IndexError = __webpack_require__(145),
 
 	    isArray = Array.isArray;
 
@@ -17869,7 +17864,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = '1.0.2-SNAPSHOT';
+	module.exports = '1.1.0';
 	// Note: This file is automatically generated when building math.js.
 	// Changes made in this file will be overwritten.
 
@@ -21869,21 +21864,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	exports.array = __webpack_require__(140);
-	exports['boolean'] = __webpack_require__(162);
-	exports.number = __webpack_require__(4);
-	exports.bignumber = __webpack_require__(139);
-	exports.object = __webpack_require__(3);
-	exports.string = __webpack_require__(163);
-	exports.types = __webpack_require__(183);
-
-
-/***/ },
-/* 144 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
 	/**
 	 * Create a syntax error with the message:
 	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
@@ -21918,7 +21898,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 145 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21958,7 +21938,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 146 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22009,7 +21989,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 147 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22052,6 +22032,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 147 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.array = __webpack_require__(140);
+	exports['boolean'] = __webpack_require__(162);
+	exports.number = __webpack_require__(4);
+	exports.bignumber = __webpack_require__(139);
+	exports.object = __webpack_require__(3);
+	exports.string = __webpack_require__(163);
+	exports.types = __webpack_require__(183);
+
+
+/***/ },
 /* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -22061,7 +22056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    object = __webpack_require__(3),
 	    string = __webpack_require__(163),
 	    collection = __webpack_require__(13),
-	    util = __webpack_require__(143),
+	    util = __webpack_require__(147),
 
 	    isArray = Array.isArray,
 	    isNode = Node.isNode;
@@ -22109,26 +22104,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Recursively execute a callback for each of the child nodes of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	ArrayNode.prototype._traverse = function (callback) {
+	ArrayNode.prototype.forEach = function (callback) {
 	  for (var i = 0; i < this.nodes.length; i++) {
 	    var node = this.nodes[i];
-	    callback(node, 'nodes.' + i, this);
-	    node._traverse(callback);
+	    callback(node, 'nodes[' + i + ']', this);
 	  }
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a new ArrayNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {ArrayNode} Returns a transformed copy of the node
+	 */
+	ArrayNode.prototype.map = function (callback) {
+	  var nodes = [];
+	  for (var i = 0; i < this.nodes.length; i++) {
+	    nodes[i] = this._ifNode(callback(this.nodes[i], 'nodes[' + i + ']', this));
+	  }
+	  return new ArrayNode(nodes);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
 	 * @return {ArrayNode}
 	 */
 	ArrayNode.prototype.clone = function() {
-	  return new ArrayNode(this.nodes.map(function(node) {
-	    return node.clone();
-	  }))
+	  return new ArrayNode(this.nodes.slice(0))
 	};
 
 	/**
@@ -22221,21 +22226,29 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/**
-	 * Recursively execute a callback for each of the child nodes of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	AssignmentNode.prototype._traverse = function (callback) {
+	AssignmentNode.prototype.forEach = function (callback) {
 	  callback(this.expr, 'expr', this);
-	  this.expr._traverse(callback);
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a new AssignmentNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {AssignmentNode} Returns a transformed copy of the node
+	 */
+	AssignmentNode.prototype.map = function (callback) {
+	  return new AssignmentNode(this.name, this._ifNode(callback(this.expr, 'expr', this)));
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
 	 * @return {AssignmentNode}
 	 */
 	AssignmentNode.prototype.clone = function() {
-	  return new AssignmentNode(this.name, this.expr.clone());
+	  return new AssignmentNode(this.name, this.expr);
 	};
 
 	/**
@@ -22275,38 +22288,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @constructor BlockNode
 	 * @extends {Node}
 	 * Holds a set with blocks
+	 * @param {Array.<{node: Node} | {node: Node, visible: boolean}>} blocks
+	 *            An array with blocks, where a block is constructed as an Object
+	 *            with properties block, which is a Node, and visible, which is
+	 *            a boolean. The property visible is optional and is true by default
 	 */
-	function BlockNode() {
+	function BlockNode(blocks) {
 	  if (!(this instanceof BlockNode)) {
 	    throw new SyntaxError('Constructor must be called with the new operator');
 	  }
 
-	  this.blocks = [];
+	  // validate input, copy blocks
+	  if (!Array.isArray(blocks)) throw new Error('Array expected');
+	  this.blocks = blocks.map(function (block) {
+	    var node    = block && block.node;
+	    var visible = block && block.visible !== undefined ? block.visible : true;
+
+	    if (!(node instanceof Node))  throw new TypeError('Property "node" must be a Node');
+	    if (!isBoolean(visible))      throw new TypeError('Property "visible" must be a boolean');
+
+	    return {
+	      node: node,
+	      visible: visible
+	    }
+	  });
 	}
 
 	BlockNode.prototype = new Node();
 
 	BlockNode.prototype.type = 'BlockNode';
-
-	/**
-	 * Add an expression. If visible = false, the expression will be evaluated
-	 * but not returned in the output.
-	 * @param {Node} expr
-	 * @param {Boolean} [visible=true]
-	 */
-	BlockNode.prototype.add = function (expr, visible) {
-	  if (visible === undefined) visible = true;
-
-	  // validate input
-	  if (!(expr instanceof Node))  throw new TypeError('Node expected for parameter "expr"');
-	  if (!isBoolean(visible))      throw new TypeError('Boolean expected for parameter "visible"');
-
-	  var index = this.blocks.length;
-	  this.blocks[index] = {
-	    node: expr,
-	    visible: visible
-	  };
-	};
 
 	/**
 	 * Compile the node to javascript code
@@ -22336,33 +22346,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Recursively execute a callback for each of the child blocks of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * Execute a callback for each of the child blocks of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	BlockNode.prototype._traverse = function (callback) {
+	BlockNode.prototype.forEach = function (callback) {
 	  for (var i = 0; i < this.blocks.length; i++) {
-	    var node = this.blocks[i].node;
-	    callback(node, 'blocks.' + i + '.node', this);
-	    node._traverse(callback);
+	    callback(this.blocks[i].node, 'blocks[' + i + '].node', this);
 	  }
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a new BlockNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {BlockNode} Returns a transformed copy of the node
+	 */
+	BlockNode.prototype.map = function (callback) {
+	  var blocks = [];
+	  for (var i = 0; i < this.blocks.length; i++) {
+	    var block = this.blocks[i];
+	    var node = this._ifNode(callback(block.node, 'blocks[' + i + '].node', this));
+	    blocks[i] = {
+	      node: node,
+	      visible: block.visible
+	    };
+	  }
+	  return new BlockNode(blocks);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
 	 * @return {BlockNode}
 	 */
 	BlockNode.prototype.clone = function() {
-	  var clone = new BlockNode();
-
-	  this.blocks.forEach(function(param) {
-	    clone.blocks.push({
-	      node: param.node.clone(),
-	      visible: param.visible
-	    })
+	  var blocks = this.blocks.map(function(block) {
+	    return {
+	      node: block.node,
+	      visible: block.visible
+	    };
 	  });
 
-	  return clone;
+	  return new BlockNode(blocks);
 	};
 
 	/**
@@ -22400,7 +22424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var BigNumber = __webpack_require__(142);
 	var Complex = __webpack_require__(6);
 	var Unit = __webpack_require__(10);
-	var util = __webpack_require__(143);
+	var util = __webpack_require__(147);
 	var isString = util.string.isString;
 	var isNumber = util.number.isNumber;
 	var isBoolean = util['boolean'].isBoolean;
@@ -22478,27 +22502,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Recursively execute a callback for each of the child nodes of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	ConditionalNode.prototype._traverse = function (callback) {
+	ConditionalNode.prototype.forEach = function (callback) {
 	  callback(this.condition, 'condition', this);
-	  this.condition._traverse(callback);
-
 	  callback(this.trueExpr, 'trueExpr', this);
-	  this.trueExpr._traverse(callback);
-
 	  callback(this.falseExpr, 'falseExpr', this);
-	  this.falseExpr._traverse(callback);
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a new ConditionalNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {ConditionalNode} Returns a transformed copy of the node
+	 */
+	ConditionalNode.prototype.map = function (callback) {
+	  return new ConditionalNode(
+	      this._ifNode(callback(this.condition, 'condition', this)),
+	      this._ifNode(callback(this.trueExpr, 'trueExpr', this)),
+	      this._ifNode(callback(this.falseExpr, 'falseExpr', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
 	 * @return {ConditionalNode}
 	 */
 	ConditionalNode.prototype.clone = function() {
-	  return new ConditionalNode(this.condition.clone(), this.trueExpr.clone(), this.falseExpr.clone());
+	  return new ConditionalNode(this.condition, this.trueExpr, this.falseExpr);
 	};
 
 	/**
@@ -22656,7 +22688,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	ConstantNode.prototype.forEach = function (callback) {
+	  // nothing to do, we don't have childs
+	};
+
+
+	/**
+	 * Create a new ConstantNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
+	 * @returns {ConstantNode} Returns a clone of the node
+	 */
+	ConstantNode.prototype.map = function (callback) {
+	  return this.clone();
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
 	 * @return {ConstantNode}
 	 */
 	ConstantNode.prototype.clone = function() {
@@ -22774,21 +22825,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Recursively execute a callback for each of the child nodes of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	FunctionAssignmentNode.prototype._traverse = function (callback) {
+	FunctionAssignmentNode.prototype.forEach = function (callback) {
 	  callback(this.expr, 'expr', this);
-	  this.expr._traverse(callback);
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a new FunctionAssignmentNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {FunctionAssignmentNode} Returns a transformed copy of the node
+	 */
+	FunctionAssignmentNode.prototype.map = function (callback) {
+	  var expr = this._ifNode(callback(this.expr, 'expr', this));
+
+	  return new FunctionAssignmentNode(this.name, this.params.slice(0), expr);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
 	 * @return {FunctionAssignmentNode}
 	 */
 	FunctionAssignmentNode.prototype.clone = function() {
-	  return new FunctionAssignmentNode(this.name, this.params.concat(), this.expr.clone());
+	  return new FunctionAssignmentNode(this.name, this.params.slice(0), this.expr);
 	};
 
 	/**
@@ -22972,21 +23033,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Recursively execute a callback for each of the child nodes of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	IndexNode.prototype._traverse = function (callback) {
+	IndexNode.prototype.forEach = function (callback) {
 	  // object
 	  callback(this.object, 'object', this);
-	  this.object._traverse(callback);
 
 	  // ranges
 	  for (var i = 0; i < this.ranges.length; i++) {
-	    var range = this.ranges[i];
-	    callback(range, 'ranges.' + i, this);
-	    range._traverse(callback);
+	    callback(this.ranges[i], 'ranges[' + i + ']', this);
 	  }
+	};
+
+	/**
+	 * Create a new IndexNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {IndexNode} Returns a transformed copy of the node
+	 */
+	IndexNode.prototype.map = function (callback) {
+	  var object = this._ifNode(callback(this.object, 'object', this));
+
+	  var ranges = [];
+	  for (var i = 0; i < this.ranges.length; i++) {
+	    ranges[i] = this._ifNode(callback(this.ranges[i], 'ranges[' + i + ']', this));
+	  }
+
+	  return new IndexNode(object, ranges);
 	};
 
 	/**
@@ -22998,13 +23072,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a clone of this node, a shallow copy
 	 * @return {IndexNode}
 	 */
 	IndexNode.prototype.clone = function() {
-	  return new IndexNode(this.object.clone(), this.ranges.map(function (range) {
-	    return range.clone();
-	  }));
+	  return new IndexNode(this.object, this.ranges.slice(0));
 	};
 
 	/**
@@ -23075,33 +23147,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new Error('Function ' + this.fn + ' missing in provided namespace "math"');
 	  }
 
-	  var args = this.args.map(function (param) {
-	    return param._compile(defs);
+	  var args = this.args.map(function (arg) {
+	    return arg._compile(defs);
 	  });
 	  return 'math.' + this.fn + '(' + args.join(', ') + ')';
 	};
 
 	/**
-	 * Recursively execute a callback for each of the child nodes of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	OperatorNode.prototype._traverse = function (callback) {
+	OperatorNode.prototype.forEach = function (callback) {
 	  for (var i = 0; i < this.args.length; i++) {
-	    var param = this.args[i];
-	    callback(param, 'args.' + i, this);
-	    param._traverse(callback);
+	    callback(this.args[i], 'args[' + i + ']', this);
 	  }
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a new OperatorNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {OperatorNode} Returns a transformed copy of the node
+	 */
+	OperatorNode.prototype.map = function (callback) {
+	  var args = [];
+	  for (var i = 0; i < this.args.length; i++) {
+	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
+	  }
+	  return new OperatorNode(this.op, this.fn, args);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
 	 * @return {OperatorNode}
 	 */
 	OperatorNode.prototype.clone = function() {
-	  return new OperatorNode(this.op, this.fn, this.args.map(function (param) {
-	    return param.clone();
-	  }));
+	  return new OperatorNode(this.op, this.fn, this.args.slice(0));
 	};
 
 	/**
@@ -23278,8 +23359,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var isRaw = (typeof fn === 'function') && (fn.rawArgs == true);
 
 	  // compile the parameters
-	  var args = this.args.map(function (param) {
-	    return param._compile(defs);
+	  var args = this.args.map(function (arg) {
+	    return arg._compile(defs);
 	  });
 
 	  if (isRaw) {
@@ -23303,27 +23384,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Recursively execute a callback for each of the child nodes of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	FunctionNode.prototype._traverse = function (callback) {
-	  // args
+	FunctionNode.prototype.forEach = function (callback) {
 	  for (var i = 0; i < this.args.length; i++) {
-	    var param = this.args[i];
-	    callback(param, 'args.' + i, this);
-	    param._traverse(callback);
+	    callback(this.args[i], 'args[' + i + ']', this);
 	  }
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a new FunctionNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {FunctionNode} Returns a transformed copy of the node
+	 */
+	FunctionNode.prototype.map = function (callback) {
+	  var args = [];
+	  for (var i = 0; i < this.args.length; i++) {
+	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
+	  }
+	  return new FunctionNode(this.name, args);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
 	 * @return {FunctionNode}
 	 */
 	FunctionNode.prototype.clone = function() {
-	  return new FunctionNode(this.name, this.args.map(function (param) {
-	    return param.clone();
-	  }));
+	  return new FunctionNode(this.name, this.args.slice(0));
 	};
 
 	/**
@@ -23360,23 +23449,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @constructor RangeNode
 	 * @extends {Node}
 	 * create a range
-	 * @param {Node[]} params           Array [start, end] or [start, end, step]
+	 * @param {Node} start  included lower-bound
+	 * @param {Node} end    included lower-bound
+	 * @param {Node} [step] optional step
 	 */
-	function RangeNode (params) {
+	function RangeNode (start, end, step) {
 	  if (!(this instanceof RangeNode)) {
 	    throw new SyntaxError('Constructor must be called with the new operator');
 	  }
 
 	  // validate inputs
-	  if (!Array.isArray(params) ||
-	      (params.length != 2 && params.length != 3) ||
-	      !params.every(isNode)) {
-	    throw new TypeError('Expected an Array containing 2 or 3 Nodes as parameter "params"');
-	  }
+	  if (!isNode(start)) throw new TypeError('Node expected');
+	  if (!isNode(end)) throw new TypeError('Node expected');
+	  if (step && !isNode(step)) throw new TypeError('Node expected');
+	  if (arguments.length > 3) throw new Error('Too many arguments');
 
-	  this.start = params[0];  // included lower-bound
-	  this.end   = params[1];  // included upper-bound
-	  this.step  = params[2];  // optional step
+	  this.start = start;         // included lower-bound
+	  this.end   = end;           // included upper-bound
+	  this.step  = step || null;  // optional step
 	}
 
 	RangeNode.prototype = new Node();
@@ -23400,33 +23490,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Recursively execute a callback for each of the child nodes of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	RangeNode.prototype._traverse = function (callback) {
+	RangeNode.prototype.forEach = function (callback) {
 	  callback(this.start, 'start', this);
-	  this.start._traverse(callback);
-
+	  callback(this.end, 'end', this);
 	  if (this.step) {
 	    callback(this.step, 'step', this);
-	    this.step._traverse(callback);
 	  }
-
-	  callback(this.end, 'end', this);
-	  this.end._traverse(callback);
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a new RangeNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {RangeNode} Returns a transformed copy of the node
+	 */
+	RangeNode.prototype.map = function (callback) {
+	  return new RangeNode(
+	      this._ifNode(callback(this.start, 'start', this)),
+	      this._ifNode(callback(this.end, 'end', this)),
+	      this.step && this._ifNode(callback(this.step, 'step', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
 	 * @return {RangeNode}
 	 */
 	RangeNode.prototype.clone = function() {
-	  var params = [this.start.clone(), this.end.clone()];
-	  if (this.step) {
-	    params.push(this.step.clone());
-	  }
-	  return new RangeNode(params);
+	  return new RangeNode(this.start, this.end, this.step && this.step);
 	};
 
 	/**
@@ -23522,6 +23616,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	SymbolNode.prototype.forEach = function (callback) {
+	  // nothing to do, we don't have childs
+	};
+
+	/**
+	 * Create a new SymbolNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
+	 * @returns {SymbolNode} Returns a clone of the node
+	 */
+	SymbolNode.prototype.map = function (callback) {
+	  return this.clone();
+	};
+
+	/**
 	 * Throws an error 'Undefined symbol {name}'
 	 * @param {String} name
 	 */
@@ -23530,7 +23642,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * Create a clone of this node
+	 * Create a clone of this node, a shallow copy
 	 * @return {SymbolNode}
 	 */
 	SymbolNode.prototype.clone = function() {
@@ -23609,24 +23721,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Recursively execute a callback for each of the child nodes of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	UpdateNode.prototype._traverse = function (callback) {
+	UpdateNode.prototype.forEach = function (callback) {
 	  callback(this.index, 'index', this);
-	  this.index._traverse(callback);
-
 	  callback(this.expr, 'expr', this);
-	  this.expr._traverse(callback);
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a new UpdateNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {UpdateNode} Returns a transformed copy of the node
+	 */
+	UpdateNode.prototype.map = function (callback) {
+	  return new UpdateNode(
+	      this._ifNode(callback(this.index, 'index', this)),
+	      this._ifNode(callback(this.expr, 'expr', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
 	 * @return {UpdateNode}
 	 */
 	UpdateNode.prototype.clone = function() {
-	  return new UpdateNode(this.index.clone(), this.expr.clone());
+	  return new UpdateNode(this.index, this.expr);
 	};
 
 	/**
@@ -23725,42 +23846,71 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @private
 	 */
 	Node.prototype._compile = function (defs) {
+	  // must be implemented by each of the Node implementations
 	  throw new Error('Cannot compile a Node interface');
 	};
 
 	/**
 	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(Node, string, Node)} callback
-	 * @private
+	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	Node.prototype._traverse = function (callback) {
-	  // must be implemented by each of the Node implementations having child nodes
+	Node.prototype.forEach = function (callback) {
+	  // must be implemented by each of the Node implementations
+	  throw new Error('Cannot run forEach on a Node interface');
+	};
+
+	/**
+	 * Create a new Node having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {OperatorNode} Returns a transformed copy of the node
+	 */
+	Node.prototype.map = function (callback) {
+	  // must be implemented by each of the Node implementations
+	  throw new Error('Cannot run map on a Node interface');
+	};
+
+	/**
+	 * Validate whether an object is a Node, for use with map
+	 * @param {Node} node
+	 * @returns {Node} Returns the input if it's a node, else throws an Error
+	 * @protected
+	 */
+	Node.prototype._ifNode = function (node) {
+	  if (!(node instanceof Node)) {
+	    throw new TypeError('Callback function must return a Node');
+	  }
+
+	  return node;
 	};
 
 	/**
 	 * Recursively traverse all nodes in a node tree. Executes given callback for
-	 * this node and each of its child nodes. Similar to Array.forEach, except
-	 * recursive.
-	 * @param {function(Node, string, Node)} callback
+	 * this node and each of its child nodes.
+	 * @param {function(node: Node, path: string, parent: Node)} callback
 	 *          A callback called for every node in the node tree.
-	 *          Signature: callback(node: Node, index: string, parent: Node) : Node
 	 */
 	Node.prototype.traverse = function (callback) {
 	  // execute callback for itself
 	  callback(this, null, null);
 
-	  // traverse over all children
-	  this._traverse(callback);
+	  // recursively traverse over all childs of a node
+	  function _traverse (node, callback) {
+	    node.forEach(function(child, path, parent) {
+	      callback(child, path, parent);
+	      _traverse(child, callback);
+	    });
+	  }
+	  _traverse(this, callback);
 	};
 
 	/**
-	 * Transform a node tree via a transform function. Similar to Array.map,
-	 * but recursively executed on all nodes in the node tree.
+	 * Recursively transform a node tree via a transform function.
 	 *
 	 * For example, to replace all nodes of type SymbolNode having name 'x' with a
 	 * ConstantNode with value 2:
 	 *
-	 *     var res = Node.transform(function (node) {
+	 *     var res = Node.transform(function (node, path, parent) {
 	 *       if (node instanceof SymbolNode) && (node.name == 'x')) {
 	 *         return new ConstantNode(2);
 	 *       }
@@ -23769,38 +23919,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *       }
 	 *     });
 	 *
-	 * @param {function(Node, string, Node)} callback
+	 * @param {function(node: Node, path: string, parent: Node) : Node} callback
 	 *          A mapping function accepting a node, and returning
 	 *          a replacement for the node or the original node.
 	 *          Signature: callback(node: Node, index: string, parent: Node) : Node
 	 * @return {Node} Returns the original node or its replacement
 	 */
 	Node.prototype.transform = function (callback) {
-	  var clone = this.clone();
-
 	  // check itself
-	  var res = callback(clone, null, null);
-
-	  if (res === clone) {
-	    // recurse over the child nodes
-	    res._traverse(function (node, index, parent) {
-	      var replacement = callback(node, index, parent);
-	      if (index.indexOf('.') !== -1) {
-	        // traverse path
-	        var props = index.split('.');
-	        var obj = parent;
-	        while (props.length > 1) {
-	          obj = obj[props.shift()];
-	        }
-	        obj[props.shift()] = replacement;
-	      }
-	      else {
-	        parent[index] = replacement;
-	      }
-	    });
+	  var replacement = callback(this, null, null);
+	  if (replacement !== this) {
+	    return replacement;
 	  }
 
-	  return res;
+	  // traverse over all childs
+	  function _transform (node, callback) {
+	    return node.map(function(child, path, parent) {
+	      var replacement = callback(child, path, parent);
+	      return (replacement !== child) ? replacement : _transform(child, callback);
+	    });
+	  }
+	  return _transform(this, callback);
 	};
 
 	/**
@@ -23811,16 +23950,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *       return (node instanceof SymbolNode) && (node.name == 'x');
 	 *     });
 	 *
-	 * @param {function} test       A test function returning true when the node
-	 *                              matches, and false otherwise. The function
-	 *                              is called as filter(node: Node).
+	 * @param {function(node: Node, path: string, parent: Node) : Node} callback
+	 *            A test function returning true when a node matches, and false
+	 *            otherwise. Function signature:
+	 *            callback(node: Node, index: string, parent: Node) : boolean
 	 * @return {Node[]} nodes       An array with nodes matching given filter criteria
 	 */
-	Node.prototype.filter = function (test) {
+	Node.prototype.filter = function (callback) {
 	  var nodes = [];
 
-	  this.traverse(function (node) {
-	    if (test(node)) {
+	  this.traverse(function (node, path, parent) {
+	    if (callback(node, path, parent)) {
 	      nodes.push(node);
 	    }
 	  });
@@ -23839,11 +23979,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Create a clone of this node
+	 * Create a clone of this node, a shallow copy
 	 * @return {Node}
 	 */
 	Node.prototype.clone = function() {
-	  return new Node();
+	  // must be implemented by each of the Node implementations
+	  throw new Error('Cannot clone a Node interface');
 	};
 
 	/**
@@ -23916,8 +24057,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var DimensionError = __webpack_require__(145);
-	var IndexError = __webpack_require__(146);
+	var DimensionError = __webpack_require__(144);
+	var IndexError = __webpack_require__(145);
 
 	/**
 	 * Transform zero-based indices to one-based indices in errors
