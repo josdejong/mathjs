@@ -182,6 +182,17 @@ describe('IndexNode', function() {
     assert.deepEqual(f.ranges[1], c);
   });
 
+  it ('should throw an error when the map callback does not return a node', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var n = new IndexNode(a, [b, c]);
+
+    assert.throws(function () {
+      n.map(function () {});
+    }, /Callback function must return a Node/)
+  });
+
   it ('should transform an IndexNodes object', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);

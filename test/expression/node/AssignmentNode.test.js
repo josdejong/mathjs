@@ -111,6 +111,15 @@ describe('AssignmentNode', function() {
     assert.strictEqual(f.expr,  e);
   });
 
+  it ('should throw an error when the map callback does not return a node', function () {
+    var x = new SymbolNode('x');
+    var d = new AssignmentNode('a', x);
+
+    assert.throws(function () {
+      d.map(function () {});
+    }, /Callback function must return a Node/)
+  });
+
   it ('should transform an AssignmentNodes (nested) parameters', function () {
     // a = x + 2
     var a = new SymbolNode('x');

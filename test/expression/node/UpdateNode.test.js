@@ -205,6 +205,20 @@ describe('UpdateNode', function() {
     assert.deepEqual(f.expr, v);
   });
 
+  it ('should throw an error when the map callback does not return a node', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
+    var b = new ConstantNode(2);
+    var c = new SymbolNode('x');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(3);
+    var n = new UpdateNode(i, v);
+
+    assert.throws(function () {
+      n.map(function () {});
+    }, /Callback function must return a Node/)
+  });
+
   it ('should transform an UpdateNodes (nested) parameters', function () {
     // A[1, x] = 3
     var a = new SymbolNode('A');

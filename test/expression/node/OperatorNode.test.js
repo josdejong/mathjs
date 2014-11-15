@@ -116,6 +116,16 @@ describe('OperatorNode', function() {
     assert.deepEqual(g.args[1],  f);
   });
 
+  it ('should throw an error when the map callback does not return a node', function () {
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('^', 'pow', [a, b]);
+
+    assert.throws(function () {
+      c.map(function () {});
+    }, /Callback function must return a Node/)
+  });
+
   it ('should transform an OperatorNodes parameters', function () {
     // x^2-x
     var a = new SymbolNode('x');

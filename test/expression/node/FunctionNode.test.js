@@ -148,6 +148,15 @@ describe('FunctionNode', function() {
     assert.strictEqual(h.args[1],  g);
   });
 
+  it ('should throw an error when the map callback does not return a node', function () {
+    var b = new ConstantNode(2);
+    var f = new FunctionNode('factorial', [b]);
+
+    assert.throws(function () {
+      f.map(function () {});
+    }, /Callback function must return a Node/)
+  });
+
   it ('should transform a FunctionNodes (nested) parameters', function () {
     // multiply(x + 2, x)
     var a = new SymbolNode('x');

@@ -136,6 +136,20 @@ describe('BlockNode', function() {
     assert.strictEqual(e.blocks[1].node.args[1], x);
   });
 
+  it ('should throw an error when the map callback does not return a node', function () {
+    var x = new SymbolNode('x');
+    var two = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [two, x]);
+    var a = new BlockNode([
+      {node: x},
+      {node: c}
+    ]);
+
+    assert.throws(function () {
+      a.map(function () {});
+    }, /Callback function must return a Node/)
+  });
+
   it ('should transform a BlockNodes parameters', function () {
     // [x, 2]
     var b = new SymbolNode('x');

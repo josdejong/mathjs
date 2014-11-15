@@ -108,6 +108,17 @@ describe('RangeNode', function() {
     assert.deepEqual(f.step,  step);
   });
 
+  it ('should throw an error when the map callback does not return a node', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
+    var n = new RangeNode(start, end, step);
+
+    assert.throws(function () {
+      n.map(function () {});
+    }, /Callback function must return a Node/)
+  });
+
   it ('should transform a RangeNodes start', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);

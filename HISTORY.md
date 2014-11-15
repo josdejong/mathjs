@@ -5,19 +5,20 @@
 
 - Implemented functions `dot` (dot product), `cross` (cross product), and
   `nthRoot`.
-- Opened up the API of nodes. Documented the API.
-- Implemented recursive functions `clone`, `map`, `forEach`, `traverse`,
-  `transform`, and `filter` for expression trees.
-- Parameter `index` in the callbacks of `map` and `forEach` are now cloned
-  for every callback.
-- Some internal refactoring inside nodes to make the API consistent:
-  - Renamed `params` to `args` and vice versa to make things consistent.
-  - Renamed `Block.nodes` to `Block.blocks`.
-  - `FunctionNode` now has a `name: string` instead of a `symbol: SymbolNode`.
-  - Changed constructor of `RangeNode` to
-    `new RangeNode(start: Node, end: Node [, step: Node])`.
-  - Nodes for a `BlockNode` must now be passed via the constructor instead
-    of via a function `add`.
+- Officially opened up the API of expression trees:
+  - Documented the API.
+  - Implemented recursive functions `clone`, `map`, `forEach`, `traverse`,
+    `transform`, and `filter` for expression trees.
+  - Parameter `index` in the callbacks of `map` and `forEach` are now cloned
+    for every callback.
+  - Some internal refactoring inside nodes to make the API consistent:
+    - Renamed `params` to `args` and vice versa to make things consistent.
+    - Renamed `Block.nodes` to `Block.blocks`.
+    - `FunctionNode` now has a `name: string` instead of a `symbol: SymbolNode`.
+    - Changed constructor of `RangeNode` to
+      `new RangeNode(start: Node, end: Node [, step: Node])`.
+    - Nodes for a `BlockNode` must now be passed via the constructor instead
+      of via a function `add`.
 - Fixed `2e` giving a syntax error instead of being parsed as `2 * e`.
 
 

@@ -75,7 +75,6 @@ describe('FunctionAssignmentNode', function() {
   });
 
   it ('should run forEach on a FunctionAssignmentNode', function () {
-    // f(x) = 2 + x
     var a = new ConstantNode(2);
     var n = new FunctionAssignmentNode('f', ['x'], a);
 
@@ -93,7 +92,6 @@ describe('FunctionAssignmentNode', function() {
   });
 
   it ('should map a FunctionAssignmentNode', function () {
-    // f(x) = 2 + x
     var a = new ConstantNode(2);
     var n = new FunctionAssignmentNode('f', ['x'], a);
 
@@ -114,6 +112,15 @@ describe('FunctionAssignmentNode', function() {
 
     assert.notStrictEqual(f, n);
     assert.deepEqual(f.expr, a);
+  });
+
+  it ('should throw an error when the map callback does not return a node', function () {
+    var a = new ConstantNode(2);
+    var n = new FunctionAssignmentNode('f', ['x'], a);
+
+    assert.throws(function () {
+      n.map(function () {});
+    }, /Callback function must return a Node/)
   });
 
   it ('should transform a FunctionAssignmentNodes (nested) parameters', function () {

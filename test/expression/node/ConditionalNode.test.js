@@ -156,6 +156,17 @@ describe('ConditionalNode', function() {
     assert.strictEqual(f.falseExpr,  b);
   });
 
+  it ('should throw an error when the map callback does not return a node', function () {
+    var condition = new ConstantNode(1);
+    var a = new ConstantNode(2);
+    var b = new ConstantNode(3);
+    var n = new ConditionalNode(condition, a, b);
+
+    assert.throws(function () {
+      n.map(function () {});
+    }, /Callback function must return a Node/)
+  });
+
   it ('should transform a ConditionalNodes condition', function () {
     var condition = new ConstantNode(1);
     var a = new ConstantNode(2);

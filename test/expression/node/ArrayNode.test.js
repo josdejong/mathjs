@@ -128,6 +128,16 @@ describe('ArrayNode', function() {
     assert.deepEqual(e.nodes[1],  b);
   });
 
+  it ('should throw an error when the map callback does not return a node', function () {
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new ArrayNode([a, b]);
+
+    assert.throws(function () {
+      c.map(function () {});
+    }, /Callback function must return a Node/)
+  });
+
   it ('should transform an ArrayNodes parameters', function () {
     // [x, 2]
     var a = new SymbolNode('x');
