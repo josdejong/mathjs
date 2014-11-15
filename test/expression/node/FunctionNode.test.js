@@ -94,6 +94,60 @@ describe('FunctionNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '4'}),  []);
   });
 
+  it ('should run forEach on a FunctionNode', function () {
+    // multiply(x + 2, x)
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [a, b]);
+    var d = new SymbolNode('x');
+    var f = new FunctionNode('multiply', [c, d]);
+
+    var nodes = [];
+    var paths = [];
+    f.forEach(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, f);
+    });
+
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], c);
+    assert.strictEqual(nodes[1], d);
+    assert.deepEqual(paths, ['args[0]', 'args[1]']);
+  });
+
+  it ('should map a FunctionNode', function () {
+    // multiply(x + 2, x)
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [a, b]);
+    var d = new SymbolNode('x');
+    var f = new FunctionNode('multiply', [c, d]);
+
+    var nodes = [];
+    var paths = [];
+    var g = new ConstantNode(3);
+    var h = f.map(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, f);
+
+      return node instanceof SymbolNode && node.name == 'x' ? g : node;
+    });
+
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], c);
+    assert.strictEqual(nodes[1], d);
+    assert.deepEqual(paths, ['args[0]', 'args[1]']);
+
+    assert.notStrictEqual(h, f);
+    assert.strictEqual(h.args[0],  c);
+    assert.strictEqual(h.args[0].args[0],  a);
+    assert.strictEqual(h.args[0].args[1],  b);
+    assert.equal(h.name, 'multiply');
+    assert.strictEqual(h.args[1],  g);
+  });
+
   it ('should transform a FunctionNodes (nested) parameters', function () {
     // multiply(x + 2, x)
     var a = new SymbolNode('x');
@@ -164,13 +218,13 @@ describe('FunctionNode', function() {
 
         case 2:
           assert.strictEqual(node, b);
-          assert.strictEqual(path, 'args.0');
+          assert.strictEqual(path, 'args[0]');
           assert.strictEqual(parent, d);
           break;
 
         case 3:
           assert.strictEqual(node, c);
-          assert.strictEqual(path, 'args.1');
+          assert.strictEqual(path, 'args[1]');
           assert.strictEqual(parent, d);
           break;
       }

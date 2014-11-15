@@ -69,6 +69,48 @@ describe('AssignmentNode', function() {
     assert.deepEqual(e.filter(function (node) {return node instanceof SymbolNode}),    []);
   });
 
+  it ('should run forEach on an AssignmentNode', function () {
+    // a = x + 2
+    var x = new SymbolNode('x');
+    var d = new AssignmentNode('a', x);
+
+    var nodes = [];
+    var paths = [];
+    d.forEach(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, d);
+    });
+
+    assert.equal(nodes.length, 1);
+    assert.strictEqual(nodes[0], x);
+    assert.deepEqual(paths, ['expr']);
+  });
+
+  it ('should map an AssignmentNode', function () {
+    // a = x + 2
+    var x = new SymbolNode('x');
+    var d = new AssignmentNode('a', x);
+
+    var e = new ConstantNode(3);
+    var nodes = [];
+    var paths = [];
+    var f = d.map(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, d);
+      return node instanceof SymbolNode && node.name == 'x' ? e : node;
+    });
+
+    assert.equal(nodes.length, 1);
+    assert.strictEqual(nodes[0], x);
+    assert.deepEqual(paths, ['expr']);
+
+    assert.notStrictEqual(f, d);
+    assert.strictEqual(d.expr,  x);
+    assert.strictEqual(f.expr,  e);
+  });
+
   it ('should transform an AssignmentNodes (nested) parameters', function () {
     // a = x + 2
     var a = new SymbolNode('x');

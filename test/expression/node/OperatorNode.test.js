@@ -63,6 +63,59 @@ describe('OperatorNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),    []);
   });
 
+  it ('should run forEach on an OperatorNode', function () {
+    // x^2-x
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('^', 'pow', [a, b]);
+    var d = new SymbolNode('x');
+    var e = new OperatorNode('-', 'subtract', [c, d]);
+
+    var nodes = [];
+    var paths = [];
+    e.forEach(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, e);
+    });
+
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], c);
+    assert.strictEqual(nodes[1], d);
+    assert.deepEqual(paths, ['args[0]', 'args[1]']);
+  });
+
+  it ('should map an OperatorNode', function () {
+    // x^2-x
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new OperatorNode('^', 'pow', [a, b]);
+    var d = new SymbolNode('x');
+    var e = new OperatorNode('-', 'subtract', [c, d]);
+
+    var nodes = [];
+    var paths = [];
+    var f = new ConstantNode(3);
+    var g = e.map(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, e);
+
+      return node instanceof SymbolNode && node.name == 'x' ? f : node;
+    });
+
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], c);
+    assert.strictEqual(nodes[1], d);
+    assert.deepEqual(paths, ['args[0]', 'args[1]']);
+
+    assert.notStrictEqual(g,  e);
+    assert.strictEqual(g.args[0], e.args[0]);
+    assert.strictEqual(g.args[0].args[0], a); // nested x is not replaced
+    assert.deepEqual(g.args[0].args[1], b);
+    assert.deepEqual(g.args[1],  f);
+  });
+
   it ('should transform an OperatorNodes parameters', function () {
     // x^2-x
     var a = new SymbolNode('x');

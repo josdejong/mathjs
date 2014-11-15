@@ -5,6 +5,7 @@ var math = require('../../../index');
 var Node = require('../../../lib/expression/node/Node');
 var ConstantNode = require('../../../lib/expression/node/ConstantNode');
 var SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var OperatorNode = require('../../../lib/expression/node/OperatorNode');
 var RangeNode = require('../../../lib/expression/node/RangeNode');
 var AssignmentNode = require('../../../lib/expression/node/AssignmentNode');
 var BlockNode = require('../../../lib/expression/node/BlockNode');
@@ -75,6 +76,64 @@ describe('BlockNode', function() {
     assert.deepEqual(d.filter(function (node) {return node instanceof RangeNode}),     []);
     assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode}),  [a, b2]);
     assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode && node.value == '3'}),  [b2]);
+  });
+
+  it ('should run forEach on a BlockNode', function () {
+    // [x, 2]
+    var x = new SymbolNode('x');
+    var two = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [two, x]);
+    var a = new BlockNode([
+      {node: x},
+      {node: c}
+    ]);
+
+    var nodes = [];
+    var paths = [];
+    a.forEach(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, a);
+    });
+
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], x);
+    assert.strictEqual(nodes[1], c);
+    assert.deepEqual(paths, ['blocks[0].node', 'blocks[1].node']);
+  });
+
+  it ('should map a BlockNode', function () {
+    // [x, 2]
+    var x = new SymbolNode('x');
+    var two = new ConstantNode(2);
+    var c = new OperatorNode('+', 'add', [two, x]);
+    var a = new BlockNode([
+      {node: x},
+      {node: c}
+    ]);
+
+    var nodes = [];
+    var paths = [];
+    var d = new ConstantNode(3);
+    var e = a.map(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, a);
+      return node instanceof SymbolNode && node.name == 'x' ? d : node;
+    });
+
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], x);
+    assert.strictEqual(nodes[1], c);
+    assert.deepEqual(paths, ['blocks[0].node', 'blocks[1].node']);
+
+    assert.notStrictEqual(e, a);
+    assert.strictEqual(e.blocks[0].node,  d);
+    assert.strictEqual(e.blocks[1].node,  c);
+
+    // should not touch nested nodes
+    assert.strictEqual(e.blocks[1].node.args[0], two);
+    assert.strictEqual(e.blocks[1].node.args[1], x);
   });
 
   it ('should transform a BlockNodes parameters', function () {

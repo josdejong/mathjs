@@ -75,6 +75,23 @@ describe('ConstantNode', function() {
     assert.deepEqual(a.filter(function (node) {return node instanceof SymbolNode}), []);
   });
 
+  it ('should run forEach on a ConstantNode', function () {
+    var a = new ConstantNode(2);
+    a.forEach(function () {
+      assert.ok(false, 'should not execute, constant has no childs')
+    });
+  });
+
+  it ('should map a ConstantNode', function () {
+    var a = new ConstantNode(2);
+    var b = a.map(function () {
+      assert.ok(false, 'should not execute, constant has no childs')
+    });
+
+    assert.notStrictEqual(b, a);
+    assert.deepEqual(b, a);
+  });
+
   it ('should transform a ConstantNode', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);

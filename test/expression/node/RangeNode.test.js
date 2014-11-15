@@ -53,9 +53,59 @@ describe('RangeNode', function() {
 
     assert.deepEqual(n.filter(function (node) {return node instanceof RangeNode}),  [n]);
     assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),  []);
-    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  [start, step, end]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  [start, end, step]);
     assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [step]);
     assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode && node.value == '4'}),  []);
+  });
+
+  it ('should run forEach on a RangeNode', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
+    var n = new RangeNode(start, end, step);
+
+    var nodes = [];
+    var paths = [];
+    n.forEach(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, n);
+    });
+
+    assert.equal(nodes.length, 3);
+    assert.strictEqual(nodes[0], start);
+    assert.strictEqual(nodes[1], end);
+    assert.strictEqual(nodes[2], step);
+    assert.deepEqual(paths, ['start', 'end', 'step']);
+  });
+
+  it ('should map a RangeNode', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var step = new ConstantNode(2);
+    var n = new RangeNode(start, end, step);
+
+    var nodes = [];
+    var paths = [];
+    var e = new ConstantNode(3);
+    var f = n.map(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, n);
+
+      return node instanceof ConstantNode && node.value == '0' ? e : node;
+    });
+
+    assert.equal(nodes.length, 3);
+    assert.strictEqual(nodes[0], start);
+    assert.strictEqual(nodes[1], end);
+    assert.strictEqual(nodes[2], step);
+    assert.deepEqual(paths, ['start', 'end', 'step']);
+
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.start,  e);
+    assert.deepEqual(f.end,  end);
+    assert.deepEqual(f.step,  step);
   });
 
   it ('should transform a RangeNodes start', function () {

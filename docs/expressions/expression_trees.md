@@ -56,13 +56,15 @@ All nodes have the following methods:
   var eval = code.eval({x: 3};    // returns 5
   ```
 
-- `filter(test: function) : Array.<Node>`
+- `filter(callback: function) : Array.<Node>`
 
-  Filter nodes in an expression tree. The `test` function is called as
-  `test(node: Node, path: string, parent: Node)` for every node in the tree,
-  and must return a boolean. The function `filter` returns an array with nodes
-  for which the test returned true. Parameter `path` is a string containing a
-  relative JSON Path. Example:
+  Filter nodes in an expression tree. The `callback` function is called as
+  `callback(node: Node, path: string, parent: Node) : boolean` for every node
+  in the tree, and must return a boolean. The function `filter` returns an
+  array with nodes for which the test returned true. Parameter `path` is a
+  string containing a relative JSON Path.
+
+  Example:
 
   ```js
   var node = math.parse('x^2 + x/4 + 3*y');
@@ -72,6 +74,41 @@ All nodes have the following methods:
   // returns an array with two entries: two SymbolNodes 'x'
   ```
 
+- `forEach(callback: function) : Array.<Node>`
+
+  Execute a callback for each of the child nodes of this node. The `callback`
+  function is called as `callback(child: Node, path: string, parent: Node)`.
+  Parameter `path` is a string containing a relative JSON Path.
+
+  See also `traverse`, which is a recursive version of `forEach`.
+
+  Example:
+
+  ```js
+  var node = math.parse('3 * x + 2');
+  node.traverse(function (node, path, parent) {
+    switch (node.type) {
+      case 'OperatorNode': console.log(node.type, node.op);    break;
+      case 'ConstantNode': console.log(node.type, node.value); break;
+      case 'SymbolNode':   console.log(node.type, node.name);  break;
+      default:             console.log(node.type);
+    }
+  });
+  // outputs:
+  //   OperatorNode *
+  //   ConstantNode 2
+  ```
+
+- `map(callback: function) : Array.<Node>`
+
+  Transform a node. Creates a new Node having it's childs be the results of
+  calling the provided callback function for each of the childs of the original
+  node. The `callback` function is called as `callback(child: Node, path: string,
+  parent: Node)` and must return a Node. Parameter `path` is a string containing
+  a relative JSON Path.
+
+  See also `transform`, which is a recursive version of `map`.
+
 - `toString() : string`
 
   Get a string representation of the parsed expression. This is not exactly
@@ -80,6 +117,7 @@ All nodes have the following methods:
   var node = math.parse('3+4*2');
   node.toString();  // returns '3 + (4 * 2)'
   ```
+
 - `toTex(): string`
 
   Get a [LaTeX](http://en.wikipedia.org/wiki/LaTeX) representation of the
@@ -91,8 +129,8 @@ All nodes have the following methods:
 
 - `transform(callback: function)`
 
-  Transform an expression tree via a transform function. Similar to `Array.map`,
-  but recursively executed on all nodes in the expression tree.
+  Recursively transform an expression tree via a transform function. Similar
+  to `Array.map`, but recursively executed on all nodes in the expression tree.
   The callback function is a mapping function accepting a node, and returning
   a replacement for the node or the original node. Function `callback` is
   called as `callback(node: Node, path: string, parent: Node)` for every node
@@ -106,13 +144,13 @@ All nodes have the following methods:
   var node = math.parse('x^2 + 5*x');
   var transformed = node.transform(function (node, path, parent) {
     if (node.type == 'SymbolNode' && node.name == 'x') {
-      return new math.expression.node.ConstantNode(2);
+      return new math.expression.node.ConstantNode(3);
     }
     else {
       return node;
     }
   });
-  transformed.toString(); // returns '(2 ^ 2) + (5 * 2)'
+  transformed.toString(); // returns '(3 ^ 2) + (5 * 3)'
   ```
 
 - `traverse(callback)`
@@ -127,19 +165,21 @@ All nodes have the following methods:
   Example:
 
   ```js
-  var node = math.parse('2 + x');
+  var node = math.parse('3 * x + 2');
   node.traverse(function (node, path, parent) {
     switch (node.type) {
-      case 'OperatorNode': console.log(node.type, node.op); break;
+      case 'OperatorNode': console.log(node.type, node.op);    break;
       case 'ConstantNode': console.log(node.type, node.value); break;
-      case 'SymbolNode': console.log(node.type, node.name); break;
-      default: console.log(node.type);
+      case 'SymbolNode':   console.log(node.type, node.name);  break;
+      default:             console.log(node.type);
     }
   });
   // outputs:
   //   OperatorNode +
-  //   ConstantNode 2
+  //   OperatorNode *
+  //   ConstantNode 3
   //   SymbolNode x
+  //   ConstantNode 2
   ```
 
 

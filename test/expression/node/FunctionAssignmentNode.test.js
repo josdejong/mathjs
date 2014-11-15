@@ -74,6 +74,48 @@ describe('FunctionAssignmentNode', function() {
     assert.deepEqual(e.filter(function (node) {return node instanceof SymbolNode}),    []);
   });
 
+  it ('should run forEach on a FunctionAssignmentNode', function () {
+    // f(x) = 2 + x
+    var a = new ConstantNode(2);
+    var n = new FunctionAssignmentNode('f', ['x'], a);
+
+    var nodes = [];
+    var paths = [];
+    n.forEach(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, n);
+    });
+
+    assert.equal(nodes.length, 1);
+    assert.strictEqual(nodes[0], a);
+    assert.deepEqual(paths, ['expr']);
+  });
+
+  it ('should map a FunctionAssignmentNode', function () {
+    // f(x) = 2 + x
+    var a = new ConstantNode(2);
+    var n = new FunctionAssignmentNode('f', ['x'], a);
+
+    var nodes = [];
+    var paths = [];
+    var e = new ConstantNode(3);
+    var f = n.map(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, n);
+
+      return node instanceof SymbolNode && node.name == 'x' ? e : node;
+    });
+
+    assert.equal(nodes.length, 1);
+    assert.strictEqual(nodes[0], a);
+    assert.deepEqual(paths, ['expr']);
+
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.expr, a);
+  });
+
   it ('should transform a FunctionAssignmentNodes (nested) parameters', function () {
     // f(x) = 2 + x
     var a = new ConstantNode(2);

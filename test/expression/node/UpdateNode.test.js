@@ -150,6 +150,61 @@ describe('UpdateNode', function() {
     assert.deepEqual(n.filter(function (node) {return node.name == 'q'}),  []);
   });
 
+  it ('should run forEach on an UpdateNode', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
+    var b = new ConstantNode(2);
+    var c = new SymbolNode('x');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(3);
+    var n = new UpdateNode(i, v);
+
+    var nodes = [];
+    var paths = [];
+    n.forEach(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, n);
+    });
+
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], i);
+    assert.strictEqual(nodes[1], v);
+    assert.deepEqual(paths, ['index', 'expr']);
+  });
+
+  it ('should map an UpdateNode', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
+    var b = new ConstantNode(2);
+    var c = new SymbolNode('x');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(3);
+    var n = new UpdateNode(i, v);
+
+    var nodes = [];
+    var paths = [];
+    var e = new ConstantNode(4);
+    var f = n.map(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, n);
+
+      return node instanceof SymbolNode && node.name == 'x' ? e : node;
+    });
+
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], i);
+    assert.strictEqual(nodes[1], v);
+    assert.deepEqual(paths, ['index', 'expr']);
+
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.index.object,  a);
+    assert.deepEqual(f.index.ranges[0],  b);
+    assert.deepEqual(f.index.ranges[1],  c); // not replaced, is nested
+    assert.deepEqual(f.expr, v);
+  });
+
   it ('should transform an UpdateNodes (nested) parameters', function () {
     // A[1, x] = 3
     var a = new SymbolNode('A');

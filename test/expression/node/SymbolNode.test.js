@@ -52,7 +52,25 @@ describe('SymbolNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  []);
   });
 
-  it ('should transform an SymbolNode', function () {
+  it ('should run forEach on a SymbolNode', function () {
+    var a = new SymbolNode('a');
+    a.forEach(function () {
+      assert.ok(false, 'should not execute, symbol has no childs')
+    });
+  });
+
+  it ('should map a SymbolNode', function () {
+    var a = new SymbolNode('a');
+    var c = new SymbolNode('c');
+    var b = a.map(function () {
+      assert.ok(false, 'should not execute, symbol has no childs')
+    });
+
+    assert.notStrictEqual(b, a);
+    assert.deepEqual(b, a);
+  });
+
+  it ('should transform a SymbolNode', function () {
     var a = new SymbolNode('x');
     var b = new SymbolNode('y');
     var c = a.transform(function (node) {

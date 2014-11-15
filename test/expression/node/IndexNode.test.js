@@ -132,6 +132,56 @@ describe('IndexNode', function() {
     assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}), []);
   });
 
+  it ('should run forEach on an IndexNode', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var n = new IndexNode(a, [b, c]);
+
+    var nodes = [];
+    var paths = [];
+    n.forEach(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, n);
+    });
+
+    assert.equal(nodes.length, 3);
+    assert.strictEqual(nodes[0], a);
+    assert.strictEqual(nodes[1], b);
+    assert.strictEqual(nodes[2], c);
+    assert.deepEqual(paths, ['object', 'ranges[0]', 'ranges[1]']);
+  });
+
+  it ('should map an IndexNode', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var n = new IndexNode(a, [b, c]);
+
+    var nodes = [];
+    var paths = [];
+    var e = new SymbolNode('c');
+    var f = n.map(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, n);
+
+      return node instanceof SymbolNode ? e : node;
+    });
+
+    assert.equal(nodes.length, 3);
+    assert.strictEqual(nodes[0], a);
+    assert.strictEqual(nodes[1], b);
+    assert.strictEqual(nodes[2], c);
+    assert.deepEqual(paths, ['object', 'ranges[0]', 'ranges[1]']);
+
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.object, e);
+    assert.deepEqual(f.ranges[0], b);
+    assert.deepEqual(f.ranges[1], c);
+  });
+
   it ('should transform an IndexNodes object', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);

@@ -80,6 +80,54 @@ describe('ArrayNode', function() {
     assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode && node.value == '2'}),  [c]);
   });
 
+  it ('should run forEach on an ArrayNode', function () {
+    // [x, 2]
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new ArrayNode([a, b]);
+
+    var d = new ConstantNode(3);
+    var nodes = [];
+    var paths = [];
+    c.forEach(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, c);
+    });
+
+    assert.deepEqual(paths, ['nodes[0]', 'nodes[1]']);
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], a);
+    assert.strictEqual(nodes[1], b);
+  });
+
+  it ('should map an ArrayNode', function () {
+    // [x, 2]
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new ArrayNode([a, b]);
+
+    var d = new ConstantNode(3);
+    var nodes = [];
+    var paths = [];
+    var e = c.map(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, c);
+
+      return (node instanceof SymbolNode) && (node.name == 'x') ? d : node;
+    });
+
+    assert.deepEqual(paths, ['nodes[0]', 'nodes[1]']);
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], a);
+    assert.strictEqual(nodes[1], b);
+
+    assert.notStrictEqual(e,  c);
+    assert.deepEqual(e.nodes[0],  d);
+    assert.deepEqual(e.nodes[1],  b);
+  });
+
   it ('should transform an ArrayNodes parameters', function () {
     // [x, 2]
     var a = new SymbolNode('x');
@@ -116,7 +164,6 @@ describe('ArrayNode', function() {
 
     var count = 0;
     c.traverse(function (node, path, parent) {
-      console.log('traverse', node.toString(), path)
       count++;
 
       switch(count) {

@@ -1360,7 +1360,7 @@ describe('parse', function() {
         });
         return '"CustomNode(' + strArgs.join(', ') + ')"';
       };
-      CustomNode.prototype._traverse = function (callback) {
+      CustomNode.prototype.forEach = function (callback) {
         // we don't have childs
       };
 
