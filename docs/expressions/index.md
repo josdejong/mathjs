@@ -13,7 +13,7 @@ This section is divided in the following pages:
 - [Parsing and evaluation](parsing.md) describes how to parse and
   evaluate expressions with math.js.
 - [Syntax](syntax.md) describes how to write expressions.
-- [Expression trees](nodes.md) explains how to parse an expression into an
+- [Expression trees](expression_trees.md) explains how to parse an expression into an
   expression tree, and use this to analyse and manipulate the expression.
 - [Customization](customization.md) describes how to customize processing and
   evaluation of expressions.
