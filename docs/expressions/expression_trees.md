@@ -126,6 +126,7 @@ All nodes have the following methods:
 
   Get a [LaTeX](http://en.wikipedia.org/wiki/LaTeX) representation of the
   expression. Example:
+
   ```js
   var node = math.parse('sqrt(2/3)');
   node.toTex(); // returns '\sqrt{\frac{2}{3}}'
@@ -212,6 +213,7 @@ namespace `math.expression.node`.
 <h3 id="arraynode">ArrayNode <a href="#arraynode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new ArrayNode(nodes: Node[])
 ```
@@ -221,6 +223,7 @@ Properties:
 - `nodes: Node[]`
 
 Examples:
+
 ```js
 var node1 = math.parse('[1, 2, 3]');
 
@@ -234,6 +237,7 @@ var node2  = new math.expression.node.ArrayNode([one, two, three]);
 <h3 id="assignmentnode">AssignmentNode <a href="#assignmentnode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new AssignmentNode(name: string, expr: Node)
 ```
@@ -244,6 +248,7 @@ Properties:
 - `expr: Node`
 
 Examples:
+
 ```js
 var node1 = math.parse('a = 3');
 
@@ -255,6 +260,7 @@ var node2 = new math.expression.node.AssignmentNode('a', expr);
 <h3 id="blocknode">BlockNode <a href="#blocknode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 block = new BlockNode(Array.<{node: Node} | {node: Node, visible: boolean}>)
 ```
@@ -264,6 +270,7 @@ Properties:
 - `blocks: Array.<{node: Node, visible: boolean}>`
 
 Examples:
+
 ```js
 var block1 = math.parse('a=1; b=2; c=3');
 
@@ -287,6 +294,7 @@ var block2 = new BlockNode([
 <h3 id="conditionalnode">ConditionalNode <a href="#conditionalnode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new ConditionalNode(condition: Node, trueExpr: Node, falseExpr: Node)
 ```
@@ -298,6 +306,7 @@ Properties:
 - `falseExpr: Node`
 
 Examples:
+
 ```js
 var node1 = math.parse('a > 0 ? a : -a');
 
@@ -312,6 +321,7 @@ var node2     = new math.expression.node.ConditionalNode(condition, trueExpr, fa
 <h3 id="constantnode">ConstantNode <a href="#constantnode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new ConstantNode(value: * [, valueType: string])
 ```
@@ -322,6 +332,7 @@ Properties:
 - `valueType: string`
 
 Examples:
+
 ```js
 var node1 = math.parse('2.4');
 
@@ -333,6 +344,7 @@ var node3 = new math.expression.node.ConstantNode('2.4', 'number');
 <h3 id="functionassignmentnode">FunctionAssignmentNode <a href="#functionassignmentnode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new FunctionAssignmentNode(name: string, params: string[], expr: Node)
 ```
@@ -344,6 +356,7 @@ Properties:
 - `expr: Node`
 
 Examples:
+
 ```js
 var node1 = math.parse('f(x) = x^2');
 
@@ -357,6 +370,7 @@ var node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr);
 <h3 id="functionnode">FunctionNode <a href="#functionnode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new FunctionNode(name: string, args: Node[])
 ```
@@ -367,6 +381,7 @@ Properties:
 - `args: Node[]`
 
 Examples:
+
 ```js
 var node1 = math.parse('sqrt(4)');
 
@@ -378,6 +393,7 @@ var node2 = new math.expression.node.FunctionNode('sqrt', [four]);
 <h3 id="indexnode">IndexNode <a href="#indexnode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new IndexNode(object: Node, ranges: Node[])
 ```
@@ -406,6 +422,7 @@ var node2 = new math.expression.node.IndexNode(A, [range, two]);
 <h3 id="operatornode">OperatorNode <a href="#operatornode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new OperatorNode(op: string, fn: string, args: Node[])
 ```
@@ -417,6 +434,7 @@ Properties:
 - `args: Node[]`
 
 Examples:
+
 ```js
 var node1 = math.parse('2.3 + 5');
 
@@ -428,6 +446,7 @@ var node2 = new math.expression.node.OperatorNode('+', 'add', [a, b]);
 <h3 id="rangenode">RangeNode <a href="#rangenode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new RangeNode(start: Node, end: Node [, step: Node])
 ```
@@ -439,6 +458,7 @@ Properties:
 - `step: Node | null`
 
 Examples:
+
 ```js
 var node1 = math.parse('1:10');
 var node2 = math.parse('0:2:10');
@@ -456,6 +476,7 @@ var node4 = new math.expression.node.RangeNode(zero, ten, two);
 <h3 id="symbolnode">SymbolNode <a href="#symbolnode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new SymbolNode(name: string)
 ```
@@ -465,6 +486,7 @@ Properties:
 - `name: string`
 
 Examples:
+
 ```js
 var node = math.parse('x');
 
@@ -475,6 +497,7 @@ var x = new math.expression.node.SymbolNode('x');
 <h3 id="updatenode">UpdateNode <a href="#updatenode" title="Permalink">#</a></h3>
 
 Construction:
+
 ```
 new UpdateNode(index: IndexNode, expr: Node)
 ```
@@ -485,6 +508,7 @@ Properties:
 - `expr: Node`
 
 Examples:
+
 ```js
 var node1 = math.parse('A[3, 1] = 4');
 
