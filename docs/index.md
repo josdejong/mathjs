@@ -21,7 +21,7 @@ describing all available functions, constants, and units in detail.
 - [Expressions](expressions/index.md)
   - [Parsing and evaluation](expressions/parsing.md)
   - [Syntax](expressions/syntax.md)
-  - [Node trees](expressions/expression_trees.md)
+  - [Expression trees](expressions/expression_trees.md)
   - [Customization](expressions/customization.md)
 - [Chained Operations](chained_operations.md)
 - [Data Types](datatypes/index.md)
