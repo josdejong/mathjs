@@ -9,6 +9,7 @@ layout: default
 - [Chained operations](chained_operations.js.html)
 - [Complex numbers](complex_numbers.js.html)
 - [Custom argument parsing](custom_argument_parsing.js.html)
+- [Expression trees](expression_trees.js.html)
 - [Expressions](expressions.js.html)
 - [Function transform](function_transform.js.html)
 - [Import](import.js.html)

@@ -4,7 +4,8 @@ layout: default
 
 <h1 id="function-randomint">Function randomInt <a href="#function-randomint" title="Permalink">#</a></h1>
 
-Return a random integer number between `min` and `max` using a uniform distribution.
+Return a random integer number larger or equal to `min` and smaller than `max`
+using a uniform distribution.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -22,9 +23,9 @@ math.randomInt(size, min, max)  // generate a matrix with random integer between
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`size` | Number | If provided, an array with `size` number of random values is returned
-`min` | Number | Minimum boundary for the random value
-`max` | Number | Maximum boundary for the random value
+`size` | Array &#124; Matrix | If provided, an array or matrix with given size and filled with random values is returned
+`min` | Number | Minimum boundary for the random value, included
+`max` | Number | Maximum boundary for the random value, excluded
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -45,7 +46,7 @@ math.randomInt([2, 3]); // returns a 2x3 matrix with random integers between 0 a
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
-[randomInt](randomInt.html),
+[random](random.html),
 [pickRandom](pickRandom.html)
 
 

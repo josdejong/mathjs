@@ -22,7 +22,11 @@ describing all available functions, constants, and units in detail.
 <h2 id="overview">Overview <a href="#overview" title="Permalink">#</a></h2>
 
 - [Introduction](introduction.html)
-- [Expressions](expressions.html)
+- [Expressions](expressions/index.html)
+  - [Parsing and evaluation](expressions/parsing.html)
+  - [Syntax](expressions/syntax.html)
+  - [Node trees](expressions/nodes.html)
+  - [Customization](expressions/customization.html)
 - [Chained Operations](chained_operations.html)
 - [Data Types](datatypes/index.html)
   - [Numbers](datatypes/numbers.html)

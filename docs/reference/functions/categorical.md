@@ -24,6 +24,7 @@ layout: default
 - [mod(x, y)](mod.html)
 - [multiply(x, y)](multiply.html)
 - [norm(x [, p])](norm.html)
+- [nthRoot(a, root)](nthRoot.html)
 - [pow(x, y)](pow.html)
 - [round(x [, n])](round.html)
 - [sign(x)](sign.html)
@@ -64,8 +65,10 @@ layout: default
 <h2 id="matrix">matrix <a href="#matrix" title="Permalink">#</a></h2>
 
 - [concat(a, b, c, ... [, dim])](concat.html)
+- [cross(x, y)](cross.html)
 - [det(x)](det.html)
 - [diag(X)](diag.html)
+- [dot(x, y)](dot.html)
 - [eye(n)](eye.html)
 - [flatten(x)](flatten.html)
 - [inv(x)](inv.html)

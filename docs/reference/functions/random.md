@@ -4,7 +4,8 @@ layout: default
 
 <h1 id="function-random">Function random <a href="#function-random" title="Permalink">#</a></h1>
 
-Return a random number between `min` and `max` using a uniform distribution.
+Return a random number larger or equal to `min` and smaller than `max`
+using a uniform distribution.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -22,9 +23,9 @@ math.random(size, min, max)  // generate a matrix with random numbers between mi
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`size` | Number | If provided, an array with `size` number of random values is returned
-`min` | Number | Minimum boundary for the random value
-`max` | Number | Maximum boundary for the random value
+`size` | Array &#124; Matrix | If provided, an array or matrix with given size and filled with random values is returned
+`min` | Number | Minimum boundary for the random value, included
+`max` | Number | Maximum boundary for the random value, excluded
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

@@ -81,8 +81,8 @@ require(['mathjs'], function (math) {
 <h2 id="use">Use <a href="#use" title="Permalink">#</a></h2>
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
-math.js can evaluate expressions (see [Expressions](expressions.html)) and supports
-chained operations (see [Chained operations](chained_operations.html)).
+math.js can evaluate expressions (see [Expressions](expressions/index.html)) and
+supports chained operations (see [Chained operations](chained_operations.html)).
 
 The example code below shows how to use math.js. More examples can be found in the
 section [Examples](http://mathjs.org/examples/index.html).
