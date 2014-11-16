@@ -113,6 +113,7 @@ All nodes have the following methods:
 
   Get a string representation of the parsed expression. This is not exactly
   the same as the original input. Example:
+
   ```js
   var node = math.parse('3+4*2');
   node.toString();  // returns '3 + (4 * 2)'
@@ -122,6 +123,7 @@ All nodes have the following methods:
 
   Get a [LaTeX](http://en.wikipedia.org/wiki/LaTeX) representation of the
   expression. Example:
+
   ```js
   var node = math.parse('sqrt(2/3)');
   node.toTex(); // returns '\sqrt{\frac{2}{3}}'
@@ -208,6 +210,7 @@ namespace `math.expression.node`.
 ### ArrayNode
 
 Construction:
+
 ```
 new ArrayNode(nodes: Node[])
 ```
@@ -217,6 +220,7 @@ Properties:
 - `nodes: Node[]`
 
 Examples:
+
 ```js
 var node1 = math.parse('[1, 2, 3]');
 
@@ -230,6 +234,7 @@ var node2  = new math.expression.node.ArrayNode([one, two, three]);
 ### AssignmentNode
 
 Construction:
+
 ```
 new AssignmentNode(name: string, expr: Node)
 ```
@@ -240,6 +245,7 @@ Properties:
 - `expr: Node`
 
 Examples:
+
 ```js
 var node1 = math.parse('a = 3');
 
@@ -251,6 +257,7 @@ var node2 = new math.expression.node.AssignmentNode('a', expr);
 ### BlockNode
 
 Construction:
+
 ```
 block = new BlockNode(Array.<{node: Node} | {node: Node, visible: boolean}>)
 ```
@@ -260,6 +267,7 @@ Properties:
 - `blocks: Array.<{node: Node, visible: boolean}>`
 
 Examples:
+
 ```js
 var block1 = math.parse('a=1; b=2; c=3');
 
@@ -283,6 +291,7 @@ var block2 = new BlockNode([
 ### ConditionalNode
 
 Construction:
+
 ```
 new ConditionalNode(condition: Node, trueExpr: Node, falseExpr: Node)
 ```
@@ -294,6 +303,7 @@ Properties:
 - `falseExpr: Node`
 
 Examples:
+
 ```js
 var node1 = math.parse('a > 0 ? a : -a');
 
@@ -308,6 +318,7 @@ var node2     = new math.expression.node.ConditionalNode(condition, trueExpr, fa
 ### ConstantNode
 
 Construction:
+
 ```
 new ConstantNode(value: * [, valueType: string])
 ```
@@ -318,6 +329,7 @@ Properties:
 - `valueType: string`
 
 Examples:
+
 ```js
 var node1 = math.parse('2.4');
 
@@ -329,6 +341,7 @@ var node3 = new math.expression.node.ConstantNode('2.4', 'number');
 ### FunctionAssignmentNode
 
 Construction:
+
 ```
 new FunctionAssignmentNode(name: string, params: string[], expr: Node)
 ```
@@ -340,6 +353,7 @@ Properties:
 - `expr: Node`
 
 Examples:
+
 ```js
 var node1 = math.parse('f(x) = x^2');
 
@@ -353,6 +367,7 @@ var node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr);
 ### FunctionNode
 
 Construction:
+
 ```
 new FunctionNode(name: string, args: Node[])
 ```
@@ -363,6 +378,7 @@ Properties:
 - `args: Node[]`
 
 Examples:
+
 ```js
 var node1 = math.parse('sqrt(4)');
 
@@ -374,6 +390,7 @@ var node2 = new math.expression.node.FunctionNode('sqrt', [four]);
 ### IndexNode
 
 Construction:
+
 ```
 new IndexNode(object: Node, ranges: Node[])
 ```
@@ -402,6 +419,7 @@ var node2 = new math.expression.node.IndexNode(A, [range, two]);
 ### OperatorNode
 
 Construction:
+
 ```
 new OperatorNode(op: string, fn: string, args: Node[])
 ```
@@ -413,6 +431,7 @@ Properties:
 - `args: Node[]`
 
 Examples:
+
 ```js
 var node1 = math.parse('2.3 + 5');
 
@@ -424,6 +443,7 @@ var node2 = new math.expression.node.OperatorNode('+', 'add', [a, b]);
 ### RangeNode
 
 Construction:
+
 ```
 new RangeNode(start: Node, end: Node [, step: Node])
 ```
@@ -435,6 +455,7 @@ Properties:
 - `step: Node | null`
 
 Examples:
+
 ```js
 var node1 = math.parse('1:10');
 var node2 = math.parse('0:2:10');
@@ -452,6 +473,7 @@ var node4 = new math.expression.node.RangeNode(zero, ten, two);
 ### SymbolNode
 
 Construction:
+
 ```
 new SymbolNode(name: string)
 ```
@@ -461,6 +483,7 @@ Properties:
 - `name: string`
 
 Examples:
+
 ```js
 var node = math.parse('x');
 
@@ -471,6 +494,7 @@ var x = new math.expression.node.SymbolNode('x');
 ### UpdateNode
 
 Construction:
+
 ```
 new UpdateNode(index: IndexNode, expr: Node)
 ```
@@ -481,6 +505,7 @@ Properties:
 - `expr: Node`
 
 Examples:
+
 ```js
 var node1 = math.parse('A[3, 1] = 4');
 
