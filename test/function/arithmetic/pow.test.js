@@ -50,6 +50,9 @@ describe('pow', function() {
   it('should exponentiate bignumbers', function() {
     assert.deepEqual(pow(bignumber(2), bignumber(3)), bignumber(8));
     assert.deepEqual(pow(bignumber(100), bignumber(500)), bignumber('1e1000'));
+
+    assert.deepEqual(pow(bignumber(-1), bignumber(2)), bignumber('1'));
+    assert.deepEqual(pow(bignumber(2), bignumber(1.5)), bignumber('2.828427124746190097603377448419396157139343750753896146353359476'));
   });
 
   it('should exponentiate a negative bignumber to a non-integer power', function() {
