@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 1.1.1
+## 2014-11-22, version 1.1.1
 
 - Fixed Unit divided by Number returning zero.
 - Fixed BigNumber downgrading to Number for a negative base in `pow`.
