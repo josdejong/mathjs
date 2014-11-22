@@ -31,7 +31,7 @@ var MD_HEADER =
 var EXAMPLE_TEMPLATE = MD_HEADER +
     '# {{title}}\n\n' +
     '{{#each files}}' +
-    'Raw file: [{{url}}]({{url}})\n\n' +
+    'File: [{{url}}]({{url}})\n\n' +
     '```{{type}}\n' +
     '{{{code}}}' +
     '\n```\n\n' +
@@ -110,7 +110,7 @@ gulp.task('docs', ['clean'], function () {
  */
 gulp.task('copyExamples', ['clean'], function () {
   // TODO: make these script replacements more robust
-  var script = '//cdnjs.cloudflare.com/ajax/libs/mathjs/' + version() + '/math.min.js';
+  var script = 'http://cdnjs.cloudflare.com/ajax/libs/mathjs/' + version() + '/math.min.js';
   return gulp.src(EXAMPLES_SRC)
       .pipe(replace(/src=".*dist\/math.js"/, 'src="' + script + '"'))
       .pipe(replace(/src=".*dist\/math.min.js"/, 'src="' + script + '"'))

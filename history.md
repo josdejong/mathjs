@@ -5,6 +5,13 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20141122-version-111">2014-11-22, version 1.1.1 <a href="#20141122-version-111" title="Permalink">#</a></h2>
+
+- Fixed Unit divided by Number returning zero.
+- Fixed BigNumber downgrading to Number for a negative base in `pow`.
+- Fixed some typos in error messaging (thanks @andy0130tw) and docs.
+
+
 <h2 id="20141115-version-110">2014-11-15, version 1.1.0 <a href="#20141115-version-110" title="Permalink">#</a></h2>
 
 - Implemented functions `dot` (dot product), `cross` (cross product), and

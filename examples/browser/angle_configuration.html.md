@@ -4,7 +4,7 @@ layout: default
 
 # Angle configuration
 
-Raw file: [angle_configuration.html](angle_configuration.html)
+File: [angle_configuration.html](angle_configuration.html)
 
 ```html
 <!DOCTYPE html>
@@ -23,7 +23,7 @@ Raw file: [angle_configuration.html](angle_configuration.html)
     }
   </style>
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/1.1.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/1.1.1/math.min.js"></script>
 </head>
 <body>
 

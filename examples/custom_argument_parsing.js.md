@@ -4,7 +4,7 @@ layout: default
 
 # Custom argument parsing
 
-Raw file: [custom_argument_parsing.js](custom_argument_parsing.js)
+File: [custom_argument_parsing.js](custom_argument_parsing.js)
 
 ```js
 /**

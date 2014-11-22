@@ -4,7 +4,7 @@ layout: default
 
 # Function transform
 
-Raw file: [function_transform.js](function_transform.js)
+File: [function_transform.js](function_transform.js)
 
 ```js
 /**

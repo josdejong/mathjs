@@ -4,7 +4,7 @@ layout: default
 
 # Expression trees
 
-Raw file: [expression_trees.js](expression_trees.js)
+File: [expression_trees.js](expression_trees.js)
 
 ```js
 var math = require('../index');

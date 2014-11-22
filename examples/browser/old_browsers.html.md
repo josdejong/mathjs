@@ -4,7 +4,7 @@ layout: default
 
 # Old browsers
 
-Raw file: [old_browsers.html](old_browsers.html)
+File: [old_browsers.html](old_browsers.html)
 
 ```html
 <!DOCTYPE html>
@@ -16,7 +16,7 @@ Raw file: [old_browsers.html](old_browsers.html)
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-sham.min.js"></script>
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/1.1.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/1.1.1/math.min.js"></script>
 </head>
 <body>
 

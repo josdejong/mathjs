@@ -4,7 +4,7 @@ layout: default
 
 # Complex numbers
 
-Raw file: [complex_numbers.js](complex_numbers.js)
+File: [complex_numbers.js](complex_numbers.js)
 
 ```js
 // complex numbers

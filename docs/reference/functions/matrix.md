@@ -32,7 +32,7 @@ Matrix | The created matrix
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-var m = math.matrix([[1, 2], [3, 4]);
+var m = math.matrix([[1, 2], [3, 4]]);
 m.size();                        // Array [2, 2]
 m.resize([3, 2], 5);
 m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]

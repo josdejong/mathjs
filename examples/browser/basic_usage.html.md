@@ -4,14 +4,14 @@ layout: default
 
 # Basic usage
 
-Raw file: [basic_usage.html](basic_usage.html)
+File: [basic_usage.html](basic_usage.html)
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
   <title>math.js | basic usage</title>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/1.1.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/1.1.1/math.min.js"></script>
 </head>
 <body>
 
