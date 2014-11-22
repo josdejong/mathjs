@@ -46,7 +46,8 @@ describe('help', function() {
   });
 
   it('should throw an error when no help is found', function() {
-    assert.throws(function () {math.help(undefined)}, /No documentation found/);
+    // assert.throws(function () {math.help(undefined)}, /No documentation found/);
+    assert.throws(function () {math.help(undefined)}, /Cannot find/);
     assert.throws(function () {math.help('nonExistingFunction')}, /No documentation found/);
     assert.throws(function () {math.help('parse')}, /No documentation found/);
   });
