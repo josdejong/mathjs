@@ -3,6 +3,7 @@
 
 ## not yet released, version 1.1.1
 
+- Fixed Unit divided by Number returning zero.
 - Fixed BigNumber downgrading to Number for a negative base in `pow`.
 - Fixed some typos in error messaging (thanks @andy0130tw) and docs.
 
