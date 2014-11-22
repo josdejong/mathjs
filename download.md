@@ -63,4 +63,3 @@ The source code of math.js is available on GitHub: https://github.com/josdejong/
 
 Math.js is open source and licensed under the
 [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
-
