@@ -47,19 +47,11 @@ describe('rightLogShift', function () {
     assert.equal(rightLogShift('-256', 2), 1073741760);
   });
 
-  it('should throw an error if string value is invalid', function () {
-    assert.throws(function () {
-      rightLogShift('This is not a number!', '12');
-    }, /Parameter x contains a NaN value/);
-    assert.throws(function () {
-      rightLogShift('This is still not a number!', 12);
-    }, /Parameter x contains a NaN value/);
-    assert.throws(function () {
-      rightLogShift(1, 'kung');
-    }, /Parameter y contains a NaN value/);
-    assert.throws(function () {
-      rightLogShift('1', 'foo');
-    }, /Parameter y contains a NaN value/);
+
+  it('should throw an error if used with a unit', function() {
+    assert.throws(function () {rightLogShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
+    assert.throws(function () {rightLogShift(2, math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {rightLogShift(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
   });
 
   it('should element-wise right logically shift a matrix', function () {

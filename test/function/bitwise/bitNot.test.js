@@ -43,8 +43,8 @@ describe('bitNot', function () {
     assert.deepEqual(bitNot(bignumber(-2)), bignumber(1));
   });*/
 
-  it('should perform bitwise not of a unit', function () {
-    assert.equal(bitNot(math.unit(5, 'km')).toString(), '-6 km');
+  it('should throw an error if used with a unit', function() {
+    assert.throws(function () {bitNot(math.unit('5cm'))}, error.UnsupportedTypeError);
   });
 
   it('should perform element-wise bitwise not on a matrix', function () {

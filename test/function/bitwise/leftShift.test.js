@@ -59,26 +59,17 @@ describe('leftShift', function () {
     assert.deepEqual(leftShift(bignumber(3), true), bignumber(6));
   });*/
 
+  it('should throw an error if used with a unit', function() {
+    assert.throws(function () {leftShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift(2, math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
+  });
+
   it('should left shift by values given by strings', function () {
     assert.equal(leftShift('0', '1000'), 0);
     assert.equal(leftShift('2', 0), 2);
     assert.equal(leftShift(2, '3'), 16);
     assert.equal(leftShift('-2', 2), -8);
-  });
-
-  it('should throw an error if string value is invalid', function () {
-    assert.throws(function () {
-      leftShift('This is not a number!', '12');
-    }, /Parameter x contains a NaN value/);
-    assert.throws(function () {
-      leftShift('This is still not a number!', 12);
-    }, /Parameter x contains a NaN value/);
-    assert.throws(function () {
-      leftShift(1, 'kung');
-    }, /Parameter y contains a NaN value/);
-    assert.throws(function () {
-      leftShift('1', 'foo');
-    }, /Parameter y contains a NaN value/);
   });
 
   it('should element-wise left shift a matrix', function () {

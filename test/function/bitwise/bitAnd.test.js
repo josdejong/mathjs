@@ -58,35 +58,10 @@ describe('bitAnd', function () {
     assert.deepEqual(bitAnd(true, bignumber(3)), bignumber(1));
   });*/
 
-  it('should bitwise and two measures of the same unit', function () {
-    approx.deepEqual(bitAnd(math.unit(33, 'km'), math.unit(100, 'mile')), math.unit(.16, 'km'));
-
-    var b = math.unit('12 m');
-    var c = math.unit('12 cm');
-    var d = math.unit('52 mm');
-    approx.deepEqual(bitAnd(b, d), math.unit(.032, 'm'));
-    approx.deepEqual(bitAnd(c, d), math.unit(4.8, 'cm'));
-  });
-
-  it('should throw an error for two measures of different units', function () {
-    assert.throws(function () {
-      bitAnd(math.unit(5, 'km'), math.unit(100, 'gram'));
-    });
-  });
-
-  it('should throw an error when one of the two units has undefined value', function () {
-    assert.throws(function () {
-      bitAnd(math.unit('km'), math.unit('5gram'));
-    }, /Parameter x contains a unit with undefined value/);
-    assert.throws(function () {
-      bitAnd(math.unit('5 km'), math.unit('gram'));
-    }, /Parameter y contains a unit with undefined value/);
-  });
-
-  it('should throw an error in case of a unit and non-unit argument', function () {
-    assert.throws(function () {bitAnd(math.unit('5cm'), 2)}, math.error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(math.unit('5cm'), new Date())}, math.error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(new Date(), math.unit('5cm'))}, math.error.UnsupportedTypeError);
+  it('should throw an error if used with a unit', function() {
+    assert.throws(function () {bitAnd(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd(2, math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
   });
 
   it('should bitwise and two ints, even in string format', function () {
@@ -94,21 +69,6 @@ describe('bitAnd', function () {
     assert.equal(bitAnd('86', 120), 80);
     assert.equal(bitAnd('-120', '-86'), -120);
     assert.equal(bitAnd(-120, '-86'), -120);
-  });
-
-  it('should throw an error in case of NaN argument', function () {
-    assert.throws(function () {
-      bitAnd(NaN, 10);
-    }, /Parameter x contains a NaN value/);
-    assert.throws(function () {
-      bitAnd('10', NaN);
-    }, /Parameter y contains a NaN value/);
-    assert.throws(function () {
-      bitAnd('This is not a number!', '12');
-    }, /Parameter x contains a NaN value/);
-    assert.throws(function () {
-      bitAnd(12, '');
-    }, /Parameter y contains a NaN value/);
   });
 
   it('should bitwise and strings and matrices element wise', function () {

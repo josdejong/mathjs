@@ -47,19 +47,11 @@ describe('rightArithShift', function () {
     assert.equal(rightArithShift('-256', 2), -64);
   });
 
-  it('should throw an error if string value is invalid', function () {
-    assert.throws(function () {
-      rightArithShift('This is not a number!', '12');
-    }, /Parameter x contains a NaN value/);
-    assert.throws(function () {
-      rightArithShift('This is still not a number!', 12);
-    }, /Parameter x contains a NaN value/);
-    assert.throws(function () {
-      rightArithShift(1, 'kung');
-    }, /Parameter y contains a NaN value/);
-    assert.throws(function () {
-      rightArithShift('1', 'foo');
-    }, /Parameter y contains a NaN value/);
+
+  it('should throw an error if used with a unit', function() {
+    assert.throws(function () {rightArithShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
+    assert.throws(function () {rightArithShift(2, math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {rightArithShift(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
   });
 
   it('should element-wise right arithmetically shift a matrix', function () {
