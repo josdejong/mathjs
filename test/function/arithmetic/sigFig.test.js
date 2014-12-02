@@ -60,4 +60,10 @@ describe('sigFig', function() {
     approx.equal(sigFig(math.pi * 10, bignumber(2)), 31);
   });
 
+  it('should round each element in a matrix, array, range to a given number of significant figures', function() {
+    approx.deepEqual(sigFig(math.range(0,2.1,0.2), 1), math.matrix([0,0.2,0.4,0.6,0.8,1,1,1,2,2,2]));
+    approx.deepEqual(sigFig([1.7,2.3], 1), [2,2]);
+    assert.deepEqual(sigFig(math.matrix([1.7,2.3]), 1).valueOf(), [2, 2]);
+  });
+
 });
