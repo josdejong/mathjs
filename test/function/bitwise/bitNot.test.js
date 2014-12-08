@@ -24,6 +24,7 @@ describe('bitNot', function () {
   it('should return bitwise not of a string', function () {
     assert.equal(bitNot('2'), -3);
     assert.equal(bitNot('-2'), 1);
+    assert.equal(bitNot('-86e2'), 8599);
   });
 
   /*it('should return bignumber bitwise not on a string', function() {

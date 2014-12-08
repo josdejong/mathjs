@@ -70,6 +70,7 @@ describe('leftShift', function () {
     assert.equal(leftShift('2', 0), 2);
     assert.equal(leftShift(2, '3'), 16);
     assert.equal(leftShift('-2', 2), -8);
+    assert.equal(leftShift(-2, '1e2'), -32);
   });
 
   it('should element-wise left shift a matrix', function () {

@@ -45,6 +45,7 @@ describe('rightArithShift', function () {
     assert.equal(rightArithShift('2', 0), 2);
     assert.equal(rightArithShift(22, '3'), 2);
     assert.equal(rightArithShift('-256', 2), -64);
+    assert.equal(rightArithShift('-256', '1e2'), -16);
   });
 
 

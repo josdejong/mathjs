@@ -49,6 +49,7 @@ describe('bitXor', function () {
     assert.equal(bitXor('86', 120), 46);
     assert.equal(bitXor('-120', '-86'), 34);
     assert.equal(bitXor(-120, '-86'), 34);
+    assert.equal(bitXor(-120, '-86e2'), 8672);
   });
 
   it('should xor strings and matrices element wise', function () {

@@ -47,6 +47,7 @@ describe('bitOr', function () {
     assert.equal(bitOr('86', 120), 126);
     assert.equal(bitOr('-120', '-86'), -86);
     assert.equal(bitOr(-120, '-86'), -86);
+    assert.equal(bitOr(-120, '-86e2'), -24);
   });
 
   it('should bitwise or strings and matrices element wise', function () {

@@ -45,6 +45,7 @@ describe('rightLogShift', function () {
     assert.equal(rightLogShift('2', 0), 2);
     assert.equal(rightLogShift(22, '3'), 2);
     assert.equal(rightLogShift('-256', 2), 1073741760);
+    assert.equal(rightLogShift('-256', '1e2'), 268435440);
   });
 
 
