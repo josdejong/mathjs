@@ -2,7 +2,7 @@
 var assert = require('assert'),
     math = require('../../../index'),
     error = require('../../../lib/error/index'),
-    // bignumber = math.bignumber,
+    bignumber = math.bignumber,
     bitNot = math.bitNot;
 
 describe('bitNot', function () {
@@ -10,12 +10,6 @@ describe('bitNot', function () {
     assert.equal(bitNot(true), -2);
     assert.equal(bitNot(false), -1);
   });
-
-  /*it('should return bignumber bitwise not of a boolean', function () {
-    var bigmath = math.create({number: 'bignumber'});
-    assert.deepEqual(bigmath.bitNot(true), bigmath.bignumber(-2));
-    assert.deepEqual(bigmath.bitNot(false), bigmath.bignumber(-1));
-  });*/
 
   it('should return bitwise not of null', function () {
     assert.equal(bitNot(null), -1);
@@ -27,11 +21,11 @@ describe('bitNot', function () {
     assert.equal(bitNot('-86e2'), 8599);
   });
 
-  /*it('should return bignumber bitwise not on a string', function() {
-    var bigmath = math.create({number: 'bignumber'});
-    assert.deepEqual(bigmath.bitNot('2'), bigmath.bignumber(-3));
-    assert.deepEqual(bigmath.bitNot('-2'), bigmath.bignumber(1));
-  });*/
+  it('should return bignumber bitwise not on a string', function() {
+    assert.deepEqual(bitNot(bignumber('2')), bignumber(-3));
+    assert.deepEqual(bitNot(bignumber('-2')), bignumber(1));
+    assert.deepEqual(bitNot(bignumber('1.2345e30')), bignumber('-1234500000000000000000000000001'));
+  });
 
   it('should perform bitwise not of a number', function () {
     assert.deepEqual(bitNot(2), -3);
@@ -39,10 +33,10 @@ describe('bitNot', function () {
     assert.deepEqual(bitNot(0), -1);
   });
 
-  /*it('should perform bitwise not of a big number', function() {
+  it('should perform bitwise not of a big number', function() {
     assert.deepEqual(bitNot(bignumber(2)), bignumber(-3));
     assert.deepEqual(bitNot(bignumber(-2)), bignumber(1));
-  });*/
+  });
 
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {bitNot(math.unit('5cm'))}, error.UnsupportedTypeError);

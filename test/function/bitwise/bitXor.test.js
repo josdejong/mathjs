@@ -1,9 +1,8 @@
 // test bitXor
 var assert = require('assert'),
-    approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
-    //bignumber = math.bignumber,
+    bignumber = math.bignumber,
     bitXor = math.bitXor;
 
 describe('bitXor', function () {
@@ -36,6 +35,33 @@ describe('bitXor', function () {
     assert.equal(bitXor(false, 0), 0);
     assert.equal(bitXor(true, 1), 0);
     assert.equal(bitXor(false, 1), 1);
+  });
+
+  it('should bitwise xor bignumbers', function () {
+    assert.deepEqual(bitXor(bignumber(1), bignumber(2)), bignumber(3));
+    assert.deepEqual(bitXor(bignumber('-1.0e+31'), bignumber('-1.0e+32')), bignumber('92546795970570634164073698164736'));
+    assert.deepEqual(bitXor(bignumber('1.0e+31'), bignumber('1.0e+32')), bignumber('92546795970570634164077993132032'));
+    assert.deepEqual(bitXor(bignumber('-1.0e+31'), bignumber('1.0e+32')), bignumber('-92546795970570634164077993132032'));
+    assert.deepEqual(bitXor(bignumber('1.0e+31'), bignumber('-1.0e+32')), bignumber('-92546795970570634164073698164736'));
+  });
+
+  it('should bitwise xor mixed numbers and bignumbers', function () {
+    assert.deepEqual(bitXor(bignumber(1), 2), bignumber(3));
+    assert.deepEqual(bitXor(1, bignumber(2)), bignumber(3));
+    assert.deepEqual(bitXor(bignumber(7), 9), bignumber(14));
+    assert.deepEqual(bitXor(7, bignumber(9)), bignumber(14));
+  });
+
+  it('should bitwise xor mixed booleans and bignumbers', function () {
+    assert.deepEqual(bitXor(bignumber(1), true), bignumber(0));
+    assert.deepEqual(bitXor(bignumber(1), false), bignumber(1));
+    assert.deepEqual(bitXor(true, bignumber(3)), bignumber(2));
+    assert.deepEqual(bitXor(false, bignumber(3)), bignumber(3));
+  });
+
+  it('should bitwise and mixed strings and bignumbers', function () {
+    assert.deepEqual(bitXor(bignumber('-1.0e+31'), '-1.0e+32'), bignumber('92546795970570634164073698164736'));
+    assert.deepEqual(bitXor('1.0e+31', bignumber('1.0e+32')), bignumber('92546795970570634164077993132032'));
   });
 
   it('should throw an error if used with a unit', function() {
