@@ -68,37 +68,37 @@ describe('gamma', function () {
   });
   
   it('should calculate the gamma of a rational bignumber', function () {
-    math.config({ precision: 15 });
-    assert.deepEqual(gamma(bignumber(0.25)), bignumber('3.62560990822191'));
-    assert.deepEqual(gamma(bignumber(0.5)), bignumber('1.77245385090551'));
-    assert.deepEqual(gamma(bignumber(1.5)), bignumber('0.886226925452758'));
-    assert.deepEqual(gamma(bignumber(2.5)), bignumber('1.32934038817913'));
-    assert.deepEqual(gamma(bignumber(30.5)), bignumber('4.82269693349091e+31'));
+    var bigmath = math.create({ precision: 15 });
+    assert.deepEqual(bigmath.gamma(bignumber(0.25)), bigmath.bignumber('3.62560990822191'));
+    assert.deepEqual(bigmath.gamma(bignumber(0.5)), bigmath.bignumber('1.77245385090551'));
+    assert.deepEqual(bigmath.gamma(bignumber(1.5)), bigmath.bignumber('0.886226925452758'));
+    assert.deepEqual(bigmath.gamma(bignumber(2.5)), bigmath.bignumber('1.32934038817913'));
+    assert.deepEqual(bigmath.gamma(bignumber(30.5)), bigmath.bignumber('4.82269693349091e+31'));
 
-    math.config({ precision: 13 });
-    assert.deepEqual(gamma(bignumber(-1.5)), bignumber('2.363271801207'));
+    bigmath.config({ precision: 13 });
+    assert.deepEqual(bigmath.gamma(bignumber(-1.5)), bigmath.bignumber('2.363271801207'));
 
-    math.config({ precision: 10 });
-    assert.deepEqual(gamma(bignumber(0.125)), bignumber('7.5339416'));
-    assert.deepEqual(gamma(bignumber(-2.5)), bignumber('-0.9453087205'));
+    bigmath.config({ precision: 10 });
+    assert.deepEqual(bigmath.gamma(bignumber(0.125)), bigmath.bignumber('7.5339416'));
+    assert.deepEqual(bigmath.gamma(bignumber(-2.5)), bigmath.bignumber('-0.9453087205'));
   });
 
   it('should calculate the gamma of an irrational bignumber', function () {
-    math.config({ precision: 11, number: 'bignumber' });
-    assert.deepEqual(gamma(math.phi.neg()), bignumber('2.3258497469'));
+    var bigmath = math.create({ precision: 11, number: 'bignumber' });
+    assert.deepEqual(bigmath.gamma(bigmath.phi.neg()), bigmath.bignumber('2.3258497469'));
 
-    math.config({ precision: 12 });
-    assert.deepEqual(gamma(math.SQRT2), bignumber('0.886581428719'));
+    bigmath.config({ precision: 12 });
+    assert.deepEqual(bigmath.gamma(bigmath.SQRT2), bigmath.bignumber('0.886581428719'));
     
-    math.config({ precision: 13 });
-    assert.deepEqual(gamma(math.SQRT2.neg()), bignumber('2.599459907525'));
+    bigmath.config({ precision: 13 });
+    assert.deepEqual(bigmath.gamma(bigmath.SQRT2.neg()), bigmath.bignumber('2.599459907525'));
 
-    math.config({ precision: 15 });
-    assert.deepEqual(gamma(math.PI), bignumber('2.28803779534003'));
-    assert.deepEqual(gamma(math.phi), bignumber('0.89567315170529'));
+    bigmath.config({ precision: 15 });
+    assert.deepEqual(bigmath.gamma(bigmath.PI), bigmath.bignumber('2.28803779534003'));
+    assert.deepEqual(bigmath.gamma(bigmath.phi), bigmath.bignumber('0.89567315170529'));
     
-    math.config({ precision: 16 });
-    assert.deepEqual(gamma(math.E), bignumber('1.567468255774054'));
+    bigmath.config({ precision: 16 });
+    assert.deepEqual(bigmath.gamma(bigmath.E), bigmath.bignumber('1.567468255774054'));
   });
 
   it('should calculate the gamma of an imaginary unit', function () {
