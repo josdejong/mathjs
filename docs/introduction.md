@@ -11,37 +11,37 @@ Math.js can be used in node.js and in the browser. Installation and download ins
 
 Math.js can be used in three different ways:
 
-- Make **function calls** like `math.sqrt(4)` and constants like `math.pi`. This works similar to JavaScript's built-in `Math` object. Examples:
-  
-  ```js
-  math.sqrt(25);                          // Number  5
-  math.add(3, 4);                         // Number  7
-  math.add(3, math.multiply(2, 3));       // Number  9
-  math.log(10000, 10);                    // Number  4
-  math.sin(math.pi / 4);                  // Number 0.70711
-  math.multiply(math.i, math.i);          // Number -1
-  ```
+-   Make **function calls** like `math.sqrt(4)` and constants like `math.pi`. This works similar to JavaScript's built-in `Math` object. Examples:
 
-- Evaluate **expressions** using [`math.eval`](reference/functions/eval.md). See section [Expressions](expressions/index.md). Some examples:
+    ```js
+    math.sqrt(25);                          // Number  5
+    math.add(3, 4);                         // Number  7
+    math.add(3, math.multiply(2, 3));       // Number  9
+    math.log(10000, 10);                    // Number  4
+    math.sin(math.pi / 4);                  // Number 0.70711
+    math.multiply(math.i, math.i);          // Number -1
+    ```
 
-  ```js
-  math.eval('12 / (2.3 + 0.7)');          // 4
-  math.eval('sqrt(3^2 + 4^2)');           // Number  5
-  math.eval('sqrt(-4)');                  // Complex 2i
-  math.eval('2 inch to cm');              // Unit    5.08 cm
-  math.eval('cos(45 deg)');               // Number  0.7071067811865476
-  math.eval('det([-1, 2; 3, 1])');        // Number -7
-  math.eval('a ^ b', {a: 2, b: 3});       // Number  8
-  ```
+-   Evaluate **expressions** using [`math.eval`](reference/functions/eval.md). See section [Expressions](expressions/index.md). Some examples:
 
-- Do **chained operations** using [`math.select`](reference/functions/select.md), described in section [Chained operations](chained_operations.md). Examples:
-  
-  ```js
-  math.select(3)
-      .add(4)
-      .subtract(2)
-      .done(); // 5
-  ```
+    ```js
+    math.eval('12 / (2.3 + 0.7)');          // 4
+    math.eval('sqrt(3^2 + 4^2)');           // Number  5
+    math.eval('sqrt(-4)');                  // Complex 2i
+    math.eval('2 inch to cm');              // Unit    5.08 cm
+    math.eval('cos(45 deg)');               // Number  0.7071067811865476
+    math.eval('det([-1, 2; 3, 1])');        // Number -7
+    math.eval('a ^ b', {a: 2, b: 3});       // Number  8
+    ```
+
+-   Do **chained operations** using [`math.select`](reference/functions/select.md), described in section [Chained operations](chained_operations.md). Examples:
+
+    ```js
+    math.select(3)
+        .add(4)
+        .subtract(2)
+        .done(); // 5
+    ```
 
 A listing with all available functions, units, and constants can be found in the [reference section](reference/index.md).
 
