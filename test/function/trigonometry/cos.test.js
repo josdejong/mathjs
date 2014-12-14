@@ -30,6 +30,7 @@ describe('cos', function() {
     approx.equal(cos(pi*7/4), 0.707106781186548);
     approx.equal(cos(pi*8/4), 1);
     approx.equal(cos(pi/4), math.sqrt(2)/2);
+    assert.ok(cos(complex('1e-50+1e-50i')).im != 0);
   });
 
   it('should return the cosine of a bignumber (downgrades to number)', function() {
