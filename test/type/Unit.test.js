@@ -178,6 +178,21 @@ describe('unit', function() {
       assert.equal(u2.fixPrefix, true);
     });
 
+    it ('should convert a valueless unit', function () {
+      var u1 = new Unit(null, 'm');
+      assert.equal(u1.value, null);
+      assert.equal(u1.unit.name, 'm');
+      assert.equal(u1.prefix.name, '');
+      assert.equal(u1.fixPrefix, false);
+
+      var u2 = u1.to(new Unit(null, 'cm'));
+      assert.notStrictEqual(u1, u2); // u2 must be a clone
+      assert.equal(u2.value, 1);     // u2 must have a value
+      assert.equal(u2.unit.name, 'm');
+      assert.equal(u2.prefix.name, 'c');
+      assert.equal(u2.fixPrefix, true);
+    });
+
     it ('should throw an error when converting to an incompatible unit', function () {
       var u1 = new Unit(5000, 'cm');
       assert.throws(function () {u1.to('kg')}, /Units do not match/);
@@ -243,8 +258,8 @@ describe('unit', function() {
     });
 
     it('should format a unit with fixed prefix and without value', function() {
-      assert.equal(new Unit(null, 'cm').to('km').format(), 'km');
-      assert.equal(new Unit(null, 'cm').to('inch').format(), 'inch');
+      assert.equal(new Unit(null, 'km').to('cm').format(), '1e+5 cm');
+      assert.equal(new Unit(null, 'inch').to('cm').format(), '2.54 cm');
     });
 
     it('should ignore properties in Object.prototype when finding the best prefix', function() {
