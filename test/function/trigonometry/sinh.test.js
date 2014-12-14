@@ -24,7 +24,7 @@ describe('sinh', function() {
     approx.equal(sinh(1), 1.1752011936438014);
   });
 
-  it('should return the sinh of very small numbers', function() {
+  it('should return the sinh of very small numbers (avoid returning zero)', function() {
     // If sinh returns 0, that is bad, so we are using assert.equal, not approx.equal
     assert.equal(sinh(-1e-10), -1e-10);
     assert.equal(sinh(1e-50), 1e-50);
