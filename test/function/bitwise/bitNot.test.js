@@ -21,21 +21,16 @@ describe('bitNot', function () {
     assert.equal(bitNot('-86e2'), 8599);
   });
 
-  it('should return bignumber bitwise not on a string', function() {
-    assert.deepEqual(bitNot(bignumber('2')), bignumber(-3));
-    assert.deepEqual(bitNot(bignumber('-2')), bignumber(1));
-    assert.deepEqual(bitNot(bignumber('1.2345e30')), bignumber('-1234500000000000000000000000001'));
-  });
-
   it('should perform bitwise not of a number', function () {
     assert.deepEqual(bitNot(2), -3);
     assert.deepEqual(bitNot(-2), 1);
     assert.deepEqual(bitNot(0), -1);
   });
 
-  it('should perform bitwise not of a big number', function() {
+  it('should perform bitwise not of a bignumber', function() {
     assert.deepEqual(bitNot(bignumber(2)), bignumber(-3));
     assert.deepEqual(bitNot(bignumber(-2)), bignumber(1));
+    assert.deepEqual(bitNot(bignumber('1.2345e30')), bignumber('-1234500000000000000000000000001'));
   });
 
   it('should throw an error if used with a unit', function() {
