@@ -3,7 +3,7 @@ var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
-    //bignumber = math.bignumber,
+    bignumber = math.bignumber,
     leftShift = math.leftShift;
 
 describe('leftShift', function () {
@@ -38,18 +38,23 @@ describe('leftShift', function () {
     assert.equal(leftShift(null, 1), 0);
   });
 
-  /*it('should left shift bignumbers', function () {
+  it('should left shift bignumbers', function () {
     assert.deepEqual(leftShift(bignumber(2), bignumber(3)), bignumber(16));
     assert.deepEqual(leftShift(bignumber(500), bignumber(100)), bignumber('633825300114114700748351602688000'));
-    assert.deepEqual(leftShift(bignumber(-1), bignumber(2)), bignumber('-1'));
+    assert.deepEqual(leftShift(bignumber(-1), bignumber(2)), bignumber(-4));
+    assert.deepEqual(leftShift(bignumber(0), bignumber(-2)).toString(), 'NaN');
+    assert.deepEqual(leftShift(bignumber(Infinity), bignumber(2)), bignumber(Infinity));
+    assert.deepEqual(leftShift(bignumber(Infinity), bignumber(Infinity)).toString(), 'NaN');
   });
 
   it('should left shift mixed numbers and bignumbers', function () {
     assert.deepEqual(leftShift(bignumber(2), 3), bignumber(16));
+    assert.deepEqual(leftShift(bignumber(500), 100), bignumber('633825300114114700748351602688000'));
     assert.deepEqual(leftShift(2, bignumber(3)), bignumber(16));
-
-    approx.equal(leftShift(-1, bignumber(2)), bignumber(-4));
-    approx.equal(leftShift(bignumber(-1), 2), bignumber(-4));
+    assert.deepEqual(leftShift(-1, bignumber(2)), bignumber(-4));
+    assert.deepEqual(leftShift(bignumber(-1), 2), bignumber(-4));
+    assert.deepEqual(leftShift(bignumber(0), -2).toString(), 'NaN');
+    assert.deepEqual(leftShift(bignumber(Infinity), Infinity).toString(), 'NaN');
   });
 
   it('should left shift mixed booleans and bignumbers', function () {
@@ -57,7 +62,14 @@ describe('leftShift', function () {
     assert.deepEqual(leftShift(false, bignumber(3)), bignumber(0));
     assert.deepEqual(leftShift(bignumber(3), false), bignumber(3));
     assert.deepEqual(leftShift(bignumber(3), true), bignumber(6));
-  });*/
+  });
+
+  it('should left shift mixed bignumbers and string', function () {
+    assert.deepEqual(leftShift(bignumber(2), '3'), bignumber(16));
+    assert.deepEqual(leftShift('2', bignumber(3)), bignumber(16));
+    assert.deepEqual(leftShift(bignumber(-1), '2'), bignumber(-4));
+    assert.deepEqual(leftShift('-2', bignumber(3)), bignumber(-16));
+  });
 
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {leftShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
@@ -70,6 +82,37 @@ describe('leftShift', function () {
     assert.equal(leftShift('2', 0), 2);
     assert.equal(leftShift(2, '3'), 16);
     assert.equal(leftShift('-2', 2), -8);
+    assert.equal(leftShift(-2, '1e2'), -32);
+  });
+
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      leftShift(1.1, 1);
+    }, /Parameters in function leftShift must be integer numbers/);
+    assert.throws(function () {
+      leftShift(1, 1.1);
+    }, /Parameters in function leftShift must be integer numbers/);
+    assert.throws(function () {
+      leftShift(1.1, 1.1);
+    }, /Parameters in function leftShift must be integer numbers/);
+    assert.throws(function () {
+      leftShift('1.1', 1);
+    }, /Parameters in function leftShift must be integer numbers/);
+    assert.throws(function () {
+      leftShift(1, '1.1');
+    }, /Parameters in function leftShift must be integer numbers/);
+    assert.throws(function () {
+      leftShift(bignumber(1.1), 1);
+    }, /Parameters in function leftShift must be integer numbers/);
+    assert.throws(function () {
+      leftShift(1, bignumber(1.1));
+    }, /Parameters in function leftShift must be integer numbers/);
+    assert.throws(function () {
+      leftShift(bignumber(1.1), bignumber(1));
+    }, /Parameters in function leftShift must be integer numbers/);
+    assert.throws(function () {
+      leftShift(bignumber(1), bignumber(1.1));
+    }, /Parameters in function leftShift must be integer numbers/);
   });
 
   it('should element-wise left shift a matrix', function () {

@@ -1,9 +1,7 @@
 // test rightLogShift
 var assert = require('assert'),
-    //approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
-    //bignumber = math.bignumber,
     rightLogShift = math.rightLogShift;
 
 describe('rightLogShift', function () {
@@ -45,8 +43,29 @@ describe('rightLogShift', function () {
     assert.equal(rightLogShift('2', 0), 2);
     assert.equal(rightLogShift(22, '3'), 2);
     assert.equal(rightLogShift('-256', 2), 1073741760);
+    assert.equal(rightLogShift('-256', '1e2'), 268435440);
   });
 
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      rightLogShift(1.1, 1);
+    }, /Parameters in function rightLogShift must be integer numbers/);
+    assert.throws(function () {
+      rightLogShift(1, 1.1);
+    }, /Parameters in function rightLogShift must be integer numbers/);
+    assert.throws(function () {
+      rightLogShift(1.1, 1.1);
+    }, /Parameters in function rightLogShift must be integer numbers/);
+    assert.throws(function () {
+      rightLogShift('1.1', '1.1');
+    }, /Parameters in function rightLogShift must be integer numbers/);
+    assert.throws(function () {
+      rightLogShift('1.1', 1);
+    }, /Parameters in function rightLogShift must be integer numbers/);
+    assert.throws(function () {
+      rightLogShift(1, '1.1');
+    }, /Parameters in function rightLogShift must be integer numbers/);
+  });
 
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {rightLogShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);

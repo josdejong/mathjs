@@ -1,9 +1,8 @@
 // test bitAnd
 var assert = require('assert'),
-    approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
-    //bignumber = math.bignumber,
+    bignumber = math.bignumber,
     bitAnd = math.bitAnd;
 
 describe('bitAnd', function () {
@@ -36,12 +35,13 @@ describe('bitAnd', function () {
     assert.equal(bitAnd(false, 1), 0);
   });
 
-/*it('should bitwise and bignumbers', function () {
+  it('should bitwise and bignumbers', function () {
     assert.deepEqual(bitAnd(bignumber(1), bignumber(2)), bignumber(0));
-    assert.deepEqual(bitAnd(bignumber('-1.0e+31'), bignumber('-1.0e+32')), bignumber('-1.0127339798528531708e+32'));
-    assert.deepEqual(bitAnd(bignumber('1.0e+31'), bignumber('1.0e+32')), bignumber('8.726602014714682918e+30'));
-    assert.deepEqual(bitAnd(bignumber('-1.0e+31'), bignumber('1.0e+32')), bignumber('9.1273397985285317082e+31'));
-    assert.deepEqual(bitAnd(bignumber('1.0e+31'), bignumber('-1.0e+32')), bignumber('1.273397985285317082e+30'));
+    assert.deepEqual(bitAnd(bignumber('-1.0e+31'), bignumber('-1.0e+32')), bignumber('-101273397985285317082036849082368'));
+    assert.deepEqual(bitAnd(bignumber('1.0e+31'), bignumber('1.0e+32')), bignumber('8726602014714682917961003433984'));
+    assert.deepEqual(bitAnd(bignumber('-1.0e+31'), bignumber('1.0e+32')), bignumber('91273397985285317082038996566016'));
+    assert.deepEqual(bitAnd(bignumber('1.0e+31'), bignumber('-1.0e+32')), bignumber('1273397985285317082036849082368'));
+    assert.deepEqual(bitAnd(bignumber('2.1877409333271352879E+75'), bignumber('-3.220131224058161211554E+42')), bignumber('2187740933327135287899999999999996863578490213829130431270426161710498840576'));
   });
 
   it('should bitwise and mixed numbers and bignumbers', function () {
@@ -56,7 +56,12 @@ describe('bitAnd', function () {
     assert.deepEqual(bitAnd(bignumber(1), false), bignumber(0));
     assert.deepEqual(bitAnd(false, bignumber(3)), bignumber(0));
     assert.deepEqual(bitAnd(true, bignumber(3)), bignumber(1));
-  });*/
+  });
+
+  it('should bitwise and mixed strings and bignumbers', function () {
+    assert.deepEqual(bitAnd(bignumber('-1.0e+31'), '-1.0e+32'), bignumber('-101273397985285317082036849082368'));
+    assert.deepEqual(bitAnd('1.0e+32', bignumber('1.0e+31')), bignumber('8726602014714682917961003433984'));
+  });
 
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {bitAnd(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
@@ -69,6 +74,37 @@ describe('bitAnd', function () {
     assert.equal(bitAnd('86', 120), 80);
     assert.equal(bitAnd('-120', '-86'), -120);
     assert.equal(bitAnd(-120, '-86'), -120);
+    assert.equal(bitAnd(-120, '-86e2'), -8696);
+  });
+
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      bitAnd(1.1, 1);
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(1, 1.1);
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(1.1, 1.1);
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd('1.1', 1);
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(1, '1.1');
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(bignumber(1.1), 1);
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(1, bignumber(1.1));
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(bignumber(1.1), bignumber(1));
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(bignumber(1), bignumber(1.1));
+    }, /Parameters in function bitAnd must be integer numbers/);
   });
 
   it('should bitwise and strings and matrices element wise', function () {

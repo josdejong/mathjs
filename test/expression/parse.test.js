@@ -123,7 +123,6 @@ describe('parse', function() {
 
   it('should give informative syntax errors', function() {
     assert.throws(function () {parse('2 +')}, /Unexpected end of expression \(char 4\)/);
-    assert.throws(function () {parse('2 ~ 3')}, /Syntax error in part "~ 3" \(char 3\)/);
     assert.throws(function () {parse('2 + 3 + *')}, /Value expected \(char 9\)/);
   });
 
@@ -858,13 +857,47 @@ describe('parse', function() {
       assert.equal(parseAndEval('5++3'), 8);
     });
 
+    it('should parse unary ~', function() {
+      assert.equal(parseAndEval('~2'), -3);
+      assert.equal(parseAndEval('~~2'), 2);
+      assert.equal(parseAndEval('~~~2'), -3);
+      assert.equal(parseAndEval('~true'), -2);
+
+      assert.equal(parseAndEval('4*~2'), -12);
+      assert.equal(parseAndEval('4 * ~2'), -12);
+      assert.equal(parseAndEval('4-~2'), 7);
+      assert.equal(parseAndEval('4 - ~2'), 7);
+      assert.equal(parseAndEval('4+~2'), 1);
+      assert.equal(parseAndEval('4 + ~2'), 1);
+
+      assert.equal(parseAndEval('10+~3'), 6);
+    });
+    
     it('should parse unary plus and minus  +, -', function() {
       assert.equal(parseAndEval('-+2'), -2);
       assert.equal(parseAndEval('-+-2'), 2);
       assert.equal(parseAndEval('+-+-2'), 2);
       assert.equal(parseAndEval('+-2'), -2);
       assert.equal(parseAndEval('+-+2'), -2);
-      assert.equal(parseAndEval('+-+-2'), 2);
+      assert.equal(parseAndEval('-+-+2'), 2);
+    });
+
+    it('should parse unary plus and bitwise not  +, ~', function() {
+      assert.equal(parseAndEval('~+2'), -3);
+      assert.equal(parseAndEval('~+~2'), 2);
+      assert.equal(parseAndEval('+~+~2'), 2);
+      assert.equal(parseAndEval('+~2'), -3);
+      assert.equal(parseAndEval('+~+2'), -3);
+      assert.equal(parseAndEval('~+~+2'), 2);
+    });
+
+    it('should parse unary minus and bitwise not  -, ~', function() {
+      assert.equal(parseAndEval('~-2'), 1);
+      assert.equal(parseAndEval('~-~2'), -4);
+      assert.equal(parseAndEval('-~-~2'), 4);
+      assert.equal(parseAndEval('-~2'), 3);
+      assert.equal(parseAndEval('-~-2'), -1);
+      assert.equal(parseAndEval('~-~-2'), 0);
     });
 
     it('should parse unequal !=', function() {

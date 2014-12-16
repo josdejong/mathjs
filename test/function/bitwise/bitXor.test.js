@@ -1,9 +1,8 @@
 // test bitXor
 var assert = require('assert'),
-    approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
-    //bignumber = math.bignumber,
+    bignumber = math.bignumber,
     bitXor = math.bitXor;
 
 describe('bitXor', function () {
@@ -38,6 +37,33 @@ describe('bitXor', function () {
     assert.equal(bitXor(false, 1), 1);
   });
 
+  it('should bitwise xor bignumbers', function () {
+    assert.deepEqual(bitXor(bignumber(1), bignumber(2)), bignumber(3));
+    assert.deepEqual(bitXor(bignumber('-1.0e+31'), bignumber('-1.0e+32')), bignumber('92546795970570634164073698164736'));
+    assert.deepEqual(bitXor(bignumber('1.0e+31'), bignumber('1.0e+32')), bignumber('92546795970570634164077993132032'));
+    assert.deepEqual(bitXor(bignumber('-1.0e+31'), bignumber('1.0e+32')), bignumber('-92546795970570634164077993132032'));
+    assert.deepEqual(bitXor(bignumber('1.0e+31'), bignumber('-1.0e+32')), bignumber('-92546795970570634164073698164736'));
+  });
+
+  it('should bitwise xor mixed numbers and bignumbers', function () {
+    assert.deepEqual(bitXor(bignumber(1), 2), bignumber(3));
+    assert.deepEqual(bitXor(1, bignumber(2)), bignumber(3));
+    assert.deepEqual(bitXor(bignumber(7), 9), bignumber(14));
+    assert.deepEqual(bitXor(7, bignumber(9)), bignumber(14));
+  });
+
+  it('should bitwise xor mixed booleans and bignumbers', function () {
+    assert.deepEqual(bitXor(bignumber(1), true), bignumber(0));
+    assert.deepEqual(bitXor(bignumber(1), false), bignumber(1));
+    assert.deepEqual(bitXor(true, bignumber(3)), bignumber(2));
+    assert.deepEqual(bitXor(false, bignumber(3)), bignumber(3));
+  });
+
+  it('should bitwise and mixed strings and bignumbers', function () {
+    assert.deepEqual(bitXor(bignumber('-1.0e+31'), '-1.0e+32'), bignumber('92546795970570634164073698164736'));
+    assert.deepEqual(bitXor('1.0e+31', bignumber('1.0e+32')), bignumber('92546795970570634164077993132032'));
+  });
+
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {bitXor(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
     assert.throws(function () {bitXor(2, math.unit('5cm'))}, error.UnsupportedTypeError);
@@ -49,6 +75,37 @@ describe('bitXor', function () {
     assert.equal(bitXor('86', 120), 46);
     assert.equal(bitXor('-120', '-86'), 34);
     assert.equal(bitXor(-120, '-86'), 34);
+    assert.equal(bitXor(-120, '-86e2'), 8672);
+  });
+
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      bitXor(1.1, 1);
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(1, 1.1);
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(1.1, 1.1);
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor('1.1', 1);
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(1, '1.1');
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(bignumber(1.1), 1);
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(1, bignumber(1.1));
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(bignumber(1.1), bignumber(1));
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(bignumber(1), bignumber(1.1));
+    }, /Parameters in function bitXor must be integer numbers/);
   });
 
   it('should xor strings and matrices element wise', function () {
