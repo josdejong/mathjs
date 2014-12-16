@@ -77,6 +77,36 @@ describe('bitAnd', function () {
     assert.equal(bitAnd(-120, '-86e2'), -8696);
   });
 
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      bitAnd(1.1, 1);
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(1, 1.1);
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(1.1, 1.1);
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd('1.1', 1);
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(1, '1.1');
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(bignumber(1.1), 1);
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(1, bignumber(1.1));
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(bignumber(1.1), bignumber(1));
+    }, /Parameters in function bitAnd must be integer numbers/);
+    assert.throws(function () {
+      bitAnd(bignumber(1), bignumber(1.1));
+    }, /Parameters in function bitAnd must be integer numbers/);
+  });
+
   it('should bitwise and strings and matrices element wise', function () {
     assert.deepEqual(bitAnd('42', ['1', 12, '31']), [0, 8, 10]);
     assert.deepEqual(bitAnd(['1', 12, '31'], '42'), [0, 8, 10]);

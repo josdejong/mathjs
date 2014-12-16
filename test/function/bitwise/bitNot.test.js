@@ -33,6 +33,18 @@ describe('bitNot', function () {
     assert.deepEqual(bitNot(bignumber('1.2345e30')), bignumber('-1234500000000000000000000000001'));
   });
 
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      bitNot(1.1);
+    }, /Parameter in function bitNot must be integer numbers/);
+    assert.throws(function () {
+      bitNot('1.1');
+    }, /Parameter in function bitNot must be integer numbers/);
+    assert.throws(function () {
+      bitNot(bignumber(1.1));
+    }, /Parameter in function bitNot must be integer numbers/);
+  });
+
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {bitNot(math.unit('5cm'))}, error.UnsupportedTypeError);
   });

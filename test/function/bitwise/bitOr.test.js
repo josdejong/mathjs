@@ -76,6 +76,36 @@ describe('bitOr', function () {
     assert.equal(bitOr(-120, '-86e2'), -24);
   });
 
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      bitOr(1.1, 1);
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(1, 1.1);
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(1.1, 1.1);
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr('1.1', 1);
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(1, '1.1');
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(bignumber(1.1), 1);
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(1, bignumber(1.1));
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(bignumber(1.1), bignumber(1));
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(bignumber(1), bignumber(1.1));
+    }, /Parameters in function bitOr must be integer numbers/);
+  });
+
   it('should bitwise or strings and matrices element wise', function () {
     assert.deepEqual(bitOr('42', ['1', 12, '31']), [43, 46, 63]);
     assert.deepEqual(bitOr(['1', 12, '31'], '42'), [43, 46, 63]);

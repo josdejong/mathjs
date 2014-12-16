@@ -78,6 +78,36 @@ describe('bitXor', function () {
     assert.equal(bitXor(-120, '-86e2'), 8672);
   });
 
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      bitXor(1.1, 1);
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(1, 1.1);
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(1.1, 1.1);
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor('1.1', 1);
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(1, '1.1');
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(bignumber(1.1), 1);
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(1, bignumber(1.1));
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(bignumber(1.1), bignumber(1));
+    }, /Parameters in function bitXor must be integer numbers/);
+    assert.throws(function () {
+      bitXor(bignumber(1), bignumber(1.1));
+    }, /Parameters in function bitXor must be integer numbers/);
+  });
+
   it('should xor strings and matrices element wise', function () {
     assert.deepEqual(bitXor('42', ['1', 12, '31']), [43, 38, 53]);
     assert.deepEqual(bitXor(['1', 12, '31'], '42'), [43, 38, 53]);

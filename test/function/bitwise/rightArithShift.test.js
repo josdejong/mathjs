@@ -82,6 +82,36 @@ describe('rightArithShift', function () {
     assert.deepEqual(rightArithShift('-17', bignumber(3)), bignumber(-3));
   });
 
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      rightArithShift(1.1, 1);
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(1, 1.1);
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(1.1, 1.1);
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift('1.1', 1);
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(1, '1.1');
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(bignumber(1.1), 1);
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(1, bignumber(1.1));
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(bignumber(1.1), bignumber(1));
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(bignumber(1), bignumber(1.1));
+    }, /Parameters in function rightArithShift must be integer numbers/);
+  });
+
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {rightArithShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
     assert.throws(function () {rightArithShift(2, math.unit('5cm'))}, error.UnsupportedTypeError);
