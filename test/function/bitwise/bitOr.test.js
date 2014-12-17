@@ -1,9 +1,8 @@
 // test bitOr
 var assert = require('assert'),
-    approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
-    //bignumber = math.bignumber,
+    bignumber = math.bignumber,
     bitOr = math.bitOr;
 
 describe('bitOr', function () {
@@ -36,6 +35,33 @@ describe('bitOr', function () {
     assert.equal(bitOr(false, 0), 0);
   });
 
+  it('should bitwise or bignumbers', function () {
+    assert.deepEqual(bitOr(bignumber(1), bignumber(2)), bignumber(3));
+    assert.deepEqual(bitOr(bignumber('-1.0e+31'), bignumber('-1.0e+32')), bignumber('-8726602014714682917963150917632'));
+    assert.deepEqual(bitOr(bignumber('1.0e+31'), bignumber('1.0e+32')), bignumber('101273397985285317082038996566016'));
+    assert.deepEqual(bitOr(bignumber('-1.0e+31'), bignumber('1.0e+32')), bignumber('-1273397985285317082038996566016'));
+    assert.deepEqual(bitOr(bignumber('1.0e+31'), bignumber('-1.0e+32')), bignumber('-91273397985285317082036849082368'));
+  });
+
+  it('should bitwise or mixed numbers and bignumbers', function () {
+    assert.deepEqual(bitOr(bignumber(1), 2), bignumber(3));
+    assert.deepEqual(bitOr(1, bignumber(2)), bignumber(3));
+    assert.deepEqual(bitOr(bignumber(7), 9), bignumber(15));
+    assert.deepEqual(bitOr(7, bignumber(9)), bignumber(15));
+  });
+
+  it('should bitwise or mixed booleans and bignumbers', function () {
+    assert.deepEqual(bitOr(bignumber(1), false), bignumber(1));
+    assert.deepEqual(bitOr(bignumber(2), true), bignumber(3));
+    assert.deepEqual(bitOr(false, bignumber(1)), bignumber(1));
+    assert.deepEqual(bitOr(true, bignumber(2)), bignumber(3));
+  });
+
+  it('should bitwise or mixed strings and bignumbers', function () {
+    assert.deepEqual(bitOr('-1.0e+31', bignumber('-1.0e+32')), bignumber('-8726602014714682917963150917632'));
+    assert.deepEqual(bitOr(bignumber('1.0e+31'), '1.0e+32'), bignumber('101273397985285317082038996566016'));
+  });
+
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {bitOr(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
     assert.throws(function () {bitOr(2, math.unit('5cm'))}, error.UnsupportedTypeError);
@@ -47,6 +73,37 @@ describe('bitOr', function () {
     assert.equal(bitOr('86', 120), 126);
     assert.equal(bitOr('-120', '-86'), -86);
     assert.equal(bitOr(-120, '-86'), -86);
+    assert.equal(bitOr(-120, '-86e2'), -24);
+  });
+
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      bitOr(1.1, 1);
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(1, 1.1);
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(1.1, 1.1);
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr('1.1', 1);
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(1, '1.1');
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(bignumber(1.1), 1);
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(1, bignumber(1.1));
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(bignumber(1.1), bignumber(1));
+    }, /Parameters in function bitOr must be integer numbers/);
+    assert.throws(function () {
+      bitOr(bignumber(1), bignumber(1.1));
+    }, /Parameters in function bitOr must be integer numbers/);
   });
 
   it('should bitwise or strings and matrices element wise', function () {

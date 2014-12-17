@@ -1,6 +1,13 @@
 # History
 
 
+## not yet released, version 1.1.2
+
+- Converting a unit without value will now result in a unit *with* value,
+  i.e. `inch in cm` will return `2.54 cm` instead of `cm`.
+- Improved accuracy of `sinh` and complex `cos` and `sin`. Thanks @pavpanchekha.
+
+
 ## 2014-11-22, version 1.1.1
 
 - Fixed Unit divided by Number returning zero.

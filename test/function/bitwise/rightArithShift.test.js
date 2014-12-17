@@ -1,9 +1,8 @@
 // test rightArithShift
 var assert = require('assert'),
-    //approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
-    //bignumber = math.bignumber,
+    bignumber = math.bignumber,
     rightArithShift = math.rightArithShift;
 
 describe('rightArithShift', function () {
@@ -45,8 +44,73 @@ describe('rightArithShift', function () {
     assert.equal(rightArithShift('2', 0), 2);
     assert.equal(rightArithShift(22, '3'), 2);
     assert.equal(rightArithShift('-256', 2), -64);
+    assert.equal(rightArithShift('-256', '1e2'), -16);
   });
 
+  it('should right arithmetically shift bignumbers', function () {
+    assert.deepEqual(rightArithShift(bignumber(17), bignumber(3)), bignumber(2));
+    assert.deepEqual(rightArithShift(bignumber('633825300114114700748351602688000'), bignumber(100)), bignumber(500));
+    assert.deepEqual(rightArithShift(bignumber(-17), bignumber(3)), bignumber(-3));
+    assert.deepEqual(rightArithShift(bignumber(-17), bignumber(-3)).toString(), 'NaN');
+    assert.deepEqual(rightArithShift(bignumber(Infinity), bignumber(Infinity)).toString(), 'NaN');
+    assert.deepEqual(rightArithShift(bignumber(-Infinity), bignumber(Infinity)), bignumber(-1));
+  });
+
+  it('should right arithmetically shift mixed numbers and bignumbers', function () {
+    assert.deepEqual(rightArithShift(bignumber(17), 3), bignumber(2));
+    assert.deepEqual(rightArithShift(bignumber('-633825300114114700748351602688000'), 100), bignumber(-500));
+    assert.deepEqual(rightArithShift(bignumber(-17), -3).toString(), 'NaN');
+    assert.deepEqual(rightArithShift(17, bignumber(3)), bignumber(2));
+    assert.deepEqual(rightArithShift(-17, bignumber(3)), bignumber(-3));
+    assert.deepEqual(rightArithShift(-3, bignumber(-17)).toString(), 'NaN');
+    assert.deepEqual(rightArithShift(bignumber(-Infinity), Infinity), bignumber(-1));
+    assert.deepEqual(rightArithShift(bignumber(Infinity), Infinity).toString(), 'NaN');
+    assert.deepEqual(rightArithShift(Infinity, bignumber(Infinity)).toString(), 'NaN');
+  });
+
+  it('should right arithmetically shift mixed booleans and bignumbers', function () {
+    assert.deepEqual(rightArithShift(true, bignumber(0)), bignumber(1));
+    assert.deepEqual(rightArithShift(false, bignumber('1000000')), bignumber(0));
+    assert.deepEqual(rightArithShift(bignumber(3), false), bignumber(3));
+    assert.deepEqual(rightArithShift(bignumber(3), true), bignumber(1));
+  });
+
+  it('should right arithmetically shift mixed bignumbers and string', function () {
+    assert.deepEqual(rightArithShift(bignumber(17), '3'), bignumber(2));
+    assert.deepEqual(rightArithShift('17', bignumber(3)), bignumber(2));
+    assert.deepEqual(rightArithShift(bignumber('-17'), '3'), bignumber(-3));
+    assert.deepEqual(rightArithShift('-17', bignumber(3)), bignumber(-3));
+  });
+
+  it('should throw an error if the parameters are not integers', function () {
+    assert.throws(function () {
+      rightArithShift(1.1, 1);
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(1, 1.1);
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(1.1, 1.1);
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift('1.1', 1);
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(1, '1.1');
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(bignumber(1.1), 1);
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(1, bignumber(1.1));
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(bignumber(1.1), bignumber(1));
+    }, /Parameters in function rightArithShift must be integer numbers/);
+    assert.throws(function () {
+      rightArithShift(bignumber(1), bignumber(1.1));
+    }, /Parameters in function rightArithShift must be integer numbers/);
+  });
 
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {rightArithShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
