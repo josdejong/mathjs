@@ -870,9 +870,25 @@ describe('parse', function() {
       assert.equal(parseAndEval('4+~2'), 1);
       assert.equal(parseAndEval('4 + ~2'), 1);
 
-      assert.equal(parseAndEval('10+~3'), 6);
+      assert.equal(parseAndEval('10+~~3'), 13);
     });
-    
+
+    it('should parse unary !', function() {
+      assert.equal(parseAndEval('!2'), false);
+      assert.equal(parseAndEval('!!2'), true);
+      assert.equal(parseAndEval('!!!2'), false);
+      assert.equal(parseAndEval('!true'), false);
+
+      assert.equal(parseAndEval('4*!2'), 0);
+      assert.equal(parseAndEval('4 * !2'), 0);
+      assert.equal(parseAndEval('4-!2'), 4);
+      assert.equal(parseAndEval('4 - !2'), 4);
+      assert.equal(parseAndEval('4+!2'), 4);
+      assert.equal(parseAndEval('4 + !2'), 4);
+
+      assert.equal(parseAndEval('10+!!3'), 11);
+    });   
+
     it('should parse unary plus and minus  +, -', function() {
       assert.equal(parseAndEval('-+2'), -2);
       assert.equal(parseAndEval('-+-2'), 2);
@@ -898,6 +914,33 @@ describe('parse', function() {
       assert.equal(parseAndEval('-~2'), 3);
       assert.equal(parseAndEval('-~-2'), -1);
       assert.equal(parseAndEval('~-~-2'), 0);
+    });
+
+    it('should parse unary plus and boolean not  +, !', function() {
+      assert.equal(parseAndEval('!+2'), false);
+      assert.equal(parseAndEval('!+!2'), true);
+      assert.equal(parseAndEval('+!+!2'), 1);
+      assert.equal(parseAndEval('+!2'), 0);
+      assert.equal(parseAndEval('+!+2'), 0);
+      assert.equal(parseAndEval('!+!+2'), true);
+    });
+
+    it('should parse bitwise not and boolean not  ~, !', function() {
+      assert.equal(parseAndEval('~!2'), -1);
+      assert.equal(parseAndEval('~!~2'), -1);
+      assert.equal(parseAndEval('!~!~2'), false);
+      assert.equal(parseAndEval('!~2'), false);
+      assert.equal(parseAndEval('!~!2'), false);
+      assert.equal(parseAndEval('~!~!2'), -1);
+    });
+
+    it('should parse unary minus and boolean not  -, !', function() {
+      assert.equal(parseAndEval('!-2'), false);
+      assert.equal(parseAndEval('!-!2'), true);
+      assert.equal(parseAndEval('-!-!2'), -1);
+      assert.equal(parseAndEval('-!2'), -0);
+      assert.equal(parseAndEval('-!-2'), -0);
+      assert.equal(parseAndEval('!-!-2'), true);
     });
 
     it('should parse unequal !=', function() {
@@ -1006,7 +1049,7 @@ describe('parse', function() {
         assert.equal(parseAndEval('1.5^1.5^1.5^1.5'), parseAndEval('1.5^(1.5^(1.5^1.5))'));
       });
 
-      it('should respect precedence of unary plus and minus and pow', function () {
+      it('should respect precedence of unary operations and pow', function () {
         assert.equal(parseAndEval('-3^2'), -9);
         assert.equal(parseAndEval('(-3)^2'), 9);
         assert.equal(parseAndEval('2^-2'), 0.25);
@@ -1015,6 +1058,16 @@ describe('parse', function() {
         assert.equal(parseAndEval('+3^2'), 9);
         assert.equal(parseAndEval('(+3)^2'), 9);
         assert.equal(parseAndEval('2^(+2)'), 4);
+
+        assert.equal(parseAndEval('~3^2'), -10);
+        assert.equal(parseAndEval('(~3)^2'), 16);
+        assert.equal(parseAndEval('2^~2'), 0.125);
+        assert.equal(parseAndEval('2^(~2)'), 0.125);
+
+        assert.equal(parseAndEval('!3^2'), false);
+        assert.equal(parseAndEval('(!3)^2'), 0);
+        assert.equal(parseAndEval('2^!2'), 1);
+        assert.equal(parseAndEval('2^(!2)'), 1);
       });
 
       it('should respect precedence of factorial and pow', function () {
@@ -1023,12 +1076,22 @@ describe('parse', function() {
         assert.equal(parseAndEval('3!^2'), 36);
       });
 
-      it('should respect precedence of factorial and (unary) plus/minus', function () {
+      it('should respect precedence of factorial and unary operations', function () {
         assert.equal(parseAndEval('-4!'), -24);
         assert.equal(parseAndEval('-(4!)'), -24);
+
         assert.equal(parseAndEval('3!+2'), 8);
         assert.equal(parseAndEval('(3!)+2'), 8);
         assert.equal(parseAndEval('+4!'), 24);
+        
+        assert.equal(parseAndEval('~4!+1'), -24);
+        assert.equal(parseAndEval('~(4!)+1'), -24);
+
+        assert.equal(parseAndEval('!4!'), false);
+        assert.equal(parseAndEval('!!4!'), true);
+        assert.equal(parseAndEval('!(4!)'), false);
+        assert.equal(parseAndEval('(!4!)'), false);
+        assert.equal(parseAndEval('(!4)!'), 1);
       });
 
       it('should respect precedence of transpose', function () {
