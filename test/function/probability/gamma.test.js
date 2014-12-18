@@ -51,7 +51,7 @@ describe('gamma', function () {
     approx.equal(gamma(-Math.PI), 1.01569714446021834110892259347);
     approx.equal(gamma(-Math.E), -0.952681729748073099220537210195);
   });
-/*
+
   it('should calculate the gamma of a whole bignumber', function () {
     assert.deepEqual(gamma(bignumber(1)), bignumber(1));
     assert.deepEqual(gamma(bignumber(2)), bignumber(1));
@@ -70,7 +70,7 @@ describe('gamma', function () {
     assert.deepEqual(gamma(bignumber('-1.0e10223')), bignumber(Infinity));
     assert.deepEqual(gamma(bignumber(-Infinity)), bignumber(NaN));
   });
-
+/*
   it('should calculate the gamma of a rational bignumber', function () {
     assert.deepEqual(gamma(bignumber(0.125)), bignumber('7.5339415987976'));
     assert.deepEqual(gamma(bignumber(0.25)), bignumber('3.62560990822191'));
