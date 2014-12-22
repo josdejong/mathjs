@@ -27,8 +27,7 @@ Powerful and easy to use.
     <h1 id="example">Example <a href="#example" title="Permalink">#</a></h1>
     <p>
       Here some example code demonstrating how to use the library.
-      More examples are available
-      <a href="examples/index.html">here</a>.
+      <a href="http://jsbin.com/devacu/edit">Click here</a> to fiddle around.
     </p>
     <div class="highlight">
 <pre><code class="language-js" data-lang="js"><span class="c1">// functions and constants</span>
