@@ -1,8 +1,12 @@
 # History
 
 
-## not yet released, version 1.1.2
+## not yet released, version 1.2.0
 
+- Support for bitwise operations `bitAnd`, `bitNot`, `bitOr`, `bitXor`,
+  `leftShift`, `rightArithShift`, and `rightLogShift`. Thanks @BigFav.
+- Support for boolean operations `and`, `not`, `or`. Thanks @BigFav.
+- Support for `gamma` function. Thanks @BigFav.
 - Converting a unit without value will now result in a unit *with* value,
   i.e. `inch in cm` will return `2.54 cm` instead of `cm`.
 - Improved accuracy of `sinh` and complex `cos` and `sin`. Thanks @pavpanchekha.
