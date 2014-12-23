@@ -804,15 +804,65 @@ describe('parse', function() {
     });
 
     it('should parse smaller <', function() {
-      assert.equal(parseAndEval('2 < 3'), true);
-      assert.equal(parseAndEval('2 < 2'), false);
-      assert.equal(parseAndEval('2 < 1'), false);
+      assert.strictEqual(parseAndEval('2 < 3'), true);
+      assert.strictEqual(parseAndEval('2 < 2'), false);
+      assert.strictEqual(parseAndEval('2 < 1'), false);
     });
 
     it('should parse smallerEq <=', function() {
-      assert.equal(parseAndEval('2 <= 3'), true);
-      assert.equal(parseAndEval('2 <= 2'), true);
-      assert.equal(parseAndEval('2 <= 1'), false);
+      assert.strictEqual(parseAndEval('2 <= 3'), true);
+      assert.strictEqual(parseAndEval('2 <= 2'), true);
+      assert.strictEqual(parseAndEval('2 <= 1'), false);
+    });
+
+    it('should parse bitwise and &', function() {
+      assert.strictEqual(parseAndEval('2 & 6'), 2);
+      assert.strictEqual(parseAndEval('5 & 3'), 1);
+      assert.strictEqual(parseAndEval('true & true'), 1);
+      assert.strictEqual(parseAndEval('true & false'), 0);
+      assert.strictEqual(parseAndEval('false & true'), 0);
+      assert.strictEqual(parseAndEval('false & false'), 0);
+    });
+
+    it('should parse bitwise or |', function() {
+      assert.strictEqual(parseAndEval('2 | 6'), 6);
+      assert.strictEqual(parseAndEval('5 | 3'), 7);
+      assert.strictEqual(parseAndEval('true | true'), 1);
+      assert.strictEqual(parseAndEval('true | false'), 1);
+      assert.strictEqual(parseAndEval('false | true'), 1);
+      assert.strictEqual(parseAndEval('false | false'), 0);
+    });
+
+    it('should parse bitwise left shift <<', function() {
+      assert.strictEqual(parseAndEval('23 << 1'), 46);
+    });
+
+    it('should parse bitwise right arithmetic shift >>', function() {
+      assert.strictEqual(parseAndEval('32 >> 4'), 2);
+      assert.strictEqual(parseAndEval('-12 >> 2'), -3);
+    });
+
+    it('should parse bitwise right logical shift >>>', function() {
+      assert.strictEqual(parseAndEval('32 >>> 4'), 2);
+      assert.strictEqual(parseAndEval('-12 >>> 2'), 1073741821);
+    });
+
+    it('should parse logical and', function() {
+      assert.strictEqual(parseAndEval('2 and 6'), true);
+      assert.strictEqual(parseAndEval('2 and 0'), false);
+      assert.strictEqual(parseAndEval('true and true'), true);
+      assert.strictEqual(parseAndEval('true and false'), false);
+      assert.strictEqual(parseAndEval('false and true'), false);
+      assert.strictEqual(parseAndEval('false and false'), false);
+    });
+
+    it('should parse logical or', function() {
+      assert.strictEqual(parseAndEval('2 or 6'), true);
+      assert.strictEqual(parseAndEval('2 or 0'), true);
+      assert.strictEqual(parseAndEval('true or true'), true);
+      assert.strictEqual(parseAndEval('true or false'), true);
+      assert.strictEqual(parseAndEval('false or true'), true);
+      assert.strictEqual(parseAndEval('false or false'), false);
     });
 
     it('should parse minus -', function() {
@@ -916,7 +966,14 @@ describe('parse', function() {
       assert.equal(parseAndEval('~-~-2'), 0);
     });
 
-    it('should parse unary plus and boolean not  +, !', function() {
+    it('should parse unary plus and logical "not"', function() {
+      assert.equal(parseAndEval('not 2'), false);
+      assert.equal(parseAndEval('not 0'), true);
+      assert.equal(parseAndEval('not 0'), true);
+      assert.equal(parseAndEval('not not 4'), true);
+    });
+
+    it('should parse unary plus and logical not +, !', function() {
       assert.equal(parseAndEval('!+2'), false);
       assert.equal(parseAndEval('!+!2'), true);
       assert.equal(parseAndEval('+!+!2'), 1);
@@ -925,7 +982,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('!+!+2'), true);
     });
 
-    it('should parse bitwise not and boolean not  ~, !', function() {
+    it('should parse bitwise not and logical not  ~, !', function() {
       assert.equal(parseAndEval('~!2'), -1);
       assert.equal(parseAndEval('~!~2'), -1);
       assert.equal(parseAndEval('!~!~2'), false);
@@ -934,7 +991,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('~!~!2'), -1);
     });
 
-    it('should parse unary minus and boolean not  -, !', function() {
+    it('should parse unary minus and logical not  -, !', function() {
       assert.equal(parseAndEval('!-2'), false);
       assert.equal(parseAndEval('!-!2'), true);
       assert.equal(parseAndEval('-!-!2'), -1);
@@ -1118,6 +1175,40 @@ describe('parse', function() {
         assert.deepEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'));
         assert.deepEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), new Matrix([1,2]));
         assert.deepEqual(parseAndEval('false ? 1:2:6'), new Matrix([2,3,4,5,6]));
+      });
+
+      it('should respect precedence between left/right shift and relational operators', function () {
+        assert.strictEqual(parseAndEval('32 >> 4 == 2'), true);
+        assert.strictEqual(parseAndEval('2 == 32 >> 4'), true);
+        assert.strictEqual(parseAndEval('2 << 2 == 8'), true);
+        assert.strictEqual(parseAndEval('8 == 2 << 2'), true);
+      });
+
+      it('should respect precedence between relational operators and bitwise and', function () {
+        assert.strictEqual(parseAndEval('2 == 3 & 1'), 0);
+        assert.strictEqual(parseAndEval('3 & 1 == 2'), 0);
+        assert.strictEqual(parseAndEval('2 == (3 & 1)'), false);
+      });
+
+      it('should respect precedence between bitwise or | and logical and', function () {
+        assert.strictEqual(parseAndEval('2 | 2 and 4'), true);
+        assert.strictEqual(parseAndEval('4 and 2 | 2'), true);
+      });
+
+      it('should respect precedence between logical and and or', function () {
+        assert.strictEqual(parseAndEval('false and true or true'), true);
+        assert.strictEqual(parseAndEval('false and (true or true)'), false);
+        assert.strictEqual(parseAndEval('true or true and false'), true);
+        assert.strictEqual(parseAndEval('(true or true) and false'), false);
+      });
+
+      it('should respect precedence of conditional operator and logical or', function () {
+        var node = math.parse('1 or 0 ? 2 or 3 : 0 or 0');
+        assert(node instanceof ConditionalNode);
+        assert.equal(node.condition.toString(), '1 or 0');
+        assert.equal(node.trueExpr.toString(), '2 or 3');
+        assert.equal(node.falseExpr.toString(), '0 or 0');
+        assert.strictEqual(node.compile(math).eval(), true);
       });
 
       it('should respect precedence of conditional operator and relational operators', function () {
