@@ -1,4 +1,5 @@
 var assert = require('assert'),
+    approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
     factorial = math.factorial;
@@ -22,6 +23,10 @@ describe('factorial', function() {
     assert.deepEqual(factorial(math.bignumber(4)), math.bignumber(24));
     assert.deepEqual(factorial(math.bignumber(5)), math.bignumber(120));
     assert.deepEqual(factorial(math.bignumber(20)), math.bignumber('2432902008176640000'));
+    assert.deepEqual(factorial(math.bignumber(21)), math.bignumber('51090942171709440000'));
+    assert.deepEqual(factorial(math.bignumber(25)), math.bignumber('1.5511210043330985984e+25'));
+    assert.deepEqual(factorial(math.bignumber(24)), math.bignumber('6.2044840173323943936e+23'));
+    assert.deepEqual(factorial(math.bignumber(22)), math.bignumber('1124000727777607680000'));
   });
 
   it('should calculate the factorial of a boolean', function() {
@@ -41,16 +46,15 @@ describe('factorial', function() {
     assert.deepEqual(factorial([0,1,2,3,4,5]), [1,1,2,6,24,120]);
   });
 
-  it('should throw an error if called with negative number', function() {
-    assert.throws(function() { factorial(-1); });
-  });
-
-  it('should throw an error if called with non-integer number', function() {  
-    assert.throws(function() { factorial(1.5); });
+  it('should calculate the factorial of a negative number or non-integer', function() {
+    assert.equal(factorial(-1), Infinity);
+    approx.equal(factorial(-1.5), -3.54490770181103205459633);
+    approx.equal(factorial(1.5), 1.32934038817913702047362561);
   });
 
   it('should throw an error if called with non-integer bignumber', function() {
     assert.throws(function() { factorial(math.bignumber(1.5)); });
+    assert.throws(function() { factorial(math.bignumber(-1.5)); });
   });
 
   it('should throw en error if called with invalid number of arguments', function() {
