@@ -90,7 +90,7 @@ All nodes have the following methods:
     
     ```js
     var node = math.parse('3 * x + 2');
-    node.traverse(function (node, path, parent) {
+    node.forEach(function (node, path, parent) {
       switch (node.type) {
         case 'OperatorNode': console.log(node.type, node.op);    break;
         case 'ConstantNode': console.log(node.type, node.value); break;

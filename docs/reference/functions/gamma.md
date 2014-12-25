@@ -2,45 +2,46 @@
 layout: default
 ---
 
-<h1 id="function-factorial">Function factorial <a href="#function-factorial" title="Permalink">#</a></h1>
+<h1 id="function-gamma">Function gamma <a href="#function-gamma" title="Permalink">#</a></h1>
 
-Compute the factorial of a value
+Compute the gamma function of a value using Lanczos approximation for
+small values, and an extended Stirling approximation for large values.
 
-Factorial only supports an integer value as argument.
 For matrices, the function is evaluated element wise.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.factorial(n)
+math.gamma(n)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`n` | Number &#124; BigNumber &#124; Array &#124; Matrix &#124; Boolean &#124; null | An integer number
+`n` | Number &#124; Array &#124; Matrix &#124; Boolean &#124; null | An integer number
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | The factorial of `n`
+Number &#124; Array &#124; Matrix | The gamma of `n`
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.factorial(5);    // returns 120
-math.factorial(3);    // returns 6
+math.gamma(5);       // returns 24
+math.gamma(-0.5);    // returns -3.5449077018110335
+math.gamma(math.i);  // returns -0.15494982830180973 - 0.49801566811835596i
 ```
 
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [combinations](combinations.html),
-[gamma](gamma.html),
+[factorial](factorial.html),
 [permutations](permutations.html)
 
 

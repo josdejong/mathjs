@@ -35,6 +35,16 @@ layout: default
 - [unaryPlus(x)](unaryPlus.html)
 - [xgcd(a, b)](xgcd.html)
 
+<h2 id="bitwise">bitwise <a href="#bitwise" title="Permalink">#</a></h2>
+
+- [bitAnd(x, y)](bitAnd.html)
+- [bitNot(x)](bitNot.html)
+- [bitOr(x, y)](bitOr.html)
+- [bitXor(x, y)](bitXor.html)
+- [leftShift(x, y)](leftShift.html)
+- [rightArithShift(x, y)](rightArithShift.html)
+- [rightLogShift(x, y)](rightLogShift.html)
+
 <h2 id="complex">complex <a href="#complex" title="Permalink">#</a></h2>
 
 - [arg(x)](arg.html)
@@ -46,12 +56,12 @@ layout: default
 
 - [bignumber(x)](bignumber.html)
 - [boolean(x)](boolean.html)
+- [chain(value)](chain.html)
 - [complex(re, im)](complex.html)
 - [index(range1, range2, ...)](index.html)
 - [matrix(x)](matrix.html)
 - [number(value)](number.html)
 - [parser()](parser.html)
-- [select(value)](select.html)
 - [string(value)](string.html)
 - [unit(x)](unit.html)
 
@@ -61,6 +71,13 @@ layout: default
 - [eval(expr [, scope])](eval.html)
 - [help(search)](help.html)
 - [parse(expr [, scope])](parse.html)
+
+<h2 id="logical">logical <a href="#logical" title="Permalink">#</a></h2>
+
+- [and(x, y)](and.html)
+- [not(x)](not.html)
+- [or(x, y)](or.html)
+- [xor(x, y)](xor.html)
 
 <h2 id="matrix">matrix <a href="#matrix" title="Permalink">#</a></h2>
 
@@ -86,6 +103,7 @@ layout: default
 - [combinations(n, k)](combinations.html)
 - [distribution(name)](distribution.html)
 - [factorial(n)](factorial.html)
+- [gamma(n)](gamma.html)
 - [permutations(n)](permutations.html)
 - [pickRandom(array)](pickRandom.html)
 - [random([min, max])](random.html)

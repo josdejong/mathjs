@@ -27,7 +27,7 @@ describing all available functions, constants, and units in detail.
   - [Syntax](expressions/syntax.html)
   - [Expression trees](expressions/expression_trees.html)
   - [Customization](expressions/customization.html)
-- [Chained Operations](chained_operations.html)
+- [Chaining](chaining.html)
 - [Data Types](datatypes/index.html)
   - [Numbers](datatypes/numbers.html)
   - [BigNumbers](datatypes/bignumbers.html)

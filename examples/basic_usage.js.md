@@ -41,7 +41,7 @@ console.log();
 
 // chained operations
 console.log('chained operations');
-var a = math.select(3)
+var a = math.chain(3)
     .add(4)
     .multiply(2)
     .done();

@@ -6,7 +6,7 @@ layout: default
 
 - [Basic usage](basic_usage.js.html)
 - [Bignumbers](bignumbers.js.html)
-- [Chained operations](chained_operations.js.html)
+- [Chaining](chaining.js.html)
 - [Complex numbers](complex_numbers.js.html)
 - [Custom argument parsing](custom_argument_parsing.js.html)
 - [Expression trees](expression_trees.js.html)

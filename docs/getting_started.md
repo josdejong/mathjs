@@ -82,7 +82,7 @@ require(['mathjs'], function (math) {
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate expressions (see [Expressions](expressions/index.html)) and
-supports chained operations (see [Chained operations](chained_operations.html)).
+supports chaining (see [Chaining](chaining.html)).
 
 The example code below shows how to use math.js. More examples can be found in the
 section [Examples](http://mathjs.org/examples/index.html).
@@ -103,7 +103,7 @@ math.eval('9 / 3 + 2i');          // 3 + 2i
 math.eval('det([-1, 2; 3, 1])');  // -7
 
 // chained operations
-math.select(3)
+math.chain(3)
     .add(4)
     .multiply(2)
     .done(); // 14

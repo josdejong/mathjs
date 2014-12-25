@@ -2,28 +2,28 @@
 layout: default
 ---
 
-<h1 id="function-select">Function select <a href="#function-select" title="Permalink">#</a></h1>
+<h1 id="function-chain">Function chain <a href="#function-chain" title="Permalink">#</a></h1>
 
-Wrap any value in a Selector, allowing to perform chained operations on
+Wrap any value in a chain, allowing to perform chained operations on
 the value.
 
-All methods available in the math.js library can be called upon the selector,
+All methods available in the math.js library can be called upon the chain,
 and then will be evaluated with the value itself as first argument.
-The selector can be closed by executing `selector.done()`, which returns
+The chain can be closed by executing `chain.done()`, which returns
 the final value.
 
-The Selector has a number of special functions:
+The chain has a number of special functions:
 
-- `done()`     Finalize the chained operation and return the selectors value.
+- `done()`     Finalize the chain and return the chain's value.
 - `valueOf()`  The same as `done()`
-- `toString()` Executes `math.format()` onto the selectors value, returning
+- `toString()` Executes `math.format()` onto the chain's value, returning
                a string representation of the value.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.select(value)
+math.chain(value)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -36,18 +36,18 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-math.chaining.Selector | The created selector
+math.chaining.Chain | The created chain
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.select(3)
+math.chain(3)
     .add(4)
     .subtract(2)
     .done();     // 5
 
-math.select( [[1, 2], [3, 4]] )
+math.chain( [[1, 2], [3, 4]] )
     .set([1, 1], 8)
     .multiply(3)
     .done();     // [[24, 6], [9, 12]]

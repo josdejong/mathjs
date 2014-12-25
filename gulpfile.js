@@ -77,7 +77,7 @@ var injectPermalinks2 = replace(/^(#+) (.*)$/mg, fn);
 /**
  * copy math.js and math.min.js
  */
-gulp.task('lib', function () {
+gulp.task('copy', function () {
   return gulp.src(LIB_SRC)
       .pipe(gulp.dest(LIB_DEST));
 });
@@ -210,7 +210,7 @@ gulp.task('history', function () {
 /**
  * Update size and version number on the downloads page
  */
-gulp.task('version', function (cb) {
+gulp.task('version', ['copy'], function (cb) {
   // get development size
   function developmentSize(callback) {
     fs.readFile(MATHJS, function (err, data) {
@@ -287,4 +287,4 @@ gulp.task('version', function (cb) {
 
 });
 
-gulp.task('default', ['lib', 'docs', 'examples', 'history', 'version']);
+gulp.task('default', ['copy', 'docs', 'examples', 'history', 'version']);
