@@ -41,8 +41,8 @@ print(str);                     // "0.6666666666666666"
 // a chain has a function .valueOf(), which returns the value hold by the chain.
 // This allows using it in regular operations. The function valueOf() acts the
 // same as function done().
-print(chain.valueOf());      // 0.66667
-print(chain + 2);            // 2.66667
+print(chain.valueOf());         // 0.66667
+print(chain + 2);               // 2.66667
 
 // the function subset can be used to get or replace sub matrices
 var array = [[1, 2], [3, 4]];

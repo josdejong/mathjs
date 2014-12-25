@@ -6,7 +6,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 1.1.2-SNAPSHOT
+ * @version 1.2.0
  * @date    2014-12-25
  *
  * @license
@@ -203,7 +203,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.create = create;
 
 	  // create a new BigNumber factory for this instance of math.js
-	  var BigNumber = __webpack_require__(155).constructor();
+	  var BigNumber = __webpack_require__(159).constructor();
 
 	  // extend BigNumber with a function clone
 	  if (typeof BigNumber.prototype.clone !== 'function') {
@@ -212,7 +212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @return {BigNumber} clone
 	     */
 	    BigNumber.prototype.clone = function() {
-	      return new BigNumber(this);
+	      return this; // just return itself (a BigNumber is immutable)
 	    };
 	  }
 
@@ -941,10 +941,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	exports.ArgumentsError = __webpack_require__(157);
-	exports.DimensionError = __webpack_require__(158);
-	exports.IndexError = __webpack_require__(159);
-	exports.UnsupportedTypeError = __webpack_require__(160);
+	exports.ArgumentsError = __webpack_require__(155);
+	exports.DimensionError = __webpack_require__(156);
+	exports.IndexError = __webpack_require__(157);
+	exports.UnsupportedTypeError = __webpack_require__(158);
 
 	// TODO: implement an InvalidValueError?
 
@@ -955,7 +955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(156),
+	var util = __webpack_require__(160),
 	    Unit = __webpack_require__(10),
 	    number = util.number,
 
@@ -1399,7 +1399,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(156);
+	var util = __webpack_require__(160);
 
 	var number = util.number;
 	var string = util.string;
@@ -1674,7 +1674,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(156),
+	var util = __webpack_require__(160),
 
 	    Range = __webpack_require__(7),
 
@@ -1949,8 +1949,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(156),
-	    DimensionError = __webpack_require__(158),
+	var util = __webpack_require__(160),
+	    DimensionError = __webpack_require__(156),
 
 	    Index = __webpack_require__(8),
 
@@ -2470,7 +2470,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(156),
+	var util = __webpack_require__(160),
 
 	    number = util.number,
 	    string = util.string,
@@ -3342,7 +3342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(156),
+	var util = __webpack_require__(160),
 	    object = util.object,
 	    string = util.string;
 
@@ -3487,10 +3487,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	// utility methods for arrays and matrices
 	'use strict';
 
-	var util = __webpack_require__(156),
+	var util = __webpack_require__(160),
 
-	    IndexError = __webpack_require__(159),
-	    DimensionError = __webpack_require__(158),
+	    IndexError = __webpack_require__(157),
+	    DimensionError = __webpack_require__(156),
 
 	    Matrix = __webpack_require__(9),
 
@@ -3753,9 +3753,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(156),
+	var util = __webpack_require__(160),
 
-	    ArgumentsError = __webpack_require__(157),
+	    ArgumentsError = __webpack_require__(155),
 
 	    isString = util.string.isString,
 	    isArray = Array.isArray,
@@ -5482,7 +5482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(155);
+	var BigNumber = __webpack_require__(159);
 	var errorTransform = __webpack_require__(174).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var argsToArray = __webpack_require__(153).argsToArray;
@@ -5529,7 +5529,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var SymbolNode = __webpack_require__(171);
 	var isBoolean = __webpack_require__(175).isBoolean;
 	var argsToArray = __webpack_require__(153).argsToArray;
-	var ArgumentsError = __webpack_require__(157);
+	var ArgumentsError = __webpack_require__(155);
 
 	/**
 	 * Attach a transform function to math.filter
@@ -5641,7 +5641,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(155);
+	var BigNumber = __webpack_require__(159);
 	var Range = __webpack_require__(7);
 	var Index = __webpack_require__(8);
 	var Matrix = __webpack_require__(9);
@@ -5693,7 +5693,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Matrix = __webpack_require__(9);
-	var BigNumber = __webpack_require__(155);
+	var BigNumber = __webpack_require__(159);
 	var Range = __webpack_require__(7);
 	var Index = __webpack_require__(8);
 	var isNumber = __webpack_require__(4).isNumber;
@@ -5745,7 +5745,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(155);
+	var BigNumber = __webpack_require__(159);
 	var errorTransform = __webpack_require__(174).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var isCollection = __webpack_require__(13).isCollection;
@@ -5790,7 +5790,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(155);
+	var BigNumber = __webpack_require__(159);
 	var errorTransform = __webpack_require__(174).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var isCollection = __webpack_require__(13).isCollection;
@@ -5835,7 +5835,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(155);
+	var BigNumber = __webpack_require__(159);
 	var errorTransform = __webpack_require__(174).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var isCollection = __webpack_require__(13).isCollection;
@@ -6042,7 +6042,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 	      _parse = __webpack_require__(14),
 
 	      collection = __webpack_require__(13),
@@ -6114,7 +6114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 	      _parse = __webpack_require__(14),
 
 	      collection = __webpack_require__(13),
@@ -6308,7 +6308,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6381,7 +6381,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6543,7 +6543,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6622,7 +6622,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -6694,7 +6694,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function(math) {
-	  var util = __webpack_require__(156);
+	  var util = __webpack_require__(160);
 
 	  var BigNumber = math.type.BigNumber;
 	  var Complex = __webpack_require__(6);
@@ -6948,7 +6948,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 	      collection = __webpack_require__(13);
 
 	  /**
@@ -6999,7 +6999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 	      collection = __webpack_require__(13);
 
 	  /**
@@ -7047,7 +7047,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7128,7 +7128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7206,7 +7206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7284,7 +7284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -7431,7 +7431,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -7593,7 +7593,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7696,7 +7696,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -7784,7 +7784,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -7923,7 +7923,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function(math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -8354,7 +8354,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	    array = __webpack_require__(153),
 	          
@@ -8542,7 +8542,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156);
+	  var util = __webpack_require__(160);
 
 	  var BigNumber = math.type.BigNumber;
 	  var collection = __webpack_require__(13);
@@ -8741,7 +8741,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -8925,7 +8925,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9065,7 +9065,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9145,7 +9145,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9251,7 +9251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9325,7 +9325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9485,7 +9485,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9574,7 +9574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -9654,7 +9654,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      Matrix = __webpack_require__(9),
 	      BigNumber = math.type.BigNumber,
@@ -9836,7 +9836,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -9935,7 +9935,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -10008,7 +10008,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -10108,7 +10108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -10207,7 +10207,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -10329,7 +10329,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -10453,7 +10453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      Matrix = __webpack_require__(9),
 	      Unit = __webpack_require__(10),
@@ -10523,7 +10523,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10600,7 +10600,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10675,7 +10675,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10752,7 +10752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -10828,7 +10828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      // take the BigNumber instance the provided math.js instance
 	      BigNumber = math.type.BigNumber,
@@ -10897,7 +10897,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -10991,7 +10991,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -11124,7 +11124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Index = __webpack_require__(8);
@@ -11198,7 +11198,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 	      Matrix = __webpack_require__(9);
 
 	  /**
@@ -11243,7 +11243,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156);
+	  var util = __webpack_require__(160);
 
 	  var BigNumber = math.type.BigNumber;
 	  var Unit = math.type.Unit;
@@ -11409,7 +11409,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * The chain has a number of special functions:
 	   *
-	   * - `done()`     Finalize the chained operation and return the chain's value.
+	   * - `done()`     Finalize the chain and return the chain's value.
 	   * - `valueOf()`  The same as `done()`
 	   * - `toString()` Executes `math.format()` onto the chain's value, returning
 	   *                a string representation of the value.
@@ -11461,7 +11461,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      collection = __webpack_require__(13),
 
@@ -11528,7 +11528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Unit = __webpack_require__(10),
@@ -11615,7 +11615,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -11727,7 +11727,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -11802,7 +11802,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -11908,7 +11908,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -11996,9 +11996,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
-	      BigNumber = __webpack_require__(155),
+	      BigNumber = __webpack_require__(159),
 	      Matrix = __webpack_require__(9),
 	      collection = __webpack_require__(13),
 
@@ -12223,7 +12223,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      Matrix = __webpack_require__(9),
 
@@ -12384,7 +12384,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -12582,7 +12582,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -12685,7 +12685,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156);
+	  var util = __webpack_require__(160);
 
 	  var Matrix = __webpack_require__(9);
 
@@ -12738,7 +12738,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156);
+	  var util = __webpack_require__(160);
 	  var Matrix = __webpack_require__(9);
 
 	  /**
@@ -12936,7 +12936,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -13013,7 +13013,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -13339,7 +13339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -13474,7 +13474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -13547,7 +13547,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      Matrix = __webpack_require__(9),
 
@@ -13611,7 +13611,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      Matrix = __webpack_require__(9),
 	      Index = __webpack_require__(8),
@@ -13828,7 +13828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      Matrix = __webpack_require__(9),
 
@@ -13911,7 +13911,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Matrix = __webpack_require__(9),
@@ -13987,7 +13987,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -14113,7 +14113,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -14425,7 +14425,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 
@@ -14538,7 +14538,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      collection = __webpack_require__(13),
@@ -14635,7 +14635,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -14850,7 +14850,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15014,7 +15014,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15141,7 +15141,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15269,7 +15269,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15396,7 +15396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -15523,7 +15523,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16466,7 +16466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16560,7 +16560,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16652,7 +16652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16739,7 +16739,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16823,7 +16823,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16912,7 +16912,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -16994,7 +16994,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -17080,7 +17080,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -17170,7 +17170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -17257,7 +17257,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -17348,7 +17348,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -17435,7 +17435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -17522,7 +17522,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -17610,7 +17610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -17698,7 +17698,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -17787,7 +17787,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      BigNumber = math.type.BigNumber,
 	      Complex = __webpack_require__(6),
@@ -17878,7 +17878,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      Unit = __webpack_require__(10),
 	      collection = __webpack_require__(13),
@@ -17940,7 +17940,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 	      object = util.object;
 
 	  /**
@@ -18058,7 +18058,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 	      string = util.string;
 
 	  /**
@@ -18143,7 +18143,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      Complex = __webpack_require__(6),
 	      Unit = __webpack_require__(10),
@@ -18361,7 +18361,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(156),
+	  var util = __webpack_require__(160),
 
 	      isString = util.string.isString;
 
@@ -18668,7 +18668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(155);
+	var BigNumber = __webpack_require__(159);
 	var isNumber = __webpack_require__(4).isNumber;
 	var digits = __webpack_require__(4).digits;
 
@@ -19374,8 +19374,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    object = __webpack_require__(3),
 	    types = __webpack_require__(196),
 
-	    DimensionError = __webpack_require__(158),
-	    IndexError = __webpack_require__(159),
+	    DimensionError = __webpack_require__(156),
+	    IndexError = __webpack_require__(157),
 
 	    isArray = Array.isArray;
 
@@ -19749,7 +19749,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = '1.1.2-SNAPSHOT';
+	module.exports = '1.2.0';
 	// Note: This file is automatically generated when building math.js.
 	// Changes made in this file will be overwritten.
 
@@ -19758,13 +19758,186 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v3.0.1 https://github.com/MikeMcl/decimal.js/LICENCE */
+	'use strict';
+
+	/**
+	 * Create a syntax error with the message:
+	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
+	 * @param {String} fn     Function name
+	 * @param {Number} count  Actual argument count
+	 * @param {Number} min    Minimum required argument count
+	 * @param {Number} [max]  Maximum required argument count
+	 * @extends Error
+	 */
+	function ArgumentsError(fn, count, min, max) {
+	  if (!(this instanceof ArgumentsError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.fn = fn;
+	  this.count = count;
+	  this.min = min;
+	  this.max = max;
+
+	  this.message = 'Wrong number of arguments in function ' + fn +
+	      ' (' + count + ' provided, ' +
+	      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	ArgumentsError.prototype = new Error();
+	ArgumentsError.prototype.constructor = Error;
+	ArgumentsError.prototype.name = 'ArgumentsError';
+
+	module.exports = ArgumentsError;
+
+
+/***/ },
+/* 156 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a range error with the message:
+	 *     'Dimension mismatch (<actual size> != <expected size>)'
+	 * @param {number | number[]} actual        The actual size
+	 * @param {number | number[]} expected      The expected size
+	 * @param {string} [relation='!=']          Optional relation between actual
+	 *                                          and expected size: '!=', '<', etc.
+	 * @extends RangeError
+	 */
+	function DimensionError(actual, expected, relation) {
+	  if (!(this instanceof DimensionError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.actual   = actual;
+	  this.expected = expected;
+	  this.relation = relation;
+
+	  this.message = 'Dimension mismatch (' +
+	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
+	      ' ' + (this.relation || '!=') + ' ' +
+	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
+	      ')';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	DimensionError.prototype = new RangeError();
+	DimensionError.prototype.constructor = RangeError;
+	DimensionError.prototype.name = 'DimensionError';
+
+	module.exports = DimensionError;
+
+
+/***/ },
+/* 157 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a range error with the message:
+	 *     'Index out of range (index < min)'
+	 *     'Index out of range (index < max)'
+	 *
+	 * @param {number} index     The actual index
+	 * @param {number} [min=0]   Minimum index (included)
+	 * @param {number} [max]     Maximum index (excluded)
+	 * @extends RangeError
+	 */
+	function IndexError(index, min, max) {
+	  if (!(this instanceof IndexError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.index = index;
+	  if (arguments.length < 3) {
+	    this.min = 0;
+	    this.max = min;
+	  }
+	  else {
+	    this.min = min;
+	    this.max = max;
+	  }
+
+	  if (this.min !== undefined && this.index < this.min) {
+	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
+	  }
+	  else if (this.max !== undefined && this.index >= this.max) {
+	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
+	  }
+	  else {
+	    this.message = 'Index out of range (' + this.index + ')';
+	  }
+
+	  this.stack = (new Error()).stack;
+	}
+
+	IndexError.prototype = new RangeError();
+	IndexError.prototype.constructor = RangeError;
+	IndexError.prototype.name = 'IndexError';
+
+	module.exports = IndexError;
+
+
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a TypeError with message:
+	 *      'Function <fn> does not support a parameter of type <type>';
+	 * @param {String} fn     Function name
+	 * @param {*...} [types]  The types of the function arguments
+	 * @extends TypeError
+	 */
+	function UnsupportedTypeError(fn, types) {
+	  if (!(this instanceof UnsupportedTypeError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.fn = fn;
+	  this.types = Array.prototype.splice.call(arguments, 1);
+
+	  if (!fn) {
+	    this.message = 'Unsupported type of argument';
+	  }
+	  else {
+	    if (this.types.length == 0) {
+	      this.message = 'Unsupported type of argument in function ' + fn;
+	    }
+	    else {
+	      this.message = 'Function ' + fn + '(' + this.types.join(', ') + ') not supported';
+	    }
+	  }
+
+	  this.stack = (new Error()).stack;
+	}
+
+	UnsupportedTypeError.prototype = new TypeError();
+	UnsupportedTypeError.prototype.constructor = TypeError;
+	UnsupportedTypeError.prototype.name = 'UnsupportedTypeError';
+
+	module.exports = UnsupportedTypeError;
+
+
+/***/ },
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v4.0.1 https://github.com/MikeMcl/decimal.js/LICENCE */
 	;(function (global) {
 	    'use strict';
 
 
 	    /*
-	     *  decimal.js v3.0.1
+	     *  decimal.js v4.0.1
 	     *  An arbitrary-precision Decimal type for JavaScript.
 	     *  https://github.com/MikeMcl/decimal.js
 	     *  Copyright (c) 2014 Michael Mclaughlin <M8ch88l@gmail.com>
@@ -19772,7 +19945,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 
 
-	    var convertBase, DecimalConstructor, noConflict,
+	    var convertBase, decimal, noConflict,
 	        crypto = global['crypto'],
 	        external = true,
 	        id = 0,
@@ -20348,15 +20521,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	            /*
 	             Numbers with massively different exponents would result in a massive number of
 	             zeros needing to be prepended, but this can be avoided while still ensuring correct
-	             rounding by limiting the number of zeros to max( precision, i ) + 2, where pr is
-	             precision and i is the length of the coefficient of whichever is greater x or y.
+	             rounding by limiting the number of zeros to max( pr, i ) + 2, where pr is precision and
+	             i is the length of the coefficient of whichever is greater, x or y.
 	             */
 	            if ( a > ( i += 2 ) ) {
 	                a = i;
 	                t.length = 1;
 	            }
 
-	            for ( t.reverse(), b = a; b--; t.push(0) );
+	            t.reverse();
+	            for ( b = a; b--; t.push(0) );
 	            t.reverse();
 	        } else {
 	            // Exponents equal. Check digits.
@@ -20582,7 +20756,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if ( !xc[0] || !yc[0] ) {
 
 	                // Return y if y is non-zero, x if x is non-zero, or zero if both are zero.
-	                x = yc[0] ? y: new Decimal( xc[0] ? x : a * 0 );
+	                x = yc[0] ? y : new Decimal( xc[0] ? x : a * 0 );
 
 	                return external ? rnd( x, pr, rm ) : x;
 	            }
@@ -20876,29 +21050,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // Multiply!
 	        for ( i = b - 1; i > -1; i-- ) {
+	            b = 0;
 
-	            for ( b = 0, j = a + i; j > i; b = b / BASE | 0 ) {
+	            for ( j = a + i; j > i; ) {
 	                  b = c[j] + yc[i] * xc[j - i - 1] + b;
 	                  c[j--] = b % BASE | 0;
+	                  b = b / BASE | 0;
 	            }
-
-	            if (b) {
-	                c[j] = ( c[j] + b ) % BASE;
-	            }
+	            c[j] = ( c[j] + b ) % BASE | 0;
 	        }
 
 	        if (b) {
 	            ++e;
-	        }
+	        } else if ( !c[0] ) {
 
-	        // Remove any leading zero.
-	        if ( !c[0] ) {
+	            // Remove leading zero.
 	            c.shift();
 	        }
 
 	        // Remove trailing zeros.
 	        for ( j = c.length; !c[--j]; c.pop() );
-
 	        y['c'] = c;
 
 	        // Get the number of digits of c[0].
@@ -20966,7 +21137,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * Note: as with JS numbers, (-0).toFixed(0) is '0', but e.g. (-0.00001).toFixed(0) is '-0'.
 	     *
-	     * [dp] {number} Decimal places. Integer, -MAX_DIGITS to MAX_DIGITS inclusive.
+	     * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
 	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
 	     *
 	     * errors true: Throw if dp and rm are not undefined, null or integers in range.
@@ -21020,25 +21191,71 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	    /*
-	     * Return a string representing the value of this Decimal in normal notation rounded using
-	     * rounding mode rounding to dp fixed decimal places, with the integer part of the number
-	     * separated into thousands by string sep1 or ',' if sep1 is null or undefined, and the
-	     * fraction part separated into groups of five digits by string sep2.
+	     * Return a string representing the value of this Decimal in fixed-point notation to dp decimal
+	     * places, rounded using rounding mode rm or Decimal.rounding if rm is omitted, and formatted
+	     * according to the following properties of the Decimal.format object.
 	     *
-	     * [sep1] {string} The grouping separator of the integer part of the number.
-	     * [sep2] {string} The grouping separator of the fraction part of the number.
-	     * [dp] {number} Decimal places. Integer, -MAX_DIGITS to MAX_DIGITS inclusive.
+	     *  Decimal.format = {
+	     *      decimalSeparator : '.',
+	     *      groupSeparator : ',',
+	     *      groupSize : 3,
+	     *      secondaryGroupSize : 0,
+	     *      fractionGroupSeparator : '\xA0',    // non-breaking space
+	     *      fractionGroupSize : 0
+	     *  };
 	     *
-	     * Non-breaking thin-space: \u202f
+	     * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
+	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive
 	     *
-	     * If dp is invalid the error message will incorrectly give the method as toFixed.
+	     * (If dp or rm are invalid the error message will give the offending method call as toFixed.)
 	     *
 	     */
-	    P['toFormat'] = function ( sep1, dp, sep2 ) {
-	        var arr = this.toFixed(dp).split('.');
+	    P['toFormat'] = function( dp, rm ) {
+	        var x = this;
 
-	        return arr[0].replace( /\B(?=(\d{3})+$)/g, sep1 == null ? ',' : sep1 + '' ) +
-	            ( arr[1] ? '.' + ( sep2 ? arr[1].replace( /\d{5}\B/g, '$&' + sep2 ) : arr[1] ) : '' );
+	        if ( !x['c'] ) {
+	            return x.toString();
+	        }
+
+	        var i,
+	            isNeg = x['s'] < 0,
+	            f = x['constructor']['format'],
+	            groupSeparator = f['groupSeparator'],
+	            g1 = +f['groupSize'],
+	            g2 = +f['secondaryGroupSize'],
+	            arr = x.toFixed( dp, rm ).split('.'),
+	            intPart = arr[0],
+	            fractionPart = arr[1],
+	            intDigits = isNeg ? intPart.slice(1) : intPart,
+	            len = intDigits.length;
+
+	        if (g2) {
+	            len -= ( i = g1, g1 = g2, g2 = i );
+	        }
+
+	        if ( g1 > 0 && len > 0 ) {
+	            i = len % g1 || g1;
+	            intPart = intDigits.substr( 0, i );
+
+	            for ( ; i < len; i += g1 ) {
+	                intPart += groupSeparator + intDigits.substr( i, g1 );
+	            }
+
+	            if ( g2 > 0 ) {
+	                intPart += groupSeparator + intDigits.slice(i);
+	            }
+
+	            if (isNeg) {
+	                intPart = '-' + intPart;
+	            }
+	        }
+
+	        return fractionPart
+	          ? intPart + f['decimalSeparator'] + ( ( g2 = +f['fractionGroupSize'] )
+	            ? fractionPart.replace( new RegExp( '\\d{' + g2 + '}\\B', 'g' ),
+	              '$&' + f['fractionGroupSeparator'] )
+	            : fractionPart )
+	          : intPart;
 	    };
 
 
@@ -21107,7 +21324,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                break;
 	            }
-	            d0 = d1, d1 = d2;
+	            d0 = d1;
+	            d1 = d2;
 
 	            n1 = n0['plus']( q['times']( d2 = n1 ) );
 	            n0 = d2;
@@ -21326,11 +21544,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                     log10(x_significand) = ln(x_significand) / ln(10)
 	                     */
 	                    e = b == 0 || !isFinite(b)
-	                      ? mathfloor( yN * (
-	                        Math.log( '0.' + coefficientToString( x['c'] ) ) / Math.LN10 + x['e'] + 1 ) )
+	                      ? mathfloor( yN * ( Math.log( '0.' + coefficientToString( x['c'] ) ) /
+	                        Math.LN10 + x['e'] + 1 ) )
 	                      : new Decimal( b + '' )['e'];
 
-	                    // Estimate may be incorrect e.g.: x: 0.999999999999999999, y: 2.29, e: 0, r.e:-1
+	                    // Estimate may be incorrect e.g. x: 0.999999999999999999, y: 2.29, e: 0, r.e:-1
 
 	                    // Overflow/underflow?
 	                    if ( e > Decimal['maxE'] + 1 || e < Decimal['minE'] - 1 ) {
@@ -21597,7 +21815,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            r += s;
 	        }
 
-	        for ( j = r.length; r.charAt(--j) == '0'; );
+	        // '0'
+	        for ( j = r.length; r.charCodeAt(--j) === 48; );
 
 	        return r.slice( 0, j + 1 || 1 );
 	    }
@@ -21635,7 +21854,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            n %= LOGBASE;
 	        }
 
-	        k =mathpow( 10, LOGBASE - n );
+	        k = mathpow( 10, LOGBASE - n );
 	        rd = c[ci] % k | 0;
 
 	        if ( repeating == null ) {
@@ -21726,9 +21945,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                strL = str.length;
 
 	            for ( ; i < strL; ) {
-
 	                for ( arrL = arr.length; arrL--; arr[arrL] *= baseIn );
-
 	                arr[ j = 0 ] += NUMERALS.indexOf( str.charAt( i++ ) );
 
 	                for ( ; j < arr.length; j++ ) {
@@ -21853,7 +22070,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            // No negative numbers: the caller will add the sign.
 	            return str;
-	        }
+	        };
 	    })();
 
 
@@ -22148,7 +22365,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 
 	            return q;
-	        }
+	        };
 	    })();
 
 
@@ -22576,7 +22793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                 been repeated previously) and the first 4 rounding digits 9999?
 
 	                 If so, restart the summation with a higher precision, otherwise
-	                 E.g. with precision: 12, rounding: 1
+	                 e.g. with precision: 12, rounding: 1
 	                 ln(135520028.6126091714265381533) = 18.7246299999 when it should be 18.72463.
 
 	                 sd - guard is the index of first rounding digit.
@@ -22613,7 +22830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            Decimal = x['constructor'];
 
 	        // Don't round if sd is null or undefined.
-	        r: if ( sd != i ) {
+	        out: if ( sd != null ) {
 
 	            // Infinity/NaN.
 	            if ( !( xc = x['c'] ) ) {
@@ -22660,7 +22877,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        j = i - LOGBASE + 1;
 	                    } else {
 
-	                      break r;
+	                      break out;
 	                    }
 	                } else {
 	                    n = k = xc[xci];
@@ -22738,7 +22955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                for ( ; ; ) {
 
-	                    // Is the digit to be rounded up in the first element of xc.
+	                    // Is the digit to be rounded up in the first element of xc?
 	                    if ( xci == 0 ) {
 
 	                        // i will be the length of xc[0] before k is added.
@@ -22796,7 +23013,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 
-	    DecimalConstructor = (function () {
+	    decimal = (function () {
 
 
 	        // Private functions used by static Decimal methods.
@@ -22892,6 +23109,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	         *   crypto     {boolean|number}
 	         *   modulo     {number}
 	         *
+	         *   format     {object}     See Decimal.prototype.toFormat
+	         *      decimalSeparator       {string}
+	         *      groupSeparator         {string}
+	         *      groupSize              {number}
+	         *      secondaryGroupSize     {number}
+	         *      fractionGroupSeparator {string}
+	         *      fractionGroupSize      {number}
+	         *
+	         *   A format object will replace the existing Decimal.format object without any property
+	         *   checking.
+	         *
 	         * E.g.
 	         *   Decimal.config({ precision: 20, rounding: 4 })
 	         *
@@ -22903,12 +23131,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                parse = Decimal['errors'] ? parseInt : parseFloat;
 
 	            if ( obj == u || typeof obj != 'object' &&
+	              // 'config() object expected: {obj}'
 	              !ifExceptionsThrow( Decimal, 'object expected', obj, c ) ) {
 
 	                return Decimal;
 	            }
 
-	            // precision {number|number[]} Integer, 1 to MAX_DIGITS inclusive.
+	            // precision {number} Integer, 1 to MAX_DIGITS inclusive.
 	            if ( ( v = obj[ p = 'precision' ] ) != u ) {
 
 	                if ( !( outOfRange = v < 1 || v > MAX_DIGITS ) && parse(v) == v ) {
@@ -23024,6 +23253,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 
+	            // format {object}
+	            if ( ( obj = obj[ p = 'format' ] ) != u ) {
+
+	                if ( typeof obj == 'object' ) {
+	                    Decimal[p] = obj;
+	                } else {
+
+	                    // 'config() format object expected: {obj}'
+	                    ifExceptionsThrow( Decimal, 'format object expected', obj, c );
+	                }
+	            }
+
 	            return Decimal;
 	        }
 
@@ -23043,7 +23284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * n {number|string|Decimal} The power to which to raise the base of the natural log.
 	         *
 	         */
-	        function exp(n) { return new this(n)['exp']() }
+	        function exp(n) { return new this(n)['exp'](); }
 
 
 	        /*
@@ -23061,7 +23302,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * n {number|string|Decimal}
 	         *
 	         */
-	        function ln(n) { return new this(n)['ln']() }
+	        function ln(n) { return new this(n)['ln'](); }
 
 
 	        /*
@@ -23074,7 +23315,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * y {number|string|Decimal} The base of the logarithm.
 	         *
 	         */
-	        function log( x, y ) { return new this(x)['log'](y) }
+	        function log( x, y ) { return new this(x)['log'](y); }
 
 
 	        /*
@@ -23112,7 +23353,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * arguments {number|string|Decimal}
 	         *
 	         */
-	        function max() { return maxOrMin( this, arguments, 'lt' ) }
+	        function max() { return maxOrMin( this, arguments, 'lt' ); }
 
 
 	        /*
@@ -23121,7 +23362,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * arguments {number|string|Decimal}
 	         *
 	         */
-	        function min() { return maxOrMin( this, arguments, 'gt' ) }
+	        function min() { return maxOrMin( this, arguments, 'gt' ); }
 
 
 	        /*
@@ -23129,24 +23370,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	         */
 	        var parseDecimal = (function () {
 	            var isValid = /^-?(\d+(\.\d*)?|\.\d+)(e[+-]?\d+)?$/i,
-	                trim = String.prototype.trim || function () {return this.replace(/^\s+|\s+$/g, '')};
+	                trim = String.prototype.trim ||
+	                  function () { return this.replace(/^\s+|\s+$/g, ''); };
 
 	            return function ( Decimal, x, n, b ) {
 	                var d, e, i, isNum, orig, valid;
 
 	                if ( typeof n != 'string' ) {
 
-	                    // TODO: modify so regex test below is avoided if type is number.
 	                    // If n is a number, check if minus zero.
 	                    n = ( isNum = typeof n == 'number' || toString.call(n) == '[object Number]' ) &&
 	                        n === 0 && 1 / n < 0 ? '-0' : n + '';
 	                }
 	                orig = n;
 
-	                if ( b == e && isValid.test(n) ) {
+	                if ( b == null && isValid.test(n) ) {
 
 	                    // Determine sign.
-	                    x['s'] = n.charAt(0) == '-' ? ( n = n.slice(1), -1 ) : 1;
+	                    x['s'] = n.charCodeAt(0) === 45 ? ( n = n.slice(1), -1 ) : 1;
 
 	                // Either n is not a valid Decimal or a base has been specified.
 	                } else {
@@ -23162,9 +23403,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                    n = trim.call(n).replace( /^\+(?!-)/, '' );
 
-	                    x['s'] = n.charAt(0) == '-' ? ( n = n.replace( /^-(?!-)/, '' ), -1 ) : 1;
+	                    x['s'] = n.charCodeAt(0) === 45 ? ( n = n.replace( /^-(?!-)/, '' ), -1 ) : 1;
 
-	                    if ( b != e ) {
+	                    if ( b != null ) {
 
 	                        if ( ( b == (b | 0) || !Decimal['errors'] ) &&
 	                          !( outOfRange = !( b >= 2 && b < 65 ) ) ) {
@@ -23175,8 +23416,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                            // Any number in exponential form will fail due to the e+/-.
 	                            if ( valid = new RegExp(
-	                              '^' + d + '(?:\\.' + d + ')?$', b < 37 ? 'i' : '' ).test(n)
-	                            ) {
+	                              '^' + d + '(?:\\.' + d + ')?$', b < 37 ? 'i' : '' ).test(n) ) {
 
 	                                if (isNum) {
 
@@ -23238,7 +23478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 
 	                // Exponential form?
-	                if ( ( i = n.search( /e/i ) ) > 0 ) {
+	                if ( ( i = n.search(/e/i) ) > 0 ) {
 
 	                    // Determine exponent.
 	                    if ( e < 0 ) {
@@ -23254,10 +23494,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 
 	                // Determine leading zeros.
-	                for ( i = 0; n.charAt(i) == '0'; i++ );
+	                for ( i = 0; n.charCodeAt(i) === 48; i++ );
 
 	                // Determine trailing zeros.
-	                for ( b = n.length; n.charAt(--b) == '0'; );
+	                for ( b = n.length; n.charCodeAt(--b) === 48; );
 
 	                n = n.slice( i, b + 1 );
 
@@ -23325,9 +23565,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    // Zero.
 	                    x['c'] = [ x['e'] = 0 ];
 	                }
-
 	                id = 0;
-	            }
+
+	                return x;
+	            };
 	        })();
 
 
@@ -23338,7 +23579,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * y {number|string|Decimal} The exponent.
 	         *
 	         */
-	        function pow( x, y ) { return new this(x)['pow'](y) }
+	        function pow( x, y ) { return new this(x)['pow'](y); }
 
 
 	        /*
@@ -23500,7 +23741,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * n {number|string|Decimal}
 	         *
 	         */
-	        function sqrt(n) { return new this(n)['sqrt']() }
+	        function sqrt(n) { return new this(n)['sqrt'](); }
 
 
 	        /*
@@ -23522,13 +23763,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	        /*
-	         * Create and return a new Decimal constructor.
+	         * Create and return a Decimal constructor.
 	         *
 	         */
-	        function DecimalFactory(obj) {
+	        function decimalFactory(obj) {
 
 	            /*
-	             * The Decimal constructor.
+	             * The Decimal constructor and exported function.
 	             * Create and return a new instance of a Decimal object.
 	             *
 	             * n {number|string|Decimal} A numeric value.
@@ -23545,17 +23786,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    return new Decimal( n, b );
 	                }
 
+	                // Retain a reference to this Decimal constructor, and shadow
+	                // Decimal.prototype.constructor which points to Object.
+	                x['constructor'] = Decimal;
+
 	                // Duplicate.
 	                if ( n instanceof Decimal ) {
 
 	                    if ( b == null ) {
 	                        id = 0;
-	                        x['constructor'] = n['constructor'];
 	                        x['s'] = n['s'];
 	                        x['e'] = n['e'];
 	                        x['c'] = ( n = n['c'] ) ? n.slice() : n;
 
-	                        return;
+	                        return x;
 	                    } else if ( b == 10 ) {
 
 	                        return rnd( new Decimal(n), Decimal['precision'], Decimal['rounding'] );
@@ -23564,13 +23808,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                }
 
-	                return parseDecimal( x['constructor'] = Decimal, x, n, b );
+	                return parseDecimal( Decimal, x, n, b );
 	            }
 
 
-	            /* ************************ CONSTRUCTOR DEFAULT PROPERTIES *****************************
+	            /* ************************ CONSTRUCTOR DEFAULT PROPERTIES ************************** */
 
-
+	            /*
 	             These default values must be integers within the stated ranges (inclusive).
 	             Most of these values can be changed during run-time using Decimal.config.
 	             */
@@ -23623,25 +23867,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            // The exponent value at and beneath which toString returns exponential notation.
 	            // Number type: -7
-	            Decimal['toExpNeg'] = -7;                       // 0 to -EXP_LIMIT
+	            Decimal['toExpNeg'] = -7;                         // 0 to -EXP_LIMIT
 
 	            // The exponent value at and above which toString returns exponential notation.
 	            // Number type: 21
-	            Decimal['toExpPos'] = 21;                       // 0 to EXP_LIMIT
+	            Decimal['toExpPos'] = 21;                         // 0 to EXP_LIMIT
 
 	            // The minimum exponent value, beneath which underflow to zero occurs.
 	            // Number type: -324  (5e-324)
-	            Decimal['minE'] = -EXP_LIMIT;                    // -1 to -EXP_LIMIT
+	            Decimal['minE'] = -EXP_LIMIT;                     // -1 to -EXP_LIMIT
 
 	            // The maximum exponent value, above which overflow to Infinity occurs.
 	            // Number type:  308  (1.7976931348623157e+308)
-	            Decimal['maxE'] = EXP_LIMIT;                     // 1 to EXP_LIMIT
+	            Decimal['maxE'] = EXP_LIMIT;                      // 1 to EXP_LIMIT
 
 	            // Whether Decimal Errors are ever thrown.
 	            Decimal['errors'] = true;                         // true/false
 
 	            // Whether to use cryptographically-secure random number generation, if available.
 	            Decimal['crypto'] = false;                        // true/false
+
+	            // Format specification for the Decimal.prototype.toFormat method
+	            Decimal.format = {
+	                decimalSeparator: '.',
+	                groupSeparator: ',',
+	                groupSize: 3,
+	                secondaryGroupSize: 0,
+	                fractionGroupSeparator: '\xA0',              // non-breaking space
+	                fractionGroupSize: 0
+	            };
 
 
 	            /* ********************** END OF CONSTRUCTOR DEFAULT PROPERTIES ********************* */
@@ -23685,7 +23939,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            //Decimal['trunc'] = trunc;
 
 	            Decimal['config'] = config;
-	            Decimal['constructor'] = DecimalFactory;
+	            Decimal['constructor'] = decimalFactory;
 	            Decimal['exp'] = exp;
 	            Decimal['ln'] = ln;
 	            Decimal['log'] = log;
@@ -23702,7 +23956,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return Decimal;
 	        }
 
-	        return DecimalFactory();
+	        return decimalFactory();
 	    })();
 
 
@@ -23713,12 +23967,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if ( true ) {
 
 	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	            return DecimalConstructor;
+	            return decimal;
 	        }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 	    // Node and other environments that support module.exports.
 	    } else if ( typeof module != 'undefined' && module.exports ) {
-	        module.exports = DecimalConstructor;
+	        module.exports = decimal;
 
 	        if ( !crypto ) {
 
@@ -23731,19 +23985,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else {
 	        noConflict = global['Decimal'];
 
-	        DecimalConstructor['noConflict'] = function () {
+	        decimal['noConflict'] = function () {
 	            global['Decimal'] = noConflict;
 
-	            return DecimalConstructor;
+	            return decimal;
 	        };
 
-	        global['Decimal'] = DecimalConstructor;
+	        global['Decimal'] = decimal;
 	    }
 	})(this);
 
 
 /***/ },
-/* 156 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23758,179 +24012,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 157 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a syntax error with the message:
-	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
-	 * @param {String} fn     Function name
-	 * @param {Number} count  Actual argument count
-	 * @param {Number} min    Minimum required argument count
-	 * @param {Number} [max]  Maximum required argument count
-	 * @extends Error
-	 */
-	function ArgumentsError(fn, count, min, max) {
-	  if (!(this instanceof ArgumentsError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.fn = fn;
-	  this.count = count;
-	  this.min = min;
-	  this.max = max;
-
-	  this.message = 'Wrong number of arguments in function ' + fn +
-	      ' (' + count + ' provided, ' +
-	      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	ArgumentsError.prototype = new Error();
-	ArgumentsError.prototype.constructor = Error;
-	ArgumentsError.prototype.name = 'ArgumentsError';
-
-	module.exports = ArgumentsError;
-
-
-/***/ },
-/* 158 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a range error with the message:
-	 *     'Dimension mismatch (<actual size> != <expected size>)'
-	 * @param {number | number[]} actual        The actual size
-	 * @param {number | number[]} expected      The expected size
-	 * @param {string} [relation='!=']          Optional relation between actual
-	 *                                          and expected size: '!=', '<', etc.
-	 * @extends RangeError
-	 */
-	function DimensionError(actual, expected, relation) {
-	  if (!(this instanceof DimensionError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.actual   = actual;
-	  this.expected = expected;
-	  this.relation = relation;
-
-	  this.message = 'Dimension mismatch (' +
-	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
-	      ' ' + (this.relation || '!=') + ' ' +
-	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
-	      ')';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	DimensionError.prototype = new RangeError();
-	DimensionError.prototype.constructor = RangeError;
-	DimensionError.prototype.name = 'DimensionError';
-
-	module.exports = DimensionError;
-
-
-/***/ },
-/* 159 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a range error with the message:
-	 *     'Index out of range (index < min)'
-	 *     'Index out of range (index < max)'
-	 *
-	 * @param {number} index     The actual index
-	 * @param {number} [min=0]   Minimum index (included)
-	 * @param {number} [max]     Maximum index (excluded)
-	 * @extends RangeError
-	 */
-	function IndexError(index, min, max) {
-	  if (!(this instanceof IndexError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.index = index;
-	  if (arguments.length < 3) {
-	    this.min = 0;
-	    this.max = min;
-	  }
-	  else {
-	    this.min = min;
-	    this.max = max;
-	  }
-
-	  if (this.min !== undefined && this.index < this.min) {
-	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
-	  }
-	  else if (this.max !== undefined && this.index >= this.max) {
-	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
-	  }
-	  else {
-	    this.message = 'Index out of range (' + this.index + ')';
-	  }
-
-	  this.stack = (new Error()).stack;
-	}
-
-	IndexError.prototype = new RangeError();
-	IndexError.prototype.constructor = RangeError;
-	IndexError.prototype.name = 'IndexError';
-
-	module.exports = IndexError;
-
-
-/***/ },
-/* 160 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a TypeError with message:
-	 *      'Function <fn> does not support a parameter of type <type>';
-	 * @param {String} fn     Function name
-	 * @param {*...} [types]  The types of the function arguments
-	 * @extends TypeError
-	 */
-	function UnsupportedTypeError(fn, types) {
-	  if (!(this instanceof UnsupportedTypeError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.fn = fn;
-	  this.types = Array.prototype.splice.call(arguments, 1);
-
-	  if (!fn) {
-	    this.message = 'Unsupported type of argument';
-	  }
-	  else {
-	    if (this.types.length == 0) {
-	      this.message = 'Unsupported type of argument in function ' + fn;
-	    }
-	    else {
-	      this.message = 'Function ' + fn + '(' + this.types.join(', ') + ') not supported';
-	    }
-	  }
-
-	  this.stack = (new Error()).stack;
-	}
-
-	UnsupportedTypeError.prototype = new TypeError();
-	UnsupportedTypeError.prototype.constructor = TypeError;
-	UnsupportedTypeError.prototype.name = 'UnsupportedTypeError';
-
-	module.exports = UnsupportedTypeError;
-
-
-/***/ },
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -23940,7 +24021,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    object = __webpack_require__(3),
 	    string = __webpack_require__(176),
 	    collection = __webpack_require__(13),
-	    util = __webpack_require__(156),
+	    util = __webpack_require__(160),
 
 	    isArray = Array.isArray,
 	    isNode = Node.isNode;
@@ -24305,10 +24386,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Node = __webpack_require__(173);
 	var latex = __webpack_require__(315);
-	var BigNumber = __webpack_require__(155);
+	var BigNumber = __webpack_require__(159);
 	var Complex = __webpack_require__(6);
 	var Unit = __webpack_require__(10);
-	var util = __webpack_require__(156);
+	var util = __webpack_require__(160);
 	var isString = util.string.isString;
 	var isNumber = util.number.isNumber;
 	var isBoolean = util['boolean'].isBoolean;
@@ -24459,7 +24540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Node = __webpack_require__(173),
-	    BigNumber = __webpack_require__(155),
+	    BigNumber = __webpack_require__(159),
 	    type = __webpack_require__(196).type,
 	    isString = __webpack_require__(176).isString;
 
@@ -24769,7 +24850,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var RangeNode = __webpack_require__(170);
 	var SymbolNode = __webpack_require__(171);
 
-	var BigNumber = __webpack_require__(155);
+	var BigNumber = __webpack_require__(159);
 	var Range = __webpack_require__(7);
 
 	var isNode = Node.isNode;
@@ -25941,8 +26022,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var DimensionError = __webpack_require__(158);
-	var IndexError = __webpack_require__(159);
+	var DimensionError = __webpack_require__(156);
+	var IndexError = __webpack_require__(157);
 
 	/**
 	 * Transform zero-based indices to one-based indices in errors
@@ -25982,7 +26063,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var number = __webpack_require__(4),
 	    bignumber = __webpack_require__(152),
-	    BigNumber = __webpack_require__(155);
+	    BigNumber = __webpack_require__(159);
 
 	/**
 	 * Test whether value is a String
