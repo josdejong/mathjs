@@ -824,6 +824,15 @@ describe('parse', function() {
       assert.strictEqual(parseAndEval('false & false'), 0);
     });
 
+    it('should parse bitwise xor ^|', function() {
+      assert.strictEqual(parseAndEval('2 ^| 6'), 4);
+      assert.strictEqual(parseAndEval('5 ^| 3'), 6);
+      assert.strictEqual(parseAndEval('true ^| true'), 0);
+      assert.strictEqual(parseAndEval('true ^| false'), 1);
+      assert.strictEqual(parseAndEval('false ^| true'), 1);
+      assert.strictEqual(parseAndEval('false ^| false'), 0);
+    });
+
     it('should parse bitwise or |', function() {
       assert.strictEqual(parseAndEval('2 | 6'), 6);
       assert.strictEqual(parseAndEval('5 | 3'), 7);
@@ -1195,6 +1204,18 @@ describe('parse', function() {
       it('should respect precedence between bitwise or | and logical and', function () {
         assert.strictEqual(parseAndEval('2 | 2 and 4'), true);
         assert.strictEqual(parseAndEval('4 and 2 | 2'), true);
+      });
+
+      it('should respect precedence between bitwise xor ^| and bitwise or |', function () {
+        assert.strictEqual(parseAndEval('4 ^| 6 | 2'), 2);
+        assert.strictEqual(parseAndEval('2 | 4 ^| 6'), 2);
+        assert.strictEqual(parseAndEval('(2 | 4) ^| 6'), 0);
+      });
+
+      it('should respect precedence between bitwise and & and bitwise or |', function () {
+        assert.strictEqual(parseAndEval('4 & 3 | 12'), 12);
+        assert.strictEqual(parseAndEval('12 | 4 & 3'), 12);
+        assert.strictEqual(parseAndEval('(12 | 4) & 3'), 0);
       });
 
       it('should respect precedence between logical and and or', function () {

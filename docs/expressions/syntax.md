@@ -65,6 +65,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `&`         | Bitwise and             | `x & y`     | Left to right | `5 & 3`               | `1`
 `~`         | Bitwise not             | `~x`        | Right to left | `~2`                  | `-3`
 `|`         | Bitwise or              | `x | y`     | Left to right | `5 | 3`               | `7`
+`^|`        | Bitwise xor             | `x ^| y`    | Left to right | `5 ^| 3`              | `6`
 `<<`        | Left shift              | `x << y`    | Left to right | `4 << 1`              | `8`
 `>>`        | Right arithmetic shift  | `x >> y`    | Left to right | `8 >> 1`              | `4`
 `>>>`       | Right logical shift     | `x >>> y`   | Left to right | `-8 >>> 1`            | `2147483644`
@@ -100,6 +101,7 @@ Operators                         | Description
 `<<`, `>>`, `>>>`                 | Bitwise left shift, bitwise right arithmetic shift, bitwise right logical shift
 `==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
 `&`                               | Bitwise and
+`^|`                              | Bitwise xor
 `|`                               | Bitwise or
 `and`                             | Logical and
 `xor`                             | Logical xor
