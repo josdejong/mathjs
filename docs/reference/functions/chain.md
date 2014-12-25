@@ -10,7 +10,7 @@ the final value.
 
 The chain has a number of special functions:
 
-- `done()`     Finalize the chained operation and return the chain's value.
+- `done()`     Finalize the chain and return the chain's value.
 - `valueOf()`  The same as `done()`
 - `toString()` Executes `math.format()` onto the chain's value, returning
                a string representation of the value.

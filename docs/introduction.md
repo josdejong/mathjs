@@ -34,7 +34,7 @@ Math.js can be used in three different ways:
     math.eval('a ^ b', {a: 2, b: 3});       // Number  8
     ```
 
--   Do **chained operations** using [`math.chain`](reference/functions/chain.md), described in section [Chained operations](chained_operations.md). Examples:
+-   Write **chains** using [`math.chain`](reference/functions/chain.md), described in section [Chaining](chaining.md). Examples:
 
     ```js
     math.chain(3)

@@ -1,4 +1,4 @@
-// chained operations
+// chaining
 
 // load math.js
 var math = require('../index');

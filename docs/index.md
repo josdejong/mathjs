@@ -23,7 +23,7 @@ describing all available functions, constants, and units in detail.
   - [Syntax](expressions/syntax.md)
   - [Expression trees](expressions/expression_trees.md)
   - [Customization](expressions/customization.md)
-- [Chained Operations](chained_operations.md)
+- [Chaining](chaining.md)
 - [Data Types](datatypes/index.md)
   - [Numbers](datatypes/numbers.md)
   - [BigNumbers](datatypes/bignumbers.md)
