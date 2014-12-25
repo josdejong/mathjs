@@ -6,7 +6,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 1.2.0
+ * @version 1.2.1-SNAPSHOT
  * @date    2014-12-25
  *
  * @license
@@ -203,7 +203,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.create = create;
 
 	  // create a new BigNumber factory for this instance of math.js
-	  var BigNumber = __webpack_require__(159).constructor();
+	  var BigNumber = __webpack_require__(155).constructor();
 
 	  // extend BigNumber with a function clone
 	  if (typeof BigNumber.prototype.clone !== 'function') {
@@ -941,10 +941,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	exports.ArgumentsError = __webpack_require__(155);
-	exports.DimensionError = __webpack_require__(156);
-	exports.IndexError = __webpack_require__(157);
-	exports.UnsupportedTypeError = __webpack_require__(158);
+	exports.ArgumentsError = __webpack_require__(156);
+	exports.DimensionError = __webpack_require__(157);
+	exports.IndexError = __webpack_require__(158);
+	exports.UnsupportedTypeError = __webpack_require__(159);
 
 	// TODO: implement an InvalidValueError?
 
@@ -1950,7 +1950,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var util = __webpack_require__(160),
-	    DimensionError = __webpack_require__(156),
+	    DimensionError = __webpack_require__(157),
 
 	    Index = __webpack_require__(8),
 
@@ -3489,8 +3489,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var util = __webpack_require__(160),
 
-	    IndexError = __webpack_require__(157),
-	    DimensionError = __webpack_require__(156),
+	    IndexError = __webpack_require__(158),
+	    DimensionError = __webpack_require__(157),
 
 	    Matrix = __webpack_require__(9),
 
@@ -3755,7 +3755,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var util = __webpack_require__(160),
 
-	    ArgumentsError = __webpack_require__(155),
+	    ArgumentsError = __webpack_require__(156),
 
 	    isString = util.string.isString,
 	    isArray = Array.isArray,
@@ -3773,13 +3773,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    BlockNode = __webpack_require__(163),
 	    ConditionalNode = __webpack_require__(164),
 	    ConstantNode = __webpack_require__(165),
-	    FunctionAssignmentNode = __webpack_require__(166),
-	    IndexNode = __webpack_require__(167),
-	    OperatorNode = __webpack_require__(168),
-	    FunctionNode = __webpack_require__(169),
-	    RangeNode = __webpack_require__(170),
-	    SymbolNode = __webpack_require__(171),
-	    UpdateNode = __webpack_require__(172);
+	    FunctionAssignmentNode = __webpack_require__(167),
+	    IndexNode = __webpack_require__(166),
+	    OperatorNode = __webpack_require__(170),
+	    FunctionNode = __webpack_require__(168),
+	    RangeNode = __webpack_require__(171),
+	    SymbolNode = __webpack_require__(172),
+	    UpdateNode = __webpack_require__(173);
 
 	/**
 	 * Parse an expression. Returns a node tree, which can be evaluated by
@@ -5295,14 +5295,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.BlockNode = __webpack_require__(163);
 	exports.ConditionalNode = __webpack_require__(164);
 	exports.ConstantNode = __webpack_require__(165);
-	exports.IndexNode = __webpack_require__(167);
-	exports.FunctionAssignmentNode = __webpack_require__(166);
-	exports.FunctionNode = __webpack_require__(169);
-	exports.Node = __webpack_require__(173);
-	exports.OperatorNode = __webpack_require__(168);
-	exports.RangeNode = __webpack_require__(170);
-	exports.SymbolNode = __webpack_require__(171);
-	exports.UpdateNode = __webpack_require__(172);
+	exports.IndexNode = __webpack_require__(166);
+	exports.FunctionAssignmentNode = __webpack_require__(167);
+	exports.FunctionNode = __webpack_require__(168);
+	exports.Node = __webpack_require__(169);
+	exports.OperatorNode = __webpack_require__(170);
+	exports.RangeNode = __webpack_require__(171);
+	exports.SymbolNode = __webpack_require__(172);
+	exports.UpdateNode = __webpack_require__(173);
 
 
 /***/ },
@@ -5482,7 +5482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(159);
+	var BigNumber = __webpack_require__(155);
 	var errorTransform = __webpack_require__(174).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var argsToArray = __webpack_require__(153).argsToArray;
@@ -5526,10 +5526,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var SymbolNode = __webpack_require__(171);
+	var SymbolNode = __webpack_require__(172);
 	var isBoolean = __webpack_require__(175).isBoolean;
 	var argsToArray = __webpack_require__(153).argsToArray;
-	var ArgumentsError = __webpack_require__(155);
+	var ArgumentsError = __webpack_require__(156);
 
 	/**
 	 * Attach a transform function to math.filter
@@ -5641,7 +5641,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(159);
+	var BigNumber = __webpack_require__(155);
 	var Range = __webpack_require__(7);
 	var Index = __webpack_require__(8);
 	var Matrix = __webpack_require__(9);
@@ -5693,7 +5693,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Matrix = __webpack_require__(9);
-	var BigNumber = __webpack_require__(159);
+	var BigNumber = __webpack_require__(155);
 	var Range = __webpack_require__(7);
 	var Index = __webpack_require__(8);
 	var isNumber = __webpack_require__(4).isNumber;
@@ -5745,7 +5745,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(159);
+	var BigNumber = __webpack_require__(155);
 	var errorTransform = __webpack_require__(174).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var isCollection = __webpack_require__(13).isCollection;
@@ -5790,7 +5790,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(159);
+	var BigNumber = __webpack_require__(155);
 	var errorTransform = __webpack_require__(174).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var isCollection = __webpack_require__(13).isCollection;
@@ -5835,7 +5835,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(159);
+	var BigNumber = __webpack_require__(155);
 	var errorTransform = __webpack_require__(174).transform;
 	var isNumber = __webpack_require__(4).isNumber;
 	var isCollection = __webpack_require__(13).isCollection;
@@ -11998,7 +11998,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = function (math) {
 	  var util = __webpack_require__(160),
 
-	      BigNumber = __webpack_require__(159),
+	      BigNumber = __webpack_require__(155),
 	      Matrix = __webpack_require__(9),
 	      collection = __webpack_require__(13),
 
@@ -18668,7 +18668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(159);
+	var BigNumber = __webpack_require__(155);
 	var isNumber = __webpack_require__(4).isNumber;
 	var digits = __webpack_require__(4).digits;
 
@@ -19374,8 +19374,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    object = __webpack_require__(3),
 	    types = __webpack_require__(196),
 
-	    DimensionError = __webpack_require__(156),
-	    IndexError = __webpack_require__(157),
+	    DimensionError = __webpack_require__(157),
+	    IndexError = __webpack_require__(158),
 
 	    isArray = Array.isArray;
 
@@ -19749,186 +19749,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = '1.2.0';
+	module.exports = '1.2.1-SNAPSHOT';
 	// Note: This file is automatically generated when building math.js.
 	// Changes made in this file will be overwritten.
 
 
 /***/ },
 /* 155 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a syntax error with the message:
-	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
-	 * @param {String} fn     Function name
-	 * @param {Number} count  Actual argument count
-	 * @param {Number} min    Minimum required argument count
-	 * @param {Number} [max]  Maximum required argument count
-	 * @extends Error
-	 */
-	function ArgumentsError(fn, count, min, max) {
-	  if (!(this instanceof ArgumentsError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.fn = fn;
-	  this.count = count;
-	  this.min = min;
-	  this.max = max;
-
-	  this.message = 'Wrong number of arguments in function ' + fn +
-	      ' (' + count + ' provided, ' +
-	      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	ArgumentsError.prototype = new Error();
-	ArgumentsError.prototype.constructor = Error;
-	ArgumentsError.prototype.name = 'ArgumentsError';
-
-	module.exports = ArgumentsError;
-
-
-/***/ },
-/* 156 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a range error with the message:
-	 *     'Dimension mismatch (<actual size> != <expected size>)'
-	 * @param {number | number[]} actual        The actual size
-	 * @param {number | number[]} expected      The expected size
-	 * @param {string} [relation='!=']          Optional relation between actual
-	 *                                          and expected size: '!=', '<', etc.
-	 * @extends RangeError
-	 */
-	function DimensionError(actual, expected, relation) {
-	  if (!(this instanceof DimensionError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.actual   = actual;
-	  this.expected = expected;
-	  this.relation = relation;
-
-	  this.message = 'Dimension mismatch (' +
-	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
-	      ' ' + (this.relation || '!=') + ' ' +
-	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
-	      ')';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	DimensionError.prototype = new RangeError();
-	DimensionError.prototype.constructor = RangeError;
-	DimensionError.prototype.name = 'DimensionError';
-
-	module.exports = DimensionError;
-
-
-/***/ },
-/* 157 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a range error with the message:
-	 *     'Index out of range (index < min)'
-	 *     'Index out of range (index < max)'
-	 *
-	 * @param {number} index     The actual index
-	 * @param {number} [min=0]   Minimum index (included)
-	 * @param {number} [max]     Maximum index (excluded)
-	 * @extends RangeError
-	 */
-	function IndexError(index, min, max) {
-	  if (!(this instanceof IndexError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.index = index;
-	  if (arguments.length < 3) {
-	    this.min = 0;
-	    this.max = min;
-	  }
-	  else {
-	    this.min = min;
-	    this.max = max;
-	  }
-
-	  if (this.min !== undefined && this.index < this.min) {
-	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
-	  }
-	  else if (this.max !== undefined && this.index >= this.max) {
-	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
-	  }
-	  else {
-	    this.message = 'Index out of range (' + this.index + ')';
-	  }
-
-	  this.stack = (new Error()).stack;
-	}
-
-	IndexError.prototype = new RangeError();
-	IndexError.prototype.constructor = RangeError;
-	IndexError.prototype.name = 'IndexError';
-
-	module.exports = IndexError;
-
-
-/***/ },
-/* 158 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a TypeError with message:
-	 *      'Function <fn> does not support a parameter of type <type>';
-	 * @param {String} fn     Function name
-	 * @param {*...} [types]  The types of the function arguments
-	 * @extends TypeError
-	 */
-	function UnsupportedTypeError(fn, types) {
-	  if (!(this instanceof UnsupportedTypeError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.fn = fn;
-	  this.types = Array.prototype.splice.call(arguments, 1);
-
-	  if (!fn) {
-	    this.message = 'Unsupported type of argument';
-	  }
-	  else {
-	    if (this.types.length == 0) {
-	      this.message = 'Unsupported type of argument in function ' + fn;
-	    }
-	    else {
-	      this.message = 'Function ' + fn + '(' + this.types.join(', ') + ') not supported';
-	    }
-	  }
-
-	  this.stack = (new Error()).stack;
-	}
-
-	UnsupportedTypeError.prototype = new TypeError();
-	UnsupportedTypeError.prototype.constructor = TypeError;
-	UnsupportedTypeError.prototype.name = 'UnsupportedTypeError';
-
-	module.exports = UnsupportedTypeError;
-
-
-/***/ },
-/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v4.0.1 https://github.com/MikeMcl/decimal.js/LICENCE */
@@ -23997,6 +23824,179 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 156 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a syntax error with the message:
+	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
+	 * @param {String} fn     Function name
+	 * @param {Number} count  Actual argument count
+	 * @param {Number} min    Minimum required argument count
+	 * @param {Number} [max]  Maximum required argument count
+	 * @extends Error
+	 */
+	function ArgumentsError(fn, count, min, max) {
+	  if (!(this instanceof ArgumentsError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.fn = fn;
+	  this.count = count;
+	  this.min = min;
+	  this.max = max;
+
+	  this.message = 'Wrong number of arguments in function ' + fn +
+	      ' (' + count + ' provided, ' +
+	      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	ArgumentsError.prototype = new Error();
+	ArgumentsError.prototype.constructor = Error;
+	ArgumentsError.prototype.name = 'ArgumentsError';
+
+	module.exports = ArgumentsError;
+
+
+/***/ },
+/* 157 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a range error with the message:
+	 *     'Dimension mismatch (<actual size> != <expected size>)'
+	 * @param {number | number[]} actual        The actual size
+	 * @param {number | number[]} expected      The expected size
+	 * @param {string} [relation='!=']          Optional relation between actual
+	 *                                          and expected size: '!=', '<', etc.
+	 * @extends RangeError
+	 */
+	function DimensionError(actual, expected, relation) {
+	  if (!(this instanceof DimensionError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.actual   = actual;
+	  this.expected = expected;
+	  this.relation = relation;
+
+	  this.message = 'Dimension mismatch (' +
+	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
+	      ' ' + (this.relation || '!=') + ' ' +
+	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
+	      ')';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	DimensionError.prototype = new RangeError();
+	DimensionError.prototype.constructor = RangeError;
+	DimensionError.prototype.name = 'DimensionError';
+
+	module.exports = DimensionError;
+
+
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a range error with the message:
+	 *     'Index out of range (index < min)'
+	 *     'Index out of range (index < max)'
+	 *
+	 * @param {number} index     The actual index
+	 * @param {number} [min=0]   Minimum index (included)
+	 * @param {number} [max]     Maximum index (excluded)
+	 * @extends RangeError
+	 */
+	function IndexError(index, min, max) {
+	  if (!(this instanceof IndexError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.index = index;
+	  if (arguments.length < 3) {
+	    this.min = 0;
+	    this.max = min;
+	  }
+	  else {
+	    this.min = min;
+	    this.max = max;
+	  }
+
+	  if (this.min !== undefined && this.index < this.min) {
+	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
+	  }
+	  else if (this.max !== undefined && this.index >= this.max) {
+	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
+	  }
+	  else {
+	    this.message = 'Index out of range (' + this.index + ')';
+	  }
+
+	  this.stack = (new Error()).stack;
+	}
+
+	IndexError.prototype = new RangeError();
+	IndexError.prototype.constructor = RangeError;
+	IndexError.prototype.name = 'IndexError';
+
+	module.exports = IndexError;
+
+
+/***/ },
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a TypeError with message:
+	 *      'Function <fn> does not support a parameter of type <type>';
+	 * @param {String} fn     Function name
+	 * @param {*...} [types]  The types of the function arguments
+	 * @extends TypeError
+	 */
+	function UnsupportedTypeError(fn, types) {
+	  if (!(this instanceof UnsupportedTypeError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.fn = fn;
+	  this.types = Array.prototype.splice.call(arguments, 1);
+
+	  if (!fn) {
+	    this.message = 'Unsupported type of argument';
+	  }
+	  else {
+	    if (this.types.length == 0) {
+	      this.message = 'Unsupported type of argument in function ' + fn;
+	    }
+	    else {
+	      this.message = 'Function ' + fn + '(' + this.types.join(', ') + ') not supported';
+	    }
+	  }
+
+	  this.stack = (new Error()).stack;
+	}
+
+	UnsupportedTypeError.prototype = new TypeError();
+	UnsupportedTypeError.prototype.constructor = TypeError;
+	UnsupportedTypeError.prototype.name = 'UnsupportedTypeError';
+
+	module.exports = UnsupportedTypeError;
+
+
+/***/ },
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -24017,7 +24017,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(173),
+	var Node = __webpack_require__(169),
 	    object = __webpack_require__(3),
 	    string = __webpack_require__(176),
 	    collection = __webpack_require__(13),
@@ -24144,12 +24144,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(173),
+	var Node = __webpack_require__(169),
 	    ArrayNode = __webpack_require__(161),
 
-	    keywords = __webpack_require__(314),
+	    keywords = __webpack_require__(315),
 
-	    latex = __webpack_require__(315),
+	    latex = __webpack_require__(314),
 	    isString = __webpack_require__(176).isString;
 
 	/**
@@ -24245,7 +24245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(173);
+	var Node = __webpack_require__(169);
 	var ResultSet = __webpack_require__(12);
 	var isBoolean = __webpack_require__(175).isBoolean;
 
@@ -24384,9 +24384,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(173);
-	var latex = __webpack_require__(315);
-	var BigNumber = __webpack_require__(159);
+	var Node = __webpack_require__(169);
+	var latex = __webpack_require__(314);
+	var BigNumber = __webpack_require__(155);
 	var Complex = __webpack_require__(6);
 	var Unit = __webpack_require__(10);
 	var util = __webpack_require__(160);
@@ -24539,8 +24539,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(173),
-	    BigNumber = __webpack_require__(159),
+	var Node = __webpack_require__(169),
+	    BigNumber = __webpack_require__(155),
 	    type = __webpack_require__(196).type,
 	    isString = __webpack_require__(176).isString;
 
@@ -24726,131 +24726,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(173);
-	var keywords = __webpack_require__(314);
-	var latex = __webpack_require__(315);
-	var isString = __webpack_require__(176).isString;
-	var isArray = Array.isArray;
+	var Node = __webpack_require__(169);
+	var RangeNode = __webpack_require__(171);
+	var SymbolNode = __webpack_require__(172);
 
-	/**
-	 * @constructor FunctionAssignmentNode
-	 * @extends {Node}
-	 * Function assignment
-	 *
-	 * @param {String} name           Function name
-	 * @param {String[]} params         Function parameter names
-	 * @param {Node} expr             The function expression
-	 */
-	function FunctionAssignmentNode(name, params, expr) {
-	  if (!(this instanceof FunctionAssignmentNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (!isString(name)) throw new TypeError('String expected for parameter "name"');
-	  if (!isArray(params) || !params.every(isString))  throw new TypeError('Array containing strings expected for parameter "params"');
-	  if (!(expr instanceof Node)) throw new TypeError('Node expected for parameter "expr"');
-	  if (name in keywords) throw new Error('Illegal function name, "'  + name +  '" is a reserved keyword');
-
-	  this.name = name;
-	  this.params = params;
-	  this.expr = expr;
-	}
-
-	FunctionAssignmentNode.prototype = new Node();
-
-	FunctionAssignmentNode.prototype.type = 'FunctionAssignmentNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	FunctionAssignmentNode.prototype._compile = function (defs) {
-	  return 'scope["' + this.name + '"] = ' +
-	      '  (function (scope) {' +
-	      '    scope = Object.create(scope); ' +
-	      '    var fn = function ' + this.name + '(' + this.params.join(',') + ') {' +
-	      '      if (arguments.length != ' + this.params.length + ') {' +
-	      // TODO: use util.error.ArgumentsError here
-	      // TODO: test arguments error
-	      '        throw new SyntaxError("Wrong number of arguments in function ' + this.name + ' (" + arguments.length + " provided, ' + this.params.length + ' expected)");' +
-	      '      }' +
-	      this.params.map(function (variable, index) {
-	        return 'scope["' + variable + '"] = arguments[' + index + '];';
-	      }).join('') +
-	      '      return ' + this.expr._compile(defs) + '' +
-	      '    };' +
-	      '    fn.syntax = "' + this.name + '(' + this.params.join(', ') + ')";' +
-	      '    return fn;' +
-	      '  })(scope);';
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	FunctionAssignmentNode.prototype.forEach = function (callback) {
-	  callback(this.expr, 'expr', this);
-	};
-
-	/**
-	 * Create a new FunctionAssignmentNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {FunctionAssignmentNode} Returns a transformed copy of the node
-	 */
-	FunctionAssignmentNode.prototype.map = function (callback) {
-	  var expr = this._ifNode(callback(this.expr, 'expr', this));
-
-	  return new FunctionAssignmentNode(this.name, this.params.slice(0), expr);
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {FunctionAssignmentNode}
-	 */
-	FunctionAssignmentNode.prototype.clone = function() {
-	  return new FunctionAssignmentNode(this.name, this.params.slice(0), this.expr);
-	};
-
-	/**
-	 * get string representation
-	 * @return {String} str
-	 */
-	FunctionAssignmentNode.prototype.toString = function() {
-	  return 'function ' + this.name +
-	      '(' + this.params.join(', ') + ') = ' +
-	      this.expr.toString();
-	};
-
-	/**
-	 * get LaTeX representation
-	 * @return {String} str
-	 */
-	FunctionAssignmentNode.prototype.toTex = function() {
-	  return this.name +
-	      latex.addBraces(this.params.map(latex.toSymbol).join(', '), true) + '=' +
-	      latex.addBraces(this.expr.toTex());
-	};
-
-	module.exports = FunctionAssignmentNode;
-
-
-/***/ },
-/* 167 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(173);
-	var RangeNode = __webpack_require__(170);
-	var SymbolNode = __webpack_require__(171);
-
-	var BigNumber = __webpack_require__(159);
+	var BigNumber = __webpack_require__(155);
 	var Range = __webpack_require__(7);
 
 	var isNode = Node.isNode;
@@ -25064,40 +24944,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = IndexNode;
 
 /***/ },
-/* 168 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(173),
-	    ConstantNode = __webpack_require__(165),
-	    SymbolNode = __webpack_require__(171),
-	    FunctionNode = __webpack_require__(169),
-	    latex = __webpack_require__(315);
+	var Node = __webpack_require__(169);
+	var keywords = __webpack_require__(315);
+	var latex = __webpack_require__(314);
+	var isString = __webpack_require__(176).isString;
+	var isArray = Array.isArray;
 
 	/**
-	 * @constructor OperatorNode
+	 * @constructor FunctionAssignmentNode
 	 * @extends {Node}
-	 * An operator with two arguments, like 2+3
+	 * Function assignment
 	 *
-	 * @param {String} op       Operator name, for example '+'
-	 * @param {String} fn       Function name, for example 'add'
-	 * @param {Node[]} args     Operator arguments
+	 * @param {String} name           Function name
+	 * @param {String[]} params         Function parameter names
+	 * @param {Node} expr             The function expression
 	 */
-	function OperatorNode (op, fn, args) {
-	  if (!(this instanceof OperatorNode)) {
+	function FunctionAssignmentNode(name, params, expr) {
+	  if (!(this instanceof FunctionAssignmentNode)) {
 	    throw new SyntaxError('Constructor must be called with the new operator');
 	  }
 
-	  // TODO: validate input
-	  this.op = op;
-	  this.fn = fn;
-	  this.args = args || [];
+	  // validate input
+	  if (!isString(name)) throw new TypeError('String expected for parameter "name"');
+	  if (!isArray(params) || !params.every(isString))  throw new TypeError('Array containing strings expected for parameter "params"');
+	  if (!(expr instanceof Node)) throw new TypeError('Node expected for parameter "expr"');
+	  if (name in keywords) throw new Error('Illegal function name, "'  + name +  '" is a reserved keyword');
+
+	  this.name = name;
+	  this.params = params;
+	  this.expr = expr;
 	}
 
-	OperatorNode.prototype = new Node();
+	FunctionAssignmentNode.prototype = new Node();
 
-	OperatorNode.prototype.type = 'OperatorNode';
+	FunctionAssignmentNode.prototype.type = 'FunctionAssignmentNode';
 
 	/**
 	 * Compile the node to javascript code
@@ -25107,181 +24992,87 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String} js
 	 * @private
 	 */
-	OperatorNode.prototype._compile = function (defs) {
-	  if (!(this.fn in defs.math)) {
-	    throw new Error('Function ' + this.fn + ' missing in provided namespace "math"');
-	  }
-
-	  var args = this.args.map(function (arg) {
-	    return arg._compile(defs);
-	  });
-	  return 'math.' + this.fn + '(' + args.join(', ') + ')';
+	FunctionAssignmentNode.prototype._compile = function (defs) {
+	  return 'scope["' + this.name + '"] = ' +
+	      '  (function (scope) {' +
+	      '    scope = Object.create(scope); ' +
+	      '    var fn = function ' + this.name + '(' + this.params.join(',') + ') {' +
+	      '      if (arguments.length != ' + this.params.length + ') {' +
+	      // TODO: use util.error.ArgumentsError here
+	      // TODO: test arguments error
+	      '        throw new SyntaxError("Wrong number of arguments in function ' + this.name + ' (" + arguments.length + " provided, ' + this.params.length + ' expected)");' +
+	      '      }' +
+	      this.params.map(function (variable, index) {
+	        return 'scope["' + variable + '"] = arguments[' + index + '];';
+	      }).join('') +
+	      '      return ' + this.expr._compile(defs) + '' +
+	      '    };' +
+	      '    fn.syntax = "' + this.name + '(' + this.params.join(', ') + ')";' +
+	      '    return fn;' +
+	      '  })(scope);';
 	};
 
 	/**
 	 * Execute a callback for each of the child nodes of this node
 	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	OperatorNode.prototype.forEach = function (callback) {
-	  for (var i = 0; i < this.args.length; i++) {
-	    callback(this.args[i], 'args[' + i + ']', this);
-	  }
+	FunctionAssignmentNode.prototype.forEach = function (callback) {
+	  callback(this.expr, 'expr', this);
 	};
 
 	/**
-	 * Create a new OperatorNode having it's childs be the results of calling
+	 * Create a new FunctionAssignmentNode having it's childs be the results of calling
 	 * the provided callback function for each of the childs of the original node.
 	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {OperatorNode} Returns a transformed copy of the node
+	 * @returns {FunctionAssignmentNode} Returns a transformed copy of the node
 	 */
-	OperatorNode.prototype.map = function (callback) {
-	  var args = [];
-	  for (var i = 0; i < this.args.length; i++) {
-	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
-	  }
-	  return new OperatorNode(this.op, this.fn, args);
+	FunctionAssignmentNode.prototype.map = function (callback) {
+	  var expr = this._ifNode(callback(this.expr, 'expr', this));
+
+	  return new FunctionAssignmentNode(this.name, this.params.slice(0), expr);
 	};
 
 	/**
 	 * Create a clone of this node, a shallow copy
-	 * @return {OperatorNode}
+	 * @return {FunctionAssignmentNode}
 	 */
-	OperatorNode.prototype.clone = function() {
-	  return new OperatorNode(this.op, this.fn, this.args.slice(0));
+	FunctionAssignmentNode.prototype.clone = function() {
+	  return new FunctionAssignmentNode(this.name, this.params.slice(0), this.expr);
 	};
 
 	/**
-	 * Get string representation
+	 * get string representation
 	 * @return {String} str
 	 */
-	OperatorNode.prototype.toString = function() {
-	  var args = this.args;
-
-	  switch (args.length) {
-	    case 1:
-	      if (this.op == '-') {
-	        // special case: unary minus
-	        return '-' + args[0].toString();
-	      }
-	      else {
-	        // for example '5!'
-	        return args[0].toString() + this.op;
-	      }
-
-	    case 2: // for example '2+3'
-	      var lhs = args[0].toString();
-	      if (args[0] instanceof OperatorNode) {
-	        lhs = '(' + lhs + ')';
-	      }
-	      var rhs = args[1].toString();
-	      if (args[1] instanceof OperatorNode) {
-	        rhs = '(' + rhs + ')';
-	      }
-	      return lhs + ' ' + this.op + ' ' + rhs;
-
-	    default: // this should not occur. format as a function call
-	      return this.op + '(' + this.args.join(', ') + ')';
-	  }
+	FunctionAssignmentNode.prototype.toString = function() {
+	  return 'function ' + this.name +
+	      '(' + this.params.join(', ') + ') = ' +
+	      this.expr.toString();
 	};
 
 	/**
-	 * Get LaTeX representation
+	 * get LaTeX representation
 	 * @return {String} str
 	 */
-	OperatorNode.prototype.toTex = function() {
-	  var args = this.args,
-	      mop = latex.toOperator(this.op),
-	      lp = args[0],
-	      rp = args[1];
-
-	  switch (args.length) {
-	    case 1:
-	      if (this.op === '-' || this.op === '+') {
-	        // special case: unary minus
-	        return this.op + lp.toTex();
-	      }
-	      // for example '5!'
-	      return lp.toTex() + this.op;
-
-	    case 2: // for example '2+3'
-	      var lhs = lp.toTex(),
-	          lhb = false,
-	          rhs = rp.toTex(),
-	          rhb = false,
-	          lop = '',
-	          rop = '';
-
-	      switch (this.op) {
-	        case '/':
-	          lop = mop;
-	          mop = '';
-
-	          break;
-
-	        case '*':
-	          if (lp instanceof OperatorNode) {
-	            if (lp.op === '+' || lp.op === '-') {
-	              lhb = true;
-	            }
-	          }
-
-	          if (rp instanceof OperatorNode) {
-	            if (rp.op === '+' || rp.op === '-') {
-	              rhb = true;
-	            }
-	            else if (rp.op === '*') {
-	              rhb = true;
-	            }
-	          }
-
-	          if ((lp instanceof ConstantNode || lp instanceof OperatorNode) &&
-	              (rp instanceof ConstantNode || rp instanceof OperatorNode)) {
-	            mop = ' \\cdot ';
-	          }
-	          else {
-	            mop = ' \\, ';
-	          }
-
-	          break;
-
-	        case '^':
-	          if (lp instanceof OperatorNode || lp instanceof FunctionNode) {
-	            lhb = true;
-	          }
-	          else if (lp instanceof SymbolNode) {
-	            lhb = null;
-	          }
-
-	          break;
-
-	        case 'to':
-	          rhs = latex.toUnit(rhs, true);
-	          break;
-	      }
-
-	      lhs = latex.addBraces(lhs, lhb);
-	      rhs = latex.addBraces(rhs, rhb);
-
-	      return lop + lhs + mop + rhs + rop;
-
-	    default: // this should not occur. format as a function call
-	      return mop + '(' + this.args.map(latex.toSymbol).join(', ') + ')';
-	  }
+	FunctionAssignmentNode.prototype.toTex = function() {
+	  return this.name +
+	      latex.addBraces(this.params.map(latex.toSymbol).join(', '), true) + '=' +
+	      latex.addBraces(this.expr.toTex());
 	};
 
-	module.exports = OperatorNode;
+	module.exports = FunctionAssignmentNode;
 
 
 /***/ },
-/* 169 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(173);
-	var SymbolNode = __webpack_require__(171);
+	var Node = __webpack_require__(169);
+	var SymbolNode = __webpack_require__(172);
 
-	var latex = __webpack_require__(315);
+	var latex = __webpack_require__(314);
 	var isNode = Node.isNode;
 	var isArray = Array.isArray;
 
@@ -25401,346 +25192,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 170 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(173);
-
-	var isNode = Node.isNode;
-
-	/**
-	 * @constructor RangeNode
-	 * @extends {Node}
-	 * create a range
-	 * @param {Node} start  included lower-bound
-	 * @param {Node} end    included lower-bound
-	 * @param {Node} [step] optional step
-	 */
-	function RangeNode (start, end, step) {
-	  if (!(this instanceof RangeNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate inputs
-	  if (!isNode(start)) throw new TypeError('Node expected');
-	  if (!isNode(end)) throw new TypeError('Node expected');
-	  if (step && !isNode(step)) throw new TypeError('Node expected');
-	  if (arguments.length > 3) throw new Error('Too many arguments');
-
-	  this.start = start;         // included lower-bound
-	  this.end   = end;           // included upper-bound
-	  this.step  = step || null;  // optional step
-	}
-
-	RangeNode.prototype = new Node();
-
-	RangeNode.prototype.type = 'RangeNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	RangeNode.prototype._compile = function (defs) {
-	  return 'math.range(' +
-	      this.start._compile(defs) + ', ' +
-	      this.end._compile(defs) +
-	      (this.step ? (', ' + this.step._compile(defs)) : '') +
-	      ')';
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	RangeNode.prototype.forEach = function (callback) {
-	  callback(this.start, 'start', this);
-	  callback(this.end, 'end', this);
-	  if (this.step) {
-	    callback(this.step, 'step', this);
-	  }
-	};
-
-	/**
-	 * Create a new RangeNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {RangeNode} Returns a transformed copy of the node
-	 */
-	RangeNode.prototype.map = function (callback) {
-	  return new RangeNode(
-	      this._ifNode(callback(this.start, 'start', this)),
-	      this._ifNode(callback(this.end, 'end', this)),
-	      this.step && this._ifNode(callback(this.step, 'step', this))
-	  );
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {RangeNode}
-	 */
-	RangeNode.prototype.clone = function() {
-	  return new RangeNode(this.start, this.end, this.step && this.step);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	RangeNode.prototype.toString = function() {
-	  // format the range like "start:step:end"
-	  var str = this.start.toString();
-	  if (this.step) {
-	    str += ':' + this.step.toString();
-	  }
-	  str += ':' + this.end.toString();
-
-	  return str;
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 */
-	RangeNode.prototype.toTex = function() {
-	  var str = this.start.toTex();
-	  if (this.step) {
-	    str += ':' + this.step.toTex();
-	  }
-	  str += ':' + this.end.toTex();
-
-	  return str;
-	};
-
-	module.exports = RangeNode;
-
-
-/***/ },
-/* 171 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(173),
-	    Unit = __webpack_require__(10),
-
-	    latex = __webpack_require__(315),
-	    isString = __webpack_require__(176).isString;
-
-	/**
-	 * @constructor SymbolNode
-	 * @extends {Node}
-	 * A symbol node can hold and resolve a symbol
-	 * @param {String} name
-	 * @extends {Node}
-	 */
-	function SymbolNode(name) {
-	  if (!(this instanceof SymbolNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (!isString(name))  throw new TypeError('String expected for parameter "name"');
-
-	  this.name = name;
-	}
-
-	SymbolNode.prototype = new Node();
-
-	SymbolNode.prototype.type = 'SymbolNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	SymbolNode.prototype._compile = function (defs) {
-	  // add a function to the definitions
-	  defs['undef'] = undef;
-	  defs['Unit'] = Unit;
-
-	  if (this.name in defs.math) {
-	    return '("' + this.name + '" in scope ? scope["' + this.name + '"] : math["' + this.name + '"])';
-	  }
-	  else {
-	    return '(' +
-	        '"' + this.name + '" in scope ? scope["' + this.name + '"] : ' +
-	        (Unit.isValuelessUnit(this.name) ?
-	            'new Unit(null, "' + this.name + '")' :
-	            'undef("' + this.name + '")') +
-	        ')';
-	  }
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	SymbolNode.prototype.forEach = function (callback) {
-	  // nothing to do, we don't have childs
-	};
-
-	/**
-	 * Create a new SymbolNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
-	 * @returns {SymbolNode} Returns a clone of the node
-	 */
-	SymbolNode.prototype.map = function (callback) {
-	  return this.clone();
-	};
-
-	/**
-	 * Throws an error 'Undefined symbol {name}'
-	 * @param {String} name
-	 */
-	function undef (name) {
-	  throw new Error('Undefined symbol ' + name);
-	}
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {SymbolNode}
-	 */
-	SymbolNode.prototype.clone = function() {
-	  return new SymbolNode(this.name);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 * @override
-	 */
-	SymbolNode.prototype.toString = function() {
-	  return this.name;
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 * @override
-	 */
-	SymbolNode.prototype.toTex = function() {
-	  return latex.toSymbol(this.name);
-	};
-
-	module.exports = SymbolNode;
-
-
-/***/ },
-/* 172 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(173),
-	    IndexNode = __webpack_require__(167);
-
-	/**
-	 * @constructor UpdateNode
-	 * @extends {Node}
-	 * Update a matrix subset, like A[2,3] = 4.5
-	 *
-	 * @param {IndexNode} index             IndexNode containing symbol and ranges
-	 * @param {Node} expr                   The expression defining the symbol
-	 */
-	function UpdateNode(index, expr) {
-	  if (!(this instanceof UpdateNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  if (!(index instanceof IndexNode)) {
-	    throw new TypeError('Expected IndexNode for parameter "index"');
-	  }
-	  if (!(expr instanceof Node)) {
-	    throw new TypeError('Expected Node for parameter "expr"');
-	  }
-
-	  this.index = index;
-	  this.expr = expr;
-	}
-
-	UpdateNode.prototype = new Node();
-
-	UpdateNode.prototype.type = 'UpdateNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	UpdateNode.prototype._compile = function (defs) {
-	  return 'scope["' + this.index.objectName() + '\"] = ' +
-	      this.index.compileSubset(defs,  this.expr._compile(defs));
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	UpdateNode.prototype.forEach = function (callback) {
-	  callback(this.index, 'index', this);
-	  callback(this.expr, 'expr', this);
-	};
-
-	/**
-	 * Create a new UpdateNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {UpdateNode} Returns a transformed copy of the node
-	 */
-	UpdateNode.prototype.map = function (callback) {
-	  return new UpdateNode(
-	      this._ifNode(callback(this.index, 'index', this)),
-	      this._ifNode(callback(this.expr, 'expr', this))
-	  );
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {UpdateNode}
-	 */
-	UpdateNode.prototype.clone = function() {
-	  return new UpdateNode(this.index, this.expr);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String}
-	 */
-	UpdateNode.prototype.toString = function() {
-	  return this.index.toString() + ' = ' + this.expr.toString();
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String}
-	 */
-	UpdateNode.prototype.toTex = function() {
-	  return this.index.toTex() + ' = ' + this.expr.toTex();
-	};
-
-	module.exports = UpdateNode;
-
-
-/***/ },
-/* 173 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var keywords = __webpack_require__(314);
+	var keywords = __webpack_require__(315);
 
 	/**
 	 * Node
@@ -26019,11 +25476,554 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(169),
+	    ConstantNode = __webpack_require__(165),
+	    SymbolNode = __webpack_require__(172),
+	    FunctionNode = __webpack_require__(168),
+	    latex = __webpack_require__(314);
+
+	/**
+	 * @constructor OperatorNode
+	 * @extends {Node}
+	 * An operator with two arguments, like 2+3
+	 *
+	 * @param {String} op       Operator name, for example '+'
+	 * @param {String} fn       Function name, for example 'add'
+	 * @param {Node[]} args     Operator arguments
+	 */
+	function OperatorNode (op, fn, args) {
+	  if (!(this instanceof OperatorNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // TODO: validate input
+	  this.op = op;
+	  this.fn = fn;
+	  this.args = args || [];
+	}
+
+	OperatorNode.prototype = new Node();
+
+	OperatorNode.prototype.type = 'OperatorNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	OperatorNode.prototype._compile = function (defs) {
+	  if (!(this.fn in defs.math)) {
+	    throw new Error('Function ' + this.fn + ' missing in provided namespace "math"');
+	  }
+
+	  var args = this.args.map(function (arg) {
+	    return arg._compile(defs);
+	  });
+	  return 'math.' + this.fn + '(' + args.join(', ') + ')';
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	OperatorNode.prototype.forEach = function (callback) {
+	  for (var i = 0; i < this.args.length; i++) {
+	    callback(this.args[i], 'args[' + i + ']', this);
+	  }
+	};
+
+	/**
+	 * Create a new OperatorNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {OperatorNode} Returns a transformed copy of the node
+	 */
+	OperatorNode.prototype.map = function (callback) {
+	  var args = [];
+	  for (var i = 0; i < this.args.length; i++) {
+	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
+	  }
+	  return new OperatorNode(this.op, this.fn, args);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {OperatorNode}
+	 */
+	OperatorNode.prototype.clone = function() {
+	  return new OperatorNode(this.op, this.fn, this.args.slice(0));
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	OperatorNode.prototype.toString = function() {
+	  var args = this.args;
+
+	  switch (args.length) {
+	    case 1:
+	      if (this.op == '-') {
+	        // special case: unary minus
+	        return '-' + args[0].toString();
+	      }
+	      else {
+	        // for example '5!'
+	        return args[0].toString() + this.op;
+	      }
+
+	    case 2: // for example '2+3'
+	      var lhs = args[0].toString();
+	      if (args[0] instanceof OperatorNode) {
+	        lhs = '(' + lhs + ')';
+	      }
+	      var rhs = args[1].toString();
+	      if (args[1] instanceof OperatorNode) {
+	        rhs = '(' + rhs + ')';
+	      }
+	      return lhs + ' ' + this.op + ' ' + rhs;
+
+	    default: // this should not occur. format as a function call
+	      return this.op + '(' + this.args.join(', ') + ')';
+	  }
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	OperatorNode.prototype.toTex = function() {
+	  var args = this.args,
+	      mop = latex.toOperator(this.op),
+	      lp = args[0],
+	      rp = args[1];
+
+	  switch (args.length) {
+	    case 1:
+	      if (this.op === '-' || this.op === '+') {
+	        // special case: unary minus
+	        return this.op + lp.toTex();
+	      }
+	      // for example '5!'
+	      return lp.toTex() + this.op;
+
+	    case 2: // for example '2+3'
+	      var lhs = lp.toTex(),
+	          lhb = false,
+	          rhs = rp.toTex(),
+	          rhb = false,
+	          lop = '',
+	          rop = '';
+
+	      switch (this.op) {
+	        case '/':
+	          lop = mop;
+	          mop = '';
+
+	          break;
+
+	        case '*':
+	          if (lp instanceof OperatorNode) {
+	            if (lp.op === '+' || lp.op === '-') {
+	              lhb = true;
+	            }
+	          }
+
+	          if (rp instanceof OperatorNode) {
+	            if (rp.op === '+' || rp.op === '-') {
+	              rhb = true;
+	            }
+	            else if (rp.op === '*') {
+	              rhb = true;
+	            }
+	          }
+
+	          if ((lp instanceof ConstantNode || lp instanceof OperatorNode) &&
+	              (rp instanceof ConstantNode || rp instanceof OperatorNode)) {
+	            mop = ' \\cdot ';
+	          }
+	          else {
+	            mop = ' \\, ';
+	          }
+
+	          break;
+
+	        case '^':
+	          if (lp instanceof OperatorNode || lp instanceof FunctionNode) {
+	            lhb = true;
+	          }
+	          else if (lp instanceof SymbolNode) {
+	            lhb = null;
+	          }
+
+	          break;
+
+	        case 'to':
+	          rhs = latex.toUnit(rhs, true);
+	          break;
+	      }
+
+	      lhs = latex.addBraces(lhs, lhb);
+	      rhs = latex.addBraces(rhs, rhb);
+
+	      return lop + lhs + mop + rhs + rop;
+
+	    default: // this should not occur. format as a function call
+	      return mop + '(' + this.args.map(latex.toSymbol).join(', ') + ')';
+	  }
+	};
+
+	module.exports = OperatorNode;
+
+
+/***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(169);
+
+	var isNode = Node.isNode;
+
+	/**
+	 * @constructor RangeNode
+	 * @extends {Node}
+	 * create a range
+	 * @param {Node} start  included lower-bound
+	 * @param {Node} end    included lower-bound
+	 * @param {Node} [step] optional step
+	 */
+	function RangeNode (start, end, step) {
+	  if (!(this instanceof RangeNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate inputs
+	  if (!isNode(start)) throw new TypeError('Node expected');
+	  if (!isNode(end)) throw new TypeError('Node expected');
+	  if (step && !isNode(step)) throw new TypeError('Node expected');
+	  if (arguments.length > 3) throw new Error('Too many arguments');
+
+	  this.start = start;         // included lower-bound
+	  this.end   = end;           // included upper-bound
+	  this.step  = step || null;  // optional step
+	}
+
+	RangeNode.prototype = new Node();
+
+	RangeNode.prototype.type = 'RangeNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	RangeNode.prototype._compile = function (defs) {
+	  return 'math.range(' +
+	      this.start._compile(defs) + ', ' +
+	      this.end._compile(defs) +
+	      (this.step ? (', ' + this.step._compile(defs)) : '') +
+	      ')';
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	RangeNode.prototype.forEach = function (callback) {
+	  callback(this.start, 'start', this);
+	  callback(this.end, 'end', this);
+	  if (this.step) {
+	    callback(this.step, 'step', this);
+	  }
+	};
+
+	/**
+	 * Create a new RangeNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {RangeNode} Returns a transformed copy of the node
+	 */
+	RangeNode.prototype.map = function (callback) {
+	  return new RangeNode(
+	      this._ifNode(callback(this.start, 'start', this)),
+	      this._ifNode(callback(this.end, 'end', this)),
+	      this.step && this._ifNode(callback(this.step, 'step', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {RangeNode}
+	 */
+	RangeNode.prototype.clone = function() {
+	  return new RangeNode(this.start, this.end, this.step && this.step);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	RangeNode.prototype.toString = function() {
+	  // format the range like "start:step:end"
+	  var str = this.start.toString();
+	  if (this.step) {
+	    str += ':' + this.step.toString();
+	  }
+	  str += ':' + this.end.toString();
+
+	  return str;
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	RangeNode.prototype.toTex = function() {
+	  var str = this.start.toTex();
+	  if (this.step) {
+	    str += ':' + this.step.toTex();
+	  }
+	  str += ':' + this.end.toTex();
+
+	  return str;
+	};
+
+	module.exports = RangeNode;
+
+
+/***/ },
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(169),
+	    Unit = __webpack_require__(10),
+
+	    latex = __webpack_require__(314),
+	    isString = __webpack_require__(176).isString;
+
+	/**
+	 * @constructor SymbolNode
+	 * @extends {Node}
+	 * A symbol node can hold and resolve a symbol
+	 * @param {String} name
+	 * @extends {Node}
+	 */
+	function SymbolNode(name) {
+	  if (!(this instanceof SymbolNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (!isString(name))  throw new TypeError('String expected for parameter "name"');
+
+	  this.name = name;
+	}
+
+	SymbolNode.prototype = new Node();
+
+	SymbolNode.prototype.type = 'SymbolNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	SymbolNode.prototype._compile = function (defs) {
+	  // add a function to the definitions
+	  defs['undef'] = undef;
+	  defs['Unit'] = Unit;
+
+	  if (this.name in defs.math) {
+	    return '("' + this.name + '" in scope ? scope["' + this.name + '"] : math["' + this.name + '"])';
+	  }
+	  else {
+	    return '(' +
+	        '"' + this.name + '" in scope ? scope["' + this.name + '"] : ' +
+	        (Unit.isValuelessUnit(this.name) ?
+	            'new Unit(null, "' + this.name + '")' :
+	            'undef("' + this.name + '")') +
+	        ')';
+	  }
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	SymbolNode.prototype.forEach = function (callback) {
+	  // nothing to do, we don't have childs
+	};
+
+	/**
+	 * Create a new SymbolNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
+	 * @returns {SymbolNode} Returns a clone of the node
+	 */
+	SymbolNode.prototype.map = function (callback) {
+	  return this.clone();
+	};
+
+	/**
+	 * Throws an error 'Undefined symbol {name}'
+	 * @param {String} name
+	 */
+	function undef (name) {
+	  throw new Error('Undefined symbol ' + name);
+	}
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {SymbolNode}
+	 */
+	SymbolNode.prototype.clone = function() {
+	  return new SymbolNode(this.name);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 * @override
+	 */
+	SymbolNode.prototype.toString = function() {
+	  return this.name;
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 * @override
+	 */
+	SymbolNode.prototype.toTex = function() {
+	  return latex.toSymbol(this.name);
+	};
+
+	module.exports = SymbolNode;
+
+
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(169),
+	    IndexNode = __webpack_require__(166);
+
+	/**
+	 * @constructor UpdateNode
+	 * @extends {Node}
+	 * Update a matrix subset, like A[2,3] = 4.5
+	 *
+	 * @param {IndexNode} index             IndexNode containing symbol and ranges
+	 * @param {Node} expr                   The expression defining the symbol
+	 */
+	function UpdateNode(index, expr) {
+	  if (!(this instanceof UpdateNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  if (!(index instanceof IndexNode)) {
+	    throw new TypeError('Expected IndexNode for parameter "index"');
+	  }
+	  if (!(expr instanceof Node)) {
+	    throw new TypeError('Expected Node for parameter "expr"');
+	  }
+
+	  this.index = index;
+	  this.expr = expr;
+	}
+
+	UpdateNode.prototype = new Node();
+
+	UpdateNode.prototype.type = 'UpdateNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	UpdateNode.prototype._compile = function (defs) {
+	  return 'scope["' + this.index.objectName() + '\"] = ' +
+	      this.index.compileSubset(defs,  this.expr._compile(defs));
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	UpdateNode.prototype.forEach = function (callback) {
+	  callback(this.index, 'index', this);
+	  callback(this.expr, 'expr', this);
+	};
+
+	/**
+	 * Create a new UpdateNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {UpdateNode} Returns a transformed copy of the node
+	 */
+	UpdateNode.prototype.map = function (callback) {
+	  return new UpdateNode(
+	      this._ifNode(callback(this.index, 'index', this)),
+	      this._ifNode(callback(this.expr, 'expr', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {UpdateNode}
+	 */
+	UpdateNode.prototype.clone = function() {
+	  return new UpdateNode(this.index, this.expr);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String}
+	 */
+	UpdateNode.prototype.toString = function() {
+	  return this.index.toString() + ' = ' + this.expr.toString();
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String}
+	 */
+	UpdateNode.prototype.toTex = function() {
+	  return this.index.toTex() + ' = ' + this.expr.toTex();
+	};
+
+	module.exports = UpdateNode;
+
+
+/***/ },
 /* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var DimensionError = __webpack_require__(156);
-	var IndexError = __webpack_require__(157);
+	var DimensionError = __webpack_require__(157);
+	var IndexError = __webpack_require__(158);
 
 	/**
 	 * Transform zero-based indices to one-based indices in errors
@@ -26063,7 +26063,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var number = __webpack_require__(4),
 	    bignumber = __webpack_require__(152),
-	    BigNumber = __webpack_require__(159);
+	    BigNumber = __webpack_require__(155);
 
 	/**
 	 * Test whether value is a String
@@ -29633,20 +29633,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	// Reserved keywords not allowed to use in the parser
-	module.exports = {
-	  end: true
-	};
-
-
-/***/ },
-/* 315 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
 	var ArrayNode = __webpack_require__(161),
-	    OperatorNode = __webpack_require__(168);
+	    OperatorNode = __webpack_require__(170);
 
 	// GREEK LETTERS
 	var greek = {
@@ -30134,6 +30122,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return prefix + (showFunc ? func : '') +
 	      exports.addBraces(texParams, brace, type) +
 	      suffix;
+	};
+
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// Reserved keywords not allowed to use in the parser
+	module.exports = {
+	  end: true
 	};
 
 
