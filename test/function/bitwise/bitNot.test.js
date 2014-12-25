@@ -15,12 +15,6 @@ describe('bitNot', function () {
     assert.equal(bitNot(null), -1);
   });
 
-  it('should return bitwise not of a string', function () {
-    assert.equal(bitNot('2'), -3);
-    assert.equal(bitNot('-2'), 1);
-    assert.equal(bitNot('-86e2'), 8599);
-  });
-
   it('should perform bitwise not of a number', function () {
     assert.deepEqual(bitNot(2), -3);
     assert.deepEqual(bitNot(-2), 1);
@@ -36,9 +30,6 @@ describe('bitNot', function () {
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       bitNot(1.1);
-    }, /Parameter in function bitNot must be integer numbers/);
-    assert.throws(function () {
-      bitNot('1.1');
     }, /Parameter in function bitNot must be integer numbers/);
     assert.throws(function () {
       bitNot(bignumber(1.1));
@@ -68,6 +59,8 @@ describe('bitNot', function () {
 
   it('should throw an error in case of invalid type of argument', function () {
     assert.throws(function () {bitNot(new Date())}, error.UnsupportedTypeError);
+    assert.throws(function () {bitNot('foo')}, error.UnsupportedTypeError);
+    assert.throws(function () {bitNot(undefined)}, error.UnsupportedTypeError);
   });
 
 });

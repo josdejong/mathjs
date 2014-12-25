@@ -58,23 +58,10 @@ describe('bitAnd', function () {
     assert.deepEqual(bitAnd(true, bignumber(3)), bignumber(1));
   });
 
-  it('should bitwise and mixed strings and bignumbers', function () {
-    assert.deepEqual(bitAnd(bignumber('-1.0e+31'), '-1.0e+32'), bignumber('-101273397985285317082036849082368'));
-    assert.deepEqual(bitAnd('1.0e+32', bignumber('1.0e+31')), bignumber('8726602014714682917961003433984'));
-  });
-
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {bitAnd(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
     assert.throws(function () {bitAnd(2, math.unit('5cm'))}, error.UnsupportedTypeError);
     assert.throws(function () {bitAnd(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
-  });
-
-  it('should bitwise and two ints, even in string format', function () {
-    assert.equal(bitAnd('120', '86'), 80);
-    assert.equal(bitAnd('86', 120), 80);
-    assert.equal(bitAnd('-120', '-86'), -120);
-    assert.equal(bitAnd(-120, '-86'), -120);
-    assert.equal(bitAnd(-120, '-86e2'), -8696);
   });
 
   it('should throw an error if the parameters are not integers', function () {
@@ -88,12 +75,6 @@ describe('bitAnd', function () {
       bitAnd(1.1, 1.1);
     }, /Parameters in function bitAnd must be integer numbers/);
     assert.throws(function () {
-      bitAnd('1.1', 1);
-    }, /Parameters in function bitAnd must be integer numbers/);
-    assert.throws(function () {
-      bitAnd(1, '1.1');
-    }, /Parameters in function bitAnd must be integer numbers/);
-    assert.throws(function () {
       bitAnd(bignumber(1.1), 1);
     }, /Parameters in function bitAnd must be integer numbers/);
     assert.throws(function () {
@@ -105,14 +86,6 @@ describe('bitAnd', function () {
     assert.throws(function () {
       bitAnd(bignumber(1), bignumber(1.1));
     }, /Parameters in function bitAnd must be integer numbers/);
-  });
-
-  it('should bitwise and strings and matrices element wise', function () {
-    assert.deepEqual(bitAnd('42', ['1', 12, '31']), [0, 8, 10]);
-    assert.deepEqual(bitAnd(['1', 12, '31'], '42'), [0, 8, 10]);
-
-    assert.deepEqual(bitAnd('42', math.matrix(['1', 12, '31'])), math.matrix([0, 8, 10]));
-    assert.deepEqual(bitAnd(math.matrix(['1', 12, '31']), '42'), math.matrix([0, 8, 10]));
   });
 
   it('should bitwise and matrices correctly', function () {
@@ -150,6 +123,15 @@ describe('bitAnd', function () {
   it('should throw an error in case of invalid number of arguments', function () {
     assert.throws(function () {bitAnd(1)}, error.ArgumentsError);
     assert.throws(function () {bitAnd(1, 2, 3)}, error.ArgumentsError);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {bitAnd(new Date(), true)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd(true, new Date())}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd(true, 'foo')}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd('foo', true)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd(true, undefined)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd(undefined, true)}, error.UnsupportedTypeError);
   });
 
 });

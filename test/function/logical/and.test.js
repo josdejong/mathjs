@@ -137,15 +137,18 @@ describe('and', function () {
     assert.deepEqual(and(matrix([0, 2]), 10), matrix([false, true]));
   });
 
-  it('should throw an error in case of invalid type if arguments', function () {
-    assert.throws(function () {and(new Date(), new Date())}, TypeError);
-    assert.throws(function () {and(2, '23')}, TypeError);
-    assert.throws(function () {and(2, undefined)}, TypeError);
-  });
-
   it('should throw an error in case of invalid number of arguments', function () {
     assert.throws(function () {and(1)}, error.ArgumentsError);
     assert.throws(function () {and(1, 2, 3)}, error.ArgumentsError);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {and(new Date(), true)}, error.UnsupportedTypeError);
+    assert.throws(function () {and(true, new Date())}, error.UnsupportedTypeError);
+    assert.throws(function () {and(true, 'foo')}, error.UnsupportedTypeError);
+    assert.throws(function () {and('foo', true)}, error.UnsupportedTypeError);
+    assert.throws(function () {and(true, undefined)}, error.UnsupportedTypeError);
+    assert.throws(function () {and(undefined, true)}, error.UnsupportedTypeError);
   });
 
 });

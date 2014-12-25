@@ -64,25 +64,10 @@ describe('leftShift', function () {
     assert.deepEqual(leftShift(bignumber(3), true), bignumber(6));
   });
 
-  it('should left shift mixed bignumbers and string', function () {
-    assert.deepEqual(leftShift(bignumber(2), '3'), bignumber(16));
-    assert.deepEqual(leftShift('2', bignumber(3)), bignumber(16));
-    assert.deepEqual(leftShift(bignumber(-1), '2'), bignumber(-4));
-    assert.deepEqual(leftShift('-2', bignumber(3)), bignumber(-16));
-  });
-
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {leftShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
     assert.throws(function () {leftShift(2, math.unit('5cm'))}, error.UnsupportedTypeError);
     assert.throws(function () {leftShift(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
-  });
-
-  it('should left shift by values given by strings', function () {
-    assert.equal(leftShift('0', '1000'), 0);
-    assert.equal(leftShift('2', 0), 2);
-    assert.equal(leftShift(2, '3'), 16);
-    assert.equal(leftShift('-2', 2), -8);
-    assert.equal(leftShift(-2, '1e2'), -32);
   });
 
   it('should throw an error if the parameters are not integers', function () {
@@ -94,12 +79,6 @@ describe('leftShift', function () {
     }, /Parameters in function leftShift must be integer numbers/);
     assert.throws(function () {
       leftShift(1.1, 1.1);
-    }, /Parameters in function leftShift must be integer numbers/);
-    assert.throws(function () {
-      leftShift('1.1', 1);
-    }, /Parameters in function leftShift must be integer numbers/);
-    assert.throws(function () {
-      leftShift(1, '1.1');
     }, /Parameters in function leftShift must be integer numbers/);
     assert.throws(function () {
       leftShift(bignumber(1.1), 1);
@@ -138,6 +117,15 @@ describe('leftShift', function () {
   it('should throw an error if used with wrong number of arguments', function () {
     assert.throws(function () {leftShift(1)}, error.ArgumentsError);
     assert.throws(function () {leftShift(1, 2, 3)}, error.ArgumentsError);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {leftShift(new Date(), true)}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift(true, new Date())}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift(true, 'foo')}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift('foo', true)}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift(true, undefined)}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift(undefined, true)}, error.UnsupportedTypeError);
   });
 
 });

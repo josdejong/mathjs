@@ -59,23 +59,10 @@ describe('bitXor', function () {
     assert.deepEqual(bitXor(false, bignumber(3)), bignumber(3));
   });
 
-  it('should bitwise and mixed strings and bignumbers', function () {
-    assert.deepEqual(bitXor(bignumber('-1.0e+31'), '-1.0e+32'), bignumber('92546795970570634164073698164736'));
-    assert.deepEqual(bitXor('1.0e+31', bignumber('1.0e+32')), bignumber('92546795970570634164077993132032'));
-  });
-
   it('should throw an error if used with a unit', function() {
     assert.throws(function () {bitXor(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
     assert.throws(function () {bitXor(2, math.unit('5cm'))}, error.UnsupportedTypeError);
     assert.throws(function () {bitXor(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
-  });
-
-  it('should xor two ints, even in string format', function () {
-    assert.equal(bitXor('120', '86'), 46);
-    assert.equal(bitXor('86', 120), 46);
-    assert.equal(bitXor('-120', '-86'), 34);
-    assert.equal(bitXor(-120, '-86'), 34);
-    assert.equal(bitXor(-120, '-86e2'), 8672);
   });
 
   it('should throw an error if the parameters are not integers', function () {
@@ -89,12 +76,6 @@ describe('bitXor', function () {
       bitXor(1.1, 1.1);
     }, /Parameters in function bitXor must be integer numbers/);
     assert.throws(function () {
-      bitXor('1.1', 1);
-    }, /Parameters in function bitXor must be integer numbers/);
-    assert.throws(function () {
-      bitXor(1, '1.1');
-    }, /Parameters in function bitXor must be integer numbers/);
-    assert.throws(function () {
       bitXor(bignumber(1.1), 1);
     }, /Parameters in function bitXor must be integer numbers/);
     assert.throws(function () {
@@ -106,14 +87,6 @@ describe('bitXor', function () {
     assert.throws(function () {
       bitXor(bignumber(1), bignumber(1.1));
     }, /Parameters in function bitXor must be integer numbers/);
-  });
-
-  it('should xor strings and matrices element wise', function () {
-    assert.deepEqual(bitXor('42', ['1', 12, '31']), [43, 38, 53]);
-    assert.deepEqual(bitXor(['1', 12, '31'], '42'), [43, 38, 53]);
-
-    assert.deepEqual(bitXor('42', math.matrix(['1', 12, '31'])), math.matrix([43, 38, 53]));
-    assert.deepEqual(bitXor(math.matrix(['1', 12, '31']), '42'), math.matrix([43, 38, 53]));
   });
 
   it('should xor matrices correctly', function () {
@@ -151,6 +124,14 @@ describe('bitXor', function () {
   it('should throw an error in case of invalid number of arguments', function () {
     assert.throws(function () {bitXor(1)}, error.ArgumentsError);
     assert.throws(function () {bitXor(1, 2, 3)}, error.ArgumentsError);
+  });
+  it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {bitXor(new Date(), true)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitXor(true, new Date())}, error.UnsupportedTypeError);
+    assert.throws(function () {bitXor(true, 'foo')}, error.UnsupportedTypeError);
+    assert.throws(function () {bitXor('foo', true)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitXor(true, undefined)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitXor(undefined, true)}, error.UnsupportedTypeError);
   });
 
 });

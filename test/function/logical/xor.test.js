@@ -157,15 +157,18 @@ describe('xor', function () {
     assert.deepEqual(xor(matrix([0, 2]), 0), matrix([false, true]));
   });
 
-  it('should throw an error in case of invalid type if arguments', function () {
-    assert.throws(function () {xor(new Date(), new Date())}, TypeError);
-    assert.throws(function () {xor(2, '23')}, TypeError);
-    assert.throws(function () {xor(2, undefined)}, TypeError);
-  });
-
   it('should throw an error in case of invalid number of arguments', function () {
     assert.throws(function () {xor(1)}, error.ArgumentsError);
     assert.throws(function () {xor(1, 2, 3)}, error.ArgumentsError);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {xor(new Date(), true)}, error.UnsupportedTypeError);
+    assert.throws(function () {xor(true, new Date())}, error.UnsupportedTypeError);
+    assert.throws(function () {xor(true, 'foo')}, error.UnsupportedTypeError);
+    assert.throws(function () {xor('foo', true)}, error.UnsupportedTypeError);
+    assert.throws(function () {xor(true, undefined)}, error.UnsupportedTypeError);
+    assert.throws(function () {xor(undefined, true)}, error.UnsupportedTypeError);
   });
 
 });

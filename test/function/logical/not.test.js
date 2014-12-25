@@ -71,15 +71,15 @@ describe('not', function () {
     assert.deepEqual(not(matrix([])), matrix([]));
   });
 
-  it('should throw an error in case of invalid type if arguments', function () {
-    assert.throws(function () {not(new Date())}, TypeError);
-    assert.throws(function () {not('23')}, TypeError);
-    assert.throws(function () {not({})}, TypeError);
-  });
-
   it('should throw an error in case of invalid number of arguments', function () {
     assert.throws(function () {not()}, error.ArgumentsError);
     assert.throws(function () {not(1, 2)}, error.ArgumentsError);
+  });
+
+  it('should throw an error in case of invalid type if arguments', function () {
+    assert.throws(function () {not(new Date())}, error.UnsupportedTypeError);
+    assert.throws(function () {not('23')}, error.UnsupportedTypeError);
+    assert.throws(function () {not({})}, error.UnsupportedTypeError);
   });
 
 });

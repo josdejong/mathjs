@@ -38,14 +38,6 @@ describe('rightLogShift', function () {
     assert.equal(rightLogShift(null, 1), 0);
   });
 
-  it('should right logically shift by values given by strings', function () {
-    assert.equal(rightLogShift('0', '1000'), 0);
-    assert.equal(rightLogShift('2', 0), 2);
-    assert.equal(rightLogShift(22, '3'), 2);
-    assert.equal(rightLogShift('-256', 2), 1073741760);
-    assert.equal(rightLogShift('-256', '1e2'), 268435440);
-  });
-
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       rightLogShift(1.1, 1);
@@ -55,15 +47,6 @@ describe('rightLogShift', function () {
     }, /Parameters in function rightLogShift must be integer numbers/);
     assert.throws(function () {
       rightLogShift(1.1, 1.1);
-    }, /Parameters in function rightLogShift must be integer numbers/);
-    assert.throws(function () {
-      rightLogShift('1.1', '1.1');
-    }, /Parameters in function rightLogShift must be integer numbers/);
-    assert.throws(function () {
-      rightLogShift('1.1', 1);
-    }, /Parameters in function rightLogShift must be integer numbers/);
-    assert.throws(function () {
-      rightLogShift(1, '1.1');
     }, /Parameters in function rightLogShift must be integer numbers/);
   });
 
@@ -96,6 +79,15 @@ describe('rightLogShift', function () {
   it('should throw an error if used with wrong number of arguments', function () {
     assert.throws(function () {rightLogShift(1)}, error.ArgumentsError);
     assert.throws(function () {rightLogShift(1, 2, 3)}, error.ArgumentsError);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {rightLogShift(new Date(), true)}, error.UnsupportedTypeError);
+    assert.throws(function () {rightLogShift(true, new Date())}, error.UnsupportedTypeError);
+    assert.throws(function () {rightLogShift(true, 'foo')}, error.UnsupportedTypeError);
+    assert.throws(function () {rightLogShift('foo', true)}, error.UnsupportedTypeError);
+    assert.throws(function () {rightLogShift(true, undefined)}, error.UnsupportedTypeError);
+    assert.throws(function () {rightLogShift(undefined, true)}, error.UnsupportedTypeError);
   });
 
 });

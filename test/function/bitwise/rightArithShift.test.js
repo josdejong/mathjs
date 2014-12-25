@@ -39,14 +39,6 @@ describe('rightArithShift', function () {
     assert.equal(rightArithShift(null, 1), 0);
   });
 
-  it('should right arithmetically shift by values given by strings', function () {
-    assert.equal(rightArithShift('0', '1000'), 0);
-    assert.equal(rightArithShift('2', 0), 2);
-    assert.equal(rightArithShift(22, '3'), 2);
-    assert.equal(rightArithShift('-256', 2), -64);
-    assert.equal(rightArithShift('-256', '1e2'), -16);
-  });
-
   it('should right arithmetically shift bignumbers', function () {
     assert.deepEqual(rightArithShift(bignumber(17), bignumber(3)), bignumber(2));
     assert.deepEqual(rightArithShift(bignumber('633825300114114700748351602688000'), bignumber(100)), bignumber(500));
@@ -75,13 +67,6 @@ describe('rightArithShift', function () {
     assert.deepEqual(rightArithShift(bignumber(3), true), bignumber(1));
   });
 
-  it('should right arithmetically shift mixed bignumbers and string', function () {
-    assert.deepEqual(rightArithShift(bignumber(17), '3'), bignumber(2));
-    assert.deepEqual(rightArithShift('17', bignumber(3)), bignumber(2));
-    assert.deepEqual(rightArithShift(bignumber('-17'), '3'), bignumber(-3));
-    assert.deepEqual(rightArithShift('-17', bignumber(3)), bignumber(-3));
-  });
-
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       rightArithShift(1.1, 1);
@@ -91,12 +76,6 @@ describe('rightArithShift', function () {
     }, /Parameters in function rightArithShift must be integer numbers/);
     assert.throws(function () {
       rightArithShift(1.1, 1.1);
-    }, /Parameters in function rightArithShift must be integer numbers/);
-    assert.throws(function () {
-      rightArithShift('1.1', 1);
-    }, /Parameters in function rightArithShift must be integer numbers/);
-    assert.throws(function () {
-      rightArithShift(1, '1.1');
     }, /Parameters in function rightArithShift must be integer numbers/);
     assert.throws(function () {
       rightArithShift(bignumber(1.1), 1);
@@ -141,6 +120,15 @@ describe('rightArithShift', function () {
   it('should throw an error if used with wrong number of arguments', function () {
     assert.throws(function () {rightArithShift(1)}, error.ArgumentsError);
     assert.throws(function () {rightArithShift(1, 2, 3)}, error.ArgumentsError);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {rightArithShift(new Date(), true)}, error.UnsupportedTypeError);
+    assert.throws(function () {rightArithShift(true, new Date())}, error.UnsupportedTypeError);
+    assert.throws(function () {rightArithShift(true, 'foo')}, error.UnsupportedTypeError);
+    assert.throws(function () {rightArithShift('foo', true)}, error.UnsupportedTypeError);
+    assert.throws(function () {rightArithShift(true, undefined)}, error.UnsupportedTypeError);
+    assert.throws(function () {rightArithShift(undefined, true)}, error.UnsupportedTypeError);
   });
 
 });

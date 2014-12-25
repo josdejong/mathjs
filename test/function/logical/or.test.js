@@ -161,15 +161,18 @@ describe('or', function () {
     assert.deepEqual(or(matrix([0, 2]), 0), matrix([false, true]));
   });
 
-  it('should throw an error in case of invalid type if arguments', function () {
-    assert.throws(function () {or(new Date(), new Date())}, TypeError);
-    assert.throws(function () {or(2, '23')}, TypeError);
-    assert.throws(function () {or(2, undefined)}, TypeError);
-  });
-
   it('should throw an error in case of invalid number of arguments', function () {
     assert.throws(function () {or(1)}, error.ArgumentsError);
     assert.throws(function () {or(1, 2, 3)}, error.ArgumentsError);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {or(new Date(), true)}, error.UnsupportedTypeError);
+    assert.throws(function () {or(true, new Date())}, error.UnsupportedTypeError);
+    assert.throws(function () {or(true, 'foo')}, error.UnsupportedTypeError);
+    assert.throws(function () {or('foo', true)}, error.UnsupportedTypeError);
+    assert.throws(function () {or(true, undefined)}, error.UnsupportedTypeError);
+    assert.throws(function () {or(undefined, true)}, error.UnsupportedTypeError);
   });
 
 });
