@@ -73,21 +73,13 @@ describe('not', function () {
   });
 
   it('should not arrays', function () {
-    assert.equal(not([0]), false);
-    assert.equal(not([0, 0, 0]), false);
-    assert.equal(not(['A', ['B', 'C']]), false);
-    assert.equal(not([]), true);
-    assert.equal(not([[]]), false);
-    assert.equal(not([[[]]]), false);
+    assert.deepEqual(not([0, 10]), [true, false]);
+    assert.deepEqual(not([]), []);
   });
 
   it('should not matrices', function () {
-    assert.equal(not(matrix([0])), false);
-    assert.equal(not(matrix([0, 0, 0])), false);
-    assert.equal(not(matrix(['A', 'B', 'C'])), false);
-    assert.equal(not(matrix([])), true);
-    assert.equal(not(matrix([[]])), false);
-    assert.equal(not(matrix([[[]]])), false);
+    assert.deepEqual(not(matrix([0, 10])), matrix([true, false]));
+    assert.deepEqual(not(matrix([])), matrix([]));
   });
 
   it('should not object', function () {

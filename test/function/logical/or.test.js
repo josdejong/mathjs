@@ -163,47 +163,27 @@ describe('or', function () {
   });
 
   it('should or two arrays', function () {
-    assert.equal(or([0], [0, 0, 0]), true);
-    assert.equal(or([], [0, 0, 0]), true);
-    assert.equal(or(['A', 'B', 'C'], []), true);
-    assert.equal(or([], []), false);
-    assert.equal(or([[]], [[]]), true);
-    assert.equal(or([[[]]], [[]]), true);
+    assert.deepEqual(or([0, 1, 0, 12], [0, 0, 1, 22]), [false, true, true, true]);
+    assert.deepEqual(or([], []), []);
   });
 
   it('should or mixed numbers and arrays', function () {
-    assert.equal(or(1, [0, 0, 0]), true);
-    assert.equal(or([0], 1), true);
-    assert.equal(or(0, [0, 0, 0]), true);
-    assert.equal(or(['A', 'B', 'C'], 0), true);
-    assert.equal(or(1, []), true);
-    assert.equal(or(0, []), false);
-    assert.equal(or([], 0), false);
-    assert.equal(or([[]], 1), true);
-    assert.equal(or([[], []], 1), true);
+    assert.deepEqual(or(10, [0, 2]), [true, true]);
+    assert.deepEqual(or([0, 2], 10), [true, true]);
+    assert.deepEqual(or(0, [0, 2]), [false, true]);
+    assert.deepEqual(or([0, 2], 0), [false, true]);
   });
 
   it('should or two matrices', function () {
-    assert.equal(or(matrix([0]), matrix([0, 0, 0])), true);
-    assert.equal(or(matrix([]), matrix([0, 0, 0])), true);
-    assert.equal(or(matrix(['A', 'B', 'C']), matrix([])), true);
-    assert.equal(or(matrix([]), matrix([])), false);
-    assert.equal(or(matrix([]), matrix([[]])), true);
-    assert.equal(or(matrix([[]]), matrix([[]])), true);
-    assert.equal(or(matrix([[[]]]), matrix([[]])), true);
+    assert.deepEqual(or(matrix([0, 1, 0, 12]), matrix([0, 0, 1, 22])), matrix([false, true, true, true]));
+    assert.deepEqual(or(matrix([]), matrix([])), matrix([]));
   });
 
   it('should or mixed numbers and matrices', function () {
-    assert.equal(or(1, matrix([0, 0, 0])), true);
-    assert.equal(or(matrix([0]), 1), true);
-    assert.equal(or(0, matrix([0, 0, 0])), true);
-    assert.equal(or(matrix(['A', 'B', 'C']), 0), true);
-    assert.equal(or(0, matrix([])), false);
-    assert.equal(or(1, matrix([])), true);
-    assert.equal(or(matrix([]), 0), false);
-    assert.equal(or(matrix([]), 1), true);
-    assert.equal(or(matrix([[]]), 1), true);
-    assert.equal(or(matrix([[], []]), 1), true);
+    assert.deepEqual(or(10, matrix([0, 2])), matrix([true, true]));
+    assert.deepEqual(or(matrix([0, 2]), 10), matrix([true, true]));
+    assert.deepEqual(or(0, matrix([0, 2])), matrix([false, true]));
+    assert.deepEqual(or(matrix([0, 2]), 0), matrix([false, true]));
   });
 
   it('should or two objects', function () {
