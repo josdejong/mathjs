@@ -45,8 +45,8 @@ Powerful and easy to use.
 <span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'9 / 3 + 2i'</span><span class="p">);</span>          <span class="c1">// 3 + 2i</span>
 <span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'det([-1, 2; 3, 1])'</span><span class="p">);</span>  <span class="c1">// -7</span>
 
-<span class="c1">// chained operations</span>
-<span class="nx">math</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1">// chaining</span>
+<span class="nx">math</span><span class="p">.</span><span class="nx">chain</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">done</span><span class="p">();</span> <span class="c1">// 14</span></code></pre>
