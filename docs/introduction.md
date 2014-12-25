@@ -34,10 +34,10 @@ Math.js can be used in three different ways:
     math.eval('a ^ b', {a: 2, b: 3});       // Number  8
     ```
 
--   Do **chained operations** using [`math.select`](reference/functions/select.md), described in section [Chained operations](chained_operations.md). Examples:
+-   Do **chained operations** using [`math.chain`](reference/functions/chain.md), described in section [Chained operations](chained_operations.md). Examples:
 
     ```js
-    math.select(3)
+    math.chain(3)
         .add(4)
         .subtract(2)
         .done(); // 5

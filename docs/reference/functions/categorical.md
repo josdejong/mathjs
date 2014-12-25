@@ -52,12 +52,12 @@
 
 - [bignumber(x)](bignumber.md)
 - [boolean(x)](boolean.md)
+- [chain(value)](chain.md)
 - [complex(re, im)](complex.md)
 - [index(range1, range2, ...)](index.md)
 - [matrix(x)](matrix.md)
 - [number(value)](number.md)
 - [parser()](parser.md)
-- [select(value)](select.md)
 - [string(value)](string.md)
 - [unit(x)](unit.md)
 

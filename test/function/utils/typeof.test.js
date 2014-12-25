@@ -74,8 +74,8 @@ describe('typeof', function() {
     assert.equal(math.typeof(new Function ()), 'function');
   });
 
-  it('should return function type for a selector', function() {
-    assert.equal(math.typeof(math.select(3)), 'selector');
+  it('should return function type for a chain', function() {
+    assert.equal(math.typeof(math.chain(3)), 'chain');
   });
 
   it('should return function type for an index', function() {

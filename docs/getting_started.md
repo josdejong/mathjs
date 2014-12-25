@@ -99,7 +99,7 @@ math.eval('9 / 3 + 2i');          // 3 + 2i
 math.eval('det([-1, 2; 3, 1])');  // -7
 
 // chained operations
-math.select(3)
+math.chain(3)
     .add(4)
     .multiply(2)
     .done(); // 14

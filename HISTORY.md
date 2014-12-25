@@ -10,6 +10,8 @@
 - Converting a unit without value will now result in a unit *with* value,
   i.e. `inch in cm` will return `2.54 cm` instead of `cm`.
 - Improved accuracy of `sinh` and complex `cos` and `sin`. Thanks @pavpanchekha.
+- Renamed function `select` to `chain`. The old function `select` will remain
+  functional until math.js v2.0.
 
 
 ## 2014-11-22, version 1.1.1

@@ -14,8 +14,8 @@ math.bitXor(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; String &#124; Array &#124; Matrix &#124; null | First value to xor
-`y` | Number &#124; BigNumber &#124; Boolean &#124; String &#124; Array &#124; Matrix &#124; null | Second value to xor
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | First value to xor
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Second value to xor
 
 ### Returns
 

@@ -15,8 +15,8 @@ math.bitOr(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; String &#124; Array &#124; Matrix &#124; null | First value to or
-`y` | Number &#124; BigNumber &#124; Boolean &#124; String &#124; Array &#124; Matrix &#124; null | Second value to or
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | First value to or
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Second value to or
 
 ### Returns
 

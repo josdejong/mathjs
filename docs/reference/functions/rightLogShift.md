@@ -15,8 +15,8 @@ math.rightLogShift(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; String &#124; Array &#124; Matrix &#124; null | Value to be shifted
-`y` | Number &#124; Boolean &#124; String &#124; null | Amount of shifts
+`x` | Number &#124; Boolean &#124; Array &#124; Matrix &#124; null | Value to be shifted
+`y` | Number &#124; Boolean &#124; null | Amount of shifts
 
 ### Returns
 

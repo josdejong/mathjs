@@ -14,14 +14,14 @@ math.and(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null &#124; undefined | First value to check
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null &#124; undefined | Second value to check
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | First value to check
+`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Second value to check
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Boolean &#124; Matrix |  Returns true when both inputs are defined with a nonzero/nonempty value.
+Boolean &#124; Array &#124; Matrix |  Returns true when both inputs are defined with a nonzero/nonempty value.
 
 
 ## Examples

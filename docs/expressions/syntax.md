@@ -20,6 +20,8 @@ the lower level syntax of math.js. Differences are:
 - Both indexes and ranges and have the upper-bound included.
 - There is a differing syntax for defining functions. Example: `f(x) = x^2`.
 - There are custom operators like `x + y` instead of `add(x, y)`.
+- Some operators are different. For example  `^` is used for exponentiation,
+  not bitwise xor.
 
 
 ## Operators
