@@ -874,6 +874,22 @@ describe('parse', function() {
       assert.strictEqual(parseAndEval('false or false'), false);
     });
 
+    it('should parse logical not', function() {
+      assert.strictEqual(parseAndEval('not 2'), false);
+      assert.strictEqual(parseAndEval('not not 2'), true);
+      assert.strictEqual(parseAndEval('not not not 2'), false);
+      assert.strictEqual(parseAndEval('not true'), false);
+
+      assert.strictEqual(parseAndEval('4*not 2'), 0);
+      assert.strictEqual(parseAndEval('4 * not 2'), 0);
+      assert.strictEqual(parseAndEval('4-not 2'), 4);
+      assert.strictEqual(parseAndEval('4 - not 2'), 4);
+      assert.strictEqual(parseAndEval('4+not 2'), 4);
+      assert.strictEqual(parseAndEval('4 + not 2'), 4);
+
+      assert.strictEqual(parseAndEval('10+not not 3'), 11);
+    });
+
     it('should parse minus -', function() {
       assert.equal(parseAndEval('4 - 2'), 2);
       assert.equal(parseAndEval('8 - 2 - 2'), 4);
@@ -932,22 +948,6 @@ describe('parse', function() {
       assert.equal(parseAndEval('10+~~3'), 13);
     });
 
-    it('should parse unary !', function() {
-      assert.equal(parseAndEval('!2'), false);
-      assert.equal(parseAndEval('!!2'), true);
-      assert.equal(parseAndEval('!!!2'), false);
-      assert.equal(parseAndEval('!true'), false);
-
-      assert.equal(parseAndEval('4*!2'), 0);
-      assert.equal(parseAndEval('4 * !2'), 0);
-      assert.equal(parseAndEval('4-!2'), 4);
-      assert.equal(parseAndEval('4 - !2'), 4);
-      assert.equal(parseAndEval('4+!2'), 4);
-      assert.equal(parseAndEval('4 + !2'), 4);
-
-      assert.equal(parseAndEval('10+!!3'), 11);
-    });   
-
     it('should parse unary plus and minus  +, -', function() {
       assert.equal(parseAndEval('-+2'), -2);
       assert.equal(parseAndEval('-+-2'), 2);
@@ -975,38 +975,31 @@ describe('parse', function() {
       assert.equal(parseAndEval('~-~-2'), 0);
     });
 
-    it('should parse unary plus and logical "not"', function() {
-      assert.equal(parseAndEval('not 2'), false);
-      assert.equal(parseAndEval('not 0'), true);
-      assert.equal(parseAndEval('not 0'), true);
-      assert.equal(parseAndEval('not not 4'), true);
+    it('should parse unary plus + and logical not', function() {
+      assert.equal(parseAndEval('not+2'), false);
+      assert.equal(parseAndEval('not + not 2'), true);
+      assert.equal(parseAndEval('+not+not 2'), 1);
+      assert.equal(parseAndEval('+ not 2'), 0);
+      assert.equal(parseAndEval('+ not +2'), 0);
+      assert.equal(parseAndEval('not + not +2'), true);
     });
 
-    it('should parse unary plus and logical not +, !', function() {
-      assert.equal(parseAndEval('!+2'), false);
-      assert.equal(parseAndEval('!+!2'), true);
-      assert.equal(parseAndEval('+!+!2'), 1);
-      assert.equal(parseAndEval('+!2'), 0);
-      assert.equal(parseAndEval('+!+2'), 0);
-      assert.equal(parseAndEval('!+!+2'), true);
+    it('should parse bitwise not ~ and logical not', function() {
+      assert.equal(parseAndEval('~not 2'), -1);
+      assert.equal(parseAndEval('~not~2'), -1);
+      assert.equal(parseAndEval('not~not~2'), false);
+      assert.equal(parseAndEval('not~2'), false);
+      assert.equal(parseAndEval('not~not 2'), false);
+      assert.equal(parseAndEval('~not~not 2'), -1);
     });
 
-    it('should parse bitwise not and logical not  ~, !', function() {
-      assert.equal(parseAndEval('~!2'), -1);
-      assert.equal(parseAndEval('~!~2'), -1);
-      assert.equal(parseAndEval('!~!~2'), false);
-      assert.equal(parseAndEval('!~2'), false);
-      assert.equal(parseAndEval('!~!2'), false);
-      assert.equal(parseAndEval('~!~!2'), -1);
-    });
-
-    it('should parse unary minus and logical not  -, !', function() {
-      assert.equal(parseAndEval('!-2'), false);
-      assert.equal(parseAndEval('!-!2'), true);
-      assert.equal(parseAndEval('-!-!2'), -1);
-      assert.equal(parseAndEval('-!2'), -0);
-      assert.equal(parseAndEval('-!-2'), -0);
-      assert.equal(parseAndEval('!-!-2'), true);
+    it('should parse unary minus and logical not', function() {
+      assert.equal(parseAndEval('not-2'), false);
+      assert.equal(parseAndEval('not-not 2'), true);
+      assert.equal(parseAndEval('-not-not 2'), -1);
+      assert.equal(parseAndEval('-not 2'), -0);
+      assert.equal(parseAndEval('-not-2'), -0);
+      assert.equal(parseAndEval('not-not-2'), true);
     });
 
     it('should parse unequal !=', function() {
@@ -1130,10 +1123,10 @@ describe('parse', function() {
         assert.equal(parseAndEval('2^~2'), 0.125);
         assert.equal(parseAndEval('2^(~2)'), 0.125);
 
-        assert.equal(parseAndEval('!3^2'), false);
-        assert.equal(parseAndEval('(!3)^2'), 0);
-        assert.equal(parseAndEval('2^!2'), 1);
-        assert.equal(parseAndEval('2^(!2)'), 1);
+        assert.equal(parseAndEval('not 3^2'), false);
+        assert.equal(parseAndEval('(not 3)^2'), 0);
+        assert.equal(parseAndEval('2^not 2'), 1);
+        assert.equal(parseAndEval('2^(not 2)'), 1);
       });
 
       it('should respect precedence of factorial and pow', function () {
@@ -1153,11 +1146,11 @@ describe('parse', function() {
         assert.equal(parseAndEval('~4!+1'), -24);
         assert.equal(parseAndEval('~(4!)+1'), -24);
 
-        assert.equal(parseAndEval('!4!'), false);
-        assert.equal(parseAndEval('!!4!'), true);
-        assert.equal(parseAndEval('!(4!)'), false);
-        assert.equal(parseAndEval('(!4!)'), false);
-        assert.equal(parseAndEval('(!4)!'), 1);
+        assert.equal(parseAndEval('not 4!'), false);
+        assert.equal(parseAndEval('not not 4!'), true);
+        assert.equal(parseAndEval('not(4!)'), false);
+        assert.equal(parseAndEval('(not 4!)'), false);
+        assert.equal(parseAndEval('(not 4)!'), 1);
       });
 
       it('should respect precedence of transpose', function () {

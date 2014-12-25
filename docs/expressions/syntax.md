@@ -65,14 +65,13 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `&`         | Bitwise and             | `x & y`     | Left to right | `5 & 3`               | `1`
 `~`         | Bitwise not             | `~x`        | Right to left | `~2`                  | `-3`
 `|`         | Bitwise or              | `x | y`     | Left to right | `5 | 3`               | `7`
-`!`         | Logical not             | `!y`        | Left to right | `!true`               | `false`
 `<<`        | Left shift              | `x << y`    | Left to right | `4 << 1`              | `8`
 `>>`        | Right arithmetic shift  | `x >> y`    | Left to right | `8 >> 1`              | `4`
 `>>>`       | Right logical shift     | `x >>> y`   | Left to right | `-8 >>> 1`            | `2147483644`
 `and`       | Logical and             | `x and y`   | Left to right | `true and false`      | `false`
+`not`       | Logical not             | `not y`     | Right to left | `not true`            | `false`
 `or`        | Logical or              | `x or y`    | Left to right | `true or false`       | `true`
 `xor`       | Logical xor             | `x xor y`   | Left to right | `true or true`        | `false`
-`not`       | Logical not             | `not y`     | Right to left | `not true`            | `false`
 `=`         | Assignment              | `x = y`     | Right to left | `a = 5`               | `5`
 `?` `:`     | Conditional expression  | `x ? y : z` | Right to left | `15 > 100 ? 1 : -1`   | `-1`
 `:`         | Range                   | `x : y`     | Right to left | `1:4`                 | `[1,2,3,4]`
@@ -92,7 +91,7 @@ Operators                         | Description
 `'`                               | Matrix transpose
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
-`+`, `-`, `~`, `!`, `not`         | Unary plus, unary minus, bitwise not, logical not (`!` or `not`)
+`+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
 `x unit`                          | Unit
 `*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus, implicit multiply
 `+`, `-`                          | Add, subtract
