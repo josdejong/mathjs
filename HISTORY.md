@@ -12,6 +12,7 @@
 - Improved accuracy of `sinh` and complex `cos` and `sin`. Thanks @pavpanchekha.
 - Renamed function `select` to `chain`. The old function `select` will remain
   functional until math.js v2.0.
+- Upgraded to decimal.js v4.0.1 (BigNumber library).
 
 
 ## 2014-11-22, version 1.1.1

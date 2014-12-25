@@ -1374,7 +1374,7 @@ describe('parse', function() {
           bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]));
     });
 
-    it('should get a elements from a matrix with bignumbers', function() {
+    it('should get an element from a matrix with bignumbers', function() {
       var scope = {};
       assert.deepEqual(bigmath.eval('a=[0.1, 0.2]', scope),
           bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]));

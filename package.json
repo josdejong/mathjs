@@ -47,7 +47,7 @@
     "unit"
   ],
   "dependencies": {
-    "decimal.js": "~3.0.0"
+    "decimal.js": "~4.0.1"
   },
   "devDependencies": {
     "webpack": "latest",
@@ -75,6 +75,6 @@
     "mathjs": "./bin/cli.js"
   },
   "engines": {
-    "node": ">= 0.9"
+    "node": ">= 0.1"
   }
 }
