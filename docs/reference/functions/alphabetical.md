@@ -121,4 +121,5 @@
 - [unit(x)](unit.md)
 - [var(a, b, c, ...)](var.md)
 - [xgcd(a, b)](xgcd.md)
+- [xor(x, y)](xor.md)
 - [zeros(m, n, p, ...)](zeros.md)

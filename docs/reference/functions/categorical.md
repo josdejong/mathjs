@@ -73,6 +73,7 @@
 - [and(x, y)](and.md)
 - [not(x)](not.md)
 - [or(x, y)](or.md)
+- [xor(x, y)](xor.md)
 
 ## matrix
 

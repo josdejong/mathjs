@@ -856,6 +856,15 @@ describe('parse', function() {
       assert.strictEqual(parseAndEval('false and false'), false);
     });
 
+    it('should parse logical xor', function() {
+      assert.strictEqual(parseAndEval('2 xor 6'), false);
+      assert.strictEqual(parseAndEval('2 xor 0'), true);
+      assert.strictEqual(parseAndEval('true xor true'), false);
+      assert.strictEqual(parseAndEval('true xor false'), true);
+      assert.strictEqual(parseAndEval('false xor true'), true);
+      assert.strictEqual(parseAndEval('false xor false'), false);
+    });
+
     it('should parse logical or', function() {
       assert.strictEqual(parseAndEval('2 or 6'), true);
       assert.strictEqual(parseAndEval('2 or 0'), true);
