@@ -11,54 +11,54 @@ var assert = require('assert'),
 describe('not', function () {
 
   it('should not numbers correctly', function () {
-    assert.equal(not(1), false);
-    assert.equal(not(-1), false);
-    assert.equal(not(1.23e+100), false);
-    assert.equal(not(-1.0e-100), false);
-    assert.equal(not(1.0e-100), false);
-    assert.equal(not(Infinity), false);
-    assert.equal(not(-Infinity), false);
-    assert.equal(not(0), true);
-    assert.equal(not(NaN), true);
+    assert.strictEqual(not(1), false);
+    assert.strictEqual(not(-1), false);
+    assert.strictEqual(not(1.23e+100), false);
+    assert.strictEqual(not(-1.0e-100), false);
+    assert.strictEqual(not(1.0e-100), false);
+    assert.strictEqual(not(Infinity), false);
+    assert.strictEqual(not(-Infinity), false);
+    assert.strictEqual(not(0), true);
+    assert.strictEqual(not(NaN), true);
   });
 
   it('should not complex numbers', function () {
-    assert.equal(not(complex(1, 1)), false);
-    assert.equal(not(complex(0, 1)), false);
-    assert.equal(not(complex(1, 0)), false);
-    assert.equal(not(complex(0, 0)), true);
-    assert.equal(not(complex()), true);
-    assert.equal(not(complex(0)), true);
-    assert.equal(not(complex(1)), false);
+    assert.strictEqual(not(complex(1, 1)), false);
+    assert.strictEqual(not(complex(0, 1)), false);
+    assert.strictEqual(not(complex(1, 0)), false);
+    assert.strictEqual(not(complex(0, 0)), true);
+    assert.strictEqual(not(complex()), true);
+    assert.strictEqual(not(complex(0)), true);
+    assert.strictEqual(not(complex(1)), false);
   });
 
   it('should not booleans', function () {
-    assert.equal(not(true), false);
-    assert.equal(not(false), true);
+    assert.strictEqual(not(true), false);
+    assert.strictEqual(not(false), true);
   });
 
   it('should not null', function () {
-    assert.equal(not(null), true);
+    assert.strictEqual(not(null), true);
   });
 
   it('should not bignumbers', function () {
-    assert.equal(not(bignumber(1)), false);
-    assert.equal(not(bignumber(-1)), false);
-    assert.equal(not(bignumber(0)), true);
-    assert.equal(not(bignumber(NaN)), true);
-    assert.equal(not(bignumber('1e+10')), false);
-    assert.equal(not(bignumber('-1.0e-100')), false);
-    assert.equal(not(bignumber('1.0e-100')), false);
-    assert.equal(not(bignumber(Infinity)), false);
-    assert.equal(not(bignumber(-Infinity)), false);
+    assert.strictEqual(not(bignumber(1)), false);
+    assert.strictEqual(not(bignumber(-1)), false);
+    assert.strictEqual(not(bignumber(0)), true);
+    assert.strictEqual(not(bignumber(NaN)), true);
+    assert.strictEqual(not(bignumber('1e+10')), false);
+    assert.strictEqual(not(bignumber('-1.0e-100')), false);
+    assert.strictEqual(not(bignumber('1.0e-100')), false);
+    assert.strictEqual(not(bignumber(Infinity)), false);
+    assert.strictEqual(not(bignumber(-Infinity)), false);
   });
 
   it('should not units', function () {
-    assert.equal(not(unit('100cm')), false);
-    assert.equal(not(unit('0 inch')), true);
-    assert.equal(not(unit('1m')), false);
-    assert.equal(not(unit('m')), true);
-    assert.equal(not(unit('-10inch')), false);
+    assert.strictEqual(not(unit('100cm')), false);
+    assert.strictEqual(not(unit('0 inch')), true);
+    assert.strictEqual(not(unit('1m')), false);
+    assert.strictEqual(not(unit('m')), true);
+    assert.strictEqual(not(unit('-10inch')), false);
   });
 
   it('should not arrays', function () {
