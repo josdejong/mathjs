@@ -139,43 +139,23 @@ describe('and', function () {
   });
 
   it('should and two arrays', function () {
-    assert.equal(and([0], [0, 0, 0]), true);
-    assert.equal(and([], [0, 0, 0]), false);
-    assert.equal(and(['A', 'B', 'C'], []), false);
-    assert.equal(and([], []), false);
-    assert.equal(and([[]], [[]]), true);
-    assert.equal(and([[[]]], [[]]), true);
+    assert.deepEqual(and([0, 1, 0, 12], [0, 0, 1, 22]), [false, false, false, true]);
+    assert.deepEqual(and([], []), []);
   });
 
   it('should and mixed numbers and arrays', function () {
-    assert.equal(and(1, [0, 0, 0]), true);
-    assert.equal(and([0], 1), true);
-    assert.equal(and(0, [0, 0, 0]), false);
-    assert.equal(and(['A', 'B', 'C'], 0), false);
-    assert.equal(and(1, []), false);
-    assert.equal(and([[]], 1), true);
-    assert.equal(and([[], []], 1), true);
+    assert.deepEqual(and(10, [0, 2]), [false, true]);
+    assert.deepEqual(and([0, 2], 10), [false, true]);
   });
 
   it('should and two matrices', function () {
-    assert.equal(and(matrix([0]), matrix([0, 0, 0])), true);
-    assert.equal(and(matrix([]), matrix([0, 0, 0])), false);
-    assert.equal(and(matrix(['A', 'B', 'C']), matrix([])), false);
-    assert.equal(and(matrix([]), matrix([])), false);
-    assert.equal(and(matrix([]), matrix([[]])), false);
-    assert.equal(and(matrix([[]]), matrix([[]])), true);
-    assert.equal(and(matrix([[[]]]), matrix([[]])), true);
+    assert.deepEqual(and(matrix([0, 1, 0, 12]), matrix([0, 0, 1, 22])), matrix([false, false, false, true]));
+    assert.deepEqual(and(matrix([]), matrix([])), matrix([]));
   });
 
   it('should and mixed numbers and matrices', function () {
-    assert.equal(and(1, matrix([0, 0, 0])), true);
-    assert.equal(and(matrix([0]), 1), true);
-    assert.equal(and(0, matrix([0, 0, 0])), false);
-    assert.equal(and(matrix(['A', 'B', 'C']), 0), false);
-    assert.equal(and(1, matrix([])), false);
-    assert.equal(and(matrix([]), 1), false);
-    assert.equal(and(matrix([[]]), 1), true);
-    assert.equal(and(matrix([[], []]), 1), true);
+    assert.deepEqual(and(10, matrix([0, 2])), matrix([false, true]));
+    assert.deepEqual(and(matrix([0, 2]), 10), matrix([false, true]));
   });
 
   it('should and two objects', function () {
