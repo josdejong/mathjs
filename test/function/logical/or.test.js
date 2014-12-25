@@ -85,12 +85,6 @@ describe('or', function () {
     assert.equal(or(null, null), false);
   });
 
-  it('should or mixed numbers and undefined', function () {
-    assert.equal(or(2, undefined), true);
-    assert.equal(or(undefined, 2), true);
-    assert.equal(or(undefined, undefined), false);
-  });
-
   it('should or bignumbers', function () {
     assert.equal(or(bignumber(1), bignumber(1)), true);
     assert.equal(or(bignumber(-1), bignumber(1)), true);
@@ -143,25 +137,6 @@ describe('or', function () {
     assert.equal(or(unit('0in'), 0), false);
   });
 
-  it('should or two strings', function () {
-    assert.equal(or('0', 'NaN'), true);
-
-    assert.equal(or('abd', ' '), true);
-    assert.equal(or('abc', ''), true);
-    assert.equal(or('', 'abd'), true);
-    assert.equal(or('', ''), false);
-    assert.equal(or(' ', ''), true);
-  });
-
-  it('should or mixed numbers and strings', function () {
-    assert.equal(or(1, 'NaN'), true);
-    assert.equal(or('abd', 1), true);
-    assert.equal(or(1, ''), true);
-    assert.equal(or(0, ''), false);
-    assert.equal(or('', 1), true);
-    assert.equal(or('', 0), false);
-  });
-
   it('should or two arrays', function () {
     assert.deepEqual(or([0, 1, 0, 12], [0, 0, 1, 22]), [false, true, true, true]);
     assert.deepEqual(or([], []), []);
@@ -186,8 +161,10 @@ describe('or', function () {
     assert.deepEqual(or(matrix([0, 2]), 0), matrix([false, true]));
   });
 
-  it('should or two objects', function () {
-    assert.equal(or(new Date(), new Date()), true);
+  it('should throw an error in case of invalid type if arguments', function () {
+    assert.throws(function () {or(new Date(), new Date())}, TypeError);
+    assert.throws(function () {or(2, '23')}, TypeError);
+    assert.throws(function () {or(2, undefined)}, TypeError);
   });
 
   it('should throw an error in case of invalid number of arguments', function () {

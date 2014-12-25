@@ -37,9 +37,8 @@ describe('not', function () {
     assert.equal(not(false), true);
   });
 
-  it('should not null/undefined values', function () {
+  it('should not null', function () {
     assert.equal(not(null), true);
-    assert.equal(not(undefined), true);
   });
 
   it('should not bignumbers', function () {
@@ -62,16 +61,6 @@ describe('not', function () {
     assert.equal(not(unit('-10inch')), false);
   });
 
-  it('should not strings', function () {
-    assert.equal(not('0'), false);
-    assert.equal(not('NaN'), false);
-
-    assert.equal(not('abd'), false);
-    assert.equal(not(''), true);
-    assert.equal(not('\0'), false);
-    assert.equal(not(' '), false);
-  });
-
   it('should not arrays', function () {
     assert.deepEqual(not([0, 10]), [true, false]);
     assert.deepEqual(not([]), []);
@@ -82,8 +71,10 @@ describe('not', function () {
     assert.deepEqual(not(matrix([])), matrix([]));
   });
 
-  it('should not object', function () {
-    assert.equal(not(new Date()), false);
+  it('should throw an error in case of invalid type if arguments', function () {
+    assert.throws(function () {not(new Date())}, TypeError);
+    assert.throws(function () {not('23')}, TypeError);
+    assert.throws(function () {not({})}, TypeError);
   });
 
   it('should throw an error in case of invalid number of arguments', function () {

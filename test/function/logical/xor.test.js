@@ -83,12 +83,6 @@ describe('xor', function () {
     assert.equal(xor(null, 2), true);
   });
 
-  it('should xor mixed numbers and undefined', function () {
-    assert.equal(xor(2, undefined), true);
-    assert.equal(xor(undefined, 2), true);
-    assert.equal(xor(null, null), false);
-  });
-
   it('should xor bignumbers', function () {
     assert.equal(xor(bignumber(1), bignumber(1)), false);
     assert.equal(xor(bignumber(-1), bignumber(1)), false);
@@ -139,24 +133,6 @@ describe('xor', function () {
     assert.equal(xor(unit('0in'), 0), false);
   });
 
-  it('should xor two strings', function () {
-    assert.equal(xor('0', 'NaN'), false);
-
-    assert.equal(xor('abd', ' '), false);
-    assert.equal(xor('abc', ''), true);
-    assert.equal(xor('', 'abd'), true);
-    assert.equal(xor('', ''), false);
-  });
-
-  it('should xor mixed numbers and strings', function () {
-    assert.equal(xor(1, 'NaN'), false);
-    assert.equal(xor('abd', 1), false);
-    assert.equal(xor(1, ''), true);
-    assert.equal(xor('', 1), true);
-    assert.equal(xor('', 0), false);
-    assert.equal(xor(0, ''), false);
-  });
-
   it('should xor two arrays', function () {
     assert.deepEqual(xor([0, 1, 0, 12], [0, 0, 1, 22]), [false, true, true, false]);
     assert.deepEqual(xor([], []), []);
@@ -181,8 +157,10 @@ describe('xor', function () {
     assert.deepEqual(xor(matrix([0, 2]), 0), matrix([false, true]));
   });
 
-  it('should xor two objects', function () {
-    assert.equal(xor(new Date(), new Date()), false);
+  it('should throw an error in case of invalid type if arguments', function () {
+    assert.throws(function () {xor(new Date(), new Date())}, TypeError);
+    assert.throws(function () {xor(2, '23')}, TypeError);
+    assert.throws(function () {xor(2, undefined)}, TypeError);
   });
 
   it('should throw an error in case of invalid number of arguments', function () {

@@ -74,11 +74,6 @@ describe('and', function () {
     assert.equal(and(null, 2), false);
   });
 
-  it('should and mixed numbers and undefined', function () {
-    assert.equal(and(2, undefined), false);
-    assert.equal(and(undefined, 2), false);
-  });
-
   it('should and bignumbers', function () {
     assert.equal(and(bignumber(1), bignumber(1)), true);
     assert.equal(and(bignumber(-1), bignumber(1)), true);
@@ -122,22 +117,6 @@ describe('and', function () {
     assert.equal(and(unit('2in'), 0), false);
   });
 
-  it('should and two strings', function () {
-    assert.equal(and('0', 'NaN'), true);
-
-    assert.equal(and('abd', ' '), true);
-    assert.equal(and('abc', ''), false);
-    assert.equal(and('', 'abd'), false);
-    assert.equal(and('', ''), false);
-  });
-
-  it('should and mixed numbers and strings', function () {
-    assert.equal(and(1, 'NaN'), true);
-    assert.equal(and('abd', 1), true);
-    assert.equal(and(1, ''), false);
-    assert.equal(and('', 1), false);
-  });
-
   it('should and two arrays', function () {
     assert.deepEqual(and([0, 1, 0, 12], [0, 0, 1, 22]), [false, false, false, true]);
     assert.deepEqual(and([], []), []);
@@ -158,8 +137,10 @@ describe('and', function () {
     assert.deepEqual(and(matrix([0, 2]), 10), matrix([false, true]));
   });
 
-  it('should and two objects', function () {
-    assert.equal(and(new Date(), new Date()), true);
+  it('should throw an error in case of invalid type if arguments', function () {
+    assert.throws(function () {and(new Date(), new Date())}, TypeError);
+    assert.throws(function () {and(2, '23')}, TypeError);
+    assert.throws(function () {and(2, undefined)}, TypeError);
   });
 
   it('should throw an error in case of invalid number of arguments', function () {
