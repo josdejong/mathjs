@@ -70,8 +70,8 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `!`         | Factorial               | `y!`        | Left to right | `5!`                  | `120`
 `&`         | Bitwise and             | `x & y`     | Left to right | `5 & 3`               | `1`
 `~`         | Bitwise not             | `~x`        | Right to left | `~2`                  | `-3`
-`|`         | Bitwise or              | `x | y`     | Left to right | `5 | 3`               | `7`
-`^|`        | Bitwise xor             | `x ^| y`    | Left to right | `5 ^| 3`              | `6`
+<code>&#124;</code>  | Bitwise or     | <code>x &#124; y</code>   | Left to right | <code>5 &#124; 3</code>  | `7`
+<code>^&#124;</code> | Bitwise xor    | <code>x ^&#124; y</code>  | Left to right | <code>5 ^&#124; 2</code> | `6`
 `<<`        | Left shift              | `x << y`    | Left to right | `4 << 1`              | `8`
 `>>`        | Right arithmetic shift  | `x >> y`    | Left to right | `8 >> 1`              | `4`
 `>>>`       | Right logical shift     | `x >>> y`   | Left to right | `-8 >>> 1`            | `2147483644`
@@ -107,8 +107,8 @@ Operators                         | Description
 `<<`, `>>`, `>>>`                 | Bitwise left shift, bitwise right arithmetic shift, bitwise right logical shift
 `==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
 `&`                               | Bitwise and
-`^|`                              | Bitwise xor
-`|`                               | Bitwise or
+<code>^&#124;</code>              | Bitwise xor
+<code>&#124;</code>               | Bitwise or
 `and`                             | Logical and
 `xor`                             | Logical xor
 `or`                              | Logical or

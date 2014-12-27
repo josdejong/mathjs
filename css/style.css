@@ -223,11 +223,11 @@ pre {
 }
 
 code {
+  padding: 0.2em;
   margin: 0;
-  border: 1px solid #ddd;
-  background-color: #fcfcfc;
-  border-radius: 2px;
-  padding: 0;
+  font-size: 90%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
 }
 
 pre code {
