@@ -52,7 +52,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `;`         | Row separator           | `[x, y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
 `\n`        | Statement separator     | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
 `+`         | Add                     | `x + y`     | Left to right | `4 + 5`               | `9`
-`+`         | Unary plus              | `+y`        | Right to left | `+"4"`                | `4`
+`+`         | Unary plus              | `+y`        | Right to left | `+4`                  | `4`
 `-`         | Subtract                | `x - y`     | Left to right | `7 - 3`               | `4`
 `-`         | Unary minus             | `-y`        | Right to left | `-4`                  | `-4`
 `*`         | Multiply                | `x * y`     | Left to right | `2 * 3`               | `6`
