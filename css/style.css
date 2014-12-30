@@ -233,6 +233,7 @@ code {
 pre code {
   margin: inherit;
   border: none;
+  font-size: 100%;
   background-color: transparent;
   border-radius: inherit;
   padding: inherit;
