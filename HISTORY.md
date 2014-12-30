@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 1.2.1-SNAPSHOT
+
+- Some minor fixes in the docs.
+
+
 ## 2014-12-25, version 1.2.0
 
 - Support for bitwise operations `bitAnd`, `bitNot`, `bitOr`, `bitXor`,

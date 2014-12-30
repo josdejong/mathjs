@@ -44,7 +44,7 @@ math.chain(3)
     .done();     // 5
 
 math.chain( [[1, 2], [3, 4]] )
-    .set([1, 1], 8)
+    .subset(math.index(0, 0), 8)
     .multiply(3)
     .done();     // [[24, 6], [9, 12]]
 ```

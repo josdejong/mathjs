@@ -97,13 +97,13 @@ allowing the function to process the arguments in a customized way. Raw
 functions are called as:
 
 ```
-rawFunction(args : Node[], math: Object, scope: Object)
+rawFunction(args: Node[], math: Object, scope: Object)
 ```
 
 Where :
 
 - `args` is an Array with nodes of the parsed arguments.
-- `math` is the math namespace with which the expression was compiled.
+- `math` is the math namespace against which the expression was compiled.
 - `scope` is the scope provided when evaluating the expression.
 
 Raw functions must be imported in the `math` namespace, as they need to be
