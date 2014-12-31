@@ -18,7 +18,7 @@ Mass                | gram(g), tonne, ton, grain (gr), dram(dr), ounce (oz), pou
 Electric current    | ampere (A)
 Temperature         | kelvin (K), celsius (degC), fahrenheit (degF), rankine (degR)
 Amount of substance | mole (mol)
-Luminous intensity	| candela (cd)
+Luminous intensity  | candela (cd)
 Force               | newton (N), poundforce (lbf)
 Binary              | bit (b), byte (B)
 
