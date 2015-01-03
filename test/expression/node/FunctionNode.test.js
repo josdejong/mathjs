@@ -266,10 +266,19 @@ describe('FunctionNode', function() {
   });
 
   it ('should LaTeX a FunctionNode', function () {
-    var c = new ConstantNode(4);
-    var n = new FunctionNode('sqrt', [c]);
+    var c1 = new ConstantNode(4);
+    var c2 = new ConstantNode(5);
 
+    var n = new FunctionNode('sqrt', [c1]);
     assert.equal(n.toTex(), '\\sqrt{4}');
+
+    // test permutations
+    var n2 = new FunctionNode('permutations', [c1]);
+    assert.equal(n2.toTex(), '{4!}');
+
+    var o = new OperatorNode('+', 'add', [c1, c2]);
+    var n3 = new FunctionNode('permutations', [o]);
+    assert.equal(n3.toTex(), '{\\left({4}+{5}\\right)!}');
   });
 
 });
