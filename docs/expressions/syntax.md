@@ -337,6 +337,10 @@ math.eval('5.4 kg');                    // Unit, 5.4 kg
 math.eval('2 inch to cm');              // Unit, 5.08 cm
 math.eval('20 celsius in fahrenheit');  // Unit, ~68 fahrenheit
 
+// convert a unit to a number
+// A second parameter with the unit for the exported number must be provided
+math.eval('number(5 cm, mm)');          // Number, 50
+
 // calculations with units
 math.eval('0.5kg + 33g');               // Unit, 0.533 kg
 math.eval('3 inch + 2 cm');             // Unit, 3.7874 inch
