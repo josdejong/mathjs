@@ -14,12 +14,16 @@ describe('util.function', function() {
       assert.strictEqual(m(3), 9);
     });
 
-    it('should throw an error in case of functions with multiple arguments', function () {
-      var f = function (x, y) {return x - y};
+    it('should memoize a function with two arguments', function () {
+      var f = function (x, y) {return x * y};
 
-      assert.throws(function () {
-        functionUtils.memoize(f);
-      })
+      var m = functionUtils.memoize(f);
+
+      assert.strictEqual(m(2, 3), 6);
+
+      // hash should differ
+      assert.strictEqual(m(1, 23), 23);
+      assert.strictEqual(m(12, 3), 36);
     });
 
     it('should really return the cached result', function () {
