@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 1.2.1-SNAPSHOT
- * @date    2015-01-03
+ * @date    2015-01-06
  *
  * @license
  * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
@@ -17533,7 +17533,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
 	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
+	      isCollection = collection.isCollection,
+
+	      bigSin = util.bignumber.sin;
 
 	  /**
 	   * Calculate the sine of a value.
@@ -17558,8 +17560,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   *    cos, tan
 	   *
-	   * @param {Number | Boolean | Complex | Unit | Array | Matrix | null} x  Function input
-	   * @return {Number | Complex | Array | Matrix} Sine of x
+	   * @param {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix | null} x  Function input
+	   * @return {Number | BigNumber | Complex | Array | Matrix} Sine of x
 	   */
 	  math.sin = function sin(x) {
 	    if (arguments.length != 1) {
@@ -17593,9 +17595,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      // TODO: implement BigNumber support
-	      // downgrade to Number
-	      return sin(x.toNumber());
+	      // TODO: implement better BigNumber support
+	      return bigSin(x);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('sin', math['typeof'](x));
@@ -18216,7 +18217,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // istanbul ignore else (we cannot unit test the else case in a node.js environment)
 	      if (true) {
 	        // load the file using require
-	        var _module = __webpack_require__(195)(object);
+	        var _module = __webpack_require__(196)(object);
 	        math_import(_module, options);
 	      }
 	      else {
@@ -18525,7 +18526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	module.exports = function (math) {
-	  var types = __webpack_require__(196),
+	  var types = __webpack_require__(195),
 
 	      Complex = __webpack_require__(6),
 	      Matrix = __webpack_require__(9),
@@ -18671,6 +18672,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var BigNumber = __webpack_require__(155);
 	var isNumber = __webpack_require__(4).isNumber;
 	var digits = __webpack_require__(4).digits;
+	var memoize = __webpack_require__(314).memoize;
 
 	/**
 	 * Test whether value is a BigNumber
@@ -18690,49 +18692,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {Number} precision
 	 * @returns {BigNumber} Returns e
 	 */
-	exports.e = function (precision) {
+	exports.e = memoize(function (precision) {
 	  var Big = BigNumber.constructor({precision: precision});
 
 	  return new Big(1).exp();
-	};
+	});
 
 	/**
 	 * Calculate BigNumber golden ratio, phi = (1+sqrt(5))/2
 	 * @param {Number} precision
 	 * @returns {BigNumber} Returns phi
 	 */
-	exports.phi = function (precision) {
+	exports.phi = memoize(function (precision) {
 	  var Big = BigNumber.constructor({precision: precision});
 
 	  return new Big(1).plus(new Big(5).sqrt()).div(2);
-	};
-
-	/**
-	 * Calculate the arc tangent of x
-	 *
-	 * arctan(x) = x - x^3/3 + x^5/5 - x^7/7 + x^9/9 - ...
-	 *           = x - x^2*x^1/3 + x^2*x^3/5 - x^2*x^5/7 + x^2*x^7/9 - ...
-	 *
-	 * @param {BigNumber} x
-	 * @returns {BigNumber} arc tangent of x
-	 */
-	exports.arctan = function (x) {
-	  var y = x;
-	  var yPrev = NaN;
-	  var x2 = x.times(x);
-	  var num = x;
-	  var sign = -1;
-
-	  for (var k = 3; !y.equals(yPrev); k += 2) {
-	    num = num.times(x2);
-
-	    yPrev = y;
-	    y = (sign > 0) ? y.plus(num.div(k)) : y.minus(num.div(k));
-	    sign = -sign;
-	  }
-
-	  return y;
-	};
+	});
 
 	/**
 	 * Calculate BigNumber pi.
@@ -18742,7 +18717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {Number} precision
 	 * @returns {BigNumber} Returns pi
 	 */
-	exports.pi = function (precision) {
+	exports.pi = memoize(function (precision) {
 	  // we calculate pi with a few decimal places extra to prevent round off issues
 	  var Big = BigNumber.constructor({precision: precision + 4});
 	  var pi4th = new Big(4).times(exports.arctan(new Big(1).div(5)))
@@ -18752,14 +18727,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // the final pi has the requested number of decimals
 	  return new Big(4).times(pi4th);
-	};
+	});
 
 	/**
 	 * Calculate BigNumber tau, tau = 2 * pi
 	 * @param {Number} precision
 	 * @returns {BigNumber} Returns tau
 	 */
-	exports.tau = function (precision) {
+	exports.tau = memoize(function (precision) {
 	  // we calculate pi at a slightly higher precision than configured to prevent round off errors
 	  // when multiplying by two in the end
 
@@ -18768,7 +18743,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var Big = BigNumber.constructor({precision: precision});
 
 	  return new Big(2).times(pi);
-	};
+	});
 
 
 	/* BigNumber functions. */
@@ -18837,6 +18812,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 	  return bitwise(x, y, function (a, b) { return a & b });
+	};
+
+	/**
+	 * Calculate the arc tangent of x
+	 *
+	 * arctan(x) = x - x^3/3 + x^5/5 - x^7/7 + x^9/9 - ...
+	 *           = x - x^2*x^1/3 + x^2*x^3/5 - x^2*x^5/7 + x^2*x^7/9 - ...
+	 *
+	 * @param {BigNumber} x
+	 * @returns {BigNumber} arc tangent of x
+	 */
+	exports.arctan = function (x) {
+	  var y = x;
+	  var yPrev = NaN;
+	  var x2 = x.times(x);
+	  var num = x;
+	  var add = true;
+
+	  for (var k = 3; !y.equals(yPrev); k += 2) {
+	    num = num.times(x2);
+
+	    yPrev = y;
+	    add = !add;
+	    y = (add) ? y.plus(num.div(k)) : y.minus(num.div(k));
+	  }
+
+	  return y;
 	};
 
 	/*
@@ -18947,6 +18949,69 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return x.isFinite() ? y : x;
 	  }
 	  return bitwise(x, y, function (a, b) { return a | b });
+	};
+
+	/**
+	 * Calculate the sine of x using Taylor Series.
+	 *
+	 * sin(x) = x - x^3/3! + x^5/5! - x^7/7! + x^9/9! - ...
+	 *        = x - x^2*x^1/3! + x^2*x^3/5! - x^2*x^5/7! + x^2*x^7/9! - ...
+	 *
+	 * TODO: Replace with Chebyshev approximation.
+	 *
+	 * @param {BigNumber} x
+	 * @returns {BigNumber} sine of x
+	 */
+	exports.sin = function (x) {
+	  var BigNumber = x['constructor'];
+	  var precision = BigNumber['precision'];
+	  if (x.isNaN() || !x.isFinite()) {
+	    return new BigNumber(NaN);
+	  }
+
+	  // sin(-x) == -sin(x)
+	  var isNeg;
+	  if (isNeg = x.isNegative()) {
+	    x['s'] = -x['s'];
+	  }
+
+	  // Get offset within the period of sin (-pi, pi] w/ gaurd digits
+	  var pi = exports.pi(precision + ~~(3*Math.log(precision)) + 1);
+	  var tau = pi.times(2);
+
+	  // Catch if tau multiple using pi's precision
+	  if (x.div(pi.toDP(x.dp(), 1)).toNumber() % 2 == 0) {
+	    return new BigNumber(0);
+	  }
+
+	  var y = x.mod(tau);
+	  // Catch if tau multiple with tau's precision
+	  if (y.toDP(x.dp(), 1).isZero()) {
+	    return new BigNumber(0);
+	  }
+	  if (y.gt(pi)) {
+	    y = y.minus(tau);
+	  }
+
+	  var yPrev = NaN;
+	  var y2 = y.times(y);
+	  var num = y;
+	  var den = BigNumber['ONE'];
+	  var add = true;
+	  for (var k = 1; !y.equals(yPrev); k += 2) {
+	    num = num.times(y2);
+	    den = den.times(k+1).times(k+2);
+
+	    yPrev = y;
+	    add = !add;
+	    y = (add) ? y.plus(num.div(den)) : y.minus(num.div(den));
+	  }
+
+	  if (isNeg) {
+	    y['s'] = -y['s'];
+	  }
+	  y['constructor']['precision'] = precision;
+	  return y.toDP(precision - 1);
 	};
 
 	/*
@@ -19372,7 +19437,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var number = __webpack_require__(4),
 	    string = __webpack_require__(176),
 	    object = __webpack_require__(3),
-	    types = __webpack_require__(196),
+	    types = __webpack_require__(195),
 
 	    DimensionError = __webpack_require__(157),
 	    IndexError = __webpack_require__(158),
@@ -24008,7 +24073,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.bignumber = __webpack_require__(152);
 	exports.object = __webpack_require__(3);
 	exports.string = __webpack_require__(176);
-	exports.types = __webpack_require__(196);
+	exports.types = __webpack_require__(195);
 
 
 /***/ },
@@ -24147,9 +24212,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Node = __webpack_require__(173),
 	    ArrayNode = __webpack_require__(161),
 
-	    keywords = __webpack_require__(314),
+	    keywords = __webpack_require__(315),
 
-	    latex = __webpack_require__(315),
+	    latex = __webpack_require__(316),
 	    isString = __webpack_require__(176).isString;
 
 	/**
@@ -24385,7 +24450,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Node = __webpack_require__(173);
-	var latex = __webpack_require__(315);
+	var latex = __webpack_require__(316);
 	var BigNumber = __webpack_require__(155);
 	var Complex = __webpack_require__(6);
 	var Unit = __webpack_require__(10);
@@ -24541,7 +24606,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Node = __webpack_require__(173),
 	    BigNumber = __webpack_require__(155),
-	    type = __webpack_require__(196).type,
+	    type = __webpack_require__(195).type,
 	    isString = __webpack_require__(176).isString;
 
 	/**
@@ -24727,8 +24792,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Node = __webpack_require__(173);
-	var keywords = __webpack_require__(314);
-	var latex = __webpack_require__(315);
+	var keywords = __webpack_require__(315);
+	var latex = __webpack_require__(316);
 	var isString = __webpack_require__(176).isString;
 	var isArray = Array.isArray;
 
@@ -25073,7 +25138,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ConstantNode = __webpack_require__(165),
 	    SymbolNode = __webpack_require__(171),
 	    FunctionNode = __webpack_require__(169),
-	    latex = __webpack_require__(315);
+	    latex = __webpack_require__(316);
 
 	/**
 	 * @constructor OperatorNode
@@ -25281,7 +25346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Node = __webpack_require__(173);
 	var SymbolNode = __webpack_require__(171);
 
-	var latex = __webpack_require__(315);
+	var latex = __webpack_require__(316);
 	var isNode = Node.isNode;
 	var isArray = Array.isArray;
 
@@ -25529,7 +25594,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Node = __webpack_require__(173),
 	    Unit = __webpack_require__(10),
 
-	    latex = __webpack_require__(315),
+	    latex = __webpack_require__(316),
 	    isString = __webpack_require__(176).isString;
 
 	/**
@@ -25740,7 +25805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var keywords = __webpack_require__(314);
+	var keywords = __webpack_require__(315);
 
 	/**
 	 * Node
@@ -26708,6 +26773,39 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	/**
+	 * Determine the type of a variable
+	 *
+	 *     type(x)
+	 *
+	 * @param {*} x
+	 * @return {String} type  Lower case type, for example 'number', 'string',
+	 *                        'array', 'date'.
+	 */
+	exports.type = function(x) {
+	  var type = typeof x;
+
+	  if (type === 'object') {
+	    if (x === null)           return 'null';
+	    if (x instanceof Boolean) return 'boolean';
+	    if (x instanceof Number)  return 'number';
+	    if (x instanceof String)  return 'string';
+	    if (Array.isArray(x))     return 'array';
+	    if (x instanceof Date)    return 'date';
+	    if (x instanceof Function)return 'function';
+	    if (x instanceof RegExp)  return 'regexp';
+	  }
+
+	  return type;
+	};
+
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var map = {
 		"./clone": 143,
 		"./clone.js": 143,
@@ -26739,40 +26837,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 195;
-
-
-/***/ },
-/* 196 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Determine the type of a variable
-	 *
-	 *     type(x)
-	 *
-	 * @param {*} x
-	 * @return {String} type  Lower case type, for example 'number', 'string',
-	 *                        'array', 'date'.
-	 */
-	exports.type = function(x) {
-	  var type = typeof x;
-
-	  if (type === 'object') {
-	    if (x === null)           return 'null';
-	    if (x instanceof Boolean) return 'boolean';
-	    if (x instanceof Number)  return 'number';
-	    if (x instanceof String)  return 'string';
-	    if (Array.isArray(x))     return 'array';
-	    if (x instanceof Date)    return 'date';
-	    if (x instanceof Function)return 'function';
-	    if (x instanceof RegExp)  return 'regexp';
-	  }
-
-	  return type;
-	};
+	webpackContext.id = 196;
 
 
 /***/ },
@@ -29634,6 +29699,38 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// function utils
+
+	/*
+	 * Memoize a given function by caching the computed result.
+	 * Very limited, supports only functions with one argument, and only primitive
+	 * values as argument.
+	 *
+	 * @param {function} fn   The function to be memoized. Must be a pure function.
+	 * @return {function}     Returns the memoized function
+	 */
+	exports.memoize = function( fn ) {
+	  if (fn.length === 1) {
+	    function memoize( arg ){
+	      if (!(arg in memoize.cache)) {
+	        return memoize.cache[arg] = fn(arg);
+	      }
+	      return memoize.cache[arg];
+	    }
+	    memoize.cache = {};
+
+	    return memoize;
+	  }
+	  else {
+	    throw new Error('Function must have one argument');
+	  }
+	};
+
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	// Reserved keywords not allowed to use in the parser
@@ -29643,7 +29740,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 315 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
