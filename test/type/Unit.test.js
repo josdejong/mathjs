@@ -193,6 +193,36 @@ describe('unit', function() {
       assert.equal(u2.fixPrefix, true);
     });
 
+    it ('should convert a binary prefixes (1)', function () {
+      var u1 = new Unit(1, 'Kib');
+      assert.equal(u1.value, 1024);
+      assert.equal(u1.unit.name, 'b');
+      assert.equal(u1.prefix.name, 'Ki');
+      assert.equal(u1.fixPrefix, false);
+
+      var u2 = u1.to(new Unit(null, 'b'));
+      assert.notStrictEqual(u1, u2); // u2 must be a clone
+      assert.equal(u2.value, 1024);     // u2 must have a value
+      assert.equal(u2.unit.name, 'b');
+      assert.equal(u2.prefix.name, '');
+      assert.equal(u2.fixPrefix, true);
+    });
+
+    it ('should convert a binary prefixes (2)', function () {
+      var u1 = new Unit(1, 'kb');
+      assert.equal(u1.value, 1000);
+      assert.equal(u1.unit.name, 'b');
+      assert.equal(u1.prefix.name, 'k');
+      assert.equal(u1.fixPrefix, false);
+
+      var u2 = u1.to(new Unit(null, 'b'));
+      assert.notStrictEqual(u1, u2); // u2 must be a clone
+      assert.equal(u2.value, 1000);     // u2 must have a value
+      assert.equal(u2.unit.name, 'b');
+      assert.equal(u2.prefix.name, '');
+      assert.equal(u2.fixPrefix, true);
+    });
+
     it ('should throw an error when converting to an incompatible unit', function () {
       var u1 = new Unit(5000, 'cm');
       assert.throws(function () {u1.to('kg')}, /Units do not match/);
