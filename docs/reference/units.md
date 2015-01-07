@@ -57,13 +57,24 @@ yocto   | y             | 1e-24
 The following binary prefixes are available.
 They can be used with units `bit` (`b`) and `byte` (`B`).
 
-Name        | Abbreviation  | Value
------------ | ------------- | -----
-kilo, kibi  | k, Ki         | 1024
-mega, mebi  | M, Mi         | 1024^2
-giga, gibi  | G, Gi         | 1024^3
-tera, tebi  | T, Ti         | 1024^4
-peta, pebi  | P, Pi         | 1024^5
-exa, exi    | E, Ei         | 1024^6
-zetta, zebi | Z, Zi         | 1024^7
-yotta, yobi | Y, Yi         | 1024^8
+Name  | Abbreviation  | Value
+----- | ------------- | ------
+kilo  | k             | 1000
+mega  | M             | 1000^2
+giga  | G             | 1000^3
+tera  | T             | 1000^4
+peta  | P             | 1000^5
+exa   | E             | 1000^6
+zetta | Z             | 1000^7
+yotta | Y             | 1000^8
+
+Name  | Abbreviation  | Value
+----- | ------------- | ------
+kibi  | Ki            | 1024
+mebi  | Mi            | 1024^2
+gibi  | Gi            | 1024^3
+tebi  | Ti            | 1024^4
+pebi  | Pi            | 1024^5
+exi   | Ei            | 1024^6
+zebi  | Zi            | 1024^7
+yobi  | Yi            | 1024^8
