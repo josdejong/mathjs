@@ -26,6 +26,16 @@ describe('util.function', function() {
       assert.strictEqual(m(12, 3), 36);
     });
 
+    it('should memoize a function with objects as arguments', function () {
+      var f = function (obj) {return obj.x * obj.y};
+
+      var m = functionUtils.memoize(f);
+
+      assert.strictEqual(m({x: 2, y: 3}), 6);
+      assert.deepEqual(Object.keys(m.cache), ['{"0":{"x":2,"y":3}}']);
+      assert.strictEqual(m.cache['{"0":{"x":2,"y":3}}'], 6);
+    });
+
     it('should really return the cached result', function () {
       var a = 2;
       var f = function (x) {return a}; // trick: no pure function
