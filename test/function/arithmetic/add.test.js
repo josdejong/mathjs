@@ -1,11 +1,12 @@
 // test add
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    add = math.add;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var BigNumber = require('decimal.js');
+var add = math.add;
 
+// TODO: make unit tests independent of math
 describe('add', function() {
 
   it('should add two numbers', function() {
@@ -35,30 +36,30 @@ describe('add', function() {
     assert.equal(add(false, 2), 2);
   });
 
-  it('should add bignumbers', function() {
-    assert.deepEqual(add(bignumber(0.1), bignumber(0.2)), bignumber(0.3));
-    assert.deepEqual(add(bignumber('2e5001'), bignumber('3e5000')), bignumber('2.3e5001'));
-    assert.deepEqual(add(bignumber('9999999999999999999'), bignumber('1')), bignumber('1e19'));
+  it('should add new BigNumbers', function() {
+    assert.deepEqual(add(new BigNumber(0.1), new BigNumber(0.2)), new BigNumber(0.3));
+    assert.deepEqual(add(new BigNumber('2e5001'), new BigNumber('3e5000')), new BigNumber('2.3e5001'));
+    assert.deepEqual(add(new BigNumber('9999999999999999999'), new BigNumber('1')), new BigNumber('1e19'));
   });
 
-  it('should add mixed numbers and bignumbers', function() {
-    assert.deepEqual(add(bignumber(0.1), 0.2), bignumber(0.3));
-    assert.deepEqual(add(0.1, bignumber(0.2)), bignumber(0.3));
+  it('should add mixed numbers and new BigNumbers', function() {
+    assert.deepEqual(add(new BigNumber(0.1), 0.2), new BigNumber(0.3));
+    assert.deepEqual(add(0.1, new BigNumber(0.2)), new BigNumber(0.3));
 
-    approx.equal(add(1/3, bignumber(1)), 1.333333333333333);
-    approx.equal(add(bignumber(1), 1/3), 1.333333333333333);
+    approx.equal(add(1/3, new BigNumber(1)), 1.333333333333333);
+    approx.equal(add(new BigNumber(1), 1/3), 1.333333333333333);
   });
 
-  it('should add mixed booleans and bignumbers', function() {
-    assert.deepEqual(add(bignumber(0.1), true), bignumber(1.1));
-    assert.deepEqual(add(bignumber(0.1), false), bignumber(0.1));
-    assert.deepEqual(add(false, bignumber(0.2)), bignumber(0.2));
-    assert.deepEqual(add(true, bignumber(0.2)), bignumber(1.2));
+  it('should add mixed booleans and new BigNumbers', function() {
+    assert.deepEqual(add(new BigNumber(0.1), true), new BigNumber(1.1));
+    assert.deepEqual(add(new BigNumber(0.1), false), new BigNumber(0.1));
+    assert.deepEqual(add(false, new BigNumber(0.2)), new BigNumber(0.2));
+    assert.deepEqual(add(true, new BigNumber(0.2)), new BigNumber(1.2));
   });
 
-  it('should add mixed complex numbers and bignumbers', function() {
-    assert.deepEqual(add(math.complex(3, -4), bignumber(2)), math.complex(5, -4));
-    assert.deepEqual(add(bignumber(2), math.complex(3, -4)), math.complex(5, -4));
+  it('should add mixed complex numbers and new BigNumbers', function() {
+    assert.deepEqual(add(math.complex(3, -4), new BigNumber(2)), math.complex(5, -4));
+    assert.deepEqual(add(new BigNumber(2), math.complex(3, -4)), math.complex(5, -4));
   });
 
   it('should add two complex numbers', function() {
@@ -87,9 +88,9 @@ describe('add', function() {
   });
 
   it('should throw an error in case of a unit and non-unit argument', function() {
-    assert.throws(function () {add(math.unit('5cm'), 2)}, math.error.UnsupportedTypeError);
-    assert.throws(function () {add(math.unit('5cm'), new Date())}, math.error.UnsupportedTypeError);
-    assert.throws(function () {add(new Date(), math.unit('5cm'))}, math.error.UnsupportedTypeError);
+    assert.throws(function () {add(math.unit('5cm'), 2)}, /TypeError/);
+    assert.throws(function () {add(math.unit('5cm'), new Date())}, /TypeError/);
+    assert.throws(function () {add(new Date(), math.unit('5cm'))}, /TypeError/);
   });
 
   it('should concatenate two strings', function() {
@@ -139,8 +140,8 @@ describe('add', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {add(1)}, error.ArgumentsError);
-    assert.throws(function () {add(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {add(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {add(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
 });

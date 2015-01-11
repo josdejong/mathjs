@@ -1,7 +1,11 @@
-var assert = require('assert'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    mean = math.mean;
+var assert = require('assert');
+var equalBigNumber = require('../../../tools/assertBigNumber').equal;
+var BigNumber = require('decimal.js');
+var Complex = require('../../../lib/type/Complex');
+var Matrix = require('../../../lib/type/Matrix');
+var Unit = require('../../../lib/type/Unit');
+var math = require('../../../index');
+var mean = math.mean;
 
 describe('mean', function() {
   it('should return the mean value of some numbers', function() {
@@ -13,18 +17,18 @@ describe('mean', function() {
   });
 
   it('should return the mean of big numbers', function() {
-    assert.deepEqual(mean(bignumber(1),bignumber(3),bignumber(5),bignumber(2),bignumber(-5)),
-        bignumber(1.2));
+    assert.deepEqual(mean(new BigNumber(1),new BigNumber(3),new BigNumber(5),new BigNumber(2),new BigNumber(-5)),
+        new BigNumber(1.2));
   });
 
   it('should return the mean value for complex values', function() {
-    assert.deepEqual(mean(math.complex(2,3), math.complex(2,1)), math.complex(2,2));
-    assert.deepEqual(mean(math.complex(2,3), math.complex(2,5)), math.complex(2,4));
+    assert.deepEqual(mean(new Complex(2,3), new Complex(2,1)), new Complex(2,2));
+    assert.deepEqual(mean(new Complex(2,3), new Complex(2,5)), new Complex(2,4));
   });
 
   it('should return the mean value for mixed real and complex values', function() {
-    assert.deepEqual(mean(math.complex(2,4), 4), math.complex(3,2));
-    assert.deepEqual(mean(4, math.complex(2,4)), math.complex(3,2));
+    assert.deepEqual(mean(new Complex(2,4), 4), new Complex(3,2));
+    assert.deepEqual(mean(4, new Complex(2,4)), new Complex(3,2));
   });
 
   it('should return the mean value from an array', function() {
@@ -33,8 +37,8 @@ describe('mean', function() {
   });
 
   it('should return the mean value from a 1d matrix', function() {
-    assert.equal(mean(math.matrix([5])), 5);
-    assert.equal(mean(math.matrix([1,3,5,2,-5])), 1.2);
+    assert.equal(mean(new Matrix([5])), 5);
+    assert.equal(mean(new Matrix([1,3,5,2,-5])), 1.2);
   });
 
   it('should return the mean for each vector on the last dimension', function() {
@@ -42,7 +46,7 @@ describe('mean', function() {
       [ 2, 4],
       [ 6, 8]
     ]), 5);
-    assert.deepEqual(mean(math.matrix([
+    assert.deepEqual(mean(new Matrix([
       [ 2, 4],
       [ 6, 8]
     ])), 5);

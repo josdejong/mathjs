@@ -1,7 +1,11 @@
-var assert = require('assert'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    max = math.max;
+var assert = require('assert');
+var equalBigNumber = require('../../../tools/assertBigNumber').equal;
+var BigNumber = require('decimal.js');
+var Complex = require('../../../lib/type/Complex');
+var Matrix = require('../../../lib/type/Matrix');
+var Unit = require('../../../lib/type/Unit');
+var math = require('../../../index');
+var max = math.max;
 
 describe('max', function() {
 
@@ -14,8 +18,8 @@ describe('max', function() {
   });
 
   it('should return the max of big numbers', function() {
-    assert.deepEqual(max(bignumber(1),bignumber(3),bignumber(5),bignumber(2),bignumber(-5)),
-        bignumber(5));
+    assert.deepEqual(max(new BigNumber(1),new BigNumber(3),new BigNumber(5),new BigNumber(2),new BigNumber(-5)),
+        new BigNumber(5));
   });
 
   it('should return the max string following lexical order', function() {
@@ -23,7 +27,7 @@ describe('max', function() {
   });
 
   it('should return the max element from a vector', function() {
-    assert.equal(max(math.matrix([1,3,5,2,-5])), 5);
+    assert.equal(max(new Matrix([1,3,5,2,-5])), 5);
   });
 
   it('should return the max element from a 2d matrix', function() {
@@ -32,7 +36,7 @@ describe('max', function() {
       [ 3, 0,  5],
       [-1, 11, 9]
     ]), 11);
-    assert.deepEqual(max(math.matrix([
+    assert.deepEqual(max(new Matrix([
       [ 1, 4,  7],
       [ 3, 0,  5],
       [-1, 11, 9]
@@ -66,13 +70,13 @@ describe('max', function() {
   });
 
   it('should throw an error when called with complex numbers', function() {
-    assert.throws(function () {max(math.complex(2,3), math.complex(2,1))}, TypeError);
-    assert.throws(function () {max(math.complex(2,3), math.complex(2,5))}, TypeError);
+    assert.throws(function () {max(new Complex(2,3), new Complex(2,1))}, TypeError);
+    assert.throws(function () {max(new Complex(2,3), new Complex(2,5))}, TypeError);
 
-    assert.throws(function () {max(math.complex(3,4), 4)}, TypeError);
-    assert.throws(function () {max(math.complex(3,4), 5)}, TypeError);
-    assert.throws(function () {max(5, math.complex(3,4))}, TypeError);
-    assert.throws(function () {max(math.complex(3,4), 6)}, TypeError);
+    assert.throws(function () {max(new Complex(3,4), 4)}, TypeError);
+    assert.throws(function () {max(new Complex(3,4), 5)}, TypeError);
+    assert.throws(function () {max(5, new Complex(3,4))}, TypeError);
+    assert.throws(function () {max(new Complex(3,4), 6)}, TypeError);
   });
 
   it('should throw an error if called a dimension out of range', function() {

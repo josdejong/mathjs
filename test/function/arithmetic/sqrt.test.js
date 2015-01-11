@@ -1,10 +1,10 @@
 // test sqrt
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    sqrt = math.sqrt,
-    bignumber = math.bignumber;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var sqrt = math.sqrt;
+var bignumber = math.bignumber;
 
 describe('sqrt', function() {
   it('should return the square root of a boolean', function () {
@@ -71,8 +71,8 @@ describe('sqrt', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {sqrt()}, error.ArgumentsError);
-    assert.throws(function () {sqrt(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {sqrt()}, /TypeError: Too few arguments/);
+    assert.throws(function () {sqrt(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

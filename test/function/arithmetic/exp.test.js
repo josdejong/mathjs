@@ -37,8 +37,8 @@ describe('exp', function() {
   });
 
   it('should throw an error if there\'s wrong number of arguments', function() {
-    assert.throws(function () {exp()}, error.ArgumentsError);
-    assert.throws(function () {exp(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {exp()}, /TypeError: Too few arguments/);
+    assert.throws(function () {exp(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should exponentiate a complex number correctly', function() {

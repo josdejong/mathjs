@@ -48,7 +48,8 @@
     "unit"
   ],
   "dependencies": {
-    "decimal.js": "~4.0.1"
+    "decimal.js": "^4.0.1",
+    "typed-function": "^0.5.0"
   },
   "devDependencies": {
     "webpack": "latest",

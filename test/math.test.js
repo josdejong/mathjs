@@ -41,11 +41,6 @@ describe('factory', function() {
     assert.notDeepEqual(math1.config(), math2.config());
     assert.notDeepEqual(math.config(), math2.config());
 
-    assert.strictEqual(typeof math1.sqrt, 'function');
-    assert.strictEqual(typeof math2.sqrt, 'function');
-
-    assert.notStrictEqual(math1.sqrt, math2.sqrt);
-
     // changing config should not affect the other
     math1.config({number: 'bignumber'});
     assert.strictEqual(math.config().number, 'number');

@@ -1,7 +1,11 @@
-var assert = require('assert'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    variance = math['var'];
+var assert = require('assert');
+var equalBigNumber = require('../../../tools/assertBigNumber').equal;
+var BigNumber = require('decimal.js');
+var Complex = require('../../../lib/type/Complex');
+var Matrix = require('../../../lib/type/Matrix');
+var Unit = require('../../../lib/type/Unit');
+var math = require('../../../index');
+var variance = math['var'];
 
 describe('variance', function() {
 
@@ -11,16 +15,16 @@ describe('variance', function() {
   });
 
   it('should return the variance of big numbers', function() {
-    assert.deepEqual(variance(bignumber(2),bignumber(4),bignumber(6)),
-        bignumber(4));
+    equalBigNumber(variance(new BigNumber(2),new BigNumber(4),new BigNumber(6)),
+        new BigNumber(4));
   });
 
   it('should return the variance of complex numbers', function() {
-    assert.deepEqual(variance(math.complex(2,3), math.complex(-1,2)), math.complex(4,3));
+    assert.deepEqual(variance(new Complex(2,3), new Complex(-1,2)), new Complex(4,3));
   });
 
   it('should return the variance of mixed numbers and complex numbers', function() {
-    assert.deepEqual(variance(2, math.complex(-1,3)), math.complex(0,-9));
+    assert.deepEqual(variance(2, new Complex(-1,3)), new Complex(0,-9));
   });
 
   it('should return the variance from an array', function() {
@@ -43,8 +47,8 @@ describe('variance', function() {
   });
 
   it('should return the variance from an 1d matrix', function() {
-    assert.equal(variance(math.matrix([2,4,6])), 4);
-    assert.equal(variance(math.matrix([5])), 0);
+    assert.equal(variance(new Matrix([2,4,6])), 4);
+    assert.equal(variance(new Matrix([5])), 0);
   });
 
   it('should return the variance element from a 2d array', function() {
@@ -55,7 +59,7 @@ describe('variance', function() {
   });
 
   it('should return the variance element from a 2d matrix', function() {
-    assert.deepEqual(variance(math.matrix([
+    assert.deepEqual(variance(new Matrix([
       [2,4,6],
       [1,3,5]
     ])), 3.5);
@@ -68,7 +72,7 @@ describe('variance', function() {
 
   it('should throw an error if called with invalid type of arguments', function() {
     assert.throws(function() {variance('a', 'b')}, TypeError);
-    assert.throws(function() {variance(math.unit('5cm'), math.unit('10cm'))}, TypeError);
+    assert.throws(function() {variance(new Unit('5cm'), new Unit('10cm'))}, TypeError);
     assert.throws(function() {variance([2,3,4], 5)}, /String expected/);
   });
 
