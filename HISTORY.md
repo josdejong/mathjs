@@ -3,6 +3,10 @@
 
 ## not yet released, version 1.2.1-SNAPSHOT
 
+- Faster loading of BigNumber configuration with a high precision by lazy
+  loading constants like `pi` and `e`.
+- Fixed constants `NaN` and `Infinity` not being BigNumber objects when
+  BigNumbers are configured.
 - Fixed missing parentheses in the `toTex` representation of function
   `permutations`.
 - Some minor fixes in the docs.
