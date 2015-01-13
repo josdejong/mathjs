@@ -13,6 +13,7 @@ describe('factorial', function() {
     assert.equal(factorial(3), 6);
     assert.equal(factorial(4), 24);
     assert.equal(factorial(5), 120);
+    assert.equal(factorial(Infinity), Infinity);    // Shouldn't stall
   });
 
   it('should calculate the factorial of a bignumber', function() {
@@ -37,6 +38,10 @@ describe('factorial', function() {
     assert.deepEqual(bigfactorial(bignumber(22)), bignumber(1.124e+21));
     assert.deepEqual(bigfactorial(bignumber(24)), bignumber(6.2045e+23));
     assert.deepEqual(bigfactorial(bignumber(21)), bignumber(5.1091e+19));
+    assert.deepEqual(bigfactorial(bignumber(26)), bignumber(4.0329e+26));
+
+    bigmath.config({precision: 20});
+    assert.deepEqual(bigfactorial(bignumber(3000)), bignumber('4.1493596034378540856e+9130'));
   });
 
   it('should calculate the factorial of a boolean', function() {
