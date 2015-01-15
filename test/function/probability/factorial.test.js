@@ -13,18 +13,24 @@ describe('factorial', function() {
     assert.equal(factorial(3), 6);
     assert.equal(factorial(4), 24);
     assert.equal(factorial(5), 120);
-    assert.equal(factorial(Infinity), Infinity);    // Shouldn't stall
+    assert.equal(factorial(Number.MAX_VALUE), Infinity);    // shouldn't stall
+    assert.equal(factorial(Infinity), Math.sqrt(2*Math.PI));
   });
 
   it('should calculate the factorial of a bignumber', function() {
-    var bigmath = math.create({precision: 5});
+    var bigmath = math.create({number: 'bignumber', precision: 5});
     var bigfactorial = bigmath.factorial;
     var bignumber = bigmath.bignumber;
+
+    assert.ok(bigfactorial(bignumber(-Infinity)).isNaN());
+    assert.deepEqual(bigfactorial(bignumber(-1)), bignumber(Infinity));
+    assert.deepEqual(bigfactorial(bignumber(0)), bignumber(1));
+    assert.deepEqual(bigfactorial(bignumber(Infinity)), bigmath.tau.sqrt());
 
     assert.deepEqual(bigfactorial(bignumber(11)), bignumber(39917000));
     assert.deepEqual(bigfactorial(bignumber(22)), bignumber(1.124e+21));
 
-    bigmath.config({precision: 20});
+    bigmath.config({number: null, precision: 20});
     assert.deepEqual(bigfactorial(bignumber(5)), bignumber(120));
     assert.deepEqual(bigfactorial(bignumber(19)), bignumber(121645100408832000));
     assert.deepEqual(bigfactorial(bignumber(20)), bignumber(2432902008176640000));

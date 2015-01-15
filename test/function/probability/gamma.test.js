@@ -15,7 +15,7 @@ describe('gamma', function () {
     assert.equal(gamma(4), 6);
     assert.equal(gamma(5), 24);
     assert.equal(gamma(6), 120);
-    assert.equal(gamma(Infinity), Infinity);
+    assert.equal(gamma(Infinity), Infinity);    // shouldn't stall
   });
 
   it('should calculate the gamma of a nonpositive integer', function () {
@@ -23,7 +23,7 @@ describe('gamma', function () {
     assert.equal(gamma(-1), Infinity);
     assert.equal(gamma(-2), Infinity);
     assert.equal(gamma(-100000), Infinity);
-    approx.equal(gamma(-Infinity), NaN);
+    assert.ok(isNaN(gamma(-Infinity)));
   });
 
   it('should calculate the gamma of a rational number', function () {
@@ -43,11 +43,11 @@ describe('gamma', function () {
   });
 
   it('should calculate the gamma of an irrational number', function () {
-    approx.equal(gamma(Math.sqrt(2)), 0.8865814287192591250809176); 
+    approx.equal(gamma(Math.SQRT2), 0.8865814287192591250809176); 
     approx.equal(gamma(Math.PI), 2.2880377953400324179595889);
     approx.equal(gamma(Math.E), 1.56746825577405307486334);
 
-    approx.equal(gamma(-Math.sqrt(2)), 2.599459907524570073533756846);
+    approx.equal(gamma(-Math.SQRT2), 2.599459907524570073533756846);
     approx.equal(gamma(-Math.PI), 1.01569714446021834110892259347);
     approx.equal(gamma(-Math.E), -0.952681729748073099220537210195);
   });
@@ -68,7 +68,7 @@ describe('gamma', function () {
     assert.deepEqual(gamma(bignumber(-1)), bignumber(Infinity));
     assert.deepEqual(gamma(bignumber(-2)), bignumber(Infinity));
     assert.deepEqual(gamma(bignumber('-1.0e10223')), bignumber(Infinity));
-    assert.deepEqual(gamma(bignumber(-Infinity)), bignumber(NaN));
+    assert.ok(gamma(bignumber(-Infinity)).isNaN());
   });
 /*
   it('should calculate the gamma of a rational bignumber', function () {
