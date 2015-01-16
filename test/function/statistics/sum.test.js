@@ -64,9 +64,9 @@ describe('sum', function() {
   });
 
 
-  it.skip('should throw an error if called with invalid number of arguments', function() {
+  it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {sum()});
-    assert.throws(function() {sum([], 2, 3)}); // TODO: must be fixed in typed-function
+    assert.throws(function() {sum([], 2, 3)});
   });
 
   it('should throw an error if called with not yet supported argument dim', function() {
