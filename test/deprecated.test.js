@@ -65,12 +65,6 @@ describe('deprecated stuff', function() {
     }, /Deprecated keyword "function"/);
   });
 
-  it ('should throw an error when using deprecated function unary', function () {
-    assert.throws(function () {
-      new math.unary(2);
-    }, /deprecated/);
-  });
-
   it ('should throw an error when using deprecated function epow', function () {
     assert.throws(function () {
       new math.epow(2, 3);

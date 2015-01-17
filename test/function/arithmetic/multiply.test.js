@@ -157,9 +157,9 @@ describe('multiply', function() {
   });
 
   it('should throw an error in case of unit non-numeric argument', function() {
-    assert.throws(function () {multiply(math.unit('5cm'), math.unit('4cm'))}, math.error.UnsupportedTypeError);
-    assert.throws(function () {multiply(math.unit('5cm'), math.complex('2+3i'))}, math.error.UnsupportedTypeError);
-    assert.throws(function () {multiply(math.complex('2+3i'), math.unit('5cm'))}, math.error.UnsupportedTypeError);
+    assert.throws(function () {multiply(math.unit('5cm'), math.unit('4cm'))}, /TypeError: Unexpected type/);
+    assert.throws(function () {multiply(math.unit('5cm'), math.complex('2+3i'))}, /TypeError: Unexpected type/);
+    assert.throws(function () {multiply(math.complex('2+3i'), math.unit('5cm'))}, /TypeError: Unexpected type/);
   });
 
   it('should throw an error if used with strings', function() {
@@ -273,8 +273,8 @@ describe('multiply', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {multiply(1)}, error.ArgumentsError);
-    assert.throws(function () {multiply(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {multiply(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {multiply(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
 });

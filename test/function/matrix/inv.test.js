@@ -75,12 +75,12 @@ describe('inv', function() {
   });
 
   it('should throw an error in case of wrong number of arguments', function() {
-    assert.throws(function () {inv()}, error.ArgumentsError);
-    assert.throws(function () {inv([], [])}, error.ArgumentsError);
+    assert.throws(function () {inv()}, /TypeError: Too few arguments/);
+    assert.throws(function () {inv([], [])}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function() {
-    assert.throws(function () {math.concat(inv('str'))}, math.error.TypeError);
+    assert.throws(function () {math.concat(inv('str'))}, /TypeError: Unexpected type of argument/);
   });
 
 });

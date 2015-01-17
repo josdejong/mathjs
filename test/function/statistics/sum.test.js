@@ -1,5 +1,4 @@
 var assert = require('assert');
-var equalBigNumber = require('../../../tools/assertBigNumber').equal;
 var BigNumber = require('decimal.js');
 var Complex = require('../../../lib/type/Complex');
 var Matrix = require('../../../lib/type/Matrix');
@@ -62,7 +61,6 @@ describe('sum', function() {
       [-1, 11, 9]
     ])), 39);
   });
-
 
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {sum()});

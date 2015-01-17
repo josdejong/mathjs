@@ -1,11 +1,11 @@
 // test divide
-var assert = require('assert'),
-    math = require('../../../index'),
-    error = require('../../../lib/error/index'),
-    approx = require('../../../tools/approx'),
-    divide = math.divide,
-    bignumber = math.bignumber,
-    complex = math.complex;
+var assert = require('assert');
+var math = require('../../../index');
+var error = require('../../../lib/error/index');
+var approx = require('../../../tools/approx');
+var divide = math.divide;
+var bignumber = math.bignumber;
+var complex = math.complex;
 
 describe('divide', function() {
   it('should divide two numbers', function() {
@@ -122,7 +122,7 @@ describe('divide', function() {
     assert.deepEqual(divide(a.valueOf(), 2), [[0.5,1],[1.5,2]]);
     assert.deepEqual(divide([], 2), []);
     assert.deepEqual(divide([], 2), []);
-  }); 
+  });
 
   it('should divide 1 over a matrix (matrix inverse)', function() {
     approx.deepEqual(divide(1, [

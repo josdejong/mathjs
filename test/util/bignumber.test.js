@@ -64,6 +64,23 @@ describe('bignumber', function() {
     assert.equal(bignumber.toExponential(new Big('2e-300'), 30), '2.00000000000000000000000000000e-300');
   });
 
+  it('should convert a number to BigNumber', function() {
+    var Big = BigNumber.constructor();
+    Big.config({precision: 4});
+
+    var a = bignumber.toBigNumber(0.123456789, BigNumber);
+    assert(a instanceof BigNumber);
+    assert.equal(a.plus(0).toString(), '0.123456789');
+
+    var b = bignumber.toBigNumber(0.123456789, Big);
+    assert(b instanceof BigNumber);
+    assert.equal(b.plus(0).toString(), '0.1235');
+
+    var c = bignumber.toBigNumber(1/3, Big);
+    assert.equal(typeof c, 'number');
+    assert.strictEqual(c, 1/3);
+  });
+
   describe('format', function () {
 
     var B = null;

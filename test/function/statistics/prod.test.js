@@ -1,5 +1,4 @@
 var assert = require('assert');
-var equalBigNumber = require('../../../tools/assertBigNumber').equal;
 var BigNumber = require('decimal.js');
 var Complex = require('../../../lib/type/Complex');
 var Matrix = require('../../../lib/type/Matrix');

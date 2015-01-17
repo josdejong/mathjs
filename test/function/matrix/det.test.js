@@ -1,6 +1,5 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var equalBigNumber = require('../../../tools/assertBigNumber').equal;
 var BigNumber = require('decimal.js');
 var Matrix = require('../../../lib/type/Matrix');
 var Complex = require('../../../lib/type/Complex');
@@ -111,7 +110,7 @@ describe('det', function() {
   });
 
   it('should calculate the determinant of a matrix with mixed numbers and bignumbers', function() {
-    equalBigNumber(det([
+    assert.deepEqual(det([
       [1, new BigNumber(2)],
       [new BigNumber(3), 4]
     ]), new BigNumber(-2));
