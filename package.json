@@ -9,13 +9,13 @@
     "mathjs": "latest"
   },
   "devDependencies": {
-    "glob": "^4.0.3",
-    "gulp": "^3.8.1",
-    "gulp-header": "^1.0.2",
+    "glob": "^4.3.5",
+    "gulp": "^3.8.10",
+    "gulp-header": "^1.2.2",
     "gulp-rename": "^1.2.0",
-    "gulp-replace": "^0.3.0",
-    "gulp-util": "^2.2.17",
-    "handlebars": "^2.0.0-alpha.4",
+    "gulp-replace": "^0.5.2",
+    "gulp-util": "^3.0.2",
+    "handlebars": "^2.0.0",
     "rimraf": "^2.2.8"
   },
   "scripts": {
