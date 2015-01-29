@@ -4,3 +4,4 @@ _site
 coverage
 *swp
 node_modules
+*.log
