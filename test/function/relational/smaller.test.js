@@ -10,6 +10,8 @@ var assert = require('assert'),
 
 describe('smaller', function() {
 
+  console.log('smaller', smaller.toString())
+
   it('should compare two numbers correctly', function() {
     assert.equal(smaller(2, 3), true);
     assert.equal(smaller(2, 2), false);
