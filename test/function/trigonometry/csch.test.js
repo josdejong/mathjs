@@ -24,7 +24,6 @@ describe('csch', function() {
     approx.equal(csch(1), 0.85091812823932);
     approx.equal(csch(2), 0.27572056477178);
     approx.equal(csch(3), 0.099821569668823);
-    approx.equal(csch(3), 0.099821569668823);
     approx.equal(csch(1e-22), Number.POSITIVE_INFINITY);
     approx.equal(csch(-1e-22), Number.NEGATIVE_INFINITY);
   });
