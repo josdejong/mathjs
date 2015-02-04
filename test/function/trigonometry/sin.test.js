@@ -21,7 +21,7 @@ describe('sin', function() {
   it('should return the sine of a number', function() {
     approx.equal(sin(0), 0);
     approx.equal(sin(pi/8), 0.382683432365090);
-    approx.equal(sin(pi/4), Math.SQRT2/2);
+    approx.equal(sin(pi/4), Math.SQRT1_2);
     approx.equal(sin(pi/2), 1);
     approx.equal(sin(pi*3/4), 0.707106781186548);
     approx.equal(sin(pi), 0);
