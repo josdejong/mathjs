@@ -21,7 +21,7 @@ describe('sin', function() {
   it('should return the sine of a number', function() {
     approx.equal(sin(0), 0);
     approx.equal(sin(pi/8), 0.382683432365090);
-    approx.equal(sin(pi/4), Math.SQRT2/2);
+    approx.equal(sin(pi/4), Math.SQRT1_2);
     approx.equal(sin(pi/2), 1);
     approx.equal(sin(pi*3/4), 0.707106781186548);
     approx.equal(sin(pi), 0);
@@ -33,8 +33,8 @@ describe('sin', function() {
 
   it('should return the sine of a bignumber', function() {
     var bigmath = math.create({number: 'bignumber', precision: 242});
-    assert.deepEqual(bigmath.sin(bigmath.bignumber(0)), bigmath.bignumber(0));
-    
+    assert.ok(bigmath.sin(bigmath.bignumber(0)).isZero());
+
     // 103.64 % tau = 3.109... <- pretty close to the pi boundary
     var result_val = bigmath.sin(bigmath.bignumber(103.64));
     assert.equal(result_val.constructor.precision, 242);
@@ -52,16 +52,17 @@ describe('sin', function() {
 
     var bigPi = bigmath.pi;
     result_val = bigmath.SQRT2.div(2).toString();
+    assert.deepEqual(bigmath.sin(bigPi.div(8)).toString(), '0.38268343236509');
     assert.deepEqual(bigmath.sin(bigPi.div(4)).toString(), result_val);
     assert.deepEqual(bigmath.sin(bigPi.div(2)).toString(), '1');
     assert.deepEqual(bigmath.sin(bigPi.times(3).div(4)).toString(), result_val);
-    assert.equal(bigmath.sin(bigPi).isZero(), true);
+    assert.ok(bigmath.sin(bigPi).isZero());
     assert.deepEqual(bigmath.sin(bigPi.times(5).div(4)).toString(), '-'+result_val);
     assert.deepEqual(bigmath.sin(bigPi.times(3).div(2)).toString(), '-1');
     assert.deepEqual(bigmath.sin(bigPi.times(7).div(4)).toString(), '-'+result_val);
-    assert.equal(bigmath.sin(bigPi.times(2)).isZero(), true);
-    assert.equal(bigmath.sin(bigmath.tau).isZero(), true);
-    assert.equal(bigmath.sin(bigmath.tau.times(2)).isZero(), true);
+    assert.ok(bigmath.sin(bigPi.times(2)).isZero());
+    assert.ok(bigmath.sin(bigmath.tau).isZero());
+    assert.ok(bigmath.sin(bigmath.tau.times(2)).isZero());
   });
 
   it('should return the sine of a complex number', function() {
