@@ -36,6 +36,7 @@ math.factorial(3);    // returns 6
 ## See also
 
 [combinations](combinations.md),
+[gamma](gamma.md),
 [permutations](permutations.md)
 
 

@@ -18,8 +18,12 @@ describing all available functions, constants, and units in detail.
 ## Overview
 
 - [Introduction](introduction.md)
-- [Expressions](expressions.md)
-- [Chained Operations](chained_operations.md)
+- [Expressions](expressions/index.md)
+  - [Parsing and evaluation](expressions/parsing.md)
+  - [Syntax](expressions/syntax.md)
+  - [Expression trees](expressions/expression_trees.md)
+  - [Customization](expressions/customization.md)
+- [Chaining](chaining.md)
 - [Data Types](datatypes/index.md)
   - [Numbers](datatypes/numbers.md)
   - [BigNumbers](datatypes/bignumbers.md)

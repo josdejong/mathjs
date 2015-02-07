@@ -1,14 +1,14 @@
 // test UpdateNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    bigmath = math.create({number: 'bignumber'}),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    IndexNode = require('../../../lib/expression/node/IndexNode'),
-    UpdateNode = require('../../../lib/expression/node/UpdateNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bigmath = math.create({number: 'bignumber'});
+var Node = require('../../../lib/expression/node/Node');
+var ConstantNode = require('../../../lib/expression/node/ConstantNode');
+var RangeNode = require('../../../lib/expression/node/RangeNode');
+var IndexNode = require('../../../lib/expression/node/IndexNode');
+var UpdateNode = require('../../../lib/expression/node/UpdateNode');
+var SymbolNode = require('../../../lib/expression/node/SymbolNode');
 
 describe('UpdateNode', function() {
 
@@ -66,14 +66,14 @@ describe('UpdateNode', function() {
     });
   });
 
-  it ('should compile a UpdateNode with range and context parameters', function () {
+  it ('should compile an UpdateNode with range and context parameters', function () {
     var a = new SymbolNode('a');
     var ranges = [
         new ConstantNode(2),
-        new RangeNode([
+        new RangeNode(
           new ConstantNode(1),
           new SymbolNode('end')
-        ])
+        )
     ];
     var b = new SymbolNode('b');
     var n = new UpdateNode(new IndexNode(a, ranges), b);
@@ -90,15 +90,15 @@ describe('UpdateNode', function() {
     });
   });
 
-  it ('should compile a UpdateNode with negative step range and context parameters', function () {
+  it ('should compile an UpdateNode with negative step range and context parameters', function () {
     var a = new SymbolNode('a');
     var ranges = [
         new ConstantNode(2),
-        new RangeNode([
+        new RangeNode(
           new SymbolNode('end'),
           new ConstantNode(1),
           new ConstantNode(-1)
-        ])
+        )
     ];
     var b = new SymbolNode('b');
     var n = new UpdateNode(new IndexNode(a, ranges), b);
@@ -115,7 +115,7 @@ describe('UpdateNode', function() {
     });
   });
 
-  it ('should compile a UpdateNode with bignumber setting', function () {
+  it ('should compile an UpdateNode with bignumber setting', function () {
     var a = new SymbolNode('a');
     var ranges = [
       new ConstantNode(2),
@@ -134,7 +134,7 @@ describe('UpdateNode', function() {
     });
   });
 
-  it ('should find a UpdateNode', function () {
+  it ('should filter an UpdateNode', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);
     var c = new ConstantNode(1);
@@ -142,27 +142,163 @@ describe('UpdateNode', function() {
     var v = new ConstantNode(2);
     var n = new UpdateNode(i, v);
 
-    assert.deepEqual(n.find({type: UpdateNode}),  [n]);
-    assert.deepEqual(n.find({type: SymbolNode}),  [a]);
-    assert.deepEqual(n.find({type: ConstantNode}),  [b, c, v]);
-    assert.deepEqual(n.find({properties: {value: '1'}}),  [c]);
-    assert.deepEqual(n.find({properties: {value: '2'}}),  [b, v]);
-    assert.deepEqual(n.find({properties: {name: 'q'}}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof UpdateNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),  [a]);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  [b, c, v]);
+    assert.deepEqual(n.filter(function (node) {return node.value ==  '1'}),  [c]);
+    assert.deepEqual(n.filter(function (node) {return node.value == '2'}),  [b, v]);
+    assert.deepEqual(n.filter(function (node) {return node.name == 'q'}),  []);
   });
 
-  it ('should match a UpdateNode', function () {
-    var a = new SymbolNode('a');
+  it ('should run forEach on an UpdateNode', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
     var b = new ConstantNode(2);
-    var c = new ConstantNode(1);
+    var c = new SymbolNode('x');
     var i = new IndexNode(a, [b, c]);
-    var v = new ConstantNode(5);
+    var v = new ConstantNode(3);
     var n = new UpdateNode(i, v);
 
-    assert.equal(n.match({type: UpdateNode}), true);
-    assert.equal(n.match({type: ConstantNode}), false);
+    var nodes = [];
+    var paths = [];
+    n.forEach(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, n);
+    });
+
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], i);
+    assert.strictEqual(nodes[1], v);
+    assert.deepEqual(paths, ['index', 'expr']);
   });
 
-  it ('should stringify a UpdateNode', function () {
+  it ('should map an UpdateNode', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
+    var b = new ConstantNode(2);
+    var c = new SymbolNode('x');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(3);
+    var n = new UpdateNode(i, v);
+
+    var nodes = [];
+    var paths = [];
+    var e = new ConstantNode(4);
+    var f = n.map(function (node, path, parent) {
+      nodes.push(node);
+      paths.push(path);
+      assert.strictEqual(parent, n);
+
+      return node instanceof SymbolNode && node.name == 'x' ? e : node;
+    });
+
+    assert.equal(nodes.length, 2);
+    assert.strictEqual(nodes[0], i);
+    assert.strictEqual(nodes[1], v);
+    assert.deepEqual(paths, ['index', 'expr']);
+
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.index.object,  a);
+    assert.deepEqual(f.index.ranges[0],  b);
+    assert.deepEqual(f.index.ranges[1],  c); // not replaced, is nested
+    assert.deepEqual(f.expr, v);
+  });
+
+  it ('should throw an error when the map callback does not return a node', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
+    var b = new ConstantNode(2);
+    var c = new SymbolNode('x');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(3);
+    var n = new UpdateNode(i, v);
+
+    assert.throws(function () {
+      n.map(function () {});
+    }, /Callback function must return a Node/)
+  });
+
+  it ('should transform an UpdateNodes (nested) parameters', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
+    var b = new ConstantNode(2);
+    var c = new SymbolNode('x');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(3);
+    var n = new UpdateNode(i, v);
+
+    var e = new ConstantNode(4);
+    var f = n.transform(function (node) {
+      return node instanceof SymbolNode && node.name == 'x' ? e : node;
+    });
+
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f.index.object,  a);
+    assert.deepEqual(f.index.ranges[0],  b);
+    assert.deepEqual(f.index.ranges[1],  e);
+    assert.deepEqual(f.expr, v);
+  });
+
+  it ('should transform an UpdateNodes replacement expr', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
+    var b = new ConstantNode(2);
+    var c = new SymbolNode('x');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(3);
+    var n = new UpdateNode(i, v);
+
+    var e = new ConstantNode(4);
+    var g = n.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '3' ? e : node;
+    });
+
+    assert.notStrictEqual(g, n);
+    assert.deepEqual(g.index,  i);
+    assert.deepEqual(g.index.object,  a);
+    assert.deepEqual(g.index.ranges[0],  b);
+    assert.deepEqual(g.index.ranges[1],  c);
+    assert.deepEqual(g.expr, e);
+
+  });
+
+  it ('should transform an UpdateNode itself', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
+    var b = new ConstantNode(2);
+    var c = new SymbolNode('x');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(3);
+    var n = new UpdateNode(i, v);
+
+    var e = new ConstantNode(5);
+    var f = n.transform(function (node) {
+      return node instanceof UpdateNode ? e : node;
+    });
+
+    assert.strictEqual(f, e);
+  });
+
+  it ('should clone an UpdateNode', function () {
+    // A[1, x] = 3
+    var a = new SymbolNode('A');
+    var b = new ConstantNode(2);
+    var c = new SymbolNode('x');
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(3);
+    var d = new UpdateNode(i, v);
+
+    var e = d.clone();
+
+    assert(e instanceof UpdateNode);
+    assert.deepEqual(e, d);
+    assert.notStrictEqual(e, d);
+    assert.strictEqual(e.index, d.index);
+    assert.strictEqual(e.expr, d.expr);
+  });
+
+  it ('should stringify an UpdateNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
       new ConstantNode(2),
@@ -174,7 +310,7 @@ describe('UpdateNode', function() {
     assert.equal(n.toString(), 'a[2, 1] = 5');
   });
 
-  it ('should LaTeX a UpdateNode', function () {
+  it ('should LaTeX an UpdateNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
       new ConstantNode(2),

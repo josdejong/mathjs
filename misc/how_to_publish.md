@@ -67,19 +67,12 @@ Publish to npm:
 
     npm publish
 
-Publish to jam.js:
-
-    jam publish
-
 No need to publish for bower: The library is already published because of the
 new version tag. There is also no need to publish a component(1) build, because
 component(1) uses GitHub as it's registry.
 
-Publish at http://jspkg.com: go to the website, select the github project,
-select the new version and press the button.
-
-Publish at cdnjs: test after 30 to 60 minutes whether the new version is
-published at cdnjs (should auto update).
+No need to publish at cdnjs: test after 30 to 60 minutes whether the new
+version is published at (should auto update).
 
 
 ## Test published libraries

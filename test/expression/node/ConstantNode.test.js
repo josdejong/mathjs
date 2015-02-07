@@ -71,16 +71,52 @@ describe('ConstantNode', function() {
 
   it ('should find a ConstantNode', function () {
     var a = new ConstantNode('2', 'number');
-    assert.deepEqual(a.find({type: ConstantNode}),  [a]);
-    assert.deepEqual(a.find({type: SymbolNode}), []);
+    assert.deepEqual(a.filter(function (node) {return node instanceof ConstantNode}),  [a]);
+    assert.deepEqual(a.filter(function (node) {return node instanceof SymbolNode}), []);
   });
 
-  it ('should match a ConstantNode', function () {
-    var a = new ConstantNode('2', 'number');
-    assert.equal(a.match({type: ConstantNode}),  true);
-    assert.equal(a.match({properties: {value: '2'}}), true);
-    assert.equal(a.match({properties: {value: '4'}}), false);
-    assert.equal(a.match({type: SymbolNode}), false);
+  it ('should run forEach on a ConstantNode', function () {
+    var a = new ConstantNode(2);
+    a.forEach(function () {
+      assert.ok(false, 'should not execute, constant has no childs')
+    });
+  });
+
+  it ('should map a ConstantNode', function () {
+    var a = new ConstantNode(2);
+    var b = a.map(function () {
+      assert.ok(false, 'should not execute, constant has no childs')
+    });
+
+    assert.notStrictEqual(b, a);
+    assert.deepEqual(b, a);
+  });
+
+  it ('should transform a ConstantNode', function () {
+    var a = new ConstantNode(2);
+    var b = new ConstantNode(3);
+    var c = a.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '2' ? b : node;
+    });
+    assert.strictEqual(c,  b);
+
+    // no match should leave the node as is
+    var d = a.transform(function (node) {
+      return node instanceof ConstantNode && node.value == '99' ? b : node;
+    });
+    assert.notStrictEqual(d,  a);
+    assert.deepEqual(d,  a);
+  });
+
+  it ('should clone a ConstantNode', function () {
+    var a = new ConstantNode(2);
+    var b = a.clone();
+
+    assert(b instanceof ConstantNode);
+    assert.deepEqual(a, b);
+    assert.notStrictEqual(a, b);
+    assert.equal(a.value, b.value);
+    assert.equal(a.valueType, b.valueType);
   });
 
   it ('should stringify a ConstantNode', function () {

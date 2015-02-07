@@ -22,7 +22,8 @@ describe('map', function() {
     var arr = [[1,2,3], [4,5,6]];
 
     assert.deepEqual(math.map(arr, function (value, index, obj) {
-      return math.clone([value, index, obj === arr]);
+      // we don't clone index here, this should return a copy with every iteration
+      return [value, index, obj === arr];
     }).valueOf(), [
       [
         [1, [0, 0], true ],

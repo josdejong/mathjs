@@ -1,7 +1,49 @@
 # History
 
 
-## 2014-10-12, version 1.0.1
+## 2014-12-25, version 1.2.0
+
+- Support for bitwise operations `bitAnd`, `bitNot`, `bitOr`, `bitXor`,
+  `leftShift`, `rightArithShift`, and `rightLogShift`. Thanks @BigFav.
+- Support for boolean operations `and`, `not`, `or`, `xor`. Thanks @BigFav.
+- Support for `gamma` function. Thanks @BigFav.
+- Converting a unit without value will now result in a unit *with* value,
+  i.e. `inch in cm` will return `2.54 cm` instead of `cm`.
+- Improved accuracy of `sinh` and complex `cos` and `sin`. Thanks @pavpanchekha.
+- Renamed function `select` to `chain`. The old function `select` will remain
+  functional until math.js v2.0.
+- Upgraded to decimal.js v4.0.1 (BigNumber library).
+
+
+## 2014-11-22, version 1.1.1
+
+- Fixed Unit divided by Number returning zero.
+- Fixed BigNumber downgrading to Number for a negative base in `pow`.
+- Fixed some typos in error messaging (thanks @andy0130tw) and docs.
+
+
+## 2014-11-15, version 1.1.0
+
+- Implemented functions `dot` (dot product), `cross` (cross product), and
+  `nthRoot`.
+- Officially opened up the API of expression trees:
+  - Documented the API.
+  - Implemented recursive functions `clone`, `map`, `forEach`, `traverse`,
+    `transform`, and `filter` for expression trees.
+  - Parameter `index` in the callbacks of `map` and `forEach` are now cloned
+    for every callback.
+  - Some internal refactoring inside nodes to make the API consistent:
+    - Renamed `params` to `args` and vice versa to make things consistent.
+    - Renamed `Block.nodes` to `Block.blocks`.
+    - `FunctionNode` now has a `name: string` instead of a `symbol: SymbolNode`.
+    - Changed constructor of `RangeNode` to
+      `new RangeNode(start: Node, end: Node [, step: Node])`.
+    - Nodes for a `BlockNode` must now be passed via the constructor instead
+      of via a function `add`.
+- Fixed `2e` giving a syntax error instead of being parsed as `2 * e`.
+
+
+## 2014-09-12, version 1.0.1
 
 - Disabled array notation for ranges in a matrix index in the expression parser 
   (it is confusing and redundant there).
@@ -170,7 +212,7 @@
 
 - Implemented trigonometric hyperbolic functions `cosh`, `coth`, `csch`,
   `sech`, `sinh`, `tanh`. Thanks Rogelio J. Baucells (@rjbaucells).
-- Added property `type` to all expression nodes in a node tree.
+- Added property `type` to all expression nodes in an expression tree.
 - Fixed functions `log`, `log10`, `pow`, and `sqrt` not supporting complex
   results from BigNumber input (like `sqrt(bignumber(-4))`).
 
@@ -494,7 +536,7 @@
   - Added support for chained variable assignments.
   - Added a function remove(name) to remove a variable from the parsers scope.
   - Renamed nodes for more consistency and to resolve naming conflicts.
-  - Improved stringification of a node tree.
+  - Improved stringification of an expression tree.
   - Some simplifications in the code.
   - Minor bug fixes.
 - Fixed a bug in the parser, returning NaN instead of throwing an error for a
@@ -585,7 +627,7 @@
 
 ## 2013-02-25, version 0.2.0
 
-- Parser, Scope, and Node tree implemented.
+- Parser, Scope, and expression tree with Nodes implemented.
 - Implemented method import which makes it easy to extend math.js.
 - Implemented methods arg, conj, cube, equal, factorial, im, largereq,
   log(x, base), log10, mod, re, sign, smallereq, square, unequal.

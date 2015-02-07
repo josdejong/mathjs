@@ -1,6 +1,7 @@
 # Function randomInt
 
-Return a random integer number between `min` and `max` using a uniform distribution.
+Return a random integer number larger or equal to `min` and smaller than `max`
+using a uniform distribution.
 
 
 ## Syntax
@@ -18,9 +19,9 @@ math.randomInt(size, min, max)  // generate a matrix with random integer between
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`size` | Number | If provided, an array with `size` number of random values is returned
-`min` | Number | Minimum boundary for the random value
-`max` | Number | Maximum boundary for the random value
+`size` | Array &#124; Matrix | If provided, an array or matrix with given size and filled with random values is returned
+`min` | Number | Minimum boundary for the random value, included
+`max` | Number | Maximum boundary for the random value, excluded
 
 ### Returns
 
@@ -41,7 +42,7 @@ math.randomInt([2, 3]); // returns a 2x3 matrix with random integers between 0 a
 
 ## See also
 
-[randomInt](randomInt.md),
+[random](random.md),
 [pickRandom](pickRandom.md)
 
 

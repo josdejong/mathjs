@@ -433,15 +433,19 @@ function iteratePath (inputPath, outputPath) {
     // generate path information for each of the files
     var functions = {};
     files.forEach(function (fullPath) {
-      var name = fullPath.match(/\/(\w*)\.js/)[1],
-          relativePath = fullPath.substring(inputPath.length);
+      var name = fullPath.match(/\/(\w*)\.js/)[1];
+      var relativePath = fullPath.substring(inputPath.length);
 
-      functions[name] = {
-        name: name,
-        category: relativePath.match(/^(.*)\//)[1],
-        fullPath: fullPath,
-        relativePath: relativePath
-      };
+      // ignore files starting with and underscore _
+      // TODO: Not so nice exception for _* files
+      if (name[0] !== '_') {
+        functions[name] = {
+          name: name,
+          category: relativePath.match(/^(.*)\//)[1],
+          fullPath: fullPath,
+          relativePath: relativePath
+        };
+      }
     });
 
     // loop over all files, generate a doc for each of them

@@ -42,6 +42,10 @@ describe ('types', function () {
     assert.equal(types.type(new Array()), 'array');
   });
 
+  it('should return the type of a function', function () {
+    assert.equal(types.type(function () {}), 'function');
+  });
+
   it('should return the type of a date', function () {
     assert.equal(types.type(new Date()), 'date');
   });

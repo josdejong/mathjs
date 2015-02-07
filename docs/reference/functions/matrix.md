@@ -28,7 +28,7 @@ Matrix | The created matrix
 ## Examples
 
 ```js
-var m = math.matrix([[1, 2], [3, 4]);
+var m = math.matrix([[1, 2], [3, 4]]);
 m.size();                        // Array [2, 2]
 m.resize([3, 2], 5);
 m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]

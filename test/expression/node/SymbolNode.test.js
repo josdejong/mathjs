@@ -44,21 +44,55 @@ describe('SymbolNode', function() {
     assert.strictEqual(expr2.eval(scope2), math.sqrt);
   });
 
-  it ('should find a SymbolNode', function () {
+  it ('should filter a SymbolNode', function () {
     var n = new SymbolNode('x');
-    assert.deepEqual(n.find({type: SymbolNode}),  [n]);
-    assert.deepEqual(n.find({properties: {name: 'x'}}),  [n]);
-    assert.deepEqual(n.find({properties: {name: 'q'}}),  []);
-    assert.deepEqual(n.find({type: ConstantNode}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node.name == 'x'}),  [n]);
+    assert.deepEqual(n.filter(function (node) {return node.name == 'q'}),  []);
+    assert.deepEqual(n.filter(function (node) {return node instanceof ConstantNode}),  []);
   });
 
-  it ('should match a SymbolNode', function () {
-    var n = new SymbolNode('x');
+  it ('should run forEach on a SymbolNode', function () {
+    var a = new SymbolNode('a');
+    a.forEach(function () {
+      assert.ok(false, 'should not execute, symbol has no childs')
+    });
+  });
 
-    assert.equal(n.match({type: SymbolNode}),  true);
-    assert.equal(n.match({properties: {name: 'x'}}),  true);
-    assert.equal(n.match({properties: {name: 'q'}}),  false);
-    assert.equal(n.match({type: ConstantNode}), false);
+  it ('should map a SymbolNode', function () {
+    var a = new SymbolNode('a');
+    var c = new SymbolNode('c');
+    var b = a.map(function () {
+      assert.ok(false, 'should not execute, symbol has no childs')
+    });
+
+    assert.notStrictEqual(b, a);
+    assert.deepEqual(b, a);
+  });
+
+  it ('should transform a SymbolNode', function () {
+    var a = new SymbolNode('x');
+    var b = new SymbolNode('y');
+    var c = a.transform(function (node) {
+      return node instanceof SymbolNode && node.name == 'x' ? b : node;
+    });
+    assert.deepEqual(c,  b);
+
+    // no match should leave the symbol as is
+    var d = a.transform(function (node) {
+      return node instanceof SymbolNode && node.name == 'q' ? b : node;
+    });
+    assert.deepEqual(d,  a);
+  });
+
+  it ('should clone a SymbolNode', function () {
+    var a = new SymbolNode('x');
+    var b = a.clone();
+
+    assert(b instanceof SymbolNode);
+    assert.deepEqual(a, b);
+    assert.notStrictEqual(a, b);
+    assert.equal(a.name, b.name);
   });
 
   it ('should stringify a SymbolNode', function () {

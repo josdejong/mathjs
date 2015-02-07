@@ -15,7 +15,7 @@ Object                 | `'object'`    | `math.typeof ({a: 2, b: 3})`
 RegExp                 | `'regexp'`    | `math.typeof (/a regexp/)`
 string                 | `'string'`    | `math.typeof ('hello world')`
 undefined              | `'undefined'` | `math.typeof(undefined)`
-math.chaining.Selector | `'selector'`  | `math.typeof (math.select(2))`
+math.chaining.Chain    | `'chain'`     | `math.typeof (math.chain(2))`
 math.type.BigNumber    | `'bignumber'` | `math.typeof (math.bignumber('2.3e500'))`
 math.type.Complex      | `'complex'`   | `math.typeof (math.complex(2, 3))`
 math.type.Help         | `'help'`      | `math.typeof (math.help('sqrt'))`

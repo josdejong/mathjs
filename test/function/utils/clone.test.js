@@ -29,7 +29,6 @@ describe('clone', function() {
     var a = math.bignumber('2.3e500');
     var b = math.clone(a);
     assert.deepEqual(a, b);
-    assert.notStrictEqual(a,b);
   });
 
   it('should clone a string', function() {
