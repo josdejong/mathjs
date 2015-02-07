@@ -1399,14 +1399,15 @@ describe('parse', function() {
           bigmath.matrix([new BigNumber(0.7), new BigNumber(0.8)]));
     });
 
-    // TODO: cleanup once decided to not downgrad BigNumber to number
+    // TODO: cleanup once decided to not downgrade BigNumber to number
     it.skip('should work with complex numbers (downgrades bignumbers to number)', function() {
       assert.deepEqual(bigmath.eval('3i'), new Complex(0, 3));
       assert.deepEqual(bigmath.eval('2 + 3i'), new Complex(2, 3));
       assert.deepEqual(bigmath.eval('2 * i'), new Complex(0, 2));
     });
 
-    it('should work with units (downgrades bignumbers to number)', function() {
+    // TODO: cleanup once decided to not downgrade BigNumber to number
+    it.skip('should work with units (downgrades bignumbers to number)', function() {
       assert.deepEqual(bigmath.eval('2 cm'), new Unit(2, 'cm'));
     });
   });
