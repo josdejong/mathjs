@@ -36,30 +36,30 @@ describe('add', function() {
     assert.equal(add(false, 2), 2);
   });
 
-  it('should add new BigNumbers', function() {
+  it('should add BigNumbers', function() {
     assert.deepEqual(add(new BigNumber(0.1), new BigNumber(0.2)), new BigNumber(0.3));
     assert.deepEqual(add(new BigNumber('2e5001'), new BigNumber('3e5000')), new BigNumber('2.3e5001'));
     assert.deepEqual(add(new BigNumber('9999999999999999999'), new BigNumber('1')), new BigNumber('1e19'));
   });
 
-  it('should add mixed numbers and new BigNumbers', function() {
+  it('should add mixed numbers and BigNumbers', function() {
     assert.deepEqual(add(new BigNumber(0.1), 0.2), new BigNumber(0.3));
-    assert.deepEqual(add(0.1, new BigNumber(0.2)), new BigNumber(0.3));
+    assert.deepEqual(add(0.1, new BigNumber(0.2)), new math.type.BigNumber(0.3));
 
-    approx.equal(add(1/3, new BigNumber(1)), 1.333333333333333);
-    approx.equal(add(new BigNumber(1), 1/3), 1.333333333333333);
+    assert.throws(function () {add(1/3, new BigNumber(1))}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
+    assert.throws(function () {add(new BigNumber(1), 1/3)}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
   });
 
-  it('should add mixed booleans and new BigNumbers', function() {
+  it('should add mixed booleans and BigNumbers', function() {
     assert.deepEqual(add(new BigNumber(0.1), true), new BigNumber(1.1));
     assert.deepEqual(add(new BigNumber(0.1), false), new BigNumber(0.1));
-    assert.deepEqual(add(false, new BigNumber(0.2)), new BigNumber(0.2));
-    assert.deepEqual(add(true, new BigNumber(0.2)), new BigNumber(1.2));
+    assert.deepEqual(add(false, new BigNumber(0.2)), new math.type.BigNumber(0.2));
+    assert.deepEqual(add(true, new BigNumber(0.2)), new math.type.BigNumber(1.2));
   });
 
-  it('should add mixed complex numbers and new BigNumbers', function() {
-    assert.deepEqual(add(math.complex(3, -4), new BigNumber(2)), math.complex(5, -4));
-    assert.deepEqual(add(new BigNumber(2), math.complex(3, -4)), math.complex(5, -4));
+  it('should add mixed complex numbers and BigNumbers', function() {
+    assert.throws(function () {add(math.complex(3, -4), new BigNumber(2))}, /TypeError: Unexpected type of argument \(expected: Array or Matrix, actual: BigNumber, index: 1\)/);
+    assert.throws(function () {add(new BigNumber(2), math.complex(3, -4))}, /TypeError: Unexpected type of argument \(expected: Array or Matrix, actual: Complex, index: 1\)/);
   });
 
   it('should add two complex numbers', function() {
@@ -114,10 +114,11 @@ describe('add', function() {
     assert.ok(a4 instanceof math.type.Matrix);
     assert.deepEqual(a4.size(), [2,2]);
     assert.deepEqual(a4.valueOf(), [[6,8],[10,12]]);
-    var a5 = math.pow(a2, 2);
+
+    var a5 = math.add(a2, 2);
     assert.ok(a5 instanceof math.type.Matrix);
     assert.deepEqual(a5.size(), [2,2]);
-    assert.deepEqual(a5.valueOf(), [[7,10],[15,22]]);
+    assert.deepEqual(a5.valueOf(), [[3,4],[5,6]]);
   });
 
   it('should add a scalar and a matrix correctly', function() {

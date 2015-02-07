@@ -28,8 +28,8 @@ describe('eye', function() {
     var one = math.bignumber(1);
     var two = math.bignumber(2);
     var three = math.bignumber(3);
-    assert.deepEqual(eye(two), matrix([[one,zero],[zero,one]]));
-    assert.deepEqual(eye(two, three), matrix([[one,zero,zero],[zero,one,zero]]));
+    assert.deepEqual(eye(two).toString(), matrix([[one,zero],[zero,one]]).toString());
+    assert.deepEqual(eye(two, three).toString(), matrix([[one,zero,zero],[zero,one,zero]]).toString());
   });
 
   it('should return an array when setting matrix=="array"', function() {

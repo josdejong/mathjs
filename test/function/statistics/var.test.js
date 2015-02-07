@@ -15,7 +15,7 @@ describe('variance', function() {
 
   it('should return the variance of big numbers', function() {
     assert.deepEqual(variance(new BigNumber(2),new BigNumber(4),new BigNumber(6)),
-        new BigNumber(4));
+        new math.type.BigNumber(4));
   });
 
   it('should return the variance of complex numbers', function() {

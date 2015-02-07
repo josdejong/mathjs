@@ -49,8 +49,8 @@ describe('subtract', function() {
     assert.deepEqual(subtract(bignumber(0.3), 0.2), bignumber(0.1));
     assert.deepEqual(subtract(0.3, bignumber(0.2)), bignumber(0.1));
 
-    approx.equal(subtract(1/3, bignumber(1).div(3)), 0);
-    approx.equal(subtract(bignumber(1).div(3), 1/3), 0);
+    assert.throws(function () {subtract(1/3, bignumber(1).div(3))}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
+    assert.throws(function () {subtract(bignumber(1).div(3), 1/3)}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
   });
 
   it('should subtract mixed booleans and bignumbers', function() {
@@ -72,9 +72,9 @@ describe('subtract', function() {
     assert.equal(subtract(10, math.complex(0, 1)), '10 - i');
   });
 
-  it('should subtract mixed complex numbers and big numbers', function() {
-    assert.equal(subtract(math.complex(3, 4), math.bignumber(10)), '-7 + 4i');
-    assert.equal(subtract(math.bignumber(10), math.complex(3, 4)), '7 - 4i');
+  it('should throw an error for mixed complex numbers and big numbers', function() {
+    assert.throws(function () {subtract(math.complex(3, 4), math.bignumber(10))}, /TypeError: Unexpected type of argument \(expected: Matrix or Array, actual: BigNumber, index: 1\)/);
+    assert.throws(function () {subtract(math.bignumber(10), math.complex(3, 4))}, /TypeError: Unexpected type of argument \(expected: Matrix or Array, actual: Complex, index: 1\)/);
   });
 
   it('should subtract two quantities of the same unit', function() {

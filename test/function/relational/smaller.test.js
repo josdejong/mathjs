@@ -10,8 +10,6 @@ var assert = require('assert'),
 
 describe('smaller', function() {
 
-  console.log('smaller', smaller.toString())
-
   it('should compare two numbers correctly', function() {
     assert.equal(smaller(2, 3), true);
     assert.equal(smaller(2, 2), false);
@@ -71,8 +69,11 @@ describe('smaller', function() {
     assert.deepEqual(smaller(bignumber(2), 3), true);
     assert.deepEqual(smaller(2, bignumber(2)), false);
 
-    assert.equal(smaller(1/3, bignumber(1).div(3)), false);
-    assert.equal(smaller(bignumber(1).div(3), 1/3), false);
+    //assert.equal(smaller(1/3, bignumber(1).div(3)), false);
+    //assert.equal(smaller(bignumber(1).div(3), 1/3), false);
+
+    assert.throws(function () {smaller(1/3, bignumber(1).div(3))}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
+    assert.throws(function () {smaller(bignumber(1).div(3), 1/3)}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
   });
 
   it('should compare mixed booleans and bignumbers', function() {
@@ -118,7 +119,7 @@ describe('smaller', function() {
     assert.equal(smaller('abc', 'abd'), true);
   });
 
-  it('should compare a string an matrix elementwise', function() {
+  it('should compare a string and matrix elementwise', function() {
     assert.deepEqual(smaller('B', ['A', 'B', 'C']), [false, false, true]);
     assert.deepEqual(smaller(['A', 'B', 'C'], 'B'), [true, false, false]);
   });

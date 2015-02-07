@@ -17,6 +17,11 @@ describe('bignumber', function() {
     assert.ok(a instanceof BigNumber);
     assert.equal(a.valueOf(), '0.1');
 
+    // from number with >15 digits
+    var a2 = bignumber(1/3);
+    assert.ok(a2 instanceof BigNumber);
+    assert.equal(a2.valueOf(), '0.3333333333333333');
+
     // from string
     var b = bignumber('0.1');
     assert.ok(b instanceof BigNumber);

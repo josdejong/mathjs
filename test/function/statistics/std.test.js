@@ -16,7 +16,7 @@ describe('std', function() {
 
   it('should return the standard deviation of big numbers', function() {
     assert.deepEqual(std(new BigNumber(2),new BigNumber(4),new BigNumber(6)),
-        new BigNumber(2));
+        new math.type.BigNumber(2));
   });
 
   it('should return the standard deviation of complex numbers', function() {

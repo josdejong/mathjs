@@ -100,7 +100,7 @@ describe('det', function() {
       [new BigNumber(-2), new BigNumber(2), new BigNumber( 3)],
       [new BigNumber(-1), new BigNumber(1), new BigNumber( 3)],
       [new BigNumber( 2), new BigNumber(0), new BigNumber(-1)]
-    ]), new BigNumber(6));
+    ]), new math.type.BigNumber(6));
 
     // the following would fail with regular Numbers due to a precision overflow
     assert.deepEqual(det([
@@ -113,7 +113,7 @@ describe('det', function() {
     assert.deepEqual(det([
       [1, new BigNumber(2)],
       [new BigNumber(3), 4]
-    ]), new BigNumber(-2));
+    ]), new math.type.BigNumber(-2));
   });
 
   it('should not change the value of the initial matrix', function() {

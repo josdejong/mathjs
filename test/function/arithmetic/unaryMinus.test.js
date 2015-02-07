@@ -14,7 +14,7 @@ describe('unaryMinus', function() {
   it.skip('should return bignumber unary minus of a boolean', function () {
     var bigmath = math.create({number: 'bignumber'});
     assert.deepEqual(bigmath.unaryMinus(true), bigmath.bignumber(-1));
-    assert.deepEqual(bigmath.unaryMinus(false), bigmath.bignumber(-0));
+    assert.deepEqual(bigmath.unaryMinus(false), bigmath.bignumber(0));
   });
 
   it('should return unary minus of null', function () {

@@ -75,10 +75,6 @@ describe('bignumber', function() {
     var b = bignumber.toBigNumber(0.123456789, Big);
     assert(b instanceof BigNumber);
     assert.equal(b.plus(0).toString(), '0.1235');
-
-    var c = bignumber.toBigNumber(1/3, Big);
-    assert.equal(typeof c, 'number');
-    assert.strictEqual(c, 1/3);
   });
 
   describe('format', function () {
