@@ -49,8 +49,9 @@ describe('asin', function() {
 
     // Hit Newton's method case
     bigmath.config({precision: 61});
+
     var arg4 = Big(0.00000001);
-    assert.deepEqual(asin(arg4), Big('1.0000000000000000166666666666666674166666666666667113e-8'));
+    assert.deepEqual(asin(arg4).toString(), '1.0000000000000000166666666666666674166666666666667113e-8');
     assert.deepEqual(arg4, Big(0.00000001));
   });
 

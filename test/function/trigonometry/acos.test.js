@@ -39,8 +39,9 @@ describe('acos', function() {
 
     // Hit Newton's method case
     bigmath.config({precision: 61});
-    assert.deepEqual(acos(Big('0.00000001')), Big('1.570796316794896619231321524973084775431910533020886243820359'));    
-
+    assert.deepEqual(acos(Big(0.00000001)).toString(), '1.570796316794896619' +
+                                                       '23132152497308477543' +
+                                                       '1910533020886243820359');
     //Make sure arg was not changed
     assert.deepEqual(arg, Big(-1));
   });
