@@ -33,8 +33,28 @@ describe('tan', function() {
     approx.equal(tan(pi*8/4), 0);
   });
 
-  it('should return the tangent of a bignumber (downgrades to number)', function() {
-    approx.equal(tan(math.bignumber(1)), 1.55740772465490);
+  it('should return the tangent of a bignumber', function() { 
+    var piBigmath = math.create({number: 'bignumber', precision: 24});
+    var bigPi = piBigmath.pi;
+    var bigTau = piBigmath.tau;
+
+    var bigmath = math.create({precision: 20});
+
+    assert.ok(bigmath.tan(bigmath.bignumber(0)).isZero());
+    assert.deepEqual(bigmath.tan(bigmath.bignumber(-1)).toString(), '-1.5574077246549022305');
+
+    assert.deepEqual(bigmath.tan(bigPi.div(8)).toString(), '0.4142135623730950488');
+    assert.deepEqual(bigmath.tan(bigPi.div(4)).toString(), '1');
+    assert.ok(!bigmath.tan(bigPi.div(2)).isFinite());
+    assert.deepEqual(bigmath.tan(bigPi.times(3).div(4)).toString(), '-1');
+    assert.ok(bigmath.tan(bigPi).isZero());
+    assert.deepEqual(bigmath.tan(bigPi.times(5).div(4)).toString(), '1');
+    assert.ok(!bigmath.tan(bigPi.times(3).div(2)).isFinite());
+    assert.deepEqual(bigmath.tan(bigPi.times(7).div(4)).toString(), '-1');
+    assert.ok(bigmath.tan(bigPi.times(2)).isZero());
+    assert.ok(bigmath.tan(bigPi.times(4)).isZero());
+    assert.ok(bigmath.tan(bigTau).isZero());
+    assert.ok(bigmath.tan(bigTau.times(2)).isZero());
   });
 
   it('should return the tangent of a complex number', function() {

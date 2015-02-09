@@ -6,7 +6,10 @@ var assert = require('assert'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
-    cos = math.cos;
+    cos = math.cos,
+    bigmath = math.create({number: 'bignumber', precision: 15}),
+    biggermath = math.create({precision: 238});
+
 
 describe('cos', function() {
   it('should return the cosine of a boolean', function () {
@@ -33,8 +36,7 @@ describe('cos', function() {
   });
 
   it('should return the cosine of a bignumber', function() {
-    var bigmath = math.create({number: 'bignumber', precision: 238});
-    assert.deepEqual(bigmath.cos(bigmath.bignumber(0)), bigmath.bignumber(1));
+    assert.deepEqual(bigmath.cos(biggermath.bignumber(0)).toString(), '1');
 
     // 103.64 % tau = 3.109... <- pretty close to the pi boundary
     var result_val = '-0.99947004918247698171247470962484532559534008595265991588' +
@@ -42,33 +44,31 @@ describe('cos', function() {
                         '80857263937361947475191126604630777331941809888320749410' +
                         '59494006339537812110786663367929884637840572887762249921' +
                         '8425619255481';
-    var cos_val = bigmath.cos(bigmath.bignumber(103.64));
+    var cos_val = biggermath.cos(biggermath.bignumber(103.64));
     assert.equal(cos_val.constructor.precision, 238);
     assert.deepEqual(cos_val.toString(), result_val);
 
-    cos_val = bigmath.cos(bigmath.bignumber(-103.64));
+    cos_val = biggermath.cos(biggermath.bignumber(-103.64));
     assert.equal(cos_val.constructor.precision, 238);
     assert.deepEqual(cos_val.toString(), result_val);
 
-    bigmath.config({precision: 15});
 
     var bigPi = bigmath.pi;
     result_val = bigmath.SQRT2.div(2).toString();
-
     assert.deepEqual(bigmath.cos(bigPi.div(4)).toString(), result_val);
     assert.ok(bigmath.cos(bigPi.div(2)).isZero());
     assert.deepEqual(bigmath.cos(bigPi).toString(), '-1');
     assert.ok(bigmath.cos(bigPi.times(3).div(2)).isZero());
     assert.deepEqual(bigmath.cos(bigPi.times(2)).toString(), '1');
-
     assert.deepEqual(bigmath.cos(bigmath.tau).toString(), '1');
     assert.deepEqual(bigmath.cos(bigmath.tau.times(2)).toString(), '1');
-
-    /* If we ever decide to pass in more digits of pi, uncomment these.
+    
+    /* Pass in more digits of pi! */
+    biggermath.config({number: 'bignumber', precision: 17});
+    bigPi = biggermath.pi;
     assert.deepEqual(bigmath.cos(bigPi.times(3).div(4)).toString(), '-'+result_val);
     assert.deepEqual(bigmath.cos(bigPi.times(5).div(4)).toString(), '-'+result_val);
     assert.deepEqual(bigmath.cos(bigPi.times(7).div(4)).toString(), result_val);
-    */
   });
 
   it('should return the cosine of a complex number', function() {
