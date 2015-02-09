@@ -1,8 +1,10 @@
 # History
 
 
-## not yet released, version 1.2.1-SNAPSHOT
+## 2015-02-09, version 1.3.0
 
+- Implemented BigNumber implementations of most trigonometric functions: `sin`,
+  `cos`, `tan`, `asin`, `acos`, `atan`, `cosh`, `sinh`, `tanh`. Thanks @BigFav.
 - Implemented function `trace`. Thanks @pcorey.
 - Faster loading of BigNumber configuration with a high precision by lazy
   loading constants like `pi` and `e`.

@@ -15,13 +15,13 @@ math.asin(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Function input
+`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Function input
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | The arc sine of x
+Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The arc sine of x
 
 
 ## Examples
