@@ -7,7 +7,9 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     asin = math.asin,
-    sin = math.sin;
+    sin = math.sin,
+    bigmath = math.create({number: 'bignumber', precision: 20}),
+    Big = bigmath.bignumber;
 
 describe('asin', function() {
   it('should return the arcsin of a boolean', function () {
@@ -27,8 +29,30 @@ describe('asin', function() {
     approx.equal(asin(1) / pi, 0.5);
   });
 
-  it('should return the arcsin of a bignumber (downgrades to number)', function() {
-    approx.equal(asin(math.bignumber(-1)), -pi / 2);
+  it('should return the arcsin of a bignumber', function() {
+    var arg1 = Big(-1);
+    var arg2 = Big(-0.581);
+    var arg3 = Big(-0.5);
+
+    assert.deepEqual(asin(Big(-1)), Big('-1.5707963267948966192'));
+    assert.deepEqual(asin(Big(-0.581)), Big('-0.6199567994522537004'));
+    assert.deepEqual(asin(Big(-0.5)), Big('-0.5235987755982988731'));
+    assert.deepEqual(asin(Big(0)), Big(0));
+    assert.deepEqual(asin(Big(0.5)), Big('0.5235987755982988731'));
+    assert.deepEqual(asin(Big(0.581)), Big('0.6199567994522537004'));
+    assert.deepEqual(asin(Big(1)), Big('1.5707963267948966192'));
+
+    // Make sure args were not changed
+    assert.deepEqual(arg1, Big(-1));
+    assert.deepEqual(arg2, Big(-0.581));
+    assert.deepEqual(arg3, Big(-0.5));
+
+    // Hit Newton's method case
+    bigmath.config({precision: 61});
+
+    var arg4 = Big(0.00000001);
+    assert.deepEqual(asin(arg4).toString(), '1.0000000000000000166666666666666674166666666666667113e-8');
+    assert.deepEqual(arg4, Big(0.00000001));
   });
 
   it('should be the inverse function of sin', function() {
@@ -37,6 +61,27 @@ describe('asin', function() {
     approx.equal(asin(sin(0.1)), 0.1);
     approx.equal(asin(sin(0.5)), 0.5);
     approx.equal(asin(sin(2)), 1.14159265358979);
+  });
+
+  it('should be the inverse function of bignumber sin', function() {
+    // More Newton's method test cases
+    assert.deepEqual(asin(bigmath.sin(Big(-2))).toString(), '-1.141592653589793238462643383279502884197169399375105820974945');
+    assert.deepEqual(asin(bigmath.sin(Big(-0.5))).toString(), '-0.5');
+    assert.deepEqual(asin(bigmath.sin(Big(-0.1))).toString(), '-0.1');
+    assert.deepEqual(asin(bigmath.sin(Big(0.1))).toString(), '0.1');
+    assert.deepEqual(asin(bigmath.sin(Big(0.5))).toString(), '0.5');
+    assert.deepEqual(asin(bigmath.sin(Big(2))).toString(), '1.141592653589793238462643383279502884197169399375105820974945');
+
+    bigmath.config({precision: 20});
+    // Full decimal Taylor test cases
+    /* sin(-1) =                      -0.8414709848078965067
+       asin(-0.8414709848078965067) = -1.00000000000000000008 => (rounding up) -1.0000000000000000001
+    assert.deepEqual(asin(bigmath.sin(Big(-1))), Big('-1')); */
+
+    assert.ok(asin(bigmath.sin(Big(0))).isZero());
+    assert.deepEqual(asin(bigmath.sin(Big(0.1))).toString(), '0.1');
+    assert.deepEqual(asin(bigmath.sin(Big(0.5))).toString(), '0.5');
+    assert.deepEqual(asin(bigmath.sin(Big(2))).toString(), '1.1415926535897932385');
   });
 
   it('should return the arcsin of a complex number', function() {
