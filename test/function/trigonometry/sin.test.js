@@ -42,7 +42,9 @@ describe('sin', function() {
                                               '714804383298805501395839512341888732261080924779366105855493575' +
                                               '835362891900420559398509489530577719840860106717522689249606121' +
                                               '2602629134186583352145117086874446046421403346033616');
-    result_val = bigmath.sin(bigmath.bignumber(-103.64));
+    var arg = bigmath.bignumber(-103.64);
+    result_val = bigmath.sin(arg);
+    assert.deepEqual(arg, bigmath.bignumber(-103.64));   // Make sure arg wasn't changed
     assert.equal(result_val.constructor.precision, 242);
     assert.deepEqual(result_val.toString(), '-0.0325518169566161584427313159942672130512044591216893328934710' +
                                                '3071480438329880550139583951234188873226108092477936610585549' +

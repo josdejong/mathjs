@@ -8,7 +8,7 @@ var assert = require('assert'),
     unit = math.unit,
     cos = math.cos,
     bigmath = math.create({number: 'bignumber', precision: 15}),
-    biggermath = math.create({precision: 238});
+    biggermath = math.create({number: 'bignumber', precision: 238});
 
 
 describe('cos', function() {
@@ -53,7 +53,9 @@ describe('cos', function() {
     assert.deepEqual(cos_val.toString(), result_val);
 
 
-    var bigPi = bigmath.pi;
+    biggermath.config({precision: 16});
+    var bigPi = biggermath.pi;
+
     result_val = bigmath.SQRT2.div(2).toString();
     assert.deepEqual(bigmath.cos(bigPi.div(4)).toString(), result_val);
     assert.ok(bigmath.cos(bigPi.div(2)).isZero());
@@ -62,10 +64,8 @@ describe('cos', function() {
     assert.deepEqual(bigmath.cos(bigPi.times(2)).toString(), '1');
     assert.deepEqual(bigmath.cos(bigmath.tau).toString(), '1');
     assert.deepEqual(bigmath.cos(bigmath.tau.times(2)).toString(), '1');
-    
-    /* Pass in more digits of pi! */
-    biggermath.config({number: 'bignumber', precision: 17});
-    bigPi = biggermath.pi;
+
+    /* Pass in an extra digit of pi! Also tests whether pi was changed previously. */
     assert.deepEqual(bigmath.cos(bigPi.times(3).div(4)).toString(), '-'+result_val);
     assert.deepEqual(bigmath.cos(bigPi.times(5).div(4)).toString(), '-'+result_val);
     assert.deepEqual(bigmath.cos(bigPi.times(7).div(4)).toString(), result_val);

@@ -30,15 +30,26 @@ describe('atan', function() {
   });
 
   it('should return the arctan of a bignumber', function() {
-    assert.deepEqual(atan(Big(-1)), Big('-0.7853981633974483096'));
-    assert.deepEqual(atan(Big(-0.5)), Big('-0.4636476090008061162'));
-    assert.deepEqual(atan(Big(0)), Big(0));
+    var arg1 = Big(-1);
+    var arg2 = Big(-0.5);
+    var arg3 = Big(0);
+    var arg6 = Big(2);
+    assert.deepEqual(atan(arg1), Big('-0.7853981633974483096'));
+    assert.deepEqual(atan(arg2), Big('-0.4636476090008061162'));
+    assert.deepEqual(atan(arg3), Big(0));
     assert.deepEqual(atan(Big(0.5)), Big('0.4636476090008061162'));
     assert.deepEqual(atan(Big(1)), Big('0.7853981633974483096'));
+    assert.deepEqual(atan(arg6), Big('1.107148717794090503'));
+
+    // Ensure the arguments where not changed
+    assert.deepEqual(arg1, Big(-1));
+    assert.deepEqual(arg2, Big(-0.5));
+    assert.deepEqual(arg3, Big(0));
+    assert.deepEqual(arg6, Big(2));
 
     // Hit Newton's method case
     bigmath.config({precision: 61});
-    assert.deepEqual(atan(Big(0.90)).toString(), '0.732815101786506591640792072734280251985755679358256086310506');
+    assert.deepEqual(atan(Big(0.9)).toString(), '0.732815101786506591640792072734280251985755679358256086310506');
   });
 
   it('should be the inverse function of tan', function() {

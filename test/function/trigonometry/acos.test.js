@@ -30,7 +30,8 @@ describe('acos', function() {
   });
 
   it('should return the arccos of a bignumber', function() {
-    assert.deepEqual(acos(Big(-1)).toString(), bigmath.pi.toString());
+    var arg = Big(-1);
+    assert.deepEqual(acos(arg).toString(), bigmath.pi.toString());
     assert.deepEqual(acos(Big(-0.5)), Big('2.0943951023931954923'));
     assert.deepEqual(acos(Big(0)), Big('1.5707963267948966192'));
     assert.deepEqual(acos(Big(0.5)), Big('1.0471975511965977462'));
@@ -38,7 +39,10 @@ describe('acos', function() {
 
     // Hit Newton's method case
     bigmath.config({precision: 61});
-    assert.deepEqual(acos(Big('0.00000001')), Big('1.570796316794896619231321524973084775431910533020886243820359'));
+    assert.deepEqual(acos(Big('0.00000001')), Big('1.570796316794896619231321524973084775431910533020886243820359'));    
+
+    //Make sure arg was not changed
+    assert.deepEqual(arg, Big(-1));
   });
 
   it('should be the inverse function of cos', function() {

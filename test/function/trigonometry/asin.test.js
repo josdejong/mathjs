@@ -30,6 +30,10 @@ describe('asin', function() {
   });
 
   it('should return the arcsin of a bignumber', function() {
+    var arg1 = Big(-1);
+    var arg2 = Big(-0.581);
+    var arg3 = Big(-0.5);
+
     assert.deepEqual(asin(Big(-1)), Big('-1.5707963267948966192'));
     assert.deepEqual(asin(Big(-0.581)), Big('-0.6199567994522537004'));
     assert.deepEqual(asin(Big(-0.5)), Big('-0.5235987755982988731'));
@@ -38,9 +42,16 @@ describe('asin', function() {
     assert.deepEqual(asin(Big(0.581)), Big('0.6199567994522537004'));
     assert.deepEqual(asin(Big(1)), Big('1.5707963267948966192'));
 
+    // Make sure args were not changed
+    assert.deepEqual(arg1, Big(-1));
+    assert.deepEqual(arg2, Big(-0.581));
+    assert.deepEqual(arg3, Big(-0.5));
+
     // Hit Newton's method case
     bigmath.config({precision: 61});
-    assert.deepEqual(asin(Big('0.00000001')), Big('1.0000000000000000166666666666666674166666666666667113e-8'));
+    var arg4 = Big(0.00000001);
+    assert.deepEqual(asin(arg4), Big('1.0000000000000000166666666666666674166666666666667113e-8'));
+    assert.deepEqual(arg4, Big(0.00000001));
   });
 
   it('should be the inverse function of sin', function() {
