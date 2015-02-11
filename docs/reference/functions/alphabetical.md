@@ -117,6 +117,7 @@ layout: default
 - [tan(x)](tan.html)
 - [tanh(x)](tanh.html)
 - [to(x, unit)](to.html)
+- [trace(x)](trace.html)
 - [transpose(x)](transpose.html)
 - [typeof(x)](typeof.html)
 - [unaryMinus(x)](unaryMinus.html)

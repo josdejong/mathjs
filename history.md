@@ -5,6 +5,20 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20150209-version-130">2015-02-09, version 1.3.0 <a href="#20150209-version-130" title="Permalink">#</a></h2>
+
+- Implemented BigNumber implementations of most trigonometric functions: `sin`,
+  `cos`, `tan`, `asin`, `acos`, `atan`, `cosh`, `sinh`, `tanh`. Thanks @BigFav.
+- Implemented function `trace`. Thanks @pcorey.
+- Faster loading of BigNumber configuration with a high precision by lazy
+  loading constants like `pi` and `e`.
+- Fixed constants `NaN` and `Infinity` not being BigNumber objects when
+  BigNumbers are configured.
+- Fixed missing parentheses in the `toTex` representation of function
+  `permutations`.
+- Some minor fixes in the docs. Thanks @KenanY.
+
+
 <h2 id="20141225-version-120">2014-12-25, version 1.2.0 <a href="#20141225-version-120" title="Permalink">#</a></h2>
 
 - Support for bitwise operations `bitAnd`, `bitNot`, `bitOr`, `bitXor`,

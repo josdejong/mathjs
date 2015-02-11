@@ -56,7 +56,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `;`         | Row separator           | `[x, y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
 `\n`        | Statement separator     | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
 `+`         | Add                     | `x + y`     | Left to right | `4 + 5`               | `9`
-`+`         | Unary plus              | `+y`        | Right to left | `+"4"`                | `4`
+`+`         | Unary plus              | `+y`        | Right to left | `+4`                  | `4`
 `-`         | Subtract                | `x - y`     | Left to right | `7 - 3`               | `4`
 `-`         | Unary minus             | `-y`        | Right to left | `-4`                  | `-4`
 `*`         | Multiply                | `x * y`     | Left to right | `2 * 3`               | `6`
@@ -340,6 +340,10 @@ math.eval('5.4 kg');                    // Unit, 5.4 kg
 // convert a unit
 math.eval('2 inch to cm');              // Unit, 5.08 cm
 math.eval('20 celsius in fahrenheit');  // Unit, ~68 fahrenheit
+
+// convert a unit to a number
+// A second parameter with the unit for the exported number must be provided
+math.eval('number(5 cm, mm)');          // Number, 50
 
 // calculations with units
 math.eval('0.5kg + 33g');               // Unit, 0.533 kg

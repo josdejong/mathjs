@@ -95,6 +95,7 @@ layout: default
 - [size(x)](size.html)
 - [squeeze(x)](squeeze.html)
 - [subset(x, index [, replacement])](subset.html)
+- [trace(x)](trace.html)
 - [transpose(x)](transpose.html)
 - [zeros(m, n, p, ...)](zeros.html)
 

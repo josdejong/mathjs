@@ -36,7 +36,7 @@ var a = math.chain(3)
     .add(4)
     .multiply(2)
     .done();
-print(a); // 14
+print(a);      // 14
 console.log();
 
 // mixed use of different data types in functions

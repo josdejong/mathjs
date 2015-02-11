@@ -16,7 +16,7 @@ File: [old_browsers.html](old_browsers.html)
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-sham.min.js"></script>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/1.2.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/1.3.0/math.min.js"></script>
 </head>
 <body>
 
@@ -49,7 +49,7 @@ File: [old_browsers.html](old_browsers.html)
       .add(4)
       .multiply(2)
       .done();
-  print(a);                                // 14
+  print(a);  // 14
 </script>
 
 </body>

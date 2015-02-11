@@ -11,7 +11,7 @@ File: [basic_usage.html](basic_usage.html)
 <html>
 <head>
   <title>math.js | basic usage</title>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/1.2.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/1.3.0/math.min.js"></script>
 </head>
 <body>
 
@@ -39,7 +39,7 @@ File: [basic_usage.html](basic_usage.html)
       .add(4)
       .multiply(2)
       .done();
-  print(a);                                // 14
+  print(a);  // 14
 </script>
 
 </body>
