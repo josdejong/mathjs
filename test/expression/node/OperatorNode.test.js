@@ -242,10 +242,54 @@ describe('OperatorNode', function() {
     assert.equal(n.toTex(), '2!');
   });
 
+  it ('should LaTeX an OperatorNode with factorial of an OperatorNode', function () {
+    var a = new ConstantNode(2);
+    var b = new ConstantNode(3);
+
+    var sub = new OperatorNode('-', 'subtract', [a, b]);
+    var add = new OperatorNode('+', 'add', [a, b]);
+    var mult = new OperatorNode('*', 'multiply', [a, b]);
+    var div = new OperatorNode('/', 'divide', [a, b]);
+
+    var n1= new OperatorNode('!', 'factorial', [sub] );
+    var n2= new OperatorNode('!', 'factorial', [add] );
+    var n3= new OperatorNode('!', 'factorial', [mult] );
+    var n4= new OperatorNode('!', 'factorial', [div] );
+    assert.equal(n1.toTex(), '\\left({{2}-{3}}\\right)!');
+    assert.equal(n2.toTex(), '\\left({{2}+{3}}\\right)!');
+    assert.equal(n3.toTex(), '\\left({{2} \\cdot {3}}\\right)!');
+    assert.equal(n4.toTex(), '\\left({\\frac{2}{3}}\\right)!');
+  });
+
   it ('should LaTeX an OperatorNode with unary minus', function () {
     var a = new ConstantNode(2);
-    var n = new OperatorNode('-', 'unaryMinus', [a]);
-    assert.equal(n.toTex(), '-2');
+    var b = new ConstantNode(3);
+
+    var sub = new OperatorNode('-', 'subtract', [a, b]);
+    var add = new OperatorNode('+', 'add', [a, b]);
+
+    var n1 = new OperatorNode('-', 'unaryMinus', [a]);
+    var n2 = new OperatorNode('-', 'unaryMinus', [sub]);
+    var n3 = new OperatorNode('-', 'unaryMinus', [add]);
+
+    assert.equal(n1.toTex(), '-2');
+    assert.equal(n2.toTex(), '-\\left({{2}-{3}}\\right)');
+    assert.equal(n3.toTex(), '-\\left({{2}+{3}}\\right)');
+  });
+
+  it ('should LaTeX an OperatorNode that subtracts an OperatorNode', function() {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+
+    var sub = new OperatorNode('-', 'subtract', [b, c]);
+    var add = new OperatorNode('+', 'add', [b, c]);
+
+    var n1 = new OperatorNode('-', 'subtract', [a, sub]);
+    var n2 = new OperatorNode('-', 'subtract', [a, add]);
+
+    assert.equal(n1.toTex(), '{1}-\\left({{2}-{3}}\\right)');
+    assert.equal(n2.toTex(), '{1}-\\left({{2}+{3}}\\right)');
   });
 
   it ('should LaTeX an OperatorNode with zero arguments', function () {
