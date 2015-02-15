@@ -6,7 +6,9 @@ var assert = require('assert'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
-    csc = math.csc;
+    csc = math.csc,
+    bigmath = math.create({number: 'bignumber', precision: 20}),
+    biggermath = math.create({number: 'bignumber', precision: 21});
 
 describe('csc', function() {
   it('should return the cosecant of a boolean', function () {
@@ -32,8 +34,25 @@ describe('csc', function() {
     approx.equal(1 / csc(pi/4), math.sqrt(2)/2);
   });
 
-  it('should return the cosecant of a bignumber (downgrades to number)', function() {
-    approx.equal(csc(math.bignumber(1)), 1.18839510577812);
+  it('should return the cosecant of a bignumber', function() {
+    var Big = bigmath.bignumber;
+    var bigPi = bigmath.pi;
+    var sqrt2 = bigmath.SQRT2.toString();
+
+    assert.ok(!bigmath.csc(Big(0)).isFinite());
+    assert.deepEqual(bigmath.csc(bigPi.div(8)).toString(), '2.6131259297527530557');
+    assert.deepEqual(bigmath.csc(bigPi.div(4)).toString(), sqrt2);
+    assert.deepEqual(bigmath.csc(bigPi.div(2)).toString(), '1');
+    assert.ok(!bigmath.csc(bigPi).isFinite());
+    assert.deepEqual(bigmath.csc(bigPi.times(3).div(2)).toString(), '-1');
+    assert.ok(!bigmath.csc(bigPi.times(2)).isFinite());
+    assert.ok(!bigmath.csc(bigmath.tau).isFinite());
+
+    /* Pass in more digits of pi. */
+    bigPi = biggermath.pi;
+    assert.deepEqual(bigmath.csc(bigPi.times(3).div(4)).toString(), sqrt2);
+    assert.deepEqual(bigmath.csc(bigPi.times(5).div(4)).toString(), '-'+sqrt2);
+    assert.deepEqual(bigmath.csc(bigPi.times(7).div(4)).toString(), '-'+sqrt2);
   });
 
   it('should return the cosecant of a complex number', function() {

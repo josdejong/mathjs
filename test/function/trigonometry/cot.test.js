@@ -6,7 +6,9 @@ var assert = require('assert'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
-    cot = math.cot;
+    cot = math.cot,
+    bigmath = math.create({number: 'bignumber', precision: 20}),
+    biggermath = math.create({number: 'bignumber', precision: 22});
 
 describe('cot', function() {
   it('should return the cotan of a boolean', function () {
@@ -20,8 +22,8 @@ describe('cot', function() {
 
   it('should return the cotan of a number', function() {
     approx.equal(cot(0), Infinity);
-    approx.equal(1 / cot(pi*1/4), 1);
     approx.equal(1 / cot(pi*1/8), 0.414213562373095);
+    approx.equal(1 / cot(pi*1/4), 1);
     approx.equal(cot(pi*2/4), 0);
     approx.equal(1 / cot(pi*3/4), -1);
     approx.equal(1 / cot(pi*4/4), 0);
@@ -31,8 +33,34 @@ describe('cot', function() {
     approx.equal(1 / cot(pi*8/4), 0);
   });
 
-  it('should return the cotan of a bignumber (downgrades to number)', function() {
-    approx.equal(cot(math.bignumber(1)), 0.642092615934331);
+  it('should return the cotan of a bignumber', function() {
+    var Big = bigmath.bignumber;
+    var bigPi = bigmath.pi;
+    var sqrt2 = bigmath.SQRT2.toString();
+
+    var arg1 = Big(0);
+    var result1 = bigmath.cot(arg1);
+    assert.ok(!result1.isFinite());
+    assert.equal(result1.constructor.precision, 20);
+    assert.deepEqual(arg1, Big(0));
+
+    var result2 = bigmath.cot(bigPi.div(8));
+    assert.deepEqual(result2.toString(), '2.4142135623730950488');
+    assert.equal(result2.constructor.precision, 20);
+    assert.equal(bigPi.constructor.precision, 20);
+
+    assert.ok(bigmath.cot(bigPi.div(2)).isZero());
+    assert.ok(!bigmath.cot(bigPi).isFinite());
+    assert.ok(bigmath.cot(bigPi.times(3).div(2)).isZero());
+    assert.ok(!bigmath.cot(bigPi.times(2)).isFinite());
+    assert.ok(!bigmath.cot(bigmath.tau).isFinite());
+
+    /* Pass in more digits of pi. */
+    bigPi = biggermath.pi;
+    assert.deepEqual(bigmath.cot(bigPi.div(4)).toString(), '1');
+    assert.deepEqual(bigmath.cot(bigPi.times(3).div(4)).toString(), '-1');
+    assert.deepEqual(bigmath.cot(bigPi.times(5).div(4)).toString(), '1');
+    assert.deepEqual(bigmath.cot(bigPi.times(7).div(4)).toString(), '-1');
   });
 
   it('should return the cotan of a complex number', function() {

@@ -84,6 +84,15 @@ describe('asin', function() {
     assert.deepEqual(asin(bigmath.sin(Big(2))).toString(), '1.1415926535897932385');
   });
 
+  it('should throw an error if the bignumber result is complex', function() {
+    assert.throws(function () {
+      asin(Big(1.1));
+    }, /asin() only has non-complex values for |x| <= 1./);
+    assert.throws(function () {
+      asin(Big(-1.1));
+    }, /asin() only has non-complex values for |x| <= 1./);
+  });
+
   it('should return the arcsin of a complex number', function() {
     var re = 0.570652784321099;
     var im = 1.983387029916536;

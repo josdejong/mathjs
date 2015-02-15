@@ -63,6 +63,15 @@ describe('acos', function() {
     assert.deepEqual(acos(bigmath.cos(Big(2))).toString(), '2');
   });
 
+  it('should throw an error if the bignumber result is complex', function() {
+    assert.throws(function () {
+      acos(Big(1.1));
+    }, /acos() only has non-complex values for |x| <= 1./);
+    assert.throws(function () {
+      acos(Big(-1.1));
+    }, /acos() only has non-complex values for |x| <= 1./);
+  });
+
   it('should return the arccos of a complex number', function() {
     approx.deepEqual(acos(complex('2+3i')), complex(1.00014354247380, -1.98338702991654));
     approx.deepEqual(acos(complex('2-3i')), complex(1.00014354247380, 1.98338702991654));

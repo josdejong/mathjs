@@ -6,31 +6,39 @@ var assert = require('assert'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
-    csch = math.csch;
+    csch = math.csch,
+    bigmath = math.create({number: 'bignumber', precision: 20});
 
 describe('csch', function() {
   it('should return the csch of a boolean', function () {
     approx.equal(csch(true), 0.85091812823932);
-    approx.equal(csch(false), Number.NaN);
+    approx.equal(csch(false), Number.POSITIVE_INFINITY);
   });
 
   it('should return the csch of null', function () {
-    approx.equal(csch(null), Number.NaN);
+    approx.equal(csch(null), Number.POSITIVE_INFINITY);
   });
 
   it('should return the csch of a number', function() {
-    approx.equal(csch(0), Number.NaN);
+    approx.equal(csch(0), Number.POSITIVE_INFINITY);
     approx.equal(csch(pi), 0.086589537530047);
     approx.equal(csch(1), 0.85091812823932);
     approx.equal(csch(2), 0.27572056477178);
-    approx.equal(csch(3), 0.099821569668823);
     approx.equal(csch(3), 0.099821569668823);
     approx.equal(csch(1e-22), Number.POSITIVE_INFINITY);
     approx.equal(csch(-1e-22), Number.NEGATIVE_INFINITY);
   });
 
-  it('should return the csch of a bignumber (downgrades to number)', function() {
-    approx.equal(csch(math.bignumber(1)), 0.85091812823932);
+  it('should return the csch of a bignumber', function() {
+    var Big = bigmath.bignumber;
+
+    assert.deepEqual(csch(Big(0)), Big(Infinity));
+    assert.deepEqual(csch(Big(1)), Big('0.85091812823932154513'));
+    assert.deepEqual(csch(Big(2)), Big('0.27572056477178320776'));
+    assert.deepEqual(csch(Big(3)), Big('0.099821569668822732851'));
+
+    /* Pass in extra digits to pi. */
+    //assert.deepEqual(csch(bigmath.pi).toString(), '0.086589537530046941828');
   });
 
   it('should return the csch of a complex number', function() {
