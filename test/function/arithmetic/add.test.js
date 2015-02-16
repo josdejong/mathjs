@@ -46,8 +46,8 @@ describe('add', function() {
     assert.deepEqual(add(new BigNumber(0.1), 0.2), new BigNumber(0.3));
     assert.deepEqual(add(0.1, new BigNumber(0.2)), new math.type.BigNumber(0.3));
 
-    assert.throws(function () {add(1/3, new BigNumber(1))}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
-    assert.throws(function () {add(new BigNumber(1), 1/3)}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
+    assert.throws(function () {add(1/3, new BigNumber(1))}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {add(new BigNumber(1), 1/3)}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should add mixed booleans and BigNumbers', function() {

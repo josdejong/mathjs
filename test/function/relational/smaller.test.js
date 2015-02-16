@@ -72,8 +72,8 @@ describe('smaller', function() {
     //assert.equal(smaller(1/3, bignumber(1).div(3)), false);
     //assert.equal(smaller(bignumber(1).div(3), 1/3), false);
 
-    assert.throws(function () {smaller(1/3, bignumber(1).div(3))}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
-    assert.throws(function () {smaller(bignumber(1).div(3), 1/3)}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
+    assert.throws(function () {smaller(1/3, bignumber(1).div(3))}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {smaller(bignumber(1).div(3), 1/3)}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should compare mixed booleans and bignumbers', function() {

@@ -49,8 +49,8 @@ describe('subtract', function() {
     assert.deepEqual(subtract(bignumber(0.3), 0.2), bignumber(0.1));
     assert.deepEqual(subtract(0.3, bignumber(0.2)), bignumber(0.1));
 
-    assert.throws(function () {subtract(1/3, bignumber(1).div(3))}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
-    assert.throws(function () {subtract(bignumber(1).div(3), 1/3)}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
+    assert.throws(function () {subtract(1/3, bignumber(1).div(3))}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {subtract(bignumber(1).div(3), 1/3)}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should subtract mixed booleans and bignumbers', function() {

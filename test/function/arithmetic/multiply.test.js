@@ -54,8 +54,8 @@ describe('multiply', function() {
     assert.deepEqual(multiply(1.5, bignumber(0.2)), bignumber(0.3));
     assert.deepEqual(multiply(bignumber('1.3e5000'), 2), bignumber('2.6e5000'));
 
-    assert.throws(function () {multiply(1/3, bignumber(1).div(3))}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
-    assert.throws(function () {multiply(bignumber(1).div(3), 1/3)}, /Decimal Error: new Decimal\(\) number type has more than 15 significant digits/);
+    assert.throws(function () {multiply(1/3, bignumber(1).div(3))}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {multiply(bignumber(1).div(3), 1/3)}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should multiply mixed booleans and bignumbers', function() {
