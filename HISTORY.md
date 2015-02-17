@@ -2,6 +2,8 @@
 
 ## not yet released, version 1.3.1-SNAPSHOT
 
+- Fixed #281: improved formatting complex numbers. Round the real or imaginary
+  part to zero when the difference is larger than the configured precision.
 
 
 ## 2015-02-09, version 1.3.0

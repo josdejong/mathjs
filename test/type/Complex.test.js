@@ -106,6 +106,27 @@ describe('Complex', function () {
       assert.equal(new Complex(1/3, 1/3).format(), '0.3333333333333333 + 0.3333333333333333i');
     });
 
+    it('should round im to zero if very small compared to re', function() {
+      assert.equal(new Complex(-1, 1.22e-16).format(), '-1 + 1.22e-16i');
+
+      assert.equal(new Complex(-1, 1.22e-16).format(15), '-1');
+      assert.equal(new Complex(-1, -1.22e-16).format(15), '-1');
+      assert.equal(new Complex(1, -1.22e-16).format(15), '1');
+      assert.equal(new Complex(1, 1.22e-16).format(15), '1');
+
+      assert.equal(new Complex(-1, 1e-7).format(5), '-1');
+    });
+
+    it('should round re to zero if very small compared to im', function() {
+      assert.equal(new Complex(1.22e-16, -1).format(), '1.22e-16 - i');
+
+      assert.equal(new Complex(1.22e-16, -1).format(15), '-i');
+      assert.equal(new Complex(-1.22e-16, -1).format(15), '-i');
+      assert.equal(new Complex(-1.22e-16, 1).format(15), 'i');
+      assert.equal(new Complex(1.22e-16, 1).format(15), 'i');
+
+      assert.equal(new Complex(1e-7, -1).format(5), '-i');
+    });
   });
 
   describe('parse', function() {
