@@ -1,7 +1,8 @@
-var assert = require('assert'),
-    math = require('../../index'),
-    index = math.index,
-    Matrix = require('../../lib/type/Matrix');
+var assert = require('assert');
+var math = require('../../index');
+var index = math.index;
+var Matrix = require('../../lib/type/Matrix');
+var Complex = require('../../lib/type/Complex');
 
 describe('matrix', function() {
 
@@ -51,6 +52,44 @@ describe('matrix', function() {
   it('toString', function() {
     assert.equal(new Matrix([[1,2],[3,4]]).toString(), '[[1, 2], [3, 4]]');
     assert.equal(new Matrix([[1,2],[3,1/3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]');
+  });
+
+  it('toJSON', function() {
+    assert.deepEqual(new Matrix([[1,2],[3,new Complex(4,5)]]).toJSON(), {
+      '@type': 'Matrix',
+      data: [[1,2],[3,{'@type': 'Complex', re: 4, im: 5}]]
+    });
+  });
+
+  it('fromJSON', function() {
+    var json = {
+      '@type': 'Matrix',
+      data: [[1,2],[3,{'@type': 'Complex', re: 4, im: 5}]]
+    };
+    var m = Matrix.fromJSON(json, math);
+    assert.ok(m instanceof Matrix);
+
+    assert.deepEqual(m._size, [2, 2]);
+    assert.strictEqual(m._data[0][0], 1);
+    assert.strictEqual(m._data[0][1], 2);
+    assert.strictEqual(m._data[1][0], 3);
+    assert.ok(m._data[1][1] instanceof Complex);
+    assert.strictEqual(m._data[1][1].re, 4);
+    assert.strictEqual(m._data[1][1].im, 5);
+  });
+
+  it('fromJSON (2)', function() {
+    var json = [[1,2],[3,{'@type': 'Complex', re: 4, im: 5}]];
+    var m = Matrix.fromJSON(json, math);
+
+    assert.ok(m instanceof Matrix);
+    assert.deepEqual(m._size, [2, 2]);
+    assert.strictEqual(m._data[0][0], 1);
+    assert.strictEqual(m._data[0][1], 2);
+    assert.strictEqual(m._data[1][0], 3);
+    assert.ok(m._data[1][1] instanceof Complex);
+    assert.strictEqual(m._data[1][1].re, 4);
+    assert.strictEqual(m._data[1][1].im, 5);
   });
 
   it('format', function() {
