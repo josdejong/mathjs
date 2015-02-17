@@ -22,7 +22,7 @@ describe('help', function() {
   };
 
   it('should generate the help for a function', function() {
-    var help = new Help(math, doc);
+    var help = new Help(doc, math);
 
     assert(help instanceof Help);
     assert.deepEqual(help.doc.name, 'add');
@@ -36,7 +36,7 @@ describe('help', function() {
   });
 
   it('should test whether an object is a Help object', function() {
-    var help = new Help(math, doc);
+    var help = new Help(doc, math);
 
     assert.equal(Help.isHelp(help), true);
     assert.equal(Help.isHelp(new Date()), false);
@@ -44,7 +44,7 @@ describe('help', function() {
   });
 
   it('should stringify a help', function() {
-    var help = new Help(math, doc);
+    var help = new Help(doc, math);
     assert.equal(help.toString(),
         '\nName: add\n' +
         '\n'+
@@ -77,13 +77,13 @@ describe('help', function() {
   });
 
   it('should stringify a doc with empty example', function() {
-    var help = new Help(math, {
+    var help = new Help({
       'name': 'add',
       'examples': [
         '2 + 3',
         ''
       ]
-    });
+    }, math);
 
     assert.equal(help.toString(),
         '\nName: add\n' +
@@ -96,12 +96,12 @@ describe('help', function() {
   });
 
   it('should stringify a doc with example throwing an error', function() {
-    var help = new Help(math, {
+    var help = new Help({
       'name': 'add',
       'examples': [
         '2 ^^ 3'
       ]
-    });
+    }, math);
 
     assert.equal(help.toString(),
         '\nName: add\n' +
@@ -113,12 +113,12 @@ describe('help', function() {
   });
 
   it('should return string representation on valueOf', function() {
-    var help = new Help(math, {
+    var help = new Help({
       'name': 'add',
       'examples': [
         '2 ^^ 3'
       ]
-    });
+    }, math);
 
     assert.strictEqual(help.valueOf(),
             '\nName: add\n' +
@@ -130,9 +130,25 @@ describe('help', function() {
   });
 
   it('should export doc to JSON', function() {
-    var help = new Help(math, doc);
+    var help = new Help(doc, math);
     var json = help.toJSON();
-    assert.deepEqual(json, doc);
+    assert.deepEqual(json, {
+      '@type': 'Help',
+      'name': 'add',
+      'category': 'Operators',
+      'syntax': [
+        'x + y',
+        'add(x, y)'
+      ],
+      'description': 'Add two values.',
+      'examples': [
+        'a = 2.1 + 3.6',
+        'a - 3.6'
+      ],
+      'seealso': [
+        'subtract'
+      ]
+    });
     json.name = 'foo';            // this should not alter the original doc
     json.examples.push('2 + 3'); // this should not alter the original doc
     assert.equal(doc.name, 'add');
