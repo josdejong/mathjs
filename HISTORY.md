@@ -1,7 +1,11 @@
 # History
 
-## not yet released, version 1.3.1-SNAPSHOT
+## not yet released, version 1.4.0-SNAPSHOT
 
+- Implemented trigonometric functions:
+  `acosh`, `acoth`, `acsch`, `asech`, `asinh`, `atanh`. Thanks @BigFav.
+- Implemented BigNumber support for functions: `cot`, `csc`, `sec`, `coth`,
+  `csch`, `sech`. Thanks @BigFav.
 - Fixed #281: improved formatting complex numbers. Round the real or imaginary
   part to zero when the difference is larger than the configured precision.
 

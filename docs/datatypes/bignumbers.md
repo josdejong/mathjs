@@ -37,8 +37,7 @@ BigNumber is not supported by the following functions:
 gcd, lcm, xgcd,
 arg,
 random,
-atan2, cot, csc, sec,
-coth, csch, sech.
+atan2.
 These functions will downgrade BigNumber to Number, and return a Number.*
 
 
