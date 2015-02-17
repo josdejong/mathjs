@@ -31,8 +31,20 @@ describe('help', function() {
 
   it('should throw an error when constructed without new operator', function() {
     assert.throws(function () {
-      Help(math, math.expression.docs.sin);
+      Help(math.expression.docs.sin, math);
     }, /Constructor must be called with the new operator/)
+  });
+
+  it('should throw an error when constructed without math argument', function() {
+    assert.throws(function () {
+      new Help(math.expression.docs.sin);
+    }, /Argument "math" missing/)
+  });
+
+  it('should throw an error when constructed without doc argument', function() {
+    assert.throws(function () {
+      new Help(undefined, math);
+    }, /Argument "doc" missing/)
   });
 
   it('should test whether an object is a Help object', function() {
@@ -67,12 +79,7 @@ describe('help', function() {
   });
 
   it('should stringify a help with empty doc', function() {
-    var help = new Help(math);
-    assert.equal(help.toString(), '\n');
-  });
-
-  it('should stringify a help without doc', function() {
-    var help = new Help(math);
+    var help = new Help({}, math);
     assert.equal(help.toString(), '\n');
   });
 
