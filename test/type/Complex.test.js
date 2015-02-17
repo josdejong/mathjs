@@ -303,4 +303,22 @@ describe('Complex', function () {
       assert.equal(polar5.phi, -1.5707963267948966);
     });
   });
+
+  it('should return a JSON representation using toJSON', function () {
+    assert.deepEqual(new Complex(2, 4).toJSON(), {'@type': 'Complex', re: 2, im: 4});
+    assert.deepEqual(new Complex(3, 0).toJSON(), {'@type': 'Complex', re: 3, im: 0});
+  });
+
+  it('should create a complex number from a JSON object', function () {
+    var c1 = Complex.fromJSON({re: 2, im: 4});
+    assert.ok(c1 instanceof Complex);
+    assert.strictEqual(c1.re, 2);
+    assert.strictEqual(c1.im, 4);
+
+    var c2 = Complex.fromJSON({re: 3, im: 0});
+    assert.ok(c2 instanceof Complex);
+    assert.strictEqual(c2.re, 3);
+    assert.strictEqual(c2.im, 0);
+  });
+
 });
