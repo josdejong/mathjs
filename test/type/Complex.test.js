@@ -1,8 +1,8 @@
 // test data type Complex
 
-var assert = require('assert'),
-    Unit = require('../../lib/type/Unit'),
-    Complex = require('../../lib/type/Complex');
+var assert = require('assert');
+var Unit = require('../../lib/type/Unit');
+var Complex = require('../../lib/type/Complex');
 
 describe('Complex', function () {
 
@@ -304,12 +304,12 @@ describe('Complex', function () {
     });
   });
 
-  it('should return a JSON representation using toJSON', function () {
+  it('toJSON', function () {
     assert.deepEqual(new Complex(2, 4).toJSON(), {'@type': 'Complex', re: 2, im: 4});
     assert.deepEqual(new Complex(3, 0).toJSON(), {'@type': 'Complex', re: 3, im: 0});
   });
 
-  it('should create a complex number from a JSON object', function () {
+  it('fromJSON', function () {
     var c1 = Complex.fromJSON({re: 2, im: 4});
     assert.ok(c1 instanceof Complex);
     assert.strictEqual(c1.re, 2);
