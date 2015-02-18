@@ -12,7 +12,7 @@ function:
 var x   = math.complex('2 + 3i');
 var str = JSON.stringify(x);
 console.log(str);
-// outputs a string '{"@type":"Complex","re":2,"im":3}'
+// outputs a string '{"mathjs":"Complex","re":2,"im":3}'
 ```
 
 In order to deserialize a string, containing math.js data types, `JSON.parse`
@@ -20,7 +20,7 @@ can be used. In order to recognize the data types of math.js, `JSON.parse` must
 be called with the reviver function of math.js:
 
 ```js
-var json = '{"@type":"Complex","re":2,"im":3}';
+var json = '{"mathjs":"Complex","re":2,"im":3}';
 var x    = JSON.parse(json, math.json.reviver);   // Complex 2 + 3i
 ```
 

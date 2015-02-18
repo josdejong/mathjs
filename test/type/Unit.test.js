@@ -248,19 +248,19 @@ describe('unit', function() {
 
     it('toJSON', function () {
       assert.deepEqual(new Unit(5, 'cm').toJSON(),
-          {'@type': 'Unit', value: 5, unit: 'cm', fixPrefix: false});
+          {'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false});
       assert.deepEqual(new Unit(5, 'cm').to('mm').toJSON(),
-          {'@type': 'Unit', value: 50, unit: 'mm', fixPrefix: true});
+          {'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true});
     });
 
     it('fromJSON', function () {
       var u1 = new Unit(5, 'cm');
-      var u2 = Unit.fromJSON({'@type': 'Unit', value: 5, unit: 'cm', fixPrefix: false});
+      var u2 = Unit.fromJSON({'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false});
       assert.ok(u2 instanceof Unit);
       assert.deepEqual(u2, u1);
 
       var u3 = new Unit(5, 'cm').to('mm');
-      var u4 = Unit.fromJSON({'@type': 'Unit', value: 50, unit: 'mm', fixPrefix: true});
+      var u4 = Unit.fromJSON({'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true});
       assert.ok(u4 instanceof Unit);
       assert.deepEqual(u4, u3);
     });

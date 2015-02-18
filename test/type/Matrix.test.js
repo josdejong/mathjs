@@ -56,14 +56,14 @@ describe('matrix', function() {
 
   it('toJSON', function() {
     assert.deepEqual(new Matrix([[1,2],[3,4]]).toJSON(), {
-      '@type': 'Matrix',
+      'mathjs': 'Matrix',
       data: [[1,2],[3,4]]
     });
   });
 
   it('fromJSON', function() {
     var json = {
-      '@type': 'Matrix',
+      'mathjs': 'Matrix',
       data: [[1,2],[3,4]]
     };
     var m = Matrix.fromJSON(json);

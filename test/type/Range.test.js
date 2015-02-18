@@ -247,8 +247,8 @@ describe('range', function() {
   });
 
   it('toJSON', function () {
-    assert.deepEqual(new Range(2, 4).toJSON(), {'@type': 'Range', start: 2, end: 4, step: 1});
-    assert.deepEqual(new Range(0, 10, 2).toJSON(), {'@type': 'Range', start: 0, end: 10, step: 2});
+    assert.deepEqual(new Range(2, 4).toJSON(), {'mathjs': 'Range', start: 2, end: 4, step: 1});
+    assert.deepEqual(new Range(0, 10, 2).toJSON(), {'mathjs': 'Range', start: 0, end: 10, step: 2});
   });
 
   it('fromJSON', function () {

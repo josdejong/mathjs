@@ -305,8 +305,8 @@ describe('Complex', function () {
   });
 
   it('toJSON', function () {
-    assert.deepEqual(new Complex(2, 4).toJSON(), {'@type': 'Complex', re: 2, im: 4});
-    assert.deepEqual(new Complex(3, 0).toJSON(), {'@type': 'Complex', re: 3, im: 0});
+    assert.deepEqual(new Complex(2, 4).toJSON(), {'mathjs': 'Complex', re: 2, im: 4});
+    assert.deepEqual(new Complex(3, 0).toJSON(), {'mathjs': 'Complex', re: 3, im: 0});
   });
 
   it('fromJSON', function () {

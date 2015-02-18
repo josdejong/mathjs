@@ -160,7 +160,7 @@ describe('help', function() {
     var help = new Help(doc);
     var json = help.toJSON();
     assert.deepEqual(json, {
-      '@type': 'Help',
+      'mathjs': 'Help',
       'name': 'add',
       'category': 'Operators',
       'syntax': [
@@ -201,7 +201,7 @@ describe('help', function() {
     };
 
     var json = Object.create(doc);
-    json['@type'] = 'Help';
+    json['mathjs'] = 'Help';
 
     var help = Help.fromJSON(json);
     assert(help instanceof Help);

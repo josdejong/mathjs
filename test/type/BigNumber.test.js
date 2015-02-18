@@ -5,7 +5,7 @@ var BigNumber = require('../../lib/type/BigNumber');
 describe('BigNumber', function () {
 
   it('toJSON', function () {
-    assert.deepEqual(new BigNumber(5).toJSON(), {'@type': 'BigNumber', value: '5'});
+    assert.deepEqual(new BigNumber(5).toJSON(), {'mathjs': 'BigNumber', value: '5'});
   });
 
   it('fromJSON', function () {
