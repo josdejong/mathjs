@@ -6,6 +6,7 @@ var Index = require('../../lib/type/Index');
 var Unit = require('../../lib/type/Unit');
 var Matrix = require('../../lib/type/Matrix');
 var BigNumber = require('../../lib/type/BigNumber');
+var Help = require('../../lib/type/Help');
 var ResultSet = require('../../lib/type/ResultSet');
 
 describe('reviver', function () {
@@ -119,6 +120,15 @@ describe('reviver', function () {
     assert(obj instanceof Matrix);
     assert(obj._data[1][1] instanceof Complex);
     assert.deepEqual(obj, m);
+  });
+
+  it('should parse a stringified Help', function () {
+    var json = '{"@type":"Help","name":"foo","description":"bar"}';
+    var h = new Help({name: 'foo', description: 'bar'});
+    var obj = JSON.parse(json, reviver);
+
+    assert(obj instanceof Help);
+    assert.deepEqual(obj, h);
   });
 
 });

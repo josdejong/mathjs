@@ -4,6 +4,7 @@ var Range = require('../../lib/type/Range');
 var Index = require('../../lib/type/Index');
 var Matrix = require('../../lib/type/Matrix');
 var Unit = require('../../lib/type/Unit');
+var Help = require('../../lib/type/Help');
 var BigNumber = require('../../lib/type/BigNumber');
 var ResultSet = require('../../lib/type/ResultSet');
 
@@ -75,6 +76,13 @@ describe('replacer', function () {
     var json = '{"@type":"Matrix","data":[[1,2],[3,{"@type":"Complex","re":4,"im":5}]]}';
 
     assert.deepEqual(JSON.stringify(m), json);
+  });
+
+  it('should stringify Help', function () {
+    var h = new Help({name: 'foo', description: 'bar'});
+    var json = '{"@type":"Help","name":"foo","description":"bar"}';
+
+    assert.deepEqual(JSON.parse(JSON.stringify(h)), JSON.parse(json));
   });
 
 });

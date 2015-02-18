@@ -22,7 +22,7 @@ describe('help', function() {
   };
 
   it('should generate the help for a function', function() {
-    var help = new Help(doc, math);
+    var help = new Help(doc);
 
     assert(help instanceof Help);
     assert.deepEqual(help.doc.name, 'add');
@@ -31,24 +31,18 @@ describe('help', function() {
 
   it('should throw an error when constructed without new operator', function() {
     assert.throws(function () {
-      Help(math.expression.docs.sin, math);
+      Help(math.expression.docs.sin);
     }, /Constructor must be called with the new operator/)
-  });
-
-  it('should throw an error when constructed without math argument', function() {
-    assert.throws(function () {
-      new Help(math.expression.docs.sin);
-    }, /Argument "math" missing/)
   });
 
   it('should throw an error when constructed without doc argument', function() {
     assert.throws(function () {
-      new Help(undefined, math);
+      new Help();
     }, /Argument "doc" missing/)
   });
 
   it('should test whether an object is a Help object', function() {
-    var help = new Help(doc, math);
+    var help = new Help(doc);
 
     assert.equal(Help.isHelp(help), true);
     assert.equal(Help.isHelp(new Date()), false);
@@ -56,8 +50,8 @@ describe('help', function() {
   });
 
   it('should stringify a help', function() {
-    var help = new Help(doc, math);
-    assert.equal(help.toString(),
+    var help = new Help(doc);
+    assert.equal(help.toText(math),
         '\nName: add\n' +
         '\n'+
         'Category: Operators\n' +
@@ -76,10 +70,29 @@ describe('help', function() {
         '        2.1\n' +
         '\n' +
         'See also: subtract\n');
+
+    assert.equal(help.toString(),
+        '\nName: add\n' +
+        '\n'+
+        'Category: Operators\n' +
+        '\n' +
+        'Description:\n' +
+        '    Add two values.\n' +
+        '\n' +
+        'Syntax:\n' +
+        '    x + y\n' +
+        '    add(x, y)\n' +
+        '\n' +
+        'Examples:\n' +
+        '    a = 2.1 + 3.6\n' +
+        '    a - 3.6\n' +
+        '\n' +
+        'See also: subtract\n');
   });
 
   it('should stringify a help with empty doc', function() {
-    var help = new Help({}, math);
+    var help = new Help({});
+    assert.equal(help.toText(math), '\n');
     assert.equal(help.toString(), '\n');
   });
 
@@ -90,14 +103,22 @@ describe('help', function() {
         '2 + 3',
         ''
       ]
-    }, math);
+    });
+
+    assert.equal(help.toText(math),
+        '\nName: add\n' +
+        '\n'+
+        'Examples:\n' +
+        '    2 + 3\n' +
+        '        5\n' +
+        '    \n' +
+        '\n');
 
     assert.equal(help.toString(),
         '\nName: add\n' +
         '\n'+
         'Examples:\n' +
         '    2 + 3\n' +
-        '        5\n' +
         '    \n' +
         '\n');
   });
@@ -108,9 +129,9 @@ describe('help', function() {
       'examples': [
         '2 ^^ 3'
       ]
-    }, math);
+    });
 
-    assert.equal(help.toString(),
+    assert.equal(help.toText(math),
         '\nName: add\n' +
         '\n'+
         'Examples:\n' +
@@ -125,19 +146,18 @@ describe('help', function() {
       'examples': [
         '2 ^^ 3'
       ]
-    }, math);
+    });
 
     assert.strictEqual(help.valueOf(),
             '\nName: add\n' +
             '\n'+
             'Examples:\n' +
             '    2 ^^ 3\n' +
-            '        SyntaxError: Value expected (char 4)\n' +
             '\n');
   });
 
   it('should export doc to JSON', function() {
-    var help = new Help(doc, math);
+    var help = new Help(doc);
     var json = help.toJSON();
     assert.deepEqual(json, {
       '@type': 'Help',
@@ -160,6 +180,32 @@ describe('help', function() {
     json.examples.push('2 + 3'); // this should not alter the original doc
     assert.equal(doc.name, 'add');
     assert.notEqual(json.examples.length, doc.examples.length);
+  });
+
+  it('should instantiate Help from json using fromJSON', function() {
+    var doc = {
+      'name': 'add',
+      'category': 'Operators',
+      'syntax': [
+        'x + y',
+        'add(x, y)'
+      ],
+      'description': 'Add two values.',
+      'examples': [
+        'a = 2.1 + 3.6',
+        'a - 3.6'
+      ],
+      'seealso': [
+        'subtract'
+      ]
+    };
+
+    var json = Object.create(doc);
+    json['@type'] = 'Help';
+
+    var help = Help.fromJSON(json);
+    assert(help instanceof Help);
+    assert.deepEqual(doc, help.doc);
   });
 
 });
