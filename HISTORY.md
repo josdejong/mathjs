@@ -6,6 +6,8 @@
   `acosh`, `acoth`, `acsch`, `asech`, `asinh`, `atanh`. Thanks @BigFav.
 - Implemented BigNumber support for functions: `cot`, `csc`, `sec`, `coth`,
   `csch`, `sech`. Thanks @BigFav.
+- Implemented support for serialization and deserialization of math.js data
+  types.
 - Fixed #281: improved formatting complex numbers. Round the real or imaginary
   part to zero when the difference is larger than the configured precision.
 
