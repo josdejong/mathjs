@@ -463,7 +463,7 @@ with an entry for every visible statement.
 
 ```js
 // a multi line expression
-math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [1, 3, 9]
+math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [3, 6, 9]
 
 // semicolon statements are hided from the output
 math.eval('a=3; b=4; a + b \n a * b');  // ResultSet, [7, 12]
