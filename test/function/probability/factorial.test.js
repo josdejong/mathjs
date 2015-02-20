@@ -13,20 +13,41 @@ describe('factorial', function() {
     assert.equal(factorial(3), 6);
     assert.equal(factorial(4), 24);
     assert.equal(factorial(5), 120);
+    assert.equal(factorial(Number.MAX_VALUE), Infinity);    // shouldn't stall
+    assert.equal(factorial(Infinity), Math.sqrt(2*Math.PI));
   });
 
   it('should calculate the factorial of a bignumber', function() {
-    assert.deepEqual(factorial(math.bignumber(0)), math.bignumber(1));
-    assert.deepEqual(factorial(math.bignumber(1)), math.bignumber(1));
-    assert.deepEqual(factorial(math.bignumber(2)), math.bignumber(2));
-    assert.deepEqual(factorial(math.bignumber(3)), math.bignumber(6));
-    assert.deepEqual(factorial(math.bignumber(4)), math.bignumber(24));
-    assert.deepEqual(factorial(math.bignumber(5)), math.bignumber(120));
-    assert.deepEqual(factorial(math.bignumber(20)), math.bignumber('2432902008176640000'));
-    assert.deepEqual(factorial(math.bignumber(21)), math.bignumber('51090942171709440000'));
-    assert.deepEqual(factorial(math.bignumber(25)), math.bignumber('1.5511210043330985984e+25'));
-    assert.deepEqual(factorial(math.bignumber(24)), math.bignumber('6.2044840173323943936e+23'));
-    assert.deepEqual(factorial(math.bignumber(22)), math.bignumber('1124000727777607680000'));
+    var bigmath = math.create({number: 'bignumber', precision: 5});
+    var bigfactorial = bigmath.factorial;
+    var bignumber = bigmath.bignumber;
+
+    assert.ok(bigfactorial(bignumber(-Infinity)).isNaN());
+    assert.deepEqual(bigfactorial(bignumber(-1)), bignumber(Infinity));
+    assert.deepEqual(bigfactorial(bignumber(0)), bignumber(1));
+    assert.deepEqual(bigfactorial(bignumber(Infinity)), bigmath.tau.sqrt());
+
+    assert.deepEqual(bigfactorial(bignumber(11)), bignumber(39917000));
+    assert.deepEqual(bigfactorial(bignumber(22)), bignumber(1.124e+21));
+
+    bigmath.config({number: null, precision: 20});
+    assert.deepEqual(bigfactorial(bignumber(5)), bignumber(120));
+    assert.deepEqual(bigfactorial(bignumber(19)), bignumber(121645100408832000));
+    assert.deepEqual(bigfactorial(bignumber(20)), bignumber(2432902008176640000));
+    assert.deepEqual(bigfactorial(bignumber(21)), bignumber('51090942171709440000'));
+    assert.deepEqual(bigfactorial(bignumber(25)), bignumber('1.5511210043330985984e+25'));
+    assert.deepEqual(bigfactorial(bignumber(24)), bignumber('6.2044840173323943936e+23'));
+    assert.deepEqual(bigfactorial(bignumber(22)), bignumber('1124000727777607680000'));
+
+    bigmath.config({precision: 5});
+    assert.deepEqual(bigfactorial(bignumber(11)), bignumber(39917000));
+    assert.deepEqual(bigfactorial(bignumber(22)), bignumber(1.124e+21));
+    assert.deepEqual(bigfactorial(bignumber(24)), bignumber(6.2045e+23));
+    assert.deepEqual(bigfactorial(bignumber(21)), bignumber(5.1091e+19));
+    assert.deepEqual(bigfactorial(bignumber(26)), bignumber(4.0329e+26));
+
+    bigmath.config({precision: 20});
+    assert.deepEqual(bigfactorial(bignumber(3000)), bignumber('4.1493596034378540856e+9130'));
   });
 
   it('should calculate the factorial of a boolean', function() {

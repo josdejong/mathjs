@@ -1,7 +1,8 @@
-var assert = require('assert'),
-    math = require('../../index'),
-    index = math.index,
-    Matrix = require('../../lib/type/Matrix');
+var assert = require('assert');
+var math = require('../../index');
+var index = math.index;
+var Matrix = require('../../lib/type/Matrix');
+var Complex = require('../../lib/type/Complex');
 
 describe('matrix', function() {
 
@@ -51,6 +52,28 @@ describe('matrix', function() {
   it('toString', function() {
     assert.equal(new Matrix([[1,2],[3,4]]).toString(), '[[1, 2], [3, 4]]');
     assert.equal(new Matrix([[1,2],[3,1/3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]');
+  });
+
+  it('toJSON', function() {
+    assert.deepEqual(new Matrix([[1,2],[3,4]]).toJSON(), {
+      'mathjs': 'Matrix',
+      data: [[1,2],[3,4]]
+    });
+  });
+
+  it('fromJSON', function() {
+    var json = {
+      'mathjs': 'Matrix',
+      data: [[1,2],[3,4]]
+    };
+    var m = Matrix.fromJSON(json);
+    assert.ok(m instanceof Matrix);
+
+    assert.deepEqual(m._size, [2, 2]);
+    assert.strictEqual(m._data[0][0], 1);
+    assert.strictEqual(m._data[0][1], 2);
+    assert.strictEqual(m._data[1][0], 3);
+    assert.strictEqual(m._data[1][1], 4);
   });
 
   it('format', function() {

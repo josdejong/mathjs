@@ -7,7 +7,9 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     atan = math.atan,
-    tan = math.tan;
+    tan = math.tan,
+    bigmath = math.create({number: 'bignumber', precision: 20}),
+    Big = bigmath.bignumber;
 
 describe('atan', function() {
   it('should return the arctan of a boolean', function () {
@@ -27,8 +29,27 @@ describe('atan', function() {
     approx.equal(atan(1) / pi, 0.25);
   });
 
-  it('should return the arctan of a bignumber (downgrades to number)', function() {
-    approx.equal(atan(math.bignumber(1)), pi / 4);
+  it('should return the arctan of a bignumber', function() {
+    var arg1 = Big(-1);
+    var arg2 = Big(-0.5);
+    var arg3 = Big(0);
+    var arg6 = Big(2);
+    assert.deepEqual(atan(arg1), Big('-0.7853981633974483096'));
+    assert.deepEqual(atan(arg2), Big('-0.4636476090008061162'));
+    assert.deepEqual(atan(arg3), Big(0));
+    assert.deepEqual(atan(Big(0.5)), Big('0.4636476090008061162'));
+    assert.deepEqual(atan(Big(1)), Big('0.7853981633974483096'));
+    assert.deepEqual(atan(arg6), Big('1.107148717794090503'));
+
+    // Ensure the arguments where not changed
+    assert.deepEqual(arg1, Big(-1));
+    assert.deepEqual(arg2, Big(-0.5));
+    assert.deepEqual(arg3, Big(0));
+    assert.deepEqual(arg6, Big(2));
+
+    // Hit Newton's method case
+    bigmath.config({precision: 61});
+    assert.deepEqual(atan(Big(0.9)).toString(), '0.732815101786506591640792072734280251985755679358256086310506');
   });
 
   it('should be the inverse function of tan', function() {
@@ -37,6 +58,16 @@ describe('atan', function() {
     approx.equal(atan(tan(0.1)), 0.1);
     approx.equal(atan(tan(0.5)), 0.5);
     approx.equal(atan(tan(2)), -1.14159265358979);
+  });
+
+  it('should be the inverse function of bignumber tan', function() {
+    bigmath.config({precision: 20});
+    assert.deepEqual(atan(bigmath.tan(Big(-1))).toString(), '-1');
+    assert.ok(atan(bigmath.tan(Big(0))).isZero());
+    assert.deepEqual(atan(bigmath.tan(Big(0.1))).toString(), '0.1');
+    assert.deepEqual(atan(bigmath.tan(Big(0.5))).toString(), '0.5');
+    assert.deepEqual(atan(bigmath.tan(Big(2))).toString(), '-1.1415926535897932385');
+    assert.deepEqual(atan(bigmath.tan(bigmath.pi.div(2))).toString(), '-1.5707963267948966192');
   });
 
   it('should return the arctan of a complex number', function() {

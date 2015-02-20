@@ -91,6 +91,7 @@
 - [size(x)](size.md)
 - [squeeze(x)](squeeze.md)
 - [subset(x, index [, replacement])](subset.md)
+- [trace(x)](trace.md)
 - [transpose(x)](transpose.md)
 - [zeros(m, n, p, ...)](zeros.md)
 

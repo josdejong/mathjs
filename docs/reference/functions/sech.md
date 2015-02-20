@@ -30,7 +30,7 @@ Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic secant of x
 ```js
 // sech(x) = 1/ cosh(x)
 math.sech(0.5);       // returns 0.886818883970074
-1 / math.cosh(0.5);   // returns 1.9190347513349437
+1 / math.cosh(0.5);   // returns 0.886818883970074
 ```
 
 

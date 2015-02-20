@@ -6,7 +6,8 @@ var assert = require('assert'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
-    sin = math.sin;
+    sin = math.sin,
+    bigmath = math.create({precision: 242});
 
 describe('sin', function() {
   it('should return the sine of a boolean', function () {
@@ -21,7 +22,7 @@ describe('sin', function() {
   it('should return the sine of a number', function() {
     approx.equal(sin(0), 0);
     approx.equal(sin(pi/8), 0.382683432365090);
-    approx.equal(sin(pi/4), Math.SQRT2/2);
+    approx.equal(sin(pi/4), Math.SQRT1_2);
     approx.equal(sin(pi/2), 1);
     approx.equal(sin(pi*3/4), 0.707106781186548);
     approx.equal(sin(pi), 0);
@@ -32,32 +33,38 @@ describe('sin', function() {
   });
 
   it('should return the sine of a bignumber', function() {
-    var bigmath = math.create({number: 'bignumber', precision: 242});
-    assert.deepEqual(bigmath.sin(bigmath.bignumber(0)), bigmath.bignumber(0));
-    
+    assert.ok(bigmath.sin(bigmath.bignumber(0)).isZero());
+
     // 103.64 % tau = 3.109... <- pretty close to the pi boundary
-    assert.deepEqual(bigmath.sin(bigmath.bignumber(103.64)).toString(), '0.032551816956616158442731315994267213051204459121689332893471030' +
-                                                                          '714804383298805501395839512341888732261080924779366105855493575' +
-                                                                          '835362891900420559398509489530577719840860106717522689249606121' +
-                                                                          '2602629134186583352145117086874446046421403346033616');
-    assert.deepEqual(bigmath.sin(bigmath.bignumber(-103.64)).toString(), '-0.0325518169566161584427313159942672130512044591216893328934710' +
-                                                                            '3071480438329880550139583951234188873226108092477936610585549' +
-                                                                            '3575835362891900420559398509489530577719840860106717522689249' +
-                                                                            '6061212602629134186583352145117086874446046421403346033616');
-    bigmath.config({precision: 15});
+    var result_val = bigmath.sin(bigmath.bignumber(103.64));
+    assert.equal(result_val.constructor.precision, 242);
+    assert.deepEqual(result_val.toString(), '0.032551816956616158442731315994267213051204459121689332893471030' +
+                                              '714804383298805501395839512341888732261080924779366105855493575' +
+                                              '835362891900420559398509489530577719840860106717522689249606121' +
+                                              '2602629134186583352145117086874446046421403346033616');
+    var arg = bigmath.bignumber(-103.64);
+    result_val = bigmath.sin(arg);
+    assert.deepEqual(arg, bigmath.bignumber(-103.64));   // Make sure arg wasn't changed
+    assert.equal(result_val.constructor.precision, 242);
+    assert.deepEqual(result_val.toString(), '-0.0325518169566161584427313159942672130512044591216893328934710' +
+                                               '3071480438329880550139583951234188873226108092477936610585549' +
+                                               '3575835362891900420559398509489530577719840860106717522689249' +
+                                               '6061212602629134186583352145117086874446046421403346033616');
+    bigmath.config({number: 'bignumber', precision: 15});
 
     var bigPi = bigmath.pi;
-    var result = bigmath.SQRT2.div(2).toString();
-    assert.deepEqual(bigmath.sin(bigPi.div(4)).toString(), result);
+    result_val = bigmath.SQRT2.div(2).toString();
+    assert.deepEqual(bigmath.sin(bigPi.div(8)).toString(), '0.38268343236509');
+    assert.deepEqual(bigmath.sin(bigPi.div(4)).toString(), result_val);
     assert.deepEqual(bigmath.sin(bigPi.div(2)).toString(), '1');
-    assert.deepEqual(bigmath.sin(bigPi.times(3).div(4)).toString(), result);
-    assert.deepEqual(bigmath.sin(bigPi).toString(), '0');
-    assert.deepEqual(bigmath.sin(bigPi.times(5).div(4)).toString(), '-'+result);
+    assert.deepEqual(bigmath.sin(bigPi.times(3).div(4)).toString(), result_val);
+    assert.ok(bigmath.sin(bigPi).isZero());
+    assert.deepEqual(bigmath.sin(bigPi.times(5).div(4)).toString(), '-'+result_val);
     assert.deepEqual(bigmath.sin(bigPi.times(3).div(2)).toString(), '-1');
-    assert.deepEqual(bigmath.sin(bigPi.times(7).div(4)).toString(), '-'+result);
-    assert.deepEqual(bigmath.sin(bigPi.times(2)).toString(), '0');
-    assert.deepEqual(bigmath.sin(bigmath.tau).toString(), '0');
-    assert.deepEqual(bigmath.sin(bigmath.tau.times(2)).toString(), '0');
+    assert.deepEqual(bigmath.sin(bigPi.times(7).div(4)).toString(), '-'+result_val);
+    assert.ok(bigmath.sin(bigPi.times(2)).isZero());
+    assert.ok(bigmath.sin(bigmath.tau).isZero());
+    assert.ok(bigmath.sin(bigmath.tau.times(2)).isZero());
   });
 
   it('should return the sine of a complex number', function() {

@@ -113,6 +113,7 @@
 - [tan(x)](tan.md)
 - [tanh(x)](tanh.md)
 - [to(x, unit)](to.md)
+- [trace(x)](trace.md)
 - [transpose(x)](transpose.md)
 - [typeof(x)](typeof.md)
 - [unaryMinus(x)](unaryMinus.md)

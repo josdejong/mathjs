@@ -1,8 +1,8 @@
 // test data type Complex
 
-var assert = require('assert'),
-    Unit = require('../../lib/type/Unit'),
-    Complex = require('../../lib/type/Complex');
+var assert = require('assert');
+var Unit = require('../../lib/type/Unit');
+var Complex = require('../../lib/type/Complex');
 
 describe('Complex', function () {
 
@@ -106,6 +106,27 @@ describe('Complex', function () {
       assert.equal(new Complex(1/3, 1/3).format(), '0.3333333333333333 + 0.3333333333333333i');
     });
 
+    it('should round im to zero if very small compared to re', function() {
+      assert.equal(new Complex(-1, 1.22e-16).format(), '-1 + 1.22e-16i');
+
+      assert.equal(new Complex(-1, 1.22e-16).format(15), '-1');
+      assert.equal(new Complex(-1, -1.22e-16).format(15), '-1');
+      assert.equal(new Complex(1, -1.22e-16).format(15), '1');
+      assert.equal(new Complex(1, 1.22e-16).format(15), '1');
+
+      assert.equal(new Complex(-1, 1e-7).format(5), '-1');
+    });
+
+    it('should round re to zero if very small compared to im', function() {
+      assert.equal(new Complex(1.22e-16, -1).format(), '1.22e-16 - i');
+
+      assert.equal(new Complex(1.22e-16, -1).format(15), '-i');
+      assert.equal(new Complex(-1.22e-16, -1).format(15), '-i');
+      assert.equal(new Complex(-1.22e-16, 1).format(15), 'i');
+      assert.equal(new Complex(1.22e-16, 1).format(15), 'i');
+
+      assert.equal(new Complex(1e-7, -1).format(5), '-i');
+    });
   });
 
   describe('parse', function() {
@@ -282,4 +303,22 @@ describe('Complex', function () {
       assert.equal(polar5.phi, -1.5707963267948966);
     });
   });
+
+  it('toJSON', function () {
+    assert.deepEqual(new Complex(2, 4).toJSON(), {'mathjs': 'Complex', re: 2, im: 4});
+    assert.deepEqual(new Complex(3, 0).toJSON(), {'mathjs': 'Complex', re: 3, im: 0});
+  });
+
+  it('fromJSON', function () {
+    var c1 = Complex.fromJSON({re: 2, im: 4});
+    assert.ok(c1 instanceof Complex);
+    assert.strictEqual(c1.re, 2);
+    assert.strictEqual(c1.im, 4);
+
+    var c2 = Complex.fromJSON({re: 3, im: 0});
+    assert.ok(c2 instanceof Complex);
+    assert.strictEqual(c2.re, 3);
+    assert.strictEqual(c2.im, 0);
+  });
+
 });

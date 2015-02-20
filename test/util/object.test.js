@@ -203,4 +203,44 @@ describe ('object', function () {
     });
   });
 
+  describe('canDefineProperty', function() {
+
+    it('should test whether defineProperty is available', function () {
+      assert.equal(object.canDefineProperty(), true);
+    });
+  });
+
+
+  describe('lazy', function() {
+
+    it('should get a lazy property', function () {
+      var obj = {};
+      var count = 0;
+      object.lazy(obj, 'x', function () {
+        count++;
+        return 2;
+      });
+
+      var x = obj.x;
+      assert.equal(x, 2);
+      assert.equal(count, 1);
+
+      var x2 = obj.x;
+      assert.equal(x2, 2);
+      assert.equal(count, 1);
+    });
+
+    it('should set a lazy property', function () {
+      var obj = {};
+      object.lazy(obj, 'x', function () {
+        return 2;
+      });
+
+      obj.x = 3;
+      var x = obj.x;
+      assert.equal(x, 3);
+    });
+
+  });
+
 });

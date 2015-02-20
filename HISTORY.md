@@ -1,5 +1,6 @@
 # History
 
+
 ## not yet released, version 2.0.0-SNAPSHOT
 
 *Breaking changes:*
@@ -8,11 +9,30 @@
   SI standards (`1 KiB == 1024 B`, `1 kB == 1000 B`).
 
 
-## not yet released, version 1.2.1-SNAPSHOT
+## not yet released, version 1.4.0-SNAPSHOT
 
+- Implemented trigonometric functions:
+  `acosh`, `acoth`, `acsch`, `asech`, `asinh`, `atanh`. Thanks @BigFav.
+- Implemented BigNumber support for functions: `cot`, `csc`, `sec`, `coth`,
+  `csch`, `sech`. Thanks @BigFav.
+- Implemented support for serialization and deserialization of math.js data
+  types.
+- Fixed #281: improved formatting complex numbers. Round the real or imaginary
+  part to zero when the difference is larger than the configured precision.
+
+
+## 2015-02-09, version 1.3.0
+
+- Implemented BigNumber implementations of most trigonometric functions: `sin`,
+  `cos`, `tan`, `asin`, `acos`, `atan`, `cosh`, `sinh`, `tanh`. Thanks @BigFav.
+- Implemented function `trace`. Thanks @pcorey.
+- Faster loading of BigNumber configuration with a high precision by lazy
+  loading constants like `pi` and `e`.
+- Fixed constants `NaN` and `Infinity` not being BigNumber objects when
+  BigNumbers are configured.
 - Fixed missing parentheses in the `toTex` representation of function
   `permutations`.
-- Some minor fixes in the docs.
+- Some minor fixes in the docs. Thanks @KenanY.
 
 
 ## 2014-12-25, version 1.2.0

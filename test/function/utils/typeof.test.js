@@ -87,7 +87,7 @@ describe('typeof', function() {
   });
 
   it('should return function type for a help object', function() {
-    assert.equal(math.typeof(new Help()), 'help');
+    assert.equal(math.typeof(new Help({}, {})), 'help');
   });
 
   it('should return object type for an object', function() {  

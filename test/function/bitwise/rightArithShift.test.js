@@ -43,21 +43,21 @@ describe('rightArithShift', function () {
     assert.deepEqual(rightArithShift(bignumber(17), bignumber(3)), bignumber(2));
     assert.deepEqual(rightArithShift(bignumber('633825300114114700748351602688000'), bignumber(100)), bignumber(500));
     assert.deepEqual(rightArithShift(bignumber(-17), bignumber(3)), bignumber(-3));
-    assert.deepEqual(rightArithShift(bignumber(-17), bignumber(-3)).toString(), 'NaN');
-    assert.deepEqual(rightArithShift(bignumber(Infinity), bignumber(Infinity)).toString(), 'NaN');
+    assert.equal(rightArithShift(bignumber(-17), bignumber(-3)).isNaN(), true);
+    assert.equal(rightArithShift(bignumber(Infinity), bignumber(Infinity)).isNaN(), true);
     assert.deepEqual(rightArithShift(bignumber(-Infinity), bignumber(Infinity)), bignumber(-1));
   });
 
   it('should right arithmetically shift mixed numbers and bignumbers', function () {
     assert.deepEqual(rightArithShift(bignumber(17), 3), bignumber(2));
     assert.deepEqual(rightArithShift(bignumber('-633825300114114700748351602688000'), 100), bignumber(-500));
-    assert.deepEqual(rightArithShift(bignumber(-17), -3).toString(), 'NaN');
+    assert.equal(rightArithShift(bignumber(-17), -3).isNaN(), true);
     assert.deepEqual(rightArithShift(17, bignumber(3)), bignumber(2));
     assert.deepEqual(rightArithShift(-17, bignumber(3)), bignumber(-3));
-    assert.deepEqual(rightArithShift(-3, bignumber(-17)).toString(), 'NaN');
+    assert.equal(rightArithShift(-3, bignumber(-17)).isNaN(), true);
     assert.deepEqual(rightArithShift(bignumber(-Infinity), Infinity), bignumber(-1));
-    assert.deepEqual(rightArithShift(bignumber(Infinity), Infinity).toString(), 'NaN');
-    assert.deepEqual(rightArithShift(Infinity, bignumber(Infinity)).toString(), 'NaN');
+    assert.equal(rightArithShift(bignumber(Infinity), Infinity).isNaN(), true);
+    assert.equal(rightArithShift(Infinity, bignumber(Infinity)).isNaN(), true);
   });
 
   it('should right arithmetically shift mixed booleans and bignumbers', function () {

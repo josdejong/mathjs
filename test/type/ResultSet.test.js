@@ -30,4 +30,18 @@ describe('ResultSet', function () {
     assert.deepEqual(r.toString(), '[1, 2, 3, 4 + 5i]');
   });
 
+  it('toJSON', function () {
+    var r = new ResultSet([1,2,3]);
+    var json = {"mathjs":"ResultSet","entries":[1,2,3]};
+    assert.deepEqual(r.toJSON(), json);
+  });
+
+  it('fromJSON', function () {
+    var r1 = new ResultSet([1,2,3]);
+    var json = {"mathjs":"ResultSet","entries":[1,2,3]};
+    var r2 = ResultSet.fromJSON(json);
+    assert(r2 instanceof ResultSet);
+    assert.deepEqual(r2, r1);
+  });
+
 });
