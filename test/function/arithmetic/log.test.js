@@ -46,8 +46,8 @@ describe('log', function() {
   });
 
   it('should throw an error if invalid number of arguments', function() {
-    assert.throws(function () {log()}, error.ArgumentsError);
-    assert.throws(function () {log(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {log()}, /TypeError: Too few arguments \(expected: any, index: 1\)/);
+    assert.throws(function () {log(1, 2, 3)}, /TypeError: Too many arguments \(expected: 2, actual: 3\)/);
   });
 
   it('should return the log of positive bignumbers', function() {
@@ -64,9 +64,9 @@ describe('log', function() {
   it('should return the log of negative bignumbers', function() {
     var bigmath = math.create({precision: 100});
 
-    approx.deepEqual(bigmath.log(bigmath.bignumber(-1)), bigmath.complex('0.000000000000000 + 3.141592653589793i'));
-    approx.deepEqual(bigmath.log(bigmath.bignumber(-2)), bigmath.complex('0.693147180559945 + 3.141592653589793i'));
-    approx.deepEqual(bigmath.log(bigmath.bignumber(-3)), bigmath.complex('1.098612288668110 + 3.141592653589793i'));
+    approx.deepEqual(bigmath.log(bigmath.bignumber(-1)).toString(), 'NaN');
+    approx.deepEqual(bigmath.log(bigmath.bignumber(-2)).toString(), 'NaN');
+    approx.deepEqual(bigmath.log(bigmath.bignumber(-3)).toString(), 'NaN');
   });
 
   it('should return the log of a bignumber with value zero', function() {
