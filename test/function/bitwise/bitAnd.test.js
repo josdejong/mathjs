@@ -59,9 +59,9 @@ describe('bitAnd', function () {
   });
 
   it('should throw an error if used with a unit', function() {
-    assert.throws(function () {bitAnd(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(2, math.unit('5cm'))}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd(math.unit('5cm'), 2)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(2, math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(math.unit('2cm'), math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error if the parameters are not integers', function () {
@@ -121,17 +121,17 @@ describe('bitAnd', function () {
   });
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () {bitAnd(1)}, error.ArgumentsError);
-    assert.throws(function () {bitAnd(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {bitAnd(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {bitAnd(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () {bitAnd(new Date(), true)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(true, new Date())}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(true, 'foo')}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd('foo', true)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(true, undefined)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(undefined, true)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd(new Date(), true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(true, new Date())}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(true, 'foo')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd('foo', true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(true, undefined)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(undefined, true)}, /TypeError: Unexpected type of argument/);
   });
 
 });
