@@ -86,6 +86,9 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `<=`        | Smallereq               | `x <= y`    | Left to right | `4 <= 3`              | `false`
 `>=`        | Largereq                | `x >= y`    | Left to right | `2 + 4 >= 6`          | `true`
 
+
+## Precedence
+
 The operators have the following precedence, from highest to lowest:
 
 Operators                         | Description

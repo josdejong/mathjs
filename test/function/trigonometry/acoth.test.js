@@ -14,17 +14,20 @@ var assert = require('assert'),
 describe('acoth', function() {
   it('should return the hyperbolic arccot of a boolean', function () {
     assert.equal(acoth(true), Infinity);
-    assert.ok(isNaN(acoth(false)));
+    approx.deepEqual(acoth(false), complex(0, pi / 2));
+    //assert.ok(isNaN(acoth(false)));
   });
 
   it('should return the hyperbolic arccot of null', function () {
-    assert.ok(isNaN(acoth(null)));
+    approx.deepEqual(acoth(null), complex(0, pi / 2));
+    //assert.ok(isNaN(acoth(null)));
   });
 
   it('should return the hyperbolic arccot of a number', function() {
-    assert.ok(isNaN(acoth(-0.5)));
-    assert.ok(isNaN(acoth(0)));
-    assert.ok(isNaN(acoth(0.5)));
+    approx.deepEqual(acoth(0), complex(0, pi / 2));
+    approx.deepEqual(acoth(0.5), complex(0.5493061443340548, -1.5707963267949));
+    //assert.ok(isNaN(acoth(0)));
+    //assert.ok(isNaN(acoth(0.5)));
 
     approx.equal(acoth(-2), -0.54930614433405484569762261846);
     assert.equal(acoth(-1), -Infinity);
