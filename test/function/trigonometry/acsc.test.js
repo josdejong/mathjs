@@ -110,7 +110,7 @@ describe('acsc', function() {
 
     approx.deepEqual(acsc(complex('-1')), complex(-pi / 2, 0));
     approx.deepEqual(acsc(complex('-0.5')), complex(-pi / 2, 1.3169578969248));
-    assert.deepEqual(acsc(complex('0')), complex(0, Infinity));
+    assert.deepEqual(acsc(complex('0')), complex(pi / 2, Infinity));
     approx.deepEqual(acsc(complex('0.5')), complex(pi / 2, -1.3169578969248));
     approx.deepEqual(acsc(complex('1')), complex(pi / 2, 0));
   });

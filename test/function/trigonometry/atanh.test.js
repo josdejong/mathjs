@@ -22,8 +22,10 @@ describe('atanh', function() {
   });
 
   it('should return the hyperbolic arctan of a number', function() {
-    assert.ok(isNaN(atanh(-1.1)));
-    assert.ok(isNaN(atanh(1.1)));
+    approx.deepEqual(atanh(-2), complex(-0.54930614433405485, pi / 2));
+    approx.deepEqual(atanh(2),  complex(0.54930614433405485, -pi / 2));
+    //assert.ok(isNaN(atanh(-2)));
+    //assert.ok(isNaN(atanh(2)));
 
     approx.equal(atanh(-1), -Infinity);
     approx.equal(atanh(-0.5), -0.54930614433405484569762261846);
@@ -80,10 +82,11 @@ describe('atanh', function() {
     approx.deepEqual(atanh(complex('-2-3i')), complex(-0.1469466662255, -1.33897252229449));
     approx.deepEqual(atanh(complex('1+i')), complex(0.402359478108525, 1.01722196789785137));
     approx.deepEqual(atanh(complex('i')), complex(0, pi / 4));
-    approx.deepEqual(atanh(complex('2')), complex(0.54930614433405485, -1.5707963267948966));
+
+    approx.deepEqual(atanh(complex('2')), complex(0.54930614433405485, -pi / 2));
     assert.deepEqual(atanh(complex('1')), complex(Infinity, 0));
     assert.deepEqual(atanh(complex('0')), complex(0, 0));
-    approx.deepEqual(atanh(complex('-2')), complex(-0.54930614433405485, 1.5707963267948966));
+    approx.deepEqual(atanh(complex('-2')), complex(-0.54930614433405485, pi / 2));
   });
 
   it('should throw an error if called with a unit', function() {
