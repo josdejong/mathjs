@@ -2,6 +2,7 @@ var assert = require('assert'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
     approx = require('../../../tools/approx'),
+    pi = math.pi,
     asech = math.asech,
     sech = math.sech,
     complex = math.complex,
@@ -21,8 +22,10 @@ describe('asech', function() {
   });
 
   it('should return the hyperbolic arcsec of a number', function() {
-    assert.ok(isNaN(asech(-1)));
-    assert.ok(isNaN(asech(1.1)));
+    approx.deepEqual(asech(-0.5), complex(1.3169578969, pi));
+    approx.deepEqual(asech(2), complex(0, pi / 3));
+    //assert.ok(isNaN(asech(-0.5)));
+    //assert.ok(isNaN(asech(2)));
 
     assert.equal(asech(0), Infinity);
     approx.equal(asech(0.25), 2.0634370688955605467272811726201);
@@ -64,14 +67,14 @@ describe('asech', function() {
     //assert.deepEqual(asech(bigmath.sech(Big(0.1))), Big(0.1));
   });
 
-/*it('should throw an error if the bignumber result is complex', function() {
+  it('should throw an error if the bignumber result is complex', function() {
     assert.throws(function () {
       asech(Big(-1));
-    }, /asech() only has non-complex values for 0 <= x <= 1./);
+    }, /asech\(\) only has non-complex values for 0 <= x <= 1./);
     assert.throws(function () {
       asech(Big(2));
-    }, /asech() only has non-complex values for 0 <= x <= 1./);
-  });*/
+    }, /asech\(\) only has non-complex values for 0 <= x <= 1./);
+  });
 
   it('should return the arcsech of a complex number', function() {
     approx.deepEqual(asech(complex('2+3i')), complex(0.23133469857397, -1.420410722467035));
@@ -80,12 +83,12 @@ describe('asech', function() {
     approx.deepEqual(asech(complex('-2-3i')), complex(0.23133469857397, 1.72118193112275858));
     approx.deepEqual(asech(complex('1+i')), complex(0.5306375309525178, -1.11851787964370594));
     approx.deepEqual(asech(complex('i')), complex(0.881373587019543, -1.570796326794897));
-    approx.deepEqual(asech(complex('2')), complex(0, math.pi / 3));
+    approx.deepEqual(asech(complex('2')), complex(0, pi / 3));
     assert.deepEqual(asech(complex('1')), complex(0, 0));
     approx.deepEqual(asech(complex('0.5')), complex(1.3169578969248, 0));
     assert.deepEqual(asech(complex('0')), complex(Infinity, 0));
-    approx.deepEqual(asech(complex('-0.5')), complex(1.3169578969248, math.pi));
-    approx.deepEqual(asech(complex('-1')), complex(0, math.pi));
+    approx.deepEqual(asech(complex('-0.5')), complex(1.3169578969248, pi));
+    approx.deepEqual(asech(complex('-1')), complex(0, pi));
   });
 
   it('should throw an error if called with a unit', function() {
