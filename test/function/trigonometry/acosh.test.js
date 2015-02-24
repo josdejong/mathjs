@@ -60,11 +60,14 @@ describe('acosh', function() {
     //assert.deepEqual(acosh(bigmath.cosh(Big(0.5))), Big(0.5));
   });
 
-/*it('should throw an error if the bignumber result is complex', function() {
+  it('should throw an error if the bignumber result is complex', function() {
     assert.throws(function () {
       acosh(Big(0.5));
-    }, /acosh() only has non-complex values for x >= 1./);
-  });*/
+    }, /acosh\(\) only has non-complex values for x >= 1./);
+    assert.throws(function () {
+      acosh(Big(-0.5));
+    }, /acosh\(\) only has non-complex values for x >= 1./);
+  });
 
   it('should return the arccosh of a complex number', function() {
     approx.deepEqual(acosh(complex('2+3i')), complex(1.9833870299165, 1.000143542473797));

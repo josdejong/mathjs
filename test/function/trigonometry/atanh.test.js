@@ -83,6 +83,7 @@ describe('atanh', function() {
     approx.deepEqual(atanh(complex('2')), complex(0.54930614433405485, -1.5707963267948966));
     assert.deepEqual(atanh(complex('1')), complex(Infinity, 0));
     assert.deepEqual(atanh(complex('0')), complex(0, 0));
+    approx.deepEqual(atanh(complex('-2')), complex(-0.54930614433405485, 1.5707963267948966));
   });
 
   it('should throw an error if called with a unit', function() {

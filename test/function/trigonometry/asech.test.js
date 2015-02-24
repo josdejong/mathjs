@@ -64,14 +64,14 @@ describe('asech', function() {
     //assert.deepEqual(asech(bigmath.sech(Big(0.1))), Big(0.1));
   });
 
-/*it('should throw an error if the bignumber result is complex', function() {
+  it('should throw an error if the bignumber result is complex', function() {
     assert.throws(function () {
       asech(Big(-1));
-    }, /asech() only has non-complex values for 0 <= x <= 1./);
+    }, /asech\(\) only has non-complex values for 0 <= x <= 1./);
     assert.throws(function () {
       asech(Big(2));
-    }, /asech() only has non-complex values for 0 <= x <= 1./);
-  });*/
+    }, /asech\(\) only has non-complex values for 0 <= x <= 1./);
+  });
 
   it('should return the arcsech of a complex number', function() {
     approx.deepEqual(asech(complex('2+3i')), complex(0.23133469857397, -1.420410722467035));

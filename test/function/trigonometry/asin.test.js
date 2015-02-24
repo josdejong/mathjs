@@ -34,9 +34,9 @@ describe('asin', function() {
     var arg2 = Big(-0.581);
     var arg3 = Big(-0.5);
 
-    assert.deepEqual(asin(Big(-1)), Big('-1.5707963267948966192'));
-    assert.deepEqual(asin(Big(-0.581)), Big('-0.6199567994522537004'));
-    assert.deepEqual(asin(Big(-0.5)), Big('-0.5235987755982988731'));
+    assert.deepEqual(asin(arg1), Big('-1.5707963267948966192'));
+    assert.deepEqual(asin(arg2), Big('-0.6199567994522537004'));
+    assert.deepEqual(asin(arg3), Big('-0.5235987755982988731'));
     assert.deepEqual(asin(Big(0)), Big(0));
     assert.deepEqual(asin(Big(0.5)), Big('0.5235987755982988731'));
     assert.deepEqual(asin(Big(0.581)), Big('0.6199567994522537004'));
