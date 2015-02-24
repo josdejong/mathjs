@@ -3,8 +3,9 @@
 ## not yet released, version 1.4.0-SNAPSHOT
 
 - Implemented trigonometric functions:
-  `acosh`, `acoth`, `acsch`, `asech`, `asinh`, `atanh`. Thanks @BigFav.
-- Implemented BigNumber support for functions: `cot`, `csc`, `sec`, `coth`,
+  `acosh`, `acoth`, `acsch`, `asech`, `asinh`, `atanh`, `acot`, `acsc`, `asec`.
+  Thanks @BigFav.
+- Added BigNumber support for functions: `cot`, `csc`, `sec`, `coth`,
   `csch`, `sech`. Thanks @BigFav.
 - Implemented support for serialization and deserialization of math.js data
   types.
