@@ -24,7 +24,7 @@
  *     cat script.txt | mathjs > results.txt  Run input stream, output to file
  *
  * @license
- * Copyright (C) 2013-2014 Jos de Jong <wjosdejong@gmail.com>
+ * Copyright (C) 2013-2015 Jos de Jong <wjosdejong@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy
@@ -39,9 +39,9 @@
  * the License.
  */
 
-var math = require('../index'),
-    parser = math.parser(),
-    fs = require('fs');
+var math = require('../index');
+var parser = math.parser();
+var fs = require('fs');
 
 var PRECISION = 14; // decimals
 
@@ -171,10 +171,20 @@ function runStream (input, output) {
       if (expr) {
         try {
           var res = parser.eval(expr);
-          parser.set('ans', res); // TODO: in case of multi line input, set ans as the last of the expressions
-          if (!Array.isArray(res) || res.length) {
-            // TODO: how to distinguish array output from multi-line output?
-
+          if (res instanceof math.type.ResultSet) {
+            res.entries.forEach(function (entry) {
+              console.log(math.format(entry, PRECISION));
+            });
+            if (res.entries.length) {
+              // set last answer from the ResultSet as ans
+              parser.set('ans', res.entries[res.entries.length - 1]);
+            }
+          }
+          else if (res instanceof math.type.Help) {
+            console.log(res.toText(math));
+          }
+          else {
+            parser.set('ans', res);
             console.log(math.format(res, PRECISION));
           }
         }

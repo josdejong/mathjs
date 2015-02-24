@@ -26,8 +26,29 @@ describe('cosh', function() {
     approx.equal(cosh(3), 10.067661995778);
   });
 
-  it('should return the cosh of a bignumber (downgrades to number)', function() {
-    approx.equal(cosh(math.bignumber(1)), 1.5430806348152);
+  it('should return the cosh of a bignumber', function() {
+    var bigmath = math.create({number: 'bignumber', precision: 20});
+    var Big = bigmath.bignumber;
+    var bigInfinity = Big(Infinity);
+
+    var arg1 = Big(-3);
+    var arg9 = Big(Infinity);
+    var arg10 = Big(-Infinity);
+    assert.deepEqual(cosh(arg1), Big('10.067661995777765842'));
+    assert.deepEqual(cosh(Big(-2)), Big('3.7621956910836314596'));
+    assert.deepEqual(cosh(Big(-1)), Big('1.5430806348152437785'));
+    assert.deepEqual(cosh(Big(0)), Big(1));
+    assert.deepEqual(cosh(Big(1)), Big('1.5430806348152437785'));
+    assert.deepEqual(cosh(Big(2)), Big('3.7621956910836314596'));
+    assert.deepEqual(cosh(Big(3)), Big('10.067661995777765842'));
+    assert.deepEqual(cosh(bigmath.pi).toString(), '11.591953275521520628');
+    assert.deepEqual(cosh(arg9), bigInfinity);
+    assert.deepEqual(cosh(arg10), bigInfinity);
+
+    // Ensure args were not changed
+    assert.deepEqual(arg1, Big(-3));
+    assert.deepEqual(arg9, bigInfinity);
+    assert.deepEqual(arg10, Big(-Infinity));
   });
 
   it('should return the cosh of a complex number', function() {

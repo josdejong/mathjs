@@ -244,6 +244,29 @@ describe('unit', function() {
 
   });
 
+  describe('json', function () {
+
+    it('toJSON', function () {
+      assert.deepEqual(new Unit(5, 'cm').toJSON(),
+          {'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false});
+      assert.deepEqual(new Unit(5, 'cm').to('mm').toJSON(),
+          {'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true});
+    });
+
+    it('fromJSON', function () {
+      var u1 = new Unit(5, 'cm');
+      var u2 = Unit.fromJSON({'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false});
+      assert.ok(u2 instanceof Unit);
+      assert.deepEqual(u2, u1);
+
+      var u3 = new Unit(5, 'cm').to('mm');
+      var u4 = Unit.fromJSON({'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true});
+      assert.ok(u4 instanceof Unit);
+      assert.deepEqual(u4, u3);
+    });
+
+  });
+
   describe('format', function () {
 
     it('should format units with given precision', function() {

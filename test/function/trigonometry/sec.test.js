@@ -6,7 +6,9 @@ var assert = require('assert'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
-    sec = math.sec;
+    sec = math.sec,
+    bigmath = math.create({number: 'bignumber', precision: 20}),
+    biggermath = math.create({number: 'bignumber', precision: 21});
 
 describe('sec', function() {
   it('should return the secant of a boolean', function () {
@@ -40,8 +42,26 @@ describe('sec', function() {
     approx.equal(sec(-2*pi), 1);
   });
 
-  it('should return the secant of a bignumber (downgrades to number)', function() {
-    approx.equal(sec(math.bignumber(1)), 1.85081571768093);
+  it('should return the secant of a bignumber', function() {
+    var Big = bigmath.bignumber;
+    var bigPi = bigmath.pi;
+    var sqrt2 = bigmath.SQRT2.toString();
+
+    assert.deepEqual(bigmath.sec(Big(0)).toString(), '1');
+    assert.deepEqual(bigmath.sec(bigPi.div(8)).toString(), '1.0823922002923939688');
+    assert.deepEqual(bigmath.sec(bigPi.div(4)).toString(), sqrt2);
+    assert.deepEqual(bigmath.sec(bigPi).toString(), '-1');
+    assert.deepEqual(bigmath.sec(bigPi.times(2)).toString(), '1');
+    assert.deepEqual(bigmath.sec(bigmath.tau).toString(), '1');
+    assert.deepEqual(bigmath.sec(bigmath.tau.times(-2)).toString(), '1');
+
+    /* Pass in one more digit of pi. */
+    bigPi = biggermath.pi;
+    assert.ok(!bigmath.sec(bigPi.div(2)).isFinite());
+    assert.deepEqual(bigmath.sec(bigPi.times(3).div(4)).toString(), '-'+sqrt2);
+    assert.deepEqual(bigmath.sec(bigPi.times(5).div(4)).toString(), '-'+sqrt2);
+    assert.ok(!bigmath.sec(bigPi.times(3).div(2)).isFinite());
+    assert.deepEqual(bigmath.sec(bigPi.times(7).div(4)).toString(), sqrt2);
   });
 
   it('should return the secant of a complex number', function() {

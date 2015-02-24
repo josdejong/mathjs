@@ -42,9 +42,9 @@ describe('leftShift', function () {
     assert.deepEqual(leftShift(bignumber(2), bignumber(3)), bignumber(16));
     assert.deepEqual(leftShift(bignumber(500), bignumber(100)), bignumber('633825300114114700748351602688000'));
     assert.deepEqual(leftShift(bignumber(-1), bignumber(2)), bignumber(-4));
-    assert.deepEqual(leftShift(bignumber(0), bignumber(-2)).toString(), 'NaN');
+    assert.equal(leftShift(bignumber(0), bignumber(-2)).isNaN(), true);
     assert.deepEqual(leftShift(bignumber(Infinity), bignumber(2)), bignumber(Infinity));
-    assert.deepEqual(leftShift(bignumber(Infinity), bignumber(Infinity)).toString(), 'NaN');
+    assert.equal(leftShift(bignumber(Infinity), bignumber(Infinity)).isNaN(), true);
   });
 
   it('should left shift mixed numbers and bignumbers', function () {
@@ -53,8 +53,8 @@ describe('leftShift', function () {
     assert.deepEqual(leftShift(2, bignumber(3)), bignumber(16));
     assert.deepEqual(leftShift(-1, bignumber(2)), bignumber(-4));
     assert.deepEqual(leftShift(bignumber(-1), 2), bignumber(-4));
-    assert.deepEqual(leftShift(bignumber(0), -2).toString(), 'NaN');
-    assert.deepEqual(leftShift(bignumber(Infinity), Infinity).toString(), 'NaN');
+    assert.equal(leftShift(bignumber(0), -2).isNaN(), true);
+    assert.equal(leftShift(bignumber(Infinity), Infinity).isNaN(), true);
   });
 
   it('should left shift mixed booleans and bignumbers', function () {

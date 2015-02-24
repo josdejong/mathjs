@@ -1300,36 +1300,33 @@ describe('parse', function() {
   });
 
   describe('functions', function () {
-    describe('functions', function () {
-      it('should evaluate function "mod"', function () {
-        approx.equal(parseAndEval('mod(8, 3)'), 2);
+    it('should evaluate function "mod"', function () {
+      approx.equal(parseAndEval('mod(8, 3)'), 2);
 
-      });
+    });
 
-      it('should evaluate function "to" ', function () {
-        approx.deepEqual(parseAndEval('to(5.08 cm * 1000, inch)'),
-            math.unit(2000, 'inch').to('inch'));
-      });
+    it('should evaluate function "to" ', function () {
+      approx.deepEqual(parseAndEval('to(5.08 cm * 1000, inch)'),
+          math.unit(2000, 'inch').to('inch'));
+    });
 
-      it('should evaluate function "sort" with a custom sort function', function () {
-        var scope = {};
-        parseAndEval('sortByLength(a, b) = size(a)[1] - size(b)[1]', scope);
-        assert.deepEqual(parseAndEval('sort(["Langdon", "Tom", "Sara"], sortByLength)', scope),
-            math.matrix(["Tom", "Sara", "Langdon"]));
-      });
+    it('should evaluate function "sort" with a custom sort function', function () {
+      var scope = {};
+      parseAndEval('sortByLength(a, b) = size(a)[1] - size(b)[1]', scope);
+      assert.deepEqual(parseAndEval('sort(["Langdon", "Tom", "Sara"], sortByLength)', scope),
+          math.matrix(["Tom", "Sara", "Langdon"]));
+    });
 
-      it('should evaluate function "filter" with a custom test function', function () {
-        var scope = {};
-        parseAndEval('isPositive(x) = x > 0', scope);
-        assert.deepEqual(parseAndEval('filter([6, -2, -1, 4, 3], isPositive)', scope),
-            math.matrix([6, 4, 3]));
-      });
+    it('should evaluate function "filter" with a custom test function', function () {
+      var scope = {};
+      parseAndEval('isPositive(x) = x > 0', scope);
+      assert.deepEqual(parseAndEval('filter([6, -2, -1, 4, 3], isPositive)', scope),
+          math.matrix([6, 4, 3]));
+    });
 
-      it('should evaluate function "filter" with a custom test equation', function () {
-        assert.deepEqual(parseAndEval('filter([6, -2, -1, 4, 3], x > 0)'),
-            math.matrix([6, 4, 3]));
-      });
-
+    it('should evaluate function "filter" with a custom test equation', function () {
+      assert.deepEqual(parseAndEval('filter([6, -2, -1, 4, 3], x > 0)'),
+          math.matrix([6, 4, 3]));
     });
 
   });

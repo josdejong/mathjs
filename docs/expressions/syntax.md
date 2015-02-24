@@ -52,7 +52,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `;`         | Row separator           | `[x, y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
 `\n`        | Statement separator     | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
 `+`         | Add                     | `x + y`     | Left to right | `4 + 5`               | `9`
-`+`         | Unary plus              | `+y`        | Right to left | `+"4"`                | `4`
+`+`         | Unary plus              | `+y`        | Right to left | `+4`                  | `4`
 `-`         | Subtract                | `x - y`     | Left to right | `7 - 3`               | `4`
 `-`         | Unary minus             | `-y`        | Right to left | `-4`                  | `-4`
 `*`         | Multiply                | `x * y`     | Left to right | `2 * 3`               | `6`
@@ -66,8 +66,8 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `!`         | Factorial               | `y!`        | Left to right | `5!`                  | `120`
 `&`         | Bitwise and             | `x & y`     | Left to right | `5 & 3`               | `1`
 `~`         | Bitwise not             | `~x`        | Right to left | `~2`                  | `-3`
-`|`         | Bitwise or              | `x | y`     | Left to right | `5 | 3`               | `7`
-`^|`        | Bitwise xor             | `x ^| y`    | Left to right | `5 ^| 3`              | `6`
+<code>&#124;</code>  | Bitwise or     | <code>x &#124; y</code>   | Left to right | <code>5 &#124; 3</code>  | `7`
+<code>^&#124;</code> | Bitwise xor    | <code>x ^&#124; y</code>  | Left to right | <code>5 ^&#124; 2</code> | `6`
 `<<`        | Left shift              | `x << y`    | Left to right | `4 << 1`              | `8`
 `>>`        | Right arithmetic shift  | `x >> y`    | Left to right | `8 >> 1`              | `4`
 `>>>`       | Right logical shift     | `x >>> y`   | Left to right | `-8 >>> 1`            | `2147483644`
@@ -103,8 +103,8 @@ Operators                         | Description
 `<<`, `>>`, `>>>`                 | Bitwise left shift, bitwise right arithmetic shift, bitwise right logical shift
 `==`, `!=`, `<`, `>`, `<=`, `>=`  | Relational
 `&`                               | Bitwise and
-`^|`                              | Bitwise xor
-`|`                               | Bitwise or
+<code>^&#124;</code>              | Bitwise xor
+<code>&#124;</code>               | Bitwise or
 `and`                             | Logical and
 `xor`                             | Logical xor
 `or`                              | Logical or
@@ -337,6 +337,10 @@ math.eval('5.4 kg');                    // Unit, 5.4 kg
 math.eval('2 inch to cm');              // Unit, 5.08 cm
 math.eval('20 celsius in fahrenheit');  // Unit, ~68 fahrenheit
 
+// convert a unit to a number
+// A second parameter with the unit for the exported number must be provided
+math.eval('number(5 cm, mm)');          // Number, 50
+
 // calculations with units
 math.eval('0.5kg + 33g');               // Unit, 0.533 kg
 math.eval('3 inch + 2 cm');             // Unit, 3.7874 inch
@@ -459,7 +463,7 @@ with an entry for every visible statement.
 
 ```js
 // a multi line expression
-math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [1, 3, 9]
+math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [3, 6, 9]
 
 // semicolon statements are hided from the output
 math.eval('a=3; b=4; a + b \n a * b');  // ResultSet, [7, 12]

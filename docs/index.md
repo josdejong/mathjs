@@ -31,6 +31,7 @@ describing all available functions, constants, and units in detail.
   - [Matrices](datatypes/matrices.md)
   - [Units](datatypes/units.md)
 - [Configuration](configuration.md)
+- [Serialization](serialization.md)
 - [Extension](extension.md)
 - [Command Line Interface](command_line_interface.md)
 

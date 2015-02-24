@@ -79,6 +79,9 @@ var c = math.unit(45, 'deg');       // Unit 45 deg
 math.cos(c);                        // Number 0.7071067811865476
 ```
 
+The expression parser supports units too. This is described in the section about
+units on the page [Syntax](../expressions/syntax.md#units).
+
 
 ## Reference
 

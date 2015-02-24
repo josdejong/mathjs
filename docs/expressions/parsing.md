@@ -5,9 +5,8 @@ Expressions can be parsed and evaluated in various ways:
 - Using the function [`math.eval(expr [,scope])`](#eval).
 - Using the function [`math.compile(expr)`](#compile).
 - Using the function [`math.parse(expr)`](#parse).
-- By creating a [parser](#parser), `math.parser()`, which contains functions
-  `parse`, `compile`, and `eval`, and keeps a scope with assigned variables in
-  memory.
+- By creating a [parser](#parser), `math.parser()`, which contains a function
+  `eval` and keeps a scope with assigned variables in memory.
 
 
 ## Eval

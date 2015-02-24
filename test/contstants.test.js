@@ -54,6 +54,14 @@ describe('constants', function() {
       approx.equal(math.SQRT2, 1.41421356237309504880168872420969807856967187537694807317667973799073247846210703885038753432764157273501384623091229702);
    });
 
+    it('should have Infinity', function() {
+      assert.strictEqual(math.Infinity, Infinity);
+    });
+
+    it('should have NaN', function() {
+      assert.ok(isNaN(math.NaN));
+    });
+
   });
 
   describe('bignumber', function () {
@@ -103,6 +111,16 @@ describe('constants', function() {
       assert.equal(bigmath.SQRT2.toString(), '1.414213562373095048801688724209698078569671875376948073176679738');
     });
 
+    it('should have bignumber Infinity', function() {
+      assert(bigmath.Infinity instanceof bigmath.type.BigNumber);
+      assert.strictEqual(bigmath.Infinity.toString(), 'Infinity');
+    });
+
+    it('should have bignumber NaN', function() {
+      assert(bigmath.NaN instanceof bigmath.type.BigNumber);
+      assert.equal(bigmath.NaN.toString(), 'NaN');
+      assert.ok(isNaN(bigmath.NaN));
+    });
   });
 
   it('should have i', function() {
@@ -118,14 +136,6 @@ describe('constants', function() {
     assert.strictEqual(math.false, false);
     assert.strictEqual(math.eval('true'), true);
     assert.strictEqual(math.eval('false'), false);
-  });
-
-  it('should have Infinity', function() {
-    assert.strictEqual(math.Infinity, Infinity);
-  });
-
-  it('should have NaN', function() {
-    assert.ok(isNaN(math.NaN));
   });
 
   it('should have null', function() {

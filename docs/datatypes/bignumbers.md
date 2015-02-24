@@ -4,6 +4,8 @@ For calculations with an arbitrary precision, math.js supports a `BigNumber`
 data type. BigNumber support is powered by
 [decimal.js](https://github.com/MikeMcl/decimal.js/).
 
+## Usage
+
 A BigNumber can be created using the function `bignumber`:
 
 ```js
@@ -35,9 +37,11 @@ BigNumber is not supported by the following functions:
 gcd, lcm, xgcd,
 arg,
 random,
-acos, asin, atan, atan2, cos, cot, csc, sec, sin, tan,
-cosh, coth, csch, sech, sinh, tanh.
+atan2.
 These functions will downgrade BigNumber to Number, and return a Number.*
+
+
+## Round-off errors
 
 Calculations with BigNumber are much slower than calculations with Number,
 but they can be executed with an arbitrary precision. By using a higher
@@ -52,6 +56,31 @@ math.divide(0.3, 0.2);                                  // Number, 1.49999999999
 math.add(math.bignumber(0.1), math.bignumber(0.2));     // BigNumber, 0.3
 math.divide(math.bignumber(0.3), math.bignumber(0.2));  // BigNumber, 1.5
 ```
+
+
+## Limitations
+
+It's important to realize that BigNumbers do not solve *all* problems related
+to precision and round-off errors. Numbers with an infinite number of digits
+cannot be represented with a regular number nor a BigNumber. Though a BigNumber
+can store a much larger number of digits, the amount of digits remains limited,
+if only to keep calculations fast enough to remain practical.
+
+```js
+var one = math.bignumber(1);
+var three = math.bignumber(3);
+var third = math.divide(one, three);
+console.log(third.toString());
+// outputs 0.3333333333333333333333333333333333333333333333333333333333333333
+
+var ans = math.multiply(third, three);
+console.log(ans.toString());
+// outputs 0.9999999999999999999999999999999999999999999999999999999999999999
+// this should be 1 again, but `third` is rounded to a limited number of digits 3
+```
+
+
+## Conversion
 
 BigNumbers can be converted to numbers and vice versa using the functions
 `number` and `bignumber`. When converting a BigNumber to a Number, the high
