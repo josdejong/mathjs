@@ -335,4 +335,15 @@ describe('OperatorNode', function() {
     assert.equal(n.getIdentifier(), 'OperatorNode:add');
   });
 
+  it ('should have a precedence', function () {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n1 = new OperatorNode('+', 'add', [a, b]);
+    var n2 = new OperatorNode('+', 'unaryPlus', [a]);
+
+    assert.equal(n1.getPrecedence(), 12);
+    assert.equal(n2.getPrecedence(), 14);
+  });
+
 });

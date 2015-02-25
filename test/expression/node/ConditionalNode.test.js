@@ -260,4 +260,9 @@ describe('ConditionalNode', function() {
     assert.equal(n.toTex(), '\\left\\{\\begin{array}{l l}{{a}={2}}, &\\quad{\\text{if}\\;true}\\\\{{b}={3}}, &\\quad{\\text{otherwise}}\\end{array}\\right.');
   });
 
+  it ('should have a precedence', function () {
+    var n = new ConditionalNode(condition, a, b);
+    assert.equal(n.getPrecedence(), 1);
+  });
+
 });

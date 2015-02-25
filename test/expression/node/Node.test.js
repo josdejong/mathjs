@@ -98,4 +98,9 @@ describe('Node', function() {
 	  assert.equal(n.getIdentifier(), 'Node');
   });
 
+  it ('should have a precedence', function () {
+	  var n = new Node();
+	  assert.equal(n.getPrecedence(), Infinity);
+  });
+
 });
