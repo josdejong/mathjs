@@ -98,11 +98,4 @@ describe('Node', function() {
 	  assert.equal(n.getIdentifier(), 'Node');
   });
 
-  it ('should throw an error if precedence is not defined', function () {
-	  var n = new Node();
-	  assert.throws(function () {
-      n.getPrecedence();
-    }, /Precedence is not defined for "Node"/);
-  });
-
 });
