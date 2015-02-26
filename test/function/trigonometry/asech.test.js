@@ -9,6 +9,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     bigmath = math.create({number: 'bignumber', precision: 20}),
+    biggermath = math.create({precision: 22}),
+    asechBig = bigmath.asech,
     Big = bigmath.bignumber;
 
 describe('asech', function() {
@@ -37,11 +39,11 @@ describe('asech', function() {
   it('should return the hyperbolic arcsec of a bignumber', function() {
     var arg1 = Big(0);
     var arg2 = Big(0.25);
-    assert.deepEqual(asech(arg1), Big(Infinity));
-    assert.deepEqual(asech(arg2), Big('2.0634370688955605467'));
-    assert.deepEqual(asech(Big(0.5)), Big('1.3169578969248167086'));
-    assert.deepEqual(asech(Big(0.75)), Big('0.79536546122390563053'));
-    assert.deepEqual(asech(Big(1)), Big(0));
+    assert.deepEqual(asechBig(arg1), Big(Infinity));
+    assert.deepEqual(asechBig(arg2), Big('2.0634370688955605467'));
+    assert.deepEqual(asechBig(Big(0.5)), Big('1.3169578969248167086'));
+    assert.deepEqual(asechBig(Big(0.75)), Big('0.79536546122390563053'));
+    assert.deepEqual(asechBig(Big(1)), Big(0));
 
     //Make sure arg was not changed
     assert.deepEqual(arg1, Big(0));
@@ -57,14 +59,13 @@ describe('asech', function() {
   });
 
   it('should be the inverse function of bignumber sech', function() {
-    assert.deepEqual(asech(bigmath.sech(Big(-1))), Big(1));
-    assert.deepEqual(asech(bigmath.sech(Big(0))), Big(0));
-    assert.deepEqual(asech(bigmath.sech(Big(0.5))), Big(0.5));
-    assert.deepEqual(asech(bigmath.sech(Big(2))), Big(2));
+    assert.deepEqual(asechBig(bigmath.sech(Big(-1))), Big(1));
+    assert.deepEqual(asechBig(bigmath.sech(Big(0))), Big(0));
+    assert.deepEqual(asechBig(bigmath.sech(Big(0.5))), Big(0.5));
+    assert.deepEqual(asechBig(bigmath.sech(Big(2))), Big(2));
 
     /* Pass in more digits to pi. */
-    //bigmath.config({precision: 21});
-    //assert.deepEqual(asech(bigmath.sech(Big(0.1))), Big(0.1));
+    assert.deepEqual(asechBig(biggermath.sech(Big(0.1))), Big(0.1));
   });
 
   it('should throw an error if the bignumber result is complex', function() {

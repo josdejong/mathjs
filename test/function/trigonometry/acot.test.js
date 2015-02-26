@@ -9,6 +9,8 @@ var assert = require('assert'),
     acot = math.acot,
     cot = math.cot,
     bigmath = math.create({number: 'bignumber', precision: 20}),
+    acotBig = bigmath.acot,
+    cotBig = bigmath.cot,
     Big = bigmath.bignumber;
 
 describe('acot', function() {
@@ -39,13 +41,13 @@ describe('acot', function() {
     var arg7 = Big(2);
     var arg8 = Big(Infinity);
 
-    assert.deepEqual(acot(Big(-2)), Big('-0.4636476090008061162'));
-    assert.deepEqual(acot(arg2), Big('-0.7853981633974483096'));
-    assert.deepEqual(acot(arg3), Big('-1.107148717794090503'));
-    assert.deepEqual(acot(arg4).toString(), '1.5707963267948966192');
-    assert.deepEqual(acot(Big(1)), Big('0.7853981633974483096'));
-    assert.deepEqual(acot(arg7), Big('0.4636476090008061162'));
-    assert.deepEqual(acot(arg8), Big(0));
+    assert.deepEqual(acotBig(Big(-2)), Big('-0.4636476090008061162'));
+    assert.deepEqual(acotBig(arg2), Big('-0.7853981633974483096'));
+    assert.deepEqual(acotBig(arg3), Big('-1.107148717794090503'));
+    assert.deepEqual(acotBig(arg4).toString(), '1.5707963267948966192');
+    assert.deepEqual(acotBig(Big(1)), Big('0.7853981633974483096'));
+    assert.deepEqual(acotBig(arg7), Big('0.4636476090008061162'));
+    assert.deepEqual(acotBig(arg8), Big(0));
 
     // Ensure the arguments where not changed
     assert.deepEqual(arg2, Big(-1));
@@ -56,7 +58,7 @@ describe('acot', function() {
 
     // Hit Newton's method case
     bigmath.config({precision: 61});
-    assert.deepEqual(acot(Big(1.1)).toString(), '0.73781506012046491381362812980339020358273335525044448963405');
+    assert.deepEqual(acotBig(Big(1.1)), Big('0.73781506012046491381362812980339020358273335525044448963405'));
   });
 
   it('should be the inverse function of cot', function() {
@@ -69,12 +71,12 @@ describe('acot', function() {
 
   it('should be the inverse function of bignumber cot', function() {
     bigmath.config({precision: 20});
-    assert.deepEqual(acot(bigmath.cot(Big(-1))).toString(), '-1');
-    assert.ok(acot(bigmath.cot(Big(0))).isZero());
-    assert.deepEqual(acot(bigmath.cot(Big(0.1))).toString(), '0.1');
-    assert.deepEqual(acot(bigmath.cot(Big(0.5))).toString(), '0.5');
-    assert.deepEqual(acot(bigmath.cot(Big(2))).toString(), '-1.1415926535897932385');
-    assert.deepEqual(acot(bigmath.cot(bigmath.pi.div(2))).toString(), '1.5707963267948966192');
+    assert.deepEqual(acotBig(cotBig(Big(-1))), Big(-1));
+    assert.deepEqual(acotBig(cotBig(Big(0))), Big(0));
+    assert.deepEqual(acotBig(cotBig(Big(0.1))), Big(0.1));
+    assert.deepEqual(acotBig(cotBig(Big(0.5))), Big(0.5));
+    assert.deepEqual(acotBig(cotBig(Big(2))), Big('-1.1415926535897932385'));
+    assert.deepEqual(acotBig(cotBig(bigmath.pi.div(2))).toString(), '1.5707963267948966192');
   });
 
   it('should return the arccot of a complex number', function() {
@@ -84,7 +86,7 @@ describe('acot', function() {
     approx.deepEqual(acot(complex('2-3i')), complex(re, im));
     approx.deepEqual(acot(complex('-2+3i')), complex(-re, -im));
     approx.deepEqual(acot(complex('-2-3i')), complex(-re, im));
-    approx.deepEqual(acot(complex('i')), complex(0, -Infinity));
+    assert.deepEqual(acot(complex('i')), complex(0, -Infinity));
     approx.deepEqual(acot(complex('1')), complex(pi / 4, 0));
     approx.deepEqual(acot(complex('1+i')), complex(0.553574358897, -0.4023594781085));
   });

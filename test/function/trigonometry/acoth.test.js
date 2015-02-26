@@ -9,6 +9,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     bigmath = math.create({number: 'bignumber', precision: 20}),
+    biggermath = math.create({precision: 21}),
+    acothBig = bigmath.acoth,
     Big = bigmath.bignumber;
 
 describe('acoth', function() {
@@ -39,12 +41,12 @@ describe('acoth', function() {
   it('should return the hyperbolic arccot of a bignumber', function() {
     var arg2 = Big(-2);
     var arg3 = Big(-1);
-    assert.deepEqual(acoth(Big(-Infinity)), Big(0));
-    assert.deepEqual(acoth(arg2), Big('-0.5493061443340548457'));
-    assert.deepEqual(acoth(arg3), Big(-Infinity));
-    assert.deepEqual(acoth(Big(1)), Big(Infinity));
-    assert.deepEqual(acoth(Big(2)), Big('0.5493061443340548457'));
-    assert.deepEqual(acoth(Big(Infinity)), Big(0));
+    assert.deepEqual(acothBig(Big(-Infinity)), Big(0));
+    assert.deepEqual(acothBig(arg2), Big('-0.5493061443340548457'));
+    assert.deepEqual(acothBig(arg3), Big(-Infinity));
+    assert.deepEqual(acothBig(Big(1)), Big(Infinity));
+    assert.deepEqual(acothBig(Big(2)), Big('0.5493061443340548457'));
+    assert.deepEqual(acothBig(Big(Infinity)), Big(0));
 
     //Make sure arg was not changed
     assert.deepEqual(arg2, Big(-2));
@@ -60,14 +62,13 @@ describe('acoth', function() {
   });
 
   it('should be the inverse function of bignumber coth', function() {
-    assert.deepEqual(acoth(bigmath.coth(Big(-1))), Big(-1));
-    assert.deepEqual(acoth(bigmath.coth(Big(0))), Big(0));
-    assert.deepEqual(acoth(bigmath.coth(Big(1))), Big(1));
+    assert.deepEqual(acothBig(bigmath.coth(Big(-1))), Big(-1));
+    assert.deepEqual(acothBig(bigmath.coth(Big(0))), Big(0));
+    assert.deepEqual(acothBig(bigmath.coth(Big(1))), Big(1));
 
     /* Pass in more digits to pi. */
-    //bigmath.config({precision: 21});
-    //assert.deepEqual(acoth(bigmath.coth(Big(-2))), Big(-2));
-    //assert.deepEqual(acoth(bigmath.coth(Big(2))), Big(2));
+    assert.deepEqual(acothBig(biggermath.coth(Big(-2))), Big(-2));
+    assert.deepEqual(acothBig(biggermath.coth(Big(2))), Big(2));
   });
 
   it('should throw an error if the bignumber result is complex', function() {
