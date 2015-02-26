@@ -73,8 +73,8 @@ describe('subtract', function() {
   });
 
   it('should throw an error for mixed complex numbers and big numbers', function() {
-    assert.throws(function () {subtract(math.complex(3, 4), math.bignumber(10))}, /TypeError: Unexpected type of argument \(expected: Matrix or Array, actual: BigNumber, index: 1\)/);
-    assert.throws(function () {subtract(math.bignumber(10), math.complex(3, 4))}, /TypeError: Unexpected type of argument \(expected: Matrix or Array, actual: Complex, index: 1\)/);
+    assert.deepEqual(subtract(math.complex(3, 4), math.bignumber(10)), math.complex(-7, 4));
+    assert.deepEqual(subtract(math.bignumber(10), math.complex(3, 4)), math.complex(7, -4));
   });
 
   it('should subtract two quantities of the same unit', function() {

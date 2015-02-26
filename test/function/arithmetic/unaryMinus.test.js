@@ -10,7 +10,7 @@ describe('unaryMinus', function() {
     assert.equal(math.unaryMinus(false), 0);
   });
 
-  // FIXME: convert boolean to BigNumber in unaryMinus
+  // TODO: unary minus should return bignumber on boolean input when configured for bignumber
   it.skip('should return bignumber unary minus of a boolean', function () {
     var bigmath = math.create({number: 'bignumber'});
     assert.deepEqual(bigmath.unaryMinus(true), bigmath.bignumber(-1));

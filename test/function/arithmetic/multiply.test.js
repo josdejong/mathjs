@@ -117,8 +117,7 @@ describe('multiply', function() {
     assert.deepEqual(multiply(2, math.complex(2, 4)), math.complex(4, 8));
   });
 
-  // TODO: remove this test
-  it.skip('should multiply mixed complex numbers and big numbers', function() {
+  it('should multiply mixed complex numbers and big numbers', function() {
     assert.deepEqual(multiply(math.complex(6, -4), math.bignumber(2)), math.complex(12, -8));
     assert.deepEqual(multiply(math.bignumber(2), math.complex(2, 4)), math.complex(4, 8));
   });

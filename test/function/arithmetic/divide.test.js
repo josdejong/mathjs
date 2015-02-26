@@ -100,10 +100,8 @@ describe('divide', function() {
   });
 
   it('should divide mixed complex numbers and bignumbers', function() {
-    //assert.deepEqual(divide(math.complex(6, -4), bignumber(2)), math.complex(3, -2));
-    //assert.deepEqual(divide(bignumber(1), math.complex(2, 4)), math.complex(0.1, -0.2));
-    assert.throws(function () {divide(math.complex(6, -4), bignumber(2))}, /TypeError: Unexpected type of argument \(expected: Complex or number, actual: BigNumber, index: 1\)/);
-    assert.throws(function () {divide(bignumber(1), math.complex(2, 4))}, /TypeError: Unexpected type of argument \(expected: BigNumber or number or boolean or null, actual: Complex, index: 1\)/);
+    assert.deepEqual(divide(math.complex(6, -4), bignumber(2)), math.complex(3, -2));
+    assert.deepEqual(divide(bignumber(1), math.complex(2, 4)), math.complex(0.1, -0.2));
   });
 
   it('should divide units by a number', function() {

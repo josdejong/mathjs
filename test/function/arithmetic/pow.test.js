@@ -121,8 +121,7 @@ describe('pow', function() {
     approx.deepEqual(pow(complex(1,1),complex(1,1)), complex('0.2739572538301211 +  0.5837007587586147i'));
   });
 
-  // TODO: support mixed complex and bignumbers?
-  it.skip('should exponentiate a complex number to the given bignumber power', function() {
+  it('should exponentiate a complex number to the given bignumber power', function() {
     approx.deepEqual(pow(complex(3, 0), math.bignumber(2)), complex(9, 0));
     approx.deepEqual(pow(complex(0, 2), math.bignumber(2)), complex(-4, 0));
   });

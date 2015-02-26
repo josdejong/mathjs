@@ -58,8 +58,8 @@ describe('add', function() {
   });
 
   it('should add mixed complex numbers and BigNumbers', function() {
-    assert.throws(function () {add(math.complex(3, -4), new BigNumber(2))}, /TypeError: Unexpected type of argument \(expected: Array or Matrix, actual: BigNumber, index: 1\)/);
-    assert.throws(function () {add(new BigNumber(2), math.complex(3, -4))}, /TypeError: Unexpected type of argument \(expected: Array or Matrix, actual: Complex, index: 1\)/);
+    assert.deepEqual(add(math.complex(3, -4), new BigNumber(2)), math.complex(5, -4));
+    assert.deepEqual(add(new BigNumber(2), math.complex(3, -4)), math.complex(5, -4));
   });
 
   it('should add two complex numbers', function() {
