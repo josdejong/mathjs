@@ -9,6 +9,8 @@
   `csch`, `sech`. Thanks @BigFav.
 - Implemented support for serialization and deserialization of math.js data
   types.
+- Fixed the calculation of `norm()` and `abs()` for large complex numbers.
+  Thanks @rjbaucells.
 - Fixed #281: improved formatting complex numbers. Round the real or imaginary
   part to zero when the difference is larger than the configured precision.
 
