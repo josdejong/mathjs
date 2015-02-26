@@ -264,4 +264,12 @@ describe('RangeNode', function() {
     assert.equal(n.toTex(), '0:2:10');
   });
 
+  it ('should have a precedence', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(1);
+    var n = new RangeNode(start, end);
+
+    assert.equal(n.getPrecedence(), 11);
+  });
+
 });

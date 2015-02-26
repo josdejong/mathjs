@@ -326,4 +326,36 @@ describe('OperatorNode', function() {
     assert.equal(m3.toTex(), '{\\left({{2}+{3}}\\right) \\cdot {4}}-{5}');
   });
 
+  it ('should have an identifier', function () {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new OperatorNode('+', 'add', [a, b]);
+
+    assert.equal(n.getIdentifier(), 'OperatorNode:add');
+  });
+
+  it ('should throw an error if creating identifier while missing a function name', function () {
+    var n1 = new OperatorNode('-', 4, []);
+    var n2 = new OperatorNode('-', '', []);
+
+    assert.throws(function () {
+      n1.getIdentifier();
+    }, /Can't create an identifier for OperatorNode, missing function name./);
+    assert.throws(function () {
+      n2.getIdentifier();
+    }, /Can't create an identifier for OperatorNode, missing function name./);
+  });
+
+  it ('should have a precedence', function () {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n1 = new OperatorNode('+', 'add', [a, b]);
+    var n2 = new OperatorNode('+', 'unaryPlus', [a]);
+
+    assert.equal(n1.getPrecedence(), 12);
+    assert.equal(n2.getPrecedence(), 14);
+  });
+
 });

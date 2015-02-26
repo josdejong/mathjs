@@ -207,4 +207,11 @@ describe('AssignmentNode', function() {
     assert.equal(n.toTex(), '{b}={3}');
   });
 
+  it ('should have a precedence', function () {
+    var b = new ConstantNode(1);
+    var n = new AssignmentNode('b', b);
+
+    assert.equal(n.getPrecedence(), 0);
+  });
+
 });

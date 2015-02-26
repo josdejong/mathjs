@@ -281,4 +281,11 @@ describe('FunctionNode', function() {
     assert.equal(n3.toTex(), '{\\left({4}+{5}\\right)!}');
   });
 
+  it ('should have an identifier', function () {
+	  var c = new ConstantNode(1);
+	  var n = new FunctionNode('sqrt', [c]);
+
+	  assert.equal(n.getIdentifier(), 'FunctionNode:sqrt');
+  });
+
 });
