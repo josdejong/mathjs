@@ -13,11 +13,11 @@ var assert = require('assert'),
 describe('sec', function() {
   it('should return the secant of a boolean', function () {
     approx.equal(sec(true), 1.85081571768093);
-    approx.equal(sec(false), Infinity);
+    assert.equal(sec(false), 1);
   });
 
   it('should return the secant of null', function () {
-    approx.equal(sec(null), Infinity);
+    assert.equal(sec(null), 1);
   });
 
   it('should return the secant of a number', function() {
@@ -47,7 +47,7 @@ describe('sec', function() {
     var bigPi = bigmath.pi;
     var sqrt2 = bigmath.SQRT2.toString();
 
-    assert.deepEqual(bigmath.sec(Big(0)).toString(), '1');
+    assert.deepEqual(bigmath.sec(Big(0)), Big(1));
     assert.deepEqual(bigmath.sec(bigPi.div(8)).toString(), '1.0823922002923939688');
     assert.deepEqual(bigmath.sec(bigPi.div(4)).toString(), sqrt2);
     assert.deepEqual(bigmath.sec(bigPi).toString(), '-1');

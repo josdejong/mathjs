@@ -7,7 +7,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     sech = math.sech,
-    bigmath = math.create({number: 'bignumber', precision: 20});
+    bigmath = math.create({precision: 20}),
+    biggermath = math.create({number: 'bignumber', precision: 21});
 
 describe('sech', function() {
   it('should return the sech of a boolean', function () {
@@ -28,15 +29,16 @@ describe('sech', function() {
   });
 
   it('should return the sech of a bignumber', function() {
+    var sechBig = bigmath.sech;
     var Big = bigmath.bignumber;
 
-    assert.deepEqual(sech(Big(0)), Big(1));
-    assert.deepEqual(sech(Big(1)), Big('0.64805427366388539957'));
-    assert.deepEqual(sech(Big(2)), Big('0.26580222883407969212'));
-    assert.deepEqual(sech(Big(3)), Big('0.099327927419433207829'));
+    assert.deepEqual(sechBig(Big(0)), Big(1));
+    assert.deepEqual(sechBig(Big(1)), Big('0.64805427366388539957'));
+    assert.deepEqual(sechBig(Big(2)), Big('0.26580222883407969212'));
+    assert.deepEqual(sechBig(Big(3)), Big('0.099327927419433207829'));
 
     /* Pass in extra digits to pi. */
-    //assert.deepEqual(sech(bigmath.pi), Big('0.0862667383340544147'));
+    assert.deepEqual(sechBig(biggermath.pi), Big('0.086266738334054414697'));
   });
 
   it('should return the sech of a complex number', function() {

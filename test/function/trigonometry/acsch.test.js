@@ -9,6 +9,7 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     bigmath = math.create({number: 'bignumber', precision: 20}),
+    acschBig = bigmath.acsch,
     Big = bigmath.bignumber;
 
 describe('acsch', function() {
@@ -32,12 +33,12 @@ describe('acsch', function() {
 
   it('should return the hyperbolic arccsc of a bignumber', function() {
     var arg = Big(-2);
-    assert.deepEqual(acsch(arg), Big('-0.4812118250596034475'));
-    assert.deepEqual(acsch(Big(-1)), Big('-0.88137358701954302523'));
-    assert.deepEqual(acsch(Big(0)), Big(Infinity));
-    assert.deepEqual(acsch(Big(1)), Big('0.88137358701954302523'));
-    assert.deepEqual(acsch(Big(2)), Big('0.4812118250596034475'));
-    assert.deepEqual(acsch(bigmath.pi).toString(), '0.31316588045086837587');
+    assert.deepEqual(acschBig(arg), Big('-0.4812118250596034475'));
+    assert.deepEqual(acschBig(Big(-1)), Big('-0.88137358701954302523'));
+    assert.deepEqual(acschBig(Big(0)), Big(Infinity));
+    assert.deepEqual(acschBig(Big(1)), Big('0.88137358701954302523'));
+    assert.deepEqual(acschBig(Big(2)), Big('0.4812118250596034475'));
+    assert.deepEqual(acschBig(bigmath.pi).toString(), '0.31316588045086837587');
 
     //Make sure arg was not changed
     assert.deepEqual(arg, Big(-2));
@@ -52,13 +53,13 @@ describe('acsch', function() {
   });
 
   it('should be the inverse function of bignumber csch', function() {
-    assert.deepEqual(acsch(bigmath.csch(Big(-2))), Big(-2));
-    assert.deepEqual(acsch(bigmath.csch(Big(-0.5))), Big(-0.5));
-    assert.deepEqual(acsch(bigmath.csch(Big(-0.1))), Big(-0.1));
-    assert.deepEqual(acsch(bigmath.csch(Big(0))), Big(0));
-    assert.deepEqual(acsch(bigmath.csch(Big(0.1))), Big(0.1));
-    assert.deepEqual(acsch(bigmath.csch(Big(0.5))), Big(0.5));
-    assert.deepEqual(acsch(bigmath.csch(Big(2))), Big(2));
+    assert.deepEqual(acschBig(bigmath.csch(Big(-2))), Big(-2));
+    assert.deepEqual(acschBig(bigmath.csch(Big(-0.5))), Big(-0.5));
+    assert.deepEqual(acschBig(bigmath.csch(Big(-0.1))), Big(-0.1));
+    assert.deepEqual(acschBig(bigmath.csch(Big(0))), Big(0));
+    assert.deepEqual(acschBig(bigmath.csch(Big(0.1))), Big(0.1));
+    assert.deepEqual(acschBig(bigmath.csch(Big(0.5))), Big(0.5));
+    assert.deepEqual(acschBig(bigmath.csch(Big(2))), Big(2));
   });
 
   it('should return the arccsch of a complex number', function() {

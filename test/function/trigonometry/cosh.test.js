@@ -6,7 +6,8 @@ var assert = require('assert'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
-    cosh = math.cosh;
+    cosh = math.cosh,
+    bigmath = math.create({number: 'bignumber', precision: 20});
 
 describe('cosh', function() {
   it('should return the cosh of a boolean', function () {
@@ -27,23 +28,23 @@ describe('cosh', function() {
   });
 
   it('should return the cosh of a bignumber', function() {
-    var bigmath = math.create({number: 'bignumber', precision: 20});
+    var coshBig = bigmath.cosh;
     var Big = bigmath.bignumber;
     var bigInfinity = Big(Infinity);
 
     var arg1 = Big(-3);
     var arg9 = Big(Infinity);
     var arg10 = Big(-Infinity);
-    assert.deepEqual(cosh(arg1), Big('10.067661995777765842'));
-    assert.deepEqual(cosh(Big(-2)), Big('3.7621956910836314596'));
-    assert.deepEqual(cosh(Big(-1)), Big('1.5430806348152437785'));
-    assert.deepEqual(cosh(Big(0)), Big(1));
-    assert.deepEqual(cosh(Big(1)), Big('1.5430806348152437785'));
-    assert.deepEqual(cosh(Big(2)), Big('3.7621956910836314596'));
-    assert.deepEqual(cosh(Big(3)), Big('10.067661995777765842'));
-    assert.deepEqual(cosh(bigmath.pi).toString(), '11.591953275521520628');
-    assert.deepEqual(cosh(arg9), bigInfinity);
-    assert.deepEqual(cosh(arg10), bigInfinity);
+    assert.deepEqual(coshBig(arg1), Big('10.067661995777765842'));
+    assert.deepEqual(coshBig(Big(-2)), Big('3.7621956910836314596'));
+    assert.deepEqual(coshBig(Big(-1)), Big('1.5430806348152437785'));
+    assert.deepEqual(coshBig(Big(0)), Big(1));
+    assert.deepEqual(coshBig(Big(1)), Big('1.5430806348152437785'));
+    assert.deepEqual(coshBig(Big(2)), Big('3.7621956910836314596'));
+    assert.deepEqual(coshBig(Big(3)), Big('10.067661995777765842'));
+    assert.deepEqual(coshBig(bigmath.pi).toString(), '11.591953275521520628');
+    assert.deepEqual(coshBig(arg9), bigInfinity);
+    assert.deepEqual(coshBig(arg10), bigInfinity);
 
     // Ensure args were not changed
     assert.deepEqual(arg1, Big(-3));
