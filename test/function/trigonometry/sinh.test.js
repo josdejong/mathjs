@@ -6,7 +6,8 @@ var assert = require('assert'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
-    sinh = math.sinh;
+    sinh = math.sinh,
+    bigmath = math.create({number: 'bignumber', precision: 20});
 
 describe('sinh', function() {
   it('should return the sinh of a boolean', function () {
@@ -31,27 +32,27 @@ describe('sinh', function() {
   })
 
   it('should return the sinh of a bignumber', function() {
-    var bigmath = math.create({number: 'bignumber', precision: 20});
+    var sinhBig = bigmath.sinh;
     var Big = bigmath.bignumber;
 
-    var arg1 = Big(-1);
-    var arg6 = Big(Infinity);
-    var arg7 = Big(-Infinity);
-    assert.deepEqual(sinh(arg1), Big('-1.1752011936438014569'));
-    assert.deepEqual(sinh(Big(0)), Big(0));
-    assert.deepEqual(sinh(bigmath.pi).toString(), '11.548739357257748378');
-    assert.deepEqual(sinh(Big(1)), Big('1.1752011936438014569'));
-    assert.deepEqual(sinh(Big(-1e-10)), Big(-1e-10));
-    assert.deepEqual(sinh(arg6), Big(Infinity));
-    assert.deepEqual(sinh(arg7), Big(-Infinity));
+    var arg1 = Big(-Infinity);
+    var arg2 = Big(-1);
+    var arg7 = Big(Infinity);
+    assert.deepEqual(sinhBig(arg1), Big(-Infinity));
+    assert.deepEqual(sinhBig(arg2), Big('-1.1752011936438014569'));
+    assert.deepEqual(sinhBig(Big(-1e-10)), Big(-1e-10));
+    assert.deepEqual(sinhBig(Big(0)), Big(0));
+    assert.deepEqual(sinhBig(Big(1)), Big('1.1752011936438014569'));
+    assert.deepEqual(sinhBig(bigmath.pi).toString(), '11.548739357257748378');
+    assert.deepEqual(sinhBig(arg7), Big(Infinity));
 
     // Ensure args were not changed
-    assert.deepEqual(arg1, Big(-1));
-    assert.deepEqual(arg6, Big(Infinity));
-    assert.deepEqual(arg7, Big(-Infinity));
+    assert.deepEqual(arg1, Big(-Infinity));
+    assert.deepEqual(arg2, Big(-1));
+    assert.deepEqual(arg7, Big(Infinity));
 
     bigmath.config({precision: 50});
-    assert.deepEqual(sinh(Big(1e-50)), Big(1e-50));
+    assert.deepEqual(sinhBig(Big(1e-50)), Big(1e-50));
   });
 
   it('should return the sinh of a complex number', function() {

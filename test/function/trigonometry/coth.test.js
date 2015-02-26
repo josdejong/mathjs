@@ -7,7 +7,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     coth = math.coth,
-    bigmath = math.create({number: 'bignumber', precision: 20});
+    bigmath = math.create({precision: 20}),
+    biggermath = math.create({number: 'bignumber', precision: 21});
 
 describe('coth', function() {
   it('should return the coth of a boolean', function () {
@@ -28,14 +29,15 @@ describe('coth', function() {
   });
 
   it('should return the coth of a bignumber', function() {
+    var cothBig = bigmath.coth;
     var Big = bigmath.bignumber;
-    assert.deepEqual(coth(Big(0)), Big(Number.POSITIVE_INFINITY));
-    assert.deepEqual(coth(Big(1)), Big('1.3130352854993313036'));
-    assert.deepEqual(coth(Big(2)), Big('1.0373147207275480959'));
-    assert.deepEqual(coth(Big(3)), Big('1.0049698233136891711'));
+    assert.deepEqual(cothBig(Big(0)), Big(Number.POSITIVE_INFINITY));
+    assert.deepEqual(cothBig(Big(1)), Big('1.3130352854993313036'));
+    assert.deepEqual(cothBig(Big(2)), Big('1.0373147207275480959'));
+    assert.deepEqual(cothBig(Big(3)), Big('1.0049698233136891711'));
 
     /* Pass in extra digits to pi. */
-    //assert.deepEqual(coth(bigmath.pi), Big('0.0862667383340544147'));
+    assert.deepEqual(cothBig(biggermath.pi), Big('1.0037418731973212882'));
   });
 
   it('should return the coth of a complex number', function() {
