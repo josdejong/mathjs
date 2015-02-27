@@ -66,8 +66,8 @@ describe('equal', function() {
     assert.deepEqual(equal(bignumber(2), 3), false);
     assert.deepEqual(equal(2, bignumber(2)), true);
 
-    assert.equal(equal(1/3, bignumber(1).div(3)), true);
-    assert.equal(equal(bignumber(1).div(3), 1/3), true);
+    assert.throws(function () {equal(1/3, bignumber(1).div(3))}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {equal(bignumber(1).div(3), 1/3)}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should compare mixed booleans and bignumbers', function() {
@@ -100,14 +100,16 @@ describe('equal', function() {
   it('should compare two units correctly', function() {
     assert.equal(equal(unit('100cm'), unit('10inch')), false);
     assert.equal(equal(unit('100cm'), unit('1m')), true);
-    //assert.equal(equal(unit('12inch'), unit('1foot')), true); // round-off error :(
-    //assert.equal(equal(unit('2.54cm'), unit('1inch')), true); // round-off error :(
+    assert.equal(equal(unit('12inch'), unit('1foot')), true); // round-off error should be no issue
+    assert.equal(equal(unit('2.54cm'), unit('1inch')), true); // round-off error should be no issue
   });
 
   it('should compare null', function() {
     assert.equal(equal(null, null), true);
     assert.equal(equal(null, undefined), false);
+    assert.equal(equal(undefined, null), false);
     assert.equal(equal(0, null), false);
+    assert.equal(equal(null, 0), false);
     assert.equal(equal('null', null), false);
   });
 
@@ -115,6 +117,7 @@ describe('equal', function() {
     assert.equal(equal(undefined, undefined), true);
     assert.equal(equal(undefined, 'undefined'), false);
     assert.equal(equal(undefined, null), false);
+    assert.equal(equal(undefined, 0), false);
     assert.equal(equal(2, undefined), false);
   });
 
@@ -158,8 +161,8 @@ describe('equal', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {equal(1)}, error.ArgumentsError);
-    assert.throws(function () {equal(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {equal(1)}, /Too few arguments/);
+    assert.throws(function () {equal(1, 2, 3)}, /Too many arguments/);
   });
 
 });

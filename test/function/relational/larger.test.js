@@ -66,8 +66,8 @@ describe('larger', function() {
     assert.equal(larger(bignumber(2), 3), false);
     assert.equal(larger(2, bignumber(2)), false);
 
-    assert.equal(larger(1/3, bignumber(1).div(3)), false);
-    assert.equal(larger(bignumber(1).div(3), 1/3), false);
+    assert.throws(function () {larger(1/3, bignumber(1).div(3))}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {larger(bignumber(1).div(3), 1/3)}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should compare mixed booleans and bignumbers', function() {
@@ -135,8 +135,8 @@ describe('larger', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {larger(1)}, error.ArgumentsError);
-    assert.throws(function () {larger(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {larger(1)}, /Too few arguments/);
+    assert.throws(function () {larger(1, 2, 3)}, /Too many arguments/);
   });
 
 });
