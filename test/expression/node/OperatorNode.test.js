@@ -10,7 +10,7 @@ var assert = require('assert'),
 describe('OperatorNode', function() {
 
   it ('should create an OperatorNode', function () {
-    var n = new OperatorNode();
+    var n = new OperatorNode('op', 'fn', []);
     assert(n instanceof OperatorNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'OperatorNode');
@@ -57,7 +57,7 @@ describe('OperatorNode', function() {
   });
 
   it ('should filter an OperatorNode without contents', function () {
-    var n = new OperatorNode();
+    var n = new OperatorNode('op', 'fn', []);
 
     assert.deepEqual(n.filter(function (node) {return node instanceof OperatorNode}),  [n]);
     assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),    []);
