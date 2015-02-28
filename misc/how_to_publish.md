@@ -30,6 +30,8 @@ To update the reference documentation, run:
 This will regenerate all documentation in docs/reference/functions from the
 functions code comments.
 
+Check whether there are new markdown files generated and add them to git.
+
 
 ## Test
 
@@ -71,8 +73,9 @@ No need to publish for bower: The library is already published because of the
 new version tag. There is also no need to publish a component(1) build, because
 component(1) uses GitHub as it's registry.
 
-No need to publish at cdnjs: test after 30 to 60 minutes whether the new
-version is published at (should auto update).
+No need to publish at cdnjs: should be updated automatically by the owners
+of cdnjs. This is currently done manually and can easily take up to a day
+before updated.
 
 
 ## Test published libraries

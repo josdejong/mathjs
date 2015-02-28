@@ -7,7 +7,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     csch = math.csch,
-    bigmath = math.create({number: 'bignumber', precision: 20});
+    bigmath = math.create({precision: 20}),
+    biggermath = math.create({number: 'bignumber', precision: 22});
 
 describe('csch', function() {
   it('should return the csch of a boolean', function () {
@@ -30,15 +31,16 @@ describe('csch', function() {
   });
 
   it('should return the csch of a bignumber', function() {
+    var cschBig = bigmath.csch;
     var Big = bigmath.bignumber;
 
-    assert.deepEqual(csch(Big(0)), Big(Infinity));
-    assert.deepEqual(csch(Big(1)), Big('0.85091812823932154513'));
-    assert.deepEqual(csch(Big(2)), Big('0.27572056477178320776'));
-    assert.deepEqual(csch(Big(3)), Big('0.099821569668822732851'));
+    assert.deepEqual(cschBig(Big(0)), Big(Infinity));
+    assert.deepEqual(cschBig(Big(1)), Big('0.85091812823932154513'));
+    assert.deepEqual(cschBig(Big(2)), Big('0.27572056477178320776'));
+    assert.deepEqual(cschBig(Big(3)), Big('0.099821569668822732851'));
 
     /* Pass in extra digits to pi. */
-    //assert.deepEqual(csch(bigmath.pi).toString(), '0.086589537530046941828');
+    assert.deepEqual(cschBig(biggermath.pi).toString(), '0.086589537530046941828');
   });
 
   it('should return the csch of a complex number', function() {

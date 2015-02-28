@@ -9,6 +9,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     bigmath = math.create({number: 'bignumber', precision: 20}),
+    biggermath = math.create({precision: 21}),
+    asecBig = bigmath.asec,
     Big = bigmath.bignumber;
 
 describe('asec', function() {
@@ -26,27 +28,30 @@ describe('asec', function() {
   it('should return the arcsec of a number', function() {
     approx.equal(asec(-2) / pi, 2 / 3);
     approx.equal(asec(-1) / pi, 1);
-    /*approx.equal(asec(-0.5) / pi, 2 / 3);
-    approx.equal(asec(0.5) / pi, 1 / 3);*/
     approx.equal(asec(1) / pi, 0);
     approx.equal(asec(2) / pi, 1 / 3);
+
+    approx.deepEqual(asec(-0.5), complex(pi, -1.3169578969248));
+    approx.deepEqual(asec(0.5), complex(0, 1.3169578969248));
   });
 
   it('should return the arcsec of a bignumber', function() {
     var arg1 = Big(-2);
     var arg2 = Big(-1);
-    assert.deepEqual(asec(arg1).toString(), bigmath.tau.div(3).toString());
-    assert.deepEqual(asec(arg2).toString(), bigmath.pi.toString());
-    assert.deepEqual(asec(Big(1)), Big(0));
-    assert.deepEqual(asec(Big(2)).toString(), bigmath.pi.div(3).toString());
-
-    // Hit Newton's method case
-    bigmath.config({precision: 61});
-    assert.deepEqual(asec(Big(3.00000001)).toString(), '1.230959418519285979938614206185297709155969929825366328254265');
+    assert.deepEqual(asecBig(arg1).toString(), bigmath.tau.div(3).toString());
+    assert.deepEqual(asecBig(arg2).toString(), bigmath.pi.toString());
+    assert.deepEqual(asecBig(Big(1)), Big(0));
+    assert.deepEqual(asecBig(Big(2)).toString(), bigmath.pi.div(3).toString());
 
     //Make sure arg was not changed
     assert.deepEqual(arg1, Big(-2));
     assert.deepEqual(arg2, Big(-1));
+
+    // Hit Newton's method case
+    bigmath.config({precision: 61});
+    var arg = Big(3.00000001);
+    assert.deepEqual(asecBig(arg), Big('1.230959418519285979938614206185297709155969929825366328254265'));
+    assert.deepEqual(arg, Big(3.00000001));
   });
 
   it('should be the inverse function of sec', function() {
@@ -59,11 +64,13 @@ describe('asec', function() {
 
   it('should be the inverse function of bignumber sec', function() {
     bigmath.config({precision: 20});
-    assert.deepEqual(asec(bigmath.sec(Big(-1))).toString(), '1');
-    assert.ok(asec(bigmath.sec(Big(0))).isZero());
-    //assert.deepEqual(asec(bigmath.sec(Big(0.1))).toString(), '0.1');
-    assert.deepEqual(asec(bigmath.sec(Big(0.5))).toString(), '0.5');
-    assert.deepEqual(asec(bigmath.sec(Big(2))).toString(), '2');
+    assert.deepEqual(asecBig(bigmath.sec(Big(-1))), Big(1));
+    assert.deepEqual(asecBig(bigmath.sec(Big(0))), Big(0));
+    assert.deepEqual(asecBig(bigmath.sec(Big(0.5))), Big(0.5));
+    assert.deepEqual(asecBig(bigmath.sec(Big(2))), Big(2));
+
+    // Pass in extra digit
+    assert.deepEqual(asecBig(biggermath.sec(Big(0.1))), Big(0.1));
   });
 
   it('should throw an error if the bignumber result is complex', function() {

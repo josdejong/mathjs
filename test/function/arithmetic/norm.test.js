@@ -33,6 +33,8 @@ describe('norm', function () {
 
   it('should return the norm of a complex number', function () {
     assert.equal(math.norm(math.complex(3, -4)), 5);
+    assert.equal(math.norm(math.complex(1e200, -4e200)), 4.12310562561766e+200);
+    assert.equal(math.norm(math.complex(-4e200, 1e200)), 4.12310562561766e+200);
   });
 
   it('should return the norm of a vector', function () {

@@ -9,6 +9,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     bigmath = math.create({number: 'bignumber', precision: 20}),
+    biggermath = math.create({precision: 21}),
+    asinhBig = bigmath.asinh,
     Big = bigmath.bignumber;
 
 describe('asinh', function() {
@@ -32,12 +34,12 @@ describe('asinh', function() {
 
   it('should return the hyperbolic arcsin of a bignumber', function() {
     var arg = Big(-2);
-    assert.deepEqual(asinh(arg), Big('-1.4436354751788103425'));
-    assert.deepEqual(asinh(Big(-1)), Big('-0.88137358701954302523'));
-    assert.deepEqual(asinh(Big(0)), Big(0));
-    assert.deepEqual(asinh(Big(1)), Big('0.88137358701954302523'));
-    assert.deepEqual(asinh(Big(2)), Big('1.4436354751788103425'));
-    assert.deepEqual(asinh(bigmath.pi).toString(), '1.8622957433108482199');
+    assert.deepEqual(asinhBig(arg), Big('-1.4436354751788103425'));
+    assert.deepEqual(asinhBig(Big(-1)), Big('-0.88137358701954302523'));
+    assert.deepEqual(asinhBig(Big(0)), Big(0));
+    assert.deepEqual(asinhBig(Big(1)), Big('0.88137358701954302523'));
+    assert.deepEqual(asinhBig(Big(2)), Big('1.4436354751788103425'));
+    assert.deepEqual(asinhBig(bigmath.pi).toString(), '1.8622957433108482199');
 
     //Make sure arg was not changed
     assert.deepEqual(arg, Big(-2));
@@ -52,14 +54,13 @@ describe('asinh', function() {
   });
 
   it('should be the inverse function of bignumber sinh', function() {
-    assert.deepEqual(asinh(bigmath.sinh(Big(-1))), Big(-1));
-    assert.deepEqual(asinh(bigmath.sinh(Big(0))), Big(0));
-    assert.deepEqual(asinh(bigmath.sinh(Big(0.5))), Big(0.5));
-    assert.deepEqual(asinh(bigmath.sinh(Big(2))), Big(2));
+    assert.deepEqual(asinhBig(bigmath.sinh(Big(-1))), Big(-1));
+    assert.deepEqual(asinhBig(bigmath.sinh(Big(0))), Big(0));
+    assert.deepEqual(asinhBig(bigmath.sinh(Big(0.5))), Big(0.5));
+    assert.deepEqual(asinhBig(bigmath.sinh(Big(2))), Big(2));
 
     /* Pass in more digits to pi. */
-    //bigmath.config({precision: 21});
-    //assert.deepEqual(asinh(bigmath.sinh(Big(0.1))), Big(0.1));
+    assert.deepEqual(asinhBig(biggermath.sinh(Big(0.1))), Big(0.1));
   });
 
   it('should return the arcsinh of a complex number', function() {

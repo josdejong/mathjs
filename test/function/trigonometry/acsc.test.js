@@ -9,25 +9,27 @@ var assert = require('assert'),
     acsc = math.acsc,
     csc = math.csc,
     bigmath = math.create({number: 'bignumber', precision: 20}),
+    biggermath = math.create({precision: 21}),
+    acscBig = bigmath.acsc,
     Big = bigmath.bignumber;
 
 describe('acsc', function() {
   it('should return the arccsc of a boolean', function () {
     approx.equal(acsc(true), pi / 2);
-    assert.ok(isNaN(acsc(false)));
-    //assert.deepEqual(acsc(false), complex(0, Infinity));
+    assert.deepEqual(acsc(false), complex(pi / 2, Infinity));
+    //assert.ok(isNaN(acsc(false)));
   });
 
   it('should return the arccsc of null', function () {
-    assert.ok(isNaN(acsc(null)));
-    //assert.deepEqual(acsc(null), complex(0, Infinity));
+    assert.deepEqual(acsc(null), complex(pi / 2, Infinity));
+    //assert.ok(isNaN(acsc(null)));
   });
 
   it('should return the arccsc of a number', function() {
     approx.equal(acsc(-2) / pi, -1/6);
     approx.equal(acsc(-1) / pi, -0.5);
-    assert.ok(isNaN(acsc(0)));
-    //assert.deepEqual(acsc(0), complex(0, Infinity));
+    assert.deepEqual(acsc(0), complex(pi / 2, Infinity));
+    //assert.ok(isNaN(acsc(0)));
     approx.equal(acsc(1) / pi, 0.5);
     approx.equal(acsc(2) / pi, 1/6);
   });
@@ -37,12 +39,12 @@ describe('acsc', function() {
     var arg2 = Big(-1.71);
     var arg3 = Big(-1);
 
-    assert.deepEqual(acsc(arg1), Big('-0.5235987755982988731'));
-    assert.deepEqual(acsc(arg2), Big('-0.624627713324716013'));
-    assert.deepEqual(acsc(arg3), Big('-1.5707963267948966192'));
-    assert.deepEqual(acsc(Big(1)), Big('1.5707963267948966192'));
-    assert.deepEqual(acsc(Big(1.71)), Big('0.624627713324716013'));
-    assert.deepEqual(acsc(Big(2)), Big('0.5235987755982988731'));
+    assert.deepEqual(acscBig(arg1), Big('-0.5235987755982988731'));
+    assert.deepEqual(acscBig(arg2), Big('-0.624627713324716013'));
+    assert.deepEqual(acscBig(arg3), Big('-1.5707963267948966192'));
+    assert.deepEqual(acscBig(Big(1)), Big('1.5707963267948966192'));
+    assert.deepEqual(acscBig(Big(1.71)), Big('0.624627713324716013'));
+    assert.deepEqual(acscBig(Big(2)), Big('0.5235987755982988731'));
 
     // Make sure args were not changed
     assert.deepEqual(arg1, Big(-2));
@@ -53,7 +55,7 @@ describe('acsc', function() {
     bigmath.config({precision: 61});
 
     var arg4 = Big(1.00000001);
-    assert.deepEqual(acsc(arg4).toString(), '1.570654905439248565373629613450057180739125884090554026623514');
+    assert.deepEqual(acscBig(arg4), Big('1.570654905439248565373629613450057180739125884090554026623514'));
     assert.deepEqual(arg4, Big(1.00000001));
   });
 
@@ -67,23 +69,22 @@ describe('acsc', function() {
 
   it('should be the inverse function of bignumber csc', function() {
     // More Newton's method test cases
-    assert.deepEqual(acsc(bigmath.csc(Big(-2))).toString(), '-1.141592653589793238462643383279502884197169399375105820974945');
-    assert.deepEqual(acsc(bigmath.csc(Big(-0.5))).toString(), '-0.5');
-    assert.deepEqual(acsc(bigmath.csc(Big(-0.1))).toString(), '-0.1');
-    assert.deepEqual(acsc(bigmath.csc(Big(0.1))).toString(), '0.1');
-    assert.deepEqual(acsc(bigmath.csc(Big(0.5))).toString(), '0.5');
-    assert.deepEqual(acsc(bigmath.csc(Big(2))).toString(), '1.141592653589793238462643383279502884197169399375105820974945');
+    assert.deepEqual(acscBig(bigmath.csc(Big(-2))), Big('-1.141592653589793238462643383279502884197169399375105820974945'));
+    assert.deepEqual(acscBig(bigmath.csc(Big(-0.5))), Big(-0.5));
+    assert.deepEqual(acscBig(bigmath.csc(Big(-0.1))), Big(-0.1));
+    assert.deepEqual(acscBig(bigmath.csc(Big(0.1))), Big(0.1));
+    assert.deepEqual(acscBig(bigmath.csc(Big(0.5))), Big(0.5));
+    assert.deepEqual(acscBig(bigmath.csc(Big(2))), Big('1.141592653589793238462643383279502884197169399375105820974945'));
 
-    bigmath.config({precision: 20});
     // Full decimal Taylor test cases
-    /* csc(-1) =                      -0.8414709848078965067
-       acsc(-0.8414709848078965067) = -1.00000000000000000008 => (rounding up) -1.0000000000000000001
-    assert.deepEqual(acsc(bigmath.csc(Big(-1))), Big('-1')); */
+    bigmath.config({precision: 20});
+    assert.deepEqual(acscBig(bigmath.csc(Big(0))), Big(0));
+    assert.deepEqual(acscBig(bigmath.csc(Big(0.1))), Big(0.1));
+    assert.deepEqual(acscBig(bigmath.csc(Big(0.5))), Big(0.5));
 
-    assert.ok(acsc(bigmath.csc(Big(0))).isZero());
-    assert.deepEqual(acsc(bigmath.csc(Big(0.1))).toString(), '0.1');
-    assert.deepEqual(acsc(bigmath.csc(Big(0.5))).toString(), '0.5');
-    //assert.deepEqual(acsc(bigmath.csc(Big(2))).toString(), '1.1415926535897932385');
+    // Pass in an extra digit
+    assert.deepEqual(acscBig(biggermath.csc(Big(-1))), Big('-1'));
+    assert.deepEqual(acscBig(biggermath.csc(Big(2))), Big('1.1415926535897932385'));
   });
 
   it('should throw an error if the bignumber result is complex', function() {
