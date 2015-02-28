@@ -326,4 +326,13 @@ describe('OperatorNode', function() {
     assert.equal(m3.toTex(), '{\\left({{2}+{3}}\\right) \\cdot {4}}-{5}');
   });
 
+  it ('should have an identifier', function () {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new OperatorNode('+', 'add', [a, b]);
+
+    assert.equal(n.getIdentifier(), 'OperatorNode:add');
+  });
+
 });

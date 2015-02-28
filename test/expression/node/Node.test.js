@@ -93,4 +93,10 @@ describe('Node', function() {
     }, /Cannot compile a Node interface/);
   });
 
+  it ('should have an identifier', function () {
+    var node = new Node();
+
+    assert.equal(node.getIdentifier(), 'Node');
+  });
+
 });
