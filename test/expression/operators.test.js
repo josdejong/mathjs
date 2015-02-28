@@ -17,9 +17,33 @@ describe('operators', function () {
     assert.equal(operators.getPrecedence(n2), 2);
   });
 
-  it('should return null if precedence is not defined', function () {
+  it('should return null if precedence is not defined for a node', function () {
     var n = new Node();
 
     assert.equal(operators.getPrecedence(n), null);
+  });
+
+  it('should return the associativity of a node', function () {
+    var a = new ConstantNode(1);
+
+    var n1 = new OperatorNode('+', 'add', [a, a]);
+    var n2 = new OperatorNode('^', 'pow', [a, a]);
+    var n3 = new OperatorNode('-', 'unaryMinus', [a]);
+    var n4 = new OperatorNode('!', 'factorial', [a]);
+
+    assert.equal(operators.getAssociativity(n1), 'left');
+    assert.equal(operators.getAssociativity(n2), 'right');
+    assert.equal(operators.getAssociativity(n3), 'right');
+    assert.equal(operators.getAssociativity(n4), 'left');
+  });
+
+  it('should return null if associativity is not defined for a node', function () {
+    var a = new ConstantNode(1);
+
+    var n1 = new Node();
+    var n2 = new AssignmentNode('a', a);
+
+    assert.equal(operators.getAssociativity(n1), null);
+    assert.equal(operators.getAssociativity(n2), null);
   });
 });
