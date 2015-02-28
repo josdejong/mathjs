@@ -1547,8 +1547,8 @@ describe('parse', function() {
     it('should correctly stringify a node tree', function() {
       assert.equal(parse('0').toString(), '0');
       assert.equal(parse('"hello"').toString(), '"hello"');
-      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + (3 * i), 4]');
-      assert.equal(parse('1/2a').toString(), '(1 / 2) * a');
+      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3 * i, 4]');
+      assert.equal(parse('1/2a').toString(), '1 / 2 * a');
     });
 
     describe('custom nodes', function () {
