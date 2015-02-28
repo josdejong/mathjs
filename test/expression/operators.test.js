@@ -46,4 +46,28 @@ describe('operators', function () {
     assert.equal(operators.getAssociativity(n1), null);
     assert.equal(operators.getAssociativity(n2), null);
   });
+
+  it('should return if a Node is associative with another Node', function () {
+    var a = new ConstantNode(1);
+
+    var n1 = new OperatorNode('+', 'add', [a, a]);
+    var n2 = new OperatorNode('-', 'subtract', [a, a]);
+
+    assert.equal(operators.isAssociativeWith(n1, n1), true);
+    assert.equal(operators.isAssociativeWith(n1, n2), true);
+    assert.equal(operators.isAssociativeWith(n2, n2), false);
+    assert.equal(operators.isAssociativeWith(n2, n1), false);
+  });
+
+  it('should return null if the associativity between two Nodes is not defined', function () {
+    var a = new ConstantNode(1);
+
+    var n1 = new Node();
+    var n2 = new AssignmentNode('a', a);
+
+    assert.equal(operators.isAssociativeWith(n1, n1), null);
+    assert.equal(operators.isAssociativeWith(n1, n2), null);
+    assert.equal(operators.isAssociativeWith(n2, n2), null);
+    assert.equal(operators.isAssociativeWith(n2, n1), null);
+  });
 });
