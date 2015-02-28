@@ -131,9 +131,18 @@
 ## trigonometry
 
 - [acos(x)](acos.md)
+- [acosh(x)](acosh.md)
+- [acot(x)](acot.md)
+- [acoth(x)](acoth.md)
+- [acsc(x)](acsc.md)
+- [acsch(x)](acsch.md)
+- [asec(x)](asec.md)
+- [asech(x)](asech.md)
 - [asin(x)](asin.md)
+- [asinh(x)](asinh.md)
 - [atan(x)](atan.md)
 - [atan2(y, x)](atan2.md)
+- [atanh(x)](atanh.md)
 - [cos(x)](cos.md)
 - [cosh(x)](cosh.md)
 - [cot(x)](cot.md)

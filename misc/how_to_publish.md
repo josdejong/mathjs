@@ -30,6 +30,8 @@ To update the reference documentation, run:
 This will regenerate all documentation in docs/reference/functions from the
 functions code comments.
 
+Check whether there are new markdown files generated and add them to git.
+
 
 ## Test
 

@@ -1,6 +1,6 @@
 # History
 
-## not yet released, version 1.4.0-SNAPSHOT
+## 2015-02-28, version 1.4.0
 
 - Implemented trigonometric functions:
   `acosh`, `acoth`, `acsch`, `asech`, `asinh`, `atanh`, `acot`, `acsc`, `asec`.

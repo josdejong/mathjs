@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 1.3.1-SNAPSHOT
- * @date    2015-02-09
+ * @version 1.4.0
+ * @date    2015-02-28
  *
  * @license
  * Copyright (C) 2013-2015 Jos de Jong <wjosdejong@gmail.com>
@@ -203,7 +203,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.create = create;
 
 	  // create a new BigNumber factory for this instance of math.js
-	  var BigNumber = __webpack_require__(156).constructor();
+	  var BigNumber = __webpack_require__(5).constructor();
 
 	  // extend BigNumber with a function clone
 	  if (typeof BigNumber.prototype.clone !== 'function') {
@@ -239,37 +239,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  // errors
-	  math.error = __webpack_require__(5);
+	  math.error = __webpack_require__(6);
 
 	  // types (Matrix, Complex, Unit, ...)
 	  math.type = {};
-	  math.type.Complex = __webpack_require__(6);
-	  math.type.Range = __webpack_require__(7);
-	  math.type.Index = __webpack_require__(8);
-	  math.type.Matrix = __webpack_require__(9);
-	  math.type.Unit = __webpack_require__(10);
-	  math.type.Help = __webpack_require__(11);
-	  math.type.ResultSet = __webpack_require__(12);
+	  math.type.Complex = __webpack_require__(7);
+	  math.type.Range = __webpack_require__(8);
+	  math.type.Index = __webpack_require__(9);
+	  math.type.Matrix = __webpack_require__(10);
+	  math.type.Unit = __webpack_require__(11);
+	  math.type.Help = __webpack_require__(12);
+	  math.type.ResultSet = __webpack_require__(13);
 	  math.type.BigNumber = BigNumber;
 
-	  math.collection = __webpack_require__(13);
+	  math.collection = __webpack_require__(14);
 
 	  // expression (parse, Parser, nodes, docs)
 	  math.expression = {};
-	  math.expression.node = __webpack_require__(14);
-	  math.expression.parse = __webpack_require__(15);
-	  math.expression.Parser = __webpack_require__(16);
-	  math.expression.docs = __webpack_require__(17);
+	  math.expression.node = __webpack_require__(15);
+	  math.expression.parse = __webpack_require__(16);
+	  math.expression.Parser = __webpack_require__(17);
+	  math.expression.docs = __webpack_require__(18);
+
+	  // serialization utilities
+	  math.json = {
+	    reviver: __webpack_require__(19)
+	  };
 
 	  // expression parser
-	  __webpack_require__(29)(math, _config);
-	  __webpack_require__(30)(math, _config);
 	  __webpack_require__(31)(math, _config);
 	  __webpack_require__(32)(math, _config);
-
-	  // functions - arithmetic
 	  __webpack_require__(33)(math, _config);
 	  __webpack_require__(34)(math, _config);
+
+	  // functions - arithmetic
 	  __webpack_require__(35)(math, _config);
 	  __webpack_require__(36)(math, _config);
 	  __webpack_require__(37)(math, _config);
@@ -297,25 +300,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(59)(math, _config);
 	  __webpack_require__(60)(math, _config);
 	  __webpack_require__(61)(math, _config);
-
-	  // functions - bitwise
 	  __webpack_require__(62)(math, _config);
 	  __webpack_require__(63)(math, _config);
+
+	  // functions - bitwise
 	  __webpack_require__(64)(math, _config);
 	  __webpack_require__(65)(math, _config);
 	  __webpack_require__(66)(math, _config);
 	  __webpack_require__(67)(math, _config);
 	  __webpack_require__(68)(math, _config);
-
-	  // functions - complex
 	  __webpack_require__(69)(math, _config);
 	  __webpack_require__(70)(math, _config);
+
+	  // functions - complex
 	  __webpack_require__(71)(math, _config);
 	  __webpack_require__(72)(math, _config);
-
-	  // functions - construction
 	  __webpack_require__(73)(math, _config);
 	  __webpack_require__(74)(math, _config);
+
+	  // functions - construction
 	  __webpack_require__(75)(math, _config);
 	  __webpack_require__(76)(math, _config);
 	  __webpack_require__(77)(math, _config);
@@ -324,16 +327,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(80)(math, _config);
 	  __webpack_require__(81)(math, _config);
 	  __webpack_require__(82)(math, _config);
-
-	  // functions - logical
 	  __webpack_require__(83)(math, _config);
 	  __webpack_require__(84)(math, _config);
+
+	  // functions - logical
 	  __webpack_require__(85)(math, _config);
 	  __webpack_require__(86)(math, _config);
-
-	  // functions - matrix
 	  __webpack_require__(87)(math, _config);
 	  __webpack_require__(88)(math, _config);
+
+	  // functions - matrix
 	  __webpack_require__(89)(math, _config);
 	  __webpack_require__(90)(math, _config);
 	  __webpack_require__(91)(math, _config);
@@ -349,40 +352,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(101)(math, _config);
 	  __webpack_require__(102)(math, _config);
 	  __webpack_require__(103)(math, _config);
+	  __webpack_require__(104)(math, _config);
+	  __webpack_require__(105)(math, _config);
 
 	  // functions - probability
 	  //require('./function/probability/distribution')(math, _config); // TODO: rethink math.distribution
-	  __webpack_require__(104)(math, _config);
-	  __webpack_require__(105)(math, _config);
 	  __webpack_require__(106)(math, _config);
 	  __webpack_require__(107)(math, _config);
 	  __webpack_require__(108)(math, _config);
 	  __webpack_require__(109)(math, _config);
 	  __webpack_require__(110)(math, _config);
-
-	  // functions - relational
 	  __webpack_require__(111)(math, _config);
 	  __webpack_require__(112)(math, _config);
+
+	  // functions - relational
 	  __webpack_require__(113)(math, _config);
 	  __webpack_require__(114)(math, _config);
 	  __webpack_require__(115)(math, _config);
 	  __webpack_require__(116)(math, _config);
 	  __webpack_require__(117)(math, _config);
 	  __webpack_require__(118)(math, _config);
-
-	  // functions - statistics
 	  __webpack_require__(119)(math, _config);
 	  __webpack_require__(120)(math, _config);
+
+	  // functions - statistics
 	  __webpack_require__(121)(math, _config);
 	  __webpack_require__(122)(math, _config);
 	  __webpack_require__(123)(math, _config);
 	  __webpack_require__(124)(math, _config);
 	  __webpack_require__(125)(math, _config);
 	  __webpack_require__(126)(math, _config);
-
-	  // functions - trigonometry
 	  __webpack_require__(127)(math, _config);
 	  __webpack_require__(128)(math, _config);
+
+	  // functions - trigonometry
 	  __webpack_require__(129)(math, _config);
 	  __webpack_require__(130)(math, _config);
 	  __webpack_require__(131)(math, _config);
@@ -397,11 +400,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(140)(math, _config);
 	  __webpack_require__(141)(math, _config);
 	  __webpack_require__(142)(math, _config);
-
-	  // functions - units
 	  __webpack_require__(143)(math, _config);
-
-	  // functions - utils
 	  __webpack_require__(144)(math, _config);
 	  __webpack_require__(145)(math, _config);
 	  __webpack_require__(146)(math, _config);
@@ -411,6 +410,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(150)(math, _config);
 	  __webpack_require__(151)(math, _config);
 	  __webpack_require__(152)(math, _config);
+	  __webpack_require__(153)(math, _config);
+
+	  // functions - units
+	  __webpack_require__(154)(math, _config);
+
+	  // functions - utils
+	  __webpack_require__(155)(math, _config);
+	  __webpack_require__(156)(math, _config);
+	  __webpack_require__(157)(math, _config);
+	  __webpack_require__(158)(math, _config);
+	  __webpack_require__(159)(math, _config);
+	  __webpack_require__(160)(math, _config);
+	  __webpack_require__(161)(math, _config);
+	  __webpack_require__(162)(math, _config);
+	  __webpack_require__(163)(math, _config);
 
 	  // TODO: deprecated since version 0.25.0, remove some day.
 	  math.ifElse = function () {
@@ -422,21 +436,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // attach transform functions (for converting one-based indices to zero-based)
 	  math.expression.transform = {
-	    concat: __webpack_require__(18)(math, _config),
-	    filter: __webpack_require__(19)(math, _config),
-	    forEach:__webpack_require__(20)(math, _config),
-	    index:  __webpack_require__(21)(math, _config),
-	    map:    __webpack_require__(22)(math, _config),
-	    max:    __webpack_require__(23)(math, _config),
-	    mean:   __webpack_require__(24)(math, _config),
-	    min:    __webpack_require__(25)(math, _config),
-	    range:  __webpack_require__(26)(math, _config),
-	    subset: __webpack_require__(27)(math, _config)
+	    concat: __webpack_require__(20)(math, _config),
+	    filter: __webpack_require__(21)(math, _config),
+	    forEach:__webpack_require__(22)(math, _config),
+	    index:  __webpack_require__(23)(math, _config),
+	    map:    __webpack_require__(24)(math, _config),
+	    max:    __webpack_require__(25)(math, _config),
+	    mean:   __webpack_require__(26)(math, _config),
+	    min:    __webpack_require__(27)(math, _config),
+	    range:  __webpack_require__(28)(math, _config),
+	    subset: __webpack_require__(29)(math, _config)
 	  };
 
 	  // selector (we initialize after all functions are loaded)
 	  math.chaining = {};
-	  math.chaining.Chain = __webpack_require__(28)(math, _config);
+	  math.chaining.Chain = __webpack_require__(30)(math, _config);
 	  math.chaining.Selector = math.chaining.Chain; // TODO: deprecate in v2.0
 
 	  // apply provided configuration options
@@ -954,14 +968,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = function (math, config) {
 	  var object = __webpack_require__(2);
-	  var bignumber = __webpack_require__(153);
-	  var Complex = __webpack_require__(6);
+	  var bignumber = __webpack_require__(164);
+	  var Complex = __webpack_require__(7);
 	  var BigNumber = math.type.BigNumber;
 
 	  math['true']     = true;
 	  math['false']    = false;
 	  math['null']     = null;
-	  math['uninitialized'] = __webpack_require__(154).UNINITIALIZED;
+	  math['uninitialized'] = __webpack_require__(165).UNINITIALIZED;
 
 	  if (config.number === 'bignumber') {
 	    math['Infinity'] = new BigNumber(Infinity);
@@ -1006,7 +1020,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.i = new Complex(0, 1);
 
 	  // meta information
-	  math.version = __webpack_require__(155);
+	  math.version = __webpack_require__(166);
 	};
 
 
@@ -1014,14 +1028,34 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	var BigNumber = __webpack_require__(336);
 
-	exports.ArgumentsError = __webpack_require__(158);
-	exports.DimensionError = __webpack_require__(159);
-	exports.IndexError = __webpack_require__(160);
-	exports.UnsupportedTypeError = __webpack_require__(161);
+	// FIXME: replace all require('decimal.js') with require('./BigNumber').
 
-	// TODO: implement an InvalidValueError?
+	/**
+	 * Get a JSON representation of a BigNumber containing
+	 * type information
+	 * @returns {Object} Returns a JSON object structured as:
+	 *                   `{"mathjs": "BigNumber", "value": "0.2"}`
+	 */
+	BigNumber.prototype.toJSON = function () {
+	  return {
+	    mathjs: 'BigNumber',
+	    value: this.toString()
+	  };
+	};
+
+	/**
+	 * Instantiate a BigNumber from a JSON object
+	 * @param {Object} json  a JSON object structured as:
+	 *                       `{"mathjs": "BigNumber", "value": "0.2"}`
+	 * @return {BigNumber}
+	 */
+	BigNumber.fromJSON = function (json) {
+	  return new BigNumber(json.value);
+	};
+
+	module.exports = BigNumber;
 
 
 /***/ },
@@ -1030,8 +1064,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var util = __webpack_require__(157),
-	    Unit = __webpack_require__(10),
+	exports.ArgumentsError = __webpack_require__(167);
+	exports.DimensionError = __webpack_require__(168);
+	exports.IndexError = __webpack_require__(169);
+	exports.UnsupportedTypeError = __webpack_require__(170);
+
+	// TODO: implement an InvalidValueError?
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var util = __webpack_require__(171),
+	    Unit = __webpack_require__(11),
 	    number = util.number,
 
 	    isNumber = util.number.isNumber,
@@ -1082,7 +1130,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this.im = construct.im;
 	          break;
 	        }
-	      } 
+	      }
 	      throw new SyntaxError('Object with the re and im or r and phi properties expected.');
 
 	    case 2:
@@ -1407,20 +1455,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String} str
 	 */
 	Complex.prototype.format = function (options) {
-	  var str = '',
-	      strRe = number.format(this.re, options),
-	      strIm = number.format(this.im, options);
+	  var str = '';
+	  var im = this.im;
+	  var re = this.re;
+	  var strRe = number.format(this.re, options);
+	  var strIm = number.format(this.im, options);
 
-	  if (this.im == 0) {
+	  // round either re or im when smaller than the configured precision
+	  var precision = isNumber(options) ? options : options ? options.precision : null;
+	  if (precision !== null) {
+	    var epsilon = Math.pow(10, -precision);
+	    if (Math.abs(re / im) < epsilon) {re = 0;}
+	    if (Math.abs(im / re) < epsilon) {im = 0;}
+	  }
+
+	  if (im == 0) {
 	    // real value
 	    str = strRe;
 	  }
-	  else if (this.re == 0) {
+	  else if (re == 0) {
 	    // purely complex value
-	    if (this.im == 1) {
+	    if (im == 1) {
 	      str = 'i';
 	    }
-	    else if (this.im == -1) {
+	    else if (im == -1) {
 	      str = '-i';
 	    }
 	    else {
@@ -1429,8 +1487,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  else {
 	    // complex value
-	    if (this.im > 0) {
-	      if (this.im == 1) {
+	    if (im > 0) {
+	      if (im == 1) {
 	        str = strRe + ' + i';
 	      }
 	      else {
@@ -1438,7 +1496,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	    else {
-	      if (this.im == -1) {
+	      if (im == -1) {
 	        str = strRe + ' - i';
 	      }
 	      else {
@@ -1459,6 +1517,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
+	 * Get a JSON representation of the complex number
+	 * @returns {Object} Returns a JSON object structured as:
+	 *                   `{"mathjs": "Complex", "re": 2, "im": 3}`
+	 */
+	Complex.prototype.toJSON = function () {
+	  return {
+	    mathjs: 'Complex',
+	    re: this.re,
+	    im: this.im
+	  };
+	};
+
+	/**
+	 * Create a Complex number from a JSON object
+	 * @param {Object} json  A JSON Object structured as
+	 *                       {"mathjs": "Complex", "re": 2, "im": 3}
+	 *                       All properties are optional, default values
+	 *                       for `re` and `im` are 0.
+	 * @return {Complex} Returns a new Complex number
+	 */
+	Complex.fromJSON = function (json) {
+	  return new Complex(json);
+	};
+
+	/**
 	 * Returns a string representation of the complex number.
 	 * @return {String} str
 	 */
@@ -1469,12 +1552,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(157);
+	var util = __webpack_require__(171);
 
 	var number = util.number;
 	var string = util.string;
@@ -1739,19 +1822,43 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return this.format();
 	};
 
+	/**
+	 * Get a JSON representation of the range
+	 * @returns {Object} Returns a JSON object structured as:
+	 *                   `{"mathjs": "Range", "start": 2, "end": 4, "step": 1}`
+	 */
+	Range.prototype.toJSON = function () {
+	  return {
+	    mathjs: 'Range',
+	    start: this.start,
+	    end: this.end,
+	    step: this.step
+	  };
+	};
+
+	/**
+	 * Instantiate a Range from a JSON object
+	 * @param {Object} json A JSON object structured as:
+	 *                      `{"mathjs": "Range", "start": 2, "end": 4, "step": 1}`
+	 * @return {Range}
+	 */
+	Range.fromJSON = function (json) {
+	  return new Range(json.start, json.end, json.step);
+	};
+
 	// exports
 	module.exports = Range;
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(157),
+	var util = __webpack_require__(171),
 
-	    Range = __webpack_require__(7),
+	    Range = __webpack_require__(8),
 
 	    number = util.number,
 
@@ -2014,28 +2121,50 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return '[' + strings.join(', ') + ']';
 	};
 
+	/**
+	 * Get a JSON representation of the Index
+	 * @returns {Object} Returns a JSON object structured as:
+	 *                   `{"mathjs": "Index", "ranges": [{"mathjs": "Range", start: 0, end: 10, step:1}, ...]}`
+	 */
+	Index.prototype.toJSON = function () {
+	  return {
+	    mathjs: 'Index',
+	    ranges: this._ranges
+	  };
+	};
+
+	/**
+	 * Instantiate an Index from a JSON object
+	 * @param {Object} json A JSON object structured as:
+	 *                     `{"mathjs": "Index", "ranges": [{"mathjs": "Range", start: 0, end: 10, step:1}, ...]}`
+	 * @return {Index}
+	 */
+	Index.fromJSON = function (json) {
+	  return Index.create(json.ranges);
+	};
+
 	// exports
 	module.exports = Index;
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(157),
-	    DimensionError = __webpack_require__(159),
+	var util = __webpack_require__(171);
+	var DimensionError = __webpack_require__(168);
 
-	    Index = __webpack_require__(8),
+	var Index = __webpack_require__(9);
 
-	    number = util.number,
-	    string = util.string,
-	    array = util.array,
-	    object = util.object,
+	var number = util.number;
+	var string = util.string;
+	var array = util.array;
+	var object = util.object;
 
-	    isArray = Array.isArray,
-	    validateIndex = array.validateIndex;
+	var isArray = Array.isArray;
+	var validateIndex = array.validateIndex;
 
 	/**
 	 * @constructor Matrix
@@ -2516,6 +2645,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
+	 * Get a JSON representation of the matrix
+	 * @returns {Object}
+	 */
+	Matrix.prototype.toJSON = function () {
+	  return {
+	    mathjs: 'Matrix',
+	    data: this._data
+	  }
+	};
+
+	/**
+	 * Generate a matrix from a JSON object
+	 * @param {Object} json  An object structured like
+	 *                       `{"mathjs": "Matrix", data: []}`,
+	 *                       where mathjs is optional
+	 * @returns {Matrix}
+	 */
+	Matrix.fromJSON = function (json) {
+	  return new Matrix(json.data);
+	};
+
+	/**
 	 * Preprocess data, which can be an Array or Matrix with nested Arrays and
 	 * Matrices. Replaces all nested Matrices with Arrays
 	 * @param {Array} data
@@ -2540,12 +2691,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(157),
+	var util = __webpack_require__(171),
 
 	    number = util.number,
 	    string = util.string,
@@ -2804,13 +2955,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Unnormalize a value, based on its currently set unit
+	 * Denormalize a value, based on its currently set unit
 	 * @param {Number} value
 	 * @param {Number} [prefixValue]    Optional prefix value to be used
-	 * @return {Number} unnormalized value
+	 * @return {Number} denormalized value
 	 * @private
 	 */
-	Unit.prototype._unnormalize = function (value, prefixValue) {
+	Unit.prototype._denormalize = function (value, prefixValue) {
 	  if (prefixValue == undefined) {
 	    return value / this.unit.value / this.prefix.value - this.unit.offset;
 	  }
@@ -2929,7 +3080,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	Unit.prototype.toNumber = function (valuelessUnit) {
 	  var other = this.to(valuelessUnit);
-	  return other._unnormalize(other.value, other.prefix.value);
+	  return other._denormalize(other.value, other.prefix.value);
 	};
 
 
@@ -2939,6 +3090,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	Unit.prototype.toString = function() {
 	  return this.format();
+	};
+
+	/**
+	 * Get a JSON representation of the unit
+	 * @returns {Object} Returns a JSON object structured as:
+	 *                   `{"mathjs": "Unit", "value": 2, "unit": "cm", "fixPrefix": false}`
+	 */
+	Unit.prototype.toJSON = function () {
+	  return {
+	    mathjs: 'Unit',
+	    value: this._denormalize(this.value),
+	    unit: this.prefix.name + this.unit.name,
+	    fixPrefix: this.fixPrefix
+	  };
+	};
+
+	/**
+	 * Instantiate a Unit from a JSON object
+	 * @param {Object} json  A JSON object structured as:
+	 *                       `{"mathjs": "Unit", "value": 2, "unit": "cm", "fixPrefix": false}`
+	 * @return {Unit}
+	 */
+	Unit.fromJSON = function (json) {
+	  var unit = new Unit(json.value, json.unit);
+	  unit.fixPrefix = json.fixPrefix || false;
+	  return unit;
 	};
 
 	/**
@@ -2961,12 +3138,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  if (this.value !== null && !this.fixPrefix) {
 	    var bestPrefix = this._bestPrefix();
-	    value = this._unnormalize(this.value, bestPrefix.value);
+	    value = this._denormalize(this.value, bestPrefix.value);
 	    str = number.format(value, options) + ' ';
 	    str += bestPrefix.name + this.unit.name;
 	  }
 	  else {
-	    value = this._unnormalize(this.value);
+	    value = this._denormalize(this.value);
 	    str = (this.value !== null) ? (number.format(value, options) + ' ') : '';
 	    str += this.prefix.name + this.unit.name;
 	  }
@@ -3412,34 +3589,33 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(157),
-	    object = util.object,
-	    string = util.string;
+	var util = __webpack_require__(171);
+	var object = util.object;
+	var string = util.string;
 
 	/**
 	 * Documentation object
-	 * @param {Object} math The math.js namespace
 	 * @param {Object} doc  Object containing properties:
 	 *                      {String} name
 	 *                      {String} category
+	 *                      {String} description
 	 *                      {String[]} syntax
 	 *                      {String[]} examples
 	 *                      {String[]} seealso
 	 * @constructor
 	 */
-	function Help (math, doc) {
+	function Help (doc) {
 	  if (!(this instanceof Help)) {
 	    throw new SyntaxError('Constructor must be called with the new operator');
 	  }
 
-	  // TODO: throw an error when math or doc is not provided
+	  if (!doc)  throw new Error('Argument "doc" missing');
 
-	  this.math = math;
 	  this.doc = doc;
 	}
 
@@ -3454,10 +3630,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * Generate readable description from a Help object
+	 * @param {Object} [math]   A math instance, used to evaluate the examples
 	 * @return {String} readableDoc
 	 * @private
 	 */
-	Help.prototype.toString = function () {
+	Help.prototype.toText = function (math) {
 	  var doc = this.doc || {};
 	  var desc = '\n';
 
@@ -3474,20 +3651,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    desc += 'Syntax:\n    ' + doc.syntax.join('\n    ') + '\n\n';
 	  }
 	  if (doc.examples) {
-	    var parser = this.math.parser();
+	    var parser = math && math.parser();
 	    desc += 'Examples:\n';
 	    for (var i = 0; i < doc.examples.length; i++) {
 	      var expr = doc.examples[i];
-	      var res;
-	      try {
-	        res = parser.eval(expr);
-	      }
-	      catch (e) {
-	        res = e;
-	      }
 	      desc += '    ' + expr + '\n';
-	      if (res !== undefined && !(res instanceof Help)) {
-	        desc += '        ' + string.format(res, {precision: 14}) + '\n';
+
+	      if (parser) {
+	        var res;
+	        try {
+	          res = parser.eval(expr);
+	        }
+	        catch (e) {
+	          res = e;
+	        }
+	        if (res !== undefined && !(res instanceof Help)) {
+	          desc += '        ' + string.format(res, {precision: 14}) + '\n';
+	        }
 	      }
 	    }
 	    desc += '\n';
@@ -3499,13 +3679,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return desc;
 	};
 
-	// TODO: implement a toHTML function in Help
+	/**
+	 * Generate a string representation of the Help object
+	 * @return {String} Returns a string
+	 * @private
+	 */
+	Help.prototype.toString = function () {
+	  return this.toText();
+	};
 
 	/**
 	 * Export the help object to JSON
 	 */
 	Help.prototype.toJSON = function () {
-	  return object.clone(this.doc);
+	  var obj = object.clone(this.doc);
+	  obj.mathjs = 'Help';
+	  return obj;
+	};
+
+	/**
+	 * Instantiate a Help object from a JSON object
+	 * @param {Object} json
+	 * @returns {Help} Returns a new Help object
+	 */
+	Help.fromJSON = function (json) {
+	  var doc = {};
+	  for (var prop in json) {
+	    if (prop !== 'mathjs') { // ignore mathjs field
+	      doc[prop] = json[prop];
+	    }
+	  }
+	  return new Help(doc);
 	};
 
 	/**
@@ -3518,7 +3722,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3552,22 +3756,44 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return '[' + this.entries.join(', ') + ']';
 	};
 
+	/**
+	 * Get a JSON representation of the ResultSet
+	 * @returns {Object} Returns a JSON object structured as:
+	 *                   `{"mathjs": "ResultSet", "entries": [...]}`
+	 */
+	ResultSet.prototype.toJSON = function () {
+	  return {
+	    mathjs: 'ResultSet',
+	    entries: this.entries
+	  };
+	};
+
+	/**
+	 * Instantiate a ResultSet from a JSON object
+	 * @param {Object} json  A JSON object structured as:
+	 *                       `{"mathjs": "ResultSet", "entries": [...]}`
+	 * @return {ResultSet}
+	 */
+	ResultSet.fromJSON = function (json) {
+	  return new ResultSet(json.entries);
+	};
+
 	module.exports = ResultSet;
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// utility methods for arrays and matrices
 	'use strict';
 
-	var util = __webpack_require__(157),
+	var util = __webpack_require__(171),
 
-	    IndexError = __webpack_require__(160),
-	    DimensionError = __webpack_require__(159),
+	    IndexError = __webpack_require__(169),
+	    DimensionError = __webpack_require__(168),
 
-	    Matrix = __webpack_require__(9),
+	    Matrix = __webpack_require__(10),
 
 	    array = util.array,
 	    isArray = util.array.isArray,
@@ -3823,59 +4049,59 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.ArrayNode = __webpack_require__(162);
-	exports.AssignmentNode = __webpack_require__(163);
-	exports.BlockNode = __webpack_require__(164);
-	exports.ConditionalNode = __webpack_require__(165);
-	exports.ConstantNode = __webpack_require__(166);
-	exports.IndexNode = __webpack_require__(167);
-	exports.FunctionAssignmentNode = __webpack_require__(168);
-	exports.FunctionNode = __webpack_require__(169);
-	exports.Node = __webpack_require__(170);
-	exports.OperatorNode = __webpack_require__(171);
-	exports.RangeNode = __webpack_require__(172);
-	exports.SymbolNode = __webpack_require__(173);
-	exports.UpdateNode = __webpack_require__(174);
-
-
-/***/ },
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(157),
+	exports.ArrayNode = __webpack_require__(172);
+	exports.AssignmentNode = __webpack_require__(173);
+	exports.BlockNode = __webpack_require__(174);
+	exports.ConditionalNode = __webpack_require__(175);
+	exports.ConstantNode = __webpack_require__(176);
+	exports.IndexNode = __webpack_require__(177);
+	exports.FunctionAssignmentNode = __webpack_require__(178);
+	exports.FunctionNode = __webpack_require__(179);
+	exports.Node = __webpack_require__(180);
+	exports.OperatorNode = __webpack_require__(181);
+	exports.RangeNode = __webpack_require__(182);
+	exports.SymbolNode = __webpack_require__(183);
+	exports.UpdateNode = __webpack_require__(184);
 
-	    ArgumentsError = __webpack_require__(158),
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var util = __webpack_require__(171),
+
+	    ArgumentsError = __webpack_require__(167),
 
 	    isString = util.string.isString,
 	    isArray = Array.isArray,
 	    type = util.types.type,
 
 	    // types
-	    Complex = __webpack_require__(6),
-	    Matrix = __webpack_require__(9),
-	    Unit = __webpack_require__(10),
-	    collection = __webpack_require__(13),
+	    Complex = __webpack_require__(7),
+	    Matrix = __webpack_require__(10),
+	    Unit = __webpack_require__(11),
+	    collection = __webpack_require__(14),
 
 	    // scope and nodes
-	    ArrayNode = __webpack_require__(162),
-	    AssignmentNode = __webpack_require__(163),
-	    BlockNode = __webpack_require__(164),
-	    ConditionalNode = __webpack_require__(165),
-	    ConstantNode = __webpack_require__(166),
-	    FunctionAssignmentNode = __webpack_require__(168),
-	    IndexNode = __webpack_require__(167),
-	    OperatorNode = __webpack_require__(171),
-	    FunctionNode = __webpack_require__(169),
-	    RangeNode = __webpack_require__(172),
-	    SymbolNode = __webpack_require__(173),
-	    UpdateNode = __webpack_require__(174);
+	    ArrayNode = __webpack_require__(172),
+	    AssignmentNode = __webpack_require__(173),
+	    BlockNode = __webpack_require__(174),
+	    ConditionalNode = __webpack_require__(175),
+	    ConstantNode = __webpack_require__(176),
+	    FunctionAssignmentNode = __webpack_require__(178),
+	    IndexNode = __webpack_require__(177),
+	    OperatorNode = __webpack_require__(181),
+	    FunctionNode = __webpack_require__(179),
+	    RangeNode = __webpack_require__(182),
+	    SymbolNode = __webpack_require__(183),
+	    UpdateNode = __webpack_require__(184);
 
 	/**
 	 * Parse an expression. Returns a node tree, which can be evaluated by
@@ -5230,12 +5456,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _parse = __webpack_require__(15);
+	var _parse = __webpack_require__(16);
 
 	/**
 	 * @constructor Parser
@@ -5381,187 +5607,237 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// constants
-	exports.e = __webpack_require__(175);
-	exports.E = __webpack_require__(175);
-	exports['false'] = __webpack_require__(176);
-	exports.i = __webpack_require__(177);
-	exports['Infinity'] = __webpack_require__(178);
-	exports.LN2 = __webpack_require__(179);
-	exports.LN10 = __webpack_require__(180);
-	exports.LOG2E = __webpack_require__(181);
-	exports.LOG10E = __webpack_require__(182);
-	exports.NaN = __webpack_require__(183);
-	exports['null'] = __webpack_require__(184);
-	exports.pi = __webpack_require__(185);
-	exports.PI = __webpack_require__(185);
-	exports.phi = __webpack_require__(186);
-	exports.SQRT1_2 = __webpack_require__(187);
-	exports.SQRT2 = __webpack_require__(188);
-	exports.tau = __webpack_require__(189);
-	exports['true'] = __webpack_require__(190);
-	exports.version = __webpack_require__(191);
+	exports.e = __webpack_require__(185);
+	exports.E = __webpack_require__(185);
+	exports['false'] = __webpack_require__(186);
+	exports.i = __webpack_require__(187);
+	exports['Infinity'] = __webpack_require__(188);
+	exports.LN2 = __webpack_require__(189);
+	exports.LN10 = __webpack_require__(190);
+	exports.LOG2E = __webpack_require__(191);
+	exports.LOG10E = __webpack_require__(192);
+	exports.NaN = __webpack_require__(193);
+	exports['null'] = __webpack_require__(194);
+	exports.pi = __webpack_require__(195);
+	exports.PI = __webpack_require__(195);
+	exports.phi = __webpack_require__(196);
+	exports.SQRT1_2 = __webpack_require__(197);
+	exports.SQRT2 = __webpack_require__(198);
+	exports.tau = __webpack_require__(199);
+	exports['true'] = __webpack_require__(200);
+	exports.version = __webpack_require__(201);
 
 	// functions - arithmetic
-	exports.abs = __webpack_require__(196);
-	exports.add = __webpack_require__(197);
-	exports.ceil = __webpack_require__(198);
-	exports.cube = __webpack_require__(199);
-	exports.divide = __webpack_require__(200);
-	exports.dotDivide = __webpack_require__(201);
-	exports.dotMultiply = __webpack_require__(202);
-	exports.dotPow = __webpack_require__(203);
-	exports.exp = __webpack_require__(204);
-	exports.fix = __webpack_require__(205);
-	exports.floor = __webpack_require__(206);
-	exports.gcd = __webpack_require__(207);
-	exports.lcm = __webpack_require__(208);
-	exports.log = __webpack_require__(209);
-	exports.log10 = __webpack_require__(210);
-	exports.mod = __webpack_require__(211);
-	exports.multiply = __webpack_require__(212);
-	exports.norm = __webpack_require__(213);
-	exports.nthRoot = __webpack_require__(214);
-	exports.pow = __webpack_require__(215);
-	exports.round = __webpack_require__(216);
-	exports.sign = __webpack_require__(217);
-	exports.sqrt = __webpack_require__(218);
-	exports.square = __webpack_require__(219);
-	exports.subtract = __webpack_require__(220);
-	exports.unaryMinus = __webpack_require__(221);
-	exports.unaryPlus = __webpack_require__(222);
-	exports.xgcd = __webpack_require__(223);
+	exports.abs = __webpack_require__(206);
+	exports.add = __webpack_require__(207);
+	exports.ceil = __webpack_require__(208);
+	exports.cube = __webpack_require__(209);
+	exports.divide = __webpack_require__(210);
+	exports.dotDivide = __webpack_require__(211);
+	exports.dotMultiply = __webpack_require__(212);
+	exports.dotPow = __webpack_require__(213);
+	exports.exp = __webpack_require__(214);
+	exports.fix = __webpack_require__(215);
+	exports.floor = __webpack_require__(216);
+	exports.gcd = __webpack_require__(217);
+	exports.lcm = __webpack_require__(218);
+	exports.log = __webpack_require__(219);
+	exports.log10 = __webpack_require__(220);
+	exports.mod = __webpack_require__(221);
+	exports.multiply = __webpack_require__(222);
+	exports.norm = __webpack_require__(223);
+	exports.nthRoot = __webpack_require__(224);
+	exports.pow = __webpack_require__(225);
+	exports.round = __webpack_require__(226);
+	exports.sign = __webpack_require__(227);
+	exports.sqrt = __webpack_require__(228);
+	exports.square = __webpack_require__(229);
+	exports.subtract = __webpack_require__(230);
+	exports.unaryMinus = __webpack_require__(231);
+	exports.unaryPlus = __webpack_require__(232);
+	exports.xgcd = __webpack_require__(233);
 
 	// functions - bitwise
-	exports.bitAnd = __webpack_require__(224);
-	exports.bitNot = __webpack_require__(225);
-	exports.bitOr = __webpack_require__(226);
-	exports.bitXor = __webpack_require__(227);
-	exports.leftShift = __webpack_require__(228);
-	exports.rightArithShift = __webpack_require__(229);
-	exports.rightLogShift = __webpack_require__(230);
+	exports.bitAnd = __webpack_require__(234);
+	exports.bitNot = __webpack_require__(235);
+	exports.bitOr = __webpack_require__(236);
+	exports.bitXor = __webpack_require__(237);
+	exports.leftShift = __webpack_require__(238);
+	exports.rightArithShift = __webpack_require__(239);
+	exports.rightLogShift = __webpack_require__(240);
 
 	// functions - complex
-	exports.arg = __webpack_require__(231);
-	exports.conj = __webpack_require__(232);
-	exports.re = __webpack_require__(233);
-	exports.im = __webpack_require__(234);
+	exports.arg = __webpack_require__(241);
+	exports.conj = __webpack_require__(242);
+	exports.re = __webpack_require__(243);
+	exports.im = __webpack_require__(244);
 
 	// functions - construction
-	exports.bignumber = __webpack_require__(235);
-	exports['boolean'] = __webpack_require__(236);
-	exports.complex = __webpack_require__(237);
-	exports.index = __webpack_require__(238);
-	exports.matrix = __webpack_require__(239);
-	exports.number = __webpack_require__(240);
-	exports.string = __webpack_require__(241);
-	exports.unit = __webpack_require__(242);
+	exports.bignumber = __webpack_require__(245);
+	exports['boolean'] = __webpack_require__(246);
+	exports.complex = __webpack_require__(247);
+	exports.index = __webpack_require__(248);
+	exports.matrix = __webpack_require__(249);
+	exports.number = __webpack_require__(250);
+	exports.string = __webpack_require__(251);
+	exports.unit = __webpack_require__(252);
 
 	// functions - expression
-	exports['eval'] =  __webpack_require__(243);
-	exports.help =  __webpack_require__(244);
+	exports['eval'] =  __webpack_require__(253);
+	exports.help =  __webpack_require__(254);
 
 	// functions - logical
-	exports['and'] = __webpack_require__(245);
-	exports['not'] = __webpack_require__(246);
-	exports['or'] = __webpack_require__(247);
-	exports['xor'] = __webpack_require__(248);
+	exports['and'] = __webpack_require__(255);
+	exports['not'] = __webpack_require__(256);
+	exports['or'] = __webpack_require__(257);
+	exports['xor'] = __webpack_require__(258);
 
 	// functions - matrix
-	exports['concat'] = __webpack_require__(249);
-	exports.cross = __webpack_require__(250);
-	exports.det = __webpack_require__(251);
-	exports.diag = __webpack_require__(252);
-	exports.dot = __webpack_require__(253);
-	exports.eye = __webpack_require__(254);
-	exports.flatten = __webpack_require__(255);
-	exports.inv = __webpack_require__(256);
-	exports.ones = __webpack_require__(257);
-	exports.range = __webpack_require__(258);
-	exports.resize = __webpack_require__(259);
-	exports.size = __webpack_require__(260);
-	exports.squeeze = __webpack_require__(261);
-	exports.subset = __webpack_require__(262);
-	exports.trace = __webpack_require__(263);
-	exports.transpose = __webpack_require__(264);
-	exports.zeros = __webpack_require__(265);
+	exports['concat'] = __webpack_require__(259);
+	exports.cross = __webpack_require__(260);
+	exports.det = __webpack_require__(261);
+	exports.diag = __webpack_require__(262);
+	exports.dot = __webpack_require__(263);
+	exports.eye = __webpack_require__(264);
+	exports.flatten = __webpack_require__(265);
+	exports.inv = __webpack_require__(266);
+	exports.ones = __webpack_require__(267);
+	exports.range = __webpack_require__(268);
+	exports.resize = __webpack_require__(269);
+	exports.size = __webpack_require__(270);
+	exports.squeeze = __webpack_require__(271);
+	exports.subset = __webpack_require__(272);
+	exports.trace = __webpack_require__(273);
+	exports.transpose = __webpack_require__(274);
+	exports.zeros = __webpack_require__(275);
 
 	// functions - probability
-	exports.combinations = __webpack_require__(266);
+	exports.combinations = __webpack_require__(276);
 	//exports.distribution = require('./function/probability/distribution');
-	exports.factorial = __webpack_require__(267);
-	exports.gamma = __webpack_require__(268);
-	exports.permutations = __webpack_require__(269);
-	exports.pickRandom = __webpack_require__(270);
-	exports.random = __webpack_require__(271);
-	exports.randomInt = __webpack_require__(272);
+	exports.factorial = __webpack_require__(277);
+	exports.gamma = __webpack_require__(278);
+	exports.permutations = __webpack_require__(279);
+	exports.pickRandom = __webpack_require__(280);
+	exports.random = __webpack_require__(281);
+	exports.randomInt = __webpack_require__(282);
 
 	// functions - relational
-	exports.compare = __webpack_require__(273);
-	exports.deepEqual = __webpack_require__(274);
-	exports['equal'] = __webpack_require__(275);
-	exports.larger = __webpack_require__(276);
-	exports.largerEq = __webpack_require__(277);
-	exports.smaller = __webpack_require__(278);
-	exports.smallerEq = __webpack_require__(279);
-	exports.unequal = __webpack_require__(280);
+	exports.compare = __webpack_require__(283);
+	exports.deepEqual = __webpack_require__(284);
+	exports['equal'] = __webpack_require__(285);
+	exports.larger = __webpack_require__(286);
+	exports.largerEq = __webpack_require__(287);
+	exports.smaller = __webpack_require__(288);
+	exports.smallerEq = __webpack_require__(289);
+	exports.unequal = __webpack_require__(290);
 
 	// functions - statistics
-	exports.max = __webpack_require__(281);
-	exports.mean = __webpack_require__(282);
-	exports.median = __webpack_require__(283);
-	exports.min = __webpack_require__(284);
-	exports.prod = __webpack_require__(285);
-	exports.std = __webpack_require__(286);
-	exports.sum = __webpack_require__(287);
-	exports['var'] = __webpack_require__(288);
+	exports.max = __webpack_require__(291);
+	exports.mean = __webpack_require__(292);
+	exports.median = __webpack_require__(293);
+	exports.min = __webpack_require__(294);
+	exports.prod = __webpack_require__(295);
+	exports.std = __webpack_require__(296);
+	exports.sum = __webpack_require__(297);
+	exports['var'] = __webpack_require__(298);
 
 	// functions - trigonometry
-	exports.acos = __webpack_require__(289);
-	exports.asin = __webpack_require__(290);
-	exports.atan = __webpack_require__(291);
-	exports.atan2 = __webpack_require__(292);
-	exports.cos = __webpack_require__(293);
-	exports.cosh = __webpack_require__(294);
-	exports.cot = __webpack_require__(295);
-	exports.coth = __webpack_require__(296);
-	exports.csc = __webpack_require__(297);
-	exports.csch = __webpack_require__(298);
-	exports.sec = __webpack_require__(299);
-	exports.sech = __webpack_require__(300);
-	exports.sin = __webpack_require__(301);
-	exports.sinh = __webpack_require__(302);
-	exports.tan = __webpack_require__(303);
-	exports.tanh = __webpack_require__(304);
+	exports.acos = __webpack_require__(299);
+	exports.acosh = __webpack_require__(300);
+	exports.acot = __webpack_require__(301);
+	exports.acoth = __webpack_require__(302);
+	exports.acsc = __webpack_require__(303);
+	exports.acsch = __webpack_require__(304);
+	exports.asec = __webpack_require__(305);
+	exports.asech = __webpack_require__(306);
+	exports.asin = __webpack_require__(307);
+	exports.asinh = __webpack_require__(308);
+	exports.atan = __webpack_require__(309);
+	exports.atanh = __webpack_require__(310);
+	exports.atan2 = __webpack_require__(311);
+	exports.cos = __webpack_require__(312);
+	exports.cosh = __webpack_require__(313);
+	exports.cot = __webpack_require__(314);
+	exports.coth = __webpack_require__(315);
+	exports.csc = __webpack_require__(316);
+	exports.csch = __webpack_require__(317);
+	exports.sec = __webpack_require__(318);
+	exports.sech = __webpack_require__(319);
+	exports.sin = __webpack_require__(320);
+	exports.sinh = __webpack_require__(321);
+	exports.tan = __webpack_require__(322);
+	exports.tanh = __webpack_require__(323);
 
 	// functions - units
-	exports.to = __webpack_require__(305);
+	exports.to = __webpack_require__(324);
 
 	// functions - utils
-	exports.clone =  __webpack_require__(306);
-	exports.map =  __webpack_require__(307);
-	exports.filter =  __webpack_require__(308);
-	exports.forEach =  __webpack_require__(309);
-	exports.format =  __webpack_require__(310);
+	exports.clone =  __webpack_require__(325);
+	exports.map =  __webpack_require__(326);
+	exports.filter =  __webpack_require__(327);
+	exports.forEach =  __webpack_require__(328);
+	exports.format =  __webpack_require__(329);
 	// exports.print =  require('./function/utils/print'); // TODO: add documentation for print as soon as the parser supports objects.
-	exports['import'] =  __webpack_require__(311);
-	exports.sort =  __webpack_require__(312);
-	exports['typeof'] =  __webpack_require__(313);
+	exports['import'] =  __webpack_require__(330);
+	exports.sort =  __webpack_require__(331);
+	exports['typeof'] =  __webpack_require__(332);
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(156);
-	var errorTransform = __webpack_require__(193).transform;
+	var BigNumber = __webpack_require__(5);
+	var Complex   = __webpack_require__(7);
+	var Help      = __webpack_require__(12);
+	var Index     = __webpack_require__(9);
+	var Matrix    = __webpack_require__(10);
+	var Range     = __webpack_require__(8);
+	var ResultSet = __webpack_require__(13);
+	var Unit      = __webpack_require__(11);
+
+	/**
+	 * Instantiate mathjs data types from their JSON representation
+	 * @param {string} key
+	 * @param {*} value
+	 * @returns {*} Returns the revived object
+	 */
+	function reviver(key, value) {
+	  var type = value && value.mathjs;
+
+	  switch (type) {
+	    case 'BigNumber': return BigNumber.fromJSON(value);
+	    case 'Complex':   return Complex.fromJSON(value);
+	    case 'Help':      return Help.fromJSON(value);
+	    case 'Index':     return Index.fromJSON(value);
+	    case 'Matrix':    return Matrix.fromJSON(value);
+	    case 'Range':     return Range.fromJSON(value);
+	    case 'ResultSet': return ResultSet.fromJSON(value);
+	    case 'Unit':      return Unit.fromJSON(value);
+	  }
+
+	  return value;
+	}
+
+	module.exports = reviver;
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var BigNumber = __webpack_require__(5);
+	var errorTransform = __webpack_require__(203).transform;
 	var isNumber = __webpack_require__(3).isNumber;
-	var argsToArray = __webpack_require__(154).argsToArray;
+	var argsToArray = __webpack_require__(165).argsToArray;
 
 	/**
 	 * Attach a transform function to math.range
@@ -5601,15 +5877,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 19 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var SymbolNode = __webpack_require__(173);
-	var isBoolean = __webpack_require__(194).isBoolean;
-	var argsToArray = __webpack_require__(154).argsToArray;
-	var ArgumentsError = __webpack_require__(158);
+	var SymbolNode = __webpack_require__(183);
+	var isBoolean = __webpack_require__(204).isBoolean;
+	var argsToArray = __webpack_require__(165).argsToArray;
+	var ArgumentsError = __webpack_require__(167);
 
 	/**
 	 * Attach a transform function to math.filter
@@ -5671,12 +5947,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 20 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Matrix = __webpack_require__(9);
+	var Matrix = __webpack_require__(10);
 
 	/**
 	 * Attach a transform function to math.forEach
@@ -5722,15 +5998,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 21 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(156);
-	var Range = __webpack_require__(7);
-	var Index = __webpack_require__(8);
-	var Matrix = __webpack_require__(9);
+	var BigNumber = __webpack_require__(5);
+	var Range = __webpack_require__(8);
+	var Index = __webpack_require__(9);
+	var Matrix = __webpack_require__(10);
 	var isNumber = __webpack_require__(3).isNumber;
 	var isArray = Array.isArray;
 
@@ -5777,15 +6053,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 22 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Matrix = __webpack_require__(9);
-	var BigNumber = __webpack_require__(156);
-	var Range = __webpack_require__(7);
-	var Index = __webpack_require__(8);
+	var Matrix = __webpack_require__(10);
+	var BigNumber = __webpack_require__(5);
+	var Range = __webpack_require__(8);
+	var Index = __webpack_require__(9);
 	var isNumber = __webpack_require__(3).isNumber;
 	var isArray = Array.isArray;
 
@@ -5834,16 +6110,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(156);
-	var errorTransform = __webpack_require__(193).transform;
+	var BigNumber = __webpack_require__(5);
+	var errorTransform = __webpack_require__(203).transform;
 	var isNumber = __webpack_require__(3).isNumber;
-	var isCollection = __webpack_require__(13).isCollection;
-	var argsToArray = __webpack_require__(154).argsToArray;
+	var isCollection = __webpack_require__(14).isCollection;
+	var argsToArray = __webpack_require__(165).argsToArray;
 
 	/**
 	 * Attach a transform function to math.max
@@ -5883,16 +6159,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 24 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(156);
-	var errorTransform = __webpack_require__(193).transform;
+	var BigNumber = __webpack_require__(5);
+	var errorTransform = __webpack_require__(203).transform;
 	var isNumber = __webpack_require__(3).isNumber;
-	var isCollection = __webpack_require__(13).isCollection;
-	var argsToArray = __webpack_require__(154).argsToArray;
+	var isCollection = __webpack_require__(14).isCollection;
+	var argsToArray = __webpack_require__(165).argsToArray;
 
 	/**
 	 * Attach a transform function to math.mean
@@ -5932,16 +6208,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(156);
-	var errorTransform = __webpack_require__(193).transform;
+	var BigNumber = __webpack_require__(5);
+	var errorTransform = __webpack_require__(203).transform;
 	var isNumber = __webpack_require__(3).isNumber;
-	var isCollection = __webpack_require__(13).isCollection;
-	var argsToArray = __webpack_require__(154).argsToArray;
+	var isCollection = __webpack_require__(14).isCollection;
+	var argsToArray = __webpack_require__(165).argsToArray;
 
 	/**
 	 * Attach a transform function to math.min
@@ -5981,13 +6257,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isBoolean = __webpack_require__(194).isBoolean;
-	var argsToArray = __webpack_require__(154).argsToArray;
+	var isBoolean = __webpack_require__(204).isBoolean;
+	var argsToArray = __webpack_require__(165).argsToArray;
 
 	/**
 	 * Attach a transform function to math.range
@@ -6016,14 +6292,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var errorTransform = __webpack_require__(193).transform;
-	var isBoolean = __webpack_require__(194).isBoolean;
-	var argsToArray = __webpack_require__(154).argsToArray;
+	var errorTransform = __webpack_require__(203).transform;
+	var isBoolean = __webpack_require__(204).isBoolean;
+	var argsToArray = __webpack_require__(165).argsToArray;
 
 	/**
 	 * Attach a transform function to math.subset
@@ -6049,13 +6325,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 28 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var string = __webpack_require__(195);
+	  var string = __webpack_require__(205);
 
 	  /**
 	   * @constructor Chain
@@ -6150,16 +6426,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 29 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
-	      _parse = __webpack_require__(15),
+	  var util = __webpack_require__(171),
+	      _parse = __webpack_require__(16),
 
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isString = util.string.isString,
 	      isCollection = collection.isCollection;
@@ -6222,16 +6498,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 30 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
-	      _parse = __webpack_require__(15),
+	  var util = __webpack_require__(171),
+	      _parse = __webpack_require__(16),
 
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isString = util.string.isString,
 	      isCollection = collection.isCollection;
@@ -6295,13 +6571,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 31 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Help = __webpack_require__(11);
+	  var Help = __webpack_require__(12);
 
 	  /**
 	   * Retrieve help on a function or data type.
@@ -6362,19 +6638,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else if (!doc) {
 	      throw new Error('No documentation found on "' + text + '"');
 	    }
-	    return new Help(math, doc);
+	    return new Help(doc);
 	  };
 	};
 
 
 /***/ },
-/* 32 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var _parse = __webpack_require__(15);
+	  var _parse = __webpack_require__(16);
 
 	  /**
 	   * Parse an expression. Returns a node tree, which can be evaluated by
@@ -6416,18 +6692,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 33 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -6468,7 +6744,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (isComplex(x)) {
-	      return Math.sqrt(x.re * x.re + x.im * x.im);
+	      // do not compute sqrt(re * re + im * im) since it will overflow with big numbers!
+	      var re = Math.abs(x.re);
+	      var im = Math.abs(x.im);
+	      if (re >= im) {
+	        var x = im / re;
+	        return re * Math.sqrt(1 + x * x);
+	      }
+	      var y = re / im;
+	      return im * Math.sqrt(1 + y * y);
 	    }
 
 	    if (x instanceof BigNumber) {
@@ -6489,19 +6773,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 34 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isNumber = util.number.isNumber,
@@ -6651,17 +6935,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 35 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -6730,17 +7014,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 36 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -6802,18 +7086,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 37 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function(math) {
-	  var util = __webpack_require__(157);
+	  var util = __webpack_require__(171);
 
 	  var BigNumber = math.type.BigNumber;
-	  var Complex = __webpack_require__(6);
-	  var Matrix = __webpack_require__(9);
-	  var Unit = __webpack_require__(10);
+	  var Complex = __webpack_require__(7);
+	  var Matrix = __webpack_require__(10);
+	  var Unit = __webpack_require__(11);
 
 	  var isNumber = util.number.isNumber;
 	  var isBoolean = util['boolean'].isBoolean;
@@ -6935,13 +7219,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 38 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function(math) {
-	  var collection = __webpack_require__(13);
+	  var collection = __webpack_require__(14);
 	  var isCollection = collection.isCollection;
 
 	  /**
@@ -7006,13 +7290,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 39 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var collection = __webpack_require__(13);
+	  var collection = __webpack_require__(14);
 
 	  /**
 	   * Divide two matrices element wise. The function accepts both matrices and
@@ -7056,14 +7340,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
-	      collection = __webpack_require__(13);
+	  var util = __webpack_require__(171),
+	      collection = __webpack_require__(14);
 
 	  /**
 	   * Multiply two matrices element wise. The function accepts both matrices and
@@ -7107,14 +7391,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
-	      collection = __webpack_require__(13);
+	  var util = __webpack_require__(171),
+	      collection = __webpack_require__(14);
 
 	  /**
 	   * Calculates the power of x to y element wise.
@@ -7155,18 +7439,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 42 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -7236,17 +7520,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 43 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -7314,17 +7598,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 44 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -7392,16 +7676,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 45 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -7539,16 +7823,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 46 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -7701,17 +7985,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 47 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -7804,17 +8088,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 48 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -7892,16 +8176,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 49 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -8031,19 +8315,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 50 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function(math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      array = util.array,
 	      isNumber = util.number.isNumber,
@@ -8462,20 +8746,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 51 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	    array = __webpack_require__(154),
+	    array = __webpack_require__(165),
 	          
 	    BigNumber = math.type.BigNumber,
-	    Complex = __webpack_require__(6),
-	    Matrix = __webpack_require__(9),
-	    collection = __webpack_require__(13),
+	    Complex = __webpack_require__(7),
+	    Matrix = __webpack_require__(10),
+	    collection = __webpack_require__(14),
 
 	    isNumber = util.number.isNumber,
 	    isBoolean = util['boolean'].isBoolean,
@@ -8531,8 +8815,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (isComplex(x)) {
-	      // ignore p, complex numbers
-	      return Math.sqrt(x.re * x.re + x.im * x.im);
+	      // do not compute sqrt(re * re + im * im) since it will overflow with big numbers!
+	      var re = Math.abs(x.re);
+	      var im = Math.abs(x.im);
+	      if (re >= im) {
+	        var x = im / re;
+	        return re * Math.sqrt(1 + x * x);
+	      }
+	      var y = re / im;
+	      return im * Math.sqrt(1 + y * y);
 	    }
 
 	    if (x instanceof BigNumber) {
@@ -8650,16 +8941,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 52 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157);
+	  var util = __webpack_require__(171);
 
 	  var BigNumber = math.type.BigNumber;
-	  var collection = __webpack_require__(13);
+	  var collection = __webpack_require__(14);
 
 	  var isNumber = util.number.isNumber;
 	  var isBoolean = util['boolean'].isBoolean;
@@ -8849,18 +9140,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 53 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      array = util.array,
 	      isNumber = util.number.isNumber,
@@ -9033,17 +9324,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 54 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isInteger = util.number.isInteger,
@@ -9173,17 +9464,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 55 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      number = util.number,
 	      isNumber = util.number.isNumber,
@@ -9253,17 +9544,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 56 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -9359,17 +9650,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 57 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -9433,19 +9724,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 58 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isNumber = util.number.isNumber,
@@ -9593,18 +9884,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 59 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -9682,18 +9973,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 60 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -9762,15 +10053,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 61 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	      Matrix = __webpack_require__(9),
+	      Matrix = __webpack_require__(10),
 	      BigNumber = math.type.BigNumber,
 
 	      isNumber = util.number.isNumber,
@@ -9944,18 +10235,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 62 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isInteger = util.number.isInteger,
@@ -10043,18 +10334,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 63 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isInteger = util.number.isInteger,
@@ -10116,18 +10407,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 64 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isInteger = util.number.isInteger,
@@ -10216,18 +10507,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 65 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isInteger = util.number.isInteger,
@@ -10315,18 +10606,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 66 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isInteger = util.number.isInteger,
@@ -10437,18 +10728,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 67 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isInteger = util.number.isInteger,
@@ -10561,17 +10852,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 68 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isInteger = util.number.isInteger,
@@ -10631,17 +10922,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 69 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -10708,17 +10999,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 70 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      object = util.object,
 	      isNumber = util.number.isNumber,
@@ -10783,17 +11074,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 71 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      object = util.object,
 	      isNumber = util.number.isNumber,
@@ -10860,17 +11151,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 72 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -10936,17 +11227,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 73 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      // take the BigNumber instance the provided math.js instance
 	      BigNumber = math.type.BigNumber,
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection,
 	      isNumber = util.number.isNumber,
@@ -11005,16 +11296,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 74 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection,
 	      isNumber = util.number.isNumber,
@@ -11099,17 +11390,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 75 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection,
 	      isNumber = util.number.isNumber,
@@ -11232,16 +11523,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 76 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Index = __webpack_require__(8);
+	      Index = __webpack_require__(9);
 
 	  /**
 	   * Create an index. An Index can store ranges having start, step, and end
@@ -11306,14 +11597,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 77 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
-	      Matrix = __webpack_require__(9);
+	  var util = __webpack_require__(171),
+	      Matrix = __webpack_require__(10);
 
 	  /**
 	   * Create a Matrix. The function creates a new `math.type.Matrix` object from
@@ -11351,17 +11642,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 78 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157);
+	  var util = __webpack_require__(171);
 
 	  var BigNumber = math.type.BigNumber;
 	  var Unit = math.type.Unit;
-	  var collection = __webpack_require__(13);
+	  var collection = __webpack_require__(14);
 
 	  var isCollection = collection.isCollection;
 	  var isNumber = util.number.isNumber;
@@ -11448,13 +11739,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 79 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Parser = __webpack_require__(16);
+	  var Parser = __webpack_require__(17);
 
 	  /**
 	   * Create a parser. The function creates a new `math.expression.Parser` object.
@@ -11506,7 +11797,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 80 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11569,15 +11860,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 81 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      number = util.number,
 	      isNumber = util.number.isNumber,
@@ -11636,17 +11927,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 82 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection,
 	      isString = util.string.isString;
@@ -11723,18 +12014,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -11835,18 +12126,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -11910,18 +12201,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -12016,18 +12307,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 86 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -12104,23 +12395,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 87 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171);
 
-	      BigNumber = __webpack_require__(156),
-	      Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	  var BigNumber = __webpack_require__(5);
+	  var Matrix = __webpack_require__(10);
+	  var collection = __webpack_require__(14);
 
-	      object = util.object,
-	      array = util.array,
-	      isNumber = util.number.isNumber,
-	      isInteger = util.number.isInteger,
-	      isCollection = collection.isCollection;
+	  var object = util.object;
+	  var array = util.array;
+	  var isNumber = util.number.isNumber;
+	  var isInteger = util.number.isInteger;
+	  var isCollection = collection.isCollection;
 
 	  /**
 	   * Concatenate two or more matrices.
@@ -12246,14 +12537,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 88 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function(math) {
-	  var array = __webpack_require__(154);
-	  var Matrix = __webpack_require__(9);
+	  var array = __webpack_require__(165);
+	  var Matrix = __webpack_require__(10);
 
 	  /**
 	   * Calculate the cross product for two vectors in three dimensional space.
@@ -12331,15 +12622,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 89 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	      Matrix = __webpack_require__(9),
+	      Matrix = __webpack_require__(10),
 
 	      object = util.object,
 	      string = util.string;
@@ -12492,16 +12783,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 90 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
+	      Matrix = __webpack_require__(10),
 
 	      object = util.object,
 	      isArray = util.array.isArray,
@@ -12609,14 +12900,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 91 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function(math) {
-	  var array = __webpack_require__(154);
-	  var Matrix = __webpack_require__(9);
+	  var array = __webpack_require__(165);
+	  var Matrix = __webpack_require__(10);
 
 	  /**
 	   * Calculate the dot product of two vectors. The dot product of
@@ -12690,17 +12981,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 92 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isInteger = util.number.isInteger,
@@ -12793,15 +13084,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 93 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157);
+	  var util = __webpack_require__(171);
 
-	  var Matrix = __webpack_require__(9);
+	  var Matrix = __webpack_require__(10);
 
 	  var object = util.object;
 	  var array = util.array;
@@ -12846,14 +13137,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 94 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157);
-	  var Matrix = __webpack_require__(9);
+	  var util = __webpack_require__(171);
+	  var Matrix = __webpack_require__(10);
 
 	  /**
 	   * Calculate the inverse of a square matrix.
@@ -13044,17 +13335,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 95 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      array = util.array,
 
@@ -13121,17 +13412,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 96 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isString = util.string.isString,
@@ -13447,16 +13738,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 97 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
+	      Matrix = __webpack_require__(10),
 
 	      array = util.array,
 	      clone = util.object.clone,
@@ -13582,18 +13873,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 98 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      Matrix = __webpack_require__(9),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      Matrix = __webpack_require__(10),
 
 	      array = util.array,
 	      isNumber = util.number.isNumber,
@@ -13655,15 +13946,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 99 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	      Matrix = __webpack_require__(9),
+	      Matrix = __webpack_require__(10),
 
 	      object = util.object,
 	      array = util.array,
@@ -13719,16 +14010,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 100 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	      Matrix = __webpack_require__(9),
-	      Index = __webpack_require__(8),
+	      Matrix = __webpack_require__(10),
+	      Index = __webpack_require__(9),
 
 	      array = util.array,
 	      isString = util.string.isString,
@@ -13936,15 +14227,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 101 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	      Matrix = __webpack_require__(9),
+	      Matrix = __webpack_require__(10),
 
 	      object = util.object,
 	      string = util.string;
@@ -14044,15 +14335,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 102 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	      Matrix = __webpack_require__(9),
+	      Matrix = __webpack_require__(10),
 
 	      object = util.object,
 	      string = util.string;
@@ -14127,17 +14418,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 103 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	      Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      array = util.array,
 	      isArray = Array.isArray;
@@ -14203,16 +14494,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 104 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -14345,17 +14636,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 105 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
@@ -14539,13 +14830,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 106 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var distribution = __webpack_require__(314)(math);
+	  var distribution = __webpack_require__(333)(math);
 
 	  /**
 	   * Return a random number larger or equal to `min` and smaller than `max`
@@ -14582,13 +14873,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 107 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var distribution = __webpack_require__(314)(math);
+	  var distribution = __webpack_require__(333)(math);
 
 	  /**
 	   * Return a random integer number larger or equal to `min` and smaller than `max`
@@ -14625,13 +14916,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 108 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var distribution = __webpack_require__(314)(math);
+	  var distribution = __webpack_require__(333)(math);
 
 	  /**
 	   * Random pick a value from a one dimensional array.
@@ -14657,13 +14948,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 109 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
 
@@ -14770,16 +15061,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 110 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isInteger = util.number.isInteger;
@@ -14867,18 +15158,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 111 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      nearlyEqual = util.number.nearlyEqual,
@@ -14997,13 +15288,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 112 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var collection = __webpack_require__(13),
+	  var collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection,
 	      isArray = Array.isArray;
@@ -15082,18 +15373,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 113 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      nearlyEqual = util.number.nearlyEqual,
@@ -15246,18 +15537,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 114 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      nearlyEqual = util.number.nearlyEqual,
@@ -15373,18 +15664,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 115 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      nearlyEqual = util.number.nearlyEqual,
@@ -15501,18 +15792,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 116 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      nearlyEqual = util.number.nearlyEqual,
@@ -15628,18 +15919,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 117 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      nearlyEqual = util.number.nearlyEqual,
@@ -15755,18 +16046,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 118 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      nearlyEqual = util.number.nearlyEqual,
@@ -15918,14 +16209,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 119 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	  var Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection;
 
@@ -16013,14 +16304,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 120 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	  var Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection;
 
@@ -16108,18 +16399,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 121 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	  var Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection,
 
-	      size = __webpack_require__(154).size,
+	      size = __webpack_require__(165).size,
 	      isArray = Array.isArray;
 
 	  /**
@@ -16212,21 +16503,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 122 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
+	  var Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
 	      BigNumber = math.type.BigNumber,
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isNumber = __webpack_require__(3).isNumber,
 	      isCollection = collection.isCollection,
 
-	      flatten = __webpack_require__(154).flatten;
+	      flatten = __webpack_require__(165).flatten;
 
 	  /**
 	   * Compute the median of a matrix or a list with values. The values are
@@ -16326,14 +16617,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 123 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	  var Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection;
 
@@ -16411,7 +16702,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 124 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16471,14 +16762,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 125 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9),
-	      collection = __webpack_require__(13),
+	  var Matrix = __webpack_require__(10),
+	      collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection;
 
@@ -16554,18 +16845,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 126 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9),
+	  var Matrix = __webpack_require__(10),
 	      BigNumber = math.type.BigNumber,
-	      collection = __webpack_require__(13),
+	      collection = __webpack_require__(14),
 
 	      isCollection = collection.isCollection,
-	      isString = __webpack_require__(195).isString,
+	      isString = __webpack_require__(205).isString,
 
 	      DEFAULT_NORMALIZATION = 'unbiased';
 
@@ -16698,24 +16989,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 127 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
 	      isCollection = collection.isCollection,
 
-	      bigArcCos = util.bignumber.arccos;
+	      bigArcCos = util.bignumber.arccos_arcsec;
 
 	  /**
 	   * Calculate the inverse cosine of a value.
@@ -16783,7 +17074,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      return bigArcCos(x);
+	      return bigArcCos(x, BigNumber, false);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('acos', math['typeof'](x));
@@ -16792,24 +17083,672 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 128 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
+
+	      isNumber = util.number.isNumber,
+	      isBoolean = util['boolean'].isBoolean,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection,
+
+	      bigAcosh = util.bignumber.acosh_asinh_asech_acsch;
+
+	  /**
+	   * Calculate the hyperbolic arccos of a value,
+	   * defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.acosh(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.acosh(1.5);       // returns 0.9624236501192069
+	   *
+	   * See also:
+	   *
+	   *    cosh, asinh, atanh
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix | null} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic arccosine of x
+	   */
+	  math.acosh = function acosh(x) {
+	    if (arguments.length != 1) {
+	      throw new math.error.ArgumentsError('acosh', arguments.length, 1);
+	    }
+
+	    if (isNumber(x)) {
+	      if (x >= 1) {
+	        return Math.log(Math.sqrt(x*x - 1) + x);
+	      }
+	      if (x <= -1) { 
+	        return new Complex(Math.log(Math.sqrt(x*x - 1) - x), Math.PI);
+	      }
+	      return acosh(new Complex(x, 0));
+	    }
+
+	    if (isComplex(x)) {
+	      // acosh(z) = (-acos(z).im,  acos(z).re)   for acos(z).im <= 0
+	      //            ( acos(z).im, -acos(z).re)   otherwise
+	      var temp;
+	      var acos = math.acos(x);
+	      if (acos.im <= 0) {
+	        temp = acos.re;
+	        acos.re = -acos.im;
+	        acos.im = temp;
+	      } else {
+	        temp = acos.im;
+	        acos.im = -acos.re;
+	        acos.re = temp;
+	      }
+
+	      return acos;
+	    }
+
+	    if (isCollection(x)) {
+	      return collection.deepMap(x, acosh);
+	    }
+
+	    if (isBoolean(x) || x === null) {
+	      return (x) ? 0 : new Complex(0, 1.5707963267948966);
+	    }
+
+	    if (x instanceof BigNumber) {
+	      return bigAcosh(x, BigNumber, false, false);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('acosh', math['typeof'](x));
+	  };
+	};
+
+
+/***/ },
+/* 131 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(171),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
 	      isCollection = collection.isCollection,
 
-	      bigArcSin = util.bignumber.arcsin;
+	      bigArcCot = util.bignumber.arctan_arccot;
+
+	  /**
+	   * Calculate the inverse cotangent of a value.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.acot(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.acot(0.5);           // returns Number 0.4636476090008061
+	   *    math.acot(math.cot(1.5)); // returns Number 1.5
+	   *
+	   *    math.acot(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+	   *
+	   * See also:
+	   *
+	   *    cot, atan
+	   *
+	   * @param {Number | Boolean | Complex | Array | Matrix | null} x   Function input
+	   * @return {Number | Complex | Array | Matrix} The arc cotangent of x
+	   */
+	  math.acot = function acot(x) {
+	    if (arguments.length != 1) {
+	      throw new math.error.ArgumentsError('acot', arguments.length, 1);
+	    }
+
+	    if (isNumber(x)) {
+	      return (x) ? Math.atan(1 / x) : halfPi;
+	    }
+
+	    if (isComplex(x)) {
+	      if (x.im == 0) {
+	        return new Complex(x.re ? Math.atan(1 / x.re) : halfPi, 0);
+	      }
+
+	      var den = x.re*x.re + x.im*x.im;
+	      x = (den != 0)
+	        ? new Complex(
+	            x.re =  x.re / den,
+	            x.im = -x.im / den)
+	        : new Complex(
+	            (x.re != 0) ?  (x.re / 0) : 0,
+	            (x.im != 0) ? -(x.im / 0) : 0);
+
+	      return math.atan(x);
+	    }
+
+	    if (isCollection(x)) {
+	      return collection.deepMap(x, acot);
+	    }
+
+	    if (isBoolean(x) || x === null) {
+	      return (x) ? 0.7853981633974483 : halfPi;
+	    }
+
+	    if (x instanceof BigNumber) {
+	      return bigArcCot(x, BigNumber, true);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('acot', math['typeof'](x));
+	  };
+
+	  var halfPi = 1.5707963267948966;
+	};
+
+
+/***/ },
+/* 132 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(171),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
+
+	      isNumber = util.number.isNumber,
+	      isBoolean = util['boolean'].isBoolean,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection,
+
+	      bigAcoth = util.bignumber.atanh_acoth;
+
+	  /**
+	   * Calculate the hyperbolic arccotangent of a value,
+	   * defined as `acoth(x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.acoth(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.acoth(0.5);       // returns 0.8047189562170503
+	   *
+	   * See also:
+	   *
+	   *    acsch, asech
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix | null} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic arccotangent of x
+	   */
+	  math.acoth = function acoth(x) {
+	    if (arguments.length != 1) {
+	      throw new math.error.ArgumentsError('acoth', arguments.length, 1);
+	    }
+
+	    if (isNumber(x)) {
+	      if (x >= 1 || x <= -1) {
+	        return isFinite(x) ? (Math.log((x+1)/x) + Math.log(x/(x-1))) / 2 : 0;
+	      }
+	      return (x) ? acoth(new Complex(x, 0)) : new Complex(0, halfPi);
+	    }
+
+	    if (isComplex(x)) {
+	      if (x.re == 0 && x.im == 0) {
+	        return new Complex(0, halfPi);
+	      }
+
+	      // acoth(z) = -i*atanh(1/z)
+	      var den = x.re*x.re + x.im*x.im;
+	      x = (den != 0)
+	        ? new Complex(
+	            x.re / den,
+	           -x.im / den
+	          )
+	        : new Complex(
+	            (x.re != 0) ?  (x.re / 0) : 0,
+	            (x.im != 0) ? -(x.im / 0) : 0
+	          );
+
+	      return math.atanh(x);
+	    }
+
+	    if (isCollection(x)) {
+	      return collection.deepMap(x, acoth);
+	    }
+
+	    if (isBoolean(x) || x === null) {
+	      return (x) ? Infinity : new Complex(0, halfPi);
+	    }
+
+	    if (x instanceof BigNumber) {
+	      return bigAcoth(x, BigNumber, true);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('acoth', math['typeof'](x));
+	  };
+
+	  var halfPi = 1.5707963267948966;
+	};
+
+
+/***/ },
+/* 133 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(171),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
+
+	      isNumber = util.number.isNumber,
+	      isBoolean = util['boolean'].isBoolean,
+	      isComplex = Complex.isComplex,
+	      isCollection = collection.isCollection,
+
+	      bigArcCsc = util.bignumber.arcsin_arccsc;
+
+	  /**
+	   * Calculate the inverse cosecant of a value.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.acsc(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.acsc(0.5);           // returns Number 0.5235987755982989
+	   *    math.acsc(math.csc(1.5)); // returns Number ~1.5
+	   *
+	   *    math.acsc(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+	   *
+	   * See also:
+	   *
+	   *    csc, asin, asec
+	   *
+	   * @param {Number | Boolean | Complex | Array | Matrix | null} x   Function input
+	   * @return {Number | Complex | Array | Matrix} The arc cosecant of x
+	   */
+	  math.acsc = function acsc(x) {
+	    if (arguments.length != 1) {
+	      throw new math.error.ArgumentsError('acsc', arguments.length, 1);
+	    }
+
+	    if (isNumber(x)) {
+	      if (x <= -1 || x >= 1) {
+	        return Math.asin(1 / x);
+	      }
+	      return acsc(new Complex(x, 0));
+	    }
+
+	    if (isComplex(x)) {
+	      if (x.re == 0 && x.im == 0) {
+	        return new Complex(halfPi, Infinity);
+	      }
+
+	      var den = x.re*x.re + x.im*x.im;
+	      x = (den != 0)
+	        ? new Complex(
+	            x.re =  x.re / den,
+	            x.im = -x.im / den)
+	        : new Complex(
+	            (x.re != 0) ?  (x.re / 0) : 0,
+	            (x.im != 0) ? -(x.im / 0) : 0);
+
+	      return math.asin(x);
+	    }
+
+	    if (isCollection(x)) {
+	      return collection.deepMap(x, acsc);
+	    }
+
+	    if (isBoolean(x) || x === null) {
+	      return (x) ? halfPi : new Complex(halfPi, Infinity);
+	    }
+
+	    if (x instanceof BigNumber) {
+	      return bigArcCsc(x, BigNumber, true);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('acsc', math['typeof'](x));
+	  };
+
+	  var halfPi = 1.5707963267948966;
+	};
+
+
+/***/ },
+/* 134 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(171),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
+
+	      isNumber = util.number.isNumber,
+	      isBoolean = util['boolean'].isBoolean,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection,
+
+	      bigAcsch = util.bignumber.acosh_asinh_asech_acsch;
+
+	  /**
+	   * Calculate the hyperbolic arccosecant of a value,
+	   * defined as `acsch(x) = ln(1/x + sqrt(1/x^2 + 1))`.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.acsch(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.acsch(0.5);       // returns 1.4436354751788103
+	   *
+	   * See also:
+	   *
+	   *    asech, acoth
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix | null} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic arccosecant of x
+	   */
+	  math.acsch = function acsch(x) {
+	    if (arguments.length != 1) {
+	      throw new math.error.ArgumentsError('acsch', arguments.length, 1);
+	    }
+
+	    if (isNumber(x)) {
+	      x = 1 / x;
+	      return Math.log(x + Math.sqrt(x*x + 1));
+	    }
+
+	    if (isComplex(x)) {
+	      if (x.im == 0) {
+	        x = (x.re != 0)
+	          ? Math.log(x.re + Math.sqrt(x.re*x.re + 1))
+	          : Infinity;
+	        return new Complex(x, 0);
+	      }
+
+	      // acsch(z) = -i*asinh(1/z)
+	      var den = x.re*x.re + x.im*x.im;
+	      x = (den != 0) 
+	        ? new Complex(
+	            x.re / den,
+	           -x.im / den
+	          )
+	        : new Complex(
+	            (x.re != 0) ?  (x.re / 0) : 0,
+	            (x.im != 0) ? -(x.im / 0) : 0
+	          );
+
+	      return math.asinh(x);
+	    }
+
+	    if (isCollection(x)) {
+	      return collection.deepMap(x, acsch);
+	    }
+
+	    if (isBoolean(x) || x === null) {
+	      return (x) ? 0.881373587019543 : Infinity;
+	    }
+
+	    if (x instanceof BigNumber) {
+	      return bigAcsch(x, BigNumber, true, true);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('acsch', math['typeof'](x));
+	  };
+	};
+
+
+/***/ },
+/* 135 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(171),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
+
+	      isNumber = util.number.isNumber,
+	      isBoolean = util['boolean'].isBoolean,
+	      isComplex = Complex.isComplex,
+	      isCollection = collection.isCollection,
+
+	      bigArcSec = util.bignumber.arccos_arcsec;
+
+	  /**
+	   * Calculate the inverse secant of a value.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.asec(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.asec(0.5);           // returns 1.0471975511965979
+	   *    math.asec(math.sec(1.5)); // returns 1.5
+	   *
+	   *    math.asec(2);             // returns 0 + 1.3169578969248166 i
+	   *
+	   * See also:
+	   *
+	   *    acos, acot, acsc
+	   *
+	   * @param {Number | Boolean | Complex | Array | Matrix | null} x  Function input
+	   * @return {Number | Complex | Array | Matrix} The arc secant of x
+	   */
+	  math.asec = function asec(x) {
+	    if (arguments.length != 1) {
+	      throw new math.error.ArgumentsError('asec', arguments.length, 1);
+	    }
+
+	    if (isNumber(x)) {
+	      if (x <= -1 || x >= 1) {
+	        return Math.acos(1 / x);
+	      }
+	      return asec(new Complex(x, 0));
+	    }
+
+	    if (isComplex(x)) {
+	      if (x.re == 0 && x.im == 0) {
+	        return new Complex(0, Infinity);
+	      }
+
+	      var den = x.re*x.re + x.im*x.im;
+	      x = (den != 0)
+	        ? new Complex(
+	            x.re =  x.re / den,
+	            x.im = -x.im / den)
+	        : new Complex(
+	            (x.re != 0) ?  (x.re / 0) : 0,
+	            (x.im != 0) ? -(x.im / 0) : 0);
+
+	      return math.acos(x);
+	    }
+
+	    if (isCollection(x)) {
+	      return collection.deepMap(x, asec);
+	    }
+
+	    if (isBoolean(x) || x === null) {
+	      return (x) ? 0 : new Complex(0, Infinity);
+	    }
+
+	    if (x instanceof BigNumber) {
+	      return bigArcSec(x, BigNumber, true);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('asec', math['typeof'](x));
+	  };
+	};
+
+
+/***/ },
+/* 136 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(171),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
+
+	      isNumber = util.number.isNumber,
+	      isBoolean = util['boolean'].isBoolean,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection,
+
+	      bigAsech = util.bignumber.acosh_asinh_asech_acsch;
+
+	  /**
+	   * Calculate the hyperbolic arccos of a value,
+	   * defined as `asech(x) = ln(sqrt(1/x^2 - 1) + 1/x)`.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.asech(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.asech(0.5);       // returns 1.3169578969248166
+	   *
+	   * See also:
+	   *
+	   *    acsch, acoth
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix | null} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic arcsecant of x
+	   */
+	  math.asech = function asech(x) {
+	    if (arguments.length != 1) {
+	      throw new math.error.ArgumentsError('asech', arguments.length, 1);
+	    }
+
+	    if (isNumber(x)) {
+	      if (x <= 1 && x >= -1) {
+	        x = 1 / x;
+
+	        var ret = Math.sqrt(x*x - 1);
+	        if (x > 0) {
+	          return Math.log(ret + x);
+	        }
+
+	        return new Complex(Math.log(ret - x), Math.PI);
+	      }
+
+	      return asech(new Complex(x, 0));
+	    }
+
+	    if (isComplex(x)) {
+	      if (x.re == 0 && x.im == 0) {
+	        return new Complex(Infinity, 0);
+	      }
+
+	      // acsch(z) = -i*asinh(1/z)
+	      var den = x.re*x.re + x.im*x.im;
+	      x = (den != 0)
+	        ? new Complex(
+	            x.re / den,
+	           -x.im / den
+	          )
+	        : new Complex(
+	            (x.re != 0) ?  (x.re / 0) : 0,
+	            (x.im != 0) ? -(x.im / 0) : 0
+	          );
+
+	      return math.acosh(x);
+	    }
+
+	    if (isCollection(x)) {
+	      return collection.deepMap(x, asech);
+	    }
+
+	    if (isBoolean(x) || x === null) {
+	      return (x) ? 0 : Infinity;
+	    }
+
+	    if (x instanceof BigNumber) {
+	      return bigAsech(x, BigNumber, false, true);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('asech', math['typeof'](x));
+	  };
+	};
+
+
+/***/ },
+/* 137 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(171),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
+
+	      isNumber = util.number.isNumber,
+	      isBoolean = util['boolean'].isBoolean,
+	      isComplex = Complex.isComplex,
+	      isCollection = collection.isCollection,
+
+	      bigArcSin = util.bignumber.arcsin_arccsc;
 
 	  /**
 	   * Calculate the inverse sine of a value.
@@ -16875,7 +17814,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      return bigArcSin(x);
+	      return bigArcSin(x, BigNumber, false);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('asin', math['typeof'](x));
@@ -16884,24 +17823,112 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 129 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
+
+	      isNumber = util.number.isNumber,
+	      isBoolean = util['boolean'].isBoolean,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection,
+
+	      bigAsinh = util.bignumber.acosh_asinh_asech_acsch;
+
+	  /**
+	   * Calculate the hyperbolic arcsine of a value,
+	   * defined as `asinh(x) = ln(x + sqrt(x^2 + 1))`.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.asinh(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.asinh(0.5);       // returns 0.48121182505960347
+	   *
+	   * See also:
+	   *
+	   *    acosh, atanh
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix | null} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic arcsine of x
+	   */
+	  math.asinh = function asinh(x) {
+	    if (arguments.length != 1) {
+	      throw new math.error.ArgumentsError('asinh', arguments.length, 1);
+	    }
+
+	    if (isNumber(x)) {
+	      return Math.log(Math.sqrt(x*x + 1) + x);
+	    }
+
+	    if (isComplex(x)) {
+	      // asinh(z) = (-asin((z.im, -z.re)).im, asin((z.im, -z.re)).re)
+	      var temp = x.im;
+	      x.im = -x.re;
+	      x.re = temp;
+
+	      var asin = math.asin(x);
+
+	      // restore original values
+	      x.re = -x.im;
+	      x.im = temp;
+
+	      temp = asin.re;
+	      asin.re = -asin.im;
+	      asin.im = temp;
+
+	      return asin;
+	    }
+
+	    if (isCollection(x)) {
+	      return collection.deepMap(x, asinh);
+	    }
+
+	    if (isBoolean(x) || x === null) {
+	      return (x) ? 0.881373587019543 : 0;
+	    }
+
+	    if (x instanceof BigNumber) {
+	      return bigAsinh(x, BigNumber, true, false);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('asinh', math['typeof'](x));
+	  };
+	};
+
+
+/***/ },
+/* 139 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math) {
+	  var util = __webpack_require__(171),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
 	      isCollection = collection.isCollection,
 
-	      bigArcTan = util.bignumber.arctan;
+	      bigArcTan = util.bignumber.arctan_arccot;
 
 	  /**
 	   * Calculate the inverse tangent of a value.
@@ -16936,6 +17963,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (isComplex(x)) {
+	      if (x.re == 0) {
+	        if (x.im == 1) {
+	          return new Complex(0, Infinity);
+	        }
+	        if (x.im == -1) {
+	          return new Complex(0, -Infinity);
+	        }
+	      }
+
 	      // atan(z) = 1/2 * i * (ln(1-iz) - ln(1+iz))
 	      var re = x.re;
 	      var im = x.im;
@@ -16962,7 +17998,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      return bigArcTan(x);
+	      return bigArcTan(x, BigNumber, false);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('atan', math['typeof'](x));
@@ -16971,17 +18007,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 130 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -17055,18 +18091,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 131 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	module.exports = function (math) {
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -17074,7 +18110,106 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isUnit = Unit.isUnit,
 	      isCollection = collection.isCollection,
 
-	      bigCos = util.bignumber.cos_sin;
+	      bigAtanh = util.bignumber.atanh_acoth;
+
+	  /**
+	   * Calculate the hyperbolic arctangent of a value,
+	   * defined as `atanh(x) = ln((1 + x)/(1 - x)) / 2`.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.atanh(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.atanh(0.5);       // returns 0.5493061443340549
+	   *
+	   * See also:
+	   *
+	   *    acosh, asinh
+	   *
+	   * @param {Number | Boolean | Complex | Unit | Array | Matrix | null} x  Function input
+	   * @return {Number | Complex | Array | Matrix} Hyperbolic arctangent of x
+	   */
+	  math.atanh = function atanh(x) {
+	    if (arguments.length != 1) {
+	      throw new math.error.ArgumentsError('atanh', arguments.length, 1);
+	    }
+
+	    if (isNumber(x)) {
+	      if (x <= 1 && x >= -1) {
+	        return Math.log((1 + x)/(1 - x)) / 2;
+	      }
+	      return atanh(new Complex(x, 0));
+	    }
+
+	    if (isComplex(x)) {
+	      // x.im should equal -pi / 2 in this case
+	      var noIM = x.re > 1 && x.im == 0;
+
+	      var oneMinus = 1 - x.re;
+	      var onePlus = 1 + x.re;
+	      var den = oneMinus*oneMinus + x.im*x.im;
+	      x = (den != 0)
+	        ? new Complex(
+	            (onePlus*oneMinus - x.im*x.im) / den,
+	            (x.im*oneMinus + onePlus*x.im) / den
+	          )
+	        : new Complex(
+	            (x.re != -1) ? (x.re / 0) : 0,
+	            (x.im != 0) ? (x.im / 0) : 0
+	          );
+
+	      var temp = x.re;
+	      x.re = Math.log(Math.sqrt(x.re*x.re + x.im*x.im)) / 2;
+	      x.im = Math.atan2(x.im, temp) / 2;
+
+	      if (noIM) {
+	        x.im = -x.im;
+	      }
+	      return x;
+	    }
+
+	    if (isCollection(x)) {
+	      return collection.deepMap(x, atanh);
+	    }
+
+	    if (isBoolean(x) || x === null) {
+	      return (x) ? Infinity : 0;
+	    }
+
+	    if (x instanceof BigNumber) {
+	      return bigAtanh(x, BigNumber, false);
+	    }
+
+	    throw new math.error.UnsupportedTypeError('atanh', math['typeof'](x));
+	  };
+	};
+
+
+/***/ },
+/* 142 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(171),
+
+	      BigNumber = math.type.BigNumber,
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
+
+	      isNumber = util.number.isNumber,
+	      isBoolean = util['boolean'].isBoolean,
+	      isComplex = Complex.isComplex,
+	      isUnit = Unit.isUnit,
+	      isCollection = collection.isCollection,
+
+	      bigCos = util.bignumber.cos_sin_sec_csc;
 
 	  /**
 	   * Calculate the cosine of a value.
@@ -17135,7 +18270,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      return bigCos(x, config.precision, 0);
+	      return bigCos(x, BigNumber, 0, false);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('cos', math['typeof'](x));
@@ -17144,18 +18279,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 132 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -17163,7 +18298,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isUnit = Unit.isUnit,
 	      isCollection = collection.isCollection,
 
-	      bigCosh = util.bignumber.cosh_sinh;
+	      bigCosh = util.bignumber.cosh_sinh_csch_sech;
 
 	  /**
 	   * Calculate the hyperbolic cosine of a value,
@@ -17217,7 +18352,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      return bigCosh(x, 0);
+	      return bigCosh(x, BigNumber, false, false);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('cosh', math['typeof'](x));
@@ -17226,24 +18361,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 133 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
 	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
+	      isCollection = collection.isCollection,
+
+	      bigCot = util.bignumber.tan_cot;
 
 	  /**
 	   * Calculate the cotangent of a value. `cot(x)` is defined as `1 / tan(x)`.
@@ -17301,9 +18438,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      // TODO: implement BigNumber support
-	      // downgrade to Number
-	      return cot(x.toNumber());
+	      return bigCot(x, BigNumber, true);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('cot', math['typeof'](x));
@@ -17312,24 +18447,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 134 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
 	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
+	      isCollection = collection.isCollection,
+
+	      bigCoth = util.bignumber.tanh_coth;
 
 	  /**
 	   * Calculate the hyperbolic cotangent of a value,
@@ -17391,9 +18528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      // TODO: implement BigNumber support
-	      // downgrade to Number
-	      return coth(x.toNumber());
+	      return bigCoth(x, BigNumber, true);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('coth', math['typeof'](x));
@@ -17402,24 +18537,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 135 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
 	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
+	      isCollection = collection.isCollection,
+
+	      bigCsc = util.bignumber.cos_sin_sec_csc;
 
 	  /**
 	   * Calculate the cosecant of a value, defined as `csc(x) = 1/sin(x)`.
@@ -17478,9 +18615,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      // TODO: implement BigNumber support
-	      // downgrade to Number
-	      return csc(x.toNumber());
+	      return bigCsc(x, BigNumber, 1, true);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('csc', math['typeof'](x));
@@ -17489,25 +18624,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 136 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 	      number = util.number,
 	      
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
 	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
+	      isCollection = collection.isCollection,
+
+	      bigCsch = util.bignumber.cosh_sinh_csch_sech;
 
 	  /**
 	   * Calculate the hyperbolic cosecant of a value,
@@ -17539,7 +18676,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    if (isNumber(x)) {
 	      // x == 0
-	      if (x == 0) return Number.NaN;
+	      if (x == 0) return Number.POSITIVE_INFINITY;
 	      // consider values close to zero (+/-)
 	      return Math.abs(2 / (Math.exp(x) - Math.exp(-x))) * number.sign(x);
 	    }
@@ -17569,9 +18706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      // TODO: implement BigNumber support
-	      // downgrade to Number
-	      return csch(x.toNumber());
+	      return bigCsch(x, BigNumber, true, true);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('csch', math['typeof'](x));
@@ -17580,24 +18715,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 137 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
 	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
+	      isCollection = collection.isCollection,
+
+	      bigSec = util.bignumber.cos_sin_sec_csc;
 
 	  /**
 	   * Calculate the secant of a value, defined as `sec(x) = 1/cos(x)`.
@@ -17656,9 +18793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      // TODO: implement BigNumber support
-	      // downgrade to Number
-	      return sec(x.toNumber());
+	      return bigSec(x, BigNumber, 0, true);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('sec', math['typeof'](x));
@@ -17667,24 +18802,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 138 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
 	      isComplex = Complex.isComplex,
 	      isUnit = Unit.isUnit,
-	      isCollection = collection.isCollection;
+	      isCollection = collection.isCollection,
+
+	      bigSech = util.bignumber.cosh_sinh_csch_sech;
 
 	  /**
 	   * Calculate the hyperbolic secant of a value,
@@ -17743,9 +18880,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      // TODO: implement BigNumber support
-	      // downgrade to Number
-	      return sech(x.toNumber());
+	      return bigSech(x, BigNumber, false, true);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('sech', math['typeof'](x));
@@ -17754,18 +18889,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 139 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -17773,7 +18908,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isUnit = Unit.isUnit,
 	      isCollection = collection.isCollection,
 
-	      bigSin = util.bignumber.cos_sin;
+	      bigSin = util.bignumber.cos_sin_sec_csc;
 
 	  /**
 	   * Calculate the sine of a value.
@@ -17833,7 +18968,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      return bigSin(x, config.precision, 1);
+	      return bigSin(x, BigNumber, 1, false);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('sin', math['typeof'](x));
@@ -17842,18 +18977,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 140 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -17861,7 +18996,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isUnit = Unit.isUnit,
 	      isCollection = collection.isCollection,
 
-	      bigSinh = util.bignumber.cosh_sinh;
+	      bigSinh = util.bignumber.cosh_sinh_csch_sech;
 
 	  /**
 	   * Calculate the hyperbolic sine of a value,
@@ -17921,7 +19056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      return bigSinh(x, 1);
+	      return bigSinh(x, BigNumber, true, false);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('sinh', math['typeof'](x));
@@ -17930,18 +19065,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 141 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math, config) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -17949,7 +19084,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isUnit = Unit.isUnit,
 	      isCollection = collection.isCollection,
 
-	      bigTan = util.bignumber.tan;
+	      bigTan = util.bignumber.tan_cot;
 
 	  /**
 	   * Calculate the tangent of a value. `tan(x)` is equal to `sin(x) / cos(x)`.
@@ -18010,7 +19145,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      return bigTan(x, config.precision);
+	      return bigTan(x, BigNumber, false);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('tan', math['typeof'](x));
@@ -18019,18 +19154,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 142 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      BigNumber = math.type.BigNumber,
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isNumber = util.number.isNumber,
 	      isBoolean = util['boolean'].isBoolean,
@@ -18038,7 +19173,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      isUnit = Unit.isUnit,
 	      isCollection = collection.isCollection,
 
-	      bigTanh = util.bignumber.tanh;
+	      bigTanh = util.bignumber.tanh_coth;
 
 	  /**
 	   * Calculate the hyperbolic tangent of a value,
@@ -18101,7 +19236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (x instanceof BigNumber) {
-	      return bigTanh(x);
+	      return bigTanh(x, BigNumber, false);
 	    }
 
 	    throw new math.error.UnsupportedTypeError('tanh', math['typeof'](x));
@@ -18110,16 +19245,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 143 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	      Unit = __webpack_require__(10),
-	      collection = __webpack_require__(13),
+	      Unit = __webpack_require__(11),
+	      collection = __webpack_require__(14),
 
 	      isString = util.string.isString,
 	      isUnit = Unit.isUnit,
@@ -18172,13 +19307,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 144 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 	      object = util.object;
 
 	  /**
@@ -18190,11 +19325,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Examples:
 	   *
-	   *    math.clone(3.5);              // returns number 3.5
-	   *    math.clone(2 - 4i);           // returns Complex 2 - 4i
-	   *    math.clone(45 deg);           // returns Unit 45 deg
-	   *    math.clone([[1, 2], [3, 4]]); // returns Array [[1, 2], [3, 4]]
-	   *    math.clone("hello world");    // returns string "hello world"
+	   *    math.clone(3.5);                   // returns number 3.5
+	   *    math.clone(math.complex('2 - 4i'); // returns Complex 2 - 4i
+	   *    math.clone(math.unit(45, 'deg'));  // returns Unit 45 deg
+	   *    math.clone([[1, 2], [3, 4]]);      // returns Array [[1, 2], [3, 4]]
+	   *    math.clone("hello world");         // returns string "hello world"
 	   *
 	   * @param {*} x   Object to be cloned
 	   * @return {*} A clone of object x
@@ -18210,13 +19345,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 145 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9);
+	  var Matrix = __webpack_require__(10);
 
 	  /**
 	   * Sort the items in a matrix.
@@ -18290,13 +19425,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 146 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 	      string = util.string;
 
 	  /**
@@ -18375,16 +19510,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 147 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
-	      Complex = __webpack_require__(6),
-	      Unit = __webpack_require__(10),
+	      Complex = __webpack_require__(7),
+	      Unit = __webpack_require__(11),
 
 	      isNumber = util.number.isNumber,
 	      isString = util.string.isString,
@@ -18454,7 +19589,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // istanbul ignore else (we cannot unit test the else case in a node.js environment)
 	      if (true) {
 	        // load the file using require
-	        var _module = __webpack_require__(192)(object);
+	        var _module = __webpack_require__(202)(object);
 	        math_import(_module, options);
 	      }
 	      else {
@@ -18535,13 +19670,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 148 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9);
+	  var Matrix = __webpack_require__(10);
 
 
 	  /**
@@ -18601,13 +19736,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 149 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var util = __webpack_require__(157),
+	  var util = __webpack_require__(171),
 
 	      isString = util.string.isString;
 
@@ -18685,13 +19820,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 150 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9);
+	  var Matrix = __webpack_require__(10);
 
 	  /**
 	   * Sort the items in a matrix.
@@ -18765,20 +19900,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 151 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var types = __webpack_require__(315),
+	  var types = __webpack_require__(334),
 
-	      Complex = __webpack_require__(6),
-	      Matrix = __webpack_require__(9),
-	      Unit = __webpack_require__(10),
-	      Index = __webpack_require__(8),
-	      Range = __webpack_require__(7),
-	      Help = __webpack_require__(11);
+	      Complex = __webpack_require__(7),
+	      Matrix = __webpack_require__(10),
+	      Unit = __webpack_require__(11),
+	      Index = __webpack_require__(9),
+	      Range = __webpack_require__(8),
+	      Help = __webpack_require__(12);
 
 	  /**
 	   * Determine the type of a variable.
@@ -18847,13 +19982,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 152 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9);
+	  var Matrix = __webpack_require__(10);
 
 	  /**
 	   * Iterate over all elements of a matrix/array, and executes the given callback function.
@@ -18909,15 +20044,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 153 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(156);
+	var BigNumber = __webpack_require__(5);
 	var isNumber = __webpack_require__(3).isNumber;
 	var digits = __webpack_require__(3).digits;
-	var memoize = __webpack_require__(316).memoize;
+	var memoize = __webpack_require__(335).memoize;
 
 	/**
 	 * Test whether value is a BigNumber
@@ -19161,10 +20296,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!x.isFinite() || !y.isFinite()) {
 	    if ((!x.isFinite() && !x.isNegative() && y.isNegative()) ||
 	           (x.isNegative() && !y.isNegative() && !y.isFinite())) {
-	        return negOne;
+	      return negOne;
 	    }
 	    if (x.isNegative() && y.isNegative()) {
-	        return x.isFinite() ? x : y;
+	      return x.isFinite() ? x : y;
 	    }
 	    return x.isFinite() ? y : x;
 	  }
@@ -19398,17 +20533,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *************************************/
 
 	/**
-	 * Calculate the arc cosine of x
+	 * Calculate the arccosine or arcsecant of x
 	 *
 	 * acos(x) = 2*atan(sqrt(1-x^2)/(1+x))
 	 *
+	 * asec(x) = acos(1/x)
+	 *
 	 * @param {BigNumber} x
-	 * @returns {BigNumber} arc cosine of x
+	 * @param {DecimalFactory} Big   current BigNumber constructor
+	 * @param {Boolean} reciprocal   is sec
+	 * @returns {BigNumber} arccosine or arcsecant of x
 	 */
-	exports.arccos = function (x) {
-	  var Big = x.constructor;
+	exports.arccos_arcsec = function (x, Big, reciprocal) {
 	  var precision = Big.precision;
-	  if (x.abs().gt(Big.ONE)) {
+	  if (reciprocal) {
+	    if (x.abs().lt(Big.ONE)) {
+	      throw new Error('asec() only has non-complex values for |x| >= 1.');
+	    }
+	  } else if (x.abs().gt(Big.ONE)) {
 	    throw new Error('acos() only has non-complex values for |x| <= 1.');
 	  }
 	  if (x.eq(-1)) {
@@ -19416,34 +20558,46 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  Big.config({precision: precision + 4});
-	  var acos = exports.arctan(Big.ONE.minus(x.times(x)).sqrt()
-	                                .div(x.plus(Big.ONE))).times(2);
-	  Big.config({precision: precision});
 
+	  if (reciprocal) {
+	    x = Big.ONE.div(x);
+	  }
+
+	  var acos = exports.arctan_arccot(Big.ONE.minus(x.times(x)).sqrt()
+	                                      .div(x.plus(Big.ONE)), Big).times(2);
+
+	  Big.config({precision: precision});
 	  return acos.toDP(precision - 1);
 	};
 
 	/**
-	 * Calculate the arc sine of x
+	 * Calculate the arcsine or arccosecant of x
 	 *
 	 * @param {BigNumber} x
-	 * @returns {BigNumber} arc sine of x
+	 * @param {DecimalFactory} Big   current BigNumber constructor
+	 * @param {Boolean} reciprocal   is csc
+	 * @returns {BigNumber} arcsine or arccosecant of x
 	 */
-	exports.arcsin = function (x) {
-	  var Big = x.constructor;
+	exports.arcsin_arccsc = function (x, Big, reciprocal) {
 	  if (x.isNaN()) {
 	    return new Big(NaN);
 	  }
-	  if (x.isZero()) {
-	    return new Big(0);
-	  }
-
-	  var absX = x.abs();
-	  if (absX.gt(1)) {
-	    throw new Error('asin() only has non-complex values for |x| <= 1.');
-	  }
 
 	  var precision = Big.precision;
+	  var absX = x.abs();
+	  if (reciprocal) {
+	    if (absX.lt(Big.ONE)) {
+	      throw new Error('acsc() only has non-complex values for |x| >= 1.');
+	    }
+
+	    Big.config({precision: precision + 2});
+	    x = Big.ONE.div(x); 
+	    Big.config({precision: precision});
+
+	    absX = x.abs();
+	  } else if (absX.gt(Big.ONE)) {
+	    throw new Error('asin() only has non-complex values for |x| <= 1.');
+	  }
 
 	  // Get x below 0.58
 	  if (absX.gt(0.8)) {
@@ -19452,15 +20606,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // arcsin(x) = sign(x)*(Pi/2 - arcsin(sqrt(1 - x^2)))
 	    var sign = x.s;
 	    var halfPi = exports.pi(precision + 4).div(2);
-	    x = halfPi.minus(exports.arcsin(Big.ONE.minus(x.times(x)).sqrt()));
+	    x = halfPi.minus(exports.arcsin_arccsc(Big.ONE.minus(x.times(x)).sqrt(), Big));
 	    x.s = sign;
 
 	    x.constructor = Big;
 	    Big.config({precision: precision});
 	    return x.toDP(precision - 1);
 	  }
-	  var wasReduced;
-	  if (wasReduced = absX.gt(0.58)) {
+	  var wasReduced = absX.gt(0.58);
+	  if (wasReduced) {
 	    Big.config({precision: precision + 8});
 
 	    // arcsin(x) = 2*arcsin(x / (sqrt(2)*sqrt(sqrt(1 - x^2) + 1)))
@@ -19473,7 +20627,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // Avoid overhead of Newton's Method if feasible
 	  var ret = (precision <= 60 || ((x.dp() <= Math.log(precision)) && x.lt(0.05)))
 	    ? arcsin_taylor(x, precision)
-	    : arcsin_newton(x, precision);
+	    : arcsin_newton(x, Big);
 
 	  if (wasReduced) {
 	    return ret.times(2);
@@ -19482,31 +20636,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	/**
-	 * Calculate the arc tangent of x
+	 * Calculate the arctangent or arccotangent of x
 	 *
 	 * @param {BigNumber} x
-	 * @returns {BigNumber} arc tangent of x
+	 * @param {DecimalFactory} Big   current BigNumber constructor
+	 * @param {Boolean} reciprocal   is cot
+	 * @returns {BigNumber} arctangent or arccotangent of x
 	 */
-	exports.arctan = function (x) {
-	  var Big = x.constructor;
+	exports.arctan_arccot = function (x, Big, reciprocal) {
 	  if (x.isNaN()) {
 	    return new Big(NaN);
 	  }
-	  if (x.isZero()) {
+	  if ((!reciprocal && x.isZero()) || (reciprocal && !x.isFinite())) {
 	    return new Big(0);
 	  }
+
 	  var precision = Big.precision;
-	  if (!x.isFinite()) {
+	  if ((!reciprocal && !x.isFinite()) || (reciprocal && x.isZero())) {
 	    var halfPi = exports.pi(precision + 2).div(2).toDP(precision - 1);
 	    halfPi.s = x.s;
 
 	    return halfPi;
 	  }
 
+	  Big.config({precision: precision + 4});
+
+	  if (reciprocal) {
+	    x = Big.ONE.div(x);
+	  }
+
 	  var absX = x.abs();
 	  if (absX.lte(0.875)) {
-	    Big.config({precision: precision + 4});
-
 	    var ret = arctan_taylor(x);
 
 	    ret.constructor = Big;
@@ -19514,8 +20674,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return ret.toDP(Big.precision - 1);
 	  }
 	  if (absX.gte(1.143)) {
-	    Big.config({precision: precision + 4});
-
 	    // arctan(x) = sign(x)*((PI / 2) - arctan(1 / |x|))
 	    var halfPi = exports.pi(precision + 4).div(2);
 	    var ret = halfPi.minus(arctan_taylor(Big.ONE.div(absX)));
@@ -19527,15 +20685,113 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  // arctan(x) = arcsin(x / [sqrt(1 + x^2)])
-	  Big.config({precision: precision + 4});
 	  x = x.div(x.times(x).plus(1).sqrt());
-	  Big.config({precision: precision});
 
-	  return exports.arcsin(x);
+	  Big.config({precision: precision});
+	  return exports.arcsin_arccsc(x, Big);
 	};
 
 	/**
-	 * Calculate cosine/sine of x using the multiple angle identity:
+	 * Calculate the hyperbolic arccosine, arcsine, arcsecant, or arccosecant of x
+	 *
+	 * acosh(x) = ln(x + sqrt(x^2 - 1))
+	 *
+	 * asinh(x) = ln(x + sqrt(x^2 + 1))
+	 *
+	 * asech(x) = acosh(1 / x)
+	 *
+	 * acsch(x) = asinh(1 / x)
+	 *
+	 * @param {BigNumber} x
+	 * @param {DecimalFactory} Big   current BigNumber constructor
+	 * @param {Boolean} mode         sine function if true, cosine function if false
+	 * @param {Boolean} reciprocal   is sec or csc
+	 * @returns {BigNumber} hyperbolic arccosine, arcsine, arcsecant, or arccosecant of x
+	 */
+	exports.acosh_asinh_asech_acsch = function (x, Big, mode, reciprocal) {
+	  if (x.isNaN()) {
+	    return new Big(NaN);
+	  }
+	  if (reciprocal && x.isZero()) {
+	    return new Big(Infinity);
+	  }
+	  if (!mode) {
+	    if (reciprocal) {
+	      if (x.isNegative() || x.gt(Big.ONE)) {
+	        throw new Error('asech() only has non-complex values for 0 <= x <= 1.');
+	      }
+	    } else if (x.lt(Big.ONE)) {
+	      throw new Error('acosh() only has non-complex values for x >= 1.');
+	    }
+	  }
+
+	  var precision = Big.precision;
+	  Big.config({precision: precision + 4});
+
+	  var y = new Big(x);
+	  y.constructor = Big;
+
+	  if (reciprocal) {
+	    y = Big.ONE.div(y);
+	  }
+
+	  var x2PlusOrMinus = (mode) ? y.times(y).plus(Big.ONE) : y.times(y).minus(Big.ONE);
+	  var ret = y.plus(x2PlusOrMinus.sqrt()).ln();
+
+	  Big.config({precision: precision});
+	  return new Big(ret.toPrecision(precision));
+	};
+
+	/**
+	 * Calculate the hyperbolic arctangent or arccotangent of x
+	 *
+	 * atanh(x) = ln((1 + x)/(1 - x)) / 2
+	 *
+	 * acoth(x) = atanh(1 / x)
+	 *
+	 * @param {BigNumber} x
+	 * @param {DecimalFactory} Big   current BigNumber constructor
+	 * @param {Boolean} reciprocal   is sec or csc
+	 * @returns {BigNumber} hyperbolic arctangent or arccotangent of x
+	 */
+	exports.atanh_acoth = function (x, Big, reciprocal) {
+	  if (x.isNaN()) {
+	    return new Big(NaN);
+	  }
+
+	  var absX = x.abs();
+	  if (absX.eq(Big.ONE)) {
+	    return new Big(x.isNegative() ? -Infinity : Infinity);
+	  }
+	  if (absX.gt(Big.ONE)) {
+	    if (!reciprocal) {
+	      throw new Error('atanh() only has non-complex values for |x| <= 1.');
+	    }
+	  } else if (reciprocal) {
+	    throw new Error('acoth() has complex values for |x| < 1.');
+	  }
+
+	  if (x.isZero()) {
+	    return new Big(0);
+	  }
+
+	  var precision = Big.precision;
+	  Big.config({precision: precision + 4});
+
+	  var y = new Big(x);
+	  y.constructor = Big;
+
+	  if (reciprocal) {
+	    y = Big.ONE.div(y);
+	  }
+	  var ret = Big.ONE.plus(y).div(Big.ONE.minus(y)).ln().div(2);
+
+	  Big.config({precision: precision});
+	  return new Big(ret.toPrecision(precision));
+	};
+
+	/**
+	 * Calculate the cosine/sine of x using the multiple angle identity:
 	 *
 	 * cos(4x) = 8[cos(x)^4 - cos(x)^2] + 1
 	 *
@@ -19543,20 +20799,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * http://www.tc.umn.edu/~ringx004/sidebar.html
 	 *
 	 * @param {BigNumber} x
-	 * @param {Number} precision    precision as defined in the config file
-	 * @param {Number} mode         sine function if 1, cosine function if 0
-	 * @returns {BigNumber} sine or cosine of x
+	 * @param {DecimalFactory} Big   current BigNumber constructor
+	 * @param {Number} mode          cosine function if 0, sine function if 1
+	 * @param {Boolean} reciprocal   is sec or csc
+	 * @returns {BigNumber} cosine, sine, secant, or cosecant of x
 	 */
-	exports.cos_sin = function (x, precision, mode) {
-	  var Big;
+	exports.cos_sin_sec_csc = function (x, Big, mode, reciprocal) {
 	  if (x.isNaN() || !x.isFinite()) {
-	    Big = BigNumber.constructor({precision: precision});
 	    return new Big(NaN);
 	  }
+	  var precision = Big.precision;
 
 	  // Avoid changing the original value
-	  var y = BigNumberCopy(x);
-	  Big = y.constructor;
+	  var y = new Big(x);
 
 	  // sin(-x) == -sin(x), cos(-x) == cos(x)
 	  var isNeg = y.isNegative();
@@ -19565,20 +20820,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  // Apply ~log(precision) guard bits
-	  var precPlusGuardDigits = precision + (Math.log(precision) | 0) + 3; 
+	  var precPlusGuardDigits = precision + (Math.log(precision) | 0) + 3;
 	  Big.config({precision: precPlusGuardDigits});
 
 	  y = reduceToPeriod(y, precPlusGuardDigits, mode);  // Make this destructive
+	  y[0].constructor = Big;
 	  if (y[1]) {
+	    y = y[0];
+	    if (reciprocal && y.isZero()) {
+	      y = new Big(Infinity);
+	    }
+
 	    Big.config({precision: precision});
-	    return y[0];
+	    return y;
 	  }
 
 	  var ret;
 	  y = y[0];
 	  if (mode) {
 	    ret = cos_sin_taylor(y.div(3125), mode);
-	    Big.config({precision: Math.min(Big.precision, precision + 15)});
+	    Big.config({precision: Math.min(precPlusGuardDigits, precision + 15)});
 
 	    var five = new Big(5);
 	    var sixteen = new Big(16);
@@ -19606,7 +20867,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    ret = cos_sin_taylor(y.div(div_factor), mode);
-	    Big.config({precision: Math.min(Big.precision, precision + 8)});
+	    Big.config({precision: Math.min(precPlusGuardDigits, precision + 8)});
 
 	    var eight = new Big(8);
 	    for (; loops > 0; --loops) {
@@ -19616,7 +20877,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  ret.constructor.config({precision: precision});
+	  if (reciprocal) {
+	    ret = (ret.e <= -precision)
+	      ? new Big(Infinity)
+	      : Big.ONE.div(ret);
+	  }
+
+	  Big.config({precision: precision});
 	  return ret.toDP(precision - 1);
 	};
 
@@ -19625,16 +20892,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * tan(x) = sin(x) / cos(x)
 	 *
+	 * cot(x) = cos(x) / sin(x)
+	 *
 	 * @param {BigNumber} x
-	 * @param {Number} precision    precision as defined in the config file
-	 * @returns {BigNumber} tangent of x
+	 * @param {DecimalFactory} Big   current BigNumber constructor
+	 * @param {Boolean} reciprocal   is cot
+	 * @returns {BigNumber} tangent or cotangent of x
 	 */
-	exports.tan = function (x, precision) {
-	  var Big = BigNumber.constructor({precision: precision});
+	exports.tan_cot = function (x, Big, reciprocal) {
 	  if (x.isNaN()) {
 	    return new Big(NaN);
 	  }
 
+	  var precision = Big.precision;
 	  var pi = exports.pi(precision + 2);
 	  var halfPi = pi.div(2).toDP(precision - 1);
 	  pi = pi.toDP(precision - 1);
@@ -19644,10 +20914,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return new Big(Infinity);
 	  }
 
-	  var sin = exports.cos_sin(y, precision + 2, 1);
+	  Big.config({precision: precision + 2});
+	  var sin = exports.cos_sin_sec_csc(y, Big, 1, false);
 	  var cos = sinToCos(sin);
 
-	  sin.constructor.config({precision: precision});
 	  sin = sin.toDP(precision);
 	  cos = cos.toDP(precision);
 
@@ -19660,14 +20930,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    cos.s = -cos.s;
 	  }
 
-	  sin.constructor.config({precision: precision + 2});
-	  var tan = sin.div(cos);
+	  var tan = (reciprocal) ? cos.div(sin) : sin.div(cos);
 
+	  Big.config({precision: precision});
 	  return new Big(tan.toPrecision(precision));
 	};
 
 	/**
-	 * Calculate the hyperbolic cosine/sine of x
+	 * Calculate the hyperbolic sine, cosine, secant, or cosecant of x
 	 *
 	 * cosh(x) = (exp(x) + exp(-x)) / 2
 	 *         = (e^x + 1/e^x) / 2
@@ -19675,25 +20945,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * sinh(x) = (exp(x) - exp(-x)) / 2
 	 *         = (e^x - 1/e^x) / 2
 	 *
+	 * sech(x) = 2 / (exp(x) + exp(-x))
+	 *         = 2 / (e^x + 1/e^x)
+	 *
+	 * csch(x) = 2 / (exp(x) - exp(-x))
+	 *         = 2 / (e^x - 1/e^x)
+	 *
 	 * @param {BigNumber} x
-	 * @param {Number} mode     cosh function if 0, sinh function if 1
-	 * @returns {BigNumber} cosh or sinh of x
+	 * @param {DecimalFactory} Big   current BigNumber constructor
+	 * @param {Boolean} mode         sinh function if true, cosh function if false
+	 * @param {Boolean} reciprocal   is sech or csch
+	 * @returns {BigNumber} hyperbolic cosine, sine, secant. or cosecant of x
 	 */
-	exports.cosh_sinh = function (x, mode) {
-	  var Big = x.constructor;
+	exports.cosh_sinh_csch_sech = function (x, Big, mode, reciprocal) {
 	  if (x.isNaN()) {
 	    return new Big(NaN);
 	  }
 	  if (!x.isFinite()) {
+	    if (reciprocal) {
+	      return new Big(0);
+	    }
 	    return new Big((mode) ? x : Infinity);
 	  }
 
 	  var precision = Big.precision;
 	  Big.config({precision: precision + 4});
 
-	  var y = x.exp();
+	  var y = new Big(x);
+	  y.constructor = Big;
+
+	  y = y.exp();
 	  y = (mode) ? y.minus(Big.ONE.div(y)) : y.plus(Big.ONE.div(y));
-	  y = y.div(2);
+	  y = (reciprocal) ? new Big(2).div(y) : y.div(2);
 
 	  Big.config({precision: precision});
 	  return new Big(y.toPrecision(precision));
@@ -19706,11 +20989,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *         = (exp(2x) - 1) / (exp(2x) + 1)
 	 *         = (e^x - 1/e^x) / (e^x + 1/e^x)
 	 *
+	 * coth(x) = (exp(x) - exp(-x)) / (exp(x) + exp(-x))
+	 *         = (exp(2x) + 1) / (exp(2x) - 1)
+	 *         = (e^x + 1/e^x) / (e^x - 1/e^x)
+	 *
 	 * @param {BigNumber} x
-	 * @returns {BigNumber} tanh of x
+	 * @param {DecimalFactory} Big   current BigNumber constructor
+	 * @param {Boolean} reciprocal   is coth
+	 * @returns {BigNumber} hyperbolic tangent or cotangent of x
 	 */
-	exports.tanh = function (x) {
-	  var Big = x.constructor;
+	exports.tanh_coth = function (x, Big, reciprocal) {
 	  if (x.isNaN()) {
 	    return new Big(NaN);
 	  }
@@ -19721,10 +21009,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var precision = Big.precision;
 	  Big.config({precision: precision + 4});
 
-	  var posExp = x.exp();
+	  var y = new Big(x);
+	  y.constructor = Big;
+
+	  var posExp = y.exp();
 	  var negExp = Big.ONE.div(posExp);
 	  var ret = posExp.minus(negExp);
-	  ret = ret.div(posExp.plus(negExp));
+	  ret = (reciprocal) ? posExp.plus(negExp).div(ret) : ret.div(posExp.plus(negExp));
 
 	  Big.config({precision: precision});
 	  return ret.toDP(precision - 1);
@@ -19740,22 +21031,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     x_(i+1) = x_i - (sin(x_i) - N)/cos(x_i)
 	 *
 	 * @param {BigNumber} x
-	 * @param {Number} oldPrecision
+	 * @param {DecimalFactory} Big   current BigNumber constructor
 	 * @returns {BigNumber} arc sine of x
 	 */
-	function arcsin_newton(x, oldPrecision) {
+	function arcsin_newton(x, Big) {
+	  var oldPrecision = Big.precision;
+
 	  // Calibration variables, adjusted from MAPM
 	  var tolerance = -(oldPrecision + 4);
 	  var maxp = oldPrecision + 8 - x.e;
 	  var localPrecision = 25 - x.e;
 	  var maxIter = Math.max(Math.log(oldPrecision + 2) * 1.442695 | 0 + 5, 5);
-
-	  var Big = BigNumber.constructor({precision: oldPrecision});
-	  var curr = new Big(Math.asin(x.toNumber()) + '');
+	  Big.config({precision: localPrecision});
 
 	  var i = 0;
+	  var curr = new Big(Math.asin(x.toNumber()) + '');
 	  do {
-	    var tmp0 = exports.cos_sin(curr, localPrecision, 1);
+	    var tmp0 = exports.cos_sin_sec_csc(curr, Big, 1, false);
 	    var tmp1 = sinToCos(tmp0);
 	    if (!tmp0.isZero()) {
 	      tmp0.s = curr.s;
@@ -19765,7 +21057,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    curr = curr.minus(tmp2);
 
 	    localPrecision = Math.min(2*localPrecision, maxp);
-	    curr.constructor.config({precision: localPrecision});
+	    Big.config({precision: localPrecision});
 	  } while ((2*tmp2.e >= tolerance) && !tmp2.isZero() && (++i <= maxIter))
 
 	  if (i == maxIter) {
@@ -19773,7 +21065,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    'Try with a higher precision.');
 	  }
 
-	  curr.constructor.config({precision: oldPrecision});
+	  Big.config({precision: oldPrecision});
 	  return curr.toDP(oldPrecision - 1);
 	}
 
@@ -20139,18 +21431,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 154 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var number = __webpack_require__(3),
-	    string = __webpack_require__(195),
+	    string = __webpack_require__(205),
 	    object = __webpack_require__(2),
-	    types = __webpack_require__(315),
+	    types = __webpack_require__(334),
 
-	    DimensionError = __webpack_require__(159),
-	    IndexError = __webpack_require__(160),
+	    DimensionError = __webpack_require__(168),
+	    IndexError = __webpack_require__(169),
 
 	    isArray = Array.isArray;
 
@@ -20521,25 +21813,6090 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.isArray = isArray;
 
 /***/ },
-/* 155 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = '1.3.1-SNAPSHOT';
+	module.exports = '1.4.0';
 	// Note: This file is automatically generated when building math.js.
 	// Changes made in this file will be overwritten.
 
 
 /***/ },
-/* 156 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v4.0.1 https://github.com/MikeMcl/decimal.js/LICENCE */
+	'use strict';
+
+	/**
+	 * Create a syntax error with the message:
+	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
+	 * @param {String} fn     Function name
+	 * @param {Number} count  Actual argument count
+	 * @param {Number} min    Minimum required argument count
+	 * @param {Number} [max]  Maximum required argument count
+	 * @extends Error
+	 */
+	function ArgumentsError(fn, count, min, max) {
+	  if (!(this instanceof ArgumentsError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.fn = fn;
+	  this.count = count;
+	  this.min = min;
+	  this.max = max;
+
+	  this.message = 'Wrong number of arguments in function ' + fn +
+	      ' (' + count + ' provided, ' +
+	      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	ArgumentsError.prototype = new Error();
+	ArgumentsError.prototype.constructor = Error;
+	ArgumentsError.prototype.name = 'ArgumentsError';
+
+	module.exports = ArgumentsError;
+
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a range error with the message:
+	 *     'Dimension mismatch (<actual size> != <expected size>)'
+	 * @param {number | number[]} actual        The actual size
+	 * @param {number | number[]} expected      The expected size
+	 * @param {string} [relation='!=']          Optional relation between actual
+	 *                                          and expected size: '!=', '<', etc.
+	 * @extends RangeError
+	 */
+	function DimensionError(actual, expected, relation) {
+	  if (!(this instanceof DimensionError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.actual   = actual;
+	  this.expected = expected;
+	  this.relation = relation;
+
+	  this.message = 'Dimension mismatch (' +
+	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
+	      ' ' + (this.relation || '!=') + ' ' +
+	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
+	      ')';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	DimensionError.prototype = new RangeError();
+	DimensionError.prototype.constructor = RangeError;
+	DimensionError.prototype.name = 'DimensionError';
+
+	module.exports = DimensionError;
+
+
+/***/ },
+/* 169 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a range error with the message:
+	 *     'Index out of range (index < min)'
+	 *     'Index out of range (index < max)'
+	 *
+	 * @param {number} index     The actual index
+	 * @param {number} [min=0]   Minimum index (included)
+	 * @param {number} [max]     Maximum index (excluded)
+	 * @extends RangeError
+	 */
+	function IndexError(index, min, max) {
+	  if (!(this instanceof IndexError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.index = index;
+	  if (arguments.length < 3) {
+	    this.min = 0;
+	    this.max = min;
+	  }
+	  else {
+	    this.min = min;
+	    this.max = max;
+	  }
+
+	  if (this.min !== undefined && this.index < this.min) {
+	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
+	  }
+	  else if (this.max !== undefined && this.index >= this.max) {
+	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
+	  }
+	  else {
+	    this.message = 'Index out of range (' + this.index + ')';
+	  }
+
+	  this.stack = (new Error()).stack;
+	}
+
+	IndexError.prototype = new RangeError();
+	IndexError.prototype.constructor = RangeError;
+	IndexError.prototype.name = 'IndexError';
+
+	module.exports = IndexError;
+
+
+/***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a TypeError with message:
+	 *      'Function <fn> does not support a parameter of type <type>';
+	 * @param {String} fn     Function name
+	 * @param {*...} [types]  The types of the function arguments
+	 * @extends TypeError
+	 */
+	function UnsupportedTypeError(fn, types) {
+	  if (!(this instanceof UnsupportedTypeError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.fn = fn;
+	  this.types = Array.prototype.splice.call(arguments, 1);
+
+	  if (!fn) {
+	    this.message = 'Unsupported type of argument';
+	  }
+	  else {
+	    if (this.types.length == 0) {
+	      this.message = 'Unsupported type of argument in function ' + fn;
+	    }
+	    else {
+	      this.message = 'Function ' + fn + '(' + this.types.join(', ') + ') not supported';
+	    }
+	  }
+
+	  this.stack = (new Error()).stack;
+	}
+
+	UnsupportedTypeError.prototype = new TypeError();
+	UnsupportedTypeError.prototype.constructor = TypeError;
+	UnsupportedTypeError.prototype.name = 'UnsupportedTypeError';
+
+	module.exports = UnsupportedTypeError;
+
+
+/***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.array = __webpack_require__(165);
+	exports['boolean'] = __webpack_require__(204);
+	exports.number = __webpack_require__(3);
+	exports.bignumber = __webpack_require__(164);
+	exports.object = __webpack_require__(2);
+	exports.string = __webpack_require__(205);
+	exports.types = __webpack_require__(334);
+
+
+/***/ },
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180),
+	    object = __webpack_require__(2),
+	    string = __webpack_require__(205),
+	    collection = __webpack_require__(14),
+	    util = __webpack_require__(171),
+
+	    isArray = Array.isArray,
+	    isNode = Node.isNode;
+
+	/**
+	 * @constructor ArrayNode
+	 * @extends {Node}
+	 * Holds an 1-dimensional array with nodes
+	 * @param {Node[]} [nodes]   1 dimensional array with nodes
+	 */
+	function ArrayNode(nodes) {
+	  if (!(this instanceof ArrayNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.nodes = nodes || [];
+
+	  // validate input
+	  if (!isArray(this.nodes) || !this.nodes.every(isNode)) {
+	    throw new TypeError('Array containing Nodes expected')
+	  }
+	}
+
+	ArrayNode.prototype = new Node();
+
+	ArrayNode.prototype.type = 'ArrayNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @private
+	 */
+	ArrayNode.prototype._compile = function (defs) {
+	  var asMatrix = (defs.math.config().matrix !== 'array');
+
+	  var nodes = this.nodes.map(function (node) {
+	    return node._compile(defs);
+	  });
+
+	  return (asMatrix ? 'math.matrix([' : '[') +
+	      nodes.join(',') +
+	      (asMatrix ? '])' : ']');
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	ArrayNode.prototype.forEach = function (callback) {
+	  for (var i = 0; i < this.nodes.length; i++) {
+	    var node = this.nodes[i];
+	    callback(node, 'nodes[' + i + ']', this);
+	  }
+	};
+
+	/**
+	 * Create a new ArrayNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {ArrayNode} Returns a transformed copy of the node
+	 */
+	ArrayNode.prototype.map = function (callback) {
+	  var nodes = [];
+	  for (var i = 0; i < this.nodes.length; i++) {
+	    nodes[i] = this._ifNode(callback(this.nodes[i], 'nodes[' + i + ']', this));
+	  }
+	  return new ArrayNode(nodes);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {ArrayNode}
+	 */
+	ArrayNode.prototype.clone = function() {
+	  return new ArrayNode(this.nodes.slice(0))
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 * @override
+	 */
+	ArrayNode.prototype.toString = function() {
+	  return string.format(this.nodes);
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	ArrayNode.prototype.toTex = function(type) {
+	  type = type || 'bmatrix';
+	  var s = '\\begin{' + type + '}';
+
+	  this.nodes.forEach(function(node) {
+	    if (node.nodes) {
+	      s += node.nodes.map(function(childNode) {
+	        return childNode.toTex();
+	      }).join('&');
+	    }
+	    else {
+	      s += node.toTex();
+	    }
+
+	    // new line
+	    s += '\\\\';
+	  });
+	  s += '\\end{' + type + '}';
+	  return s;
+	};
+
+	module.exports = ArrayNode;
+
+
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180),
+	    ArrayNode = __webpack_require__(172),
+
+	    keywords = __webpack_require__(337),
+
+	    latex = __webpack_require__(338),
+	    isString = __webpack_require__(205).isString;
+
+	/**
+	 * @constructor AssignmentNode
+	 * @extends {Node}
+	 * Define a symbol, like "a = 3.2"
+	 *
+	 * @param {String} name       Symbol name
+	 * @param {Node} expr         The expression defining the symbol
+	 */
+	function AssignmentNode(name, expr) {
+	  if (!(this instanceof AssignmentNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (!isString(name))          throw new TypeError('String expected for parameter "name"');
+	  if (!(expr instanceof Node))  throw new TypeError('Node expected for parameter "expr"');
+	  if (name in keywords)         throw new Error('Illegal symbol name, "'  + name +  '" is a reserved keyword');
+
+	  this.name = name;
+	  this.expr = expr;
+	}
+
+	AssignmentNode.prototype = new Node();
+
+	AssignmentNode.prototype.type = 'AssignmentNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @private
+	 */
+	AssignmentNode.prototype._compile = function (defs) {
+	  return 'scope["' + this.name + '"] = ' + this.expr._compile(defs) + '';
+	};
+
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	AssignmentNode.prototype.forEach = function (callback) {
+	  callback(this.expr, 'expr', this);
+	};
+
+	/**
+	 * Create a new AssignmentNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {AssignmentNode} Returns a transformed copy of the node
+	 */
+	AssignmentNode.prototype.map = function (callback) {
+	  return new AssignmentNode(this.name, this._ifNode(callback(this.expr, 'expr', this)));
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {AssignmentNode}
+	 */
+	AssignmentNode.prototype.clone = function() {
+	  return new AssignmentNode(this.name, this.expr);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String}
+	 */
+	AssignmentNode.prototype.toString = function() {
+	  return this.name + ' = ' + this.expr.toString();
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String}
+	 */
+	AssignmentNode.prototype.toTex = function() {
+	  var brace;
+	  if (this.expr instanceof ArrayNode) {
+	    brace = ['\\mathbf{', '}'];
+	  }
+	  return latex.addBraces(latex.toSymbol(this.name), brace) + '=' +
+	      latex.addBraces(this.expr.toTex());
+	};
+
+	module.exports = AssignmentNode;
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180);
+	var ResultSet = __webpack_require__(13);
+	var isBoolean = __webpack_require__(204).isBoolean;
+
+	/**
+	 * @constructor BlockNode
+	 * @extends {Node}
+	 * Holds a set with blocks
+	 * @param {Array.<{node: Node} | {node: Node, visible: boolean}>} blocks
+	 *            An array with blocks, where a block is constructed as an Object
+	 *            with properties block, which is a Node, and visible, which is
+	 *            a boolean. The property visible is optional and is true by default
+	 */
+	function BlockNode(blocks) {
+	  if (!(this instanceof BlockNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input, copy blocks
+	  if (!Array.isArray(blocks)) throw new Error('Array expected');
+	  this.blocks = blocks.map(function (block) {
+	    var node    = block && block.node;
+	    var visible = block && block.visible !== undefined ? block.visible : true;
+
+	    if (!(node instanceof Node))  throw new TypeError('Property "node" must be a Node');
+	    if (!isBoolean(visible))      throw new TypeError('Property "visible" must be a boolean');
+
+	    return {
+	      node: node,
+	      visible: visible
+	    }
+	  });
+	}
+
+	BlockNode.prototype = new Node();
+
+	BlockNode.prototype.type = 'BlockNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	BlockNode.prototype._compile = function (defs) {
+	  defs.ResultSet = ResultSet;
+	  var blocks = this.blocks.map(function (param) {
+	    var js = param.node._compile(defs);
+	    if (param.visible) {
+	      return 'results.push(' + js + ');';
+	    }
+	    else {
+	      return js + ';';
+	    }
+	  });
+
+	  return '(function () {' +
+	      'var results = [];' +
+	      blocks.join('') +
+	      'return new ResultSet(results);' +
+	      '})()';
+	};
+
+	/**
+	 * Execute a callback for each of the child blocks of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	BlockNode.prototype.forEach = function (callback) {
+	  for (var i = 0; i < this.blocks.length; i++) {
+	    callback(this.blocks[i].node, 'blocks[' + i + '].node', this);
+	  }
+	};
+
+	/**
+	 * Create a new BlockNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {BlockNode} Returns a transformed copy of the node
+	 */
+	BlockNode.prototype.map = function (callback) {
+	  var blocks = [];
+	  for (var i = 0; i < this.blocks.length; i++) {
+	    var block = this.blocks[i];
+	    var node = this._ifNode(callback(block.node, 'blocks[' + i + '].node', this));
+	    blocks[i] = {
+	      node: node,
+	      visible: block.visible
+	    };
+	  }
+	  return new BlockNode(blocks);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {BlockNode}
+	 */
+	BlockNode.prototype.clone = function() {
+	  var blocks = this.blocks.map(function(block) {
+	    return {
+	      node: block.node,
+	      visible: block.visible
+	    };
+	  });
+
+	  return new BlockNode(blocks);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 * @override
+	 */
+	BlockNode.prototype.toString = function() {
+	  return this.blocks.map(function (param) {
+	    return param.node.toString() + (param.visible ? '' : ';');
+	  }).join('\n');
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	BlockNode.prototype.toTex = function() {
+	  return this.blocks.map(function (param) {
+	    return param.node.toTex() + (param.visible ? '' : ';');
+	  }).join('\n');
+	};
+
+	module.exports = BlockNode;
+
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180);
+	var latex = __webpack_require__(338);
+	var BigNumber = __webpack_require__(5);
+	var Complex = __webpack_require__(7);
+	var Unit = __webpack_require__(11);
+	var util = __webpack_require__(171);
+	var isString = util.string.isString;
+	var isNumber = util.number.isNumber;
+	var isBoolean = util['boolean'].isBoolean;
+
+	/**
+	 * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'
+	 *
+	 * @param {Node} condition   Condition, must result in a boolean
+	 * @param {Node} trueExpr    Expression evaluated when condition is true
+	 * @param {Node} falseExpr   Expression evaluated when condition is true
+	 *
+	 * @constructor ConditionalNode
+	 * @extends {Node}
+	 */
+	function ConditionalNode (condition, trueExpr, falseExpr) {
+	  if (!(this instanceof ConditionalNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+	  if (!(condition instanceof Node)) throw new TypeError('Parameter condition must be a Node');
+	  if (!(trueExpr instanceof Node))  throw new TypeError('Parameter trueExpr must be a Node');
+	  if (!(falseExpr instanceof Node)) throw new TypeError('Parameter falseExpr must be a Node');
+
+	  this.condition = condition;
+	  this.trueExpr = trueExpr;
+	  this.falseExpr = falseExpr;
+	}
+
+	ConditionalNode.prototype = new Node();
+
+	ConditionalNode.prototype.type = 'ConditionalNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	ConditionalNode.prototype._compile = function(defs) {
+	  /**
+	   * Test whether a condition is met
+	   * @param {*} condition
+	   * @returns {boolean} true if condition is true or non-zero, else false
+	   */
+	  defs.testCondition = function (condition) {
+	    if (isNumber(condition) || isBoolean(condition) || isString(condition)) {
+	      return condition ? true : false;
+	    }
+
+	    if (condition instanceof BigNumber) {
+	      return condition.isZero() ? false : true;
+	    }
+
+	    if (condition instanceof Complex) {
+	      return (condition.re || condition.im) ? true : false;
+	    }
+
+	    if (condition instanceof Unit) {
+	      return condition.value ? true : false;
+	    }
+
+	    if (condition === null || condition === undefined) {
+	      return false;
+	    }
+
+	    throw new TypeError('Unsupported type of condition "' + defs.math['typeof'](condition) + '"');
+	  };
+
+	  return (
+	      'testCondition(' + this.condition._compile(defs) + ') ? ' +
+	      '( ' + this.trueExpr._compile(defs) + ') : ' +
+	      '( ' + this.falseExpr._compile(defs) + ')'
+	      );
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	ConditionalNode.prototype.forEach = function (callback) {
+	  callback(this.condition, 'condition', this);
+	  callback(this.trueExpr, 'trueExpr', this);
+	  callback(this.falseExpr, 'falseExpr', this);
+	};
+
+	/**
+	 * Create a new ConditionalNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {ConditionalNode} Returns a transformed copy of the node
+	 */
+	ConditionalNode.prototype.map = function (callback) {
+	  return new ConditionalNode(
+	      this._ifNode(callback(this.condition, 'condition', this)),
+	      this._ifNode(callback(this.trueExpr, 'trueExpr', this)),
+	      this._ifNode(callback(this.falseExpr, 'falseExpr', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {ConditionalNode}
+	 */
+	ConditionalNode.prototype.clone = function() {
+	  return new ConditionalNode(this.condition, this.trueExpr, this.falseExpr);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	ConditionalNode.prototype.toString = function() {
+	  // TODO: not nice adding parenthesis al the time
+	  return '(' + this.condition.toString() + ') ? (' +
+	      this.trueExpr.toString() + ') : (' +
+	      this.falseExpr.toString() + ')';
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	ConditionalNode.prototype.toTex = function() {
+	  var s = (
+	      latex.addBraces(this.trueExpr.toTex()) +
+	      ', &\\quad' +
+	      latex.addBraces('\\text{if}\\;' + this.condition.toTex())
+	      ) + '\\\\' + (
+	      latex.addBraces(this.falseExpr.toTex()) +
+	      ', &\\quad' +
+	      latex.addBraces('\\text{otherwise}')
+	      );
+
+	  return latex.addBraces(s, [
+	    '\\left\\{\\begin{array}{l l}',
+	    '\\end{array}\\right.'
+	  ]);
+	};
+
+	module.exports = ConditionalNode;
+
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180);
+	var BigNumber = __webpack_require__(5);
+	var type = __webpack_require__(334).type;
+	var isString = __webpack_require__(205).isString;
+
+	/**
+	 * A ConstantNode holds a constant value like a number or string. A ConstantNode
+	 * stores a stringified version of the value and uses this to compile to
+	 * JavaScript.
+	 *
+	 * In case of a stringified number as input, this may be compiled to a BigNumber
+	 * when the math instance is configured for BigNumbers.
+	 *
+	 * Usage:
+	 *
+	 *     // stringified values with type
+	 *     new ConstantNode('2.3', 'number');
+	 *     new ConstantNode('true', 'boolean');
+	 *     new ConstantNode('hello', 'string');
+	 *
+	 *     // non-stringified values, type will be automatically detected
+	 *     new ConstantNode(2.3);
+	 *     new ConstantNode('hello');
+	 *
+	 * @param {String | Number | Boolean | null | undefined} value
+	 *                            When valueType is provided, value must contain
+	 *                            an uninterpreted string representing the value.
+	 *                            When valueType is undefined, value can be a
+	 *                            number, string, boolean, null, or undefined, and
+	 *                            the type will be determined automatically.
+	 * @param {String} [valueType]  The type of value. Choose from 'number', 'string',
+	 *                              'boolean', 'undefined', 'null'
+	 * @constructor ConstantNode
+	 * @extends {Node}
+	 */
+	function ConstantNode(value, valueType) {
+	  if (!(this instanceof ConstantNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  if (valueType) {
+	    if (!isString(valueType)) {
+	      throw new TypeError('String expected for parameter "valueType"');
+	    }
+	    if (!isString(value)){
+	      throw new TypeError('String expected for parameter "value"');
+	    }
+
+	    this.value = value;
+	    this.valueType = valueType;
+	  }
+	  else {
+	    // stringify the value and determine the type
+	    this.value = value + '';
+	    this.valueType = type(value);
+	  }
+
+	  if (!SUPPORTED_TYPES[this.valueType]) {
+	    throw new TypeError('Unsupported type of value "' + this.valueType + '"');
+	  }
+	}
+
+	var SUPPORTED_TYPES = {
+	  'number': true,
+	  'string': true,
+	  'boolean': true,
+	  'undefined': true,
+	  'null': true
+	};
+
+	ConstantNode.prototype = new Node();
+
+	ConstantNode.prototype.type = 'ConstantNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	ConstantNode.prototype._compile = function (defs) {
+	  switch (this.valueType) {
+	    case 'number':
+	      if (defs.math.config().number === 'bignumber') {
+	        return 'math.bignumber("' + this.value + '")';
+	      }
+	      else {
+	        // remove leading zeros like '003.2' which are not allowed by JavaScript
+	        return this.value.replace(/^(0*)[0-9]/, function (match, zeros) {
+	          return match.substring(zeros.length);
+	        });
+	      }
+
+	    case 'string':
+	      return '"' + this.value + '"';
+
+	    case 'boolean':
+	      return this.value;
+
+	    case 'undefined':
+	      return this.value;
+
+	    case 'null':
+	      return this.value;
+
+	    default:
+	        // TODO: move this error to the constructor?
+	      throw new TypeError('Unsupported type of constant "' + this.valueType + '"');
+	  }
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	ConstantNode.prototype.forEach = function (callback) {
+	  // nothing to do, we don't have childs
+	};
+
+
+	/**
+	 * Create a new ConstantNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
+	 * @returns {ConstantNode} Returns a clone of the node
+	 */
+	ConstantNode.prototype.map = function (callback) {
+	  return this.clone();
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {ConstantNode}
+	 */
+	ConstantNode.prototype.clone = function() {
+	  return new ConstantNode(this.value, this.valueType);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	ConstantNode.prototype.toString = function() {
+	  switch (this.valueType) {
+	    case 'string':
+	      return '"' + this.value + '"';
+
+	    default:
+	      return this.value;
+	  }
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	ConstantNode.prototype.toTex = function() {
+	  var value = this.value,
+	      index;
+	  switch (this.valueType) {
+	    case 'string':
+	      return '\\text{' + value + '}';
+
+	    case 'number':
+	      index = value.toLowerCase().indexOf('e');
+	      if (index !== -1) {
+	        return value.substring(0, index) + ' \\cdot 10^{' +
+	            value.substring(index + 1) + '}';
+	      }
+	      return value;
+
+	    default:
+	      return value;
+	  }
+	};
+
+	module.exports = ConstantNode;
+
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180);
+	var RangeNode = __webpack_require__(182);
+	var SymbolNode = __webpack_require__(183);
+
+	var BigNumber = __webpack_require__(5);
+	var Range = __webpack_require__(8);
+
+	var isNode = Node.isNode;
+	var isArray = Array.isArray;
+
+	/**
+	 * @constructor IndexNode
+	 * @extends Node
+	 *
+	 * get a subset of a matrix
+	 *
+	 * @param {Node} object
+	 * @param {Node[]} ranges
+	 */
+	function IndexNode (object, ranges) {
+	  if (!(this instanceof IndexNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (!(object instanceof Node)) throw new TypeError('Node expected for parameter "object"');
+	  if (!isArray(ranges) || !ranges.every(isNode)) {
+	    throw new TypeError('Array containing Nodes expected for parameter "ranges"');
+	  }
+
+	  this.object = object;
+	  this.ranges = ranges;
+	}
+
+	IndexNode.prototype = new Node();
+
+	IndexNode.prototype.type = 'IndexNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	IndexNode.prototype._compile = function (defs) {
+	  return this.compileSubset(defs);
+	};
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs           Object which can be used to define functions
+	 *                                or constants globally available for the
+	 *                                compiled expression
+	 * @param {String} [replacement]  If provided, the function returns
+	 *                                  "math.subset(obj, math.index(...), replacement)"
+	 *                                Else, the function returns
+	 *                                  "math.subset(obj, math.index(...))"
+	 * @return {String} js
+	 * @returns {string}
+	 */
+	IndexNode.prototype.compileSubset = function(defs, replacement) {
+	  // check whether any of the ranges expressions uses the context symbol 'end'
+	  function test(node) {
+	    return (node instanceof SymbolNode) && (node.name == 'end');
+	  }
+
+	  var someUseEnd = false;
+	  var rangesUseEnd = this.ranges.map(function (range) {
+	    var useEnd = range.filter(test).length > 0;
+	    someUseEnd = useEnd ? useEnd : someUseEnd;
+	    return useEnd;
+	  });
+
+	  // create a Range from start, step and end
+	  defs.range = function (start, end, step) {
+	    return new Range(
+	            start instanceof BigNumber ? start.toNumber() : start,
+	            end instanceof BigNumber ? end.toNumber() : end,
+	            step instanceof BigNumber ? step.toNumber() : step
+	    );
+	  };
+
+	  // TODO: implement support for bignumber (currently bignumbers are silently
+	  //       reduced to numbers when changing the value to zero-based)
+
+	  // TODO: Optimization: when the range values are ConstantNodes,
+	  //       we can beforehand resolve the zero-based value
+
+	  var ranges = this.ranges.map(function(range, i) {
+	    var useEnd = rangesUseEnd[i];
+	    if (range instanceof RangeNode) {
+	      if (useEnd) {
+	        // resolve end and create range
+	        return '(function (scope) {' +
+	            '  scope = Object.create(scope); ' +
+	            '  scope["end"] = size[' + i + '];' +
+	            '  return range(' +
+	            '    ' + range.start._compile(defs) + ', ' +
+	            '    ' + range.end._compile(defs) + ', ' +
+	            '    ' + (range.step ? range.step._compile(defs) : '1') +
+	            '  );' +
+	            '})(scope)';
+	      }
+	      else {
+	        // create range
+	        return 'range(' +
+	            range.start._compile(defs) + ', ' +
+	            range.end._compile(defs) + ', ' +
+	            (range.step ? range.step._compile(defs) : '1') +
+	            ')';
+	      }
+	    }
+	    else {
+	      if (useEnd) {
+	        // resolve the parameter 'end'
+	        return '(function (scope) {' +
+	            '  scope = Object.create(scope); ' +
+	            '  scope["end"] = size[' + i + '];' +
+	            '  return ' + range._compile(defs) + ';' +
+	            '})(scope)'
+	      }
+	      else {
+	        // just evaluate the expression
+	        return range._compile(defs);
+	      }
+	    }
+	  });
+
+	  // if some parameters use the 'end' parameter, we need to calculate the size
+	  if (someUseEnd) {
+	    return '(function () {' +
+	        '  var obj = ' + this.object._compile(defs) + ';' +
+	        '  var size = math.size(obj).valueOf();' +
+	        '  return math.subset(' +
+	        '    obj, ' +
+	        '    math.index(' + ranges.join(', ') + ')' +
+	        '    ' + (replacement ? (', ' + replacement) : '') +
+	        '  );' +
+	        '})()';
+	  }
+	  else {
+	    return 'math.subset(' +
+	        this.object._compile(defs) + ',' +
+	        'math.index(' + ranges.join(', ') + ')' +
+	        (replacement ? (', ' + replacement) : '') +
+	        ')';
+	  }
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	IndexNode.prototype.forEach = function (callback) {
+	  // object
+	  callback(this.object, 'object', this);
+
+	  // ranges
+	  for (var i = 0; i < this.ranges.length; i++) {
+	    callback(this.ranges[i], 'ranges[' + i + ']', this);
+	  }
+	};
+
+	/**
+	 * Create a new IndexNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {IndexNode} Returns a transformed copy of the node
+	 */
+	IndexNode.prototype.map = function (callback) {
+	  var object = this._ifNode(callback(this.object, 'object', this));
+
+	  var ranges = [];
+	  for (var i = 0; i < this.ranges.length; i++) {
+	    ranges[i] = this._ifNode(callback(this.ranges[i], 'ranges[' + i + ']', this));
+	  }
+
+	  return new IndexNode(object, ranges);
+	};
+
+	/**
+	 * Get the name of the object linked to this IndexNode
+	 * @return {string} name
+	 */
+	IndexNode.prototype.objectName = function() {
+	  return this.object.name;
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {IndexNode}
+	 */
+	IndexNode.prototype.clone = function() {
+	  return new IndexNode(this.object, this.ranges.slice(0));
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	IndexNode.prototype.toString = function() {
+	  // format the parameters like "[1, 0:5]"
+	  return this.object.toString() + '[' + this.ranges.join(', ') + ']';
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	IndexNode.prototype.toTex = function() {
+	  return this.object.toTex() + '[' + this.ranges.join(', ') + ']';
+	};
+
+	module.exports = IndexNode;
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180);
+	var keywords = __webpack_require__(337);
+	var latex = __webpack_require__(338);
+	var isString = __webpack_require__(205).isString;
+	var isArray = Array.isArray;
+
+	/**
+	 * @constructor FunctionAssignmentNode
+	 * @extends {Node}
+	 * Function assignment
+	 *
+	 * @param {String} name           Function name
+	 * @param {String[]} params         Function parameter names
+	 * @param {Node} expr             The function expression
+	 */
+	function FunctionAssignmentNode(name, params, expr) {
+	  if (!(this instanceof FunctionAssignmentNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (!isString(name)) throw new TypeError('String expected for parameter "name"');
+	  if (!isArray(params) || !params.every(isString))  throw new TypeError('Array containing strings expected for parameter "params"');
+	  if (!(expr instanceof Node)) throw new TypeError('Node expected for parameter "expr"');
+	  if (name in keywords) throw new Error('Illegal function name, "'  + name +  '" is a reserved keyword');
+
+	  this.name = name;
+	  this.params = params;
+	  this.expr = expr;
+	}
+
+	FunctionAssignmentNode.prototype = new Node();
+
+	FunctionAssignmentNode.prototype.type = 'FunctionAssignmentNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	FunctionAssignmentNode.prototype._compile = function (defs) {
+	  return 'scope["' + this.name + '"] = ' +
+	      '  (function (scope) {' +
+	      '    scope = Object.create(scope); ' +
+	      '    var fn = function ' + this.name + '(' + this.params.join(',') + ') {' +
+	      '      if (arguments.length != ' + this.params.length + ') {' +
+	      // TODO: use util.error.ArgumentsError here
+	      // TODO: test arguments error
+	      '        throw new SyntaxError("Wrong number of arguments in function ' + this.name + ' (" + arguments.length + " provided, ' + this.params.length + ' expected)");' +
+	      '      }' +
+	      this.params.map(function (variable, index) {
+	        return 'scope["' + variable + '"] = arguments[' + index + '];';
+	      }).join('') +
+	      '      return ' + this.expr._compile(defs) + '' +
+	      '    };' +
+	      '    fn.syntax = "' + this.name + '(' + this.params.join(', ') + ')";' +
+	      '    return fn;' +
+	      '  })(scope);';
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	FunctionAssignmentNode.prototype.forEach = function (callback) {
+	  callback(this.expr, 'expr', this);
+	};
+
+	/**
+	 * Create a new FunctionAssignmentNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {FunctionAssignmentNode} Returns a transformed copy of the node
+	 */
+	FunctionAssignmentNode.prototype.map = function (callback) {
+	  var expr = this._ifNode(callback(this.expr, 'expr', this));
+
+	  return new FunctionAssignmentNode(this.name, this.params.slice(0), expr);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {FunctionAssignmentNode}
+	 */
+	FunctionAssignmentNode.prototype.clone = function() {
+	  return new FunctionAssignmentNode(this.name, this.params.slice(0), this.expr);
+	};
+
+	/**
+	 * get string representation
+	 * @return {String} str
+	 */
+	FunctionAssignmentNode.prototype.toString = function() {
+	  return 'function ' + this.name +
+	      '(' + this.params.join(', ') + ') = ' +
+	      this.expr.toString();
+	};
+
+	/**
+	 * get LaTeX representation
+	 * @return {String} str
+	 */
+	FunctionAssignmentNode.prototype.toTex = function() {
+	  return this.name +
+	      latex.addBraces(this.params.map(latex.toSymbol).join(', '), true) + '=' +
+	      latex.addBraces(this.expr.toTex());
+	};
+
+	module.exports = FunctionAssignmentNode;
+
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180);
+	var SymbolNode = __webpack_require__(183);
+
+	var latex = __webpack_require__(338);
+	var isNode = Node.isNode;
+	var isArray = Array.isArray;
+
+	/**
+	 * @constructor FunctionNode
+	 * @extends {Node}
+	 * invoke a list with arguments on a node
+	 * @param {string} name
+	 * @param {Node[]} args
+	 */
+	function FunctionNode (name, args) {
+	  if (!(this instanceof FunctionNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (typeof name !== 'string') throw new TypeError('string expected for parameter "name"');
+	  if (!isArray(args) || !args.every(isNode)) {
+	    throw new TypeError('Array containing Nodes expected for parameter "args"');
+	  }
+
+	  this.name = name;
+	  this.args = args || [];
+	}
+
+	FunctionNode.prototype = new Node();
+
+	FunctionNode.prototype.type = 'FunctionNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	FunctionNode.prototype._compile = function (defs) {
+	  var fn = defs.math[this.name];
+	  var isRaw = (typeof fn === 'function') && (fn.rawArgs == true);
+
+	  // compile the parameters
+	  var args = this.args.map(function (arg) {
+	    return arg._compile(defs);
+	  });
+
+	  if (isRaw) {
+	    // pass unevaluated parameters (nodes) to the function
+	    var paramsName;
+	    do {
+	      paramsName = 'p' + Math.round(Math.random() * 10000);
+	    }
+	    while (paramsName in defs);
+	    defs[paramsName] = this.args;
+
+	    return '("' + this.name + '" in scope ? ' +
+	        'scope["' + this.name + '"](' + args.join(', ') + ') : ' +
+	        'math["' + this.name + '"]' + '(' + paramsName + ', math, scope))';
+	  }
+	  else {
+	    // "regular" evaluation
+	    var symbol = new SymbolNode(this.name);
+	    return symbol._compile(defs) + '(' + args.join(', ') + ')';
+	  }
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	FunctionNode.prototype.forEach = function (callback) {
+	  for (var i = 0; i < this.args.length; i++) {
+	    callback(this.args[i], 'args[' + i + ']', this);
+	  }
+	};
+
+	/**
+	 * Create a new FunctionNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {FunctionNode} Returns a transformed copy of the node
+	 */
+	FunctionNode.prototype.map = function (callback) {
+	  var args = [];
+	  for (var i = 0; i < this.args.length; i++) {
+	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
+	  }
+	  return new FunctionNode(this.name, args);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {FunctionNode}
+	 */
+	FunctionNode.prototype.clone = function() {
+	  return new FunctionNode(this.name, this.args.slice(0));
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	FunctionNode.prototype.toString = function() {
+	  // format the parameters like "add(2, 4.2)"
+	  return this.name + '(' + this.args.join(', ') + ')';
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	FunctionNode.prototype.toTex = function() {
+	  return latex.toArgs(this);
+	};
+
+	module.exports = FunctionNode;
+
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var keywords = __webpack_require__(337);
+
+	/**
+	 * Node
+	 */
+	function Node() {
+	  if (!(this instanceof Node)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+	}
+
+	/**
+	 * Evaluate the node
+	 * @return {*} result
+	 */
+	// TODO: cleanup deprecated code one day. Deprecated since version 0.19.0
+	Node.prototype.eval = function () {
+	  throw new Error('Node.eval is deprecated. ' +
+	      'Use Node.compile(math).eval([scope]) instead.');
+	};
+
+	Node.prototype.type = 'Node';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} math             math.js instance
+	 * @return {{eval: function}} expr  Returns an object with a function 'eval',
+	 *                                  which can be invoked as expr.eval([scope]),
+	 *                                  where scope is an optional object with
+	 *                                  variables.
+	 */
+	Node.prototype.compile = function (math) {
+	  if (!(math instanceof Object)) {
+	    throw new TypeError('Object expected for parameter math');
+	  }
+
+	  // definitions globally available inside the closure of the compiled expressions
+	  var defs = {
+	    math: _transform(math),
+	    _validateScope: _validateScope
+	  };
+
+	  var code = this._compile(defs);
+
+	  var defsCode = Object.keys(defs).map(function (name) {
+	    return '    var ' + name + ' = defs["' + name + '"];';
+	  });
+
+	  var factoryCode =
+	      defsCode.join(' ') +
+	          'return {' +
+	          '  "eval": function (scope) {' +
+	          '    if (scope) _validateScope(scope);' +
+	          '    scope = scope || {};' +
+	          '    return ' + code + ';' +
+	          '  }' +
+	          '};';
+
+	  var factory = new Function ('defs', factoryCode);
+	  return factory(defs);
+	};
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          and constants globally available inside the closure
+	 *                          of the compiled expression
+	 * @return {String} js
+	 * @private
+	 */
+	Node.prototype._compile = function (defs) {
+	  // must be implemented by each of the Node implementations
+	  throw new Error('Cannot compile a Node interface');
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	Node.prototype.forEach = function (callback) {
+	  // must be implemented by each of the Node implementations
+	  throw new Error('Cannot run forEach on a Node interface');
+	};
+
+	/**
+	 * Create a new Node having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {OperatorNode} Returns a transformed copy of the node
+	 */
+	Node.prototype.map = function (callback) {
+	  // must be implemented by each of the Node implementations
+	  throw new Error('Cannot run map on a Node interface');
+	};
+
+	/**
+	 * Validate whether an object is a Node, for use with map
+	 * @param {Node} node
+	 * @returns {Node} Returns the input if it's a node, else throws an Error
+	 * @protected
+	 */
+	Node.prototype._ifNode = function (node) {
+	  if (!(node instanceof Node)) {
+	    throw new TypeError('Callback function must return a Node');
+	  }
+
+	  return node;
+	};
+
+	/**
+	 * Recursively traverse all nodes in a node tree. Executes given callback for
+	 * this node and each of its child nodes.
+	 * @param {function(node: Node, path: string, parent: Node)} callback
+	 *          A callback called for every node in the node tree.
+	 */
+	Node.prototype.traverse = function (callback) {
+	  // execute callback for itself
+	  callback(this, null, null);
+
+	  // recursively traverse over all childs of a node
+	  function _traverse (node, callback) {
+	    node.forEach(function(child, path, parent) {
+	      callback(child, path, parent);
+	      _traverse(child, callback);
+	    });
+	  }
+	  _traverse(this, callback);
+	};
+
+	/**
+	 * Recursively transform a node tree via a transform function.
+	 *
+	 * For example, to replace all nodes of type SymbolNode having name 'x' with a
+	 * ConstantNode with value 2:
+	 *
+	 *     var res = Node.transform(function (node, path, parent) {
+	 *       if (node instanceof SymbolNode) && (node.name == 'x')) {
+	 *         return new ConstantNode(2);
+	 *       }
+	 *       else {
+	 *         return node;
+	 *       }
+	 *     });
+	 *
+	 * @param {function(node: Node, path: string, parent: Node) : Node} callback
+	 *          A mapping function accepting a node, and returning
+	 *          a replacement for the node or the original node.
+	 *          Signature: callback(node: Node, index: string, parent: Node) : Node
+	 * @return {Node} Returns the original node or its replacement
+	 */
+	Node.prototype.transform = function (callback) {
+	  // check itself
+	  var replacement = callback(this, null, null);
+	  if (replacement !== this) {
+	    return replacement;
+	  }
+
+	  // traverse over all childs
+	  function _transform (node, callback) {
+	    return node.map(function(child, path, parent) {
+	      var replacement = callback(child, path, parent);
+	      return (replacement !== child) ? replacement : _transform(child, callback);
+	    });
+	  }
+	  return _transform(this, callback);
+	};
+
+	/**
+	 * Find any node in the node tree matching given filter function. For example, to
+	 * find all nodes of type SymbolNode having name 'x':
+	 *
+	 *     var results = Node.filter(function (node) {
+	 *       return (node instanceof SymbolNode) && (node.name == 'x');
+	 *     });
+	 *
+	 * @param {function(node: Node, path: string, parent: Node) : Node} callback
+	 *            A test function returning true when a node matches, and false
+	 *            otherwise. Function signature:
+	 *            callback(node: Node, index: string, parent: Node) : boolean
+	 * @return {Node[]} nodes       An array with nodes matching given filter criteria
+	 */
+	Node.prototype.filter = function (callback) {
+	  var nodes = [];
+
+	  this.traverse(function (node, path, parent) {
+	    if (callback(node, path, parent)) {
+	      nodes.push(node);
+	    }
+	  });
+
+	  return nodes;
+	};
+
+	// TODO: deprecated since version 1.1.0, remove this some day
+	Node.prototype.find = function () {
+	  throw new Error('Function Node.find is deprecated. Use Node.filter instead.');
+	};
+
+	// TODO: deprecated since version 1.1.0, remove this some day
+	Node.prototype.match = function () {
+	  throw new Error('Function Node.match is deprecated. See functions Node.filter, Node.transform, Node.traverse.');
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {Node}
+	 */
+	Node.prototype.clone = function() {
+	  // must be implemented by each of the Node implementations
+	  throw new Error('Cannot clone a Node interface');
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String}
+	 */
+	Node.prototype.toString = function() {
+	  return '';
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String}
+	 */
+	Node.prototype.toTex = function() {
+	  return '';
+	};
+
+	/**
+	 * Test whether an object is a Node
+	 * @param {*} object
+	 * @returns {boolean} isNode
+	 */
+	Node.isNode = function(object) {
+	  return object instanceof Node;
+	};
+
+	/**
+	 * Validate the symbol names of a scope.
+	 * Throws an error when the scope contains an illegal symbol.
+	 * @param {Object} scope
+	 */
+	function _validateScope (scope) {
+	  for (var symbol in scope) {
+	    if (scope.hasOwnProperty(symbol)) {
+	      if (symbol in keywords) {
+	        throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword');
+	      }
+	    }
+	  }
+	}
+
+	/**
+	 * Replace all functions having a transform function attached at property transform
+	 * with their transform.
+	 * @param {Object} math
+	 * @return {Object} transformed
+	 * @private
+	 */
+	function _transform(math) {
+	  var transformed = Object.create(math);
+
+	  if (math.expression && math.expression.transform) {
+	    for (var name in math.expression.transform) {
+	      if (math.expression.transform.hasOwnProperty(name)) {
+	        transformed[name] = math.expression.transform[name];
+	      }
+	    }
+	  }
+
+	  return transformed;
+	}
+
+	module.exports = Node;
+
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180),
+	    ConstantNode = __webpack_require__(176),
+	    SymbolNode = __webpack_require__(183),
+	    FunctionNode = __webpack_require__(179),
+	    latex = __webpack_require__(338);
+
+	/**
+	 * @constructor OperatorNode
+	 * @extends {Node}
+	 * An operator with two arguments, like 2+3
+	 *
+	 * @param {String} op       Operator name, for example '+'
+	 * @param {String} fn       Function name, for example 'add'
+	 * @param {Node[]} args     Operator arguments
+	 */
+	function OperatorNode (op, fn, args) {
+	  if (!(this instanceof OperatorNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // TODO: validate input
+	  this.op = op;
+	  this.fn = fn;
+	  this.args = args || [];
+	}
+
+	OperatorNode.prototype = new Node();
+
+	OperatorNode.prototype.type = 'OperatorNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	OperatorNode.prototype._compile = function (defs) {
+	  if (!(this.fn in defs.math)) {
+	    throw new Error('Function ' + this.fn + ' missing in provided namespace "math"');
+	  }
+
+	  var args = this.args.map(function (arg) {
+	    return arg._compile(defs);
+	  });
+	  return 'math.' + this.fn + '(' + args.join(', ') + ')';
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	OperatorNode.prototype.forEach = function (callback) {
+	  for (var i = 0; i < this.args.length; i++) {
+	    callback(this.args[i], 'args[' + i + ']', this);
+	  }
+	};
+
+	/**
+	 * Create a new OperatorNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {OperatorNode} Returns a transformed copy of the node
+	 */
+	OperatorNode.prototype.map = function (callback) {
+	  var args = [];
+	  for (var i = 0; i < this.args.length; i++) {
+	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
+	  }
+	  return new OperatorNode(this.op, this.fn, args);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {OperatorNode}
+	 */
+	OperatorNode.prototype.clone = function() {
+	  return new OperatorNode(this.op, this.fn, this.args.slice(0));
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	OperatorNode.prototype.toString = function() {
+	  var args = this.args;
+
+	  switch (args.length) {
+	    case 1:
+	      if (this.op == '-') {
+	        // special case: unary minus
+	        return '-' + args[0].toString();
+	      }
+	      else {
+	        // for example '5!'
+	        return args[0].toString() + this.op;
+	      }
+
+	    case 2: // for example '2+3'
+	      var lhs = args[0].toString();
+	      if (args[0] instanceof OperatorNode) {
+	        lhs = '(' + lhs + ')';
+	      }
+	      var rhs = args[1].toString();
+	      if (args[1] instanceof OperatorNode) {
+	        rhs = '(' + rhs + ')';
+	      }
+	      return lhs + ' ' + this.op + ' ' + rhs;
+
+	    default: // this should not occur. format as a function call
+	      return this.op + '(' + this.args.join(', ') + ')';
+	  }
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	OperatorNode.prototype.toTex = function() {
+	  var args = this.args,
+	      mop = latex.toOperator(this.op),
+	      lp = args[0],
+	      rp = args[1];
+
+	  switch (args.length) {
+	    case 1:
+	      var operand = lp.toTex();
+	      switch (this.op) {
+	        case '-': //unary minus needs brackets around '-' and '+'
+	          if (lp instanceof OperatorNode && (lp.op === '-' || lp.op === '+')) {
+	            return this.op + latex.addBraces(operand, true);
+	          }
+	        case '+':
+	          return this.op + operand;
+	          break;
+	        default: // fox example '5!'
+	          if (lp instanceof OperatorNode) {
+	            return latex.addBraces(operand, true) + this.op;
+	          }
+	          return operand + this.op;
+	      }
+
+	    case 2: // for example '2+3'
+	      var lhs = lp.toTex(),
+	          lhb = false,
+	          rhs = rp.toTex(),
+	          rhb = false,
+	          lop = '',
+	          rop = '';
+
+	      switch (this.op) {
+	        case '/':
+	          lop = mop;
+	          mop = '';
+
+	          break;
+
+	        case '*':
+	          if (lp instanceof OperatorNode) {
+	            if (lp.op === '+' || lp.op === '-') {
+	              lhb = true;
+	            }
+	          }
+
+	          if (rp instanceof OperatorNode) {
+	            if (rp.op === '+' || rp.op === '-' || rp.op === '*') {
+	              rhb = true;
+	            }
+	          }
+
+	          if ((lp instanceof ConstantNode || lp instanceof OperatorNode) &&
+	              (rp instanceof ConstantNode || rp instanceof OperatorNode)) {
+	            mop = ' \\cdot ';
+	          }
+	          else {
+	            mop = ' \\, ';
+	          }
+
+	          break;
+
+	        case '-':
+	          if (rp instanceof OperatorNode) {
+	            if (rp.op === '+' | rp.op === '-' ) {
+	              rhb = true;
+	            }
+	          }
+	          break;
+
+	        case '^':
+	          if (lp instanceof OperatorNode || lp instanceof FunctionNode) {
+	            lhb = true;
+	          }
+	          else if (lp instanceof SymbolNode) {
+	            lhb = null;
+	          }
+
+	          break;
+
+	        case 'to':
+	          rhs = latex.toUnit(rhs, true);
+	          break;
+	      }
+
+	      lhs = latex.addBraces(lhs, lhb);
+	      rhs = latex.addBraces(rhs, rhb);
+
+	      return lop + lhs + mop + rhs + rop;
+
+	    default: // this should not occur. format as a function call
+	      return mop + '(' + this.args.map(latex.toSymbol).join(', ') + ')';
+	  }
+	};
+
+	module.exports = OperatorNode;
+
+
+/***/ },
+/* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180);
+
+	var isNode = Node.isNode;
+
+	/**
+	 * @constructor RangeNode
+	 * @extends {Node}
+	 * create a range
+	 * @param {Node} start  included lower-bound
+	 * @param {Node} end    included lower-bound
+	 * @param {Node} [step] optional step
+	 */
+	function RangeNode (start, end, step) {
+	  if (!(this instanceof RangeNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate inputs
+	  if (!isNode(start)) throw new TypeError('Node expected');
+	  if (!isNode(end)) throw new TypeError('Node expected');
+	  if (step && !isNode(step)) throw new TypeError('Node expected');
+	  if (arguments.length > 3) throw new Error('Too many arguments');
+
+	  this.start = start;         // included lower-bound
+	  this.end   = end;           // included upper-bound
+	  this.step  = step || null;  // optional step
+	}
+
+	RangeNode.prototype = new Node();
+
+	RangeNode.prototype.type = 'RangeNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	RangeNode.prototype._compile = function (defs) {
+	  return 'math.range(' +
+	      this.start._compile(defs) + ', ' +
+	      this.end._compile(defs) +
+	      (this.step ? (', ' + this.step._compile(defs)) : '') +
+	      ')';
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	RangeNode.prototype.forEach = function (callback) {
+	  callback(this.start, 'start', this);
+	  callback(this.end, 'end', this);
+	  if (this.step) {
+	    callback(this.step, 'step', this);
+	  }
+	};
+
+	/**
+	 * Create a new RangeNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {RangeNode} Returns a transformed copy of the node
+	 */
+	RangeNode.prototype.map = function (callback) {
+	  return new RangeNode(
+	      this._ifNode(callback(this.start, 'start', this)),
+	      this._ifNode(callback(this.end, 'end', this)),
+	      this.step && this._ifNode(callback(this.step, 'step', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {RangeNode}
+	 */
+	RangeNode.prototype.clone = function() {
+	  return new RangeNode(this.start, this.end, this.step && this.step);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	RangeNode.prototype.toString = function() {
+	  // format the range like "start:step:end"
+	  var str = this.start.toString();
+	  if (this.step) {
+	    str += ':' + this.step.toString();
+	  }
+	  str += ':' + this.end.toString();
+
+	  return str;
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 */
+	RangeNode.prototype.toTex = function() {
+	  var str = this.start.toTex();
+	  if (this.step) {
+	    str += ':' + this.step.toTex();
+	  }
+	  str += ':' + this.end.toTex();
+
+	  return str;
+	};
+
+	module.exports = RangeNode;
+
+
+/***/ },
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180),
+	    Unit = __webpack_require__(11),
+
+	    latex = __webpack_require__(338),
+	    isString = __webpack_require__(205).isString;
+
+	/**
+	 * @constructor SymbolNode
+	 * @extends {Node}
+	 * A symbol node can hold and resolve a symbol
+	 * @param {String} name
+	 * @extends {Node}
+	 */
+	function SymbolNode(name) {
+	  if (!(this instanceof SymbolNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (!isString(name))  throw new TypeError('String expected for parameter "name"');
+
+	  this.name = name;
+	}
+
+	SymbolNode.prototype = new Node();
+
+	SymbolNode.prototype.type = 'SymbolNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	SymbolNode.prototype._compile = function (defs) {
+	  // add a function to the definitions
+	  defs['undef'] = undef;
+	  defs['Unit'] = Unit;
+
+	  if (this.name in defs.math) {
+	    return '("' + this.name + '" in scope ? scope["' + this.name + '"] : math["' + this.name + '"])';
+	  }
+	  else {
+	    return '(' +
+	        '"' + this.name + '" in scope ? scope["' + this.name + '"] : ' +
+	        (Unit.isValuelessUnit(this.name) ?
+	            'new Unit(null, "' + this.name + '")' :
+	            'undef("' + this.name + '")') +
+	        ')';
+	  }
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	SymbolNode.prototype.forEach = function (callback) {
+	  // nothing to do, we don't have childs
+	};
+
+	/**
+	 * Create a new SymbolNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
+	 * @returns {SymbolNode} Returns a clone of the node
+	 */
+	SymbolNode.prototype.map = function (callback) {
+	  return this.clone();
+	};
+
+	/**
+	 * Throws an error 'Undefined symbol {name}'
+	 * @param {String} name
+	 */
+	function undef (name) {
+	  throw new Error('Undefined symbol ' + name);
+	}
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {SymbolNode}
+	 */
+	SymbolNode.prototype.clone = function() {
+	  return new SymbolNode(this.name);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 * @override
+	 */
+	SymbolNode.prototype.toString = function() {
+	  return this.name;
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String} str
+	 * @override
+	 */
+	SymbolNode.prototype.toTex = function() {
+	  return latex.toSymbol(this.name);
+	};
+
+	module.exports = SymbolNode;
+
+
+/***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(180),
+	    IndexNode = __webpack_require__(177);
+
+	/**
+	 * @constructor UpdateNode
+	 * @extends {Node}
+	 * Update a matrix subset, like A[2,3] = 4.5
+	 *
+	 * @param {IndexNode} index             IndexNode containing symbol and ranges
+	 * @param {Node} expr                   The expression defining the symbol
+	 */
+	function UpdateNode(index, expr) {
+	  if (!(this instanceof UpdateNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  if (!(index instanceof IndexNode)) {
+	    throw new TypeError('Expected IndexNode for parameter "index"');
+	  }
+	  if (!(expr instanceof Node)) {
+	    throw new TypeError('Expected Node for parameter "expr"');
+	  }
+
+	  this.index = index;
+	  this.expr = expr;
+	}
+
+	UpdateNode.prototype = new Node();
+
+	UpdateNode.prototype.type = 'UpdateNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	UpdateNode.prototype._compile = function (defs) {
+	  return 'scope["' + this.index.objectName() + '\"] = ' +
+	      this.index.compileSubset(defs,  this.expr._compile(defs));
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	UpdateNode.prototype.forEach = function (callback) {
+	  callback(this.index, 'index', this);
+	  callback(this.expr, 'expr', this);
+	};
+
+	/**
+	 * Create a new UpdateNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {UpdateNode} Returns a transformed copy of the node
+	 */
+	UpdateNode.prototype.map = function (callback) {
+	  return new UpdateNode(
+	      this._ifNode(callback(this.index, 'index', this)),
+	      this._ifNode(callback(this.expr, 'expr', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {UpdateNode}
+	 */
+	UpdateNode.prototype.clone = function() {
+	  return new UpdateNode(this.index, this.expr);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String}
+	 */
+	UpdateNode.prototype.toString = function() {
+	  return this.index.toString() + ' = ' + this.expr.toString();
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @return {String}
+	 */
+	UpdateNode.prototype.toTex = function() {
+	  return this.index.toTex() + ' = ' + this.expr.toTex();
+	};
+
+	module.exports = UpdateNode;
+
+
+/***/ },
+/* 185 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'e',
+	  'category': 'Constants',
+	  'syntax': [
+	    'e'
+	  ],
+	  'description': 'Euler\'s number, the base of the natural logarithm. Approximately equal to 2.71828',
+	  'examples': [
+	    'e',
+	    'e ^ 2',
+	    'exp(2)',
+	    'log(e)'
+	  ],
+	  'seealso': ['exp']
+	};
+
+
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'false',
+	  'category': 'Constants',
+	  'syntax': [
+	    'false'
+	  ],
+	  'description': 'Boolean value false',
+	  'examples': [
+	    'false'
+	  ],
+	  'seealso': ['true']
+	};
+
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'i',
+	  'category': 'Constants',
+	  'syntax': [
+	    'i'
+	  ],
+	  'description': 'Imaginary unit, defined as i*i=-1. A complex number is described as a + b*i, where a is the real part, and b is the imaginary part.',
+	  'examples': [
+	    'i',
+	    'i * i',
+	    'sqrt(-1)'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'Infinity',
+	  'category': 'Constants',
+	  'syntax': [
+	    'Infinity'
+	  ],
+	  'description': 'Infinity, a number which is larger than the maximum number that can be handled by a floating point number.',
+	  'examples': [
+	    'Infinity',
+	    '1 / 0'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'LN2',
+	  'category': 'Constants',
+	  'syntax': [
+	    'LN2'
+	  ],
+	  'description': 'Returns the natural logarithm of 2, approximately equal to 0.693',
+	  'examples': [
+	    'LN2',
+	    'log(2)'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'LN10',
+	  'category': 'Constants',
+	  'syntax': [
+	    'LN10'
+	  ],
+	  'description': 'Returns the natural logarithm of 10, approximately equal to 2.302',
+	  'examples': [
+	    'LN10',
+	    'log(10)'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'LOG2E',
+	  'category': 'Constants',
+	  'syntax': [
+	    'LOG2E'
+	  ],
+	  'description': 'Returns the base-2 logarithm of E, approximately equal to 1.442',
+	  'examples': [
+	    'LOG2E',
+	    'log(e, 2)'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'LOG10E',
+	  'category': 'Constants',
+	  'syntax': [
+	    'LOG10E'
+	  ],
+	  'description': 'Returns the base-10 logarithm of E, approximately equal to 0.434',
+	  'examples': [
+	    'LOG10E',
+	    'log(e, 10)'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'NaN',
+	  'category': 'Constants',
+	  'syntax': [
+	    'NaN'
+	  ],
+	  'description': 'Not a number',
+	  'examples': [
+	    'NaN',
+	    '0 / 0'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'null',
+	  'category': 'Constants',
+	  'syntax': [
+	    'null'
+	  ],
+	  'description': 'Value null',
+	  'examples': [
+	    'null'
+	  ],
+	  'seealso': ['true', 'false']
+	};
+
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'pi',
+	  'category': 'Constants',
+	  'syntax': [
+	    'pi'
+	  ],
+	  'description': 'The number pi is a mathematical constant that is the ratio of a circle\'s circumference to its diameter, and is approximately equal to 3.14159',
+	  'examples': [
+	    'pi',
+	    'sin(pi/2)'
+	  ],
+	  'seealso': ['tau']
+	};
+
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'phi',
+	  'category': 'Constants',
+	  'syntax': [
+	    'phi'
+	  ],
+	  'description': 'Phi is the golden ratio. Two quantities are in the golden ratio if their ratio is the same as the ratio of their sum to the larger of the two quantities. Phi is defined as `(1 + sqrt(5)) / 2` and is approximately 1.618034...',
+	  'examples': [
+	    'tau'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'SQRT1_2',
+	  'category': 'Constants',
+	  'syntax': [
+	    'SQRT1_2'
+	  ],
+	  'description': 'Returns the square root of 1/2, approximately equal to 0.707',
+	  'examples': [
+	    'SQRT1_2',
+	    'sqrt(1/2)'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'SQRT2',
+	  'category': 'Constants',
+	  'syntax': [
+	    'SQRT2'
+	  ],
+	  'description': 'Returns the square root of 2, approximately equal to 1.414',
+	  'examples': [
+	    'SQRT2',
+	    'sqrt(2)'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'tau',
+	  'category': 'Constants',
+	  'syntax': [
+	    'tau'
+	  ],
+	  'description': 'Tau is the ratio constant of a circle\'s circumference to radius, equal to 2 * pi, approximately 6.2832.',
+	  'examples': [
+	    'tau',
+	    '2 * pi'
+	  ],
+	  'seealso': ['pi']
+	};
+
+
+/***/ },
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'true',
+	  'category': 'Constants',
+	  'syntax': [
+	    'true'
+	  ],
+	  'description': 'Boolean value true',
+	  'examples': [
+	    'true'
+	  ],
+	  'seealso': ['false']
+	};
+
+
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'version',
+	  'category': 'Constants',
+	  'syntax': [
+	    'version'
+	  ],
+	  'description': 'A string with the version number of math.js',
+	  'examples': [
+	    'version'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var map = {
+		"./clone": 155,
+		"./clone.js": 155,
+		"./filter": 156,
+		"./filter.js": 156,
+		"./forEach": 163,
+		"./forEach.js": 163,
+		"./format": 157,
+		"./format.js": 157,
+		"./import": 158,
+		"./import.js": 158,
+		"./map": 159,
+		"./map.js": 159,
+		"./print": 160,
+		"./print.js": 160,
+		"./sort": 161,
+		"./sort.js": 161,
+		"./typeof": 162,
+		"./typeof.js": 162
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 202;
+
+
+/***/ },
+/* 203 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var DimensionError = __webpack_require__(168);
+	var IndexError = __webpack_require__(169);
+
+	/**
+	 * Transform zero-based indices to one-based indices in errors
+	 * @param {Error} err
+	 * @returns {Error} Returns the transformed error
+	 */
+	exports.transform = function (err) {
+	  if (err instanceof IndexError) {
+	    return new IndexError(err.index + 1, err.min + 1, err.max + 1);
+	  }
+
+	  return err;
+	};
+
+
+/***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Test whether value is a Boolean
+	 * @param {*} value
+	 * @return {Boolean} isBoolean
+	 */
+	exports.isBoolean = function(value) {
+	  return (value instanceof Boolean) || (typeof value == 'boolean');
+	};
+
+
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var number = __webpack_require__(3);
+	var bignumber = __webpack_require__(164);
+	var BigNumber = __webpack_require__(5);
+
+	/**
+	 * Test whether value is a String
+	 * @param {*} value
+	 * @return {Boolean} isString
+	 */
+	exports.isString = function(value) {
+	  return (value instanceof String) || (typeof value == 'string');
+	};
+
+	/**
+	 * Check if a text ends with a certain string.
+	 * @param {String} text
+	 * @param {String} search
+	 */
+	exports.endsWith = function(text, search) {
+	  var start = text.length - search.length;
+	  var end = text.length;
+	  return (text.substring(start, end) === search);
+	};
+
+	/**
+	 * Format a value of any type into a string.
+	 *
+	 * Usage:
+	 *     math.format(value)
+	 *     math.format(value, precision)
+	 *
+	 * If value is a function, the returned string is 'function' unless the function
+	 * has a property `description`, in that case this properties value is returned.
+	 *
+	 * Example usage:
+	 *     math.format(2/7);                // '0.2857142857142857'
+	 *     math.format(math.pi, 3);         // '3.14'
+	 *     math.format(new Complex(2, 3));  // '2 + 3i'
+	 *     math.format('hello');            // '"hello"'
+	 *
+	 * @param {*} value             Value to be stringified
+	 * @param {Object | Number | Function} [options]  Formatting options. See
+	 *                                                lib/util/number:format for a
+	 *                                                description of the available
+	 *                                                options.
+	 * @return {String} str
+	 */
+	exports.format = function(value, options) {
+	  if (number.isNumber(value)) {
+	    return number.format(value, options);
+	  }
+
+	  if (value instanceof BigNumber) {
+	    return bignumber.format(value, options);
+	  }
+
+	  if (Array.isArray(value)) {
+	    return formatArray(value, options);
+	  }
+
+	  if (exports.isString(value)) {
+	    return '"' + value + '"';
+	  }
+
+	  if (typeof value === 'function') {
+	    return value.syntax ? value.syntax + '' : 'function';
+	  }
+
+	  if (value instanceof Object) {
+	    if (typeof value.format === 'function') {
+	      return value.format(options);
+	    }
+	    else {
+	      return value.toString();
+	    }
+	  }
+
+	  return String(value);
+	};
+
+	/**
+	 * Recursively format an n-dimensional matrix
+	 * Example output: "[[1, 2], [3, 4]]"
+	 * @param {Array} array
+	 * @param {Object | Number | Function} [options]  Formatting options. See
+	 *                                                lib/util/number:format for a
+	 *                                                description of the available
+	 *                                                options.
+	 * @returns {String} str
+	 */
+	function formatArray (array, options) {
+	  if (Array.isArray(array)) {
+	    var str = '[';
+	    var len = array.length;
+	    for (var i = 0; i < len; i++) {
+	      if (i != 0) {
+	        str += ', ';
+	      }
+	      str += formatArray(array[i], options);
+	    }
+	    str += ']';
+	    return str;
+	  }
+	  else {
+	    return exports.format(array, options);
+	  }
+	}
+
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'abs',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'abs(x)'
+	  ],
+	  'description': 'Compute the absolute value.',
+	  'examples': [
+	    'abs(3.5)',
+	    'abs(-4.2)'
+	  ],
+	  'seealso': ['sign']
+	};
+
+
+/***/ },
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'add',
+	  'category': 'Operators',
+	  'syntax': [
+	    'x + y',
+	    'add(x, y)'
+	  ],
+	  'description': 'Add two values.',
+	  'examples': [
+	    'a = 2.1 + 3.6',
+	    'a - 3.6',
+	    '3 + 2i',
+	    '"hello" + " world"',
+	    '3 cm + 2 inch'
+	  ],
+	  'seealso': [
+	    'subtract'
+	  ]
+	};
+
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'ceil',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'ceil(x)'
+	  ],
+	  'description':
+	      'Round a value towards plus infinity. If x is complex, both real and imaginary part are rounded towards plus infinity.',
+	  'examples': [
+	    'ceil(3.2)',
+	    'ceil(3.8)',
+	    'ceil(-4.2)'
+	  ],
+	  'seealso': ['floor', 'fix', 'round']
+	};
+
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'cube',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'cube(x)'
+	  ],
+	  'description': 'Compute the cube of a value. The cube of x is x * x * x.',
+	  'examples': [
+	    'cube(2)',
+	    '2^3',
+	    '2 * 2 * 2'
+	  ],
+	  'seealso': [
+	    'multiply',
+	    'square',
+	    'pow'
+	  ]
+	};
+
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'divide',
+	  'category': 'Operators',
+	  'syntax': [
+	    'x / y',
+	    'divide(x, y)'
+	  ],
+	  'description': 'Divide two values.',
+	  'examples': [
+	    'a = 2 / 3',
+	    'a * 3',
+	    '4.5 / 2',
+	    '3 + 4 / 2',
+	    '(3 + 4) / 2',
+	    '18 km / 4.5'
+	  ],
+	  'seealso': [
+	    'multiply'
+	  ]
+	};
+
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'dotDivide',
+	  'category': 'Operators',
+	  'syntax': [
+	    'x ./ y',
+	    'dotDivide(x, y)'
+	  ],
+	  'description': 'Divide two values element wise.',
+	  'examples': [
+	    'a = [1, 2, 3; 4, 5, 6]',
+	    'b = [2, 1, 1; 3, 2, 5]',
+	    'a ./ b'
+	  ],
+	  'seealso': [
+	    'multiply',
+	    'dotMultiply',
+	    'divide'
+	  ]
+	};
+
+
+/***/ },
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'dotMultiply',
+	  'category': 'Operators',
+	  'syntax': [
+	    'x .* y',
+	    'dotMultiply(x, y)'
+	  ],
+	  'description': 'Multiply two values element wise.',
+	  'examples': [
+	    'a = [1, 2, 3; 4, 5, 6]',
+	    'b = [2, 1, 1; 3, 2, 5]',
+	    'a .* b'
+	  ],
+	  'seealso': [
+	    'multiply',
+	    'divide',
+	    'dotDivide'
+	  ]
+	};
+
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'dotpow',
+	  'category': 'Operators',
+	  'syntax': [
+	    'x .^ y',
+	    'dotpow(x, y)'
+	  ],
+	  'description':
+	      'Calculates the power of x to y element wise.',
+	  'examples': [
+	    'a = [1, 2, 3; 4, 5, 6]',
+	    'a .^ 2'
+	  ],
+	  'seealso': [
+	    'pow'
+	  ]
+	};
+
+
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'exp',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'exp(x)'
+	  ],
+	  'description': 'Calculate the exponent of a value.',
+	  'examples': [
+	    'exp(1.3)',
+	    'e ^ 1.3',
+	    'log(exp(1.3))',
+	    'x = 2.4',
+	    '(exp(i*x) == cos(x) + i*sin(x))   # Euler\'s formula'
+	  ],
+	  'seealso': [
+	    'pow',
+	    'log'
+	  ]
+	};
+
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'fix',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'fix(x)'
+	  ],
+	  'description':
+	      'Round a value towards zero. If x is complex, both real and imaginary part are rounded towards zero.',
+	  'examples': [
+	    'fix(3.2)',
+	    'fix(3.8)',
+	    'fix(-4.2)',
+	    'fix(-4.8)'
+	  ],
+	  'seealso': ['ceil', 'floor', 'round']
+	};
+
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'floor',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'floor(x)'
+	  ],
+	  'description':
+	      'Round a value towards minus infinity.If x is complex, both real and imaginary part are rounded towards minus infinity.',
+	  'examples': [
+	    'floor(3.2)',
+	    'floor(3.8)',
+	    'floor(-4.2)'
+	  ],
+	  'seealso': ['ceil', 'fix', 'round']
+	};
+
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'gcd',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'gcd(a, b)',
+	    'gcd(a, b, c, ...)'
+	  ],
+	  'description': 'Compute the greatest common divisor.',
+	  'examples': [
+	    'gcd(8, 12)',
+	    'gcd(-4, 6)',
+	    'gcd(25, 15, -10)'
+	  ],
+	  'seealso': [ 'lcm', 'xgcd' ]
+	};
+
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'lcm',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'lcm(x, y)'
+	  ],
+	  'description': 'Compute the least common multiple.',
+	  'examples': [
+	    'lcm(4, 6)',
+	    'lcm(6, 21)',
+	    'lcm(6, 21, 5)'
+	  ],
+	  'seealso': [ 'gcd' ]
+	};
+
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'log',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'log(x)',
+	    'log(x, base)'
+	  ],
+	  'description': 'Compute the logarithm of a value. If no base is provided, the natural logarithm of x is calculated. If base if provided, the logarithm is calculated for the specified base. log(x, base) is defined as log(x) / log(base).',
+	  'examples': [
+	    'log(3.5)',
+	    'a = log(2.4)',
+	    'exp(a)',
+	    '10 ^ 4',
+	    'log(10000, 10)',
+	    'log(10000) / log(10)',
+	    'b = log(1024, 2)',
+	    '2 ^ b'
+	  ],
+	  'seealso': [
+	    'exp',
+	    'log10'
+	  ]
+	};
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'log10',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'log10(x)'
+	  ],
+	  'description': 'Compute the 10-base logarithm of a value.',
+	  'examples': [
+	    'log10(0.00001)',
+	    'log10(10000)',
+	    '10 ^ 4',
+	    'log(10000) / log(10)',
+	    'log(10000, 10)'
+	  ],
+	  'seealso': [
+	    'exp',
+	    'log'
+	  ]
+	};
+
+
+/***/ },
+/* 221 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'mod',
+	  'category': 'Operators',
+	  'syntax': [
+	    'x % y',
+	    'x mod y',
+	    'mod(x, y)'
+	  ],
+	  'description':
+	      'Calculates the modulus, the remainder of an integer division.',
+	  'examples': [
+	    '7 % 3',
+	    '11 % 2',
+	    '10 mod 4',
+	    'function isOdd(x) = x % 2',
+	    'isOdd(2)',
+	    'isOdd(3)'
+	  ],
+	  'seealso': ['divide']
+	};
+
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'multiply',
+	  'category': 'Operators',
+	  'syntax': [
+	    'x * y',
+	    'multiply(x, y)'
+	  ],
+	  'description': 'multiply two values.',
+	  'examples': [
+	    'a = 2.1 * 3.4',
+	    'a / 3.4',
+	    '2 * 3 + 4',
+	    '2 * (3 + 4)',
+	    '3 * 2.1 km'
+	  ],
+	  'seealso': [
+	    'divide'
+	  ]
+	};
+
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'norm',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'norm(x)',
+	    'norm(x, p)'
+	  ],
+	  'description': 'Calculate the norm of a number, vector or matrix.',
+	  'examples': [
+	    'abs(-3.5)',
+	    'norm(-3.5)',
+	    'norm(3 - 4i))',
+	    'norm([1, 2, -3], Infinity)',
+	    'norm([1, 2, -3], -Infinity)',
+	    'norm([3, 4], 2)',
+	    'norm([[1, 2], [3, 4]], 1)',
+	    'norm([[1, 2], [3, 4]], \'inf\')',
+	    'norm([[1, 2], [3, 4]], \'fro\')'
+	  ]
+	};
+
+
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'nthRoot',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'nthRoot(a)',
+	    'nthRoot(a, root)'
+	  ],
+	  'description': 'Calculate the nth root of a value. ' +
+	      'The principal nth root of a positive real number A, ' +
+	      'is the positive real solution of the equation "x^root = A".',
+	  'examples': [
+	    '4 ^ 3',
+	    'nthRoot(64, 3)',
+	    'nthRoot(9, 2)',
+	    'sqrt(9)'
+	  ],
+	  'seealso': [
+	    'sqrt',
+	    'pow'
+	  ]
+	};
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'pow',
+	  'category': 'Operators',
+	  'syntax': [
+	    'x ^ y',
+	    'pow(x, y)'
+	  ],
+	  'description':
+	      'Calculates the power of x to y, x^y.',
+	  'examples': [
+	    '2^3 = 8',
+	    '2*2*2',
+	    '1 + e ^ (pi * i)'
+	  ],
+	  'seealso': [ 'multiply' ]
+	};
+
+
+/***/ },
+/* 226 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'round',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'round(x)',
+	    'round(x, n)'
+	  ],
+	  'description':
+	      'round a value towards the nearest integer.If x is complex, both real and imaginary part are rounded towards the nearest integer. When n is specified, the value is rounded to n decimals.',
+	  'examples': [
+	    'round(3.2)',
+	    'round(3.8)',
+	    'round(-4.2)',
+	    'round(-4.8)',
+	    'round(pi, 3)',
+	    'round(123.45678, 2)'
+	  ],
+	  'seealso': ['ceil', 'floor', 'fix']
+	};
+
+
+/***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'sign',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'sign(x)'
+	  ],
+	  'description':
+	      'Compute the sign of a value. The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.',
+	  'examples': [
+	    'sign(3.5)',
+	    'sign(-4.2)',
+	    'sign(0)'
+	  ],
+	  'seealso': [
+	    'abs'
+	  ]
+	};
+
+
+/***/ },
+/* 228 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'sqrt',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'sqrt(x)'
+	  ],
+	  'description':
+	      'Compute the square root value. If x = y * y, then y is the square root of x.',
+	  'examples': [
+	    'sqrt(25)',
+	    '5 * 5',
+	    'sqrt(-1)'
+	  ],
+	  'seealso': [
+	    'square',
+	    'multiply'
+	  ]
+	};
+
+
+/***/ },
+/* 229 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'square',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'square(x)'
+	  ],
+	  'description':
+	      'Compute the square of a value. The square of x is x * x.',
+	  'examples': [
+	    'square(3)',
+	    'sqrt(9)',
+	    '3^2',
+	    '3 * 3'
+	  ],
+	  'seealso': [
+	    'multiply',
+	    'pow',
+	    'sqrt',
+	    'cube'
+	  ]
+	};
+
+
+/***/ },
+/* 230 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'subtract',
+	  'category': 'Operators',
+	  'syntax': [
+	    'x - y',
+	    'subtract(x, y)'
+	  ],
+	  'description': 'subtract two values.',
+	  'examples': [
+	    'a = 5.3 - 2',
+	    'a + 2',
+	    '2/3 - 1/6',
+	    '2 * 3 - 3',
+	    '2.1 km - 500m'
+	  ],
+	  'seealso': [
+	    'add'
+	  ]
+	};
+
+
+/***/ },
+/* 231 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'unaryMinus',
+	  'category': 'Operators',
+	  'syntax': [
+	    '-x',
+	    'unaryMinus(x)'
+	  ],
+	  'description':
+	      'Inverse the sign of a value. Converts booleans and strings to numbers.',
+	  'examples': [
+	    '-4.5',
+	    '-(-5.6)',
+	    '-"22"'
+	  ],
+	  'seealso': [
+	    'add', 'subtract', 'unaryPlus'
+	  ]
+	};
+
+
+/***/ },
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'unaryPlus',
+	  'category': 'Operators',
+	  'syntax': [
+	    '+x',
+	    'unaryPlus(x)'
+	  ],
+	  'description':
+	      'Converts booleans and strings to numbers.',
+	  'examples': [
+	    '+true',
+	    '+"2"'
+	  ],
+	  'seealso': [
+	    'add', 'subtract', 'unaryMinus'
+	  ]
+	};
+
+
+/***/ },
+/* 233 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'xgcd',
+	  'category': 'Arithmetic',
+	  'syntax': [
+	    'xgcd(a, b)'
+	  ],
+	  'description': 'Calculate the extended greatest common divisor for two values',
+	  'examples': [
+	    'xgcd(8, 12)',
+	    'gcd(8, 12)',
+	    'xgcd(36163, 21199)'
+	  ],
+	  'seealso': [ 'gcd', 'lcm' ]
+	};
+
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'bitAnd',
+	  'category': 'Bitwise',
+	  'syntax': [
+	    'x & y',
+	    'bitAnd(x, y)'
+	  ],
+	  'description': 'Bitwise AND operation. Performs the logical AND operation on each pair of the corresponding bits of the two given values by multiplying them. If both bits in the compared position are 1, the bit in the resulting binary representation is 1, otherwise, the result is 0',
+	  'examples': [
+	    '5 & 3',
+	    'bitAnd(53, 131)',
+	    '[1, 12, 31] & 42'
+	  ],
+	  'seealso': [
+	    'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift'
+	  ]
+	};
+
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'bitNot',
+	  'category': 'Bitwise',
+	  'syntax': [
+	    '~x',
+	    'bitNot(x)'
+	  ],
+	  'description': 'Bitwise NOT operation. Performs a logical negation on each bit of the given value. Bits that are 0 become 1, and those that are 1 become 0.',
+	  'examples': [
+	    '~1',
+	    '~2',
+	    'bitNot([2, -3, 4])'
+	  ],
+	  'seealso': [
+	    'bitAnd', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift'
+	  ]
+	};
+
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'bitOr',
+	  'category': 'Bitwise',
+	  'syntax': [
+	    'x | y',
+	    'bitOr(x, y)'
+	  ],
+	  'description': 'Bitwise OR operation. Performs the logical inclusive OR operation on each pair of corresponding bits of the two given values. The result in each position is 1 if the first bit is 1 or the second bit is 1 or both bits are 1, otherwise, the result is 0.',
+	  'examples': [
+	    '5 | 3',
+	    'bitOr([1, 2, 3], 4)'
+	  ],
+	  'seealso': [
+	    'bitAnd', 'bitNot', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift'
+	  ]
+	};
+
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'bitXor',
+	  'category': 'Bitwise',
+	  'syntax': [
+	    'bitXor(x, y)'
+	  ],
+	  'description': 'Bitwise XOR operation, exclusive OR. Performs the logical exclusive OR operation on each pair of corresponding bits of the two given values. The result in each position is 1 if only the first bit is 1 or only the second bit is 1, but will be 0 if both are 0 or both are 1.',
+	  'examples': [
+	    'bitOr(1, 2)',
+	    'bitXor([2, 3, 4], 4)'
+	  ],
+	  'seealso': [
+	    'bitAnd', 'bitNot', 'bitOr', 'leftShift', 'rightArithShift', 'rightLogShift'
+	  ]
+	};
+
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'leftShift',
+	  'category': 'Bitwise',
+	  'syntax': [
+	    'x << y',
+	    'leftShift(x, y)'
+	  ],
+	  'description': 'Bitwise left logical shift of a value x by y number of bits.',
+	  'examples': [
+	    '4 << 1',
+	    '8 >> 1'
+	  ],
+	  'seealso': [
+	    'bitAnd', 'bitNot', 'bitOr', 'bitXor', 'rightArithShift', 'rightLogShift'
+	  ]
+	};
+
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'rightArithShift',
+	  'category': 'Bitwise',
+	  'syntax': [
+	    'x >> y',
+	    'leftShift(x, y)'
+	  ],
+	  'description': 'Bitwise right arithmetic shift of a value x by y number of bits.',
+	  'examples': [
+	    '8 >> 1',
+	    '4 << 1',
+	    '-12 >> 2'
+	  ],
+	  'seealso': [
+	    'bitAnd', 'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightLogShift'
+	  ]
+	};
+
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'rightLogShift',
+	  'category': 'Bitwise',
+	  'syntax': [
+	    'x >> y',
+	    'leftShift(x, y)'
+	  ],
+	  'description': 'Bitwise right logical shift of a value x by y number of bits.',
+	  'examples': [
+	    '8 >>> 1',
+	    '4 << 1',
+	    '-12 >>> 2'
+	  ],
+	  'seealso': [
+	    'bitAnd', 'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift'
+	  ]
+	};
+
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'arg',
+	  'category': 'Complex',
+	  'syntax': [
+	    'arg(x)'
+	  ],
+	  'description':
+	      'Compute the argument of a complex value. If x = a+bi, the argument is computed as atan2(b, a).',
+	  'examples': [
+	    'arg(2 + 2i)',
+	    'atan2(3, 2)',
+	    'arg(2 + 3i)'
+	  ],
+	  'seealso': [
+	    're',
+	    'im',
+	    'conj',
+	    'abs'
+	  ]
+	};
+
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'conj',
+	  'category': 'Complex',
+	  'syntax': [
+	    'conj(x)'
+	  ],
+	  'description':
+	      'Compute the complex conjugate of a complex value. If x = a+bi, the complex conjugate is a-bi.',
+	  'examples': [
+	    'conj(2 + 3i)',
+	    'conj(2 - 3i)',
+	    'conj(-5.2i)'
+	  ],
+	  'seealso': [
+	    're',
+	    'im',
+	    'abs',
+	    'arg'
+	  ]
+	};
+
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 're',
+	  'category': 'Complex',
+	  'syntax': [
+	    're(x)'
+	  ],
+	  'description': 'Get the real part of a complex number.',
+	  'examples': [
+	    're(2 + 3i)',
+	    'im(2 + 3i)',
+	    're(-5.2i)',
+	    're(2.4)'
+	  ],
+	  'seealso': [
+	    'im',
+	    'conj',
+	    'abs',
+	    'arg'
+	  ]
+	};
+
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'im',
+	  'category': 'Complex',
+	  'syntax': [
+	    'im(x)'
+	  ],
+	  'description': 'Get the imaginary part of a complex number.',
+	  'examples': [
+	    'im(2 + 3i)',
+	    're(2 + 3i)',
+	    'im(-5.2i)',
+	    'im(2.4)'
+	  ],
+	  'seealso': [
+	    're',
+	    'conj',
+	    'abs',
+	    'arg'
+	  ]
+	};
+
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'bignumber',
+	  'category': 'Type',
+	  'syntax': [
+	    'bignumber(x)'
+	  ],
+	  'description':
+	      'Create a big number from a number or string.',
+	  'examples': [
+	    '0.1 + 0.2',
+	    'bignumber(0.1) + bignumber(0.2)',
+	    'bignumber("7.2")',
+	    'bignumber("7.2e500")',
+	    'bignumber([0.1, 0.2, 0.3])'
+	  ],
+	  'seealso': [
+	    'boolean', 'complex', 'index', 'matrix', 'string', 'unit'
+	  ]
+	};
+
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'boolean',
+	  'category': 'Type',
+	  'syntax': [
+	    'x',
+	    'boolean(x)'
+	  ],
+	  'description':
+	      'Convert a string or number into a boolean.',
+	  'examples': [
+	    'boolean(0)',
+	    'boolean(1)',
+	    'boolean(3)',
+	    'boolean("true")',
+	    'boolean("false")',
+	    'boolean([1, 0, 1, 1])'
+	  ],
+	  'seealso': [
+	    'bignumber', 'complex', 'index', 'matrix', 'number', 'string', 'unit'
+	  ]
+	};
+
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'complex',
+	  'category': 'Type',
+	  'syntax': [
+	    'complex()',
+	    'complex(re, im)',
+	    'complex(string)'
+	  ],
+	  'description':
+	      'Create a complex number.',
+	  'examples': [
+	    'complex()',
+	    'complex(2, 3)',
+	    'complex("7 - 2i")'
+	  ],
+	  'seealso': [
+	    'bignumber', 'boolean', 'index', 'matrix', 'number', 'string', 'unit'
+	  ]
+	};
+
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'index',
+	  'category': 'Type',
+	  'syntax': [
+	    '[start]',
+	    '[start:end]',
+	    '[start:step:end]',
+	    '[start1, start 2, ...]',
+	    '[start1:end1, start2:end2, ...]',
+	    '[start1:step1:end1, start2:step2:end2, ...]'
+	  ],
+	  'description':
+	      'Create an index to get or replace a subset of a matrix',
+	  'examples': [
+	    '[]',
+	    '[1, 2, 3]',
+	    'A = [1, 2, 3; 4, 5, 6]',
+	    'A[1, :]',
+	    'A[1, 2] = 50',
+	    'A[0:2, 0:2] = ones(2, 2)'
+	  ],
+	  'seealso': [
+	    'bignumber', 'boolean', 'complex', 'matrix,', 'number', 'range', 'string', 'unit'
+	  ]
+	};
+
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'matrix',
+	  'category': 'Type',
+	  'syntax': [
+	    '[]',
+	    '[a1, b1, ...; a2, b2, ...]',
+	    'matrix()',
+	    'matrix([...])'
+	  ],
+	  'description':
+	      'Create a matrix.',
+	  'examples': [
+	    '[]',
+	    '[1, 2, 3]',
+	    '[1, 2, 3; 4, 5, 6]',
+	    'matrix()',
+	    'matrix([3, 4])'
+	  ],
+	  'seealso': [
+	    'bignumber', 'boolean', 'complex', 'index', 'number', 'string', 'unit'
+	  ]
+	};
+
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'number',
+	  'category': 'Type',
+	  'syntax': [
+	    'x',
+	    'number(x)'
+	  ],
+	  'description':
+	      'Create a number or convert a string or boolean into a number.',
+	  'examples': [
+	    '2',
+	    '2e3',
+	    '4.05',
+	    'number(2)',
+	    'number("7.2")',
+	    'number(true)',
+	    'number([true, false, true, true])',
+	    'number("52cm", "m")'
+	  ],
+	  'seealso': [
+	    'bignumber', 'boolean', 'complex', 'index', 'matrix', 'string', 'unit'
+	  ]
+	};
+
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'string',
+	  'category': 'Type',
+	  'syntax': [
+	    '"text"',
+	    'string(x)'
+	  ],
+	  'description':
+	      'Create a string or convert a value to a string',
+	  'examples': [
+	    '"Hello World!"',
+	    'string(4.2)',
+	    'string(3 + 2i)'
+	  ],
+	  'seealso': [
+	    'bignumber', 'boolean', 'complex', 'index', 'matrix', 'number', 'unit'
+	  ]
+	};
+
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'unit',
+	  'category': 'Type',
+	  'syntax': [
+	    'value unit',
+	    'unit(value, unit)',
+	    'unit(string)'
+	  ],
+	  'description':
+	      'Create a unit.',
+	  'examples': [
+	    '5.5 mm',
+	    '3 inch',
+	    'unit(7.1, "kilogram")',
+	    'unit("23 deg")'
+	  ],
+	  'seealso': [
+	    'bignumber', 'boolean', 'complex', 'index', 'matrix', 'number', 'string'
+	  ]
+	};
+
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'eval',
+	  'category': 'Expression',
+	  'syntax': [
+	    'eval(expression)',
+	    'eval([expr1, expr2, expr3, ...])'
+	  ],
+	  'description': 'Evaluate an expression or an array with expressions.',
+	  'examples': [
+	    'eval("2 + 3")',
+	    'eval("sqrt(" + 4 + ")")'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'help',
+	  'category': 'Expression',
+	  'syntax': [
+	    'help(object)',
+	    'help(string)'
+	  ],
+	  'description': 'Display documentation on a function or data type.',
+	  'examples': [
+	    'help(sqrt)',
+	    'help("complex")'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'and',
+	  'category': 'Logical',
+	  'syntax': [
+	    'x and y',
+	    'and(x, y)'
+	  ],
+	  'description': 'Logical and. Test whether two values are both defined with a nonzero/nonempty value.',
+	  'examples': [
+	    'true and false',
+	    'true and true',
+	    '2 and 4'
+	  ],
+	  'seealso': [
+	    'not', 'or', 'xor'
+	  ]
+	};
+
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'not',
+	  'category': 'Logical',
+	  'syntax': [
+	    '!x',
+	    'not x',
+	    'not(x)'
+	  ],
+	  'description': 'Logical not. Flips the boolean value of given argument.',
+	  'examples': [
+	    '!true',
+	    'not false',
+	    '!2',
+	    '!0'
+	  ],
+	  'seealso': [
+	    'and', 'or', 'xor'
+	  ]
+	};
+
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'or',
+	  'category': 'Logical',
+	  'syntax': [
+	    'x or y',
+	    'or(x, y)'
+	  ],
+	  'description': 'Logical or. Test if at least one value is defined with a nonzero/nonempty value.',
+	  'examples': [
+	    'true or false',
+	    'false or false',
+	    '0 or 4'
+	  ],
+	  'seealso': [
+	    'not', 'and', 'xor'
+	  ]
+	};
+
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'xor',
+	  'category': 'Logical',
+	  'syntax': [
+	    'x or y',
+	    'or(x, y)'
+	  ],
+	  'description': 'Logical exclusive or, xor. Test whether one and only one value is defined with a nonzero/nonempty value.',
+	  'examples': [
+	    'true xor false',
+	    'false xor false',
+	    'true xor true',
+	    '0 or 4'
+	  ],
+	  'seealso': [
+	    'not', 'and', 'or'
+	  ]
+	};
+
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'concat',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'concat(A, B, C, ...)',
+	    'concat(A, B, C, ..., dim)'
+	  ],
+	  'description': 'Concatenate matrices. By default, the matrices are concatenated by the last dimension. The dimension on which to concatenate can be provided as last argument.',
+	  'examples': [
+	    'A = [1, 2; 5, 6]',
+	    'B = [3, 4; 7, 8]',
+	    'concat(A, B)',
+	    'concat(A, B, 1)',
+	    'concat(A, B, 2)'
+	  ],
+	  'seealso': [
+	    'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'cross',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'cross(A, B)'
+	  ],
+	  'description': 'Calculate the cross product for two vectors in three dimensional space.',
+	  'examples': [
+	    'cross([1, 1, 0],  [0, 1, 1])',
+	    'cross([3, -3, 1], [4, 9, 2])',
+	    'cross([2, 3, 4],  [5, 6, 7])'
+	  ],
+	  'seealso': [
+	    'multiply',
+	    'dot'
+	  ]
+	};
+
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'det',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'det(x)'
+	  ],
+	  'description': 'Calculate the determinant of a matrix',
+	  'examples': [
+	    'det([1, 2; 3, 4])',
+	    'det([-2, 2, 3; -1, 1, 3; 2, 0, -1])'
+	  ],
+	  'seealso': [
+	    'concat', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'diag',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'diag(x)',
+	    'diag(x, k)'
+	  ],
+	  'description': 'Create a diagonal matrix or retrieve the diagonal of a matrix. When x is a vector, a matrix with the vector values on the diagonal will be returned. When x is a matrix, a vector with the diagonal values of the matrix is returned. When k is provided, the k-th diagonal will be filled in or retrieved, if k is positive, the values are placed on the super diagonal. When k is negative, the values are placed on the sub diagonal.',
+	  'examples': [
+	    'diag(1:3)',
+	    'diag(1:3, 1)',
+	    'a = [1, 2, 3; 4, 5, 6; 7, 8, 9]',
+	    'diag(a)'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'dot',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'dot(A, B)'
+	  ],
+	  'description': 'Calculate the dot product of two vectors. ' +
+	      'The dot product of A = [a1, a2, a3, ..., an] and B = [b1, b2, b3, ..., bn] ' +
+	      'is defined as dot(A, B) = a1 * b1 + a2 * b2 + a3 * b3 + ... + an * bn',
+	  'examples': [
+	    'dot([2, 4, 1], [2, 2, 3])',
+	    '[2, 4, 1] * [2, 2, 3]'
+	  ],
+	  'seealso': [
+	    'multiply',
+	    'cross'
+	  ]
+	};
+
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'eye',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'eye(n)',
+	    'eye(m, n)',
+	    'eye([m, n])',
+	    'eye'
+	  ],
+	  'description': 'Returns the identity matrix with size m-by-n. The matrix has ones on the diagonal and zeros elsewhere.',
+	  'examples': [
+	    'eye(3)',
+	    'eye(3, 5)',
+	    'a = [1, 2, 3; 4, 5, 6]',
+	    'eye(size(a))'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'diag', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'flatten',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'flatten(x)'
+	  ],
+	  'description': 'Flatten a multi dimensional matrix into a single dimensional matrix.',
+	  'examples': [
+	    'a = [1, 2, 3; 4, 5, 6]',
+	    'size(a)',
+	    'b = flatten(a)',
+	    'size(b)'
+	  ],
+	  'seealso': [
+	    'concat', 'resize', 'size', 'squeeze'
+	  ]
+	};
+
+
+/***/ },
+/* 266 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'inv',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'inv(x)'
+	  ],
+	  'description': 'Calculate the inverse of a matrix',
+	  'examples': [
+	    'inv([1, 2; 3, 4])',
+	    'inv(4)',
+	    '1 / 4'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'diag', 'eye', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'ones',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'ones(m)',
+	    'ones(m, n)',
+	    'ones(m, n, p, ...)',
+	    'ones([m])',
+	    'ones([m, n])',
+	    'ones([m, n, p, ...])',
+	    'ones'
+	  ],
+	  'description': 'Create a matrix containing ones.',
+	  'examples': [
+	    'ones(3)',
+	    'ones(3, 5)',
+	    'ones([2,3]) * 4.5',
+	    'a = [1, 2, 3; 4, 5, 6]',
+	    'ones(size(a))'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'diag', 'eye', 'inv', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'range',
+	  'category': 'Type',
+	  'syntax': [
+	    'start:end',
+	    'start:step:end',
+	    'range(start, end)',
+	    'range(start, end, step)',
+	    'range(string)'
+	  ],
+	  'description':
+	      'Create a range. Lower bound of the range is included, upper bound is excluded.',
+	  'examples': [
+	    '1:5',
+	    '3:-1:-3',
+	    'range(3, 7)',
+	    'range(0, 12, 2)',
+	    'range("4:10")',
+	    'a = [1, 2, 3, 4; 5, 6, 7, 8]',
+	    'a[1:2, 1:2]'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'resize',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'resize(x, size)',
+	    'resize(x, size, defaultValue)'
+	  ],
+	  'description': 'Resize a matrix.',
+	  'examples': [
+	    'resize([1,2,3,4,5], [3])',
+	    'resize([1,2,3], [5])',
+	    'resize([1,2,3], [5], -1)',
+	    'resize(2, [2, 3])',
+	    'resize("hello", [8], "!")'
+	  ],
+	  'seealso': [
+	    'size', 'subset', 'squeeze'
+	  ]
+	};
+
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'size',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'size(x)'
+	  ],
+	  'description': 'Calculate the size of a matrix.',
+	  'examples': [
+	    'size(2.3)',
+	    'size("hello world")',
+	    'a = [1, 2; 3, 4; 5, 6]',
+	    'size(a)',
+	    'size(1:6)'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'squeeze',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'squeeze(x)'
+	  ],
+	  'description': 'Remove inner and outer singleton dimensions from a matrix.',
+	  'examples': [
+	    'a = zeros(3,2,1)',
+	    'size(squeeze(a))',
+	    'b = zeros(1,1,3)',
+	    'size(squeeze(b))'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'subset', 'trace', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'subset',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'value(index)',
+	    'value(index) = replacement',
+	    'subset(value, [index])',
+	    'subset(value, [index], replacement)'
+	  ],
+	  'description': 'Get or set a subset of a matrix or string. ' +
+	      'Indexes are one-based. ' +
+	      'Both the ranges lower-bound and upper-bound are included.',
+	  'examples': [
+	    'd = [1, 2; 3, 4]',
+	    'e = []',
+	    'e[1, 1:2] = [5, 6]',
+	    'e[2, :] = [7, 8]',
+	    'f = d * e',
+	    'f[2, 1]',
+	    'f[:, 1]'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'trace', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'trace',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'trace(A)'
+	  ],
+	  'description': 'Calculate the trace of a matrix: the sum of the elements on the main diagonal of a square matrix.',
+	  'examples': [
+	    'A = [1, 2, 3; -1, 2, 3; 2, 0, 3]',
+	    'trace(A)'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'transpose',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'x\'',
+	    'transpose(x)'
+	  ],
+	  'description': 'Transpose a matrix',
+	  'examples': [
+	    'a = [1, 2, 3; 4, 5, 6]',
+	    'a\'',
+	    'transpose(a)'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'zeros'
+	  ]
+	};
+
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'zeros',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'zeros(m)',
+	    'zeros(m, n)',
+	    'zeros(m, n, p, ...)',
+	    'zeros([m])',
+	    'zeros([m, n])',
+	    'zeros([m, n, p, ...])',
+	    'zeros'
+	  ],
+	  'description': 'Create a matrix containing zeros.',
+	  'examples': [
+	    'zeros(3)',
+	    'zeros(3, 5)',
+	    'a = [1, 2, 3; 4, 5, 6]',
+	    'zeros(size(a))'
+	  ],
+	  'seealso': [
+	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose'
+	  ]
+	};
+
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'combinations',
+	  'category': 'Probability',
+	  'syntax': [
+	    'combinations(n, k)'
+	  ],
+	  'description': 'Compute the number of combinations of n items taken k at a time',
+	  'examples': [
+	    'combinations(7, 5)'
+	  ],
+	  'seealso': ['permutations', 'factorial']
+	};
+
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'factorial',
+	  'category': 'Probability',
+	  'syntax': [
+	    'n!',
+	    'factorial(n)'
+	  ],
+	  'description': 'Compute the factorial of a value',
+	  'examples': [
+	    '5!',
+	    '5 * 4 * 3 * 2 * 1',
+	    '3!'
+	  ],
+	  'seealso': ['combinations', 'permutations', 'gamma']
+	};
+
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'gamma',
+	  'category': 'Probability',
+	  'syntax': [
+	    'gamma(n)'
+	  ],
+	  'description': 'Compute the gamma function. For small values, the Lanczos approximation is used, and for large values the extended Stirling approximation.',
+	  'examples': [
+	    'gamma(4)',
+	    '3!',
+	    'gamma(1/2)',
+	    'sqrt(pi)'
+	  ],
+	  'seealso': ['factorial']
+	};
+
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'permutations',
+	  'category': 'Probability',
+	  'syntax': [
+	    'permutations(n)',
+	    'permutations(n, k)'
+	  ],
+	  'description': 'Compute the number of permutations of n items taken k at a time',
+	  'examples': [
+	    'permutations(5)',
+	    'permutations(5, 3)'
+	  ],
+	  'seealso': ['combinations', 'factorial']
+	};
+
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'pickRandom',
+	  'category': 'Probability',
+	  'syntax': [
+	    'pickRandom(array)'
+	  ],
+	  'description':
+	      'Pick a random entry from a given array.',
+	  'examples': [
+	    'pickRandom(0:10)',
+	    'pickRandom([1, 3, 1, 6])'
+	  ],
+	  'seealso': ['random', 'randomInt']
+	};
+
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'random',
+	  'category': 'Probability',
+	  'syntax': [
+	    'random()',
+	    'random(max)',
+	    'random(min, max)',
+	    'random(size)',
+	    'random(size, max)',
+	    'random(size, min, max)'
+	  ],
+	  'description':
+	      'Return a random number.',
+	  'examples': [
+	    'random()',
+	    'random(10, 20)',
+	    'random([2, 3])'
+	  ],
+	  'seealso': ['pickRandom', 'randomInt']
+	};
+
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'randInt',
+	  'category': 'Probability',
+	  'syntax': [
+	    'randInt()',
+	    'randInt(max)',
+	    'randInt(min, max)',
+	    'randInt(size)',
+	    'randInt(size, max)',
+	    'randInt(size, min, max)'
+	  ],
+	  'description':
+	      'Return a random integer number',
+	  'examples': [
+	    'randInt()',
+	    'randInt(10, 20)',
+	    'randInt([2, 3], 10)'
+	  ],
+	  'seealso': ['pickRandom', 'random']
+	};
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'compare',
+	  'category': 'Relational',
+	  'syntax': [
+	    'compare(x, y)'
+	  ],
+	  'description':
+	      'Compare two values. Returns 1 if x is larger than y, -1 if x is smaller than y, and 0 if x and y are equal.',
+	  'examples': [
+	    'compare(2, 3)',
+	    'compare(3, 2)',
+	    'compare(2, 2)',
+	    'compare(5cm, 40mm)',
+	    'compare(2, [1, 2, 3])'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'smaller', 'smallerEq', 'largerEq'
+	  ]
+	};
+
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'deepEqual',
+	  'category': 'Relational',
+	  'syntax': [
+	    'deepEqual(x, y)'
+	  ],
+	  'description':
+	      'Check equality of two matrices element wise. Returns true if the size of both matrices is equal and when and each of the elements are equal.',
+	  'examples': [
+	    '[1,3,4] == [1,3,4]',
+	    '[1,3,4] == [1,3]'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare'
+	  ]
+	};
+
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'equal',
+	  'category': 'Relational',
+	  'syntax': [
+	    'x == y',
+	    'equal(x, y)'
+	  ],
+	  'description':
+	      'Check equality of two values. Returns true if the values are equal, and false if not.',
+	  'examples': [
+	    '2+2 == 3',
+	    '2+2 == 4',
+	    'a = 3.2',
+	    'b = 6-2.8',
+	    'a == b',
+	    '50cm == 0.5m'
+	  ],
+	  'seealso': [
+	    'unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual'
+	  ]
+	};
+
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'larger',
+	  'category': 'Relational',
+	  'syntax': [
+	    'x > y',
+	    'larger(x, y)'
+	  ],
+	  'description':
+	      'Check if value x is larger than y. Returns true if x is larger than y, and false if not.',
+	  'examples': [
+	    '2 > 3',
+	    '5 > 2*2',
+	    'a = 3.3',
+	    'b = 6-2.8',
+	    '(a > b)',
+	    '(b < a)',
+	    '5 cm > 2 inch'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compare'
+	  ]
+	};
+
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'largerEq',
+	  'category': 'Relational',
+	  'syntax': [
+	    'x >= y',
+	    'largerEq(x, y)'
+	  ],
+	  'description':
+	      'Check if value x is larger or equal to y. Returns true if x is larger or equal to y, and false if not.',
+	  'examples': [
+	    '2 > 1+1',
+	    '2 >= 1+1',
+	    'a = 3.2',
+	    'b = 6-2.8',
+	    '(a > b)'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'smallerEq', 'smaller', 'largerEq', 'compare'
+	  ]
+	};
+
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'smaller',
+	  'category': 'Relational',
+	  'syntax': [
+	    'x < y',
+	    'smaller(x, y)'
+	  ],
+	  'description':
+	      'Check if value x is smaller than value y. Returns true if x is smaller than y, and false if not.',
+	  'examples': [
+	    '2 < 3',
+	    '5 < 2*2',
+	    'a = 3.3',
+	    'b = 6-2.8',
+	    '(a < b)',
+	    '5 cm < 2 inch'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'larger', 'smallerEq', 'largerEq', 'compare'
+	  ]
+	};
+
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'smallerEq',
+	  'category': 'Relational',
+	  'syntax': [
+	    'x <= y',
+	    'smallerEq(x, y)'
+	  ],
+	  'description':
+	      'Check if value x is smaller or equal to value y. Returns true if x is smaller than y, and false if not.',
+	  'examples': [
+	    '2 < 1+1',
+	    '2 <= 1+1',
+	    'a = 3.2',
+	    'b = 6-2.8',
+	    '(a < b)'
+	  ],
+	  'seealso': [
+	    'equal', 'unequal', 'larger', 'smaller', 'largerEq', 'compare'
+	  ]
+	};
+
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'unequal',
+	  'category': 'Relational',
+	  'syntax': [
+	    'x != y',
+	    'unequal(x, y)'
+	  ],
+	  'description':
+	      'Check unequality of two values. Returns true if the values are unequal, and false if they are equal.',
+	  'examples': [
+	    '2+2 != 3',
+	    '2+2 != 4',
+	    'a = 3.2',
+	    'b = 6-2.8',
+	    'a != b',
+	    '50cm != 0.5m',
+	    '5 cm != 2 inch'
+	  ],
+	  'seealso': [
+	    'equal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual'
+	  ]
+	};
+
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'max',
+	  'category': 'Statistics',
+	  'syntax': [
+	    'max(a, b, c, ...)',
+	    'max(A)',
+	    'max(A, dim)'
+	  ],
+	  'description': 'Compute the maximum value of a list of values.',
+	  'examples': [
+	    'max(2, 3, 4, 1)',
+	    'max([2, 3, 4, 1])',
+	    'max([2, 5; 4, 3])',
+	    'max([2, 5; 4, 3], 1)',
+	    'max([2, 5; 4, 3], 2)',
+	    'max(2.7, 7.1, -4.5, 2.0, 4.1)',
+	    'min(2.7, 7.1, -4.5, 2.0, 4.1)'
+	  ],
+	  'seealso': [
+	    'mean',
+	    'median',
+	    'min',
+	    'prod',
+	    'std',
+	    'sum',
+	    'var'
+	  ]
+	};
+
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'mean',
+	  'category': 'Statistics',
+	  'syntax': [
+	    'mean(a, b, c, ...)',
+	    'mean(A)',
+	    'mean(A, dim)'
+	  ],
+	  'description': 'Compute the arithmetic mean of a list of values.',
+	  'examples': [
+	    'mean(2, 3, 4, 1)',
+	    'mean([2, 3, 4, 1])',
+	    'mean([2, 5; 4, 3])',
+	    'mean([2, 5; 4, 3], 1)',
+	    'mean([2, 5; 4, 3], 2)',
+	    'mean([1.0, 2.7, 3.2, 4.0])'
+	  ],
+	  'seealso': [
+	    'max',
+	    'median',
+	    'min',
+	    'prod',
+	    'std',
+	    'sum',
+	    'var'
+	  ]
+	};
+
+
+/***/ },
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'median',
+	  'category': 'Statistics',
+	  'syntax': [
+	    'median(a, b, c, ...)',
+	    'median(A)'
+	  ],
+	  'description': 'Compute the median of all values. The values are sorted and the middle value is returned. In case of an even number of values, the average of the two middle values is returned.',
+	  'examples': [
+	    'median(5, 2, 7)',
+	    'median([3, -1, 5, 7])'
+	  ],
+	  'seealso': [
+	    'max',
+	    'mean',
+	    'min',
+	    'prod',
+	    'std',
+	    'sum',
+	    'var'
+	  ]
+	};
+
+
+/***/ },
+/* 294 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'min',
+	  'category': 'Statistics',
+	  'syntax': [
+	    'min(a, b, c, ...)',
+	    'min(A)',
+	    'min(A, dim)'
+	  ],
+	  'description': 'Compute the minimum value of a list of values.',
+	  'examples': [
+	    'min(2, 3, 4, 1)',
+	    'min([2, 3, 4, 1])',
+	    'min([2, 5; 4, 3])',
+	    'min([2, 5; 4, 3], 1)',
+	    'min([2, 5; 4, 3], 2)',
+	    'min(2.7, 7.1, -4.5, 2.0, 4.1)',
+	    'max(2.7, 7.1, -4.5, 2.0, 4.1)'
+	  ],
+	  'seealso': [
+	    'max',
+	    'mean',
+	    'median',
+	    'prod',
+	    'std',
+	    'sum',
+	    'var'
+	  ]
+	};
+
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'prod',
+	  'category': 'Statistics',
+	  'syntax': [
+	    'prod(a, b, c, ...)',
+	    'prod(A)'
+	  ],
+	  'description': 'Compute the product of all values.',
+	  'examples': [
+	    'prod(2, 3, 4)',
+	    'prod([2, 3, 4])',
+	    'prod([2, 5; 4, 3])'
+	  ],
+	  'seealso': [
+	    'max',
+	    'mean',
+	    'min',
+	    'median',
+	    'min',
+	    'std',
+	    'sum',
+	    'var'
+	  ]
+	};
+
+
+/***/ },
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'std',
+	  'category': 'Statistics',
+	  'syntax': [
+	    'std(a, b, c, ...)',
+	    'std(A)',
+	    'std(A, normalization)'
+	  ],
+	  'description': 'Compute the standard deviation of all values, defined as std(A) = sqrt(var(A)). Optional parameter normalization can be "unbiased" (default), "uncorrected", or "biased".',
+	  'examples': [
+	    'std(2, 4, 6)',
+	    'std([2, 4, 6, 8])',
+	    'std([2, 4, 6, 8], "uncorrected")',
+	    'std([2, 4, 6, 8], "biased")',
+	    'std([1, 2, 3; 4, 5, 6])'
+	  ],
+	  'seealso': [
+	    'max',
+	    'mean',
+	    'min',
+	    'median',
+	    'min',
+	    'prod',
+	    'sum',
+	    'var'
+	  ]
+	};
+
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'sum',
+	  'category': 'Statistics',
+	  'syntax': [
+	    'sum(a, b, c, ...)',
+	    'sum(A)'
+	  ],
+	  'description': 'Compute the sum of all values.',
+	  'examples': [
+	    'sum(2, 3, 4, 1)',
+	    'sum([2, 3, 4, 1])',
+	    'sum([2, 5; 4, 3])'
+	  ],
+	  'seealso': [
+	    'max',
+	    'mean',
+	    'median',
+	    'min',
+	    'prod',
+	    'std',
+	    'sum',
+	    'var'
+	  ]
+	};
+
+
+/***/ },
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'var',
+	  'category': 'Statistics',
+	  'syntax': [
+	    'var(a, b, c, ...)',
+	    'var(A)',
+	    'var(A, normalization)'
+	  ],
+	  'description': 'Compute the variance of all values. Optional parameter normalization can be "unbiased" (default), "uncorrected", or "biased".',
+	  'examples': [
+	    'var(2, 4, 6)',
+	    'var([2, 4, 6, 8])',
+	    'var([2, 4, 6, 8], "uncorrected")',
+	    'var([2, 4, 6, 8], "biased")',
+	    'var([1, 2, 3; 4, 5, 6])'
+	  ],
+	  'seealso': [
+	    'max',
+	    'mean',
+	    'min',
+	    'median',
+	    'min',
+	    'prod',
+	    'std',
+	    'sum'
+	  ]
+	};
+
+
+/***/ },
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'acos',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'acos(x)'
+	  ],
+	  'description': 'Compute the inverse cosine of a value in radians.',
+	  'examples': [
+	    'acos(0.5)',
+	    'acos(cos(2.3))'
+	  ],
+	  'seealso': [
+	    'cos',
+	    'atan',
+	    'asin'
+	  ]
+	};
+
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'acosh',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'acosh(x)'
+	  ],
+	  'description': 'Calculate the hyperbolic arccos of a value, defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.',
+	  'examples': [
+	    'acosh(1.5)'
+	  ],
+	  'seealso': [
+	    'cosh',
+	    'asinh',
+	    'atanh'
+	  ]
+	};
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'acot',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'acot(x)'
+	  ],
+	  'description': 'Calculate the inverse cotangent of a value.',
+	  'examples': [
+	    'acot(0.5)',
+	    'acot(cot(0.5))',
+	    'acot(2)'
+	  ],
+	  'seealso': [
+	    'cot',
+	    'atan'
+	  ]
+	};
+
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'acoth',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'acoth(x)'
+	  ],
+	  'description': 'Calculate the hyperbolic arccotangent of a value, defined as `acoth(x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.',
+	  'examples': [
+	    'acoth(0.5)'
+	  ],
+	  'seealso': [
+	    'acsch',
+	    'asech'
+	  ]
+	};
+
+/***/ },
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'acsc',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'acsc(x)'
+	  ],
+	  'description': 'Calculate the inverse cotangent of a value.',
+	  'examples': [
+	    'acsc(0.5)',
+	    'acsc(csc(0.5))',
+	    'acsc(2)'
+	  ],
+	  'seealso': [
+	    'csc',
+	    'asin',
+	    'asec'
+	  ]
+	};
+
+
+/***/ },
+/* 304 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'acsch',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'acsch(x)'
+	  ],
+	  'description': 'Calculate the hyperbolic arccosecant of a value, defined as `acsch(x) = ln(1/x + sqrt(1/x^2 + 1))`.',
+	  'examples': [
+	    'acsch(0.5)'
+	  ],
+	  'seealso': [
+	    'asech',
+	    'acoth'
+	  ]
+	};
+
+
+/***/ },
+/* 305 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'asec',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'asec(x)'
+	  ],
+	  'description': 'Calculate the inverse secant of a value.',
+	  'examples': [
+	    'asec(0.5)',
+	    'asec(sec(0.5))',
+	    'asec(2)'
+	  ],
+	  'seealso': [
+	    'acos',
+	    'acot',
+	    'acsc'
+	  ]
+	};
+
+
+/***/ },
+/* 306 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'asech',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'asech(x)'
+	  ],
+	  'description': 'Calculate the inverse secant of a value.',
+	  'examples': [
+	    'asech(0.5)'
+	  ],
+	  'seealso': [
+	    'acsch',
+	    'acoth'
+	  ]
+	};
+
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'asin',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'asin(x)'
+	  ],
+	  'description': 'Compute the inverse sine of a value in radians.',
+	  'examples': [
+	    'asin(0.5)',
+	    'asin(sin(2.3))'
+	  ],
+	  'seealso': [
+	    'sin',
+	    'acos',
+	    'atan'
+	  ]
+	};
+
+
+/***/ },
+/* 308 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'asinh',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'asinh(x)'
+	  ],
+	  'description': 'Calculate the hyperbolic arcsine of a value, defined as `asinh(x) = ln(x + sqrt(x^2 + 1))`.',
+	  'examples': [
+	    'asinh(0.5)'
+	  ],
+	  'seealso': [
+	    'acosh',
+	    'atanh'
+	  ]
+	};
+
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'atan',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'atan(x)'
+	  ],
+	  'description': 'Compute the inverse tangent of a value in radians.',
+	  'examples': [
+	    'atan(0.5)',
+	    'atan(tan(2.3))'
+	  ],
+	  'seealso': [
+	    'tan',
+	    'acos',
+	    'asin'
+	  ]
+	};
+
+
+/***/ },
+/* 310 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'atanh',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'atanh(x)'
+	  ],
+	  'description': 'Calculate the hyperbolic arctangent of a value, defined as `atanh(x) = ln((1 + x)/(1 - x)) / 2`.',
+	  'examples': [
+	    'atanh(0.5)'
+	  ],
+	  'seealso': [
+	    'acosh',
+	    'asinh'
+	  ]
+	};
+
+
+/***/ },
+/* 311 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'atan2',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'atan2(y, x)'
+	  ],
+	  'description':
+	      'Computes the principal value of the arc tangent of y/x in radians.',
+	  'examples': [
+	    'atan2(2, 2) / pi',
+	    'angle = 60 deg in rad',
+	    'x = cos(angle)',
+	    'y = sin(angle)',
+	    'atan2(y, x)'
+	  ],
+	  'seealso': [
+	    'sin',
+	    'cos',
+	    'tan'
+	  ]
+	};
+
+
+/***/ },
+/* 312 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'cos',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'cos(x)'
+	  ],
+	  'description': 'Compute the cosine of x in radians.',
+	  'examples': [
+	    'cos(2)',
+	    'cos(pi / 4) ^ 2',
+	    'cos(180 deg)',
+	    'cos(60 deg)',
+	    'sin(0.2)^2 + cos(0.2)^2'
+	  ],
+	  'seealso': [
+	    'acos',
+	    'sin',
+	    'tan'
+	  ]
+	};
+
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'cosh',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'cosh(x)'
+	  ],
+	  'description': 'Compute the hyperbolic cosine of x in radians.',
+	  'examples': [
+	    'cosh(0.5)'
+	  ],
+	  'seealso': [
+	    'sinh',
+	    'tanh',
+	    'coth'
+	  ]
+	};
+
+
+/***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'cot',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'cot(x)'
+	  ],
+	  'description': 'Compute the cotangent of x in radians. Defined as 1/tan(x)',
+	  'examples': [
+	    'cot(2)',
+	    '1 / tan(2)'
+	  ],
+	  'seealso': [
+	    'sec',
+	    'csc',
+	    'tan'
+	  ]
+	};
+
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'coth',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'coth(x)'
+	  ],
+	  'description': 'Compute the hyperbolic cotangent of x in radians.',
+	  'examples': [
+	    'coth(2)',
+	    '1 / tanh(2)'
+	  ],
+	  'seealso': [
+	    'sech',
+	    'csch',
+	    'tanh'
+	  ]
+	};
+
+
+/***/ },
+/* 316 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'csc',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'csc(x)'
+	  ],
+	  'description': 'Compute the cosecant of x in radians. Defined as 1/sin(x)',
+	  'examples': [
+	    'csc(2)',
+	    '1 / sin(2)'
+	  ],
+	  'seealso': [
+	    'sec',
+	    'cot',
+	    'sin'
+	  ]
+	};
+
+
+/***/ },
+/* 317 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'csch',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'csch(x)'
+	  ],
+	  'description': 'Compute the hyperbolic cosecant of x in radians. Defined as 1/sinh(x)',
+	  'examples': [
+	    'csch(2)',
+	    '1 / sinh(2)'
+	  ],
+	  'seealso': [
+	    'sech',
+	    'coth',
+	    'sinh'
+	  ]
+	};
+
+
+/***/ },
+/* 318 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'sec',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'sec(x)'
+	  ],
+	  'description': 'Compute the secant of x in radians. Defined as 1/cos(x)',
+	  'examples': [
+	    'sec(2)',
+	    '1 / cos(2)'
+	  ],
+	  'seealso': [
+	    'cot',
+	    'csc',
+	    'cos'
+	  ]
+	};
+
+
+/***/ },
+/* 319 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'sech',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'sech(x)'
+	  ],
+	  'description': 'Compute the hyperbolic secant of x in radians. Defined as 1/cosh(x)',
+	  'examples': [
+	    'sech(2)',
+	    '1 / cosh(2)'
+	  ],
+	  'seealso': [
+	    'coth',
+	    'csch',
+	    'cosh'
+	  ]
+	};
+
+
+/***/ },
+/* 320 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'sin',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'sin(x)'
+	  ],
+	  'description': 'Compute the sine of x in radians.',
+	  'examples': [
+	    'sin(2)',
+	    'sin(pi / 4) ^ 2',
+	    'sin(90 deg)',
+	    'sin(30 deg)',
+	    'sin(0.2)^2 + cos(0.2)^2'
+	  ],
+	  'seealso': [
+	    'asin',
+	    'cos',
+	    'tan'
+	  ]
+	};
+
+
+/***/ },
+/* 321 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'sinh',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'sinh(x)'
+	  ],
+	  'description': 'Compute the hyperbolic sine of x in radians.',
+	  'examples': [
+	    'sinh(0.5)'
+	  ],
+	  'seealso': [
+	    'cosh',
+	    'tanh'
+	  ]
+	};
+
+
+/***/ },
+/* 322 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'tan',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'tan(x)'
+	  ],
+	  'description': 'Compute the tangent of x in radians.',
+	  'examples': [
+	    'tan(0.5)',
+	    'sin(0.5) / cos(0.5)',
+	    'tan(pi / 4)',
+	    'tan(45 deg)'
+	  ],
+	  'seealso': [
+	    'atan',
+	    'sin',
+	    'cos'
+	  ]
+	};
+
+
+/***/ },
+/* 323 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'tanh',
+	  'category': 'Trigonometry',
+	  'syntax': [
+	    'tanh(x)'
+	  ],
+	  'description': 'Compute the hyperbolic tangent of x in radians.',
+	  'examples': [
+	    'tanh(0.5)',
+	    'sinh(0.5) / cosh(0.5)'
+	  ],
+	  'seealso': [
+	    'sinh',
+	    'cosh'
+	  ]
+	};
+
+
+/***/ },
+/* 324 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'to',
+	  'category': 'Units',
+	  'syntax': [
+	    'x to unit',
+	    'to(x, unit)'
+	  ],
+	  'description': 'Change the unit of a value.',
+	  'examples': [
+	    '5 inch to cm',
+	    '3.2kg to g',
+	    '16 bytes in bits'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 325 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'clone',
+	  'category': 'Utils',
+	  'syntax': [
+	    'clone(x)'
+	  ],
+	  'description': 'Clone a variable. Creates a copy of primitive variables,and a deep copy of matrices',
+	  'examples': [
+	    'clone(3.5)',
+	    'clone(2 - 4i)',
+	    'clone(45 deg)',
+	    'clone([1, 2; 3, 4])',
+	    'clone("hello world")'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 326 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'map',
+	  'category': 'Utils',
+	  'syntax': [
+	    'map(x, callback)'
+	  ],
+	  'description': 'Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.',
+	  'examples': [
+	    'map([1, 2, 3], function(val) { return value * value })'
+	  ],
+	  'seealso': ['filter', 'forEach']
+	};
+
+
+/***/ },
+/* 327 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'filter',
+	  'category': 'Utils',
+	  'syntax': [
+	    'filter(x, test)'
+	  ],
+	  'description': 'Filter items in a matrix.',
+	  'examples': [
+	    'isPositive(x) = x > 0',
+	    'filter([6, -2, -1, 4, 3], isPositive)',
+	    'filter([6, -2, 0, 1, 0], x != 0)'
+	  ],
+	  'seealso': ['sort', 'map', 'forEach']
+	};
+
+
+/***/ },
+/* 328 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'forEach',
+	  'category': 'Utils',
+	  'syntax': [
+	    'forEach(x, callback)'
+	  ],
+	  'description': 'Iterates over all elements of a matrix/array, and executes the given callback function.',
+	  'examples': [
+	    'forEach([1, 2, 3], function(val) { console.log(val) })'
+	  ],
+	  'seealso': ['map', 'sort', 'filter']
+	};
+
+
+/***/ },
+/* 329 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'format',
+	  'category': 'Utils',
+	  'syntax': [
+	    'format(value)',
+	    'format(value, precision)'
+	  ],
+	  'description': 'Format a value of any type as string.',
+	  'examples': [
+	    'format(2.3)',
+	    'format(3 - 4i)',
+	    'format([])',
+	    'format(pi, 3)'
+	  ],
+	  'seealso': ['print']
+	};
+
+
+/***/ },
+/* 330 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'import',
+	  'category': 'Utils',
+	  'syntax': [
+	    'import(string)'
+	  ],
+	  'description': 'Import functions from a file.',
+	  'examples': [
+	    'import("numbers")',
+	    'import("./mylib.js")'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 331 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'sort',
+	  'category': 'Utils',
+	  'syntax': [
+	    'sort(x)',
+	    'sort(x, compare)'
+	  ],
+	  'description': 'Sort the items in a matrix. Compare can be a string "asc" or "desc", or a custom sort function.',
+	  'examples': [
+	    'sort([5, 10, 1])',
+	    'sort(["C", "B", "A", "D"])',
+	    'sortByLength(a, b) = size(a)[1] - size(b)[1]',
+	    'sort(["Langdon", "Tom", "Sara"], sortByLength)'
+	  ],
+	  'seealso': ['map', 'filter', 'forEach']
+	};
+
+
+/***/ },
+/* 332 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'typeof',
+	  'category': 'Utils',
+	  'syntax': [
+	    'typeof(x)'
+	  ],
+	  'description': 'Get the type of a variable.',
+	  'examples': [
+	    'typeof(3.5)',
+	    'typeof(2 - 4i)',
+	    'typeof(45 deg)',
+	    'typeof("hello world")'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 333 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// NOTE: distribution is NOT added to math.distribution but returned by the factory function
+	// TODO: rethink math.distribution
+
+	module.exports = function (math) {
+	  var Matrix = __webpack_require__(10);
+	  var array = __webpack_require__(165);
+	  var collection = __webpack_require__(14);
+	  var isCollection = collection.isCollection;
+
+	  /**
+	   * Create a distribution object with a set of random functions for given
+	   * random distribution.
+	   *
+	   * Syntax:
+	   *
+	   *     math.distribution(name)
+	   *
+	   * Examples:
+	   *
+	   *     var normalDist = math.distribution('normal'); // create a normal distribution
+	   *     normalDist.random(0, 10);                      // get a random value between 0 and 10
+	   *
+	   * See also:
+	   *
+	   *     random, randomInt, pickRandom
+	   *
+	   * @param {String} name   Name of a distribution. Choose from 'uniform', 'normal'.
+	   * @return {Object}       Returns a distribution object containing functions:
+	   *                        `random([size] [, min] [, max])`,
+	   *                        `randomInt([min] [, max])`,
+	   *                        `pickRandom(array)`
+	   */
+	  function distribution(name) {
+	    if (!distributions.hasOwnProperty(name))
+	      throw new Error('Unknown distribution ' + name);
+
+	    var args = Array.prototype.slice.call(arguments, 1),
+	        distribution = distributions[name].apply(this, args);
+
+	    return (function(distribution) {
+
+	      // This is the public API for all distributions
+	      var randFunctions = {
+
+	        random: function(arg1, arg2, arg3) {
+	          var size, min, max;
+	          if (arguments.length > 3) {
+	            throw new math.error.ArgumentsError('random', arguments.length, 0, 3);
+
+	          // `random(max)` or `random(size)`
+	          } else if (arguments.length === 1) {
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	            }
+	            else {
+	              max = arg1;
+	            }
+	          // `random(min, max)` or `random(size, max)`
+	          } else if (arguments.length === 2) {
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	              max = arg2;
+	            }
+	            else {
+	              min = arg1;
+	              max = arg2;
+	            }
+	          // `random(size, min, max)`
+	          } else {
+	            size = arg1;
+	            min = arg2;
+	            max = arg3;
+	          }
+
+	          // TODO: validate type of min, max, and size
+
+	          if (max === undefined) max = 1;
+	          if (min === undefined) min = 0;
+	          if (size !== undefined) {
+	            var res = _randomDataForMatrix(size.valueOf(), min, max, _random);
+	            return (size instanceof Matrix) ? new Matrix(res) : res;
+	          }
+	          else return _random(min, max);
+	        },
+
+	        randomInt: function(arg1, arg2, arg3) {
+	          var size, min, max;
+	          if (arguments.length > 3 || arguments.length < 1)
+	            throw new math.error.ArgumentsError('randomInt', arguments.length, 1, 3);
+
+	          // `random(max)` or `random(size)`
+	          else if (arguments.length === 1)
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	            }
+	            else {
+	              max = arg1;
+	            }
+	          // `randomInt(min, max)` or `randomInt(size, max)`
+	          else if (arguments.length === 2) {
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	              max = arg2;
+	            }
+	            else {
+	              min = arg1;
+	              max = arg2;
+	            }
+	          // `randomInt(size, min, max)`
+	          } else {
+	            size = arg1;
+	            min = arg2;
+	            max = arg3;
+	          }
+
+	          // TODO: validate type of min, max, and size
+
+	          if (min === undefined) min = 0;
+	          if (size !== undefined) {
+	            var res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt);
+	            return (size instanceof Matrix) ? new Matrix(res) : res;
+	          }
+	          else return _randomInt(min, max);
+	        },
+
+	        pickRandom: function(possibles) {
+	          if (arguments.length !== 1) {
+	            throw new math.error.ArgumentsError('pickRandom', arguments.length, 1);
+	          }
+	          if (possibles instanceof Matrix) {
+	            possibles = possibles.valueOf(); // get Array
+	          }
+	          else if (!Array.isArray(possibles)) {
+	            throw new math.error.UnsupportedTypeError('pickRandom', math['typeof'](possibles));
+	          }
+
+	          if (array.size(possibles).length > 1) {
+	            throw new Error('Only one dimensional vectors supported');
+	          }
+
+	          // TODO: add support for multi dimensional matrices
+	          return possibles[Math.floor(Math.random() * possibles.length)];
+	        }
+
+	      };
+
+	      var _random = function(min, max) {
+	        return min + distribution() * (max - min);
+	      };
+
+	      var _randomInt = function(min, max) {
+	        return Math.floor(min + distribution() * (max - min));
+	      };
+
+	      // This is a function for generating a random matrix recursively.
+	      var _randomDataForMatrix = function(size, min, max, randFunc) {
+	        var data = [], length, i;
+	        size = size.slice(0);
+
+	        if (size.length > 1) {
+	          for (i = 0, length = size.shift(); i < length; i++)
+	            data.push(_randomDataForMatrix(size, min, max, randFunc));
+	        } else {
+	          for (i = 0, length = size.shift(); i < length; i++)
+	            data.push(randFunc(min, max));
+	        }
+
+	        return data;
+	      };
+
+	      return randFunctions;
+
+	    })(distribution);
+	  };
+
+	  // Each distribution is a function that takes no argument and when called returns
+	  // a number between 0 and 1.
+	  var distributions = {
+
+	    uniform: function() {
+	      return Math.random;
+	    },
+
+	    // Implementation of normal distribution using Box-Muller transform
+	    // ref : http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+	    // We take : mean = 0.5, standard deviation = 1/6
+	    // so that 99.7% values are in [0, 1].
+	    normal: function() {
+	      return function() {
+	        var u1, u2,
+	            picked = -1;
+	        // We reject values outside of the interval [0, 1]
+	        // TODO: check if it is ok to do that?
+	        while (picked < 0 || picked > 1) {
+	          u1 = Math.random();
+	          u2 = Math.random();
+	          picked = 1/6 * Math.pow(-2 * Math.log(u1), 0.5) * Math.cos(2 * Math.PI * u2) + 0.5;
+	        }
+	        return picked;
+	      }
+	    }
+	  };
+
+	  return distribution;
+	};
+
+
+/***/ },
+/* 334 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Determine the type of a variable
+	 *
+	 *     type(x)
+	 *
+	 * @param {*} x
+	 * @return {String} type  Lower case type, for example 'number', 'string',
+	 *                        'array', 'date'.
+	 */
+	exports.type = function(x) {
+	  var type = typeof x;
+
+	  if (type === 'object') {
+	    if (x === null)           return 'null';
+	    if (x instanceof Boolean) return 'boolean';
+	    if (x instanceof Number)  return 'number';
+	    if (x instanceof String)  return 'string';
+	    if (Array.isArray(x))     return 'array';
+	    if (x instanceof Date)    return 'date';
+	    if (x instanceof Function)return 'function';
+	    if (x instanceof RegExp)  return 'regexp';
+	  }
+
+	  return type;
+	};
+
+
+/***/ },
+/* 335 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// function utils
+
+	/*
+	 * Memoize a given function by caching the computed result.
+	 * The cache of a memoized function can be cleared by deleting the `cache`
+	 * property of the function.
+	 *
+	 * @param {function} fn   The function to be memoized. Must be a pure function.
+	 * @return {function}     Returns the memoized function
+	 */
+	exports.memoize = function(fn) {
+	  return function memoize() {
+	    if (typeof memoize.cache !== 'object') {
+	      memoize.cache = {};
+	    }
+
+	    var hash = JSON.stringify(arguments);
+	    if (!(hash in memoize.cache)) {
+	      return memoize.cache[hash] = fn.apply(fn, arguments);
+	    }
+	    return memoize.cache[hash];
+	  };
+	};
+
+
+/***/ },
+/* 336 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v4.0.2 https://github.com/MikeMcl/decimal.js/LICENCE */
 	;(function (global) {
 	    'use strict';
 
 
 	    /*
-	     *  decimal.js v4.0.1
+	     *  decimal.js v4.0.2
 	     *  An arbitrary-precision Decimal type for JavaScript.
 	     *  https://github.com/MikeMcl/decimal.js
 	     *  Copyright (c) 2014 Michael Mclaughlin <M8ch88l@gmail.com>
@@ -21426,20 +28783,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /*
 	     * Return the number of significant digits of this Decimal.
 	     *
-	     * z {boolean|number} Whether to count integer-part trailing zeros: true, false, 1 or 0.
+	     * [z] {boolean|number} Whether to count integer-part trailing zeros: true, false, 1 or 0.
 	     *
 	     */
 	    P['precision'] = P['sd'] = function (z) {
 	        var n = null,
 	            x = this;
 
-	        if ( z != n ) {
+	        if ( z != n && z !== !!z && z !== 1 && z !== 0 ) {
 
-	            if ( z !== !!z && z !== 1 && z !== 0 ) {
-
-	                // 'precision() argument not a boolean or binary digit: {z}'
-	                ifExceptionsThrow( x['constructor'], 'argument', z, 'precision', 1 );
-	            }
+	            // 'precision() argument not a boolean or binary digit: {z}'
+	            ifExceptionsThrow( x['constructor'], 'argument', z, 'precision', 1 );
 	        }
 
 	        if ( x['c'] ) {
@@ -24217,7 +31571,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    for ( ; i < n; ) {
 	                        v = a[i];
 
-	                        // 0 >= v < 4294967296
+	                        // 0 <= v < 4294967296
 	                        // Probability that v >= 4.29e9, is 4967296 / 4294967296 = 0.00116 (1 in 865).
 	                        if ( v >= 4.29e9 ) {
 
@@ -24247,7 +31601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            crypto['randomBytes'](4).copy( a, i );
 	                        } else {
 
-	                            // 0 <= v <= 4289999999
+	                            // 0 <= v <= 2139999999
 	                            // 0 <= ( v % 1e7 ) <= 9999999
 	                            r.push( v % 1e7 );
 	                            i += 4;
@@ -24599,5862 +31953,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 157 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.array = __webpack_require__(154);
-	exports['boolean'] = __webpack_require__(194);
-	exports.number = __webpack_require__(3);
-	exports.bignumber = __webpack_require__(153);
-	exports.object = __webpack_require__(2);
-	exports.string = __webpack_require__(195);
-	exports.types = __webpack_require__(315);
-
-
-/***/ },
-/* 158 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a syntax error with the message:
-	 *     'Wrong number of arguments in function <fn> (<count> provided, <min>-<max> expected)'
-	 * @param {String} fn     Function name
-	 * @param {Number} count  Actual argument count
-	 * @param {Number} min    Minimum required argument count
-	 * @param {Number} [max]  Maximum required argument count
-	 * @extends Error
-	 */
-	function ArgumentsError(fn, count, min, max) {
-	  if (!(this instanceof ArgumentsError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.fn = fn;
-	  this.count = count;
-	  this.min = min;
-	  this.max = max;
-
-	  this.message = 'Wrong number of arguments in function ' + fn +
-	      ' (' + count + ' provided, ' +
-	      min + ((max != undefined) ? ('-' + max) : '') + ' expected)';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	ArgumentsError.prototype = new Error();
-	ArgumentsError.prototype.constructor = Error;
-	ArgumentsError.prototype.name = 'ArgumentsError';
-
-	module.exports = ArgumentsError;
-
-
-/***/ },
-/* 159 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a range error with the message:
-	 *     'Dimension mismatch (<actual size> != <expected size>)'
-	 * @param {number | number[]} actual        The actual size
-	 * @param {number | number[]} expected      The expected size
-	 * @param {string} [relation='!=']          Optional relation between actual
-	 *                                          and expected size: '!=', '<', etc.
-	 * @extends RangeError
-	 */
-	function DimensionError(actual, expected, relation) {
-	  if (!(this instanceof DimensionError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.actual   = actual;
-	  this.expected = expected;
-	  this.relation = relation;
-
-	  this.message = 'Dimension mismatch (' +
-	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
-	      ' ' + (this.relation || '!=') + ' ' +
-	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
-	      ')';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	DimensionError.prototype = new RangeError();
-	DimensionError.prototype.constructor = RangeError;
-	DimensionError.prototype.name = 'DimensionError';
-
-	module.exports = DimensionError;
-
-
-/***/ },
-/* 160 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a range error with the message:
-	 *     'Index out of range (index < min)'
-	 *     'Index out of range (index < max)'
-	 *
-	 * @param {number} index     The actual index
-	 * @param {number} [min=0]   Minimum index (included)
-	 * @param {number} [max]     Maximum index (excluded)
-	 * @extends RangeError
-	 */
-	function IndexError(index, min, max) {
-	  if (!(this instanceof IndexError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.index = index;
-	  if (arguments.length < 3) {
-	    this.min = 0;
-	    this.max = min;
-	  }
-	  else {
-	    this.min = min;
-	    this.max = max;
-	  }
-
-	  if (this.min !== undefined && this.index < this.min) {
-	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
-	  }
-	  else if (this.max !== undefined && this.index >= this.max) {
-	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
-	  }
-	  else {
-	    this.message = 'Index out of range (' + this.index + ')';
-	  }
-
-	  this.stack = (new Error()).stack;
-	}
-
-	IndexError.prototype = new RangeError();
-	IndexError.prototype.constructor = RangeError;
-	IndexError.prototype.name = 'IndexError';
-
-	module.exports = IndexError;
-
-
-/***/ },
-/* 161 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a TypeError with message:
-	 *      'Function <fn> does not support a parameter of type <type>';
-	 * @param {String} fn     Function name
-	 * @param {*...} [types]  The types of the function arguments
-	 * @extends TypeError
-	 */
-	function UnsupportedTypeError(fn, types) {
-	  if (!(this instanceof UnsupportedTypeError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.fn = fn;
-	  this.types = Array.prototype.splice.call(arguments, 1);
-
-	  if (!fn) {
-	    this.message = 'Unsupported type of argument';
-	  }
-	  else {
-	    if (this.types.length == 0) {
-	      this.message = 'Unsupported type of argument in function ' + fn;
-	    }
-	    else {
-	      this.message = 'Function ' + fn + '(' + this.types.join(', ') + ') not supported';
-	    }
-	  }
-
-	  this.stack = (new Error()).stack;
-	}
-
-	UnsupportedTypeError.prototype = new TypeError();
-	UnsupportedTypeError.prototype.constructor = TypeError;
-	UnsupportedTypeError.prototype.name = 'UnsupportedTypeError';
-
-	module.exports = UnsupportedTypeError;
-
-
-/***/ },
-/* 162 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170),
-	    object = __webpack_require__(2),
-	    string = __webpack_require__(195),
-	    collection = __webpack_require__(13),
-	    util = __webpack_require__(157),
-
-	    isArray = Array.isArray,
-	    isNode = Node.isNode;
-
-	/**
-	 * @constructor ArrayNode
-	 * @extends {Node}
-	 * Holds an 1-dimensional array with nodes
-	 * @param {Node[]} [nodes]   1 dimensional array with nodes
-	 */
-	function ArrayNode(nodes) {
-	  if (!(this instanceof ArrayNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.nodes = nodes || [];
-
-	  // validate input
-	  if (!isArray(this.nodes) || !this.nodes.every(isNode)) {
-	    throw new TypeError('Array containing Nodes expected')
-	  }
-	}
-
-	ArrayNode.prototype = new Node();
-
-	ArrayNode.prototype.type = 'ArrayNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @private
-	 */
-	ArrayNode.prototype._compile = function (defs) {
-	  var asMatrix = (defs.math.config().matrix !== 'array');
-
-	  var nodes = this.nodes.map(function (node) {
-	    return node._compile(defs);
-	  });
-
-	  return (asMatrix ? 'math.matrix([' : '[') +
-	      nodes.join(',') +
-	      (asMatrix ? '])' : ']');
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	ArrayNode.prototype.forEach = function (callback) {
-	  for (var i = 0; i < this.nodes.length; i++) {
-	    var node = this.nodes[i];
-	    callback(node, 'nodes[' + i + ']', this);
-	  }
-	};
-
-	/**
-	 * Create a new ArrayNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {ArrayNode} Returns a transformed copy of the node
-	 */
-	ArrayNode.prototype.map = function (callback) {
-	  var nodes = [];
-	  for (var i = 0; i < this.nodes.length; i++) {
-	    nodes[i] = this._ifNode(callback(this.nodes[i], 'nodes[' + i + ']', this));
-	  }
-	  return new ArrayNode(nodes);
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {ArrayNode}
-	 */
-	ArrayNode.prototype.clone = function() {
-	  return new ArrayNode(this.nodes.slice(0))
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 * @override
-	 */
-	ArrayNode.prototype.toString = function() {
-	  return string.format(this.nodes);
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 */
-	ArrayNode.prototype.toTex = function(type) {
-	  type = type || 'bmatrix';
-	  var s = '\\begin{' + type + '}';
-
-	  this.nodes.forEach(function(node) {
-	    if (node.nodes) {
-	      s += node.nodes.map(function(childNode) {
-	        return childNode.toTex();
-	      }).join('&');
-	    }
-	    else {
-	      s += node.toTex();
-	    }
-
-	    // new line
-	    s += '\\\\';
-	  });
-	  s += '\\end{' + type + '}';
-	  return s;
-	};
-
-	module.exports = ArrayNode;
-
-
-/***/ },
-/* 163 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170),
-	    ArrayNode = __webpack_require__(162),
-
-	    keywords = __webpack_require__(317),
-
-	    latex = __webpack_require__(318),
-	    isString = __webpack_require__(195).isString;
-
-	/**
-	 * @constructor AssignmentNode
-	 * @extends {Node}
-	 * Define a symbol, like "a = 3.2"
-	 *
-	 * @param {String} name       Symbol name
-	 * @param {Node} expr         The expression defining the symbol
-	 */
-	function AssignmentNode(name, expr) {
-	  if (!(this instanceof AssignmentNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (!isString(name))          throw new TypeError('String expected for parameter "name"');
-	  if (!(expr instanceof Node))  throw new TypeError('Node expected for parameter "expr"');
-	  if (name in keywords)         throw new Error('Illegal symbol name, "'  + name +  '" is a reserved keyword');
-
-	  this.name = name;
-	  this.expr = expr;
-	}
-
-	AssignmentNode.prototype = new Node();
-
-	AssignmentNode.prototype.type = 'AssignmentNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @private
-	 */
-	AssignmentNode.prototype._compile = function (defs) {
-	  return 'scope["' + this.name + '"] = ' + this.expr._compile(defs) + '';
-	};
-
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	AssignmentNode.prototype.forEach = function (callback) {
-	  callback(this.expr, 'expr', this);
-	};
-
-	/**
-	 * Create a new AssignmentNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {AssignmentNode} Returns a transformed copy of the node
-	 */
-	AssignmentNode.prototype.map = function (callback) {
-	  return new AssignmentNode(this.name, this._ifNode(callback(this.expr, 'expr', this)));
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {AssignmentNode}
-	 */
-	AssignmentNode.prototype.clone = function() {
-	  return new AssignmentNode(this.name, this.expr);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String}
-	 */
-	AssignmentNode.prototype.toString = function() {
-	  return this.name + ' = ' + this.expr.toString();
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String}
-	 */
-	AssignmentNode.prototype.toTex = function() {
-	  var brace;
-	  if (this.expr instanceof ArrayNode) {
-	    brace = ['\\mathbf{', '}'];
-	  }
-	  return latex.addBraces(latex.toSymbol(this.name), brace) + '=' +
-	      latex.addBraces(this.expr.toTex());
-	};
-
-	module.exports = AssignmentNode;
-
-/***/ },
-/* 164 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170);
-	var ResultSet = __webpack_require__(12);
-	var isBoolean = __webpack_require__(194).isBoolean;
-
-	/**
-	 * @constructor BlockNode
-	 * @extends {Node}
-	 * Holds a set with blocks
-	 * @param {Array.<{node: Node} | {node: Node, visible: boolean}>} blocks
-	 *            An array with blocks, where a block is constructed as an Object
-	 *            with properties block, which is a Node, and visible, which is
-	 *            a boolean. The property visible is optional and is true by default
-	 */
-	function BlockNode(blocks) {
-	  if (!(this instanceof BlockNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input, copy blocks
-	  if (!Array.isArray(blocks)) throw new Error('Array expected');
-	  this.blocks = blocks.map(function (block) {
-	    var node    = block && block.node;
-	    var visible = block && block.visible !== undefined ? block.visible : true;
-
-	    if (!(node instanceof Node))  throw new TypeError('Property "node" must be a Node');
-	    if (!isBoolean(visible))      throw new TypeError('Property "visible" must be a boolean');
-
-	    return {
-	      node: node,
-	      visible: visible
-	    }
-	  });
-	}
-
-	BlockNode.prototype = new Node();
-
-	BlockNode.prototype.type = 'BlockNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	BlockNode.prototype._compile = function (defs) {
-	  defs.ResultSet = ResultSet;
-	  var blocks = this.blocks.map(function (param) {
-	    var js = param.node._compile(defs);
-	    if (param.visible) {
-	      return 'results.push(' + js + ');';
-	    }
-	    else {
-	      return js + ';';
-	    }
-	  });
-
-	  return '(function () {' +
-	      'var results = [];' +
-	      blocks.join('') +
-	      'return new ResultSet(results);' +
-	      '})()';
-	};
-
-	/**
-	 * Execute a callback for each of the child blocks of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	BlockNode.prototype.forEach = function (callback) {
-	  for (var i = 0; i < this.blocks.length; i++) {
-	    callback(this.blocks[i].node, 'blocks[' + i + '].node', this);
-	  }
-	};
-
-	/**
-	 * Create a new BlockNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {BlockNode} Returns a transformed copy of the node
-	 */
-	BlockNode.prototype.map = function (callback) {
-	  var blocks = [];
-	  for (var i = 0; i < this.blocks.length; i++) {
-	    var block = this.blocks[i];
-	    var node = this._ifNode(callback(block.node, 'blocks[' + i + '].node', this));
-	    blocks[i] = {
-	      node: node,
-	      visible: block.visible
-	    };
-	  }
-	  return new BlockNode(blocks);
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {BlockNode}
-	 */
-	BlockNode.prototype.clone = function() {
-	  var blocks = this.blocks.map(function(block) {
-	    return {
-	      node: block.node,
-	      visible: block.visible
-	    };
-	  });
-
-	  return new BlockNode(blocks);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 * @override
-	 */
-	BlockNode.prototype.toString = function() {
-	  return this.blocks.map(function (param) {
-	    return param.node.toString() + (param.visible ? '' : ';');
-	  }).join('\n');
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 */
-	BlockNode.prototype.toTex = function() {
-	  return this.blocks.map(function (param) {
-	    return param.node.toTex() + (param.visible ? '' : ';');
-	  }).join('\n');
-	};
-
-	module.exports = BlockNode;
-
-
-/***/ },
-/* 165 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170);
-	var latex = __webpack_require__(318);
-	var BigNumber = __webpack_require__(156);
-	var Complex = __webpack_require__(6);
-	var Unit = __webpack_require__(10);
-	var util = __webpack_require__(157);
-	var isString = util.string.isString;
-	var isNumber = util.number.isNumber;
-	var isBoolean = util['boolean'].isBoolean;
-
-	/**
-	 * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'
-	 *
-	 * @param {Node} condition   Condition, must result in a boolean
-	 * @param {Node} trueExpr    Expression evaluated when condition is true
-	 * @param {Node} falseExpr   Expression evaluated when condition is true
-	 *
-	 * @constructor ConditionalNode
-	 * @extends {Node}
-	 */
-	function ConditionalNode (condition, trueExpr, falseExpr) {
-	  if (!(this instanceof ConditionalNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-	  if (!(condition instanceof Node)) throw new TypeError('Parameter condition must be a Node');
-	  if (!(trueExpr instanceof Node))  throw new TypeError('Parameter trueExpr must be a Node');
-	  if (!(falseExpr instanceof Node)) throw new TypeError('Parameter falseExpr must be a Node');
-
-	  this.condition = condition;
-	  this.trueExpr = trueExpr;
-	  this.falseExpr = falseExpr;
-	}
-
-	ConditionalNode.prototype = new Node();
-
-	ConditionalNode.prototype.type = 'ConditionalNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	ConditionalNode.prototype._compile = function(defs) {
-	  /**
-	   * Test whether a condition is met
-	   * @param {*} condition
-	   * @returns {boolean} true if condition is true or non-zero, else false
-	   */
-	  defs.testCondition = function (condition) {
-	    if (isNumber(condition) || isBoolean(condition) || isString(condition)) {
-	      return condition ? true : false;
-	    }
-
-	    if (condition instanceof BigNumber) {
-	      return condition.isZero() ? false : true;
-	    }
-
-	    if (condition instanceof Complex) {
-	      return (condition.re || condition.im) ? true : false;
-	    }
-
-	    if (condition instanceof Unit) {
-	      return condition.value ? true : false;
-	    }
-
-	    if (condition === null || condition === undefined) {
-	      return false;
-	    }
-
-	    throw new TypeError('Unsupported type of condition "' + defs.math['typeof'](condition) + '"');
-	  };
-
-	  return (
-	      'testCondition(' + this.condition._compile(defs) + ') ? ' +
-	      '( ' + this.trueExpr._compile(defs) + ') : ' +
-	      '( ' + this.falseExpr._compile(defs) + ')'
-	      );
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	ConditionalNode.prototype.forEach = function (callback) {
-	  callback(this.condition, 'condition', this);
-	  callback(this.trueExpr, 'trueExpr', this);
-	  callback(this.falseExpr, 'falseExpr', this);
-	};
-
-	/**
-	 * Create a new ConditionalNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {ConditionalNode} Returns a transformed copy of the node
-	 */
-	ConditionalNode.prototype.map = function (callback) {
-	  return new ConditionalNode(
-	      this._ifNode(callback(this.condition, 'condition', this)),
-	      this._ifNode(callback(this.trueExpr, 'trueExpr', this)),
-	      this._ifNode(callback(this.falseExpr, 'falseExpr', this))
-	  );
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {ConditionalNode}
-	 */
-	ConditionalNode.prototype.clone = function() {
-	  return new ConditionalNode(this.condition, this.trueExpr, this.falseExpr);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	ConditionalNode.prototype.toString = function() {
-	  // TODO: not nice adding parenthesis al the time
-	  return '(' + this.condition.toString() + ') ? (' +
-	      this.trueExpr.toString() + ') : (' +
-	      this.falseExpr.toString() + ')';
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 */
-	ConditionalNode.prototype.toTex = function() {
-	  var s = (
-	      latex.addBraces(this.trueExpr.toTex()) +
-	      ', &\\quad' +
-	      latex.addBraces('\\text{if}\\;' + this.condition.toTex())
-	      ) + '\\\\' + (
-	      latex.addBraces(this.falseExpr.toTex()) +
-	      ', &\\quad' +
-	      latex.addBraces('\\text{otherwise}')
-	      );
-
-	  return latex.addBraces(s, [
-	    '\\left\\{\\begin{array}{l l}',
-	    '\\end{array}\\right.'
-	  ]);
-	};
-
-	module.exports = ConditionalNode;
-
-
-/***/ },
-/* 166 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170),
-	    BigNumber = __webpack_require__(156),
-	    type = __webpack_require__(315).type,
-	    isString = __webpack_require__(195).isString;
-
-	/**
-	 * A ConstantNode holds a constant value like a number or string. A ConstantNode
-	 * stores a stringified version of the value and uses this to compile to
-	 * JavaScript.
-	 *
-	 * In case of a stringified number as input, this may be compiled to a BigNumber
-	 * when the math instance is configured for BigNumbers.
-	 *
-	 * Usage:
-	 *
-	 *     // stringified values with type
-	 *     new ConstantNode('2.3', 'number');
-	 *     new ConstantNode('true', 'boolean');
-	 *     new ConstantNode('hello', 'string');
-	 *
-	 *     // non-stringified values, type will be automatically detected
-	 *     new ConstantNode(2.3);
-	 *     new ConstantNode('hello');
-	 *
-	 * @param {String | Number | Boolean | null | undefined} value
-	 *                            When valueType is provided, value must contain
-	 *                            an uninterpreted string representing the value.
-	 *                            When valueType is undefined, value can be a
-	 *                            number, string, boolean, null, or undefined, and
-	 *                            the type will be determined automatically.
-	 * @param {String} [valueType]  The type of value. Choose from 'number', 'string',
-	 *                              'boolean', 'undefined', 'null'
-	 * @constructor ConstantNode
-	 * @extends {Node}
-	 */
-	function ConstantNode(value, valueType) {
-	  if (!(this instanceof ConstantNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  if (valueType) {
-	    if (!isString(valueType)) {
-	      throw new TypeError('String expected for parameter "valueType"');
-	    }
-	    if (!isString(value)){
-	      throw new TypeError('String expected for parameter "value"');
-	    }
-
-	    this.value = value;
-	    this.valueType = valueType;
-	  }
-	  else {
-	    // stringify the value and determine the type
-	    this.value = value + '';
-	    this.valueType = type(value);
-	  }
-
-	  if (!SUPPORTED_TYPES[this.valueType]) {
-	    throw new TypeError('Unsupported type of value "' + this.valueType + '"');
-	  }
-	}
-
-	var SUPPORTED_TYPES = {
-	  'number': true,
-	  'string': true,
-	  'boolean': true,
-	  'undefined': true,
-	  'null': true
-	};
-
-	ConstantNode.prototype = new Node();
-
-	ConstantNode.prototype.type = 'ConstantNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	ConstantNode.prototype._compile = function (defs) {
-	  switch (this.valueType) {
-	    case 'number':
-	      if (defs.math.config().number === 'bignumber') {
-	        return 'math.bignumber("' + this.value + '")';
-	      }
-	      else {
-	        // remove leading zeros like '003.2' which are not allowed by JavaScript
-	        return this.value.replace(/^(0*)[0-9]/, function (match, zeros) {
-	          return match.substring(zeros.length);
-	        });
-	      }
-
-	    case 'string':
-	      return '"' + this.value + '"';
-
-	    case 'boolean':
-	      return this.value;
-
-	    case 'undefined':
-	      return this.value;
-
-	    case 'null':
-	      return this.value;
-
-	    default:
-	        // TODO: move this error to the constructor?
-	      throw new TypeError('Unsupported type of constant "' + this.valueType + '"');
-	  }
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	ConstantNode.prototype.forEach = function (callback) {
-	  // nothing to do, we don't have childs
-	};
-
-
-	/**
-	 * Create a new ConstantNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
-	 * @returns {ConstantNode} Returns a clone of the node
-	 */
-	ConstantNode.prototype.map = function (callback) {
-	  return this.clone();
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {ConstantNode}
-	 */
-	ConstantNode.prototype.clone = function() {
-	  return new ConstantNode(this.value, this.valueType);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	ConstantNode.prototype.toString = function() {
-	  switch (this.valueType) {
-	    case 'string':
-	      return '"' + this.value + '"';
-
-	    default:
-	      return this.value;
-	  }
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 */
-	ConstantNode.prototype.toTex = function() {
-	  var value = this.value,
-	      index;
-	  switch (this.valueType) {
-	    case 'string':
-	      return '\\text{' + value + '}';
-
-	    case 'number':
-	      index = value.toLowerCase().indexOf('e');
-	      if (index !== -1) {
-	        return value.substring(0, index) + ' \\cdot 10^{' +
-	            value.substring(index + 1) + '}';
-	      }
-	      return value;
-
-	    default:
-	      return value;
-	  }
-	};
-
-	module.exports = ConstantNode;
-
-
-/***/ },
-/* 167 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170);
-	var RangeNode = __webpack_require__(172);
-	var SymbolNode = __webpack_require__(173);
-
-	var BigNumber = __webpack_require__(156);
-	var Range = __webpack_require__(7);
-
-	var isNode = Node.isNode;
-	var isArray = Array.isArray;
-
-	/**
-	 * @constructor IndexNode
-	 * @extends Node
-	 *
-	 * get a subset of a matrix
-	 *
-	 * @param {Node} object
-	 * @param {Node[]} ranges
-	 */
-	function IndexNode (object, ranges) {
-	  if (!(this instanceof IndexNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (!(object instanceof Node)) throw new TypeError('Node expected for parameter "object"');
-	  if (!isArray(ranges) || !ranges.every(isNode)) {
-	    throw new TypeError('Array containing Nodes expected for parameter "ranges"');
-	  }
-
-	  this.object = object;
-	  this.ranges = ranges;
-	}
-
-	IndexNode.prototype = new Node();
-
-	IndexNode.prototype.type = 'IndexNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	IndexNode.prototype._compile = function (defs) {
-	  return this.compileSubset(defs);
-	};
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs           Object which can be used to define functions
-	 *                                or constants globally available for the
-	 *                                compiled expression
-	 * @param {String} [replacement]  If provided, the function returns
-	 *                                  "math.subset(obj, math.index(...), replacement)"
-	 *                                Else, the function returns
-	 *                                  "math.subset(obj, math.index(...))"
-	 * @return {String} js
-	 * @returns {string}
-	 */
-	IndexNode.prototype.compileSubset = function(defs, replacement) {
-	  // check whether any of the ranges expressions uses the context symbol 'end'
-	  function test(node) {
-	    return (node instanceof SymbolNode) && (node.name == 'end');
-	  }
-
-	  var someUseEnd = false;
-	  var rangesUseEnd = this.ranges.map(function (range) {
-	    var useEnd = range.filter(test).length > 0;
-	    someUseEnd = useEnd ? useEnd : someUseEnd;
-	    return useEnd;
-	  });
-
-	  // create a Range from start, step and end
-	  defs.range = function (start, end, step) {
-	    return new Range(
-	            start instanceof BigNumber ? start.toNumber() : start,
-	            end instanceof BigNumber ? end.toNumber() : end,
-	            step instanceof BigNumber ? step.toNumber() : step
-	    );
-	  };
-
-	  // TODO: implement support for bignumber (currently bignumbers are silently
-	  //       reduced to numbers when changing the value to zero-based)
-
-	  // TODO: Optimization: when the range values are ConstantNodes,
-	  //       we can beforehand resolve the zero-based value
-
-	  var ranges = this.ranges.map(function(range, i) {
-	    var useEnd = rangesUseEnd[i];
-	    if (range instanceof RangeNode) {
-	      if (useEnd) {
-	        // resolve end and create range
-	        return '(function (scope) {' +
-	            '  scope = Object.create(scope); ' +
-	            '  scope["end"] = size[' + i + '];' +
-	            '  return range(' +
-	            '    ' + range.start._compile(defs) + ', ' +
-	            '    ' + range.end._compile(defs) + ', ' +
-	            '    ' + (range.step ? range.step._compile(defs) : '1') +
-	            '  );' +
-	            '})(scope)';
-	      }
-	      else {
-	        // create range
-	        return 'range(' +
-	            range.start._compile(defs) + ', ' +
-	            range.end._compile(defs) + ', ' +
-	            (range.step ? range.step._compile(defs) : '1') +
-	            ')';
-	      }
-	    }
-	    else {
-	      if (useEnd) {
-	        // resolve the parameter 'end'
-	        return '(function (scope) {' +
-	            '  scope = Object.create(scope); ' +
-	            '  scope["end"] = size[' + i + '];' +
-	            '  return ' + range._compile(defs) + ';' +
-	            '})(scope)'
-	      }
-	      else {
-	        // just evaluate the expression
-	        return range._compile(defs);
-	      }
-	    }
-	  });
-
-	  // if some parameters use the 'end' parameter, we need to calculate the size
-	  if (someUseEnd) {
-	    return '(function () {' +
-	        '  var obj = ' + this.object._compile(defs) + ';' +
-	        '  var size = math.size(obj).valueOf();' +
-	        '  return math.subset(' +
-	        '    obj, ' +
-	        '    math.index(' + ranges.join(', ') + ')' +
-	        '    ' + (replacement ? (', ' + replacement) : '') +
-	        '  );' +
-	        '})()';
-	  }
-	  else {
-	    return 'math.subset(' +
-	        this.object._compile(defs) + ',' +
-	        'math.index(' + ranges.join(', ') + ')' +
-	        (replacement ? (', ' + replacement) : '') +
-	        ')';
-	  }
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	IndexNode.prototype.forEach = function (callback) {
-	  // object
-	  callback(this.object, 'object', this);
-
-	  // ranges
-	  for (var i = 0; i < this.ranges.length; i++) {
-	    callback(this.ranges[i], 'ranges[' + i + ']', this);
-	  }
-	};
-
-	/**
-	 * Create a new IndexNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {IndexNode} Returns a transformed copy of the node
-	 */
-	IndexNode.prototype.map = function (callback) {
-	  var object = this._ifNode(callback(this.object, 'object', this));
-
-	  var ranges = [];
-	  for (var i = 0; i < this.ranges.length; i++) {
-	    ranges[i] = this._ifNode(callback(this.ranges[i], 'ranges[' + i + ']', this));
-	  }
-
-	  return new IndexNode(object, ranges);
-	};
-
-	/**
-	 * Get the name of the object linked to this IndexNode
-	 * @return {string} name
-	 */
-	IndexNode.prototype.objectName = function() {
-	  return this.object.name;
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {IndexNode}
-	 */
-	IndexNode.prototype.clone = function() {
-	  return new IndexNode(this.object, this.ranges.slice(0));
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	IndexNode.prototype.toString = function() {
-	  // format the parameters like "[1, 0:5]"
-	  return this.object.toString() + '[' + this.ranges.join(', ') + ']';
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 */
-	IndexNode.prototype.toTex = function() {
-	  return this.object.toTex() + '[' + this.ranges.join(', ') + ']';
-	};
-
-	module.exports = IndexNode;
-
-/***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170);
-	var keywords = __webpack_require__(317);
-	var latex = __webpack_require__(318);
-	var isString = __webpack_require__(195).isString;
-	var isArray = Array.isArray;
-
-	/**
-	 * @constructor FunctionAssignmentNode
-	 * @extends {Node}
-	 * Function assignment
-	 *
-	 * @param {String} name           Function name
-	 * @param {String[]} params         Function parameter names
-	 * @param {Node} expr             The function expression
-	 */
-	function FunctionAssignmentNode(name, params, expr) {
-	  if (!(this instanceof FunctionAssignmentNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (!isString(name)) throw new TypeError('String expected for parameter "name"');
-	  if (!isArray(params) || !params.every(isString))  throw new TypeError('Array containing strings expected for parameter "params"');
-	  if (!(expr instanceof Node)) throw new TypeError('Node expected for parameter "expr"');
-	  if (name in keywords) throw new Error('Illegal function name, "'  + name +  '" is a reserved keyword');
-
-	  this.name = name;
-	  this.params = params;
-	  this.expr = expr;
-	}
-
-	FunctionAssignmentNode.prototype = new Node();
-
-	FunctionAssignmentNode.prototype.type = 'FunctionAssignmentNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	FunctionAssignmentNode.prototype._compile = function (defs) {
-	  return 'scope["' + this.name + '"] = ' +
-	      '  (function (scope) {' +
-	      '    scope = Object.create(scope); ' +
-	      '    var fn = function ' + this.name + '(' + this.params.join(',') + ') {' +
-	      '      if (arguments.length != ' + this.params.length + ') {' +
-	      // TODO: use util.error.ArgumentsError here
-	      // TODO: test arguments error
-	      '        throw new SyntaxError("Wrong number of arguments in function ' + this.name + ' (" + arguments.length + " provided, ' + this.params.length + ' expected)");' +
-	      '      }' +
-	      this.params.map(function (variable, index) {
-	        return 'scope["' + variable + '"] = arguments[' + index + '];';
-	      }).join('') +
-	      '      return ' + this.expr._compile(defs) + '' +
-	      '    };' +
-	      '    fn.syntax = "' + this.name + '(' + this.params.join(', ') + ')";' +
-	      '    return fn;' +
-	      '  })(scope);';
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	FunctionAssignmentNode.prototype.forEach = function (callback) {
-	  callback(this.expr, 'expr', this);
-	};
-
-	/**
-	 * Create a new FunctionAssignmentNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {FunctionAssignmentNode} Returns a transformed copy of the node
-	 */
-	FunctionAssignmentNode.prototype.map = function (callback) {
-	  var expr = this._ifNode(callback(this.expr, 'expr', this));
-
-	  return new FunctionAssignmentNode(this.name, this.params.slice(0), expr);
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {FunctionAssignmentNode}
-	 */
-	FunctionAssignmentNode.prototype.clone = function() {
-	  return new FunctionAssignmentNode(this.name, this.params.slice(0), this.expr);
-	};
-
-	/**
-	 * get string representation
-	 * @return {String} str
-	 */
-	FunctionAssignmentNode.prototype.toString = function() {
-	  return 'function ' + this.name +
-	      '(' + this.params.join(', ') + ') = ' +
-	      this.expr.toString();
-	};
-
-	/**
-	 * get LaTeX representation
-	 * @return {String} str
-	 */
-	FunctionAssignmentNode.prototype.toTex = function() {
-	  return this.name +
-	      latex.addBraces(this.params.map(latex.toSymbol).join(', '), true) + '=' +
-	      latex.addBraces(this.expr.toTex());
-	};
-
-	module.exports = FunctionAssignmentNode;
-
-
-/***/ },
-/* 169 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170);
-	var SymbolNode = __webpack_require__(173);
-
-	var latex = __webpack_require__(318);
-	var isNode = Node.isNode;
-	var isArray = Array.isArray;
-
-	/**
-	 * @constructor FunctionNode
-	 * @extends {Node}
-	 * invoke a list with arguments on a node
-	 * @param {string} name
-	 * @param {Node[]} args
-	 */
-	function FunctionNode (name, args) {
-	  if (!(this instanceof FunctionNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (typeof name !== 'string') throw new TypeError('string expected for parameter "name"');
-	  if (!isArray(args) || !args.every(isNode)) {
-	    throw new TypeError('Array containing Nodes expected for parameter "args"');
-	  }
-
-	  this.name = name;
-	  this.args = args || [];
-	}
-
-	FunctionNode.prototype = new Node();
-
-	FunctionNode.prototype.type = 'FunctionNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	FunctionNode.prototype._compile = function (defs) {
-	  var fn = defs.math[this.name];
-	  var isRaw = (typeof fn === 'function') && (fn.rawArgs == true);
-
-	  // compile the parameters
-	  var args = this.args.map(function (arg) {
-	    return arg._compile(defs);
-	  });
-
-	  if (isRaw) {
-	    // pass unevaluated parameters (nodes) to the function
-	    var paramsName;
-	    do {
-	      paramsName = 'p' + Math.round(Math.random() * 10000);
-	    }
-	    while (paramsName in defs);
-	    defs[paramsName] = this.args;
-
-	    return '("' + this.name + '" in scope ? ' +
-	        'scope["' + this.name + '"](' + args.join(', ') + ') : ' +
-	        'math["' + this.name + '"]' + '(' + paramsName + ', math, scope))';
-	  }
-	  else {
-	    // "regular" evaluation
-	    var symbol = new SymbolNode(this.name);
-	    return symbol._compile(defs) + '(' + args.join(', ') + ')';
-	  }
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	FunctionNode.prototype.forEach = function (callback) {
-	  for (var i = 0; i < this.args.length; i++) {
-	    callback(this.args[i], 'args[' + i + ']', this);
-	  }
-	};
-
-	/**
-	 * Create a new FunctionNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {FunctionNode} Returns a transformed copy of the node
-	 */
-	FunctionNode.prototype.map = function (callback) {
-	  var args = [];
-	  for (var i = 0; i < this.args.length; i++) {
-	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
-	  }
-	  return new FunctionNode(this.name, args);
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {FunctionNode}
-	 */
-	FunctionNode.prototype.clone = function() {
-	  return new FunctionNode(this.name, this.args.slice(0));
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	FunctionNode.prototype.toString = function() {
-	  // format the parameters like "add(2, 4.2)"
-	  return this.name + '(' + this.args.join(', ') + ')';
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 */
-	FunctionNode.prototype.toTex = function() {
-	  return latex.toArgs(this);
-	};
-
-	module.exports = FunctionNode;
-
-
-/***/ },
-/* 170 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var keywords = __webpack_require__(317);
-
-	/**
-	 * Node
-	 */
-	function Node() {
-	  if (!(this instanceof Node)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-	}
-
-	/**
-	 * Evaluate the node
-	 * @return {*} result
-	 */
-	// TODO: cleanup deprecated code one day. Deprecated since version 0.19.0
-	Node.prototype.eval = function () {
-	  throw new Error('Node.eval is deprecated. ' +
-	      'Use Node.compile(math).eval([scope]) instead.');
-	};
-
-	Node.prototype.type = 'Node';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} math             math.js instance
-	 * @return {{eval: function}} expr  Returns an object with a function 'eval',
-	 *                                  which can be invoked as expr.eval([scope]),
-	 *                                  where scope is an optional object with
-	 *                                  variables.
-	 */
-	Node.prototype.compile = function (math) {
-	  if (!(math instanceof Object)) {
-	    throw new TypeError('Object expected for parameter math');
-	  }
-
-	  // definitions globally available inside the closure of the compiled expressions
-	  var defs = {
-	    math: _transform(math),
-	    _validateScope: _validateScope
-	  };
-
-	  var code = this._compile(defs);
-
-	  var defsCode = Object.keys(defs).map(function (name) {
-	    return '    var ' + name + ' = defs["' + name + '"];';
-	  });
-
-	  var factoryCode =
-	      defsCode.join(' ') +
-	          'return {' +
-	          '  "eval": function (scope) {' +
-	          '    if (scope) _validateScope(scope);' +
-	          '    scope = scope || {};' +
-	          '    return ' + code + ';' +
-	          '  }' +
-	          '};';
-
-	  var factory = new Function ('defs', factoryCode);
-	  return factory(defs);
-	};
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          and constants globally available inside the closure
-	 *                          of the compiled expression
-	 * @return {String} js
-	 * @private
-	 */
-	Node.prototype._compile = function (defs) {
-	  // must be implemented by each of the Node implementations
-	  throw new Error('Cannot compile a Node interface');
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	Node.prototype.forEach = function (callback) {
-	  // must be implemented by each of the Node implementations
-	  throw new Error('Cannot run forEach on a Node interface');
-	};
-
-	/**
-	 * Create a new Node having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {OperatorNode} Returns a transformed copy of the node
-	 */
-	Node.prototype.map = function (callback) {
-	  // must be implemented by each of the Node implementations
-	  throw new Error('Cannot run map on a Node interface');
-	};
-
-	/**
-	 * Validate whether an object is a Node, for use with map
-	 * @param {Node} node
-	 * @returns {Node} Returns the input if it's a node, else throws an Error
-	 * @protected
-	 */
-	Node.prototype._ifNode = function (node) {
-	  if (!(node instanceof Node)) {
-	    throw new TypeError('Callback function must return a Node');
-	  }
-
-	  return node;
-	};
-
-	/**
-	 * Recursively traverse all nodes in a node tree. Executes given callback for
-	 * this node and each of its child nodes.
-	 * @param {function(node: Node, path: string, parent: Node)} callback
-	 *          A callback called for every node in the node tree.
-	 */
-	Node.prototype.traverse = function (callback) {
-	  // execute callback for itself
-	  callback(this, null, null);
-
-	  // recursively traverse over all childs of a node
-	  function _traverse (node, callback) {
-	    node.forEach(function(child, path, parent) {
-	      callback(child, path, parent);
-	      _traverse(child, callback);
-	    });
-	  }
-	  _traverse(this, callback);
-	};
-
-	/**
-	 * Recursively transform a node tree via a transform function.
-	 *
-	 * For example, to replace all nodes of type SymbolNode having name 'x' with a
-	 * ConstantNode with value 2:
-	 *
-	 *     var res = Node.transform(function (node, path, parent) {
-	 *       if (node instanceof SymbolNode) && (node.name == 'x')) {
-	 *         return new ConstantNode(2);
-	 *       }
-	 *       else {
-	 *         return node;
-	 *       }
-	 *     });
-	 *
-	 * @param {function(node: Node, path: string, parent: Node) : Node} callback
-	 *          A mapping function accepting a node, and returning
-	 *          a replacement for the node or the original node.
-	 *          Signature: callback(node: Node, index: string, parent: Node) : Node
-	 * @return {Node} Returns the original node or its replacement
-	 */
-	Node.prototype.transform = function (callback) {
-	  // check itself
-	  var replacement = callback(this, null, null);
-	  if (replacement !== this) {
-	    return replacement;
-	  }
-
-	  // traverse over all childs
-	  function _transform (node, callback) {
-	    return node.map(function(child, path, parent) {
-	      var replacement = callback(child, path, parent);
-	      return (replacement !== child) ? replacement : _transform(child, callback);
-	    });
-	  }
-	  return _transform(this, callback);
-	};
-
-	/**
-	 * Find any node in the node tree matching given filter function. For example, to
-	 * find all nodes of type SymbolNode having name 'x':
-	 *
-	 *     var results = Node.filter(function (node) {
-	 *       return (node instanceof SymbolNode) && (node.name == 'x');
-	 *     });
-	 *
-	 * @param {function(node: Node, path: string, parent: Node) : Node} callback
-	 *            A test function returning true when a node matches, and false
-	 *            otherwise. Function signature:
-	 *            callback(node: Node, index: string, parent: Node) : boolean
-	 * @return {Node[]} nodes       An array with nodes matching given filter criteria
-	 */
-	Node.prototype.filter = function (callback) {
-	  var nodes = [];
-
-	  this.traverse(function (node, path, parent) {
-	    if (callback(node, path, parent)) {
-	      nodes.push(node);
-	    }
-	  });
-
-	  return nodes;
-	};
-
-	// TODO: deprecated since version 1.1.0, remove this some day
-	Node.prototype.find = function () {
-	  throw new Error('Function Node.find is deprecated. Use Node.filter instead.');
-	};
-
-	// TODO: deprecated since version 1.1.0, remove this some day
-	Node.prototype.match = function () {
-	  throw new Error('Function Node.match is deprecated. See functions Node.filter, Node.transform, Node.traverse.');
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {Node}
-	 */
-	Node.prototype.clone = function() {
-	  // must be implemented by each of the Node implementations
-	  throw new Error('Cannot clone a Node interface');
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String}
-	 */
-	Node.prototype.toString = function() {
-	  return '';
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String}
-	 */
-	Node.prototype.toTex = function() {
-	  return '';
-	};
-
-	/**
-	 * Test whether an object is a Node
-	 * @param {*} object
-	 * @returns {boolean} isNode
-	 */
-	Node.isNode = function(object) {
-	  return object instanceof Node;
-	};
-
-	/**
-	 * Validate the symbol names of a scope.
-	 * Throws an error when the scope contains an illegal symbol.
-	 * @param {Object} scope
-	 */
-	function _validateScope (scope) {
-	  for (var symbol in scope) {
-	    if (scope.hasOwnProperty(symbol)) {
-	      if (symbol in keywords) {
-	        throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword');
-	      }
-	    }
-	  }
-	}
-
-	/**
-	 * Replace all functions having a transform function attached at property transform
-	 * with their transform.
-	 * @param {Object} math
-	 * @return {Object} transformed
-	 * @private
-	 */
-	function _transform(math) {
-	  var transformed = Object.create(math);
-
-	  if (math.expression && math.expression.transform) {
-	    for (var name in math.expression.transform) {
-	      if (math.expression.transform.hasOwnProperty(name)) {
-	        transformed[name] = math.expression.transform[name];
-	      }
-	    }
-	  }
-
-	  return transformed;
-	}
-
-	module.exports = Node;
-
-
-/***/ },
-/* 171 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170),
-	    ConstantNode = __webpack_require__(166),
-	    SymbolNode = __webpack_require__(173),
-	    FunctionNode = __webpack_require__(169),
-	    latex = __webpack_require__(318);
-
-	/**
-	 * @constructor OperatorNode
-	 * @extends {Node}
-	 * An operator with two arguments, like 2+3
-	 *
-	 * @param {String} op       Operator name, for example '+'
-	 * @param {String} fn       Function name, for example 'add'
-	 * @param {Node[]} args     Operator arguments
-	 */
-	function OperatorNode (op, fn, args) {
-	  if (!(this instanceof OperatorNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // TODO: validate input
-	  this.op = op;
-	  this.fn = fn;
-	  this.args = args || [];
-	}
-
-	OperatorNode.prototype = new Node();
-
-	OperatorNode.prototype.type = 'OperatorNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	OperatorNode.prototype._compile = function (defs) {
-	  if (!(this.fn in defs.math)) {
-	    throw new Error('Function ' + this.fn + ' missing in provided namespace "math"');
-	  }
-
-	  var args = this.args.map(function (arg) {
-	    return arg._compile(defs);
-	  });
-	  return 'math.' + this.fn + '(' + args.join(', ') + ')';
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	OperatorNode.prototype.forEach = function (callback) {
-	  for (var i = 0; i < this.args.length; i++) {
-	    callback(this.args[i], 'args[' + i + ']', this);
-	  }
-	};
-
-	/**
-	 * Create a new OperatorNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {OperatorNode} Returns a transformed copy of the node
-	 */
-	OperatorNode.prototype.map = function (callback) {
-	  var args = [];
-	  for (var i = 0; i < this.args.length; i++) {
-	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
-	  }
-	  return new OperatorNode(this.op, this.fn, args);
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {OperatorNode}
-	 */
-	OperatorNode.prototype.clone = function() {
-	  return new OperatorNode(this.op, this.fn, this.args.slice(0));
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	OperatorNode.prototype.toString = function() {
-	  var args = this.args;
-
-	  switch (args.length) {
-	    case 1:
-	      if (this.op == '-') {
-	        // special case: unary minus
-	        return '-' + args[0].toString();
-	      }
-	      else {
-	        // for example '5!'
-	        return args[0].toString() + this.op;
-	      }
-
-	    case 2: // for example '2+3'
-	      var lhs = args[0].toString();
-	      if (args[0] instanceof OperatorNode) {
-	        lhs = '(' + lhs + ')';
-	      }
-	      var rhs = args[1].toString();
-	      if (args[1] instanceof OperatorNode) {
-	        rhs = '(' + rhs + ')';
-	      }
-	      return lhs + ' ' + this.op + ' ' + rhs;
-
-	    default: // this should not occur. format as a function call
-	      return this.op + '(' + this.args.join(', ') + ')';
-	  }
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 */
-	OperatorNode.prototype.toTex = function() {
-	  var args = this.args,
-	      mop = latex.toOperator(this.op),
-	      lp = args[0],
-	      rp = args[1];
-
-	  switch (args.length) {
-	    case 1:
-	      if (this.op === '-' || this.op === '+') {
-	        // special case: unary minus
-	        return this.op + lp.toTex();
-	      }
-	      // for example '5!'
-	      return lp.toTex() + this.op;
-
-	    case 2: // for example '2+3'
-	      var lhs = lp.toTex(),
-	          lhb = false,
-	          rhs = rp.toTex(),
-	          rhb = false,
-	          lop = '',
-	          rop = '';
-
-	      switch (this.op) {
-	        case '/':
-	          lop = mop;
-	          mop = '';
-
-	          break;
-
-	        case '*':
-	          if (lp instanceof OperatorNode) {
-	            if (lp.op === '+' || lp.op === '-') {
-	              lhb = true;
-	            }
-	          }
-
-	          if (rp instanceof OperatorNode) {
-	            if (rp.op === '+' || rp.op === '-') {
-	              rhb = true;
-	            }
-	            else if (rp.op === '*') {
-	              rhb = true;
-	            }
-	          }
-
-	          if ((lp instanceof ConstantNode || lp instanceof OperatorNode) &&
-	              (rp instanceof ConstantNode || rp instanceof OperatorNode)) {
-	            mop = ' \\cdot ';
-	          }
-	          else {
-	            mop = ' \\, ';
-	          }
-
-	          break;
-
-	        case '^':
-	          if (lp instanceof OperatorNode || lp instanceof FunctionNode) {
-	            lhb = true;
-	          }
-	          else if (lp instanceof SymbolNode) {
-	            lhb = null;
-	          }
-
-	          break;
-
-	        case 'to':
-	          rhs = latex.toUnit(rhs, true);
-	          break;
-	      }
-
-	      lhs = latex.addBraces(lhs, lhb);
-	      rhs = latex.addBraces(rhs, rhb);
-
-	      return lop + lhs + mop + rhs + rop;
-
-	    default: // this should not occur. format as a function call
-	      return mop + '(' + this.args.map(latex.toSymbol).join(', ') + ')';
-	  }
-	};
-
-	module.exports = OperatorNode;
-
-
-/***/ },
-/* 172 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170);
-
-	var isNode = Node.isNode;
-
-	/**
-	 * @constructor RangeNode
-	 * @extends {Node}
-	 * create a range
-	 * @param {Node} start  included lower-bound
-	 * @param {Node} end    included lower-bound
-	 * @param {Node} [step] optional step
-	 */
-	function RangeNode (start, end, step) {
-	  if (!(this instanceof RangeNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate inputs
-	  if (!isNode(start)) throw new TypeError('Node expected');
-	  if (!isNode(end)) throw new TypeError('Node expected');
-	  if (step && !isNode(step)) throw new TypeError('Node expected');
-	  if (arguments.length > 3) throw new Error('Too many arguments');
-
-	  this.start = start;         // included lower-bound
-	  this.end   = end;           // included upper-bound
-	  this.step  = step || null;  // optional step
-	}
-
-	RangeNode.prototype = new Node();
-
-	RangeNode.prototype.type = 'RangeNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	RangeNode.prototype._compile = function (defs) {
-	  return 'math.range(' +
-	      this.start._compile(defs) + ', ' +
-	      this.end._compile(defs) +
-	      (this.step ? (', ' + this.step._compile(defs)) : '') +
-	      ')';
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	RangeNode.prototype.forEach = function (callback) {
-	  callback(this.start, 'start', this);
-	  callback(this.end, 'end', this);
-	  if (this.step) {
-	    callback(this.step, 'step', this);
-	  }
-	};
-
-	/**
-	 * Create a new RangeNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {RangeNode} Returns a transformed copy of the node
-	 */
-	RangeNode.prototype.map = function (callback) {
-	  return new RangeNode(
-	      this._ifNode(callback(this.start, 'start', this)),
-	      this._ifNode(callback(this.end, 'end', this)),
-	      this.step && this._ifNode(callback(this.step, 'step', this))
-	  );
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {RangeNode}
-	 */
-	RangeNode.prototype.clone = function() {
-	  return new RangeNode(this.start, this.end, this.step && this.step);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	RangeNode.prototype.toString = function() {
-	  // format the range like "start:step:end"
-	  var str = this.start.toString();
-	  if (this.step) {
-	    str += ':' + this.step.toString();
-	  }
-	  str += ':' + this.end.toString();
-
-	  return str;
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 */
-	RangeNode.prototype.toTex = function() {
-	  var str = this.start.toTex();
-	  if (this.step) {
-	    str += ':' + this.step.toTex();
-	  }
-	  str += ':' + this.end.toTex();
-
-	  return str;
-	};
-
-	module.exports = RangeNode;
-
-
-/***/ },
-/* 173 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170),
-	    Unit = __webpack_require__(10),
-
-	    latex = __webpack_require__(318),
-	    isString = __webpack_require__(195).isString;
-
-	/**
-	 * @constructor SymbolNode
-	 * @extends {Node}
-	 * A symbol node can hold and resolve a symbol
-	 * @param {String} name
-	 * @extends {Node}
-	 */
-	function SymbolNode(name) {
-	  if (!(this instanceof SymbolNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (!isString(name))  throw new TypeError('String expected for parameter "name"');
-
-	  this.name = name;
-	}
-
-	SymbolNode.prototype = new Node();
-
-	SymbolNode.prototype.type = 'SymbolNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	SymbolNode.prototype._compile = function (defs) {
-	  // add a function to the definitions
-	  defs['undef'] = undef;
-	  defs['Unit'] = Unit;
-
-	  if (this.name in defs.math) {
-	    return '("' + this.name + '" in scope ? scope["' + this.name + '"] : math["' + this.name + '"])';
-	  }
-	  else {
-	    return '(' +
-	        '"' + this.name + '" in scope ? scope["' + this.name + '"] : ' +
-	        (Unit.isValuelessUnit(this.name) ?
-	            'new Unit(null, "' + this.name + '")' :
-	            'undef("' + this.name + '")') +
-	        ')';
-	  }
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	SymbolNode.prototype.forEach = function (callback) {
-	  // nothing to do, we don't have childs
-	};
-
-	/**
-	 * Create a new SymbolNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
-	 * @returns {SymbolNode} Returns a clone of the node
-	 */
-	SymbolNode.prototype.map = function (callback) {
-	  return this.clone();
-	};
-
-	/**
-	 * Throws an error 'Undefined symbol {name}'
-	 * @param {String} name
-	 */
-	function undef (name) {
-	  throw new Error('Undefined symbol ' + name);
-	}
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {SymbolNode}
-	 */
-	SymbolNode.prototype.clone = function() {
-	  return new SymbolNode(this.name);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 * @override
-	 */
-	SymbolNode.prototype.toString = function() {
-	  return this.name;
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String} str
-	 * @override
-	 */
-	SymbolNode.prototype.toTex = function() {
-	  return latex.toSymbol(this.name);
-	};
-
-	module.exports = SymbolNode;
-
-
-/***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(170),
-	    IndexNode = __webpack_require__(167);
-
-	/**
-	 * @constructor UpdateNode
-	 * @extends {Node}
-	 * Update a matrix subset, like A[2,3] = 4.5
-	 *
-	 * @param {IndexNode} index             IndexNode containing symbol and ranges
-	 * @param {Node} expr                   The expression defining the symbol
-	 */
-	function UpdateNode(index, expr) {
-	  if (!(this instanceof UpdateNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  if (!(index instanceof IndexNode)) {
-	    throw new TypeError('Expected IndexNode for parameter "index"');
-	  }
-	  if (!(expr instanceof Node)) {
-	    throw new TypeError('Expected Node for parameter "expr"');
-	  }
-
-	  this.index = index;
-	  this.expr = expr;
-	}
-
-	UpdateNode.prototype = new Node();
-
-	UpdateNode.prototype.type = 'UpdateNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	UpdateNode.prototype._compile = function (defs) {
-	  return 'scope["' + this.index.objectName() + '\"] = ' +
-	      this.index.compileSubset(defs,  this.expr._compile(defs));
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	UpdateNode.prototype.forEach = function (callback) {
-	  callback(this.index, 'index', this);
-	  callback(this.expr, 'expr', this);
-	};
-
-	/**
-	 * Create a new UpdateNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {UpdateNode} Returns a transformed copy of the node
-	 */
-	UpdateNode.prototype.map = function (callback) {
-	  return new UpdateNode(
-	      this._ifNode(callback(this.index, 'index', this)),
-	      this._ifNode(callback(this.expr, 'expr', this))
-	  );
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {UpdateNode}
-	 */
-	UpdateNode.prototype.clone = function() {
-	  return new UpdateNode(this.index, this.expr);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String}
-	 */
-	UpdateNode.prototype.toString = function() {
-	  return this.index.toString() + ' = ' + this.expr.toString();
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @return {String}
-	 */
-	UpdateNode.prototype.toTex = function() {
-	  return this.index.toTex() + ' = ' + this.expr.toTex();
-	};
-
-	module.exports = UpdateNode;
-
-
-/***/ },
-/* 175 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'e',
-	  'category': 'Constants',
-	  'syntax': [
-	    'e'
-	  ],
-	  'description': 'Euler\'s number, the base of the natural logarithm. Approximately equal to 2.71828',
-	  'examples': [
-	    'e',
-	    'e ^ 2',
-	    'exp(2)',
-	    'log(e)'
-	  ],
-	  'seealso': ['exp']
-	};
-
-
-/***/ },
-/* 176 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'false',
-	  'category': 'Constants',
-	  'syntax': [
-	    'false'
-	  ],
-	  'description': 'Boolean value false',
-	  'examples': [
-	    'false'
-	  ],
-	  'seealso': ['true']
-	};
-
-
-/***/ },
-/* 177 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'i',
-	  'category': 'Constants',
-	  'syntax': [
-	    'i'
-	  ],
-	  'description': 'Imaginary unit, defined as i*i=-1. A complex number is described as a + b*i, where a is the real part, and b is the imaginary part.',
-	  'examples': [
-	    'i',
-	    'i * i',
-	    'sqrt(-1)'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 178 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'Infinity',
-	  'category': 'Constants',
-	  'syntax': [
-	    'Infinity'
-	  ],
-	  'description': 'Infinity, a number which is larger than the maximum number that can be handled by a floating point number.',
-	  'examples': [
-	    'Infinity',
-	    '1 / 0'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'LN2',
-	  'category': 'Constants',
-	  'syntax': [
-	    'LN2'
-	  ],
-	  'description': 'Returns the natural logarithm of 2, approximately equal to 0.693',
-	  'examples': [
-	    'LN2',
-	    'log(2)'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'LN10',
-	  'category': 'Constants',
-	  'syntax': [
-	    'LN10'
-	  ],
-	  'description': 'Returns the natural logarithm of 10, approximately equal to 2.302',
-	  'examples': [
-	    'LN10',
-	    'log(10)'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'LOG2E',
-	  'category': 'Constants',
-	  'syntax': [
-	    'LOG2E'
-	  ],
-	  'description': 'Returns the base-2 logarithm of E, approximately equal to 1.442',
-	  'examples': [
-	    'LOG2E',
-	    'log(e, 2)'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 182 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'LOG10E',
-	  'category': 'Constants',
-	  'syntax': [
-	    'LOG10E'
-	  ],
-	  'description': 'Returns the base-10 logarithm of E, approximately equal to 0.434',
-	  'examples': [
-	    'LOG10E',
-	    'log(e, 10)'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'NaN',
-	  'category': 'Constants',
-	  'syntax': [
-	    'NaN'
-	  ],
-	  'description': 'Not a number',
-	  'examples': [
-	    'NaN',
-	    '0 / 0'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'null',
-	  'category': 'Constants',
-	  'syntax': [
-	    'null'
-	  ],
-	  'description': 'Value null',
-	  'examples': [
-	    'null'
-	  ],
-	  'seealso': ['true', 'false']
-	};
-
-
-/***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'pi',
-	  'category': 'Constants',
-	  'syntax': [
-	    'pi'
-	  ],
-	  'description': 'The number pi is a mathematical constant that is the ratio of a circle\'s circumference to its diameter, and is approximately equal to 3.14159',
-	  'examples': [
-	    'pi',
-	    'sin(pi/2)'
-	  ],
-	  'seealso': ['tau']
-	};
-
-
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'phi',
-	  'category': 'Constants',
-	  'syntax': [
-	    'phi'
-	  ],
-	  'description': 'Phi is the golden ratio. Two quantities are in the golden ratio if their ratio is the same as the ratio of their sum to the larger of the two quantities. Phi is defined as `(1 + sqrt(5)) / 2` and is approximately 1.618034...',
-	  'examples': [
-	    'tau'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 187 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'SQRT1_2',
-	  'category': 'Constants',
-	  'syntax': [
-	    'SQRT1_2'
-	  ],
-	  'description': 'Returns the square root of 1/2, approximately equal to 0.707',
-	  'examples': [
-	    'SQRT1_2',
-	    'sqrt(1/2)'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 188 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'SQRT2',
-	  'category': 'Constants',
-	  'syntax': [
-	    'SQRT2'
-	  ],
-	  'description': 'Returns the square root of 2, approximately equal to 1.414',
-	  'examples': [
-	    'SQRT2',
-	    'sqrt(2)'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 189 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'tau',
-	  'category': 'Constants',
-	  'syntax': [
-	    'tau'
-	  ],
-	  'description': 'Tau is the ratio constant of a circle\'s circumference to radius, equal to 2 * pi, approximately 6.2832.',
-	  'examples': [
-	    'tau',
-	    '2 * pi'
-	  ],
-	  'seealso': ['pi']
-	};
-
-
-/***/ },
-/* 190 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'true',
-	  'category': 'Constants',
-	  'syntax': [
-	    'true'
-	  ],
-	  'description': 'Boolean value true',
-	  'examples': [
-	    'true'
-	  ],
-	  'seealso': ['false']
-	};
-
-
-/***/ },
-/* 191 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'version',
-	  'category': 'Constants',
-	  'syntax': [
-	    'version'
-	  ],
-	  'description': 'A string with the version number of math.js',
-	  'examples': [
-	    'version'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 192 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./clone": 144,
-		"./clone.js": 144,
-		"./filter": 145,
-		"./filter.js": 145,
-		"./forEach": 152,
-		"./forEach.js": 152,
-		"./format": 146,
-		"./format.js": 146,
-		"./import": 147,
-		"./import.js": 147,
-		"./map": 148,
-		"./map.js": 148,
-		"./print": 149,
-		"./print.js": 149,
-		"./sort": 150,
-		"./sort.js": 150,
-		"./typeof": 151,
-		"./typeof.js": 151
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 192;
-
-
-/***/ },
-/* 193 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var DimensionError = __webpack_require__(159);
-	var IndexError = __webpack_require__(160);
-
-	/**
-	 * Transform zero-based indices to one-based indices in errors
-	 * @param {Error} err
-	 * @returns {Error} Returns the transformed error
-	 */
-	exports.transform = function (err) {
-	  if (err instanceof IndexError) {
-	    return new IndexError(err.index + 1, err.min + 1, err.max + 1);
-	  }
-
-	  return err;
-	};
-
-
-/***/ },
-/* 194 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Test whether value is a Boolean
-	 * @param {*} value
-	 * @return {Boolean} isBoolean
-	 */
-	exports.isBoolean = function(value) {
-	  return (value instanceof Boolean) || (typeof value == 'boolean');
-	};
-
-
-/***/ },
-/* 195 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var number = __webpack_require__(3),
-	    bignumber = __webpack_require__(153),
-	    BigNumber = __webpack_require__(156);
-
-	/**
-	 * Test whether value is a String
-	 * @param {*} value
-	 * @return {Boolean} isString
-	 */
-	exports.isString = function(value) {
-	  return (value instanceof String) || (typeof value == 'string');
-	};
-
-	/**
-	 * Check if a text ends with a certain string.
-	 * @param {String} text
-	 * @param {String} search
-	 */
-	exports.endsWith = function(text, search) {
-	  var start = text.length - search.length;
-	  var end = text.length;
-	  return (text.substring(start, end) === search);
-	};
-
-	/**
-	 * Format a value of any type into a string.
-	 *
-	 * Usage:
-	 *     math.format(value)
-	 *     math.format(value, precision)
-	 *
-	 * If value is a function, the returned string is 'function' unless the function
-	 * has a property `description`, in that case this properties value is returned.
-	 *
-	 * Example usage:
-	 *     math.format(2/7);                // '0.2857142857142857'
-	 *     math.format(math.pi, 3);         // '3.14'
-	 *     math.format(new Complex(2, 3));  // '2 + 3i'
-	 *     math.format('hello');            // '"hello"'
-	 *
-	 * @param {*} value             Value to be stringified
-	 * @param {Object | Number | Function} [options]  Formatting options. See
-	 *                                                lib/util/number:format for a
-	 *                                                description of the available
-	 *                                                options.
-	 * @return {String} str
-	 */
-	exports.format = function(value, options) {
-	  if (number.isNumber(value)) {
-	    return number.format(value, options);
-	  }
-
-	  if (value instanceof BigNumber) {
-	    return bignumber.format(value, options);
-	  }
-
-	  if (Array.isArray(value)) {
-	    return formatArray(value, options);
-	  }
-
-	  if (exports.isString(value)) {
-	    return '"' + value + '"';
-	  }
-
-	  if (typeof value === 'function') {
-	    return value.syntax ? value.syntax + '' : 'function';
-	  }
-
-	  if (value instanceof Object) {
-	    if (typeof value.format === 'function') {
-	      return value.format(options);
-	    }
-	    else {
-	      return value.toString();
-	    }
-	  }
-
-	  return String(value);
-	};
-
-	/**
-	 * Recursively format an n-dimensional matrix
-	 * Example output: "[[1, 2], [3, 4]]"
-	 * @param {Array} array
-	 * @param {Object | Number | Function} [options]  Formatting options. See
-	 *                                                lib/util/number:format for a
-	 *                                                description of the available
-	 *                                                options.
-	 * @returns {String} str
-	 */
-	function formatArray (array, options) {
-	  if (Array.isArray(array)) {
-	    var str = '[';
-	    var len = array.length;
-	    for (var i = 0; i < len; i++) {
-	      if (i != 0) {
-	        str += ', ';
-	      }
-	      str += formatArray(array[i], options);
-	    }
-	    str += ']';
-	    return str;
-	  }
-	  else {
-	    return exports.format(array, options);
-	  }
-	}
-
-
-/***/ },
-/* 196 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'abs',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'abs(x)'
-	  ],
-	  'description': 'Compute the absolute value.',
-	  'examples': [
-	    'abs(3.5)',
-	    'abs(-4.2)'
-	  ],
-	  'seealso': ['sign']
-	};
-
-
-/***/ },
-/* 197 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'add',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x + y',
-	    'add(x, y)'
-	  ],
-	  'description': 'Add two values.',
-	  'examples': [
-	    'a = 2.1 + 3.6',
-	    'a - 3.6',
-	    '3 + 2i',
-	    '"hello" + " world"',
-	    '3 cm + 2 inch'
-	  ],
-	  'seealso': [
-	    'subtract'
-	  ]
-	};
-
-
-/***/ },
-/* 198 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'ceil',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'ceil(x)'
-	  ],
-	  'description':
-	      'Round a value towards plus infinity. If x is complex, both real and imaginary part are rounded towards plus infinity.',
-	  'examples': [
-	    'ceil(3.2)',
-	    'ceil(3.8)',
-	    'ceil(-4.2)'
-	  ],
-	  'seealso': ['floor', 'fix', 'round']
-	};
-
-
-/***/ },
-/* 199 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'cube',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'cube(x)'
-	  ],
-	  'description': 'Compute the cube of a value. The cube of x is x * x * x.',
-	  'examples': [
-	    'cube(2)',
-	    '2^3',
-	    '2 * 2 * 2'
-	  ],
-	  'seealso': [
-	    'multiply',
-	    'square',
-	    'pow'
-	  ]
-	};
-
-
-/***/ },
-/* 200 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'divide',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x / y',
-	    'divide(x, y)'
-	  ],
-	  'description': 'Divide two values.',
-	  'examples': [
-	    'a = 2 / 3',
-	    'a * 3',
-	    '4.5 / 2',
-	    '3 + 4 / 2',
-	    '(3 + 4) / 2',
-	    '18 km / 4.5'
-	  ],
-	  'seealso': [
-	    'multiply'
-	  ]
-	};
-
-
-/***/ },
-/* 201 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'dotDivide',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x ./ y',
-	    'dotDivide(x, y)'
-	  ],
-	  'description': 'Divide two values element wise.',
-	  'examples': [
-	    'a = [1, 2, 3; 4, 5, 6]',
-	    'b = [2, 1, 1; 3, 2, 5]',
-	    'a ./ b'
-	  ],
-	  'seealso': [
-	    'multiply',
-	    'dotMultiply',
-	    'divide'
-	  ]
-	};
-
-
-/***/ },
-/* 202 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'dotMultiply',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x .* y',
-	    'dotMultiply(x, y)'
-	  ],
-	  'description': 'Multiply two values element wise.',
-	  'examples': [
-	    'a = [1, 2, 3; 4, 5, 6]',
-	    'b = [2, 1, 1; 3, 2, 5]',
-	    'a .* b'
-	  ],
-	  'seealso': [
-	    'multiply',
-	    'divide',
-	    'dotDivide'
-	  ]
-	};
-
-
-/***/ },
-/* 203 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'dotpow',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x .^ y',
-	    'dotpow(x, y)'
-	  ],
-	  'description':
-	      'Calculates the power of x to y element wise.',
-	  'examples': [
-	    'a = [1, 2, 3; 4, 5, 6]',
-	    'a .^ 2'
-	  ],
-	  'seealso': [
-	    'pow'
-	  ]
-	};
-
-
-/***/ },
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'exp',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'exp(x)'
-	  ],
-	  'description': 'Calculate the exponent of a value.',
-	  'examples': [
-	    'exp(1.3)',
-	    'e ^ 1.3',
-	    'log(exp(1.3))',
-	    'x = 2.4',
-	    '(exp(i*x) == cos(x) + i*sin(x))   # Euler\'s formula'
-	  ],
-	  'seealso': [
-	    'pow',
-	    'log'
-	  ]
-	};
-
-
-/***/ },
-/* 205 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'fix',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'fix(x)'
-	  ],
-	  'description':
-	      'Round a value towards zero. If x is complex, both real and imaginary part are rounded towards zero.',
-	  'examples': [
-	    'fix(3.2)',
-	    'fix(3.8)',
-	    'fix(-4.2)',
-	    'fix(-4.8)'
-	  ],
-	  'seealso': ['ceil', 'floor', 'round']
-	};
-
-
-/***/ },
-/* 206 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'floor',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'floor(x)'
-	  ],
-	  'description':
-	      'Round a value towards minus infinity.If x is complex, both real and imaginary part are rounded towards minus infinity.',
-	  'examples': [
-	    'floor(3.2)',
-	    'floor(3.8)',
-	    'floor(-4.2)'
-	  ],
-	  'seealso': ['ceil', 'fix', 'round']
-	};
-
-
-/***/ },
-/* 207 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'gcd',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'gcd(a, b)',
-	    'gcd(a, b, c, ...)'
-	  ],
-	  'description': 'Compute the greatest common divisor.',
-	  'examples': [
-	    'gcd(8, 12)',
-	    'gcd(-4, 6)',
-	    'gcd(25, 15, -10)'
-	  ],
-	  'seealso': [ 'lcm', 'xgcd' ]
-	};
-
-
-/***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'lcm',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'lcm(x, y)'
-	  ],
-	  'description': 'Compute the least common multiple.',
-	  'examples': [
-	    'lcm(4, 6)',
-	    'lcm(6, 21)',
-	    'lcm(6, 21, 5)'
-	  ],
-	  'seealso': [ 'gcd' ]
-	};
-
-
-/***/ },
-/* 209 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'log',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'log(x)',
-	    'log(x, base)'
-	  ],
-	  'description': 'Compute the logarithm of a value. If no base is provided, the natural logarithm of x is calculated. If base if provided, the logarithm is calculated for the specified base. log(x, base) is defined as log(x) / log(base).',
-	  'examples': [
-	    'log(3.5)',
-	    'a = log(2.4)',
-	    'exp(a)',
-	    '10 ^ 4',
-	    'log(10000, 10)',
-	    'log(10000) / log(10)',
-	    'b = log(1024, 2)',
-	    '2 ^ b'
-	  ],
-	  'seealso': [
-	    'exp',
-	    'log10'
-	  ]
-	};
-
-/***/ },
-/* 210 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'log10',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'log10(x)'
-	  ],
-	  'description': 'Compute the 10-base logarithm of a value.',
-	  'examples': [
-	    'log10(0.00001)',
-	    'log10(10000)',
-	    '10 ^ 4',
-	    'log(10000) / log(10)',
-	    'log(10000, 10)'
-	  ],
-	  'seealso': [
-	    'exp',
-	    'log'
-	  ]
-	};
-
-
-/***/ },
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'mod',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x % y',
-	    'x mod y',
-	    'mod(x, y)'
-	  ],
-	  'description':
-	      'Calculates the modulus, the remainder of an integer division.',
-	  'examples': [
-	    '7 % 3',
-	    '11 % 2',
-	    '10 mod 4',
-	    'function isOdd(x) = x % 2',
-	    'isOdd(2)',
-	    'isOdd(3)'
-	  ],
-	  'seealso': ['divide']
-	};
-
-
-/***/ },
-/* 212 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'multiply',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x * y',
-	    'multiply(x, y)'
-	  ],
-	  'description': 'multiply two values.',
-	  'examples': [
-	    'a = 2.1 * 3.4',
-	    'a / 3.4',
-	    '2 * 3 + 4',
-	    '2 * (3 + 4)',
-	    '3 * 2.1 km'
-	  ],
-	  'seealso': [
-	    'divide'
-	  ]
-	};
-
-
-/***/ },
-/* 213 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'norm',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'norm(x)',
-	    'norm(x, p)'
-	  ],
-	  'description': 'Calculate the norm of a number, vector or matrix.',
-	  'examples': [
-	    'abs(-3.5)',
-	    'norm(-3.5)',
-	    'norm(3 - 4i))',
-	    'norm([1, 2, -3], Infinity)',
-	    'norm([1, 2, -3], -Infinity)',
-	    'norm([3, 4], 2)',
-	    'norm([[1, 2], [3, 4]], 1)',
-	    'norm([[1, 2], [3, 4]], \'inf\')',
-	    'norm([[1, 2], [3, 4]], \'fro\')'
-	  ]
-	};
-
-
-/***/ },
-/* 214 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'nthRoot',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'nthRoot(a)',
-	    'nthRoot(a, root)'
-	  ],
-	  'description': 'Calculate the nth root of a value. ' +
-	      'The principal nth root of a positive real number A, ' +
-	      'is the positive real solution of the equation "x^root = A".',
-	  'examples': [
-	    '4 ^ 3',
-	    'nthRoot(64, 3)',
-	    'nthRoot(9, 2)',
-	    'sqrt(9)'
-	  ],
-	  'seealso': [
-	    'sqrt',
-	    'pow'
-	  ]
-	};
-
-/***/ },
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'pow',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x ^ y',
-	    'pow(x, y)'
-	  ],
-	  'description':
-	      'Calculates the power of x to y, x^y.',
-	  'examples': [
-	    '2^3 = 8',
-	    '2*2*2',
-	    '1 + e ^ (pi * i)'
-	  ],
-	  'seealso': [ 'multiply' ]
-	};
-
-
-/***/ },
-/* 216 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'round',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'round(x)',
-	    'round(x, n)'
-	  ],
-	  'description':
-	      'round a value towards the nearest integer.If x is complex, both real and imaginary part are rounded towards the nearest integer. When n is specified, the value is rounded to n decimals.',
-	  'examples': [
-	    'round(3.2)',
-	    'round(3.8)',
-	    'round(-4.2)',
-	    'round(-4.8)',
-	    'round(pi, 3)',
-	    'round(123.45678, 2)'
-	  ],
-	  'seealso': ['ceil', 'floor', 'fix']
-	};
-
-
-/***/ },
-/* 217 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'sign',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'sign(x)'
-	  ],
-	  'description':
-	      'Compute the sign of a value. The sign of a value x is 1 when x>1, -1 when x<0, and 0 when x=0.',
-	  'examples': [
-	    'sign(3.5)',
-	    'sign(-4.2)',
-	    'sign(0)'
-	  ],
-	  'seealso': [
-	    'abs'
-	  ]
-	};
-
-
-/***/ },
-/* 218 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'sqrt',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'sqrt(x)'
-	  ],
-	  'description':
-	      'Compute the square root value. If x = y * y, then y is the square root of x.',
-	  'examples': [
-	    'sqrt(25)',
-	    '5 * 5',
-	    'sqrt(-1)'
-	  ],
-	  'seealso': [
-	    'square',
-	    'multiply'
-	  ]
-	};
-
-
-/***/ },
-/* 219 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'square',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'square(x)'
-	  ],
-	  'description':
-	      'Compute the square of a value. The square of x is x * x.',
-	  'examples': [
-	    'square(3)',
-	    'sqrt(9)',
-	    '3^2',
-	    '3 * 3'
-	  ],
-	  'seealso': [
-	    'multiply',
-	    'pow',
-	    'sqrt',
-	    'cube'
-	  ]
-	};
-
-
-/***/ },
-/* 220 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'subtract',
-	  'category': 'Operators',
-	  'syntax': [
-	    'x - y',
-	    'subtract(x, y)'
-	  ],
-	  'description': 'subtract two values.',
-	  'examples': [
-	    'a = 5.3 - 2',
-	    'a + 2',
-	    '2/3 - 1/6',
-	    '2 * 3 - 3',
-	    '2.1 km - 500m'
-	  ],
-	  'seealso': [
-	    'add'
-	  ]
-	};
-
-
-/***/ },
-/* 221 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'unaryMinus',
-	  'category': 'Operators',
-	  'syntax': [
-	    '-x',
-	    'unaryMinus(x)'
-	  ],
-	  'description':
-	      'Inverse the sign of a value. Converts booleans and strings to numbers.',
-	  'examples': [
-	    '-4.5',
-	    '-(-5.6)',
-	    '-"22"'
-	  ],
-	  'seealso': [
-	    'add', 'subtract', 'unaryPlus'
-	  ]
-	};
-
-
-/***/ },
-/* 222 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'unaryPlus',
-	  'category': 'Operators',
-	  'syntax': [
-	    '+x',
-	    'unaryPlus(x)'
-	  ],
-	  'description':
-	      'Converts booleans and strings to numbers.',
-	  'examples': [
-	    '+true',
-	    '+"2"'
-	  ],
-	  'seealso': [
-	    'add', 'subtract', 'unaryMinus'
-	  ]
-	};
-
-
-/***/ },
-/* 223 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'xgcd',
-	  'category': 'Arithmetic',
-	  'syntax': [
-	    'xgcd(a, b)'
-	  ],
-	  'description': 'Calculate the extended greatest common divisor for two values',
-	  'examples': [
-	    'xgcd(8, 12)',
-	    'gcd(8, 12)',
-	    'xgcd(36163, 21199)'
-	  ],
-	  'seealso': [ 'gcd', 'lcm' ]
-	};
-
-
-/***/ },
-/* 224 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'bitAnd',
-	  'category': 'Bitwise',
-	  'syntax': [
-	    'x & y',
-	    'bitAnd(x, y)'
-	  ],
-	  'description': 'Bitwise AND operation. Performs the logical AND operation on each pair of the corresponding bits of the two given values by multiplying them. If both bits in the compared position are 1, the bit in the resulting binary representation is 1, otherwise, the result is 0',
-	  'examples': [
-	    '5 & 3',
-	    'bitAnd(53, 131)',
-	    '[1, 12, 31] & 42'
-	  ],
-	  'seealso': [
-	    'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift'
-	  ]
-	};
-
-
-/***/ },
-/* 225 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'bitNot',
-	  'category': 'Bitwise',
-	  'syntax': [
-	    '~x',
-	    'bitNot(x)'
-	  ],
-	  'description': 'Bitwise NOT operation. Performs a logical negation on each bit of the given value. Bits that are 0 become 1, and those that are 1 become 0.',
-	  'examples': [
-	    '~1',
-	    '~2',
-	    'bitNot([2, -3, 4])'
-	  ],
-	  'seealso': [
-	    'bitAnd', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift'
-	  ]
-	};
-
-
-/***/ },
-/* 226 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'bitOr',
-	  'category': 'Bitwise',
-	  'syntax': [
-	    'x | y',
-	    'bitOr(x, y)'
-	  ],
-	  'description': 'Bitwise OR operation. Performs the logical inclusive OR operation on each pair of corresponding bits of the two given values. The result in each position is 1 if the first bit is 1 or the second bit is 1 or both bits are 1, otherwise, the result is 0.',
-	  'examples': [
-	    '5 | 3',
-	    'bitOr([1, 2, 3], 4)'
-	  ],
-	  'seealso': [
-	    'bitAnd', 'bitNot', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift'
-	  ]
-	};
-
-
-/***/ },
-/* 227 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'bitXor',
-	  'category': 'Bitwise',
-	  'syntax': [
-	    'bitXor(x, y)'
-	  ],
-	  'description': 'Bitwise XOR operation, exclusive OR. Performs the logical exclusive OR operation on each pair of corresponding bits of the two given values. The result in each position is 1 if only the first bit is 1 or only the second bit is 1, but will be 0 if both are 0 or both are 1.',
-	  'examples': [
-	    'bitOr(1, 2)',
-	    'bitXor([2, 3, 4], 4)'
-	  ],
-	  'seealso': [
-	    'bitAnd', 'bitNot', 'bitOr', 'leftShift', 'rightArithShift', 'rightLogShift'
-	  ]
-	};
-
-
-/***/ },
-/* 228 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'leftShift',
-	  'category': 'Bitwise',
-	  'syntax': [
-	    'x << y',
-	    'leftShift(x, y)'
-	  ],
-	  'description': 'Bitwise left logical shift of a value x by y number of bits.',
-	  'examples': [
-	    '4 << 1',
-	    '8 >> 1'
-	  ],
-	  'seealso': [
-	    'bitAnd', 'bitNot', 'bitOr', 'bitXor', 'rightArithShift', 'rightLogShift'
-	  ]
-	};
-
-
-/***/ },
-/* 229 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'rightArithShift',
-	  'category': 'Bitwise',
-	  'syntax': [
-	    'x >> y',
-	    'leftShift(x, y)'
-	  ],
-	  'description': 'Bitwise right arithmetic shift of a value x by y number of bits.',
-	  'examples': [
-	    '8 >> 1',
-	    '4 << 1',
-	    '-12 >> 2'
-	  ],
-	  'seealso': [
-	    'bitAnd', 'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightLogShift'
-	  ]
-	};
-
-
-/***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'rightLogShift',
-	  'category': 'Bitwise',
-	  'syntax': [
-	    'x >> y',
-	    'leftShift(x, y)'
-	  ],
-	  'description': 'Bitwise right logical shift of a value x by y number of bits.',
-	  'examples': [
-	    '8 >>> 1',
-	    '4 << 1',
-	    '-12 >>> 2'
-	  ],
-	  'seealso': [
-	    'bitAnd', 'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift'
-	  ]
-	};
-
-
-/***/ },
-/* 231 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'arg',
-	  'category': 'Complex',
-	  'syntax': [
-	    'arg(x)'
-	  ],
-	  'description':
-	      'Compute the argument of a complex value. If x = a+bi, the argument is computed as atan2(b, a).',
-	  'examples': [
-	    'arg(2 + 2i)',
-	    'atan2(3, 2)',
-	    'arg(2 + 3i)'
-	  ],
-	  'seealso': [
-	    're',
-	    'im',
-	    'conj',
-	    'abs'
-	  ]
-	};
-
-
-/***/ },
-/* 232 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'conj',
-	  'category': 'Complex',
-	  'syntax': [
-	    'conj(x)'
-	  ],
-	  'description':
-	      'Compute the complex conjugate of a complex value. If x = a+bi, the complex conjugate is a-bi.',
-	  'examples': [
-	    'conj(2 + 3i)',
-	    'conj(2 - 3i)',
-	    'conj(-5.2i)'
-	  ],
-	  'seealso': [
-	    're',
-	    'im',
-	    'abs',
-	    'arg'
-	  ]
-	};
-
-
-/***/ },
-/* 233 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 're',
-	  'category': 'Complex',
-	  'syntax': [
-	    're(x)'
-	  ],
-	  'description': 'Get the real part of a complex number.',
-	  'examples': [
-	    're(2 + 3i)',
-	    'im(2 + 3i)',
-	    're(-5.2i)',
-	    're(2.4)'
-	  ],
-	  'seealso': [
-	    'im',
-	    'conj',
-	    'abs',
-	    'arg'
-	  ]
-	};
-
-
-/***/ },
-/* 234 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'im',
-	  'category': 'Complex',
-	  'syntax': [
-	    'im(x)'
-	  ],
-	  'description': 'Get the imaginary part of a complex number.',
-	  'examples': [
-	    'im(2 + 3i)',
-	    're(2 + 3i)',
-	    'im(-5.2i)',
-	    'im(2.4)'
-	  ],
-	  'seealso': [
-	    're',
-	    'conj',
-	    'abs',
-	    'arg'
-	  ]
-	};
-
-
-/***/ },
-/* 235 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'bignumber',
-	  'category': 'Type',
-	  'syntax': [
-	    'bignumber(x)'
-	  ],
-	  'description':
-	      'Create a big number from a number or string.',
-	  'examples': [
-	    '0.1 + 0.2',
-	    'bignumber(0.1) + bignumber(0.2)',
-	    'bignumber("7.2")',
-	    'bignumber("7.2e500")',
-	    'bignumber([0.1, 0.2, 0.3])'
-	  ],
-	  'seealso': [
-	    'boolean', 'complex', 'index', 'matrix', 'string', 'unit'
-	  ]
-	};
-
-
-/***/ },
-/* 236 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'boolean',
-	  'category': 'Type',
-	  'syntax': [
-	    'x',
-	    'boolean(x)'
-	  ],
-	  'description':
-	      'Convert a string or number into a boolean.',
-	  'examples': [
-	    'boolean(0)',
-	    'boolean(1)',
-	    'boolean(3)',
-	    'boolean("true")',
-	    'boolean("false")',
-	    'boolean([1, 0, 1, 1])'
-	  ],
-	  'seealso': [
-	    'bignumber', 'complex', 'index', 'matrix', 'number', 'string', 'unit'
-	  ]
-	};
-
-
-/***/ },
-/* 237 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'complex',
-	  'category': 'Type',
-	  'syntax': [
-	    'complex()',
-	    'complex(re, im)',
-	    'complex(string)'
-	  ],
-	  'description':
-	      'Create a complex number.',
-	  'examples': [
-	    'complex()',
-	    'complex(2, 3)',
-	    'complex("7 - 2i")'
-	  ],
-	  'seealso': [
-	    'bignumber', 'boolean', 'index', 'matrix', 'number', 'string', 'unit'
-	  ]
-	};
-
-
-/***/ },
-/* 238 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'index',
-	  'category': 'Type',
-	  'syntax': [
-	    '[start]',
-	    '[start:end]',
-	    '[start:step:end]',
-	    '[start1, start 2, ...]',
-	    '[start1:end1, start2:end2, ...]',
-	    '[start1:step1:end1, start2:step2:end2, ...]'
-	  ],
-	  'description':
-	      'Create an index to get or replace a subset of a matrix',
-	  'examples': [
-	    '[]',
-	    '[1, 2, 3]',
-	    'A = [1, 2, 3; 4, 5, 6]',
-	    'A[1, :]',
-	    'A[1, 2] = 50',
-	    'A[0:2, 0:2] = ones(2, 2)'
-	  ],
-	  'seealso': [
-	    'bignumber', 'boolean', 'complex', 'matrix,', 'number', 'range', 'string', 'unit'
-	  ]
-	};
-
-
-/***/ },
-/* 239 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'matrix',
-	  'category': 'Type',
-	  'syntax': [
-	    '[]',
-	    '[a1, b1, ...; a2, b2, ...]',
-	    'matrix()',
-	    'matrix([...])'
-	  ],
-	  'description':
-	      'Create a matrix.',
-	  'examples': [
-	    '[]',
-	    '[1, 2, 3]',
-	    '[1, 2, 3; 4, 5, 6]',
-	    'matrix()',
-	    'matrix([3, 4])'
-	  ],
-	  'seealso': [
-	    'bignumber', 'boolean', 'complex', 'index', 'number', 'string', 'unit'
-	  ]
-	};
-
-
-/***/ },
-/* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'number',
-	  'category': 'Type',
-	  'syntax': [
-	    'x',
-	    'number(x)'
-	  ],
-	  'description':
-	      'Create a number or convert a string or boolean into a number.',
-	  'examples': [
-	    '2',
-	    '2e3',
-	    '4.05',
-	    'number(2)',
-	    'number("7.2")',
-	    'number(true)',
-	    'number([true, false, true, true])',
-	    'number("52cm", "m")'
-	  ],
-	  'seealso': [
-	    'bignumber', 'boolean', 'complex', 'index', 'matrix', 'string', 'unit'
-	  ]
-	};
-
-
-/***/ },
-/* 241 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'string',
-	  'category': 'Type',
-	  'syntax': [
-	    '"text"',
-	    'string(x)'
-	  ],
-	  'description':
-	      'Create a string or convert a value to a string',
-	  'examples': [
-	    '"Hello World!"',
-	    'string(4.2)',
-	    'string(3 + 2i)'
-	  ],
-	  'seealso': [
-	    'bignumber', 'boolean', 'complex', 'index', 'matrix', 'number', 'unit'
-	  ]
-	};
-
-
-/***/ },
-/* 242 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'unit',
-	  'category': 'Type',
-	  'syntax': [
-	    'value unit',
-	    'unit(value, unit)',
-	    'unit(string)'
-	  ],
-	  'description':
-	      'Create a unit.',
-	  'examples': [
-	    '5.5 mm',
-	    '3 inch',
-	    'unit(7.1, "kilogram")',
-	    'unit("23 deg")'
-	  ],
-	  'seealso': [
-	    'bignumber', 'boolean', 'complex', 'index', 'matrix', 'number', 'string'
-	  ]
-	};
-
-
-/***/ },
-/* 243 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'eval',
-	  'category': 'Expression',
-	  'syntax': [
-	    'eval(expression)',
-	    'eval([expr1, expr2, expr3, ...])'
-	  ],
-	  'description': 'Evaluate an expression or an array with expressions.',
-	  'examples': [
-	    'eval("2 + 3")',
-	    'eval("sqrt(" + 4 + ")")'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 244 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'help',
-	  'category': 'Expression',
-	  'syntax': [
-	    'help(object)',
-	    'help(string)'
-	  ],
-	  'description': 'Display documentation on a function or data type.',
-	  'examples': [
-	    'help(sqrt)',
-	    'help("complex")'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 245 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'and',
-	  'category': 'Logical',
-	  'syntax': [
-	    'x and y',
-	    'and(x, y)'
-	  ],
-	  'description': 'Logical and. Test whether two values are both defined with a nonzero/nonempty value.',
-	  'examples': [
-	    'true and false',
-	    'true and true',
-	    '2 and 4'
-	  ],
-	  'seealso': [
-	    'not', 'or', 'xor'
-	  ]
-	};
-
-
-/***/ },
-/* 246 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'not',
-	  'category': 'Logical',
-	  'syntax': [
-	    '!x',
-	    'not x',
-	    'not(x)'
-	  ],
-	  'description': 'Logical not. Flips the boolean value of given argument.',
-	  'examples': [
-	    '!true',
-	    'not false',
-	    '!2',
-	    '!0'
-	  ],
-	  'seealso': [
-	    'and', 'or', 'xor'
-	  ]
-	};
-
-
-/***/ },
-/* 247 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'or',
-	  'category': 'Logical',
-	  'syntax': [
-	    'x or y',
-	    'or(x, y)'
-	  ],
-	  'description': 'Logical or. Test if at least one value is defined with a nonzero/nonempty value.',
-	  'examples': [
-	    'true or false',
-	    'false or false',
-	    '0 or 4'
-	  ],
-	  'seealso': [
-	    'not', 'and', 'xor'
-	  ]
-	};
-
-
-/***/ },
-/* 248 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'xor',
-	  'category': 'Logical',
-	  'syntax': [
-	    'x or y',
-	    'or(x, y)'
-	  ],
-	  'description': 'Logical exclusive or, xor. Test whether one and only one value is defined with a nonzero/nonempty value.',
-	  'examples': [
-	    'true xor false',
-	    'false xor false',
-	    'true xor true',
-	    '0 or 4'
-	  ],
-	  'seealso': [
-	    'not', 'and', 'or'
-	  ]
-	};
-
-
-/***/ },
-/* 249 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'concat',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'concat(A, B, C, ...)',
-	    'concat(A, B, C, ..., dim)'
-	  ],
-	  'description': 'Concatenate matrices. By default, the matrices are concatenated by the last dimension. The dimension on which to concatenate can be provided as last argument.',
-	  'examples': [
-	    'A = [1, 2; 5, 6]',
-	    'B = [3, 4; 7, 8]',
-	    'concat(A, B)',
-	    'concat(A, B, 1)',
-	    'concat(A, B, 2)'
-	  ],
-	  'seealso': [
-	    'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 250 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'cross',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'cross(A, B)'
-	  ],
-	  'description': 'Calculate the cross product for two vectors in three dimensional space.',
-	  'examples': [
-	    'cross([1, 1, 0],  [0, 1, 1])',
-	    'cross([3, -3, 1], [4, 9, 2])',
-	    'cross([2, 3, 4],  [5, 6, 7])'
-	  ],
-	  'seealso': [
-	    'multiply',
-	    'dot'
-	  ]
-	};
-
-
-/***/ },
-/* 251 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'det',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'det(x)'
-	  ],
-	  'description': 'Calculate the determinant of a matrix',
-	  'examples': [
-	    'det([1, 2; 3, 4])',
-	    'det([-2, 2, 3; -1, 1, 3; 2, 0, -1])'
-	  ],
-	  'seealso': [
-	    'concat', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 252 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'diag',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'diag(x)',
-	    'diag(x, k)'
-	  ],
-	  'description': 'Create a diagonal matrix or retrieve the diagonal of a matrix. When x is a vector, a matrix with the vector values on the diagonal will be returned. When x is a matrix, a vector with the diagonal values of the matrix is returned. When k is provided, the k-th diagonal will be filled in or retrieved, if k is positive, the values are placed on the super diagonal. When k is negative, the values are placed on the sub diagonal.',
-	  'examples': [
-	    'diag(1:3)',
-	    'diag(1:3, 1)',
-	    'a = [1, 2, 3; 4, 5, 6; 7, 8, 9]',
-	    'diag(a)'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'dot',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'dot(A, B)'
-	  ],
-	  'description': 'Calculate the dot product of two vectors. ' +
-	      'The dot product of A = [a1, a2, a3, ..., an] and B = [b1, b2, b3, ..., bn] ' +
-	      'is defined as dot(A, B) = a1 * b1 + a2 * b2 + a3 * b3 + ... + an * bn',
-	  'examples': [
-	    'dot([2, 4, 1], [2, 2, 3])',
-	    '[2, 4, 1] * [2, 2, 3]'
-	  ],
-	  'seealso': [
-	    'multiply',
-	    'cross'
-	  ]
-	};
-
-
-/***/ },
-/* 254 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'eye',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'eye(n)',
-	    'eye(m, n)',
-	    'eye([m, n])',
-	    'eye'
-	  ],
-	  'description': 'Returns the identity matrix with size m-by-n. The matrix has ones on the diagonal and zeros elsewhere.',
-	  'examples': [
-	    'eye(3)',
-	    'eye(3, 5)',
-	    'a = [1, 2, 3; 4, 5, 6]',
-	    'eye(size(a))'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'diag', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 255 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'flatten',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'flatten(x)'
-	  ],
-	  'description': 'Flatten a multi dimensional matrix into a single dimensional matrix.',
-	  'examples': [
-	    'a = [1, 2, 3; 4, 5, 6]',
-	    'size(a)',
-	    'b = flatten(a)',
-	    'size(b)'
-	  ],
-	  'seealso': [
-	    'concat', 'resize', 'size', 'squeeze'
-	  ]
-	};
-
-
-/***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'inv',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'inv(x)'
-	  ],
-	  'description': 'Calculate the inverse of a matrix',
-	  'examples': [
-	    'inv([1, 2; 3, 4])',
-	    'inv(4)',
-	    '1 / 4'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'diag', 'eye', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'ones',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'ones(m)',
-	    'ones(m, n)',
-	    'ones(m, n, p, ...)',
-	    'ones([m])',
-	    'ones([m, n])',
-	    'ones([m, n, p, ...])',
-	    'ones'
-	  ],
-	  'description': 'Create a matrix containing ones.',
-	  'examples': [
-	    'ones(3)',
-	    'ones(3, 5)',
-	    'ones([2,3]) * 4.5',
-	    'a = [1, 2, 3; 4, 5, 6]',
-	    'ones(size(a))'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'diag', 'eye', 'inv', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 258 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'range',
-	  'category': 'Type',
-	  'syntax': [
-	    'start:end',
-	    'start:step:end',
-	    'range(start, end)',
-	    'range(start, end, step)',
-	    'range(string)'
-	  ],
-	  'description':
-	      'Create a range. Lower bound of the range is included, upper bound is excluded.',
-	  'examples': [
-	    '1:5',
-	    '3:-1:-3',
-	    'range(3, 7)',
-	    'range(0, 12, 2)',
-	    'range("4:10")',
-	    'a = [1, 2, 3, 4; 5, 6, 7, 8]',
-	    'a[1:2, 1:2]'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'resize',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'resize(x, size)',
-	    'resize(x, size, defaultValue)'
-	  ],
-	  'description': 'Resize a matrix.',
-	  'examples': [
-	    'resize([1,2,3,4,5], [3])',
-	    'resize([1,2,3], [5])',
-	    'resize([1,2,3], [5], -1)',
-	    'resize(2, [2, 3])',
-	    'resize("hello", [8], "!")'
-	  ],
-	  'seealso': [
-	    'size', 'subset', 'squeeze'
-	  ]
-	};
-
-
-/***/ },
-/* 260 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'size',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'size(x)'
-	  ],
-	  'description': 'Calculate the size of a matrix.',
-	  'examples': [
-	    'size(2.3)',
-	    'size("hello world")',
-	    'a = [1, 2; 3, 4; 5, 6]',
-	    'size(a)',
-	    'size(1:6)'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 261 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'squeeze',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'squeeze(x)'
-	  ],
-	  'description': 'Remove inner and outer singleton dimensions from a matrix.',
-	  'examples': [
-	    'a = zeros(3,2,1)',
-	    'size(squeeze(a))',
-	    'b = zeros(1,1,3)',
-	    'size(squeeze(b))'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'subset', 'trace', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 262 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'subset',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'value(index)',
-	    'value(index) = replacement',
-	    'subset(value, [index])',
-	    'subset(value, [index], replacement)'
-	  ],
-	  'description': 'Get or set a subset of a matrix or string. ' +
-	      'Indexes are one-based. ' +
-	      'Both the ranges lower-bound and upper-bound are included.',
-	  'examples': [
-	    'd = [1, 2; 3, 4]',
-	    'e = []',
-	    'e[1, 1:2] = [5, 6]',
-	    'e[2, :] = [7, 8]',
-	    'f = d * e',
-	    'f[2, 1]',
-	    'f[:, 1]'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'trace', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 263 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'trace',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'trace(A)'
-	  ],
-	  'description': 'Calculate the trace of a matrix: the sum of the elements on the main diagonal of a square matrix.',
-	  'examples': [
-	    'A = [1, 2, 3; -1, 2, 3; 2, 0, 3]',
-	    'trace(A)'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'transpose', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 264 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'transpose',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'x\'',
-	    'transpose(x)'
-	  ],
-	  'description': 'Transpose a matrix',
-	  'examples': [
-	    'a = [1, 2, 3; 4, 5, 6]',
-	    'a\'',
-	    'transpose(a)'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'zeros'
-	  ]
-	};
-
-
-/***/ },
-/* 265 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'zeros',
-	  'category': 'Matrix',
-	  'syntax': [
-	    'zeros(m)',
-	    'zeros(m, n)',
-	    'zeros(m, n, p, ...)',
-	    'zeros([m])',
-	    'zeros([m, n])',
-	    'zeros([m, n, p, ...])',
-	    'zeros'
-	  ],
-	  'description': 'Create a matrix containing zeros.',
-	  'examples': [
-	    'zeros(3)',
-	    'zeros(3, 5)',
-	    'a = [1, 2, 3; 4, 5, 6]',
-	    'zeros(size(a))'
-	  ],
-	  'seealso': [
-	    'concat', 'det', 'diag', 'eye', 'inv', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose'
-	  ]
-	};
-
-
-/***/ },
-/* 266 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'combinations',
-	  'category': 'Probability',
-	  'syntax': [
-	    'combinations(n, k)'
-	  ],
-	  'description': 'Compute the number of combinations of n items taken k at a time',
-	  'examples': [
-	    'combinations(7, 5)'
-	  ],
-	  'seealso': ['permutations', 'factorial']
-	};
-
-
-/***/ },
-/* 267 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'factorial',
-	  'category': 'Probability',
-	  'syntax': [
-	    'n!',
-	    'factorial(n)'
-	  ],
-	  'description': 'Compute the factorial of a value',
-	  'examples': [
-	    '5!',
-	    '5 * 4 * 3 * 2 * 1',
-	    '3!'
-	  ],
-	  'seealso': ['combinations', 'permutations', 'gamma']
-	};
-
-
-/***/ },
-/* 268 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'gamma',
-	  'category': 'Probability',
-	  'syntax': [
-	    'gamma(n)'
-	  ],
-	  'description': 'Compute the gamma function. For small values, the Lanczos approximation is used, and for large values the extended Stirling approximation.',
-	  'examples': [
-	    'gamma(4)',
-	    '3!',
-	    'gamma(1/2)',
-	    'sqrt(pi)'
-	  ],
-	  'seealso': ['factorial']
-	};
-
-
-/***/ },
-/* 269 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'permutations',
-	  'category': 'Probability',
-	  'syntax': [
-	    'permutations(n)',
-	    'permutations(n, k)'
-	  ],
-	  'description': 'Compute the number of permutations of n items taken k at a time',
-	  'examples': [
-	    'permutations(5)',
-	    'permutations(5, 3)'
-	  ],
-	  'seealso': ['combinations', 'factorial']
-	};
-
-
-/***/ },
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'pickRandom',
-	  'category': 'Probability',
-	  'syntax': [
-	    'pickRandom(array)'
-	  ],
-	  'description':
-	      'Pick a random entry from a given array.',
-	  'examples': [
-	    'pickRandom(0:10)',
-	    'pickRandom([1, 3, 1, 6])'
-	  ],
-	  'seealso': ['random', 'randomInt']
-	};
-
-
-/***/ },
-/* 271 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'random',
-	  'category': 'Probability',
-	  'syntax': [
-	    'random()',
-	    'random(max)',
-	    'random(min, max)',
-	    'random(size)',
-	    'random(size, max)',
-	    'random(size, min, max)'
-	  ],
-	  'description':
-	      'Return a random number.',
-	  'examples': [
-	    'random()',
-	    'random(10, 20)',
-	    'random([2, 3])'
-	  ],
-	  'seealso': ['pickRandom', 'randomInt']
-	};
-
-
-/***/ },
-/* 272 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'randInt',
-	  'category': 'Probability',
-	  'syntax': [
-	    'randInt()',
-	    'randInt(max)',
-	    'randInt(min, max)',
-	    'randInt(size)',
-	    'randInt(size, max)',
-	    'randInt(size, min, max)'
-	  ],
-	  'description':
-	      'Return a random integer number',
-	  'examples': [
-	    'randInt()',
-	    'randInt(10, 20)',
-	    'randInt([2, 3], 10)'
-	  ],
-	  'seealso': ['pickRandom', 'random']
-	};
-
-/***/ },
-/* 273 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'compare',
-	  'category': 'Relational',
-	  'syntax': [
-	    'compare(x, y)'
-	  ],
-	  'description':
-	      'Compare two values. Returns 1 if x is larger than y, -1 if x is smaller than y, and 0 if x and y are equal.',
-	  'examples': [
-	    'compare(2, 3)',
-	    'compare(3, 2)',
-	    'compare(2, 2)',
-	    'compare(5cm, 40mm)',
-	    'compare(2, [1, 2, 3])'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'smaller', 'smallerEq', 'largerEq'
-	  ]
-	};
-
-
-/***/ },
-/* 274 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'deepEqual',
-	  'category': 'Relational',
-	  'syntax': [
-	    'deepEqual(x, y)'
-	  ],
-	  'description':
-	      'Check equality of two matrices element wise. Returns true if the size of both matrices is equal and when and each of the elements are equal.',
-	  'examples': [
-	    '[1,3,4] == [1,3,4]',
-	    '[1,3,4] == [1,3]'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare'
-	  ]
-	};
-
-
-/***/ },
-/* 275 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'equal',
-	  'category': 'Relational',
-	  'syntax': [
-	    'x == y',
-	    'equal(x, y)'
-	  ],
-	  'description':
-	      'Check equality of two values. Returns true if the values are equal, and false if not.',
-	  'examples': [
-	    '2+2 == 3',
-	    '2+2 == 4',
-	    'a = 3.2',
-	    'b = 6-2.8',
-	    'a == b',
-	    '50cm == 0.5m'
-	  ],
-	  'seealso': [
-	    'unequal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual'
-	  ]
-	};
-
-
-/***/ },
-/* 276 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'larger',
-	  'category': 'Relational',
-	  'syntax': [
-	    'x > y',
-	    'larger(x, y)'
-	  ],
-	  'description':
-	      'Check if value x is larger than y. Returns true if x is larger than y, and false if not.',
-	  'examples': [
-	    '2 > 3',
-	    '5 > 2*2',
-	    'a = 3.3',
-	    'b = 6-2.8',
-	    '(a > b)',
-	    '(b < a)',
-	    '5 cm > 2 inch'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compare'
-	  ]
-	};
-
-
-/***/ },
-/* 277 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'largerEq',
-	  'category': 'Relational',
-	  'syntax': [
-	    'x >= y',
-	    'largerEq(x, y)'
-	  ],
-	  'description':
-	      'Check if value x is larger or equal to y. Returns true if x is larger or equal to y, and false if not.',
-	  'examples': [
-	    '2 > 1+1',
-	    '2 >= 1+1',
-	    'a = 3.2',
-	    'b = 6-2.8',
-	    '(a > b)'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'smallerEq', 'smaller', 'largerEq', 'compare'
-	  ]
-	};
-
-
-/***/ },
-/* 278 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'smaller',
-	  'category': 'Relational',
-	  'syntax': [
-	    'x < y',
-	    'smaller(x, y)'
-	  ],
-	  'description':
-	      'Check if value x is smaller than value y. Returns true if x is smaller than y, and false if not.',
-	  'examples': [
-	    '2 < 3',
-	    '5 < 2*2',
-	    'a = 3.3',
-	    'b = 6-2.8',
-	    '(a < b)',
-	    '5 cm < 2 inch'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'larger', 'smallerEq', 'largerEq', 'compare'
-	  ]
-	};
-
-
-/***/ },
-/* 279 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'smallerEq',
-	  'category': 'Relational',
-	  'syntax': [
-	    'x <= y',
-	    'smallerEq(x, y)'
-	  ],
-	  'description':
-	      'Check if value x is smaller or equal to value y. Returns true if x is smaller than y, and false if not.',
-	  'examples': [
-	    '2 < 1+1',
-	    '2 <= 1+1',
-	    'a = 3.2',
-	    'b = 6-2.8',
-	    '(a < b)'
-	  ],
-	  'seealso': [
-	    'equal', 'unequal', 'larger', 'smaller', 'largerEq', 'compare'
-	  ]
-	};
-
-
-/***/ },
-/* 280 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'unequal',
-	  'category': 'Relational',
-	  'syntax': [
-	    'x != y',
-	    'unequal(x, y)'
-	  ],
-	  'description':
-	      'Check unequality of two values. Returns true if the values are unequal, and false if they are equal.',
-	  'examples': [
-	    '2+2 != 3',
-	    '2+2 != 4',
-	    'a = 3.2',
-	    'b = 6-2.8',
-	    'a != b',
-	    '50cm != 0.5m',
-	    '5 cm != 2 inch'
-	  ],
-	  'seealso': [
-	    'equal', 'smaller', 'larger', 'smallerEq', 'largerEq', 'compare', 'deepEqual'
-	  ]
-	};
-
-
-/***/ },
-/* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'max',
-	  'category': 'Statistics',
-	  'syntax': [
-	    'max(a, b, c, ...)',
-	    'max(A)',
-	    'max(A, dim)'
-	  ],
-	  'description': 'Compute the maximum value of a list of values.',
-	  'examples': [
-	    'max(2, 3, 4, 1)',
-	    'max([2, 3, 4, 1])',
-	    'max([2, 5; 4, 3])',
-	    'max([2, 5; 4, 3], 1)',
-	    'max([2, 5; 4, 3], 2)',
-	    'max(2.7, 7.1, -4.5, 2.0, 4.1)',
-	    'min(2.7, 7.1, -4.5, 2.0, 4.1)'
-	  ],
-	  'seealso': [
-	    'mean',
-	    'median',
-	    'min',
-	    'prod',
-	    'std',
-	    'sum',
-	    'var'
-	  ]
-	};
-
-
-/***/ },
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'mean',
-	  'category': 'Statistics',
-	  'syntax': [
-	    'mean(a, b, c, ...)',
-	    'mean(A)',
-	    'mean(A, dim)'
-	  ],
-	  'description': 'Compute the arithmetic mean of a list of values.',
-	  'examples': [
-	    'mean(2, 3, 4, 1)',
-	    'mean([2, 3, 4, 1])',
-	    'mean([2, 5; 4, 3])',
-	    'mean([2, 5; 4, 3], 1)',
-	    'mean([2, 5; 4, 3], 2)',
-	    'mean([1.0, 2.7, 3.2, 4.0])'
-	  ],
-	  'seealso': [
-	    'max',
-	    'median',
-	    'min',
-	    'prod',
-	    'std',
-	    'sum',
-	    'var'
-	  ]
-	};
-
-
-/***/ },
-/* 283 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'median',
-	  'category': 'Statistics',
-	  'syntax': [
-	    'median(a, b, c, ...)',
-	    'median(A)'
-	  ],
-	  'description': 'Compute the median of all values. The values are sorted and the middle value is returned. In case of an even number of values, the average of the two middle values is returned.',
-	  'examples': [
-	    'median(5, 2, 7)',
-	    'median([3, -1, 5, 7])'
-	  ],
-	  'seealso': [
-	    'max',
-	    'mean',
-	    'min',
-	    'prod',
-	    'std',
-	    'sum',
-	    'var'
-	  ]
-	};
-
-
-/***/ },
-/* 284 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'min',
-	  'category': 'Statistics',
-	  'syntax': [
-	    'min(a, b, c, ...)',
-	    'min(A)',
-	    'min(A, dim)'
-	  ],
-	  'description': 'Compute the minimum value of a list of values.',
-	  'examples': [
-	    'min(2, 3, 4, 1)',
-	    'min([2, 3, 4, 1])',
-	    'min([2, 5; 4, 3])',
-	    'min([2, 5; 4, 3], 1)',
-	    'min([2, 5; 4, 3], 2)',
-	    'min(2.7, 7.1, -4.5, 2.0, 4.1)',
-	    'max(2.7, 7.1, -4.5, 2.0, 4.1)'
-	  ],
-	  'seealso': [
-	    'max',
-	    'mean',
-	    'median',
-	    'prod',
-	    'std',
-	    'sum',
-	    'var'
-	  ]
-	};
-
-
-/***/ },
-/* 285 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'prod',
-	  'category': 'Statistics',
-	  'syntax': [
-	    'prod(a, b, c, ...)',
-	    'prod(A)'
-	  ],
-	  'description': 'Compute the product of all values.',
-	  'examples': [
-	    'prod(2, 3, 4)',
-	    'prod([2, 3, 4])',
-	    'prod([2, 5; 4, 3])'
-	  ],
-	  'seealso': [
-	    'max',
-	    'mean',
-	    'min',
-	    'median',
-	    'min',
-	    'std',
-	    'sum',
-	    'var'
-	  ]
-	};
-
-
-/***/ },
-/* 286 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'std',
-	  'category': 'Statistics',
-	  'syntax': [
-	    'std(a, b, c, ...)',
-	    'std(A)',
-	    'std(A, normalization)'
-	  ],
-	  'description': 'Compute the standard deviation of all values, defined as std(A) = sqrt(var(A)). Optional parameter normalization can be "unbiased" (default), "uncorrected", or "biased".',
-	  'examples': [
-	    'std(2, 4, 6)',
-	    'std([2, 4, 6, 8])',
-	    'std([2, 4, 6, 8], "uncorrected")',
-	    'std([2, 4, 6, 8], "biased")',
-	    'std([1, 2, 3; 4, 5, 6])'
-	  ],
-	  'seealso': [
-	    'max',
-	    'mean',
-	    'min',
-	    'median',
-	    'min',
-	    'prod',
-	    'sum',
-	    'var'
-	  ]
-	};
-
-
-/***/ },
-/* 287 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'sum',
-	  'category': 'Statistics',
-	  'syntax': [
-	    'sum(a, b, c, ...)',
-	    'sum(A)'
-	  ],
-	  'description': 'Compute the sum of all values.',
-	  'examples': [
-	    'sum(2, 3, 4, 1)',
-	    'sum([2, 3, 4, 1])',
-	    'sum([2, 5; 4, 3])'
-	  ],
-	  'seealso': [
-	    'max',
-	    'mean',
-	    'median',
-	    'min',
-	    'prod',
-	    'std',
-	    'sum',
-	    'var'
-	  ]
-	};
-
-
-/***/ },
-/* 288 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'var',
-	  'category': 'Statistics',
-	  'syntax': [
-	    'var(a, b, c, ...)',
-	    'var(A)',
-	    'var(A, normalization)'
-	  ],
-	  'description': 'Compute the variance of all values. Optional parameter normalization can be "unbiased" (default), "uncorrected", or "biased".',
-	  'examples': [
-	    'var(2, 4, 6)',
-	    'var([2, 4, 6, 8])',
-	    'var([2, 4, 6, 8], "uncorrected")',
-	    'var([2, 4, 6, 8], "biased")',
-	    'var([1, 2, 3; 4, 5, 6])'
-	  ],
-	  'seealso': [
-	    'max',
-	    'mean',
-	    'min',
-	    'median',
-	    'min',
-	    'prod',
-	    'std',
-	    'sum'
-	  ]
-	};
-
-
-/***/ },
-/* 289 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'acos',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'acos(x)'
-	  ],
-	  'description': 'Compute the inverse cosine of a value in radians.',
-	  'examples': [
-	    'acos(0.5)',
-	    'acos(cos(2.3))'
-	  ],
-	  'seealso': [
-	    'cos',
-	    'atan',
-	    'asin'
-	  ]
-	};
-
-
-/***/ },
-/* 290 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'asin',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'asin(x)'
-	  ],
-	  'description': 'Compute the inverse sine of a value in radians.',
-	  'examples': [
-	    'asin(0.5)',
-	    'asin(sin(2.3))'
-	  ],
-	  'seealso': [
-	    'sin',
-	    'acos',
-	    'atan'
-	  ]
-	};
-
-
-/***/ },
-/* 291 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'atan',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'atan(x)'
-	  ],
-	  'description': 'Compute the inverse tangent of a value in radians.',
-	  'examples': [
-	    'atan(0.5)',
-	    'atan(tan(2.3))'
-	  ],
-	  'seealso': [
-	    'tan',
-	    'acos',
-	    'asin'
-	  ]
-	};
-
-
-/***/ },
-/* 292 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'atan2',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'atan2(y, x)'
-	  ],
-	  'description':
-	      'Computes the principal value of the arc tangent of y/x in radians.',
-	  'examples': [
-	    'atan2(2, 2) / pi',
-	    'angle = 60 deg in rad',
-	    'x = cos(angle)',
-	    'y = sin(angle)',
-	    'atan2(y, x)'
-	  ],
-	  'seealso': [
-	    'sin',
-	    'cos',
-	    'tan'
-	  ]
-	};
-
-
-/***/ },
-/* 293 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'cos',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'cos(x)'
-	  ],
-	  'description': 'Compute the cosine of x in radians.',
-	  'examples': [
-	    'cos(2)',
-	    'cos(pi / 4) ^ 2',
-	    'cos(180 deg)',
-	    'cos(60 deg)',
-	    'sin(0.2)^2 + cos(0.2)^2'
-	  ],
-	  'seealso': [
-	    'acos',
-	    'sin',
-	    'tan'
-	  ]
-	};
-
-
-/***/ },
-/* 294 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'cosh',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'cosh(x)'
-	  ],
-	  'description': 'Compute the hyperbolic cosine of x in radians.',
-	  'examples': [
-	    'cosh(0.5)'
-	  ],
-	  'seealso': [
-	    'sinh',
-	    'tanh',
-	    'coth'
-	  ]
-	};
-
-
-/***/ },
-/* 295 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'cot',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'cot(x)'
-	  ],
-	  'description': 'Compute the cotangent of x in radians. Defined as 1/tan(x)',
-	  'examples': [
-	    'cot(2)',
-	    '1 / tan(2)'
-	  ],
-	  'seealso': [
-	    'sec',
-	    'csc',
-	    'tan'
-	  ]
-	};
-
-
-/***/ },
-/* 296 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'coth',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'coth(x)'
-	  ],
-	  'description': 'Compute the hyperbolic cotangent of x in radians.',
-	  'examples': [
-	    'coth(2)',
-	    '1 / tanh(2)'
-	  ],
-	  'seealso': [
-	    'sech',
-	    'csch',
-	    'tanh'
-	  ]
-	};
-
-
-/***/ },
-/* 297 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'csc',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'csc(x)'
-	  ],
-	  'description': 'Compute the cosecant of x in radians. Defined as 1/sin(x)',
-	  'examples': [
-	    'csc(2)',
-	    '1 / sin(2)'
-	  ],
-	  'seealso': [
-	    'sec',
-	    'cot',
-	    'sin'
-	  ]
-	};
-
-
-/***/ },
-/* 298 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'csch',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'csch(x)'
-	  ],
-	  'description': 'Compute the hyperbolic cosecant of x in radians. Defined as 1/sinh(x)',
-	  'examples': [
-	    'csch(2)',
-	    '1 / sinh(2)'
-	  ],
-	  'seealso': [
-	    'sech',
-	    'coth',
-	    'sinh'
-	  ]
-	};
-
-
-/***/ },
-/* 299 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'sec',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'sec(x)'
-	  ],
-	  'description': 'Compute the secant of x in radians. Defined as 1/cos(x)',
-	  'examples': [
-	    'sec(2)',
-	    '1 / cos(2)'
-	  ],
-	  'seealso': [
-	    'cot',
-	    'csc',
-	    'cos'
-	  ]
-	};
-
-
-/***/ },
-/* 300 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'sech',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'sech(x)'
-	  ],
-	  'description': 'Compute the hyperbolic secant of x in radians. Defined as 1/cosh(x)',
-	  'examples': [
-	    'sech(2)',
-	    '1 / cosh(2)'
-	  ],
-	  'seealso': [
-	    'coth',
-	    'csch',
-	    'cosh'
-	  ]
-	};
-
-
-/***/ },
-/* 301 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'sin',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'sin(x)'
-	  ],
-	  'description': 'Compute the sine of x in radians.',
-	  'examples': [
-	    'sin(2)',
-	    'sin(pi / 4) ^ 2',
-	    'sin(90 deg)',
-	    'sin(30 deg)',
-	    'sin(0.2)^2 + cos(0.2)^2'
-	  ],
-	  'seealso': [
-	    'asin',
-	    'cos',
-	    'tan'
-	  ]
-	};
-
-
-/***/ },
-/* 302 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'sinh',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'sinh(x)'
-	  ],
-	  'description': 'Compute the hyperbolic sine of x in radians.',
-	  'examples': [
-	    'sinh(0.5)'
-	  ],
-	  'seealso': [
-	    'cosh',
-	    'tanh'
-	  ]
-	};
-
-
-/***/ },
-/* 303 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'tan',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'tan(x)'
-	  ],
-	  'description': 'Compute the tangent of x in radians.',
-	  'examples': [
-	    'tan(0.5)',
-	    'sin(0.5) / cos(0.5)',
-	    'tan(pi / 4)',
-	    'tan(45 deg)'
-	  ],
-	  'seealso': [
-	    'atan',
-	    'sin',
-	    'cos'
-	  ]
-	};
-
-
-/***/ },
-/* 304 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'tanh',
-	  'category': 'Trigonometry',
-	  'syntax': [
-	    'tanh(x)'
-	  ],
-	  'description': 'Compute the hyperbolic tangent of x in radians.',
-	  'examples': [
-	    'tanh(0.5)',
-	    'sinh(0.5) / cosh(0.5)'
-	  ],
-	  'seealso': [
-	    'sinh',
-	    'cosh'
-	  ]
-	};
-
-
-/***/ },
-/* 305 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'to',
-	  'category': 'Units',
-	  'syntax': [
-	    'x to unit',
-	    'to(x, unit)'
-	  ],
-	  'description': 'Change the unit of a value.',
-	  'examples': [
-	    '5 inch to cm',
-	    '3.2kg to g',
-	    '16 bytes in bits'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 306 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'clone',
-	  'category': 'Utils',
-	  'syntax': [
-	    'clone(x)'
-	  ],
-	  'description': 'Clone a variable. Creates a copy of primitive variables,and a deep copy of matrices',
-	  'examples': [
-	    'clone(3.5)',
-	    'clone(2 - 4i)',
-	    'clone(45 deg)',
-	    'clone([1, 2; 3, 4])',
-	    'clone("hello world")'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 307 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'map',
-	  'category': 'Utils',
-	  'syntax': [
-	    'map(x, callback)'
-	  ],
-	  'description': 'Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.',
-	  'examples': [
-	    'map([1, 2, 3], function(val) { return value * value })'
-	  ],
-	  'seealso': ['filter', 'forEach']
-	};
-
-
-/***/ },
-/* 308 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'filter',
-	  'category': 'Utils',
-	  'syntax': [
-	    'filter(x, test)'
-	  ],
-	  'description': 'Filter items in a matrix.',
-	  'examples': [
-	    'isPositive(x) = x > 0',
-	    'filter([6, -2, -1, 4, 3], isPositive)',
-	    'filter([6, -2, 0, 1, 0], x != 0)'
-	  ],
-	  'seealso': ['sort', 'map', 'forEach']
-	};
-
-
-/***/ },
-/* 309 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'forEach',
-	  'category': 'Utils',
-	  'syntax': [
-	    'forEach(x, callback)'
-	  ],
-	  'description': 'Iterates over all elements of a matrix/array, and executes the given callback function.',
-	  'examples': [
-	    'forEach([1, 2, 3], function(val) { console.log(val) })'
-	  ],
-	  'seealso': ['map', 'sort', 'filter']
-	};
-
-
-/***/ },
-/* 310 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'format',
-	  'category': 'Utils',
-	  'syntax': [
-	    'format(value)',
-	    'format(value, precision)'
-	  ],
-	  'description': 'Format a value of any type as string.',
-	  'examples': [
-	    'format(2.3)',
-	    'format(3 - 4i)',
-	    'format([])',
-	    'format(pi, 3)'
-	  ],
-	  'seealso': ['print']
-	};
-
-
-/***/ },
-/* 311 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'import',
-	  'category': 'Utils',
-	  'syntax': [
-	    'import(string)'
-	  ],
-	  'description': 'Import functions from a file.',
-	  'examples': [
-	    'import("numbers")',
-	    'import("./mylib.js")'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 312 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'sort',
-	  'category': 'Utils',
-	  'syntax': [
-	    'sort(x)',
-	    'sort(x, compare)'
-	  ],
-	  'description': 'Sort the items in a matrix. Compare can be a string "asc" or "desc", or a custom sort function.',
-	  'examples': [
-	    'sort([5, 10, 1])',
-	    'sort(["C", "B", "A", "D"])',
-	    'sortByLength(a, b) = size(a)[1] - size(b)[1]',
-	    'sort(["Langdon", "Tom", "Sara"], sortByLength)'
-	  ],
-	  'seealso': ['map', 'filter', 'forEach']
-	};
-
-
-/***/ },
-/* 313 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'typeof',
-	  'category': 'Utils',
-	  'syntax': [
-	    'typeof(x)'
-	  ],
-	  'description': 'Get the type of a variable.',
-	  'examples': [
-	    'typeof(3.5)',
-	    'typeof(2 - 4i)',
-	    'typeof(45 deg)',
-	    'typeof("hello world")'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 314 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	// NOTE: distribution is NOT added to math.distribution but returned by the factory function
-	// TODO: rethink math.distribution
-
-	module.exports = function (math) {
-	  var Matrix = __webpack_require__(9);
-	  var array = __webpack_require__(154);
-	  var collection = __webpack_require__(13);
-	  var isCollection = collection.isCollection;
-
-	  /**
-	   * Create a distribution object with a set of random functions for given
-	   * random distribution.
-	   *
-	   * Syntax:
-	   *
-	   *     math.distribution(name)
-	   *
-	   * Examples:
-	   *
-	   *     var normalDist = math.distribution('normal'); // create a normal distribution
-	   *     normalDist.random(0, 10);                      // get a random value between 0 and 10
-	   *
-	   * See also:
-	   *
-	   *     random, randomInt, pickRandom
-	   *
-	   * @param {String} name   Name of a distribution. Choose from 'uniform', 'normal'.
-	   * @return {Object}       Returns a distribution object containing functions:
-	   *                        `random([size] [, min] [, max])`,
-	   *                        `randomInt([min] [, max])`,
-	   *                        `pickRandom(array)`
-	   */
-	  function distribution(name) {
-	    if (!distributions.hasOwnProperty(name))
-	      throw new Error('Unknown distribution ' + name);
-
-	    var args = Array.prototype.slice.call(arguments, 1),
-	        distribution = distributions[name].apply(this, args);
-
-	    return (function(distribution) {
-
-	      // This is the public API for all distributions
-	      var randFunctions = {
-
-	        random: function(arg1, arg2, arg3) {
-	          var size, min, max;
-	          if (arguments.length > 3) {
-	            throw new math.error.ArgumentsError('random', arguments.length, 0, 3);
-
-	          // `random(max)` or `random(size)`
-	          } else if (arguments.length === 1) {
-	            if (isCollection(arg1)) {
-	              size = arg1;
-	            }
-	            else {
-	              max = arg1;
-	            }
-	          // `random(min, max)` or `random(size, max)`
-	          } else if (arguments.length === 2) {
-	            if (isCollection(arg1)) {
-	              size = arg1;
-	              max = arg2;
-	            }
-	            else {
-	              min = arg1;
-	              max = arg2;
-	            }
-	          // `random(size, min, max)`
-	          } else {
-	            size = arg1;
-	            min = arg2;
-	            max = arg3;
-	          }
-
-	          // TODO: validate type of min, max, and size
-
-	          if (max === undefined) max = 1;
-	          if (min === undefined) min = 0;
-	          if (size !== undefined) {
-	            var res = _randomDataForMatrix(size.valueOf(), min, max, _random);
-	            return (size instanceof Matrix) ? new Matrix(res) : res;
-	          }
-	          else return _random(min, max);
-	        },
-
-	        randomInt: function(arg1, arg2, arg3) {
-	          var size, min, max;
-	          if (arguments.length > 3 || arguments.length < 1)
-	            throw new math.error.ArgumentsError('randomInt', arguments.length, 1, 3);
-
-	          // `random(max)` or `random(size)`
-	          else if (arguments.length === 1)
-	            if (isCollection(arg1)) {
-	              size = arg1;
-	            }
-	            else {
-	              max = arg1;
-	            }
-	          // `randomInt(min, max)` or `randomInt(size, max)`
-	          else if (arguments.length === 2) {
-	            if (isCollection(arg1)) {
-	              size = arg1;
-	              max = arg2;
-	            }
-	            else {
-	              min = arg1;
-	              max = arg2;
-	            }
-	          // `randomInt(size, min, max)`
-	          } else {
-	            size = arg1;
-	            min = arg2;
-	            max = arg3;
-	          }
-
-	          // TODO: validate type of min, max, and size
-
-	          if (min === undefined) min = 0;
-	          if (size !== undefined) {
-	            var res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt);
-	            return (size instanceof Matrix) ? new Matrix(res) : res;
-	          }
-	          else return _randomInt(min, max);
-	        },
-
-	        pickRandom: function(possibles) {
-	          if (arguments.length !== 1) {
-	            throw new math.error.ArgumentsError('pickRandom', arguments.length, 1);
-	          }
-	          if (possibles instanceof Matrix) {
-	            possibles = possibles.valueOf(); // get Array
-	          }
-	          else if (!Array.isArray(possibles)) {
-	            throw new math.error.UnsupportedTypeError('pickRandom', math['typeof'](possibles));
-	          }
-
-	          if (array.size(possibles).length > 1) {
-	            throw new Error('Only one dimensional vectors supported');
-	          }
-
-	          // TODO: add support for multi dimensional matrices
-	          return possibles[Math.floor(Math.random() * possibles.length)];
-	        }
-
-	      };
-
-	      var _random = function(min, max) {
-	        return min + distribution() * (max - min);
-	      };
-
-	      var _randomInt = function(min, max) {
-	        return Math.floor(min + distribution() * (max - min));
-	      };
-
-	      // This is a function for generating a random matrix recursively.
-	      var _randomDataForMatrix = function(size, min, max, randFunc) {
-	        var data = [], length, i;
-	        size = size.slice(0);
-
-	        if (size.length > 1) {
-	          for (i = 0, length = size.shift(); i < length; i++)
-	            data.push(_randomDataForMatrix(size, min, max, randFunc));
-	        } else {
-	          for (i = 0, length = size.shift(); i < length; i++)
-	            data.push(randFunc(min, max));
-	        }
-
-	        return data;
-	      };
-
-	      return randFunctions;
-
-	    })(distribution);
-	  };
-
-	  // Each distribution is a function that takes no argument and when called returns
-	  // a number between 0 and 1.
-	  var distributions = {
-
-	    uniform: function() {
-	      return Math.random;
-	    },
-
-	    // Implementation of normal distribution using Box-Muller transform
-	    // ref : http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
-	    // We take : mean = 0.5, standard deviation = 1/6
-	    // so that 99.7% values are in [0, 1].
-	    normal: function() {
-	      return function() {
-	        var u1, u2,
-	            picked = -1;
-	        // We reject values outside of the interval [0, 1]
-	        // TODO: check if it is ok to do that?
-	        while (picked < 0 || picked > 1) {
-	          u1 = Math.random();
-	          u2 = Math.random();
-	          picked = 1/6 * Math.pow(-2 * Math.log(u1), 0.5) * Math.cos(2 * Math.PI * u2) + 0.5;
-	        }
-	        return picked;
-	      }
-	    }
-	  };
-
-	  return distribution;
-	};
-
-
-/***/ },
-/* 315 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Determine the type of a variable
-	 *
-	 *     type(x)
-	 *
-	 * @param {*} x
-	 * @return {String} type  Lower case type, for example 'number', 'string',
-	 *                        'array', 'date'.
-	 */
-	exports.type = function(x) {
-	  var type = typeof x;
-
-	  if (type === 'object') {
-	    if (x === null)           return 'null';
-	    if (x instanceof Boolean) return 'boolean';
-	    if (x instanceof Number)  return 'number';
-	    if (x instanceof String)  return 'string';
-	    if (Array.isArray(x))     return 'array';
-	    if (x instanceof Date)    return 'date';
-	    if (x instanceof Function)return 'function';
-	    if (x instanceof RegExp)  return 'regexp';
-	  }
-
-	  return type;
-	};
-
-
-/***/ },
-/* 316 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// function utils
-
-	/*
-	 * Memoize a given function by caching the computed result.
-	 * The cache of a memoized function can be cleared by deleting the `cache`
-	 * property of the function.
-	 *
-	 * @param {function} fn   The function to be memoized. Must be a pure function.
-	 * @return {function}     Returns the memoized function
-	 */
-	exports.memoize = function(fn) {
-	  return function memoize() {
-	    if (typeof memoize.cache !== 'object') {
-	      memoize.cache = {};
-	    }
-
-	    var hash = JSON.stringify(arguments);
-	    if (!(hash in memoize.cache)) {
-	      return memoize.cache[hash] = fn.apply(fn, arguments);
-	    }
-	    return memoize.cache[hash];
-	  };
-	};
-
-
-/***/ },
-/* 317 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30466,16 +31965,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 318 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// FIXME: remove dependencies on Nodes
-	var ArrayNode = __webpack_require__(162);
-	var OperatorNode = __webpack_require__(171);
-	var SymbolNode = __webpack_require__(173);
-	var ConstantNode = __webpack_require__(166);
+	var ArrayNode = __webpack_require__(172);
+	var OperatorNode = __webpack_require__(181);
+	var SymbolNode = __webpack_require__(183);
+	var ConstantNode = __webpack_require__(176);
 
 	// GREEK LETTERS
 	var greek = {
