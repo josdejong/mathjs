@@ -35,6 +35,7 @@ describing all available functions, constants, and units in detail.
   - [Matrices](datatypes/matrices.html)
   - [Units](datatypes/units.html)
 - [Configuration](configuration.html)
+- [Serialization](serialization.html)
 - [Extension](extension.html)
 - [Command Line Interface](command_line_interface.html)
 

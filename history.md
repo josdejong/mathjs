@@ -4,6 +4,20 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20150228-version-140">2015-02-28, version 1.4.0 <a href="#20150228-version-140" title="Permalink">#</a></h2>
+
+- Implemented trigonometric functions:
+  `acosh`, `acoth`, `acsch`, `asech`, `asinh`, `atanh`, `acot`, `acsc`, `asec`.
+  Thanks @BigFav.
+- Added BigNumber support for functions: `cot`, `csc`, `sec`, `coth`,
+  `csch`, `sech`. Thanks @BigFav.
+- Implemented support for serialization and deserialization of math.js data
+  types.
+- Fixed the calculation of `norm()` and `abs()` for large complex numbers.
+  Thanks @rjbaucells.
+- Fixed #281: improved formatting complex numbers. Round the real or imaginary
+  part to zero when the difference is larger than the configured precision.
+
 
 <h2 id="20150209-version-130">2015-02-09, version 1.3.0 <a href="#20150209-version-130" title="Permalink">#</a></h2>
 

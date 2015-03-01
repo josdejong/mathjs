@@ -90,6 +90,9 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `<=`        | Smallereq               | `x <= y`    | Left to right | `4 <= 3`              | `false`
 `>=`        | Largereq                | `x >= y`    | Left to right | `2 + 4 >= 6`          | `true`
 
+
+<h2 id="precedence">Precedence <a href="#precedence" title="Permalink">#</a></h2>
+
 The operators have the following precedence, from highest to lowest:
 
 Operators                         | Description
@@ -467,7 +470,7 @@ with an entry for every visible statement.
 
 ```js
 // a multi line expression
-math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [1, 3, 9]
+math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [3, 6, 9]
 
 // semicolon statements are hided from the output
 math.eval('a=3; b=4; a + b \n a * b');  // ResultSet, [7, 12]

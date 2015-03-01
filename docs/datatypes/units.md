@@ -39,13 +39,20 @@ A `Unit` contains the following functions:
   length, mass, etc.
 - `equals(unit)`. Test whether a unit equals an other unit. Units are equal
   when they have the same base and same value when normalized to SI units.
-- `to(unitName)`. Convert the unit to a specific unit name. Returns a clone of
-  the unit with a fixed prefix and unit.
-- `toNumber(unitName)`. Get the value of a unit when converted to the
-  specified unit (a unit with optional prefix but without value).
 - `format([precision])`. Get a string representation of the unit. The function
   will determine the best fitting prefix for the unit. If precision is defined,
   the units value will be rounded to the provided number of digits.
+- `fromJSON(json)`. Revive a unit from a JSON object. Accepts
+  An object `{mathjs: 'Unit', value: number, unit: string, fixPrefix: boolean}`,
+  where the property `mathjs` and `fixPrefix` are optional.
+  Used when deserializing a unit, see [Serialization](../serialization.html).
+- `to(unitName)`. Convert the unit to a specific unit name. Returns a clone of
+  the unit with a fixed prefix and unit.
+- `toJSON()`. Returns a JSON representation of the unit, with signature
+  `{mathjs: 'Unit', value: number, unit: string, fixPrefix: boolean}`.
+  Used when serializing a unit, see [Serialization](../serialization.html).
+- `toNumber(unitName)`. Get the value of a unit when converted to the
+  specified unit (a unit with optional prefix but without value).
 - `toString()`. Get a string representation of the unit. The function will
   determine the best fitting prefix for the unit.
 

@@ -14,6 +14,7 @@ layout: default
 - [Function transform](function_transform.js.html)
 - [Import](import.js.html)
 - [Matrices](matrices.js.html)
+- [Serialization](serialization.js.html)
 - [Units](units.js.html)
 
 # Browser examples

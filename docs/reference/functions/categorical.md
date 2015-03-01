@@ -135,9 +135,18 @@ layout: default
 <h2 id="trigonometry">trigonometry <a href="#trigonometry" title="Permalink">#</a></h2>
 
 - [acos(x)](acos.html)
+- [acosh(x)](acosh.html)
+- [acot(x)](acot.html)
+- [acoth(x)](acoth.html)
+- [acsc(x)](acsc.html)
+- [acsch(x)](acsch.html)
+- [asec(x)](asec.html)
+- [asech(x)](asech.html)
 - [asin(x)](asin.html)
+- [asinh(x)](asinh.html)
 - [atan(x)](atan.html)
 - [atan2(y, x)](atan2.html)
+- [atanh(x)](atanh.html)
 - [cos(x)](cos.html)
 - [cosh(x)](cosh.html)
 - [cot(x)](cot.html)
