@@ -8,6 +8,9 @@
   SI standards (`1 KiB == 1024 B`, `1 kB == 1000 B`).
 
 
+## not yet released, version 1.4.1-SNAPSHOT
+
+
 ## 2015-02-28, version 1.4.0
 
 - Implemented trigonometric functions:
