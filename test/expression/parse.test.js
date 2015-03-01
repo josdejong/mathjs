@@ -1262,8 +1262,8 @@ describe('parse', function() {
         var node = math.parse('a ? (b ? c : d) : (e ? f : g)');
         assert(node instanceof ConditionalNode);
         assert.equal(node.condition.toString(), 'a');
-        assert.equal(node.trueExpr.toString(), '(b) ? (c) : (d)');
-        assert.equal(node.falseExpr.toString(), '(e) ? (f) : (g)');
+        assert.equal(node.trueExpr.toString(), 'b ? c : d');
+        assert.equal(node.falseExpr.toString(), 'e ? f : g');
       });
 
       it('should respect precedence of range operator and relational operators', function () {
