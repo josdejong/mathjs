@@ -6,6 +6,7 @@ var assert = require('assert'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     OperatorNode = require('../../../lib/expression/node/OperatorNode'),
     FunctionAssignmentNode = require('../../../lib/expression/node/FunctionAssignmentNode'),
+    AssignmentNode = require('../../../lib/expression/node/AssignmentNode'),
     RangeNode = require('../../../lib/expression/node/RangeNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode');
 
@@ -176,6 +177,15 @@ describe('FunctionAssignmentNode', function() {
     var n = new FunctionAssignmentNode('f', ['x'], o);
 
     assert.equal(n.toString(), 'function f(x) = 2 + x');
+  });
+
+  it ('should stringify a FunctionAssignmentNode conataining an AssignmentNode', function () {
+    var a = new ConstantNode(2);
+
+    var n1 = new AssignmentNode('a', a);
+    var n = new FunctionAssignmentNode('f', ['x'], n1);
+
+    assert.equal(n.toString(), 'function f(x) = (a = 2)');
   });
 
   it ('should LaTeX a FunctionAssignmentNode', function() {
