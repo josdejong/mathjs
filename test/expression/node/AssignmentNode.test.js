@@ -200,6 +200,15 @@ describe('AssignmentNode', function() {
     assert.equal(n.toString(), 'b = 3');
   });
 
+  it ('should stringify an AssignmentNode containing and AssignmentNode', function () {
+    var a = new ConstantNode(2);
+    var b = new AssignmentNode('a', a);
+
+    var n = new AssignmentNode('b', b);
+
+    assert.equal(n.toString(), 'b = (a = 2)');
+  });
+
   it ('should LaTeX a AssignmentNode', function () {
     var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
