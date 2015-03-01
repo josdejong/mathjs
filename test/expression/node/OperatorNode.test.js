@@ -276,7 +276,7 @@ describe('OperatorNode', function() {
     var c = new ConstantNode(4);
 
     var n = new OperatorNode('+', 'add', [a, b]);
-    assert.equal(n.toTex(), '{2}+{3}');
+    assert.equal(n.toTex(), '{2} + {3}');
   });
 
   it ('should LaTeX an OperatorNode with factorial', function () {
@@ -298,8 +298,8 @@ describe('OperatorNode', function() {
     var n2= new OperatorNode('!', 'factorial', [add] );
     var n3= new OperatorNode('!', 'factorial', [mult] );
     var n4= new OperatorNode('!', 'factorial', [div] );
-    assert.equal(n1.toTex(), '\\left({{2}-{3}}\\right)!');
-    assert.equal(n2.toTex(), '\\left({{2}+{3}}\\right)!');
+    assert.equal(n1.toTex(), '\\left({{2} - {3}}\\right)!');
+    assert.equal(n2.toTex(), '\\left({{2} + {3}}\\right)!');
     assert.equal(n3.toTex(), '\\left({{2} \\cdot {3}}\\right)!');
     assert.equal(n4.toTex(), '\\left({\\frac{2}{3}}\\right)!');
   });
@@ -316,8 +316,8 @@ describe('OperatorNode', function() {
     var n3 = new OperatorNode('-', 'unaryMinus', [add]);
 
     assert.equal(n1.toTex(), '-2');
-    assert.equal(n2.toTex(), '-\\left({{2}-{3}}\\right)');
-    assert.equal(n3.toTex(), '-\\left({{2}+{3}}\\right)');
+    assert.equal(n2.toTex(), '-\\left({{2} - {3}}\\right)');
+    assert.equal(n3.toTex(), '-\\left({{2} + {3}}\\right)');
   });
 
   it ('should LaTeX an OperatorNode that subtracts an OperatorNode', function() {
@@ -331,13 +331,13 @@ describe('OperatorNode', function() {
     var n1 = new OperatorNode('-', 'subtract', [a, sub]);
     var n2 = new OperatorNode('-', 'subtract', [a, add]);
 
-    assert.equal(n1.toTex(), '{1}-\\left({{2}-{3}}\\right)');
-    assert.equal(n2.toTex(), '{1}-\\left({{2}+{3}}\\right)');
+    assert.equal(n1.toTex(), '{1} - \\left({{2} - {3}}\\right)');
+    assert.equal(n2.toTex(), '{1} - \\left({{2} + {3}}\\right)');
   });
 
   it ('should LaTeX an OperatorNode with zero arguments', function () {
     var n = new OperatorNode('foo', 'foo', []);
-    assert.equal(n.toTex(), 'foo()');
+    assert.equal(n.toTex(), 'foo\\left({}\\right)');
   });
 
   it ('should LaTeX an OperatorNode with more than two operators', function () {
@@ -346,7 +346,7 @@ describe('OperatorNode', function() {
     var c = new ConstantNode(4);
 
     var n = new OperatorNode('foo', 'foo', [a, b, c]);
-    assert.equal(n.toTex(), 'foo(2, 3, 4)');
+    assert.equal(n.toTex(), 'foo\\left({2, 3, 4}\\right)');
 
   });
 
@@ -363,10 +363,10 @@ describe('OperatorNode', function() {
     var m2 = new OperatorNode('*', 'multiply', [n1, c]);
     var m3 = new OperatorNode('-', 'subtract', [m2, d]);
 
-    assert.equal(n1.toTex(), '{2}+{3}');
-    assert.equal(n2.toTex(), '{4}-{5}');
-    assert.equal(n3.toTex(), '\\left({{2}+{3}}\\right) \\cdot \\left({{4}-{5}}\\right)');
-    assert.equal(m3.toTex(), '{\\left({{2}+{3}}\\right) \\cdot {4}}-{5}');
+    assert.equal(n1.toTex(), '{2} + {3}');
+    assert.equal(n2.toTex(), '{4} - {5}');
+    assert.equal(n3.toTex(), '\\left({{2} + {3}}\\right) \\cdot \\left({{4} - {5}}\\right)');
+    assert.equal(m3.toTex(), '{\\left({{2} + {3}}\\right) \\cdot {4}} - {5}');
   });
 
   it ('should have an identifier', function () {

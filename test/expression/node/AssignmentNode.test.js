@@ -216,4 +216,13 @@ describe('AssignmentNode', function() {
     assert.equal(n.toTex(), '{b}={3}');
   });
 
+  it ('should LaTeX an AssignmentNode containing an AssignmentNode', function () {
+    var a = new ConstantNode(2);
+    var b = new AssignmentNode('a', a);
+
+    var n = new AssignmentNode('b', b);
+
+    assert.equal(n.toTex(), '{b}=\\left({{a}={2}}\\right)');
+  });
+
 });
