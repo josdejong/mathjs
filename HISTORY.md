@@ -1,5 +1,8 @@
 # History
 
+## not yet released, version 1.4.1-SNAPSHOT
+
+
 ## 2015-02-28, version 1.4.0
 
 - Implemented trigonometric functions:
