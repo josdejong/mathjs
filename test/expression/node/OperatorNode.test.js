@@ -10,7 +10,7 @@ var assert = require('assert'),
 describe('OperatorNode', function() {
 
   it ('should create an OperatorNode', function () {
-    var n = new OperatorNode();
+    var n = new OperatorNode('op', 'fn', []);
     assert(n instanceof OperatorNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'OperatorNode');
@@ -57,7 +57,7 @@ describe('OperatorNode', function() {
   });
 
   it ('should filter an OperatorNode without contents', function () {
-    var n = new OperatorNode();
+    var n = new OperatorNode('op', 'fn', []);
 
     assert.deepEqual(n.filter(function (node) {return node instanceof OperatorNode}),  [n]);
     assert.deepEqual(n.filter(function (node) {return node instanceof SymbolNode}),    []);
@@ -176,55 +176,98 @@ describe('OperatorNode', function() {
     assert.strictEqual(d.args[1], c.args[1]);
   });
 
-  it ('should stringify an OperatorNode', function () {
-    var a = new ConstantNode(2);
-    var b = new ConstantNode(3);
-    var c = new ConstantNode(4);
+  describe('toString', function () {
+    it ('should stringify an OperatorNode', function () {
+      var a = new ConstantNode(2);
+      var b = new ConstantNode(3);
+      var c = new ConstantNode(4);
 
-    var n = new OperatorNode('+', 'add', [a, b]);
-    assert.equal(n.toString(), '2 + 3');
-  });
+      var n = new OperatorNode('+', 'add', [a, b]);
+      assert.equal(n.toString(), '2 + 3');
+    });
 
-  it ('should stringify an OperatorNode with factorial', function () {
-    var a = new ConstantNode(2);
-    var n = new OperatorNode('!', 'factorial', [a]);
-    assert.equal(n.toString(), '2!');
-  });
+    it ('should stringify an OperatorNode with factorial', function () {
+      var a = new ConstantNode(2);
+      var n = new OperatorNode('!', 'factorial', [a]);
+      assert.equal(n.toString(), '2!');
+    });
 
-  it ('should stringify an OperatorNode with unary minus', function () {
-    var a = new ConstantNode(2);
-    var n = new OperatorNode('-', 'unaryMinus', [a]);
-    assert.equal(n.toString(), '-2');
-  });
+    it ('should stringify an OperatorNode with unary minus', function () {
+      var a = new ConstantNode(2);
+      var n = new OperatorNode('-', 'unaryMinus', [a]);
+      assert.equal(n.toString(), '-2');
+    });
 
-  it ('should stringify an OperatorNode with zero arguments', function () {
-    var n = new OperatorNode('foo', 'foo', []);
-    assert.equal(n.toString(), 'foo()');
-  });
+    it ('should stringify an OperatorNode with zero arguments', function () {
+      var n = new OperatorNode('foo', 'foo', []);
+      assert.equal(n.toString(), 'foo()');
+    });
 
-  it ('should stringify an OperatorNode with more than two operators', function () {
-    var a = new ConstantNode(2);
-    var b = new ConstantNode(3);
-    var c = new ConstantNode(4);
+    it ('should stringify an OperatorNode with more than two operators', function () {
+      var a = new ConstantNode(2);
+      var b = new ConstantNode(3);
+      var c = new ConstantNode(4);
 
-    var n = new OperatorNode('foo', 'foo', [a, b, c]);
-    assert.equal(n.toString(), 'foo(2, 3, 4)');
+      var n = new OperatorNode('foo', 'foo', [a, b, c]);
+      assert.equal(n.toString(), 'foo(2, 3, 4)');
 
-  });
+    });
 
-  it ('should stringify an OperatorNode with nested operator nodes', function () {
-    var a = new ConstantNode(2);
-    var b = new ConstantNode(3);
-    var c = new ConstantNode(4);
-    var d = new ConstantNode(5);
+    it ('should stringify an OperatorNode with nested operator nodes', function () {
+      var a = new ConstantNode(2);
+      var b = new ConstantNode(3);
+      var c = new ConstantNode(4);
+      var d = new ConstantNode(5);
 
-    var n1 = new OperatorNode('+', 'add', [a, b]);
-    var n2 = new OperatorNode('-', 'subtract', [c, d]);
-    var n3 = new OperatorNode('*', 'multiply', [n1, n2]);
+      var n1 = new OperatorNode('+', 'add', [a, b]);
+      var n2 = new OperatorNode('-', 'subtract', [c, d]);
+      var n3 = new OperatorNode('*', 'multiply', [n1, n2]);
 
-    assert.equal(n1.toString(), '2 + 3');
-    assert.equal(n2.toString(), '4 - 5');
-    assert.equal(n3.toString(), '(2 + 3) * (4 - 5)');
+      assert.equal(n1.toString(), '2 + 3');
+      assert.equal(n2.toString(), '4 - 5');
+      assert.equal(n3.toString(), '(2 + 3) * (4 - 5)');
+    });
+
+    it ('should stringify left associative OperatorNodes that are associative with another Node', function () {
+      assert.equal(math.parse('(a+b)+c').toString(), 'a + b + c');
+      assert.equal(math.parse('a+(b+c)').toString(), 'a + b + c');
+      assert.equal(math.parse('(a+b)-c').toString(), 'a + b - c');
+      assert.equal(math.parse('a+(b-c)').toString(), 'a + b - c');
+
+      assert.equal(math.parse('(a*b)*c').toString(), 'a * b * c');
+      assert.equal(math.parse('a*(b*c)').toString(), 'a * b * c');
+      assert.equal(math.parse('(a*b)/c').toString(), 'a * b / c');
+      assert.equal(math.parse('a*(b/c)').toString(), 'a * b / c');
+    });
+
+    it ('should stringify left associative OperatorNodes that are not associative with another Node', function () {
+      assert.equal(math.parse('(a-b)-c').toString(), 'a - b - c');
+      assert.equal(math.parse('a-(b-c)').toString(), 'a - (b - c)');
+      assert.equal(math.parse('(a-b)+c').toString(), 'a - b + c');
+      assert.equal(math.parse('a-(b+c)').toString(), 'a - (b + c)');
+
+      assert.equal(math.parse('(a/b)/c').toString(), 'a / b / c');
+      assert.equal(math.parse('a/(b/c)').toString(), 'a / (b / c)');
+      assert.equal(math.parse('(a/b)*c').toString(), 'a / b * c');
+      assert.equal(math.parse('a/(b*c)').toString(), 'a / (b * c)');
+    });
+
+    it ('should stringify right associative OperatorNodes that are not associative with another Node', function () {
+      assert.equal(math.parse('(a^b)^c').toString(), '(a ^ b) ^ c');
+      assert.equal(math.parse('a^(b^c)').toString(), 'a ^ b ^ c');
+    });
+
+    it ('should stringify unary OperatorNodes containing a binary OperatorNode', function () {
+      assert.equal(math.parse('(a*b)!').toString(), '(a * b)!');
+      assert.equal(math.parse('-(a*b)').toString(), '-(a * b)');
+      assert.equal(math.parse('-(a+b)').toString(), '-(a + b)');
+    });
+
+    it ('should stringify unary OperatorNodes containing a unary OperatorNode', function () {
+      assert.equal(math.parse('(-a)!').toString(), '(-a)!');
+      assert.equal(math.parse('-(a!)').toString(), '-a!');
+      assert.equal(math.parse('-(-a)').toString(), '-(-a)');
+    });
   });
 
   it ('should LaTeX an OperatorNode', function () {
@@ -324,6 +367,15 @@ describe('OperatorNode', function() {
     assert.equal(n2.toTex(), '{4}-{5}');
     assert.equal(n3.toTex(), '\\left({{2}+{3}}\\right) \\cdot \\left({{4}-{5}}\\right)');
     assert.equal(m3.toTex(), '{\\left({{2}+{3}}\\right) \\cdot {4}}-{5}');
+  });
+
+  it ('should have an identifier', function () {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new OperatorNode('+', 'add', [a, b]);
+
+    assert.equal(n.getIdentifier(), 'OperatorNode:add');
   });
 
 });

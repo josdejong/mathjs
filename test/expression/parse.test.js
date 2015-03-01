@@ -1262,8 +1262,8 @@ describe('parse', function() {
         var node = math.parse('a ? (b ? c : d) : (e ? f : g)');
         assert(node instanceof ConditionalNode);
         assert.equal(node.condition.toString(), 'a');
-        assert.equal(node.trueExpr.toString(), '(b) ? (c) : (d)');
-        assert.equal(node.falseExpr.toString(), '(e) ? (f) : (g)');
+        assert.equal(node.trueExpr.toString(), 'b ? c : d');
+        assert.equal(node.falseExpr.toString(), 'e ? f : g');
       });
 
       it('should respect precedence of range operator and relational operators', function () {
@@ -1547,8 +1547,8 @@ describe('parse', function() {
     it('should correctly stringify a node tree', function() {
       assert.equal(parse('0').toString(), '0');
       assert.equal(parse('"hello"').toString(), '"hello"');
-      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + (3 * i), 4]');
-      assert.equal(parse('1/2a').toString(), '(1 / 2) * a');
+      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3 * i, 4]');
+      assert.equal(parse('1/2a').toString(), '1 / 2 * a');
     });
 
     describe('custom nodes', function () {
