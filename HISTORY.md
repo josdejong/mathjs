@@ -2,6 +2,9 @@
 
 ## not yet released, version 1.4.1-SNAPSHOT
 
+- Improvements and bug fixes in outputting parenteses in `Node.toString` and
+  `Node.toTex` functions. Thanks @FSMaxB.
+
 
 ## 2015-02-28, version 1.4.0
 
