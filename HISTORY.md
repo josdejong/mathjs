@@ -2,6 +2,7 @@
 
 ## not yet released, version 1.4.1-SNAPSHOT
 
+- Added unit `stone` (6.35 kg).
 - Improvements and bug fixes in outputting parenteses in `Node.toString` and
   `Node.toTex` functions. Thanks @FSMaxB.
 
