@@ -39,7 +39,7 @@ describe('csc', function() {
     var bigPi = bigmath.pi;
     var sqrt2 = bigmath.SQRT2.toString();
 
-    assert.ok(!bigmath.csc(Big(0)).isFinite());
+    assert.deepEqual(bigmath.csc(Big(0)), Big(Infinity));
     assert.deepEqual(bigmath.csc(bigPi.div(8)).toString(), '2.6131259297527530557');
     assert.deepEqual(bigmath.csc(bigPi.div(4)).toString(), sqrt2);
     assert.deepEqual(bigmath.csc(bigPi.div(2)).toString(), '1');

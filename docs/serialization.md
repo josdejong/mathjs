@@ -1,9 +1,13 @@
 # Serialization
 
 Math.js has a number of data types like `Matrix`, `Complex`, and `Unit`. These
-types are instantiated JavaScript objects. In order to share these data types
-between a server and a client, or a web worker and the browser, these data
-types must be serialized. The data types of math.js can be serialized to JSON.
+types are instantiated JavaScript objects. To be able to store these data types
+or share them between processes, they must be serialized. The data types of
+math.js can be serialized to JSON. Use cases:
+
+- Store data in a database or on disk.
+- Share data between a server and a client.
+- Share data between a web worker and the browser.
 
 Math.js types can be serialized using JavaScript's built-in `JSON.stringify`
 function:
@@ -25,10 +29,10 @@ var x    = JSON.parse(json, math.json.reviver);   // Complex 2 + 3i
 ```
 
 Note that if math.js is used in conjunction with other data types, it is
-possible to use multiple reviver functions by cascading them, like:
+possible to use multiple reviver functions at the same time by cascading them:
 
 ```js
 var reviver = function (key, value) {
-  return math.json.reviver(key, otherReviver(key, value));
+  return reviver1(key, reviver2(key, value));
 }
 ```

@@ -33,23 +33,22 @@ describe('sin', function() {
   });
 
   it('should return the sine of a bignumber', function() {
-    assert.ok(bigmath.sin(bigmath.bignumber(0)).isZero());
+    var Big = bigmath.bignumber;
+    assert.deepEqual(bigmath.sin(Big(0)), Big(0));
 
     // 103.64 % tau = 3.109... <- pretty close to the pi boundary
-    var result_val = bigmath.sin(bigmath.bignumber(103.64));
-    assert.equal(result_val.constructor.precision, 242);
-    assert.deepEqual(result_val.toString(), '0.032551816956616158442731315994267213051204459121689332893471030' +
-                                              '714804383298805501395839512341888732261080924779366105855493575' +
-                                              '835362891900420559398509489530577719840860106717522689249606121' +
-                                              '2602629134186583352145117086874446046421403346033616');
-    var arg = bigmath.bignumber(-103.64);
+    var result_val = bigmath.sin(Big(103.64));
+    assert.deepEqual(result_val, Big('0.0325518169566161584427313159942672130512044591216893328934710' +
+                                       '3071480438329880550139583951234188873226108092477936610585549' +
+                                       '3575835362891900420559398509489530577719840860106717522689249' +
+                                       '6061212602629134186583352145117086874446046421403346033616'));
+    var arg = Big(-103.64);
     result_val = bigmath.sin(arg);
-    assert.deepEqual(arg, bigmath.bignumber(-103.64));   // Make sure arg wasn't changed
-    assert.equal(result_val.constructor.precision, 242);
-    assert.deepEqual(result_val.toString(), '-0.0325518169566161584427313159942672130512044591216893328934710' +
-                                               '3071480438329880550139583951234188873226108092477936610585549' +
-                                               '3575835362891900420559398509489530577719840860106717522689249' +
-                                               '6061212602629134186583352145117086874446046421403346033616');
+    assert.deepEqual(arg, Big(-103.64));   // Make sure arg wasn't changed
+    assert.deepEqual(result_val, Big('-0.0325518169566161584427313159942672130512044591216893328934710' +
+                                        '3071480438329880550139583951234188873226108092477936610585549' +
+                                        '3575835362891900420559398509489530577719840860106717522689249' +
+                                        '6061212602629134186583352145117086874446046421403346033616'));
     bigmath.config({number: 'bignumber', precision: 15});
 
     var bigPi = bigmath.pi;

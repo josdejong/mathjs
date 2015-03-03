@@ -9,6 +9,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     bigmath = math.create({number: 'bignumber', precision: 20}),
+    biggermath = math.create({precision: 21}),
+    atanhBig = bigmath.atanh,
     Big = bigmath.bignumber;
 
 describe('atanh', function() {
@@ -22,8 +24,10 @@ describe('atanh', function() {
   });
 
   it('should return the hyperbolic arctan of a number', function() {
-    assert.ok(isNaN(atanh(-1.1)));
-    assert.ok(isNaN(atanh(1.1)));
+    approx.deepEqual(atanh(-2), complex(-0.54930614433405485, pi / 2));
+    approx.deepEqual(atanh(2),  complex(0.54930614433405485, -pi / 2));
+    //assert.ok(isNaN(atanh(-2)));
+    //assert.ok(isNaN(atanh(2)));
 
     approx.equal(atanh(-1), -Infinity);
     approx.equal(atanh(-0.5), -0.54930614433405484569762261846);
@@ -35,11 +39,11 @@ describe('atanh', function() {
   it('should return the hyperbolic arctan of a bignumber', function() {
     var arg1 = Big(-1);
     var arg2 = Big(-0.5);
-    assert.deepEqual(atanh(arg1), Big(-Infinity));
-    assert.deepEqual(atanh(arg2), Big('-0.5493061443340548457')); 
-    assert.deepEqual(atanh(Big(0)), Big(0));
-    assert.deepEqual(atanh(Big(0.5)), Big('0.5493061443340548457')); 
-    assert.deepEqual(atanh(Big(1)), Big(Infinity));
+    assert.deepEqual(atanhBig(arg1), Big(-Infinity));
+    assert.deepEqual(atanhBig(arg2), Big('-0.5493061443340548457')); 
+    assert.deepEqual(atanhBig(Big(0)), Big(0));
+    assert.deepEqual(atanhBig(Big(0.5)), Big('0.5493061443340548457')); 
+    assert.deepEqual(atanhBig(Big(1)), Big(Infinity));
 
     //Make sure arg was not changed
     assert.deepEqual(arg1, Big(-1));
@@ -54,14 +58,15 @@ describe('atanh', function() {
   });
 
   it('should be the inverse function of bignumber tanh', function() {
-    assert.deepEqual(atanh(bigmath.tanh(Big(-0.5))), Big(-0.5));
-    assert.deepEqual(atanh(bigmath.tanh(Big(0))), Big(0));
-    assert.deepEqual(atanh(bigmath.tanh(Big(0.5))), Big(0.5));
+    assert.deepEqual(atanhBig(bigmath.tanh(Big(-0.5))), Big(-0.5));
+    assert.deepEqual(atanhBig(bigmath.tanh(Big(0))), Big(0));
+    assert.deepEqual(atanhBig(bigmath.tanh(Big(0.5))), Big(0.5));
 
     /* Pass in more digits to pi. */
-    //bigmath.config({precision: 21});
-    //assert.deepEqual(atanh(bigmath.tanh(Big(-1))), Big(-1));
-    //assert.deepEqual(atanh(bigmath.tanh(Big(0.1))), Big(0.1));
+    var arg = Big(-1);
+    assert.deepEqual(atanhBig(biggermath.tanh(arg)), Big(-1));
+    assert.deepEqual(atanhBig(biggermath.tanh(Big(0.1))), Big(0.1));
+    assert.deepEqual(arg, Big(-1));
   });
 
   it('should throw an error if the bignumber result is complex', function() {
@@ -80,9 +85,11 @@ describe('atanh', function() {
     approx.deepEqual(atanh(complex('-2-3i')), complex(-0.1469466662255, -1.33897252229449));
     approx.deepEqual(atanh(complex('1+i')), complex(0.402359478108525, 1.01722196789785137));
     approx.deepEqual(atanh(complex('i')), complex(0, pi / 4));
-    approx.deepEqual(atanh(complex('2')), complex(0.54930614433405485, -1.5707963267948966));
+
+    approx.deepEqual(atanh(complex('2')), complex(0.54930614433405485, -pi / 2));
     assert.deepEqual(atanh(complex('1')), complex(Infinity, 0));
     assert.deepEqual(atanh(complex('0')), complex(0, 0));
+    approx.deepEqual(atanh(complex('-2')), complex(-0.54930614433405485, pi / 2));
   });
 
   it('should throw an error if called with a unit', function() {

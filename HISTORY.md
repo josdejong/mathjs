@@ -1,13 +1,23 @@
 # History
 
-## not yet released, version 1.4.0-SNAPSHOT
+## not yet released, version 1.4.1-SNAPSHOT
+
+- Added unit `stone` (6.35 kg).
+- Improvements and bug fixes in outputting parenteses in `Node.toString` and
+  `Node.toTex` functions. Thanks @FSMaxB.
+
+
+## 2015-02-28, version 1.4.0
 
 - Implemented trigonometric functions:
-  `acosh`, `acoth`, `acsch`, `asech`, `asinh`, `atanh`. Thanks @BigFav.
-- Implemented BigNumber support for functions: `cot`, `csc`, `sec`, `coth`,
+  `acosh`, `acoth`, `acsch`, `asech`, `asinh`, `atanh`, `acot`, `acsc`, `asec`.
+  Thanks @BigFav.
+- Added BigNumber support for functions: `cot`, `csc`, `sec`, `coth`,
   `csch`, `sech`. Thanks @BigFav.
 - Implemented support for serialization and deserialization of math.js data
   types.
+- Fixed the calculation of `norm()` and `abs()` for large complex numbers.
+  Thanks @rjbaucells.
 - Fixed #281: improved formatting complex numbers. Round the real or imaginary
   part to zero when the difference is larger than the configured precision.
 

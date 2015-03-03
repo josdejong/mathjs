@@ -60,16 +60,21 @@ A `Complex` object has the following functions:
 - `equals(other)`. Test whether a complex number equals an other complex value.
   Two complex numbers are equal when both their real and imaginary parts are
   equal.
-- `fromPolar(r: number, phi: number)`. Create a complex number from polar
-  coordinates.
-- `fromPolar({r: number, phi: number})`. Create a complex number from polar
-  coordinates.
-- `toPolar()`. Get the polar coordinates of the complex number, returns
-  an object with properties `r` and `phi`.
 - `format([precision: number])`. Get a string representation of the complex number,
   formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
   If precision is defined, the units value will be rounded to the provided
   number of digits.
+- `fromJSON(json)`. Revive a complex number from a JSON object. Accepts
+  An object `{mathjs: 'Complex', re: number, im: number}`, where the property
+  `mathjs` is optional.
+  Used when deserializing a complex number, see [Serialization](../serialization.md).
+- `fromPolar(r: number, phi: number)`. Create a complex number from polar
+  coordinates.
+- `toJSON()`. Returns a JSON representation of the complex number, with signature
+  `{mathjs: 'Complex', re: number, im: number}`.
+  Used when serializing a complex number, see [Serialization](../serialization.md).
+- `toPolar()`. Get the polar coordinates of the complex number, returns
+  an object with properties `r` and `phi`.
 - `toString()`. Returns a string representation of the complex number, formatted
   as `a + bi` where `a` is the real part and `b` the imaginary part.
 

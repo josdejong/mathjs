@@ -9,6 +9,7 @@ var assert = require('assert'),
     atan = math.atan,
     tan = math.tan,
     bigmath = math.create({number: 'bignumber', precision: 20}),
+    atanBig = bigmath.atan;
     Big = bigmath.bignumber;
 
 describe('atan', function() {
@@ -34,12 +35,12 @@ describe('atan', function() {
     var arg2 = Big(-0.5);
     var arg3 = Big(0);
     var arg6 = Big(2);
-    assert.deepEqual(atan(arg1), Big('-0.7853981633974483096'));
-    assert.deepEqual(atan(arg2), Big('-0.4636476090008061162'));
-    assert.deepEqual(atan(arg3), Big(0));
-    assert.deepEqual(atan(Big(0.5)), Big('0.4636476090008061162'));
-    assert.deepEqual(atan(Big(1)), Big('0.7853981633974483096'));
-    assert.deepEqual(atan(arg6), Big('1.107148717794090503'));
+    assert.deepEqual(atanBig(arg1), Big('-0.7853981633974483096'));
+    assert.deepEqual(atanBig(arg2), Big('-0.4636476090008061162'));
+    assert.deepEqual(atanBig(arg3), Big(0));
+    assert.deepEqual(atanBig(Big(0.5)), Big('0.4636476090008061162'));
+    assert.deepEqual(atanBig(Big(1)), Big('0.7853981633974483096'));
+    assert.deepEqual(atanBig(arg6), Big('1.107148717794090503'));
 
     // Ensure the arguments where not changed
     assert.deepEqual(arg1, Big(-1));
@@ -49,7 +50,7 @@ describe('atan', function() {
 
     // Hit Newton's method case
     bigmath.config({precision: 61});
-    assert.deepEqual(atan(Big(0.9)).toString(), '0.732815101786506591640792072734280251985755679358256086310506');
+    assert.deepEqual(atanBig(Big(0.9)), Big('0.732815101786506591640792072734280251985755679358256086310506'));
   });
 
   it('should be the inverse function of tan', function() {
@@ -62,12 +63,12 @@ describe('atan', function() {
 
   it('should be the inverse function of bignumber tan', function() {
     bigmath.config({precision: 20});
-    assert.deepEqual(atan(bigmath.tan(Big(-1))).toString(), '-1');
-    assert.ok(atan(bigmath.tan(Big(0))).isZero());
-    assert.deepEqual(atan(bigmath.tan(Big(0.1))).toString(), '0.1');
-    assert.deepEqual(atan(bigmath.tan(Big(0.5))).toString(), '0.5');
-    assert.deepEqual(atan(bigmath.tan(Big(2))).toString(), '-1.1415926535897932385');
-    assert.deepEqual(atan(bigmath.tan(bigmath.pi.div(2))).toString(), '-1.5707963267948966192');
+    assert.deepEqual(atanBig(bigmath.tan(Big(-1))), Big(-1));
+    assert.deepEqual(atanBig(bigmath.tan(Big(0))), Big(0));
+    assert.deepEqual(atanBig(bigmath.tan(Big(0.1))), Big(0.1));
+    assert.deepEqual(atanBig(bigmath.tan(Big(0.5))), Big(0.5));
+    assert.deepEqual(atanBig(bigmath.tan(Big(2))), Big('-1.1415926535897932385'));
+    assert.deepEqual(atanBig(bigmath.tan(bigmath.pi.div(2))).toString(), '-1.5707963267948966192');
   });
 
   it('should return the arctan of a complex number', function() {
@@ -77,7 +78,8 @@ describe('atan', function() {
     approx.deepEqual(atan(complex('2-3i')), complex(re, -im));
     approx.deepEqual(atan(complex('-2+3i')), complex(-re, im));
     approx.deepEqual(atan(complex('-2-3i')), complex(-re, -im));
-    approx.deepEqual(atan(complex('i')), complex(NaN, NaN)); // TODO: should return NaN + Infi instead
+    approx.deepEqual(atan(complex('i')), complex(0, Infinity));
+    approx.deepEqual(atan(complex('-i')), complex(0, -Infinity));
     approx.deepEqual(atan(complex('1')), complex(0.785398163397448, 0));
     approx.deepEqual(atan(complex('1+i')), complex(1.017221967897851, 0.402359478108525));
   });

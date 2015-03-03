@@ -9,21 +9,28 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     bigmath = math.create({number: 'bignumber', precision: 20}),
+    biggermath = math.create({precision: 22}),
+    acoshBig = bigmath.acosh,
     Big = bigmath.bignumber;
 
 describe('acosh', function() {
   it('should return the hyperbolic arccos of a boolean', function () {
     assert.equal(acosh(true), 0);
-    assert.ok(isNaN(acosh(false)));
+    approx.deepEqual(acosh(false), complex(0, pi / 2));
+    //assert.ok(isNaN(acosh(false)));
   });
 
   it('should return the hyperbolic arccos of null', function () {
-    assert.ok(isNaN(acosh(null)));
+    approx.deepEqual(acosh(null), complex(0, pi / 2));
+    //assert.ok(isNaN(acosh(null)));
   });
 
   it('should return the hyperbolic arccos of a number', function() {
-    assert.ok(isNaN(acosh(-1.5)));
-    assert.ok(isNaN(acosh(0)));
+    approx.deepEqual(acosh(-2), complex(1.31695789692481670862504634730797, pi));
+    approx.deepEqual(acosh(0), complex(0, pi / 2));
+    //assert.ok(isNaN(acosh(-2)));
+    //assert.ok(isNaN(acosh(0)));
+
     approx.equal(acosh(1), 0);
     approx.equal(acosh(2), 1.31695789692481670862504634730797);
     approx.equal(acosh(3), 1.7627471740390860504652186499595);
@@ -32,10 +39,10 @@ describe('acosh', function() {
 
   it('should return the hyperbolic arccos of a bignumber', function() {
     var arg = Big(1);
-    assert.deepEqual(acosh(arg), Big(0));
-    assert.deepEqual(acosh(Big(2)), Big('1.3169578969248167086'));
-    assert.deepEqual(acosh(Big(3)), Big('1.7627471740390860505'));
-    assert.deepEqual(acosh(bigmath.pi).toString(), '1.811526272460853107');
+    assert.deepEqual(acosh(arg), math.bignumber(0));
+    assert.deepEqual(acoshBig(Big(2)), Big('1.3169578969248167086'));
+    assert.deepEqual(acoshBig(Big(3)), Big('1.7627471740390860505'));
+    assert.deepEqual(acoshBig(bigmath.pi).toString(), '1.811526272460853107');
 
     //Make sure arg was not changed
     assert.deepEqual(arg, Big(1));
@@ -50,21 +57,25 @@ describe('acosh', function() {
   });
 
   it('should be the inverse function of bignumber cosh', function() {
-    assert.deepEqual(acosh(bigmath.cosh(Big(-1))), Big(1));
-    assert.deepEqual(acosh(bigmath.cosh(Big(0))), Big(0));
-    assert.deepEqual(acosh(bigmath.cosh(Big(2))), Big(2));
+    assert.deepEqual(acoshBig(bigmath.cosh(Big(-1))), Big(1));
+    assert.deepEqual(acoshBig(bigmath.cosh(Big(0))), Big(0));
+    assert.deepEqual(acoshBig(bigmath.cosh(Big(2))), Big(2));
 
-    /* Pass in more digits to pi. */
-    //bigmath.config({precision: 21});
-    //assert.deepEqual(acosh(bigmath.cosh(Big(0.1))), Big(0.1));
-    //assert.deepEqual(acosh(bigmath.cosh(Big(0.5))), Big(0.5));
+    // Pass in extra digit
+    var arg = Big(0.1);
+    assert.deepEqual(acoshBig(biggermath.cosh(arg)), Big(0.1));
+    assert.deepEqual(acoshBig(biggermath.cosh(Big(0.5))), Big(0.5));
+    assert.deepEqual(arg, Big(0.1));
   });
 
-/*it('should throw an error if the bignumber result is complex', function() {
+  it('should throw an error if the bignumber result is complex', function() {
     assert.throws(function () {
       acosh(Big(0.5));
-    }, /acosh() only has non-complex values for x >= 1./);
-  });*/
+    }, /acosh\(\) only has non-complex values for x >= 1./);
+    assert.throws(function () {
+      acosh(Big(-0.5));
+    }, /acosh\(\) only has non-complex values for x >= 1./);
+  });
 
   it('should return the arccosh of a complex number', function() {
     approx.deepEqual(acosh(complex('2+3i')), complex(1.9833870299165, 1.000143542473797));
