@@ -1,12 +1,13 @@
 var assert= require('assert');
-var Complex = require('../../lib/type/Complex');
-var Range = require('../../lib/type/Range');
-var Index = require('../../lib/type/Index');
-var Matrix = require('../../lib/type/Matrix');
-var Unit = require('../../lib/type/Unit');
-var Help = require('../../lib/type/Help');
+var math = require('../../index');
+var Complex = math.type.Complex;
+var Range = math.type.Range;
+var Index = math.type.Index;
+var Matrix = math.type.Matrix;
+var Unit = math.type.Unit;
+var Help = math.type.Help;
 var BigNumber = require('../../lib/type/BigNumber');
-var ResultSet = require('../../lib/type/ResultSet');
+var ResultSet = math.type.ResultSet;
 
 describe('replacer', function () {
 

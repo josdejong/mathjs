@@ -1,8 +1,8 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index'),
-    Unit = require('../../../lib/type/Unit'),
-    Matrix = require('../../../lib/type/Matrix'),
+    Unit = math.type.Unit,
+    Matrix = math.type.Matrix,
     unit = math.unit;
 
 describe('to', function() {

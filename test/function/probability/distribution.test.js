@@ -2,8 +2,8 @@ var assert = require('assert');
 var error = require('../../../lib/error/index');
 var seed = require('seed-random');
 var _ = require('underscore');
-var Matrix = require('../../../lib/type/Matrix');
 var math = require('../../../index');
+var Matrix = math.type.Matrix;
 var distribution = require('../../../lib/function/probability/distribution')(math);
 
 var assertApproxEqual = function(testVal, val, tolerance) {

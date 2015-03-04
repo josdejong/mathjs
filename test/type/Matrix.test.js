@@ -1,7 +1,7 @@
 var assert = require('assert');
 var math = require('../../index');
 var index = math.index;
-var Matrix = require('../../lib/type/Matrix');
+var Matrix = math.type.Matrix;
 var Complex = require('../../lib/type/Complex');
 
 describe('matrix', function() {

@@ -1,13 +1,14 @@
 var assert= require('assert');
-var reviver = require('../../lib/json/reviver');
-var Complex = require('../../lib/type/Complex');
-var Range = require('../../lib/type/Range');
-var Index = require('../../lib/type/Index');
-var Unit = require('../../lib/type/Unit');
-var Matrix = require('../../lib/type/Matrix');
+var math = require('../../index');
+var reviver = math.json.reviver;
+var Complex = math.type.Complex;
+var Range = math.type.Range;
+var Index = math.type.Index;
+var Unit = math.type.Unit;
+var Matrix = math.type.Matrix;
 var BigNumber = require('../../lib/type/BigNumber');
-var Help = require('../../lib/type/Help');
-var ResultSet = require('../../lib/type/ResultSet');
+var Help = math.type.Help;
+var ResultSet = math.type.ResultSet;
 
 describe('reviver', function () {
 

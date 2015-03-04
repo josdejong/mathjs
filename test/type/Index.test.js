@@ -1,8 +1,9 @@
 // test data type Index
 var assert = require('assert');
-var Index = require('../../lib/type/Index');
-var Matrix = require('../../lib/type/Matrix');
-var Range = require('../../lib/type/Range');
+var math = require('../../index');
+var Index = math.type.Index;
+var Matrix = math.type.Matrix;
+var Range = math.type.Range;
 
 describe('Index', function () {
 
