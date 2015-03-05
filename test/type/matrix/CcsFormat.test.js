@@ -54,6 +54,15 @@ describe('CcsFormat', function() {
       assert.deepEqual(m._index, [0, 2]);
       assert.deepEqual(m._ptr, [0, 1, 2]);
     });
+    
+    it('should create an empty CCS from an array', function () {
+      var m = new CcsFormat([]);
+      assert.equal(m._format, 'ccs');
+      assert.deepEqual(m._size, [0, 0]);
+      assert.deepEqual(m._values, []);
+      assert.deepEqual(m._index, []);
+      assert.deepEqual(m._ptr, [0]);
+    });
 
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { CcsFormat(); }, /Constructor must be called with the new operator/);

@@ -54,7 +54,16 @@ describe('CrsFormat', function() {
       assert.deepEqual(m._index, [0, 1]);
       assert.deepEqual(m._ptr, [0, 1, 1, 2]);
     });
-    
+
+    it('should create an empty CRS from an array', function () {
+      var m = new CrsFormat([]);
+      assert.equal(m._format, 'crs');
+      assert.deepEqual(m._size, [0, 0]);
+      assert.deepEqual(m._values, []);
+      assert.deepEqual(m._index, []);
+      assert.deepEqual(m._ptr, [0]);
+    });
+
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { CrsFormat(); }, /Constructor must be called with the new operator/);
     });
