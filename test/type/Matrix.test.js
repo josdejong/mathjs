@@ -27,11 +27,24 @@ describe('matrix', function() {
 
       assert.deepEqual(m, new Matrix([[1,2],[3, 4]]));
     });
+    
+    it('should create a matrix with a specific storage format', function () {
+      var m = new Matrix([], 'ccs');
+      
+      assert.equal(m._storage.format(), 'ccs');
+    });
+    
+    it('should throw an error when called with an invalid storage format', function () {
+      assert.throws(function () { new Matrix([], 1); }, /format must be a string value/);
+    });
+    
+    it('should throw an error when called with an unknown storage format', function () {
+      assert.throws(function () { new Matrix([], '123'); }, /Unsupported Matrix Storage Format: 123/);
+    });
 
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () {Matrix()}, /Constructor must be called with the new operator/);
     });
-
   });
 
   describe('size', function() {
@@ -54,26 +67,115 @@ describe('matrix', function() {
     assert.equal(new Matrix([[1,2],[3,1/3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]');
   });
 
-  it('toJSON', function() {
-    assert.deepEqual(new Matrix([[1,2],[3,4]]).toJSON(), {
-      'mathjs': 'Matrix',
-      data: [[1,2],[3,4]]
+  describe('toJSON', function () {
+    
+    it('should serialize Matrix, default storage format', function() {
+      assert.deepEqual(
+        new Matrix([[1,2],[3,4]]).toJSON(),
+        {
+          mathjs: 'Matrix',
+          storage: {
+            format: 'dense',
+            data: [[1, 2], [3, 4]],
+            size: [2, 2]
+          }
+        });
+    });
+    
+    it('should serialize Matrix, CCS storage format', function() {
+      assert.deepEqual(
+        new Matrix([], 'ccs').toJSON(),
+        {
+          mathjs: 'Matrix',
+          storage: {
+            format: 'ccs',
+            values: [],
+            index: [],
+            ptr: [0],
+            size: [0, 0]
+          }
+        });
+    });
+    
+    it('should serialize Matrix, CRS storage format', function() {
+      assert.deepEqual(
+        new Matrix([], 'crs').toJSON(),
+        {
+          mathjs: 'Matrix',
+          storage: {
+            format: 'crs',
+            values: [],
+            index: [],
+            ptr: [0],
+            size: [0, 0]
+          }
+        });
     });
   });
 
-  it('fromJSON', function() {
-    var json = {
-      'mathjs': 'Matrix',
-      data: [[1,2],[3,4]]
-    };
-    var m = Matrix.fromJSON(json);
-    assert.ok(m instanceof Matrix);
+  describe('fromJSON', function () {
+    
+    it('should deserialize Matrix, default storage format', function() {
+      var json = {
+        mathjs: 'Matrix',
+        storage: {
+          format: 'dense',
+          data: [[1, 2], [3, 4]],
+          size: [2, 2]
+        }
+      };
+      var m = Matrix.fromJSON(json);
+      assert.ok(m instanceof Matrix);
 
-    assert.deepEqual(m._size, [2, 2]);
-    assert.strictEqual(m._data[0][0], 1);
-    assert.strictEqual(m._data[0][1], 2);
-    assert.strictEqual(m._data[1][0], 3);
-    assert.strictEqual(m._data[1][1], 4);
+      assert.equal(m._storage._format, 'dense');
+      assert.deepEqual(m._storage._size, [2, 2]);
+      assert.strictEqual(m._storage._data[0][0], 1);
+      assert.strictEqual(m._storage._data[0][1], 2);
+      assert.strictEqual(m._storage._data[1][0], 3);
+      assert.strictEqual(m._storage._data[1][1], 4);
+    });
+    
+    it('should deserialize Matrix, CCS storage format', function() {
+      var json = {
+        mathjs: 'Matrix',
+        storage: {
+          format: 'ccs',
+          values: [],
+          index: [],
+          ptr: [0],
+          size: [0, 0]
+        }
+      };
+      var m = Matrix.fromJSON(json);
+      assert.ok(m instanceof Matrix);
+
+      assert.equal(m._storage._format, 'ccs');
+      assert.deepEqual(m._storage._size, [0, 0]);
+      assert.deepEqual(m._storage._values, []);
+      assert.deepEqual(m._storage._index, []);
+      assert.deepEqual(m._storage._ptr, [0]);
+    });
+    
+    it('should deserialize Matrix, CRS storage format', function() {
+      var json = {
+        mathjs: 'Matrix',
+        storage: {
+          format: 'crs',
+          values: [],
+          index: [],
+          ptr: [0],
+          size: [0, 0]
+        }
+      };
+      var m = Matrix.fromJSON(json);
+      assert.ok(m instanceof Matrix);
+
+      assert.equal(m._storage._format, 'crs');
+      assert.deepEqual(m._storage._size, [0, 0]);
+      assert.deepEqual(m._storage._values, []);
+      assert.deepEqual(m._storage._index, []);
+      assert.deepEqual(m._storage._ptr, [0]);
+    });
   });
 
   it('format', function() {
@@ -152,6 +254,7 @@ describe('matrix', function() {
   describe('set', function() {
     it('should set a value in a matrix', function() {
       var m = new Matrix([[0, 0], [0, 0]]);
+
       m.set([1,0], 5);
       assert.deepEqual(m, new Matrix([
         [0, 0],
