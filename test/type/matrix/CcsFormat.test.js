@@ -22,8 +22,7 @@ describe('CcsFormat', function() {
           [0, 4, 0, 0, 2, -1]
         ]);
       assert.equal(m._format, 'ccs');
-      assert.equal(m._rows, 6);
-      assert.equal(m._columns, 6);
+      assert.deepEqual(m._size, [6, 6]);
       assert.deepEqual(m._values, [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1]);
       assert.deepEqual(m._index, [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5]);
       assert.deepEqual(m._ptr, [0, 3, 7, 9, 12, 16, 19]);
@@ -36,8 +35,7 @@ describe('CcsFormat', function() {
           [0, 0, 1]
         ]);
       assert.equal(m._format, 'ccs');
-      assert.equal(m._rows, 2);
-      assert.equal(m._columns, 3);
+      assert.deepEqual(m._size, [2, 3]);
       assert.deepEqual(m._values, [1, 1]);
       assert.deepEqual(m._index, [0, 1]);
       assert.deepEqual(m._ptr, [0, 1, 1, 2]);
@@ -51,8 +49,7 @@ describe('CcsFormat', function() {
           [0, 1]
         ]);
       assert.equal(m._format, 'ccs');
-      assert.equal(m._rows, 3);
-      assert.equal(m._columns, 2);
+      assert.deepEqual(m._size, [3, 2]);
       assert.deepEqual(m._values, [1, 1]);
       assert.deepEqual(m._index, [0, 2]);
       assert.deepEqual(m._ptr, [0, 1, 2]);
@@ -80,8 +77,7 @@ describe('CcsFormat', function() {
         values: [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1],
         index: [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5],
         ptr: [0, 3, 7, 9, 12, 16, 19],
-        rows: 6,
-        columns: 6
+        size: [6, 6]
       });
 
       var a = m.toArray();
@@ -103,8 +99,7 @@ describe('CcsFormat', function() {
         values: [1, 1],
         index: [0, 1],
         ptr: [0, 1, 1, 2],
-        rows: 2,
-        columns: 3
+        size: [2, 3]
       });
 
       var a = m.toArray();
@@ -122,8 +117,7 @@ describe('CcsFormat', function() {
         values: [new Complex(1, 1), new Complex(4, 4), new Complex(5, 5), new Complex(2, 2), new Complex(3, 3), new Complex(6, 6)],
         index: [0, 2, 2, 0, 1, 2],
         ptr: [0, 2, 3, 6],
-        rows: 3,
-        columns: 3
+        size: [3, 3]
       });
 
       var a = m.toArray();
@@ -144,8 +138,7 @@ describe('CcsFormat', function() {
       
       var m = CcsFormat.diagonal(3, 3, 1);
 
-      assert.equal(m._rows, 3);
-      assert.equal(m._columns, 3);
+      assert.deepEqual(m._size, [3, 3]);
       assert.deepEqual(m._values, [1, 1, 1]);
       assert.deepEqual(m._index, [0, 1, 2]);
       assert.deepEqual(m._ptr, [0, 1, 2, 3]);
@@ -163,8 +156,7 @@ describe('CcsFormat', function() {
 
       var m = CcsFormat.diagonal(3, 3, new Complex(1, 1));
 
-      assert.equal(m._rows, 3);
-      assert.equal(m._columns, 3);
+      assert.deepEqual(m._size, [3, 3]);
       assert.deepEqual(m._values, [new Complex(1, 1), new Complex(1, 1), new Complex(1, 1)]);
       assert.deepEqual(m._index, [0, 1, 2]);
       assert.deepEqual(m._ptr, [0, 1, 2, 3]);
@@ -174,8 +166,7 @@ describe('CcsFormat', function() {
 
       var m = CcsFormat.diagonal(4, 3, 1);
 
-      assert.equal(m._rows, 4);
-      assert.equal(m._columns, 3);
+      assert.deepEqual(m._size, [4, 3]);
       assert.deepEqual(m._values, [1, 1, 1]);
       assert.deepEqual(m._index, [0, 1, 2]);
       assert.deepEqual(m._ptr, [0, 1, 2, 3]);
@@ -194,8 +185,7 @@ describe('CcsFormat', function() {
 
       var m = CcsFormat.diagonal(3, 4, 1);
 
-      assert.equal(m._rows, 3);
-      assert.equal(m._columns, 4);
+      assert.deepEqual(m._size, [3, 4]);
       assert.deepEqual(m._values, [1, 1, 1]);
       assert.deepEqual(m._index, [0, 1, 2]);
       assert.deepEqual(m._ptr, [0, 1, 2, 3]);
@@ -222,10 +212,10 @@ describe('CcsFormat', function() {
         [0, 4, 0, 0, 2, -1]
       ]);
 
-      assert.throws(function () { m.get(-1, 0); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.get(10, 0); }, /Index out of range \(10 > 5\)/);
-      assert.throws(function () { m.get(0, -1); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.get(0, 10); }, /Index out of range \(10 > 5\)/);
+      assert.throws(function () { m.get([-1, 0]); }, /Index out of range \(-1 < 0\)/);
+      assert.throws(function () { m.get([10, 0]); }, /Index out of range \(10 > 5\)/);
+      assert.throws(function () { m.get([0, -1]); }, /Index out of range \(-1 < 0\)/);
+      assert.throws(function () { m.get([0, 10]); }, /Index out of range \(10 > 5\)/);
     });
 
     it('should get matrix element', function () {
@@ -238,10 +228,10 @@ describe('CcsFormat', function() {
         [0, 4, 0, 0, 2, -1]
       ]);
 
-      assert.equal(m.get(0, 0), 10);
-      assert.equal(m.get(3, 1), 0);
-      assert.equal(m.get(5, 1), 4);
-      assert.equal(m.get(5, 5), -1);
+      assert.equal(m.get([0, 0]), 10);
+      assert.equal(m.get([3, 1]), 0);
+      assert.equal(m.get([5, 1]), 4);
+      assert.equal(m.get([5, 5]), -1);
     });
   });
   
@@ -257,10 +247,10 @@ describe('CcsFormat', function() {
         [0, 4, 0, 0, 2, -1]
       ]);
 
-      assert.throws(function () { m.set(-1, 0); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.set(10, 0); }, /Index out of range \(10 > 5\)/);
-      assert.throws(function () { m.set(0, -1); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.set(0, 10); }, /Index out of range \(10 > 5\)/);
+      assert.throws(function () { m.set([-1, 0]); }, /Index out of range \(-1 < 0\)/);
+      assert.throws(function () { m.set([10, 0]); }, /Index out of range \(10 > 5\)/);
+      assert.throws(function () { m.set([0, -1]); }, /Index out of range \(-1 < 0\)/);
+      assert.throws(function () { m.set([0, 10]); }, /Index out of range \(10 > 5\)/);
     });
 
     it('should remove matrix element', function () {
@@ -273,9 +263,9 @@ describe('CcsFormat', function() {
         [0, 4, 0, 0, 2, -1]
       ]);
 
-      m.set(0, 0, 0);
-      m.set(0, 4, 0);
-      m.set(5, 1, 0);
+      m.set([0, 0], 0);
+      m.set([0, 4], 0);
+      m.set([5, 1], 0);
       
       assert.deepEqual(
         m.toArray(),
@@ -299,9 +289,9 @@ describe('CcsFormat', function() {
         [0, 4, 0, 0, 2, -1]
       ]);
 
-      m.set(0, 0, 15);
-      m.set(0, 4, 10);
-      m.set(5, 1, 20);
+      m.set([0, 0], 15);
+      m.set([0, 4], 10);
+      m.set([5, 1], 20);
 
       assert.deepEqual(
         m.toArray(),
@@ -325,9 +315,9 @@ describe('CcsFormat', function() {
         [0, 4, 0, 0, 2, -1]
       ]);
 
-      m.set(0, 1, 15);
-      m.set(0, 5, 10);
-      m.set(5, 0, 20);
+      m.set([0, 1], 15);
+      m.set([0, 5], 10);
+      m.set([5, 0], 20);
 
       assert.deepEqual(
         m.toArray(),
