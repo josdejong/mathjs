@@ -60,7 +60,7 @@ describe('replacer', function () {
 
   it('should stringify a Matrix', function () {
     var m = new Matrix([[1,2],[3,4]]);
-    var json = '{"mathjs":"Matrix","data":[[1,2],[3,4]]}';
+    var json = '{"mathjs":"Matrix","storage":{"format":"dense","data":[[1,2],[3,4]],"size":[2,2]}}';
 
     assert.deepEqual(JSON.stringify(m), json);
   });
@@ -74,7 +74,7 @@ describe('replacer', function () {
   it('should stringify a Matrix containing a complex number', function () {
     var c = new Complex(4, 5);
     var m = new Matrix([[1,2],[3,c]]);
-    var json = '{"mathjs":"Matrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]]}';
+    var json = '{"mathjs":"Matrix","storage":{"format":"dense","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}}';
 
     assert.deepEqual(JSON.stringify(m), json);
   });

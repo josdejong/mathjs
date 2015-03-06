@@ -22,7 +22,7 @@ describe('matrix', function() {
   it('should be the identity if called with a matrix', function() {
     var b = matrix([[1,2],[3,4]]);
     var c = matrix(b);
-    assert.ok(c._data != b._data); // data should be cloned
+    assert.ok(c._storage != b._storage); // data should be cloned
     assert.deepEqual(c, new math.type.Matrix([[1,2],[3,4]]));
     assert.deepEqual(math.size(c), matrix([2,2]));
   });

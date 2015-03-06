@@ -194,9 +194,31 @@ describe('DenseFormat', function() {
       ]);
 
       assert.throws(function () { m.set([-1, 0]); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.set([10, 0]); }, /Index out of range \(10 > 5\)/);
       assert.throws(function () { m.set([0, -1]); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.set([0, 10]); }, /Index out of range \(10 > 5\)/);
+    });
+    
+    it('should grow matrix as needed', function () {
+      var m = new DenseFormat([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([0, 2], 22);
+      assert.deepEqual(
+        m._data,
+        [
+          [1, 2, 22],
+          [3, 4, 0]
+        ]);
+      
+      m.set([2, 2], 33);
+      assert.deepEqual(
+        m._data,
+        [
+          [1, 2, 22],
+          [3, 4, 0],
+          [0, 0, 33]
+        ]);
     });
 
     it('should remove matrix element', function () {
