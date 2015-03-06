@@ -74,4 +74,7 @@ describe('Chain', function() {
     delete Object.prototype.foo;
   });
 
+  // TODO: test createProxy(name, value)
+  // TODO: test createProxy(values)
+
 });
