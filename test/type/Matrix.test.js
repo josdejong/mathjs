@@ -535,32 +535,33 @@ describe('matrix', function() {
     });
 
     it('should work on empty matrices', function() {
-      var m, m2;
-      m = new Matrix([]);
-      m2 = m.map(function (value) { return value * 2; });
-      assert.deepEqual(m2.valueOf(), []);
+      var m = new Matrix([]);
+      var m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.toArray(), []);
     });
 
     it('should invoke callback with parameters value, index, obj', function() {
       var m = new Matrix([[1,2,3], [4,5,6]]);
 
-      assert.deepEqual(m.map(function (value, index, obj) {
+      var m2 = m.map(function (value, index, obj) {
         return math.clone([value, index, obj === m]);
-      }).valueOf(), [
+      });
+      
+      assert.deepEqual(
+        m2.toArray(), 
         [
-          [1, [0, 0], true ],
-          [2, [0, 1], true ],
-          [3, [0, 2], true ]
-        ],
-        [
-          [4, [1, 0], true ],
-          [5, [1, 1], true ],
-          [6, [1, 2], true ]
-        ]
-      ]);
-
+          [
+            [1, [0, 0], true ],
+            [2, [0, 1], true ],
+            [3, [0, 2], true ]
+          ],
+          [
+            [4, [1, 0], true ],
+            [5, [1, 1], true ],
+            [6, [1, 2], true ]
+          ]
+        ]);
     });
-
   });
 
   describe('forEach', function() {
@@ -621,11 +622,9 @@ describe('matrix', function() {
       var m = new Matrix([[1,2,3], [4,5,6]]);
       var m4 = m.clone();
       assert.deepEqual(m4.size(), [2,3]);
-      assert.deepEqual(m4.valueOf(), [[1,2,3], [4,5,6]]);
+      assert.deepEqual(m4.toArray(), [[1,2,3], [4,5,6]]);
     });
-
   });
-
 });
 
 // TODO: extensively test Matrix
