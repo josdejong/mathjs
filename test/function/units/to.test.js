@@ -68,7 +68,7 @@ describe('to', function() {
 
   it('should throw an error if called with a number', function() {
     assert.throws(function () {math.to(5, unit('m'))}, TypeError);
-    assert.throws(function () {math.to(unit('5cm'), 2)}, TypeError);
+    assert.throws(function () {math.to(unit('5cm'), 2)}, /SyntaxError: Unknown unit "2"/);
   });
 
   it('should throw an error if called with a string', function() {

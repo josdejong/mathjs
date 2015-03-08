@@ -1,10 +1,8 @@
-// test parse
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node');
+// test compile
+var assert = require('assert');
+var math = require('../../../index');
 
-describe('parse', function() {
+describe('compile', function() {
 
   it('should compile an expression', function() {
     var code = math.compile('(5+3)/4');
@@ -23,12 +21,11 @@ describe('parse', function() {
   });
 
   it('should throw an error on wrong number of arguments', function() {
-    assert.throws(function () {math.compile()}, error.ArgumentsError);
-    assert.throws(function () {math.compile('2+3', '3+4')}, error.ArgumentsError);
+    assert.throws(function () {math.compile()}, /TypeError: Too few arguments/);
+    assert.throws(function () {math.compile('2+3', '3+4')}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error on wrong type of argument', function() {
-    assert.throws(function () {math.compile(2)}, TypeError);
     assert.throws(function () {math.compile(math.complex(2, 3))}, TypeError);
   });
 
