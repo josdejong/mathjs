@@ -1,6 +1,5 @@
 // test unequal
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     bignumber = math.bignumber,
     complex = math.complex,
@@ -67,8 +66,8 @@ describe('unequal', function() {
     assert.deepEqual(unequal(bignumber(2), 3), true);
     assert.deepEqual(unequal(2, bignumber(2)), false);
 
-    assert.equal(unequal(1/3, bignumber(1).div(3)), false);
-    assert.equal(unequal(bignumber(1).div(3), 1/3), false);
+    assert.throws(function () {unequal(1/3, bignumber(1).div(3))}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {unequal(bignumber(1).div(3), 1/3)}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should compare mixed booleans and bignumbers', function() {
@@ -163,8 +162,8 @@ describe('unequal', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {unequal(1)}, error.ArgumentsError);
-    assert.throws(function () {unequal(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {unequal(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {unequal(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
 });

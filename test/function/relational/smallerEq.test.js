@@ -1,7 +1,6 @@
 // test smaller
 var assert = require('assert'),
     math = require('../../../index'),
-    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -70,8 +69,8 @@ describe('smallerEq', function() {
     assert.deepEqual(smallerEq(bignumber(2), 3), true);
     assert.deepEqual(smallerEq(2, bignumber(2)), true);
 
-    assert.equal(smallerEq(1/3, bignumber(1).div(3)), true);
-    assert.equal(smallerEq(bignumber(1).div(3), 1/3), true);
+    assert.throws(function () {smallerEq(1/3, bignumber(1).div(3))}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {smallerEq(bignumber(1).div(3), 1/3)}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should compare mixed booleans and bignumbers', function() {
@@ -142,8 +141,8 @@ describe('smallerEq', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {smallerEq(1)}, error.ArgumentsError);
-    assert.throws(function () {smallerEq(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {smallerEq(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {smallerEq(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
 });
