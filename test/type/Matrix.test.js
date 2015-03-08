@@ -255,7 +255,7 @@ describe('matrix', function() {
     it('should set a value in a matrix', function() {
       var m = new Matrix([[0, 0], [0, 0]]);
 
-      m.set([1,0], 5);
+      m.set([1, 0], 5);
       assert.deepEqual(m, new Matrix([
         [0, 0],
         [5, 0]
@@ -512,26 +512,18 @@ describe('matrix', function() {
       var m, m2;
 
       m = new Matrix([
-        [[1,2],[3,4]],
-        [[5,6],[7,8]],
-        [[9,10],[11,12]],
-        [[13,14],[15,16]]
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11,12],
+        [13, 14, 15,16]
       ]);
       m2 = m.map(function (value) { return value * 2; });
-      assert.deepEqual(m2.valueOf(), [
-        [[2,4],[6,8]],
-        [[10,12],[14,16]],
-        [[18,20],[22,24]],
-        [[26,28],[30,32]]
+      assert.deepEqual(m2.toArray(), [
+        [2, 4, 6, 8],
+        [10, 12, 14, 16],
+        [18, 20, 22, 24],
+        [26, 28, 30, 32]
       ]);
-
-      m = new Matrix([1]);
-      m2 = m.map(function (value) { return value * 2; });
-      assert.deepEqual(m2.valueOf(), [2]);
-
-      m = new Matrix([1,2,3]);
-      m2 = m.map(function (value) { return value * 2; });
-      assert.deepEqual(m2.valueOf(), [2,4,6]);
     });
 
     it('should work on empty matrices', function() {
@@ -541,43 +533,38 @@ describe('matrix', function() {
     });
 
     it('should invoke callback with parameters value, index, obj', function() {
-      var m = new Matrix([[1,2,3], [4,5,6]]);
+      var m = new Matrix([[1, 2, 3], [4, 5, 6]]);
 
-      var m2 = m.map(function (value, index, obj) {
-        return math.clone([value, index, obj === m]);
-      });
-      
+      var m2 = m.map(
+        function (value, index, obj) {
+          return value + index[0] * 100 + index[1] * 10 + (obj === m ? 1000 : 0);
+        }
+      );
+
       assert.deepEqual(
         m2.toArray(), 
         [
-          [
-            [1, [0, 0], true ],
-            [2, [0, 1], true ],
-            [3, [0, 2], true ]
-          ],
-          [
-            [4, [1, 0], true ],
-            [5, [1, 1], true ],
-            [6, [1, 2], true ]
-          ]
+          [1001, 1012, 1023],
+          [1104, 1115, 1126]
         ]);
     });
   });
 
   describe('forEach', function() {
 
-    it('should run on all elements of the matrix, last dimension first', function() {
+    it('should run on all elements of the matrix', function() {
       var m, output;
 
       m = new Matrix([
-        [[1,2],[3,4]],
-        [[5,6],[7,8]],
-        [[9,10],[11,12]],
-        [[13,14],[15,16]]
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 16]
       ]);
       output = [];
       m.forEach(function (value) { output.push(value); });
-      assert.deepEqual(output, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+      // assert all values were visited, order is Matrix storage format specific
+      assert.deepEqual(output.sort(), [1, 10, 11,12, 13, 14, 15, 16, 2, 3, 4, 5, 6, 7, 8, 9]);
 
       m = new Matrix([1]);
       output = [];
@@ -587,7 +574,8 @@ describe('matrix', function() {
       m = new Matrix([1,2,3]);
       output = [];
       m.forEach(function (value) { output.push(value); });
-      assert.deepEqual(output, [1,2,3]);
+      // assert all values were visited, order is Matrix storage format specific
+      assert.deepEqual(output.sort(), [1, 2, 3]);
     });
 
     it('should work on empty matrices', function() {
@@ -598,22 +586,21 @@ describe('matrix', function() {
     });
 
     it('should invoke callback with parameters value, index, obj', function() {
-      var m = new Matrix([[1,2,3], [4,5,6]]);
-
+      var m = new Matrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6]
+        ]);
+      var o = {};
       var output = [];
-      m.forEach(function (value, index, obj) {
-        output.push(math.clone([value, index, obj === m]));
-      });
-      assert.deepEqual(output, [
-        [1, [0, 0], true ],
-        [2, [0, 1], true ],
-        [3, [0, 2], true ],
-        [4, [1, 0], true ],
-        [5, [1, 1], true ],
-        [6, [1, 2], true ]
-      ]);
+      m.forEach(
+        function (value, index, obj) {
+          output.push(value + index[0] * 100 + index[1] * 10 + (obj === m ? 1000 : 0));
+        }
+      );
+      // assert all values were visited, order is Matrix storage format specific
+      assert.deepEqual(output.sort(), [1001, 1012, 1023, 1104, 1115, 1126]);
     });
-
   });
 
   describe('clone', function() {

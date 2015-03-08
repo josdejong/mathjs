@@ -314,6 +314,121 @@ describe('DenseFormat', function() {
       assert.deepEqual(m1._data, m2._data);
     });
   });
+  
+  describe('map', function() {
+
+    it('should apply the given function to all elements in the matrix', function() {
+      var m = new DenseFormat([
+        [[1,2],[3,4]],
+        [[5,6],[7,8]],
+        [[9,10],[11,12]],
+        [[13,14],[15,16]]
+      ]);      
+      var m2 = m.map(function (value) { return value * 2; });      
+      assert.deepEqual(
+        m2.valueOf(), 
+        [
+          [[2,4],[6,8]],
+          [[10,12],[14,16]],
+          [[18,20],[22,24]],
+          [[26,28],[30,32]]
+        ]);
+
+      m = new DenseFormat([1]);
+      m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.valueOf(), [2]);
+
+      m = new DenseFormat([1,2,3]);
+      m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.valueOf(), [2,4,6]);
+    });
+
+    it('should work on empty matrices', function() {
+      var m = new DenseFormat([]);
+      var m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.toArray(), []);
+    });
+
+    it('should invoke callback with parameters value, index, obj', function() {
+      var m = new DenseFormat([[1,2,3], [4,5,6]]);
+      var o = {};
+      var m2 = m.map(
+        function (value, index, obj) {
+          return math.clone([value, index, obj === o]);
+        },
+        o
+      );
+
+      assert.deepEqual(
+        m2.toArray(),
+        [
+          [
+            [1, [0, 0], true ],
+            [2, [0, 1], true ],
+            [3, [0, 2], true ]
+          ],
+          [
+            [4, [1, 0], true ],
+            [5, [1, 1], true ],
+            [6, [1, 2], true ]
+          ]
+        ]);
+    });
+  });
+  
+  describe('forEach', function() {
+
+    it('should run on all elements of the matrix, last dimension first', function() {
+      var m, output;
+
+      m = new DenseFormat([
+        [[1,2],[3,4]],
+        [[5,6],[7,8]],
+        [[9,10],[11,12]],
+        [[13,14],[15,16]]
+      ]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+
+      m = new DenseFormat([1]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, [1]);
+
+      m = new DenseFormat([1,2,3]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, [1,2,3]);
+    });
+
+    it('should work on empty matrices', function() {
+      m = new DenseFormat([]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, []);
+    });
+
+    it('should invoke callback with parameters value, index, obj', function() {
+      var m = new DenseFormat([[1,2,3], [4,5,6]]);
+      var o = {};
+      var output = [];
+      m.forEach(
+        function (value, index, obj) {
+          output.push(math.clone([value, index, obj === o]));
+        },
+        o
+      );
+      assert.deepEqual(output, [
+        [1, [0, 0], true ],
+        [2, [0, 1], true ],
+        [3, [0, 2], true ],
+        [4, [1, 0], true ],
+        [5, [1, 1], true ],
+        [6, [1, 2], true ]
+      ]);
+    });
+  });
 
   describe('toString', function() {
 
