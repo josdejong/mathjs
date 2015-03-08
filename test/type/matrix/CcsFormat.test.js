@@ -266,9 +266,7 @@ describe('CcsFormat', function() {
       ]);
 
       assert.throws(function () { m.set([-1, 0]); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.set([10, 0]); }, /Index out of range \(10 > 5\)/);
       assert.throws(function () { m.set([0, -1]); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.set([0, 10]); }, /Index out of range \(10 > 5\)/);
     });
 
     it('should remove matrix element', function () {
@@ -346,6 +344,164 @@ describe('CcsFormat', function() {
           [3, 0, 8, 7, 5, 0],
           [0, 8, 0, 9, 9, 13],
           [20, 4, 0, 0, 2, -1]
+        ]);
+    });
+    
+    it('should add rows as meeded', function () {
+      var m = new CcsFormat([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([3, 1], 22);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4],
+          [0, 0],
+          [0, 22]
+        ]);
+
+      m.set([4, 0], 33);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4],
+          [0, 0],
+          [0, 22],
+          [33, 0]
+        ]);
+    });
+    
+    it('should add columns as meeded', function () {
+      var m = new CcsFormat([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([1, 3], 22);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, 0, 0],
+          [3, 4, 0, 22],
+        ]);
+
+      m.set([0, 4], 33);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, 0, 0, 33],
+          [3, 4, 0, 22, 0],
+        ]);
+    });
+    
+    it('should add rows & columns as meeded', function () {
+      var m = new CcsFormat([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([3, 3], 22);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, 0, 0],
+          [3, 4, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 22]
+        ]);
+
+      m.set([4, 4], 33);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, 0, 0, 0],
+          [3, 4, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 22, 0],
+          [0, 0, 0, 0, 33]
+        ]);
+    });
+
+    it('should add rows as meeded, non zero default', function () {
+      var m = new CcsFormat([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([3, 1], 22, -1);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4],
+          [-1, -1],
+          [-1, 22]
+        ]);
+
+      m.set([4, 0], 33, -2);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4],
+          [-1, -1],
+          [-1, 22],
+          [33, -2]
+        ]);
+    });
+    
+    it('should add columns as meeded, non zero default', function () {
+      var m = new CcsFormat([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([1, 3], 22, -1);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, -1, -1],
+          [3, 4, -1, 22],
+        ]);
+
+      m.set([0, 4], 33, -2);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, -1, -1, 33],
+          [3, 4, -1, 22, -2],
+        ]);
+    });
+    
+    it('should add rows & columns as meeded, non zero default', function () {
+      var m = new CcsFormat([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([3, 3], 22, -1);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, -1, -1],
+          [3, 4, -1, -1],
+          [-1, -1, -1, -1],
+          [-1, -1, -1, 22]
+        ]);
+
+      m.set([4, 4], 33, -2);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, -1, -1, -2],
+          [3, 4, -1, -1, -2],
+          [-1, -1, -1, -1, -2],
+          [-1, -1, -1, 22, -2],
+          [-2, -2, -2, -2, 33]
         ]);
     });
   });

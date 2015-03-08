@@ -220,6 +220,23 @@ describe('DenseFormat', function() {
           [0, 0, 33]
         ]);
     });
+    
+    it('should add new dimension if needed', function() {
+      var m = new DenseFormat(
+        [
+          [0, 0, 4],
+          [5, 0, 0]
+        ]);
+
+      m.set([0,0,1], 3);
+
+      assert.deepEqual(
+        m.valueOf(), 
+        [
+          [[0,3], [0,0], [4,0]],
+          [[5,0], [0,0], [0,0]]
+        ]);
+    });
 
     it('should remove matrix element', function () {
       var m = new DenseFormat([
