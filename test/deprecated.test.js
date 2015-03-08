@@ -65,24 +65,6 @@ describe('deprecated stuff', function() {
     }, /Deprecated keyword "function"/);
   });
 
-  it ('should throw an error when using deprecated function epow', function () {
-    assert.throws(function () {
-      new math.epow(2, 3);
-    }, /is renamed/);
-  });
-
-  it ('should throw an error when using deprecated function edivide', function () {
-    assert.throws(function () {
-      new math.edivide(2, 3);
-    }, /is renamed/);
-  });
-
-  it ('should throw an error when using deprecated function emultiply', function () {
-    assert.throws(function () {
-      new math.emultiply(2, 3);
-    }, /is renamed/);
-  });
-
   it ('should throw an error when using deprecated function ifElse', function () {
     assert.throws(function () {
       new math.ifElse(true, 1, 0);

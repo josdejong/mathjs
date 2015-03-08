@@ -1,14 +1,13 @@
 // test ceil
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    range = math.range,
-    ceil = math.ceil;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bignumber = math.bignumber;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var range = math.range;
+var ceil = math.ceil;
 
 describe('ceil', function() {
   it('should return the ceil of a boolean', function () {
@@ -70,8 +69,8 @@ describe('ceil', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {ceil()}, error.ArgumentsError);
-    assert.throws(function () {ceil(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {ceil()}, /TypeError: Too few arguments/);
+    assert.throws(function () {ceil(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

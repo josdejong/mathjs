@@ -44,8 +44,8 @@ describe('dotPow', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {dotPow(1)}, error.ArgumentsError);
-    assert.throws(function () {dotPow(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {dotPow(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {dotPow(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
   it('should elevate a complex number to the given power', function() {
