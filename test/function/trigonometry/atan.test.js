@@ -9,7 +9,7 @@ var assert = require('assert'),
     atan = math.atan,
     tan = math.tan,
     bigmath = math.create({number: 'bignumber', precision: 20}),
-    atanBig = bigmath.atan;
+    atanBig = bigmath.atan,
     Big = bigmath.bignumber;
 
 describe('atan', function() {
@@ -35,18 +35,21 @@ describe('atan', function() {
     var arg2 = Big(-0.5);
     var arg3 = Big(0);
     var arg6 = Big(2);
+    var arg7 = Big(Infinity);
     assert.deepEqual(atanBig(arg1), Big('-0.7853981633974483096'));
     assert.deepEqual(atanBig(arg2), Big('-0.4636476090008061162'));
     assert.deepEqual(atanBig(arg3), Big(0));
     assert.deepEqual(atanBig(Big(0.5)), Big('0.4636476090008061162'));
     assert.deepEqual(atanBig(Big(1)), Big('0.7853981633974483096'));
     assert.deepEqual(atanBig(arg6), Big('1.107148717794090503'));
+    assert.deepEqual(atanBig(arg7).toString(), '1.5707963267948966192');
 
     // Ensure the arguments where not changed
     assert.deepEqual(arg1, Big(-1));
     assert.deepEqual(arg2, Big(-0.5));
     assert.deepEqual(arg3, Big(0));
     assert.deepEqual(arg6, Big(2));
+    assert.deepEqual(arg7, Big(Infinity));
 
     // Hit Newton's method case
     bigmath.config({precision: 61});
