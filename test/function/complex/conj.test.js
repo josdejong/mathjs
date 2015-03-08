@@ -1,7 +1,6 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    conj = math.conj;
+var assert = require('assert');
+var math = require('../../../index');
+var conj = math.conj;
 
 describe('conj', function() {
   it('should compute the conjugate of a boolean', function () {
@@ -39,17 +38,14 @@ describe('conj', function() {
         '[2 - 3i, 3 + 4i]');
   });
 
-  it('should be identity if used with a string', function() {
-    assert.equal(conj('string'), 'string');
-  });
-
-  it('should be identity if used with a unit', function() {
-    assert.deepEqual(conj(math.unit('5cm')), math.unit('5cm'));
+  it('should throw an error when called with an unsupported type of argument', function() {
+    assert.throws(function () {conj('string')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {conj(math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {conj()}, error.ArgumentsError);
-    assert.throws(function () {conj(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {conj()}, /TypeError: Too few arguments/);
+    assert.throws(function () {conj(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

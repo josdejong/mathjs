@@ -1,9 +1,8 @@
 // test sign
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    bignumber = math.bignumber;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bignumber = math.bignumber;
 
 describe('sign', function() {
   it('should calculate the sign of a boolean', function () {
@@ -48,8 +47,8 @@ describe('sign', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.sign()}, error.ArgumentsError);
-    assert.throws(function () {math.sign(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {math.sign()}, /TypeError: Too few arguments/);
+    assert.throws(function () {math.sign(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

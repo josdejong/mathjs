@@ -1,14 +1,13 @@
 // test fix
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    range = math.range,
-    fix = math.fix;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bignumber = math.bignumber;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var range = math.range;
+var fix = math.fix;
 
 describe('fix', function() {
   it('should round booleans correctly', function () {
@@ -72,8 +71,8 @@ describe('fix', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {fix()}, error.ArgumentsError);
-    assert.throws(function () {fix(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {fix()}, /TypeError: Too few arguments/);
+    assert.throws(function () {fix(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

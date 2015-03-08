@@ -1,12 +1,11 @@
 // test square
-var assert = require('assert'),
-    math = require('../../../index'),
-    error = require('../../../lib/error/index'),
-    unit = math.unit,
-    bignumber = math.bignumber,
-    matrix = math.matrix,
-    range = math.range,
-    square = math.square;
+var assert = require('assert');
+var math = require('../../../index');
+var unit = math.unit;
+var bignumber = math.bignumber;
+var matrix = math.matrix;
+var range = math.range;
+var square = math.square;
 
 describe('square', function() {
   it('should return the square of a boolean', function () {
@@ -31,8 +30,8 @@ describe('square', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {square()}, error.ArgumentsError);
-    assert.throws(function () {square(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {square()}, /TypeError: Too few arguments/);
+    assert.throws(function () {square(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should return the square of a complex number', function() {

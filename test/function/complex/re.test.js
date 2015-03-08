@@ -1,6 +1,5 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index');
+var assert = require('assert');
+var math = require('../../../index');
 
 describe('re', function() {
 
@@ -18,10 +17,6 @@ describe('re', function() {
     assert.deepEqual(math.re(math.bignumber(2)), math.bignumber(2));
   });
 
-  it('should return the real part of a string', function() {
-    assert.equal(math.re('string'), 'string');
-  });
-
   it('should return the real part of a boolean', function() {
     assert.strictEqual(math.re(true), 1);
     assert.strictEqual(math.re(false), 0);
@@ -36,9 +31,14 @@ describe('re', function() {
     assert.deepEqual(math.re(math.matrix([2, math.complex('3-6i')])).valueOf(), [2, 3]);
   });
 
+  it('should throw an error when called with an unsupported type of argument', function() {
+    assert.throws(function () {math.re('string')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.re(math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.re()}, error.ArgumentsError);
-    assert.throws(function () {math.re(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {math.re()}, /TypeError: Too few arguments/);
+    assert.throws(function () {math.re(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });
