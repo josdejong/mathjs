@@ -6,31 +6,31 @@ var assert = require('assert'),
 
 describe('gcd', function() {
   it('should find the greatest common divisor of two or more numbers', function() {
-    assert.equal(gcd(12, 8), 4);
-    assert.equal(gcd(8, 12), 4);
-    assert.equal(gcd(8, -12), 4);
-    assert.equal(gcd(-12, 8), 4);
-    assert.equal(gcd(12, -8), 4);
-    assert.equal(gcd(15, 3), 3);
-    assert.equal(gcd(25, 15, -10, 30), 5);
+    assert.strictEqual(gcd(12, 8), 4);
+    assert.strictEqual(gcd(8, 12), 4);
+    assert.strictEqual(gcd(8, -12), 4);
+    assert.strictEqual(gcd(-12, 8), 4);
+    assert.strictEqual(gcd(12, -8), 4);
+    assert.strictEqual(gcd(15, 3), 3);
+    assert.strictEqual(gcd(25, 15, -10, 30), 5);
   });
 
   it ('should calculate gcd for edge cases around zero', function () {
-    assert.equal(gcd(3, 0), 3);
-    assert.equal(gcd(-3, 0), 3);
-    assert.equal(gcd(0, 3), 3);
-    assert.equal(gcd(0, -3), 3);
-    assert.equal(gcd(0, 0), 0);
+    assert.strictEqual(gcd(3, 0), 3);
+    assert.strictEqual(gcd(-3, 0), 3);
+    assert.strictEqual(gcd(0, 3), 3);
+    assert.strictEqual(gcd(0, -3), 3);
+    assert.strictEqual(gcd(0, 0), 0);
 
-    assert.equal(gcd(1, 1), 1);
-    assert.equal(gcd(1, 0), 1);
-    assert.equal(gcd(1, -1), 1);
-    assert.equal(gcd(-1, 1), 1);
-    assert.equal(gcd(-1, 0), 1);
-    assert.equal(gcd(-1, -1), 1);
-    assert.equal(gcd(0, 1), 1);
-    assert.equal(gcd(0, -1), 1);
-    assert.equal(gcd(0, 0), 0);
+    assert.strictEqual(gcd(1, 1), 1);
+    assert.strictEqual(gcd(1, 0), 1);
+    assert.strictEqual(gcd(1, -1), 1);
+    assert.strictEqual(gcd(-1, 1), 1);
+    assert.strictEqual(gcd(-1, 0), 1);
+    assert.strictEqual(gcd(-1, -1), 1);
+    assert.strictEqual(gcd(0, 1), 1);
+    assert.strictEqual(gcd(0, -1), 1);
+    assert.strictEqual(gcd(0, 0), 0);
   });
 
   it ('should calculate gcd for edge cases with negative values', function () {
@@ -69,7 +69,7 @@ describe('gcd', function() {
   });
 
   it('should throw an error if only one argument', function() {
-    assert.throws(function () {gcd(1); }, SyntaxError);
+    assert.throws(function () {gcd(1); }, /TypeError: Too few arguments/);
   });
 
   it('should throw an error for non-integer numbers', function() {
@@ -78,16 +78,16 @@ describe('gcd', function() {
   })
 
   it('should throw an error with complex numbers', function() {
-    assert.throws(function () {gcd(math.complex(1,3),2); }, math.error.UnsupportedTypeError);
+    assert.throws(function () {gcd(math.complex(1,3),2); }, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error with strings', function() {
-    assert.throws(function () {gcd('a', 2); }, /Function gcd\(string, number\) not supported/);
-    assert.throws(function () {gcd(2, 'a'); }, /Function gcd\(number, string\) not supported/);
+    assert.throws(function () {gcd('a', 2); }, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {gcd(2, 'a'); }, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error with units', function() {
-    assert.throws(function () { gcd(math.unit('5cm'), 2); }, /Function gcd\(unit, number\) not supported/);
+    assert.throws(function () { gcd(math.unit('5cm'), 2); }, /TypeError: Unexpected type of argument/);
   });
 
   it('should find the greatest common divisor element-wise in a matrix', function() {

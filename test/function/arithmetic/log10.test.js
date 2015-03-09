@@ -1,13 +1,12 @@
 // test exp
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    range = math.range,
-    log10 = math.log10;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var range = math.range;
+var log10 = math.log10;
 
 describe('log10', function() {
   it('should return the log base 10 of a boolean', function () {
@@ -68,8 +67,8 @@ describe('log10', function() {
   });
 
   it('should throw an error if used with a wrong number of arguments', function() {
-    assert.throws(function () {log10()}, error.ArgumentsError);
-    assert.throws(function () {log10(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {log10()}, /TypeError: Too few arguments/);
+    assert.throws(function () {log10(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should return the log base 10 of a complex number', function() {

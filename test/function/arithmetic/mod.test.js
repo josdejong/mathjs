@@ -1,12 +1,11 @@
 // test mod
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    matrix = math.matrix,
-    range = math.range,
-    mod = math.mod;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bignumber = math.bignumber;
+var matrix = math.matrix;
+var range = math.range;
+var mod = math.mod;
 
 describe('mod', function() {
   it('should calculate the modulus of booleans correctly', function () {
@@ -43,13 +42,13 @@ describe('mod', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {mod(1)}, error.ArgumentsError);
-    assert.throws(function () {mod(1,2,3)}, error.ArgumentsError);
+    assert.throws(function () {mod(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {mod(1,2,3)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error if used with wrong type of arguments', function() {
-    assert.throws(function () {mod(1, 'string')}, math.error.UnsupportedTypeError);
-    assert.throws(function () {mod('string', bignumber(2))}, math.error.UnsupportedTypeError);
+    assert.throws(function () {mod(1, 'string')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {mod('string', bignumber(2))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should calculate the modulus of bignumbers', function() {
@@ -76,9 +75,8 @@ describe('mod', function() {
     assert.deepEqual(mod(bignumber(0), 3), bignumber(0));
     assert.deepEqual(mod(bignumber(7), 0), bignumber(7));
 
-    approx.equal(mod(7/3, bignumber(2)), 1/3);
-    approx.equal(mod(7/3, 1/3), 0);
-    approx.equal(mod(bignumber(7).div(3), 1/3), 0);
+    assert.throws(function () {mod(7/3, bignumber(2))}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {mod(bignumber(7).div(3), 1/3)}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should calculate the modulus of mixed booleans and bignumbers', function() {

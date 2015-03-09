@@ -14,7 +14,7 @@ describe('lcm', function() {
     assert.equal(lcm(21, 6), 42);
     assert.equal(lcm(3, -4, 24), 24);
 
-    assert.throws(function () {lcm(1); }, SyntaxError, 'Wrong number of arguments in function lcm (3 provided, 1-2 expected)');
+    assert.throws(function () {lcm(1); }, /TypeError: Too few arguments/);
   });
 
   it ('should calculate lcm for edge cases around zero', function () {
