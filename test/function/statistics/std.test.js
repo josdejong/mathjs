@@ -74,7 +74,7 @@ describe('std', function() {
   it('should throw an error if called with invalid type of arguments', function() {
     assert.throws(function() {std('a', 'b')}, TypeError);
     assert.throws(function() {std(new Unit('5cm'), new Unit('10cm'))}, TypeError);
-    assert.throws(function() {std([2,3,4], 5)}, /String expected/);
+    assert.throws(function() {std([2,3,4], 5)}, /Unknown normalization "5"/);
   });
 
   it('should throw an error if called with an empty array', function() {

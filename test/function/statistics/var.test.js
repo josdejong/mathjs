@@ -72,7 +72,7 @@ describe('variance', function() {
   it('should throw an error if called with invalid type of arguments', function() {
     assert.throws(function() {variance('a', 'b')}, TypeError);
     assert.throws(function() {variance(new Unit('5cm'), new Unit('10cm'))}, TypeError);
-    assert.throws(function() {variance([2,3,4], 5)}, /String expected/);
+    assert.throws(function() {variance([2,3,4], 5)}, /Unknown normalization "5"/);
   });
 
   it('should throw an error if called with an empty array', function() {

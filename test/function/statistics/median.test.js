@@ -33,6 +33,14 @@ describe('median', function() {
         new BigNumber(2));
   });
 
+  it('should return the median of an even number of booleans', function() {
+    assert.strictEqual(median(true, true, false, false), 0.5);
+  });
+
+  it('should return the median of an odd number of booleans', function() {
+    assert.strictEqual(median(true, true, false), 1);
+  });
+
   it('should return the median from an array', function() {
     assert.equal(median([1,3,5,2,-5]), 2);
   });
@@ -70,11 +78,10 @@ describe('median', function() {
   });
 
   it('should throw an error if called with unsupported type of arguments', function() {
-    assert.throws(function () {median('A', 'C', 'D', 'B')}, math.error.UnsupportedTypeError);
-    assert.throws(function () {median('A', 'C', 'B')}, math.error.UnsupportedTypeError);
-    assert.throws(function () {median(true, false, true)}, math.error.UnsupportedTypeError);
-    assert.throws(function () {median(0, 'B')}, math.error.UnsupportedTypeError);
-    assert.throws(function () {median(new Complex(2,3), new Complex(-1,2))}, TypeError); // TODO: for some reason the test fails when expecting math.error.UnsupportedTypeError
+    assert.throws(function () {median('A', 'C', 'D', 'B')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {median('A', 'C', 'B')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {median(0, 'B')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {median(new Complex(2,3), new Complex(-1,2))}, /TypeError: No ordering relation is defined for complex numbers/);
   });
 
   it('should throw an error if called with an empty array', function() {
