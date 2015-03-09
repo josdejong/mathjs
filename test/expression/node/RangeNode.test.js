@@ -5,7 +5,8 @@ var assert = require('assert'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode');
+    RangeNode = require('../../../lib/expression/node/RangeNode'),
+  OperatorNode = require('../../../lib/expression/node/OperatorNode');
 
 describe('RangeNode', function() {
 
@@ -245,6 +246,30 @@ describe('RangeNode', function() {
     var n = new RangeNode(start, end, step);
 
     assert.equal(n.toString(), '0:2:10');
+  });
+  
+  it ('should stringify a RangeNode with an OperatorNode', function () {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var o1 = new OperatorNode('+', 'add', [a, b]);
+    var o2 = new OperatorNode('<', 'smaller', [a, b]);
+
+    var n = new RangeNode(o1, o1, o2);
+
+    assert.equal(n.toString(), '1 + 2:(1 < 2):1 + 2');
+  });
+
+  it ('should stringify a RangeNode with a RangeNode', function () {
+    var start1 = new ConstantNode(0);
+    var end1 = new ConstantNode(10);
+    var step2 = new ConstantNode(2);
+    var end2 = new ConstantNode(100);
+
+    var start2 = new RangeNode(start1, end1);
+    var n = new RangeNode(start2, end2, step2);
+
+    assert.equal(n.toString(), '(0:10):2:100');
   });
 
   it ('should LaTeX a RangeNode without step', function () {

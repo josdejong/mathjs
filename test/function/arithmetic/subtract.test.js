@@ -61,15 +61,15 @@ describe('subtract', function() {
   });
 
   it('should subtract two complex numbers correctly', function() {
-    assert.equal(subtract(math.complex(3, 2), math.complex(8, 4)), '-5 - 2i');
-    assert.equal(subtract(math.complex(6, 3), math.complex(-2, -2)), '8 + 5i');
-    assert.equal(subtract(math.complex(3, 4), 10), '-7 + 4i');
-    assert.equal(subtract(math.complex(3, 4), -2), '5 + 4i');
-    assert.equal(subtract(math.complex(-3, -4), 10), '-13 - 4i');
-    assert.equal(subtract(10, math.complex(3, 4)), '7 - 4i');
-    assert.equal(subtract(10, math.i), '10 - i');
-    assert.equal(subtract(0, math.i), '-i');
-    assert.equal(subtract(10, math.complex(0, 1)), '10 - i');
+    assert.deepEqual(subtract(math.complex(3, 2), math.complex(8, 4)), math.complex('-5 - 2i'));
+    assert.deepEqual(subtract(math.complex(6, 3), math.complex(-2, -2)), math.complex('8 + 5i'));
+    assert.deepEqual(subtract(math.complex(3, 4), 10), math.complex('-7 + 4i'));
+    assert.deepEqual(subtract(math.complex(3, 4), -2), math.complex('5 + 4i'));
+    assert.deepEqual(subtract(math.complex(-3, -4), 10), math.complex('-13 - 4i'));
+    assert.deepEqual(subtract(10, math.complex(3, 4)), math.complex('7 - 4i'));
+    assert.deepEqual(subtract(10, math.i), math.complex('10 - i'));
+    assert.deepEqual(subtract(0, math.i), math.complex('-i'));
+    assert.deepEqual(subtract(10, math.complex(0, 1)), math.complex('10 - i'));
   });
 
   it('should throw an error for mixed complex numbers and big numbers', function() {

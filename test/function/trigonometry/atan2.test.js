@@ -4,21 +4,14 @@ var assert = require('assert'),
     math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
-    acos = math.acos,
-    atan = math.atan,
-    asin = math.asin,
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
     divide = math.divide,
-    round = math.round,
-    sec = math.sec,
-    csc = math.csc,
-    cot = math.cot,
-    sin = math.sin,
-    cos = math.cos,
-    tan = math.tan,
-    atan2 = math.atan2;
+    atan2 = math.atan2,
+    bigmath = math.create({precision: 20}),
+    Big = bigmath.bignumber,
+    atan2Big = bigmath.atan2;
 
 describe('atan2', function() {
 
@@ -53,13 +46,33 @@ describe('atan2', function() {
     assert.equal(atan2(null, 1), 0);
   });
 
-  it('should return the arctan of for bignumbers (downgrades to number)', function() {
-    approx.equal(atan2(math.bignumber(1), math.bignumber(1)), pi / 4);
+  it('should return the arctan of for bignumbers', function() {
+    assert.deepEqual(atan2Big(Big(0), Big(0)), Big(NaN));
+    assert.deepEqual(atan2Big(Big(0), Big(1)), Big(0));
+    assert.deepEqual(atan2Big(Big(1), Big(1)), Big('0.7853981633974483096'));
+    assert.deepEqual(atan2Big(Big(1), Big(0)), Big('1.5707963267948966192'));
+    assert.deepEqual(atan2Big(Big(1), Big(-1)), Big('2.3561944901923449288'));
+    assert.deepEqual(atan2Big(Big(0), Big(-1)), Big('3.1415926535897932385'));
+    assert.deepEqual(atan2Big(Big(-1), Big(-1)), Big('-2.3561944901923449288'));
+    assert.deepEqual(atan2Big(Big(-1), Big(0)), Big('-1.5707963267948966192'));
+    assert.deepEqual(atan2Big(Big(-1), Big(1)), Big('-0.7853981633974483096'));
   });
 
-  it('should return the arctan of for mixed numbers and bignumbers (downgrades to number)', function() {
-    approx.equal(atan2(1, math.bignumber(1)), pi / 4);
-    approx.equal(atan2(math.bignumber(1), 1), pi / 4);
+  it('should return the arctan of for mixed numbers and bignumbers', function() {
+    assert.deepEqual(atan2Big(1, Big(1)), Big('0.7853981633974483096'));
+    assert.deepEqual(atan2Big(Big(1), 1), Big('0.7853981633974483096'));
+  });
+
+  it('should return the arctan of for mixed bignumbers and booleans', function() {
+    assert.deepEqual(atan2Big(Big(1), true), Big('0.7853981633974483096'));
+    assert.deepEqual(atan2Big(Big(1), false), Big('1.5707963267948966192'));
+    assert.deepEqual(atan2Big(true, Big(1)), Big('0.7853981633974483096'));
+    assert.deepEqual(atan2Big(false, Big(1)), Big(0));
+  });
+
+  it('should calculate atan2 with mixed bignumbers and null', function() {
+    assert.deepEqual(atan2Big(Big(1), null), Big('1.5707963267948966192'));
+    assert.deepEqual(atan2Big(null, Big(1)), Big(0));
   });
 
   it('should throw an error if called with a complex', function() {
