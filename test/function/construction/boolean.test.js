@@ -31,7 +31,7 @@ describe('boolean', function() {
   });
 
   it('should convert the elements of a matrix or array to booleans', function() {
-    assert.deepEqual(bool(math.matrix([1,0,1,1])), new math.type.Matrix([true, false, true, true]));
+    assert.deepEqual(bool(math.matrix([1,0,1,1])), math.matrix([true, false, true, true]));
     assert.deepEqual(bool([1,0,1,1]), [true, false, true, true]);
   });
 

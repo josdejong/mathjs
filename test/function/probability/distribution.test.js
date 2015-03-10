@@ -249,7 +249,7 @@ describe('distribution', function () {
     });
 
     it('should pick numbers from the given matrix following an uniform distribution', function() {
-      var possibles = new Matrix([11, 22, 33, 44, 55]),
+      var possibles = math.matrix([11, 22, 33, 44, 55]),
           picked = [],
           count;
 
@@ -275,7 +275,7 @@ describe('distribution', function () {
 
     it('should throw an error when providing a multi dimensional matrix', function() {
       assert.throws(function () {
-        uniformDistrib.pickRandom(new Matrix([[1,2], [3,4]]));
+        uniformDistrib.pickRandom(math.matrix([[1,2], [3,4]]));
       }, /Only one dimensional vectors supported/);
     });
   });

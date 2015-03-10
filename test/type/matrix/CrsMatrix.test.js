@@ -1,18 +1,18 @@
 var assert = require('assert');
 var math = require('../../../index');
-var CrsFormat = math.type.Matrix.format.crs;
+var CrsMatrix = math.type.CrsMatrix;
 var Complex = math.type.Complex;
 
-describe('CrsFormat', function() {
+describe('CrsMatrix', function() {
 
   describe('constructor', function() {
 
     it('should throw exception if called with no argument', function() {
-      assert.throws(function () { new CrsFormat(); }, /data must be an array/);
+      assert.throws(function () { new CrsMatrix(); }, /data must be an array/);
     });
 
     it('should create a CRS from an array', function () {
-      var m = new CrsFormat(
+      var m = new CrsMatrix(
         [
           [10, 0, 0, 0, -2, 0],
           [3, 9, 0, 0, 0, 3],
@@ -29,7 +29,7 @@ describe('CrsFormat', function() {
     });
 
     it('should create a CRS from an array, empty column', function () {
-      var m = new CrsFormat(
+      var m = new CrsMatrix(
         [
           [1, 0, 0],
           [0, 0, 1]
@@ -42,7 +42,7 @@ describe('CrsFormat', function() {
     });
     
     it('should create a CRS from an array, empty row', function () {
-      var m = new CrsFormat(
+      var m = new CrsMatrix(
         [
           [1, 0],
           [0, 0],
@@ -56,7 +56,7 @@ describe('CrsFormat', function() {
     });
 
     it('should create an empty CRS from an array', function () {
-      var m = new CrsFormat([]);
+      var m = new CrsMatrix([]);
       assert.equal(m._format, 'crs');
       assert.deepEqual(m._size, [0, 0]);
       assert.deepEqual(m._values, []);
@@ -65,24 +65,24 @@ describe('CrsFormat', function() {
     });
 
     it('should throw an error when called without new keyword', function () {
-      assert.throws(function () { CrsFormat(); }, /Constructor must be called with the new operator/);
+      assert.throws(function () { CrsMatrix(); }, /Constructor must be called with the new operator/);
     });
   });
   
   describe('size', function() {
 
     it('should return the expected size', function() {
-      assert.deepEqual(new CrsFormat([[23]]).size(), [1, 1]);
-      assert.deepEqual(new CrsFormat([[1, 2, 3], [4, 5, 6]]).size(), [2, 3]);
-      assert.deepEqual(new CrsFormat([[1], [2], [3]]).size(), [3, 1]);
-      assert.deepEqual(new CrsFormat([[]]).size(), [1, 0]);
+      assert.deepEqual(new CrsMatrix([[23]]).size(), [1, 1]);
+      assert.deepEqual(new CrsMatrix([[1, 2, 3], [4, 5, 6]]).size(), [2, 3]);
+      assert.deepEqual(new CrsMatrix([[1], [2], [3]]).size(), [3, 1]);
+      assert.deepEqual(new CrsMatrix([[]]).size(), [1, 0]);
     });
   });
   
   describe('toArray', function () {
     
     it('should return array', function () {
-      var m = new CrsFormat({
+      var m = new CrsMatrix({
         values: [10, -2, 3, 9, 3, 7, 8, 7, 3, 8, 7, 5, 8, 9, 9, 13, 4, 2, -1],
         index: [0, 4, 0, 1, 5, 1, 2, 3, 0, 2, 3, 4, 1, 3, 4, 5, 1, 4, 5],
         ptr: [0, 2, 5, 8, 12, 16, 19],
@@ -104,7 +104,7 @@ describe('CrsFormat', function() {
     });
     
     it('should return array, empty row', function () {
-      var m = new CrsFormat({
+      var m = new CrsMatrix({
         values: [1, 1],
         index: [0, 1],
         ptr: [0, 1, 1, 2],
@@ -123,7 +123,7 @@ describe('CrsFormat', function() {
     });
     
     it('should return array, complex numbers', function () {
-      var m = new CrsFormat({
+      var m = new CrsMatrix({
         values: [new Complex(1, 1), new Complex(2, 2), new Complex(3, 3), new Complex(4, 4), new Complex(5, 5), new Complex(6, 6)],
         index: [0, 2, 2, 0, 1, 2],
         ptr: [0, 2, 3, 6],
@@ -146,7 +146,7 @@ describe('CrsFormat', function() {
 
     it('should create CRS matrix (n x n)', function () {
 
-      var m = CrsFormat.diagonal(3, 3, 1);
+      var m = CrsMatrix.diagonal(3, 3, 1);
 
       assert.deepEqual(m._size, [3, 3]);
       assert.deepEqual(m._values, [1, 1, 1]);
@@ -164,7 +164,7 @@ describe('CrsFormat', function() {
 
     it('should create CRS matrix (n x n), complex number', function () {
 
-      var m = CrsFormat.diagonal(3, 3, new Complex(1, 1));
+      var m = CrsMatrix.diagonal(3, 3, new Complex(1, 1));
 
       assert.deepEqual(m._size, [3, 3]);
       assert.deepEqual(m._values, [new Complex(1, 1), new Complex(1, 1), new Complex(1, 1)]);
@@ -174,7 +174,7 @@ describe('CrsFormat', function() {
 
     it('should create CRS matrix (m x n), m > n', function () {
 
-      var m = CrsFormat.diagonal(4, 3, 1);
+      var m = CrsMatrix.diagonal(4, 3, 1);
 
       assert.deepEqual(m._size, [4, 3]);
       assert.deepEqual(m._values, [1, 1, 1]);
@@ -193,7 +193,7 @@ describe('CrsFormat', function() {
 
     it('should create CRS matrix (m x n), m < n', function () {
 
-      var m = CrsFormat.diagonal(3, 4, 1);
+      var m = CrsMatrix.diagonal(3, 4, 1);
 
       assert.deepEqual(m._size, [3, 4]);
       assert.deepEqual(m._values, [1, 1, 1]);
@@ -213,7 +213,7 @@ describe('CrsFormat', function() {
   describe('get', function () {
 
     it('should throw on invalid element position', function () {
-      var m = new CrsFormat([
+      var m = new CrsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -229,7 +229,7 @@ describe('CrsFormat', function() {
     });
     
     it('should get matrix element', function () {
-      var m = new CrsFormat([
+      var m = new CrsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -248,7 +248,7 @@ describe('CrsFormat', function() {
   describe('set', function () {
 
     it('should throw on invalid element position', function () {
-      var m = new CrsFormat([
+      var m = new CrsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -264,7 +264,7 @@ describe('CrsFormat', function() {
     });
 
     it('should remove matrix element', function () {
-      var m = new CrsFormat([
+      var m = new CrsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -290,7 +290,7 @@ describe('CrsFormat', function() {
     });
 
     it('should update matrix element (non zero)', function () {
-      var m = new CrsFormat([
+      var m = new CrsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -316,7 +316,7 @@ describe('CrsFormat', function() {
     });
 
     it('should update matrix element (zero)', function () {
-      var m = new CrsFormat([
+      var m = new CrsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -345,7 +345,7 @@ describe('CrsFormat', function() {
   describe('clone', function() {
 
     it('should clone the matrix properly', function() {
-      var m1 = new CrsFormat(
+      var m1 = new CrsMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -360,7 +360,7 @@ describe('CrsFormat', function() {
   describe('toString', function() {
 
     it('should return string representation of matrix', function() {
-      var m = new CrsFormat(
+      var m = new CrsMatrix(
         [
           [1, 0, 0],
           [0, 0, 1]

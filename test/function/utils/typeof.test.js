@@ -42,7 +42,7 @@ describe('typeof', function() {
 
   it('should return matrix type for a matrix', function() {  
     assert.equal(math.typeof(math.matrix()), 'matrix');
-    assert.equal(math.typeof(new Matrix()), 'matrix');
+    assert.equal(math.typeof(math.matrix()), 'matrix');
   });
 
   it('should return unit type for a unit', function() {

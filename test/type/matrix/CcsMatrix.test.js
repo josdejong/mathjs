@@ -1,19 +1,24 @@
 var assert = require('assert');
 var math = require('../../../index');
 var index = math.index;
-var CcsFormat = math.type.Matrix.format.ccs;
+var CcsMatrix = math.type.CcsMatrix;
+var DenseMatrix = math.type.DenseMatrix;
 var Complex = math.type.Complex;
 
-describe('CcsFormat', function() {
+describe('CcsMatrix', function() {
 
   describe('constructor', function() {
 
-    it('should throw exception if called with no argument', function() {
-      assert.throws(function () { new CcsFormat(); }, /data must be an array/);
+    it('should create empty matrix if called with no argument', function() {
+      var m = new CcsMatrix();
+      assert.deepEqual(m._size, [0]);
+      assert.deepEqual(m._values, []);
+      assert.deepEqual(m._index, []);
+      assert.deepEqual(m._ptr, [0]);
     });
 
     it('should create a CCS from an array', function () {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [10, 0, 0, 0, -2, 0],
           [3, 9, 0, 0, 0, 3],
@@ -30,7 +35,7 @@ describe('CcsFormat', function() {
     });
     
     it('should create a CCS from an array, empty column', function () {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 0, 0],
           [0, 0, 1]
@@ -43,7 +48,7 @@ describe('CcsFormat', function() {
     });
     
     it('should create a CCS from an array, empty row', function () {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 0],
           [0, 0],
@@ -57,7 +62,7 @@ describe('CcsFormat', function() {
     });
     
     it('should create an empty CCS from an array', function () {
-      var m = new CcsFormat([]);
+      var m = new CcsMatrix([]);
       assert.equal(m._format, 'ccs');
       assert.deepEqual(m._size, [0, 0]);
       assert.deepEqual(m._values, []);
@@ -66,7 +71,7 @@ describe('CcsFormat', function() {
     });
 
     it('should create a CCS from a vector', function () {
-      var m = new CcsFormat([1, 2, 3]);
+      var m = new CcsMatrix([1, 2, 3]);
       assert.equal(m._format, 'ccs');
       assert.deepEqual(m._size, [3, 1]);
       assert.deepEqual(m._values, [1, 2, 3]);
@@ -74,25 +79,53 @@ describe('CcsFormat', function() {
       assert.deepEqual(m._ptr, [0, 3]);
     });
     
+    it('should create a CcsMatrix from another CcsMatrix', function () {
+      var m1 = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ]);
+      var m2 = new CcsMatrix(m1);
+      assert.deepEqual(m1._size, m2._size);
+      assert.deepEqual(m1._values, m2._values);
+      assert.deepEqual(m1._index, m2._index);
+      assert.deepEqual(m1._ptr, m2._ptr);
+    });
+    
+    it('should create a CcsMatrix from a DenseMatrix', function () {
+      var m1 = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ]);
+      var m2 = new CcsMatrix(m1);
+      assert.deepEqual(m1.size(), m2.size());
+      assert.deepEqual(m1.toArray(), m2.toArray());
+    });
+    
     it('should throw an error when called without new keyword', function () {
-      assert.throws(function () { CcsFormat(); }, /Constructor must be called with the new operator/);
+      assert.throws(function () { CcsMatrix(); }, /Constructor must be called with the new operator/);
     });
   });
 
   describe('size', function() {
 
     it('should return the expected size', function() {
-      assert.deepEqual(new CcsFormat([[23]]).size(), [1, 1]);
-      assert.deepEqual(new CcsFormat([[1, 2, 3], [4, 5, 6]]).size(), [2, 3]);
-      assert.deepEqual(new CcsFormat([[1], [2], [3]]).size(), [3, 1]);
-      assert.deepEqual(new CcsFormat([[]]).size(), [1, 0]);
+      assert.deepEqual(new CcsMatrix([[23]]).size(), [1, 1]);
+      assert.deepEqual(new CcsMatrix([[1, 2, 3], [4, 5, 6]]).size(), [2, 3]);
+      assert.deepEqual(new CcsMatrix([[1], [2], [3]]).size(), [3, 1]);
+      assert.deepEqual(new CcsMatrix([[]]).size(), [1, 0]);
     });
   });
   
   describe('toArray', function () {
 
     it('should return array', function () {
-      var m = new CcsFormat({
+      var m = new CcsMatrix({
         values: [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1],
         index: [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5],
         ptr: [0, 3, 7, 9, 12, 16, 19],
@@ -114,7 +147,7 @@ describe('CcsFormat', function() {
     });
     
     it('should return array, empty column', function () {
-      var m = new CcsFormat({
+      var m = new CcsMatrix({
         values: [1, 1],
         index: [0, 1],
         ptr: [0, 1, 1, 2],
@@ -132,7 +165,7 @@ describe('CcsFormat', function() {
     });
     
     it('should return array, complex numbers', function () {
-      var m = new CcsFormat({
+      var m = new CcsMatrix({
         values: [new Complex(1, 1), new Complex(4, 4), new Complex(5, 5), new Complex(2, 2), new Complex(3, 3), new Complex(6, 6)],
         index: [0, 2, 2, 0, 1, 2],
         ptr: [0, 2, 3, 6],
@@ -155,7 +188,7 @@ describe('CcsFormat', function() {
 
     it('should create CCS matrix (n x n)', function () {
       
-      var m = CcsFormat.diagonal(3, 3, 1);
+      var m = CcsMatrix.diagonal(3, 3, 1);
 
       assert.deepEqual(m._size, [3, 3]);
       assert.deepEqual(m._values, [1, 1, 1]);
@@ -173,7 +206,7 @@ describe('CcsFormat', function() {
     
     it('should create CCS matrix (n x n), complex number', function () {
 
-      var m = CcsFormat.diagonal(3, 3, new Complex(1, 1));
+      var m = CcsMatrix.diagonal(3, 3, new Complex(1, 1));
 
       assert.deepEqual(m._size, [3, 3]);
       assert.deepEqual(m._values, [new Complex(1, 1), new Complex(1, 1), new Complex(1, 1)]);
@@ -183,7 +216,7 @@ describe('CcsFormat', function() {
     
     it('should create CCS matrix (m x n), m > n', function () {
 
-      var m = CcsFormat.diagonal(4, 3, 1);
+      var m = CcsMatrix.diagonal(4, 3, 1);
 
       assert.deepEqual(m._size, [4, 3]);
       assert.deepEqual(m._values, [1, 1, 1]);
@@ -202,7 +235,7 @@ describe('CcsFormat', function() {
     
     it('should create CCS matrix (m x n), m < n', function () {
 
-      var m = CcsFormat.diagonal(3, 4, 1);
+      var m = CcsMatrix.diagonal(3, 4, 1);
 
       assert.deepEqual(m._size, [3, 4]);
       assert.deepEqual(m._values, [1, 1, 1]);
@@ -222,7 +255,7 @@ describe('CcsFormat', function() {
   describe('get', function () {
 
     it('should throw on invalid element position', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -238,7 +271,7 @@ describe('CcsFormat', function() {
     });
 
     it('should get matrix element', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -257,7 +290,7 @@ describe('CcsFormat', function() {
   describe('set', function () {
 
     it('should throw on invalid element position', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -271,7 +304,7 @@ describe('CcsFormat', function() {
     });
 
     it('should remove matrix element', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -297,7 +330,7 @@ describe('CcsFormat', function() {
     });
     
     it('should update matrix element (non zero)', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -323,7 +356,7 @@ describe('CcsFormat', function() {
     });
 
     it('should update matrix element (zero)', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -349,7 +382,7 @@ describe('CcsFormat', function() {
     });
     
     it('should add rows as meeded', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [1, 2],
         [3, 4]
       ]);
@@ -377,7 +410,7 @@ describe('CcsFormat', function() {
     });
     
     it('should add columns as meeded', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [1, 2],
         [3, 4]
       ]);
@@ -400,7 +433,7 @@ describe('CcsFormat', function() {
     });
     
     it('should add rows & columns as meeded', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [1, 2],
         [3, 4]
       ]);
@@ -428,7 +461,7 @@ describe('CcsFormat', function() {
     });
 
     it('should add rows as meeded, non zero default', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [1, 2],
         [3, 4]
       ]);
@@ -456,7 +489,7 @@ describe('CcsFormat', function() {
     });
     
     it('should add columns as meeded, non zero default', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [1, 2],
         [3, 4]
       ]);
@@ -479,7 +512,7 @@ describe('CcsFormat', function() {
     });
     
     it('should add rows & columns as meeded, non zero default', function () {
-      var m = new CcsFormat([
+      var m = new CcsMatrix([
         [1, 2],
         [3, 4]
       ]);
@@ -510,7 +543,7 @@ describe('CcsFormat', function() {
   describe('resize', function() {
 
     it('should increase columns as needed, zero value', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -529,7 +562,7 @@ describe('CcsFormat', function() {
     });
     
     it('should increase columns as needed, non zero value', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -548,7 +581,7 @@ describe('CcsFormat', function() {
     });
     
     it('should increase rows as needed, zero value', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -568,7 +601,7 @@ describe('CcsFormat', function() {
     });
     
     it('should increase rows as needed, non zero value', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -588,7 +621,7 @@ describe('CcsFormat', function() {
     });
     
     it('should increase rows & columns as needed, zero value, empty CCS', function() {
-      var m = new CcsFormat([]);
+      var m = new CcsMatrix([]);
       m.resize([2, 2]);
       assert.deepEqual(m._size, [2, 2]);
       assert.deepEqual(m._values, []);
@@ -603,7 +636,7 @@ describe('CcsFormat', function() {
     });
     
     it('should increase rows & columns as needed, non zero value, empty CCS', function() {
-      var m = new CcsFormat([]);
+      var m = new CcsMatrix([]);
       m.resize([2, 2], 100);
       assert.deepEqual(m._size, [2, 2]);
       assert.deepEqual(m._values, [100, 100, 100, 100]);
@@ -618,7 +651,7 @@ describe('CcsFormat', function() {
     });
     
     it('should decrease columns as needed', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -637,7 +670,7 @@ describe('CcsFormat', function() {
     });
     
     it('should decrease columns as needed, zero matrix', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [0, 0, 0],
           [0, 0, 0]
@@ -656,7 +689,7 @@ describe('CcsFormat', function() {
     });
     
     it('should decrease rows as needed', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 2],
           [3, 4]
@@ -674,7 +707,7 @@ describe('CcsFormat', function() {
     });
     
     it('should decrease rows as needed, zero CCS', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [0, 0],
           [0, 0]
@@ -692,7 +725,7 @@ describe('CcsFormat', function() {
     });
     
     it('should decrease rows & columns as needed, zero CCS', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [0, 0, 0, 0],
           [0, 0, 0, 0],
@@ -716,7 +749,7 @@ describe('CcsFormat', function() {
   describe('clone', function() {
 
     it('should clone the matrix properly', function() {
-      var m1 = new CcsFormat(
+      var m1 = new CcsMatrix(
         [
           [1,2,3],
           [4,5,6]
@@ -733,7 +766,7 @@ describe('CcsFormat', function() {
     it('should apply the given function to all elements in the matrix', function() {
       var m, m2;
 
-      m = new CcsFormat([
+      m = new CcsMatrix([
         [1, 2, 3, 4],
         [5, 6, 7, 8],
         [9, 10, 11,12],
@@ -747,23 +780,23 @@ describe('CcsFormat', function() {
         [26, 28, 30, 32]
       ]);
       
-      m = new CcsFormat([1]);
+      m = new CcsMatrix([1]);
       m2 = m.map(function (value) { return value * 2; });
       assert.deepEqual(m2.toArray(), [[2]]);
 
-      m = new CcsFormat([1,2,3]);
+      m = new CcsMatrix([1,2,3]);
       m2 = m.map(function (value) { return value * 2; });
       assert.deepEqual(m2.toArray(), [[2],[4],[6]]);
     });
 
     it('should work on empty matrices', function() {
-      var m = new CcsFormat([]);
+      var m = new CcsMatrix([]);
       var m2 = m.map(function (value) { return value * 2; });
       assert.deepEqual(m2.toArray(), []);
     });
     
     it('should process all values (zero and non-zero)', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [0, 0],
           [0, 0]
@@ -779,7 +812,7 @@ describe('CcsFormat', function() {
     });
     
     it('should process non-zero values', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 0],
           [0, 2]
@@ -795,7 +828,7 @@ describe('CcsFormat', function() {
     });
 
     it('should invoke callback with parameters value, index, obj', function() {
-      var m = new CcsFormat([[1, 2, 3], [4, 5, 6]]);
+      var m = new CcsMatrix([[1, 2, 3], [4, 5, 6]]);
       var o = {};
 
       var m2 = m.map(
@@ -817,7 +850,7 @@ describe('CcsFormat', function() {
   describe('get subset', function() {
 
     it('should get the right subset of the matrix', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
@@ -834,35 +867,35 @@ describe('CcsFormat', function() {
 
     /*
     it('should squeeze the output when index contains a scalar', function() {
-      var m = new CcsFormat(math.range(0, 10));
+      var m = new CcsMatrix(math.range(0, 10));
       assert.deepEqual(m.subset(index(1)), 1);
-      assert.deepEqual(m.subset(index([1, 2])), new CcsFormat([1]));
+      assert.deepEqual(m.subset(index([1, 2])), new CcsMatrix([1]));
 
-      m = new CcsFormat([[1,2], [3, 4]]);
+      m = new CcsMatrix([[1,2], [3, 4]]);
       assert.deepEqual(m.subset(index(1, 1)), 4);
-      assert.deepEqual(m.subset(index([1, 2], 1)), new CcsFormat([[4]]));
-      assert.deepEqual(m.subset(index(1, [1, 2])), new CcsFormat([[4]]));
-      assert.deepEqual(m.subset(index([1, 2], [1, 2])), new CcsFormat([[4]]));
+      assert.deepEqual(m.subset(index([1, 2], 1)), new CcsMatrix([[4]]));
+      assert.deepEqual(m.subset(index(1, [1, 2])), new CcsMatrix([[4]]));
+      assert.deepEqual(m.subset(index([1, 2], [1, 2])), new CcsMatrix([[4]]));
     });
 
     it('should throw an error if the given subset is invalid', function() {
-      var m = new CcsFormat();
+      var m = new CcsMatrix();
       assert.throws(function () { m.subset([-1]); });
 
-      m = new CcsFormat([[1, 2, 3], [4, 5, 6]]);
+      m = new CcsMatrix([[1, 2, 3], [4, 5, 6]]);
       assert.throws(function () { m.subset([1, 2, 3]); });
       assert.throws(function () { m.subset([3, 0]); });
       assert.throws(function () { m.subset([1]); });
     });
 
     it('should throw an error in case of wrong number of arguments', function() {
-      var m = new CcsFormat();
+      var m = new CcsMatrix();
       assert.throws(function () { m.subset();}, /Wrong number of arguments/);
       assert.throws(function () { m.subset(1, 2, 3, 4); }, /Wrong number of arguments/);
     });
 
     it('should throw an error in case of dimension mismatch', function() {
-      var m = new CcsFormat([[1,2,3],[4,5,6]]);
+      var m = new CcsMatrix([[1,2,3],[4,5,6]]);
       assert.throws(function () {m.subset(index([0,2]))}, /Dimension mismatch/);
     });
     */
@@ -873,7 +906,7 @@ describe('CcsFormat', function() {
     it('should run on all elements of the matrix', function() {
       var m, output;
 
-      m = new CcsFormat([
+      m = new CcsMatrix([
         [1, 2, 3, 4],
         [5, 6, 7, 8],
         [9, 10, 11,12],
@@ -883,26 +916,26 @@ describe('CcsFormat', function() {
       m.forEach(function (value) { output.push(value); });
       assert.deepEqual(output, [1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16]);
 
-      m = new CcsFormat([1]);
+      m = new CcsMatrix([1]);
       output = [];
       m.forEach(function (value) { output.push(value); });
       assert.deepEqual(output, [1]);
 
-      m = new CcsFormat([1,2,3]);
+      m = new CcsMatrix([1,2,3]);
       output = [];
       m.forEach(function (value) { output.push(value); });
       assert.deepEqual(output, [1,2,3]);
     });
 
     it('should work on empty matrices', function() {
-      m = new CcsFormat([]);
+      m = new CcsMatrix([]);
       output = [];
       m.forEach(function (value) { output.push(value); });
       assert.deepEqual(output, []);
     });
 
     it('should invoke callback with parameters value, index, obj', function() {
-      var m = new CcsFormat([[1,2,3], [4,5,6]]);
+      var m = new CcsMatrix([[1,2,3], [4,5,6]]);
       var o = {};
       var output = [];
       m.forEach(
@@ -918,7 +951,7 @@ describe('CcsFormat', function() {
   describe('toString', function() {
 
     it('should return string representation of matrix', function() {
-      var m = new CcsFormat(
+      var m = new CcsMatrix(
         [
           [1, 0, 0],
           [0, 0, 1]

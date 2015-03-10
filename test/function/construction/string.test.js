@@ -30,7 +30,7 @@ describe('string', function() {
 
   it('should convert the elements of a matrix to strings', function() {
     assert.deepEqual(string(math.matrix([[2,true],['hi',null]])),
-        new math.type.Matrix([['2', 'true'],['hi', 'null']]));
+        math.matrix([['2', 'true'],['hi', 'null']]));
   });
 
   it('should convert a number to string', function() {
