@@ -1,5 +1,6 @@
 var assert = require('assert');
 var math = require('../../../index');
+var index = math.index;
 var CcsFormat = math.type.Matrix.format.ccs;
 var Complex = math.type.Complex;
 
@@ -745,7 +746,7 @@ describe('CcsFormat', function() {
         [18, 20, 22, 24],
         [26, 28, 30, 32]
       ]);
-
+      
       m = new CcsFormat([1]);
       m2 = m.map(function (value) { return value * 2; });
       assert.deepEqual(m2.toArray(), [[2]]);
@@ -759,6 +760,38 @@ describe('CcsFormat', function() {
       var m = new CcsFormat([]);
       var m2 = m.map(function (value) { return value * 2; });
       assert.deepEqual(m2.toArray(), []);
+    });
+    
+    it('should process all values (zero and non-zero)', function() {
+      var m = new CcsFormat(
+        [
+          [0, 0],
+          [0, 0]
+        ]
+      );
+      var m2 = m.map(function (value) { return value + 2; });
+      assert.deepEqual(
+        m2.toArray(),
+        [
+          [2, 2],
+          [2, 2]
+        ]);
+    });
+    
+    it('should process non-zero values', function() {
+      var m = new CcsFormat(
+        [
+          [1, 0],
+          [0, 2]
+        ]
+      );
+      var m2 = m.map(function (value) { return value + 2; }, m, true);
+      assert.deepEqual(
+        m2.toArray(),
+        [
+          [3, 0],
+          [0, 4]
+        ]);
     });
 
     it('should invoke callback with parameters value, index, obj', function() {
@@ -779,6 +812,60 @@ describe('CcsFormat', function() {
           [1104, 1115, 1126]
         ]);
     });
+  });
+  
+  describe('get subset', function() {
+
+    it('should get the right subset of the matrix', function() {
+      var m = new CcsFormat(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9]
+        ]);
+      assert.deepEqual(m.size(), [3, 3]);
+      assert.deepEqual(m.subset(index(1, 1)), 5);
+      assert.deepEqual(m.subset(index([0, 2],[0, 2])).toArray(), [[1, 2], [4, 5]]);
+      assert.deepEqual(m.subset(index(1, [1, 3])).toArray(), [[5, 6]]);
+      assert.deepEqual(m.subset(index(0, [1, 3])).toArray(), [[2, 3]]);
+      assert.deepEqual(m.subset(index([1, 3], 1)).toArray(), [[5], [8]]);
+      assert.deepEqual(m.subset(index([1, 3], 2)).toArray(), [[6], [9]]);
+    });
+
+    /*
+    it('should squeeze the output when index contains a scalar', function() {
+      var m = new CcsFormat(math.range(0, 10));
+      assert.deepEqual(m.subset(index(1)), 1);
+      assert.deepEqual(m.subset(index([1, 2])), new CcsFormat([1]));
+
+      m = new CcsFormat([[1,2], [3, 4]]);
+      assert.deepEqual(m.subset(index(1, 1)), 4);
+      assert.deepEqual(m.subset(index([1, 2], 1)), new CcsFormat([[4]]));
+      assert.deepEqual(m.subset(index(1, [1, 2])), new CcsFormat([[4]]));
+      assert.deepEqual(m.subset(index([1, 2], [1, 2])), new CcsFormat([[4]]));
+    });
+
+    it('should throw an error if the given subset is invalid', function() {
+      var m = new CcsFormat();
+      assert.throws(function () { m.subset([-1]); });
+
+      m = new CcsFormat([[1, 2, 3], [4, 5, 6]]);
+      assert.throws(function () { m.subset([1, 2, 3]); });
+      assert.throws(function () { m.subset([3, 0]); });
+      assert.throws(function () { m.subset([1]); });
+    });
+
+    it('should throw an error in case of wrong number of arguments', function() {
+      var m = new CcsFormat();
+      assert.throws(function () { m.subset();}, /Wrong number of arguments/);
+      assert.throws(function () { m.subset(1, 2, 3, 4); }, /Wrong number of arguments/);
+    });
+
+    it('should throw an error in case of dimension mismatch', function() {
+      var m = new CcsFormat([[1,2,3],[4,5,6]]);
+      assert.throws(function () {m.subset(index([0,2]))}, /Dimension mismatch/);
+    });
+    */
   });
   
   describe('forEach', function() {
