@@ -40,17 +40,17 @@ describe('resize', function() {
   });
 
   it('should resize a matrix', function() {
-    var matrix = new Matrix([[0,1,2],[3,4,5]]);
+    var matrix = math.matrix([[0,1,2],[3,4,5]]);
     assert.deepEqual(math.resize(matrix, [3, 2]),
-        new Matrix([[0,1], [3,4], [0,0]]));
-    assert.deepEqual(math.resize(matrix, new Matrix([3, 2])),
-        new Matrix([[0,1], [3,4], [0,0]]));
+        math.matrix([[0,1], [3,4], [0,0]]));
+    assert.deepEqual(math.resize(matrix, math.matrix([3, 2])),
+        math.matrix([[0,1], [3,4], [0,0]]));
 
     // content should be cloned
     var x = math.complex(2, 3);
-    var a = new Matrix([x]);
+    var a = math.matrix([x]);
     var b = math.resize(a, [2], 4);
-    assert.deepEqual(b, new Matrix([x, 4]));
+    assert.deepEqual(b, math.matrix([x, 4]));
     assert.notStrictEqual(b.valueOf()[0], x);
   });
 
@@ -60,7 +60,7 @@ describe('resize', function() {
   });
 
   it('should resize a matrix into a scalar', function() {
-    var matrix = new Matrix([[0,1,2],[3,4,5]]);
+    var matrix = math.matrix([[0,1,2],[3,4,5]]);
     assert.deepEqual(math.resize(matrix, []), 0);
   });
 
@@ -84,8 +84,8 @@ describe('resize', function() {
   });
 
   it('should resize a scalar into a matrix', function() {
-    assert.deepEqual(math.resize(2, [3], 4), new Matrix([2, 4, 4]));
-    assert.deepEqual(math.resize(2, [2,2], 4), new Matrix([[2,4], [4,4]]));
+    assert.deepEqual(math.resize(2, [3], 4), math.matrix([2, 4, 4]));
+    assert.deepEqual(math.resize(2, [2,2], 4), math.matrix([[2,4], [4,4]]));
   });
 
   it('should resize a scalar into a scalar', function() {

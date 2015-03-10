@@ -46,7 +46,7 @@ describe('number', function() {
   });
 
   it('should convert the elements of a matrix to numbers', function() {
-    assert.deepEqual(number(math.matrix(['123',true])), new math.type.Matrix([123, 1]));
+    assert.deepEqual(number(math.matrix(['123',true])), math.matrix([123, 1]));
   });
 
   it('should convert the elements of an array to numbers', function() {

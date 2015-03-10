@@ -58,12 +58,19 @@ describe('replacer', function () {
     assert.deepEqual(JSON.stringify(u), json);
   });
 
-  it('should stringify a Matrix', function () {
-    var m = new Matrix([[1,2],[3,4]]);
-    var json = '{"mathjs":"Matrix","storage":{"format":"dense","data":[[1,2],[3,4]],"size":[2,2]}}';
+  it('should stringify a Matrix, dense storage format', function () {
+    var m = math.matrix([[1,2],[3,4]], 'dense');
+    var json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,4]],"size":[2,2]}';
 
     assert.deepEqual(JSON.stringify(m), json);
   });
+  
+  /*it('should stringify a Matrix, ccs storage format', function () {
+    var m = math.matrix([[1,2],[3,4]], 'ccs');
+    var json = '{"mathjs":"CcsMatrix","values":[1,3,2,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
+
+    assert.deepEqual(JSON.stringify(m), json);
+  });*/
 
   it('should stringify a ResultSet', function () {
     var r = new ResultSet([1,2,new Complex(3,4)]);
@@ -71,13 +78,21 @@ describe('replacer', function () {
     assert.deepEqual(JSON.stringify(r), json);
   });
 
-  it('should stringify a Matrix containing a complex number', function () {
+  it('should stringify a Matrix containing a complex number, dense storage format', function () {
     var c = new Complex(4, 5);
-    var m = new Matrix([[1,2],[3,c]]);
-    var json = '{"mathjs":"Matrix","storage":{"format":"dense","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}}';
+    var m = math.matrix([[1,2],[3,c]], 'dense');
+    var json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}';
 
     assert.deepEqual(JSON.stringify(m), json);
   });
+  
+  /*it('should stringify a Matrix containing a complex number, ccs storage format', function () {
+    var c = new Complex(4, 5);
+    var m = math.matrix([[1,2],[3,c]], 'ccs');
+    var json = '{"mathjs":"CcsMatrix","values":[1,3,2,{"mathjs":"Complex","re":4,"im":5}],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
+
+    assert.deepEqual(JSON.stringify(m), json);
+  });*/
 
   it('should stringify Help', function () {
     var h = new Help({name: 'foo', description: 'bar'});

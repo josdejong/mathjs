@@ -36,7 +36,7 @@ describe('complex', function() {
       new math.type.Complex(1, 0),
       new math.type.Complex(2, 3)
     ];
-    assert.deepEqual(complex(math.matrix([2, 1, complex(2, 3)])), new math.type.Matrix(result));
+    assert.deepEqual(complex(math.matrix([2, 1, complex(2, 3)])), math.matrix(result));
     assert.deepEqual(complex([2, 1, complex(2, 3)]), result);
   });
 

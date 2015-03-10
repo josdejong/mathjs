@@ -15,22 +15,22 @@ describe('matrix', function() {
   it('should create a matrix from an array', function() {
     var b = matrix([[1,2],[3,4]]);
     assert.ok(b instanceof math.type.Matrix);
-    assert.deepEqual(b, new math.type.Matrix([[1,2],[3,4]]));
+    assert.deepEqual(b, matrix([[1,2],[3,4]]));
     assert.deepEqual(math.size(b), matrix([2,2]));
   });
 
-  it('should be the identity if called with a matrix', function() {
-    var b = matrix([[1,2],[3,4]]);
-    var c = matrix(b);
-    assert.ok(c._storage != b._storage); // data should be cloned
-    assert.deepEqual(c, new math.type.Matrix([[1,2],[3,4]]));
-    assert.deepEqual(math.size(c), matrix([2,2]));
+  it('should be the identity if called with a matrix, dense format', function() {
+    var b = matrix([[1,2],[3,4]], 'dense');
+    var c = matrix(b, 'dense');
+    assert.ok(c._data != b._data); // data should be cloned
+    assert.deepEqual(c, matrix([[1,2],[3,4]], 'dense'));
+    assert.deepEqual(math.size(c), matrix([2,2], 'dense'));
   });
 
   it('should create a matrix from a range correctly', function() {
     var d = matrix(math.range(1,6));
     assert.ok(d instanceof math.type.Matrix);
-    assert.deepEqual(d, new math.type.Matrix([1,2,3,4,5]));
+    assert.deepEqual(d, matrix([1,2,3,4,5]));
     assert.deepEqual(math.size(d), matrix([5]));
   });
 
@@ -42,8 +42,15 @@ describe('matrix', function() {
     assert.throws(function () {matrix(math.unit('5cm'))}, TypeError);
   });
 
-  it('should throw an error if called with 2 numbers', function() {
-    assert.throws(function () {matrix(2, 3)}, error.ArgumentsError);
+  it('should throw an error if called with 3 numbers', function() {
+    assert.throws(function () {matrix(2, 3, 4)}, error.ArgumentsError);
   });
 
+  it('should throw an error when called with an invalid storage format', function () {
+    assert.throws(function () { math.matrix([], 1); }, /format must be a string value/);
+  });
+  
+  it('should throw an error when called with an unknown storage format', function () {
+    assert.throws(function () { math.matrix([], '123'); }, /Unsupported Matrix Storage Format: 123/);
+  });
 });
