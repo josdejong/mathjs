@@ -25,7 +25,6 @@ describe('DenseMatrix', function() {
           [7, 8, 9],
           [10, 11, 12]
         ]);
-      assert.equal(m._format, 'dense');
       assert.deepEqual(m._size, [4, 3]);
       assert.deepEqual(
         m._data,
