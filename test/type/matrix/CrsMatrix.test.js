@@ -358,17 +358,9 @@ describe('CrsMatrix', function() {
   });
   
   describe('toString', function() {
-
     it('should return string representation of matrix', function() {
-      var m = new CrsMatrix(
-        [
-          [1, 0, 0],
-          [0, 0, 1]
-        ]);
-
-      var s = m.toString();
-
-      assert.equal(s, '2 x 3\n\n(0, 0) = 1\n(1, 2) = 1');
+      assert.equal(new CrsMatrix([[1,2],[3,4]]).toString(), '[[1, 2], [3, 4]]');
+      assert.equal(new CrsMatrix([[1,2],[3,1/3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]');
     });
   });
   
