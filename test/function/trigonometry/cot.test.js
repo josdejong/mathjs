@@ -57,7 +57,7 @@ describe('cot', function() {
 
     /* Pass in more digits of pi. */
     var biggerPi = biggermath.pi;
-    console.log(biggerPi.constructor.precision);
+    //console.log(biggerPi.constructor.precision);
     assert.deepEqual(bigmath.cot(biggerPi.div(4)).toString(), '1');
     assert.deepEqual(bigmath.cot(biggerPi.times(3).div(4)).toString(), '-1');
     assert.deepEqual(bigmath.cot(biggerPi.times(5).div(4)).toString(), '1');

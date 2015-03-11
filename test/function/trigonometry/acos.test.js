@@ -1,17 +1,16 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    approx = require('../../../tools/approx'),
-    pi = math.pi,
-    acos = math.acos,
-    cos = math.cos,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    acosBig = bigmath.acos,
-    cosBig = bigmath.cos,
-    Big = bigmath.bignumber;
+var assert = require('assert');
+var math = require('../../../index');
+var approx = require('../../../tools/approx');
+var pi = math.pi;
+var acos = math.acos;
+var cos = math.cos;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var bigmath = math.create({number: 'bignumber', precision: 20});
+var acosBig = bigmath.acos;
+var cosBig = bigmath.cos;
+var Big = bigmath.bignumber;
 
 describe('acos', function() {
   it('should return the arccos of a boolean', function () {
@@ -102,8 +101,8 @@ describe('acos', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {acos()}, error.ArgumentsError);
-    assert.throws(function () {acos(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {acos()}, /TypeError: Too few arguments/);
+    assert.throws(function () {acos(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

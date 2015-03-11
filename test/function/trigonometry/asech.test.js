@@ -108,8 +108,8 @@ describe('asech', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {asech()}, error.ArgumentsError);
-    assert.throws(function () {asech(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {asech()}, /TypeError: Too few arguments/);
+    assert.throws(function () {asech(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

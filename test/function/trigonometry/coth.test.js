@@ -70,7 +70,7 @@ describe('coth', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {coth()}, error.ArgumentsError);
-    assert.throws(function () {coth(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {coth()}, /TypeError: Too few arguments/);
+    assert.throws(function () {coth(1, 2)}, /TypeError: Too many arguments/);
   });
 });

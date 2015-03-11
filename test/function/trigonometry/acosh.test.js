@@ -104,8 +104,8 @@ describe('acosh', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {acosh()}, error.ArgumentsError);
-    assert.throws(function () {acosh(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {acosh()}, /TypeError: Too few arguments/);
+    assert.throws(function () {acosh(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });
