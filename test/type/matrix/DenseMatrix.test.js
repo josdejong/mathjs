@@ -364,7 +364,7 @@ describe('DenseMatrix', function() {
       ]));
 
       // a single value
-      var i = math.matrix();
+      var i = new DenseMatrix();
       defaultValue = 0;
       i.subset(math.index(2, 1), 6, defaultValue);
       assert.deepEqual(i, new DenseMatrix([[0, 0], [0, 0], [0, 6]]));
