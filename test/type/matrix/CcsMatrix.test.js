@@ -1,6 +1,7 @@
 var assert = require('assert');
 var math = require('../../../index');
 var index = math.index;
+var Matrix = math.type.Matrix;
 var CcsMatrix = math.type.CcsMatrix;
 var DenseMatrix = math.type.DenseMatrix;
 var Complex = math.type.Complex;
@@ -27,7 +28,6 @@ describe('CcsMatrix', function() {
           [0, 8, 0, 9, 9, 13],
           [0, 4, 0, 0, 2, -1]
         ]);
-      assert.equal(m._format, 'ccs');
       assert.deepEqual(m._size, [6, 6]);
       assert.deepEqual(m._values, [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1]);
       assert.deepEqual(m._index, [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5]);
@@ -40,7 +40,6 @@ describe('CcsMatrix', function() {
           [1, 0, 0],
           [0, 0, 1]
         ]);
-      assert.equal(m._format, 'ccs');
       assert.deepEqual(m._size, [2, 3]);
       assert.deepEqual(m._values, [1, 1]);
       assert.deepEqual(m._index, [0, 1]);
@@ -54,7 +53,6 @@ describe('CcsMatrix', function() {
           [0, 0],
           [0, 1]
         ]);
-      assert.equal(m._format, 'ccs');
       assert.deepEqual(m._size, [3, 2]);
       assert.deepEqual(m._values, [1, 1]);
       assert.deepEqual(m._index, [0, 2]);
@@ -63,7 +61,6 @@ describe('CcsMatrix', function() {
     
     it('should create an empty CCS from an array', function () {
       var m = new CcsMatrix([]);
-      assert.equal(m._format, 'ccs');
       assert.deepEqual(m._size, [0, 0]);
       assert.deepEqual(m._values, []);
       assert.deepEqual(m._index, []);
@@ -72,7 +69,6 @@ describe('CcsMatrix', function() {
 
     it('should create a CCS from a vector', function () {
       var m = new CcsMatrix([1, 2, 3]);
-      assert.equal(m._format, 'ccs');
       assert.deepEqual(m._size, [3, 1]);
       assert.deepEqual(m._values, [1, 2, 3]);
       assert.deepEqual(m._index, [0, 1, 2]);
@@ -119,6 +115,914 @@ describe('CcsMatrix', function() {
       assert.deepEqual(new CcsMatrix([[1, 2, 3], [4, 5, 6]]).size(), [2, 3]);
       assert.deepEqual(new CcsMatrix([[1], [2], [3]]).size(), [3, 1]);
       assert.deepEqual(new CcsMatrix([[]]).size(), [1, 0]);
+    });
+  });
+  
+  describe('toString', function() {
+
+    it('should return string representation of matrix', function() {
+      var m = new CcsMatrix(
+        [
+          [1, 0, 0],
+          [0, 0, 1]
+        ]);
+
+      var s = m.toString();
+
+      assert.equal(s, '2 x 3\n\n(0, 0) = 1\n(1, 2) = 1');
+    });
+  });
+  
+  describe('toJSON', function () {
+
+    it('should serialize Matrix', function() {
+      assert.deepEqual(
+        new CcsMatrix([[1, 2], [3, 4]]).toJSON(),
+        {
+          mathjs: 'CcsMatrix',
+          values: [1, 3, 2, 4],
+          index: [0, 1, 0, 1],
+          ptr: [0, 2, 4],
+          size: [2, 2]
+        });
+    });
+  });
+  
+  describe('fromJSON', function () {
+
+    it('should deserialize Matrix', function() {
+      var json = {
+        mathjs: 'CcsMatrix',
+        values: [1, 3, 2, 4],
+        index: [0, 1, 0, 1],
+        ptr: [0, 2, 4],
+        size: [2, 2]
+      };
+      var m = CcsMatrix.fromJSON(json);
+      assert.ok(m instanceof Matrix);
+
+      assert.deepEqual(m._size, [2, 2]);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4]
+        ]);
+    });
+  });
+  
+  describe('format', function () {
+    /* TODO: implement!
+    it('should format matrix', function() {
+      assert.equal(new CcsMatrix([[1,2],[3,1/3]]).format(), '[[1, 2], [3, 0.3333333333333333]]');
+      assert.equal(new CcsMatrix([[1,2],[3,1/3]]).format(3), '[[1, 2], [3, 0.333]]');
+      assert.equal(new CcsMatrix([[1,2],[3,1/3]]).format(4), '[[1, 2], [3, 0.3333]]');
+    });
+    */
+  });
+  
+  describe('resize', function() {
+
+    it('should increase columns as needed, zero value', function() {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6]
+        ]);
+      m.resize([2, 4]);
+      assert.deepEqual(m._size, [2, 4]);
+      assert.deepEqual(m._values, [1, 4, 2, 5, 3, 6]);
+      assert.deepEqual(m._index, [0, 1, 0, 1, 0, 1]);
+      assert.deepEqual(m._ptr, [0, 2, 4, 6, 6]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 2, 3, 0],
+          [4, 5, 6, 0]
+        ]);
+    });
+
+    it('should increase columns as needed, non zero value', function() {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6]
+        ]);
+      m.resize([2, 4], 100);
+      assert.deepEqual(m._size, [2, 4]);
+      assert.deepEqual(m._values, [1, 4, 2, 5, 3, 6, 100, 100]);
+      assert.deepEqual(m._index, [0, 1, 0, 1, 0, 1, 0, 1]);
+      assert.deepEqual(m._ptr, [0, 2, 4, 6, 8]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 2, 3, 100],
+          [4, 5, 6, 100]
+        ]);
+    });
+
+    it('should increase rows as needed, zero value', function() {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6]
+        ]);
+      m.resize([3, 3]);
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 4, 2, 5, 3, 6]);
+      assert.deepEqual(m._index, [0, 1, 0, 1, 0, 1]);
+      assert.deepEqual(m._ptr, [0, 2, 4, 6]);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [0, 0, 0]
+        ]);
+    });
+
+    it('should increase rows as needed, non zero value', function() {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6]
+        ]);
+      m.resize([3, 3], 100);
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 4, 100, 2, 5, 100, 3, 6, 100]);
+      assert.deepEqual(m._index, [0, 1, 2, 0, 1, 2, 0, 1, 2]);
+      assert.deepEqual(m._ptr, [0, 3, 6, 9]);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [100, 100, 100]
+        ]);
+    });
+
+    it('should increase rows & columns as needed, zero value, empty CCS', function() {
+      var m = new CcsMatrix([]);
+      m.resize([2, 2]);
+      assert.deepEqual(m._size, [2, 2]);
+      assert.deepEqual(m._values, []);
+      assert.deepEqual(m._index, []);
+      assert.deepEqual(m._ptr, [0, 0, 0]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0],
+          [0, 0]
+        ]);
+    });
+
+    it('should increase rows & columns as needed, non zero value, empty CCS', function() {
+      var m = new CcsMatrix([]);
+      m.resize([2, 2], 100);
+      assert.deepEqual(m._size, [2, 2]);
+      assert.deepEqual(m._values, [100, 100, 100, 100]);
+      assert.deepEqual(m._index, [0, 1, 0, 1]);
+      assert.deepEqual(m._ptr, [0, 2, 4]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [100, 100],
+          [100, 100]
+        ]);
+    });
+
+    it('should decrease columns as needed', function() {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6]
+        ]);
+      m.resize([2, 2]);
+      assert.deepEqual(m._size, [2, 2]);
+      assert.deepEqual(m._values, [1, 4, 2, 5]);
+      assert.deepEqual(m._index, [0, 1, 0, 1]);
+      assert.deepEqual(m._ptr, [0, 2, 4]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 2],
+          [4, 5]
+        ]);
+    });
+
+    it('should decrease columns as needed, zero matrix', function() {
+      var m = new CcsMatrix(
+        [
+          [0, 0, 0],
+          [0, 0, 0]
+        ]);
+      m.resize([2, 2]);
+      assert.deepEqual(m._size, [2, 2]);
+      assert.deepEqual(m._values, []);
+      assert.deepEqual(m._index, []);
+      assert.deepEqual(m._ptr, [0, 0, 0]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0],
+          [0, 0]
+        ]);
+    });
+
+    it('should decrease rows as needed', function() {
+      var m = new CcsMatrix(
+        [
+          [1, 2],
+          [3, 4]
+        ]);
+      m.resize([1, 2]);
+      assert.deepEqual(m._size, [1, 2]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [0, 0]);
+      assert.deepEqual(m._ptr, [0, 1, 2]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 2]
+        ]);
+    });
+
+    it('should decrease rows as needed, zero CCS', function() {
+      var m = new CcsMatrix(
+        [
+          [0, 0],
+          [0, 0]
+        ]);
+      m.resize([1, 2]);
+      assert.deepEqual(m._size, [1, 2]);
+      assert.deepEqual(m._values, []);
+      assert.deepEqual(m._index, []);
+      assert.deepEqual(m._ptr, [0, 0, 0]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0]
+        ]);
+    });
+
+    it('should decrease rows & columns as needed, zero CCS', function() {
+      var m = new CcsMatrix(
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0]
+        ]);
+      m.resize([2, 2]);
+      assert.deepEqual(m._size, [2, 2]);
+      assert.deepEqual(m._values, []);
+      assert.deepEqual(m._index, []);
+      assert.deepEqual(m._ptr, [0, 0, 0]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0],
+          [0, 0]
+        ]);
+    });
+  });
+  
+  describe('get', function () {
+
+    it('should throw on invalid element position', function () {
+      var m = new CcsMatrix([
+        [10, 0, 0, 0, -2, 0],
+        [3, 9, 0, 0, 0, 3],
+        [0, 7, 8, 7, 0, 0],
+        [3, 0, 8, 7, 5, 0],
+        [0, 8, 0, 9, 9, 13],
+        [0, 4, 0, 0, 2, -1]
+      ]);
+
+      assert.throws(function () { m.get([-1, 0]); }, /Index out of range \(-1 < 0\)/);
+      assert.throws(function () { m.get([10, 0]); }, /Index out of range \(10 > 5\)/);
+      assert.throws(function () { m.get([0, -1]); }, /Index out of range \(-1 < 0\)/);
+      assert.throws(function () { m.get([0, 10]); }, /Index out of range \(10 > 5\)/);
+    });
+    
+    it('should throw an error in case of dimension mismatch', function() {
+      var m = new CcsMatrix([[0, 1], [2, 3]]);
+      assert.throws(function () { m.get([0,2,0,2,0,2]); }, /Dimension mismatch/);
+    });
+
+    it('should get matrix element', function () {
+      var m = new CcsMatrix([
+        [10, 0, 0, 0, -2, 0],
+        [3, 9, 0, 0, 0, 3],
+        [0, 7, 8, 7, 0, 0],
+        [3, 0, 8, 7, 5, 0],
+        [0, 8, 0, 9, 9, 13],
+        [0, 4, 0, 0, 2, -1]
+      ]);
+
+      assert.equal(m.get([0, 0]), 10);
+      assert.equal(m.get([3, 1]), 0);
+      assert.equal(m.get([5, 1]), 4);
+      assert.equal(m.get([5, 5]), -1);
+    });
+  });
+  
+  describe('set', function () {
+
+    it('should throw on invalid element position', function () {
+      var m = new CcsMatrix([
+        [10, 0, 0, 0, -2, 0],
+        [3, 9, 0, 0, 0, 3],
+        [0, 7, 8, 7, 0, 0],
+        [3, 0, 8, 7, 5, 0],
+        [0, 8, 0, 9, 9, 13],
+        [0, 4, 0, 0, 2, -1]
+      ]);
+
+      assert.throws(function () { m.set([-1, 0]); }, /Index out of range \(-1 < 0\)/);
+      assert.throws(function () { m.set([0, -1]); }, /Index out of range \(-1 < 0\)/);
+      assert.throws(function () { m.set([0, 1.5]); }, /Index must be an integer \(value: 1\.5\)/);
+    });
+
+    it('should remove matrix element', function () {
+      var m = new CcsMatrix([
+        [10, 0, 0, 0, -2, 0],
+        [3, 9, 0, 0, 0, 3],
+        [0, 7, 8, 7, 0, 0],
+        [3, 0, 8, 7, 5, 0],
+        [0, 8, 0, 9, 9, 13],
+        [0, 4, 0, 0, 2, -1]
+      ]);
+
+      m.set([0, 0], 0);
+      m.set([0, 4], 0);
+      m.set([5, 1], 0);
+
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [0, 0, 0, 0, 0, 0],
+          [3, 9, 0, 0, 0, 3],
+          [0, 7, 8, 7, 0, 0],
+          [3, 0, 8, 7, 5, 0],
+          [0, 8, 0, 9, 9, 13],
+          [0, 0, 0, 0, 2, -1]
+        ]);
+    });
+
+    it('should update matrix element (non zero)', function () {
+      var m = new CcsMatrix([
+        [10, 0, 0, 0, -2, 0],
+        [3, 9, 0, 0, 0, 3],
+        [0, 7, 8, 7, 0, 0],
+        [3, 0, 8, 7, 5, 0],
+        [0, 8, 0, 9, 9, 13],
+        [0, 4, 0, 0, 2, -1]
+      ]);
+
+      m.set([0, 0], 15);
+      m.set([0, 4], 10);
+      m.set([5, 1], 20);
+
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [15, 0, 0, 0, 10, 0],
+          [3, 9, 0, 0, 0, 3],
+          [0, 7, 8, 7, 0, 0],
+          [3, 0, 8, 7, 5, 0],
+          [0, 8, 0, 9, 9, 13],
+          [0, 20, 0, 0, 2, -1]
+        ]);
+    });
+
+    it('should update matrix element (zero)', function () {
+      var m = new CcsMatrix([
+        [10, 0, 0, 0, -2, 0],
+        [3, 9, 0, 0, 0, 3],
+        [0, 7, 8, 7, 0, 0],
+        [3, 0, 8, 7, 5, 0],
+        [0, 8, 0, 9, 9, 13],
+        [0, 4, 0, 0, 2, -1]
+      ]);
+
+      m.set([0, 1], 15);
+      m.set([0, 5], 10);
+      m.set([5, 0], 20);
+
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [10, 15, 0, 0, -2, 10],
+          [3, 9, 0, 0, 0, 3],
+          [0, 7, 8, 7, 0, 0],
+          [3, 0, 8, 7, 5, 0],
+          [0, 8, 0, 9, 9, 13],
+          [20, 4, 0, 0, 2, -1]
+        ]);
+    });
+
+    it('should add rows as meeded', function () {
+      var m = new CcsMatrix([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([3, 1], 22);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4],
+          [0, 0],
+          [0, 22]
+        ]);
+
+      m.set([4, 0], 33);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4],
+          [0, 0],
+          [0, 22],
+          [33, 0]
+        ]);
+    });
+
+    it('should add columns as meeded', function () {
+      var m = new CcsMatrix([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([1, 3], 22);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, 0, 0],
+          [3, 4, 0, 22],
+        ]);
+
+      m.set([0, 4], 33);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, 0, 0, 33],
+          [3, 4, 0, 22, 0],
+        ]);
+    });
+
+    it('should add rows & columns as meeded', function () {
+      var m = new CcsMatrix([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([3, 3], 22);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, 0, 0],
+          [3, 4, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 22]
+        ]);
+
+      m.set([4, 4], 33);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, 0, 0, 0],
+          [3, 4, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 22, 0],
+          [0, 0, 0, 0, 33]
+        ]);
+    });
+
+    it('should add rows as meeded, non zero default', function () {
+      var m = new CcsMatrix([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([3, 1], 22, -1);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4],
+          [-1, -1],
+          [-1, 22]
+        ]);
+
+      m.set([4, 0], 33, -2);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4],
+          [-1, -1],
+          [-1, 22],
+          [33, -2]
+        ]);
+    });
+
+    it('should add columns as meeded, non zero default', function () {
+      var m = new CcsMatrix([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([1, 3], 22, -1);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, -1, -1],
+          [3, 4, -1, 22],
+        ]);
+
+      m.set([0, 4], 33, -2);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, -1, -1, 33],
+          [3, 4, -1, 22, -2],
+        ]);
+    });
+
+    it('should add rows & columns as meeded, non zero default', function () {
+      var m = new CcsMatrix([
+        [1, 2],
+        [3, 4]
+      ]);
+
+      m.set([3, 3], 22, -1);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, -1, -1],
+          [3, 4, -1, -1],
+          [-1, -1, -1, -1],
+          [-1, -1, -1, 22]
+        ]);
+
+      m.set([4, 4], 33, -2);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2, -1, -1, -2],
+          [3, 4, -1, -1, -2],
+          [-1, -1, -1, -1, -2],
+          [-1, -1, -1, 22, -2],
+          [-2, -2, -2, -2, 33]
+        ]);
+    });
+  });
+
+  describe('get subset', function() {
+
+    it('should get the right subset of the matrix', function() {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9]
+        ]);
+      assert.deepEqual(m.size(), [3, 3]);
+      assert.deepEqual(m.subset(index(1, 1)), 5);
+      assert.deepEqual(m.subset(index([0, 2],[0, 2])).toArray(), [[1, 2], [4, 5]]);
+      assert.deepEqual(m.subset(index(1, [1, 3])).toArray(), [[5, 6]]);
+      assert.deepEqual(m.subset(index(0, [1, 3])).toArray(), [[2, 3]]);
+      assert.deepEqual(m.subset(index([1, 3], 1)).toArray(), [[5], [8]]);
+      assert.deepEqual(m.subset(index([1, 3], 2)).toArray(), [[6], [9]]);
+    });
+
+    /* TODO: implement!
+    it('should squeeze the output when index contains a scalar', function() {
+      var m = new CcsMatrix(math.range(0, 10));
+      // assert.deepEqual(m.subset(index(1)), 1);
+      assert.deepEqual(m.subset(index([1, 2])), new CcsMatrix([1]));
+
+      m = new CcsMatrix([[1,2], [3, 4]]);
+      assert.deepEqual(m.subset(index(1, 1)), 4);
+      assert.deepEqual(m.subset(index([1, 2], 1)), new CcsMatrix([[4]]));
+      assert.deepEqual(m.subset(index(1, [1, 2])), new CcsMatrix([[4]]));
+      assert.deepEqual(m.subset(index([1, 2], [1, 2])), new CcsMatrix([[4]]));
+    });
+    */
+    it('should throw an error if the given subset is invalid', function() {
+      var m = new CcsMatrix();
+      assert.throws(function () { m.subset([-1]); });
+
+      m = new CcsMatrix([[1, 2, 3], [4, 5, 6]]);
+      assert.throws(function () { m.subset([1, 2, 3]); });
+      assert.throws(function () { m.subset([3, 0]); });
+      assert.throws(function () { m.subset([1]); });
+    });
+    
+    /* TODO: implement!
+    it('should throw an error in case of wrong number of arguments', function() {
+      var m = new CcsMatrix();
+      assert.throws(function () { m.subset();}, /Wrong number of arguments/);
+      assert.throws(function () { m.subset(1, 2, 3, 4); }, /Wrong number of arguments/);
+    });
+    */
+    it('should throw an error in case of dimension mismatch', function() {
+      var m = new CcsMatrix([[1,2,3],[4,5,6]]);
+      assert.throws(function () {m.subset(index([0,2]))}, /Dimension mismatch/);
+    });
+  });
+
+  describe('set subset', function() {
+    /* TODO: implement!
+    it('should set the given subset', function() {
+      // set 1-dimensional
+      var m = new CcsMatrix(math.range(0,7));
+      m.subset(index([2,4]), [20,30]);
+      assert.deepEqual(m, new CcsMatrix([0,1,20,30,4,5,6]));
+      m.subset(index(4), 40);
+      assert.deepEqual(m, new CcsMatrix([0,1,20,30,40,5,6]));
+
+      // set 2-dimensional
+      m = new CcsMatrix();
+      m.resize([3,3]);
+      assert.deepEqual(m, new CcsMatrix([
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+      ]));
+      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
+      assert.deepEqual(m, new CcsMatrix([
+        [0, 0, 0],
+        [0, 1, 2],
+        [0, 3, 4]]));
+      m.subset(index(0, [0,3]), [5,6,7]);
+      assert.deepEqual(m, new CcsMatrix([[5,6,7],[0,1,2],[0,3,4]]));
+      m.subset(index([0,3], 0), [8,9,10]);  // unsqueezes the submatrix
+      assert.deepEqual(m, new CcsMatrix([[8,6,7],[9,1,2],[10,3,4]]));
+    });
+
+    it('should set the given subset with defaultValue for new elements', function() {
+      // multiple values
+      var m = new CcsMatrix();
+      var defaultValue = 0;
+      m.subset(index([3,5]), [3, 4], defaultValue);
+      assert.deepEqual(m, new CcsMatrix([0, 0, 0, 3, 4]));
+
+      defaultValue = 1;
+      m.subset(index([3,5],1), [5, 6], defaultValue);
+      assert.deepEqual(m, new CcsMatrix([
+        [0, 1],
+        [0, 1],
+        [0, 1],
+        [3, 5],
+        [4, 6]
+      ]));
+
+      defaultValue = 2;
+      m.subset(index([3,5],2), [7, 8], defaultValue);
+      assert.deepEqual(m, new CcsMatrix([
+        [0, 1, 2],
+        [0, 1, 2],
+        [0, 1, 2],
+        [3, 5, 7],
+        [4, 6, 8]
+      ]));
+
+      // a single value
+      var i = math.matrix();
+      defaultValue = 0;
+      i.subset(math.index(2, 1), 6, defaultValue);
+      assert.deepEqual(i, new CcsMatrix([[0, 0], [0, 0], [0, 6]]));
+    });
+
+    it('should unsqueeze the replacement subset if needed', function() {
+      var m = new CcsMatrix([[0,0],[0,0]]); // 2x2
+
+      m.subset(index(0, [0,2]), [1,1]); // 2
+      assert.deepEqual(m, new CcsMatrix([[1,1],[0,0]]));
+
+      m.subset(index([0,2], 0), [2,2]); // 2
+      assert.deepEqual(m, new CcsMatrix([[2,1],[2,0]]));
+
+      m = new CcsMatrix([[[0],[0],[0]]]); // 1x3x1
+      m.subset(index(0, [0,3], 0), [1,2,3]); // 3
+      assert.deepEqual(m, new CcsMatrix([[[1],[2],[3]]]));
+
+      m = new CcsMatrix([[[0,0,0]]]); // 1x1x3
+      m.subset(index(0, 0, [0,3]), [1,2,3]); // 3
+      assert.deepEqual(m, new CcsMatrix([[[1,2,3]]]));
+
+      m = new CcsMatrix([[[0]],[[0]],[[0]]]); // 3x1x1
+      m.subset(index([0,3], 0, 0), [1,2,3]); // 3
+      assert.deepEqual(m, new CcsMatrix([[[1]],[[2]],[[3]]]));
+
+      m = new CcsMatrix([[[0,0,0]]]); // 1x1x3
+      m.subset(index(0, 0, [0,3]), [[1,2,3]]); // 1x3
+      assert.deepEqual(m, new CcsMatrix([[[1,2,3]]]));
+
+      m = new CcsMatrix([[[0]],[[0]],[[0]]]); // 3x1x1
+      m.subset(index([0,3], 0, 0), [[1],[2],[3]]); // 3x1
+      assert.deepEqual(m, new CcsMatrix([[[1]],[[2]],[[3]]]));
+    });
+
+    it('should resize the matrix if the replacement subset is different size than selected subset', function() {
+      // set 2-dimensional with resize
+      var m = new CcsMatrix([[123]]);
+      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
+      assert.deepEqual(m, new CcsMatrix([[123,0,0],[0,1,2],[0,3,4]]));
+
+      // set resize dimensions
+      m = new CcsMatrix([123]);
+      assert.deepEqual(m.size(), [1]);
+
+      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
+      assert.deepEqual(m, new CcsMatrix([[123,0,0],[0,1,2],[0,3,4]]));
+
+      m.subset(index([0,2], [0,2]), [[55,55],[55,55]]);
+      assert.deepEqual(m, new CcsMatrix([[55,55,0],[55,55,2],[0,3,4]]));
+
+      m = new CcsMatrix();
+      m.subset(index([1,3], [1,3], [1,3]), [[[1,2],[3,4]],[[5,6],[7,8]]]);
+      var res = new CcsMatrix([
+        [
+          [0, 0, 0],
+          [0, 0, 0],
+          [0, 0, 0]
+        ],
+        [
+          [0, 0, 0],
+          [0, 1, 2],
+          [0, 3, 4]
+        ],
+        [
+          [0, 0, 0],
+          [0, 5, 6],
+          [0, 7, 8]
+        ]
+      ]);
+      assert.deepEqual(m, res);
+    });
+
+    it ('should throw an error in case of wrong type of index', function () {
+      assert.throws(function () { new CcsMatrix().subset('no index', 2); }, /Invalid index/);
+    });
+
+    it ('should throw an error in case of wrong size of submatrix', function () {
+      assert.throws(function () { new CcsMatrix().subset(index(0), [2,3]); }, /Scalar expected/);
+    });
+
+    it('should throw an error in case of dimension mismatch', function() {
+      var m = new CcsMatrix([[1,2,3],[4,5,6]]);
+      assert.throws(function () { m.subset(index([0,2]), [100,100]); }, /Dimension mismatch/);
+      assert.throws(function () { m.subset(index([0,2], [0,2]), [100,100]); }, /Dimension mismatch/);
+    });
+    */
+  });
+  
+  describe('map', function() {
+
+    it('should apply the given function to all elements in the matrix', function() {
+      var m, m2;
+
+      m = new CcsMatrix([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11,12],
+        [13, 14, 15,16]
+      ]);
+      m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.toArray(), [
+        [2, 4, 6, 8],
+        [10, 12, 14, 16],
+        [18, 20, 22, 24],
+        [26, 28, 30, 32]
+      ]);
+
+      m = new CcsMatrix([1]);
+      m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.toArray(), [[2]]);
+
+      m = new CcsMatrix([1,2,3]);
+      m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.toArray(), [[2],[4],[6]]);
+    });
+
+    it('should work on empty matrices', function() {
+      var m = new CcsMatrix([]);
+      var m2 = m.map(function (value) { return value * 2; });
+      assert.deepEqual(m2.toArray(), []);
+    });
+
+    it('should process all values (zero and non-zero)', function() {
+      var m = new CcsMatrix(
+        [
+          [0, 0],
+          [0, 0]
+        ]
+      );
+      var m2 = m.map(function (value) { return value + 2; });
+      assert.deepEqual(
+        m2.toArray(),
+        [
+          [2, 2],
+          [2, 2]
+        ]);
+    });
+
+    it('should process non-zero values', function() {
+      var m = new CcsMatrix(
+        [
+          [1, 0],
+          [0, 2]
+        ]
+      );
+      var m2 = m.map(function (value) { return value + 2; }, m, true);
+      assert.deepEqual(
+        m2.toArray(),
+        [
+          [3, 0],
+          [0, 4]
+        ]);
+    });
+
+    it('should invoke callback with parameters value, index, obj', function() {
+      var m = new CcsMatrix([[1, 2, 3], [4, 5, 6]]);
+
+      var m2 = m.map(
+        function (value, index, obj) {
+          return value + index[0] * 100 + index[1] * 10 + (obj === m ? 1000 : 0);
+        }
+      );
+
+      assert.deepEqual(
+        m2.toArray(), 
+        [
+          [1001, 1012, 1023],
+          [1104, 1115, 1126]
+        ]);
+    });
+  });
+  
+  describe('forEach', function() {
+
+    it('should run on all elements of the matrix', function() {
+      var m, output;
+
+      m = new CcsMatrix([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11,12],
+        [13, 14, 15,16]
+      ]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, [1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16]);
+
+      m = new CcsMatrix([1]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, [1]);
+
+      m = new CcsMatrix([1,2,3]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, [1,2,3]);
+    });
+
+    it('should work on empty matrices', function() {
+      m = new CcsMatrix([]);
+      output = [];
+      m.forEach(function (value) { output.push(value); });
+      assert.deepEqual(output, []);
+    });
+
+    it('should invoke callback with parameters value, index, obj', function() {
+      var m = new CcsMatrix([[1,2,3], [4,5,6]]);
+      var output = [];
+      m.forEach(
+        function (value, index, obj) {
+          output.push(value + index[0] * 100 + index[1] * 10 + (obj === m ? 1000 : 0));
+        }
+      );
+      assert.deepEqual(output, [1001, 1104, 1012, 1115, 1023, 1126]);
+    });
+  });
+  
+  describe('clone', function() {
+
+    it('should clone the matrix properly', function() {
+      var m1 = new CcsMatrix(
+        [
+          [1,2,3],
+          [4,5,6]
+        ]);
+
+      var m2 = m1.clone();
+
+      assert.deepEqual(m1.toArray(), m2.toArray());
     });
   });
   
@@ -250,716 +1154,5 @@ describe('CcsMatrix', function() {
           [0, 0, 1, 0]
         ]);
     });
-  });
-  
-  describe('get', function () {
-
-    it('should throw on invalid element position', function () {
-      var m = new CcsMatrix([
-        [10, 0, 0, 0, -2, 0],
-        [3, 9, 0, 0, 0, 3],
-        [0, 7, 8, 7, 0, 0],
-        [3, 0, 8, 7, 5, 0],
-        [0, 8, 0, 9, 9, 13],
-        [0, 4, 0, 0, 2, -1]
-      ]);
-
-      assert.throws(function () { m.get([-1, 0]); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.get([10, 0]); }, /Index out of range \(10 > 5\)/);
-      assert.throws(function () { m.get([0, -1]); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.get([0, 10]); }, /Index out of range \(10 > 5\)/);
-    });
-
-    it('should get matrix element', function () {
-      var m = new CcsMatrix([
-        [10, 0, 0, 0, -2, 0],
-        [3, 9, 0, 0, 0, 3],
-        [0, 7, 8, 7, 0, 0],
-        [3, 0, 8, 7, 5, 0],
-        [0, 8, 0, 9, 9, 13],
-        [0, 4, 0, 0, 2, -1]
-      ]);
-
-      assert.equal(m.get([0, 0]), 10);
-      assert.equal(m.get([3, 1]), 0);
-      assert.equal(m.get([5, 1]), 4);
-      assert.equal(m.get([5, 5]), -1);
-    });
-  });
-  
-  describe('set', function () {
-
-    it('should throw on invalid element position', function () {
-      var m = new CcsMatrix([
-        [10, 0, 0, 0, -2, 0],
-        [3, 9, 0, 0, 0, 3],
-        [0, 7, 8, 7, 0, 0],
-        [3, 0, 8, 7, 5, 0],
-        [0, 8, 0, 9, 9, 13],
-        [0, 4, 0, 0, 2, -1]
-      ]);
-
-      assert.throws(function () { m.set([-1, 0]); }, /Index out of range \(-1 < 0\)/);
-      assert.throws(function () { m.set([0, -1]); }, /Index out of range \(-1 < 0\)/);
-    });
-
-    it('should remove matrix element', function () {
-      var m = new CcsMatrix([
-        [10, 0, 0, 0, -2, 0],
-        [3, 9, 0, 0, 0, 3],
-        [0, 7, 8, 7, 0, 0],
-        [3, 0, 8, 7, 5, 0],
-        [0, 8, 0, 9, 9, 13],
-        [0, 4, 0, 0, 2, -1]
-      ]);
-
-      m.set([0, 0], 0);
-      m.set([0, 4], 0);
-      m.set([5, 1], 0);
-      
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [0, 0, 0, 0, 0, 0],
-          [3, 9, 0, 0, 0, 3],
-          [0, 7, 8, 7, 0, 0],
-          [3, 0, 8, 7, 5, 0],
-          [0, 8, 0, 9, 9, 13],
-          [0, 0, 0, 0, 2, -1]
-        ]);
-    });
-    
-    it('should update matrix element (non zero)', function () {
-      var m = new CcsMatrix([
-        [10, 0, 0, 0, -2, 0],
-        [3, 9, 0, 0, 0, 3],
-        [0, 7, 8, 7, 0, 0],
-        [3, 0, 8, 7, 5, 0],
-        [0, 8, 0, 9, 9, 13],
-        [0, 4, 0, 0, 2, -1]
-      ]);
-
-      m.set([0, 0], 15);
-      m.set([0, 4], 10);
-      m.set([5, 1], 20);
-
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [15, 0, 0, 0, 10, 0],
-          [3, 9, 0, 0, 0, 3],
-          [0, 7, 8, 7, 0, 0],
-          [3, 0, 8, 7, 5, 0],
-          [0, 8, 0, 9, 9, 13],
-          [0, 20, 0, 0, 2, -1]
-        ]);
-    });
-
-    it('should update matrix element (zero)', function () {
-      var m = new CcsMatrix([
-        [10, 0, 0, 0, -2, 0],
-        [3, 9, 0, 0, 0, 3],
-        [0, 7, 8, 7, 0, 0],
-        [3, 0, 8, 7, 5, 0],
-        [0, 8, 0, 9, 9, 13],
-        [0, 4, 0, 0, 2, -1]
-      ]);
-
-      m.set([0, 1], 15);
-      m.set([0, 5], 10);
-      m.set([5, 0], 20);
-
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [10, 15, 0, 0, -2, 10],
-          [3, 9, 0, 0, 0, 3],
-          [0, 7, 8, 7, 0, 0],
-          [3, 0, 8, 7, 5, 0],
-          [0, 8, 0, 9, 9, 13],
-          [20, 4, 0, 0, 2, -1]
-        ]);
-    });
-    
-    it('should add rows as meeded', function () {
-      var m = new CcsMatrix([
-        [1, 2],
-        [3, 4]
-      ]);
-
-      m.set([3, 1], 22);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2],
-          [3, 4],
-          [0, 0],
-          [0, 22]
-        ]);
-
-      m.set([4, 0], 33);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2],
-          [3, 4],
-          [0, 0],
-          [0, 22],
-          [33, 0]
-        ]);
-    });
-    
-    it('should add columns as meeded', function () {
-      var m = new CcsMatrix([
-        [1, 2],
-        [3, 4]
-      ]);
-
-      m.set([1, 3], 22);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2, 0, 0],
-          [3, 4, 0, 22],
-        ]);
-
-      m.set([0, 4], 33);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2, 0, 0, 33],
-          [3, 4, 0, 22, 0],
-        ]);
-    });
-    
-    it('should add rows & columns as meeded', function () {
-      var m = new CcsMatrix([
-        [1, 2],
-        [3, 4]
-      ]);
-
-      m.set([3, 3], 22);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2, 0, 0],
-          [3, 4, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 22]
-        ]);
-
-      m.set([4, 4], 33);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2, 0, 0, 0],
-          [3, 4, 0, 0, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 0, 22, 0],
-          [0, 0, 0, 0, 33]
-        ]);
-    });
-
-    it('should add rows as meeded, non zero default', function () {
-      var m = new CcsMatrix([
-        [1, 2],
-        [3, 4]
-      ]);
-
-      m.set([3, 1], 22, -1);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2],
-          [3, 4],
-          [-1, -1],
-          [-1, 22]
-        ]);
-
-      m.set([4, 0], 33, -2);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2],
-          [3, 4],
-          [-1, -1],
-          [-1, 22],
-          [33, -2]
-        ]);
-    });
-    
-    it('should add columns as meeded, non zero default', function () {
-      var m = new CcsMatrix([
-        [1, 2],
-        [3, 4]
-      ]);
-
-      m.set([1, 3], 22, -1);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2, -1, -1],
-          [3, 4, -1, 22],
-        ]);
-
-      m.set([0, 4], 33, -2);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2, -1, -1, 33],
-          [3, 4, -1, 22, -2],
-        ]);
-    });
-    
-    it('should add rows & columns as meeded, non zero default', function () {
-      var m = new CcsMatrix([
-        [1, 2],
-        [3, 4]
-      ]);
-
-      m.set([3, 3], 22, -1);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2, -1, -1],
-          [3, 4, -1, -1],
-          [-1, -1, -1, -1],
-          [-1, -1, -1, 22]
-        ]);
-
-      m.set([4, 4], 33, -2);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2, -1, -1, -2],
-          [3, 4, -1, -1, -2],
-          [-1, -1, -1, -1, -2],
-          [-1, -1, -1, 22, -2],
-          [-2, -2, -2, -2, 33]
-        ]);
-    });
-  });
-  
-  describe('resize', function() {
-
-    it('should increase columns as needed, zero value', function() {
-      var m = new CcsMatrix(
-        [
-          [1, 2, 3],
-          [4, 5, 6]
-        ]);
-      m.resize([2, 4]);
-      assert.deepEqual(m._size, [2, 4]);
-      assert.deepEqual(m._values, [1, 4, 2, 5, 3, 6]);
-      assert.deepEqual(m._index, [0, 1, 0, 1, 0, 1]);
-      assert.deepEqual(m._ptr, [0, 2, 4, 6, 6]);
-      assert.deepEqual(
-        m.toArray(), 
-        [
-          [1, 2, 3, 0],
-          [4, 5, 6, 0]
-        ]);
-    });
-    
-    it('should increase columns as needed, non zero value', function() {
-      var m = new CcsMatrix(
-        [
-          [1, 2, 3],
-          [4, 5, 6]
-        ]);
-      m.resize([2, 4], 100);
-      assert.deepEqual(m._size, [2, 4]);
-      assert.deepEqual(m._values, [1, 4, 2, 5, 3, 6, 100, 100]);
-      assert.deepEqual(m._index, [0, 1, 0, 1, 0, 1, 0, 1]);
-      assert.deepEqual(m._ptr, [0, 2, 4, 6, 8]);
-      assert.deepEqual(
-        m.toArray(), 
-        [
-          [1, 2, 3, 100],
-          [4, 5, 6, 100]
-        ]);
-    });
-    
-    it('should increase rows as needed, zero value', function() {
-      var m = new CcsMatrix(
-        [
-          [1, 2, 3],
-          [4, 5, 6]
-        ]);
-      m.resize([3, 3]);
-      assert.deepEqual(m._size, [3, 3]);
-      assert.deepEqual(m._values, [1, 4, 2, 5, 3, 6]);
-      assert.deepEqual(m._index, [0, 1, 0, 1, 0, 1]);
-      assert.deepEqual(m._ptr, [0, 2, 4, 6]);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2, 3],
-          [4, 5, 6],
-          [0, 0, 0]
-        ]);
-    });
-    
-    it('should increase rows as needed, non zero value', function() {
-      var m = new CcsMatrix(
-        [
-          [1, 2, 3],
-          [4, 5, 6]
-        ]);
-      m.resize([3, 3], 100);
-      assert.deepEqual(m._size, [3, 3]);
-      assert.deepEqual(m._values, [1, 4, 100, 2, 5, 100, 3, 6, 100]);
-      assert.deepEqual(m._index, [0, 1, 2, 0, 1, 2, 0, 1, 2]);
-      assert.deepEqual(m._ptr, [0, 3, 6, 9]);
-      assert.deepEqual(
-        m.toArray(),
-        [
-          [1, 2, 3],
-          [4, 5, 6],
-          [100, 100, 100]
-        ]);
-    });
-    
-    it('should increase rows & columns as needed, zero value, empty CCS', function() {
-      var m = new CcsMatrix([]);
-      m.resize([2, 2]);
-      assert.deepEqual(m._size, [2, 2]);
-      assert.deepEqual(m._values, []);
-      assert.deepEqual(m._index, []);
-      assert.deepEqual(m._ptr, [0, 0, 0]);
-      assert.deepEqual(
-        m.toArray(), 
-        [
-          [0, 0],
-          [0, 0]
-        ]);
-    });
-    
-    it('should increase rows & columns as needed, non zero value, empty CCS', function() {
-      var m = new CcsMatrix([]);
-      m.resize([2, 2], 100);
-      assert.deepEqual(m._size, [2, 2]);
-      assert.deepEqual(m._values, [100, 100, 100, 100]);
-      assert.deepEqual(m._index, [0, 1, 0, 1]);
-      assert.deepEqual(m._ptr, [0, 2, 4]);
-      assert.deepEqual(
-        m.toArray(), 
-        [
-          [100, 100],
-          [100, 100]
-        ]);
-    });
-    
-    it('should decrease columns as needed', function() {
-      var m = new CcsMatrix(
-        [
-          [1, 2, 3],
-          [4, 5, 6]
-        ]);
-      m.resize([2, 2]);
-      assert.deepEqual(m._size, [2, 2]);
-      assert.deepEqual(m._values, [1, 4, 2, 5]);
-      assert.deepEqual(m._index, [0, 1, 0, 1]);
-      assert.deepEqual(m._ptr, [0, 2, 4]);
-      assert.deepEqual(
-        m.toArray(), 
-        [
-          [1, 2],
-          [4, 5]
-        ]);
-    });
-    
-    it('should decrease columns as needed, zero matrix', function() {
-      var m = new CcsMatrix(
-        [
-          [0, 0, 0],
-          [0, 0, 0]
-        ]);
-      m.resize([2, 2]);
-      assert.deepEqual(m._size, [2, 2]);
-      assert.deepEqual(m._values, []);
-      assert.deepEqual(m._index, []);
-      assert.deepEqual(m._ptr, [0, 0, 0]);
-      assert.deepEqual(
-        m.toArray(), 
-        [
-          [0, 0],
-          [0, 0]
-        ]);
-    });
-    
-    it('should decrease rows as needed', function() {
-      var m = new CcsMatrix(
-        [
-          [1, 2],
-          [3, 4]
-        ]);
-      m.resize([1, 2]);
-      assert.deepEqual(m._size, [1, 2]);
-      assert.deepEqual(m._values, [1, 2]);
-      assert.deepEqual(m._index, [0, 0]);
-      assert.deepEqual(m._ptr, [0, 1, 2]);
-      assert.deepEqual(
-        m.toArray(), 
-        [
-          [1, 2]
-        ]);
-    });
-    
-    it('should decrease rows as needed, zero CCS', function() {
-      var m = new CcsMatrix(
-        [
-          [0, 0],
-          [0, 0]
-        ]);
-      m.resize([1, 2]);
-      assert.deepEqual(m._size, [1, 2]);
-      assert.deepEqual(m._values, []);
-      assert.deepEqual(m._index, []);
-      assert.deepEqual(m._ptr, [0, 0, 0]);
-      assert.deepEqual(
-        m.toArray(), 
-        [
-          [0, 0]
-        ]);
-    });
-    
-    it('should decrease rows & columns as needed, zero CCS', function() {
-      var m = new CcsMatrix(
-        [
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0]
-        ]);
-      m.resize([2, 2]);
-      assert.deepEqual(m._size, [2, 2]);
-      assert.deepEqual(m._values, []);
-      assert.deepEqual(m._index, []);
-      assert.deepEqual(m._ptr, [0, 0, 0]);
-      assert.deepEqual(
-        m.toArray(), 
-        [
-          [0, 0],
-          [0, 0]
-        ]);
-    });
-  });
-  
-  describe('clone', function() {
-
-    it('should clone the matrix properly', function() {
-      var m1 = new CcsMatrix(
-        [
-          [1,2,3],
-          [4,5,6]
-        ]);
-      
-      var m2 = m1.clone();
-      
-      assert.deepEqual(m1.toArray(), m2.toArray());
-    });
-  });
-  
-  describe('map', function() {
-
-    it('should apply the given function to all elements in the matrix', function() {
-      var m, m2;
-
-      m = new CcsMatrix([
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11,12],
-        [13, 14, 15,16]
-      ]);
-      m2 = m.map(function (value) { return value * 2; });
-      assert.deepEqual(m2.toArray(), [
-        [2, 4, 6, 8],
-        [10, 12, 14, 16],
-        [18, 20, 22, 24],
-        [26, 28, 30, 32]
-      ]);
-      
-      m = new CcsMatrix([1]);
-      m2 = m.map(function (value) { return value * 2; });
-      assert.deepEqual(m2.toArray(), [[2]]);
-
-      m = new CcsMatrix([1,2,3]);
-      m2 = m.map(function (value) { return value * 2; });
-      assert.deepEqual(m2.toArray(), [[2],[4],[6]]);
-    });
-
-    it('should work on empty matrices', function() {
-      var m = new CcsMatrix([]);
-      var m2 = m.map(function (value) { return value * 2; });
-      assert.deepEqual(m2.toArray(), []);
-    });
-    
-    it('should process all values (zero and non-zero)', function() {
-      var m = new CcsMatrix(
-        [
-          [0, 0],
-          [0, 0]
-        ]
-      );
-      var m2 = m.map(function (value) { return value + 2; });
-      assert.deepEqual(
-        m2.toArray(),
-        [
-          [2, 2],
-          [2, 2]
-        ]);
-    });
-    
-    it('should process non-zero values', function() {
-      var m = new CcsMatrix(
-        [
-          [1, 0],
-          [0, 2]
-        ]
-      );
-      var m2 = m.map(function (value) { return value + 2; }, m, true);
-      assert.deepEqual(
-        m2.toArray(),
-        [
-          [3, 0],
-          [0, 4]
-        ]);
-    });
-
-    it('should invoke callback with parameters value, index, obj', function() {
-      var m = new CcsMatrix([[1, 2, 3], [4, 5, 6]]);
-      var o = {};
-
-      var m2 = m.map(
-        function (value, index, obj) {
-          return value + index[0] * 100 + index[1] * 10 + (obj === o ? 1000 : 0);
-        },
-        o
-      );
-
-      assert.deepEqual(
-        m2.toArray(), 
-        [
-          [1001, 1012, 1023],
-          [1104, 1115, 1126]
-        ]);
-    });
-  });
-  
-  describe('get subset', function() {
-
-    it('should get the right subset of the matrix', function() {
-      var m = new CcsMatrix(
-        [
-          [1, 2, 3],
-          [4, 5, 6],
-          [7, 8, 9]
-        ]);
-      assert.deepEqual(m.size(), [3, 3]);
-      assert.deepEqual(m.subset(index(1, 1)), 5);
-      assert.deepEqual(m.subset(index([0, 2],[0, 2])).toArray(), [[1, 2], [4, 5]]);
-      assert.deepEqual(m.subset(index(1, [1, 3])).toArray(), [[5, 6]]);
-      assert.deepEqual(m.subset(index(0, [1, 3])).toArray(), [[2, 3]]);
-      assert.deepEqual(m.subset(index([1, 3], 1)).toArray(), [[5], [8]]);
-      assert.deepEqual(m.subset(index([1, 3], 2)).toArray(), [[6], [9]]);
-    });
-
-    /*
-    it('should squeeze the output when index contains a scalar', function() {
-      var m = new CcsMatrix(math.range(0, 10));
-      assert.deepEqual(m.subset(index(1)), 1);
-      assert.deepEqual(m.subset(index([1, 2])), new CcsMatrix([1]));
-
-      m = new CcsMatrix([[1,2], [3, 4]]);
-      assert.deepEqual(m.subset(index(1, 1)), 4);
-      assert.deepEqual(m.subset(index([1, 2], 1)), new CcsMatrix([[4]]));
-      assert.deepEqual(m.subset(index(1, [1, 2])), new CcsMatrix([[4]]));
-      assert.deepEqual(m.subset(index([1, 2], [1, 2])), new CcsMatrix([[4]]));
-    });
-
-    it('should throw an error if the given subset is invalid', function() {
-      var m = new CcsMatrix();
-      assert.throws(function () { m.subset([-1]); });
-
-      m = new CcsMatrix([[1, 2, 3], [4, 5, 6]]);
-      assert.throws(function () { m.subset([1, 2, 3]); });
-      assert.throws(function () { m.subset([3, 0]); });
-      assert.throws(function () { m.subset([1]); });
-    });
-
-    it('should throw an error in case of wrong number of arguments', function() {
-      var m = new CcsMatrix();
-      assert.throws(function () { m.subset();}, /Wrong number of arguments/);
-      assert.throws(function () { m.subset(1, 2, 3, 4); }, /Wrong number of arguments/);
-    });
-
-    it('should throw an error in case of dimension mismatch', function() {
-      var m = new CcsMatrix([[1,2,3],[4,5,6]]);
-      assert.throws(function () {m.subset(index([0,2]))}, /Dimension mismatch/);
-    });
-    */
-  });
-  
-  describe('forEach', function() {
-
-    it('should run on all elements of the matrix', function() {
-      var m, output;
-
-      m = new CcsMatrix([
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11,12],
-        [13, 14, 15,16]
-      ]);
-      output = [];
-      m.forEach(function (value) { output.push(value); });
-      assert.deepEqual(output, [1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16]);
-
-      m = new CcsMatrix([1]);
-      output = [];
-      m.forEach(function (value) { output.push(value); });
-      assert.deepEqual(output, [1]);
-
-      m = new CcsMatrix([1,2,3]);
-      output = [];
-      m.forEach(function (value) { output.push(value); });
-      assert.deepEqual(output, [1,2,3]);
-    });
-
-    it('should work on empty matrices', function() {
-      m = new CcsMatrix([]);
-      output = [];
-      m.forEach(function (value) { output.push(value); });
-      assert.deepEqual(output, []);
-    });
-
-    it('should invoke callback with parameters value, index, obj', function() {
-      var m = new CcsMatrix([[1,2,3], [4,5,6]]);
-      var o = {};
-      var output = [];
-      m.forEach(
-        function (value, index, obj) {
-          output.push(value + index[0] * 100 + index[1] * 10 + (obj === o ? 1000 : 0));
-        },
-        o
-      );
-      assert.deepEqual(output, [1001, 1104, 1012, 1115, 1023, 1126]);
-    });
-  });
-  
-  describe('toString', function() {
-
-    it('should return string representation of matrix', function() {
-      var m = new CcsMatrix(
-        [
-          [1, 0, 0],
-          [0, 0, 1]
-        ]);
-
-      var s = m.toString();
-
-      assert.equal(s, '2 x 3\n\n(0, 0) = 1\n(1, 2) = 1');
-    });
-  });
+  });  
 });
