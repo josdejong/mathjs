@@ -1154,5 +1154,24 @@ describe('CcsMatrix', function() {
           [0, 0, 1, 0]
         ]);
     });
-  });  
+  });
+  
+  describe('transpose', function () {
+    
+    it('should transpose a 2d matrix', function() {
+      var m = new CcsMatrix([[1,2,3],[4,5,6]]);
+      assert.deepEqual(m.transpose().toArray(), [[1,4],[2,5],[3,6]]);
+      
+      m = new CcsMatrix([[1,2],[3,4]]);
+      assert.deepEqual(m.transpose().toArray(), [[1,3],[2,4]]);
+      
+      m = new CcsMatrix([[1,2,3,4]]);
+      assert.deepEqual(m.transpose().toArray(), [[1],[2],[3],[4]]);
+    });
+    
+    it('should throw an error for invalid matrix transpose', function() {
+      var m = new CcsMatrix([[]]);
+      assert.throws(function () { m.transpose(); });
+    });
+  });
 });
