@@ -1244,4 +1244,30 @@ describe('CcsMatrix', function() {
       assert.throws(function () { m.transpose(); });
     });
   });
+  
+  describe('zeros', function () {
+
+    it('should generate a matrix with zeros', function() {
+      var m = CcsMatrix.zeros(2, 2);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0],
+          [0, 0]
+        ]);
+    });
+
+    it('should generate a big matrix with zeros', function() {
+      var m = CcsMatrix.zeros(1000, 1000);
+      assert.deepEqual(m._values, []);
+      assert.deepEqual(m._index, []);
+      assert.equal(m._ptr.length, 1001);
+      assert.deepEqual(m._size, [1000, 1000]);
+    });
+    
+    it('should throw an error for invalid matrix transpose', function() {
+      var m = new CcsMatrix([[]]);
+      assert.throws(function () { m.transpose(); });
+    });
+  });
 });

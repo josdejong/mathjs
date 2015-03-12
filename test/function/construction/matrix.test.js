@@ -26,6 +26,13 @@ describe('matrix', function() {
     assert.deepEqual(c, matrix([[1,2],[3,4]], 'dense'));
     assert.deepEqual(math.size(c), matrix([2,2], 'dense'));
   });
+  
+  it('should be the identity if called with a matrix, CCS format', function() {
+    var b = matrix([[1,2],[3,4]], 'ccs');
+    var c = matrix(b, 'ccs');
+    assert.ok(c._values != b._values); // data should be cloned
+    assert.deepEqual(c, matrix([[1,2],[3,4]], 'ccs'));
+  });
 
   it('should create a matrix from a range correctly', function() {
     var d = matrix(math.range(1,6));
@@ -35,15 +42,15 @@ describe('matrix', function() {
   });
 
   it('should throw an error if called with a single number', function() {
-    assert.throws(function () {matrix(123)}, TypeError);
+    assert.throws(function () { matrix(123); }, TypeError);
   });
 
   it('should throw an error if called with a unit', function() {
-    assert.throws(function () {matrix(math.unit('5cm'))}, TypeError);
+    assert.throws(function () { matrix(math.unit('5cm')); }, TypeError);
   });
 
   it('should throw an error if called with 3 numbers', function() {
-    assert.throws(function () {matrix(2, 3, 4)}, error.ArgumentsError);
+    assert.throws(function () { matrix(2, 3, 4); }, error.ArgumentsError);
   });
 
   it('should throw an error when called with an invalid storage format', function () {
