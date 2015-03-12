@@ -617,8 +617,7 @@ describe('DenseMatrix', function() {
       assert.deepEqual(a, [new Complex(1, 1), new Complex(4, 4), new Complex(5, 5), new Complex(2, 2), new Complex(3, 3), new Complex(6, 6)]);
     });
   });
-  
-  
+
   describe('transpose', function () {
 
     it('should transpose a 2d matrix', function() {
@@ -638,6 +637,41 @@ describe('DenseMatrix', function() {
       
       m = new DenseMatrix([[[1],[2]],[[3],[4]]]);
       assert.throws(function () { m.transpose(); });
+    });
+  });
+  
+  describe('trace', function () {
+
+    it('should calculate trace on a square matrix', function() {
+      var m = new DenseMatrix([
+        [1, 2],
+        [4, -2]
+      ]);
+      assert.equal(m.trace(), -1);
+
+      m = new DenseMatrix([
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ]);
+      assert.equal(m.trace(), 0);
+
+      m = new DenseMatrix([
+        [1, 0, 0, 0],
+        [0, 0, 2, 0],
+        [1, 0, 0, 0],
+        [0, 0, 1, 9]
+      ]);
+      assert.equal(m.trace(), 10);
+    });
+
+    it('should throw an error for invalid matrix', function() {
+      var m = new DenseMatrix([
+        [1, 2, 3],
+        [4, 5, 6]
+      ]);
+      assert.throws(function () { m.trace(); });
     });
   });
   
