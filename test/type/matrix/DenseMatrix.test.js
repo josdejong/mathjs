@@ -617,8 +617,7 @@ describe('DenseMatrix', function() {
       assert.deepEqual(a, [new Complex(1, 1), new Complex(4, 4), new Complex(5, 5), new Complex(2, 2), new Complex(3, 3), new Complex(6, 6)]);
     });
   });
-  
-  
+
   describe('transpose', function () {
 
     it('should transpose a 2d matrix', function() {

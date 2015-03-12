@@ -163,14 +163,29 @@ describe('CcsMatrix', function() {
     });
   });
   
-  describe('format', function () {
-    /* TODO: implement!
+  describe('format', function () {    
     it('should format matrix', function() {
-      assert.equal(new CcsMatrix([[1,2],[3,1/3]]).format(), '[[1, 2], [3, 0.3333333333333333]]');
-      assert.equal(new CcsMatrix([[1,2],[3,1/3]]).format(3), '[[1, 2], [3, 0.333]]');
-      assert.equal(new CcsMatrix([[1,2],[3,1/3]]).format(4), '[[1, 2], [3, 0.3333]]');
+      var m = new CcsMatrix(
+        [
+          [0, 0], 
+          [0, 1/3]
+        ]);
+      assert.equal(m.format(), 'CCS [2 x 2]\n\n    (1, 1) ==> 0.3333333333333333');
+      
+      m = new CcsMatrix(
+        [
+          [0, 0], 
+          [0, 1/3]
+        ]);
+      assert.equal(m.format(3), 'CCS [2 x 2]\n\n    (1, 1) ==> 0.333');
+      
+      m = new CcsMatrix(
+        [
+          [0, 0], 
+          [0, 1/3]
+        ]);
+      assert.equal(m.format(4), 'CCS [2 x 2]\n\n    (1, 1) ==> 0.3333');
     });
-    */
   });
   
   describe('resize', function() {
@@ -783,36 +798,40 @@ describe('CcsMatrix', function() {
           [1, 1, 2]
         ]);
     });
-    
-    /* TODO: implement!
+
     it('should set vector value', function () {
       var m = new CcsMatrix([
         [0, 0],
         [0, 0]
       ]);
 
-      m.subset(index([0], [1]), [1, 2]);
+      m.subset(index(0, [0, 2]), [1, 2]);
       assert.deepEqual(
         m.toArray(), 
         [
           [1, 2],
           [0, 0]
         ]);
-    });
-    
-    it('should set the given subset', function() {
-      // set 2-dimensional
-      var m = new CcsMatrix();
-      m.resize([3,3]);
+      
+      m.subset(index(1, [0, 2]), [3, 4]);
       assert.deepEqual(
         m.toArray(), 
+        [
+          [1, 2],
+          [3, 4]
+        ]);
+    });
+
+    it('should set subset', function() {
+      // set 2-dimensional
+      var m = new CcsMatrix(
         [
           [0, 0, 0],
           [0, 0, 0],
           [0, 0, 0]
         ]);
       
-      m.subset(index([1, 3], [1, 3]), [[1, 2],[3, 4]]);
+      m.subset(index([1, 3], [1, 3]), [[1, 2], [3, 4]]);
       assert.deepEqual(
         m.toArray(), 
         [
@@ -821,114 +840,109 @@ describe('CcsMatrix', function() {
           [0, 3, 4]
         ]);
 
-      //m.subset(index(0, [0,3]), [5,6,7]);
-      //assert.deepEqual(m, new CcsMatrix([[5,6,7],[0,1,2],[0,3,4]]));
-      //m.subset(index([0,3], 0), [8,9,10]);  // unsqueezes the submatrix
-      //assert.deepEqual(m, new CcsMatrix([[8,6,7],[9,1,2],[10,3,4]]));
+      m.subset(index(0, [0, 3]), [5, 6, 7]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [5, 6, 7],
+          [0, 1, 2],
+          [0, 3, 4]
+        ]);      
+
+      m.subset(index([0,3], 0), [8,9,10]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [8, 6, 7],
+          [9, 1, 2],
+          [10, 3, 4]
+        ]);
     });
     
-    it('should set the given subset with defaultValue for new elements', function() {
-      // multiple values
-      var m = new CcsMatrix();
-      var defaultValue = 0;
-      m.subset(index([3,5]), [3, 4], defaultValue);
-      assert.deepEqual(m, new CcsMatrix([0, 0, 0, 3, 4]));
-
-      defaultValue = 1;
-      m.subset(index([3,5],1), [5, 6], defaultValue);
-      assert.deepEqual(m, new CcsMatrix([
-        [0, 1],
-        [0, 1],
-        [0, 1],
-        [3, 5],
-        [4, 6]
-      ]));
-
-      defaultValue = 2;
-      m.subset(index([3,5],2), [7, 8], defaultValue);
-      assert.deepEqual(m, new CcsMatrix([
-        [0, 1, 2],
-        [0, 1, 2],
-        [0, 1, 2],
-        [3, 5, 7],
-        [4, 6, 8]
-      ]));
-
-      // a single value
-      var i = math.matrix();
-      defaultValue = 0;
-      i.subset(math.index(2, 1), 6, defaultValue);
-      assert.deepEqual(i, new CcsMatrix([[0, 0], [0, 0], [0, 6]]));
-    });
-
-    it('should unsqueeze the replacement subset if needed', function() {
-      var m = new CcsMatrix([[0,0],[0,0]]); // 2x2
-
-      m.subset(index(0, [0,2]), [1,1]); // 2
-      assert.deepEqual(m, new CcsMatrix([[1,1],[0,0]]));
-
-      m.subset(index([0,2], 0), [2,2]); // 2
-      assert.deepEqual(m, new CcsMatrix([[2,1],[2,0]]));
-
-      m = new CcsMatrix([[[0],[0],[0]]]); // 1x3x1
-      m.subset(index(0, [0,3], 0), [1,2,3]); // 3
-      assert.deepEqual(m, new CcsMatrix([[[1],[2],[3]]]));
-
-      m = new CcsMatrix([[[0,0,0]]]); // 1x1x3
-      m.subset(index(0, 0, [0,3]), [1,2,3]); // 3
-      assert.deepEqual(m, new CcsMatrix([[[1,2,3]]]));
-
-      m = new CcsMatrix([[[0]],[[0]],[[0]]]); // 3x1x1
-      m.subset(index([0,3], 0, 0), [1,2,3]); // 3
-      assert.deepEqual(m, new CcsMatrix([[[1]],[[2]],[[3]]]));
-
-      m = new CcsMatrix([[[0,0,0]]]); // 1x1x3
-      m.subset(index(0, 0, [0,3]), [[1,2,3]]); // 1x3
-      assert.deepEqual(m, new CcsMatrix([[[1,2,3]]]));
-
-      m = new CcsMatrix([[[0]],[[0]],[[0]]]); // 3x1x1
-      m.subset(index([0,3], 0, 0), [[1],[2],[3]]); // 3x1
-      assert.deepEqual(m, new CcsMatrix([[[1]],[[2]],[[3]]]));
-    });
-
-    it('should resize the matrix if the replacement subset is different size than selected subset', function() {
-      // set 2-dimensional with resize
-      var m = new CcsMatrix([[123]]);
-      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
-      assert.deepEqual(m, new CcsMatrix([[123,0,0],[0,1,2],[0,3,4]]));
-
-      // set resize dimensions
-      m = new CcsMatrix([123]);
-      assert.deepEqual(m.size(), [1]);
-
-      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
-      assert.deepEqual(m, new CcsMatrix([[123,0,0],[0,1,2],[0,3,4]]));
-
-      m.subset(index([0,2], [0,2]), [[55,55],[55,55]]);
-      assert.deepEqual(m, new CcsMatrix([[55,55,0],[55,55,2],[0,3,4]]));
-
-      m = new CcsMatrix();
-      m.subset(index([1,3], [1,3], [1,3]), [[[1,2],[3,4]],[[5,6],[7,8]]]);
-      var res = new CcsMatrix([
+    it('should set subset growing matrix', function() {
+      // set 2-dimensional
+      var m = new CcsMatrix(
         [
           [0, 0, 0],
           [0, 0, 0],
           [0, 0, 0]
-        ],
-        [
-          [0, 0, 0],
-          [0, 1, 2],
-          [0, 3, 4]
-        ],
-        [
-          [0, 0, 0],
-          [0, 5, 6],
-          [0, 7, 8]
-        ]
-      ]);
-      assert.deepEqual(m, res);
-    });
+        ]);
 
+      m.subset(index([2, 4], [2, 4]), [[1, 2], [3, 4]]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 1, 2],
+          [0, 0, 3, 4]
+        ]);
+
+      m.subset(index(4, [0, 3]), [5, 6, 7]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 1, 2],
+          [0, 0, 3, 4],
+          [5, 6, 7, 0]
+        ]);      
+
+      m.subset(index([0, 3], 4), [8, 9, 10]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0, 0, 8],
+          [0, 0, 0, 0, 9],
+          [0, 0, 1, 2, 10],
+          [0, 0, 3, 4, 0],
+          [5, 6, 7, 0, 0]
+        ]);
+    });
+    
+    it('should set subset growing matrix, default value', function() {
+      // set 2-dimensional
+      var m = new CcsMatrix(
+        [
+          [0, 0, 0],
+          [0, 0, 0],
+          [0, 0, 0]
+        ]);
+
+      m.subset(index([2, 4], [2, 4]), [[1, 2], [3, 4]], -1);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0, -1],
+          [0, 0, 0, -1],
+          [0, 0, 1, 2],
+          [-1, -1, 3, 4]
+        ]);
+
+      m.subset(index(4, [0, 3]), [5, 6, 7], -2);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0, -1],
+          [0, 0, 0, -1],
+          [0, 0, 1, 2],
+          [-1, -1, 3, 4],
+          [5, 6, 7, -2]
+        ]);      
+
+      m.subset(index([0, 3], 4), [8, 9, 10], -3);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0, -1, 8],
+          [0, 0, 0, -1, 9],
+          [0, 0, 1, 2, 10],
+          [-1, -1, 3, 4, -3],
+          [5, 6, 7, -2, -3]
+        ]);
+    });
+    
     it ('should throw an error in case of wrong type of index', function () {
       assert.throws(function () { new CcsMatrix().subset('no index', 2); }, /Invalid index/);
     });
@@ -936,13 +950,6 @@ describe('CcsMatrix', function() {
     it ('should throw an error in case of wrong size of submatrix', function () {
       assert.throws(function () { new CcsMatrix().subset(index(0), [2,3]); }, /Scalar expected/);
     });
-
-    it('should throw an error in case of dimension mismatch', function() {
-      var m = new CcsMatrix([[1,2,3],[4,5,6]]);
-      assert.throws(function () { m.subset(index([0,2]), [100,100]); }, /Dimension mismatch/);
-      assert.throws(function () { m.subset(index([0,2], [0,2]), [100,100]); }, /Dimension mismatch/);
-    });
-    */
   });
   
   describe('map', function() {
