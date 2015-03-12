@@ -1,14 +1,12 @@
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     approx = require('../../../tools/approx'),
     math = require('../../../index');
 
 describe('trace', function() {
 
-  it('should calculate correctly the trace of a NxN matrix', function() {
+  it('should calculate correctly the trace of a NxN array', function() {
     assert.equal(math.trace([5]), 5);
     assert.equal(math.trace([[1,2],[3,4]]), 5);
-    assert.equal(math.trace(math.matrix([[1,2],[3,4]])), 5);
     approx.equal(math.trace([
       [-2, 2,  3],
       [-1, 1,  3],
@@ -26,7 +24,80 @@ describe('trace', function() {
       [1,7,5,9,7], 
       [2,7,4,3,7]
     ]), 28);
-    approx.equal(math.trace(math.diag([4,-5,6])), 5);
+  });
+  
+  it('should calculate correctly the trace of a NxN matrix', function() {
+    assert.equal(math.trace(math.matrix([5])), 5);
+    assert.equal(math.trace(math.matrix([[1,2],[3,4]])), 5);
+    assert.equal(math.trace(math.matrix([[1,2],[3,4]])), 5);
+    approx.equal(
+      math.trace(
+        math.matrix(
+          [
+            [-2, 2,  3],
+            [-1, 1,  3],
+            [ 2, 0, -1]
+          ])), 
+      -2);
+    approx.equal(
+      math.trace(
+        math.matrix(
+          [
+            [ 1, 4,  7],
+            [ 3, 0,  5],
+            [-1, 9, 11]
+          ])), 
+      12);
+    approx.equal(
+      math.trace(
+        math.matrix(
+          [
+            [1, 7, 4, 3, 7], 
+            [0, 7, 0, 3, 7], 
+            [0, 7, 4, 3, 0], 
+            [1, 7, 5, 9, 7], 
+            [2, 7, 4, 3, 7]
+          ])), 
+      28);
+    approx.equal(math.trace(math.diag([4, -5, 6])), 5);
+  });
+  
+  it('should calculate correctly the trace of a NxN matrix, CCS format', function() {
+    assert.equal(math.trace(math.matrix([5], 'ccs')), 5);
+    assert.equal(math.trace(math.matrix([[1,2],[3,4]], 'ccs')), 5);
+    assert.equal(math.trace(math.matrix([[1,2],[3,4]], 'ccs')), 5);
+    approx.equal(
+      math.trace(
+        math.matrix(
+          [
+            [-2, 2,  3],
+            [-1, 1,  3],
+            [ 2, 0, -1]
+          ],
+          'ccs')), 
+      -2);
+    approx.equal(
+      math.trace(
+        math.matrix(
+          [
+            [ 1, 4,  7],
+            [ 3, 0,  5],
+            [-1, 9, 11]
+          ],
+          'ccs')), 
+      12);
+    approx.equal(
+      math.trace(
+        math.matrix(
+          [
+            [1, 7, 4, 3, 7], 
+            [0, 7, 0, 3, 7], 
+            [0, 7, 4, 3, 0], 
+            [1, 7, 5, 9, 7], 
+            [2, 7, 4, 3, 7]
+          ],
+          'ccs')), 
+      28);
   });
 
   it('should return N for the identity matrix',function() {
@@ -48,9 +119,31 @@ describe('trace', function() {
     assert.equal(c2.re, 2);
   });
 
-  it('should calculate the trace for a 1x1 matrix',function() {
+  it('should calculate the trace for a 1x1 array',function() {
     var c1 = math.complex(2, 3);
     var c2 = math.trace([[c1]]);
+    assert.deepEqual(c1, c2);
+
+    // c2 should be a clone
+    c1.re = 0;
+    assert.equal(c1.re, 0);
+    assert.equal(c2.re, 2);
+  });
+  
+  it('should calculate the trace for a 1x1 matrix',function() {
+    var c1 = math.complex(2, 3);
+    var c2 = math.trace(math.matrix([[c1]]));
+    assert.deepEqual(c1, c2);
+
+    // c2 should be a clone
+    c1.re = 0;
+    assert.equal(c1.re, 0);
+    assert.equal(c2.re, 2);
+  });
+  
+  it('should calculate the trace for a 1x1 matrix, CCS format',function() {
+    var c1 = math.complex(2, 3);
+    var c2 = math.trace(math.matrix([[c1]], 'ccs'));
     assert.deepEqual(c1, c2);
 
     // c2 should be a clone
@@ -103,12 +196,12 @@ describe('trace', function() {
     assert.throws(function() { math.trace([1,2]); });
     assert.throws(function() { math.trace([[1,2,3],[1,2,3]]); });
     assert.throws(function() { math.trace([0,1],[0,1],[0,1]); });
+    assert.throws(function() { math.trace(math.matrix([[1,2,3],[1,2,3]])); });
+    assert.throws(function() { math.trace(math.matrix([[1,2,3],[1,2,3]], 'ccs')); });
   });
 
   it('should not accept arrays with dimensions higher than 2', function() {
     assert.throws(function() { math.trace([[[1]]]); }, RangeError);
     assert.throws(function() { math.trace(math.matrix([[[1]]])); }, RangeError);
   });
-
-
 });

@@ -1245,31 +1245,38 @@ describe('CcsMatrix', function() {
     });
   });
   
-  describe('zeros', function () {
+  describe('trace', function () {
 
-    it('should generate a matrix with zeros', function() {
-      var m = CcsMatrix.zeros([2, 2]);
-      assert.deepEqual(
-        m.toArray(), 
-        [
-          [0, 0],
-          [0, 0]
-        ]);
-    });
-
-    it('should generate a big matrix with zeros', function() {
-      var m = CcsMatrix.zeros([1000, 2000]);
-      assert.deepEqual(m._values, []);
-      assert.deepEqual(m._index, []);
-      assert.equal(m._ptr.length, 2001);
-      assert.deepEqual(m._size, [1000, 2000]);
+    it('should calculate trace on a square matrix', function() {
+      var m = new CcsMatrix([
+        [1, 2],
+        [4, -2]
+      ]);
+      assert.equal(m.trace(), -1);
+      
+      m = new CcsMatrix([
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ]);
+      assert.equal(m.trace(), 0);
+      
+      m = new CcsMatrix([
+        [1, 0, 0, 0],
+        [0, 0, 2, 0],
+        [1, 0, 0, 0],
+        [0, 0, 1, 9]
+      ]);
+      assert.equal(m.trace(), 10);
     });
     
-    it('should throw an error for invalid size', function() {
-      assert.throws(function () { CcsMatrix.zeros(1); }, /Array expected/);
-      assert.throws(function () { CcsMatrix.zeros([]); }, /Only two dimensions matrix are supported/);
-      assert.throws(function () { CcsMatrix.zeros([1]); }, /Only two dimensions matrix are supported/);
-      assert.throws(function () { CcsMatrix.zeros([1, 2, 3]); }, /Only two dimensions matrix are supported/);
+    it('should throw an error for invalid matrix', function() {
+      var m = new CcsMatrix([
+        [1, 2, 3],
+        [4, 5, 6]
+      ]);
+      assert.throws(function () { m.trace(); });
     });
   });
 });
