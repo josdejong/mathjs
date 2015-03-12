@@ -12,6 +12,22 @@ describe('matrix', function() {
     assert.deepEqual(math.size(a), matrix([0])); // TODO: wouldn't it be nicer if an empty matrix has zero dimensions?
   });
 
+  it('should create empty matrix, dense format', function() {
+    var a = matrix('dense');
+    assert.ok(a instanceof math.type.Matrix);
+    assert.deepEqual(math.size(a), matrix([0]));
+  });
+  
+  it('should create empty matrix, ccs format', function() {
+    var a = matrix('ccs');
+    assert.ok(a instanceof math.type.Matrix);
+  });
+  
+  it('should create empty matrix, crs format', function() {
+    var a = matrix('crs');
+    assert.ok(a instanceof math.type.Matrix);
+  });
+  
   it('should create a matrix from an array', function() {
     var b = matrix([[1,2],[3,4]]);
     assert.ok(b instanceof math.type.Matrix);

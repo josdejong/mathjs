@@ -11,8 +11,7 @@ describe('zeros', function() {
     assert.deepEqual(zeros([]), []);
     assert.deepEqual(zeros(matrix([])), matrix());
   });
-  
-  /*
+    
   it('should create an empty matrix, CCS format', function () {
     assert.deepEqual(zeros('ccs'), matrix('ccs'));
     assert.deepEqual(zeros([], 'ccs'), matrix([], 'ccs'));
@@ -24,7 +23,6 @@ describe('zeros', function() {
     assert.deepEqual(zeros([], 'crs'), matrix([], 'crs'));
     assert.deepEqual(zeros(matrix([]), 'crs'), matrix('crs'));
   });
-*/
   
   it('should create a vector with zeros', function () {
     assert.deepEqual(zeros(3), matrix([0,0,0]));
