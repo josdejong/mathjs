@@ -9,9 +9,9 @@ dimension will be calculated. Parameter `dim` is zero-based.
 ## Syntax
 
 ```js
-mean.mean(a, b, c, ...)
-mean.mean(A)
-mean.mean(A, dim)
+math.mean(a, b, c, ...)
+math.mean(A)
+math.mean(A, dim)
 ```
 
 ### Parameters
