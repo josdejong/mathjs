@@ -1042,15 +1042,25 @@ describe('CcsMatrix', function() {
       var m = new CcsMatrix(
         [
           [1, 0],
-          [0, 2]
+          [0, 0]
         ]
       );
-      var m2 = m.map(function (value) { return value + 2; }, m, true);
+      var counter = 0;
+      
+      var m2 = m.map(
+        function (value) { 
+          counter++;
+          return value + 2; 
+        }, 
+        m, 
+        true);
+      
+      assert(counter === 1);
       assert.deepEqual(
         m2.toArray(),
         [
           [3, 0],
-          [0, 4]
+          [0, 0]
         ]);
     });
 
