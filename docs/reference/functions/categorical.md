@@ -120,7 +120,7 @@
 ## statistics
 
 - [max(a, b, c, ...)](max.md)
-- [mean.mean(a, b, c, ...)](mean.md)
+- [mean(a, b, c, ...)](mean.md)
 - [mean.median(a, b, c, ...)](median.md)
 - [min(a, b, c, ...)](min.md)
 - [prod(a, b, c, ...)](prod.md)
