@@ -256,4 +256,28 @@ describe('BlockNode', function() {
     assert.equal(n.toTex(), '5\n{foo}={3};\nfoo');
   });
 
+  it ('should LaTeX a BlockNode with custom toTex', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunctions = {
+      BlockNode: function (node, callbacks) {
+        var latex = '';
+        node.blocks.forEach(function (block) {
+          latex += block.node.toTex(callbacks) + '; ';
+        });
+
+        return latex;
+      },
+      ConstantNode: function (node, callbacks) {
+        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new BlockNode([{node: a}, {node: b}]);
+
+    assert.equal(n.toTex(customFunctions), 'const\\left(1, number\\right); const\\left(2, number\\right); ');
+  });
+
 });

@@ -260,4 +260,26 @@ describe('ConditionalNode', function() {
     assert.equal(n.toTex(), '\\left\\{\\begin{array}{l l}{{a}={2}}, &\\quad{\\text{if}\\;true}\\\\{{b}={3}}, &\\quad{\\text{otherwise}}\\end{array}\\right.');
   });
 
+  it ('should LaTeX a ConditionalNode with custom toTex', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunctions = {
+      ConditionalNode: function (node, callbacks) {
+        return 'if ' + node.condition.toTex(callbacks)
+          + ' then ' + node.trueExpr.toTex(callbacks)
+          + ' else ' + node.falseExpr.toTex(callbacks);
+      },
+      ConstantNode: function (node, callbacks) {
+        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+
+    var n = new ConditionalNode(a, b, c);
+
+    assert.equal(n.toTex(customFunctions), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)');
+  });
+
 });
