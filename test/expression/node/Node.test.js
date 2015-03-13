@@ -74,9 +74,11 @@ describe('Node', function() {
     assert.equal(node.toString(), '');
   });
 
-  it ('should LaTeX a Node', function () {
-    var node = new Node();
-    assert.equal(node.toTex(), '');
+  it ('should throw an error when calling toTex', function () {
+    assert.throws(function () {
+      var node = new Node();
+      node.toTex();
+    }, /_toTex not implemented for this Node/);
   });
 
   it ('should throw an error in case of wrong arguments for compile', function () {
