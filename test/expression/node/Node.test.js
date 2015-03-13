@@ -77,6 +77,8 @@ describe('Node', function() {
   it ('should throw an error when calling _toTex', function () {
     assert.throws(function () {
       var node = new Node();
+      node.type = 'SpecialNode';  //this is necessary because toTex
+                                  //returns '' for a Node
       node._toTex();
     }, /_toTex not implemented for this Node/);
   });
