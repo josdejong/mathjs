@@ -392,6 +392,42 @@ describe('CcsMatrix', function() {
           [0, 0]
         ]);
     });
+    
+    it('should return a different matrix when copy=true', function() {
+      var m1 = new CcsMatrix(
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0]
+        ]);
+      var m2 = m1.resize([2, 2], 0, true);
+      assert(m1 !== m2);
+      // original matrix cannot be modified
+      assert.deepEqual(m1._size, [4, 4]);
+      assert.deepEqual(m1._values, []);
+      assert.deepEqual(m1._index, []);
+      assert.deepEqual(m1._ptr, [0, 0, 0, 0, 0]);
+      assert.deepEqual(
+        m1.toArray(), 
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0]
+        ]);
+      // new matrix should have correct size
+      assert.deepEqual(m2._size, [2, 2]);
+      assert.deepEqual(m2._values, []);
+      assert.deepEqual(m2._index, []);
+      assert.deepEqual(m2._ptr, [0, 0, 0]);
+      assert.deepEqual(
+        m2.toArray(), 
+        [
+          [0, 0],
+          [0, 0]
+        ]);
+    });
   });
   
   describe('get', function () {

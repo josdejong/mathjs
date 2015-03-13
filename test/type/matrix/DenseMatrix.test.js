@@ -171,6 +171,36 @@ describe('DenseMatrix', function() {
       m.resize([3], math.uninitialized);
       assert.deepEqual(m.valueOf(), arr(uninit, uninit, uninit));
     });
+    
+    it('should return a different matrix when copy=true', function() {
+      var m1 = new DenseMatrix(
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0]
+        ]);
+      var m2 = m1.resize([2, 2], 0, true);
+      assert(m1 !== m2);
+      // original matrix cannot be modified
+      assert.deepEqual(m1._size, [4, 4]);
+      assert.deepEqual(
+        m1._data, 
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0]
+        ]);
+      // new matrix should have correct size
+      assert.deepEqual(m2._size, [2, 2]);
+      assert.deepEqual(
+        m2._data, 
+        [
+          [0, 0],
+          [0, 0]
+        ]);
+    });
   });
   
   describe('get', function () {
