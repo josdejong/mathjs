@@ -236,4 +236,29 @@ describe('ArrayNode', function() {
     assert.equal(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}');
   });
 
+  it ('should LaTeX an ArrayNode with custom toTex', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunctions = {
+      ArrayNode: function (node, callbacks) {
+        var latex = '\\left[';
+        node.nodes.forEach(function (node) {
+          latex += node.toTex(callbacks) + ', ';
+        });
+
+        latex += '\\right]';
+        return latex;
+      },
+      ConstantNode: function (node, callbacks) {
+        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new ArrayNode([a, b]);
+
+    assert.equal(n.toTex(customFunctions), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]');
+  });
+
 });

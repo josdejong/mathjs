@@ -107,4 +107,17 @@ describe('SymbolNode', function() {
     assert.equal(s.toTex(), 'foo');
   });
 
+  it ('should LaTeX a SymbolNode with custom toTex', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunctions = {
+      SymbolNode: function (node, callbacks) {
+        return 'symbol(' + node.name + ')';
+      }
+    };
+
+    var n = new SymbolNode('a');
+
+    assert.equal(n.toTex(customFunctions), 'symbol(a)');
+  });
+
 });
