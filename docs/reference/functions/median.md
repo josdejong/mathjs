@@ -12,8 +12,8 @@ elements will be calculated.
 ## Syntax
 
 ```js
-mean.median(a, b, c, ...)
-mean.median(A)
+math.median(a, b, c, ...)
+math.median(A)
 ```
 
 ### Parameters
