@@ -648,6 +648,267 @@ describe('DenseMatrix', function() {
     });
   });
 
+  describe('diagonal', function () {
+
+    it('should create matrix (n x n)', function () {
+
+      var m = DenseMatrix.diagonal([3, 3], 1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0],
+          [0, 1, 0],
+          [0, 0, 1]
+        ]);
+    });
+
+    it('should create matrix (n x n), k > 0', function () {
+
+      var m = DenseMatrix.diagonal([3, 3], 1, 1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 1],
+          [0, 0, 0]
+        ]);
+    });
+
+    it('should create matrix (n x n), k < 0', function () {
+
+      var m = DenseMatrix.diagonal([3, 3], 1, -1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 1, 0]
+        ]);
+    });
+
+    it('should create matrix (n x n), vector value', function () {
+
+      var m = DenseMatrix.diagonal([3, 3], [1, 2, 3]);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0],
+          [0, 2, 0],
+          [0, 0, 3]
+        ]);
+    });
+
+    it('should create matrix (n x n), vector value, k > 0', function () {
+
+      var m = DenseMatrix.diagonal([3, 3], [1, 2], 1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 2],
+          [0, 0, 0]
+        ]);
+    });
+
+    it('should create matrix (n x n), vector value, k < 0', function () {
+
+      var m = DenseMatrix.diagonal([3, 3], [1, 2], -1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 2, 0]
+        ]);
+    });
+
+    it('should create matrix (m x n), m > n', function () {
+
+      var m = DenseMatrix.diagonal([4, 3], 1);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0],
+          [0, 1, 0],
+          [0, 0, 1],
+          [0, 0, 0]
+        ]);
+    });
+
+    it('should create matrix (m x n), m > n, k > 0', function () {
+
+      var m = DenseMatrix.diagonal([4, 3], 1, 1);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 1],
+          [0, 0, 0],
+          [0, 0, 0]
+        ]);
+    });
+
+    it('should create matrix (m x n), m > n, k < 0', function () {
+
+      var m = DenseMatrix.diagonal([4, 3], 1, -1);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 1, 0],
+          [0, 0, 1],
+        ]);
+    });
+
+    it('should create matrix (m x n), m > n, vector value', function () {
+
+      var m = DenseMatrix.diagonal([4, 3], [1, 2, 3]);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0],
+          [0, 2, 0],
+          [0, 0, 3],
+          [0, 0, 0]
+        ]);
+    });
+
+    it('should create matrix (m x n), m > n, vector value, k > 0', function () {
+
+      var m = DenseMatrix.diagonal([4, 3], [1, 2], 1);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 2],
+          [0, 0, 0],
+          [0, 0, 0]
+        ]);
+    });
+
+    it('should create matrix (m x n), m > n, vector value, k < 0', function () {
+
+      var m = DenseMatrix.diagonal([4, 3], [1, 2, 3], -1);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 2, 0],
+          [0, 0, 3]
+        ]);
+    });
+
+    it('should create matrix (m x n), m < n', function () {
+
+      var m = DenseMatrix.diagonal([3, 4], 1);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0, 0],
+          [0, 1, 0, 0],
+          [0, 0, 1, 0]
+        ]);
+    });
+
+    it('should create matrix (m x n), m < n, k > 0', function () {
+
+      var m = DenseMatrix.diagonal([3, 4], 1, 1);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0, 0],
+          [0, 0, 1, 0],
+          [0, 0, 0, 1]
+        ]);
+    });
+
+    it('should create matrix (m x n), m < n, k < 0', function () {
+
+      var m = DenseMatrix.diagonal([3, 4], 1, -1);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0, 0],
+          [1, 0, 0, 0],
+          [0, 1, 0, 0]
+        ]);
+    });
+
+    it('should create matrix (m x n), m < n, vector value', function () {
+
+      var m = DenseMatrix.diagonal([3, 4], [1, 2, 3]);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0, 0],
+          [0, 2, 0, 0],
+          [0, 0, 3, 0]
+        ]);
+    });
+
+    it('should create matrix (m x n), m < n, vector value, k > 0', function () {
+
+      var m = DenseMatrix.diagonal([3, 4], [1, 2, 3], 1);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0, 0],
+          [0, 0, 2, 0],
+          [0, 0, 0, 3]
+        ]);
+    });
+
+    it('should create matrix (m x n), m < n, vector value, k < 0', function () {
+
+      var m = DenseMatrix.diagonal([3, 4], [1, 2], -1);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0, 0],
+          [1, 0, 0, 0],
+          [0, 2, 0, 0]
+        ]);
+    });
+  });
+  
   describe('transpose', function () {
 
     it('should transpose a 2d matrix', function() {
