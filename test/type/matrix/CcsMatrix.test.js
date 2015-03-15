@@ -1224,6 +1224,96 @@ describe('CcsMatrix', function() {
         ]);
     });
     
+    it('should create CCS matrix (n x n), k > 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], 1, 1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 1]);
+      assert.deepEqual(m._index, [0, 1]);
+      assert.deepEqual(m._ptr, [0, 0, 1, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 1],
+          [0, 0, 0]
+        ]);
+    });
+    
+    it('should create CCS matrix (n x n), k < 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], 1, -1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 1]);
+      assert.deepEqual(m._index, [1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 1, 0]
+        ]);
+    });
+    
+    it('should create CCS matrix (n x n), vector value', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], [1, 2, 3]);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2, 3]);
+      assert.deepEqual(m._index, [0, 1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 3]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0],
+          [0, 2, 0],
+          [0, 0, 3]
+        ]);
+    });
+    
+    it('should create CCS matrix (n x n), vector value, k > 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], [1, 2], 1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [0, 1]);
+      assert.deepEqual(m._ptr, [0, 0, 1, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 2],
+          [0, 0, 0]
+        ]);
+    });
+    
+    it('should create CCS matrix (n x n), vector value, k < 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], [1, 2], -1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 2, 0]
+        ]);
+    });
+    
     it('should create CCS matrix (n x n), complex number', function () {
 
       var m = CcsMatrix.diagonal([3, 3], new Complex(1, 1));
@@ -1253,6 +1343,101 @@ describe('CcsMatrix', function() {
         ]);
     });
     
+    it('should create CCS matrix (m x n), m > n, k > 0', function () {
+
+      var m = CcsMatrix.diagonal([4, 3], 1, 1);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(m._values, [1, 1]);
+      assert.deepEqual(m._index, [0, 1]);
+      assert.deepEqual(m._ptr, [0, 0, 1, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 1],
+          [0, 0, 0],
+          [0, 0, 0]
+        ]);
+    });
+    
+    it('should create CCS matrix (m x n), m > n, k < 0', function () {
+
+      var m = CcsMatrix.diagonal([4, 3], 1, -1);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(m._values, [1, 1, 1]);
+      assert.deepEqual(m._index, [1, 2, 3]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 3]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 1, 0],
+          [0, 0, 1],
+        ]);
+    });
+    
+    it('should create CCS matrix (m x n), m > n, vector value', function () {
+
+      var m = CcsMatrix.diagonal([4, 3], [1, 2, 3]);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(m._values, [1, 2, 3]);
+      assert.deepEqual(m._index, [0, 1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 3]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0],
+          [0, 2, 0],
+          [0, 0, 3],
+          [0, 0, 0]
+        ]);
+    });
+    
+    it('should create CCS matrix (m x n), m > n, vector value, k > 0', function () {
+
+      var m = CcsMatrix.diagonal([4, 3], [1, 2], 1);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [0, 1]);
+      assert.deepEqual(m._ptr, [0, 0, 1, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 2],
+          [0, 0, 0],
+          [0, 0, 0]
+        ]);
+    });
+    
+    it('should create CCS matrix (m x n), m > n, vector value, k < 0', function () {
+
+      var m = CcsMatrix.diagonal([4, 3], [1, 2, 3], -1);
+
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(m._values, [1, 2, 3]);
+      assert.deepEqual(m._index, [1, 2, 3]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 3]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 2, 0],
+          [0, 0, 3]
+        ]);
+    });
+    
     it('should create CCS matrix (m x n), m < n', function () {
 
       var m = CcsMatrix.diagonal([3, 4], 1);
@@ -1268,6 +1453,96 @@ describe('CcsMatrix', function() {
           [1, 0, 0, 0],
           [0, 1, 0, 0],
           [0, 0, 1, 0]
+        ]);
+    });
+    
+    it('should create CCS matrix (m x n), m < n, k > 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 4], 1, 1);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(m._values, [1, 1, 1]);
+      assert.deepEqual(m._index, [0, 1, 2]);
+      assert.deepEqual(m._ptr, [0, 0, 1, 2, 3]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0, 0],
+          [0, 0, 1, 0],
+          [0, 0, 0, 1]
+        ]);
+    });
+    
+    it('should create CCS matrix (m x n), m < n, k < 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 4], 1, -1);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(m._values, [1, 1]);
+      assert.deepEqual(m._index, [1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 2, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0, 0],
+          [1, 0, 0, 0],
+          [0, 1, 0, 0]
+        ]);
+    });
+    
+    it('should create CCS matrix (m x n), m < n, vector value', function () {
+
+      var m = CcsMatrix.diagonal([3, 4], [1, 2, 3]);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(m._values, [1, 2, 3]);
+      assert.deepEqual(m._index, [0, 1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 3, 3]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0, 0],
+          [0, 2, 0, 0],
+          [0, 0, 3, 0]
+        ]);
+    });
+    
+    it('should create CCS matrix (m x n), m < n, vector value, k > 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 4], [1, 2, 3], 1);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(m._values, [1, 2, 3]);
+      assert.deepEqual(m._index, [0, 1, 2]);
+      assert.deepEqual(m._ptr, [0, 0, 1, 2, 3]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0, 0],
+          [0, 0, 2, 0],
+          [0, 0, 0, 3]
+        ]);
+    });
+    
+    it('should create CCS matrix (m x n), m < n, vector value, k < 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 4], [1, 2], -1);
+
+      assert.deepEqual(m._size, [3, 4]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 2, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0, 0],
+          [1, 0, 0, 0],
+          [0, 2, 0, 0]
         ]);
     });
   });
