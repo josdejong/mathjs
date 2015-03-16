@@ -102,7 +102,7 @@ describe('diag', function() {
 
   it('should throw an error in case of wrong number of arguments', function() {
     assert.throws(function () {math.diag()}, error.ArgumentsError);
-    assert.throws(function () {math.diag([], 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {math.diag([], 2, 3, 4)}, error.ArgumentsError);
   });
 
   it('should throw an error in case of invalid type of arguments', function() {
