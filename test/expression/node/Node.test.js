@@ -74,9 +74,29 @@ describe('Node', function() {
     assert.equal(node.toString(), '');
   });
 
-  it ('should LaTeX a Node', function () {
-    var node = new Node();
-    assert.equal(node.toTex(), '');
+  it ('should throw an error when calling _toTex', function () {
+    assert.throws(function () {
+      var node = new Node();
+      node.type = 'SpecialNode';  //this is necessary because toTex
+                                  //returns '' for a Node
+      node._toTex();
+    }, /_toTex not implemented for this Node/);
+  });
+
+  it ('should ignore custom toTex if it returns nothing', function () {
+    var callback1 = function (node, callback) {};
+    var callback2 = {
+      bla: function (node, callbacks) {}
+    };
+    var mymath = math.create();
+    mymath.expression.node.Node.prototype._toTex = function () {
+      return 'default';
+    };
+    var n1 = new mymath.expression.node.Node();
+    var n2 = new mymath.expression.node.FunctionNode('bla', []);
+    
+    assert.equal(n1.toTex(callback1), 'default');
+    assert.equal(n2.toTex(callback2), 'bla\\left({}\\right)');
   });
 
   it ('should throw an error in case of wrong arguments for compile', function () {

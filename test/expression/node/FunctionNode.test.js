@@ -288,4 +288,48 @@ describe('FunctionNode', function() {
     assert.equal(n.getIdentifier(), 'FunctionNode:factorial');
   });
 
+  it ('should LaTeX a FunctionNode with custom toTex', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, callback) {
+      if (node.type === 'FunctionNode') {
+        var latex = '\\mbox{' + node.name + '}\\left(';
+        node.args.forEach(function (arg) {
+          latex += arg.toTex(callback) + ', ';
+        });
+        latex += '\\right)';
+        return latex;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n1 = new FunctionNode('add', [a, b]);
+    var n2 = new FunctionNode('subtract', [a, b]);
+
+    assert.equal(n1.toTex(customFunction), '\\mbox{add}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
+    assert.equal(n2.toTex(customFunction), '\\mbox{subtract}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
+  });
+
+  it ('should LaTeX a FunctionNode with custom toTex for a single function', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = {
+      'add': function (node, callbacks) {
+        return node.args[0].toTex(callbacks) 
+          + ' ' + node.name + ' ' 
+          + node.args[1].toTex(callbacks);
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new FunctionNode('add', [a, b]);
+
+    assert.equal(n.toTex(customFunction), '1 add 2');
+  });
+
 });
