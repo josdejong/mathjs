@@ -258,16 +258,16 @@ describe('BlockNode', function() {
 
   it ('should LaTeX a BlockNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunctions = {
-      BlockNode: function (node, callbacks) {
+    var customFunction = function (node, callback) {
+      if (node.type === 'BlockNode') {
         var latex = '';
         node.blocks.forEach(function (block) {
-          latex += block.node.toTex(callbacks) + '; ';
+          latex += block.node.toTex(callback) + '; ';
         });
 
         return latex;
-      },
-      ConstantNode: function (node, callbacks) {
+      }
+      else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
       }
     };
@@ -277,7 +277,7 @@ describe('BlockNode', function() {
 
     var n = new BlockNode([{node: a}, {node: b}]);
 
-    assert.equal(n.toTex(customFunctions), 'const\\left(1, number\\right); const\\left(2, number\\right); ');
+    assert.equal(n.toTex(customFunction), 'const\\left(1, number\\right); const\\left(2, number\\right); ');
   });
 
 });

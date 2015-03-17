@@ -209,17 +209,17 @@ describe('FunctionAssignmentNode', function() {
 
   it ('should LaTeX a FunctionAssignmentNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunctions = {
-      FunctionAssignmentNode: function (node, callbacks) {
+    var customFunction = function (node, callback) {
+      if (node.type === 'FunctionAssignmentNode') {
         var latex = '\\mbox{' + node.name + '}\\left(';
         node.params.forEach(function (param) {
           latex += param + ', ';
         });
 
-        latex += '\\right)=' + node.expr.toTex(customFunctions);
+        latex += '\\right)=' + node.expr.toTex(callback);
         return latex;
-      },
-      ConstantNode: function (node, callbacks) {
+      }
+      else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
       }
     };
@@ -228,7 +228,7 @@ describe('FunctionAssignmentNode', function() {
 
     var n = new FunctionAssignmentNode('func', ['x'], a);
 
-    assert.equal(n.toTex(customFunctions), '\\mbox{func}\\left(x, \\right)=const\\left(1, number\\right)');
+    assert.equal(n.toTex(customFunction), '\\mbox{func}\\left(x, \\right)=const\\left(1, number\\right)');
   });
 
 });

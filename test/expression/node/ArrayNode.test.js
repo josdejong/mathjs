@@ -238,17 +238,17 @@ describe('ArrayNode', function() {
 
   it ('should LaTeX an ArrayNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunctions = {
-      ArrayNode: function (node, callbacks) {
+    var customFunction = function (node, callback) {
+      if (node.type === 'ArrayNode') {
         var latex = '\\left[';
         node.nodes.forEach(function (node) {
-          latex += node.toTex(callbacks) + ', ';
+          latex += node.toTex(callback) + ', ';
         });
 
         latex += '\\right]';
         return latex;
-      },
-      ConstantNode: function (node, callbacks) {
+      }
+      else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
       }
     };
@@ -258,7 +258,7 @@ describe('ArrayNode', function() {
 
     var n = new ArrayNode([a, b]);
 
-    assert.equal(n.toTex(customFunctions), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]');
+    assert.equal(n.toTex(customFunction), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]');
   });
 
 });

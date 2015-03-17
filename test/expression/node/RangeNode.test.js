@@ -291,13 +291,13 @@ describe('RangeNode', function() {
 
   it ('should LaTeX a RangeNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunctions = {
-      RangeNode: function (node, callbacks) {
-        return 'from ' + node.start.toTex(customFunctions)
-          + ' to ' + node.end.toTex(customFunctions)
-          + ' with steps of ' + node.step.toTex(customFunctions);
-      },
-      ConstantNode: function (node, callbacks) {
+    var customFunction = function (node, callback) {
+      if (node.type === 'RangeNode') {
+        return 'from ' + node.start.toTex(callback)
+          + ' to ' + node.end.toTex(callback)
+          + ' with steps of ' + node.step.toTex(callback);
+      }
+      else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
       }
     };
@@ -308,7 +308,7 @@ describe('RangeNode', function() {
 
     var n = new RangeNode(a, b, c);
 
-    assert.equal(n.toTex(customFunctions), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)');
+    assert.equal(n.toTex(customFunction), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)');
   });
 
 });

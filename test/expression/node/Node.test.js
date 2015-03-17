@@ -86,16 +86,17 @@ describe('Node', function() {
   it ('should ignore custom toTex if it returns nothing', function () {
     var callback1 = function (node, callback) {};
     var callback2 = {
-      Node: function (node, callbacks) {}
+      bla: function (node, callbacks) {}
     };
     var mymath = math.create();
     mymath.expression.node.Node.prototype._toTex = function () {
       return 'default';
     };
-    var n = new mymath.expression.node.Node();
+    var n1 = new mymath.expression.node.Node();
+    var n2 = new mymath.expression.node.FunctionNode('bla', []);
     
-    assert.equal(n.toTex(callback1), 'default');
-    assert.equal(n.toTex(callback2), 'default');
+    assert.equal(n1.toTex(callback1), 'default');
+    assert.equal(n2.toTex(callback2), 'bla\\left({}\\right)');
   });
 
   it ('should throw an error in case of wrong arguments for compile', function () {

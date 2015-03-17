@@ -141,15 +141,15 @@ describe('ConstantNode', function() {
 
   it ('should LaTeX a ConstantNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunctions = {
-      ConstantNode: function (node, callbacks) {
+    var customFunction = function (node, callback) {
+      if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
       }
     };
 
     var n = new ConstantNode(1);
 
-    assert.equal(n.toTex(customFunctions), 'const\\left(1, number\\right)');
+    assert.equal(n.toTex(customFunction), 'const\\left(1, number\\right)');
   });
 
 });

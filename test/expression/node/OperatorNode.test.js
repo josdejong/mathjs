@@ -380,13 +380,13 @@ describe('OperatorNode', function() {
 
   it ('should LaTeX an OperatorNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunctions = {
-      'OperatorNode': function (node, callbacks) {
+    var customFunction = function (node, callback) {
+      if (node.type === 'OperatorNode') {
         return node.op + node.fn + '(' 
-          + node.args[0].toTex(customFunctions)
-          + ', ' +  node.args[1].toTex(customFunctions) + ')';
-      },
-      ConstantNode: function (node, callbacks) {
+          + node.args[0].toTex(callback)
+          + ', ' +  node.args[1].toTex(callback) + ')';
+      }
+      else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
       }
     };
@@ -397,19 +397,19 @@ describe('OperatorNode', function() {
     var n1 = new OperatorNode('+', 'add', [a, b]);
 	var n2 = new OperatorNode('-', 'subtract', [a, b]);
 
-    assert.equal(n1.toTex(customFunctions), '+add(const\\left(1, number\\right), const\\left(2, number\\right))');
-    assert.equal(n2.toTex(customFunctions), '-subtract(const\\left(1, number\\right), const\\left(2, number\\right))');
+    assert.equal(n1.toTex(customFunction), '+add(const\\left(1, number\\right), const\\left(2, number\\right))');
+    assert.equal(n2.toTex(customFunction), '-subtract(const\\left(1, number\\right), const\\left(2, number\\right))');
   });
 
   it ('should LaTeX an OperatorNode with custom toTex for a single operator', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunctions = {
-      'OperatorNode:add': function (node, callbacks) {
-        return node.args[0].toTex(customFunctions)
+    var customFunction = function (node, callback) {
+      if ((node.type === 'OperatorNode') && (node.fn === 'add')) {
+        return node.args[0].toTex(callback)
           + node.op + node.fn + node.op + 
-          node.args[1].toTex(customFunctions);
-      },
-      ConstantNode: function (node, callbacks) {
+          node.args[1].toTex(callback);
+      }
+      else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
       }
     };
@@ -419,7 +419,7 @@ describe('OperatorNode', function() {
 
     var n = new OperatorNode('+', 'add', [a, b]);
 
-    assert.equal(n.toTex(customFunctions), 'const\\left(1, number\\right)+add+const\\left(2, number\\right)');
+    assert.equal(n.toTex(customFunction), 'const\\left(1, number\\right)+add+const\\left(2, number\\right)');
   });
 
 });
