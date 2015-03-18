@@ -49,6 +49,13 @@ describe('matrix', function() {
     assert.ok(c._values != b._values); // data should be cloned
     assert.deepEqual(c, matrix([[1,2],[3,4]], 'ccs'));
   });
+  
+  it('should be the identity if called with a matrix, CRS format', function() {
+    var b = matrix([[1,2],[3,4]], 'crs');
+    var c = matrix(b, 'crs');
+    assert.ok(c._values != b._values); // data should be cloned
+    assert.deepEqual(c, matrix([[1,2],[3,4]], 'crs'));
+  });
 
   it('should create a matrix from a range correctly', function() {
     var d = matrix(math.range(1,6));
