@@ -337,7 +337,7 @@ describe('OperatorNode', function() {
 
   it ('should LaTeX an OperatorNode with zero arguments', function () {
     var n = new OperatorNode('foo', 'foo', []);
-    assert.equal(n.toTex(), 'foo\\left({}\\right)');
+    assert.equal(n.toTex(), '\\mathrm{foo}\\left(\\right)');
   });
 
   it ('should LaTeX an OperatorNode with more than two operators', function () {
@@ -346,7 +346,7 @@ describe('OperatorNode', function() {
     var c = new ConstantNode(4);
 
     var n = new OperatorNode('foo', 'foo', [a, b, c]);
-    assert.equal(n.toTex(), 'foo\\left({2, 3, 4}\\right)');
+    assert.equal(n.toTex(), '\\mathrm{foo}\\left({2},{3},{4}\\right)');
 
   });
 
