@@ -1713,4 +1713,62 @@ describe('CcsMatrix', function() {
       assert.throws(function () { m.trace(); });
     });
   });
+  
+  describe('multiply', function () {
+    
+    it('should multiply matrix x scalar', function() {
+      var m = new CcsMatrix([
+        [2, 0],
+        [4, 0]
+      ]);
+      
+      var r = m.multiply(3);
+      assert.deepEqual(r._size, m._size);
+      assert.deepEqual(r._values, [6, 12]);
+      assert.deepEqual(r._index, m._index);
+      assert.deepEqual(r._ptr, m._ptr);
+      
+      r = m.multiply(math.complex(3, 3));
+      assert.deepEqual(r._size, m._size);
+      assert.deepEqual(r._values, [math.complex(6, 6), math.complex(12, 12)]);
+      assert.deepEqual(r._index, m._index);
+      assert.deepEqual(r._ptr, m._ptr);
+      
+      r = m.multiply(math.bignumber(3));
+      assert.deepEqual(r._size, m._size);
+      assert.deepEqual(r._values, [math.bignumber(6), math.bignumber(12)]);
+      assert.deepEqual(r._index, m._index);
+      assert.deepEqual(r._ptr, m._ptr);
+      
+      r = m.multiply(true);
+      assert.deepEqual(r._size, m._size);
+      assert.deepEqual(r._values, [2, 4]);
+      assert.deepEqual(r._index, m._index);
+      assert.deepEqual(r._ptr, m._ptr);
+      
+      r = m.multiply(false);
+      assert.deepEqual(r._size, m._size);
+      assert.deepEqual(r._values, []);
+      assert.deepEqual(r._index, []);
+      assert.deepEqual(r._ptr, [0, 0, 0]);
+    });
+    
+    it('should multiply matrix x matrix', function() {
+      var m = new CcsMatrix([
+        [2, 0],
+        [4, 0]
+      ]);
+      
+      var r = m.multiply(new CcsMatrix([
+        [2, 0],
+        [4, 0]
+      ]));
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [0, 0], //[2, 0],
+          [0, 0] //[6, 0]
+        ]);
+    });
+  });
 });
