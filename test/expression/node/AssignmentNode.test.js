@@ -225,4 +225,22 @@ describe('AssignmentNode', function() {
     assert.equal(n.toTex(), '{b}=\\left({{a}={2}}\\right)');
   });
 
+  it ('should LaTeX an AssignmentNode with custom toTex', function () {
+    //Also checks if custom funcions get passed to the children
+    var customFunction = function (node, callback) {
+      if (node.type === 'AssignmentNode') {
+        return node.name + '\\mbox{equals}' + node.expr.toTex(callback);
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+      }
+    };
+
+    var a = new ConstantNode(1);
+
+    var n = new AssignmentNode('a', a);
+
+    assert.equal(n.toTex(customFunction), 'a\\mbox{equals}const\\left(1, number\\right)');
+  });
+
 });

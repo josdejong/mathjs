@@ -285,4 +285,29 @@ describe('IndexNode', function() {
     assert.equal(n2.toTex(), 'a[]')
   });
 
+  it ('should LaTeX an IndexNode with custom toTex', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, callback) {
+      if (node.type === 'IndexNode') {
+        var latex = node.object.toTex(callback) + ' at ';
+        node.ranges.forEach(function (range) {
+          latex += range.toTex(callback) + ', ';
+        });
+
+        return latex;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+      }
+    };
+
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var n = new IndexNode(a, [b, c]);
+
+    assert.equal(n.toTex(customFunction), 'a at const\\left(1, number\\right), const\\left(2, number\\right), ');
+  });
+
 });

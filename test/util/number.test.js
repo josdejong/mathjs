@@ -71,12 +71,25 @@ describe('number', function() {
   it('should format a number using toFixed', function() {
     assert.equal(number.toFixed(2.34), '2');
     assert.equal(number.toFixed(2.34, 1), '2.3');
+    assert.equal(number.toFixed(-2.34, 1), '-2.3');
     assert.equal(number.toFixed(2.34e10, 1), '23400000000.0');
+    assert.equal(number.toFixed(2.34e30, 1), '2340000000000000000000000000000.0'); // test above the 21 digit limit of toPrecision
     assert.equal(number.toFixed(2.34e-10, 1), '0.0');
     assert.equal(number.toFixed(2, 20), '2.00000000000000000000');
     assert.equal(number.toFixed(2, 21), '2.00000000000000000000');
     assert.equal(number.toFixed(2, 22), '2.00000000000000000000');
     assert.equal(number.toFixed(2, 30), '2.00000000000000000000');
+  });
+
+  it('should format a number using toPrecision', function() {
+    assert.equal(number.toPrecision(2.34), '2.34');
+    assert.equal(number.toPrecision(2.34, 2), '2.3');
+    assert.equal(number.toPrecision(-2.34, 2), '-2.3');
+    assert.equal(number.toPrecision(2.34e10, 2), '2.3e+10');
+    assert.equal(number.toPrecision(2.34e-10, 2), '2.3e-10');
+    assert.equal(number.toPrecision(2, 4), '2.000');
+
+    // TODO: test upper and lower bounds here
   });
 
   it('should format a number using toExponential', function() {
@@ -106,9 +119,22 @@ describe('number', function() {
         assert.equal(number.format(123, options), '123');
         assert.equal(number.format(123.456, options), '123');
         assert.equal(number.format(123.7, options), '124');
+        assert.equal(number.format(-123.7, options), '-124');
         assert.equal(number.format(0.123456, options), '0');
+
         assert.equal(number.format(123456789, options), '123456789');
+        assert.equal(number.format(-123456789, options), '-123456789');
         assert.equal(number.format(123456789e+9, options), '123456789000000000');
+        assert.equal(number.format(123456789e+17, options), '12345678900000000000000000');
+        assert.equal(number.format(123456789e+18, options), '123456789000000000000000000');
+        assert.equal(number.format(123456789e+19, options), '1234567890000000000000000000');
+        assert.equal(number.format(123456789e+20, options), '12345678900000000000000000000');
+        assert.equal(number.format(123456789e+21, options), '123456789000000000000000000000');
+        assert.equal(number.format(123456789e+22, options), '1234567890000000000000000000000');
+
+        assert.equal(number.format(1e-18, options), '0');
+        assert.equal(number.format(1e-22, options), '0');
+        assert.equal(number.format(1e-32, options), '0');
       });
 
       it('fixed notation with precision', function () {
@@ -119,8 +145,26 @@ describe('number', function() {
         assert.equal(number.format(123.456, options), '123.46');
         assert.equal(number.format(123.7, options), '123.70');
         assert.equal(number.format(0.123456, options), '0.12');
+
         assert.equal(number.format(123456789, options), '123456789.00');
         assert.equal(number.format(123456789e+9, options), '123456789000000000.00');
+        assert.equal(number.format(123456789e+18, options), '123456789000000000000000000.00');
+        assert.equal(number.format(123456789e+19, options), '1234567890000000000000000000.00');
+        assert.equal(number.format(123456789e+20, options), '12345678900000000000000000000.00');
+        assert.equal(number.format(123456789e+21, options), '123456789000000000000000000000.00');
+        assert.equal(number.format(123456789e+22, options), '1234567890000000000000000000000.00');
+
+        assert.equal(number.format(1.2e-14, options), '0.00');
+        assert.equal(number.format(1.3e-18, options), '0.00');
+        assert.equal(number.format(1.3e-19, options), '0.00');
+        assert.equal(number.format(1.3e-20, options), '0.00');
+        assert.equal(number.format(1.3e-21, options), '0.00');
+        assert.equal(number.format(1.3e-22, options), '0.00');
+
+        assert.equal(number.format(5.6789e-30, {notation: 'fixed', precision: 32}),
+            '0.00000000000000000000000000000568');
+        assert.equal(number.format(5.6999e-30, {notation: 'fixed', precision: 32}),
+            '0.00000000000000000000000000000570');
       });
 
       it('exponential notation', function () {
@@ -198,7 +242,7 @@ describe('number', function() {
         assert.equal(number.format(1234, {precision: 2}), '1200');
 
         // overflow the maximum allowed precision of 20
-        assert.equal(number.format(2.3, {precision: 30}), '2.3');
+        assert.equal(number.format(4, {precision: 30}), '4');
       });
 
       it('auto notation with custom lower and upper bound', function () {
@@ -220,24 +264,50 @@ describe('number', function() {
       });
 
       it('auto notation with custom lower bound', function () {
-        var options = {
-          exponential: {
-            lower: 1e-6
-          }
-        };
+        var options = { exponential: { lower: 1e-6 } };
         assert.equal(number.format(0, options), '0');
         assert.equal(number.format(1e-6, options), '0.000001');
         assert.equal(number.format(0.999e-6, options), '9.99e-7');
       });
 
+      it('auto notation with very large custom lower bound', function () {
+        assert.equal(number.format(1, { exponential: { lower: 1e-2 } }), '1');
+        assert.equal(number.format(1e-1, { exponential: { lower: 1e-2 } }), '0.1');
+        assert.equal(number.format(1e-2, { exponential: { lower: 1e-2} }), '0.01');
+        assert.equal(number.format(1e-3, { exponential: { lower: 1e-2 } }), '1e-3');
+      });
+
+      it('auto notation with very small custom lower bound', function () {
+        assert.equal(number.format(1e-18, { exponential: { lower: 1e-30 } }), '0.000000000000000001');
+        assert.equal(number.format(1e-19, { exponential: { lower: 1e-30 } }), '0.0000000000000000001');
+        assert.equal(number.format(1e-20, { exponential: { lower: 1e-30 } }), '0.00000000000000000001');
+        assert.equal(number.format(1e-21, { exponential: { lower: 1e-30 } }), '0.000000000000000000001');
+        assert.equal(number.format(1e-22, { exponential: { lower: 1e-30 } }), '0.0000000000000000000001');
+        assert.equal(number.format(1e-23, { exponential: { lower: 1e-30 } }), '0.00000000000000000000001');
+        assert.equal(number.format(1e-24, { exponential: { lower: 1e-30 } }), '0.000000000000000000000001');
+      });
+
       it('auto notation with custom upper bound', function () {
-        var options = {
-          exponential: {
-            upper: 1e+9
-          }
-        };
+        var options = { exponential: { upper: 1e+9 } };
         assert.equal(number.format(1e+9, options), '1e+9');
         assert.equal(number.format(1e+9-1, options), '999999999');
+      });
+
+      it('auto notation with very large custom upper bound', function () {
+        assert.equal(number.format(1e+18, { exponential: { upper: 1e+30 } }), '1000000000000000000');
+        assert.equal(number.format(1e+19, { exponential: { upper: 1e+30 } }), '10000000000000000000');
+        assert.equal(number.format(1e+20, { exponential: { upper: 1e+30 } }), '100000000000000000000');
+        assert.equal(number.format(1e+21, { exponential: { upper: 1e+30 } }), '1000000000000000000000');
+        assert.equal(number.format(1e+22, { exponential: { upper: 1e+30 } }), '10000000000000000000000');
+        assert.equal(number.format(1e+23, { exponential: { upper: 1e+30 } }), '100000000000000000000000');
+        assert.equal(number.format(1e+24, { exponential: { upper: 1e+30 } }), '1000000000000000000000000');
+      });
+
+      it('auto notation with very small custom upper bound', function () {
+        assert.equal(number.format(1, { exponential: { upper: 1e2 } }), '1');
+        assert.equal(number.format(1e1, { exponential: { upper: 1e2 } }), '10');
+        assert.equal(number.format(1e2, { exponential: { upper: 1e2 } }), '1e+2');
+        assert.equal(number.format(1e3, { exponential: { upper: 1e2 } }), '1e+3');
       });
 
       it('auto notation with custom precision, lower, and upper bound', function () {

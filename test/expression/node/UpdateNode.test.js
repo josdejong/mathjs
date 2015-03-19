@@ -322,4 +322,34 @@ describe('UpdateNode', function() {
     assert.equal(n.toString(), 'a[2, 1] = 5');
   });
 
+  it ('should LaTeX an UpdateNode with custom toTex', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, callback) {
+      if (node.type === 'UpdateNode') {
+        return node.index.toTex(callback) + ' equals ' + node.expr.toTex(callback);
+      }
+      else if (node.type === 'IndexNode') {
+        var latex = node.object.toTex(callback) + ' at ';
+        node.ranges.forEach(function (range) {
+          latex += range.toTex(callback) + ', ';
+        });
+        return latex;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+      }
+    };
+
+    var a = new SymbolNode('a');
+    var ranges = [
+      new ConstantNode(2),
+      new ConstantNode(1)
+    ];
+    var v = new ConstantNode(5);
+
+    var n = new UpdateNode(new IndexNode(a, ranges), v);
+
+    assert.equal(n.toTex(customFunction), 'a at const\\left(2, number\\right), const\\left(1, number\\right),  equals const\\left(5, number\\right)');
+  });
+
 });

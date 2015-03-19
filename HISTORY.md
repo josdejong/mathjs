@@ -3,8 +3,12 @@
 ## not yet released, version 1.4.1-SNAPSHOT
 
 - Added unit `stone` (6.35 kg).
-- Improvements and bug fixes in outputting parenteses in `Node.toString` and
+- Implemented BigNumber support for function `atan2`. Thanks @BigFav.
+- Implemented support for custom LaTeX representations. Thanks @FSMaxB.
+- Improvements and bug fixes in outputting parentheses in `Node.toString` and
   `Node.toTex` functions. Thanks @FSMaxB.
+- Fixed #291: function `format` sometimes returning exponential notation when
+  it should return a fixed notation.
 
 
 ## 2015-02-28, version 1.4.0
