@@ -1865,5 +1865,20 @@ describe('CcsMatrix', function() {
       var b = [4, 5, 6];
       assert.strictEqual(a.multiply(b), 32);
     });
+    
+    it('should throw an error when multiplying matrices with incompatible sizes', function() {
+      // vector * vector
+      assert.throws(function () {math.matrix([1,1], 'ccs').multiply([1, 1, 1]);});
+
+      // matrix * matrix
+      assert.throws(function () {math.matrix([[1,1]], 'ccs').multiply([[1,1]]);});
+      assert.throws(function () {math.matrix([[1,1]], 'ccs').multiply([[1,1], [1,1], [1,1]]);});
+
+      // matrix * vector
+      assert.throws(function () {math.matrix([[1,1], [1,1]], 'ccs').multiply([1,1,1]);});
+
+      // vector * matrix
+      assert.throws(function () {math.matrix([1,1,1], 'ccs').multiply([[1,1], [1,1]]);});
+    });
   });
 });

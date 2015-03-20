@@ -8,7 +8,6 @@ var assert = require('assert'),
     matrix = math.matrix,
     complex = math.complex,
     bignumber = math.bignumber,
-    range = math.range,
     i = math.i,
     unit = math.unit;
 
@@ -157,14 +156,14 @@ describe('multiply', function() {
   });
 
   it('should throw an error in case of unit non-numeric argument', function() {
-    assert.throws(function () {multiply(math.unit('5cm'), math.unit('4cm'))}, math.error.UnsupportedTypeError);
-    assert.throws(function () {multiply(math.unit('5cm'), math.complex('2+3i'))}, math.error.UnsupportedTypeError);
-    assert.throws(function () {multiply(math.complex('2+3i'), math.unit('5cm'))}, math.error.UnsupportedTypeError);
+    assert.throws(function () {multiply(math.unit('5cm'), math.unit('4cm'));}, math.error.UnsupportedTypeError);
+    assert.throws(function () {multiply(math.unit('5cm'), math.complex('2+3i'));}, math.error.UnsupportedTypeError);
+    assert.throws(function () {multiply(math.complex('2+3i'), math.unit('5cm'));}, math.error.UnsupportedTypeError);
   });
 
   it('should throw an error if used with strings', function() {
-    assert.throws(function () {multiply("hello", "world")});
-    assert.throws(function () {multiply("hello", 2)});
+    assert.throws(function () {multiply("hello", "world");});
+    assert.throws(function () {multiply("hello", 2);});
   });
 
   var a = matrix([[1,2],[3,4]]);
@@ -212,7 +211,7 @@ describe('multiply', function() {
   });
 
   it('should throw an error when multiplying empty vectors', function () {
-    assert.throws(function () {multiply([], [])}, /Cannot multiply two empty vectors/);
+    assert.throws(function () {multiply([], []);}, /Cannot multiply two empty vectors/);
   });
 
   it('should multiply mixed array and matrix', function () {
@@ -252,29 +251,29 @@ describe('multiply', function() {
 
   it('should throw an error when multiplying matrices with incompatible sizes', function() {
     // vector * vector
-    assert.throws(function () {multiply([1,1], [1,1, 1])});
+    assert.throws(function () {multiply([1,1], [1,1, 1]);});
 
     // matrix * matrix
-    assert.throws(function () {multiply([[1,1]], [[1,1]])});
-    assert.throws(function () {multiply([[1,1]], [[1,1], [1,1], [1,1]])});
+    assert.throws(function () {multiply([[1,1]], [[1,1]]);});
+    assert.throws(function () {multiply([[1,1]], [[1,1], [1,1], [1,1]]);});
 
     // matrix * vector
-    assert.throws(function () {multiply([[1,1], [1,1]], [1,1,1])});
+    assert.throws(function () {multiply([[1,1], [1,1]], [1,1,1]);});
 
     // vector * matrix
-    assert.throws(function () {multiply([1,1,1], [[1,1], [1,1]])});
+    assert.throws(function () {multiply([1,1,1], [[1,1], [1,1]]);});
   });
 
   it('should throw an error when multiplying multi dimensional matrices', function() {
-    assert.throws(function () {multiply([[[1]]], [1])});
-    assert.throws(function () {multiply([[[1]]], [[1]])});
-    assert.throws(function () {multiply([1], [[[1]]])});
-    assert.throws(function () {multiply([[1]], [[[1]]])});
+    assert.throws(function () {multiply([[[1]]], [1]);});
+    assert.throws(function () {multiply([[[1]]], [[1]]);});
+    assert.throws(function () {multiply([1], [[[1]]]);});
+    assert.throws(function () {multiply([[1]], [[[1]]]);});
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {multiply(1)}, error.ArgumentsError);
-    assert.throws(function () {multiply(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {multiply(1);}, error.ArgumentsError);
+    assert.throws(function () {multiply(1, 2, 3);}, error.ArgumentsError);
   });
 
 });
