@@ -282,7 +282,7 @@ describe('OperatorNode', function() {
   it ('should LaTeX an OperatorNode with factorial', function () {
     var a = new ConstantNode(2);
     var n = new OperatorNode('!', 'factorial', [a]);
-    assert.equal(n.toTex(), '2!');
+    assert.equal(n.toTex(), '{2}!');
   });
 
   it ('should LaTeX an OperatorNode with factorial of an OperatorNode', function () {
@@ -315,7 +315,7 @@ describe('OperatorNode', function() {
     var n2 = new OperatorNode('-', 'unaryMinus', [sub]);
     var n3 = new OperatorNode('-', 'unaryMinus', [add]);
 
-    assert.equal(n1.toTex(), '-2');
+    assert.equal(n1.toTex(), '-{2}');
     assert.equal(n2.toTex(), '-\\left({{2} - {3}}\\right)');
     assert.equal(n3.toTex(), '-\\left({{2} + {3}}\\right)');
   });
