@@ -1766,9 +1766,104 @@ describe('CcsMatrix', function() {
       assert.deepEqual(
         r.valueOf(),
         [
-          [0, 0], //[2, 0],
-          [0, 0] //[6, 0]
+          [4, 0],
+          [8, 0]
         ]);
+      
+      r = m.multiply(math.matrix([
+        [2, 0],
+        [4, 0]
+      ]), 'crs');
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4, 0],
+          [8, 0]
+        ]);
+      
+      r = m.multiply(math.matrix([
+        [2, 0],
+        [4, 0]
+      ]), 'dense');
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4, 0],
+          [8, 0]
+        ]);
+    });
+    
+    it('should multiply matrix x array', function() {
+      var m = new CcsMatrix([
+        [2, 0],
+        [4, 0]
+      ]);
+
+      var r = m.multiply(
+        [
+          [2, 0],
+          [4, 0]
+        ]);
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4, 0],
+          [8, 0]
+        ]);
+      
+      r = m.multiply(
+        [
+          [2, 0, 1],
+          [4, 0, 1]
+        ]);
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4, 0, 2],
+          [8, 0, 4]
+        ]);
+    });
+    
+    it('should multiply matrix x vector array', function() {
+      var m = new CcsMatrix([
+        [2, 0],
+        [4, 0]
+      ]);
+
+      var r = m.multiply(
+        [
+          [2],
+          [4]
+        ]);
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4],
+          [8]
+        ]);
+    });
+    
+    it ('should squeeze scalar results of matrix * matrix', function () {
+      var a = new CcsMatrix(
+        [
+          [1, 2, 3]
+        ]);
+      var b = new CcsMatrix(
+        [
+          [4], 
+          [5], 
+          [6]
+        ]);
+      assert.strictEqual(a.multiply(b), 32);
+    });
+
+    it ('should squeeze scalar results of matrix * vector', function () {
+      var a = new CcsMatrix(
+        [
+          [1, 2, 3]
+        ]);
+      var b = [4, 5, 6];
+      assert.strictEqual(a.multiply(b), 32);
     });
   });
 });
