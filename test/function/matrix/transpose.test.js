@@ -32,8 +32,8 @@ describe('transpose', function() {
   });
 
   it('should throw an error if called with an invalid number of arguments', function() {
-    assert.throws(function () {transpose()}, error.ArgumentsError);
-    assert.throws(function () {transpose([1,2],2)}, error.ArgumentsError);
+    assert.throws(function () {transpose()}, /TypeError: Too few arguments/);
+    assert.throws(function () {transpose([1,2],2)}, /TypeError: Too many arguments/);
   });
 });
 

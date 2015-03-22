@@ -104,24 +104,6 @@ exports.create = function create () {
   typed.conversions = [
     {
       from: 'number',
-      to: 'Complex',
-      convert: function (x) {
-        return new Complex(x, 0);
-      }
-    }, {
-      from: 'BigNumber',
-      to: 'Complex',
-      convert: function (x) {
-        return new Complex(x.toNumber(), 0);
-      }
-    }, {
-      from: 'number',
-      to: 'string',
-      convert: function (x) {
-        return x + '';
-      }
-    }, {
-      from: 'number',
       to: 'BigNumber',
       convert: function (x) {
         // note: conversion from number to BigNumber can fail if x has >15 digits
@@ -133,14 +115,26 @@ exports.create = function create () {
         return new BigNumber(x);
       }
     }, {
-      from: 'boolean',
-      to: 'number',
+      from: 'number',
+      to: 'Complex',
       convert: function (x) {
-        return +x;
+        return new Complex(x, 0);
+      }
+    }, {
+      from: 'number',
+      to: 'string',
+      convert: function (x) {
+        return x + '';
+      }
+    }, {
+      from: 'BigNumber',
+      to: 'Complex',
+      convert: function (x) {
+        return new Complex(x.toNumber(), 0);
       }
     }, {
       from: 'boolean',
-      to: 'string',
+      to: 'number',
       convert: function (x) {
         return +x;
       }
@@ -149,6 +143,12 @@ exports.create = function create () {
       to: 'BigNumber',
       convert: function (x) {
         return new BigNumber(+x);
+      }
+    }, {
+      from: 'boolean',
+      to: 'string',
+      convert: function (x) {
+        return +x;
       }
     }, {
       from: 'null',

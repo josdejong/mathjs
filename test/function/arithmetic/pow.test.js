@@ -77,7 +77,7 @@ describe('pow', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {pow(1)}, /TypeError: Too few arguments \(expected: number or Complex or BigNumber or boolean or null, index: 1\)/);
+    assert.throws(function () {pow(1)}, /TypeError: Too few arguments \(expected: number or BigNumber or Complex or boolean or null, index: 1\)/);
     assert.throws(function () {pow(1, 2, 3)}, /TypeError: Too many arguments \(expected: 2, actual: 3\)/);
   });
 

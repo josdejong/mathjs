@@ -60,8 +60,8 @@ describe('nthRoot', function() {
   });
 
   it('should throw an error if invalid number of arguments', function() {
-    assert.throws(function () {nthRoot()}, error.ArgumentsError);
-    assert.throws(function () {nthRoot(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {nthRoot()}, /TypeError: Too few arguments/);
+    assert.throws(function () {nthRoot(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
 

@@ -51,10 +51,10 @@ function create (config) {
   math.import(require('./lib/function/arithmetic/log10'));
   math.import(require('./lib/function/arithmetic/mod'));
   math.import(require('./lib/function/arithmetic/multiply'));
-  require('./lib/function/arithmetic/norm')(math, _config);
-  require('./lib/function/arithmetic/nthRoot')(math, _config);
+  math.import(require('./lib/function/arithmetic/norm'));
+  math.import(require('./lib/function/arithmetic/nthRoot'));
   math.import(require('./lib/function/arithmetic/pow'));
-  require('./lib/function/arithmetic/round')(math, _config);
+  math.import(require('./lib/function/arithmetic/round'));
   math.import(require('./lib/function/arithmetic/sign'));
   math.import(require('./lib/function/arithmetic/sqrt'));
   math.import(require('./lib/function/arithmetic/square'));
@@ -106,7 +106,7 @@ function create (config) {
   require('./lib/function/matrix/concat')(math, _config);
   require('./lib/function/matrix/cross')(math, _config);
   math.import(require('./lib/function/matrix/det'));
-  require('./lib/function/matrix/diag')(math, _config);
+  math.import(require('./lib/function/matrix/diag'));
   require('./lib/function/matrix/dot')(math, _config);
   math.import(require('./lib/function/matrix/eye'));
   require('./lib/function/matrix/flatten')(math, _config);
@@ -118,7 +118,7 @@ function create (config) {
   require('./lib/function/matrix/squeeze')(math, _config);
   require('./lib/function/matrix/subset')(math, _config);
   require('./lib/function/matrix/trace')(math, _config);
-  require('./lib/function/matrix/transpose')(math, _config);
+  math.import(require('./lib/function/matrix/transpose'));
   require('./lib/function/matrix/zeros')(math, _config);
 
   // functions - probability

@@ -29,12 +29,12 @@ describe('round', function() {
   });
 
   it('should throw an error on invalid type of value', function() {
-    assert.throws(function () {round('string');}, TypeError);
-    assert.throws(function () {round(new Date());}, TypeError);
+    assert.throws(function () {round('string');}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {round(new Date());}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error on invalid type of n', function() {
-    assert.throws(function () {round(math.pi, new Date());}, TypeError);
+    assert.throws(function () {round(math.pi, new Date());}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error on invalid value of n', function() {
@@ -44,8 +44,8 @@ describe('round', function() {
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {round();}, error.ArgumentsError);
-    assert.throws(function () {round(1,2,3);}, error.ArgumentsError);
+    assert.throws(function () {round();}, /TypeError: Too few arguments/);
+    assert.throws(function () {round(1,2,3);}, /TypeError: Too many arguments/);
   });
 
   it('should round bignumbers', function() {
@@ -53,8 +53,8 @@ describe('round', function() {
     assert.deepEqual(round(bignumber(2.1)), bignumber(2));
     assert.deepEqual(round(bignumber(2.123456), bignumber(3)), bignumber(2.123));
     assert.deepEqual(round(bignumber(2.123456), 3), bignumber(2.123));
-    assert.deepEqual(round(2.1234567, bignumber(3)), 2.123);
-    assert.deepEqual(round(true, bignumber(3)), 1);
+    assert.deepEqual(round(2.1234567, bignumber(3)), bignumber(2.123));
+    assert.deepEqual(round(true, bignumber(3)), bignumber(1));
     assert.deepEqual(round(bignumber(1.23), true), bignumber(1.2));
   });
 
@@ -73,7 +73,7 @@ describe('round', function() {
   });
 
   it('should throw an error if used with a string', function() {
-    assert.throws(function () { round("hello world"); }, TypeError, 'Function round(unit) not supported');
+    assert.throws(function () { round("hello world"); }, /TypeError: Unexpected type of argument/);
   });
 
   it('should round each element in a matrix, array, range', function() {

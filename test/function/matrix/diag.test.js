@@ -31,7 +31,7 @@ describe('diag', function() {
   });
 
   it('should throw an error in case of invalid k', function() {
-    assert.throws(function () {math.diag([[1,2,3],[4,5,6]], 'a')}, /Second parameter in function diag must be an integer/);
+    assert.throws(function () {math.diag([[1,2,3],[4,5,6]], 'a')}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {math.diag([[1,2,3],[4,5,6]], 2.4)}, /Second parameter in function diag must be an integer/);
   });
 
@@ -101,13 +101,13 @@ describe('diag', function() {
   });
 
   it('should throw an error in case of wrong number of arguments', function() {
-    assert.throws(function () {math.diag()}, error.ArgumentsError);
-    assert.throws(function () {math.diag([], 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {math.diag()}, /TypeError: Too few arguments/);
+    assert.throws(function () {math.diag([], 2, 3)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function() {
-    assert.throws(function () {math.diag(2)}, math.error.TypeError);
-    assert.throws(function () {math.diag([], 'str')}, math.error.TypeError);
+    assert.throws(function () {math.diag(2)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.diag([], 'str')}, /TypeError: Unexpected type of argument/);
   });
 
 });
