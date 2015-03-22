@@ -78,7 +78,7 @@ function create (config) {
   math.import(require('./lib/function/complex/re'));
   math.import(require('./lib/function/complex/im'));
 
-  //// functions - construction
+  // functions - construction
   require('./lib/function/construction/bignumber')(math, _config);
   require('./lib/function/construction/boolean')(math, _config);
   require('./lib/function/construction/complex')(math, _config);
@@ -154,28 +154,28 @@ function create (config) {
   // functions - trigonometry
   math.import(require('./lib/function/trigonometry/acos'));
   math.import(require('./lib/function/trigonometry/acosh'));
-  require('./lib/function/trigonometry/acot')(math, _config);
+  math.import(require('./lib/function/trigonometry/acot'));
   math.import(require('./lib/function/trigonometry/acoth'));
-  require('./lib/function/trigonometry/acsc')(math, _config);
+  math.import(require('./lib/function/trigonometry/acsc'));
   math.import(require('./lib/function/trigonometry/acsch'));
-  require('./lib/function/trigonometry/asec')(math, _config);
+  math.import(require('./lib/function/trigonometry/asec'));
   math.import(require('./lib/function/trigonometry/asech'));
   math.import(require('./lib/function/trigonometry/asin'));
   math.import(require('./lib/function/trigonometry/asinh'));
-  require('./lib/function/trigonometry/atan')(math, _config);
-  require('./lib/function/trigonometry/atan2')(math, _config);
+  math.import(require('./lib/function/trigonometry/atan'));
+  math.import(require('./lib/function/trigonometry/atan2'));
   math.import(require('./lib/function/trigonometry/atanh'));
   math.import(require('./lib/function/trigonometry/cos'));
   math.import(require('./lib/function/trigonometry/cosh'));
-  require('./lib/function/trigonometry/cot')(math, _config);
+  math.import(require('./lib/function/trigonometry/cot'));
   math.import(require('./lib/function/trigonometry/coth'));
-  require('./lib/function/trigonometry/csc')(math, _config);
+  math.import(require('./lib/function/trigonometry/csc'));
   math.import(require('./lib/function/trigonometry/csch'));
-  require('./lib/function/trigonometry/sec')(math, _config);
+  math.import(require('./lib/function/trigonometry/sec'));
   math.import(require('./lib/function/trigonometry/sech'));
-  require('./lib/function/trigonometry/sin')(math, _config);
+  math.import(require('./lib/function/trigonometry/sin'));
   math.import(require('./lib/function/trigonometry/sinh'));
-  require('./lib/function/trigonometry/tan')(math, _config);
+  math.import(require('./lib/function/trigonometry/tan'));
   math.import(require('./lib/function/trigonometry/tanh'));
 
   // functions - units
@@ -185,7 +185,7 @@ function create (config) {
   require('./lib/function/utils/clone')(math, _config);
   require('./lib/function/utils/filter')(math, _config);
   require('./lib/function/utils/format')(math, _config);
-  //require('./lib/function/utils/import')(math, _config); // TODO: merge with the new import
+  // note: import is already loaded by loader.js
   require('./lib/function/utils/map')(math, _config);
   require('./lib/function/utils/print')(math, _config);
   require('./lib/function/utils/sort')(math, _config);

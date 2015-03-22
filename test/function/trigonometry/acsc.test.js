@@ -132,8 +132,8 @@ describe('acsc', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {acsc()}, error.ArgumentsError);
-    assert.throws(function () {acsc(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {acsc()}, /TypeError: Too few arguments/);
+    assert.throws(function () {acsc(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

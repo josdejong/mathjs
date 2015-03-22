@@ -210,7 +210,7 @@ exports.create = function create () {
     return object.clone(_config);
   };
 
-  // FIXME: load constants via math.import() like all functions
+  // FIXME: load constants via math.import() like all functions (problem: it must be reloaded when config changes)
   // constants
   require('./lib/constants')(math, _config);
 

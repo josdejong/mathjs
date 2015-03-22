@@ -114,8 +114,8 @@ describe('asec', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {asec()}, error.ArgumentsError);
-    assert.throws(function () {asec(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {asec()}, /TypeError: Too few arguments/);
+    assert.throws(function () {asec(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

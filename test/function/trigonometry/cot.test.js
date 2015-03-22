@@ -100,8 +100,8 @@ describe('cot', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {cot()}, error.ArgumentsError);
-    assert.throws(function () {cot(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {cot()}, /TypeError: Too few arguments/);
+    assert.throws(function () {cot(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

@@ -104,8 +104,8 @@ describe('atan', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {atan()}, error.ArgumentsError);
-    assert.throws(function () {atan(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {atan()}, /TypeError: Too few arguments/);
+    assert.throws(function () {atan(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });
