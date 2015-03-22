@@ -182,15 +182,15 @@ function create (config) {
   math.import(require('./lib/function/units/to'));
 
   // functions - utils
-  require('./lib/function/utils/clone')(math, _config);
-  require('./lib/function/utils/filter')(math, _config);
-  require('./lib/function/utils/format')(math, _config);
+  math.import(require('./lib/function/utils/clone'));
+  math.import(require('./lib/function/utils/filter'));
+  math.import(require('./lib/function/utils/format'));
   // note: import is already loaded by loader.js
-  require('./lib/function/utils/map')(math, _config);
-  require('./lib/function/utils/print')(math, _config);
-  require('./lib/function/utils/sort')(math, _config);
-  require('./lib/function/utils/typeof')(math, _config);
-  require('./lib/function/utils/forEach')(math, _config);
+  math.import(require('./lib/function/utils/map'));
+  math.import(require('./lib/function/utils/print'));
+  math.import(require('./lib/function/utils/sort'));
+  math.import(require('./lib/function/utils/typeof'));
+  math.import(require('./lib/function/utils/forEach'));
 
   // attach transform functions (for converting one-based indices to zero-based)
   math.expression.transform = {
@@ -208,10 +208,8 @@ function create (config) {
 
   // create Chain, and create proxies for all functions/constants in the math
   // namespace.
-  math.chaining = {
-    Chain: require('./lib/chaining/Chain')()
-  };
-  math.chaining.Chain.createProxy(math);
+  math.type.Chain = require('./lib/type/Chain')();
+  math.type.Chain.createProxy(math);
 
   // apply custom options
   math.config(config);

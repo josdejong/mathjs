@@ -2,7 +2,7 @@
 var assert = require('assert'),
     approx = require('../../tools/approx'),
     math = require('../../index'),
-    Chain = math.chaining.Chain;
+    Chain = math.type.Chain;
 
 describe('Chain', function() {
 

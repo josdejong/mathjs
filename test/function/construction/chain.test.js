@@ -1,6 +1,6 @@
-var assert = require('assert'),
-    math = require('../../../index'),
-    Chain = math.chaining.Chain;
+var assert = require('assert');
+var math = require('../../../index');
+var Chain = math.type.Chain;
 
 describe('chain', function() {
 
