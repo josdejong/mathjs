@@ -3,6 +3,7 @@
 ## not yet released, version 1.4.1-SNAPSHOT
 
 - Added unit `stone` (6.35 kg).
+- Implemented support for sparse matrices. Thanks @rjbaucells.
 - Implemented BigNumber support for function `atan2`. Thanks @BigFav.
 - Implemented support for custom LaTeX representations. Thanks @FSMaxB.
 - Improvements and bug fixes in outputting parentheses in `Node.toString` and
