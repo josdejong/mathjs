@@ -1095,6 +1095,19 @@ describe('CrsMatrix', function() {
       assert.deepEqual(output, []);
     });
 
+    it('should process non-zero values', function() {
+      var m = new CrsMatrix(
+        [
+          [1, 0],
+          [0, 0]
+        ]
+      );
+      var counter = 0;
+
+      m.forEach(function () { counter++; }, true);
+      assert(counter === 1);
+    });
+    
     it('should invoke callback with parameters value, index, obj', function() {
       var m = new CrsMatrix([[1,2,3], [4,5,6]]);
       var output = [];
