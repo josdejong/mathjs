@@ -1,6 +1,5 @@
 // test zeros
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     zeros = math.zeros,
     matrix = math.matrix;
@@ -12,7 +11,19 @@ describe('zeros', function() {
     assert.deepEqual(zeros([]), []);
     assert.deepEqual(zeros(matrix([])), matrix());
   });
-
+    
+  it('should create an empty matrix, CCS format', function () {
+    assert.deepEqual(zeros('ccs'), matrix('ccs'));
+    assert.deepEqual(zeros([], 'ccs'), matrix([], 'ccs'));
+    assert.deepEqual(zeros(matrix([]), 'ccs'), matrix('ccs'));
+  });
+  
+  it('should create an empty matrix, CRS format', function () {
+    assert.deepEqual(zeros('crs'), matrix('crs'));
+    assert.deepEqual(zeros([], 'crs'), matrix([], 'crs'));
+    assert.deepEqual(zeros(matrix([]), 'crs'), matrix('crs'));
+  });
+  
   it('should create a vector with zeros', function () {
     assert.deepEqual(zeros(3), matrix([0,0,0]));
     assert.deepEqual(zeros(matrix([4])), matrix([0,0,0,0]));

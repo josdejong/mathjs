@@ -1,13 +1,12 @@
 // test typeof
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    Index = require('../../../lib/type/Index'),
-    Range = require('../../../lib/type/Range'),
-    Matrix = require('../../../lib/type/Matrix'),
-    Help = require('../../../lib/type/Help'),
-    Unit = require('../../../lib/type/Unit'),
-    Complex = require('../../../lib/type/Complex'),
-    math = require('../../../index');
+    math = require('../../../index')
+    Index = math.type.Index,
+    Range = math.type.Range,
+    Matrix = math.type.Matrix,
+    Help = math.type.Help,
+    Unit = math.type.Unit,
+    Complex = math.type.Complex;
 
 describe('typeof', function() {
 
@@ -43,7 +42,7 @@ describe('typeof', function() {
 
   it('should return matrix type for a matrix', function() {  
     assert.equal(math.typeof(math.matrix()), 'matrix');
-    assert.equal(math.typeof(new Matrix()), 'matrix');
+    assert.equal(math.typeof(math.matrix()), 'matrix');
   });
 
   it('should return unit type for a unit', function() {

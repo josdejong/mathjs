@@ -83,6 +83,7 @@ describe('norm', function () {
     // p = 'fro'
     assert.equal(math.norm([[1, 2], [-3, -4]], 'fro'), math.sqrt(30));
     assert.equal(math.norm(math.matrix([[1, 2], [-3, -4]]), 'fro'), math.sqrt(30));
+    assert.equal(math.norm(math.matrix([[1, 2, 3], [4, 5, 6]]), 'fro'), math.sqrt(91));
     // p - not implemented yet!
     assert.throws(function() {
       math.norm(math.norm([[1, 2], [3, 4]], 2), 6);
@@ -90,8 +91,8 @@ describe('norm', function () {
   });
   
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.norm()}, error.ArgumentsError);
-    assert.throws(function () {math.norm(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {math.norm();}, error.ArgumentsError);
+    assert.throws(function () {math.norm(1, 2, 3);}, error.ArgumentsError);
   });
 
   it('should throw an error with a string', function () {

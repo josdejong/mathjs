@@ -1,8 +1,8 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index'),
-    Unit = require('../../../lib/type/Unit'),
-    Matrix = require('../../../lib/type/Matrix'),
+    Unit = math.type.Unit,
+    Matrix = math.type.Matrix,
     unit = math.unit;
 
 describe('to', function() {
@@ -45,7 +45,7 @@ describe('to', function() {
     var b = math.to(a, unit('mm'));
 
     assert.ok(b instanceof math.type.Matrix);
-    approx.deepEqual(b, new Matrix([
+    approx.deepEqual(b, math.matrix([
       [new Unit(10, 'mm').to('mm'), new Unit(20, 'mm').to('mm')],
       [new Unit(30, 'mm').to('mm'), new Unit(40, 'mm').to('mm')]
     ]));

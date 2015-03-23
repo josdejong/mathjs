@@ -1,13 +1,14 @@
 var assert= require('assert');
-var reviver = require('../../lib/json/reviver');
-var Complex = require('../../lib/type/Complex');
-var Range = require('../../lib/type/Range');
-var Index = require('../../lib/type/Index');
-var Unit = require('../../lib/type/Unit');
-var Matrix = require('../../lib/type/Matrix');
+var math = require('../../index');
+var reviver = math.json.reviver;
+var Complex = math.type.Complex;
+var Range = math.type.Range;
+var Index = math.type.Index;
+var Unit = math.type.Unit;
+var Matrix = math.type.Matrix;
 var BigNumber = require('../../lib/type/BigNumber');
-var Help = require('../../lib/type/Help');
-var ResultSet = require('../../lib/type/ResultSet');
+var Help = math.type.Help;
+var ResultSet = math.type.ResultSet;
 
 describe('reviver', function () {
 
@@ -100,9 +101,9 @@ describe('reviver', function () {
     assert.deepEqual(obj, i);
   });
 
-  it('should parse a stringified Matrix', function () {
-    var json = '{"mathjs":"Matrix","data":[[1,2],[3,4]]}';
-    var m = new Matrix([[1,2],[3,4]]);
+  it('should parse a stringified Matrix, dense storage format', function () {
+    var json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,4]],"size":[2,2]}';
+    var m = math.matrix([[1,2],[3,4]], 'dense');
 
     var obj = JSON.parse(json, reviver);
 
@@ -110,10 +111,10 @@ describe('reviver', function () {
     assert.deepEqual(obj, m);
   });
 
-  it('should parse a stringified Matrix containing a complex number', function () {
-    var json = '{"mathjs":"Matrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]]}';
+  it('should parse a stringified Matrix containing a complex number, dense storage format', function () {
+    var json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}';
     var c = new Complex(4, 5);
-    var m = new Matrix([[1,2],[3,c]]);
+    var m = math.matrix([[1,2],[3,c]], 'dense');
 
     var obj = JSON.parse(json, reviver);
 

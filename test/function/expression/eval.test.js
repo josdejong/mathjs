@@ -18,7 +18,7 @@ describe('eval', function() {
   it('should eval a list of expressions', function() {
     assert.deepEqual(math.eval(['1+2', '3+4', '5+6']), [3, 7, 11]);
     assert.deepEqual(math.eval(['a=3', 'b=4', 'a*b']), [3, 4, 12]);
-    assert.deepEqual(math.eval(new Matrix(['a=3', 'b=4', 'a*b'])), new Matrix([3, 4, 12]));
+    assert.deepEqual(math.eval(math.matrix(['a=3', 'b=4', 'a*b'])), math.matrix([3, 4, 12]));
     assert.deepEqual(math.eval(['a=3', 'b=4', 'a*b']), [3, 4, 12]);
   });
 
