@@ -72,11 +72,11 @@ describe('bignumber', function() {
   });
 
   it('should throw an error in case of unsupported type of argument', function() {
-    assert.throws(function () {math.bignumber(new Date())}, TypeError);
+    assert.throws(function () {math.bignumber(new Date())}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.bignumber(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {math.bignumber(1, 2)}, /TypeError: Too many arguments/);
   });
 
 });

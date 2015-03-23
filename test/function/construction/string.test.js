@@ -53,7 +53,7 @@ describe('string', function() {
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
-    assert.throws(function () {string(1,2)}, error.ArgumentsError);
-    assert.throws(function () {string(1,2,3)}, error.ArgumentsError);
+    assert.throws(function () {string(1,2)}, /TypeError: Too many arguments/);
+    assert.throws(function () {string(1,2,3)}, /TypeError: Too many arguments/);
   });
 });

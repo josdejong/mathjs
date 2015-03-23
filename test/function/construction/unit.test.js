@@ -36,7 +36,7 @@ describe('unit', function() {
   });
 
   it('should throw an error if called with a number', function() {
-    assert.throws(function () {unit(2)}, TypeError);
+    assert.throws(function () {unit(2)}, /SyntaxError: String "2" is no valid unit/);
   });
 
   it('should throw an error if called with a complex', function() {
@@ -56,16 +56,16 @@ describe('unit', function() {
     assert.throws(function () {unit('2', 'cm')}, TypeError);
   });
 
-  it('should throw an error if called with one invalid argument', function() {
+  it('should throw an error if called with an invalid argument', function() {
     assert.throws(function () {unit(2, math.complex(2,3))}, TypeError);
-    assert.throws(function () {unit(true, 'cm')}, TypeError);
+    assert.throws(function () {unit(true)}, TypeError);
   });
 
   it('should throw an error if called with no argument', function() {
-    assert.throws(function () {unit()}, error.ArgumentsError);
+    assert.throws(function () {unit()}, /TypeError: Too few arguments/);
   });
 
   it('should throw an error if called with an invalid number of arguments', function() {  
-    assert.throws(function () {unit(1,2,3)}, error.ArgumentsError);
+    assert.throws(function () {unit(1,'cm',3)}, /TypeError: Too many arguments/);
   });
 });

@@ -79,16 +79,16 @@ function create (config) {
   math.import(require('./lib/function/complex/im'));
 
   // functions - construction
-  require('./lib/function/construction/bignumber')(math, _config);
-  require('./lib/function/construction/boolean')(math, _config);
-  require('./lib/function/construction/complex')(math, _config);
-  require('./lib/function/construction/index')(math, _config);
-  require('./lib/function/construction/matrix')(math, _config);
-  require('./lib/function/construction/number')(math, _config);
-  require('./lib/function/construction/parser')(math, _config);
-  require('./lib/function/construction/chain')(math, _config);
-  require('./lib/function/construction/string')(math, _config);
-  require('./lib/function/construction/unit')(math, _config);
+  math.import(require('./lib/function/construction/bignumber'));
+  math.import(require('./lib/function/construction/boolean'));
+  math.import(require('./lib/function/construction/chain'));
+  math.import(require('./lib/function/construction/complex'));
+  math.import(require('./lib/function/construction/index'));
+  math.import(require('./lib/function/construction/matrix'));
+  math.import(require('./lib/function/construction/number'));
+  math.import(require('./lib/function/construction/parser'));
+  math.import(require('./lib/function/construction/string'));
+  math.import(require('./lib/function/construction/unit'));
 
   // expression parser
   math.import(require('./lib/function/expression/compile'));

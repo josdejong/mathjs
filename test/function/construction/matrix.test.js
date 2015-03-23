@@ -43,7 +43,7 @@ describe('matrix', function() {
   });
 
   it('should throw an error if called with 2 numbers', function() {
-    assert.throws(function () {matrix(2, 3)}, error.ArgumentsError);
+    assert.throws(function () {matrix([], 3)}, /TypeError: Too many arguments/);
   });
 
 });

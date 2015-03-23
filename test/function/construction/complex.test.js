@@ -53,12 +53,12 @@ describe('complex', function() {
     assert.throws(function () {complex('no valid complex number')}, SyntaxError);
   });
 
-  it('should throw an error if called with a boolean', function() {
-    assert.throws(function () {complex(false)}, TypeError);
+  it('should create a complex value from a boolean', function() {
+    assert.deepEqual(complex(true), new math.type.Complex(1, 0));
   });
 
   it('should throw an error if called with a unit', function() {
-    assert.throws(function () {complex(math.unit('5cm'))}, TypeError);
+    assert.throws(function () {complex(math.unit('5cm'))}, /Error: Expected object with either properties re and im, or properties r and phi./);
   });
 
   it('should accept two numbers as arguments', function() {
@@ -69,14 +69,11 @@ describe('complex', function() {
   });
 
   it('should throw an error if passed two argument, one is invalid', function() {
-    assert.throws(function () {complex(true, 2)}, TypeError);
-    assert.throws(function () {complex(null, 2)}, TypeError);
-    assert.throws(function () {complex(2, false)}, TypeError);
     assert.throws(function () {complex('string', 2)}, TypeError);
     assert.throws(function () {complex(2, 'string')}, TypeError);
   });
 
   it('should throw an error if called with more than 2 arguments', function() {
-    assert.throws(function () {complex(2,3,4)}, error.ArgumentsError);
+    assert.throws(function () {complex(2,3,4)}, /TypeError: Too many arguments/);
   });
 });

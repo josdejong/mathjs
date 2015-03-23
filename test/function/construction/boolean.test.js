@@ -51,27 +51,21 @@ describe('boolean', function() {
     assert.equal(bool(' -4e2 '), true);
   });
 
-  it('should convert a Boolean into a boolean', function() {
-    assert.equal(bool(new Boolean(true)), true);
-    assert.equal(bool(new Boolean(false)), false);
-  });
-
   it('should throw an error if the string is not a valid number', function() {
-    assert.throws(function () {bool('')}, SyntaxError);
-    assert.throws(function () {bool('23a')}, SyntaxError);
+    assert.throws(function () {bool('')}, /Error: Cannot convert/);
+    assert.throws(function () {bool('23a')}, /Error: Cannot convert/);
   });
 
   it('should throw an error if there\'s a wrong number of arguments', function() {
-    assert.throws(function () {bool(1,2)}, error.ArgumentsError);
-    assert.throws(function () {bool(1,2,3)}, error.ArgumentsError);
+    assert.throws(function () {bool(1,2)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error if used with a complex', function() {
-    assert.throws(function () {bool(math.complex(2,3))}, SyntaxError);
+    assert.throws(function () {bool(math.complex(2,3))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error if used with a unit', function() {  
-    assert.throws(function () {bool(math.unit('5cm'))}, SyntaxError);
+    assert.throws(function () {bool(math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 
 });
