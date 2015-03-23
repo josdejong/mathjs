@@ -1095,6 +1095,19 @@ describe('CrsMatrix', function() {
       assert.deepEqual(output, []);
     });
 
+    it('should process non-zero values', function() {
+      var m = new CrsMatrix(
+        [
+          [1, 0],
+          [0, 0]
+        ]
+      );
+      var counter = 0;
+
+      m.forEach(function () { counter++; }, true);
+      assert(counter === 1);
+    });
+    
     it('should invoke callback with parameters value, index, obj', function() {
       var m = new CrsMatrix([[1,2,3], [4,5,6]]);
       var output = [];
@@ -1691,6 +1704,174 @@ describe('CrsMatrix', function() {
         [4, 5, 6]
       ]);
       assert.throws(function () { m.trace(); });
+    });
+  });
+  
+  describe('multiply', function () {
+
+    it('should multiply matrix x scalar', function() {
+      var m = new CrsMatrix([
+        [2, 0],
+        [4, 0]
+      ]);
+
+      var r = m.multiply(3);
+      assert.deepEqual(r._size, m._size);
+      assert.deepEqual(r._values, [6, 12]);
+      assert.deepEqual(r._index, m._index);
+      assert.deepEqual(r._ptr, m._ptr);
+
+      r = m.multiply(math.complex(3, 3));
+      assert.deepEqual(r._size, m._size);
+      assert.deepEqual(r._values, [math.complex(6, 6), math.complex(12, 12)]);
+      assert.deepEqual(r._index, m._index);
+      assert.deepEqual(r._ptr, m._ptr);
+
+      r = m.multiply(math.bignumber(3));
+      assert.deepEqual(r._size, m._size);
+      assert.deepEqual(r._values, [math.bignumber(6), math.bignumber(12)]);
+      assert.deepEqual(r._index, m._index);
+      assert.deepEqual(r._ptr, m._ptr);
+
+      r = m.multiply(true);
+      assert.deepEqual(r._size, m._size);
+      assert.deepEqual(r._values, [2, 4]);
+      assert.deepEqual(r._index, m._index);
+      assert.deepEqual(r._ptr, m._ptr);
+
+      r = m.multiply(false);
+      assert.deepEqual(r._size, m._size);
+      assert.deepEqual(r._values, []);
+      assert.deepEqual(r._index, []);
+      assert.deepEqual(r._ptr, [0, 0, 0]);
+    });
+
+    it('should multiply matrix x matrix', function() {
+      var m = new CrsMatrix([
+        [2, 0],
+        [4, 0]
+      ]);
+
+      var r = m.multiply(new CrsMatrix([
+        [2, 0],
+        [4, 0]
+      ]));
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4, 0],
+          [8, 0]
+        ]);
+
+      r = m.multiply(math.matrix([
+        [2, 0],
+        [4, 0]
+      ]), 'crs');
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4, 0],
+          [8, 0]
+        ]);
+
+      r = m.multiply(math.matrix([
+        [2, 0],
+        [4, 0]
+      ]), 'dense');
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4, 0],
+          [8, 0]
+        ]);
+    });
+
+    it('should multiply matrix x array', function() {
+      var m = new CrsMatrix([
+        [2, 0],
+        [4, 0]
+      ]);
+
+      var r = m.multiply(
+        [
+          [2, 0],
+          [4, 0]
+        ]);
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4, 0],
+          [8, 0]
+        ]);
+
+      r = m.multiply(
+        [
+          [2, 0, 1],
+          [4, 0, 1]
+        ]);
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4, 0, 2],
+          [8, 0, 4]
+        ]);
+    });
+
+    it('should multiply matrix x vector array', function() {
+      var m = new CrsMatrix([
+        [2, 0],
+        [4, 0]
+      ]);
+
+      var r = m.multiply(
+        [
+          [2],
+          [4]
+        ]);
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [4],
+          [8]
+        ]);
+    });
+
+    it ('should squeeze scalar results of matrix * matrix', function () {
+      var a = new CrsMatrix(
+        [
+          [1, 2, 3]
+        ]);
+      var b = new CrsMatrix(
+        [
+          [4], 
+          [5], 
+          [6]
+        ]);
+      assert.strictEqual(a.multiply(b), 32);
+    });
+
+    it ('should squeeze scalar results of matrix * vector', function () {
+      var a = new CrsMatrix(
+        [
+          [1, 2, 3]
+        ]);
+      var b = [4, 5, 6];
+      assert.strictEqual(a.multiply(b), 32);
+    });
+
+    it('should throw an error when multiplying matrices with incompatible sizes', function() {
+      // vector * vector
+      assert.throws(function () {math.matrix([1,1], 'crs').multiply([1, 1, 1]);});
+
+      // matrix * matrix
+      assert.throws(function () {math.matrix([[1,1]], 'crs').multiply([[1,1]]);});
+      assert.throws(function () {math.matrix([[1,1]], 'crs').multiply([[1,1], [1,1], [1,1]]);});
+
+      // matrix * vector
+      assert.throws(function () {math.matrix([[1,1], [1,1]], 'crs').multiply([1,1,1]);});
+
+      // vector * matrix
+      assert.throws(function () {math.matrix([1,1,1], 'crs').multiply([[1,1], [1,1]]);});
     });
   });
 });
