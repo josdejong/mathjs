@@ -104,4 +104,9 @@ describe('sec', function() {
     assert.throws(function () {sec(1, 2)}, error.ArgumentsError);
   });
 
+  it('should LaTeX sec', function () {
+    var expression = math.parse('sec(1)');
+    assert.equal(expression.toTex(), '\\sec\\left({1}\\right)');
+  });
+
 });

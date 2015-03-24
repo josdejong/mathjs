@@ -103,4 +103,9 @@ describe('dotPow', function() {
     approx.deepEqual(dotPow([[1,2,3],[4,5,6]],2), [[1,4,9],[16,25,36]]);
   });
 
+  it('should LaTeX dotPow', function () {
+    var expression = math.parse('dotPow(a,b)'); //TODO do this properly with matrices
+    assert.equal(expression.toTex(), '\\mathrm{dotPow}\\left({a},{b}\\right)');
+  });
+
 });

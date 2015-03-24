@@ -94,5 +94,9 @@ describe('dotMultiply', function() {
     assert.throws(function () {dotMultiply(1)}, error.ArgumentsError);
     assert.throws(function () {dotMultiply(1, 2, 3)}, error.ArgumentsError);
   });
-
+  
+  it('should LaTeX dotMultiply', function () {
+    var expression = math.parse('dotMultiply(a,b)'); //TODO do this properly with matrices
+    assert.equal(expression.toTex(), '\\mathrm{dotMultiply}\\left({a},{b}\\right)');
+  });
 });

@@ -72,4 +72,9 @@ describe('unaryMinus', function() {
     assert.throws(function () {math.unaryMinus(new Date())}, error.UnsupportedTypeError);
   });
 
+  it('should LaTeX unaryMinus', function () {
+    var expression = math.parse('unaryMinus(1)');
+    assert.equal(expression.toTex(), '-\\left({1}\\right)');
+  });
+
 });

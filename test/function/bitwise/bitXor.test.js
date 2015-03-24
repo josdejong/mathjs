@@ -134,4 +134,9 @@ describe('bitXor', function () {
     assert.throws(function () {bitXor(undefined, true)}, error.UnsupportedTypeError);
   });
 
+  it('should LaTeX bitXor', function () {
+    var expression = math.parse('bitXor(2,3)');
+    assert.equal(expression.toTex(), '\\mathrm{bitXor}\\left({2},{3}\\right)');
+  });
+
 });

@@ -79,5 +79,9 @@ describe('exp', function() {
         matrix([[1, 2.71828182845905], [7.38905609893065, 20.0855369231877]]));
   });
 
+  it('should LaTeX exp', function () {
+    var expression = math.parse('exp(0)');
+    assert.equal(expression.toTex(), '\\exp\\left({0}\\right)');
+  });
 
 });

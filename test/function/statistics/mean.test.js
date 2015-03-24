@@ -84,4 +84,9 @@ describe('mean', function() {
     assert.throws(function() {mean([])});
   });
 
+  it('should LaTeX mean', function () {
+    var expression = math.parse('mean(1,2,3,4)');
+    assert.equal(expression.toTex(), '\\mathrm{mean}\\left({1},{2},{3},{4}\\right)');
+  });
+
 });

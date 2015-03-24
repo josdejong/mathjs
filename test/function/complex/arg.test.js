@@ -69,4 +69,9 @@ describe('arg', function() {
     assert.throws(function () {arg(1, 2)}, error.ArgumentsError);
   });
 
+  it('should LaTeX arg', function () {
+    var expression = math.parse('arg(1+i)');
+    assert.equal(expression.toTex(), '\\arg\\left({{1} + {i}}\\right)');
+  });
+
 });

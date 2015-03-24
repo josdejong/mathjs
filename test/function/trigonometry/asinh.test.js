@@ -94,4 +94,9 @@ describe('asinh', function() {
     assert.throws(function () {asinh(1, 2)}, error.ArgumentsError);
   });
 
+  it('should LaTeX asinh', function () {
+    var expression = math.parse('asinh(2)');
+    assert.equal(expression.toTex(), '\\sinh^{-1}\\left({2}\\right)');
+  });
+
 });

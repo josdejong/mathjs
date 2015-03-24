@@ -63,4 +63,9 @@ describe('bitNot', function () {
     assert.throws(function () {bitNot(undefined)}, error.UnsupportedTypeError);
   });
 
+  it('should LaTeX bitNot', function () {
+    var expression = math.parse('bitNot(4)');
+    assert.equal(expression.toTex(), '\\mathrm{bitNot}\\left({4}\\right)');
+  });
+
 });

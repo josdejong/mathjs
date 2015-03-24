@@ -159,4 +159,9 @@ describe('divide', function() {
     assert.throws(function () {divide(2); });
   });
 
+  it('should LaTeX divide', function () {
+    var expression = math.parse('divide(1,2)');
+    assert.equal(expression.toTex(), '\\frac{1}{2}');
+  });
+
 });

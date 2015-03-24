@@ -31,4 +31,9 @@ describe('squeeze', function() {
     assert.throws(function () {squeeze()}, error.ArgumentsError);
     assert.throws(function () {squeeze(1,2)}, error.ArgumentsError);
   });
+
+  it('should LaTeX squeeze', function () {
+    var expression = math.parse('squeeze([[0],[0]])');
+    assert.equal(expression.toTex(), '\\mathrm{squeeze}\\left({\\begin{bmatrix}0\\\\0\\\\\\end{bmatrix}}\\right)');
+  });
 });

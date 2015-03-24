@@ -8,4 +8,10 @@ describe('pickRandom', function () {
   it('should have a function pickRandom', function () {
     assert.equal(typeof math.pickRandom, 'function');
   })
+
+  it('should LaTeX pickRandom', function () {
+    var expression = math.parse('pickRandom([1,2,3])');
+    assert.equal(expression.toTex(), '\\mathrm{pickRandom}\\left({\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}}\\right)');
+  });
+
 });

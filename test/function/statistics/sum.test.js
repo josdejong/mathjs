@@ -72,4 +72,9 @@ describe('sum', function() {
     assert.throws(function() {sum([])});
   });
 
+  it('should LaTeX sum', function () {
+    var expression = math.parse('sum(1,2,3)');
+    assert.equal(expression.toTex(), '\\mathrm{sum}\\left({1},{2},{3}\\right)');
+  });
+
 });

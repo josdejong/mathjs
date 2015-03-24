@@ -73,4 +73,9 @@ describe('coth', function() {
     assert.throws(function () {coth()}, error.ArgumentsError);
     assert.throws(function () {coth(1, 2)}, error.ArgumentsError);
   });
+
+  it('should LaTeX coth', function () {
+    var expression = math.parse('coth(1)');
+    assert.equal(expression.toTex(), '\\coth\\left({1}\\right)');
+  });
 });

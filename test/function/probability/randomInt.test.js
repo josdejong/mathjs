@@ -8,4 +8,9 @@ describe('randomInt', function () {
   it('should have a function randomInt', function () {
     assert.equal(typeof math.randomInt, 'function');
   })
+
+  it('should LaTeX randomInt', function () {
+    var expression = math.parse('randomInt(0,100)');
+    assert.equal(expression.toTex(), '\\mathrm{randomInt}\\left({0},{100}\\right)');
+  });
 });

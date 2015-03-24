@@ -80,4 +80,9 @@ describe('lcm', function() {
     assert.deepEqual(lcm([5,2,3], [25,3,6]), [25, 6, 6]);
   });
 
+  it('should LaTeX lcm', function () {
+    var expression = math.parse('lcm(2,3)');
+    assert.equal(expression.toTex(), '\\mathrm{lcm}\\left({2},{3}\\right)');
+  });
+
 });

@@ -68,4 +68,12 @@ describe('unit', function() {
   it('should throw an error if called with an invalid number of arguments', function() {  
     assert.throws(function () {unit(1,2,3)}, error.ArgumentsError);
   });
+
+  it('should LaTeX unit', function () {
+    var expr1 = math.parse('unit(cm)');
+    var expr2 = math.parse('unit(1,cm)');
+
+    assert.equal(expr1.toTex(), '\\left({cm}\\right)');
+    assert.equal(expr2.toTex(), '\\left({\\left({1}\\right){cm}}\\right)');
+  });
 });

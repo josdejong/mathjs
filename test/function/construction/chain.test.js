@@ -17,4 +17,9 @@ describe('chain', function() {
     assert.strictEqual(math.chaining.Selector, math.chaining.Chain);
   });
 
+  it('should LaTeX chain', function () {
+    var expression = math.parse('chain(1)');
+    assert.equal(expression.toTex(), '\\mathrm{chain}\\left({1}\\right)');
+  });
+
 });

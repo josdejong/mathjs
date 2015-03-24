@@ -46,4 +46,9 @@ describe('im', function() {
     assert.throws(function () {math.im(1, 2)}, error.ArgumentsError);
   });
 
+  it('should LaTeX im', function () {
+    var expression = math.parse('im(1+i)');
+    assert.equal(expression.toTex(), '\\Im\\left\\lbrace{{1} + {i}}\\right\\rbrace');
+  });
+
 });

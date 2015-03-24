@@ -157,4 +157,9 @@ describe('gamma', function () {
     assert.throws(function() { gamma('a string'); });
   });
 
+  it('should LaTeX gamma', function () {
+    var expression = math.parse('gamma(2.5)');
+    assert.equal(expression.toTex(), '\\Gamma\\left({2.5}\\right)');
+  });
+
 });

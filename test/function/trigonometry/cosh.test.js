@@ -85,4 +85,9 @@ describe('cosh', function() {
     assert.throws(function () {cosh()}, error.ArgumentsError);
     assert.throws(function () {cosh(1, 2)}, error.ArgumentsError);
   });
+
+  it('should LaTeX cosh', function () {
+    var expression = math.parse('cosh(1)');
+    assert.equal(expression.toTex(), '\\cosh\\left({1}\\right)');
+  });
 });

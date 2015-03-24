@@ -77,5 +77,10 @@ describe('median', function() {
   it('should throw an error if called with an empty array', function() {
     assert.throws(function() {median([])});
   });
+  
+  it('should LaTeX median', function () {
+    var expression = math.parse('median(1,2,3,4)');
+    assert.equal(expression.toTex(), '\\mathrm{median}\\left({1},{2},{3},{4}\\right)');
+  });
 
 });

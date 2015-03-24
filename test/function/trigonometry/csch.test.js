@@ -76,4 +76,9 @@ describe('csch', function() {
     assert.throws(function () {csch()}, error.ArgumentsError);
     assert.throws(function () {csch(1, 2)}, error.ArgumentsError);
   });
+
+  it('should LaTeX csch', function () {
+    var expression = math.parse('csch(1)');
+    assert.equal(expression.toTex(), '\\mathrm{csch}\\left({1}\\right)');
+  });
 });

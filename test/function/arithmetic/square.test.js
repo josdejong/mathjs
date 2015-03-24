@@ -55,4 +55,9 @@ describe('square', function() {
     assert.deepEqual(square(matrix([[1,2],[3,4]])), matrix([[1,4],[9,16]]));
   });
 
+  it('should LaTeX square', function () {
+    var expression = math.parse('square(4)');
+    assert.equal(expression.toTex(), '\\left({4}\\right)^{2}');
+  });
+
 });

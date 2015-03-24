@@ -134,4 +134,9 @@ describe('bitAnd', function () {
     assert.throws(function () {bitAnd(undefined, true)}, error.UnsupportedTypeError);
   });
 
+  it('should LaTeX bitAnd', function () {
+    var expression = math.parse('bitAnd(4,2)');
+    assert.equal(expression.toTex(), '\\mathrm{bitAnd}\\left({4},{2}\\right)');
+  });
+
 });

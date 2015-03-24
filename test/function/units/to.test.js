@@ -75,4 +75,9 @@ describe('to', function() {
     assert.throws(function () {math.to('5cm', unit('cm'))}, TypeError);
   });
 
+  it('should LaTeX to', function () {
+    var expression = math.parse('to(2cm,m)');
+    assert.equal(expression.toTex(), '\\left({{2} \\cdot {cm}}\\rightarrow{m}\\right)');
+  });
+
 });

@@ -76,4 +76,9 @@ describe('variance', function() {
     assert.throws(function() {variance([])});
   });
 
+  it('should LaTeX var', function () {
+    var expression = math.parse('var(1,2,3)');
+    assert.equal(expression.toTex(), '\\mathrm{Var}\\left({1},{2},{3}\\right)');
+  });
+
 });

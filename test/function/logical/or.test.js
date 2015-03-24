@@ -175,4 +175,9 @@ describe('or', function () {
     assert.throws(function () {or(undefined, true)}, error.UnsupportedTypeError);
   });
 
+  it('should LaTeX or', function () {
+    var expression = math.parse('or(1,2)');
+    assert.equal(expression.toTex(), '\\left({1}\\vee{2}\\right)');
+  });
+
 });

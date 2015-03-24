@@ -109,4 +109,9 @@ describe('nthRoot', function() {
     approx.deepEqual(nthRoot(matrix(a), n), matrix(x));
   });
 
+  it('should LaTeX nthRoot', function () {
+    var expression = math.parse('nthRoot(8,3)');
+    assert.equal(expression.toTex(), '\\sqrt[3]{8}');
+  });
+
 });

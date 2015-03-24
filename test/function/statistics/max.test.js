@@ -89,4 +89,9 @@ describe('max', function() {
     assert.throws(function() {max([])});
   });
 
+  it('should LaTeX max', function () {
+    var expression = math.parse('max(1,2,3)');
+    assert.equal(expression.toTex(), '\\max\\left({1},{2},{3}\\right)');
+  });
+
 });

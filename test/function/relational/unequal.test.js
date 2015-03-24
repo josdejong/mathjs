@@ -167,4 +167,9 @@ describe('unequal', function() {
     assert.throws(function () {unequal(1, 2, 3)}, error.ArgumentsError);
   });
 
+  it('should LaTeX unequal', function () {
+    var expression = math.parse('unequal(1,0)');
+    assert.equal(expression.toTex(), '\\left({1}\\neq{0}\\right)');
+  });
+
 });

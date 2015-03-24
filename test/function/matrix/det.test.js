@@ -130,5 +130,9 @@ describe('det', function() {
     assert.throws(function() { math.det(math.matrix([[[1]]])); }, RangeError);
   });
 
+  it('should LaTeX det', function () {
+    var expression = math.parse('det([1])');
+    assert.equal(expression.toTex(), '\\det\\left({\\begin{bmatrix}1\\\\\\end{bmatrix}}\\right)');
+  });
 
 });

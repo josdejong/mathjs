@@ -104,4 +104,9 @@ describe('mod', function() {
     approx.deepEqual(mod(matrix([-4,-3,-2,-1,0,1,2,3,4]), 3), matrix([2,0,1,2,0,1,2,0,1]));
   });
 
+  it('should LaTeX mod', function () {
+    var expression = math.parse('mod(11,2)');
+    assert.equal(expression.toTex(), '\\mod\\left({11},{2}\\right)');
+  });
+
 });

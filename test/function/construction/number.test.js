@@ -66,5 +66,15 @@ describe('number', function() {
     assert.throws(function () {number(math.unit('5cm'), 2)}, TypeError);
     assert.throws(function () {number('23', 2)}, TypeError);
   });
+
+  it('should LaTeX number', function () {
+    var expr1 = math.parse('number()');
+    var expr2 = math.parse('number(1)');
+    var expr3 = math.parse('number(1,cm)');
+
+    assert.equal(expr1.toTex(), '0');
+    assert.equal(expr2.toTex(), '\\left({1}\\right)');
+    assert.equal(expr3.toTex(), '\\left(\\left({1}\\right){cm}\\right)');
+  });
 });
 

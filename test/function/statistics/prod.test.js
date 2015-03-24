@@ -61,4 +61,9 @@ describe('prod', function() {
     assert.throws(function() {prod([])});
   });
 
+  it('should LaTeX prod', function () {
+    var expression = math.parse('prod(1,2,3)');
+    assert.equal(expression.toTex(), '\\mathrm{prod}\\left({1},{2},{3}\\right)');
+  });
+
 });

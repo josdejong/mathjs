@@ -84,4 +84,9 @@ describe('inv', function() {
     assert.throws(function () {math.concat(inv('str'))}, math.error.TypeError);
   });
 
+  it('should  LaTeX inv', function () {
+    var expression = math.parse('inv([[1,2],[3,4]])');
+    assert.equal(expression.toTex(), '{\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}}^{-1}');
+  });
+
 });

@@ -326,4 +326,9 @@ describe('distribution', function () {
     assert.throws(function () {dist.pickRandom(23); }, error.TypeError);
     // TODO: more type testing...
   });
+
+  it('should LaTeX distribution', function () {
+    var expression = math.parse('distribution(normal)');
+    assert.equal(expression.toTex(), '\\mathrm{distribution}\\left({normal}\\right)');
+  });
 });

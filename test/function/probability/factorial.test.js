@@ -88,5 +88,9 @@ describe('factorial', function() {
     assert.throws(function() { factorial('a string'); });
   });
 
+  it('should LaTeX factorial', function () {
+    var expression = math.parse('factorial(6)');
+    assert.equal(expression.toTex(), '\\left({6}\\right)!');
+  });
 
 });

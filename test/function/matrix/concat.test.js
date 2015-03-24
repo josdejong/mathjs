@@ -101,4 +101,9 @@ describe('concat', function() {
     assert.throws(function () {math.concat(2)}, /At least one matrix expected/);
   });
 
+  it('should LaTeX concat', function () {
+    var expression = math.parse('concat([1],[2])');
+    assert.equal(expression.toTex(), '\\mathrm{concat}\\left({\\begin{bmatrix}1\\\\\\end{bmatrix}},{\\begin{bmatrix}2\\\\\\end{bmatrix}}\\right)');
+  });
+
 });

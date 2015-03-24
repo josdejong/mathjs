@@ -100,4 +100,12 @@ describe('norm', function () {
       math.norm('a string');
     });
   });
+
+  it('should LaTeX norm', function () {
+    var expr1 = math.parse('norm(a)');
+    var expr2 = math.parse("norm(a,2)");
+
+    assert.equal(expr1.toTex(), '\\left\\|{a}\\right\\|');
+    assert.equal(expr2.toTex(), '\\mathrm{norm}\\left({a},{2}\\right)');
+  });
 });

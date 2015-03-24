@@ -120,4 +120,9 @@ describe('xgcd', function() {
     assert.throws(function () { xgcd([5,2,3], [25,3,6]); }, TypeError, 'Function xgcd(array, array) not supported');
   });
 
+  it('should LaTeX xgcd', function () {
+    var expression = math.parse('xgcd(2,3)');
+    assert.equal(expression.toTex(), '\\mathrm{xgcd}\\left({2},{3}\\right)');
+  });
+
 });

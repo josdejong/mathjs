@@ -162,4 +162,9 @@ describe('equal', function() {
     assert.throws(function () {equal(1, 2, 3)}, error.ArgumentsError);
   });
 
+  it('should LaTeX equal', function () {
+    var expression = math.parse('equal(1,2)');
+    assert.equal(expression.toTex(), '\\mathrm{equal}\\left({1},{2}\\right)');
+  });
+
 });

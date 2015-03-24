@@ -6,7 +6,9 @@ var assert = require('assert'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
-    not = math.not;
+    not = math.not,
+    FunctionNode = require('../../../lib/expression/node/FunctionNode'),
+    ConstantNode = require('../../../lib/expression/node/ConstantNode');
 
 describe('not', function () {
 
@@ -80,6 +82,12 @@ describe('not', function () {
     assert.throws(function () {not(new Date())}, error.UnsupportedTypeError);
     assert.throws(function () {not('23')}, error.UnsupportedTypeError);
     assert.throws(function () {not({})}, error.UnsupportedTypeError);
+  });
+
+  it('should LaTeX not', function () {
+    var c = new ConstantNode(1);
+    var node = new FunctionNode('not', [c]);
+    assert.equal(node.toTex(), '\\neg\\left({1}\\right)');
   });
 
 });
