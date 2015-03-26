@@ -160,4 +160,9 @@ describe('import', function() {
     assert.deepEqual(math.import({pi: 24}), {pi: undefined}); // pi was ignored
   });
 
+  it('should import a boolean', function () {
+    assert.deepEqual(math.import({a: true}), {a: true});
+    assert.strictEqual(math.a, true);
+  });
+
 });
