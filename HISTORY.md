@@ -7,6 +7,10 @@
 - Fixed binary prefix and SI prefix incorrectly used for byte. Now following
   SI standards (`1 KiB == 1024 B`, `1 kB == 1000 B`).
 
+*Other changes:*
+
+- Function `import` now returns the imported objects.
+
 
 ## not yet released, version 1.4.1-SNAPSHOT
 

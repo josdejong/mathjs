@@ -155,4 +155,9 @@ describe('import', function() {
     delete Object.prototype.foo;
   });
 
+  it('should return the imported object', function () {
+    assert.deepEqual(math.import({a: 24}), {a: 24});
+    assert.deepEqual(math.import({pi: 24}), {pi: undefined}); // pi was ignored
+  });
+
 });
