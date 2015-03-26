@@ -28,6 +28,16 @@ function create (config) {
   math.expression.Parser = require('./lib/expression/Parser');
   math.expression.docs = require('./lib/expression/docs/index');
 
+  // data types (Matrix, Complex, Unit, ...)
+  math.type.Complex = require('./lib/type/Complex');
+  math.type.Range = require('./lib/type/Range');
+  math.type.Index = require('./lib/type/Index');
+  math.type.Matrix = require('./lib/type/Matrix');
+  math.type.Unit = require('./lib/type/Unit');
+  math.type.Help = require('./lib/type/Help');
+  math.type.ResultSet = require('./lib/type/ResultSet');
+  math.import(require('./lib/type/BigNumber'));
+
   // serialization utilities
   // math.json.*
   math.import(require('./lib/json/reviver'));
@@ -182,6 +192,7 @@ function create (config) {
 
   // functions - utils
   math.import(require('./lib/function/utils/clone'));
+  math.import(require('./lib/function/utils/config'));
   math.import(require('./lib/function/utils/filter'));
   math.import(require('./lib/function/utils/format'));
   // note: import is already loaded by loader.js

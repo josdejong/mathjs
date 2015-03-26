@@ -59,7 +59,7 @@ exports.create = function create () {
     if (index === -1) {
       // doesn't yet exist
       if (factory.math) {
-        // pass math namespace
+        // pass with math namespace
         instance = factory.factory(math.type, _config, load, typed, math);
       }
       else {
@@ -71,7 +71,7 @@ exports.create = function create () {
       instances.push(instance);
     }
     else {
-      // already existing function, return this instance
+      // already existing function, return the cached instance
       instance = instances[index];
     }
 
@@ -82,34 +82,15 @@ exports.create = function create () {
   // constants, and types
   math['import'] = load(require('./lib/function/utils/import'));
 
-  // TODO: dynamically load data types into the loader, via factory functions for types
-  var Complex = require('./lib/type/Complex');
-  var Range = require('./lib/type/Range');
-  var Index = require('./lib/type/Index');
-  var Matrix = require('./lib/type/Matrix');
-  var Unit = require('./lib/type/Unit');
-  var Help = require('./lib/type/Help');
-  var ResultSet = require('./lib/type/ResultSet');
-  var BigNumber = math.import(require('./lib/type/BigNumber'));
-
-  // types (Matrix, Complex, Unit, ...)
-  math.type.Complex = Complex;
-  math.type.Range = Range;
-  math.type.Index = Index;
-  math.type.Matrix = Matrix;
-  math.type.Unit = Unit;
-  math.type.Help = Help;
-  math.type.ResultSet = ResultSet;
-
   // configure typed functions
-  typed.types['Complex']    = function (x) { return x instanceof Complex; };
-  typed.types['Range']      = function (x) { return x instanceof Range; };
-  typed.types['Index']      = function (x) { return x instanceof Index; };
-  typed.types['Matrix']     = function (x) { return x instanceof Matrix; };
-  typed.types['Unit']       = function (x) { return x instanceof Unit; };
-  typed.types['Help']       = function (x) { return x instanceof Help; };
-  typed.types['ResultSet']  = function (x) { return x instanceof ResultSet; };
-  typed.types['BigNumber']  = function (x) { return x instanceof BigNumber; };
+  typed.types['Complex']    = function (x) { return x instanceof math.type.Complex; };
+  typed.types['Range']      = function (x) { return x instanceof math.type.Range; };
+  typed.types['Index']      = function (x) { return x instanceof math.type.Index; };
+  typed.types['Matrix']     = function (x) { return x instanceof math.type.Matrix; };
+  typed.types['Unit']       = function (x) { return x instanceof math.type.Unit; };
+  typed.types['Help']       = function (x) { return x instanceof math.type.Help; };
+  typed.types['ResultSet']  = function (x) { return x instanceof math.type.ResultSet; };
+  typed.types['BigNumber']  = function (x) { return x instanceof math.type.BigNumber; };
 
   typed.conversions = [
     {
@@ -122,13 +103,13 @@ exports.create = function create () {
           '(value: ' + x + '). ' +
           'Use function bignumber(x) to convert to BigNumber.');
         }
-        return new BigNumber(x);
+        return new math.type.BigNumber(x);
       }
     }, {
       from: 'number',
       to: 'Complex',
       convert: function (x) {
-        return new Complex(x, 0);
+        return new math.type.Complex(x, 0);
       }
     }, {
       from: 'number',
@@ -140,7 +121,7 @@ exports.create = function create () {
       from: 'BigNumber',
       to: 'Complex',
       convert: function (x) {
-        return new Complex(x.toNumber(), 0);
+        return new math.type.Complex(x.toNumber(), 0);
       }
     }, {
       from: 'boolean',
@@ -152,7 +133,7 @@ exports.create = function create () {
       from: 'boolean',
       to: 'BigNumber',
       convert: function (x) {
-        return new BigNumber(+x);
+        return new math.type.BigNumber(+x);
       }
     }, {
       from: 'boolean',
@@ -176,13 +157,13 @@ exports.create = function create () {
       from: 'null',
       to: 'BigNumber',
       convert: function () {
-        return new BigNumber(0);
+        return new math.type.BigNumber(0);
       }
     }, {
       from: 'Array',
       to: 'Matrix',
       convert: function (array) {
-        return new Matrix(array);
+        return new math.type.Matrix(array);
       }
     }
   ];
@@ -191,42 +172,9 @@ exports.create = function create () {
   // constants
   require('./lib/constants')(math, _config);
 
-  /**
-   * Set configuration options for math.js, and get current options
-   * @param {Object} [options] Available options:
-   *                            {String} matrix
-   *                              A string 'matrix' (default) or 'array'.
-   *                            {String} number
-   *                              A string 'number' (default) or 'bignumber'
-   *                            {Number} precision
-   *                              The number of significant digits for BigNumbers.
-   *                              Not applicable for Numbers.
-   * @return {Object} Returns the current configuration
-   */
-    // TODO: change the function config into a regular function, move it to /lib/function/utils
-  math.config = function config(options) {
-    if (options) {
-      // merge options
-      object.deepExtend(_config, options);
+  math._config = _config; // TODO: cleanup when everything is refactored
 
-      if (options.precision) {
-        BigNumber.config({
-          precision: options.precision
-        });
-      }
-
-      // reload the constants (they depend on option number and precision)
-      // this must be done after math.type.BigNumber.config is applied
-      require('./lib/constants')(math, _config);
-    }
-
-    // return a clone of the settings
-    return object.clone(_config);
-  };
-
-  math._config = _config; // TODO: cleanup when everything is converted
-
-  // TODO: remove errors from the namespace as soon as they are redundant
+  // TODO: remove errors from the namespace as soon as all functions are refactored
   // errors
   math.error = require('./lib/error/index');
 
