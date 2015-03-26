@@ -29,9 +29,8 @@ function create (config) {
   math.expression.docs = require('./lib/expression/docs/index');
 
   // serialization utilities
-  math.json = {
-    reviver: require('./lib/json/reviver')
-  };
+  // math.json.*
+  math.import(require('./lib/json/reviver'));
 
   // functions - arithmetic
   math.import(require('./lib/function/arithmetic/abs'));

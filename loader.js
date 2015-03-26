@@ -17,8 +17,10 @@ exports.create = function create () {
   var factories = [];
   var instances = [];
 
-  // the created factory
-  var math = {};
+  // create a namespace for the mathjs instance
+  var math = {
+    type: {}
+  };
 
   var typed = require('typed-function');
   // TODO: must create a separate instance of typed, with custom config.
@@ -40,6 +42,46 @@ exports.create = function create () {
     epsilon: 1e-14
   };
 
+  /**
+   * Load a function or data type from a factory.
+   * If the function or data type already exists, the existing instance is
+   * returned.
+   * @param {{type: string, name: string, factory: function}} factory
+   * @returns {*}
+   */
+  function load (factory) {
+    if (!object.isFactory(factory)) {
+      throw new Error('Factory object with properties `type`, `name`, and `factory` expected');
+    }
+
+    var index = factories.indexOf(factory);
+    var instance;
+    if (index === -1) {
+      // doesn't yet exist
+      if (factory.math) {
+        // pass math namespace
+        instance = factory.factory(math.type, _config, load, typed, math);
+      }
+      else {
+        instance = factory.factory(math.type, _config, load, typed);
+      }
+
+      // append to the cache
+      factories.push(factory);
+      instances.push(instance);
+    }
+    else {
+      // already existing function, return this instance
+      instance = instances[index];
+    }
+
+    return instance;
+  }
+
+  // load the import function, which can be used to load all other functions,
+  // constants, and types
+  math['import'] = load(require('./lib/function/utils/import'));
+
   // TODO: dynamically load data types into the loader, via factory functions for types
   var Complex = require('./lib/type/Complex');
   var Range = require('./lib/type/Range');
@@ -48,48 +90,16 @@ exports.create = function create () {
   var Unit = require('./lib/type/Unit');
   var Help = require('./lib/type/Help');
   var ResultSet = require('./lib/type/ResultSet');
-
-  // create a new BigNumber factory for this instance of math.js
-  var BigNumber = require('./lib/type/BigNumber').constructor(_config);
-
-  // TODO: remove BigNumber.convert as soon as it's deprecated
-  // extend BigNumber with a function convert
-  if (typeof BigNumber.convert !== 'function') {
-    /**
-     * Try to convert a Number in to a BigNumber.
-     * If the number has 15 or mor significant digits, the Number cannot be
-     * converted to BigNumber and will return the original number.
-     * @param {Number} number
-     * @return {BigNumber | Number} bignumber
-     */
-    BigNumber.convert = function(number) {
-      if (digits(number) > 15) {
-        return number;
-      }
-      else {
-        return new BigNumber(number);
-      }
-    };
-  }
-  else {
-    throw new Error('Cannot add function convert to BigNumber: function already exists');
-  }
-
-  // TODO: remove errors from the namespace as soon as they are redundant
-  // errors
-  math.error = require('./lib/error/index');
+  var BigNumber = math.import(require('./lib/type/BigNumber'));
 
   // types (Matrix, Complex, Unit, ...)
-  math.type = {
-    Complex: Complex,
-    Range: Range,
-    Index: Index,
-    Matrix: Matrix,
-    Unit: Unit,
-    Help: Help,
-    ResultSet: ResultSet,
-    BigNumber: BigNumber
-  };
+  math.type.Complex = Complex;
+  math.type.Range = Range;
+  math.type.Index = Index;
+  math.type.Matrix = Matrix;
+  math.type.Unit = Unit;
+  math.type.Help = Help;
+  math.type.ResultSet = ResultSet;
 
   // configure typed functions
   typed.types['Complex']    = function (x) { return x instanceof Complex; };
@@ -177,6 +187,10 @@ exports.create = function create () {
     }
   ];
 
+  // FIXME: load constants via math.import() like all functions (problem: it must be reloaded when config changes)
+  // constants
+  require('./lib/constants')(math, _config);
+
   /**
    * Set configuration options for math.js, and get current options
    * @param {Object} [options] Available options:
@@ -189,7 +203,7 @@ exports.create = function create () {
    *                              Not applicable for Numbers.
    * @return {Object} Returns the current configuration
    */
-  // TODO: change the function config into a regular function, move it to /lib/function/utils
+    // TODO: change the function config into a regular function, move it to /lib/function/utils
   math.config = function config(options) {
     if (options) {
       // merge options
@@ -210,59 +224,11 @@ exports.create = function create () {
     return object.clone(_config);
   };
 
-  // FIXME: load constants via math.import() like all functions (problem: it must be reloaded when config changes)
-  // constants
-  require('./lib/constants')(math, _config);
-
-  /**
-   * Load a . If the function already exists,
-   * the existing instance is returned
-   * @param object
-   * @returns {*}
-   */
-  function load (object) {
-    if (isFunctionFactory(object)) {
-      var factory = object.factory;
-      var index = factories.indexOf(factory);
-      var instance;
-      if (index === -1) {
-        // doesn't yet exist
-        if (object.math) {
-          // pass math namespace
-          instance = factory(math.type, _config, load, typed, math);
-        }
-        else {
-          instance = factory(math.type, _config, load, typed);
-        }
-
-        // append to the cache
-        factories.push(factory);
-        instances.push(instance);
-      }
-      else {
-        // already existing function, return this instance
-        instance = instances[index];
-      }
-
-      return instance;
-    }
-    else {
-      throw new Error('Function factory expected');
-    }
-  }
-
-  // TODO: isFunctionFactory is defined twice: also in /lib/function/util/import.js
-  function isFunctionFactory (object) {
-    return object.type === 'function' &&
-        typeof object.name === 'string' &&
-        typeof object.factory === 'function';
-  }
-
-  // load the import function, which can be used to load all other functions,
-  // constants, and types
-  math['import'] = load(require('./lib/function/utils/import'));
-
   math._config = _config; // TODO: cleanup when everything is converted
+
+  // TODO: remove errors from the namespace as soon as they are redundant
+  // errors
+  math.error = require('./lib/error/index');
 
   return math;
 };

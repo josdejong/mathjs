@@ -243,4 +243,47 @@ describe ('object', function () {
 
   });
 
+  describe('traverse', function() {
+
+    it('should traverse an existing path into an object', function () {
+      var a = {};
+      var b = {a: a};
+      var c = {b: b};
+
+      assert.strictEqual(object.traverse(c), c);
+      assert.strictEqual(object.traverse(c, ''), c);
+      assert.strictEqual(object.traverse(c, 'b'), b);
+      assert.strictEqual(object.traverse(c, 'b.a'), a);
+    });
+
+    it('should append missing piece of a path', function () {
+      var a = {};
+      var b = {a: a};
+      var c = {b: b};
+
+      assert.strictEqual(object.traverse(c), c);
+      assert.strictEqual(object.traverse(c, ''), c);
+      assert.strictEqual(object.traverse(c, 'b'), b);
+      assert.strictEqual(object.traverse(c, 'b.a'), a);
+      assert.strictEqual(object.traverse(c, 'b.d'), b.d);
+      assert.strictEqual(object.traverse(c, 'b.e.f'), b.e.f);
+    });
+
+  });
+
+  describe ('isFactory', function () {
+
+    it('should test whether an object is a factory', function () {
+      assert.equal(object.isFactory({}), false);
+      assert.equal(object.isFactory({foo: true}), false);
+      assert.equal(object.isFactory({name: 'foo'}), false);
+      assert.equal(object.isFactory({name: 'foo', factory: 'bar'}), false);
+      assert.equal(object.isFactory({name: 2, factory: function () {}}), false);
+      assert.equal(object.isFactory({factory: function () {}}), false);
+
+      assert.equal(object.isFactory({name: 'foo', factory: function () {}}), true);
+      assert.equal(object.isFactory({name: 'foo', factory: function () {}, foo: 'bar'}), true);
+    });
+
+  })
 });
