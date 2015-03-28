@@ -17,7 +17,7 @@ Parameter | Type | Description
 `matrix` | Array &#124; Matrix &#124; String | An array, matrix, or string
 `index` | Index | An index containing ranges for each dimension
 `replacement` | * | An array, matrix, or scalar. If provided, the subset is replaced with replacement. If not provided, the subset is returned
-`defaultValue` | * | Default value, filled in on new entries when the matrix is resized. If not provided, new matrix elements will be left undefined. Default value: undefined.
+`defaultValue` | * | Default value, filled in on new entries when the matrix is resized. If not provided, math.matrix elements will be left undefined. Default value: undefined.
 
 ### Returns
 

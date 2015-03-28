@@ -3,7 +3,8 @@
 Math.js supports multi dimensional matrices and arrays. Matrices can be
 created, manipulated, and used in calculations. Both regular JavaScript
 arrays as well as the matrix type implemented by math.js can be used
-interchangeably in all relevant math.js functions.
+interchangeably in all relevant math.js functions. math.js supports both
+dense and sparse matrices.
 
 
 ## Arrays and matrices
@@ -308,4 +309,22 @@ var cum = a.map(function (value, index, matrix) {
   return count;
 });
 console.log(cum.toString()); // [[0, 1], [3, 6], [10, 15]]
+```
+
+## Storage types
+
+Math.js supports both dense matrices as well as sparse matrices. Sparse matrices are efficient for matrices largely containing zeros. In that case they save a lot of memory, and calculations can be much faster than for dense matrices.
+
+Math.js supports three type of matrices:
+
+- Dense matrix (`'dense'`, `default`) A regular, dense matrix, supporting multi dimensional matrices. This is the default matrix type.
+- Compressed row storage (`'crs'`): A two dimensional sparse matrix implementation.
+- Compressed column storage (`'ccs'`): A two dimensional sparse matrix implementation.
+
+The type of matrix can be selected when creating a matrix using the construction functions `matrix`, `diag`, `eye`, `ones`, and `zeros`.
+
+```js
+// create sparse matrices
+var m1 = math.matrix([[0, 1], [0, 0]], 'crs');
+var m2 = math.eye(1000, 1000, 'ccs');
 ```

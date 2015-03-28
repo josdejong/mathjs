@@ -81,6 +81,6 @@ describe('matrix', function() {
   });
   
   it('should throw an error when called with an unknown storage format', function () {
-    assert.throws(function () { math.matrix([], '123'); }, /Unsupported Matrix Storage Format: 123/);
+    assert.throws(function () { math.matrix([], '123'); }, /Unsupported matrix storage format: 123/);
   });
 });

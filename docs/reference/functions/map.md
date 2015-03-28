@@ -1,6 +1,6 @@
 # Function map
 
-Create a new matrix or array with the results of the callback function executed on
+Create a math.matrix or array with the results of the callback function executed on
 each entry of the matrix/array.
 
 
