@@ -1,6 +1,6 @@
 # History
 
-## not yet released, version 1.4.1-SNAPSHOT
+## 2015-03-28, version 1.5.0
 
 - Added unit `stone` (6.35 kg).
 - Implemented support for sparse matrices. Thanks @rjbaucells.

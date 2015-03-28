@@ -1,5 +1,6 @@
 var assert = require('assert');
-var BigNumber = require('../../lib/type/BigNumber');
+var math = require('../../index');
+var BigNumber = math.type.BigNumber;
 
 
 describe('BigNumber', function () {
