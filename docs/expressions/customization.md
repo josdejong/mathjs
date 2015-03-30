@@ -155,6 +155,7 @@ functions of that name.
 
 
 **Examples for option 2**
+
 ```js
 var customFunctions = {
   binomial: function (n, k) {
@@ -175,6 +176,7 @@ var customLaTeX = {
 ```
 
 You can simply use your custom toTex functions by passing them to `toTex`:
+
 ```js
 math.import(customFunctions);
 var expression = math.parse('binomial(factorial(2),1)');
@@ -210,7 +212,9 @@ var expression = math.parse('1+2');
 var latex = expression.toTex(customLaTeX);
 //latex now contains '\mbox{one} plus \mbox{two}'
 ```
+
 Another example in conjunction with custom functions:
+
 ```js
 var customFunctions = {
   binomial: function (n, k) {
