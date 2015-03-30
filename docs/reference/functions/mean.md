@@ -13,9 +13,9 @@ dimension will be calculated. Parameter `dim` is zero-based.
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-mean.mean(a, b, c, ...)
-mean.mean(A)
-mean.mean(A, dim)
+math.mean(a, b, c, ...)
+math.mean(A)
+math.mean(A, dim)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>

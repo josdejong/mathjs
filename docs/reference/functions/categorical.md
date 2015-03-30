@@ -124,8 +124,8 @@ layout: default
 <h2 id="statistics">statistics <a href="#statistics" title="Permalink">#</a></h2>
 
 - [max(a, b, c, ...)](max.html)
-- [mean.mean(a, b, c, ...)](mean.html)
-- [mean.median(a, b, c, ...)](median.html)
+- [mean(a, b, c, ...)](mean.html)
+- [median(a, b, c, ...)](median.html)
 - [min(a, b, c, ...)](min.html)
 - [prod(a, b, c, ...)](prod.html)
 - [std(a, b, c, ...)](std.html)

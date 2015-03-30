@@ -50,8 +50,6 @@ e.subset(math.index(1, [0, 2]), [[7, 8]]);
 print(e);                                   // [[5, 6], [7, 8]]
 var f = math.multiply(d, e);
 print(f);                                   // [[19, 22], [43, 50]]
-print(math.or(d, e));                       // [[5, 6], [7, 12]]
-print(math.not(e));                         // [[-6, -7], [-8, -9]]
 var g = f.subset(math.index(1, 0));
 print(g);                                   // 43
 console.log();

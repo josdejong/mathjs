@@ -15,6 +15,7 @@ layout: default
 - [Import](import.js.html)
 - [Matrices](matrices.js.html)
 - [Serialization](serialization.js.html)
+- [Sparse matrices](sparse_matrices.js.html)
 - [Units](units.js.html)
 
 # Browser examples

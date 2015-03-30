@@ -12,9 +12,11 @@ multiple dimensions.
 
 ```js
 math.zeros(m)
+math.zeros(m, format)
 math.zeros(m, n)
+math.zeros(m, n, format)
 math.zeros([m, n])
-math.zeros([m, n, p, ...])
+math.zeros([m, n], format)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -22,12 +24,13 @@ math.zeros([m, n, p, ...])
 Parameter | Type | Description
 --------- | ---- | -----------
 `size` | ...Number &#124; Array | The size of each dimension of the matrix
+`format` | string | The Matrix storage format
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Array &#124; Matrix &#124; Number | A matrix filled with zeros
+Array &#124; Matrix | A matrix filled with zeros
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
@@ -35,6 +38,7 @@ Array &#124; Matrix &#124; Number | A matrix filled with zeros
 ```js
 math.zeros(3);                  // returns [0, 0, 0]
 math.zeros(3, 2);               // returns [[0, 0], [0, 0], [0, 0]]
+math.zeros(3, 'dense');         // returns [0, 0, 0]
 
 var A = [[1, 2, 3], [4, 5, 6]];
 math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]

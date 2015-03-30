@@ -16,8 +16,8 @@ elements will be calculated.
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-mean.median(a, b, c, ...)
-mean.median(A)
+math.median(a, b, c, ...)
+math.median(A)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
