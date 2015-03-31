@@ -1,10 +1,10 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var BigNumber = require('decimal.js');
-var Matrix = require('../../../lib/type/Matrix');
-var Complex = require('../../../lib/type/Complex');
 var error = require('../../../lib/error/index');
 var math = require('../../../index');
+var BigNumber = math.type.BigNumber;
+var Complex = math.type.Complex;
+var DenseMatrix = math.type.DenseMatrix;
 var det = math.det;
 var diag = math.diag;
 var eye = math.eye;
@@ -14,7 +14,7 @@ describe('det', function() {
   it('should calculate correctly the determinant of a NxN matrix', function() {
     assert.equal(det([5]), 5);
     assert.equal(det([[1,2],[3,4]]), -2);
-    assert.equal(det(new Matrix([[1,2],[3,4]])), -2);
+    assert.equal(det(new DenseMatrix([[1,2],[3,4]])), -2);
     approx.equal(det([
       [-2, 2,  3],
       [-1, 1,  3],
@@ -130,7 +130,7 @@ describe('det', function() {
 
   it('should not accept arrays with dimensions higher than 2', function() {
     assert.throws(function() { det([[[1]]]); }, RangeError);
-    assert.throws(function() { det(new Matrix([[[1]]])); }, RangeError);
+    assert.throws(function() { det(new DenseMatrix([[[1]]])); }, RangeError);
   });
 
 });

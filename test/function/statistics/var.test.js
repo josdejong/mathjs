@@ -1,9 +1,9 @@
 var assert = require('assert');
-var BigNumber = require('decimal.js');
-var Complex = require('../../../lib/type/Complex');
-var Matrix = require('../../../lib/type/Matrix');
-var Unit = require('../../../lib/type/Unit');
 var math = require('../../../index');
+var BigNumber = math.type.BigNumber;
+var Complex = math.type.Complex;
+var DenseMatrix = math.type.DenseMatrix;
+var Unit = math.type.Unit;
 var variance = math['var'];
 
 describe('variance', function() {
@@ -46,8 +46,8 @@ describe('variance', function() {
   });
 
   it('should return the variance from an 1d matrix', function() {
-    assert.equal(variance(new Matrix([2,4,6])), 4);
-    assert.equal(variance(new Matrix([5])), 0);
+    assert.equal(variance(new DenseMatrix([2,4,6])), 4);
+    assert.equal(variance(new DenseMatrix([5])), 0);
   });
 
   it('should return the variance element from a 2d array', function() {
@@ -58,7 +58,7 @@ describe('variance', function() {
   });
 
   it('should return the variance element from a 2d matrix', function() {
-    assert.deepEqual(variance(new Matrix([
+    assert.deepEqual(variance(new DenseMatrix([
       [2,4,6],
       [1,3,5]
     ])), 3.5);

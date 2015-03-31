@@ -19,24 +19,37 @@ function create (config) {
 
   var _config = math._config; // TODO: cleanup as soon as redundant
 
-  math.collection = require('./lib/type/collection');
+  // util methods for Arrays and Matrices
+  math.import(require('./lib/type/collection'));
 
   // expression (parse, Parser, nodes, docs)
   math.expression = {};
   math.expression.node = require('./lib/expression/node/index');
-  math.expression.parse = require('./lib/expression/parse');
-  math.expression.Parser = require('./lib/expression/Parser');
+  math.import(require('./lib/expression/parse'));
+  math.import(require('./lib/expression/Parser'));
   math.expression.docs = require('./lib/expression/docs/index');
 
   // data types (Matrix, Complex, Unit, ...)
   math.type.Complex = require('./lib/type/Complex');
   math.type.Range = require('./lib/type/Range');
   math.type.Index = require('./lib/type/Index');
-  math.type.Matrix = require('./lib/type/Matrix');
+  math.import(require('./lib/type/Matrix'));
   math.type.Unit = require('./lib/type/Unit');
   math.type.Help = require('./lib/type/Help');
   math.type.ResultSet = require('./lib/type/ResultSet');
   math.import(require('./lib/type/BigNumber'));
+
+  // matrix storage formats
+  math.import(require('./lib/type/matrix/CcsMatrix'));
+  math.import(require('./lib/type/matrix/CrsMatrix'));
+  math.import(require('./lib/type/matrix/DenseMatrix'));
+
+  // matrix storage format registry
+  math.type.Matrix._storage.ccs = math.type.CcsMatrix;
+  math.type.Matrix._storage.crs = math.type.CrsMatrix;
+  math.type.Matrix._storage.dense = math.type.DenseMatrix;
+  math.type.Matrix._storage['default'] = math.type.DenseMatrix;
+
 
   // serialization utilities
   // math.json.*

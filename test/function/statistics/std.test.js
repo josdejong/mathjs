@@ -1,10 +1,10 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var BigNumber = require('decimal.js');
-var Complex = require('../../../lib/type/Complex');
-var Matrix = require('../../../lib/type/Matrix');
-var Unit = require('../../../lib/type/Unit');
 var math = require('../../../index');
+var BigNumber = math.type.BigNumber;
+var Complex = math.type.Complex;
+var DenseMatrix = math.type.DenseMatrix;
+var Unit = math.type.Unit;
 var std = math.std;
 
 describe('std', function() {
@@ -48,8 +48,8 @@ describe('std', function() {
   });
 
   it('should return the standard deviation from an 1d matrix', function() {
-    assert.equal(std(new Matrix([2,4,6])), 2);
-    assert.equal(std(new Matrix([5])), 0);
+    assert.equal(std(new DenseMatrix([2,4,6])), 2);
+    assert.equal(std(new DenseMatrix([5])), 0);
   });
 
   it('should return the standard deviation element from a 2d array', function() {
@@ -60,7 +60,7 @@ describe('std', function() {
   });
 
   it('should return the standard deviation element from a 2d matrix', function() {
-    assert.deepEqual(std(new Matrix([
+    assert.deepEqual(std(new DenseMatrix([
       [2,4,6],
       [1,3,5]
     ])), Math.sqrt(3.5));

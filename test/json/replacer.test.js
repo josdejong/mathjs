@@ -79,7 +79,7 @@ describe('replacer', function () {
   });
 
   it('should stringify a Matrix containing a complex number, dense storage format', function () {
-    var c = new Complex(4, 5);
+    var c = new math.type.Complex(4, 5);
     var m = math.matrix([[1,2],[3,c]], 'dense');
     var json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}';
 
@@ -87,7 +87,7 @@ describe('replacer', function () {
   });
   
   it('should stringify a Matrix containing a complex number, ccs storage format', function () {
-    var c = new Complex(4, 5);
+    var c = new math.type.Complex(4, 5);
     var m = math.matrix([[1,2],[3,c]], 'ccs');
     var json = '{"mathjs":"CcsMatrix","values":[1,3,2,{"mathjs":"Complex","re":4,"im":5}],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
 

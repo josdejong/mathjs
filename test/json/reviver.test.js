@@ -99,19 +99,19 @@ describe('reviver', function () {
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Matrix);
+    assert(obj instanceof math.type.Matrix);
     assert.deepEqual(obj, m);
   });
 
   it('should parse a stringified Matrix containing a complex number, dense storage format', function () {
     var json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}';
-    var c = new Complex(4, 5);
+    var c = new math.type.Complex(4, 5);
     var m = math.matrix([[1,2],[3,c]], 'dense');
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Matrix);
-    assert(obj._data[1][1] instanceof Complex);
+    assert(obj instanceof math.type.Matrix);
+    assert(obj._data[1][1] instanceof math.type.Complex);
     assert.deepEqual(obj, m);
   });
 
@@ -122,7 +122,7 @@ describe('reviver', function () {
     var obj = JSON.parse(json, reviver);
 
     assert(obj instanceof math.type.CcsMatrix);
-    assert(obj instanceof Matrix);
+    assert(obj instanceof math.type.Matrix);
     assert.deepEqual(obj, m);
   });
 
@@ -132,7 +132,7 @@ describe('reviver', function () {
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Matrix);
+    assert(obj instanceof math.type.Matrix);
     assert(obj instanceof math.type.CrsMatrix);
     assert.deepEqual(obj, m);
   });

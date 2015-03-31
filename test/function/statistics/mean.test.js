@@ -1,9 +1,9 @@
 var assert = require('assert');
-var BigNumber = require('decimal.js');
-var Complex = require('../../../lib/type/Complex');
-var Matrix = require('../../../lib/type/Matrix');
-var Unit = require('../../../lib/type/Unit');
 var math = require('../../../index');
+var BigNumber = math.type.BigNumber;
+var Complex = math.type.Complex;
+var DenseMatrix = math.type.DenseMatrix;
+var Unit = math.type.Unit;
 var mean = math.mean;
 
 describe('mean', function() {
@@ -36,8 +36,8 @@ describe('mean', function() {
   });
 
   it('should return the mean value from a 1d matrix', function() {
-    assert.equal(mean(new Matrix([5])), 5);
-    assert.equal(mean(new Matrix([1,3,5,2,-5])), 1.2);
+    assert.equal(mean(new DenseMatrix([5])), 5);
+    assert.equal(mean(new DenseMatrix([1,3,5,2,-5])), 1.2);
   });
 
   it('should return the mean for each vector on the last dimension', function() {
@@ -45,7 +45,7 @@ describe('mean', function() {
       [ 2, 4],
       [ 6, 8]
     ]), 5);
-    assert.deepEqual(mean(new Matrix([
+    assert.deepEqual(mean(new DenseMatrix([
       [ 2, 4],
       [ 6, 8]
     ])), 5);

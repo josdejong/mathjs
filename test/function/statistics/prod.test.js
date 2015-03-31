@@ -1,9 +1,9 @@
 var assert = require('assert');
-var BigNumber = require('decimal.js');
-var Complex = require('../../../lib/type/Complex');
-var Matrix = require('../../../lib/type/Matrix');
-var Unit = require('../../../lib/type/Unit');
 var math = require('../../../index');
+var BigNumber = math.type.BigNumber;
+var Complex = math.type.Complex;
+var DenseMatrix = math.type.DenseMatrix;
+var Unit = math.type.Unit;
 var prod = math.prod;
 
 describe('prod', function() {
@@ -34,7 +34,7 @@ describe('prod', function() {
   });
 
   it('should return the prod from an 1d matrix', function() {
-    assert.equal(prod(new Matrix([1,3,5,2])), 30);
+    assert.equal(prod(new DenseMatrix([1,3,5,2])), 30);
   });
 
   it('should return the prod element from a 2d array', function() {
@@ -45,7 +45,7 @@ describe('prod', function() {
   });
 
   it('should return the prod element from a 2d matrix', function() {
-    assert.deepEqual(prod(new Matrix([
+    assert.deepEqual(prod(new DenseMatrix([
       [ 1, 7, 2],
       [ 3, 5, 4]
     ])), 840);

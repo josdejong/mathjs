@@ -1,9 +1,9 @@
 var assert = require('assert');
-var BigNumber = require('decimal.js');
-var Complex = require('../../../lib/type/Complex');
-var Matrix = require('../../../lib/type/Matrix');
-var Unit = require('../../../lib/type/Unit');
 var math = require('../../../index');
+var BigNumber = math.type.BigNumber;
+var Complex = math.type.Complex;
+var DenseMatrix = math.type.DenseMatrix;
+var Unit = math.type.Unit;
 var min = math.min;
 
 describe('min', function() {
@@ -30,7 +30,7 @@ describe('min', function() {
   });
 
   it('should return the min element from a vector array', function() {
-    assert.equal(min(new Matrix([1,3,5,-5,2])), -5);
+    assert.equal(min(new DenseMatrix([1,3,5,-5,2])), -5);
   });
 
   it('should return the max element from a 2d matrix', function() {
@@ -39,7 +39,7 @@ describe('min', function() {
       [ 3, 0,  5],
       [-1, 9, 11]
     ]), -1);
-    assert.deepEqual(min(new Matrix([
+    assert.deepEqual(min(new DenseMatrix([
       [ 1, 4,  7],
       [ 3, 0,  5],
       [-1, 9, 11]

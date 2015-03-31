@@ -1,10 +1,10 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var BigNumber = require('decimal.js');
-var Complex = require('../../../lib/type/Complex');
-var Matrix = require('../../../lib/type/Matrix');
-var Unit = require('../../../lib/type/Unit');
 var math = require('../../../index');
+var BigNumber = math.type.BigNumber;
+var Complex = math.type.Complex;
+var DenseMatrix = math.type.DenseMatrix;
+var Unit = math.type.Unit;
 var median = math.median;
 
 describe('median', function() {
@@ -51,7 +51,7 @@ describe('median', function() {
   });
 
   it('should return the median from an 1d matrix', function() {
-    assert.equal(median(new Matrix([1,3,5,2,-5])), 2);
+    assert.equal(median(new DenseMatrix([1,3,5,2,-5])), 2);
   });
 
   it('should return the median from a 2d array', function() {
@@ -62,7 +62,7 @@ describe('median', function() {
   });
 
   it('should return the median from a 2d matrix', function() {
-    approx.equal(median(new Matrix([
+    approx.equal(median(new DenseMatrix([
       [ 1, 4,  7],
       [ 3, 0,  5]
     ])), 3.5);

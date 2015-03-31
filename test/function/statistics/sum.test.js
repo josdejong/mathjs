@@ -1,9 +1,9 @@
 var assert = require('assert');
-var BigNumber = require('decimal.js');
-var Complex = require('../../../lib/type/Complex');
-var Matrix = require('../../../lib/type/Matrix');
-var Unit = require('../../../lib/type/Unit');
 var math = require('../../../index');
+var BigNumber = math.type.BigNumber;
+var Complex = math.type.Complex;
+var DenseMatrix = math.type.DenseMatrix;
+var Unit = math.type.Unit;
 var sum = math.sum;
 
 describe('sum', function() {
@@ -43,7 +43,7 @@ describe('sum', function() {
   });
 
   it('should return the sum from an 1d matrix', function() {
-    assert.equal(sum(new Matrix([1,3,5,2,-5])), 6);
+    assert.equal(sum(new DenseMatrix([1,3,5,2,-5])), 6);
   });
 
   it('should return the sum element from a 2d array', function() {
@@ -55,7 +55,7 @@ describe('sum', function() {
   });
 
   it('should return the sum element from a 2d matrix', function() {
-    assert.deepEqual(sum(new Matrix([
+    assert.deepEqual(sum(new DenseMatrix([
       [ 1, 4,  7],
       [ 3, 0,  5],
       [-1, 11, 9]

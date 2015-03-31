@@ -64,20 +64,20 @@ describe('matrix', function() {
     assert.deepEqual(math.size(d), matrix([5]));
   });
 
-  it('should throw an error if called with a single number', function() {
-    assert.throws(function () { matrix(123); }, TypeError);
+  it('should throw an error if called with an invalid argument', function() {
+    assert.throws(function () { matrix(new Date()); }, TypeError);
   });
 
   it('should throw an error if called with a unit', function() {
     assert.throws(function () { matrix(math.unit('5cm')); }, TypeError);
   });
 
-  it('should throw an error if called with 2 numbers', function() {
-    assert.throws(function () {matrix([], 3)}, /TypeError: Too many arguments/);
+  it('should throw an error if called with too many arguments', function() {
+    assert.throws(function () {matrix([], 3, 3)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error when called with an invalid storage format', function () {
-    assert.throws(function () { math.matrix([], 1); }, /format must be a string value/);
+    assert.throws(function () { math.matrix([], 1); }, /Unsupported matrix storage format: 1/);
   });
   
   it('should throw an error when called with an unknown storage format', function () {
