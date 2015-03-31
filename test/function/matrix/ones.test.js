@@ -12,6 +12,18 @@ describe('ones', function() {
     assert.deepEqual(ones([]), []);
     assert.deepEqual(ones(matrix([])), matrix());
   });
+  
+  it('should create an empty matrix, CCS format', function () {
+    assert.deepEqual(ones('ccs'), matrix('ccs'));
+    assert.deepEqual(ones([], 'ccs'), matrix([], 'ccs'));
+    assert.deepEqual(ones(matrix([]), 'ccs'), matrix('ccs'));
+  });
+  
+  it('should create an empty matrix, CRS format', function () {
+    assert.deepEqual(ones('crs'), matrix('crs'));
+    assert.deepEqual(ones([], 'crs'), matrix([], 'crs'));
+    assert.deepEqual(ones(matrix([]), 'crs'), matrix('crs'));
+  });
 
   it('should create a vector with ones', function () {
     assert.deepEqual(ones(3), matrix([1,1,1]));

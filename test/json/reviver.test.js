@@ -93,25 +93,47 @@ describe('reviver', function () {
     assert.deepEqual(obj, i);
   });
 
-  it('should parse a stringified Matrix', function () {
-    var json = '{"mathjs":"Matrix","data":[[1,2],[3,4]]}';
-    var m = new math.type.Matrix([[1,2],[3,4]]);
+  it('should parse a stringified Matrix, dense storage format', function () {
+    var json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,4]],"size":[2,2]}';
+    var m = math.matrix([[1,2],[3,4]], 'dense');
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof math.type.Matrix);
+    assert(obj instanceof Matrix);
     assert.deepEqual(obj, m);
   });
 
-  it('should parse a stringified Matrix containing a complex number', function () {
-    var json = '{"mathjs":"Matrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]]}';
-    var c = new math.type.Complex(4, 5);
-    var m = new math.type.Matrix([[1,2],[3,c]]);
+  it('should parse a stringified Matrix containing a complex number, dense storage format', function () {
+    var json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}';
+    var c = new Complex(4, 5);
+    var m = math.matrix([[1,2],[3,c]], 'dense');
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof math.type.Matrix);
-    assert(obj._data[1][1] instanceof math.type.Complex);
+    assert(obj instanceof Matrix);
+    assert(obj._data[1][1] instanceof Complex);
+    assert.deepEqual(obj, m);
+  });
+
+  it('should parse a Matrix, ccs storage format', function () {
+    var json = '{"mathjs":"CcsMatrix","values":[1,3,2,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
+    var m = math.matrix([[1,2],[3,4]], 'ccs');
+
+    var obj = JSON.parse(json, reviver);
+
+    assert(obj instanceof math.type.CcsMatrix);
+    assert(obj instanceof Matrix);
+    assert.deepEqual(obj, m);
+  });
+
+  it('should parse a Matrix, crs storage format', function () {
+    var json = '{"mathjs":"CrsMatrix","values":[1,2,3,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
+    var m = math.matrix([[1,2],[3,4]], 'crs');
+
+    var obj = JSON.parse(json, reviver);
+
+    assert(obj instanceof Matrix);
+    assert(obj instanceof math.type.CrsMatrix);
     assert.deepEqual(obj, m);
   });
 

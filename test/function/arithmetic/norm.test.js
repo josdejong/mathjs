@@ -1,10 +1,10 @@
 // test norm
 var assert = require('assert'),
-  error = require('../../../lib/error/index'),
-  math = require('../../../index');
+    error = require('../../../lib/error/index'),
+    math = require('../../../index');
 
 describe('norm', function () {
-  
+
   it('should return the absolute value of a boolean', function () {
     assert.equal(math.norm(true), 1);
     assert.equal(math.norm(true, 10), 1);
@@ -24,7 +24,7 @@ describe('norm', function () {
     assert.equal(math.norm(0), 0);
     assert.equal(math.norm(100, 10), 100);
   });
-  
+
   it('should return the absolute value of a big number', function () {
     assert.deepEqual(math.norm(math.bignumber(-2.3)), math.bignumber(2.3));
     assert.deepEqual(math.norm(math.bignumber('5e500')), math.bignumber('5e500'));
@@ -88,7 +88,7 @@ describe('norm', function () {
       math.norm(math.norm([[1, 2], [3, 4]], 2), 6);
     });
   });
-  
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {math.norm()}, /TypeError: Too few arguments/);
     assert.throws(function () {math.norm(1, 2, 3)}, /TypeError: Too many arguments/);

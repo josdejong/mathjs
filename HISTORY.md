@@ -12,10 +12,12 @@
 - Function `import` now returns the imported objects.
 
 
-## not yet released, version 1.4.1-SNAPSHOT
+## 2015-03-28, version 1.5.0
 
 - Added unit `stone` (6.35 kg).
+- Implemented support for sparse matrices. Thanks @rjbaucells.
 - Implemented BigNumber support for function `atan2`. Thanks @BigFav.
+- Implemented support for custom LaTeX representations. Thanks @FSMaxB.
 - Improvements and bug fixes in outputting parentheses in `Node.toString` and
   `Node.toTex` functions. Thanks @FSMaxB.
 - Fixed #291: function `format` sometimes returning exponential notation when

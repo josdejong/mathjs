@@ -8,8 +8,11 @@ The matrix has ones on the diagonal and zeros elsewhere.
 
 ```js
 math.eye(n)
+math.eye(n, format)
 math.eye(m, n)
+math.eye(m, n, format)
 math.eye([m, n])
+math.eye([m, n], format)
 ```
 
 ### Parameters
@@ -17,6 +20,7 @@ math.eye([m, n])
 Parameter | Type | Description
 --------- | ---- | -----------
 `size` | ...Number &#124; Matrix &#124; Array | The size for the matrix
+`format` | string | The Matrix storage format
 
 ### Returns
 

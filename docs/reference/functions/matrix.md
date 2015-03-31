@@ -8,8 +8,10 @@ matrix, like getting the size and getting or setting values in the matrix.
 ## Syntax
 
 ```js
-math.matrix()      // creates an empty matrix
-math.matrix(data)  // creates a matrix with initial data.
+math.matrix()               // creates an empty matrix using default storage format (dense).
+math.matrix(data)           // creates a matrix with initial data using default storage format (dense).
+math.matrix('dense')        // creates an empty matrix using the given storage format.
+math.matrix(data, 'dense')  // creates a matrix with initial data using the given storage format.
 ```
 
 ### Parameters
@@ -17,6 +19,7 @@ math.matrix(data)  // creates a matrix with initial data.
 Parameter | Type | Description
 --------- | ---- | -----------
 `data` | Array &#124; Matrix | A multi dimensional array
+`format` | string | The Matrix storage format
 
 ### Returns
 

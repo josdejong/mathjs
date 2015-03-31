@@ -8,9 +8,13 @@ multiple dimensions.
 
 ```js
 math.ones(m)
+math.ones(m, format)
 math.ones(m, n)
+math.ones(m, n, format)
 math.ones([m, n])
+math.ones([m, n], format)
 math.ones([m, n, p, ...])
+math.ones([m, n, p, ...], format)
 ```
 
 ### Parameters
@@ -18,6 +22,7 @@ math.ones([m, n, p, ...])
 Parameter | Type | Description
 --------- | ---- | -----------
 `size` | ...Number &#124; Array | The size of each dimension of the matrix
+`format` | string | The Matrix storage format
 
 ### Returns
 
@@ -31,6 +36,7 @@ Array &#124; Matrix &#124; Number | A matrix filled with ones
 ```js
 math.ones(3);                   // returns [1, 1, 1]
 math.ones(3, 2);                // returns [[1, 1], [1, 1], [1, 1]]
+math.ones(3, 2, 'dense');       // returns Dense Matrix [[1, 1], [1, 1], [1, 1]]
 
 var A = [[1, 2, 3], [4, 5, 6]];
 math.zeros(math.size(A));       // returns [[1, 1, 1], [1, 1, 1]]

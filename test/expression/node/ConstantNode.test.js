@@ -139,4 +139,17 @@ describe('ConstantNode', function() {
     assert.equal(new ConstantNode('null', 'null').toTex(), 'null');
   });
 
+  it ('should LaTeX a ConstantNode with custom toTex', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, callback) {
+      if (node.type === 'ConstantNode') {
+        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+      }
+    };
+
+    var n = new ConstantNode(1);
+
+    assert.equal(n.toTex(customFunction), 'const\\left(1, number\\right)');
+  });
+
 });

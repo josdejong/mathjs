@@ -56,7 +56,8 @@ describe('inv', function() {
   it('should return the inverse for each element in a matrix', function() {
     assert.deepEqual(inv(math.matrix([4])), math.matrix([1/4]));
     assert.deepEqual(inv(math.matrix([[4]])), math.matrix([[1/4]]));
-    assert.deepEqual(inv(math.matrix([[1,2],[3,4]])), math.matrix([[-2, 1],[1.5, -0.5]]));
+    assert.deepEqual(inv(math.matrix([[4]], 'ccs')), math.matrix([[1/4]], 'ccs'));
+    assert.deepEqual(inv(math.matrix([[1,2],[3,4]], 'ccs')), math.matrix([[-2, 1],[1.5, -0.5]], 'ccs'));
   });
 
   it('should throw an error in case of non-square matrices', function() {

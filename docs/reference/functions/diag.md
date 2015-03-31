@@ -12,7 +12,9 @@ When k is negative, the values are placed on the sub diagonal.
 
 ```js
 math.diag(X)
+math.diag(X, format)
 math.diag(X, k)
+math.diag(X, k, format)
 ```
 
 ### Parameters
@@ -21,6 +23,7 @@ Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Matrix &#124; Array | A two dimensional matrix or a vector
 `k` | Number &#124; BigNumber | The diagonal where the vector will be filled in or retrieved. Default value: 0.
+`format` | string | The matrix storage format. Default value: 'dense'.
 
 ### Returns
 

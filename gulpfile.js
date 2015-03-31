@@ -14,9 +14,7 @@ var ENTRY       = './index.js',
     DIST        = './dist',
     REF_SRC     = './lib/function/',
     REF_DEST    = './docs/reference/functions/',
-    MATH_JS     = DIST + '/' + FILE,
-    MATH_MIN_JS = DIST + '/' + FILE_MIN,
-    MATH_MAP_JS = DIST + '/' + FILE_MAP;
+    MATH_JS     = DIST + '/' + FILE;
 
 // generate banner with today's date and correct version
 function createBanner() {
@@ -86,13 +84,22 @@ gulp.task('bundle', ['validate'], function (cb) {
 });
 
 gulp.task('minify', ['bundle'], function () {
-  var result = uglify.minify([MATH_JS], uglifyConfig);
+  var oldCwd = process.cwd();
+  process.chdir(DIST);
 
-  fs.writeFileSync(MATH_MIN_JS, result.code);
-  fs.writeFileSync(MATH_MAP_JS, result.map);
+  try {
+    var result = uglify.minify([FILE], uglifyConfig);
 
-  gutil.log('Minified ' + MATH_MIN_JS);
-  gutil.log('Mapped ' + MATH_MAP_JS);
+    fs.writeFileSync(FILE_MIN, result.code);
+    fs.writeFileSync(FILE_MAP, result.map);
+
+    gutil.log('Minified ' + FILE_MIN);
+    gutil.log('Mapped ' + FILE_MAP);
+  } catch(e) {
+    throw e;
+  } finally {
+    process.chdir(oldCwd);
+  }
 });
 
 // test whether the docs for the expression parser are complete

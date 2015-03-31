@@ -139,3 +139,99 @@ math.import({
 math.eval('myFunction(2 + 3, sqrt(4))');
 // returns 'arguments: 2 + 3, sqrt(4), evaluated: 5, 2'
 ```
+
+## Custom LaTeX conversion
+
+You can provide the `toTex` function of an expression tree with your own LaTeX converters.
+This can be used to override the builtin LaTeX conversion or provide LaTeX output for your own custom functions.
+
+You can pass your own callback(s) to `toTex`. If it returns nothing, the standard LaTeX conversion will be use.
+If your callback returns a string, this string will be used.
+
+There's two ways of passing callbacks:
+1. Pass an object that maps function names to callbacks. Those callbacks will be used for FunctionNodes with 
+functions of that name.
+2. Pass a function to `toTex`. This function will then be used for every node.
+
+
+**Examples for option 2**
+
+```js
+var customFunctions = {
+  binomial: function (n, k) {
+    //calculate n choose k
+    // (do some stuff)
+    return result;
+  }
+};
+
+var customLaTeX = {
+  'binomial': function (node, callbacks) { //provide toTex for your own custom function
+    return '\\binom{' + node.args[0].toTex(callbacks) + '}{' + node.args[1].toTex(callbacks) + '}';
+  },
+  'factorial': function (node, callbacks) { //override toTex for builtin functions
+  	return 'factorial\\left(' + node.args[0] + '\\right)';
+  }
+};
+```
+
+You can simply use your custom toTex functions by passing them to `toTex`:
+
+```js
+math.import(customFunctions);
+var expression = math.parse('binomial(factorial(2),1)');
+var latex = expression.toTex(customLaTeX);
+//latex now contains "\binom{factorial\\left(2\\right)}{1}"
+```
+
+**Examples for option 2:**
+
+```js
+var customLaTeX = function (node, callback) {
+  if ((node.type === 'OperatorNode') && (node.fn === 'add')) {
+    //don't forget to pass the callback to the toTex functions
+    return node.args[0].toTex(callback) + ' plus ' + node.args[1].toTex(callback);
+  }
+  else if (node.type === 'ConstantNode') {
+    if (node.value == 0) {
+        return '\\mbox{zero}';
+    }
+    else if (node.value == 1) {
+        return '\\mbox{one}';
+    }
+    else if (node.value == 2) {
+        return '\\mbox{two}';
+    }
+    else {
+        return node.value;
+    }
+  }
+};
+
+var expression = math.parse('1+2');
+var latex = expression.toTex(customLaTeX);
+//latex now contains '\mbox{one} plus \mbox{two}'
+```
+
+Another example in conjunction with custom functions:
+
+```js
+var customFunctions = {
+  binomial: function (n, k) {
+    //calculate n choose k
+    // (do some stuff)
+    return result;
+  }
+};
+
+var customLaTeX = function (node, callback) {
+  if ((node.type === 'FunctionNode') && (node.name === 'binomial')) {
+      return '\\binom{' + node.args[0].toTex(callback) + '}{' + node.args[1].toTex(callback) + '}';
+  }
+};
+
+math.import(customFunctions);
+var expression = math.parse('binomial(2,1)');
+var latex = expression.toTex(customLaTeX);
+//latex now contains "\binom{2}{1}"
+```

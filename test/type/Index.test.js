@@ -1,8 +1,9 @@
 // test data type Index
 var assert = require('assert');
-var Index = require('../../lib/type/Index');
-var Matrix = require('../../lib/type/Matrix');
-var Range = require('../../lib/type/Range');
+var math = require('../../index');
+var Index = math.type.Index;
+var Matrix = math.type.Matrix;
+var Range = math.type.Range;
 
 describe('Index', function () {
 
@@ -22,7 +23,7 @@ describe('Index', function () {
   });
 
   it('should create an Index from a Matrix', function () {
-    assert.deepEqual(new Index(new Matrix([0, 10]))._ranges, [{start:0, end:10, step:1}]);
+    assert.deepEqual(new Index(math.matrix([0, 10]))._ranges, [{start:0, end:10, step:1}]);
   });
 
   it('should create an Index from an array with ranges', function () {
@@ -140,7 +141,7 @@ describe('Index', function () {
 
   it('should test whether an object is an Index', function () {
     assert.equal(Index.isIndex(new Index()), true);
-    assert.equal(Index.isIndex(new Matrix()), false);
+    assert.equal(Index.isIndex(math.matrix()), false);
     assert.equal(Index.isIndex(23.4), false);
     assert.equal(Index.isIndex([]), false);
     assert.equal(Index.isIndex({}), false);
