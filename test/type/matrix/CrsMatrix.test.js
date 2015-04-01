@@ -1306,6 +1306,62 @@ describe('CrsMatrix', function() {
           [0, 2, 0]
         ]);
     });
+    
+    it('should create CRS matrix (n x n), matrix vector value', function () {
+
+      var m = CrsMatrix.diagonal([3, 3], math.matrix([1, 2, 3]));
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2, 3]);
+      assert.deepEqual(m._index, [0, 1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 3]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0],
+          [0, 2, 0],
+          [0, 0, 3]
+        ]);
+    });
+
+    it('should create CRS matrix (n x n), matrix vector value, k > 0', function () {
+
+      var m = CrsMatrix.diagonal([3, 3], math.matrix([1, 2]), 1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 2],
+          [0, 0, 0]
+        ]);
+    });
+
+    it('should create CRS matrix (n x n), matrix vector value, k < 0', function () {
+
+      var m = CrsMatrix.diagonal([3, 3], math.matrix([1, 2]), -1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [0, 1]);
+      assert.deepEqual(m._ptr, [0, 0, 1, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 2, 0]
+        ]);
+    });
+    
+    
 
     it('should create CRS matrix (n x n), complex number', function () {
 
@@ -1548,7 +1604,7 @@ describe('CrsMatrix', function() {
           [0, 0, 1]
         ]);
 
-      assert.deepEqual(m.diagonal(), [1, 1, 1]);
+      assert.deepEqual(m.diagonal(), new CrsMatrix([1, 1, 1]));
     });
 
     it('should get CRS matrix diagonal (n x n), k > 0', function () {
@@ -1560,7 +1616,7 @@ describe('CrsMatrix', function() {
           [0, 0, 1]
         ]);
 
-      assert.deepEqual(m.diagonal(1), [2, 3]);
+      assert.deepEqual(m.diagonal(1), new CrsMatrix([2, 3]));
     });
 
     it('should get CRS matrix diagonal (n x n), k < 0', function () {
@@ -1572,7 +1628,7 @@ describe('CrsMatrix', function() {
           [0, 3, 1]
         ]);
 
-      assert.deepEqual(m.diagonal(-1), [2, 3]);
+      assert.deepEqual(m.diagonal(-1), new CrsMatrix([2, 3]));
     });
 
     it('should get CRS matrix diagonal (m x n), m > n', function () {
@@ -1585,7 +1641,7 @@ describe('CrsMatrix', function() {
           [0, 0, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(), [1, 1, 1]);
+      assert.deepEqual(m.diagonal(), new CrsMatrix([1, 1, 1]));
     });
 
     it('should get CRS matrix diagonal (m x n), m > n, k > 0', function () {
@@ -1598,7 +1654,7 @@ describe('CrsMatrix', function() {
           [0, 0, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(1), [2, 3]);
+      assert.deepEqual(m.diagonal(1), new CrsMatrix([2, 3]));
     });
 
     it('should get CRS matrix diagonal (m x n), m > n, k < 0', function () {
@@ -1611,7 +1667,7 @@ describe('CrsMatrix', function() {
           [0, 0, 4]
         ]);
 
-      assert.deepEqual(m.diagonal(-1), [2, 3, 4]);
+      assert.deepEqual(m.diagonal(-1), new CrsMatrix([2, 3, 4]));
     });
 
     it('should get CRS matrix diagonal (m x n), m < n', function () {
@@ -1623,7 +1679,7 @@ describe('CrsMatrix', function() {
           [0, 0, 1, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(), [1, 1, 1]);
+      assert.deepEqual(m.diagonal(), new CrsMatrix([1, 1, 1]));
     });
 
     it('should get CRS matrix diagonal (m x n), m < n, k > 0', function () {
@@ -1635,7 +1691,7 @@ describe('CrsMatrix', function() {
           [0, 0, 1, 4]
         ]);
 
-      assert.deepEqual(m.diagonal(1), [2, 3, 4]);
+      assert.deepEqual(m.diagonal(1), new CrsMatrix([2, 3, 4]));
     });
 
     it('should get CRS matrix diagonal (m x n), m < n, k < 0', function () {
@@ -1647,9 +1703,9 @@ describe('CrsMatrix', function() {
           [4, 3, 1, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(-1), [2, 3]);
+      assert.deepEqual(m.diagonal(-1), new CrsMatrix([2, 3]));
 
-      assert.deepEqual(m.diagonal(-2), [4]);
+      assert.deepEqual(m.diagonal(-2), new CrsMatrix([4]));
     });
   });
   
