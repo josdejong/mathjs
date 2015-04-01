@@ -54,7 +54,7 @@ describe('help', function() {
 
   it('should LaTeX help', function () {
     var expression = math.parse('help(parse)');
-    assert.equal(expression.toTex(), '\\mathrm{help}\\left({parse}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{help}\\left({\\mathrm{parse}}\\right)');
   });
 
 });

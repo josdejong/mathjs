@@ -89,7 +89,7 @@ describe('dotDivide', function() {
 
   it('should LaTeX dotDivide', function () {
     var expression = math.parse('dotDivide(a,b)'); //TODO do this properly with matrices
-    assert.equal(expression.toTex(), '\\mathrm{dotDivide}\\left({a},{b}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{dotDivide}\\left({\\mathrm{a}},{\\mathrm{b}}\\right)');
   });
 
 });

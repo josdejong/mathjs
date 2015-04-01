@@ -105,7 +105,7 @@ describe('dotPow', function() {
 
   it('should LaTeX dotPow', function () {
     var expression = math.parse('dotPow(a,b)'); //TODO do this properly with matrices
-    assert.equal(expression.toTex(), '\\mathrm{dotPow}\\left({a},{b}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{dotPow}\\left({\\mathrm{a}},{\\mathrm{b}}\\right)');
   });
 
 });

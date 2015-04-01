@@ -50,7 +50,7 @@ describe('map', function() {
 
   it('should LaTeX map', function () {
     var expression = math.parse('map([1,2,3],callback)');
-    assert.equal(expression.toTex(), '\\mathrm{map}\\left({\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}},{callback}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{map}\\left({\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}},{\\mathrm{callback}}\\right)');
   });
 
 });

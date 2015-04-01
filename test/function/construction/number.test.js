@@ -74,7 +74,7 @@ describe('number', function() {
 
     assert.equal(expr1.toTex(), '0');
     assert.equal(expr2.toTex(), '\\left({1}\\right)');
-    assert.equal(expr3.toTex(), '\\left(\\left({1}\\right){cm}\\right)');
+    assert.equal(expr3.toTex(), '\\left(\\left({1}\\right){\\mathrm{cm}}\\right)');
   });
 });
 
