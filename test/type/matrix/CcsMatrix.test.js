@@ -1948,4 +1948,44 @@ describe('CcsMatrix', function() {
       assert.throws(function () {math.matrix([1,1,1], 'ccs').multiply([[1,1], [1,1]]);});
     });
   });
+  
+  describe('lup', function () {
+    
+    it('should decompose matrix, n x n, no pivoting', function () {
+      var m = new CcsMatrix(
+        [
+          [2, 1],
+          [1, 4]
+        ]
+      );
+      
+      var r = m.lup();
+      
+      assert.deepEqual(r.v, []);
+      assert.deepEqual(
+        r.L,
+        new CcsMatrix(
+          [
+            [1, 0],
+            [1.5, 1]
+          ]
+        ));
+      assert.deepEqual(
+        r.U,
+        new CcsMatrix(
+          [
+            [2, 1],
+            [0, 3.5]
+          ]
+        ));
+      assert.deepEqual(
+        r.P,
+        new CcsMatrix(
+          [
+            [1, 0],
+            [0, 1]
+          ]
+        ));
+    });
+  });
 });
