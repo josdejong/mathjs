@@ -78,4 +78,10 @@ describe('median', function() {
     assert.throws(function() {median([])});
   });
 
+  it('should not mutate the array', function() {
+    var a = [3,2,1];
+    var b = median(a);
+    assert.deepEqual(a,[3,2,1]);
+  });
+
 });
