@@ -1327,6 +1327,60 @@ describe('CcsMatrix', function() {
         ]);
     });
     
+    it('should create CCS matrix (n x n), matrix vector value', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], math.matrix([1, 2, 3]));
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2, 3]);
+      assert.deepEqual(m._index, [0, 1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 3]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0],
+          [0, 2, 0],
+          [0, 0, 3]
+        ]);
+    });
+
+    it('should create CCS matrix (n x n), matrix vector value, k > 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], math.matrix([1, 2]), 1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [0, 1]);
+      assert.deepEqual(m._ptr, [0, 0, 1, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 2],
+          [0, 0, 0]
+        ]);
+    });
+
+    it('should create CCS matrix (n x n), matrix vector value, k < 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], math.matrix([1, 2]), -1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 2, 0]
+        ]);
+    });
+      
     it('should create CCS matrix (n x n), complex number', function () {
 
       var m = CcsMatrix.diagonal([3, 3], new Complex(1, 1));
@@ -1568,7 +1622,7 @@ describe('CcsMatrix', function() {
           [0, 0, 1]
         ]);
 
-      assert.deepEqual(m.diagonal(), [1, 1, 1]);
+      assert.deepEqual(m.diagonal(), new CcsMatrix([1, 1, 1]));
     });
     
     it('should get CCS matrix diagonal (n x n), k > 0', function () {
@@ -1580,7 +1634,7 @@ describe('CcsMatrix', function() {
           [0, 0, 1]
         ]);
 
-      assert.deepEqual(m.diagonal(1), [2, 3]);
+      assert.deepEqual(m.diagonal(1), new CcsMatrix([2, 3]));
     });
     
     it('should get CCS matrix diagonal (n x n), k < 0', function () {
@@ -1592,7 +1646,7 @@ describe('CcsMatrix', function() {
           [0, 3, 1]
         ]);
 
-      assert.deepEqual(m.diagonal(-1), [2, 3]);
+      assert.deepEqual(m.diagonal(-1), new CcsMatrix([2, 3]));
     });
     
     it('should get CCS matrix diagonal (m x n), m > n', function () {
@@ -1605,7 +1659,7 @@ describe('CcsMatrix', function() {
           [0, 0, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(), [1, 1, 1]);
+      assert.deepEqual(m.diagonal(), new CcsMatrix([1, 1, 1]));
     });
 
     it('should get CCS matrix diagonal (m x n), m > n, k > 0', function () {
@@ -1618,7 +1672,7 @@ describe('CcsMatrix', function() {
           [0, 0, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(1), [2, 3]);
+      assert.deepEqual(m.diagonal(1), new CcsMatrix([2, 3]));
     });
     
     it('should get CCS matrix diagonal (m x n), m > n, k < 0', function () {
@@ -1631,7 +1685,7 @@ describe('CcsMatrix', function() {
           [0, 0, 4]
         ]);
 
-      assert.deepEqual(m.diagonal(-1), [2, 3, 4]);
+      assert.deepEqual(m.diagonal(-1), new CcsMatrix([2, 3, 4]));
     });
     
     it('should get CCS matrix diagonal (m x n), m < n', function () {
@@ -1643,7 +1697,7 @@ describe('CcsMatrix', function() {
           [0, 0, 1, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(), [1, 1, 1]);
+      assert.deepEqual(m.diagonal(), new CcsMatrix([1, 1, 1]));
     });
     
     it('should get CCS matrix diagonal (m x n), m < n, k > 0', function () {
@@ -1655,7 +1709,7 @@ describe('CcsMatrix', function() {
           [0, 0, 1, 4]
         ]);
       
-      assert.deepEqual(m.diagonal(1), [2, 3, 4]);
+      assert.deepEqual(m.diagonal(1), new CcsMatrix([2, 3, 4]));
     });
     
     it('should get CCS matrix diagonal (m x n), m < n, k < 0', function () {
@@ -1667,9 +1721,9 @@ describe('CcsMatrix', function() {
           [4, 3, 1, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(-1), [2, 3]);
+      assert.deepEqual(m.diagonal(-1), new CcsMatrix([2, 3]));
       
-      assert.deepEqual(m.diagonal(-2), [4]);
+      assert.deepEqual(m.diagonal(-2), new CcsMatrix([4]));
     });
   });
   

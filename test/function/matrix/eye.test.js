@@ -11,8 +11,7 @@ describe('eye', function() {
     assert.deepEqual(eye(matrix([])), matrix());
   });
 
-  // FIXME: create an empty matrix with ccs storage type
-  it.skip('should create an empty matrix with ccs storage type', function () {
+  it('should create an empty matrix with ccs storage type', function () {
     assert.deepEqual(eye('ccs'), matrix('ccs'));
     assert.deepEqual(eye(matrix([], 'ccs')), matrix('ccs'));
   });
@@ -28,8 +27,7 @@ describe('eye', function() {
     assert.deepEqual(eye(3,3), matrix([[1,0,0],[0,1,0],[0,0,1]]));
   });
 
-  // FIXME: create a matrix with ccs storage type
-  it.skip('should create an identity matrix with storage type css of the given size', function() {
+  it('should create an identity matrix with storage type css of the given size', function() {
     assert.deepEqual(eye(1, 'ccs'), matrix([[1]], 'ccs'));
     assert.deepEqual(eye(2, 'ccs'), matrix([[1,0],[0,1]], 'ccs'));
     assert.deepEqual(eye(2,3, 'ccs'), matrix([[1,0,0],[0,1,0]], 'ccs'));
