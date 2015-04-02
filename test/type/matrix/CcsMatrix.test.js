@@ -1966,7 +1966,7 @@ describe('CcsMatrix', function() {
         new CcsMatrix(
           [
             [1, 0],
-            [1.5, 1]
+            [0.5, 1]
           ]
         ));
       assert.deepEqual(
@@ -1983,6 +1983,81 @@ describe('CcsMatrix', function() {
           [
             [1, 0],
             [0, 1]
+          ]
+        ));
+    });
+    
+    it('should decompose matrix, m x n, m < n, no pivoting', function () {
+      var m = new CcsMatrix(
+        [
+          [2, 1, 1],
+          [1, 4, 5]
+        ]
+      );
+
+      var r = m.lup();
+
+      assert.deepEqual(
+        r.L,
+        new CcsMatrix(
+          [
+            [1, 0],
+            [0.5, 1]
+          ]
+        ));
+      assert.deepEqual(
+        r.U,
+        new CcsMatrix(
+          [
+            [2, 1, 1],
+            [0, 3.5, 4.5]
+          ]
+        ));
+      assert.deepEqual(
+        r.P,
+        new CcsMatrix(
+          [
+            [1, 0],
+            [0, 1]
+          ]
+        ));
+    });
+    
+    it('should decompose matrix, m x n, m > n, no pivoting', function () {
+      var m = new CcsMatrix(
+        [
+          [8, 2],
+          [6, 4],
+          [4, 1]
+        ]
+      );
+
+      var r = m.lup();
+
+      assert.deepEqual(
+        r.L,
+        new CcsMatrix(
+          [
+            [1, 0],
+            [0.75, 1],
+            [0.5, 0]
+          ]
+        ));
+      assert.deepEqual(
+        r.U,
+        new CcsMatrix(
+          [
+            [8, 2],
+            [0, 2.5]
+          ]
+        ));
+      assert.deepEqual(
+        r.P,
+        new CcsMatrix(
+          [
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 1]
           ]
         ));
     });
