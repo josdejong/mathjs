@@ -39,6 +39,9 @@ function create (config) {
   math.type.ResultSet = require('./lib/type/ResultSet');
   math.import(require('./lib/type/BigNumber'));
 
+  // sparse accumulator
+  math.import(require('./lib/type/matrix/Spa'));
+  
   // matrix storage formats
   math.import(require('./lib/type/matrix/CcsMatrix'));
   math.import(require('./lib/type/matrix/CrsMatrix'));

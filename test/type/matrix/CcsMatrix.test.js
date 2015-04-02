@@ -1961,7 +1961,6 @@ describe('CcsMatrix', function() {
       
       var r = m.lup();
       
-      assert.deepEqual(r.v, []);
       assert.deepEqual(
         r.L,
         new CcsMatrix(
