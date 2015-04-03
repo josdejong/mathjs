@@ -1951,7 +1951,7 @@ describe('CcsMatrix', function() {
   
   describe('lup', function () {
     
-    it('should decompose matrix, n x n, no pivoting', function () {
+    it('should decompose matrix, n x n, no permutations', function () {
       var m = new CcsMatrix(
         [
           [2, 1],
@@ -1987,9 +1987,11 @@ describe('CcsMatrix', function() {
             [0, 1]
           ]
         ));
+      // verify
+      assert.deepEqual(math.multiply(r[2], m), math.multiply(r[0], r[1]));
     });
     
-    it('should decompose matrix, m x n, m < n, no pivoting', function () {
+    it('should decompose matrix, m x n, m < n, no permutations', function () {
       var m = new CcsMatrix(
         [
           [2, 1, 1],
@@ -2025,9 +2027,11 @@ describe('CcsMatrix', function() {
             [0, 1]
           ]
         ));
+      // verify
+      assert.deepEqual(math.multiply(r[2], m), math.multiply(r[0], r[1]));
     });
     
-    it('should decompose matrix, m x n, m > n, no pivoting', function () {
+    it('should decompose matrix, m x n, m > n, no permutations', function () {
       var m = new CcsMatrix(
         [
           [8, 2],
@@ -2064,6 +2068,55 @@ describe('CcsMatrix', function() {
             [1, 0, 0],
             [0, 1, 0],
             [0, 0, 1]
+          ]
+        ));
+      // verify
+      assert.deepEqual(math.multiply(r[2], m), math.multiply(r[0], r[1]));
+    });
+    
+    it('should decompose matrix, n x n', function () {
+      var m = new CcsMatrix(
+        [
+          [16, -120, 240, -140],
+          [-120, 1200, -2700, 1680],
+          [240, -2700, 6480, -4200],
+          [-140, 1680, -4200, 2800]
+        ]
+      );
+
+      var r = m.lup();
+      assert.deepEqual(math.multiply(r[2], m), math.multiply(r[0], r[1]));
+      // L
+      assert.deepEqual(
+        r[0],
+        new CcsMatrix(
+          [
+            [1, 0, 0, 0],  
+            [-0.5, 1, 0, 0],
+            [-0.5833333, -0.7, 1, 0],
+            [0.0666667, -0.4, -0.5714286, 1]
+          ]
+        ));
+      // U
+      assert.deepEqual(
+        r[1],
+        new CcsMatrix(
+          [
+            [240, -2700, 6480, -4200],
+            [0, -150, 540, -420], 
+            [0, 0, -42, 56],
+            [0, 0, 0, 4]
+          ]
+        ));
+      // P
+      assert.deepEqual(
+        r[2],
+        new CcsMatrix(
+          [
+            [0, 0, 1, 0],
+            [0, 1, 0, 0],
+            [0, 0, 0, 1],
+            [1, 0, 0, 0]
           ]
         ));
     });
