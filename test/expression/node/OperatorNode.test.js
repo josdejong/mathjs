@@ -301,7 +301,7 @@ describe('OperatorNode', function() {
     assert.equal(n1.toTex(), '\\left({{2} - {3}}\\right)!');
     assert.equal(n2.toTex(), '\\left({{2} + {3}}\\right)!');
     assert.equal(n3.toTex(), '\\left({{2} \\cdot {3}}\\right)!');
-    assert.equal(n4.toTex(), '\\left({\\frac{2}{3}}\\right)!');
+    assert.equal(n4.toTex(), '\\left({\\frac{{2}}{{3}}}\\right)!');
   });
 
   it ('should LaTeX an OperatorNode with unary minus', function () {
@@ -367,6 +367,15 @@ describe('OperatorNode', function() {
     assert.equal(n2.toTex(), '{4} - {5}');
     assert.equal(n3.toTex(), '\\left({{2} + {3}}\\right) \\cdot \\left({{4} - {5}}\\right)');
     assert.equal(m3.toTex(), '{\\left({{2} + {3}}\\right) \\cdot {4}} - {5}');
+  });
+
+  it('should LaTeX fractions with operators that are enclosed in parenthesis', function () {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var add = new OperatorNode('+', 'add', [a,a]);
+    var frac = new OperatorNode('/', 'divide', [add,b]);
+    assert.equal(frac.toTex(), '\\frac{\\left({{1} + {1}}\\right)}{{2}}');
   });
 
   it ('should have an identifier', function () {
