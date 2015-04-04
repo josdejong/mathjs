@@ -1268,6 +1268,176 @@ describe('DenseMatrix', function() {
     });
   });
   
+  describe('lup', function () {
+
+    it('should decompose matrix, n x n, no permutations', function () {
+      var m = new DenseMatrix(
+        [
+          [2, 1],
+          [1, 4]
+        ]
+      );
+
+      var r = m.lup();
+      // L
+      assert.deepEqual(
+        r.l,
+        new DenseMatrix(
+          [
+            [1, 0],
+            [0.5, 1]
+          ]
+        ));
+      // U
+      assert.deepEqual(
+        r.u,
+        new DenseMatrix(
+          [
+            [2, 1],
+            [0, 3.5]
+          ]
+        ));
+      // P
+      assert.deepEqual(
+        r.p,
+        new DenseMatrix(
+          [
+            [1, 0],
+            [0, 1]
+          ]
+        ));
+      // verify
+      assert.deepEqual(math.multiply(r.p, m), math.multiply(r.l, r.u));
+    });
+
+    it('should decompose matrix, m x n, m < n, no permutations', function () {
+      var m = new DenseMatrix(
+        [
+          [2, 1, 1],
+          [1, 4, 5]
+        ]
+      );
+
+      var r = m.lup();
+      // L
+      assert.deepEqual(
+        r.l,
+        new DenseMatrix(
+          [
+            [1, 0],
+            [0.5, 1]
+          ]
+        ));
+      // U
+      assert.deepEqual(
+        r.u,
+        new DenseMatrix(
+          [
+            [2, 1, 1],
+            [0, 3.5, 4.5]
+          ]
+        ));
+      // P
+      assert.deepEqual(
+        r.p,
+        new DenseMatrix(
+          [
+            [1, 0],
+            [0, 1]
+          ]
+        ));
+      // verify
+      assert.deepEqual(math.multiply(r.p, m), math.multiply(r.l, r.u));
+    });
+
+    it('should decompose matrix, m x n, m > n, no permutations', function () {
+      var m = new DenseMatrix(
+        [
+          [8, 2],
+          [6, 4],
+          [4, 1]
+        ]
+      );
+
+      var r = m.lup();
+      // L
+      assert.deepEqual(
+        r.l,
+        new DenseMatrix(
+          [
+            [1, 0],
+            [0.75, 1],
+            [0.5, 0]
+          ]
+        ));
+      // U
+      assert.deepEqual(
+        r.u,
+        new DenseMatrix(
+          [
+            [8, 2],
+            [0, 2.5]
+          ]
+        ));
+      // P
+      assert.deepEqual(
+        r.p,
+        new DenseMatrix(
+          [
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 1]
+          ]
+        ));
+      // verify
+      assert.deepEqual(math.multiply(r.p, m), math.multiply(r.l, r.u));
+    });
+
+    it('should decompose matrix, n x n', function () {
+      var m = new DenseMatrix(
+        [
+          [16, -120, 240, -140],
+          [-120, 1200, -2700, 1680],
+          [240, -2700, 6480, -4200],
+          [-140, 1680, -4200, 2800]
+        ]
+      );
+
+      var r = m.lup();
+      // L
+      assert.deepEqual(
+        r.l.valueOf(),
+        [
+          [1, 0, 0, 0],  
+          [-0.5, 1, 0, 0],
+          [-0.5833333333333334, -0.7, 1, 0],
+          [0.06666666666666667, -0.4, -0.5714285714285714, 1]
+        ]);
+      // U
+      assert.deepEqual(
+        r.u.valueOf(),
+        [
+          [240, -2700, 6480, -4200],
+          [0, -150, 540, -420], 
+          [0, 0, -42, 56],
+          [0, 0, 0, 4]
+        ]);
+      // P
+      assert.deepEqual(
+        r.p,
+        new DenseMatrix(
+          [
+            [0, 0, 1, 0],
+            [0, 1, 0, 0],
+            [0, 0, 0, 1],
+            [1, 0, 0, 0]
+          ]
+        ));
+      // verify
+      assert.deepEqual(math.multiply(r.p, m), math.multiply(r.l, r.u));
+    });
+  });
+  
   /**
    * Helper function to create an Array containing uninitialized values
    * Example: arr(uninit, uninit, 2);    // [ , , 2 ]
