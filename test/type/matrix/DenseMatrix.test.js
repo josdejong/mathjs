@@ -1281,7 +1281,7 @@ describe('DenseMatrix', function() {
       var r = m.lup();
       // L
       assert.deepEqual(
-        r.l,
+        r.L,
         new DenseMatrix(
           [
             [1, 0],
@@ -1290,7 +1290,7 @@ describe('DenseMatrix', function() {
         ));
       // U
       assert.deepEqual(
-        r.u,
+        r.U,
         new DenseMatrix(
           [
             [2, 1],
@@ -1299,7 +1299,7 @@ describe('DenseMatrix', function() {
         ));
       // P
       assert.deepEqual(
-        r.p,
+        r.P,
         new DenseMatrix(
           [
             [1, 0],
@@ -1307,7 +1307,7 @@ describe('DenseMatrix', function() {
           ]
         ));
       // verify
-      assert.deepEqual(math.multiply(r.p, m), math.multiply(r.l, r.u));
+      assert.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
     });
 
     it('should decompose matrix, m x n, m < n, no permutations', function () {
@@ -1321,7 +1321,7 @@ describe('DenseMatrix', function() {
       var r = m.lup();
       // L
       assert.deepEqual(
-        r.l,
+        r.L,
         new DenseMatrix(
           [
             [1, 0],
@@ -1330,7 +1330,7 @@ describe('DenseMatrix', function() {
         ));
       // U
       assert.deepEqual(
-        r.u,
+        r.U,
         new DenseMatrix(
           [
             [2, 1, 1],
@@ -1339,7 +1339,7 @@ describe('DenseMatrix', function() {
         ));
       // P
       assert.deepEqual(
-        r.p,
+        r.P,
         new DenseMatrix(
           [
             [1, 0],
@@ -1347,7 +1347,7 @@ describe('DenseMatrix', function() {
           ]
         ));
       // verify
-      assert.deepEqual(math.multiply(r.p, m), math.multiply(r.l, r.u));
+      assert.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
     });
 
     it('should decompose matrix, m x n, m > n, no permutations', function () {
@@ -1362,7 +1362,7 @@ describe('DenseMatrix', function() {
       var r = m.lup();
       // L
       assert.deepEqual(
-        r.l,
+        r.L,
         new DenseMatrix(
           [
             [1, 0],
@@ -1372,7 +1372,7 @@ describe('DenseMatrix', function() {
         ));
       // U
       assert.deepEqual(
-        r.u,
+        r.U,
         new DenseMatrix(
           [
             [8, 2],
@@ -1381,7 +1381,7 @@ describe('DenseMatrix', function() {
         ));
       // P
       assert.deepEqual(
-        r.p,
+        r.P,
         new DenseMatrix(
           [
             [1, 0, 0],
@@ -1390,7 +1390,7 @@ describe('DenseMatrix', function() {
           ]
         ));
       // verify
-      assert.deepEqual(math.multiply(r.p, m), math.multiply(r.l, r.u));
+      assert.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
     });
 
     it('should decompose matrix, n x n', function () {
@@ -1406,7 +1406,7 @@ describe('DenseMatrix', function() {
       var r = m.lup();
       // L
       assert.deepEqual(
-        r.l.valueOf(),
+        r.L.valueOf(),
         [
           [1, 0, 0, 0],  
           [-0.5, 1, 0, 0],
@@ -1415,7 +1415,7 @@ describe('DenseMatrix', function() {
         ]);
       // U
       assert.deepEqual(
-        r.u.valueOf(),
+        r.U.valueOf(),
         [
           [240, -2700, 6480, -4200],
           [0, -150, 540, -420], 
@@ -1424,7 +1424,7 @@ describe('DenseMatrix', function() {
         ]);
       // P
       assert.deepEqual(
-        r.p,
+        r.P,
         new DenseMatrix(
           [
             [0, 0, 1, 0],
@@ -1434,7 +1434,7 @@ describe('DenseMatrix', function() {
           ]
         ));
       // verify
-      assert.deepEqual(math.multiply(r.p, m), math.multiply(r.l, r.u));
+      assert.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
     });
   });
   
