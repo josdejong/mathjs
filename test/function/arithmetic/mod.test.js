@@ -106,7 +106,7 @@ describe('mod', function() {
 
   it('should LaTeX mod', function () {
     var expression = math.parse('mod(11,2)');
-    assert.equal(expression.toTex(), '\\mod\\left({11},{2}\\right)');
+    assert.equal(expression.toTex(), '\\left({11}\\mod{2}\\right)');
   });
 
 });
