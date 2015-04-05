@@ -96,7 +96,7 @@ describe('dotMultiply', function() {
   });
   
   it('should LaTeX dotMultiply', function () {
-    var expression = math.parse('dotMultiply(a,b)'); //TODO do this properly with matrices
-    assert.equal(expression.toTex(), '\\mathrm{dotMultiply}\\left({\\mathrm{a}},{\\mathrm{b}}\\right)');
+    var expression = math.parse('dotMultiply([1,2],[3,4])');
+    assert.equal(expression.toTex(), '\\left({\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}}.\\cdot{\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}}\\right)');
   });
 });
