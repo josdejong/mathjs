@@ -1,4 +1,5 @@
 var assert = require('assert');
+var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var Matrix = math.type.Matrix;
 var DenseMatrix = math.type.DenseMatrix;
@@ -1268,6 +1269,123 @@ describe('DenseMatrix', function() {
     });
   });
   
+  describe('swapRows', function () {
+
+    it('should swap rows with values', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(1, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [7, 8, 9],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap row with value and no values', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [0, 0, 0],
+          [10, 11, 12]
+        ]);
+      m.swapRows(1, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [0, 0, 0],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap row with no value and values', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [0, 0, 0],
+          [10, 11, 12]
+        ]);
+      m.swapRows(2, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [0, 0, 0],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap rows with missing values', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(2, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [7, 0, 9],
+          [0, 5, 0],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap last row with another row', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(3, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [10, 11, 12],
+          [7, 0, 9],
+          [0, 5, 0]
+        ]);
+    });
+
+    it('should swap first row with another row', function () {
+      var m = new DenseMatrix(
+        [
+          [0, 2, 0],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 0, 0]
+        ]);
+      m.swapRows(0, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [7, 0, 9],
+          [0, 5, 0],
+          [0, 2, 0],
+          [10, 0, 0]
+        ]);
+    });
+  });
+  
   describe('lup', function () {
 
     it('should decompose matrix, n x n, no permutations', function () {
@@ -1307,7 +1425,7 @@ describe('DenseMatrix', function() {
           ]
         ));
       // verify
-      assert.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+      approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
     });
 
     it('should decompose matrix, m x n, m < n, no permutations', function () {
@@ -1347,7 +1465,7 @@ describe('DenseMatrix', function() {
           ]
         ));
       // verify
-      assert.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+      approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
     });
 
     it('should decompose matrix, m x n, m > n, no permutations', function () {
@@ -1390,7 +1508,7 @@ describe('DenseMatrix', function() {
           ]
         ));
       // verify
-      assert.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+      approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
     });
 
     it('should decompose matrix, n x n', function () {
@@ -1405,16 +1523,16 @@ describe('DenseMatrix', function() {
 
       var r = m.lup();
       // L
-      assert.deepEqual(
+      approx.deepEqual(
         r.L.valueOf(),
         [
           [1, 0, 0, 0],  
           [-0.5, 1, 0, 0],
           [-0.5833333333333334, -0.7, 1, 0],
-          [0.06666666666666667, -0.4, -0.5714285714285714, 1]
+          [0.06666666666666667, -0.4, -0.5714285714285776, 1]
         ]);
       // U
-      assert.deepEqual(
+      approx.deepEqual(
         r.U.valueOf(),
         [
           [240, -2700, 6480, -4200],
@@ -1423,18 +1541,89 @@ describe('DenseMatrix', function() {
           [0, 0, 0, 4]
         ]);
       // P
-      assert.deepEqual(
-        r.P,
-        new DenseMatrix(
-          [
-            [0, 0, 1, 0],
-            [0, 1, 0, 0],
-            [0, 0, 0, 1],
-            [1, 0, 0, 0]
-          ]
-        ));
+      approx.deepEqual(
+        r.P.valueOf(),
+        [
+          [0, 0, 1, 0],
+          [0, 1, 0, 0],      
+          [0, 0, 0, 1],
+          [1, 0, 0, 0]
+        ]);
       // verify
-      assert.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+      approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    });
+    
+    it('should decompose matrix, 3 x 3, zero pivote value', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3], 
+          [2, 4, 6], 
+          [4, 8, 9]
+        ]);
+
+      var r = m.lup();
+      // L
+      approx.deepEqual(
+        r.L.valueOf(),
+        [
+          [1, 0, 0],  
+          [0.5, 1, 0],
+          [0.25, 0, 1.0]
+        ]);
+      // U
+      approx.deepEqual(
+        r.U.valueOf(),
+        [
+          [4, 8, 9],
+          [0, 0, 1.5], 
+          [0, 0, 0.75]
+        ]);
+      // P
+      approx.deepEqual(
+        r.P.valueOf(),
+        [
+          [0, 0, 1],
+          [0, 1, 0],      
+          [1, 0, 0]
+        ]);
+      // verify
+      approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    });
+    
+    it('should decompose matrix, 3 x 2, complex numbers', function () {
+      var m = new DenseMatrix(
+        [
+          [math.complex(0, 3), 10],
+          [math.complex(0, 1), 1],
+          [math.complex(0, 1), 1]
+        ]);
+
+      var r = m.lup();
+      // L
+      approx.deepEqual(
+        r.L.valueOf(),
+        [
+          [1, 0],
+          [math.complex(0.3333333, 0), 1],
+          [math.complex(0.3333333, 0), 1]
+        ]);
+      // U
+      approx.deepEqual(
+        r.U.valueOf(),
+        [
+          [math.complex(0, 3), 10],
+          [0, math.complex(-2.3333333333, 0)]
+        ]);
+      // P
+      approx.deepEqual(
+        r.P.valueOf(),
+        [
+          [1, 0, 0],
+          [0, 1, 0],
+          [0, 0, 1]
+        ]);
+      // verify
+      approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
     });
   });
   

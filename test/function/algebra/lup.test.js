@@ -1,5 +1,6 @@
 // test abs
 var assert = require('assert'),
+    approx = require('../../../tools/approx'),
     math = require('../../../index');
 
 describe('lup', function () {
@@ -16,6 +17,6 @@ describe('lup', function () {
     // P
     assert.deepEqual(r.P, math.matrix([[1, 0], [0, 1]], 'ccs'));
     // verify
-    assert.deepEqual(math.multiply(m, r.P), math.multiply(r.L, r.U));
+    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
   });
 });
