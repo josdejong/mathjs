@@ -38,6 +38,7 @@ function create (config) {
   math.type.Help = require('./lib/type/Help');
   math.type.ResultSet = require('./lib/type/ResultSet');
   math.import(require('./lib/type/BigNumber'));
+  math.import(require('./lib/type/FibonacciHeap'));
 
   // sparse accumulator
   math.import(require('./lib/type/matrix/Spa'));
