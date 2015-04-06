@@ -1,5 +1,11 @@
 # History
 
+## not-yet-released, version 1.5.1
+
+- Fixed #316: a bug in rounding values when formatting.
+- Fixed #317: a bug in formatting negative values.
+
+
 ## 2015-03-28, version 1.5.0
 
 - Added unit `stone` (6.35 kg).

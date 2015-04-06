@@ -14,6 +14,7 @@ describe('round', function() {
     approx.equal(round(math.pi, 3), 3.142);
     approx.equal(round(math.pi, 6), 3.141593);
     approx.equal(round(1234.5678, 2), 1234.57);
+    approx.equal(round(2.135, 2), 2.14);
   });
 
   it('should round booleans (yeah, not really useful but it should be supported)', function() {
