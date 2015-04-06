@@ -3,9 +3,9 @@ var math = require('../../index');
 var index = math.index;
 var FibonacciHeap = math.type.FibonacciHeap;
 
-describe('FibonacciHeap', function() {
+describe('FibonacciHeap', function () {
 
-  describe('constructor', function() {
+  describe('constructor', function () {
     
     it('should create heap', function () {
       var h = new FibonacciHeap();
@@ -32,7 +32,7 @@ describe('FibonacciHeap', function() {
     it('should insert two nodes when heap is empty', function () {
       var h = new FibonacciHeap();
       h.insert(1, 'v1');
-      h.insert(10, 'v10');      
+      h.insert(10, 'v10');
       assert.equal(h._size, 2);
       assert(h._minimum !== null);
       assert.equal(h._minimum.key, 1);
@@ -91,6 +91,39 @@ describe('FibonacciHeap', function() {
       }
       assert.equal(h._size, 0);
       assert(h._minimum === null);
+    });
+  });
+  
+  describe('remove', function () {
+    
+    it('should remove node, one node', function () {
+      var h = new FibonacciHeap();
+      var n = h.insert(1, 'v1');
+      h.remove(n);
+      assert.equal(h._size, 0);
+      assert(h._minimum === null);
+    });
+    
+    it('should remove node with smaller key', function () {
+      var h = new FibonacciHeap();
+      h.insert(20, 'v20');
+      var n = h.insert(1, 'v1');
+      h.insert(10, 'v10');
+      h.insert(5, 'v5');
+      h.insert(4, 'v4');
+      h.remove(n);
+      assert.equal(h._size, 4);
+    });
+    
+    it('should remove node with largest key', function () {
+      var h = new FibonacciHeap();      
+      h.insert(1, 'v1');
+      h.insert(10, 'v10');
+      var n = h.insert(20, 'v20');
+      h.insert(5, 'v5');
+      h.insert(4, 'v4');
+      h.remove(n);
+      assert.equal(h._size, 4);
     });
   });
 });
