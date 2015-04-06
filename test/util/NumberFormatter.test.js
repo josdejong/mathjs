@@ -7,6 +7,12 @@ describe('NumberFormatter', function() {
   it('should create a new NumberFormatter', function () {
     assert.deepEqual(new NumberFormatter(0),        {sign: '', coefficients: [0], exponent: 0});
     assert.deepEqual(new NumberFormatter(2.3),      {sign: '', coefficients: [2, 3], exponent: 0});
+
+    var a = new NumberFormatter(2.3);
+    assert.strictEqual(a.coefficients[0], 2);
+    assert.strictEqual(a.coefficients[1], 3);
+    assert.strictEqual(a.exponent, 0);
+
     assert.deepEqual(new NumberFormatter(-2.3),     {sign: '-', coefficients: [2, 3], exponent: 0});
     assert.deepEqual(new NumberFormatter('02.3'),   {sign: '', coefficients: [2, 3], exponent: 0});
     assert.deepEqual(new NumberFormatter(2300),     {sign: '', coefficients: [2, 3], exponent: 3});
