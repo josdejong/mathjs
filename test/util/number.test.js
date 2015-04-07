@@ -128,6 +128,7 @@ describe('number', function() {
         assert.equal(number.format(123.456, options), '123');
         assert.equal(number.format(123.7, options), '124');
         assert.equal(number.format(-123.7, options), '-124');
+        assert.equal(number.format(-66, options), '-66');
         assert.equal(number.format(0.123456, options), '0');
 
         assert.equal(number.format(123456789, options), '123456789');

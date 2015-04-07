@@ -28,6 +28,21 @@ describe('NumberFormatter', function() {
     assert.deepEqual(new NumberFormatter('2.3e-3'), {sign: '', coefficients: [2, 3], exponent: -3});
     assert.deepEqual(new NumberFormatter('23e-3'),  {sign: '', coefficients: [2, 3], exponent: -2});
     assert.deepEqual(new NumberFormatter('-23e-3'),  {sign: '-', coefficients: [2, 3], exponent: -2});
+    assert.deepEqual(new NumberFormatter('99.99'),  {sign: '', coefficients: [9,9,9,9], exponent: 1});
+  });
+
+  it('should clone a NumberFormatter', function () {
+    var a = new NumberFormatter(2.3);
+    var clone = a.clone();
+    assert.deepEqual(clone, a);
+    assert.notStrictEqual(clone, a);
+  });
+
+  it('should round a NumberFormatter', function () {
+    assert.deepEqual(new NumberFormatter(123456).roundDigits(3), new NumberFormatter(123000));
+    assert.deepEqual(new NumberFormatter(123456).roundDigits(4), new NumberFormatter(123500));
+    assert.deepEqual(new NumberFormatter(0.00555).roundDigits(2), new NumberFormatter(0.0056));
+    assert.deepEqual(new NumberFormatter(99.99).roundDigits(2), new NumberFormatter(100));
   });
 
   it('should format a number with toFixed', function () {
@@ -58,6 +73,8 @@ describe('NumberFormatter', function() {
 
   it('should format a number with toExponential', function () {
     assert.strictEqual(new NumberFormatter(0).toExponential(), '0e+0');
+    assert.strictEqual(new NumberFormatter(1).toExponential(), '1e+0');
+    assert.strictEqual(new NumberFormatter(1000).toExponential(), '1e+3');
     assert.strictEqual(new NumberFormatter(2300).toExponential(), '2.3e+3');
     assert.strictEqual(new NumberFormatter(3.568).toExponential(), '3.568e+0');
     assert.strictEqual(new NumberFormatter(0.00123).toExponential(), '1.23e-3');
@@ -67,6 +84,7 @@ describe('NumberFormatter', function() {
     assert.strictEqual(new NumberFormatter(0).toExponential(2), '0.0e+0');
     assert.strictEqual(new NumberFormatter(1234).toExponential(2), '1.2e+3');
     assert.strictEqual(new NumberFormatter(1234).toExponential(6), '1.23400e+3');
+    assert.strictEqual(new NumberFormatter(9999).toExponential(2), '1.0e+4');
   });
 
   it('should format a number with toPrecision', function () {
@@ -79,9 +97,14 @@ describe('NumberFormatter', function() {
 
     assert.strictEqual(new NumberFormatter(2300).toPrecision(6), '2300.00');
     assert.strictEqual(new NumberFormatter(1234.5678).toPrecision(6), '1234.57');
+    assert.strictEqual(new NumberFormatter(1234.5678).toPrecision(2), '1200');
     assert.strictEqual(new NumberFormatter(1234).toPrecision(2), '1200');
     assert.strictEqual(new NumberFormatter(0.004).toPrecision(3), '0.00400');
     assert.strictEqual(new NumberFormatter(0.00123456).toPrecision(5), '0.0012346');
+    assert.strictEqual(new NumberFormatter(999).toPrecision(2), '1000');
+    assert.strictEqual(new NumberFormatter(9990).toPrecision(2), '10000');
+    assert.strictEqual(new NumberFormatter(99999).toPrecision(2), '100000');
+    assert.strictEqual(new NumberFormatter(999e7).toPrecision(2), '1.0e+10');
   });
 
   it('should should throw an error on invalid input', function () {
