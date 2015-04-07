@@ -4,7 +4,6 @@ var math = require('../../../index');
 var index = math.index;
 var Matrix = math.type.Matrix;
 var CcsMatrix = math.type.CcsMatrix;
-var DenseMatrix = math.type.DenseMatrix;
 var Complex = math.type.Complex;
 
 describe('CcsMatrix', function() {
@@ -92,13 +91,26 @@ describe('CcsMatrix', function() {
     });
     
     it('should create a CcsMatrix from a DenseMatrix', function () {
-      var m1 = new DenseMatrix(
+      var m1 = math.matrix(
         [
           [1, 2, 3],
           [4, 5, 6],
           [7, 8, 9],
           [10, 11, 12]
         ]);
+      var m2 = new CcsMatrix(m1);
+      assert.deepEqual(m1.size(), m2.size());
+      assert.deepEqual(m1.toArray(), m2.toArray());
+    });
+    
+    it('should create a CcsMatrix from a CrsMatrix', function () {
+      var m1 = math.matrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ], 'crs');
       var m2 = new CcsMatrix(m1);
       assert.deepEqual(m1.size(), m2.size());
       assert.deepEqual(m1.toArray(), m2.toArray());
@@ -2080,31 +2092,25 @@ describe('CcsMatrix', function() {
       var r = m.lup();
       // L
       assert.deepEqual(
-        r.L,
-        new CcsMatrix(
-          [
-            [1, 0],
-            [0.5, 1]
-          ]
-        ));
+        r.L.valueOf(),
+        [
+          [1, 0],
+          [0.5, 1]
+        ]);
       // U
       assert.deepEqual(
-        r.U,
-        new CcsMatrix(
-          [
-            [2, 1],
-            [0, 3.5]
-          ]
-        ));
+        r.U.valueOf(),
+        [
+          [2, 1],
+          [0, 3.5]
+        ]);
       // P
       assert.deepEqual(
-        r.P,
-        new CcsMatrix(
-          [
-            [1, 0],
-            [0, 1]
-          ]
-        ));
+        r.P.valueOf(),
+        [
+          [1, 0],
+          [0, 1]
+        ]);
       // verify
       approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
     });
@@ -2120,31 +2126,25 @@ describe('CcsMatrix', function() {
       var r = m.lup();
       // L
       assert.deepEqual(
-        r.L,
-        new CcsMatrix(
-          [
-            [1, 0],
-            [0.5, 1]
-          ]
-        ));
+        r.L.valueOf(),
+        [
+          [1, 0],
+          [0.5, 1]
+        ]);
       // U
       assert.deepEqual(
-        r.U,
-        new CcsMatrix(
-          [
-            [2, 1, 1],
-            [0, 3.5, 4.5]
-          ]
-        ));
+        r.U.valueOf(),
+        [
+          [2, 1, 1],
+          [0, 3.5, 4.5]
+        ]);
       // P
       assert.deepEqual(
-        r.P,
-        new CcsMatrix(
-          [
-            [1, 0],
-            [0, 1]
-          ]
-        ));
+        r.P.valueOf(),
+        [
+          [1, 0],
+          [0, 1]
+        ]);
       // verify
       approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
     });
@@ -2161,33 +2161,27 @@ describe('CcsMatrix', function() {
       var r = m.lup();
       // L
       assert.deepEqual(
-        r.L,
-        new CcsMatrix(
-          [
-            [1, 0],
-            [0.75, 1],
-            [0.5, 0]
-          ]
-        ));
+        r.L.valueOf(),
+        [
+          [1, 0],
+          [0.75, 1],
+          [0.5, 0]
+        ]);
       // U
       assert.deepEqual(
-        r.U,
-        new CcsMatrix(
-          [
-            [8, 2],
-            [0, 2.5]
-          ]
-        ));
+        r.U.valueOf(),
+        [
+          [8, 2],
+          [0, 2.5]
+        ]);
       // P
       assert.deepEqual(
-        r.P,
-        new CcsMatrix(
-          [
-            [1, 0, 0],
-            [0, 1, 0],
-            [0, 0, 1]
-          ]
-        ));
+        r.P.valueOf(),
+        [
+          [1, 0, 0],
+          [0, 1, 0],
+          [0, 0, 1]
+        ]);
       // verify
       approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
     });
