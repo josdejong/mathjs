@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "1.5.1",
+  "version": "1.5.2-SNAPSHOT",
   "main": "./dist/math.min.js",
   "ignore": [
     "coverage",
