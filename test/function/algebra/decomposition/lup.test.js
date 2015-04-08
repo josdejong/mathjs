@@ -1,10 +1,10 @@
-// test abs
+// test lup
 var assert = require('assert'),
     approx = require('../../../../tools/approx'),
     math = require('../../../../index');
 
 describe('lup', function () {
-  
+
   it('should decompose matrix, n x n, no pivoting, array', function () {
 
     var a = [[2, 1], [1, 4]];
@@ -19,9 +19,9 @@ describe('lup', function () {
     // verify
     approx.deepEqual(math.multiply(r.P, a), math.multiply(r.L, r.U));
   });
-  
+
   it('should decompose matrix, n x n, no pivoting, ccs format', function () {
-    
+
     var m = math.matrix([[2, 1], [1, 4]], 'ccs');
 
     var r = math.lup(m);
@@ -34,7 +34,7 @@ describe('lup', function () {
     // verify
     approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
   });
-  
+
   it('should decompose matrix, n x n, no pivoting, crs format', function () {
 
     var m = math.matrix([[2, 1], [1, 4]], 'crs');
@@ -49,7 +49,7 @@ describe('lup', function () {
     // verify
     approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
   });
-  
+
   it('should decompose matrix, n x n, no pivoting, dense format', function () {
 
     var m = math.matrix([[2, 1], [1, 4]], 'dense');

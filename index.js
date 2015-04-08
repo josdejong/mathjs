@@ -39,8 +39,7 @@ function create (config) {
   math.type.ResultSet = require('./lib/type/ResultSet');
   math.import(require('./lib/type/BigNumber'));
   math.import(require('./lib/type/FibonacciHeap'));
-  math.import(require('./lib/type/Vector'));
-
+  
   // sparse accumulator
   math.import(require('./lib/type/matrix/Spa'));
   
@@ -49,19 +48,12 @@ function create (config) {
   math.import(require('./lib/type/matrix/CrsMatrix'));
   math.import(require('./lib/type/matrix/DenseMatrix'));
   
-  // vector storage formats
-  math.import(require('./lib/type/vector/DenseVector'));
-
   // matrix storage format registry
   math.type.Matrix._storage.ccs = math.type.CcsMatrix;
   math.type.Matrix._storage.crs = math.type.CrsMatrix;
   math.type.Matrix._storage.dense = math.type.DenseMatrix;
   math.type.Matrix._storage['default'] = math.type.DenseMatrix;
 
-  // vector storage format registry
-  math.type.Vector._storage.dense = math.type.DenseVector;
-  math.type.Vector._storage['default'] = math.type.DenseVector;
-  
   // serialization utilities
   // math.json.*
   math.import(require('./lib/json/reviver'));
@@ -128,7 +120,6 @@ function create (config) {
   math.import(require('./lib/function/construction/parser'));
   math.import(require('./lib/function/construction/string'));
   math.import(require('./lib/function/construction/unit'));
-  math.import(require('./lib/function/construction/vector'));
 
   // expression parser
   math.import(require('./lib/function/expression/compile'));
