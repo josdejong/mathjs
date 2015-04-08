@@ -59,8 +59,11 @@ function create (config) {
   // math.json.*
   math.import(require('./lib/json/reviver'));
 
-  // functions - algebra
-  math.import(require('./lib/function/algebra/lup'));
+  // functions - algebra/decomposition
+  math.import(require('./lib/function/algebra/decomposition/lup'));
+  
+  // functions - algebra/solver
+  math.import(require('./lib/function/algebra/solver/lusolve'));
   
   // functions - arithmetic
   math.import(require('./lib/function/arithmetic/abs'));

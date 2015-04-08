@@ -1,7 +1,7 @@
 // test abs
 var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index');
+    approx = require('../../../../tools/approx'),
+    math = require('../../../../index');
 
 describe('lup', function () {
   
