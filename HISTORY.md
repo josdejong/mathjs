@@ -12,6 +12,12 @@
 - Function `import` now returns the imported objects.
 
 
+## 2015-04-08, version 1.5.1
+
+- Fixed #316: a bug in rounding values when formatting.
+- Fixed #317, #319: a bug in formatting negative values.
+
+
 ## 2015-03-28, version 1.5.0
 
 - Added unit `stone` (6.35 kg).

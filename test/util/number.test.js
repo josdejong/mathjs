@@ -76,9 +76,14 @@ describe('number', function() {
     assert.equal(number.toFixed(2.34e30, 1), '2340000000000000000000000000000.0'); // test above the 21 digit limit of toPrecision
     assert.equal(number.toFixed(2.34e-10, 1), '0.0');
     assert.equal(number.toFixed(2, 20), '2.00000000000000000000');
-    assert.equal(number.toFixed(2, 21), '2.00000000000000000000');
-    assert.equal(number.toFixed(2, 22), '2.00000000000000000000');
-    assert.equal(number.toFixed(2, 30), '2.00000000000000000000');
+    assert.equal(number.toFixed(2, 21), '2.000000000000000000000');
+    assert.equal(number.toFixed(2, 22), '2.0000000000000000000000');
+    assert.equal(number.toFixed(2, 30), '2.000000000000000000000000000000');
+    assert.equal(number.toFixed(-2e3, 0), '-2000');
+    assert.equal(number.toFixed(5.555, 1), '5.6');
+    assert.equal(number.toFixed(-5.555, 1), '-5.6');
+    assert.equal(number.toFixed(-0.005555, 4), '-0.0056');
+    assert.equal(number.toFixed(2.135, 2), '2.14');
   });
 
   it('should format a number using toPrecision', function() {
@@ -88,6 +93,8 @@ describe('number', function() {
     assert.equal(number.toPrecision(2.34e10, 2), '2.3e+10');
     assert.equal(number.toPrecision(2.34e-10, 2), '2.3e-10');
     assert.equal(number.toPrecision(2, 4), '2.000');
+    assert.equal(number.toPrecision(-0.005555, 2), '-0.0056');
+    assert.equal(number.toPrecision(2.135, 3), '2.14');
 
     // TODO: test upper and lower bounds here
   });
@@ -97,10 +104,11 @@ describe('number', function() {
     assert.equal(number.toExponential(2.34e+3), '2.34e+3');
     assert.equal(number.toExponential(2.34e-3), '2.34e-3');
     assert.equal(number.toExponential(2.34e+3, 2), '2.3e+3');
+    assert.equal(number.toExponential(2.135, 3), '2.14e+0');
     assert.equal(number.toExponential(2e+3, 20), '2.0000000000000000000e+3');
     assert.equal(number.toExponential(2e+3, 21), '2.00000000000000000000e+3');
-    assert.equal(number.toExponential(2e+3, 22), '2.00000000000000000000e+3');
-    assert.equal(number.toExponential(2e+3, 30), '2.00000000000000000000e+3');
+    assert.equal(number.toExponential(2e+3, 22), '2.000000000000000000000e+3');
+    assert.equal(number.toExponential(2e+3, 30), '2.00000000000000000000000000000e+3');
   });
 
   describe('format', function () {
@@ -120,6 +128,7 @@ describe('number', function() {
         assert.equal(number.format(123.456, options), '123');
         assert.equal(number.format(123.7, options), '124');
         assert.equal(number.format(-123.7, options), '-124');
+        assert.equal(number.format(-66, options), '-66');
         assert.equal(number.format(0.123456, options), '0');
 
         assert.equal(number.format(123456789, options), '123456789');
@@ -145,6 +154,7 @@ describe('number', function() {
         assert.equal(number.format(123.456, options), '123.46');
         assert.equal(number.format(123.7, options), '123.70');
         assert.equal(number.format(0.123456, options), '0.12');
+        assert.equal(number.format(-0.5555, options), '-0.56');
 
         assert.equal(number.format(123456789, options), '123456789.00');
         assert.equal(number.format(123456789e+9, options), '123456789000000000.00');
@@ -189,6 +199,9 @@ describe('number', function() {
         assert.equal(number.format(2/7), '0.2857142857142857');
         assert.equal(number.format(0.10400), '0.104');
         assert.equal(number.format(1000), '1000');
+        //assert.equal(number.format(-0.005), '-0.005');
+        assert.equal(number.format(-2300), '-2300');
+        assert.equal(number.format(-1.2e12), '-1.2e+12');
 
         assert.equal(number.format(0), '0');
 
@@ -227,6 +240,8 @@ describe('number', function() {
         assert.equal(number.format(1/3, {precision: 3}), '0.333');
         assert.equal(number.format(1/3, {precision: 4}), '0.3333');
         assert.equal(number.format(1/3, {precision: 5}), '0.33333');
+        assert.equal(number.format(0.05555, {precision: 2}), '0.056');
+        assert.equal(number.format(-0.05555, {precision: 2}), '-0.056');
 
         assert.equal(number.format(1000.000, {precision: 5}), '1000');
         assert.equal(number.format(1000.0010, {precision: 5}), '1000'); // rounded off at 5 digits
