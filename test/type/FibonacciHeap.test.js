@@ -1,6 +1,5 @@
 var assert = require('assert');
 var math = require('../../index');
-var index = math.index;
 var FibonacciHeap = math.type.FibonacciHeap;
 
 describe('FibonacciHeap', function () {
@@ -85,9 +84,13 @@ describe('FibonacciHeap', function () {
       var n;
       var l = h.extractMinimum();
       var s = h._size;
-      while (n = h.extractMinimum()) {
+      while (true) {
+        n = h.extractMinimum();
+        if (!n)
+          break;
         assert(n.key > l.key);
         assert.equal(h._size, --s);
+        l = n;
       }
       assert.equal(h._size, 0);
       assert(h._minimum === null);

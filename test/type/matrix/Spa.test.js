@@ -1,6 +1,5 @@
 var assert = require('assert');
 var math = require('../../../index');
-var index = math.index;
 var Spa = math.type.Spa;
 
 describe('Spa', function() {
@@ -131,7 +130,7 @@ describe('Spa', function() {
       spa.set(1, 2);
       var x;
       var c = 0;
-      spa.forEach(0, 9, function (i, v) {
+      spa.forEach(0, 9, function (i) {
         if (!x) {
           assert.equal(i, 1);
           x = i;
@@ -156,7 +155,7 @@ describe('Spa', function() {
       spa.set(1, 2);
       var x;
       var c = 0;
-      spa.forEach(2, 3, function (i, v) {
+      spa.forEach(2, 3, function (i) {
         if (!x) {
           assert.equal(i, 2);
           x = i;
