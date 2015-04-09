@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20150408-version-151">2015-04-08, version 1.5.1 <a href="#20150408-version-151" title="Permalink">#</a></h2>
+
+- Fixed #316: a bug in rounding values when formatting.
+- Fixed #317, #319: a bug in formatting negative values.
+
+
 <h2 id="20150328-version-150">2015-03-28, version 1.5.0 <a href="#20150328-version-150" title="Permalink">#</a></h2>
 
 - Added unit `stone` (6.35 kg).
