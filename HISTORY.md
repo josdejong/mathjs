@@ -1,5 +1,12 @@
 # History
 
+
+## not yet released, version 1.5.2
+
+- Fixed #313: parsed functions did not handle recursive calls correctly.
+- Performance improvements in parsed functions.
+
+
 ## 2015-04-08, version 1.5.1
 
 - Fixed #316: a bug in rounding values when formatting.
