@@ -2283,4 +2283,20 @@ describe('CrsMatrix', function() {
       approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
     });
   });
+  
+  describe('forwardSubstitution', function () {
+    
+    it('should throw when matrix is singular', function () {
+      var m = new CrsMatrix([[0, 0], [0, 1]]);
+      assert.throws(function () {m.forwardSubstitution([1,1]);}, /Error: Linear system cannot be solved since matrix is singular/);
+    });
+  });
+  
+  describe('backwardSubstitution', function () {
+
+    it('should throw when matrix is singular', function () {
+      var m = new CrsMatrix([[0, 0], [0, 1]]);
+      assert.throws(function () {m.backwardSubstitution([1,1]);}, /Error: Linear system cannot be solved since matrix is singular/);
+    });
+  });
 });
