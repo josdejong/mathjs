@@ -48,4 +48,9 @@ describe('sort', function() {
     assert.throws(function() { math.sort() });
   });
 
+  it('should LaTeX sort', function () {
+    var expression = math.parse('sort([3,2,1])');
+    assert.equal(expression.toTex(), '\\mathrm{sort}\\left({\\begin{bmatrix}3\\\\2\\\\1\\\\\\end{bmatrix}}\\right)');
+  });
+
 });

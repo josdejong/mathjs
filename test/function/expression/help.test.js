@@ -52,4 +52,9 @@ describe('help', function() {
     assert.throws(function () {math.help('parse')}, /No documentation found/);
   });
 
+  it('should LaTeX help', function () {
+    var expression = math.parse('help(parse)');
+    assert.equal(expression.toTex(), '\\mathrm{help}\\left({\\mathrm{parse}}\\right)');
+  });
+
 });

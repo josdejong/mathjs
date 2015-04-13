@@ -103,4 +103,9 @@ describe('dotPow', function() {
     approx.deepEqual(dotPow([[1,2,3],[4,5,6]],2), [[1,4,9],[16,25,36]]);
   });
 
+  it('should LaTeX dotPow', function () {
+    var expression = math.parse('dotPow([1,2],[3,4])');
+    assert.equal(expression.toTex(), '\\left({\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}}.^{\\wedge}{\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}}\\right)');
+  });
+
 });

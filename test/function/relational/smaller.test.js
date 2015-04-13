@@ -143,4 +143,9 @@ describe('smaller', function() {
     assert.throws(function () {smaller(1, 2, 3)}, error.ArgumentsError);
   });
 
+  it('should LaTeX smaller', function () {
+    var expression = math.parse('smaller(1,2)');
+    assert.equal(expression.toTex(), '\\left({1}<{2}\\right)');
+  });
+
 });

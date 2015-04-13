@@ -147,4 +147,9 @@ describe('range', function() {
     assert.throws(function () {range()}, error.ArgumentsError);
     assert.throws(function () {range(1,2,3,4,5)}, error.ArgumentsError);
   });
+
+  it('should LaTeX range', function () {
+    var expression = math.parse('range(1,10)');
+    assert.equal(expression.toTex(), '\\mathrm{range}\\left({1},{10}\\right)');
+  });
 });

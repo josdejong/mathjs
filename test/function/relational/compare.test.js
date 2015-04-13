@@ -135,4 +135,9 @@ describe('compare', function() {
     assert.throws(function () {compare(1, 2, 3)}, error.ArgumentsError);
   });
 
+  it('should LaTeX compare', function () {
+    var expression = math.parse('compare(1,2)');
+    assert.equal(expression.toTex(), '\\mathrm{compare}\\left({1},{2}\\right)');
+  });
+
 });

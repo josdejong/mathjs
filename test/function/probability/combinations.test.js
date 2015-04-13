@@ -33,5 +33,9 @@ describe('combinations', function() {
       assert.throws(function() {combinations(true, "hello world")});
   });
 
+  it('should LaTeX combinations', function () {
+    var expression = math.parse('combinations(3,2)');
+    assert.equal(expression.toTex(), '\\binom{3}{2}');
+  });
 
 });

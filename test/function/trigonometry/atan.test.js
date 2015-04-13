@@ -108,4 +108,9 @@ describe('atan', function() {
     assert.throws(function () {atan(1, 2)}, error.ArgumentsError);
   });
 
+  it('should LaTeX atan', function () {
+    var expression = math.parse('atan(10)');
+    assert.equal(expression.toTex(), '\\tan^{-1}\\left({10}\\right)');
+  });
+
 });

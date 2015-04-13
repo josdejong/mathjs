@@ -72,4 +72,9 @@ describe('unaryPlus', function() {
     assert.throws(function () {math.unaryPlus(new Date())}, error.UnsupportedTypeError);
   });
 
+  it('should LaTeX unaryPlus', function () {
+    var expression = math.parse('unaryPlus(1)');
+    assert.equal(expression.toTex(), '+\\left({1}\\right)');
+  });
+
 });

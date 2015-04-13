@@ -77,4 +77,8 @@ describe('zeros', function() {
 
   // TODO: test with invalid input
 
+  it('should LaTeX zeros', function () {
+    var expression = math.parse('zeros(2,3)');
+    assert.equal(expression.toTex(), '\\mathrm{zeros}\\left({2},{3}\\right)');
+  });
 });

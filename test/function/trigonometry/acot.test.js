@@ -112,4 +112,9 @@ describe('acot', function() {
     assert.throws(function () {acot(1, 2)}, error.ArgumentsError);
   });
 
+  it('should LaTeX acot', function () {
+    var expression = math.parse('acot(2)');
+    assert.equal(expression.toTex(), '\\cot^{-1}\\left({2}\\right)');
+  });
+
 });

@@ -46,4 +46,9 @@ describe('filter', function() {
     assert.throws(function() { math.filter([]) });
   });
 
+  it('should LaTeX filter', function () {
+    var expression = math.parse('filter(1,test)');
+    assert.equal(expression.toTex(), '\\mathrm{filter}\\left({1},{\\mathrm{test}}\\right)');
+  });
+
 });

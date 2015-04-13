@@ -151,4 +151,9 @@ describe('and', function () {
     assert.throws(function () {and(undefined, true)}, error.UnsupportedTypeError);
   });
 
+  it('should LaTeX and', function () {
+    var expression = math.parse('and(1,2)');
+    assert.equal(expression.toTex(), '\\left({1}\\wedge{2}\\right)');
+  });
+
 });

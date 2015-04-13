@@ -84,4 +84,9 @@ describe('tanh', function() {
     assert.throws(function () {tanh()}, error.ArgumentsError);
     assert.throws(function () {tanh(1, 2)}, error.ArgumentsError);
   });
+
+  it('should LaTeX tanh', function () {
+    var expression = math.parse('tanh(1)');
+    assert.equal(expression.toTex(), '\\tanh\\left({1}\\right)');
+  });
 });

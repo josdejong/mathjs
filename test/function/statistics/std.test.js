@@ -78,4 +78,9 @@ describe('std', function() {
     assert.throws(function() {std([])});
   });
 
+  it('should LaTeX std', function () {
+    var expression = math.parse('std(1,2,3)');
+    assert.equal(expression.toTex(), '\\mathrm{std}\\left({1},{2},{3}\\right)');
+  });
+
 });

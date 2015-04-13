@@ -41,4 +41,9 @@ describe('re', function() {
     assert.throws(function () {math.re(1, 2)}, error.ArgumentsError);
   });
 
+  it('should LaTeX re', function () {
+    var expression = math.parse('re(1+i)');
+    assert.equal(expression.toTex(), '\\Re\\left\\lbrace{{1} + {{i}}}\\right\\rbrace');
+  });
+
 });

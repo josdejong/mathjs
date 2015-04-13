@@ -74,4 +74,9 @@ describe('ceil', function() {
     assert.throws(function () {ceil(1, 2)}, error.ArgumentsError);
   });
 
+  it('should LaTeX ceil', function () {
+    var expression = math.parse('ceil(0.5)');
+    assert.equal(expression.toTex(), '\\left\\lceil{0.5}\\right\\rceil');
+  });
+
 });

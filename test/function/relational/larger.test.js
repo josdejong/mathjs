@@ -139,4 +139,9 @@ describe('larger', function() {
     assert.throws(function () {larger(1, 2, 3)}, error.ArgumentsError);
   });
 
+  it('should LaTeX larger', function () {
+    var expression = math.parse('larger(1,2)');
+    assert.equal(expression.toTex(), '\\left({1}>{2}\\right)');
+  });
+
 });

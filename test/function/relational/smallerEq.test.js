@@ -146,4 +146,9 @@ describe('smallerEq', function() {
     assert.throws(function () {smallerEq(1, 2, 3)}, error.ArgumentsError);
   });
 
+  it('should LaTeX smallerEq', function () {
+    var expression = math.parse('smallerEq(1,2)');
+    assert.equal(expression.toTex(), '\\left({1}\\leq{2}\\right)');
+  });
+
 });

@@ -88,4 +88,9 @@ describe('sinh', function() {
     assert.throws(function () {sinh()}, error.ArgumentsError);
     assert.throws(function () {sinh(1, 2)}, error.ArgumentsError);
   });
+
+  it('should LaTeX sinh', function () {
+    var expression = math.parse('sinh(1)');
+    assert.equal(expression.toTex(), '\\sinh\\left({1}\\right)');
+  });
 });

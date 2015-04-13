@@ -21,4 +21,14 @@ describe('index', function() {
     assert.deepEqual(index._ranges, [{start:2, end:6, step:1}, {start: 3, end: 4, step: 1}]);
   });
 
+  it('should LaTeX index', function () {
+    var expr1 = math.parse('index(1)');
+    var expr2 = math.parse('index(1,2)');
+    var expr3 = math.parse('index(1,2,3)');
+
+    assert.equal(expr1.toTex(), '\\mathrm{index}\\left({1}\\right)');
+    assert.equal(expr2.toTex(), '\\mathrm{index}\\left({1},{2}\\right)');
+    assert.equal(expr3.toTex(), '\\mathrm{index}\\left({1},{2},{3}\\right)');
+  });
+
 });

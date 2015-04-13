@@ -94,5 +94,9 @@ describe('dotMultiply', function() {
     assert.throws(function () {dotMultiply(1)}, error.ArgumentsError);
     assert.throws(function () {dotMultiply(1, 2, 3)}, error.ArgumentsError);
   });
-
+  
+  it('should LaTeX dotMultiply', function () {
+    var expression = math.parse('dotMultiply([1,2],[3,4])');
+    assert.equal(expression.toTex(), '\\left({\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}}.\\cdot{\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}}\\right)');
+  });
 });

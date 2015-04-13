@@ -77,4 +77,9 @@ describe('ones', function() {
 
   // TODO: test with invalid input
 
+  it('should LaTeX ones', function () {
+    var expression = math.parse('ones(2)');
+    assert.equal(expression.toTex(), '\\mathrm{ones}\\left({2}\\right)');
+  });
+
 });

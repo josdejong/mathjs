@@ -35,4 +35,9 @@ describe('transpose', function() {
     assert.throws(function () {transpose()}, error.ArgumentsError);
     assert.throws(function () {transpose([1,2],2)}, error.ArgumentsError);
   });
+
+  it('should LaTeX transpose', function () {
+    var expression = math.parse('transpose([[1,2],[3,4]])');
+    assert.equal(expression.toTex(), '{\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}}^{\\top}');
+  });
 });

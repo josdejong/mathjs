@@ -90,4 +90,9 @@ describe('rightLogShift', function () {
     assert.throws(function () {rightLogShift(undefined, true)}, error.UnsupportedTypeError);
   });
 
+  it('should LaTeX rightLogShift', function () {
+    var expression = math.parse('rightLogShift(1,2)');
+    assert.equal(expression.toTex(), '\\left({1}>>>{2}\\right)');
+  });
+
 });

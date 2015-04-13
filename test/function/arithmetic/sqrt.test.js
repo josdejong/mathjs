@@ -75,4 +75,9 @@ describe('sqrt', function() {
     assert.throws(function () {sqrt(1, 2)}, error.ArgumentsError);
   });
 
+  it('should LaTeX sqrt', function () {
+    var expression = math.parse('sqrt(2)');
+    assert.equal(expression.toTex(), '\\sqrt{2}');
+  });
+
 });

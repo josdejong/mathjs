@@ -53,4 +53,9 @@ describe('deepEqual', function() {
     assert.throws(function () {deepEqual(1, 2, 3)}, error.ArgumentsError);
   });
 
+  it('should LaTeX deepEqual', function () {
+    var expression = math.parse('deepEqual([1,2],[1,3])');
+    assert.equal(expression.toTex(), '\\mathrm{deepEqual}\\left({\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}},{\\begin{bmatrix}1\\\\3\\\\\\end{bmatrix}}\\right)');
+  });
+
 });

@@ -76,4 +76,9 @@ describe('fix', function() {
     assert.throws(function () {fix(1, 2)}, error.ArgumentsError);
   });
 
+  it('should LaTeX fix', function () {
+    var expression = math.parse('fix(0.6)');
+    assert.equal(expression.toTex(), '\\mathrm{fix}\\left({0.6}\\right)');
+  });
+
 });
