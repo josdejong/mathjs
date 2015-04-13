@@ -1,5 +1,4 @@
 var assert = require('assert');
-var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var index = math.index;
 var Matrix = math.type.Matrix;
@@ -2058,22 +2057,6 @@ describe('CrsMatrix', function() {
           [0, 2, 0],
           [10, 0, 0]
         ]);
-    });
-  });
-  
-  describe('forwardSubstitution', function () {
-    
-    it('should throw when matrix is singular', function () {
-      var m = new CrsMatrix([[0, 0], [0, 1]]);
-      assert.throws(function () {m.forwardSubstitution([1,1]);}, /Error: Linear system cannot be solved since matrix is singular/);
-    });
-  });
-  
-  describe('backwardSubstitution', function () {
-
-    it('should throw when matrix is singular', function () {
-      var m = new CrsMatrix([[0, 0], [0, 1]]);
-      assert.throws(function () {m.backwardSubstitution([1,1]);}, /Error: Linear system cannot be solved since matrix is singular/);
     });
   });
 });
