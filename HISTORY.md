@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 1.5.3-SNAPSHOT
+
+- Improvements in `toTex`. Thanks @FSMaxB.
+
+
 ## 2015-04-09, version 1.5.2
 
 - Fixed #313: parsed functions did not handle recursive calls correctly.
