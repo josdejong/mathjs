@@ -1,7 +1,6 @@
 // test bitNot
 var assert = require('assert'),
     math = require('../../../index'),
-    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     bitNot = math.bitNot;
 
@@ -30,14 +29,14 @@ describe('bitNot', function () {
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       bitNot(1.1);
-    }, /Parameter in function bitNot must be integer numbers/);
+    }, /Integer expected in function bitNot/);
     assert.throws(function () {
       bitNot(bignumber(1.1));
-    }, /Parameter in function bitNot must be integer numbers/);
+    }, /Integer expected in function bitNot/);
   });
 
   it('should throw an error if used with a unit', function() {
-    assert.throws(function () {bitNot(math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {bitNot(math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should perform element-wise bitwise not on a matrix', function () {
@@ -53,14 +52,14 @@ describe('bitNot', function () {
   });
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () {bitNot()}, error.ArgumentsError);
-    assert.throws(function () {bitNot(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {bitNot()}, /TypeError: Too few arguments/);
+    assert.throws(function () {bitNot(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of argument', function () {
-    assert.throws(function () {bitNot(new Date())}, error.UnsupportedTypeError);
-    assert.throws(function () {bitNot('foo')}, error.UnsupportedTypeError);
-    assert.throws(function () {bitNot(undefined)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitNot(new Date())}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitNot('foo')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitNot(undefined)}, /TypeError: Unexpected type of argument/);
   });
 
 });

@@ -1,6 +1,5 @@
 // test bitAnd
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     bignumber = math.bignumber,
     bitAnd = math.bitAnd;
@@ -67,25 +66,25 @@ describe('bitAnd', function () {
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       bitAnd(1.1, 1);
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(1, 1.1);
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(1.1, 1.1);
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(bignumber(1.1), 1);
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(1, bignumber(1.1));
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(bignumber(1.1), bignumber(1));
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(bignumber(1), bignumber(1.1));
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
   });
 
   it('should bitwise and matrices correctly', function () {

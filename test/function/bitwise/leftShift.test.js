@@ -1,7 +1,6 @@
 // test leftShift
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     bignumber = math.bignumber,
     leftShift = math.leftShift;
@@ -65,33 +64,33 @@ describe('leftShift', function () {
   });
 
   it('should throw an error if used with a unit', function() {
-    assert.throws(function () {leftShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(2, math.unit('5cm'))}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift(math.unit('5cm'), 2)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(2, math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(math.unit('2cm'), math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       leftShift(1.1, 1);
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(1, 1.1);
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(1.1, 1.1);
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(bignumber(1.1), 1);
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(1, bignumber(1.1));
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(bignumber(1.1), bignumber(1));
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(bignumber(1), bignumber(1.1));
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
   });
 
   it('should element-wise left shift a matrix', function () {
@@ -115,17 +114,17 @@ describe('leftShift', function () {
   });
 
   it('should throw an error if used with wrong number of arguments', function () {
-    assert.throws(function () {leftShift(1)}, error.ArgumentsError);
-    assert.throws(function () {leftShift(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {leftShift(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {leftShift(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () {leftShift(new Date(), true)}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(true, new Date())}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(true, 'foo')}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift('foo', true)}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(true, undefined)}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(undefined, true)}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift(new Date(), true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(true, new Date())}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(true, 'foo')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift('foo', true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(true, undefined)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(undefined, true)}, /TypeError: Unexpected type of argument/);
   });
 
 });

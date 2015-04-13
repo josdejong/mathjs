@@ -1,6 +1,5 @@
 // test rightLogShift
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     rightLogShift = math.rightLogShift;
 
@@ -41,19 +40,19 @@ describe('rightLogShift', function () {
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       rightLogShift(1.1, 1);
-    }, /Parameters in function rightLogShift must be integer numbers/);
+    }, /Integers expected in function rightLogShift/);
     assert.throws(function () {
       rightLogShift(1, 1.1);
-    }, /Parameters in function rightLogShift must be integer numbers/);
+    }, /Integers expected in function rightLogShift/);
     assert.throws(function () {
       rightLogShift(1.1, 1.1);
-    }, /Parameters in function rightLogShift must be integer numbers/);
+    }, /Integers expected in function rightLogShift/);
   });
 
   it('should throw an error if used with a unit', function() {
-    assert.throws(function () {rightLogShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
-    assert.throws(function () {rightLogShift(2, math.unit('5cm'))}, error.UnsupportedTypeError);
-    assert.throws(function () {rightLogShift(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {rightLogShift(math.unit('5cm'), 2)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {rightLogShift(2, math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {rightLogShift(math.unit('2cm'), math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should element-wise right logically shift a matrix', function () {
@@ -77,17 +76,17 @@ describe('rightLogShift', function () {
   });
 
   it('should throw an error if used with wrong number of arguments', function () {
-    assert.throws(function () {rightLogShift(1)}, error.ArgumentsError);
-    assert.throws(function () {rightLogShift(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {rightLogShift(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {rightLogShift(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () {rightLogShift(new Date(), true)}, error.UnsupportedTypeError);
-    assert.throws(function () {rightLogShift(true, new Date())}, error.UnsupportedTypeError);
-    assert.throws(function () {rightLogShift(true, 'foo')}, error.UnsupportedTypeError);
-    assert.throws(function () {rightLogShift('foo', true)}, error.UnsupportedTypeError);
-    assert.throws(function () {rightLogShift(true, undefined)}, error.UnsupportedTypeError);
-    assert.throws(function () {rightLogShift(undefined, true)}, error.UnsupportedTypeError);
+    assert.throws(function () {rightLogShift(new Date(), true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {rightLogShift(true, new Date())}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {rightLogShift(true, 'foo')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {rightLogShift('foo', true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {rightLogShift(true, undefined)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {rightLogShift(undefined, true)}, /TypeError: Unexpected type of argument/);
   });
 
 });

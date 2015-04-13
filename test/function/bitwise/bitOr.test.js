@@ -1,6 +1,5 @@
 // test bitOr
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     bignumber = math.bignumber,
     bitOr = math.bitOr;
@@ -58,33 +57,33 @@ describe('bitOr', function () {
   });
 
   it('should throw an error if used with a unit', function() {
-    assert.throws(function () {bitOr(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitOr(2, math.unit('5cm'))}, error.UnsupportedTypeError);
-    assert.throws(function () {bitOr(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {bitOr(math.unit('5cm'), 2)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(2, math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(math.unit('2cm'), math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       bitOr(1.1, 1);
-    }, /Parameters in function bitOr must be integer numbers/);
+    }, /Integers expected in function bitOr/);
     assert.throws(function () {
       bitOr(1, 1.1);
-    }, /Parameters in function bitOr must be integer numbers/);
+    }, /Integers expected in function bitOr/);
     assert.throws(function () {
       bitOr(1.1, 1.1);
-    }, /Parameters in function bitOr must be integer numbers/);
+    }, /Integers expected in function bitOr/);
     assert.throws(function () {
       bitOr(bignumber(1.1), 1);
-    }, /Parameters in function bitOr must be integer numbers/);
+    }, /Integers expected in function bitOr/);
     assert.throws(function () {
       bitOr(1, bignumber(1.1));
-    }, /Parameters in function bitOr must be integer numbers/);
+    }, /Integers expected in function bitOr/);
     assert.throws(function () {
       bitOr(bignumber(1.1), bignumber(1));
-    }, /Parameters in function bitOr must be integer numbers/);
+    }, /Integers expected in function bitOr/);
     assert.throws(function () {
       bitOr(bignumber(1), bignumber(1.1));
-    }, /Parameters in function bitOr must be integer numbers/);
+    }, /Integers expected in function bitOr/);
   });
 
   it('should bitwise or matrices correctly', function () {
@@ -120,16 +119,16 @@ describe('bitOr', function () {
   });
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () {bitOr(1)}, error.ArgumentsError);
-    assert.throws(function () {bitOr(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {bitOr(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {bitOr(1, 2, 3)}, /TypeError: Too many arguments/);
   });
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () {bitOr(new Date(), true)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitOr(true, new Date())}, error.UnsupportedTypeError);
-    assert.throws(function () {bitOr(true, 'foo')}, error.UnsupportedTypeError);
-    assert.throws(function () {bitOr('foo', true)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitOr(true, undefined)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitOr(undefined, true)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitOr(new Date(), true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(true, new Date())}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(true, 'foo')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr('foo', true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(true, undefined)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(undefined, true)}, /TypeError: Unexpected type of argument/);
   });
 
 });

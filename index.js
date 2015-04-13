@@ -96,12 +96,12 @@ function create (config) {
 
   // functions - bitwise
   math.import(require('./lib/function/bitwise/bitAnd'));
-  require('./lib/function/bitwise/bitNot')(math, _config);
-  require('./lib/function/bitwise/bitOr')(math, _config);
-  require('./lib/function/bitwise/bitXor')(math, _config);
-  require('./lib/function/bitwise/leftShift')(math, _config);
-  require('./lib/function/bitwise/rightArithShift')(math, _config);
-  require('./lib/function/bitwise/rightLogShift')(math, _config);
+  math.import(require('./lib/function/bitwise/bitNot'));
+  math.import(require('./lib/function/bitwise/bitOr'));
+  math.import(require('./lib/function/bitwise/bitXor'));
+  math.import(require('./lib/function/bitwise/leftShift'));
+  math.import(require('./lib/function/bitwise/rightArithShift'));
+  math.import(require('./lib/function/bitwise/rightLogShift'));
 
   // functions - complex
   math.import(require('./lib/function/complex/arg'));
