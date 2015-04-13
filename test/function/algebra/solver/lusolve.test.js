@@ -1,4 +1,4 @@
-// test abs
+// test lusolve
 var assert = require('assert'),
     approx = require('../../../../tools/approx'),
     math = require('../../../../index');
