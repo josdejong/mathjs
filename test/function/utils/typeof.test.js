@@ -99,4 +99,9 @@ describe('typeof', function() {
     assert.throws(function() {math.typeof(1,2); });
   });
 
+  it('should LaTeX typeof', function () {
+    var expression = math.parse('typeof(1)');
+    assert.equal(expression.toTex(), '\\mathrm{typeof}\\left({1}\\right)');
+  });
+
 });

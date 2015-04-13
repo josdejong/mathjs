@@ -171,4 +171,9 @@ describe('xor', function () {
     assert.throws(function () {xor(undefined, true)}, error.UnsupportedTypeError);
   });
 
+  it('should LaTeX xor', function () {
+    var expression = math.parse('xor(1,2)');
+    assert.equal(expression.toTex(), '\\left({1}\\veebar{2}\\right)');
+  });
+
 });

@@ -43,4 +43,9 @@ describe('print', function() {
     assert.throws (function () {math.print('', 2)}, /TypeError: Unexpected type of argument/);
   });
 
+  it('should LaTeX print', function () {
+    var expression = math.parse('print(template,values)');
+    assert.equal(expression.toTex(), '\\mathrm{print}\\left({\\mathrm{template}},{\\mathrm{values}}\\right)');
+  });
+
 });

@@ -126,4 +126,9 @@ describe('subtract', function() {
     assert.throws(function () {subtract(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX subtract', function () {
+    var expression = math.parse('subtract(2,1)');
+    assert.equal(expression.toTex(), '\\left({2}-{1}\\right)');
+  });
+
 });

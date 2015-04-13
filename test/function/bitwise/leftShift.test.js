@@ -127,4 +127,9 @@ describe('leftShift', function () {
     assert.throws(function () {leftShift(undefined, true)}, /TypeError: Unexpected type of argument/);
   });
 
+  it('should LaTeX leftShift', function () {
+    var expression = math.parse('leftShift(2,3)');
+    assert.equal(expression.toTex(), '\\left({2}<<{3}\\right)');
+  });
+
 });

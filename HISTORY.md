@@ -1,5 +1,6 @@
 # History
 
+
 ## not yet released, version 2.0.0-SNAPSHOT
 
 - Implemented matrix LU decomposition with partial pivoting and a LU based 
@@ -7,6 +8,18 @@
 - Large internal refactoring, allowing to create custom bundles of math.js.
 - Function `import` now returns the imported objects.
 
+
+## not yet released, version 1.5.3-SNAPSHOT
+
+- Improvements in `toTex`. Thanks @FSMaxB.
+
+
+## 2015-04-09, version 1.5.2
+
+- Fixed #313: parsed functions did not handle recursive calls correctly.
+- Fixed #251: binary prefix and SI prefix incorrectly used for byte. Now 
+  following SI standards (`1 KiB == 1024 B`, `1 kB == 1000 B`).
+- Performance improvements in parsed functions.
 
 ## 2015-04-08, version 1.5.1
 

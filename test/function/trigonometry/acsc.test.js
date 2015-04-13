@@ -136,4 +136,9 @@ describe('acsc', function() {
     assert.throws(function () {acsc(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTex acsc', function () {
+    var expression = math.parse('acsc(2)');
+    assert.equal(expression.toTex(), '\\csc^{-1}\\left({2}\\right)');
+  });
+
 });

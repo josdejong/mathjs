@@ -38,4 +38,9 @@ describe('cross', function() {
     assert.throws(function () {math.cross([], [])}, /Vectors with length 3 expected/);
   });
 
+  it('should LaTeX cross', function () {
+    var expression = math.parse('cross([1],[2])');
+    assert.equal(expression.toTex(), '{\\begin{bmatrix}1\\\\\\end{bmatrix}}\\times{\\begin{bmatrix}2\\\\\\end{bmatrix}}');
+  });
+
 });

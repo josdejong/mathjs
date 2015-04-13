@@ -96,7 +96,7 @@ describe('Node', function() {
     var n2 = new mymath.expression.node.FunctionNode('bla', []);
     
     assert.equal(n1.toTex(callback1), 'default');
-    assert.equal(n2.toTex(callback2), 'bla\\left({}\\right)');
+    assert.equal(n2.toTex(callback2), '\\mathrm{bla}\\left(\\right)');
   });
 
   it ('should throw an error in case of wrong arguments for compile', function () {

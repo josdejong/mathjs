@@ -60,4 +60,9 @@ describe('size', function() {
   it('should throw an error if called with invalid type of arguments', function() {
     assert.throws(function () {size(new Date())}, math.error.UnsupportedTypeError);
   });
+
+  it('should LaTeX size', function () {
+    var expression = math.parse('size(1)');
+    assert.equal(expression.toTex(), '\\mathrm{size}\\left({1}\\right)');
+  });
 });

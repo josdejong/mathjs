@@ -94,4 +94,9 @@ describe('gcd', function() {
     assert.deepEqual(gcd([5,2,3], [25,3,6]), [5, 1, 3]);
   });
 
+  it('should LaTeX gcd', function () {
+    var expression = math.parse('gcd(2,3)');
+    assert.equal(expression.toTex(), '\\gcd\\left({2},{3}\\right)');
+  });
+
 });

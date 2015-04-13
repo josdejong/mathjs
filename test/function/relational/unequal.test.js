@@ -166,4 +166,9 @@ describe('unequal', function() {
     assert.throws(function () {unequal(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX unequal', function () {
+    var expression = math.parse('unequal(1,0)');
+    assert.equal(expression.toTex(), '\\left({1}\\neq{0}\\right)');
+  });
+
 });

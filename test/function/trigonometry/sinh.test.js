@@ -88,4 +88,9 @@ describe('sinh', function() {
     assert.throws(function () {sinh()}, /TypeError: Too few arguments/);
     assert.throws(function () {sinh(1, 2)}, /TypeError: Too many arguments/);
   });
+
+  it('should LaTeX sinh', function () {
+    var expression = math.parse('sinh(1)');
+    assert.equal(expression.toTex(), '\\sinh\\left({1}\\right)');
+  });
 });

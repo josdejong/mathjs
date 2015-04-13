@@ -56,4 +56,12 @@ describe('string', function() {
     assert.throws(function () {string(1,2)}, /TypeError: Too many arguments/);
     assert.throws(function () {string(1,2,3)}, /TypeError: Too many arguments/);
   });
+
+  it('should LaTeX string', function () {
+    var expr1 = math.parse('string()');
+    var expr2 = math.parse('string(bla)');
+    
+    assert.equal(expr1.toTex(), '""');
+    assert.equal(expr2.toTex(), '"bla"');
+  });
 });

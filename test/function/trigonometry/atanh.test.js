@@ -112,4 +112,9 @@ describe('atanh', function() {
     assert.throws(function () {atanh(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX atanh', function () {
+    var expression = math.parse('atanh(0.5)');
+    assert.equal(expression.toTex(), '\\tanh^{-1}\\left({0.5}\\right)');
+  });
+
 });

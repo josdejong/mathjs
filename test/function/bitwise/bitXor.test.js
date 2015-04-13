@@ -133,4 +133,9 @@ describe('bitXor', function () {
     assert.throws(function () {bitXor(undefined, true)}, /TypeError: Unexpected type of argument/);
   });
 
+  it('should LaTeX bitXor', function () {
+    var expression = math.parse('bitXor(2,3)');
+    assert.equal(expression.toTex(), '\\left({2}\\underline{|}{3}\\right)');
+  });
+
 });

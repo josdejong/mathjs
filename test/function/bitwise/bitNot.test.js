@@ -62,4 +62,9 @@ describe('bitNot', function () {
     assert.throws(function () {bitNot(undefined)}, /TypeError: Unexpected type of argument/);
   });
 
+  it('should LaTeX bitNot', function () {
+    var expression = math.parse('bitNot(4)');
+    assert.equal(expression.toTex(), '~\\left({4}\\right)');
+  });
+
 });

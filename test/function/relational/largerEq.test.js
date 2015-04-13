@@ -140,4 +140,9 @@ describe('largerEq', function() {
     assert.throws(function () {largerEq(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX largerEq', function () {
+    var expression = math.parse('largerEq(1,2)');
+    assert.equal(expression.toTex(), '\\left({1}\\geq{2}\\right)');
+  });
+
 });

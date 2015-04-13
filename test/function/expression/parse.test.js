@@ -23,4 +23,9 @@ describe('parse', function() {
     assert.equal(nodes[1].compile(math).eval(), 9);
   });
 
+  it('should LaTeX parse', function () {
+    var expression = math.parse('parse(expr,options)');
+    assert.equal(expression.toTex(), '\\mathrm{parse}\\left({\\mathrm{expr}},{\\mathrm{options}}\\right)');
+  });
+
 });

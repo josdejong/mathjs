@@ -94,5 +94,9 @@ describe('dotMultiply', function() {
     assert.throws(function () {dotMultiply(1)}, /TypeError: Too few arguments/);
     assert.throws(function () {dotMultiply(1, 2, 3)}, /TypeError: Too many arguments/);
   });
-
+  
+  it('should LaTeX dotMultiply', function () {
+    var expression = math.parse('dotMultiply([1,2],[3,4])');
+    assert.equal(expression.toTex(), '\\left({\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}}.\\cdot{\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}}\\right)');
+  });
 });

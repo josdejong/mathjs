@@ -47,4 +47,9 @@ describe('flatten', function() {
     assert.throws(function () {flatten("str")}, /TypeError/);
   });
 
+  it('should LaTeX flatten', function () {
+    var expression = math.parse('flatten([[1,2],[3,4]])');
+    assert.equal(expression.toTex(), '\\mathrm{flatten}\\left({\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}}\\right)');
+  });
+
 });

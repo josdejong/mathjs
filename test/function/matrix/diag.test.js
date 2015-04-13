@@ -123,4 +123,12 @@ describe('diag', function() {
     assert.throws(function () {math.diag([], new Date());}, /TypeError: Unexpected type of argument/);
   });
 
+  it('should LaTeX diag', function () {
+    var expr1 = math.parse('diag([1,2,3])');
+    var expr2 = math.parse('diag([1,2,3],1)');
+
+    assert.equal(expr1.toTex(), '\\mathrm{diag}\\left({\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}}\\right)');
+    assert.equal(expr2.toTex(), '\\mathrm{diag}\\left({\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}},{1}\\right)');
+  });
+
 });

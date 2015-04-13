@@ -82,4 +82,12 @@ describe('matrix', function() {
   it('should throw an error when called with an unknown storage format', function () {
     assert.throws(function () { math.matrix([], '123'); }, /Unsupported matrix storage format: 123/);
   });
+
+  it('should LaTeX matrix', function () {
+    var expr1 = math.parse('matrix()');
+    var expr2 = math.parse('matrix([1])');
+
+    assert.equal(expr1.toTex(), '\\begin{bmatrix}\\end{bmatrix}');
+    assert.equal(expr2.toTex(), '\\left({\\begin{bmatrix}1\\\\\\end{bmatrix}}\\right)');
+  });
 });

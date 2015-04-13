@@ -95,4 +95,9 @@ describe('csc', function() {
     assert.throws(function () {csc(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX csc', function () {
+    var expression = math.parse('csc(1)');
+    assert.equal(expression.toTex(), '\\csc\\left({1}\\right)');
+  });
+
 });

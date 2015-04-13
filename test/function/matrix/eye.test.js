@@ -64,4 +64,9 @@ describe('eye', function() {
     assert.throws(function () {eye([2, -2]);});
   });
 
+  it('should LaTeX eye', function () {
+    var expression = math.parse('eye(2)');
+    assert.equal(expression.toTex(), '\\mathrm{eye}\\left({2}\\right)');
+  });
+
 });

@@ -84,4 +84,12 @@ describe('round', function() {
     assert.deepEqual(round(math.matrix([1.7,2.3])).valueOf(), [2, 2]);
   });
 
+  it('should LaTeX round', function () {
+    var expr1 = math.parse('round(1.1)');
+    var expr2 = math.parse('round(1.1,2)');
+
+    assert.equal(expr1.toTex(), '\\left\\lfloor{1.1}\\right\\rceil');
+    assert.equal(expr2.toTex(), '\\mathrm{round}\\left({1.1},{2}\\right)');
+  });
+
 });

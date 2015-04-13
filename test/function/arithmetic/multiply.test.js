@@ -279,4 +279,9 @@ describe('multiply', function() {
     assert.throws(function () {multiply(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX mutliply', function () {
+    var expression = math.parse('multiply(2,3)');
+    assert.equal(expression.toTex(), '\\left({2}\\cdot{3}\\right)');
+  });
+
 });

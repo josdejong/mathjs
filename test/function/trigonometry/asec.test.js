@@ -118,4 +118,9 @@ describe('asec', function() {
     assert.throws(function () {asec(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX asec', function () {
+    var expression = math.parse('asec(2)');
+    assert.equal(expression.toTex(), '\\sec^{-1}\\left({2}\\right)');
+  });
+
 });

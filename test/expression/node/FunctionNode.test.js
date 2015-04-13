@@ -274,11 +274,11 @@ describe('FunctionNode', function() {
 
     // test permutations
     var n2 = new FunctionNode('permutations', [c1]);
-    assert.equal(n2.toTex(), '{4!}');
+    assert.equal(n2.toTex(), '\\mathrm{permutations}\\left({4}\\right)');
 
     var o = new OperatorNode('+', 'add', [c1, c2]);
     var n3 = new FunctionNode('permutations', [o]);
-    assert.equal(n3.toTex(), '{\\left({4} + {5}\\right)!}');
+    assert.equal(n3.toTex(), '\\mathrm{permutations}\\left({{4} + {5}}\\right)');
   });
 
   it ('should have an identifier', function () {

@@ -68,4 +68,9 @@ describe('boolean', function() {
     assert.throws(function () {bool(math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 
+  it('should LaTeX boolean', function () {
+    var expression = math.parse('boolean(1)');
+    assert.equal(expression.toTex(), '\\mathrm{boolean}\\left({1}\\right)');
+  });
+
 });

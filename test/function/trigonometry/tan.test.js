@@ -98,4 +98,9 @@ describe('tan', function() {
     assert.throws(function () {tan(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX tan', function () {
+    var expression = math.parse('tan(1)');
+    assert.equal(expression.toTex(), '\\tan\\left({1}\\right)');
+  });
+
 });

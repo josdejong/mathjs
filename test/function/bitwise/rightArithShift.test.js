@@ -130,4 +130,9 @@ describe('rightArithShift', function () {
     assert.throws(function () {rightArithShift(undefined, true)}, /TypeError: Unexpected type of argument/);
   });
 
+  it('should LaTeX rightArithShift', function () {
+    var expression = math.parse('rightArithShift(3,2)');
+    assert.equal(expression.toTex(), '\\left({3}>>{2}\\right)');
+  });
+
 });

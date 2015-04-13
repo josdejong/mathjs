@@ -56,4 +56,9 @@ describe('cube', function() {
     assert.deepEqual(cube(matrix([[1,2],[3,4]])), matrix([[1,8],[27,64]]));
   });
 
+  it('should LaTeX cube', function () {
+    var expression = math.parse('cube(2)');
+    assert.equal(expression.toTex(), '\\left({2}\\right)^{3}');
+  });
+
 });

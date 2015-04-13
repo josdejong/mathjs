@@ -26,10 +26,10 @@ describe('det', function() {
       [-1, 9, 11]
     ]), -8);
     approx.equal(det([
-      [1,7,4,3,7], 
-      [0,7,0,3,7], 
-      [0,7,4,3,0], 
-      [1,7,5,9,7], 
+      [1,7,4,3,7],
+      [0,7,0,3,7],
+      [0,7,4,3,0],
+      [1,7,5,9,7],
       [2,7,4,3,7]
     ]), -1176);
     approx.equal(det(diag([4,-5,6])), -120);
@@ -131,6 +131,11 @@ describe('det', function() {
   it('should not accept arrays with dimensions higher than 2', function() {
     assert.throws(function() { det([[[1]]]); }, RangeError);
     assert.throws(function() { det(new DenseMatrix([[[1]]])); }, RangeError);
+  });
+  
+  it('should LaTeX det', function () {
+    var expression = math.parse('det([1])');
+    assert.equal(expression.toTex(), '\\det\\left({\\begin{bmatrix}1\\\\\\end{bmatrix}}\\right)');
   });
 
 });

@@ -35,5 +35,9 @@ describe('dot', function() {
     assert.throws(function () {math.dot([], [])}, /Cannot calculate the dot product of empty vectors/);
   });
 
+  it('should LaTeX dot', function () {
+    var expression = math.parse('dot([1,2],[3,4])');
+    assert.equal(expression.toTex(), '\\left({\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}}\\cdot{\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}}\\right)');
+  });
 
 });

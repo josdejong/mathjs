@@ -104,4 +104,9 @@ describe('cot', function() {
     assert.throws(function () {cot(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX cot', function () {
+    var expression = math.parse('cot(1)');
+    assert.equal(expression.toTex(), '\\cot\\left({1}\\right)');
+  });
+
 });

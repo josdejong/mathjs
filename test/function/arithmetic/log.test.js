@@ -101,4 +101,12 @@ describe('log', function() {
         matrix([[0, 0.693147180559945], [1.098612288668110, 1.386294361119891]]));
   });
 
+  it('should LaTeX log', function () {
+    var expr1 = math.parse('log(e)');
+    var expr2 = math.parse('log(32,2)');
+
+    assert.equal(expr1.toTex(), '\\ln\\left({\\mathrm{e}}\\right)');
+    assert.equal(expr2.toTex(), '\\log_{2}\\left({32}\\right)');
+  });
+
 });

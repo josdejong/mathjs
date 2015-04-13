@@ -204,4 +204,10 @@ describe('trace', function() {
     assert.throws(function() { math.trace([[[1]]]); }, RangeError);
     assert.throws(function() { math.trace(math.matrix([[[1]]])); }, RangeError);
   });
+
+  it('should LaTeX trace', function () {
+    var expression = math.parse('trace([[1,2],[3,4]])');
+    assert.equal(expression.toTex(), '\\mathrm{tr}\\left({\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}}\\right)');
+  });
+
 });

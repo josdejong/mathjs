@@ -99,4 +99,9 @@ describe('log10', function() {
         matrix([[0, 0.301029995663981], [0.477121254719662, 0.602059991327962]]));
   });
 
+  it('should LaTeX log10', function () {
+    var expression = math.parse('log10(10)');
+    assert.equal(expression.toTex(), '\\log_{10}\\left({10}\\right)');
+  });
+
 });

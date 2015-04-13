@@ -101,4 +101,9 @@ describe('min', function() {
     assert.throws(function() {min([])});
   });
 
+  it('should LaTeX min', function () {
+    var expression = math.parse('min(1,2,3)');
+    assert.equal(expression.toTex(), '\\min\\left({1},{2},{3}\\right)');
+  });
+
 });

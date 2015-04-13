@@ -112,4 +112,9 @@ describe('asech', function() {
     assert.throws(function () {asech(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX asech', function () {
+    var expression = math.parse('asech(1)');
+    assert.equal(expression.toTex(), '\\mathrm{sech}^{-1}\\left({1}\\right)');
+  });
+
 });

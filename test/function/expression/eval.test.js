@@ -73,4 +73,12 @@ describe('eval', function() {
     assert.deepEqual(math.eval('hello("jos")', scope), 'hello, jos!');
   });
 
+  it('should LaTeX eval', function () {
+    var expr1 = math.parse('eval(expr)');
+    var expr2 = math.parse('eval(expr,scope)');
+
+    assert.equal(expr1.toTex(), '\\mathrm{eval}\\left({\\mathrm{expr}}\\right)');
+    assert.equal(expr2.toTex(), '\\mathrm{eval}\\left({\\mathrm{expr}},{\\mathrm{scope}}\\right)');
+  });
+
 });

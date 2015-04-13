@@ -115,4 +115,9 @@ describe('acoth', function() {
     assert.throws(function () {acoth(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX acoth', function () {
+    var expression = math.parse('acoth(2)');
+    assert.equal(expression.toTex(), '\\coth^{-1}\\left({2}\\right)');
+  });
+
 });

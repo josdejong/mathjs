@@ -85,4 +85,9 @@ describe('format', function() {
     assert.throws (function () {math.format(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX format', function () {
+    var expression = math.parse('format(1)');
+    assert.equal(expression.toTex(), '\\mathrm{format}\\left({1}\\right)');
+  });
+
 });

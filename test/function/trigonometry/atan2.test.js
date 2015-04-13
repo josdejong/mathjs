@@ -103,4 +103,9 @@ describe('atan2', function() {
     assert.throws(function () {atan2(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX atan2', function () {
+    var expression = math.parse('atan2(1,1)');
+    assert.equal(expression.toTex(), '\\mathrm{atan2}\\left({1},{1}\\right)');
+  });
+
 });

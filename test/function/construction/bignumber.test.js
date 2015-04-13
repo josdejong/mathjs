@@ -79,4 +79,12 @@ describe('bignumber', function() {
     assert.throws(function () {math.bignumber(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX bignumber', function () {
+    var expr1 = math.parse('bignumber()');
+    var expr2 = math.parse('bignumber(1)');
+
+    assert.equal(expr1.toTex(), '0');
+    assert.equal(expr2.toTex(), '\\left({1}\\right)');
+  });
+
 });

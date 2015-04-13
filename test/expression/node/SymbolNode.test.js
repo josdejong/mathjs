@@ -104,7 +104,7 @@ describe('SymbolNode', function() {
   it ('should LaTeX a SymbolNode', function () {
     var s = new SymbolNode('foo');
 
-    assert.equal(s.toTex(), 'foo');
+    assert.equal(s.toTex(), '\\mathrm{foo}');
   });
 
   it ('should LaTeX a SymbolNode with custom toTex', function () {

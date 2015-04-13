@@ -105,4 +105,9 @@ describe('acos', function() {
     assert.throws(function () {acos(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX acos', function () {
+    var expression = math.parse('acos(1)');
+    assert.equal(expression.toTex(), '\\cos^{-1}\\left({1}\\right)');
+  });
+
 });

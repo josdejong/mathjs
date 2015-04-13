@@ -165,4 +165,9 @@ describe('import', function() {
     assert.strictEqual(math.a, true);
   });
 
+  it('should LaTeX import', function () {
+    var expression = math.parse('import(object)');
+    assert.equal(expression.toTex(), '\\mathrm{import}\\left({\\mathrm{object}}\\right)');
+  });
+
 });

@@ -107,4 +107,9 @@ describe('sin', function() {
     assert.throws(function () {sin(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX sin', function () {
+    var expression = math.parse('sin(0.5)');
+    assert.equal(expression.toTex(), '\\sin\\left({0.5}\\right)');
+  });
+
 });

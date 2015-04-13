@@ -10,5 +10,10 @@ describe('parser', function() {
     assert(parser instanceof Parser);
   });
 
+  it('should LaTeX parser', function () { //This doesn't really make sense in a way
+    var expression = math.parse('parser()');
+    assert.equal(expression.toTex(), '\\mathrm{parser}\\left(\\right)');
+  });
+
 });
 

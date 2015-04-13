@@ -71,4 +71,9 @@ describe('floor', function() {
     assert.throws(function () {floor(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should LaTeX floor', function () {
+    var expression = math.parse('floor(0.6)');
+    assert.equal(expression.toTex(), '\\left\\lfloor{0.6}\\right\\rfloor');
+  });
+
 });

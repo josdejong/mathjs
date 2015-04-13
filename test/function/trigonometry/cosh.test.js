@@ -85,4 +85,9 @@ describe('cosh', function() {
     assert.throws(function () {cosh()}, /TypeError: Too few arguments/);
     assert.throws(function () {cosh(1, 2)}, /TypeError: Too many arguments/);
   });
+
+  it('should LaTeX cosh', function () {
+    var expression = math.parse('cosh(1)');
+    assert.equal(expression.toTex(), '\\cosh\\left({1}\\right)');
+  });
 });

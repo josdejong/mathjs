@@ -282,7 +282,7 @@ describe('OperatorNode', function() {
   it ('should LaTeX an OperatorNode with factorial', function () {
     var a = new ConstantNode(2);
     var n = new OperatorNode('!', 'factorial', [a]);
-    assert.equal(n.toTex(), '2!');
+    assert.equal(n.toTex(), '{2}!');
   });
 
   it ('should LaTeX an OperatorNode with factorial of an OperatorNode', function () {
@@ -301,7 +301,7 @@ describe('OperatorNode', function() {
     assert.equal(n1.toTex(), '\\left({{2} - {3}}\\right)!');
     assert.equal(n2.toTex(), '\\left({{2} + {3}}\\right)!');
     assert.equal(n3.toTex(), '\\left({{2} \\cdot {3}}\\right)!');
-    assert.equal(n4.toTex(), '\\left({\\frac{2}{3}}\\right)!');
+    assert.equal(n4.toTex(), '\\left({\\frac{{2}}{{3}}}\\right)!');
   });
 
   it ('should LaTeX an OperatorNode with unary minus', function () {
@@ -315,7 +315,7 @@ describe('OperatorNode', function() {
     var n2 = new OperatorNode('-', 'unaryMinus', [sub]);
     var n3 = new OperatorNode('-', 'unaryMinus', [add]);
 
-    assert.equal(n1.toTex(), '-2');
+    assert.equal(n1.toTex(), '-{2}');
     assert.equal(n2.toTex(), '-\\left({{2} - {3}}\\right)');
     assert.equal(n3.toTex(), '-\\left({{2} + {3}}\\right)');
   });
@@ -337,7 +337,7 @@ describe('OperatorNode', function() {
 
   it ('should LaTeX an OperatorNode with zero arguments', function () {
     var n = new OperatorNode('foo', 'foo', []);
-    assert.equal(n.toTex(), 'foo\\left({}\\right)');
+    assert.equal(n.toTex(), '\\mathrm{foo}\\left(\\right)');
   });
 
   it ('should LaTeX an OperatorNode with more than two operators', function () {
@@ -346,7 +346,7 @@ describe('OperatorNode', function() {
     var c = new ConstantNode(4);
 
     var n = new OperatorNode('foo', 'foo', [a, b, c]);
-    assert.equal(n.toTex(), 'foo\\left({2, 3, 4}\\right)');
+    assert.equal(n.toTex(), '\\mathrm{foo}\\left({2},{3},{4}\\right)');
 
   });
 
@@ -367,6 +367,15 @@ describe('OperatorNode', function() {
     assert.equal(n2.toTex(), '{4} - {5}');
     assert.equal(n3.toTex(), '\\left({{2} + {3}}\\right) \\cdot \\left({{4} - {5}}\\right)');
     assert.equal(m3.toTex(), '{\\left({{2} + {3}}\\right) \\cdot {4}} - {5}');
+  });
+
+  it('should LaTeX fractions with operators that are enclosed in parenthesis', function () {
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var add = new OperatorNode('+', 'add', [a,a]);
+    var frac = new OperatorNode('/', 'divide', [add,b]);
+    assert.equal(frac.toTex(), '\\frac{\\left({{1} + {1}}\\right)}{{2}}');
   });
 
   it ('should have an identifier', function () {

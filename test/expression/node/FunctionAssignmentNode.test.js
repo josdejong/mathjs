@@ -5,6 +5,8 @@ var assert = require('assert'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
     OperatorNode = require('../../../lib/expression/node/OperatorNode'),
+    ConditionalNode = require('../../../lib/expression/node/ConditionalNode'),
+    FunctionNode = require('../../../lib/expression/node/FunctionNode'),
     FunctionAssignmentNode = require('../../../lib/expression/node/FunctionAssignmentNode'),
     AssignmentNode = require('../../../lib/expression/node/AssignmentNode'),
     RangeNode = require('../../../lib/expression/node/RangeNode'),
@@ -46,6 +48,74 @@ describe('FunctionAssignmentNode', function() {
     assert.throws(function () {scope.f()}, SyntaxError);
     assert.throws(function () {scope.f(2, 3)}, SyntaxError);
 
+  });
+
+  it ('should eval a recursive FunctionAssignmentNode', function () {
+    var x = new SymbolNode('x');
+    var one = new ConstantNode(1);
+    var condition = new OperatorNode('<=', 'smallerEq', [x, one]);
+    var truePart = one;
+    var falsePart = new OperatorNode('*', 'multiply', [
+      x,
+      new FunctionNode('factorial', [
+        new OperatorNode('-', 'subtract', [
+          x,
+          one
+        ])
+      ])
+    ]);
+    var n1 = new ConditionalNode(condition, truePart, falsePart);
+
+    var n2 = new FunctionAssignmentNode('factorial', ['x'], n1);
+
+    var expr = n2.compile(math);
+    var scope = {};
+    var factorial = expr.eval(scope);
+    assert.equal(typeof scope.factorial, 'function');
+    assert.equal(factorial(3), 6);
+    assert.equal(factorial(5), 120);
+  });
+
+  it ('should eval a recursive FunctionAssignmentNode with two recursive calls', function () {
+    var x = new SymbolNode('x');
+    var zero = new ConstantNode(0);
+    var one = new ConstantNode(1);
+    var two = new ConstantNode(2);
+
+    var n1 = new ConditionalNode(
+        new OperatorNode('<=', 'smallerEq', [x, zero]),
+        zero,
+        new ConditionalNode(
+            new OperatorNode('<=', 'smallerEq', [x, two]),
+            one,
+            new OperatorNode('+', 'add', [
+              new FunctionNode('fib', [
+                new OperatorNode('-', 'subtract', [ x, one ])
+              ]),
+              new FunctionNode('fib', [
+                new OperatorNode('-', 'subtract', [ x, two ])
+              ])
+            ])
+        )
+    );
+
+    var n2 = new FunctionAssignmentNode('fib', ['x'], n1);
+    //var n2 = math.parse('fib(x) = (x <= 0) ? 0 : ((x <= 2) ? 1 : (fib(x - 1) + f(fib - 2)))');
+
+    var expr = n2.compile(math);
+    var scope = {};
+    var fib = expr.eval(scope);
+
+    assert.equal(typeof fib, 'function');
+    assert.equal(fib(0), 0);
+    assert.equal(fib(1), 1);
+    assert.equal(fib(2), 1);
+    assert.equal(fib(3), 2);
+    assert.equal(fib(4), 3);
+    assert.equal(fib(5), 5);
+    assert.equal(fib(6), 8);
+    assert.equal(fib(7), 13);
+    assert.equal(fib(8), 21);
   });
 
   it ('should filter a FunctionAssignmentNode', function () {
@@ -195,7 +265,7 @@ describe('FunctionAssignmentNode', function() {
     var p = new OperatorNode('^', 'pow', [o, a]);
     var n = new FunctionAssignmentNode('f', ['x'], p);
 
-    assert.equal(n.toTex(), 'f\\left({x}\\right)={\\left({\\frac{x}{2}}\\right) ^ {2}}');
+    assert.equal(n.toTex(), '\\mathrm{f}\\left(\\mathrm{x}\\right):={\\left({\\frac{{\\mathrm{x}}}{{2}}}\\right) ^ {2}}');
   });
 
   it ('should LaTeX a FunctionAssignmentNode containing an AssignmentNode', function () {
@@ -204,7 +274,7 @@ describe('FunctionAssignmentNode', function() {
     var n1 = new AssignmentNode('a', a);
     var n = new FunctionAssignmentNode('f', ['x'], n1);
 
-    assert.equal(n.toTex(), 'f\\left({x}\\right)=\\left({{a}={2}}\\right)');
+    assert.equal(n.toTex(), '\\mathrm{f}\\left(\\mathrm{x}\\right):=\\left({\\mathrm{a}:={2}}\\right)');
   });
 
   it ('should LaTeX a FunctionAssignmentNode with custom toTex', function () {
