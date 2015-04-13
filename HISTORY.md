@@ -2,13 +2,9 @@
 
 ## not yet released, version 2.0.0-SNAPSHOT
 
-*Breaking changes:*
-
-- Fixed binary prefix and SI prefix incorrectly used for byte. Now following
-  SI standards (`1 KiB == 1024 B`, `1 kB == 1000 B`).
-
-*Other changes:*
-
+- Implemented matrix LU decomposition with partial pivoting and a LU based 
+  linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
+- Large internal refactoring, allowing to create custom bundles of math.js.
 - Function `import` now returns the imported objects.
 
 
