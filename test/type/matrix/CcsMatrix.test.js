@@ -3,7 +3,6 @@ var math = require('../../../index');
 var index = math.index;
 var Matrix = math.type.Matrix;
 var CcsMatrix = math.type.CcsMatrix;
-var DenseMatrix = math.type.DenseMatrix;
 var Complex = math.type.Complex;
 
 describe('CcsMatrix', function() {
@@ -91,13 +90,26 @@ describe('CcsMatrix', function() {
     });
     
     it('should create a CcsMatrix from a DenseMatrix', function () {
-      var m1 = new DenseMatrix(
+      var m1 = math.matrix(
         [
           [1, 2, 3],
           [4, 5, 6],
           [7, 8, 9],
           [10, 11, 12]
         ]);
+      var m2 = new CcsMatrix(m1);
+      assert.deepEqual(m1.size(), m2.size());
+      assert.deepEqual(m1.toArray(), m2.toArray());
+    });
+    
+    it('should create a CcsMatrix from a CrsMatrix', function () {
+      var m1 = math.matrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ], 'crs');
       var m2 = new CcsMatrix(m1);
       assert.deepEqual(m1.size(), m2.size());
       assert.deepEqual(m1.toArray(), m2.toArray());
@@ -1946,6 +1958,123 @@ describe('CcsMatrix', function() {
 
       // vector * matrix
       assert.throws(function () {math.matrix([1,1,1], 'ccs').multiply([[1,1], [1,1]]);});
+    });
+  });
+  
+  describe('swapRows', function () {
+
+    it('should swap rows with values', function () {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(1, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [7, 8, 9],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap row with value and no values', function () {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [0, 0, 0],
+          [10, 11, 12]
+        ]);
+      m.swapRows(1, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [0, 0, 0],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap row with no value and values', function () {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [0, 0, 0],
+          [10, 11, 12]
+        ]);
+      m.swapRows(2, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [0, 0, 0],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap rows with missing values', function () {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(2, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [7, 0, 9],
+          [0, 5, 0],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap last row with another row', function () {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(3, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [10, 11, 12],
+          [7, 0, 9],
+          [0, 5, 0]
+        ]);
+    });
+
+    it('should swap first row with another row', function () {
+      var m = new CcsMatrix(
+        [
+          [0, 2, 0],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 0, 0]
+        ]);
+      m.swapRows(0, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [7, 0, 9],
+          [0, 5, 0],
+          [0, 2, 0],
+          [10, 0, 0]
+        ]);
     });
   });
 });

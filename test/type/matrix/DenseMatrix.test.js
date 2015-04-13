@@ -1268,6 +1268,123 @@ describe('DenseMatrix', function() {
     });
   });
   
+  describe('swapRows', function () {
+
+    it('should swap rows with values', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(1, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [7, 8, 9],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap row with value and no values', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [0, 0, 0],
+          [10, 11, 12]
+        ]);
+      m.swapRows(1, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [0, 0, 0],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap row with no value and values', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [0, 0, 0],
+          [10, 11, 12]
+        ]);
+      m.swapRows(2, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [0, 0, 0],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap rows with missing values', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(2, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [7, 0, 9],
+          [0, 5, 0],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap last row with another row', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(3, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [10, 11, 12],
+          [7, 0, 9],
+          [0, 5, 0]
+        ]);
+    });
+
+    it('should swap first row with another row', function () {
+      var m = new DenseMatrix(
+        [
+          [0, 2, 0],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 0, 0]
+        ]);
+      m.swapRows(0, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [7, 0, 9],
+          [0, 5, 0],
+          [0, 2, 0],
+          [10, 0, 0]
+        ]);
+    });
+  });
+  
   /**
    * Helper function to create an Array containing uninitialized values
    * Example: arr(uninit, uninit, 2);    // [ , , 2 ]
