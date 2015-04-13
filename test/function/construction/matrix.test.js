@@ -1,6 +1,5 @@
 // test matrix construction
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     matrix = math.matrix;
 
@@ -73,7 +72,7 @@ describe('matrix', function() {
   });
 
   it('should throw an error if called with too many arguments', function() {
-    assert.throws(function () {matrix([], 3, 3)}, /TypeError: Too many arguments/);
+    assert.throws(function () {matrix([], 3, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error when called with an invalid storage format', function () {

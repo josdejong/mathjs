@@ -1,5 +1,4 @@
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     bignumber = math.bignumber;
 
@@ -115,13 +114,13 @@ describe('diag', function() {
   });
 
   it('should throw an error in case of wrong number of arguments', function() {
-    assert.throws(function () {math.diag()}, /TypeError: Too few arguments/);
-    assert.throws(function () {math.diag([], 2, 3, 4)}, /TypeError: Too many arguments/);
+    assert.throws(function () {math.diag();}, /TypeError: Too few arguments/);
+    assert.throws(function () {math.diag([], 2, 3, 4);}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function() {
-    assert.throws(function () {math.diag(2)}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {math.diag([], new Date())}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.diag(2);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.diag([], new Date());}, /TypeError: Unexpected type of argument/);
   });
 
 });

@@ -38,23 +38,32 @@ function create (config) {
   math.type.Help = require('./lib/type/Help');
   math.type.ResultSet = require('./lib/type/ResultSet');
   math.import(require('./lib/type/BigNumber'));
-
+  math.import(require('./lib/type/FibonacciHeap'));
+  
+  // sparse accumulator
+  math.import(require('./lib/type/matrix/Spa'));
+  
   // matrix storage formats
   math.import(require('./lib/type/matrix/CcsMatrix'));
   math.import(require('./lib/type/matrix/CrsMatrix'));
   math.import(require('./lib/type/matrix/DenseMatrix'));
-
+  
   // matrix storage format registry
   math.type.Matrix._storage.ccs = math.type.CcsMatrix;
   math.type.Matrix._storage.crs = math.type.CrsMatrix;
   math.type.Matrix._storage.dense = math.type.DenseMatrix;
   math.type.Matrix._storage['default'] = math.type.DenseMatrix;
 
-
   // serialization utilities
   // math.json.*
   math.import(require('./lib/json/reviver'));
 
+  // functions - algebra/decomposition
+  math.import(require('./lib/function/algebra/decomposition/lup'));
+  
+  // functions - algebra/solver
+  math.import(require('./lib/function/algebra/solver/lusolve'));
+  
   // functions - arithmetic
   math.import(require('./lib/function/arithmetic/abs'));
   math.import(require('./lib/function/arithmetic/add'));

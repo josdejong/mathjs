@@ -1,6 +1,5 @@
 // test norm
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index');
 
 describe('norm', function () {
@@ -75,14 +74,22 @@ describe('norm', function () {
     // p = 1
     assert.equal(math.norm([[1, 2], [3, 4]], 1), 6);
     assert.equal(math.norm(math.matrix([[1, 2], [3, 4]]), 1), 6);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]], 'ccs'), 1), 6);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]], 'crs'), 1), 6);
     // p = Infinity
     assert.equal(math.norm([[1, 2], [3, 4]], Number.POSITIVE_INFINITY), 7);
     assert.equal(math.norm(math.matrix([[1, 2], [3, 4]]), Number.POSITIVE_INFINITY), 7);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]], 'ccs'), Number.POSITIVE_INFINITY), 7);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]], 'crs'), Number.POSITIVE_INFINITY), 7);
     assert.equal(math.norm([[1, 2], [3, 4]], 'inf'), 7);
     assert.equal(math.norm(math.matrix([[1, 2], [3, 4]]), 'inf'), 7);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]], 'ccs'), 'inf'), 7);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]], 'crs'), 'inf'), 7);
     // p = 'fro'
     assert.equal(math.norm([[1, 2], [-3, -4]], 'fro'), math.sqrt(30));
     assert.equal(math.norm(math.matrix([[1, 2], [-3, -4]]), 'fro'), math.sqrt(30));
+    assert.equal(math.norm(math.matrix([[1, 2], [-3, -4]], 'ccs'), 'fro'), math.sqrt(30));
+    assert.equal(math.norm(math.matrix([[1, 2], [-3, -4]], 'crs'), 'fro'), math.sqrt(30));
     // p - not implemented yet!
     assert.throws(function() {
       math.norm(math.norm([[1, 2], [3, 4]], 2), 6);
@@ -90,8 +97,8 @@ describe('norm', function () {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.norm()}, /TypeError: Too few arguments/);
-    assert.throws(function () {math.norm(1, 2, 3)}, /TypeError: Too many arguments/);
+    assert.throws(function () {math.norm();}, /TypeError: Too few arguments/);
+    assert.throws(function () {math.norm(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error with a string', function () {

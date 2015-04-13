@@ -3,7 +3,6 @@ var math = require('../../../index');
 var index = math.index;
 var Matrix = math.type.Matrix;
 var CcsMatrix = math.type.CcsMatrix;
-var DenseMatrix = math.type.DenseMatrix;
 var Complex = math.type.Complex;
 
 describe('CcsMatrix', function() {
@@ -91,13 +90,26 @@ describe('CcsMatrix', function() {
     });
     
     it('should create a CcsMatrix from a DenseMatrix', function () {
-      var m1 = new DenseMatrix(
+      var m1 = math.matrix(
         [
           [1, 2, 3],
           [4, 5, 6],
           [7, 8, 9],
           [10, 11, 12]
         ]);
+      var m2 = new CcsMatrix(m1);
+      assert.deepEqual(m1.size(), m2.size());
+      assert.deepEqual(m1.toArray(), m2.toArray());
+    });
+    
+    it('should create a CcsMatrix from a CrsMatrix', function () {
+      var m1 = math.matrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ], 'crs');
       var m2 = new CcsMatrix(m1);
       assert.deepEqual(m1.size(), m2.size());
       assert.deepEqual(m1.toArray(), m2.toArray());
@@ -1327,6 +1339,60 @@ describe('CcsMatrix', function() {
         ]);
     });
     
+    it('should create CCS matrix (n x n), matrix vector value', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], math.matrix([1, 2, 3]));
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2, 3]);
+      assert.deepEqual(m._index, [0, 1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 3]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [1, 0, 0],
+          [0, 2, 0],
+          [0, 0, 3]
+        ]);
+    });
+
+    it('should create CCS matrix (n x n), matrix vector value, k > 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], math.matrix([1, 2]), 1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [0, 1]);
+      assert.deepEqual(m._ptr, [0, 0, 1, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 1, 0],
+          [0, 0, 2],
+          [0, 0, 0]
+        ]);
+    });
+
+    it('should create CCS matrix (n x n), matrix vector value, k < 0', function () {
+
+      var m = CcsMatrix.diagonal([3, 3], math.matrix([1, 2]), -1);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(m._values, [1, 2]);
+      assert.deepEqual(m._index, [1, 2]);
+      assert.deepEqual(m._ptr, [0, 1, 2, 2]);
+
+      assert.deepEqual(
+        m.toArray(), 
+        [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 2, 0]
+        ]);
+    });
+      
     it('should create CCS matrix (n x n), complex number', function () {
 
       var m = CcsMatrix.diagonal([3, 3], new Complex(1, 1));
@@ -1568,7 +1634,7 @@ describe('CcsMatrix', function() {
           [0, 0, 1]
         ]);
 
-      assert.deepEqual(m.diagonal(), [1, 1, 1]);
+      assert.deepEqual(m.diagonal(), new CcsMatrix([1, 1, 1]));
     });
     
     it('should get CCS matrix diagonal (n x n), k > 0', function () {
@@ -1580,7 +1646,7 @@ describe('CcsMatrix', function() {
           [0, 0, 1]
         ]);
 
-      assert.deepEqual(m.diagonal(1), [2, 3]);
+      assert.deepEqual(m.diagonal(1), new CcsMatrix([2, 3]));
     });
     
     it('should get CCS matrix diagonal (n x n), k < 0', function () {
@@ -1592,7 +1658,7 @@ describe('CcsMatrix', function() {
           [0, 3, 1]
         ]);
 
-      assert.deepEqual(m.diagonal(-1), [2, 3]);
+      assert.deepEqual(m.diagonal(-1), new CcsMatrix([2, 3]));
     });
     
     it('should get CCS matrix diagonal (m x n), m > n', function () {
@@ -1605,7 +1671,7 @@ describe('CcsMatrix', function() {
           [0, 0, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(), [1, 1, 1]);
+      assert.deepEqual(m.diagonal(), new CcsMatrix([1, 1, 1]));
     });
 
     it('should get CCS matrix diagonal (m x n), m > n, k > 0', function () {
@@ -1618,7 +1684,7 @@ describe('CcsMatrix', function() {
           [0, 0, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(1), [2, 3]);
+      assert.deepEqual(m.diagonal(1), new CcsMatrix([2, 3]));
     });
     
     it('should get CCS matrix diagonal (m x n), m > n, k < 0', function () {
@@ -1631,7 +1697,7 @@ describe('CcsMatrix', function() {
           [0, 0, 4]
         ]);
 
-      assert.deepEqual(m.diagonal(-1), [2, 3, 4]);
+      assert.deepEqual(m.diagonal(-1), new CcsMatrix([2, 3, 4]));
     });
     
     it('should get CCS matrix diagonal (m x n), m < n', function () {
@@ -1643,7 +1709,7 @@ describe('CcsMatrix', function() {
           [0, 0, 1, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(), [1, 1, 1]);
+      assert.deepEqual(m.diagonal(), new CcsMatrix([1, 1, 1]));
     });
     
     it('should get CCS matrix diagonal (m x n), m < n, k > 0', function () {
@@ -1655,7 +1721,7 @@ describe('CcsMatrix', function() {
           [0, 0, 1, 4]
         ]);
       
-      assert.deepEqual(m.diagonal(1), [2, 3, 4]);
+      assert.deepEqual(m.diagonal(1), new CcsMatrix([2, 3, 4]));
     });
     
     it('should get CCS matrix diagonal (m x n), m < n, k < 0', function () {
@@ -1667,9 +1733,9 @@ describe('CcsMatrix', function() {
           [4, 3, 1, 0]
         ]);
 
-      assert.deepEqual(m.diagonal(-1), [2, 3]);
+      assert.deepEqual(m.diagonal(-1), new CcsMatrix([2, 3]));
       
-      assert.deepEqual(m.diagonal(-2), [4]);
+      assert.deepEqual(m.diagonal(-2), new CcsMatrix([4]));
     });
   });
   
@@ -1892,6 +1958,123 @@ describe('CcsMatrix', function() {
 
       // vector * matrix
       assert.throws(function () {math.matrix([1,1,1], 'ccs').multiply([[1,1], [1,1]]);});
+    });
+  });
+  
+  describe('swapRows', function () {
+
+    it('should swap rows with values', function () {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(1, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [7, 8, 9],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap row with value and no values', function () {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [0, 0, 0],
+          [10, 11, 12]
+        ]);
+      m.swapRows(1, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [0, 0, 0],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap row with no value and values', function () {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [0, 0, 0],
+          [10, 11, 12]
+        ]);
+      m.swapRows(2, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [0, 0, 0],
+          [4, 5, 6],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap rows with missing values', function () {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(2, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [7, 0, 9],
+          [0, 5, 0],          
+          [10, 11, 12]
+        ]);
+    });
+
+    it('should swap last row with another row', function () {
+      var m = new CcsMatrix(
+        [
+          [1, 2, 3],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 11, 12]
+        ]);
+      m.swapRows(3, 1);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 2, 3],
+          [10, 11, 12],
+          [7, 0, 9],
+          [0, 5, 0]
+        ]);
+    });
+
+    it('should swap first row with another row', function () {
+      var m = new CcsMatrix(
+        [
+          [0, 2, 0],
+          [0, 5, 0],
+          [7, 0, 9],
+          [10, 0, 0]
+        ]);
+      m.swapRows(0, 2);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [7, 0, 9],
+          [0, 5, 0],
+          [0, 2, 0],
+          [10, 0, 0]
+        ]);
     });
   });
 });
