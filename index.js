@@ -123,9 +123,9 @@ function create (config) {
 
   // expression parser
   math.import(require('./lib/function/expression/compile'));
-  require('./lib/function/expression/eval')(math, _config);
-  require('./lib/function/expression/help')(math, _config);
-  require('./lib/function/expression/parse')(math, _config);
+  math.import(require('./lib/function/expression/eval'));
+  math.import(require('./lib/function/expression/help'));
+  math.import(require('./lib/function/expression/parse'));
 
   // functions - logical
   math.import(require('./lib/function/logical/and'));

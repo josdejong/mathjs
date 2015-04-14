@@ -1,7 +1,6 @@
 // test eval
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var error = require('../../../lib/error/index');
 var math = require('../../../index');
 var Complex = math.type.Complex;
 var Matrix = math.type.Matrix;
@@ -29,20 +28,16 @@ describe('eval', function() {
   });
 
   it('should throw an error if wrong number of arguments', function() {
-    assert.throws(function () {math.eval()},  error.ArgumentsError);
-    assert.throws(function () {math.eval(1,2,3)}, error.ArgumentsError);
-  });
-
-  it('should throw an error with a number', function() {
-    assert.throws(function () {math.eval(23)}, TypeError);
+    assert.throws(function () {math.eval()},  /TypeError: Too few arguments/);
+    assert.throws(function () {math.eval('', {}, 3)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error with a unit', function() {
-    assert.throws(function () {math.eval(new Unit(5, 'cm'))}, TypeError);
+    assert.throws(function () {math.eval(new Unit(5, 'cm'))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error with a complex number', function() {
-    assert.throws(function () {math.eval(new Complex(2,3))}, TypeError);
+    assert.throws(function () {math.eval(new Complex(2,3))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error with a boolean', function() {

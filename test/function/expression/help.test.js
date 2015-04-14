@@ -17,8 +17,8 @@ describe('help', function() {
   });
 
   it('should throw an error on wrong number of arguments', function() {
-    assert.throws(function () {math.help()}, SyntaxError);
-    assert.throws(function () {math.help('sin', 2)}, SyntaxError);
+    assert.throws(function () {math.help()}, /TypeError: Too few arguments/);
+    assert.throws(function () {math.help('sin', 2)}, /TypeError: Too many arguments/);
   });
 
   it('should find help from a function name', function() {
@@ -47,7 +47,7 @@ describe('help', function() {
 
   it('should throw an error when no help is found', function() {
     // assert.throws(function () {math.help(undefined)}, /No documentation found/);
-    assert.throws(function () {math.help(undefined)}, /Cannot find/);
+    assert.throws(function () {math.help(new Date())}, /No documentation found/);
     assert.throws(function () {math.help('nonExistingFunction')}, /No documentation found/);
     assert.throws(function () {math.help('parse')}, /No documentation found/);
   });
