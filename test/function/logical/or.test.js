@@ -1,7 +1,6 @@
 // test or
 var assert = require('assert'),
     math = require('../../../index'),
-    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -127,16 +126,6 @@ describe('or', function () {
     assert.strictEqual(or(unit(0, 'km'), unit(0, 'gram')), false);
   });
 
-  it('should or mixed numbers and units', function () {
-    assert.strictEqual(or(2, unit('3m')), true);
-    assert.strictEqual(or(0, unit('2m')), true);
-    assert.strictEqual(or(2, unit('0m')), true);
-    assert.strictEqual(or(0, unit('0m')), false);
-    assert.strictEqual(or(unit('0in'), 2), true);
-    assert.strictEqual(or(unit('2in'), 0), true);
-    assert.strictEqual(or(unit('0in'), 0), false);
-  });
-
   it('should or two arrays', function () {
     assert.deepEqual(or([0, 1, 0, 12], [0, 0, 1, 22]), [false, true, true, true]);
     assert.deepEqual(or([], []), []);
@@ -162,17 +151,17 @@ describe('or', function () {
   });
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () {or(1)}, error.ArgumentsError);
-    assert.throws(function () {or(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {or(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {or(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () {or(new Date(), true)}, error.UnsupportedTypeError);
-    assert.throws(function () {or(true, new Date())}, error.UnsupportedTypeError);
-    assert.throws(function () {or(true, 'foo')}, error.UnsupportedTypeError);
-    assert.throws(function () {or('foo', true)}, error.UnsupportedTypeError);
-    assert.throws(function () {or(true, undefined)}, error.UnsupportedTypeError);
-    assert.throws(function () {or(undefined, true)}, error.UnsupportedTypeError);
+    assert.throws(function () {or(new Date(), true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {or(true, new Date())}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {or(true, 'foo')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {or('foo', true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {or(true, undefined)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {or(undefined, true)}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX or', function () {

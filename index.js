@@ -128,10 +128,10 @@ function create (config) {
   require('./lib/function/expression/parse')(math, _config);
 
   // functions - logical
-  require('./lib/function/logical/and')(math, _config);
-  require('./lib/function/logical/not')(math, _config);
-  require('./lib/function/logical/or')(math, _config);
-  require('./lib/function/logical/xor')(math, _config);
+  math.import(require('./lib/function/logical/and'));
+  math.import(require('./lib/function/logical/not'));
+  math.import(require('./lib/function/logical/or'));
+  math.import(require('./lib/function/logical/xor'));
 
   // functions - matrix
   require('./lib/function/matrix/concat')(math, _config);

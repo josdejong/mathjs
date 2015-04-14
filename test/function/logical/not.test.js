@@ -1,7 +1,6 @@
 // test not
 var assert = require('assert'),
     math = require('../../../index'),
-    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -74,14 +73,14 @@ describe('not', function () {
   });
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () {not()}, error.ArgumentsError);
-    assert.throws(function () {not(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {not()}, /TypeError: Too few arguments/);
+    assert.throws(function () {not(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type if arguments', function () {
-    assert.throws(function () {not(new Date())}, error.UnsupportedTypeError);
-    assert.throws(function () {not('23')}, error.UnsupportedTypeError);
-    assert.throws(function () {not({})}, error.UnsupportedTypeError);
+    assert.throws(function () {not(new Date())}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {not('23')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {not({})}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX not', function () {
