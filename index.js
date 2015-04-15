@@ -153,14 +153,14 @@ function create (config) {
   require('./lib/function/matrix/zeros')(math, _config);
 
   // functions - probability
-  //require('./lib/function/probability/distribution')(math, _config); // TODO: rethink math.distribution
-  require('./lib/function/probability/factorial')(math, _config);
-  require('./lib/function/probability/gamma')(math, _config);
-  require('./lib/function/probability/random')(math, _config);
-  require('./lib/function/probability/randomInt')(math, _config);
-  require('./lib/function/probability/pickRandom')(math, _config);
-  require('./lib/function/probability/permutations')(math, _config);
-  require('./lib/function/probability/combinations')(math, _config);
+  //math.import(require('./lib/function/probability/distribution')); // TODO: rethink math.distribution
+  math.import(require('./lib/function/probability/combinations'));
+  math.import(require('./lib/function/probability/factorial'));
+  math.import(require('./lib/function/probability/gamma'));
+  math.import(require('./lib/function/probability/permutations'));
+  math.import(require('./lib/function/probability/pickRandom'));
+  math.import(require('./lib/function/probability/random'));
+  math.import(require('./lib/function/probability/randomInt'));
 
   // functions - relational
   math.import(require('./lib/function/relational/compare'));

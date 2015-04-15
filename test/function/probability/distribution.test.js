@@ -3,8 +3,8 @@ var error = require('../../../lib/error/index');
 var seed = require('seed-random');
 var _ = require('underscore');
 var math = require('../../../index');
+var distribution = math.import('../../../lib/function/probability/distribution');
 var Matrix = math.type.Matrix;
-var distribution = require('../../../lib/function/probability/distribution')(math);
 
 var assertApproxEqual = function(testVal, val, tolerance) {
   var diff = Math.abs(val - testVal);
@@ -136,7 +136,7 @@ describe('distribution', function () {
 
       // Collect all values in one array
       matrices.forEach(function(matrix) {
-        assert(matrix instanceof math.type.Matrix);
+        assert(matrix instanceof Matrix);
         assert.deepEqual(matrix.size(), size.valueOf());
         matrix.forEach(function(val) {
           picked.push(val);
