@@ -47,12 +47,6 @@ function create (config) {
   math.import(require('./lib/type/matrix/CcsMatrix'));
   math.import(require('./lib/type/matrix/CrsMatrix'));
   math.import(require('./lib/type/matrix/DenseMatrix'));
-  
-  // matrix storage format registry
-  math.type.Matrix._storage.ccs = math.type.CcsMatrix;
-  math.type.Matrix._storage.crs = math.type.CrsMatrix;
-  math.type.Matrix._storage.dense = math.type.DenseMatrix;
-  math.type.Matrix._storage['default'] = math.type.DenseMatrix;
 
   // serialization utilities
   // math.json.*
