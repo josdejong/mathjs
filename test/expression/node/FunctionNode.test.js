@@ -278,7 +278,7 @@ describe('FunctionNode', function() {
 
     var o = new OperatorNode('+', 'add', [c1, c2]);
     var n3 = new FunctionNode('permutations', [o]);
-    assert.equal(n3.toTex(), '\\mathrm{permutations}\\left({{4} + {5}}\\right)');
+    assert.equal(n3.toTex(), '\\mathrm{permutations}\\left({{4}+{5}}\\right)');
   });
 
   it ('should have an identifier', function () {
