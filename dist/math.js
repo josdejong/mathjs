@@ -121,7 +121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    matrix: 'matrix',
 
 	    // type of default number output. Choose 'number' (default) or 'bignumber'
-	    number: 'bignumber',
+	    number: 'number',
 
 	    // number of significant digits in BigNumbers
 	    precision: 64,
@@ -27301,10 +27301,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @param {OperatorNode} root
 	 * @param {Node[]} arguments
+	 * @param {bool}
 	 * @return {bool[]}
 	 * @private
 	 */
-	function calculateNecessaryParentheses (root, args) {
+	function calculateNecessaryParentheses (root, args, latex) {
 	  //precedence of the root OperatorNode
 	  var precedence = operators.getPrecedence(root);
 	  var associativity = operators.getAssociativity(root);
@@ -27313,6 +27314,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    case 1: //unary operators
 	      //precedence of the operand
 	      var operandPrecedence = operators.getPrecedence(args[0]);
+
+	      //handle special cases for LaTeX, where some of the parentheses aren't needed
+	      if (latex && (operandPrecedence !== null)) {
+	        var operandIdentifier = args[0].getIdentifier();
+	        var rootIdentifier = root.getIdentifier();
+	        if (operators.properties[precedence][rootIdentifier].latexLeftParens === false) {
+	          return [false];
+	        }
+
+	        if (operators.properties[operandPrecedence][operandIdentifier].latexParens === false) {
+	          return [false];
+	        }
+	      }
 
 	      if (operandPrecedence === null) {
 	        //if the operand has no defined precedence, no parens are needed
@@ -27377,6 +27391,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	      else {
 	        rhsParens = false;
 	      }
+
+	      //handle special cases for LaTeX, where some of the parentheses aren't needed
+	      if (latex) {
+	        var rootIdentifier = root.getIdentifier();
+	        var lhsIdentifier = root.args[0].getIdentifier();
+	        var rhsIdentifier = root.args[1].getIdentifier();
+
+	        if (lhsPrecedence !== null) {
+	          if (operators.properties[precedence][rootIdentifier].latexLeftParens === false) {
+	            lhsParens = false;
+	          }
+
+	          if (operators.properties[lhsPrecedence][lhsIdentifier].latexParens === false) {
+	            lhsParens = false;
+	          }
+	        }
+
+	        if (rhsPrecedence !== null) {
+	          if (operators.properties[precedence][rootIdentifier].latexRightParens === false) {
+	            rhsParens = false;
+	          }
+
+	          if (operators.properties[rhsPrecedence][rhsIdentifier].latexParens === false) {
+	            rhsParens = false;
+	          }
+	        }
+	      }
+
 	      return [lhsParens, rhsParens];
 	    default:
 	      //behavior is undefined, fall back to putting everything in parens
@@ -27394,7 +27436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	OperatorNode.prototype.toString = function() {
 	  var args = this.args;
-	  var parens = calculateNecessaryParentheses(this, args);
+	  var parens = calculateNecessaryParentheses(this, args, false);
 
 	  switch (args.length) {
 	    case 1: //unary operators
@@ -27440,7 +27482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	OperatorNode.prototype._toTex = function(callbacks) {
 	 var args = this.args; 
-	 var parens = calculateNecessaryParentheses(this, args);
+	 var parens = calculateNecessaryParentheses(this, args, true);
 	 var op = latex.operators[this.fn];
 	 op = typeof op === 'undefined' ? this.op : op; //fall back to using this.op
 
@@ -35710,13 +35752,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	//
 	// postfix operators are left associative, prefix operators 
 	// are right associative
+	//
+	//It's also possible to set the following properties:
+	// latexParens: if set to false, this node doesn't need to be enclosed
+	//              in parentheses when using LaTeX
+	// latexLeftParens: if set to false, this !OperatorNode's! 
+	//                  left argument doesn't need to be enclosed
+	//                  in parentheses
+	// latexRightParens: the same for the right argument
 	var properties = [
 	  { //assignment
 	    'AssignmentNode': {},
 	    'FunctionAssignmentNode': {}
 	  },
 	  { //conditional expression
-	    'ConditionalNode': {}
+	    'ConditionalNode': {
+	      latexLeftParens: false,
+	      latexRightParens: false,
+	      latexParens: false
+	      //conditionals don't need parentheses in LaTeX because
+	      //they are 2 dimensional
+	    }
 	  },
 	  { //logical or
 	    'OperatorNode:or': {
@@ -35826,7 +35882,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    'OperatorNode:divide': {
 	      associativity: 'left',
-	      associativeWith: []
+	      associativeWith: [],
+	      latexLeftParens: false,
+	      latexRightParens: false,
+	      latexParens: false
+	      //fractions don't require parentheses because
+	      //they're 2 dimensional, so parens aren't needed
+	      //in LaTeX
 	    },
 	    'OperatorNode:dotMultiply': {
 	      associativity: 'left',
@@ -35863,7 +35925,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  { //exponentiation
 	    'OperatorNode:pow': {
 	      associativity: 'right',
-	      associativeWith: []
+	      associativeWith: [],
+	      latexRightParens: false,
+	      //the exponent doesn't need parentheses in
+	      //LaTeX because it's 2 dimensional
+	      //(it's on top)
 	    },
 	    'OperatorNode:dotPow': {
 	      associativity: 'right',
