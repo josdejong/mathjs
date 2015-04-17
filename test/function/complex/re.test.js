@@ -43,7 +43,7 @@ describe('re', function() {
 
   it('should LaTeX re', function () {
     var expression = math.parse('re(1+i)');
-    assert.equal(expression.toTex(), '\\Re\\left\\lbrace{{1}+{{i}}}\\right\\rbrace');
+    assert.equal(expression.toTex(), '\\Re\\left\\lbrace{1+{i}}\\right\\rbrace');
   });
 
 });

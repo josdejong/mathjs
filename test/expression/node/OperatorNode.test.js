@@ -277,13 +277,13 @@ describe('OperatorNode', function() {
     var c = new ConstantNode(4);
 
     var n = new OperatorNode('+', 'add', [a, b]);
-    assert.equal(n.toTex(), '{2}+{3}');
+    assert.equal(n.toTex(), '2+3');
   });
 
   it ('should LaTeX an OperatorNode with factorial', function () {
     var a = new ConstantNode(2);
     var n = new OperatorNode('!', 'factorial', [a]);
-    assert.equal(n.toTex(), '{2}!');
+    assert.equal(n.toTex(), '2!');
   });
 
   it ('should LaTeX an OperatorNode with factorial of an OperatorNode', function () {
@@ -299,10 +299,10 @@ describe('OperatorNode', function() {
     var n2= new OperatorNode('!', 'factorial', [add] );
     var n3= new OperatorNode('!', 'factorial', [mult] );
     var n4= new OperatorNode('!', 'factorial', [div] );
-    assert.equal(n1.toTex(), '\\left({{2}-{3}}\\right)!');
-    assert.equal(n2.toTex(), '\\left({{2}+{3}}\\right)!');
-    assert.equal(n3.toTex(), '\\left({{2}\\cdot{3}}\\right)!');
-    assert.equal(n4.toTex(), '{\\frac{{2}}{{3}}}!');
+    assert.equal(n1.toTex(), '\\left(2-3\\right)!');
+    assert.equal(n2.toTex(), '\\left(2+3\\right)!');
+    assert.equal(n3.toTex(), '\\left(2\\cdot3\\right)!');
+    assert.equal(n4.toTex(), '\\frac{2}{3}!');
   });
 
   it ('should LaTeX an OperatorNode with unary minus', function () {
@@ -316,9 +316,9 @@ describe('OperatorNode', function() {
     var n2 = new OperatorNode('-', 'unaryMinus', [sub]);
     var n3 = new OperatorNode('-', 'unaryMinus', [add]);
 
-    assert.equal(n1.toTex(), '-{2}');
-    assert.equal(n2.toTex(), '-\\left({{2}-{3}}\\right)');
-    assert.equal(n3.toTex(), '-\\left({{2}+{3}}\\right)');
+    assert.equal(n1.toTex(), '-2');
+    assert.equal(n2.toTex(), '-\\left(2-3\\right)');
+    assert.equal(n3.toTex(), '-\\left(2+3\\right)');
   });
 
   it ('should LaTeX an OperatorNode that subtracts an OperatorNode', function() {
@@ -332,8 +332,8 @@ describe('OperatorNode', function() {
     var n1 = new OperatorNode('-', 'subtract', [a, sub]);
     var n2 = new OperatorNode('-', 'subtract', [a, add]);
 
-    assert.equal(n1.toTex(), '{1}-\\left({{2}-{3}}\\right)');
-    assert.equal(n2.toTex(), '{1}-\\left({{2}+{3}}\\right)');
+    assert.equal(n1.toTex(), '1-\\left(2-3\\right)');
+    assert.equal(n2.toTex(), '1-\\left(2+3\\right)');
   });
 
   it ('should LaTeX an OperatorNode with zero arguments', function () {
@@ -347,7 +347,7 @@ describe('OperatorNode', function() {
     var c = new ConstantNode(4);
 
     var n = new OperatorNode('foo', 'foo', [a, b, c]);
-    assert.equal(n.toTex(), '\\mathrm{foo}\\left({2},{3},{4}\\right)');
+    assert.equal(n.toTex(), '\\mathrm{foo}\\left(2,3,4\\right)');
 
   });
 
@@ -364,10 +364,10 @@ describe('OperatorNode', function() {
     var m2 = new OperatorNode('*', 'multiply', [n1, c]);
     var m3 = new OperatorNode('-', 'subtract', [m2, d]);
 
-    assert.equal(n1.toTex(), '{2}+{3}');
-    assert.equal(n2.toTex(), '{4}-{5}');
-    assert.equal(n3.toTex(), '\\left({{2}+{3}}\\right)\\cdot\\left({{4}-{5}}\\right)');
-    assert.equal(m3.toTex(), '{\\left({{2}+{3}}\\right)\\cdot{4}}-{5}');
+    assert.equal(n1.toTex(), '2+3');
+    assert.equal(n2.toTex(), '4-5');
+    assert.equal(n3.toTex(), '\\left(2+3\\right)\\cdot\\left(4-5\\right)');
+    assert.equal(m3.toTex(), '\\left(2+3\\right)\\cdot4-5');
   });
 
   it('should LaTeX fractions with operators that are enclosed in parenthesis', function () {
@@ -376,7 +376,7 @@ describe('OperatorNode', function() {
 
     var add = new OperatorNode('+', 'add', [a,a]);
     var frac = new OperatorNode('/', 'divide', [add,b]);
-    assert.equal(frac.toTex(), '\\frac{{{1}+{1}}}{{2}}');
+    assert.equal(frac.toTex(), '\\frac{1+1}{2}');
   });
 
   it ('should have an identifier', function () {
@@ -437,7 +437,7 @@ describe('OperatorNode', function() {
     var frac = new OperatorNode('/', 'divide', [a,a]);
     var pow = new OperatorNode('^', 'pow', [frac, a]);
 
-    assert.equal(pow.toTex(), '\\left({{\\frac{{1}}{{1}}}}\\right)^{{1}}');
+    assert.equal(pow.toTex(), '\\left({\\frac{1}{1}}\\right)^{1}');
   });
 
   it ('should LaTeX powers of conditions with parentheses', function () {
@@ -445,7 +445,7 @@ describe('OperatorNode', function() {
     var cond = new ConditionalNode(a, a, a);
     var pow = new OperatorNode('^', 'pow', [cond, a]);
 
-    assert.equal(pow.toTex(), '\\left({{\\left\\{\\begin{array}{l l}{1}, &\\quad{\\text{if}\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{array}\\right.}}\\right)^{{1}}');
+    assert.equal(pow.toTex(), '\\left({\\left\\{\\begin{array}{l l}{1}, &\\quad{\\text{if}\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{array}\\right.}\\right)^{1}');
   });
 
 });

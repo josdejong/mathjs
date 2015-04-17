@@ -54,7 +54,7 @@ describe('sign', function() {
 
   it('should LaTeX sign', function () {
     var expression = math.parse('sign(-4)');
-    assert.equal(expression.toTex(), '\\mathrm{sign}\\left({-{4}}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{sign}\\left({-4}\\right)');
   });
 
 });
