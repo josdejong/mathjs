@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 1.5.3-SNAPSHOT
- * @date    2015-04-09
+ * @date    2015-04-17
  *
  * @license
  * Copyright (C) 2013-2015 Jos de Jong <wjosdejong@gmail.com>
@@ -121,7 +121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    matrix: 'matrix',
 
 	    // type of default number output. Choose 'number' (default) or 'bignumber'
-	    number: 'number',
+	    number: 'bignumber',
 
 	    // number of significant digits in BigNumbers
 	    precision: 64,
@@ -700,7 +700,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      set: function (value) {
 	        _value = value;
 	        _uninitialized = false;
-	      }
+	      },
+
+	      configurable: true
 	    });
 	  }
 	  else {
@@ -17896,7 +17898,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   *    combinations, factorial, permutations
 	   *
-	   * @param {Number | Array | Matrix | Boolean | null} n   An integer number
+	   * @param {Number | Array | Matrix | Boolean | null} n   A real or complex number
 	   * @return {Number | Array | Matrix}    The gamma of `n`
 	   */
 	  math.gamma = function gamma (n) {
@@ -25839,21 +25841,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var precedence = operators.getPrecedence(this);
 	  var exprPrecedence = operators.getPrecedence(this.expr);
 
-	  var expr = this.expr.toTex(callbacks);
+	  var expr = '{' + this.expr.toTex(callbacks) + '}';
 	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
-	    //adds visible round brackets
-	    expr = latex.addBraces(expr, true);
-	  }
-	  else {
-	    //adds (invisible) curly braces
-	    expr = latex.addBraces(expr, false);
+	    expr = '\\left(' + expr + '\\right)';
 	  }
 
-	  var brace;
-	  if (this.expr instanceof ArrayNode) {
-	    brace = ['\\mathbf{', '}'];
-	  }
-	  return latex.addBraces(latex.toSymbol(this.name), brace) + '=' + expr;
+	  return latex.toSymbol(this.name) + ':=' + expr;
 	};
 
 	module.exports = AssignmentNode;
@@ -26160,20 +26153,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String} str
 	 */
 	ConditionalNode.prototype._toTex = function(callbacks) {
-	  var s = (
-	      latex.addBraces(this.trueExpr.toTex(callbacks)) +
-	      ', &\\quad' +
-	      latex.addBraces('\\text{if}\\;' + this.condition.toTex(callbacks))
-	      ) + '\\\\' + (
-	      latex.addBraces(this.falseExpr.toTex(callbacks)) +
-	      ', &\\quad' +
-	      latex.addBraces('\\text{otherwise}')
-	      );
-
-	  return latex.addBraces(s, [
-	    '\\left\\{\\begin{array}{l l}',
-	    '\\end{array}\\right.'
-	  ]);
+	  return '\\left\\{\\begin{array}{l l}{'
+	    + this.trueExpr.toTex(callbacks) + '}, &\\quad{\\text{if}\\;'
+	    + this.condition.toTex(callbacks)
+	    + '}\\\\{' + this.falseExpr.toTex(callbacks)
+	    + '}, &\\quad{\\text{otherwise}}\\end{array}\\right.';
 	};
 
 	module.exports = ConditionalNode;
@@ -26718,19 +26702,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var precedence = operators.getPrecedence(this);
 	  var exprPrecedence = operators.getPrecedence(this.expr);
 
-	  var expr = this.expr.toTex(callbacks);
+	  var expr = '{' + this.expr.toTex(callbacks) + '}';
 	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
-	    //adds visible round brackets
-	    expr = latex.addBraces(expr, true);
-	  }
-	  else {
-	    //add (invisible) curly braces
-	    expr = latex.addBraces(expr, false);
+	    expr = '\\left(' + expr + '\\right)';
 	  }
 
-	  return latex.toFunction(this.name)
-	       + latex.addBraces(this.params.map(latex.toSymbol).join(', '), true) + '=' //FIXME, this doesn't call toTex on the parameters AFAIK (toSymbol)
-	       + expr;
+	  return latex.toSymbol(this.name) 
+	    + '\\left(' + this.params.map(latex.toSymbol).join(',') + '\\right):=' + expr;
 	};
 
 	module.exports = FunctionAssignmentNode;
@@ -26859,7 +26837,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String} str
 	 */
 	FunctionNode.prototype._toTex = function(callbacks) {
-	  return latex.toArgs(this, callbacks);
+	  return latex.toFunction(this, callbacks, this.name);
 	};
 
 	/**
@@ -27463,15 +27441,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	OperatorNode.prototype._toTex = function(callbacks) {
 	 var args = this.args; 
 	 var parens = calculateNecessaryParentheses(this, args);
-	 var op = latex.toOperator(this.op); //operator
+	 var op = latex.operators[this.fn];
+	 op = typeof op === 'undefined' ? this.op : op; //fall back to using this.op
 
 	 switch (args.length) {
 	   case 1: //unary operators
 	     var assoc = operators.getAssociativity(this);
 
-	     var operand = args[0].toTex(callbacks);
+	     var operand = '{' + args[0].toTex(callbacks) + '}';
 	     if (parens[0]) {
-	       operand = latex.addBraces(operand, true);
+	       operand = '\\left(' + operand + '\\right)';
 	     }
 
 	     if (assoc === 'right') { //prefix operator
@@ -27486,27 +27465,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	   case 2: //binary operators
 	     var lhs = args[0]; //left hand side
-	     //reminder: if parens[0] is false, this puts it in curly braces
-	     var lhsTex = latex.addBraces(lhs.toTex(callbacks), parens[0]);
+	     var lhsTex =  '{' + lhs.toTex(callbacks) + '}';
+	     if (parens[0]) {
+	       lhsTex = '\\left(' + lhsTex + '\\right)';
+	     }
 	     var rhs = args[1]; //right hand side
-	     var rhsTex = latex.addBraces(rhs.toTex(callbacks), parens[1]);
+	     var rhsTex = '{' + rhs.toTex(callbacks) + '}';
+	     if (parens[1]) {
+	       rhsTex = '\\left(' + rhsTex + '\\right)';
+	     }
 
 	     switch (this.getIdentifier()) {
 	       case 'OperatorNode:divide':
 	         //op contains '\\frac' at this point
-	         return op + lhsTex + rhsTex;
-
-	       case 'OperatorNode:to':
-	         rhsTex = latex.toUnit(rhs.toTex(callbacks));
-	         rhsTex = latex.addBraces(rhsTex, parens[1]);
-	         break;
+	         return op + '{' + lhsTex + '}' + '{' + rhsTex + '}';
 	     }
 	     return lhsTex + ' ' + op + ' ' + rhsTex;
 
 	   default:
 	     //fall back to formatting as a function call
-	     var argumentList = this.args.map(latex.toSymbol).join(', ');
-	     return latex.toFunction(this.fn) + latex.addBraces(argumentList, true);
+	     //as this is a fallback, it doesn't use
+	     //fancy function names
+	     return '\\mathrm{' + this.fn + '}\\left('
+	             + args.map(function (arg) {
+	               return '{' + arg.toTex(callbacks) + '}';
+	             }).join(',') + '\\right)';
 	 }
 	};
 
@@ -27779,7 +27762,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @override
 	 */
 	SymbolNode.prototype._toTex = function(callbacks) {
-	  return latex.toSymbol(this.name, callbacks);
+	  return latex.toSymbol(this.name);
 	};
 
 	module.exports = SymbolNode;
@@ -35995,508 +35978,356 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	// FIXME: remove dependencies on Nodes
-	var ArrayNode = __webpack_require__(177);
-	var OperatorNode = __webpack_require__(186);
-	var SymbolNode = __webpack_require__(188);
-	var ConstantNode = __webpack_require__(181);
-
-	// GREEK LETTERS
-	var greek = {
-	  Alpha: 'A',     alpha: true,
-	  Beta: 'B',      beta: true,
-	  Gamma: true,    gamma: true,
-	  Delta: true,    delta: true,
-	  Epsilon: 'E',   epsilon: true,  varepsilon: true,
-	  Zeta: 'Z',      zeta: true,
-	  Eta: 'H',       eta: true,
-	  Theta: true,    theta: true,    vartheta: true,
-	  Iota: 'I',      iota: true,
-	  Kappa: 'K',     kappa: true,    varkappa: true,
-	  Lambda: true,   lambda: true,
-	  Mu: 'M',        mu: true,
-	  Nu: 'N',        nu: true,
-	  Xi: true,       xi: true,
-	  Omicron: 'O',   omicron: true,
-	  Pi: true,       pi: true,       varpi: true,
-	  Rho: 'P',       rho: true,      varrho: true,
-	  Sigma: true,    sigma: true,    varsigma: true,
-	  Tau: 'T',       tau: true,
-	  Upsilon: true,  upsilon: true,
-	  Phi: true,      phi: true,      varphi: true,
-	  Chi: 'X',       chi: true,
-	  Psi: true,      psi: true,
-	  Omega: true,    omega: true
-	};
-
-	var dots = {
-	  dots: true,
-	  ldots: true,
-	  cdots: true,
-	  vdots: true,
-	  ddots: true,
-	  idots: true
-	};
-
-	var logic = {
+	exports.symbols = {
+	  // GREEK LETTERS
+	  Alpha: 'A',     alpha: '\\alpha',
+	  Beta: 'B',      beta: '\\beta',
+	  Gamma: '\\Gamma',    gamma: '\\gamma',
+	  Delta: '\\Delta',    delta: '\\delta',
+	  Epsilon: 'E',   epsilon: '\\epsilon',  varepsilon: '\\varepsilon',
+	  Zeta: 'Z',      zeta: '\\zeta',
+	  Eta: 'H',       eta: '\\eta',
+	  Theta: '\\Theta',    theta: '\\theta',    vartheta: '\\vartheta',
+	  Iota: 'I',      iota: '\\iota',
+	  Kappa: 'K',     kappa: '\\kappa',    varkappa: '\\varkappa',
+	  Lambda: '\\Lambda',   lambda: '\\lambda',
+	  Mu: 'M',        mu: '\\mu',
+	  Nu: 'N',        nu: '\\nu',
+	  Xi: '\\Xi',       xi: '\\xi',
+	  Omicron: 'O',   omicron: 'o',
+	  Pi: '\\Pi',       pi: '\\pi',       varpi: '\\varpi',
+	  Rho: 'P',       rho: '\\rho',      varrho: '\\varrho',
+	  Sigma: '\\Sigma',    sigma: '\\sigma',    varsigma: '\\varsigma',
+	  Tau: 'T',       tau: '\\tau',
+	  Upsilon: '\\Upsilon',  upsilon: '\\upsilon',
+	  Phi: '\\Phi',      phi: '\\phi',      varphi: '\\varphi',
+	  Chi: 'X',       chi: '\\chi',
+	  Psi: '\\Psi',      psi: '\\psi',
+	  Omega: '\\Omega',    omega: '\\omega',
+	  //logic
 	  'true': '\\mathrm{True}',
-	  'false': '\\mathrm{False}'
-	};
-
-	var other = {
+	  'false': '\\mathrm{False}',
+	  //other
+	  i: 'i', //TODO use \i ??
 	  inf: '\\infty',
 	  Inf: '\\infty',
 	  infinity: '\\infty',
 	  Infinity: '\\infty',
 	  oo: '\\infty',
-	  lim: true,
+	  lim: '\\lim',
 	  'undefined': '\\mathbf{?}'
 	};
 
-	// FUNCTIONS
+	exports.operators = {
+	  'transpose': '^{\\top}',
+	  'factorial': '!',
+	  'pow': '^',
+	  'dotPow': '.^{\\wedge}', //TODO find ideal solution
+	  'unaryPlus': '+',
+	  'unaryMinus': '-',
+	  'bitNot': '~', //TODO find ideal solution
+	  'not': '\\neg',
+	  'multiply': '\\cdot',
+	  'divide': '\\frac', //TODO how to handle that properly?
+	  'dotMultiply': '.\\cdot', //TODO find ideal solution
+	  'dotDivide': '.:', //TODO find ideal solution
+	  'mod': '\\mod',
+	  'add': '+',
+	  'subtract': '-',
+	  'to': '\\rightarrow',
+	  'leftShift': '<<',
+	  'rightArithShift': '>>',
+	  'rightLogShift': '>>>',
+	  'equal': '=',
+	  'unequal': '\\neq',
+	  'smaller': '<',
+	  'larger': '>',
+	  'smallerEq': '\\leq',
+	  'largerEq': '\\geq',
+	  'bitAnd': '\\&',
+	  'bitXor': '\\underline{|}',
+	  'bitOr': '|',
+	  'and': '\\wedge',
+	  'xor': '\\veebar',
+	  'or': '\\vee'
+	};
+
+
+	//create a comma separated list of function arguments
+	function functionArgs(args, callbacks) {
+	  return args.map( function (arg) {
+	    return '{' + arg.toTex(callbacks) + '}';
+	  }).join(',');
+	}
+
+	var defaultTemplate = '\\mathrm{%name%}\\left(%*%\\right)';
+
+	/*
+	 * expand a template
+	 *
+	 * @param {String} template
+	 * @param {String} name of the function
+	 * @param {Array} arguments of the function ( Strings )
+	 **/
+	function expandTemplate(template, name, args) {
+	  //replace %name% with the variable 'name'
+	  template = template.replace(/%name%/g, name);
+
+	  //replace %0%, %1% .... with the arguments in args
+	  args.forEach(function (arg, index) {
+	    template = template.replace(RegExp('%' + index + '%', 'g'), '{' + arg + '}');
+	  });
+
+	  //replace %*% with a comma separated list of all arguments
+	  template = template.replace('%*%', args.map(function (arg) {
+	      return '{' + arg + '}';
+	    }).join(','));
+
+	  //replace %% with %, this comes in handy when you need a % in your LaTeX string
+	  template = template.replace('%%', '%');
+
+	  return template;
+	}
+
+	//this is a map containing all the latex converters for all the functions
 	var functions = {
-	  acos: '\\cos^{-1}',
-	  arccos: '\\cos^{-1}',
-	  cos: true,
-	  csc: true,
-	  csch: false,
-	  exp: true,
-	  ker: true,
-	  limsup: true,
-	  min: true,
-	  sinh: true,
-	  asin: '\\sin^{-1}',
-	  arcsin: '\\sin^{-1}',
-	  cosh: true,
-	  deg: true,
-	  gcd: true,
-	  lg: true,
-	  ln: true,
-	  Pr: true,
-	  sup: true,
-	  atan: '\\tan^{-1}',
-	  atan2: '\\tan2^{-1}',
-	  arctan: '\\tan^{-1}',
-	  cot: true,
-	  det: true,
-	  hom: true,
-	  log: true,
-	  log10: '\\log_{10}',
-	  sec: true,
-	  sech: false,
-	  tan: true,
-	  arg: true,
-	  coth: true,
-	  dim: true,
-	  inf: true,
-	  max: true,
-	  sin: true,
-	  tanh: true,
+	  //arithmetic
+	  'abs': '\\left|%0%\\right|',
+	  'add': '\\left(%0%+%1%\\right)',
+	  'ceil': '\\left\\lceil%0%\\right\\rceil',
+	  'cube': '\\left(%0%\\right)^{3}',
+	  'divide': '\\frac%0%%1%',
+	  'dotDivide': '\\left(%0%' + exports.operators['dotDivide'] + '%1%\\right)',
+	  'dotMultiply': '\\left(%0%' + exports.operators['dotMultiply'] + '%1%\\right)',
+	  'dotPow': '\\left(%0%' + exports.operators['dotPow'] + '%1%\\right)',
+	  'exp': '\\exp\\left(%0%\\right)',
+	  'fix': defaultTemplate,
+	  'floor': '\\left\\lfloor%0%\\right\\rfloor',
+	  'gcd': '\\gcd\\left(%*%\\right)',
+	  'lcm': defaultTemplate,
+	  'log10': '\\log_{10}\\left(%0%\\right)',
+	  'log': {
+	    1: '\\ln\\left(%0%\\right)',
+	    2: '\\log_%1%\\left(%0%\\right)'
+	  },
+	  'mod': '\\left(%0%' + exports.operators['mod'] + '%1%\\right)',
+	  'multiply': '\\left(%0%' + exports.operators['multiply'] + '%1%\\right)',
+	  'norm': {
+	    1: '\\left\\|%0%\\right\\|',
+	    2: defaultTemplate
+	  },
+	  'nthRoot': '\\sqrt[%1%]%0%',
+	  'pow': '\\left(%0%' + exports.operators['pow'] + '%1%\\right)',
+	  'round': {
+	    1: '\\left\\lfloor%0%\\right\\rceil',
+	    2: defaultTemplate
+	  },
+	  'sign': defaultTemplate,
+	  'sqrt': '\\sqrt%0%',
+	  'square': '\\left(%0%\\right)^{2}',
+	  'subtract': '\\left(%0%' + exports.operators['subtract'] + '%1%\\right)',
+	  'unaryMinus': exports.operators['unaryMinus'] + '\\left(%0%\\right)',
+	  'unaryPlus': exports.operators['unaryPlus'] + '\\left(%0%\\right)',
+	  'xgcd': defaultTemplate,
 
-	  fix: false,
-	  lcm: false,
-	  sign: false,
-	  xgcd: false,
-	  unaryMinus: false,
-	  unaryPlus: false,
+	  //bitwise
+	  'bitAnd': '\\left(%0%' + exports.operators['bitAnd'] + '%1%\\right)',
+	  'bitOr': '\\left(%0%' + exports.operators['bitOr'] + '%1%\\right)',
+	  'bitXor': '\\left(%0%' + exports.operators['bitXor'] + '%1%\\right)',
+	  'bitNot': exports.operators['bitNot'] + '\\left(%0%\\right)',
+	  'leftShift': '\\left(%0%' + exports.operators['leftShift'] + '%1%\\right)',
+	  'rightArithShift': '\\left(%0%' + exports.operators['rightArithShift'] + '%1%\\right)',
+	  'rightLogShift': '\\left(%0%' + exports.operators['rightLogShift'] + '%1%\\right)',
 
-	  // complex
-	  complex: false,
-	  conj: false,
-	  im: false,
-	  re: false,
+	  //complex
+	  'arg': '\\arg\\left(%0%\\right)',
+	  'conj': '\\left(%0%\\right)^{*}',
+	  'im': '\\Im\\left\\lbrace%0%\\right\\rbrace',
+	  're': '\\Re\\left\\lbrace%0%\\right\\rbrace',
 
-	  // matrix
-	  diag: false,
-	  resize: false,
-	  size: false,
-	  squeeze: false,
-	  subset: false,
-	  index: false,
-	  ones: false,
-	  zeros: false,
-	  range: false,
+	  //construction
+	  'bignumber': {
+	    0: '0',
+	    1: '\\left(%0%\\right)'
+	  },
+	  'boolean': defaultTemplate,
+	  'chain': defaultTemplate,
+	  'complex': {
+	    0: '0',
+	    1: '\\left(%0%\\right)',
+	    2: '\\left({\\left(%0%\\right)+'
+	      + exports.symbols['i'] + '\\cdot\\left(%1%\\right)}\\right)',
+	  },
+	  'index': defaultTemplate,
+	  'matrix': {
+	    0: '\\begin{bmatrix}\\end{bmatrix}',
+	    1: '\\left(%0%\\right)',
+	    2: '\\left(%0%\\right)'
+	  },
+	  'number': {
+	    0: '0',
+	    1: '\\left(%0%\\right)',
+	    2: '\\left(\\left(%0%\\right)%1%\\right)'
+	  },
+	  'parser': defaultTemplate,
+	  'string': {
+	    0: '""',
+	    1: function (node) {
+	      return '"' + node.args[0].toString() + '"';
+	    }
+	  },
+	  'unit': {
+	    1: '\\left(%0%\\right)',
+	    2: '\\left({\\left(%0%\\right)%1%}\\right)'
+	  },
 
-	  // probability
-	  random: false,
+	  //expression TODO does the default even work in this case? (.toTex on the args)
+	  'compile': defaultTemplate,
+	  'eval': defaultTemplate,
+	  'help': defaultTemplate,
+	  'parse': defaultTemplate,
 
-	  // statistics
-	  mean: '\\mu',
-	  median: false,
-	  prod: false,
-	  std: '\\sigma',
-	  'var': '\\sigma^2'
-	};
+	  //logical
+	  'and': '\\left(%0%' + exports.operators['and'] + '%1%\\right)',
+	  'not': exports.operators['not'] + '\\left(%0%\\right)',
+	  'or': '\\left(%0%' + exports.operators['or'] + '%1%\\right)',
+	  'xor': '\\left(%0%' + exports.operators['xor'] + '%1%\\right)',
 
-	// CURLY FUNCTIONS
-	// wrap parameters with {}
-	var curlyFunctions = {
-	  sqrt: true,
-	  inv: true,
-	  int: '\\int',
-	  Int: '\\int',
-	  integrate: '\\int',
-	  eigenvalues: '\\lambda',
-	  liminf: true,
-	  lim: true,
-	  exp: 'e^',
-	  sum: true,
+	  //matrix
+	  'concat': defaultTemplate,
+	  'cross': '%0%\\times%1%',
+	  'det': '\\det\\left(%0%\\right)',
+	  'diag': defaultTemplate,
+	  'dot': '\\left(%0%\\cdot%1%\\right)',
+	  'eye': defaultTemplate,
+	  'flatten': defaultTemplate,
+	  'inv': '%0%^{-1}',
+	  'ones': defaultTemplate,
+	  'range': defaultTemplate,
+	  'resize': defaultTemplate,
+	  'size': defaultTemplate,
+	  'squeeze': defaultTemplate,
+	  'subset': defaultTemplate,
+	  'trace': '\\mathrm{tr}\\left(%0%\\right)',
+	  'transpose': '%0%^{\\top}',
+	  'zeros': defaultTemplate,
 
-	  eye: '\\mathbf{I}'
-	};
+	  //probability
+	  'combinations': '\\binom%0%%1%',
+	  'distribution': defaultTemplate,
+	  'factorial': '\\left(%0%\\right)!',
+	  'gamma': '\\Gamma\\left(%0%\\right)',
+	  'permutations': defaultTemplate,
+	  'pickRandom': defaultTemplate,
+	  'randomInt': defaultTemplate,
+	  'random': defaultTemplate,
 
-	var operators = {
-	  '<=': '\\leq',
-	  '>=': '\\geq',
-	  '!=': '\\neq',
-	  'in': true,
-	  '*': '\\cdot',
-	  '/': '\\frac',
-	  'mod': '\\bmod',
-	  'to': '\\rightarrow'
+	  //relational
+	  'compare': defaultTemplate,
+	  'deepEqual': defaultTemplate,
+	  'equal': '\\left(%0%' + exports.operators['equal'] + '%1%\\right)',
+	  'largerEq': '\\left(%0%' + exports.operators['largerEq'] + '%1%\\right)',
+	  'larger': '\\left(%0%' + exports.operators['larger'] + '%1%\\right)',
+	  'smallerEq': '\\left(%0%' + exports.operators['smallerEq'] + '%1%\\right)',
+	  'smaller': '\\left(%0%' + exports.operators['smaller'] + '%1%\\right)',
+	  'unequal': '\\left(%0%' + exports.operators['unequal'] + '%1%\\right)',
+
+	  //statistics
+	  'max': '\\max\\left(%*%\\right)',
+	  'mean': defaultTemplate,
+	  'median': defaultTemplate,
+	  'min': '\\min\\left(%*%\\right)',
+	  'prod': defaultTemplate,
+	  'std': defaultTemplate,
+	  'sum': defaultTemplate,
+	  'var': '\\mathrm{Var}\\left(%*%\\right)',
+
+	  //trigonometry
+	  'acosh': '\\cosh^{-1}\\left(%0%\\right)',
+	  'acos': '\\cos^{-1}\\left(%0%\\right)',
+	  'acoth': '\\coth^{-1}\\left(%0%\\right)',
+	  'acot': '\\cot^{-1}\\left(%0%\\right)',
+	  'acsch': '\\mathrm{csch}^{-1}\\left(%0%\\right)',
+	  'acsc': '\\csc^{-1}\\left(%0%\\right)',
+	  'asech': '\\mathrm{sech}^{-1}\\left(%0%\\right)',
+	  'asec': '\\sec^{-1}\\left(%0%\\right)',
+	  'asinh': '\\sinh^{-1}\\left(%0%\\right)',
+	  'asin': '\\sin^{-1}\\left(%0%\\right)',
+	  'atan2': '\\mathrm{atan2}\\left(%*%\\right)',
+	  'atanh': '\\tanh^{-1}\\left(%0%\\right)',
+	  'atan': '\\tan^{-1}\\left(%0%\\right)',
+	  'cosh': '\\cosh\\left(%0%\\right)',
+	  'cos': '\\cos\\left(%0%\\right)',
+	  'coth': '\\coth\\left(%0%\\right)',
+	  'cot': '\\cot\\left(%0%\\right)',
+	  'csch': '\\mathrm{csch}\\left(%0%\\right)',
+	  'csc': '\\csc\\left(%0%\\right)',
+	  'sech': '\\mathrm{sech}\\left(%0%\\right)',
+	  'sec': '\\sec\\left(%0%\\right)',
+	  'sinh': '\\sinh\\left(%0%\\right)',
+	  'sin': '\\sin\\left(%0%\\right)',
+	  'tanh': '\\tanh\\left(%0%\\right)',
+	  'tan': '\\tan\\left(%0%\\right)',
+
+	  //units
+	  'to': '\\left(%0%' + exports.operators['to'] + '%1%\\right)',
+
+	  //utils
+	  'clone': defaultTemplate,
+	  'filter': defaultTemplate,
+	  'forEach': defaultTemplate,
+	  'format': defaultTemplate,
+	  'import': defaultTemplate,
+	  'map': defaultTemplate,
+	  'print': defaultTemplate,
+	  'sort': defaultTemplate,
+	  'typeof': defaultTemplate
 	};
 
 	var units = {
 	  deg: '^{\\circ}'
 	};
 
-	var symbols = {};
-
-	function mapSymbols() {
-	  var args = Array.prototype.slice.call(arguments),
-	      obj;
-	  for (var i = 0, len = args.length; i < len; i++) {
-	    obj = args[i];
-	    for (var key in obj) {
-	      if (obj.hasOwnProperty(key)) {
-	        symbols[key] = obj[key];
-	      }
-	    }
+	//FIXME find a good solution so that single characters still
+	//get rendered in regular italic whereas single character units
+	//are rendered with \mathrm
+	exports.toSymbol = function (name) {
+	  if (typeof exports.symbols[name] !== 'undefined') {
+	    return '{' + exports.symbols[name] + '}';
 	  }
-	}
-
-	mapSymbols(
-	  functions,
-	  curlyFunctions,
-	  greek,
-	  dots,
-	  logic,
-	  other
-	);
-
-	function latexIs(arr, value) {
-	  return typeof arr[value] !== 'undefined';
-	}
-
-	function latexIsFn(arr) {
-	  return function(value) {
-	    return latexIs(arr, value);
-	  };
-	}
-
-	function latexToFn(arr) {
-	  return function(value) {
-	    if (typeof arr[value] === 'boolean') {
-	      if (arr[value] === true) {
-	        value = '\\' + value;
-	      }
-	      else {
-	        value = '\\mathrm{' + value + '}';
-	      }
-	    }
-	    else if (typeof arr[value] === 'string') {
-	      value = arr[value];
-	    }
-	    else if (typeof value === 'string') {
-	      var index = value.indexOf('_');
-	      if (index !== -1) {
-	        value = exports.toSymbol(value.substring(0, index)) + '_{' +
-	            exports.toSymbol(value.substring(index+1)) + '}';
-	      }
-	    }
-
-	    return value;
-	  };
-	}
-
-	exports.isSymbol = latexIsFn(symbols);
-	exports.toSymbol = latexToFn(symbols);
-
-	exports.isFunction = latexIsFn(functions);
-	exports.toFunction = latexToFn(functions);
-
-	exports.isCurlyFunction = latexIsFn(curlyFunctions);
-	exports.toCurlyFunction = latexToFn(curlyFunctions);
-
-	exports.isOperator = latexIsFn(operators);
-	exports.toOperator = latexToFn(operators);
-
-	exports.isUnit = latexIsFn(units);
-	exports.toUnit = (function() {
-	  var _toUnit = latexToFn(units);
-
-	  return function(value, notSpaced) {
-	    if (exports.isUnit(value)) {
-	      return _toUnit(value);
-	    }
-
-	    return (notSpaced ? '' : '\\,') + '\\mathrm{' + value + '}';
-	  };
-	}());
-
-	exports.addBraces = function(s, brace, type) {
-	  if (brace === null) {
-	    return s;
+	  else if (name.indexOf('_') !== -1) {
+	    //symbol with index (eg. alpha_1)
+	    var index = name.indexOf('_');
+	    return '{' + exports.toSymbol(name.substring(0, index)) + '}_{'
+	      + exports.toSymbol(name.substring(index + 1)) + '}';
 	  }
-
-	  var braces = ['', ''];
-	  type = type || 'normal';
-
-	  if (typeof brace === 'undefined' || brace === false) {
-	    braces = ['{', '}'];
-	  }
-	  else if (brace === true) {
-	    braces = ['(', ')'];
-	    type = 'lr';
-	  }
-	  else if (Array.isArray(brace) && brace.length === 2) {
-	    braces = brace;
-	  }
-	  else {
-	    braces = [brace, brace];
-	  }
-
-	  switch (type) {
-	    case 'normal':
-	    case false:
-	      return braces[0] + s + braces[1];
-
-	    case 'lr':
-	      return '\\left' + braces[0] + '{' + s + '}' + '\\right' + braces[1];
-
-	    case 'be':
-	      return '\\begin{' + braces[0] + '}' + s + '\\end{' + braces[1] + '}';
-	  }
-
-	  return braces[0] + s + braces[1];
+	  return '\\mathrm{' + name + '}';
 	};
 
-	exports.toArgs = function(that, customFunctions) {
-	  var name = that.name,
-	      args = that.args,
-	      func = exports.toSymbol(that.name),
-	      texParams = null,
-	      brace = null,
-	      type = false,
-	      showFunc = false,
-	      prefix = '',
-	      suffix = '',
-	      op = null;
+	//returns the latex output for a given function
+	exports.toFunction = function (node, callbacks, name) {
+	  var latexConverter = functions[name];
+	  var args = node.args.map(function (arg) { //get LaTeX of the arguments
+	    return arg.toTex(callbacks);
+	  });
 
-	  switch (name) {
-	    // OPERATORS
-	    case 'add':
-	      op = '+';
-	      break;
-
-	    case 'subtract':
-	      op = '-';
-	      break;
-
-	    case 'larger':
-	      op = '>';
-	      break;
-
-	    case 'largerEq':
-	      op = '>=';
-	      break;
-
-	    case 'smaller':
-	      op = '<';
-	      break;
-
-	    case 'smallerEq':
-	      op = '<=';
-	      break;
-
-	    case 'unequal':
-	      op = '!=';
-	      break;
-
-	    case 'equal':
-	      op = '=';
-	      break;
-
-	    case 'mod':
-	      op = 'mod';
-	      break;
-
-	    case 'multiply':
-	      op = '*';
-	      break;
-
-	    case 'pow':
-	      op = '^';
-	      break;
-
-	    case 'concat':
-	      op = '||';
-	      break;
-
-	    case 'factorial':
-	      op = '!';
-	      break;
-
-	    case 'permutations':
-	      if (args.length === 1) {
-	        if (args[0] instanceof SymbolNode || args[0] instanceof ConstantNode) {
-	          op = '!';
-	        }
-	        else {
-	          return '{\\left(' + args[0].toTex(customFunctions) + '\\right)!}';
-	        }
+	  switch (typeof latexConverter) {
+	    case 'function': //a callback function
+	      return latexConverter(node, callbacks);
+	    case 'string': //a template string
+	      return expandTemplate(latexConverter, name, args);
+	    case 'object': //an object with different "converters" for different numbers of arguments
+	      switch (typeof latexConverter[args.length]) {
+	        case 'function':
+	          return latexConverter[args.length](node, callbacks);
+	        case 'string':
+	          return expandTemplate(latexConverter[args.length], name, args);
 	      }
-	      else {
-	        // op = 'P';
-	        var n = args[0].toTex(customFunctions),
-	            k = args[1].toTex(customFunctions);
-	        return '\\frac{' + n + '!}{\\left(' + n + ' - ' + k + '\\right)!}';
-	      }
-	      break;
-
-	    // probability
-	    case 'combinations':
-	      op = '\\choose';
-	      break;
-
-	    // LR BRACES
-	    case 'abs':
-	      brace = '|';
-	      type = 'lr';
-	      break;
-
-	    case 'norm':
-	      brace = '\\|';
-	      type = 'lr';
-
-	      if (args.length === 2) {
-	        var tmp = args[1].toTex(customFunctions);
-
-	        if (tmp === '\\text{inf}') {
-	          tmp = '\\infty';
-	        }
-	        else if (tmp === '\\text{-inf}') {
-	          tmp = '{- \\infty}';
-	        }
-	        else if (tmp === '\\text{fro}') {
-	          tmp = 'F';
-	        }
-
-	        suffix = '_{' + tmp + '}';
-	        args = [args[0]];
-	      }
-	      break;
-
-	    case 'ceil':
-	      brace = ['\\lceil', '\\rceil'];
-	      type = 'lr';
-	      break;
-
-	    case 'floor':
-	      brace = ['\\lfloor', '\\rfloor'];
-	      type = 'lr';
-	      break;
-
-	    case 'round':
-	      brace = ['\\lfloor', '\\rceil'];
-	      type = 'lr';
-
-	      if (args.length === 2) {
-	        suffix = '_' + exports.addBraces(args[1].toTex(customFunctions));
-	        args = [args[0]];
-	      }
-	      break;
-
-
-	    // NORMAL BRACES
-	    case 'inv':
-	      suffix = '^{-1}';
-	      break;
-
-	    case 'transpose':
-	      suffix = '^{T}';
-	      brace = false;
-	      break;
-
-	    // SPECIAL NOTATION
-	    case 'log':
-	      var base = 'e';
-	      if (args.length === 2) {
-	        base = args[1].toTex(customFunctions);
-	        func = '\\log_{' + base + '}';
-	        args = [args[0]];
-	      }
-	      if (base === 'e') {
-	        func = '\\ln';
-	      }
-
-	      showFunc = true;
-	      break;
-
-	    case 'square':
-	      suffix = '^{2}';
-	      break;
-
-	    case 'cube':
-	      suffix = '^{3}';
-	      break;
-
-
-	    // MATRICES
-	    case 'eye':
-	      showFunc = true;
-	      brace = false;
-	      func += '_';
-	      break;
-
-	    case 'det':
-	      if (that.args[0] instanceof ArrayNode) {
-	        //FIXME passing 'vmatrix' like that is really ugly
-	        that.args[0].latexType = 'vmatrix';
-	        var latex = that.args[0].toTex(customFunctions);
-	        delete that.args[0].latexType;
-	        return latex;
-	      }
-
-	      brace = 'vmatrix';
-	      type = 'be';
-	      break;
-
+	      //no break here! That's intentionally
 	    default:
-	      showFunc = true;
-	      break;
+	      return expandTemplate(defaultTemplate, name, args);
 	  }
-
-	  if (op !== null) {
-	    brace = (op === '+' || op === '-');
-	    texParams = (new OperatorNode(op, name, args)).toTex(customFunctions);
-	  }
-	  else {
-	    op = ', ';
-	  }
-
-	  if (brace === null && !exports.isCurlyFunction(name)) {
-	    brace = true;
-	  }
-
-	  texParams = texParams || args.map(function(param) {
-	    return '{' + param.toTex(customFunctions) + '}'  ;
-	  }).join(op);
-
-	  return prefix + (showFunc ? func : '') +
-	      exports.addBraces(texParams, brace, type) +
-	      suffix;
-	};
+	}
 
 
 /***/ }

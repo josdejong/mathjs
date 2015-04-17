@@ -4,6 +4,7 @@
 ## not yet released, version 1.5.3-SNAPSHOT
 
 - Improvements in `toTex`. Thanks @FSMaxB.
+- Fixed not being able to override lazy loaded constants.
 
 
 ## 2015-04-09, version 1.5.2
