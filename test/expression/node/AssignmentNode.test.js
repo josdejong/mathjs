@@ -222,7 +222,7 @@ describe('AssignmentNode', function() {
 
     var n = new AssignmentNode('b', b);
 
-    assert.equal(n.toTex(), '\\mathrm{b}:=\\left({\\mathrm{a}:={2}}\\right)');
+    assert.equal(n.toTex(), '\\mathrm{b}:=\\left(\\mathrm{a}:={2}\\right)');
   });
 
   it ('should LaTeX an AssignmentNode with custom toTex', function () {
