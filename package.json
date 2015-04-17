@@ -51,7 +51,7 @@
   ],
   "dependencies": {
     "decimal.js": "^4.0.1",
-    "typed-function": "^0.6.2"
+    "typed-function": "^0.7.0"
   },
   "devDependencies": {
     "webpack": "latest",
