@@ -127,7 +127,7 @@ describe('SymbolNode', function() {
 
     var mult = new OperatorNode('*', 'multiply', [a,b]);
 
-    assert.equal(mult.toTex(), '1\\cdot {E}');
+    assert.equal(mult.toTex(), '1\\cdot E');
   });
 
 });
