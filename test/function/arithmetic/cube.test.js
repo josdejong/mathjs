@@ -59,7 +59,7 @@ describe('cube', function() {
 
   it('should LaTeX cube', function () {
     var expression = math.parse('cube(2)');
-    assert.equal(expression.toTex(), '\\left({2}\\right)^{3}');
+    assert.equal(expression.toTex(), '\\left(2\\right)^3');
   });
 
 });

@@ -106,7 +106,7 @@ describe('cot', function() {
 
   it('should LaTeX cot', function () {
     var expression = math.parse('cot(1)');
-    assert.equal(expression.toTex(), '\\cot\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\cot\\left(1\\right)');
   });
 
 });

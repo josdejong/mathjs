@@ -278,7 +278,7 @@ describe('multiply', function() {
 
   it('should LaTeX mutliply', function () {
     var expression = math.parse('multiply(2,3)');
-    assert.equal(expression.toTex(), '\\left({2}\\cdot{3}\\right)');
+    assert.equal(expression.toTex(), '\\left(2\\cdot3\\right)');
   });
 
 });

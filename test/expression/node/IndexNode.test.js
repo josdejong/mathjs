@@ -279,10 +279,10 @@ describe('IndexNode', function() {
     ];
 
     var n = new IndexNode(a, ranges);
-    assert.equal(n.toTex(), '\\mathrm{a}[2, 1]');
+    assert.equal(n.toTex(), '\\mathrm{a}_{\\left[2,1\\right]}');
 
     var n2 = new IndexNode(a, []);
-    assert.equal(n2.toTex(), '\\mathrm{a}[]')
+    assert.equal(n2.toTex(), '\\mathrm{a}_{\\left[\\right]}')
   });
 
   it ('should LaTeX an IndexNode with custom toTex', function () {

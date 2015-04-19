@@ -153,7 +153,7 @@ describe('and', function () {
 
   it('should LaTeX and', function () {
     var expression = math.parse('and(1,2)');
-    assert.equal(expression.toTex(), '\\left({1}\\wedge{2}\\right)');
+    assert.equal(expression.toTex(), '\\left(1\\wedge2\\right)');
   });
 
 });

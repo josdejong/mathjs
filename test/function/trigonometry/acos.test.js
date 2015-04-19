@@ -108,7 +108,7 @@ describe('acos', function() {
 
   it('should LaTeX acos', function () {
     var expression = math.parse('acos(1)');
-    assert.equal(expression.toTex(), '\\cos^{-1}\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\cos^{-1}\\left(1\\right)');
   });
 
 });

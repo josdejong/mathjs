@@ -47,7 +47,7 @@ describe('forEach', function() {
 
   it('should LaTeX forEach', function () {
     var expression = math.parse('forEach([1,2,3],callback)');
-    assert.equal(expression.toTex(), '\\mathrm{forEach}\\left({\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}},{\\mathrm{callback}}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{forEach}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix},\\mathrm{callback}\\right)');
   });
 
 });

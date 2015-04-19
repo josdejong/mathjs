@@ -60,7 +60,7 @@ describe('eye', function() {
 
   it('should LaTeX eye', function () {
     var expression = math.parse('eye(2)');
-    assert.equal(expression.toTex(), '\\mathrm{eye}\\left({2}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{eye}\\left(2\\right)');
   });
 
 });

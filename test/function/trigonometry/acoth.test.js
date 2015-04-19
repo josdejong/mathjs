@@ -117,7 +117,7 @@ describe('acoth', function() {
 
   it('should LaTeX acoth', function () {
     var expression = math.parse('acoth(2)');
-    assert.equal(expression.toTex(), '\\coth^{-1}\\left({2}\\right)');
+    assert.equal(expression.toTex(), '\\coth^{-1}\\left(2\\right)');
   });
 
 });

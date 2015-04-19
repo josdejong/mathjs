@@ -103,7 +103,7 @@ describe('concat', function() {
 
   it('should LaTeX concat', function () {
     var expression = math.parse('concat([1],[2])');
-    assert.equal(expression.toTex(), '\\mathrm{concat}\\left({\\begin{bmatrix}1\\\\\\end{bmatrix}},{\\begin{bmatrix}2\\\\\\end{bmatrix}}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{concat}\\left(\\begin{bmatrix}1\\\\\\end{bmatrix},\\begin{bmatrix}2\\\\\\end{bmatrix}\\right)');
   });
 
 });

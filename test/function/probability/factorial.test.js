@@ -90,7 +90,7 @@ describe('factorial', function() {
 
   it('should LaTeX factorial', function () {
     var expression = math.parse('factorial(6)');
-    assert.equal(expression.toTex(), '\\left({6}\\right)!');
+    assert.equal(expression.toTex(), '\\left(6\\right)!');
   });
 
 });

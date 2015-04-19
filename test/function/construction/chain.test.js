@@ -19,7 +19,7 @@ describe('chain', function() {
 
   it('should LaTeX chain', function () {
     var expression = math.parse('chain(1)');
-    assert.equal(expression.toTex(), '\\mathrm{chain}\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{chain}\\left(1\\right)');
   });
 
 });

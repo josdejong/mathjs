@@ -157,7 +157,7 @@ describe('import', function() {
 
   it('should LaTeX import', function () {
     var expression = math.parse('import(object)');
-    assert.equal(expression.toTex(), '\\mathrm{import}\\left({\\mathrm{object}}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{import}\\left(\\mathrm{object}\\right)');
   });
 
 });

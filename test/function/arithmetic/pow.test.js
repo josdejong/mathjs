@@ -170,7 +170,7 @@ describe('pow', function() {
 
   it('should LaTeX pow', function () {
     var expression = math.parse('pow(2,10)');
-    assert.equal(expression.toTex(), '\\left({2}^{10}\\right)');
+    assert.equal(expression.toTex(), '\\left(2\\right)^{10}');
   });
 
 });

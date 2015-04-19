@@ -145,7 +145,7 @@ describe('smaller', function() {
 
   it('should LaTeX smaller', function () {
     var expression = math.parse('smaller(1,2)');
-    assert.equal(expression.toTex(), '\\left({1}<{2}\\right)');
+    assert.equal(expression.toTex(), '\\left(1<2\\right)');
   });
 
 });

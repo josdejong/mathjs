@@ -77,7 +77,7 @@ describe('clone', function() {
 
   it('should LaTeX clone', function () {
     var expression = math.parse('clone(1)');
-    assert.equal(expression.toTex(), '\\mathrm{clone}\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{clone}\\left(1\\right)');
   });
 
 });

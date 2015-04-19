@@ -79,7 +79,7 @@ describe('ones', function() {
 
   it('should LaTeX ones', function () {
     var expression = math.parse('ones(2)');
-    assert.equal(expression.toTex(), '\\mathrm{ones}\\left({2}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{ones}\\left(2\\right)');
   });
 
 });

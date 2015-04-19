@@ -74,7 +74,7 @@ describe('unaryMinus', function() {
 
   it('should LaTeX unaryMinus', function () {
     var expression = math.parse('unaryMinus(1)');
-    assert.equal(expression.toTex(), '-\\left({1}\\right)');
+    assert.equal(expression.toTex(), '-\\left(1\\right)');
   });
 
 });

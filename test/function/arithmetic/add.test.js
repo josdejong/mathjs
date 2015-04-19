@@ -145,7 +145,7 @@ describe('add', function() {
 
   it('should LaTeX add', function () {
     var expression = math.parse('add(1,2)');
-    assert.equal(expression.toTex(), '\\left({1}+{2}\\right)');
+    assert.equal(expression.toTex(), '\\left(1+2\\right)');
   });
 
 });

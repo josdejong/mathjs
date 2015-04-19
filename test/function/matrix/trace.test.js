@@ -207,7 +207,7 @@ describe('trace', function() {
 
   it('should LaTeX trace', function () {
     var expression = math.parse('trace([[1,2],[3,4]])');
-    assert.equal(expression.toTex(), '\\mathrm{tr}\\left({\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{tr}\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)');
   });
 
 });
