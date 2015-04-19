@@ -265,7 +265,7 @@ describe('FunctionAssignmentNode', function() {
     var p = new OperatorNode('^', 'pow', [o, a]);
     var n = new FunctionAssignmentNode('f', ['x'], p);
 
-    assert.equal(n.toTex(), '\\mathrm{f}\\left(\\mathrm{x}\\right):={{\\frac{{\\mathrm{x}}}{{2}}}^{2}}');
+    assert.equal(n.toTex(), '\\mathrm{f}\\left(\\mathrm{x}\\right):={\\left({{\\frac{{\\mathrm{x}}}{{2}}}}\\right)^{{2}}}');
   });
 
   it ('should LaTeX a FunctionAssignmentNode containing an AssignmentNode', function () {

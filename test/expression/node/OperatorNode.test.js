@@ -4,6 +4,7 @@ var assert = require('assert'),
     math = require('../../../index'),
     Node = require('../../../lib/expression/node/Node'),
     ConstantNode = require('../../../lib/expression/node/ConstantNode'),
+    ConditionalNode = require('../../../lib/expression/node/ConditionalNode'),
     SymbolNode = require('../../../lib/expression/node/SymbolNode'),
     OperatorNode = require('../../../lib/expression/node/OperatorNode');
 
@@ -429,6 +430,22 @@ describe('OperatorNode', function() {
     var n = new OperatorNode('+', 'add', [a, b]);
 
     assert.equal(n.toTex(customFunction), 'const\\left(1, number\\right)+add+const\\left(2, number\\right)');
+  });
+
+  it ('should LaTeX powers of fractions with parentheses', function () {
+    var a = new ConstantNode(1);
+    var frac = new OperatorNode('/', 'divide', [a,a]);
+    var pow = new OperatorNode('^', 'pow', [frac, a]);
+
+    assert.equal(pow.toTex(), '\\left({{\\frac{{1}}{{1}}}}\\right)^{{1}}');
+  });
+
+  it ('should LaTeX powers of conditions with parentheses', function () {
+    var a = new ConstantNode(1);
+    var cond = new ConditionalNode(a, a, a);
+    var pow = new OperatorNode('^', 'pow', [cond, a]);
+
+    assert.equal(pow.toTex(), '\\left({{\\left\\{\\begin{array}{l l}{1}, &\\quad{\\text{if}\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{array}\\right.}}\\right)^{{1}}');
   });
 
 });
