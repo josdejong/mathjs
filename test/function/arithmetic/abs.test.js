@@ -62,7 +62,7 @@ describe('abs', function () {
 
   it('should LaTeX abs', function () {
 	  var expression = math.parse('abs(-1)');
-	  assert.equal(expression.toTex(),'\\left|{-1}\\right|');
+	  assert.equal(expression.toTex(),'\\left|-1\\right|');
   });
 
 });

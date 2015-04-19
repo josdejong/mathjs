@@ -26,9 +26,9 @@ describe('index', function() {
     var expr2 = math.parse('index(1,2)');
     var expr3 = math.parse('index(1,2,3)');
 
-    assert.equal(expr1.toTex(), '\\mathrm{index}\\left({1}\\right)');
-    assert.equal(expr2.toTex(), '\\mathrm{index}\\left({1},{2}\\right)');
-    assert.equal(expr3.toTex(), '\\mathrm{index}\\left({1},{2},{3}\\right)');
+    assert.equal(expr1.toTex(), '\\mathrm{index}\\left(1\\right)');
+    assert.equal(expr2.toTex(), '\\mathrm{index}\\left(1,2\\right)');
+    assert.equal(expr3.toTex(), '\\mathrm{index}\\left(1,2,3\\right)');
   });
 
 });

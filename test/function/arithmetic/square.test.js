@@ -57,7 +57,7 @@ describe('square', function() {
 
   it('should LaTeX square', function () {
     var expression = math.parse('square(4)');
-    assert.equal(expression.toTex(), '\\left({4}\\right)^{2}');
+    assert.equal(expression.toTex(), '\\left(4\\right)^2');
   });
 
 });

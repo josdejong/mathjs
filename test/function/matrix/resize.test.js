@@ -123,7 +123,7 @@ describe('resize', function() {
 
   it('should LaTeX resize', function () {
     var expression = math.parse('resize([1,2],1)');
-    assert.equal(expression.toTex(), '\\mathrm{resize}\\left({\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}},{1}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{resize}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},1\\right)');
   });
 });
 

@@ -88,8 +88,8 @@ describe('round', function() {
     var expr1 = math.parse('round(1.1)');
     var expr2 = math.parse('round(1.1,2)');
 
-    assert.equal(expr1.toTex(), '\\left\\lfloor{1.1}\\right\\rceil');
-    assert.equal(expr2.toTex(), '\\mathrm{round}\\left({1.1},{2}\\right)');
+    assert.equal(expr1.toTex(), '\\left\\lfloor1.1\\right\\rceil');
+    assert.equal(expr2.toTex(), '\\mathrm{round}\\left(1.1,2\\right)');
   });
 
 });

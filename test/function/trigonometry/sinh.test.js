@@ -91,6 +91,6 @@ describe('sinh', function() {
 
   it('should LaTeX sinh', function () {
     var expression = math.parse('sinh(1)');
-    assert.equal(expression.toTex(), '\\sinh\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\sinh\\left(1\\right)');
   });
 });

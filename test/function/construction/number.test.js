@@ -73,8 +73,8 @@ describe('number', function() {
     var expr3 = math.parse('number(1,cm)');
 
     assert.equal(expr1.toTex(), '0');
-    assert.equal(expr2.toTex(), '\\left({1}\\right)');
-    assert.equal(expr3.toTex(), '\\left(\\left({1}\\right){\\mathrm{cm}}\\right)');
+    assert.equal(expr2.toTex(), '\\left(1\\right)');
+    assert.equal(expr3.toTex(), '\\left(\\left(1\\right)\\mathrm{cm}\\right)');
   });
 });
 

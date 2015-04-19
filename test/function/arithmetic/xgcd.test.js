@@ -122,7 +122,7 @@ describe('xgcd', function() {
 
   it('should LaTeX xgcd', function () {
     var expression = math.parse('xgcd(2,3)');
-    assert.equal(expression.toTex(), '\\mathrm{xgcd}\\left({2},{3}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{xgcd}\\left(2,3\\right)');
   });
 
 });

@@ -169,7 +169,7 @@ describe('unequal', function() {
 
   it('should LaTeX unequal', function () {
     var expression = math.parse('unequal(1,0)');
-    assert.equal(expression.toTex(), '\\left({1}\\neq{0}\\right)');
+    assert.equal(expression.toTex(), '\\left(1\\neq0\\right)');
   });
 
 });

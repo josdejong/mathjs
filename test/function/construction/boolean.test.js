@@ -76,7 +76,7 @@ describe('boolean', function() {
 
   it('should LaTeX boolean', function () {
     var expression = math.parse('boolean(1)');
-    assert.equal(expression.toTex(), '\\mathrm{boolean}\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{boolean}\\left(1\\right)');
   });
 
 });

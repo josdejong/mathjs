@@ -132,7 +132,7 @@ describe('asin', function() {
 
   it('should LaTeX asin', function () {
     var expression = math.parse('asin(0.5)');
-    assert.equal(expression.toTex(), '\\sin^{-1}\\left({0.5}\\right)');
+    assert.equal(expression.toTex(), '\\sin^{-1}\\left(0.5\\right)');
   });
 
 });
