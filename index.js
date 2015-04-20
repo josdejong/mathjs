@@ -129,18 +129,18 @@ function create (config) {
 
   // functions - matrix
   require('./lib/function/matrix/concat')(math, _config);
-  require('./lib/function/matrix/cross')(math, _config);
+  math.import(require('./lib/function/matrix/cross'));
   math.import(require('./lib/function/matrix/det'));
   math.import(require('./lib/function/matrix/diag'));
-  require('./lib/function/matrix/dot')(math, _config);
+  math.import(require('./lib/function/matrix/dot'));
   math.import(require('./lib/function/matrix/eye'));
   require('./lib/function/matrix/flatten')(math, _config);
   math.import(require('./lib/function/matrix/inv'));
   require('./lib/function/matrix/ones')(math, _config);
   require('./lib/function/matrix/range')(math, _config);
   require('./lib/function/matrix/resize')(math, _config);
-  require('./lib/function/matrix/size')(math, _config);
-  require('./lib/function/matrix/squeeze')(math, _config);
+  math.import(require('./lib/function/matrix/size'));
+  math.import(require('./lib/function/matrix/squeeze'));
   require('./lib/function/matrix/subset')(math, _config);
   require('./lib/function/matrix/trace')(math, _config);
   math.import(require('./lib/function/matrix/transpose'));

@@ -53,12 +53,12 @@ describe('size', function() {
   });
 
   it('should throw an error if called with an invalid number of arguments', function() {
-    assert.throws(function () {size()}, error.ArgumentsError);
-    assert.throws(function () {size(1,2)}, error.ArgumentsError);
+    assert.throws(function () {size()}, /TypeError: Too few arguments/);
+    assert.throws(function () {size(1,2)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error if called with invalid type of arguments', function() {
-    assert.throws(function () {size(new Date())}, math.error.UnsupportedTypeError);
+    assert.throws(function () {size(new Date())}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX size', function () {
