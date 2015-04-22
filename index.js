@@ -128,13 +128,13 @@ function create (config) {
   math.import(require('./lib/function/logical/xor'));
 
   // functions - matrix
-  require('./lib/function/matrix/concat')(math, _config);
+  math.import(require('./lib/function/matrix/concat'));
   math.import(require('./lib/function/matrix/cross'));
   math.import(require('./lib/function/matrix/det'));
   math.import(require('./lib/function/matrix/diag'));
   math.import(require('./lib/function/matrix/dot'));
   math.import(require('./lib/function/matrix/eye'));
-  require('./lib/function/matrix/flatten')(math, _config);
+  math.import(require('./lib/function/matrix/flatten'));
   math.import(require('./lib/function/matrix/inv'));
   require('./lib/function/matrix/ones')(math, _config);
   require('./lib/function/matrix/range')(math, _config);

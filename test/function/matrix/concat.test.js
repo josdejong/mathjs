@@ -94,7 +94,7 @@ describe('concat', function() {
   });
 
   it('should throw an error in case of invalid type of argument', function() {
-    assert.throws(function () {math.concat(math.complex(2,3))}, math.error.UnsupportedTypeError);
+    assert.throws(function () {math.concat(math.complex(2,3))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error when called without matrices as argument', function() {
