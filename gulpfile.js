@@ -104,14 +104,16 @@ gulp.task('minify', ['bundle'], function () {
 
 // test whether the docs for the expression parser are complete
 gulp.task('validate', function (cb) {
-  var exec = require('exec');
+  var child_process = require('child_process');
 
   // this is run in a separate process as the modules need to be reloaded
   // with every validation (and required modules stay in cache).
-  exec(['node', 'tools/validate'], function(err, out, code) {
-    if (err instanceof Error) throw err;
-    process.stderr.write(err);
-    process.stdout.write(out);
+  child_process.execFile ('node', ['./tools/validate'], function(err, stdout, stderr) {
+    if (err instanceof Error) {
+      throw err;
+    }
+    process.stdout.write(stdout);
+    process.stderr.write(stderr);
     cb();
   });
 });

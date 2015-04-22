@@ -1720,25 +1720,6 @@ describe('CrsMatrix', function() {
       assert.deepEqual(m.diagonal(-2), new CrsMatrix([4]));
     });
   });
-  
-  describe('transpose', function () {
-
-    it('should transpose a 2d matrix', function() {
-      var m = new CrsMatrix([[1,2,3],[4,5,6]]);
-      assert.deepEqual(m.transpose().toArray(), [[1,4],[2,5],[3,6]]);
-
-      m = new CrsMatrix([[1,2],[3,4]]);
-      assert.deepEqual(m.transpose().toArray(), [[1,3],[2,4]]);
-
-      m = new CrsMatrix([[1,2,3,4]]);
-      assert.deepEqual(m.transpose().toArray(), [[1],[2],[3],[4]]);
-    });
-
-    it('should throw an error for invalid matrix transpose', function() {
-      var m = new CrsMatrix([[]]);
-      assert.throws(function () { m.transpose(); });
-    });
-  });
 
   describe('multiply', function () {
 
