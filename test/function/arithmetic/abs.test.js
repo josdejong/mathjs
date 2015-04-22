@@ -36,6 +36,8 @@ describe('abs', function () {
     assert.equal(math.abs(math.complex(1, 0)), 1);
     assert.equal(math.abs(math.complex(0, 1)), 1);
     assert.equal(math.abs(math.complex(0, 0)), 0);
+    assert.equal(math.abs(math.complex(-1, 0)), 1);
+    assert.equal(math.abs(math.complex(0, -1)), 1);
   });
 
   it('should return the absolute value of all elements in a matrix', function () {
