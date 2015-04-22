@@ -142,7 +142,7 @@ function create (config) {
   math.import(require('./lib/function/matrix/size'));
   math.import(require('./lib/function/matrix/squeeze'));
   require('./lib/function/matrix/subset')(math, _config);
-  require('./lib/function/matrix/trace')(math, _config);
+  math.import(require('./lib/function/matrix/trace'));
   math.import(require('./lib/function/matrix/transpose'));
   require('./lib/function/matrix/zeros')(math, _config);
 
