@@ -54,17 +54,17 @@
     "typed-function": "^0.7.0"
   },
   "devDependencies": {
-    "webpack": "1.8.9",
-    "mocha": "2.2.4",
-    "istanbul": "0.3.13",
-    "numbers": "0.6.0",
-    "uglify-js": "2.4.20",
-    "underscore": "1.8.3",
-    "seed-random": "2.2.0",
-    "gulp": "3.8.11",
-    "gulp-util": "3.0.4",
-    "glob": "5.0.5",
-    "mkdirp": "0.5.0"
+    "webpack": "^1.8.9",
+    "mocha": "^2.2.4",
+    "istanbul": "^0.3.13",
+    "numbers": "^0.6.0",
+    "uglify-js": "^2.4.20",
+    "underscore": "^1.8.3",
+    "seed-random": "^2.2.0",
+    "gulp": "^3.8.11",
+    "gulp-util": "^3.0.4",
+    "glob": "^5.0.5",
+    "mkdirp": "^0.5.0"
   },
   "main": "./index",
   "scripts": {
