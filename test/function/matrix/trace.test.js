@@ -210,4 +210,108 @@ describe('trace', function() {
     assert.equal(expression.toTex(), '\\mathrm{tr}\\left({\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}}\\right)');
   });
 
+  describe('DenseMatrix', function () {
+
+    it('should calculate trace on a square matrix', function() {
+      var m = math.matrix([
+        [1, 2],
+        [4, -2]
+      ]);
+      assert.equal(math.trace(m), -1);
+
+      m = math.matrix([
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ]);
+      assert.equal(math.trace(m), 0);
+
+      m = math.matrix([
+        [1, 0, 0, 0],
+        [0, 0, 2, 0],
+        [1, 0, 0, 0],
+        [0, 0, 1, 9]
+      ]);
+      assert.equal(math.trace(m), 10);
+    });
+
+    it('should throw an error for invalid matrix', function() {
+      var m = math.matrix([
+        [1, 2, 3],
+        [4, 5, 6]
+      ]);
+      assert.throws(function () { math.trace(m); });
+    });
+  });
+  
+  describe('CcsMatrix', function () {
+
+    it('should calculate trace on a square matrix', function() {
+      var m = math.matrix([
+        [1, 2],
+        [4, -2]
+      ], 'ccs');
+      assert.equal(math.trace(m), -1);
+
+      m = math.matrix([
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ], 'ccs');
+      assert.equal(math.trace(m), 0);
+
+      m = math.matrix([
+        [1, 0, 0, 0],
+        [0, 0, 2, 0],
+        [1, 0, 0, 0],
+        [0, 0, 1, 9]
+      ], 'ccs');
+      assert.equal(math.trace(m), 10);
+    });
+
+    it('should throw an error for invalid matrix', function() {
+      var m = math.matrix([
+        [1, 2, 3],
+        [4, 5, 6]
+      ], 'ccs');
+      assert.throws(function () { math.trace(m); });
+    });
+  });
+  
+  describe('CrsMatrix', function () {
+
+    it('should calculate trace on a square matrix', function() {
+      var m = math.matrix([
+        [1, 2],
+        [4, -2]
+      ], 'crs');
+      assert.equal(math.trace(m), -1);
+
+      m = math.matrix([
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ], 'crs');
+      assert.equal(math.trace(m), 0);
+
+      m = math.matrix([
+        [1, 0, 0, 0],
+        [0, 0, 2, 0],
+        [1, 0, 0, 0],
+        [0, 0, 1, 9]
+      ], 'crs');
+      assert.equal(math.trace(m), 10);
+    });
+
+    it('should throw an error for invalid matrix', function() {
+      var m = math.matrix([
+        [1, 2, 3],
+        [4, 5, 6]
+      ], 'crs');
+      assert.throws(function () { math.trace(m); });
+    });
+  });
 });

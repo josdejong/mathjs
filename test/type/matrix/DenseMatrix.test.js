@@ -1086,41 +1086,6 @@ describe('DenseMatrix', function() {
     });
   });
   
-  describe('trace', function () {
-
-    it('should calculate trace on a square matrix', function() {
-      var m = new DenseMatrix([
-        [1, 2],
-        [4, -2]
-      ]);
-      assert.equal(m.trace(), -1);
-
-      m = new DenseMatrix([
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
-      ]);
-      assert.equal(m.trace(), 0);
-
-      m = new DenseMatrix([
-        [1, 0, 0, 0],
-        [0, 0, 2, 0],
-        [1, 0, 0, 0],
-        [0, 0, 1, 9]
-      ]);
-      assert.equal(m.trace(), 10);
-    });
-
-    it('should throw an error for invalid matrix', function() {
-      var m = new DenseMatrix([
-        [1, 2, 3],
-        [4, 5, 6]
-      ]);
-      assert.throws(function () { m.trace(); });
-    });
-  });
-  
   describe('multiply', function () {
 
     it('should multiply matrix x scalar', function() {
