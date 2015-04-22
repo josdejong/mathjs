@@ -63,7 +63,6 @@
     "seed-random": "latest",
     "gulp": "latest",
     "gulp-util": "latest",
-    "exec": "latest",
     "glob": "latest",
     "mkdirp": "latest"
   },
