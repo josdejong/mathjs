@@ -1,9 +1,10 @@
 # History
 
 
-## not yet released, version 1.5.3-SNAPSHOT
+## 2015-04-22, version 1.6.0
 
 - Improvements in `toTex`. Thanks @FSMaxB.
+- Fixed #328: `abs(0 + 0i)` evaluated to `NaN`.
 - Fixed not being able to override lazy loaded constants.
 
 
