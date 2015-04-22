@@ -32,6 +32,12 @@ describe('abs', function () {
     assert.equal(math.norm(math.complex(-4e200, 1e200)), 4.12310562561766e+200);
   });
 
+  it('should return the absolute number of a complex number with zero', function () {
+    assert.equal(math.abs(math.complex(1, 0)), 1);
+    assert.equal(math.abs(math.complex(0, 1)), 1);
+    assert.equal(math.abs(math.complex(0, 0)), 0);
+  });
+
   it('should return the absolute value of all elements in a matrix', function () {
     var a1 = math.abs(math.matrix([1,-2,3]));
     assert.ok(a1 instanceof math.type.Matrix);
