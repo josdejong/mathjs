@@ -9,9 +9,11 @@
 - Function `import` now returns the imported objects.
 
 
-## not yet released, version 1.5.3-SNAPSHOT
+## 2015-04-22, version 1.6.0
 
 - Improvements in `toTex`. Thanks @FSMaxB.
+- Fixed #328: `abs(0 + 0i)` evaluated to `NaN`.
+- Fixed not being able to override lazy loaded constants.
 
 
 ## 2015-04-09, version 1.5.2
@@ -20,6 +22,7 @@
 - Fixed #251: binary prefix and SI prefix incorrectly used for byte. Now 
   following SI standards (`1 KiB == 1024 B`, `1 kB == 1000 B`).
 - Performance improvements in parsed functions.
+
 
 ## 2015-04-08, version 1.5.1
 

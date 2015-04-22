@@ -50,7 +50,7 @@ describe('conj', function() {
 
   it('should LaTeX conj', function () {
     var expression = math.parse('conj(1+i)');
-    assert.equal(expression.toTex(), '\\left({{1} + {{i}}}\\right)^{*}');
+    assert.equal(expression.toTex(), '\\left(1+ i\\right)^*');
   });
 
 });

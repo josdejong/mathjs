@@ -109,7 +109,7 @@ describe('sin', function() {
 
   it('should LaTeX sin', function () {
     var expression = math.parse('sin(0.5)');
-    assert.equal(expression.toTex(), '\\sin\\left({0.5}\\right)');
+    assert.equal(expression.toTex(), '\\sin\\left(0.5\\right)');
   });
 
 });

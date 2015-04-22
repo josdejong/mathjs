@@ -111,7 +111,7 @@ describe('nthRoot', function() {
 
   it('should LaTeX nthRoot', function () {
     var expression = math.parse('nthRoot(8,3)');
-    assert.equal(expression.toTex(), '\\sqrt[{3}]{8}');
+    assert.equal(expression.toTex(), '\\sqrt[3]{8}');
   });
 
 });

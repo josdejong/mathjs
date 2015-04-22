@@ -40,7 +40,7 @@ describe('cross', function() {
 
   it('should LaTeX cross', function () {
     var expression = math.parse('cross([1],[2])');
-    assert.equal(expression.toTex(), '{\\begin{bmatrix}1\\\\\\end{bmatrix}}\\times{\\begin{bmatrix}2\\\\\\end{bmatrix}}');
+    assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)\\times\\left(\\begin{bmatrix}2\\\\\\end{bmatrix}\\right)');
   });
 
 });

@@ -132,7 +132,7 @@ describe('rightArithShift', function () {
 
   it('should LaTeX rightArithShift', function () {
     var expression = math.parse('rightArithShift(3,2)');
-    assert.equal(expression.toTex(), '\\left({3}>>{2}\\right)');
+    assert.equal(expression.toTex(), '\\left(3>>2\\right)');
   });
 
 });

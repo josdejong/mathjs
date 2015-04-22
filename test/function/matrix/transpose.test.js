@@ -106,6 +106,6 @@ describe('transpose', function() {
 
   it('should LaTeX transpose', function () {
     var expression = math.parse('transpose([[1,2],[3,4]])');
-    assert.equal(expression.toTex(), '{\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}}^{\\top}');
+    assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)^\\top');
   });
 });

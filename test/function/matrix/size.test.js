@@ -63,6 +63,6 @@ describe('size', function() {
 
   it('should LaTeX size', function () {
     var expression = math.parse('size(1)');
-    assert.equal(expression.toTex(), '\\mathrm{size}\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{size}\\left(1\\right)');
   });
 });

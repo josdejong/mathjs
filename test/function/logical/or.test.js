@@ -166,7 +166,7 @@ describe('or', function () {
 
   it('should LaTeX or', function () {
     var expression = math.parse('or(1,2)');
-    assert.equal(expression.toTex(), '\\left({1}\\vee{2}\\right)');
+    assert.equal(expression.toTex(), '\\left(1\\vee2\\right)');
   });
 
 });

@@ -96,7 +96,7 @@ describe('gcd', function() {
 
   it('should LaTeX gcd', function () {
     var expression = math.parse('gcd(2,3)');
-    assert.equal(expression.toTex(), '\\gcd\\left({2},{3}\\right)');
+    assert.equal(expression.toTex(), '\\gcd\\left(2,3\\right)');
   });
 
 });

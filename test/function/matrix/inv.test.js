@@ -86,7 +86,7 @@ describe('inv', function() {
 
   it('should  LaTeX inv', function () {
     var expression = math.parse('inv([[1,2],[3,4]])');
-    assert.equal(expression.toTex(), '{\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}}^{-1}');
+    assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)^{-1}');
   });
 
 });

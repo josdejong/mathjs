@@ -111,7 +111,7 @@ describe('norm', function () {
     var expr1 = math.parse('norm(a)');
     var expr2 = math.parse("norm(a,2)");
 
-    assert.equal(expr1.toTex(), '\\left\\|{\\mathrm{a}}\\right\\|');
-    assert.equal(expr2.toTex(), '\\mathrm{norm}\\left({\\mathrm{a}},{2}\\right)');
+    assert.equal(expr1.toTex(), '\\left\\|\\mathrm{a}\\right\\|');
+    assert.equal(expr2.toTex(), '\\mathrm{norm}\\left(\\mathrm{a},2\\right)');
   });
 });

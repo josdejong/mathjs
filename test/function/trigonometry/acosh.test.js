@@ -110,7 +110,7 @@ describe('acosh', function() {
 
   it('should LaTeX acosh', function () {
     var expression = math.parse('acosh(1)');
-    assert.equal(expression.toTex(), '\\cosh^{-1}\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\cosh^{-1}\\left(1\\right)');
   });
 
 });

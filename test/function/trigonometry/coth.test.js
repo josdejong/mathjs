@@ -76,6 +76,6 @@ describe('coth', function() {
 
   it('should LaTeX coth', function () {
     var expression = math.parse('coth(1)');
-    assert.equal(expression.toTex(), '\\coth\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\coth\\left(1\\right)');
   });
 });

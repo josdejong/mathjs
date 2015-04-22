@@ -253,7 +253,7 @@ describe('BlockNode', function() {
       {node: new SymbolNode('foo'), visible:true}
     ]);
 
-    assert.equal(n.toTex(), '5\n\\mathrm{foo}:={3};\n\\mathrm{foo}');
+    assert.equal(n.toTex(), '5\n\\mathrm{foo}:=3;\n\\mathrm{foo}');
   });
 
   it ('should LaTeX a BlockNode with custom toTex', function () {

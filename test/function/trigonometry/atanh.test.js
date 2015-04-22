@@ -114,7 +114,7 @@ describe('atanh', function() {
 
   it('should LaTeX atanh', function () {
     var expression = math.parse('atanh(0.5)');
-    assert.equal(expression.toTex(), '\\tanh^{-1}\\left({0.5}\\right)');
+    assert.equal(expression.toTex(), '\\tanh^{-1}\\left(0.5\\right)');
   });
 
 });

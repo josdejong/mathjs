@@ -106,7 +106,7 @@ describe('sec', function() {
 
   it('should LaTeX sec', function () {
     var expression = math.parse('sec(1)');
-    assert.equal(expression.toTex(), '\\sec\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\sec\\left(1\\right)');
   });
 
 });

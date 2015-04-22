@@ -100,7 +100,7 @@ describe('tan', function() {
 
   it('should LaTeX tan', function () {
     var expression = math.parse('tan(1)');
-    assert.equal(expression.toTex(), '\\tan\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\tan\\left(1\\right)');
   });
 
 });

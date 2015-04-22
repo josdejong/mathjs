@@ -95,7 +95,7 @@ describe('acsch', function() {
 
   it('should LaTeX acsch', function () {
     var expression = math.parse('acsch(2)');
-    assert.equal(expression.toTex(), '\\mathrm{csch}^{-1}\\left({2}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{csch}^{-1}\\left(2\\right)');
   });
 
 });

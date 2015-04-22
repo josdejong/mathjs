@@ -150,7 +150,7 @@ describe('subset', function() {
 
   it('should LaTeX subset', function () {
     var expression = math.parse('subset([1],index(0,0))');
-    assert.equal(expression.toTex(), '\\mathrm{subset}\\left({\\begin{bmatrix}1\\\\\\end{bmatrix}},{\\mathrm{index}\\left({0},{0}\\right)}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{subset}\\left(\\begin{bmatrix}1\\\\\\end{bmatrix},\\mathrm{index}\\left(0,0\\right)\\right)');
   });
 });
 

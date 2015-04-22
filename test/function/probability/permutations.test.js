@@ -57,7 +57,7 @@ describe('permutations', function() {
 
   it('should LaTeX permutations', function () {
     var expression = math.parse('permutations(2)');
-    assert.equal(expression.toTex(), '\\mathrm{permutations}\\left({2}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{permutations}\\left(2\\right)');
   });
 
 });

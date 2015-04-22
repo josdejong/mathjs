@@ -162,7 +162,7 @@ describe('xor', function () {
 
   it('should LaTeX xor', function () {
     var expression = math.parse('xor(1,2)');
-    assert.equal(expression.toTex(), '\\left({1}\\veebar{2}\\right)');
+    assert.equal(expression.toTex(), '\\left(1\\veebar2\\right)');
   });
 
 });

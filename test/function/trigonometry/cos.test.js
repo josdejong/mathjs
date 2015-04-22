@@ -114,7 +114,7 @@ describe('cos', function() {
 
   it('should LaTeX cos', function () {
     var expression = math.parse('cos(1)');
-    assert.equal(expression.toTex(), '\\cos\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\cos\\left(1\\right)');
   });
 
 });

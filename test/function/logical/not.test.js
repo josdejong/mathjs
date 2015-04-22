@@ -86,7 +86,7 @@ describe('not', function () {
   it('should LaTeX not', function () {
     var c = new ConstantNode(1);
     var node = new FunctionNode('not', [c]);
-    assert.equal(node.toTex(), '\\neg\\left({1}\\right)');
+    assert.equal(node.toTex(), '\\neg\\left(1\\right)');
   });
 
 });

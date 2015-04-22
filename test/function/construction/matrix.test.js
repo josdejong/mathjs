@@ -88,6 +88,6 @@ describe('matrix', function() {
     var expr2 = math.parse('matrix([1])');
 
     assert.equal(expr1.toTex(), '\\begin{bmatrix}\\end{bmatrix}');
-    assert.equal(expr2.toTex(), '\\left({\\begin{bmatrix}1\\\\\\end{bmatrix}}\\right)');
+    assert.equal(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)');
   });
 });

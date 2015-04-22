@@ -135,7 +135,7 @@ describe('bitAnd', function () {
 
   it('should LaTeX bitAnd', function () {
     var expression = math.parse('bitAnd(4,2)');
-    assert.equal(expression.toTex(), '\\left({4}\\&{2}\\right)');
+    assert.equal(expression.toTex(), '\\left(4\\&2\\right)');
   });
 
 });

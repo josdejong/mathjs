@@ -128,7 +128,7 @@ describe('subtract', function() {
 
   it('should LaTeX subtract', function () {
     var expression = math.parse('subtract(2,1)');
-    assert.equal(expression.toTex(), '\\left({2}-{1}\\right)');
+    assert.equal(expression.toTex(), '\\left(2-1\\right)');
   });
 
 });

@@ -319,7 +319,7 @@ describe('UpdateNode', function() {
     var v = new ConstantNode(5);
 
     var n = new UpdateNode(new IndexNode(a, ranges), v);
-    assert.equal(n.toString(), 'a[2, 1] = 5');
+    assert.equal(n.toTex(), '\\mathrm{a}_{\\left[2,1\\right]}:=5');
   });
 
   it ('should LaTeX an UpdateNode with custom toTex', function () {

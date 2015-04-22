@@ -94,7 +94,7 @@ describe('max', function() {
 
   it('should LaTeX max', function () {
     var expression = math.parse('max(1,2,3)');
-    assert.equal(expression.toTex(), '\\max\\left({1},{2},{3}\\right)');
+    assert.equal(expression.toTex(), '\\max\\left(1,2,3\\right)');
   });
 
 });

@@ -90,7 +90,7 @@ describe('median', function() {
   
   it('should LaTeX median', function () {
     var expression = math.parse('median(1,2,3,4)');
-    assert.equal(expression.toTex(), '\\mathrm{median}\\left({1},{2},{3},{4}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{median}\\left(1,2,3,4\\right)');
   });
 
 });

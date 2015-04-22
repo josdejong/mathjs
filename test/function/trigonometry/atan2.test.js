@@ -105,7 +105,7 @@ describe('atan2', function() {
 
   it('should LaTeX atan2', function () {
     var expression = math.parse('atan2(1,1)');
-    assert.equal(expression.toTex(), '\\mathrm{atan2}\\left({1},{1}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{atan2}\\left(1,1\\right)');
   });
 
 });

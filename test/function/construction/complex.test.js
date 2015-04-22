@@ -83,7 +83,7 @@ describe('complex', function() {
     var expr3 = math.parse('complex(1,2)');
 
     assert.equal(expr1.toTex(), '0');
-    assert.equal(expr2.toTex(), '\\left({1}\\right)');
-    assert.equal(expr3.toTex(), '\\left({\\left({1}\\right)+i\\cdot\\left({2}\\right)}\\right)');
+    assert.equal(expr2.toTex(), '\\left(1\\right)');
+    assert.equal(expr3.toTex(), '\\left(\\left(1\\right)+i\\cdot\\left(2\\right)\\right)');
   });
 });

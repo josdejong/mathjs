@@ -87,7 +87,7 @@ describe('format', function() {
 
   it('should LaTeX format', function () {
     var expression = math.parse('format(1)');
-    assert.equal(expression.toTex(), '\\mathrm{format}\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{format}\\left(1\\right)');
   });
 
 });

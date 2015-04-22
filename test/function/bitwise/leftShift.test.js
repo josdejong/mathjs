@@ -129,7 +129,7 @@ describe('leftShift', function () {
 
   it('should LaTeX leftShift', function () {
     var expression = math.parse('leftShift(2,3)');
-    assert.equal(expression.toTex(), '\\left({2}<<{3}\\right)');
+    assert.equal(expression.toTex(), '\\left(2<<3\\right)');
   });
 
 });

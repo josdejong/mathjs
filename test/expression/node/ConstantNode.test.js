@@ -139,6 +139,11 @@ describe('ConstantNode', function() {
     assert.equal(new ConstantNode('null', 'null').toTex(), 'null');
   });
 
+  it ('should LaTeX a ConstantNode in exponential notation', function () {
+    var n = new ConstantNode('1e10', 'number');
+    assert.equal(n.toTex(), '1\\cdot10^{10}');
+  });
+
   it ('should LaTeX a ConstantNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
     var customFunction = function (node, callback) {

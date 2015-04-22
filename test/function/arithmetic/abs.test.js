@@ -40,6 +40,14 @@ describe('abs', function () {
     assert.deepEqual(a1, [2,1,0,1,2]);
   });
 
+  it('should return the absolute number of a complex number with zero', function () {
+    assert.equal(math.abs(math.complex(1, 0)), 1);
+    assert.equal(math.abs(math.complex(0, 1)), 1);
+    assert.equal(math.abs(math.complex(0, 0)), 0);
+    assert.equal(math.abs(math.complex(-1, 0)), 1);
+    assert.equal(math.abs(math.complex(0, -1)), 1);
+  });
+
   it('should return the absolute value of all elements in a matrix', function () {
     var a1 = math.abs(math.matrix([1,-2,3]));
     assert.ok(a1 instanceof math.type.Matrix);
@@ -69,7 +77,7 @@ describe('abs', function () {
 
   it('should LaTeX abs', function () {
 	  var expression = math.parse('abs(-1)');
-	  assert.equal(expression.toTex(),'\\left|{-{1}}\\right|');
+	  assert.equal(expression.toTex(),'\\left|-1\\right|');
   });
 
 });

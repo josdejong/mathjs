@@ -31,7 +31,7 @@ describe('compile', function() {
 
   it('should LaTeX compile', function () {
     var expression = math.parse('compile(1)');
-    assert.equal(expression.toTex(), '\\mathrm{compile}\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{compile}\\left(1\\right)');
   });
 
 });

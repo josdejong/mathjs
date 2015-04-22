@@ -73,7 +73,7 @@ describe('floor', function() {
 
   it('should LaTeX floor', function () {
     var expression = math.parse('floor(0.6)');
-    assert.equal(expression.toTex(), '\\left\\lfloor{0.6}\\right\\rfloor');
+    assert.equal(expression.toTex(), '\\left\\lfloor0.6\\right\\rfloor');
   });
 
 });

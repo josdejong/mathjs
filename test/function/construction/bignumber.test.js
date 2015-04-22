@@ -84,7 +84,7 @@ describe('bignumber', function() {
     var expr2 = math.parse('bignumber(1)');
 
     assert.equal(expr1.toTex(), '0');
-    assert.equal(expr2.toTex(), '\\left({1}\\right)');
+    assert.equal(expr2.toTex(), '\\left(1\\right)');
   });
 
 });

@@ -77,6 +77,6 @@ describe('sech', function() {
 
   it('should LaTeX sech', function () {
     var expression = math.parse('sech(1)');
-    assert.equal(expression.toTex(), '\\mathrm{sech}\\left({1}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{sech}\\left(1\\right)');
   });
 });

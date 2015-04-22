@@ -150,6 +150,6 @@ describe('range', function() {
 
   it('should LaTeX range', function () {
     var expression = math.parse('range(1,10)');
-    assert.equal(expression.toTex(), '\\mathrm{range}\\left({1},{10}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{range}\\left(1,10\\right)');
   });
 });

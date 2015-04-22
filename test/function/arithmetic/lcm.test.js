@@ -82,7 +82,7 @@ describe('lcm', function() {
 
   it('should LaTeX lcm', function () {
     var expression = math.parse('lcm(2,3)');
-    assert.equal(expression.toTex(), '\\mathrm{lcm}\\left({2},{3}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{lcm}\\left(2,3\\right)');
   });
 
 });

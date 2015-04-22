@@ -114,7 +114,7 @@ describe('acot', function() {
 
   it('should LaTeX acot', function () {
     var expression = math.parse('acot(2)');
-    assert.equal(expression.toTex(), '\\cot^{-1}\\left({2}\\right)');
+    assert.equal(expression.toTex(), '\\cot^{-1}\\left(2\\right)');
   });
 
 });

@@ -11,6 +11,6 @@ describe('random', function () {
 
   it('should LaTeX random', function () {
     var expression = math.parse('random(0,1)');
-    assert.equal(expression.toTex(), '\\mathrm{random}\\left({0},{1}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{random}\\left(0,1\\right)');
   });
 });
