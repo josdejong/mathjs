@@ -1061,6 +1061,7 @@ describe('multiply', function() {
     });
 
     it('should multiply matrix x matrix 1220 x 1220, Matrix Market, crs x dense matrix', function (done) {
+      // increment timeout, TODO: improve algorithm performance! Travis CI tests failing on node v0.10.38!
       this.timeout(4000);
       // import matrix
       market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
