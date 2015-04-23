@@ -40,13 +40,13 @@ function create (config) {
   math.import(require('./lib/type/BigNumber'));
   math.import(require('./lib/type/FibonacciHeap'));
   
-  // sparse accumulator
-  math.import(require('./lib/type/matrix/Spa'));
-  
   // matrix storage formats
   math.import(require('./lib/type/matrix/CcsMatrix'));
   math.import(require('./lib/type/matrix/CrsMatrix'));
   math.import(require('./lib/type/matrix/DenseMatrix'));
+
+  // sparse accumulator
+  math.import(require('./lib/type/matrix/Spa'));
 
   // serialization utilities
   // math.json.*

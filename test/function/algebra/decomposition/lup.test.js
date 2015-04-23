@@ -7,9 +7,9 @@ describe('lup', function () {
 
   it('should decompose matrix, n x n, no permutations, array', function () {
 
-    var a = [[2, 1], [1, 4]];
+    var m = [[2, 1], [1, 4]];
 
-    var r = math.lup(a);
+    var r = math.lup(m);
     // L
     assert.deepEqual(r.L.valueOf(), [[1, 0], [0.5, 1]]);
     // U
@@ -17,7 +17,7 @@ describe('lup', function () {
     // P
     assert.deepEqual(r.P.valueOf(), [[1, 0], [0, 1]]);
     // verify
-    approx.deepEqual(math.multiply(r.P, a), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, n x n, no permutations, ccs format', function () {
@@ -32,7 +32,7 @@ describe('lup', function () {
     // P
     assert.deepEqual(r.P.valueOf(), [[1, 0], [0, 1]]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, n x n, no permutations, crs format', function () {
@@ -47,7 +47,7 @@ describe('lup', function () {
     // P
     assert.deepEqual(r.P.valueOf(), [[1, 0], [0, 1]]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, n x n, no permutations, dense format', function () {
@@ -62,7 +62,7 @@ describe('lup', function () {
     // P
     assert.deepEqual(r.P.valueOf(), [[1, 0], [0, 1]]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
   
   it('should decompose matrix, m x n, m < n, no permutations, dense format', function () {
@@ -102,7 +102,7 @@ describe('lup', function () {
         ]
       ));
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, m x n, m > n, no permutations, dense format', function () {
@@ -145,7 +145,7 @@ describe('lup', function () {
         ]
       ));
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, n x n, dense format', function () {
@@ -187,7 +187,7 @@ describe('lup', function () {
         [1, 0, 0, 0]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, 3 x 3, zero pivote value, dense format', function () {
@@ -224,7 +224,7 @@ describe('lup', function () {
         [1, 0, 0]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, 3 x 2, complex numbers, dense format', function () {
@@ -260,7 +260,7 @@ describe('lup', function () {
         [0, 0, 1]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
   
   it('should decompose matrix, m x n, m < n, no permutations, ccs format', function () {
@@ -294,7 +294,7 @@ describe('lup', function () {
         [0, 1]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, m x n, m > n, no permutations, ccs format', function () {
@@ -331,7 +331,7 @@ describe('lup', function () {
         [0, 0, 1]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, n x n, ccs format', function () {
@@ -373,7 +373,7 @@ describe('lup', function () {
         [1, 0, 0, 0]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, 3 x 3, zero pivote value, ccs format', function () {
@@ -411,7 +411,7 @@ describe('lup', function () {
         [1, 0, 0]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, 3 x 2, complex numbers, ccs format', function () {
@@ -447,7 +447,7 @@ describe('lup', function () {
         [0, 0, 1]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
   
   it('should decompose matrix, m x n, m < n, no permutations, crs format', function () {
@@ -481,7 +481,7 @@ describe('lup', function () {
         [0, 1]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, m x n, m > n, no permutations, crs format', function () {
@@ -518,7 +518,7 @@ describe('lup', function () {
         [0, 0, 1]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, n x n, crs format', function () {
@@ -560,7 +560,7 @@ describe('lup', function () {
         [1, 0, 0, 0]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, 3 x 3, zero pivote value, crs format', function () {
@@ -598,7 +598,7 @@ describe('lup', function () {
         [1, 0, 0]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
   it('should decompose matrix, 3 x 2, complex numbers, crs format', function () {
@@ -635,6 +635,6 @@ describe('lup', function () {
         [0, 0, 1]
       ]);
     // verify
-    approx.deepEqual(r.P.multiply(m), r.L.multiply(r.U));
+    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 });
