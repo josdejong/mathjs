@@ -72,7 +72,7 @@ describe('factory', function() {
       number: 'bignumber',
       precision: 32,
       epsilon: 1e-7,
-      parenthesis: 'manual'
+      parenthesis: 'keep'
     });
 
     assert.deepEqual(math1.config(), {
@@ -80,7 +80,7 @@ describe('factory', function() {
       number: 'bignumber',
       precision: 32,
       epsilon: 1e-7,
-      parenthesis: 'manual'
+      parenthesis: 'keep'
     });
 
     // restore the original config

@@ -675,8 +675,8 @@ describe('parse', function() {
       assert.throws(function () {parseAndEval('3 * (1 + 2')}, /Parenthesis \) expected/);
     });
 
-    it('should parse parentheses in manual mode', function () {
-      var manualMath = math.create({parenthesis: 'manual'});
+    it('should parse parentheses in "keep" mode', function () {
+      var manualMath = math.create({parenthesis: 'keep'});
 
       var a = manualMath.parse('((1))');
       var b = manualMath.parse('((1+(1)))');

@@ -106,8 +106,7 @@
   function changeParenthesis() {
     var checkbox = document.getElementById('parenthesis');
     if (checkbox.checked) {
-      math.config({parenthesis: 'manual'});
-      console.log('manual');
+      math.config({parenthesis: 'keep'});
     }
     else {
       math.config({parenthesis: 'automatic'});

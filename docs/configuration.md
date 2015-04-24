@@ -36,10 +36,10 @@ The following configuration options are available:
   Default value is `64`.
 
 - `parenthesis`. The way parentheses in the input are treated. You can choose
-  between `'automatic'` and `'manual'`. When set to `'automatic'` mathjs tries
+  between `'automatic'` and `'keep'`. When set to `'automatic'` mathjs tries
   to use as few parentheses as possible, leaving unnecessary parentheses out.
   ( parentheses aren't represented in the node tree in this mode ).
-  When set to `'manual'` mathjs uses the same parentheses that are present in the
+  When set to `'keep'` mathjs uses the same parentheses that are present in the
   input. This is achieved by representing parentheses in the node tree via a
   `ParenthesisNode`. You might want to use the latter when displaying user input
   that should look almost exactly like the user typed it in.
