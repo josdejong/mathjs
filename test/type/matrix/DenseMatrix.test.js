@@ -2,7 +2,7 @@ var assert = require('assert');
 var math = require('../../../index');
 var Matrix = math.type.Matrix;
 var DenseMatrix = math.type.DenseMatrix;
-var CcsMatrix = math.type.CcsMatrix;
+var SparseMatrix = math.type.SparseMatrix;
 var Complex = math.type.Complex;
 
 var index = math.index;
@@ -55,8 +55,8 @@ describe('DenseMatrix', function() {
       assert.deepEqual(m1._data, m2._data);
     });
     
-    it('should create a DenseMatrix from a CcsMatrix', function () {
-      var m1 = new CcsMatrix(
+    it('should create a DenseMatrix from a SparseMatrix', function () {
+      var m1 = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],

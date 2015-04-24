@@ -60,16 +60,16 @@ describe('transpose', function() {
     });
   });
   
-  describe('CcsMatrix', function () {
+  describe('SparseMatrix', function () {
 
     it('should transpose a 2d matrix', function() {
-      var m = math.matrix([[1,2,3],[4,5,6]], 'ccs');
+      var m = math.matrix([[1,2,3],[4,5,6]], 'sparse');
       assert.deepEqual(transpose(m).valueOf(), [[1,4],[2,5],[3,6]]);
 
-      m = math.matrix([[1,4],[2,5],[3,6]], 'ccs');
+      m = math.matrix([[1,4],[2,5],[3,6]], 'sparse');
       assert.deepEqual(transpose(m).toArray(), [[1,2,3],[4,5,6]]);
       
-      m = math.matrix([[1,2],[3,4]], 'ccs');
+      m = math.matrix([[1,2],[3,4]], 'sparse');
       assert.deepEqual(transpose(m).valueOf(), [[1,3],[2,4]]);
 
       m = math.matrix([[1,2,3,4]]);
@@ -77,29 +77,7 @@ describe('transpose', function() {
     });
 
     it('should throw an error for invalid matrix transpose', function() {
-      var m = math.matrix([[]], 'ccs');
-      assert.throws(function () { transpose(m); });
-    });
-  });
-
-  describe('CrsMatrix', function () {
-
-    it('should transpose a 2d matrix', function() {
-      var m = math.matrix([[1,2,3],[4,5,6]], 'crs');
-      assert.deepEqual(transpose(m).toArray(), [[1,4],[2,5],[3,6]]);
-      
-      m = math.matrix([[1,4],[2,5],[3,6]], 'crs');
-      assert.deepEqual(transpose(m).toArray(), [[1,2,3],[4,5,6]]);
-
-      m = math.matrix([[1,2],[3,4]], 'crs');
-      assert.deepEqual(transpose(m).toArray(), [[1,3],[2,4]]);
-
-      m = math.matrix([[1,2,3,4]], 'crs');
-      assert.deepEqual(transpose(m).toArray(), [[1],[2],[3],[4]]);
-    });
-
-    it('should throw an error for invalid matrix transpose', function() {
-      var m = math.matrix([[]], 'crs');
+      var m = math.matrix([[]], 'sparse');
       assert.throws(function () { transpose(m); });
     });
   });
