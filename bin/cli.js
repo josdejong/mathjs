@@ -15,6 +15,8 @@
  *
  *     --version, -v  Show application version
  *        --help, -h  Show this message
+ *     --tex          Generate LaTeX instead of evaluating
+ *     --string       Generate string instead of evaluating
  *
  * Example usage:
  *     mathjs                                 Open a command prompt
@@ -133,8 +135,9 @@ function completer (text) {
  * the output.
  * @param input   Input stream
  * @param output  Output stream
+ * @param mode    Output mode
  */
-function runStream (input, output) {
+function runStream (input, output, mode) {
   var readline = require('readline'),
       rl = readline.createInterface({
         input: input || process.stdin,
@@ -152,52 +155,76 @@ function runStream (input, output) {
   rl.on('line', function(line) {
     var expr = line.trim();
 
-    // check for exit
-    if (expr.toLowerCase() == 'exit' || expr.toLowerCase() == 'quit') {
-      // exit application
-      rl.close();
-    }
-    if (expr.toLowerCase() == 'clear') {
-      // clear memory
-      parser.clear();
-      console.log('memory cleared');
+    switch (expr.toLowerCase()) {
+      case 'quit':
+      case 'exit':
+        // exit application
+        rl.close();
+        break;
+      case 'clear':
+        // clear memory
+        parser.clear();
+        console.log('memory cleared');
 
-      // get next input
-      if (rl.output.isTTY) {
-        rl.prompt();
-      }
-    }
-    else {
-      // evaluate expression
-      if (expr) {
-        try {
-          var res = parser.eval(expr);
-          if (res instanceof math.type.ResultSet) {
-            res.entries.forEach(function (entry) {
-              console.log(math.format(entry, PRECISION));
-            });
-            if (res.entries.length) {
-              // set last answer from the ResultSet as ans
-              parser.set('ans', res.entries[res.entries.length - 1]);
+        // get next input
+        if (rl.output.isTTY) {
+          rl.prompt();
+        }
+        break;
+      default:
+        if (!expr) {
+          break;
+        }
+        switch (mode) {
+          case 'eval':
+            // evaluate expression
+            try {
+              var res = parser.eval(expr);
+              if (res instanceof math.type.ResultSet) {
+                res.entries.forEach(function (entry) {
+                  console.log(math.format(entry, PRECISION));
+                });
+                if (res.entries.length) {
+                  // set last answer from the ResultSet as ans
+                  parser.set('ans', res.entries[res.entries.length - 1]);
+                }
+              }
+              else if (res instanceof math.type.Help) {
+                console.log(res.toText(math));
+              }
+              else {
+                parser.set('ans', res);
+                console.log(math.format(res, PRECISION));
+              }
             }
-          }
-          else if (res instanceof math.type.Help) {
-            console.log(res.toText(math));
-          }
-          else {
-            parser.set('ans', res);
-            console.log(math.format(res, PRECISION));
-          }
+            catch (err) {
+              console.log(err.toString());
+            }
+            break;
+          case 'string':
+            try {
+              var string = math.parse(expr).toString();
+              console.log(string);
+            }
+            catch (err) {
+              console.log(err.toString());
+            }
+            break;
+          case 'tex':
+            try {
+              var tex = math.parse(expr).toTex();
+              console.log(tex);
+            }
+            catch (err) {
+              console.log(err.toString());
+            }
+            break;
         }
-        catch (err) {
-          console.log(err.toString());
-        }
-      }
+    }
 
-      // get next input
-      if (rl.output.isTTY) {
-        rl.prompt();
-      }
+    // get next input
+    if (rl.output.isTTY) {
+      rl.prompt();
     }
   });
 
@@ -242,6 +269,8 @@ function outputHelp() {
   console.log('Options:');
   console.log('    --version, -v  Show application version');
   console.log('       --help, -h  Show this message');
+  console.log('    --tex          Generate LaTeX instead of evaluating');
+  console.log('    --String       Generate string instead of evaluating');
   console.log();
   console.log('Example usage:');
   console.log('    mathjs                                Open a command prompt');
@@ -257,35 +286,42 @@ function outputHelp() {
 /**
  * Process input and output, based on the command line arguments
  */
-if (process.argv.length > 2) {
-  var queue = []; //queue of scripts that need to be processed
+var queue = []; //queue of scripts that need to be processed
+var mode = 'eval'; //one of 'eval', 'tex' or 'string'
 
-  process.argv.forEach(function (arg, index) {
-    if (index < 2) {
-      return;
-    }
+process.argv.forEach(function (arg, index) {
+if (index < 2) {
+  return;
+}
 
-    switch (arg) {
-      case '-v':
-      case '--version':
-        outputVersion();
-        break;
-      case '-h':
-      case '--help':
-        outputHelp();
-        break;
-      default:
-        queue.push(arg);
-    }
-  });
+switch (arg) {
+  case '-v':
+  case '--version':
+    outputVersion();
+    break;
+  case '-h':
+  case '--help':
+    outputHelp();
+    break;
+  case '--tex':
+    mode = 'tex';
+    break;
+  case '--string':
+    mode = 'string';
+    break;
+  default:
+    queue.push(arg);
+}
+});
 
-  //work through the queue
-  queue.forEach(function (arg) {
-    // run a script file
-    runStream(fs.createReadStream(arg), process.stdout);
-  });
+if (queue.length === 0) {
+// run a stream, can be user input or pipe input
+runStream(process.stdin, process.stdout, mode);
 }
 else {
-  // run a stream, can be user input or pipe input
-  runStream(process.stdin, process.stdout);
+//work through the queue
+queue.forEach(function (arg) {
+  // run a script file
+  runStream(fs.createReadStream(arg), process.stdout, mode);
+});
 }
