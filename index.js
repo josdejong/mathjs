@@ -41,8 +41,7 @@ function create (config) {
   math.import(require('./lib/type/FibonacciHeap'));
   
   // matrix storage formats
-  math.import(require('./lib/type/matrix/CcsMatrix'));
-  math.import(require('./lib/type/matrix/CrsMatrix'));
+  math.import(require('./lib/type/matrix/SparseMatrix'));
   math.import(require('./lib/type/matrix/DenseMatrix'));
 
   // sparse accumulator
@@ -112,6 +111,7 @@ function create (config) {
   math.import(require('./lib/function/construction/matrix'));
   math.import(require('./lib/function/construction/number'));
   math.import(require('./lib/function/construction/parser'));
+  math.import(require('./lib/function/construction/sparse'));
   math.import(require('./lib/function/construction/string'));
   math.import(require('./lib/function/construction/unit'));
 

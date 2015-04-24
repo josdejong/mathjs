@@ -62,10 +62,10 @@ describe('trace', function() {
     approx.equal(math.trace(math.diag([4, -5, 6])), 5);
   });
   
-  it('should calculate correctly the trace of a NxN matrix, CCS format', function() {
-    assert.equal(math.trace(math.matrix([5], 'ccs')), 5);
-    assert.equal(math.trace(math.matrix([[1,2],[3,4]], 'ccs')), 5);
-    assert.equal(math.trace(math.matrix([[1,2],[3,4]], 'ccs')), 5);
+  it('should calculate correctly the trace of a NxN matrix, sparse', function() {
+    assert.equal(math.trace(math.matrix([5], 'sparse')), 5);
+    assert.equal(math.trace(math.matrix([[1,2],[3,4]], 'sparse')), 5);
+    assert.equal(math.trace(math.matrix([[1,2],[3,4]], 'sparse')), 5);
     approx.equal(
       math.trace(
         math.matrix(
@@ -74,7 +74,7 @@ describe('trace', function() {
             [-1, 1,  3],
             [ 2, 0, -1]
           ],
-          'ccs')), 
+          'sparse')), 
       -2);
     approx.equal(
       math.trace(
@@ -84,7 +84,7 @@ describe('trace', function() {
             [ 3, 0,  5],
             [-1, 9, 11]
           ],
-          'ccs')), 
+          'sparse')), 
       12);
     approx.equal(
       math.trace(
@@ -96,7 +96,7 @@ describe('trace', function() {
             [1, 7, 5, 9, 7], 
             [2, 7, 4, 3, 7]
           ],
-          'ccs')), 
+          'sparse')), 
       28);
   });
 
@@ -141,9 +141,9 @@ describe('trace', function() {
     assert.equal(c2.re, 2);
   });
   
-  it('should calculate the trace for a 1x1 matrix, CCS format',function() {
+  it('should calculate the trace for a 1x1 matrix, sparse',function() {
     var c1 = math.complex(2, 3);
-    var c2 = math.trace(math.matrix([[c1]], 'ccs'));
+    var c2 = math.trace(math.matrix([[c1]], 'sparse'));
     assert.deepEqual(c1, c2);
 
     // c2 should be a clone
@@ -197,7 +197,7 @@ describe('trace', function() {
     assert.throws(function() { math.trace([[1,2,3],[1,2,3]]); });
     assert.throws(function() { math.trace([0,1],[0,1],[0,1]); });
     assert.throws(function() { math.trace(math.matrix([[1,2,3],[1,2,3]])); });
-    assert.throws(function() { math.trace(math.matrix([[1,2,3],[1,2,3]], 'ccs')); });
+    assert.throws(function() { math.trace(math.matrix([[1,2,3],[1,2,3]], 'sparse')); });
   });
 
   it('should not accept arrays with dimensions higher than 2', function() {
@@ -245,13 +245,13 @@ describe('trace', function() {
     });
   });
   
-  describe('CcsMatrix', function () {
+  describe('SparseMatrix', function () {
 
     it('should calculate trace on a square matrix', function() {
       var m = math.matrix([
         [1, 2],
         [4, -2]
-      ], 'ccs');
+      ], 'sparse');
       assert.equal(math.trace(m), -1);
 
       m = math.matrix([
@@ -259,7 +259,7 @@ describe('trace', function() {
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0]
-      ], 'ccs');
+      ], 'sparse');
       assert.equal(math.trace(m), 0);
 
       m = math.matrix([
@@ -267,7 +267,7 @@ describe('trace', function() {
         [0, 0, 2, 0],
         [1, 0, 0, 0],
         [0, 0, 1, 9]
-      ], 'ccs');
+      ], 'sparse');
       assert.equal(math.trace(m), 10);
     });
 
@@ -275,42 +275,7 @@ describe('trace', function() {
       var m = math.matrix([
         [1, 2, 3],
         [4, 5, 6]
-      ], 'ccs');
-      assert.throws(function () { math.trace(m); });
-    });
-  });
-  
-  describe('CrsMatrix', function () {
-
-    it('should calculate trace on a square matrix', function() {
-      var m = math.matrix([
-        [1, 2],
-        [4, -2]
-      ], 'crs');
-      assert.equal(math.trace(m), -1);
-
-      m = math.matrix([
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
-      ], 'crs');
-      assert.equal(math.trace(m), 0);
-
-      m = math.matrix([
-        [1, 0, 0, 0],
-        [0, 0, 2, 0],
-        [1, 0, 0, 0],
-        [0, 0, 1, 9]
-      ], 'crs');
-      assert.equal(math.trace(m), 10);
-    });
-
-    it('should throw an error for invalid matrix', function() {
-      var m = math.matrix([
-        [1, 2, 3],
-        [4, 5, 6]
-      ], 'crs');
+      ], 'sparse');
       assert.throws(function () { math.trace(m); });
     });
   });

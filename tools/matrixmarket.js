@@ -9,7 +9,7 @@ var fs = require('fs'),
     
     Spa = math.type.Spa,
     DenseMatrix = math.type.DenseMatrix,
-    CcsMatrix = math.type.CcsMatrix,
+    SparseMatrix = math.type.SparseMatrix,
     FibonacciHeap = math.type.FibonacciHeap;
 
 var _importFromStream = function (stream, deferred) {
@@ -234,7 +234,7 @@ var _importFromStream = function (stream, deferred) {
           // ptr update
           ptr.push(values.length);
           // resolve promise
-          deferred.resolve(new CcsMatrix({
+          deferred.resolve(new SparseMatrix({
             values: values,
             index: index,
             ptr: ptr,

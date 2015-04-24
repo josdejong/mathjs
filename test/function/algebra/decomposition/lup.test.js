@@ -20,24 +20,9 @@ describe('lup', function () {
     approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
-  it('should decompose matrix, n x n, no permutations, ccs format', function () {
+  it('should decompose matrix, n x n, no permutations, sparse', function () {
 
-    var m = math.matrix([[2, 1], [1, 4]], 'ccs');
-
-    var r = math.lup(m);
-    // L
-    assert.deepEqual(r.L.valueOf(), [[1, 0], [0.5, 1]]);
-    // U
-    assert.deepEqual(r.U.valueOf(), [[2, 1], [0, 3.5]]);
-    // P
-    assert.deepEqual(r.P.valueOf(), [[1, 0], [0, 1]]);
-    // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
-  });
-
-  it('should decompose matrix, n x n, no permutations, crs format', function () {
-
-    var m = math.matrix([[2, 1], [1, 4]], 'crs');
+    var m = math.matrix([[2, 1], [1, 4]], 'sparse');
 
     var r = math.lup(m);
     // L
@@ -263,13 +248,13 @@ describe('lup', function () {
     approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
   
-  it('should decompose matrix, m x n, m < n, no permutations, ccs format', function () {
+  it('should decompose matrix, m x n, m < n, no permutations, sparse', function () {
     var m = math.matrix(
       [
         [2, 1, 1],
         [1, 4, 5]
       ], 
-      'ccs');
+      'sparse');
 
     var r = math.lup(m);
     // L
@@ -297,14 +282,14 @@ describe('lup', function () {
     approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
-  it('should decompose matrix, m x n, m > n, no permutations, ccs format', function () {
+  it('should decompose matrix, m x n, m > n, no permutations, sparse', function () {
     var m = math.matrix(
       [
         [8, 2],
         [6, 4],
         [4, 1]
       ],
-      'ccs');
+      'sparse');
 
     var r = math.lup(m);
     // L
@@ -334,7 +319,7 @@ describe('lup', function () {
     approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
-  it('should decompose matrix, n x n, ccs format', function () {
+  it('should decompose matrix, n x n, sparse', function () {
     var m = math.matrix(
       [
         [16, -120, 240, -140],
@@ -342,7 +327,7 @@ describe('lup', function () {
         [240, -2700, 6480, -4200],
         [-140, 1680, -4200, 2800]
       ],
-      'ccs');
+      'sparse');
 
     var r = math.lup(m);
     // L
@@ -376,14 +361,14 @@ describe('lup', function () {
     approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
-  it('should decompose matrix, 3 x 3, zero pivote value, ccs format', function () {
+  it('should decompose matrix, 3 x 3, zero pivote value, sparse', function () {
     var m = math.matrix(
       [
         [1, 2, 3], 
         [2, 4, 6], 
         [4, 8, 9]
       ],
-      'ccs');
+      'sparse');
 
     var r = math.lup(m);
     // L
@@ -414,201 +399,13 @@ describe('lup', function () {
     approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
   });
 
-  it('should decompose matrix, 3 x 2, complex numbers, ccs format', function () {
+  it('should decompose matrix, 3 x 2, complex numbers, sparse', function () {
     var m = math.matrix(
       [
         [math.complex(0, 3), 10],
         [math.complex(0, 1), 1],
         [math.complex(0, 1), 1]
-      ], 'ccs');
-
-    var r = math.lup(m);
-    // L
-    approx.deepEqual(
-      r.L.valueOf(),
-      [
-        [1, 0],
-        [math.complex(0.3333333, 0), 1],
-        [math.complex(0.3333333, 0), 1]
-      ]);
-    // U
-    approx.deepEqual(
-      r.U.valueOf(),
-      [
-        [math.complex(0, 3), 10],
-        [0, math.complex(-2.3333333333, 0)]
-      ]);
-    // P
-    approx.deepEqual(
-      r.P.valueOf(),
-      [
-        [1, 0, 0],
-        [0, 1, 0],
-        [0, 0, 1]
-      ]);
-    // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
-  });
-  
-  it('should decompose matrix, m x n, m < n, no permutations, crs format', function () {
-    var m = math.matrix(
-      [
-        [2, 1, 1],
-        [1, 4, 5]
-      ],
-      'ccs');
-
-    var r = math.lup(m);
-    // L
-    assert.deepEqual(
-      r.L.valueOf(),
-      [
-        [1, 0],
-        [0.5, 1]
-      ]);
-    // U
-    assert.deepEqual(
-      r.U.valueOf(),
-      [
-        [2, 1, 1],
-        [0, 3.5, 4.5]
-      ]);
-    // P
-    assert.deepEqual(
-      r.P.valueOf(),
-      [
-        [1, 0],
-        [0, 1]
-      ]);
-    // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
-  });
-
-  it('should decompose matrix, m x n, m > n, no permutations, crs format', function () {
-    var m = math.matrix(
-      [
-        [8, 2],
-        [6, 4],
-        [4, 1]
-      ],
-      'ccs');
-
-    var r = math.lup(m);
-    // L
-    assert.deepEqual(
-      r.L.valueOf(),
-      [
-        [1, 0],
-        [0.75, 1],
-        [0.5, 0]
-      ]);
-    // U
-    assert.deepEqual(
-      r.U.valueOf(),
-      [
-        [8, 2],
-        [0, 2.5]
-      ]);
-    // P
-    assert.deepEqual(
-      r.P.valueOf(),
-      [
-        [1, 0, 0],
-        [0, 1, 0],
-        [0, 0, 1]
-      ]);
-    // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
-  });
-
-  it('should decompose matrix, n x n, crs format', function () {
-    var m = math.matrix(
-      [
-        [16, -120, 240, -140],
-        [-120, 1200, -2700, 1680],
-        [240, -2700, 6480, -4200],
-        [-140, 1680, -4200, 2800]
-      ],
-      'ccs');
-
-    var r = math.lup(m);
-    // L
-    approx.deepEqual(
-      r.L.valueOf(),
-      [
-        [1, 0, 0, 0],  
-        [-0.5, 1, 0, 0],
-        [-0.5833333333333334, -0.7, 1, 0],
-        [0.06666666666666667, -0.4, -0.5714285714285776, 1]
-      ]);
-    // U
-    approx.deepEqual(
-      r.U.valueOf(),
-      [
-        [240, -2700, 6480, -4200],
-        [0, -150, 540, -420], 
-        [0, 0, -42, 56],
-        [0, 0, 0, 4]
-      ]);
-    // P
-    approx.deepEqual(
-      r.P.valueOf(),
-      [
-        [0, 0, 1, 0],
-        [0, 1, 0, 0],      
-        [0, 0, 0, 1],
-        [1, 0, 0, 0]
-      ]);
-    // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
-  });
-
-  it('should decompose matrix, 3 x 3, zero pivote value, crs format', function () {
-    var m = math.matrix(
-      [
-        [1, 2, 3], 
-        [2, 4, 6], 
-        [4, 8, 9]
-      ],
-      'ccs');
-
-    var r = math.lup(m);
-    // L
-    approx.deepEqual(
-      r.L.valueOf(),
-      [
-        [1, 0, 0],  
-        [0.5, 1, 0],
-        [0.25, 0, 1.0]
-      ]);
-    // U
-    approx.deepEqual(
-      r.U.valueOf(),
-      [
-        [4, 8, 9],
-        [0, 0, 1.5], 
-        [0, 0, 0.75]
-      ]);
-    // P
-    approx.deepEqual(
-      r.P.valueOf(),
-      [
-        [0, 0, 1],
-        [0, 1, 0],      
-        [1, 0, 0]
-      ]);
-    // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
-  });
-
-  it('should decompose matrix, 3 x 2, complex numbers, crs format', function () {
-    var m = math.matrix(
-      [
-        [math.complex(0, 3), 10],
-        [math.complex(0, 1), 1],
-        [math.complex(0, 1), 1]
-      ],
-      'ccs');
+      ], 'sparse');
 
     var r = math.lup(m);
     // L
