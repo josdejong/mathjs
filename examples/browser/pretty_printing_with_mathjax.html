@@ -62,11 +62,15 @@
   </tr>
 
 </table>
+<input id="parenthesis" type="checkbox" onClick="changeParenthesis(); expr.oninput();" onKeyUp="changeParenthesis(); expr.oninput();" >
+<b>use parentheses from the input</b>
 
 <script>
   var expr = document.getElementById('expr'),
       pretty = document.getElementById('pretty'),
       result = document.getElementById('result');
+
+  changeParenthesis();
 
   // initialize with an example expression
   expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2';
@@ -98,6 +102,17 @@
     }
     catch (err) {}
   };
+
+  function changeParenthesis() {
+    var checkbox = document.getElementById('parenthesis');
+    if (checkbox.checked) {
+      math.config({parenthesis: 'manual'});
+      console.log('manual');
+    }
+    else {
+      math.config({parenthesis: 'automatic'});
+    }
+  }
 </script>
 
 </body>
