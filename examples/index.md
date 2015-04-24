@@ -24,6 +24,7 @@ layout: default
 - [Basic usage](browser/basic_usage.html.html)
 - [Custom separators](browser/custom_separators.html.html)
 - [Old browsers](browser/old_browsers.html.html)
+- [Plot](browser/plot.html.html)
 - [Pretty printing with mathjax](browser/pretty_printing_with_mathjax.html.html)
 - [Requirejs loading](browser/requirejs_loading.html.html)
 - [Webworkers](browser/webworkers/index.html)

@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 1.5.1
- * @date    2015-04-08
+ * @version 1.6.0
+ * @date    2015-04-22
  *
  * @license
  * Copyright (C) 2013-2015 Jos de Jong <wjosdejong@gmail.com>
@@ -700,7 +700,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      set: function (value) {
 	        _value = value;
 	        _uninitialized = false;
-	      }
+	      },
+
+	      configurable: true
 	    });
 	  }
 	  else {
@@ -3009,14 +3011,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  BINARY_SHORT: {
 	    '': {name: '', value: 1, scientific: true},
-	    'k': {name: 'k', value: 1024, scientific: true},
-	    'M': {name: 'M', value: Math.pow(1024, 2), scientific: true},
-	    'G': {name: 'G', value: Math.pow(1024, 3), scientific: true},
-	    'T': {name: 'T', value: Math.pow(1024, 4), scientific: true},
-	    'P': {name: 'P', value: Math.pow(1024, 5), scientific: true},
-	    'E': {name: 'E', value: Math.pow(1024, 6), scientific: true},
-	    'Z': {name: 'Z', value: Math.pow(1024, 7), scientific: true},
-	    'Y': {name: 'Y', value: Math.pow(1024, 8), scientific: true},
+	    'k': {name: 'k', value: 1e3, scientific: true},
+	    'M': {name: 'M', value: 1e6, scientific: true},
+	    'G': {name: 'G', value: 1e9, scientific: true},
+	    'T': {name: 'T', value: 1e12, scientific: true},
+	    'P': {name: 'P', value: 1e15, scientific: true},
+	    'E': {name: 'E', value: 1e18, scientific: true},
+	    'Z': {name: 'Z', value: 1e21, scientific: true},
+	    'Y': {name: 'Y', value: 1e24, scientific: true},
 
 	    'Ki': {name: 'Ki', value: 1024, scientific: true},
 	    'Mi': {name: 'Mi', value: Math.pow(1024, 2), scientific: true},
@@ -3029,21 +3031,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  BINARY_LONG: {
 	    '': {name: '', value: 1, scientific: true},
-	    'kilo': {name: 'kilo', value: 1024, scientific: true},
-	    'mega': {name: 'mega', value: Math.pow(1024, 2), scientific: true},
-	    'giga': {name: 'giga', value: Math.pow(1024, 3), scientific: true},
-	    'tera': {name: 'tera', value: Math.pow(1024, 4), scientific: true},
-	    'peta': {name: 'peta', value: Math.pow(1024, 5), scientific: true},
-	    'exa': {name: 'exa', value: Math.pow(1024, 6), scientific: true},
-	    'zetta': {name: 'zetta', value: Math.pow(1024, 7), scientific: true},
-	    'yotta': {name: 'yotta', value: Math.pow(1024, 8), scientific: true},
+	    'kilo': {name: 'kilo', value: 1e3, scientific: true},
+	    'mega': {name: 'mega', value: 1e6, scientific: true},
+	    'giga': {name: 'giga', value: 1e9, scientific: true},
+	    'tera': {name: 'tera', value: 1e12, scientific: true},
+	    'peta': {name: 'peta', value: 1e15, scientific: true},
+	    'exa':  {name: 'exa', value: 1e18, scientific: true},
+	    'zetta': {name: 'zetta', value: 1e21, scientific: true},
+	    'yotta': {name: 'yotta', value: 1e24, scientific: true},
 
 	    'kibi': {name: 'kibi', value: 1024, scientific: true},
 	    'mebi': {name: 'mebi', value: Math.pow(1024, 2), scientific: true},
 	    'gibi': {name: 'gibi', value: Math.pow(1024, 3), scientific: true},
 	    'tebi': {name: 'tebi', value: Math.pow(1024, 4), scientific: true},
 	    'pebi': {name: 'pebi', value: Math.pow(1024, 5), scientific: true},
-	    'exi': {name: 'exi', value: Math.pow(1024, 6), scientific: true},
+	    'exi':  {name: 'exi', value: Math.pow(1024, 6), scientific: true},
 	    'zebi': {name: 'zebi', value: Math.pow(1024, 7), scientific: true},
 	    'yobi': {name: 'yobi', value: Math.pow(1024, 8), scientific: true}
 	  }
@@ -7264,14 +7266,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.BlockNode = __webpack_require__(179);
 	exports.ConditionalNode = __webpack_require__(180);
 	exports.ConstantNode = __webpack_require__(181);
-	exports.IndexNode = __webpack_require__(182);
-	exports.FunctionAssignmentNode = __webpack_require__(183);
-	exports.FunctionNode = __webpack_require__(184);
-	exports.Node = __webpack_require__(185);
-	exports.OperatorNode = __webpack_require__(186);
-	exports.RangeNode = __webpack_require__(187);
-	exports.SymbolNode = __webpack_require__(188);
-	exports.UpdateNode = __webpack_require__(189);
+	exports.IndexNode = __webpack_require__(183);
+	exports.FunctionAssignmentNode = __webpack_require__(182);
+	exports.FunctionNode = __webpack_require__(185);
+	exports.Node = __webpack_require__(189);
+	exports.OperatorNode = __webpack_require__(184);
+	exports.RangeNode = __webpack_require__(186);
+	exports.SymbolNode = __webpack_require__(187);
+	exports.UpdateNode = __webpack_require__(188);
 
 
 /***/ },
@@ -7293,13 +7295,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    BlockNode = __webpack_require__(179),
 	    ConditionalNode = __webpack_require__(180),
 	    ConstantNode = __webpack_require__(181),
-	    FunctionAssignmentNode = __webpack_require__(183),
-	    IndexNode = __webpack_require__(182),
-	    OperatorNode = __webpack_require__(186),
-	    FunctionNode = __webpack_require__(184),
-	    RangeNode = __webpack_require__(187),
-	    SymbolNode = __webpack_require__(188),
-	    UpdateNode = __webpack_require__(189);
+	    FunctionAssignmentNode = __webpack_require__(182),
+	    IndexNode = __webpack_require__(183),
+	    OperatorNode = __webpack_require__(184),
+	    FunctionNode = __webpack_require__(185),
+	    RangeNode = __webpack_require__(186),
+	    SymbolNode = __webpack_require__(187),
+	    UpdateNode = __webpack_require__(188);
 
 	module.exports = function (math) {
 
@@ -9066,7 +9068,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var SymbolNode = __webpack_require__(188);
+	var SymbolNode = __webpack_require__(187);
 	var isBoolean = __webpack_require__(209).isBoolean;
 	var argsToArray = __webpack_require__(169).argsToArray;
 	var ArgumentsError = __webpack_require__(171);
@@ -10758,15 +10760,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (isComplex(x)) {
-	      // do not compute sqrt(re * re + im * im) since it will overflow with big numbers!
 	      var re = Math.abs(x.re);
 	      var im = Math.abs(x.im);
-	      if (re >= im) {
-	        var i = im / re;
-	        return re * Math.sqrt(1 + i * i);
+	      if (re < 1000 && im < 1000) {
+	        return Math.sqrt(re * re + im * im);
 	      }
-	      var j = re / im;
-	      return im * Math.sqrt(1 + j * j);
+	      else {
+	        // prevent overflow for large numbers
+	        if (re >= im) {
+	          var i = im / re;
+	          return re * Math.sqrt(1 + i * i);
+	        }
+	        else {
+	          var j = re / im;
+	          return im * Math.sqrt(1 + j * j);
+	        }
+	      }
 	    }
 
 	    if (x instanceof BigNumber) {
@@ -17896,7 +17905,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   *    combinations, factorial, permutations
 	   *
-	   * @param {Number | Array | Matrix | Boolean | null} n   An integer number
+	   * @param {Number | Array | Matrix | Boolean | null} n   A real or complex number
 	   * @return {Number | Array | Matrix}    The gamma of `n`
 	   */
 	  math.gamma = function gamma (n) {
@@ -25303,7 +25312,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = '1.5.1';
+	module.exports = '1.6.0';
 	// Note: This file is automatically generated when building math.js.
 	// Changes made in this file will be overwritten.
 
@@ -25617,7 +25626,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(185),
+	var Node = __webpack_require__(189),
 	    string = __webpack_require__(176),
 
 	    isArray = Array.isArray,
@@ -25743,7 +25752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(185),
+	var Node = __webpack_require__(189),
 	    ArrayNode = __webpack_require__(177),
 
 	    keywords = __webpack_require__(341),
@@ -25841,19 +25850,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  var expr = this.expr.toTex(callbacks);
 	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
-	    //adds visible round brackets
-	    expr = latex.addBraces(expr, true);
-	  }
-	  else {
-	    //adds (invisible) curly braces
-	    expr = latex.addBraces(expr, false);
+	    expr = '\\left(' + expr + '\\right)';
 	  }
 
-	  var brace;
-	  if (this.expr instanceof ArrayNode) {
-	    brace = ['\\mathbf{', '}'];
-	  }
-	  return latex.addBraces(latex.toSymbol(this.name), brace) + '=' + expr;
+	  return latex.toSymbol(this.name) + ':=' + expr;
 	};
 
 	module.exports = AssignmentNode;
@@ -25865,7 +25865,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(185);
+	var Node = __webpack_require__(189);
 	var ResultSet = __webpack_require__(13);
 	var isBoolean = __webpack_require__(209).isBoolean;
 
@@ -26005,7 +26005,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(185);
+	var Node = __webpack_require__(189);
 	var latex = __webpack_require__(343);
 	var BigNumber = __webpack_require__(5);
 	var Complex = __webpack_require__(7);
@@ -26160,20 +26160,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String} str
 	 */
 	ConditionalNode.prototype._toTex = function(callbacks) {
-	  var s = (
-	      latex.addBraces(this.trueExpr.toTex(callbacks)) +
-	      ', &\\quad' +
-	      latex.addBraces('\\text{if}\\;' + this.condition.toTex(callbacks))
-	      ) + '\\\\' + (
-	      latex.addBraces(this.falseExpr.toTex(callbacks)) +
-	      ', &\\quad' +
-	      latex.addBraces('\\text{otherwise}')
-	      );
-
-	  return latex.addBraces(s, [
-	    '\\left\\{\\begin{array}{l l}',
-	    '\\end{array}\\right.'
-	  ]);
+	  return '\\left\\{\\begin{array}{l l}{'
+	    + this.trueExpr.toTex(callbacks) + '}, &\\quad{\\text{if}\\;'
+	    + this.condition.toTex(callbacks)
+	    + '}\\\\{' + this.falseExpr.toTex(callbacks)
+	    + '}, &\\quad{\\text{otherwise}}\\end{array}\\right.';
 	};
 
 	module.exports = ConditionalNode;
@@ -26185,7 +26176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(185);
+	var Node = __webpack_require__(189);
 	var BigNumber = __webpack_require__(5);
 	var type = __webpack_require__(338).type;
 	var isString = __webpack_require__(176).isString;
@@ -26354,7 +26345,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    case 'number':
 	      index = value.toLowerCase().indexOf('e');
 	      if (index !== -1) {
-	        return value.substring(0, index) + ' \\cdot 10^{' +
+	        return value.substring(0, index) + '\\cdot10^{' +
 	            value.substring(index + 1) + '}';
 	      }
 	      return value;
@@ -26373,9 +26364,145 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(185);
-	var RangeNode = __webpack_require__(187);
-	var SymbolNode = __webpack_require__(188);
+	var Node = __webpack_require__(189);
+	var keywords = __webpack_require__(341);
+	var latex = __webpack_require__(343);
+	var operators = __webpack_require__(342);
+	var isString = __webpack_require__(176).isString;
+	var isArray = Array.isArray;
+
+	/**
+	 * @constructor FunctionAssignmentNode
+	 * @extends {Node}
+	 * Function assignment
+	 *
+	 * @param {String} name           Function name
+	 * @param {String[]} params         Function parameter names
+	 * @param {Node} expr             The function expression
+	 */
+	function FunctionAssignmentNode(name, params, expr) {
+	  if (!(this instanceof FunctionAssignmentNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (!isString(name)) throw new TypeError('String expected for parameter "name"');
+	  if (!isArray(params) || !params.every(isString))  throw new TypeError('Array containing strings expected for parameter "params"');
+	  if (!(expr instanceof Node)) throw new TypeError('Node expected for parameter "expr"');
+	  if (name in keywords) throw new Error('Illegal function name, "'  + name +  '" is a reserved keyword');
+
+	  this.name = name;
+	  this.params = params;
+	  this.expr = expr;
+	}
+
+	FunctionAssignmentNode.prototype = new Node();
+
+	FunctionAssignmentNode.prototype.type = 'FunctionAssignmentNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	FunctionAssignmentNode.prototype._compile = function (defs) {
+	  // add the function arguments to defs (used by SymbolNode and UpdateNode)
+	  this.params.forEach(function (variable) {
+	    defs.args[variable] = true;
+	  });
+
+	  return 'scope["' + this.name + '"] = ' +
+	      '  (function () {' +
+	      '    var fn = function ' + this.name + '(' + this.params.join(',') + ') {' +
+	      '      if (arguments.length != ' + this.params.length + ') {' +
+	      // TODO: use util.error.ArgumentsError here?
+	      // TODO: test arguments error
+	      '        throw new SyntaxError("Wrong number of arguments in function ' + this.name + ' (" + arguments.length + " provided, ' + this.params.length + ' expected)");' +
+	      '      }' +
+	      '      return ' + this.expr._compile(defs) + '' +
+	      '    };' +
+	      '    fn.syntax = "' + this.name + '(' + this.params.join(', ') + ')";' +
+	      '    return fn;' +
+	      '  })();';
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	FunctionAssignmentNode.prototype.forEach = function (callback) {
+	  callback(this.expr, 'expr', this);
+	};
+
+	/**
+	 * Create a new FunctionAssignmentNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {FunctionAssignmentNode} Returns a transformed copy of the node
+	 */
+	FunctionAssignmentNode.prototype.map = function (callback) {
+	  var expr = this._ifNode(callback(this.expr, 'expr', this));
+
+	  return new FunctionAssignmentNode(this.name, this.params.slice(0), expr);
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {FunctionAssignmentNode}
+	 */
+	FunctionAssignmentNode.prototype.clone = function() {
+	  return new FunctionAssignmentNode(this.name, this.params.slice(0), this.expr);
+	};
+
+	/**
+	 * get string representation
+	 * @return {String} str
+	 */
+	FunctionAssignmentNode.prototype.toString = function() {
+	  var precedence = operators.getPrecedence(this);
+	  var exprPrecedence = operators.getPrecedence(this.expr);
+
+	  var expr = this.expr.toString();
+	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
+	    expr = '(' + expr + ')';
+	  }
+	  return 'function ' + this.name +
+	      '(' + this.params.join(', ') + ') = ' + expr;
+	};
+
+	/**
+	 * get LaTeX representation
+	 * @param {Object|function} callback(s)
+	 * @return {String} str
+	 */
+	FunctionAssignmentNode.prototype._toTex = function(callbacks) {
+	  var precedence = operators.getPrecedence(this);
+	  var exprPrecedence = operators.getPrecedence(this.expr);
+
+	  var expr = this.expr.toTex(callbacks);
+	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
+	    expr = '\\left(' + expr + '\\right)';
+	  }
+
+	  return latex.toSymbol(this.name) 
+	    + '\\left(' + this.params.map(latex.toSymbol).join(',') + '\\right):=' + expr;
+	};
+
+	module.exports = FunctionAssignmentNode;
+
+
+/***/ },
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(189);
+	var RangeNode = __webpack_require__(186);
+	var SymbolNode = __webpack_require__(187);
 
 	var BigNumber = __webpack_require__(5);
 	var Range = __webpack_require__(8);
@@ -26467,16 +26594,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var useEnd = rangesUseEnd[i];
 	    if (range instanceof RangeNode) {
 	      if (useEnd) {
+	        defs.args.end = true;
+
 	        // resolve end and create range
-	        return '(function (scope) {' +
-	            '  scope = Object.create(scope); ' +
-	            '  scope["end"] = size[' + i + '];' +
+	        return '(function () {' +
+	            '  var end = size[' + i + '];' +
 	            '  return range(' +
 	            '    ' + range.start._compile(defs) + ', ' +
 	            '    ' + range.end._compile(defs) + ', ' +
 	            '    ' + (range.step ? range.step._compile(defs) : '1') +
 	            '  );' +
-	            '})(scope)';
+	            '})()';
 	      }
 	      else {
 	        // create range
@@ -26489,12 +26617,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    else {
 	      if (useEnd) {
+	        defs.args.end = true;
+
 	        // resolve the parameter 'end'
-	        return '(function (scope) {' +
-	            '  scope = Object.create(scope); ' +
-	            '  scope["end"] = size[' + i + '];' +
+	        return '(function () {' +
+	            '  var end = size[' + i + '];' +
 	            '  return ' + range._compile(defs) + ';' +
-	            '})(scope)'
+	            '})()'
 	      }
 	      else {
 	        // just evaluate the expression
@@ -26586,53 +26715,63 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String} str
 	 */
 	IndexNode.prototype._toTex = function(callbacks) {
-	  return this.object.toTex(callbacks) + '[' + this.ranges.join(', ') + ']';
+	  var ranges = this.ranges.map(function (range) {
+	    return range.toTex(callbacks);
+	  });
+	  return this.object.toTex(callbacks) + '_{\\left[' + ranges.join(',') + '\\right]}';
 	};
 
 	module.exports = IndexNode;
 
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(185);
-	var keywords = __webpack_require__(341);
-	var latex = __webpack_require__(343);
-	var operators = __webpack_require__(342);
-	var isString = __webpack_require__(176).isString;
-	var isArray = Array.isArray;
+	var Node = __webpack_require__(189),
+	    ConstantNode = __webpack_require__(181),
+	    SymbolNode = __webpack_require__(187),
+	    FunctionNode = __webpack_require__(185),
+	    latex = __webpack_require__(343),
+	    operators = __webpack_require__(342),
+	    isArray = Array.isArray,
+	    isNode = Node.isNode;
 
 	/**
-	 * @constructor FunctionAssignmentNode
+	 * @constructor OperatorNode
 	 * @extends {Node}
-	 * Function assignment
+	 * An operator with two arguments, like 2+3
 	 *
-	 * @param {String} name           Function name
-	 * @param {String[]} params         Function parameter names
-	 * @param {Node} expr             The function expression
+	 * @param {String} op       Operator name, for example '+'
+	 * @param {String} fn       Function name, for example 'add'
+	 * @param {Node[]} args     Operator arguments
 	 */
-	function FunctionAssignmentNode(name, params, expr) {
-	  if (!(this instanceof FunctionAssignmentNode)) {
+	function OperatorNode (op, fn, args) {
+	  if (!(this instanceof OperatorNode)) {
 	    throw new SyntaxError('Constructor must be called with the new operator');
 	  }
 
-	  // validate input
-	  if (!isString(name)) throw new TypeError('String expected for parameter "name"');
-	  if (!isArray(params) || !params.every(isString))  throw new TypeError('Array containing strings expected for parameter "params"');
-	  if (!(expr instanceof Node)) throw new TypeError('Node expected for parameter "expr"');
-	  if (name in keywords) throw new Error('Illegal function name, "'  + name +  '" is a reserved keyword');
+	  //validate input
+	  if (typeof op !== 'string') {
+	    throw new TypeError('string expected for parameter "op"');
+	  }
+	  if (typeof fn !== 'string') {
+	    throw new TypeError('string expected for parameter "fn"');
+	  }
+	  if (!isArray(args) || !args.every(isNode)) {
+	    throw new TypeError('Array containing Nodes expected for parameter "args"');
+	  }
 
-	  this.name = name;
-	  this.params = params;
-	  this.expr = expr;
+	  this.op = op;
+	  this.fn = fn;
+	  this.args = args || [];
 	}
 
-	FunctionAssignmentNode.prototype = new Node();
+	OperatorNode.prototype = new Node();
 
-	FunctionAssignmentNode.prototype.type = 'FunctionAssignmentNode';
+	OperatorNode.prototype.type = 'OperatorNode';
 
 	/**
 	 * Compile the node to javascript code
@@ -26642,105 +26781,320 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String} js
 	 * @private
 	 */
-	FunctionAssignmentNode.prototype._compile = function (defs) {
-	  return 'scope["' + this.name + '"] = ' +
-	      '  (function (scope) {' +
-	      '    scope = Object.create(scope); ' +
-	      '    var fn = function ' + this.name + '(' + this.params.join(',') + ') {' +
-	      '      if (arguments.length != ' + this.params.length + ') {' +
-	      // TODO: use util.error.ArgumentsError here
-	      // TODO: test arguments error
-	      '        throw new SyntaxError("Wrong number of arguments in function ' + this.name + ' (" + arguments.length + " provided, ' + this.params.length + ' expected)");' +
-	      '      }' +
-	      this.params.map(function (variable, index) {
-	        return 'scope["' + variable + '"] = arguments[' + index + '];';
-	      }).join('') +
-	      '      return ' + this.expr._compile(defs) + '' +
-	      '    };' +
-	      '    fn.syntax = "' + this.name + '(' + this.params.join(', ') + ')";' +
-	      '    return fn;' +
-	      '  })(scope);';
+	OperatorNode.prototype._compile = function (defs) {
+	  if (!(this.fn in defs.math)) {
+	    throw new Error('Function ' + this.fn + ' missing in provided namespace "math"');
+	  }
+
+	  var args = this.args.map(function (arg) {
+	    return arg._compile(defs);
+	  });
+	  return 'math.' + this.fn + '(' + args.join(', ') + ')';
 	};
 
 	/**
 	 * Execute a callback for each of the child nodes of this node
 	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	FunctionAssignmentNode.prototype.forEach = function (callback) {
-	  callback(this.expr, 'expr', this);
+	OperatorNode.prototype.forEach = function (callback) {
+	  for (var i = 0; i < this.args.length; i++) {
+	    callback(this.args[i], 'args[' + i + ']', this);
+	  }
 	};
 
 	/**
-	 * Create a new FunctionAssignmentNode having it's childs be the results of calling
+	 * Create a new OperatorNode having it's childs be the results of calling
 	 * the provided callback function for each of the childs of the original node.
 	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {FunctionAssignmentNode} Returns a transformed copy of the node
+	 * @returns {OperatorNode} Returns a transformed copy of the node
 	 */
-	FunctionAssignmentNode.prototype.map = function (callback) {
-	  var expr = this._ifNode(callback(this.expr, 'expr', this));
-
-	  return new FunctionAssignmentNode(this.name, this.params.slice(0), expr);
+	OperatorNode.prototype.map = function (callback) {
+	  var args = [];
+	  for (var i = 0; i < this.args.length; i++) {
+	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
+	  }
+	  return new OperatorNode(this.op, this.fn, args);
 	};
 
 	/**
 	 * Create a clone of this node, a shallow copy
-	 * @return {FunctionAssignmentNode}
+	 * @return {OperatorNode}
 	 */
-	FunctionAssignmentNode.prototype.clone = function() {
-	  return new FunctionAssignmentNode(this.name, this.params.slice(0), this.expr);
+	OperatorNode.prototype.clone = function() {
+	  return new OperatorNode(this.op, this.fn, this.args.slice(0));
 	};
 
 	/**
-	 * get string representation
+	 * Calculate which parentheses are necessary. Gets an OperatorNode
+	 * (which is the root of the tree) and an Array of Nodes
+	 * (this.args) and returns an array where 'true' means that an argument
+	 * has to be enclosed in parentheses whereas 'false' means the opposite.
+	 *
+	 * @param {OperatorNode} root
+	 * @param {Node[]} arguments
+	 * @param {bool}
+	 * @return {bool[]}
+	 * @private
+	 */
+	function calculateNecessaryParentheses (root, args, latex) {
+	  //precedence of the root OperatorNode
+	  var precedence = operators.getPrecedence(root);
+	  var associativity = operators.getAssociativity(root);
+
+	  switch (args.length) {
+	    case 1: //unary operators
+	      //precedence of the operand
+	      var operandPrecedence = operators.getPrecedence(args[0]);
+
+	      //handle special cases for LaTeX, where some of the parentheses aren't needed
+	      if (latex && (operandPrecedence !== null)) {
+	        var operandIdentifier = args[0].getIdentifier();
+	        var rootIdentifier = root.getIdentifier();
+	        if (operators.properties[precedence][rootIdentifier].latexLeftParens === false) {
+	          return [false];
+	        }
+
+	        if (operators.properties[operandPrecedence][operandIdentifier].latexParens === false) {
+	          return [false];
+	        }
+	      }
+
+	      if (operandPrecedence === null) {
+	        //if the operand has no defined precedence, no parens are needed
+	        return [false];
+	      }
+
+	      if (operandPrecedence <= precedence) {
+	        //if the operands precedence is lower, parens are needed
+	        return [true];
+	      }
+
+	      //otherwise, no parens needed
+	      return [false];
+
+	    case 2: //binary operators
+	      var lhsParens; //left hand side needs parenthesis?
+	      //precedence of the left hand side
+	      var lhsPrecedence = operators.getPrecedence(args[0]);
+	      //is the root node associative with the left hand side
+	      var assocWithLhs = operators.isAssociativeWith(root, args[0]);
+
+	      if (lhsPrecedence === null) {
+	        //if the left hand side has no defined precedence, no parens are needed
+	        //FunctionNode for example
+	        lhsParens = false;
+	      }
+	      else if ((lhsPrecedence === precedence) && (associativity === 'right') && !assocWithLhs) {
+	        //In case of equal precedence, if the root node is left associative
+	        // parens are **never** necessary for the left hand side.
+	        //If it is right associative however, parens are necessary
+	        //if the root node isn't associative with the left hand side
+	        lhsParens = true;
+	      }
+	      else if (lhsPrecedence < precedence) {
+	        lhsParens = true;
+	      }
+	      else {
+	        lhsParens = false;
+	      }
+
+	      var rhsParens; //right hand side needs parenthesis?
+	      //precedence of the right hand side
+	      var rhsPrecedence = operators.getPrecedence(args[1]);
+	      //is the root node associative with the right hand side?
+	      var assocWithRhs = operators.isAssociativeWith(root, args[1]);
+
+	      if (rhsPrecedence === null) {
+	        //if the right hand side has no defined precedence, no parens are needed
+	        //FunctionNode for example
+	        rhsParens = false;
+	      }
+	      else if ((rhsPrecedence === precedence) && (associativity === 'left') && !assocWithRhs) {
+	        //In case of equal precedence, if the root node is right associative
+	        // parens are **never** necessary for the right hand side.
+	        //If it is left associative however, parens are necessary
+	        //if the root node isn't associative with the right hand side
+	        rhsParens = true;
+	      }
+	      else if (rhsPrecedence < precedence) {
+	        rhsParens = true;
+	      }
+	      else {
+	        rhsParens = false;
+	      }
+
+	      //handle special cases for LaTeX, where some of the parentheses aren't needed
+	      if (latex) {
+	        var rootIdentifier = root.getIdentifier();
+	        var lhsIdentifier = root.args[0].getIdentifier();
+	        var rhsIdentifier = root.args[1].getIdentifier();
+
+	        if (lhsPrecedence !== null) {
+	          if (operators.properties[precedence][rootIdentifier].latexLeftParens === false) {
+	            lhsParens = false;
+	          }
+
+	          if (operators.properties[lhsPrecedence][lhsIdentifier].latexParens === false) {
+	            lhsParens = false;
+	          }
+	        }
+
+	        if (rhsPrecedence !== null) {
+	          if (operators.properties[precedence][rootIdentifier].latexRightParens === false) {
+	            rhsParens = false;
+	          }
+
+	          if (operators.properties[rhsPrecedence][rhsIdentifier].latexParens === false) {
+	            rhsParens = false;
+	          }
+	        }
+	      }
+
+	      return [lhsParens, rhsParens];
+	    default:
+	      //behavior is undefined, fall back to putting everything in parens
+	      var parens = [];
+	      args.forEach(function () {
+	        parens.push(true);
+	      });
+	      return parens;
+	  }
+	}
+
+	/**
+	 * Get string representation.
 	 * @return {String} str
 	 */
-	FunctionAssignmentNode.prototype.toString = function() {
-	  var precedence = operators.getPrecedence(this);
-	  var exprPrecedence = operators.getPrecedence(this.expr);
+	OperatorNode.prototype.toString = function() {
+	  var args = this.args;
+	  var parens = calculateNecessaryParentheses(this, args, false);
 
-	  var expr = this.expr.toString();
-	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
-	    expr = '(' + expr + ')';
+	  switch (args.length) {
+	    case 1: //unary operators
+	      var assoc = operators.getAssociativity(this);
+
+	      var operand = args[0].toString();
+	      if (parens[0]) {
+	        operand = '(' + operand + ')';
+	      }
+
+	      if (assoc === 'right') { //prefix operator
+	        return this.op + operand;
+	      }
+	      else if (assoc === 'left') { //postfix
+	        return operand + this.op;
+	      }
+
+	      //fall back to postfix
+	      return operand + this.op;
+
+	    case 2:
+	      var lhs = args[0].toString(); //left hand side
+	      var rhs = args[1].toString(); //right hand side
+	      if (parens[0]) { //left hand side in parenthesis?
+	        lhs = '(' + lhs + ')';
+	      }
+	      if (parens[1]) { //right hand side in parenthesis?
+	        rhs = '(' + rhs + ')';
+	      }
+
+	      return lhs + ' ' + this.op + ' ' + rhs;
+
+	    default:
+	      //fallback to formatting as a function call
+	      return this.fn + '(' + this.args.join(', ') + ')';
 	  }
-	  return 'function ' + this.name +
-	      '(' + this.params.join(', ') + ') = ' + expr;
 	};
 
 	/**
-	 * get LaTeX representation
+	 * Get LaTeX representation
 	 * @param {Object|function} callback(s)
 	 * @return {String} str
 	 */
-	FunctionAssignmentNode.prototype._toTex = function(callbacks) {
-	  var precedence = operators.getPrecedence(this);
-	  var exprPrecedence = operators.getPrecedence(this.expr);
+	OperatorNode.prototype._toTex = function(callbacks) {
+	 var args = this.args; 
+	 var parens = calculateNecessaryParentheses(this, args, true);
+	 var op = latex.operators[this.fn];
+	 op = typeof op === 'undefined' ? this.op : op; //fall back to using this.op
 
-	  var expr = this.expr.toTex(callbacks);
-	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
-	    //adds visible round brackets
-	    expr = latex.addBraces(expr, true);
-	  }
-	  else {
-	    //add (invisible) curly braces
-	    expr = latex.addBraces(expr, false);
-	  }
+	 switch (args.length) {
+	   case 1: //unary operators
+	     var assoc = operators.getAssociativity(this);
 
-	  return latex.toFunction(this.name)
-	       + latex.addBraces(this.params.map(latex.toSymbol).join(', '), true) + '=' //FIXME, this doesn't call toTex on the parameters AFAIK (toSymbol)
-	       + expr;
+	     var operand = args[0].toTex(callbacks);
+	     if (parens[0]) {
+	       operand = '\\left(' + operand + '\\right)';
+	     }
+
+	     if (assoc === 'right') { //prefix operator
+	       return op + operand;
+	     }
+	     else if (assoc === 'left') { //postfix operator
+	       return operand + op;
+	     }
+
+	     //fall back to postfix
+	     return operand + op;
+
+	   case 2: //binary operators
+	     var lhs = args[0]; //left hand side
+	     var lhsTex =  lhs.toTex(callbacks);
+	     if (parens[0]) {
+	       lhsTex = '\\left(' + lhsTex + '\\right)';
+	     }
+
+	     var rhs = args[1]; //right hand side
+	     var rhsTex = rhs.toTex(callbacks);
+	     if (parens[1]) {
+	       rhsTex = '\\left(' + rhsTex + '\\right)';
+	     }
+
+	     //handle some exceptions (due to the way LaTeX works)
+	     switch (this.getIdentifier()) {
+	       case 'OperatorNode:divide':
+	         //op contains '\\frac' at this point
+	         return op + '{' + lhsTex + '}' + '{' + rhsTex + '}';
+	       case 'OperatorNode:pow':
+	         lhsTex = '{' + lhsTex + '}';
+	         rhsTex = '{' + rhsTex + '}';
+	         switch (lhs.getIdentifier()) {
+	           case 'ConditionalNode': //
+	           case 'OperatorNode:divide':
+	             lhsTex = '\\left(' + lhsTex + '\\right)';
+	         }
+	     }
+	     return lhsTex + op + rhsTex;
+
+	   default:
+	     //fall back to formatting as a function call
+	     //as this is a fallback, it doesn't use
+	     //fancy function names
+	     return '\\mathrm{' + this.fn + '}\\left('
+	             + args.map(function (arg) {
+	               return arg.toTex(callbacks);
+	             }).join(',') + '\\right)';
+	 }
 	};
 
-	module.exports = FunctionAssignmentNode;
+	/**
+	 * Get identifier.
+	 * @return {String}
+	 */
+	OperatorNode.prototype.getIdentifier = function () {
+	  return this.type + ':' + this.fn;
+	};
+
+	module.exports = OperatorNode;
 
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(185);
-	var SymbolNode = __webpack_require__(188);
+	var Node = __webpack_require__(189);
+	var SymbolNode = __webpack_require__(187);
 
 	var latex = __webpack_require__(343);
 	var isNode = Node.isNode;
@@ -26856,7 +27210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String} str
 	 */
 	FunctionNode.prototype._toTex = function(callbacks) {
-	  return latex.toArgs(this, callbacks);
+	  return latex.toFunction(this, callbacks, this.name);
 	};
 
 	/**
@@ -26871,7 +27225,382 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 185 */
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(189);
+	var operators = __webpack_require__(342);
+
+	var isNode = Node.isNode;
+
+	/**
+	 * @constructor RangeNode
+	 * @extends {Node}
+	 * create a range
+	 * @param {Node} start  included lower-bound
+	 * @param {Node} end    included lower-bound
+	 * @param {Node} [step] optional step
+	 */
+	function RangeNode (start, end, step) {
+	  if (!(this instanceof RangeNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate inputs
+	  if (!isNode(start)) throw new TypeError('Node expected');
+	  if (!isNode(end)) throw new TypeError('Node expected');
+	  if (step && !isNode(step)) throw new TypeError('Node expected');
+	  if (arguments.length > 3) throw new Error('Too many arguments');
+
+	  this.start = start;         // included lower-bound
+	  this.end   = end;           // included upper-bound
+	  this.step  = step || null;  // optional step
+	}
+
+	RangeNode.prototype = new Node();
+
+	RangeNode.prototype.type = 'RangeNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	RangeNode.prototype._compile = function (defs) {
+	  return 'math.range(' +
+	      this.start._compile(defs) + ', ' +
+	      this.end._compile(defs) +
+	      (this.step ? (', ' + this.step._compile(defs)) : '') +
+	      ')';
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	RangeNode.prototype.forEach = function (callback) {
+	  callback(this.start, 'start', this);
+	  callback(this.end, 'end', this);
+	  if (this.step) {
+	    callback(this.step, 'step', this);
+	  }
+	};
+
+	/**
+	 * Create a new RangeNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {RangeNode} Returns a transformed copy of the node
+	 */
+	RangeNode.prototype.map = function (callback) {
+	  return new RangeNode(
+	      this._ifNode(callback(this.start, 'start', this)),
+	      this._ifNode(callback(this.end, 'end', this)),
+	      this.step && this._ifNode(callback(this.step, 'step', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {RangeNode}
+	 */
+	RangeNode.prototype.clone = function() {
+	  return new RangeNode(this.start, this.end, this.step && this.step);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	RangeNode.prototype.toString = function() {
+	  var precedence = operators.getPrecedence(this);
+
+	  //format string as start:step:stop
+	  var str;
+
+	  var start = this.start.toString();
+	  var startPrecedence = operators.getPrecedence(this.start);
+	  if ((startPrecedence !== null) && (startPrecedence <= precedence)) {
+	    start = '(' + start + ')';
+	  }
+	  str = start;
+
+	  if (this.step) {
+	    var step = this.step.toString();
+	    var stepPrecedence = operators.getPrecedence(this.step);
+	    if ((stepPrecedence !== null) && (stepPrecedence <= precedence)) {
+	      step = '(' + step + ')';
+	    }
+	    str += ':' + step;
+	  }
+
+	  var end = this.end.toString();
+	  var endPrecedence = operators.getPrecedence(this.end);
+	  if ((endPrecedence !== null) && (endPrecedence <= precedence)) {
+	    end = '(' + end + ')';
+	  }
+	  str += ':' + end;
+
+	  return str;
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @params {Object|function} callback(s)
+	 * @return {String} str
+	 */
+	RangeNode.prototype._toTex = function(callbacks) {
+	  var str = this.start.toTex(callbacks);
+	  if (this.step) {
+	    str += ':' + this.step.toTex(callbacks);
+	  }
+	  str += ':' + this.end.toTex(callbacks);
+
+	  return str;
+	};
+
+	module.exports = RangeNode;
+
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(189),
+	    Unit = __webpack_require__(11),
+
+	    latex = __webpack_require__(343),
+	    isString = __webpack_require__(176).isString;
+
+	/**
+	 * @constructor SymbolNode
+	 * @extends {Node}
+	 * A symbol node can hold and resolve a symbol
+	 * @param {String} name
+	 * @extends {Node}
+	 */
+	function SymbolNode(name) {
+	  if (!(this instanceof SymbolNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (!isString(name))  throw new TypeError('String expected for parameter "name"');
+
+	  this.name = name;
+	}
+
+	SymbolNode.prototype = new Node();
+
+	SymbolNode.prototype.type = 'SymbolNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	SymbolNode.prototype._compile = function (defs) {
+	  // add a function to the definitions
+	  defs['undef'] = undef;
+	  defs['Unit'] = Unit;
+
+	  if (this.name in defs.args) {
+	    // this is a FunctionAssignment argument
+	    // (like an x when inside the expression of a function assignment `f(x) = ...`)
+	    return this.name;
+	  }
+	  else if (this.name in defs.math) {
+	    return '("' + this.name + '" in scope ? scope["' + this.name + '"] : math["' + this.name + '"])';
+	  }
+	  else {
+	    return '(' +
+	        '"' + this.name + '" in scope ? scope["' + this.name + '"] : ' +
+	        (Unit.isValuelessUnit(this.name) ?
+	            'new Unit(null, "' + this.name + '")' :
+	            'undef("' + this.name + '")') +
+	        ')';
+	  }
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	SymbolNode.prototype.forEach = function (callback) {
+	  // nothing to do, we don't have childs
+	};
+
+	/**
+	 * Create a new SymbolNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
+	 * @returns {SymbolNode} Returns a clone of the node
+	 */
+	SymbolNode.prototype.map = function (callback) {
+	  return this.clone();
+	};
+
+	/**
+	 * Throws an error 'Undefined symbol {name}'
+	 * @param {String} name
+	 */
+	function undef (name) {
+	  throw new Error('Undefined symbol ' + name);
+	}
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {SymbolNode}
+	 */
+	SymbolNode.prototype.clone = function() {
+	  return new SymbolNode(this.name);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 * @override
+	 */
+	SymbolNode.prototype.toString = function() {
+	  return this.name;
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @param {Object|function} callback(s)
+	 * @return {String} str
+	 * @override
+	 */
+	SymbolNode.prototype._toTex = function(callbacks) {
+	  var symbol = latex.toSymbol(this.name);
+	  if (symbol[0] === '\\') {
+	    //no space needed if the symbol starts with '\'
+	    return symbol;
+	  }
+	  //the space prevents symbols from breaking stuff like '\cdot' if it's written right before the symbol
+	  return ' ' + symbol;
+	};
+
+	module.exports = SymbolNode;
+
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(189),
+	    IndexNode = __webpack_require__(183);
+
+	/**
+	 * @constructor UpdateNode
+	 * @extends {Node}
+	 * Update a matrix subset, like A[2,3] = 4.5
+	 *
+	 * @param {IndexNode} index             IndexNode containing symbol and ranges
+	 * @param {Node} expr                   The expression defining the symbol
+	 */
+	function UpdateNode(index, expr) {
+	  if (!(this instanceof UpdateNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  if (!(index instanceof IndexNode)) {
+	    throw new TypeError('Expected IndexNode for parameter "index"');
+	  }
+	  if (!(expr instanceof Node)) {
+	    throw new TypeError('Expected Node for parameter "expr"');
+	  }
+
+	  this.index = index;
+	  this.expr = expr;
+	}
+
+	UpdateNode.prototype = new Node();
+
+	UpdateNode.prototype.type = 'UpdateNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	UpdateNode.prototype._compile = function (defs) {
+	  var lhs = (this.index.objectName() in defs.args)
+	    ? this.name + ' = ' // this is a FunctionAssignment argument
+	    : 'scope["' + this.index.objectName() + '\"]';
+
+	  var rhs = this.index.compileSubset(defs,  this.expr._compile(defs));
+
+	  return lhs + ' = ' + rhs;
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	UpdateNode.prototype.forEach = function (callback) {
+	  callback(this.index, 'index', this);
+	  callback(this.expr, 'expr', this);
+	};
+
+	/**
+	 * Create a new UpdateNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {UpdateNode} Returns a transformed copy of the node
+	 */
+	UpdateNode.prototype.map = function (callback) {
+	  return new UpdateNode(
+	      this._ifNode(callback(this.index, 'index', this)),
+	      this._ifNode(callback(this.expr, 'expr', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {UpdateNode}
+	 */
+	UpdateNode.prototype.clone = function() {
+	  return new UpdateNode(this.index, this.expr);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String}
+	 */
+	UpdateNode.prototype.toString = function() {
+	  return this.index.toString() + ' = ' + this.expr.toString();
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @param {Object|function} callback(s)
+	 * @return {String}
+	 */
+	UpdateNode.prototype._toTex = function(callbacks) {
+	  return this.index.toTex(callbacks) + ':=' + this.expr.toTex(callbacks);
+	};
+
+	module.exports = UpdateNode;
+
+
+/***/ },
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26915,6 +27644,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // definitions globally available inside the closure of the compiled expressions
 	  var defs = {
 	    math: _transform(math),
+	    args: {}, // can be filled with names of FunctionAssignment arguments
 	    _validateScope: _validateScope
 	  };
 
@@ -27209,671 +27939,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	module.exports = Node;
-
-
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(185),
-	    ConstantNode = __webpack_require__(181),
-	    SymbolNode = __webpack_require__(188),
-	    FunctionNode = __webpack_require__(184),
-	    latex = __webpack_require__(343),
-	    operators = __webpack_require__(342),
-	    isArray = Array.isArray,
-	    isNode = Node.isNode;
-
-	/**
-	 * @constructor OperatorNode
-	 * @extends {Node}
-	 * An operator with two arguments, like 2+3
-	 *
-	 * @param {String} op       Operator name, for example '+'
-	 * @param {String} fn       Function name, for example 'add'
-	 * @param {Node[]} args     Operator arguments
-	 */
-	function OperatorNode (op, fn, args) {
-	  if (!(this instanceof OperatorNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  //validate input
-	  if (typeof op !== 'string') {
-	    throw new TypeError('string expected for parameter "op"');
-	  }
-	  if (typeof fn !== 'string') {
-	    throw new TypeError('string expected for parameter "fn"');
-	  }
-	  if (!isArray(args) || !args.every(isNode)) {
-	    throw new TypeError('Array containing Nodes expected for parameter "args"');
-	  }
-
-	  this.op = op;
-	  this.fn = fn;
-	  this.args = args || [];
-	}
-
-	OperatorNode.prototype = new Node();
-
-	OperatorNode.prototype.type = 'OperatorNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	OperatorNode.prototype._compile = function (defs) {
-	  if (!(this.fn in defs.math)) {
-	    throw new Error('Function ' + this.fn + ' missing in provided namespace "math"');
-	  }
-
-	  var args = this.args.map(function (arg) {
-	    return arg._compile(defs);
-	  });
-	  return 'math.' + this.fn + '(' + args.join(', ') + ')';
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	OperatorNode.prototype.forEach = function (callback) {
-	  for (var i = 0; i < this.args.length; i++) {
-	    callback(this.args[i], 'args[' + i + ']', this);
-	  }
-	};
-
-	/**
-	 * Create a new OperatorNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {OperatorNode} Returns a transformed copy of the node
-	 */
-	OperatorNode.prototype.map = function (callback) {
-	  var args = [];
-	  for (var i = 0; i < this.args.length; i++) {
-	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
-	  }
-	  return new OperatorNode(this.op, this.fn, args);
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {OperatorNode}
-	 */
-	OperatorNode.prototype.clone = function() {
-	  return new OperatorNode(this.op, this.fn, this.args.slice(0));
-	};
-
-	/**
-	 * Calculate which parentheses are necessary. Gets an OperatorNode
-	 * (which is the root of the tree) and an Array of Nodes
-	 * (this.args) and returns an array where 'true' means that an argument
-	 * has to be enclosed in parentheses whereas 'false' means the opposite.
-	 *
-	 * @param {OperatorNode} root
-	 * @param {Node[]} arguments
-	 * @return {bool[]}
-	 * @private
-	 */
-	function calculateNecessaryParentheses (root, args) {
-	  //precedence of the root OperatorNode
-	  var precedence = operators.getPrecedence(root);
-	  var associativity = operators.getAssociativity(root);
-
-	  switch (args.length) {
-	    case 1: //unary operators
-	      //precedence of the operand
-	      var operandPrecedence = operators.getPrecedence(args[0]);
-
-	      if (operandPrecedence === null) {
-	        //if the operand has no defined precedence, no parens are needed
-	        return [false];
-	      }
-
-	      if (operandPrecedence <= precedence) {
-	        //if the operands precedence is lower, parens are needed
-	        return [true];
-	      }
-
-	      //otherwise, no parens needed
-	      return [false];
-
-	    case 2: //binary operators
-	      var lhsParens; //left hand side needs parenthesis?
-	      //precedence of the left hand side
-	      var lhsPrecedence = operators.getPrecedence(args[0]);
-	      //is the root node associative with the left hand side
-	      var assocWithLhs = operators.isAssociativeWith(root, args[0]);
-
-	      if (lhsPrecedence === null) {
-	        //if the left hand side has no defined precedence, no parens are needed
-	        //FunctionNode for example
-	        lhsParens = false;
-	      }
-	      else if ((lhsPrecedence === precedence) && (associativity === 'right') && !assocWithLhs) {
-	        //In case of equal precedence, if the root node is left associative
-	        // parens are **never** necessary for the left hand side.
-	        //If it is right associative however, parens are necessary
-	        //if the root node isn't associative with the left hand side
-	        lhsParens = true;
-	      }
-	      else if (lhsPrecedence < precedence) {
-	        lhsParens = true;
-	      }
-	      else {
-	        lhsParens = false;
-	      }
-
-	      var rhsParens; //right hand side needs parenthesis?
-	      //precedence of the right hand side
-	      var rhsPrecedence = operators.getPrecedence(args[1]);
-	      //is the root node associative with the right hand side?
-	      var assocWithRhs = operators.isAssociativeWith(root, args[1]);
-
-	      if (rhsPrecedence === null) {
-	        //if the right hand side has no defined precedence, no parens are needed
-	        //FunctionNode for example
-	        rhsParens = false;
-	      }
-	      else if ((rhsPrecedence === precedence) && (associativity === 'left') && !assocWithRhs) {
-	        //In case of equal precedence, if the root node is right associative
-	        // parens are **never** necessary for the right hand side.
-	        //If it is left associative however, parens are necessary
-	        //if the root node isn't associative with the right hand side
-	        rhsParens = true;
-	      }
-	      else if (rhsPrecedence < precedence) {
-	        rhsParens = true;
-	      }
-	      else {
-	        rhsParens = false;
-	      }
-	      return [lhsParens, rhsParens];
-	    default:
-	      //behavior is undefined, fall back to putting everything in parens
-	      var parens = [];
-	      args.forEach(function () {
-	        parens.push(true);
-	      });
-	      return parens;
-	  }
-	}
-
-	/**
-	 * Get string representation.
-	 * @return {String} str
-	 */
-	OperatorNode.prototype.toString = function() {
-	  var args = this.args;
-	  var parens = calculateNecessaryParentheses(this, args);
-
-	  switch (args.length) {
-	    case 1: //unary operators
-	      var assoc = operators.getAssociativity(this);
-
-	      var operand = args[0].toString();
-	      if (parens[0]) {
-	        operand = '(' + operand + ')';
-	      }
-
-	      if (assoc === 'right') { //prefix operator
-	        return this.op + operand;
-	      }
-	      else if (assoc === 'left') { //postfix
-	        return operand + this.op;
-	      }
-
-	      //fall back to postfix
-	      return operand + this.op;
-
-	    case 2:
-	      var lhs = args[0].toString(); //left hand side
-	      var rhs = args[1].toString(); //right hand side
-	      if (parens[0]) { //left hand side in parenthesis?
-	        lhs = '(' + lhs + ')';
-	      }
-	      if (parens[1]) { //right hand side in parenthesis?
-	        rhs = '(' + rhs + ')';
-	      }
-
-	      return lhs + ' ' + this.op + ' ' + rhs;
-
-	    default:
-	      //fallback to formatting as a function call
-	      return this.fn + '(' + this.args.join(', ') + ')';
-	  }
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @param {Object|function} callback(s)
-	 * @return {String} str
-	 */
-	OperatorNode.prototype._toTex = function(callbacks) {
-	 var args = this.args; 
-	 var parens = calculateNecessaryParentheses(this, args);
-	 var op = latex.toOperator(this.op); //operator
-
-	 switch (args.length) {
-	   case 1: //unary operators
-	     var assoc = operators.getAssociativity(this);
-
-	     var operand = args[0].toTex(callbacks);
-	     if (parens[0]) {
-	       operand = latex.addBraces(operand, true);
-	     }
-
-	     if (assoc === 'right') { //prefix operator
-	       return op + operand;
-	     }
-	     else if (assoc === 'left') { //postfix operator
-	       return operand + op;
-	     }
-
-	     //fall back to postfix
-	     return operand + op;
-
-	   case 2: //binary operators
-	     var lhs = args[0]; //left hand side
-	     //reminder: if parens[0] is false, this puts it in curly braces
-	     var lhsTex = latex.addBraces(lhs.toTex(callbacks), parens[0]);
-	     var rhs = args[1]; //right hand side
-	     var rhsTex = latex.addBraces(rhs.toTex(callbacks), parens[1]);
-
-	     switch (this.getIdentifier()) {
-	       case 'OperatorNode:divide':
-	         //op contains '\\frac' at this point
-	         return op + lhsTex + rhsTex;
-
-	       case 'OperatorNode:to':
-	         rhsTex = latex.toUnit(rhs.toTex(callbacks));
-	         rhsTex = latex.addBraces(rhsTex, parens[1]);
-	         break;
-	     }
-	     return lhsTex + ' ' + op + ' ' + rhsTex;
-
-	   default:
-	     //fall back to formatting as a function call
-	     var argumentList = this.args.map(latex.toSymbol).join(', ');
-	     return latex.toFunction(this.fn) + latex.addBraces(argumentList, true);
-	 }
-	};
-
-	/**
-	 * Get identifier.
-	 * @return {String}
-	 */
-	OperatorNode.prototype.getIdentifier = function () {
-	  return this.type + ':' + this.fn;
-	};
-
-	module.exports = OperatorNode;
-
-
-/***/ },
-/* 187 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(185);
-	var operators = __webpack_require__(342);
-
-	var isNode = Node.isNode;
-
-	/**
-	 * @constructor RangeNode
-	 * @extends {Node}
-	 * create a range
-	 * @param {Node} start  included lower-bound
-	 * @param {Node} end    included lower-bound
-	 * @param {Node} [step] optional step
-	 */
-	function RangeNode (start, end, step) {
-	  if (!(this instanceof RangeNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate inputs
-	  if (!isNode(start)) throw new TypeError('Node expected');
-	  if (!isNode(end)) throw new TypeError('Node expected');
-	  if (step && !isNode(step)) throw new TypeError('Node expected');
-	  if (arguments.length > 3) throw new Error('Too many arguments');
-
-	  this.start = start;         // included lower-bound
-	  this.end   = end;           // included upper-bound
-	  this.step  = step || null;  // optional step
-	}
-
-	RangeNode.prototype = new Node();
-
-	RangeNode.prototype.type = 'RangeNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	RangeNode.prototype._compile = function (defs) {
-	  return 'math.range(' +
-	      this.start._compile(defs) + ', ' +
-	      this.end._compile(defs) +
-	      (this.step ? (', ' + this.step._compile(defs)) : '') +
-	      ')';
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	RangeNode.prototype.forEach = function (callback) {
-	  callback(this.start, 'start', this);
-	  callback(this.end, 'end', this);
-	  if (this.step) {
-	    callback(this.step, 'step', this);
-	  }
-	};
-
-	/**
-	 * Create a new RangeNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {RangeNode} Returns a transformed copy of the node
-	 */
-	RangeNode.prototype.map = function (callback) {
-	  return new RangeNode(
-	      this._ifNode(callback(this.start, 'start', this)),
-	      this._ifNode(callback(this.end, 'end', this)),
-	      this.step && this._ifNode(callback(this.step, 'step', this))
-	  );
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {RangeNode}
-	 */
-	RangeNode.prototype.clone = function() {
-	  return new RangeNode(this.start, this.end, this.step && this.step);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	RangeNode.prototype.toString = function() {
-	  var precedence = operators.getPrecedence(this);
-
-	  //format string as start:step:stop
-	  var str;
-
-	  var start = this.start.toString();
-	  var startPrecedence = operators.getPrecedence(this.start);
-	  if ((startPrecedence !== null) && (startPrecedence <= precedence)) {
-	    start = '(' + start + ')';
-	  }
-	  str = start;
-
-	  if (this.step) {
-	    var step = this.step.toString();
-	    var stepPrecedence = operators.getPrecedence(this.step);
-	    if ((stepPrecedence !== null) && (stepPrecedence <= precedence)) {
-	      step = '(' + step + ')';
-	    }
-	    str += ':' + step;
-	  }
-
-	  var end = this.end.toString();
-	  var endPrecedence = operators.getPrecedence(this.end);
-	  if ((endPrecedence !== null) && (endPrecedence <= precedence)) {
-	    end = '(' + end + ')';
-	  }
-	  str += ':' + end;
-
-	  return str;
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @params {Object|function} callback(s)
-	 * @return {String} str
-	 */
-	RangeNode.prototype._toTex = function(callbacks) {
-	  var str = this.start.toTex(callbacks);
-	  if (this.step) {
-	    str += ':' + this.step.toTex(callbacks);
-	  }
-	  str += ':' + this.end.toTex(callbacks);
-
-	  return str;
-	};
-
-	module.exports = RangeNode;
-
-
-/***/ },
-/* 188 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(185),
-	    Unit = __webpack_require__(11),
-
-	    latex = __webpack_require__(343),
-	    isString = __webpack_require__(176).isString;
-
-	/**
-	 * @constructor SymbolNode
-	 * @extends {Node}
-	 * A symbol node can hold and resolve a symbol
-	 * @param {String} name
-	 * @extends {Node}
-	 */
-	function SymbolNode(name) {
-	  if (!(this instanceof SymbolNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (!isString(name))  throw new TypeError('String expected for parameter "name"');
-
-	  this.name = name;
-	}
-
-	SymbolNode.prototype = new Node();
-
-	SymbolNode.prototype.type = 'SymbolNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	SymbolNode.prototype._compile = function (defs) {
-	  // add a function to the definitions
-	  defs['undef'] = undef;
-	  defs['Unit'] = Unit;
-
-	  if (this.name in defs.math) {
-	    return '("' + this.name + '" in scope ? scope["' + this.name + '"] : math["' + this.name + '"])';
-	  }
-	  else {
-	    return '(' +
-	        '"' + this.name + '" in scope ? scope["' + this.name + '"] : ' +
-	        (Unit.isValuelessUnit(this.name) ?
-	            'new Unit(null, "' + this.name + '")' :
-	            'undef("' + this.name + '")') +
-	        ')';
-	  }
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	SymbolNode.prototype.forEach = function (callback) {
-	  // nothing to do, we don't have childs
-	};
-
-	/**
-	 * Create a new SymbolNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
-	 * @returns {SymbolNode} Returns a clone of the node
-	 */
-	SymbolNode.prototype.map = function (callback) {
-	  return this.clone();
-	};
-
-	/**
-	 * Throws an error 'Undefined symbol {name}'
-	 * @param {String} name
-	 */
-	function undef (name) {
-	  throw new Error('Undefined symbol ' + name);
-	}
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {SymbolNode}
-	 */
-	SymbolNode.prototype.clone = function() {
-	  return new SymbolNode(this.name);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 * @override
-	 */
-	SymbolNode.prototype.toString = function() {
-	  return this.name;
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @param {Object|function} callback(s)
-	 * @return {String} str
-	 * @override
-	 */
-	SymbolNode.prototype._toTex = function(callbacks) {
-	  return latex.toSymbol(this.name, callbacks);
-	};
-
-	module.exports = SymbolNode;
-
-
-/***/ },
-/* 189 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(185),
-	    IndexNode = __webpack_require__(182);
-
-	/**
-	 * @constructor UpdateNode
-	 * @extends {Node}
-	 * Update a matrix subset, like A[2,3] = 4.5
-	 *
-	 * @param {IndexNode} index             IndexNode containing symbol and ranges
-	 * @param {Node} expr                   The expression defining the symbol
-	 */
-	function UpdateNode(index, expr) {
-	  if (!(this instanceof UpdateNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  if (!(index instanceof IndexNode)) {
-	    throw new TypeError('Expected IndexNode for parameter "index"');
-	  }
-	  if (!(expr instanceof Node)) {
-	    throw new TypeError('Expected Node for parameter "expr"');
-	  }
-
-	  this.index = index;
-	  this.expr = expr;
-	}
-
-	UpdateNode.prototype = new Node();
-
-	UpdateNode.prototype.type = 'UpdateNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	UpdateNode.prototype._compile = function (defs) {
-	  return 'scope["' + this.index.objectName() + '\"] = ' +
-	      this.index.compileSubset(defs,  this.expr._compile(defs));
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	UpdateNode.prototype.forEach = function (callback) {
-	  callback(this.index, 'index', this);
-	  callback(this.expr, 'expr', this);
-	};
-
-	/**
-	 * Create a new UpdateNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {UpdateNode} Returns a transformed copy of the node
-	 */
-	UpdateNode.prototype.map = function (callback) {
-	  return new UpdateNode(
-	      this._ifNode(callback(this.index, 'index', this)),
-	      this._ifNode(callback(this.expr, 'expr', this))
-	  );
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {UpdateNode}
-	 */
-	UpdateNode.prototype.clone = function() {
-	  return new UpdateNode(this.index, this.expr);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String}
-	 */
-	UpdateNode.prototype.toString = function() {
-	  return this.index.toString() + ' = ' + this.expr.toString();
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @param {Object|function} callback(s)
-	 * @return {String}
-	 */
-	UpdateNode.prototype._toTex = function(callbacks) {
-	  return this.index.toTex(callbacks) + ' = ' + this.expr.toTex(callbacks);
-	};
-
-	module.exports = UpdateNode;
 
 
 /***/ },
@@ -35713,13 +35778,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	//
 	// postfix operators are left associative, prefix operators 
 	// are right associative
+	//
+	//It's also possible to set the following properties:
+	// latexParens: if set to false, this node doesn't need to be enclosed
+	//              in parentheses when using LaTeX
+	// latexLeftParens: if set to false, this !OperatorNode's! 
+	//                  left argument doesn't need to be enclosed
+	//                  in parentheses
+	// latexRightParens: the same for the right argument
 	var properties = [
 	  { //assignment
 	    'AssignmentNode': {},
 	    'FunctionAssignmentNode': {}
 	  },
 	  { //conditional expression
-	    'ConditionalNode': {}
+	    'ConditionalNode': {
+	      latexLeftParens: false,
+	      latexRightParens: false,
+	      latexParens: false
+	      //conditionals don't need parentheses in LaTeX because
+	      //they are 2 dimensional
+	    }
 	  },
 	  { //logical or
 	    'OperatorNode:or': {
@@ -35829,7 +35908,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    'OperatorNode:divide': {
 	      associativity: 'left',
-	      associativeWith: []
+	      associativeWith: [],
+	      latexLeftParens: false,
+	      latexRightParens: false,
+	      latexParens: false
+	      //fractions don't require parentheses because
+	      //they're 2 dimensional, so parens aren't needed
+	      //in LaTeX
 	    },
 	    'OperatorNode:dotMultiply': {
 	      associativity: 'left',
@@ -35866,7 +35951,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  { //exponentiation
 	    'OperatorNode:pow': {
 	      associativity: 'right',
-	      associativeWith: []
+	      associativeWith: [],
+	      latexRightParens: false,
+	      //the exponent doesn't need parentheses in
+	      //LaTeX because it's 2 dimensional
+	      //(it's on top)
 	    },
 	    'OperatorNode:dotPow': {
 	      associativity: 'right',
@@ -35981,508 +36070,360 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	// FIXME: remove dependencies on Nodes
-	var ArrayNode = __webpack_require__(177);
-	var OperatorNode = __webpack_require__(186);
-	var SymbolNode = __webpack_require__(188);
-	var ConstantNode = __webpack_require__(181);
-
-	// GREEK LETTERS
-	var greek = {
-	  Alpha: 'A',     alpha: true,
-	  Beta: 'B',      beta: true,
-	  Gamma: true,    gamma: true,
-	  Delta: true,    delta: true,
-	  Epsilon: 'E',   epsilon: true,  varepsilon: true,
-	  Zeta: 'Z',      zeta: true,
-	  Eta: 'H',       eta: true,
-	  Theta: true,    theta: true,    vartheta: true,
-	  Iota: 'I',      iota: true,
-	  Kappa: 'K',     kappa: true,    varkappa: true,
-	  Lambda: true,   lambda: true,
-	  Mu: 'M',        mu: true,
-	  Nu: 'N',        nu: true,
-	  Xi: true,       xi: true,
-	  Omicron: 'O',   omicron: true,
-	  Pi: true,       pi: true,       varpi: true,
-	  Rho: 'P',       rho: true,      varrho: true,
-	  Sigma: true,    sigma: true,    varsigma: true,
-	  Tau: 'T',       tau: true,
-	  Upsilon: true,  upsilon: true,
-	  Phi: true,      phi: true,      varphi: true,
-	  Chi: 'X',       chi: true,
-	  Psi: true,      psi: true,
-	  Omega: true,    omega: true
-	};
-
-	var dots = {
-	  dots: true,
-	  ldots: true,
-	  cdots: true,
-	  vdots: true,
-	  ddots: true,
-	  idots: true
-	};
-
-	var logic = {
+	exports.symbols = {
+	  // GREEK LETTERS
+	  Alpha: 'A',     alpha: '\\alpha',
+	  Beta: 'B',      beta: '\\beta',
+	  Gamma: '\\Gamma',    gamma: '\\gamma',
+	  Delta: '\\Delta',    delta: '\\delta',
+	  Epsilon: 'E',   epsilon: '\\epsilon',  varepsilon: '\\varepsilon',
+	  Zeta: 'Z',      zeta: '\\zeta',
+	  Eta: 'H',       eta: '\\eta',
+	  Theta: '\\Theta',    theta: '\\theta',    vartheta: '\\vartheta',
+	  Iota: 'I',      iota: '\\iota',
+	  Kappa: 'K',     kappa: '\\kappa',    varkappa: '\\varkappa',
+	  Lambda: '\\Lambda',   lambda: '\\lambda',
+	  Mu: 'M',        mu: '\\mu',
+	  Nu: 'N',        nu: '\\nu',
+	  Xi: '\\Xi',       xi: '\\xi',
+	  Omicron: 'O',   omicron: 'o',
+	  Pi: '\\Pi',       pi: '\\pi',       varpi: '\\varpi',
+	  Rho: 'P',       rho: '\\rho',      varrho: '\\varrho',
+	  Sigma: '\\Sigma',    sigma: '\\sigma',    varsigma: '\\varsigma',
+	  Tau: 'T',       tau: '\\tau',
+	  Upsilon: '\\Upsilon',  upsilon: '\\upsilon',
+	  Phi: '\\Phi',      phi: '\\phi',      varphi: '\\varphi',
+	  Chi: 'X',       chi: '\\chi',
+	  Psi: '\\Psi',      psi: '\\psi',
+	  Omega: '\\Omega',    omega: '\\omega',
+	  //logic
 	  'true': '\\mathrm{True}',
-	  'false': '\\mathrm{False}'
-	};
-
-	var other = {
+	  'false': '\\mathrm{False}',
+	  //other
+	  i: 'i', //TODO use \i ??
 	  inf: '\\infty',
 	  Inf: '\\infty',
 	  infinity: '\\infty',
 	  Infinity: '\\infty',
 	  oo: '\\infty',
-	  lim: true,
+	  lim: '\\lim',
 	  'undefined': '\\mathbf{?}'
 	};
 
-	// FUNCTIONS
+	exports.operators = {
+	  'transpose': '^\\top',
+	  'factorial': '!',
+	  'pow': '^',
+	  'dotPow': '.^\\wedge', //TODO find ideal solution
+	  'unaryPlus': '+',
+	  'unaryMinus': '-',
+	  'bitNot': '~', //TODO find ideal solution
+	  'not': '\\neg',
+	  'multiply': '\\cdot',
+	  'divide': '\\frac', //TODO how to handle that properly?
+	  'dotMultiply': '.\\cdot', //TODO find ideal solution
+	  'dotDivide': '.:', //TODO find ideal solution
+	  'mod': '\\mod',
+	  'add': '+',
+	  'subtract': '-',
+	  'to': '\\rightarrow',
+	  'leftShift': '<<',
+	  'rightArithShift': '>>',
+	  'rightLogShift': '>>>',
+	  'equal': '=',
+	  'unequal': '\\neq',
+	  'smaller': '<',
+	  'larger': '>',
+	  'smallerEq': '\\leq',
+	  'largerEq': '\\geq',
+	  'bitAnd': '\\&',
+	  'bitXor': '\\underline{|}',
+	  'bitOr': '|',
+	  'and': '\\wedge',
+	  'xor': '\\veebar',
+	  'or': '\\vee'
+	};
+
+
+	//create a comma separated list of function arguments
+	function functionArgs(args, callbacks) {
+	  return args.map( function (arg) {
+	    return arg.toTex(callbacks);
+	  }).join(',');
+	}
+
+	var defaultTemplate = '\\mathrm{%name%}\\left(%*%\\right)';
+
+	/*
+	 * expand a template
+	 *
+	 * @param {String} template
+	 * @param {String} name of the function
+	 * @param {Array} arguments of the function ( Strings )
+	 **/
+	function expandTemplate(template, name, args) {
+	  //replace %name% with the variable 'name'
+	  template = template.replace(/%name%/g, name);
+
+	  //replace %0%, %1% .... with the arguments in args
+	  args.forEach(function (arg, index) {
+	    template = template.replace(RegExp('%' + index + '%', 'g'), arg);
+	  });
+
+	  //replace %*% with a comma separated list of all arguments
+	  template = template.replace('%*%', args.map(function (arg) {
+	      return arg;
+	    }).join(','));
+
+	  //replace %% with %, this comes in handy when you need a % in your LaTeX string
+	  template = template.replace('%%', '%');
+
+	  return template;
+	}
+
+	//this is a map containing all the latex converters for all the functions
 	var functions = {
-	  acos: '\\cos^{-1}',
-	  arccos: '\\cos^{-1}',
-	  cos: true,
-	  csc: true,
-	  csch: false,
-	  exp: true,
-	  ker: true,
-	  limsup: true,
-	  min: true,
-	  sinh: true,
-	  asin: '\\sin^{-1}',
-	  arcsin: '\\sin^{-1}',
-	  cosh: true,
-	  deg: true,
-	  gcd: true,
-	  lg: true,
-	  ln: true,
-	  Pr: true,
-	  sup: true,
-	  atan: '\\tan^{-1}',
-	  atan2: '\\tan2^{-1}',
-	  arctan: '\\tan^{-1}',
-	  cot: true,
-	  det: true,
-	  hom: true,
-	  log: true,
-	  log10: '\\log_{10}',
-	  sec: true,
-	  sech: false,
-	  tan: true,
-	  arg: true,
-	  coth: true,
-	  dim: true,
-	  inf: true,
-	  max: true,
-	  sin: true,
-	  tanh: true,
+	  //arithmetic
+	  'abs': '\\left|%0%\\right|',
+	  'add': '\\left(%0%+%1%\\right)',
+	  'ceil': '\\left\\lceil%0%\\right\\rceil',
+	  'cube': '\\left(%0%\\right)^3',
+	  'divide': '\\frac{%0%}{%1%}',
+	  'dotDivide': '\\left(%0%' + exports.operators['dotDivide'] + '%1%\\right)',
+	  'dotMultiply': '\\left(%0%' + exports.operators['dotMultiply'] + '%1%\\right)',
+	  'dotPow': '\\left(%0%' + exports.operators['dotPow'] + '%1%\\right)',
+	  'exp': '\\exp\\left(%0%\\right)',
+	  'fix': defaultTemplate,
+	  'floor': '\\left\\lfloor%0%\\right\\rfloor',
+	  'gcd': '\\gcd\\left(%*%\\right)',
+	  'lcm': defaultTemplate,
+	  'log10': '\\log_{10}\\left(%0%\\right)',
+	  'log': {
+	    1: '\\ln\\left(%0%\\right)',
+	    2: '\\log_{%1%}\\left(%0%\\right)'
+	  },
+	  'mod': '\\left(%0%' + exports.operators['mod'] + '%1%\\right)',
+	  'multiply': '\\left(%0%' + exports.operators['multiply'] + '%1%\\right)',
+	  'norm': {
+	    1: '\\left\\|%0%\\right\\|',
+	    2: defaultTemplate
+	  },
+	  'nthRoot': '\\sqrt[%1%]{%0%}',
+	  'pow': '\\left(%0%\\right)' + exports.operators['pow'] + '{%1%}',
+	  'round': {
+	    1: '\\left\\lfloor%0%\\right\\rceil',
+	    2: defaultTemplate
+	  },
+	  'sign': defaultTemplate,
+	  'sqrt': '\\sqrt{%0%}',
+	  'square': '\\left(%0%\\right)^2',
+	  'subtract': '\\left(%0%' + exports.operators['subtract'] + '%1%\\right)',
+	  'unaryMinus': exports.operators['unaryMinus'] + '\\left(%0%\\right)',
+	  'unaryPlus': exports.operators['unaryPlus'] + '\\left(%0%\\right)',
+	  'xgcd': defaultTemplate,
 
-	  fix: false,
-	  lcm: false,
-	  sign: false,
-	  xgcd: false,
-	  unaryMinus: false,
-	  unaryPlus: false,
+	  //bitwise
+	  'bitAnd': '\\left(%0%' + exports.operators['bitAnd'] + '%1%\\right)',
+	  'bitOr': '\\left(%0%' + exports.operators['bitOr'] + '%1%\\right)',
+	  'bitXor': '\\left(%0%' + exports.operators['bitXor'] + '%1%\\right)',
+	  'bitNot': exports.operators['bitNot'] + '\\left(%0%\\right)',
+	  'leftShift': '\\left(%0%' + exports.operators['leftShift'] + '%1%\\right)',
+	  'rightArithShift': '\\left(%0%' + exports.operators['rightArithShift'] + '%1%\\right)',
+	  'rightLogShift': '\\left(%0%' + exports.operators['rightLogShift'] + '%1%\\right)',
 
-	  // complex
-	  complex: false,
-	  conj: false,
-	  im: false,
-	  re: false,
+	  //complex
+	  'arg': '\\arg\\left(%0%\\right)',
+	  'conj': '\\left(%0%\\right)^*',
+	  'im': '\\Im\\left\\lbrace%0%\\right\\rbrace',
+	  're': '\\Re\\left\\lbrace%0%\\right\\rbrace',
 
-	  // matrix
-	  diag: false,
-	  resize: false,
-	  size: false,
-	  squeeze: false,
-	  subset: false,
-	  index: false,
-	  ones: false,
-	  zeros: false,
-	  range: false,
+	  //construction
+	  'bignumber': {
+	    0: '0',
+	    1: '\\left(%0%\\right)'
+	  },
+	  'boolean': defaultTemplate,
+	  'chain': defaultTemplate,
+	  'complex': {
+	    0: '0',
+	    1: '\\left(%0%\\right)',
+	    2: '\\left(\\left(%0%\\right)+'
+	      + exports.symbols['i'] + '\\cdot\\left(%1%\\right)\\right)',
+	  },
+	  'index': defaultTemplate,
+	  'matrix': {
+	    0: '\\begin{bmatrix}\\end{bmatrix}',
+	    1: '\\left(%0%\\right)',
+	    2: '\\left(%0%\\right)'
+	  },
+	  'number': {
+	    0: '0',
+	    1: '\\left(%0%\\right)',
+	    2: '\\left(\\left(%0%\\right)%1%\\right)'
+	  },
+	  'parser': defaultTemplate,
+	  'string': {
+	    0: '""',
+	    1: function (node) {
+	      return '"' + node.args[0].toString() + '"';
+	    }
+	  },
+	  'unit': {
+	    1: '\\left(%0%\\right)',
+	    2: '\\left(\\left(%0%\\right)%1%\\right)'
+	  },
 
-	  // probability
-	  random: false,
+	  //expression TODO does the default even work in this case? (.toTex on the args)
+	  'compile': defaultTemplate,
+	  'eval': defaultTemplate,
+	  'help': defaultTemplate,
+	  'parse': defaultTemplate,
 
-	  // statistics
-	  mean: '\\mu',
-	  median: false,
-	  prod: false,
-	  std: '\\sigma',
-	  'var': '\\sigma^2'
-	};
+	  //logical
+	  'and': '\\left(%0%' + exports.operators['and'] + '%1%\\right)',
+	  'not': exports.operators['not'] + '\\left(%0%\\right)',
+	  'or': '\\left(%0%' + exports.operators['or'] + '%1%\\right)',
+	  'xor': '\\left(%0%' + exports.operators['xor'] + '%1%\\right)',
 
-	// CURLY FUNCTIONS
-	// wrap parameters with {}
-	var curlyFunctions = {
-	  sqrt: true,
-	  inv: true,
-	  int: '\\int',
-	  Int: '\\int',
-	  integrate: '\\int',
-	  eigenvalues: '\\lambda',
-	  liminf: true,
-	  lim: true,
-	  exp: 'e^',
-	  sum: true,
+	  //matrix
+	  'concat': defaultTemplate,
+	  'cross': '\\left(%0%\\right)\\times\\left(%1%\\right)',
+	  'det': '\\det\\left(%0%\\right)',
+	  'diag': defaultTemplate,
+	  'dot': '\\left(%0%\\cdot%1%\\right)',
+	  'eye': defaultTemplate,
+	  'flatten': defaultTemplate,
+	  'inv': '\\left(%0%\\right)^{-1}',
+	  'ones': defaultTemplate,
+	  'range': defaultTemplate,
+	  'resize': defaultTemplate,
+	  'size': defaultTemplate,
+	  'squeeze': defaultTemplate,
+	  'subset': defaultTemplate,
+	  'trace': '\\mathrm{tr}\\left(%0%\\right)',
+	  'transpose': '\\left(%0%\\right)' + exports.operators['transpose'],
+	  'zeros': defaultTemplate,
 
-	  eye: '\\mathbf{I}'
-	};
+	  //probability
+	  'combinations': '\\binom{%0%}{%1%}',
+	  'distribution': defaultTemplate,
+	  'factorial': '\\left(%0%\\right)' + exports.operators['factorial'],
+	  'gamma': '\\Gamma\\left(%0%\\right)',
+	  'permutations': defaultTemplate,
+	  'pickRandom': defaultTemplate,
+	  'randomInt': defaultTemplate,
+	  'random': defaultTemplate,
 
-	var operators = {
-	  '<=': '\\leq',
-	  '>=': '\\geq',
-	  '!=': '\\neq',
-	  'in': true,
-	  '*': '\\cdot',
-	  '/': '\\frac',
-	  'mod': '\\bmod',
-	  'to': '\\rightarrow'
+	  //relational
+	  'compare': defaultTemplate,
+	  'deepEqual': defaultTemplate,
+	  'equal': '\\left(%0%' + exports.operators['equal'] + '%1%\\right)',
+	  'largerEq': '\\left(%0%' + exports.operators['largerEq'] + '%1%\\right)',
+	  'larger': '\\left(%0%' + exports.operators['larger'] + '%1%\\right)',
+	  'smallerEq': '\\left(%0%' + exports.operators['smallerEq'] + '%1%\\right)',
+	  'smaller': '\\left(%0%' + exports.operators['smaller'] + '%1%\\right)',
+	  'unequal': '\\left(%0%' + exports.operators['unequal'] + '%1%\\right)',
+
+	  //statistics
+	  'max': '\\max\\left(%*%\\right)',
+	  'mean': defaultTemplate,
+	  'median': defaultTemplate,
+	  'min': '\\min\\left(%*%\\right)',
+	  'prod': defaultTemplate,
+	  'std': defaultTemplate,
+	  'sum': defaultTemplate,
+	  'var': '\\mathrm{Var}\\left(%*%\\right)',
+
+	  //trigonometry
+	  'acosh': '\\cosh^{-1}\\left(%0%\\right)',
+	  'acos': '\\cos^{-1}\\left(%0%\\right)',
+	  'acoth': '\\coth^{-1}\\left(%0%\\right)',
+	  'acot': '\\cot^{-1}\\left(%0%\\right)',
+	  'acsch': '\\mathrm{csch}^{-1}\\left(%0%\\right)',
+	  'acsc': '\\csc^{-1}\\left(%0%\\right)',
+	  'asech': '\\mathrm{sech}^{-1}\\left(%0%\\right)',
+	  'asec': '\\sec^{-1}\\left(%0%\\right)',
+	  'asinh': '\\sinh^{-1}\\left(%0%\\right)',
+	  'asin': '\\sin^{-1}\\left(%0%\\right)',
+	  'atan2': '\\mathrm{atan2}\\left(%*%\\right)',
+	  'atanh': '\\tanh^{-1}\\left(%0%\\right)',
+	  'atan': '\\tan^{-1}\\left(%0%\\right)',
+	  'cosh': '\\cosh\\left(%0%\\right)',
+	  'cos': '\\cos\\left(%0%\\right)',
+	  'coth': '\\coth\\left(%0%\\right)',
+	  'cot': '\\cot\\left(%0%\\right)',
+	  'csch': '\\mathrm{csch}\\left(%0%\\right)',
+	  'csc': '\\csc\\left(%0%\\right)',
+	  'sech': '\\mathrm{sech}\\left(%0%\\right)',
+	  'sec': '\\sec\\left(%0%\\right)',
+	  'sinh': '\\sinh\\left(%0%\\right)',
+	  'sin': '\\sin\\left(%0%\\right)',
+	  'tanh': '\\tanh\\left(%0%\\right)',
+	  'tan': '\\tan\\left(%0%\\right)',
+
+	  //units
+	  'to': '\\left(%0%' + exports.operators['to'] + '%1%\\right)',
+
+	  //utils
+	  'clone': defaultTemplate,
+	  'filter': defaultTemplate,
+	  'forEach': defaultTemplate,
+	  'format': defaultTemplate,
+	  'import': defaultTemplate,
+	  'map': defaultTemplate,
+	  'print': defaultTemplate,
+	  'sort': defaultTemplate,
+	  'typeof': defaultTemplate
 	};
 
 	var units = {
-	  deg: '^{\\circ}'
+	  deg: '^\\circ'
 	};
 
-	var symbols = {};
-
-	function mapSymbols() {
-	  var args = Array.prototype.slice.call(arguments),
-	      obj;
-	  for (var i = 0, len = args.length; i < len; i++) {
-	    obj = args[i];
-	    for (var key in obj) {
-	      if (obj.hasOwnProperty(key)) {
-	        symbols[key] = obj[key];
-	      }
-	    }
-	  }
-	}
-
-	mapSymbols(
-	  functions,
-	  curlyFunctions,
-	  greek,
-	  dots,
-	  logic,
-	  other
-	);
-
-	function latexIs(arr, value) {
-	  return typeof arr[value] !== 'undefined';
-	}
-
-	function latexIsFn(arr) {
-	  return function(value) {
-	    return latexIs(arr, value);
-	  };
-	}
-
-	function latexToFn(arr) {
-	  return function(value) {
-	    if (typeof arr[value] === 'boolean') {
-	      if (arr[value] === true) {
-	        value = '\\' + value;
-	      }
-	      else {
-	        value = '\\mathrm{' + value + '}';
-	      }
-	    }
-	    else if (typeof arr[value] === 'string') {
-	      value = arr[value];
-	    }
-	    else if (typeof value === 'string') {
-	      var index = value.indexOf('_');
-	      if (index !== -1) {
-	        value = exports.toSymbol(value.substring(0, index)) + '_{' +
-	            exports.toSymbol(value.substring(index+1)) + '}';
-	      }
-	    }
-
-	    return value;
-	  };
-	}
-
-	exports.isSymbol = latexIsFn(symbols);
-	exports.toSymbol = latexToFn(symbols);
-
-	exports.isFunction = latexIsFn(functions);
-	exports.toFunction = latexToFn(functions);
-
-	exports.isCurlyFunction = latexIsFn(curlyFunctions);
-	exports.toCurlyFunction = latexToFn(curlyFunctions);
-
-	exports.isOperator = latexIsFn(operators);
-	exports.toOperator = latexToFn(operators);
-
-	exports.isUnit = latexIsFn(units);
-	exports.toUnit = (function() {
-	  var _toUnit = latexToFn(units);
-
-	  return function(value, notSpaced) {
-	    if (exports.isUnit(value)) {
-	      return _toUnit(value);
-	    }
-
-	    return (notSpaced ? '' : '\\,') + '\\mathrm{' + value + '}';
-	  };
-	}());
-
-	exports.addBraces = function(s, brace, type) {
-	  if (brace === null) {
-	    return s;
+	//FIXME find a good solution so that single characters still
+	//get rendered in regular italic whereas single character units
+	//are rendered with \mathrm
+	exports.toSymbol = function (name) {
+	  if (units.hasOwnProperty(name)) {
+	    return units[name];
 	  }
 
-	  var braces = ['', ''];
-	  type = type || 'normal';
-
-	  if (typeof brace === 'undefined' || brace === false) {
-	    braces = ['{', '}'];
+	  if (exports.symbols.hasOwnProperty(name)) {
+	    return exports.symbols[name];
 	  }
-	  else if (brace === true) {
-	    braces = ['(', ')'];
-	    type = 'lr';
+	  else if (name.indexOf('_') !== -1) {
+	    //symbol with index (eg. alpha_1)
+	    var index = name.indexOf('_');
+	    return exports.toSymbol(name.substring(0, index)) + '_{'
+	      + exports.toSymbol(name.substring(index + 1)) + '}';
 	  }
-	  else if (Array.isArray(brace) && brace.length === 2) {
-	    braces = brace;
-	  }
-	  else {
-	    braces = [brace, brace];
-	  }
-
-	  switch (type) {
-	    case 'normal':
-	    case false:
-	      return braces[0] + s + braces[1];
-
-	    case 'lr':
-	      return '\\left' + braces[0] + '{' + s + '}' + '\\right' + braces[1];
-
-	    case 'be':
-	      return '\\begin{' + braces[0] + '}' + s + '\\end{' + braces[1] + '}';
-	  }
-
-	  return braces[0] + s + braces[1];
+	  return '\\mathrm{' + name + '}';
 	};
 
-	exports.toArgs = function(that, customFunctions) {
-	  var name = that.name,
-	      args = that.args,
-	      func = exports.toSymbol(that.name),
-	      texParams = null,
-	      brace = null,
-	      type = false,
-	      showFunc = false,
-	      prefix = '',
-	      suffix = '',
-	      op = null;
+	//returns the latex output for a given function
+	exports.toFunction = function (node, callbacks, name) {
+	  var latexConverter = functions[name];
+	  var args = node.args.map(function (arg) { //get LaTeX of the arguments
+	    return arg.toTex(callbacks);
+	  });
 
-	  switch (name) {
-	    // OPERATORS
-	    case 'add':
-	      op = '+';
-	      break;
-
-	    case 'subtract':
-	      op = '-';
-	      break;
-
-	    case 'larger':
-	      op = '>';
-	      break;
-
-	    case 'largerEq':
-	      op = '>=';
-	      break;
-
-	    case 'smaller':
-	      op = '<';
-	      break;
-
-	    case 'smallerEq':
-	      op = '<=';
-	      break;
-
-	    case 'unequal':
-	      op = '!=';
-	      break;
-
-	    case 'equal':
-	      op = '=';
-	      break;
-
-	    case 'mod':
-	      op = 'mod';
-	      break;
-
-	    case 'multiply':
-	      op = '*';
-	      break;
-
-	    case 'pow':
-	      op = '^';
-	      break;
-
-	    case 'concat':
-	      op = '||';
-	      break;
-
-	    case 'factorial':
-	      op = '!';
-	      break;
-
-	    case 'permutations':
-	      if (args.length === 1) {
-	        if (args[0] instanceof SymbolNode || args[0] instanceof ConstantNode) {
-	          op = '!';
-	        }
-	        else {
-	          return '{\\left(' + args[0].toTex(customFunctions) + '\\right)!}';
-	        }
+	  switch (typeof latexConverter) {
+	    case 'function': //a callback function
+	      return latexConverter(node, callbacks);
+	    case 'string': //a template string
+	      return expandTemplate(latexConverter, name, args);
+	    case 'object': //an object with different "converters" for different numbers of arguments
+	      switch (typeof latexConverter[args.length]) {
+	        case 'function':
+	          return latexConverter[args.length](node, callbacks);
+	        case 'string':
+	          return expandTemplate(latexConverter[args.length], name, args);
 	      }
-	      else {
-	        // op = 'P';
-	        var n = args[0].toTex(customFunctions),
-	            k = args[1].toTex(customFunctions);
-	        return '\\frac{' + n + '!}{\\left(' + n + ' - ' + k + '\\right)!}';
-	      }
-	      break;
-
-	    // probability
-	    case 'combinations':
-	      op = '\\choose';
-	      break;
-
-	    // LR BRACES
-	    case 'abs':
-	      brace = '|';
-	      type = 'lr';
-	      break;
-
-	    case 'norm':
-	      brace = '\\|';
-	      type = 'lr';
-
-	      if (args.length === 2) {
-	        var tmp = args[1].toTex(customFunctions);
-
-	        if (tmp === '\\text{inf}') {
-	          tmp = '\\infty';
-	        }
-	        else if (tmp === '\\text{-inf}') {
-	          tmp = '{- \\infty}';
-	        }
-	        else if (tmp === '\\text{fro}') {
-	          tmp = 'F';
-	        }
-
-	        suffix = '_{' + tmp + '}';
-	        args = [args[0]];
-	      }
-	      break;
-
-	    case 'ceil':
-	      brace = ['\\lceil', '\\rceil'];
-	      type = 'lr';
-	      break;
-
-	    case 'floor':
-	      brace = ['\\lfloor', '\\rfloor'];
-	      type = 'lr';
-	      break;
-
-	    case 'round':
-	      brace = ['\\lfloor', '\\rceil'];
-	      type = 'lr';
-
-	      if (args.length === 2) {
-	        suffix = '_' + exports.addBraces(args[1].toTex(customFunctions));
-	        args = [args[0]];
-	      }
-	      break;
-
-
-	    // NORMAL BRACES
-	    case 'inv':
-	      suffix = '^{-1}';
-	      break;
-
-	    case 'transpose':
-	      suffix = '^{T}';
-	      brace = false;
-	      break;
-
-	    // SPECIAL NOTATION
-	    case 'log':
-	      var base = 'e';
-	      if (args.length === 2) {
-	        base = args[1].toTex(customFunctions);
-	        func = '\\log_{' + base + '}';
-	        args = [args[0]];
-	      }
-	      if (base === 'e') {
-	        func = '\\ln';
-	      }
-
-	      showFunc = true;
-	      break;
-
-	    case 'square':
-	      suffix = '^{2}';
-	      break;
-
-	    case 'cube':
-	      suffix = '^{3}';
-	      break;
-
-
-	    // MATRICES
-	    case 'eye':
-	      showFunc = true;
-	      brace = false;
-	      func += '_';
-	      break;
-
-	    case 'det':
-	      if (that.args[0] instanceof ArrayNode) {
-	        //FIXME passing 'vmatrix' like that is really ugly
-	        that.args[0].latexType = 'vmatrix';
-	        var latex = that.args[0].toTex(customFunctions);
-	        delete that.args[0].latexType;
-	        return latex;
-	      }
-
-	      brace = 'vmatrix';
-	      type = 'be';
-	      break;
-
+	      //no break here! That's intentionally
 	    default:
-	      showFunc = true;
-	      break;
+	      return expandTemplate(defaultTemplate, name, args);
 	  }
-
-	  if (op !== null) {
-	    brace = (op === '+' || op === '-');
-	    texParams = (new OperatorNode(op, name, args)).toTex(customFunctions);
-	  }
-	  else {
-	    op = ', ';
-	  }
-
-	  if (brace === null && !exports.isCurlyFunction(name)) {
-	    brace = true;
-	  }
-
-	  texParams = texParams || args.map(function(param) {
-	    return '{' + param.toTex(customFunctions) + '}'  ;
-	  }).join(op);
-
-	  return prefix + (showFunc ? func : '') +
-	      exports.addBraces(texParams, brace, type) +
-	      suffix;
-	};
+	}
 
 
 /***/ }

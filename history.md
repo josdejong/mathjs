@@ -4,6 +4,22 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h2 id="20150422-version-160">2015-04-22, version 1.6.0 <a href="#20150422-version-160" title="Permalink">#</a></h2>
+
+- Improvements in `toTex`. Thanks @FSMaxB.
+- Fixed #328: `abs(0 + 0i)` evaluated to `NaN`.
+- Fixed not being able to override lazy loaded constants.
+
+
+<h2 id="20150409-version-152">2015-04-09, version 1.5.2 <a href="#20150409-version-152" title="Permalink">#</a></h2>
+
+- Fixed #313: parsed functions did not handle recursive calls correctly.
+- Fixed #251: binary prefix and SI prefix incorrectly used for byte. Now 
+  following SI standards (`1 KiB == 1024 B`, `1 kB == 1000 B`).
+- Performance improvements in parsed functions.
+
+
 <h2 id="20150408-version-151">2015-04-08, version 1.5.1 <a href="#20150408-version-151" title="Permalink">#</a></h2>
 
 - Fixed #316: a bug in rounding values when formatting.
