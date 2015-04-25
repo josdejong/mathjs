@@ -10,7 +10,8 @@ describe('factory', function() {
       matrix: 'matrix',
       number: 'number',
       precision: 64,
-      epsilon: 1e-14
+      epsilon: 1e-14,
+      parenthesis: 'automatic'
     });
   });
 
@@ -25,7 +26,8 @@ describe('factory', function() {
       matrix: 'array',
       number: 'bignumber',
       precision: 64,
-      epsilon: 1e-14
+      epsilon: 1e-14,
+      parenthesis: 'automatic'
     });
   });
 
@@ -61,21 +63,24 @@ describe('factory', function() {
       matrix: 'matrix',
       number: 'number',
       precision: 64,
-      epsilon: 1e-14
+      epsilon: 1e-14,
+      parenthesis: 'automatic'
     });
 
     math1.config({
       matrix: 'array',
       number: 'bignumber',
       precision: 32,
-      epsilon: 1e-7
+      epsilon: 1e-7,
+      parenthesis: 'keep'
     });
 
     assert.deepEqual(math1.config(), {
       matrix: 'array',
       number: 'bignumber',
       precision: 32,
-      epsilon: 1e-7
+      epsilon: 1e-7,
+      parenthesis: 'keep'
     });
 
     // restore the original config

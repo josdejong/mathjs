@@ -5,7 +5,9 @@ var math = require('../../index');
 var ArgumentsError = require('../../lib/error/ArgumentsError');
 var parse = math.expression.parse;
 var ConditionalNode = require('../../lib/expression/node/ConditionalNode');
+var ConstantNode = require('../../lib/expression/node/ConstantNode');
 var OperatorNode = require('../../lib/expression/node/OperatorNode');
+var ParenthesisNode = require('../../lib/expression/node/ParenthesisNode');
 var RangeNode = require('../../lib/expression/node/RangeNode');
 var Complex = math.type.Complex;
 var Matrix = math.type.Matrix;
@@ -671,6 +673,31 @@ describe('parse', function() {
 
     it('should throw an error in case of unclosed parentheses', function () {
       assert.throws(function () {parseAndEval('3 * (1 + 2')}, /Parenthesis \) expected/);
+    });
+
+    it('should parse parentheses in "keep" mode', function () {
+      var manualMath = math.create({parenthesis: 'keep'});
+
+      var a = manualMath.parse('((1))');
+      var b = manualMath.parse('((1+(1)))');
+      var c = manualMath.parse('(1+2)*(3+4)');
+      var d = manualMath.parse('(1+(2*3)+4)');
+
+      var c1 = new ConstantNode(1);
+      var c2 = new ConstantNode(2);
+      var c3 = new ConstantNode(3);
+      var c4 = new ConstantNode(4);
+
+      var p1 = new ParenthesisNode(c1);
+      var p2 = new ParenthesisNode(new OperatorNode('+', 'add', [c1, c2]));
+      var p3 = new ParenthesisNode(new OperatorNode('+', 'add', [c3, c4]));
+      var p4 = new ParenthesisNode(new OperatorNode('*', 'multiply', [c2, c3]));
+      var p5 = new ParenthesisNode(new OperatorNode('+', 'add', [new OperatorNode('+', 'add', [c1, p4]), c4]));
+
+      assert.deepEqual(a, new ParenthesisNode(p1));
+      assert.deepEqual(b, new ParenthesisNode(new ParenthesisNode(new OperatorNode('+', 'add', [c1, p1]))));
+      assert.deepEqual(c, new OperatorNode('*', 'multiply', [p2, p3]));
+      assert.deepEqual(d, p5);
     });
   });
 
