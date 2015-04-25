@@ -252,10 +252,7 @@ describe('multiply', function() {
       r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'dense'));
       assert.equal(r, 39);
 
-      r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'ccs'));
-      assert.equal(r, 39);
-
-      r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'crs'));
+      r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'sparse'));
       assert.equal(r, 39);
     });
 
@@ -268,10 +265,7 @@ describe('multiply', function() {
       r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'dense'));
       assert.equal(r, 39);
 
-      r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'ccs'));
-      assert.equal(r, 39);
-
-      r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'crs'));
+      r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'sparse'));
       assert.equal(r, 39);
     });
 
@@ -344,18 +338,7 @@ describe('multiply', function() {
       r = multiply(m, math.matrix([
         [2, 0],
         [4, 0]
-      ], 'ccs'));
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [4, 0],
-          [8, 0]
-        ]);
-
-      r = multiply(m, math.matrix([
-        [2, 0],
-        [4, 0]
-      ], 'crs'));
+      ], 'sparse'));
       assert.deepEqual(
         r.valueOf(),
         [
@@ -367,15 +350,7 @@ describe('multiply', function() {
     it('should multiply matrix x matrix', function() {
       var m = math.matrix([[1, 2], [3, 4]], 'dense');
 
-      var r = multiply(m, math.matrix([[5, 6], [7, 8]], 'ccs'));
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [19, 22],
-          [43, 50]
-        ]);
-
-      r = multiply(m, math.matrix([[5, 6], [7, 8]], 'crs'));
+      var r = multiply(m, math.matrix([[5, 6], [7, 8]], 'sparse'));
       assert.deepEqual(
         r.valueOf(),
         [
@@ -531,10 +506,10 @@ describe('multiply', function() {
     });
   });
 
-  describe('CCS Matrix', function () {
+  describe('Sparse Matrix', function () {
 
     it('should multiply matrix x scalar', function() {
-      var m = math.matrix([[2, 0], [4, 0]], 'ccs');
+      var m = math.matrix([[2, 0], [4, 0]], 'sparse');
 
       var r = multiply(m, 3);
       assert.deepEqual(r._size, m._size);
@@ -568,17 +543,9 @@ describe('multiply', function() {
     });
 
     it('should multiply matrix x matrix with zeros', function() {
-      var m = math.matrix([[2, 0], [4, 0]], 'ccs');
+      var m = math.matrix([[2, 0], [4, 0]], 'sparse');
 
-      var r = multiply(m, math.matrix([[2, 0], [4, 0]], 'ccs'));
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [4, 0],
-          [8, 0]
-        ]);
-
-      r = multiply(m, math.matrix([[2, 0], [4, 0]], 'crs'));
+      var r = multiply(m, math.matrix([[2, 0], [4, 0]], 'sparse'));
       assert.deepEqual(
         r.valueOf(),
         [
@@ -596,17 +563,9 @@ describe('multiply', function() {
     });
 
     it('should multiply matrix x matrix', function() {
-      var m = math.matrix([[1, 2], [3, 4]], 'ccs');
+      var m = math.matrix([[1, 2], [3, 4]], 'sparse');
 
-      var r = multiply(m, math.matrix([[5, 6], [7, 8]], 'ccs'));
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [19, 22],
-          [43, 50]
-        ]);
-
-      r = multiply(m, math.matrix([[5, 6], [7, 8]], 'crs'));
+      var r = multiply(m, math.matrix([[5, 6], [7, 8]], 'sparse'));
       assert.deepEqual(
         r.valueOf(),
         [
@@ -624,7 +583,7 @@ describe('multiply', function() {
     });
 
     it('should multiply matrix x array', function() {
-      var m = math.matrix([[2, 0], [4, 0]], 'ccs');
+      var m = math.matrix([[2, 0], [4, 0]], 'sparse');
 
       var r = multiply(m, 
                        [
@@ -652,7 +611,7 @@ describe('multiply', function() {
     });
 
     it('should multiply matrix x vector array', function() {
-      var m = math.matrix([[2, 0], [4, 0]], 'ccs');
+      var m = math.matrix([[2, 0], [4, 0]], 'sparse');
 
       var r = multiply(m, 
                        [
@@ -668,30 +627,30 @@ describe('multiply', function() {
     });
 
     it ('should squeeze scalar results of matrix * matrix', function () {
-      var a = math.matrix([[1, 2, 3]], 'ccs');
-      var b = math.matrix([[4], [5], [6]], 'ccs');
+      var a = math.matrix([[1, 2, 3]], 'sparse');
+      var b = math.matrix([[4], [5], [6]], 'sparse');
       assert.strictEqual(multiply(a, b), 32);
     });
 
     it ('should squeeze scalar results of matrix * vector', function () {
-      var a = math.matrix([[1, 2, 3]], 'ccs');
+      var a = math.matrix([[1, 2, 3]], 'sparse');
       var b = [4, 5, 6];
       assert.strictEqual(multiply(a, b), 32);
     });
 
     it('should throw an error when multiplying matrices with incompatible sizes', function() {
       // vector * vector
-      assert.throws(function () {math.matrix([1,1], 'ccs').multiply([1, 1, 1]);});
+      assert.throws(function () {math.matrix([1,1], 'sparse').multiply([1, 1, 1]);});
 
       // matrix * matrix
-      assert.throws(function () {math.matrix([[1,1]], 'ccs').multiply([[1,1]]);});
-      assert.throws(function () {math.matrix([[1,1]], 'ccs').multiply([[1,1], [1,1], [1,1]]);});
+      assert.throws(function () {math.matrix([[1,1]], 'sparse').multiply([[1,1]]);});
+      assert.throws(function () {math.matrix([[1,1]], 'sparse').multiply([[1,1], [1,1], [1,1]]);});
 
       // matrix * vector
-      assert.throws(function () {math.matrix([[1,1], [1,1]], 'ccs').multiply([1,1,1]);});
+      assert.throws(function () {math.matrix([[1,1], [1,1]], 'sparse').multiply([1,1,1]);});
 
       // vector * matrix
-      assert.throws(function () {math.matrix([1,1,1], 'ccs').multiply([[1,1], [1,1]]);});
+      assert.throws(function () {math.matrix([1,1,1], 'sparse').multiply([[1,1], [1,1]]);});
     });
 
     it('should multiply triangular matrices', function () {
@@ -700,13 +659,13 @@ describe('multiply', function() {
         [-0.5, 1, 0, 0],  
         [0, -0.7, 1, 0],  
         [0.0666667, -0.4, -0.5714286, 1]
-      ], 'ccs');
+      ], 'sparse');
       var u = math.matrix([
         [240, -2700, 6480, -4200],
         [0, -150, 540, -420],
         [0, 0, -42, 56],
         [0, 0, 0, 4]
-      ], 'ccs');
+      ], 'sparse');
 
       var r = multiply(l, u);
 
@@ -717,231 +676,31 @@ describe('multiply', function() {
           [-120, 1200, -2700, 1680],
           [0, 105, -420, 350],
           [16, -120, 240, -140]
-        ], 'ccs'));
+        ], 'sparse'));
     });
 
-    var a = matrix([[1,2],[3,4]], 'ccs');
-    var b = matrix([[5,6],[7,8]], 'ccs');
-    var c = matrix([[5],[6]], 'ccs');
-    var d = matrix([[5,6]], 'ccs');
+    var a = matrix([[1,2],[3,4]], 'sparse');
+    var b = matrix([[5,6],[7,8]], 'sparse');
+    var c = matrix([[5],[6]], 'sparse');
+    var d = matrix([[5,6]], 'sparse');
 
     it('should perform element-wise multiplication if multiplying a matrix and a number', function() {
-      approx.deepEqual(multiply(a, 3), matrix([[3,6],[9,12]], 'ccs'));
-      approx.deepEqual(multiply(3, a), matrix([[3,6],[9,12]], 'ccs'));
+      approx.deepEqual(multiply(a, 3), matrix([[3,6],[9,12]], 'sparse'));
+      approx.deepEqual(multiply(3, a), matrix([[3,6],[9,12]], 'sparse'));
     });
 
     it('should perform matrix multiplication', function () {
-      approx.deepEqual(multiply(a, b), matrix([[19,22],[43,50]], 'ccs'));
-      approx.deepEqual(multiply(a, c), matrix([[17],[39]], 'ccs'));
-      approx.deepEqual(multiply(d, a), matrix([[23,34]], 'ccs'));
-      approx.deepEqual(multiply(d, b), matrix([[67,78]], 'ccs'));
-      approx.deepEqual(multiply(d, c), 61);
-    });
-  });
-
-  describe('CRS Matrix', function () {
-
-    it('should multiply matrix x scalar', function() {
-      var m = math.matrix([[2, 0], [4, 0]], 'crs');
-
-      var r = multiply(m, 3);
-      assert.deepEqual(r._size, m._size);
-      assert.deepEqual(r._values, [6, 12]);
-      assert.deepEqual(r._index, m._index);
-      assert.deepEqual(r._ptr, m._ptr);
-
-      r = multiply(m, math.complex(3, 3));
-      assert.deepEqual(r._size, m._size);
-      assert.deepEqual(r._values, [math.complex(6, 6), math.complex(12, 12)]);
-      assert.deepEqual(r._index, m._index);
-      assert.deepEqual(r._ptr, m._ptr);
-
-      r = multiply(m, math.bignumber(3));
-      assert.deepEqual(r._size, m._size);
-      assert.deepEqual(r._values, [math.bignumber(6), math.bignumber(12)]);
-      assert.deepEqual(r._index, m._index);
-      assert.deepEqual(r._ptr, m._ptr);
-
-      r = multiply(m, true);
-      assert.deepEqual(r._size, m._size);
-      assert.deepEqual(r._values, [2, 4]);
-      assert.deepEqual(r._index, m._index);
-      assert.deepEqual(r._ptr, m._ptr);
-
-      r = multiply(m, false);
-      assert.deepEqual(r._size, m._size);
-      assert.deepEqual(r._values, []);
-      assert.deepEqual(r._index, []);
-      assert.deepEqual(r._ptr, [0, 0, 0]);
-    });
-
-    it('should multiply matrix x matrix with zeros', function() {
-      var m = math.matrix([[2, 0], [4, 0]], 'crs');
-
-      var r = multiply(m, math.matrix([[2, 0], [4, 0]], 'ccs'));
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [4, 0],
-          [8, 0]
-        ]);
-
-      r = multiply(m, math.matrix([[2, 0], [4, 0]], 'crs'));
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [4, 0],
-          [8, 0]
-        ]);
-
-      r = multiply(m, math.matrix([[2, 0], [4, 0]], 'dense'));
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [4, 0],
-          [8, 0]
-        ]);
-    });
-
-    it('should multiply matrix x matrix', function() {
-      var m = math.matrix([[1, 2], [3, 4]], 'crs');
-
-      var r = multiply(m, math.matrix([[5, 6], [7, 8]], 'ccs'));
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [19, 22],
-          [43, 50]
-        ]);
-
-      r = multiply(m, math.matrix([[5, 6], [7, 8]], 'crs'));
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [19, 22],
-          [43, 50]
-        ]);
-
-      r = multiply(m, math.matrix([[5, 6], [7, 8]], 'dense'));
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [19, 22],
-          [43, 50]
-        ]);
-    });
-
-    it('should multiply matrix x array', function() {
-      var m = math.matrix([[2, 0], [4, 0]], 'crs');
-
-      var r = multiply(m, [[2, 0], [4, 0]]);
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [4, 0],
-          [8, 0]
-        ]);
-
-      r = multiply(m, [[2, 0, 1], [4, 0, 1]]);
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [4, 0, 2],
-          [8, 0, 4]
-        ]);
-    });
-
-    it('should multiply matrix x vector array', function() {
-      var m = math.matrix([[2, 0], [4, 0]], 'crs');
-
-      var r = multiply(m, 
-                       [
-        [2],
-        [4]
-      ]);
-      assert.deepEqual(
-        r.valueOf(),
-        [
-          [4],
-          [8]
-        ]);
-    });
-
-    it ('should squeeze scalar results of matrix * matrix', function () {
-      var a = math.matrix([[1, 2, 3]], 'crs');
-      var b = math.matrix([[4], [5], [6]], 'crs');
-      assert.strictEqual(multiply(a, b), 32);
-    });
-
-    it ('should squeeze scalar results of matrix * vector', function () {
-      var a = math.matrix([[1, 2, 3]], 'crs');
-      var b = [4, 5, 6];
-      assert.strictEqual(multiply(a, b), 32);
-    });
-
-    it('should throw an error when multiplying matrices with incompatible sizes', function() {
-      // vector * vector
-      assert.throws(function () {math.matrix([1,1], 'crs').multiply([1, 1, 1]);});
-
-      // matrix * matrix
-      assert.throws(function () {math.matrix([[1,1]], 'crs').multiply([[1,1]]);});
-      assert.throws(function () {math.matrix([[1,1]], 'crs').multiply([[1,1], [1,1], [1,1]]);});
-
-      // matrix * vector
-      assert.throws(function () {math.matrix([[1,1], [1,1]], 'crs').multiply([1,1,1]);});
-
-      // vector * matrix
-      assert.throws(function () {math.matrix([1,1,1], 'crs').multiply([[1,1], [1,1]]);});
-    });
-
-    it('should multiply triangular matrices', function () {
-      var l = math.matrix([
-        [1, 0, 0, 0],
-        [-0.5, 1, 0, 0],  
-        [0, -0.7, 1, 0],  
-        [0.0666667, -0.4, -0.5714286, 1]
-      ], 'crs');
-      var u = math.matrix([
-        [240, -2700, 6480, -4200],
-        [0, -150, 540, -420],
-        [0, 0, -42, 56],
-        [0, 0, 0, 4]
-      ], 'crs');
-
-      var r = multiply(l, u);
-
-      approx.deepEqual(
-        r,
-        math.matrix([
-          [240, -2700, 6480, -4200],
-          [-120, 1200, -2700, 1680],
-          [0, 105, -420, 350],
-          [16, -120, 240, -140]
-        ], 'crs'));
-    });
-
-    var a = matrix([[1,2],[3,4]], 'crs');
-    var b = matrix([[5,6],[7,8]], 'crs');
-    var c = matrix([[5],[6]], 'crs');
-    var d = matrix([[5,6]], 'crs');
-
-    it('should perform element-wise multiplication if multiplying a matrix and a number', function() {
-      approx.deepEqual(multiply(a, 3), matrix([[3,6],[9,12]], 'crs'));
-      approx.deepEqual(multiply(3, a), matrix([[3,6],[9,12]], 'crs'));
-    });
-
-    it('should perform matrix multiplication', function () {
-      approx.deepEqual(multiply(a, b), matrix([[19,22],[43,50]], 'crs'));
-      approx.deepEqual(multiply(a, c), matrix([[17],[39]], 'crs'));
-      approx.deepEqual(multiply(d, a), matrix([[23,34]], 'crs'));
-      approx.deepEqual(multiply(d, b), matrix([[67,78]], 'crs'));
+      approx.deepEqual(multiply(a, b), matrix([[19,22],[43,50]], 'sparse'));
+      approx.deepEqual(multiply(a, c), matrix([[17],[39]], 'sparse'));
+      approx.deepEqual(multiply(d, a), matrix([[23,34]], 'sparse'));
+      approx.deepEqual(multiply(d, b), matrix([[67,78]], 'sparse'));
       approx.deepEqual(multiply(d, c), 61);
     });
   });
 
   describe('Matrix Market', function () {
 
-    it('should multiply matrix x matrix 1220 x 1220, Matrix Market, css x ccs', function (done) {
+    it('should multiply matrix x matrix 1220 x 1220, Matrix Market, sparse x sparse', function (done) {
       // import matrix
       market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
         .then(function (matrices) {
@@ -949,127 +708,6 @@ describe('multiply', function() {
           var m = matrices[0];
           // multiply matrices, used to compare performance in different implementations
           math.multiply(m, m);
-          // indicate test has completed
-          done();
-        })
-        .fail(function (error) {
-          // indicate test has completed
-          done(error);
-        });
-    });
-
-    it('should multiply matrix x matrix 1220 x 1220, Matrix Market, crs x crs matrix', function (done) {
-      // import matrix
-      market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
-        .then(function (matrices) {
-          // matrix, convert it to crs
-          var m = math.matrix(matrices[0], 'crs');
-          // multiply matrices, used to compare performance in different implementations
-          math.multiply(m, m);
-          // indicate test has completed
-          done();
-        })
-        .fail(function (error) {
-          // indicate test has completed
-          done(error);
-        });
-    });
-
-    it('should multiply matrix x matrix 1220 x 1220, Matrix Market, crs x ccs matrix', function (done) {
-      // import matrix
-      market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
-        .then(function (matrices) {
-          // matrix, convert it to crs
-          var m = matrices[0];
-          // multiply matrices, used to compare performance in different implementations
-          math.multiply(math.matrix(m, 'crs'), m);
-          // indicate test has completed
-          done();
-        })
-        .fail(function (error) {
-          // indicate test has completed
-          done(error);
-        });
-    });
-
-    it('should multiply matrix x matrix 1220 x 1220, Matrix Market, ccs x crs matrix', function (done) {
-      // import matrix
-      market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
-        .then(function (matrices) {
-          // matrix, convert it to crs
-          var m = matrices[0];
-          // multiply matrices, used to compare performance in different implementations
-          math.multiply(m, math.matrix(m, 'crs'));
-          // indicate test has completed
-          done();
-        })
-        .fail(function (error) {
-          // indicate test has completed
-          done(error);
-        });
-    });
-
-    it('should multiply matrix x matrix 1220 x 1220, Matrix Market, dense x ccs matrix', function (done) {
-      // import matrix
-      market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
-        .then(function (matrices) {
-          // matrix, convert it to crs
-          var m = matrices[0];
-          // multiply matrices, used to compare performance in different implementations
-          math.multiply(math.matrix(m, 'dense'), m);
-          // indicate test has completed
-          done();
-        })
-        .fail(function (error) {
-          // indicate test has completed
-          done(error);
-        });
-    });
-
-    it('should multiply matrix x matrix 1220 x 1220, Matrix Market, ccs x dense matrix', function (done) {
-      // import matrix
-      market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
-        .then(function (matrices) {
-          // matrix, convert it to crs
-          var m = matrices[0];
-          // multiply matrices, used to compare performance in different implementations
-          math.multiply(m, math.matrix(m, 'dense'));
-          // indicate test has completed
-          done();
-        })
-        .fail(function (error) {
-          // indicate test has completed
-          done(error);
-        });
-    });
-
-    it('should multiply matrix x matrix 1220 x 1220, Matrix Market, dense x crs matrix', function (done) {
-      // import matrix
-      market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
-        .then(function (matrices) {
-          // matrix, convert it to crs
-          var m = matrices[0];
-          // multiply matrices, used to compare performance in different implementations
-          math.multiply(math.matrix(m, 'dense'), math.matrix(m, 'crs'));
-          // indicate test has completed
-          done();
-        })
-        .fail(function (error) {
-          // indicate test has completed
-          done(error);
-        });
-    });
-
-    it('should multiply matrix x matrix 1220 x 1220, Matrix Market, crs x dense matrix', function (done) {
-      // increment timeout, TODO: improve algorithm performance! Travis CI tests failing on node v0.10.38!
-      this.timeout(4000);
-      // import matrix
-      market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
-        .then(function (matrices) {
-          // matrix, convert it to crs
-          var m = matrices[0];
-          // multiply matrices, used to compare performance in different implementations
-          math.multiply(math.matrix(m, 'crs'), math.matrix(m, 'dense'));
           // indicate test has completed
           done();
         })

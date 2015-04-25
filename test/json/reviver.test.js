@@ -115,25 +115,14 @@ describe('reviver', function () {
     assert.deepEqual(obj, m);
   });
 
-  it('should parse a Matrix, ccs storage format', function () {
-    var json = '{"mathjs":"CcsMatrix","values":[1,3,2,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
-    var m = math.matrix([[1,2],[3,4]], 'ccs');
+  it('should parse a Matrix, sparse', function () {
+    var json = '{"mathjs":"SparseMatrix","values":[1,3,2,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
+    var m = math.matrix([[1,2],[3,4]], 'sparse');
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof math.type.CcsMatrix);
+    assert(obj instanceof math.type.SparseMatrix);
     assert(obj instanceof math.type.Matrix);
-    assert.deepEqual(obj, m);
-  });
-
-  it('should parse a Matrix, crs storage format', function () {
-    var json = '{"mathjs":"CrsMatrix","values":[1,2,3,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
-    var m = math.matrix([[1,2],[3,4]], 'crs');
-
-    var obj = JSON.parse(json, reviver);
-
-    assert(obj instanceof math.type.Matrix);
-    assert(obj instanceof math.type.CrsMatrix);
     assert.deepEqual(obj, m);
   });
 

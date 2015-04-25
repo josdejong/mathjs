@@ -17,13 +17,8 @@ describe('matrix', function() {
     assert.deepEqual(math.size(a), matrix([0]));
   });
   
-  it('should create empty matrix, ccs format', function() {
-    var a = matrix('ccs');
-    assert.ok(a instanceof math.type.Matrix);
-  });
-  
-  it('should create empty matrix, crs format', function() {
-    var a = matrix('crs');
+  it('should create empty matrix, sparse', function() {
+    var a = matrix('sparse');
     assert.ok(a instanceof math.type.Matrix);
   });
   
@@ -42,18 +37,11 @@ describe('matrix', function() {
     assert.deepEqual(math.size(c), matrix([2,2], 'dense'));
   });
   
-  it('should be the identity if called with a matrix, CCS format', function() {
-    var b = matrix([[1,2],[3,4]], 'ccs');
-    var c = matrix(b, 'ccs');
+  it('should be the identity if called with a matrix, sparse', function() {
+    var b = matrix([[1,2],[3,4]], 'sparse');
+    var c = matrix(b, 'sparse');
     assert.ok(c._values != b._values); // data should be cloned
-    assert.deepEqual(c, matrix([[1,2],[3,4]], 'ccs'));
-  });
-  
-  it('should be the identity if called with a matrix, CRS format', function() {
-    var b = matrix([[1,2],[3,4]], 'crs');
-    var c = matrix(b, 'crs');
-    assert.ok(c._values != b._values); // data should be cloned
-    assert.deepEqual(c, matrix([[1,2],[3,4]], 'crs'));
+    assert.deepEqual(c, matrix([[1,2],[3,4]], 'sparse'));
   });
 
   it('should create a matrix from a range correctly', function() {
