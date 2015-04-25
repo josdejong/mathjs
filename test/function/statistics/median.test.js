@@ -83,4 +83,10 @@ describe('median', function() {
     assert.equal(expression.toTex(), '\\mathrm{median}\\left(1,2,3,4\\right)');
   });
 
+  it('should not mutate the array', function() {
+    var a = [3,2,1];
+    var b = median(a);
+    assert.deepEqual(a,[3,2,1]);
+  });
+
 });
