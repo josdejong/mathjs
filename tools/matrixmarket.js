@@ -18,13 +18,15 @@ var _importFromStream = function (stream, deferred) {
   var headerRegex = /%%MatrixMarket ([a-zA-Z]+) ([a-zA-Z]+) ([a-zA-Z]+) ([a-zA-Z]+)/;
   var coordinateHeaderRegex = /(\d+) (\d+) (\d+)/;
   var coordinateDataRegex = /(\d+) (\d+) (.*)/;
+  var coordinatePatternRegex = /(\d+) (\d+)/;
   var arrayHeaderRegex = /(\d+) (\d+)/;
   var arrayDataRegex = /(\d+)/;
   
   // Matrix Market supported formats
   var typecodes = ['matrix'];
   var formats = ['coordinate', 'array'];
-  var datatypes = ['real'];
+  var datatypes = ['real', 'pattern'];
+  var qualifiers = ['general', 'symmetric'];
 
   // matrix data
   var mm = null;
@@ -38,6 +40,7 @@ var _importFromStream = function (stream, deferred) {
       var typecode = matches[1];
       var format = matches[2];
       var datatype = matches[3];
+      var qualifier = matches[4];
       // check typecode
       if (typecodes.indexOf(typecode) === -1) {
         // typecode not supported
@@ -59,11 +62,19 @@ var _importFromStream = function (stream, deferred) {
         // close stream
         stream.close();
       }
+      if (qualifiers.indexOf(qualifier) === -1) {
+        // typecode not supported
+        deferred.reject(new Error('Matrix Market qualifier is not supported: ' + qualifier));
+        // close stream
+        stream.close();
+      }
+      
       // initialize matrix market structure
       mm = {
         typecode: typecode,
         format: format,
         datatype: datatype,
+        qualifier: qualifier,
         data: null
       };
     }
@@ -110,6 +121,8 @@ var _importFromStream = function (stream, deferred) {
     switch (mm.datatype) {
       case 'real':
         return parseFloat(text);
+      case 'pattern':
+        return 1;
     }
   };
 
@@ -119,15 +132,22 @@ var _importFromStream = function (stream, deferred) {
     // check matrix format
     switch (mm.format) {
       case 'coordinate':
+        // regex to use
+        var rx = mm.datatype !== 'pattern' ? coordinateDataRegex : coordinatePatternRegex;
         // check data line is correct
-        matches = line.match(coordinateDataRegex);
+        matches = line.match(rx);
         if (matches !== null) {
           // row, columns, value
           var r = parseInt(matches[1]) - 1;
           var c = parseInt(matches[2]) - 1;
-          var v = readValue(matches[3]);
+          var v = readValue(matches.length === 4 ? matches[3] : null);
           // insert entry
           mm.data.insert(c, {i: r, j: c, v: v});
+          // check matrix is simmetric
+          if (mm.qualifier === 'symmetric' && c !== r) {
+            // insert entry
+            mm.data.insert(r, {i: c, j: r, v: v});
+          }
         }
         break;
       case 'array':          
@@ -192,7 +212,7 @@ var _importFromStream = function (stream, deferred) {
       switch (mm.format) {
         case 'coordinate':
           // CCS structure
-          var values = [];
+          var values = mm.datatype !== 'pattern' ? [] : undefined;
           var index = [];
           var ptr = [];
           // mm data & pointer
@@ -203,8 +223,9 @@ var _importFromStream = function (stream, deferred) {
           var pushValue = function (i, v) {
             // push row
             index.push(i);
-            // push value
-            values.push(v);
+            // check there is a value (pattern matrix)
+            if (values)
+              values.push(v);
           };
           // extract node (column sorted)            
           var n = d.extractMinimum();
@@ -217,7 +238,7 @@ var _importFromStream = function (stream, deferred) {
               // process columns from p + 1 to n.j
               for (var j = p + 1; j <= n.key; j++) {
                 // ptr update
-                ptr.push(values.length);
+                ptr.push(index.length);
               }
               // create sparse accumulator
               spa = new Spa(mm.rows);
@@ -232,7 +253,7 @@ var _importFromStream = function (stream, deferred) {
           // process sparse accumulator
           spa.forEach(0, mm.rows, pushValue);
           // ptr update
-          ptr.push(values.length);
+          ptr.push(index.length);
           // resolve promise
           deferred.resolve(new SparseMatrix({
             values: values,

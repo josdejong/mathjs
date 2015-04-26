@@ -1,4 +1,3 @@
-// test lup
 var assert = require('assert'),
     approx = require('../../../../tools/approx'),
     math = require('../../../../index');
@@ -7,7 +6,7 @@ var cs_lu = math.import(require('../../../../lib/function/algebra/sparse/cs_lu')
 
 describe('cs_lu', function () {
 
-  it('should decompose matrix, 2 x 2, no permutations, array', function () {
+  it('should decompose matrix, 2 x 2, no symbolic ordering, array', function () {
     
     var m = math.sparse([[2, 1], [1, 4]]);
 
