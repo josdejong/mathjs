@@ -165,6 +165,14 @@ describe('import', function() {
     assert.strictEqual(math.a, true);
   });
 
+  it.skip('should import a factory', function () {
+    // TODO: unit test importing a factory
+  });
+
+  it.skip('should import an Array', function () {
+    // TODO: unit test importing an Array containing stuff
+  });
+
   it('should LaTeX import', function () {
     var expression = math.parse('import(object)');
     assert.equal(expression.toTex(), '\\mathrm{import}\\left(\\mathrm{object}\\right)');

@@ -57,77 +57,16 @@ function create (config) {
   // functions - algebra/solver
   math.import(require('./lib/function/algebra/solver/lusolve'));
   
-  // functions - arithmetic
-  math.import(require('./lib/function/arithmetic/abs'));
-  math.import(require('./lib/function/arithmetic/add'));
-  math.import(require('./lib/function/arithmetic/ceil'));
-  math.import(require('./lib/function/arithmetic/cube'));
-  math.import(require('./lib/function/arithmetic/divide'));
-  math.import(require('./lib/function/arithmetic/dotDivide'));
-  math.import(require('./lib/function/arithmetic/dotMultiply'));
-  math.import(require('./lib/function/arithmetic/dotPow'));
-  math.import(require('./lib/function/arithmetic/exp'));
-  math.import(require('./lib/function/arithmetic/fix'));
-  math.import(require('./lib/function/arithmetic/floor'));
-  math.import(require('./lib/function/arithmetic/gcd'));
-  math.import(require('./lib/function/arithmetic/lcm'));
-  math.import(require('./lib/function/arithmetic/log'));
-  math.import(require('./lib/function/arithmetic/log10'));
-  math.import(require('./lib/function/arithmetic/mod'));
-  math.import(require('./lib/function/arithmetic/multiply'));
-  math.import(require('./lib/function/arithmetic/norm'));
-  math.import(require('./lib/function/arithmetic/nthRoot'));
-  math.import(require('./lib/function/arithmetic/pow'));
-  math.import(require('./lib/function/arithmetic/round'));
-  math.import(require('./lib/function/arithmetic/sign'));
-  math.import(require('./lib/function/arithmetic/sqrt'));
-  math.import(require('./lib/function/arithmetic/square'));
-  math.import(require('./lib/function/arithmetic/subtract'));
-  math.import(require('./lib/function/arithmetic/unaryMinus'));
-  math.import(require('./lib/function/arithmetic/unaryPlus'));
-  math.import(require('./lib/function/arithmetic/xgcd'));
-
-  // functions - bitwise
-  math.import(require('./lib/function/bitwise/bitAnd'));
-  math.import(require('./lib/function/bitwise/bitNot'));
-  math.import(require('./lib/function/bitwise/bitOr'));
-  math.import(require('./lib/function/bitwise/bitXor'));
-  math.import(require('./lib/function/bitwise/leftShift'));
-  math.import(require('./lib/function/bitwise/rightArithShift'));
-  math.import(require('./lib/function/bitwise/rightLogShift'));
-
-  // functions - complex
-  math.import(require('./lib/function/complex/arg'));
-  math.import(require('./lib/function/complex/conj'));
-  math.import(require('./lib/function/complex/re'));
-  math.import(require('./lib/function/complex/im'));
-
-  // functions - construction
-  math.import(require('./lib/function/construction/bignumber'));
-  math.import(require('./lib/function/construction/boolean'));
-  math.import(require('./lib/function/construction/chain'));
-  math.import(require('./lib/function/construction/complex'));
-  math.import(require('./lib/function/construction/index'));
-  math.import(require('./lib/function/construction/matrix'));
-  math.import(require('./lib/function/construction/number'));
-  math.import(require('./lib/function/construction/parser'));
-  math.import(require('./lib/function/construction/sparse'));
-  math.import(require('./lib/function/construction/string'));
-  math.import(require('./lib/function/construction/unit'));
-
-  // expression parser
-  math.import(require('./lib/function/expression/compile'));
-  math.import(require('./lib/function/expression/eval'));
-  math.import(require('./lib/function/expression/help'));
-  math.import(require('./lib/function/expression/parse'));
-
-  // functions - logical
-  math.import(require('./lib/function/logical/and'));
-  math.import(require('./lib/function/logical/not'));
-  math.import(require('./lib/function/logical/or'));
-  math.import(require('./lib/function/logical/xor'));
+  // functions
+  math.import(require('./lib/function/arithmetic'));
+  math.import(require('./lib/function/bitwise'));
+  math.import(require('./lib/function/complex'));
+  math.import(require('./lib/function/construction'));
+  math.import(require('./lib/function/expression'));
+  math.import(require('./lib/function/logical'));
 
   // functions - matrix
+  // TODO: replace with a matrix/index.js file when all functions are refactored
   math.import(require('./lib/function/matrix/concat'));
   math.import(require('./lib/function/matrix/cross'));
   math.import(require('./lib/function/matrix/det'));
@@ -146,77 +85,13 @@ function create (config) {
   math.import(require('./lib/function/matrix/transpose'));
   require('./lib/function/matrix/zeros')(math, _config);
 
-  // functions - probability
-  //math.import(require('./lib/function/probability/distribution')); // TODO: rethink math.distribution
-  math.import(require('./lib/function/probability/combinations'));
-  math.import(require('./lib/function/probability/factorial'));
-  math.import(require('./lib/function/probability/gamma'));
-  math.import(require('./lib/function/probability/permutations'));
-  math.import(require('./lib/function/probability/pickRandom'));
-  math.import(require('./lib/function/probability/random'));
-  math.import(require('./lib/function/probability/randomInt'));
-
-  // functions - relational
-  math.import(require('./lib/function/relational/compare'));
-  math.import(require('./lib/function/relational/deepEqual'));
-  math.import(require('./lib/function/relational/equal'));
-  math.import(require('./lib/function/relational/larger'));
-  math.import(require('./lib/function/relational/largerEq'));
-  math.import(require('./lib/function/relational/smaller'));
-  math.import(require('./lib/function/relational/smallerEq'));
-  math.import(require('./lib/function/relational/unequal'));
-
-  // functions - statistics
-  math.import(require('./lib/function/statistics/max'));
-  math.import(require('./lib/function/statistics/mean'));
-  math.import(require('./lib/function/statistics/median'));
-  math.import(require('./lib/function/statistics/min'));
-  math.import(require('./lib/function/statistics/prod'));
-  math.import(require('./lib/function/statistics/std'));
-  math.import(require('./lib/function/statistics/sum'));
-  math.import(require('./lib/function/statistics/var'));
-
-  // functions - trigonometry
-  math.import(require('./lib/function/trigonometry/acos'));
-  math.import(require('./lib/function/trigonometry/acosh'));
-  math.import(require('./lib/function/trigonometry/acot'));
-  math.import(require('./lib/function/trigonometry/acoth'));
-  math.import(require('./lib/function/trigonometry/acsc'));
-  math.import(require('./lib/function/trigonometry/acsch'));
-  math.import(require('./lib/function/trigonometry/asec'));
-  math.import(require('./lib/function/trigonometry/asech'));
-  math.import(require('./lib/function/trigonometry/asin'));
-  math.import(require('./lib/function/trigonometry/asinh'));
-  math.import(require('./lib/function/trigonometry/atan'));
-  math.import(require('./lib/function/trigonometry/atan2'));
-  math.import(require('./lib/function/trigonometry/atanh'));
-  math.import(require('./lib/function/trigonometry/cos'));
-  math.import(require('./lib/function/trigonometry/cosh'));
-  math.import(require('./lib/function/trigonometry/cot'));
-  math.import(require('./lib/function/trigonometry/coth'));
-  math.import(require('./lib/function/trigonometry/csc'));
-  math.import(require('./lib/function/trigonometry/csch'));
-  math.import(require('./lib/function/trigonometry/sec'));
-  math.import(require('./lib/function/trigonometry/sech'));
-  math.import(require('./lib/function/trigonometry/sin'));
-  math.import(require('./lib/function/trigonometry/sinh'));
-  math.import(require('./lib/function/trigonometry/tan'));
-  math.import(require('./lib/function/trigonometry/tanh'));
-
-  // functions - units
+  // functions
+  math.import(require('./lib/function/probability'));
+  math.import(require('./lib/function/relational'));
+  math.import(require('./lib/function/statistics'));
+  math.import(require('./lib/function/trigonometry'));
   math.import(require('./lib/function/units/to'));
-
-  // functions - utils
-  math.import(require('./lib/function/utils/clone'));
-  math.import(require('./lib/function/utils/config'));
-  math.import(require('./lib/function/utils/filter'));
-  math.import(require('./lib/function/utils/format'));
-  // note: import is already loaded by loader.js
-  math.import(require('./lib/function/utils/map'));
-  math.import(require('./lib/function/utils/print'));
-  math.import(require('./lib/function/utils/sort'));
-  math.import(require('./lib/function/utils/typeof'));
-  math.import(require('./lib/function/utils/forEach'));
+  math.import(require('./lib/function/utils'));
 
   // attach transform functions (for converting one-based indices to zero-based)
   math.expression.transform = {
