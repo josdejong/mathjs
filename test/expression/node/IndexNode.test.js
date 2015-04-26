@@ -1,12 +1,13 @@
 // test IndexNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    bigmath = require('../../../index').create({number: 'bignumber'}),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    IndexNode = require('../../../lib/expression/node/IndexNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bigmath = require('../../../index').create({number: 'bignumber'});
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var IndexNode = math.expression.node.IndexNode;
+var RangeNode = math.expression.node.RangeNode;
 
 describe('IndexNode', function() {
 

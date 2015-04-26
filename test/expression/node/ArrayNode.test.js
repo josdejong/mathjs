@@ -1,12 +1,12 @@
 // test ArrayNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    ArrayNode = require('../../../lib/expression/node/ArrayNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var RangeNode = math.expression.node.RangeNode;
+var ArrayNode = math.expression.node.ArrayNode;
 
 describe('ArrayNode', function() {
 

@@ -1,16 +1,16 @@
 // test FunctionAssignmentNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    OperatorNode = require('../../../lib/expression/node/OperatorNode'),
-    ConditionalNode = require('../../../lib/expression/node/ConditionalNode'),
-    FunctionNode = require('../../../lib/expression/node/FunctionNode'),
-    FunctionAssignmentNode = require('../../../lib/expression/node/FunctionAssignmentNode'),
-    AssignmentNode = require('../../../lib/expression/node/AssignmentNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var AssignmentNode = math.expression.node.AssignmentNode;
+var ConditionalNode = math.expression.node.ConditionalNode;
+var OperatorNode = math.expression.node.OperatorNode;
+var FunctionNode = math.expression.node.FunctionNode;
+var FunctionAssignmentNode = math.expression.node.FunctionAssignmentNode;
+var RangeNode = math.expression.node.RangeNode;
 
 describe('FunctionAssignmentNode', function() {
 

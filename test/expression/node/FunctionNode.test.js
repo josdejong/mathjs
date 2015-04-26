@@ -2,12 +2,12 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
-var Node = require('../../../lib/expression/node/Node');
-var ConstantNode = require('../../../lib/expression/node/ConstantNode');
-var SymbolNode = require('../../../lib/expression/node/SymbolNode');
-var RangeNode = require('../../../lib/expression/node/RangeNode');
-var FunctionNode = require('../../../lib/expression/node/FunctionNode');
-var OperatorNode = require('../../../lib/expression/node/OperatorNode');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var FunctionNode = math.expression.node.FunctionNode;
+var OperatorNode = math.expression.node.OperatorNode;
+var RangeNode = math.expression.node.RangeNode;
 
 describe('FunctionNode', function() {
 

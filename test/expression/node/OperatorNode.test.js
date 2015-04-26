@@ -1,12 +1,12 @@
 // test OperatorNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    ConditionalNode = require('../../../lib/expression/node/ConditionalNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    OperatorNode = require('../../../lib/expression/node/OperatorNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var OperatorNode = math.expression.node.OperatorNode;
+var ConditionalNode = math.expression.node.ConditionalNode;
 
 describe('OperatorNode', function() {
 

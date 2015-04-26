@@ -3,12 +3,12 @@ var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var bigmath = math.create({number: 'bignumber'});
-var Node = require('../../../lib/expression/node/Node');
-var ConstantNode = require('../../../lib/expression/node/ConstantNode');
-var RangeNode = require('../../../lib/expression/node/RangeNode');
-var IndexNode = require('../../../lib/expression/node/IndexNode');
-var UpdateNode = require('../../../lib/expression/node/UpdateNode');
-var SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var RangeNode = math.expression.node.RangeNode;
+var IndexNode = math.expression.node.IndexNode;
+var UpdateNode = math.expression.node.UpdateNode;
 
 describe('UpdateNode', function() {
 

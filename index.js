@@ -22,12 +22,11 @@ function create (config) {
   // util methods for Arrays and Matrices
   math.import(require('./lib/type/collection'));
 
-  // expression (parse, Parser, nodes, docs)
-  math.expression = {};
-  math.expression.node = require('./lib/expression/node/index');
+  // expression (parse, Parser, node.*, docs.*)
+  math.import(require('./lib/expression/node'));
   math.import(require('./lib/expression/parse'));
   math.import(require('./lib/expression/Parser'));
-  math.expression.docs = require('./lib/expression/docs/index');
+  math.expression.docs = require('./lib/expression/docs');
 
   // data types (Matrix, Complex, Unit, ...)
   math.type.Complex = require('./lib/type/Complex');

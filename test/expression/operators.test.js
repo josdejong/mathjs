@@ -1,9 +1,12 @@
 var assert = require('assert');
+
+var math = require('../../loader').create();
 var operators = require('../../lib/expression/operators');
-var OperatorNode = require('../../lib/expression/node/OperatorNode');
-var AssignmentNode = require('../../lib/expression/node/AssignmentNode');
-var ConstantNode = require('../../lib/expression/node/ConstantNode');
-var Node = require('../../lib/expression/node/Node');
+var OperatorNode = math.import(require('../../lib/expression/node/OperatorNode'));
+var AssignmentNode = math.import(require('../../lib/expression/node/AssignmentNode'));
+var ConstantNode = math.import(require('../../lib/expression/node/ConstantNode'));
+var Node = math.import(require('../../lib/expression/node/Node'));
+
 
 describe('operators', function () {
   it('should return the precedence of a node', function () {
