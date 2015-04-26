@@ -15,8 +15,8 @@ describe('cs_amd', function () {
         var m = matrices[0];
         
         var r = cs_amd(1, m);
-      
-      console.log(r);
+        // verify permutation vector
+        // assert.deepEqual(r, [22, 20, 10, 23, 12, 5, 16, 8, 14, 4, 15, 7, 1, 9, 13, 17, 0, 2, 3, 6, 11, 18, 21, 19]);
         // indicate test has completed
         done();
       })
@@ -24,5 +24,16 @@ describe('cs_amd', function () {
         // indicate test has completed
         done(error);
       });
+  });
+  
+  it('test2', function () {
+    var m = new math.type.SparseMatrix({
+      values: undefined,
+      index: [0, 1, 0, 1, 2, 4, 1, 2, 3, 4, 2, 3, 1, 4],
+      ptr: [0, 2, 6, 10, 12, 14],
+      size: [5, 5]
+    });
+    var r = cs_amd(1, m);
+    console.log(r);
   });
 });
