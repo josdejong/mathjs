@@ -1,7 +1,6 @@
 // test add
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var error = require('../../../lib/error/index');
 var math = require('../../../index');
 var BigNumber = require('decimal.js');
 var add = math.add;
@@ -46,8 +45,8 @@ describe('add', function() {
     assert.deepEqual(add(new BigNumber(0.1), 0.2), new BigNumber(0.3));
     assert.deepEqual(add(0.1, new BigNumber(0.2)), new math.type.BigNumber(0.3));
 
-    assert.throws(function () {add(1/3, new BigNumber(1))}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
-    assert.throws(function () {add(new BigNumber(1), 1/3)}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {add(1/3, new BigNumber(1));}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {add(new BigNumber(1), 1/3);}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should add mixed booleans and BigNumbers', function() {
@@ -88,9 +87,9 @@ describe('add', function() {
   });
 
   it('should throw an error in case of a unit and non-unit argument', function() {
-    assert.throws(function () {add(math.unit('5cm'), 2)}, /TypeError/);
-    assert.throws(function () {add(math.unit('5cm'), new Date())}, /TypeError/);
-    assert.throws(function () {add(new Date(), math.unit('5cm'))}, /TypeError/);
+    assert.throws(function () {add(math.unit('5cm'), 2);}, /TypeError/);
+    assert.throws(function () {add(math.unit('5cm'), new Date());}, /TypeError/);
+    assert.throws(function () {add(new Date(), math.unit('5cm'));}, /TypeError/);
   });
 
   it('should concatenate two strings', function() {
@@ -98,51 +97,96 @@ describe('add', function() {
     assert.equal(add('str', 123), 'str123');
     assert.equal(add(123, 'str'), '123str');
   });
+  
+  describe('Array', function () {
+    
+    it('should concatenate strings and array element wise', function() {
+      assert.deepEqual(add('A', ['B', 'C']), ['AB', 'AC']);
+      assert.deepEqual(add(['B', 'C'], 'A'), ['BA', 'CA']);
+    });
+    
+    it('should add arrays correctly', function() {
+      var a2 = [[1,2],[3,4]];
+      var a3 = [[5,6],[7,8]];
+      var a4 = add(a2, a3);
+      assert.deepEqual(a4, [[6,8],[10,12]]);
+    });
+    
+    it('should add a scalar and an array correctly', function() {
+      assert.deepEqual(add(2, [3,4]), [5,6]);
+      assert.deepEqual(add([3,4], 2), [5,6]);
+    });
 
-  it('should concatenate strings and matrices element wise', function() {
-    assert.deepEqual(add('A', ['B', 'C']), ['AB', 'AC']);
-    assert.deepEqual(add(['B', 'C'], 'A'), ['BA', 'CA']);
+    it('should add array and matrix correctly', function() {
+      var a = [1,2,3];
+      var b = math.matrix([3,2,1]);
+      var c = add(a, b);
 
-    assert.deepEqual(add('A', math.matrix(['B', 'C'])), math.matrix(['AB', 'AC']));
-    assert.deepEqual(add(math.matrix(['B', 'C']), 'A'), math.matrix(['BA', 'CA']));
+      assert.ok(c instanceof math.type.Matrix);
+      assert.deepEqual(c, math.matrix([4,4,4]));
+    });
   });
 
-  it('should add matrices correctly', function() {
-    var a2 = math.matrix([[1,2],[3,4]]);
-    var a3 = math.matrix([[5,6],[7,8]]);
-    var a4 = add(a2, a3);
-    assert.ok(a4 instanceof math.type.Matrix);
-    assert.deepEqual(a4.size(), [2,2]);
-    assert.deepEqual(a4.valueOf(), [[6,8],[10,12]]);
+  describe('DenseMatrix', function () {
+    
+    it('should concatenate strings and matrices element wise', function() {
+      assert.deepEqual(add('A', math.matrix(['B', 'C'])), math.matrix(['AB', 'AC']));
+      assert.deepEqual(add(math.matrix(['B', 'C']), 'A'), math.matrix(['BA', 'CA']));
+    });
+    
+    it('should add matrices correctly', function() {
+      var a2 = math.matrix([[1,2],[3,4]]);
+      var a3 = math.matrix([[5,6],[7,8]]);
+      var a4 = add(a2, a3);
+      assert.ok(a4 instanceof math.type.Matrix);
+      assert.deepEqual(a4.size(), [2,2]);
+      assert.deepEqual(a4.valueOf(), [[6,8],[10,12]]);
+    });
+    
+    it('should add a scalar and a matrix correctly', function() {
+      assert.deepEqual(add(2, math.matrix([3,4])), math.matrix([5,6]));
+      assert.deepEqual(add(math.matrix([3,4]), 2), math.matrix([5,6]));
+    });
 
-    var a5 = math.add(a2, 2);
-    assert.ok(a5 instanceof math.type.Matrix);
-    assert.deepEqual(a5.size(), [2,2]);
-    assert.deepEqual(a5.valueOf(), [[3,4],[5,6]]);
+    it('should add matrix and array correctly', function() {
+      var a = math.matrix([1,2,3]);
+      var b = [3,2,1];
+      var c = add(a, b);
+
+      assert.ok(c instanceof math.type.Matrix);
+      assert.deepEqual(c, math.matrix([4,4,4]));
+    });
   });
+  
+  describe('SparseMatrix', function () {
 
-  it('should add a scalar and a matrix correctly', function() {
-    assert.deepEqual(add(2, math.matrix([3,4])), math.matrix([5,6]));
-    assert.deepEqual(add(math.matrix([3,4]), 2), math.matrix([5,6]));
+    it('should add matrices correctly', function() {
+      var a2 = math.matrix([[1,2],[3,4]], 'sparse');
+      var a3 = math.matrix([[5,6],[7,8]], 'sparse');
+      var a4 = add(a2, a3);
+      assert.ok(a4 instanceof math.type.Matrix);
+      assert.deepEqual(a4.size(), [2,2]);
+      assert.deepEqual(a4.valueOf(), [[6,8],[10,12]]);
+    });
+
+    it('should add a scalar and a matrix correctly', function() {
+      assert.deepEqual(add(2, math.matrix([[3,4],[5,6]], 'sparse')), math.matrix([[5,6],[7,8]], 'sparse'));
+      assert.deepEqual(add(math.matrix([[3,4],[5,6]], 'sparse'), 2), math.matrix([[5,6],[7,8]], 'sparse'));
+    });
+
+    it('should add matrix and array correctly', function() {
+      var a = math.matrix([[1,2,3],[1,0,0]], 'sparse');
+      var b = [[3,2,1],[0,0,1]];
+      var c = add(a, b);
+
+      assert.ok(c instanceof math.type.Matrix);
+      assert.deepEqual(c, math.matrix([[4,4,4],[1,0,1]], 'sparse'));
+    });
   });
-
-  it('should add a scalar and an array correctly', function() {
-    assert.deepEqual(add(2, [3,4]), [5,6]);
-    assert.deepEqual(add([3,4], 2), [5,6]);
-  });
-
-  it('should add a matrix and an array correctly', function() {
-    var a = [1,2,3];
-    var b = math.matrix([3,2,1]);
-    var c = add(a, b);
-
-    assert.ok(c instanceof math.type.Matrix);
-    assert.deepEqual(c, math.matrix([4,4,4]));
-  });
-
+  
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {add(1)}, /TypeError: Too few arguments/);
-    assert.throws(function () {add(1, 2, 3)}, /TypeError: Too many arguments/);
+    assert.throws(function () {add(1);}, /TypeError: Too few arguments/);
+    assert.throws(function () {add(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX add', function () {
