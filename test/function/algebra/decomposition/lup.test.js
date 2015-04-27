@@ -17,7 +17,7 @@ describe('lup', function () {
     // P
     assert.deepEqual(r.P.valueOf(), [[1, 0], [0, 1]]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
   it('should decompose matrix, n x n, no permutations, sparse', function () {
@@ -32,7 +32,7 @@ describe('lup', function () {
     // P
     assert.deepEqual(r.P.valueOf(), [[1, 0], [0, 1]]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
   it('should decompose matrix, n x n, no permutations, dense format', function () {
@@ -47,7 +47,7 @@ describe('lup', function () {
     // P
     assert.deepEqual(r.P.valueOf(), [[1, 0], [0, 1]]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
   
   it('should decompose matrix, m x n, m < n, no permutations, dense format', function () {
@@ -87,7 +87,7 @@ describe('lup', function () {
         ]
       ));
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
   it('should decompose matrix, m x n, m > n, no permutations, dense format', function () {
@@ -130,7 +130,7 @@ describe('lup', function () {
         ]
       ));
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
   it('should decompose matrix, n x n, dense format', function () {
@@ -172,7 +172,7 @@ describe('lup', function () {
         [1, 0, 0, 0]
       ]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
   it('should decompose matrix, 3 x 3, zero pivote value, dense format', function () {
@@ -209,7 +209,7 @@ describe('lup', function () {
         [1, 0, 0]
       ]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
   it('should decompose matrix, 3 x 2, complex numbers, dense format', function () {
@@ -245,7 +245,7 @@ describe('lup', function () {
         [0, 0, 1]
       ]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
   
   it('should decompose matrix, m x n, m < n, no permutations, sparse', function () {
@@ -279,7 +279,7 @@ describe('lup', function () {
         [0, 1]
       ]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
   it('should decompose matrix, m x n, m > n, no permutations, sparse', function () {
@@ -316,7 +316,7 @@ describe('lup', function () {
         [0, 0, 1]
       ]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
   it('should decompose matrix, n x n, sparse', function () {
@@ -358,7 +358,7 @@ describe('lup', function () {
         [1, 0, 0, 0]
       ]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
   it('should decompose matrix, 3 x 3, zero pivote value, sparse', function () {
@@ -396,7 +396,7 @@ describe('lup', function () {
         [1, 0, 0]
       ]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
   it('should decompose matrix, 3 x 2, complex numbers, sparse', function () {
@@ -432,6 +432,6 @@ describe('lup', function () {
         [0, 0, 1]
       ]);
     // verify
-    approx.deepEqual(math.multiply(r.P, m), math.multiply(r.L, r.U));
+    approx.deepEqual(math.multiply(r.P, m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 });
