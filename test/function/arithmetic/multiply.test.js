@@ -697,6 +697,87 @@ describe('multiply', function() {
       approx.deepEqual(multiply(d, b), matrix([[67,78]], 'sparse'));
       approx.deepEqual(multiply(d, c), 61);
     });
+    
+    it('should multiply two pattern matrices correctly', function() {
+
+      var a = new math.type.SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+
+      var b = new math.type.SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 1],
+        ptr: [0, 3, 3, 4],
+        size: [3, 3]
+      });
+
+      var c = multiply(a, b);
+
+      assert.deepEqual(
+        c.valueOf(),
+        [
+          [1, 0, 0],
+          [1, 0, 0],
+          [1, 0, 1]
+        ]);
+    });
+
+    it('should multiply pattern and value matrices correctly', function() {
+
+      var a = new math.type.SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+
+      var b = new math.type.SparseMatrix({
+        values: [1, 2, 3, 4],
+        index: [0, 1, 2, 1],
+        ptr: [0, 3, 3, 4],
+        size: [3, 3]
+      });
+
+      var c = multiply(a, b);
+
+      assert.deepEqual(
+        c.valueOf(),
+        [
+          [1, 0, 0],
+          [1, 0, 0],
+          [1, 0, 1]
+        ]);
+    });
+
+    it('should multiply value and pattern matrices correctly', function() {
+
+      var a = new math.type.SparseMatrix({
+        values: [1, 2, 3, 4],
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+
+      var b = new math.type.SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 1],
+        ptr: [0, 3, 3, 4],
+        size: [3, 3]
+      });
+
+      var c = multiply(a, b);
+
+      assert.deepEqual(
+        c.valueOf(),
+        [
+          [1, 0, 0],
+          [1, 0, 0],
+          [1, 0, 1]
+        ]);
+    });
   });
 
   describe('Matrix Market', function () {
