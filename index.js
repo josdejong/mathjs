@@ -72,7 +72,7 @@ function create (config) {
   math.import(require('./lib/function/matrix/inv'));
   require('./lib/function/matrix/ones')(math, _config);
   math.import(require('./lib/function/matrix/range'));
-  require('./lib/function/matrix/resize')(math, _config);
+  math.import(require('./lib/function/matrix/resize'));
   math.import(require('./lib/function/matrix/size'));
   math.import(require('./lib/function/matrix/squeeze'));
   math.import(require('./lib/function/matrix/subset'));
