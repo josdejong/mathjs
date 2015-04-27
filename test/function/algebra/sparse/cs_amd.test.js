@@ -14,7 +14,7 @@ describe('cs_amd', function () {
         // matrix
         var m = matrices[0];
         
-        var r = cs_amd(1, m);
+        var r = cs_amd(1, m);console.log(r);
         // verify permutation vector
         // assert.deepEqual(r, [22, 20, 10, 23, 12, 5, 16, 8, 14, 4, 15, 7, 1, 9, 13, 17, 0, 2, 3, 6, 11, 18, 21, 19]);
         // indicate test has completed
@@ -33,7 +33,7 @@ describe('cs_amd', function () {
       ptr: [0, 2, 6, 10, 12, 14],
       size: [5, 5]
     });
-    var r = cs_amd(1, m);
+    var r = cs_amd(3, m);
     console.log(r);
   });
 });
