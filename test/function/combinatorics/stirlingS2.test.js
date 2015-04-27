@@ -39,7 +39,7 @@ it('should not work with the wrong number or type of arguments', function() {
 
 it('should LaTeX stirlingS2', function () {
   var expression = math.parse('stirlingS2(3,2)');
-  assert.equal(expression.toTex(), '\S{3}{2}');
+  assert.equal(expression.toTex(), '\\mathrm{S}\\left(3,2\\right)');
 });
 
 });
