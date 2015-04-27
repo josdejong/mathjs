@@ -132,7 +132,7 @@ describe('ConstantNode', function() {
   it ('should LaTeX a ConstantNode', function () {
     assert.equal(new ConstantNode('3', 'number').toTex(), '3');
     assert.deepEqual(new ConstantNode('3', 'number').toTex(), '3');
-    assert.equal(new ConstantNode('hi', 'string').toTex(), '\\text{hi}');
+    assert.equal(new ConstantNode('hi', 'string').toTex(), '\\mathtt{"hi"}');
     assert.equal(new ConstantNode('true', 'boolean').toTex(), 'true');
     assert.equal(new ConstantNode('false', 'boolean').toTex(), 'false');
     assert.equal(new ConstantNode('undefined', 'undefined').toTex(), 'undefined');
