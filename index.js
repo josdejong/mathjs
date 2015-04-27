@@ -22,12 +22,6 @@ function create (config) {
   // util methods for Arrays and Matrices
   math.import(require('./lib/type/collection'));
 
-  // expression (parse, Parser, node.*, docs.*)
-  math.import(require('./lib/expression/node'));
-  math.import(require('./lib/expression/parse'));
-  math.import(require('./lib/expression/Parser'));
-  math.expression.docs = require('./lib/expression/docs');
-
   // data types (Matrix, Complex, Unit, ...)
   math.type.Complex = require('./lib/type/Complex');
   math.type.Range = require('./lib/type/Range');
@@ -38,13 +32,20 @@ function create (config) {
   math.type.ResultSet = require('./lib/type/ResultSet');
   math.import(require('./lib/type/BigNumber'));
   math.import(require('./lib/type/FibonacciHeap'));
-  
+
   // matrix storage formats
   math.import(require('./lib/type/matrix/SparseMatrix'));
   math.import(require('./lib/type/matrix/DenseMatrix'));
 
   // sparse accumulator
   math.import(require('./lib/type/matrix/Spa'));
+
+  // expression (parse, Parser, node.*, docs.*)
+  math.import(require('./lib/expression/node'));
+  math.import(require('./lib/expression/parse'));
+  math.import(require('./lib/expression/Parser'));
+  math.import(require('./lib/expression/transform'));
+  math.expression.docs = require('./lib/expression/docs');
 
   // serialization utilities
   // math.json.*
@@ -84,20 +85,8 @@ function create (config) {
   math.import(require('./lib/function/relational'));
   math.import(require('./lib/function/statistics'));
   math.import(require('./lib/function/trigonometry'));
-  math.import(require('./lib/function/units/to'));
-  math.import(require('./lib/function/utils'));
-
-  // attach transform functions (for converting one-based indices to zero-based)
-  math.import(require('./lib/expression/transform/concat.transform'));
-  math.import(require('./lib/expression/transform/filter.transform'));
-  math.import(require('./lib/expression/transform/forEach.transform'));
-  math.import(require('./lib/expression/transform/index.transform'));
-  math.import(require('./lib/expression/transform/map.transform'));
-  math.import(require('./lib/expression/transform/max.transform'));
-  math.import(require('./lib/expression/transform/mean.transform'));
-  math.import(require('./lib/expression/transform/min.transform'));
-  math.import(require('./lib/expression/transform/range.transform'));
-  math.import(require('./lib/expression/transform/subset.transform'));
+  math.import(require('./lib/function/units'));
+  math.import(require('./lib/function/utils')); // contains the config function
 
   // create Chain, and create proxies for all functions/constants in the math
   // namespace.
