@@ -1,7 +1,6 @@
 // test subtract
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     bignumber = math.bignumber,
     subtract = math.subtract;
@@ -49,8 +48,8 @@ describe('subtract', function() {
     assert.deepEqual(subtract(bignumber(0.3), 0.2), bignumber(0.1));
     assert.deepEqual(subtract(0.3, bignumber(0.2)), bignumber(0.1));
 
-    assert.throws(function () {subtract(1/3, bignumber(1).div(3))}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
-    assert.throws(function () {subtract(bignumber(1).div(3), 1/3)}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {subtract(1/3, bignumber(1).div(3));}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {subtract(bignumber(1).div(3), 1/3);}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should subtract mixed booleans and bignumbers', function() {
@@ -108,27 +107,93 @@ describe('subtract', function() {
 
   it('should throw an error when used with a string', function() {
     assert.throws(function () {subtract('hello ', 'world'); });
-    assert.throws(function () {subtract('str', 123)});
-    assert.throws(function () {subtract(123, 'str')});
+    assert.throws(function () {subtract('str', 123);});
+    assert.throws(function () {subtract(123, 'str');});
   });
 
-  it('should perform element-wise subtraction of two matrices', function() {
-    var a2 = math.matrix([[1,2],[3,4]]);
-    var a3 = math.matrix([[5,6],[7,8]]);
-    var a6 = subtract(a2, a3);
-    assert.ok(a6 instanceof math.type.Matrix);
-    assert.deepEqual(a6.size(), [2,2]);
-    assert.deepEqual(a6.valueOf(), [[-4,-4],[-4,-4]]);
+  describe('Array', function () {
+
+    it('should subtract arrays correctly', function() {
+      var a2 = [[10,20],[30,40]];
+      var a3 = [[5,6],[7,8]];
+      var a4 = subtract(a2, a3);
+      assert.deepEqual(a4, [[5,14],[23,32]]);
+    });
+
+    it('should subtract a scalar and an array correctly', function() {
+      assert.deepEqual(subtract(2, [3,4]), [-1,-2]);
+      assert.deepEqual(subtract([3,4], 2), [1,2]);
+    });
+
+    it('should subtract array and matrix correctly', function() {
+      var a = [1,2,3];
+      var b = math.matrix([3,2,1]);
+      var c = subtract(a, b);
+
+      assert.ok(c instanceof math.type.Matrix);
+      assert.deepEqual(c, math.matrix([-2,0,2]));
+    });
+  });
+  
+  describe('DenseMatrix', function () {
+
+    it('should subtract matrices correctly', function() {
+      var a2 = math.matrix([[10,20],[30,40]]);
+      var a3 = math.matrix([[5,6],[7,8]]);
+      var a4 = subtract(a2, a3);
+      assert.ok(a4 instanceof math.type.Matrix);
+      assert.deepEqual(a4.size(), [2,2]);
+      assert.deepEqual(a4.valueOf(), [[5,14],[23,32]]);
+    });
+
+    it('should subtract a scalar and a matrix correctly', function() {
+      assert.deepEqual(subtract(2, math.matrix([3,4])), math.matrix([-1,-2]));
+      assert.deepEqual(subtract(math.matrix([3,4]), 2), math.matrix([1,2]));
+    });
+
+    it('should subtract matrix and array correctly', function() {
+      var a = math.matrix([1,2,3]);
+      var b = [3,2,1];
+      var c = subtract(a, b);
+
+      assert.ok(c instanceof math.type.Matrix);
+      assert.deepEqual(c, math.matrix([-2,0,2]));
+    });
+  });
+  
+  describe('SparseMatrix', function () {
+
+    it('should subtract matrices correctly', function() {
+      var a2 = math.matrix([[10,20],[30,40]], 'sparse');
+      var a3 = math.matrix([[5,6],[7,8]], 'sparse');
+      var a4 = subtract(a2, a3);
+      assert.ok(a4 instanceof math.type.Matrix);
+      assert.deepEqual(a4.size(), [2,2]);
+      assert.deepEqual(a4.valueOf(), [[5,14],[23,32]]);
+    });
+
+    it('should subtract a scalar and a matrix correctly', function() {
+      assert.deepEqual(subtract(2, math.matrix([[3,4],[5,6]], 'sparse')).valueOf(), [[-1,-2],[-3,-4]]);
+      assert.deepEqual(subtract(math.matrix([[3,4],[5,6]], 'sparse'), 2).valueOf(), [[1,2],[3,4]]);
+    });
+
+    it('should subtract matrix and array correctly', function() {
+      var a = math.matrix([[1,2,3],[1,0,0]], 'sparse');
+      var b = [[3,2,1],[0,0,1]];
+      var c = subtract(a, b);
+
+      assert.ok(c instanceof math.type.Matrix);
+      assert.deepEqual(c.valueOf(), [[-2,0,2],[1,0,-1]]);
+    });
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {subtract(1)}, /TypeError: Too few arguments/);
-    assert.throws(function () {subtract(1, 2, 3)}, /TypeError: Too many arguments/);
+    assert.throws(function () {subtract(1);}, /TypeError: Too few arguments/);
+    assert.throws(function () {subtract(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX subtract', function () {
     var expression = math.parse('subtract(2,1)');
     assert.equal(expression.toTex(), '\\left(2-1\\right)');
   });
-
 });

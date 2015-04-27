@@ -668,15 +668,16 @@ describe('multiply', function() {
       ], 'sparse');
 
       var r = multiply(l, u);
-
+      
+      assert(r.storage(), 'sparse');
       approx.deepEqual(
-        r,
-        math.matrix([
+        r.valueOf(),
+        [
           [240, -2700, 6480, -4200],
           [-120, 1200, -2700, 1680],
           [0, 105, -420, 350],
           [16, -120, 240, -140]
-        ], 'sparse'));
+        ]);
     });
 
     var a = matrix([[1,2],[3,4]], 'sparse');
