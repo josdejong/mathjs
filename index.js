@@ -89,9 +89,9 @@ function create (config) {
 
   // attach transform functions (for converting one-based indices to zero-based)
   math.import(require('./lib/expression/transform/concat.transform'));
-  require('./lib/expression/transform/filter.transform')(math, _config);
-  require('./lib/expression/transform/forEach.transform')(math, _config);
-  require('./lib/expression/transform/index.transform')(math, _config);
+  math.import(require('./lib/expression/transform/filter.transform'));
+  math.import(require('./lib/expression/transform/forEach.transform'));
+  math.import(require('./lib/expression/transform/index.transform'));
   math.import(require('./lib/expression/transform/map.transform'));
   math.import(require('./lib/expression/transform/max.transform'));
   math.import(require('./lib/expression/transform/mean.transform'));
