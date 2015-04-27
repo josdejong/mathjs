@@ -48,15 +48,10 @@ function create (config) {
 
   // serialization utilities
   // math.json.*
-  math.import(require('./lib/json/reviver'));
+  math.import(require('./lib/json'));
 
-  // functions - algebra/decomposition
-  math.import(require('./lib/function/algebra/decomposition/lup'));
-  
-  // functions - algebra/solver
-  math.import(require('./lib/function/algebra/solver/lusolve'));
-  
   // functions
+  math.import(require('./lib/function/algebra')); // decomposition and solver
   math.import(require('./lib/function/arithmetic'));
   math.import(require('./lib/function/bitwise'));
   math.import(require('./lib/function/complex'));
@@ -93,18 +88,16 @@ function create (config) {
   math.import(require('./lib/function/utils'));
 
   // attach transform functions (for converting one-based indices to zero-based)
-  math.expression.transform = {
-    concat: require('./lib/expression/transform/concat.transform')(math, _config),
-    filter: require('./lib/expression/transform/filter.transform')(math, _config),
-    forEach:require('./lib/expression/transform/forEach.transform')(math, _config),
-    index:  require('./lib/expression/transform/index.transform')(math, _config),
-    map:    require('./lib/expression/transform/map.transform')(math, _config),
-    max:    require('./lib/expression/transform/max.transform')(math, _config),
-    mean:   require('./lib/expression/transform/mean.transform')(math, _config),
-    min:    require('./lib/expression/transform/min.transform')(math, _config),
-    range:  require('./lib/expression/transform/range.transform')(math, _config),
-    subset: require('./lib/expression/transform/subset.transform')(math, _config)
-  };
+  require('./lib/expression/transform/concat.transform')(math, _config);
+  require('./lib/expression/transform/filter.transform')(math, _config);
+  require('./lib/expression/transform/forEach.transform')(math, _config);
+  require('./lib/expression/transform/index.transform')(math, _config);
+  require('./lib/expression/transform/map.transform')(math, _config);
+  require('./lib/expression/transform/max.transform')(math, _config);
+  require('./lib/expression/transform/mean.transform')(math, _config);
+  require('./lib/expression/transform/min.transform')(math, _config);
+  require('./lib/expression/transform/range.transform')(math, _config);
+  require('./lib/expression/transform/subset.transform')(math, _config);
 
   // create Chain, and create proxies for all functions/constants in the math
   // namespace.
