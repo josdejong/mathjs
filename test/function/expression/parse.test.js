@@ -25,7 +25,7 @@ describe('parse', function() {
 
   it('should LaTeX parse', function () {
     var expression = math.parse('parse(expr,options)');
-    assert.equal(expression.toTex(), '\\mathrm{parse}\\left(\\mathrm{expr},\\mathrm{options}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{parse}\\left( expr, options\\right)');
   });
 
 });
