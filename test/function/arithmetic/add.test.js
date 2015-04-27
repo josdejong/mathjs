@@ -182,6 +182,90 @@ describe('add', function() {
       assert.ok(c instanceof math.type.Matrix);
       assert.deepEqual(c, math.matrix([[4,4,4],[1,0,1]], 'sparse'));
     });
+    
+    it('should add two pattern matrices correctly', function() {
+      
+      var a = new math.type.SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      
+      var b = new math.type.SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 1],
+        ptr: [0, 3, 3, 4],
+        size: [3, 3]
+      });
+      
+      var c = add(a, b);
+      
+      assert.deepEqual(
+        c, 
+        new math.type.SparseMatrix({
+          values: undefined,
+          index: [0, 1, 2, 2, 0, 1],
+          ptr: [0, 3, 4, 6],
+          size: [3, 3]
+        }));
+    });
+    
+    it('should add pattern and value matrices correctly', function() {
+
+      var a = new math.type.SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+
+      var b = new math.type.SparseMatrix({
+        values: [1, 2, 3, 4],
+        index: [0, 1, 2, 1],
+        ptr: [0, 3, 3, 4],
+        size: [3, 3]
+      });
+
+      var c = add(a, b);
+
+      assert.deepEqual(
+        c, 
+        new math.type.SparseMatrix({
+          values: undefined,
+          index: [0, 1, 2, 2, 0, 1],
+          ptr: [0, 3, 4, 6],
+          size: [3, 3]
+        }));
+    });
+    
+    it('should add value and pattern matrices correctly', function() {
+
+      var a = new math.type.SparseMatrix({
+        values: [1, 2, 3, 4],
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+
+      var b = new math.type.SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 1],
+        ptr: [0, 3, 3, 4],
+        size: [3, 3]
+      });
+
+      var c = add(a, b);
+
+      assert.deepEqual(
+        c, 
+        new math.type.SparseMatrix({
+          values: undefined,
+          index: [0, 1, 2, 2, 0, 1],
+          ptr: [0, 3, 4, 6],
+          size: [3, 3]
+        }));
+    });
   });
   
   it('should throw an error in case of invalid number of arguments', function() {

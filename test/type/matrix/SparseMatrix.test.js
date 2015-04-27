@@ -160,6 +160,27 @@ describe('SparseMatrix', function() {
           [3, 4]
         ]);
     });
+    
+    it('should deserialize Pattern Matrix', function() {
+      var json = {
+        mathjs: 'SparseMatrix',
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      };
+      var m = SparseMatrix.fromJSON(json);
+      assert.ok(m instanceof Matrix);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 0, 1],
+          [1, 0, 0],
+          [0, 1, 0]
+        ]);
+    });
   });
   
   describe('format', function () {    
@@ -184,6 +205,17 @@ describe('SparseMatrix', function() {
           [0, 1/3]
         ]);
       assert.equal(m.format(4), 'Sparse Matrix [2 x 2] density: 0.25\n\n    (1, 1) ==> 0.3333');
+    });
+    
+    it('should format pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+
+      assert.equal(m.format(3), 'Sparse Matrix [3 x 3] density: 0.444\n\n    (0, 0) ==> X\n    (1, 0) ==> X\n    (2, 1) ==> X\n    (0, 2) ==> X');
     });
   });
   
@@ -450,6 +482,16 @@ describe('SparseMatrix', function() {
     it('should throw an error in case of dimension mismatch', function() {
       var m = new SparseMatrix([[0, 1], [2, 3]]);
       assert.throws(function () { m.get([0,2,0,2,0,2]); }, /Dimension mismatch/);
+    });
+    
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.get([0,1]); }, /Cannot invoke get on a Pattern only matrix/);
     });
 
     it('should get matrix element', function () {
@@ -721,6 +763,16 @@ describe('SparseMatrix', function() {
           [-2, -2, -2, -2, 33]
         ]);
     });
+    
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.set([0,1], 1); }, /Cannot invoke set on a Pattern only matrix/);
+    });
   });
 
   describe('get subset', function() {
@@ -774,6 +826,16 @@ describe('SparseMatrix', function() {
     it('should throw an error in case of dimension mismatch', function() {
       var m = new SparseMatrix([[1,2,3],[4,5,6]]);
       assert.throws(function () { m.subset(index([0,2])); }, /Dimension mismatch/);
+    });
+    
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.subset(index(1, 1)); }, /Cannot invoke subset on a Pattern only matrix/);
     });
   });
 
@@ -985,6 +1047,16 @@ describe('SparseMatrix', function() {
     it ('should throw an error in case of wrong size of submatrix', function () {
       assert.throws(function () { new SparseMatrix().subset(index(0), [2,3]); }, /Scalar expected/);
     });
+    
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.subset(index([2, 4], [2, 4]), [[1, 2], [3, 4]], -1); }, /Cannot invoke subset on a Pattern only matrix/);
+    });
   });
   
   describe('map', function() {
@@ -1079,6 +1151,16 @@ describe('SparseMatrix', function() {
           [1104, 1115, 1126]
         ]);
     });
+    
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.map(function () {}, m, true); }, /Cannot invoke map on a Pattern only matrix/);
+    });
   });
   
   describe('forEach', function() {
@@ -1137,6 +1219,16 @@ describe('SparseMatrix', function() {
       );
       assert.deepEqual(output, [1001, 1104, 1012, 1115, 1023, 1126]);
     });
+
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.forEach(function () {}); }, /Cannot invoke forEach on a Pattern only matrix/);
+    });
   });
   
   describe('clone', function() {
@@ -1150,6 +1242,19 @@ describe('SparseMatrix', function() {
 
       var m2 = m1.clone();
 
+      assert.deepEqual(m1.toArray(), m2.toArray());
+    });
+    
+    it('should clone pattern matrix', function() {
+      var m1 = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      
+      var m2 = m1.clone();
+      
       assert.deepEqual(m1.toArray(), m2.toArray());
     });
   });
@@ -1839,6 +1944,25 @@ describe('SparseMatrix', function() {
           [0, 5, 0],
           [0, 2, 0],
           [10, 0, 0]
+        ]);
+    });
+    
+    it('should swap rows on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+
+      m.swapRows(0, 2);
+
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [0, 1, 0],
+          [1, 0, 0],
+          [1, 0, 1]
         ]);
     });
   });
