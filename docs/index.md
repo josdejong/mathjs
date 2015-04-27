@@ -34,6 +34,7 @@ describing all available functions, constants, and units in detail.
 - [Serialization](serialization.md)
 - [Extension](extension.md)
 - [Command Line Interface](command_line_interface.md)
+- [Command Line Debugging](command_line_debugging.md)
 
 ## Examples
 
