@@ -70,11 +70,11 @@ function create (config) {
   math.import(require('./lib/function/matrix/flatten'));
   math.import(require('./lib/function/matrix/inv'));
   require('./lib/function/matrix/ones')(math, _config);
-  require('./lib/function/matrix/range')(math, _config);
+  math.import(require('./lib/function/matrix/range'));
   require('./lib/function/matrix/resize')(math, _config);
   math.import(require('./lib/function/matrix/size'));
   math.import(require('./lib/function/matrix/squeeze'));
-  require('./lib/function/matrix/subset')(math, _config);
+  math.import(require('./lib/function/matrix/subset'));
   math.import(require('./lib/function/matrix/trace'));
   math.import(require('./lib/function/matrix/transpose'));
   require('./lib/function/matrix/zeros')(math, _config);
@@ -88,16 +88,16 @@ function create (config) {
   math.import(require('./lib/function/utils'));
 
   // attach transform functions (for converting one-based indices to zero-based)
-  require('./lib/expression/transform/concat.transform')(math, _config);
+  math.import(require('./lib/expression/transform/concat.transform'));
   require('./lib/expression/transform/filter.transform')(math, _config);
   require('./lib/expression/transform/forEach.transform')(math, _config);
   require('./lib/expression/transform/index.transform')(math, _config);
-  require('./lib/expression/transform/map.transform')(math, _config);
-  require('./lib/expression/transform/max.transform')(math, _config);
-  require('./lib/expression/transform/mean.transform')(math, _config);
-  require('./lib/expression/transform/min.transform')(math, _config);
-  require('./lib/expression/transform/range.transform')(math, _config);
-  require('./lib/expression/transform/subset.transform')(math, _config);
+  math.import(require('./lib/expression/transform/map.transform'));
+  math.import(require('./lib/expression/transform/max.transform'));
+  math.import(require('./lib/expression/transform/mean.transform'));
+  math.import(require('./lib/expression/transform/min.transform'));
+  math.import(require('./lib/expression/transform/range.transform'));
+  math.import(require('./lib/expression/transform/subset.transform'));
 
   // create Chain, and create proxies for all functions/constants in the math
   // namespace.
