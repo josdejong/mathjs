@@ -2,7 +2,7 @@
 
 var assert = require('assert');
 var Complex = require('../../lib/type/Complex');
-var ResultSet = require('../../lib/type/ResultSet');
+var ResultSet = require('../../lib/type/ResultSet').factory();
 
 describe('ResultSet', function () {
 

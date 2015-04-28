@@ -29,7 +29,7 @@ function create (config) {
   math.import(require('./lib/type/Matrix'));
   math.type.Unit = require('./lib/type/Unit');
   math.import(require('./lib/type/Help'));
-  math.type.ResultSet = require('./lib/type/ResultSet');
+  math.import(require('./lib/type/ResultSet'));
   math.import(require('./lib/type/BigNumber'));
   math.import(require('./lib/type/FibonacciHeap'));
 
