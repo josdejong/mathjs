@@ -14,15 +14,15 @@ var loader = require('./loader');
  */
 function create (config) {
   // create a new, empty math.js instance
+  // TODO: pass config here
   var math = loader.create();
   math.create = create;
-
-  var _config = math._config; // TODO: cleanup as soon as redundant
 
   // util methods for Arrays and Matrices
   math.import(require('./lib/type/collection'));
 
   // data types (Matrix, Complex, Unit, ...)
+  // TODO: load all data types via math.import
   math.type.Complex = require('./lib/type/Complex');
   math.type.Range = require('./lib/type/Range');
   math.type.Index = require('./lib/type/Index');
@@ -40,47 +40,25 @@ function create (config) {
   // sparse accumulator
   math.import(require('./lib/type/matrix/Spa'));
 
-  // expression (parse, Parser, node.*, docs.*)
+  // expression (expression.parse, expression.Parser, expression.node.*, expression.docs.*)
   math.import(require('./lib/expression/node'));
   math.import(require('./lib/expression/parse'));
   math.import(require('./lib/expression/Parser'));
   math.import(require('./lib/expression/transform'));
   math.expression.docs = require('./lib/expression/docs');
 
-  // serialization utilities
-  // math.json.*
+  // serialization utilities (math.json.reviver)
   math.import(require('./lib/json'));
 
   // functions
-  math.import(require('./lib/function/algebra')); // decomposition and solver
+  math.import(require('./lib/function/algebra'));
   math.import(require('./lib/function/arithmetic'));
   math.import(require('./lib/function/bitwise'));
   math.import(require('./lib/function/complex'));
   math.import(require('./lib/function/construction'));
   math.import(require('./lib/function/expression'));
   math.import(require('./lib/function/logical'));
-
-  // functions - matrix
-  // TODO: replace with a matrix/index.js file when all functions are refactored
-  math.import(require('./lib/function/matrix/concat'));
-  math.import(require('./lib/function/matrix/cross'));
-  math.import(require('./lib/function/matrix/det'));
-  math.import(require('./lib/function/matrix/diag'));
-  math.import(require('./lib/function/matrix/dot'));
-  math.import(require('./lib/function/matrix/eye'));
-  math.import(require('./lib/function/matrix/flatten'));
-  math.import(require('./lib/function/matrix/inv'));
-  require('./lib/function/matrix/ones')(math, _config);
-  math.import(require('./lib/function/matrix/range'));
-  math.import(require('./lib/function/matrix/resize'));
-  math.import(require('./lib/function/matrix/size'));
-  math.import(require('./lib/function/matrix/squeeze'));
-  math.import(require('./lib/function/matrix/subset'));
-  math.import(require('./lib/function/matrix/trace'));
-  math.import(require('./lib/function/matrix/transpose'));
-  require('./lib/function/matrix/zeros')(math, _config);
-
-  // functions
+  math.import(require('./lib/function/matrix'));
   math.import(require('./lib/function/probability'));
   math.import(require('./lib/function/relational'));
   math.import(require('./lib/function/statistics'));
@@ -90,6 +68,7 @@ function create (config) {
 
   // create Chain, and create proxies for all functions/constants in the math
   // namespace.
+  // TODO: load Chain via math.import
   math.type.Chain = require('./lib/type/Chain')();
   math.type.Chain.createProxy(math);
 

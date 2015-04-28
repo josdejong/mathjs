@@ -5,6 +5,7 @@ var isFactory = require('./lib/util/object').isFactory;
  * @returns {Object} Returns a math.js instance containing
  *                   a function `import` to add new functions
  */
+// TODO: support passing config here
 exports.create = function create () {
   // simple test for ES5 support
   if (typeof Object.create !== 'function') {
@@ -79,12 +80,11 @@ exports.create = function create () {
   // load the import function, which can be used to load all other functions,
   // constants, and types
   math['import'] = load(require('./lib/function/utils/import'));
+  // TODO: automatically load config method too? Like import?
 
   // FIXME: load constants via math.import() like all functions (problem: it must be reloaded when config changes)
   // constants
   require('./lib/constants')(math, _config);
-
-  math._config = _config; // TODO: cleanup when everything is refactored
 
   // TODO: remove errors from the namespace as soon as all functions are refactored
   // errors
