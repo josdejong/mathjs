@@ -16,6 +16,11 @@ describe('SymbolNode', function() {
     assert.equal(n.type, 'SymbolNode');
   });
 
+  it ('should have isSymbolNode', function () {
+    var node = new SymbolNode('a');
+    assert(node.isSymbolNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     assert.throws(function () {SymbolNode('sqrt')}, SyntaxError);
   });

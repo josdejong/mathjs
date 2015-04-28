@@ -18,6 +18,11 @@ describe('IndexNode', function() {
     assert.equal(n.type, 'IndexNode');
   });
 
+  it ('should have isIndexNode', function () {
+    var node = new IndexNode(new Node(), []);
+    assert(node.isIndexNode);
+  });
+
   it ('should throw an error when calling with wrong arguments', function () {
     assert.throws(function () {new IndexNode()}, TypeError);
     assert.throws(function () {new IndexNode('a', [])}, TypeError);

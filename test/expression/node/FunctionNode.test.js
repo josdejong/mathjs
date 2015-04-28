@@ -19,6 +19,12 @@ describe('FunctionNode', function() {
     assert.equal(n.type, 'FunctionNode');
   });
 
+  it ('should have isFunctionNode', function () {
+    var c = new ConstantNode(1);
+    var node = new FunctionNode('square', [c]);
+    assert(node.isFunctionNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     var s = new SymbolNode('sqrt');
     var c = new ConstantNode(4);

@@ -20,6 +20,12 @@ describe('ArrayNode', function() {
     assert.equal(b.type, 'ArrayNode');
   });
 
+  it ('should have isArrayNode', function () {
+    var node = new ArrayNode([]);
+
+    assert(node.isArrayNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     assert.throws(function () {ArrayNode()}, SyntaxError);
   });

@@ -19,6 +19,11 @@ describe('AssignmentNode', function() {
     assert.equal(n.type, 'AssignmentNode');
   });
 
+  it ('should have isAssignmentNode', function () {
+    var node = new AssignmentNode('a', new Node());
+    assert(node.isAssignmentNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     assert.throws(function () {AssignmentNode('a', new Node())}, SyntaxError);
   });
