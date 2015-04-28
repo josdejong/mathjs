@@ -86,9 +86,8 @@ exports.create = function create () {
   // constants
   require('./lib/constants')(math, _config);
 
-  // TODO: remove errors from the namespace as soon as all functions are refactored
   // errors
-  math.error = require('./lib/error/index');
+  math.error = require('./lib/error');
 
   return math;
 };

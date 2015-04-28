@@ -134,9 +134,8 @@ describe('import', function() {
   });
 
   it('should throw an error in case of wrong number of arguments', function () {
-    assert.throws (function () {math.import()}, error.ArgumentsError);
-    assert.throws (function () {math.import('', {}, 3)}, error.ArgumentsError);
-
+    assert.throws (function () {math.import()}, /ArgumentsError/);
+    assert.throws (function () {math.import('', {}, 3)}, /ArgumentsError/);
   });
 
   it('should throw an error in case of wrong type of arguments', function () {
