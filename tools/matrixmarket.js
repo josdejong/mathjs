@@ -195,6 +195,7 @@ var _importFromStream = function (stream, deferred) {
           var values = [];
           var index = [];
           var ptr = [];
+          var datatype = mm.datatype === 'real' ? 'number' : undefined;
           // mm data & pointer
           var d = mm.data;
           var p = -1;
@@ -238,7 +239,8 @@ var _importFromStream = function (stream, deferred) {
             values: values,
             index: index,
             ptr: ptr,
-            size: [mm.rows, mm.columns]
+            size: [mm.rows, mm.columns],
+            datatype: datatype
           }));   
           break;
         case 'array':

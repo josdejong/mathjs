@@ -103,7 +103,8 @@ describe('DenseMatrix', function() {
         {
           mathjs: 'DenseMatrix',
           data: [[1, 2], [3, 4]],
-          size: [2, 2]
+          size: [2, 2],
+          datatype: undefined
         });
     });
   });
