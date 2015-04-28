@@ -120,8 +120,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.type.Unit = __webpack_require__(7);
 	  math.type.Help = __webpack_require__(8);
 	  math.type.ResultSet = __webpack_require__(9);
-	  math.import(__webpack_require__(10));
 	  math.import(__webpack_require__(11));
+	  math.import(__webpack_require__(10));
 	  
 	  // matrix storage formats
 	  math.import(__webpack_require__(16));
@@ -144,9 +144,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.import(__webpack_require__(29));
 	  math.import(__webpack_require__(31));
 	  math.import(__webpack_require__(30));
-	  math.import(__webpack_require__(34));
-	  math.import(__webpack_require__(32));
 	  math.import(__webpack_require__(33));
+	  math.import(__webpack_require__(32));
+	  math.import(__webpack_require__(34));
 	  math.import(__webpack_require__(35));
 	  math.import(__webpack_require__(36));
 	  math.import(__webpack_require__(37));
@@ -157,24 +157,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.import(__webpack_require__(42));
 	  math.import(__webpack_require__(43));
 	  math.import(__webpack_require__(44));
-	  math.import(__webpack_require__(47));
 	  math.import(__webpack_require__(45));
 	  math.import(__webpack_require__(46));
+	  math.import(__webpack_require__(47));
 	  math.import(__webpack_require__(48));
 	  math.import(__webpack_require__(49));
 	  math.import(__webpack_require__(50));
 	  math.import(__webpack_require__(51));
 	  math.import(__webpack_require__(52));
-	  math.import(__webpack_require__(53));
 	  math.import(__webpack_require__(54));
-	  math.import(__webpack_require__(55));
+	  math.import(__webpack_require__(53));
 	  math.import(__webpack_require__(56));
+	  math.import(__webpack_require__(55));
 
 	  // functions - bitwise
 	  math.import(__webpack_require__(57));
 	  math.import(__webpack_require__(58));
-	  math.import(__webpack_require__(60));
 	  math.import(__webpack_require__(59));
+	  math.import(__webpack_require__(60));
 	  math.import(__webpack_require__(61));
 	  math.import(__webpack_require__(62));
 	  math.import(__webpack_require__(63));
@@ -191,11 +191,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.import(__webpack_require__(70));
 	  math.import(__webpack_require__(71));
 	  math.import(__webpack_require__(72));
-	  math.import(__webpack_require__(73));
 	  math.import(__webpack_require__(74));
+	  math.import(__webpack_require__(73));
+	  math.import(__webpack_require__(76));
 	  math.import(__webpack_require__(75));
 	  math.import(__webpack_require__(77));
-	  math.import(__webpack_require__(76));
 	  math.import(__webpack_require__(78));
 
 	  // expression parser
@@ -226,8 +226,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.import(__webpack_require__(99));
 	  __webpack_require__(100)(math, _config);
 	  math.import(__webpack_require__(101));
-	  math.import(__webpack_require__(103));
-	  __webpack_require__(102)(math, _config);
+	  math.import(__webpack_require__(102));
+	  __webpack_require__(103)(math, _config);
 
 	  // functions - probability
 	  //math.import(require('./lib/function/probability/distribution')); // TODO: rethink math.distribution
@@ -271,8 +271,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math.import(__webpack_require__(135));
 	  math.import(__webpack_require__(136));
 	  math.import(__webpack_require__(137));
-	  math.import(__webpack_require__(139));
 	  math.import(__webpack_require__(138));
+	  math.import(__webpack_require__(139));
 	  math.import(__webpack_require__(140));
 	  math.import(__webpack_require__(141));
 	  math.import(__webpack_require__(142));
@@ -312,12 +312,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    mean:   __webpack_require__(26)(math, _config),
 	    min:    __webpack_require__(27)(math, _config),
 	    range:  __webpack_require__(28)(math, _config),
-	    subset: __webpack_require__(165)(math, _config)
+	    subset: __webpack_require__(164)(math, _config)
 	  };
 
 	  // create Chain, and create proxies for all functions/constants in the math
 	  // namespace.
-	  math.type.Chain = __webpack_require__(164)();
+	  math.type.Chain = __webpack_require__(165)();
 	  math.type.Chain.createProxy(math);
 
 	  // apply custom options
@@ -358,7 +358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  // create a new typed instance
-	  var typed = __webpack_require__(167).create(math);
+	  var typed = __webpack_require__(168).create(math);
 
 	  // create configuration options. These are private
 	  var _config = {
@@ -414,11 +414,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // load the import function, which can be used to load all other functions,
 	  // constants, and types
-	  math['import'] = load(__webpack_require__(169));
+	  math['import'] = load(__webpack_require__(167));
 
 	  // FIXME: load constants via math.import() like all functions (problem: it must be reloaded when config changes)
 	  // constants
-	  __webpack_require__(168)(math, _config);
+	  __webpack_require__(169)(math, _config);
 
 	  math._config = _config; // TODO: cleanup when everything is refactored
 
@@ -439,11 +439,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var util = __webpack_require__(171);
 	var arraySize = __webpack_require__(172).size;
-	var IndexError = __webpack_require__(173);
-	var DimensionError = __webpack_require__(174);
+	var IndexError = __webpack_require__(174);
+	var DimensionError = __webpack_require__(173);
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 
 	  var collection = {};
 
@@ -3114,70 +3114,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Decimal = __webpack_require__(350);
-	var digits = __webpack_require__(175).digits;
-
-	function factory (type, config, load, typed) {
-	  var BigNumber = Decimal.constructor(config);
-
-	  /**
-	   * Get a JSON representation of a BigNumber containing
-	   * type information
-	   * @returns {Object} Returns a JSON object structured as:
-	   *                   `{"mathjs": "BigNumber", "value": "0.2"}`
-	   */
-	  BigNumber.prototype.toJSON = function () {
-	    return {
-	      mathjs: 'BigNumber',
-	      value: this.toString()
-	    };
-	  };
-
-	  /**
-	   * Instantiate a BigNumber from a JSON object
-	   * @param {Object} json  a JSON object structured as:
-	   *                       `{"mathjs": "BigNumber", "value": "0.2"}`
-	   * @return {BigNumber}
-	   */
-	  BigNumber.fromJSON = function (json) {
-	    return new BigNumber(json.value);
-	  };
-
-	  // TODO: remove BigNumber.convert as soon as it's deprecated
-	  // extend BigNumber with a function convert
-	  if (typeof BigNumber.convert !== 'function') {
-	    /**
-	     * Try to convert a Number in to a BigNumber.
-	     * If the number has 15 or mor significant digits, the Number cannot be
-	     * converted to BigNumber and will return the original number.
-	     * @param {Number} number
-	     * @return {BigNumber | Number} bignumber
-	     */
-	    BigNumber.convert = function(number) {
-	      if (digits(number) > 15) {
-	        return number;
-	      }
-	      else {
-	        return new BigNumber(number);
-	      }
-	    };
-	  }
-	  else {
-	    throw new Error('Cannot add function convert to BigNumber: function already exists');
-	  }
-
-	  return BigNumber;
-	}
-
-	exports.name = 'BigNumber';
-	exports.path = 'type';
-	exports.factory = factory;
-
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	function factory (type, config, load, typed) {
@@ -3509,6 +3445,70 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Decimal = __webpack_require__(351);
+	var digits = __webpack_require__(175).digits;
+
+	function factory (type, config, load, typed) {
+	  var BigNumber = Decimal.constructor(config);
+
+	  /**
+	   * Get a JSON representation of a BigNumber containing
+	   * type information
+	   * @returns {Object} Returns a JSON object structured as:
+	   *                   `{"mathjs": "BigNumber", "value": "0.2"}`
+	   */
+	  BigNumber.prototype.toJSON = function () {
+	    return {
+	      mathjs: 'BigNumber',
+	      value: this.toString()
+	    };
+	  };
+
+	  /**
+	   * Instantiate a BigNumber from a JSON object
+	   * @param {Object} json  a JSON object structured as:
+	   *                       `{"mathjs": "BigNumber", "value": "0.2"}`
+	   * @return {BigNumber}
+	   */
+	  BigNumber.fromJSON = function (json) {
+	    return new BigNumber(json.value);
+	  };
+
+	  // TODO: remove BigNumber.convert as soon as it's deprecated
+	  // extend BigNumber with a function convert
+	  if (typeof BigNumber.convert !== 'function') {
+	    /**
+	     * Try to convert a Number in to a BigNumber.
+	     * If the number has 15 or mor significant digits, the Number cannot be
+	     * converted to BigNumber and will return the original number.
+	     * @param {Number} number
+	     * @return {BigNumber | Number} bignumber
+	     */
+	    BigNumber.convert = function(number) {
+	      if (digits(number) > 15) {
+	        return number;
+	      }
+	      else {
+	        return new BigNumber(number);
+	      }
+	    };
+	  }
+	  else {
+	    throw new Error('Cannot add function convert to BigNumber: function already exists');
+	  }
+
+	  return BigNumber;
+	}
+
+	exports.name = 'BigNumber';
+	exports.path = 'type';
+	exports.factory = factory;
+
+
+/***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -3520,9 +3520,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var isString = util.string.isString;
 
-	var ArrayNode = __webpack_require__(177);
-	var AssignmentNode = __webpack_require__(179);
-	var BlockNode = __webpack_require__(178);
+	var ArrayNode = __webpack_require__(178);
+	var AssignmentNode = __webpack_require__(177);
+	var BlockNode = __webpack_require__(179);
 	var ConditionalNode = __webpack_require__(180);
 	var ConstantNode = __webpack_require__(181);
 	var FunctionAssignmentNode = __webpack_require__(182);
@@ -5049,9 +5049,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	exports.ArrayNode = __webpack_require__(177);
-	exports.AssignmentNode = __webpack_require__(179);
-	exports.BlockNode = __webpack_require__(178);
+	exports.ArrayNode = __webpack_require__(178);
+	exports.AssignmentNode = __webpack_require__(177);
+	exports.BlockNode = __webpack_require__(179);
 	exports.ConditionalNode = __webpack_require__(180);
 	exports.ConstantNode = __webpack_require__(181);
 	exports.IndexNode = __webpack_require__(183);
@@ -5072,20 +5072,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.e = __webpack_require__(190);
 	exports.E = __webpack_require__(190);
 	exports['false'] = __webpack_require__(191);
-	exports.i = __webpack_require__(193);
-	exports['Infinity'] = __webpack_require__(192);
-	exports.LN2 = __webpack_require__(194);
-	exports.LN10 = __webpack_require__(195);
+	exports.i = __webpack_require__(192);
+	exports['Infinity'] = __webpack_require__(193);
+	exports.LN2 = __webpack_require__(195);
+	exports.LN10 = __webpack_require__(194);
 	exports.LOG2E = __webpack_require__(196);
 	exports.LOG10E = __webpack_require__(197);
-	exports.NaN = __webpack_require__(200);
-	exports['null'] = __webpack_require__(198);
-	exports.pi = __webpack_require__(199);
-	exports.PI = __webpack_require__(199);
+	exports.NaN = __webpack_require__(198);
+	exports['null'] = __webpack_require__(199);
+	exports.pi = __webpack_require__(200);
+	exports.PI = __webpack_require__(200);
 	exports.phi = __webpack_require__(201);
-	exports.SQRT1_2 = __webpack_require__(204);
-	exports.SQRT2 = __webpack_require__(202);
-	exports.tau = __webpack_require__(203);
+	exports.SQRT1_2 = __webpack_require__(202);
+	exports.SQRT2 = __webpack_require__(203);
+	exports.tau = __webpack_require__(204);
 	exports['true'] = __webpack_require__(205);
 	exports.version = __webpack_require__(206);
 
@@ -5121,8 +5121,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// functions - bitwise
 	exports.bitAnd = __webpack_require__(245);
-	exports.bitNot = __webpack_require__(247);
-	exports.bitOr = __webpack_require__(246);
+	exports.bitNot = __webpack_require__(246);
+	exports.bitOr = __webpack_require__(247);
 	exports.bitXor = __webpack_require__(248);
 	exports.leftShift = __webpack_require__(249);
 	exports.rightArithShift = __webpack_require__(250);
@@ -5137,8 +5137,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	// functions - construction
 	exports.bignumber = __webpack_require__(256);
 	exports['boolean'] = __webpack_require__(257);
-	exports.complex = __webpack_require__(259);
-	exports.index = __webpack_require__(258);
+	exports.complex = __webpack_require__(258);
+	exports.index = __webpack_require__(259);
 	exports.matrix = __webpack_require__(260);
 	exports.number = __webpack_require__(261);
 	exports.string = __webpack_require__(262);
@@ -5195,8 +5195,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// functions - statistics
 	exports.max = __webpack_require__(302);
-	exports.mean = __webpack_require__(304);
-	exports.median = __webpack_require__(303);
+	exports.mean = __webpack_require__(303);
+	exports.median = __webpack_require__(304);
 	exports.min = __webpack_require__(305);
 	exports.prod = __webpack_require__(306);
 	exports.std = __webpack_require__(307);
@@ -5252,7 +5252,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var util = __webpack_require__(171);
-	var DimensionError = __webpack_require__(174);
+	var DimensionError = __webpack_require__(173);
 
 	var array = util.array;
 	var object = util.object;
@@ -6421,7 +6421,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var util = __webpack_require__(171);
-	var DimensionError = __webpack_require__(174);
+	var DimensionError = __webpack_require__(173);
 
 	var string = util.string;
 	var array = util.array;
@@ -7388,7 +7388,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(350);
+	var BigNumber = __webpack_require__(351);
 	var errorTransform = __webpack_require__(207).transform;
 	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
@@ -7558,7 +7558,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(350);
+	var BigNumber = __webpack_require__(351);
 	var Range = __webpack_require__(4);
 	var Index = __webpack_require__(5);
 	var isNumber = __webpack_require__(175).isNumber;
@@ -7664,7 +7664,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(350);
+	var BigNumber = __webpack_require__(351);
 	var errorTransform = __webpack_require__(207).transform;
 	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
@@ -7715,7 +7715,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(350);
+	var BigNumber = __webpack_require__(351);
 	var errorTransform = __webpack_require__(207).transform;
 	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
@@ -7766,7 +7766,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(350);
+	var BigNumber = __webpack_require__(351);
 	var errorTransform = __webpack_require__(207).transform;
 	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
@@ -7989,16 +7989,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var clone = __webpack_require__(166).clone;
-	var DimensionError = __webpack_require__(174);
+	var DimensionError = __webpack_require__(173);
 
 	function factory (type, config, load, typed) {
 
 	  var collection = load(__webpack_require__(2));
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  var equal = load(__webpack_require__(113));
 	  var sparseScatter = load(__webpack_require__(210));
 	  var addScalar = load(__webpack_require__(209));
-	  var multiplyScalar = load(__webpack_require__(211));
+	  var multiplyScalar = load(__webpack_require__(212));
 	  
 	  var DenseMatrix = type.DenseMatrix,
 	      SparseMatrix = type.SparseMatrix;
@@ -8382,8 +8382,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  var collection   = load(__webpack_require__(2));
-	  var divideScalar = load(__webpack_require__(212));
-	  var multiply     = load(__webpack_require__(47));
+	  var divideScalar = load(__webpack_require__(211));
+	  var multiply     = load(__webpack_require__(45));
 	  var inv          = load(__webpack_require__(94));
 
 	  /**
@@ -8449,56 +8449,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var collection = load(__webpack_require__(2));
-	  var divideScalar = load(__webpack_require__(212));
-
-	  /**
-	   * Divide two matrices element wise. The function accepts both matrices and
-	   * scalar values.
-	   *
-	   * Syntax:
-	   *
-	   *    math.dotDivide(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    math.dotDivide(2, 4);   // returns 0.5
-	   *
-	   *    a = [[9, 5], [6, 1]];
-	   *    b = [[3, 2], [5, 2]];
-	   *
-	   *    math.dotDivide(a, b);   // returns [[3, 2.5], [1.2, 0.5]]
-	   *    math.divide(a, b);      // returns [[1.75, 0.75], [-1.75, 2.25]]
-	   *
-	   * See also:
-	   *
-	   *    divide, multiply, dotMultiply
-	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix | null} x Numerator
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix | null} y Denominator
-	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
-	   */
-	  return typed('dotDivide', {
-	    'any, any': function (x, y) {
-	      return collection.deepMap2(x, y, divideScalar);
-	    }
-	  });
-	}
-
-	exports.name = 'dotDivide';
-	exports.factory = factory;
-
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	function factory (type, config, load, typed) {
 
 	  var collection = load(__webpack_require__(2));
-	  var complexMultiply = load(__webpack_require__(211)).signatures['Complex,Complex'];
+	  var complexMultiply = load(__webpack_require__(212)).signatures['Complex,Complex'];
 
 	  /**
 	   * Compute the cube of a value, `x * x * x`.
@@ -8551,6 +8504,53 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function factory (type, config, load, typed) {
+	  var collection = load(__webpack_require__(2));
+	  var divideScalar = load(__webpack_require__(211));
+
+	  /**
+	   * Divide two matrices element wise. The function accepts both matrices and
+	   * scalar values.
+	   *
+	   * Syntax:
+	   *
+	   *    math.dotDivide(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    math.dotDivide(2, 4);   // returns 0.5
+	   *
+	   *    a = [[9, 5], [6, 1]];
+	   *    b = [[3, 2], [5, 2]];
+	   *
+	   *    math.dotDivide(a, b);   // returns [[3, 2.5], [1.2, 0.5]]
+	   *    math.divide(a, b);      // returns [[1.75, 0.75], [-1.75, 2.25]]
+	   *
+	   * See also:
+	   *
+	   *    divide, multiply, dotMultiply
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix | null} x Numerator
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix | null} y Denominator
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
+	   */
+	  return typed('dotDivide', {
+	    'any, any': function (x, y) {
+	      return collection.deepMap2(x, y, divideScalar);
+	    }
+	  });
+	}
+
+	exports.name = 'dotDivide';
+	exports.factory = factory;
+
+
+/***/ },
 /* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -8560,7 +8560,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
-	  var multiply = load(__webpack_require__(47));
+	  var multiply = load(__webpack_require__(45));
 
 	  /**
 	   * Multiply two matrices element wise. The function accepts both matrices and
@@ -9074,7 +9074,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
-	  var divideScalar = load(__webpack_require__(212));
+	  var divideScalar = load(__webpack_require__(211));
 
 	  /**
 	   * Calculate the logarithm of a value.
@@ -9337,370 +9337,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	function factory (type, config, load, typed) {
-	  
-	  var abs       = load(__webpack_require__(29));
-	  var add       = load(__webpack_require__(31));
-	  var pow       = load(__webpack_require__(48));
-	  var sqrt      = load(__webpack_require__(51));
-	  var multiply  = load(__webpack_require__(47));
-	  var equal     = load(__webpack_require__(113));
-	  var larger    = load(__webpack_require__(114));
-	  var smaller   = load(__webpack_require__(116));
-	  var matrix    = load(__webpack_require__(73));
-	  var trace     = load(__webpack_require__(101));
-	  var transpose = load(__webpack_require__(103));
-	  
-	  var complexAbs = abs.signatures['Complex'];
-
-	  /**
-	   * Calculate the norm of a number, vector or matrix.
-	   *
-	   * The second parameter p is optional. If not provided, it defaults to 2.
-	   *
-	   * Syntax:
-	   *
-	   *    math.norm(x)
-	   *    math.norm(x, p)
-	   *
-	   * Examples:
-	   *
-	   *    math.abs(-3.5);                         // returns 3.5
-	   *    math.norm(-3.5);                        // returns 3.5
-	   *
-	   *    math.norm(math.complex(3, -4));         // returns 5
-	   *
-	   *    math.norm([1, 2, -3], Infinity);        // returns 3
-	   *    math.norm([1, 2, -3], -Infinity);       // returns 1
-	   *
-	   *    math.norm([3, 4], 2);                   // returns 5
-	   *
-	   *    math.norm([[1, 2], [3, 4]], 1)          // returns 6
-	   *    math.norm([[1, 2], [3, 4]], 'inf');     // returns 7
-	   *    math.norm([[1, 2], [3, 4]], 'fro');     // returns 5.477225575051661
-	   *
-	   * See also:
-	   *
-	   *    abs
-	   *
-	   * @param  {Number | BigNumber | Complex | Boolean | Array | Matrix | null} x
-	   *            Value for which to calculate the norm
-	   * @param  {Number | BigNumber | String} [p=2]
-	   *            Vector space.
-	   *            Supported numbers include Infinity and -Infinity.
-	   *            Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm)
-	   * @return {Number | BigNumber} the p-norm
-	   */
-	  var norm = typed('norm', {
-	    'number': Math.abs,
-
-	    'Complex': complexAbs,
-
-	    'BigNumber': function (x) {
-	      // norm(x) = abs(x)
-	      return x.abs();
-	    },
-	    
-	    'boolean | null' : function (x) {
-	      // norm(x) = abs(x)
-	      return Math.abs(x);
-	    },
-
-	    'Array': function (x) {
-	      return _norm(matrix(x), 2);
-	    },
-	    
-	    'Matrix': function (x) {
-	      return _norm(x, 2);
-	    },
-
-	    'number | Complex | BigNumber | boolean | null, number | BigNumber | string': function (x) {
-	      // ignore second parameter, TODO: remove the option of second parameter for these types
-	      return norm(x);
-	    },
-
-	    'Array, number | BigNumber | string': function (x, p) {
-	      return _norm(matrix(x), p);
-	    },
-	    
-	    'Matrix, number | BigNumber | string': function (x, p) {
-	      return _norm(x, p);
-	    }
-	  });
-
-	  /**
-	   * Calculate the norm for an array
-	   * @param {Array} x
-	   * @param {number | string} p
-	   * @returns {number} Returns the norm
-	   * @private
-	   */
-	  function _norm (x, p) {
-	    // size
-	    var sizeX = x.size();
-	    
-	    // check if it is a vector
-	    if (sizeX.length == 1) {
-	      // check p
-	      if (p === Number.POSITIVE_INFINITY || p === 'inf') {
-	        // norm(x, Infinity) = max(abs(x))
-	        var pinf = 0;
-	        // skip zeros since abs(0) == 0
-	        x.forEach(
-	          function (value) {
-	            var v = abs(value);
-	            if (larger(v, pinf))
-	              pinf = v;
-	          },
-	          true);
-	        return pinf;
-	      }
-	      if (p === Number.NEGATIVE_INFINITY || p === '-inf') {
-	        // norm(x, -Infinity) = min(abs(x))
-	        var ninf;
-	        // skip zeros since abs(0) == 0
-	        x.forEach(
-	          function (value) {
-	            var v = abs(value);
-	            if (!ninf || smaller(v, ninf))
-	              ninf = v;
-	          },
-	          true);
-	        return ninf || 0;
-	      }
-	      if (p === 'fro') {
-	        return _norm(x, 2);
-	      }
-	      if (typeof p === 'number' && !isNaN(p)) {
-	        // check p != 0
-	        if (!equal(p, 0)) {
-	          // norm(x, p) = sum(abs(xi) ^ p) ^ 1/p
-	          var n = 0;
-	          // skip zeros since abs(0) == 0
-	          x.forEach(
-	            function (value) {
-	              n = add(pow(abs(value), p), n);
-	            },
-	            true);
-	          return pow(n, 1 / p);
-	        }
-	        return Number.POSITIVE_INFINITY;
-	      }
-	      // invalid parameter value
-	      throw new Error('Unsupported parameter value');
-	    }
-	    // MxN matrix
-	    if (sizeX.length == 2) {
-	      // check p
-	      if (p === 1) {
-	        // norm(x) = the largest column sum
-	        var c = [];
-	        // result
-	        var maxc = 0;
-	        // skip zeros since abs(0) == 0
-	        x.forEach(
-	          function (value, index) {
-	            var j = index[1];
-	            var cj = add(c[j] || 0, abs(value));
-	            if (larger(cj, maxc))
-	              maxc = cj;
-	            c[j] = cj;
-	          },
-	          true);
-	        return maxc;
-	      }
-	      if (p === Number.POSITIVE_INFINITY || p === 'inf') {
-	        // norm(x) = the largest row sum
-	        var r = [];
-	        // result
-	        var maxr = 0;
-	        // skip zeros since abs(0) == 0
-	        x.forEach(
-	          function (value, index) {
-	            var i = index[0];
-	            var ri = add(r[i] || 0, abs(value));
-	            if (larger(ri, maxr))
-	              maxr = ri;
-	            r[i] = ri;
-	          },
-	          true);
-	        return maxr;
-	      }
-	      if (p === 'fro') {
-	        // norm(x) = sqrt(sum(diag(x'x)))
-	        return sqrt(trace(multiply(transpose(x), x)));
-	      }
-	      if (p === 2) {
-	        // not implemented
-	        throw new Error('Unsupported parameter value, missing implementation of matrix singular value decomposition');
-	      }
-	      // invalid parameter value
-	      throw new Error('Unsupported parameter value');
-	    }
-	  }
-
-	  return norm;
-	}
-
-	exports.name = 'norm';
-	exports.factory = factory;
-
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	function factory (type, config, load, typed) {
-	  var collection = load(__webpack_require__(2));
-
-	  /**
-	   * Calculate the nth root of a value.
-	   * The principal nth root of a positive real number A, is the positive real
-	   * solution of the equation
-	   *
-	   *     x^root = A
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *     math.nthRoot(a)
-	   *     math.nthRoot(a, root)
-	   *
-	   * Examples:
-	   *
-	   *     math.nthRoot(9, 2);    // returns 3, as 3^2 == 9
-	   *     math.sqrt(9);          // returns 3, as 3^2 == 9
-	   *     math.nthRoot(64, 3);   // returns 4, as 4^3 == 64
-	   *
-	   * See also:
-	   *
-	   *     sqrt, pow
-	   *
-	   * @param {Number | BigNumber | Boolean | Array | Matrix | null} a
-	   *              Value for which to calculate the nth root
-	   * @param {Number | BigNumber | Boolean | null} [root=2]    The root.
-	   * @return {Number | Complex | Array | Matrix} Returns the nth root of `a`
-	   */
-	  var nthRoot = typed('nthRoot', {
-	    'number': function (x) {
-	      return _nthRoot(x, 2);
-	    },
-	    'number, number': _nthRoot,
-
-	    'BigNumber': function (x) {
-	      return _bigNthRoot(x, new type.BigNumber(2));
-	    },
-	    'BigNumber, BigNumber': _bigNthRoot,
-
-	    'Array | Matrix': function (x) {
-	      return collection.deepMap(x, nthRoot);
-	    },
-
-	    'Array | Matrix, any': function (x, root) {
-	      return collection.deepMap2(x, root, nthRoot);
-	    },
-
-	    'any, Array | Matrix': function (x, root) {
-	      return collection.deepMap2(x, root, nthRoot);
-	    }
-	  });
-
-	  return nthRoot;
-
-	  /**
-	   * Calculate the nth root of a for BigNumbers, solve x^root == a
-	   * http://rosettacode.org/wiki/Nth_root#JavaScript
-	   * @param {BigNumber} a
-	   * @param {BigNumber} root
-	   * @private
-	   */
-	  function _bigNthRoot(a, root) {
-	    var zero = new type.BigNumber(0);
-	    var one = new type.BigNumber(1);
-	    var inv = root.isNegative();
-	    if (inv) root = root.negated();
-
-	    if (root.isZero()) throw new Error('Root must be non-zero');
-	    if (a.isNegative() && !root.abs().mod(2).equals(1)) throw new Error('Root must be odd when a is negative.');
-
-	    // edge cases zero and infinity
-	    if (a.isZero()) return zero;
-	    if (!a.isFinite())
-	    {
-	      return inv ? zero : a;
-	    }
-
-	    var x = one; // Initial guess
-	    var i = 0;
-	    var iMax = 100;
-	    do {
-	      var xPrev = x;
-	      var delta = a.div(x.pow(root.minus(1))).minus(x).div(root);
-	      x = x.plus(delta);
-	      i++;
-	    }
-	    while (!x.equals(xPrev) && i < iMax);
-
-	    return inv ? one.div(x) : x;
-	  }
-	}
-
-	/**
-	 * Calculate the nth root of a, solve x^root == a
-	 * http://rosettacode.org/wiki/Nth_root#JavaScript
-	 * @param {number} a
-	 * @param {number} root
-	 * @private
-	 */
-	function _nthRoot(a, root) {
-	  var inv = root < 0;
-	  if (inv) root = -root;
-
-	  if (root === 0) throw new Error('Root must be non-zero');
-	  if (a < 0 && (Math.abs(root) % 2 != 1)) throw new Error('Root must be odd when a is negative.');
-
-	  // edge cases zero and infinity
-	  if (a == 0) return 0;
-	  if (!Number.isFinite(a)) {
-	    return inv ? 0 : a;
-	  }
-
-	  var epsilon = 1e-16;
-	  var x = 1; // Initial guess
-	  var i = 0;
-	  var iMax = 100;
-	  do {
-	    var delta = (a / Math.pow(x, root - 1) - x) / root;
-	    x = x + delta;
-	    i++;
-	  }
-	  while (Math.abs(delta) > epsilon && i < iMax);
-
-	  return inv ? 1 / x : x;
-	}
-
-	exports.name = 'nthRoot';
-	exports.factory = factory;
-
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
 	var util = __webpack_require__(171);
 
 	var array = util.array;
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  var addScalar = load(__webpack_require__(209));
-	  var multiplyScalar = load(__webpack_require__(211));
+	  var multiplyScalar = load(__webpack_require__(212));
 	  var equal = load(__webpack_require__(113));
 
 	  var collection = load(__webpack_require__(2));
@@ -10135,59 +9780,91 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * C = A * B
 	   *
 	   * @param {Matrix} a            DenseMatrix    (MxN)
-	   * @param {Matrix} b            SparseMatrix      (NxC)
+	   * @param {Matrix} b            SparseMatrix   (NxC)
 	   *
-	   * @return {Matrix}             DenseMatrix    (MxC)
+	   * @return {Matrix}             SparseMatrix   (MxC)
 	   */
 	  var _multiplyDenseMatrixSparseMatrix = function (a, b) {
 	    // a dense
 	    var adata = a._data;
 	    var asize = a._size;
+	    var adt = a._datatype;
 	    // b sparse
 	    var bvalues = b._values;
 	    var bindex = b._index;
 	    var bptr = b._ptr;
 	    var bsize = b._size;
+	    var bdt = b._datatype;
 	    // validate b matrix
 	    if (!bvalues)
 	      throw new Error('Cannot multiply Dense Matrix times Pattern only Matrix');
 	    // rows & columns
 	    var arows = asize[0];
 	    var bcolumns = bsize[1];
-
 	    // result
-	    var c = new Array(arows);
+	    var cvalues = [];
+	    var cindex = [];
+	    var cptr = new Array(bcolumns + 1);
+	    // c matrix
+	    var c = new SparseMatrix({
+	      values : cvalues,
+	      index: cindex,
+	      ptr: cptr,
+	      size: [arows, bcolumns],
+	      datatype: dt
+	    });
+	    
+	    // process data types
+	    var dt = adt && bdt && adt === bdt ? adt : undefined;
+	    // multiply & add scalar implementations
+	    var mf = dt ? multiplyScalar.signatures[dt + ',' + dt] || multiplyScalar : multiplyScalar;
+	    var af = dt ? addScalar.signatures[dt + ',' + dt] || addScalar : addScalar;
 
-	    // loop a rows
-	    for (var i = 0; i < arows; i++) {
-	      // initialize row
-	      c[i] = new Array(bcolumns);
-	      // current row
-	      var row = adata[i];
-	      // loop b columns
-	      for (var j = 0; j < bcolumns; j++) {
-	        // sum
-	        var sum = 0;
-	        // values & index in column j
-	        for (var k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+	    // loop b columns
+	    for (var jb = 0; jb < bcolumns; jb++) {
+	      // last row mark processed
+	      var last = 0;
+	      // update ptr
+	      cptr[jb] = cindex.length;
+	      // loop a rows
+	      for (var i = 0; i < arows; i++) {
+	        // column mark
+	        var mark = i + 1;
+	        // C[i, jb]
+	        var cij;
+	        // values in b column j
+	        for (var kb0 = bptr[jb], kb1 = bptr[jb + 1], kb = kb0; kb < kb1; kb++) {
 	          // row
-	          var x = bindex[k];
-	          // multiply & accumulate
-	          sum = addScalar(sum, multiply(row[x], bvalues[k]));
+	          var ib = bindex[kb];
+	          // check value has been initialized
+	          if (last !== mark) {
+	            // first value in column jb
+	            cij = mf(adata[i][ib], bvalues[kb]);
+	            // update mark
+	            last = mark;
+	          }
+	          else {
+	            // accumulate value
+	            cij = af(cij, mf(adata[i][ib], bvalues[kb]));
+	          }
 	        }
-	        c[i][j] = sum;
+	        // check column has been processed and value != 0
+	        if (last === mark && !equal(cij, 0)) {
+	          // push row & value
+	          cindex.push(i);
+	          cvalues.push(cij);
+	        }
 	      }
 	    }
+	    // update ptr
+	    cptr[bcolumns] = cindex.length;
 
 	    // check we need to squeeze the result into a scalar
 	    if (arows === 1 && bcolumns === 1)
-	      return c[0][0];
+	      return cvalues.length === 1 ? cvalues[0] : 0;
 
-	    // return matrix
-	    return new DenseMatrix({
-	      data: c,
-	      size: [arows, bcolumns]
-	    });
+	    // return sparse matrix
+	    return c;
 	  };
 
 	  /**
@@ -10217,7 +9894,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var cvalues = [];
 	    var cindex = [];
 	    var cptr = new Array(2);
-
+	    
 	    // process data types
 	    var dt = adt && bdt && adt === bdt ? adt : undefined;
 	    // multiply & add scalar implementations
@@ -10503,6 +10180,361 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function factory (type, config, load, typed) {
+	  
+	  var abs       = load(__webpack_require__(29));
+	  var add       = load(__webpack_require__(31));
+	  var pow       = load(__webpack_require__(48));
+	  var sqrt      = load(__webpack_require__(51));
+	  var multiply  = load(__webpack_require__(45));
+	  var equal     = load(__webpack_require__(113));
+	  var larger    = load(__webpack_require__(114));
+	  var smaller   = load(__webpack_require__(116));
+	  var matrix    = load(__webpack_require__(74));
+	  var trace     = load(__webpack_require__(101));
+	  var transpose = load(__webpack_require__(102));
+	  
+	  var complexAbs = abs.signatures['Complex'];
+
+	  /**
+	   * Calculate the norm of a number, vector or matrix.
+	   *
+	   * The second parameter p is optional. If not provided, it defaults to 2.
+	   *
+	   * Syntax:
+	   *
+	   *    math.norm(x)
+	   *    math.norm(x, p)
+	   *
+	   * Examples:
+	   *
+	   *    math.abs(-3.5);                         // returns 3.5
+	   *    math.norm(-3.5);                        // returns 3.5
+	   *
+	   *    math.norm(math.complex(3, -4));         // returns 5
+	   *
+	   *    math.norm([1, 2, -3], Infinity);        // returns 3
+	   *    math.norm([1, 2, -3], -Infinity);       // returns 1
+	   *
+	   *    math.norm([3, 4], 2);                   // returns 5
+	   *
+	   *    math.norm([[1, 2], [3, 4]], 1)          // returns 6
+	   *    math.norm([[1, 2], [3, 4]], 'inf');     // returns 7
+	   *    math.norm([[1, 2], [3, 4]], 'fro');     // returns 5.477225575051661
+	   *
+	   * See also:
+	   *
+	   *    abs
+	   *
+	   * @param  {Number | BigNumber | Complex | Boolean | Array | Matrix | null} x
+	   *            Value for which to calculate the norm
+	   * @param  {Number | BigNumber | String} [p=2]
+	   *            Vector space.
+	   *            Supported numbers include Infinity and -Infinity.
+	   *            Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm)
+	   * @return {Number | BigNumber} the p-norm
+	   */
+	  var norm = typed('norm', {
+	    'number': Math.abs,
+
+	    'Complex': complexAbs,
+
+	    'BigNumber': function (x) {
+	      // norm(x) = abs(x)
+	      return x.abs();
+	    },
+	    
+	    'boolean | null' : function (x) {
+	      // norm(x) = abs(x)
+	      return Math.abs(x);
+	    },
+
+	    'Array': function (x) {
+	      return _norm(matrix(x), 2);
+	    },
+	    
+	    'Matrix': function (x) {
+	      return _norm(x, 2);
+	    },
+
+	    'number | Complex | BigNumber | boolean | null, number | BigNumber | string': function (x) {
+	      // ignore second parameter, TODO: remove the option of second parameter for these types
+	      return norm(x);
+	    },
+
+	    'Array, number | BigNumber | string': function (x, p) {
+	      return _norm(matrix(x), p);
+	    },
+	    
+	    'Matrix, number | BigNumber | string': function (x, p) {
+	      return _norm(x, p);
+	    }
+	  });
+
+	  /**
+	   * Calculate the norm for an array
+	   * @param {Array} x
+	   * @param {number | string} p
+	   * @returns {number} Returns the norm
+	   * @private
+	   */
+	  function _norm (x, p) {
+	    // size
+	    var sizeX = x.size();
+	    
+	    // check if it is a vector
+	    if (sizeX.length == 1) {
+	      // check p
+	      if (p === Number.POSITIVE_INFINITY || p === 'inf') {
+	        // norm(x, Infinity) = max(abs(x))
+	        var pinf = 0;
+	        // skip zeros since abs(0) == 0
+	        x.forEach(
+	          function (value) {
+	            var v = abs(value);
+	            if (larger(v, pinf))
+	              pinf = v;
+	          },
+	          true);
+	        return pinf;
+	      }
+	      if (p === Number.NEGATIVE_INFINITY || p === '-inf') {
+	        // norm(x, -Infinity) = min(abs(x))
+	        var ninf;
+	        // skip zeros since abs(0) == 0
+	        x.forEach(
+	          function (value) {
+	            var v = abs(value);
+	            if (!ninf || smaller(v, ninf))
+	              ninf = v;
+	          },
+	          true);
+	        return ninf || 0;
+	      }
+	      if (p === 'fro') {
+	        return _norm(x, 2);
+	      }
+	      if (typeof p === 'number' && !isNaN(p)) {
+	        // check p != 0
+	        if (!equal(p, 0)) {
+	          // norm(x, p) = sum(abs(xi) ^ p) ^ 1/p
+	          var n = 0;
+	          // skip zeros since abs(0) == 0
+	          x.forEach(
+	            function (value) {
+	              n = add(pow(abs(value), p), n);
+	            },
+	            true);
+	          return pow(n, 1 / p);
+	        }
+	        return Number.POSITIVE_INFINITY;
+	      }
+	      // invalid parameter value
+	      throw new Error('Unsupported parameter value');
+	    }
+	    // MxN matrix
+	    if (sizeX.length == 2) {
+	      // check p
+	      if (p === 1) {
+	        // norm(x) = the largest column sum
+	        var c = [];
+	        // result
+	        var maxc = 0;
+	        // skip zeros since abs(0) == 0
+	        x.forEach(
+	          function (value, index) {
+	            var j = index[1];
+	            var cj = add(c[j] || 0, abs(value));
+	            if (larger(cj, maxc))
+	              maxc = cj;
+	            c[j] = cj;
+	          },
+	          true);
+	        return maxc;
+	      }
+	      if (p === Number.POSITIVE_INFINITY || p === 'inf') {
+	        // norm(x) = the largest row sum
+	        var r = [];
+	        // result
+	        var maxr = 0;
+	        // skip zeros since abs(0) == 0
+	        x.forEach(
+	          function (value, index) {
+	            var i = index[0];
+	            var ri = add(r[i] || 0, abs(value));
+	            if (larger(ri, maxr))
+	              maxr = ri;
+	            r[i] = ri;
+	          },
+	          true);
+	        return maxr;
+	      }
+	      if (p === 'fro') {
+	        // norm(x) = sqrt(sum(diag(x'x)))
+	        return sqrt(trace(multiply(transpose(x), x)));
+	      }
+	      if (p === 2) {
+	        // not implemented
+	        throw new Error('Unsupported parameter value, missing implementation of matrix singular value decomposition');
+	      }
+	      // invalid parameter value
+	      throw new Error('Unsupported parameter value');
+	    }
+	  }
+
+	  return norm;
+	}
+
+	exports.name = 'norm';
+	exports.factory = factory;
+
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function factory (type, config, load, typed) {
+	  var collection = load(__webpack_require__(2));
+
+	  /**
+	   * Calculate the nth root of a value.
+	   * The principal nth root of a positive real number A, is the positive real
+	   * solution of the equation
+	   *
+	   *     x^root = A
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *     math.nthRoot(a)
+	   *     math.nthRoot(a, root)
+	   *
+	   * Examples:
+	   *
+	   *     math.nthRoot(9, 2);    // returns 3, as 3^2 == 9
+	   *     math.sqrt(9);          // returns 3, as 3^2 == 9
+	   *     math.nthRoot(64, 3);   // returns 4, as 4^3 == 64
+	   *
+	   * See also:
+	   *
+	   *     sqrt, pow
+	   *
+	   * @param {Number | BigNumber | Boolean | Array | Matrix | null} a
+	   *              Value for which to calculate the nth root
+	   * @param {Number | BigNumber | Boolean | null} [root=2]    The root.
+	   * @return {Number | Complex | Array | Matrix} Returns the nth root of `a`
+	   */
+	  var nthRoot = typed('nthRoot', {
+	    'number': function (x) {
+	      return _nthRoot(x, 2);
+	    },
+	    'number, number': _nthRoot,
+
+	    'BigNumber': function (x) {
+	      return _bigNthRoot(x, new type.BigNumber(2));
+	    },
+	    'BigNumber, BigNumber': _bigNthRoot,
+
+	    'Array | Matrix': function (x) {
+	      return collection.deepMap(x, nthRoot);
+	    },
+
+	    'Array | Matrix, any': function (x, root) {
+	      return collection.deepMap2(x, root, nthRoot);
+	    },
+
+	    'any, Array | Matrix': function (x, root) {
+	      return collection.deepMap2(x, root, nthRoot);
+	    }
+	  });
+
+	  return nthRoot;
+
+	  /**
+	   * Calculate the nth root of a for BigNumbers, solve x^root == a
+	   * http://rosettacode.org/wiki/Nth_root#JavaScript
+	   * @param {BigNumber} a
+	   * @param {BigNumber} root
+	   * @private
+	   */
+	  function _bigNthRoot(a, root) {
+	    var zero = new type.BigNumber(0);
+	    var one = new type.BigNumber(1);
+	    var inv = root.isNegative();
+	    if (inv) root = root.negated();
+
+	    if (root.isZero()) throw new Error('Root must be non-zero');
+	    if (a.isNegative() && !root.abs().mod(2).equals(1)) throw new Error('Root must be odd when a is negative.');
+
+	    // edge cases zero and infinity
+	    if (a.isZero()) return zero;
+	    if (!a.isFinite())
+	    {
+	      return inv ? zero : a;
+	    }
+
+	    var x = one; // Initial guess
+	    var i = 0;
+	    var iMax = 100;
+	    do {
+	      var xPrev = x;
+	      var delta = a.div(x.pow(root.minus(1))).minus(x).div(root);
+	      x = x.plus(delta);
+	      i++;
+	    }
+	    while (!x.equals(xPrev) && i < iMax);
+
+	    return inv ? one.div(x) : x;
+	  }
+	}
+
+	/**
+	 * Calculate the nth root of a, solve x^root == a
+	 * http://rosettacode.org/wiki/Nth_root#JavaScript
+	 * @param {number} a
+	 * @param {number} root
+	 * @private
+	 */
+	function _nthRoot(a, root) {
+	  var inv = root < 0;
+	  if (inv) root = -root;
+
+	  if (root === 0) throw new Error('Root must be non-zero');
+	  if (a < 0 && (Math.abs(root) % 2 != 1)) throw new Error('Root must be odd when a is negative.');
+
+	  // edge cases zero and infinity
+	  if (a == 0) return 0;
+	  if (!Number.isFinite(a)) {
+	    return inv ? 0 : a;
+	  }
+
+	  var epsilon = 1e-16;
+	  var x = 1; // Initial guess
+	  var i = 0;
+	  var iMax = 100;
+	  do {
+	    var delta = (a / Math.pow(x, root - 1) - x) / root;
+	    x = x + delta;
+	    i++;
+	  }
+	  while (Math.abs(delta) > epsilon && i < iMax);
+
+	  return inv ? 1 / x : x;
+	}
+
+	exports.name = 'nthRoot';
+	exports.factory = factory;
+
+
+/***/ },
 /* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -10516,8 +10548,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var exp = load(__webpack_require__(37));
 	  var eye = load(__webpack_require__(92));
 	  var log = load(__webpack_require__(42));
-	  var multiply = load(__webpack_require__(47));
-	  var matrix = load(__webpack_require__(73));
+	  var multiply = load(__webpack_require__(45));
+	  var matrix = load(__webpack_require__(74));
 
 	  /**
 	   * Calculates the power of x to y, `x ^ y`.
@@ -11012,17 +11044,83 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	function factory (type, config, load, typed) {
+	  var collection = load(__webpack_require__(2));
+
+	  /**
+	   * Inverse the sign of a value, apply a unary minus operation.
+	   *
+	   * For matrices, the function is evaluated element wise. Boolean values and
+	   * strings will be converted to a number. For complex numbers, both real and
+	   * complex value are inverted.
+	   *
+	   * Syntax:
+	   *
+	   *    math.unaryMinus(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.unaryMinus(3.5);      // returns -3.5
+	   *    math.unaryMinus(-4.2);     // returns 4.2
+	   *
+	   * See also:
+	   *
+	   *    add, subtract, unaryPlus
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix | null} x Number to be inverted.
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
+	   */
+	  var unaryMinus = typed('unaryMinus', {
+	    'number': function (x) {
+	      return -x;
+	    },
+
+	    'Complex': function (x) {
+	      return new x.constructor(-x.re, -x.im);
+	    },
+
+	    'BigNumber': function (x) {
+	      return x.neg();
+	    },
+
+	    'Unit': function (x) {
+	      var res = x.clone();
+	      res.value = -x.value;
+	      return res;
+	    },
+
+	    'Array | Matrix': function (x) {
+	      // deep map collection, skip zeros since unaryMinus(0) = 0
+	      return collection.deepMap(x, unaryMinus, true);
+	    }
+
+	    // TODO: add support for string
+	  });
+
+	  return unaryMinus;
+	}
+
+	exports.name = 'unaryMinus';
+	exports.factory = factory;
+
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	var clone = __webpack_require__(166).clone;
-	var DimensionError = __webpack_require__(174);
+	var DimensionError = __webpack_require__(173);
 
 	function factory (type, config, load, typed) {
 
-	  var unaryMinus = load(__webpack_require__(54));
-	  var matrix = load(__webpack_require__(73));
+	  var unaryMinus = load(__webpack_require__(53));
+	  var matrix = load(__webpack_require__(74));
 	  var equal = load(__webpack_require__(113));
 	  var sparseScatter = load(__webpack_require__(210));
 	  var addScalar = load(__webpack_require__(209));
-	  var multiplyScalar = load(__webpack_require__(211));
+	  var multiplyScalar = load(__webpack_require__(212));
 
 	  var collection = load(__webpack_require__(2));
 
@@ -11484,141 +11582,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	function factory (type, config, load, typed) {
-	  var collection = load(__webpack_require__(2));
-
-	  /**
-	   * Inverse the sign of a value, apply a unary minus operation.
-	   *
-	   * For matrices, the function is evaluated element wise. Boolean values and
-	   * strings will be converted to a number. For complex numbers, both real and
-	   * complex value are inverted.
-	   *
-	   * Syntax:
-	   *
-	   *    math.unaryMinus(x)
-	   *
-	   * Examples:
-	   *
-	   *    math.unaryMinus(3.5);      // returns -3.5
-	   *    math.unaryMinus(-4.2);     // returns 4.2
-	   *
-	   * See also:
-	   *
-	   *    add, subtract, unaryPlus
-	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | Array | Matrix | null} x Number to be inverted.
-	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
-	   */
-	  var unaryMinus = typed('unaryMinus', {
-	    'number': function (x) {
-	      return -x;
-	    },
-
-	    'Complex': function (x) {
-	      return new x.constructor(-x.re, -x.im);
-	    },
-
-	    'BigNumber': function (x) {
-	      return x.neg();
-	    },
-
-	    'Unit': function (x) {
-	      var res = x.clone();
-	      res.value = -x.value;
-	      return res;
-	    },
-
-	    'Array | Matrix': function (x) {
-	      // deep map collection, skip zeros since unaryMinus(0) = 0
-	      return collection.deepMap(x, unaryMinus, true);
-	    }
-
-	    // TODO: add support for string
-	  });
-
-	  return unaryMinus;
-	}
-
-	exports.name = 'unaryMinus';
-	exports.factory = factory;
-
-
-/***/ },
 /* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	function factory (type, config, load, typed) {
-	  var collection = load(__webpack_require__(2));
-
-	  /**
-	   * Unary plus operation.
-	   * Boolean values and strings will be converted to a number, numeric values will be returned as is.
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.unaryPlus(x)
-	   *
-	   * Examples:
-	   *
-	   *    math.unaryPlus(3.5);      // returns 3.5
-	   *    math.unaryPlus(1);     // returns 1
-	   *
-	   * See also:
-	   *
-	   *    unaryMinus, add, subtract
-	   *
-	   * @param  {Number | BigNumber | Boolean | String | Complex | Unit | Array | Matrix | null} x
-	   *            Input value
-	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}
-	   *            Returns the input value when numeric, converts to a number when input is non-numeric.
-	   */
-	  var unaryPlus = typed('unaryPlus', {
-	    'number': function (x) {
-	      return x;
-	    },
-
-	    'Complex': function (x) {
-	      return x.clone();
-	    },
-
-	    'BigNumber': function (x) {
-	      return x;
-	    },
-
-	    'Unit': function (x) {
-	      return x.clone();
-	    },
-
-	    'Array | Matrix': function (x) {
-	      // deep map collection, skip zeros since unaryPlus(0) = 0
-	      return collection.deepMap(x, unaryPlus, true);
-	    },
-
-	    'boolean | string | null': function (x) {
-	      // convert to a number or bignumber
-	      return (config.number == 'bignumber') ? new type.BigNumber(+x): +x;
-	    }
-	  });
-
-	  return unaryPlus;
-	}
-
-	exports.name = 'unaryPlus';
-	exports.factory = factory;
-
-
-/***/ },
-/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11627,7 +11591,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 
 	  /**
 	   * Calculate the extended greatest common divisor for two values.
@@ -11751,6 +11715,74 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.name = 'xgcd';
 	exports.factory = factory;
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function factory (type, config, load, typed) {
+	  var collection = load(__webpack_require__(2));
+
+	  /**
+	   * Unary plus operation.
+	   * Boolean values and strings will be converted to a number, numeric values will be returned as is.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.unaryPlus(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.unaryPlus(3.5);      // returns 3.5
+	   *    math.unaryPlus(1);     // returns 1
+	   *
+	   * See also:
+	   *
+	   *    unaryMinus, add, subtract
+	   *
+	   * @param  {Number | BigNumber | Boolean | String | Complex | Unit | Array | Matrix | null} x
+	   *            Input value
+	   * @return {Number | BigNumber | Complex | Unit | Array | Matrix}
+	   *            Returns the input value when numeric, converts to a number when input is non-numeric.
+	   */
+	  var unaryPlus = typed('unaryPlus', {
+	    'number': function (x) {
+	      return x;
+	    },
+
+	    'Complex': function (x) {
+	      return x.clone();
+	    },
+
+	    'BigNumber': function (x) {
+	      return x;
+	    },
+
+	    'Unit': function (x) {
+	      return x.clone();
+	    },
+
+	    'Array | Matrix': function (x) {
+	      // deep map collection, skip zeros since unaryPlus(0) = 0
+	      return collection.deepMap(x, unaryPlus, true);
+	    },
+
+	    'boolean | string | null': function (x) {
+	      // convert to a number or bignumber
+	      return (config.number == 'bignumber') ? new type.BigNumber(+x): +x;
+	    }
+	  });
+
+	  return unaryPlus;
+	}
+
+	exports.name = 'unaryPlus';
+	exports.factory = factory;
+
 
 /***/ },
 /* 57 */
@@ -11877,67 +11909,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var isInteger = __webpack_require__(175).isInteger;
-	var bigBitXor = __webpack_require__(213).xor;
-
-	function factory (type, config, load, typed) {
-	  var collection = load(__webpack_require__(2));
-
-	  /**
-	   * Bitwise XOR two values, `x ^ y`.
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.bitXor(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    math.bitXor(1, 2);               // returns Number 3
-	   *
-	   *    math.bitXor([2, 3, 4], 4);       // returns Array [6, 7, 0]
-	   *
-	   * See also:
-	   *
-	   *    bitAnd, bitNot, bitOr, leftShift, rightArithShift, rightLogShift
-	   *
-	   * @param  {Number | BigNumber | Boolean | Array | Matrix | null} x First value to xor
-	   * @param  {Number | BigNumber | Boolean | Array | Matrix | null} y Second value to xor
-	   * @return {Number | BigNumber | Array | Matrix} XOR of `x` and `y`
-	   */
-	  var bitXor = typed('bitXor', {
-	    'number, number': function (x, y) {
-	      if (!isInteger(x) || !isInteger(y)) {
-	        throw new Error('Integers expected in function bitXor');
-	      }
-
-	      return x ^ y;
-	    },
-
-	    'BigNumber, BigNumber': bigBitXor,
-
-	    'Array | Matrix, any': function (x, y) {
-	      return collection.deepMap2(x, y, bitXor);
-	    },
-
-	    'any, Array | Matrix': function (x, y) {
-	      return collection.deepMap2(x, y, bitXor);
-	    }
-	  });
-
-	  return bitXor;
-	}
-
-	exports.name = 'bitXor';
-	exports.factory = factory;
-
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var isInteger = __webpack_require__(175).isInteger;
 	var bigBitOr = __webpack_require__(213).or;
 
 	function factory (type, config, load, typed) {
@@ -11990,6 +11961,67 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	exports.name = 'bitOr';
+	exports.factory = factory;
+
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var isInteger = __webpack_require__(175).isInteger;
+	var bigBitXor = __webpack_require__(213).xor;
+
+	function factory (type, config, load, typed) {
+	  var collection = load(__webpack_require__(2));
+
+	  /**
+	   * Bitwise XOR two values, `x ^ y`.
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.bitXor(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    math.bitXor(1, 2);               // returns Number 3
+	   *
+	   *    math.bitXor([2, 3, 4], 4);       // returns Array [6, 7, 0]
+	   *
+	   * See also:
+	   *
+	   *    bitAnd, bitNot, bitOr, leftShift, rightArithShift, rightLogShift
+	   *
+	   * @param  {Number | BigNumber | Boolean | Array | Matrix | null} x First value to xor
+	   * @param  {Number | BigNumber | Boolean | Array | Matrix | null} y Second value to xor
+	   * @return {Number | BigNumber | Array | Matrix} XOR of `x` and `y`
+	   */
+	  var bitXor = typed('bitXor', {
+	    'number, number': function (x, y) {
+	      if (!isInteger(x) || !isInteger(y)) {
+	        throw new Error('Integers expected in function bitXor');
+	      }
+
+	      return x ^ y;
+	    },
+
+	    'BigNumber, BigNumber': bigBitXor,
+
+	    'Array | Matrix, any': function (x, y) {
+	      return collection.deepMap2(x, y, bitXor);
+	    },
+
+	    'any, Array | Matrix': function (x, y) {
+	      return collection.deepMap2(x, y, bitXor);
+	    }
+	  });
+
+	  return bitXor;
+	}
+
+	exports.name = 'bitXor';
 	exports.factory = factory;
 
 
@@ -12809,6 +12841,81 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	function factory (type, config, load, typed) {
+	  var collection = load(__webpack_require__(2));
+
+	  /**
+	   * Create a number or convert a string, boolean, or unit to a number.
+	   * When value is a matrix, all elements will be converted to number.
+	   *
+	   * Syntax:
+	   *
+	   *    math.number(value)
+	   *    math.number(unit, valuelessUnit)
+	   *
+	   * Examples:
+	   *
+	   *    math.number(2);                         // returns number 2
+	   *    math.number('7.2');                     // returns number 7.2
+	   *    math.number(true);                      // returns number 1
+	   *    math.number([true, false, true, true]); // returns [1, 0, 1, 1]
+	   *    math.number(math.unit('52cm'), 'm');    // returns 0.52
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, complex, index, matrix, string, unit
+	   *
+	   * @param {String | Number | Boolean | Array | Matrix | Unit | null} [value]  Value to be converted
+	   * @param {Unit | string} [valuelessUnit] A valueless unit, used to convert a unit to a number
+	   * @return {Number | Array | Matrix} The created number
+	   */
+	  var number = typed('number', {
+	    '': function () {
+	      return 0;
+	    },
+
+	    'number': function (x) {
+	      return x;
+	    },
+
+	    'string': function (x) {
+	      var num = Number(x);
+	      if (isNaN(num)) {
+	        throw new SyntaxError('String "' + x + '" is no valid number');
+	      }
+	      return num;
+	    },
+
+	    'BigNumber': function (x) {
+	      return x.toNumber();
+	    },
+
+	    'Unit': function (x) {
+	      throw new Error('Second argument with valueless unit expected');
+	    },
+
+	    'Unit, string | Unit': function (unit, valuelessUnit) {
+	      return unit.toNumber(valuelessUnit);
+	    },
+
+	    'Array | Matrix': function (x) {
+	      return collection.deepMap(x, number);
+	    }
+	  });
+
+	  return number;
+	}
+
+	exports.name = 'number';
+	exports.factory = factory;
+
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function factory (type, config, load, typed) {
 	  /**
 	   * Create a Matrix. The function creates a new `math.type.Matrix` object from
 	   * an `Array`. A Matrix has utility functions to manipulate the data in the
@@ -12881,82 +12988,58 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var collection = load(__webpack_require__(2));
+
+	  var SparseMatrix = type.SparseMatrix;
 
 	  /**
-	   * Create a number or convert a string, boolean, or unit to a number.
-	   * When value is a matrix, all elements will be converted to number.
+	   * Create a Sparse Matrix. The function creates a new `math.type.Matrix` object from
+	   * an `Array`. A Matrix has utility functions to manipulate the data in the
+	   * matrix, like getting the size and getting or setting values in the matrix.
 	   *
 	   * Syntax:
 	   *
-	   *    math.number(value)
-	   *    math.number(unit, valuelessUnit)
+	   *    math.sparse()               // creates an empty sparse matrix.
+	   *    math.sparse(data)           // creates a sparse matrix with initial data.
 	   *
 	   * Examples:
 	   *
-	   *    math.number(2);                         // returns number 2
-	   *    math.number('7.2');                     // returns number 7.2
-	   *    math.number(true);                      // returns number 1
-	   *    math.number([true, false, true, true]); // returns [1, 0, 1, 1]
-	   *    math.number(math.unit('52cm'), 'm');    // returns 0.52
+	   *    var m = math.sparse([[1, 2], [3, 4]]);
+	   *    m.size();                        // Array [2, 2]
+	   *    m.resize([3, 2], 5);
+	   *    m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]
+	   *    m.get([1, 0])                    // number 3
 	   *
 	   * See also:
 	   *
-	   *    bignumber, boolean, complex, index, matrix, string, unit
+	   *    bignumber, boolean, complex, index, number, string, unit, matrix
 	   *
-	   * @param {String | Number | Boolean | Array | Matrix | Unit | null} [value]  Value to be converted
-	   * @param {Unit | string} [valuelessUnit] A valueless unit, used to convert a unit to a number
-	   * @return {Number | Array | Matrix} The created number
+	   * @param {Array | Matrix} [data]    A two dimensional array
+	   *
+	   * @return {Matrix} The created matrix
 	   */
-	  var number = typed('number', {
+	  return typed('sparse', {
 	    '': function () {
-	      return 0;
+	      return new SparseMatrix([]);
 	    },
 
-	    'number': function (x) {
-	      return x;
-	    },
-
-	    'string': function (x) {
-	      var num = Number(x);
-	      if (isNaN(num)) {
-	        throw new SyntaxError('String "' + x + '" is no valid number');
-	      }
-	      return num;
-	    },
-
-	    'BigNumber': function (x) {
-	      return x.toNumber();
-	    },
-
-	    'Unit': function (x) {
-	      throw new Error('Second argument with valueless unit expected');
-	    },
-
-	    'Unit, string | Unit': function (unit, valuelessUnit) {
-	      return unit.toNumber(valuelessUnit);
-	    },
-
-	    'Array | Matrix': function (x) {
-	      return collection.deepMap(x, number);
+	    'Array | Matrix': function (data) {
+	      return new SparseMatrix(data);
 	    }
 	  });
-
-	  return number;
 	}
 
-	exports.name = 'number';
+	exports.name = 'sparse';
 	exports.factory = factory;
 
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13020,7 +13103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13083,57 +13166,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	exports.name = 'string';
-	exports.factory = factory;
-
-
-/***/ },
-/* 77 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	function factory (type, config, load, typed) {
-
-	  var SparseMatrix = type.SparseMatrix;
-
-	  /**
-	   * Create a Sparse Matrix. The function creates a new `math.type.Matrix` object from
-	   * an `Array`. A Matrix has utility functions to manipulate the data in the
-	   * matrix, like getting the size and getting or setting values in the matrix.
-	   *
-	   * Syntax:
-	   *
-	   *    math.sparse()               // creates an empty sparse matrix.
-	   *    math.sparse(data)           // creates a sparse matrix with initial data.
-	   *
-	   * Examples:
-	   *
-	   *    var m = math.sparse([[1, 2], [3, 4]]);
-	   *    m.size();                        // Array [2, 2]
-	   *    m.resize([3, 2], 5);
-	   *    m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]
-	   *    m.get([1, 0])                    // number 3
-	   *
-	   * See also:
-	   *
-	   *    bignumber, boolean, complex, index, number, string, unit, matrix
-	   *
-	   * @param {Array | Matrix} [data]    A two dimensional array
-	   *
-	   * @return {Matrix} The created matrix
-	   */
-	  return typed('sparse', {
-	    '': function () {
-	      return new SparseMatrix([]);
-	    },
-
-	    'Array | Matrix': function (data) {
-	      return new SparseMatrix(data);
-	    }
-	  });
-	}
-
-	exports.name = 'sparse';
 	exports.factory = factory;
 
 
@@ -13741,11 +13773,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var clone = __webpack_require__(166).clone;
 	var isInteger = __webpack_require__(175).isInteger;
 	var array = __webpack_require__(172);
-	var IndexError = __webpack_require__(173);
-	var DimensionError = __webpack_require__(174);
+	var IndexError = __webpack_require__(174);
+	var DimensionError = __webpack_require__(173);
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 
 	  /**
 	   * Concatenate two or more matrices.
@@ -13886,9 +13918,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var size = __webpack_require__(172).size;
 
 	function factory (type, config, load, typed) {
-	  var matrix   = load(__webpack_require__(73));
-	  var subtract = load(__webpack_require__(53));
-	  var multiply = load(__webpack_require__(47));
+	  var matrix   = load(__webpack_require__(74));
+	  var subtract = load(__webpack_require__(54));
+	  var multiply = load(__webpack_require__(45));
 
 	  /**
 	   * Calculate the cross product for two vectors in three dimensional space.
@@ -13975,11 +14007,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  var add = load(__webpack_require__(31));
-	  var subtract = load(__webpack_require__(53));
-	  var multiply = load(__webpack_require__(47));
-	  var unaryMinus = load(__webpack_require__(54));
+	  var subtract = load(__webpack_require__(54));
+	  var multiply = load(__webpack_require__(45));
+	  var unaryMinus = load(__webpack_require__(53));
 
 	  /**
 	   * Calculate the determinant of a matrix.
@@ -14146,7 +14178,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  
 	  /**
 	   * Create a diagonal matrix or retrieve the diagonal of a matrix
@@ -14316,7 +14348,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  var add      = load(__webpack_require__(31));
-	  var multiply = load(__webpack_require__(47));
+	  var multiply = load(__webpack_require__(45));
 
 	  /**
 	   * Calculate the dot product of two vectors. The dot product of
@@ -14398,7 +14430,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  
 	  /**
 	   * Create a 2-dimensional identity matrix with size m x n or n x n.
@@ -14542,7 +14574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _flatten = __webpack_require__(172).flatten;
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 
 	  /**
 	   * Flatten a multi dimensional matrix into a single dimensional matrix.
@@ -14589,11 +14621,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  var collection   = load(__webpack_require__(2));
-	  var matrix       = load(__webpack_require__(73));
-	  var divideScalar = load(__webpack_require__(212));
+	  var matrix       = load(__webpack_require__(74));
+	  var divideScalar = load(__webpack_require__(211));
 	  var add          = load(__webpack_require__(31));
-	  var multiply     = load(__webpack_require__(47));
-	  var unaryMinus   = load(__webpack_require__(54));
+	  var multiply     = load(__webpack_require__(45));
+	  var unaryMinus   = load(__webpack_require__(53));
 	  var det          = load(__webpack_require__(89));
 	  var eye          = load(__webpack_require__(92));
 
@@ -15382,7 +15414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var array = __webpack_require__(172);
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 
 	  /**
 	   * Calculate the size of a matrix or scalar.
@@ -15440,7 +15472,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var array = __webpack_require__(172);
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 
 	  /**
 	   * Squeeze a matrix, remove inner and outer singleton dimensions from a matrix.
@@ -15722,7 +15754,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  var add = load(__webpack_require__(31));
 
 	  /**
@@ -15868,127 +15900,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	module.exports = function (math, config) {
-	  var util = __webpack_require__(171),
-
-	      BigNumber = math.type.BigNumber,
-	      Matrix = math.type.Matrix,
-	      collection = math.collection,
-
-	      array = util.array,
-	      isNumber = util.number.isNumber,
-	      isInteger = util.number.isInteger,
-	      isString = util.string.isString,
-	      isArray = Array.isArray;
-
-	  /**
-	   * Create a matrix filled with zeros. The created matrix can have one or
-	   * multiple dimensions.
-	   *
-	   * Syntax:
-	   *
-	   *    math.zeros(m)
-	   *    math.zeros(m, format)
-	   *    math.zeros(m, n)
-	   *    math.zeros(m, n, format)
-	   *    math.zeros([m, n])
-	   *    math.zeros([m, n], format)
-	   *
-	   * Examples:
-	   *
-	   *    math.zeros(3);                  // returns [0, 0, 0]
-	   *    math.zeros(3, 2);               // returns [[0, 0], [0, 0], [0, 0]]
-	   *    math.zeros(3, 'dense');         // returns [0, 0, 0]
-	   *
-	   *    var A = [[1, 2, 3], [4, 5, 6]];
-	   *    math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]
-	   *
-	   * See also:
-	   *
-	   *    ones, eye, size, range
-	   *
-	   * @param {...Number | Array} size    The size of each dimension of the matrix
-	   * @param {string} [format]           The Matrix storage format
-	   *
-	   * @return {Array | Matrix}           A matrix filled with zeros
-	   */
-	  math.zeros = function zeros (size) {
-	    // process arguments
-	    var args = collection.argsToArray(arguments);    
-	    // matrix storage format
-	    var f;
-	    // check format was provided
-	    if (args.length > 0 && isString(args[args.length - 1])) {
-	      // set format
-	      f = args[args.length - 1];
-	      // re-process arguments, ignore last one
-	      args = collection.argsToArray(args.slice(0, args.length - 1));
-	    }
-	    else if (size instanceof Matrix) {
-	      // use matrix format
-	      f = size.storage();
-	    }
-	    else if (!isArray(size) && config.matrix === 'matrix') {
-	      // use default matrix format
-	      f = 'default';
-	    }
-
-	    // convert arguments from bignumber to numbers if needed
-	    var asBigNumber = false;
-	    // map arguments & validate
-	    args = args.map(function (value) {
-	      // check it is a big number
-	      if (value instanceof BigNumber) {
-	        // set flag
-	        asBigNumber = true;
-	        // convert it
-	        value = value.toNumber();
-	      }
-	      // validate arguments
-	      if (!isNumber(value) || !isInteger(value) || value < 0) {
-	        throw new Error('Parameters in function eye must be positive integers');
-	      } 
-	      return value;
-	    });
-	        
-	    // default value
-	    var defaultValue = asBigNumber ? new BigNumber(0) : 0;
-	    
-	    // check we need to return a matrix
-	    if (f) {
-	      // create empty matrix
-	      var m = math.matrix(f);
-	      // check we need to resize matrix
-	      if (args.length > 0) {
-	        // resize it to correct size
-	        return m.resize(args, defaultValue);
-	      }
-	      return m;
-	    }
-	    // empty array
-	    var res = [];
-	    // check we need to resize array
-	    if (args.length > 0) {
-	      // resize array
-	      return array.resize(res, args, defaultValue);
-	    }
-	    return res;
-	  };
-	};
-
-
-/***/ },
-/* 103 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
 	var clone = __webpack_require__(166).clone;
 	var format = __webpack_require__(214).format;
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 
 	  var DenseMatrix = type.DenseMatrix,
 	      SparseMatrix = type.SparseMatrix;
@@ -16150,6 +16067,121 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.name = 'transpose';
 	exports.factory = factory;
+
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math, config) {
+	  var util = __webpack_require__(171),
+
+	      BigNumber = math.type.BigNumber,
+	      Matrix = math.type.Matrix,
+	      collection = math.collection,
+
+	      array = util.array,
+	      isNumber = util.number.isNumber,
+	      isInteger = util.number.isInteger,
+	      isString = util.string.isString,
+	      isArray = Array.isArray;
+
+	  /**
+	   * Create a matrix filled with zeros. The created matrix can have one or
+	   * multiple dimensions.
+	   *
+	   * Syntax:
+	   *
+	   *    math.zeros(m)
+	   *    math.zeros(m, format)
+	   *    math.zeros(m, n)
+	   *    math.zeros(m, n, format)
+	   *    math.zeros([m, n])
+	   *    math.zeros([m, n], format)
+	   *
+	   * Examples:
+	   *
+	   *    math.zeros(3);                  // returns [0, 0, 0]
+	   *    math.zeros(3, 2);               // returns [[0, 0], [0, 0], [0, 0]]
+	   *    math.zeros(3, 'dense');         // returns [0, 0, 0]
+	   *
+	   *    var A = [[1, 2, 3], [4, 5, 6]];
+	   *    math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]
+	   *
+	   * See also:
+	   *
+	   *    ones, eye, size, range
+	   *
+	   * @param {...Number | Array} size    The size of each dimension of the matrix
+	   * @param {string} [format]           The Matrix storage format
+	   *
+	   * @return {Array | Matrix}           A matrix filled with zeros
+	   */
+	  math.zeros = function zeros (size) {
+	    // process arguments
+	    var args = collection.argsToArray(arguments);    
+	    // matrix storage format
+	    var f;
+	    // check format was provided
+	    if (args.length > 0 && isString(args[args.length - 1])) {
+	      // set format
+	      f = args[args.length - 1];
+	      // re-process arguments, ignore last one
+	      args = collection.argsToArray(args.slice(0, args.length - 1));
+	    }
+	    else if (size instanceof Matrix) {
+	      // use matrix format
+	      f = size.storage();
+	    }
+	    else if (!isArray(size) && config.matrix === 'matrix') {
+	      // use default matrix format
+	      f = 'default';
+	    }
+
+	    // convert arguments from bignumber to numbers if needed
+	    var asBigNumber = false;
+	    // map arguments & validate
+	    args = args.map(function (value) {
+	      // check it is a big number
+	      if (value instanceof BigNumber) {
+	        // set flag
+	        asBigNumber = true;
+	        // convert it
+	        value = value.toNumber();
+	      }
+	      // validate arguments
+	      if (!isNumber(value) || !isInteger(value) || value < 0) {
+	        throw new Error('Parameters in function eye must be positive integers');
+	      } 
+	      return value;
+	    });
+	        
+	    // default value
+	    var defaultValue = asBigNumber ? new BigNumber(0) : 0;
+	    
+	    // check we need to return a matrix
+	    if (f) {
+	      // create empty matrix
+	      var m = math.matrix(f);
+	      // check we need to resize matrix
+	      if (args.length > 0) {
+	        // resize it to correct size
+	        return m.resize(args, defaultValue);
+	      }
+	      return m;
+	    }
+	    // empty array
+	    var res = [];
+	    // check we need to resize array
+	    if (args.length > 0) {
+	      // resize array
+	      return array.resize(res, args, defaultValue);
+	    }
+	    return res;
+	  };
+	};
 
 
 /***/ },
@@ -16315,7 +16347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
-	  var multiply   = load(__webpack_require__(47));
+	  var multiply   = load(__webpack_require__(45));
 	  var pow        = load(__webpack_require__(48));
 
 	  /**
@@ -17896,7 +17928,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
-	  var multiply = load(__webpack_require__(47));
+	  var multiply = load(__webpack_require__(45));
 
 	  /**
 	   * Compute the product of a matrix or a list with values.
@@ -18128,8 +18160,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
 	  var add = load(__webpack_require__(31));
-	  var subtract = load(__webpack_require__(53));
-	  var multiply = load(__webpack_require__(47));
+	  var subtract = load(__webpack_require__(54));
+	  var multiply = load(__webpack_require__(45));
 	  var divide = load(__webpack_require__(32));
 
 	  /**
@@ -18508,7 +18540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var HALF_PI = 1.5707963267948966;
 
 	function factory (type, config, load, typed) {
-	  var atanh = load(__webpack_require__(138)).signatures['Complex'];
+	  var atanh = load(__webpack_require__(139)).signatures['Complex'];
 	  var collection = load(__webpack_require__(2));
 
 	  /**
@@ -19178,6 +19210,71 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var bigAtan2 = __webpack_require__(213).arctan2;
+
+	function factory (type, config, load, typed) {
+	  var collection = load(__webpack_require__(2));
+
+	  /**
+	   * Calculate the inverse tangent function with two arguments, y/x.
+	   * By providing two arguments, the right quadrant of the computed angle can be
+	   * determined.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.atan2(y, x)
+	   *
+	   * Examples:
+	   *
+	   *    math.atan2(2, 2) / math.pi;       // returns number 0.25
+	   *
+	   *    var angle = math.unit(60, 'deg'); // returns Unit 60 deg
+	   *    var x = math.cos(angle);
+	   *    var y = math.sin(angle);
+	   *
+	   *    math.atan(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+	   *
+	   * See also:
+	   *
+	   *    tan, atan, sin, cos
+	   *
+	   * @param {Number | Boolean | Array | Matrix | null} y  Second dimension
+	   * @param {Number | Boolean | Array | Matrix | null} x  First dimension
+	   * @return {Number | Array | Matrix} Four-quadrant inverse tangent
+	   */
+	  var atan2 = typed('atan2', {
+	    'number, number': Math.atan2,
+
+	    // TODO: implement atan2 for complex numbers
+
+	    'BigNumber, BigNumber': function (y, x) {
+	      return bigAtan2(y, x, type.BigNumber);
+	    },
+
+	    'Array | Matrix, any': function (y, x) {
+	      return collection.deepMap2(y, x, atan2);
+	    },
+
+	    'any, Array | Matrix': function (y, x) {
+	      return collection.deepMap2(y, x, atan2);
+	    }
+	  });
+
+	  return atan2;
+	}
+
+	exports.name = 'atan2';
+	exports.factory = factory;
+
+
+/***/ },
+/* 139 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	var bigAtanh = __webpack_require__(213).atanh_acoth;
 
 	function factory (type, config, load, typed) {
@@ -19261,71 +19358,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	exports.name = 'atanh';
-	exports.factory = factory;
-
-
-/***/ },
-/* 139 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var bigAtan2 = __webpack_require__(213).arctan2;
-
-	function factory (type, config, load, typed) {
-	  var collection = load(__webpack_require__(2));
-
-	  /**
-	   * Calculate the inverse tangent function with two arguments, y/x.
-	   * By providing two arguments, the right quadrant of the computed angle can be
-	   * determined.
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.atan2(y, x)
-	   *
-	   * Examples:
-	   *
-	   *    math.atan2(2, 2) / math.pi;       // returns number 0.25
-	   *
-	   *    var angle = math.unit(60, 'deg'); // returns Unit 60 deg
-	   *    var x = math.cos(angle);
-	   *    var y = math.sin(angle);
-	   *
-	   *    math.atan(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
-	   *
-	   * See also:
-	   *
-	   *    tan, atan, sin, cos
-	   *
-	   * @param {Number | Boolean | Array | Matrix | null} y  Second dimension
-	   * @param {Number | Boolean | Array | Matrix | null} x  First dimension
-	   * @return {Number | Array | Matrix} Four-quadrant inverse tangent
-	   */
-	  var atan2 = typed('atan2', {
-	    'number, number': Math.atan2,
-
-	    // TODO: implement atan2 for complex numbers
-
-	    'BigNumber, BigNumber': function (y, x) {
-	      return bigAtan2(y, x, type.BigNumber);
-	    },
-
-	    'Array | Matrix, any': function (y, x) {
-	      return collection.deepMap2(y, x, atan2);
-	    },
-
-	    'any, Array | Matrix': function (y, x) {
-	      return collection.deepMap2(y, x, atan2);
-	    }
-	  });
-
-	  return atan2;
-	}
-
-	exports.name = 'atan2';
 	exports.factory = factory;
 
 
@@ -20374,7 +20406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // reload the constants (they depend on option number and precision)
 	      // this must be done after math.type.BigNumber.config is applied
 	      // TODO: this is an ugly solution, refreshing the constants like this
-	      __webpack_require__(168)(math, config);
+	      __webpack_require__(169)(math, config);
 	    }
 
 	    // return a clone of the settings
@@ -20396,7 +20428,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var size = __webpack_require__(172).size;
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  
 	  /**
 	   * Sort the items in a matrix.
@@ -20723,7 +20755,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var size = __webpack_require__(172).size;
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  var asc = load(__webpack_require__(111));
 	  var desc = function (a, b) {
 	    return -asc(a, b);
@@ -20988,15 +21020,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  var abs = load(__webpack_require__(29));
 	  var add = load(__webpack_require__(31));
-	  var divideScalar = load(__webpack_require__(212));
-	  var multiply = load(__webpack_require__(47));
-	  var subtract = load(__webpack_require__(53));
+	  var divideScalar = load(__webpack_require__(211));
+	  var multiply = load(__webpack_require__(45));
+	  var subtract = load(__webpack_require__(54));
 	  var larger = load(__webpack_require__(114));
 	  var equal = load(__webpack_require__(113));
-	  var unaryMinus = load(__webpack_require__(54));
+	  var unaryMinus = load(__webpack_require__(53));
 	  
 	  var SparseMatrix = type.SparseMatrix;
 	  var DenseMatrix = type.DenseMatrix;
@@ -21375,9 +21407,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  var lup = load(__webpack_require__(162));
-	  var multiply = load(__webpack_require__(47));
+	  var multiply = load(__webpack_require__(45));
 
 	  var backwardSubstitution = load(__webpack_require__(344));
 	  var forwardSubstitution = load(__webpack_require__(345));
@@ -21466,6 +21498,39 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var errorTransform = __webpack_require__(207).transform;
+	var isBoolean = __webpack_require__(208).isBoolean;
+	var argsToArray = __webpack_require__(172).argsToArray;
+
+	/**
+	 * Attach a transform function to math.subset
+	 * Adds a property transform containing the transform function.
+	 *
+	 * This transform creates a range which includes the end value
+	 * @param {Object} math
+	 */
+	module.exports = function (math) {
+	  var transform = function () {
+	    try {
+	      return math.subset.apply(math, argsToArray(arguments));
+	    }
+	    catch (err) {
+	      throw errorTransform(err);
+	    }
+	  };
+
+	  math.subset.transform = transform;
+
+	  return transform;
+	};
+
+
+/***/ },
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21586,45 +21651,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 165 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var errorTransform = __webpack_require__(207).transform;
-	var isBoolean = __webpack_require__(208).isBoolean;
-	var argsToArray = __webpack_require__(172).argsToArray;
-
-	/**
-	 * Attach a transform function to math.subset
-	 * Adds a property transform containing the transform function.
-	 *
-	 * This transform creates a range which includes the end value
-	 * @param {Object} math
-	 */
-	module.exports = function (math) {
-	  var transform = function () {
-	    try {
-	      return math.subset.apply(math, argsToArray(arguments));
-	    }
-	    catch (err) {
-	      throw errorTransform(err);
-	    }
-	  };
-
-	  math.subset.transform = transform;
-
-	  return transform;
-	};
-
-
-/***/ },
 /* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(350);
+	var BigNumber = __webpack_require__(351);
 
 	/**
 	 * Clone an object
@@ -21865,176 +21897,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var typed = __webpack_require__(356);
-	var digits = __webpack_require__(175).digits;
-
-	/**
-	 * Factory function for creating a new typed instance
-	 * @param {Object} math
-	 * @returns {function}
-	 */
-	exports.create = function create(math) {
-	  // TODO: must create a separate instance of typed, with custom config.
-	  // TODO: typed-function must be able to silently ignore signatures with unknown data types
-
-	  // configure typed functions
-	  typed.types['Complex']    = function (x) { return x instanceof math.type.Complex; };
-	  typed.types['Range']      = function (x) { return x instanceof math.type.Range; };
-	  typed.types['Index']      = function (x) { return x instanceof math.type.Index; };
-	  typed.types['Matrix']     = function (x) { return x instanceof math.type.Matrix; };
-	  typed.types['Unit']       = function (x) { return x instanceof math.type.Unit; };
-	  typed.types['Help']       = function (x) { return x instanceof math.type.Help; };
-	  typed.types['ResultSet']  = function (x) { return x instanceof math.type.ResultSet; };
-	  typed.types['BigNumber']  = function (x) { return x instanceof math.type.BigNumber; };
-	  
-	  typed.conversions = [
-	    {
-	      from: 'number',
-	      to: 'BigNumber',
-	      convert: function (x) {
-	        // note: conversion from number to BigNumber can fail if x has >15 digits
-	        if (digits(x) > 15) {
-	          throw new TypeError('Cannot implicitly convert a number with >15 significant digits to BigNumber ' +
-	          '(value: ' + x + '). ' +
-	          'Use function bignumber(x) to convert to BigNumber.');
-	        }
-	        return new math.type.BigNumber(x);
-	      }
-	    }, {
-	      from: 'number',
-	      to: 'Complex',
-	      convert: function (x) {
-	        return new math.type.Complex(x, 0);
-	      }
-	    }, {
-	      from: 'number',
-	      to: 'string',
-	      convert: function (x) {
-	        return x + '';
-	      }
-	    }, {
-	      from: 'BigNumber',
-	      to: 'Complex',
-	      convert: function (x) {
-	        return new math.type.Complex(x.toNumber(), 0);
-	      }
-	    }, {
-	      from: 'boolean',
-	      to: 'number',
-	      convert: function (x) {
-	        return +x;
-	      }
-	    }, {
-	      from: 'boolean',
-	      to: 'BigNumber',
-	      convert: function (x) {
-	        return new math.type.BigNumber(+x);
-	      }
-	    }, {
-	      from: 'boolean',
-	      to: 'string',
-	      convert: function (x) {
-	        return +x;
-	      }
-	    }, {
-	      from: 'null',
-	      to: 'number',
-	      convert: function () {
-	        return 0;
-	      }
-	    }, {
-	      from: 'null',
-	      to: 'string',
-	      convert: function () {
-	        return 'null';
-	      }
-	    }, {
-	      from: 'null',
-	      to: 'BigNumber',
-	      convert: function () {
-	        return new math.type.BigNumber(0);
-	      }
-	    }, {
-	      from: 'Array',
-	      to: 'Matrix',
-	      convert: function (array) {
-	        return new math.type.Matrix(array);
-	      }
-	    }
-	  ];
-
-	  return typed;
-	};
-
-
-/***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = function (math, config) {
-	  var object = __webpack_require__(166);
-	  var bignumber = __webpack_require__(213);
-	  var Complex = __webpack_require__(3);
-	  var BigNumber = math.type.BigNumber;
-
-	  math['true']     = true;
-	  math['false']    = false;
-	  math['null']     = null;
-	  math['uninitialized'] = __webpack_require__(172).UNINITIALIZED;
-
-	  if (config.number === 'bignumber') {
-	    math['Infinity'] = new BigNumber(Infinity);
-	    math['NaN']      = new BigNumber(NaN);
-
-	    object.lazy(math, 'pi',  function () {return bignumber.pi(config.precision)});
-	    object.lazy(math, 'tau', function () {return bignumber.tau(config.precision)});
-	    object.lazy(math, 'e',   function () {return bignumber.e(config.precision)});
-	    object.lazy(math, 'phi', function () {return bignumber.phi(config.precision)}); // golden ratio, (1+sqrt(5))/2
-
-	    // uppercase constants (for compatibility with built-in Math)
-	    object.lazy(math, 'E',       function () {return math.e;});
-	    object.lazy(math, 'LN2',     function () {return new BigNumber(2).ln();});
-	    object.lazy(math, 'LN10',    function () {return new BigNumber(10).ln()});
-	    object.lazy(math, 'LOG2E',   function () {return new BigNumber(1).div(new BigNumber(2).ln());});
-	    object.lazy(math, 'LOG10E',  function () {return new BigNumber(1).div(new BigNumber(10).ln())});
-	    object.lazy(math, 'PI',      function () {return math.pi});
-	    object.lazy(math, 'SQRT1_2', function () {return new BigNumber('0.5').sqrt()});
-	    object.lazy(math, 'SQRT2',   function () {return new BigNumber(2).sqrt()});
-	  }
-	  else {
-	    math['Infinity'] = Infinity;
-	    math['NaN']      = NaN;
-
-	    math.pi  = Math.PI;
-	    math.tau = Math.PI * 2;
-	    math.e   = Math.E;
-	    math.phi = 1.61803398874989484820458683436563811772030917980576286213545; // golden ratio, (1+sqrt(5))/2
-
-	    // uppercase constants (for compatibility with built-in Math)
-	    math.E           = math.e;
-	    math.LN2         = Math.LN2;
-	    math.LN10        = Math.LN10;
-	    math.LOG2E       = Math.LOG2E;
-	    math.LOG10E      = Math.LOG10E;
-	    math.PI          = math.pi;
-	    math.SQRT1_2     = Math.SQRT1_2;
-	    math.SQRT2       = Math.SQRT2;
-	  }
-
-	  // complex i
-	  math.i = new Complex(0, 1);
-
-	  // meta information
-	  math.version = __webpack_require__(348);
-	};
-
-
-/***/ },
-/* 169 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	var isFactory = __webpack_require__(166).isFactory;
@@ -22227,15 +22089,185 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var typed = __webpack_require__(356);
+	var digits = __webpack_require__(175).digits;
+
+	/**
+	 * Factory function for creating a new typed instance
+	 * @param {Object} math
+	 * @returns {function}
+	 */
+	exports.create = function create(math) {
+	  // TODO: must create a separate instance of typed, with custom config.
+	  // TODO: typed-function must be able to silently ignore signatures with unknown data types
+
+	  // configure typed functions
+	  typed.types['Complex']    = function (x) { return x instanceof math.type.Complex; };
+	  typed.types['Range']      = function (x) { return x instanceof math.type.Range; };
+	  typed.types['Index']      = function (x) { return x instanceof math.type.Index; };
+	  typed.types['Matrix']     = function (x) { return x instanceof math.type.Matrix; };
+	  typed.types['Unit']       = function (x) { return x instanceof math.type.Unit; };
+	  typed.types['Help']       = function (x) { return x instanceof math.type.Help; };
+	  typed.types['ResultSet']  = function (x) { return x instanceof math.type.ResultSet; };
+	  typed.types['BigNumber']  = function (x) { return x instanceof math.type.BigNumber; };
+	  
+	  typed.conversions = [
+	    {
+	      from: 'number',
+	      to: 'BigNumber',
+	      convert: function (x) {
+	        // note: conversion from number to BigNumber can fail if x has >15 digits
+	        if (digits(x) > 15) {
+	          throw new TypeError('Cannot implicitly convert a number with >15 significant digits to BigNumber ' +
+	          '(value: ' + x + '). ' +
+	          'Use function bignumber(x) to convert to BigNumber.');
+	        }
+	        return new math.type.BigNumber(x);
+	      }
+	    }, {
+	      from: 'number',
+	      to: 'Complex',
+	      convert: function (x) {
+	        return new math.type.Complex(x, 0);
+	      }
+	    }, {
+	      from: 'number',
+	      to: 'string',
+	      convert: function (x) {
+	        return x + '';
+	      }
+	    }, {
+	      from: 'BigNumber',
+	      to: 'Complex',
+	      convert: function (x) {
+	        return new math.type.Complex(x.toNumber(), 0);
+	      }
+	    }, {
+	      from: 'boolean',
+	      to: 'number',
+	      convert: function (x) {
+	        return +x;
+	      }
+	    }, {
+	      from: 'boolean',
+	      to: 'BigNumber',
+	      convert: function (x) {
+	        return new math.type.BigNumber(+x);
+	      }
+	    }, {
+	      from: 'boolean',
+	      to: 'string',
+	      convert: function (x) {
+	        return +x;
+	      }
+	    }, {
+	      from: 'null',
+	      to: 'number',
+	      convert: function () {
+	        return 0;
+	      }
+	    }, {
+	      from: 'null',
+	      to: 'string',
+	      convert: function () {
+	        return 'null';
+	      }
+	    }, {
+	      from: 'null',
+	      to: 'BigNumber',
+	      convert: function () {
+	        return new math.type.BigNumber(0);
+	      }
+	    }, {
+	      from: 'Array',
+	      to: 'Matrix',
+	      convert: function (array) {
+	        return new math.type.Matrix(array);
+	      }
+	    }
+	  ];
+
+	  return typed;
+	};
+
+
+/***/ },
+/* 169 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function (math, config) {
+	  var object = __webpack_require__(166);
+	  var bignumber = __webpack_require__(213);
+	  var Complex = __webpack_require__(3);
+	  var BigNumber = math.type.BigNumber;
+
+	  math['true']     = true;
+	  math['false']    = false;
+	  math['null']     = null;
+	  math['uninitialized'] = __webpack_require__(172).UNINITIALIZED;
+
+	  if (config.number === 'bignumber') {
+	    math['Infinity'] = new BigNumber(Infinity);
+	    math['NaN']      = new BigNumber(NaN);
+
+	    object.lazy(math, 'pi',  function () {return bignumber.pi(config.precision)});
+	    object.lazy(math, 'tau', function () {return bignumber.tau(config.precision)});
+	    object.lazy(math, 'e',   function () {return bignumber.e(config.precision)});
+	    object.lazy(math, 'phi', function () {return bignumber.phi(config.precision)}); // golden ratio, (1+sqrt(5))/2
+
+	    // uppercase constants (for compatibility with built-in Math)
+	    object.lazy(math, 'E',       function () {return math.e;});
+	    object.lazy(math, 'LN2',     function () {return new BigNumber(2).ln();});
+	    object.lazy(math, 'LN10',    function () {return new BigNumber(10).ln()});
+	    object.lazy(math, 'LOG2E',   function () {return new BigNumber(1).div(new BigNumber(2).ln());});
+	    object.lazy(math, 'LOG10E',  function () {return new BigNumber(1).div(new BigNumber(10).ln())});
+	    object.lazy(math, 'PI',      function () {return math.pi});
+	    object.lazy(math, 'SQRT1_2', function () {return new BigNumber('0.5').sqrt()});
+	    object.lazy(math, 'SQRT2',   function () {return new BigNumber(2).sqrt()});
+	  }
+	  else {
+	    math['Infinity'] = Infinity;
+	    math['NaN']      = NaN;
+
+	    math.pi  = Math.PI;
+	    math.tau = Math.PI * 2;
+	    math.e   = Math.E;
+	    math.phi = 1.61803398874989484820458683436563811772030917980576286213545; // golden ratio, (1+sqrt(5))/2
+
+	    // uppercase constants (for compatibility with built-in Math)
+	    math.E           = math.e;
+	    math.LN2         = Math.LN2;
+	    math.LN10        = Math.LN10;
+	    math.LOG2E       = Math.LOG2E;
+	    math.LOG10E      = Math.LOG10E;
+	    math.PI          = math.pi;
+	    math.SQRT1_2     = Math.SQRT1_2;
+	    math.SQRT2       = Math.SQRT2;
+	  }
+
+	  // complex i
+	  math.i = new Complex(0, 1);
+
+	  // meta information
+	  math.version = __webpack_require__(348);
+	};
+
+
+/***/ },
 /* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.ArgumentsError = __webpack_require__(176);
-	exports.DimensionError = __webpack_require__(174);
-	exports.IndexError = __webpack_require__(173);
-	exports.UnsupportedTypeError = __webpack_require__(347);
+	exports.DimensionError = __webpack_require__(173);
+	exports.IndexError = __webpack_require__(174);
+	exports.UnsupportedTypeError = __webpack_require__(349);
 
 	// TODO: implement an InvalidValueError?
 
@@ -22248,7 +22280,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.array = __webpack_require__(172);
 	exports['boolean'] = __webpack_require__(208);
-	exports['function'] = __webpack_require__(349);
+	exports['function'] = __webpack_require__(347);
 	exports.number = __webpack_require__(175);
 	exports.bignumber = __webpack_require__(213);
 	exports.object = __webpack_require__(166);
@@ -22267,8 +22299,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var object = __webpack_require__(166);
 	var types = __webpack_require__(216);
 
-	var DimensionError = __webpack_require__(174);
-	var IndexError = __webpack_require__(173);
+	var DimensionError = __webpack_require__(173);
+	var IndexError = __webpack_require__(174);
 
 	var isArray = Array.isArray;
 
@@ -22645,6 +22677,46 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * Create a range error with the message:
+	 *     'Dimension mismatch (<actual size> != <expected size>)'
+	 * @param {number | number[]} actual        The actual size
+	 * @param {number | number[]} expected      The expected size
+	 * @param {string} [relation='!=']          Optional relation between actual
+	 *                                          and expected size: '!=', '<', etc.
+	 * @extends RangeError
+	 */
+	function DimensionError(actual, expected, relation) {
+	  if (!(this instanceof DimensionError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.actual   = actual;
+	  this.expected = expected;
+	  this.relation = relation;
+
+	  this.message = 'Dimension mismatch (' +
+	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
+	      ' ' + (this.relation || '!=') + ' ' +
+	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
+	      ')';
+
+	  this.stack = (new Error()).stack;
+	}
+
+	DimensionError.prototype = new RangeError();
+	DimensionError.prototype.constructor = RangeError;
+	DimensionError.prototype.name = 'DimensionError';
+
+	module.exports = DimensionError;
+
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Create a range error with the message:
 	 *     'Index out of range (index < min)'
 	 *     'Index out of range (index < max)'
 	 *
@@ -22689,52 +22761,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Create a range error with the message:
-	 *     'Dimension mismatch (<actual size> != <expected size>)'
-	 * @param {number | number[]} actual        The actual size
-	 * @param {number | number[]} expected      The expected size
-	 * @param {string} [relation='!=']          Optional relation between actual
-	 *                                          and expected size: '!=', '<', etc.
-	 * @extends RangeError
-	 */
-	function DimensionError(actual, expected, relation) {
-	  if (!(this instanceof DimensionError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.actual   = actual;
-	  this.expected = expected;
-	  this.relation = relation;
-
-	  this.message = 'Dimension mismatch (' +
-	      (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
-	      ' ' + (this.relation || '!=') + ' ' +
-	      (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
-	      ')';
-
-	  this.stack = (new Error()).stack;
-	}
-
-	DimensionError.prototype = new RangeError();
-	DimensionError.prototype.constructor = RangeError;
-	DimensionError.prototype.name = 'DimensionError';
-
-	module.exports = DimensionError;
-
-
-/***/ },
 /* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var NumberFormatter = __webpack_require__(351);
+	var NumberFormatter = __webpack_require__(350);
 
 	/**
 	 * Test whether value is a Number
@@ -23039,6 +23071,119 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Node = __webpack_require__(189),
+	    ArrayNode = __webpack_require__(178),
+
+	    keywords = __webpack_require__(352),
+	    operators = __webpack_require__(353),
+
+	    latex = __webpack_require__(354),
+	    isString = __webpack_require__(214).isString;
+
+	/**
+	 * @constructor AssignmentNode
+	 * @extends {Node}
+	 * Define a symbol, like "a = 3.2"
+	 *
+	 * @param {String} name       Symbol name
+	 * @param {Node} expr         The expression defining the symbol
+	 */
+	function AssignmentNode(name, expr) {
+	  if (!(this instanceof AssignmentNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (!isString(name))          throw new TypeError('String expected for parameter "name"');
+	  if (!(expr instanceof Node))  throw new TypeError('Node expected for parameter "expr"');
+	  if (name in keywords)         throw new Error('Illegal symbol name, "'  + name +  '" is a reserved keyword');
+
+	  this.name = name;
+	  this.expr = expr;
+	}
+
+	AssignmentNode.prototype = new Node();
+
+	AssignmentNode.prototype.type = 'AssignmentNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @private
+	 */
+	AssignmentNode.prototype._compile = function (defs) {
+	  return 'scope["' + this.name + '"] = ' + this.expr._compile(defs) + '';
+	};
+
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	AssignmentNode.prototype.forEach = function (callback) {
+	  callback(this.expr, 'expr', this);
+	};
+
+	/**
+	 * Create a new AssignmentNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {AssignmentNode} Returns a transformed copy of the node
+	 */
+	AssignmentNode.prototype.map = function (callback) {
+	  return new AssignmentNode(this.name, this._ifNode(callback(this.expr, 'expr', this)));
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {AssignmentNode}
+	 */
+	AssignmentNode.prototype.clone = function() {
+	  return new AssignmentNode(this.name, this.expr);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String}
+	 */
+	AssignmentNode.prototype.toString = function() {
+	  var precedence = operators.getPrecedence(this);
+	  var exprPrecedence = operators.getPrecedence(this.expr);
+	  var expr = this.expr.toString();
+	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
+	    expr = '(' + expr + ')';
+	  }
+	  return this.name + ' = ' + expr;
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @param {Object|function} callback(s)
+	 * @return {String}
+	 */
+	AssignmentNode.prototype._toTex = function(callbacks) {
+	  var precedence = operators.getPrecedence(this);
+	  var exprPrecedence = operators.getPrecedence(this.expr);
+
+	  var expr = this.expr.toTex(callbacks);
+	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
+	    expr = '\\left(' + expr + '\\right)';
+	  }
+
+	  return latex.toSymbol(this.name) + ':=' + expr;
+	};
+
+	module.exports = AssignmentNode;
+
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(189),
 	    string = __webpack_require__(214),
 
 	    isArray = Array.isArray,
@@ -23159,7 +23304,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23299,131 +23444,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(189),
-	    ArrayNode = __webpack_require__(177),
-
-	    keywords = __webpack_require__(352),
-	    operators = __webpack_require__(354),
-
-	    latex = __webpack_require__(353),
-	    isString = __webpack_require__(214).isString;
-
-	/**
-	 * @constructor AssignmentNode
-	 * @extends {Node}
-	 * Define a symbol, like "a = 3.2"
-	 *
-	 * @param {String} name       Symbol name
-	 * @param {Node} expr         The expression defining the symbol
-	 */
-	function AssignmentNode(name, expr) {
-	  if (!(this instanceof AssignmentNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (!isString(name))          throw new TypeError('String expected for parameter "name"');
-	  if (!(expr instanceof Node))  throw new TypeError('Node expected for parameter "expr"');
-	  if (name in keywords)         throw new Error('Illegal symbol name, "'  + name +  '" is a reserved keyword');
-
-	  this.name = name;
-	  this.expr = expr;
-	}
-
-	AssignmentNode.prototype = new Node();
-
-	AssignmentNode.prototype.type = 'AssignmentNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @private
-	 */
-	AssignmentNode.prototype._compile = function (defs) {
-	  return 'scope["' + this.name + '"] = ' + this.expr._compile(defs) + '';
-	};
-
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	AssignmentNode.prototype.forEach = function (callback) {
-	  callback(this.expr, 'expr', this);
-	};
-
-	/**
-	 * Create a new AssignmentNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {AssignmentNode} Returns a transformed copy of the node
-	 */
-	AssignmentNode.prototype.map = function (callback) {
-	  return new AssignmentNode(this.name, this._ifNode(callback(this.expr, 'expr', this)));
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {AssignmentNode}
-	 */
-	AssignmentNode.prototype.clone = function() {
-	  return new AssignmentNode(this.name, this.expr);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String}
-	 */
-	AssignmentNode.prototype.toString = function() {
-	  var precedence = operators.getPrecedence(this);
-	  var exprPrecedence = operators.getPrecedence(this.expr);
-	  var expr = this.expr.toString();
-	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
-	    expr = '(' + expr + ')';
-	  }
-	  return this.name + ' = ' + expr;
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @param {Object|function} callback(s)
-	 * @return {String}
-	 */
-	AssignmentNode.prototype._toTex = function(callbacks) {
-	  var precedence = operators.getPrecedence(this);
-	  var exprPrecedence = operators.getPrecedence(this.expr);
-
-	  var expr = this.expr.toTex(callbacks);
-	  if ((exprPrecedence !== null) && (exprPrecedence <= precedence)) {
-	    expr = '\\left(' + expr + '\\right)';
-	  }
-
-	  return latex.toSymbol(this.name) + ':=' + expr;
-	};
-
-	module.exports = AssignmentNode;
-
-
-/***/ },
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Node = __webpack_require__(189);
-	var latex = __webpack_require__(353);
-	var BigNumber = __webpack_require__(350);
+	var latex = __webpack_require__(354);
+	var BigNumber = __webpack_require__(351);
 	var Complex = __webpack_require__(3);
 	var Unit = __webpack_require__(7);
 	var util = __webpack_require__(171);
-	var operators = __webpack_require__(354);
+	var operators = __webpack_require__(353);
 	var isString = util.string.isString;
 	var isNumber = util.number.isNumber;
 	var isBoolean = util['boolean'].isBoolean;
@@ -23589,7 +23621,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Node = __webpack_require__(189);
-	var BigNumber = __webpack_require__(350);
+	var BigNumber = __webpack_require__(351);
 	var type = __webpack_require__(216).type;
 	var isString = __webpack_require__(214).isString;
 
@@ -23778,8 +23810,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Node = __webpack_require__(189);
 	var keywords = __webpack_require__(352);
-	var latex = __webpack_require__(353);
-	var operators = __webpack_require__(354);
+	var latex = __webpack_require__(354);
+	var operators = __webpack_require__(353);
 	var isString = __webpack_require__(214).isString;
 	var isArray = Array.isArray;
 
@@ -23916,7 +23948,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var RangeNode = __webpack_require__(186);
 	var SymbolNode = __webpack_require__(187);
 
-	var BigNumber = __webpack_require__(350);
+	var BigNumber = __webpack_require__(351);
 	var Range = __webpack_require__(4);
 
 	var isNode = Node.isNode;
@@ -24146,8 +24178,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ConstantNode = __webpack_require__(181),
 	    SymbolNode = __webpack_require__(187),
 	    FunctionNode = __webpack_require__(185),
-	    latex = __webpack_require__(353),
-	    operators = __webpack_require__(354),
+	    latex = __webpack_require__(354),
+	    operators = __webpack_require__(353),
 	    isArray = Array.isArray,
 	    isNode = Node.isNode;
 
@@ -24508,7 +24540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Node = __webpack_require__(189);
 	var SymbolNode = __webpack_require__(187);
 
-	var latex = __webpack_require__(353);
+	var latex = __webpack_require__(354);
 	var isNode = Node.isNode;
 	var isArray = Array.isArray;
 
@@ -24643,7 +24675,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Node = __webpack_require__(189);
-	var operators = __webpack_require__(354);
+	var operators = __webpack_require__(353);
 
 	var isNode = Node.isNode;
 
@@ -24788,7 +24820,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Node = __webpack_require__(189),
 	    Unit = __webpack_require__(7),
 
-	    latex = __webpack_require__(353),
+	    latex = __webpack_require__(354),
 	    isString = __webpack_require__(214).isString;
 
 	/**
@@ -25397,25 +25429,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  'name': 'Infinity',
-	  'category': 'Constants',
-	  'syntax': [
-	    'Infinity'
-	  ],
-	  'description': 'Infinity, a number which is larger than the maximum number that can be handled by a floating point number.',
-	  'examples': [
-	    'Infinity',
-	    '1 / 0'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 193 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
 	  'name': 'i',
 	  'category': 'Constants',
 	  'syntax': [
@@ -25432,26 +25445,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 194 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  'name': 'LN2',
+	  'name': 'Infinity',
 	  'category': 'Constants',
 	  'syntax': [
-	    'LN2'
+	    'Infinity'
 	  ],
-	  'description': 'Returns the natural logarithm of 2, approximately equal to 0.693',
+	  'description': 'Infinity, a number which is larger than the maximum number that can be handled by a floating point number.',
 	  'examples': [
-	    'LN2',
-	    'log(2)'
+	    'Infinity',
+	    '1 / 0'
 	  ],
 	  'seealso': []
 	};
 
 
 /***/ },
-/* 195 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25464,6 +25477,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'examples': [
 	    'LN10',
 	    'log(10)'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'LN2',
+	  'category': 'Constants',
+	  'syntax': [
+	    'LN2'
+	  ],
+	  'description': 'Returns the natural logarithm of 2, approximately equal to 0.693',
+	  'examples': [
+	    'LN2',
+	    'log(2)'
 	  ],
 	  'seealso': []
 	};
@@ -25512,6 +25544,25 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
+	  'name': 'NaN',
+	  'category': 'Constants',
+	  'syntax': [
+	    'NaN'
+	  ],
+	  'description': 'Not a number',
+	  'examples': [
+	    'NaN',
+	    '0 / 0'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
 	  'name': 'null',
 	  'category': 'Constants',
 	  'syntax': [
@@ -25526,7 +25577,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 199 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25541,25 +25592,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'sin(pi/2)'
 	  ],
 	  'seealso': ['tau']
-	};
-
-
-/***/ },
-/* 200 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'NaN',
-	  'category': 'Constants',
-	  'syntax': [
-	    'NaN'
-	  ],
-	  'description': 'Not a number',
-	  'examples': [
-	    'NaN',
-	    '0 / 0'
-	  ],
-	  'seealso': []
 	};
 
 
@@ -25586,6 +25618,25 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
+	  'name': 'SQRT1_2',
+	  'category': 'Constants',
+	  'syntax': [
+	    'SQRT1_2'
+	  ],
+	  'description': 'Returns the square root of 1/2, approximately equal to 0.707',
+	  'examples': [
+	    'SQRT1_2',
+	    'sqrt(1/2)'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 203 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
 	  'name': 'SQRT2',
 	  'category': 'Constants',
 	  'syntax': [
@@ -25601,7 +25652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 203 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -25616,25 +25667,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    '2 * pi'
 	  ],
 	  'seealso': ['pi']
-	};
-
-
-/***/ },
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'SQRT1_2',
-	  'category': 'Constants',
-	  'syntax': [
-	    'SQRT1_2'
-	  ],
-	  'description': 'Returns the square root of 1/2, approximately equal to 0.707',
-	  'examples': [
-	    'SQRT1_2',
-	    'sqrt(1/2)'
-	  ],
-	  'seealso': []
 	};
 
 
@@ -25678,8 +25710,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var DimensionError = __webpack_require__(174);
-	var IndexError = __webpack_require__(173);
+	var DimensionError = __webpack_require__(173);
+	var IndexError = __webpack_require__(174);
 
 	/**
 	 * Transform zero-based indices to one-based indices in errors
@@ -25855,64 +25887,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	function factory(type, config, load, typed) {
-	  
-	  /**
-	   * Multiply two scalar values, `x * y`.
-	   * This function is meant for internal use: it is used by the public function
-	   * `multiply`
-	   *
-	   * This function does not support collections (Array or Matrix), and does
-	   * not validate the number of of inputs.
-	   *
-	   * @param  {Number | BigNumber | Boolean | Complex | Unit | null} x   First value to multiply
-	   * @param  {Number | BigNumber | Boolean | Complex | null} y          Second value to multiply
-	   * @return {Number | BigNumber | Complex | Unit}                      Multiplication of `x` and `y`
-	   * @private
-	   */
-	  var multiplyScalar = typed('multiplyScalar', {
-
-	    'number, number': function (x, y) {
-	      return x * y;
-	    },
-
-	    'Complex, Complex': function (x, y) {
-	      return new type.Complex(
-	        x.re * y.re - x.im * y.im,
-	        x.re * y.im + x.im * y.re
-	      );
-	    },
-
-	    'BigNumber, BigNumber': function (x, y) {
-	      return x.times(y);
-	    },
-	    
-	    'number, Unit': function (x, y) {
-	      var res = y.clone();
-	      res.value = (res.value === null) ? res._normalize(x) : (res.value * x);
-	      return res;
-	    },
-
-	    'Unit, number': function (x, y) {
-	      var res = x.clone();
-	      res.value = (res.value === null) ? res._normalize(y) : (res.value * y);
-	      return res;
-	    },
-	  });
-
-	  return multiplyScalar;
-	}
-
-	exports.name = 'multiplyScalar';
-	exports.factory = factory;
-
-
-/***/ },
-/* 212 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	function factory(type, config, load, typed) {
 	  /**
 	   * Divide two scalar values, `x / y`.
 	   * This function is meant for internal use: it is used by the public functions
@@ -25976,15 +25950,73 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+	  
+	  /**
+	   * Multiply two scalar values, `x * y`.
+	   * This function is meant for internal use: it is used by the public function
+	   * `multiply`
+	   *
+	   * This function does not support collections (Array or Matrix), and does
+	   * not validate the number of of inputs.
+	   *
+	   * @param  {Number | BigNumber | Boolean | Complex | Unit | null} x   First value to multiply
+	   * @param  {Number | BigNumber | Boolean | Complex | null} y          Second value to multiply
+	   * @return {Number | BigNumber | Complex | Unit}                      Multiplication of `x` and `y`
+	   * @private
+	   */
+	  var multiplyScalar = typed('multiplyScalar', {
+
+	    'number, number': function (x, y) {
+	      return x * y;
+	    },
+
+	    'Complex, Complex': function (x, y) {
+	      return new type.Complex(
+	        x.re * y.re - x.im * y.im,
+	        x.re * y.im + x.im * y.re
+	      );
+	    },
+
+	    'BigNumber, BigNumber': function (x, y) {
+	      return x.times(y);
+	    },
+	    
+	    'number, Unit': function (x, y) {
+	      var res = y.clone();
+	      res.value = (res.value === null) ? res._normalize(x) : (res.value * x);
+	      return res;
+	    },
+
+	    'Unit, number': function (x, y) {
+	      var res = x.clone();
+	      res.value = (res.value === null) ? res._normalize(y) : (res.value * y);
+	      return res;
+	    },
+	  });
+
+	  return multiplyScalar;
+	}
+
+	exports.name = 'multiplyScalar';
+	exports.factory = factory;
+
+
+/***/ },
 /* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(350);
+	var BigNumber = __webpack_require__(351);
 	var isNumber = __webpack_require__(175).isNumber;
 	var digits = __webpack_require__(175).digits;
-	var memoize = __webpack_require__(349).memoize;
+	var memoize = __webpack_require__(347).memoize;
 
 	/**
 	 * Test whether value is a BigNumber
@@ -27413,7 +27445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var number = __webpack_require__(175);
 	var bignumber = __webpack_require__(213);
-	var BigNumber = __webpack_require__(350);
+	var BigNumber = __webpack_require__(351);
 
 	/**
 	 * Test whether value is a String
@@ -27532,7 +27564,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// TODO: rework to a typed function
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
-	  var matrix = load(__webpack_require__(73));
+	  var matrix = load(__webpack_require__(74));
 	  var array = __webpack_require__(172);
 
 	  var isCollection = collection.isCollection;
@@ -28465,28 +28497,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  'name': 'bitOr',
-	  'category': 'Bitwise',
-	  'syntax': [
-	    'x | y',
-	    'bitOr(x, y)'
-	  ],
-	  'description': 'Bitwise OR operation. Performs the logical inclusive OR operation on each pair of corresponding bits of the two given values. The result in each position is 1 if the first bit is 1 or the second bit is 1 or both bits are 1, otherwise, the result is 0.',
-	  'examples': [
-	    '5 | 3',
-	    'bitOr([1, 2, 3], 4)'
-	  ],
-	  'seealso': [
-	    'bitAnd', 'bitNot', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift'
-	  ]
-	};
-
-
-/***/ },
-/* 247 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
 	  'name': 'bitNot',
 	  'category': 'Bitwise',
 	  'syntax': [
@@ -28501,6 +28511,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'seealso': [
 	    'bitAnd', 'bitOr', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift'
+	  ]
+	};
+
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'bitOr',
+	  'category': 'Bitwise',
+	  'syntax': [
+	    'x | y',
+	    'bitOr(x, y)'
+	  ],
+	  'description': 'Bitwise OR operation. Performs the logical inclusive OR operation on each pair of corresponding bits of the two given values. The result in each position is 1 if the first bit is 1 or the second bit is 1 or both bits are 1, otherwise, the result is 0.',
+	  'examples': [
+	    '5 | 3',
+	    'bitOr([1, 2, 3], 4)'
+	  ],
+	  'seealso': [
+	    'bitAnd', 'bitNot', 'bitXor', 'leftShift', 'rightArithShift', 'rightLogShift'
 	  ]
 	};
 
@@ -28755,6 +28787,31 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
+	  'name': 'complex',
+	  'category': 'Type',
+	  'syntax': [
+	    'complex()',
+	    'complex(re, im)',
+	    'complex(string)'
+	  ],
+	  'description':
+	      'Create a complex number.',
+	  'examples': [
+	    'complex()',
+	    'complex(2, 3)',
+	    'complex("7 - 2i")'
+	  ],
+	  'seealso': [
+	    'bignumber', 'boolean', 'index', 'matrix', 'number', 'string', 'unit'
+	  ]
+	};
+
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
 	  'name': 'index',
 	  'category': 'Type',
 	  'syntax': [
@@ -28777,31 +28834,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ],
 	  'seealso': [
 	    'bignumber', 'boolean', 'complex', 'matrix,', 'number', 'range', 'string', 'unit'
-	  ]
-	};
-
-
-/***/ },
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	  'name': 'complex',
-	  'category': 'Type',
-	  'syntax': [
-	    'complex()',
-	    'complex(re, im)',
-	    'complex(string)'
-	  ],
-	  'description':
-	      'Create a complex number.',
-	  'examples': [
-	    'complex()',
-	    'complex(2, 3)',
-	    'complex("7 - 2i")'
-	  ],
-	  'seealso': [
-	    'bignumber', 'boolean', 'index', 'matrix', 'number', 'string', 'unit'
 	  ]
 	};
 
@@ -29872,34 +29904,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	  'name': 'median',
-	  'category': 'Statistics',
-	  'syntax': [
-	    'median(a, b, c, ...)',
-	    'median(A)'
-	  ],
-	  'description': 'Compute the median of all values. The values are sorted and the middle value is returned. In case of an even number of values, the average of the two middle values is returned.',
-	  'examples': [
-	    'median(5, 2, 7)',
-	    'median([3, -1, 5, 7])'
-	  ],
-	  'seealso': [
-	    'max',
-	    'mean',
-	    'min',
-	    'prod',
-	    'std',
-	    'sum',
-	    'var'
-	  ]
-	};
-
-
-/***/ },
-/* 304 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
 	  'name': 'mean',
 	  'category': 'Statistics',
 	  'syntax': [
@@ -29919,6 +29923,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'seealso': [
 	    'max',
 	    'median',
+	    'min',
+	    'prod',
+	    'std',
+	    'sum',
+	    'var'
+	  ]
+	};
+
+
+/***/ },
+/* 304 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  'name': 'median',
+	  'category': 'Statistics',
+	  'syntax': [
+	    'median(a, b, c, ...)',
+	    'median(A)'
+	  ],
+	  'description': 'Compute the median of all values. The values are sorted and the middle value is returned. In case of an even number of values, the average of the two middle values is returned.',
+	  'examples': [
+	    'median(5, 2, 7)',
+	    'median([3, -1, 5, 7])'
+	  ],
+	  'seealso': [
+	    'max',
+	    'mean',
 	    'min',
 	    'prod',
 	    'std',
@@ -30851,10 +30883,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(73));
-	  var divideScalar = load(__webpack_require__(212));
-	  var multiply = load(__webpack_require__(47));
-	  var subtract = load(__webpack_require__(53));
+	  var matrix = load(__webpack_require__(74));
+	  var divideScalar = load(__webpack_require__(211));
+	  var multiply = load(__webpack_require__(45));
+	  var subtract = load(__webpack_require__(54));
 	  var equal = load(__webpack_require__(113));
 
 	  var substitutionValidation = load(__webpack_require__(355));
@@ -31031,10 +31063,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(73));
-	  var divideScalar = load(__webpack_require__(212));
-	  var multiply = load(__webpack_require__(47));
-	  var subtract = load(__webpack_require__(53));
+	  var matrix = load(__webpack_require__(74));
+	  var divideScalar = load(__webpack_require__(211));
+	  var multiply = load(__webpack_require__(45));
+	  var subtract = load(__webpack_require__(54));
 	  var equal = load(__webpack_require__(113));
 
 	  var substitutionValidation = load(__webpack_require__(355));
@@ -31217,8 +31249,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		"./forEach.js": 161,
 		"./format": 156,
 		"./format.js": 156,
-		"./import": 169,
-		"./import.js": 169,
+		"./import": 167,
+		"./import.js": 167,
 		"./map": 157,
 		"./map.js": 157,
 		"./print": 158,
@@ -31244,6 +31276,44 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 347 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// function utils
+
+	/*
+	 * Memoize a given function by caching the computed result.
+	 * The cache of a memoized function can be cleared by deleting the `cache`
+	 * property of the function.
+	 *
+	 * @param {function} fn   The function to be memoized. Must be a pure function.
+	 * @return {function}     Returns the memoized function
+	 */
+	exports.memoize = function(fn) {
+	  return function memoize() {
+	    if (typeof memoize.cache !== 'object') {
+	      memoize.cache = {};
+	    }
+
+	    var hash = JSON.stringify(arguments);
+	    if (!(hash in memoize.cache)) {
+	      return memoize.cache[hash] = fn.apply(fn, arguments);
+	    }
+	    return memoize.cache[hash];
+	  };
+	};
+
+
+/***/ },
+/* 348 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = '2.0.0-SNAPSHOT';
+	// Note: This file is automatically generated when building math.js.
+	// Changes made in this file will be overwritten.
+
+
+/***/ },
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31286,45 +31356,220 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 348 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = '2.0.0-SNAPSHOT';
-	// Note: This file is automatically generated when building math.js.
-	// Changes made in this file will be overwritten.
+	'use strict';
 
-
-/***/ },
-/* 349 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// function utils
-
-	/*
-	 * Memoize a given function by caching the computed result.
-	 * The cache of a memoized function can be cleared by deleting the `cache`
-	 * property of the function.
-	 *
-	 * @param {function} fn   The function to be memoized. Must be a pure function.
-	 * @return {function}     Returns the memoized function
+	/**
+	 * Format a number using methods toPrecision, toFixed, toExponential.
+	 * @param {number | string} value
+	 * @constructor
 	 */
-	exports.memoize = function(fn) {
-	  return function memoize() {
-	    if (typeof memoize.cache !== 'object') {
-	      memoize.cache = {};
-	    }
+	function NumberFormatter (value) {
+	  // parse the input value
+	  var match = String(value).toLowerCase().match(/^0*?(-?)(\d+\.?\d*)(e([+-]?\d+))?$/);
+	  if (!match) {
+	    throw new SyntaxError('Invalid number');
+	  }
 
-	    var hash = JSON.stringify(arguments);
-	    if (!(hash in memoize.cache)) {
-	      return memoize.cache[hash] = fn.apply(fn, arguments);
-	    }
-	    return memoize.cache[hash];
-	  };
+	  var sign         = match[1];
+	  var coefficients = match[2];
+	  var exponent     = parseFloat(match[4] || '0');
+
+	  var dot = coefficients.indexOf('.');
+	  exponent += (dot !== -1) ? (dot - 1) : (coefficients.length - 1);
+
+	  this.sign = sign;
+	  this.coefficients = coefficients
+	      .replace('.', '')  // remove the dot (must be removed before removing leading zeros)
+	      .replace(/^0*/, function (zeros) {
+	        // remove leading zeros, add their count to the exponent
+	        exponent -= zeros.length;
+	        return '';
+	      })
+	      .replace(/0*$/, '') // remove trailing zeros
+	      .split('')
+	      .map(function (d) {
+	        return parseInt(d);
+	      });
+
+	  if (this.coefficients.length === 0) {
+	    this.coefficients.push(0);
+	    exponent++;
+	  }
+
+	  this.exponent = exponent;
+	}
+
+	/**
+	 * Format a number with fixed notation.
+	 * @param {Number} [precision=0]        Optional number of decimals after the
+	 *                                      decimal point. Zero by default.
+	 */
+	NumberFormatter.prototype.toFixed = function (precision) {
+	  var rounded = this.roundDigits(this.exponent + 1 + (precision || 0));
+	  var c = rounded.coefficients;
+	  var p = rounded.exponent + 1; // exponent may have changed
+
+	  // append zeros if needed
+	  var pp = p + (precision || 0);
+	  if (c.length < pp) {
+	    c = c.concat(zeros(pp - c.length));
+	  }
+
+	  // prepend zeros if needed
+	  if (p < 0) {
+	    c = zeros(-p + 1).concat(c);
+	    p = 1;
+	  }
+
+	  // insert a dot if needed
+	  if (precision) {
+	    c.splice(p, 0, (p === 0) ? '0.' : '.');
+	  }
+
+	  return this.sign + c.join('');
 	};
 
+	/**
+	 * Format a number in exponential notation. Like '1.23e+5', '2.3e+0', '3.500e-3'
+	 * @param {Number} [precision]  Number of digits in formatted output.
+	 *                              If not provided, the maximum available digits
+	 *                              is used.
+	 */
+	NumberFormatter.prototype.toExponential = function (precision) {
+	  // round if needed, else create a clone
+	  var rounded = precision ? this.roundDigits(precision) : this.clone();
+	  var c = rounded.coefficients;
+	  var e = rounded.exponent;
+
+	  // append zeros if needed
+	  if (c.length < precision) {
+	    c = c.concat(zeros(precision - c.length));
+	  }
+
+	  // format as `C.CCCe+EEE` or `C.CCCe-EEE`
+	  var first = c.shift();
+	  return this.sign + first + (c.length > 0 ? ('.' + c.join('')) : '') +
+	      'e' + (e >= 0 ? '+' : '') + e;
+	};
+
+	/**
+	 * Format a number with a certain precision
+	 * @param {Number} [precision=undefined] Optional number of digits.
+	 * @param {{lower: number | undefined, upper: number | undefined}} [options]
+	 *                                       By default:
+	 *                                         lower = 1e-3 (excl)
+	 *                                         upper = 1e+5 (incl)
+	 * @return {string}
+	 */
+	NumberFormatter.prototype.toPrecision = function(precision, options) {
+	  // determine lower and upper bound for exponential notation.
+	  var lower = (options && options.lower !== undefined) ? options.lower : 1e-3;
+	  var upper = (options && options.upper !== undefined) ? options.upper : 1e+5;
+
+	  var abs = Math.abs(Math.pow(10, this.exponent));
+	  if (abs < lower || abs >= upper) {
+	    // exponential notation
+	    return this.toExponential(precision);
+	  }
+	  else {
+	    var rounded = precision ? this.roundDigits(precision) : this.clone();
+	    var c = rounded.coefficients;
+	    var e = rounded.exponent;
+
+	    // append trailing zeros
+	    if (c.length < precision) {
+	      c = c.concat(zeros(precision - c.length));
+	    }
+
+	    // append trailing zeros
+	    // TODO: simplify the next statement
+	    c = c.concat(zeros(e - c.length + 1 +
+	        (c.length < precision ? precision - c.length : 0)));
+
+	    // prepend zeros
+	    c = zeros(-e).concat(c);
+
+	    var dot = e > 0 ? e : 0;
+	    if (dot < c.length - 1) {
+	      c.splice(dot + 1, 0, '.');
+	    }
+
+	    return this.sign + c.join('');
+	  }
+	};
+
+	/**
+	 * Crete a clone of the NumberFormatter
+	 * @return {NumberFormatter} Returns a clone of the NumberFormatter
+	 */
+	NumberFormatter.prototype.clone = function () {
+	  var clone = new NumberFormatter('0');
+	  clone.sign = this.sign;
+	  clone.coefficients = this.coefficients.slice(0);
+	  clone.exponent = this.exponent;
+	  return clone;
+	};
+
+	/**
+	 * Round the number of digits of a number *
+	 * @param {number} precision  A positive integer
+	 * @return {NumberFormatter}  Returns a new NumberFormatter with the rounded
+	 *                            digits
+	 */
+	NumberFormatter.prototype.roundDigits = function (precision) {
+	  var rounded = this.clone();
+	  var c = rounded.coefficients;
+
+	  // prepend zeros if needed
+	  while (precision <= 0) {
+	    c.unshift(0);
+	    rounded.exponent++;
+	    precision++;
+	  }
+
+	  if (c.length > precision) {
+	    var removed = c.splice(precision);
+
+	    if (removed[0] >= 5) {
+	      var i = precision - 1;
+	      c[i]++;
+	      while (c[i] === 10) {
+	        c.pop();
+	        if (i === 0) {
+	          c.unshift(0);
+	          rounded.exponent++;
+	          i++;
+	        }
+	        i--;
+	        c[i]++;
+	      }
+	    }
+	  }
+
+	  return rounded;
+	};
+
+	/**
+	 * Create an array filled with zeros.
+	 * @param {number} length
+	 * @return {Array}
+	 */
+	function zeros(length) {
+	  var arr = [];
+	  for (var i = 0; i < length; i++) {
+	    arr.push(0);
+	  }
+	  return arr;
+	}
+
+	module.exports = NumberFormatter;
+
 
 /***/ },
-/* 350 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v4.0.2 https://github.com/MikeMcl/decimal.js/LICENCE */
@@ -35390,219 +35635,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 351 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Format a number using methods toPrecision, toFixed, toExponential.
-	 * @param {number | string} value
-	 * @constructor
-	 */
-	function NumberFormatter (value) {
-	  // parse the input value
-	  var match = String(value).toLowerCase().match(/^0*?(-?)(\d+\.?\d*)(e([+-]?\d+))?$/);
-	  if (!match) {
-	    throw new SyntaxError('Invalid number');
-	  }
-
-	  var sign         = match[1];
-	  var coefficients = match[2];
-	  var exponent     = parseFloat(match[4] || '0');
-
-	  var dot = coefficients.indexOf('.');
-	  exponent += (dot !== -1) ? (dot - 1) : (coefficients.length - 1);
-
-	  this.sign = sign;
-	  this.coefficients = coefficients
-	      .replace('.', '')  // remove the dot (must be removed before removing leading zeros)
-	      .replace(/^0*/, function (zeros) {
-	        // remove leading zeros, add their count to the exponent
-	        exponent -= zeros.length;
-	        return '';
-	      })
-	      .replace(/0*$/, '') // remove trailing zeros
-	      .split('')
-	      .map(function (d) {
-	        return parseInt(d);
-	      });
-
-	  if (this.coefficients.length === 0) {
-	    this.coefficients.push(0);
-	    exponent++;
-	  }
-
-	  this.exponent = exponent;
-	}
-
-	/**
-	 * Format a number with fixed notation.
-	 * @param {Number} [precision=0]        Optional number of decimals after the
-	 *                                      decimal point. Zero by default.
-	 */
-	NumberFormatter.prototype.toFixed = function (precision) {
-	  var rounded = this.roundDigits(this.exponent + 1 + (precision || 0));
-	  var c = rounded.coefficients;
-	  var p = rounded.exponent + 1; // exponent may have changed
-
-	  // append zeros if needed
-	  var pp = p + (precision || 0);
-	  if (c.length < pp) {
-	    c = c.concat(zeros(pp - c.length));
-	  }
-
-	  // prepend zeros if needed
-	  if (p < 0) {
-	    c = zeros(-p + 1).concat(c);
-	    p = 1;
-	  }
-
-	  // insert a dot if needed
-	  if (precision) {
-	    c.splice(p, 0, (p === 0) ? '0.' : '.');
-	  }
-
-	  return this.sign + c.join('');
-	};
-
-	/**
-	 * Format a number in exponential notation. Like '1.23e+5', '2.3e+0', '3.500e-3'
-	 * @param {Number} [precision]  Number of digits in formatted output.
-	 *                              If not provided, the maximum available digits
-	 *                              is used.
-	 */
-	NumberFormatter.prototype.toExponential = function (precision) {
-	  // round if needed, else create a clone
-	  var rounded = precision ? this.roundDigits(precision) : this.clone();
-	  var c = rounded.coefficients;
-	  var e = rounded.exponent;
-
-	  // append zeros if needed
-	  if (c.length < precision) {
-	    c = c.concat(zeros(precision - c.length));
-	  }
-
-	  // format as `C.CCCe+EEE` or `C.CCCe-EEE`
-	  var first = c.shift();
-	  return this.sign + first + (c.length > 0 ? ('.' + c.join('')) : '') +
-	      'e' + (e >= 0 ? '+' : '') + e;
-	};
-
-	/**
-	 * Format a number with a certain precision
-	 * @param {Number} [precision=undefined] Optional number of digits.
-	 * @param {{lower: number | undefined, upper: number | undefined}} [options]
-	 *                                       By default:
-	 *                                         lower = 1e-3 (excl)
-	 *                                         upper = 1e+5 (incl)
-	 * @return {string}
-	 */
-	NumberFormatter.prototype.toPrecision = function(precision, options) {
-	  // determine lower and upper bound for exponential notation.
-	  var lower = (options && options.lower !== undefined) ? options.lower : 1e-3;
-	  var upper = (options && options.upper !== undefined) ? options.upper : 1e+5;
-
-	  var abs = Math.abs(Math.pow(10, this.exponent));
-	  if (abs < lower || abs >= upper) {
-	    // exponential notation
-	    return this.toExponential(precision);
-	  }
-	  else {
-	    var rounded = precision ? this.roundDigits(precision) : this.clone();
-	    var c = rounded.coefficients;
-	    var e = rounded.exponent;
-
-	    // append trailing zeros
-	    if (c.length < precision) {
-	      c = c.concat(zeros(precision - c.length));
-	    }
-
-	    // append trailing zeros
-	    // TODO: simplify the next statement
-	    c = c.concat(zeros(e - c.length + 1 +
-	        (c.length < precision ? precision - c.length : 0)));
-
-	    // prepend zeros
-	    c = zeros(-e).concat(c);
-
-	    var dot = e > 0 ? e : 0;
-	    if (dot < c.length - 1) {
-	      c.splice(dot + 1, 0, '.');
-	    }
-
-	    return this.sign + c.join('');
-	  }
-	};
-
-	/**
-	 * Crete a clone of the NumberFormatter
-	 * @return {NumberFormatter} Returns a clone of the NumberFormatter
-	 */
-	NumberFormatter.prototype.clone = function () {
-	  var clone = new NumberFormatter('0');
-	  clone.sign = this.sign;
-	  clone.coefficients = this.coefficients.slice(0);
-	  clone.exponent = this.exponent;
-	  return clone;
-	};
-
-	/**
-	 * Round the number of digits of a number *
-	 * @param {number} precision  A positive integer
-	 * @return {NumberFormatter}  Returns a new NumberFormatter with the rounded
-	 *                            digits
-	 */
-	NumberFormatter.prototype.roundDigits = function (precision) {
-	  var rounded = this.clone();
-	  var c = rounded.coefficients;
-
-	  // prepend zeros if needed
-	  while (precision <= 0) {
-	    c.unshift(0);
-	    rounded.exponent++;
-	    precision++;
-	  }
-
-	  if (c.length > precision) {
-	    var removed = c.splice(precision);
-
-	    if (removed[0] >= 5) {
-	      var i = precision - 1;
-	      c[i]++;
-	      while (c[i] === 10) {
-	        c.pop();
-	        if (i === 0) {
-	          c.unshift(0);
-	          rounded.exponent++;
-	          i++;
-	        }
-	        i--;
-	        c[i]++;
-	      }
-	    }
-	  }
-
-	  return rounded;
-	};
-
-	/**
-	 * Create an array filled with zeros.
-	 * @param {number} length
-	 * @return {Array}
-	 */
-	function zeros(length) {
-	  var arr = [];
-	  for (var i = 0; i < length; i++) {
-	    arr.push(0);
-	  }
-	  return arr;
-	}
-
-	module.exports = NumberFormatter;
-
-
-/***/ },
 /* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -35616,6 +35648,308 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 353 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict'
+
+	//list of identifiers of nodes in order of their precedence
+	//also contains information about left/right associativity
+	//and which other operator the operator is associative with
+	//Example:
+	// addition is associative with addition and subtraction, because:
+	// (a+b)+c=a+(b+c)
+	// (a+b)-c=a+(b-c)
+	//
+	// postfix operators are left associative, prefix operators 
+	// are right associative
+	//
+	//It's also possible to set the following properties:
+	// latexParens: if set to false, this node doesn't need to be enclosed
+	//              in parentheses when using LaTeX
+	// latexLeftParens: if set to false, this !OperatorNode's! 
+	//                  left argument doesn't need to be enclosed
+	//                  in parentheses
+	// latexRightParens: the same for the right argument
+	var properties = [
+	  { //assignment
+	    'AssignmentNode': {},
+	    'FunctionAssignmentNode': {}
+	  },
+	  { //conditional expression
+	    'ConditionalNode': {
+	      latexLeftParens: false,
+	      latexRightParens: false,
+	      latexParens: false
+	      //conditionals don't need parentheses in LaTeX because
+	      //they are 2 dimensional
+	    }
+	  },
+	  { //logical or
+	    'OperatorNode:or': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+
+	  },
+	  { //logical xor
+	    'OperatorNode:xor': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+	  },
+	  { //logical and
+	    'OperatorNode:and': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+	  },
+	  { //bitwise or
+	    'OperatorNode:bitOr': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+	  },
+	  { //bitwise xor
+	    'OperatorNode:bitXor': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+	  },
+	  { //bitwise and
+	    'OperatorNode:bitAnd': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+	  },
+	  { //relational operators
+	    'OperatorNode:equal': {
+	      associativity: 'left',
+	      associativeWith: []
+	    },
+	    'OperatorNode:unequal': {
+	      associativity: 'left',
+	      associativeWith: []
+	    },
+	    'OperatorNode:smaller': {
+	      associativity: 'left',
+	      associativeWith: []
+	    },
+	    'OperatorNode:larger': {
+	      associativity: 'left',
+	      associativeWith: []
+	    },
+	    'OperatorNode:smallerEq': {
+	      associativity: 'left',
+	      associativeWith: []
+	    },
+	    'OperatorNode:largerEq': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+	  },
+	  { //bitshift operators
+	    'OperatorNode:leftShift': {
+	      associativity: 'left',
+	      associativeWith: []
+	    },
+	    'OperatorNode:rightArithShift': {
+	      associativity: 'left',
+	      associativeWith: []
+	    },
+	    'OperatorNode:rightLogShift': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+	  },
+	  { //unit conversion
+	    'OperatorNode:to': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+	  },
+	  { //range
+	    'RangeNode': {}
+	  },
+	  { //addition, subtraction
+	    'OperatorNode:add': {
+	      associativity: 'left',
+	      associativeWith: ['OperatorNode:add', 'OperatorNode:subtract']
+	    },
+	    'OperatorNode:subtract': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+	  },
+	  { //multiply, divide, modulus
+	    'OperatorNode:multiply': {
+	      associativity: 'left',
+	      associativeWith: [
+	        'OperatorNode:multiply',
+	        'OperatorNode:divide',
+	        'Operator:dotMultiply',
+	        'Operator:dotDivide'
+	      ]
+	    },
+	    'OperatorNode:divide': {
+	      associativity: 'left',
+	      associativeWith: [],
+	      latexLeftParens: false,
+	      latexRightParens: false,
+	      latexParens: false
+	      //fractions don't require parentheses because
+	      //they're 2 dimensional, so parens aren't needed
+	      //in LaTeX
+	    },
+	    'OperatorNode:dotMultiply': {
+	      associativity: 'left',
+	      associativeWith: [
+	        'OperatorNode:multiply',
+	        'OperatorNode:divide',
+	        'OperatorNode:dotMultiply',
+	        'OperatorNode:doDivide'
+	      ]
+	    },
+	    'OperatorNode:dotDivide': {
+	      associativity: 'left',
+	      associativeWith: []
+	    },
+	    'OperatorNode:mod': {
+	      associativity: 'left',
+	      associativeWith: []
+	    }
+	  },
+	  { //unary prefix operators
+	    'OperatorNode:unaryPlus': {
+	      associativity: 'right'
+	    },
+	    'OperatorNode:unaryMinus': {
+	      associativity: 'right'
+	    },
+	    'OperatorNode:bitNot': {
+	      associativity: 'right'
+	    },
+	    'OperatorNode:not': {
+	      associativity: 'right'
+	    }
+	  },
+	  { //exponentiation
+	    'OperatorNode:pow': {
+	      associativity: 'right',
+	      associativeWith: [],
+	      latexRightParens: false,
+	      //the exponent doesn't need parentheses in
+	      //LaTeX because it's 2 dimensional
+	      //(it's on top)
+	    },
+	    'OperatorNode:dotPow': {
+	      associativity: 'right',
+	      associativeWith: []
+	    }
+	  },
+	  { //factorial
+	    'OperatorNode:factorial': {
+	      associativity: 'left'
+	    }
+	  },
+	  { //matrix transpose
+	    'OperatorNode:transpose': {
+	      associativity: 'left'
+	    }
+	  }
+	];
+
+	/**
+	 * Get the precedence of a Node.
+	 * Higher number for higher precedence, starting with 0.
+	 * Returns null if the precedence is undefined.
+	 *
+	 * @param {Node}
+	 * @return {Number|null}
+	 */
+	function getPrecedence (node) {
+	  var identifier = node.getIdentifier();
+	  for (var i = 0; i < properties.length; i++) {
+	    if (identifier in properties[i]) {
+	      return i;
+	    }
+	  }
+	  return null;
+	}
+
+	/**
+	 * Get the associativity of an operator (left or right).
+	 * Returns a string containing 'left' or 'right' or null if
+	 * the associativity is not defined.
+	 *
+	 * @param {Node}
+	 * @return {String|null}
+	 * @throws {Error}
+	 */
+	function getAssociativity (node) {
+	  var identifier = node.getIdentifier();
+	  var index = getPrecedence(node);
+	  if (index === null) {
+	    //node isn't in the list
+	    return null;
+	  }
+	  var property = properties[index][identifier];
+
+	  if (property.hasOwnProperty('associativity')) {
+	    if (property.associativity === 'left') {
+	      return 'left';
+	    }
+	    if (property.associativity === 'right') {
+	      return 'right';
+	    }
+	    //associativity is invalid
+	    throw Error('\'' + identifier + '\' has the invalid associativity \''
+	                + property.associativity + '\'.');
+	  }
+
+	  //associativity is undefined
+	  return null;
+	}
+
+	/**
+	 * Check if an operator is associative with another operator.
+	 * Returns either true or false or null if not defined.
+	 *
+	 * @param {Node} nodeA
+	 * @param {Node} nodeB
+	 * @return {bool|null}
+	 */
+	function isAssociativeWith (nodeA, nodeB) {
+	  var identifierA = nodeA.getIdentifier();
+	  var identifierB = nodeB.getIdentifier();
+	  var index = getPrecedence(nodeA);
+	  if (index === null) {
+	    //node isn't in the list
+	    return null;
+	  }
+	  var property = properties[index][identifierA];
+
+	  if (property.hasOwnProperty('associativeWith')
+	      && (property.associativeWith instanceof Array)) {
+	    for (var i = 0; i < property.associativeWith.length; i++) {
+	      if (property.associativeWith[i] === identifierB) {
+	        return true;
+	      }
+	    }
+	    return false;
+	  }
+
+	  //associativeWith is not defined
+	  return null;
+	}
+
+	module.exports.properties = properties;
+	module.exports.getPrecedence = getPrecedence;
+	module.exports.getAssociativity = getAssociativity;
+	module.exports.isAssociativeWith = isAssociativeWith;
+
+
+/***/ },
+/* 354 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35978,308 +36312,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return expandTemplate(defaultTemplate, name, args);
 	  }
 	}
-
-
-/***/ },
-/* 354 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict'
-
-	//list of identifiers of nodes in order of their precedence
-	//also contains information about left/right associativity
-	//and which other operator the operator is associative with
-	//Example:
-	// addition is associative with addition and subtraction, because:
-	// (a+b)+c=a+(b+c)
-	// (a+b)-c=a+(b-c)
-	//
-	// postfix operators are left associative, prefix operators 
-	// are right associative
-	//
-	//It's also possible to set the following properties:
-	// latexParens: if set to false, this node doesn't need to be enclosed
-	//              in parentheses when using LaTeX
-	// latexLeftParens: if set to false, this !OperatorNode's! 
-	//                  left argument doesn't need to be enclosed
-	//                  in parentheses
-	// latexRightParens: the same for the right argument
-	var properties = [
-	  { //assignment
-	    'AssignmentNode': {},
-	    'FunctionAssignmentNode': {}
-	  },
-	  { //conditional expression
-	    'ConditionalNode': {
-	      latexLeftParens: false,
-	      latexRightParens: false,
-	      latexParens: false
-	      //conditionals don't need parentheses in LaTeX because
-	      //they are 2 dimensional
-	    }
-	  },
-	  { //logical or
-	    'OperatorNode:or': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-
-	  },
-	  { //logical xor
-	    'OperatorNode:xor': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-	  },
-	  { //logical and
-	    'OperatorNode:and': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-	  },
-	  { //bitwise or
-	    'OperatorNode:bitOr': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-	  },
-	  { //bitwise xor
-	    'OperatorNode:bitXor': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-	  },
-	  { //bitwise and
-	    'OperatorNode:bitAnd': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-	  },
-	  { //relational operators
-	    'OperatorNode:equal': {
-	      associativity: 'left',
-	      associativeWith: []
-	    },
-	    'OperatorNode:unequal': {
-	      associativity: 'left',
-	      associativeWith: []
-	    },
-	    'OperatorNode:smaller': {
-	      associativity: 'left',
-	      associativeWith: []
-	    },
-	    'OperatorNode:larger': {
-	      associativity: 'left',
-	      associativeWith: []
-	    },
-	    'OperatorNode:smallerEq': {
-	      associativity: 'left',
-	      associativeWith: []
-	    },
-	    'OperatorNode:largerEq': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-	  },
-	  { //bitshift operators
-	    'OperatorNode:leftShift': {
-	      associativity: 'left',
-	      associativeWith: []
-	    },
-	    'OperatorNode:rightArithShift': {
-	      associativity: 'left',
-	      associativeWith: []
-	    },
-	    'OperatorNode:rightLogShift': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-	  },
-	  { //unit conversion
-	    'OperatorNode:to': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-	  },
-	  { //range
-	    'RangeNode': {}
-	  },
-	  { //addition, subtraction
-	    'OperatorNode:add': {
-	      associativity: 'left',
-	      associativeWith: ['OperatorNode:add', 'OperatorNode:subtract']
-	    },
-	    'OperatorNode:subtract': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-	  },
-	  { //multiply, divide, modulus
-	    'OperatorNode:multiply': {
-	      associativity: 'left',
-	      associativeWith: [
-	        'OperatorNode:multiply',
-	        'OperatorNode:divide',
-	        'Operator:dotMultiply',
-	        'Operator:dotDivide'
-	      ]
-	    },
-	    'OperatorNode:divide': {
-	      associativity: 'left',
-	      associativeWith: [],
-	      latexLeftParens: false,
-	      latexRightParens: false,
-	      latexParens: false
-	      //fractions don't require parentheses because
-	      //they're 2 dimensional, so parens aren't needed
-	      //in LaTeX
-	    },
-	    'OperatorNode:dotMultiply': {
-	      associativity: 'left',
-	      associativeWith: [
-	        'OperatorNode:multiply',
-	        'OperatorNode:divide',
-	        'OperatorNode:dotMultiply',
-	        'OperatorNode:doDivide'
-	      ]
-	    },
-	    'OperatorNode:dotDivide': {
-	      associativity: 'left',
-	      associativeWith: []
-	    },
-	    'OperatorNode:mod': {
-	      associativity: 'left',
-	      associativeWith: []
-	    }
-	  },
-	  { //unary prefix operators
-	    'OperatorNode:unaryPlus': {
-	      associativity: 'right'
-	    },
-	    'OperatorNode:unaryMinus': {
-	      associativity: 'right'
-	    },
-	    'OperatorNode:bitNot': {
-	      associativity: 'right'
-	    },
-	    'OperatorNode:not': {
-	      associativity: 'right'
-	    }
-	  },
-	  { //exponentiation
-	    'OperatorNode:pow': {
-	      associativity: 'right',
-	      associativeWith: [],
-	      latexRightParens: false,
-	      //the exponent doesn't need parentheses in
-	      //LaTeX because it's 2 dimensional
-	      //(it's on top)
-	    },
-	    'OperatorNode:dotPow': {
-	      associativity: 'right',
-	      associativeWith: []
-	    }
-	  },
-	  { //factorial
-	    'OperatorNode:factorial': {
-	      associativity: 'left'
-	    }
-	  },
-	  { //matrix transpose
-	    'OperatorNode:transpose': {
-	      associativity: 'left'
-	    }
-	  }
-	];
-
-	/**
-	 * Get the precedence of a Node.
-	 * Higher number for higher precedence, starting with 0.
-	 * Returns null if the precedence is undefined.
-	 *
-	 * @param {Node}
-	 * @return {Number|null}
-	 */
-	function getPrecedence (node) {
-	  var identifier = node.getIdentifier();
-	  for (var i = 0; i < properties.length; i++) {
-	    if (identifier in properties[i]) {
-	      return i;
-	    }
-	  }
-	  return null;
-	}
-
-	/**
-	 * Get the associativity of an operator (left or right).
-	 * Returns a string containing 'left' or 'right' or null if
-	 * the associativity is not defined.
-	 *
-	 * @param {Node}
-	 * @return {String|null}
-	 * @throws {Error}
-	 */
-	function getAssociativity (node) {
-	  var identifier = node.getIdentifier();
-	  var index = getPrecedence(node);
-	  if (index === null) {
-	    //node isn't in the list
-	    return null;
-	  }
-	  var property = properties[index][identifier];
-
-	  if (property.hasOwnProperty('associativity')) {
-	    if (property.associativity === 'left') {
-	      return 'left';
-	    }
-	    if (property.associativity === 'right') {
-	      return 'right';
-	    }
-	    //associativity is invalid
-	    throw Error('\'' + identifier + '\' has the invalid associativity \''
-	                + property.associativity + '\'.');
-	  }
-
-	  //associativity is undefined
-	  return null;
-	}
-
-	/**
-	 * Check if an operator is associative with another operator.
-	 * Returns either true or false or null if not defined.
-	 *
-	 * @param {Node} nodeA
-	 * @param {Node} nodeB
-	 * @return {bool|null}
-	 */
-	function isAssociativeWith (nodeA, nodeB) {
-	  var identifierA = nodeA.getIdentifier();
-	  var identifierB = nodeB.getIdentifier();
-	  var index = getPrecedence(nodeA);
-	  if (index === null) {
-	    //node isn't in the list
-	    return null;
-	  }
-	  var property = properties[index][identifierA];
-
-	  if (property.hasOwnProperty('associativeWith')
-	      && (property.associativeWith instanceof Array)) {
-	    for (var i = 0; i < property.associativeWith.length; i++) {
-	      if (property.associativeWith[i] === identifierB) {
-	        return true;
-	      }
-	    }
-	    return false;
-	  }
-
-	  //associativeWith is not defined
-	  return null;
-	}
-
-	module.exports.properties = properties;
-	module.exports.getPrecedence = getPrecedence;
-	module.exports.getAssociativity = getAssociativity;
-	module.exports.isAssociativeWith = isAssociativeWith;
 
 
 /***/ },
