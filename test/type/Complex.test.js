@@ -1,8 +1,9 @@
 // test data type Complex
 
 var assert = require('assert');
-var Unit = require('../../lib/type/Unit');
-var Complex = require('../../lib/type/Complex');
+var math = require('../../index');
+var Unit = math.type.Unit;
+var Complex = math.type.Complex;
 
 describe('Complex', function () {
 

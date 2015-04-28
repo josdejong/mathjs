@@ -23,11 +23,11 @@ function create (config) {
 
   // data types (Matrix, Complex, Unit, ...)
   // TODO: load all data types via math.import
-  math.type.Complex = require('./lib/type/Complex');
+  math.import(require('./lib/type/Complex'));
   math.type.Range = require('./lib/type/Range');
   math.type.Index = require('./lib/type/Index');
   math.import(require('./lib/type/Matrix'));
-  math.type.Unit = require('./lib/type/Unit');
+  math.import(require('./lib/type/Unit'));
   math.import(require('./lib/type/Help'));
   math.import(require('./lib/type/ResultSet'));
   math.import(require('./lib/type/BigNumber'));
@@ -37,6 +37,10 @@ function create (config) {
   math.import(require('./lib/type/matrix/SparseMatrix'));
   math.import(require('./lib/type/matrix/DenseMatrix'));
   math.import(require('./lib/type/matrix/Spa')); // sparse accumulator
+
+  // FIXME: load constants via math.import() like all functions (problem: it must be reloaded when config changes)
+  // constants
+  math.import(require('./lib/constants'));
 
   // expression (expression.parse, expression.Parser, expression.node.*, expression.docs.*)
   math.import(require('./lib/expression'));

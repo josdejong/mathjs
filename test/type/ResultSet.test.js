@@ -1,8 +1,10 @@
 // test data type ResultSet
 
 var assert = require('assert');
-var Complex = require('../../lib/type/Complex');
-var ResultSet = require('../../lib/type/ResultSet').factory();
+var math = require('../../index');
+var Unit = math.type.Unit;
+var Complex = math.type.Complex;
+var ResultSet = math.type.ResultSet;
 
 describe('ResultSet', function () {
 

@@ -82,10 +82,6 @@ exports.create = function create () {
   math['import'] = load(require('./lib/function/utils/import'));
   // TODO: automatically load config method too? Like import?
 
-  // FIXME: load constants via math.import() like all functions (problem: it must be reloaded when config changes)
-  // constants
-  require('./lib/constants')(math, _config);
-
   // errors
   math.error = require('./lib/error');
 
