@@ -134,7 +134,8 @@ describe('SparseMatrix', function() {
           values: [1, 3, 2, 4],
           index: [0, 1, 0, 1],
           ptr: [0, 2, 4],
-          size: [2, 2]
+          size: [2, 2],
+          datatype: undefined
         });
     });
   });

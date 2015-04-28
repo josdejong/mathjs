@@ -7,7 +7,7 @@
  * mathematical functions, and a flexible expression parser.
  *
  * @version 2.0.0-SNAPSHOT
- * @date    2015-04-27
+ * @date    2015-04-28
  *
  * @license
  * Copyright (C) 2013-2015 Jos de Jong <wjosdejong@gmail.com>
@@ -3114,7 +3114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Decimal = __webpack_require__(349);
+	var Decimal = __webpack_require__(350);
 	var digits = __webpack_require__(175).digits;
 
 	function factory (type, config, load, typed) {
@@ -3644,14 +3644,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ArrayNode = __webpack_require__(178);
 	var AssignmentNode = __webpack_require__(179);
 	var BlockNode = __webpack_require__(180);
-	var ConditionalNode = __webpack_require__(182);
-	var ConstantNode = __webpack_require__(181);
+	var ConditionalNode = __webpack_require__(181);
+	var ConstantNode = __webpack_require__(182);
 	var FunctionAssignmentNode = __webpack_require__(183);
 	var IndexNode = __webpack_require__(184);
-	var OperatorNode = __webpack_require__(186);
-	var FunctionNode = __webpack_require__(185);
-	var RangeNode = __webpack_require__(188);
-	var SymbolNode = __webpack_require__(187);
+	var OperatorNode = __webpack_require__(185);
+	var FunctionNode = __webpack_require__(186);
+	var RangeNode = __webpack_require__(187);
+	var SymbolNode = __webpack_require__(188);
 	var UpdateNode = __webpack_require__(189);
 
 	function factory (type, config, load, typed) {
@@ -5173,15 +5173,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.ArrayNode = __webpack_require__(178);
 	exports.AssignmentNode = __webpack_require__(179);
 	exports.BlockNode = __webpack_require__(180);
-	exports.ConditionalNode = __webpack_require__(182);
-	exports.ConstantNode = __webpack_require__(181);
+	exports.ConditionalNode = __webpack_require__(181);
+	exports.ConstantNode = __webpack_require__(182);
 	exports.IndexNode = __webpack_require__(184);
 	exports.FunctionAssignmentNode = __webpack_require__(183);
-	exports.FunctionNode = __webpack_require__(185);
+	exports.FunctionNode = __webpack_require__(186);
 	exports.Node = __webpack_require__(190);
-	exports.OperatorNode = __webpack_require__(186);
-	exports.RangeNode = __webpack_require__(188);
-	exports.SymbolNode = __webpack_require__(187);
+	exports.OperatorNode = __webpack_require__(185);
+	exports.RangeNode = __webpack_require__(187);
+	exports.SymbolNode = __webpack_require__(188);
 	exports.UpdateNode = __webpack_require__(189);
 
 
@@ -5439,6 +5439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      matrix._index = object.clone(source._index);
 	      matrix._ptr = object.clone(source._ptr);
 	      matrix._size = object.clone(source._size);
+	      matrix._datatype = source._datatype;
 	    }
 	    else {
 	      // build from matrix data
@@ -5451,6 +5452,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    matrix._values = [];
 	    matrix._index = [];
 	    matrix._ptr = [];
+	    matrix._datatype = undefined;
 	    // discover rows & columns, do not use math.size() to avoid looping array twice
 	    var rows = data.length;
 	    var columns = 0;
@@ -7499,7 +7501,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(349);
+	var BigNumber = __webpack_require__(350);
 	var errorTransform = __webpack_require__(208).transform;
 	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
@@ -7547,7 +7549,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var SymbolNode = __webpack_require__(187);
+	var SymbolNode = __webpack_require__(188);
 	var isBoolean = __webpack_require__(209).isBoolean;
 	var argsToArray = __webpack_require__(172).argsToArray;
 	var ArgumentsError = __webpack_require__(177);
@@ -7669,7 +7671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(349);
+	var BigNumber = __webpack_require__(350);
 	var Range = __webpack_require__(4);
 	var Index = __webpack_require__(5);
 	var isNumber = __webpack_require__(175).isNumber;
@@ -7775,7 +7777,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(349);
+	var BigNumber = __webpack_require__(350);
 	var errorTransform = __webpack_require__(208).transform;
 	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
@@ -7826,7 +7828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(349);
+	var BigNumber = __webpack_require__(350);
 	var errorTransform = __webpack_require__(208).transform;
 	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
@@ -7877,7 +7879,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(349);
+	var BigNumber = __webpack_require__(350);
 	var errorTransform = __webpack_require__(208).transform;
 	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
@@ -10113,7 +10115,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      values : cvalues,
 	      index: cindex,
 	      ptr: cptr,
-	      size: [arows, bcolumns]
+	      size: [arows, bcolumns],
+	      datatype: dt
 	    });
 	    // workspace
 	    var x = values ? new Array(arows) : undefined;
@@ -11034,6 +11037,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var matrix = load(__webpack_require__(75));
 	  var equal = load(__webpack_require__(115));
 	  var sparseScatter = load(__webpack_require__(210));
+	  var addScalar = load(__webpack_require__(211));
+	  var multiplyScalar = load(__webpack_require__(212));
 
 	  var collection = load(__webpack_require__(2));
 
@@ -11353,9 +11358,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // init ptr for j
 	      cptr[j] = cindex.length;
 	      // process column j of a and write it to x
-	      sparseScatter(a, j, 1, w, x, j + 1, c);
+	      sparseScatter(a, j, 1, w, x, j + 1, c, multiplyScalar, addScalar);
 	      // process column j of b and write it to x (multiply value by negative one)
-	      sparseScatter(b, j, -1, w, x, j + 1, c);
+	      sparseScatter(b, j, -1, w, x, j + 1, c, multiplyScalar, addScalar);
 	      // check matrix contains values (pattern matrix)
 	      if (values) {
 	        // loop column values in C
@@ -11419,7 +11424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      }
 	      // process column j of a and write it to x
-	      sparseScatter(a, j, 1, w, x, j + 1, c);
+	      sparseScatter(a, j, 1, w, x, j + 1, c, multiplyScalar, addScalar);
 	      // loop column values in C
 	      for (var p0 = cptr[j], p1 = cindex.length, p = p0; p < p1; p++) {
 	        // copy x[i] to c[i, j]
@@ -11770,7 +11775,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var isInteger = __webpack_require__(175).isInteger;
-	var bigBitAnd = __webpack_require__(215).and;
+	var bigBitAnd = __webpack_require__(214).and;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -11831,7 +11836,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var isInteger = __webpack_require__(175).isInteger;
-	var bigBitNot = __webpack_require__(215).not;
+	var bigBitNot = __webpack_require__(214).not;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -11888,7 +11893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var isInteger = __webpack_require__(175).isInteger;
-	var bigBitOr = __webpack_require__(215).or;
+	var bigBitOr = __webpack_require__(214).or;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -11950,7 +11955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var isInteger = __webpack_require__(175).isInteger;
-	var bigBitXor = __webpack_require__(215).xor;
+	var bigBitXor = __webpack_require__(214).xor;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -12011,7 +12016,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var isInteger = __webpack_require__(175).isInteger;
-	var bigLeftShift = __webpack_require__(215).leftShift;
+	var bigLeftShift = __webpack_require__(214).leftShift;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -12073,7 +12078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var isInteger = __webpack_require__(175).isInteger;
-	var bigRightArithShift = __webpack_require__(215).rightArithShift;
+	var bigRightArithShift = __webpack_require__(214).rightArithShift;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -16259,7 +16264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bignumber = __webpack_require__(215);
+	var bignumber = __webpack_require__(214);
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -16671,7 +16676,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var distribution = load(__webpack_require__(214));
+	  var distribution = load(__webpack_require__(215));
 
 	  /**
 	   * Random pick a value from a one dimensional array.
@@ -16707,7 +16712,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var distribution = load(__webpack_require__(214));
+	  var distribution = load(__webpack_require__(215));
 
 	  /**
 	   * Return a random number larger or equal to `min` and smaller than `max`
@@ -16754,7 +16759,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var distribution = load(__webpack_require__(214));
+	  var distribution = load(__webpack_require__(215));
 
 	  /**
 	   * Return a random integer number larger or equal to `min` and smaller than `max`
@@ -18263,7 +18268,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigArcCos = __webpack_require__(215).arccos_arcsec;
+	var bigArcCos = __webpack_require__(214).arccos_arcsec;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -18353,7 +18358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigAcosh = __webpack_require__(215).acosh_asinh_asech_acsch;
+	var bigAcosh = __webpack_require__(214).acosh_asinh_asech_acsch;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -18439,7 +18444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigArcCot = __webpack_require__(215).arctan_arccot;
+	var bigArcCot = __webpack_require__(214).arctan_arccot;
 
 	var HALF_PI = 1.5707963267948966;
 
@@ -18514,7 +18519,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigAcoth = __webpack_require__(215).atanh_acoth;
+	var bigAcoth = __webpack_require__(214).atanh_acoth;
 
 	var HALF_PI = 1.5707963267948966;
 
@@ -18601,7 +18606,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigArcCsc = __webpack_require__(215).arcsin_arccsc;
+	var bigArcCsc = __webpack_require__(214).arcsin_arccsc;
 
 	var HALF_PI = 1.5707963267948966;
 
@@ -18687,7 +18692,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigAcsch = __webpack_require__(215).acosh_asinh_asech_acsch;
+	var bigAcsch = __webpack_require__(214).acosh_asinh_asech_acsch;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -18765,7 +18770,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigArcSec = __webpack_require__(215).arccos_arcsec;
+	var bigArcSec = __webpack_require__(214).arccos_arcsec;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -18849,7 +18854,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigAsech = __webpack_require__(215).acosh_asinh_asech_acsch;
+	var bigAsech = __webpack_require__(214).acosh_asinh_asech_acsch;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -18942,7 +18947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigArcSin = __webpack_require__(215).arcsin_arccsc;
+	var bigArcSin = __webpack_require__(214).arcsin_arccsc;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19031,7 +19036,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigAsinh = __webpack_require__(215).acosh_asinh_asech_acsch;
+	var bigAsinh = __webpack_require__(214).acosh_asinh_asech_acsch;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19105,7 +19110,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigArcTan = __webpack_require__(215).arctan_arccot;
+	var bigArcTan = __webpack_require__(214).arctan_arccot;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19189,7 +19194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigAtan2 = __webpack_require__(215).arctan2;
+	var bigAtan2 = __webpack_require__(214).arctan2;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19254,7 +19259,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigAtanh = __webpack_require__(215).atanh_acoth;
+	var bigAtanh = __webpack_require__(214).atanh_acoth;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19346,7 +19351,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigCos = __webpack_require__(215).cos_sin_sec_csc;
+	var bigCos = __webpack_require__(214).cos_sin_sec_csc;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19419,7 +19424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigCosh = __webpack_require__(215).cosh_sinh_csch_sech;
+	var bigCosh = __webpack_require__(214).cosh_sinh_csch_sech;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19493,7 +19498,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigCot = __webpack_require__(215).tan_cot;
+	var bigCot = __webpack_require__(214).tan_cot;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19564,7 +19569,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigCoth = __webpack_require__(215).tanh_coth;
+	var bigCoth = __webpack_require__(214).tanh_coth;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19646,7 +19651,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigCsc = __webpack_require__(215).cos_sin_sec_csc;
+	var bigCsc = __webpack_require__(214).cos_sin_sec_csc;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19718,7 +19723,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigCsch = __webpack_require__(215).cosh_sinh_csch_sech;
+	var bigCsch = __webpack_require__(214).cosh_sinh_csch_sech;
 	var sign = __webpack_require__(175).sign;
 
 	function factory (type, config, load, typed) {
@@ -19804,7 +19809,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigSec = __webpack_require__(215).cos_sin_sec_csc;
+	var bigSec = __webpack_require__(214).cos_sin_sec_csc;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19876,7 +19881,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigSech = __webpack_require__(215).cosh_sinh_csch_sech;
+	var bigSech = __webpack_require__(214).cosh_sinh_csch_sech;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19955,7 +19960,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigSin = __webpack_require__(215).cos_sin_sec_csc;
+	var bigSin = __webpack_require__(214).cos_sin_sec_csc;
 
 	function factory (type, config, load, typed) {
 	  var cosh = load(__webpack_require__(143)).signatures['number'];
@@ -20028,7 +20033,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigSinh = __webpack_require__(215).cosh_sinh_csch_sech;
+	var bigSinh = __webpack_require__(214).cosh_sinh_csch_sech;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -20109,7 +20114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigTan = __webpack_require__(215).tan_cot;
+	var bigTan = __webpack_require__(214).tan_cot;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -20182,7 +20187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var bigTanh = __webpack_require__(215).tanh_coth;
+	var bigTanh = __webpack_require__(214).tanh_coth;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -21481,7 +21486,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var BigNumber = __webpack_require__(349);
+	var BigNumber = __webpack_require__(350);
 
 	/**
 	 * Clone an object
@@ -22027,7 +22032,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = function (math, config) {
 	  var object = __webpack_require__(166);
-	  var bignumber = __webpack_require__(215);
+	  var bignumber = __webpack_require__(214);
 	  var Complex = __webpack_require__(3);
 	  var BigNumber = math.type.BigNumber;
 
@@ -22105,9 +22110,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.array = __webpack_require__(172);
 	exports['boolean'] = __webpack_require__(209);
-	exports['function'] = __webpack_require__(350);
+	exports['function'] = __webpack_require__(349);
 	exports.number = __webpack_require__(175);
-	exports.bignumber = __webpack_require__(215);
+	exports.bignumber = __webpack_require__(214);
 	exports.object = __webpack_require__(166);
 	exports.string = __webpack_require__(176);
 	exports.types = __webpack_require__(216);
@@ -22857,8 +22862,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var number = __webpack_require__(175);
-	var bignumber = __webpack_require__(215);
-	var BigNumber = __webpack_require__(349);
+	var bignumber = __webpack_require__(214);
+	var BigNumber = __webpack_require__(350);
 
 	/**
 	 * Test whether value is a String
@@ -23390,7 +23395,178 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Node = __webpack_require__(190);
-	var BigNumber = __webpack_require__(349);
+	var latex = __webpack_require__(354);
+	var BigNumber = __webpack_require__(350);
+	var Complex = __webpack_require__(3);
+	var Unit = __webpack_require__(7);
+	var util = __webpack_require__(171);
+	var operators = __webpack_require__(353);
+	var isString = util.string.isString;
+	var isNumber = util.number.isNumber;
+	var isBoolean = util['boolean'].isBoolean;
+
+	/**
+	 * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'
+	 *
+	 * @param {Node} condition   Condition, must result in a boolean
+	 * @param {Node} trueExpr    Expression evaluated when condition is true
+	 * @param {Node} falseExpr   Expression evaluated when condition is true
+	 *
+	 * @constructor ConditionalNode
+	 * @extends {Node}
+	 */
+	function ConditionalNode (condition, trueExpr, falseExpr) {
+	  if (!(this instanceof ConditionalNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+	  if (!(condition instanceof Node)) throw new TypeError('Parameter condition must be a Node');
+	  if (!(trueExpr instanceof Node))  throw new TypeError('Parameter trueExpr must be a Node');
+	  if (!(falseExpr instanceof Node)) throw new TypeError('Parameter falseExpr must be a Node');
+
+	  this.condition = condition;
+	  this.trueExpr = trueExpr;
+	  this.falseExpr = falseExpr;
+	}
+
+	ConditionalNode.prototype = new Node();
+
+	ConditionalNode.prototype.type = 'ConditionalNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	ConditionalNode.prototype._compile = function(defs) {
+	  /**
+	   * Test whether a condition is met
+	   * @param {*} condition
+	   * @returns {boolean} true if condition is true or non-zero, else false
+	   */
+	  defs.testCondition = function (condition) {
+	    if (isNumber(condition) || isBoolean(condition) || isString(condition)) {
+	      return condition ? true : false;
+	    }
+
+	    if (condition instanceof BigNumber) {
+	      return condition.isZero() ? false : true;
+	    }
+
+	    if (condition instanceof Complex) {
+	      return (condition.re || condition.im) ? true : false;
+	    }
+
+	    if (condition instanceof Unit) {
+	      return condition.value ? true : false;
+	    }
+
+	    if (condition === null || condition === undefined) {
+	      return false;
+	    }
+
+	    throw new TypeError('Unsupported type of condition "' + defs.math['typeof'](condition) + '"');
+	  };
+
+	  return (
+	      'testCondition(' + this.condition._compile(defs) + ') ? ' +
+	      '( ' + this.trueExpr._compile(defs) + ') : ' +
+	      '( ' + this.falseExpr._compile(defs) + ')'
+	      );
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	ConditionalNode.prototype.forEach = function (callback) {
+	  callback(this.condition, 'condition', this);
+	  callback(this.trueExpr, 'trueExpr', this);
+	  callback(this.falseExpr, 'falseExpr', this);
+	};
+
+	/**
+	 * Create a new ConditionalNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {ConditionalNode} Returns a transformed copy of the node
+	 */
+	ConditionalNode.prototype.map = function (callback) {
+	  return new ConditionalNode(
+	      this._ifNode(callback(this.condition, 'condition', this)),
+	      this._ifNode(callback(this.trueExpr, 'trueExpr', this)),
+	      this._ifNode(callback(this.falseExpr, 'falseExpr', this))
+	  );
+	};
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {ConditionalNode}
+	 */
+	ConditionalNode.prototype.clone = function() {
+	  return new ConditionalNode(this.condition, this.trueExpr, this.falseExpr);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 */
+	ConditionalNode.prototype.toString = function() {
+	  var precedence = operators.getPrecedence(this);
+
+	  //Enclose Arguments in parentheses if they are an OperatorNode
+	  //or have lower or equal precedence
+	  //NOTE: enclosing all OperatorNodes in parentheses is a decision
+	  //purely based on aesthetics and readability
+	  var condition = this.condition.toString();
+	  var conditionPrecedence = operators.getPrecedence(this.condition);
+	  if ((this.condition.type === 'OperatorNode')
+	      || ((conditionPrecedence !== null) && (conditionPrecedence <= precedence))) {
+	    condition = '(' + condition + ')';
+	  }
+
+	  var trueExpr = this.trueExpr.toString();
+	  var truePrecedence = operators.getPrecedence(this.trueExpr);
+	  if ((this.trueExpr.type === 'OperatorNode')
+	      || ((truePrecedence !== null) && (truePrecedence <= precedence))) {
+	    trueExpr = '(' + trueExpr + ')';
+	  }
+
+	  var falseExpr = this.falseExpr.toString();
+	  var falsePrecedence = operators.getPrecedence(this.falseExpr);
+	  if ((this.falseExpr.type === 'OperatorNode')
+	      || ((falsePrecedence !== null) && (falsePrecedence <= precedence))) {
+	    falseExpr = '(' + falseExpr + ')';
+	  }
+	  return condition + ' ? ' + trueExpr + ' : ' + falseExpr;
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @param {Object|function} callback(s)
+	 * @return {String} str
+	 */
+	ConditionalNode.prototype._toTex = function(callbacks) {
+	  return '\\left\\{\\begin{array}{l l}{'
+	    + this.trueExpr.toTex(callbacks) + '}, &\\quad{\\text{if}\\;'
+	    + this.condition.toTex(callbacks)
+	    + '}\\\\{' + this.falseExpr.toTex(callbacks)
+	    + '}, &\\quad{\\text{otherwise}}\\end{array}\\right.';
+	};
+
+	module.exports = ConditionalNode;
+
+
+/***/ },
+/* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(190);
+	var BigNumber = __webpack_require__(350);
 	var type = __webpack_require__(216).type;
 	var isString = __webpack_require__(176).isString;
 
@@ -23572,177 +23748,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 182 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Node = __webpack_require__(190);
-	var latex = __webpack_require__(354);
-	var BigNumber = __webpack_require__(349);
-	var Complex = __webpack_require__(3);
-	var Unit = __webpack_require__(7);
-	var util = __webpack_require__(171);
-	var operators = __webpack_require__(353);
-	var isString = util.string.isString;
-	var isNumber = util.number.isNumber;
-	var isBoolean = util['boolean'].isBoolean;
-
-	/**
-	 * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'
-	 *
-	 * @param {Node} condition   Condition, must result in a boolean
-	 * @param {Node} trueExpr    Expression evaluated when condition is true
-	 * @param {Node} falseExpr   Expression evaluated when condition is true
-	 *
-	 * @constructor ConditionalNode
-	 * @extends {Node}
-	 */
-	function ConditionalNode (condition, trueExpr, falseExpr) {
-	  if (!(this instanceof ConditionalNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-	  if (!(condition instanceof Node)) throw new TypeError('Parameter condition must be a Node');
-	  if (!(trueExpr instanceof Node))  throw new TypeError('Parameter trueExpr must be a Node');
-	  if (!(falseExpr instanceof Node)) throw new TypeError('Parameter falseExpr must be a Node');
-
-	  this.condition = condition;
-	  this.trueExpr = trueExpr;
-	  this.falseExpr = falseExpr;
-	}
-
-	ConditionalNode.prototype = new Node();
-
-	ConditionalNode.prototype.type = 'ConditionalNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	ConditionalNode.prototype._compile = function(defs) {
-	  /**
-	   * Test whether a condition is met
-	   * @param {*} condition
-	   * @returns {boolean} true if condition is true or non-zero, else false
-	   */
-	  defs.testCondition = function (condition) {
-	    if (isNumber(condition) || isBoolean(condition) || isString(condition)) {
-	      return condition ? true : false;
-	    }
-
-	    if (condition instanceof BigNumber) {
-	      return condition.isZero() ? false : true;
-	    }
-
-	    if (condition instanceof Complex) {
-	      return (condition.re || condition.im) ? true : false;
-	    }
-
-	    if (condition instanceof Unit) {
-	      return condition.value ? true : false;
-	    }
-
-	    if (condition === null || condition === undefined) {
-	      return false;
-	    }
-
-	    throw new TypeError('Unsupported type of condition "' + defs.math['typeof'](condition) + '"');
-	  };
-
-	  return (
-	      'testCondition(' + this.condition._compile(defs) + ') ? ' +
-	      '( ' + this.trueExpr._compile(defs) + ') : ' +
-	      '( ' + this.falseExpr._compile(defs) + ')'
-	      );
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	ConditionalNode.prototype.forEach = function (callback) {
-	  callback(this.condition, 'condition', this);
-	  callback(this.trueExpr, 'trueExpr', this);
-	  callback(this.falseExpr, 'falseExpr', this);
-	};
-
-	/**
-	 * Create a new ConditionalNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {ConditionalNode} Returns a transformed copy of the node
-	 */
-	ConditionalNode.prototype.map = function (callback) {
-	  return new ConditionalNode(
-	      this._ifNode(callback(this.condition, 'condition', this)),
-	      this._ifNode(callback(this.trueExpr, 'trueExpr', this)),
-	      this._ifNode(callback(this.falseExpr, 'falseExpr', this))
-	  );
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {ConditionalNode}
-	 */
-	ConditionalNode.prototype.clone = function() {
-	  return new ConditionalNode(this.condition, this.trueExpr, this.falseExpr);
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	ConditionalNode.prototype.toString = function() {
-	  var precedence = operators.getPrecedence(this);
-
-	  //Enclose Arguments in parentheses if they are an OperatorNode
-	  //or have lower or equal precedence
-	  //NOTE: enclosing all OperatorNodes in parentheses is a decision
-	  //purely based on aesthetics and readability
-	  var condition = this.condition.toString();
-	  var conditionPrecedence = operators.getPrecedence(this.condition);
-	  if ((this.condition.type === 'OperatorNode')
-	      || ((conditionPrecedence !== null) && (conditionPrecedence <= precedence))) {
-	    condition = '(' + condition + ')';
-	  }
-
-	  var trueExpr = this.trueExpr.toString();
-	  var truePrecedence = operators.getPrecedence(this.trueExpr);
-	  if ((this.trueExpr.type === 'OperatorNode')
-	      || ((truePrecedence !== null) && (truePrecedence <= precedence))) {
-	    trueExpr = '(' + trueExpr + ')';
-	  }
-
-	  var falseExpr = this.falseExpr.toString();
-	  var falsePrecedence = operators.getPrecedence(this.falseExpr);
-	  if ((this.falseExpr.type === 'OperatorNode')
-	      || ((falsePrecedence !== null) && (falsePrecedence <= precedence))) {
-	    falseExpr = '(' + falseExpr + ')';
-	  }
-	  return condition + ' ? ' + trueExpr + ' : ' + falseExpr;
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @param {Object|function} callback(s)
-	 * @return {String} str
-	 */
-	ConditionalNode.prototype._toTex = function(callbacks) {
-	  return '\\left\\{\\begin{array}{l l}{'
-	    + this.trueExpr.toTex(callbacks) + '}, &\\quad{\\text{if}\\;'
-	    + this.condition.toTex(callbacks)
-	    + '}\\\\{' + this.falseExpr.toTex(callbacks)
-	    + '}, &\\quad{\\text{otherwise}}\\end{array}\\right.';
-	};
-
-	module.exports = ConditionalNode;
-
-
-/***/ },
 /* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -23885,10 +23890,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Node = __webpack_require__(190);
-	var RangeNode = __webpack_require__(188);
-	var SymbolNode = __webpack_require__(187);
+	var RangeNode = __webpack_require__(187);
+	var SymbolNode = __webpack_require__(188);
 
-	var BigNumber = __webpack_require__(349);
+	var BigNumber = __webpack_require__(350);
 	var Range = __webpack_require__(4);
 
 	var isNode = Node.isNode;
@@ -24114,147 +24119,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var Node = __webpack_require__(190);
-	var SymbolNode = __webpack_require__(187);
-
-	var latex = __webpack_require__(354);
-	var isNode = Node.isNode;
-	var isArray = Array.isArray;
-
-	/**
-	 * @constructor FunctionNode
-	 * @extends {Node}
-	 * invoke a list with arguments on a node
-	 * @param {string} name
-	 * @param {Node[]} args
-	 */
-	function FunctionNode (name, args) {
-	  if (!(this instanceof FunctionNode)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  // validate input
-	  if (typeof name !== 'string') throw new TypeError('string expected for parameter "name"');
-	  if (!isArray(args) || !args.every(isNode)) {
-	    throw new TypeError('Array containing Nodes expected for parameter "args"');
-	  }
-
-	  this.name = name;
-	  this.args = args || [];
-	}
-
-	FunctionNode.prototype = new Node();
-
-	FunctionNode.prototype.type = 'FunctionNode';
-
-	/**
-	 * Compile the node to javascript code
-	 * @param {Object} defs     Object which can be used to define functions
-	 *                          or constants globally available for the compiled
-	 *                          expression
-	 * @return {String} js
-	 * @private
-	 */
-	FunctionNode.prototype._compile = function (defs) {
-	  var fn = defs.math[this.name];
-	  var isRaw = (typeof fn === 'function') && (fn.rawArgs == true);
-
-	  // compile the parameters
-	  var args = this.args.map(function (arg) {
-	    return arg._compile(defs);
-	  });
-
-	  if (isRaw) {
-	    // pass unevaluated parameters (nodes) to the function
-	    var paramsName;
-	    do {
-	      paramsName = 'p' + Math.round(Math.random() * 10000);
-	    }
-	    while (paramsName in defs);
-	    defs[paramsName] = this.args;
-
-	    return '("' + this.name + '" in scope ? ' +
-	        'scope["' + this.name + '"](' + args.join(', ') + ') : ' +
-	        'math["' + this.name + '"]' + '(' + paramsName + ', math, scope))';
-	  }
-	  else {
-	    // "regular" evaluation
-	    var symbol = new SymbolNode(this.name);
-	    return symbol._compile(defs) + '(' + args.join(', ') + ')';
-	  }
-	};
-
-	/**
-	 * Execute a callback for each of the child nodes of this node
-	 * @param {function(child: Node, path: string, parent: Node)} callback
-	 */
-	FunctionNode.prototype.forEach = function (callback) {
-	  for (var i = 0; i < this.args.length; i++) {
-	    callback(this.args[i], 'args[' + i + ']', this);
-	  }
-	};
-
-	/**
-	 * Create a new FunctionNode having it's childs be the results of calling
-	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node): Node} callback
-	 * @returns {FunctionNode} Returns a transformed copy of the node
-	 */
-	FunctionNode.prototype.map = function (callback) {
-	  var args = [];
-	  for (var i = 0; i < this.args.length; i++) {
-	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
-	  }
-	  return new FunctionNode(this.name, args);
-	};
-
-	/**
-	 * Create a clone of this node, a shallow copy
-	 * @return {FunctionNode}
-	 */
-	FunctionNode.prototype.clone = function() {
-	  return new FunctionNode(this.name, this.args.slice(0));
-	};
-
-	/**
-	 * Get string representation
-	 * @return {String} str
-	 */
-	FunctionNode.prototype.toString = function() {
-	  // format the parameters like "add(2, 4.2)"
-	  return this.name + '(' + this.args.join(', ') + ')';
-	};
-
-	/**
-	 * Get LaTeX representation
-	 * @param {Object|function} callback(s)
-	 * @return {String} str
-	 */
-	FunctionNode.prototype._toTex = function(callbacks) {
-	  return latex.toFunction(this, callbacks, this.name);
-	};
-
-	/**
-	 * Get identifier.
-	 * @return {String}
-	 */
-	FunctionNode.prototype.getIdentifier = function () {
-	  return this.type + ':' + this.name;
-	};
-
-	module.exports = FunctionNode;
-
-
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
 	var Node = __webpack_require__(190),
-	    ConstantNode = __webpack_require__(181),
-	    SymbolNode = __webpack_require__(187),
-	    FunctionNode = __webpack_require__(185),
+	    ConstantNode = __webpack_require__(182),
+	    SymbolNode = __webpack_require__(188),
+	    FunctionNode = __webpack_require__(186),
 	    latex = __webpack_require__(354),
 	    operators = __webpack_require__(353),
 	    isArray = Array.isArray,
@@ -24609,38 +24477,43 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 187 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Node = __webpack_require__(190),
-	    Unit = __webpack_require__(7),
+	var Node = __webpack_require__(190);
+	var SymbolNode = __webpack_require__(188);
 
-	    latex = __webpack_require__(354),
-	    isString = __webpack_require__(176).isString;
+	var latex = __webpack_require__(354);
+	var isNode = Node.isNode;
+	var isArray = Array.isArray;
 
 	/**
-	 * @constructor SymbolNode
+	 * @constructor FunctionNode
 	 * @extends {Node}
-	 * A symbol node can hold and resolve a symbol
-	 * @param {String} name
-	 * @extends {Node}
+	 * invoke a list with arguments on a node
+	 * @param {string} name
+	 * @param {Node[]} args
 	 */
-	function SymbolNode(name) {
-	  if (!(this instanceof SymbolNode)) {
+	function FunctionNode (name, args) {
+	  if (!(this instanceof FunctionNode)) {
 	    throw new SyntaxError('Constructor must be called with the new operator');
 	  }
 
 	  // validate input
-	  if (!isString(name))  throw new TypeError('String expected for parameter "name"');
+	  if (typeof name !== 'string') throw new TypeError('string expected for parameter "name"');
+	  if (!isArray(args) || !args.every(isNode)) {
+	    throw new TypeError('Array containing Nodes expected for parameter "args"');
+	  }
 
 	  this.name = name;
+	  this.args = args || [];
 	}
 
-	SymbolNode.prototype = new Node();
+	FunctionNode.prototype = new Node();
 
-	SymbolNode.prototype.type = 'SymbolNode';
+	FunctionNode.prototype.type = 'FunctionNode';
 
 	/**
 	 * Compile the node to javascript code
@@ -24650,26 +24523,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {String} js
 	 * @private
 	 */
-	SymbolNode.prototype._compile = function (defs) {
-	  // add a function to the definitions
-	  defs['undef'] = undef;
-	  defs['Unit'] = Unit;
+	FunctionNode.prototype._compile = function (defs) {
+	  var fn = defs.math[this.name];
+	  var isRaw = (typeof fn === 'function') && (fn.rawArgs == true);
 
-	  if (this.name in defs.args) {
-	    // this is a FunctionAssignment argument
-	    // (like an x when inside the expression of a function assignment `f(x) = ...`)
-	    return this.name;
-	  }
-	  else if (this.name in defs.math) {
-	    return '("' + this.name + '" in scope ? scope["' + this.name + '"] : math["' + this.name + '"])';
+	  // compile the parameters
+	  var args = this.args.map(function (arg) {
+	    return arg._compile(defs);
+	  });
+
+	  if (isRaw) {
+	    // pass unevaluated parameters (nodes) to the function
+	    var paramsName;
+	    do {
+	      paramsName = 'p' + Math.round(Math.random() * 10000);
+	    }
+	    while (paramsName in defs);
+	    defs[paramsName] = this.args;
+
+	    return '("' + this.name + '" in scope ? ' +
+	        'scope["' + this.name + '"](' + args.join(', ') + ') : ' +
+	        'math["' + this.name + '"]' + '(' + paramsName + ', math, scope))';
 	  }
 	  else {
-	    return '(' +
-	        '"' + this.name + '" in scope ? scope["' + this.name + '"] : ' +
-	        (Unit.isValuelessUnit(this.name) ?
-	            'new Unit(null, "' + this.name + '")' :
-	            'undef("' + this.name + '")') +
-	        ')';
+	    // "regular" evaluation
+	    var symbol = new SymbolNode(this.name);
+	    return symbol._compile(defs) + '(' + args.join(', ') + ')';
 	  }
 	};
 
@@ -24677,66 +24556,65 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Execute a callback for each of the child nodes of this node
 	 * @param {function(child: Node, path: string, parent: Node)} callback
 	 */
-	SymbolNode.prototype.forEach = function (callback) {
-	  // nothing to do, we don't have childs
+	FunctionNode.prototype.forEach = function (callback) {
+	  for (var i = 0; i < this.args.length; i++) {
+	    callback(this.args[i], 'args[' + i + ']', this);
+	  }
 	};
 
 	/**
-	 * Create a new SymbolNode having it's childs be the results of calling
+	 * Create a new FunctionNode having it's childs be the results of calling
 	 * the provided callback function for each of the childs of the original node.
-	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
-	 * @returns {SymbolNode} Returns a clone of the node
+	 * @param {function(child: Node, path: string, parent: Node): Node} callback
+	 * @returns {FunctionNode} Returns a transformed copy of the node
 	 */
-	SymbolNode.prototype.map = function (callback) {
-	  return this.clone();
+	FunctionNode.prototype.map = function (callback) {
+	  var args = [];
+	  for (var i = 0; i < this.args.length; i++) {
+	    args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
+	  }
+	  return new FunctionNode(this.name, args);
 	};
-
-	/**
-	 * Throws an error 'Undefined symbol {name}'
-	 * @param {String} name
-	 */
-	function undef (name) {
-	  throw new Error('Undefined symbol ' + name);
-	}
 
 	/**
 	 * Create a clone of this node, a shallow copy
-	 * @return {SymbolNode}
+	 * @return {FunctionNode}
 	 */
-	SymbolNode.prototype.clone = function() {
-	  return new SymbolNode(this.name);
+	FunctionNode.prototype.clone = function() {
+	  return new FunctionNode(this.name, this.args.slice(0));
 	};
 
 	/**
 	 * Get string representation
 	 * @return {String} str
-	 * @override
 	 */
-	SymbolNode.prototype.toString = function() {
-	  return this.name;
+	FunctionNode.prototype.toString = function() {
+	  // format the parameters like "add(2, 4.2)"
+	  return this.name + '(' + this.args.join(', ') + ')';
 	};
 
 	/**
 	 * Get LaTeX representation
 	 * @param {Object|function} callback(s)
 	 * @return {String} str
-	 * @override
 	 */
-	SymbolNode.prototype._toTex = function(callbacks) {
-	  var symbol = latex.toSymbol(this.name);
-	  if (symbol[0] === '\\') {
-	    //no space needed if the symbol starts with '\'
-	    return symbol;
-	  }
-	  //the space prevents symbols from breaking stuff like '\cdot' if it's written right before the symbol
-	  return ' ' + symbol;
+	FunctionNode.prototype._toTex = function(callbacks) {
+	  return latex.toFunction(this, callbacks, this.name);
 	};
 
-	module.exports = SymbolNode;
+	/**
+	 * Get identifier.
+	 * @return {String}
+	 */
+	FunctionNode.prototype.getIdentifier = function () {
+	  return this.type + ':' + this.name;
+	};
+
+	module.exports = FunctionNode;
 
 
 /***/ },
-/* 188 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24876,6 +24754,133 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = RangeNode;
+
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Node = __webpack_require__(190),
+	    Unit = __webpack_require__(7),
+
+	    latex = __webpack_require__(354),
+	    isString = __webpack_require__(176).isString;
+
+	/**
+	 * @constructor SymbolNode
+	 * @extends {Node}
+	 * A symbol node can hold and resolve a symbol
+	 * @param {String} name
+	 * @extends {Node}
+	 */
+	function SymbolNode(name) {
+	  if (!(this instanceof SymbolNode)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  // validate input
+	  if (!isString(name))  throw new TypeError('String expected for parameter "name"');
+
+	  this.name = name;
+	}
+
+	SymbolNode.prototype = new Node();
+
+	SymbolNode.prototype.type = 'SymbolNode';
+
+	/**
+	 * Compile the node to javascript code
+	 * @param {Object} defs     Object which can be used to define functions
+	 *                          or constants globally available for the compiled
+	 *                          expression
+	 * @return {String} js
+	 * @private
+	 */
+	SymbolNode.prototype._compile = function (defs) {
+	  // add a function to the definitions
+	  defs['undef'] = undef;
+	  defs['Unit'] = Unit;
+
+	  if (this.name in defs.args) {
+	    // this is a FunctionAssignment argument
+	    // (like an x when inside the expression of a function assignment `f(x) = ...`)
+	    return this.name;
+	  }
+	  else if (this.name in defs.math) {
+	    return '("' + this.name + '" in scope ? scope["' + this.name + '"] : math["' + this.name + '"])';
+	  }
+	  else {
+	    return '(' +
+	        '"' + this.name + '" in scope ? scope["' + this.name + '"] : ' +
+	        (Unit.isValuelessUnit(this.name) ?
+	            'new Unit(null, "' + this.name + '")' :
+	            'undef("' + this.name + '")') +
+	        ')';
+	  }
+	};
+
+	/**
+	 * Execute a callback for each of the child nodes of this node
+	 * @param {function(child: Node, path: string, parent: Node)} callback
+	 */
+	SymbolNode.prototype.forEach = function (callback) {
+	  // nothing to do, we don't have childs
+	};
+
+	/**
+	 * Create a new SymbolNode having it's childs be the results of calling
+	 * the provided callback function for each of the childs of the original node.
+	 * @param {function(child: Node, path: string, parent: Node) : Node} callback
+	 * @returns {SymbolNode} Returns a clone of the node
+	 */
+	SymbolNode.prototype.map = function (callback) {
+	  return this.clone();
+	};
+
+	/**
+	 * Throws an error 'Undefined symbol {name}'
+	 * @param {String} name
+	 */
+	function undef (name) {
+	  throw new Error('Undefined symbol ' + name);
+	}
+
+	/**
+	 * Create a clone of this node, a shallow copy
+	 * @return {SymbolNode}
+	 */
+	SymbolNode.prototype.clone = function() {
+	  return new SymbolNode(this.name);
+	};
+
+	/**
+	 * Get string representation
+	 * @return {String} str
+	 * @override
+	 */
+	SymbolNode.prototype.toString = function() {
+	  return this.name;
+	};
+
+	/**
+	 * Get LaTeX representation
+	 * @param {Object|function} callback(s)
+	 * @return {String} str
+	 * @override
+	 */
+	SymbolNode.prototype._toTex = function(callbacks) {
+	  var symbol = latex.toSymbol(this.name);
+	  if (symbol[0] === '\\') {
+	    //no space needed if the symbol starts with '\'
+	    return symbol;
+	  }
+	  //the space prevents symbols from breaking stuff like '\cdot' if it's written right before the symbol
+	  return ' ' + symbol;
+	};
+
+	module.exports = SymbolNode;
 
 
 /***/ },
@@ -25953,228 +25958,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var ArgumentsError = __webpack_require__(177);
-
-	// TODO: rethink math.distribution
-	// TODO: rework to a typed function
-	function factory (type, config, load, typed) {
-	  var collection = load(__webpack_require__(2));
-	  var matrix = load(__webpack_require__(75));
-	  var array = __webpack_require__(172);
-
-	  var isCollection = collection.isCollection;
-
-	  /**
-	   * Create a distribution object with a set of random functions for given
-	   * random distribution.
-	   *
-	   * Syntax:
-	   *
-	   *     math.distribution(name)
-	   *
-	   * Examples:
-	   *
-	   *     var normalDist = math.distribution('normal'); // create a normal distribution
-	   *     normalDist.random(0, 10);                     // get a random value between 0 and 10
-	   *
-	   * See also:
-	   *
-	   *     random, randomInt, pickRandom
-	   *
-	   * @param {String} name   Name of a distribution. Choose from 'uniform', 'normal'.
-	   * @return {Object}       Returns a distribution object containing functions:
-	   *                        `random([size] [, min] [, max])`,
-	   *                        `randomInt([min] [, max])`,
-	   *                        `pickRandom(array)`
-	   */
-	  function distribution(name) {
-	    if (!distributions.hasOwnProperty(name))
-	      throw new Error('Unknown distribution ' + name);
-
-	    var args = Array.prototype.slice.call(arguments, 1),
-	        distribution = distributions[name].apply(this, args);
-
-	    return (function(distribution) {
-
-	      // This is the public API for all distributions
-	      var randFunctions = {
-
-	        random: function(arg1, arg2, arg3) {
-	          var size, min, max;
-	          if (arguments.length > 3) {
-	            throw new ArgumentsError('random', arguments.length, 0, 3);
-
-	          // `random(max)` or `random(size)`
-	          } else if (arguments.length === 1) {
-	            if (isCollection(arg1)) {
-	              size = arg1;
-	            }
-	            else {
-	              max = arg1;
-	            }
-	          // `random(min, max)` or `random(size, max)`
-	          } else if (arguments.length === 2) {
-	            if (isCollection(arg1)) {
-	              size = arg1;
-	              max = arg2;
-	            }
-	            else {
-	              min = arg1;
-	              max = arg2;
-	            }
-	          // `random(size, min, max)`
-	          } else {
-	            size = arg1;
-	            min = arg2;
-	            max = arg3;
-	          }
-
-	          // TODO: validate type of min, max, and size
-
-	          if (max === undefined) max = 1;
-	          if (min === undefined) min = 0;
-	          if (size !== undefined) {
-	            var res = _randomDataForMatrix(size.valueOf(), min, max, _random);
-	            return (size instanceof type.Matrix) ? matrix(res) : res;
-	          }
-	          else return _random(min, max);
-	        },
-
-	        randomInt: function(arg1, arg2, arg3) {
-	          var size, min, max;
-	          if (arguments.length > 3 || arguments.length < 1)
-	            throw new ArgumentsError('randomInt', arguments.length, 1, 3);
-
-	          // `random(max)` or `random(size)`
-	          else if (arguments.length === 1)
-	            if (isCollection(arg1)) {
-	              size = arg1;
-	            }
-	            else {
-	              max = arg1;
-	            }
-	          // `randomInt(min, max)` or `randomInt(size, max)`
-	          else if (arguments.length === 2) {
-	            if (isCollection(arg1)) {
-	              size = arg1;
-	              max = arg2;
-	            }
-	            else {
-	              min = arg1;
-	              max = arg2;
-	            }
-	          // `randomInt(size, min, max)`
-	          } else {
-	            size = arg1;
-	            min = arg2;
-	            max = arg3;
-	          }
-
-	          // TODO: validate type of min, max, and size
-
-	          if (min === undefined) min = 0;
-	          if (size !== undefined) {
-	            var res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt);
-	            return (size instanceof type.Matrix) ? matrix(res) : res;
-	          }
-	          else return _randomInt(min, max);
-	        },
-
-	        pickRandom: function(possibles) {
-	          if (arguments.length !== 1) {
-	            throw new ArgumentsError('pickRandom', arguments.length, 1);
-	          }
-	          if (possibles instanceof type.Matrix) {
-	            possibles = possibles.valueOf(); // get Array
-	          }
-	          else if (!Array.isArray(possibles)) {
-	            throw new TypeError('Unsupported type of value in function pickRandom');
-	          }
-
-	          if (array.size(possibles).length > 1) {
-	            throw new Error('Only one dimensional vectors supported');
-	          }
-
-	          // TODO: add support for multi dimensional matrices
-	          return possibles[Math.floor(Math.random() * possibles.length)];
-	        }
-
-	      };
-
-	      var _random = function(min, max) {
-	        return min + distribution() * (max - min);
-	      };
-
-	      var _randomInt = function(min, max) {
-	        return Math.floor(min + distribution() * (max - min));
-	      };
-
-	      // This is a function for generating a random matrix recursively.
-	      var _randomDataForMatrix = function(size, min, max, randFunc) {
-	        var data = [], length, i;
-	        size = size.slice(0);
-
-	        if (size.length > 1) {
-	          for (i = 0, length = size.shift(); i < length; i++)
-	            data.push(_randomDataForMatrix(size, min, max, randFunc));
-	        } else {
-	          for (i = 0, length = size.shift(); i < length; i++)
-	            data.push(randFunc(min, max));
-	        }
-
-	        return data;
-	      };
-
-	      return randFunctions;
-
-	    })(distribution);
-	  }
-
-	  // Each distribution is a function that takes no argument and when called returns
-	  // a number between 0 and 1.
-	  var distributions = {
-
-	    uniform: function() {
-	      return Math.random;
-	    },
-
-	    // Implementation of normal distribution using Box-Muller transform
-	    // ref : http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
-	    // We take : mean = 0.5, standard deviation = 1/6
-	    // so that 99.7% values are in [0, 1].
-	    normal: function() {
-	      return function() {
-	        var u1, u2,
-	            picked = -1;
-	        // We reject values outside of the interval [0, 1]
-	        // TODO: check if it is ok to do that?
-	        while (picked < 0 || picked > 1) {
-	          u1 = Math.random();
-	          u2 = Math.random();
-	          picked = 1/6 * Math.pow(-2 * Math.log(u1), 0.5) * Math.cos(2 * Math.PI * u2) + 0.5;
-	        }
-	        return picked;
-	      }
-	    }
-	  };
-
-	  return distribution;
-	}
-
-	exports.name = 'distribution';
-	exports.factory = factory;
-
-
-/***/ },
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var BigNumber = __webpack_require__(349);
+	var BigNumber = __webpack_require__(350);
 	var isNumber = __webpack_require__(175).isNumber;
 	var digits = __webpack_require__(175).digits;
-	var memoize = __webpack_require__(350).memoize;
+	var memoize = __webpack_require__(349).memoize;
 
 	/**
 	 * Test whether value is a BigNumber
@@ -27593,6 +27380,224 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // Note: the (precision || 0) is needed as the toFixed of BigNumber has an
 	  // undefined default precision instead of 0.
 	};
+
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var ArgumentsError = __webpack_require__(177);
+
+	// TODO: rethink math.distribution
+	// TODO: rework to a typed function
+	function factory (type, config, load, typed) {
+	  var collection = load(__webpack_require__(2));
+	  var matrix = load(__webpack_require__(75));
+	  var array = __webpack_require__(172);
+
+	  var isCollection = collection.isCollection;
+
+	  /**
+	   * Create a distribution object with a set of random functions for given
+	   * random distribution.
+	   *
+	   * Syntax:
+	   *
+	   *     math.distribution(name)
+	   *
+	   * Examples:
+	   *
+	   *     var normalDist = math.distribution('normal'); // create a normal distribution
+	   *     normalDist.random(0, 10);                     // get a random value between 0 and 10
+	   *
+	   * See also:
+	   *
+	   *     random, randomInt, pickRandom
+	   *
+	   * @param {String} name   Name of a distribution. Choose from 'uniform', 'normal'.
+	   * @return {Object}       Returns a distribution object containing functions:
+	   *                        `random([size] [, min] [, max])`,
+	   *                        `randomInt([min] [, max])`,
+	   *                        `pickRandom(array)`
+	   */
+	  function distribution(name) {
+	    if (!distributions.hasOwnProperty(name))
+	      throw new Error('Unknown distribution ' + name);
+
+	    var args = Array.prototype.slice.call(arguments, 1),
+	        distribution = distributions[name].apply(this, args);
+
+	    return (function(distribution) {
+
+	      // This is the public API for all distributions
+	      var randFunctions = {
+
+	        random: function(arg1, arg2, arg3) {
+	          var size, min, max;
+	          if (arguments.length > 3) {
+	            throw new ArgumentsError('random', arguments.length, 0, 3);
+
+	          // `random(max)` or `random(size)`
+	          } else if (arguments.length === 1) {
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	            }
+	            else {
+	              max = arg1;
+	            }
+	          // `random(min, max)` or `random(size, max)`
+	          } else if (arguments.length === 2) {
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	              max = arg2;
+	            }
+	            else {
+	              min = arg1;
+	              max = arg2;
+	            }
+	          // `random(size, min, max)`
+	          } else {
+	            size = arg1;
+	            min = arg2;
+	            max = arg3;
+	          }
+
+	          // TODO: validate type of min, max, and size
+
+	          if (max === undefined) max = 1;
+	          if (min === undefined) min = 0;
+	          if (size !== undefined) {
+	            var res = _randomDataForMatrix(size.valueOf(), min, max, _random);
+	            return (size instanceof type.Matrix) ? matrix(res) : res;
+	          }
+	          else return _random(min, max);
+	        },
+
+	        randomInt: function(arg1, arg2, arg3) {
+	          var size, min, max;
+	          if (arguments.length > 3 || arguments.length < 1)
+	            throw new ArgumentsError('randomInt', arguments.length, 1, 3);
+
+	          // `random(max)` or `random(size)`
+	          else if (arguments.length === 1)
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	            }
+	            else {
+	              max = arg1;
+	            }
+	          // `randomInt(min, max)` or `randomInt(size, max)`
+	          else if (arguments.length === 2) {
+	            if (isCollection(arg1)) {
+	              size = arg1;
+	              max = arg2;
+	            }
+	            else {
+	              min = arg1;
+	              max = arg2;
+	            }
+	          // `randomInt(size, min, max)`
+	          } else {
+	            size = arg1;
+	            min = arg2;
+	            max = arg3;
+	          }
+
+	          // TODO: validate type of min, max, and size
+
+	          if (min === undefined) min = 0;
+	          if (size !== undefined) {
+	            var res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt);
+	            return (size instanceof type.Matrix) ? matrix(res) : res;
+	          }
+	          else return _randomInt(min, max);
+	        },
+
+	        pickRandom: function(possibles) {
+	          if (arguments.length !== 1) {
+	            throw new ArgumentsError('pickRandom', arguments.length, 1);
+	          }
+	          if (possibles instanceof type.Matrix) {
+	            possibles = possibles.valueOf(); // get Array
+	          }
+	          else if (!Array.isArray(possibles)) {
+	            throw new TypeError('Unsupported type of value in function pickRandom');
+	          }
+
+	          if (array.size(possibles).length > 1) {
+	            throw new Error('Only one dimensional vectors supported');
+	          }
+
+	          // TODO: add support for multi dimensional matrices
+	          return possibles[Math.floor(Math.random() * possibles.length)];
+	        }
+
+	      };
+
+	      var _random = function(min, max) {
+	        return min + distribution() * (max - min);
+	      };
+
+	      var _randomInt = function(min, max) {
+	        return Math.floor(min + distribution() * (max - min));
+	      };
+
+	      // This is a function for generating a random matrix recursively.
+	      var _randomDataForMatrix = function(size, min, max, randFunc) {
+	        var data = [], length, i;
+	        size = size.slice(0);
+
+	        if (size.length > 1) {
+	          for (i = 0, length = size.shift(); i < length; i++)
+	            data.push(_randomDataForMatrix(size, min, max, randFunc));
+	        } else {
+	          for (i = 0, length = size.shift(); i < length; i++)
+	            data.push(randFunc(min, max));
+	        }
+
+	        return data;
+	      };
+
+	      return randFunctions;
+
+	    })(distribution);
+	  }
+
+	  // Each distribution is a function that takes no argument and when called returns
+	  // a number between 0 and 1.
+	  var distributions = {
+
+	    uniform: function() {
+	      return Math.random;
+	    },
+
+	    // Implementation of normal distribution using Box-Muller transform
+	    // ref : http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+	    // We take : mean = 0.5, standard deviation = 1/6
+	    // so that 99.7% values are in [0, 1].
+	    normal: function() {
+	      return function() {
+	        var u1, u2,
+	            picked = -1;
+	        // We reject values outside of the interval [0, 1]
+	        // TODO: check if it is ok to do that?
+	        while (picked < 0 || picked > 1) {
+	          u1 = Math.random();
+	          u2 = Math.random();
+	          picked = 1/6 * Math.pow(-2 * Math.log(u1), 0.5) * Math.cos(2 * Math.PI * u2) + 0.5;
+	        }
+	        return picked;
+	      }
+	    }
+	  };
+
+	  return distribution;
+	}
+
+	exports.name = 'distribution';
+	exports.factory = factory;
 
 
 /***/ },
@@ -31153,6 +31158,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 349 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// function utils
+
+	/*
+	 * Memoize a given function by caching the computed result.
+	 * The cache of a memoized function can be cleared by deleting the `cache`
+	 * property of the function.
+	 *
+	 * @param {function} fn   The function to be memoized. Must be a pure function.
+	 * @return {function}     Returns the memoized function
+	 */
+	exports.memoize = function(fn) {
+	  return function memoize() {
+	    if (typeof memoize.cache !== 'object') {
+	      memoize.cache = {};
+	    }
+
+	    var hash = JSON.stringify(arguments);
+	    if (!(hash in memoize.cache)) {
+	      return memoize.cache[hash] = fn.apply(fn, arguments);
+	    }
+	    return memoize.cache[hash];
+	  };
+	};
+
+
+/***/ },
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v4.0.2 https://github.com/MikeMcl/decimal.js/LICENCE */
@@ -35215,35 +35249,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        global['Decimal'] = decimal;
 	    }
 	})(this);
-
-
-/***/ },
-/* 350 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// function utils
-
-	/*
-	 * Memoize a given function by caching the computed result.
-	 * The cache of a memoized function can be cleared by deleting the `cache`
-	 * property of the function.
-	 *
-	 * @param {function} fn   The function to be memoized. Must be a pure function.
-	 * @return {function}     Returns the memoized function
-	 */
-	exports.memoize = function(fn) {
-	  return function memoize() {
-	    if (typeof memoize.cache !== 'object') {
-	      memoize.cache = {};
-	    }
-
-	    var hash = JSON.stringify(arguments);
-	    if (!(hash in memoize.cache)) {
-	      return memoize.cache[hash] = fn.apply(fn, arguments);
-	    }
-	    return memoize.cache[hash];
-	  };
-	};
 
 
 /***/ },
