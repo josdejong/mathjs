@@ -1,7 +1,7 @@
 // test Help
-var assert = require('assert'),
-    Help = require('../../lib/type/Help'),
-    math = require('../../index');
+var assert = require('assert');
+var math = require('../../index');
+var Help = math.type.Help;
 
 describe('help', function() {
   var doc = {
@@ -51,7 +51,7 @@ describe('help', function() {
 
   it('should stringify a help', function() {
     var help = new Help(doc);
-    assert.equal(help.toText(math),
+    assert.equal(help.toString(),
         '\nName: add\n' +
         '\n'+
         'Category: Operators\n' +
@@ -70,29 +70,10 @@ describe('help', function() {
         '        2.1\n' +
         '\n' +
         'See also: subtract\n');
-
-    assert.equal(help.toString(),
-        '\nName: add\n' +
-        '\n'+
-        'Category: Operators\n' +
-        '\n' +
-        'Description:\n' +
-        '    Add two values.\n' +
-        '\n' +
-        'Syntax:\n' +
-        '    x + y\n' +
-        '    add(x, y)\n' +
-        '\n' +
-        'Examples:\n' +
-        '    a = 2.1 + 3.6\n' +
-        '    a - 3.6\n' +
-        '\n' +
-        'See also: subtract\n');
   });
 
   it('should stringify a help with empty doc', function() {
     var help = new Help({});
-    assert.equal(help.toText(math), '\n');
     assert.equal(help.toString(), '\n');
   });
 
@@ -105,20 +86,12 @@ describe('help', function() {
       ]
     });
 
-    assert.equal(help.toText(math),
-        '\nName: add\n' +
-        '\n'+
-        'Examples:\n' +
-        '    2 + 3\n' +
-        '        5\n' +
-        '    \n' +
-        '\n');
-
     assert.equal(help.toString(),
         '\nName: add\n' +
         '\n'+
         'Examples:\n' +
         '    2 + 3\n' +
+        '        5\n' +
         '    \n' +
         '\n');
   });
@@ -131,7 +104,7 @@ describe('help', function() {
       ]
     });
 
-    assert.equal(help.toText(math),
+    assert.equal(help.toString(),
         '\nName: add\n' +
         '\n'+
         'Examples:\n' +
@@ -153,6 +126,7 @@ describe('help', function() {
             '\n'+
             'Examples:\n' +
             '    2 ^^ 3\n' +
+            '        SyntaxError: Value expected (char 4)\n' +
             '\n');
   });
 

@@ -28,7 +28,7 @@ function create (config) {
   math.type.Index = require('./lib/type/Index');
   math.import(require('./lib/type/Matrix'));
   math.type.Unit = require('./lib/type/Unit');
-  math.type.Help = require('./lib/type/Help');
+  math.import(require('./lib/type/Help'));
   math.type.ResultSet = require('./lib/type/ResultSet');
   math.import(require('./lib/type/BigNumber'));
   math.import(require('./lib/type/FibonacciHeap'));
@@ -36,16 +36,14 @@ function create (config) {
   // matrix storage formats
   math.import(require('./lib/type/matrix/SparseMatrix'));
   math.import(require('./lib/type/matrix/DenseMatrix'));
-
-  // sparse accumulator
-  math.import(require('./lib/type/matrix/Spa'));
+  math.import(require('./lib/type/matrix/Spa')); // sparse accumulator
 
   // expression (expression.parse, expression.Parser, expression.node.*, expression.docs.*)
   math.import(require('./lib/expression/node'));
   math.import(require('./lib/expression/parse'));
   math.import(require('./lib/expression/Parser'));
   math.import(require('./lib/expression/transform'));
-  math.expression.docs = require('./lib/expression/docs');
+  math.import(require('./lib/expression/docs'));
 
   // serialization utilities (math.json.reviver)
   math.import(require('./lib/json'));
