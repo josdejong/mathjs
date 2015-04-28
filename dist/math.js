@@ -10090,6 +10090,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var _multiplySparseMatrixSparseMatrix = function (a, b) {
 	    // a sparse
 	    var avalues = a._values;
+	    var aindex = a._index;
+	    var aptr = a._ptr;
 	    var adt = a._datatype;
 	    // b sparse
 	    var bvalues = b._values;
@@ -10122,17 +10124,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var x = values ? new Array(arows) : undefined;
 	    // vector with marks indicating a value x[i] exists in a given column
 	    var w = new Array(arows);
-
+	if(dt) {
 	    // loop b columns
 	    for (var jb = 0; jb < bcolumns; jb++) {
 	      // update ptr
 	      cptr[jb] = cindex.length;
+	      // mark in workspace for current column
+	      var mark = jb + 1;
 	      // B values & index in j
 	      for (var kb0 = bptr[jb], kb1 = bptr[jb + 1], kb = kb0; kb < kb1; kb++) {
 	        // b row
 	        var ib = bindex[kb];
-	        // multiply both matrices and store results in x
-	        sparseScatter(a, ib, x ? bvalues[kb] : 1, w, x, jb + 1, c, mf, af);
+	        // loop values in a[:,ib]
+	        for (var ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
+	          // row
+	          var ia = aindex[ka];
+	          // check value exists in current j
+	          if (w[ia] !== mark) {
+	            // ia is new entry in j
+	            w[ia] = mark;
+	            // add i to pattern of C
+	            cindex.push(ia);
+	            // x(ia) = A
+	            x[ia] = mf(bvalues[kb], avalues[ka]);
+	          }
+	          else {
+	            // i exists in C already
+	            x[ia] = af(x[ia], mf(bvalues[kb], avalues[ka]));
+	          }
+	        }
 	      }
 	      // check we need to process matrix values (pattern matrix)
 	      if (values) {
@@ -10147,7 +10167,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    // update ptr
 	    cptr[bcolumns] = cindex.length;
-
+	}
+	    else {
+	      // loop b columns
+	      for (var jb = 0; jb < bcolumns; jb++) {
+	        // update ptr
+	        cptr[jb] = cindex.length;
+	        // B values & index in j
+	        for (var kb0 = bptr[jb], kb1 = bptr[jb + 1], kb = kb0; kb < kb1; kb++) {
+	          // b row
+	          var ib = bindex[kb];
+	          // multiply both matrices and store results in x
+	          sparseScatter(a, ib, x ? bvalues[kb] : 1, w, x, jb + 1, c, mf, af);
+	        }
+	        // check we need to process matrix values (pattern matrix)
+	        if (values) {
+	          // copy values from x to column jb of c
+	          for (var p0 = cptr[jb], p1 = cindex.length, p = p0; p < p1; p++) {
+	            // row
+	            var ic = cindex[p];
+	            // copy value
+	            cvalues[p] = x[ic];
+	          }
+	        }
+	      }
+	      // update ptr
+	      cptr[bcolumns] = cindex.length;
+	    }
 	    // check we need to squeeze the result into a scalar
 	    if (arows === 1 && bcolumns === 1 && values)
 	      return cvalues.length === 1 ? cvalues[0] : 0;
