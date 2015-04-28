@@ -20,6 +20,11 @@ describe('BlockNode', function() {
     assert.equal(n.type, 'BlockNode');
   });
 
+  it ('should have isBlockNode', function () {
+    var node = new BlockNode([]);
+    assert(node.isBlockNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     assert.throws(function () {BlockNode()}, SyntaxError);
   });

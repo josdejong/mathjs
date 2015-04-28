@@ -21,6 +21,11 @@ describe('FunctionAssignmentNode', function() {
     assert.equal(n.type, 'FunctionAssignmentNode');
   });
 
+  it ('should have isFunctionAssignmentNode', function () {
+    var node = new FunctionAssignmentNode('f', ['x'], new ConstantNode(2));
+    assert(node.isFunctionAssignmentNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     assert.throws(function () {FunctionAssignmentNode('f', ['x'], new ConstantNode(2))}, SyntaxError);
   });

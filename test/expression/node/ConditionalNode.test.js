@@ -24,6 +24,11 @@ describe('ConditionalNode', function() {
     assert.equal(n.type, 'ConditionalNode');
   });
 
+  it ('should have isConditionalNode', function () {
+    var node = new ConditionalNode(condition, a, b);
+    assert(node.isConditionalNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     assert.throws(function () {ConditionalNode()}, SyntaxError);
   });

@@ -25,6 +25,17 @@ describe('UpdateNode', function() {
     assert.equal(n.type, 'UpdateNode');
   });
 
+  it ('should have isUpdateNode', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(5);
+    var node = new UpdateNode(i, v);
+
+    assert(node.isUpdateNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);

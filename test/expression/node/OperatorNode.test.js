@@ -17,6 +17,11 @@ describe('OperatorNode', function() {
     assert.equal(n.type, 'OperatorNode');
   });
 
+  it ('should have isOperatorNode', function () {
+    var node = new OperatorNode('op', 'fn', []);
+    assert(node.isOperatorNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
