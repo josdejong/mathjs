@@ -581,6 +581,21 @@ describe('multiply', function() {
           [43, 50]
         ]);
     });
+    
+    it('should multiply matrix x matrix, datatype=number', function() {
+      var m1 = math.matrix([[1, 2], [3, 4]], 'sparse');
+      m1._datatype = 'number';
+      var m2 = math.matrix([[5, 6], [7, 8]], 'sparse');
+      m2._datatype = 'number';
+      
+      var r = multiply(m1, m2);
+      assert.deepEqual(
+        r.valueOf(),
+        [
+          [19, 22],
+          [43, 50]
+        ]);
+    });
 
     it('should multiply matrix x array', function() {
       var m = math.matrix([[2, 0], [4, 0]], 'sparse');
