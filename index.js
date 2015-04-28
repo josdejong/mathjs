@@ -39,11 +39,7 @@ function create (config) {
   math.import(require('./lib/type/matrix/Spa')); // sparse accumulator
 
   // expression (expression.parse, expression.Parser, expression.node.*, expression.docs.*)
-  math.import(require('./lib/expression/node'));
-  math.import(require('./lib/expression/parse'));
-  math.import(require('./lib/expression/Parser'));
-  math.import(require('./lib/expression/transform'));
-  math.import(require('./lib/expression/docs'));
+  math.import(require('./lib/expression'));
 
   // serialization utilities (math.json.reviver)
   math.import(require('./lib/json'));
