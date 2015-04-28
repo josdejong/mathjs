@@ -19,6 +19,14 @@ describe('RangeNode', function() {
     assert.equal(n.type, 'RangeNode');
   });
 
+  it ('should have isRangeNode', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var node = new RangeNode(start, end);
+
+    assert(node.isRangeNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);

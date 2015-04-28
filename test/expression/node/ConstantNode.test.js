@@ -29,6 +29,11 @@ describe('ConstantNode', function() {
     assert.deepEqual(new ConstantNode(undefined), new ConstantNode('undefined', 'undefined'));
   });
 
+  it ('should have isConstantNode', function () {
+    var node = new ConstantNode(1);
+    assert(node.isConstantNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     assert.throws(function () {ConstantNode('3', 'number')}, SyntaxError);
   });
