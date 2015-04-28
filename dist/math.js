@@ -3115,7 +3115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Decimal = __webpack_require__(350);
-	var digits = __webpack_require__(176).digits;
+	var digits = __webpack_require__(175).digits;
 
 	function factory (type, config, load, typed) {
 	  var BigNumber = Decimal.constructor(config);
@@ -3516,7 +3516,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// TODO: change to exports.create = function () {...}
 	module.exports = function () {
-	  var string = __webpack_require__(175);
+	  var string = __webpack_require__(176);
 
 	  /**
 	   * @constructor Chain
@@ -7503,7 +7503,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var BigNumber = __webpack_require__(350);
 	var errorTransform = __webpack_require__(208).transform;
-	var isNumber = __webpack_require__(176).isNumber;
+	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
 
 	/**
@@ -7674,7 +7674,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var BigNumber = __webpack_require__(350);
 	var Range = __webpack_require__(4);
 	var Index = __webpack_require__(5);
-	var isNumber = __webpack_require__(176).isNumber;
+	var isNumber = __webpack_require__(175).isNumber;
 
 	/**
 	 * Attach a transform function to math.index
@@ -7779,7 +7779,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var BigNumber = __webpack_require__(350);
 	var errorTransform = __webpack_require__(208).transform;
-	var isNumber = __webpack_require__(176).isNumber;
+	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
 
 	/**
@@ -7830,7 +7830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var BigNumber = __webpack_require__(350);
 	var errorTransform = __webpack_require__(208).transform;
-	var isNumber = __webpack_require__(176).isNumber;
+	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
 
 	/**
@@ -7881,7 +7881,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var BigNumber = __webpack_require__(350);
 	var errorTransform = __webpack_require__(208).transform;
-	var isNumber = __webpack_require__(176).isNumber;
+	var isNumber = __webpack_require__(175).isNumber;
 	var argsToArray = __webpack_require__(172).argsToArray;
 
 	/**
@@ -8985,7 +8985,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -9094,7 +9094,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -9493,7 +9493,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var addScalar = load(__webpack_require__(211));
 	  var multiplyScalar = load(__webpack_require__(212));
 	  var equal = load(__webpack_require__(115));
-	  var sparseScatter = load(__webpack_require__(210));
 
 	  var collection = load(__webpack_require__(2));
 
@@ -10124,6 +10123,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var x = values ? new Array(arows) : undefined;
 	    // vector with marks indicating a value x[i] exists in a given column
 	    var w = new Array(arows);
+	    // variables
+	    var ka, ka0, ka1, kb, kb0, kb1, ia, ib;
 	    // loop b columns
 	    for (var jb = 0; jb < bcolumns; jb++) {
 	      // update ptr
@@ -10131,15 +10132,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // mark in workspace for current column
 	      var mark = jb + 1;
 	      // B values & index in j
-	      for (var kb0 = bptr[jb], kb1 = bptr[jb + 1], kb = kb0; kb < kb1; kb++) {
+	      for (kb0 = bptr[jb], kb1 = bptr[jb + 1], kb = kb0; kb < kb1; kb++) {
 	        // b row
-	        var ib = bindex[kb];
+	        ib = bindex[kb];
 	        // check we need to process values
 	        if (values) {
 	          // loop values in a[:,ib]
-	          for (var ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
+	          for (ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
 	            // row
-	            var ia = aindex[ka];
+	            ia = aindex[ka];
 	            // check value exists in current j
 	            if (w[ia] !== mark) {
 	              // ia is new entry in j
@@ -10157,9 +10158,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        else {
 	          // loop values in a[:,ib]
-	          for (var ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
+	          for (ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
 	            // row
-	            var ia = aindex[ka];
+	            ia = aindex[ka];
 	            // check value exists in current j
 	            if (w[ia] !== mark) {
 	              // ia is new entry in j
@@ -10560,7 +10561,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 	var size = __webpack_require__(172).size;
 
 	function factory (type, config, load, typed) {
@@ -10706,8 +10707,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
-	var toFixed = __webpack_require__(176).toFixed;
+	var isInteger = __webpack_require__(175).isInteger;
+	var toFixed = __webpack_require__(175).toFixed;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -10824,7 +10825,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var number = __webpack_require__(176);
+	var number = __webpack_require__(175);
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -11675,7 +11676,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -11810,7 +11811,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 	var bigBitAnd = __webpack_require__(214).and;
 
 	function factory (type, config, load, typed) {
@@ -11871,7 +11872,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 	var bigBitNot = __webpack_require__(214).not;
 
 	function factory (type, config, load, typed) {
@@ -11928,7 +11929,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 	var bigBitOr = __webpack_require__(214).or;
 
 	function factory (type, config, load, typed) {
@@ -11990,7 +11991,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 	var bigBitXor = __webpack_require__(214).xor;
 
 	function factory (type, config, load, typed) {
@@ -12051,7 +12052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 	var bigLeftShift = __webpack_require__(214).leftShift;
 
 	function factory (type, config, load, typed) {
@@ -12113,7 +12114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 	var bigRightArithShift = __webpack_require__(214).rightArithShift;
 
 	function factory (type, config, load, typed) {
@@ -12175,7 +12176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -13128,7 +13129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var number = __webpack_require__(176);
+	var number = __webpack_require__(175);
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -13791,7 +13792,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var clone = __webpack_require__(166).clone;
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 	var array = __webpack_require__(172);
 	var IndexError = __webpack_require__(173);
 	var DimensionError = __webpack_require__(174);
@@ -14194,7 +14195,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var array     = __webpack_require__(172);
 	var clone     = __webpack_require__(166).clone;
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 
 	function factory (type, config, load, typed) {
 
@@ -14446,7 +14447,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var array = __webpack_require__(172);
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 
 	function factory (type, config, load, typed) {
 	  
@@ -15770,7 +15771,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var clone = __webpack_require__(166).clone;
-	var format = __webpack_require__(175).format;
+	var format = __webpack_require__(176).format;
 
 	function factory (type, config, load, typed) {
 	  
@@ -15921,7 +15922,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var clone = __webpack_require__(166).clone;
-	var format = __webpack_require__(175).format;
+	var format = __webpack_require__(176).format;
 
 	function factory (type, config, load, typed) {
 
@@ -16210,7 +16211,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -16363,7 +16364,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -16615,7 +16616,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isInteger = __webpack_require__(176).isInteger;
+	var isInteger = __webpack_require__(175).isInteger;
 
 	function factory (type, config, load, typed) {
 	  var factorial = load(__webpack_require__(107));
@@ -16841,7 +16842,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var nearlyEqual = __webpack_require__(176).nearlyEqual;
+	var nearlyEqual = __webpack_require__(175).nearlyEqual;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -17013,7 +17014,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var nearlyEqual = __webpack_require__(176).nearlyEqual;
+	var nearlyEqual = __webpack_require__(175).nearlyEqual;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -17123,7 +17124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var nearlyEqual = __webpack_require__(176).nearlyEqual;
+	var nearlyEqual = __webpack_require__(175).nearlyEqual;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -17208,7 +17209,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var nearlyEqual = __webpack_require__(176).nearlyEqual;
+	var nearlyEqual = __webpack_require__(175).nearlyEqual;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -17289,7 +17290,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var nearlyEqual = __webpack_require__(176).nearlyEqual;
+	var nearlyEqual = __webpack_require__(175).nearlyEqual;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -17374,7 +17375,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var nearlyEqual = __webpack_require__(176).nearlyEqual;
+	var nearlyEqual = __webpack_require__(175).nearlyEqual;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -17454,7 +17455,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var nearlyEqual = __webpack_require__(176).nearlyEqual;
+	var nearlyEqual = __webpack_require__(175).nearlyEqual;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -19760,7 +19761,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var bigCsch = __webpack_require__(214).cosh_sinh_csch_sech;
-	var sign = __webpack_require__(176).sign;
+	var sign = __webpack_require__(175).sign;
 
 	function factory (type, config, load, typed) {
 	  var collection = load(__webpack_require__(2));
@@ -20536,7 +20537,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var string = __webpack_require__(175);
+	var string = __webpack_require__(176);
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -20686,8 +20687,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isString = __webpack_require__(175).isString;
-	var format = __webpack_require__(175).format;
+	var isString = __webpack_require__(176).isString;
+	var format = __webpack_require__(176).format;
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -21764,7 +21765,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var typed = __webpack_require__(356);
-	var digits = __webpack_require__(176).digits;
+	var digits = __webpack_require__(175).digits;
 
 	/**
 	 * Factory function for creating a new typed instance
@@ -22147,10 +22148,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.array = __webpack_require__(172);
 	exports['boolean'] = __webpack_require__(209);
 	exports['function'] = __webpack_require__(349);
-	exports.number = __webpack_require__(176);
+	exports.number = __webpack_require__(175);
 	exports.bignumber = __webpack_require__(214);
 	exports.object = __webpack_require__(166);
-	exports.string = __webpack_require__(175);
+	exports.string = __webpack_require__(176);
 	exports.types = __webpack_require__(216);
 
 
@@ -22160,8 +22161,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var number = __webpack_require__(176);
-	var string = __webpack_require__(175);
+	var number = __webpack_require__(175);
+	var string = __webpack_require__(176);
 	var object = __webpack_require__(166);
 	var types = __webpack_require__(216);
 
@@ -22632,121 +22633,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var number = __webpack_require__(176);
-	var bignumber = __webpack_require__(214);
-	var BigNumber = __webpack_require__(350);
-
-	/**
-	 * Test whether value is a String
-	 * @param {*} value
-	 * @return {Boolean} isString
-	 */
-	exports.isString = function(value) {
-	  return (value instanceof String) || (typeof value == 'string');
-	};
-
-	/**
-	 * Check if a text ends with a certain string.
-	 * @param {String} text
-	 * @param {String} search
-	 */
-	exports.endsWith = function(text, search) {
-	  var start = text.length - search.length;
-	  var end = text.length;
-	  return (text.substring(start, end) === search);
-	};
-
-	/**
-	 * Format a value of any type into a string.
-	 *
-	 * Usage:
-	 *     math.format(value)
-	 *     math.format(value, precision)
-	 *
-	 * If value is a function, the returned string is 'function' unless the function
-	 * has a property `description`, in that case this properties value is returned.
-	 *
-	 * Example usage:
-	 *     math.format(2/7);                // '0.2857142857142857'
-	 *     math.format(math.pi, 3);         // '3.14'
-	 *     math.format(new Complex(2, 3));  // '2 + 3i'
-	 *     math.format('hello');            // '"hello"'
-	 *
-	 * @param {*} value             Value to be stringified
-	 * @param {Object | Number | Function} [options]  Formatting options. See
-	 *                                                lib/util/number:format for a
-	 *                                                description of the available
-	 *                                                options.
-	 * @return {String} str
-	 */
-	exports.format = function(value, options) {
-	  if (number.isNumber(value)) {
-	    return number.format(value, options);
-	  }
-
-	  if (value instanceof BigNumber) {
-	    return bignumber.format(value, options);
-	  }
-
-	  if (Array.isArray(value)) {
-	    return formatArray(value, options);
-	  }
-
-	  if (exports.isString(value)) {
-	    return '"' + value + '"';
-	  }
-
-	  if (typeof value === 'function') {
-	    return value.syntax ? value.syntax + '' : 'function';
-	  }
-
-	  if (value instanceof Object) {
-	    if (typeof value.format === 'function') {
-	      return value.format(options);
-	    }
-	    else {
-	      return value.toString();
-	    }
-	  }
-
-	  return String(value);
-	};
-
-	/**
-	 * Recursively format an n-dimensional matrix
-	 * Example output: "[[1, 2], [3, 4]]"
-	 * @param {Array} array
-	 * @param {Object | Number | Function} [options]  Formatting options. See
-	 *                                                lib/util/number:format for a
-	 *                                                description of the available
-	 *                                                options.
-	 * @returns {String} str
-	 */
-	function formatArray (array, options) {
-	  if (Array.isArray(array)) {
-	    var str = '[';
-	    var len = array.length;
-	    for (var i = 0; i < len; i++) {
-	      if (i != 0) {
-	        str += ', ';
-	      }
-	      str += formatArray(array[i], options);
-	    }
-	    str += ']';
-	    return str;
-	  }
-	  else {
-	    return exports.format(array, options);
-	  }
-	}
-
-
-/***/ },
-/* 176 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
 	var NumberFormatter = __webpack_require__(351);
 
 	/**
@@ -23007,6 +22893,121 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var number = __webpack_require__(175);
+	var bignumber = __webpack_require__(214);
+	var BigNumber = __webpack_require__(350);
+
+	/**
+	 * Test whether value is a String
+	 * @param {*} value
+	 * @return {Boolean} isString
+	 */
+	exports.isString = function(value) {
+	  return (value instanceof String) || (typeof value == 'string');
+	};
+
+	/**
+	 * Check if a text ends with a certain string.
+	 * @param {String} text
+	 * @param {String} search
+	 */
+	exports.endsWith = function(text, search) {
+	  var start = text.length - search.length;
+	  var end = text.length;
+	  return (text.substring(start, end) === search);
+	};
+
+	/**
+	 * Format a value of any type into a string.
+	 *
+	 * Usage:
+	 *     math.format(value)
+	 *     math.format(value, precision)
+	 *
+	 * If value is a function, the returned string is 'function' unless the function
+	 * has a property `description`, in that case this properties value is returned.
+	 *
+	 * Example usage:
+	 *     math.format(2/7);                // '0.2857142857142857'
+	 *     math.format(math.pi, 3);         // '3.14'
+	 *     math.format(new Complex(2, 3));  // '2 + 3i'
+	 *     math.format('hello');            // '"hello"'
+	 *
+	 * @param {*} value             Value to be stringified
+	 * @param {Object | Number | Function} [options]  Formatting options. See
+	 *                                                lib/util/number:format for a
+	 *                                                description of the available
+	 *                                                options.
+	 * @return {String} str
+	 */
+	exports.format = function(value, options) {
+	  if (number.isNumber(value)) {
+	    return number.format(value, options);
+	  }
+
+	  if (value instanceof BigNumber) {
+	    return bignumber.format(value, options);
+	  }
+
+	  if (Array.isArray(value)) {
+	    return formatArray(value, options);
+	  }
+
+	  if (exports.isString(value)) {
+	    return '"' + value + '"';
+	  }
+
+	  if (typeof value === 'function') {
+	    return value.syntax ? value.syntax + '' : 'function';
+	  }
+
+	  if (value instanceof Object) {
+	    if (typeof value.format === 'function') {
+	      return value.format(options);
+	    }
+	    else {
+	      return value.toString();
+	    }
+	  }
+
+	  return String(value);
+	};
+
+	/**
+	 * Recursively format an n-dimensional matrix
+	 * Example output: "[[1, 2], [3, 4]]"
+	 * @param {Array} array
+	 * @param {Object | Number | Function} [options]  Formatting options. See
+	 *                                                lib/util/number:format for a
+	 *                                                description of the available
+	 *                                                options.
+	 * @returns {String} str
+	 */
+	function formatArray (array, options) {
+	  if (Array.isArray(array)) {
+	    var str = '[';
+	    var len = array.length;
+	    for (var i = 0; i < len; i++) {
+	      if (i != 0) {
+	        str += ', ';
+	      }
+	      str += formatArray(array[i], options);
+	    }
+	    str += ']';
+	    return str;
+	  }
+	  else {
+	    return exports.format(array, options);
+	  }
+	}
+
+
+/***/ },
 /* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -23052,7 +23053,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var Node = __webpack_require__(190),
-	    string = __webpack_require__(175),
+	    string = __webpack_require__(176),
 
 	    isArray = Array.isArray,
 	    isNode = Node.isNode;
@@ -23184,7 +23185,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    operators = __webpack_require__(353),
 
 	    latex = __webpack_require__(354),
-	    isString = __webpack_require__(175).isString;
+	    isString = __webpack_require__(176).isString;
 
 	/**
 	 * @constructor AssignmentNode
@@ -23604,7 +23605,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Node = __webpack_require__(190);
 	var BigNumber = __webpack_require__(350);
 	var type = __webpack_require__(216).type;
-	var isString = __webpack_require__(175).isString;
+	var isString = __webpack_require__(176).isString;
 
 	/**
 	 * A ConstantNode holds a constant value like a number or string. A ConstantNode
@@ -23793,7 +23794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var keywords = __webpack_require__(352);
 	var latex = __webpack_require__(354);
 	var operators = __webpack_require__(353);
-	var isString = __webpack_require__(175).isString;
+	var isString = __webpack_require__(176).isString;
 	var isArray = Array.isArray;
 
 	/**
@@ -24802,7 +24803,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Unit = __webpack_require__(7),
 
 	    latex = __webpack_require__(354),
-	    isString = __webpack_require__(175).isString;
+	    isString = __webpack_require__(176).isString;
 
 	/**
 	 * @constructor SymbolNode
@@ -25995,8 +25996,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var BigNumber = __webpack_require__(350);
-	var isNumber = __webpack_require__(176).isNumber;
-	var digits = __webpack_require__(176).digits;
+	var isNumber = __webpack_require__(175).isNumber;
+	var digits = __webpack_require__(175).digits;
 	var memoize = __webpack_require__(349).memoize;
 
 	/**
