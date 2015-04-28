@@ -164,7 +164,19 @@ describe('import', function() {
     assert.strictEqual(math.a, true);
   });
 
-  it.skip('should import a factory', function () {
+  it.skip('should import a factory with name', function () {
+    // TODO: unit test importing a factory
+  });
+
+  it.skip('should import a factory with path', function () {
+    // TODO: unit test importing a factory
+  });
+
+  it.skip('should import a factory without name', function () {
+    // TODO: unit test importing a factory
+  });
+
+  it.skip('should pass the namespace to a factory function', function () {
     // TODO: unit test importing a factory
   });
 

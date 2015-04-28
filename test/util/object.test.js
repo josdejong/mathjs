@@ -278,8 +278,8 @@ describe ('object', function () {
       assert.equal(object.isFactory({foo: true}), false);
       assert.equal(object.isFactory({name: 'foo'}), false);
       assert.equal(object.isFactory({name: 'foo', factory: 'bar'}), false);
-      assert.equal(object.isFactory({name: 2, factory: function () {}}), false);
-      assert.equal(object.isFactory({factory: function () {}}), false);
+      assert.equal(object.isFactory({name: 2, factory: function () {}}), true);
+      assert.equal(object.isFactory({factory: function () {}}), true);
 
       assert.equal(object.isFactory({name: 'foo', factory: function () {}}), true);
       assert.equal(object.isFactory({name: 'foo', factory: function () {}, foo: 'bar'}), true);
