@@ -2,13 +2,13 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
-var Node = require('../../../lib/expression/node/Node');
-var ConstantNode = require('../../../lib/expression/node/ConstantNode');
-var SymbolNode = require('../../../lib/expression/node/SymbolNode');
-var ArrayNode = require('../../../lib/expression/node/ArrayNode');
-var RangeNode = require('../../../lib/expression/node/RangeNode');
-var AssignmentNode = require('../../../lib/expression/node/AssignmentNode');
-var OperatorNode = require('../../../lib/expression/node/OperatorNode');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var RangeNode = math.expression.node.RangeNode;
+var ArrayNode = math.expression.node.ArrayNode;
+var AssignmentNode = math.expression.node.AssignmentNode;
+var OperatorNode = math.expression.node.OperatorNode;
 
 describe('AssignmentNode', function() {
 
@@ -17,6 +17,11 @@ describe('AssignmentNode', function() {
     assert(n instanceof AssignmentNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'AssignmentNode');
+  });
+
+  it ('should have isAssignmentNode', function () {
+    var node = new AssignmentNode('a', new Node());
+    assert(node.isAssignmentNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -213,7 +218,7 @@ describe('AssignmentNode', function() {
     var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
-    assert.equal(n.toTex(), '\\mathrm{b}:=3');
+    assert.equal(n.toTex(), 'b:=3');
   });
 
   it ('should LaTeX an AssignmentNode containing an AssignmentNode', function () {
@@ -222,7 +227,7 @@ describe('AssignmentNode', function() {
 
     var n = new AssignmentNode('b', b);
 
-    assert.equal(n.toTex(), '\\mathrm{b}:=\\left(\\mathrm{a}:=2\\right)');
+    assert.equal(n.toTex(), 'b:=\\left(a:=2\\right)');
   });
 
   it ('should LaTeX an AssignmentNode with custom toTex', function () {

@@ -328,7 +328,7 @@ describe('distribution', function () {
   });
 
   it('should LaTeX distribution', function () {
-    var expression = math.parse('distribution(normal)');
-    assert.equal(expression.toTex(), '\\mathrm{distribution}\\left(\\mathrm{normal}\\right)');
+    var expression = math.parse('distribution("normal")');
+    assert.equal(expression.toTex(), '\\mathrm{distribution}\\left(\\mathtt{"normal"}\\right)');
   });
 });
