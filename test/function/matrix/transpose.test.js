@@ -39,16 +39,25 @@ describe('transpose', function() {
 
     it('should transpose a 2d matrix', function() {
       var m = math.matrix([[1,2,3],[4,5,6]]);
-      assert.deepEqual(transpose(m).valueOf(), [[1,4],[2,5],[3,6]]);
+      var t = transpose(m);
+      assert.deepEqual(t.valueOf(), [[1,4],[2,5],[3,6]]);
 
       m = math.matrix([[1,4],[2,5],[3,6]]);
-      assert.deepEqual(transpose(m).toArray(), [[1,2,3],[4,5,6]]);
+      t = transpose(m);
+      assert.deepEqual(t.toArray(), [[1,2,3],[4,5,6]]);
       
       m = math.matrix([[1,2],[3,4]]);
-      assert.deepEqual(transpose(m).valueOf(), [[1,3],[2,4]]);
+      t = transpose(m);
+      assert.deepEqual(t.valueOf(), [[1,3],[2,4]]);
 
       m = math.matrix([[1,2,3,4]]);
-      assert.deepEqual(transpose(m).valueOf(), [[1],[2],[3],[4]]);
+      t = transpose(m);
+      assert.deepEqual(t.valueOf(), [[1],[2],[3],[4]]);
+      
+      m = math.matrix([[1,2,3,4]], 'dense', 'number');
+      t = transpose(m);
+      assert.deepEqual(t.valueOf(), [[1],[2],[3],[4]]);
+      assert.ok(t.datatype() === 'number');
     });
 
     it('should throw an error for invalid matrix transpose', function() {
@@ -63,17 +72,22 @@ describe('transpose', function() {
   describe('SparseMatrix', function () {
 
     it('should transpose a 2d matrix', function() {
-      var m = math.matrix([[1,2,3],[4,5,6]], 'sparse');
-      assert.deepEqual(transpose(m).valueOf(), [[1,4],[2,5],[3,6]]);
+      var m = math.sparse([[1,2,3],[4,5,6]]);
+      var t = transpose(m);
+      assert.deepEqual(t.valueOf(), [[1,4],[2,5],[3,6]]);
 
-      m = math.matrix([[1,4],[2,5],[3,6]], 'sparse');
-      assert.deepEqual(transpose(m).toArray(), [[1,2,3],[4,5,6]]);
+      m = math.sparse([[1,4],[2,5],[3,6]]);
+      t = transpose(m);
+      assert.deepEqual(t.toArray(), [[1,2,3],[4,5,6]]);
       
-      m = math.matrix([[1,2],[3,4]], 'sparse');
-      assert.deepEqual(transpose(m).valueOf(), [[1,3],[2,4]]);
+      m = math.sparse([[1,2],[3,4]]);
+      t = transpose(m);
+      assert.deepEqual(t.valueOf(), [[1,3],[2,4]]);
 
-      m = math.matrix([[1,2,3,4]]);
-      assert.deepEqual(transpose(m).valueOf(), [[1],[2],[3],[4]]);
+      m = math.sparse([[1,2,3,4]], 'number');
+      t = transpose(m);
+      assert.deepEqual(t.valueOf(), [[1],[2],[3],[4]]);
+      assert.ok(t.datatype() === 'number');
     });
 
     it('should throw an error for invalid matrix transpose', function() {
