@@ -3,6 +3,7 @@ var math = require('../../../index');
 var index = math.index;
 var Matrix = math.type.Matrix;
 var SparseMatrix = math.type.SparseMatrix;
+var DenseMatrix = math.type.DenseMatrix;
 var Complex = math.type.Complex;
 
 describe('SparseMatrix', function() {
@@ -31,6 +32,24 @@ describe('SparseMatrix', function() {
       assert.deepEqual(m._values, [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1]);
       assert.deepEqual(m._index, [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5]);
       assert.deepEqual(m._ptr, [0, 3, 7, 9, 12, 16, 19]);
+      assert(typeof m._datatype === 'undefined');
+    });
+    
+    it('should create a Sparse Matrix from an array, number datatype', function () {
+      var m = new SparseMatrix(
+        [
+          [10, 0, 0, 0, -2, 0],
+          [3, 9, 0, 0, 0, 3],
+          [0, 7, 8, 7, 0, 0],
+          [3, 0, 8, 7, 5, 0],
+          [0, 8, 0, 9, 9, 13],
+          [0, 4, 0, 0, 2, -1]
+        ], 'number');
+      assert.deepEqual(m._size, [6, 6]);
+      assert.deepEqual(m._values, [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1]);
+      assert.deepEqual(m._index, [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5]);
+      assert.deepEqual(m._ptr, [0, 3, 7, 9, 12, 16, 19]);
+      assert(m._datatype === 'number');
     });
     
     it('should create a Sparse Matrix from an array, empty column', function () {
@@ -89,6 +108,22 @@ describe('SparseMatrix', function() {
       assert.deepEqual(m1._ptr, m2._ptr);
     });
     
+    it('should create a Sparse Matrix from another Sparse Matrix, number datatype', function () {
+      var m1 = new SparseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ], 'number');
+      var m2 = new SparseMatrix(m1);
+      assert.deepEqual(m1._size, m2._size);
+      assert.deepEqual(m1._values, m2._values);
+      assert.deepEqual(m1._index, m2._index);
+      assert.deepEqual(m1._ptr, m2._ptr);
+      assert.deepEqual(m1._datatype, m2._datatype);
+    });
+    
     it('should create a Sparse Matrix from a Dense Matrix', function () {
       var m1 = math.matrix(
         [
@@ -102,8 +137,26 @@ describe('SparseMatrix', function() {
       assert.deepEqual(m1.toArray(), m2.toArray());
     });
     
+    it('should create a Sparse Matrix from a Dense Matrix, number datatype', function () {
+      var m1 = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ], 'dense', 'number');
+      var m2 = new SparseMatrix(m1);
+      assert.deepEqual(m1.size(), m2.size());
+      assert.deepEqual(m1.toArray(), m2.toArray());
+      assert.deepEqual(m1._datatype, m2._datatype);
+    });
+    
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { SparseMatrix(); }, /Constructor must be called with the new operator/);
+    });
+    
+    it('should throw an error when called with invalid datatype', function () {
+      assert.throws(function () { new SparseMatrix([], 1); });
     });
   });
 
@@ -138,6 +191,19 @@ describe('SparseMatrix', function() {
           datatype: undefined
         });
     });
+    
+    it('should serialize Matrix, number datatype', function() {
+      assert.deepEqual(
+        new SparseMatrix([[1, 2], [3, 4]], 'number').toJSON(),
+        {
+          mathjs: 'SparseMatrix',
+          values: [1, 3, 2, 4],
+          index: [0, 1, 0, 1],
+          ptr: [0, 2, 4],
+          size: [2, 2],
+          datatype: 'number'
+        });
+    });
   });
   
   describe('fromJSON', function () {
@@ -160,6 +226,28 @@ describe('SparseMatrix', function() {
           [1, 2],
           [3, 4]
         ]);
+    });
+    
+    it('should deserialize Matrix, number datatype', function() {
+      var json = {
+        mathjs: 'SparseMatrix',
+        values: [1, 3, 2, 4],
+        index: [0, 1, 0, 1],
+        ptr: [0, 2, 4],
+        size: [2, 2],
+        datatype: 'number'
+      };
+      var m = SparseMatrix.fromJSON(json);
+      assert.ok(m instanceof Matrix);
+
+      assert.deepEqual(m._size, [2, 2]);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4]
+        ]);
+      assert.strictEqual(m._datatype, 'number');
     });
     
     it('should deserialize Pattern Matrix', function() {
