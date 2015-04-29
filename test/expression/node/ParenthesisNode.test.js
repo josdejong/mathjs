@@ -112,6 +112,18 @@ describe('ParenthesisNode', function() {
     assert.equal(n.content, clone.content);
   });
 
+  it ('should get the content of a ParenthesisNode', function () {
+    var c = new math.expression.node.ConstantNode(1);
+    var p1 = new math.expression.node.ParenthesisNode(c);
+    var p2 = new math.expression.node.ParenthesisNode(p1);
+
+    assert.equal(p1.content, c);
+    assert.equal(p1.getContent(), c);
+    assert.deepEqual(p1.getContent(), c);
+    assert.equal(p2.getContent(), c);
+    assert.deepEqual(p2.getContent(), c);
+  });
+
   it ('should stringify a ParenthesisNode', function () {
     var a = new ConstantNode(1);
     var n = new ParenthesisNode(a);
