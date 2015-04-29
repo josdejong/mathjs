@@ -125,13 +125,22 @@ describe('subtract', function() {
       assert.deepEqual(subtract([3,4], 2), [1,2]);
     });
 
-    it('should subtract array and matrix correctly', function() {
+    it('should subtract array and dense matrix correctly', function() {
       var a = [1,2,3];
       var b = math.matrix([3,2,1]);
       var c = subtract(a, b);
 
       assert.ok(c instanceof math.type.Matrix);
       assert.deepEqual(c, math.matrix([-2,0,2]));
+    });
+    
+    it('should subtract array and dense matrix correctly', function() {
+      var a = [[1,2,3],[4,5,6]];
+      var b = math.sparse([[6,5,4],[ 3, 2, 1]]);
+      var c = subtract(a, b);
+
+      assert.ok(c instanceof math.type.Matrix);
+      assert.deepEqual(c, math.matrix([[-5,-3,-1],[1,3,5]]));
     });
   });
   
@@ -159,17 +168,25 @@ describe('subtract', function() {
       assert.ok(c instanceof math.type.Matrix);
       assert.deepEqual(c, math.matrix([-2,0,2]));
     });
+    
+    it('should subtract dense and sparse matrices correctly', function() {
+      var a = math.matrix([[1,2,3],[1,0,0]]);
+      var b = math.sparse([[3,2,1],[0,0,1]]);
+      var c = subtract(a, b);
+
+      assert.ok(c instanceof math.type.Matrix);
+      assert.deepEqual(c, math.matrix([[-2,0,2],[1,0,-1]]));
+    });
   });
   
   describe('SparseMatrix', function () {
 
     it('should subtract matrices correctly', function() {
-      var a2 = math.matrix([[10,20],[30,40]], 'sparse');
-      var a3 = math.matrix([[5,6],[7,8]], 'sparse');
+      var a2 = math.matrix([[10,20],[30,0]], 'sparse');
+      var a3 = math.matrix([[5,6],[30,8]], 'sparse');
       var a4 = subtract(a2, a3);
       assert.ok(a4 instanceof math.type.Matrix);
-      assert.deepEqual(a4.size(), [2,2]);
-      assert.deepEqual(a4.valueOf(), [[5,14],[23,32]]);
+      assert.deepEqual(a4, math.sparse([[5,14],[0,-8]]));
     });
 
     it('should subtract a scalar and a matrix correctly', function() {
@@ -184,6 +201,15 @@ describe('subtract', function() {
 
       assert.ok(c instanceof math.type.Matrix);
       assert.deepEqual(c.valueOf(), [[-2,0,2],[1,0,-1]]);
+    });
+    
+    it('should subtract sparse and dense matrices correctly', function() {
+      var a = math.sparse([[1,2,3],[1,0,0]]);
+      var b = math.matrix([[3,2,1],[0,0,1]]);
+      var c = subtract(a, b);
+
+      assert.ok(c instanceof math.type.Matrix);
+      assert.deepEqual(c, math.matrix([[-2,0,2],[1,0,-1]]));
     });
   });
 
