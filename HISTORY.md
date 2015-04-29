@@ -9,6 +9,14 @@
 - Function `import` now returns the imported objects.
 
 
+## not yet released, version 1.6.1-SNAPSHOT
+
+- Extended the command line interface with a `mode` option to output either
+  the expressions result, string representation, or tex representation.
+  Thanks @FSMaxB.
+- Fixed #309: Function median mutating the input matrix. Thanks @FSMaxB. 
+
+
 ## 2015-04-22, version 1.6.0
 
 - Improvements in `toTex`. Thanks @FSMaxB.

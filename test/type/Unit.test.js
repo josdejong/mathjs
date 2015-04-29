@@ -1,6 +1,7 @@
-var assert = require('assert'),
-    approx = require('../../tools/approx'),
-    Unit = require('../../lib/type/Unit');
+var assert = require('assert');
+var approx = require('../../tools/approx');
+var math = require('../../index');
+var Unit = math.type.Unit;
 
 describe('unit', function() {
 

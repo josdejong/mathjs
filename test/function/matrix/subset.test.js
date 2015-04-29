@@ -130,22 +130,22 @@ describe('subset', function() {
     });
 
     it('should throw an error if in case of an invalid index type', function() {
-      assert.throws(function () {subset('hello', 2)}, /Index expected/);
-      assert.throws(function () {subset('hello', 2, 'A')}, /Index expected/);
+      assert.throws(function () {subset('hello', 2)}, /TypeError: Unexpected type of argument/);
+      assert.throws(function () {subset('hello', 2, 'A')}, /TypeError: Unexpected type of argument/);
     });
 
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {subset()}, error.ArgumentsError);
-    assert.throws(function () {subset(d)}, error.ArgumentsError);
-    assert.throws(function () {subset(d, index(0,0), 1, 0, 5)}, error.ArgumentsError);
+    assert.throws(function () {subset()}, /TypeError: Too few arguments/);
+    assert.throws(function () {subset(d)}, /TypeError: Too few arguments/);
+    assert.throws(function () {subset(d, index(0,0), 1, 0, 5)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function() {
-    assert.throws(function () {subset(new Date(), index(0))}, math.error.UnsupportedTypeError);
-    assert.throws(function () {subset(new Date(), index(0), 2)}, math.error.UnsupportedTypeError);
-    assert.throws(function () {subset([1,2], [0])}, math.error.TypeError);
+    assert.throws(function () {subset(new Date(), index(0))}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {subset(new Date(), index(0), 2)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {subset([1,2], [0])}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX subset', function () {

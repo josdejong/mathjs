@@ -1,13 +1,13 @@
 // test not
-var assert = require('assert'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    not = math.not,
-    FunctionNode = require('../../../lib/expression/node/FunctionNode'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode');
+var assert = require('assert');
+var math = require('../../../index');
+var bignumber = math.bignumber;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var not = math.not;
+var FunctionNode = math.expression.node.FunctionNode;
+var ConstantNode = math.expression.node.ConstantNode;
 
 describe('not', function () {
 

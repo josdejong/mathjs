@@ -23,7 +23,6 @@ describe('number', function() {
   it('isNumber', function() {
     assert.equal(number.isNumber(1), true);
     assert.equal(number.isNumber(2e+3), true);
-    assert.equal(number.isNumber(new Number(23)), true);
     assert.equal(number.isNumber(Number(2.3)), true);
     assert.equal(number.isNumber(NaN), true);
     assert.equal(number.isNumber(-23), true);
@@ -40,6 +39,9 @@ describe('number', function() {
     assert.equal(number.isNumber(null), false);
     assert.equal(number.isNumber(undefined), false);
     assert.equal(number.isNumber(), false);
+
+    // we don't support non primitive Numbers anymore
+    assert.equal(number.isNumber(new Number(23)), false);
   });
 
   it('sign', function() {

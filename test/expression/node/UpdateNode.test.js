@@ -3,12 +3,12 @@ var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var bigmath = math.create({number: 'bignumber'});
-var Node = require('../../../lib/expression/node/Node');
-var ConstantNode = require('../../../lib/expression/node/ConstantNode');
-var RangeNode = require('../../../lib/expression/node/RangeNode');
-var IndexNode = require('../../../lib/expression/node/IndexNode');
-var UpdateNode = require('../../../lib/expression/node/UpdateNode');
-var SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var RangeNode = math.expression.node.RangeNode;
+var IndexNode = math.expression.node.IndexNode;
+var UpdateNode = math.expression.node.UpdateNode;
 
 describe('UpdateNode', function() {
 
@@ -23,6 +23,17 @@ describe('UpdateNode', function() {
     assert(n instanceof UpdateNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'UpdateNode');
+  });
+
+  it ('should have isUpdateNode', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(5);
+    var node = new UpdateNode(i, v);
+
+    assert(node.isUpdateNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -319,7 +330,7 @@ describe('UpdateNode', function() {
     var v = new ConstantNode(5);
 
     var n = new UpdateNode(new IndexNode(a, ranges), v);
-    assert.equal(n.toTex(), '\\mathrm{a}_{\\left[2,1\\right]}:=5');
+    assert.equal(n.toTex(), ' a_{\\left[2,1\\right]}:=5');
   });
 
   it ('should LaTeX an UpdateNode with custom toTex', function () {
@@ -349,7 +360,7 @@ describe('UpdateNode', function() {
 
     var n = new UpdateNode(new IndexNode(a, ranges), v);
 
-    assert.equal(n.toTex(customFunction), '\\mathrm{a} at const\\left(2, number\\right), const\\left(1, number\\right),  equals const\\left(5, number\\right)');
+    assert.equal(n.toTex(customFunction), ' a at const\\left(2, number\\right), const\\left(1, number\\right),  equals const\\left(5, number\\right)');
   });
 
 });
