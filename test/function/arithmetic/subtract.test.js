@@ -122,7 +122,9 @@ describe('subtract', function() {
 
     it('should subtract a scalar and an array correctly', function() {
       assert.deepEqual(subtract(2, [3,4]), [-1,-2]);
+      assert.deepEqual(subtract(2, [3,0]), [-1,2]);
       assert.deepEqual(subtract([3,4], 2), [1,2]);
+      assert.deepEqual(subtract([3,0], 2), [1,-2]);
     });
 
     it('should subtract array and dense matrix correctly', function() {
@@ -191,7 +193,9 @@ describe('subtract', function() {
 
     it('should subtract a scalar and a matrix correctly', function() {
       assert.deepEqual(subtract(2, math.matrix([[3,4],[5,6]], 'sparse')).valueOf(), [[-1,-2],[-3,-4]]);
+      assert.deepEqual(subtract(2, math.matrix([[3,4],[0,6]], 'sparse')).valueOf(), [[-1,-2],[2,-4]]);
       assert.deepEqual(subtract(math.matrix([[3,4],[5,6]], 'sparse'), 2).valueOf(), [[1,2],[3,4]]);
+      assert.deepEqual(subtract(math.matrix([[3,4],[0,6]], 'sparse'), 2).valueOf(), [[1,2],[-2,4]]);
     });
 
     it('should subtract matrix and array correctly', function() {
