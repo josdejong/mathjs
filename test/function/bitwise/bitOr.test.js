@@ -57,9 +57,9 @@ describe('bitOr', function () {
   });
 
   it('should throw an error if used with a unit', function() {
-    assert.throws(function () {bitOr(math.unit('5cm'), 2)}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitOr(2, math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitOr(math.unit('2cm'), math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(math.unit('5cm'), 2);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(2, math.unit('5cm'));}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(math.unit('2cm'), math.unit('5cm'));}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error if the parameters are not integers', function () {
@@ -86,6 +86,89 @@ describe('bitOr', function () {
     }, /Integers expected in function bitOr/);
   });
 
+  it('should bitwise or arrays correctly', function () {
+    var a = [[1,4],[3,2]];
+
+    // array - array
+    var b = [[5,8],[7,6]];
+    var c = bitOr(a, b);
+    assert.deepEqual(c, [[5,12],[7,6]]);
+
+    // array - dense
+    b = math.matrix([[5,8],[7,6]]);
+    c = bitOr(a, b);
+    assert.deepEqual(c, math.matrix([[5,12],[7,6]]));
+
+    // array - sparse
+    b = math.sparse([[5,8],[7,6]]);
+    c = bitOr(a, b);
+    assert.deepEqual(c, math.matrix([[5,12],[7,6]]));
+  });
+
+  it('should bitwise or dense matrix correctly', function () {
+    var a = math.matrix([[1,4],[3,2]]);
+
+    // dense - array
+    var b = [[5,8],[7,6]];
+    var c = bitOr(a, b);
+    assert.deepEqual(c, math.matrix([[5,12],[7,6]]));
+
+    // dense - dense
+    b = math.matrix([[5,8],[7,6]]);
+    c = bitOr(a, b);
+    assert.deepEqual(c, math.matrix([[5,12],[7,6]]));
+
+    // dense - sparse
+    b = math.sparse([[5,8],[7,6]]);
+    c = bitOr(a, b);
+    assert.deepEqual(c, math.matrix([[5,12],[7,6]]));
+  });
+
+  it('should bitwise or sparse matrix correctly', function () {
+    var a = math.sparse([[1,4],[3,2]]);
+
+    // sparse - array
+    var b = [[5,8],[7,6]];
+    var c = bitOr(a, b);
+    assert.deepEqual(c, math.matrix([[5,12],[7,6]]));
+
+    // sparse - dense
+    b = math.matrix([[5,8],[7,6]]);
+    c = bitOr(a, b);
+    assert.deepEqual(c, math.matrix([[5,12],[7,6]]));
+
+    // sparse - sparse
+    b = math.sparse([[5,8],[7,6]]);
+    c = bitOr(a, b);
+    assert.deepEqual(c, math.sparse([[5,12],[7,6]]));
+
+    // sparse - sparse pattern
+    a = math.sparse([[1,1],[0,0]]);
+    b = new math.type.SparseMatrix({ 
+      index: [ 0, 1],
+      ptr: [ 0, 1, 2 ],
+      size: [ 2, 2 ]
+    });
+    c = bitOr(a, b);
+    assert.deepEqual(
+      c, 
+      new math.type.SparseMatrix({ 
+        index: [0, 0, 1],
+        ptr: [0, 1, 3],
+        size: [2, 2]
+      }));
+
+    // sparse pattern - sparse
+    c = bitOr(b, a);
+    assert.deepEqual(
+      c, 
+      new math.type.SparseMatrix({ 
+        index: [0, 1, 0], // row index not in order, not a problem!
+        ptr: [0, 1, 3],
+        size: [2, 2]
+      }));
+  });
+  
   it('should bitwise or matrices correctly', function () {
     var a2 = math.matrix([[1,2],[3,4]]);
     var a3 = math.matrix([[5,6],[7,8]]);
@@ -119,21 +202,21 @@ describe('bitOr', function () {
   });
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () {bitOr(1)}, /TypeError: Too few arguments/);
-    assert.throws(function () {bitOr(1, 2, 3)}, /TypeError: Too many arguments/);
+    assert.throws(function () {bitOr(1);}, /TypeError: Too few arguments/);
+    assert.throws(function () {bitOr(1, 2, 3);}, /TypeError: Too many arguments/);
   });
+
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () {bitOr(new Date(), true)}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitOr(true, new Date())}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitOr(true, 'foo')}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitOr('foo', true)}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitOr(true, undefined)}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitOr(undefined, true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(new Date(), true);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(true, new Date());}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(true, 'foo');}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr('foo', true);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(true, undefined);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitOr(undefined, true);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX bitOr', function () {
     var expression = math.parse('bitOr(2,3)');
     assert.equal(expression.toTex(), '\\left(2|3\\right)');
   });
-
 });
