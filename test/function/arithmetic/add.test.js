@@ -187,8 +187,8 @@ describe('add', function() {
     });
 
     it('should add a scalar and a matrix correctly', function() {
-      assert.deepEqual(add(2, math.matrix([[3,4],[5,6]], 'sparse')), math.matrix([[5,6],[7,8]], 'sparse'));
-      assert.deepEqual(add(math.matrix([[3,4],[5,6]], 'sparse'), 2), math.matrix([[5,6],[7,8]], 'sparse'));
+      assert.deepEqual(add(2, math.matrix([[3,4],[5,6]], 'sparse')), math.matrix([[5,6],[7,8]], 'dense'));
+      assert.deepEqual(add(math.matrix([[3,4],[5,6]], 'sparse'), 2), math.matrix([[5,6],[7,8]], 'dense'));
     });
 
     it('should add matrix and array correctly', function() {
