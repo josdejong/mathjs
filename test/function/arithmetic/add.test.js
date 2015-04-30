@@ -112,6 +112,13 @@ describe('add', function() {
       assert.deepEqual(a4, [[6,8],[10,12]]);
     });
     
+    it('should add 3 dimension arrays correctly', function() {
+      var a2 = [[[1,1],[2,2]],[[3,3],[4,4]]];
+      var a3 = [[[5,5],[6,6]],[[7,7],[8,8]]];
+      var a4 = add(a2, a3);
+      assert.deepEqual(a4, [[[6,6],[8,8]],[[10,10],[12,12]]]);
+    });
+    
     it('should add a scalar and an array correctly', function() {
       assert.deepEqual(add(2, [3,4]), [5,6]);
       assert.deepEqual(add([3,4], 2), [5,6]);
@@ -150,6 +157,13 @@ describe('add', function() {
       assert.ok(a4 instanceof math.type.Matrix);
       assert.deepEqual(a4.size(), [2,2]);
       assert.deepEqual(a4.valueOf(), [[6,8],[10,12]]);
+    });
+    
+    it('should add 3 dimension natrices correctly', function() {
+      var a2 = math.matrix([[[1,1],[2,2]],[[3,3],[4,4]]]);
+      var a3 = math.matrix([[[5,5],[6,6]],[[7,7],[8,8]]]);
+      var a4 = add(a2, a3);
+      assert.deepEqual(a4, math.matrix([[[6,6],[8,8]],[[10,10],[12,12]]]));
     });
     
     it('should add a scalar and a matrix correctly', function() {
