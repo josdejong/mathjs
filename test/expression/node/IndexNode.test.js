@@ -59,7 +59,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var expr = n.compile(math);
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -78,7 +78,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var expr = n.compile(math);
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -96,7 +96,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var expr = n.compile(math);
 
     var scope = {
       a: [[1, 2], [3, 4]]

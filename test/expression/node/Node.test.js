@@ -79,7 +79,7 @@ describe('Node', function() {
       node.type = 'SpecialNode';  //this is necessary because toTex
                                   //returns '' for a Node
       node._toTex();
-    }, /_toTex not implemented for this Node/);
+    }, /_toTex not implemented for SpecialNode/);
   });
 
   it ('should ignore custom toTex if it returns nothing', function () {
