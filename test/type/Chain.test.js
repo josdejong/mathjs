@@ -11,29 +11,11 @@ describe('Chain', function() {
     assert.equal(new Chain(0).add(3).done(), 3);
   });
 
-  it('should chain operations with bignumbers', function() {
-    var result = new Chain(math.bignumber(3))
-        .add(4)
-        .subtract(math.bignumber(2))
-        .done();
-    assert.deepEqual(result, math.bignumber(5));
-  });
+  it('should not contain constants, only functions', function() {
+    var chain = new Chain(math.bignumber(3));
 
-
-  it('should update constants when configuration is changed', function() {
-    var bigmath = math.create();
-    approx.equal(new bigmath.type.Chain().pi.done(), Math.PI);
-
-    bigmath.config({number: 'bignumber'});
-
-    approx.deepEqual(new bigmath.type.Chain().pi.done(),
-        math.bignumber('3.141592653589793238462643383279502884197169399375105820974944592'));
-  });
-
-  it('should chain operations with constants', function() {
-    approx.equal(new Chain().pi.done(), Math.PI);
-    approx.deepEqual(new Chain().i.multiply(2).add(3).done(), math.complex(3, 2));
-    approx.equal(new Chain().pi.divide(4).sin().pow(2).done(), 0.5);
+    assert(typeof chain.pi, 'undefined');
+    assert(typeof chain.sin, 'function');
   });
 
   it('should chain operations with matrices', function() {
@@ -61,10 +43,15 @@ describe('Chain', function() {
     assert.equal(b.done(), 2.3);
   });
 
-  // FIXME: should not break with null or true as value
-  it.skip('should not break with null or true as value', function() {
+  it('should create a proxy for imported functions', function() {
+    math.import({hello: function (a) { return a + '!'}});
+    var a = new Chain('hello').hello().done();
+    assert.strictEqual(a, 'hello!');
+  });
+
+  it('should not break with null or true as value', function() {
     assert.equal(new Chain(null).add('').done(), 'null');
-    assert.equal(new Chain(true).add('').done(), 'true');
+    assert.equal(new Chain(true).add(1).done(), 2);
   });
 
   it('should throw an error if called with wrong input', function() {

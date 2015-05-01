@@ -28,6 +28,7 @@ function create (config) {
   math.error = require('./lib/error');
 
   // data types (Matrix, Complex, Unit, ...)
+  math.import(require('./lib/type/Chain'));
   math.import(require('./lib/type/Complex'));
   math.import(require('./lib/type/Range'));
   math.import(require('./lib/type/Index'));
@@ -70,11 +71,6 @@ function create (config) {
   math.import(require('./lib/function/trigonometry'));
   math.import(require('./lib/function/units'));
   math.import(require('./lib/function/utils')); // contains the config function
-
-  // create Chain, and create proxies for all functions/constants in the math
-  // namespace.
-  math.import(require('./lib/type/Chain'));
-  // TODO: move Chain to the other types
 
   return math;
 }
