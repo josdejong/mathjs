@@ -1,8 +1,8 @@
 // test data type Range
 
-var assert = require('assert'),
-    math = require('../../index'),
-    Range = math.type.Range;
+var assert = require('assert');
+var math = require('../../index');
+var Range = math.type.Range;
 
 describe('range', function() {
   describe('create', function() {
