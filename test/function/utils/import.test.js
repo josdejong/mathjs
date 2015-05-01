@@ -84,7 +84,7 @@ describe('import', function() {
   it('should extend math with numbers', function() {
     // extend math.js with numbers.js
     // examples copied from https://github.com/sjkaliski/numbers.js/blob/master/examples/statistic.js
-    math.import('numbers', {wrap: true});
+    math.import(require('numbers'), {wrap: true});
 
     assert.equal(math.fibonacci(7), 13);
 
@@ -124,23 +124,14 @@ describe('import', function() {
     approx.equal(estFollowers, 1422.431464053916);
   });
 
-  it.skip('should throw an error when trying to load a module when no module loader is available', function () {
-    var orig = require;
-    require = undefined;
-
-    assert.throws(function () {math.import('numbers');}, /Cannot load file: require not available/);
-
-    require = orig;
-  });
-
   it('should throw an error in case of wrong number of arguments', function () {
     assert.throws (function () {math.import()}, /ArgumentsError/);
     assert.throws (function () {math.import('', {}, 3)}, /ArgumentsError/);
   });
 
   it('should throw an error in case of wrong type of arguments', function () {
-    assert.throws(function () {math.import(2)}, /Object or module name expected/);
-    assert.throws(function () {math.import(function () {})}, /Object or module name expected/);
+    assert.throws(function () {math.import(2)}, /TypeError: Factory, Object, or Array expected/);
+    assert.throws(function () {math.import(function () {})}, /TypeError: Factory, Object, or Array expected/);
   });
 
   it('should ignore properties on Object', function () {

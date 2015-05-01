@@ -41,7 +41,7 @@ print(math.eval('hello("user")'));    // 'hello, user!'
  */
 try {
   // import the numbers.js library into math.js
-  math.import('numbers', {wrap: true});
+  math.import(require('numbers'), {wrap: true});
 }
 catch (err) {
   console.log('Warning: to import numbers.js, the library must\n' +
@@ -61,7 +61,7 @@ if (math.fibonacci) {
  */
 try {
   // import the numeric.js library into math.js
-  math.import('numeric', {wrap: true});
+  math.import(require('numeric'), {wrap: true});
 }
 catch (err) {
   console.log('Warning: to import numeric.js, the library must\n' +
