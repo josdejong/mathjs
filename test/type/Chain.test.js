@@ -1,8 +1,8 @@
 // test chain
-var assert = require('assert'),
-    approx = require('../../tools/approx'),
-    math = require('../../index'),
-    Chain = math.type.Chain;
+var assert = require('assert');
+var approx = require('../../tools/approx');
+var math = require('../../index');
+var Chain = math.type.Chain;
 
 describe('Chain', function() {
 
@@ -17,6 +17,17 @@ describe('Chain', function() {
         .subtract(math.bignumber(2))
         .done();
     assert.deepEqual(result, math.bignumber(5));
+  });
+
+
+  it('should update constants when configuration is changed', function() {
+    var bigmath = math.create();
+    approx.equal(new bigmath.type.Chain().pi.done(), Math.PI);
+
+    bigmath.config({number: 'bignumber'});
+
+    approx.deepEqual(new bigmath.type.Chain().pi.done(),
+        math.bignumber('3.141592653589793238462643383279502884197169399375105820974944592'));
   });
 
   it('should chain operations with constants', function() {

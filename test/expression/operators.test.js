@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var math = require('../../loader').create();
+var math = require('../../core').create();
 var operators = require('../../lib/expression/operators');
 var OperatorNode = math.import(require('../../lib/expression/node/OperatorNode'));
 var AssignmentNode = math.import(require('../../lib/expression/node/AssignmentNode'));

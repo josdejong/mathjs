@@ -1,25 +1,31 @@
-var loader = require('./loader');
+var core = require('./core');
 
 /**
  * math.js factory function. Creates a new instance of math.js
  *
  * @param {Object} [config] Available configuration options:
- *                            {String} matrix
+ *                            {number} epsilon
+ *                              Minimum relative difference between two
+ *                              compared values, used by all comparison functions.
+ *                            {string} matrix
  *                              A string 'matrix' (default) or 'array'.
- *                            {String} number
+ *                            {string} number
  *                              A string 'number' (default) or 'bignumber'
- *                            {Number} precision
+ *                            {number} precision
  *                              The number of significant digits for BigNumbers.
  *                              Not applicable for Numbers.
  */
 function create (config) {
-  // create a new, empty math.js instance
-  // TODO: pass config here
-  var math = loader.create();
+  // create a new math.js instance
+  var math = core.create(config);
   math.create = create;
 
   // util methods for Arrays and Matrices
+  // TODO: export these utils in a separate path utils or something, together with ./lib/utils?
   math.import(require('./lib/type/collection'));
+
+  // errors
+  math.error = require('./lib/error');
 
   // data types (Matrix, Complex, Unit, ...)
   math.import(require('./lib/type/Complex'));
@@ -34,24 +40,28 @@ function create (config) {
   math.import(require('./lib/type/ResultSet'));
   math.import(require('./lib/type/BigNumber'));
   math.import(require('./lib/type/FibonacciHeap'));
+  math.import(require('./lib/function/construction'));
+  // TODO: how to group ./lib/function/construction?
 
   // FIXME: load constants via math.import() like all functions (problem: it must be reloaded when config changes)
   // constants
   math.import(require('./lib/constants'));
+  math.import(require('./lib/constants'));
 
   // expression (expression.parse, expression.Parser, expression.node.*, expression.docs.*)
   math.import(require('./lib/expression'));
+  math.import(require('./lib/function/expression'));
+  // TODO: where to put ./lib/function/expression?
 
-  // serialization utilities (math.json.reviver)
+  // serialization utility (math.json.reviver)
   math.import(require('./lib/json'));
+  // TODO: put ./lib/json in core.js?
 
   // functions
   math.import(require('./lib/function/algebra'));
   math.import(require('./lib/function/arithmetic'));
   math.import(require('./lib/function/bitwise'));
   math.import(require('./lib/function/complex'));
-  math.import(require('./lib/function/construction'));
-  math.import(require('./lib/function/expression'));
   math.import(require('./lib/function/logical'));
   math.import(require('./lib/function/matrix'));
   math.import(require('./lib/function/probability'));
@@ -63,12 +73,8 @@ function create (config) {
 
   // create Chain, and create proxies for all functions/constants in the math
   // namespace.
-  // TODO: load Chain via math.import
-  math.type.Chain = require('./lib/type/Chain')();
-  math.type.Chain.createProxy(math);
-
-  // apply custom options
-  math.config(config);
+  math.import(require('./lib/type/Chain'));
+  // TODO: move Chain to the other types
 
   return math;
 }

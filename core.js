@@ -1,12 +1,29 @@
 var isFactory = require('./lib/util/object').isFactory;
+var deepExtend = require('./lib/util/object').deepExtend;
+var typedFactory = require('./lib/util/typed');
+var emitter = require('./lib/util/emitter');
 
 /**
- * Math.js loader. Creates a new, empty math.js instance
- * @returns {Object} Returns a math.js instance containing
- *                   a function `import` to add new functions
+ * Math.js core. Creates a new, empty math.js instance
+ * @param {Object} [options] Available options:
+ *                            {number} epsilon
+ *                              Minimum relative difference between two
+ *                              compared values, used by all comparison functions.
+ *                            {string} matrix
+ *                              A string 'matrix' (default) or 'array'.
+ *                            {string} number
+ *                              A string 'number' (default) or 'bignumber'
+ *                            {number} precision
+ *                              The number of significant digits for BigNumbers.
+ *                              Not applicable for Numbers.
+ * @returns {Object} Returns a bare-bone math.js instance containing
+ *                   functions:
+ *                   - `import` to add new functions
+ *                   - `config` to change configuration
+ *                   - `on`, `off`, `once`, `emit` for events
+ *
  */
-// TODO: support passing config here
-exports.create = function create () {
+exports.create = function create (options) {
   // simple test for ES5 support
   if (typeof Object.create !== 'function') {
     throw new Error('ES5 not supported by this JavaScript engine. ' +
@@ -17,13 +34,13 @@ exports.create = function create () {
   var factories = [];
   var instances = [];
 
-  // create a namespace for the mathjs instance
-  var math = {
+  // create a namespace for the mathjs instance, and attach emitter functions
+  var math = emitter.mixin({
     type: {}
-  };
+  });
 
   // create a new typed instance
-  var typed = require('./lib/util/typed').create(math);
+  var typed = typedFactory.create(math);
 
   // create configuration options. These are private
   var _config = {
@@ -40,6 +57,11 @@ exports.create = function create () {
     // used by all comparison functions
     epsilon: 1e-14
   };
+
+  if (options) {
+    // merge options
+    deepExtend(_config, options);
+  }
 
   /**
    * Load a function or data type from a factory.
@@ -77,13 +99,9 @@ exports.create = function create () {
     return instance;
   }
 
-  // load the import function, which can be used to load all other functions,
-  // constants, and types
+  // load the import and config functions
   math['import'] = load(require('./lib/function/utils/import'));
-  // TODO: automatically load config method too? Like import?
-
-  // errors
-  math.error = require('./lib/error');
+  math['config'] = load(require('./lib/function/utils/config'));
 
   return math;
 };
