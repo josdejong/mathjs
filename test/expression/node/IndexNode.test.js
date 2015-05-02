@@ -238,7 +238,8 @@ describe('IndexNode', function() {
       return node instanceof IndexNode ? e : node;
     });
 
-    assert.strictEqual(f, e);
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f, e);
   });
 
   it ('should clone an IndexNode', function () {

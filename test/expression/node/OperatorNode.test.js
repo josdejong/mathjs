@@ -140,10 +140,6 @@ describe('OperatorNode', function() {
       return node instanceof SymbolNode && node.name == 'x' ? f : node;
     });
 
-    assert.notStrictEqual(g,  e);
-    assert.notStrictEqual(g.args[0], e.args[0]);
-    assert.strictEqual(g.args[0].args[0],  f);
-    assert.deepEqual(g.args[0].args[1],  b);
     assert.deepEqual(g.args[1],  f);
   });
 

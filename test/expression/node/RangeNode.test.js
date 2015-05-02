@@ -197,7 +197,7 @@ describe('RangeNode', function() {
       return node instanceof RangeNode ? e : node;
     });
 
-    assert.strictEqual(f, e);
+    assert.deepEqual(f, e);
   });
 
   it ('should clone a RangeNode', function () {

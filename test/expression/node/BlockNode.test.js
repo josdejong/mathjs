@@ -177,7 +177,9 @@ describe('BlockNode', function() {
     var e = a.transform(function (node) {
       return node instanceof BlockNode ? d : node;
     });
-    assert.strictEqual(e, d);
+
+    assert.notStrictEqual(e, a);
+    assert.deepEqual(e, d);
   });
 
   it ('should traverse a BlockNode', function () {

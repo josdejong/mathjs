@@ -149,7 +149,8 @@ describe('AssignmentNode', function() {
       return node instanceof AssignmentNode ? e : node;
     });
 
-    assert.strictEqual(f, e);
+    assert.notStrictEqual(f, d);
+    assert.deepEqual(f, e);
   });
 
   it ('should traverse an AssignmentNode', function () {

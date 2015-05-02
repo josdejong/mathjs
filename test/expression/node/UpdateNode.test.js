@@ -277,7 +277,7 @@ describe('UpdateNode', function() {
       return node instanceof UpdateNode ? e : node;
     });
 
-    assert.strictEqual(f, e);
+    assert.deepEqual(f, e);
   });
 
   it ('should clone an UpdateNode', function () {

@@ -7,6 +7,8 @@
   the expressions result, string representation, or tex representation.
   Thanks @FSMaxB.
 - Fixed #309: Function median mutating the input matrix. Thanks @FSMaxB. 
+- Fixed `Node.transform` not recursing over replaced parts of the 
+  node tree (see #349).
 
 
 ## 2015-04-22, version 1.6.0
