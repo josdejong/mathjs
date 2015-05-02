@@ -21,7 +21,6 @@ var emitter = require('./lib/util/emitter');
  *                   - `import` to add new functions
  *                   - `config` to change configuration
  *                   - `on`, `off`, `once`, `emit` for events
- *
  */
 exports.create = function create (options) {
   // simple test for ES5 support

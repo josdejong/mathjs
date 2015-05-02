@@ -16,6 +16,7 @@ var core = require('./core');
  *                              Not applicable for Numbers.
  */
 function create (config) {
+
   // create a new math.js instance
   var math = core.create(config);
   math.create = create;
@@ -44,12 +45,10 @@ function create (config) {
   math.import(require('./lib/function/construction'));
   // TODO: how to group ./lib/function/construction?
 
-  // FIXME: load constants via math.import() like all functions (problem: it must be reloaded when config changes)
   // constants
   math.import(require('./lib/constants'));
-  math.import(require('./lib/constants'));
 
-  // expression (expression.parse, expression.Parser, expression.node.*, expression.docs.*)
+  // expression parsing
   math.import(require('./lib/expression'));
   math.import(require('./lib/function/expression'));
   // TODO: where to put ./lib/function/expression?
@@ -70,7 +69,7 @@ function create (config) {
   math.import(require('./lib/function/statistics'));
   math.import(require('./lib/function/trigonometry'));
   math.import(require('./lib/function/units'));
-  math.import(require('./lib/function/utils')); // contains the config function
+  math.import(require('./lib/function/utils'));
 
   return math;
 }
