@@ -11,17 +11,16 @@ describe('bellNumbers', function() {
     assert.equal(bellNumbers(8), 4140);
   });
 
-  // it('should calculate the bellNumbers of n items with BigNumbers', function(){
-  //   assert.deepEqual(bellNumbers(math.bignumber(2)), math.bignumber(2));
-  // //   assert.deepEqual(bellNumbers(math.bignumber(10), math.bignumber(4)),math.bignumber(34105));
-  // //   assert.deepEqual(bellNumbers(math.bignumber(8), math.bignumber(6)),math.bignumber(266));
-  // });
+  it('should calculate the bellNumbers of n items with BigNumbers', function(){
+    assert.deepEqual(bellNumbers(math.bignumber(2)), math.bignumber(2));
+    assert.deepEqual(bellNumbers(math.bignumber(3)), math.bignumber(5));
+  });
 
   it('should not work with non-integer and negative input', function() {
     assert.throws(function() {bellNumbers(0.5)}, TypeError);
     assert.throws(function() {bellNumbers(-1)}, TypeError);
-    // assert.throws(function() {bellNumbers(math.bignumber(-3))}, TypeError);
-    // assert.throws(function() {bellNumbers(math.bignumber(3.5))}, TypeError);
+    assert.throws(function() {bellNumbers(math.bignumber(-3))}, TypeError);
+    assert.throws(function() {bellNumbers(math.bignumber(3.5))}, TypeError);
   });
 
   it('should not work with the wrong number or type of arguments', function() {
