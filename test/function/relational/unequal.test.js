@@ -4,6 +4,7 @@ var assert = require('assert'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
+    sparse = math.sparse,
     unit = math.unit,
     unequal = math.unequal;
 
@@ -66,8 +67,8 @@ describe('unequal', function() {
     assert.deepEqual(unequal(bignumber(2), 3), true);
     assert.deepEqual(unequal(2, bignumber(2)), false);
 
-    assert.throws(function () {unequal(1/3, bignumber(1).div(3))}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
-    assert.throws(function () {unequal(bignumber(1).div(3), 1/3)}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {unequal(1/3, bignumber(1).div(3));}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {unequal(bignumber(1).div(3), 1/3);}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should compare mixed booleans and bignumbers', function() {
@@ -128,13 +129,13 @@ describe('unequal', function() {
   });
 
   it('should throw an error when comparing numbers and units', function() {
-    assert.throws(function () {unequal(unit('100cm'), 22)});
-    assert.throws(function () {unequal(22, unit('100cm'))});
+    assert.throws(function () {unequal(unit('100cm'), 22);});
+    assert.throws(function () {unequal(22, unit('100cm'));});
   });
 
   it('should throw an error when comparing bignumbers and units', function() {
-    assert.throws(function () {unequal(unit('100cm'), bignumber(22))});
-    assert.throws(function () {unequal(bignumber(22), unit('100cm'))});
+    assert.throws(function () {unequal(unit('100cm'), bignumber(22));});
+    assert.throws(function () {unequal(bignumber(22), unit('100cm'));});
   });
 
   it('should throw an error for two measures of different units', function() {
@@ -147,23 +148,77 @@ describe('unequal', function() {
     assert.equal(unequal('hello', 'hello'), false);
   });
 
-  it('should compare a string an matrix elementwise', function() {
-    assert.deepEqual(unequal('B', ['A', 'B', 'C']), [true, false, true]);
-    assert.deepEqual(unequal(['A', 'B', 'C'], 'B'), [true, false, true]);
+  describe('Array', function () {
+
+    it('should compare array - scalar', function () {
+      assert.deepEqual(unequal('B', ['A', 'B', 'C']), [true, false, true]);
+      assert.deepEqual(unequal(['A', 'B', 'C'], 'B'), [true, false, true]);
+    });
+
+    it('should compare array - array', function () {
+      assert.deepEqual(unequal([[1, 2, 0], [-1, 0, 2]], [[1, -1, 0], [-1, 1, 0]]), [[false, true, false], [false, true, true]]);
+    });
+
+    it('should compare array - dense matrix', function () {
+      assert.deepEqual(unequal([[1, 2, 0], [-1, 0, 2]], matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, true, true]]));
+    });
+
+    it('should compare array - sparse matrix', function () {
+      assert.deepEqual(unequal([[1, 2, 0], [-1, 0, 2]], sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, true, true]]));
+    });
+
+    it('should throw an error if arrays have different sizes', function() {
+      assert.throws(function () {unequal([1,4,5], [3,4]);});
+    });
   });
 
-  it('should compare two matrices element wise', function() {
-    assert.deepEqual(unequal([1,4,5], [3,4,5]), [true, false, false]);
-    assert.deepEqual(unequal([1,4,5], matrix([3,4,5])), matrix([true, false, false]));
+  describe('DenseMatrix', function () {
+
+    it('should compare dense matrix - scalar', function () {
+      assert.deepEqual(unequal('B', matrix(['A', 'B', 'C'])), matrix([true, false, true]));
+      assert.deepEqual(unequal(matrix(['A', 'B', 'C']), 'B'), matrix([true, false, true]));
+    });
+
+    it('should compare dense matrix - array', function () {
+      assert.deepEqual(unequal(matrix([[1, 2, 0], [-1, 0, 2]]), [[1, -1, 0], [-1, 1, 0]]), matrix([[false, true, false], [false, true, true]]));
+    });
+
+    it('should compare dense matrix - dense matrix', function () {
+      assert.deepEqual(unequal(matrix([[1, 2, 0], [-1, 0, 2]]), matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, true, true]]));
+    });
+
+    it('should compare dense matrix - sparse matrix', function () {
+      assert.deepEqual(unequal(matrix([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, true, true]]));
+    });
+  });
+
+  describe('SparseMatrix', function () {
+
+    it('should compare sparse matrix - scalar', function () {
+      assert.deepEqual(unequal('B', sparse([['A', 'B'], ['C', 'D']])), matrix([[true, false], [true, true]]));
+      assert.deepEqual(unequal(sparse([['A', 'B'], ['C', 'D']]), 'B'), matrix([[true, false], [true, true]]));
+    });
+
+    it('should compare sparse matrix - array', function () {
+      assert.deepEqual(unequal(sparse([[1, 2, 0], [-1, 0, 2]]), [[1, -1, 0], [-1, 1, 0]]), matrix([[false, true, false], [false, true, true]]));
+    });
+
+    it('should compare sparse matrix - dense matrix', function () {
+      assert.deepEqual(unequal(sparse([[1, 2, 0], [-1, 0, 2]]), matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, true, true]]));
+    });
+
+    it('should compare sparse matrix - sparse matrix', function () {
+      assert.deepEqual(unequal(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, true, true]]));
+    });
   });
 
   it('should throw an error if matrices have different sizes', function() {
-    assert.throws(function () {unequal([1,4,5], [3,4])});
+    assert.throws(function () {unequal([1,4,5], [3,4]);});
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {unequal(1)}, /TypeError: Too few arguments/);
-    assert.throws(function () {unequal(1, 2, 3)}, /TypeError: Too many arguments/);
+    assert.throws(function () {unequal(1);}, /TypeError: Too few arguments/);
+    assert.throws(function () {unequal(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX unequal', function () {
