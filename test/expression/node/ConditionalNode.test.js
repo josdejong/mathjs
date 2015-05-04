@@ -1,12 +1,12 @@
 // test ConditionalNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    AssignmentNode = require('../../../lib/expression/node/AssignmentNode'),
-    ConditionalNode = require('../../../lib/expression/node/ConditionalNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var AssignmentNode = math.expression.node.AssignmentNode;
+var ConditionalNode = math.expression.node.ConditionalNode;
 
 describe('ConditionalNode', function() {
   var condition = new ConstantNode(true);
@@ -22,6 +22,11 @@ describe('ConditionalNode', function() {
     assert(n instanceof ConditionalNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'ConditionalNode');
+  });
+
+  it ('should have isConditionalNode', function () {
+    var node = new ConditionalNode(condition, a, b);
+    assert(node.isConditionalNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -257,7 +262,7 @@ describe('ConditionalNode', function() {
   it ('should LaTeX a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 
-    assert.equal(n.toTex(), '\\left\\{\\begin{array}{l l}{\\mathrm{a}:=2}, &\\quad{\\text{if}\\;true}\\\\{\\mathrm{b}:=3}, &\\quad{\\text{otherwise}}\\end{array}\\right.');
+    assert.equal(n.toTex(), '\\left\\{\\begin{array}{l l}{a:=2}, &\\quad{\\text{if}\\;true}\\\\{b:=3}, &\\quad{\\text{otherwise}}\\end{array}\\right.');
   });
 
   it ('should LaTeX a ConditionalNode with custom toTex', function () {

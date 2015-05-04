@@ -1,10 +1,12 @@
 // test gcd
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
+    matrix = math.matrix,
+    sparse = math.sparse,
     gcd = math.gcd;
 
 describe('gcd', function() {
+
   it('should find the greatest common divisor of two or more numbers', function() {
     assert.strictEqual(gcd(12, 8), 4);
     assert.strictEqual(gcd(8, 12), 4);
@@ -75,7 +77,7 @@ describe('gcd', function() {
   it('should throw an error for non-integer numbers', function() {
     assert.throws(function () {gcd(2, 4.1); }, /Parameters in function gcd must be integer numbers/);
     assert.throws(function () {gcd(2.3, 4); }, /Parameters in function gcd must be integer numbers/);
-  })
+  });
 
   it('should throw an error with complex numbers', function() {
     assert.throws(function () {gcd(math.complex(1,3),2); }, /TypeError: Unexpected type of argument/);
@@ -89,14 +91,69 @@ describe('gcd', function() {
   it('should throw an error with units', function() {
     assert.throws(function () { gcd(math.unit('5cm'), 2); }, /TypeError: Unexpected type of argument/);
   });
+  
+  describe('Array', function () {
+    
+    it('should find the greatest common divisor array - scalar', function() {
+      assert.deepEqual(gcd([5, 18, 3], 3), [1, 3, 3]);
+      assert.deepEqual(gcd(3, [5, 18, 3]), [1, 3, 3]);
+    });
+    
+    it('should find the greatest common divisor array - array', function() {
+      assert.deepEqual(gcd([5, 2, 3], [25, 3, 6]), [5, 1, 3]);
+    });
+    
+    it('should find the greatest common divisor array - dense matrix', function() {
+      assert.deepEqual(gcd([5, 2, 3], matrix([25, 3, 6])), matrix([5, 1, 3]));
+    });
 
-  it('should find the greatest common divisor element-wise in a matrix', function() {
-    assert.deepEqual(gcd([5,2,3], [25,3,6]), [5, 1, 3]);
+    it('should find the greatest common divisor array - sparse matrix', function() {
+      assert.deepEqual(gcd([[5, 2, 3], [3, 2, 5]], sparse([[0, 3, 6], [6, 0, 25]])), matrix([[5, 1, 3], [3, 2, 5]]));
+    });
+  });
+  
+  describe('DenseMatrix', function () {
+
+    it('should find the greatest common divisor dense matrix - scalar', function() {
+      assert.deepEqual(gcd(matrix([5, 18, 3]), 3), matrix([1, 3, 3]));
+      assert.deepEqual(gcd(3, matrix([5, 18, 3])), matrix([1, 3, 3]));
+    });
+
+    it('should find the greatest common divisor dense matrix - array', function() {
+      assert.deepEqual(gcd(matrix([5, 2, 3]), [25, 3, 6]), matrix([5, 1, 3]));
+    });
+
+    it('should find the greatest common divisor dense matrix - dense matrix', function() {
+      assert.deepEqual(gcd(matrix([5, 2, 3]), matrix([25, 3, 6])), matrix([5, 1, 3]));
+    });
+
+    it('should find the greatest common divisor dense matrix - sparse matrix', function() {
+      assert.deepEqual(gcd(matrix([[5, 2, 3], [3, 2, 5]]), sparse([[0, 3, 6], [6, 0, 25]])), matrix([[5, 1, 3], [3, 2, 5]]));
+    });
+  });
+  
+  describe('SparseMatrix', function () {
+
+    it('should find the greatest common divisor sparse matrix - scalar', function() {
+      assert.deepEqual(gcd(sparse([[5, 0, 3], [0, 18, 0]]), 3), matrix([[1, 3, 3], [3, 3, 3]]));
+      assert.deepEqual(gcd(3, sparse([[5, 0, 3], [0, 18, 0]])), matrix([[1, 3, 3], [3, 3, 3]]));
+    });
+
+    it('should find the greatest common divisor sparse matrix - array', function() {
+      assert.deepEqual(gcd(sparse([[5, 2, 3], [3, 2, 5]]), [[0, 3, 6], [6, 0, 25]]), matrix([[5, 1, 3], [3, 2, 5]]));
+    });
+
+    it('should find the greatest common divisor sparse matrix - dense matrix', function() {
+      assert.deepEqual(gcd(sparse([[5, 2, 3], [3, 2, 5]]), matrix([[0, 3, 6], [6, 0, 25]])), matrix([[5, 1, 3], [3, 2, 5]]));
+    });
+
+    it('should find the greatest common divisor sparse matrix - sparse matrix', function() {
+      assert.deepEqual(gcd(sparse([[5, 2, 3], [3, 2, 5]]), sparse([[0, 3, 6], [6, 0, 25]])), sparse([[5, 1, 3], [3, 2, 5]]));
+    });
   });
 
   it('should LaTeX gcd', function () {
     var expression = math.parse('gcd(2,3)');
     assert.equal(expression.toTex(), '\\gcd\\left(2,3\\right)');
   });
-
 });

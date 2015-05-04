@@ -45,7 +45,7 @@ describe('print', function() {
 
   it('should LaTeX print', function () {
     var expression = math.parse('print(template,values)');
-    assert.equal(expression.toTex(), '\\mathrm{print}\\left(\\mathrm{template},\\mathrm{values}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{print}\\left( template, values\\right)');
   });
 
 });

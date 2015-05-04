@@ -1,16 +1,16 @@
 // test FunctionAssignmentNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    OperatorNode = require('../../../lib/expression/node/OperatorNode'),
-    ConditionalNode = require('../../../lib/expression/node/ConditionalNode'),
-    FunctionNode = require('../../../lib/expression/node/FunctionNode'),
-    FunctionAssignmentNode = require('../../../lib/expression/node/FunctionAssignmentNode'),
-    AssignmentNode = require('../../../lib/expression/node/AssignmentNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var AssignmentNode = math.expression.node.AssignmentNode;
+var ConditionalNode = math.expression.node.ConditionalNode;
+var OperatorNode = math.expression.node.OperatorNode;
+var FunctionNode = math.expression.node.FunctionNode;
+var FunctionAssignmentNode = math.expression.node.FunctionAssignmentNode;
+var RangeNode = math.expression.node.RangeNode;
 
 describe('FunctionAssignmentNode', function() {
 
@@ -19,6 +19,11 @@ describe('FunctionAssignmentNode', function() {
     assert(n instanceof FunctionAssignmentNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'FunctionAssignmentNode');
+  });
+
+  it ('should have isFunctionAssignmentNode', function () {
+    var node = new FunctionAssignmentNode('f', ['x'], new ConstantNode(2));
+    assert(node.isFunctionAssignmentNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -265,7 +270,7 @@ describe('FunctionAssignmentNode', function() {
     var p = new OperatorNode('^', 'pow', [o, a]);
     var n = new FunctionAssignmentNode('f', ['x'], p);
 
-    assert.equal(n.toTex(), '\\mathrm{f}\\left(\\mathrm{x}\\right):=\\left({\\frac{\\mathrm{x}}{2}}\\right)^{2}');
+    assert.equal(n.toTex(), '\\mathrm{f}\\left(x\\right):=\\left({\\frac{ x}{2}}\\right)^{2}');
   });
 
   it ('should LaTeX a FunctionAssignmentNode containing an AssignmentNode', function () {
@@ -274,7 +279,7 @@ describe('FunctionAssignmentNode', function() {
     var n1 = new AssignmentNode('a', a);
     var n = new FunctionAssignmentNode('f', ['x'], n1);
 
-    assert.equal(n.toTex(), '\\mathrm{f}\\left(\\mathrm{x}\\right):=\\left(\\mathrm{a}:=2\\right)');
+    assert.equal(n.toTex(), '\\mathrm{f}\\left(x\\right):=\\left(a:=2\\right)');
   });
 
   it ('should LaTeX a FunctionAssignmentNode with custom toTex', function () {

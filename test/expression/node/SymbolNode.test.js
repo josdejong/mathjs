@@ -1,11 +1,11 @@
 // test SymbolNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    OperatorNode = require('../../../lib/expression/node/OperatorNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var OperatorNode = math.expression.node.OperatorNode;
 
 describe('SymbolNode', function() {
 
@@ -14,6 +14,11 @@ describe('SymbolNode', function() {
     assert(n instanceof SymbolNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'SymbolNode');
+  });
+
+  it ('should have isSymbolNode', function () {
+    var node = new SymbolNode('a');
+    assert(node.isSymbolNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -105,7 +110,7 @@ describe('SymbolNode', function() {
   it ('should LaTeX a SymbolNode', function () {
     var s = new SymbolNode('foo');
 
-    assert.equal(s.toTex(), '\\mathrm{foo}');
+    assert.equal(s.toTex(), ' foo');
   });
 
   it ('should LaTeX a SymbolNode with custom toTex', function () {

@@ -1,12 +1,13 @@
 // test IndexNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    bigmath = require('../../../index').create({number: 'bignumber'}),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    IndexNode = require('../../../lib/expression/node/IndexNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bigmath = require('../../../index').create({number: 'bignumber'});
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var IndexNode = math.expression.node.IndexNode;
+var RangeNode = math.expression.node.RangeNode;
 
 describe('IndexNode', function() {
 
@@ -15,6 +16,11 @@ describe('IndexNode', function() {
     assert(n instanceof IndexNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'IndexNode');
+  });
+
+  it ('should have isIndexNode', function () {
+    var node = new IndexNode(new Node(), []);
+    assert(node.isIndexNode);
   });
 
   it ('should throw an error when calling with wrong arguments', function () {
@@ -53,7 +59,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var expr = n.compile(math);
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -72,7 +78,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var expr = n.compile(math);
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -90,7 +96,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var expr = n.compile(math);
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -279,10 +285,10 @@ describe('IndexNode', function() {
     ];
 
     var n = new IndexNode(a, ranges);
-    assert.equal(n.toTex(), '\\mathrm{a}_{\\left[2,1\\right]}');
+    assert.equal(n.toTex(), ' a_{\\left[2,1\\right]}');
 
     var n2 = new IndexNode(a, []);
-    assert.equal(n2.toTex(), '\\mathrm{a}_{\\left[\\right]}')
+    assert.equal(n2.toTex(), ' a_{\\left[\\right]}')
   });
 
   it ('should LaTeX an IndexNode with custom toTex', function () {
@@ -307,7 +313,7 @@ describe('IndexNode', function() {
 
     var n = new IndexNode(a, [b, c]);
 
-    assert.equal(n.toTex(customFunction), '\\mathrm{a} at const\\left(1, number\\right), const\\left(2, number\\right), ');
+    assert.equal(n.toTex(customFunction), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ');
   });
 
 });

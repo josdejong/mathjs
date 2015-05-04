@@ -2,7 +2,7 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
-var Node = require('../../../lib/expression/node/Node');
+var Node = math.expression.node.Node;
 
 describe('Node', function() {
   function MyNode () {}
@@ -15,6 +15,11 @@ describe('Node', function() {
   it ('should create a Node', function () {
     var n = new Node();
     assert(n instanceof Node);
+  });
+
+  it ('should have isNode', function () {
+    var node = new Node();
+    assert(node.isNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -63,12 +68,6 @@ describe('Node', function() {
     }, /Cannot clone a Node interface/);
   });
 
-  it ('should test whether an object is a Node', function () {
-    assert.equal(Node.isNode(new Node()), true);
-    assert.equal(Node.isNode(new Date()), false);
-    assert.equal(Node.isNode(2), false);
-  });
-
   it ('should stringify a Node', function () {
     var node = new Node();
     assert.equal(node.toString(), '');
@@ -80,7 +79,7 @@ describe('Node', function() {
       node.type = 'SpecialNode';  //this is necessary because toTex
                                   //returns '' for a Node
       node._toTex();
-    }, /_toTex not implemented for this Node/);
+    }, /_toTex not implemented for SpecialNode/);
   });
 
   it ('should ignore custom toTex if it returns nothing', function () {

@@ -1,11 +1,11 @@
 // test ConstantNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    bigmath = require('../../../index').create({number: 'bignumber'}),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bigmath = require('../../../index').create({number: 'bignumber'});
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
 
 describe('ConstantNode', function() {
 
@@ -27,6 +27,11 @@ describe('ConstantNode', function() {
     assert.deepEqual(new ConstantNode(false), new ConstantNode('false', 'boolean'));
     assert.deepEqual(new ConstantNode(null), new ConstantNode('null', 'null'));
     assert.deepEqual(new ConstantNode(undefined), new ConstantNode('undefined', 'undefined'));
+  });
+
+  it ('should have isConstantNode', function () {
+    var node = new ConstantNode(1);
+    assert(node.isConstantNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -132,7 +137,7 @@ describe('ConstantNode', function() {
   it ('should LaTeX a ConstantNode', function () {
     assert.equal(new ConstantNode('3', 'number').toTex(), '3');
     assert.deepEqual(new ConstantNode('3', 'number').toTex(), '3');
-    assert.equal(new ConstantNode('hi', 'string').toTex(), '\\text{hi}');
+    assert.equal(new ConstantNode('hi', 'string').toTex(), '\\mathtt{"hi"}');
     assert.equal(new ConstantNode('true', 'boolean').toTex(), 'true');
     assert.equal(new ConstantNode('false', 'boolean').toTex(), 'false');
     assert.equal(new ConstantNode('undefined', 'undefined').toTex(), 'undefined');
