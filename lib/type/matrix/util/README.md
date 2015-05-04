@@ -5,8 +5,8 @@
   * Output type is a `DenseMatrix` (the cloned matrix)
   * `x()` operation invoked NZ times (number of nonzero items in `SparseMatrix`)
 
-  **Cij = x(Dij, Sij);    Sij != 0**
-  **Cij = Dij        ;    otherwise**
+    **Cij = x(Dij, Sij);    Sij != 0**
+    **Cij = Dij        ;    otherwise**
 
 - **Algorithm 2 `x(dense, sparse)`**
   * Algorithm should iterate `SparseMatrix` (nonzero items) and call the `x(d(i,j),s(i,j))` operation for the items in the Sparse and Dense matrices (since zero & X == zero)
