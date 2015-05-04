@@ -130,7 +130,7 @@ describe('atan2', function() {
   describe('SparseMatrix', function () {
 
     it('should calculate atan2 sparse matrix - scalar', function () {
-      assert.deepEqual(divide(atan2(1, sparse([[1, -1], [0, 1]])), pi), sparse([[0.25, 0.75], [0.5, 0.25]]));
+      assert.deepEqual(divide(atan2(1, sparse([[1, -1], [0, 1]])), pi), matrix([[0.25, 0.75], [0.5, 0.25]]));
       assert.deepEqual(divide(atan2(sparse([[1, -1], [0, 1]]), 1), pi), sparse([[0.25, -0.25], [0, 0.25]]));
     });
 
