@@ -8,7 +8,7 @@ Algorithms for the implementation of element wise operations between a Dense and
   **Cij = x(Dij, Sij);    Sij != 0**
   **Cij = Dij          ;    otherwise**
 
-_ **Algorithm 2 `x(dense, sparse)`**
+- **Algorithm 2 `x(dense, sparse)`**
   * Algorithm should iterate `SparseMatrix` (nonzero items) and call the `x(d(i,j),s(i,j))` operation for the items in the Sparse and Dense matrices (since zero & X == zero)
   * Output type is a `SparseMatrix` since the number of nonzero items will be less or equal the number of nonzero elements in the Sparse Matrix.
   * `x()` operation invoked NZ times (number of nonzero items in `SparseMatrix`)
