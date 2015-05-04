@@ -1,4 +1,4 @@
-**Algorithms for the implementation of element wise operations between a Dense and Sparse matrices:**
+##Algorithms for the implementation of element wise operations between a Dense and Sparse matrices:
 
 - **Algorithm 1 `x(dense, sparse)`**
   * Algorithm should clone `DenseMatrix` and call the `x(d(i,j), s(i,j))` operation for the items in the Dense and Sparse matrices (iterating on the Sparse matrix nonzero items), updating the cloned matrix.
