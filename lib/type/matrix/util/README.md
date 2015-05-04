@@ -6,7 +6,7 @@
   * `x()` operation invoked NZ times (number of nonzero items in `SparseMatrix`)
 
   **Cij = x(Dij, Sij);    Sij != 0**
-  **Cij = Dij          ;    otherwise**
+  **Cij = Dij        ;    otherwise**
 
 - **Algorithm 2 `x(dense, sparse)`**
   * Algorithm should iterate `SparseMatrix` (nonzero items) and call the `x(d(i,j),s(i,j))` operation for the items in the Sparse and Dense matrices (since zero & X == zero)
@@ -22,7 +22,7 @@
   * `x()` operation invoked M*N times
 
   **Cij = x(Dij, Sij);    Sij != 0**
-  **Cij = x(Dij, 0);    otherwise**
+  **Cij = x(Dij, 0)  ;    otherwise**
 
 - **Algorithm 4 `x(sparse, sparse)`**
   * Algorithm should iterate on the nonzero values of matrices A and B and call `x(Aij, Bij)` when both matrices contain value at (i,j)
@@ -30,8 +30,8 @@
   * `x()` operation invoked NZ times (number of nonzero items at the same (i,j) for both matrices)
 
   **Cij = x(Aij, Bij);    Aij != 0 && Bij != 0**
-  **Cij = Aij;    Aij != 0**
-  **Cij = Bij;    Bij != 0**
+  **Cij = Aij        ;    Aij != 0**
+  **Cij = Bij        ;    Bij != 0**
 
 **Algorithms for the implementation of element wise operations between a Sparse matrices:**
 
@@ -41,7 +41,7 @@
   * `x()` operation invoked NZ times (number of nonzero values in A only + number of nonzero values in B only + number of nonzero values in A and B)
 
   **Cij = x(Aij, Bij);    Aij != 0 || Bij != 0**
-  **Cij = 0;  otherwise**
+  **Cij = 0          ;    otherwise**
 
 - **Algorithm 6 `x(sparse, sparse)`**
   * Algorithm should iterate on the nonzero values of matrices A and B and call `x(Aij, Bij)` when both matrices contain value at (i,j).
@@ -49,7 +49,7 @@
   * `x()` operation invoked NZ times (number of nonzero items at the same (i,j) for both matrices)
 
   **Cij = x(Aij, Bij);    Aij != 0 && Bij != 0**
-  **Cij = 0;  otherwise**
+  **Cij = 0          ;    otherwise**
 
 - **Algorithm 7 `x(sparse, sparse)`**
   * Algorithm should iterate on all values of matrices A and B and call `x(Aij, Bij)`
@@ -64,8 +64,8 @@
   * `x()` operation invoked NZ times (number of nonzero items at the same (i,j) for both matrices)
 
   **Cij = x(Aij, Bij);    Aij != 0 && Bij != 0**
-  **Cij = Aij;  Aij != 0**
-  **Cij = 0;  otherwise**
+  **Cij = Aij        ;    Aij != 0**
+  **Cij = 0          ;    otherwise**
 
 - **Algorithm 9 `x(sparse, sparse)`**
   * Algorithm should iterate on the nonzero values of matrices A `x(Aij, Bij)`.
@@ -73,7 +73,7 @@
   * `x()` operation invoked NZA times (number of nonzero items in A)
 
   **Cij = x(Aij, Bij);    Aij != 0**
-  **Cij = 0;  otherwise**
+  **Cij = 0          ;    otherwise**
   
 **Algorithms for the implementation of element wise operations between a Sparse and Scalar Value:**
 
@@ -83,7 +83,7 @@
   * `x()` operation invoked NZ times (number of nonzero items)
 
   **Cij = x(Aij, N);    Aij != 0**
-  **Cij = N;    otherwise**
+  **Cij = N        ;    otherwise**
 
 - **Algorithm 11 `x(sparse, scalar)`**
   * Algorithm should iterate on the nonzero values of matrix A and call `x(Aij, N)`.
@@ -91,7 +91,7 @@
   * `x()` operation invoked NZ times (number of nonzero items)
 
   **Cij = x(Aij, N);    Aij != 0**
-  **Cij = 0;    otherwise**
+  **Cij = 0        ;    otherwise**
 
 - **Algorithm 12 `x(sparse, scalar)`**
   * Algorithm should iterate on the zero and nonzero values of matrix A and call `x(Aij, N)`.
@@ -99,7 +99,7 @@
   * `x()` operation invoked MxN times.
 
   **Cij = x(Aij, N);    Aij != 0**
-  **Cij = x(0, N);    otherwise**
+  **Cij = x(0, N)  ;    otherwise**
   
 **Algorithms for the implementation of element wise operations between a Dense and Dense matrices:**
 
