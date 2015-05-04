@@ -14,6 +14,7 @@ describe('composition', function() {
   it('should calculate the composition of n items taken k at a time with BigNumbers', function(){
     assert.equal(composition(math.bignumber(7), math.bignumber(5)), math.bignumber(15));
     assert.equal(composition(math.bignumber(70), math.bignumber(3)), math.bignumber(2346));
+    assert.equal(composition(math.bignumber(56), math.bignumber(11)), math.bignumber(29248649430));
   });
 
   it('should not work with non-integer and negative input', function() {
