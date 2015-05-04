@@ -33,7 +33,7 @@
   **Cij = Aij        ;    Aij != 0**
   **Cij = Bij        ;    Bij != 0**
 
-**Algorithms for the implementation of element wise operations between a Sparse matrices:**
+###Algorithms for the implementation of element wise operations between a Sparse matrices:
 
 - **Algorithm 5 `x(sparse, sparse)`**
   * Algorithm should iterate on the nonzero values of matrices A and B and call `x(Aij, Bij)` for every nonzero value.
@@ -75,7 +75,7 @@
   **Cij = x(Aij, Bij);    Aij != 0**
   **Cij = 0          ;    otherwise**
   
-**Algorithms for the implementation of element wise operations between a Sparse and Scalar Value:**
+###Algorithms for the implementation of element wise operations between a Sparse and Scalar Value:
 
 - **Algorithm 10 `x(sparse, scalar)`**
   * Algorithm should iterate on the nonzero values of matrix A and call `x(Aij, N)`.
@@ -101,7 +101,7 @@
   **Cij = x(Aij, N);    Aij != 0**
   **Cij = x(0, N)  ;    otherwise**
   
-**Algorithms for the implementation of element wise operations between a Dense and Dense matrices:**
+###Algorithms for the implementation of element wise operations between a Dense and Dense matrices:
 
 - **Algorithm 13 `x(dense, dense)`
   * Algorithm should iterate on the values of matrix A and B for all dimensions and call `x(Aij..z,Bij..z)`
@@ -110,7 +110,7 @@
 
   **Cij..z = x(Aij..z, Bij..z)**
   
-**Algorithms for the implementation of element wise operations between a Dense Matrix and a Scalar Value:**
+###Algorithms for the implementation of element wise operations between a Dense Matrix and a Scalar Value:
 
 - **Algorithm 14 `x(dense, scalar)`**
   * Algorithm should iterate on the values of matrix A for all dimensions and call `x(Aij..z, N)`
