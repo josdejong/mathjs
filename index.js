@@ -21,24 +21,17 @@ function create (config) {
   var math = core.create(config);
   math.create = create;
 
-  // util methods for Arrays and Matrices
-  // TODO: export these utils in a separate path utils or something, together with ./lib/utils?
-  math.import(require('./lib/type/matrix/collection'));
-
-  // errors
-  math.error = require('./lib/error');
-
   // data types (Matrix, Complex, Unit, ...)
-  math.import(require('./lib/type/Chain'));
-  math.import(require('./lib/type/Complex'));
-  math.import(require('./lib/type/Range'));
-  math.import(require('./lib/type/Index'));
+  math.import(require('./lib/type/bignumber'));
+  math.import(require('./lib/type/chain'));
+  math.import(require('./lib/type/complex'));
+  math.import(require('./lib/type/help'));
+  math.import(require('./lib/type/index'));
   math.import(require('./lib/type/matrix'));
-  math.import(require('./lib/type/Unit'));
-  math.import(require('./lib/type/Help'));
-  math.import(require('./lib/type/ResultSet'));
-  math.import(require('./lib/type/BigNumber'));
-  math.import(require('./lib/function/construction'));
+  math.import(require('./lib/type/primitive')); // number, string, boolean
+  math.import(require('./lib/type/range'));
+  math.import(require('./lib/type/resultset'));
+  math.import(require('./lib/type/unit'));
 
   // constants
   math.import(require('./lib/constants'));
@@ -62,6 +55,13 @@ function create (config) {
   math.import(require('./lib/function/trigonometry'));
   math.import(require('./lib/function/units'));
   math.import(require('./lib/function/utils'));
+
+  // util methods for Arrays and Matrices
+  // TODO: export these utils in a separate path utils or something, together with ./lib/utils?
+  math.import(require('./lib/type/matrix/collection'));
+
+  // errors
+  math.error = require('./lib/error');
 
   return math;
 }
