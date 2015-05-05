@@ -50,8 +50,6 @@ function create (config) {
 
   // expression parsing
   math.import(require('./lib/expression'));
-  math.import(require('./lib/function/expression'));
-  // TODO: where to put ./lib/function/expression?
 
   // serialization utility (math.json.reviver)
   math.import(require('./lib/json'));
