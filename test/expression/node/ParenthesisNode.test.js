@@ -131,10 +131,38 @@ describe('ParenthesisNode', function() {
     assert.equal(n.toString(), '(1)');
   });
 
+  it ('should stringify a ParenthesisNode when not in keep mode', function () {
+    var allMath = math.create({parenthesis: 'all'});
+    var autoMath = math.create({parenthesis: 'auto'});
+
+    var allC = new allMath.expression.node.ConstantNode(1);
+    var autoC = new autoMath.expression.node.ConstantNode(1);
+
+    var allP = new allMath.expression.node.ParenthesisNode(allC);
+    var autoP = new autoMath.expression.node.ParenthesisNode(autoC);
+
+    assert.equal(allP.toString(), '1');
+    assert.equal(autoP.toString(), '1');
+  });
+
   it ('should LaTeX a ParenthesisNode', function () {
     var a = new ConstantNode(1);
     var n = new ParenthesisNode(a);
 
     assert.equal(n.toTex(), '\\left(1\\right)');
+  });
+
+  it ('should LaTeX a ParenthesisNode when not in keep mode', function () {
+    var allMath = math.create({parenthesis: 'all'});
+    var autoMath = math.create({parenthesis: 'auto'});
+
+    var allC = new allMath.expression.node.ConstantNode(1);
+    var autoC = new autoMath.expression.node.ConstantNode(1);
+
+    var allP = new allMath.expression.node.ParenthesisNode(allC);
+    var autoP = new autoMath.expression.node.ParenthesisNode(autoC);
+
+    assert.equal(allP.toTex(), '1');
+    assert.equal(autoP.toTex(), '1');
   });
 });
