@@ -38,9 +38,7 @@ function create (config) {
   math.import(require('./lib/type/Help'));
   math.import(require('./lib/type/ResultSet'));
   math.import(require('./lib/type/BigNumber'));
-  math.import(require('./lib/type/FibonacciHeap'));
   math.import(require('./lib/function/construction'));
-  // TODO: how to group ./lib/function/construction?
 
   // constants
   math.import(require('./lib/constants'));
