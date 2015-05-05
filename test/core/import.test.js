@@ -1,8 +1,8 @@
 // test import
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    mathjs = require('../../../index'),
-    approx = require('../../../tools/approx');
+    error = require('../../lib/error/index'),
+    mathjs = require('../../index'),
+    approx = require('../../tools/approx');
 
 describe('import', function() {
   var math = null;
