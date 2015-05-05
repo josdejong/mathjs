@@ -6,13 +6,6 @@ describe('Spa', function() {
 
   describe('constructor', function() {
     
-    it('Should create Spa with initial length', function () {
-      var spa = new Spa(10);
-      assert(spa._values !== null);
-      assert(spa._heap !== null);
-      assert.equal(spa._values.length, 10);
-    });
-    
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { Spa(); }, /Constructor must be called with the new operator/);
     });
