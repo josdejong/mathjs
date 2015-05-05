@@ -3,6 +3,7 @@ var math = require('../../../index');
 var index = math.index;
 var Matrix = math.type.Matrix;
 var SparseMatrix = math.type.SparseMatrix;
+var DenseMatrix = math.type.DenseMatrix;
 var Complex = math.type.Complex;
 
 describe('SparseMatrix', function() {
@@ -31,6 +32,24 @@ describe('SparseMatrix', function() {
       assert.deepEqual(m._values, [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1]);
       assert.deepEqual(m._index, [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5]);
       assert.deepEqual(m._ptr, [0, 3, 7, 9, 12, 16, 19]);
+      assert(typeof m._datatype === 'undefined');
+    });
+    
+    it('should create a Sparse Matrix from an array, number datatype', function () {
+      var m = new SparseMatrix(
+        [
+          [10, 0, 0, 0, -2, 0],
+          [3, 9, 0, 0, 0, 3],
+          [0, 7, 8, 7, 0, 0],
+          [3, 0, 8, 7, 5, 0],
+          [0, 8, 0, 9, 9, 13],
+          [0, 4, 0, 0, 2, -1]
+        ], 'number');
+      assert.deepEqual(m._size, [6, 6]);
+      assert.deepEqual(m._values, [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1]);
+      assert.deepEqual(m._index, [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5]);
+      assert.deepEqual(m._ptr, [0, 3, 7, 9, 12, 16, 19]);
+      assert(m._datatype === 'number');
     });
     
     it('should create a Sparse Matrix from an array, empty column', function () {
@@ -89,6 +108,22 @@ describe('SparseMatrix', function() {
       assert.deepEqual(m1._ptr, m2._ptr);
     });
     
+    it('should create a Sparse Matrix from another Sparse Matrix, number datatype', function () {
+      var m1 = new SparseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ], 'number');
+      var m2 = new SparseMatrix(m1);
+      assert.deepEqual(m1._size, m2._size);
+      assert.deepEqual(m1._values, m2._values);
+      assert.deepEqual(m1._index, m2._index);
+      assert.deepEqual(m1._ptr, m2._ptr);
+      assert.deepEqual(m1._datatype, m2._datatype);
+    });
+    
     it('should create a Sparse Matrix from a Dense Matrix', function () {
       var m1 = math.matrix(
         [
@@ -102,8 +137,26 @@ describe('SparseMatrix', function() {
       assert.deepEqual(m1.toArray(), m2.toArray());
     });
     
+    it('should create a Sparse Matrix from a Dense Matrix, number datatype', function () {
+      var m1 = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ], 'dense', 'number');
+      var m2 = new SparseMatrix(m1);
+      assert.deepEqual(m1.size(), m2.size());
+      assert.deepEqual(m1.toArray(), m2.toArray());
+      assert.deepEqual(m1._datatype, m2._datatype);
+    });
+    
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { SparseMatrix(); }, /Constructor must be called with the new operator/);
+    });
+    
+    it('should throw an error when called with invalid datatype', function () {
+      assert.throws(function () { new SparseMatrix([], 1); });
     });
   });
 
@@ -134,7 +187,21 @@ describe('SparseMatrix', function() {
           values: [1, 3, 2, 4],
           index: [0, 1, 0, 1],
           ptr: [0, 2, 4],
-          size: [2, 2]
+          size: [2, 2],
+          datatype: undefined
+        });
+    });
+    
+    it('should serialize Matrix, number datatype', function() {
+      assert.deepEqual(
+        new SparseMatrix([[1, 2], [3, 4]], 'number').toJSON(),
+        {
+          mathjs: 'SparseMatrix',
+          values: [1, 3, 2, 4],
+          index: [0, 1, 0, 1],
+          ptr: [0, 2, 4],
+          size: [2, 2],
+          datatype: 'number'
         });
     });
   });
@@ -158,6 +225,49 @@ describe('SparseMatrix', function() {
         [
           [1, 2],
           [3, 4]
+        ]);
+    });
+    
+    it('should deserialize Matrix, number datatype', function() {
+      var json = {
+        mathjs: 'SparseMatrix',
+        values: [1, 3, 2, 4],
+        index: [0, 1, 0, 1],
+        ptr: [0, 2, 4],
+        size: [2, 2],
+        datatype: 'number'
+      };
+      var m = SparseMatrix.fromJSON(json);
+      assert.ok(m instanceof Matrix);
+
+      assert.deepEqual(m._size, [2, 2]);
+      assert.deepEqual(
+        m.toArray(),
+        [
+          [1, 2],
+          [3, 4]
+        ]);
+      assert.strictEqual(m._datatype, 'number');
+    });
+    
+    it('should deserialize Pattern Matrix', function() {
+      var json = {
+        mathjs: 'SparseMatrix',
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      };
+      var m = SparseMatrix.fromJSON(json);
+      assert.ok(m instanceof Matrix);
+
+      assert.deepEqual(m._size, [3, 3]);
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [1, 0, 1],
+          [1, 0, 0],
+          [0, 1, 0]
         ]);
     });
   });
@@ -184,6 +294,17 @@ describe('SparseMatrix', function() {
           [0, 1/3]
         ]);
       assert.equal(m.format(4), 'Sparse Matrix [2 x 2] density: 0.25\n\n    (1, 1) ==> 0.3333');
+    });
+    
+    it('should format pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+
+      assert.equal(m.format(3), 'Sparse Matrix [3 x 3] density: 0.444\n\n    (0, 0) ==> X\n    (1, 0) ==> X\n    (2, 1) ==> X\n    (0, 2) ==> X');
     });
   });
   
@@ -450,6 +571,16 @@ describe('SparseMatrix', function() {
     it('should throw an error in case of dimension mismatch', function() {
       var m = new SparseMatrix([[0, 1], [2, 3]]);
       assert.throws(function () { m.get([0,2,0,2,0,2]); }, /Dimension mismatch/);
+    });
+    
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.get([0,1]); }, /Cannot invoke get on a Pattern only matrix/);
     });
 
     it('should get matrix element', function () {
@@ -721,6 +852,16 @@ describe('SparseMatrix', function() {
           [-2, -2, -2, -2, 33]
         ]);
     });
+    
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.set([0,1], 1); }, /Cannot invoke set on a Pattern only matrix/);
+    });
   });
 
   describe('get subset', function() {
@@ -774,6 +915,16 @@ describe('SparseMatrix', function() {
     it('should throw an error in case of dimension mismatch', function() {
       var m = new SparseMatrix([[1,2,3],[4,5,6]]);
       assert.throws(function () { m.subset(index([0,2])); }, /Dimension mismatch/);
+    });
+    
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.subset(index(1, 1)); }, /Cannot invoke subset on a Pattern only matrix/);
     });
   });
 
@@ -985,6 +1136,16 @@ describe('SparseMatrix', function() {
     it ('should throw an error in case of wrong size of submatrix', function () {
       assert.throws(function () { new SparseMatrix().subset(index(0), [2,3]); }, /Scalar expected/);
     });
+    
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.subset(index([2, 4], [2, 4]), [[1, 2], [3, 4]], -1); }, /Cannot invoke subset on a Pattern only matrix/);
+    });
   });
   
   describe('map', function() {
@@ -1079,6 +1240,16 @@ describe('SparseMatrix', function() {
           [1104, 1115, 1126]
         ]);
     });
+    
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.map(function () {}, m, true); }, /Cannot invoke map on a Pattern only matrix/);
+    });
   });
   
   describe('forEach', function() {
@@ -1137,6 +1308,16 @@ describe('SparseMatrix', function() {
       );
       assert.deepEqual(output, [1001, 1104, 1012, 1115, 1023, 1126]);
     });
+
+    it('should throw an error when invoked on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      assert.throws(function () { m.forEach(function () {}); }, /Cannot invoke forEach on a Pattern only matrix/);
+    });
   });
   
   describe('clone', function() {
@@ -1150,6 +1331,19 @@ describe('SparseMatrix', function() {
 
       var m2 = m1.clone();
 
+      assert.deepEqual(m1.toArray(), m2.toArray());
+    });
+    
+    it('should clone pattern matrix', function() {
+      var m1 = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+      
+      var m2 = m1.clone();
+      
       assert.deepEqual(m1.toArray(), m2.toArray());
     });
   });
@@ -1839,6 +2033,25 @@ describe('SparseMatrix', function() {
           [0, 5, 0],
           [0, 2, 0],
           [10, 0, 0]
+        ]);
+    });
+    
+    it('should swap rows on a pattern matrix', function() {
+      var m = new SparseMatrix({
+        values: undefined,
+        index: [0, 1, 2, 0],
+        ptr: [0, 2, 3, 4],
+        size: [3, 3]
+      });
+
+      m.swapRows(0, 2);
+
+      assert.deepEqual(
+        m.valueOf(),
+        [
+          [0, 1, 0],
+          [1, 0, 0],
+          [1, 0, 1]
         ]);
     });
   });

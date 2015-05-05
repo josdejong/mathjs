@@ -1,11 +1,11 @@
 // test atan2
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,
     matrix = math.matrix,
+    sparse = math.sparse,
     unit = math.unit,
     divide = math.divide,
     atan2 = math.atan2,
@@ -16,15 +16,15 @@ var assert = require('assert'),
 describe('atan2', function() {
 
   it('should calculate atan2 correctly', function() {
-    approx.equal(atan2(0, 0) / pi, 0);
-    approx.equal(atan2(0, 1) / pi, 0);
-    approx.equal(atan2(1, 1) / pi, 0.25);
-    approx.equal(atan2(1, 0) / pi, 0.5);
-    approx.equal(atan2(1, -1) / pi, 0.75);
-    approx.equal(atan2(0, -1) / pi, 1);
-    approx.equal(atan2(-1, -1) / pi, -0.75);
-    approx.equal(atan2(-1, 0) / pi, -0.5);
-    approx.equal(atan2(-1, 1) / pi, -0.25);
+    assert.equal(atan2(0, 0) / pi, 0);
+    assert.equal(atan2(0, 1) / pi, 0);
+    assert.equal(atan2(1, 1) / pi, 0.25);
+    assert.equal(atan2(1, 0) / pi, 0.5);
+    assert.equal(atan2(1, -1) / pi, 0.75);
+    assert.equal(atan2(0, -1) / pi, 1);
+    assert.equal(atan2(-1, -1) / pi, -0.75);
+    assert.equal(atan2(-1, 0) / pi, -0.5);
+    assert.equal(atan2(-1, 1) / pi, -0.25);
   });
 
   it('should calculate atan2 for booleans', function() {
@@ -80,32 +80,91 @@ describe('atan2', function() {
   });
 
   it('should throw an error if called with a string', function() {
-    assert.throws(function () {atan2('string', 1)});
+    assert.throws(function () {atan2('string', 1);});
   });
 
   it('should throw an error if called with a unit', function() {
-    assert.throws(function () {atan2(unit('5cm'), 1)});
+    assert.throws(function () {atan2(unit('5cm'), 1);});
+  });
+  
+  describe('Array', function () {
+
+    it('should calculate atan2 array - scalar', function () {
+      assert.deepEqual(divide(atan2(1, [1, -1, 0]), pi), [0.25, 0.75, 0.5]);
+      assert.deepEqual(divide(atan2([1, -1, 0], 1), pi), [0.25, -0.25, 0]);
+    });
+
+    it('should calculate atan2 array - array', function () {
+      assert.deepEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], [[-1, 0, 1], [1, 1, 1]]), pi), [[0.75, -0.5, 0], [0.25, -0.25, 0]]);
+    });
+
+    it('should calculate atan2 array - dense matrix', function () {
+      assert.deepEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], matrix([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]));
+    });
+
+    it('should calculate atan2 array - sparse matrix', function () {
+      assert.deepEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], sparse([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]));
+    });
+  });
+
+  describe('DenseMatrix', function () {
+
+    it('should calculate atan2 dense matrix - scalar', function () {
+      assert.deepEqual(divide(atan2(1, matrix([1, -1, 0])), pi), matrix([0.25, 0.75, 0.5]));
+      assert.deepEqual(divide(atan2(matrix([1, -1, 0]), 1), pi), matrix([0.25, -0.25, 0]));
+    });
+
+    it('should calculate atan2 dense matrix - array', function () {
+      assert.deepEqual(divide(atan2(matrix([[1, -1, 0], [1, -1, 0]]), [[-1, 0, 1], [1, 1, 1]]), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]));
+    });
+
+    it('should calculate atan2 dense matrix - dense matrix', function () {
+      assert.deepEqual(divide(atan2(matrix([[1, -1, 0], [1, -1, 0]]), matrix([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]));
+    });
+
+    it('should calculate atan2 dense matrix - sparse matrix', function () {
+      assert.deepEqual(divide(atan2(matrix([[1, -1, 0], [1, -1, 0]]), sparse([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]));
+    });
+  });
+
+  describe('SparseMatrix', function () {
+
+    it('should calculate atan2 sparse matrix - scalar', function () {
+      assert.deepEqual(divide(atan2(1, sparse([[1, -1], [0, 1]])), pi), matrix([[0.25, 0.75], [0.5, 0.25]]));
+      assert.deepEqual(divide(atan2(sparse([[1, -1], [0, 1]]), 1), pi), sparse([[0.25, -0.25], [0, 0.25]]));
+    });
+
+    it('should calculate atan2 sparse matrix - array', function () {
+      assert.deepEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), [[-1, 0, 1], [1, 1, 1]]), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]));
+    });
+
+    it('should calculate atan2 sparse matrix - dense matrix', function () {
+      assert.deepEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), matrix([[-1, 0, 1], [1, 1, 1]])), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]));
+    });
+
+    it('should calculate atan2 sparse matrix - sparse matrix', function () {
+      assert.deepEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), sparse([[-1, 0, 1], [1, 1, 1]])), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]));
+    });
   });
 
   it('should calculate the atan2 element-wise for arrays and matrices', function() {
     // array, matrix, range
-    approx.deepEqual(divide(atan2([1,0,-1], [1,0,-1]), pi), [0.25, 0, -0.75]);
+    approx.deepEqual(divide(atan2([1, 0, -1], [1, 0, -1]), pi), [0.25, 0, -0.75]);
     approx.deepEqual(divide(atan2(
         matrix([1,0,-1]),
         matrix([1,0,-1])), pi),
         matrix([0.25, 0, -0.75]));
-    approx.equal(atan2(0, 2) / pi, 0);
-    approx.equal(atan2(0, -2) / pi, 1);
+    assert.equal(atan2(0, 2) / pi, 0);
+    assert.equal(atan2(0, -2) / pi, 1);
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {atan2(1)}, /TypeError: Too few arguments/);
-    assert.throws(function () {atan2(1, 2, 3)}, /TypeError: Too many arguments/);
+    assert.throws(function () {atan2(1);}, /TypeError: Too few arguments/);
+    assert.throws(function () {atan2(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX atan2', function () {
     var expression = math.parse('atan2(1,1)');
     assert.equal(expression.toTex(), '\\mathrm{atan2}\\left(1,1\\right)');
   });
-
 });

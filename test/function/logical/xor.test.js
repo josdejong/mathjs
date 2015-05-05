@@ -4,6 +4,7 @@ var assert = require('assert'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
+    sparse = math.sparse,
     unit = math.unit,
     xor = math.xor;
 
@@ -127,23 +128,68 @@ describe('xor', function () {
     assert.deepEqual(xor([], []), []);
   });
 
-  it('should xor mixed numbers and arrays', function () {
-    assert.deepEqual(xor(10, [0, 2]), [true, false]);
-    assert.deepEqual(xor([0, 2], 10), [true, false]);
-    assert.deepEqual(xor(0, [0, 2]), [false, true]);
-    assert.deepEqual(xor([0, 2], 0), [false, true]);
+  describe('Array', function () {
+
+    it('should xor array - scalar', function () {
+      assert.deepEqual(xor(10, [0, 2]), [true, false]);
+      assert.deepEqual(xor([0, 2], 10), [true, false]);
+    });
+
+    it('should xor array - array', function () {
+      assert.deepEqual(xor([0, 1, 0, 12], [0, 0, 1, 22]), [false, true, true, false]);
+      assert.deepEqual(xor([], []), []);
+    });
+
+    it('should xor array - dense matrix', function () {
+      assert.deepEqual(xor([0, 1, 0, 12], matrix([0, 0, 1, 22])), matrix([false, true, true, false]));
+      assert.deepEqual(xor([], matrix([])), matrix([]));
+    });
+
+    it('should xor array - sparse matrix', function () {
+      assert.deepEqual(xor([[0, 1], [0, 12]], sparse([[0, 0], [1, 22]])), matrix([[false, true], [true, false]]));
+    });
   });
 
-  it('should xor two matrices', function () {
-    assert.deepEqual(xor(matrix([0, 1, 0, 12]), matrix([0, 0, 1, 22])), matrix([false, true, true, false]));
-    assert.deepEqual(xor(matrix([]), matrix([])), matrix([]));
+  describe('DenseMatrix', function () {
+
+    it('should xor dense matrix - scalar', function () {
+      assert.deepEqual(xor(10, matrix([0, 2])), matrix([true, false]));
+      assert.deepEqual(xor(matrix([0, 2]), 10), matrix([true, false]));
+    });
+
+    it('should xor dense matrix - array', function () {
+      assert.deepEqual(xor(matrix([0, 1, 0, 12]), [0, 0, 1, 22]), matrix([false, true, true, false]));
+      assert.deepEqual(xor(matrix([]), []), matrix([]));
+    });
+
+    it('should xor dense matrix - dense matrix', function () {
+      assert.deepEqual(xor(matrix([0, 1, 0, 12]), matrix([0, 0, 1, 22])), matrix([false, true, true, false]));
+      assert.deepEqual(xor(matrix([]), matrix([])), matrix([]));
+    });
+
+    it('should xor dense matrix - sparse matrix', function () {
+      assert.deepEqual(xor(matrix([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), matrix([[false, true], [true, false]]));
+    });
   });
 
-  it('should xor mixed numbers and matrices', function () {
-    assert.deepEqual(xor(10, matrix([0, 2])), matrix([true, false]));
-    assert.deepEqual(xor(matrix([0, 2]), 10), matrix([true, false]));
-    assert.deepEqual(xor(0, matrix([0, 2])), matrix([false, true]));
-    assert.deepEqual(xor(matrix([0, 2]), 0), matrix([false, true]));
+  describe('SparseMatrix', function () {
+
+    it('should xor sparse matrix - scalar', function () {
+      assert.deepEqual(xor(10, sparse([[0], [2]])), matrix([[true], [false]]));
+      assert.deepEqual(xor(sparse([[0], [2]]), 10), matrix([[true], [false]]));
+    });
+
+    it('should xor sparse matrix - array', function () {
+      assert.deepEqual(xor(sparse([[0, 1], [0, 12]]), [[0, 0], [1, 22]]), matrix([[false, true], [true, false]]));
+    });
+
+    it('should xor sparse matrix - dense matrix', function () {
+      assert.deepEqual(xor(sparse([[0, 1], [0, 12]]), matrix([[0, 0], [1, 22]])), matrix([[false, true], [true, false]]));
+    });
+
+    it('should xor sparse matrix - sparse matrix', function () {
+      assert.deepEqual(xor(sparse([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), matrix([[false, true], [true, false]]));
+    });
   });
 
   it('should throw an error in case of invalid number of arguments', function () {
@@ -164,5 +210,4 @@ describe('xor', function () {
     var expression = math.parse('xor(1,2)');
     assert.equal(expression.toTex(), '\\left(1\\veebar2\\right)');
   });
-
 });
