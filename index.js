@@ -23,7 +23,7 @@ function create (config) {
 
   // util methods for Arrays and Matrices
   // TODO: export these utils in a separate path utils or something, together with ./lib/utils?
-  math.import(require('./lib/type/collection'));
+  math.import(require('./lib/type/matrix/collection'));
 
   // errors
   math.error = require('./lib/error');
@@ -33,10 +33,7 @@ function create (config) {
   math.import(require('./lib/type/Complex'));
   math.import(require('./lib/type/Range'));
   math.import(require('./lib/type/Index'));
-  math.import(require('./lib/type/Matrix'));
-  math.import(require('./lib/type/matrix/SparseMatrix'));
-  math.import(require('./lib/type/matrix/DenseMatrix'));
-  math.import(require('./lib/type/matrix/Spa')); // sparse accumulator
+  math.import(require('./lib/type/matrix'));
   math.import(require('./lib/type/Unit'));
   math.import(require('./lib/type/Help'));
   math.import(require('./lib/type/ResultSet'));
@@ -53,7 +50,6 @@ function create (config) {
 
   // serialization utility (math.json.reviver)
   math.import(require('./lib/json'));
-  // TODO: put ./lib/json in core.js?
 
   // functions
   math.import(require('./lib/function/algebra'));
