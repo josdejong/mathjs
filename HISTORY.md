@@ -7,6 +7,9 @@
   linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
 - Large internal refactoring, allowing to create custom bundles of math.js.
 - Function `import` now returns the imported objects.
+- Function `import` no longer supports a module name as argument. Instead,
+  modules can be loaded using require: `math.import(require('module-name'))`.
+- Drastically refactored and reorganized the source code.
 
 
 ## not yet released, version 1.6.1-SNAPSHOT

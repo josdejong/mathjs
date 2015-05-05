@@ -1,12 +1,12 @@
 // test typeof
-var assert = require('assert'),
-    math = require('../../../index')
-    Index = math.type.Index,
-    Range = math.type.Range,
-    Matrix = math.type.Matrix,
-    Help = math.type.Help,
-    Unit = math.type.Unit,
-    Complex = math.type.Complex;
+var assert = require('assert');
+var math = require('../../../index');
+var Index = math.type.Index;
+var Range = math.type.Range;
+var Matrix = math.type.Matrix;
+var Help = math.type.Help;
+var Unit = math.type.Unit;
+var Complex = math.type.Complex;
 
 describe('typeof', function() {
 
