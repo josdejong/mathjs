@@ -139,13 +139,14 @@ describe('Index', function () {
     ]);
   });
 
-  it('should test whether an object is an Index', function () {
-    assert.equal(Index.isIndex(new Index()), true);
-    assert.equal(Index.isIndex(math.matrix()), false);
-    assert.equal(Index.isIndex(23.4), false);
-    assert.equal(Index.isIndex([]), false);
-    assert.equal(Index.isIndex({}), false);
-    assert.equal(Index.isIndex(new Date()), false);
+  it('should have a property isIndex', function () {
+    var a = new math.type.Index([2, 5]);
+    assert.strictEqual(a.isIndex, true);
+  });
+
+  it('should have a property type', function () {
+    var a = new math.type.Index([2, 5]);
+    assert.strictEqual(a.type, 'Index');
   });
 
   it('should expand an index into an array', function () {

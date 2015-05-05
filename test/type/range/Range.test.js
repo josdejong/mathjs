@@ -178,12 +178,18 @@ describe('range', function() {
     });
   });
 
-  describe('isRange', function () {
-    it('should test whether an object is a Range', function () {
-      assert.equal(Range.isRange(new Range()), true);
-      assert.equal(Range.isRange(new Date()), false);
-      assert.equal(Range.isRange('1:2:10'), false);
+  describe('type', function () {
+
+    it('should have a property isRange', function () {
+      var a = new math.type.Range(0, 10);
+      assert.strictEqual(a.isRange, true);
     });
+
+    it('should have a property type', function () {
+      var a = new math.type.Range(0, 10);
+      assert.strictEqual(a.type, 'Range');
+    });
+
   });
 
   describe('map', function () {

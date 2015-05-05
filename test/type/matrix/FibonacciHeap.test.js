@@ -11,7 +11,17 @@ describe('FibonacciHeap', function () {
       assert.equal(h._size, 0);
       assert(h._minimum === null);
     });
-    
+
+    it('should have a property isFibonacciHeap', function () {
+      var a = new FibonacciHeap();
+      assert.strictEqual(a.isFibonacciHeap, true);
+    });
+
+    it('should have a property type', function () {
+      var a = new FibonacciHeap();
+      assert.strictEqual(a.type, 'FibonacciHeap');
+    });
+
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { FibonacciHeap(); }, /Constructor must be called with the new operator/);
     });

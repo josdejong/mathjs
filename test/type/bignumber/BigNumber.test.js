@@ -4,6 +4,16 @@ var math = require('../../../index');
 
 describe('BigNumber', function () {
 
+  it('should have a property isBigNumber', function () {
+    var a = new math.type.BigNumber(5);
+    assert.strictEqual(a.isBigNumber, true);
+  });
+
+  it('should have a property type', function () {
+    var a = new math.type.BigNumber(5);
+    assert.strictEqual(a.type, 'BigNumber');
+  });
+
   it('toJSON', function () {
     assert.deepEqual(new math.type.BigNumber(5).toJSON(), {'mathjs': 'BigNumber', value: '5'});
   });

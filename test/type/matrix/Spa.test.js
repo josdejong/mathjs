@@ -9,6 +9,17 @@ describe('Spa', function() {
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { Spa(); }, /Constructor must be called with the new operator/);
     });
+
+    it('should have a property isSpa', function () {
+      var a = new Spa();
+      assert.strictEqual(a.isSpa, true);
+    });
+
+    it('should have a property type', function () {
+      var a = new Spa();
+      assert.strictEqual(a.type, 'Spa');
+    });
+
   });
   
   describe('test', function () {

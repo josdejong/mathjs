@@ -71,13 +71,16 @@ describe('unit', function() {
 
   });
 
-  describe('isUnit', function() {
+  describe('type', function() {
 
-    it('should test whether a variable is a unit', function() {
-      assert.equal(Unit.isUnit(new Date()), false);
-      assert.equal(Unit.isUnit('string'), false);
-      assert.equal(Unit.isUnit(new Unit(2, 'km')), true);
-      assert.equal(Unit.isUnit(new Unit(null, 'km')), true);
+    it('should have a property isUnit', function () {
+      var a = new math.type.Unit(5, 'cm');
+      assert.strictEqual(a.isUnit, true);
+    });
+
+    it('should have a property type', function () {
+      var a = new math.type.Unit(5, 'cm');
+      assert.strictEqual(a.type, 'Unit');
     });
 
   });

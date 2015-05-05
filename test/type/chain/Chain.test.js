@@ -11,6 +11,16 @@ describe('Chain', function() {
     assert.equal(new Chain(0).add(3).done(), 3);
   });
 
+  it('should have a property isChain', function () {
+    var a = new math.type.Chain(5);
+    assert.strictEqual(a.isChain, true);
+  });
+
+  it('should have a property type', function () {
+    var a = new math.type.Chain(5);
+    assert.strictEqual(a.type, 'Chain');
+  });
+
   it('should not contain constants, only functions', function() {
     var chain = new Chain(math.bignumber(3));
 

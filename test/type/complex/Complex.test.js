@@ -23,6 +23,16 @@ describe('Complex', function () {
       assertComplex(complex2, 0, 0);
     });
 
+    it('should have a property isComplex', function () {
+      var a = new math.type.Complex(2,3);
+      assert.strictEqual(a.isComplex, true);
+    });
+
+    it('should have a property type', function () {
+      var a = new math.type.Complex(2,3);
+      assert.strictEqual(a.type, 'Complex');
+    });
+
     it('should throw an error if called with wrong number of arguments', function() {
       assert.throws(function () { new Complex(3, -4, 5); });
       assert.throws(function () { new Complex(1); });

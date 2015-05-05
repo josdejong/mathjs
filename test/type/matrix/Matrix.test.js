@@ -14,6 +14,17 @@ describe('matrix', function() {
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { Matrix(); }, /Constructor must be called with the new operator/);
     });
+    
+    it('should have a property isMatrix', function () {
+      var a = new Matrix();
+      assert.strictEqual(a.isMatrix, true);
+    });
+
+    it('should have a property type', function () {
+      var a = new Matrix();
+      assert.strictEqual(a.type, 'Matrix');
+    });
+
   });
 
   describe('size', function() {

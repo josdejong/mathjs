@@ -32,6 +32,16 @@ describe('ResultSet', function () {
     assert.deepEqual(r.toString(), '[1, 2, 3, 4 + 5i]');
   });
 
+  it('should have a property isResultSet', function () {
+    var a = new math.type.ResultSet([]);
+    assert.strictEqual(a.isResultSet, true);
+  });
+
+  it('should have a property type', function () {
+    var a = new math.type.ResultSet([]);
+    assert.strictEqual(a.type, 'ResultSet');
+  });
+
   it('toJSON', function () {
     var r = new ResultSet([1,2,3]);
     var json = {"mathjs":"ResultSet","entries":[1,2,3]};
