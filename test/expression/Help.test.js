@@ -41,12 +41,14 @@ describe('help', function() {
     }, /Argument "doc" missing/)
   });
 
-  it('should test whether an object is a Help object', function() {
-    var help = new Help(doc);
+  it('should have a property isHelp', function () {
+    var a = new Help(doc);
+    assert.strictEqual(a.isHelp, true);
+  });
 
-    assert.equal(Help.isHelp(help), true);
-    assert.equal(Help.isHelp(new Date()), false);
-    assert.equal(Help.isHelp({}), false);
+  it('should have a property type', function () {
+    var a = new Help(doc);
+    assert.strictEqual(a.type, 'Help');
   });
 
   it('should stringify a help', function() {

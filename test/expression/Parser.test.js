@@ -12,6 +12,16 @@ describe('parser', function() {
     assert.ok(parser instanceof Parser);
   });
 
+  it('should have a property isParser', function () {
+    var a = new Parser();
+    assert.strictEqual(a.isParser, true);
+  });
+
+  it('should have a property type', function () {
+    var a = new Parser();
+    assert.strictEqual(a.type, 'Parser');
+  });
+
   it ('should throw an error when using deprecated function parse', function () {
     var parser = new Parser();
 
