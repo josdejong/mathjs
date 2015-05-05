@@ -1,7 +1,7 @@
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    approx = require('../../../tools/approx'),
+    error = require('../../lib/error/index'),
+    math = require('../../index'),
+    approx = require('../../tools/approx'),
     number = math.number;
 
 describe('number', function() {

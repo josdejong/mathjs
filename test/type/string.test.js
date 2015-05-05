@@ -1,6 +1,6 @@
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
+    error = require('../../lib/error/index'),
+    math = require('../../index'),
     string = math.string;
 
 describe('string', function() {

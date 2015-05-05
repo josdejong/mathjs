@@ -23,13 +23,15 @@ function create (config) {
 
   // data types (Matrix, Complex, Unit, ...)
   math.import(require('./lib/type/bignumber'));
+  math.import(require('./lib/type/boolean'));
   math.import(require('./lib/type/chain'));
   math.import(require('./lib/type/complex'));
   math.import(require('./lib/type/index'));
   math.import(require('./lib/type/matrix'));
-  math.import(require('./lib/type/primitive')); // number, string, boolean
+  math.import(require('./lib/type/number'));
   math.import(require('./lib/type/range'));
   math.import(require('./lib/type/resultset'));
+  math.import(require('./lib/type/string'));
   math.import(require('./lib/type/unit'));
 
   // constants
