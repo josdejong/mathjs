@@ -4,6 +4,7 @@ var assert = require('assert'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
+    sparse = math.sparse,
     unit = math.unit,
     largerEq = math.largerEq;
 
@@ -67,8 +68,8 @@ describe('largerEq', function() {
     assert.equal(largerEq(bignumber(2), 3), false);
     assert.equal(largerEq(2, bignumber(2)), true);
 
-    assert.throws(function () {largerEq(1/3, bignumber(1).div(3))}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
-    assert.throws(function () {largerEq(bignumber(1).div(3), 1/3)}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {largerEq(1/3, bignumber(1).div(3));}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {largerEq(bignumber(1).div(3), 1/3);}, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should compare mixed booleans and bignumbers', function() {
@@ -95,7 +96,7 @@ describe('largerEq', function() {
   });
 
   it('should throw an error if comparing a unit with a number', function() {
-    assert.throws(function () {largerEq(unit('100cm'), 22)});
+    assert.throws(function () {largerEq(unit('100cm'), 22);});
   });
 
   it('should throw an error for two measures of different units', function() {
@@ -103,7 +104,7 @@ describe('largerEq', function() {
   });
 
   it('should throw an error if comparing a unit with a bignumber', function() {
-    assert.throws(function () {largerEq(unit('100cm'), bignumber(22))});
+    assert.throws(function () {largerEq(unit('100cm'), bignumber(22));});
   });
 
   it('should perform lexical comparison for 2 strings', function() {
@@ -113,31 +114,85 @@ describe('largerEq', function() {
     assert.equal(largerEq('abc', 'abd'), false);
   });
 
-  it('should compare a string an matrix elementwise', function() {
-    assert.deepEqual(largerEq('B', ['A', 'B', 'C']), [true, true, false]);
-    assert.deepEqual(largerEq(['A', 'B', 'C'], 'B'), [false, true, true]);
+  describe('Array', function () {
+
+    it('should compare array - scalar', function () {
+      assert.deepEqual(largerEq('B', ['A', 'B', 'C']), [true, true, false]);
+      assert.deepEqual(largerEq(['A', 'B', 'C'], 'B'), [false, true, true]);
+    });
+
+    it('should compare array - array', function () {
+      assert.deepEqual(largerEq([[1, 2, 0], [-1, 0, 2]], [[1, -1, 0], [-1, 1, 0]]), [[true, true, true], [true, false, true]]);
+    });
+
+    it('should compare array - dense matrix', function () {
+      assert.deepEqual(largerEq([[1, 2, 0], [-1, 0, 2]], matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[true, true, true], [true, false, true]]));
+    });
+
+    it('should compare array - sparse matrix', function () {
+      assert.deepEqual(largerEq([[1, 2, 0], [-1, 0, 2]], sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[true, true, true], [true, false, true]]));
+    });
+
+    it('should throw an error if arrays have different sizes', function() {
+      assert.throws(function () {largerEq([1,4,5], [3,4]);});
+    });
   });
 
-  it('should perform element-wise comparison for two matrices of the same size', function() {
-    assert.deepEqual(largerEq([1,4,6], [3,4,5]), [false, true, true]);
-    assert.deepEqual(largerEq([1,4,6], matrix([3,4,5])), matrix([false, true, true]));
+  describe('DenseMatrix', function () {
+
+    it('should compare dense matrix - scalar', function () {
+      assert.deepEqual(largerEq('B', matrix(['A', 'B', 'C'])), matrix([true, true, false]));
+      assert.deepEqual(largerEq(matrix(['A', 'B', 'C']), 'B'), matrix([false, true, true]));
+    });
+
+    it('should compare dense matrix - array', function () {
+      assert.deepEqual(largerEq(matrix([[1, 2, 0], [-1, 0, 2]]), [[1, -1, 0], [-1, 1, 0]]), matrix([[true, true, true], [true, false, true]]));
+    });
+
+    it('should compare dense matrix - dense matrix', function () {
+      assert.deepEqual(largerEq(matrix([[1, 2, 0], [-1, 0, 2]]), matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[true, true, true], [true, false, true]]));
+    });
+
+    it('should compare dense matrix - sparse matrix', function () {
+      assert.deepEqual(largerEq(matrix([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[true, true, true], [true, false, true]]));
+    });
+  });
+
+  describe('SparseMatrix', function () {
+
+    it('should compare sparse matrix - scalar', function () {
+      assert.deepEqual(largerEq('B', sparse([['A', 'B'], ['C', 'D']])), matrix([[true, true], [false, false]]));
+      assert.deepEqual(largerEq(sparse([['A', 'B'], ['C', 'D']]), 'B'), matrix([[false, true], [true, true]]));
+    });
+
+    it('should compare sparse matrix - array', function () {
+      assert.deepEqual(largerEq(sparse([[1, 2, 0], [-1, 0, 2]]), [[1, -1, 0], [-1, 1, 0]]), matrix([[true, true, true], [true, false, true]]));
+    });
+
+    it('should compare sparse matrix - dense matrix', function () {
+      assert.deepEqual(largerEq(sparse([[1, 2, 0], [-1, 0, 2]]), matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[true, true, true], [true, false, true]]));
+    });
+
+    it('should compare sparse matrix - sparse matrix', function () {
+      assert.deepEqual(largerEq(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[true, true, true], [true, false, true]]));
+    });
   });
 
   it('should throw an error when comparing complex numbers', function() {
-    assert.throws(function () {largerEq(complex(1,1), complex(1,2))}, TypeError);
-    assert.throws(function () {largerEq(complex(2,1), 3)}, TypeError);
-    assert.throws(function () {largerEq(3, complex(2,4))}, TypeError);
-    assert.throws(function () {largerEq(math.bignumber(3), complex(2,4))}, TypeError);
-    assert.throws(function () {largerEq(complex(2,4), math.bignumber(3))}, TypeError);
+    assert.throws(function () {largerEq(complex(1,1), complex(1,2));}, TypeError);
+    assert.throws(function () {largerEq(complex(2,1), 3);}, TypeError);
+    assert.throws(function () {largerEq(3, complex(2,4));}, TypeError);
+    assert.throws(function () {largerEq(math.bignumber(3), complex(2,4));}, TypeError);
+    assert.throws(function () {largerEq(complex(2,4), math.bignumber(3));}, TypeError);
   });
 
   it('should throw an error if comparing two matrices of different sizes', function() {
-    assert.throws(function () {largerEq([1,4,6], [3,4])});
+    assert.throws(function () {largerEq([1,4,6], [3,4]);});
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {largerEq(1)}, /TypeError: Too few arguments/);
-    assert.throws(function () {largerEq(1, 2, 3)}, /TypeError: Too many arguments/);
+    assert.throws(function () {largerEq(1);}, /TypeError: Too few arguments/);
+    assert.throws(function () {largerEq(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX largerEq', function () {

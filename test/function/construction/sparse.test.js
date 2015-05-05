@@ -10,11 +10,25 @@ describe('sparse', function() {
     assert.ok(a instanceof math.type.Matrix);
   });
 
+  it('should create empty matrix, number datatype', function() {
+    var a = sparse('number');
+    assert.ok(a instanceof math.type.Matrix);
+    assert.ok(a.datatype() === 'number');
+  });
+
   it('should be the identity if called with a matrix', function() {
     var b = sparse([[1,2],[3,4]]);
     var c = sparse(b);
     assert.ok(c._values != b._values); // data should be cloned
     assert.deepEqual(c, sparse([[1,2],[3,4]]));
+  });
+
+  it('should be the identity if called with a matrix, number datatype', function() {
+    var b = sparse([[1,2],[3,4]], 'number');
+    var c = sparse(b);
+    assert.ok(c._values != b._values); // data should be cloned
+    assert.deepEqual(c.valueOf(), b.valueOf());
+    assert.ok(c.datatype() === 'number');
   });
 
   it('should throw an error if called with an invalid argument', function() {

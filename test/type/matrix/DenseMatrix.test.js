@@ -36,6 +36,26 @@ describe('DenseMatrix', function() {
         ]);
     });
     
+    it('should create a DenseMatrix from an array, number datatype', function () {
+      var m = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ], 'number');
+      assert.deepEqual(m._size, [4, 3]);
+      assert.deepEqual(
+        m._data,
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ]);
+      assert(m._datatype === 'number');
+    });
+    
     it('should create a DenseMatrix an array containing matrices', function () {
       var m = new DenseMatrix([new DenseMatrix([1,2]), new DenseMatrix([3, 4])]);
 
@@ -55,6 +75,20 @@ describe('DenseMatrix', function() {
       assert.deepEqual(m1._data, m2._data);
     });
     
+    it('should create a DenseMatrix from another DenseMatrix, number datatype', function () {
+      var m1 = new DenseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ], 'number');
+      var m2 = new DenseMatrix(m1);
+      assert.deepEqual(m1._size, m2._size);
+      assert.deepEqual(m1._data, m2._data);
+      assert.deepEqual(m1._datatype, m2._datatype);
+    });
+    
     it('should create a DenseMatrix from a SparseMatrix', function () {
       var m1 = new SparseMatrix(
         [
@@ -67,9 +101,27 @@ describe('DenseMatrix', function() {
       assert.deepEqual(m1.size(), m2.size());
       assert.deepEqual(m1.toArray(), m2.toArray());
     });
+    
+    it('should create a DenseMatrix from a SparseMatrix, number datatype', function () {
+      var m1 = new SparseMatrix(
+        [
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+          [10, 11, 12]
+        ], 'number');
+      var m2 = new DenseMatrix(m1);
+      assert.deepEqual(m1.size(), m2.size());
+      assert.deepEqual(m1.toArray(), m2.toArray());
+      assert.deepEqual(m1._datatype, m2._datatype);
+    });
 
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { DenseMatrix(); }, /Constructor must be called with the new operator/);
+    });
+
+    it('should throw an error when called with invalid datatype', function () {
+      assert.throws(function () { new DenseMatrix([], 1); });
     });
   });
 
@@ -103,7 +155,19 @@ describe('DenseMatrix', function() {
         {
           mathjs: 'DenseMatrix',
           data: [[1, 2], [3, 4]],
-          size: [2, 2]
+          size: [2, 2],
+          datatype: undefined
+        });
+    });
+    
+    it('should serialize Matrix, number datatype', function() {
+      assert.deepEqual(
+        new DenseMatrix([[1,2],[3,4]], 'number').toJSON(),
+        {
+          mathjs: 'DenseMatrix',
+          data: [[1, 2], [3, 4]],
+          size: [2, 2],
+          datatype: 'number'
         });
     });
   });
@@ -124,6 +188,24 @@ describe('DenseMatrix', function() {
       assert.strictEqual(m._data[0][1], 2);
       assert.strictEqual(m._data[1][0], 3);
       assert.strictEqual(m._data[1][1], 4);
+    });
+    
+    it('should deserialize Matrix, number datatype', function() {
+      var json = {
+        mathjs: 'DenseMatrix',
+        data: [[1, 2], [3, 4]],
+        size: [2, 2],
+        datatype: 'number'
+      };
+      var m = DenseMatrix.fromJSON(json);
+      assert.ok(m instanceof Matrix);
+
+      assert.deepEqual(m._size, [2, 2]);
+      assert.strictEqual(m._data[0][0], 1);
+      assert.strictEqual(m._data[0][1], 2);
+      assert.strictEqual(m._data[1][0], 3);
+      assert.strictEqual(m._data[1][1], 4);
+      assert.strictEqual(m._datatype, 'number');
     });
   });
   
