@@ -190,7 +190,7 @@ function runStream (input, output, mode) {
                 }
               }
               else if (res instanceof math.type.Help) {
-                console.log(res.toText(math));
+                console.log(res.toString());
               }
               else {
                 parser.set('ans', res);
@@ -201,6 +201,7 @@ function runStream (input, output, mode) {
               console.log(err.toString());
             }
             break;
+
           case 'string':
             try {
               var string = math.parse(expr).toString();
@@ -210,6 +211,7 @@ function runStream (input, output, mode) {
               console.log(err.toString());
             }
             break;
+
           case 'tex':
             try {
               var tex = math.parse(expr).toTex();
