@@ -284,6 +284,19 @@ describe('OperatorNode', function() {
     });
   });
 
+  it ('should respect the \'all\' parenthesis option', function () {
+    var allMath = math.create({parenthesis: 'all'});
+
+    assert.equal(allMath.parse('1+1+1').toString(), '(1 + 1) + 1' );
+    assert.equal(allMath.parse('1+1+1').toTex(), '\\left(1+1\\right)+1' );
+  });
+
+  it ('should correctly LaTeX fractions in \'all\' parenthesis mode', function () {
+    var allMath = math.create({parenthesis: 'all'});
+
+    assert.equal(allMath.parse('1/2/3').toTex(), '\\frac{\\left(\\frac{1}{2}\\right)}{3}');
+  });
+
   it ('should LaTeX an OperatorNode', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);

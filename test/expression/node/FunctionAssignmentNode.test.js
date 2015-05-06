@@ -245,6 +245,14 @@ describe('FunctionAssignmentNode', function() {
     assert.strictEqual(e.expr, d.expr);
   });
 
+  it ('should respect the \'all\' parenthesis option', function () {
+    var allMath = math.create({parenthesis: 'all'});
+
+    var expr = allMath.parse('f(x)=x+1');
+    assert.equal(expr.toString(), 'function f(x) = (x + 1)');
+    assert.equal(expr.toTex(), '\\mathrm{f}\\left(x\\right):=\\left( x+1\\right)');
+  });
+
   it ('should stringify a FunctionAssignmentNode', function () {
     var a = new ConstantNode(2);
     var x = new SymbolNode('x');
