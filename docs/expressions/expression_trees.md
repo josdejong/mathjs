@@ -446,6 +446,27 @@ var b     = new math.expression.node.ConstantNode(5);
 var node2 = new math.expression.node.OperatorNode('+', 'add', [a, b]);
 ```
 
+### ParenthesisNode
+
+Construction:
+
+```
+new ParenthesisNode(content: Node)
+```
+
+Properties:
+
+- `content: Node`
+
+Examples:
+
+```js
+var node1 = math.parse('(1)');
+
+var a     = new math.expression.node.ConstantNode(1);
+var node2 = new math.expression.node.ParenthesisNode(a);
+```
+
 ### RangeNode
 
 Construction:
