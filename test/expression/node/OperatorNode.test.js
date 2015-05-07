@@ -458,4 +458,11 @@ describe('OperatorNode', function() {
     assert.equal(pow.toTex(), '\\left({\\left\\{\\begin{array}{l l}{1}, &\\quad{\\text{if}\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{array}\\right.}\\right)^{1}');
   });
 
+  it ('should LaTeX simple expressions in \'auto\' mode', function () {
+    var autoMath = math.create({parenthesis: 'auto'});
+
+    //this covers a bug that was triggered previously
+    assert.equal(autoMath.parse('1+(1+1)').toTex(), '1+1+1');
+  });
+
 });
