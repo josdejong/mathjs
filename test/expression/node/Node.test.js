@@ -68,18 +68,18 @@ describe('Node', function() {
     }, /Cannot clone a Node interface/);
   });
 
-  it ('should stringify a Node', function () {
-    var node = new Node();
-    assert.equal(node.toString(), '');
+  it ('should throw an error when stringifying a Node interface', function () {
+    assert.throws(function () {
+      var node = new Node();
+      node.toString();
+    }, /_toString not implemented for Node/);
   });
 
   it ('should throw an error when calling _toTex', function () {
     assert.throws(function () {
       var node = new Node();
-      node.type = 'SpecialNode';  //this is necessary because toTex
-                                  //returns '' for a Node
       node._toTex();
-    }, /_toTex not implemented for SpecialNode/);
+    }, /_toTex not implemented for Node/);
   });
 
   it ('should ignore custom toTex if it returns nothing', function () {
