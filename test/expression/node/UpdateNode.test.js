@@ -342,14 +342,14 @@ describe('UpdateNode', function() {
 
   it ('should LaTeX an UpdateNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, config, callback) {
       if (node.type === 'UpdateNode') {
-        return node.index.toTex(callback) + ' equals ' + node.expr.toTex(callback);
+        return node.index.toTex(config, callback) + ' equals ' + node.expr.toTex(config, callback);
       }
       else if (node.type === 'IndexNode') {
-        var latex = node.object.toTex(callback) + ' at ';
+        var latex = node.object.toTex(config, callback) + ' at ';
         node.ranges.forEach(function (range) {
-          latex += range.toTex(callback) + ', ';
+          latex += range.toTex(config, callback) + ', ';
         });
         return latex;
       }
@@ -367,7 +367,7 @@ describe('UpdateNode', function() {
 
     var n = new UpdateNode(new IndexNode(a, ranges), v);
 
-    assert.equal(n.toTex(customFunction), ' a at const\\left(2, number\\right), const\\left(1, number\\right),  equals const\\left(5, number\\right)');
+    assert.equal(n.toTex({}, customFunction), ' a at const\\left(2, number\\right), const\\left(1, number\\right),  equals const\\left(5, number\\right)');
   });
 
 });
