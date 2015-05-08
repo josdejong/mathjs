@@ -273,11 +273,11 @@ describe('ConditionalNode', function() {
 
   it ('should LaTeX a ConditionalNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, config, callback) {
       if (node.type === 'ConditionalNode') {
-        return 'if ' + node.condition.toTex(callback)
-          + ' then ' + node.trueExpr.toTex(callback)
-          + ' else ' + node.falseExpr.toTex(callback);
+        return 'if ' + node.condition.toTex(config, callback)
+          + ' then ' + node.trueExpr.toTex(config, callback)
+          + ' else ' + node.falseExpr.toTex(config, callback);
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -290,7 +290,7 @@ describe('ConditionalNode', function() {
 
     var n = new ConditionalNode(a, b, c);
 
-    assert.equal(n.toTex(customFunction), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)');
+    assert.equal(n.toTex({}, customFunction), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)');
   });
 
 });
