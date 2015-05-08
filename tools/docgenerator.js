@@ -45,7 +45,8 @@ var SYNTAX = {
  */
 function generateDoc(name, code) {
   // get block comment from code
-  var match = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//.exec(code);
+  //var match = /\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\//.exec(code); // TODO: cleanup
+  var match = /\/\*[\W\w]*\*\//.exec(code);
 
   // get text content inside block comment
   var comment = match[0].replace('/**', '')

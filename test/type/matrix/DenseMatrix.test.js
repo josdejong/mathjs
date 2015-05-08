@@ -116,6 +116,21 @@ describe('DenseMatrix', function() {
       assert.deepEqual(m1._datatype, m2._datatype);
     });
 
+    it('should have a property isMatrix', function () {
+      var a = new DenseMatrix();
+      assert.strictEqual(a.isMatrix, true);
+    });
+
+    it('should have a property isDenseMatrix', function () {
+      var a = new DenseMatrix();
+      assert.strictEqual(a.isDenseMatrix, true);
+    });
+
+    it('should have a property type', function () {
+      var a = new DenseMatrix();
+      assert.strictEqual(a.type, 'DenseMatrix');
+    });
+
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { DenseMatrix(); }, /Constructor must be called with the new operator/);
     });

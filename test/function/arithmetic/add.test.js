@@ -223,6 +223,15 @@ describe('add', function() {
       assert.deepEqual(c, math.matrix([[4,4,4],[1,0,1]]));
     });
     
+    it('should add sparse and sparse matrices correctly', function() {
+      var a = math.sparse([[1,2,3],[1,0,0]]);
+      var b = math.sparse([[3,2,1],[0,0,1]]);
+      var c = add(a, b);
+
+      assert.ok(c instanceof math.type.Matrix);
+      assert.deepEqual(c, math.sparse([[4,4,4],[1,0,1]]));
+    });
+    
     it('should add two pattern matrices correctly', function() {
       
       var a = new math.type.SparseMatrix({

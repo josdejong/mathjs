@@ -3,27 +3,16 @@
 // load math.js
 var math = require('../index');
 
-/**
- * Helper function to output a value in the console. Value will be formatted.
- * @param {*} value
- */
-function print (value) {
-  var precision = 14;
-  console.log(math.format(value, precision));
-}
-
 // create a chained operation using the function `chain(value)`
-// end a chain using done().
+// end a chain using done(). Let's calculate (3 + 4) * 2
 var a = math.chain(3)
     .add(4)
     .multiply(2)
     .done();
 print(a);  // 14
 
-// all functions and variables available in the math namespace can be used
-// from a chain
-var b = math.chain()
-    .pi
+// Another example, calculate square(sin(pi / 4))
+var b = math.chain(math.pi)
     .divide(4)
     .sin()
     .square()
@@ -56,3 +45,12 @@ var m = math.chain(array)
     .multiply(3)
     .done();
 print(m);  // [[24, 6], [9, 12]]
+
+/**
+ * Helper function to output a value in the console. Value will be formatted.
+ * @param {*} value
+ */
+function print (value) {
+    var precision = 14;
+    console.log(math.format(value, precision));
+}

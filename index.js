@@ -1,48 +1,46 @@
-var loader = require('./loader');
+var core = require('./core');
 
 /**
  * math.js factory function. Creates a new instance of math.js
  *
  * @param {Object} [config] Available configuration options:
- *                            {String} matrix
+ *                            {number} epsilon
+ *                              Minimum relative difference between two
+ *                              compared values, used by all comparison functions.
+ *                            {string} matrix
  *                              A string 'matrix' (default) or 'array'.
- *                            {String} number
+ *                            {string} number
  *                              A string 'number' (default) or 'bignumber'
- *                            {Number} precision
+ *                            {number} precision
  *                              The number of significant digits for BigNumbers.
  *                              Not applicable for Numbers.
  */
 function create (config) {
-  // create a new, empty math.js instance
-  // TODO: pass config here
-  var math = loader.create();
+
+  // create a new math.js instance
+  var math = core.create(config);
   math.create = create;
 
-  // util methods for Arrays and Matrices
-  math.import(require('./lib/type/collection'));
-
   // data types (Matrix, Complex, Unit, ...)
-  math.import(require('./lib/type/Complex'));
-  math.import(require('./lib/type/Range'));
-  math.import(require('./lib/type/Index'));
-  math.import(require('./lib/type/Matrix'));
-  math.import(require('./lib/type/matrix/SparseMatrix'));
-  math.import(require('./lib/type/matrix/DenseMatrix'));
-  math.import(require('./lib/type/matrix/Spa')); // sparse accumulator
-  math.import(require('./lib/type/Unit'));
-  math.import(require('./lib/type/Help'));
-  math.import(require('./lib/type/ResultSet'));
-  math.import(require('./lib/type/BigNumber'));
-  math.import(require('./lib/type/FibonacciHeap'));
+  math.import(require('./lib/type/bignumber'));
+  math.import(require('./lib/type/boolean'));
+  math.import(require('./lib/type/chain'));
+  math.import(require('./lib/type/complex'));
+  math.import(require('./lib/type/index'));
+  math.import(require('./lib/type/matrix'));
+  math.import(require('./lib/type/number'));
+  math.import(require('./lib/type/range'));
+  math.import(require('./lib/type/resultset'));
+  math.import(require('./lib/type/string'));
+  math.import(require('./lib/type/unit'));
 
-  // FIXME: load constants via math.import() like all functions (problem: it must be reloaded when config changes)
   // constants
   math.import(require('./lib/constants'));
 
-  // expression (expression.parse, expression.Parser, expression.node.*, expression.docs.*)
+  // expression parsing
   math.import(require('./lib/expression'));
 
-  // serialization utilities (math.json.reviver)
+  // serialization utility (math.json.reviver)
   math.import(require('./lib/json'));
 
   // functions
@@ -50,8 +48,6 @@ function create (config) {
   math.import(require('./lib/function/arithmetic'));
   math.import(require('./lib/function/bitwise'));
   math.import(require('./lib/function/complex'));
-  math.import(require('./lib/function/construction'));
-  math.import(require('./lib/function/expression'));
   math.import(require('./lib/function/logical'));
   math.import(require('./lib/function/matrix'));
   math.import(require('./lib/function/probability'));
@@ -59,16 +55,14 @@ function create (config) {
   math.import(require('./lib/function/statistics'));
   math.import(require('./lib/function/trigonometry'));
   math.import(require('./lib/function/units'));
-  math.import(require('./lib/function/utils')); // contains the config function
+  math.import(require('./lib/function/utils'));
 
-  // create Chain, and create proxies for all functions/constants in the math
-  // namespace.
-  // TODO: load Chain via math.import
-  math.type.Chain = require('./lib/type/Chain')();
-  math.type.Chain.createProxy(math);
+  // util methods for Arrays and Matrices
+  // TODO: export these utils in a separate path utils or something, together with ./lib/utils?
+  math.import(require('./lib/type/matrix/collection'));
 
-  // apply custom options
-  math.config(config);
+  // errors
+  math.error = require('./lib/error');
 
   return math;
 }

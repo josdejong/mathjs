@@ -150,7 +150,22 @@ describe('SparseMatrix', function() {
       assert.deepEqual(m1.toArray(), m2.toArray());
       assert.deepEqual(m1._datatype, m2._datatype);
     });
-    
+
+    it('should have a property isMatrix', function () {
+      var a = new SparseMatrix();
+      assert.strictEqual(a.isMatrix, true);
+    });
+
+    it('should have a property isSparseMatrix', function () {
+      var a = new SparseMatrix();
+      assert.strictEqual(a.isSparseMatrix, true);
+    });
+
+    it('should have a property type', function () {
+      var a = new SparseMatrix();
+      assert.strictEqual(a.type, 'SparseMatrix');
+    });
+
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { SparseMatrix(); }, /Constructor must be called with the new operator/);
     });
