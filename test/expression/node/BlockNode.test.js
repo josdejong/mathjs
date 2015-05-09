@@ -251,6 +251,30 @@ describe('BlockNode', function() {
     assert.equal(n.toString(), '5\nfoo = 3;\nfoo');
   });
 
+  it ('should stringify a BlockNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, config, callback) {
+      if (node.type === 'BlockNode') {
+        var string = '';
+        node.blocks.forEach(function (block) {
+          string += block.node.toString(config, callback) + '; ';
+        });
+
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new BlockNode([{node: a}, {node: b}]);
+
+    assert.equal(n.toString({}, customFunction), 'const(1, number); const(2, number); ');
+  });
+
   it ('should LaTeX a BlockNode', function () {
     var n = new BlockNode([
       {node: new ConstantNode(5), visible:true},

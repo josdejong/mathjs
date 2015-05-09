@@ -277,6 +277,31 @@ describe('IndexNode', function() {
     assert.equal(n2.toString(), 'a[]')
   });
 
+  it ('should stringigy an IndexNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, config, callback) {
+      if (node.type === 'IndexNode') {
+        var string = node.object.toString(config, callback) + ' at ';
+        node.ranges.forEach(function (range) {
+          string += range.toTex(config, callback) + ', ';
+        });
+
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var n = new IndexNode(a, [b, c]);
+
+    assert.equal(n.toString({}, customFunction), 'a at const(1, number), const(2, number), ');
+  });
+
   it ('should LaTeX an IndexNode', function () {
     var a = new SymbolNode('a');
     var ranges = [

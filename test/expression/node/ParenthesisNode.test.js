@@ -145,6 +145,19 @@ describe('ParenthesisNode', function() {
     assert.equal(autoP.toString(), '1');
   });
 
+  it ('should stringify a ParenthesisNode with custom toString', function () {
+    var customFunction = function (node, config, callback) {
+      if (node.type === 'ParenthesisNode') {
+        return '[' + node.content.toString(config, callback) + ']';
+      }
+    };
+
+    var c = new math.expression.node.ConstantNode(1);
+    var n = new math.expression.node.ParenthesisNode(c);
+
+    assert.equal(n.toString({}, customFunction), '[1]');
+  });
+
   it ('should LaTeX a ParenthesisNode', function () {
     var a = new ConstantNode(1);
     var n = new ParenthesisNode(a);
@@ -164,5 +177,18 @@ describe('ParenthesisNode', function() {
 
     assert.equal(allP.toTex(), '1');
     assert.equal(autoP.toTex(), '1');
+  });
+
+  it ('should LaTeX a ParenthesisNode with custom toTex', function () {
+    var customFunction = function (node, config, callback) {
+      if (node.type === 'ParenthesisNode') {
+        return '\\left[' + node.content.toTex(config, callback) + '\\right]';
+      }
+    };
+
+    var c = new math.expression.node.ConstantNode(1);
+    var n = new math.expression.node.ParenthesisNode(c);
+
+    assert.equal(n.toTex({}, customFunction), '\\left[1\\right]');
   });
 });
