@@ -277,6 +277,31 @@ describe('IndexNode', function() {
     assert.equal(n2.toString(), 'a[]')
   });
 
+  it ('should stringigy an IndexNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, config, callback) {
+      if (node.type === 'IndexNode') {
+        var string = node.object.toString(config, callback) + ' at ';
+        node.ranges.forEach(function (range) {
+          string += range.toTex(config, callback) + ', ';
+        });
+
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var n = new IndexNode(a, [b, c]);
+
+    assert.equal(n.toString({}, customFunction), 'a at const(1, number), const(2, number), ');
+  });
+
   it ('should LaTeX an IndexNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
@@ -293,11 +318,11 @@ describe('IndexNode', function() {
 
   it ('should LaTeX an IndexNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, config, callback) {
       if (node.type === 'IndexNode') {
-        var latex = node.object.toTex(callback) + ' at ';
+        var latex = node.object.toTex(config, callback) + ' at ';
         node.ranges.forEach(function (range) {
-          latex += range.toTex(callback) + ', ';
+          latex += range.toTex(config, callback) + ', ';
         });
 
         return latex;
@@ -313,7 +338,7 @@ describe('IndexNode', function() {
 
     var n = new IndexNode(a, [b, c]);
 
-    assert.equal(n.toTex(customFunction), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ');
+    assert.equal(n.toTex({}, customFunction), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ');
   });
 
 });

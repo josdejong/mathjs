@@ -134,6 +134,19 @@ describe('ConstantNode', function() {
     assert.equal(new ConstantNode('null', 'null').toString(), 'null');
   });
 
+  it ('should stringify a ConstantNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, config, callback) {
+      if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var n = new ConstantNode(1);
+
+    assert.equal(n.toString({}, customFunction), 'const(1, number)');
+  });
+
   it ('should LaTeX a ConstantNode', function () {
     assert.equal(new ConstantNode('3', 'number').toTex(), '3');
     assert.deepEqual(new ConstantNode('3', 'number').toTex(), '3');
@@ -151,7 +164,7 @@ describe('ConstantNode', function() {
 
   it ('should LaTeX a ConstantNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, config, callback) {
       if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
       }
@@ -159,7 +172,7 @@ describe('ConstantNode', function() {
 
     var n = new ConstantNode(1);
 
-    assert.equal(n.toTex(customFunction), 'const\\left(1, number\\right)');
+    assert.equal(n.toTex({}, customFunction), 'const\\left(1, number\\right)');
   });
 
 });

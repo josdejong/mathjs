@@ -271,6 +271,30 @@ describe('FunctionAssignmentNode', function() {
     assert.equal(n.toString(), 'function f(x) = (a = 2)');
   });
 
+  it ('should stringify a FunctionAssignmentNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, config, callback) {
+      if (node.type === 'FunctionAssignmentNode') {
+        var string = '[' + node.name + '](';
+        node.params.forEach(function (param) {
+          string += param + ', ';
+        });
+
+        string += ')=' + node.expr.toString(config, callback);
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+
+    var n = new FunctionAssignmentNode('func', ['x'], a);
+
+    assert.equal(n.toString({}, customFunction), '[func](x, )=const(1, number)');
+  });
+
   it ('should LaTeX a FunctionAssignmentNode', function() {
     var a = new ConstantNode(2);
     var x = new SymbolNode('x');
@@ -292,14 +316,14 @@ describe('FunctionAssignmentNode', function() {
 
   it ('should LaTeX a FunctionAssignmentNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, config, callback) {
       if (node.type === 'FunctionAssignmentNode') {
         var latex = '\\mbox{' + node.name + '}\\left(';
         node.params.forEach(function (param) {
           latex += param + ', ';
         });
 
-        latex += '\\right)=' + node.expr.toTex(callback);
+        latex += '\\right)=' + node.expr.toTex(config, callback);
         return latex;
       }
       else if (node.type === 'ConstantNode') {
@@ -311,7 +335,7 @@ describe('FunctionAssignmentNode', function() {
 
     var n = new FunctionAssignmentNode('func', ['x'], a);
 
-    assert.equal(n.toTex(customFunction), '\\mbox{func}\\left(x, \\right)=const\\left(1, number\\right)');
+    assert.equal(n.toTex({}, customFunction), '\\mbox{func}\\left(x, \\right)=const\\left(1, number\\right)');
   });
 
 });

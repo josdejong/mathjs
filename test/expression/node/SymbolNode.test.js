@@ -107,6 +107,19 @@ describe('SymbolNode', function() {
     assert.equal(s.toString(), 'foo');
   });
 
+  it ('should stringigy a SymbolNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, config, callback) {
+      if (node.type === 'SymbolNode') {
+        return 'symbol(' + node.name + ')';
+      }
+    };
+
+    var n = new SymbolNode('a');
+
+    assert.equal(n.toString({}, customFunction), 'symbol(a)');
+  });
+
   it ('should LaTeX a SymbolNode', function () {
     var s = new SymbolNode('foo');
 
@@ -115,7 +128,7 @@ describe('SymbolNode', function() {
 
   it ('should LaTeX a SymbolNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, config, callback) {
       if (node.type === 'SymbolNode') {
         return 'symbol(' + node.name + ')';
       }
@@ -123,7 +136,7 @@ describe('SymbolNode', function() {
 
     var n = new SymbolNode('a');
 
-    assert.equal(n.toTex(customFunction), 'symbol(a)');
+    assert.equal(n.toTex({}, customFunction), 'symbol(a)');
   });
 
   it ('should LaTeX a SymbolNode without breaking \\cdot', function () {
