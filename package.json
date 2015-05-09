@@ -52,7 +52,7 @@
   "dependencies": {
     "decimal.js": "^4.0.2",
     "tiny-emitter": "^1.0.0",
-    "typed-function": "^0.7.0"
+    "typed-function": "^0.8.0"
   },
   "devDependencies": {
     "webpack": "^1.8.9",
