@@ -1254,16 +1254,16 @@ describe('parse', function() {
         var node = math.parse('a ? (b : c) : (d : e)');
         assert(node instanceof ConditionalNode);
         assert.equal(node.condition.toString(), 'a');
-        assert.equal(node.trueExpr.toString(), 'b:c');
-        assert.equal(node.falseExpr.toString(), 'd:e');
+        assert.equal(node.trueExpr.toString(), '(b:c)');
+        assert.equal(node.falseExpr.toString(), '(d:e)');
       });
 
       it('should respect precedence of conditional operator and range operator (2)', function () {
         var node = math.parse('a ? (b ? c : d) : (e ? f : g)');
         assert(node instanceof ConditionalNode);
         assert.equal(node.condition.toString(), 'a');
-        assert.equal(node.trueExpr.toString(), 'b ? c : d');
-        assert.equal(node.falseExpr.toString(), 'e ? f : g');
+        assert.equal(node.trueExpr.toString(), '(b ? c : d)');
+        assert.equal(node.falseExpr.toString(), '(e ? f : g)');
       });
 
       it('should respect precedence of range operator and relational operators', function () {
@@ -1580,7 +1580,7 @@ describe('parse', function() {
 
       it('should parse custom nodes', function() {
         var node = parse('custom(x, (2+x), sin(x))', options);
-        assert.equal(node.compile(math).eval(), 'CustomNode(x, 2 + x, sin(x))');
+        assert.equal(node.compile(math).eval(), 'CustomNode(x, (2 + x), sin(x))');
       });
 
       it('should parse custom nodes without parameters', function() {

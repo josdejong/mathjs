@@ -253,6 +253,12 @@ describe('ConditionalNode', function() {
     assert.strictEqual(d.falseExpr, c.falseExpr);
   });
 
+  it ('should respect the \'all\' parenthesis option', function () {
+    var allMath = math.create({parenthesis: 'all'});
+
+    assert.equal(allMath.parse('a?b:c').toString(), '(a) ? (b) : (c)');
+  });
+
   it ('should stringify a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 
