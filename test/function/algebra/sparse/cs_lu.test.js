@@ -3,9 +3,9 @@ var assert = require('assert'),
     math = require('../../../../index'),
     market = require('../../../../tools/matrixmarket');
 
+var cs_permute = math.import(require('../../../../lib/function/algebra/sparse/cs_permute'));
 var cs_lu = math.import(require('../../../../lib/function/algebra/sparse/cs_lu'));
 var cs_sqr = math.import(require('../../../../lib/function/algebra/sparse/cs_sqr'));
-var cs_permute = math.import(require('../../../../lib/function/algebra/sparse/cs_permute'));
 
 describe('cs_lu', function () {
 
