@@ -271,6 +271,50 @@ describe('FunctionNode', function() {
     assert.equal(n.toString(), 'sqrt(4)');
   });
 
+  it ('should stringify a FunctionNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, config, callback) {
+      if (node.type === 'FunctionNode') {
+        var string = '[' + node.name + '](';
+        node.args.forEach(function (arg) {
+          string += arg.toString(config, callback) + ', ';
+        });
+        string += ')';
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n1 = new FunctionNode('add', [a, b]);
+    var n2 = new FunctionNode('subtract', [a, b]);
+
+    assert.equal(n1.toString({}, customFunction), '[add](const(1, number), const(2, number), )');
+    assert.equal(n2.toString({}, customFunction), '[subtract](const(1, number), const(2, number), )');
+  });
+
+  it ('should stringify a FunctionNode with custom toString for a single function', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = {
+      'add': function (node, config, callbacks) {
+        return node.args[0].toString(config, callbacks) 
+          + ' ' + node.name + ' ' 
+          + node.args[1].toString(config, callbacks);
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new FunctionNode('add', [a, b]);
+
+    assert.equal(n.toString({}, customFunction), '1 add 2');
+  });
+
   it ('should LaTeX a FunctionNode', function () {
     var c1 = new ConstantNode(4);
     var c2 = new ConstantNode(5);

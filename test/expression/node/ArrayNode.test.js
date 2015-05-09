@@ -230,6 +230,31 @@ describe('ArrayNode', function() {
     assert.equal(n.toString(), '[1, 2, 3, 4]');
   });
 
+  it ('should stringify an ArrayNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, config, callback) {
+      if (node.type === 'ArrayNode') {
+        var string = '[';
+        node.nodes.forEach(function (node) {
+          string += node.toString(config, callback) + ', ';
+        });
+
+        string += ']';
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new ArrayNode([a, b]);
+
+    assert.equal(n.toString({}, customFunction), '[const(1, number), const(2, number), ]');
+  });
+
   it ('should LaTeX an ArrayNode', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);
