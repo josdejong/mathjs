@@ -144,7 +144,7 @@ describe('SparseMatrix', function() {
           [4, 5, 6],
           [7, 8, 9],
           [10, 11, 12]
-        ], 'dense', 'number');
+        ], 'number');
       var m2 = new SparseMatrix(m1);
       assert.deepEqual(m1.size(), m2.size());
       assert.deepEqual(m1.toArray(), m2.toArray());
