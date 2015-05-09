@@ -1,6 +1,6 @@
 # Configuration
 
-Math.js contains a number of configuration options. There are two ways to 
+Math.js contains a number of configuration options. There are three ways to
 configure math.js:
 
 - Configure an existing instance of math.js using `math.config(options)`,
@@ -8,6 +8,8 @@ configure math.js:
 - Create and configure a new instance of math.js using `math.create([options])`,
   for example `var bigmath = math.create({number: 'bignumber'})` to create a new
   instance configured to use BigNumbers.
+- Pass configuration directly to `toTex` and `toString`. This currently only affects
+  the `parenthesis` option.
 
 The following configuration options are available:
 
@@ -82,6 +84,9 @@ var bigmath = math.create({
 
 // parser will parse numbers as BigNumber now:
 bigmath.eval('1 / 3');  // BigNumber, 0.33333333333333333333333333333333
+
+// sanitize parentheses in the string output:
+math.parse('(1+1)-2').toString({parenthesis: 'auto'}); // "1 + 1 - 2"
 ```
 
 ### browser
