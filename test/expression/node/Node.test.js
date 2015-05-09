@@ -118,4 +118,10 @@ describe('Node', function() {
     assert.equal(node.getIdentifier(), 'Node');
   });
 
+  it ('should get the content of a Node', function () {
+    var c = new math.expression.node.ConstantNode(1);
+
+    assert.equal(c.getContent(), c);
+    assert.deepEqual(c.getContent(), c);
+  });
 });

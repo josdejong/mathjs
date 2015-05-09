@@ -198,6 +198,14 @@ describe('AssignmentNode', function() {
     assert.strictEqual(e.expr, d.expr);
   });
 
+  it ('should respect the \'all\' parenthesis option', function () {
+    var allMath = math.create({parenthesis: 'all'});
+
+    var expr = allMath.parse('a=1');
+    assert.equal(expr.toString(), 'a = (1)');
+    assert.equal(expr.toTex(), 'a:=\\left(1\\right)');
+  });
+
   it ('should stringify a AssignmentNode', function () {
     var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
