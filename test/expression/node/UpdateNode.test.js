@@ -321,6 +321,13 @@ describe('UpdateNode', function() {
     assert.equal(n.toString(), 'a[2, 1] = 5');
   });
 
+  it ('should respect the \'all\' parenthesis option', function () {
+    var allMath = math.create({parenthesis: 'all'});
+
+    assert.equal(allMath.parse('a[1]=2').toString(), 'a[1] = (2)' );
+    assert.equal(allMath.parse('a[1]=2').toTex(), ' a_{1}:=\\left(2\\right)' );
+  });
+
   it ('should LaTeX an UpdateNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
@@ -330,7 +337,7 @@ describe('UpdateNode', function() {
     var v = new ConstantNode(5);
 
     var n = new UpdateNode(new IndexNode(a, ranges), v);
-    assert.equal(n.toTex(), ' a_{\\left[2,1\\right]}:=5');
+    assert.equal(n.toTex(), ' a_{2,1}:=5');
   });
 
   it ('should LaTeX an UpdateNode with custom toTex', function () {

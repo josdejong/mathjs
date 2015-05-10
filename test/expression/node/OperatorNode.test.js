@@ -235,32 +235,38 @@ describe('OperatorNode', function() {
     });
 
     it ('should stringify left associative OperatorNodes that are associative with another Node', function () {
-      assert.equal(math.parse('(a+b)+c').toString(), 'a + b + c');
-      assert.equal(math.parse('a+(b+c)').toString(), 'a + b + c');
-      assert.equal(math.parse('(a+b)-c').toString(), 'a + b - c');
-      assert.equal(math.parse('a+(b-c)').toString(), 'a + b - c');
+      var autoMath = math.create({parenthesis: 'auto'});
 
-      assert.equal(math.parse('(a*b)*c').toString(), 'a * b * c');
-      assert.equal(math.parse('a*(b*c)').toString(), 'a * b * c');
-      assert.equal(math.parse('(a*b)/c').toString(), 'a * b / c');
-      assert.equal(math.parse('a*(b/c)').toString(), 'a * b / c');
+      assert.equal(autoMath.parse('(a+b)+c').toString(), 'a + b + c');
+      assert.equal(autoMath.parse('a+(b+c)').toString(), 'a + b + c');
+      assert.equal(autoMath.parse('(a+b)-c').toString(), 'a + b - c');
+      assert.equal(autoMath.parse('a+(b-c)').toString(), 'a + b - c');
+
+      assert.equal(autoMath.parse('(a*b)*c').toString(), 'a * b * c');
+      assert.equal(autoMath.parse('a*(b*c)').toString(), 'a * b * c');
+      assert.equal(autoMath.parse('(a*b)/c').toString(), 'a * b / c');
+      assert.equal(autoMath.parse('a*(b/c)').toString(), 'a * b / c');
     });
 
     it ('should stringify left associative OperatorNodes that are not associative with another Node', function () {
-      assert.equal(math.parse('(a-b)-c').toString(), 'a - b - c');
-      assert.equal(math.parse('a-(b-c)').toString(), 'a - (b - c)');
-      assert.equal(math.parse('(a-b)+c').toString(), 'a - b + c');
-      assert.equal(math.parse('a-(b+c)').toString(), 'a - (b + c)');
+      var autoMath = math.create({parenthesis: 'auto'});
 
-      assert.equal(math.parse('(a/b)/c').toString(), 'a / b / c');
-      assert.equal(math.parse('a/(b/c)').toString(), 'a / (b / c)');
-      assert.equal(math.parse('(a/b)*c').toString(), 'a / b * c');
-      assert.equal(math.parse('a/(b*c)').toString(), 'a / (b * c)');
+      assert.equal(autoMath.parse('(a-b)-c').toString(), 'a - b - c');
+      assert.equal(autoMath.parse('a-(b-c)').toString(), 'a - (b - c)');
+      assert.equal(autoMath.parse('(a-b)+c').toString(), 'a - b + c');
+      assert.equal(autoMath.parse('a-(b+c)').toString(), 'a - (b + c)');
+
+      assert.equal(autoMath.parse('(a/b)/c').toString(), 'a / b / c');
+      assert.equal(autoMath.parse('a/(b/c)').toString(), 'a / (b / c)');
+      assert.equal(autoMath.parse('(a/b)*c').toString(), 'a / b * c');
+      assert.equal(autoMath.parse('a/(b*c)').toString(), 'a / (b * c)');
     });
 
     it ('should stringify right associative OperatorNodes that are not associative with another Node', function () {
-      assert.equal(math.parse('(a^b)^c').toString(), '(a ^ b) ^ c');
-      assert.equal(math.parse('a^(b^c)').toString(), 'a ^ b ^ c');
+      var autoMath = math.create({parenthesis: 'auto'});
+
+      assert.equal(autoMath.parse('(a^b)^c').toString(), '(a ^ b) ^ c');
+      assert.equal(autoMath.parse('a^(b^c)').toString(), 'a ^ b ^ c');
     });
 
     it ('should stringify unary OperatorNodes containing a binary OperatorNode', function () {
@@ -270,10 +276,25 @@ describe('OperatorNode', function() {
     });
 
     it ('should stringify unary OperatorNodes containing a unary OperatorNode', function () {
-      assert.equal(math.parse('(-a)!').toString(), '(-a)!');
-      assert.equal(math.parse('-(a!)').toString(), '-a!');
-      assert.equal(math.parse('-(-a)').toString(), '-(-a)');
+      var autoMath = math.create({parenthesis: 'auto'});
+
+      assert.equal(autoMath.parse('(-a)!').toString(), '(-a)!');
+      assert.equal(autoMath.parse('-(a!)').toString(), '-a!');
+      assert.equal(autoMath.parse('-(-a)').toString(), '-(-a)');
     });
+  });
+
+  it ('should respect the \'all\' parenthesis option', function () {
+    var allMath = math.create({parenthesis: 'all'});
+
+    assert.equal(allMath.parse('1+1+1').toString(), '(1 + 1) + 1' );
+    assert.equal(allMath.parse('1+1+1').toTex(), '\\left(1+1\\right)+1' );
+  });
+
+  it ('should correctly LaTeX fractions in \'all\' parenthesis mode', function () {
+    var allMath = math.create({parenthesis: 'all'});
+
+    assert.equal(allMath.parse('1/2/3').toTex(), '\\frac{\\left(\\frac{1}{2}\\right)}{3}');
   });
 
   it ('should LaTeX an OperatorNode', function () {
@@ -451,6 +472,13 @@ describe('OperatorNode', function() {
     var pow = new OperatorNode('^', 'pow', [cond, a]);
 
     assert.equal(pow.toTex(), '\\left({\\left\\{\\begin{array}{l l}{1}, &\\quad{\\text{if}\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{array}\\right.}\\right)^{1}');
+  });
+
+  it ('should LaTeX simple expressions in \'auto\' mode', function () {
+    var autoMath = math.create({parenthesis: 'auto'});
+
+    //this covers a bug that was triggered previously
+    assert.equal(autoMath.parse('1+(1+1)').toTex(), '1+1+1');
   });
 
 });
