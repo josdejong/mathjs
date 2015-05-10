@@ -35,6 +35,13 @@ The following configuration options are available:
   This setting only applies to BigNumbers, not to numbers.
   Default value is `64`.
 
+- `parenthesis`. The way parenthesis is displayed in the output of `toTex` and `toString`
+  There are three available options: `'keep'` (default), `'auto'` and `'all'`.
+  When set to `'keep'`, parentheses will be printed in the same way they were in the input
+  that has been parsed (they are represented in the node tree as `ParenthesisNode`s). When
+  set to `'auto'`, mathjs tries to use as few parentheses as possible, thereby getting rid
+  of unnecessary parentheses. When set to `'all'` mathjs puts almost everything in parentheses
+  to make the structure of the node tree explicit.
 
 ## Examples
 

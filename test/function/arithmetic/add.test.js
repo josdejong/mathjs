@@ -87,9 +87,9 @@ describe('add', function() {
   });
 
   it('should throw an error in case of a unit and non-unit argument', function() {
-    assert.throws(function () {add(math.unit('5cm'), 2);}, /TypeError/);
-    assert.throws(function () {add(math.unit('5cm'), new Date());}, /TypeError/);
-    assert.throws(function () {add(new Date(), math.unit('5cm'));}, /TypeError/);
+    assert.throws(function () {add(math.unit('5cm'), 2);}, /TypeError: Unexpected type of argument in function add/);
+    assert.throws(function () {add(math.unit('5cm'), new Date());}, /TypeError: Unexpected type of argument in function add/);
+    assert.throws(function () {add(new Date(), math.unit('5cm'));}, /TypeError: Unexpected type of argument in function add/);
   });
 
   it('should concatenate two strings', function() {

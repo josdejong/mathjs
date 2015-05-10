@@ -280,6 +280,13 @@ describe('RangeNode', function() {
     assert.equal(n.toString(), '(0:10):2:100');
   });
 
+  it ('should respect the \'all\' parenthesis option', function () {
+    var allMath = math.create({parenthesis: 'all'});
+
+    assert.equal(allMath.parse('1:2:3').toString(), '(1):(2):(3)');
+    assert.equal(allMath.parse('1:2:3').toTex(), '\\left(1\\right):\\left(2\\right):\\left(3\\right)');
+  });
+
   it ('should LaTeX a RangeNode without step', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);

@@ -115,7 +115,7 @@ describe('divide', function() {
   // TODO: divide units by a bignumber
   it('should divide units by a big number', function() {
     //assert.equal(divide(math.unit('5 m'), bignumber(10)).toString(), '500 mm'); // TODO
-    assert.throws(function () {divide(math.unit('5 m'), bignumber(10))}, /TypeError: Unexpected type of argument \(expected: number or boolean or null, actual: BigNumber, index: 1\)/);
+    assert.throws(function () {divide(math.unit('5 m'), bignumber(10))}, /TypeError: Unexpected type of argument in function divide \(expected: number or boolean or null, actual: BigNumber, index: 1\)/);
   });
 
   it('should divide each elements in a matrix by a number', function() {
