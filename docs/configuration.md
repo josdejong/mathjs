@@ -24,12 +24,14 @@ The following configuration options are available:
   inputs, a matrix will be returned always.
 
 - `number`. The default type of numbers. This setting is used by functions
-  like `eval `which cannot determine the correct type of output from the
+  like `eval` which cannot determine the correct type of output from the
   functions input. For most functions though, the type of output is determined
   from the the input: a number as input will return a number as output,
   a BigNumber as input returns a BigNumber as output.
-  Available values are: `'number'` (default) or `'bignumber'`.
-  BigNumbers have higher precision than the default numbers of JavaScript.
+  Available values are: `'number'` (default), `'bignumber'`, or `'fraction'`.
+  [BigNumbers](./datatypes/bignumbers.js) have higher precision than the default 
+  numbers of JavaScript, and [`Fractions`](./datatypes/fractions.js) store
+  values in terms of a numerator and denominator.
 
 - `precision`. The maximum number of significant digits for bigNumbers.
   This setting only applies to BigNumbers, not to numbers.
@@ -76,7 +78,7 @@ math2.range(0, 4);      // Matrix [0, 1, 2, 3]
 
 // create an instance of math.js with bignumber configuration
 var bigmath = math.create({
-  number: 'bignumber',  // Choose 'number' (default) or 'bignumber'
+  number: 'bignumber',  // Choose 'number' (default), 'bignumber', or 'fraction'
   precision: 32         // 64 by default, only applicable for BigNumbers
 });
 
@@ -110,7 +112,7 @@ bigmath.eval('1 / 3');  // BigNumber, 0.33333333333333333333333333333333
     
     // create a new instance of math.js with bignumber configuration
     var bigmath = math.create({
-      number: 'bignumber',  // Choose 'number' (default) or 'bignumber'
+      number: 'bignumber',  // Choose 'number' (default), 'bignumber', or 'fraction'
       precision: 32         // 64 by default, only applicable for BigNumbers
     });
     

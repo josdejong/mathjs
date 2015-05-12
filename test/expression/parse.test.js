@@ -203,6 +203,20 @@ describe('parse', function() {
 
   });
 
+  describe('fraction', function () {
+
+    it('should output fractions if default number type is fraction', function() {
+      var fmath = math.create({
+        number: 'fraction'
+      });
+
+      assert(parse('0.1').compile(fmath).eval() instanceof math.type.Fraction);
+      assert.equal(parse('1/3').compile(fmath).eval().toString(), '0.(3)');
+      assert.equal(parse('0.1+0.2').compile(fmath).eval().toString(), '0.3');
+    });
+
+  });
+
   describe('string', function () {
 
     it('should parse a string', function() {
