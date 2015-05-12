@@ -98,6 +98,19 @@ describe('mod', function() {
     assert.throws(function () {mod(5, 'string');}, TypeError);
   });
 
+  it('should calculate modulus of two fractions', function() {
+    var a = mod(math.fraction(8), math.fraction(3));
+    assert.equal(a.toString(), '2');
+    assert(a instanceof math.type.Fraction);
+
+    assert.equal(mod(math.fraction(4.55), math.fraction(0.05)).toString(), '0');
+  });
+
+  it('should calculate modulus of mixed fractions and numbers', function() {
+    assert.strictEqual(mod(8, math.fraction(3)), 2);
+    assert.strictEqual(mod(math.fraction(8), 3), 2);
+  });
+
   describe('Array', function () {
     
     it('should perform element-wise modulus on array and scalar', function() {

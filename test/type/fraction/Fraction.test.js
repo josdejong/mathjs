@@ -14,6 +14,11 @@ describe('Fraction', function () {
     assert.strictEqual(a.type, 'Fraction');
   });
 
+  it('should have a valueOf method', function () {
+    var a = new math.type.Fraction(1,2);
+    assert.strictEqual(a.valueOf(), 0.5);
+  });
+
   it.skip('toJSON', function () {
     // TODO: implement and test Fraction.toJSON
   });

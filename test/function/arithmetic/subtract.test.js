@@ -77,14 +77,14 @@ describe('subtract', function() {
   });
 
   it('should subtract two fractions', function() {
-    assert.equal(subtract(math.fraction(1,3), math.fraction(1,6)), '0.1(6)');
-    assert.equal(subtract(math.fraction(3,5), math.fraction(1,5)), '0.4');
-    assert.equal(subtract(math.fraction(1), math.fraction(1,3)), '0.(6)');
+    assert.equal(subtract(math.fraction(1,3), math.fraction(1,6)).toString(), '0.1(6)');
+    assert.equal(subtract(math.fraction(3,5), math.fraction(1,5)).toString(), '0.4');
+    assert.equal(subtract(math.fraction(1), math.fraction(1,3)).toString(), '0.(6)');
   });
 
   it('should subtract mixed fractions and numbers', function() {
-    assert.equal(subtract(1, math.fraction(1,3)), 0.6666666666666667);
-    assert.equal(subtract(math.fraction(1,3), 1), -0.6666666666666667);
+    assert.strictEqual(subtract(1, math.fraction(1,3)), 0.6666666666666667);
+    assert.strictEqual(subtract(math.fraction(1,3), 1), -0.6666666666666667);
   });
 
   it('should subtract two quantities of the same unit', function() {

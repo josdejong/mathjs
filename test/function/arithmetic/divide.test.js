@@ -105,12 +105,12 @@ describe('divide', function() {
   });
 
   it('should divide two fractions', function() {
-    assert.equal(divide(math.fraction(1,4), math.fraction(1,2)), '0.5');
+    assert.equal(divide(math.fraction(1,4), math.fraction(1,2)).toString(), '0.5');
   });
 
   it('should divide mixed fractions and numbers', function() {
-    assert.equal(divide(1, math.fraction(3)), 0.3333333333333333);
-    assert.equal(divide(math.fraction(1), 3), 0.3333333333333333);
+    assert.strictEqual(divide(1, math.fraction(3)), 0.3333333333333333);
+    assert.strictEqual(divide(math.fraction(1), 3), 0.3333333333333333);
   });
 
   it('should divide units by a number', function() {

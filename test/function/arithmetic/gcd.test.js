@@ -57,6 +57,15 @@ describe('gcd', function() {
     assert.deepEqual(gcd(8, math.bignumber(12)), math.bignumber(4));
   });
 
+  it('should find the greatest common divisor of fractions', function () {
+    assert.equal(gcd(math.fraction(5,8), math.fraction(3,7)).toString(), '0.017(857142)');
+  });
+
+  it('should find the greatest common divisor of mixed numbers and fractions', function () {
+    assert.strictEqual(gcd(math.fraction(12), 8), 4);
+    assert.strictEqual(gcd(12, math.fraction(8)), 4);
+  });
+
   it('should find the greatest common divisor of booleans', function() {
     assert.equal(gcd(true, true), 1);
     assert.equal(gcd(true, false), 1);
