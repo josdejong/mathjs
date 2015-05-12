@@ -75,6 +75,21 @@ describe('compare', function() {
     assert.deepEqual(compare(true, bignumber(0)), bignumber(1));
   });
 
+  it('should compare two fractions', function() {
+    assert(compare(math.fraction(1,3), math.fraction(1,6)) instanceof math.type.Fraction);
+
+    assert.equal(compare(math.fraction(3), math.fraction(2)).valueOf(), 1);
+    assert.equal(compare(math.fraction(2), math.fraction(3)).valueOf(), -1);
+    assert.equal(compare(math.fraction(3), math.fraction(3)).valueOf(), 0);
+
+    assert.strictEqual(compare(math.add(math.fraction(0.1), math.fraction(0.2)), math.fraction(0.3)).valueOf(), 0); // this would fail with numbers
+  });
+
+  it('should compare mixed fractions and numbers', function() {
+    assert.strictEqual(compare(1, math.fraction(1,3)), 1);
+    assert.strictEqual(compare(math.fraction(1,3), 1), -1);
+  });
+
   it('should add two measures of the same unit', function() {
     assert.equal(compare(unit('100cm'), unit('10inch')), 1);
     assert.equal(compare(unit('99cm'), unit('1m')), -1);

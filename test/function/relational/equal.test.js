@@ -97,6 +97,19 @@ describe('equal', function() {
     assert.deepEqual(equal(bignumber(6), math.complex(6, 4)), false);
   });
 
+  it('should compare two fractions', function() {
+    assert.strictEqual(equal(math.fraction(3), math.fraction(2)).valueOf(), false);
+    assert.strictEqual(equal(math.fraction(2), math.fraction(3)).valueOf(), false);
+    assert.strictEqual(equal(math.fraction(3), math.fraction(3)).valueOf(), true);
+
+    assert.strictEqual(equal(math.add(math.fraction(0.1), math.fraction(0.2)), math.fraction(0.3)).valueOf(), true); // this would fail with numbers
+  });
+
+  it('should compare mixed fractions and numbers', function() {
+    assert.strictEqual(equal(1, math.fraction(1,3)), false);
+    assert.strictEqual(equal(math.fraction(2), 2), true);
+  });
+
   it('should compare two units correctly', function() {
     assert.equal(equal(unit('100cm'), unit('10inch')), false);
     assert.equal(equal(unit('100cm'), unit('1m')), true);

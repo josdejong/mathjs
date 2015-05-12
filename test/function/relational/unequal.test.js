@@ -100,6 +100,17 @@ describe('unequal', function() {
     assert.deepEqual(unequal(bignumber(6), math.complex(6, 4)), true);
   });
 
+  it('should compare two fractions', function() {
+    assert.strictEqual(unequal(math.fraction(3), math.fraction(2)).valueOf(), true);
+    assert.strictEqual(unequal(math.fraction(2), math.fraction(3)).valueOf(), true);
+    assert.strictEqual(unequal(math.fraction(3), math.fraction(3)).valueOf(), false);
+  });
+
+  it('should compare mixed fractions and numbers', function() {
+    assert.strictEqual(unequal(1, math.fraction(1,3)), true);
+    assert.strictEqual(unequal(math.fraction(2), 2), false);
+  });
+
   it('should compare two quantitites of the same unit correctly', function() {
     assert.equal(unequal(unit('100cm'), unit('10inch')), true);
     assert.equal(unequal(unit('100cm'), unit('1m')), false);
