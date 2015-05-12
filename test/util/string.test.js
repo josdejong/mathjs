@@ -1,8 +1,9 @@
 // test string utils
-var assert = require('assert'),
-    approx = require('../../tools/approx'),
-    BigNumber = require('decimal.js'),
-    string = require('../../lib/util/string');
+var assert = require('assert');
+var approx = require('../../tools/approx');
+var BigNumber = require('decimal.js');
+var math = require('../../index');
+var string = require('../../lib/util/string');
 
 describe ('string', function () {
 
@@ -39,6 +40,21 @@ describe ('string', function () {
         precision: 20
       });
       assert.equal(string.format(new B(1).div(3)), '0.33333333333333333333');
+    });
+
+    it ('should format a fraction without options', function () {
+      assert.equal(string.format(math.fraction(1,3)), '1/3');
+      assert.equal(string.format(math.fraction(2,6)), '1/3');
+    });
+
+    it ('should format a fraction with option fraction=\'ratio\'', function () {
+      assert.equal(string.format(math.fraction(1,3), {fraction: 'ratio'}), '1/3');
+      assert.equal(string.format(math.fraction(2,6), {fraction: 'ratio'}), '1/3');
+    });
+
+    it ('should format a fraction with option fraction=\'decimal\'', function () {
+      assert.equal(string.format(math.fraction(1,3), {fraction: 'decimal'}), '0.(3)');
+      assert.equal(string.format(math.fraction(2,6), {fraction: 'decimal'}), '0.(3)');
     });
 
     it ('should format a number with configuration', function () {
