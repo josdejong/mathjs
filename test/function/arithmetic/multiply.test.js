@@ -123,6 +123,16 @@ describe('multiply', function() {
       assert.deepEqual(multiply(math.bignumber(2), math.complex(2, 4)), math.complex(4, 8));
     });
 
+    it('should multiply two fractions', function() {
+      assert.equal(multiply(math.fraction(1,4), math.fraction(1,2)), '0.125');
+      assert.equal(multiply(math.fraction(2), math.fraction(1,3)), '0.(6)');
+    });
+
+    it('should multiply mixed fractions and numbers', function() {
+      assert.equal(multiply(2, math.fraction(1,3)), 0.6666666666666666);
+      assert.equal(multiply(math.fraction(1,3), 2), 0.6666666666666666);
+    });
+
     it('should multiply a number and a unit correctly', function() {
       assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm');
       assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm');

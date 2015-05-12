@@ -26,6 +26,7 @@ function create (config) {
   math.import(require('./lib/type/boolean'));
   math.import(require('./lib/type/chain'));
   math.import(require('./lib/type/complex'));
+  math.import(require('./lib/type/fraction'));
   math.import(require('./lib/type/index'));
   math.import(require('./lib/type/matrix'));
   math.import(require('./lib/type/number'));
