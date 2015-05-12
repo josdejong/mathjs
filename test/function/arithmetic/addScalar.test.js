@@ -68,7 +68,9 @@ describe('add', function() {
   });
 
   it('should add two fractions', function() {
-    assert.equal(add(math.fraction(1,3), math.fraction(1,6)).toString(), '0.5');
+    var a = math.fraction(1,3);
+    assert.equal(add(a, math.fraction(1,6)).toString(), '0.5');
+    assert.equal(a.toString(), '0.(3)');
     assert.equal(add(math.fraction(1,5), math.fraction(2,5)).toString(), '0.6');
     assert.equal(add(math.fraction(1), math.fraction(1,3)).toString(), '1.(3)');
   });

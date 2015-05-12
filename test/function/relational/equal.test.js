@@ -98,7 +98,10 @@ describe('equal', function() {
   });
 
   it('should compare two fractions', function() {
-    assert.strictEqual(equal(math.fraction(3), math.fraction(2)).valueOf(), false);
+    var a = math.fraction(3);
+    assert.strictEqual(equal(a, math.fraction(2)).valueOf(), false);
+    assert.equal(a.toString(), '3');
+
     assert.strictEqual(equal(math.fraction(2), math.fraction(3)).valueOf(), false);
     assert.strictEqual(equal(math.fraction(3), math.fraction(3)).valueOf(), true);
 

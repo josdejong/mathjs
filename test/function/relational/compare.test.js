@@ -76,7 +76,11 @@ describe('compare', function() {
   });
 
   it('should compare two fractions', function() {
-    assert(compare(math.fraction(1,3), math.fraction(1,6)) instanceof math.type.Fraction);
+    var a = math.fraction(1,3);
+    var b = math.fraction(1,6);
+    assert(compare(a, b) instanceof math.type.Fraction);
+    assert.equal(a.toString(), '0.(3)');
+    assert.equal(b.toString(), '0.1(6)');
 
     assert.equal(compare(math.fraction(3), math.fraction(2)).valueOf(), 1);
     assert.equal(compare(math.fraction(2), math.fraction(3)).valueOf(), -1);

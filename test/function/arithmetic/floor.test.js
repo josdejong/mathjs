@@ -55,7 +55,9 @@ describe('floor', function() {
   });
 
   it('should floor fractions correctly', function() {
-    assert(floor(fraction('2/3')) instanceof math.type.Fraction);
+    var a = fraction('2/3');
+    assert(floor(a) instanceof math.type.Fraction);
+    assert.equal(a.toString(), '0.(6)');
 
     assert.equal(floor(fraction(0)).toString(), '0');
     assert.equal(floor(fraction(1)).toString(), '1');

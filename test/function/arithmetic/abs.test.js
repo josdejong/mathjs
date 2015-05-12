@@ -31,7 +31,9 @@ describe('abs', function () {
   });
 
   it('should return the absolute value of a fraction', function () {
-    assert.equal(math.abs(math.fraction('-1/3')).toString(), '0.(3)');
+    var a = math.fraction('-1/3');
+    assert.equal(math.abs(a).toString(), '0.(3)');
+    assert.equal(a.toString(), '-0.(3)');
     assert.equal(math.abs(math.fraction('1/3')).toString(), '0.(3)');
   });
 

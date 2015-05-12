@@ -56,7 +56,9 @@ describe('fix', function() {
   });
 
   it('should round fractions correctly', function() {
-    assert(fix(fraction('2/3')) instanceof math.type.Fraction);
+    var a = fraction('2/3');
+    assert(fix(a) instanceof math.type.Fraction);
+    assert.equal(a.toString(), '0.(6)');
 
     assert.equal(fix(fraction(0)).toString(), '0');
     assert.equal(fix(fraction(1)).toString(), '1');

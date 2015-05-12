@@ -105,7 +105,9 @@ describe('divide', function() {
   });
 
   it('should divide two fractions', function() {
-    assert.equal(divide(math.fraction(1,4), math.fraction(1,2)).toString(), '0.5');
+    var a = math.fraction(1,4);
+    assert.equal(divide(a, math.fraction(1,2)).toString(), '0.5');
+    assert.equal(a.toString(), '0.25');
   });
 
   it('should divide mixed fractions and numbers', function() {

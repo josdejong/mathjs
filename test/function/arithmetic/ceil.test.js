@@ -55,7 +55,10 @@ describe('ceil', function() {
   });
 
   it('should return the ceil of a number', function() {
-    assert(ceil(fraction('2/3')) instanceof math.type.Fraction);
+    var a = fraction('2/3');
+    assert(ceil(a) instanceof math.type.Fraction);
+    assert.equal(a.toString(), '0.(6)');
+
     assert.equal(ceil(fraction(0)).toString(), '0');
     assert.equal(ceil(fraction(1)), '1');
     assert.equal(ceil(fraction(1.3)).toString(), '2');

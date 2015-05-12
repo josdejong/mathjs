@@ -11,6 +11,12 @@ describe('fraction', function () {
     equalFraction(math.fraction({n: 1, d: 3}), new Fraction(1,3));
   });
 
+  it('should clone a fraction', function () {
+    var a = math.fraction(1,3);
+    var b = math.fraction(a);
+    assert.notStrictEqual(a, b);
+  });
+
   it('should create a fraction for all elements in an array', function () {
     var arr = math.fraction([0.2, 0.25, 0.125]);
     assert(Array.isArray(arr));

@@ -124,7 +124,10 @@ describe('multiply', function() {
     });
 
     it('should multiply two fractions', function() {
-      assert.equal(multiply(math.fraction(1,4), math.fraction(1,2)).toString(), '0.125');
+      var a = math.fraction(1,4);
+      assert.equal(multiply(a, math.fraction(1,2)).toString(), '0.125');
+      assert.equal(a.toString(), '0.25');
+
       assert.equal(multiply(math.fraction(2), math.fraction(1,3)).toString(), '0.(6)');
     });
 

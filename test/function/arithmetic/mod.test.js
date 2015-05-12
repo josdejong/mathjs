@@ -99,8 +99,10 @@ describe('mod', function() {
   });
 
   it('should calculate modulus of two fractions', function() {
-    var a = mod(math.fraction(8), math.fraction(3));
+    var b = math.fraction(8);
+    var a = mod(b, math.fraction(3));
     assert.equal(a.toString(), '2');
+    assert.equal(b.toString(), '8');
     assert(a instanceof math.type.Fraction);
 
     assert.equal(mod(math.fraction(4.55), math.fraction(0.05)).toString(), '0');

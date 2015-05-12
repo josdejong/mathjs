@@ -58,7 +58,9 @@ describe('gcd', function() {
   });
 
   it('should find the greatest common divisor of fractions', function () {
-    assert.equal(gcd(math.fraction(5,8), math.fraction(3,7)).toString(), '0.017(857142)');
+    var a = math.fraction(5,8);
+    assert.equal(gcd(a, math.fraction(3,7)).toString(), '0.017(857142)');
+    assert.equal(a.toString(), '0.625');
   });
 
   it('should find the greatest common divisor of mixed numbers and fractions', function () {
