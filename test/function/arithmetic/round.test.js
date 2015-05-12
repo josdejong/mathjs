@@ -1,11 +1,12 @@
 // test round
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    matrix = math.matrix,
-    sparse = math.sparse,
-    round = math.round;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bignumber = math.bignumber;
+var fraction = math.fraction;
+var matrix = math.matrix;
+var sparse = math.sparse;
+var round = math.round;
 
 describe('round', function() {
 
@@ -58,6 +59,13 @@ describe('round', function() {
     assert.deepEqual(round(2.1234567, bignumber(3)), bignumber(2.123));
     assert.deepEqual(round(true, bignumber(3)), bignumber(1));
     assert.deepEqual(round(bignumber(1.23), true), bignumber(1.2));
+  });
+
+  it('should round fractions', function() {
+    assert(round(fraction('2/3')) instanceof math.type.Fraction);
+    assert.equal(round(fraction('2/3')).toString(), '1');
+    assert.equal(round(fraction('1/3')).toString(), '0');
+    assert.equal(round(fraction('1/2')).toString(), '1');
   });
 
   it('should round real and imag part of a complex number', function() {

@@ -4,6 +4,7 @@ var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var bignumber = math.bignumber;
 var complex = math.complex;
+var fraction = math.fraction;
 var matrix = math.matrix;
 var unit = math.unit;
 var range = math.range;
@@ -30,7 +31,7 @@ describe('ceil', function() {
     approx.equal(ceil(-1.8), -1);
     approx.equal(ceil(-2), -2);
     approx.equal(ceil(-2.1), -2);
-    approx.deepEqual(ceil(math.pi), 4);
+    approx.equal(ceil(math.pi), 4);
   });
 
   it('should return the ceil of a big number', function () {
@@ -53,6 +54,19 @@ describe('ceil', function() {
     approx.deepEqual(ceil(complex(-1.3, -1.8)), complex(-1, -1));
   });
 
+  it('should return the ceil of a number', function() {
+    assert(ceil(fraction('2/3')) instanceof math.type.Fraction);
+    assert.equal(ceil(fraction(0)).toString(), '0');
+    assert.equal(ceil(fraction(1)), '1');
+    assert.equal(ceil(fraction(1.3)).toString(), '2');
+    assert.equal(ceil(fraction(1.8)).toString(), '2');
+    assert.equal(ceil(fraction(2)).toString(), '2');
+    assert.equal(ceil(fraction(-1)).toString(), '-1');
+    assert.equal(ceil(fraction(-1.3)).toString(), '-1');
+    assert.equal(ceil(fraction(-1.8)).toString(), '-1');
+    assert.equal(ceil(fraction(-2)).toString(), '-2');
+    assert.equal(ceil(fraction(-2.1)).toString(), '-2');
+  });
 
   it('should throw an error for units', function() {
     assert.throws(function () {ceil(unit('5cm'))}, TypeError, 'Function ceil(unit) not supported');

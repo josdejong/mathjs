@@ -45,6 +45,7 @@ describe ('string', function () {
     it ('should format a fraction without options', function () {
       assert.equal(string.format(math.fraction(1,3)), '1/3');
       assert.equal(string.format(math.fraction(2,6)), '1/3');
+      assert.equal(string.format(math.fraction(-0.125)), '-1/8');
     });
 
     it ('should format a fraction with option fraction=\'ratio\'', function () {
