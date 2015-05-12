@@ -50,9 +50,9 @@ math.eval('0.1 + 0.2');   // Fraction, 0.3
 The following functions support fractions:
 
 - Arithmetic functions: `abs`, `add`, `ceil`, `divide`, `dotDivide`, `dotMultiply`, `fix`, `floor`, `gcd`, `mod`, `multiply`, `round`, `subtract`.
+- Construction functions: `fraction`.
 - Relational functions: `compare`, `deepEqual`, `equal`, `larger`, `largerEq`, `smaller`, `smallerEq`, `unequal`.
 - Utils functions: `format`.
-- Construction functions: `fraction`.
 
 
 ## Conversion

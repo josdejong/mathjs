@@ -19,12 +19,23 @@ describe('Fraction', function () {
     assert.strictEqual(a.valueOf(), 0.5);
   });
 
-  it.skip('toJSON', function () {
-    // TODO: implement and test Fraction.toJSON
+  it('toJSON', function () {
+    assert.deepEqual(new math.type.Fraction(0.375).toJSON(), {'mathjs': 'Fraction', n: 3, d: 8});
+    assert.deepEqual(new math.type.Fraction(-0.375).toJSON(), {'mathjs': 'Fraction', n: -3, d: 8});
   });
 
-  it.skip('fromJSON', function () {
-    // TODO: implement and test Fraction.fromJSON
+  it('fromJSON', function () {
+    var b = math.type.Fraction.fromJSON({n: 3, d: 8});
+    assert.ok(b instanceof math.type.Fraction);
+    assert.strictEqual(b.toString(), '0.375');
+
+    var c = math.type.Fraction.fromJSON({n: -3, d: 8});
+    assert.ok(c instanceof math.type.Fraction);
+    assert.strictEqual(c.toString(), '-0.375');
+
+    var d = math.type.Fraction.fromJSON({n: 3, d: -8});
+    assert.ok(d instanceof math.type.Fraction);
+    assert.strictEqual(d.toString(), '-0.375');
   });
 
 });

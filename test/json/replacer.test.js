@@ -24,6 +24,13 @@ describe('replacer', function () {
     assert.deepEqual(JSON.stringify(b), json);
   });
 
+  it('should stringify a Fraction', function () {
+    var b = new math.type.Fraction(0.375);
+    var json = '{"mathjs":"Fraction","n":3,"d":8}';
+
+    assert.deepEqual(JSON.stringify(b), json);
+  });
+
   it('should stringify a Range', function () {
     var r = new math.type.Range(2, 10);
     var json = '{"mathjs":"Range","start":2,"end":10,"step":1}';
