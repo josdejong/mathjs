@@ -21,7 +21,8 @@ BigNumbers instead of [numbers](numbers.md) by default, configure math.js like:
 
 ```js
 math.config({
-  number: 'bignumber', // Default type of number: 'number' (default) or 'bignumber'
+  number: 'bignumber', // Default type of number: 
+                       // 'number' (default), 'bignumber', or 'fraction'
   precision: 64        // Number of significant digits for BigNumbers
 });
 
@@ -83,21 +84,21 @@ console.log(ans.toString());
 ## Conversion
 
 BigNumbers can be converted to numbers and vice versa using the functions
-`number` and `bignumber`. When converting a BigNumber to a Number, the high
+`number` and `bignumber`. When converting a BigNumber to a number, the high
 precision of the BigNumber will be lost. When a BigNumber is too large to be represented
 as Number, it will be initialized as `Infinity`.
 
 ```js
 // converting numbers and BigNumbers
-var a = math.number(0.3);                         // Number, 0.3
+var a = math.number(0.3);                         // number, 0.3
 var b = math.bignumber(a);                        // BigNumber, 0.3
-var c = math.number(b);                           // Number, 0.3
+var c = math.number(b);                           // number, 0.3
 
 // exceeding the maximum of a number
 var d = math.bignumber('1.2e500');                // BigNumber, 1.2e+500
-var e = math.number(d);                           // Number, Infinity
+var e = math.number(d);                           // number, Infinity
 
 // loosing precision when converting to number
 var f = math.bignumber('0.2222222222222222222');  // BigNumber, 0.2222222222222222222
-var g = math.number(f);                           // Number,    0.2222222222222222
+var g = math.number(f);                           // number,    0.2222222222222222
 ```

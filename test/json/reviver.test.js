@@ -30,6 +30,18 @@ describe('reviver', function () {
     assert.deepEqual(obj, b);
   });
 
+  it('should parse a stringified Fraction', function () {
+    var json = '{"mathjs":"Fraction","n":3,"d":8}';
+    var b = new math.type.Fraction(0.375);
+
+    var obj = JSON.parse(json, reviver);
+
+    assert(obj instanceof math.type.Fraction);
+    assert.strictEqual(obj.s, b.s);
+    assert.strictEqual(obj.n, b.n);
+    assert.strictEqual(obj.d, b.d);
+  });
+
   it('should parse a stringified Range', function () {
     var json = '{"mathjs":"Range","start":2,"end":10}';
     var r = new math.type.Range(2, 10);

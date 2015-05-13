@@ -11,6 +11,7 @@ The supported data types are:
 - [Number](numbers.md)
 - [BigNumber](bignumbers.md)
 - [Complex](complex_numbers.md)
+- [Fraction](fractions.md)
 - [Array](matrices.md)
 - [Matrix](matrices.md)
 - [Unit](units.md)
@@ -26,6 +27,9 @@ math.sqrt(4.41e2);              // 21
 
 // use BigNumbers
 math.add(math.bignumber(0.1), math.bignumber(0.2)); // BigNumber, 0.3
+
+// use Fractions
+math.add(math.fraction(1), math.fraction(3)); // Fraction, 0.(3)
 
 // use strings
 math.add('hello ', 'world');    // 'hello world'

@@ -4,6 +4,7 @@ var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var bignumber = math.bignumber;
 var complex = math.complex;
+var fraction = math.fraction;
 var matrix = math.matrix;
 var unit = math.unit;
 var range = math.range;
@@ -30,7 +31,7 @@ describe('fix', function() {
     approx.equal(fix(-1.8), -1);
     approx.equal(fix(-2), -2);
     approx.equal(fix(-2.1), -2);
-    approx.deepEqual(fix(math.pi), 3);
+    approx.equal(fix(math.pi), 3);
   });
 
   it('should round big numbers correctly', function() {
@@ -54,6 +55,23 @@ describe('fix', function() {
     approx.deepEqual(fix(complex(-1.3, -1.8)), complex(-1, -1));
   });
 
+  it('should round fractions correctly', function() {
+    var a = fraction('2/3');
+    assert(fix(a) instanceof math.type.Fraction);
+    assert.equal(a.toString(), '0.(6)');
+
+    assert.equal(fix(fraction(0)).toString(), '0');
+    assert.equal(fix(fraction(1)).toString(), '1');
+    assert.equal(fix(fraction(1.3)).toString(), '1');
+    assert.equal(fix(fraction(1.8)).toString(), '1');
+    assert.equal(fix(fraction(2)).toString(), '2');
+    assert.equal(fix(fraction(-1)).toString(), '-1');
+    assert.equal(fix(fraction(-1.3)).toString(), '-1');
+    assert.equal(fix(fraction(-1.8)).toString(), '-1');
+    assert.equal(fix(fraction(-2)).toString(), '-2');
+    assert.equal(fix(fraction(-2.1)).toString(), '-2');
+  });
+  
   it('should throw an error on unit as parameter', function() {
     // unit
     assert.throws(function () {fix(unit('5cm'))}, TypeError, 'Function fix(unit) not supported');
