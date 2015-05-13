@@ -5,6 +5,7 @@ var Matrix = math.type.Matrix;
 var SparseMatrix = math.type.SparseMatrix;
 var DenseMatrix = math.type.DenseMatrix;
 var Complex = math.type.Complex;
+var Range = math.type.Range;
 
 describe('SparseMatrix', function() {
 
@@ -890,11 +891,13 @@ describe('SparseMatrix', function() {
         ]);
       assert.deepEqual(m.size(), [3, 3]);
       assert.deepEqual(m.subset(index(1, 1)), 5);
-      assert.deepEqual(m.subset(index([0, 2],[0, 2])).toArray(), [[1, 2], [4, 5]]);
-      assert.deepEqual(m.subset(index(1, [1, 3])).toArray(), [[5, 6]]);
-      assert.deepEqual(m.subset(index(0, [1, 3])).toArray(), [[2, 3]]);
-      assert.deepEqual(m.subset(index([1, 3], 1)).toArray(), [[5], [8]]);
-      assert.deepEqual(m.subset(index([1, 3], 2)).toArray(), [[6], [9]]);
+      assert.deepEqual(m.subset(index(new Range(0, 2), new Range(0, 2))).toArray(), [[1, 2], [4, 5]]);
+      assert.deepEqual(m.subset(index(1, new Range(1, 3))).toArray(), [[5, 6]]);
+      assert.deepEqual(m.subset(index(0, new Range(1, 3))).toArray(), [[2, 3]]);
+      assert.deepEqual(m.subset(index(new Range(1, 3), 1)).toArray(), [[5], [8]]);
+      assert.deepEqual(m.subset(index(new Range(1, 3), 2)).toArray(), [[6], [9]]);
+      assert.deepEqual(m.subset(index(new Range(1, 3, 2), 2)).toArray(), [[9]]);
+      assert.deepEqual(m.subset(index([0, 1], [2, 1])).toArray(), [[3, 2], [6, 5]]);
     });
 
     /* TODO: implement!
@@ -1032,7 +1035,7 @@ describe('SparseMatrix', function() {
           [0, 0, 0]
         ]);
       
-      m.subset(index([1, 3], [1, 3]), [[1, 2], [3, 4]]);
+      m.subset(index(new Range(1, 3), new Range(1, 3)), [[1, 2], [3, 4]]);
       assert.deepEqual(
         m.toArray(), 
         [
@@ -1041,7 +1044,7 @@ describe('SparseMatrix', function() {
           [0, 3, 4]
         ]);
 
-      m.subset(index(0, [0, 3]), [5, 6, 7]);
+      m.subset(index(0, new Range(0, 3)), [5, 6, 7]);
       assert.deepEqual(
         m.toArray(), 
         [
@@ -1050,7 +1053,7 @@ describe('SparseMatrix', function() {
           [0, 3, 4]
         ]);      
 
-      m.subset(index([0,3], 0), [8,9,10]);
+      m.subset(index(new Range(0, 3), 0), [8, 9, 10]);
       assert.deepEqual(
         m.toArray(), 
         [
@@ -1069,7 +1072,7 @@ describe('SparseMatrix', function() {
           [0, 0, 0]
         ]);
 
-      m.subset(index([2, 4], [2, 4]), [[1, 2], [3, 4]]);
+      m.subset(index(new Range(2, 4), new Range(2, 4)), [[1, 2], [3, 4]]);
       assert.deepEqual(
         m.toArray(), 
         [
@@ -1079,7 +1082,7 @@ describe('SparseMatrix', function() {
           [0, 0, 3, 4]
         ]);
 
-      m.subset(index(4, [0, 3]), [5, 6, 7]);
+      m.subset(index(4, new Range(0, 3)), [5, 6, 7]);
       assert.deepEqual(
         m.toArray(), 
         [
@@ -1090,7 +1093,7 @@ describe('SparseMatrix', function() {
           [5, 6, 7, 0]
         ]);      
 
-      m.subset(index([0, 3], 4), [8, 9, 10]);
+      m.subset(index(new Range(0, 3), 4), [8, 9, 10]);
       assert.deepEqual(
         m.toArray(), 
         [
@@ -1121,7 +1124,7 @@ describe('SparseMatrix', function() {
           [-1, -1, 3, 4]
         ]);
 
-      m.subset(index(4, [0, 3]), [5, 6, 7], -2);
+      m.subset(index(4, new Range(0, 3)), [5, 6, 7], -2);
       assert.deepEqual(
         m.toArray(), 
         [
@@ -1132,7 +1135,7 @@ describe('SparseMatrix', function() {
           [5, 6, 7, -2]
         ]);      
 
-      m.subset(index([0, 3], 4), [8, 9, 10], -3);
+      m.subset(index(new Range(0, 3), 4), [8, 9, 10], -3);
       assert.deepEqual(
         m.toArray(), 
         [
