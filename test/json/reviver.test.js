@@ -1,6 +1,7 @@
 var assert = require('assert');
 var math = require('../../index');
 var reviver = math.json.reviver;
+var Range = math.type.Range;
 
 describe('reviver', function () {
 
@@ -83,11 +84,11 @@ describe('reviver', function () {
   });
 
   it('should parse a stringified Index', function () {
-    var json = '{"mathjs":"Index","ranges":[' +
+    var json = '{"mathjs":"Index","dimensions":[' +
         '{"mathjs":"Range","start":0,"end":10,"step":1},' +
         '{"mathjs":"Range","start":2,"end":3,"step":1}' +
         ']}';
-    var i = new math.type.Index([0, 10], 2);
+    var i = new math.type.Index(new Range(0, 10), new Range(2, 3));
 
     var obj = JSON.parse(json, reviver);
 
@@ -96,7 +97,7 @@ describe('reviver', function () {
   });
 
   it('should parse a stringified Index (2)', function () {
-    var json = '{"mathjs":"Index","ranges":[[0, 10],2]}';
+    var json = '{"mathjs":"Index","dimensions":[[0, 10],2]}';
     var i = new math.type.Index([0, 10], 2);
 
     var obj = JSON.parse(json, reviver);
