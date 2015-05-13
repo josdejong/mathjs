@@ -896,8 +896,11 @@ describe('SparseMatrix', function() {
       assert.deepEqual(m.subset(index(0, new Range(1, 3))).toArray(), [[2, 3]]);
       assert.deepEqual(m.subset(index(new Range(1, 3), 1)).toArray(), [[5], [8]]);
       assert.deepEqual(m.subset(index(new Range(1, 3), 2)).toArray(), [[6], [9]]);
-      assert.deepEqual(m.subset(index(new Range(1, 3, 2), 2)).toArray(), [[9]]);
+      assert.deepEqual(m.subset(index(new Range(1, 3, 2), 2)).toArray(), [[6]]);
       assert.deepEqual(m.subset(index([0, 1], [2, 1])).toArray(), [[3, 2], [6, 5]]);
+      assert.deepEqual(m.subset(index([0, 1, 2], [2, 1, 0])).toArray(), [[3, 2, 1], [6, 5, 4], [9, 8, 7]]);
+      assert.deepEqual(m.subset(index([2, 1, 0], [0, 1, 2])).toArray(), [[7, 8, 9], [4, 5, 6], [1, 2, 3]]);
+      assert.deepEqual(m.subset(index([2, 1, 0], [2, 1, 0])).toArray(), [[9, 8, 7], [6, 5, 4], [3, 2, 1]]);
     });
 
     /* TODO: implement!
