@@ -38,9 +38,15 @@ describe('Index', function () {
   });
 
   it('should create an Index from an array with ranges', function () {
-    var index = Index.create([new Range(0, 10), 4]);
+    var index = Index.create([new Range(0, 10), new Range(4)]);
     assert(index instanceof Index);
-    assert.deepEqual(index._dimensions, [new Range(0, 10), new Set([4])]);
+    assert.deepEqual(index._dimensions, [new Range(0, 10), new Range(4)]);
+  });
+  
+  it('should create an Index from an array with sets', function () {
+    var index = Index.create([new Set([0, 10]), new Set([4])]);
+    assert(index instanceof Index);
+    assert.deepEqual(index._dimensions, [new Set([0, 10]), new Set([4])]);
   });
 
   it('should calculate the size of an Index', function () {
@@ -81,8 +87,12 @@ describe('Index', function () {
     assert.equal(new Index(2, 5, 2).isScalar(), true);
     assert.equal(new Index(2).isScalar(), true);
     assert.equal(new Index(new Range(2, 10)).isScalar(), false);
+    assert.equal(new Index(new Set([2, 10])).isScalar(), false);
+    assert.equal(new Index(new Set([2])).isScalar(), true);
     assert.equal(new Index(2, new Range(0, 4), 2).isScalar(), false);
+    assert.equal(new Index(2, new Set([0, 4]), 2).isScalar(), false);
     assert.equal(new Index(new Range(0, 2), new Range(0, 4)).isScalar(), false);
+    assert.equal(new Index(new Set([0, 2]), new Set([0, 4])).isScalar(), false);
     assert.equal(new Index().isScalar(), true);
   });
 
