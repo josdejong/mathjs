@@ -9,6 +9,7 @@ var OperatorNode = math.expression.node.OperatorNode;
 var RangeNode = math.expression.node.RangeNode;
 var Complex = math.type.Complex;
 var Matrix = math.type.Matrix;
+var Range = math.type.Range;
 var Unit = math.type.Unit;
 var ResultSet = math.type.ResultSet;
 
@@ -392,7 +393,7 @@ describe('parse', function() {
       assert.deepEqual(scope.a, math.matrix([[100, 2, 0],[3,10,11],[0,12,13]]));
       var a = scope.a;
       // note: after getting subset, uninitialized elements are replaced by elements with an undefined value
-      assert.deepEqual(a.subset(math.index([0,3], [0,2])), math.matrix([[100,2],[3,10],[0,12]]));
+      assert.deepEqual(a.subset(math.index(new Range(0,3), new Range(0,2))), math.matrix([[100,2],[3,10],[0,12]]));
       assert.deepEqual(parseAndEval('a[1:3,1:2]', scope), math.matrix([[100,2],[3,10],[0,12]]));
 
       scope.b = [[1,2],[3,4]];

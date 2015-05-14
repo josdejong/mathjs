@@ -108,7 +108,7 @@ describe('Index', function () {
 
   it('toJSON', function () {
     assert.deepEqual(new Index(new Range(0, 10), 2, new Set([1, 2, 3])).toJSON(),
-        {'mathjs': 'Index', ranges: [
+        {'mathjs': 'Index', dimensions: [
           new Range(0, 10, 1),
           new Set([2]),
           new Set([1, 2, 3])
@@ -116,7 +116,7 @@ describe('Index', function () {
   });
 
   it('fromJSON', function () {
-    var json = {ranges: [
+    var json = {dimensions: [
       new Range(0, 10, 1),
       new Set([2]),
       new Set([1, 2, 3])

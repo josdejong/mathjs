@@ -38,10 +38,10 @@ describe('replacer', function () {
   });
 
   it('should stringify an Index', function () {
-    var i = new math.type.Index([0, 10], 2);
-    var json = '{"mathjs":"Index","ranges":[' +
+    var i = new math.type.Index(new math.type.Range(0, 10), 2);
+    var json = '{"mathjs":"Index","dimensions":[' +
         '{"mathjs":"Range","start":0,"end":10,"step":1},' +
-        '{"mathjs":"Range","start":2,"end":3,"step":1}' +
+        '{"mathjs":"Set","values":[2],"min":null,"max":null}' +
         ']}';
     assert.deepEqual(JSON.stringify(i), json);
   });
