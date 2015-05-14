@@ -529,8 +529,8 @@ describe('parse', function() {
       };
 
       assert.throws(function () {
-        parseAndEval('a[2, [2,3]]', scope);
-      }, /TypeError: Ranges must be a Number or Range/);
+        parseAndEval('a[2, "1"]', scope);
+      }, /TypeError: Ranges must be a Number, Range, Set, Array or Matrix/);
     });
 
     it('should throw an error for invalid matrix', function() {
