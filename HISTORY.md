@@ -1,8 +1,10 @@
 # History
 
 
-## not yet released, version 1.6.1-SNAPSHOT
+## 2015-05-14, version 1.7.0
 
+- Implemented function `quantileSeq`. Thanks @BigFav.
+- Implemented functions `stirlingS2` and `bellNumbers`. Thanks @devanp92.
 - Extended the command line interface with a `mode` option to output either
   the expressions result, string representation, or tex representation.
   Thanks @FSMaxB.
