@@ -3,7 +3,7 @@ var assert = require('assert'),
     approx = require('../../../../tools/approx'),
     math = require('../../../../index');
 
-describe.skip('lusolve', function () {
+describe('lusolve', function () {
   
   it('should solve linear system 4 x 4, arrays', function () {
     var m = 
@@ -68,7 +68,7 @@ describe.skip('lusolve', function () {
     var x = math.lusolve(m, b);
 
     assert(x instanceof math.type.Matrix);
-    approx.deepEqual(x, math.matrix([-1, -0.5, -1/3, -0.25], 'sparse'));
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1/3], [-0.25]]));
   });
   
   it('should solve linear system 4 x 4, matrix and column matrix', function () {
@@ -110,7 +110,7 @@ describe.skip('lusolve', function () {
     var x = math.lusolve(m, b);
 
     assert(x instanceof math.type.Matrix);
-    approx.deepEqual(x, math.matrix([-1, -0.5, -1/3, -0.25], 'sparse'));
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1/3], [-0.25]]));
   });
   
   it('should solve linear system 4 x 4, LUP decomposition (array)', function () {
@@ -158,10 +158,10 @@ describe.skip('lusolve', function () {
     var lup = math.lup(m);
 
     var x = math.lusolve(lup, [-1, -1, -1, -1]);
-    approx.deepEqual(x, math.matrix([-1, -0.5, -1/3, -0.25], 'sparse'));
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1/3], [-0.25]]));
 
     var y = math.lusolve(lup, [1, 2, 1, -1]);
-    approx.deepEqual(y, math.matrix([1, 1, 1/3, -0.25], 'sparse'));
+    approx.deepEqual(y, math.matrix([[1], [1], [1/3], [-0.25]]));
   });
   
   it('should solve linear system 3 x 3, no permutations, arrays', function () {
@@ -203,7 +203,7 @@ describe.skip('lusolve', function () {
 
     var x = math.lusolve(m, b);
 
-    approx.deepEqual(x, math.matrix([[-5/3], [7/3], [-1]], 'sparse'));
+    approx.deepEqual(x, math.matrix([[-5/3], [7/3], [-1]]));
   });
   
   it('should solve linear system 3 x 3, permutations, arrays', function () {
@@ -245,7 +245,7 @@ describe.skip('lusolve', function () {
 
     var x = math.lusolve(m, b);
 
-    approx.deepEqual(x, math.matrix([[-5/3], [7/3], [-1]], 'sparse'));
+    approx.deepEqual(x, math.matrix([[-5/3], [7/3], [-1]]));
   });
   
   it('should throw exception when matrix is singular', function () {
