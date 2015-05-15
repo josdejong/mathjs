@@ -199,11 +199,9 @@ describe('AssignmentNode', function() {
   });
 
   it ('should respect the \'all\' parenthesis option', function () {
-    var allMath = math.create({parenthesis: 'all'});
-
-    var expr = allMath.parse('a=1');
+    var expr = math.parse('a=1');
     assert.equal(expr.toString({parenthesis: 'all'}), 'a = (1)');
-    assert.equal(expr.toTex(), 'a:=\\left(1\\right)');
+    assert.equal(expr.toTex({parenthesis: 'all'}), 'a:=\\left(1\\right)');
   });
 
   it ('should stringify a AssignmentNode', function () {
@@ -258,9 +256,9 @@ describe('AssignmentNode', function() {
 
   it ('should LaTeX an AssignmentNode with custom toTex', function () {
     //Also checks if custom funcions get passed to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'AssignmentNode') {
-        return node.name + '\\mbox{equals}' + node.expr.toTex(config, callback);
+        return node.name + '\\mbox{equals}' + node.expr.toTex(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -271,7 +269,7 @@ describe('AssignmentNode', function() {
 
     var n = new AssignmentNode('a', a);
 
-    assert.equal(n.toTex({}, customFunction), 'a\\mbox{equals}const\\left(1, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), 'a\\mbox{equals}const\\left(1, number\\right)');
   });
 
 });

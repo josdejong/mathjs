@@ -340,11 +340,11 @@ describe('FunctionNode', function() {
 
   it ('should LaTeX a FunctionNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'FunctionNode') {
         var latex = '\\mbox{' + node.name + '}\\left(';
         node.args.forEach(function (arg) {
-          latex += arg.toTex(config, callback) + ', ';
+          latex += arg.toTex(options) + ', ';
         });
         latex += '\\right)';
         return latex;
@@ -360,17 +360,17 @@ describe('FunctionNode', function() {
     var n1 = new FunctionNode('add', [a, b]);
     var n2 = new FunctionNode('subtract', [a, b]);
 
-    assert.equal(n1.toTex({}, customFunction), '\\mbox{add}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
-    assert.equal(n2.toTex({}, customFunction), '\\mbox{subtract}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
+    assert.equal(n1.toTex({handler: customFunction}), '\\mbox{add}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
+    assert.equal(n2.toTex({handler: customFunction}), '\\mbox{subtract}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
   });
 
   it ('should LaTeX a FunctionNode with custom toTex for a single function', function () {
     //Also checks if the custom functions get passed on to the children
     var customFunction = {
-      'add': function (node, config, callbacks) {
-        return node.args[0].toTex(config, callbacks) 
+      'add': function (node, options) {
+        return node.args[0].toTex(options) 
           + ' ' + node.name + ' ' 
-          + node.args[1].toTex(config, callbacks);
+          + node.args[1].toTex(options);
       }
     };
 
@@ -379,7 +379,7 @@ describe('FunctionNode', function() {
 
     var n = new FunctionNode('add', [a, b]);
 
-    assert.equal(n.toTex({}, customFunction), '1 add 2');
+    assert.equal(n.toTex({handler: customFunction}), '1 add 2');
   });
 
 });

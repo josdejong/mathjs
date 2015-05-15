@@ -161,29 +161,24 @@ describe('ParenthesisNode', function() {
   });
 
   it ('should LaTeX a ParenthesisNode when not in keep mode', function () {
-    var allMath = math.create({parenthesis: 'all'});
-    var autoMath = math.create({parenthesis: 'auto'});
+    var c = new math.expression.node.ConstantNode(1);
 
-    var allC = new allMath.expression.node.ConstantNode(1);
-    var autoC = new autoMath.expression.node.ConstantNode(1);
+    var p = new math.expression.node.ParenthesisNode(c);
 
-    var allP = new allMath.expression.node.ParenthesisNode(allC);
-    var autoP = new autoMath.expression.node.ParenthesisNode(autoC);
-
-    assert.equal(allP.toTex(), '1');
-    assert.equal(autoP.toTex(), '1');
+    assert.equal(p.toTex({parenthesis: 'all'}), '1');
+    assert.equal(p.toTex({parenthesis: 'auto'}), '1');
   });
 
   it ('should LaTeX a ParenthesisNode with custom toTex', function () {
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'ParenthesisNode') {
-        return '\\left[' + node.content.toTex(config, callback) + '\\right]';
+        return '\\left[' + node.content.toTex(options) + '\\right]';
       }
     };
 
     var c = new math.expression.node.ConstantNode(1);
     var n = new math.expression.node.ParenthesisNode(c);
 
-    assert.equal(n.toTex({}, customFunction), '\\left[1\\right]');
+    assert.equal(n.toTex({handler: customFunction}), '\\left[1\\right]');
   });
 });

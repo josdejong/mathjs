@@ -322,10 +322,8 @@ describe('UpdateNode', function() {
   });
 
   it ('should respect the \'all\' parenthesis option', function () {
-    var allMath = math.create({parenthesis: 'all'});
-
-    assert.equal(allMath.parse('a[1]=2').toString({parenthesis: 'all'}), 'a[1] = (2)' );
-    assert.equal(allMath.parse('a[1]=2').toTex(), ' a_{1}:=\\left(2\\right)' );
+    assert.equal(math.parse('a[1]=2').toString({parenthesis: 'all'}), 'a[1] = (2)' );
+    assert.equal(math.parse('a[1]=2').toTex({parenthesis: 'all'}), ' a_{1}:=\\left(2\\right)' );
   });
 
   it ('should LaTeX an UpdateNode', function () {
@@ -372,14 +370,14 @@ describe('UpdateNode', function() {
 
   it ('should LaTeX an UpdateNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'UpdateNode') {
-        return node.index.toTex(config, callback) + ' equals ' + node.expr.toTex(config, callback);
+        return node.index.toTex(options) + ' equals ' + node.expr.toTex(options);
       }
       else if (node.type === 'IndexNode') {
-        var latex = node.object.toTex(config, callback) + ' at ';
+        var latex = node.object.toTex(options) + ' at ';
         node.ranges.forEach(function (range) {
-          latex += range.toTex(config, callback) + ', ';
+          latex += range.toTex(options) + ', ';
         });
         return latex;
       }
@@ -397,7 +395,7 @@ describe('UpdateNode', function() {
 
     var n = new UpdateNode(new IndexNode(a, ranges), v);
 
-    assert.equal(n.toTex({}, customFunction), ' a at const\\left(2, number\\right), const\\left(1, number\\right),  equals const\\left(5, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), ' a at const\\left(2, number\\right), const\\left(1, number\\right),  equals const\\left(5, number\\right)');
   });
 
 });

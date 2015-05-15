@@ -303,10 +303,8 @@ describe('RangeNode', function() {
   });
 
   it ('should respect the \'all\' parenthesis option', function () {
-    var allMath = math.create({parenthesis: 'all'});
-
-    assert.equal(allMath.parse('1:2:3').toString({parenthesis: 'all'}), '(1):(2):(3)');
-    assert.equal(allMath.parse('1:2:3').toTex(), '\\left(1\\right):\\left(2\\right):\\left(3\\right)');
+    assert.equal(math.parse('1:2:3').toString({parenthesis: 'all'}), '(1):(2):(3)');
+    assert.equal(math.parse('1:2:3').toTex({parenthesis: 'all'}), '\\left(1\\right):\\left(2\\right):\\left(3\\right)');
   });
 
   it ('should LaTeX a RangeNode without step', function () {
@@ -328,11 +326,11 @@ describe('RangeNode', function() {
 
   it ('should LaTeX a RangeNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'RangeNode') {
-        return 'from ' + node.start.toTex(config, callback)
-          + ' to ' + node.end.toTex(config, callback)
-          + ' with steps of ' + node.step.toTex(config, callback);
+        return 'from ' + node.start.toTex(options)
+          + ' to ' + node.end.toTex(options)
+          + ' with steps of ' + node.step.toTex(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -345,7 +343,7 @@ describe('RangeNode', function() {
 
     var n = new RangeNode(a, b, c);
 
-    assert.equal(n.toTex({}, customFunction), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)');
   });
 
 });
