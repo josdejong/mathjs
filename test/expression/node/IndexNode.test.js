@@ -279,11 +279,11 @@ describe('IndexNode', function() {
 
   it ('should stringigy an IndexNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'IndexNode') {
-        var string = node.object.toString(config, callback) + ' at ';
+        var string = node.object.toString(options) + ' at ';
         node.ranges.forEach(function (range) {
-          string += range.toTex(config, callback) + ', ';
+          string += range.toString(options) + ', ';
         });
 
         return string;
@@ -299,7 +299,7 @@ describe('IndexNode', function() {
 
     var n = new IndexNode(a, [b, c]);
 
-    assert.equal(n.toString({}, customFunction), 'a at const(1, number), const(2, number), ');
+    assert.equal(n.toString({handler: customFunction}), 'a at const(1, number), const(2, number), ');
   });
 
   it ('should LaTeX an IndexNode', function () {

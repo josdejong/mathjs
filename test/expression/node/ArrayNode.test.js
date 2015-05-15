@@ -232,11 +232,11 @@ describe('ArrayNode', function() {
 
   it ('should stringify an ArrayNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'ArrayNode') {
         var string = '[';
         node.nodes.forEach(function (node) {
-          string += node.toString(config, callback) + ', ';
+          string += node.toString(options) + ', ';
         });
 
         string += ']';
@@ -252,7 +252,7 @@ describe('ArrayNode', function() {
 
     var n = new ArrayNode([a, b]);
 
-    assert.equal(n.toString({}, customFunction), '[const(1, number), const(2, number), ]');
+    assert.equal(n.toString({handler: customFunction}), '[const(1, number), const(2, number), ]');
   });
 
   it ('should LaTeX an ArrayNode', function () {

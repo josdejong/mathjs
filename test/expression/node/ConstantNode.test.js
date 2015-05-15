@@ -136,7 +136,7 @@ describe('ConstantNode', function() {
 
   it ('should stringify a ConstantNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + node.valueType + ')'
       }
@@ -144,7 +144,7 @@ describe('ConstantNode', function() {
 
     var n = new ConstantNode(1);
 
-    assert.equal(n.toString({}, customFunction), 'const(1, number)');
+    assert.equal(n.toString({handler: customFunction}), 'const(1, number)');
   });
 
   it ('should LaTeX a ConstantNode', function () {

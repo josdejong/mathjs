@@ -254,9 +254,7 @@ describe('ConditionalNode', function() {
   });
 
   it ('should respect the \'all\' parenthesis option', function () {
-    var allMath = math.create({parenthesis: 'all'});
-
-    assert.equal(allMath.parse('a?b:c').toString(), '(a) ? (b) : (c)');
+    assert.equal(math.parse('a?b:c').toString({parenthesis: 'all'}), '(a) ? (b) : (c)');
   });
 
   it ('should stringify a ConditionalNode', function () {
@@ -267,11 +265,11 @@ describe('ConditionalNode', function() {
 
   it ('should stringify a ConditionalNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'ConditionalNode') {
-        return 'if ' + node.condition.toString(config, callback)
-          + ' then ' + node.trueExpr.toString(config, callback)
-          + ' else ' + node.falseExpr.toString(config, callback);
+        return 'if ' + node.condition.toString(options)
+          + ' then ' + node.trueExpr.toString(options)
+          + ' else ' + node.falseExpr.toString(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + node.valueType + ')'
@@ -284,7 +282,7 @@ describe('ConditionalNode', function() {
 
     var n = new ConditionalNode(a, b, c);
 
-    assert.equal(n.toTex({}, customFunction), 'if const(1, number) then const(2, number) else const(3, number)');
+    assert.equal(n.toString({handler: customFunction}), 'if const(1, number) then const(2, number) else const(3, number)');
   });
 
   it ('should LaTeX a ConditionalNode', function () {

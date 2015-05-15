@@ -249,7 +249,7 @@ describe('FunctionAssignmentNode', function() {
     var allMath = math.create({parenthesis: 'all'});
 
     var expr = allMath.parse('f(x)=x+1');
-    assert.equal(expr.toString(), 'function f(x) = (x + 1)');
+    assert.equal(expr.toString({parenthesis: 'all'}), 'function f(x) = (x + 1)');
     assert.equal(expr.toTex(), '\\mathrm{f}\\left(x\\right):=\\left( x+1\\right)');
   });
 
@@ -273,14 +273,14 @@ describe('FunctionAssignmentNode', function() {
 
   it ('should stringify a FunctionAssignmentNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'FunctionAssignmentNode') {
         var string = '[' + node.name + '](';
         node.params.forEach(function (param) {
           string += param + ', ';
         });
 
-        string += ')=' + node.expr.toString(config, callback);
+        string += ')=' + node.expr.toString(options);
         return string;
       }
       else if (node.type === 'ConstantNode') {
@@ -292,7 +292,7 @@ describe('FunctionAssignmentNode', function() {
 
     var n = new FunctionAssignmentNode('func', ['x'], a);
 
-    assert.equal(n.toString({}, customFunction), '[func](x, )=const(1, number)');
+    assert.equal(n.toString({handler: customFunction}), '[func](x, )=const(1, number)');
   });
 
   it ('should LaTeX a FunctionAssignmentNode', function() {

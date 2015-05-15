@@ -109,7 +109,7 @@ describe('SymbolNode', function() {
 
   it ('should stringigy a SymbolNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'SymbolNode') {
         return 'symbol(' + node.name + ')';
       }
@@ -117,7 +117,7 @@ describe('SymbolNode', function() {
 
     var n = new SymbolNode('a');
 
-    assert.equal(n.toString({}, customFunction), 'symbol(a)');
+    assert.equal(n.toString({handler: customFunction}), 'symbol(a)');
   });
 
   it ('should LaTeX a SymbolNode', function () {

@@ -282,11 +282,11 @@ describe('RangeNode', function() {
 
   it ('should stringify a RangeNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'RangeNode') {
-        return 'from ' + node.start.toString(config, callback)
-          + ' to ' + node.end.toString(config, callback)
-          + ' with steps of ' + node.step.toString(config, callback);
+        return 'from ' + node.start.toString(options)
+          + ' to ' + node.end.toString(options)
+          + ' with steps of ' + node.step.toString(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + node.valueType + ')'
@@ -299,13 +299,13 @@ describe('RangeNode', function() {
 
     var n = new RangeNode(a, b, c);
 
-    assert.equal(n.toString({}, customFunction), 'from const(1, number) to const(2, number) with steps of const(3, number)');
+    assert.equal(n.toString({handler: customFunction}), 'from const(1, number) to const(2, number) with steps of const(3, number)');
   });
 
   it ('should respect the \'all\' parenthesis option', function () {
     var allMath = math.create({parenthesis: 'all'});
 
-    assert.equal(allMath.parse('1:2:3').toString(), '(1):(2):(3)');
+    assert.equal(allMath.parse('1:2:3').toString({parenthesis: 'all'}), '(1):(2):(3)');
     assert.equal(allMath.parse('1:2:3').toTex(), '\\left(1\\right):\\left(2\\right):\\left(3\\right)');
   });
 

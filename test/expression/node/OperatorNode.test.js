@@ -235,38 +235,32 @@ describe('OperatorNode', function() {
     });
 
     it ('should stringify left associative OperatorNodes that are associative with another Node', function () {
-      var autoMath = math.create({parenthesis: 'auto'});
+      assert.equal(math.parse('(a+b)+c').toString({parenthesis: 'auto'}), 'a + b + c');
+      assert.equal(math.parse('a+(b+c)').toString({parenthesis: 'auto'}), 'a + b + c');
+      assert.equal(math.parse('(a+b)-c').toString({parenthesis: 'auto'}), 'a + b - c');
+      assert.equal(math.parse('a+(b-c)').toString({parenthesis: 'auto'}), 'a + b - c');
 
-      assert.equal(autoMath.parse('(a+b)+c').toString(), 'a + b + c');
-      assert.equal(autoMath.parse('a+(b+c)').toString(), 'a + b + c');
-      assert.equal(autoMath.parse('(a+b)-c').toString(), 'a + b - c');
-      assert.equal(autoMath.parse('a+(b-c)').toString(), 'a + b - c');
-
-      assert.equal(autoMath.parse('(a*b)*c').toString(), 'a * b * c');
-      assert.equal(autoMath.parse('a*(b*c)').toString(), 'a * b * c');
-      assert.equal(autoMath.parse('(a*b)/c').toString(), 'a * b / c');
-      assert.equal(autoMath.parse('a*(b/c)').toString(), 'a * b / c');
+      assert.equal(math.parse('(a*b)*c').toString({parenthesis: 'auto'}), 'a * b * c');
+      assert.equal(math.parse('a*(b*c)').toString({parenthesis: 'auto'}), 'a * b * c');
+      assert.equal(math.parse('(a*b)/c').toString({parenthesis: 'auto'}), 'a * b / c');
+      assert.equal(math.parse('a*(b/c)').toString({parenthesis: 'auto'}), 'a * b / c');
     });
 
     it ('should stringify left associative OperatorNodes that are not associative with another Node', function () {
-      var autoMath = math.create({parenthesis: 'auto'});
+      assert.equal(math.parse('(a-b)-c').toString({parenthesis: 'auto'}), 'a - b - c');
+      assert.equal(math.parse('a-(b-c)').toString({parenthesis: 'auto'}), 'a - (b - c)');
+      assert.equal(math.parse('(a-b)+c').toString({parenthesis: 'auto'}), 'a - b + c');
+      assert.equal(math.parse('a-(b+c)').toString({parenthesis: 'auto'}), 'a - (b + c)');
 
-      assert.equal(autoMath.parse('(a-b)-c').toString(), 'a - b - c');
-      assert.equal(autoMath.parse('a-(b-c)').toString(), 'a - (b - c)');
-      assert.equal(autoMath.parse('(a-b)+c').toString(), 'a - b + c');
-      assert.equal(autoMath.parse('a-(b+c)').toString(), 'a - (b + c)');
-
-      assert.equal(autoMath.parse('(a/b)/c').toString(), 'a / b / c');
-      assert.equal(autoMath.parse('a/(b/c)').toString(), 'a / (b / c)');
-      assert.equal(autoMath.parse('(a/b)*c').toString(), 'a / b * c');
-      assert.equal(autoMath.parse('a/(b*c)').toString(), 'a / (b * c)');
+      assert.equal(math.parse('(a/b)/c').toString({parenthesis: 'auto'}), 'a / b / c');
+      assert.equal(math.parse('a/(b/c)').toString({parenthesis: 'auto'}), 'a / (b / c)');
+      assert.equal(math.parse('(a/b)*c').toString({parenthesis: 'auto'}), 'a / b * c');
+      assert.equal(math.parse('a/(b*c)').toString({parenthesis: 'auto'}), 'a / (b * c)');
     });
 
     it ('should stringify right associative OperatorNodes that are not associative with another Node', function () {
-      var autoMath = math.create({parenthesis: 'auto'});
-
-      assert.equal(autoMath.parse('(a^b)^c').toString(), '(a ^ b) ^ c');
-      assert.equal(autoMath.parse('a^(b^c)').toString(), 'a ^ b ^ c');
+      assert.equal(math.parse('(a^b)^c').toString({parenthesis: 'auto'}), '(a ^ b) ^ c');
+      assert.equal(math.parse('a^(b^c)').toString({parenthesis: 'auto'}), 'a ^ b ^ c');
     });
 
     it ('should stringify unary OperatorNodes containing a binary OperatorNode', function () {
@@ -276,21 +270,19 @@ describe('OperatorNode', function() {
     });
 
     it ('should stringify unary OperatorNodes containing a unary OperatorNode', function () {
-      var autoMath = math.create({parenthesis: 'auto'});
-
-      assert.equal(autoMath.parse('(-a)!').toString(), '(-a)!');
-      assert.equal(autoMath.parse('-(a!)').toString(), '-a!');
-      assert.equal(autoMath.parse('-(-a)').toString(), '-(-a)');
+      assert.equal(math.parse('(-a)!').toString({parenthesis: 'auto'}), '(-a)!');
+      assert.equal(math.parse('-(a!)').toString({parenthesis: 'auto'}), '-a!');
+      assert.equal(math.parse('-(-a)').toString({parenthesis: 'auto'}), '-(-a)');
     });
   });
 
   it ('should stringify an OperatorNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'OperatorNode') {
         return node.op + node.fn + '(' 
-          + node.args[0].toString(config, callback)
-          + ', ' +  node.args[1].toString(config, callback) + ')';
+          + node.args[0].toString(options)
+          + ', ' +  node.args[1].toString(options) + ')';
       }
       else if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + node.valueType + ')'
@@ -303,17 +295,17 @@ describe('OperatorNode', function() {
     var n1 = new OperatorNode('+', 'add', [a, b]);
 	var n2 = new OperatorNode('-', 'subtract', [a, b]);
 
-    assert.equal(n1.toString({}, customFunction), '+add(const(1, number), const(2, number))');
-    assert.equal(n2.toString({}, customFunction), '-subtract(const(1, number), const(2, number))');
+    assert.equal(n1.toString({handler: customFunction}), '+add(const(1, number), const(2, number))');
+    assert.equal(n2.toString({handler: customFunction}), '-subtract(const(1, number), const(2, number))');
   });
 
   it ('should stringify an OperatorNode with custom toString for a single operator', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if ((node.type === 'OperatorNode') && (node.fn === 'add')) {
-        return node.args[0].toString(config, callback)
+        return node.args[0].toString(options)
           + node.op + node.fn + node.op + 
-          node.args[1].toString(config, callback);
+          node.args[1].toString(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + node.valueType + ')'
@@ -325,13 +317,13 @@ describe('OperatorNode', function() {
 
     var n = new OperatorNode('+', 'add', [a, b]);
 
-    assert.equal(n.toString({}, customFunction), 'const(1, number)+add+const(2, number)');
+    assert.equal(n.toString({handler: customFunction}), 'const(1, number)+add+const(2, number)');
   });
 
   it ('should respect the \'all\' parenthesis option', function () {
     var allMath = math.create({parenthesis: 'all'});
 
-    assert.equal(allMath.parse('1+1+1').toString(), '(1 + 1) + 1' );
+    assert.equal(allMath.parse('1+1+1').toString({parenthesis: 'all'}), '(1 + 1) + 1' );
     assert.equal(allMath.parse('1+1+1').toTex(), '\\left(1+1\\right)+1' );
   });
 

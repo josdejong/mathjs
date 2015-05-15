@@ -253,11 +253,11 @@ describe('BlockNode', function() {
 
   it ('should stringify a BlockNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'BlockNode') {
         var string = '';
         node.blocks.forEach(function (block) {
-          string += block.node.toString(config, callback) + '; ';
+          string += block.node.toString(options) + '; ';
         });
 
         return string;
@@ -272,7 +272,7 @@ describe('BlockNode', function() {
 
     var n = new BlockNode([{node: a}, {node: b}]);
 
-    assert.equal(n.toString({}, customFunction), 'const(1, number); const(2, number); ');
+    assert.equal(n.toString({handler: customFunction}), 'const(1, number); const(2, number); ');
   });
 
   it ('should LaTeX a BlockNode', function () {

@@ -273,11 +273,11 @@ describe('FunctionNode', function() {
 
   it ('should stringify a FunctionNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'FunctionNode') {
         var string = '[' + node.name + '](';
         node.args.forEach(function (arg) {
-          string += arg.toString(config, callback) + ', ';
+          string += arg.toString(options) + ', ';
         });
         string += ')';
         return string;
@@ -293,17 +293,17 @@ describe('FunctionNode', function() {
     var n1 = new FunctionNode('add', [a, b]);
     var n2 = new FunctionNode('subtract', [a, b]);
 
-    assert.equal(n1.toString({}, customFunction), '[add](const(1, number), const(2, number), )');
-    assert.equal(n2.toString({}, customFunction), '[subtract](const(1, number), const(2, number), )');
+    assert.equal(n1.toString({handler: customFunction}), '[add](const(1, number), const(2, number), )');
+    assert.equal(n2.toString({handler: customFunction}), '[subtract](const(1, number), const(2, number), )');
   });
 
   it ('should stringify a FunctionNode with custom toString for a single function', function () {
     //Also checks if the custom functions get passed on to the children
     var customFunction = {
-      'add': function (node, config, callbacks) {
-        return node.args[0].toString(config, callbacks) 
+      'add': function (node, options) {
+        return node.args[0].toString(options) 
           + ' ' + node.name + ' ' 
-          + node.args[1].toString(config, callbacks);
+          + node.args[1].toString(options);
       }
     };
 
@@ -312,7 +312,7 @@ describe('FunctionNode', function() {
 
     var n = new FunctionNode('add', [a, b]);
 
-    assert.equal(n.toString({}, customFunction), '1 add 2');
+    assert.equal(n.toString({handler: customFunction}), '1 add 2');
   });
 
   it ('should LaTeX a FunctionNode', function () {

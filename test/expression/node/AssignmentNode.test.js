@@ -202,7 +202,7 @@ describe('AssignmentNode', function() {
     var allMath = math.create({parenthesis: 'all'});
 
     var expr = allMath.parse('a=1');
-    assert.equal(expr.toString(), 'a = (1)');
+    assert.equal(expr.toString({parenthesis: 'all'}), 'a = (1)');
     assert.equal(expr.toTex(), 'a:=\\left(1\\right)');
   });
 
@@ -224,9 +224,9 @@ describe('AssignmentNode', function() {
 
   it ('should stringify an AssignmentNode with custom toString', function () {
     //Also checks if custom funcions get passed to the children
-    var customFunction = function (node, config, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'AssignmentNode') {
-        return node.name + ' equals ' + node.expr.toString(config, callback);
+        return node.name + ' equals ' + node.expr.toString(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ', ' + node.valueType + ')'
@@ -237,7 +237,7 @@ describe('AssignmentNode', function() {
 
     var n = new AssignmentNode('a', a);
 
-    assert.equal(n.toString({}, customFunction), 'a equals const(1, number)');
+    assert.equal(n.toString({handler: customFunction}), 'a equals const(1, number)');
   });
 
   it ('should LaTeX a AssignmentNode', function () {
