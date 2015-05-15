@@ -3,7 +3,7 @@
 
 ## 2015-05-14, version 1.7.0
 
-- Implemented function `quantileSeq`. Thanks @BigFav.
+- Implemented function `quantileSeq` and `partitionSelect`. Thanks @BigFav.
 - Implemented functions `stirlingS2` and `bellNumbers`. Thanks @devanp92.
 - Extended the command line interface with a `mode` option to output either
   the expressions result, string representation, or tex representation.
