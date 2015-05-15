@@ -1,9 +1,9 @@
 # Complex Numbers
 
-Math.js supports creation, manipulation, and calculations with complex numbers.
+Math.js supports the creation, manipulation, and calculations with complex numbers.
 
 In mathematics, a complex number is an expression of the form `a + bi`,
-where `a` and `b` are real numbers, and `i` represents the imaginary number
+where `a` and `b` are real numbers and `i` represents the imaginary number
 defined as `i^2 = -1`. (In other words, `i` is the square root of `-1`.)
 The real number `a` is called the real part of the complex number,
 and the real number `b` is the imaginary part. For example, `3 + 2i` is a
@@ -57,7 +57,7 @@ The properties `re` and `im` of a complex number can be read and replaced.
 A `Complex` object has the following functions:
 
 - `clone()`. Create a clone of the complex number.
-- `equals(other)`. Test whether a complex number equals an other complex value.
+- `equals(other)`. Test whether a complex number equals another complex value.
   Two complex numbers are equal when both their real and imaginary parts are
   equal.
 - `format([precision: number])`. Get a string representation of the complex number,
