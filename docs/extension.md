@@ -20,7 +20,7 @@ argument can be an object with options. The following options are available:
   If true, the functions will be wrapped in a wrapper function which
   converts data types like Matrix to primitive data types like Array.
   The wrapper is needed when extending math.js with libraries which do not
-  support the math.js data types. Default value is false.
+  support the math.js data types. The default value is false.
 
 Math.js can be extended with functions and variables:
 
