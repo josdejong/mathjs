@@ -68,7 +68,7 @@ describe('usolve', function () {
     var x = math.usolve(m, b);
 
     assert(x instanceof math.type.Matrix);
-    approx.deepEqual(x, math.sparse([[-1], [-1], [-1], [4]]));
+    approx.deepEqual(x, math.matrix([[-1], [-1], [-1], [4]]));
   });
 
   it('should solve linear system 4 x 4, matrix and column matrix', function () {
@@ -110,7 +110,7 @@ describe('usolve', function () {
     var x = math.usolve(m, b);
 
     assert(x instanceof math.type.Matrix);
-    approx.deepEqual(x, math.sparse([[-1], [-1], [-1], [4]]));
+    approx.deepEqual(x, math.matrix([[-1], [-1], [-1], [4]]));
   });
 
   it('should throw exception when matrix is singular', function () {
