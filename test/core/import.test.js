@@ -1,8 +1,7 @@
 // test import
-var assert = require('assert'),
-    error = require('../../lib/error/index'),
-    mathjs = require('../../index'),
-    approx = require('../../tools/approx');
+var assert = require('assert');
+var mathjs = require('../../index');
+var approx = require('../../tools/approx');
 
 describe('import', function() {
   var math = null;
@@ -27,8 +26,14 @@ describe('import', function() {
   });
 
   it('should not override existing functions', function() {
-    math.import({myvalue: 10});
-    approx.equal(math.myvalue, 42);
+    assert.throws(function () {math.import({myvalue: 10})},
+        /Error: Cannot import "myvalue": already exists/);
+    assert.equal(math.myvalue, 42);
+  });
+
+  it('should throw no errors when silent:true', function() {
+    assert.deepEqual(math.import({myvalue: 10}, {silent: true}), {myvalue: undefined});
+    assert.equal(math.myvalue, 42);
   });
 
   it('should override existing functions if forced', function() {
@@ -84,7 +89,7 @@ describe('import', function() {
   it('should extend math with numbers', function() {
     // extend math.js with numbers.js
     // examples copied from https://github.com/sjkaliski/numbers.js/blob/master/examples/statistic.js
-    math.import(require('numbers'), {wrap: true});
+    math.import(require('numbers'), {wrap: true, silent: true});
 
     assert.equal(math.fibonacci(7), 13);
 
@@ -147,7 +152,67 @@ describe('import', function() {
 
   it('should return the imported object', function () {
     assert.deepEqual(math.import({a: 24}), {a: 24});
-    assert.deepEqual(math.import({pi: 24}), {pi: undefined}); // pi was ignored
+    assert.deepEqual(math.import({pi: 24}, {silent: true}), {pi: undefined}); // pi was ignored
+  });
+
+  it('should import a boolean', function () {
+    assert.deepEqual(math.import({a: true}), {a: true});
+    assert.strictEqual(math.a, true);
+  });
+
+  it('should merge typed functions with the same name', function () {
+    math.import({
+      'foo': math.typed('foo', {
+        'number': function (x) {
+          return 'foo(number)';
+        }
+      })
+    });
+
+    math.import({
+      'foo': math.typed('foo', {
+        'string': function (x) {
+          return 'foo(string)';
+        }
+      })
+    });
+
+    assert.deepEqual(Object.keys(math.foo.signatures).sort(), ['number', 'string']);
+    assert.equal(math.foo(2), 'foo(number)');
+    assert.equal(math.foo('bar'), 'foo(string)');
+    assert.throws(function () {
+      math.foo(new Date())
+    }, /TypeError: Unexpected type of argument in function foo/);
+
+  });
+
+  it('should merge typed functions coming from a factory', function () {
+    math.import({
+      'foo': math.typed('foo', {
+        'number': function (x) {
+          return 'foo(number)';
+        }
+      })
+    });
+
+    math.import({
+      'name': 'foo',
+      'factory': function () {
+        return math.typed('foo', {
+          'string': function (x) {
+            return 'foo(string)';
+          }
+        })
+      }
+    });
+
+    assert.deepEqual(Object.keys(math.foo.signatures).sort(), ['number', 'string']);
+    assert.equal(math.foo(2), 'foo(number)');
+    assert.equal(math.foo('bar'), 'foo(string)');
+    assert.throws(function () {
+      math.foo(new Date())
+    }, /TypeError: Unexpected type of argument in function foo/);
+
   });
 
   it('should import a boolean', function () {

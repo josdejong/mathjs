@@ -40,13 +40,13 @@ print(math.eval('hello("user")'));    // 'hello, user!'
  *     npm install numbers
  */
 try {
-  // import the numbers.js library into math.js
-  math.import(require('numbers'), {wrap: true});
+  var numbers = require('numbers');
 }
 catch (err) {
   console.log('Warning: to import numbers.js, the library must\n' +
       'be installed first via `npm install numbers`.');
 }
+math.import(numbers, {wrap: true, silent: true});
 
 if (math.fibonacci) {
   // calculate fibonacci
@@ -61,12 +61,14 @@ if (math.fibonacci) {
  */
 try {
   // import the numeric.js library into math.js
-  math.import(require('numeric'), {wrap: true});
+  var numeric = require('numeric');
 }
 catch (err) {
   console.log('Warning: to import numeric.js, the library must\n' +
       'be installed first via `npm install numeric`.');
 }
+console.log(typeof numeric)
+math.import(numeric, {wrap: true, silent: true});
 
 if (math.eig) {
   // calculate eigenvalues of a matrix

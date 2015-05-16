@@ -14,13 +14,16 @@ The first argument is object containing the functions and/or values to be
 imported. The optional second argument can be an object with options. The 
 following options are available:
 
-- `{Boolean} override`
+- `{boolean} override`
   If true, existing functions will be overwritten. False by default.
-- `{Boolean} wrap`
+- `{boolean} silent`
+  If true, the function will not throw errors on duplicates or invalid
+  types. Default value is `false`.
+- `{boolean} wrap`
   If true, the functions will be wrapped in a wrapper function which
   converts data types like Matrix to primitive data types like Array.
   The wrapper is needed when extending math.js with libraries which do not
-  support the math.js data types. Default value is false.
+  support the math.js data types. Default value is `false`.
 
 Math.js can be extended with functions and variables:
 
@@ -56,8 +59,8 @@ like `Array`, the imported functions can be wrapped by enabling `{wrap: true}`.
 
 ```js
 // import the numbers.js and numeric.js libraries into math.js
-math.import(require('numbers'), {wrap: true});
-math.import(require('numeric'), {wrap: true});
+math.import(require('numbers'), {wrap: true, silent: true});
+math.import(require('numeric'), {wrap: true, silent: true});
 
 // use functions from numbers.js
 math.fibonacci(7);                          // 13

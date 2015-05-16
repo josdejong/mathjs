@@ -10,6 +10,8 @@
 - Function `import` now returns the imported objects.
 - Function `import` no longer supports a module name as argument. Instead,
   modules can be loaded using require: `math.import(require('module-name'))`.
+- Function `import` has a new option `silent` to ignore errors, and throws
+  errors on duplicates by default.
 - Drastically refactored and reorganized the source code.
 
 
