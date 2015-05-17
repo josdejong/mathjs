@@ -46,6 +46,19 @@ $ mathjs --tex
 
 ```bash
 $ mathjs --string
-> (1+1)
-(1 + 1)
+> (1+1+1)
+(1 + 1 + 1)
+```
+
+To change the parenthesis option use the `--parenthesis=` flag:
+```bash
+$ mathjs --string --parenthesis=auto
+> (1+1+1)
+1 + 1 + 1
+```
+
+```bash
+$ mathjs --string --parenthesis=all
+> (1+1+1)
+(1 + 1) + 1
 ```
