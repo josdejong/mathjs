@@ -21,7 +21,7 @@ describe('slu', function () {
     approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
-  it('should decompose matrix, 4 x 4, amd(A+A\') (order=1), partial pivoting', function () {
+  it('should decompose matrix, 4 x 4, amd(A+A\') (order=1)', function () {
 
     var m = math.sparse(
       [

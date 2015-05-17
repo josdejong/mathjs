@@ -248,6 +248,70 @@ describe('lusolve', function () {
     approx.deepEqual(x, math.matrix([[-5/3], [7/3], [-1]]));
   });
   
+  it('should solve linear system 4 x 4, natural ordering (order=0), partial pivoting, sparse matrix', function () {
+    var m = math.sparse(
+      [
+        [4.5,   0, 3.2,   0],
+        [3.1, 2.9,   0, 0.9],
+        [0,   1.7,   3,   0],
+        [3.5, 0.4,   0,   1]
+      ]);
+
+    var b = [1.000000, 1.250000, 1.500000, 1.750000];
+
+    var x = math.lusolve(m, b, 0, 1);
+
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]));
+  });
+  
+  it('should solve linear system 4 x 4, amd(A+A\') (order=1), partial pivoting, sparse matrix', function () {
+    var m = math.sparse(
+      [
+        [4.5,   0, 3.2,   0],
+        [3.1, 2.9,   0, 0.9],
+        [0,   1.7,   3,   0],
+        [3.5, 0.4,   0,   1]
+      ]);
+
+    var b = [1.000000, 1.250000, 1.500000, 1.750000];
+
+    var x = math.lusolve(m, b, 1, 1);
+
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]));
+  });
+  
+  it('should solve linear system 4 x 4, amd(A\'*A) (order=2), partial pivoting, sparse matrix', function () {
+    var m = math.sparse(
+      [
+        [4.5,   0, 3.2,   0],
+        [3.1, 2.9,   0, 0.9],
+        [0,   1.7,   3,   0],
+        [3.5, 0.4,   0,   1]
+      ]);
+
+    var b = [1.000000, 1.250000, 1.500000, 1.750000];
+
+    var x = math.lusolve(m, b, 2, 1);
+
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]));
+  });
+  
+  it('should solve linear system 4 x 4, amd(A\'*A) (order=3), partial pivoting, sparse matrix', function () {
+    var m = math.sparse(
+      [
+        [4.5,   0, 3.2,   0],
+        [3.1, 2.9,   0, 0.9],
+        [0,   1.7,   3,   0],
+        [3.5, 0.4,   0,   1]
+      ]);
+
+    var b = [1.000000, 1.250000, 1.500000, 1.750000];
+
+    var x = math.lusolve(m, b, 3, 1);
+
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]));
+  });
+  
   it('should throw exception when matrix is singular', function () {
     assert.throws(function () { math.lusolve([[1, 1], [0, 0]], [1, 1]); }, /Error: Linear system cannot be solved since matrix is singular/);
     assert.throws(function () { math.lusolve(math.matrix([[1, 1], [0, 0]], 'dense'), [1, 1]); }, /Error: Linear system cannot be solved since matrix is singular/);
