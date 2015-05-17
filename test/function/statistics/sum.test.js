@@ -71,8 +71,8 @@ describe('sum', function() {
     assert.throws(function() {sum([], 2)}, /not yet supported/);
   });
 
-  it('should throw an error if called with an empty array', function() {
-    assert.throws(function() {sum([])});
+  it('should return zero if called with an empty array', function() {
+    assert.equal(sum([]), 0);
   });
 
   it('should LaTeX sum', function () {
