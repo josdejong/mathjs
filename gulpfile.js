@@ -122,10 +122,10 @@ gulp.task('docs', function () {
   docgenerator.iteratePath(REF_SRC, REF_DEST);
 });
 
-// The default task (called when you run `gulp`)
-gulp.task('default', ['bundle', 'minify']);
-
 // The watch task (to automatically rebuild when the source code changes)
 gulp.task('watch', ['bundle', 'minify'], function () {
   gulp.watch(['index.js', 'lib/**/*.js'], ['bundle', 'minify']);
 });
+
+// The default task (called when you run `gulp`)
+gulp.task('default', ['bundle', 'minify']);
