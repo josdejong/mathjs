@@ -254,15 +254,35 @@ describe('ConditionalNode', function() {
   });
 
   it ('should respect the \'all\' parenthesis option', function () {
-    var allMath = math.create({parenthesis: 'all'});
-
-    assert.equal(allMath.parse('a?b:c').toString(), '(a) ? (b) : (c)');
+    assert.equal(math.parse('a?b:c').toString({parenthesis: 'all'}), '(a) ? (b) : (c)');
   });
 
   it ('should stringify a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 
     assert.equal(n.toString(), 'true ? (a = 2) : (b = 3)');
+  });
+
+  it ('should stringify a ConditionalNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'ConditionalNode') {
+        return 'if ' + node.condition.toString(options)
+          + ' then ' + node.trueExpr.toString(options)
+          + ' else ' + node.falseExpr.toString(options);
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+
+    var n = new ConditionalNode(a, b, c);
+
+    assert.equal(n.toString({handler: customFunction}), 'if const(1, number) then const(2, number) else const(3, number)');
   });
 
   it ('should LaTeX a ConditionalNode', function () {
@@ -273,11 +293,11 @@ describe('ConditionalNode', function() {
 
   it ('should LaTeX a ConditionalNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'ConditionalNode') {
-        return 'if ' + node.condition.toTex(callback)
-          + ' then ' + node.trueExpr.toTex(callback)
-          + ' else ' + node.falseExpr.toTex(callback);
+        return 'if ' + node.condition.toTex(options)
+          + ' then ' + node.trueExpr.toTex(options)
+          + ' else ' + node.falseExpr.toTex(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -290,7 +310,7 @@ describe('ConditionalNode', function() {
 
     var n = new ConditionalNode(a, b, c);
 
-    assert.equal(n.toTex(customFunction), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)');
   });
 
 });

@@ -47,5 +47,5 @@ $ mathjs --tex
 ```bash
 $ mathjs --string
 > (1+1)
-1 + 1
+(1 + 1)
 ```

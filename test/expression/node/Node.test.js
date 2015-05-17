@@ -68,19 +68,36 @@ describe('Node', function() {
     }, /Cannot clone a Node interface/);
   });
 
-  it ('should stringify a Node', function () {
-    var node = new Node();
-    assert.equal(node.toString(), '');
+  it ('should throw an error when stringifying a Node interface', function () {
+    assert.throws(function () {
+      var node = new Node();
+      node.toString();
+    }, /_toString not implemented for Node/);
   });
 
   it ('should throw an error when calling _toTex', function () {
     assert.throws(function () {
       var node = new Node();
-      node.type = 'SpecialNode';  //this is necessary because toTex
-                                  //returns '' for a Node
       node._toTex();
-    }, /_toTex not implemented for SpecialNode/);
+    }, /_toTex not implemented for Node/);
   });
+
+  it ('should ignore custom toString if it returns nothing', function () {
+    var callback1 = function (node, callback) {};
+    var callback2 = {
+      bla: function (node, callbacks) {}
+    };
+    var mymath = math.create();
+    mymath.expression.node.Node.prototype._toString = function () {
+      return 'default';
+    };
+    var n1 = new mymath.expression.node.Node();
+    var n2 = new mymath.expression.node.FunctionNode('bla', []);
+    
+    assert.equal(n1.toString(callback1), 'default');
+    assert.equal(n2.toString(callback2), 'bla()');
+  });
+
 
   it ('should ignore custom toTex if it returns nothing', function () {
     var callback1 = function (node, callback) {};
