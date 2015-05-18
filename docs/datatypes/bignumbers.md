@@ -1,7 +1,7 @@
 # BigNumbers
 
 For calculations with an arbitrary precision, math.js supports a `BigNumber`
-data type. BigNumber support is powered by
+datatype. BigNumber support is powered by
 [decimal.js](https://github.com/MikeMcl/decimal.js/).
 
 ## Usage
@@ -63,7 +63,7 @@ math.divide(math.bignumber(0.3), math.bignumber(0.2));  // BigNumber, 1.5
 It's important to realize that BigNumbers do not solve *all* problems related
 to precision and round-off errors. Numbers with an infinite number of digits
 cannot be represented with a regular number nor a BigNumber. Though a BigNumber
-can store a much larger number of digits, the amount of digits remains limited,
+can store a much larger number of digits, the amount of digits remains limited
 if only to keep calculations fast enough to remain practical.
 
 ```js

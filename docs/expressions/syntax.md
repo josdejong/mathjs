@@ -148,7 +148,7 @@ parser.eval('g(2, 3)'); // 8
 
 ## Constants and variables
 
-Math.js has a number of built in constants such as `pi` and `e`.
+Math.js has a number of built-in constants such as `pi` and `e`.
 All available constants are listed on he page
 [Constants](../constants.md).
 
@@ -259,7 +259,7 @@ Math.js supports BigNumbers for calculations with an arbitrary precision.
 The pros and cons of Number and BigNumber are explained in detail on the page
 [Numbers](../datatypes/numbers.md).
 
-BigNumbers are slower, but have a higher precision. Calculations with big
+BigNumbers are slower but have a higher precision. Calculations with big
 numbers are supported only by arithmetic functions.
 
 BigNumbers can be created using the `bignumber` function:
@@ -390,9 +390,9 @@ math.eval('eval("2 + 3")'); // 5
 
 Matrices can be created by entering a series of values between square brackets,
 elements are separated by a comma `,`.
-A matrix like `[1, 2, 3]` will create a vector, a 1 dimensional matrix with
-size `[3]`. To create a multi dimensional matrix, matrices can be nested into
-each other. For easier creation of two dimensional matrices, a semicolon `;`
+A matrix like `[1, 2, 3]` will create a vector, a 1-dimensional matrix with
+size `[3]`. To create a multi-dimensional matrix, matrices can be nested into
+each other. For easier creation of two-dimensional matrices, a semicolon `;`
 can be used to separate rows in a matrix.
 
 ```js
@@ -405,7 +405,7 @@ math.eval('[[[1, 2], [3, 4]], [[5, 6], [7, 8]]]');    // Matrix, size [2, 2, 2]
 math.eval('[1, 2, 3; 4, 5, 6]');                      // Matrix, size [2, 3]
 ```
 
-An other way to create filled matrices is using the functions `zeros`, `ones`,
+Another way to create filled matrices is using the functions `zeros`, `ones`,
 `eye`, and `range`.
 
 ```js
@@ -422,15 +422,15 @@ math.eval('1:4');             // Matrix, [1, 2, 3, 4],              size [4]
 math.eval('0:2:10');          // Matrix, [0, 2, 4, 6, 8, 10],       size [6]
 ```
 
-A subset can be retrieved from a matrix using indexes, and a subset of a matrix
+A subset can be retrieved from a matrix using indexes and a subset of a matrix
 can be replaced by using indexes. Indexes are enclosed in square brackets, and
 contain a number or a range for each of the matrix dimensions. A range can have
-its start and/or end undefined. When start is undefined, the range will start
-at 1, when end is undefined, the range will end at the end of the matrix.
+its start and/or end undefined. When the start is undefined, the range will start
+at 1, when the end is undefined, the range will end at the end of the matrix.
 There is a context variable `end` available as well to denote the end of the
 matrix.
 
-*IMPORTANT: matrix indexes and ranges work different from the math.js indexes
+*IMPORTANT: matrix indexes and ranges work differently from the math.js indexes
 in JavaScript: They are one-based with an included upper-bound, similar to most
 math applications.*
 
@@ -456,19 +456,19 @@ parser.eval('c[end - 1 : -1 : 2]');   // Matrix, [8, 7, 6]
 ```
 
 
-## Multi line expressions
+## Multi-line expressions
 
 An expression can contain multiple lines, and expressions can be spread over
 multiple lines. Lines can be separated by a newline character `\n` or by a
-semicolon `;`. Output of statements followed by a semicolon will be hided from
+semicolon `;`. Output of statements followed by a semicolon will be hidden from
 the output, and empty lines are ignored. The output is returned as a `ResultSet`,
 with an entry for every visible statement.
 
 ```js
-// a multi line expression
+// a multi-line expression
 math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [3, 6, 9]
 
-// semicolon statements are hided from the output
+// semicolon statements are hidden from the output
 math.eval('a=3; b=4; a + b \n a * b');  // ResultSet, [7, 12]
 
 // single expression spread over multiple lines
@@ -509,7 +509,7 @@ math.eval('2 + 3i');          // Complex, 2 + 3i
 
 ## Comments
 
-Comments can be added to explain or describe calculations in text. A comment
+Comments can be added to explain or describe calculations in the text. A comment
 starts with a sharp sign character `#`, and ends at the end of the line. A line
 can contain a comment only, or can contain an expression followed by a comment.
 

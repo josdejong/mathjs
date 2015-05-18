@@ -21,7 +21,7 @@ math.eval([expr1, expr2, expr3, ...], scope)
 ```
 
 Function `eval` accepts a single expression or an array with
-expressions as first argument, and has an optional second argument
+expressions as the first argument and has an optional second argument
 containing a scope with variables and functions. The scope is a regular
 JavaScript Object. The scope will be used to resolve symbols, and to write
 assigned variables or function.
@@ -58,7 +58,7 @@ math.compile([expr1, expr2, expr3, ...]);
 ```
 
 Function `compile` accepts a single expression or an array with
-expressions as argument. Function `compile` returns an object with a function
+expressions as the argument. Function `compile` returns an object with a function
 `eval([scope])`, which can be executed to evaluate the expression against an
 (optional) scope:
 
@@ -92,7 +92,7 @@ math.parse([expr1, expr2, expr3, ...])
 ```
 
 Function `parse` accepts a single expression or an array with
-expressions as argument. Function `parse` returns a the root node of the tree,
+expressions as the argument. Function `parse` returns a the root node of the tree,
 which can be successively compiled and evaluated:
 
 ```js

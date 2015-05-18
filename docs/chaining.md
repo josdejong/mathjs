@@ -4,7 +4,7 @@ Math.js supports chaining operations by wrapping a value into a `Chain`.
 A chain can be created with the function `math.chain(value)`
 (formerly `math.select(value)`).
 All functions available in the math namespace can be executed via the chain.
-The functions will be executed with the chain's value as first argument,
+The functions will be executed with the chain's value as the first argument,
 followed by extra arguments provided by the function call itself.
 
 ```js
