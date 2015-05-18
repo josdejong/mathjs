@@ -77,6 +77,12 @@ describe('median', function() {
   it('should throw an error if called with an empty array', function() {
     assert.throws(function() {median([])});
   });
+
+  it('should not mutate the input', function () {
+    var a = [3,2,1];
+    var b = median(a);
+    assert.deepEqual(a,[3,2,1]);
+  });
   
   it('should LaTeX median', function () {
     var expression = math.parse('median(1,2,3,4)');

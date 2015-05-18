@@ -452,6 +452,13 @@ describe('util.array', function() {
       assert.deepEqual(array.flatten([[[1,2],[3,4]],[[5,6],[7,8]]]), [1,2,3,4,5,6,7,8]);
     });
 
+    it('should return a new array', function () {
+      var input = [3,2,1];
+      var flat = array.flatten(input);
+      flat.sort();
+      assert.deepEqual(input, [3,2,1]);
+    });
+
   });
 
 });
