@@ -8,6 +8,7 @@
 - Extended the command line interface with a `mode` option to output either
   the expressions result, string representation, or tex representation.
   Thanks @FSMaxB.
+- Improved the performance of `median` (see #373). Thanks @BigFav.
 - Fixed #309: Function median mutating the input matrix. Thanks @FSMaxB. 
 - Fixed `Node.transform` not recursing over replaced parts of the 
   node tree (see #349).
