@@ -13,6 +13,7 @@
 - Function `import` has a new option `silent` to ignore errors, and throws
   errors on duplicates by default.
 - Drastically refactored and reorganized the source code.
+- Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
 
 
 ## not yet released, version 1.6.1-SNAPSHOT
