@@ -72,7 +72,17 @@ describe('sum', function() {
   });
 
   it('should return zero if called with an empty array', function() {
+    var bigMath = math.create({number: 'bignumber'});
+    var fracMath = math.create({number: 'fraction'});
+
+    var big = bigMath.sum([]);
+    var frac = fracMath.sum([]);
+
     assert.equal(sum([]), 0);
+    assert.equal(big.type, 'BigNumber');
+    assert.equal(frac.type, 'Fraction');
+    assert.equal(math.equal(bigMath.sum([]), new BigNumber(0)).valueOf(), true);
+    assert.equal(math.equal(fracMath.sum([]), new fracMath.type.Fraction(0)), true);
   });
 
   it('should LaTeX sum', function () {
