@@ -456,28 +456,4 @@ describe('number', function() {
 
   });
 
-    describe('isPositiveInteger', function() {
-
-        it('should determine if input is a integer', function() {
-            assert.equal(number.isPositiveInteger([1]), false);
-            assert.equal(number.isPositiveInteger(false), false);
-            assert.equal(number.isPositiveInteger('test'), false);
-            assert.equal(number.isPositiveInteger({a:1}), false);
-            assert.equal(number.isPositiveInteger(0.1), false);
-        });
-
-        it('should determine if integer is positive', function() {
-            assert.equal(number.isPositiveInteger(-1), false);
-            assert.equal(number.isPositiveInteger(1), true);
-        });
-
-        it('should determine if BigNumber is positive', function() {
-            BigNumber = require('decimal.js');
-            assert.equal(number.isPositiveInteger(new BigNumber(10)), true);
-            assert.equal(number.isPositiveInteger(new BigNumber(-10)), false);
-            assert.equal(number.isPositiveInteger(new BigNumber(100000)), true);
-        });
-
-    });
-
 });
