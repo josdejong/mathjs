@@ -128,10 +128,9 @@ describe('range', function() {
   });
 
   it('should throw an error if called with one invalid argument', function() {  
-    assert.throws(function () {range(2, 'string')}, TypeError);
     assert.throws(function () {range(math.unit('5cm'), 2)}, TypeError);
     assert.throws(function () {range(2, math.complex(2,3))}, TypeError);
-    assert.throws(function () {range(2, 'string', 3)}, TypeError);
+    assert.throws(function () {range(2, new Date(), 3)}, TypeError);
     assert.throws(function () {range(2, 1, math.unit('5cm'))}, TypeError);
     assert.throws(function () {range(math.complex(2,3), 1, 3)}, TypeError);
   });

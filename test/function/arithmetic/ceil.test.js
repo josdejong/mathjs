@@ -76,8 +76,8 @@ describe('ceil', function() {
   });
 
 
-  it('should throw an error for strings', function() {
-    assert.throws(function () {ceil('hello world')}, TypeError, 'Function ceil(string) not supported');
+  it('should convert a string to a number', function() {
+    assert.strictEqual(ceil('1.8'), 2);
   });
 
   it('should ceil each element in a matrix, array or range', function() {

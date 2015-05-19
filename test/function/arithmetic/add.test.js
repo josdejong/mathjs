@@ -10,9 +10,9 @@ describe('add', function() {
 
   describe('Array', function () {
     
-    it('should concatenate strings and array element wise', function() {
-      assert.deepEqual(add('A', ['B', 'C']), ['AB', 'AC']);
-      assert.deepEqual(add(['B', 'C'], 'A'), ['BA', 'CA']);
+    it('should convert strings and add them element wise', function() {
+      assert.deepEqual(add('2', ['3', '4']), [5, 6]);
+      assert.deepEqual(add(['2', '3'], '4'), [6, 7]);
     });
     
     it('should add arrays correctly', function() {
@@ -55,9 +55,9 @@ describe('add', function() {
 
   describe('DenseMatrix', function () {
     
-    it('should concatenate strings and matrices element wise', function() {
-      assert.deepEqual(add('A', math.matrix(['B', 'C'])), math.matrix(['AB', 'AC']));
-      assert.deepEqual(add(math.matrix(['B', 'C']), 'A'), math.matrix(['BA', 'CA']));
+    it('should handle strings and matrices element wise', function() {
+      assert.deepEqual(add('2', math.matrix(['3', '4'])), math.matrix([5, 6]));
+      assert.deepEqual(add(math.matrix(['2', '3']), '4'), math.matrix([6, 7]));
     });
     
     it('should add matrices correctly', function() {

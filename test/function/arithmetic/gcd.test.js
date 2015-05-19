@@ -94,9 +94,12 @@ describe('gcd', function() {
     assert.throws(function () {gcd(math.complex(1,3),2); }, /TypeError: Unexpected type of argument/);
   });
 
-  it('should throw an error with strings', function() {
-    assert.throws(function () {gcd('a', 2); }, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {gcd(2, 'a'); }, /TypeError: Unexpected type of argument/);
+  it('should convert strings to numbers', function() {
+    assert.strictEqual(gcd('12', '8'), 4);
+    assert.strictEqual(gcd(12, '8'), 4);
+    assert.strictEqual(gcd('12', 8), 4);
+
+    assert.throws(function () {gcd('a', 8); }, /Cannot convert "a" to a number/);
   });
 
   it('should throw an error with units', function() {

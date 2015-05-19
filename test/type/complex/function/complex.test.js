@@ -69,8 +69,8 @@ describe('complex', function() {
   });
 
   it('should throw an error if passed two argument, one is invalid', function() {
-    assert.throws(function () {complex('string', 2)}, TypeError);
-    assert.throws(function () {complex(2, 'string')}, TypeError);
+    assert.throws(function () {complex(new Date(), 2)}, TypeError);
+    assert.throws(function () {complex(2, new Date())}, TypeError);
   });
 
   it('should throw an error if called with more than 2 arguments', function() {

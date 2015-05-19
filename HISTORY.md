@@ -3,6 +3,9 @@
 
 ## not yet released, version 2.0.0-SNAPSHOT
 
+- String input is now converted to numbers by default for all functions. 
+- Adding two strings will no longer concatenate them, but will convert the 
+  strings to numbers and add them.
 - Implemented support for fractions, powered by the library `fraction.js`.
 - Implemented matrix LU decomposition with partial pivoting and a LU based 
   linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.

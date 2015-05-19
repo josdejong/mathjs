@@ -209,8 +209,6 @@ describe('bitAnd', function () {
   it('should throw an error in case of invalid type of arguments', function () {
     assert.throws(function () {bitAnd(new Date(), true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitAnd(true, new Date());}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitAnd(true, 'foo');}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitAnd('foo', true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitAnd(true, undefined);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitAnd(undefined, true);}, /TypeError: Unexpected type of argument/);
   });

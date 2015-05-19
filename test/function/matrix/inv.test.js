@@ -81,7 +81,7 @@ describe('inv', function() {
   });
 
   it('should throw an error in case of invalid type of arguments', function() {
-    assert.throws(function () {math.concat(inv('str'))}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.concat(inv(new Date()))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should  LaTeX inv', function () {

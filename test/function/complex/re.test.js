@@ -32,7 +32,7 @@ describe('re', function() {
   });
 
   it('should throw an error when called with an unsupported type of argument', function() {
-    assert.throws(function () {math.re('string')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.re(new Date())}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {math.re(math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 

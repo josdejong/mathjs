@@ -58,7 +58,6 @@ describe('bitNot', function () {
 
   it('should throw an error in case of invalid type of argument', function () {
     assert.throws(function () {bitNot(new Date())}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitNot('foo')}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitNot(undefined)}, /TypeError: Unexpected type of argument/);
   });
 

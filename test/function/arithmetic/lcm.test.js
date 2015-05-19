@@ -68,9 +68,13 @@ describe('lcm', function() {
     assert.throws(function () {lcm(math.complex(1,3),2); }, TypeError, 'Function lcm(complex, number) not supported');
   });
 
-  it('should throw an error with strings', function() {
-    assert.throws(function () {lcm('a', 2); }, TypeError, 'Function lcm(string, number) not supported');
-    assert.throws(function () {lcm(2, 'a'); }, TypeError, 'Function lcm(number, string) not supported');
+  it('should convert strings to numbers', function() {
+    assert.equal(lcm('4', '6'), 12);
+    assert.equal(lcm('4', 6), 12);
+    assert.equal(lcm(4, '6'), 12);
+
+
+    assert.throws(function () {lcm('a', 2); }, /Cannot convert "a" to a number/);
   });
 
   it('should throw an error with units', function() {

@@ -37,6 +37,10 @@ describe('abs', function () {
     assert.equal(math.abs(math.fraction('1/3')).toString(), '0.(3)');
   });
 
+  it('should convert a string to a number', function() {
+    assert.strictEqual(math.abs('-2'), 2);
+  });
+
   it('should return the absolute value of all elements in an Array', function () {
     var a1 = math.abs([1,-2,3]);
     assert.ok(Array.isArray(a1));
@@ -77,7 +81,7 @@ describe('abs', function () {
   });
 
   it('should throw an error in case of unsupported types', function () {
-    assert.throws(function () {math.abs('a string');}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.abs(new Date());}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {math.abs(undefined);}, /TypeError: Unexpected type of argument/);
   });
 

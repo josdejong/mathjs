@@ -200,8 +200,6 @@ describe('xor', function () {
   it('should throw an error in case of invalid type of arguments', function () {
     assert.throws(function () {xor(new Date(), true)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {xor(true, new Date())}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {xor(true, 'foo')}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {xor('foo', true)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {xor(true, undefined)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {xor(undefined, true)}, /TypeError: Unexpected type of argument/);
   });

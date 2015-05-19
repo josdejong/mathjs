@@ -21,9 +21,9 @@ describe('sum', function() {
         new BigNumber(11));
   });
 
-  it('should return the sum of strings (concatenates the strings)', function() {
-    assert.equal(sum('A', 'C', 'D', 'B'), 'ACDB');
-    assert.equal(sum([['A', 'C'], ['D', 'B']]), 'ACDB');
+  it('should return the sum of strings (convert them to numbers)', function() {
+    assert.strictEqual(sum('2', '3', '4', '5'), 14);
+    assert.strictEqual(sum([['2', '3'], ['4', '5']]), 14);
   });
 
   it('should return the sum of complex numbers', function() {

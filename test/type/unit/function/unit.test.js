@@ -51,8 +51,8 @@ describe('unit', function() {
     assert.deepEqual(unit(math.bignumber(5), 'cm').toString(), '50 mm');
   });
 
-  it('should throw an error if called with 2 strings', function() {
-    assert.throws(function () {unit('2', 'cm')}, TypeError);
+  it('should convert a string to number with 2 strings', function() {
+    assert.deepEqual(unit('5', 'cm').toString(), '50 mm');
   });
 
   it('should throw an error if called with an invalid argument', function() {
