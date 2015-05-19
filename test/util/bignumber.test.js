@@ -278,4 +278,27 @@ describe('bignumber', function() {
 
   });
 
+    it('should determine if input is a integer', function() {
+        assert.equal(bignumber.isPositiveInteger([new BigNumber(1)]), false);
+        assert.equal(bignumber.isPositiveInteger(false), false);
+        assert.equal(bignumber.isPositiveInteger('test'), false);
+        assert.equal(bignumber.isPositiveInteger({a:new BigNumber(1)}), false);
+        assert.equal(bignumber.isPositiveInteger(new BigNumber(0.1)), false);
+    });
+
+    it('should determine if integer is positive', function() {
+        assert.equal(bignumber.isPositiveInteger(new BigNumber(1)), true);
+        assert.equal(bignumber.isPositiveInteger(new BigNumber(0)), false);
+        assert.equal(bignumber.isPositiveInteger(new BigNumber(0)), false);
+        assert.equal(bignumber.isPositiveInteger(new BigNumber(-0)), false);
+    });
+
+    it('should determine if BigNumber is positive', function() {
+        BigNumber = require('decimal.js');
+        assert.equal(bignumber.isPositiveInteger(new BigNumber(10)), true);
+        assert.equal(bignumber.isPositiveInteger(new BigNumber(-10)), false);
+        assert.equal(bignumber.isPositiveInteger(new BigNumber(100000)), true);
+    });
+
 });
+
