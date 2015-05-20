@@ -24,6 +24,13 @@ describe('replacer', function () {
     assert.deepEqual(JSON.stringify(b), json);
   });
 
+  it('should stringify a Fraction', function () {
+    var b = new math.type.Fraction(0.375);
+    var json = '{"mathjs":"Fraction","n":3,"d":8}';
+
+    assert.deepEqual(JSON.stringify(b), json);
+  });
+
   it('should stringify a Range', function () {
     var r = new math.type.Range(2, 10);
     var json = '{"mathjs":"Range","start":2,"end":10,"step":1}';
@@ -31,10 +38,10 @@ describe('replacer', function () {
   });
 
   it('should stringify an Index', function () {
-    var i = new math.type.Index([0, 10], 2);
-    var json = '{"mathjs":"Index","ranges":[' +
+    var i = new math.type.Index(new math.type.Range(0, 10), 2);
+    var json = '{"mathjs":"Index","dimensions":[' +
         '{"mathjs":"Range","start":0,"end":10,"step":1},' +
-        '{"mathjs":"Range","start":2,"end":3,"step":1}' +
+        '{"mathjs":"ImmutableDenseMatrix","data":[2],"size":[1]}' +
         ']}';
     assert.deepEqual(JSON.stringify(i), json);
   });

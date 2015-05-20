@@ -10,7 +10,7 @@ Powerful and easy to use.
 
 ## Features
 
-- Supports numbers, big numbers, complex numbers, units, strings, arrays, and matrices.
+- Supports numbers, big numbers, complex numbers, fractions, units, strings, arrays, and matrices.
 - Is compatible with JavaScript's built-in Math library.
 - Contains a flexible expression parser.
 - Supports chained operations.

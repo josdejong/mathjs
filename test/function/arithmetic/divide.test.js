@@ -104,6 +104,17 @@ describe('divide', function() {
     assert.deepEqual(divide(bignumber(1), math.complex(2, 4)), math.complex(0.1, -0.2));
   });
 
+  it('should divide two fractions', function() {
+    var a = math.fraction(1,4);
+    assert.equal(divide(a, math.fraction(1,2)).toString(), '0.5');
+    assert.equal(a.toString(), '0.25');
+  });
+
+  it('should divide mixed fractions and numbers', function() {
+    assert.strictEqual(divide(1, math.fraction(3)), 0.3333333333333333);
+    assert.strictEqual(divide(math.fraction(1), 3), 0.3333333333333333);
+  });
+
   it('should divide units by a number', function() {
     assert.equal(divide(math.unit('5 m'), 10).toString(), '500 mm');
   });
@@ -115,7 +126,7 @@ describe('divide', function() {
   // TODO: divide units by a bignumber
   it('should divide units by a big number', function() {
     //assert.equal(divide(math.unit('5 m'), bignumber(10)).toString(), '500 mm'); // TODO
-    assert.throws(function () {divide(math.unit('5 m'), bignumber(10))}, /TypeError: Unexpected type of argument in function divide \(expected: number or boolean or null, actual: BigNumber, index: 1\)/);
+    assert.throws(function () {divide(math.unit('5 m'), bignumber(10))}, /TypeError: Unexpected type of argument in function divide \(expected: number or boolean or null or Fraction, actual: BigNumber, index: 1\)/);
   });
 
   it('should divide each elements in a matrix by a number', function() {

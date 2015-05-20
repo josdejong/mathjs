@@ -1,8 +1,8 @@
 // test unary minus
-var assert = require('assert'),
-    math = require('../../../index'),
-    error = require('../../../lib/error/index'),
-    bignumber = math.bignumber;
+var assert = require('assert');
+var math = require('../../../index');
+var bignumber = math.bignumber;
+var fraction = math.fraction;
 
 describe('unaryMinus', function() {
   it('should return unary minus of a boolean', function () {
@@ -31,6 +31,15 @@ describe('unaryMinus', function() {
     assert.deepEqual(math.unaryMinus(bignumber(2)), bignumber(-2));
     assert.deepEqual(math.unaryMinus(bignumber(-2)), bignumber(2));
     assert.deepEqual(math.unaryMinus(bignumber(0)).valueOf(), bignumber(0).valueOf());
+  });
+
+  it('should perform unary minus of a fraction', function() {
+    var a = fraction(0.5);
+    assert(math.unaryMinus(a) instanceof math.type.Fraction);
+    assert.equal(a.toString(), '0.5');
+
+    assert.equal(math.unaryMinus(fraction(0.5)).toString(), '-0.5');
+    assert.equal(math.unaryMinus(fraction(-0.5)).toString(), '0.5');
   });
 
   it('should perform unary minus of a complex number', function() {

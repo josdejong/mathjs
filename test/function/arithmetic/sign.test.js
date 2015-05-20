@@ -3,6 +3,7 @@ var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var bignumber = math.bignumber;
+var fraction = math.fraction;
 
 describe('sign', function() {
   it('should calculate the sign of a boolean', function () {
@@ -24,6 +25,14 @@ describe('sign', function() {
     assert.deepEqual(math.sign(bignumber(3)), bignumber(1));
     assert.deepEqual(math.sign(bignumber(-3)), bignumber(-1));
     assert.deepEqual(math.sign(bignumber(0)), bignumber(0));
+  });
+
+  it('should calculate the sign of a fraction', function() {
+    var a = fraction(0.5);
+    assert(math.sign(a) instanceof math.type.Fraction);
+    assert.equal(math.sign(a).toString(), '1');
+    assert.equal(math.sign(fraction(-0.5)).toString(), '-1');
+    assert.equal(a.toString(), '0.5');
   });
 
   it('should calculate the sign of a complex value', function() {

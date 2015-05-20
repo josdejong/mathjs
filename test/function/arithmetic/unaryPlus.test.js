@@ -3,6 +3,7 @@ var assert = require('assert');
 var math = require('../../../index');
 var error = require('../../../lib/error/index');
 var bignumber = math.bignumber;
+var fraction = math.fraction;
 
 describe('unaryPlus', function() {
   it('should return unary plus of a boolean', function () {
@@ -65,6 +66,15 @@ describe('unaryPlus', function() {
     assert.deepEqual(math.unaryPlus(bignumber(2)), bignumber(2));
     assert.deepEqual(math.unaryPlus(bignumber(-2)), bignumber(-2));
     assert.deepEqual(math.unaryPlus(bignumber(0)).valueOf(), bignumber(0).valueOf());
+  });
+
+  it('should perform unary plus of a fraction', function() {
+    var a = fraction(0.5);
+    assert(math.unaryPlus(a) instanceof math.type.Fraction);
+    assert.equal(a.toString(), '0.5');
+
+    assert.equal(math.unaryPlus(fraction(0.5)).toString(), '0.5');
+    assert.equal(math.unaryPlus(fraction(-0.5)).toString(), '-0.5');
   });
 
   it('should perform unary plus of a complex number', function() {
