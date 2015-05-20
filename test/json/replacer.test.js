@@ -41,7 +41,7 @@ describe('replacer', function () {
     var i = new math.type.Index(new math.type.Range(0, 10), 2);
     var json = '{"mathjs":"Index","dimensions":[' +
         '{"mathjs":"Range","start":0,"end":10,"step":1},' +
-        '{"mathjs":"Set","values":[2],"min":null,"max":null}' +
+        '{"mathjs":"ImmutableDenseMatrix","data":[2],"size":[1]}' +
         ']}';
     assert.deepEqual(JSON.stringify(i), json);
   });

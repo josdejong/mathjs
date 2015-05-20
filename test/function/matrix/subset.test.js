@@ -89,9 +89,9 @@ describe('subset', function() {
 
     it('should throw an error if trying to access an invalid subset of a string', function() {
       //assert.throws(function () {subset('hello', 1);}, TypeError);
-      assert.throws(function () {subset('hello', index(new Set([6])));}, RangeError);
-      assert.throws(function () {subset('hello', index(new Set([-2])));}, RangeError);
-      assert.throws(function () {subset('hello', index(new Set([1.3])));}, TypeError);
+      assert.throws(function () {subset('hello', index([6]));}, RangeError);
+      assert.throws(function () {subset('hello', index([-2]));}, RangeError);
+      assert.throws(function () {subset('hello', index([1.3]));}, TypeError);
     });
 
     it('should set the right subset of a string', function() {

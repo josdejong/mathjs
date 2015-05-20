@@ -1,9 +1,8 @@
 // test index construction
 var assert = require('assert'),
-    error = require('../../../../lib/error/index'),
     math = require('../../../../index'),
     Range = math.type.Range,
-    Set = math.type.Set;
+    ImmutableDenseMatrix = math.type.ImmutableDenseMatrix;
 
 describe('index', function() {
 
@@ -20,7 +19,7 @@ describe('index', function() {
   it('should create an index from bignumbers (downgrades to numbers)', function() {
     var index = math.index(new Range(math.bignumber(2), math.bignumber(6)), math.bignumber(3));
     assert.ok(index instanceof math.type.Index);
-    assert.deepEqual(index._dimensions, [new Range(2, 6, 1), new Set([3])]);
+    assert.deepEqual(index._dimensions, [new Range(2, 6, 1), new ImmutableDenseMatrix([3])]);
   });
 
   it('should LaTeX index', function () {
