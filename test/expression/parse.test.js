@@ -530,7 +530,7 @@ describe('parse', function() {
 
       assert.throws(function () {
         parseAndEval('a[2, "1"]', scope);
-      }, /TypeError: Ranges must be a Number, Range, Set, Array or Matrix/);
+      }, /TypeError: Ranges must be a Number, Range, Array or Matrix/);
     });
 
     it('should throw an error for invalid matrix', function() {
