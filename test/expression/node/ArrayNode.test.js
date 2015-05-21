@@ -230,6 +230,31 @@ describe('ArrayNode', function() {
     assert.equal(n.toString(), '[1, 2, 3, 4]');
   });
 
+  it ('should stringify an ArrayNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'ArrayNode') {
+        var string = '[';
+        node.nodes.forEach(function (node) {
+          string += node.toString(options) + ', ';
+        });
+
+        string += ']';
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new ArrayNode([a, b]);
+
+    assert.equal(n.toString({handler: customFunction}), '[const(1, number), const(2, number), ]');
+  });
+
   it ('should LaTeX an ArrayNode', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);
@@ -244,11 +269,11 @@ describe('ArrayNode', function() {
 
   it ('should LaTeX an ArrayNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'ArrayNode') {
         var latex = '\\left[';
         node.nodes.forEach(function (node) {
-          latex += node.toTex(callback) + ', ';
+          latex += node.toTex(options) + ', ';
         });
 
         latex += '\\right]';
@@ -264,7 +289,7 @@ describe('ArrayNode', function() {
 
     var n = new ArrayNode([a, b]);
 
-    assert.equal(n.toTex(customFunction), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]');
+    assert.equal(n.toTex({handler: customFunction}), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]');
   });
 
 });

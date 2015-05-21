@@ -80,6 +80,12 @@ describe('add', function() {
     assert.strictEqual(add(math.fraction(1,3), 1), 1.3333333333333333);
   });
 
+  it('should convert strings to numbers', function() {
+    assert.strictEqual(add('2', '3'), 5);
+    assert.strictEqual(add(2, '3'), 5);
+    assert.strictEqual(add('2', 3), 5);
+  });
+
   it('should add two measures of the same unit', function() {
     approx.deepEqual(add(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(165.93, 'km'));
   });
@@ -103,12 +109,6 @@ describe('add', function() {
     assert.throws(function () {add(math.unit('5cm'), 2);}, /TypeError: Unexpected type of argument in function add/);
     assert.throws(function () {add(math.unit('5cm'), new Date());}, /TypeError: Unexpected type of argument in function add/);
     assert.throws(function () {add(new Date(), math.unit('5cm'));}, /TypeError: Unexpected type of argument in function add/);
-  });
-
-  it('should concatenate two strings', function() {
-    assert.equal(add('hello ', 'world'), 'hello world');
-    assert.equal(add('str', 123), 'str123');
-    assert.equal(add(123, 'str'), '123str');
   });
 
   it('should throw an error in case of invalid number of arguments', function() {

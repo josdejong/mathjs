@@ -211,8 +211,6 @@ describe('or', function () {
   it('should throw an error in case of invalid type of arguments', function () {
     assert.throws(function () {or(new Date(), true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {or(true, new Date());}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {or(true, 'foo');}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {or('foo', true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {or(true, undefined);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {or(undefined, true);}, /TypeError: Unexpected type of argument/);
   });

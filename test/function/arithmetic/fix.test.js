@@ -77,9 +77,8 @@ describe('fix', function() {
     assert.throws(function () {fix(unit('5cm'))}, TypeError, 'Function fix(unit) not supported');
   });
 
-  it('should throw an error on string as parameter', function() {
-    // string
-    assert.throws(function () {fix('hello world')}, TypeError, 'Function fix(string) not supported');
+  it('should convert a string to a number', function() {
+    assert.strictEqual(fix('1.8'), 1);
   });
 
   it('should correctly round all values of a matrix element-wise', function() {

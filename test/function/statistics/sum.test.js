@@ -21,9 +21,9 @@ describe('sum', function() {
         new BigNumber(11));
   });
 
-  it('should return the sum of strings (concatenates the strings)', function() {
-    assert.equal(sum('A', 'C', 'D', 'B'), 'ACDB');
-    assert.equal(sum([['A', 'C'], ['D', 'B']]), 'ACDB');
+  it('should return the sum of strings (convert them to numbers)', function() {
+    assert.strictEqual(sum('2', '3', '4', '5'), 14);
+    assert.strictEqual(sum([['2', '3'], ['4', '5']]), 14);
   });
 
   it('should return the sum of complex numbers', function() {
@@ -71,8 +71,18 @@ describe('sum', function() {
     assert.throws(function() {sum([], 2)}, /not yet supported/);
   });
 
-  it('should throw an error if called with an empty array', function() {
-    assert.throws(function() {sum([])});
+  it('should return zero if called with an empty array', function() {
+    var bigMath = math.create({number: 'bignumber'});
+    var fracMath = math.create({number: 'fraction'});
+
+    var big = bigMath.sum([]);
+    var frac = fracMath.sum([]);
+
+    assert.equal(sum([]), 0);
+    assert.equal(big.type, 'BigNumber');
+    assert.equal(frac.type, 'Fraction');
+    assert.equal(math.equal(bigMath.sum([]), new BigNumber(0)).valueOf(), true);
+    assert.equal(math.equal(fracMath.sum([]), new fracMath.type.Fraction(0)), true);
   });
 
   it('should LaTeX sum', function () {

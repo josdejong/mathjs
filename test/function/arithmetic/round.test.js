@@ -32,7 +32,6 @@ describe('round', function() {
   });
 
   it('should throw an error on invalid type of value', function() {
-    assert.throws(function () {round('string');}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {round(new Date());}, /TypeError: Unexpected type of argument/);
   });
 
@@ -85,9 +84,12 @@ describe('round', function() {
     assert.throws(function () { round(math.unit('5cm'), bignumber(2)); }, TypeError, 'Function round(unit) not supported');
   });
 
-  it('should throw an error if used with a string', function() {
-    assert.throws(function () { round("hello world"); }, /TypeError: Unexpected type of argument/);
+  it('should convert to a number when used with a string', function() {
+    assert.strictEqual(round('3.6'), 4);
+    assert.strictEqual(round('3.12345', '3'), 3.123);
+    assert.throws(function () {round('hello world'); }, /Cannot convert "hello world" to a number/);
   });
+
 
   it('should round each element in a matrix, array, range', function() {
     assert.deepEqual(round(math.range(0,2.1,1/3), 2), math.matrix([0,0.33,0.67,1,1.33,1.67,2]));

@@ -60,7 +60,7 @@ describe('Chain', function() {
   });
 
   it('should not break with null or true as value', function() {
-    assert.equal(new Chain(null).add('').done(), 'null');
+    assert.equal(new Chain(null).add(1).done(), 1);
     assert.equal(new Chain(true).add(1).done(), 2);
   });
 

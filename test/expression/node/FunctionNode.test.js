@@ -271,6 +271,50 @@ describe('FunctionNode', function() {
     assert.equal(n.toString(), 'sqrt(4)');
   });
 
+  it ('should stringify a FunctionNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'FunctionNode') {
+        var string = '[' + node.name + '](';
+        node.args.forEach(function (arg) {
+          string += arg.toString(options) + ', ';
+        });
+        string += ')';
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n1 = new FunctionNode('add', [a, b]);
+    var n2 = new FunctionNode('subtract', [a, b]);
+
+    assert.equal(n1.toString({handler: customFunction}), '[add](const(1, number), const(2, number), )');
+    assert.equal(n2.toString({handler: customFunction}), '[subtract](const(1, number), const(2, number), )');
+  });
+
+  it ('should stringify a FunctionNode with custom toString for a single function', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = {
+      'add': function (node, options) {
+        return node.args[0].toString(options) 
+          + ' ' + node.name + ' ' 
+          + node.args[1].toString(options);
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new FunctionNode('add', [a, b]);
+
+    assert.equal(n.toString({handler: customFunction}), '1 add 2');
+  });
+
   it ('should LaTeX a FunctionNode', function () {
     var c1 = new ConstantNode(4);
     var c2 = new ConstantNode(5);
@@ -296,11 +340,11 @@ describe('FunctionNode', function() {
 
   it ('should LaTeX a FunctionNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'FunctionNode') {
         var latex = '\\mbox{' + node.name + '}\\left(';
         node.args.forEach(function (arg) {
-          latex += arg.toTex(callback) + ', ';
+          latex += arg.toTex(options) + ', ';
         });
         latex += '\\right)';
         return latex;
@@ -316,17 +360,17 @@ describe('FunctionNode', function() {
     var n1 = new FunctionNode('add', [a, b]);
     var n2 = new FunctionNode('subtract', [a, b]);
 
-    assert.equal(n1.toTex(customFunction), '\\mbox{add}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
-    assert.equal(n2.toTex(customFunction), '\\mbox{subtract}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
+    assert.equal(n1.toTex({handler: customFunction}), '\\mbox{add}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
+    assert.equal(n2.toTex({handler: customFunction}), '\\mbox{subtract}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
   });
 
   it ('should LaTeX a FunctionNode with custom toTex for a single function', function () {
     //Also checks if the custom functions get passed on to the children
     var customFunction = {
-      'add': function (node, callbacks) {
-        return node.args[0].toTex(callbacks) 
+      'add': function (node, options) {
+        return node.args[0].toTex(options) 
           + ' ' + node.name + ' ' 
-          + node.args[1].toTex(callbacks);
+          + node.args[1].toTex(options);
       }
     };
 
@@ -335,7 +379,7 @@ describe('FunctionNode', function() {
 
     var n = new FunctionNode('add', [a, b]);
 
-    assert.equal(n.toTex(customFunction), '1 add 2');
+    assert.equal(n.toTex({handler: customFunction}), '1 add 2');
   });
 
 });

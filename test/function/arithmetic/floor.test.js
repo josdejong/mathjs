@@ -75,8 +75,8 @@ describe('floor', function() {
     assert.throws(function () {floor(unit('5cm'))}, TypeError, 'Function floor(unit) not supported');
   });
 
-  it('should throw an error with a string', function() {
-    assert.throws(function () {floor('hello world')}, TypeError, 'Function floor(string) not supported');
+  it('should convert a string to a number', function() {
+    assert.strictEqual(floor('1.8'), 1);
   });
 
   it('should floor all elements in a matrix', function() {

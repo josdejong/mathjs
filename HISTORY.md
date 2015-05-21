@@ -3,6 +3,9 @@
 
 ## not yet released, version 2.0.0-SNAPSHOT
 
+- String input is now converted to numbers by default for all functions. 
+- Adding two strings will no longer concatenate them, but will convert the 
+  strings to numbers and add them.
 - Implemented support for fractions, powered by the library `fraction.js`.
 - Implemented matrix LU decomposition with partial pivoting and a LU based 
   linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
@@ -10,7 +13,10 @@
 - Function `import` now returns the imported objects.
 - Function `import` no longer supports a module name as argument. Instead,
   modules can be loaded using require: `math.import(require('module-name'))`.
+- Function `import` has a new option `silent` to ignore errors, and throws
+  errors on duplicates by default.
 - Drastically refactored and reorganized the source code.
+- Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
 
 
 ## not yet released, version 1.6.1-SNAPSHOT
