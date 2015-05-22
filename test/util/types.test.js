@@ -33,25 +33,25 @@ describe ('types', function () {
   });
 
   it('should return the type of an object', function () {
-    assert.equal(types.type({}), 'object');
-    assert.equal(types.type(new Object()), 'object');
+    assert.equal(types.type({}), 'Object');
+    assert.equal(types.type(new Object()), 'Object');
   });
 
   it('should return the type of an array', function () {
-    assert.equal(types.type([]), 'array');
-    assert.equal(types.type(new Array()), 'array');
+    assert.equal(types.type([]), 'Array');
+    assert.equal(types.type(new Array()), 'Array');
   });
 
   it('should return the type of a function', function () {
-    assert.equal(types.type(function () {}), 'function');
+    assert.equal(types.type(function () {}), 'Function');
   });
 
   it('should return the type of a date', function () {
-    assert.equal(types.type(new Date()), 'date');
+    assert.equal(types.type(new Date()), 'Date');
   });
 
   it('should return the type of a regexp', function () {
-    assert.equal(types.type(/regexp/), 'regexp');
+    assert.equal(types.type(/regexp/), 'RegExp');
   });
 
 });

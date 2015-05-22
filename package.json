@@ -59,7 +59,6 @@
     "webpack": "^1.8.9",
     "mocha": "^2.2.4",
     "istanbul": "^0.3.13",
-    "numbers": "^0.6.0",
     "uglify-js": "^2.4.20",
     "underscore": "^1.8.3",
     "seed-random": "^2.2.0",

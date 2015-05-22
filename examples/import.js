@@ -7,14 +7,6 @@
 // load math.js
 var math = require('../index');
 
-/**
- * Helper function to output a value in the console. Value will be formatted.
- * @param {*} value
- */
-function print (value) {
-  var precision = 14;
-  console.log(math.format(value, precision));
-}
 
 /**
  * Define new functions and variables
@@ -40,19 +32,23 @@ print(math.eval('hello("user")'));    // 'hello, user!'
  *     npm install numbers
  */
 try {
+  // load the numbers.js library
   var numbers = require('numbers');
+
+  // import the numbers.js library into math.js
+  math.import(numbers, {wrap: true, silent: true});
+
+  if (math.fibonacci) {
+    // calculate fibonacci
+    print(math.fibonacci(7));           // 13
+    print(math.eval('fibonacci(7)'));   // 13
+  }
 }
 catch (err) {
-  console.log('Warning: to import numbers.js, the library must\n' +
+  console.log('Warning: To import numbers.js, the library must ' +
       'be installed first via `npm install numbers`.');
 }
-math.import(numbers, {wrap: true, silent: true});
 
-if (math.fibonacci) {
-  // calculate fibonacci
-  print(math.fibonacci(7));           // 13
-  print(math.eval('fibonacci(7)'));   // 13
-}
 
 /**
  * Import the math library numeric.js, http://numericjs.com/
@@ -60,29 +56,31 @@ if (math.fibonacci) {
  *     npm install numeric
  */
 try {
-  // import the numeric.js library into math.js
+  // load the numeric.js library
   var numeric = require('numeric');
+
+  // import the numeric.js library into math.js
+  math.import(numeric, {wrap: true, silent: true});
+
+  if (math.eig) {
+    // calculate eigenvalues of a matrix
+    print(math.eval('eig([1, 2; 4, 3])').lambda.x); // [5, -1];
+
+    // solve AX = b
+    var A = math.eval('[1, 2, 3; 2, -1, 1; 3, 0, -1]');
+    var b = [9, 8, 3];
+    print(math.solve(A, b)); // [2, -1, 3]
+  }
 }
 catch (err) {
-  console.log('Warning: to import numeric.js, the library must\n' +
+  console.log('Warning: To import numeric.js, the library must ' +
       'be installed first via `npm install numeric`.');
 }
-console.log(typeof numeric)
-math.import(numeric, {wrap: true, silent: true});
 
-if (math.eig) {
-  // calculate eigenvalues of a matrix
-  print(math.eval('eig([1, 2; 4, 3])').lambda.x); // [5, -1];
-
-  // solve AX = b
-  var A = math.eval('[1, 2, 3; 2, -1, 1; 3, 0, -1]');
-  var b = [9, 8, 3];
-  print(math.solve(A, b)); // [2, -1, 3]
-}
 
 /**
  * By default, the function import does not allow overriding existing functions.
- * Existing functions can be overridden by specifying option `override=true`
+ * Existing functions can be overridden by specifying option `override: true`
  */
 math.import({
   pi: 3.14
@@ -91,3 +89,13 @@ math.import({
 });
 
 print(math.pi); // returns 3.14 instead of 3.141592653589793
+
+
+/**
+ * Helper function to output a value in the console. Value will be formatted.
+ * @param {*} value
+ */
+function print (value) {
+  var precision = 14;
+  console.log(math.format(value, precision));
+}

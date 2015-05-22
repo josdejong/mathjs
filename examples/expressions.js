@@ -10,15 +10,6 @@
 // load math.js
 var math = require('../index');
 
-/**
- * Helper function to output a value in the console. Value will be formatted.
- * @param {*} value
- */
-function print (value) {
-  var precision = 14;
-  console.log(math.format(value, precision));
-}
-
 // 1. using the function math.eval
 //
 // Function `eval` accepts a single expression or an array with
@@ -190,3 +181,13 @@ print(parser.eval('hello("hero")'));            // "hello, hero!"
 
 // clear defined functions and variables
 parser.clear();
+
+
+/**
+ * Helper function to output a value in the console. Value will be formatted.
+ * @param {*} value
+ */
+function print (value) {
+  var precision = 14;
+  console.log(math.format(value, precision));
+}
