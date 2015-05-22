@@ -29,7 +29,23 @@ or to pipe input and output streams:
 ```bash
 $ mathjs                                 # Open a command prompt
 $ mathjs script.txt                      # Run a script file, output to console
+$ mathjs script1.txt script2.txt         # Run two script files
 $ mathjs script.txt > results.txt        # Run a script file, output to file
 $ cat script.txt | mathjs                # Run input stream, output to console
 $ cat script.txt | mathjs > results.txt  # Run input stream, output to file
+```
+
+You can also use it to create LaTeX from or sanitize your expressions using the
+`--tex` and `--string` options:
+
+```bash
+$ mathjs --tex
+> 1/2
+\frac{1}{2}
+```
+
+```bash
+$ mathjs --string
+> (1+1)
+1 + 1
 ```
