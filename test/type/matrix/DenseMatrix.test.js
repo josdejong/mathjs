@@ -4,6 +4,7 @@ var Matrix = math.type.Matrix;
 var DenseMatrix = math.type.DenseMatrix;
 var SparseMatrix = math.type.SparseMatrix;
 var Complex = math.type.Complex;
+var Range = math.type.Range;
 
 var index = math.index;
 
@@ -364,7 +365,7 @@ describe('DenseMatrix', function() {
       assert.throws(function() { m.set([2.5,0], 5); });
       assert.throws(function() { m.set([1], 5); });
       assert.throws(function() { m.set([-1, 1], 5); });
-      assert.throws(function() { m.set(math.index([0,0]), 5); });
+      assert.throws(function() { m.set(math.index(new Range(0,0)), 5); });
     });
   });
   
@@ -376,39 +377,39 @@ describe('DenseMatrix', function() {
       // get 1-dimensional
       m = new DenseMatrix(math.range(0,10));
       assert.deepEqual(m.size(), [10]);
-      assert.deepEqual(m.subset(index([2,5])).valueOf(), [2,3,4]);
+      assert.deepEqual(m.subset(index(new Range(2, 5))).valueOf(), [2,3,4]);
 
       // get 2-dimensional
       m = new DenseMatrix([[1,2,3],[4,5,6],[7,8,9]]);
       assert.deepEqual(m.size(), [3,3]);
       assert.deepEqual(m.subset(index(1,1)), 5);
-      assert.deepEqual(m.subset(index([0,2],[0,2])).valueOf(), [[1,2],[4,5]]);
-      assert.deepEqual(m.subset(index(1, [1,3])).valueOf(), [[5,6]]);
-      assert.deepEqual(m.subset(index(0, [1,3])).valueOf(), [[2,3]]);
-      assert.deepEqual(m.subset(index([1,3], 1)).valueOf(), [[5],[8]]);
-      assert.deepEqual(m.subset(index([1,3], 2)).valueOf(), [[6],[9]]);
+      assert.deepEqual(m.subset(index(new Range(0,2),new Range(0,2))).valueOf(), [[1,2],[4,5]]);
+      assert.deepEqual(m.subset(index(1, new Range(1,3))).valueOf(), [[5,6]]);
+      assert.deepEqual(m.subset(index(0, new Range(1,3))).valueOf(), [[2,3]]);
+      assert.deepEqual(m.subset(index(new Range(1,3), 1)).valueOf(), [[5],[8]]);
+      assert.deepEqual(m.subset(index(new Range(1,3), 2)).valueOf(), [[6],[9]]);
 
       // get n-dimensional
       m = new DenseMatrix([[[1,2],[3,4]], [[5,6],[7,8]]]);
       assert.deepEqual(m.size(), [2,2,2]);
-      assert.deepEqual(m.subset(index([0,2],[0,2],[0,2])).valueOf(), m.valueOf());
+      assert.deepEqual(m.subset(index(new Range(0,2),new Range(0,2),new Range(0,2))).valueOf(), m.valueOf());
       assert.deepEqual(m.subset(index(0,0,0)), 1);
       assert.deepEqual(m.subset(index(1,1,1)).valueOf(), 8);
-      assert.deepEqual(m.subset(index(1,1,[0,2])).valueOf(), [[[7,8]]]);
-      assert.deepEqual(m.subset(index(1,[0,2],1)).valueOf(), [[[6],[8]]]);
-      assert.deepEqual(m.subset(index([0,2],1,1)).valueOf(), [[[4]],[[8]]]);
+      assert.deepEqual(m.subset(index(1,1,new Range(0,2))).valueOf(), [[[7,8]]]);
+      assert.deepEqual(m.subset(index(1,new Range(0,2),1)).valueOf(), [[[6],[8]]]);
+      assert.deepEqual(m.subset(index(new Range(0,2),1,1)).valueOf(), [[[4]],[[8]]]);
     });
 
     it('should squeeze the output when index contains a scalar', function() {
       var m = new DenseMatrix(math.range(0,10));
       assert.deepEqual(m.subset(index(1)), 1);
-      assert.deepEqual(m.subset(index([1,2])), new DenseMatrix([1]));
+      assert.deepEqual(m.subset(index(new Range(1,2))), new DenseMatrix([1]));
 
       m = new DenseMatrix([[1,2], [3,4]]);
       assert.deepEqual(m.subset(index(1,1)), 4);
-      assert.deepEqual(m.subset(index([1,2], 1)), new DenseMatrix([[4]]));
-      assert.deepEqual(m.subset(index(1, [1,2])), new DenseMatrix([[4]]));
-      assert.deepEqual(m.subset(index([1,2], [1,2])), new DenseMatrix([[4]]));
+      assert.deepEqual(m.subset(index(new Range(1,2), 1)), new DenseMatrix([[4]]));
+      assert.deepEqual(m.subset(index(1, new Range(1,2))), new DenseMatrix([[4]]));
+      assert.deepEqual(m.subset(index(new Range(1,2), new Range(1,2))), new DenseMatrix([[4]]));
     });
 
     it('should throw an error if the given subset is invalid', function() {
@@ -429,7 +430,7 @@ describe('DenseMatrix', function() {
 
     it('should throw an error in case of dimension mismatch', function() {
       var m = new DenseMatrix([[1,2,3],[4,5,6]]);
-      assert.throws(function () { m.subset(index([0,2])); }, /Dimension mismatch/);
+      assert.throws(function () { m.subset(index(new Range(0,2))); }, /Dimension mismatch/);
     });
 
   });
@@ -439,7 +440,7 @@ describe('DenseMatrix', function() {
     it('should set the given subset', function() {
       // set 1-dimensional
       var m = new DenseMatrix(math.range(0,7));
-      m.subset(index([2,4]), [20,30]);
+      m.subset(index(new Range(2,4)), [20,30]);
       assert.deepEqual(m, new DenseMatrix([0,1,20,30,4,5,6]));
       m.subset(index(4), 40);
       assert.deepEqual(m, new DenseMatrix([0,1,20,30,40,5,6]));
@@ -452,14 +453,14 @@ describe('DenseMatrix', function() {
         [0, 0, 0],
         [0, 0, 0]
       ]));
-      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
+      m.subset(index(new Range(1,3), new Range(1,3)), [[1,2],[3,4]]);
       assert.deepEqual(m, new DenseMatrix([
         [0, 0, 0],
         [0, 1, 2],
         [0, 3, 4]]));
-      m.subset(index(0, [0,3]), [5,6,7]);
+      m.subset(index(0, new Range(0,3)), [5,6,7]);
       assert.deepEqual(m, new DenseMatrix([[5,6,7],[0,1,2],[0,3,4]]));
-      m.subset(index([0,3], 0), [8,9,10]);  // unsqueezes the submatrix
+      m.subset(index(new Range(0,3), 0), [8,9,10]);  // unsqueezes the submatrix
       assert.deepEqual(m, new DenseMatrix([[8,6,7],[9,1,2],[10,3,4]]));
     });
 
@@ -467,11 +468,11 @@ describe('DenseMatrix', function() {
       // multiple values
       var m = new DenseMatrix();
       var defaultValue = 0;
-      m.subset(index([3,5]), [3, 4], defaultValue);
+      m.subset(index(new Range(3,5)), [3, 4], defaultValue);
       assert.deepEqual(m, new DenseMatrix([0, 0, 0, 3, 4]));
 
       defaultValue = 1;
-      m.subset(index([3,5],1), [5, 6], defaultValue);
+      m.subset(index(new Range(3,5),1), [5, 6], defaultValue);
       assert.deepEqual(m, new DenseMatrix([
         [0, 1],
         [0, 1],
@@ -481,7 +482,7 @@ describe('DenseMatrix', function() {
       ]));
 
       defaultValue = 2;
-      m.subset(index([3,5],2), [7, 8], defaultValue);
+      m.subset(index(new Range(3,5),2), [7, 8], defaultValue);
       assert.deepEqual(m, new DenseMatrix([
         [0, 1, 2],
         [0, 1, 2],
@@ -500,51 +501,51 @@ describe('DenseMatrix', function() {
     it('should unsqueeze the replacement subset if needed', function() {
       var m = new DenseMatrix([[0,0],[0,0]]); // 2x2
 
-      m.subset(index(0, [0,2]), [1,1]); // 2
+      m.subset(index(0, new Range(0,2)), [1,1]); // 2
       assert.deepEqual(m, new DenseMatrix([[1,1],[0,0]]));
 
-      m.subset(index([0,2], 0), [2,2]); // 2
+      m.subset(index(new Range(0,2), 0), [2,2]); // 2
       assert.deepEqual(m, new DenseMatrix([[2,1],[2,0]]));
 
       m = new DenseMatrix([[[0],[0],[0]]]); // 1x3x1
-      m.subset(index(0, [0,3], 0), [1,2,3]); // 3
+      m.subset(index(0, new Range(0,3), 0), [1,2,3]); // 3
       assert.deepEqual(m, new DenseMatrix([[[1],[2],[3]]]));
 
       m = new DenseMatrix([[[0,0,0]]]); // 1x1x3
-      m.subset(index(0, 0, [0,3]), [1,2,3]); // 3
+      m.subset(index(0, 0, new Range(0,3)), [1,2,3]); // 3
       assert.deepEqual(m, new DenseMatrix([[[1,2,3]]]));
 
       m = new DenseMatrix([[[0]],[[0]],[[0]]]); // 3x1x1
-      m.subset(index([0,3], 0, 0), [1,2,3]); // 3
+      m.subset(index(new Range(0,3), 0, 0), [1,2,3]); // 3
       assert.deepEqual(m, new DenseMatrix([[[1]],[[2]],[[3]]]));
 
       m = new DenseMatrix([[[0,0,0]]]); // 1x1x3
-      m.subset(index(0, 0, [0,3]), [[1,2,3]]); // 1x3
+      m.subset(index(0, 0, new Range(0,3)), [[1,2,3]]); // 1x3
       assert.deepEqual(m, new DenseMatrix([[[1,2,3]]]));
 
       m = new DenseMatrix([[[0]],[[0]],[[0]]]); // 3x1x1
-      m.subset(index([0,3], 0, 0), [[1],[2],[3]]); // 3x1
+      m.subset(index(new Range(0,3), 0, 0), [[1],[2],[3]]); // 3x1
       assert.deepEqual(m, new DenseMatrix([[[1]],[[2]],[[3]]]));
     });
 
     it('should resize the matrix if the replacement subset is different size than selected subset', function() {
       // set 2-dimensional with resize
       var m = new DenseMatrix([[123]]);
-      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
+      m.subset(index(new Range(1,3), new Range(1,3)), [[1,2],[3,4]]);
       assert.deepEqual(m, new DenseMatrix([[123,0,0],[0,1,2],[0,3,4]]));
 
       // set resize dimensions
       m = new DenseMatrix([123]);
       assert.deepEqual(m.size(), [1]);
 
-      m.subset(index([1,3], [1,3]), [[1,2],[3,4]]);
+      m.subset(index(new Range(1,3), new Range(1,3)), [[1,2],[3,4]]);
       assert.deepEqual(m, new DenseMatrix([[123,0,0],[0,1,2],[0,3,4]]));
 
-      m.subset(index([0,2], [0,2]), [[55,55],[55,55]]);
+      m.subset(index(new Range(0,2), new Range(0,2)), [[55,55],[55,55]]);
       assert.deepEqual(m, new DenseMatrix([[55,55,0],[55,55,2],[0,3,4]]));
 
       m = new DenseMatrix();
-      m.subset(index([1,3], [1,3], [1,3]), [[[1,2],[3,4]],[[5,6],[7,8]]]);
+      m.subset(index(new Range(1,3), new Range(1,3), new Range(1,3)), [[[1,2],[3,4]],[[5,6],[7,8]]]);
       var res = new DenseMatrix([
         [
           [0, 0, 0],
@@ -575,8 +576,8 @@ describe('DenseMatrix', function() {
 
     it('should throw an error in case of dimension mismatch', function() {
       var m = new DenseMatrix([[1,2,3],[4,5,6]]);
-      assert.throws(function () { m.subset(index([0,2]), [100,100]); }, /Dimension mismatch/);
-      assert.throws(function () { m.subset(index([0,2], [0,2]), [100,100]); }, /Dimension mismatch/);
+      assert.throws(function () { m.subset(index(new Range(0,2)), [100,100]); }, /Dimension mismatch/);
+      assert.throws(function () { m.subset(index(new Range(0,2), new Range(0,2)), [100,100]); }, /Dimension mismatch/);
     });
 
   });

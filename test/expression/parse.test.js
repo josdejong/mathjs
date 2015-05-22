@@ -9,6 +9,7 @@ var OperatorNode = math.expression.node.OperatorNode;
 var RangeNode = math.expression.node.RangeNode;
 var Complex = math.type.Complex;
 var Matrix = math.type.Matrix;
+var Range = math.type.Range;
 var Unit = math.type.Unit;
 var ResultSet = math.type.ResultSet;
 
@@ -122,25 +123,25 @@ describe('parse', function() {
   });
 
   it('should give informative syntax errors', function() {
-    assert.throws(function () {parse('2 +')}, /Unexpected end of expression \(char 4\)/);
-    assert.throws(function () {parse('2 + 3 + *')}, /Value expected \(char 9\)/);
+    assert.throws(function () {parse('2 +');}, /Unexpected end of expression \(char 4\)/);
+    assert.throws(function () {parse('2 + 3 + *');}, /Value expected \(char 9\)/);
   });
 
   it('should throw an error if called with wrong number of arguments', function() {
-    assert.throws(function () {parse()}, ArgumentsError);
-    assert.throws(function () {parse(1,2,3)}, ArgumentsError);
-    assert.throws(function () {parse([1, 2])}, TypeError);
+    assert.throws(function () {parse();}, ArgumentsError);
+    assert.throws(function () {parse(1,2,3);}, ArgumentsError);
+    assert.throws(function () {parse([1, 2]);}, TypeError);
   });
 
   it('should throw an error if called with a wrong type of argument', function() {
-    assert.throws(function () {parse(23)}, TypeError);
-    assert.throws(function () {parse(math.unit('5cm'))}, TypeError);
-    assert.throws(function () {parse(new Complex(2,3))}, TypeError);
-    assert.throws(function () {parse(true)}, TypeError);
+    assert.throws(function () {parse(23);}, TypeError);
+    assert.throws(function () {parse(math.unit('5cm'));}, TypeError);
+    assert.throws(function () {parse(new Complex(2,3));}, TypeError);
+    assert.throws(function () {parse(true);}, TypeError);
   });
 
   it('should throw an error in case of unsupported characters', function() {
-    assert.throws(function () {parse('2\u00A1')}, /Syntax error in part "\u00A1"/);
+    assert.throws(function () {parse('2\u00A1');}, /Syntax error in part "\u00A1"/);
   });
 
   describe('comments', function () {
@@ -392,7 +393,7 @@ describe('parse', function() {
       assert.deepEqual(scope.a, math.matrix([[100, 2, 0],[3,10,11],[0,12,13]]));
       var a = scope.a;
       // note: after getting subset, uninitialized elements are replaced by elements with an undefined value
-      assert.deepEqual(a.subset(math.index([0,3], [0,2])), math.matrix([[100,2],[3,10],[0,12]]));
+      assert.deepEqual(a.subset(math.index(new Range(0,3), new Range(0,2))), math.matrix([[100,2],[3,10],[0,12]]));
       assert.deepEqual(parseAndEval('a[1:3,1:2]', scope), math.matrix([[100,2],[3,10],[0,12]]));
 
       scope.b = [[1,2],[3,4]];
@@ -528,27 +529,27 @@ describe('parse', function() {
       };
 
       assert.throws(function () {
-        parseAndEval('a[2, [2,3]]', scope);
-      }, /TypeError: Ranges must be a Number or Range/);
+        parseAndEval('a[2, "1"]', scope);
+      }, /TypeError: Ranges must be a Number, Range, Array or Matrix/);
     });
 
     it('should throw an error for invalid matrix', function() {
-      assert.throws(function () {parseAndEval('[1, 2')}, /End of matrix ] expected/);
-      assert.throws(function () {parseAndEval('[1; 2')}, /End of matrix ] expected/);
+      assert.throws(function () {parseAndEval('[1, 2');}, /End of matrix ] expected/);
+      assert.throws(function () {parseAndEval('[1; 2');}, /End of matrix ] expected/);
     });
 
     it('should throw an error when matrix rows mismatch', function() {
-      assert.throws(function () {parseAndEval('[1, 2; 1, 2, 3]')}, /Column dimensions mismatch/);
+      assert.throws(function () {parseAndEval('[1, 2; 1, 2, 3]');}, /Column dimensions mismatch/);
     });
 
     it('should throw an error for invalid matrix subsets', function() {
       var scope = {a: [1,2,3]};
-      assert.throws(function () {parseAndEval('a[1', scope)}, /Parenthesis ] expected/);
+      assert.throws(function () {parseAndEval('a[1', scope);}, /Parenthesis ] expected/);
     });
 
     it('should throw an error for invalid matrix concatenations', function() {
       var scope = {};
-      assert.throws(function () {parseAndEval('c=concat(a, [1,2,3])', scope)});
+      assert.throws(function () {parseAndEval('c=concat(a, [1,2,3])', scope);});
     });
   });
 
@@ -589,7 +590,7 @@ describe('parse', function() {
 
     it('should throw an error on invalid assignments', function() {
       //assert.throws(function () {parseAndEval('sin(2) = 0.75')}, SyntaxError); // TODO: should this throw an exception?
-      assert.throws(function () {parseAndEval('sin + 2 = 3')}, SyntaxError);
+      assert.throws(function () {parseAndEval('sin + 2 = 3');}, SyntaxError);
     });
 
     it('should parse nested assignments', function() {
@@ -605,7 +606,7 @@ describe('parse', function() {
     });
 
     it('should throw an error for invalid nested assignments', function() {
-      assert.throws(function () {parseAndEval('a(j = 3)', {})}, SyntaxError);
+      assert.throws(function () {parseAndEval('a(j = 3)', {});}, SyntaxError);
     });
 
   });
@@ -684,7 +685,7 @@ describe('parse', function() {
     });
 
     it('should throw an error in case of unclosed parentheses', function () {
-      assert.throws(function () {parseAndEval('3 * (1 + 2')}, /Parenthesis \) expected/);
+      assert.throws(function () {parseAndEval('3 * (1 + 2');}, /Parenthesis \) expected/);
     });
   });
 
@@ -789,7 +790,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('(2+3)(-2)'), -10); //implicit multiplication
       assert.equal(parseAndEval('4(2+3)'), 20);
       assert.equal(parseAndEval('(a)(2+3)', {a:4}), 20);  // implicit multiplication
-      assert.equal(parseAndEval('a(2+3)', {a: function() {return 42}}), 42); // function call
+      assert.equal(parseAndEval('a(2+3)', {a: function() {return 42;}}), 42); // function call
 
       assert.equal(parseAndEval('(2+3)(4+5)'), 45);
       assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);
@@ -1049,7 +1050,7 @@ describe('parse', function() {
     });
 
     it('should throw an error when false part of conditional expression is missing', function() {
-      assert.throws(function() {parseAndEval('2 ? true')}, /False part of conditional expression expected/);
+      assert.throws(function() {parseAndEval('2 ? true');}, /False part of conditional expression expected/);
     });
 
     it('should parse : (range)', function() {
@@ -1479,36 +1480,36 @@ describe('parse', function() {
 
     it('should return IndexErrors with one based indices', function () {
       // functions throw a zero-based error
-      assert.throws(function () {math.subset([1,2,3], math.index(4))}, /Index out of range \(4 > 2\)/);
-      assert.throws(function () {math.subset([1,2,3], math.index(-2))}, /Index out of range \(-2 < 0\)/);
+      assert.throws(function () {math.subset([1,2,3], math.index(4));}, /Index out of range \(4 > 2\)/);
+      assert.throws(function () {math.subset([1,2,3], math.index(-2));}, /Index out of range \(-2 < 0\)/);
 
       // evaluation via parser throws one-based error
-      assert.throws(function () {math.eval('A[4]', {A:[1,2,3]})}, /Index out of range \(4 > 3\)/);
-      assert.throws(function () {math.eval('A[-2]', {A: [1,2,3]})}, /Index out of range \(-2 < 1\)/);
+      assert.throws(function () {math.eval('A[4]', {A:[1,2,3]});}, /Index out of range \(4 > 3\)/);
+      assert.throws(function () {math.eval('A[-2]', {A: [1,2,3]});}, /IndexError: Index out of range \(-2 < 1\)/);
     });
 
     it('should return DimensionErrors with one based indices (subset)', function () {
       // TODO: it would be more clear when all errors where DimensionErrors
 
       // functions throw a zero-based error
-      assert.throws(function () {math.subset([1,2,3], math.index(1,1))}, /DimensionError: Dimension mismatch \(2 != 1\)/);
+      assert.throws(function () {math.subset([1,2,3], math.index(1,1));}, /DimensionError: Dimension mismatch \(2 != 1\)/);
 
       // evaluation via parser throws one-based error
-      assert.throws(function () {math.eval('A[1,1]', {A: [1,2,3]})}, /DimensionError: Dimension mismatch \(2 != 1\)/);
+      assert.throws(function () {math.eval('A[1,1]', {A: [1,2,3]});}, /DimensionError: Dimension mismatch \(2 != 1\)/);
     });
 
     it('should return DimensionErrors with one based indices (concat)', function () {
       // TODO: it would be more clear when all errors where DimensionErrors
 
       // functions throw a zero-based error
-      assert.throws(function () {math.concat([1,2], [[3,4]])}, /DimensionError: Dimension mismatch \(1 != 2\)/);
-      assert.throws(function () {math.concat([[1,2]], [[3,4]], 2)}, /IndexError: Index out of range \(2 > 1\)/);
-      assert.throws(function () {math.concat([[1,2]], [[3,4]], -1)}, /IndexError: Index out of range \(-1 < 0\)/);
+      assert.throws(function () {math.concat([1,2], [[3,4]]);}, /DimensionError: Dimension mismatch \(1 != 2\)/);
+      assert.throws(function () {math.concat([[1,2]], [[3,4]], 2);}, /IndexError: Index out of range \(2 > 1\)/);
+      assert.throws(function () {math.concat([[1,2]], [[3,4]], -1);}, /IndexError: Index out of range \(-1 < 0\)/);
 
       // evaluation via parser throws one-based error
-      assert.throws(function () {math.eval('concat([1,2], [[3,4]])')}, /DimensionError: Dimension mismatch \(1 != 2\)/);
-      assert.throws(function () {math.eval('concat([[1,2]], [[3,4]], 3)')}, /IndexError: Index out of range \(3 > 2\)/);
-      assert.throws(function () {math.eval('concat([[1,2]], [[3,4]], 0)')}, /IndexError: Index out of range \(0 < 1\)/);
+      assert.throws(function () {math.eval('concat([1,2], [[3,4]])');}, /DimensionError: Dimension mismatch \(1 != 2\)/);
+      assert.throws(function () {math.eval('concat([[1,2]], [[3,4]], 3)');}, /IndexError: Index out of range \(3 > 2\)/);
+      assert.throws(function () {math.eval('concat([[1,2]], [[3,4]], 0)');}, /IndexError: Index out of range \(0 < 1\)/);
     });
 
     it('should return DimensionErrors with one based indices (max)', function () {
@@ -1521,8 +1522,8 @@ describe('parse', function() {
       assert.deepEqual(math.eval('max([[1,2], [3,4]])'), 4);
       assert.deepEqual(math.eval('max([[1,2], [3,4]], 1)'), math.matrix([3, 4]));
       assert.deepEqual(math.eval('max([[1,2], [3,4]], 2)'), math.matrix([2, 4]));
-      assert.throws(function () {math.eval('max([[1,2], [3,4]], 3)')}, /IndexError: Index out of range \(3 > 2\)/);
-      assert.throws(function () {math.eval('max([[1,2], [3,4]], 0)')}, /IndexError: Index out of range \(0 < 1\)/);
+      assert.throws(function () {math.eval('max([[1,2], [3,4]], 3)');}, /IndexError: Index out of range \(3 > 2\)/);
+      assert.throws(function () {math.eval('max([[1,2], [3,4]], 0)');}, /IndexError: Index out of range \(0 < 1\)/);
     });
 
     it('should return DimensionErrors with one based indices (min)', function () {
@@ -1535,8 +1536,8 @@ describe('parse', function() {
       assert.deepEqual(math.eval('min([[1,2], [3,4]])'), 1);
       assert.deepEqual(math.eval('min([[1,2], [3,4]], 1)'), math.matrix([1, 2]));
       assert.deepEqual(math.eval('min([[1,2], [3,4]], 2)'), math.matrix([1, 3]));
-      assert.throws(function () {math.eval('min([[1,2], [3,4]], 3)')}, /IndexError: Index out of range \(3 > 2\)/);
-      assert.throws(function () {math.eval('min([[1,2], [3,4]], 0)')}, /IndexError: Index out of range \(0 < 1\)/);
+      assert.throws(function () {math.eval('min([[1,2], [3,4]], 3)');}, /IndexError: Index out of range \(3 > 2\)/);
+      assert.throws(function () {math.eval('min([[1,2], [3,4]], 0)');}, /IndexError: Index out of range \(0 < 1\)/);
     });
 
     it('should return DimensionErrors with one based indices (mean)', function () {
@@ -1549,8 +1550,8 @@ describe('parse', function() {
       assert.deepEqual(math.eval('mean([[1,2], [3,4]])'), 2.5);
       assert.deepEqual(math.eval('mean([[1,2], [3,4]], 1)'), math.matrix([2, 3]));
       assert.deepEqual(math.eval('mean([[1,2], [3,4]], 2)'), math.matrix([1.5, 3.5]));
-      assert.throws(function () {math.eval('mean([[1,2], [3,4]], 3)')}, /IndexError: Index out of range \(3 > 2\)/);
-      assert.throws(function () {math.eval('mean([[1,2], [3,4]], 0)')}, /IndexError: Index out of range \(0 < 1\)/);
+      assert.throws(function () {math.eval('mean([[1,2], [3,4]], 3)');}, /IndexError: Index out of range \(3 > 2\)/);
+      assert.throws(function () {math.eval('mean([[1,2], [3,4]], 0)');}, /IndexError: Index out of range \(0 < 1\)/);
     });
 
   });
@@ -1600,16 +1601,16 @@ describe('parse', function() {
       it('should parse custom nodes without parameters', function() {
         var node = parse('custom()', options);
         assert.equal(node.compile(math).eval(), 'CustomNode()');
-        assert.equal(node.filter(function (node) {return node instanceof CustomNode}).length, 1);
+        assert.equal(node.filter(function (node) {return node instanceof CustomNode;}).length, 1);
 
         var node2 = parse('custom', options);
         assert.equal(node2.compile(math).eval(), 'CustomNode()');
-        assert.equal(node2.filter(function (node) {return node instanceof CustomNode}).length, 1);
+        assert.equal(node2.filter(function (node) {return node instanceof CustomNode;}).length, 1);
       });
 
       it('should throw an error on syntax errors in using custom nodes', function() {
-        assert.throws(function () {parse('custom(x', options)}, /Parenthesis \) expected/);
-        assert.throws(function () {parse('custom(x, ', options)}, /Unexpected end of expression/);
+        assert.throws(function () {parse('custom(x', options);}, /Parenthesis \) expected/);
+        assert.throws(function () {parse('custom(x, ', options);}, /Unexpected end of expression/);
       });
     });
 
