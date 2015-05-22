@@ -197,7 +197,7 @@ describe('range', function() {
       var r = new Range(2, 6);
       assert.deepEqual(r.map(function (value, index, range) {
         assert.strictEqual(range, r);
-        return 'range[' + index + ']=' + value;
+        return 'range[' + index[0] + ']=' + value;
       }), [
           'range[0]=2',
           'range[1]=3',
@@ -213,7 +213,7 @@ describe('range', function() {
       var log = [];
       r.forEach(function (value, index, range) {
         assert.strictEqual(range, r);
-        log.push('range[' + index + ']=' + value);
+        log.push('range[' + index[0] + ']=' + value);
       });
 
       assert.deepEqual(log, [

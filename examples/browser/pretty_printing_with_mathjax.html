@@ -62,24 +62,20 @@
   </tr>
 </table>
 <b>Parenthesis option:</b>
-<input type="radio" name="parenthesis" value="keep" onclick="setParenthesis('keep')" checked>keep
-<input type="radio" name="parenthesis" value="auto" onclick="setParenthesis('auto')">auto
-<input type="radio" name="parenthesis" value="all" onclick="setParenthesis('all')">all
+<input type="radio" name="parenthesis" value="keep" onclick="parenthesis = 'keep'; expr.oninput();" checked>keep
+<input type="radio" name="parenthesis" value="auto" onclick="parenthesis = 'auto'; expr.oninput();">auto
+<input type="radio" name="parenthesis" value="all" onclick="parenthesis = 'all'; expr.oninput();">all
 
 
 <script>
   var expr = document.getElementById('expr'),
       pretty = document.getElementById('pretty'),
-      result = document.getElementById('result');
-
-  function setParenthesis(option) {
-    math.config({parenthesis: option});
-    expr.oninput();
-  }
+      result = document.getElementById('result'),
+      parenthesis = 'keep';
 
   // initialize with an example expression
   expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2';
-  pretty.innerHTML = '$$' + math.parse(expr.value).toTex() + '$$';
+  pretty.innerHTML = '$$' + math.parse(expr.value).toTex({parenthesis: parenthesis}) + '$$';
   result.innerHTML = math.eval(expr.value);
 
   expr.oninput = function () {
@@ -98,7 +94,7 @@
 
     try {
       // export the expression to LaTeX
-      var latex = node ? node.toTex() : '';
+        var latex = node ? node.toTex({parenthesis: parenthesis}) : '';
       console.log('LaTeX expression:', latex);
 
       // display and re-render the expression

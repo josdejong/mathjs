@@ -180,8 +180,6 @@ describe('and', function () {
   it('should throw an error in case of invalid type of arguments', function () {
     assert.throws(function () {and(new Date(), true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {and(true, new Date());}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {and(true, 'foo');}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {and('foo', true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {and(true, undefined);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {and(undefined, true);}, /TypeError: Unexpected type of argument/);
   });

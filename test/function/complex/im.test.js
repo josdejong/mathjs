@@ -37,7 +37,7 @@ describe('im', function() {
   });
 
   it('should throw an error when called with an unsupported type of argument', function() {
-    assert.throws(function () {math.im('string')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.im(new Date())}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {math.im(math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 

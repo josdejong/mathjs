@@ -1,11 +1,12 @@
 // test round
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    matrix = math.matrix,
-    sparse = math.sparse,
-    round = math.round;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bignumber = math.bignumber;
+var fraction = math.fraction;
+var matrix = math.matrix;
+var sparse = math.sparse;
+var round = math.round;
 
 describe('round', function() {
 
@@ -31,7 +32,6 @@ describe('round', function() {
   });
 
   it('should throw an error on invalid type of value', function() {
-    assert.throws(function () {round('string');}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {round(new Date());}, /TypeError: Unexpected type of argument/);
   });
 
@@ -60,6 +60,16 @@ describe('round', function() {
     assert.deepEqual(round(bignumber(1.23), true), bignumber(1.2));
   });
 
+  it('should round fractions', function() {
+    var a = fraction('2/3');
+    assert(round(a) instanceof math.type.Fraction);
+    assert.equal(a.toString(), '0.(6)');
+
+    assert.equal(round(fraction('2/3')).toString(), '1');
+    assert.equal(round(fraction('1/3')).toString(), '0');
+    assert.equal(round(fraction('1/2')).toString(), '1');
+  });
+
   it('should round real and imag part of a complex number', function() {
     assert.deepEqual(round(math.complex(2.2, math.pi)), math.complex(2,3));
   });
@@ -74,9 +84,12 @@ describe('round', function() {
     assert.throws(function () { round(math.unit('5cm'), bignumber(2)); }, TypeError, 'Function round(unit) not supported');
   });
 
-  it('should throw an error if used with a string', function() {
-    assert.throws(function () { round("hello world"); }, /TypeError: Unexpected type of argument/);
+  it('should convert to a number when used with a string', function() {
+    assert.strictEqual(round('3.6'), 4);
+    assert.strictEqual(round('3.12345', '3'), 3.123);
+    assert.throws(function () {round('hello world'); }, /Cannot convert "hello world" to a number/);
   });
+
 
   it('should round each element in a matrix, array, range', function() {
     assert.deepEqual(round(math.range(0,2.1,1/3), 2), math.matrix([0,0.33,0.67,1,1.33,1.67,2]));

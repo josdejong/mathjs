@@ -280,11 +280,31 @@ describe('RangeNode', function() {
     assert.equal(n.toString(), '(0:10):2:100');
   });
 
-  it ('should respect the \'all\' parenthesis option', function () {
-    var allMath = math.create({parenthesis: 'all'});
+  it ('should stringify a RangeNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'RangeNode') {
+        return 'from ' + node.start.toString(options)
+          + ' to ' + node.end.toString(options)
+          + ' with steps of ' + node.step.toString(options);
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
 
-    assert.equal(allMath.parse('1:2:3').toString(), '(1):(2):(3)');
-    assert.equal(allMath.parse('1:2:3').toTex(), '\\left(1\\right):\\left(2\\right):\\left(3\\right)');
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+
+    var n = new RangeNode(a, b, c);
+
+    assert.equal(n.toString({handler: customFunction}), 'from const(1, number) to const(2, number) with steps of const(3, number)');
+  });
+
+  it ('should respect the \'all\' parenthesis option', function () {
+    assert.equal(math.parse('1:2:3').toString({parenthesis: 'all'}), '(1):(2):(3)');
+    assert.equal(math.parse('1:2:3').toTex({parenthesis: 'all'}), '\\left(1\\right):\\left(2\\right):\\left(3\\right)');
   });
 
   it ('should LaTeX a RangeNode without step', function () {
@@ -306,11 +326,11 @@ describe('RangeNode', function() {
 
   it ('should LaTeX a RangeNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'RangeNode') {
-        return 'from ' + node.start.toTex(callback)
-          + ' to ' + node.end.toTex(callback)
-          + ' with steps of ' + node.step.toTex(callback);
+        return 'from ' + node.start.toTex(options)
+          + ' to ' + node.end.toTex(options)
+          + ' with steps of ' + node.step.toTex(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -323,7 +343,7 @@ describe('RangeNode', function() {
 
     var n = new RangeNode(a, b, c);
 
-    assert.equal(n.toTex(customFunction), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)');
   });
 
 });

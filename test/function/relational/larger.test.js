@@ -79,6 +79,17 @@ describe('larger', function() {
     assert.equal(larger(true, bignumber(0)), true);
   });
 
+  it('should compare two fractions', function() {
+    assert.strictEqual(larger(math.fraction(3), math.fraction(2)).valueOf(), true);
+    assert.strictEqual(larger(math.fraction(2), math.fraction(3)).valueOf(), false);
+    assert.strictEqual(larger(math.fraction(3), math.fraction(3)).valueOf(), false);
+  });
+
+  it('should compare mixed fractions and numbers', function() {
+    assert.strictEqual(larger(1, math.fraction(1,3)), true);
+    assert.strictEqual(larger(math.fraction(2), 2), false);
+  });
+
   it('should add two measures of the same unit', function() {
     assert.equal(larger(unit('100cm'), unit('10inch')), true);
     assert.equal(larger(unit('99cm'), unit('1m')), false);

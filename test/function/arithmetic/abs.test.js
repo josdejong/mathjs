@@ -1,7 +1,6 @@
 // test abs
-var assert = require('assert'),
-    math = require('../../../index'),
-    error = math.error;
+var assert = require('assert');
+var math = require('../../../index');
 
 describe('abs', function () {
   it('should return the abs value of a boolean', function () {
@@ -29,6 +28,17 @@ describe('abs', function () {
   it('should return the absolute value of a complex number', function () {
     assert.equal(math.abs(math.complex(3, -4)), 5);
     assert.equal(math.abs(math.complex(1e200, -4e200)), 4.12310562561766e+200);
+  });
+
+  it('should return the absolute value of a fraction', function () {
+    var a = math.fraction('-1/3');
+    assert.equal(math.abs(a).toString(), '0.(3)');
+    assert.equal(a.toString(), '-0.(3)');
+    assert.equal(math.abs(math.fraction('1/3')).toString(), '0.(3)');
+  });
+
+  it('should convert a string to a number', function() {
+    assert.strictEqual(math.abs('-2'), 2);
   });
 
   it('should return the absolute value of all elements in an Array', function () {
@@ -71,7 +81,7 @@ describe('abs', function () {
   });
 
   it('should throw an error in case of unsupported types', function () {
-    assert.throws(function () {math.abs('a string');}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.abs(new Date());}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {math.abs(undefined);}, /TypeError: Unexpected type of argument/);
   });
 

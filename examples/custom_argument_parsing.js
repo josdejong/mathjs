@@ -11,7 +11,7 @@ var math = require('../index');
 
 /**
  * Calculate the numeric integration of a function
- * @param {function} f
+ * @param {Function} f
  * @param {number} start
  * @param {number} end
  * @param {number} [step=0.01]

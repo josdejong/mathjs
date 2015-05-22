@@ -48,8 +48,8 @@ describe('mod', function() {
   });
 
   it('should throw an error if used with wrong type of arguments', function() {
-    assert.throws(function () {mod(1, 'string');}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {mod('string', bignumber(2));}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {mod(1, new Date());}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {mod(new Date(), bignumber(2));}, /TypeError: Unexpected type of argument/);
   });
 
   it('should calculate the modulus of bignumbers', function() {
@@ -93,9 +93,26 @@ describe('mod', function() {
     assert.throws(function () {mod(bignumber(3), math.complex(1,2));}, TypeError);
   });
 
-  it('should an throw an error if used on a string', function() {
-    assert.throws(function () {mod('string', 3);}, TypeError);
-    assert.throws(function () {mod(5, 'string');}, TypeError);
+  it('should convert string to number', function() {
+    assert.strictEqual(mod('8', '3'), 2);
+    assert.strictEqual(mod('8', 3), 2);
+    assert.strictEqual(mod(8, '3'), 2);
+    assert.throws(function () {mod(5, 'a');}, /Cannot convert "a" to a number/);
+  });
+
+  it('should calculate modulus of two fractions', function() {
+    var b = math.fraction(8);
+    var a = mod(b, math.fraction(3));
+    assert.equal(a.toString(), '2');
+    assert.equal(b.toString(), '8');
+    assert(a instanceof math.type.Fraction);
+
+    assert.equal(mod(math.fraction(4.55), math.fraction(0.05)).toString(), '0');
+  });
+
+  it('should calculate modulus of mixed fractions and numbers', function() {
+    assert.strictEqual(mod(8, math.fraction(3)), 2);
+    assert.strictEqual(mod(math.fraction(8), 3), 2);
   });
 
   describe('Array', function () {

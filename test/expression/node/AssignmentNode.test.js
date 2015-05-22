@@ -199,11 +199,9 @@ describe('AssignmentNode', function() {
   });
 
   it ('should respect the \'all\' parenthesis option', function () {
-    var allMath = math.create({parenthesis: 'all'});
-
-    var expr = allMath.parse('a=1');
-    assert.equal(expr.toString(), 'a = (1)');
-    assert.equal(expr.toTex(), 'a:=\\left(1\\right)');
+    var expr = math.parse('a=1');
+    assert.equal(expr.toString({parenthesis: 'all'}), 'a = (1)');
+    assert.equal(expr.toTex({parenthesis: 'all'}), 'a:=\\left(1\\right)');
   });
 
   it ('should stringify a AssignmentNode', function () {
@@ -220,6 +218,24 @@ describe('AssignmentNode', function() {
     var n = new AssignmentNode('b', b);
 
     assert.equal(n.toString(), 'b = (a = 2)');
+  });
+
+  it ('should stringify an AssignmentNode with custom toString', function () {
+    //Also checks if custom funcions get passed to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'AssignmentNode') {
+        return node.name + ' equals ' + node.expr.toString(options);
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+
+    var n = new AssignmentNode('a', a);
+
+    assert.equal(n.toString({handler: customFunction}), 'a equals const(1, number)');
   });
 
   it ('should LaTeX a AssignmentNode', function () {
@@ -240,9 +256,9 @@ describe('AssignmentNode', function() {
 
   it ('should LaTeX an AssignmentNode with custom toTex', function () {
     //Also checks if custom funcions get passed to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'AssignmentNode') {
-        return node.name + '\\mbox{equals}' + node.expr.toTex(callback);
+        return node.name + '\\mbox{equals}' + node.expr.toTex(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -253,7 +269,7 @@ describe('AssignmentNode', function() {
 
     var n = new AssignmentNode('a', a);
 
-    assert.equal(n.toTex(customFunction), 'a\\mbox{equals}const\\left(1, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), 'a\\mbox{equals}const\\left(1, number\\right)');
   });
 
 });

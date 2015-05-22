@@ -175,8 +175,6 @@ describe('rightArithShift', function () {
   it('should throw an error in case of invalid type of arguments', function () {
     assert.throws(function () {rightArithShift(new Date(), true)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {rightArithShift(true, new Date())}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {rightArithShift(true, 'foo')}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {rightArithShift('foo', true)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {rightArithShift(true, undefined)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {rightArithShift(undefined, true)}, /TypeError: Unexpected type of argument/);
   });

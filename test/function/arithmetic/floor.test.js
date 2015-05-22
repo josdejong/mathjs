@@ -4,6 +4,7 @@ var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var bignumber = math.bignumber;
 var complex = math.complex;
+var fraction = math.fraction;
 var matrix = math.matrix;
 var unit = math.unit;
 var range = math.range;
@@ -30,7 +31,7 @@ describe('floor', function() {
     approx.equal(floor(-1.8), -2);
     approx.equal(floor(-2), -2);
     approx.equal(floor(-2.1), -3);
-    approx.deepEqual(floor(math.pi), 3);
+    approx.equal(floor(math.pi), 3);
   });
 
   it('should floor big numbers correctly', function() {
@@ -53,12 +54,29 @@ describe('floor', function() {
     approx.deepEqual(floor(complex(-1.3, -1.8)), complex(-2, -2));
   });
 
+  it('should floor fractions correctly', function() {
+    var a = fraction('2/3');
+    assert(floor(a) instanceof math.type.Fraction);
+    assert.equal(a.toString(), '0.(6)');
+
+    assert.equal(floor(fraction(0)).toString(), '0');
+    assert.equal(floor(fraction(1)).toString(), '1');
+    assert.equal(floor(fraction(1.3)).toString(), '1');
+    assert.equal(floor(fraction(1.8)).toString(), '1');
+    assert.equal(floor(fraction(2)).toString(), '2');
+    assert.equal(floor(fraction(-1)).toString(), '-1');
+    assert.equal(floor(fraction(-1.3)).toString(), '-2');
+    assert.equal(floor(fraction(-1.8)).toString(), '-2');
+    assert.equal(floor(fraction(-2)).toString(), '-2');
+    assert.equal(floor(fraction(-2.1)).toString(), '-3');
+  });
+
   it('should throw an error with a unit', function() {
     assert.throws(function () {floor(unit('5cm'))}, TypeError, 'Function floor(unit) not supported');
   });
 
-  it('should throw an error with a string', function() {
-    assert.throws(function () {floor('hello world')}, TypeError, 'Function floor(string) not supported');
+  it('should convert a string to a number', function() {
+    assert.strictEqual(floor('1.8'), 1);
   });
 
   it('should floor all elements in a matrix', function() {

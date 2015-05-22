@@ -78,9 +78,7 @@ describe('median', function() {
   });
 
   it('should throw an error if called with unsupported type of arguments', function() {
-    assert.throws(function () {median('A', 'C', 'D', 'B')}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {median('A', 'C', 'B')}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {median(0, 'B')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {median(new Date(), 2, 3)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {median(new Complex(2,3), new Complex(-1,2))}, /TypeError: No ordering relation is defined for complex numbers/);
   });
 

@@ -3,6 +3,7 @@ var assert = require('assert');
 var math = require('../../../index');
 var unit = math.unit;
 var bignumber = math.bignumber;
+var fraction = math.fraction;
 var matrix = math.matrix;
 var range = math.range;
 var cube = math.cube;
@@ -27,6 +28,13 @@ describe('cube', function() {
     assert.deepEqual(cube(bignumber(4)), bignumber(64));
     assert.deepEqual(cube(bignumber(-2)), bignumber(-8));
     assert.deepEqual(cube(bignumber(0)), bignumber(0));
+  });
+
+  it('should return the cube of a fraction', function() {
+    var a = fraction(0.5);
+    assert(cube(a) instanceof math.type.Fraction);
+    assert.equal(cube(a).toString(), '0.125');
+    assert.equal(a.toString(), '0.5');
   });
 
   it('should return the cube of a complex number', function() {

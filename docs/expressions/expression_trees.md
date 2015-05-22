@@ -109,7 +109,7 @@ All nodes have the following methods:
     
     See also `transform`, which is a recursive version of `map`.
 
--   `toString() : string`
+-   `toString(options: object) : string`
 
     Get a string representation of the parsed expression. This is not exactly
     the same as the original input. Example:
@@ -119,7 +119,9 @@ All nodes have the following methods:
     node.toString();  // returns '3 + (4 * 2)'
     ```
 
--   `toTex(): string`
+    Information about the options in [Customization](customization.md#custom-latex-and-string-conversion).
+
+-   `toTex(options: object): string`
 
     Get a [LaTeX](http://en.wikipedia.org/wiki/LaTeX) representation of the
     expression. Example:
@@ -128,6 +130,8 @@ All nodes have the following methods:
     var node = math.parse('sqrt(2/3)');
     node.toTex(); // returns '\sqrt{\frac{2}{3}}'
     ```
+
+    Information about the options in [Customization](customization.md#custom-latex-and-string-conversion).
 
 -   `transform(callback: function)`
 

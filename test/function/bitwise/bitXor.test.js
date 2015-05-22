@@ -158,8 +158,6 @@ describe('bitXor', function () {
   it('should throw an error in case of invalid type of arguments', function () {
     assert.throws(function () {bitXor(new Date(), true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitXor(true, new Date());}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitXor(true, 'foo');}, /TypeError: Unexpected type of argument/);
-    assert.throws(function () {bitXor('foo', true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitXor(true, undefined);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitXor(undefined, true);}, /TypeError: Unexpected type of argument/);
   });

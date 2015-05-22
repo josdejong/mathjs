@@ -39,7 +39,7 @@ describe('conj', function() {
   });
 
   it('should throw an error when called with an unsupported type of argument', function() {
-    assert.throws(function () {conj('string')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {conj(new Date())}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {conj(math.unit('5cm'))}, /TypeError: Unexpected type of argument/);
   });
 

@@ -1,9 +1,9 @@
 // test subtract
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    subtract = math.subtract;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bignumber = math.bignumber;
+var subtract = math.subtract;
 
 describe('subtract', function() {
 
@@ -74,6 +74,20 @@ describe('subtract', function() {
   it('should throw an error for mixed complex numbers and big numbers', function() {
     assert.deepEqual(subtract(math.complex(3, 4), math.bignumber(10)), math.complex(-7, 4));
     assert.deepEqual(subtract(math.bignumber(10), math.complex(3, 4)), math.complex(7, -4));
+  });
+
+  it('should subtract two fractions', function() {
+    var a = math.fraction(1,3);
+    assert.equal(subtract(a, math.fraction(1,6)).toString(), '0.1(6)');
+    assert.equal(a.toString(), '0.(3)');
+
+    assert.equal(subtract(math.fraction(3,5), math.fraction(1,5)).toString(), '0.4');
+    assert.equal(subtract(math.fraction(1), math.fraction(1,3)).toString(), '0.(6)');
+  });
+
+  it('should subtract mixed fractions and numbers', function() {
+    assert.strictEqual(subtract(1, math.fraction(1,3)), 0.6666666666666667);
+    assert.strictEqual(subtract(math.fraction(1,3), 1), -0.6666666666666667);
   });
 
   it('should subtract two quantities of the same unit', function() {
