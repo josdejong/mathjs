@@ -10,10 +10,18 @@ var core = require('./core');
  *                            {string} matrix
  *                              A string 'matrix' (default) or 'array'.
  *                            {string} number
- *                              A string 'number' (default) or 'bignumber'
+ *                              A string 'number' (default), 'bignumber', or
+ *                              'fraction'
  *                            {number} precision
  *                              The number of significant digits for BigNumbers.
  *                              Not applicable for Numbers.
+ *                            {boolean} predictable
+ *                              Predictable output type of functions. When true,
+ *                              output type depends only on the input types. When
+ *                              false (default), output type can vary depending
+ *                              on input values. For example `math.sqrt(-2)`
+ *                              returns `NaN` when predictable is false, and
+ *                              returns `complex('2i')` when true.
  */
 function create (config) {
 

@@ -8,6 +8,7 @@ var complex = math.complex;
 var matrix = math.matrix;
 var unit = math.unit;
 var bigmath = math.create({number: 'bignumber', precision: 20});
+var mathPredictable = math.create({predictable: true});
 var acosBig = bigmath.acos;
 var cosBig = bigmath.cos;
 var Big = bigmath.bignumber;
@@ -28,6 +29,14 @@ describe('acos', function() {
     approx.equal(acos(0) / pi, 0.5);
     approx.equal(acos(0.5) / pi, 1 / 3);
     approx.equal(acos(1) / pi, 0);
+
+    approx.deepEqual(acos(-2), complex('3.14159265358979 - 1.31695789692482i'));
+    approx.deepEqual(acos(2), complex('1.316957896924817i'));
+  });
+
+  it('should return the arccos of a number when predictable:true', function() {
+    assert.equal(typeof mathPredictable.acos(-2), 'number');
+    assert(isNaN(mathPredictable.acos(-2)));
   });
 
   it('should return the arccos of a bignumber', function() {

@@ -1,17 +1,18 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    approx = require('../../../tools/approx'),
-    pi = math.pi,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    acsc = math.acsc,
-    csc = math.csc,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    biggermath = math.create({precision: 21}),
-    acscBig = bigmath.acsc,
-    Big = bigmath.bignumber;
+var assert = require('assert');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var approx = require('../../../tools/approx');
+var pi = math.pi;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var acsc = math.acsc;
+var csc = math.csc;
+var bigmath = math.create({number: 'bignumber', precision: 20});
+var biggermath = math.create({precision: 21});
+var predmath = math.create({predictable: true});
+var acscBig = bigmath.acsc;
+var Big = bigmath.bignumber;
 
 describe('acsc', function() {
   it('should return the arccsc of a boolean', function () {
@@ -32,6 +33,11 @@ describe('acsc', function() {
     //assert.ok(isNaN(acsc(0)));
     approx.equal(acsc(1) / pi, 0.5);
     approx.equal(acsc(2) / pi, 1/6);
+  });
+
+  it('should return the arccsc of a number when predictable:true', function() {
+    assert.equal(typeof predmath.acsc(0), 'number');
+    assert(isNaN(predmath.acsc(0)));
   });
 
   it('should return the arccsc of a bignumber', function() {

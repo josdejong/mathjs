@@ -1,14 +1,15 @@
 // test exp
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    range = math.range,
-    pow = math.pow;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var mathPredictable = math.create({predictable: true});
+var bignumber = math.bignumber;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var range = math.range;
+var pow = math.pow;
 
 describe('pow', function() {
 
@@ -26,6 +27,12 @@ describe('pow', function() {
 
   it('should exponentiate a negative number to a non-integer power', function() {
     approx.deepEqual(pow(-2,1.5), complex(0, -2.82842712474619));
+  });
+
+  it('should exponentiate a negative number to a non-integer power with predictable:true', function() {
+    var res = mathPredictable.pow(-2,1.5);
+    assert.equal(typeof res, 'number');
+    assert(isNaN(res));
   });
 
   it('should exponentiate booleans to the given power', function() {
@@ -59,6 +66,10 @@ describe('pow', function() {
     approx.deepEqual(pow(bignumber(-2), bignumber(1.5)), complex(0, -2.82842712474619));
     approx.deepEqual(pow(-2, bignumber(1.5)), complex(0, -2.82842712474619));
     approx.deepEqual(pow(bignumber(-2), 1.5), complex(0, -2.82842712474619));
+  });
+
+  it('should exponentiate a negative bignumber to a non-integer power', function() {
+    assert.deepEqual(mathPredictable.pow(bignumber(-2), bignumber(1.5)), bignumber(NaN));
   });
 
   it('should exponentiate mixed numbers and bignumbers', function() {
