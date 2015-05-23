@@ -382,4 +382,12 @@ describe('FunctionNode', function() {
     assert.equal(n.toTex({handler: customFunction}), '1 add 2');
   });
 
+  it ('should LaTeX a FunctionNode with callback attached to the function', function () {
+    var customMath = math.create();
+    customMath.add.toTex = function (node, options) {
+      return node.args[0].toTex(options) + ' plus ' + node.args[1].toTex(options);
+    };
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2');
+  });
 });
