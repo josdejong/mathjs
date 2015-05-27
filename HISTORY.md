@@ -3,6 +3,7 @@
 
 ## not yet released, version 1.7.1-SNAPSHOT
 
+- Implemented function `composition`. Thanks @BigFav.
 - Added BigNumber support for functions `stirlingS2` and `bellNumbers`. 
   Thanks @devanp92.
 - Improved the performance of `median` (see #373). Thanks @BigFav.
