@@ -1,7 +1,6 @@
 # Function randomInt
 
-Return a random integer number larger or equal to `min` and smaller than `max`
-using a uniform distribution.
+Return a random integer number including `min` and excluding `max` using a uniform distribution.
 
 
 ## Syntax
