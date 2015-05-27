@@ -43,16 +43,14 @@ All nodes have the following methods:
 
     Recursively clone an expression tree.
 
--   `compile(namespace: Object) : Object`
+-   `compile() : Object`
 
-    Compile an expression into optimized JavaScript code.
-    The expression is compiled against a namespace, typically `math`, needed to
-    bind internally used functions. `compile` returns an object with a function
-    `eval([scope])` to evaluate. Example:
+    Compile an expression into optimized JavaScript code. `compile` returns an 
+    object with a function `eval([scope])` to evaluate. Example:
     
     ```js
     var node = math.parse('2 + x'); // returns the root Node of an expression tree
-    var code = node.compile(math);  // returns {eval: function (scope) {...}}
+    var code = node.compile();      // returns {eval: function (scope) {...}}
     var eval = code.eval({x: 3};    // returns 5
     ```
 

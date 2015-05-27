@@ -20,7 +20,7 @@
   modules can be loaded using require: `math.import(require('module-name'))`.
 - Function `import` has a new option `silent` to ignore errors, and throws
   errors on duplicates by default.
-- Drastically refactored and reorganized the source code.
+- Method `Node.compile()` no longer needs `math` to be passed as argument.
 - Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
 
 

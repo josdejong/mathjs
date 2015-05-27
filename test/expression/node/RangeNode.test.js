@@ -50,7 +50,7 @@ describe('RangeNode', function() {
     var step = new ConstantNode(2);
     var n = new RangeNode(start, end, step);
 
-    var expr = n.compile(math);
+    var expr = n.compile();
     assert.deepEqual(expr.eval(), math.matrix([0, 2, 4, 6, 8, 10]));
   });
 

@@ -28,11 +28,11 @@ describe('ParenthesisNode', function() {
     assert.throws(function () {new ParenthesisNode(2)}, TypeError);
   });
 
-  it.skip ('should compile a ParenthesisNode', function () {
+  it ('should compile a ParenthesisNode', function () {
     var a = new ConstantNode(1);
     var n = new ParenthesisNode(a);
 
-    assert.equal(n.compile(math), a.compile(math)); //FIXME doesn't work for whatever reason
+    assert.equal(n.compile().eval.toString(), a.compile().eval.toString());
   });
 
   it ('should filter a ParenthesisNode', function () {

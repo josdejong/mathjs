@@ -45,32 +45,32 @@ describe('ConstantNode', function() {
   });
 
   it ('should throw an error in case of unknown type of constant', function () {
-    assert.throws(function () {new ConstantNode('3', 'bla').compile(math);}, TypeError);
+    assert.throws(function () {new ConstantNode('3', 'bla').compile();}, TypeError);
   });
 
   it ('should compile a ConstantNode', function () {
-    var expr = new ConstantNode('2.3', 'number').compile(math);
+    var expr = new ConstantNode('2.3', 'number').compile();
     assert.strictEqual(expr.eval(), 2.3);
 
-    expr = new ConstantNode('002.3', 'number').compile(math);
+    expr = new ConstantNode('002.3', 'number').compile();
     assert.strictEqual(expr.eval(), 2.3);
 
-    expr = new ConstantNode('hello', 'string').compile(math);
+    expr = new ConstantNode('hello', 'string').compile();
     assert.strictEqual(expr.eval(), 'hello');
 
-    expr = new ConstantNode('true', 'boolean').compile(math);
+    expr = new ConstantNode('true', 'boolean').compile();
     assert.strictEqual(expr.eval(), true);
 
-    expr = new ConstantNode('undefined', 'undefined').compile(math);
+    expr = new ConstantNode('undefined', 'undefined').compile();
     assert.strictEqual(expr.eval(), undefined);
 
-    expr = new ConstantNode('null', 'null').compile(math);
+    expr = new ConstantNode('null', 'null').compile();
     assert.strictEqual(expr.eval(), null);
 
   });
 
   it ('should compile a ConstantNode with bigmath', function () {
-    var expr = new ConstantNode('2.3', 'number').compile(bigmath);
+    var expr = new bigmath.expression.node.ConstantNode('2.3', 'number').compile();
     assert.deepEqual(expr.eval(), new bigmath.type.BigNumber(2.3));
   });
 

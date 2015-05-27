@@ -78,7 +78,7 @@ var node1 = math.parse('sqrt(3^2 + 4^2)');
 print(node1.toString());                    // "sqrt((3 ^ 2) + (4 ^ 2))"
 
 // compile the node
-var code1 = node1.compile(math);
+var code1 = node1.compile();
 
 // evaluate the compiled code
 print(code1.eval());                        // 5
@@ -86,7 +86,7 @@ print(code1.eval());                        // 5
 // provide a scope
 console.log('\nprovide a scope');
 var node2 = math.parse('x^a');
-var code2 = node2.compile(math);
+var code2 = node2.compile();
 print(node2.toString());                    // "x ^ a"
 var scope = {
   x: 3,
