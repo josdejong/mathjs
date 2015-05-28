@@ -178,16 +178,6 @@ describe('distribution', function () {
   });
 
   describe('randomInt', function() {
-    
-    it('should pick uniformly distributed integers in [0, 1)', function() {
-      var picked = [];
-
-      _.times(10000, function() {
-        picked.push(uniformDistrib.randomInt());
-      });
-
-      assertUniformDistributionInt(picked, 0, 1);
-    });
 
     it('should pick uniformly distributed integers in [min, max)', function() {
       var picked = [];
