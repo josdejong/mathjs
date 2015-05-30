@@ -162,8 +162,6 @@ describe('slu', function () {
   
   /**
    * C = A(p,q) where p is the row permutation vector and q the column permutation vector.
-   *
-   * This function is needed until Matrix supports the syntax A[p,q] for indices
    */
   var _permute = function (A, pinv, q) {
     // matrix arrays
