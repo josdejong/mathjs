@@ -9,7 +9,7 @@ describe('parse', function() {
   it('should parse an expression', function() {
     var node = math.parse('(5+3)/4');
     assert.ok(node instanceof Node);
-    assert.equal(node.compile(math).eval(), 2);
+    assert.equal(node.compile().eval(), 2);
   });
 
   it('should parse multiple expressions', function() {
@@ -19,8 +19,8 @@ describe('parse', function() {
 
     assert.ok(nodes[0] instanceof Node);
     assert.ok(nodes[1] instanceof Node);
-    assert.equal(nodes[0].compile(math).eval(), 5);
-    assert.equal(nodes[1].compile(math).eval(), 9);
+    assert.equal(nodes[0].compile().eval(), 5);
+    assert.equal(nodes[1].compile().eval(), 9);
   });
 
   it('should LaTeX parse', function () {

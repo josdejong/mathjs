@@ -44,7 +44,7 @@ describe('FunctionAssignmentNode', function() {
     var o = new OperatorNode('+', 'add', [a, x]);
     var n = new FunctionAssignmentNode('f', ['x'], o);
 
-    var expr = n.compile(math);
+    var expr = n.compile();
     var scope = {};
     var f = expr.eval(scope);
     assert.equal(typeof scope.f, 'function');
@@ -73,7 +73,7 @@ describe('FunctionAssignmentNode', function() {
 
     var n2 = new FunctionAssignmentNode('factorial', ['x'], n1);
 
-    var expr = n2.compile(math);
+    var expr = n2.compile();
     var scope = {};
     var factorial = expr.eval(scope);
     assert.equal(typeof scope.factorial, 'function');
@@ -107,7 +107,7 @@ describe('FunctionAssignmentNode', function() {
     var n2 = new FunctionAssignmentNode('fib', ['x'], n1);
     //var n2 = math.parse('fib(x) = (x <= 0) ? 0 : ((x <= 2) ? 1 : (fib(x - 1) + f(fib - 2)))');
 
-    var expr = n2.compile(math);
+    var expr = n2.compile();
     var scope = {};
     var fib = expr.eval(scope);
 

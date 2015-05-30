@@ -33,6 +33,7 @@ print(str);  // "0.6666666666666666"
 print(chain.valueOf()); // 0.66667
 print(chain + 2);       // 2.66667
 
+
 // the function subset can be used to get or replace sub matrices
 var array = [[1, 2], [3, 4]];
 var v = math.chain(array)
@@ -46,11 +47,12 @@ var m = math.chain(array)
     .done();
 print(m);  // [[24, 6], [9, 12]]
 
+
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-    var precision = 14;
-    console.log(math.format(value, precision));
+  var precision = 14;
+  console.log(math.format(value, precision));
 }

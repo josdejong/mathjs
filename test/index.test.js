@@ -10,7 +10,8 @@ describe('factory', function() {
       matrix: 'matrix',
       number: 'number',
       precision: 64,
-      epsilon: 1e-14,
+      predictable: false,
+      epsilon: 1e-14
     });
   });
 
@@ -25,6 +26,7 @@ describe('factory', function() {
       matrix: 'array',
       number: 'bignumber',
       precision: 64,
+      predictable: false,
       epsilon: 1e-14
     });
   });
@@ -56,7 +58,8 @@ describe('factory', function() {
       matrix: 'matrix',
       number: 'number',
       precision: 64,
-      epsilon: 1e-14,
+      predictable: false,
+      epsilon: 1e-14
     });
 
     // restore the original config

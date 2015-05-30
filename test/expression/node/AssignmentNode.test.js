@@ -46,7 +46,7 @@ describe('AssignmentNode', function() {
     var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
-    var expr = n.compile(math);
+    var expr = n.compile();
 
     var scope = {};
     assert.equal(expr.eval(scope), 3);

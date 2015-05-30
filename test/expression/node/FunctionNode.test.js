@@ -44,15 +44,15 @@ describe('FunctionNode', function() {
     var n = new FunctionNode('sqrt', [c]);
 
     var scope = {};
-    assert.equal(n.compile(math).eval(scope), 2);
+    assert.equal(n.compile().eval(scope), 2);
   });
 
   it ('should compile a FunctionNode with a raw function', function () {
     var mymath = math.create();
     function myFunction (args, _math, _scope) {
       assert.equal(args.length, 2);
-      assert(args[0] instanceof Node);
-      assert(args[1] instanceof Node);
+      assert(args[0] instanceof mymath.expression.node.Node);
+      assert(args[1] instanceof mymath.expression.node.Node);
       assert.deepEqual(_math.__proto__, mymath);
       assert.strictEqual(_scope, scope);
       return 'myFunction(' + args.join(', ') + ')';
@@ -60,12 +60,12 @@ describe('FunctionNode', function() {
     myFunction.rawArgs = true;
     mymath.import({myFunction: myFunction});
 
-    var a = new ConstantNode(4);
-    var b = new ConstantNode(5);
-    var n = new FunctionNode('myFunction', [a, b]);
+    var a = new mymath.expression.node.ConstantNode(4);
+    var b = new mymath.expression.node.ConstantNode(5);
+    var n = new mymath.expression.node.FunctionNode('myFunction', [a, b]);
 
     var scope = {};
-    assert.equal(n.compile(mymath).eval(scope), 'myFunction(4, 5)');
+    assert.equal(n.compile().eval(scope), 'myFunction(4, 5)');
   });
 
   it ('should compile a FunctionNode with overloaded a raw function', function () {
@@ -76,16 +76,16 @@ describe('FunctionNode', function() {
     myFunction.rawArgs = true;
     mymath.import({myFunction: myFunction});
 
-    var a = new ConstantNode(4);
-    var b = new ConstantNode(5);
-    var n = new FunctionNode('myFunction', [a, b]);
+    var a = new mymath.expression.node.ConstantNode(4);
+    var b = new mymath.expression.node.ConstantNode(5);
+    var n = new mymath.expression.node.FunctionNode('myFunction', [a, b]);
 
     var scope = {
       myFunction: function () {
         return 42;
       }
     };
-    assert.equal(n.compile(mymath).eval(scope), 42);
+    assert.equal(n.compile().eval(scope), 42);
   });
 
   it ('should filter a FunctionNode', function () {

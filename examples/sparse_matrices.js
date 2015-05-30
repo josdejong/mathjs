@@ -1,7 +1,7 @@
 var math = require('../index');
 
-// create a sparse matrix using compressed column storage (ccs)
-var a = math.eye(1000, 1000, 'ccs');
+// create a sparse matrix
+var a = math.eye(1000, 1000, 'sparse');
 
 // do operations with a sparse matrix
 var b = math.multiply(a, a);

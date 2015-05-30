@@ -33,7 +33,7 @@ describe('OperatorNode', function() {
     var b = new ConstantNode(3);
     var n = new OperatorNode('+', 'add', [a, b]);
 
-    var expr = n.compile(math);
+    var expr = n.compile();
 
     assert.equal(expr.eval(), 5);
   });
@@ -41,13 +41,11 @@ describe('OperatorNode', function() {
   it ('should throw an error in case of unresolved operator function', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
-    var n = new OperatorNode('+', 'add', [a, b]);
-
-    var emptyNamespace = {};
+    var n = new OperatorNode('***', 'foo', [a, b]);
 
     assert.throws(function () {
-      n.compile(emptyNamespace);
-    }, /Function add missing in provided namespace/);
+      n.compile();
+    }, /Function foo missing in provided namespace/);
   });
 
   it ('should filter an OperatorNode', function () {

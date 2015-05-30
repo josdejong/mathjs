@@ -2,6 +2,7 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
+var mathPredictable = math.create({predictable: true});
 var complex = math.complex;
 var matrix = math.matrix;
 var unit = math.unit;
@@ -35,6 +36,11 @@ describe('log10', function() {
     approx.deepEqual(log10(-1), complex('0.000000000000000 + 1.364376353841841i'));
     approx.deepEqual(log10(-2), complex('0.301029995663981 + 1.364376353841841i'));
     approx.deepEqual(log10(-3), complex('0.477121254719662 + 1.364376353841841i'));
+  });
+
+  it('should return the log base 10 of negative numbers with predicable:true', function() {
+    assert.equal(typeof mathPredictable.log10(-1), 'number');
+    assert(isNaN(mathPredictable.log10(-1)));
   });
 
   it('should return the log base 10 of zero', function() {

@@ -9,13 +9,18 @@
 - Implemented support for fractions, powered by the library `fraction.js`.
 - Implemented matrix LU decomposition with partial pivoting and a LU based 
   linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
+- Implemented a new configuration option `predictable`, which can be set to
+  true in order to ensure predictable function output types.
 - Large internal refactoring, allowing to create custom bundles of math.js.
+- Function `typeof` no longer returns lower case names, but now returns lower
+  case names for primitives (like `number`, `boolean`, `string`), and 
+  upper-camel-case for non-primitives (like `Array`, `Complex`, `Function`).
 - Function `import` now returns the imported objects.
 - Function `import` no longer supports a module name as argument. Instead,
   modules can be loaded using require: `math.import(require('module-name'))`.
 - Function `import` has a new option `silent` to ignore errors, and throws
   errors on duplicates by default.
-- Drastically refactored and reorganized the source code.
+- Method `Node.compile()` no longer needs `math` to be passed as argument.
 - Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
 
 

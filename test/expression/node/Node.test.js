@@ -115,17 +115,10 @@ describe('Node', function() {
     assert.equal(n2.toTex(callback2), '\\mathrm{bla}\\left(\\right)');
   });
 
-  it ('should throw an error in case of wrong arguments for compile', function () {
-    var node = new Node();
-    assert.throws(function () {
-      node.compile()
-    }, /Object expected/);
-  });
-
   it ('should throw an error when compiling an abstract node', function () {
     var node = new Node();
     assert.throws(function () {
-      node.compile(math)
+      node.compile()
     }, /Cannot compile a Node interface/);
   });
 

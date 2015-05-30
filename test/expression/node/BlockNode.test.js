@@ -53,7 +53,7 @@ describe('BlockNode', function() {
     ]);
 
     var scope = {};
-    assert.deepEqual(n.compile(math).eval(scope), new ResultSet([5, 3]));
+    assert.deepEqual(n.compile().eval(scope), new ResultSet([5, 3]));
     assert.deepEqual(scope, {foo: 3});
   });
 
@@ -62,7 +62,7 @@ describe('BlockNode', function() {
       {node: new ConstantNode(5)}
     ]);
 
-    assert.deepEqual(n.compile(math).eval(), new ResultSet([5]));
+    assert.deepEqual(n.compile().eval(), new ResultSet([5]));
   });
 
   it ('should filter a BlockNode', function () {

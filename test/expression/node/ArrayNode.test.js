@@ -40,23 +40,30 @@ describe('ArrayNode', function() {
     var a = new ArrayNode([c]);
     var b = new ArrayNode();
 
-    assert.deepEqual(a.compile(math).eval(), math.matrix([1]));
-    assert.deepEqual(b.compile(math).eval(), math.matrix([]));
+    assert.deepEqual(a.compile().eval(), math.matrix([1]));
+    assert.deepEqual(b.compile().eval(), math.matrix([]));
   });
 
-  it ('should compile an ArrayNode', function () {
+  it ('should compile an ArrayNode and evaluate as Matrix', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);
     var c = new ConstantNode(3);
     var d = new ConstantNode(4);
     var n = new ArrayNode([a, b, c, d]);
 
-    var expr = n.compile(math);
+    var expr = n.compile();
     assert.deepEqual(expr.eval(), math.matrix([1,2,3,4]));
+  });
 
+  it ('should compile an ArrayNode and evaluate as Array', function () {
     var mathArray = math.create({matrix: 'array'});
-    var expr2 = n.compile(mathArray);
-    assert.deepEqual(expr2.eval(), [1,2,3,4]);
+    var a = new mathArray.expression.node.ConstantNode(1);
+    var b = new mathArray.expression.node.ConstantNode(2);
+    var c = new mathArray.expression.node.ConstantNode(3);
+    var d = new mathArray.expression.node.ConstantNode(4);
+    var n = new mathArray.expression.node.ArrayNode([a, b, c, d]);
+    var expr = n.compile();
+    assert.deepEqual(expr.eval(), [1,2,3,4]);
   });
 
   it ('should compile nested ArrayNodes', function () {
@@ -69,7 +76,7 @@ describe('ArrayNode', function() {
     var n3 = new ArrayNode([c, d]);
     var n4 = new ArrayNode([n2, n3]);
 
-    var expr = n4.compile(math);
+    var expr = n4.compile();
     assert.deepEqual(expr.eval(), math.matrix([[1,2],[3,4]]));
   });
 

@@ -1,13 +1,14 @@
 // test log
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    range = math.range,
-    log = math.log;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var mathPredictable = math.create({predictable: true});
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var range = math.range;
+var log = math.log;
 
 describe('log', function() {
   it('should return the log of a boolean value', function () {
@@ -32,6 +33,11 @@ describe('log', function() {
     approx.deepEqual(log(-1), complex('0.000000000000000 + 3.141592653589793i'));
     approx.deepEqual(log(-2), complex('0.693147180559945 + 3.141592653589793i'));
     approx.deepEqual(log(-3), complex('1.098612288668110 + 3.141592653589793i'));
+  });
+
+  it('should return the log of negative numbers with predictable: true', function() {
+    assert.equal(typeof mathPredictable.log(-1), 'number');
+    assert(isNaN(mathPredictable.log(-1)));
   });
 
   it('should return the log of zero', function() {
@@ -64,9 +70,13 @@ describe('log', function() {
   it('should return the log of negative bignumbers', function() {
     var bigmath = math.create({precision: 100});
 
-    approx.deepEqual(bigmath.log(bigmath.bignumber(-1)).toString(), 'NaN');
-    approx.deepEqual(bigmath.log(bigmath.bignumber(-2)).toString(), 'NaN');
-    approx.deepEqual(bigmath.log(bigmath.bignumber(-3)).toString(), 'NaN');
+    approx.deepEqual(bigmath.log(bigmath.bignumber(-1)), complex('0.000000000000000 + 3.141592653589793i'));
+    approx.deepEqual(bigmath.log(bigmath.bignumber(-2)), complex('0.693147180559945 + 3.141592653589793i'));
+    approx.deepEqual(bigmath.log(bigmath.bignumber(-3)), complex('1.098612288668110 + 3.141592653589793i'));
+  });
+
+  it('should return the log of negative bignumbers with predictable:true', function() {
+    assert.deepEqual(mathPredictable.log(math.bignumber(-1)), math.bignumber(NaN));
   });
 
   it('should return the log of a bignumber with value zero', function() {

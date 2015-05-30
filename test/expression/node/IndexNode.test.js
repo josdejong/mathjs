@@ -35,13 +35,13 @@ describe('IndexNode', function() {
   });
 
   it ('should compile a IndexNode', function () {
-    var a = new SymbolNode('a');
+    var a = new bigmath.expression.node.SymbolNode('a');
     var ranges = [
-      new ConstantNode(2),
-      new ConstantNode(1)
+      new bigmath.expression.node.ConstantNode(2),
+      new bigmath.expression.node.ConstantNode(1)
     ];
-    var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var n = new bigmath.expression.node.IndexNode(a, ranges);
+    var expr = n.compile();
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -59,7 +59,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile();
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -78,7 +78,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile();
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -96,7 +96,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(math);
+    var expr = n.compile();
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -105,11 +105,11 @@ describe('IndexNode', function() {
   });
 
   it ('should compile a IndexNode with bignumber setting', function () {
-    var a = new SymbolNode('a');
-    var b = new ConstantNode(2);
-    var c = new ConstantNode(1);
-    var n = new IndexNode(a, [b, c]);
-    var expr = n.compile(bigmath);
+    var a = new bigmath.expression.node.SymbolNode('a');
+    var b = new bigmath.expression.node.ConstantNode(2);
+    var c = new bigmath.expression.node.ConstantNode(1);
+    var n = new bigmath.expression.node.IndexNode(a, [b, c]);
+    var expr = n.compile();
 
     var scope = {
       a: [[1, 2], [3, 4]]

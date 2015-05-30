@@ -121,7 +121,7 @@ function myFunction(args, math, scope) {
 
   // evaluate the arguments
   var res = args.map(function (arg) {
-    return arg.compile(math).eval(scope);
+    return arg.compile().eval(scope);
   });
 
   return 'arguments: ' + str.join(',') + ', evaluated: ' + res.join(',');

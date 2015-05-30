@@ -32,6 +32,7 @@ print(math.eval('0.1 + 0.2'));  // BigNumber, 0.3
 print(math.eval('0.3 / 0.2'));  // BigNumber, 1.5
 console.log();
 
+
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
