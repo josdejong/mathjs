@@ -68,7 +68,7 @@ describe('lusolve', function () {
     var x = math.lusolve(m, b);
 
     assert(x instanceof math.type.Matrix);
-    approx.deepEqual(x, math.matrix([-1, -0.5, -1/3, -0.25], 'sparse'));
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1/3], [-0.25]]));
   });
   
   it('should solve linear system 4 x 4, matrix and column matrix', function () {
@@ -110,7 +110,7 @@ describe('lusolve', function () {
     var x = math.lusolve(m, b);
 
     assert(x instanceof math.type.Matrix);
-    approx.deepEqual(x, math.matrix([-1, -0.5, -1/3, -0.25], 'sparse'));
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1/3], [-0.25]]));
   });
   
   it('should solve linear system 4 x 4, LUP decomposition (array)', function () {
@@ -158,10 +158,10 @@ describe('lusolve', function () {
     var lup = math.lup(m);
 
     var x = math.lusolve(lup, [-1, -1, -1, -1]);
-    approx.deepEqual(x, math.matrix([-1, -0.5, -1/3, -0.25], 'sparse'));
+    approx.deepEqual(x, math.matrix([[-1], [-0.5], [-1/3], [-0.25]]));
 
     var y = math.lusolve(lup, [1, 2, 1, -1]);
-    approx.deepEqual(y, math.matrix([1, 1, 1/3, -0.25], 'sparse'));
+    approx.deepEqual(y, math.matrix([[1], [1], [1/3], [-0.25]]));
   });
   
   it('should solve linear system 3 x 3, no permutations, arrays', function () {
@@ -203,7 +203,7 @@ describe('lusolve', function () {
 
     var x = math.lusolve(m, b);
 
-    approx.deepEqual(x, math.matrix([[-5/3], [7/3], [-1]], 'sparse'));
+    approx.deepEqual(x, math.matrix([[-5/3], [7/3], [-1]]));
   });
   
   it('should solve linear system 3 x 3, permutations, arrays', function () {
@@ -245,7 +245,71 @@ describe('lusolve', function () {
 
     var x = math.lusolve(m, b);
 
-    approx.deepEqual(x, math.matrix([[-5/3], [7/3], [-1]], 'sparse'));
+    approx.deepEqual(x, math.matrix([[-5/3], [7/3], [-1]]));
+  });
+  
+  it('should solve linear system 4 x 4, natural ordering (order=0), partial pivoting, sparse matrix', function () {
+    var m = math.sparse(
+      [
+        [4.5,   0, 3.2,   0],
+        [3.1, 2.9,   0, 0.9],
+        [0,   1.7,   3,   0],
+        [3.5, 0.4,   0,   1]
+      ]);
+
+    var b = [1.000000, 1.250000, 1.500000, 1.750000];
+
+    var x = math.lusolve(m, b, 0, 1);
+
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]));
+  });
+  
+  it('should solve linear system 4 x 4, amd(A+A\') (order=1), partial pivoting, sparse matrix', function () {
+    var m = math.sparse(
+      [
+        [4.5,   0, 3.2,   0],
+        [3.1, 2.9,   0, 0.9],
+        [0,   1.7,   3,   0],
+        [3.5, 0.4,   0,   1]
+      ]);
+
+    var b = [1.000000, 1.250000, 1.500000, 1.750000];
+
+    var x = math.lusolve(m, b, 1, 1);
+
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]));
+  });
+  
+  it('should solve linear system 4 x 4, amd(A\'*A) (order=2), partial pivoting, sparse matrix', function () {
+    var m = math.sparse(
+      [
+        [4.5,   0, 3.2,   0],
+        [3.1, 2.9,   0, 0.9],
+        [0,   1.7,   3,   0],
+        [3.5, 0.4,   0,   1]
+      ]);
+
+    var b = [1.000000, 1.250000, 1.500000, 1.750000];
+
+    var x = math.lusolve(m, b, 2, 1);
+
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]));
+  });
+  
+  it('should solve linear system 4 x 4, amd(A\'*A) (order=3), partial pivoting, sparse matrix', function () {
+    var m = math.sparse(
+      [
+        [4.5,   0, 3.2,   0],
+        [3.1, 2.9,   0, 0.9],
+        [0,   1.7,   3,   0],
+        [3.5, 0.4,   0,   1]
+      ]);
+
+    var b = [1.000000, 1.250000, 1.500000, 1.750000];
+
+    var x = math.lusolve(m, b, 3, 1);
+
+    approx.deepEqual(x, math.matrix([[-0.186372], [-0.131621], [0.574586], [2.454950]]));
   });
   
   it('should throw exception when matrix is singular', function () {
