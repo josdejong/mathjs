@@ -14,7 +14,7 @@ describe('fraction', function () {
   it('should clone a fraction', function () {
     var a = math.fraction(1,3);
     var b = math.fraction(a);
-    assert.notStrictEqual(a, b);
+    assert.strictEqual(a, b); // b === a as fractions are supposed to be immutable
   });
 
   it('should create a fraction for all elements in an array', function () {
