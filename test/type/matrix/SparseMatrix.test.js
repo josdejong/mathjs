@@ -167,6 +167,23 @@ describe('SparseMatrix', function() {
       assert.strictEqual(a.type, 'SparseMatrix');
     });
 
+    // TODO: add some more input validations to SparseMatrix
+    it.skip('should throw an error when input array does not have two dimensions', function () {
+      assert.throws(function () { new SparseMatrix([1,2,3]); }, /DimensionError: Two dimensional array expected/);
+      assert.throws(function () { new SparseMatrix([[[1]],[[2]],[[3]]]); }, /DimensionError: Two dimensional array expected/);
+    });
+
+    // TODO: add some more input validations to SparseMatrix
+    it.skip('should throw an error when the dimensions of the input array are invalid', function () {
+      assert.throws(function () {
+        new SparseMatrix(
+            [
+              [1, 2],
+              [4, 5, 6]
+            ]);
+      }, /DimensionError: Dimension mismatch \(3 != 2\)/);
+    });
+
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { SparseMatrix(); }, /Constructor must be called with the new operator/);
     });

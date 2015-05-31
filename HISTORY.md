@@ -22,6 +22,8 @@
   errors on duplicates by default.
 - Method `Node.compile()` no longer needs `math` to be passed as argument.
 - Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
+- The size of Arrays is no longer validated. Matrices will validate this on
+  creation.
 
 
 ## not yet released, version 1.6.1-SNAPSHOT
