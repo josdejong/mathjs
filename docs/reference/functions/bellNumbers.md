@@ -1,6 +1,9 @@
 # Function bellNumbers
 
-Calculate the Bell Number for an `n` element set.
+The Bell Numbers count the number of partitions of a set. A partition is a pairwise disjoint subset of S whose union is S.
+bellNumbers only takes integer arguments.
+The following condition must be enforced: n >= 0
+
 
 ## Syntax
 
@@ -12,26 +15,25 @@ math.bellNumbers(n)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`n` | Number &#124; BigNumber | Function input
+`n` | Number &#124; BigNumber | Total number of objects in the set
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber | The number of ways to partition a set of n elements.
+Number &#124; BigNumber | B(n)
 
 
 ## Examples
 
 ```js
-math.bellNumbers(5);           // returns Number 52
-math.bellNumbers(math.bignumber(10)); // returns Number 115975
+math.bellNumbers(3); // returns 5;
+math.bellNumbers(8); // returns 4140;
 ```
 
 
 ## See also
 
-[combinations](combinations.md),
 [stirlingS2](stirlingS2.md)
 
 
