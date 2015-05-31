@@ -4,9 +4,10 @@
 ## not yet released, version 1.7.1-SNAPSHOT
 
 - Implemented function `composition`. Thanks @devanp92.
-- Added BigNumber support for functions `stirlingS2` and `bellNumbers`. 
+- Implemented BigNumber support for functions `stirlingS2` and `bellNumbers`. 
   Thanks @devanp92.
 - Improved the performance of `median` (see #373). Thanks @BigFav.
+- Fixed #381: issue in docs of `randomInt`.
 
 
 ## 2015-05-14, version 1.7.0
