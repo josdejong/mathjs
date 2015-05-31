@@ -1,25 +1,19 @@
 # History
 
 
-## not yet released, version 1.7.1-SNAPSHOT
-
-- Implemented function `composition`. Thanks @devanp92.
-- Implemented BigNumber support for functions `stirlingS2` and `bellNumbers`. 
-  Thanks @devanp92.
-- Improved the performance of `median` (see #373). Thanks @BigFav.
-- Fixed #381: issue in docs of `randomInt`.
-
-
-## 2015-05-14, version 1.7.0
+## 2015-05-31, version 1.7.0
 
 - Implemented function `quantileSeq` and `partitionSelect`. Thanks @BigFav.
-- Implemented functions `stirlingS2` and `bellNumbers`. Thanks @devanp92.
+- Implemented functions `stirlingS2`, `bellNumbers`, `composition`, and 
+  `multinomial`. Thanks @devanp92.
+- Improved the performance of `median` (see #373). Thanks @BigFav.
 - Extended the command line interface with a `mode` option to output either
   the expressions result, string representation, or tex representation.
   Thanks @FSMaxB.
 - Fixed #309: Function median mutating the input matrix. Thanks @FSMaxB. 
 - Fixed `Node.transform` not recursing over replaced parts of the 
   node tree (see #349).
+- Fixed #381: issue in docs of `randomInt`.
 
 
 ## 2015-04-22, version 1.6.0
