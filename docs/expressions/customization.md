@@ -149,6 +149,7 @@ You can pass your own callback(s) to `toTex`. If it returns nothing, the standar
 If your callback returns a string, this string will be used.
 
 There's two ways of passing callbacks:
+
 1. Pass an object that maps function names to callbacks. Those callbacks will be used for FunctionNodes with 
 functions of that name.
 2. Pass a function to `toTex`. This function will then be used for every node.
