@@ -64,8 +64,16 @@ describe('sum', function() {
     assert.throws(function() {sum([], 2, 3)});
   });
 
-  it('should throw an error if called with not yet supported argument dim', function() {
-    assert.throws(function() {sum([], 2)}, /not yet supported/);
+  it('should return the column sum', function() {
+    assert.deepEqual(sum([[2, 5], [4, 3]], 1), [ [6, 8] ]);
+  });
+  
+  it('should return the row sum', function() {
+    assert.deepEqual(sum([[2, 5], [4, 3]], 2), [ [7], [7] ]);
+  });
+  
+  it('should return the row sum (with matrix)', function() {
+    assert.deepEqual(sum(math.matrix([[2, 5], [4, 3]]), 2), math.matrix([ [7], [7] ]));
   });
 
   it('should throw an error if called with an empty array', function() {
