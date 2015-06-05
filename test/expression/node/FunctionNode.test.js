@@ -390,4 +390,25 @@ describe('FunctionNode', function() {
 
     assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2');
   });
+
+  it ('should LaTeX a FunctionNode with template string attached to the function', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '%0% plus %1%';
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2');
+  });
+
+  it ('should LaTeX a FunctionNode with object of callbacks attached to the function', function () {
+    var customMath = math.create();
+    customMath.sum.toTex = {
+      2: "%0%+%1%",
+      3: function (node, options) {
+        return node.args[0] + '+' + node.args[1] + '+' + node.args[2];
+      }
+    };
+
+    assert.equal(customMath.parse('sum(1,2)').toTex(), '1+2');
+    assert.equal(customMath.parse('sum(1,2,3)').toTex(), '1+2+3');
+  });
+
 });
