@@ -45,6 +45,12 @@ layout: default
 - [rightArithShift(x, y)](rightArithShift.html)
 - [rightLogShift(x, y)](rightLogShift.html)
 
+<h2 id="combinatorics">combinatorics <a href="#combinatorics" title="Permalink">#</a></h2>
+
+- [bellNumbers(n)](bellNumbers.html)
+- [composition(n, k)](composition.html)
+- [stirlingS2(n, k)](stirlingS2.html)
+
 <h2 id="complex">complex <a href="#complex" title="Permalink">#</a></h2>
 
 - [arg(x)](arg.html)
@@ -105,6 +111,7 @@ layout: default
 - [distribution(name)](distribution.html)
 - [factorial(n)](factorial.html)
 - [gamma(n)](gamma.html)
+- [multinomial(a)](multinomial.html)
 - [permutations(n)](permutations.html)
 - [pickRandom(array)](pickRandom.html)
 - [random([min, max])](random.html)
@@ -128,6 +135,7 @@ layout: default
 - [median(a, b, c, ...)](median.html)
 - [min(a, b, c, ...)](min.html)
 - [prod(a, b, c, ...)](prod.html)
+- [quantileSeq(A, prob[, sorted])](quantileSeq.html)
 - [std(a, b, c, ...)](std.html)
 - [sum(a, b, c, ...)](sum.html)
 - [var(a, b, c, ...)](var.html)
@@ -172,6 +180,7 @@ layout: default
 - [format(value [, precision])](format.html)
 - [import(filename | object, override)](import.html)
 - [map(x, callback)](map.html)
+- [partitionSelect(x, k)](partitionSelect.html)
 - [print(template, values [, precision])](print.html)
 - [sort(x)](sort.html)
 - [typeof(x)](typeof.html)

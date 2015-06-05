@@ -11,7 +11,6 @@ using a uniform distribution.
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.randomInt()                // generate a random integer between 0 and 1
 math.randomInt(max)             // generate a random integer between 0 and max
 math.randomInt(min, max)        // generate a random integer between min and max
 math.randomInt(size)            // generate a matrix with random integer between 0 and 1
@@ -37,7 +36,6 @@ Number &#124; Array &#124; Matrix | A random integer value
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.randomInt();       // returns a random integer between 0 and 1
 math.randomInt(100);    // returns a random integer between 0 and 100
 math.randomInt(30, 40); // returns a random integer between 30 and 40
 math.randomInt([2, 3]); // returns a 2x3 matrix with random integers between 0 and 1

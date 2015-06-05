@@ -50,8 +50,7 @@ math.ones(2, 3);                              // Matrix, [[1, 1, 1], [1, 1, 1]]
 <h2 id="creation">Creation <a href="#creation" title="Permalink">#</a></h2>
 
 A matrix can be created from an array using the function `math.matrix`. The
-provided array can contain nested arrays in order to create a multi
-dimensional matrix. When called without arguments, an empty matrix will be
+provided array can contain nested arrays in order to create a multi-dimensional matrix. When called without arguments, an empty matrix will be
 created.
 
 ```js
@@ -156,9 +155,9 @@ math.det(d);                              // 23
 
 Math.js uses geometric dimensions:
 
-- A scalar is zero dimensional.
-- A vector is one dimensional.
-- A matrix is two or multi dimensional.
+- A scalar is zero-dimensional.
+- A vector is one-dimensional.
+- A matrix is two or multi-dimensional.
 
 The size of a matrix can be calculated with the function `size`. Function `size`
 returns a `Matrix` or `Array`, depending on the configuration option `matrix`.
@@ -171,11 +170,11 @@ math.size(2.4);                               // Matrix, []
 math.size(math.complex(3, 2));                // Matrix, []
 math.size(math.unit('5.3 mm'));               // Matrix, []
 
-// get the size of a one dimensional matrix (a vector) and a string
+// get the size of a one-dimensional matrix (a vector) and a string
 math.size([0, 1, 2, 3]);                      // Array, [4]
 math.size('hello world');                     // Matrix, [11]
 
-// get the size of a two dimensional matrix
+// get the size of a two-dimensional matrix
 var a = [[0, 1, 2, 3]];                       // Array
 var b = math.matrix([[0, 1, 2], [3, 4, 5]]);  // Matrix
 math.size(a);                                 // Array, [1, 4]
@@ -184,7 +183,7 @@ math.size(b);                                 // Matrix, [2, 3]
 // matrices have a function size (always returns an Array)
 b.size();                                     // Array, [2, 3]
 
-// get the size of a multi dimensional matrix
+// get the size of a multi-dimensional matrix
 var c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]];
 math.size(c);                                 // Array, [2, 2, 3]
 ```
@@ -193,9 +192,9 @@ math.size(c);                                 // Array, [2, 2, 3]
 <h2 id="resizing">Resizing <a href="#resizing" title="Permalink">#</a></h2>
 
 Matrices can be resized using their `resize` function. This function is called
-with an Array with the new size as first argument, and accepts an optional
+with an Array with the new size as the first argument, and accepts an optional
 default value. If no default value is provided, new entries will be filled with
-zero. To leave new entries uninitialized, specify `math.uninitialized` as 
+zero. To leave new entries uninitialized, specify `math.uninitialized` as the
 default value.
 
 ```js
@@ -321,7 +320,7 @@ Math.js supports both dense matrices as well as sparse matrices. Sparse matrices
 
 Math.js supports three type of matrices:
 
-- Dense matrix (`'dense'`, `default`) A regular, dense matrix, supporting multi dimensional matrices. This is the default matrix type.
+- Dense matrix (`'dense'`, `default`) A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
 - Compressed row storage (`'crs'`): A two dimensional sparse matrix implementation.
 - Compressed column storage (`'ccs'`): A two dimensional sparse matrix implementation.
 

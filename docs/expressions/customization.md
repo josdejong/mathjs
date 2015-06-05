@@ -14,7 +14,7 @@ return value by writing a *transform* for the function. A transform is a
 function wrapping around a function to be transformed or completely replaces
 a function.
 
-For example, the functions or math.js use zero-based matrix indices (as is
+For example, the functions for math.js use zero-based matrix indices (as is
 common in programing languages), but the expression parser uses one-based
 indices. To enable this, all functions dealing with indices have a transform,
 which changes input from one-based to zero-based, and transforms output (and

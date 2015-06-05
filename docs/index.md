@@ -38,6 +38,7 @@ describing all available functions, constants, and units in detail.
 - [Serialization](serialization.html)
 - [Extension](extension.html)
 - [Command Line Interface](command_line_interface.html)
+- [Command Line Debugging](command_line_debugging.html)
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 

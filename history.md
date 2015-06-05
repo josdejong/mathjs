@@ -5,6 +5,21 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20150531-version-170">2015-05-31, version 1.7.0 <a href="#20150531-version-170" title="Permalink">#</a></h2>
+
+- Implemented function `quantileSeq` and `partitionSelect`. Thanks @BigFav.
+- Implemented functions `stirlingS2`, `bellNumbers`, `composition`, and 
+  `multinomial`. Thanks @devanp92.
+- Improved the performance of `median` (see #373). Thanks @BigFav.
+- Extended the command line interface with a `mode` option to output either
+  the expressions result, string representation, or tex representation.
+  Thanks @FSMaxB.
+- Fixed #309: Function median mutating the input matrix. Thanks @FSMaxB. 
+- Fixed `Node.transform` not recursing over replaced parts of the 
+  node tree (see #349).
+- Fixed #381: issue in docs of `randomInt`.
+
+
 <h2 id="20150422-version-160">2015-04-22, version 1.6.0 <a href="#20150422-version-160" title="Permalink">#</a></h2>
 
 - Improvements in `toTex`. Thanks @FSMaxB.
