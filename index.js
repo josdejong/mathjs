@@ -58,6 +58,7 @@ function create (config) {
   math.import(require('./lib/function/bitwise'));
   math.import(require('./lib/function/combinatorics'));
   math.import(require('./lib/function/complex'));
+  math.import(require('./lib/function/geometry'));
   math.import(require('./lib/function/logical'));
   math.import(require('./lib/function/matrix'));
   math.import(require('./lib/function/probability'));
