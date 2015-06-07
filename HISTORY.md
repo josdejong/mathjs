@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 1.8.0-SNAPSHOT
+
+- Implemented function `intersect`. Thanks @kv-kunalvyas.
+
+
 ## 2015-05-31, version 1.7.0
 
 - Implemented function `quantileSeq` and `partitionSelect`. Thanks @BigFav.
