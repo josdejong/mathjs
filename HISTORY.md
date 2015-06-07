@@ -14,6 +14,8 @@
 - Implemented function `intersect`. Thanks @kv-kunalvyas.
 - Implemented support for adding `toTex` properties to custom functions.
   Thanks @FSMaxB.
+- Implemented util functions `isInteger`, `isNegative`, `isNumeric`, 
+  `isPositive`, and `isZero`.
 - Large internal refactoring, allowing to create custom bundles of math.js.
 - Function `typeof` no longer returns lower case names, but now returns lower
   case names for primitives (like `number`, `boolean`, `string`), and 
