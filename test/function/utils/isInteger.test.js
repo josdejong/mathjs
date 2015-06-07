@@ -50,14 +50,11 @@ describe('isInteger', function() {
     assert.deepEqual(isInteger(math.matrix([2, 5, 0.5, 3])), math.matrix([true, true, false, true]));
   });
 
-  it('should test whether a non-supported types are an integer', function() {
-    assert.strictEqual(isInteger(math.complex(2, 3)), false);
-    assert.strictEqual(isInteger(math.unit('5 cm')), false);
-    assert.strictEqual(isInteger('2'), false);
-    assert.strictEqual(isInteger('foo'), false);
-  });
-
   it('should throw an error in case of unsupported data types', function() {
+    assert.throws(function () {isInteger(math.complex(2, 3))}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {isInteger(math.unit('5 cm'))}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {isInteger('2')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {isInteger('foo')}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {isInteger(new Date())}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {isInteger({})}, /TypeError: Unexpected type of argument/);
   });

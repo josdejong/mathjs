@@ -68,12 +68,9 @@ describe('isZero', function() {
     assert.deepEqual(isZero(math.matrix([0, 5, 0, -3])), math.matrix([true, false, true, false]));
   });
 
-  it('should test whether a non-supported types are zero', function() {
-    assert.strictEqual(isZero('0'), false);
-    assert.strictEqual(isZero('foo'), false);
-  });
-
   it('should throw an error in case of unsupported data types', function() {
+    assert.throws(function () {isZero('0')}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {isZero('foo')}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {isZero(new Date())}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {isZero({})}, /TypeError: Unexpected type of argument/);
   });
