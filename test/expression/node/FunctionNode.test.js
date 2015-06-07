@@ -393,7 +393,7 @@ describe('FunctionNode', function() {
 
   it ('should LaTeX a FunctionNode with template string attached to the function', function () {
     var customMath = math.create();
-    customMath.add.toTex = '%0% plus %1%';
+    customMath.add.toTex = '${args[0]} plus ${args[1]}';
 
     assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2');
   });
@@ -401,7 +401,7 @@ describe('FunctionNode', function() {
   it ('should LaTeX a FunctionNode with object of callbacks attached to the function', function () {
     var customMath = math.create();
     customMath.sum.toTex = {
-      2: "%0%+%1%",
+      2: "${args[0]}+${args[1]}",
       3: function (node, options) {
         return node.args[0] + '+' + node.args[1] + '+' + node.args[2];
       }
