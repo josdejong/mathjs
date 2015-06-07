@@ -382,4 +382,83 @@ describe('FunctionNode', function() {
     assert.equal(n.toTex({handler: customFunction}), '1 add 2');
   });
 
+  it ('should LaTeX a FunctionNode with callback attached to the function', function () {
+    var customMath = math.create();
+    customMath.add.toTex = function (node, options) {
+      return node.args[0].toTex(options) + ' plus ' + node.args[1].toTex(options);
+    };
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2');
+  });
+
+  it ('should LaTeX a FunctionNode with template string attached to the function', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${args[0]} plus ${args[1]}';
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2');
+  });
+
+  it ('should LaTeX a FunctionNode with object of callbacks attached to the function', function () {
+    var customMath = math.create();
+    customMath.sum.toTex = {
+      2: "${args[0]}+${args[1]}",
+      3: function (node, options) {
+        return node.args[0] + '+' + node.args[1] + '+' + node.args[2];
+      }
+    };
+
+    assert.equal(customMath.parse('sum(1,2)').toTex(), '1+2');
+    assert.equal(customMath.parse('sum(1,2,3)').toTex(), '1+2+3');
+  });
+
+  it ('should LaTeX templates with string properties', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${name}';
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), 'add');
+  });
+
+  it ('should LaTeX templates with node properties', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${args[0]} plus ${args[1]}';
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2');
+  });
+
+  it ('should LaTeX templates with properties that are arrays of Nodes', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${args}';
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), '1,2');
+  });
+
+  it ('should throw an Error for templates with properties that don\'t exist', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${some_property}';
+
+    assert.throws(function () {customMath.parse('add(1,2)').toTex()}, ReferenceError);
+  });
+
+  it ('should throw an Error for templates with properties that aren\'t Nodes or Strings or Arrays of Nodes', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${some_property}';
+    var tree = customMath.parse('add(1,2)');
+
+    tree.some_property = {};
+    assert.throws(function () {tree.toTex()}, TypeError);
+
+    customMath.add.prototype.some_property = 1;
+    tree.some_property = 1;
+    assert.throws(function () {tree.toTex()}, TypeError);
+  });
+
+  it ('should throw an Error for templates with properties that are arrays of non Nodes', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${some_property}';
+    var tree = customMath.parse('add(1,2)');
+    tree.some_property = [1,2];
+
+    assert.throws(function () {tree.toTex()}, TypeError);
+  });
+
 });
