@@ -140,6 +140,46 @@ math.eval('myFunction(2 + 3, sqrt(4))');
 // returns 'arguments: 2 + 3, sqrt(4), evaluated: 5, 2'
 ```
 
+## Attaching LaTeX handlers to functions
+
+You can attach a `toTex` property to your custom functions before importing them to define their LaTeX output. This
+`toTex` property can be a handler in the format described in the next section 'Custom LaTeX and String conversion'
+or a template string similar to ES6 templates.
+
+### Template syntax
+* `${name}`: Get's replaced by the name of the function
+* `${args}`: Get's replaced by a comma separated list of the arguments of the function.
+* `${args[0]}`: Get's replaced by the first argument of a function
+* `$$`: Get's replaced by `$`
+
+#### Example
+
+```js
+var customFunctions = {
+  plus: function (a, b) {
+    return a + b;
+  },
+  minus: function (a, b) {
+    return a - b;
+  },
+  binom: function (n, k) {
+    return 1;
+  }
+};
+
+customFunctions.plus.toTex = '${args[0]}+${args[1]}'; //template string
+customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
+customFunctions.minus.toTex = function (node, options) { //handler function
+  return node.args[0].toTex(options) + node.name + node.args[1].toTex(options);
+};
+
+math.import(customFunctions);
+
+math.parse('plus(1,2)').toTex();    //'1+2'
+math.parse('binom(1,2)').toTex();   // '\\mathrm{binom}\\left(1,2\\right)'
+math.parse('minus(1,2)').toTex();   // '1minus2'
+```
+
 ## Custom LaTeX and String conversion
 
 You can pass the `toTex` and `toString` functions an object to change their behaviour. This object is of the following form:
@@ -161,6 +201,7 @@ There's two ways of passing callbacks:
 1. Pass an object that maps function names to callbacks. Those callbacks will be used for FunctionNodes with 
 functions of that name.
 2. Pass a function to `toTex`. This function will then be used for every node.
+
 ```js
 var expression = math.parse('(1+1+1)');
 
