@@ -11,6 +11,7 @@
   linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
 - Implemented a new configuration option `predictable`, which can be set to
   true in order to ensure predictable function output types.
+- Implemented function `intersect`. Thanks @kv-kunalvyas.
 - Large internal refactoring, allowing to create custom bundles of math.js.
 - Function `typeof` no longer returns lower case names, but now returns lower
   case names for primitives (like `number`, `boolean`, `string`), and 
