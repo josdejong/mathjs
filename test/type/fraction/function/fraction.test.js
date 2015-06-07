@@ -37,6 +37,12 @@ describe('fraction', function () {
     equalFraction(arr[2], new Fraction(1, 8));
   });
 
+  it('should throw an error in case of NaN or Infinity', function () {
+    assert.throws(function () {math.fraction(Infinity)}, /Error: Infinity cannot be represented as a fraction/);
+    assert.throws(function () {math.fraction(-Infinity)}, /Error: -Infinity cannot be represented as a fraction/);
+    assert.throws(function () {math.fraction(NaN)}, /Error: NaN cannot be represented as a fraction/);
+  });
+
 });
 
 function equalFraction (a, b) {
