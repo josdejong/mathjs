@@ -184,9 +184,9 @@ describe('ConditionalNode', function() {
     });
 
     assert.notStrictEqual(f, n);
-    assert.strictEqual(f.condition,  e);
-    assert.deepEqual(f.trueExpr,  a);
-    assert.deepEqual(f.falseExpr,  b);
+    assert.deepEqual(f.condition, e);
+    assert.deepEqual(f.trueExpr, a);
+    assert.deepEqual(f.falseExpr, b);
   });
 
   it ('should transform a ConditionalNodes trueExpr', function () {
@@ -201,9 +201,9 @@ describe('ConditionalNode', function() {
     });
 
     assert.notStrictEqual(f, n);
-    assert.deepEqual(f.condition,  condition);
-    assert.strictEqual(f.trueExpr,  e);
-    assert.deepEqual(f.falseExpr,  b);
+    assert.deepEqual(f.condition, condition);
+    assert.deepEqual(f.trueExpr, e);
+    assert.deepEqual(f.falseExpr, b);
   });
 
   it ('should transform a ConditionalNodes falseExpr', function () {
@@ -220,7 +220,7 @@ describe('ConditionalNode', function() {
     assert.notStrictEqual(f, n);
     assert.deepEqual(f.condition, condition);
     assert.deepEqual(f.trueExpr, a);
-    assert.strictEqual(f.falseExpr, e);
+    assert.deepEqual(f.falseExpr, e);
   });
 
   it ('should transform a ConditionalNode itself', function () {
@@ -234,7 +234,8 @@ describe('ConditionalNode', function() {
       return node instanceof ConditionalNode ? e : node;
     });
 
-    assert.strictEqual(f, e);
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f, e);
   });
 
   it ('should clone a ConditionalNode itself', function () {

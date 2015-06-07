@@ -10,7 +10,7 @@ return value by writing a *transform* for the function. A transform is a
 function wrapping around a function to be transformed or completely replaces
 a function.
 
-For example, the functions or math.js use zero-based matrix indices (as is
+For example, the functions for math.js use zero-based matrix indices (as is
 common in programing languages), but the expression parser uses one-based
 indices. To enable this, all functions dealing with indices have a transform,
 which changes input from one-based to zero-based, and transforms output (and
@@ -156,6 +156,11 @@ The `parenthesis` option changes the way parenteheses are used in the output. Th
 * `auto`: Only display parentheses that are necessary. Mathjs tries to get rid of as much parntheses as possible.
 * `all`: Display all parentheses that are given by the structure of the node tree. This makes the output precedence unambiguous.
 
+There's two ways of passing callbacks:
+
+1. Pass an object that maps function names to callbacks. Those callbacks will be used for FunctionNodes with 
+functions of that name.
+2. Pass a function to `toTex`. This function will then be used for every node.
 ```js
 var expression = math.parse('(1+1+1)');
 

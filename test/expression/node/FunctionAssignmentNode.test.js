@@ -228,7 +228,8 @@ describe('FunctionAssignmentNode', function() {
       return node instanceof FunctionAssignmentNode ? e : node;
     });
 
-    assert.strictEqual(f, e);
+    assert.notStrictEqual(f, n);
+    assert.deepEqual(f, e);
   });
 
   it ('should clone a FunctionAssignmentNode', function () {

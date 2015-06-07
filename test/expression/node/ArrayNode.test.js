@@ -177,7 +177,9 @@ describe('ArrayNode', function() {
     var e = c.transform(function (node) {
       return (node instanceof ArrayNode) ? d : node;
     });
-    assert.strictEqual(e, d);
+
+    assert.notStrictEqual(e, c);
+    assert.deepEqual(e, d);
   });
 
   it ('should traverse an ArrayNode', function () {

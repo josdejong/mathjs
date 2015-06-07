@@ -41,6 +41,12 @@
 - [rightArithShift(x, y)](rightArithShift.md)
 - [rightLogShift(x, y)](rightLogShift.md)
 
+## combinatorics
+
+- [bellNumbers(n)](bellNumbers.md)
+- [composition(n, k)](composition.md)
+- [stirlingS2(n, k)](stirlingS2.md)
+
 ## complex
 
 - [arg(x)](arg.md)
@@ -101,6 +107,7 @@
 - [distribution(name)](distribution.md)
 - [factorial(n)](factorial.md)
 - [gamma(n)](gamma.md)
+- [multinomial(a)](multinomial.md)
 - [permutations(n)](permutations.md)
 - [pickRandom(array)](pickRandom.md)
 - [random([min, max])](random.md)
@@ -124,6 +131,7 @@
 - [median(a, b, c, ...)](median.md)
 - [min(a, b, c, ...)](min.md)
 - [prod(a, b, c, ...)](prod.md)
+- [quantileSeq(A, prob[, sorted])](quantileSeq.md)
 - [std(a, b, c, ...)](std.md)
 - [sum(a, b, c, ...)](sum.md)
 - [var(a, b, c, ...)](var.md)
@@ -168,6 +176,7 @@
 - [format(value [, precision])](format.md)
 - [import(filename | object, override)](import.md)
 - [map(x, callback)](map.md)
+- [partitionSelect(x, k)](partitionSelect.md)
 - [print(template, values [, precision])](print.md)
 - [sort(x)](sort.md)
 - [typeof(x)](typeof.md)

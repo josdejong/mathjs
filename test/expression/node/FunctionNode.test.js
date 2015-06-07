@@ -211,7 +211,7 @@ describe('FunctionNode', function() {
       return node instanceof FunctionNode ? e : node;
     });
 
-    assert.strictEqual(f, e);
+    assert.deepEqual(f, e);
   });
 
   it ('should traverse a FunctionNode', function () {
