@@ -15,8 +15,8 @@ math.lsolve(L, b);
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`A` | Matrix, Array | N x N matrix or array (L)
-`A` | Matrix, Array | column vector with the b values
+`L` | Matrix, Array | A N x N matrix or array (L)
+`b` | Matrix, Array | A column vector with the b values
 
 ### Returns
 

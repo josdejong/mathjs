@@ -14,7 +14,7 @@ math.lusolve(lup, b)   // returns column vector with the solution to the linear 
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`a` | Matrix &#124; Array &#124; Object | Invertible Matrix or the Matrix LU decomposition
+`A` | Matrix &#124; Array &#124; Object | Invertible Matrix or the Matrix LU decomposition
 `b` | Matrix &#124; Array | Column Vector
 `order` | number | The Symbolic Ordering and Analysis order, see slu for details. Matrix must be a SparseMatrix
 `threshold` | Number | Partial pivoting threshold (1 for partial pivoting), see slu for details. Matrix must be a SparseMatrix.

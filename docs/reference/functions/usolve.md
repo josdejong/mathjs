@@ -15,8 +15,8 @@ math.usolve(U, b);
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`A` | Matrix, Array | N x N matrix or array (U)
-`A` | Matrix, Array | column vector with the b values
+`U` | Matrix, Array | A N x N matrix or array (U)
+`b` | Matrix, Array | A column vector with the b values
 
 ### Returns
 

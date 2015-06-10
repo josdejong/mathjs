@@ -14,7 +14,7 @@ math.lup(A);
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`A` | Matrix &#124; Array | two dimensional matrix or array for which to get the LUP decomposition.
+`A` | Matrix &#124; Array | A two dimensional matrix or array for which to get the LUP decomposition.
 
 ### Returns
 
