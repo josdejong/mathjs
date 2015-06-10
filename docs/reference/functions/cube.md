@@ -14,22 +14,22 @@ math.cube(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Number for which to calculate the cube
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Number for which to calculate the cube
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Cube of x
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Cube of x
 
 
 ## Examples
 
 ```js
-math.cube(2);            // returns Number 8
-math.pow(2, 3);          // returns Number 8
-math.cube(4);            // returns Number 64
-4 * 4 * 4;               // returns Number 64
+math.cube(2);            // returns number 8
+math.pow(2, 3);          // returns number 8
+math.cube(4);            // returns number 64
+4 * 4 * 4;               // returns number 64
 
 math.cube([1, 2, 3, 4]); // returns Array [1, 8, 27, 64]
 ```

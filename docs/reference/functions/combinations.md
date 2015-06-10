@@ -17,14 +17,14 @@ math.combinations(n, k)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`n` | Number &#124; BigNumber | Total number of objects in the set
-`k` | Number &#124; BigNumber | Number of objects in the subset
+`n` | number &#124; BigNumber | Total number of objects in the set
+`k` | number &#124; BigNumber | Number of objects in the subset
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber | Number of possible combinations.
+number &#124; BigNumber | Number of possible combinations.
 
 
 ## Examples

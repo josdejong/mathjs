@@ -14,22 +14,22 @@ math.floor(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Number to be rounded
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Rounded value
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Rounded value
 
 
 ## Examples
 
 ```js
-math.floor(3.2);              // returns Number 3
-math.floor(3.8);              // returns Number 3
-math.floor(-4.2);             // returns Number -5
-math.floor(-4.7);             // returns Number -5
+math.floor(3.2);              // returns number 3
+math.floor(3.8);              // returns number 3
+math.floor(-4.2);             // returns number -5
+math.floor(-4.7);             // returns number -5
 
 var c = math.complex(3.2, -2.7);
 math.floor(c);                // returns Complex 3 - 3i

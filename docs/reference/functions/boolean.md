@@ -17,13 +17,13 @@ math.boolean(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix &#124; null | A value of any type
+`value` | string &#124; number &#124; boolean &#124; Array &#124; Matrix &#124; null | A value of any type
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Boolean &#124; Array &#124; Matrix | The boolean value
+boolean &#124; Array &#124; Matrix | The boolean value
 
 
 ## Examples

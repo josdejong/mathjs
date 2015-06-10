@@ -20,13 +20,13 @@ math.lcm(a, b, c, ...)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | ... Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Two or more integer numbers
+`args` | ... number &#124; BigNumber &#124; Array &#124; Matrix | Two or more integer numbers
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | The least common multiple
+number &#124; BigNumber &#124; Array &#124; Matrix | The least common multiple
 
 
 ## Examples

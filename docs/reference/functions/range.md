@@ -20,13 +20,13 @@ math.range(start, end, step [, includeEnd])  // Create a range with start, step,
 
 ### Where
 
-- `str: String`
+- `str: string`
   A string 'start:end' or 'start:step:end'
-- `start: {Number | BigNumber}`
+- `start: {number | BigNumber}`
   Start of the range
-- `end: Number | BigNumber`
+- `end: number | BigNumber`
   End of the range, excluded by default, included when parameter includeEnd=true
-- `step: Number | BigNumber`
+- `step: number | BigNumber`
   Step size. Default value is 1.
 - `includeEnd: boolean`
   Option to specify whether to include the end or not. False by default.

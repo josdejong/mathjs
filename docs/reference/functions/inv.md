@@ -13,13 +13,13 @@ math.inv(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Complex &#124; Array &#124; Matrix | Matrix to be inversed
+`x` | number &#124; Complex &#124; Array &#124; Matrix | Matrix to be inversed
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | The inverse of `x`.
+number &#124; Complex &#124; Array &#124; Matrix | The inverse of `x`.
 
 
 ## Examples

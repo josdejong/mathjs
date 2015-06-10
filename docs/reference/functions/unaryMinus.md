@@ -17,13 +17,13 @@ math.unaryMinus(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; String &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Number to be inverted.
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Number to be inverted.
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Returns the value with inverted sign.
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Returns the value with inverted sign.
 
 
 ## Examples

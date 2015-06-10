@@ -5,10 +5,10 @@
  * The tool can parse documentation information from the block comment in the
  * functions code, and generate a markdown file with the documentation.
  */
-var fs = require('fs'),
-    glob = require('glob'),
-    mkdirp = require('mkdirp'),
-    gutil = require('gulp-util');
+var fs = require('fs');
+var glob = require('glob');
+var mkdirp = require('mkdirp');
+var gutil = require('gulp-util');
 
 // special cases for function syntax
 var SYNTAX = {
@@ -19,6 +19,7 @@ var SYNTAX = {
   round: 'round(x [, n])',
   complex: 'complex(re, im)',
   matrix: 'matrix(x)',
+  sparse: 'sparse(x)',
   unit: 'unit(x)',
   eval: 'eval(expr [, scope])',
   parse: 'parse(expr [, scope])',
@@ -28,12 +29,18 @@ var SYNTAX = {
   resize: 'resize(x, size [, defaultValue])',
   subset: 'subset(x, index [, replacement])',
   zeros: 'zeros(m, n, p, ...)',
-  pernutations: 'permutations(n [, k])',
+  permutations: 'permutations(n [, k])',
   random: 'random([min, max])',
   randomInt: 'randomInt([min, max])',
   format: 'format(value [, precision])',
-  'import': 'import(filename | object, override)',
+  'import': 'import(object, override)',
   print: 'print(template, values [, precision])'
+};
+
+var IGNORE_WARNINGS = {
+  seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain'],
+  parameters: ['parser'],
+  returns: ['forEach']
 };
 
 /**
@@ -45,8 +52,11 @@ var SYNTAX = {
  */
 function generateDoc(name, code) {
   // get block comment from code
-  //var match = /\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\//.exec(code); // TODO: cleanup
-  var match = /\/\*[\W\w]*\*\//.exec(code);
+  var match = /\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\//.exec(code);
+
+  if (!match) {
+    return null;
+  }
 
   // get text content inside block comment
   var comment = match[0].replace('/**', '')
@@ -198,7 +208,7 @@ function generateDoc(name, code) {
   function parseParameters() {
     var count = 0;
     do {
-      var match = /\s*@param\s*{(.*)}\s*\[?(\w*)\]?\s*(.*)?$/.exec(line);
+      var match = /\s*@param\s*\{(.*)}\s*\[?(\w*)]?\s*(.*)?$/.exec(line);
       if (match) {
         next();
 
@@ -236,7 +246,7 @@ function generateDoc(name, code) {
   }
 
   function parseReturns() {
-    var match = /\s*@returns?\s*{(.*)}\s*(.*)?$/.exec(line);
+    var match = /\s*@returns?\s*\{(.*)}\s*(.*)?$/.exec(line);
     if (match) {
       next();
 
@@ -301,6 +311,10 @@ function generateDoc(name, code) {
 function validateDoc (doc) {
   var issues = [];
 
+  function ignore(field) {
+    return IGNORE_WARNINGS[field].indexOf(doc.name) !== -1
+  }
+
   if (!doc.name) {
     issues.push('name missing in document');
   }
@@ -331,7 +345,9 @@ function validateDoc (doc) {
     });
   }
   else {
-    issues.push('function "' + doc.name + '": parameters missing');
+    if (!ignore('parameters')) {
+      issues.push('function "' + doc.name + '": parameters missing');
+    }
   }
 
   if (doc.returns) {
@@ -343,11 +359,15 @@ function validateDoc (doc) {
     }
   }
   else {
-    issues.push('function "' + doc.name + '": returns missing');
+    if (!ignore('returns')) {
+      issues.push('function "' + doc.name + '": returns missing');
+    }
   }
 
   if (!doc.seeAlso || doc.seeAlso.length == 0) {
-    issues.push('function "' + doc.name + '": seeAlso missing');
+    if (!ignore('seeAlso')) {
+      issues.push('function "' + doc.name + '": seeAlso missing');
+    }
   }
 
   return issues;
@@ -432,19 +452,39 @@ function iteratePath (inputPath, outputPath) {
 
   glob(inputPath + '**/*.js', null, function (err, files) {
     // generate path information for each of the files
-    var functions = {};
-    files.forEach(function (fullPath) {
-      var name = fullPath.match(/\/(\w*)\.js/)[1];
-      var relativePath = fullPath.substring(inputPath.length);
+    var functions = {}; // TODO: change to array
 
-      // ignore files starting with and underscore _
-      // TODO: Not so nice exception for _* files
-      if (name[0] !== '_') {
+    files.forEach(function (fullPath) {
+      var path = fullPath.split('/');
+      var name = path.pop().replace(/.js$/, '');
+      var functionIndex = path.indexOf('function');
+      var category;
+
+      // Note: determining whether a file is a function and what it's category
+      // is is a bit tricky and quite specific to the structure of the code,
+      // we reckon with some edge cases here.
+      if (path.indexOf('docs') === -1 && functionIndex !== -1) {
+        if (path.indexOf('expression') !== -1) {
+          category = 'expression';
+        }
+        else if (path.indexOf(name) !== -1) {
+          category = 'construction';
+        }
+        else {
+          category = path[functionIndex + 1];
+        }
+      }
+      else if (path.join('/') === './lib/type') {
+        // for boolean.js, number.js, string.js
+        category = 'construction';
+      }
+
+      if (category) {
         functions[name] = {
           name: name,
-          category: relativePath.match(/^(.*)\//)[1],
+          category: category,
           fullPath: fullPath,
-          relativePath: relativePath
+          relativePath: fullPath.substring(inputPath.length)
         };
       }
     });
@@ -454,16 +494,23 @@ function iteratePath (inputPath, outputPath) {
     for (var name in functions) {
       if (functions.hasOwnProperty(name)) {
         var fn = functions[name];
+        var code = String(fs.readFileSync(fn.fullPath));
 
-        var code = fs.readFileSync(fn.fullPath);
-        var doc = generateDoc(name, code);
-        fn.doc = doc;
+        var isFunction = code.indexOf('exports.name') !== -1
+            && code.indexOf('exports.factory') !== -1
+            && code.indexOf('exports.path') === -1;
+        var doc = isFunction && generateDoc(name, code);
 
-        issues = issues.concat(validateDoc(doc));
-
-        var markdown = generateMarkdown(doc, functions);
-
-        fs.writeFileSync(outputPath + '/' + fn.name + '.md', markdown);
+        if (isFunction && doc) {
+          fn.doc = doc;
+          issues = issues.concat(validateDoc(doc));
+          var markdown = generateMarkdown(doc, functions);
+          fs.writeFileSync(outputPath + '/' + fn.name + '.md', markdown);
+        }
+        else {
+          //gutil.log('Ignoring', fn.fullPath);
+          delete functions[name];
+        }
       }
     }
 
@@ -478,7 +525,8 @@ function iteratePath (inputPath, outputPath) {
       var syntax = SYNTAX[name] || fn.doc && fn.doc.syntax && fn.doc.syntax[0] || name;
       syntax = syntax
           .replace(/^math\./, '')
-          .replace(/\s+\/\/.*$/, '');
+          .replace(/\s+\/\/.*$/, '')
+          .replace(/;$/, '');
       return '- [' + syntax + '](' + name + '.md)';
     }
 

@@ -20,7 +20,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Number | The trace of `x`
+number | The trace of `x`
 
 
 ## Examples

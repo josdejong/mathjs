@@ -15,19 +15,19 @@ math.bitNot(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Value to not
+`x` | number &#124; BigNumber &#124; Array &#124; Matrix | Value to not
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | NOT of `x`
+number &#124; BigNumber &#124; Array &#124; Matrix | NOT of `x`
 
 
 ## Examples
 
 ```js
-math.bitNot(1);               // returns Number -2
+math.bitNot(1);               // returns number -2
 
 math.bitNot([2, -3, 4]);      // returns Array [-3, 2, 5]
 ```

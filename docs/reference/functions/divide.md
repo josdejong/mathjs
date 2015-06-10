@@ -14,20 +14,20 @@ math.divide(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Numerator
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Denominator
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Numerator
+`y` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Denominator
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Quotient, `x / y`
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Quotient, `x / y`
 
 
 ## Examples
 
 ```js
-math.divide(2, 3);            // returns Number 0.6666666666666666
+math.divide(2, 3);            // returns number 0.6666666666666666
 
 var a = math.complex(5, 14);
 var b = math.complex(4, 1);

@@ -21,14 +21,14 @@ math.mod(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Dividend
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Divisor
+`x` | number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Dividend
+`y` | number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Divisor
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | Returns the remainder of `x` divided by `y`.
+number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Returns the remainder of `x` divided by `y`.
 
 
 ## Examples

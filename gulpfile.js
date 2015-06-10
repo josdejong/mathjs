@@ -12,7 +12,7 @@ var ENTRY       = './index.js',
     FILE_MIN    = 'math.min.js',
     FILE_MAP    = 'math.map',
     DIST        = './dist',
-    REF_SRC     = './lib/function/',
+    REF_SRC     = './lib/',
     REF_DEST    = './docs/reference/functions/',
     MATH_JS     = DIST + '/' + FILE;
 

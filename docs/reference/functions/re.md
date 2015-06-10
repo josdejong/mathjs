@@ -16,24 +16,24 @@ math.re(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Boolean &#124; null |  A complex number or array with complex numbers
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  A complex number or array with complex numbers
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | The real part of x
+number &#124; BigNumber &#124; Array &#124; Matrix | The real part of x
 
 
 ## Examples
 
 ```js
 var a = math.complex(2, 3);
-math.re(a);                     // returns Number 2
-math.im(a);                     // returns Number 3
+math.re(a);                     // returns number 2
+math.im(a);                     // returns number 3
 
-math.re(math.complex('-5.2i')); // returns Number 0
-math.re(math.complex(2.4));     // returns Number 2.4
+math.re(math.complex('-5.2i')); // returns number 0
+math.re(math.complex(2.4));     // returns number 2.4
 ```
 
 

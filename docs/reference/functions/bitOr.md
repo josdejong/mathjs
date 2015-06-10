@@ -15,20 +15,20 @@ math.bitOr(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | First value to or
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Second value to or
+`x` | number &#124; BigNumber &#124; Array &#124; Matrix | First value to or
+`y` | number &#124; BigNumber &#124; Array &#124; Matrix | Second value to or
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | OR of `x` and `y`
+number &#124; BigNumber &#124; Array &#124; Matrix | OR of `x` and `y`
 
 
 ## Examples
 
 ```js
-math.bitOr(1, 2);               // returns Number 3
+math.bitOr(1, 2);               // returns number 3
 
 math.bitOr([1, 2, 3], 4);       // returns Array [5, 6, 7]
 ```

@@ -16,7 +16,7 @@ math.compile([expr1, expr2, expr3, ...]) // returns an array with nodes
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`expr` | String &#124; String[] &#124; Matrix |  The expression to be compiled
+`expr` | string &#124; string[] &#124; Array &#124; Matrix |  The expression to be compiled
 
 ### Returns
 

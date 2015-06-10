@@ -16,24 +16,24 @@ math.arg(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Complex &#124; Array &#124; Matrix &#124; Boolean &#124; null |  A complex number or array with complex numbers
+`x` | number &#124; Complex &#124; Array &#124; Matrix |  A complex number or array with complex numbers
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Array &#124; Matrix | The argument of x
+number &#124; Array &#124; Matrix | The argument of x
 
 
 ## Examples
 
 ```js
 var a = math.complex(2, 2);
-math.arg(a) / math.pi;          // returns Number 0.25
+math.arg(a) / math.pi;          // returns number 0.25
 
 var b = math.complex('2 + 3i');
-math.arg(b);                    // returns Number 0.982793723247329
-math.atan2(3, 2);               // returns Number 0.982793723247329
+math.arg(b);                    // returns number 0.982793723247329
+math.atan2(3, 2);               // returns number 0.982793723247329
 ```
 
 

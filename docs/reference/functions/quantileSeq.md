@@ -23,7 +23,7 @@ Parameter | Type | Description
 --------- | ---- | -----------
 `data` | Array, Matrix | A single matrix or Array
 `probOrN` | Number, BigNumber, Array | prob is the order of the quantile, while N is the amount of evenly distributed steps of probabilities; only one of these options can be provided
-`sorted` | Boolean | =False              is data sorted in ascending order
+`sorted` | Boolean | =false              is data sorted in ascending order
 
 ### Returns
 

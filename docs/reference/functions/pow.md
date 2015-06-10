@@ -15,20 +15,20 @@ math.pow(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | The base
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; null | The exponent
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The base
+`y` | number &#124; BigNumber &#124; Complex | The exponent
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The value of `x` to the power `y`
+number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The value of `x` to the power `y`
 
 
 ## Examples
 
 ```js
-math.pow(2, 3);               // returns Number 8
+math.pow(2, 3);               // returns number 8
 
 var a = math.complex(2, 3);
 math.pow(a, 2)                // returns Complex -5 + 12i

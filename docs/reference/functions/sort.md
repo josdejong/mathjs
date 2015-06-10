@@ -15,7 +15,7 @@ math.sort(x, compare)
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Matrix &#124; Array | A one dimensional matrix or array to sort
-`compare` | Function &#124; 'asc' &#124; 'desc' |  An optional comparator function. The function is called as `compare(a, b)`, and must return 1 when a > b, -1 when a < b, and 0 when a == b. Default value: 'asc'.
+`compare` | Function &#124; 'asc' &#124; 'desc' |  An optional _comparator function. The function is called as `compare(a, b)`, and must return 1 when a > b, -1 when a < b, and 0 when a == b. Default value: 'asc'.
 
 ### Returns
 

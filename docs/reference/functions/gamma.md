@@ -16,13 +16,13 @@ math.gamma(n)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`n` | Number &#124; Array &#124; Matrix &#124; Boolean &#124; null | A real or complex number
+`n` | number &#124; Array &#124; Matrix | A real or complex number
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Array &#124; Matrix | The gamma of `n`
+number &#124; Array &#124; Matrix | The gamma of `n`
 
 
 ## Examples

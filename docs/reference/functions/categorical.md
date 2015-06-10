@@ -1,5 +1,13 @@
 # Function reference (categorical)
 
+## algebra
+
+- [lsolve(L, b)](lsolve.md)
+- [lup(A)](lup.md)
+- [lusolve(A, b)](lusolve.md)
+- [slu(A, order, threshold)](slu.md)
+- [usolve(U, b)](usolve.md)
+
 ## arithmetic
 
 - [abs(x)](abs.md)
@@ -20,7 +28,7 @@
 - [mod(x, y)](mod.md)
 - [multiply(x, y)](multiply.md)
 - [norm(x [, p])](norm.md)
-- [nthRoot(a, root)](nthRoot.md)
+- [nthRoot(a)](nthRoot.md)
 - [pow(x, y)](pow.md)
 - [round(x [, n])](round.md)
 - [sign(x)](sign.md)
@@ -60,10 +68,10 @@
 - [boolean(x)](boolean.md)
 - [chain(value)](chain.md)
 - [complex(re, im)](complex.md)
+- [fraction(numerator, denominator)](fraction.md)
 - [index(range1, range2, ...)](index.md)
 - [matrix(x)](matrix.md)
 - [number(value)](number.md)
-- [parser()](parser.md)
 - [string(value)](string.md)
 - [unit(x)](unit.md)
 
@@ -73,6 +81,11 @@
 - [eval(expr [, scope])](eval.md)
 - [help(search)](help.md)
 - [parse(expr [, scope])](parse.md)
+- [parser()](parser.md)
+
+## geometry
+
+- [intersect(endPoint1Line1, endPoint2Line1, endPoint1Line2, endPoint2Line2)](intersect.md)
 
 ## logical
 
@@ -108,7 +121,7 @@
 - [factorial(n)](factorial.md)
 - [gamma(n)](gamma.md)
 - [multinomial(a)](multinomial.md)
-- [permutations(n)](permutations.md)
+- [permutations(n [, k])](permutations.md)
 - [pickRandom(array)](pickRandom.md)
 - [random([min, max])](random.md)
 - [randomInt([min, max])](randomInt.md)
@@ -174,7 +187,11 @@
 - [filter(x, test)](filter.md)
 - [forEach(x, callback)](forEach.md)
 - [format(value [, precision])](format.md)
-- [import(filename | object, override)](import.md)
+- [isInteger(x)](isInteger.md)
+- [isNegative(x)](isNegative.md)
+- [isNumeric(x)](isNumeric.md)
+- [isPositive(x)](isPositive.md)
+- [isZero(x)](isZero.md)
 - [map(x, callback)](map.md)
 - [partitionSelect(x, k)](partitionSelect.md)
 - [print(template, values [, precision])](print.md)

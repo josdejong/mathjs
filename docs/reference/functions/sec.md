@@ -15,20 +15,20 @@ math.sec(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Function input
+`x` | number &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | Secant of x
+number &#124; Complex &#124; Array &#124; Matrix | Secant of x
 
 
 ## Examples
 
 ```js
-math.sec(2);      // returns Number -2.4029979617223822
-1 / math.cos(2);  // returns Number -2.4029979617223822
+math.sec(2);      // returns number -2.4029979617223822
+1 / math.cos(2);  // returns number -2.4029979617223822
 ```
 
 
