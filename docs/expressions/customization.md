@@ -1,7 +1,15 @@
 # Customization
 
 Besides parsing and evaluating expressions, the expression parser supports
-a number of features to customize processing and evaluation of expressions.
+a number of features to customize processing and evaluation of expressions
+and outputting expressions.
+
+On this page:
+
+- [Function transforms](#function-transforms)
+- [Custom argument parsing](#custom-argument-parsing)
+- [Custom LaTeX handlers](#custom-latex-handlers)
+- [Custom LaTeX and string output](#custom-latex-and-string-output)
 
 ## Function transforms
 
@@ -140,17 +148,18 @@ math.eval('myFunction(2 + 3, sqrt(4))');
 // returns 'arguments: 2 + 3, sqrt(4), evaluated: 5, 2'
 ```
 
-## Attaching LaTeX handlers to functions
+## Custom LaTeX handlers
 
 You can attach a `toTex` property to your custom functions before importing them to define their LaTeX output. This
 `toTex` property can be a handler in the format described in the next section 'Custom LaTeX and String conversion'
 or a template string similar to ES6 templates.
 
 ### Template syntax
-* `${name}`: Get's replaced by the name of the function
-* `${args}`: Get's replaced by a comma separated list of the arguments of the function.
-* `${args[0]}`: Get's replaced by the first argument of a function
-* `$$`: Get's replaced by `$`
+
+* `${name}`: Gets replaced by the name of the function
+* `${args}`: Gets replaced by a comma separated list of the arguments of the function.
+* `${args[0]}`: Gets replaced by the first argument of a function
+* `$$`: Gets replaced by `$`
 
 #### Example
 
@@ -180,17 +189,19 @@ math.parse('binom(1,2)').toTex();   // '\\mathrm{binom}\\left(1,2\\right)'
 math.parse('minus(1,2)').toTex();   // '1minus2'
 ```
 
-## Custom LaTeX and String conversion
+## Custom LaTeX and string output
 
-You can pass the `toTex` and `toString` functions an object to change their behaviour. This object is of the following form:
+All expression nodes have a method `toTex` and `toString` to output an expression respectively in LaTex format or as regular text .
+The functions `toTex` and `toString` accept an `options` argument to customise output. This object is of the following form:
 ```js
 {
-  parenthesis: 'keep', //parenthesis option
-  handler: someHandler //handler to change the output
+  parenthesis: 'keep',   // parenthesis option
+  handler: someHandler   // handler to change the output
 }
 ```
 
 ### Parenthesis
+
 The `parenthesis` option changes the way parenteheses are used in the output. There are three options available:
 * `keep`: Keep the parentheses from the input and display them as is. This is the default.
 * `auto`: Only display parentheses that are necessary. Mathjs tries to get rid of as much parntheses as possible.
