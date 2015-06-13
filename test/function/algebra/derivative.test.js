@@ -24,7 +24,16 @@ describe('derivative', function() {
     assert.deepEqual(math.eval('derivative((x), x)'), math.parse('(1)'));
   });
 
-  it('should take the derivative of a OperatorNodes with Constants', function() {
+  it('should take the derivative of FunctionAssignmentNodes', function() {
+    assert.deepEqual(math.derivative(math.parse('f(x) = 5x + x + 2'), new SymbolNode('x')),
+                     math.parse('5*1 + 1 + 0'));
+    assert.deepEqual(math.derivative(math.parse('f(x) = 5 + 2'), new SymbolNode('x')),
+                     new ConstantNode(0));
+    assert.deepEqual(math.derivative(math.parse('f(y) = 5y + 2'), new SymbolNode('x')),
+                     new ConstantNode(0));
+  });
+
+  it('should take the derivative of a OperatorNodes with ConstantNodes', function() {
     assert.deepEqual(math.eval('derivative(1 + 2, x)'), new ConstantNode(0));
     assert.deepEqual(math.eval('derivative(-100^2 + 3*3/2 - 12, x)'), new ConstantNode(0));
   });
@@ -70,7 +79,7 @@ describe('derivative', function() {
                                                         ]));
 
 
-    // d/dx(7x / 2) = 7 * 1 / 2 = 7 / 2
+    // Basic division, d/dx(7x / 2) = 7 * 1 / 2 = 7 / 2
     assert.deepEqual(math.eval('derivative(7x / 2, x)'), new OperatorNode('*', 'multiply', [
                                                            new ConstantNode(7),
                                                            new OperatorNode('/', 'divide', [
@@ -152,6 +161,36 @@ describe('derivative', function() {
                                                                   ]));
 
 
+    // Secret constant; 0^f(x) = 1 (in JS), 1^f(x) = 1
+    assert.deepEqual(math.eval('derivative(0^(2^x + x^3 + 2), x)'), new ConstantNode(0));
+    assert.deepEqual(math.eval('derivative(1^(2^x + x^3 + 2), x)'), new ConstantNode(0));
+    // d/dx(10^(2x + 2)) = 10^(2x + 2)*ln(10)*(2*1 + 0)
+    assert.deepEqual(math.eval('derivative(10^(2x + 2), x)'), new OperatorNode('*', 'multiply', [
+                                                                new OperatorNode('^', 'pow', [
+                                                                  new ConstantNode(10),
+                                                                  new ParenthesisNode(
+                                                                    new OperatorNode('+', 'add', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(2),
+                                                                        new SymbolNode('x')
+                                                                      ]),
+                                                                      new ConstantNode(2)
+                                                                    ])
+                                                                  )
+                                                                ]),
+                                                                new OperatorNode('*', 'multiply', [
+                                                                  new FunctionNode('log', [new ConstantNode(10)]),
+                                                                  new ParenthesisNode(
+                                                                    new OperatorNode('+', 'add', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(2),
+                                                                        new ConstantNode(1)
+                                                                      ]),
+                                                                      new ConstantNode(0)
+                                                                    ])
+                                                                  )
+                                                                ])
+                                                              ]));
     // Secret constant, f(x)^0 = 1 -> d/dx(f(x)^0) = 1
     assert.deepEqual(math.eval('derivative((x^x^x^x)^0, x)'), new ConstantNode(0));
     // Ignore powers of 1, d/dx((x + 2)^1) -> d/dx(x+2) = (1 + 0) = 1
@@ -265,37 +304,349 @@ describe('derivative', function() {
   });
 
   it('should properly take the derivative of mathematical functions', function() {
+    assert.deepEqual(math.eval('derivative(sqrt((6x)), x)'), new OperatorNode('/', 'divide', [
+                                                               math.parse('(6 * 1)'),
+                                                               math.parse('2 * sqrt((6 * x))')
+                                                             ]));
+    assert.deepEqual(math.eval('derivative(nthRoot((6x)), x)'), new OperatorNode('/', 'divide', [
+                                                                  math.parse('(6 * 1)'),
+                                                                  math.parse('2 * sqrt((6 * x))')
+                                                                ]));
+    assert.deepEqual(math.eval('derivative(nthRoot(6x, 3), x)'), new OperatorNode('*', 'multiply', [
+                                                                   math.parse('1/3'),
+                                                                   new OperatorNode('*', 'multiply', [
+                                                                     math.parse('6*1'),
+                                                                     new OperatorNode('^', 'pow', [
+                                                                       math.parse('6x'),
+                                                                       math.parse('1/3 - 1')
+                                                                     ])
+                                                                   ])
+                                                                 ]));
     assert.deepEqual(math.eval('derivative(log((6x)), x)'), math.parse('(6*1)/(6*x)'));
     assert.deepEqual(math.eval('derivative(log((6x), 10), x)'), new OperatorNode('/', 'divide', [
+                                                                  math.parse('(6*1)'),
+                                                                  math.parse('(6x)log(10)')
+                                                                ]));
+    assert.deepEqual(math.eval('derivative(log10((6x)), x)'), new OperatorNode('/', 'divide', [
                                                                   math.parse('(6*1)'),
                                                                   math.parse('(6x)log(10)')
                                                                 ]));
     assert.deepEqual(math.eval('derivative(sin(2x), x)'), math.parse('2*1*cos(2x)'));
     assert.deepEqual(math.eval('derivative(cos(2x), x)'), math.parse('2*1*-sin(2x)'));
     assert.deepEqual(math.eval('derivative(tan(2x), x)'), math.parse('2*1*sec(2x)^2'));
+    assert.deepEqual(math.eval('derivative(sec(2x), x)'), math.parse('2*1*sec(2x)*tan(2x)'));
+    assert.deepEqual(math.eval('derivative(csc(2x), x)'), new OperatorNode('*', 'multiply', [
+                                                            new OperatorNode('-', 'unaryMinus', [
+                                                              new OperatorNode('*', 'multiply', [
+                                                                new ConstantNode(2),
+                                                                new ConstantNode(1)
+                                                              ]),
+                                                            ]),
+                                                            math.parse('csc(2x)cot(2x)')
+                                                          ]));
+    assert.deepEqual(math.eval('derivative(cot(2x), x)'), new OperatorNode('*', 'multiply', [
+                                                            new OperatorNode('-', 'unaryMinus', [
+                                                              new OperatorNode('*', 'multiply', [
+                                                                new ConstantNode(2),
+                                                                new ConstantNode(1)
+                                                              ]),
+                                                            ]),
+                                                            math.parse('csc(2x)^2')
+                                                          ]));
+    assert.deepEqual(math.eval('derivative(asin(2x), x)'), new OperatorNode('/', 'divide', [
+                                                             new OperatorNode('*', 'multiply', [
+                                                               new ConstantNode(2),
+                                                               new ConstantNode(1)
+                                                             ]),
+                                                             new FunctionNode('sqrt', [
+                                                               new OperatorNode('-', 'subtract', [
+                                                                 new ConstantNode(1),
+                                                                 new OperatorNode('^', 'pow', [
+                                                                   new OperatorNode('*', 'multiply', [
+                                                                     new ConstantNode(2),
+                                                                     new SymbolNode('x')
+                                                                   ]),
+                                                                   new ConstantNode(2)
+                                                                 ])
+                                                               ])
+                                                             ])
+                                                           ]));
+    assert.deepEqual(math.eval('derivative(acos(2x), x)'), new OperatorNode('/', 'divide', [
+                                                             new OperatorNode('-', 'unaryMinus', [
+                                                               new OperatorNode('*', 'multiply', [
+                                                                 new ConstantNode(2),
+                                                                 new ConstantNode(1)
+                                                               ])
+                                                             ]),
+                                                             new FunctionNode('sqrt', [
+                                                               new OperatorNode('-', 'subtract', [
+                                                                 new ConstantNode(1),
+                                                                 new OperatorNode('^', 'pow', [
+                                                                   new OperatorNode('*', 'multiply', [
+                                                                     new ConstantNode(2),
+                                                                     new SymbolNode('x')
+                                                                   ]),
+                                                                   new ConstantNode(2)
+                                                                 ])
+                                                               ])
+                                                             ])
+                                                           ]));
+    assert.deepEqual(math.eval('derivative(atan(2x), x)'), new OperatorNode('/', 'divide', [
+                                                             new OperatorNode('*', 'multiply', [
+                                                               new ConstantNode(2),
+                                                               new ConstantNode(1)
+                                                             ]),
+                                                             new OperatorNode('+', 'add', [
+                                                               new OperatorNode('^', 'pow', [
+                                                                 new OperatorNode('*', 'multiply', [
+                                                                   new ConstantNode(2),
+                                                                   new SymbolNode('x')
+                                                                 ]),
+                                                                 new ConstantNode(2)
+                                                               ]),
+                                                               new ConstantNode(1)
+                                                             ])
+                                                           ]));
+    assert.deepEqual(math.eval('derivative(asec(2x), x)'), new OperatorNode('/', 'divide', [
+                                                             new OperatorNode('*', 'multiply', [
+                                                               new ConstantNode(2),
+                                                               new ConstantNode(1)
+                                                             ]),
+                                                             new OperatorNode('*', 'multiply', [ 
+                                                               new FunctionNode('abs', [
+                                                                 new OperatorNode('*', 'multiply', [
+                                                                   new ConstantNode(2),
+                                                                   new SymbolNode('x')
+                                                                 ])
+                                                               ]),
+                                                               new FunctionNode('sqrt', [
+                                                                 new OperatorNode('-', 'subtract', [
+                                                                   new OperatorNode('^', 'pow', [
+                                                                     new OperatorNode('*', 'multiply', [
+                                                                       new ConstantNode(2),
+                                                                       new SymbolNode('x')
+                                                                     ]),
+                                                                     new ConstantNode(2)
+                                                                   ]),
+                                                                   new ConstantNode(1)
+                                                                 ])
+                                                               ])
+                                                             ])
+                                                           ]));
+    assert.deepEqual(math.eval('derivative(acsc(2x), x)'), new OperatorNode('/', 'divide', [
+                                                             new OperatorNode('-', 'unaryMinus', [ 
+                                                               new OperatorNode('*', 'multiply', [
+                                                                 new ConstantNode(2),
+                                                                 new ConstantNode(1)
+                                                               ])
+                                                             ]),
+                                                             new OperatorNode('*', 'multiply', [ 
+                                                               new FunctionNode('abs', [
+                                                                 new OperatorNode('*', 'multiply', [
+                                                                   new ConstantNode(2),
+                                                                   new SymbolNode('x')
+                                                                 ])
+                                                               ]),
+                                                               new FunctionNode('sqrt', [
+                                                                 new OperatorNode('-', 'subtract', [
+                                                                   new OperatorNode('^', 'pow', [
+                                                                     new OperatorNode('*', 'multiply', [
+                                                                       new ConstantNode(2),
+                                                                       new SymbolNode('x')
+                                                                     ]),
+                                                                     new ConstantNode(2)
+                                                                   ]),
+                                                                   new ConstantNode(1)
+                                                                 ])
+                                                               ])
+                                                             ])
+                                                           ]));
+    assert.deepEqual(math.eval('derivative(acot(2x), x)'), new OperatorNode('/', 'divide', [
+                                                             new OperatorNode('-', 'unaryMinus', [
+                                                               new OperatorNode('*', 'multiply', [
+                                                                 new ConstantNode(2),
+                                                                 new ConstantNode(1)
+                                                               ])
+                                                             ]),
+                                                             new OperatorNode('+', 'add', [
+                                                               new OperatorNode('^', 'pow', [
+                                                                 new OperatorNode('*', 'multiply', [
+                                                                   new ConstantNode(2),
+                                                                   new SymbolNode('x')
+                                                                 ]),
+                                                                 new ConstantNode(2)
+                                                               ]),
+                                                               new ConstantNode(1)
+                                                             ])
+                                                           ]));
+    assert.deepEqual(math.eval('derivative(sinh(2x), x)'), math.parse('2*1*cosh(2x)'));
+    assert.deepEqual(math.eval('derivative(cosh(2x), x)'), math.parse('2*1*sinh(2x)'));
+    assert.deepEqual(math.eval('derivative(tanh(2x), x)'), math.parse('2*1*sech(2x)^2'));
+    assert.deepEqual(math.eval('derivative(sech(2x), x)'), new OperatorNode('*', 'multiply', [
+                                                             new OperatorNode('-', 'unaryMinus', [
+                                                               new OperatorNode('*', 'multiply', [
+                                                                 new ConstantNode(2),
+                                                                 new ConstantNode(1)
+                                                               ]),
+                                                             ]),
+                                                             math.parse('sech(2x)tanh(2x)')
+                                                           ]));
+    assert.deepEqual(math.eval('derivative(csch(2x), x)'), new OperatorNode('*', 'multiply', [
+                                                             new OperatorNode('-', 'unaryMinus', [
+                                                               new OperatorNode('*', 'multiply', [
+                                                                 new ConstantNode(2),
+                                                                 new ConstantNode(1)
+                                                               ]),
+                                                             ]),
+                                                             math.parse('csch(2x)coth(2x)')
+                                                           ]));
+    assert.deepEqual(math.eval('derivative(coth(2x), x)'), new OperatorNode('*', 'multiply', [
+                                                             new OperatorNode('-', 'unaryMinus', [
+                                                               new OperatorNode('*', 'multiply', [
+                                                                 new ConstantNode(2),
+                                                                 new ConstantNode(1)
+                                                               ]),
+                                                             ]),
+                                                             math.parse('csch(2x)^2')
+                                                           ]));
+    assert.deepEqual(math.eval('derivative(asinh(2x), x)'), new OperatorNode('/', 'divide', [
+                                                              new OperatorNode('*', 'multiply', [
+                                                                new ConstantNode(2),
+                                                                new ConstantNode(1)
+                                                              ]),
+                                                              new FunctionNode('sqrt', [
+                                                                new OperatorNode('+', 'add', [
+                                                                  new OperatorNode('^', 'pow', [
+                                                                    new OperatorNode('*', 'multiply', [
+                                                                      new ConstantNode(2),
+                                                                      new SymbolNode('x')
+                                                                    ]),
+                                                                    new ConstantNode(2)
+                                                                  ]),
+                                                                  new ConstantNode(1)
+                                                                ])
+                                                              ])
+                                                            ]));
+    assert.deepEqual(math.eval('derivative(acosh(2x), x)'), new OperatorNode('/', 'divide', [
+                                                              new OperatorNode('*', 'multiply', [
+                                                                new ConstantNode(2),
+                                                                new ConstantNode(1)
+                                                              ]),
+                                                              new FunctionNode('sqrt', [
+                                                                new OperatorNode('-', 'subtract', [
+                                                                  new OperatorNode('^', 'pow', [
+                                                                    new OperatorNode('*', 'multiply', [
+                                                                      new ConstantNode(2),
+                                                                      new SymbolNode('x')
+                                                                    ]),
+                                                                    new ConstantNode(2)
+                                                                  ]),
+                                                                  new ConstantNode(1)
+                                                                ])
+                                                              ])
+                                                            ]));
+    assert.deepEqual(math.eval('derivative(atanh(2x), x)'), new OperatorNode('/', 'divide', [
+                                                              new OperatorNode('*', 'multiply', [
+                                                                new ConstantNode(2),
+                                                                new ConstantNode(1)
+                                                              ]),
+                                                              new OperatorNode('-', 'subtract', [
+                                                                new ConstantNode(1),
+                                                                new OperatorNode('^', 'pow', [
+                                                                  new OperatorNode('*', 'multiply', [
+                                                                    new ConstantNode(2),
+                                                                    new SymbolNode('x')
+                                                                  ]),
+                                                                  new ConstantNode(2)
+                                                                ])
+                                                              ])
+                                                            ]));
+    assert.deepEqual(math.eval('derivative(asech(2x), x)'), new OperatorNode('/', 'divide', [
+                                                              new OperatorNode('-', 'unaryMinus', [
+                                                                new OperatorNode('*', 'multiply', [
+                                                                  new ConstantNode(2),
+                                                                  new ConstantNode(1)
+                                                                ])
+                                                              ]),
+                                                              new OperatorNode('*', 'multiply', [ 
+                                                                new OperatorNode('*', 'multiply', [
+                                                                  new ConstantNode(2),
+                                                                  new SymbolNode('x')
+                                                                ]),
+                                                                new FunctionNode('sqrt', [
+                                                                  new OperatorNode('-', 'subtract', [
+                                                                    new ConstantNode(1),
+                                                                    new OperatorNode('^', 'pow', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(2),
+                                                                        new SymbolNode('x')
+                                                                      ]),
+                                                                      new ConstantNode(2)
+                                                                    ])
+                                                                  ])
+                                                                ])
+                                                              ])
+                                                            ]));
+    assert.deepEqual(math.eval('derivative(acsch(2x), x)'), new OperatorNode('/', 'divide', [
+                                                              new OperatorNode('-', 'unaryMinus', [ 
+                                                                new OperatorNode('*', 'multiply', [
+                                                                  new ConstantNode(2),
+                                                                  new ConstantNode(1)
+                                                                ])
+                                                              ]),
+                                                              new OperatorNode('*', 'multiply', [ 
+                                                                new FunctionNode('abs', [
+                                                                  new OperatorNode('*', 'multiply', [
+                                                                    new ConstantNode(2),
+                                                                    new SymbolNode('x')
+                                                                  ])
+                                                                ]),
+                                                                new FunctionNode('sqrt', [
+                                                                  new OperatorNode('+', 'add', [
+                                                                    new OperatorNode('^', 'pow', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(2),
+                                                                        new SymbolNode('x')
+                                                                      ]),
+                                                                      new ConstantNode(2)
+                                                                    ]),
+                                                                    new ConstantNode(1)
+                                                                  ])
+                                                                ])
+                                                              ])
+                                                            ]));
+    assert.deepEqual(math.eval('derivative(acoth(2x), x)'), new OperatorNode('/', 'divide', [
+                                                              new OperatorNode('-', 'unaryMinus', [ 
+                                                                new OperatorNode('*', 'multiply', [
+                                                                  new ConstantNode(2),
+                                                                  new ConstantNode(1)
+                                                                ])
+                                                              ]),
+                                                              new OperatorNode('-', 'subtract', [
+                                                                new ConstantNode(1),
+                                                                new OperatorNode('^', 'pow', [
+                                                                  new OperatorNode('*', 'multiply', [
+                                                                    new ConstantNode(2),
+                                                                    new SymbolNode('x')
+                                                                  ]),
+                                                                  new ConstantNode(2)
+                                                                ])
+                                                              ])
+                                                            ]));
   });
-
-  /*
-  it('should have controlled behavior on arguments errors', function() {
-    var funcList = ['log', 'sin', 'cos', 'tan'];
-
-    for (var i = 0; i < funcList.length; ++i) {
-      // Too few arguments
-      var f = math.eval('f(x) = derivative(' + funcList[i] + '(), x)');
-      var errStr = 'TypeError: Too few arguments in function ' + funcList[i] +
-                   ' (expected: number or Complex or BigNumber or Unit or Array or Matrix or Fraction or boolean or null, index: 0)';
-      assert.throws(function () { f(2); }, errStr);
-
-      // Too many arguments
-      f = math.eval('f(x) = derivative(' + funcList[i] + '(x, x, x, x, x), x)');
-      assert.throws(function () { f(2, 2, 2, 2, 2); }, /SyntaxError: Wrong number of arguments in function f \(5 provided, 1 expected\)/);
-    }
-  });
-  */
 
   it('should throw error if expressions contain unsupported operators or functions', function() {
     assert.throws(function () { math.eval('derivative(x << 2, x)'); }, /Error: Operator "<<" not supported by derivative/);
     assert.throws(function () { math.eval('derivative(subset(x), x)'); }, /Error: Function "subset" not supported by derivative/);
+  });
+
+  it('should have controlled behavior on arguments errors', function() {
+    assert.throws(function() {
+      math.eval('derivative(sqrt(), x)');
+    }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Array or Matrix or Fraction or string or boolean or null, index: 0\)/);
+    assert.throws(function() {
+      math.eval('derivative(sqrt(12, 2x), x)');
+    }, /TypeError: Too many arguments in function sqrt \(expected: 1, actual: 2\)/);
   });
 
   it('should throw error for incorrect argument types', function() {
@@ -305,11 +656,11 @@ describe('derivative', function() {
 
     assert.throws(function () {
       math.eval('derivative([1, 2; 3, 4], x)');
-    }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode, actual: ArrayNode, index: 1\)/);
+    }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode or FunctionAssignmentNode, actual: ArrayNode, index: 1\)/);
 
     assert.throws(function () {
       math.eval('derivative(x + [1, 2; 3, 4], x)');
-    }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode, actual: ArrayNode, index: 1\)/);
+    }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode or FunctionAssignmentNode, actual: ArrayNode, index: 1\)/);
   });
 
   it('should throw error if incorrect number of arguments', function() {
