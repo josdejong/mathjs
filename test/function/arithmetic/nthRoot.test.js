@@ -34,9 +34,18 @@ describe('nthRoot', function() {
     approx.equal(nthRoot(0.0001, 3), 0.0464158883361278);
   });
 
+  it('should return the nthRoot for very large numbers', function() {
+    approx.equal(nthRoot(2e150 * 2e150), 2e150);
+    approx.equal(nthRoot(Math.pow(2, 1000)), 3.273390607896142e+150);
+  });
+
+  it('should return the nthRoot for small large numbers', function() {
+    approx.equal(nthRoot(4e-300), 2e-150);
+  });
+
   it('should return the nthRoot for negative numbers', function() {
     approx.equal(nthRoot(-64, 3), -4);
-    approx.equal(nthRoot(-64, 3), -4);
+    approx.equal(nthRoot(-8, 3), -2);
   });
 
   it('should return the nthRoot for negative roots', function() {
