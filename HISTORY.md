@@ -29,6 +29,8 @@
 - Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
 - The size of Arrays is no longer validated. Matrices will validate this on
   creation.
+- Fixed #397: Inaccuracies in `nthRoot` for very large values, and wrong results 
+  for very small values.
 
 
 ## 2015-05-31, version 1.7.0
