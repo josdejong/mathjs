@@ -28,6 +28,7 @@ describe('nthRoot', function() {
     approx.equal(nthRoot(64, 3), 4);
     approx.equal(nthRoot(2, 2.5), 1.31950791077289);
     approx.equal(nthRoot(2.5, 2), 1.58113883008419);
+    approx.equal(nthRoot(0.1+0.2), 0.5477225575051662); // a value containing a round-off error
     approx.equal(nthRoot(0, 3), 0);
     approx.equal(nthRoot(0, 2), 0);
     approx.equal(nthRoot(0.0001, 3), 0.0464158883361278);
